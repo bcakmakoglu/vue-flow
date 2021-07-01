@@ -1,0 +1,187 @@
+.react-flow {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.react-flow__renderer,
+.react-flow__pane,
+.react-flow__selectionpane {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.react-flow__pane {
+  z-index: 1;
+}
+
+.react-flow__renderer {
+  z-index: 4;
+}
+
+.react-flow__selectionpane {
+  z-index: 5;
+}
+
+.react-flow__selection {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.react-flow__edges {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.react-flow__edge {
+  pointer-events: visibleStroke;
+
+  &.inactive {
+    pointer-events: none;
+  }
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+}
+
+.react-flow__edge-path {
+  fill: none;
+}
+
+.react-flow__edge-textwrapper {
+  pointer-events: all;
+}
+
+.react-flow__edge-text {
+  pointer-events: none;
+  user-select: none;
+}
+
+.react-flow__connection {
+  pointer-events: none;
+
+  .animated {
+    stroke-dasharray: 5;
+    animation: dashdraw 0.5s linear infinite;
+  }
+}
+
+.react-flow__connection-path {
+  fill: none;
+}
+
+.react-flow__nodes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transform-origin: 0 0;
+  z-index: 3;
+}
+
+.react-flow__node {
+  position: absolute;
+  user-select: none;
+  pointer-events: all;
+  transform-origin: 0 0;
+}
+
+.react-flow__nodesselection {
+  z-index: 3;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: left top;
+  pointer-events: none;
+
+  &-rect {
+    position: absolute;
+    pointer-events: all;
+    cursor: grab;
+  }
+}
+
+.react-flow__handle {
+  pointer-events: none;
+
+  &.connectable {
+    pointer-events: all;
+  }
+}
+
+.react-flow__handle-bottom {
+  top: auto;
+  left: 50%;
+  bottom: -4px;
+  transform: translate(-50%, 0);
+}
+
+.react-flow__handle-top {
+  left: 50%;
+  top: -4px;
+  transform: translate(-50%, 0);
+}
+
+.react-flow__handle-left {
+  top: 50%;
+  left: -4px;
+  transform: translate(0, -50%);
+}
+
+.react-flow__handle-right {
+  right: -4px;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.react-flow__edgeupdater {
+  cursor: move;
+  pointer-events: all;
+}
+
+/* additional components */
+
+.react-flow__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.react-flow__controls {
+  position: absolute;
+  z-index: 5;
+  bottom: 10px;
+  left: 10px;
+
+  &-button {
+    width: 24px;
+    height: 24px;
+    border: none;
+
+    svg {
+      width: 100%;
+    }
+  }
+}
+
+.react-flow__minimap {
+  position: absolute;
+  z-index: 5;
+  bottom: 10px;
+  right: 10px;
+}
