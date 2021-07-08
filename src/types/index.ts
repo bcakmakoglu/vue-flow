@@ -1,5 +1,5 @@
 import { Selection as D3Selection, ZoomBehavior } from 'd3';
-import { Component, HTMLAttributes, VNode } from 'vue';
+import { Component, HTMLAttributes, PropType, VNode } from 'vue';
 
 export type ElementId = string;
 
@@ -84,7 +84,7 @@ export enum BackgroundVariant {
 
 export type HandleType = 'source' | 'target';
 
-export type NodeTypesType = { [key: string]: VNode };
+export type NodeTypesType = { [key: string]: Component };
 
 export type EdgeTypesType = NodeTypesType;
 
@@ -135,6 +135,185 @@ export interface WrapEdgeProps<T = any> {
   onEdgeUpdateEnd?: (event: MouseEvent, edge: Edge) => void;
 }
 
+export const WrapEdgeProps = {
+  id: {
+    type: String as PropType<WrapEdgeProps['id']>,
+    required: false,
+    default: undefined
+  },
+  type: {
+    type: String as PropType<WrapEdgeProps['type']>,
+    required: true
+  },
+  data: {
+    type: String as PropType<WrapEdgeProps['data']>,
+    required: false,
+    default: undefined
+  },
+  onClick: {
+    type: Function('event', 'edge') as PropType<WrapEdgeProps['onClick']>,
+    required: false,
+    default: () => ({})
+  },
+  onEdgeDoubleClick: {
+    type: Function('event', 'edge') as PropType<WrapEdgeProps['onEdgeDoubleClick']>,
+    required: false,
+    default: () => ({})
+  },
+  selected: {
+    type: Boolean as PropType<WrapEdgeProps['selected']>,
+    required: true,
+    default: false
+  },
+  animated: {
+    type: Boolean as PropType<WrapEdgeProps['animated']>,
+    required: false,
+    default: false
+  },
+  label: {
+    type: Object as PropType<WrapEdgeProps['label']>,
+    required: false,
+    default: undefined
+  },
+  labelStyle: {
+    type: Object as PropType<WrapEdgeProps['labelStyle']>,
+    required: false,
+    default: undefined
+  },
+  labelShowBg: {
+    type: Boolean as PropType<WrapEdgeProps['labelShowBg']>,
+    required: false,
+    default: false
+  },
+  labelBgStyle: {
+    type: Object as PropType<WrapEdgeProps['labelBgStyle']>,
+    required: false,
+    default: undefined
+  },
+  labelBgPadding: {
+    type: Array as unknown as PropType<WrapEdgeProps['labelBgPadding']>,
+    required: false,
+    default: undefined
+  },
+  labelBgBorderRadius: {
+    type: Number as PropType<WrapEdgeProps['labelBgBorderRadius']>,
+    required: false,
+    default: undefined
+  },
+  style: {
+    type: Object as PropType<WrapEdgeProps['style']>,
+    required: false,
+    default: undefined
+  },
+  arrowHeadType: {
+    type: String as PropType<WrapEdgeProps['arrowHeadType']>,
+    required: false,
+    default: undefined
+  },
+  source: {
+    type: String as PropType<WrapEdgeProps['source']>,
+    required: true
+  },
+  target: {
+    type: String as PropType<WrapEdgeProps['target']>,
+    required: true
+  },
+  sourceHandleId: {
+    type: String as PropType<WrapEdgeProps['sourceHandleId']>,
+    required: true,
+    default: null
+  },
+  targetHandleId: {
+    type: String as PropType<WrapEdgeProps['targetHandleId']>,
+    required: true,
+    default: null
+  },
+  sourceX: {
+    type: Number as PropType<WrapEdgeProps['sourceX']>,
+    required: true
+  },
+  sourceY: {
+    type: Number as PropType<WrapEdgeProps['sourceY']>,
+    required: true
+  },
+  targetX: {
+    type: Number as PropType<WrapEdgeProps['targetX']>,
+    required: true
+  },
+  targetY: {
+    type: Number as PropType<WrapEdgeProps['targetY']>,
+    required: true
+  },
+  sourcePosition: {
+    type: String as PropType<WrapEdgeProps['sourcePosition']>,
+    required: true
+  },
+  targetPosition: {
+    type: String as PropType<WrapEdgeProps['targetPosition']>,
+    required: true
+  },
+  elementsSelectable: {
+    type: Boolean as PropType<WrapEdgeProps['elementsSelectable']>,
+    required: false,
+    default: false
+  },
+  markerEndId: {
+    type: String as PropType<WrapEdgeProps['markerEndId']>,
+    required: false,
+    default: undefined
+  },
+  isHidden: {
+    type: Boolean as PropType<WrapEdgeProps['isHidden']>,
+    required: false,
+    default: false
+  },
+  handleEdgeUpdate: {
+    type: Boolean as PropType<WrapEdgeProps['handleEdgeUpdate']>,
+    required: false,
+    default: false
+  },
+  onConnectEdge: {
+    type: Function() as PropType<WrapEdgeProps['onConnectEdge']>,
+    required: false,
+    default: () => ({})
+  },
+  onContextMenu: {
+    type: Function() as PropType<WrapEdgeProps['onContextMenu']>,
+    required: false,
+    default: () => ({})
+  },
+  onMouseEnter: {
+    type: Function() as PropType<WrapEdgeProps['onMouseEnter']>,
+    required: false,
+    default: () => ({})
+  },
+  onMouseMove: {
+    type: Function() as PropType<WrapEdgeProps['onMouseMove']>,
+    required: false,
+    default: () => ({})
+  },
+  onMouseLeave: {
+    type: Function() as PropType<WrapEdgeProps['onMouseLeave']>,
+    required: false,
+    default: () => ({})
+  },
+  edgeUpdaterRadius: {
+    type: Number as PropType<WrapEdgeProps['edgeUpdaterRadius']>,
+    required: false,
+    default: undefined
+  },
+  onEdgeUpdateStart: {
+    type: Function() as PropType<WrapEdgeProps['onEdgeUpdateStart']>,
+    required: false,
+    default: () => ({})
+  },
+  onEdgeUpdateEnd: {
+    type: Function() as PropType<WrapEdgeProps['onEdgeUpdateEnd']>,
+    required: false,
+    default: () => ({})
+  }
+};
+
 export interface EdgeProps<T = any> {
   id: ElementId;
   source: ElementId;
@@ -164,6 +343,112 @@ export interface EdgeProps<T = any> {
 export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
   borderRadius?: number;
 }
+
+export const EdgeProps = {
+  id: {
+    type: String as PropType<EdgeSmoothStepProps['id']>,
+    required: true
+  },
+  sourceX: {
+    type: Number as PropType<EdgeSmoothStepProps['sourceX']>,
+    required: true,
+    default: 0
+  },
+  sourceY: {
+    type: Number as PropType<EdgeSmoothStepProps['sourceY']>,
+    required: true,
+    default: 0
+  },
+  targetX: {
+    type: Number as PropType<EdgeSmoothStepProps['targetX']>,
+    required: true,
+    default: 0
+  },
+  targetY: {
+    type: Number as PropType<EdgeSmoothStepProps['targetY']>,
+    required: true,
+    default: 0
+  },
+  sourcePosition: {
+    type: String as PropType<EdgeSmoothStepProps['sourcePosition']>,
+    required: true,
+    default: Position.Bottom
+  },
+  targetPosition: {
+    type: String as PropType<EdgeSmoothStepProps['targetPosition']>,
+    required: true,
+    default: Position.Top
+  },
+  label: {
+    type: String as PropType<EdgeSmoothStepProps['label']>,
+    required: false,
+    default: undefined
+  },
+  labelStyle: {
+    type: Object as PropType<EdgeSmoothStepProps['labelStyle']>,
+    required: true,
+    default: undefined
+  },
+  labelShowBg: {
+    type: Boolean as PropType<EdgeSmoothStepProps['labelShowBg']>,
+    required: false,
+    default: false
+  },
+  labelBgStyle: {
+    type: String as PropType<EdgeSmoothStepProps['labelBgStyle']>,
+    required: false,
+    default: undefined
+  },
+  labelBgPadding: {
+    type: [0, 0] as any as PropType<[number, number]>,
+    required: false,
+    default: undefined
+  },
+  labelBgBorderRadius: {
+    type: Number as PropType<EdgeSmoothStepProps['labelBgBorderRadius']>,
+    required: false,
+    default: undefined
+  },
+  arrowHeadType: {
+    type: Object as PropType<EdgeSmoothStepProps['arrowHeadType']>,
+    required: false,
+    default: undefined
+  },
+  markerEndId: {
+    type: String as PropType<EdgeSmoothStepProps['markerEndId']>,
+    required: false,
+    default: undefined
+  },
+  style: {
+    type: Object as PropType<EdgeSmoothStepProps['style']>,
+    required: false,
+    default: undefined
+  },
+  data: {
+    type: Object as PropType<EdgeSmoothStepProps['data']>,
+    required: false,
+    default: undefined
+  },
+  sourceHandleId: {
+    type: Object as PropType<EdgeSmoothStepProps['sourceHandleId']>,
+    required: false,
+    default: undefined
+  },
+  targetHandleId: {
+    type: Object as PropType<EdgeSmoothStepProps['targetHandleId']>,
+    required: false,
+    default: undefined
+  }
+};
+
+export const EdgeSmoothStepProps = {
+  ...EdgeProps,
+  borderRadius: {
+    type: Number as PropType<EdgeSmoothStepProps['borderRadius']>,
+    required: false,
+    default: 5
+  }
+};
 
 export interface EdgeTextProps extends HTMLAttributes {
   x: number;
@@ -212,6 +497,152 @@ export interface NodeComponentProps<T = any> {
   style?: any;
   isDragging?: boolean;
 }
+
+export const WrapNodeProps = {
+  id: {
+    type: String as PropType<WrapNodeProps['id']>,
+    required: true
+  },
+  type: {
+    type: String as PropType<WrapNodeProps['type']>,
+    required: true
+  },
+  data: {
+    type: Object as PropType<WrapNodeProps['data']>,
+    required: false,
+    default: undefined as any
+  },
+  selected: {
+    type: Boolean as PropType<WrapNodeProps['selected']>,
+    required: false,
+    default: false
+  },
+  scale: {
+    type: Number as PropType<WrapNodeProps['scale']>,
+    required: false,
+    default: undefined
+  },
+  xPos: {
+    type: Number as PropType<WrapNodeProps['xPos']>,
+    required: false,
+    default: undefined
+  },
+  yPos: {
+    type: Number as PropType<WrapNodeProps['yPos']>,
+    required: false,
+    default: undefined
+  },
+  isSelectable: {
+    type: Boolean as PropType<WrapNodeProps['isSelectable']>,
+    required: false,
+    default: undefined
+  },
+  isDraggable: {
+    type: Boolean as PropType<WrapNodeProps['isDraggable']>,
+    required: false,
+    default: undefined
+  },
+  isConnectable: {
+    type: Boolean as PropType<WrapNodeProps['isConnectable']>,
+    required: false,
+    default: undefined
+  },
+  selectNodesOnDrag: {
+    type: Boolean as PropType<WrapNodeProps['selectNodesOnDrag']>,
+    required: false,
+    default: undefined
+  },
+  onClick: {
+    type: Function() as PropType<WrapNodeProps['onClick']>,
+    required: false,
+    default: () => {}
+  },
+  onNodeDoubleClick: {
+    type: Function() as PropType<WrapNodeProps['onNodeDoubleClick']>,
+    required: false,
+    default: () => {}
+  },
+  onMouseEnter: {
+    type: Function() as PropType<WrapNodeProps['onMouseEnter']>,
+    required: false,
+    default: () => {}
+  },
+  onMouseMove: {
+    type: Function() as PropType<WrapNodeProps['onMouseMove']>,
+    required: false,
+    default: () => {}
+  },
+  onMouseLeave: {
+    type: Function() as PropType<WrapNodeProps['onMouseLeave']>,
+    required: false,
+    default: () => {}
+  },
+  onContextMenu: {
+    type: Function() as PropType<WrapNodeProps['onContextMenu']>,
+    required: false,
+    default: () => {}
+  },
+  onNodeDragStart: {
+    type: Function() as PropType<WrapNodeProps['onNodeDragStart']>,
+    required: false,
+    default: () => {}
+  },
+  onNodeDrag: {
+    type: Function() as PropType<WrapNodeProps['onNodeDrag']>,
+    required: false,
+    default: () => {}
+  },
+  onNodeDragStop: {
+    type: Function() as PropType<WrapNodeProps['onNodeDragStop']>,
+    required: false,
+    default: () => {}
+  },
+  style: {
+    type: Object as PropType<WrapNodeProps['style']>,
+    required: false,
+    default: undefined as any
+  },
+  sourcePosition: {
+    type: String as PropType<WrapNodeProps['sourcePosition']>,
+    required: false,
+    default: undefined
+  },
+  targetPosition: {
+    type: String as PropType<WrapNodeProps['targetPosition']>,
+    required: false,
+    default: undefined
+  },
+  isHidden: {
+    type: Boolean as PropType<WrapNodeProps['isHidden']>,
+    required: false,
+    default: undefined
+  },
+  isInitialized: {
+    type: Boolean as PropType<WrapNodeProps['isInitialized']>,
+    required: false,
+    default: undefined
+  },
+  snapToGrid: {
+    type: Boolean as PropType<WrapNodeProps['snapToGrid']>,
+    required: false,
+    default: undefined
+  },
+  snapGrid: {
+    type: Object as PropType<WrapNodeProps['snapGrid']>,
+    required: false,
+    default: undefined
+  },
+  isDragging: {
+    type: Boolean as PropType<WrapNodeProps['isDragging']>,
+    required: false,
+    default: undefined
+  },
+  resizeObserver: {
+    type: Object as PropType<WrapNodeProps['resizeObserver']>,
+    required: false,
+    default: undefined
+  }
+};
 
 export interface WrapNodeProps<T = any> {
   id: ElementId;
@@ -437,5 +868,39 @@ export interface ReactFlowState {
   onConnectStop?: OnConnectStopFunc;
   onConnectEnd?: OnConnectEndFunc;
 }
+
+export type RevueFlowActionsTree = {
+  setOnConnect: (onConnect: OnConnectFunc) => void;
+  setOnConnectStart: (onConnectStart: OnConnectStartFunc) => void;
+  setOnConnectStop: (onConnectStop: OnConnectStopFunc) => void;
+  setOnConnectEnd: (onConnectEnd: OnConnectEndFunc) => void;
+  setElements: (elements: Elements) => void;
+  updateNodeDimensions: (updates: NodeDimensionUpdate[]) => void;
+  updateNodePos: (payload: NodePosUpdate) => void;
+  updateNodePosDiff: (payload: NodeDiffUpdate) => void;
+  setUserSelection: (mousePos: XYPosition) => void;
+  updateUserSelection: (mousePos: XYPosition) => void;
+  unsetUserSelection: () => void;
+  addSelectedElements: (elements: Elements) => void;
+  initD3Zoom: (payload: InitD3ZoomPayload) => void;
+  setMinZoom: (zoom: number) => void;
+  setMaxZoom: (zoom: number) => void;
+  setTranslateExtent: (translateExtent: TranslateExtent) => void;
+  setNodeExtent: (nodeExtent: NodeExtent) => void;
+  resetSelectedElements: () => void;
+  unsetNodesSelection: () => void;
+  updateTransform: (transform: Transform) => void;
+  updateSize: (size: Dimensions) => void;
+  setConnectionPosition: (connectionPosition: XYPosition) => void;
+  setConnectionNodeId: (payload: SetConnectionId) => void;
+  setSnapToGrid: (snapToGrid: boolean) => void;
+  setSnapGrid: (snapGrid: SnapGrid) => void;
+  setInteractive: (isInteractive: boolean) => void;
+  setNodesDraggable: (nodesDraggable: boolean) => void;
+  setNodesConnectable: (nodesConnectable: boolean) => void;
+  setElementsSelectable: (elementsSelectable: boolean) => void;
+  setMultiSelectionActive: (multiSelectionActive: boolean) => void;
+  setConnectionMode: (connectionMode: ConnectionMode) => void;
+};
 
 export type UpdateNodeInternals = (nodeId: ElementId) => void;

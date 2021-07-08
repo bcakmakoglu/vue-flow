@@ -5,7 +5,7 @@ const baseRules = {
   'no-use-before-define': 0,
   'no-unused-vars': 'off',
   '@typescript-eslint/no-unused-vars': ['error'],
-  indent: ['error', 2, { SwitchCase: 1, flatTernaryExpressions: true }],
+  indent: ['warn', 2, { SwitchCase: 1, flatTernaryExpressions: true }],
   quotes: ['error', 'single', { avoidEscape: true }],
   semi: ['error', 'always'],
   'import/no-mutable-exports': 0,

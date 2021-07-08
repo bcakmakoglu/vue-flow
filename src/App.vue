@@ -1,16 +1,24 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <revue-flow></revue-flow>
+  <RevueFlow style="height: 1000px" :elements="elements"> Let's flow! </RevueFlow>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Index from './container/RevueFlow';
+import RevueFlow from './container/RevueFlow';
 
 export default defineComponent({
   name: 'App',
   components: {
-    RevueFlow: Index
+    RevueFlow
+  },
+  data() {
+    return {
+      elements: [
+        { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
+        { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 } },
+        { id: 'e1-2', source: '1', target: '2', animated: true }
+      ]
+    };
   }
 });
 </script>
