@@ -13,11 +13,11 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
       const pinia = store();
       const updating = ref<boolean>(false);
       const inactive = !props.elementsSelectable && !props.onClick;
-      const edgeClasses = [
+      const edgeClasses = computed(() => [
         'react-flow__edge',
         `react-flow__edge-${props.type}`,
         { selected: props.selected, animated: props.animated, inactive, updating: updating.value }
-      ];
+      ]);
 
       const edgeElement = computed<Edge>(() => {
         const el: Edge = {
@@ -52,19 +52,19 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
       };
 
       const onEdgeContextMenu = (event: MouseEvent) => {
-        if (props.onContextMenu) props.onContextMenu?.(event, edgeElement.value);
+        if (typeof props.onContextMenu === 'function') props.onContextMenu?.(event, edgeElement.value);
       };
 
       const onEdgeMouseEnter = (event: MouseEvent) => {
-        if (props.onMouseEnter) props.onMouseEnter?.(event, edgeElement.value);
+        if (typeof props.onMouseEnter === 'function') props.onMouseEnter?.(event, edgeElement.value);
       };
 
       const onEdgeMouseMove = (event: MouseEvent) => {
-        if (props.onMouseMove) props.onMouseMove?.(event, edgeElement.value);
+        if (typeof props.onMouseMove === 'function') props.onMouseMove?.(event, edgeElement.value);
       };
 
       const onEdgeMouseLeave = (event: MouseEvent) => {
-        if (props.onMouseLeave) props.onMouseLeave?.(event, edgeElement.value);
+        if (typeof props.onMouseLeave === 'function') props.onMouseLeave?.(event, edgeElement.value);
       };
 
       const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
@@ -113,7 +113,7 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
 
       return () => (
         <g
-          class={edgeClasses}
+          class={edgeClasses.value}
           onClick={onEdgeClick}
           onContextmenu={onEdgeContextMenu}
           onMouseenter={onEdgeMouseEnter}

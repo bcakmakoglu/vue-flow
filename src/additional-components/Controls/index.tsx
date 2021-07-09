@@ -31,7 +31,7 @@ export const ControlButton = defineComponent({
   },
   setup(props, { slots }) {
     return () => (
-      <button class={['react-flow__controls-button']} onClick={props.onClick} disabled={props.disabled}>
+      <button class={['react-flow__controls-button']} {...props}>
         {slots.default ? slots.default() : ''}
       </button>
     );
@@ -85,23 +85,27 @@ const Controls = defineComponent({
   setup(props, { slots }) {
     const pinia = store();
     const isVisible = ref<boolean>(false);
-    const { zoomIn, zoomOut, fitView } = useZoomPanHelper();
+    const zoomHelper = ref(useZoomPanHelper());
+
+    onMounted(() => {
+      zoomHelper.value = useZoomPanHelper();
+    });
 
     const isInteractive = pinia.nodesDraggable && pinia.nodesConnectable && pinia.elementsSelectable;
     const mapClasses = ['react-flow__controls'];
 
     const onZoomInHandler = () => {
-      zoomIn?.();
+      zoomHelper.value.zoomIn?.();
       props.onZoomIn?.();
     };
 
     const onZoomOutHandler = () => {
-      zoomOut?.();
+      zoomHelper.value.zoomOut?.();
       props.onZoomOut?.();
     };
 
     const onFitViewHandler = () => {
-      fitView?.(props.fitViewParams);
+      zoomHelper.value.fitView?.(props.fitViewParams);
       props.onFitView?.();
     };
 
