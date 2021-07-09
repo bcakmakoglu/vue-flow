@@ -1,4 +1,4 @@
-import { computed, CSSProperties, defineComponent, PropType } from 'vue-demi';
+import { computed, CSSProperties, defineComponent, PropType } from 'vue';
 
 import EdgeText from './EdgeText';
 

@@ -1,6 +1,6 @@
 import { BackgroundVariant } from '../../types';
 import { createGridDotsPath, createGridLinesPath } from './utils';
-import { computed, defineComponent, HTMLAttributes, PropType } from 'vue-demi';
+import { computed, defineComponent, HTMLAttributes, PropType } from 'vue';
 import store from '../../store';
 
 export interface BackgroundProps extends HTMLAttributes {

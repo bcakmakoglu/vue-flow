@@ -1,6 +1,6 @@
 import { Connection, ElementId, Position } from '../../types';
 import { onMouseDown, ValidConnectionFunc } from './handler';
-import { defineComponent, inject, PropType } from 'vue-demi';
+import { defineComponent, inject, PropType } from 'vue';
 import store from '../../store';
 
 const alwaysValid = () => true;

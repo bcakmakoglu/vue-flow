@@ -1,6 +1,6 @@
 import { isInputDOMNode } from '../utils';
 import { KeyCode } from '../types';
-import { onMounted, ref } from 'vue-demi';
+import { onMounted, ref } from 'vue';
 
 export default (keyCode?: KeyCode): boolean => {
   const keyPressed = ref<boolean>(false);

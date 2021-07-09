@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue-demi';
+import { defineComponent } from 'vue';
 
 import { EdgeSmoothStepProps } from '../../types';
 import SmoothStepEdge from './SmoothStepEdge';

@@ -1,5 +1,5 @@
 import { Selection as D3Selection, ZoomBehavior } from 'd3';
-import { Component, HTMLAttributes, PropType, VNode } from 'vue-demi';
+import { Component, HTMLAttributes, PropType, VNode } from 'vue';
 
 export type ElementId = string;
 
