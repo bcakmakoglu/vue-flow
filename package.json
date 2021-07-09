@@ -8,15 +8,8 @@
   },
   "license": "MIT",
   "author": "Burak Cakmakoglu",
-  "main": "dist/index.js",
-  "module": "dist/revue-flow.es.js",
+  "main": "dist/revue-flow.es.js",
   "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/revue.flow.es.js",
-      "require": "./dist/index.js"
-    }
-  },
   "files": [
     "dist",
     "nocss"
