@@ -267,22 +267,22 @@ const RevueFlow = defineComponent({
       default: undefined as any
     },
     selectionKeyCode: {
-      type: (Number || String) as PropType<RevueFlowProps['selectionKeyCode']>,
+      type: [Number, String] as PropType<RevueFlowProps['selectionKeyCode']>,
       required: false,
       default: 'Shift'
     },
     multiSelectionKeyCode: {
-      type: (Number || String) as PropType<RevueFlowProps['multiSelectionKeyCode']>,
+      type: [Number, String] as PropType<RevueFlowProps['multiSelectionKeyCode']>,
       required: false,
       default: 'Meta'
     },
     zoomActivationKeyCode: {
-      type: (Number || String) as PropType<RevueFlowProps['zoomActivationKeyCode']>,
+      type: [Number, String] as PropType<RevueFlowProps['zoomActivationKeyCode']>,
       required: false,
       default: 'Meta'
     },
     deleteKeyCode: {
-      type: (Number || String) as PropType<RevueFlowProps['deleteKeyCode']>,
+      type: [Number, String] as PropType<RevueFlowProps['deleteKeyCode']>,
       required: false,
       default: 'Backspace'
     },

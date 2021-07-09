@@ -18,7 +18,7 @@ export default defineConfig({
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
-          'vue-demi': 'vue-demi'
+          'vue-demi': 'VueDemi'
         },
         dir: 'dist',
         sourcemap: true,

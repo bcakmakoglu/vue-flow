@@ -8,9 +8,15 @@
   },
   "license": "MIT",
   "author": "Burak Cakmakoglu",
-  "main": "dist/revue-flow.es.js",
+  "main": "dist/index.js",
   "module": "dist/revue-flow.es.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/revue.flow.es.js",
+      "require": "./dist/index.js"
+    }
+  },
   "files": [
     "dist",
     "nocss"
@@ -28,7 +34,7 @@
   "dependencies": {
     "d3": "^7.0.0",
     "pinia": "^2.0.0-beta.3",
-    "vue-demi": "^0.10.1"
+    "vue-demi": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -70,7 +76,7 @@
   },
   "peerDependencies": {
     "@vue/composition-api": "^1.0.0-rc.13",
-    "vue": "^2.0.0 || >=3.0.0"
+    "vue": "^2.6.11 || >=3.0.5"
   },
   "peerDependenciesMeta": {
     "@vue/composition-api": {

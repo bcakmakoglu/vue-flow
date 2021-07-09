@@ -114,7 +114,7 @@ const ZoomPane = defineComponent({
       default: undefined
     },
     zoomActivationKeyCode: {
-      type: (Number || String) as PropType<ZoomPaneProps['zoomActivationKeyCode']>,
+      type: [Number, String] as PropType<ZoomPaneProps['zoomActivationKeyCode']>,
       required: false,
       default: undefined
     }

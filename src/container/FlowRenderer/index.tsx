@@ -77,22 +77,22 @@ const FlowRenderer = defineComponent({
       default: undefined as any
     },
     deleteKeyCode: {
-      type: (Number || String) as PropType<FlowRendererProps['deleteKeyCode']>,
+      type: [Number, String] as PropType<FlowRendererProps['deleteKeyCode']>,
       required: false,
       default: undefined
     },
     selectionKeyCode: {
-      type: (Number || String) as PropType<FlowRendererProps['selectionKeyCode']>,
+      type: [Number, String] as PropType<FlowRendererProps['selectionKeyCode']>,
       required: false,
       default: undefined
     },
     multiSelectionKeyCode: {
-      type: (Number || String) as PropType<FlowRendererProps['multiSelectionKeyCode']>,
+      type: [Number, String] as PropType<FlowRendererProps['multiSelectionKeyCode']>,
       required: false,
       default: undefined
     },
     zoomActivationKeyCode: {
-      type: (Number || String) as PropType<FlowRendererProps['zoomActivationKeyCode']>,
+      type: [Number, String] as PropType<FlowRendererProps['zoomActivationKeyCode']>,
       required: false,
       default: undefined
     },

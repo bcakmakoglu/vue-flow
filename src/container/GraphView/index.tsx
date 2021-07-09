@@ -159,22 +159,22 @@ const GraphView = defineComponent({
       default: undefined as any
     },
     selectionKeyCode: {
-      type: (Number || String) as PropType<GraphViewProps['selectionKeyCode']>,
+      type: [Number, String] as PropType<GraphViewProps['selectionKeyCode']>,
       required: false,
       default: undefined
     },
     multiSelectionKeyCode: {
-      type: (Number || String) as PropType<GraphViewProps['multiSelectionKeyCode']>,
+      type: [Number, String] as PropType<GraphViewProps['multiSelectionKeyCode']>,
       required: false,
       default: undefined
     },
     zoomActivationKeyCode: {
-      type: (Number || String) as PropType<GraphViewProps['zoomActivationKeyCode']>,
+      type: [Number, String] as PropType<GraphViewProps['zoomActivationKeyCode']>,
       required: false,
       default: undefined
     },
     deleteKeyCode: {
-      type: (Number || String) as PropType<GraphViewProps['deleteKeyCode']>,
+      type: [Number, String] as PropType<GraphViewProps['deleteKeyCode']>,
       required: false,
       default: undefined
     },
