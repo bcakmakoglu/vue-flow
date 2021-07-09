@@ -1,4 +1,4 @@
-import { ref, defineComponent, CSSProperties, PropType } from 'vue';
+import { ref, defineComponent, CSSProperties, PropType, computed } from 'vue';
 
 import { getBezierPath } from '../Edges/BezierEdge';
 import { getSmoothStepPath } from '../Edges/SmoothStepEdge';
@@ -79,44 +79,52 @@ const ConnectionLine = defineComponent({
     CustomConnectionLineComponent: {
       type: Object as PropType<ConnectionLineProps['CustomConnectionLineComponent']>,
       required: false,
-      default: () => ({})
+      default: undefined
     }
   },
   setup(props) {
-    console.log('connectionline');
     const sourceNode = ref<Node | null>(props.nodes.find((n) => n.id === props.connectionNodeId) || null);
 
     if (!sourceNode.value || !props.isConnectable) {
       return null;
     }
 
-    const sourceHandle = props.connectionHandleId
-      ? sourceNode.value.__rf.handleBounds[props.connectionHandleType].find(
-          (d: HandleElement) => d.id === props.connectionHandleId
-        )
-      : sourceNode.value.__rf.handleBounds[props.connectionHandleType][0];
-    const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.value.__rf.width / 2;
-    const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.value.__rf.height;
-    const sourceX = sourceNode.value.__rf.position.x + sourceHandleX;
-    const sourceY = sourceNode.value.__rf.position.y + sourceHandleY;
+    const sourceHandle = computed(() =>
+      props.connectionHandleId
+        ? sourceNode.value?.__rf.handleBounds[props.connectionHandleType].find(
+            (d: HandleElement) => d.id === props.connectionHandleId
+          )
+        : sourceNode.value?.__rf.handleBounds[props.connectionHandleType][0]
+    );
+    const sourceHandleX = computed(() =>
+      sourceHandle.value ? sourceHandle.value.x + sourceHandle.value.width / 2 : sourceNode.value?.__rf.width / 2
+    );
+    const sourceHandleY = computed(() =>
+      sourceHandle.value ? sourceHandle.value.y + sourceHandle.value.height / 2 : sourceNode.value?.__rf.height
+    );
+    const sourceX = computed(() => sourceNode.value?.__rf.position.x + sourceHandleX.value);
+    const sourceY = computed(() => sourceNode.value?.__rf.position.y + sourceHandleY.value);
 
-    const targetX = (props.connectionPositionX - props.transform[0]) / props.transform[2];
-    const targetY = (props.connectionPositionY - props.transform[1]) / props.transform[2];
+    const targetX = computed(() => (props.connectionPositionX - props.transform[0]) / props.transform[2]);
+    const targetY = computed(() => (props.connectionPositionY - props.transform[1]) / props.transform[2]);
 
-    const isRightOrLeft = sourceHandle?.position === Position.Left || sourceHandle?.position === Position.Right;
-    const targetPosition = isRightOrLeft ? Position.Left : Position.Top;
+    const isRightOrLeft = computed(
+      () => sourceHandle.value?.position === Position.Left || sourceHandle.value?.position === Position.Right
+    );
+    const targetPosition = computed(() => (isRightOrLeft.value ? Position.Left : Position.Top));
 
     if (props.CustomConnectionLineComponent) {
+      // eslint-disable-next-line vue/no-setup-props-destructure
+      const ConnectionLineComponent: any = props.CustomConnectionLineComponent;
       return () => (
         <g class="react-flow__connection">
-          <component
-            is={props.CustomConnectionLineComponent}
-            sourceX={sourceX}
-            sourceY={sourceY}
-            sourcePosition={sourceHandle?.position}
-            targetX={targetX}
-            targetY={targetY}
-            targetPosition={targetPosition}
+          <ConnectionLineComponent
+            sourceX={sourceX.value}
+            sourceY={sourceY.value}
+            sourcePosition={sourceHandle.value?.position}
+            targetX={targetX.value}
+            targetY={targetY.value}
+            targetPosition={targetPosition.value}
             connectionLineType={props.connectionLineType}
             connectionLineStyle={props.connectionLineStyle}
           />
@@ -124,43 +132,47 @@ const ConnectionLine = defineComponent({
       );
     }
 
-    let dAttr = '';
+    let dAttr = computed(() => `M${sourceX.value},${sourceY.value} ${targetX.value},${targetY.value}`);
 
     if (props.connectionLineType === ConnectionLineType.Bezier) {
-      dAttr = getBezierPath({
-        sourceX,
-        sourceY,
-        sourcePosition: sourceHandle?.position,
-        targetX,
-        targetY,
-        targetPosition
-      });
+      dAttr = computed(() =>
+        getBezierPath({
+          sourceX: sourceX.value,
+          sourceY: sourceY.value,
+          sourcePosition: sourceHandle.value?.position,
+          targetX: targetX.value,
+          targetY: targetY.value,
+          targetPosition: targetPosition.value
+        })
+      );
     } else if (props.connectionLineType === ConnectionLineType.Step) {
-      dAttr = getSmoothStepPath({
-        sourceX,
-        sourceY,
-        sourcePosition: sourceHandle?.position,
-        targetX,
-        targetY,
-        targetPosition,
-        borderRadius: 0
-      });
+      dAttr = computed(() =>
+        getSmoothStepPath({
+          sourceX: sourceX.value,
+          sourceY: sourceY.value,
+          sourcePosition: sourceHandle.value?.position,
+          targetX: targetX.value,
+          targetY: targetY.value,
+          targetPosition: targetPosition.value,
+          borderRadius: 0
+        })
+      );
     } else if (props.connectionLineType === ConnectionLineType.SmoothStep) {
-      dAttr = getSmoothStepPath({
-        sourceX,
-        sourceY,
-        sourcePosition: sourceHandle?.position,
-        targetX,
-        targetY,
-        targetPosition
-      });
-    } else {
-      dAttr = `M${sourceX},${sourceY} ${targetX},${targetY}`;
+      dAttr = computed(() =>
+        getSmoothStepPath({
+          sourceX: sourceX.value,
+          sourceY: sourceY.value,
+          sourcePosition: sourceHandle.value?.position,
+          targetX: targetX.value,
+          targetY: targetY.value,
+          targetPosition: targetPosition.value
+        })
+      );
     }
 
     return () => (
       <g class="react-flow__connection">
-        <path d={dAttr} class="react-flow__connection-path" style={props.connectionLineStyle} />
+        <path d={dAttr.value} class="react-flow__connection-path" style={props.connectionLineStyle} />
       </g>
     );
   }

@@ -103,8 +103,6 @@ export function onMouseDown(
   // when react-flow is used inside a shadow root we can't use document
   const doc = getHostForElement(event.target as HTMLElement);
 
-  console.log(doc);
-
   if (!doc) {
     return;
   }

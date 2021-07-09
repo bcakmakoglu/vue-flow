@@ -48,23 +48,23 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
           pinia.addSelectedElements(edgeElement.value as any);
         }
 
-        props.onClick?.(event, edgeElement.value);
+        if (props.onClick) props.onClick?.(event, edgeElement.value);
       };
 
       const onEdgeContextMenu = (event: MouseEvent) => {
-        props.onContextMenu?.(event, edgeElement.value);
+        if (props.onContextMenu) props.onContextMenu?.(event, edgeElement.value);
       };
 
       const onEdgeMouseEnter = (event: MouseEvent) => {
-        props.onMouseEnter?.(event, edgeElement.value);
+        if (props.onMouseEnter) props.onMouseEnter?.(event, edgeElement.value);
       };
 
       const onEdgeMouseMove = (event: MouseEvent) => {
-        props.onMouseMove?.(event, edgeElement.value);
+        if (props.onMouseMove) props.onMouseMove?.(event, edgeElement.value);
       };
 
       const onEdgeMouseLeave = (event: MouseEvent) => {
-        props.onMouseLeave?.(event, edgeElement.value);
+        if (props.onMouseLeave) props.onMouseLeave?.(event, edgeElement.value);
       };
 
       const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {

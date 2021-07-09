@@ -120,7 +120,6 @@ const BezierEdge = defineComponent({
     }
   },
   setup(props) {
-    console.log('edge');
     const centered = computed(() => {
       return getCenter({
         sourceX: props.sourceX,
@@ -132,7 +131,6 @@ const BezierEdge = defineComponent({
       });
     });
     const path = computed(() => {
-      console.log('computing in edge');
       return getBezierPath({
         sourceX: props.sourceX,
         sourceY: props.sourceY,

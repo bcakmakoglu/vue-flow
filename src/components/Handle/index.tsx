@@ -1,5 +1,4 @@
 import { Connection, ElementId, Position } from '../../types';
-
 import { onMouseDown, ValidConnectionFunc } from './handler';
 import { defineComponent, inject, PropType } from 'vue';
 import store from '../../store';
@@ -42,7 +41,6 @@ const Handle = defineComponent({
   setup(props, { slots }) {
     const pinia = store();
     const nodeId = inject<ElementId>('NodeIdContext') as ElementId;
-    const handleId = props.id || null;
     const isTarget = props.type === 'target';
 
     const onConnectExtended = (params: Connection) => {
@@ -53,7 +51,7 @@ const Handle = defineComponent({
     const onMouseDownHandler = (event: MouseEvent) => {
       onMouseDown(
         event,
-        handleId,
+        props.id || '',
         nodeId,
         pinia.setConnectionNodeId,
         pinia.setConnectionPosition,
@@ -82,7 +80,7 @@ const Handle = defineComponent({
 
     return () => (
       <div
-        data-handleid={handleId}
+        data-handleid={props.id}
         data-nodeid={nodeId}
         data-handlepos={props.position}
         class={handleClasses}

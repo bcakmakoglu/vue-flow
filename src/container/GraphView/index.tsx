@@ -2,9 +2,7 @@ import FlowRenderer from '../FlowRenderer';
 import NodeRenderer from '../NodeRenderer';
 import EdgeRenderer from '../EdgeRenderer';
 import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph';
-
 import { ReactFlowProps } from '../RevueFlow';
-
 import { NodeTypesType, EdgeTypesType, ConnectionLineType, KeyCode } from '../../types';
 import { CSSProperties, defineComponent, onMounted, PropType, ref } from 'vue';
 import store from '../../store';

@@ -93,7 +93,6 @@ export const getEdgePositions = (
   const sourceHandlePos = getHandlePosition(sourcePosition, sourceNode, sourceHandle);
   const targetHandlePos = getHandlePosition(targetPosition, targetNode, targetHandle);
 
-  console.log('getting edge positions');
   return {
     sourceX: sourceHandlePos.x,
     sourceY: sourceHandlePos.y,
