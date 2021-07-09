@@ -1,6 +1,7 @@
 import { Connection, Edge, Elements, FlowElement, Node, OnLoadParams } from './types';
 import { addEdge, isNode, removeElements } from './utils/graph';
 import RevueFlow from './container/RevueFlow';
+import { MiniMap, Controls, Background } from './additional-components';
 import { defineComponent, ref } from 'vue';
 
 const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
@@ -16,6 +17,7 @@ const initialElements: Elements = [
 ];
 
 const BasicFlow = defineComponent({
+  components: { RevueFlow, MiniMap, Controls, Background },
   setup() {
     const elements = ref<Elements>(initialElements);
     const rfInstance = ref<OnLoadParams | null>(null);
@@ -62,6 +64,9 @@ const BasicFlow = defineComponent({
         minZoom={0.2}
         maxZoom={4}
       >
+        <MiniMap />
+        <Controls />
+        <Background color="#aaa" gap={16} />
         <div style={{ position: 'absolute', right: '10px', top: '10px', zIndex: 4 }}>
           <button onClick={resetTransform} style={{ marginRight: '5px' }}>
             reset transform

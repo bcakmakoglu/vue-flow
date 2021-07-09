@@ -31,7 +31,6 @@ export default function configureStore(
         this.onConnectStop = onConnectStop;
       },
       setElements(elements) {
-        console.log('setting elements');
         const propElements = elements;
         const nextElements: NextElements = {
           nextNodes: [],

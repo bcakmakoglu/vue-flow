@@ -88,8 +88,6 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements): Elem
     return elements;
   }
 
-  console.log(edge);
-
   return elements.concat(edge);
 };
 
