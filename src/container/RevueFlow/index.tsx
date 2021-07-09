@@ -123,7 +123,7 @@ const RevueFlow = defineComponent({
   components: { GraphView },
   props: {
     elements: {
-      type: Object as PropType<RevueFlowProps['elements']>,
+      type: Array as PropType<RevueFlowProps['elements']>,
       required: true
     },
     nodeTypesId: {
