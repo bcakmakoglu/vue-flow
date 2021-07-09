@@ -6,18 +6,7 @@ import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/gr
 import { ReactFlowProps } from '../RevueFlow';
 
 import { NodeTypesType, EdgeTypesType, ConnectionLineType, KeyCode } from '../../types';
-import {
-  reactive,
-  computed,
-  CSSProperties,
-  defineComponent,
-  onBeforeMount,
-  onMounted,
-  onUpdated,
-  PropType,
-  ref,
-  watch
-} from 'vue';
+import { CSSProperties, defineComponent, onMounted, PropType, ref } from 'vue';
 import store from '../../store';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 

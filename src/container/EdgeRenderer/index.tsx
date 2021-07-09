@@ -1,6 +1,5 @@
 import ConnectionLine from '../../components/ConnectionLine/index';
 import { isEdge } from '../../utils/graph';
-import MarkerDefinitions from './MarkerDefinitions';
 import { getEdgePositions, getHandle, isEdgeVisible, getSourceTargetNodes } from './utils';
 import {
   Position,
@@ -152,13 +151,14 @@ const EdgeCmp = defineComponent({
 
     const isVisible = computed(() => {
       return props.onlyRenderVisibleElements
-        ? isEdgeVisible({
-            sourcePos: { x: edgePositions.value?.sourceX, y: edgePositions.value?.sourceY },
-            targetPos: { x: edgePositions.value?.targetX, y: edgePositions.value?.targetY },
-            width: props.width || 0,
-            height: props.height || 0,
-            transform: props.transform
-          })
+        ? edgePositions.value &&
+            isEdgeVisible({
+              sourcePos: { x: edgePositions.value?.sourceX, y: edgePositions.value?.sourceY },
+              targetPos: { x: edgePositions.value?.targetX, y: edgePositions.value?.targetY },
+              width: props.width || 0,
+              height: props.height || 0,
+              transform: props.transform
+            })
         : true;
     });
 
@@ -190,10 +190,10 @@ const EdgeCmp = defineComponent({
         target={props.edge.target}
         sourceHandleId={sourceHandleId}
         targetHandleId={targetHandleId}
-        sourceX={edgePositions.value.sourceX}
-        sourceY={edgePositions.value.sourceY}
-        targetX={edgePositions.value.targetX}
-        targetY={edgePositions.value.targetY}
+        sourceX={edgePositions.value?.sourceX}
+        sourceY={edgePositions.value?.sourceY}
+        targetX={edgePositions.value?.targetX}
+        targetY={edgePositions.value?.targetY}
         sourcePosition={sourcePosition}
         targetPosition={targetPosition}
         elementsSelectable={props.elementsSelectable}

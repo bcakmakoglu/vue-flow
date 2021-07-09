@@ -1,5 +1,8 @@
 <template>
-  <Basic style="height: 100vh" />
+  <div id="app">
+    <h1>Revue Flow</h1>
+    <Basic style="height: 75vh" />
+  </div>
 </template>
 
 <script lang="ts">
