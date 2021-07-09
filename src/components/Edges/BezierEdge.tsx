@@ -1,4 +1,4 @@
-import { CSSProperties, defineComponent, PropType } from 'vue';
+import { computed, CSSProperties, defineComponent, PropType } from 'vue';
 
 import EdgeText from './EdgeText';
 
@@ -96,9 +96,9 @@ const BezierEdge = defineComponent({
       required: true
     },
     labelBgPadding: {
-      type: ([0, 0] as any) as PropType<[number, number]>,
+      type: Array as unknown as PropType<[number, number]>,
       required: false,
-      default: () => [0, 0] as [number, number]
+      default: () => [0, 0]
     },
     labelBgBorderRadius: {
       type: Number,
@@ -120,26 +120,32 @@ const BezierEdge = defineComponent({
     }
   },
   setup(props) {
-    const [centerX, centerY] = getCenter({
-      sourceX: props.sourceX,
-      sourceY: props.sourceY,
-      targetX: props.targetX,
-      targetY: props.targetY,
-      sourcePosition: props.sourcePosition,
-      targetPosition: props.targetPosition
+    console.log('edge');
+    const centered = computed(() => {
+      return getCenter({
+        sourceX: props.sourceX,
+        sourceY: props.sourceY,
+        targetX: props.targetX,
+        targetY: props.targetY,
+        sourcePosition: props.sourcePosition,
+        targetPosition: props.targetPosition
+      });
     });
-    const path = getBezierPath({
-      sourceX: props.sourceX,
-      sourceY: props.sourceY,
-      targetX: props.targetX,
-      targetY: props.targetY,
-      targetPosition: props.targetPosition
+    const path = computed(() => {
+      console.log('computing in edge');
+      return getBezierPath({
+        sourceX: props.sourceX,
+        sourceY: props.sourceY,
+        targetX: props.targetX,
+        targetY: props.targetY,
+        targetPosition: props.targetPosition
+      });
     });
 
     const text = props.label ? (
       <EdgeText
-        x={centerX}
-        y={centerY}
+        x={centered.value[0]}
+        y={centered.value[1]}
         label={props.label}
         labelStyle={props.labelStyle}
         labelShowBg={props.labelShowBg}
@@ -151,9 +157,9 @@ const BezierEdge = defineComponent({
 
     const markerEnd = getMarkerEnd(props.arrowHeadType, props.markerEndId);
 
-    return (
+    return () => (
       <>
-        <path style={props.style} d={path} class="react-flow__edge-path" marker-end={markerEnd} />
+        <path style={props.style} d={path.value} class="react-flow__edge-path" marker-end={markerEnd} />
         {text}
       </>
     );

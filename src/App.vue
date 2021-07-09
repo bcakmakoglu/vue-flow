@@ -1,15 +1,15 @@
 <template>
-  <RevueFlow style="height: 1000px" :elements="elements"> Let's flow! </RevueFlow>
+  <Basic style="height: 100vh" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import RevueFlow from './container/RevueFlow';
+import Basic from './Basic';
 
 export default defineComponent({
   name: 'App',
   components: {
-    RevueFlow
+    Basic
   },
   data() {
     return {

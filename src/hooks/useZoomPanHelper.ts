@@ -1,7 +1,6 @@
 import { zoomIdentity } from 'd3-zoom';
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '../utils/graph';
 import { FitViewParams, FlowTransform, ZoomPanHelperFunctions, Rect, XYPosition } from '../types';
-import { computed } from 'vue';
 import store from '../store';
 
 const DEFAULT_PADDING = 0.1;
@@ -20,7 +19,7 @@ const initialZoomPanHelper: ZoomPanHelperFunctions = {
 
 const useZoomPanHelper = (): ZoomPanHelperFunctions => {
   const pinia = store();
-  const zoomPanHelperFunctions = computed<ZoomPanHelperFunctions>(() => {
+  const zoomPanHelperFunctions = () => {
     if (pinia.d3Selection && pinia.d3Zoom) {
       return {
         zoomIn: () => pinia.d3Zoom?.scaleBy(pinia.d3Selection as any, 1.2),
@@ -77,9 +76,9 @@ const useZoomPanHelper = (): ZoomPanHelperFunctions => {
     }
 
     return initialZoomPanHelper;
-  });
+  };
 
-  return zoomPanHelperFunctions.value;
+  return zoomPanHelperFunctions();
 };
 
 export default useZoomPanHelper;

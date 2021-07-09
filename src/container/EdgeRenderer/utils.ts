@@ -59,7 +59,6 @@ export function getHandlePosition(position: Position, node: Node, handle: any | 
 }
 
 export function getHandle(bounds: HandleElement[], handleId: ElementId | null): HandleElement | null {
-  console.log('handle', bounds);
   if (!bounds) {
     return null;
   }
@@ -94,6 +93,7 @@ export const getEdgePositions = (
   const sourceHandlePos = getHandlePosition(sourcePosition, sourceNode, sourceHandle);
   const targetHandlePos = getHandlePosition(targetPosition, targetNode, targetHandle);
 
+  console.log('getting edge positions');
   return {
     sourceX: sourceHandlePos.x,
     sourceY: sourceHandlePos.y,

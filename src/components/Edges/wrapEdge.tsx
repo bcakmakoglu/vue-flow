@@ -10,16 +10,13 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
     components: { EdgeComponent },
     props: WrapEdgeProps,
     setup(props) {
-      console.log('wrap');
       const pinia = store();
-
       const updating = ref<boolean>(false);
-
       const inactive = !props.elementsSelectable && !props.onClick;
       const edgeClasses = [
         'react-flow__edge',
         `react-flow__edge-${props.type}`,
-        { selected: props.selected, animated: props.animated, inactive, updating }
+        { selected: props.selected, animated: props.animated, inactive, updating: updating.value }
       ];
 
       const edgeElement = computed<Edge>(() => {

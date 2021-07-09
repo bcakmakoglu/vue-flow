@@ -14,7 +14,7 @@ import {
   Transform,
   OnEdgeUpdateFunc
 } from '../../types';
-import { computed, CSSProperties, defineComponent, PropType, ref } from 'vue';
+import { computed, CSSProperties, defineComponent, PropType } from 'vue';
 import store from '../../store';
 
 interface EdgeRendererProps {
@@ -102,71 +102,59 @@ const EdgeCmp = defineComponent({
     }
   },
   setup(props) {
-    const sourceHandleId = props.edge.sourceHandle || null;
-    const targetHandleId = props.edge.targetHandle || null;
-    const nodes = computed(() => {
-      console.log('foo');
-      return getSourceTargetNodes(props.edge, props.nodes);
-    });
-    const { sourceNode, targetNode } = nodes.value;
-    console.log(nodes.value);
+    const sourceHandleId = computed(() => props.edge.sourceHandle ?? null);
+    const targetHandleId = computed(() => props.edge.targetHandle ?? null);
+    const nodes = computed(() => getSourceTargetNodes(props.edge, props.nodes));
 
     const onConnectEdge = (connection: Connection) => {
       props.props.onEdgeUpdate?.(props.edge, connection);
     };
 
-    if (!sourceNode) {
+    if (!nodes.value.sourceNode) {
       console.log(`couldn't create edge for source id: ${props.edge.source}; edge id: ${props.edge.id}`);
-      return null;
+      return () => null;
     }
 
-    if (!targetNode) {
+    if (!nodes.value.targetNode) {
       console.log(`couldn't create edge for target id: ${props.edge.target}; edge id: ${props.edge.id}`);
-      return null;
-    }
-
-    // source and target node need to be initialized
-    if (!sourceNode.__rf.width || !targetNode.__rf.width) {
-      return null;
+      return () => null;
     }
 
     const edgeType = props.edge.type || 'default';
     const EdgeComponent: any = props.props.edgeTypes[edgeType] || props.props.edgeTypes.default;
-    const targetNodeBounds = targetNode.__rf.handleBounds;
+    const targetNodeBounds = nodes.value.targetNode.__rf.handleBounds;
     // when connection type is loose we can define all handles as sources
     const targetNodeHandles =
       props.connectionMode === ConnectionMode.Strict
         ? targetNodeBounds.target
         : targetNodeBounds.target || targetNodeBounds.source;
-    const sourceHandle = getHandle(sourceNode.__rf.handleBounds.source, sourceHandleId);
-    const targetHandle = getHandle(targetNodeHandles, targetHandleId);
-    const sourcePosition = sourceHandle ? sourceHandle.position : Position.Bottom;
-    const targetPosition = targetHandle ? targetHandle.position : Position.Top;
-
-    if (!sourceHandle) {
-      console.log(`couldn't create edge for source handle id: ${sourceHandleId}; edge id: ${props.edge.id}`);
-      return null;
-    }
-
-    if (!targetHandle) {
-      console.log(`couldn't create edge for target handle id: ${targetHandleId}; edge id: ${props.edge.id}`);
-      return null;
-    }
-
-    const { sourceX, sourceY, targetX, targetY } = getEdgePositions(
-      sourceNode,
-      sourceHandle,
-      sourcePosition,
-      targetNode,
-      targetHandle,
-      targetPosition
+    const sourceHandle = computed(
+      () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf.handleBounds.source, sourceHandleId.value)
     );
+    const targetHandle = computed(() => getHandle(targetNodeHandles, targetHandleId.value));
+    const sourcePosition = sourceHandle.value ? sourceHandle.value.position : Position.Bottom;
+    const targetPosition = targetHandle.value ? targetHandle.value.position : Position.Top;
+
+    const edgePositions = computed(() => {
+      return (
+        nodes.value.sourceNode &&
+        nodes.value.targetNode &&
+        getEdgePositions(
+          nodes.value.sourceNode,
+          sourceHandle,
+          sourcePosition,
+          nodes.value.targetNode,
+          targetHandle,
+          targetPosition
+        )
+      );
+    });
 
     const isVisible = computed(() => {
       return props.onlyRenderVisibleElements
         ? isEdgeVisible({
-            sourcePos: { x: sourceX, y: sourceY },
-            targetPos: { x: targetX, y: targetY },
+            sourcePos: { x: edgePositions.value?.sourceX, y: edgePositions.value?.sourceY },
+            targetPos: { x: edgePositions.value?.targetX, y: edgePositions.value?.targetY },
             width: props.width || 0,
             height: props.height || 0,
             transform: props.transform
@@ -202,10 +190,10 @@ const EdgeCmp = defineComponent({
         target={props.edge.target}
         sourceHandleId={sourceHandleId}
         targetHandleId={targetHandleId}
-        sourceX={sourceX}
-        sourceY={sourceY}
-        targetX={targetX}
-        targetY={targetY}
+        sourceX={edgePositions.value.sourceX}
+        sourceY={edgePositions.value.sourceY}
+        targetX={edgePositions.value.targetX}
+        targetY={edgePositions.value.targetY}
         sourcePosition={sourcePosition}
         targetPosition={targetPosition}
         elementsSelectable={props.elementsSelectable}
@@ -228,7 +216,10 @@ const EdgeCmp = defineComponent({
 
 const EdgeRenderer = defineComponent({
   name: 'EdgeRenderer',
-  components: { EdgeCmp, ConnectionLine },
+  components: {
+    EdgeCmp,
+    ConnectionLine
+  },
   props: {
     edgeTypes: {
       type: Object,
@@ -323,13 +314,12 @@ const EdgeRenderer = defineComponent({
   },
   setup(props) {
     const pinia = store();
-
-    const transformStyle = `translate(${pinia.transform[0]},${pinia.transform[1]}) scale(${pinia.transform[2]})`;
-    const renderConnectionLine = pinia.connectionNodeId && pinia.connectionHandleType;
+    const transformStyle = computed(() => `translate(${pinia.transform[0]},${pinia.transform[1]}) scale(${pinia.transform[2]})`);
+    const renderConnectionLine = computed(() => pinia.connectionNodeId && pinia.connectionHandleType);
 
     return () => (
       <svg width={pinia.width} height={pinia.height} class="react-flow__edges">
-        <g transform={transformStyle}>
+        <g transform={transformStyle.value}>
           {pinia.edges.map((edge: Edge) => (
             <EdgeCmp
               key={edge.id}
@@ -344,7 +334,7 @@ const EdgeRenderer = defineComponent({
               onlyRenderVisibleElements={props.onlyRenderVisibleElements}
             />
           ))}
-          {renderConnectionLine && (
+          {renderConnectionLine.value && (
             <ConnectionLine
               nodes={pinia.nodes}
               connectionNodeId={pinia.connectionNodeId!}

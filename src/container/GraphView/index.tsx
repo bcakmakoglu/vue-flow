@@ -6,7 +6,18 @@ import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/gr
 import { ReactFlowProps } from '../RevueFlow';
 
 import { NodeTypesType, EdgeTypesType, ConnectionLineType, KeyCode } from '../../types';
-import { CSSProperties, defineComponent, onMounted, PropType, ref } from 'vue';
+import {
+  reactive,
+  computed,
+  CSSProperties,
+  defineComponent,
+  onBeforeMount,
+  onMounted,
+  onUpdated,
+  PropType,
+  ref,
+  watch
+} from 'vue';
 import store from '../../store';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 
@@ -350,9 +361,9 @@ const GraphView = defineComponent({
     const pinia = store();
     const isInitialized = ref<boolean>(false);
 
-    const { zoomIn, zoomOut, zoomTo, transform, fitView, initialized } = useZoomPanHelper();
-
     onMounted(() => {
+      const { zoomIn, zoomOut, zoomTo, transform, fitView, initialized } = useZoomPanHelper();
+
       if (!isInitialized.value && initialized) {
         if (props.onLoad) {
           props.onLoad({
@@ -364,9 +375,8 @@ const GraphView = defineComponent({
             project: onLoadProject(pinia),
             getElements: onLoadGetElements(pinia),
             toObject: onLoadToObject(pinia)
-          } as any);
+          });
         }
-
         isInitialized.value = true;
       }
     });

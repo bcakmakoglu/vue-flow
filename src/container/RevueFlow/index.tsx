@@ -1,4 +1,4 @@
-import { computed, CSSProperties, defineComponent, HTMLAttributes, onMounted, PropType, provide } from 'vue';
+import { computed, CSSProperties, defineComponent, HTMLAttributes, onBeforeMount, PropType, provide } from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -454,14 +454,11 @@ const RevueFlow = defineComponent({
   },
   setup(props, { slots }) {
     const pinia = store();
-    const nodeTypesParsed = computed(() => createNodeTypes(props.nodeTypes as any));
-    const edgeTypesParsed = computed(() => createEdgeTypes(props.edgeTypes as any));
-    provide('store', pinia);
-    const reactFlowClasses = ['react-flow'];
+    pinia.setElements(props.elements);
 
-    onMounted(() => {
-      pinia.setElements(props.elements);
-    });
+    const nodeTypesParsed = computed(() => props.nodeTypes && createNodeTypes(props.nodeTypes));
+    const edgeTypesParsed = computed(() => props.edgeTypes && createEdgeTypes(props.edgeTypes));
+    const reactFlowClasses = ['react-flow'];
 
     return () => (
       <div class={reactFlowClasses}>
