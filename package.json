@@ -8,12 +8,11 @@
   },
   "license": "MIT",
   "author": "Burak Cakmakoglu",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "serve": "vite preview",
-    "prepublishOnly": "yarn build",
-    "test": "exit 0"
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
   },
   "main": "dist/RevueFlow.js",
   "module": "dist/RevueFlow.esm.js",
@@ -22,6 +21,14 @@
     "dist",
     "nocss"
   ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "build:siroc": "siroc build",
+    "serve": "vite preview",
+    "prepublishOnly": "yarn build:siroc",
+    "test": "exit 0"
+  },
   "dependencies": {
     "d3": "^7.0.0",
     "pinia": "^2.0.0-beta.3",
@@ -48,6 +55,7 @@
     "postcss-cli": "^8.3.1",
     "postcss-nested": "^5.0.5",
     "prettier": "^2.2.1",
+    "siroc": "^0.12.0",
     "typescript": "^4.3.5",
     "vite": "^2.3.8",
     "vue-tsc": "^0.0.24"
