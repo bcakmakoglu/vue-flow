@@ -87,7 +87,7 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
           nodeId || '',
           pinia.setConnectionNodeId,
           pinia.setConnectionPosition,
-          props.onConnectEdge,
+          props.onConnectEdge as any,
           isTarget,
           isValidConnection,
           pinia.connectionMode,

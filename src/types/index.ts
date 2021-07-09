@@ -153,12 +153,12 @@ export const WrapEdgeProps = {
   onClick: {
     type: Function('event', 'edge') as PropType<WrapEdgeProps['onClick']>,
     required: false,
-    default: () => ({})
+    default: undefined
   },
   onEdgeDoubleClick: {
     type: Function('event', 'edge') as PropType<WrapEdgeProps['onEdgeDoubleClick']>,
     required: false,
-    default: () => ({})
+    default: undefined
   },
   selected: {
     type: Boolean as PropType<WrapEdgeProps['selected']>,
@@ -275,27 +275,27 @@ export const WrapEdgeProps = {
   onConnectEdge: {
     type: Function() as PropType<WrapEdgeProps['onConnectEdge']>,
     required: false,
-    default: () => ({})
+    default: undefined
   },
   onContextMenu: {
     type: Function() as PropType<WrapEdgeProps['onContextMenu']>,
     required: false,
-    default: () => ({})
+    default: undefined
   },
   onMouseEnter: {
     type: Function() as PropType<WrapEdgeProps['onMouseEnter']>,
     required: false,
-    default: () => ({})
+    default: undefined
   },
   onMouseMove: {
     type: Function() as PropType<WrapEdgeProps['onMouseMove']>,
     required: false,
-    default: () => ({})
+    default: undefined
   },
   onMouseLeave: {
     type: Function() as PropType<WrapEdgeProps['onMouseLeave']>,
     required: false,
-    default: () => ({})
+    default: undefined
   },
   edgeUpdaterRadius: {
     type: Number as PropType<WrapEdgeProps['edgeUpdaterRadius']>,
@@ -305,12 +305,12 @@ export const WrapEdgeProps = {
   onEdgeUpdateStart: {
     type: Function() as PropType<WrapEdgeProps['onEdgeUpdateStart']>,
     required: false,
-    default: () => ({})
+    default: undefined
   },
   onEdgeUpdateEnd: {
     type: Function() as PropType<WrapEdgeProps['onEdgeUpdateEnd']>,
     required: false,
-    default: () => ({})
+    default: undefined
   }
 };
 
@@ -555,47 +555,47 @@ export const WrapNodeProps = {
   onClick: {
     type: Function() as PropType<WrapNodeProps['onClick']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   onNodeDoubleClick: {
     type: Function() as PropType<WrapNodeProps['onNodeDoubleClick']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   onMouseEnter: {
     type: Function() as PropType<WrapNodeProps['onMouseEnter']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   onMouseMove: {
     type: Function() as PropType<WrapNodeProps['onMouseMove']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   onMouseLeave: {
     type: Function() as PropType<WrapNodeProps['onMouseLeave']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   onContextMenu: {
     type: Function() as PropType<WrapNodeProps['onContextMenu']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   onNodeDragStart: {
     type: Function() as PropType<WrapNodeProps['onNodeDragStart']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   onNodeDrag: {
     type: Function() as PropType<WrapNodeProps['onNodeDrag']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   onNodeDragStop: {
     type: Function() as PropType<WrapNodeProps['onNodeDragStop']>,
     required: false,
-    default: () => {}
+    default: undefined
   },
   style: {
     type: Object as PropType<WrapNodeProps['style']>,
