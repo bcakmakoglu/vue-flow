@@ -137,7 +137,7 @@ const NodeRenderer = defineComponent({
         {visibleNodes.value.map((node) => {
           const nodeType = node.type || 'default';
           if (props.nodeTypes) {
-            const NodeComponent: any = (props.nodeTypes[nodeType] || props.nodeTypes.default);
+            const NodeComponent: any = props.nodeTypes[nodeType] || props.nodeTypes.default;
             if (!props.nodeTypes[nodeType]) {
               console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`);
             }

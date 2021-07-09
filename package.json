@@ -20,8 +20,10 @@
     "build": "vue-tsc --noEmit && vite build",
     "build:dist": "rollup -c --environment NODE_ENV:production && postcss src/*.css --dir dist",
     "serve": "vite preview",
-    "prepublishOnly": "yarn build:dist",
-    "test": "exit 0"
+    "prepublishOnly": "yarn lint && yarn build:dist",
+    "test": "exit 0",
+    "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
+    "lint": "yarn lint:js"
   },
   "dependencies": {
     "d3": "^7.0.0",
