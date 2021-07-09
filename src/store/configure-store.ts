@@ -1,28 +1,21 @@
-import { createPinia, defineStore, StoreDefinition } from 'pinia';
+import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia';
 import isEqual from 'fast-deep-equal';
 import { Edge, Node, NodeDiffUpdate, ReactFlowState, RevueFlowActionsTree, XYPosition } from '../types';
-import {
-  getConnectedEdges,
-  getNodesInside,
-  getRectOfNodes,
-  isEdge,
-  isNode,
-  parseEdge,
-  parseNode
-} from '../utils/graph';
+import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '../utils/graph';
 import { clampPosition, getDimensions } from '../utils';
 import { getHandleBounds } from '../components/Nodes/utils';
-import { provide } from 'vue-demi';
 
 type NextElements = {
   nextNodes: Node[];
   nextEdges: Edge[];
 };
 
+const pinia = createPinia();
+setActivePinia(pinia);
+
 export default function configureStore(
   preloadedState: ReactFlowState
 ): StoreDefinition<'revue-flow', ReactFlowState, any, RevueFlowActionsTree> {
-  provide(Symbol('pinia'), createPinia());
   return defineStore({
     id: 'revue-flow',
     state: () => preloadedState,
@@ -199,8 +192,8 @@ export default function configureStore(
         const selectedElementsChanged = !isEqual(nextSelectedElements, this.selectedElements);
         const selectedElementsUpdate = selectedElementsChanged
           ? {
-            selectedElements: nextSelectedElements.length > 0 ? nextSelectedElements : null
-          }
+              selectedElements: nextSelectedElements.length > 0 ? nextSelectedElements : null
+            }
           : {};
 
         this.userSelectionRect = nextUserSelectRect;
