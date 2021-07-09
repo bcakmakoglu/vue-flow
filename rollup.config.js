@@ -58,7 +58,7 @@ export const baseConfig = ({ mainFile = pkg.main, moduleFile = pkg.module, injec
     babel({
       extensions: [...DEFAULT_BABEL_EXTENSIONS, '.ts', '.tsx'],
       exclude: 'node_modules/**',
-      babelHelpers: 'inline'
+      babelHelpers: 'bundled'
     })
   ]
 });

@@ -1,9 +1,9 @@
 import { Dimensions, XYPosition, NodeExtent } from '../types';
 
 export const isInputDOMNode = (e: MouseEvent | /* DraggableEvent | */ KeyboardEvent): boolean => {
-  const target = e?.target as HTMLElement;
+  const target = e.target as HTMLElement;
 
-  return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target?.nodeName) || target?.hasAttribute('contenteditable');
+  return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target?.nodeName) || target.hasAttribute('contenteditable');
 };
 
 export const getDimensions = (node: HTMLDivElement): Dimensions => ({
@@ -19,4 +19,4 @@ export const clampPosition = (position: XYPosition, extent: NodeExtent) => ({
 });
 
 export const getHostForElement = (element: HTMLElement): Document | ShadowRoot =>
-  (element.getRootNode?.() as Document | ShadowRoot) || window?.document;
+  (element.getRootNode() as Document | ShadowRoot) || window.document;
