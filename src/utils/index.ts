@@ -3,7 +3,7 @@ import { Dimensions, XYPosition, NodeExtent } from '../types';
 export const isInputDOMNode = (e: MouseEvent | /* DraggableEvent | */ KeyboardEvent): boolean => {
   const target = e.target as HTMLElement;
 
-  return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target?.nodeName) || target.hasAttribute('contenteditable');
+  return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.nodeName) || target.hasAttribute('contenteditable');
 };
 
 export const getDimensions = (node: HTMLDivElement): Dimensions => ({
