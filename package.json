@@ -1,10 +1,27 @@
 {
+  "name": "@braks/revue-flow",
   "version": "0.0.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bcakmakoglu/revue-flow"
+  },
+  "license": "MIT",
+  "author": "Burak Cakmakoglu",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "prepublishOnly": "yarn build",
+    "test": "exit 0"
   },
+  "main": "dist/RevueFlow.js",
+  "module": "dist/RevueFlow.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "nocss"
+  ],
   "dependencies": {
     "d3": "^7.0.0",
     "pinia": "^2.0.0-beta.3",
@@ -26,6 +43,7 @@
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.12.1",
+    "np": "^7.5.0",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
     "postcss-nested": "^5.0.5",
@@ -33,5 +51,14 @@
     "typescript": "^4.3.5",
     "vite": "^2.3.8",
     "vue-tsc": "^0.0.24"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "http://registry.npmjs.org/"
+  },
+  "np": {
+    "branch": "master",
+    "yarn": true,
+    "message": "v%s"
   }
 }
