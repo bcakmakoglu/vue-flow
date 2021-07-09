@@ -1,4 +1,4 @@
-import {computed, CSSProperties, defineComponent, HTMLAttributes, onMounted, onUpdated, PropType, watch} from 'vue';
+import { computed, CSSProperties, defineComponent, HTMLAttributes, onUpdated, PropType } from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
