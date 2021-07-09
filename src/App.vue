@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Revue Flow</h1>
-    <Basic style="height: 75vh" />
+    <Basic style="height: 75vh; background: #0f0f0f" />
   </div>
 </template>
 

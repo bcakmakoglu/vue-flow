@@ -41,20 +41,22 @@ const Background = defineComponent({
   },
   setup(props) {
     const pinia = store();
-    const [x, y, scale] = pinia.transform;
+    const transform = computed(() => pinia.transform);
     // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
-    const patternId = computed(() => `pattern-${Math.floor(Math.random() * 100000)}`);
+    const patternId = `pattern-${Math.floor(Math.random() * 100000)}`;
 
     const bgClasses = ['react-flow__background'];
-    const scaledGap = props.gap || 15 * scale;
-    const xOffset = x % scaledGap;
-    const yOffset = y % scaledGap;
+    const scaledGap = computed(() => props.gap && props.gap * transform.value[2]);
+    const xOffset = computed(() => scaledGap.value && transform.value[0] % scaledGap.value);
+    const yOffset = computed(() => scaledGap.value && transform.value[1] % scaledGap.value);
 
     const isLines = props.variant === BackgroundVariant.Lines;
     const bgColor = props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots];
-    const path = isLines
-      ? createGridLinesPath(scaledGap, props.size || 0.4, bgColor)
-      : createGridDotsPath(props.size || 0.4 * scale, bgColor);
+    const path = computed(() =>
+      isLines
+        ? scaledGap.value && props.size && createGridLinesPath(scaledGap.value, props.size, bgColor)
+        : createGridDotsPath(props.size || 0.4 * transform.value[2], bgColor)
+    );
 
     return () => (
       <svg
@@ -64,10 +66,17 @@ const Background = defineComponent({
           height: '100%'
         }}
       >
-        <pattern id={patternId.value} x={xOffset} y={yOffset} width={scaledGap} height={scaledGap} patternUnits="userSpaceOnUse">
-          {path}
+        <pattern
+          id={patternId}
+          x={xOffset.value}
+          y={yOffset.value}
+          width={scaledGap.value}
+          height={scaledGap.value}
+          patternUnits="userSpaceOnUse"
+        >
+          {path.value}
         </pattern>
-        <rect x="0" y="0" width="100%" height="100%" fill={`url(#${patternId.value})`} />
+        <rect x="0" y="0" width="100%" height="100%" fill={`url(#${patternId})`} />
       </svg>
     );
   }
