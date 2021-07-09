@@ -21,10 +21,7 @@ const BasicFlow = defineComponent({
     const rfInstance = ref<OnLoadParams | null>(null);
     const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value));
     const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value));
-    const onLoad = (reactFlowInstance: OnLoadParams) => {
-      console.log('loaded', reactFlowInstance);
-      rfInstance.value = reactFlowInstance;
-    };
+    const onLoad = (reactFlowInstance: OnLoadParams) => (rfInstance.value = reactFlowInstance);
 
     const updatePos = () => {
       elements.value = elements.value.map((el) => {

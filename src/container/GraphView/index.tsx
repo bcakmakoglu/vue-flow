@@ -4,7 +4,7 @@ import EdgeRenderer from '../EdgeRenderer';
 import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph';
 import { ReactFlowProps } from '../RevueFlow';
 import { NodeTypesType, EdgeTypesType, ConnectionLineType, KeyCode } from '../../types';
-import { CSSProperties, defineComponent, onMounted, PropType, ref } from 'vue';
+import { CSSProperties, defineComponent, onBeforeMount, onMounted, PropType, ref } from 'vue';
 import store from '../../store';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 
@@ -368,45 +368,57 @@ const GraphView = defineComponent({
       }
     });
 
-    onMounted(() => {
+    onBeforeMount(() => {
       if (props.onConnect) {
         pinia.setOnConnect(props.onConnect);
       }
-    });
 
-    onMounted(() => {
       if (props.onConnectStart) {
         pinia.setOnConnectStart(props.onConnectStart);
       }
-    });
 
-    onMounted(() => {
       if (props.onConnectStop) {
         pinia.setOnConnectStop(props.onConnectStop);
       }
-    });
 
-    onMounted(() => {
       if (props.onConnectEnd) {
         pinia.setOnConnectEnd(props.onConnectEnd);
       }
-    });
 
-    onMounted(() => {
       if (typeof props.snapToGrid !== 'undefined') {
         pinia.setSnapToGrid(props.snapToGrid);
       }
-    });
 
-    onMounted(() => {
       if (typeof props.snapGrid !== 'undefined') {
         pinia.setSnapGrid(props.snapGrid);
       }
-    });
 
-    onMounted(() => {
       if (typeof props.nodesDraggable !== 'undefined') {
         pinia.setNodesDraggable(!!props.nodesDraggable);
+      }
+
+      if (typeof props.nodesConnectable !== 'undefined') {
+        pinia.setNodesConnectable(!!props.nodesConnectable);
+      }
+
+      if (typeof props.elementsSelectable !== 'undefined') {
+        pinia.setElementsSelectable(!!props.elementsSelectable);
+      }
+
+      if (typeof props.minZoom !== 'undefined') {
+        pinia.setMinZoom(props.minZoom as any);
+      }
+
+      if (typeof props.maxZoom !== 'undefined') {
+        pinia.setMaxZoom(props.maxZoom as any);
+      }
+
+      if (typeof props.translateExtent !== 'undefined') {
+        pinia.setTranslateExtent(props.translateExtent as any);
+      }
+
+      if (typeof props.nodeExtent !== 'undefined') {
+        pinia.setNodeExtent(props.nodeExtent as any);
       }
     });
 
@@ -420,33 +432,7 @@ const GraphView = defineComponent({
       if (typeof props.elementsSelectable !== 'undefined') {
         pinia.setElementsSelectable(!!props.elementsSelectable);
       }
-    });
 
-    onMounted(() => {
-      if (typeof props.minZoom !== 'undefined') {
-        pinia.setMinZoom(props.minZoom as any);
-      }
-    });
-
-    onMounted(() => {
-      if (typeof props.maxZoom !== 'undefined') {
-        pinia.setMaxZoom(props.maxZoom as any);
-      }
-    });
-
-    onMounted(() => {
-      if (typeof props.translateExtent !== 'undefined') {
-        pinia.setTranslateExtent(props.translateExtent as any);
-      }
-    });
-
-    onMounted(() => {
-      if (typeof props.nodeExtent !== 'undefined') {
-        pinia.setNodeExtent(props.nodeExtent as any);
-      }
-    });
-
-    onMounted(() => {
       if (typeof props.connectionMode !== 'undefined') {
         pinia.setConnectionMode(props.connectionMode as any);
       }

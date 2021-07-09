@@ -1,4 +1,4 @@
-import { computed, CSSProperties, defineComponent, HTMLAttributes, PropType } from 'vue';
+import {computed, CSSProperties, defineComponent, HTMLAttributes, onMounted, onUpdated, PropType, watch} from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -455,6 +455,9 @@ const RevueFlow = defineComponent({
   setup(props, { slots }) {
     const pinia = store();
     pinia.setElements(props.elements);
+    onUpdated(() => {
+      pinia.setElements(props.elements);
+    });
 
     const nodeTypesParsed = computed(() => props.nodeTypes && createNodeTypes(props.nodeTypes));
     const edgeTypesParsed = computed(() => props.edgeTypes && createEdgeTypes(props.edgeTypes));

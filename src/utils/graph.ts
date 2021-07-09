@@ -70,7 +70,7 @@ const connectionExists = (edge: Edge, elements: Elements) => {
 
 export const addEdge = (edgeParams: Edge | Connection, elements: Elements): Elements => {
   if (!edgeParams.source || !edgeParams.target) {
-    console.warn("Can't create edge. An edge needs a source and a target.");
+    console.log("Can't create edge. An edge needs a source and a target.");
     return elements;
   }
 
@@ -87,6 +87,8 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements): Elem
   if (connectionExists(edge, elements)) {
     return elements;
   }
+
+  console.log(edge);
 
   return elements.concat(edge);
 };
