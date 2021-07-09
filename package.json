@@ -69,7 +69,7 @@
     "vue-tsc": "^0.0.24"
   },
   "peerDependencies": {
-    "@vue/composition-api": "^1.0.0-rc.1",
+    "@vue/composition-api": "^1.0.0-rc.13",
     "vue": "^2.0.0 || >=3.0.0"
   },
   "peerDependenciesMeta": {
