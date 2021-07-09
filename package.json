@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build && yarn build:dist",
-    "build:dist": "rollup -c --environment NODE_ENV:production && postcss src/*.css --dir dist",
+    "build:dist": "rollup -c --environment NODE_ENV:production",
     "serve": "vite preview",
     "prepublishOnly": "yarn build",
     "test": "exit 0;",
