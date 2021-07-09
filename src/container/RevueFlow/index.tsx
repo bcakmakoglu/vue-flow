@@ -1,4 +1,4 @@
-import { computed, CSSProperties, defineComponent, HTMLAttributes, onUpdated, PropType } from 'vue';
+import { computed, CSSProperties, defineComponent, HTMLAttributes, onUpdated, PropType } from 'vue-demi';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -45,7 +45,7 @@ const defaultEdgeTypes = {
   smoothstep: SmoothStepEdge
 };
 
-export interface ReactFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
+export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
   elements: Elements;
   onElementClick?: (event: MouseEvent, element: Node | Edge) => void;
   onElementsRemove?: (elements: Elements) => void;
@@ -123,331 +123,331 @@ const RevueFlow = defineComponent({
   components: { GraphView },
   props: {
     elements: {
-      type: Object as PropType<ReactFlowProps['elements']>,
+      type: Object as PropType<RevueFlowProps['elements']>,
       required: true
     },
     nodeTypesId: {
-      type: String as PropType<ReactFlowProps['nodeTypesId']>,
+      type: String as PropType<RevueFlowProps['nodeTypesId']>,
       required: false,
       default: '1'
     },
     edgeTypesId: {
-      type: String as PropType<ReactFlowProps['edgeTypesId']>,
+      type: String as PropType<RevueFlowProps['edgeTypesId']>,
       required: false,
       default: '1'
     },
     nodeTypes: {
-      type: Object as PropType<ReactFlowProps['nodeTypes']>,
+      type: Object as PropType<RevueFlowProps['nodeTypes']>,
       required: false,
       default: () => defaultNodeTypes
     },
     edgeTypes: {
-      type: Object as PropType<ReactFlowProps['edgeTypes']>,
+      type: Object as PropType<RevueFlowProps['edgeTypes']>,
       required: false,
       default: () => defaultEdgeTypes
     },
     onMove: {
-      type: Function() as PropType<ReactFlowProps['onMove']>,
+      type: Function() as PropType<RevueFlowProps['onMove']>,
       required: false,
       default: undefined as any
     },
     onMoveStart: {
-      type: Function() as PropType<ReactFlowProps['onMoveStart']>,
+      type: Function() as PropType<RevueFlowProps['onMoveStart']>,
       required: false,
       default: undefined as any
     },
     onMoveEnd: {
-      type: Function() as PropType<ReactFlowProps['onMoveEnd']>,
+      type: Function() as PropType<RevueFlowProps['onMoveEnd']>,
       required: false,
       default: undefined as any
     },
     onLoad: {
-      type: Function() as PropType<ReactFlowProps['onLoad']>,
+      type: Function() as PropType<RevueFlowProps['onLoad']>,
       required: false,
       default: undefined as any
     },
     onElementClick: {
-      type: Function() as PropType<ReactFlowProps['onElementClick']>,
+      type: Function() as PropType<RevueFlowProps['onElementClick']>,
       required: false,
       default: undefined as any
     },
     onNodeDoubleClick: {
-      type: Function() as PropType<ReactFlowProps['onNodeDoubleClick']>,
+      type: Function() as PropType<RevueFlowProps['onNodeDoubleClick']>,
       required: false,
       default: undefined as any
     },
     onEdgeDoubleClick: {
-      type: Function() as PropType<ReactFlowProps['onEdgeDoubleClick']>,
+      type: Function() as PropType<RevueFlowProps['onEdgeDoubleClick']>,
       required: false,
       default: undefined as any
     },
     onNodeMouseEnter: {
-      type: Function() as PropType<ReactFlowProps['onNodeMouseEnter']>,
+      type: Function() as PropType<RevueFlowProps['onNodeMouseEnter']>,
       required: false,
       default: undefined as any
     },
     onNodeMouseMove: {
-      type: Function() as PropType<ReactFlowProps['onNodeMouseMove']>,
+      type: Function() as PropType<RevueFlowProps['onNodeMouseMove']>,
       required: false,
       default: undefined as any
     },
     onNodeMouseLeave: {
-      type: Function() as PropType<ReactFlowProps['onNodeMouseLeave']>,
+      type: Function() as PropType<RevueFlowProps['onNodeMouseLeave']>,
       required: false,
       default: undefined as any
     },
     onNodeContextMenu: {
-      type: Function() as PropType<ReactFlowProps['onNodeContextMenu']>,
+      type: Function() as PropType<RevueFlowProps['onNodeContextMenu']>,
       required: false,
       default: undefined as any
     },
     onNodeDragStart: {
-      type: Function() as PropType<ReactFlowProps['onNodeDragStart']>,
+      type: Function() as PropType<RevueFlowProps['onNodeDragStart']>,
       required: false,
       default: undefined as any
     },
     onNodeDrag: {
-      type: Function() as PropType<ReactFlowProps['onNodeDrag']>,
+      type: Function() as PropType<RevueFlowProps['onNodeDrag']>,
       required: false,
       default: undefined as any
     },
     onNodeDragStop: {
-      type: Function() as PropType<ReactFlowProps['onNodeDragStop']>,
+      type: Function() as PropType<RevueFlowProps['onNodeDragStop']>,
       required: false,
       default: undefined as any
     },
     onSelectionContextMenu: {
-      type: Function() as PropType<ReactFlowProps['onSelectionContextMenu']>,
+      type: Function() as PropType<RevueFlowProps['onSelectionContextMenu']>,
       required: false,
       default: undefined as any
     },
     onElementsRemove: {
-      type: Function() as PropType<ReactFlowProps['onElementsRemove']>,
+      type: Function() as PropType<RevueFlowProps['onElementsRemove']>,
       required: false,
       default: undefined as any
     },
     onConnect: {
-      type: Function() as PropType<ReactFlowProps['onConnect']>,
+      type: Function() as PropType<RevueFlowProps['onConnect']>,
       required: false,
       default: undefined as any
     },
     onConnectStart: {
-      type: Function() as PropType<ReactFlowProps['onConnectStart']>,
+      type: Function() as PropType<RevueFlowProps['onConnectStart']>,
       required: false,
       default: undefined as any
     },
     onConnectStop: {
-      type: Function() as PropType<ReactFlowProps['onConnectStop']>,
+      type: Function() as PropType<RevueFlowProps['onConnectStop']>,
       required: false,
       default: undefined as any
     },
     onConnectEnd: {
-      type: Function() as PropType<ReactFlowProps['onConnectEnd']>,
+      type: Function() as PropType<RevueFlowProps['onConnectEnd']>,
       required: false,
       default: undefined as any
     },
     connectionMode: {
-      type: String as PropType<ReactFlowProps['connectionMode']>,
+      type: String as PropType<RevueFlowProps['connectionMode']>,
       required: false,
       default: ConnectionMode.Strict
     },
     connectionLineType: {
-      type: String as PropType<ReactFlowProps['connectionLineType']>,
+      type: String as PropType<RevueFlowProps['connectionLineType']>,
       required: false,
       default: ConnectionLineType.Bezier
     },
     connectionLineStyle: {
-      type: Object as PropType<ReactFlowProps['connectionLineStyle']>,
+      type: Object as PropType<RevueFlowProps['connectionLineStyle']>,
       required: false,
       default: () => ({} as CSSProperties)
     },
     connectionLineComponent: {
-      type: Object as PropType<ReactFlowProps['connectionLineComponent']>,
+      type: Object as PropType<RevueFlowProps['connectionLineComponent']>,
       required: false,
       default: undefined as any
     },
     selectionKeyCode: {
-      type: (Number || String) as PropType<ReactFlowProps['selectionKeyCode']>,
+      type: (Number || String) as PropType<RevueFlowProps['selectionKeyCode']>,
       required: false,
       default: 'Shift'
     },
     multiSelectionKeyCode: {
-      type: (Number || String) as PropType<ReactFlowProps['multiSelectionKeyCode']>,
+      type: (Number || String) as PropType<RevueFlowProps['multiSelectionKeyCode']>,
       required: false,
       default: 'Meta'
     },
     zoomActivationKeyCode: {
-      type: (Number || String) as PropType<ReactFlowProps['zoomActivationKeyCode']>,
+      type: (Number || String) as PropType<RevueFlowProps['zoomActivationKeyCode']>,
       required: false,
       default: 'Meta'
     },
     deleteKeyCode: {
-      type: (Number || String) as PropType<ReactFlowProps['deleteKeyCode']>,
+      type: (Number || String) as PropType<RevueFlowProps['deleteKeyCode']>,
       required: false,
       default: 'Backspace'
     },
     snapToGrid: {
-      type: Boolean as PropType<ReactFlowProps['snapToGrid']>,
+      type: Boolean as PropType<RevueFlowProps['snapToGrid']>,
       required: false,
       default: false
     },
     snapGrid: {
-      type: Array as unknown as PropType<ReactFlowProps['snapGrid']>,
+      type: Array as unknown as PropType<RevueFlowProps['snapGrid']>,
       required: false,
       default: () => [15, 15]
     },
     onlyRenderVisibleElements: {
-      type: Boolean as PropType<ReactFlowProps['onlyRenderVisibleElements']>,
+      type: Boolean as PropType<RevueFlowProps['onlyRenderVisibleElements']>,
       required: false,
       default: false
     },
     nodesDraggable: {
-      type: Boolean as PropType<ReactFlowProps['nodesDraggable']>,
+      type: Boolean as PropType<RevueFlowProps['nodesDraggable']>,
       required: false,
       default: undefined
     },
     nodesConnectable: {
-      type: Boolean as PropType<ReactFlowProps['nodesConnectable']>,
+      type: Boolean as PropType<RevueFlowProps['nodesConnectable']>,
       required: false,
       default: undefined
     },
     elementsSelectable: {
-      type: Boolean as PropType<ReactFlowProps['elementsSelectable']>,
+      type: Boolean as PropType<RevueFlowProps['elementsSelectable']>,
       required: false,
       default: undefined
     },
     selectNodesOnDrag: {
-      type: Boolean as PropType<ReactFlowProps['selectNodesOnDrag']>,
+      type: Boolean as PropType<RevueFlowProps['selectNodesOnDrag']>,
       required: false,
       default: true
     },
     minZoom: {
-      type: Number as PropType<ReactFlowProps['minZoom']>,
+      type: Number as PropType<RevueFlowProps['minZoom']>,
       required: false,
       default: undefined
     },
     maxZoom: {
-      type: Number as PropType<ReactFlowProps['maxZoom']>,
+      type: Number as PropType<RevueFlowProps['maxZoom']>,
       required: false,
       default: undefined
     },
     defaultZoom: {
-      type: Number as PropType<ReactFlowProps['defaultZoom']>,
+      type: Number as PropType<RevueFlowProps['defaultZoom']>,
       required: false,
       default: 1
     },
     defaultPosition: {
-      type: Array as unknown as PropType<ReactFlowProps['defaultPosition']>,
+      type: Array as unknown as PropType<RevueFlowProps['defaultPosition']>,
       required: false,
       default: () => [0, 0]
     },
     translateExtent: {
-      type: Array as unknown as PropType<ReactFlowProps['translateExtent']>,
+      type: Array as unknown as PropType<RevueFlowProps['translateExtent']>,
       required: false,
       default: undefined
     },
     nodeExtent: {
-      type: Array as unknown as PropType<ReactFlowProps['nodeExtent']>,
+      type: Array as unknown as PropType<RevueFlowProps['nodeExtent']>,
       required: false,
       default: undefined
     },
     arrowHeadColor: {
-      type: String as PropType<ReactFlowProps['arrowHeadColor']>,
+      type: String as PropType<RevueFlowProps['arrowHeadColor']>,
       required: false,
       default: '#b1b1b7'
     },
     markerEndId: {
-      type: String as PropType<ReactFlowProps['markerEndId']>,
+      type: String as PropType<RevueFlowProps['markerEndId']>,
       required: false,
       default: undefined
     },
     zoomOnScroll: {
-      type: Boolean as PropType<ReactFlowProps['zoomOnScroll']>,
+      type: Boolean as PropType<RevueFlowProps['zoomOnScroll']>,
       required: false,
       default: true
     },
     zoomOnPinch: {
-      type: Boolean as PropType<ReactFlowProps['zoomOnPinch']>,
+      type: Boolean as PropType<RevueFlowProps['zoomOnPinch']>,
       required: false,
       default: true
     },
     panOnScroll: {
-      type: Boolean as PropType<ReactFlowProps['panOnScroll']>,
+      type: Boolean as PropType<RevueFlowProps['panOnScroll']>,
       required: false,
       default: false
     },
     panOnScrollSpeed: {
-      type: Number as PropType<ReactFlowProps['panOnScrollSpeed']>,
+      type: Number as PropType<RevueFlowProps['panOnScrollSpeed']>,
       required: false,
       default: 0.5
     },
     panOnScrollMode: {
-      type: String as PropType<ReactFlowProps['panOnScrollMode']>,
+      type: String as PropType<RevueFlowProps['panOnScrollMode']>,
       required: false,
       default: PanOnScrollMode.Free
     },
     zoomOnDoubleClick: {
-      type: Boolean as PropType<ReactFlowProps['zoomOnDoubleClick']>,
+      type: Boolean as PropType<RevueFlowProps['zoomOnDoubleClick']>,
       required: false,
       default: true
     },
     paneMoveable: {
-      type: Boolean as PropType<ReactFlowProps['paneMoveable']>,
+      type: Boolean as PropType<RevueFlowProps['paneMoveable']>,
       required: false,
       default: true
     },
     onPaneClick: {
-      type: Function() as PropType<ReactFlowProps['onPaneClick']>,
+      type: Function() as PropType<RevueFlowProps['onPaneClick']>,
       required: false,
       default: undefined as any
     },
     onPaneScroll: {
-      type: Function() as PropType<ReactFlowProps['onPaneScroll']>,
+      type: Function() as PropType<RevueFlowProps['onPaneScroll']>,
       required: false,
       default: undefined as any
     },
     onPaneContextMenu: {
-      type: Function() as PropType<ReactFlowProps['onPaneContextMenu']>,
+      type: Function() as PropType<RevueFlowProps['onPaneContextMenu']>,
       required: false,
       default: undefined as any
     },
     onEdgeUpdate: {
-      type: Function() as PropType<ReactFlowProps['onEdgeUpdate']>,
+      type: Function() as PropType<RevueFlowProps['onEdgeUpdate']>,
       required: false,
       default: undefined as any
     },
     onEdgeMouseEnter: {
-      type: Function() as PropType<ReactFlowProps['onEdgeMouseEnter']>,
+      type: Function() as PropType<RevueFlowProps['onEdgeMouseEnter']>,
       required: false,
       default: undefined as any
     },
     onEdgeContextMenu: {
-      type: Function() as PropType<ReactFlowProps['onEdgeContextMenu']>,
+      type: Function() as PropType<RevueFlowProps['onEdgeContextMenu']>,
       required: false,
       default: undefined as any
     },
     onEdgeMouseMove: {
-      type: Function() as PropType<ReactFlowProps['onEdgeMouseMove']>,
+      type: Function() as PropType<RevueFlowProps['onEdgeMouseMove']>,
       required: false,
       default: undefined as any
     },
     onEdgeMouseLeave: {
-      type: Function() as PropType<ReactFlowProps['onEdgeMouseLeave']>,
+      type: Function() as PropType<RevueFlowProps['onEdgeMouseLeave']>,
       required: false,
       default: undefined as any
     },
     onEdgeUpdateEnd: {
-      type: Function() as PropType<ReactFlowProps['onEdgeUpdateEnd']>,
+      type: Function() as PropType<RevueFlowProps['onEdgeUpdateEnd']>,
       required: false,
       default: undefined as any
     },
     onEdgeUpdateStart: {
-      type: Function() as PropType<ReactFlowProps['onEdgeUpdateStart']>,
+      type: Function() as PropType<RevueFlowProps['onEdgeUpdateStart']>,
       required: false,
       default: undefined as any
     },
     edgeUpdaterRadius: {
-      type: Number as PropType<ReactFlowProps['edgeUpdaterRadius']>,
+      type: Number as PropType<RevueFlowProps['edgeUpdaterRadius']>,
       required: false,
       default: 10
     }

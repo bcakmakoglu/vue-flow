@@ -1,6 +1,6 @@
 import { getNodesInside } from '../../utils/graph';
 import { Node, NodeTypesType, Edge } from '../../types';
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue-demi';
 import store from '../../store';
 
 interface NodeRendererProps {

@@ -25,8 +25,3 @@ export { default as useUpdateNodeInternals } from './hooks/useUpdateNodeInternal
 
 export * from './additional-components';
 export * from './types';
-
-export { ReactFlowProps } from './container/RevueFlow';
-export { MiniMapProps } from './additional-components/MiniMap';
-export { ControlProps } from './additional-components/Controls';
-export { BackgroundProps } from './additional-components/Background';

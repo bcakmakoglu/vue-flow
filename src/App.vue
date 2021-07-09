@@ -1,18 +1,15 @@
 <template>
   <div id="app">
     <h1>Revue Flow</h1>
-    <Basic style="height: 75vh; background: #0f0f0f" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import Basic from './Basic';
+import { defineComponent } from 'vue-demi';
 
 export default defineComponent({
   name: 'App',
   components: {
-    Basic
   },
   data() {
     return {

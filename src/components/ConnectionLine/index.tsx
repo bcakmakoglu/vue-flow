@@ -1,4 +1,4 @@
-import { ref, defineComponent, CSSProperties, PropType, computed } from 'vue';
+import { ref, defineComponent, CSSProperties, PropType, computed } from 'vue-demi';
 
 import { getBezierPath } from '../Edges/BezierEdge';
 import { getSmoothStepPath } from '../Edges/SmoothStepEdge';

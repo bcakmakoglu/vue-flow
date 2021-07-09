@@ -2,13 +2,13 @@ import FlowRenderer from '../FlowRenderer';
 import NodeRenderer from '../NodeRenderer';
 import EdgeRenderer from '../EdgeRenderer';
 import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph';
-import { ReactFlowProps } from '../RevueFlow';
+import { RevueFlowProps } from '../RevueFlow';
 import { NodeTypesType, EdgeTypesType, ConnectionLineType, KeyCode } from '../../types';
-import { CSSProperties, defineComponent, onBeforeMount, onMounted, PropType, ref } from 'vue';
+import { CSSProperties, defineComponent, onBeforeMount, onMounted, PropType, ref } from 'vue-demi';
 import store from '../../store';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 
-export interface GraphViewProps extends Omit<ReactFlowProps, 'onSelectionChange' | 'elements'> {
+export interface GraphViewProps extends Omit<RevueFlowProps, 'onSelectionChange' | 'elements'> {
   nodeTypes: NodeTypesType;
   edgeTypes: EdgeTypesType;
   selectionKeyCode: KeyCode;

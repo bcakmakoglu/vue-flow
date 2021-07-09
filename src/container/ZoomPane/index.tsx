@@ -3,7 +3,7 @@ import { select, pointer } from 'd3-selection';
 
 import { clamp } from '../../utils';
 import { FlowTransform, TranslateExtent, PanOnScrollMode, KeyCode } from '../../types';
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
+import { defineComponent, onMounted, PropType, ref, watch } from 'vue-demi';
 import store from '../../store';
 import useKeyPress from '../../hooks/useKeyPress';
 import useResizeHandler from '../../hooks/useResizeHandler';
