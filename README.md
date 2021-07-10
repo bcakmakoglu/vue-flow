@@ -29,7 +29,7 @@ $ npm i --save @braks/revue-flow
 This doesn't work with Vue2, sorry.
 
 ## Development
-This project uses Vite for development and Rollup to create type definitions.
+This project uses Vite for development and Rollup to create a distribution.
 
 ```bash
 # start (dev)
@@ -38,6 +38,9 @@ $ yarn dev
 # build app
 $ yarn build
 
-# serve app from dist
+# serve app from build
 $ yarn serve
+
+# build dist
+$ yarn build:dist
 ```
