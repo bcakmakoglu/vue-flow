@@ -1,4 +1,4 @@
-import { Component, computed, defineComponent, ref } from 'vue';
+import { Component, computed, defineComponent, ref } from 'vue-demi';
 
 import store from '../../store';
 import { Edge, EdgeProps, Position, WrapEdgeProps } from '../../types';

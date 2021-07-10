@@ -1,4 +1,4 @@
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType } from 'vue-demi';
 
 interface MiniMapNodeProps {
   x: number;

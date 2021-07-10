@@ -1,6 +1,6 @@
 import Handle from '../../components/Handle';
 import { NodeProps, Position } from '../../types';
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType } from 'vue-demi';
 
 const OutputNode = defineComponent({
   name: 'OutputNode',
