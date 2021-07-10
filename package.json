@@ -9,7 +9,11 @@
   "license": "MIT",
   "author": "Burak Cakmakoglu",
   "main": "dist/revue-flow.es.js",
+  "browser": "dist/revue-flow.esm.js",
+  "unpkg": "dist/revue-flow.global.js",
+  "jsdelivr": "dist/revue-flow.global.js",
   "module": "dist/revue-flow.umd.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "nocss"
@@ -20,7 +24,7 @@
     "build:dist": "rollup -c --environment NODE_ENV:production",
     "build:app": "vite build -c vite.config.app.ts",
     "serve": "vite preview",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "yarn build:dist",
     "test": "exit 0;",
     "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
     "lint": "yarn lint:js"
