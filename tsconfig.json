@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
@@ -10,7 +9,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "declaration": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
