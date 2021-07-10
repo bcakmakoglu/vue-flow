@@ -21,6 +21,9 @@ export const baseConfig = ({ injectCSS = true } = {}) => ({
     }
   },
   output: {
+    globals: {
+      'vue-demi': 'VueDemi'
+    },
     dir: 'dist',
     sourcemap: true,
     exports: 'named'

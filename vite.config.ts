@@ -10,6 +10,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'RevueFlow'
     },
+    sourcemap: true,
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
@@ -25,7 +26,11 @@ export default defineConfig({
         exports: 'named'
       },
       inlineDynamicImports: true
-    }
+    },
+    commonjsOptions: {
+      include: 'node_modules/**'
+    },
+    polyfillDynamicImport: true
   },
   optimizeDeps: {
     exclude: ['vue-demi']
