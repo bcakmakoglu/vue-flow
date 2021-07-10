@@ -25,13 +25,6 @@ $ yarn add @braks/revue-flow
 $ npm i --save @braks/revue-flow
 ```
 
-Make sure to include the style.css file from the revue-flow dist directory in your main file or give the nodes your own styling.
-```ts
-import '@braks/revue-flow/dist/style.css';
-
-// the rest of your app
-```
-
 ## Vue2
 This doesn't work with Vue2, sorry.
 
