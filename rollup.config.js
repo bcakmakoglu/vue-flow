@@ -82,7 +82,7 @@ function createConfig(format, output, plugins = []) {
   output.sourcemap = !!process.env.SOURCE_MAP;
   output.banner = banner;
   output.externalLiveBindings = false;
-  output.globals = { vue: 'Vue', 'vue-demi': 'VueDemi' };
+  output.globals = { 'vue-demi': 'VueDemi' };
 
   const isProductionBuild = /\.prod\.js$/.test(output.file);
   const isGlobalBuild = format.startsWith('global');
@@ -111,7 +111,7 @@ function createConfig(format, output, plugins = []) {
   // during a single build.
   hasTSChecked = true;
 
-  const external = ['vue', 'vue-demi', (id) => id.includes('@babel/runtime')];
+  const external = ['vue-demi', (id) => id.includes('@babel/runtime')];
 
   const nodePlugins = [resolve(), commonjs({ include: 'node_modules/**' })];
 
@@ -170,7 +170,7 @@ function createReplacePlugin(isProduction, isBundlerESMBuild, isBrowserBuild, is
     // is targeting Node (SSR)?
     __NODE_JS__: isNodeBuild,
     __ENV__: JSON.stringify(process.env.NODE_ENV),
-    __REACT_FLOW_VERSION__: JSON.stringify(pkg.version),
+    __REVUE_FLOW_VERSION__: JSON.stringify(pkg.version),
     preventAssignment: true
   };
   // allow inline overrides like

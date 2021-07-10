@@ -53,7 +53,7 @@ export const initialState: ReactFlowState = {
 
   multiSelectionActive: false,
 
-  reactFlowVersion: typeof __REACT_FLOW_VERSION__ !== 'undefined' ? __REACT_FLOW_VERSION__ : '-'
+  reactFlowVersion: typeof __REVUE_FLOW_VERSION__ !== 'undefined' ? __REVUE_FLOW_VERSION__ : '-'
 };
 
 const store = configureStore(initialState);
