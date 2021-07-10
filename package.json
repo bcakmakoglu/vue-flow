@@ -1,6 +1,6 @@
 {
   "name": "@braks/revue-flow",
-  "version": "0.0.20",
+  "version": "0.0.22",
   "private": false,
   "repository": {
     "type": "git",
@@ -8,8 +8,11 @@
   },
   "license": "MIT",
   "author": "Burak Cakmakoglu",
-  "main": "dist/revue-flow.es.js",
-  "module": "dist/revue-flow.es.js",
+  "main": "dist/revue-flow.cjs.js",
+  "browser": "dist/revue-flow.esm.js",
+  "unpkg": "dist/revue-flow.global.js",
+  "jsdelivr": "dist/revue-flow.global.js",
+  "module": "dist/revue-flow.esm-bundler.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
@@ -17,11 +20,11 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build && yarn build:dist",
+    "build": "vue-tsc --noEmit && vite build",
     "build:dist": "rollup -c --environment NODE_ENV:production",
     "build:app": "vite build -c vite.config.app.ts",
     "serve": "vite preview",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "yarn build:dist",
     "test": "exit 0;",
     "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
     "lint": "yarn lint:js"
@@ -57,6 +60,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^7.12.1",
     "np": "^7.5.0",
+    "pascalcase": "^1.0.0",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
     "postcss-nested": "^5.0.5",
@@ -66,7 +70,9 @@
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-serve": "^1.1.0",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-vue": "^6.0.0",
     "typescript": "^4.3.5",
     "vite": "^2.3.8",
     "vue": "^3.0.5",

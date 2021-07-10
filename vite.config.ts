@@ -12,14 +12,9 @@ export default defineConfig({
     },
     sourcemap: true,
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
-      external: ['vue', 'vue-demi', '@vue/composition-api'],
+      external: ['vue-demi'],
       output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
         globals: {
-          vue: 'Vue',
           'vue-demi': 'VueDemi'
         },
         dir: 'dist',
@@ -32,9 +27,6 @@ export default defineConfig({
       include: 'node_modules/**'
     },
     polyfillDynamicImport: true
-  },
-  optimizeDeps: {
-    exclude: ['vue-demi']
   },
   plugins: [
     vue(),
