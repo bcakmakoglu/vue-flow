@@ -1,7 +1,12 @@
+import { defineComponent, HTMLAttributes, onMounted, PropType, ref } from 'vue';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 import { FitViewParams } from '../../types';
-import { defineComponent, HTMLAttributes, onMounted, PropType, ref } from 'vue';
 import store from '../../store';
+import PlusIcon from '../../../assets/icons/plus.svg';
+import MinusIcon from '../../../assets/icons/minus.svg';
+import Fitview from '../../../assets/icons/fitview.svg';
+import Lock from '../../../assets/icons/lock.svg';
+import Unlock from '../../../assets/icons/unlock.svg';
 
 export interface ControlProps extends HTMLAttributes {
   showZoom?: boolean;
@@ -123,25 +128,21 @@ const Controls = defineComponent({
         {props.showZoom && (
           <>
             <ControlButton onClick={onZoomInHandler} class="revue-flow__controls-zoomin">
-              <img src={'../../../assets/icons/plus.svg'} alt="Plus" />
+              <PlusIcon />
             </ControlButton>
             <ControlButton onClick={onZoomOutHandler} class="revue-flow__controls-zoomout">
-              <img src={'../../../assets/icons/minus.svg'} alt="Minus" />
+              <MinusIcon />
             </ControlButton>
           </>
         )}
         {props.showFitView && (
           <ControlButton class="revue-flow__controls-fitview" onClick={onFitViewHandler}>
-            <img src={'../../../assets/icons/fitview.svg'} alt="FitView" />
+            <Fitview />
           </ControlButton>
         )}
         {props.showInteractive && (
           <ControlButton class="revue-flow__controls-interactive" onClick={onInteractiveChangeHandler}>
-            {isInteractive ? (
-              <img src={'../../../assets/icons/unlock.svg'} alt="Unlock" />
-            ) : (
-              <img src={'../../../assets/icons/lock.svg'} alt="Lock" />
-            )}
+            {isInteractive ? <Unlock /> : <Lock />}
           </ControlButton>
         )}
         {slots.default ? slots.default() : ''}

@@ -7,6 +7,7 @@ import pascalcase from 'pascalcase';
 import pkg from './package.json';
 import postcss from 'rollup-plugin-postcss';
 import babel from '@rollup/plugin-babel';
+import svg from 'rollup-plugin-svg';
 import { DEFAULT_EXTENSIONS as DEFAULT_BABEL_EXTENSIONS } from '@babel/core';
 
 const name = pkg.name;
@@ -43,14 +44,6 @@ const outputConfigs = {
   cjs: {
     file: pkg.main,
     format: 'cjs'
-  },
-  'global-vue-3': {
-    file: pkg.unpkg.replace('2', '3'),
-    format: 'iife'
-  },
-  'global-vue-2': {
-    file: pkg.unpkg,
-    format: 'iife'
   },
   esm: {
     file: pkg.browser,
@@ -113,8 +106,6 @@ function createConfig(format, output, plugins = []) {
 
   const external = ['vue'];
 
-  const nodePlugins = [resolve(), commonjs({ include: 'node_modules/**' })];
-
   return {
     input: 'src/index.ts',
     // Global and Browser ESM builds inlines everything so that they can be
@@ -130,8 +121,9 @@ function createConfig(format, output, plugins = []) {
         isGlobalBuild,
         isNodeBuild
       ),
-      ...nodePlugins,
-      ...plugins,
+      svg(),
+      resolve(),
+      commonjs({ include: 'node_modules/**' }),
       postcss({
         minimize: true,
         inject: true
@@ -140,7 +132,8 @@ function createConfig(format, output, plugins = []) {
         extensions: [...DEFAULT_BABEL_EXTENSIONS, '.ts', '.tsx'],
         exclude: 'node_modules/**',
         babelHelpers: 'inline'
-      })
+      }),
+      ...plugins
     ],
     output
     // onwarn: (msg, warn) => {

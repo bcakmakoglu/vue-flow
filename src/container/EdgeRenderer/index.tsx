@@ -15,6 +15,7 @@ import {
 } from '../../types';
 import { computed, CSSProperties, defineComponent, PropType } from 'vue';
 import store from '../../store';
+import MarkerDefinitions from './MarkerDefinitions';
 
 interface EdgeRendererProps {
   edgeTypes: any;
@@ -101,8 +102,6 @@ const EdgeCmp = defineComponent({
     }
   },
   setup(props) {
-    const sourceHandleId = computed(() => props.edge.sourceHandle || null);
-    const targetHandleId = computed(() => props.edge.targetHandle || null);
     const nodes = computed(() => getSourceTargetNodes(props.edge, props.nodes));
 
     const onConnectEdge = (connection: Connection) => {
@@ -119,20 +118,20 @@ const EdgeCmp = defineComponent({
       return () => null;
     }
 
-    const edgeType = props.edge.type || 'default';
-    const EdgeComponent: any = props.props.edgeTypes[edgeType] || props.props.edgeTypes.default;
-    const targetNodeBounds = nodes.value.targetNode.__rf.handleBounds;
+    const EdgeComponent: any = props.props.edgeTypes[props.edge.type as string] || props.props.edgeTypes.default;
+    const targetNodeBounds = computed(() => nodes.value.targetNode?.__rf.handleBounds);
     // when connection type is loose we can define all handles as sources
-    const targetNodeHandles =
+    const targetNodeHandles = computed(() =>
       props.connectionMode === ConnectionMode.Strict
-        ? targetNodeBounds.target
-        : targetNodeBounds.target || targetNodeBounds.source;
-    const sourceHandle = computed(
-      () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf.handleBounds.source, sourceHandleId.value)
+        ? targetNodeBounds.value?.target
+        : targetNodeBounds.value?.target || targetNodeBounds.value?.source
     );
-    const targetHandle = computed(() => getHandle(targetNodeHandles, targetHandleId.value));
-    const sourcePosition = sourceHandle.value ? sourceHandle.value.position : Position.Bottom;
-    const targetPosition = targetHandle.value ? targetHandle.value.position : Position.Top;
+    const sourceHandle = computed(
+      () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf.handleBounds.source, props.edge.sourceHandle || null)
+    );
+    const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle || null));
+    const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom));
+    const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top));
 
     const edgePositions = computed(() => {
       return (
@@ -140,11 +139,11 @@ const EdgeCmp = defineComponent({
         nodes.value.targetNode &&
         getEdgePositions(
           nodes.value.sourceNode,
-          sourceHandle,
-          sourcePosition,
+          sourceHandle.value,
+          sourcePosition.value,
           nodes.value.targetNode,
-          targetHandle,
-          targetPosition
+          targetHandle.value,
+          targetPosition.value
         )
       );
     });
@@ -188,8 +187,8 @@ const EdgeCmp = defineComponent({
         arrowHeadType={props.edge.arrowHeadType}
         source={props.edge.source}
         target={props.edge.target}
-        sourceHandleId={sourceHandleId}
-        targetHandleId={targetHandleId}
+        sourceHandleId={props.edge.sourceHandle}
+        targetHandleId={props.edge.targetHandle}
         sourceX={edgePositions.value?.sourceX}
         sourceY={edgePositions.value?.sourceY}
         targetX={edgePositions.value?.targetX}
@@ -218,7 +217,8 @@ const EdgeRenderer = defineComponent({
   name: 'EdgeRenderer',
   components: {
     EdgeCmp,
-    ConnectionLine
+    ConnectionLine,
+    MarkerDefinitions
   },
   props: {
     edgeTypes: {
@@ -247,12 +247,12 @@ const EdgeRenderer = defineComponent({
       default: undefined
     },
     onElementClick: {
-      type: Function() as PropType<EdgeRendererProps['onElementClick']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onElementClick']>,
       required: false,
       default: undefined
     },
     onEdgeDoubleClick: {
-      type: Function() as PropType<EdgeRendererProps['onEdgeDoubleClick']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onEdgeDoubleClick']>,
       required: false,
       default: undefined
     },
@@ -272,37 +272,37 @@ const EdgeRenderer = defineComponent({
       default: undefined
     },
     onEdgeUpdate: {
-      type: Function() as PropType<EdgeRendererProps['onEdgeUpdate']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onEdgeUpdate']>,
       required: false,
       default: undefined
     },
     onEdgeContextMenu: {
-      type: Function() as PropType<EdgeRendererProps['onEdgeContextMenu']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onEdgeContextMenu']>,
       required: false,
       default: undefined
     },
     onEdgeMouseEnter: {
-      type: Function() as PropType<EdgeRendererProps['onEdgeMouseEnter']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onEdgeMouseEnter']>,
       required: false,
       default: undefined
     },
     onEdgeMouseMove: {
-      type: Function() as PropType<EdgeRendererProps['onEdgeMouseMove']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onEdgeMouseMove']>,
       required: false,
       default: undefined
     },
     onEdgeMouseLeave: {
-      type: Function() as PropType<EdgeRendererProps['onEdgeMouseLeave']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onEdgeMouseLeave']>,
       required: false,
       default: undefined
     },
     onEdgeUpdateStart: {
-      type: Function() as PropType<EdgeRendererProps['onEdgeUpdateStart']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onEdgeUpdateStart']>,
       required: false,
       default: undefined
     },
     onEdgeUpdateEnd: {
-      type: Function() as PropType<EdgeRendererProps['onEdgeUpdateEnd']>,
+      type: Function as unknown as PropType<EdgeRendererProps['onEdgeUpdateEnd']>,
       required: false,
       default: undefined
     },
@@ -314,11 +314,15 @@ const EdgeRenderer = defineComponent({
   },
   setup(props) {
     const pinia = store();
-    const transformStyle = computed(() => `translate(${pinia.transform[0]},${pinia.transform[1]}) scale(${pinia.transform[2]})`);
+    const transform = computed(() => pinia.transform);
+    const transformStyle = computed(() => {
+      return `translate(${transform.value[0]},${transform.value[1]}) scale(${transform.value[2]})`;
+    });
     const renderConnectionLine = computed(() => pinia.connectionNodeId && pinia.connectionHandleType);
 
     return () => (
       <svg width={pinia.width} height={pinia.height} class="revue-flow__edges">
+        <MarkerDefinitions color={props.arrowHeadColor || ''} />
         <g transform={transformStyle.value}>
           {pinia.edges.map((edge: Edge) => (
             <EdgeCmp

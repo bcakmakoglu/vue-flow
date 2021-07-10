@@ -1,4 +1,4 @@
-import { Component, computed, defineComponent, ref } from 'vue';
+import { Component, computed, defineComponent, PropType, ref } from 'vue';
 
 import store from '../../store';
 import { Edge, EdgeProps, Position, WrapEdgeProps } from '../../types';
@@ -8,11 +8,188 @@ import { EdgeAnchor } from './EdgeAnchor';
 export default (EdgeComponent: any): Component<EdgeProps> => {
   return defineComponent({
     components: { EdgeComponent },
-    props: WrapEdgeProps,
+    props: {
+      id: {
+        type: String as PropType<WrapEdgeProps['id']>,
+        required: false,
+        default: undefined
+      },
+      type: {
+        type: String as PropType<WrapEdgeProps['type']>,
+        required: true
+      },
+      data: {
+        type: String as PropType<WrapEdgeProps['data']>,
+        required: false,
+        default: undefined
+      },
+      onClick: {
+        type: Function as unknown as PropType<WrapEdgeProps['onClick']>,
+        required: false,
+        default: undefined
+      },
+      onEdgeDoubleClick: {
+        type: Function as unknown as PropType<WrapEdgeProps['onEdgeDoubleClick']>,
+        required: false,
+        default: undefined
+      },
+      selected: {
+        type: Boolean as PropType<WrapEdgeProps['selected']>,
+        required: true,
+        default: false
+      },
+      animated: {
+        type: Boolean as PropType<WrapEdgeProps['animated']>,
+        required: false,
+        default: false
+      },
+      label: {
+        type: Object as PropType<WrapEdgeProps['label']>,
+        required: false,
+        default: undefined
+      },
+      labelStyle: {
+        type: Object as PropType<WrapEdgeProps['labelStyle']>,
+        required: false,
+        default: undefined
+      },
+      labelShowBg: {
+        type: Boolean as PropType<WrapEdgeProps['labelShowBg']>,
+        required: false,
+        default: false
+      },
+      labelBgStyle: {
+        type: Object as PropType<WrapEdgeProps['labelBgStyle']>,
+        required: false,
+        default: undefined
+      },
+      labelBgPadding: {
+        type: Array as unknown as PropType<WrapEdgeProps['labelBgPadding']>,
+        required: false,
+        default: undefined
+      },
+      labelBgBorderRadius: {
+        type: Number as PropType<WrapEdgeProps['labelBgBorderRadius']>,
+        required: false,
+        default: undefined
+      },
+      style: {
+        type: Object as PropType<WrapEdgeProps['style']>,
+        required: false,
+        default: undefined
+      },
+      arrowHeadType: {
+        type: String as PropType<WrapEdgeProps['arrowHeadType']>,
+        required: false,
+        default: undefined
+      },
+      source: {
+        type: String as PropType<WrapEdgeProps['source']>,
+        required: true
+      },
+      target: {
+        type: String as PropType<WrapEdgeProps['target']>,
+        required: true
+      },
+      sourceHandleId: {
+        type: String as PropType<WrapEdgeProps['sourceHandleId']>,
+        required: true,
+        default: null
+      },
+      targetHandleId: {
+        type: String as PropType<WrapEdgeProps['targetHandleId']>,
+        required: true,
+        default: null
+      },
+      sourceX: {
+        type: Number as PropType<WrapEdgeProps['sourceX']>,
+        required: true
+      },
+      sourceY: {
+        type: Number as PropType<WrapEdgeProps['sourceY']>,
+        required: true
+      },
+      targetX: {
+        type: Number as PropType<WrapEdgeProps['targetX']>,
+        required: true
+      },
+      targetY: {
+        type: Number as PropType<WrapEdgeProps['targetY']>,
+        required: true
+      },
+      sourcePosition: {
+        type: String as PropType<WrapEdgeProps['sourcePosition']>,
+        required: true
+      },
+      targetPosition: {
+        type: String as PropType<WrapEdgeProps['targetPosition']>,
+        required: true
+      },
+      elementsSelectable: {
+        type: Boolean as PropType<WrapEdgeProps['elementsSelectable']>,
+        required: false,
+        default: false
+      },
+      markerEndId: {
+        type: String as PropType<WrapEdgeProps['markerEndId']>,
+        required: false,
+        default: undefined
+      },
+      isHidden: {
+        type: Boolean as PropType<WrapEdgeProps['isHidden']>,
+        required: false,
+        default: false
+      },
+      handleEdgeUpdate: {
+        type: Boolean as PropType<WrapEdgeProps['handleEdgeUpdate']>,
+        required: false,
+        default: false
+      },
+      onConnectEdge: {
+        type: Function as PropType<WrapEdgeProps['onConnectEdge']>,
+        required: false,
+        default: undefined
+      },
+      onContextMenu: {
+        type: Function as unknown as PropType<WrapEdgeProps['onContextMenu']>,
+        required: false,
+        default: undefined
+      },
+      onMouseEnter: {
+        type: Function as unknown as PropType<WrapEdgeProps['onMouseEnter']>,
+        required: false,
+        default: undefined
+      },
+      onMouseMove: {
+        type: Function as unknown as PropType<WrapEdgeProps['onMouseMove']>,
+        required: false,
+        default: undefined
+      },
+      onMouseLeave: {
+        type: Function as unknown as PropType<WrapEdgeProps['onMouseLeave']>,
+        required: false,
+        default: undefined
+      },
+      edgeUpdaterRadius: {
+        type: Number as PropType<WrapEdgeProps['edgeUpdaterRadius']>,
+        required: false,
+        default: undefined
+      },
+      onEdgeUpdateStart: {
+        type: Function as unknown as PropType<WrapEdgeProps['onEdgeUpdateStart']>,
+        required: false,
+        default: undefined
+      },
+      onEdgeUpdateEnd: {
+        type: Function as unknown as PropType<WrapEdgeProps['onEdgeUpdateEnd']>,
+        required: false,
+        default: undefined
+      }
+    },
     setup(props) {
       const pinia = store();
       const updating = ref<boolean>(false);
-      const inactive = !props.elementsSelectable && !props.onClick;
+      const inactive = computed(() => !props.elementsSelectable && !props.onClick);
       const edgeClasses = computed(() => [
         'revue-flow__edge',
         `revue-flow__edge-${props.type}`,
@@ -21,9 +198,9 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
 
       const edgeElement = computed<Edge>(() => {
         const el: Edge = {
-          id: props.id || '',
-          source: props.source || '',
-          target: props.target || '',
+          id: props.id as string,
+          source: props.source,
+          target: props.target,
           type: props.type
         };
 
@@ -48,23 +225,23 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
           pinia.addSelectedElements(edgeElement.value as any);
         }
 
-        if (props.onClick) props.onClick?.(event, edgeElement.value);
+        if (typeof props.onClick === 'function') props.onClick(event, edgeElement.value);
       };
 
       const onEdgeContextMenu = (event: MouseEvent) => {
-        if (typeof props.onContextMenu === 'function') props.onContextMenu?.(event, edgeElement.value);
+        if (typeof props.onContextMenu === 'function') props.onContextMenu(event, edgeElement.value);
       };
 
       const onEdgeMouseEnter = (event: MouseEvent) => {
-        if (typeof props.onMouseEnter === 'function') props.onMouseEnter?.(event, edgeElement.value);
+        if (typeof props.onMouseEnter === 'function') props.onMouseEnter(event, edgeElement.value);
       };
 
       const onEdgeMouseMove = (event: MouseEvent) => {
-        if (typeof props.onMouseMove === 'function') props.onMouseMove?.(event, edgeElement.value);
+        if (typeof props.onMouseMove === 'function') props.onMouseMove(event, edgeElement.value);
       };
 
       const onEdgeMouseLeave = (event: MouseEvent) => {
-        if (typeof props.onMouseLeave === 'function') props.onMouseLeave?.(event, edgeElement.value);
+        if (typeof props.onMouseLeave === 'function') props.onMouseLeave(event, edgeElement.value);
       };
 
       const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
@@ -84,7 +261,7 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
         onMouseDown(
           event,
           handleId,
-          nodeId || '',
+          nodeId,
           pinia.setConnectionNodeId,
           pinia.setConnectionPosition,
           props.onConnectEdge as any,

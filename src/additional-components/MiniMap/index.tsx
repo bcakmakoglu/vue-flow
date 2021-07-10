@@ -24,17 +24,17 @@ const MiniMap = defineComponent({
   name: 'MiniMap',
   props: {
     nodeStrokeColor: {
-      type: (String || Function) as PropType<MiniMapProps['nodeStrokeColor']>,
+      type: [String, Function] as PropType<MiniMapProps['nodeStrokeColor']>,
       required: false,
       default: '#555'
     },
     nodeColor: {
-      type: (String || Function) as PropType<MiniMapProps['nodeColor']>,
+      type: [String, Function] as PropType<MiniMapProps['nodeColor']>,
       required: false,
       default: '#fff'
     },
     nodeClassName: {
-      type: (String || Function) as PropType<MiniMapProps['nodeClassName']>,
+      type: [String, Function] as PropType<MiniMapProps['nodeClassName']>,
       required: false,
       default: ''
     },
@@ -57,17 +57,15 @@ const MiniMap = defineComponent({
   setup(props, { attrs }: { attrs: Record<string, any> }) {
     const pinia = store();
     const transform = computed(() => pinia.transform);
-
-    const mapClasses = ['revue-flow__minimap'];
     const elementWidth = computed(() => (attrs.style?.width || defaultWidth)! as number);
     const elementHeight = computed(() => (attrs.style?.height || defaultHeight)! as number);
-    const nodeColorFunc = (props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor) as StringFunc;
-    const nodeStrokeColorFunc = (
-      props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor
-    ) as StringFunc;
-    const nodeClassNameFunc = (
-      props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName
-    ) as StringFunc;
+    const nodeColorFunc = computed(() => (props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor) as StringFunc);
+    const nodeStrokeColorFunc = computed(
+      () => (props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor) as StringFunc
+    );
+    const nodeClassNameFunc = computed(
+      () => (props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName) as StringFunc
+    );
     const hasNodes = computed(() => pinia.nodes && pinia.nodes.length);
     const bb = computed(() => getRectOfNodes(pinia.nodes));
     const viewBB = computed<Rect>(() => ({
@@ -94,7 +92,7 @@ const MiniMap = defineComponent({
         width={elementWidth.value}
         height={elementHeight.value}
         viewBox={`${x.value} ${y.value} ${width.value} ${height.value}`}
-        class={mapClasses}
+        class="revue-flow__minimap"
       >
         {pinia.nodes
           .filter((node) => !node.isHidden)
@@ -106,10 +104,10 @@ const MiniMap = defineComponent({
               width={node.__rf.width}
               height={node.__rf.height}
               style={node.style}
-              class={nodeClassNameFunc(node)}
-              color={nodeColorFunc(node)}
+              class={nodeClassNameFunc.value(node)}
+              color={nodeColorFunc.value(node)}
               borderRadius={props.nodeBorderRadius}
-              strokeColor={nodeStrokeColorFunc(node)}
+              strokeColor={nodeStrokeColorFunc.value(node)}
               strokeWidth={props.nodeStrokeWidth}
               shapeRendering={shapeRendering}
             />

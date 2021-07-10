@@ -1,4 +1,4 @@
-import { computed, CSSProperties, defineComponent, HTMLAttributes, onUpdated, PropType } from 'vue';
+import { computed, CSSProperties, defineComponent, HTMLAttributes, onBeforeUnmount, onUpdated, PropType } from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -27,7 +27,6 @@ import {
   OnEdgeUpdateFunc,
   NodeExtent
 } from '../../types';
-
 import '../../style.css';
 import '../../theme-default.css';
 import store from '../../store';
@@ -259,7 +258,7 @@ const RevueFlow = defineComponent({
     connectionLineStyle: {
       type: Object as PropType<RevueFlowProps['connectionLineStyle']>,
       required: false,
-      default: () => ({} as CSSProperties)
+      default: undefined
     },
     connectionLineComponent: {
       type: Object as PropType<RevueFlowProps['connectionLineComponent']>,
@@ -459,12 +458,15 @@ const RevueFlow = defineComponent({
       pinia.setElements(props.elements);
     });
 
+    onBeforeUnmount(() => {
+      pinia.setElements([]);
+    });
+
     const nodeTypesParsed = computed(() => props.nodeTypes && createNodeTypes(props.nodeTypes));
     const edgeTypesParsed = computed(() => props.edgeTypes && createEdgeTypes(props.edgeTypes));
-    const reactFlowClasses = ['revue-flow'];
 
     return () => (
-      <div class={reactFlowClasses}>
+      <div class="revue-flow">
         <GraphView
           onLoad={props.onLoad}
           onMove={props.onMove}

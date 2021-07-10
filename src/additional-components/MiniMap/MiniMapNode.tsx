@@ -1,4 +1,4 @@
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 
 interface MiniMapNodeProps {
   x: number;
@@ -62,19 +62,19 @@ const MiniMapNode = defineComponent({
     }
   },
   setup(props, { attrs }: { attrs: Record<string, any> }) {
-    const { background, backgroundColor } = attrs.style || {};
-    const fill = (props.color || background || backgroundColor) as string;
+    const styles = attrs.style || {};
+    const fill = computed(() => (props.color || styles.value.background || styles.value.backgroundColor) as string);
 
     return () => (
       <rect
-        class={['revue-flow__minimap-node']}
+        class="revue-flow__minimap-node"
         x={props.x}
         y={props.y}
         rx={props.borderRadius}
         ry={props.borderRadius}
         width={props.width}
         height={props.height}
-        fill={fill}
+        fill={fill.value}
         stroke={props.strokeColor}
         stroke-width={props.strokeWidth}
         shape-rendering={props.shapeRendering}

@@ -1,5 +1,5 @@
 import { Position } from '../../types';
-import { defineComponent, HTMLAttributes, PropType } from 'vue';
+import { computed, defineComponent, HTMLAttributes, PropType } from 'vue';
 
 const shiftX = (x: number, shift: number, position: Position): number => {
   if (position === Position.Left) return x - shift;
@@ -41,13 +41,13 @@ export const EdgeAnchor = defineComponent({
     }
   },
   setup(props) {
-    const radius = props.radius || 10;
+    const radius = computed(() => props.radius || 10);
     return () => (
       <circle
         class="revue-flow__edgeupdater"
-        cx={shiftX(props.centerX, radius, props.position)}
-        cy={shiftY(props.centerY, radius, props.position)}
-        r={radius}
+        cx={shiftX(props.centerX, radius.value, props.position)}
+        cy={shiftY(props.centerY, radius.value, props.position)}
+        r={radius.value}
         stroke="transparent"
         fill="transparent"
       />

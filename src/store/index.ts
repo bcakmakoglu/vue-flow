@@ -58,6 +58,6 @@ export const initialState: ReactFlowState = {
 
 const store = configureStore(initialState);
 
-export type ReactFlowDispatch = RevueFlowActionsTree;
+export type RevueFlowDispatch = RevueFlowActionsTree;
 
 export default store;

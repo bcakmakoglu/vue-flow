@@ -28,8 +28,7 @@ const EdgeText = defineComponent({
       default: () => ({})
     },
     labelBgPadding: {
-      /* @ts-ignore */
-      type: Array as PropType<[number, number]>,
+      type: Array as unknown as PropType<[number, number]>,
       default: () => [2, 4]
     },
     labelBgBorderRadius: {
