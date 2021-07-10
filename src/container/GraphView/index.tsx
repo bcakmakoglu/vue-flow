@@ -4,7 +4,7 @@ import EdgeRenderer from '../EdgeRenderer';
 import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph';
 import { RevueFlowProps } from '../RevueFlow';
 import { NodeTypesType, EdgeTypesType, ConnectionLineType, KeyCode } from '../../types';
-import { CSSProperties, defineComponent, onBeforeMount, onMounted, PropType, ref } from 'vue';
+import { CSSProperties, defineComponent, onBeforeMount, onMounted, PropType, ref } from 'vue-demi';
 import store from '../../store';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 

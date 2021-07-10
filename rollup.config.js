@@ -14,7 +14,7 @@ const processEnv = isProd || isTesting ? 'production' : 'development';
 
 export const baseConfig = ({ injectCSS = true } = {}) => ({
   input: 'src/index.ts',
-  external: ['vue', 'vue-demi', (id) => id.includes('@babel/runtime')],
+  external: ['vue', 'vue-demi', '@vue/composition-api', (id) => id.includes('@babel/runtime')],
   onwarn(warning, rollupWarn) {
     if (warning.code !== 'CIRCULAR_DEPENDENCY') {
       rollupWarn(warning);
@@ -56,11 +56,11 @@ export const baseConfig = ({ injectCSS = true } = {}) => ({
 
 export default isProd && !isTesting
   ? [
-    baseConfig(),
-    baseConfig({
-      mainFile: 'dist/nocss/ReactFlow-nocss.js',
-      moduleFile: 'dist/nocss/ReactFlow-nocss.esm.js',
-      injectCSS: false
-    })
-  ]
+      baseConfig(),
+      baseConfig({
+        mainFile: 'dist/nocss/ReactFlow-nocss.js',
+        moduleFile: 'dist/nocss/ReactFlow-nocss.esm.js',
+        injectCSS: false
+      })
+    ]
   : baseConfig();

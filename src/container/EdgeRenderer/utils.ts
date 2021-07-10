@@ -3,7 +3,7 @@ import wrapEdge from '../../components/Edges/wrapEdge';
 import { rectToBox } from '../../utils/graph';
 
 import { EdgeTypesType, EdgeProps, Position, Node, XYPosition, ElementId, HandleElement, Transform, Edge } from '../../types';
-import { Component } from 'vue';
+import { Component } from 'vue-demi';
 
 export function createEdgeTypes(edgeTypes: EdgeTypesType): EdgeTypesType {
   const standardTypes: EdgeTypesType = {

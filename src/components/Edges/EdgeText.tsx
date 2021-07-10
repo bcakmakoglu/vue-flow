@@ -1,5 +1,5 @@
 import { EdgeTextProps, Rect } from '../../types';
-import { defineComponent, PropType, ref, watch } from 'vue';
+import { defineComponent, PropType, ref, watch } from 'vue-demi';
 
 const EdgeText = defineComponent({
   props: {

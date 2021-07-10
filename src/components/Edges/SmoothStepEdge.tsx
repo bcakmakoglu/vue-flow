@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue-demi';
 
 import EdgeText from './EdgeText';
 import { getMarkerEnd, getCenter } from './utils';

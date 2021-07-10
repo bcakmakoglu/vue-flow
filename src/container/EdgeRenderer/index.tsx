@@ -13,7 +13,7 @@ import {
   Transform,
   OnEdgeUpdateFunc
 } from '../../types';
-import { computed, CSSProperties, defineComponent, PropType } from 'vue';
+import { computed, CSSProperties, defineComponent, PropType } from 'vue-demi';
 import store from '../../store';
 
 interface EdgeRendererProps {

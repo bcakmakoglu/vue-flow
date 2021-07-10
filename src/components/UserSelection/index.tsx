@@ -2,7 +2,7 @@
  * The user selection rectangle gets displayed when a user drags the mouse while pressing shift
  */
 import { XYPosition } from '../../types';
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType } from 'vue-demi';
 import store from '../../store';
 
 type UserSelectionProps = {

@@ -1,5 +1,5 @@
 import { Position } from '../../types';
-import { defineComponent, HTMLAttributes, PropType } from 'vue';
+import { defineComponent, HTMLAttributes, PropType } from 'vue-demi';
 
 const shiftX = (x: number, shift: number, position: Position): number => {
   if (position === Position.Left) return x - shift;
