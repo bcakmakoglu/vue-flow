@@ -92,17 +92,16 @@ function createConfig(format, output, plugins = []) {
 
   if (isGlobalBuild) output.name = pascalcase(pkg.name);
 
-  const shouldEmitDeclarations = !hasTSChecked;
-
   const tsPlugin = ts({
     check: !hasTSChecked,
+    clean: !hasTSChecked,
     tsconfig: path.resolve(__dirname, 'tsconfig.json'),
     cacheRoot: path.resolve(__dirname, 'node_modules/.rts2_cache'),
     tsconfigOverride: {
       compilerOptions: {
-        sourceMap: true,
-        declaration: shouldEmitDeclarations,
-        declarationMap: shouldEmitDeclarations
+        sourceMap: !hasTSChecked,
+        declaration: !hasTSChecked,
+        declarationMap: !hasTSChecked
       },
       exclude: ['__tests__', 'test-dts']
     }

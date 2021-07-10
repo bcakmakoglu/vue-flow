@@ -101,8 +101,8 @@ const EdgeCmp = defineComponent({
     }
   },
   setup(props) {
-    const sourceHandleId = computed(() => props.edge.sourceHandle ?? null);
-    const targetHandleId = computed(() => props.edge.targetHandle ?? null);
+    const sourceHandleId = computed(() => props.edge.sourceHandle || null);
+    const targetHandleId = computed(() => props.edge.targetHandle || null);
     const nodes = computed(() => getSourceTargetNodes(props.edge, props.nodes));
 
     const onConnectEdge = (connection: Connection) => {

@@ -174,8 +174,8 @@ export default function configureStore(
         };
       },
       updateUserSelection(mousePos) {
-        const startX = this.userSelectionRect.startX ?? 0;
-        const startY = this.userSelectionRect.startY ?? 0;
+        const startX = this.userSelectionRect.startX || 0;
+        const startY = this.userSelectionRect.startY || 0;
 
         const nextUserSelectRect: ReactFlowState['userSelectionRect'] = {
           ...this.userSelectionRect,

@@ -268,14 +268,14 @@ const parseElements = (nodes: Node[], edges: Edge[]): Elements => {
 
 export const onLoadGetElements = (currentStore: Store<'revue-flow', ReactFlowState>) => {
   return (): Elements => {
-    return parseElements(currentStore.nodes ?? [], currentStore.edges ?? []);
+    return parseElements(currentStore.nodes || [], currentStore.edges || []);
   };
 };
 
 export const onLoadToObject = (currentStore: Store<'revue-flow', ReactFlowState>) => {
   return (): FlowExportObject => {
     return {
-      elements: parseElements(currentStore.nodes ?? [], currentStore.edges ?? []),
+      elements: parseElements(currentStore.nodes || [], currentStore.edges || []),
       position: [currentStore.transform[0], currentStore.transform[1]],
       zoom: currentStore.transform[2]
     };
