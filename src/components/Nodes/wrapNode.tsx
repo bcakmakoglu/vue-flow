@@ -1,5 +1,5 @@
 import { Node, WrapNodeProps } from '../../types';
-import { computed, CSSProperties, defineComponent, onMounted, provide, ref } from 'vue-demi';
+import { computed, CSSProperties, defineComponent, onMounted, provide, ref } from 'vue';
 import store from '../../store';
 
 export default (NodeComponent: any) => {

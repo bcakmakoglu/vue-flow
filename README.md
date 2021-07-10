@@ -33,14 +33,7 @@ import '@braks/revue-flow/dist/style.css';
 ```
 
 ## Vue2
-With Vue2 make sure you have the composition api installed as a dependency. Same goes for Nuxtjs.
-```bash
-# install revue flow
-$ yarn add @braks/revue-flow @vue/composition-api
-
-# or
-$ npm i --save @braks/revue-flowy @vue/composition-api
-```
+This doesn't work with Vue2, sorry.
 
 ## Development
 This project uses Vite for development and Rollup to create type definitions.

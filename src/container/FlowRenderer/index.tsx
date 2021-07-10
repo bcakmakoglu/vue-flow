@@ -1,7 +1,7 @@
 import { GraphViewProps } from '../GraphView';
 import ZoomPane from '../ZoomPane';
 import UserSelection from '../../components/UserSelection';
-import { defineComponent, PropType } from 'vue-demi';
+import { defineComponent, PropType } from 'vue';
 import store from '../../store';
 
 type FlowRendererProps = Omit<

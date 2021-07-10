@@ -2,7 +2,7 @@ import { Connection, Edge, Elements, FlowElement, Node, OnLoadParams } from './t
 import { addEdge, isNode, removeElements } from './utils/graph';
 import RevueFlow from './container/RevueFlow';
 import { MiniMap, Controls, Background } from './additional-components';
-import { defineComponent, ref } from 'vue-demi';
+import { defineComponent, ref } from 'vue';
 
 const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
 const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);

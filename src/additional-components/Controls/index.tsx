@@ -1,6 +1,6 @@
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 import { FitViewParams } from '../../types';
-import { defineComponent, HTMLAttributes, onMounted, PropType, ref } from 'vue-demi';
+import { defineComponent, HTMLAttributes, onMounted, PropType, ref } from 'vue';
 import store from '../../store';
 
 export interface ControlProps extends HTMLAttributes {
