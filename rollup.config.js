@@ -14,7 +14,7 @@ const processEnv = isProd || isTesting ? 'production' : 'development';
 
 export const baseConfig = ({ injectCSS = true } = {}) => ({
   input: 'src/index.ts',
-  external: ['vue-demi', (id) => id.includes('@babel/runtime')],
+  external: ['vue', 'vue-demi', (id) => id.includes('@babel/runtime')],
   onwarn(warning, rollupWarn) {
     if (warning.code !== 'CIRCULAR_DEPENDENCY') {
       rollupWarn(warning);
@@ -22,6 +22,7 @@ export const baseConfig = ({ injectCSS = true } = {}) => ({
   },
   output: {
     globals: {
+      vue: 'Vue',
       'vue-demi': 'VueDemi'
     },
     dir: 'dist',

@@ -1,7 +1,7 @@
 import { getRectOfNodes, getBoundsofRects } from '../../utils/graph';
 import { Node, Rect } from '../../types';
 import MiniMapNode from './MiniMapNode';
-import { computed, defineComponent, HTMLAttributes, PropType } from 'vue-demi';
+import { computed, defineComponent, HTMLAttributes, PropType } from 'vue';
 import store from '../../store';
 
 type StringFunc = (node: Node) => string;

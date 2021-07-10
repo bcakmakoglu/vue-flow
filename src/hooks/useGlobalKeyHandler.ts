@@ -2,7 +2,7 @@ import useKeyPress from './useKeyPress';
 import { isNode, getConnectedEdges } from '../utils/graph';
 import { Elements, KeyCode, ElementId, FlowElement } from '../types';
 import store from '../store';
-import { onMounted } from 'vue-demi';
+import { onMounted } from 'vue';
 
 interface HookParams {
   deleteKeyCode: KeyCode;
