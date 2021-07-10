@@ -1,6 +1,4 @@
 import RevueFlow from './container/RevueFlow';
-import { App } from 'vue-demi';
-
 export default RevueFlow;
 
 export { default as Handle } from './components/Handle';
@@ -26,22 +24,3 @@ export { default as useUpdateNodeInternals } from './hooks/useUpdateNodeInternal
 
 export * from './additional-components';
 export * from './types';
-
-export interface RevueFlowOptions {
-  theme: string;
-}
-
-export interface RevueFlowPlugin {
-  options?: RevueFlowOptions;
-
-  install(app: App): void;
-}
-
-export function createRevueFlowPlugin(options?: RevueFlowOptions): RevueFlowPlugin {
-  return {
-    options,
-    install(app: App) {
-      app.component('revue-flow', RevueFlow);
-    }
-  };
-}
