@@ -1,11 +1,11 @@
-.react-flow__selection {
+.revue-flow__selection {
   background: rgba(0, 89, 220, 0.08);
   border: 1px dotted rgba(0, 89, 220, 0.8);
 }
 
-.react-flow__edge {
+.revue-flow__edge {
   &.selected {
-    .react-flow__edge-path {
+    .revue-flow__edge-path {
       stroke: #555;
     }
   }
@@ -16,37 +16,37 @@
   }
 
   &.updating {
-    .react-flow__edge-path {
+    .revue-flow__edge-path {
       stroke: #777;
     }
   }
 }
 
-.react-flow__edge-path {
+.revue-flow__edge-path {
   stroke: #b1b1b7;
   stroke-width: 1;
 }
 
-.react-flow__edge-text {
+.revue-flow__edge-text {
   font-size: 10px;
 }
 
-.react-flow__edge-textbg {
+.revue-flow__edge-textbg {
   fill: white;
 }
 
-.react-flow__connection-path {
+.revue-flow__connection-path {
   stroke: #b1b1b7;
   stroke-width: 1;
 }
 
-.react-flow__node {
+.revue-flow__node {
   cursor: grab;
 }
 
-.react-flow__node-default,
-.react-flow__node-input,
-.react-flow__node-output {
+.revue-flow__node-default,
+.revue-flow__node-input,
+.revue-flow__node-output {
   padding: 10px;
   border-radius: 3px;
   width: 150px;
@@ -57,15 +57,15 @@
   border-style: solid;
 }
 
-.react-flow__node-default.selectable,
-.react-flow__node-input.selectable,
-.react-flow__node-output.selectable {
+.revue-flow__node-default.selectable,
+.revue-flow__node-input.selectable,
+.revue-flow__node-output.selectable {
   &:hover {
     box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
   }
 }
 
-.react-flow__node-input {
+.revue-flow__node-input {
   background: #fff;
   border-color: #0041d0;
 
@@ -74,12 +74,12 @@
     box-shadow: 0 0 0 0.5px #0041d0;
   }
 
-  .react-flow__handle {
+  .revue-flow__handle {
     background: #0041d0;
   }
 }
 
-.react-flow__node-default {
+.revue-flow__node-default {
   background: #fff;
   border-color: #1a192b;
 
@@ -88,12 +88,12 @@
     box-shadow: 0 0 0 0.5px #1a192b;
   }
 
-  .react-flow__handle {
+  .revue-flow__handle {
     background: #1a192b;
   }
 }
 
-.react-flow__node-output {
+.revue-flow__node-output {
   background: #fff;
   border-color: #ff0072;
 
@@ -102,17 +102,17 @@
     box-shadow: 0 0 0 0.5px #ff0072;
   }
 
-  .react-flow__handle {
+  .revue-flow__handle {
     background: #ff0072;
   }
 }
 
-.react-flow__nodesselection-rect {
+.revue-flow__nodesselection-rect {
   background: rgba(0, 89, 220, 0.08);
   border: 1px dotted rgba(0, 89, 220, 0.8);
 }
 
-.react-flow__handle {
+.revue-flow__handle {
   position: absolute;
   width: 6px;
   height: 6px;
@@ -125,11 +125,11 @@
   }
 }
 
-.react-flow__minimap {
+.revue-flow__minimap {
   background-color: #fff;
 }
 
-.react-flow__controls {
+.revue-flow__controls {
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
 
   &-button {

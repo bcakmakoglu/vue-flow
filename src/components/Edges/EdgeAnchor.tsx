@@ -44,7 +44,7 @@ export const EdgeAnchor = defineComponent({
     const radius = props.radius || 10;
     return () => (
       <circle
-        class="react-flow__edgeupdater"
+        class="revue-flow__edgeupdater"
         cx={shiftX(props.centerX, radius, props.position)}
         cy={shiftY(props.centerY, radius, props.position)}
         r={radius}

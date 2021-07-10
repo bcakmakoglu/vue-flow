@@ -14,8 +14,8 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
       const updating = ref<boolean>(false);
       const inactive = !props.elementsSelectable && !props.onClick;
       const edgeClasses = computed(() => [
-        'react-flow__edge',
-        `react-flow__edge-${props.type}`,
+        'revue-flow__edge',
+        `revue-flow__edge-${props.type}`,
         { selected: props.selected, animated: props.animated, inactive, updating: updating.value }
       ]);
 

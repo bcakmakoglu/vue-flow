@@ -67,7 +67,7 @@ const MiniMapNode = defineComponent({
 
     return () => (
       <rect
-        class={['react-flow__minimap-node']}
+        class={['revue-flow__minimap-node']}
         x={props.x}
         y={props.y}
         rx={props.borderRadius}

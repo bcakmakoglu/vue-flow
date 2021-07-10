@@ -68,8 +68,8 @@ const Handle = defineComponent({
     };
 
     const handleClasses = [
-      'react-flow__handle',
-      `react-flow__handle-${props.position}`,
+      'revue-flow__handle',
+      `revue-flow__handle-${props.position}`,
       'nodrag',
       {
         source: !isTarget,

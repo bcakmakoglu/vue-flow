@@ -31,7 +31,7 @@ const StraightEdge = defineComponent({
       <>
         <path
           style={props.style}
-          class="react-flow__edge-path"
+          class="revue-flow__edge-path"
           d={`M ${props.sourceX},${props.sourceY}L ${props.targetX},${props.targetY}`}
           marker-end={markerEnd}
         />

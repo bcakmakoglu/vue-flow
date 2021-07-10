@@ -1,4 +1,5 @@
 # React Flow in Vue3 = Revue Flow
+[![contentful](./assets/Revueflow.png)](https://md-cf-docs.vercel.app/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/revue-flow)
 [![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/revue-flow.svg)](https://david-dm.org/bcakmakoglu/revue-flow)
 [![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/revue-flow.svg?type=dev)](https://david-dm.org/bcakmakoglu/revue-flow?type=dev)
@@ -7,16 +8,16 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/revue-flow)
 
 This repo is still a big construction site with nothing really finished.
-Please check out [React Flow](https://reactflow.dev/) if you like the idea.
+Please check out [revue Flow](https://reactflow.dev/) if you like the idea.
 
 ### Motivation
-Seeing as many libraries exist in the React ecosystem and Vue sadly does not get the same
-love and attention, I decided to port the React Flow library to Vue.js.
+Seeing as many libraries exist in the revue ecosystem and Vue sadly does not get the same
+love and attention, I decided to port the revue Flow library to Vue.js.
 
-### Usage
+## Usage
+Check the React Flow docs for usage. It's really the same.
 
-## Vue3
-
+### Vue3
 ```bash
 # install revue flow
 $ yarn add @braks/revue-flow
@@ -25,7 +26,7 @@ $ yarn add @braks/revue-flow
 $ npm i --save @braks/revue-flow
 ```
 
-## Vue2
+### Vue2
 This doesn't work with Vue2, sorry.
 
 ## Development

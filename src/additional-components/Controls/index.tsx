@@ -31,7 +31,7 @@ export const ControlButton = defineComponent({
   },
   setup(props, { slots }) {
     return () => (
-      <button class={['react-flow__controls-button']} {...props}>
+      <button class={['revue-flow__controls-button']} {...props}>
         {slots.default ? slots.default() : ''}
       </button>
     );
@@ -92,7 +92,7 @@ const Controls = defineComponent({
     });
 
     const isInteractive = pinia.nodesDraggable && pinia.nodesConnectable && pinia.elementsSelectable;
-    const mapClasses = ['react-flow__controls'];
+    const mapClasses = ['revue-flow__controls'];
 
     const onZoomInHandler = () => {
       zoomHelper.value.zoomIn?.();
@@ -122,21 +122,21 @@ const Controls = defineComponent({
       <div class={mapClasses}>
         {props.showZoom && (
           <>
-            <ControlButton onClick={onZoomInHandler} class="react-flow__controls-zoomin">
+            <ControlButton onClick={onZoomInHandler} class="revue-flow__controls-zoomin">
               <img src={'../../../assets/icons/plus.svg'} alt="Plus" />
             </ControlButton>
-            <ControlButton onClick={onZoomOutHandler} class="react-flow__controls-zoomout">
+            <ControlButton onClick={onZoomOutHandler} class="revue-flow__controls-zoomout">
               <img src={'../../../assets/icons/minus.svg'} alt="Minus" />
             </ControlButton>
           </>
         )}
         {props.showFitView && (
-          <ControlButton class="react-flow__controls-fitview" onClick={onFitViewHandler}>
+          <ControlButton class="revue-flow__controls-fitview" onClick={onFitViewHandler}>
             <img src={'../../../assets/icons/fitview.svg'} alt="FitView" />
           </ControlButton>
         )}
         {props.showInteractive && (
-          <ControlButton class="react-flow__controls-interactive" onClick={onInteractiveChangeHandler}>
+          <ControlButton class="revue-flow__controls-interactive" onClick={onInteractiveChangeHandler}>
             {isInteractive ? (
               <img src={'../../../assets/icons/unlock.svg'} alt="Unlock" />
             ) : (

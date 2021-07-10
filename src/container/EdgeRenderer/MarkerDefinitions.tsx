@@ -14,7 +14,7 @@ const Marker = defineComponent({
   setup(props, { slots }) {
     return () => (
       <marker
-        class="react-flow__arrowhead"
+        class="revue-flow__arrowhead"
         id={props.id}
         markerWidth="12.5"
         markerHeight="12.5"
@@ -44,7 +44,7 @@ const MarkerDefinitions = defineComponent({
   setup(props) {
     return () => (
       <defs>
-        <Marker id="react-flow__arrowclosed">
+        <Marker id="revue-flow__arrowclosed">
           <polyline
             stroke={props.color}
             stroke-linecap="round"
@@ -54,7 +54,7 @@ const MarkerDefinitions = defineComponent({
             points="-5,-4 0,0 -5,4 -5,-4"
           />
         </Marker>
-        <Marker id="react-flow__arrow">
+        <Marker id="revue-flow__arrow">
           <polyline
             stroke={props.color}
             stroke-linecap="round"

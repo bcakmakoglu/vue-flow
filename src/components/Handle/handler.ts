@@ -79,8 +79,8 @@ function checkElementBelowIsValid(
 }
 
 function resetRecentHandle(hoveredHandle: Element): void {
-  hoveredHandle?.classList.remove('react-flow__handle-valid');
-  hoveredHandle?.classList.remove('react-flow__handle-connecting');
+  hoveredHandle?.classList.remove('revue-flow__handle-valid');
+  hoveredHandle?.classList.remove('revue-flow__handle-connecting');
 }
 
 export function onMouseDown(
@@ -99,8 +99,8 @@ export function onMouseDown(
   onConnectStop?: OnConnectStopFunc,
   onConnectEnd?: OnConnectEndFunc
 ): void {
-  const reactFlowNode = (event.target as Element).closest('.react-flow');
-  // when react-flow is used inside a shadow root we can't use document
+  const revueFlowNode = (event.target as Element).closest('.revue-flow');
+  // when revue-flow is used inside a shadow root we can't use document
   const doc = getHostForElement(event.target as HTMLElement);
 
   if (!doc) {
@@ -111,12 +111,12 @@ export function onMouseDown(
   const elementBelowIsTarget = elementBelow?.classList.contains('target');
   const elementBelowIsSource = elementBelow?.classList.contains('source');
 
-  if (!reactFlowNode || (!elementBelowIsTarget && !elementBelowIsSource && !elementEdgeUpdaterType)) {
+  if (!revueFlowNode || (!elementBelowIsTarget && !elementBelowIsSource && !elementEdgeUpdaterType)) {
     return;
   }
 
   const handleType = elementEdgeUpdaterType ? elementEdgeUpdaterType : elementBelowIsTarget ? 'target' : 'source';
-  const containerBounds = reactFlowNode.getBoundingClientRect();
+  const containerBounds = revueFlowNode.getBoundingClientRect();
   let recentHoveredHandle: Element;
 
   setPosition({
@@ -151,8 +151,8 @@ export function onMouseDown(
 
     if (!isOwnHandle && elementBelow) {
       recentHoveredHandle = elementBelow;
-      elementBelow.classList.add('react-flow__handle-connecting');
-      elementBelow.classList.toggle('react-flow__handle-valid', isValid);
+      elementBelow.classList.add('revue-flow__handle-connecting');
+      elementBelow.classList.toggle('revue-flow__handle-valid', isValid);
     }
   }
 

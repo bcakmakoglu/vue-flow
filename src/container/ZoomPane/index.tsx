@@ -271,14 +271,14 @@ const ZoomPane = defineComponent({
 
           // when the target element is a node, we still allow zooming
           if (
-            (event.target.closest('.react-flow__node') || event.target.closest('.react-flow__edge')) &&
+            (event.target.closest('.revue-flow__node') || event.target.closest('.revue-flow__edge')) &&
             event.type !== 'wheel'
           ) {
             return false;
           }
 
           // when the target element is a node selection, we still allow zooming
-          if (event.target.closest('.react-flow__nodesselection') && event.type !== 'wheel') {
+          if (event.target.closest('.revue-flow__nodesselection') && event.type !== 'wheel') {
             return false;
           }
 
@@ -303,7 +303,7 @@ const ZoomPane = defineComponent({
     });
 
     return () => (
-      <div class="react-flow__renderer react-flow__zoompane" ref={zoomPane}>
+      <div class="revue-flow__renderer revue-flow__zoompane" ref={zoomPane}>
         {slots.default ? slots.default() : ''}
       </div>
     );

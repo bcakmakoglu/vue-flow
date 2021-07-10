@@ -162,8 +162,8 @@ export default (NodeComponent: any) => {
       }
 
       const nodeClasses = [
-        'react-flow__node',
-        `react-flow__node-${props.type}`,
+        'revue-flow__node',
+        `revue-flow__node-${props.type}`,
         {
           selected: props.selected,
           selectable: props.isSelectable

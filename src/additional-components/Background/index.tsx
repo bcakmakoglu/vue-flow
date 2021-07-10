@@ -45,7 +45,7 @@ const Background = defineComponent({
     // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
     const patternId = `pattern-${Math.floor(Math.random() * 100000)}`;
 
-    const bgClasses = ['react-flow__background'];
+    const bgClasses = ['revue-flow__background'];
     const scaledGap = computed(() => props.gap && props.gap * transform.value[2]);
     const xOffset = computed(() => scaledGap.value && transform.value[0] % scaledGap.value);
     const yOffset = computed(() => scaledGap.value && transform.value[1] % scaledGap.value);

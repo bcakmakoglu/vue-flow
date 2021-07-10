@@ -117,7 +117,7 @@ const ConnectionLine = defineComponent({
       // eslint-disable-next-line vue/no-setup-props-destructure
       const ConnectionLineComponent: any = props.CustomConnectionLineComponent;
       return () => (
-        <g class="react-flow__connection">
+        <g class="revue-flow__connection">
           <ConnectionLineComponent
             sourceX={sourceX.value}
             sourceY={sourceY.value}
@@ -171,8 +171,8 @@ const ConnectionLine = defineComponent({
     }
 
     return () => (
-      <g class="react-flow__connection">
-        <path d={dAttr.value} class="react-flow__connection-path" style={props.connectionLineStyle} />
+      <g class="revue-flow__connection">
+        <path d={dAttr.value} class="revue-flow__connection-path" style={props.connectionLineStyle} />
       </g>
     );
   }

@@ -318,7 +318,7 @@ const EdgeRenderer = defineComponent({
     const renderConnectionLine = computed(() => pinia.connectionNodeId && pinia.connectionHandleType);
 
     return () => (
-      <svg width={pinia.width} height={pinia.height} class="react-flow__edges">
+      <svg width={pinia.width} height={pinia.height} class="revue-flow__edges">
         <g transform={transformStyle.value}>
           {pinia.edges.map((edge: Edge) => (
             <EdgeCmp

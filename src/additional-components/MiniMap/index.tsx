@@ -58,7 +58,7 @@ const MiniMap = defineComponent({
     const pinia = store();
     const transform = computed(() => pinia.transform);
 
-    const mapClasses = ['react-flow__minimap'];
+    const mapClasses = ['revue-flow__minimap'];
     const elementWidth = computed(() => (attrs.style?.width || defaultWidth)! as number);
     const elementHeight = computed(() => (attrs.style?.height || defaultHeight)! as number);
     const nodeColorFunc = (props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor) as StringFunc;
@@ -115,7 +115,7 @@ const MiniMap = defineComponent({
             />
           ))}
         <path
-          class="react-flow__minimap-mask"
+          class="revue-flow__minimap-mask"
           d={`M${x.value - offset.value},${y.value - offset.value}h${width.value + offset.value * 2}v${
             height.value + offset.value * 2
           }h${-width.value - offset.value * 2}z

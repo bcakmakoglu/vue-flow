@@ -5,7 +5,7 @@ function useUpdateNodeInternals(): UpdateNodeInternals {
   const pinia = store();
 
   return (id: ElementId) => {
-    const nodeElement: HTMLDivElement | null = document.querySelector(`.react-flow__node[data-id="${id}"]`);
+    const nodeElement: HTMLDivElement | null = document.querySelector(`.revue-flow__node[data-id="${id}"]`);
 
     if (nodeElement) {
       pinia.updateNodeDimensions([{ id, nodeElement, forceUpdate: true }]);

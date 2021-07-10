@@ -133,7 +133,7 @@ const NodeRenderer = defineComponent({
     });
 
     return () => (
-      <div class="react-flow__nodes" style={transformStyle.value}>
+      <div class="revue-flow__nodes" style={transformStyle.value}>
         {visibleNodes.value.map((node) => {
           const nodeType = node.type || 'default';
           if (props.nodeTypes) {

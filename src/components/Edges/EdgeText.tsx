@@ -62,7 +62,7 @@ const EdgeText = defineComponent({
     return (
       <g
         transform={`translate(${props.x - edgeTextBox.value.width / 2} ${props.y - edgeTextBox.value.height / 2})`}
-        class="react-flow__edge-textwrapper"
+        class="revue-flow__edge-textwrapper"
       >
         {props.labelShowBg && (
           <rect
@@ -70,13 +70,13 @@ const EdgeText = defineComponent({
             x={-props.labelBgPadding[0]}
             y={-props.labelBgPadding[1]}
             height={edgeTextBox.value.height + 2 * props.labelBgPadding[1]}
-            class="react-flow__edge-textbg"
+            class="revue-flow__edge-textbg"
             style={props.labelBgStyle}
             rx={props.labelBgBorderRadius}
             ry={props.labelBgBorderRadius}
           />
         )}
-        <text class="react-flow__edge-text" y={edgeTextBox.value.height / 2} dy="0.3em" ref={edgeRef} style={props.labelStyle}>
+        <text class="revue-flow__edge-text" y={edgeTextBox.value.height / 2} dy="0.3em" ref={edgeRef} style={props.labelStyle}>
           {label}
         </text>
         {slots.default ? slots.default() : ''}

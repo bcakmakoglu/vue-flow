@@ -131,7 +131,7 @@ const SmoothStepEdge = defineComponent({
 
     return (
       <>
-        <path style={props.style} class="react-flow__edge-path" d={path} marker-end={markerEnd} />
+        <path style={props.style} class="revue-flow__edge-path" d={path} marker-end={markerEnd} />
         {text}
       </>
     );

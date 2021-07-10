@@ -157,7 +157,7 @@ const BezierEdge = defineComponent({
 
     return () => (
       <>
-        <path style={props.style} d={path.value} class="react-flow__edge-path" marker-end={markerEnd} />
+        <path style={props.style} d={path.value} class="revue-flow__edge-path" marker-end={markerEnd} />
         {text}
       </>
     );

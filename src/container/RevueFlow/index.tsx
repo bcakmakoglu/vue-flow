@@ -461,7 +461,7 @@ const RevueFlow = defineComponent({
 
     const nodeTypesParsed = computed(() => props.nodeTypes && createNodeTypes(props.nodeTypes));
     const edgeTypesParsed = computed(() => props.edgeTypes && createEdgeTypes(props.edgeTypes));
-    const reactFlowClasses = ['react-flow'];
+    const reactFlowClasses = ['revue-flow'];
 
     return () => (
       <div class={reactFlowClasses}>

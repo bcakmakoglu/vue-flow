@@ -189,7 +189,7 @@ const FlowRenderer = defineComponent({
         zoomActivationKeyCode={props.zoomActivationKeyCode}
       >
         {slots.default ? slots.default() : ''}
-        <div class="react-flow__pane" onClick={onClick} onContextmenu={onContextMenu} onWheel={onWheel} />
+        <div class="revue-flow__pane" onClick={onClick} onContextmenu={onContextMenu} onWheel={onWheel} />
       </ZoomPane>
     );
   }

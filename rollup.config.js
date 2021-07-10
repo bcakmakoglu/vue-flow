@@ -82,7 +82,7 @@ function createConfig(format, output, plugins = []) {
   output.sourcemap = !!process.env.SOURCE_MAP;
   output.banner = banner;
   output.externalLiveBindings = false;
-  output.globals = { 'vue': 'Vue' };
+  output.globals = { vue: 'Vue' };
 
   const isProductionBuild = /\.prod\.js$/.test(output.file);
   const isGlobalBuild = format.startsWith('global');

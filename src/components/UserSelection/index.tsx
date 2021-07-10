@@ -10,12 +10,12 @@ type UserSelectionProps = {
 };
 
 function getMousePosition(event: MouseEvent): XYPosition | void {
-  const reactFlowNode = (event.target as Element).closest('.react-flow');
-  if (!reactFlowNode) {
+  const revueFlowNode = (event.target as Element).closest('.revue-flow');
+  if (!revueFlowNode) {
     return;
   }
 
-  const containerBounds = reactFlowNode.getBoundingClientRect();
+  const containerBounds = revueFlowNode.getBoundingClientRect();
 
   return {
     x: event.clientX - containerBounds.left,
@@ -33,7 +33,7 @@ const SelectionRect = defineComponent({
 
     return () => (
       <div
-        class="react-flow__selection"
+        class="revue-flow__selection"
         style={{
           width: pinia.userSelectionRect.width,
           height: pinia.userSelectionRect.height,
@@ -91,7 +91,7 @@ export default defineComponent({
 
     return () => (
       <div
-        class="react-flow__selectionpane"
+        class="revue-flow__selectionpane"
         onMousedown={onMouseDown}
         onMousemove={onMouseMove}
         onMouseup={onMouseUp}
