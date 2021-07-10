@@ -112,7 +112,7 @@ function createConfig(format, output, plugins = []) {
   // during a single build.
   hasTSChecked = true;
 
-  const external = ['vue', 'vue-demi', '@vue/composition-api', (id) => id.includes('@babel/runtime')];
+  const external = ['vue', 'vue-demi', (id) => id.includes('@babel/runtime')];
 
   const nodePlugins = [resolve(), commonjs({ include: 'node_modules/**' })];
 
