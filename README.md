@@ -9,7 +9,9 @@
 
 This repo is still a big construction site with nothing really finished.
 You can check the examples to see what's working and what's not.
-Please visit [React Flow](https://reactflow.dev/) and support them if you like the idea.
+Please visit [React Flow](https://reactflow.dev/) and support them if you like the idea. 
+They did most of the heavy lifting by writing the library in the first place.
+All I did is bring it to Vue3.
 
 ### Motivation
 Seeing as many libraries exist in the revue ecosystem and Vue sadly does not get the same
