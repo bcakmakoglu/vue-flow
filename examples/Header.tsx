@@ -18,7 +18,7 @@ const Header = defineComponent({
         <select v-model={route.path} onChange={onChange}>
           {routes.map((route) => (
             <option value={route.path} key={route.path}>
-              {route.path === '/' ? 'overview' : route.path.substr(1, route.path.length)}
+              {route.path === '/' ? 'basic' : route.path.substr(1, route.path.length)}
             </option>
           ))}
         </select>
