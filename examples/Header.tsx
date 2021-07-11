@@ -12,7 +12,7 @@ const Header = defineComponent({
 
     return () => (
       <header>
-        <a class="logo" href="https://github.com/wbkd/react-flow">
+        <a class="logo" href="https://github.com/bcakmakoglu/revue-flow">
           Revue Flow Dev
         </a>
         <select v-model={route.path} onChange={onChange}>

@@ -13,7 +13,7 @@ import {
   Box,
   Connection,
   FlowExportObject,
-  ReactFlowState,
+  RevueFlowState,
   NodeExtent
 } from '../types';
 
@@ -55,7 +55,7 @@ export const removeElements = (elementsToRemove: Elements, elements: Elements): 
 };
 
 const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection): ElementId =>
-  `reactflow__edge-${source}${sourceHandle}-${target}${targetHandle}`;
+  `revueflow__edge-${source}${sourceHandle}-${target}${targetHandle}`;
 
 const connectionExists = (edge: Edge, elements: Elements) => {
   return elements.some(
@@ -138,7 +138,7 @@ export const pointToRendererPoint = (
   return position;
 };
 
-export const onLoadProject = (currentStore: Store<'revue-flow', ReactFlowState>) => {
+export const onLoadProject = (currentStore: Store<'revue-flow', RevueFlowState>) => {
   return (position: XYPosition): XYPosition => {
     return pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid);
   };
@@ -266,13 +266,13 @@ const parseElements = (nodes: Node[], edges: Edge[]): Elements => {
   ];
 };
 
-export const onLoadGetElements = (currentStore: Store<'revue-flow', ReactFlowState>) => {
+export const onLoadGetElements = (currentStore: Store<'revue-flow', RevueFlowState>) => {
   return (): Elements => {
     return parseElements(currentStore.nodes || [], currentStore.edges || []);
   };
 };
 
-export const onLoadToObject = (currentStore: Store<'revue-flow', ReactFlowState>) => {
+export const onLoadToObject = (currentStore: Store<'revue-flow', RevueFlowState>) => {
   return (): FlowExportObject => {
     return {
       elements: parseElements(currentStore.nodes || [], currentStore.edges || []),

@@ -824,7 +824,7 @@ export type InitD3ZoomPayload = {
   transform: Transform;
 };
 
-export interface ReactFlowState {
+export interface RevueFlowState {
   width: number;
   height: number;
   transform: Transform;
@@ -861,7 +861,7 @@ export interface ReactFlowState {
 
   multiSelectionActive: boolean;
 
-  reactFlowVersion: string;
+  revueFlowVersion: string;
 
   onConnect?: OnConnectFunc;
   onConnectStart?: OnConnectStartFunc;

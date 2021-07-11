@@ -1,7 +1,7 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition, Pinia } from 'pinia';
 import { inject } from 'vue';
 import isEqual from 'fast-deep-equal';
-import { Edge, Node, NodeDiffUpdate, ReactFlowState, RevueFlowActionsTree, XYPosition } from '../types';
+import { Edge, Node, NodeDiffUpdate, RevueFlowState, RevueFlowActionsTree, XYPosition } from '../types';
 import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '../utils/graph';
 import { clampPosition, getDimensions } from '../utils';
 import { getHandleBounds } from '../components/Nodes/utils';
@@ -12,8 +12,8 @@ type NextElements = {
 };
 
 export default function configureStore(
-  preloadedState: ReactFlowState
-): StoreDefinition<any, ReactFlowState, any, RevueFlowActionsTree> {
+  preloadedState: RevueFlowState
+): StoreDefinition<any, RevueFlowState, any, RevueFlowActionsTree> {
   const pinia = inject<Pinia>(Symbol('pinia')) ?? createPinia();
   setActivePinia(pinia);
 
@@ -178,7 +178,7 @@ export default function configureStore(
         const startX = this.userSelectionRect.startX || 0;
         const startY = this.userSelectionRect.startY || 0;
 
-        const nextUserSelectRect: ReactFlowState['userSelectionRect'] = {
+        const nextUserSelectRect: RevueFlowState['userSelectionRect'] = {
           ...this.userSelectionRect,
           x: mousePos.x < startX ? mousePos.x : this.userSelectionRect.x,
           y: mousePos.y < startY ? mousePos.y : this.userSelectionRect.y,

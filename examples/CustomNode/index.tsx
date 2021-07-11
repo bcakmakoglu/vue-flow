@@ -16,7 +16,7 @@ import RevueFlow, {
 } from '../../src';
 import ColorSelectorNode from './ColorSelectorNode';
 
-const onLoad = (reactFlowInstance: OnLoadParams) => console.log('flow loaded:', reactFlowInstance);
+const onLoad = (revueFlowInstance: OnLoadParams) => console.log('flow loaded:', revueFlowInstance);
 const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
 const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
 

@@ -1,8 +1,8 @@
 import configureStore from './configure-store';
 
-import { ReactFlowState, ConnectionMode } from '../types';
+import { RevueFlowState, ConnectionMode } from '../types';
 
-export const initialState: ReactFlowState = {
+export const initialState: RevueFlowState = {
   width: 0,
   height: 0,
   transform: [0, 0, 1],
@@ -53,7 +53,7 @@ export const initialState: ReactFlowState = {
 
   multiSelectionActive: false,
 
-  reactFlowVersion: typeof __REVUE_FLOW_VERSION__ !== 'undefined' ? __REVUE_FLOW_VERSION__ : '-'
+  revueFlowVersion: typeof __REVUE_FLOW_VERSION__ !== 'undefined' ? __REVUE_FLOW_VERSION__ : '-'
 };
 
 const store = configureStore(initialState);
