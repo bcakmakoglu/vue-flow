@@ -34,7 +34,6 @@ export function getHandlePosition(position: Position, node: Node, handle: any | 
   const width = handle?.width || node.__rf.width;
   const height = handle?.height || node.__rf.height;
 
-  console.log(handle?.x, handle?.y);
   switch (position) {
     case Position.Top:
       return {

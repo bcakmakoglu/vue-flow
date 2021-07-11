@@ -13,12 +13,12 @@ type NextElements = {
 
 export default function configureStore(
   preloadedState: ReactFlowState
-): StoreDefinition<'revue-flow', ReactFlowState, any, RevueFlowActionsTree> {
+): StoreDefinition<any, ReactFlowState, any, RevueFlowActionsTree> {
   const pinia = inject<Pinia>(Symbol('pinia')) ?? createPinia();
   setActivePinia(pinia);
 
   return defineStore({
-    id: 'revue-flow',
+    id: 'revue-flow-' + pinia.state.value.length + 1,
     state: () => preloadedState,
     getters: {},
     actions: {

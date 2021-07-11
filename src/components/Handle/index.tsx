@@ -1,6 +1,6 @@
 import { Connection, ElementId, Position } from '../../types';
 import { onMouseDown, ValidConnectionFunc } from './handler';
-import { defineComponent, inject, PropType } from 'vue';
+import { computed, defineComponent, inject, PropType } from 'vue';
 import store from '../../store';
 
 const alwaysValid = () => true;
@@ -41,22 +41,23 @@ const Handle = defineComponent({
   setup(props, { slots }) {
     const pinia = store();
     const nodeId = inject<ElementId>('NodeIdContext') as ElementId;
-    const isTarget = props.type === 'target';
+    const isTarget = computed(() => props.type === 'target');
+    const onConnect = computed(() => pinia.onConnect);
 
     const onConnectExtended = (params: Connection) => {
-      pinia.onConnect?.(params);
+      onConnect.value?.(params);
       props.onConnect?.(params);
     };
 
     const onMouseDownHandler = (event: MouseEvent) => {
       onMouseDown(
         event,
-        props.id || '',
+        props.id as string,
         nodeId,
         pinia.setConnectionNodeId,
         pinia.setConnectionPosition,
         onConnectExtended,
-        isTarget,
+        isTarget.value,
         props.isValidConnection,
         pinia.connectionMode,
         undefined,
@@ -67,23 +68,23 @@ const Handle = defineComponent({
       );
     };
 
-    const handleClasses = [
+    const handleClasses = computed(() => [
       'revue-flow__handle',
       `revue-flow__handle-${props.position}`,
       'nodrag',
       {
-        source: !isTarget,
-        target: isTarget,
+        source: !isTarget.value,
+        target: isTarget.value,
         connectable: props.isConnectable
       }
-    ];
+    ]);
 
     return () => (
       <div
         data-handleid={props.id}
         data-nodeid={nodeId}
         data-handlepos={props.position}
-        class={handleClasses}
+        class={handleClasses.value}
         onMousedown={onMouseDownHandler}
       >
         {slots.default ? slots.default() : ''}

@@ -1,6 +1,6 @@
 import configureStore from './configure-store';
 
-import { ReactFlowState, ConnectionMode, RevueFlowActionsTree } from '../types';
+import { ReactFlowState, ConnectionMode } from '../types';
 
 export const initialState: ReactFlowState = {
   width: 0,
@@ -58,6 +58,5 @@ export const initialState: ReactFlowState = {
 
 const store = configureStore(initialState);
 
-export type RevueFlowDispatch = RevueFlowActionsTree;
-
+export type StoreType = typeof store;
 export default store;

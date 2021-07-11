@@ -1,4 +1,14 @@
-import { computed, CSSProperties, defineComponent, HTMLAttributes, onBeforeUnmount, onUpdated, PropType } from 'vue';
+import {
+  computed,
+  CSSProperties,
+  defineComponent,
+  HTMLAttributes,
+  onBeforeUnmount,
+  onMounted,
+  onUpdated,
+  PropType,
+  watch
+} from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -29,7 +39,8 @@ import {
 } from '../../types';
 import '../../style.css';
 import '../../theme-default.css';
-import store from '../../store';
+import { initialState } from '../../store';
+import configureStore from '../../store/configure-store';
 
 const defaultNodeTypes = {
   input: InputNode,
@@ -452,14 +463,17 @@ const RevueFlow = defineComponent({
     }
   },
   setup(props, { slots }) {
-    const pinia = store();
-    pinia.setElements(props.elements);
+    const store = configureStore(initialState)();
+    watch(props.elements, () => store.setElements(props.elements));
     onUpdated(() => {
-      pinia.setElements(props.elements);
+      store.setElements(props.elements);
     });
-
+    onMounted(() => {
+      store.setElements(props.elements);
+    });
     onBeforeUnmount(() => {
-      pinia.setElements([]);
+      store.$reset();
+      store.setElements([]);
     });
 
     const nodeTypesParsed = computed(() => props.nodeTypes && createNodeTypes(props.nodeTypes));

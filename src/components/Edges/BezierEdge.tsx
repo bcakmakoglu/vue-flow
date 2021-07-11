@@ -35,13 +35,10 @@ export function getBezierPath({
   let path = `M${sourceX},${sourceY} C${sourceX},${cY} ${targetX},${cY} ${targetX},${targetY}`;
 
   if (leftAndRight.includes(sourcePosition) && leftAndRight.includes(targetPosition)) {
-    console.log('foo');
     path = `M${sourceX},${sourceY} C${cX},${sourceY} ${cX},${targetY} ${targetX},${targetY}`;
   } else if (leftAndRight.includes(targetPosition)) {
-    console.log('bar');
     path = `M${sourceX},${sourceY} C${sourceX},${targetY} ${sourceX},${targetY} ${targetX},${targetY}`;
   } else if (leftAndRight.includes(sourcePosition)) {
-    console.log('baz');
     path = `M${sourceX},${sourceY} C${targetX},${sourceY} ${targetX},${sourceY} ${targetX},${targetY}`;
   }
 
