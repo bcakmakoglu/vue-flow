@@ -1,5 +1,5 @@
 # React Flow in Vue3 = Revue Flow
-[![contentful](./assets/Revueflow.png)](https://md-cf-docs.vercel.app/)
+[![contentful](./assets/Revueflow.png)](https://reactflow.dev/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/revue-flow)
 [![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/revue-flow.svg)](https://david-dm.org/bcakmakoglu/revue-flow)
 [![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/revue-flow.svg?type=dev)](https://david-dm.org/bcakmakoglu/revue-flow?type=dev)
@@ -8,7 +8,8 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/revue-flow)
 
 This repo is still a big construction site with nothing really finished.
-Please check out [revue Flow](https://reactflow.dev/) if you like the idea.
+You can check the examples to see what's working and what's not.
+Please visit [React Flow](https://reactflow.dev/) and support them if you like the idea.
 
 ### Motivation
 Seeing as many libraries exist in the revue ecosystem and Vue sadly does not get the same
