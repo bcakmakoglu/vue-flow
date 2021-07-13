@@ -1,12 +1,11 @@
-import { Node, WrapNodeProps } from '../../types';
-import { computed, CSSProperties, defineComponent, onMounted, provide, ref } from 'vue';
-import store from '../../store';
+import { Node, RevueFlowStore, WrapNodeProps } from '../../types';
+import { computed, CSSProperties, defineComponent, inject, onMounted, provide, ref } from 'vue';
 
 export default (NodeComponent: any) => {
   return defineComponent({
     props: WrapNodeProps,
     setup(props) {
-      const pinia = store();
+      const store = inject<RevueFlowStore>('store');
       provide('NodeIdContext', props.id);
 
       const nodeElement = ref<HTMLDivElement | null>(null);
@@ -70,10 +69,10 @@ export default (NodeComponent: any) => {
       const onSelectNodeHandler = (event: MouseEvent) => {
         if (!props.isDraggable) {
           if (props.isSelectable) {
-            pinia.unsetNodesSelection();
+            store?.unsetNodesSelection();
 
             if (!props.selected) {
-              pinia.addSelectedElements([node.value as Node]);
+              store?.addSelectedElements([node.value as Node]);
             }
           }
 
@@ -81,70 +80,62 @@ export default (NodeComponent: any) => {
         }
       };
 
-      /**
-       const onDragStart = (event: DraggableEvent) => {
-        onNodeDragStart?.(event as MouseEvent, node);
+      const onDragStart = (event: DragEvent) => {
+        props.onNodeDragStart?.(event as MouseEvent, node.value as Node);
 
-        if (selectNodesOnDrag && isSelectable) {
-          unsetNodesSelection();
+        if (props.selectNodesOnDrag && props.isSelectable) {
+          store?.unsetNodesSelection();
 
-          if (!selected) {
-            addSelectedElements(node);
+          if (!props.selected) {
+            store?.addSelectedElements([node.value as Node]);
           }
-        } else if (!selectNodesOnDrag && !selected && isSelectable) {
-          unsetNodesSelection();
-          addSelectedElements([]);
+        } else if (!props.selectNodesOnDrag && !props.selected && props.isSelectable) {
+          store?.unsetNodesSelection();
+          store?.addSelectedElements([]);
         }
       };
 
-       const onDrag = useCallback(
-       (event: DraggableEvent, draggableData: DraggableData) => {
-          if (onNodeDrag) {
-            node.position.x += draggableData.deltaX;
-            node.position.y += draggableData.deltaY;
-            onNodeDrag(event as MouseEvent, node);
+      const onDrag = (event: DragEvent, draggableData: any) => {
+        if (props.onNodeDrag) {
+          node.value.position.x += draggableData.deltaX;
+          node.value.position.y += draggableData.deltaY;
+          props.onNodeDrag(event as MouseEvent, node.value as Node);
+        }
+
+        store?.updateNodePosDiff({
+          id: props.id as string,
+          diff: {
+            x: draggableData.deltaX,
+            y: draggableData.deltaY
+          },
+          isDragging: true
+        });
+      };
+
+      const onDragStop = (event: DragEvent) => {
+        // onDragStop also gets called when user just clicks on a node.
+        // Because of that we set dragging to true inside the onDrag handler and handle the click here
+        if (!props.isDragging) {
+          if (props.isSelectable && !props.selectNodesOnDrag && !props.selected) {
+            store?.addSelectedElements([node.value as Node]);
           }
 
-          updateNodePosDiff({
-            id,
-            diff: {
-              x: draggableData.deltaX,
-              y: draggableData.deltaY
-            },
-            isDragging: true
-          });
-        },
-       [id, node, onNodeDrag]
-       );
+          props.onClick?.(event as MouseEvent, node.value as Node);
 
-       const onDragStop = useCallback(
-       (event: DraggableEvent) => {
-          // onDragStop also gets called when user just clicks on a node.
-          // Because of that we set dragging to true inside the onDrag handler and handle the click here
-          if (!isDragging) {
-            if (isSelectable && !selectNodesOnDrag && !selected) {
-              addSelectedElements(node);
-            }
+          return;
+        }
 
-            onClick?.(event as MouseEvent, node);
+        store?.updateNodePosDiff({
+          id: node.value.id as string,
+          isDragging: false
+        });
 
-            return;
-          }
-
-          updateNodePosDiff({
-            id: node.id,
-            isDragging: false
-          });
-
-          onNodeDragStop?.(event as MouseEvent, node);
-        },
-       [node, isSelectable, selectNodesOnDrag, onClick, onNodeDragStop, isDragging, selected]
-       );
-       */
+        props.onNodeDragStop?.(event as MouseEvent, node.value as Node);
+      };
 
       onMounted(() => {
         if (nodeElement.value && !props.isHidden) {
-          pinia.updateNodeDimensions([{ id: props.id || '', nodeElement: nodeElement.value, forceUpdate: true }]);
+          store?.updateNodeDimensions([{ id: props.id || '', nodeElement: nodeElement.value, forceUpdate: true }]);
         }
       });
 
@@ -161,18 +152,18 @@ export default (NodeComponent: any) => {
         return null;
       }
 
-      const nodeClasses = [
+      const nodeClasses = computed(() => [
         'revue-flow__node',
         `revue-flow__node-${props.type}`,
         {
           selected: props.selected,
           selectable: props.isSelectable
         }
-      ];
+      ]);
 
       return () => (
         <div
-          class={nodeClasses}
+          class={nodeClasses.value}
           ref={nodeElement}
           style={nodeStyle.value}
           onMouseenter={onMouseEnterHandler}

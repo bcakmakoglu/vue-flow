@@ -58,5 +58,4 @@ export const initialState: RevueFlowState = {
 
 const store = configureStore(initialState);
 
-export type StoreType = typeof store;
 export default store;

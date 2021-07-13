@@ -1,7 +1,6 @@
 import { getNodesInside } from '../../utils/graph';
-import { Node, NodeTypesType, Edge } from '../../types';
-import { computed, defineComponent, PropType } from 'vue';
-import store from '../../store';
+import { Node, NodeTypesType, Edge, RevueFlowStore } from '../../types';
+import { computed, defineComponent, inject, PropType } from 'vue';
 
 interface NodeRendererProps {
   nodeTypes: NodeTypesType;
@@ -49,72 +48,73 @@ const NodeRenderer = defineComponent({
       default: undefined
     },
     onElementClick: {
-      type: Function() as PropType<NodeRendererProps['onElementClick']>,
+      type: Function as unknown as PropType<NodeRendererProps['onElementClick']>,
       required: false,
       default: undefined
     },
     onNodeDoubleClick: {
-      type: Function() as PropType<NodeRendererProps['onNodeDoubleClick']>,
+      type: Function as unknown as PropType<NodeRendererProps['onNodeDoubleClick']>,
       required: false,
       default: undefined
     },
     onNodeMouseEnter: {
-      type: Function() as PropType<NodeRendererProps['onNodeMouseEnter']>,
+      type: Function as unknown as PropType<NodeRendererProps['onNodeMouseEnter']>,
       required: false,
       default: undefined
     },
     onNodeMouseMove: {
-      type: Function() as PropType<NodeRendererProps['onNodeMouseMove']>,
+      type: Function as unknown as PropType<NodeRendererProps['onNodeMouseMove']>,
       required: false,
       default: undefined
     },
     onNodeMouseLeave: {
-      type: Function() as PropType<NodeRendererProps['onNodeMouseLeave']>,
+      type: Function as unknown as PropType<NodeRendererProps['onNodeMouseLeave']>,
       required: false,
       default: undefined
     },
     onNodeContextMenu: {
-      type: Function() as PropType<NodeRendererProps['onNodeContextMenu']>,
+      type: Function as unknown as PropType<NodeRendererProps['onNodeContextMenu']>,
       required: false,
       default: undefined
     },
     onNodeDrag: {
-      type: Function() as PropType<NodeRendererProps['onNodeDrag']>,
+      type: Function as unknown as PropType<NodeRendererProps['onNodeDrag']>,
       required: false,
       default: undefined
     },
     onNodeDragStart: {
-      type: Function() as PropType<NodeRendererProps['onNodeDragStart']>,
+      type: Function as unknown as PropType<NodeRendererProps['onNodeDragStart']>,
       required: false,
       default: undefined
     },
     onNodeDragStop: {
-      type: Function() as PropType<NodeRendererProps['onNodeDragStop']>,
+      type: Function as unknown as PropType<NodeRendererProps['onNodeDragStop']>,
       required: false,
       default: undefined
     }
   },
   setup(props) {
-    const pinia = store();
+    const store = inject<RevueFlowStore>('store');
 
     const visibleNodes = computed(() => {
       return props.onlyRenderVisibleElements
-        ? getNodesInside(
-            pinia.nodes,
-            {
-              x: 0,
-              y: 0,
-              width: pinia.width,
-              height: pinia.height
-            },
-            pinia.transform,
-            true
-          )
-        : pinia.nodes;
+        ? store?.nodes &&
+            getNodesInside(
+              store?.nodes,
+              {
+                x: 0,
+                y: 0,
+                width: store?.width,
+                height: store?.height
+              },
+              store?.transform,
+              true
+            )
+        : store?.nodes;
     });
 
     const transformStyle = computed(() => ({
-      transform: `translate(${pinia.transform[0]}px,${pinia.transform[1]}px) scale(${pinia.transform[2]})`
+      transform: `translate(${store?.transform[0]}px,${store?.transform[1]}px) scale(${store?.transform[2]})`
     }));
 
     const resizeObserver = computed(() => {
@@ -128,13 +128,13 @@ const NodeRenderer = defineComponent({
           nodeElement: entry.target as HTMLDivElement
         }));
 
-        pinia.updateNodeDimensions(updates);
+        store?.updateNodeDimensions(updates);
       });
     });
 
     return () => (
       <div class="revue-flow__nodes" style={transformStyle.value}>
-        {visibleNodes.value.map((node) => {
+        {visibleNodes.value?.map((node) => {
           const nodeType = node.type || 'default';
           if (props.nodeTypes) {
             const NodeComponent: any = props.nodeTypes[nodeType] || props.nodeTypes.default;
@@ -142,9 +142,9 @@ const NodeRenderer = defineComponent({
               console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`);
             }
 
-            const isDraggable = !!(node.draggable || (pinia.nodesDraggable && typeof node.draggable === 'undefined'));
-            const isSelectable = !!(node.selectable || (pinia.elementsSelectable && typeof node.selectable === 'undefined'));
-            const isConnectable = !!(node.connectable || (pinia.nodesConnectable && typeof node.connectable === 'undefined'));
+            const isDraggable = !!(node.draggable || (store?.nodesDraggable && typeof node.draggable === 'undefined'));
+            const isSelectable = !!(node.selectable || (store?.elementsSelectable && typeof node.selectable === 'undefined'));
+            const isConnectable = !!(node.connectable || (store?.nodesConnectable && typeof node.connectable === 'undefined'));
 
             return (
               <NodeComponent
@@ -173,8 +173,8 @@ const NodeRenderer = defineComponent({
                 onNodeDragStart={props.onNodeDragStart}
                 onNodeDrag={props.onNodeDrag}
                 onNodeDragStop={props.onNodeDragStop}
-                scale={pinia.transform[2]}
-                selected={pinia.selectedElements?.some(({ id }) => id === node.id) || false}
+                scale={store?.transform[2]}
+                selected={store?.selectedElements?.some(({ id }) => id === node.id) || false}
                 isDraggable={isDraggable}
                 isSelectable={isSelectable}
                 isConnectable={isConnectable}

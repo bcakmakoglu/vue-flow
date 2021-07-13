@@ -1,5 +1,6 @@
 import { Selection as D3Selection, ZoomBehavior } from 'd3';
 import { Component, HTMLAttributes, PropType, VNode } from 'vue';
+import { Store } from 'pinia';
 
 export type ElementId = string;
 
@@ -869,7 +870,7 @@ export interface RevueFlowState {
   onConnectEnd?: OnConnectEndFunc;
 }
 
-export type RevueFlowActionsTree = {
+export type RevueFlowActions = {
   setOnConnect: (onConnect: OnConnectFunc) => void;
   setOnConnectStart: (onConnectStart: OnConnectStartFunc) => void;
   setOnConnectStop: (onConnectStop: OnConnectStopFunc) => void;
@@ -902,5 +903,7 @@ export type RevueFlowActionsTree = {
   setMultiSelectionActive: (multiSelectionActive: boolean) => void;
   setConnectionMode: (connectionMode: ConnectionMode) => void;
 };
+
+export type RevueFlowStore = Store<string, RevueFlowState, any, RevueFlowActions>;
 
 export type UpdateNodeInternals = (nodeId: ElementId) => void;

@@ -1,14 +1,4 @@
-import {
-  computed,
-  CSSProperties,
-  defineComponent,
-  HTMLAttributes,
-  onBeforeUnmount,
-  onMounted,
-  onUpdated,
-  PropType,
-  watch
-} from 'vue';
+import { computed, CSSProperties, defineComponent, HTMLAttributes, onBeforeUnmount, onUpdated, PropType, provide } from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -427,32 +417,32 @@ const RevueFlow = defineComponent({
       default: undefined as any
     },
     onEdgeMouseEnter: {
-      type: Function() as PropType<RevueFlowProps['onEdgeMouseEnter']>,
+      type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseEnter']>,
       required: false,
       default: undefined as any
     },
     onEdgeContextMenu: {
-      type: Function() as PropType<RevueFlowProps['onEdgeContextMenu']>,
+      type: Function as unknown as PropType<RevueFlowProps['onEdgeContextMenu']>,
       required: false,
       default: undefined as any
     },
     onEdgeMouseMove: {
-      type: Function() as PropType<RevueFlowProps['onEdgeMouseMove']>,
+      type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseMove']>,
       required: false,
       default: undefined as any
     },
     onEdgeMouseLeave: {
-      type: Function() as PropType<RevueFlowProps['onEdgeMouseLeave']>,
+      type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseLeave']>,
       required: false,
       default: undefined as any
     },
     onEdgeUpdateEnd: {
-      type: Function() as PropType<RevueFlowProps['onEdgeUpdateEnd']>,
+      type: Function as unknown as PropType<RevueFlowProps['onEdgeUpdateEnd']>,
       required: false,
       default: undefined as any
     },
     onEdgeUpdateStart: {
-      type: Function() as PropType<RevueFlowProps['onEdgeUpdateStart']>,
+      type: Function as unknown as PropType<RevueFlowProps['onEdgeUpdateStart']>,
       required: false,
       default: undefined as any
     },
@@ -464,11 +454,9 @@ const RevueFlow = defineComponent({
   },
   setup(props, { slots }) {
     const store = configureStore(initialState)();
-    watch(props.elements, () => store.setElements(props.elements));
+    provide('store', store);
+    store.setElements(props.elements);
     onUpdated(() => {
-      store.setElements(props.elements);
-    });
-    onMounted(() => {
       store.setElements(props.elements);
     });
     onBeforeUnmount(() => {

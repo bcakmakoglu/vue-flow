@@ -1,7 +1,6 @@
-import { setActivePinia, createPinia, defineStore, StoreDefinition, Pinia } from 'pinia';
-import { inject } from 'vue';
+import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia';
 import isEqual from 'fast-deep-equal';
-import { Edge, Node, NodeDiffUpdate, RevueFlowState, RevueFlowActionsTree, XYPosition } from '../types';
+import { Edge, Node, NodeDiffUpdate, RevueFlowState, RevueFlowActions, XYPosition } from '../types';
 import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '../utils/graph';
 import { clampPosition, getDimensions } from '../utils';
 import { getHandleBounds } from '../components/Nodes/utils';
@@ -10,11 +9,11 @@ type NextElements = {
   nextNodes: Node[];
   nextEdges: Edge[];
 };
+const pinia = createPinia();
 
 export default function configureStore(
   preloadedState: RevueFlowState
-): StoreDefinition<any, RevueFlowState, any, RevueFlowActionsTree> {
-  const pinia = inject<Pinia>(Symbol('pinia')) ?? createPinia();
+): StoreDefinition<string, RevueFlowState, any, RevueFlowActions> {
   setActivePinia(pinia);
 
   return defineStore({

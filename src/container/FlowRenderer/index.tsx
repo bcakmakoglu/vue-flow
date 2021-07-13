@@ -1,8 +1,11 @@
 import { GraphViewProps } from '../GraphView';
 import ZoomPane from '../ZoomPane';
 import UserSelection from '../../components/UserSelection';
-import { defineComponent, PropType } from 'vue';
-import store from '../../store';
+import NodesSelection from '../../components/NodesSelection';
+import { defineComponent, inject, PropType } from 'vue';
+import { RevueFlowStore } from '../../types';
+import useGlobalKeyHandler from '../../hooks/useGlobalKeyHandler';
+import useKeyPress from '../../hooks/useKeyPress';
 
 type FlowRendererProps = Omit<
   GraphViewProps,
@@ -19,7 +22,7 @@ type FlowRendererProps = Omit<
 
 const FlowRenderer = defineComponent({
   name: 'FlowRenderer',
-  components: { UserSelection, ZoomPane },
+  components: { UserSelection, ZoomPane, NodesSelection },
   props: {
     onPaneClick: {
       type: Function() as PropType<FlowRendererProps['onPaneClick']>,
@@ -153,12 +156,20 @@ const FlowRenderer = defineComponent({
     }
   },
   setup(props, { slots }) {
-    const pinia = store();
+    const store = inject<RevueFlowStore>('store');
+
+    const selectionKeyPressed = useKeyPress(props.selectionKeyCode);
+
+    useGlobalKeyHandler({
+      onElementsRemove: props.onElementsRemove,
+      deleteKeyCode: props.deleteKeyCode as string,
+      multiSelectionKeyCode: props.multiSelectionKeyCode as string
+    });
 
     const onClick = (event: MouseEvent) => {
       props.onPaneClick?.(event);
-      pinia.unsetNodesSelection();
-      pinia.resetSelectedElements();
+      store?.unsetNodesSelection();
+      store?.resetSelectedElements();
     };
 
     const onContextMenu = (event: MouseEvent) => {
@@ -189,6 +200,15 @@ const FlowRenderer = defineComponent({
         zoomActivationKeyCode={props.zoomActivationKeyCode}
       >
         {slots.default ? slots.default() : ''}
+        <UserSelection selectionKeyPressed={selectionKeyPressed} />
+        {store?.nodesSelectionActive && (
+          <NodesSelection
+            onSelectionDragStart={props.onSelectionDragStart}
+            onSelectionDrag={props.onSelectionDrag}
+            onSelectionDragStop={props.onSelectionDragStop}
+            onSelectionContextMenu={props.onSelectionContextMenu}
+          />
+        )}
         <div class="revue-flow__pane" onClick={onClick} onContextmenu={onContextMenu} onWheel={onWheel} />
       </ZoomPane>
     );

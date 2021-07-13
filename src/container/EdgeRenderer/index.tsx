@@ -11,10 +11,11 @@ import {
   ConnectionLineComponent,
   ConnectionMode,
   Transform,
-  OnEdgeUpdateFunc
+  OnEdgeUpdateFunc,
+  RevueFlowStore,
+  HandleType
 } from '../../types';
-import { computed, CSSProperties, defineComponent, PropType } from 'vue';
-import store from '../../store';
+import { computed, CSSProperties, defineComponent, inject, PropType } from 'vue';
 import MarkerDefinitions from './MarkerDefinitions';
 
 interface EdgeRendererProps {
@@ -313,43 +314,43 @@ const EdgeRenderer = defineComponent({
     }
   },
   setup(props) {
-    const pinia = store();
-    const transform = computed(() => pinia.transform);
+    const store = inject<RevueFlowStore>('store');
+    const transform = computed(() => store?.transform);
     const transformStyle = computed(() => {
-      return `translate(${transform.value[0]},${transform.value[1]}) scale(${transform.value[2]})`;
+      return `translate(${transform.value?.[0]},${transform.value?.[1]}) scale(${transform.value?.[2]})`;
     });
-    const renderConnectionLine = computed(() => pinia.connectionNodeId && pinia.connectionHandleType);
+    const renderConnectionLine = computed(() => store?.connectionNodeId && store?.connectionHandleType);
 
     return () => (
-      <svg width={pinia.width} height={pinia.height} class="revue-flow__edges">
-        <MarkerDefinitions color={props.arrowHeadColor || ''} />
+      <svg width={store?.width} height={store?.height} class="revue-flow__edges">
+        <MarkerDefinitions color={props.arrowHeadColor as string} />
         <g transform={transformStyle.value}>
-          {pinia.edges.map((edge: Edge) => (
+          {store?.edges.map((edge: Edge) => (
             <EdgeCmp
               key={edge.id}
               edge={edge}
               props={props as any}
-              nodes={pinia.nodes}
-              selectedElements={pinia.selectedElements}
-              elementsSelectable={pinia.elementsSelectable}
-              transform={pinia.transform}
-              width={pinia.width}
-              height={pinia.height}
+              nodes={store?.nodes}
+              selectedElements={store?.selectedElements}
+              elementsSelectable={store?.elementsSelectable}
+              transform={store?.transform}
+              width={store?.width}
+              height={store?.height}
               onlyRenderVisibleElements={props.onlyRenderVisibleElements}
             />
           ))}
           {renderConnectionLine.value && (
             <ConnectionLine
-              nodes={pinia.nodes}
-              connectionNodeId={pinia.connectionNodeId!}
-              connectionHandleId={pinia.connectionHandleId}
-              connectionHandleType={pinia.connectionHandleType!}
-              connectionPositionX={pinia.connectionPosition.x}
-              connectionPositionY={pinia.connectionPosition.y}
-              transform={pinia.transform}
+              nodes={store?.nodes}
+              connectionNodeId={store?.connectionNodeId as string}
+              connectionHandleId={store?.connectionHandleId as string}
+              connectionHandleType={store?.connectionHandleType as HandleType}
+              connectionPositionX={store?.connectionPosition.x}
+              connectionPositionY={store?.connectionPosition.y}
+              transform={store?.transform}
               connectionLineStyle={props.connectionLineStyle}
               connectionLineType={props.connectionLineType}
-              isConnectable={pinia.nodesConnectable}
+              isConnectable={store?.nodesConnectable}
               CustomConnectionLineComponent={props.connectionLineComponent}
             />
           )}

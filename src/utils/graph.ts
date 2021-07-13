@@ -1,5 +1,3 @@
-import { Store } from 'pinia';
-
 import { clampPosition, clamp } from './index';
 
 import {
@@ -13,8 +11,8 @@ import {
   Box,
   Connection,
   FlowExportObject,
-  RevueFlowState,
-  NodeExtent
+  NodeExtent,
+  RevueFlowStore
 } from '../types';
 
 export const isEdge = (element: Node | Connection | Edge): element is Edge =>
@@ -138,7 +136,7 @@ export const pointToRendererPoint = (
   return position;
 };
 
-export const onLoadProject = (currentStore: Store<'revue-flow', RevueFlowState>) => {
+export const onLoadProject = (currentStore: RevueFlowStore) => {
   return (position: XYPosition): XYPosition => {
     return pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid);
   };
@@ -266,13 +264,13 @@ const parseElements = (nodes: Node[], edges: Edge[]): Elements => {
   ];
 };
 
-export const onLoadGetElements = (currentStore: Store<'revue-flow', RevueFlowState>) => {
+export const onLoadGetElements = (currentStore: RevueFlowStore) => {
   return (): Elements => {
     return parseElements(currentStore.nodes || [], currentStore.edges || []);
   };
 };
 
-export const onLoadToObject = (currentStore: Store<'revue-flow', RevueFlowState>) => {
+export const onLoadToObject = (currentStore: RevueFlowStore) => {
   return (): FlowExportObject => {
     return {
       elements: parseElements(currentStore.nodes || [], currentStore.edges || []),

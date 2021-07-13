@@ -58,7 +58,6 @@
     "np": "^7.5.0",
     "pascalcase": "^1.0.0",
     "postcss": "^8.3.5",
-    "postcss-cli": "^8.3.1",
     "postcss-nested": "^5.0.5",
     "prettier": "^2.2.1",
     "rollup": "^2.52.2",
