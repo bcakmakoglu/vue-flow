@@ -526,12 +526,12 @@ export const WrapNodeProps = {
   xPos: {
     type: Number as PropType<WrapNodeProps['xPos']>,
     required: false,
-    default: undefined
+    default: 0
   },
   yPos: {
     type: Number as PropType<WrapNodeProps['yPos']>,
     required: false,
-    default: undefined
+    default: 0
   },
   isSelectable: {
     type: Boolean as PropType<WrapNodeProps['isSelectable']>,

@@ -1,5 +1,6 @@
 import { Node, RevueFlowStore, WrapNodeProps } from '../../types';
 import { computed, CSSProperties, defineComponent, inject, onMounted, provide, ref } from 'vue';
+import { DraggableCore, DraggableEventHandler } from '@braks/revue-draggable';
 
 export default (NodeComponent: any) => {
   return defineComponent({
@@ -8,7 +9,7 @@ export default (NodeComponent: any) => {
       const store = inject<RevueFlowStore>('store');
       provide('NodeIdContext', props.id);
 
-      const nodeElement = ref<HTMLDivElement | null>(null);
+      const nodeElement = ref<HTMLDivElement | undefined>();
 
       const node = computed(() => ({
         id: props.id,
@@ -16,7 +17,7 @@ export default (NodeComponent: any) => {
         position: { x: props.xPos, y: props.yPos },
         data: props.data
       }));
-      // const grid = computed(() => (props.snapToGrid ? props.snapGrid : [1, 1])! as [number, number]);
+      const grid = computed(() => (props.snapToGrid ? props.snapGrid : [1, 1])! as [number, number]);
 
       const nodeStyle = computed<CSSProperties>(() => ({
         zIndex: props.selected ? 10 : 3,
@@ -80,7 +81,7 @@ export default (NodeComponent: any) => {
         }
       };
 
-      const onDragStart = (event: DragEvent) => {
+      const onDragStart: DraggableEventHandler = (event) => {
         props.onNodeDragStart?.(event as MouseEvent, node.value as Node);
 
         if (props.selectNodesOnDrag && props.isSelectable) {
@@ -95,7 +96,7 @@ export default (NodeComponent: any) => {
         }
       };
 
-      const onDrag = (event: DragEvent, draggableData: any) => {
+      const onDrag: DraggableEventHandler = (event, draggableData) => {
         if (props.onNodeDrag) {
           node.value.position.x += draggableData.deltaX;
           node.value.position.y += draggableData.deltaY;
@@ -112,7 +113,7 @@ export default (NodeComponent: any) => {
         });
       };
 
-      const onDragStop = (event: DragEvent) => {
+      const onDragStop: DraggableEventHandler = (event) => {
         // onDragStop also gets called when user just clicks on a node.
         // Because of that we set dragging to true inside the onDrag handler and handle the click here
         if (!props.isDragging) {
@@ -120,7 +121,7 @@ export default (NodeComponent: any) => {
             store?.addSelectedElements([node.value as Node]);
           }
 
-          props.onClick?.(event as MouseEvent, node.value as Node);
+          props.onClick?.(event, node.value as Node);
 
           return;
         }
@@ -162,30 +163,42 @@ export default (NodeComponent: any) => {
       ]);
 
       return () => (
-        <div
-          class={nodeClasses.value}
-          ref={nodeElement}
-          style={nodeStyle.value}
-          onMouseenter={onMouseEnterHandler}
-          onMousemove={onMouseMoveHandler}
-          onMouseleave={onMouseLeaveHandler}
-          onContextmenu={onContextMenuHandler}
-          onClick={onSelectNodeHandler}
-          data-id={props.id}
+        <DraggableCore
+          onStart={onDragStart}
+          onDrag={onDrag}
+          onStop={onDragStop}
+          scale={props.scale}
+          disabled={!props.isDraggable}
+          cancel=".nodrag"
+          grid={grid.value}
+          nodeRef={nodeElement.value}
+          enableUserSelectHack={false}
         >
-          <NodeComponent
-            id={props.id}
-            data={props.data}
-            type={props.type}
-            xPos={props.xPos}
-            yPos={props.yPos}
-            selected={props.selected}
-            isConnectable={props.isConnectable}
-            sourcePosition={props.sourcePosition}
-            targetPosition={props.targetPosition}
-            isDragging={props.isDragging}
-          />
-        </div>
+          <div
+            class={nodeClasses.value}
+            ref={nodeElement}
+            style={nodeStyle.value}
+            onMouseenter={onMouseEnterHandler}
+            onMousemove={onMouseMoveHandler}
+            onMouseleave={onMouseLeaveHandler}
+            onContextmenu={onContextMenuHandler}
+            onClick={onSelectNodeHandler}
+            data-id={props.id}
+          >
+            <NodeComponent
+              id={props.id}
+              data={props.data}
+              type={props.type}
+              xPos={props.xPos}
+              yPos={props.yPos}
+              selected={props.selected}
+              isConnectable={props.isConnectable}
+              sourcePosition={props.sourcePosition}
+              targetPosition={props.targetPosition}
+              isDragging={props.isDragging}
+            />
+          </div>
+        </DraggableCore>
       );
     }
   });
