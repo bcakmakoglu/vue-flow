@@ -157,8 +157,7 @@ const FlowRenderer = defineComponent({
   },
   setup(props, { slots }) {
     const store = inject<RevueFlowStore>('store');
-
-    const selectionKeyPressed = useKeyPress(props.selectionKeyCode);
+    const keyPressed = useKeyPress(props.selectionKeyCode);
 
     useGlobalKeyHandler({
       onElementsRemove: props.onElementsRemove,
@@ -200,7 +199,7 @@ const FlowRenderer = defineComponent({
         zoomActivationKeyCode={props.zoomActivationKeyCode}
       >
         {slots.default ? slots.default() : ''}
-        <UserSelection selectionKeyPressed={selectionKeyPressed} />
+        {keyPressed.value ? <UserSelection selectionKeyPressed={keyPressed.value} /> : ''}
         {store?.nodesSelectionActive && (
           <NodesSelection
             onSelectionDragStart={props.onSelectionDragStart}

@@ -191,13 +191,13 @@ export default function configureStore(
         const nextSelectedElements = [...selectedNodes, ...selectedEdges];
         const selectedElementsChanged = !isEqual(nextSelectedElements, this.selectedElements);
         const selectedElementsUpdate = selectedElementsChanged
-          ? {
-              selectedElements: nextSelectedElements.length > 0 ? nextSelectedElements : null
-            }
-          : {};
+          ? nextSelectedElements.length > 0
+            ? nextSelectedElements
+            : []
+          : [];
 
         this.userSelectionRect = nextUserSelectRect;
-        this.selectedElements = selectedElementsUpdate.selectedElements as any;
+        this.selectedElements = selectedElementsUpdate;
       },
       unsetUserSelection() {
         const selectedNodes = this.selectedElements?.filter((node) => isNode(node) && node.__rf) as Node[];
@@ -206,9 +206,11 @@ export default function configureStore(
         this.userSelectionRect.draw = false;
 
         if (!selectedNodes || selectedNodes.length === 0) {
+          console.log('Foo');
           this.selectedElements = null;
           this.nodesSelectionActive = false;
         } else {
+          console.log('bar');
           this.selectedNodesBbox = getRectOfNodes(selectedNodes);
           this.nodesSelectionActive = true;
         }

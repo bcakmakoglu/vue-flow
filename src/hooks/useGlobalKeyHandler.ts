@@ -1,8 +1,7 @@
 import useKeyPress from './useKeyPress';
 import { isNode, getConnectedEdges } from '../utils/graph';
-import { Elements, KeyCode, ElementId, FlowElement } from '../types';
-import store from '../store';
-import { onMounted } from 'vue';
+import { Elements, KeyCode, ElementId, FlowElement, RevueFlowStore } from '../types';
+import { inject, onMounted } from 'vue';
 
 interface HookParams {
   deleteKeyCode: KeyCode;
@@ -11,29 +10,27 @@ interface HookParams {
 }
 
 export default ({ deleteKeyCode, multiSelectionKeyCode, onElementsRemove }: HookParams): void => {
-  const pinia = store();
+  const store = inject<RevueFlowStore>('store');
 
   const deleteKeyPressed = useKeyPress(deleteKeyCode);
   const multiSelectionKeyPressed = useKeyPress(multiSelectionKeyCode);
 
   onMounted(() => {
-    const { edges, selectedElements } = pinia;
-
-    if (onElementsRemove && deleteKeyPressed && selectedElements) {
-      const selectedNodes = selectedElements.filter(isNode);
-      const connectedEdges = getConnectedEdges(selectedNodes, edges);
-      const elementsToRemove = [...selectedElements, ...connectedEdges].reduce(
+    if (onElementsRemove && deleteKeyPressed.value && store?.selectedElements) {
+      const selectedNodes = store?.selectedElements.filter(isNode);
+      const connectedEdges = getConnectedEdges(selectedNodes, store?.edges);
+      const elementsToRemove = [...store?.selectedElements, ...connectedEdges].reduce(
         (res, item) => res.set(item.id, item),
         new Map<ElementId, FlowElement>()
       );
 
       onElementsRemove(Array.from(elementsToRemove.values()));
-      pinia.unsetNodesSelection();
-      pinia.resetSelectedElements();
+      store?.unsetNodesSelection();
+      store?.resetSelectedElements();
     }
   });
 
   onMounted(() => {
-    pinia.setMultiSelectionActive(multiSelectionKeyPressed);
+    store?.setMultiSelectionActive(multiSelectionKeyPressed.value);
   });
 };

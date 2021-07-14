@@ -1,9 +1,8 @@
 /**
  * The user selection rectangle gets displayed when a user drags the mouse while pressing shift
  */
-import { XYPosition } from '../../types';
-import { defineComponent, PropType } from 'vue';
-import store from '../../store';
+import { RevueFlowStore, XYPosition } from '../../types';
+import { computed, defineComponent, inject, PropType } from 'vue';
 
 type UserSelectionProps = {
   selectionKeyPressed: boolean;
@@ -25,19 +24,20 @@ function getMousePosition(event: MouseEvent): XYPosition | void {
 
 const SelectionRect = defineComponent({
   setup() {
-    const pinia = store();
+    const store = inject<RevueFlowStore>('store');
 
-    if (!pinia.userSelectionRect.draw) {
+    if (!store?.userSelectionRect.draw) {
       return null;
     }
 
+    console.log('selectionrect');
     return () => (
       <div
         class="revue-flow__selection"
         style={{
-          width: pinia.userSelectionRect.width,
-          height: pinia.userSelectionRect.height,
-          transform: `translate(${pinia.userSelectionRect.x}px, ${pinia.userSelectionRect.y}px)`
+          width: store?.userSelectionRect.width,
+          height: store?.userSelectionRect.height,
+          transform: `translate(${store?.userSelectionRect.x}px, ${store?.userSelectionRect.y}px)`
         }}
       />
     );
@@ -53,10 +53,14 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const pinia = store();
-    const renderUserSelectionPane = pinia.selectionActive || props.selectionKeyPressed;
+    const store = inject<RevueFlowStore>('store')!;
+    const renderUserSelectionPane = computed(() => {
+      return props.selectionKeyPressed || store.selectionActive;
+    });
 
-    if (!pinia.elementsSelectable || !renderUserSelectionPane) {
+    const shouldRender = computed(() => renderUserSelectionPane.value || store.elementsSelectable);
+
+    if (!shouldRender.value) {
       return null;
     }
 
@@ -66,11 +70,11 @@ export default defineComponent({
         return;
       }
 
-      pinia.setUserSelection(mousePos);
+      store?.setUserSelection(mousePos);
     };
 
     const onMouseMove = (event: MouseEvent): void => {
-      if (!props.selectionKeyPressed || !pinia.selectionActive) {
+      if (!props.selectionKeyPressed || !store?.selectionActive) {
         return;
       }
       const mousePos = getMousePosition(event);
@@ -79,14 +83,14 @@ export default defineComponent({
         return;
       }
 
-      pinia.updateUserSelection(mousePos);
+      store?.updateUserSelection(mousePos);
     };
 
-    const onMouseUp = () => pinia.unsetUserSelection();
+    const onMouseUp = () => store?.unsetUserSelection();
 
     const onMouseLeave = () => {
-      pinia.unsetUserSelection();
-      pinia.unsetNodesSelection();
+      store?.unsetUserSelection();
+      store?.unsetNodesSelection();
     };
 
     return () => (
