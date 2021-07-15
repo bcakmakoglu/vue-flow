@@ -12,6 +12,10 @@ export const routes = [
   {
     path: '/custom-node',
     component: () => import('./CustomNode')
+  },
+  {
+    path: '/drag-n-drop',
+    component: () => import('./DragNDrop')
   }
 ];
 
