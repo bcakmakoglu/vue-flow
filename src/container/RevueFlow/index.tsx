@@ -1,4 +1,14 @@
-import { computed, CSSProperties, defineComponent, HTMLAttributes, onBeforeUnmount, onUpdated, PropType, provide } from 'vue';
+import {
+  computed,
+  CSSProperties,
+  defineComponent,
+  HTMLAttributes,
+  onBeforeUnmount,
+  PropType,
+  provide,
+  reactive,
+  watchEffect
+} from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -25,7 +35,8 @@ import {
   KeyCode,
   PanOnScrollMode,
   OnEdgeUpdateFunc,
-  NodeExtent
+  NodeExtent,
+  RevueFlowStore
 } from '../../types';
 import '../../style.css';
 import '../../theme-default.css';
@@ -147,104 +158,104 @@ const RevueFlow = defineComponent({
       default: () => defaultEdgeTypes
     },
     onMove: {
-      type: Function() as PropType<RevueFlowProps['onMove']>,
+      type: Function as unknown as PropType<RevueFlowProps['onMove']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onMoveStart: {
-      type: Function() as PropType<RevueFlowProps['onMoveStart']>,
+      type: Function as unknown as PropType<RevueFlowProps['onMoveStart']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onMoveEnd: {
-      type: Function() as PropType<RevueFlowProps['onMoveEnd']>,
+      type: Function as unknown as PropType<RevueFlowProps['onMoveEnd']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onLoad: {
-      type: Function() as PropType<RevueFlowProps['onLoad']>,
+      type: Function as unknown as PropType<RevueFlowProps['onLoad']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onElementClick: {
-      type: Function() as PropType<RevueFlowProps['onElementClick']>,
+      type: Function as unknown as PropType<RevueFlowProps['onElementClick']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onNodeDoubleClick: {
-      type: Function() as PropType<RevueFlowProps['onNodeDoubleClick']>,
+      type: Function as unknown as PropType<RevueFlowProps['onNodeDoubleClick']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onEdgeDoubleClick: {
-      type: Function() as PropType<RevueFlowProps['onEdgeDoubleClick']>,
+      type: Function as unknown as PropType<RevueFlowProps['onEdgeDoubleClick']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onNodeMouseEnter: {
-      type: Function() as PropType<RevueFlowProps['onNodeMouseEnter']>,
+      type: Function as unknown as PropType<RevueFlowProps['onNodeMouseEnter']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onNodeMouseMove: {
-      type: Function() as PropType<RevueFlowProps['onNodeMouseMove']>,
+      type: Function as unknown as PropType<RevueFlowProps['onNodeMouseMove']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onNodeMouseLeave: {
-      type: Function() as PropType<RevueFlowProps['onNodeMouseLeave']>,
+      type: Function as unknown as PropType<RevueFlowProps['onNodeMouseLeave']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onNodeContextMenu: {
-      type: Function() as PropType<RevueFlowProps['onNodeContextMenu']>,
+      type: Function as unknown as PropType<RevueFlowProps['onNodeContextMenu']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onNodeDragStart: {
-      type: Function() as PropType<RevueFlowProps['onNodeDragStart']>,
+      type: Function as unknown as PropType<RevueFlowProps['onNodeDragStart']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onNodeDrag: {
-      type: Function() as PropType<RevueFlowProps['onNodeDrag']>,
+      type: Function as unknown as PropType<RevueFlowProps['onNodeDrag']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onNodeDragStop: {
-      type: Function() as PropType<RevueFlowProps['onNodeDragStop']>,
+      type: Function as unknown as PropType<RevueFlowProps['onNodeDragStop']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onSelectionContextMenu: {
-      type: Function() as PropType<RevueFlowProps['onSelectionContextMenu']>,
+      type: Function as unknown as PropType<RevueFlowProps['onSelectionContextMenu']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onElementsRemove: {
-      type: Function() as PropType<RevueFlowProps['onElementsRemove']>,
+      type: Function as unknown as PropType<RevueFlowProps['onElementsRemove']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onConnect: {
-      type: Function() as PropType<RevueFlowProps['onConnect']>,
+      type: Function as unknown as PropType<RevueFlowProps['onConnect']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onConnectStart: {
-      type: Function() as PropType<RevueFlowProps['onConnectStart']>,
+      type: Function as unknown as PropType<RevueFlowProps['onConnectStart']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onConnectStop: {
-      type: Function() as PropType<RevueFlowProps['onConnectStop']>,
+      type: Function as unknown as PropType<RevueFlowProps['onConnectStop']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onConnectEnd: {
-      type: Function() as PropType<RevueFlowProps['onConnectEnd']>,
+      type: Function as unknown as PropType<RevueFlowProps['onConnectEnd']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     connectionMode: {
       type: String as PropType<RevueFlowProps['connectionMode']>,
@@ -264,7 +275,7 @@ const RevueFlow = defineComponent({
     connectionLineComponent: {
       type: Object as PropType<RevueFlowProps['connectionLineComponent']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     selectionKeyCode: {
       type: [Number, String] as PropType<RevueFlowProps['selectionKeyCode']>,
@@ -397,147 +408,308 @@ const RevueFlow = defineComponent({
       default: true
     },
     onPaneClick: {
-      type: Function() as PropType<RevueFlowProps['onPaneClick']>,
+      type: Function as unknown as PropType<RevueFlowProps['onPaneClick']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onPaneScroll: {
-      type: Function() as PropType<RevueFlowProps['onPaneScroll']>,
+      type: Function as unknown as PropType<RevueFlowProps['onPaneScroll']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onPaneContextMenu: {
-      type: Function() as PropType<RevueFlowProps['onPaneContextMenu']>,
+      type: Function as unknown as PropType<RevueFlowProps['onPaneContextMenu']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onEdgeUpdate: {
-      type: Function() as PropType<RevueFlowProps['onEdgeUpdate']>,
+      type: Function as unknown as PropType<RevueFlowProps['onEdgeUpdate']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onEdgeMouseEnter: {
       type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseEnter']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onEdgeContextMenu: {
       type: Function as unknown as PropType<RevueFlowProps['onEdgeContextMenu']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onEdgeMouseMove: {
       type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseMove']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onEdgeMouseLeave: {
       type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseLeave']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onEdgeUpdateEnd: {
       type: Function as unknown as PropType<RevueFlowProps['onEdgeUpdateEnd']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onEdgeUpdateStart: {
       type: Function as unknown as PropType<RevueFlowProps['onEdgeUpdateStart']>,
       required: false,
-      default: undefined as any
+      default: undefined
+    },
+    onSelectionDragStart: {
+      type: Function as unknown as PropType<RevueFlowProps['onSelectionDragStart']>,
+      required: false,
+      default: undefined
+    },
+    onSelectionDrag: {
+      type: Function as unknown as PropType<RevueFlowProps['onSelectionDrag']>,
+      required: false,
+      default: undefined
+    },
+    onSelectionDragStop: {
+      type: Function as unknown as PropType<RevueFlowProps['onSelectionDragStop']>,
+      required: false,
+      default: undefined
+    },
+    onSelectionChange: {
+      type: Function as unknown as PropType<RevueFlowProps['onSelectionChange']>,
+      required: false,
+      default: undefined
     },
     edgeUpdaterRadius: {
       type: Number as PropType<RevueFlowProps['edgeUpdaterRadius']>,
       required: false,
       default: 10
+    },
+    onDrop: {
+      type: Function as unknown as PropType<(e: DragEvent) => any>,
+      required: false,
+      default: undefined as any
+    },
+    onDragover: {
+      type: Function as unknown as PropType<(e: DragEvent) => any>,
+      required: false,
+      default: undefined as any
     }
+
+    /*  // focus events
+      onFocus: FocusEvent,
+      onFocusin: FocusEvent,
+      onFocusout: FocusEvent,
+      onBlur: FocusEvent,
+
+      // keyboard events
+      onKeydown: KeyboardEvent,
+      onKeypress: KeyboardEvent,
+      onKeyup: KeyboardEvent,
+
+      // mouse events
+      onAuxclick: MouseEvent,
+      onClick: MouseEvent,
+      onContextmenu: MouseEvent,
+      onDblclick: MouseEvent,
+      onMousedown: MouseEvent,
+      onMouseenter: MouseEvent,
+      onMouseleave: MouseEvent,
+      onMousemove: MouseEvent,
+      onMouseout: MouseEvent,
+      onMouseover: MouseEvent,
+      onMouseup: MouseEvent,
+
+      // selection events
+      onSelect: Event,
+
+      // UI events
+      onScroll: UIEvent,
+
+      // touch events
+      onTouchcancel: TouchEvent,
+      onTouchend: TouchEvent,
+      onTouchmove: TouchEvent,
+      onTouchstart: TouchEvent,
+
+      // pointer events
+      onPointerdown: PointerEvent,
+      onPointermove: PointerEvent,
+      onPointerup: PointerEvent,
+      onPointercancel: PointerEvent,
+      onPointerenter: PointerEvent,
+      onPointerleave: PointerEvent,
+      onPointerover: PointerEvent,
+      onPointerout: PointerEvent,
+
+      // wheel events
+      onWheel: WheelEvent,
+
+      // transition events
+      onTransitionend: TransitionEvent,
+      onTransitionstart: TransitionEvent,
+     */
   },
   setup(props, { slots }) {
+    const {
+      elements = [],
+      nodeTypes = defaultNodeTypes,
+      edgeTypes = defaultEdgeTypes,
+      onElementClick,
+      onLoad,
+      onMove,
+      onMoveStart,
+      onMoveEnd,
+      onElementsRemove,
+      onConnect,
+      onConnectStart,
+      onConnectStop,
+      onConnectEnd,
+      onNodeMouseEnter,
+      onNodeMouseMove,
+      onNodeMouseLeave,
+      onNodeContextMenu,
+      onNodeDoubleClick,
+      onNodeDragStart,
+      onNodeDrag,
+      onNodeDragStop,
+      onSelectionChange,
+      onSelectionDragStart,
+      onSelectionDrag,
+      onSelectionDragStop,
+      onSelectionContextMenu,
+      connectionMode = ConnectionMode.Strict,
+      connectionLineType = ConnectionLineType.Bezier,
+      connectionLineStyle,
+      connectionLineComponent,
+      deleteKeyCode = 'Backspace',
+      selectionKeyCode = 'Shift',
+      multiSelectionKeyCode = 'Meta',
+      zoomActivationKeyCode = 'Meta',
+      snapToGrid = false,
+      snapGrid = [15, 15],
+      onlyRenderVisibleElements = false,
+      selectNodesOnDrag = true,
+      nodesDraggable,
+      nodesConnectable,
+      elementsSelectable,
+      minZoom,
+      maxZoom,
+      defaultZoom = 1,
+      defaultPosition = [0, 0],
+      translateExtent,
+      nodeExtent,
+      arrowHeadColor = '#b1b1b7',
+      markerEndId,
+      zoomOnScroll = true,
+      zoomOnPinch = true,
+      panOnScroll = false,
+      panOnScrollSpeed = 0.5,
+      panOnScrollMode = PanOnScrollMode.Free,
+      zoomOnDoubleClick = true,
+      paneMoveable = true,
+      onPaneClick,
+      onPaneScroll,
+      onPaneContextMenu,
+      onEdgeUpdate,
+      onEdgeContextMenu,
+      onEdgeDoubleClick,
+      onEdgeMouseEnter,
+      onEdgeMouseMove,
+      onEdgeMouseLeave,
+      onEdgeUpdateStart,
+      onEdgeUpdateEnd,
+      edgeUpdaterRadius = 10,
+      nodeTypesId = '1',
+      edgeTypesId = '1',
+      ...rest
+    } = reactive(props);
     const store = configureStore(initialState)();
-    provide('store', store);
-    store.setElements(props.elements);
-    onUpdated(() => {
-      store.setElements(props.elements);
+    provide<RevueFlowStore>('store', store);
+    store.setElements(elements);
+
+    watchEffect(() => {
+      store.setElements(elements);
+      onSelectionChange?.(store.selectedElements);
     });
     onBeforeUnmount(() => {
       store.$reset();
       store.setElements([]);
     });
 
-    const nodeTypesParsed = computed(() => props.nodeTypes && createNodeTypes(props.nodeTypes));
-    const edgeTypesParsed = computed(() => props.edgeTypes && createEdgeTypes(props.edgeTypes));
+    const nodeTypesParsed = computed(() => nodeTypes && createNodeTypes(nodeTypes));
+    const edgeTypesParsed = computed(() => edgeTypes && createEdgeTypes(edgeTypes));
 
     return () => (
-      <div class="revue-flow">
+      <div {...rest} class="revue-flow">
         <GraphView
-          onLoad={props.onLoad}
-          onMove={props.onMove}
-          onMoveStart={props.onMoveStart}
-          onMoveEnd={props.onMoveEnd}
-          onElementClick={props.onElementClick}
-          onNodeMouseEnter={props.onNodeMouseEnter}
-          onNodeMouseMove={props.onNodeMouseMove}
-          onNodeMouseLeave={props.onNodeMouseLeave}
-          onNodeContextMenu={props.onNodeContextMenu}
-          onNodeDoubleClick={props.onNodeDoubleClick}
-          onNodeDragStart={props.onNodeDragStart}
-          onNodeDrag={props.onNodeDrag}
-          onNodeDragStop={props.onNodeDragStop}
+          onLoad={onLoad}
+          onMove={onMove}
+          onMoveStart={onMoveStart}
+          onMoveEnd={onMoveEnd}
+          onElementClick={onElementClick}
+          onNodeMouseEnter={onNodeMouseEnter}
+          onNodeMouseMove={onNodeMouseMove}
+          onNodeMouseLeave={onNodeMouseLeave}
+          onNodeContextMenu={onNodeContextMenu}
+          onNodeDoubleClick={onNodeDoubleClick}
+          onNodeDragStart={onNodeDragStart}
+          onNodeDrag={onNodeDrag}
+          onNodeDragStop={onNodeDragStop}
           nodeTypes={nodeTypesParsed.value}
           edgeTypes={edgeTypesParsed.value}
-          connectionMode={props.connectionMode}
-          connectionLineType={props.connectionLineType}
-          connectionLineStyle={props.connectionLineStyle}
-          connectionLineComponent={props.connectionLineComponent}
-          selectionKeyCode={props.selectionKeyCode}
-          onElementsRemove={props.onElementsRemove}
-          deleteKeyCode={props.deleteKeyCode}
-          multiSelectionKeyCode={props.multiSelectionKeyCode}
-          zoomActivationKeyCode={props.zoomActivationKeyCode}
-          onConnect={props.onConnect}
-          onConnectStart={props.onConnectStart}
-          onConnectStop={props.onConnectStop}
-          onConnectEnd={props.onConnectEnd}
-          snapToGrid={props.snapToGrid}
-          snapGrid={props.snapGrid}
-          onlyRenderVisibleElements={props.onlyRenderVisibleElements}
-          nodesDraggable={props.nodesDraggable}
-          nodesConnectable={props.nodesConnectable}
-          elementsSelectable={props.elementsSelectable}
-          selectNodesOnDrag={props.selectNodesOnDrag}
-          minZoom={props.minZoom}
-          maxZoom={props.maxZoom}
-          defaultZoom={props.defaultZoom}
-          defaultPosition={props.defaultPosition}
-          translateExtent={props.translateExtent}
-          nodeExtent={props.nodeExtent}
-          arrowHeadColor={props.arrowHeadColor}
-          markerEndId={props.markerEndId}
-          zoomOnScroll={props.zoomOnScroll}
-          zoomOnPinch={props.zoomOnPinch}
-          zoomOnDoubleClick={props.zoomOnDoubleClick}
-          panOnScroll={props.panOnScroll}
-          panOnScrollSpeed={props.panOnScrollSpeed}
-          panOnScrollMode={props.panOnScrollMode}
-          paneMoveable={props.paneMoveable}
-          onPaneClick={props.onPaneClick}
-          onPaneScroll={props.onPaneScroll}
-          onPaneContextMenu={props.onPaneContextMenu}
-          onSelectionContextMenu={props.onSelectionContextMenu}
-          onEdgeUpdate={props.onEdgeUpdate}
-          onEdgeContextMenu={props.onEdgeContextMenu}
-          onEdgeDoubleClick={props.onEdgeDoubleClick}
-          onEdgeMouseEnter={props.onEdgeMouseEnter}
-          onEdgeMouseMove={props.onEdgeMouseMove}
-          onEdgeMouseLeave={props.onEdgeMouseLeave}
-          onEdgeUpdateStart={props.onEdgeUpdateStart}
-          onEdgeUpdateEnd={props.onEdgeUpdateEnd}
-          edgeUpdaterRadius={props.edgeUpdaterRadius}
+          connectionMode={connectionMode}
+          connectionLineType={connectionLineType}
+          connectionLineStyle={connectionLineStyle}
+          connectionLineComponent={connectionLineComponent}
+          selectionKeyCode={selectionKeyCode}
+          onElementsRemove={onElementsRemove}
+          deleteKeyCode={deleteKeyCode}
+          multiSelectionKeyCode={multiSelectionKeyCode}
+          zoomActivationKeyCode={zoomActivationKeyCode}
+          onConnect={onConnect}
+          onConnectStart={onConnectStart}
+          onConnectStop={onConnectStop}
+          onConnectEnd={onConnectEnd}
+          snapToGrid={snapToGrid}
+          snapGrid={snapGrid}
+          onlyRenderVisibleElements={onlyRenderVisibleElements}
+          nodesDraggable={nodesDraggable}
+          nodesConnectable={nodesConnectable}
+          elementsSelectable={elementsSelectable}
+          selectNodesOnDrag={selectNodesOnDrag}
+          minZoom={minZoom}
+          maxZoom={maxZoom}
+          defaultZoom={defaultZoom}
+          defaultPosition={defaultPosition}
+          translateExtent={translateExtent}
+          nodeExtent={nodeExtent}
+          arrowHeadColor={arrowHeadColor}
+          markerEndId={markerEndId}
+          zoomOnScroll={zoomOnScroll}
+          zoomOnPinch={zoomOnPinch}
+          zoomOnDoubleClick={zoomOnDoubleClick}
+          panOnScroll={panOnScroll}
+          panOnScrollSpeed={panOnScrollSpeed}
+          panOnScrollMode={panOnScrollMode}
+          paneMoveable={paneMoveable}
+          onPaneClick={onPaneClick}
+          onPaneScroll={onPaneScroll}
+          onPaneContextMenu={onPaneContextMenu}
+          onSelectionDragStart={onSelectionDragStart}
+          onSelectionDrag={onSelectionDrag}
+          onSelectionDragStop={onSelectionDragStop}
+          onSelectionContextMenu={onSelectionContextMenu}
+          onEdgeUpdate={onEdgeUpdate}
+          onEdgeContextMenu={onEdgeContextMenu}
+          onEdgeDoubleClick={onEdgeDoubleClick}
+          onEdgeMouseEnter={onEdgeMouseEnter}
+          onEdgeMouseMove={onEdgeMouseMove}
+          onEdgeMouseLeave={onEdgeMouseLeave}
+          onEdgeUpdateStart={onEdgeUpdateStart}
+          onEdgeUpdateEnd={onEdgeUpdateEnd}
+          edgeUpdaterRadius={edgeUpdaterRadius}
         />
         {slots.default ? slots.default() : ''}
       </div>
     );
   }
 });
-
 export default RevueFlow;

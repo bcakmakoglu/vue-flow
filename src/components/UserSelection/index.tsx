@@ -30,13 +30,12 @@ const SelectionRect = defineComponent({
       return null;
     }
 
-    console.log('selectionrect');
     return () => (
       <div
         class="revue-flow__selection"
         style={{
-          width: store?.userSelectionRect.width,
-          height: store?.userSelectionRect.height,
+          width: `${store?.userSelectionRect.width}px`,
+          height: `${store?.userSelectionRect.height}px`,
           transform: `translate(${store?.userSelectionRect.x}px, ${store?.userSelectionRect.y}px)`
         }}
       />

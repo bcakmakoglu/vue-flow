@@ -25,57 +25,57 @@ const FlowRenderer = defineComponent({
   components: { UserSelection, ZoomPane, NodesSelection },
   props: {
     onPaneClick: {
-      type: Function() as PropType<FlowRendererProps['onPaneClick']>,
+      type: Function as unknown as PropType<FlowRendererProps['onPaneClick']>,
       required: false,
       default: undefined as any
     },
     onPaneContextMenu: {
-      type: Function() as PropType<FlowRendererProps['onPaneContextMenu']>,
+      type: Function as unknown as PropType<FlowRendererProps['onPaneContextMenu']>,
       required: false,
       default: undefined as any
     },
     onPaneScroll: {
-      type: Function() as PropType<FlowRendererProps['onPaneScroll']>,
+      type: Function as unknown as PropType<FlowRendererProps['onPaneScroll']>,
       required: false,
       default: undefined as any
     },
     onElementsRemove: {
-      type: Function() as PropType<FlowRendererProps['onElementsRemove']>,
+      type: Function as unknown as PropType<FlowRendererProps['onElementsRemove']>,
       required: false,
       default: undefined as any
     },
     onMove: {
-      type: Function() as PropType<FlowRendererProps['onMove']>,
+      type: Function as unknown as PropType<FlowRendererProps['onMove']>,
       required: false,
       default: undefined as any
     },
     onMoveStart: {
-      type: Function() as PropType<FlowRendererProps['onMoveStart']>,
+      type: Function as unknown as PropType<FlowRendererProps['onMoveStart']>,
       required: false,
       default: undefined as any
     },
     onMoveEnd: {
-      type: Function() as PropType<FlowRendererProps['onMoveEnd']>,
+      type: Function as unknown as PropType<FlowRendererProps['onMoveEnd']>,
       required: false,
       default: undefined as any
     },
     onSelectionDragStart: {
-      type: Function() as PropType<FlowRendererProps['onSelectionDragStart']>,
+      type: Function as unknown as PropType<FlowRendererProps['onSelectionDragStart']>,
       required: false,
       default: undefined as any
     },
     onSelectionDrag: {
-      type: Function() as PropType<FlowRendererProps['onSelectionDrag']>,
+      type: Function as unknown as PropType<FlowRendererProps['onSelectionDrag']>,
       required: false,
       default: undefined as any
     },
     onSelectionDragStop: {
-      type: Function() as PropType<FlowRendererProps['onSelectionDragStop']>,
+      type: Function as unknown as PropType<FlowRendererProps['onSelectionDragStop']>,
       required: false,
       default: undefined as any
     },
     onSelectionContextMenu: {
-      type: Function() as PropType<FlowRendererProps['onSelectionContextMenu']>,
+      type: Function as unknown as PropType<FlowRendererProps['onSelectionContextMenu']>,
       required: false,
       default: undefined as any
     },

@@ -206,11 +206,9 @@ export default function configureStore(
         this.userSelectionRect.draw = false;
 
         if (!selectedNodes || selectedNodes.length === 0) {
-          console.log('Foo');
           this.selectedElements = null;
           this.nodesSelectionActive = false;
         } else {
-          console.log('bar');
           this.selectedNodesBbox = getRectOfNodes(selectedNodes);
           this.nodesSelectionActive = true;
         }
