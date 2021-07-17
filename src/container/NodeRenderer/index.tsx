@@ -94,27 +94,27 @@ const NodeRenderer = defineComponent({
     }
   },
   setup(props) {
-    const store = inject<RevueFlowStore>('store');
+    const store = inject<RevueFlowStore>('store')!;
 
     const visibleNodes = computed(() => {
       return props.onlyRenderVisibleElements
-        ? store?.nodes &&
+        ? store.nodes &&
             getNodesInside(
-              store?.nodes,
+              store.nodes,
               {
                 x: 0,
                 y: 0,
                 width: store?.width,
                 height: store?.height
               },
-              store?.transform,
+              store.transform,
               true
             )
-        : store?.nodes;
+        : store.nodes;
     });
 
     const transformStyle = computed(() => ({
-      transform: `translate(${store?.transform[0]}px,${store?.transform[1]}px) scale(${store?.transform[2]})`
+      transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`
     }));
 
     const resizeObserver = computed(() => {
@@ -128,7 +128,7 @@ const NodeRenderer = defineComponent({
           nodeElement: entry.target as HTMLDivElement
         }));
 
-        store?.updateNodeDimensions(updates);
+        store.updateNodeDimensions(updates);
       });
     });
 

@@ -3,7 +3,7 @@ import { select, pointer } from 'd3-selection';
 
 import { clamp } from '../../utils';
 import { FlowTransform, TranslateExtent, PanOnScrollMode, KeyCode } from '../../types';
-import { defineComponent, onMounted, PropType, ref, watch, watchEffect } from 'vue';
+import { defineComponent, PropType, ref, watch, watchEffect } from 'vue';
 import store from '../../store';
 import useKeyPress from '../../hooks/useKeyPress';
 import useResizeHandler from '../../hooks/useResizeHandler';
@@ -129,7 +129,7 @@ const ZoomPane = defineComponent({
       if (zoomPane.value) useResizeHandler(zoomPane.value);
     });
 
-    onMounted(() => {
+    watchEffect(() => {
       if (zoomPane.value && props.defaultPosition && props.defaultZoom) {
         const currentTranslateExtent =
           typeof props.translateExtent !== 'undefined' ? props.translateExtent : pinia.translateExtent;
@@ -153,7 +153,7 @@ const ZoomPane = defineComponent({
       }
     });
 
-    onMounted(() => {
+    watchEffect(() => {
       if (pinia.d3Selection && pinia.d3Zoom) {
         if (props.panOnScroll && zoomActivationKeyPressed) {
           pinia.d3Selection

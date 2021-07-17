@@ -29,7 +29,6 @@ const nodeTypes = {
 };
 
 const CustomNodeFlow = defineComponent({
-  components: { RevueFlow, MiniMap, Controls },
   setup() {
     const elements = ref<Elements>([]);
     const bgColor = ref(initBgColor);
