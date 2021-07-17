@@ -1,7 +1,6 @@
-import { Connection, ElementId, Position } from '../../types';
+import { Connection, ElementId, Position, RevueFlowStore } from '../../types';
 import { onMouseDown, ValidConnectionFunc } from './handler';
 import { computed, defineComponent, inject, PropType } from 'vue';
-import store from '../../store';
 
 const alwaysValid = () => true;
 
@@ -39,10 +38,10 @@ const Handle = defineComponent({
     }
   },
   setup(props, { slots }) {
-    const pinia = store();
+    const store = inject<RevueFlowStore>('store')!;
     const nodeId = inject<ElementId>('NodeIdContext') as ElementId;
     const isTarget = computed(() => props.type === 'target');
-    const onConnect = computed(() => pinia.onConnect);
+    const onConnect = computed(() => store.onConnect);
 
     const onConnectExtended = (params: Connection) => {
       onConnect.value?.(params);
@@ -54,17 +53,17 @@ const Handle = defineComponent({
         event,
         props.id as string,
         nodeId,
-        pinia.setConnectionNodeId,
-        pinia.setConnectionPosition,
+        store.setConnectionNodeId,
+        store.setConnectionPosition,
         onConnectExtended,
         isTarget.value,
         props.isValidConnection,
-        pinia.connectionMode,
+        store.connectionMode,
         undefined,
         undefined,
-        pinia.onConnectStart,
-        pinia.onConnectStop,
-        pinia.onConnectEnd
+        store.onConnectStart,
+        store.onConnectStop,
+        store.onConnectEnd
       );
     };
 

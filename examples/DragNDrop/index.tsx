@@ -50,7 +50,6 @@ const DnDFlow = defineComponent({
         };
 
         elements.value.push(newNode);
-        console.log(elements.value);
       }
     };
 
