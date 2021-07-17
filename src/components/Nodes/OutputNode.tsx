@@ -24,10 +24,10 @@ const OutputNode = defineComponent({
   },
   setup(props) {
     return () => (
-      <>
+      <div>
         {props.data?.label}
         <Handle type="source" position={props.targetPosition} isConnectable={props.isConnectable} />
-      </>
+      </div>
     );
   }
 });

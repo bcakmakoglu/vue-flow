@@ -50,47 +50,47 @@ const NodeRenderer = defineComponent({
     onElementClick: {
       type: Function as unknown as PropType<NodeRendererProps['onElementClick']>,
       required: false,
-      default: undefined
+      default: () => {}
     },
     onNodeDoubleClick: {
       type: Function as unknown as PropType<NodeRendererProps['onNodeDoubleClick']>,
       required: false,
-      default: undefined
+      default: () => {}
     },
     onNodeMouseEnter: {
       type: Function as unknown as PropType<NodeRendererProps['onNodeMouseEnter']>,
       required: false,
-      default: undefined
+      default: () => {}
     },
     onNodeMouseMove: {
       type: Function as unknown as PropType<NodeRendererProps['onNodeMouseMove']>,
       required: false,
-      default: undefined
+      default: () => {}
     },
     onNodeMouseLeave: {
       type: Function as unknown as PropType<NodeRendererProps['onNodeMouseLeave']>,
       required: false,
-      default: undefined
+      default: () => {}
     },
     onNodeContextMenu: {
       type: Function as unknown as PropType<NodeRendererProps['onNodeContextMenu']>,
       required: false,
-      default: undefined
+      default: () => {}
     },
     onNodeDrag: {
       type: Function as unknown as PropType<NodeRendererProps['onNodeDrag']>,
       required: false,
-      default: undefined
+      default: () => {}
     },
     onNodeDragStart: {
       type: Function as unknown as PropType<NodeRendererProps['onNodeDragStart']>,
       required: false,
-      default: undefined
+      default: () => {}
     },
     onNodeDragStop: {
       type: Function as unknown as PropType<NodeRendererProps['onNodeDragStop']>,
       required: false,
-      default: undefined
+      default: () => {}
     }
   },
   setup(props) {
@@ -137,7 +137,7 @@ const NodeRenderer = defineComponent({
         {visibleNodes.value?.map((node) => {
           const nodeType = node.type || 'default';
           if (props.nodeTypes) {
-            const NodeComponent: any = props.nodeTypes[nodeType] || props.nodeTypes.default;
+            const NodeComponent = (props.nodeTypes[nodeType] || props.nodeTypes.default);
             if (!props.nodeTypes[nodeType]) {
               console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`);
             }
@@ -150,8 +150,6 @@ const NodeRenderer = defineComponent({
               <NodeComponent
                 key={node.id}
                 id={node.id}
-                className={node.className}
-                style={node.style}
                 type={nodeType}
                 data={node.data}
                 sourcePosition={node.sourcePosition}

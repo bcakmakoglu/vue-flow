@@ -1,5 +1,5 @@
 import { Selection as D3Selection, ZoomBehavior } from 'd3';
-import { Component, HTMLAttributes, PropType, VNode } from 'vue';
+import { DefineComponent, HTMLAttributes, PropType, VNode } from 'vue';
 import { Store } from 'pinia';
 
 export type ElementId = string;
@@ -85,7 +85,7 @@ export enum BackgroundVariant {
 
 export type HandleType = 'source' | 'target';
 
-export type NodeTypesType = { [key: string]: Component };
+export type NodeTypesType = { [key: string]: DefineComponent<WrapNodeProps> };
 
 export type EdgeTypesType = NodeTypesType;
 
@@ -667,7 +667,6 @@ export interface WrapNodeProps<T = any> {
   onNodeDrag?: (event: MouseEvent, node: Node) => void;
   onNodeDragStop?: (event: MouseEvent, node: Node) => void;
   style?: any;
-  className?: string;
   sourcePosition?: Position;
   targetPosition?: Position;
   isHidden?: boolean;
@@ -738,7 +737,7 @@ export type ConnectionLineComponentProps = {
   connectionLineType: ConnectionLineType;
 };
 
-export type ConnectionLineComponent = Component<ConnectionLineComponentProps>;
+export type ConnectionLineComponent = DefineComponent<ConnectionLineComponentProps>;
 
 export type OnConnectFunc = (connection: Connection) => void;
 export type OnConnectStartParams = {

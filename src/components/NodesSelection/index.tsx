@@ -71,9 +71,7 @@ const NodesSelection = defineComponent({
     };
 
     const onDrag: DraggableEventHandler = (event, data) => {
-      if (props.onSelectionDrag) {
-        props.onSelectionDrag(event, selectedNodes.value);
-      }
+      props.onSelectionDrag?.(event, selectedNodes.value);
 
       store.updateNodePosDiff({
         diff: {
@@ -111,6 +109,7 @@ const NodesSelection = defineComponent({
             onStart={onStart}
             onDrag={onDrag}
             onStop={onStop}
+            nodeRef={nodeRef.value}
             enableUserSelectHack={false}
             nodeRef={nodeRef.value}
           >

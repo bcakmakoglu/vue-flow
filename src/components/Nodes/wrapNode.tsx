@@ -1,8 +1,8 @@
 import { Node, RevueFlowStore, WrapNodeProps } from '../../types';
-import { computed, CSSProperties, defineComponent, inject, onMounted, provide, ref } from 'vue';
+import { computed, CSSProperties, DefineComponent, defineComponent, inject, onMounted, provide, ref } from 'vue';
 import { DraggableCore, DraggableEventHandler } from '@braks/revue-draggable';
 
-export default (NodeComponent: any) => {
+export default (NodeComponent: DefineComponent<WrapNodeProps>) => {
   return defineComponent({
     props: WrapNodeProps,
     setup(props) {

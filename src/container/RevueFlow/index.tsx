@@ -1,14 +1,4 @@
-import {
-  computed,
-  CSSProperties,
-  defineComponent,
-  HTMLAttributes,
-  inject,
-  onBeforeUnmount,
-  PropType,
-  provide,
-  watchEffect
-} from 'vue';
+import { computed, CSSProperties, defineComponent, HTMLAttributes, onBeforeUnmount, PropType, provide, watchEffect } from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -548,7 +538,7 @@ const RevueFlow = defineComponent({
      */
   },
   setup(props, { slots }) {
-    const store = typeof inject('store') !== 'undefined' ? inject<RevueFlowStore>('store')! : configureStore(initialState)();
+    const store = configureStore(initialState)();
     provide<RevueFlowStore>('store', store);
     store.setElements(props.elements);
 

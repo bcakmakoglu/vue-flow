@@ -56,11 +56,11 @@ export default defineComponent({
         return;
       }
 
-      store?.setUserSelection(mousePos);
+      store.setUserSelection(mousePos);
     };
 
     const onMouseMove = (event: MouseEvent): void => {
-      if (!store?.selectionActive) {
+      if (!store.selectionActive) {
         return;
       }
       const mousePos = getMousePosition(event);
@@ -69,16 +69,14 @@ export default defineComponent({
         return;
       }
 
-      store?.updateUserSelection(mousePos);
+      store.updateUserSelection(mousePos);
     };
 
-    const onMouseUp = () => {
-      store?.unsetUserSelection();
-    };
+    const onMouseUp = () => store.unsetUserSelection();
 
     const onMouseLeave = () => {
-      store?.unsetUserSelection();
-      store?.unsetNodesSelection();
+      store.unsetUserSelection();
+      store.unsetNodesSelection();
     };
 
     return () => (
