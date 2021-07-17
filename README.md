@@ -14,8 +14,8 @@ They did most of the heavy lifting by writing the library in the first place.
 All I did is bring it to Vue3.
 
 ### Motivation
-Seeing as many libraries exist in the revue ecosystem and Vue sadly does not get the same
-love and attention, I decided to port the revue Flow library to Vue.js.
+Seeing as many libraries exist in the React ecosystem and Vue sadly does not get the same
+love and attention, I decided to port the React Flow library to Vue.js.
 
 ## Usage
 Check the React Flow docs for usage. It's really the same.
