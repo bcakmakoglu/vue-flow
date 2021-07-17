@@ -1,7 +1,6 @@
 import { Dimensions, XYPosition, NodeExtent } from '../types';
-import { DraggableEvent } from '@braks/revue-draggable';
 
-export const isInputDOMNode = (e: KeyboardEvent | DraggableEvent['event']): boolean => {
+export const isInputDOMNode = (e: KeyboardEvent | MouseEvent): boolean => {
   const target = e.target as HTMLElement;
   return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.nodeName) || target.hasAttribute('contentEditable');
 };
