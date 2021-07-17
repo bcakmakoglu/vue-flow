@@ -21,6 +21,7 @@ const NodesSelection = ({
   onSelectionContextMenu
 }: NodesSelectionProps) => {
   const store = inject<RevueFlowStore>('store');
+  console.log('nodesSelection');
 
   const nodeRef = ref<HTMLElement | undefined>();
 

@@ -3,7 +3,7 @@ import { select, pointer } from 'd3-selection';
 
 import { clamp } from '../../utils';
 import { FlowTransform, TranslateExtent, PanOnScrollMode, KeyCode } from '../../types';
-import { defineComponent, onMounted, PropType, ref, watch } from 'vue';
+import { defineComponent, onMounted, PropType, ref, watch, watchEffect } from 'vue';
 import store from '../../store';
 import useKeyPress from '../../hooks/useKeyPress';
 import useResizeHandler from '../../hooks/useResizeHandler';
@@ -193,7 +193,7 @@ const ZoomPane = defineComponent({
       }
     });
 
-    onMounted(() => {
+    watchEffect(() => {
       if (pinia.d3Zoom) {
         if (props.selectionKeyPressed) {
           pinia.d3Zoom.on('zoom', null);
@@ -210,7 +210,7 @@ const ZoomPane = defineComponent({
       }
     });
 
-    onMounted(() => {
+    watchEffect(() => {
       if (pinia.d3Zoom) {
         if (props.onMoveStart) {
           pinia.d3Zoom.on('start', (event: any) => {
@@ -227,7 +227,7 @@ const ZoomPane = defineComponent({
       }
     });
 
-    onMounted(() => {
+    watchEffect(() => {
       if (pinia.d3Zoom) {
         if (props.onMoveEnd) {
           pinia.d3Zoom.on('end', (event: any) => {
@@ -244,7 +244,7 @@ const ZoomPane = defineComponent({
       }
     });
 
-    onMounted(() => {
+    watchEffect(() => {
       if (pinia.d3Zoom) {
         pinia.d3Zoom.filter((event: any) => {
           const zoomScroll = props.zoomOnScroll;

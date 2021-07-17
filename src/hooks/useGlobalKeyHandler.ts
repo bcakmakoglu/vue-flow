@@ -1,7 +1,7 @@
 import useKeyPress from './useKeyPress';
 import { isNode, getConnectedEdges } from '../utils/graph';
-import { Elements, KeyCode, ElementId, FlowElement, RevueFlowStore } from '../types';
-import { inject, onMounted } from 'vue';
+import { Elements, KeyCode, ElementId, FlowElement, RevueFlowStore, Edge } from '../types';
+import { computed, inject, watch } from 'vue';
 
 interface HookParams {
   deleteKeyCode: KeyCode;
@@ -14,12 +14,14 @@ export default ({ deleteKeyCode, multiSelectionKeyCode, onElementsRemove }: Hook
 
   const deleteKeyPressed = useKeyPress(deleteKeyCode);
   const multiSelectionKeyPressed = useKeyPress(multiSelectionKeyCode);
+  const selectedElements = computed(() => store?.selectedElements || []);
+  const edges = computed(() => store?.edges);
 
-  onMounted(() => {
-    if (onElementsRemove && deleteKeyPressed.value && store?.selectedElements) {
-      const selectedNodes = store?.selectedElements.filter(isNode);
-      const connectedEdges = getConnectedEdges(selectedNodes, store?.edges);
-      const elementsToRemove = [...store?.selectedElements, ...connectedEdges].reduce(
+  watch(selectedElements, () => {
+    if (onElementsRemove && deleteKeyPressed.value && selectedElements.value.length > 0) {
+      const selectedNodes = selectedElements.value.filter(isNode);
+      const connectedEdges = getConnectedEdges(selectedNodes, edges.value as Edge[]);
+      const elementsToRemove = [...selectedElements.value, ...connectedEdges].reduce(
         (res, item) => res.set(item.id, item),
         new Map<ElementId, FlowElement>()
       );
@@ -30,7 +32,7 @@ export default ({ deleteKeyCode, multiSelectionKeyCode, onElementsRemove }: Hook
     }
   });
 
-  onMounted(() => {
+  watch(multiSelectionKeyPressed, () => {
     store?.setMultiSelectionActive(multiSelectionKeyPressed.value);
   });
 };

@@ -2,11 +2,7 @@
  * The user selection rectangle gets displayed when a user drags the mouse while pressing shift
  */
 import { RevueFlowStore, XYPosition } from '../../types';
-import { computed, defineComponent, inject, PropType } from 'vue';
-
-type UserSelectionProps = {
-  selectionKeyPressed: boolean;
-};
+import { computed, defineComponent, inject } from 'vue';
 
 function getMousePosition(event: MouseEvent): XYPosition | void {
   const revueFlowNode = (event.target as Element).closest('.revue-flow');
@@ -26,38 +22,29 @@ const SelectionRect = defineComponent({
   setup() {
     const store = inject<RevueFlowStore>('store');
 
-    if (!store?.userSelectionRect.draw) {
-      return null;
-    }
-
-    return () => (
-      <div
-        class="revue-flow__selection"
-        style={{
-          width: `${store?.userSelectionRect.width}px`,
-          height: `${store?.userSelectionRect.height}px`,
-          transform: `translate(${store?.userSelectionRect.x}px, ${store?.userSelectionRect.y}px)`
-        }}
-      />
-    );
+    return () => {
+      return store?.userSelectionRect.draw ? (
+        <div
+          class="revue-flow__selection"
+          style={{
+            width: `${store?.userSelectionRect.width}px`,
+            height: `${store?.userSelectionRect.height}px`,
+            transform: `translate(${store?.userSelectionRect.x}px, ${store?.userSelectionRect.y}px)`
+          }}
+        />
+      ) : (
+        ''
+      );
+    };
   }
 });
 
 export default defineComponent({
   components: { SelectionRect },
-  props: {
-    selectionKeyPressed: {
-      type: Boolean as PropType<UserSelectionProps['selectionKeyPressed']>,
-      required: true
-    }
-  },
-  setup(props) {
+  setup() {
     const store = inject<RevueFlowStore>('store')!;
-    const renderUserSelectionPane = computed(() => {
-      return props.selectionKeyPressed || store.selectionActive;
-    });
 
-    const shouldRender = computed(() => renderUserSelectionPane.value || store.elementsSelectable);
+    const shouldRender = computed(() => store.selectionActive || store.elementsSelectable);
 
     if (!shouldRender.value) {
       return null;
@@ -69,11 +56,12 @@ export default defineComponent({
         return;
       }
 
+      console.log('mouseDown');
       store?.setUserSelection(mousePos);
     };
 
     const onMouseMove = (event: MouseEvent): void => {
-      if (!props.selectionKeyPressed || !store?.selectionActive) {
+      if (!store?.selectionActive) {
         return;
       }
       const mousePos = getMousePosition(event);
@@ -81,11 +69,15 @@ export default defineComponent({
       if (!mousePos) {
         return;
       }
+      console.log('mousemove');
 
       store?.updateUserSelection(mousePos);
     };
 
-    const onMouseUp = () => store?.unsetUserSelection();
+    const onMouseUp = () => {
+      console.log('mosueUp');
+      store?.unsetUserSelection();
+    };
 
     const onMouseLeave = () => {
       store?.unsetUserSelection();
@@ -97,6 +89,7 @@ export default defineComponent({
         class="revue-flow__selectionpane"
         onMousedown={onMouseDown}
         onMousemove={onMouseMove}
+        onClick={onMouseUp}
         onMouseup={onMouseUp}
         onMouseleave={onMouseLeave}
       >

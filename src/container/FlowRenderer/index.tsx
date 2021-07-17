@@ -27,57 +27,57 @@ const FlowRenderer = defineComponent({
     onPaneClick: {
       type: Function as unknown as PropType<FlowRendererProps['onPaneClick']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onPaneContextMenu: {
       type: Function as unknown as PropType<FlowRendererProps['onPaneContextMenu']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onPaneScroll: {
       type: Function as unknown as PropType<FlowRendererProps['onPaneScroll']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onElementsRemove: {
       type: Function as unknown as PropType<FlowRendererProps['onElementsRemove']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onMove: {
       type: Function as unknown as PropType<FlowRendererProps['onMove']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onMoveStart: {
       type: Function as unknown as PropType<FlowRendererProps['onMoveStart']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onMoveEnd: {
       type: Function as unknown as PropType<FlowRendererProps['onMoveEnd']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onSelectionDragStart: {
       type: Function as unknown as PropType<FlowRendererProps['onSelectionDragStart']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onSelectionDrag: {
       type: Function as unknown as PropType<FlowRendererProps['onSelectionDrag']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onSelectionDragStop: {
       type: Function as unknown as PropType<FlowRendererProps['onSelectionDragStop']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onSelectionContextMenu: {
       type: Function as unknown as PropType<FlowRendererProps['onSelectionContextMenu']>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     deleteKeyCode: {
       type: [Number, String] as PropType<FlowRendererProps['deleteKeyCode']>,
@@ -184,7 +184,7 @@ const FlowRenderer = defineComponent({
         onMove={props.onMove}
         onMoveStart={props.onMoveStart}
         onMoveEnd={props.onMoveEnd}
-        selectionKeyPressed={false}
+        selectionKeyPressed={keyPressed.value}
         elementsSelectable={props.elementsSelectable}
         zoomOnScroll={props.zoomOnScroll}
         zoomOnPinch={props.zoomOnPinch}
@@ -199,7 +199,7 @@ const FlowRenderer = defineComponent({
         zoomActivationKeyCode={props.zoomActivationKeyCode}
       >
         {slots.default ? slots.default() : ''}
-        {keyPressed.value ? <UserSelection selectionKeyPressed={keyPressed.value} /> : ''}
+        {keyPressed.value ? <UserSelection track-by={'selection'} /> : ''}
         {store?.nodesSelectionActive && (
           <NodesSelection
             onSelectionDragStart={props.onSelectionDragStart}

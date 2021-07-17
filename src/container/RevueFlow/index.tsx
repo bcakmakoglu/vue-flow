@@ -485,12 +485,12 @@ const RevueFlow = defineComponent({
     onDrop: {
       type: Function as unknown as PropType<(e: DragEvent) => any>,
       required: false,
-      default: undefined as any
+      default: undefined
     },
     onDragover: {
       type: Function as unknown as PropType<(e: DragEvent) => any>,
       required: false,
-      default: undefined as any
+      default: undefined
     }
 
     /*  // focus events
