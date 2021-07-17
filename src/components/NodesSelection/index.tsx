@@ -70,10 +70,18 @@ const NodesSelection = defineComponent({
       props.onSelectionDragStart?.(event, selectedNodes.value);
     };
 
-    const onDrag: DraggableEventHandler = (event) => {
+    const onDrag: DraggableEventHandler = (event, data) => {
       if (props.onSelectionDrag) {
         props.onSelectionDrag(event, selectedNodes.value);
       }
+
+      store.updateNodePosDiff({
+        diff: {
+          x: data.deltaX,
+          y: data.deltaY
+        },
+        isDragging: true
+      });
     };
 
     const onStop: DraggableEventHandler = (event: MouseEvent) => {

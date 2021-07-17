@@ -262,10 +262,10 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
-"@braks/revue-draggable@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@braks/revue-draggable/-/revue-draggable-0.1.10.tgz#d6c7de3de44f1fbce09b37ba35a80100418850ba"
-  integrity sha512-m8cXb1NADAYQxhNUqfrzIhlvRPacaBEy/J8FVemkQCZLhzd5lHUMaTv+5hiYRgljXcoRLWO21HF4NtqWZ1kQuw==
+"@braks/revue-draggable@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@braks/revue-draggable/-/revue-draggable-0.1.12.tgz#6ccf57c1954f1bcc3e66e3956f7205dc57841deb"
+  integrity sha512-eq2uj6t3GKmIej5RcDBSun94ZKs1wmEDvMMx/uz+m7EzeffXYIDyo8Zk1Nkmb3MdOcvp4BHpnzuAxUbPnZnEMA==
   dependencies:
     vue-demi latest
 

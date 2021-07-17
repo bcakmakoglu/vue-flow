@@ -56,7 +56,6 @@ export default defineComponent({
         return;
       }
 
-      console.log('mouseDown');
       store?.setUserSelection(mousePos);
     };
 
@@ -69,13 +68,11 @@ export default defineComponent({
       if (!mousePos) {
         return;
       }
-      console.log('mousemove');
 
       store?.updateUserSelection(mousePos);
     };
 
     const onMouseUp = () => {
-      console.log('mosueUp');
       store?.unsetUserSelection();
     };
 
