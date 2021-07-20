@@ -1,7 +1,6 @@
-import { defineComponent, HTMLAttributes, onMounted, PropType, ref } from 'vue';
+import { defineComponent, HTMLAttributes, inject, onMounted, PropType, ref } from 'vue';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
-import { FitViewParams } from '../../types';
-import store from '../../store';
+import { FitViewParams, RevueFlowStore } from '../../types';
 import PlusIcon from '../../../assets/icons/plus.svg';
 import MinusIcon from '../../../assets/icons/minus.svg';
 import Fitview from '../../../assets/icons/fitview.svg';
@@ -88,7 +87,7 @@ const Controls = defineComponent({
     }
   },
   setup(props, { slots }) {
-    const pinia = store();
+    const store = inject<RevueFlowStore>('store')!;
     const isVisible = ref<boolean>(false);
     const zoomHelper = ref(useZoomPanHelper());
 
@@ -96,7 +95,7 @@ const Controls = defineComponent({
       zoomHelper.value = useZoomPanHelper();
     });
 
-    const isInteractive = pinia.nodesDraggable && pinia.nodesConnectable && pinia.elementsSelectable;
+    const isInteractive = store.nodesDraggable && store.nodesConnectable && store.elementsSelectable;
     const mapClasses = ['revue-flow__controls'];
 
     const onZoomInHandler = () => {
@@ -115,7 +114,7 @@ const Controls = defineComponent({
     };
 
     const onInteractiveChangeHandler = () => {
-      pinia.setInteractive?.(!isInteractive);
+      store.setInteractive?.(!isInteractive);
       props.onInteractiveChange?.(!isInteractive);
     };
 

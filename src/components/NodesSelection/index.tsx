@@ -4,8 +4,8 @@
  */
 import { isNode } from '../../utils/graph';
 import { Node, RevueFlowStore } from '../../types';
-import { computed, defineComponent, inject, PropType, ref } from 'vue';
-import Draggable, { DraggableEventHandler } from '@braks/revue-draggable';
+import { computed, defineComponent, inject, PropType } from 'vue';
+import { Draggable, DraggableEventHandler } from '@braks/revue-draggable';
 
 export interface NodesSelectionProps {
   onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void;
@@ -39,7 +39,6 @@ const NodesSelection = defineComponent({
   },
   setup(props) {
     const store = inject<RevueFlowStore>('store')!;
-    const nodeRef = ref<HTMLElement | undefined>();
     const grid = computed(() => (store.snapToGrid ? store.snapGrid : [1, 1])! as [number, number]);
 
     const selectedNodes = computed(() =>
@@ -67,10 +66,12 @@ const NodesSelection = defineComponent({
     }));
 
     const onStart: DraggableEventHandler = (event: MouseEvent) => {
+      console.log('ondragstart');
       props.onSelectionDragStart?.(event, selectedNodes.value);
     };
 
     const onDrag: DraggableEventHandler = (event, data) => {
+      console.log('ondrag');
       props.onSelectionDrag?.(event, selectedNodes.value);
 
       store.updateNodePosDiff({
@@ -83,6 +84,7 @@ const NodesSelection = defineComponent({
     };
 
     const onStop: DraggableEventHandler = (event: MouseEvent) => {
+      console.log('ondragend');
       store.updateNodePosDiff({
         isDragging: false
       });
@@ -104,16 +106,14 @@ const NodesSelection = defineComponent({
       ) : (
         <div class="revue-flow__nodesselection" style={style.value}>
           <Draggable
+            start={onStart}
+            move={onDrag}
+            stop={onStop}
             scale={store.transform[2]}
             grid={grid.value}
-            onStart={onStart}
-            onDrag={onDrag}
-            onStop={onStop}
-            nodeRef={nodeRef.value}
             enableUserSelectHack={false}
-            nodeRef={nodeRef.value}
           >
-            <div ref={nodeRef} class="revue-flow__nodesselection-rect" onContextmenu={onContextMenu} style={innerStyle.value} />
+            <div class="revue-flow__nodesselection-rect" onContextmenu={onContextMenu} style={innerStyle.value} />
           </Draggable>
         </div>
       );

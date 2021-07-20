@@ -1,4 +1,14 @@
-import { computed, CSSProperties, defineComponent, HTMLAttributes, onBeforeUnmount, PropType, provide, watchEffect } from 'vue';
+import {
+  computed,
+  CSSProperties,
+  defineComponent,
+  HTMLAttributes,
+  onBeforeUnmount,
+  onUpdated,
+  PropType,
+  provide,
+  watchEffect
+} from 'vue';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -543,6 +553,11 @@ const RevueFlow = defineComponent({
     store.setElements(props.elements);
 
     watchEffect(() => {
+      store.setElements(props.elements);
+      props.onSelectionChange?.(store.selectedElements);
+    });
+
+    onUpdated(() => {
       store.setElements(props.elements);
       props.onSelectionChange?.(store.selectedElements);
     });

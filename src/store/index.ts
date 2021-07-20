@@ -1,5 +1,3 @@
-import configureStore from './configure-store';
-
 import { RevueFlowState, ConnectionMode } from '../types';
 
 export const initialState: RevueFlowState = {
@@ -55,7 +53,3 @@ export const initialState: RevueFlowState = {
 
   revueFlowVersion: typeof __REVUE_FLOW_VERSION__ !== 'undefined' ? __REVUE_FLOW_VERSION__ : '-'
 };
-
-const store = configureStore(initialState);
-
-export default store;

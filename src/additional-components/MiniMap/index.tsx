@@ -1,8 +1,7 @@
 import { getRectOfNodes, getBoundsofRects } from '../../utils/graph';
-import { Node, Rect } from '../../types';
+import { Node, Rect, RevueFlowStore } from '../../types';
 import MiniMapNode from './MiniMapNode';
-import { computed, defineComponent, HTMLAttributes, PropType } from 'vue';
-import store from '../../store';
+import { computed, defineComponent, HTMLAttributes, inject, PropType } from 'vue';
 
 type StringFunc = (node: Node) => string;
 
@@ -55,8 +54,8 @@ const MiniMap = defineComponent({
     }
   },
   setup(props, { attrs }: { attrs: Record<string, any> }) {
-    const pinia = store();
-    const transform = computed(() => pinia.transform);
+    const store = inject<RevueFlowStore>('store')!;
+    const transform = computed(() => store.transform);
     const elementWidth = computed(() => (attrs.style?.width || defaultWidth)! as number);
     const elementHeight = computed(() => (attrs.style?.height || defaultHeight)! as number);
     const nodeColorFunc = computed(() => (props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor) as StringFunc);
@@ -66,13 +65,13 @@ const MiniMap = defineComponent({
     const nodeClassNameFunc = computed(
       () => (props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName) as StringFunc
     );
-    const hasNodes = computed(() => pinia.nodes && pinia.nodes.length);
-    const bb = computed(() => getRectOfNodes(pinia.nodes));
+    const hasNodes = computed(() => store.nodes && store.nodes.length);
+    const bb = computed(() => getRectOfNodes(store.nodes));
     const viewBB = computed<Rect>(() => ({
       x: -transform.value[0] / transform.value[2],
       y: -transform.value[1] / transform.value[2],
-      width: pinia.width / transform.value[2],
-      height: pinia.height / transform.value[2]
+      width: store.width / transform.value[2],
+      height: store.height / transform.value[2]
     }));
     const boundingRect = computed(() => (hasNodes.value ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value));
     const scaledWidth = computed(() => boundingRect.value.width / elementWidth.value);
@@ -94,7 +93,7 @@ const MiniMap = defineComponent({
         viewBox={`${x.value} ${y.value} ${width.value} ${height.value}`}
         class="revue-flow__minimap"
       >
-        {pinia.nodes
+        {store.nodes
           .filter((node) => !node.isHidden)
           .map((node) => (
             <MiniMapNode

@@ -1,12 +1,12 @@
 import { Node, RevueFlowStore, WrapNodeProps } from '../../types';
-import { computed, CSSProperties, DefineComponent, defineComponent, inject, onMounted, provide, ref } from 'vue';
-import { DraggableCore, DraggableEventHandler } from '@braks/revue-draggable';
+import { computed, CSSProperties, DefineComponent, defineComponent, inject, onMounted, provide, ref, watchEffect } from 'vue';
+import { DraggableEventHandler, DraggableCore } from '@braks/revue-draggable';
 
 export default (NodeComponent: DefineComponent<WrapNodeProps>) => {
   return defineComponent({
     props: WrapNodeProps,
     setup(props) {
-      const store = inject<RevueFlowStore>('store');
+      const store = inject<RevueFlowStore>('store')!;
       provide('NodeIdContext', props.id);
 
       const nodeElement = ref<HTMLDivElement | undefined>();
@@ -134,7 +134,7 @@ export default (NodeComponent: DefineComponent<WrapNodeProps>) => {
         props.onNodeDragStop?.(event as MouseEvent, node.value as Node);
       };
 
-      onMounted(() => {
+      watchEffect(() => {
         if (nodeElement.value && !props.isHidden) {
           store?.updateNodeDimensions([{ id: props.id || '', nodeElement: nodeElement.value, forceUpdate: true }]);
         }
@@ -164,14 +164,13 @@ export default (NodeComponent: DefineComponent<WrapNodeProps>) => {
 
       return () => (
         <DraggableCore
-          onStart={onDragStart}
-          onDrag={onDrag}
-          onStop={onDragStop}
-          scale={props.scale}
+          start={onDragStart}
+          move={onDrag}
+          stop={onDragStop}
+          scale={store.transform[2]}
           disabled={!props.isDraggable}
           cancel=".nodrag"
           grid={grid.value}
-          nodeRef={nodeElement.value}
           enableUserSelectHack={false}
         >
           <div

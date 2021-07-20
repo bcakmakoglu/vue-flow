@@ -1,14 +1,14 @@
-import { ElementId, UpdateNodeInternals } from '../types';
-import store from '../store';
+import { ElementId, RevueFlowStore, UpdateNodeInternals } from '../types';
+import { inject } from 'vue';
 
 function useUpdateNodeInternals(): UpdateNodeInternals {
-  const pinia = store();
+  const store = inject<RevueFlowStore>('store')!;
 
   return (id: ElementId) => {
     const nodeElement: HTMLDivElement | null = document.querySelector(`.revue-flow__node[data-id="${id}"]`);
 
     if (nodeElement) {
-      pinia.updateNodeDimensions([{ id, nodeElement, forceUpdate: true }]);
+      store.updateNodeDimensions([{ id, nodeElement, forceUpdate: true }]);
     }
   };
 }

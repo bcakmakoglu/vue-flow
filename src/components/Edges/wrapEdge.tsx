@@ -1,11 +1,9 @@
-import { Component, computed, defineComponent, PropType, ref } from 'vue';
-
-import store from '../../store';
-import { Edge, EdgeProps, Position, WrapEdgeProps } from '../../types';
+import { computed, DefineComponent, defineComponent, inject, PropType, ref } from 'vue';
+import { Edge, EdgeProps, Position, RevueFlowStore, WrapEdgeProps } from '../../types';
 import { onMouseDown } from '../Handle/handler';
 import { EdgeAnchor } from './EdgeAnchor';
 
-export default (EdgeComponent: any): Component<EdgeProps> => {
+export default (EdgeComponent: DefineComponent<EdgeProps>) => {
   return defineComponent({
     components: { EdgeComponent },
     props: {
@@ -187,7 +185,7 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
       }
     },
     setup(props) {
-      const pinia = store();
+      const store = inject<RevueFlowStore>('store')!;
       const updating = ref<boolean>(false);
       const inactive = computed(() => !props.elementsSelectable && !props.onClick);
       const edgeClasses = computed(() => [
@@ -221,8 +219,8 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
 
       const onEdgeClick = (event: MouseEvent) => {
         if (props.elementsSelectable) {
-          pinia.unsetNodesSelection();
-          pinia.addSelectedElements(edgeElement.value as any);
+          store.unsetNodesSelection();
+          store.addSelectedElements(edgeElement.value as any);
         }
 
         if (typeof props.onClick === 'function') props.onClick(event, edgeElement.value);
@@ -262,12 +260,12 @@ export default (EdgeComponent: any): Component<EdgeProps> => {
           event,
           handleId,
           nodeId,
-          pinia.setConnectionNodeId,
-          pinia.setConnectionPosition,
+          store.setConnectionNodeId,
+          store.setConnectionPosition,
           props.onConnectEdge as any,
           isTarget,
           isValidConnection,
-          pinia.connectionMode,
+          store.connectionMode,
           isSourceHandle ? 'target' : 'source',
           _onEdgeUpdate
         );

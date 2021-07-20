@@ -28,7 +28,7 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
-    "@braks/revue-draggable": "^0.1.13",
+    "@braks/revue-draggable": "^0.2.1-5",
     "@types/d3": "^7.0.0",
     "d3": "^7.0.0",
     "d3-selection": "^3.0.0",

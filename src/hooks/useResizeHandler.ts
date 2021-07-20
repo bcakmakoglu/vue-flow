@@ -1,9 +1,7 @@
 import { getDimensions } from '../utils';
-import store from '../store';
+import { Dimensions } from '../types';
 
-export default (rendererNode: HTMLDivElement) => {
-  const pinia = store();
-
+export default (rendererNode: HTMLDivElement, updateSize: (size: Dimensions) => any) => {
   let resizeObserver: ResizeObserver;
 
   const updateDimensions = () => {
@@ -17,7 +15,7 @@ export default (rendererNode: HTMLDivElement) => {
       console.log('The revue Flow parent container needs a width and a height to render the graph.');
     }
 
-    pinia.updateSize(size);
+    updateSize(size);
   };
 
   updateDimensions();
@@ -27,14 +25,4 @@ export default (rendererNode: HTMLDivElement) => {
     resizeObserver = new ResizeObserver(() => updateDimensions());
     resizeObserver.observe(rendererNode);
   }
-  /*
-    return () => {
-      window.onresize = null;
-
-      if (resizeObserver && rendererNode) {
-        resizeObserver.unobserve(rendererNode);
-      }
-    };
-
-   */
 };

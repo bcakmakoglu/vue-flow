@@ -262,11 +262,12 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
-"@braks/revue-draggable@^0.1.13":
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/@braks/revue-draggable/-/revue-draggable-0.1.13.tgz#cff5a9ac21c488de5b0c3fef6cdbd3f8f828dd21"
-  integrity sha512-unczSXZNK3ZnHoIj5w45a4eN7iQH6s0Ot33G2s7zkdMRHcoGh8Cc0ltw5m5XlrEgk4ch0vAEIU+MQiS8/D27uw==
+"@braks/revue-draggable@^0.2.1-5":
+  version "0.2.1-5"
+  resolved "https://registry.yarnpkg.com/@braks/revue-draggable/-/revue-draggable-0.2.1-5.tgz#280f9cb4dfd5c3bc88dff0f8c70ffa8966536328"
+  integrity sha512-+oDuUvTVd5ST6brdtfXYJMnFrmyQat9W7yUKpKBTI0od3ycfaGgMCT9w+OoQ3rlBi2cV6gFXlhZVIeLi+v55aA==
   dependencies:
+    "@vueuse/core" "^5.1.3"
     vue-demi latest
 
 "@eslint/eslintrc@^0.4.2":
@@ -910,6 +911,21 @@
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.1.4.tgz#c14c461ec42ea2c1556e86f60b0354341d91adc3"
   integrity sha512-6O45kZAmkLvzGLToBxEz4lR2W6kXohCtebV2UxjH9GXjd8X9AhEn68FN9eNanFtWNzvgw1hqd6HkPRVQalqf7Q==
+
+"@vueuse/core@^5.1.3":
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-5.1.4.tgz#c590bd1ff5cdd3d2caa033b65ed8cb42fc12a534"
+  integrity sha512-iuRhSaScI1GJS4N3CFPc1GajOr6F6J1Nng1I6ocNOjLx+evss6egImx9wnuX45fxqQstnh7Vfqe3FF7+0NgoWg==
+  dependencies:
+    "@vueuse/shared" "5.1.4"
+    vue-demi "*"
+
+"@vueuse/shared@5.1.4":
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-5.1.4.tgz#35e3aa8ce7e52b447191915ee8b4afa481838c43"
+  integrity sha512-C0xiMv8+sFI3WhXdlrcLKI4d4dFnouHe4Te51cxWgcmpW7S8eUiM8fXPaQVxUQZ4E9PCx3zEZpNpCLzQa+6Lag==
+  dependencies:
+    vue-demi "*"
 
 acorn-jsx@^5.2.0, acorn-jsx@^5.3.1:
   version "5.3.2"
@@ -5624,6 +5640,11 @@ vite@^2.3.8:
     rollup "^2.38.5"
   optionalDependencies:
     fsevents "~2.3.2"
+
+vue-demi@*:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.11.2.tgz#faa06da53887c493a695b997f4fcb4784a667990"
+  integrity sha512-J+X8Au6BhQdcej6LY4O986634hZLu55L0ewU2j8my7WIKlu8cK0dqmdUxqVHHMd/cMrKKZ9SywB/id6aLhwCtA==
 
 vue-demi@latest:
   version "0.10.1"

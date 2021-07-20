@@ -1,7 +1,6 @@
-import { BackgroundVariant } from '../../types';
+import { BackgroundVariant, RevueFlowStore } from '../../types';
 import { createGridDotsPath, createGridLinesPath } from './utils';
-import { computed, defineComponent, HTMLAttributes, PropType } from 'vue';
-import store from '../../store';
+import { computed, defineComponent, HTMLAttributes, inject, PropType } from 'vue';
 
 export interface BackgroundProps extends HTMLAttributes {
   variant?: BackgroundVariant;
@@ -26,7 +25,7 @@ const Background = defineComponent({
     gap: {
       type: Number as PropType<BackgroundProps['gap']>,
       required: false,
-      default: 15
+      default: 10
     },
     color: {
       type: String as PropType<BackgroundProps['color']>,
@@ -40,8 +39,8 @@ const Background = defineComponent({
     }
   },
   setup(props) {
-    const pinia = store();
-    const transform = computed(() => pinia.transform);
+    const store = inject<RevueFlowStore>('store')!;
+    const transform = computed(() => store.transform);
     // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
     const patternId = `pattern-${Math.floor(Math.random() * 100000)}`;
 
@@ -50,12 +49,12 @@ const Background = defineComponent({
     const xOffset = computed(() => scaledGap.value && transform.value[0] % scaledGap.value);
     const yOffset = computed(() => scaledGap.value && transform.value[1] % scaledGap.value);
 
-    const isLines = props.variant === BackgroundVariant.Lines;
-    const bgColor = props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots];
+    const isLines = computed(() => props.variant === BackgroundVariant.Lines);
+    const bgColor = computed(() => (props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]));
     const path = computed(() =>
-      isLines
-        ? scaledGap.value && props.size && createGridLinesPath(scaledGap.value, props.size, bgColor)
-        : createGridDotsPath(props.size || 0.4 * transform.value[2], bgColor)
+      isLines.value
+        ? scaledGap.value && props.size && createGridLinesPath(scaledGap.value, props.size, bgColor.value)
+        : createGridDotsPath(props.size || 0.4 * transform.value[2], bgColor.value)
     );
 
     return () => (
