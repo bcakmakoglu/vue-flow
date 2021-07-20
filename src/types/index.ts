@@ -87,7 +87,7 @@ export type HandleType = 'source' | 'target';
 
 export type NodeTypesType = { [key: string]: DefineComponent<WrapNodeProps> };
 
-export type EdgeTypesType = NodeTypesType;
+export type EdgeTypesType = { [key: string]: DefineComponent<WrapEdgeProps> };
 
 export interface SelectionRect extends Rect {
   startX: number;

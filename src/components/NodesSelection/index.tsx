@@ -2,10 +2,10 @@
  * The nodes selection rectangle gets displayed when a user
  * made a selectio  with on or several nodes
  */
-import { isNode } from '../../utils/graph';
-import { Node, RevueFlowStore } from '../../types';
 import { computed, defineComponent, inject, PropType } from 'vue';
 import { Draggable, DraggableEventHandler } from '@braks/revue-draggable';
+import { isNode } from '../../utils/graph';
+import { Node, RevueFlowStore } from '../../types';
 
 export interface NodesSelectionProps {
   onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void;

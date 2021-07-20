@@ -1,9 +1,9 @@
 import { computed, DefineComponent, defineComponent, inject, PropType, ref } from 'vue';
-import { Edge, EdgeProps, Position, RevueFlowStore, WrapEdgeProps } from '../../types';
+import { Edge, Position, RevueFlowStore, WrapEdgeProps } from '../../types';
 import { onMouseDown } from '../Handle/handler';
 import { EdgeAnchor } from './EdgeAnchor';
 
-export default (EdgeComponent: DefineComponent<EdgeProps>) => {
+export default (EdgeComponent: DefineComponent<WrapEdgeProps>) => {
   return defineComponent({
     components: { EdgeComponent },
     props: {
