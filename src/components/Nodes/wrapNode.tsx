@@ -1,5 +1,5 @@
 import { Node, RevueFlowStore, WrapNodeProps } from '../../types';
-import { computed, CSSProperties, DefineComponent, defineComponent, inject, onMounted, provide, ref, watchEffect } from 'vue';
+import { computed, CSSProperties, DefineComponent, defineComponent, inject, onMounted, onUpdated, provide, ref } from 'vue';
 import { DraggableEventHandler, DraggableCore } from '@braks/revue-draggable';
 
 export default (NodeComponent: DefineComponent<WrapNodeProps>) => {
@@ -134,7 +134,7 @@ export default (NodeComponent: DefineComponent<WrapNodeProps>) => {
         props.onNodeDragStop?.(event as MouseEvent, node.value as Node);
       };
 
-      watchEffect(() => {
+      onUpdated(() => {
         if (nodeElement.value && !props.isHidden) {
           store?.updateNodeDimensions([{ id: props.id || '', nodeElement: nodeElement.value, forceUpdate: true }]);
         }
@@ -162,12 +162,14 @@ export default (NodeComponent: DefineComponent<WrapNodeProps>) => {
         }
       ]);
 
+      const scale = computed(() => store.transform[2] || 1);
+
       return () => (
         <DraggableCore
           start={onDragStart}
           move={onDrag}
           stop={onDragStop}
-          scale={store.transform[2]}
+          scale={scale.value}
           disabled={!props.isDraggable}
           cancel=".nodrag"
           grid={grid.value}
