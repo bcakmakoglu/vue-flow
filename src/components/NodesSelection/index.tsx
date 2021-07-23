@@ -3,7 +3,7 @@
  * made a selectio  with on or several nodes
  */
 import { computed, defineComponent, inject, PropType } from 'vue';
-import { Draggable, DraggableEventHandler } from '@braks/revue-draggable';
+import { Draggable, DraggableEventListener } from '@braks/revue-draggable';
 import { isNode } from '../../utils/graph';
 import { Node, RevueFlowStore } from '../../types';
 
@@ -65,13 +65,12 @@ const NodesSelection = defineComponent({
       left: `${store.selectedNodesBbox.x}px`
     }));
 
-    const onStart: DraggableEventHandler = (event: MouseEvent) => {
-      console.log('ondragstart');
+    const onStart: DraggableEventListener = ({ event }) => {
+      event.stopPropagation();
       props.onSelectionDragStart?.(event, selectedNodes.value);
     };
 
-    const onDrag: DraggableEventHandler = (event, data) => {
-      console.log('ondrag');
+    const onDrag: DraggableEventListener = ({ event, data }) => {
       props.onSelectionDrag?.(event, selectedNodes.value);
 
       store.updateNodePosDiff({
@@ -83,8 +82,7 @@ const NodesSelection = defineComponent({
       });
     };
 
-    const onStop: DraggableEventHandler = (event: MouseEvent) => {
-      console.log('ondragend');
+    const onStop: DraggableEventListener = ({ event }) => {
       store.updateNodePosDiff({
         isDragging: false
       });
@@ -106,9 +104,9 @@ const NodesSelection = defineComponent({
       ) : (
         <div class="revue-flow__nodesselection" style={style.value}>
           <Draggable
-            start={onStart}
-            move={onDrag}
-            stop={onStop}
+            onStart={onStart}
+            onMove={onDrag}
+            onStop={onStop}
             scale={store.transform[2]}
             grid={grid.value}
             enableUserSelectHack={false}

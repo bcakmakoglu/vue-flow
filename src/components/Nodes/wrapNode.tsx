@@ -162,14 +162,12 @@ export default (NodeComponent: DefineComponent<WrapNodeProps>) => {
         }
       ]);
 
-      const scale = computed(() => store.transform[2] || 1);
-
       return () => (
         <DraggableCore
           start={onDragStart}
           move={onDrag}
           stop={onDragStop}
-          scale={scale.value}
+          scale={store.transform[2]}
           disabled={!props.isDraggable}
           cancel=".nodrag"
           grid={grid.value}
