@@ -4,14 +4,13 @@ import {
   ElementId,
   XYPosition,
   OnConnectFunc,
-  OnConnectStartFunc,
-  OnConnectStopFunc,
-  OnConnectEndFunc,
   ConnectionMode,
   SetConnectionId,
   Connection,
-  HandleType
+  HandleType,
+  RevueFlowStore
 } from '../../types';
+import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 export type ValidConnectionFunc = (connection: Connection) => boolean;
 export type SetSourceIdFunc = (params: SetConnectionId) => void;
@@ -85,19 +84,19 @@ function resetRecentHandle(hoveredHandle: Element): void {
 
 export function onMouseDown(
   event: MouseEvent,
+  store: RevueFlowStore,
+  hooks: {
+    connectStart: RevueFlowHooks['connectStart'];
+    connectStop: RevueFlowHooks['connectStop'];
+    connectEnd: RevueFlowHooks['connectEnd'];
+  },
   handleId: ElementId | null,
   nodeId: ElementId,
-  setConnectionNodeId: SetSourceIdFunc,
-  setPosition: SetPosition,
   onConnect: OnConnectFunc,
   isTarget: boolean,
   isValidConnection: ValidConnectionFunc,
-  connectionMode: ConnectionMode,
   elementEdgeUpdaterType?: HandleType,
-  onEdgeUpdateEnd?: (evt: MouseEvent) => void,
-  onConnectStart?: OnConnectStartFunc,
-  onConnectStop?: OnConnectStopFunc,
-  onConnectEnd?: OnConnectEndFunc
+  onEdgeUpdateEnd?: (evt: MouseEvent) => void
 ): void {
   const revueFlowNode = (event.target as Element).closest('.revue-flow');
   // when revue-flow is used inside a shadow root we can't use document
@@ -119,23 +118,23 @@ export function onMouseDown(
   const containerBounds = revueFlowNode.getBoundingClientRect();
   let recentHoveredHandle: Element;
 
-  setPosition({
-    x: event.clientX - containerBounds.left,
-    y: event.clientY - containerBounds.top
-  });
+  store.connectionPosition.x = event.clientX - containerBounds.left;
+  store.connectionPosition.y = event.clientY - containerBounds.top;
 
-  setConnectionNodeId({ connectionNodeId: nodeId, connectionHandleId: handleId, connectionHandleType: handleType });
-  onConnectStart?.(event, { nodeId, handleId, handleType });
+  store.setConnectionNodeId({
+    connectionNodeId: nodeId,
+    connectionHandleId: handleId,
+    connectionHandleType: handleType
+  });
+  hooks.connectStart.trigger({ event, params: { nodeId, handleId, handleType } });
 
   function onMouseMove(event: MouseEvent) {
-    setPosition({
-      x: event.clientX - containerBounds.left,
-      y: event.clientY - containerBounds.top
-    });
+    store.connectionPosition.x = event.clientX - containerBounds.left;
+    store.connectionPosition.y = event.clientY - containerBounds.top;
 
     const { connection, elementBelow, isValid, isHoveringHandle } = checkElementBelowIsValid(
       event,
-      connectionMode,
+      store.connectionMode,
       isTarget,
       nodeId,
       handleId,
@@ -159,7 +158,7 @@ export function onMouseDown(
   function onMouseUp(event: MouseEvent) {
     const { connection, isValid } = checkElementBelowIsValid(
       event,
-      connectionMode,
+      store.connectionMode,
       isTarget,
       nodeId,
       handleId,
@@ -167,20 +166,20 @@ export function onMouseDown(
       doc
     );
 
-    onConnectStop?.(event);
+    hooks.connectStop.trigger(event);
 
     if (isValid) {
       onConnect?.(connection);
     }
 
-    onConnectEnd?.(event);
+    hooks.connectEnd.trigger(event);
 
     if (elementEdgeUpdaterType && onEdgeUpdateEnd) {
       onEdgeUpdateEnd(event);
     }
 
     resetRecentHandle(recentHoveredHandle);
-    setConnectionNodeId({ connectionNodeId: null, connectionHandleId: null, connectionHandleType: null });
+    store.setConnectionNodeId({ connectionNodeId: null, connectionHandleId: null, connectionHandleType: null });
 
     doc.removeEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject);
     doc.removeEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject);

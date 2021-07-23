@@ -1,10 +1,43 @@
-import { defineComponent, inject, PropType } from 'vue';
+<template>
+  <ZoomPane
+    :onMove="onMove"
+    :onMoveStart="onMoveStart"
+    :onMoveEnd="onMoveEnd"
+    :selectionKeyPressed="keyPressed"
+    :elementsSelectable="elementsSelectable"
+    :zoomOnScroll="zoomOnScroll"
+    :zoomOnPinch="zoomOnPinch"
+    :panOnScroll="panOnScroll"
+    :panOnScrollSpeed="panOnScrollSpeed"
+    :panOnScrollMode="panOnScrollMode"
+    :zoomOnDoubleClick="zoomOnDoubleClick"
+    :paneMoveable="paneMoveable"
+    :defaultPosition="defaultPosition"
+    :defaultZoom="defaultZoom"
+    :translateExtent="translateExtent"
+    :zoomActivationKeyCode="zoomActivationKeyCode"
+  >
+    <slot></slot>
+    <UserSelection v-if="keyPressed" />
+    <NodesSelection
+      v-if="selectionActive"
+      :onSelectionDragStart="onSelectionDragStart"
+      :onSelectionDrag="onSelectionDrag"
+      :onSelectionDragStop="onSelectionDragStop"
+      :onSelectionContextMenu="onSelectionContextMenu"
+    />
+    <div class="revue-flow__pane" @click="onClick" @onContextmenu="onContextMenu" @wheel="onWheel" />
+  </ZoomPane>
+</template>
+<script lang="ts">
+import { computed, defineComponent, inject, PropType } from 'vue';
 import ZoomPane from '../ZoomPane';
 import UserSelection from '../../components/UserSelection';
 import NodesSelection from '../../components/NodesSelection';
 import { RevueFlowStore, GraphViewProps } from '../../types';
 import useGlobalKeyHandler from '../../hooks/useGlobalKeyHandler';
 import useKeyPress from '../../hooks/useKeyPress';
+import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 type FlowRendererProps = Omit<
   GraphViewProps,
@@ -154,64 +187,39 @@ const FlowRenderer = defineComponent({
       default: undefined
     }
   },
-  setup(props, { slots }) {
+  setup(props) {
     const store = inject<RevueFlowStore>('store')!;
+    const hooks = inject<RevueFlowHooks>('hooks')!;
     const keyPressed = useKeyPress(props.selectionKeyCode);
 
     useGlobalKeyHandler({
       store,
       onElementsRemove: props.onElementsRemove,
-      deleteKeyCode: props.deleteKeyCode as string,
-      multiSelectionKeyCode: props.multiSelectionKeyCode as string
+      deleteKeyCode: props.deleteKeyCode,
+      multiSelectionKeyCode: props.multiSelectionKeyCode
     });
 
     const onClick = (event: MouseEvent) => {
-      props.onPaneClick?.(event);
-      store?.unsetNodesSelection();
-      store?.resetSelectedElements();
+      hooks.paneClick.trigger(event);
+      store.unsetNodesSelection();
+      store.resetSelectedElements();
     };
 
-    const onContextMenu = (event: MouseEvent) => {
-      props.onPaneContextMenu?.(event);
-    };
+    const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event);
 
-    const onWheel = (event: WheelEvent) => {
-      props.onPaneScroll?.(event);
-    };
+    const onWheel = (event: WheelEvent) => hooks.paneScroll.trigger(event);
 
-    return () => (
-      <ZoomPane
-        onMove={props.onMove}
-        onMoveStart={props.onMoveStart}
-        onMoveEnd={props.onMoveEnd}
-        selectionKeyPressed={keyPressed.value}
-        elementsSelectable={props.elementsSelectable}
-        zoomOnScroll={props.zoomOnScroll}
-        zoomOnPinch={props.zoomOnPinch}
-        panOnScroll={props.panOnScroll}
-        panOnScrollSpeed={props.panOnScrollSpeed}
-        panOnScrollMode={props.panOnScrollMode}
-        zoomOnDoubleClick={props.zoomOnDoubleClick}
-        paneMoveable={props.paneMoveable}
-        defaultPosition={props.defaultPosition}
-        defaultZoom={props.defaultZoom}
-        translateExtent={props.translateExtent}
-        zoomActivationKeyCode={props.zoomActivationKeyCode}
-      >
-        {slots.default ? slots.default() : ''}
-        {keyPressed.value ? <UserSelection /> : ''}
-        {store?.nodesSelectionActive && (
-          <NodesSelection
-            onSelectionDragStart={props.onSelectionDragStart}
-            onSelectionDrag={props.onSelectionDrag}
-            onSelectionDragStop={props.onSelectionDragStop}
-            onSelectionContextMenu={props.onSelectionContextMenu}
-          />
-        )}
-        <div class="revue-flow__pane" onClick={onClick} onContextmenu={onContextMenu} onWheel={onWheel} />
-      </ZoomPane>
-    );
+    const selectionActive = computed(() => store.nodesSelectionActive);
+
+    return {
+      onClick,
+      onContextMenu,
+      onWheel,
+      keyPressed,
+      selectionActive
+    };
   }
 });
 
 export default FlowRenderer;
+</script>

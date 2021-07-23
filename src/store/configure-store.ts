@@ -21,18 +21,6 @@ export default function configureStore(
     state: () => preloadedState,
     getters: {},
     actions: {
-      setOnConnect(onConnect) {
-        this.onConnect = onConnect;
-      },
-      setOnConnectStart(onConnectStart) {
-        this.onConnectStart = onConnectStart;
-      },
-      setOnConnectEnd(onConnectEnd) {
-        this.onConnectEnd = onConnectEnd;
-      },
-      setOnConnectStop(onConnectStop) {
-        this.onConnectStop = onConnectStop;
-      },
       setElements(elements) {
         const propElements = elements;
         const nextElements: NextElements = {
@@ -252,46 +240,19 @@ export default function configureStore(
       unsetNodesSelection() {
         this.nodesSelectionActive = false;
       },
-      updateTransform(transform) {
-        this.transform = transform;
-      },
       updateSize(size) {
         this.height = size.height;
         this.width = size.width;
-      },
-      setConnectionPosition(connectionPosition) {
-        this.connectionPosition = connectionPosition;
       },
       setConnectionNodeId(payload) {
         this.connectionNodeId = payload.connectionNodeId;
         this.connectionHandleId = payload.connectionHandleId;
         this.connectionHandleType = payload.connectionHandleType;
       },
-      setSnapToGrid(snapToGrid) {
-        this.snapToGrid = snapToGrid;
-      },
-      setSnapGrid(snapGrid) {
-        this.snapGrid = snapGrid;
-      },
       setInteractive(isInteractive) {
         this.nodesDraggable = isInteractive;
         this.nodesConnectable = isInteractive;
         this.elementsSelectable = isInteractive;
-      },
-      setNodesDraggable(nodesDraggable) {
-        this.nodesDraggable = nodesDraggable;
-      },
-      setNodesConnectable(nodesConnectable) {
-        this.nodesConnectable = nodesConnectable;
-      },
-      setElementsSelectable(elementsSelectable) {
-        this.elementsSelectable = elementsSelectable;
-      },
-      setMultiSelectionActive(multiSelectionActive) {
-        this.multiSelectionActive = multiSelectionActive;
-      },
-      setConnectionMode(connectionMode) {
-        this.connectionMode = connectionMode;
       }
     }
   });

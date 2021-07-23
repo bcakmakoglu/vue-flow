@@ -870,10 +870,6 @@ export interface RevueFlowState {
 }
 
 export type RevueFlowActions = {
-  setOnConnect: (onConnect: OnConnectFunc) => void;
-  setOnConnectStart: (onConnectStart: OnConnectStartFunc) => void;
-  setOnConnectStop: (onConnectStop: OnConnectStopFunc) => void;
-  setOnConnectEnd: (onConnectEnd: OnConnectEndFunc) => void;
   setElements: (elements: Elements) => void;
   updateNodeDimensions: (updates: NodeDimensionUpdate[]) => void;
   updateNodePos: (payload: NodePosUpdate) => void;
@@ -889,18 +885,9 @@ export type RevueFlowActions = {
   setNodeExtent: (nodeExtent: NodeExtent) => void;
   resetSelectedElements: () => void;
   unsetNodesSelection: () => void;
-  updateTransform: (transform: Transform) => void;
   updateSize: (size: Dimensions) => void;
-  setConnectionPosition: (connectionPosition: XYPosition) => void;
   setConnectionNodeId: (payload: SetConnectionId) => void;
-  setSnapToGrid: (snapToGrid: boolean) => void;
-  setSnapGrid: (snapGrid: SnapGrid) => void;
   setInteractive: (isInteractive: boolean) => void;
-  setNodesDraggable: (nodesDraggable: boolean) => void;
-  setNodesConnectable: (nodesConnectable: boolean) => void;
-  setElementsSelectable: (elementsSelectable: boolean) => void;
-  setMultiSelectionActive: (multiSelectionActive: boolean) => void;
-  setConnectionMode: (connectionMode: ConnectionMode) => void;
 };
 
 export type RevueFlowStore = Store<string, RevueFlowState, any, RevueFlowActions>;
@@ -935,6 +922,14 @@ export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
   onPaneScroll?: (event?: WheelEvent) => void;
   onPaneClick?: (event: MouseEvent) => void;
   onPaneContextMenu?: (event: MouseEvent) => void;
+  onEdgeUpdate?: OnEdgeUpdateFunc;
+  onEdgeContextMenu?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeMouseEnter?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeMouseMove?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeMouseLeave?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeDoubleClick?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeUpdateStart?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeUpdateEnd?: (event: MouseEvent, edge: Edge) => void;
   nodeTypes?: NodeTypesType;
   edgeTypes?: EdgeTypesType;
   connectionMode?: ConnectionMode;
@@ -967,14 +962,6 @@ export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
   panOnScrollSpeed?: number;
   panOnScrollMode?: PanOnScrollMode;
   zoomOnDoubleClick?: boolean;
-  onEdgeUpdate?: OnEdgeUpdateFunc;
-  onEdgeContextMenu?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseEnter?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseMove?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseLeave?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeDoubleClick?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeUpdateStart?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeUpdateEnd?: (event: MouseEvent, edge: Edge) => void;
   edgeUpdaterRadius?: number;
   nodeTypesId?: string;
   edgeTypesId?: string;

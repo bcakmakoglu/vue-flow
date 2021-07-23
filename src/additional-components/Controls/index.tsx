@@ -1,6 +1,6 @@
 import { defineComponent, HTMLAttributes, inject, onMounted, PropType, ref } from 'vue';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
-import { FitViewParams, RevueFlowStore } from '../../types';
+import { FitViewParams, RevueFlowStore, ZoomPanHelperFunctions } from '../../types';
 import PlusIcon from '../../../assets/icons/plus.svg';
 import MinusIcon from '../../../assets/icons/minus.svg';
 import Fitview from '../../../assets/icons/fitview.svg';
@@ -89,27 +89,28 @@ const Controls = defineComponent({
   setup(props, { slots }) {
     const store = inject<RevueFlowStore>('store')!;
     const isVisible = ref<boolean>(false);
-    const zoomHelper = ref(useZoomPanHelper());
+    const zoomHelper = ref<ZoomPanHelperFunctions>();
+    const { onReady } = useZoomPanHelper(store);
 
-    onMounted(() => {
-      zoomHelper.value = useZoomPanHelper();
+    onReady((helper) => {
+      zoomHelper.value = helper;
     });
 
     const isInteractive = store.nodesDraggable && store.nodesConnectable && store.elementsSelectable;
     const mapClasses = ['revue-flow__controls'];
 
     const onZoomInHandler = () => {
-      zoomHelper.value.zoomIn?.();
+      zoomHelper.value?.zoomIn?.();
       props.onZoomIn?.();
     };
 
     const onZoomOutHandler = () => {
-      zoomHelper.value.zoomOut?.();
+      zoomHelper.value?.zoomOut?.();
       props.onZoomOut?.();
     };
 
     const onFitViewHandler = () => {
-      zoomHelper.value.fitView?.(props.fitViewParams);
+      zoomHelper.value?.fitView?.(props.fitViewParams);
       props.onFitView?.();
     };
 

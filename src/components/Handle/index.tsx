@@ -1,6 +1,7 @@
 import { Connection, ElementId, Position, RevueFlowStore } from '../../types';
 import { onMouseDown, ValidConnectionFunc } from './handler';
 import { computed, defineComponent, inject, PropType } from 'vue';
+import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 const alwaysValid = () => true;
 
@@ -39,6 +40,7 @@ const Handle = defineComponent({
   },
   setup(props, { slots }) {
     const store = inject<RevueFlowStore>('store')!;
+    const hooks = inject<RevueFlowHooks>('hooks')!;
     const nodeId = inject<ElementId>('NodeIdContext') as ElementId;
     const isTarget = computed(() => props.type === 'target');
     const onConnect = computed(() => store.onConnect);
@@ -51,19 +53,15 @@ const Handle = defineComponent({
     const onMouseDownHandler = (event: MouseEvent) => {
       onMouseDown(
         event,
+        store,
+        hooks,
         props.id as string,
         nodeId,
-        store.setConnectionNodeId,
-        store.setConnectionPosition,
         onConnectExtended,
         isTarget.value,
         props.isValidConnection,
-        store.connectionMode,
         undefined,
-        undefined,
-        store.onConnectStart,
-        store.onConnectStop,
-        store.onConnectEnd
+        undefined
       );
     };
 

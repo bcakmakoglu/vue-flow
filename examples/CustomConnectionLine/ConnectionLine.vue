@@ -1,3 +1,16 @@
+<template>
+  <g>
+    <path
+      class="animated"
+      fill="none"
+      stroke="#222"
+      :stroke-width="1.5"
+      :d="`M${sourceX},${sourceY} C ${sourceX} ${targetY} ${sourceX} ${targetY} ${targetX},${targetY}`"
+    />
+    <circle :cx="targetX" :cy="targetY" fill="#fff" :r="3" stroke="#222" :stroke-width="1.5" />
+  </g>
+</template>
+<script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import { ConnectionLineComponentProps } from '../../src';
 
@@ -19,21 +32,8 @@ const ConnectionLine = defineComponent({
       type: Number as PropType<ConnectionLineComponentProps['targetY']>,
       required: true
     }
-  },
-  setup(props) {
-    return () => (
-      <g>
-        <path
-          fill="none"
-          stroke="#222"
-          stroke-width={1.5}
-          class="animated"
-          d={`M${props.sourceX},${props.sourceY} C ${props.sourceX} ${props.targetY} ${props.sourceX} ${props.targetY} ${props.targetX},${props.targetY}`}
-        />
-        <circle cx={props.targetX} cy={props.targetY} fill="#fff" r={3} stroke="#222" stroke-width={1.5} />
-      </g>
-    );
   }
 });
 
 export default ConnectionLine;
+</script>
