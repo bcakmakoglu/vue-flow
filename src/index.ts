@@ -1,4 +1,4 @@
-export { default as default } from './container/RevueFlow';
+export { default as default } from './container/RevueFlow/RevueFlow.vue';
 export { default as Handle } from './components/Handle';
 export { default as EdgeText } from './components/Edges/EdgeText';
 export { getBezierPath } from './components/Edges/BezierEdge';

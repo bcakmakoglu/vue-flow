@@ -198,7 +198,7 @@ const ZoomPane = defineComponent({
           store.d3Zoom.on('zoom', null);
         } else {
           store.d3Zoom.on('zoom', (event: any) => {
-            store.updateTransform([event.transform.x, event.transform.y, event.transform.k]);
+            store.transform = [event.transform.x, event.transform.y, event.transform.k];
 
             if (props.onMove) {
               const flowTransform = eventToFlowTransform(event.transform);
