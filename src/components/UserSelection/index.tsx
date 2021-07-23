@@ -3,6 +3,7 @@
  */
 import { RevueFlowStore, XYPosition } from '../../types';
 import { computed, defineComponent, inject } from 'vue';
+import { templateRef, useEventListener } from '@vueuse/core';
 
 function getMousePosition(event: MouseEvent): XYPosition | void {
   const revueFlowNode = (event.target as Element).closest('.revue-flow');
@@ -18,39 +19,30 @@ function getMousePosition(event: MouseEvent): XYPosition | void {
   };
 }
 
-const SelectionRect = defineComponent({
-  setup() {
-    const store = inject<RevueFlowStore>('store');
-
-    return () => {
-      return store?.userSelectionRect.draw ? (
-        <div
-          class="revue-flow__selection"
-          style={{
-            width: `${store?.userSelectionRect.width}px`,
-            height: `${store?.userSelectionRect.height}px`,
-            transform: `translate(${store?.userSelectionRect.x}px, ${store?.userSelectionRect.y}px)`
-          }}
-        />
-      ) : (
-        ''
-      );
-    };
-  }
-});
+const SelectionRect = (props: { width: number; height: number; x: number; y: number }) => {
+  return (
+    <div
+      class="revue-flow__selection"
+      style={{
+        width: `${props.width}px`,
+        height: `${props.height}px`,
+        transform: `translate(${props.x}px, ${props.y}px)`
+      }}
+    />
+  );
+};
 
 export default defineComponent({
   components: { SelectionRect },
   setup() {
     const store = inject<RevueFlowStore>('store')!;
-
+    const el = templateRef('user-selection', null);
     const shouldRender = computed(() => store.selectionActive || store.elementsSelectable);
-
     if (!shouldRender.value) {
       return null;
     }
 
-    const onMouseDown = (event: MouseEvent): void => {
+    const onMouseDown = (event: MouseEvent) => {
       const mousePos = getMousePosition(event);
       if (!mousePos) {
         return;
@@ -59,7 +51,8 @@ export default defineComponent({
       store.setUserSelection(mousePos);
     };
 
-    const onMouseMove = (event: MouseEvent): void => {
+    const onMouseMove = (event: MouseEvent) => {
+
       if (!store.selectionActive) {
         return;
       }
@@ -72,23 +65,33 @@ export default defineComponent({
       store.updateUserSelection(mousePos);
     };
 
-    const onMouseUp = () => store.unsetUserSelection();
+    const onMouseUp = () => {
+      store.unsetUserSelection();
+    };
 
     const onMouseLeave = () => {
       store.unsetUserSelection();
       store.unsetNodesSelection();
     };
 
+    useEventListener(el, 'mousedown', onMouseDown);
+    useEventListener(el, 'mousemove', onMouseMove);
+    useEventListener(el, 'click', onMouseUp);
+    useEventListener(el, 'mouseup', onMouseUp);
+    useEventListener(el, 'mouseleave', onMouseLeave);
+
     return () => (
-      <div
-        class="revue-flow__selectionpane"
-        onMousedown={onMouseDown}
-        onMousemove={onMouseMove}
-        onClick={onMouseUp}
-        onMouseup={onMouseUp}
-        onMouseleave={onMouseLeave}
-      >
-        <SelectionRect />
+      <div class="revue-flow__selectionpane" ref="user-selection">
+        {store?.userSelectionRect.draw ? (
+          <SelectionRect
+            width={store.userSelectionRect.width}
+            height={store.userSelectionRect.height}
+            x={store.userSelectionRect.x}
+            y={store.userSelectionRect.y}
+          />
+        ) : (
+          ''
+        )}
       </div>
     );
   }

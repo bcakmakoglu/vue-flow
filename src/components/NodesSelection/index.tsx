@@ -66,7 +66,6 @@ const NodesSelection = defineComponent({
     }));
 
     const onStart: DraggableEventListener = ({ event }) => {
-      event.stopPropagation();
       props.onSelectionDragStart?.(event, selectedNodes.value);
     };
 

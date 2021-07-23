@@ -1,14 +1,6 @@
-import {
-  computed,
-  CSSProperties,
-  defineComponent,
-  HTMLAttributes,
-  onBeforeUnmount,
-  onUpdated,
-  PropType,
-  provide,
-  watchEffect
-} from 'vue';
+import { computed, defineComponent, onBeforeUnmount, PropType, provide, watch } from 'vue';
+import '../../style.css';
+import '../../theme-default.css';
 import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
@@ -16,30 +8,7 @@ import OutputNode from '../../components/Nodes/OutputNode';
 import { createNodeTypes } from '../NodeRenderer/utils';
 import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '../../components/Edges';
 import { createEdgeTypes } from '../EdgeRenderer/utils';
-import {
-  Elements,
-  NodeTypesType,
-  EdgeTypesType,
-  OnLoadFunc,
-  Node,
-  Edge,
-  Connection,
-  ConnectionMode,
-  ConnectionLineType,
-  ConnectionLineComponent,
-  FlowTransform,
-  OnConnectStartFunc,
-  OnConnectStopFunc,
-  OnConnectEndFunc,
-  TranslateExtent,
-  KeyCode,
-  PanOnScrollMode,
-  OnEdgeUpdateFunc,
-  NodeExtent,
-  RevueFlowStore
-} from '../../types';
-import '../../style.css';
-import '../../theme-default.css';
+import { ConnectionMode, ConnectionLineType, PanOnScrollMode, RevueFlowStore, RevueFlowProps } from '../../types';
 import { initialState } from '../../store';
 import configureStore from '../../store/configure-store';
 
@@ -55,79 +24,6 @@ const defaultEdgeTypes = {
   step: StepEdge,
   smoothstep: SmoothStepEdge
 };
-
-export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
-  elements: Elements;
-  onElementClick?: (event: MouseEvent, element: Node | Edge) => void;
-  onElementsRemove?: (elements: Elements) => void;
-  onNodeDoubleClick?: (event: MouseEvent, node: Node) => void;
-  onNodeMouseEnter?: (event: MouseEvent, node: Node) => void;
-  onNodeMouseMove?: (event: MouseEvent, node: Node) => void;
-  onNodeMouseLeave?: (event: MouseEvent, node: Node) => void;
-  onNodeContextMenu?: (event: MouseEvent, node: Node) => void;
-  onNodeDragStart?: (event: MouseEvent, node: Node) => void;
-  onNodeDrag?: (event: MouseEvent, node: Node) => void;
-  onNodeDragStop?: (event: MouseEvent, node: Node) => void;
-  onConnect?: (connection: Edge | Connection) => void;
-  onConnectStart?: OnConnectStartFunc;
-  onConnectStop?: OnConnectStopFunc;
-  onConnectEnd?: OnConnectEndFunc;
-  onLoad?: OnLoadFunc;
-  onMove?: (flowTransform?: FlowTransform) => void;
-  onMoveStart?: (flowTransform?: FlowTransform) => void;
-  onMoveEnd?: (flowTransform?: FlowTransform) => void;
-  onSelectionChange?: (elements: Elements | null) => void;
-  onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void;
-  onSelectionDrag?: (event: MouseEvent, nodes: Node[]) => void;
-  onSelectionDragStop?: (event: MouseEvent, nodes: Node[]) => void;
-  onSelectionContextMenu?: (event: MouseEvent, nodes: Node[]) => void;
-  onPaneScroll?: (event?: WheelEvent) => void;
-  onPaneClick?: (event: MouseEvent) => void;
-  onPaneContextMenu?: (event: MouseEvent) => void;
-  nodeTypes?: NodeTypesType;
-  edgeTypes?: EdgeTypesType;
-  connectionMode?: ConnectionMode;
-  connectionLineType?: ConnectionLineType;
-  connectionLineStyle?: CSSProperties;
-  connectionLineComponent?: ConnectionLineComponent;
-  deleteKeyCode?: KeyCode;
-  selectionKeyCode?: KeyCode;
-  multiSelectionKeyCode?: KeyCode;
-  zoomActivationKeyCode?: KeyCode;
-  snapToGrid?: boolean;
-  snapGrid?: [number, number];
-  onlyRenderVisibleElements?: boolean;
-  nodesDraggable?: boolean;
-  nodesConnectable?: boolean;
-  elementsSelectable?: boolean;
-  selectNodesOnDrag?: boolean;
-  paneMoveable?: boolean;
-  minZoom?: number;
-  maxZoom?: number;
-  defaultZoom?: number;
-  defaultPosition?: [number, number];
-  translateExtent?: TranslateExtent;
-  nodeExtent?: NodeExtent;
-  arrowHeadColor?: string;
-  markerEndId?: string;
-  zoomOnScroll?: boolean;
-  zoomOnPinch?: boolean;
-  panOnScroll?: boolean;
-  panOnScrollSpeed?: number;
-  panOnScrollMode?: PanOnScrollMode;
-  zoomOnDoubleClick?: boolean;
-  onEdgeUpdate?: OnEdgeUpdateFunc;
-  onEdgeContextMenu?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseEnter?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseMove?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseLeave?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeDoubleClick?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeUpdateStart?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeUpdateEnd?: (event: MouseEvent, edge: Edge) => void;
-  edgeUpdaterRadius?: number;
-  nodeTypesId?: string;
-  edgeTypesId?: string;
-}
 
 const RevueFlow = defineComponent({
   name: 'RevueFlow',
@@ -552,14 +448,8 @@ const RevueFlow = defineComponent({
     provide<RevueFlowStore>('store', store);
     store.setElements(props.elements);
 
-    watchEffect(() => {
+    watch(props, () => {
       store.setElements(props.elements);
-      props.onSelectionChange?.(store.selectedElements);
-    });
-
-    onUpdated(() => {
-      store.setElements(props.elements);
-      props.onSelectionChange?.(store.selectedElements);
     });
 
     onBeforeUnmount(() => {

@@ -1,9 +1,8 @@
-import { GraphViewProps } from '../GraphView';
+import { defineComponent, inject, PropType } from 'vue';
 import ZoomPane from '../ZoomPane';
 import UserSelection from '../../components/UserSelection';
 import NodesSelection from '../../components/NodesSelection';
-import { defineComponent, inject, PropType } from 'vue';
-import { RevueFlowStore } from '../../types';
+import { RevueFlowStore, GraphViewProps } from '../../types';
 import useGlobalKeyHandler from '../../hooks/useGlobalKeyHandler';
 import useKeyPress from '../../hooks/useKeyPress';
 
@@ -199,7 +198,7 @@ const FlowRenderer = defineComponent({
         zoomActivationKeyCode={props.zoomActivationKeyCode}
       >
         {slots.default ? slots.default() : ''}
-        {keyPressed.value ? <UserSelection track-by={'selection'} /> : ''}
+        {keyPressed.value ? <UserSelection /> : ''}
         {store?.nodesSelectionActive && (
           <NodesSelection
             onSelectionDragStart={props.onSelectionDragStart}

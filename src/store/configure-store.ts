@@ -189,15 +189,8 @@ export default function configureStore(
         const selectedEdges = getConnectedEdges(selectedNodes, this.edges);
 
         const nextSelectedElements = [...selectedNodes, ...selectedEdges];
-        const selectedElementsChanged = !isEqual(nextSelectedElements, this.selectedElements);
-        const selectedElementsUpdate = selectedElementsChanged
-          ? nextSelectedElements.length > 0
-            ? nextSelectedElements
-            : []
-          : [];
-
         this.userSelectionRect = nextUserSelectRect;
-        this.selectedElements = selectedElementsUpdate;
+        this.selectedElements = nextSelectedElements;
       },
       unsetUserSelection() {
         const selectedNodes = this.selectedElements?.filter((node) => isNode(node) && node.__rf) as Node[];

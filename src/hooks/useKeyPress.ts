@@ -1,44 +1,37 @@
-import { isInputDOMNode } from '../utils';
+import { ref, Ref } from 'vue';
 import { KeyCode } from '../types';
-import { onBeforeUnmount, onMounted, ref, Ref } from 'vue';
+import { onKeyStroke, useEventListener } from '@vueuse/core';
 
 export default (keyCode?: KeyCode): Ref<boolean> => {
   const keyPressed = ref<boolean>(false);
 
-  const downHandler = (event: KeyboardEvent) => {
-    if (!isInputDOMNode(event) && (event.key === keyCode || event.keyCode === keyCode)) {
-      event.preventDefault();
+  onKeyStroke(
+    (event) => event.key === keyCode || event.keyCode === keyCode,
+    (e) => {
+      e.preventDefault();
       keyPressed.value = true;
-    }
-  };
-
-  const upHandler = (event: KeyboardEvent) => {
-    if (!isInputDOMNode(event) && (event.key === keyCode || event.keyCode === keyCode)) {
+    },
+    { eventName: 'keypress' }
+  );
+  onKeyStroke(
+    (event) => event.key === keyCode || event.keyCode === keyCode,
+    (e) => {
+      e.preventDefault();
+      keyPressed.value = true;
+    },
+    { eventName: 'keydown' }
+  );
+  onKeyStroke(
+    (event) => event.key === keyCode || event.keyCode === keyCode,
+    (e) => {
+      e.preventDefault();
       keyPressed.value = false;
-    }
-  };
+    },
+    { eventName: 'keyup' }
+  );
 
-  const resetHandler = () => (keyPressed.value = false);
-
-  const bindEvents = () => {
-    if (typeof keyCode !== 'undefined') {
-      window.addEventListener('keydown', downHandler);
-      window.addEventListener('keyup', upHandler);
-      window.addEventListener('blur', resetHandler);
-    }
-  };
-
-  const unbindEvents = () => {
-    window.removeEventListener('keydown', downHandler);
-    window.removeEventListener('keyup', upHandler);
-    window.removeEventListener('blur', resetHandler);
-  };
-
-  onMounted(() => {
-    bindEvents();
-  });
-  onBeforeUnmount(() => {
-    unbindEvents();
+  useEventListener(window, 'blur', () => {
+    keyPressed.value = false;
   });
 
   return keyPressed;

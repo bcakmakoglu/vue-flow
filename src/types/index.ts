@@ -1,5 +1,5 @@
 import { Selection as D3Selection, ZoomBehavior } from 'd3';
-import { DefineComponent, HTMLAttributes, PropType, VNode } from 'vue';
+import { CSSProperties, DefineComponent, HTMLAttributes, PropType, VNode } from 'vue';
 import { Store } from 'pinia';
 
 export type ElementId = string;
@@ -906,3 +906,92 @@ export type RevueFlowActions = {
 export type RevueFlowStore = Store<string, RevueFlowState, any, RevueFlowActions>;
 
 export type UpdateNodeInternals = (nodeId: ElementId) => void;
+
+export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
+  elements: Elements;
+  onElementClick?: (event: MouseEvent, element: Node | Edge) => void;
+  onElementsRemove?: (elements: Elements) => void;
+  onNodeDoubleClick?: (event: MouseEvent, node: Node) => void;
+  onNodeMouseEnter?: (event: MouseEvent, node: Node) => void;
+  onNodeMouseMove?: (event: MouseEvent, node: Node) => void;
+  onNodeMouseLeave?: (event: MouseEvent, node: Node) => void;
+  onNodeContextMenu?: (event: MouseEvent, node: Node) => void;
+  onNodeDragStart?: (event: MouseEvent, node: Node) => void;
+  onNodeDrag?: (event: MouseEvent, node: Node) => void;
+  onNodeDragStop?: (event: MouseEvent, node: Node) => void;
+  onConnect?: (connection: Edge | Connection) => void;
+  onConnectStart?: OnConnectStartFunc;
+  onConnectStop?: OnConnectStopFunc;
+  onConnectEnd?: OnConnectEndFunc;
+  onLoad?: OnLoadFunc;
+  onMove?: (flowTransform?: FlowTransform) => void;
+  onMoveStart?: (flowTransform?: FlowTransform) => void;
+  onMoveEnd?: (flowTransform?: FlowTransform) => void;
+  onSelectionChange?: (elements: Elements | null) => void;
+  onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void;
+  onSelectionDrag?: (event: MouseEvent, nodes: Node[]) => void;
+  onSelectionDragStop?: (event: MouseEvent, nodes: Node[]) => void;
+  onSelectionContextMenu?: (event: MouseEvent, nodes: Node[]) => void;
+  onPaneScroll?: (event?: WheelEvent) => void;
+  onPaneClick?: (event: MouseEvent) => void;
+  onPaneContextMenu?: (event: MouseEvent) => void;
+  nodeTypes?: NodeTypesType;
+  edgeTypes?: EdgeTypesType;
+  connectionMode?: ConnectionMode;
+  connectionLineType?: ConnectionLineType;
+  connectionLineStyle?: CSSProperties;
+  connectionLineComponent?: ConnectionLineComponent;
+  deleteKeyCode?: KeyCode;
+  selectionKeyCode?: KeyCode;
+  multiSelectionKeyCode?: KeyCode;
+  zoomActivationKeyCode?: KeyCode;
+  snapToGrid?: boolean;
+  snapGrid?: [number, number];
+  onlyRenderVisibleElements?: boolean;
+  nodesDraggable?: boolean;
+  nodesConnectable?: boolean;
+  elementsSelectable?: boolean;
+  selectNodesOnDrag?: boolean;
+  paneMoveable?: boolean;
+  minZoom?: number;
+  maxZoom?: number;
+  defaultZoom?: number;
+  defaultPosition?: [number, number];
+  translateExtent?: TranslateExtent;
+  nodeExtent?: NodeExtent;
+  arrowHeadColor?: string;
+  markerEndId?: string;
+  zoomOnScroll?: boolean;
+  zoomOnPinch?: boolean;
+  panOnScroll?: boolean;
+  panOnScrollSpeed?: number;
+  panOnScrollMode?: PanOnScrollMode;
+  zoomOnDoubleClick?: boolean;
+  onEdgeUpdate?: OnEdgeUpdateFunc;
+  onEdgeContextMenu?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeMouseEnter?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeMouseMove?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeMouseLeave?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeDoubleClick?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeUpdateStart?: (event: MouseEvent, edge: Edge) => void;
+  onEdgeUpdateEnd?: (event: MouseEvent, edge: Edge) => void;
+  edgeUpdaterRadius?: number;
+  nodeTypesId?: string;
+  edgeTypesId?: string;
+}
+
+export interface GraphViewProps extends Omit<RevueFlowProps, 'onSelectionChange' | 'elements'> {
+  nodeTypes: NodeTypesType;
+  edgeTypes: EdgeTypesType;
+  selectionKeyCode: KeyCode;
+  deleteKeyCode: KeyCode;
+  multiSelectionKeyCode: KeyCode;
+  connectionLineType: ConnectionLineType;
+  snapToGrid: boolean;
+  snapGrid: [number, number];
+  onlyRenderVisibleElements: boolean;
+  defaultZoom: number;
+  defaultPosition: [number, number];
+  arrowHeadColor: string;
+  selectNodesOnDrag: boolean;
+}

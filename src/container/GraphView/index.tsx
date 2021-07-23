@@ -3,25 +3,8 @@ import FlowRenderer from '../FlowRenderer';
 import NodeRenderer from '../NodeRenderer';
 import EdgeRenderer from '../EdgeRenderer';
 import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph';
-import { RevueFlowProps } from '../RevueFlow';
-import { NodeTypesType, EdgeTypesType, ConnectionLineType, KeyCode, RevueFlowStore } from '../../types';
+import { GraphViewProps, RevueFlowStore } from '../../types';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
-
-export interface GraphViewProps extends Omit<RevueFlowProps, 'onSelectionChange' | 'elements'> {
-  nodeTypes: NodeTypesType;
-  edgeTypes: EdgeTypesType;
-  selectionKeyCode: KeyCode;
-  deleteKeyCode: KeyCode;
-  multiSelectionKeyCode: KeyCode;
-  connectionLineType: ConnectionLineType;
-  snapToGrid: boolean;
-  snapGrid: [number, number];
-  onlyRenderVisibleElements: boolean;
-  defaultZoom: number;
-  defaultPosition: [number, number];
-  arrowHeadColor: string;
-  selectNodesOnDrag: boolean;
-}
 
 const GraphView = defineComponent({
   name: 'GraphView',
