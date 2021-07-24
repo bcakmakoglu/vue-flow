@@ -45,28 +45,24 @@ export function getBezierPath({
   return path;
 }
 
-const BezierEdge = defineComponent({
+export default defineComponent({
   inheritAttrs: false,
   props: {
     sourceX: {
       type: Number,
-      required: false,
-      default: 0
+      required: true
     },
     sourceY: {
       type: Number,
-      required: false,
-      default: 0
+      required: true
     },
     targetX: {
       type: Number,
-      required: false,
-      default: 0
+      required: true
     },
     targetY: {
       type: Number,
-      required: false,
-      default: 0
+      required: true
     },
     sourcePosition: {
       type: String as PropType<Position>,
@@ -141,7 +137,8 @@ const BezierEdge = defineComponent({
         sourceY: props.sourceY,
         targetX: props.targetX,
         targetY: props.targetY,
-        targetPosition: props.targetPosition
+        targetPosition: props.targetPosition,
+        sourcePosition: props.sourcePosition
       });
     });
 
@@ -168,5 +165,3 @@ const BezierEdge = defineComponent({
     );
   }
 });
-
-export default BezierEdge;
