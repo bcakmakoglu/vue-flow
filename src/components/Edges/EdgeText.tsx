@@ -1,7 +1,7 @@
 import { EdgeTextProps, Rect } from '../../types';
 import { defineComponent, PropType, ref, watch } from 'vue';
 
-const EdgeText = defineComponent({
+export default defineComponent({
   props: {
     x: {
       type: Number as PropType<EdgeTextProps['x']>,
@@ -83,5 +83,3 @@ const EdgeText = defineComponent({
     );
   }
 });
-
-export default EdgeText;

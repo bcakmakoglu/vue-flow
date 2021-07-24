@@ -1,10 +1,10 @@
 import { computed, defineComponent, inject, PropType } from 'vue';
 import Node from '../../components/Nodes/Node.vue';
 import { getNodesInside } from '../../utils/graph';
-import { NodeTypesType, RevueFlowStore } from '../../types';
+import { NodeType, RevueFlowStore } from '../../types';
 
 interface NodeRendererProps {
-  nodeTypes: NodeTypesType;
+  nodeTypes: Record<string, NodeType>;
   selectNodesOnDrag: boolean;
   snapToGrid: boolean;
   snapGrid: [number, number];

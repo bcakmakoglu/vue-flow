@@ -1,8 +1,8 @@
 import Handle from '../../components/Handle';
-import { NodeProps, Position } from '../../types';
+import { NodeProps, NodeType, Position } from '../../types';
 import { defineComponent, PropType } from 'vue';
 
-const InputNode = defineComponent({
+export default defineComponent({
   name: 'InputNode',
   components: { Handle },
   inheritAttrs: false,
@@ -31,6 +31,4 @@ const InputNode = defineComponent({
       </>
     );
   }
-});
-
-export default InputNode;
+}) as NodeType;

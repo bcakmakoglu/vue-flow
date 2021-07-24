@@ -1,9 +1,8 @@
-import { computed, CSSProperties, defineComponent, PropType } from 'vue';
-
+import { defineComponent } from 'vue';
 import EdgeText from './EdgeText';
-
-import { getMarkerEnd, getCenter } from './utils';
-import { ArrowHeadType, Position } from '../../types';
+import { getMarkerEnd, getCenter, GetCenterParams, DefaultEdgeProps } from './utils';
+import { ArrowHeadType, EdgeType, Position } from '../../types';
+import { reactify } from '@vueuse/core';
 
 interface GetBezierPathParams {
   sourceX: number;
@@ -48,104 +47,34 @@ export function getBezierPath({
 export default defineComponent({
   inheritAttrs: false,
   props: {
-    sourceX: {
-      type: Number,
-      required: true
-    },
-    sourceY: {
-      type: Number,
-      required: true
-    },
-    targetX: {
-      type: Number,
-      required: true
-    },
-    targetY: {
-      type: Number,
-      required: true
-    },
-    sourcePosition: {
-      type: String as PropType<Position>,
-      required: false,
-      default: Position.Bottom
-    },
-    targetPosition: {
-      type: String as PropType<Position>,
-      required: false,
-      default: Position.Top
-    },
-    label: {
-      type: String,
-      required: false,
-      default: undefined
-    },
-    labelStyle: {
-      type: Object,
-      required: false,
-      default: undefined
-    },
-    labelShowBg: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    labelBgStyle: {
-      type: String,
-      required: false,
-      default: undefined
-    },
-    labelBgPadding: {
-      type: Array as unknown as PropType<[number, number]>,
-      required: false,
-      default: () => [0, 0]
-    },
-    labelBgBorderRadius: {
-      type: Number,
-      required: false,
-      default: 0
-    },
-    arrowHeadType: {
-      type: String as PropType<ArrowHeadType>,
-      required: false,
-      default: undefined
-    },
-    markerEndId: {
-      type: String,
-      required: false,
-      default: undefined
-    },
-    style: {
-      type: Object as PropType<CSSProperties>,
-      required: false,
-      default: () => {}
-    }
+    ...DefaultEdgeProps
   },
   setup(props) {
-    const centered = computed(() => {
+    const centered = reactify(({ sourceX, sourceY, targetX, targetY, targetPosition, sourcePosition }: GetCenterParams) => {
       return getCenter({
-        sourceX: props.sourceX,
-        sourceY: props.sourceY,
-        targetX: props.targetX,
-        targetY: props.targetY,
-        sourcePosition: props.sourcePosition,
-        targetPosition: props.targetPosition
+        sourceX: sourceX,
+        sourceY: sourceY,
+        targetX: targetX,
+        targetY: targetY,
+        sourcePosition: sourcePosition,
+        targetPosition: targetPosition
       });
     });
-    const path = computed(() => {
+    const path = reactify(({ sourceX, sourceY, targetX, targetY, targetPosition, sourcePosition }: GetBezierPathParams) => {
       return getBezierPath({
-        sourceX: props.sourceX,
-        sourceY: props.sourceY,
-        targetX: props.targetX,
-        targetY: props.targetY,
-        targetPosition: props.targetPosition,
-        sourcePosition: props.sourcePosition
+        sourceX: sourceX,
+        sourceY: sourceY,
+        targetX: targetX,
+        targetY: targetY,
+        targetPosition: targetPosition,
+        sourcePosition: sourcePosition
       });
     });
 
     const text = props.label ? (
       <EdgeText
-        x={centered.value[0]}
-        y={centered.value[1]}
+        x={centered({ ...props }).value[0]}
+        y={centered({ ...props }).value[1]}
         label={props.label}
         labelStyle={props.labelStyle}
         labelShowBg={props.labelShowBg}
@@ -155,13 +84,18 @@ export default defineComponent({
       />
     ) : null;
 
-    const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId));
+    const markerEnd = reactify((arrowHeadType?: ArrowHeadType, markerEndId?: string) => getMarkerEnd(arrowHeadType, markerEndId));
 
     return () => (
       <>
-        <path style={props.style} d={path.value} class="revue-flow__edge-path" marker-end={markerEnd.value} />
+        <path
+          class="revue-flow__edge-path"
+          style={props.style}
+          d={path({ ...props }).value}
+          marker-end={markerEnd(props.arrowHeadType, props.markerEndId).value}
+        />
         {text}
       </>
     );
   }
-});
+}) as EdgeType;

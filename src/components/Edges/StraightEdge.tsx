@@ -1,24 +1,28 @@
 import { defineComponent } from 'vue';
-
 import EdgeText from './EdgeText';
-import { getMarkerEnd } from './utils';
-import { EdgeProps } from '../../types';
+import { getMarkerEnd, DefaultEdgeProps } from './utils';
+import { reactify } from '@vueuse/core';
+import { ArrowHeadType, EdgeType } from '../../types';
 
-const StraightEdge = defineComponent({
+export default defineComponent({
   inheritAttrs: false,
-  props: EdgeProps,
+  props: {
+    ...DefaultEdgeProps
+  },
   setup(props) {
-    const yOffset = Math.abs(props.targetY - props.sourceY) / 2;
-    const centerY = props.targetY < props.sourceY ? props.targetY + yOffset : props.targetY - yOffset;
-
-    const xOffset = Math.abs(props.targetX - props.sourceX) / 2;
-    const centerX = props.targetX < props.sourceX ? props.targetX + xOffset : props.targetX - xOffset;
-    const markerEnd = getMarkerEnd(props.arrowHeadType, props.markerEndId);
+    const centerY = reactify((targetY: number, sourceY: number) => {
+      const yOffset = Math.abs(targetY - sourceY) / 2;
+      return targetY < sourceY ? targetY + yOffset : targetY - yOffset;
+    });
+    const centerX = reactify((targetX: number, sourceX: number) => {
+      const xOffset = Math.abs(targetX - sourceX) / 2;
+      return targetX < sourceX ? targetX + xOffset : targetX - xOffset;
+    });
 
     const text = props.label ? (
       <EdgeText
-        x={centerX}
-        y={centerY}
+        x={centerX(props.targetX, props.sourceX).value}
+        y={centerY(props.targetY, props.sourceY).value}
         label={props.label}
         labelStyle={props.labelStyle}
         labelShowBg={props.labelShowBg}
@@ -28,18 +32,18 @@ const StraightEdge = defineComponent({
       />
     ) : null;
 
+    const markerEnd = reactify((arrowHeadType?: ArrowHeadType, markerEndId?: string) => getMarkerEnd(arrowHeadType, markerEndId));
+
     return (
       <>
         <path
           style={props.style}
           class="revue-flow__edge-path"
           d={`M ${props.sourceX},${props.sourceY}L ${props.targetX},${props.targetY}`}
-          marker-end={markerEnd}
+          marker-end={markerEnd(props.arrowHeadType, props.markerEndId).value}
         />
         {text}
       </>
     );
   }
-});
-
-export default StraightEdge;
+}) as unknown as EdgeType;

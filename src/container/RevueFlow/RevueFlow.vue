@@ -1,8 +1,8 @@
 <template>
   <div class="revue-flow">
     <GraphView
-      :node-types="nodeTypesParsed"
-      :edge-types="edgeTypesParsed"
+      :node-types="nodeTypesParsed().value"
+      :edge-types="edgeTypesParsed().value"
       :connection-mode="connectionMode"
       :connection-line-type="connectionLineType"
       :connection-line-style="connectionLineStyle"
@@ -39,8 +39,8 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, onBeforeUnmount, onUpdated, PropType, provide, watch } from 'vue';
-import { useVModel } from '@vueuse/core';
+import { defineComponent, onBeforeUnmount, onUpdated, PropType, provide, watch } from 'vue';
+import { reactify, useVModel } from '@vueuse/core';
 import '../../style.css';
 import '../../theme-default.css';
 import GraphView from '../GraphView/GraphView.vue';
@@ -160,12 +160,12 @@ export default defineComponent({
     nodesConnectable: {
       type: Boolean as PropType<RevueFlowProps['nodesConnectable']>,
       required: false,
-      default: undefined
+      default: true
     },
     elementsSelectable: {
       type: Boolean as PropType<RevueFlowProps['elementsSelectable']>,
       required: false,
-      default: undefined
+      default: true
     },
     selectNodesOnDrag: {
       type: Boolean as PropType<RevueFlowProps['selectNodesOnDrag']>,
@@ -175,12 +175,12 @@ export default defineComponent({
     minZoom: {
       type: Number as PropType<RevueFlowProps['minZoom']>,
       required: false,
-      default: undefined
+      default: 0.5
     },
     maxZoom: {
       type: Number as PropType<RevueFlowProps['maxZoom']>,
       required: false,
-      default: undefined
+      default: 2
     },
     defaultZoom: {
       type: Number as PropType<RevueFlowProps['defaultZoom']>,
@@ -195,12 +195,18 @@ export default defineComponent({
     translateExtent: {
       type: Array as unknown as PropType<RevueFlowProps['translateExtent']>,
       required: false,
-      default: undefined
+      default: () => [
+        [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
+        [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY]
+      ]
     },
     nodeExtent: {
       type: Array as unknown as PropType<RevueFlowProps['nodeExtent']>,
       required: false,
-      default: undefined
+      default: () => [
+        [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
+        [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY]
+      ]
     },
     arrowHeadColor: {
       type: String as PropType<RevueFlowProps['arrowHeadColor']>,
@@ -275,12 +281,8 @@ export default defineComponent({
       store.setElements([]);
     });
 
-    const nodeTypesParsed = computed(
-      () => props.nodeTypes && createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes } as any)
-    );
-    const edgeTypesParsed = computed(
-      () => props.edgeTypes && createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes } as any)
-    );
+    const nodeTypesParsed = reactify(() => createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes }));
+    const edgeTypesParsed = reactify(() => createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes }));
 
     return {
       nodeTypesParsed,

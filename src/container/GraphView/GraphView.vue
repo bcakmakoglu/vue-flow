@@ -37,7 +37,7 @@
   </FlowRenderer>
 </template>
 <script lang="ts">
-import { defineComponent, inject, PropType, CSSProperties, watchEffect } from 'vue';
+import { defineComponent, inject, PropType, watchEffect } from 'vue';
 import FlowRenderer from '../FlowRenderer';
 import NodeRenderer from '../NodeRenderer';
 import EdgeRenderer from '../EdgeRenderer';
@@ -52,13 +52,11 @@ export default defineComponent({
   props: {
     nodeTypes: {
       type: Object as PropType<GraphViewProps['nodeTypes']>,
-      required: false,
-      default: undefined
+      required: true
     },
     edgeTypes: {
       type: Object as PropType<GraphViewProps['edgeTypes']>,
-      required: false,
-      default: undefined
+      required: true
     },
     connectionMode: {
       type: String as PropType<GraphViewProps['connectionMode']>,
@@ -73,7 +71,7 @@ export default defineComponent({
     connectionLineStyle: {
       type: Object as PropType<GraphViewProps['connectionLineStyle']>,
       required: false,
-      default: () => ({} as CSSProperties)
+      default: () => {}
     },
     connectionLineComponent: {
       type: Object as PropType<GraphViewProps['connectionLineComponent']>,

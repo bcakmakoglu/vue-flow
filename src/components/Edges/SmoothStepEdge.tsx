@@ -1,8 +1,8 @@
-import { defineComponent } from 'vue';
-
+import { computed, defineComponent } from 'vue';
 import EdgeText from './EdgeText';
-import { getMarkerEnd, getCenter } from './utils';
-import { EdgeSmoothStepProps, Position } from '../../types';
+import { getMarkerEnd, getCenter, EdgeSmoothProps } from './utils';
+import { ArrowHeadType, EdgeType, Position } from '../../types';
+import { reactify } from '@vueuse/core';
 
 // These are some helper methods for drawing the round corners
 // The name indicates the direction of the path. "bottomLeftCorner" goes
@@ -92,35 +92,41 @@ export function getSmoothStepPath({
   return `M ${sourceX},${sourceY}${firstCornerPath}${secondCornerPath}L ${targetX},${targetY}`;
 }
 
-const SmoothStepEdge = defineComponent({
+export default defineComponent({
   inheritAttrs: false,
-  props: EdgeSmoothStepProps,
+  props: {
+    ...EdgeSmoothProps
+  },
   setup(props) {
-    const [centerX, centerY] = getCenter({
-      sourceX: props.sourceX,
-      sourceY: props.sourceY,
-      targetX: props.targetX,
-      targetY: props.targetY,
-      sourcePosition: props.sourcePosition,
-      targetPosition: props.targetPosition
+    const centered = computed(() => {
+      return getCenter({
+        sourceX: props.sourceX,
+        sourceY: props.sourceY,
+        targetX: props.targetX,
+        targetY: props.targetY,
+        sourcePosition: props.sourcePosition,
+        targetPosition: props.targetPosition
+      });
     });
 
-    const path = getSmoothStepPath({
-      sourceX: props.sourceX,
-      sourceY: props.sourceY,
-      targetX: props.targetX,
-      targetY: props.targetY,
-      sourcePosition: props.sourcePosition,
-      targetPosition: props.targetPosition,
-      borderRadius: props.borderRadius
+    const path = computed(() => {
+      return getSmoothStepPath({
+        sourceX: props.sourceX,
+        sourceY: props.sourceY,
+        targetX: props.targetX,
+        targetY: props.targetY,
+        sourcePosition: props.sourcePosition,
+        targetPosition: props.targetPosition,
+        borderRadius: props.borderRadius
+      });
     });
 
-    const markerEnd = getMarkerEnd(props.arrowHeadType, props.markerEndId);
+    const markerEnd = reactify((arrowHeadType?: ArrowHeadType, markerEndId?: string) => getMarkerEnd(arrowHeadType, markerEndId));
 
     const text = props.label ? (
       <EdgeText
-        x={centerX}
-        y={centerY}
+        x={centered.value[0]}
+        y={centered.value[1]}
         label={props.label}
         labelStyle={props.labelStyle}
         labelShowBg={props.labelShowBg}
@@ -132,11 +138,14 @@ const SmoothStepEdge = defineComponent({
 
     return (
       <>
-        <path style={props.style} class="revue-flow__edge-path" d={path} marker-end={markerEnd} />
+        <path
+          class="revue-flow__edge-path"
+          style={props.style}
+          d={path.value}
+          marker-end={markerEnd(props.arrowHeadType, props.markerEndId).value}
+        />
         {text}
       </>
     );
   }
-});
-
-export default SmoothStepEdge;
+}) as unknown as EdgeType;
