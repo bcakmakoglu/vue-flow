@@ -95,7 +95,7 @@ const CustomNodeFlow = defineComponent({
           id: '2',
           type: 'selectorNode',
           data: { onChange: onChange, color: bgColor.value },
-          style: { border: '1px solid #777', padding: 10 },
+          style: { border: '1px solid #777', padding: '10px' },
           position: { x: 250, y: 50 }
         },
         {

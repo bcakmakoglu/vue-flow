@@ -113,7 +113,6 @@ export default defineComponent({
     });
 
     const isSelected = computed(() => store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id) || false);
-
     const updating = ref<boolean>(false);
     const inactive = computed(() => !store.elementsSelectable);
     const edgeClasses = computed(() => [
@@ -197,7 +196,7 @@ export default defineComponent({
     const onEdgeUpdaterMouseOut = () => (updating.value = false);
 
     return () =>
-      isVisible.value ? (
+      isVisible.value && edgePositions.value ? (
         <g
           class={edgeClasses.value}
           onClick={onEdgeClick}
@@ -206,31 +205,35 @@ export default defineComponent({
           onMousemove={onEdgeMouseMove}
           onMouseleave={onEdgeMouseLeave}
         >
-          {h(props.type, {
-            id: props.edge.id,
-            source: props.edge.source,
-            target: props.edge.target,
-            selected: isSelected,
-            animated: props.edge.animated,
-            label: props.edge.label,
-            labelStyle: props.edge.labelStyle,
-            labelShowBg: props.edge.labelShowBg,
-            labelBgStyle: props.edge.labelBgStyle,
-            labelBgPadding: props.edge.labelBgPadding,
-            labelBgBorderRadius: props.edge.labelBgBorderRadius,
-            data: props.edge.data,
-            style: props.edge.style,
-            arrowHeadType: props.edge.arrowHeadType,
-            sourceX: edgePositions.value.sourceX,
-            sourceY: edgePositions.value.sourceY,
-            targetX: edgePositions.value.targetX,
-            targetY: edgePositions.value.targetY,
-            sourcePosition: sourcePosition.value,
-            targetPosition: targetPosition.value,
-            markerEndId: props.markerEndId,
-            sourceHandleId: props.edge.sourceHandle,
-            targetHandleId: props.edge.targetHandle
-          }, {})}
+          {h(
+            props.type,
+            {
+              id: props.edge.id,
+              source: props.edge.source,
+              target: props.edge.target,
+              selected: isSelected,
+              animated: props.edge.animated,
+              label: props.edge.label,
+              labelStyle: props.edge.labelStyle,
+              labelShowBg: props.edge.labelShowBg,
+              labelBgStyle: props.edge.labelBgStyle,
+              labelBgPadding: props.edge.labelBgPadding,
+              labelBgBorderRadius: props.edge.labelBgBorderRadius,
+              data: props.edge.data,
+              style: props.edge.style,
+              arrowHeadType: props.edge.arrowHeadType,
+              sourceX: edgePositions.value.sourceX,
+              sourceY: edgePositions.value.sourceY,
+              targetX: edgePositions.value.targetX,
+              targetY: edgePositions.value.targetY,
+              sourcePosition: sourcePosition.value,
+              targetPosition: targetPosition.value,
+              markerEndId: props.markerEndId,
+              sourceHandleId: props.edge.sourceHandle,
+              targetHandleId: props.edge.targetHandle
+            },
+            {}
+          )}
           <g onMousedown={onEdgeUpdaterSourceMouseDown} onMouseenter={onEdgeUpdaterMouseEnter} onMouseout={onEdgeUpdaterMouseOut}>
             <EdgeAnchor
               position={sourcePosition.value}
