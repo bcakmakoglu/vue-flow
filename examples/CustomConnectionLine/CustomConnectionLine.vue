@@ -1,9 +1,9 @@
 <template>
   <RevueFlow
     v-model="elements"
-    :connectionLineComponent="ConnectionLine"
-    :onElementsRemove="onElementsRemove"
-    :onConnect="onConnect"
+    :connection-line-component="ConnectionLine"
+    @elementsRemove="onElementsRemove"
+    @connect="onConnect"
   >
     <Background :variant="bgVariant" />
   </RevueFlow>
@@ -14,10 +14,17 @@ import RevueFlow, { removeElements, addEdge, Background, BackgroundVariant, Elem
 import ConnectionLine from './ConnectionLine.vue';
 import { defineComponent, ref } from 'vue';
 
-const ConnectionLineFlow = defineComponent({
+export default defineComponent({
   components: { RevueFlow, Background },
   setup() {
-    const elements = ref<Elements>([{ id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } }]);
+    const elements = ref<Elements>([
+      {
+        id: '1',
+        type: 'input',
+        data: { label: 'Node 1' },
+        position: { x: 250, y: 5 }
+      }
+    ] as Elements);
     const onElementsRemove = (elementsToRemove: Elements) =>
       (elements.value = removeElements(elementsToRemove, elements.value as Elements));
     const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value as Elements));
@@ -31,6 +38,4 @@ const ConnectionLineFlow = defineComponent({
     };
   }
 });
-
-export default ConnectionLineFlow;
 </script>

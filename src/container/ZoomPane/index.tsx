@@ -1,11 +1,12 @@
-import { zoom, zoomIdentity } from 'd3-zoom';
+import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
 import { select, pointer } from 'd3-selection';
-
 import { clamp } from '../../utils';
 import { FlowTransform, TranslateExtent, PanOnScrollMode, KeyCode, RevueFlowStore } from '../../types';
 import { defineComponent, inject, PropType, ref, watchEffect } from 'vue';
 import useKeyPress from '../../hooks/useKeyPress';
 import useResizeHandler from '../../hooks/useResizeHandler';
+import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
+import { templateRef, whenever } from '@vueuse/core';
 
 interface ZoomPaneProps {
   selectionKeyPressed: boolean;
@@ -20,38 +21,12 @@ interface ZoomPaneProps {
   defaultPosition?: [number, number];
   defaultZoom?: number;
   translateExtent?: TranslateExtent;
-  onMove?: (flowTransform?: FlowTransform) => void;
-  onMoveStart?: (flowTransform?: FlowTransform) => void;
-  onMoveEnd?: (flowTransform?: FlowTransform) => void;
   zoomActivationKeyCode?: KeyCode;
 }
 
-const viewChanged = (prevTransform: FlowTransform, eventTransform: any): boolean =>
-  prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k;
-
-const eventToFlowTransform = (eventTransform: any): FlowTransform => ({
-  x: eventTransform.x,
-  y: eventTransform.y,
-  zoom: eventTransform.k
-});
-
-const ZoomPane = defineComponent({
+export default defineComponent({
+  name: 'ZoomPane',
   props: {
-    onMove: {
-      type: Function as unknown as PropType<ZoomPaneProps['onMove']>,
-      required: false,
-      default: () => {}
-    },
-    onMoveStart: {
-      type: Function as unknown as PropType<ZoomPaneProps['onMoveStart']>,
-      required: false,
-      default: () => {}
-    },
-    onMoveEnd: {
-      type: Function as unknown as PropType<ZoomPaneProps['onMoveEnd']>,
-      required: false,
-      default: () => {}
-    },
     zoomOnScroll: {
       type: Boolean as PropType<ZoomPaneProps['zoomOnScroll']>,
       required: false,
@@ -85,12 +60,12 @@ const ZoomPane = defineComponent({
     selectionKeyPressed: {
       type: Boolean as PropType<ZoomPaneProps['selectionKeyPressed']>,
       required: false,
-      default: undefined
+      default: false
     },
     elementsSelectable: {
       type: Boolean as PropType<ZoomPaneProps['elementsSelectable']>,
       required: false,
-      default: undefined
+      default: true
     },
     paneMoveable: {
       type: Boolean as PropType<ZoomPaneProps['paneMoveable']>,
@@ -120,16 +95,23 @@ const ZoomPane = defineComponent({
   },
   setup(props, { slots }) {
     const store = inject<RevueFlowStore>('store')!;
-    const zoomPane = ref<HTMLDivElement | null>(null);
+    const hooks = inject<RevueFlowHooks>('hooks')!;
+    const zoomPane = templateRef<HTMLDivElement>('zoom-pane', null);
     const prevTransform = ref<FlowTransform>({ x: 0, y: 0, zoom: 0 });
     const zoomActivationKeyPressed = useKeyPress(props.zoomActivationKeyCode);
 
-    watchEffect(() => {
-      if (zoomPane.value) useResizeHandler(zoomPane.value, store.updateSize);
+    const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
+      prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k;
+
+    const eventToFlowTransform = (eventTransform: ZoomTransform): FlowTransform => ({
+      x: eventTransform.x,
+      y: eventTransform.y,
+      zoom: eventTransform.k
     });
 
-    watchEffect(() => {
-      if (zoomPane.value && props.defaultPosition && props.defaultZoom) {
+    const { onReady } = useResizeHandler(zoomPane, store.updateSize);
+    onReady(() => {
+      if (props.defaultPosition && props.defaultZoom) {
         const currentTranslateExtent =
           typeof props.translateExtent !== 'undefined' ? props.translateExtent : store.translateExtent;
         const d3ZoomInstance = zoom().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(currentTranslateExtent);
@@ -152,43 +134,41 @@ const ZoomPane = defineComponent({
       }
     });
 
-    watchEffect(() => {
-      if (store.d3Selection && store.d3Zoom) {
-        if (props.panOnScroll && zoomActivationKeyPressed) {
-          store.d3Selection
-            .on('wheel', (event: any) => {
-              event.preventDefault();
-              event.stopImmediatePropagation();
+    whenever(zoomActivationKeyPressed, () => {
+      if (props.panOnScroll) {
+        store.d3Selection
+          ?.on('wheel', (event: WheelEvent) => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
 
-              const currentZoom = store.d3Selection?.property('__zoom').k || 1;
+            const currentZoom = store.d3Selection?.property('__zoom').k || 1;
 
-              if (event.ctrlKey && props.zoomOnPinch) {
-                const point = pointer(event);
-                // taken from https://github.com/d3/d3-zoom/blob/master/src/zoom.js
-                const pinchDelta = -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * 10;
-                const zoom = currentZoom * Math.pow(2, pinchDelta);
-                if (store.d3Selection) store.d3Zoom?.scaleTo(store.d3Selection, zoom, point);
+            if (event.ctrlKey && props.zoomOnPinch) {
+              const point = pointer(event);
+              // taken from https://github.com/d3/d3-zoom/blob/master/src/zoom.js
+              const pinchDelta = -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * 10;
+              const zoom = currentZoom * Math.pow(2, pinchDelta);
+              if (store.d3Selection) store.d3Zoom?.scaleTo(store.d3Selection, zoom, point);
 
-                return;
-              }
+              return;
+            }
 
-              // increase scroll speed in firefox
-              // firefox: deltaMode === 1; chrome: deltaMode === 0
-              const deltaNormalize = event.deltaMode === 1 ? 20 : 1;
-              const deltaX = props.panOnScrollMode === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize;
-              const deltaY = props.panOnScrollMode === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize;
+            // increase scroll speed in firefox
+            // firefox: deltaMode === 1; chrome: deltaMode === 0
+            const deltaNormalize = event.deltaMode === 1 ? 20 : 1;
+            const deltaX = props.panOnScrollMode === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize;
+            const deltaY = props.panOnScrollMode === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize;
 
-              if (store.d3Selection && props.panOnScrollSpeed)
-                store.d3Zoom?.translateBy(
-                  store.d3Selection,
-                  -(deltaX / currentZoom) * props.panOnScrollSpeed,
-                  -(deltaY / currentZoom) * props.panOnScrollSpeed
-                );
-            })
-            .on('wheel.zoom', null);
-        } else if (typeof store.d3ZoomHandler !== 'undefined') {
-          store.d3Selection.on('wheel', null).on('wheel.zoom', store.d3ZoomHandler);
-        }
+            if (store.d3Selection && props.panOnScrollSpeed)
+              store.d3Zoom?.translateBy(
+                store.d3Selection,
+                -(deltaX / currentZoom) * props.panOnScrollSpeed,
+                -(deltaY / currentZoom) * props.panOnScrollSpeed
+              );
+          })
+          .on('wheel.zoom', null);
+      } else if (typeof store.d3ZoomHandler !== 'undefined') {
+        store.d3Selection?.on('wheel', null).on('wheel.zoom', store.d3ZoomHandler);
       }
     });
 
@@ -197,13 +177,9 @@ const ZoomPane = defineComponent({
         if (props.selectionKeyPressed) {
           store.d3Zoom.on('zoom', null);
         } else {
-          store.d3Zoom.on('zoom', (event: any) => {
+          store.d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
             store.transform = [event.transform.x, event.transform.y, event.transform.k];
-
-            if (props.onMove) {
-              const flowTransform = eventToFlowTransform(event.transform);
-              props.onMove(flowTransform);
-            }
+            hooks.move.trigger(eventToFlowTransform(event.transform));
           });
         }
       }
@@ -211,41 +187,33 @@ const ZoomPane = defineComponent({
 
     watchEffect(() => {
       if (store.d3Zoom) {
-        if (props.onMoveStart) {
-          store.d3Zoom.on('start', (event: any) => {
-            if (viewChanged(prevTransform.value, event.transform)) {
-              const flowTransform = eventToFlowTransform(event.transform);
-              prevTransform.value = flowTransform;
+        store.d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+          if (viewChanged(prevTransform.value, event.transform)) {
+            const flowTransform = eventToFlowTransform(event.transform);
+            prevTransform.value = flowTransform;
 
-              if (props.onMoveStart) props.onMoveStart(flowTransform);
-            }
-          });
-        } else {
-          store.d3Zoom.on('start', null);
-        }
+            hooks.moveStart.trigger(flowTransform);
+          }
+        });
       }
     });
 
     watchEffect(() => {
       if (store.d3Zoom) {
-        if (props.onMoveEnd) {
-          store.d3Zoom.on('end', (event: any) => {
-            if (viewChanged(prevTransform.value, event.transform)) {
-              const flowTransform = eventToFlowTransform(event.transform);
-              prevTransform.value = flowTransform;
+        store.d3Zoom.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+          if (viewChanged(prevTransform.value, event.transform)) {
+            const flowTransform = eventToFlowTransform(event.transform);
+            prevTransform.value = flowTransform;
 
-              if (props.onMoveEnd) props.onMoveEnd(flowTransform);
-            }
-          });
-        } else {
-          store.d3Zoom.on('end', null);
-        }
+            hooks.moveEnd.trigger(flowTransform);
+          }
+        });
       }
     });
 
     watchEffect(() => {
       if (store.d3Zoom) {
-        store.d3Zoom.filter((event: any) => {
+        store.d3Zoom.filter((event: MouseEvent) => {
           const zoomScroll = props.zoomOnScroll;
           const pinchZoom = props.zoomOnPinch && event.ctrlKey;
 
@@ -264,20 +232,20 @@ const ZoomPane = defineComponent({
             return false;
           }
 
-          if (event.target.closest('.nowheel') && event.type === 'wheel') {
+          if ((event.target as Element).closest('.nowheel') && event.type === 'wheel') {
             return false;
           }
 
           // when the target element is a node, we still allow zooming
           if (
-            (event.target.closest('.revue-flow__node') || event.target.closest('.revue-flow__edge')) &&
+            ((event.target as Element).closest('.revue-flow__node') || (event.target as Element).closest('.revue-flow__edge')) &&
             event.type !== 'wheel'
           ) {
             return false;
           }
 
           // when the target element is a node selection, we still allow zooming
-          if (event.target.closest('.revue-flow__nodesselection') && event.type !== 'wheel') {
+          if ((event.target as Element).closest('.revue-flow__nodesselection') && event.type !== 'wheel') {
             return false;
           }
 
@@ -302,11 +270,9 @@ const ZoomPane = defineComponent({
     });
 
     return () => (
-      <div class="revue-flow__renderer revue-flow__zoompane" ref={zoomPane}>
+      <div class="revue-flow__renderer revue-flow__zoompane" ref="zoom-pane">
         {slots.default ? slots.default() : ''}
       </div>
     );
   }
 });
-
-export default ZoomPane;

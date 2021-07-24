@@ -1,52 +1,52 @@
 <template>
   <FlowRenderer
-    :deleteKeyCode="deleteKeyCode"
-    :selectionKeyCode="selectionKeyCode"
-    :multiSelectionKeyCode="multiSelectionKeyCode"
-    :zoomActivationKeyCode="zoomActivationKeyCode"
-    :elementsSelectable="elementsSelectable"
-    :zoomOnScroll="zoomOnScroll"
-    :zoomOnPinch="zoomOnPinch"
-    :zoomOnDoubleClick="zoomOnDoubleClick"
-    :panOnScroll="panOnScroll"
-    :panOnScrollSpeed="panOnScrollSpeed"
-    :panOnScrollMode="panOnScrollMode"
-    :paneMoveable="paneMoveable"
-    :defaultPosition="defaultPosition"
-    :defaultZoom="defaultZoom"
-    :translateExtent="translateExtent"
+    :delete-key-code="deleteKeyCode"
+    :selection-key-code="selectionKeyCode"
+    :multi-selection-key-code="multiSelectionKeyCode"
+    :zoom-activation-key-code="zoomActivationKeyCode"
+    :elements-selectable="elementsSelectable"
+    :zoom-on-scroll="zoomOnScroll"
+    :zoom-on-pinch="zoomOnPinch"
+    :zoom-on-double-click="zoomOnDoubleClick"
+    :pan-on-scroll="panOnScroll"
+    :pan-on-scroll-speed="panOnScrollSpeed"
+    :pan-on-scroll-mode="panOnScrollMode"
+    :pane-moveable="paneMoveable"
+    :default-position="defaultPosition"
+    :default-zoom="defaultZoom"
+    :translate-extent="translateExtent"
   >
     <NodeRenderer
-      :nodeTypes="nodeTypes"
-      :selectNodesOnDrag="selectNodesOnDrag"
-      :snapToGrid="snapToGrid"
-      :snapGrid="snapGrid"
-      :onlyRenderVisibleElements="onlyRenderVisibleElements"
+      :node-types="nodeTypes"
+      :select-nodes-on-drag="selectNodesOnDrag"
+      :snap-to-grid="snapToGrid"
+      :snap-grid="snapGrid"
+      :only-render-visible-elements="onlyRenderVisibleElements"
     />
     <EdgeRenderer
-      :edgeTypes="edgeTypes"
-      :connectionLineType="connectionLineType"
-      :connectionLineStyle="connectionLineStyle"
-      :connectionLineComponent="connectionLineComponent"
-      :connectionMode="connectionMode"
-      :arrowHeadColor="arrowHeadColor"
-      :markerEndId="markerEndId"
-      :onlyRenderVisibleElements="onlyRenderVisibleElements"
-      :edgeUpdaterRadius="edgeUpdaterRadius"
+      :edge-types="edgeTypes"
+      :connection-line-type="connectionLineType"
+      :connection-line-style="connectionLineStyle"
+      :connection-line-component="connectionLineComponent"
+      :connection-mode="connectionMode"
+      :arrow-head-color="arrowHeadColor"
+      :marker-end-id="markerEndId"
+      :only-render-visible-elements="onlyRenderVisibleElements"
+      :edge-updater-radius="edgeUpdaterRadius"
     />
   </FlowRenderer>
 </template>
 <script lang="ts">
 import { defineComponent, inject, PropType, CSSProperties, watchEffect } from 'vue';
-import FlowRenderer from '../FlowRenderer/FlowRenderer.vue';
-import NodeRenderer from '../NodeRenderer/NodeRenderer.vue';
-import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue';
+import FlowRenderer from '../FlowRenderer';
+import NodeRenderer from '../NodeRenderer';
+import EdgeRenderer from '../EdgeRenderer';
 import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph';
 import { GraphViewProps, RevueFlowStore } from '../../types';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
-const GraphView = defineComponent({
+export default defineComponent({
   name: 'GraphView',
   components: { NodeRenderer, EdgeRenderer, FlowRenderer },
   props: {
@@ -220,20 +220,18 @@ const GraphView = defineComponent({
     const store = inject<RevueFlowStore>('store')!;
     const hooks = inject<RevueFlowHooks>('hooks')!;
 
-    const { onReady } = useZoomPanHelper(store);
-    onReady(({ zoomIn, zoomOut, zoomTo, transform, fitView, initialized }) => {
-      if (initialized) {
-        hooks.load.trigger({
-          fitView: (params = { padding: 0.1 }) => fitView(params),
-          zoomIn,
-          zoomOut,
-          zoomTo,
-          setTransform: transform,
-          project: onLoadProject(store),
-          getElements: onLoadGetElements(store),
-          toObject: onLoadToObject(store)
-        });
-      }
+    const { onReady } = useZoomPanHelper();
+    onReady(({ zoomIn, zoomOut, zoomTo, transform, fitView }) => {
+      hooks.load.trigger({
+        fitView: (params = { padding: 0.1 }) => fitView(params),
+        zoomIn,
+        zoomOut,
+        zoomTo,
+        setTransform: transform,
+        project: onLoadProject(store),
+        getElements: onLoadGetElements(store),
+        toObject: onLoadToObject(store)
+      });
     });
 
     const init = () => {
@@ -281,6 +279,4 @@ const GraphView = defineComponent({
     });
   }
 });
-
-export default GraphView;
 </script>

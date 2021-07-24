@@ -666,7 +666,6 @@ export interface ZoomPanHelperFunctions {
   setCenter: (x: number, y: number, zoom?: number) => void;
   fitBounds: (bounds: Rect, padding?: number) => void;
   project: (position: XYPosition) => XYPosition;
-  initialized: boolean;
 }
 
 export type OnEdgeUpdateFunc<T = any> = (oldEdge: Edge<T>, newConnection: Connection) => void;

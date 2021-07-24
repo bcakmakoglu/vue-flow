@@ -57,7 +57,7 @@ export default defineComponent({
       required: true
     },
     type: {
-      type: Object,
+      type: [Object, String],
       required: true
     },
     snapToGrid: {

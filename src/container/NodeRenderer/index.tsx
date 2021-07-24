@@ -1,21 +1,7 @@
-<template>
-  <div class="revue-flow__nodes" :style="transformStyle">
-    <template v-for="(node, i) of visibleNodes" :key="`node-${i}`">
-      <Node
-        :node="node"
-        :snap-grid="snapGrid"
-        :snap-to-grid="snapToGrid"
-        :select-nodes-on-drag="selectNodesOnDrag"
-        :type="nodeTypes[node.type]"
-      />
-    </template>
-  </div>
-</template>
-<script lang="ts">
-import { getNodesInside } from '../../utils/graph';
-import { NodeTypesType, RevueFlowStore } from '../../types';
 import { computed, defineComponent, inject, PropType } from 'vue';
 import Node from '../../components/Nodes/Node.vue';
+import { getNodesInside } from '../../utils/graph';
+import { NodeTypesType, RevueFlowStore } from '../../types';
 
 interface NodeRendererProps {
   nodeTypes: NodeTypesType;
@@ -25,7 +11,7 @@ interface NodeRendererProps {
   onlyRenderVisibleElements: boolean;
 }
 
-const NodeRenderer = defineComponent({
+export default defineComponent({
   name: 'NodeRenderer',
   components: { Node },
   props: {
@@ -79,12 +65,28 @@ const NodeRenderer = defineComponent({
       transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`
     }));
 
-    return {
-      transformStyle,
-      visibleNodes
-    };
+    return () => (
+      <div class="revue-flow__nodes" style={transformStyle.value}>
+        {visibleNodes.value?.map((node) => {
+          const nodeType = node.type || 'default';
+          if (props.nodeTypes) {
+            const type = props.nodeTypes[nodeType] || props.nodeTypes.default;
+            if (!props.nodeTypes[nodeType]) {
+              console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`);
+            }
+
+            return (
+              <Node
+                node={node}
+                snapGrid={props.snapGrid}
+                snapToGrid={props.snapToGrid}
+                selectNodesOnDrag={props.selectNodesOnDrag}
+                type={type}
+              />
+            );
+          }
+        })}
+      </div>
+    );
   }
 });
-
-export default NodeRenderer;
-</script>

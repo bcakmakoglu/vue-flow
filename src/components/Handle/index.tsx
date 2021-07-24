@@ -5,7 +5,7 @@ import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 const alwaysValid = () => true;
 
-const Handle = defineComponent({
+export default defineComponent({
   props: {
     type: {
       type: String,
@@ -41,21 +41,18 @@ const Handle = defineComponent({
   setup(props, { slots }) {
     const store = inject<RevueFlowStore>('store')!;
     const hooks = inject<RevueFlowHooks>('hooks')!;
-    const nodeId = inject<ElementId>('NodeIdContext') as ElementId;
-    const isTarget = computed(() => props.type === 'target');
+    const nodeId = inject<ElementId>('NodeIdContext')!;
 
-    const onMouseDownHandler = (event: MouseEvent) => {
-      console.log('mousedown');
-      onMouseDown(event, store, hooks, props.id as string, nodeId, isTarget.value, props.isValidConnection);
-    };
+    const onMouseDownHandler = (event: MouseEvent) =>
+      onMouseDown(event, store, hooks, props.id as string, nodeId, props.type === 'target', props.isValidConnection);
 
     const handleClasses = computed(() => [
       'revue-flow__handle',
       `revue-flow__handle-${props.position}`,
       'nodrag',
       {
-        source: !isTarget.value,
-        target: isTarget.value,
+        source: props.type !== 'target',
+        target: props.type === 'target',
         connectable: props.isConnectable
       }
     ]);
@@ -73,5 +70,3 @@ const Handle = defineComponent({
     );
   }
 });
-
-export default Handle;

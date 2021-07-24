@@ -38,9 +38,6 @@ export default defineComponent({
     const store = inject<RevueFlowStore>('store')!;
     const el = templateRef('user-selection', null);
     const shouldRender = computed(() => store.selectionActive || store.elementsSelectable);
-    if (!shouldRender.value) {
-      return null;
-    }
 
     const onMouseDown = (event: MouseEvent) => {
       const mousePos = getMousePosition(event);
@@ -52,12 +49,10 @@ export default defineComponent({
     };
 
     const onMouseMove = (event: MouseEvent) => {
-
       if (!store.selectionActive) {
         return;
       }
       const mousePos = getMousePosition(event);
-
       if (!mousePos) {
         return;
       }
@@ -80,19 +75,22 @@ export default defineComponent({
     useEventListener(el, 'mouseup', onMouseUp);
     useEventListener(el, 'mouseleave', onMouseLeave);
 
-    return () => (
-      <div class="revue-flow__selectionpane" ref="user-selection">
-        {store?.userSelectionRect.draw ? (
-          <SelectionRect
-            width={store.userSelectionRect.width}
-            height={store.userSelectionRect.height}
-            x={store.userSelectionRect.x}
-            y={store.userSelectionRect.y}
-          />
-        ) : (
-          ''
-        )}
-      </div>
-    );
+    return () =>
+      shouldRender.value ? (
+        <div class="revue-flow__selectionpane" ref="user-selection">
+          {store?.userSelectionRect.draw ? (
+            <SelectionRect
+              width={store.userSelectionRect.width}
+              height={store.userSelectionRect.height}
+              x={store.userSelectionRect.x}
+              y={store.userSelectionRect.y}
+            />
+          ) : (
+            ''
+          )}
+        </div>
+      ) : (
+        ''
+      );
   }
 });

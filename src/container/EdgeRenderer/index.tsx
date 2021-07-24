@@ -1,30 +1,8 @@
-<template>
-  <svg :width="width" :height="height" class="revue-flow__edges">
-    <MarkerDefinitions :color="arrowHeadColor" />
-    <g :transform="transformStyle">
-      <template v-for="edge of edges" :key="edge.id">
-        <Edge
-          :edge="edge"
-          :marker-end-id="markerEndId"
-          :onlyRenderVisibleElements="onlyRenderVisibleElements"
-          :type="edgeTypes[edge.type]"
-        />
-        <ConnectionLine
-          v-if="renderConnectionLine"
-          :connectionLineStyle="connectionLineStyle"
-          :connectionLineType="connectionLineType"
-          :CustomConnectionLineComponent="connectionLineComponent"
-        />
-      </template>
-    </g>
-  </svg>
-</template>
-<script lang="ts">
 import { computed, CSSProperties, defineComponent, inject, PropType } from 'vue';
-import Edge from '../../components/Edges/Edge.vue';
-import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue';
 import { ConnectionLineType, ConnectionLineComponent, ConnectionMode, RevueFlowStore } from '../../types';
-import MarkerDefinitions from './MarkerDefinitions.vue';
+import ConnectionLine from '../../components/ConnectionLine';
+import MarkerDefinitions from './MarkerDefinitions';
+import Edge from '../../components/Edges/Edge';
 
 interface EdgeRendererProps {
   edgeTypes: any;
@@ -38,7 +16,7 @@ interface EdgeRendererProps {
   edgeUpdaterRadius?: number;
 }
 
-const EdgeRenderer = defineComponent({
+export default defineComponent({
   name: 'EdgeRenderer',
   components: {
     Edge,
@@ -48,8 +26,7 @@ const EdgeRenderer = defineComponent({
   props: {
     edgeTypes: {
       type: Object,
-      required: false,
-      default: undefined
+      required: true
     },
     connectionLineType: {
       type: String as PropType<EdgeRendererProps['connectionLineType']>,
@@ -92,27 +69,36 @@ const EdgeRenderer = defineComponent({
       default: undefined
     }
   },
-  setup() {
-    const store = inject<RevueFlowStore>('store')!;
-    const edges = computed(() => store.edges);
-    const transform = computed(() => store.transform);
+  setup(props) {
+    const store = inject<RevueFlowStore>('store');
+    const transform = computed(() => store?.transform);
     const transformStyle = computed(() => {
       return `translate(${transform.value?.[0]},${transform.value?.[1]}) scale(${transform.value?.[2]})`;
     });
-    const renderConnectionLine = computed(() => store.connectionNodeId && store.connectionHandleType);
-    const width = computed(() => store.width);
-    const height = computed(() => store.height);
+    const renderConnectionLine = computed(() => store?.connectionNodeId && store?.connectionHandleType);
 
-    return {
-      transform,
-      transformStyle,
-      renderConnectionLine,
-      edges,
-      width,
-      height
-    };
+    return () => (
+      <svg width={store?.width} height={store?.height} class="revue-flow__edges">
+        <MarkerDefinitions color={props.arrowHeadColor as string} />
+        <g transform={transformStyle.value}>
+          {store?.edges.map((edge) => (
+            <Edge
+              key={edge.id}
+              edge={edge}
+              type={props.edgeTypes[edge.type || 'default']}
+              onlyRenderVisibleElements={props.onlyRenderVisibleElements}
+              markerEndId={props.markerEndId}
+            />
+          ))}
+          {renderConnectionLine.value && (
+            <ConnectionLine
+              connectionLineStyle={props.connectionLineStyle}
+              connectionLineType={props.connectionLineType}
+              customConnectionLine={props.connectionLineComponent}
+            />
+          )}
+        </g>
+      </svg>
+    );
   }
 });
-
-export default EdgeRenderer;
-</script>

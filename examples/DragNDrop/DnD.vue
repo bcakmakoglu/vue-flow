@@ -1,14 +1,7 @@
 <template>
   <div class="dndflow">
     <div class="revueflow-wrapper" @drop="onDrop">
-      <RevueFlow
-        v-model="elements"
-        :onConnect="onConnect"
-        :onElementsRemove="onElementsRemove"
-        :onLoad="onLoad"
-        @dragover="onDragOver"
-        @click="onDrop"
-      >
+      <RevueFlow v-model="elements" @elementsRemove="onElementsRemove" @load="onLoad" @connect="onConnect" @dragover="onDragOver">
         <Controls />
       </RevueFlow>
     </div>
@@ -43,7 +36,7 @@ const DnDFlow = defineComponent({
         data: { label: 'input node' },
         position: { x: 250, y: 5 }
       }
-    ]);
+    ] as Elements);
 
     let id = 0;
     const getId = (): ElementId => `dndnode_${id++}`;
@@ -67,12 +60,12 @@ const DnDFlow = defineComponent({
         console.log(event.dataTransfer?.getData('application/revueflow'));
         const type = event.dataTransfer?.getData('application/revueflow');
         const position = revueFlowInstance.value.project({ x: event.clientX, y: event.clientY - 40 });
-        const newNode: Node = {
+        const newNode = {
           id: getId(),
           type,
           position,
           data: { label: `${type} node` }
-        };
+        } as Node;
 
         elements.value.push(newNode);
       }
