@@ -18,7 +18,9 @@ export default function configureStore(
 
   return defineStore({
     id: 'revue-flow-' + Math.random(),
-    state: () => preloadedState,
+    state: () => ({
+      ...preloadedState
+    }),
     getters: {},
     actions: {
       setElements(elements) {
