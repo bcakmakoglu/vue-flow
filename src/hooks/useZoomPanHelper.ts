@@ -1,14 +1,15 @@
 import { zoomIdentity } from 'd3-zoom';
-import { computed } from 'vue';
-import { createEventHook, until } from '@vueuse/core';
+import { computed, inject } from 'vue';
+import { createEventHook, EventHookOn, until } from '@vueuse/core';
 import { Selection, ZoomBehavior } from 'd3';
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '../utils/graph';
 import { FitViewParams, FlowTransform, ZoomPanHelperFunctions, Rect, XYPosition, RevueFlowStore } from '../types';
 
 const DEFAULT_PADDING = 0.1;
 
-const useZoomPanHelper = (store: RevueFlowStore) => {
+const useZoomPanHelper = (): { onReady: EventHookOn<ZoomPanHelperFunctions> } => {
   const zoomPanHelperEvent = createEventHook<ZoomPanHelperFunctions>();
+  const store = inject<RevueFlowStore>('store')!;
   const d3Zoom = computed(() => store.d3Zoom);
   const d3Selection = computed(() => store.d3Selection);
 

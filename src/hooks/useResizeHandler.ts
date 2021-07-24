@@ -1,15 +1,14 @@
 import { getDimensions } from '../utils';
 import { Dimensions } from '../types';
+import { MaybeRef, unrefElement, until, useEventListener, useResizeObserver } from '@vueuse/core';
 
-export default (rendererNode: HTMLDivElement, updateSize: (size: Dimensions) => any) => {
-  let resizeObserver: ResizeObserver;
-
+export default (rendererNode: MaybeRef<HTMLDivElement>, updateSize: (size: Dimensions) => any) => {
   const updateDimensions = () => {
     if (!rendererNode) {
       return;
     }
 
-    const size = getDimensions(rendererNode);
+    const size = getDimensions(unrefElement(rendererNode));
 
     if (size.height === 0 || size.width === 0) {
       console.log('The revue Flow parent container needs a width and a height to render the graph.');
@@ -18,11 +17,11 @@ export default (rendererNode: HTMLDivElement, updateSize: (size: Dimensions) => 
     updateSize(size);
   };
 
-  updateDimensions();
-  window.onresize = updateDimensions;
-
-  if (rendererNode) {
-    resizeObserver = new ResizeObserver(() => updateDimensions());
-    resizeObserver.observe(rendererNode);
-  }
+  until(rendererNode)
+    .toBeTruthy()
+    .then(() => {
+      updateDimensions();
+      useEventListener(window, 'resize', updateDimensions);
+      useResizeObserver(unrefElement(rendererNode), () => updateDimensions());
+    });
 };
