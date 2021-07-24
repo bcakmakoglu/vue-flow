@@ -1,60 +1,6 @@
-<template>
-  <g
-    :class="edgeClasses"
-    @click="onEdgeClick"
-    @contextmenu="onEdgeContextMenu"
-    @mouseenter="onEdgeMouseEnter"
-    @mousemove="onEdgeMouseMove"
-    @mouseleave="onEdgeMouseLeave"
-  >
-    <component
-      :is="type"
-      :id="edge.id"
-      :source="edge.source"
-      :target="edge.target"
-      :selected="isSelected"
-      :animated="edge.animated"
-      :label="edge.label"
-      :label-style="edge.labelStyle"
-      :label-show-bg="edge.labelShowBg"
-      :label-bg-style="edge.labelBgStyle"
-      :label-bg-padding="edge.labelBgPadding"
-      :label-bg-borderRadius="edge.labelBgBorderRadius"
-      :data="edge.data"
-      :style="edge.style"
-      :arrow-head-type="edge.arrowHeadType"
-      :source-x="edgePositions.sourceX"
-      :source-y="edgePositions.sourceY"
-      :target-x="edgePositions.targetX"
-      :target-y="edgePositions.targetY"
-      :source-position="sourcePosition"
-      :target-position="targetPosition"
-      :marker-end-id="markerEndId"
-      :source-handle-id="edge.sourceHandle"
-      :target-handle-id="edge.targetHandle"
-    />
-    <g @mousedown="onEdgeUpdaterSourceMouseDown" @mouseenter="onEdgeUpdaterMouseEnter" @mouseout="onEdgeUpdaterMouseOut">
-      <EdgeAnchor
-        :position="sourcePosition"
-        :center-x="edgePositions.sourceX"
-        :center-y="edgePositions.sourceY"
-        :radius="edgeUpdaterRadius"
-      />
-    </g>
-    <g @mousedown="onEdgeUpdaterTargetMouseDown" @mouseenter="onEdgeUpdaterMouseEnter" @mouseout="onEdgeUpdaterMouseOut">
-      <EdgeAnchor
-        :position="sourcePosition"
-        :center-x="edgePositions.sourceX"
-        :center-y="edgePositions.sourceY"
-        :radius="edgeUpdaterRadius"
-      />
-    </g>
-  </g>
-</template>
-<script lang="ts">
 import { EdgeAnchor } from './EdgeAnchor';
 import { ConnectionMode, Edge, Elements, Node, Position, RevueFlowStore, Transform } from '../../types';
-import { computed, defineComponent, inject, PropType, ref } from 'vue';
+import { computed, defineComponent, h, inject, PropType, ref } from 'vue';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '../../container/EdgeRenderer/utils';
 import { isEdge } from '../../utils/graph';
@@ -143,15 +89,13 @@ export default defineComponent({
       targetX: number;
       targetY: number;
     }>(() => {
-      return (
-        getEdgePositions(
-          nodes.value.sourceNode,
-          sourceHandle.value,
-          sourcePosition.value,
-          nodes.value.targetNode,
-          targetHandle.value,
-          targetPosition.value
-        ) || {}
+      return getEdgePositions(
+        nodes.value.sourceNode as Node,
+        sourceHandle.value,
+        sourcePosition.value,
+        nodes.value.targetNode as Node,
+        targetHandle.value,
+        targetPosition.value
       );
     });
 
@@ -252,25 +196,60 @@ export default defineComponent({
     const onEdgeUpdaterMouseEnter = () => (updating.value = true);
     const onEdgeUpdaterMouseOut = () => (updating.value = false);
 
-    return {
-      isSelected,
-      isVisible,
-      edgePositions,
-      sourceHandle,
-      targetHandle,
-      sourcePosition,
-      targetPosition,
-      edgeClasses,
-      onEdgeClick,
-      onEdgeMouseEnter,
-      onEdgeMouseMove,
-      onEdgeMouseLeave,
-      onEdgeUpdaterSourceMouseDown,
-      onEdgeUpdaterTargetMouseDown,
-      onEdgeUpdaterMouseEnter,
-      onEdgeUpdaterMouseOut,
-      onEdgeContextMenu
-    };
+    return () =>
+      isVisible.value ? (
+        <g
+          class={edgeClasses.value}
+          onClick={onEdgeClick}
+          onContextmenu={onEdgeContextMenu}
+          onMouseenter={onEdgeMouseEnter}
+          onMousemove={onEdgeMouseMove}
+          onMouseleave={onEdgeMouseLeave}
+        >
+          {h(props.type, {
+            id: props.edge.id,
+            source: props.edge.source,
+            target: props.edge.target,
+            selected: isSelected,
+            animated: props.edge.animated,
+            label: props.edge.label,
+            labelStyle: props.edge.labelStyle,
+            labelShowBg: props.edge.labelShowBg,
+            labelBgStyle: props.edge.labelBgStyle,
+            labelBgPadding: props.edge.labelBgPadding,
+            labelBgBorderRadius: props.edge.labelBgBorderRadius,
+            data: props.edge.data,
+            style: props.edge.style,
+            arrowHeadType: props.edge.arrowHeadType,
+            sourceX: edgePositions.value.sourceX,
+            sourceY: edgePositions.value.sourceY,
+            targetX: edgePositions.value.targetX,
+            targetY: edgePositions.value.targetY,
+            sourcePosition: sourcePosition.value,
+            targetPosition: targetPosition.value,
+            markerEndId: props.markerEndId,
+            sourceHandleId: props.edge.sourceHandle,
+            targetHandleId: props.edge.targetHandle
+          }, {})}
+          <g onMousedown={onEdgeUpdaterSourceMouseDown} onMouseenter={onEdgeUpdaterMouseEnter} onMouseout={onEdgeUpdaterMouseOut}>
+            <EdgeAnchor
+              position={sourcePosition.value}
+              centerX={edgePositions.value.sourceX}
+              centerY={edgePositions.value.sourceY}
+              radius={props.edgeUpdaterRadius}
+            />
+          </g>
+          <g onMousedown={onEdgeUpdaterTargetMouseDown} onMouseenter={onEdgeUpdaterMouseEnter} onMouseout={onEdgeUpdaterMouseOut}>
+            <EdgeAnchor
+              position={sourcePosition.value}
+              centerX={edgePositions.value.sourceX}
+              centerY={edgePositions.value.sourceY}
+              radius={props.edgeUpdaterRadius}
+            />
+          </g>
+        </g>
+      ) : (
+        ''
+      );
   }
 });
-</script>

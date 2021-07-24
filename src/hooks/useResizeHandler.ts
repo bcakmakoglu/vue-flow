@@ -1,10 +1,11 @@
+import { createEventHook, MaybeRef, unrefElement, until, useEventListener, useResizeObserver } from '@vueuse/core';
 import { getDimensions } from '../utils';
 import { Dimensions } from '../types';
-import { MaybeRef, unrefElement, until, useEventListener, useResizeObserver } from '@vueuse/core';
 
 export default (rendererNode: MaybeRef<HTMLDivElement>, updateSize: (size: Dimensions) => any) => {
+  const resizeHandlerHook = createEventHook();
   const updateDimensions = () => {
-    if (!rendererNode) {
+    if (!unrefElement(rendererNode)) {
       return;
     }
 
@@ -23,5 +24,10 @@ export default (rendererNode: MaybeRef<HTMLDivElement>, updateSize: (size: Dimen
       updateDimensions();
       useEventListener(window, 'resize', updateDimensions);
       useResizeObserver(unrefElement(rendererNode), () => updateDimensions());
+      resizeHandlerHook.trigger(true);
     });
+
+  return {
+    onReady: resizeHandlerHook.on
+  };
 };

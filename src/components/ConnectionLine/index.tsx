@@ -1,23 +1,4 @@
-<template>
-  <g v-show="sourceNode && nodesConnectable" class="revue-flow__connection">
-    <g v-if="CustomConnectionLineComponent" class="revue-flow__connection">
-      <component
-        :is="CustomConnectionLineComponent"
-        :sourceX="sourceX"
-        :sourceY="sourceY"
-        :sourcePosition="sourceHandle.position"
-        :targetX="targetX"
-        :targetY="targetY"
-        :targetPosition="targetPosition"
-        :connectionLineType="connectionLineType"
-        :connectionLineStyle="connectionLineStyle"
-      />
-    </g>
-    <path v-else class="revue-flow__connection-path" :d="dAttr" :style="connectionLineStyle" />
-  </g>
-</template>
-<script lang="ts">
-import { ref, defineComponent, CSSProperties, PropType, computed, inject } from 'vue';
+import { ref, defineComponent, CSSProperties, PropType, computed, inject, h } from 'vue';
 
 import { getBezierPath } from '../Edges/BezierEdge';
 import { getSmoothStepPath } from '../Edges/SmoothStepEdge';
@@ -26,23 +7,23 @@ import { Node, HandleElement, Position, ConnectionLineType, ConnectionLineCompon
 interface ConnectionLineProps {
   connectionLineType: ConnectionLineType;
   connectionLineStyle?: CSSProperties;
-  CustomConnectionLineComponent?: ConnectionLineComponent;
+  customConnectionLine?: ConnectionLineComponent;
 }
 
-const ConnectionLine = defineComponent({
+export default defineComponent({
   props: {
-    connectionLineType: {
-      type: String as PropType<ConnectionLineProps['connectionLineType']>,
-      required: false,
-      default: ConnectionLineType.Bezier
-    },
     connectionLineStyle: {
       type: Object as PropType<ConnectionLineProps['connectionLineStyle']>,
       required: false,
       default: () => {}
     },
-    CustomConnectionLineComponent: {
-      type: Object as PropType<ConnectionLineProps['CustomConnectionLineComponent']>,
+    connectionLineType: {
+      type: String as PropType<ConnectionLineProps['connectionLineType']>,
+      required: false,
+      default: ConnectionLineType.Bezier
+    },
+    customConnectionLine: {
+      type: Object as PropType<ConnectionLineProps['customConnectionLine']>,
       required: false,
       default: undefined
     }
@@ -114,20 +95,31 @@ const ConnectionLine = defineComponent({
       );
     }
 
-    return {
-      dAttr,
-      targetX,
-      targetY,
-      sourceX,
-      sourceY,
-      sourceHandle,
-      sourceNode,
-      sourceHandleX,
-      sourceHandleY,
-      nodesConnectable
-    };
+    if (props.customConnectionLine) {
+      return () => (
+        <g class="revue-flow__connection">
+          {props.customConnectionLine &&
+            h(props.customConnectionLine, {
+              sourceX: sourceX.value,
+              sourceY: sourceY.value,
+              sourcePosition: sourceHandle.value?.position,
+              targetX: targetX.value,
+              targetY: targetY.value,
+              targetPosition: targetPosition.value,
+              connectionLineType: props.connectionLineType,
+              connectionLineStyle: props.connectionLineStyle
+            })}
+        </g>
+      );
+    }
+
+    return () =>
+      nodesConnectable.value && sourceNode.value ? (
+        <g class="revue-flow__connection">
+          <path d={dAttr.value} class="revue-flow__connection-path" style={props.connectionLineStyle} />
+        </g>
+      ) : (
+        ''
+      );
   }
 });
-
-export default ConnectionLine;
-</script>

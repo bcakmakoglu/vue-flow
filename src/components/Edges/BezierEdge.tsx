@@ -121,7 +121,7 @@ const BezierEdge = defineComponent({
     style: {
       type: Object as PropType<CSSProperties>,
       required: false,
-      default: () => ({})
+      default: () => {}
     }
   },
   setup(props) {

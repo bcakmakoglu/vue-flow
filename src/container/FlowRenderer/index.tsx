@@ -1,26 +1,3 @@
-<template>
-  <ZoomPane
-    :selectionKeyPressed="keyPressed"
-    :elementsSelectable="elementsSelectable"
-    :zoomOnScroll="zoomOnScroll"
-    :zoomOnPinch="zoomOnPinch"
-    :panOnScroll="panOnScroll"
-    :panOnScrollSpeed="panOnScrollSpeed"
-    :panOnScrollMode="panOnScrollMode"
-    :zoomOnDoubleClick="zoomOnDoubleClick"
-    :paneMoveable="paneMoveable"
-    :defaultPosition="defaultPosition"
-    :defaultZoom="defaultZoom"
-    :translateExtent="translateExtent"
-    :zoomActivationKeyCode="zoomActivationKeyCode"
-  >
-    <slot></slot>
-    <UserSelection v-if="keyPressed" />
-    <NodesSelection v-if="selectionActive" />
-    <div class="revue-flow__pane" @click="onClick" @onContextmenu="onContextMenu" @wheel="onWheel" />
-  </ZoomPane>
-</template>
-<script lang="ts">
 import { computed, defineComponent, inject, PropType } from 'vue';
 import ZoomPane from '../ZoomPane';
 import UserSelection from '../../components/UserSelection';
@@ -43,7 +20,7 @@ type FlowRendererProps = Omit<
   | 'selectNodesOnDrag'
 >;
 
-const FlowRenderer = defineComponent({
+export default defineComponent({
   name: 'FlowRenderer',
   components: { UserSelection, ZoomPane, NodesSelection },
   props: {
@@ -123,7 +100,7 @@ const FlowRenderer = defineComponent({
       default: undefined
     }
   },
-  setup(props) {
+  setup(props, { slots }) {
     const store = inject<RevueFlowStore>('store')!;
     const hooks = inject<RevueFlowHooks>('hooks')!;
     const keyPressed = useKeyPress(props.selectionKeyCode);
@@ -147,15 +124,27 @@ const FlowRenderer = defineComponent({
 
     const selectionActive = computed(() => store.nodesSelectionActive);
 
-    return {
-      onClick,
-      onContextMenu,
-      onWheel,
-      keyPressed,
-      selectionActive
-    };
+    return () => (
+      <ZoomPane
+        selectionKeyPressed={keyPressed.value}
+        elementsSelectable={props.elementsSelectable}
+        zoomOnScroll={props.zoomOnScroll}
+        zoomOnPinch={props.zoomOnPinch}
+        panOnScroll={props.panOnScroll}
+        panOnScrollSpeed={props.panOnScrollSpeed}
+        panOnScrollMode={props.panOnScrollMode}
+        zoomOnDoubleClick={props.zoomOnDoubleClick}
+        paneMoveable={props.paneMoveable}
+        defaultPosition={props.defaultPosition}
+        defaultZoom={props.defaultZoom}
+        translateExtent={props.translateExtent}
+        zoomActivationKeyCode={props.zoomActivationKeyCode}
+      >
+        {slots.default ? slots.default() : ''}
+        {keyPressed.value ? <UserSelection /> : ''}
+        {selectionActive.value ? <NodesSelection /> : ''}
+        <div class="revue-flow__pane" onClick={onClick} onContextmenu={onContextMenu} onWheel={onWheel} />
+      </ZoomPane>
+    );
   }
 });
-
-export default FlowRenderer;
-</script>

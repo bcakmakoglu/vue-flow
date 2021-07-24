@@ -1,39 +1,39 @@
 <template>
   <div class="revue-flow">
     <GraphView
-      :nodeTypes="nodeTypesParsed"
-      :edgeTypes="edgeTypesParsed"
-      :connectionMode="connectionMode"
-      :connectionLineType="connectionLineType"
-      :connectionLineStyle="connectionLineStyle"
-      :connectionLineComponent="connectionLineComponent"
-      :selectionKeyCode="selectionKeyCode"
-      :deleteKeyCode="deleteKeyCode"
-      :multiSelectionKeyCode="multiSelectionKeyCode"
-      :zoomActivationKeyCode="zoomActivationKeyCode"
-      :snapToGrid="snapToGrid"
-      :snapGrid="snapGrid"
-      :onlyRenderVisibleElements="onlyRenderVisibleElements"
-      :nodesDraggable="nodesDraggable"
-      :nodesConnectable="nodesConnectable"
-      :elementsSelectable="elementsSelectable"
-      :selectNodesOnDrag="selectNodesOnDrag"
-      :minZoom="minZoom"
-      :maxZoom="maxZoom"
-      :defaultZoom="defaultZoom"
-      :defaultPosition="defaultPosition"
-      :translateExtent="translateExtent"
-      :nodeExtent="nodeExtent"
-      :arrowHeadColor="arrowHeadColor"
-      :markerEndId="markerEndId"
-      :zoomOnScroll="zoomOnScroll"
-      :zoomOnPinch="zoomOnPinch"
-      :zoomOnDoubleClick="zoomOnDoubleClick"
-      :panOnScroll="panOnScroll"
-      :panOnScrollSpeed="panOnScrollSpeed"
-      :panOnScrollMode="panOnScrollMode"
-      :paneMoveable="paneMoveable"
-      :edgeUpdaterRadius="edgeUpdaterRadius"
+      :node-types="nodeTypesParsed"
+      :edge-types="edgeTypesParsed"
+      :connection-mode="connectionMode"
+      :connection-line-type="connectionLineType"
+      :connection-line-style="connectionLineStyle"
+      :connection-line-component="connectionLineComponent"
+      :selection-key-code="selectionKeyCode"
+      :delete-key-code="deleteKeyCode"
+      :multi-selection-key-code="multiSelectionKeyCode"
+      :zoom-activation-key-code="zoomActivationKeyCode"
+      :snap-to-grid="snapToGrid"
+      :snap-grid="snapGrid"
+      :only-render-visible-elements="onlyRenderVisibleElements"
+      :nodes-draggable="nodesDraggable"
+      :nodes-connectable="nodesConnectable"
+      :elements-selectable="elementsSelectable"
+      :select-nodes-on-drag="selectNodesOnDrag"
+      :min-zoom="minZoom"
+      :max-zoom="maxZoom"
+      :default-zoom="defaultZoom"
+      :default-position="defaultPosition"
+      :translate-extent="translateExtent"
+      :node-extent="nodeExtent"
+      :arrow-head-color="arrowHeadColor"
+      :marker-end-id="markerEndId"
+      :zoom-on-scroll="zoomOnScroll"
+      :zoom-on-pinch="zoomOnPinch"
+      :zoom-on-double-click="zoomOnDoubleClick"
+      :pan-on-scroll="panOnScroll"
+      :pan-on-scroll-speed="panOnScrollSpeed"
+      :pan-on-scroll-mode="panOnScrollMode"
+      :pane-moveable="paneMoveable"
+      :edge-updater-radius="edgeUpdaterRadius"
     />
     <slot></slot>
   </div>
@@ -68,8 +68,7 @@ const defaultEdgeTypes = {
   smoothstep: SmoothStepEdge
 };
 
-const eventHooks = useRevueFlow();
-const RevueFlow = defineComponent({
+export default defineComponent({
   name: 'RevueFlow',
   components: { GraphView },
   props: {
@@ -254,12 +253,12 @@ const RevueFlow = defineComponent({
       default: 10
     }
   },
-  emits: Object.keys(eventHooks),
+  emits: Object.keys(useRevueFlow()),
   setup(props, { emit }) {
     const store = configureStore(initialState)();
     provide<RevueFlowStore>('store', store);
-    eventHooks.bind(emit);
-    provide<RevueFlowHooks>('hooks', eventHooks);
+    const hooks = useRevueFlow().bind(emit);
+    provide<RevueFlowHooks>('hooks', hooks);
     const elements = useVModel(props, 'modelValue', emit);
 
     store.setElements(elements.value);
@@ -289,5 +288,4 @@ const RevueFlow = defineComponent({
     };
   }
 });
-export default RevueFlow;
 </script>

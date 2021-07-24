@@ -44,7 +44,7 @@ export interface RevueFlowHooks {
   edgeUpdateEnd: EventHook<{ event: MouseEvent; edge: Edge }>;
 }
 
-export const useRevueFlow = (): RevueFlowHooks & { bind: (emit: (event: string, ...args: any[]) => void) => void } => {
+export const useRevueFlow = (): RevueFlowHooks & { bind: (emit: (event: string, ...args: any[]) => void) => RevueFlowHooks } => {
   const eventHooks: RevueFlowHooks = {
     elementClick: createEventHook<{ event: MouseEvent; element: Node | Edge }>(),
     elementsRemove: createEventHook<Elements>(),
@@ -93,6 +93,8 @@ export const useRevueFlow = (): RevueFlowHooks & { bind: (emit: (event: string, 
         emit(key, data);
       });
     }
+
+    return eventHooks;
   };
 
   return {

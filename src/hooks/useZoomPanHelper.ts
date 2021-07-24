@@ -65,8 +65,7 @@ const useZoomPanHelper = (): { onReady: EventHookOn<ZoomPanHelperFunctions> } =>
     project: (position: XYPosition) => {
       const { transform, snapToGrid, snapGrid } = store;
       return pointToRendererPoint(position, transform, snapToGrid, snapGrid);
-    },
-    initialized: true
+    }
   });
 
   until(d3Zoom)

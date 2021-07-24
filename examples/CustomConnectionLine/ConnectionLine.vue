@@ -14,7 +14,7 @@
 import { defineComponent, PropType } from 'vue';
 import { ConnectionLineComponentProps } from '../../src';
 
-const ConnectionLine = defineComponent({
+export default defineComponent({
   props: {
     sourceX: {
       type: Number as PropType<ConnectionLineComponentProps['sourceX']>,
@@ -34,6 +34,4 @@ const ConnectionLine = defineComponent({
     }
   }
 });
-
-export default ConnectionLine;
 </script>

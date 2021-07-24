@@ -90,7 +90,7 @@ const Controls = defineComponent({
     const store = inject<RevueFlowStore>('store')!;
     const isVisible = ref<boolean>(false);
     const zoomHelper = ref<ZoomPanHelperFunctions>();
-    const { onReady } = useZoomPanHelper(store);
+    const { onReady } = useZoomPanHelper();
 
     onReady((helper) => {
       zoomHelper.value = helper;

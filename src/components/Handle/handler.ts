@@ -1,11 +1,8 @@
 import { getHostForElement } from '../../utils';
-import { ElementId, XYPosition, ConnectionMode, SetConnectionId, Connection, HandleType, RevueFlowStore } from '../../types';
+import { ElementId, ConnectionMode, Connection, HandleType, RevueFlowStore } from '../../types';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 export type ValidConnectionFunc = (connection: Connection) => boolean;
-export type SetSourceIdFunc = (params: SetConnectionId) => void;
-
-export type SetPosition = (pos: XYPosition) => void;
 
 type Result = {
   elementBelow: Element | null;
