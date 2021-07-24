@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * The nodes selection rectangle gets displayed when a user
  * made a selectio  with on or several nodes

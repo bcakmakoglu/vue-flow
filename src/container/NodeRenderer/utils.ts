@@ -1,20 +1,19 @@
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
 import OutputNode from '../../components/Nodes/OutputNode';
-import { NodeTypesType } from '../../types';
+import { NodeType } from '../../types';
 
-export function createNodeTypes(nodeTypes: NodeTypesType): NodeTypesType {
-  const standardTypes: NodeTypesType = {
+export function createNodeTypes(nodeTypes: Record<string, NodeType>): Record<string, NodeType> {
+  const standardTypes: Record<string, NodeType> = {
     input: nodeTypes.input || InputNode,
     default: nodeTypes.default || DefaultNode,
     output: nodeTypes.output || OutputNode
   };
 
-  const wrappedTypes = {} as NodeTypesType;
-  const specialTypes: NodeTypesType = Object.keys(nodeTypes)
+  const wrappedTypes = {} as NodeType;
+  const specialTypes: NodeType = Object.keys(nodeTypes)
     .filter((k) => !['input', 'default', 'output'].includes(k))
     .reduce((res, key) => {
-      // @ts-ignore
       res[key] = nodeTypes[key] || DefaultNode;
 
       return res;

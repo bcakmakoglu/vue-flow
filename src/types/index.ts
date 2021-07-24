@@ -1,5 +1,5 @@
 import { Selection as D3Selection, ZoomBehavior } from 'd3';
-import { CSSProperties, DefineComponent, HTMLAttributes, PropType, VNode } from 'vue';
+import { CSSProperties, DefineComponent, HTMLAttributes, VNode } from 'vue';
 import { Store } from 'pinia';
 
 export type ElementId = string;
@@ -91,235 +91,15 @@ export enum BackgroundVariant {
 
 export type HandleType = 'source' | 'target';
 
-export type NodeTypesType = { [key: string]: DefineComponent<WrapNodeProps> };
+export type NodeType = DefineComponent<NodeProps>;
 
-export type EdgeTypesType = { [key: string]: DefineComponent<WrapEdgeProps> };
+export type EdgeType = DefineComponent<EdgeSmoothStepProps>;
 
 export interface SelectionRect extends Rect {
   startX: number;
   startY: number;
   draw: boolean;
 }
-
-export interface WrapEdgeProps<T = any> {
-  id: ElementId;
-  className?: string;
-  type: string;
-  data?: T;
-  onClick?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeDoubleClick?: (event: MouseEvent, edge: Edge) => void;
-  selected: boolean;
-  animated?: boolean;
-  label?: string | VNode;
-  labelStyle?: any;
-  labelShowBg?: boolean;
-  labelBgStyle?: any;
-  labelBgPadding?: [number, number];
-  labelBgBorderRadius?: number;
-  style?: any;
-  arrowHeadType?: ArrowHeadType;
-  source: ElementId;
-  target: ElementId;
-  sourceHandleId: ElementId | null;
-  targetHandleId: ElementId | null;
-  sourceX: number;
-  sourceY: number;
-  targetX: number;
-  targetY: number;
-  sourcePosition: Position;
-  targetPosition: Position;
-  elementsSelectable?: boolean;
-  markerEndId?: string;
-  isHidden?: boolean;
-  handleEdgeUpdate: boolean;
-  onConnectEdge: OnConnectFunc;
-  onContextMenu?: (event: MouseEvent, edge: Edge) => void;
-  onMouseEnter?: (event: MouseEvent, edge: Edge) => void;
-  onMouseMove?: (event: MouseEvent, edge: Edge) => void;
-  onMouseLeave?: (event: MouseEvent, edge: Edge) => void;
-  edgeUpdaterRadius?: number;
-  onEdgeUpdateStart?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeUpdateEnd?: (event: MouseEvent, edge: Edge) => void;
-}
-
-export const WrapEdgeProps = {
-  id: {
-    type: String as PropType<WrapEdgeProps['id']>,
-    required: false,
-    default: undefined
-  },
-  type: {
-    type: String as PropType<WrapEdgeProps['type']>,
-    required: true
-  },
-  data: {
-    type: String as PropType<WrapEdgeProps['data']>,
-    required: false,
-    default: undefined
-  },
-  onClick: {
-    type: Function('event', 'edge') as PropType<WrapEdgeProps['onClick']>,
-    required: false,
-    default: undefined
-  },
-  onEdgeDoubleClick: {
-    type: Function('event', 'edge') as PropType<WrapEdgeProps['onEdgeDoubleClick']>,
-    required: false,
-    default: undefined
-  },
-  selected: {
-    type: Boolean as PropType<WrapEdgeProps['selected']>,
-    required: true,
-    default: false
-  },
-  animated: {
-    type: Boolean as PropType<WrapEdgeProps['animated']>,
-    required: false,
-    default: false
-  },
-  label: {
-    type: Object as PropType<WrapEdgeProps['label']>,
-    required: false,
-    default: undefined
-  },
-  labelStyle: {
-    type: Object as PropType<WrapEdgeProps['labelStyle']>,
-    required: false,
-    default: undefined
-  },
-  labelShowBg: {
-    type: Boolean as PropType<WrapEdgeProps['labelShowBg']>,
-    required: false,
-    default: false
-  },
-  labelBgStyle: {
-    type: Object as PropType<WrapEdgeProps['labelBgStyle']>,
-    required: false,
-    default: undefined
-  },
-  labelBgPadding: {
-    type: Array as unknown as PropType<WrapEdgeProps['labelBgPadding']>,
-    required: false,
-    default: undefined
-  },
-  labelBgBorderRadius: {
-    type: Number as PropType<WrapEdgeProps['labelBgBorderRadius']>,
-    required: false,
-    default: undefined
-  },
-  style: {
-    type: Object as PropType<WrapEdgeProps['style']>,
-    required: false,
-    default: undefined
-  },
-  arrowHeadType: {
-    type: String as PropType<WrapEdgeProps['arrowHeadType']>,
-    required: false,
-    default: undefined
-  },
-  source: {
-    type: String as PropType<WrapEdgeProps['source']>,
-    required: true
-  },
-  target: {
-    type: String as PropType<WrapEdgeProps['target']>,
-    required: true
-  },
-  sourceHandleId: {
-    type: String as PropType<WrapEdgeProps['sourceHandleId']>,
-    required: true,
-    default: null
-  },
-  targetHandleId: {
-    type: String as PropType<WrapEdgeProps['targetHandleId']>,
-    required: true,
-    default: null
-  },
-  sourceX: {
-    type: Number as PropType<WrapEdgeProps['sourceX']>,
-    required: true
-  },
-  sourceY: {
-    type: Number as PropType<WrapEdgeProps['sourceY']>,
-    required: true
-  },
-  targetX: {
-    type: Number as PropType<WrapEdgeProps['targetX']>,
-    required: true
-  },
-  targetY: {
-    type: Number as PropType<WrapEdgeProps['targetY']>,
-    required: true
-  },
-  sourcePosition: {
-    type: String as PropType<WrapEdgeProps['sourcePosition']>,
-    required: true
-  },
-  targetPosition: {
-    type: String as PropType<WrapEdgeProps['targetPosition']>,
-    required: true
-  },
-  elementsSelectable: {
-    type: Boolean as PropType<WrapEdgeProps['elementsSelectable']>,
-    required: false,
-    default: false
-  },
-  markerEndId: {
-    type: String as PropType<WrapEdgeProps['markerEndId']>,
-    required: false,
-    default: undefined
-  },
-  isHidden: {
-    type: Boolean as PropType<WrapEdgeProps['isHidden']>,
-    required: false,
-    default: false
-  },
-  handleEdgeUpdate: {
-    type: Boolean as PropType<WrapEdgeProps['handleEdgeUpdate']>,
-    required: false,
-    default: false
-  },
-  onConnectEdge: {
-    type: Function() as PropType<WrapEdgeProps['onConnectEdge']>,
-    required: false,
-    default: undefined
-  },
-  onContextMenu: {
-    type: Function() as PropType<WrapEdgeProps['onContextMenu']>,
-    required: false,
-    default: undefined
-  },
-  onMouseEnter: {
-    type: Function() as PropType<WrapEdgeProps['onMouseEnter']>,
-    required: false,
-    default: undefined
-  },
-  onMouseMove: {
-    type: Function() as PropType<WrapEdgeProps['onMouseMove']>,
-    required: false,
-    default: undefined
-  },
-  onMouseLeave: {
-    type: Function() as PropType<WrapEdgeProps['onMouseLeave']>,
-    required: false,
-    default: undefined
-  },
-  edgeUpdaterRadius: {
-    type: Number as PropType<WrapEdgeProps['edgeUpdaterRadius']>,
-    required: false,
-    default: undefined
-  },
-  onEdgeUpdateStart: {
-    type: Function() as PropType<WrapEdgeProps['onEdgeUpdateStart']>,
-    required: false,
-    default: undefined
-  },
-  onEdgeUpdateEnd: {
-    type: Function() as PropType<WrapEdgeProps['onEdgeUpdateEnd']>,
-    required: false,
-    default: undefined
-  }
-};
 
 export interface EdgeProps<T = any> {
   id: ElementId;
@@ -351,112 +131,6 @@ export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
   borderRadius?: number;
 }
 
-export const EdgeProps = {
-  id: {
-    type: String as PropType<EdgeSmoothStepProps['id']>,
-    required: true
-  },
-  sourceX: {
-    type: Number as PropType<EdgeSmoothStepProps['sourceX']>,
-    required: true,
-    default: 0
-  },
-  sourceY: {
-    type: Number as PropType<EdgeSmoothStepProps['sourceY']>,
-    required: true,
-    default: 0
-  },
-  targetX: {
-    type: Number as PropType<EdgeSmoothStepProps['targetX']>,
-    required: true,
-    default: 0
-  },
-  targetY: {
-    type: Number as PropType<EdgeSmoothStepProps['targetY']>,
-    required: true,
-    default: 0
-  },
-  sourcePosition: {
-    type: String as PropType<EdgeSmoothStepProps['sourcePosition']>,
-    required: true,
-    default: Position.Bottom
-  },
-  targetPosition: {
-    type: String as PropType<EdgeSmoothStepProps['targetPosition']>,
-    required: true,
-    default: Position.Top
-  },
-  label: {
-    type: String as PropType<EdgeSmoothStepProps['label']>,
-    required: false,
-    default: undefined
-  },
-  labelStyle: {
-    type: Object as PropType<EdgeSmoothStepProps['labelStyle']>,
-    required: true,
-    default: undefined
-  },
-  labelShowBg: {
-    type: Boolean as PropType<EdgeSmoothStepProps['labelShowBg']>,
-    required: false,
-    default: false
-  },
-  labelBgStyle: {
-    type: String as PropType<EdgeSmoothStepProps['labelBgStyle']>,
-    required: false,
-    default: undefined
-  },
-  labelBgPadding: {
-    type: [0, 0] as any as PropType<[number, number]>,
-    required: false,
-    default: undefined
-  },
-  labelBgBorderRadius: {
-    type: Number as PropType<EdgeSmoothStepProps['labelBgBorderRadius']>,
-    required: false,
-    default: undefined
-  },
-  arrowHeadType: {
-    type: Object as PropType<EdgeSmoothStepProps['arrowHeadType']>,
-    required: false,
-    default: undefined
-  },
-  markerEndId: {
-    type: String as PropType<EdgeSmoothStepProps['markerEndId']>,
-    required: false,
-    default: undefined
-  },
-  style: {
-    type: Object as PropType<EdgeSmoothStepProps['style']>,
-    required: false,
-    default: undefined
-  },
-  data: {
-    type: Object as PropType<EdgeSmoothStepProps['data']>,
-    required: false,
-    default: undefined
-  },
-  sourceHandleId: {
-    type: Object as PropType<EdgeSmoothStepProps['sourceHandleId']>,
-    required: false,
-    default: undefined
-  },
-  targetHandleId: {
-    type: Object as PropType<EdgeSmoothStepProps['targetHandleId']>,
-    required: false,
-    default: undefined
-  }
-};
-
-export const EdgeSmoothStepProps = {
-  ...EdgeProps,
-  borderRadius: {
-    type: Number as PropType<EdgeSmoothStepProps['borderRadius']>,
-    required: false,
-    default: 5
-  }
-};
-
 export interface EdgeTextProps extends HTMLAttributes {
   x: number;
   y: number;
@@ -479,62 +153,6 @@ export interface NodeProps<T = any> {
   targetPosition?: Position;
   sourcePosition?: Position;
   isDragging?: boolean;
-}
-
-export interface NodeComponentProps<T = any> {
-  id: ElementId;
-  type: string;
-  data: T;
-  selected?: boolean;
-  isConnectable: boolean;
-  transform?: Transform;
-  xPos?: number;
-  yPos?: number;
-  targetPosition?: Position;
-  sourcePosition?: Position;
-  onClick?: (node: Node) => void;
-  onNodeDoubleClick?: (node: Node) => void;
-  onMouseEnter?: (node: Node) => void;
-  onMouseMove?: (node: Node) => void;
-  onMouseLeave?: (node: Node) => void;
-  onContextMenu?: (node: Node) => void;
-  onNodeDragStart?: (node: Node) => void;
-  onNodeDrag?: (node: Node) => void;
-  onNodeDragStop?: (node: Node) => void;
-  style?: any;
-  isDragging?: boolean;
-}
-
-export interface WrapNodeProps<T = any> {
-  id: ElementId;
-  type: string;
-  data: T;
-  selected: boolean;
-  scale: number;
-  xPos: number;
-  yPos: number;
-  isSelectable: boolean;
-  isDraggable: boolean;
-  isConnectable: boolean;
-  selectNodesOnDrag: boolean;
-  onClick?: (event: MouseEvent, node: Node) => void;
-  onNodeDoubleClick?: (event: MouseEvent, node: Node) => void;
-  onMouseEnter?: (event: MouseEvent, node: Node) => void;
-  onMouseMove?: (event: MouseEvent, node: Node) => void;
-  onMouseLeave?: (event: MouseEvent, node: Node) => void;
-  onContextMenu?: (event: MouseEvent, node: Node) => void;
-  onNodeDragStart?: (event: MouseEvent, node: Node) => void;
-  onNodeDrag?: (event: MouseEvent, node: Node) => void;
-  onNodeDragStop?: (event: MouseEvent, node: Node) => void;
-  style?: any;
-  sourcePosition?: Position;
-  targetPosition?: Position;
-  isHidden?: boolean;
-  isInitialized?: boolean;
-  snapToGrid?: boolean;
-  snapGrid?: SnapGrid;
-  isDragging?: boolean;
-  resizeObserver: ResizeObserver | null;
 }
 
 export type FitViewParams = {
@@ -753,47 +371,10 @@ export type RevueFlowStore = Store<string, RevueFlowState, any, RevueFlowActions
 
 export type UpdateNodeInternals = (nodeId: ElementId) => void;
 
-export interface RevueFlowEvents {
-  onElementClick?: (event: MouseEvent, element: Node | Edge) => void;
-  onElementsRemove?: (elements: Elements) => void;
-  onNodeDoubleClick?: (event: MouseEvent, node: Node) => void;
-  onNodeMouseEnter?: (event: MouseEvent, node: Node) => void;
-  onNodeMouseMove?: (event: MouseEvent, node: Node) => void;
-  onNodeMouseLeave?: (event: MouseEvent, node: Node) => void;
-  onNodeContextMenu?: (event: MouseEvent, node: Node) => void;
-  onNodeDragStart?: (event: MouseEvent, node: Node) => void;
-  onNodeDrag?: (event: MouseEvent, node: Node) => void;
-  onNodeDragStop?: (event: MouseEvent, node: Node) => void;
-  onConnect?: (connection: Edge | Connection) => void;
-  onConnectStart?: OnConnectStartFunc;
-  onConnectStop?: OnConnectStopFunc;
-  onConnectEnd?: OnConnectEndFunc;
-  onLoad?: OnLoadFunc;
-  onMove?: (flowTransform?: FlowTransform) => void;
-  onMoveStart?: (flowTransform?: FlowTransform) => void;
-  onMoveEnd?: (flowTransform?: FlowTransform) => void;
-  onSelectionChange?: (elements: Elements | null) => void;
-  onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void;
-  onSelectionDrag?: (event: MouseEvent, nodes: Node[]) => void;
-  onSelectionDragStop?: (event: MouseEvent, nodes: Node[]) => void;
-  onSelectionContextMenu?: (event: MouseEvent, nodes: Node[]) => void;
-  onPaneScroll?: (event?: WheelEvent) => void;
-  onPaneClick?: (event: MouseEvent) => void;
-  onPaneContextMenu?: (event: MouseEvent) => void;
-  onEdgeUpdate?: OnEdgeUpdateFunc;
-  onEdgeContextMenu?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseEnter?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseMove?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeMouseLeave?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeDoubleClick?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeUpdateStart?: (event: MouseEvent, edge: Edge) => void;
-  onEdgeUpdateEnd?: (event: MouseEvent, edge: Edge) => void;
-}
-
 export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
   modelValue: Elements;
-  nodeTypes?: NodeTypesType;
-  edgeTypes?: EdgeTypesType;
+  nodeTypes?: Record<string, NodeType>;
+  edgeTypes?: Record<string, EdgeType>;
   connectionMode?: ConnectionMode;
   connectionLineType?: ConnectionLineType;
   connectionLineStyle?: CSSProperties;
@@ -829,9 +410,7 @@ export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
   edgeTypesId?: string;
 }
 
-export interface GraphViewProps extends Omit<RevueFlowProps, 'onSelectionChange' | 'elements'> {
-  nodeTypes: NodeTypesType;
-  edgeTypes: EdgeTypesType;
+export interface GraphViewProps extends Required<RevueFlowProps> {
   selectionKeyCode: KeyCode;
   deleteKeyCode: KeyCode;
   multiSelectionKeyCode: KeyCode;

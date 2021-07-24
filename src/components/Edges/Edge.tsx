@@ -1,6 +1,6 @@
-import { EdgeAnchor } from './EdgeAnchor';
-import { ConnectionMode, Edge, Elements, Node, Position, RevueFlowStore, Transform } from '../../types';
 import { computed, defineComponent, h, inject, PropType, ref } from 'vue';
+import EdgeAnchor from './EdgeAnchor';
+import { ConnectionMode, Edge, Elements, Node, Position, RevueFlowStore, Transform } from '../../types';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '../../container/EdgeRenderer/utils';
 import { isEdge } from '../../utils/graph';

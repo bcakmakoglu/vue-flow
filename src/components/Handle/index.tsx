@@ -31,11 +31,6 @@ export default defineComponent({
       type: String,
       required: false,
       default: undefined
-    },
-    onConnect: {
-      type: Function,
-      required: false,
-      default: undefined
     }
   },
   setup(props, { slots }) {

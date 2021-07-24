@@ -1,4 +1,5 @@
-import { ArrowHeadType, Position } from '../../types';
+import { ArrowHeadType, Position, EdgeProps, EdgeSmoothStepProps } from '../../types';
+import { PropType } from 'vue';
 
 export const getMarkerEnd = (arrowHeadType?: ArrowHeadType, markerEndId?: string): string => {
   if (typeof markerEndId !== 'undefined' && markerEndId) {
@@ -51,4 +52,111 @@ export const getCenter = ({
   const centerY = targetY < sourceY ? targetY + yOffset : targetY - yOffset;
 
   return [centerX, centerY, xOffset, yOffset];
+};
+
+export const DefaultEdgeProps = {
+  id: {
+    type: String as PropType<EdgeProps['id']>,
+    required: true,
+    default: 0
+  },
+  sourceX: {
+    type: Number as PropType<EdgeProps['sourceX']>,
+    required: true,
+    default: 0
+  },
+  sourceY: {
+    type: Number as PropType<EdgeProps['sourceY']>,
+    required: true,
+    default: 0
+  },
+  targetX: {
+    type: Number as PropType<EdgeProps['targetX']>,
+    required: true,
+    default: 0
+  },
+  targetY: {
+    type: Number as PropType<EdgeProps['targetY']>,
+    required: true,
+    default: 0
+  },
+  sourcePosition: {
+    type: String as PropType<EdgeProps['sourcePosition']>,
+    required: false,
+    default: Position.Bottom
+  },
+  targetPosition: {
+    type: String as PropType<EdgeProps['targetPosition']>,
+    required: false,
+    default: Position.Top
+  },
+  label: {
+    type: String as PropType<EdgeProps['label']>,
+    required: false,
+    default: undefined
+  },
+  labelStyle: {
+    type: Object as PropType<EdgeProps['labelStyle']>,
+    required: false,
+    default: undefined
+  },
+  labelShowBg: {
+    type: Boolean as PropType<EdgeProps['labelShowBg']>,
+    required: false,
+    default: false
+  },
+  labelBgStyle: {
+    type: String as PropType<EdgeProps['labelBgStyle']>,
+    required: false,
+    default: undefined
+  },
+  labelBgPadding: {
+    type: Array as unknown as PropType<[number, number]>,
+    required: false,
+    default: undefined
+  },
+  labelBgBorderRadius: {
+    type: Number as PropType<EdgeProps['labelBgBorderRadius']>,
+    required: false,
+    default: undefined
+  },
+  arrowHeadType: {
+    type: Object as PropType<EdgeProps['arrowHeadType']>,
+    required: false,
+    default: undefined
+  },
+  markerEndId: {
+    type: String as PropType<EdgeProps['markerEndId']>,
+    required: false,
+    default: undefined
+  },
+  style: {
+    type: Object as PropType<EdgeProps['style']>,
+    required: false,
+    default: undefined
+  },
+  data: {
+    type: Object as PropType<EdgeProps['data']>,
+    required: false,
+    default: undefined
+  },
+  sourceHandleId: {
+    type: String as PropType<EdgeProps['sourceHandleId']>,
+    required: false,
+    default: undefined
+  },
+  targetHandleId: {
+    type: String as PropType<EdgeProps['targetHandleId']>,
+    required: false,
+    default: undefined
+  }
+};
+
+export const EdgeSmoothProps = {
+  ...DefaultEdgeProps,
+  borderRadius: {
+    type: Number as PropType<EdgeSmoothStepProps['borderRadius']>,
+    required: false,
+    default: 5
+  }
 };

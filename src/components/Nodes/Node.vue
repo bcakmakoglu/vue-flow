@@ -39,11 +39,11 @@
 import { computed, CSSProperties, defineComponent, inject, PropType, provide } from 'vue';
 import { templateRef, tryOnMounted, useResizeObserver } from '@vueuse/core';
 import { DraggableCore, DraggableEventListener } from '@braks/revue-draggable';
-import { Node, NodeDimensionUpdate, NodeTypesType, RevueFlowStore } from '../../types';
+import { Node, NodeDimensionUpdate, NodeType, RevueFlowStore } from '../../types';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 interface NodeProps {
-  nodeTypes: NodeTypesType;
+  nodeTypes: Record<string, NodeType>;
   snapToGrid: boolean;
   snapGrid: [number, number];
   selectNodesOnDrag: boolean;

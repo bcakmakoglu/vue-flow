@@ -20,7 +20,7 @@ export interface EdgeAnchorProps extends HTMLAttributes {
   radius?: number;
 }
 
-export const EdgeAnchor = defineComponent({
+export default defineComponent({
   props: {
     position: {
       type: String as PropType<EdgeAnchorProps['position']>,
