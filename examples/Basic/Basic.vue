@@ -5,6 +5,7 @@
     :onElementsRemove="onElementsRemove"
     :onConnect="onConnect"
     :onNodeDragStop="onNodeDragStop"
+    :onNodeClick="onElementClick"
     :defaultZoom="1.5"
     :minZoom="0.2"
     :maxZoom="4"
@@ -15,10 +16,10 @@
     <Controls />
     <Background color="#aaa" :gap="8" />
     <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
-      <button :onClick="resetTransform" style="margin-right: 5px">reset transform</button>
-      <button :onClick="updatePos" style="margin-right: 5px">change pos</button>
-      <button :onClick="toggleClassnames" style="margin-right: 5px">toggle classnames</button>
-      <button :onClick="logToObject">toObject</button>
+      <button @click="resetTransform" style="margin-right: 5px">reset transform</button>
+      <button @click="updatePos" style="margin-right: 5px">change pos</button>
+      <button @click="toggleClassnames" style="margin-right: 5px">toggle classnames</button>
+      <button @click="logToObject">toObject</button>
     </div>
   </RevueFlow>
 </template>
@@ -31,7 +32,6 @@ import RevueFlow, {
   Edge,
   Elements,
   FlowElement,
-  Node,
   OnLoadParams,
   addEdge,
   isNode,
@@ -42,8 +42,8 @@ import { defineComponent, ref } from 'vue';
 const BasicFlow = defineComponent({
   components: { RevueFlow, MiniMap, Controls, Background },
   setup() {
-    const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
-    const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
+    const onNodeDragStop = ({ node }) => console.log('drag stop', node);
+    const onElementClick = ({ node }) => console.log('click', node);
     const elements = ref<Elements>([
       { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
       { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 } },
@@ -51,7 +51,7 @@ const BasicFlow = defineComponent({
       { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 } },
       { id: 'e1-2', source: '1', target: '2', animated: true },
       { id: 'e1-3', source: '1', target: '3' }
-    ]);
+    ] as Elements);
     const rfInstance = ref<OnLoadParams | null>(null);
     const onElementsRemove = (elementsToRemove: Elements) =>
       (elements.value = removeElements(elementsToRemove, elements.value as Elements));

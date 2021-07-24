@@ -93,6 +93,7 @@ export function getSmoothStepPath({
 }
 
 const SmoothStepEdge = defineComponent({
+  inheritAttrs: false,
   props: EdgeSmoothStepProps,
   setup(props) {
     const [centerX, centerY] = getCenter({

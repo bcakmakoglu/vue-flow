@@ -10,9 +10,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    vueJsx({
-      // options are passed on to @vue/babel-plugin-jsx
-    }),
+    vueJsx(),
     svgLoader()
   ]
 });
