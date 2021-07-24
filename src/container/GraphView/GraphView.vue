@@ -1,17 +1,10 @@
 <template>
   <FlowRenderer
-    :onPaneClick="onPaneClick"
-    :onPaneContextMenu="onPaneContextMenu"
-    :onPaneScroll="onPaneScroll"
-    :onElementsRemove="onElementsRemove"
     :deleteKeyCode="deleteKeyCode"
     :selectionKeyCode="selectionKeyCode"
     :multiSelectionKeyCode="multiSelectionKeyCode"
     :zoomActivationKeyCode="zoomActivationKeyCode"
     :elementsSelectable="elementsSelectable"
-    :onMove="onMove"
-    :onMoveStart="onMoveStart"
-    :onMoveEnd="onMoveEnd"
     :zoomOnScroll="zoomOnScroll"
     :zoomOnPinch="zoomOnPinch"
     :zoomOnDoubleClick="zoomOnDoubleClick"
@@ -22,22 +15,9 @@
     :defaultPosition="defaultPosition"
     :defaultZoom="defaultZoom"
     :translateExtent="translateExtent"
-    :onSelectionDragStart="onSelectionDragStart"
-    :onSelectionDrag="onSelectionDrag"
-    :onSelectionDragStop="onSelectionDragStop"
-    :onSelectionContextMenu="onSelectionContextMenu"
   >
     <NodeRenderer
       :nodeTypes="nodeTypes"
-      :onElementClick="onElementClick"
-      :onNodeDoubleClick="onNodeDoubleClick"
-      :onNodeMouseEnter="onNodeMouseEnter"
-      :onNodeMouseMove="onNodeMouseMove"
-      :onNodeMouseLeave="onNodeMouseLeave"
-      :onNodeContextMenu="onNodeContextMenu"
-      :onNodeDragStop="onNodeDragStop"
-      :onNodeDrag="onNodeDrag"
-      :onNodeDragStart="onNodeDragStart"
       :selectNodesOnDrag="selectNodesOnDrag"
       :snapToGrid="snapToGrid"
       :snapGrid="snapGrid"
@@ -45,22 +25,13 @@
     />
     <EdgeRenderer
       :edgeTypes="edgeTypes"
-      :onElementClick="onElementClick"
-      :onEdgeDoubleClick="onEdgeDoubleClick"
       :connectionLineType="connectionLineType"
       :connectionLineStyle="connectionLineStyle"
       :connectionLineComponent="connectionLineComponent"
       :connectionMode="connectionMode"
       :arrowHeadColor="arrowHeadColor"
       :markerEndId="markerEndId"
-      :onEdgeUpdate="onEdgeUpdate"
       :onlyRenderVisibleElements="onlyRenderVisibleElements"
-      :onEdgeContextMenu="onEdgeContextMenu"
-      :onEdgeMouseEnter="onEdgeMouseEnter"
-      :onEdgeMouseMove="onEdgeMouseMove"
-      :onEdgeMouseLeave="onEdgeMouseLeave"
-      :onEdgeUpdateStart="onEdgeUpdateStart"
-      :onEdgeUpdateEnd="onEdgeUpdateEnd"
       :edgeUpdaterRadius="edgeUpdaterRadius"
     />
   </FlowRenderer>
@@ -68,8 +39,8 @@
 <script lang="ts">
 import { defineComponent, inject, PropType, CSSProperties, watchEffect } from 'vue';
 import FlowRenderer from '../FlowRenderer/FlowRenderer.vue';
-import NodeRenderer from '../NodeRenderer';
-import EdgeRenderer from '../EdgeRenderer';
+import NodeRenderer from '../NodeRenderer/NodeRenderer.vue';
+import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue';
 import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph';
 import { GraphViewProps, RevueFlowStore } from '../../types';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
@@ -86,106 +57,6 @@ const GraphView = defineComponent({
     },
     edgeTypes: {
       type: Object as PropType<GraphViewProps['edgeTypes']>,
-      required: false,
-      default: undefined
-    },
-    onMove: {
-      type: Function as unknown as PropType<GraphViewProps['onMove']>,
-      required: false,
-      default: undefined
-    },
-    onMoveStart: {
-      type: Function as unknown as PropType<GraphViewProps['onMoveStart']>,
-      required: false,
-      default: undefined
-    },
-    onMoveEnd: {
-      type: Function as unknown as PropType<GraphViewProps['onMoveEnd']>,
-      required: false,
-      default: undefined
-    },
-    onLoad: {
-      type: Function as unknown as PropType<GraphViewProps['onLoad']>,
-      required: false,
-      default: undefined
-    },
-    onElementClick: {
-      type: Function as unknown as PropType<GraphViewProps['onElementClick']>,
-      required: false,
-      default: undefined
-    },
-    onNodeDoubleClick: {
-      type: Function as unknown as PropType<GraphViewProps['onNodeDoubleClick']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeDoubleClick: {
-      type: Function as unknown as PropType<GraphViewProps['onEdgeDoubleClick']>,
-      required: false,
-      default: undefined
-    },
-    onNodeMouseEnter: {
-      type: Function as unknown as PropType<GraphViewProps['onNodeMouseEnter']>,
-      required: false,
-      default: undefined
-    },
-    onNodeMouseMove: {
-      type: Function as unknown as PropType<GraphViewProps['onNodeMouseMove']>,
-      required: false,
-      default: undefined
-    },
-    onNodeMouseLeave: {
-      type: Function as unknown as PropType<GraphViewProps['onNodeMouseLeave']>,
-      required: false,
-      default: undefined
-    },
-    onNodeContextMenu: {
-      type: Function as unknown as PropType<GraphViewProps['onNodeContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onNodeDragStart: {
-      type: Function as unknown as PropType<GraphViewProps['onNodeDragStart']>,
-      required: false,
-      default: undefined
-    },
-    onNodeDrag: {
-      type: Function as unknown as PropType<GraphViewProps['onNodeDrag']>,
-      required: false,
-      default: undefined
-    },
-    onNodeDragStop: {
-      type: Function as unknown as PropType<GraphViewProps['onNodeDragStop']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionContextMenu: {
-      type: Function as unknown as PropType<GraphViewProps['onSelectionContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onElementsRemove: {
-      type: Function as unknown as PropType<GraphViewProps['onElementsRemove']>,
-      required: false,
-      default: undefined
-    },
-    onConnect: {
-      type: Function as unknown as PropType<GraphViewProps['onConnect']>,
-      required: false,
-      default: undefined
-    },
-    onConnectStart: {
-      type: Function as unknown as PropType<GraphViewProps['onConnectStart']>,
-      required: false,
-      default: undefined
-    },
-    onConnectStop: {
-      type: Function as unknown as PropType<GraphViewProps['onConnectStop']>,
-      required: false,
-      default: undefined
-    },
-    onConnectEnd: {
-      type: Function as unknown as PropType<GraphViewProps['onConnectEnd']>,
       required: false,
       default: undefined
     },
@@ -336,71 +207,6 @@ const GraphView = defineComponent({
     },
     paneMoveable: {
       type: Boolean as PropType<GraphViewProps['paneMoveable']>,
-      required: false,
-      default: undefined
-    },
-    onPaneClick: {
-      type: Function as unknown as PropType<GraphViewProps['onPaneClick']>,
-      required: false,
-      default: undefined
-    },
-    onPaneScroll: {
-      type: Function as unknown as PropType<GraphViewProps['onPaneScroll']>,
-      required: false,
-      default: undefined
-    },
-    onPaneContextMenu: {
-      type: Function as unknown as PropType<GraphViewProps['onPaneContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeUpdate: {
-      type: Function as unknown as PropType<GraphViewProps['onEdgeUpdate']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeMouseEnter: {
-      type: Function as unknown as PropType<GraphViewProps['onEdgeMouseEnter']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeContextMenu: {
-      type: Function as unknown as PropType<GraphViewProps['onEdgeContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeMouseMove: {
-      type: Function as unknown as PropType<GraphViewProps['onEdgeMouseMove']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeMouseLeave: {
-      type: Function as unknown as PropType<GraphViewProps['onEdgeMouseLeave']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeUpdateEnd: {
-      type: Function as unknown as PropType<GraphViewProps['onEdgeUpdateEnd']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeUpdateStart: {
-      type: Function as unknown as PropType<GraphViewProps['onEdgeUpdateStart']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDragStart: {
-      type: Function as unknown as PropType<GraphViewProps['onSelectionDragStart']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDrag: {
-      type: Function as unknown as PropType<GraphViewProps['onSelectionDrag']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDragStop: {
-      type: Function as unknown as PropType<GraphViewProps['onSelectionDragStop']>,
       required: false,
       default: undefined
     },

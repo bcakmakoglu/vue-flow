@@ -1,11 +1,11 @@
 import { ElementId, Position, RevueFlowStore } from '../../types';
 import { onMouseDown, ValidConnectionFunc } from './handler';
-import { computed, defineComponent, inject, PropType } from 'vue';
+import { computed, defineComponent, h, inject, PropType } from 'vue';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 const alwaysValid = () => true;
 
-const Handle = defineComponent({
+export default defineComponent({
   props: {
     type: {
       type: String,
@@ -31,11 +31,6 @@ const Handle = defineComponent({
       type: String,
       required: false,
       default: undefined
-    },
-    onConnect: {
-      type: Function,
-      required: false,
-      default: undefined
     }
   },
   setup(props, { slots }) {
@@ -45,8 +40,7 @@ const Handle = defineComponent({
     const isTarget = computed(() => props.type === 'target');
 
     const onMouseDownHandler = (event: MouseEvent) => {
-      console.log('mousedown');
-      onMouseDown(event, store, hooks, props.id as string, nodeId, isTarget.value, props.isValidConnection);
+      onMouseDown(event, store, hooks, props.id || '', nodeId, isTarget.value, props.isValidConnection);
     };
 
     const handleClasses = computed(() => [
@@ -60,18 +54,17 @@ const Handle = defineComponent({
       }
     ]);
 
-    return () => (
-      <div
-        data-handleid={props.id}
-        data-nodeid={nodeId}
-        data-handlepos={props.position}
-        class={handleClasses.value}
-        onMousedown={onMouseDownHandler}
-      >
-        {slots.default ? slots.default() : ''}
-      </div>
-    );
+    return () =>
+      h(
+        'div',
+        {
+          dataHandleid: props.id,
+          dataNodeid: nodeId,
+          dataHandlepos: props.position,
+          class: handleClasses.value,
+          onMouseDown: onMouseDownHandler
+        },
+        slots.default?.()
+      );
   }
 });
-
-export default Handle;

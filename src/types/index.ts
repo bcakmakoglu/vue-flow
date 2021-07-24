@@ -40,7 +40,13 @@ export interface Node<T = any> {
   id: ElementId;
   position: XYPosition;
   type?: string;
-  __rf?: any;
+  __rf: {
+    position: XYPosition;
+    isDragging?: boolean;
+    width: number | null;
+    height: number | null;
+    handleBounds?: any;
+  };
   data?: T;
   style?: any;
   className?: string;
@@ -499,152 +505,6 @@ export interface NodeComponentProps<T = any> {
   isDragging?: boolean;
 }
 
-export const WrapNodeProps = {
-  id: {
-    type: String as PropType<WrapNodeProps['id']>,
-    required: true
-  },
-  type: {
-    type: String as PropType<WrapNodeProps['type']>,
-    required: true
-  },
-  data: {
-    type: Object as PropType<WrapNodeProps['data']>,
-    required: false,
-    default: undefined as any
-  },
-  selected: {
-    type: Boolean as PropType<WrapNodeProps['selected']>,
-    required: false,
-    default: false
-  },
-  scale: {
-    type: Number as PropType<WrapNodeProps['scale']>,
-    required: false,
-    default: undefined
-  },
-  xPos: {
-    type: Number as PropType<WrapNodeProps['xPos']>,
-    required: false,
-    default: 0
-  },
-  yPos: {
-    type: Number as PropType<WrapNodeProps['yPos']>,
-    required: false,
-    default: 0
-  },
-  isSelectable: {
-    type: Boolean as PropType<WrapNodeProps['isSelectable']>,
-    required: false,
-    default: undefined
-  },
-  isDraggable: {
-    type: Boolean as PropType<WrapNodeProps['isDraggable']>,
-    required: false,
-    default: undefined
-  },
-  isConnectable: {
-    type: Boolean as PropType<WrapNodeProps['isConnectable']>,
-    required: false,
-    default: undefined
-  },
-  selectNodesOnDrag: {
-    type: Boolean as PropType<WrapNodeProps['selectNodesOnDrag']>,
-    required: false,
-    default: undefined
-  },
-  onClick: {
-    type: Function() as PropType<WrapNodeProps['onClick']>,
-    required: false,
-    default: undefined
-  },
-  onNodeDoubleClick: {
-    type: Function() as PropType<WrapNodeProps['onNodeDoubleClick']>,
-    required: false,
-    default: undefined
-  },
-  onMouseEnter: {
-    type: Function() as PropType<WrapNodeProps['onMouseEnter']>,
-    required: false,
-    default: undefined
-  },
-  onMouseMove: {
-    type: Function() as PropType<WrapNodeProps['onMouseMove']>,
-    required: false,
-    default: undefined
-  },
-  onMouseLeave: {
-    type: Function() as PropType<WrapNodeProps['onMouseLeave']>,
-    required: false,
-    default: undefined
-  },
-  onContextMenu: {
-    type: Function() as PropType<WrapNodeProps['onContextMenu']>,
-    required: false,
-    default: undefined
-  },
-  onNodeDragStart: {
-    type: Function() as PropType<WrapNodeProps['onNodeDragStart']>,
-    required: false,
-    default: undefined
-  },
-  onNodeDrag: {
-    type: Function() as PropType<WrapNodeProps['onNodeDrag']>,
-    required: false,
-    default: undefined
-  },
-  onNodeDragStop: {
-    type: Function() as PropType<WrapNodeProps['onNodeDragStop']>,
-    required: false,
-    default: undefined
-  },
-  style: {
-    type: Object as PropType<WrapNodeProps['style']>,
-    required: false,
-    default: undefined as any
-  },
-  sourcePosition: {
-    type: String as PropType<WrapNodeProps['sourcePosition']>,
-    required: false,
-    default: undefined
-  },
-  targetPosition: {
-    type: String as PropType<WrapNodeProps['targetPosition']>,
-    required: false,
-    default: undefined
-  },
-  isHidden: {
-    type: Boolean as PropType<WrapNodeProps['isHidden']>,
-    required: false,
-    default: undefined
-  },
-  isInitialized: {
-    type: Boolean as PropType<WrapNodeProps['isInitialized']>,
-    required: false,
-    default: undefined
-  },
-  snapToGrid: {
-    type: Boolean as PropType<WrapNodeProps['snapToGrid']>,
-    required: false,
-    default: undefined
-  },
-  snapGrid: {
-    type: Object as PropType<WrapNodeProps['snapGrid']>,
-    required: false,
-    default: undefined
-  },
-  isDragging: {
-    type: Boolean as PropType<WrapNodeProps['isDragging']>,
-    required: false,
-    default: undefined
-  },
-  resizeObserver: {
-    type: Object as PropType<WrapNodeProps['resizeObserver']>,
-    required: false,
-    default: undefined
-  }
-};
-
 export interface WrapNodeProps<T = any> {
   id: ElementId;
   type: string;
@@ -894,8 +754,7 @@ export type RevueFlowStore = Store<string, RevueFlowState, any, RevueFlowActions
 
 export type UpdateNodeInternals = (nodeId: ElementId) => void;
 
-export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
-  elements: Elements;
+export interface RevueFlowEvents {
   onElementClick?: (event: MouseEvent, element: Node | Edge) => void;
   onElementsRemove?: (elements: Elements) => void;
   onNodeDoubleClick?: (event: MouseEvent, node: Node) => void;
@@ -930,6 +789,10 @@ export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
   onEdgeDoubleClick?: (event: MouseEvent, edge: Edge) => void;
   onEdgeUpdateStart?: (event: MouseEvent, edge: Edge) => void;
   onEdgeUpdateEnd?: (event: MouseEvent, edge: Edge) => void;
+}
+
+export interface RevueFlowProps extends Omit<HTMLAttributes, 'onLoad'> {
+  modelValue: Elements;
   nodeTypes?: NodeTypesType;
   edgeTypes?: EdgeTypesType;
   connectionMode?: ConnectionMode;

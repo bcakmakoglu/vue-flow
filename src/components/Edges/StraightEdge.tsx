@@ -5,6 +5,7 @@ import { getMarkerEnd } from './utils';
 import { EdgeProps } from '../../types';
 
 const StraightEdge = defineComponent({
+  inheritAttrs: false,
   props: EdgeProps,
   setup(props) {
     const yOffset = Math.abs(props.targetY - props.sourceY) / 2;

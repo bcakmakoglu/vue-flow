@@ -1,22 +1,20 @@
-import { DefineComponent } from 'vue';
 import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '../../components/Edges';
-import wrapEdge from '../../components/Edges/wrapEdge';
 import { rectToBox } from '../../utils/graph';
-import { EdgeTypesType, Position, Node, XYPosition, ElementId, HandleElement, Transform, Edge, WrapEdgeProps } from '../../types';
+import { EdgeTypesType, Position, Node, XYPosition, ElementId, HandleElement, Transform, Edge } from '../../types';
 
 export function createEdgeTypes(edgeTypes: EdgeTypesType): EdgeTypesType {
   const standardTypes: EdgeTypesType = {
-    default: wrapEdge(edgeTypes.default || BezierEdge) as DefineComponent<WrapEdgeProps>,
-    straight: wrapEdge(edgeTypes.bezier || StraightEdge) as DefineComponent<WrapEdgeProps>,
-    step: wrapEdge(edgeTypes.step || StepEdge) as DefineComponent<WrapEdgeProps>,
-    smoothstep: wrapEdge(edgeTypes.step || SmoothStepEdge) as DefineComponent<WrapEdgeProps>
+    default: edgeTypes.default || BezierEdge,
+    straight: edgeTypes.bezier || StraightEdge,
+    step: edgeTypes.step || StepEdge,
+    smoothstep: edgeTypes.step || SmoothStepEdge
   };
 
   const wrappedTypes = {} as EdgeTypesType;
   const specialTypes: EdgeTypesType = Object.keys(edgeTypes)
     .filter((k) => !['default', 'bezier'].includes(k))
     .reduce((res, key) => {
-      res[key] = wrapEdge(edgeTypes[key] || BezierEdge) as DefineComponent<WrapEdgeProps>;
+      res[key] = edgeTypes[key] || BezierEdge;
 
       return res;
     }, wrappedTypes);

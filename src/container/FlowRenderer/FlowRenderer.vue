@@ -1,8 +1,5 @@
 <template>
   <ZoomPane
-    :onMove="onMove"
-    :onMoveStart="onMoveStart"
-    :onMoveEnd="onMoveEnd"
     :selectionKeyPressed="keyPressed"
     :elementsSelectable="elementsSelectable"
     :zoomOnScroll="zoomOnScroll"
@@ -19,13 +16,7 @@
   >
     <slot></slot>
     <UserSelection v-if="keyPressed" />
-    <NodesSelection
-      v-if="selectionActive"
-      :onSelectionDragStart="onSelectionDragStart"
-      :onSelectionDrag="onSelectionDrag"
-      :onSelectionDragStop="onSelectionDragStop"
-      :onSelectionContextMenu="onSelectionContextMenu"
-    />
+    <NodesSelection v-if="selectionActive" />
     <div class="revue-flow__pane" @click="onClick" @onContextmenu="onContextMenu" @wheel="onWheel" />
   </ZoomPane>
 </template>
@@ -56,61 +47,6 @@ const FlowRenderer = defineComponent({
   name: 'FlowRenderer',
   components: { UserSelection, ZoomPane, NodesSelection },
   props: {
-    onPaneClick: {
-      type: Function as unknown as PropType<FlowRendererProps['onPaneClick']>,
-      required: false,
-      default: undefined
-    },
-    onPaneContextMenu: {
-      type: Function as unknown as PropType<FlowRendererProps['onPaneContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onPaneScroll: {
-      type: Function as unknown as PropType<FlowRendererProps['onPaneScroll']>,
-      required: false,
-      default: undefined
-    },
-    onElementsRemove: {
-      type: Function as unknown as PropType<FlowRendererProps['onElementsRemove']>,
-      required: false,
-      default: undefined
-    },
-    onMove: {
-      type: Function as unknown as PropType<FlowRendererProps['onMove']>,
-      required: false,
-      default: undefined
-    },
-    onMoveStart: {
-      type: Function as unknown as PropType<FlowRendererProps['onMoveStart']>,
-      required: false,
-      default: undefined
-    },
-    onMoveEnd: {
-      type: Function as unknown as PropType<FlowRendererProps['onMoveEnd']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDragStart: {
-      type: Function as unknown as PropType<FlowRendererProps['onSelectionDragStart']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDrag: {
-      type: Function as unknown as PropType<FlowRendererProps['onSelectionDrag']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDragStop: {
-      type: Function as unknown as PropType<FlowRendererProps['onSelectionDragStop']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionContextMenu: {
-      type: Function as unknown as PropType<FlowRendererProps['onSelectionContextMenu']>,
-      required: false,
-      default: undefined
-    },
     deleteKeyCode: {
       type: [Number, String] as PropType<FlowRendererProps['deleteKeyCode']>,
       required: false,
@@ -194,9 +130,9 @@ const FlowRenderer = defineComponent({
 
     useGlobalKeyHandler({
       store,
-      onElementsRemove: props.onElementsRemove,
-      deleteKeyCode: props.deleteKeyCode,
-      multiSelectionKeyCode: props.multiSelectionKeyCode
+      onElementsRemove: hooks.elementsRemove.trigger,
+      deleteKeyCode: props.deleteKeyCode || '',
+      multiSelectionKeyCode: props.multiSelectionKeyCode || ''
     });
 
     const onClick = (event: MouseEvent) => {

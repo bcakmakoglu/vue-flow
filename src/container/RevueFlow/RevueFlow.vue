@@ -1,19 +1,6 @@
 <template>
   <div class="revue-flow">
     <GraphView
-      :onLoad="onLoad"
-      :onMove="onMove"
-      :onMoveStart="onMoveStart"
-      :onMoveEnd="onMoveEnd"
-      :onElementClick="onElementClick"
-      :onNodeMouseEnter="onNodeMouseEnter"
-      :onNodeMouseMove="onNodeMouseMove"
-      :onNodeMouseLeave="onNodeMouseLeave"
-      :onNodeContextMenu="onNodeContextMenu"
-      :onNodeDoubleClick="onNodeDoubleClick"
-      :onNodeDragStart="onNodeDragStart"
-      :onNodeDrag="onNodeDrag"
-      :onNodeDragStop="onNodeDragStop"
       :nodeTypes="nodeTypesParsed"
       :edgeTypes="edgeTypesParsed"
       :connectionMode="connectionMode"
@@ -21,14 +8,9 @@
       :connectionLineStyle="connectionLineStyle"
       :connectionLineComponent="connectionLineComponent"
       :selectionKeyCode="selectionKeyCode"
-      :onElementsRemove="onElementsRemove"
       :deleteKeyCode="deleteKeyCode"
       :multiSelectionKeyCode="multiSelectionKeyCode"
       :zoomActivationKeyCode="zoomActivationKeyCode"
-      :onConnect="onConnect"
-      :onConnectStart="onConnectStart"
-      :onConnectStop="onConnectStop"
-      :onConnectEnd="onConnectEnd"
       :snapToGrid="snapToGrid"
       :snapGrid="snapGrid"
       :onlyRenderVisibleElements="onlyRenderVisibleElements"
@@ -51,21 +33,6 @@
       :panOnScrollSpeed="panOnScrollSpeed"
       :panOnScrollMode="panOnScrollMode"
       :paneMoveable="paneMoveable"
-      :onPaneClick="onPaneClick"
-      :onPaneScroll="onPaneScroll"
-      :onPaneContextMenu="onPaneContextMenu"
-      :onSelectionDragStart="onSelectionDragStart"
-      :onSelectionDrag="onSelectionDrag"
-      :onSelectionDragStop="onSelectionDragStop"
-      :onSelectionContextMenu="onSelectionContextMenu"
-      :onEdgeUpdate="onEdgeUpdate"
-      :onEdgeContextMenu="onEdgeContextMenu"
-      :onEdgeDoubleClick="onEdgeDoubleClick"
-      :onEdgeMouseEnter="onEdgeMouseEnter"
-      :onEdgeMouseMove="onEdgeMouseMove"
-      :onEdgeMouseLeave="onEdgeMouseLeave"
-      :onEdgeUpdateStart="onEdgeUpdateStart"
-      :onEdgeUpdateEnd="onEdgeUpdateEnd"
       :edgeUpdaterRadius="edgeUpdaterRadius"
     />
     <slot></slot>
@@ -101,12 +68,13 @@ const defaultEdgeTypes = {
   smoothstep: SmoothStepEdge
 };
 
+const eventHooks = useRevueFlow();
 const RevueFlow = defineComponent({
   name: 'RevueFlow',
   components: { GraphView },
   props: {
     modelValue: {
-      type: Array as PropType<RevueFlowProps['elements']>,
+      type: Array as PropType<RevueFlowProps['modelValue']>,
       required: false,
       default: () => []
     },
@@ -129,106 +97,6 @@ const RevueFlow = defineComponent({
       type: Object as PropType<RevueFlowProps['edgeTypes']>,
       required: false,
       default: () => defaultEdgeTypes
-    },
-    onMove: {
-      type: Function as unknown as PropType<RevueFlowProps['onMove']>,
-      required: false,
-      default: undefined
-    },
-    onMoveStart: {
-      type: Function as unknown as PropType<RevueFlowProps['onMoveStart']>,
-      required: false,
-      default: undefined
-    },
-    onMoveEnd: {
-      type: Function as unknown as PropType<RevueFlowProps['onMoveEnd']>,
-      required: false,
-      default: undefined
-    },
-    onLoad: {
-      type: Function as unknown as PropType<RevueFlowProps['onLoad']>,
-      required: false,
-      default: undefined
-    },
-    onElementClick: {
-      type: Function as unknown as PropType<RevueFlowProps['onElementClick']>,
-      required: false,
-      default: undefined
-    },
-    onNodeDoubleClick: {
-      type: Function as unknown as PropType<RevueFlowProps['onNodeDoubleClick']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeDoubleClick: {
-      type: Function as unknown as PropType<RevueFlowProps['onEdgeDoubleClick']>,
-      required: false,
-      default: undefined
-    },
-    onNodeMouseEnter: {
-      type: Function as unknown as PropType<RevueFlowProps['onNodeMouseEnter']>,
-      required: false,
-      default: undefined
-    },
-    onNodeMouseMove: {
-      type: Function as unknown as PropType<RevueFlowProps['onNodeMouseMove']>,
-      required: false,
-      default: undefined
-    },
-    onNodeMouseLeave: {
-      type: Function as unknown as PropType<RevueFlowProps['onNodeMouseLeave']>,
-      required: false,
-      default: undefined
-    },
-    onNodeContextMenu: {
-      type: Function as unknown as PropType<RevueFlowProps['onNodeContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onNodeDragStart: {
-      type: Function as unknown as PropType<RevueFlowProps['onNodeDragStart']>,
-      required: false,
-      default: undefined
-    },
-    onNodeDrag: {
-      type: Function as unknown as PropType<RevueFlowProps['onNodeDrag']>,
-      required: false,
-      default: undefined
-    },
-    onNodeDragStop: {
-      type: Function as unknown as PropType<RevueFlowProps['onNodeDragStop']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionContextMenu: {
-      type: Function as unknown as PropType<RevueFlowProps['onSelectionContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onElementsRemove: {
-      type: Function as unknown as PropType<RevueFlowProps['onElementsRemove']>,
-      required: false,
-      default: undefined
-    },
-    onConnect: {
-      type: Function as unknown as PropType<RevueFlowProps['onConnect']>,
-      required: false,
-      default: undefined
-    },
-    onConnectStart: {
-      type: Function as unknown as PropType<RevueFlowProps['onConnectStart']>,
-      required: false,
-      default: undefined
-    },
-    onConnectStop: {
-      type: Function as unknown as PropType<RevueFlowProps['onConnectStop']>,
-      required: false,
-      default: undefined
-    },
-    onConnectEnd: {
-      type: Function as unknown as PropType<RevueFlowProps['onConnectEnd']>,
-      required: false,
-      default: undefined
     },
     connectionMode: {
       type: String as PropType<RevueFlowProps['connectionMode']>,
@@ -380,87 +248,18 @@ const RevueFlow = defineComponent({
       required: false,
       default: true
     },
-    onPaneClick: {
-      type: Function as unknown as PropType<RevueFlowProps['onPaneClick']>,
-      required: false,
-      default: undefined
-    },
-    onPaneScroll: {
-      type: Function as unknown as PropType<RevueFlowProps['onPaneScroll']>,
-      required: false,
-      default: undefined
-    },
-    onPaneContextMenu: {
-      type: Function as unknown as PropType<RevueFlowProps['onPaneContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeUpdate: {
-      type: Function as unknown as PropType<RevueFlowProps['onEdgeUpdate']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeMouseEnter: {
-      type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseEnter']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeContextMenu: {
-      type: Function as unknown as PropType<RevueFlowProps['onEdgeContextMenu']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeMouseMove: {
-      type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseMove']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeMouseLeave: {
-      type: Function as unknown as PropType<RevueFlowProps['onEdgeMouseLeave']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeUpdateEnd: {
-      type: Function as unknown as PropType<RevueFlowProps['onEdgeUpdateEnd']>,
-      required: false,
-      default: undefined
-    },
-    onEdgeUpdateStart: {
-      type: Function as unknown as PropType<RevueFlowProps['onEdgeUpdateStart']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDragStart: {
-      type: Function as unknown as PropType<RevueFlowProps['onSelectionDragStart']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDrag: {
-      type: Function as unknown as PropType<RevueFlowProps['onSelectionDrag']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDragStop: {
-      type: Function as unknown as PropType<RevueFlowProps['onSelectionDragStop']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionChange: {
-      type: Function as unknown as PropType<RevueFlowProps['onSelectionChange']>,
-      required: false,
-      default: undefined
-    },
     edgeUpdaterRadius: {
       type: Number as PropType<RevueFlowProps['edgeUpdaterRadius']>,
       required: false,
       default: 10
     }
   },
-  emits: ['', 'load'],
+  emits: Object.keys(eventHooks),
   setup(props, { emit }) {
     const store = configureStore(initialState)();
     provide<RevueFlowStore>('store', store);
-    provide<RevueFlowHooks>('hooks', useRevueFlow(emit));
+    eventHooks.bind(emit);
+    provide<RevueFlowHooks>('hooks', eventHooks);
     const elements = useVModel(props, 'modelValue', emit);
 
     store.setElements(elements.value);
@@ -469,7 +268,6 @@ const RevueFlow = defineComponent({
     });
 
     onUpdated(() => {
-      console.log('updated');
       store.setElements(elements.value);
     });
 
@@ -478,12 +276,16 @@ const RevueFlow = defineComponent({
       store.setElements([]);
     });
 
-    const nodeTypesParsed = computed(() => props.nodeTypes && createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes }));
-    const edgeTypesParsed = computed(() => props.edgeTypes && createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes }));
+    const nodeTypesParsed = computed(
+      () => props.nodeTypes && createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes } as any)
+    );
+    const edgeTypesParsed = computed(
+      () => props.edgeTypes && createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes } as any)
+    );
 
     return {
-      nodeTypesParsed: nodeTypesParsed.value,
-      edgeTypesParsed: edgeTypesParsed.value
+      nodeTypesParsed,
+      edgeTypesParsed
     };
   }
 });

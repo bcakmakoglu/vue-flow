@@ -202,7 +202,7 @@ export const getRectOfNodes = (nodes: Node[]): Rect => {
           ...position,
           width,
           height
-        })
+        } as any)
       ),
     { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity }
   );
@@ -224,7 +224,7 @@ export const getNodesInside = (nodes: Node[], rect: Rect, [tx, ty, tScale]: Tran
   });
 
   return nodes.filter(({ __rf: { position, width, height, isDragging } }) => {
-    const nBox = rectToBox({ ...position, width, height });
+    const nBox = rectToBox({ ...position, width, height } as any);
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x));
     const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y));
     const overlappingArea = Math.ceil(xOverlap * yOverlap);
@@ -257,7 +257,7 @@ const parseElements = (nodes: Node[], edges: Edge[]): Elements => {
 
       n.position = n.__rf.position;
 
-      delete n.__rf;
+      n.__rf = {} as any;
       return n;
     }),
     ...edges.map((e) => ({ ...e }))

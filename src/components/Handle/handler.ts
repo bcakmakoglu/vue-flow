@@ -1,15 +1,5 @@
 import { getHostForElement } from '../../utils';
-
-import {
-  ElementId,
-  XYPosition,
-  OnConnectFunc,
-  ConnectionMode,
-  SetConnectionId,
-  Connection,
-  HandleType,
-  RevueFlowStore
-} from '../../types';
+import { ElementId, XYPosition, ConnectionMode, SetConnectionId, Connection, HandleType, RevueFlowStore } from '../../types';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 export type ValidConnectionFunc = (connection: Connection) => boolean;
@@ -89,14 +79,14 @@ export function onMouseDown(
     connectStart: RevueFlowHooks['connectStart'];
     connectStop: RevueFlowHooks['connectStop'];
     connectEnd: RevueFlowHooks['connectEnd'];
+    connect: RevueFlowHooks['connect'];
+    edgeUpdateEnd: RevueFlowHooks['edgeUpdateEnd'];
   },
   handleId: ElementId | null,
   nodeId: ElementId,
-  onConnect: OnConnectFunc,
   isTarget: boolean,
   isValidConnection: ValidConnectionFunc,
-  elementEdgeUpdaterType?: HandleType,
-  onEdgeUpdateEnd?: (evt: MouseEvent) => void
+  elementEdgeUpdaterType?: HandleType
 ): void {
   const revueFlowNode = (event.target as Element).closest('.revue-flow');
   // when revue-flow is used inside a shadow root we can't use document
@@ -169,13 +159,13 @@ export function onMouseDown(
     hooks.connectStop.trigger(event);
 
     if (isValid) {
-      onConnect?.(connection);
+      hooks.connect.trigger(connection);
     }
 
     hooks.connectEnd.trigger(event);
 
-    if (elementEdgeUpdaterType && onEdgeUpdateEnd) {
-      onEdgeUpdateEnd(event);
+    if (elementEdgeUpdaterType) {
+      hooks.edgeUpdateEnd.trigger({ event } as any);
     }
 
     resetRecentHandle(recentHoveredHandle);

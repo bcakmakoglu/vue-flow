@@ -5,6 +5,7 @@ import { defineComponent, PropType } from 'vue';
 const OutputNode = defineComponent({
   name: 'OutputNode',
   components: { Handle },
+  inheritAttrs: false,
   props: {
     data: {
       type: Object as PropType<NodeProps['data']>,
@@ -24,10 +25,10 @@ const OutputNode = defineComponent({
   },
   setup(props) {
     return () => (
-      <div>
+      <>
         {props.data?.label}
         <Handle type="source" position={props.targetPosition} isConnectable={props.isConnectable} />
-      </div>
+      </>
     );
   }
 });

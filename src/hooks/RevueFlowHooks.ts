@@ -1,12 +1,12 @@
 // global hooks
 import { Connection, Edge, Elements, FlowTransform, Node, OnConnectStartParams, OnLoadParams } from '../types';
 import { createEventHook, EventHook } from '@vueuse/core';
-import { SetupContext } from 'vue';
 
 export interface RevueFlowHooks {
   elementClick: EventHook<{ event: MouseEvent; element: Node | Edge }>;
   elementsRemove: EventHook<Elements>;
   nodeDoubleClick: EventHook<{ event: MouseEvent; node: Node }>;
+  nodeClick: EventHook<{ event: MouseEvent; node: Node }>;
   nodeMouseEnter: EventHook<{ event: MouseEvent; node: Node }>;
   nodeMouseMove: EventHook<{ event: MouseEvent; node: Node }>;
   nodeMouseLeave: EventHook<{ event: MouseEvent; node: Node }>;
@@ -14,7 +14,7 @@ export interface RevueFlowHooks {
   nodeDragStart: EventHook<{ event: MouseEvent; node: Node }>;
   nodeDrag: EventHook<{ event: MouseEvent; node: Node }>;
   nodeDragStop: EventHook<{ event: MouseEvent; node: Node }>;
-  connect: EventHook<Edge | Connection>;
+  connect: EventHook<Connection>;
   connectStart: EventHook<{
     event: MouseEvent;
     params: OnConnectStartParams;
@@ -33,21 +33,23 @@ export interface RevueFlowHooks {
   paneScroll: EventHook<WheelEvent | undefined>;
   paneClick: EventHook<MouseEvent>;
   paneContextMenu: EventHook<MouseEvent>;
-  edgeUpdate: EventHook<{ oldEdge: Edge; newConnection: Connection }>;
+  edgeUpdate: EventHook<{ edge: Edge; connection: Connection }>;
   edgeContextMenu: EventHook<{ event: MouseEvent; edge: Edge }>;
   edgeMouseEnter: EventHook<{ event: MouseEvent; edge: Edge }>;
   edgeMouseMove: EventHook<{ event: MouseEvent; edge: Edge }>;
   edgeMouseLeave: EventHook<{ event: MouseEvent; edge: Edge }>;
   edgeDoubleClick: EventHook<{ event: MouseEvent; edge: Edge }>;
+  edgeClick: EventHook<{ event: MouseEvent; edge: Edge }>;
   edgeUpdateStart: EventHook<{ event: MouseEvent; edge: Edge }>;
   edgeUpdateEnd: EventHook<{ event: MouseEvent; edge: Edge }>;
 }
 
-export const useRevueFlow = (emit: SetupContext['emit']): RevueFlowHooks => {
+export const useRevueFlow = (): RevueFlowHooks & { bind: (emit: (event: string, ...args: any[]) => void) => void } => {
   const eventHooks: RevueFlowHooks = {
     elementClick: createEventHook<{ event: MouseEvent; element: Node | Edge }>(),
     elementsRemove: createEventHook<Elements>(),
     nodeDoubleClick: createEventHook<{ event: MouseEvent; node: Node }>(),
+    nodeClick: createEventHook<{ event: MouseEvent; node: Node }>(),
     nodeMouseEnter: createEventHook<{ event: MouseEvent; node: Node }>(),
     nodeMouseMove: createEventHook<{ event: MouseEvent; node: Node }>(),
     nodeMouseLeave: createEventHook<{ event: MouseEvent; node: Node }>(),
@@ -55,7 +57,7 @@ export const useRevueFlow = (emit: SetupContext['emit']): RevueFlowHooks => {
     nodeDragStart: createEventHook<{ event: MouseEvent; node: Node }>(),
     nodeDrag: createEventHook<{ event: MouseEvent; node: Node }>(),
     nodeDragStop: createEventHook<{ event: MouseEvent; node: Node }>(),
-    connect: createEventHook<Edge | Connection>(),
+    connect: createEventHook<Connection>(),
     connectStart: createEventHook<{
       event: MouseEvent;
       params: OnConnectStartParams;
@@ -74,23 +76,27 @@ export const useRevueFlow = (emit: SetupContext['emit']): RevueFlowHooks => {
     paneScroll: createEventHook<WheelEvent | undefined>(),
     paneClick: createEventHook<MouseEvent>(),
     paneContextMenu: createEventHook<MouseEvent>(),
-    edgeUpdate: createEventHook<{ oldEdge: Edge; newConnection: Connection }>(),
+    edgeUpdate: createEventHook<{ edge: Edge; connection: Connection }>(),
     edgeContextMenu: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeMouseEnter: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeMouseMove: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeMouseLeave: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeDoubleClick: createEventHook<{ event: MouseEvent; edge: Edge }>(),
+    edgeClick: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeUpdateStart: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeUpdateEnd: createEventHook<{ event: MouseEvent; edge: Edge }>()
   };
 
-  for (const [key, value] of Object.entries(eventHooks)) {
-    value.on((data: any) => {
-      emit(key, data);
-    });
-  }
+  const bind = (emit: (event: string, args: any) => void) => {
+    for (const [key, value] of Object.entries(eventHooks)) {
+      value.on((data: any) => {
+        emit(key, data);
+      });
+    }
+  };
 
   return {
-    ...eventHooks
+    ...eventHooks,
+    bind
   };
 };

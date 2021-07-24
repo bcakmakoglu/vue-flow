@@ -4,6 +4,7 @@ import { EdgeSmoothStepProps } from '../../types';
 import SmoothStepEdge from './SmoothStepEdge';
 
 const StepEdge = defineComponent({
+  inheritAttrs: false,
   components: { SmoothStepEdge },
   props: EdgeSmoothStepProps,
   setup(props) {

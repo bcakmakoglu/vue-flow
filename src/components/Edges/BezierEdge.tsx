@@ -46,44 +46,46 @@ export function getBezierPath({
 }
 
 const BezierEdge = defineComponent({
+  inheritAttrs: false,
   props: {
     sourceX: {
       type: Number,
-      required: true,
+      required: false,
       default: 0
     },
     sourceY: {
       type: Number,
-      required: true,
+      required: false,
       default: 0
     },
     targetX: {
       type: Number,
-      required: true,
+      required: false,
       default: 0
     },
     targetY: {
       type: Number,
-      required: true,
+      required: false,
       default: 0
     },
     sourcePosition: {
       type: String as PropType<Position>,
-      required: true,
+      required: false,
       default: Position.Bottom
     },
     targetPosition: {
       type: String as PropType<Position>,
-      required: true,
+      required: false,
       default: Position.Top
     },
     label: {
       type: String,
-      required: true
+      required: false,
+      default: undefined
     },
     labelStyle: {
       type: Object,
-      required: true,
+      required: false,
       default: undefined
     },
     labelShowBg: {
@@ -93,7 +95,8 @@ const BezierEdge = defineComponent({
     },
     labelBgStyle: {
       type: String,
-      required: true
+      required: false,
+      default: undefined
     },
     labelBgPadding: {
       type: Array as unknown as PropType<[number, number]>,
@@ -106,12 +109,14 @@ const BezierEdge = defineComponent({
       default: 0
     },
     arrowHeadType: {
-      type: Object as PropType<ArrowHeadType>,
-      required: true
+      type: String as PropType<ArrowHeadType>,
+      required: false,
+      default: undefined
     },
     markerEndId: {
       type: String,
-      required: true
+      required: false,
+      default: undefined
     },
     style: {
       type: Object as PropType<CSSProperties>,
