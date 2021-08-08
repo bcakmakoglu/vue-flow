@@ -103,7 +103,7 @@ export const DefaultEdgeProps = {
   labelShowBg: {
     type: Boolean as PropType<EdgeProps['labelShowBg']>,
     required: false,
-    default: false
+    default: true
   },
   labelBgStyle: {
     type: [String, Object] as PropType<EdgeProps['labelBgStyle']>,
