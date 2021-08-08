@@ -104,7 +104,7 @@ for (const { external, iife } of activePackages) {
         format: 'es'
       },
       plugins: [dts()],
-      external: ['vue', ...(external || [])]
+      external: ['vue', ...(external || []), /\.css$/]
     });
   }
 }
