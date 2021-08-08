@@ -19,19 +19,6 @@ export default defineComponent({
       return targetX < sourceX ? targetX + xOffset : targetX - xOffset;
     });
 
-    const text = props.label ? (
-      <EdgeText
-        x={centerX(props.targetX, props.sourceX).value}
-        y={centerY(props.targetY, props.sourceY).value}
-        label={props.label}
-        labelStyle={props.labelStyle}
-        labelShowBg={props.labelShowBg}
-        labelBgStyle={props.labelBgStyle}
-        labelBgPadding={props.labelBgPadding}
-        labelBgBorderRadius={props.labelBgBorderRadius}
-      />
-    ) : null;
-
     const markerEnd = reactify((arrowHeadType?: ArrowHeadType, markerEndId?: string) => getMarkerEnd(arrowHeadType, markerEndId));
 
     return () => (
@@ -42,7 +29,18 @@ export default defineComponent({
           d={`M ${props.sourceX},${props.sourceY}L ${props.targetX},${props.targetY}`}
           marker-end={markerEnd(props.arrowHeadType, props.markerEndId).value}
         />
-        {text}
+        {props.label ? (
+          <EdgeText
+            x={centerX(props.targetX, props.sourceX).value}
+            y={centerY(props.targetY, props.sourceY).value}
+            label={props.label}
+            labelStyle={props.labelStyle}
+            labelShowBg={props.labelShowBg}
+            labelBgStyle={props.labelBgStyle}
+            labelBgPadding={props.labelBgPadding}
+            labelBgBorderRadius={props.labelBgBorderRadius}
+          />
+        ) : null}
       </>
     );
   }

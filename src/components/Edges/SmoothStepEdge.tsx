@@ -123,19 +123,6 @@ export default defineComponent({
 
     const markerEnd = reactify((arrowHeadType?: ArrowHeadType, markerEndId?: string) => getMarkerEnd(arrowHeadType, markerEndId));
 
-    const text = props.label ? (
-      <EdgeText
-        x={centered.value[0]}
-        y={centered.value[1]}
-        label={props.label}
-        labelStyle={props.labelStyle}
-        labelShowBg={props.labelShowBg}
-        labelBgStyle={props.labelBgStyle}
-        labelBgPadding={props.labelBgPadding}
-        labelBgBorderRadius={props.labelBgBorderRadius}
-      />
-    ) : null;
-
     return () => (
       <>
         <path
@@ -144,7 +131,18 @@ export default defineComponent({
           d={path.value}
           marker-end={markerEnd(props.arrowHeadType, props.markerEndId).value}
         />
-        {text}
+        {props.label ? (
+          <EdgeText
+            x={centered.value[0]}
+            y={centered.value[1]}
+            label={props.label}
+            labelStyle={props.labelStyle}
+            labelShowBg={props.labelShowBg}
+            labelBgStyle={props.labelBgStyle}
+            labelBgPadding={props.labelBgPadding}
+            labelBgBorderRadius={props.labelBgBorderRadius}
+          />
+        ) : null}
       </>
     );
   }
