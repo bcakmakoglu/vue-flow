@@ -5,7 +5,6 @@ import { OutputOptions, RollupOptions } from 'rollup';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
-import vue from 'rollup-plugin-vue';
 // @ts-ignore
 import svg from 'rollup-plugin-svg';
 import postcss from 'rollup-plugin-postcss';
@@ -93,8 +92,7 @@ for (const { external, iife } of activePackages) {
           extensions: [...DEFAULT_BABEL_EXTENSIONS, '.ts', '.tsx'],
           exclude: 'node_modules/**',
           babelHelpers: 'bundled'
-        }),
-        vue()
+        })
       ],
       external: ['vue', ...(external || [])]
     });

@@ -11,5 +11,9 @@ declare global {
     interface IntrinsicElements {
       [elem: string]: any;
     }
+
+    interface IntrinsicAttributes {
+      [prop: string]: any;
+    }
   }
 }

@@ -1,49 +1,8 @@
-<template>
-  <div class="revue-flow">
-    <GraphView
-      :node-types="nodeTypesParsed().value"
-      :edge-types="edgeTypesParsed().value"
-      :connection-mode="connectionMode"
-      :connection-line-type="connectionLineType"
-      :connection-line-style="connectionLineStyle"
-      :connection-line-component="connectionLineComponent"
-      :selection-key-code="selectionKeyCode"
-      :delete-key-code="deleteKeyCode"
-      :multi-selection-key-code="multiSelectionKeyCode"
-      :zoom-activation-key-code="zoomActivationKeyCode"
-      :snap-to-grid="snapToGrid"
-      :snap-grid="snapGrid"
-      :only-render-visible-elements="onlyRenderVisibleElements"
-      :nodes-draggable="nodesDraggable"
-      :nodes-connectable="nodesConnectable"
-      :elements-selectable="elementsSelectable"
-      :select-nodes-on-drag="selectNodesOnDrag"
-      :min-zoom="minZoom"
-      :max-zoom="maxZoom"
-      :default-zoom="defaultZoom"
-      :default-position="defaultPosition"
-      :translate-extent="translateExtent"
-      :node-extent="nodeExtent"
-      :arrow-head-color="arrowHeadColor"
-      :marker-end-id="markerEndId"
-      :zoom-on-scroll="zoomOnScroll"
-      :zoom-on-pinch="zoomOnPinch"
-      :zoom-on-double-click="zoomOnDoubleClick"
-      :pan-on-scroll="panOnScroll"
-      :pan-on-scroll-speed="panOnScrollSpeed"
-      :pan-on-scroll-mode="panOnScrollMode"
-      :pane-moveable="paneMoveable"
-      :edge-updater-radius="edgeUpdaterRadius"
-    />
-    <slot></slot>
-  </div>
-</template>
-<script lang="ts">
 import { defineComponent, onBeforeUnmount, onUpdated, PropType, provide, watch } from 'vue';
 import { reactify, useVModel } from '@vueuse/core';
 import '../../style.css';
 import '../../theme-default.css';
-import GraphView from '../GraphView/GraphView.vue';
+import GraphView from '../GraphView';
 import DefaultNode from '../../components/Nodes/DefaultNode';
 import InputNode from '../../components/Nodes/InputNode';
 import OutputNode from '../../components/Nodes/OutputNode';
@@ -260,7 +219,7 @@ export default defineComponent({
     }
   },
   emits: Object.keys(useRevueFlow()),
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     const store = configureStore(initialState)();
     provide<RevueFlowStore>('store', store);
     const hooks = useRevueFlow().bind(emit);
@@ -284,10 +243,45 @@ export default defineComponent({
     const nodeTypesParsed = reactify(() => createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes }));
     const edgeTypesParsed = reactify(() => createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes }));
 
-    return {
-      nodeTypesParsed,
-      edgeTypesParsed
-    };
+    return () => (
+      <div class="revue-flow">
+        <GraphView
+          nodeTypes={nodeTypesParsed().value}
+          edgeTypes={edgeTypesParsed().value}
+          connectionMode={props.connectionMode}
+          connectionLineType={props.connectionLineType}
+          connectionLineStyle={props.connectionLineStyle}
+          connectionLineComponent={props.connectionLineComponent}
+          selectionKeyCode={props.selectionKeyCode}
+          deleteKeyCode={props.deleteKeyCode}
+          multiSelectionKeyCode={props.multiSelectionKeyCode}
+          zoomActivationKeyCode={props.zoomActivationKeyCode}
+          snapToGrid={props.snapToGrid}
+          snapGrid={props.snapGrid}
+          onlyRenderVisibleElements={props.onlyRenderVisibleElements}
+          nodesDraggable={props.nodesDraggable}
+          nodesConnectable={props.nodesConnectable}
+          elementsSelectable={props.elementsSelectable}
+          selectNodesOnDrag={props.selectNodesOnDrag}
+          minZoom={props.minZoom}
+          maxZoom={props.maxZoom}
+          defaultZoom={props.defaultZoom}
+          defaultPosition={props.defaultPosition}
+          translateExtent={props.translateExtent}
+          nodeExtent={props.nodeExtent}
+          arrowHeadColor={props.arrowHeadColor}
+          markerEndId={props.markerEndId}
+          zoomOnScroll={props.zoomOnScroll}
+          zoomOnPinch={props.zoomOnPinch}
+          zoomOnDoubleClick={props.zoomOnDoubleClick}
+          panOnScroll={props.panOnScroll}
+          panOnScrollSpeed={props.panOnScrollSpeed}
+          panOnScrollMode={props.panOnScrollMode}
+          paneMoveable={props.paneMoveable}
+          edgeUpdaterRadius={props.edgeUpdaterRadius}
+        />
+        {slots.default ? slots.default() : ''}
+      </div>
+    );
   }
 });
-</script>

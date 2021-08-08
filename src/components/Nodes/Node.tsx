@@ -1,42 +1,4 @@
-<template>
-  <DraggableCore
-    cancel=".nodrag"
-    :scale="transform[2]"
-    :disabled="!isDraggable"
-    :grid="grid"
-    :enableUserSelectHack="false"
-    @start="onDragStart"
-    @move="onDrag"
-    @stop="onDragStop"
-  >
-    <div
-      ref="nodeElement"
-      :class="nodeClasses"
-      :style="nodeStyle"
-      :data-id="node.id"
-      @mouseenter="onMouseEnterHandler"
-      @mousemove="onMouseMoveHandler"
-      @mouseleave="onMouseLeaveHandler"
-      @contextmenu="onContextMenuHandler"
-      @click="onSelectNodeHandler"
-    >
-      <component
-        :is="type"
-        :data="node.data"
-        :type="node.type"
-        :x-pos="node.__rf.position.x"
-        :y-pos="node.__rf.position.y"
-        :selected="selected"
-        :is-connectable="isConnectable"
-        :source-position="node.sourcePosition"
-        :target-position="node.targetPosition"
-        :is-dragging="node.__rf.isDragging"
-      />
-    </div>
-  </DraggableCore>
-</template>
-<script lang="ts">
-import { computed, CSSProperties, defineComponent, inject, PropType, provide } from 'vue';
+import { computed, CSSProperties, defineComponent, h, inject, PropType, provide } from 'vue';
 import { templateRef, tryOnMounted, useResizeObserver } from '@vueuse/core';
 import { DraggableCore, DraggableEventListener } from '@braks/revue-draggable';
 import { Node, NodeDimensionUpdate, NodeType, RevueFlowStore } from '../../types';
@@ -57,7 +19,7 @@ export default defineComponent({
       required: true
     },
     type: {
-      type: [Object, String],
+      type: Object,
       required: true
     },
     snapToGrid: {
@@ -235,24 +197,41 @@ export default defineComponent({
       }
     ]);
 
-    return {
-      nodeClasses,
-      grid,
-      nodeStyle,
-      nodeElement,
-      onDragStart,
-      onDrag,
-      onDragStop,
-      onContextMenuHandler,
-      onMouseEnterHandler,
-      onMouseLeaveHandler,
-      onMouseMoveHandler,
-      onSelectNodeHandler,
-      transform,
-      isConnectable,
-      isDraggable,
-      selected
-    };
+    return () => (
+      <DraggableCore
+        cancel=".nodrag"
+        scale={transform.value[2]}
+        disabled={!isDraggable.value}
+        grid={grid.value}
+        enableUserSelectHack={false}
+        onStart={onDragStart}
+        onMove={onDrag}
+        onStop={onDragStop}
+      >
+        <div
+          ref="nodeElement"
+          class={nodeClasses.value}
+          style={nodeStyle.value}
+          data-id={props.node.id}
+          onMouseenter={onMouseEnterHandler}
+          onMousemove={onMouseMoveHandler}
+          onMouseleave={onMouseLeaveHandler}
+          onContextmenu={onContextMenuHandler}
+          onClick={onSelectNodeHandler}
+        >
+          {h(props.type, {
+            data: props.node.data,
+            type: props.node.type,
+            xPos: props.node.__rf.position.x,
+            yPos: props.node.__rf.position.y,
+            selected: selected.value,
+            isConnectable: isConnectable.value,
+            sourcePosition: props.node.sourcePosition,
+            targetPosition: props.node.targetPosition,
+            isDragging: props.node.__rf.isDragging
+          })}
+        </div>
+      </DraggableCore>
+    );
   }
 });
-</script>

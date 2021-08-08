@@ -1,42 +1,3 @@
-<template>
-  <FlowRenderer
-    :delete-key-code="deleteKeyCode"
-    :selection-key-code="selectionKeyCode"
-    :multi-selection-key-code="multiSelectionKeyCode"
-    :zoom-activation-key-code="zoomActivationKeyCode"
-    :elements-selectable="elementsSelectable"
-    :zoom-on-scroll="zoomOnScroll"
-    :zoom-on-pinch="zoomOnPinch"
-    :zoom-on-double-click="zoomOnDoubleClick"
-    :pan-on-scroll="panOnScroll"
-    :pan-on-scroll-speed="panOnScrollSpeed"
-    :pan-on-scroll-mode="panOnScrollMode"
-    :pane-moveable="paneMoveable"
-    :default-position="defaultPosition"
-    :default-zoom="defaultZoom"
-    :translate-extent="translateExtent"
-  >
-    <NodeRenderer
-      :node-types="nodeTypes"
-      :select-nodes-on-drag="selectNodesOnDrag"
-      :snap-to-grid="snapToGrid"
-      :snap-grid="snapGrid"
-      :only-render-visible-elements="onlyRenderVisibleElements"
-    />
-    <EdgeRenderer
-      :edge-types="edgeTypes"
-      :connection-line-type="connectionLineType"
-      :connection-line-style="connectionLineStyle"
-      :connection-line-component="connectionLineComponent"
-      :connection-mode="connectionMode"
-      :arrow-head-color="arrowHeadColor"
-      :marker-end-id="markerEndId"
-      :only-render-visible-elements="onlyRenderVisibleElements"
-      :edge-updater-radius="edgeUpdaterRadius"
-    />
-  </FlowRenderer>
-</template>
-<script lang="ts">
 import { defineComponent, inject, PropType, watchEffect } from 'vue';
 import FlowRenderer from '../FlowRenderer';
 import NodeRenderer from '../NodeRenderer';
@@ -275,6 +236,44 @@ export default defineComponent({
     watchEffect(() => {
       init();
     });
+
+    return () => (
+      <FlowRenderer
+        deleteKeyCode={props.deleteKeyCode}
+        selectionKeyCode={props.selectionKeyCode}
+        multiSelectionKeyCode={props.multiSelectionKeyCode}
+        zoomActivationKeyCode={props.zoomActivationKeyCode}
+        elementsSelectable={props.elementsSelectable}
+        zoomOnScroll={props.zoomOnScroll}
+        zoomOnPinch={props.zoomOnPinch}
+        zoomOnDoubleClick={props.zoomOnDoubleClick}
+        panOnScroll={props.panOnScroll}
+        panOnScrollSpeed={props.panOnScrollSpeed}
+        panOnScrollMode={props.panOnScrollMode}
+        paneMoveable={props.paneMoveable}
+        defaultPosition={props.defaultPosition}
+        defaultZoom={props.defaultZoom}
+        translateExtent={props.translateExtent}
+      >
+        <NodeRenderer
+          nodeTypes={props.nodeTypes}
+          selectNodesOnDrag={props.selectNodesOnDrag}
+          snapToGrid={props.snapToGrid}
+          snapGrid={props.snapGrid}
+          onlyRenderVisibleElements={props.onlyRenderVisibleElements}
+        />
+        <EdgeRenderer
+          edgeTypes={props.edgeTypes}
+          connectionLineType={props.connectionLineType}
+          connectionLineStyle={props.connectionLineStyle}
+          connectionLineComponent={props.connectionLineComponent}
+          connectionMode={props.connectionMode}
+          arrowHeadColor={props.arrowHeadColor}
+          markerEndId={props.markerEndId}
+          onlyRenderVisibleElements={props.onlyRenderVisibleElements}
+          edgeUpdaterRadius={props.edgeUpdaterRadius}
+        />
+      </FlowRenderer>
+    );
   }
 });
-</script>

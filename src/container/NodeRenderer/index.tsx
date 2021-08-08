@@ -1,5 +1,5 @@
 import { computed, defineComponent, inject, PropType } from 'vue';
-import Node from '../../components/Nodes/Node.vue';
+import Node from '../../components/Nodes/Node';
 import { getNodesInside } from '../../utils/graph';
 import { NodeType, RevueFlowStore } from '../../types';
 
