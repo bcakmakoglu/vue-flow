@@ -3,10 +3,11 @@
  * The nodes selection rectangle gets displayed when a user
  * made a selectio  with on or several nodes
  */
-import { computed, defineComponent, inject, PropType } from 'vue';
+import { computed, defineComponent, inject } from 'vue';
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable';
 import { isNode } from '../../utils/graph';
 import { Node, RevueFlowStore } from '../../types';
+import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 export interface NodesSelectionProps {
   onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void;
@@ -16,31 +17,11 @@ export interface NodesSelectionProps {
 }
 
 const NodesSelection = defineComponent({
-  props: {
-    onSelectionDragStart: {
-      type: Function as unknown as PropType<NodesSelectionProps['onSelectionDragStart']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDrag: {
-      type: Function as unknown as PropType<NodesSelectionProps['onSelectionDrag']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionDragStop: {
-      type: Function as unknown as PropType<NodesSelectionProps['onSelectionDragStop']>,
-      required: false,
-      default: undefined
-    },
-    onSelectionContextMenu: {
-      type: Function as unknown as PropType<NodesSelectionProps['onSelectionContextMenu']>,
-      required: false,
-      default: undefined
-    }
-  },
-  setup(props) {
+  setup() {
     const store = inject<RevueFlowStore>('store')!;
+    const hooks = inject<RevueFlowHooks>('hooks')!;
     const grid = computed(() => (store.snapToGrid ? store.snapGrid : [1, 1])! as [number, number]);
+    const transform = computed(() => store.transform);
 
     const selectedNodes = computed(() =>
       store.selectedElements
@@ -67,11 +48,11 @@ const NodesSelection = defineComponent({
     }));
 
     const onStart: DraggableEventListener = ({ event }) => {
-      props.onSelectionDragStart?.(event, selectedNodes.value);
+      hooks.selectionDragStart.trigger({ event, nodes: selectedNodes.value });
     };
 
     const onDrag: DraggableEventListener = ({ event, data }) => {
-      props.onSelectionDrag?.(event, selectedNodes.value);
+      hooks.selectionDrag.trigger({ event, nodes: selectedNodes.value });
 
       store.updateNodePosDiff({
         diff: {
@@ -87,15 +68,15 @@ const NodesSelection = defineComponent({
         isDragging: false
       });
 
-      props.onSelectionDragStop?.(event, selectedNodes.value);
+      hooks.selectionDragStop.trigger({ event, nodes: selectedNodes.value });
     };
 
     const onContextMenu = (event: MouseEvent) => {
-      const selectedNodes = store.selectedElements
+      const selectedNodes: Node[] = store.selectedElements
         ? store.selectedElements.filter(isNode).map((selectedNode) => store.nodes.find((node) => node.id === selectedNode.id))
         : [];
 
-      props.onSelectionContextMenu?.(event, selectedNodes as any);
+      hooks.selectionContextMenu.trigger({ event, nodes: selectedNodes });
     };
 
     return () => {
@@ -107,7 +88,7 @@ const NodesSelection = defineComponent({
             onStart={onStart}
             onMove={onDrag}
             onStop={onStop}
-            scale={store.transform[2]}
+            scale={transform.value[2]}
             grid={grid.value}
             enableUserSelectHack={false}
           >
