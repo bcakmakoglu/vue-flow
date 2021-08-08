@@ -16,11 +16,13 @@ const Header = defineComponent({
           Revue Flow Dev
         </a>
         <select v-model={route.path} onChange={onChange}>
-          {routes.map((route) => (
-            <option value={route.path} key={route.path}>
-              {route.path === '/' ? 'basic' : route.path.substr(1, route.path.length)}
-            </option>
-          ))}
+          {routes.map((route) =>
+            route.path !== '/' ? (
+              <option value={route.path} key={route.path}>
+                {route.path.substr(1, route.path.length)}
+              </option>
+            ) : null
+          )}
         </select>
       </header>
     );
