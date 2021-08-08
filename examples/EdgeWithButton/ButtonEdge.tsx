@@ -1,13 +1,20 @@
-import { computed, defineComponent } from 'vue';
-import { getBezierPath, getEdgeCenter, getMarkerEnd } from '../../src';
+import { computed, defineComponent, inject } from 'vue';
+import { getBezierPath, getEdgeCenter, getMarkerEnd, RevueFlowStore } from '../../src';
 import { DefaultEdgeProps } from '../../src/components/Edges/utils';
+import { RevueFlowHooks } from '../../src/hooks/RevueFlowHooks';
 
 export default defineComponent({
   props: {
     ...DefaultEdgeProps
   },
   setup(props) {
+    const store = inject<RevueFlowStore>('store')!;
+    const hooks = inject<RevueFlowHooks>('hooks')!;
     const onEdgeClick = (evt: Event, id: string) => {
+      const edge = store.edges.find((edge) => edge.id === id);
+      if (edge) {
+        hooks.elementsRemove.trigger([edge]);
+      }
       evt.stopPropagation();
       alert(`remove ${id}`);
     };
