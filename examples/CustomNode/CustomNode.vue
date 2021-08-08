@@ -45,7 +45,10 @@ const CustomNodeFlow = defineComponent({
       selectorNode: ColorSelectorNode
     };
 
-    const onLoad = (revueFlowInstance: OnLoadParams) => console.log('flow loaded:', revueFlowInstance);
+    const onLoad = (revueFlowInstance: OnLoadParams) => {
+      revueFlowInstance.fitView();
+      console.log('flow loaded:', revueFlowInstance);
+    };
     const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
     const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
     const nodeStroke = (n: Node): string => {

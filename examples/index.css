@@ -1,10 +1,10 @@
 body {
-  font-family: sans-serif;
   color: #111;
 }
 
 #root {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

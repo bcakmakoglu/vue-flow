@@ -16,6 +16,10 @@ export const routes = [
   {
     path: '/drag-n-drop',
     component: () => import('./DragNDrop/DnD.vue')
+  },
+  {
+    path: '/edges',
+    component: () => import('./Edges')
   }
 ];
 
