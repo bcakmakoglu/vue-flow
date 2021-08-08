@@ -105,14 +105,14 @@ const CustomNodeFlow = defineComponent({
           id: '3',
           type: 'output',
           data: { label: 'Output A' },
-          position: { x: 550, y: 25 },
+          position: { x: 650, y: 25 },
           targetPosition: Position.Left
         },
         {
           id: '4',
           type: 'output',
           data: { label: 'Output B' },
-          position: { x: 550, y: 100 },
+          position: { x: 650, y: 100 },
           targetPosition: Position.Left
         },
 
