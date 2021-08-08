@@ -1,6 +1,10 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router';
 
-export const routes = [
+export const routes: RouterOptions['routes'] = [
+  {
+    path: '/',
+    redirect: '/basic'
+  },
   {
     path: '/basic',
     component: () => import('./Basic/Basic.vue')
