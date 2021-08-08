@@ -20,7 +20,7 @@ export default defineComponent({
     targetPosition: {
       type: String as PropType<NodeProps['targetPosition']>,
       required: false,
-      default: Position.Bottom
+      default: Position.Top
     }
   },
   setup(props) {
