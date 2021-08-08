@@ -58,7 +58,7 @@ export default defineComponent({
       return null;
     }
 
-    return (
+    return () => (
       <g
         transform={`translate(${props.x - edgeTextBox.value.width / 2} ${props.y - edgeTextBox.value.height / 2})`}
         class="revue-flow__edge-textwrapper"
