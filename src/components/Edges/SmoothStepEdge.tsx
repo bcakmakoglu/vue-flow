@@ -136,7 +136,7 @@ export default defineComponent({
       />
     ) : null;
 
-    return (
+    return () => (
       <>
         <path
           class="revue-flow__edge-path"

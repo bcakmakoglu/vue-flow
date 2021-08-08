@@ -34,7 +34,7 @@ export default defineComponent({
 
     const markerEnd = reactify((arrowHeadType?: ArrowHeadType, markerEndId?: string) => getMarkerEnd(arrowHeadType, markerEndId));
 
-    return (
+    return () => (
       <>
         <path
           style={props.style}
