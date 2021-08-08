@@ -1,4 +1,4 @@
-import { FunctionalComponent, ref } from 'vue';
+import { ref } from 'vue';
 import CustomEdge from './CustomEdge';
 import CustomEdge2 from './CustomEdge2';
 import RevueFlow, {
@@ -12,13 +12,8 @@ import RevueFlow, {
   addEdge,
   Connection,
   Edge,
-  EdgeProps,
   removeElements
 } from '../../src';
-
-const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView();
-const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
-const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
 
 const initialElements = [
   { id: '1', type: 'input', data: { label: 'Input 1' }, position: { x: 250, y: 0 } },
@@ -80,7 +75,7 @@ const initialElements = [
   }
 ];
 
-const edgeTypes: Record<string, FunctionalComponent<EdgeProps>> = {
+const edgeTypes: Record<string, any> = {
   custom: CustomEdge,
   custom2: CustomEdge2
 };
@@ -88,6 +83,9 @@ const edgeTypes: Record<string, FunctionalComponent<EdgeProps>> = {
 const EdgesFlow = () => {
   const elements = ref<Elements>(initialElements as Elements);
 
+  const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView();
+  const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
+  const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
   const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value));
   const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value));
 

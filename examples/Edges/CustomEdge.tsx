@@ -1,31 +1,35 @@
-import { EdgeProps, getBezierPath, getMarkerEnd } from '../../src';
-import { FunctionalComponent } from 'vue';
+import { getBezierPath, getMarkerEnd } from '../../src';
+import { computed, defineComponent } from 'vue';
+import { DefaultEdgeProps } from '../../src/components/Edges/utils';
 
-const CustomEdge: FunctionalComponent<EdgeProps> = ({
-  id,
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-  sourcePosition,
-  targetPosition,
-  data,
-  arrowHeadType,
-  markerEndId
-}) => {
-  const edgePath = getBezierPath({ sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition });
-  const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
+const CustomEdge = defineComponent({
+  props: {
+    ...DefaultEdgeProps
+  },
+  setup(props) {
+    const edgePath = computed(() =>
+      getBezierPath({
+        sourceX: props.sourceX,
+        sourceY: props.sourceY,
+        sourcePosition: props.sourcePosition,
+        targetX: props.targetX,
+        targetY: props.targetY,
+        targetPosition: props.targetPosition
+      })
+    );
+    const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId));
 
-  return () => (
-    <>
-      <path id={id} class="react-flow__edge-path" d={edgePath} marker-end={markerEnd} />
-      <text>
-        <textPath href={`#${id}`} style={{ fontSize: '12px' }} startOffset="50%" text-anchor="middle">
-          {data.text}
-        </textPath>
-      </text>
-    </>
-  );
-};
+    return () => (
+      <>
+        <path id={props.id} class="revue-flow__edge-path" d={edgePath.value} marker-end={markerEnd.value} />
+        <text>
+          <textPath href={`#${props.id}`} style={{ fontSize: '12px' }} startOffset="50%" text-anchor="middle">
+            {props.data.text}
+          </textPath>
+        </text>
+      </>
+    );
+  }
+});
 
 export default CustomEdge;

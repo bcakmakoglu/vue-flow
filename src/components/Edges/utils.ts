@@ -138,7 +138,7 @@ export const DefaultEdgeProps = {
   data: {
     type: Object as PropType<EdgeProps['data']>,
     required: false,
-    default: undefined
+    default: () => ({} as any)
   },
   sourceHandleId: {
     type: String as PropType<EdgeProps['sourceHandleId']>,
