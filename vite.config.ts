@@ -8,9 +8,5 @@ export default defineConfig({
   build: {
     outDir: 'build'
   },
-  plugins: [
-    vue(),
-    vueJsx(),
-    svgLoader()
-  ]
+  plugins: [vue(), vueJsx(), svgLoader()]
 });
