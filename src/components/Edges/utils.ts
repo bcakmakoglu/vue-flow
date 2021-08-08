@@ -91,9 +91,9 @@ export const DefaultEdgeProps = {
     default: Position.Top
   },
   label: {
-    type: String as PropType<EdgeProps['label']>,
+    type: [String, Object] as PropType<EdgeProps['label']>,
     required: false,
-    default: undefined
+    default: () => {}
   },
   labelStyle: {
     type: Object as PropType<EdgeProps['labelStyle']>,
@@ -106,7 +106,7 @@ export const DefaultEdgeProps = {
     default: false
   },
   labelBgStyle: {
-    type: String as PropType<EdgeProps['labelBgStyle']>,
+    type: [String, Object] as PropType<EdgeProps['labelBgStyle']>,
     required: false,
     default: undefined
   },
@@ -121,7 +121,7 @@ export const DefaultEdgeProps = {
     default: undefined
   },
   arrowHeadType: {
-    type: Object as PropType<EdgeProps['arrowHeadType']>,
+    type: String as PropType<EdgeProps['arrowHeadType']>,
     required: false,
     default: undefined
   },

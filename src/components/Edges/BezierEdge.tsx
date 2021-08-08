@@ -71,19 +71,6 @@ export default defineComponent({
       });
     });
 
-    const text = props.label ? (
-      <EdgeText
-        x={centered({ ...props }).value[0]}
-        y={centered({ ...props }).value[1]}
-        label={props.label}
-        labelStyle={props.labelStyle}
-        labelShowBg={props.labelShowBg}
-        labelBgStyle={props.labelBgStyle}
-        labelBgPadding={props.labelBgPadding}
-        labelBgBorderRadius={props.labelBgBorderRadius}
-      />
-    ) : null;
-
     const markerEnd = reactify((arrowHeadType?: ArrowHeadType, markerEndId?: string) => getMarkerEnd(arrowHeadType, markerEndId));
 
     return () => (
@@ -94,7 +81,18 @@ export default defineComponent({
           d={path({ ...props }).value}
           marker-end={markerEnd(props.arrowHeadType, props.markerEndId).value}
         />
-        {text}
+        {props.label ? (
+          <EdgeText
+            x={centered({ ...props }).value[0]}
+            y={centered({ ...props }).value[1]}
+            label={props.label}
+            labelStyle={props.labelStyle}
+            labelShowBg={props.labelShowBg}
+            labelBgStyle={props.labelBgStyle}
+            labelBgPadding={props.labelBgPadding}
+            labelBgBorderRadius={props.labelBgBorderRadius}
+          />
+        ) : null}
       </>
     );
   }

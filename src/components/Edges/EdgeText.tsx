@@ -1,5 +1,5 @@
 import { EdgeTextProps, Rect } from '../../types';
-import { defineComponent, PropType, ref, watch } from 'vue';
+import { defineComponent, PropType, ref, watchEffect } from 'vue';
 
 export default defineComponent({
   props: {
@@ -12,7 +12,7 @@ export default defineComponent({
       required: true
     },
     label: {
-      type: String as PropType<EdgeTextProps['label']>,
+      type: [String, Object] as PropType<EdgeTextProps['label']>,
       required: true
     },
     labelStyle: {
@@ -39,24 +39,19 @@ export default defineComponent({
   setup(props, { slots }) {
     const edgeRef = ref<SVGTextElement | null>(null);
     const edgeTextBox = ref<Rect>({ x: 0, y: 0, width: 0, height: 0 });
-    const label = ref(props.label);
 
-    watch(label, () => {
-      if (edgeRef.value) {
-        const textBbox = edgeRef.value.getBBox();
+    watchEffect(() => {
+      const textBbox = edgeRef.value?.getBBox();
 
-        edgeRef.value = {
+      if (textBbox) {
+        edgeTextBox.value = {
           x: textBbox.x,
           y: textBbox.y,
           width: textBbox.width,
           height: textBbox.height
-        } as any;
+        };
       }
     });
-
-    if (typeof label.value === 'undefined' || !label.value) {
-      return null;
-    }
 
     return () => (
       <g
@@ -75,8 +70,8 @@ export default defineComponent({
             ry={props.labelBgBorderRadius}
           />
         )}
-        <text class="revue-flow__edge-text" y={edgeTextBox.value.height / 2} dy="0.3em" ref={edgeRef} style={props.labelStyle}>
-          {label}
+        <text ref={edgeRef} class="revue-flow__edge-text" y={edgeTextBox.value.height / 2} dy="0.3em" style={props.labelStyle}>
+          {props.label}
         </text>
         {slots.default ? slots.default() : ''}
       </g>
