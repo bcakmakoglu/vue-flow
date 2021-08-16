@@ -188,7 +188,7 @@ export default defineComponent({
     const onEdgeUpdaterMouseOut = () => (updating.value = false);
 
     return () =>
-      isVisible.value && edgePositions.value ? (
+      !props.edge.isHidden && isVisible.value && edgePositions.value ? (
         <g
           class={[
             'revue-flow__edge',

@@ -36,6 +36,10 @@ export const routes: RouterOptions['routes'] = [
   {
     path: '/empty',
     component: () => import('./Empty')
+  },
+  {
+    path: '/hidden',
+    component: () => import('./Hidden')
   }
 ];
 

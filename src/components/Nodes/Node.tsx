@@ -178,54 +178,57 @@ export default defineComponent({
       ]);
     });
 
-    return () => (
-      <DraggableCore
-        cancel=".nodrag"
-        scale={store.transform[2]}
-        disabled={!isDraggable.value}
-        grid={props.snapGrid}
-        enableUserSelectHack={false}
-        onStart={onDragStart}
-        onMove={onDrag}
-        onStop={onDragStop}
-      >
-        <div
-          ref="nodeElement"
-          class={[
-            'revue-flow__node',
-            `revue-flow__node-${props.node.type}`,
-            {
-              selected: selected.value,
-              selectable: isSelectable.value
-            }
-          ]}
-          style={{
-            zIndex: selected.value ? 10 : 3,
-            transform: `translate(${props.node.__rf.position.x}px,${props.node.__rf.position.y}px)`,
-            pointerEvents: isSelectable.value || isDraggable.value ? 'all' : 'none',
-            opacity: props.node.__rf.width !== null && props.node.__rf.height !== null ? 1 : 0,
-            ...props.node.style
-          }}
-          data-id={props.node.id}
-          onMouseenter={onMouseEnterHandler}
-          onMousemove={onMouseMoveHandler}
-          onMouseleave={onMouseLeaveHandler}
-          onContextmenu={onContextMenuHandler}
-          onClick={onSelectNodeHandler}
+    return () =>
+      props.node.isHidden ? (
+        ''
+      ) : (
+        <DraggableCore
+          cancel=".nodrag"
+          scale={store.transform[2]}
+          disabled={!isDraggable.value}
+          grid={props.snapGrid}
+          enableUserSelectHack={false}
+          onStart={onDragStart}
+          onMove={onDrag}
+          onStop={onDragStop}
         >
-          {h(props.type, {
-            data: props.node.data,
-            type: props.node.type,
-            xPos: props.node.__rf.position.x,
-            yPos: props.node.__rf.position.y,
-            selected: selected.value,
-            isConnectable: isConnectable.value,
-            sourcePosition: props.node.sourcePosition,
-            targetPosition: props.node.targetPosition,
-            isDragging: props.node.__rf.isDragging
-          })}
-        </div>
-      </DraggableCore>
-    );
+          <div
+            ref="nodeElement"
+            class={[
+              'revue-flow__node',
+              `revue-flow__node-${props.node.type}`,
+              {
+                selected: selected.value,
+                selectable: isSelectable.value
+              }
+            ]}
+            style={{
+              zIndex: selected.value ? 10 : 3,
+              transform: `translate(${props.node.__rf.position.x}px,${props.node.__rf.position.y}px)`,
+              pointerEvents: isSelectable.value || isDraggable.value ? 'all' : 'none',
+              opacity: props.node.__rf.width !== null && props.node.__rf.height !== null ? 1 : 0,
+              ...props.node.style
+            }}
+            data-id={props.node.id}
+            onMouseenter={onMouseEnterHandler}
+            onMousemove={onMouseMoveHandler}
+            onMouseleave={onMouseLeaveHandler}
+            onContextmenu={onContextMenuHandler}
+            onClick={onSelectNodeHandler}
+          >
+            {h(props.type, {
+              data: props.node.data,
+              type: props.node.type,
+              xPos: props.node.__rf.position.x,
+              yPos: props.node.__rf.position.y,
+              selected: selected.value,
+              isConnectable: isConnectable.value,
+              sourcePosition: props.node.sourcePosition,
+              targetPosition: props.node.targetPosition,
+              isDragging: props.node.__rf.isDragging
+            })}
+          </div>
+        </DraggableCore>
+      );
   }
 });
