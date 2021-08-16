@@ -40,6 +40,10 @@ export const routes: RouterOptions['routes'] = [
   {
     path: '/hidden',
     component: () => import('./Hidden')
+  },
+  {
+    path: '/interaction',
+    component: () => import('./Interaction')
   }
 ];
 
