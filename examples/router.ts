@@ -32,6 +32,10 @@ export const routes: RouterOptions['routes'] = [
   {
     path: '/edge-types',
     component: () => import('./EdgeTypes')
+  },
+  {
+    path: '/empty',
+    component: () => import('./Empty')
   }
 ];
 
