@@ -1,8 +1,9 @@
-import { computed, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import EdgeText from './EdgeText';
-import { getMarkerEnd, getCenter, EdgeSmoothProps } from './utils';
+import { getMarkerEnd, getCenter, EdgeSmoothProps, GetCenterParams } from './utils';
 import { ArrowHeadType, EdgeType, Position } from '../../types';
 import { reactify } from '@vueuse/core';
+import { getBezierPath } from './BezierEdge';
 
 // These are some helper methods for drawing the round corners
 // The name indicates the direction of the path. "bottomLeftCorner" goes
@@ -98,26 +99,24 @@ export default defineComponent({
     ...EdgeSmoothProps
   },
   setup(props) {
-    const centered = computed(() => {
+    const centered = reactify(({ sourceX, sourceY, targetX, targetY, targetPosition, sourcePosition }: GetCenterParams) => {
       return getCenter({
-        sourceX: props.sourceX,
-        sourceY: props.sourceY,
-        targetX: props.targetX,
-        targetY: props.targetY,
-        sourcePosition: props.sourcePosition,
-        targetPosition: props.targetPosition
+        sourceX: sourceX,
+        sourceY: sourceY,
+        targetX: targetX,
+        targetY: targetY,
+        sourcePosition: sourcePosition,
+        targetPosition: targetPosition
       });
     });
-
-    const path = computed(() => {
-      return getSmoothStepPath({
-        sourceX: props.sourceX,
-        sourceY: props.sourceY,
-        targetX: props.targetX,
-        targetY: props.targetY,
-        sourcePosition: props.sourcePosition,
-        targetPosition: props.targetPosition,
-        borderRadius: props.borderRadius
+    const path = reactify(({ sourceX, sourceY, targetX, targetY, targetPosition, sourcePosition }: GetSmoothStepPathParams) => {
+      return getBezierPath({
+        sourceX: sourceX,
+        sourceY: sourceY,
+        targetX: targetX,
+        targetY: targetY,
+        targetPosition: targetPosition,
+        sourcePosition: sourcePosition
       });
     });
 
@@ -128,13 +127,13 @@ export default defineComponent({
         <path
           class="revue-flow__edge-path"
           style={props.style}
-          d={path.value}
+          d={path({ ...props }).value}
           marker-end={markerEnd(props.arrowHeadType, props.markerEndId).value}
         />
         {props.label ? (
           <EdgeText
-            x={centered.value[0]}
-            y={centered.value[1]}
+            x={centered({ ...props }).value[0]}
+            y={centered({ ...props }).value[1]}
             label={props.label}
             labelStyle={props.labelStyle}
             labelShowBg={props.labelShowBg}

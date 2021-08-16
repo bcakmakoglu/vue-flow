@@ -70,18 +70,18 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = inject<RevueFlowStore>('store');
-    const transform = computed(() => store?.transform);
+    const store = inject<RevueFlowStore>('store')!;
+
     const transformStyle = computed(() => {
-      return `translate(${transform.value?.[0]},${transform.value?.[1]}) scale(${transform.value?.[2]})`;
+      return `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`;
     });
-    const renderConnectionLine = computed(() => store?.connectionNodeId && store?.connectionHandleType);
+    const renderConnectionLine = computed(() => store.connectionNodeId && store.connectionHandleType);
 
     return () => (
-      <svg width={store?.width} height={store?.height} class="revue-flow__edges">
+      <svg width={store.width} height={store.height} class="revue-flow__edges">
         <MarkerDefinitions color={props.arrowHeadColor as string} />
         <g transform={transformStyle.value}>
-          {store?.edges.map((edge) => (
+          {store.edges.map((edge) => (
             <Edge
               key={edge.id}
               edge={edge}

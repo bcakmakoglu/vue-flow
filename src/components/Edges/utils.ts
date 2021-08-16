@@ -70,6 +70,21 @@ export const DefaultEdgeProps = {
     required: true,
     default: 0
   },
+  source: {
+    type: String as PropType<EdgeProps['source']>,
+    required: true,
+    default: 0
+  },
+  target: {
+    type: String as PropType<EdgeProps['target']>,
+    required: true,
+    default: 0
+  },
+  selected: {
+    type: Boolean as PropType<EdgeProps['selected']>,
+    required: true,
+    default: false
+  },
   targetX: {
     type: Number as PropType<EdgeProps['targetX']>,
     required: true,

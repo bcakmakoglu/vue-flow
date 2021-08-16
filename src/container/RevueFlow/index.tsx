@@ -1,5 +1,5 @@
 import { defineComponent, onBeforeUnmount, onUpdated, PropType, provide, watch } from 'vue';
-import { reactify, useVModel } from '@vueuse/core';
+import { useVModel } from '@vueuse/core';
 import '../../style.css';
 import '../../theme-default.css';
 import GraphView from '../GraphView';
@@ -240,14 +240,11 @@ export default defineComponent({
       store.setElements([]);
     });
 
-    const nodeTypesParsed = reactify(() => createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes }));
-    const edgeTypesParsed = reactify(() => createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes }));
-
     return () => (
       <div class="revue-flow">
         <GraphView
-          nodeTypes={nodeTypesParsed().value}
-          edgeTypes={edgeTypesParsed().value}
+          nodeTypes={createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })}
+          edgeTypes={createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })}
           connectionMode={props.connectionMode}
           connectionLineType={props.connectionLineType}
           connectionLineStyle={props.connectionLineStyle}

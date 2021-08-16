@@ -69,17 +69,15 @@ export default defineComponent({
       console.warn(`couldn't create edge for target id: ${props.edge.target}; edge id: ${props.edge.id}`);
     }
 
-    const targetNodeBounds = computed(() => nodes.value.targetNode?.__rf.handleBounds);
     // when connection type is loose we can define all handles as sources
-    const targetNodeHandles = computed(() =>
+    const targetNodeHandles = () =>
       props.connectionMode === ConnectionMode.Strict
-        ? targetNodeBounds.value?.target
-        : targetNodeBounds.value?.target || targetNodeBounds.value?.source
-    );
+        ? nodes.value.targetNode?.__rf.handleBounds.target
+        : nodes.value.targetNode?.__rf.handleBounds.target || nodes.value.targetNode?.__rf.handleBounds.source;
     const sourceHandle = computed(
       () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf.handleBounds.source, props.edge.sourceHandle || null)
     );
-    const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle || null));
+    const targetHandle = computed(() => getHandle(targetNodeHandles(), props.edge.targetHandle || null));
     const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom));
     const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top));
 
@@ -88,16 +86,16 @@ export default defineComponent({
       sourceY: number;
       targetX: number;
       targetY: number;
-    }>(() => {
-      return getEdgePositions(
+    }>(() =>
+      getEdgePositions(
         nodes.value.sourceNode as Node,
         sourceHandle.value,
         sourcePosition.value,
         nodes.value.targetNode as Node,
         targetHandle.value,
         targetPosition.value
-      );
-    });
+      )
+    );
 
     const isVisible = computed(() => {
       return props.onlyRenderVisibleElements
@@ -113,13 +111,6 @@ export default defineComponent({
     });
 
     const isSelected = computed(() => store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id) || false);
-    const updating = ref<boolean>(false);
-    const inactive = computed(() => !store.elementsSelectable);
-    const edgeClasses = computed(() => [
-      'revue-flow__edge',
-      `revue-flow__edge-${props.type}`,
-      { selected: isSelected.value, animated: props.edge.animated, inactive: inactive.value, updating: updating.value }
-    ]);
 
     const edgeElement = computed<Edge>(() => {
       const el: Edge = {
@@ -192,13 +183,23 @@ export default defineComponent({
       handleEdgeUpdater(event, false);
     };
 
+    const updating = ref<boolean>(false);
     const onEdgeUpdaterMouseEnter = () => (updating.value = true);
     const onEdgeUpdaterMouseOut = () => (updating.value = false);
 
     return () =>
       isVisible.value && edgePositions.value ? (
         <g
-          class={edgeClasses.value}
+          class={[
+            'revue-flow__edge',
+            `revue-flow__edge-${props.type}`,
+            {
+              selected: isSelected.value,
+              animated: props.edge.animated,
+              inactive: !store.elementsSelectable,
+              updating: updating.value
+            }
+          ]}
           onClick={onEdgeClick}
           onContextmenu={onEdgeContextMenu}
           onMouseenter={onEdgeMouseEnter}
@@ -211,7 +212,7 @@ export default defineComponent({
               id: props.edge.id,
               source: props.edge.source,
               target: props.edge.target,
-              selected: isSelected,
+              selected: isSelected.value,
               animated: props.edge.animated,
               label: props.edge.label,
               labelStyle: props.edge.labelStyle,

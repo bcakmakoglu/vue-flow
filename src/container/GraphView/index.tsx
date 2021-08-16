@@ -1,4 +1,4 @@
-import { defineComponent, inject, PropType, watchEffect } from 'vue';
+import { defineComponent, inject, PropType } from 'vue';
 import FlowRenderer from '../FlowRenderer';
 import NodeRenderer from '../NodeRenderer';
 import EdgeRenderer from '../EdgeRenderer';
@@ -6,6 +6,7 @@ import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/gr
 import { GraphViewProps, RevueFlowStore } from '../../types';
 import useZoomPanHelper from '../../hooks/useZoomPanHelper';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
+import { tryOnMounted } from '@vueuse/core';
 
 export default defineComponent({
   name: 'GraphView',
@@ -233,7 +234,7 @@ export default defineComponent({
       }
     };
 
-    watchEffect(() => {
+    tryOnMounted(() => {
       init();
     });
 

@@ -1,4 +1,4 @@
-import { computed, CSSProperties, defineComponent, h, inject, PropType, provide } from 'vue';
+import { computed, defineComponent, h, inject, PropType, provide } from 'vue';
 import { templateRef, tryOnMounted, useResizeObserver } from '@vueuse/core';
 import { DraggableCore, DraggableEventListener } from '@braks/revue-draggable';
 import { Node, NodeDimensionUpdate, NodeType, RevueFlowStore } from '../../types';
@@ -46,7 +46,6 @@ export default defineComponent({
     const nodeElement = templateRef<HTMLDivElement>('nodeElement', null);
 
     const selected = computed(() => store.selectedElements?.some(({ id }) => id === props.node.id) || false);
-    const transform = computed(() => store.transform);
     const isDraggable = computed(
       () => props.node.draggable || (store.nodesDraggable && typeof props.node.draggable === 'undefined')
     );
@@ -66,16 +65,7 @@ export default defineComponent({
           data: props.node.data
         } as Node)
     );
-    const grid = computed(() => (props.snapToGrid ? props.snapGrid : [1, 1])! as [number, number]);
-    const initialized = computed(() => props.node.__rf.width !== null && props.node.__rf.height !== null);
 
-    const nodeStyle = computed<CSSProperties>(() => ({
-      zIndex: selected.value ? 10 : 3,
-      transform: `translate(${props.node.__rf.position.x}px,${props.node.__rf.position.y}px)`,
-      pointerEvents: isSelectable.value || isDraggable.value ? 'all' : 'none',
-      opacity: initialized.value ? 1 : 0,
-      ...props.node.style
-    }));
     const onMouseEnterHandler = () => {
       if (props.node.__rf.isDragging) {
         return;
@@ -188,21 +178,12 @@ export default defineComponent({
       ]);
     });
 
-    const nodeClasses = computed(() => [
-      'revue-flow__node',
-      `revue-flow__node-${props.node.type}`,
-      {
-        selected: selected.value,
-        selectable: isSelectable.value
-      }
-    ]);
-
     return () => (
       <DraggableCore
         cancel=".nodrag"
-        scale={transform.value[2]}
+        scale={store.transform[2]}
         disabled={!isDraggable.value}
-        grid={grid.value}
+        grid={props.snapGrid}
         enableUserSelectHack={false}
         onStart={onDragStart}
         onMove={onDrag}
@@ -210,8 +191,21 @@ export default defineComponent({
       >
         <div
           ref="nodeElement"
-          class={nodeClasses.value}
-          style={nodeStyle.value}
+          class={[
+            'revue-flow__node',
+            `revue-flow__node-${props.node.type}`,
+            {
+              selected: selected.value,
+              selectable: isSelectable.value
+            }
+          ]}
+          style={{
+            zIndex: selected.value ? 10 : 3,
+            transform: `translate(${props.node.__rf.position.x}px,${props.node.__rf.position.y}px)`,
+            pointerEvents: isSelectable.value || isDraggable.value ? 'all' : 'none',
+            opacity: props.node.__rf.width !== null && props.node.__rf.height !== null ? 1 : 0,
+            ...props.node.style
+          }}
           data-id={props.node.id}
           onMouseenter={onMouseEnterHandler}
           onMousemove={onMouseMoveHandler}

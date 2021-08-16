@@ -28,6 +28,10 @@ export const routes: RouterOptions['routes'] = [
   {
     path: '/button-edge',
     component: () => import('./EdgeWithButton/EdgeWithButton.vue')
+  },
+  {
+    path: '/edge-types',
+    component: () => import('./EdgeTypes')
   }
 ];
 

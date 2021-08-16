@@ -1,6 +1,6 @@
 import { ElementId, Position, RevueFlowStore } from '../../types';
 import { onMouseDown, ValidConnectionFunc } from './handler';
-import { computed, defineComponent, inject, PropType } from 'vue';
+import { defineComponent, inject, PropType } from 'vue';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 
 const alwaysValid = () => true;
@@ -41,23 +41,21 @@ export default defineComponent({
     const onMouseDownHandler = (event: MouseEvent) =>
       onMouseDown(event, store, hooks, props.id as string, nodeId, props.type === 'target', props.isValidConnection);
 
-    const handleClasses = computed(() => [
-      'revue-flow__handle',
-      `revue-flow__handle-${props.position}`,
-      'nodrag',
-      {
-        source: props.type !== 'target',
-        target: props.type === 'target',
-        connectable: props.isConnectable
-      }
-    ]);
-
     return () => (
       <div
         data-handleid={props.id}
         data-nodeid={nodeId}
         data-handlepos={props.position}
-        class={handleClasses.value}
+        class={[
+          'revue-flow__handle',
+          `revue-flow__handle-${props.position}`,
+          'nodrag',
+          {
+            source: props.type !== 'target',
+            target: props.type === 'target',
+            connectable: props.isConnectable
+          }
+        ]}
         onMousedown={onMouseDownHandler}
       >
         {slots.default ? slots.default() : ''}
