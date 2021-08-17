@@ -126,7 +126,6 @@ export default defineComponent({
 
     return () => (
       <ZoomPane
-        selectionKeyPressed={keyPressed.value}
         elementsSelectable={props.elementsSelectable}
         zoomOnScroll={props.zoomOnScroll}
         zoomOnPinch={props.zoomOnPinch}
@@ -139,6 +138,7 @@ export default defineComponent({
         defaultZoom={props.defaultZoom}
         translateExtent={props.translateExtent}
         zoomActivationKeyCode={props.zoomActivationKeyCode}
+        selectionKeyCode={props.selectionKeyCode}
       >
         {slots.default ? slots.default() : ''}
         {keyPressed.value ? <UserSelection /> : ''}
