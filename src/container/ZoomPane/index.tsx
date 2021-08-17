@@ -2,11 +2,12 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
 import { select, pointer } from 'd3-selection';
 import { clamp } from '../../utils';
 import { FlowTransform, TranslateExtent, PanOnScrollMode, KeyCode, RevueFlowStore } from '../../types';
-import { defineComponent, inject, PropType, ref, watchEffect } from 'vue';
+import { computed, defineComponent, inject, PropType, ref } from 'vue';
 import useKeyPress from '../../hooks/useKeyPress';
 import useResizeHandler from '../../hooks/useResizeHandler';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 import { templateRef, whenever } from '@vueuse/core';
+import { ZoomBehavior } from 'd3';
 
 interface ZoomPaneProps {
   selectionKeyPressed: boolean;
@@ -131,6 +132,8 @@ export default defineComponent({
           // we need to pass transform because zoom handler is not registered when we set the initial transform
           transform: [clampedX, clampedY, clampedZoom]
         });
+        applyZoomHandlers(d3ZoomInstance);
+        applyZoomFilter(d3ZoomInstance);
       }
     });
 
@@ -172,105 +175,96 @@ export default defineComponent({
       }
     });
 
-    watchEffect(() => {
-      if (store.d3Zoom) {
-        if (props.selectionKeyPressed) {
-          store.d3Zoom.on('zoom', null);
-        } else {
-          store.d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-            store.transform = [event.transform.x, event.transform.y, event.transform.k];
-            hooks.move.trigger(eventToFlowTransform(event.transform));
-          });
+    const applyZoomHandlers = (d3Zoom: ZoomBehavior<Element, unknown>) => {
+      d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+        if (viewChanged(prevTransform.value, event.transform)) {
+          const flowTransform = eventToFlowTransform(event.transform);
+          prevTransform.value = flowTransform;
+
+          hooks.moveStart.trigger(flowTransform);
         }
-      }
-    });
+      });
 
-    watchEffect(() => {
-      if (store.d3Zoom) {
-        store.d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-          if (viewChanged(prevTransform.value, event.transform)) {
-            const flowTransform = eventToFlowTransform(event.transform);
-            prevTransform.value = flowTransform;
+      d3Zoom.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+        if (viewChanged(prevTransform.value, event.transform)) {
+          const flowTransform = eventToFlowTransform(event.transform);
+          prevTransform.value = flowTransform;
 
-            hooks.moveStart.trigger(flowTransform);
-          }
-        });
-      }
-    });
+          hooks.moveEnd.trigger(flowTransform);
+        }
+      });
 
-    watchEffect(() => {
-      if (store.d3Zoom) {
-        store.d3Zoom.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-          if (viewChanged(prevTransform.value, event.transform)) {
-            const flowTransform = eventToFlowTransform(event.transform);
-            prevTransform.value = flowTransform;
+      d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+        store.transform = [event.transform.x, event.transform.y, event.transform.k];
+        hooks.move.trigger(eventToFlowTransform(event.transform));
+      });
 
-            hooks.moveEnd.trigger(flowTransform);
-          }
-        });
-      }
-    });
+      const selectionKeyPressed = computed(() => props.selectionKeyPressed);
+      whenever(selectionKeyPressed, () => {
+        if (selectionKeyPressed.value) {
+          d3Zoom.on('zoom', null);
+        }
+      });
+    };
 
-    watchEffect(() => {
-      if (store.d3Zoom) {
-        store.d3Zoom.filter((event: MouseEvent) => {
-          const zoomScroll = props.zoomOnScroll;
-          const pinchZoom = props.zoomOnPinch && event.ctrlKey;
+    const applyZoomFilter = (d3Zoom: ZoomBehavior<Element, unknown>) => {
+      d3Zoom.filter((event: MouseEvent) => {
+        const zoomScroll = props.zoomOnScroll;
+        const pinchZoom = props.zoomOnPinch && event.ctrlKey;
 
-          // if all interactions are disabled, we prevent all zoom events
-          if (!props.paneMoveable && !zoomScroll && !props.panOnScroll && !props.zoomOnDoubleClick && !props.zoomOnPinch) {
-            return false;
-          }
+        // if all interactions are disabled, we prevent all zoom events
+        if (!props.paneMoveable && !zoomScroll && !props.panOnScroll && !props.zoomOnDoubleClick && !props.zoomOnPinch) {
+          return false;
+        }
 
-          // during a selection we prevent all other interactions
-          if (props.selectionKeyPressed) {
-            return false;
-          }
+        // during a selection we prevent all other interactions
+        if (props.selectionKeyPressed) {
+          return false;
+        }
 
-          // if zoom on double click is disabled, we prevent the double click event
-          if (!props.zoomOnDoubleClick && event.type === 'dblclick') {
-            return false;
-          }
+        // if zoom on double click is disabled, we prevent the double click event
+        if (!props.zoomOnDoubleClick && event.type === 'dblclick') {
+          return false;
+        }
 
-          if ((event.target as Element).closest('.nowheel') && event.type === 'wheel') {
-            return false;
-          }
+        if ((event.target as Element).closest('.nowheel') && event.type === 'wheel') {
+          return false;
+        }
 
-          // when the target element is a node, we still allow zooming
-          if (
-            ((event.target as Element).closest('.revue-flow__node') || (event.target as Element).closest('.revue-flow__edge')) &&
-            event.type !== 'wheel'
-          ) {
-            return false;
-          }
+        // when the target element is a node, we still allow zooming
+        if (
+          ((event.target as Element).closest('.revue-flow__node') || (event.target as Element).closest('.revue-flow__edge')) &&
+          event.type !== 'wheel'
+        ) {
+          return false;
+        }
 
-          // when the target element is a node selection, we still allow zooming
-          if ((event.target as Element).closest('.revue-flow__nodesselection') && event.type !== 'wheel') {
-            return false;
-          }
+        // when the target element is a node selection, we still allow zooming
+        if ((event.target as Element).closest('.revue-flow__nodesselection') && event.type !== 'wheel') {
+          return false;
+        }
 
-          if (!props.zoomOnPinch && event.ctrlKey && event.type === 'wheel') {
-            return false;
-          }
+        if (!props.zoomOnPinch && event.ctrlKey && event.type === 'wheel') {
+          return false;
+        }
 
-          // when there is no scroll handling enabled, we prevent all wheel events
-          if (!zoomScroll && !props.panOnScroll && !pinchZoom && event.type === 'wheel') {
-            return false;
-          }
+        // when there is no scroll handling enabled, we prevent all wheel events
+        if (!zoomScroll && !props.panOnScroll && !pinchZoom && event.type === 'wheel') {
+          return false;
+        }
 
-          // if the pane is not movable, we prevent dragging it with mousestart or touchstart
-          if (!props.paneMoveable && (event.type === 'mousedown' || event.type === 'touchstart')) {
-            return false;
-          }
+        // if the pane is not movable, we prevent dragging it with mousestart or touchstart
+        if (!props.paneMoveable && (event.type === 'mousedown' || event.type === 'touchstart')) {
+          return false;
+        }
 
-          // default filter for d3-zoom
-          return (!event.ctrlKey || event.type === 'wheel') && !event.button;
-        });
-      }
-    });
+        // default filter for d3-zoom
+        return (!event.ctrlKey || event.type === 'wheel') && !event.button;
+      });
+    };
 
     return () => (
-      <div class="revue-flow__renderer revue-flow__zoompane" ref="zoom-pane">
+      <div ref="zoom-pane" class="revue-flow__renderer revue-flow__zoompane">
         {slots.default ? slots.default() : ''}
       </div>
     );
