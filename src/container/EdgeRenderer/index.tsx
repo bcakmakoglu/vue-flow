@@ -1,4 +1,4 @@
-import { computed, CSSProperties, defineComponent, inject, PropType } from 'vue';
+import { CSSProperties, defineComponent, inject, PropType } from 'vue';
 import { ConnectionLineType, ConnectionLineComponent, ConnectionMode, RevueFlowStore } from '../../types';
 import ConnectionLine from '../../components/ConnectionLine';
 import MarkerDefinitions from './MarkerDefinitions';
@@ -72,25 +72,20 @@ export default defineComponent({
   setup(props) {
     const store = inject<RevueFlowStore>('store')!;
 
-    const transformStyle = computed(() => {
-      return `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`;
-    });
-    const renderConnectionLine = computed(() => store.connectionNodeId && store.connectionHandleType);
-
     return () => (
       <svg width={store.width} height={store.height} class="revue-flow__edges">
-        <MarkerDefinitions color={props.arrowHeadColor as string} />
-        <g transform={transformStyle.value}>
-          {store.edges.map((edge) => (
+        <MarkerDefinitions color={props.arrowHeadColor} />
+        <g transform={`translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`}>
+          {store.edges.map((edge, i) => (
             <Edge
-              key={edge.id}
               edge={edge}
               type={props.edgeTypes[edge.type || 'default']}
               onlyRenderVisibleElements={props.onlyRenderVisibleElements}
               markerEndId={props.markerEndId}
+              key={edge.id + i}
             />
           ))}
-          {renderConnectionLine.value && (
+          {store.connectionNodeId && store.connectionHandleType && (
             <ConnectionLine
               connectionLineStyle={props.connectionLineStyle}
               connectionLineType={props.connectionLineType}

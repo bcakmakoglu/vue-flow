@@ -1,10 +1,11 @@
-import { computed, defineComponent, h, inject, PropType, ref } from 'vue';
+import { computed, defineComponent, h, inject, PropType, ref, watchPostEffect } from 'vue';
 import EdgeAnchor from './EdgeAnchor';
 import { ConnectionMode, Edge, Elements, Node, Position, RevueFlowStore, Transform } from '../../types';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '../../container/EdgeRenderer/utils';
 import { isEdge } from '../../utils/graph';
 import { onMouseDown } from '../Handle/handler';
+import { controlledRef } from '@vueuse/core';
 
 interface EdgeProps {
   edge: Edge;
@@ -55,7 +56,15 @@ export default defineComponent({
   setup(props) {
     const store = inject<RevueFlowStore>('store')!;
     const hooks = inject<RevueFlowHooks>('hooks')!;
-    const nodes = computed(() => getSourceTargetNodes(props.edge, store.nodes));
+    const nodes = controlledRef(getSourceTargetNodes(props.edge, store.nodes), {
+      onBeforeChange: (value, oldValue) => {
+        if (JSON.stringify(value) === JSON.stringify(oldValue)) return false;
+      }
+    });
+
+    watchPostEffect(() => {
+      nodes.value = getSourceTargetNodes(props.edge, store.nodes);
+    });
 
     hooks.connect.on((connection) => {
       hooks.edgeUpdate.trigger({ edge: props.edge, connection });
@@ -70,49 +79,32 @@ export default defineComponent({
     }
 
     // when connection type is loose we can define all handles as sources
-    const targetNodeHandles = () =>
+    const targetNodeHandles =
       props.connectionMode === ConnectionMode.Strict
         ? nodes.value.targetNode?.__rf.handleBounds.target
         : nodes.value.targetNode?.__rf.handleBounds.target || nodes.value.targetNode?.__rf.handleBounds.source;
-    const sourceHandle = computed(
-      () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf.handleBounds.source, props.edge.sourceHandle || null)
-    );
-    const targetHandle = computed(() => getHandle(targetNodeHandles(), props.edge.targetHandle || null));
-    const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom));
-    const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top));
 
-    const edgePositions = computed<{
-      sourceX: number;
-      sourceY: number;
-      targetX: number;
-      targetY: number;
-    }>(() =>
-      getEdgePositions(
-        nodes.value.sourceNode as Node,
-        sourceHandle.value,
-        sourcePosition.value,
-        nodes.value.targetNode as Node,
-        targetHandle.value,
-        targetPosition.value
-      )
-    );
+    const sourceHandle =
+      nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf.handleBounds.source, props.edge.sourceHandle || null);
+    const targetHandle = getHandle(targetNodeHandles, props.edge.targetHandle || null);
+    const sourcePosition = sourceHandle ? sourceHandle.position : Position.Bottom;
+    const targetPosition = targetHandle ? targetHandle.position : Position.Top;
 
-    const isVisible = computed(() => {
+    const isVisible = ({ sourceX, sourceY, targetX, targetY }: Record<string, number>) => {
       return props.onlyRenderVisibleElements
-        ? edgePositions.value &&
-            isEdgeVisible({
-              sourcePos: { x: edgePositions.value?.sourceX, y: edgePositions.value?.sourceY },
-              targetPos: { x: edgePositions.value?.targetX, y: edgePositions.value?.targetY },
-              width: store.width || 0,
-              height: store.height || 0,
-              transform: store.transform
-            })
+        ? isEdgeVisible({
+            sourcePos: { x: sourceX, y: sourceY },
+            targetPos: { x: targetX, y: targetY },
+            width: store.width || 0,
+            height: store.height || 0,
+            transform: store.transform
+          })
         : true;
-    });
+    };
 
     const isSelected = computed(() => store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id) || false);
 
-    const edgeElement = computed<Edge>(() => {
+    const edgeElement = () => {
       const el: Edge = {
         id: props.edge.id || '',
         source: props.edge.source,
@@ -133,28 +125,28 @@ export default defineComponent({
       }
 
       return el;
-    });
+    };
 
     const onEdgeClick = (event: MouseEvent) => {
       if (store.elementsSelectable) {
         store.unsetNodesSelection();
-        store.addSelectedElements(edgeElement.value as any);
+        store.addSelectedElements(edgeElement() as any);
       }
 
-      hooks.edgeClick.trigger({ event, edge: edgeElement.value });
+      hooks.edgeClick.trigger({ event, edge: edgeElement() });
     };
 
     const onEdgeContextMenu = (event: MouseEvent) =>
       hooks.edgeContextMenu.trigger({
         event,
-        edge: edgeElement.value
+        edge: edgeElement()
       });
 
-    const onEdgeMouseEnter = (event: MouseEvent) => hooks.edgeMouseEnter.trigger({ event, edge: edgeElement.value });
+    const onEdgeMouseEnter = (event: MouseEvent) => hooks.edgeMouseEnter.trigger({ event, edge: edgeElement() });
 
-    const onEdgeMouseMove = (event: MouseEvent) => hooks.edgeMouseMove.trigger({ event, edge: edgeElement.value });
+    const onEdgeMouseMove = (event: MouseEvent) => hooks.edgeMouseMove.trigger({ event, edge: edgeElement() });
 
-    const onEdgeMouseLeave = (event: MouseEvent) => hooks.edgeMouseLeave.trigger({ event, edge: edgeElement.value });
+    const onEdgeMouseLeave = (event: MouseEvent) => hooks.edgeMouseLeave.trigger({ event, edge: edgeElement() });
 
     const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
       const nodeId = isSourceHandle ? props.edge.target : props.edge.source;
@@ -162,7 +154,7 @@ export default defineComponent({
       const isValidConnection = () => true;
       const isTarget = isSourceHandle;
 
-      hooks.edgeUpdateStart.trigger({ event, edge: edgeElement.value });
+      hooks.edgeUpdateStart.trigger({ event, edge: edgeElement() });
       onMouseDown(
         event,
         store,
@@ -187,8 +179,16 @@ export default defineComponent({
     const onEdgeUpdaterMouseEnter = () => (updating.value = true);
     const onEdgeUpdaterMouseOut = () => (updating.value = false);
 
-    return () =>
-      !props.edge.isHidden && isVisible.value && edgePositions.value ? (
+    return () => {
+      const { targetX, targetY, sourceX, sourceY } = getEdgePositions(
+        nodes.value.sourceNode as Node,
+        sourceHandle,
+        sourcePosition,
+        nodes.value.targetNode as Node,
+        targetHandle,
+        targetPosition
+      );
+      return !props.edge.isHidden && isVisible({ targetX, targetY, sourceX, sourceY }) ? (
         <g
           class={[
             'revue-flow__edge',
@@ -223,12 +223,10 @@ export default defineComponent({
               data: props.edge.data,
               style: props.edge.style,
               arrowHeadType: props.edge.arrowHeadType,
-              sourceX: edgePositions.value.sourceX,
-              sourceY: edgePositions.value.sourceY,
-              targetX: edgePositions.value.targetX,
-              targetY: edgePositions.value.targetY,
-              sourcePosition: sourcePosition.value,
-              targetPosition: targetPosition.value,
+              sourceX: sourceX,
+              sourceY: sourceY,
+              targetX: targetX,
+              targetY: targetY,
               markerEndId: props.markerEndId,
               sourceHandleId: props.edge.sourceHandle,
               targetHandleId: props.edge.targetHandle
@@ -236,24 +234,15 @@ export default defineComponent({
             {}
           )}
           <g onMousedown={onEdgeUpdaterSourceMouseDown} onMouseenter={onEdgeUpdaterMouseEnter} onMouseout={onEdgeUpdaterMouseOut}>
-            <EdgeAnchor
-              position={sourcePosition.value}
-              centerX={edgePositions.value.sourceX}
-              centerY={edgePositions.value.sourceY}
-              radius={props.edgeUpdaterRadius}
-            />
+            <EdgeAnchor position={sourcePosition} centerX={sourceX} centerY={sourceY} radius={props.edgeUpdaterRadius} />
           </g>
           <g onMousedown={onEdgeUpdaterTargetMouseDown} onMouseenter={onEdgeUpdaterMouseEnter} onMouseout={onEdgeUpdaterMouseOut}>
-            <EdgeAnchor
-              position={sourcePosition.value}
-              centerX={edgePositions.value.sourceX}
-              centerY={edgePositions.value.sourceY}
-              radius={props.edgeUpdaterRadius}
-            />
+            <EdgeAnchor position={sourcePosition} centerX={sourceX} centerY={sourceY} radius={props.edgeUpdaterRadius} />
           </g>
         </g>
       ) : (
         ''
       );
+    };
   }
 });
