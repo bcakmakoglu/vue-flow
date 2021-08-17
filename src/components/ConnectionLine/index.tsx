@@ -31,33 +31,31 @@ export default defineComponent({
   setup(props) {
     const store = inject<RevueFlowStore>('store')!;
     const sourceNode = ref<Node | null>(store.nodes.find((n) => n.id === store.connectionNodeId) || null);
+    const nodesConnectable = computed(() => store.nodesConnectable);
 
     const sourceHandle = computed(() =>
       store.connectionHandleId && store.connectionHandleType
         ? sourceNode.value?.__rf.handleBounds[store.connectionHandleType].find(
-            (d: HandleElement) => d.id === store.connectionHandleId
-          )
+          (d: HandleElement) => d.id === store.connectionHandleId
+        )
         : store.connectionHandleType && sourceNode.value?.__rf.handleBounds[store.connectionHandleType][0]
     );
-
-    const sourceX = computed(() =>
-      sourceNode.value?.__rf.position.x + sourceHandle.value
-        ? sourceHandle.value.x + sourceHandle.value.width / 2
-        : (sourceNode.value?.__rf.width as number) / 2
+    const sourceHandleX = computed(() =>
+      sourceHandle.value ? sourceHandle.value.x + sourceHandle.value.width / 2 : (sourceNode.value?.__rf.width as number) / 2
     );
-    const sourceY = computed(() =>
-      sourceNode.value?.__rf.position.y + sourceHandle.value
-        ? sourceHandle.value.y + sourceHandle.value.height / 2
-        : sourceNode.value?.__rf.height
+    const sourceHandleY = computed(() =>
+      sourceHandle.value ? sourceHandle.value.y + sourceHandle.value.height / 2 : sourceNode.value?.__rf.height
     );
+    const sourceX = computed(() => sourceNode.value?.__rf.position.x + sourceHandleX.value);
+    const sourceY = computed(() => sourceNode.value?.__rf.position.y + sourceHandleY.value);
 
     const targetX = computed(() => (store.connectionPosition.x - store.transform[0]) / store.transform[2]);
     const targetY = computed(() => (store.connectionPosition.y - store.transform[1]) / store.transform[2]);
-    const targetPosition = computed(() =>
-      sourceHandle.value?.position === Position.Left || sourceHandle.value?.position === Position.Right
-        ? Position.Left
-        : Position.Top
+
+    const isRightOrLeft = computed(
+      () => sourceHandle.value?.position === Position.Left || sourceHandle.value?.position === Position.Right
     );
+    const targetPosition = computed(() => (isRightOrLeft.value ? Position.Left : Position.Top));
 
     let dAttr = computed(() => `M${sourceX.value},${sourceY.value} ${targetX.value},${targetY.value}`);
 
@@ -116,7 +114,7 @@ export default defineComponent({
     }
 
     return () =>
-      store.nodesConnectable && sourceNode.value ? (
+      nodesConnectable.value && sourceNode.value ? (
         <g class="revue-flow__connection">
           <path d={dAttr.value} class="revue-flow__connection-path" style={props.connectionLineStyle} />
         </g>
