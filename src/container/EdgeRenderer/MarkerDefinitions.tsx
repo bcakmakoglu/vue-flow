@@ -10,7 +10,8 @@ export default defineComponent({
   props: {
     color: {
       type: String as PropType<MarkerDefinitionsProps['color']>,
-      required: true
+      required: false,
+      default: ''
     }
   },
   setup(props) {
