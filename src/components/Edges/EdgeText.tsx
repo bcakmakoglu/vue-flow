@@ -60,10 +60,10 @@ export default defineComponent({
       >
         {props.labelShowBg && (
           <rect
-            width={edgeTextBox.value.width + 2 * props.labelBgPadding[0]}
+            width={edgeTextBox.value.width + 2 * props.labelBgPadding[0] + 'px'}
+            height={edgeTextBox.value.height + 2 * props.labelBgPadding[1] + 'px'}
             x={-props.labelBgPadding[0]}
             y={-props.labelBgPadding[1]}
-            height={edgeTextBox.value.height + 2 * props.labelBgPadding[1]}
             class="revue-flow__edge-textbg"
             style={props.labelBgStyle}
             rx={props.labelBgBorderRadius}
