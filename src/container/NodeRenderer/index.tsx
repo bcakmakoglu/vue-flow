@@ -82,6 +82,7 @@ export default defineComponent({
                 snapToGrid={props.snapToGrid}
                 selectNodesOnDrag={props.selectNodesOnDrag}
                 type={type}
+                key={node.id}
               />
             );
           }
