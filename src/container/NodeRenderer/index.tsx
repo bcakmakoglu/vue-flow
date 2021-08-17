@@ -1,4 +1,4 @@
-import { computed, defineComponent, inject, PropType } from 'vue';
+import { defineComponent, inject, PropType } from 'vue';
 import Node from '../../components/Nodes/Node';
 import { getNodesInside } from '../../utils/graph';
 import { NodeType, RevueFlowStore } from '../../types';
@@ -44,7 +44,7 @@ export default defineComponent({
   setup(props) {
     const store = inject<RevueFlowStore>('store')!;
 
-    const visibleNodes = computed(() => {
+    const getNodes = () => {
       return props.onlyRenderVisibleElements
         ? store.nodes &&
             getNodesInside(
@@ -59,34 +59,38 @@ export default defineComponent({
               true
             )
         : store.nodes;
-    });
+    };
 
-    const transformStyle = computed(() => ({
-      transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`
-    }));
+    const visibleNodes = () =>
+      getNodes().map((node, i) => {
+        const nodeType = node.type || 'default';
+        if (props.nodeTypes) {
+          const type = props.nodeTypes[nodeType] || props.nodeTypes.default;
+          if (!props.nodeTypes[nodeType]) {
+            console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`);
+          }
+
+          return (
+            <Node
+              node={node}
+              snapGrid={props.snapGrid}
+              snapToGrid={props.snapToGrid}
+              selectNodesOnDrag={props.selectNodesOnDrag}
+              type={type}
+              key={node.id + i}
+            />
+          );
+        }
+      });
 
     return () => (
-      <div class="revue-flow__nodes" style={transformStyle.value}>
-        {visibleNodes.value?.map((node) => {
-          const nodeType = node.type || 'default';
-          if (props.nodeTypes) {
-            const type = props.nodeTypes[nodeType] || props.nodeTypes.default;
-            if (!props.nodeTypes[nodeType]) {
-              console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`);
-            }
-
-            return (
-              <Node
-                node={node}
-                snapGrid={props.snapGrid}
-                snapToGrid={props.snapToGrid}
-                selectNodesOnDrag={props.selectNodesOnDrag}
-                type={type}
-                key={node.id}
-              />
-            );
-          }
-        })}
+      <div
+        class="revue-flow__nodes"
+        style={{
+          transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`
+        }}
+      >
+        {visibleNodes()}
       </div>
     );
   }

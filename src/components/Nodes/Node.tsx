@@ -1,5 +1,5 @@
-import { computed, defineComponent, h, inject, PropType, provide } from 'vue';
-import { templateRef, tryOnMounted, useResizeObserver } from '@vueuse/core';
+import { computed, defineComponent, h, inject, onMounted, PropType, provide } from 'vue';
+import { templateRef, useResizeObserver } from '@vueuse/core';
 import { DraggableCore, DraggableEventListener } from '@braks/revue-draggable';
 import { Node, NodeDimensionUpdate, NodeType, RevueFlowStore } from '../../types';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
@@ -56,22 +56,20 @@ export default defineComponent({
       () => props.node.connectable || (store.nodesConnectable && typeof props.node.connectable === 'undefined')
     );
 
-    const node = computed(
-      () =>
-        ({
-          id: props.node.id,
-          type: props.node.type,
-          position: { x: props.node.__rf.position.x, y: props.node.__rf.position.y },
-          data: props.node.data
-        } as Node)
-    );
+    const node = () =>
+      ({
+        id: props.node.id,
+        type: props.node.type,
+        position: { x: props.node.__rf.position.x, y: props.node.__rf.position.y },
+        data: props.node.data
+      } as Node);
 
     const onMouseEnterHandler = () => {
       if (props.node.__rf.isDragging) {
         return;
       }
 
-      return (event: MouseEvent) => hooks.nodeMouseEnter.trigger({ event, node: node.value });
+      return (event: MouseEvent) => hooks.nodeMouseEnter.trigger({ event, node: node() });
     };
 
     const onMouseMoveHandler = () => {
@@ -79,7 +77,7 @@ export default defineComponent({
         return;
       }
 
-      return (event: MouseEvent) => hooks.nodeMouseMove.trigger({ event, node: node.value });
+      return (event: MouseEvent) => hooks.nodeMouseMove.trigger({ event, node: node() });
     };
 
     const onMouseLeaveHandler = () => {
@@ -87,35 +85,37 @@ export default defineComponent({
         return;
       }
 
-      return (event: MouseEvent) => hooks.nodeMouseLeave.trigger({ event, node: node.value });
+      return (event: MouseEvent) => hooks.nodeMouseLeave.trigger({ event, node: node() });
     };
 
     const onContextMenuHandler = () => {
-      return (event: MouseEvent) => hooks.nodeContextMenu.trigger({ event, node: node.value });
+      return (event: MouseEvent) => hooks.nodeContextMenu.trigger({ event, node: node() });
     };
 
     const onSelectNodeHandler = (event: MouseEvent) => {
       if (!isDraggable.value) {
+        const n = node();
         if (isSelectable.value) {
           store.unsetNodesSelection();
 
           if (!selected.value) {
-            store.addSelectedElements([node.value]);
+            store.addSelectedElements([n]);
           }
         }
 
-        hooks.nodeClick.trigger({ event, node: node.value });
+        hooks.nodeClick.trigger({ event, node: n });
       }
     };
 
     const onDragStart: DraggableEventListener = ({ event }) => {
-      hooks.nodeDragStart.trigger({ event, node: node.value });
+      const n = node();
+      hooks.nodeDragStart.trigger({ event, node: n });
 
       if (props.selectNodesOnDrag && isSelectable.value) {
         store.unsetNodesSelection();
 
         if (!selected.value) {
-          store.addSelectedElements([node.value]);
+          store.addSelectedElements([n]);
         }
       } else if (!props.selectNodesOnDrag && !selected.value && isSelectable.value) {
         store.unsetNodesSelection();
@@ -124,9 +124,10 @@ export default defineComponent({
     };
 
     const onDrag: DraggableEventListener = ({ event, data }) => {
-      node.value.position.x += data.deltaX;
-      node.value.position.y += data.deltaY;
-      hooks.nodeDrag.trigger({ event, node: node.value });
+      const n = node();
+      n.position.x += data.deltaX;
+      n.position.y += data.deltaY;
+      hooks.nodeDrag.trigger({ event, node: n });
 
       store?.updateNodePosDiff({
         id: props.node.id as string,
@@ -139,24 +140,25 @@ export default defineComponent({
     };
 
     const onDragStop: DraggableEventListener = ({ event }) => {
+      const n = node();
       // onDragStop also gets called when user just clicks on a node.
       // Because of that we set dragging to true inside the onDrag handler and handle the click here
       if (!props.node.__rf.isDragging) {
         if (isSelectable.value && !props.selectNodesOnDrag && !selected.value) {
-          store.addSelectedElements([node.value]);
+          store.addSelectedElements([n]);
         }
 
-        hooks.nodeClick.trigger({ event, node: node.value });
+        hooks.nodeClick.trigger({ event, node: n });
 
         return;
       }
 
       store.updateNodePosDiff({
-        id: node.value.id || '',
+        id: n.id || '',
         isDragging: false
       });
 
-      hooks.nodeDragStop.trigger({ event, node: node.value });
+      hooks.nodeDragStop.trigger({ event, node: n });
     };
 
     useResizeObserver(nodeElement, (entries) => {
@@ -168,7 +170,7 @@ export default defineComponent({
       store.updateNodeDimensions(updates);
     });
 
-    tryOnMounted(() => {
+    onMounted(() => {
       store.updateNodeDimensions([
         {
           id: props.node.id || '',
