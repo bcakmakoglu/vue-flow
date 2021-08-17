@@ -2,7 +2,7 @@ import { ElementId, Elements, Position } from '../../src';
 
 const nodeWidth = 80;
 const nodeGapWidth = nodeWidth * 2;
-const nodeStyle = { width: nodeWidth, fontSize: 11, color: 'white' };
+const nodeStyle = { width: nodeWidth + 'px', fontSize: '11px', color: 'white' };
 
 const sourceTargetPositions = [
   { source: Position.Bottom, target: Position.Top },
