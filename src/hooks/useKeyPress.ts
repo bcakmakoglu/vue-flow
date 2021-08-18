@@ -1,9 +1,16 @@
-import { ref, Ref } from 'vue';
+import { Ref } from 'vue';
 import { KeyCode } from '../types';
-import { onKeyStroke, useEventListener } from '@vueuse/core';
+import { controlledRef, onKeyStroke, useEventListener } from '@vueuse/core';
 
-export default (keyCode?: KeyCode): Ref<boolean> => {
-  const keyPressed = ref<boolean>(false);
+export default (keyCode?: KeyCode, cb?: (keyPress: boolean) => void): Ref<boolean> => {
+  const keyPressed = controlledRef<boolean>(false, {
+    onBeforeChange(val, oldVal) {
+      if (val === oldVal) return false;
+    },
+    onChanged() {
+      if (cb && typeof cb === 'function') cb(keyPressed.value);
+    }
+  });
 
   onKeyStroke(
     (event) => event.key === keyCode || event.keyCode === keyCode,
@@ -33,6 +40,8 @@ export default (keyCode?: KeyCode): Ref<boolean> => {
   useEventListener(window, 'blur', () => {
     keyPressed.value = false;
   });
+
+  if (cb && typeof cb === 'function') cb(keyPressed.value);
 
   return keyPressed;
 };

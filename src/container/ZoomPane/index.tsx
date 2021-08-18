@@ -2,15 +2,14 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom';
 import { select, pointer } from 'd3-selection';
 import { clamp } from '../../utils';
 import { FlowTransform, TranslateExtent, PanOnScrollMode, KeyCode, RevueFlowStore } from '../../types';
-import { computed, defineComponent, inject, onUpdated, PropType, ref } from 'vue';
+import { defineComponent, inject, PropType, ref, watchPostEffect } from 'vue';
 import useKeyPress from '../../hooks/useKeyPress';
 import useResizeHandler from '../../hooks/useResizeHandler';
 import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
-import { templateRef, whenever } from '@vueuse/core';
+import { templateRef } from '@vueuse/core';
 import { ZoomBehavior } from 'd3';
 
 interface ZoomPaneProps {
-  selectionKeyPressed: boolean;
   elementsSelectable?: boolean;
   zoomOnScroll?: boolean;
   zoomOnPinch?: boolean;
@@ -59,10 +58,10 @@ export default defineComponent({
       required: false,
       default: true
     },
-    selectionKeyPressed: {
-      type: Boolean as PropType<ZoomPaneProps['selectionKeyPressed']>,
+    selectionKeyCode: {
+      type: [Number, String] as PropType<ZoomPaneProps['selectionKeyCode']>,
       required: false,
-      default: false
+      default: undefined
     },
     elementsSelectable: {
       type: Boolean as PropType<ZoomPaneProps['elementsSelectable']>,
@@ -157,21 +156,19 @@ export default defineComponent({
           }
         });
 
-        d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-          store.transform = [event.transform.x, event.transform.y, event.transform.k];
-          hooks.move.trigger(eventToFlowTransform(event.transform));
-        });
-
-        const selectionKeyPressed = computed(() => props.selectionKeyPressed);
-        whenever(selectionKeyPressed, () => {
-          if (selectionKeyPressed.value) {
+        useKeyPress(props.selectionKeyCode, (keyPress) => {
+          if (keyPress) {
             d3Zoom.on('zoom', null);
+          } else {
+            d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+              store.transform = [event.transform.x, event.transform.y, event.transform.k];
+              hooks.move.trigger(eventToFlowTransform(event.transform));
+            });
           }
         });
 
-        const zoomActivationKeyPressed = useKeyPress(props.zoomActivationKeyCode);
-        whenever(zoomActivationKeyPressed, () => {
-          if (props.panOnScroll) {
+        useKeyPress(props.zoomActivationKeyCode, (keyPress) => {
+          if (props.panOnScroll && keyPress) {
             store.d3Selection
               ?.on('wheel', (event: WheelEvent) => {
                 event.preventDefault();
@@ -209,7 +206,10 @@ export default defineComponent({
         });
       };
 
+      watchPostEffect(() => store.d3Zoom && applyZoomFilter(store.d3Zoom));
+
       const applyZoomFilter = (d3Zoom: ZoomBehavior<Element, unknown>) => {
+        const keyPress = useKeyPress(props.selectionKeyCode);
         d3Zoom.filter((event: MouseEvent) => {
           const zoomScroll = props.zoomOnScroll;
           const pinchZoom = props.zoomOnPinch && event.ctrlKey;
@@ -220,7 +220,7 @@ export default defineComponent({
           }
 
           // during a selection we prevent all other interactions
-          if (props.selectionKeyPressed) {
+          if (keyPress.value) {
             return false;
           }
 
@@ -267,7 +267,6 @@ export default defineComponent({
     };
 
     init();
-    onUpdated(() => init());
 
     return () => (
       <div ref="zoom-pane" class="revue-flow__renderer revue-flow__zoompane">
