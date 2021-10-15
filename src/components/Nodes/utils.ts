@@ -1,20 +1,11 @@
-import { HandleElement, Position } from '../../types'
-import { getDimensions } from '../../utils'
-
-export const getHandleBounds = (nodeElement: HTMLDivElement, scale: number) => {
-  const bounds = nodeElement.getBoundingClientRect()
-
-  return {
-    source: getHandleBoundsByHandleType('.source', nodeElement, bounds, scale),
-    target: getHandleBoundsByHandleType('.target', nodeElement, bounds, scale)
-  }
-}
+import { HandleElement, Position } from '~/types'
+import { getDimensions } from '~/utils'
 
 export const getHandleBoundsByHandleType = (
   selector: string,
   nodeElement: HTMLDivElement,
   parentBounds: ClientRect | DOMRect,
-  k: number
+  k: number,
 ): HandleElement[] | null => {
   const handles = nodeElement.querySelectorAll(selector)
 
@@ -35,7 +26,16 @@ export const getHandleBoundsByHandleType = (
       position: handlePosition,
       x: (bounds.left - parentBounds.left) / k,
       y: (bounds.top - parentBounds.top) / k,
-      ...dimensions
+      ...dimensions,
     }
   })
+}
+
+export const getHandleBounds = (nodeElement: HTMLDivElement, scale: number) => {
+  const bounds = nodeElement.getBoundingClientRect()
+
+  return {
+    source: getHandleBoundsByHandleType('.source', nodeElement, bounds, scale),
+    target: getHandleBoundsByHandleType('.target', nodeElement, bounds, scale),
+  }
 }
