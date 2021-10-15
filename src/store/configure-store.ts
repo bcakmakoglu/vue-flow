@@ -1,9 +1,9 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import isEqual from 'fast-deep-equal'
-import { Edge, Node, NodeDiffUpdate, RevueFlowState, RevueFlowActions, XYPosition } from '../types'
-import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '../utils/graph'
-import { clampPosition, getDimensions } from '../utils'
-import { getHandleBounds } from '../components/Nodes/utils'
+import { Edge, Node, NodeDiffUpdate, RevueFlowState, RevueFlowActions, XYPosition } from '~/types'
+import { clampPosition, getDimensions } from '~/utils'
+import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '~/utils/graph'
+import { getHandleBounds } from '~/components/Nodes/utils'
 
 type NextElements = {
   nextNodes: Node[]
@@ -12,14 +12,14 @@ type NextElements = {
 const pinia = createPinia()
 
 export default function configureStore(
-  preloadedState: RevueFlowState
+  preloadedState: RevueFlowState,
 ): StoreDefinition<string, RevueFlowState, any, RevueFlowActions> {
   setActivePinia(pinia)
 
   return defineStore({
-    id: 'revue-flow-' + Math.random(),
+    id: `revue-flow-${Math.random()}`,
     state: () => ({
-      ...preloadedState
+      ...preloadedState,
     }),
     getters: {},
     actions: {
@@ -27,7 +27,7 @@ export default function configureStore(
         const propElements = elements
         const nextElements: NextElements = {
           nextNodes: [],
-          nextEdges: []
+          nextEdges: [],
         }
         const { nextNodes, nextEdges } = propElements.reduce((res, propElement): NextElements => {
           if (isNode(propElement)) {
@@ -36,7 +36,7 @@ export default function configureStore(
             if (storeNode) {
               const updatedNode: Node = {
                 ...storeNode,
-                ...propElement
+                ...propElement,
               }
 
               if (storeNode.position.x !== propElement.position.x || storeNode.position.y !== propElement.position.y) {
@@ -59,7 +59,7 @@ export default function configureStore(
             if (storeEdge) {
               res.nextEdges.push({
                 ...storeEdge,
-                ...propElement
+                ...propElement,
               })
             } else {
               res.nextEdges.push(parseEdge(propElement))
@@ -90,8 +90,8 @@ export default function configureStore(
                 __rf: {
                   ...node.__rf,
                   ...dimensions,
-                  handleBounds
-                }
+                  handleBounds,
+                },
               }
             }
           }
@@ -107,7 +107,7 @@ export default function configureStore(
           const [gridSizeX, gridSizeY] = this.snapGrid
           position = {
             x: gridSizeX * Math.round(pos.x / gridSizeX),
-            y: gridSizeY * Math.round(pos.y / gridSizeY)
+            y: gridSizeY * Math.round(pos.y / gridSizeY),
           }
         }
 
@@ -117,8 +117,8 @@ export default function configureStore(
               ...node,
               __rf: {
                 ...node.__rf,
-                position
-              }
+                position,
+              },
             }
           }
 
@@ -134,14 +134,14 @@ export default function configureStore(
               ...node,
               __rf: {
                 ...node.__rf,
-                isDragging
-              }
+                isDragging,
+              },
             }
 
             if (diff) {
               updatedNode.__rf.position = {
                 x: node.__rf.position.x + diff.x,
-                y: node.__rf.position.y + diff.y
+                y: node.__rf.position.y + diff.y,
               }
             }
 
@@ -160,7 +160,7 @@ export default function configureStore(
           startY: mousePos.y,
           x: mousePos.x,
           y: mousePos.y,
-          draw: true
+          draw: true,
         }
       },
       updateUserSelection(mousePos) {
@@ -172,7 +172,7 @@ export default function configureStore(
           x: mousePos.x < startX ? mousePos.x : this.userSelectionRect.x,
           y: mousePos.y < startY ? mousePos.y : this.userSelectionRect.y,
           width: Math.abs(mousePos.x - startX),
-          height: Math.abs(mousePos.y - startY)
+          height: Math.abs(mousePos.y - startY),
         }
 
         const selectedNodes = getNodesInside(this.nodes, nextUserSelectRect, this.transform)
@@ -231,8 +231,8 @@ export default function configureStore(
             ...node,
             __rf: {
               ...node.__rf,
-              position: clampPosition(node.__rf.position, nodeExtent)
-            }
+              position: clampPosition(node.__rf.position, nodeExtent),
+            },
           }
         })
       },
@@ -255,7 +255,7 @@ export default function configureStore(
         this.nodesDraggable = isInteractive
         this.nodesConnectable = isInteractive
         this.elementsSelectable = isInteractive
-      }
-    }
+      },
+    },
   })
 }

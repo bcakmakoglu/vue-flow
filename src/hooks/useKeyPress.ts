@@ -2,13 +2,13 @@ import { Ref } from 'vue'
 import { onKeyDown, onKeyPressed, onKeyUp } from '@vueuse/core'
 import { KeyCode } from '~/types'
 
-export default (keyCode: KeyCode, cb?: (keyPress: boolean) => void): Ref<boolean> => {
-  const keyPressed = controlledRef<boolean>(false, {
+export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
+  const isPressed = controlledRef<boolean>(false, {
     onBeforeChange(val, oldVal) {
       if (val === oldVal) return false
     },
     onChanged() {
-      if (cb && typeof cb === 'function') cb(keyPressed.value)
+      if (onChange && typeof onChange === 'function') onChange(isPressed.value)
     },
   })
 
@@ -16,7 +16,7 @@ export default (keyCode: KeyCode, cb?: (keyPress: boolean) => void): Ref<boolean
     (e) => e.key === keyCode || e.keyCode === keyCode,
     (e) => {
       e.preventDefault()
-      keyPressed.value = true
+      isPressed.value = true
     },
   )
 
@@ -24,7 +24,7 @@ export default (keyCode: KeyCode, cb?: (keyPress: boolean) => void): Ref<boolean
     (e) => e.key === keyCode || e.keyCode === keyCode,
     (e) => {
       e.preventDefault()
-      keyPressed.value = true
+      isPressed.value = true
     },
   )
 
@@ -32,15 +32,15 @@ export default (keyCode: KeyCode, cb?: (keyPress: boolean) => void): Ref<boolean
     (event) => event.key === keyCode || event.keyCode === keyCode,
     (e) => {
       e.preventDefault()
-      keyPressed.value = false
+      isPressed.value = false
     },
   )
 
   useEventListener(window, 'blur', () => {
-    keyPressed.value = false
+    isPressed.value = false
   })
 
-  if (cb && typeof cb === 'function') cb(keyPressed.value)
+  if (onChange && typeof onChange === 'function') onChange(isPressed.value)
 
-  return keyPressed
+  return isPressed
 }

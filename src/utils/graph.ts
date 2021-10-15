@@ -1,5 +1,3 @@
-import { clampPosition, clamp } from './index'
-
 import {
   ElementId,
   Node,
@@ -12,8 +10,9 @@ import {
   Connection,
   FlowExportObject,
   NodeExtent,
-  RevueFlowStore
+  RevueFlowStore,
 } from '../types'
+import { clampPosition, clamp } from './index'
 
 export const isEdge = (element: Node | Connection | Edge): element is Edge =>
   'id' in element && 'source' in element && 'target' in element
@@ -62,7 +61,7 @@ const connectionExists = (edge: Edge, elements: Elements) => {
       el.source === edge.source &&
       el.target === edge.target &&
       (el.sourceHandle === edge.sourceHandle || (!el.sourceHandle && !edge.sourceHandle)) &&
-      (el.targetHandle === edge.targetHandle || (!el.targetHandle && !edge.targetHandle))
+      (el.targetHandle === edge.targetHandle || (!el.targetHandle && !edge.targetHandle)),
   )
 }
 
@@ -78,7 +77,7 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements): Elem
   } else {
     edge = {
       ...edgeParams,
-      id: getEdgeId(edgeParams)
+      id: getEdgeId(edgeParams),
     } as Edge
   }
 
@@ -109,7 +108,7 @@ export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: E
     source: newConnection.source,
     target: newConnection.target,
     sourceHandle: newConnection.sourceHandle,
-    targetHandle: newConnection.targetHandle
+    targetHandle: newConnection.targetHandle,
   } as Edge
 
   return elements.filter((e) => e.id !== oldEdge.id).concat(edge)
@@ -119,75 +118,70 @@ export const pointToRendererPoint = (
   { x, y }: XYPosition,
   [tx, ty, tScale]: Transform,
   snapToGrid: boolean,
-  [snapX, snapY]: [number, number]
+  [snapX, snapY]: [number, number],
 ): XYPosition => {
   const position: XYPosition = {
     x: (x - tx) / tScale,
-    y: (y - ty) / tScale
+    y: (y - ty) / tScale,
   }
 
   if (snapToGrid) {
     return {
       x: snapX * Math.round(position.x / snapX),
-      y: snapY * Math.round(position.y / snapY)
+      y: snapY * Math.round(position.y / snapY),
     }
   }
 
   return position
 }
 
-export const onLoadProject = (currentStore: RevueFlowStore) => {
-  return (position: XYPosition): XYPosition => {
-    return pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
-  }
-}
+export const onLoadProject =
+  (currentStore: RevueFlowStore) =>
+  (position: XYPosition): XYPosition =>
+    pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
 
-export const parseNode = (node: Node, nodeExtent: NodeExtent): Node => {
-  return {
-    ...node,
-    id: node.id.toString(),
-    type: node.type || 'default',
-    __rf: {
-      position: clampPosition(node.position, nodeExtent),
-      width: null,
-      height: null,
-      handleBounds: {},
-      isDragging: false
-    }
-  }
-}
+export const parseNode = (node: Node, nodeExtent: NodeExtent): Node => ({
+  ...node,
+  id: node.id.toString(),
+  type: node.type || 'default',
+  __rf: {
+    position: clampPosition(node.position, nodeExtent),
+    width: null,
+    height: null,
+    handleBounds: {},
+    isDragging: false,
+  },
+})
 
-export const parseEdge = (edge: Edge): Edge => {
-  return {
-    ...edge,
-    source: edge.source.toString(),
-    target: edge.target.toString(),
-    sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : null,
-    targetHandle: edge.targetHandle ? edge.targetHandle.toString() : null,
-    id: edge.id.toString(),
-    type: edge.type || 'default'
-  }
-}
+export const parseEdge = (edge: Edge): Edge => ({
+  ...edge,
+  source: edge.source.toString(),
+  target: edge.target.toString(),
+  sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : null,
+  targetHandle: edge.targetHandle ? edge.targetHandle.toString() : null,
+  id: edge.id.toString(),
+  type: edge.type || 'default',
+})
 
 const getBoundsOfBoxes = (box1: Box, box2: Box): Box => ({
   x: Math.min(box1.x, box2.x),
   y: Math.min(box1.y, box2.y),
   x2: Math.max(box1.x2, box2.x2),
-  y2: Math.max(box1.y2, box2.y2)
+  y2: Math.max(box1.y2, box2.y2),
 })
 
 export const rectToBox = ({ x, y, width, height }: Rect): Box => ({
   x,
   y,
   x2: x + width,
-  y2: y + height
+  y2: y + height,
 })
 
 export const boxToRect = ({ x, y, x2, y2 }: Box): Rect => ({
   x,
   y,
   width: x2 - x,
-  height: y2 - y
+  height: y2 - y,
 })
 
 export const getBoundsofRects = (rect1: Rect, rect2: Rect): Rect =>
@@ -201,10 +195,10 @@ export const getRectOfNodes = (nodes: Node[]): Rect => {
         rectToBox({
           ...position,
           width,
-          height
-        } as any)
+          height,
+        } as any),
       ),
-    { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity }
+    { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity },
   )
 
   return boxToRect(box)
@@ -212,7 +206,7 @@ export const getRectOfNodes = (nodes: Node[]): Rect => {
 
 export const graphPosToZoomedPos = ({ x, y }: XYPosition, [tx, ty, tScale]: Transform): XYPosition => ({
   x: x * tScale + tx,
-  y: y * tScale + ty
+  y: y * tScale + ty,
 })
 
 export const getNodesInside = (nodes: Node[], rect: Rect, [tx, ty, tScale]: Transform = [0, 0, 1], partially = false): Node[] => {
@@ -220,7 +214,7 @@ export const getNodesInside = (nodes: Node[], rect: Rect, [tx, ty, tScale]: Tran
     x: (rect.x - tx) / tScale,
     y: (rect.y - ty) / tScale,
     width: rect.width / tScale,
-    height: rect.height / tScale
+    height: rect.height / tScale,
   })
 
   return nodes.filter(({ __rf: { position, width, height, isDragging } }) => {
@@ -250,35 +244,26 @@ export const getConnectedEdges = (nodes: Node[], edges: Edge[]): Edge[] => {
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-const parseElements = (nodes: Node[], edges: Edge[]): Elements => {
-  return [
-    ...nodes.map((node) => {
-      const n = { ...node }
+const parseElements = (nodes: Node[], edges: Edge[]): Elements => [
+  ...nodes.map((node) => {
+    const n = { ...node }
 
-      n.position = n.__rf.position
+    n.position = n.__rf.position
 
-      n.__rf = {} as any
-      return n
-    }),
-    ...edges.map((e) => ({ ...e }))
-  ]
-}
+    n.__rf = {} as any
+    return n
+  }),
+  ...edges.map((e) => ({ ...e })),
+]
 
-export const onLoadGetElements = (currentStore: RevueFlowStore) => {
-  return (): Elements => {
-    return parseElements(currentStore.nodes || [], currentStore.edges || [])
-  }
-}
+export const onLoadGetElements = (currentStore: RevueFlowStore) => (): Elements =>
+  parseElements(currentStore.nodes || [], currentStore.edges || [])
 
-export const onLoadToObject = (currentStore: RevueFlowStore) => {
-  return (): FlowExportObject => {
-    return {
-      elements: parseElements(currentStore.nodes || [], currentStore.edges || []),
-      position: [currentStore.transform[0], currentStore.transform[1]],
-      zoom: currentStore.transform[2]
-    }
-  }
-}
+export const onLoadToObject = (currentStore: RevueFlowStore) => (): FlowExportObject => ({
+  elements: parseElements(currentStore.nodes || [], currentStore.edges || []),
+  position: [currentStore.transform[0], currentStore.transform[1]],
+  zoom: currentStore.transform[2],
+})
 
 export const getTransformForBounds = (
   bounds: Rect,
@@ -286,7 +271,7 @@ export const getTransformForBounds = (
   height: number,
   minZoom: number,
   maxZoom: number,
-  padding = 0.1
+  padding = 0.1,
 ): Transform => {
   const xZoom = width / (bounds.width * (1 + padding))
   const yZoom = height / (bounds.height * (1 + padding))

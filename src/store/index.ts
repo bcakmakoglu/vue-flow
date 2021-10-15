@@ -16,12 +16,12 @@ export const initialState: RevueFlowState = {
   maxZoom: 2,
   translateExtent: [
     [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-    [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY]
+    [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   ],
 
   nodeExtent: [
     [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-    [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY]
+    [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   ],
 
   nodesSelectionActive: false,
@@ -34,7 +34,7 @@ export const initialState: RevueFlowState = {
     y: 0,
     width: 0,
     height: 0,
-    draw: false
+    draw: false,
   },
   connectionNodeId: null,
   connectionHandleId: null,
@@ -51,5 +51,5 @@ export const initialState: RevueFlowState = {
 
   multiSelectionActive: false,
 
-  revueFlowVersion: typeof __REVUE_FLOW_VERSION__ !== 'undefined' ? __REVUE_FLOW_VERSION__ : '-'
+  revueFlowVersion: typeof __REVUE_FLOW_VERSION__ !== 'undefined' ? __REVUE_FLOW_VERSION__ : '-',
 }

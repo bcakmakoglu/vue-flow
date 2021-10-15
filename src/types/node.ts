@@ -1,4 +1,4 @@
-import { ComponentPublicInstance } from 'vue'
+import { DefineComponent } from 'vue'
 import { XYPosition } from './types'
 import { ElementId, Position } from './index'
 
@@ -57,4 +57,4 @@ export interface NodeProps<T = any> {
   isDragging?: boolean
 }
 
-export type NodeType = ComponentPublicInstance<NodeProps>
+export type NodeType = DefineComponent<NodeProps>

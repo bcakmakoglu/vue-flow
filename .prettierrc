@@ -1,8 +1,8 @@
 {
   "singleQuote": true,
-  "trailingComma": "none",
+  "trailingComma": "all",
   "semi": false,
+  "quoteProps": "consistent",
   "bracketSpacing": true,
-  "vueIndentScriptAndStyle": false,
   "printWidth": 130
 }

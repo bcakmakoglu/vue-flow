@@ -1,33 +1,20 @@
-import { createEventHook, MaybeRef, unrefElement, until, useEventListener, useResizeObserver } from '@vueuse/core'
-import { getDimensions } from '../utils'
-import { Dimensions } from '../types'
+import { Ref } from 'vue'
+import { getDimensions } from '~/utils'
+import { Dimensions } from '~/types'
 
-export default (rendererNode: MaybeRef<HTMLDivElement>, updateSize: (size: Dimensions) => any) => {
-  const resizeHandlerHook = createEventHook()
+export default (el: Ref<HTMLDivElement>) => {
+  const dimensions = ref<Dimensions>({ width: 0, height: 0 })
   const updateDimensions = () => {
-    if (!unrefElement(rendererNode)) {
-      return
-    }
+    const unrefEl = unrefElement(el)
+    if (!unrefEl) return
 
-    const size = getDimensions(unrefElement(rendererNode))
-
-    if (size.height === 0 || size.width === 0) {
+    const size = getDimensions(unrefEl as HTMLDivElement)
+    if (size.height === 0 || size.width === 0)
       console.log('The revue Flow parent container needs a width and a height to render the graph.')
-    }
-
-    updateSize(size)
   }
 
-  until(rendererNode)
-    .toBeTruthy()
-    .then(() => {
-      updateDimensions()
-      useEventListener(window, 'resize', updateDimensions)
-      useResizeObserver(unrefElement(rendererNode), () => updateDimensions())
-      resizeHandlerHook.trigger(true)
-    })
+  useEventListener(window, 'resize', updateDimensions)
+  useResizeObserver(el, () => updateDimensions())
 
-  return {
-    onReady: resizeHandlerHook.on
-  }
+  return dimensions
 }
