@@ -17,6 +17,7 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
+    "jsxFactory": "h",
     "types": [
       "vite/client",
       "@types/node"
@@ -27,16 +28,9 @@
       ]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
-  ],
   "exclude": [
     "node_modules",
     "build",
-    "dist",
-    "example"
+    "dist"
   ]
 }
