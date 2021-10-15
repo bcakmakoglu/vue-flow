@@ -1,40 +1,39 @@
 import { Ref } from 'vue'
-import { KeyCode } from '../types'
-import { controlledRef, onKeyStroke, useEventListener } from '@vueuse/core'
+import { onKeyDown, onKeyPressed, onKeyUp } from '@vueuse/core'
+import { KeyCode } from '~/types'
 
-export default (keyCode?: KeyCode, cb?: (keyPress: boolean) => void): Ref<boolean> => {
+export default (keyCode: KeyCode, cb?: (keyPress: boolean) => void): Ref<boolean> => {
   const keyPressed = controlledRef<boolean>(false, {
     onBeforeChange(val, oldVal) {
       if (val === oldVal) return false
     },
     onChanged() {
       if (cb && typeof cb === 'function') cb(keyPressed.value)
-    }
+    },
   })
 
-  onKeyStroke(
-    (event) => event.key === keyCode || event.keyCode === keyCode,
+  onKeyPressed(
+    (e) => e.key === keyCode || e.keyCode === keyCode,
     (e) => {
       e.preventDefault()
       keyPressed.value = true
     },
-    { eventName: 'keypress' }
   )
-  onKeyStroke(
-    (event) => event.key === keyCode || event.keyCode === keyCode,
+
+  onKeyDown(
+    (e) => e.key === keyCode || e.keyCode === keyCode,
     (e) => {
       e.preventDefault()
       keyPressed.value = true
     },
-    { eventName: 'keydown' }
   )
-  onKeyStroke(
+
+  onKeyUp(
     (event) => event.key === keyCode || event.keyCode === keyCode,
     (e) => {
       e.preventDefault()
       keyPressed.value = false
     },
-    { eventName: 'keyup' }
   )
 
   useEventListener(window, 'blur', () => {
