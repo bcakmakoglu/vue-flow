@@ -192,7 +192,7 @@ setElements(elements.value)
 </script>
 <template>
   <div class="revue-flow">
-    <ZoomPane v-bind="props">
+    <ZoomPane>
       <template #default="{ transform, dimensions }">
         <SelectionPane
           :delete-key-code="props.deleteKeyCode"

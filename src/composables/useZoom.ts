@@ -179,9 +179,7 @@ const useZoom = (zoomPane: Ref<HTMLDivElement>, options: UseZoomOptions) => {
       applyZoomFilter()
     })
 
-  return {
-    transform,
-  }
+  return transform
 }
 
 export default useZoom
