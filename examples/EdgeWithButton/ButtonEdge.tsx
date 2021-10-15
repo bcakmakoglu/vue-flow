@@ -1,25 +1,25 @@
-import { computed, defineComponent, inject } from 'vue';
-import { getBezierPath, getEdgeCenter, getMarkerEnd, RevueFlowStore } from '../../src';
-import { DefaultEdgeProps } from '../../src/components/Edges/utils';
-import { RevueFlowHooks } from '../../src/hooks/RevueFlowHooks';
+import { computed, defineComponent, inject } from 'vue'
+import { getBezierPath, getEdgeCenter, getMarkerEnd, RevueFlowStore } from '../../src'
+import { DefaultEdgeProps } from '../../src/components/Edges/utils'
+import { RevueFlowHooks } from '../../src/hooks/RevueFlowHooks'
 
 export default defineComponent({
   props: {
     ...DefaultEdgeProps
   },
   setup(props) {
-    const store = inject<RevueFlowStore>('store')!;
-    const hooks = inject<RevueFlowHooks>('hooks')!;
+    const store = inject<RevueFlowStore>('store')!
+    const hooks = inject<RevueFlowHooks>('hooks')!
     const onEdgeClick = (evt: Event, id: string) => {
-      const edge = store.edges.find((edge) => edge.id === id);
+      const edge = store.edges.find((edge) => edge.id === id)
       if (edge) {
-        hooks.elementsRemove.trigger([edge]);
+        hooks.elementsRemove.trigger([edge])
       }
-      evt.stopPropagation();
-      alert(`remove ${id}`);
-    };
+      evt.stopPropagation()
+      alert(`remove ${id}`)
+    }
 
-    const foreignObjectSize = 40;
+    const foreignObjectSize = 40
 
     const edgePath = computed(() =>
       getBezierPath({
@@ -30,8 +30,8 @@ export default defineComponent({
         targetY: props.targetY,
         targetPosition: props.targetPosition
       })
-    );
-    const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId));
+    )
+    const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
     const center = computed(() =>
       getEdgeCenter({
         sourceX: props.sourceX,
@@ -39,7 +39,7 @@ export default defineComponent({
         targetX: props.targetX,
         targetY: props.targetY
       })
-    );
+    )
 
     return () => (
       <>
@@ -59,6 +59,6 @@ export default defineComponent({
           </body>
         </foreignObject>
       </>
-    );
+    )
   }
-});
+})

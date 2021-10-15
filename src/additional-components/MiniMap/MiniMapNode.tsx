@@ -1,15 +1,15 @@
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue'
 
 interface MiniMapNodeProps {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  borderRadius: number;
-  color: string;
-  shapeRendering: string;
-  strokeColor: string;
-  strokeWidth: number;
+  x: number
+  y: number
+  width: number
+  height: number
+  borderRadius: number
+  color: string
+  shapeRendering: string
+  strokeColor: string
+  strokeWidth: number
 }
 
 const MiniMapNode = defineComponent({
@@ -62,8 +62,8 @@ const MiniMapNode = defineComponent({
     }
   },
   setup(props, { attrs }: { attrs: Record<string, any> }) {
-    const styles = attrs.style || {};
-    const fill = computed(() => (props.color || styles.value.background || styles.value.backgroundColor) as string);
+    const styles = attrs.style || {}
+    const fill = computed(() => (props.color || styles.value.background || styles.value.backgroundColor) as string)
 
     return () => (
       <rect
@@ -79,8 +79,8 @@ const MiniMapNode = defineComponent({
         stroke-width={props.strokeWidth}
         shape-rendering={props.shapeRendering}
       />
-    );
+    )
   }
-});
+})
 
-export default MiniMapNode;
+export default MiniMapNode

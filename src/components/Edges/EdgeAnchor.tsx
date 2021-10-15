@@ -1,23 +1,23 @@
-import { Position } from '../../types';
-import { defineComponent, HTMLAttributes, PropType } from 'vue';
+import { Position } from '../../types'
+import { defineComponent, HTMLAttributes, PropType } from 'vue'
 
 const shiftX = (x: number, shift: number, position: Position): number => {
-  if (position === Position.Left) return x - shift;
-  if (position === Position.Right) return x + shift;
-  return x;
-};
+  if (position === Position.Left) return x - shift
+  if (position === Position.Right) return x + shift
+  return x
+}
 
 const shiftY = (y: number, shift: number, position: Position): number => {
-  if (position === Position.Top) return y - shift;
-  if (position === Position.Bottom) return y + shift;
-  return y;
-};
+  if (position === Position.Top) return y - shift
+  if (position === Position.Bottom) return y + shift
+  return y
+}
 
 export interface EdgeAnchorProps extends HTMLAttributes {
-  position: Position;
-  centerX: number;
-  centerY: number;
-  radius?: number;
+  position: Position
+  centerX: number
+  centerY: number
+  radius?: number
 }
 
 export default defineComponent({
@@ -50,6 +50,6 @@ export default defineComponent({
         stroke="transparent"
         fill="transparent"
       />
-    );
+    )
   }
-});
+})

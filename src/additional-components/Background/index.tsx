@@ -1,18 +1,18 @@
-import { BackgroundVariant, RevueFlowStore } from '../../types';
-import { createGridDotsPath, createGridLinesPath } from './utils';
-import { computed, defineComponent, HTMLAttributes, inject, PropType } from 'vue';
+import { BackgroundVariant, RevueFlowStore } from '../../types'
+import { createGridDotsPath, createGridLinesPath } from './utils'
+import { computed, defineComponent, HTMLAttributes, inject, PropType } from 'vue'
 
 export interface BackgroundProps extends HTMLAttributes {
-  variant?: BackgroundVariant;
-  gap?: number;
-  color?: string;
-  size?: number;
+  variant?: BackgroundVariant
+  gap?: number
+  color?: string
+  size?: number
 }
 
 const defaultColors = {
   [BackgroundVariant.Dots]: '#81818a',
   [BackgroundVariant.Lines]: '#eee'
-};
+}
 
 const Background = defineComponent({
   name: 'Background',
@@ -39,23 +39,23 @@ const Background = defineComponent({
     }
   },
   setup(props) {
-    const store = inject<RevueFlowStore>('store')!;
-    const transform = computed(() => store.transform);
+    const store = inject<RevueFlowStore>('store')!
+    const transform = computed(() => store.transform)
     // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
-    const patternId = `pattern-${Math.floor(Math.random() * 100000)}`;
+    const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
 
-    const bgClasses = ['revue-flow__background'];
-    const scaledGap = computed(() => props.gap && props.gap * transform.value[2]);
-    const xOffset = computed(() => scaledGap.value && transform.value[0] % scaledGap.value);
-    const yOffset = computed(() => scaledGap.value && transform.value[1] % scaledGap.value);
+    const bgClasses = ['revue-flow__background']
+    const scaledGap = computed(() => props.gap && props.gap * transform.value[2])
+    const xOffset = computed(() => scaledGap.value && transform.value[0] % scaledGap.value)
+    const yOffset = computed(() => scaledGap.value && transform.value[1] % scaledGap.value)
 
-    const isLines = computed(() => props.variant === BackgroundVariant.Lines);
-    const bgColor = computed(() => (props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]));
+    const isLines = computed(() => props.variant === BackgroundVariant.Lines)
+    const bgColor = computed(() => (props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]))
     const path = computed(() =>
       isLines.value
         ? scaledGap.value && props.size && createGridLinesPath(scaledGap.value, props.size, bgColor.value)
         : createGridDotsPath(props.size || 0.4 * transform.value[2], bgColor.value)
-    );
+    )
 
     return () => (
       <svg
@@ -77,8 +77,8 @@ const Background = defineComponent({
         </pattern>
         <rect x="0" y="0" width="100%" height="100%" fill={`url(#${patternId})`} />
       </svg>
-    );
+    )
   }
-});
+})
 
-export default Background;
+export default Background

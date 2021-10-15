@@ -1,6 +1,6 @@
-import { getBezierPath, getMarkerEnd } from '../../src';
-import { computed, defineComponent } from 'vue';
-import { DefaultEdgeProps } from '../../src/components/Edges/utils';
+import { getBezierPath, getMarkerEnd } from '../../src'
+import { computed, defineComponent } from 'vue'
+import { DefaultEdgeProps } from '../../src/components/Edges/utils'
 
 const CustomEdge = defineComponent({
   props: {
@@ -16,8 +16,8 @@ const CustomEdge = defineComponent({
         targetY: props.targetY,
         targetPosition: props.targetPosition
       })
-    );
-    const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId));
+    )
+    const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
 
     return () => (
       <>
@@ -28,8 +28,8 @@ const CustomEdge = defineComponent({
           </textPath>
         </text>
       </>
-    );
+    )
   }
-});
+})
 
-export default CustomEdge;
+export default CustomEdge

@@ -1,9 +1,9 @@
-import { ElementId, Position, RevueFlowStore } from '../../types';
-import { onMouseDown, ValidConnectionFunc } from './handler';
-import { defineComponent, inject, PropType } from 'vue';
-import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
+import { ElementId, Position, RevueFlowStore } from '../../types'
+import { onMouseDown, ValidConnectionFunc } from './handler'
+import { defineComponent, inject, PropType } from 'vue'
+import { RevueFlowHooks } from '../../hooks/RevueFlowHooks'
 
-const alwaysValid = () => true;
+const alwaysValid = () => true
 
 export default defineComponent({
   props: {
@@ -34,12 +34,12 @@ export default defineComponent({
     }
   },
   setup(props, { slots }) {
-    const store = inject<RevueFlowStore>('store')!;
-    const hooks = inject<RevueFlowHooks>('hooks')!;
-    const nodeId = inject<ElementId>('NodeIdContext')!;
+    const store = inject<RevueFlowStore>('store')!
+    const hooks = inject<RevueFlowHooks>('hooks')!
+    const nodeId = inject<ElementId>('NodeIdContext')!
 
     const onMouseDownHandler = (event: MouseEvent) =>
-      onMouseDown(event, store, hooks, props.id as string, nodeId, props.type === 'target', props.isValidConnection);
+      onMouseDown(event, store, hooks, props.id as string, nodeId, props.type === 'target', props.isValidConnection)
 
     return () => (
       <div
@@ -60,6 +60,6 @@ export default defineComponent({
       >
         {slots.default ? slots.default() : ''}
       </div>
-    );
+    )
   }
-});
+})

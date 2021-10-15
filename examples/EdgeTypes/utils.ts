@@ -1,18 +1,18 @@
-import { ElementId, Elements, Position } from '../../src';
+import { ElementId, Elements, Position } from '../../src'
 
-const nodeWidth = 80;
-const nodeGapWidth = nodeWidth * 2;
-const nodeStyle = { width: nodeWidth + 'px', fontSize: '11px', color: 'white' };
+const nodeWidth = 80
+const nodeGapWidth = nodeWidth * 2
+const nodeStyle = { width: nodeWidth + 'px', fontSize: '11px', color: 'white' }
 
 const sourceTargetPositions = [
   { source: Position.Bottom, target: Position.Top },
   { source: Position.Right, target: Position.Left }
-];
+]
 const nodeColors = [
   ['#1e9e99', '#4cb3ac', '#6ec9c0', '#8ddfd4'],
   ['#0f4c75', '#1b5d8b', '#276fa1', '#3282b8']
-];
-const edgeTypes = ['default', 'step', 'smoothstep', 'straight'];
+]
+const edgeTypes = ['default', 'step', 'smoothstep', 'straight']
 const offsets = [
   {
     x: 0,
@@ -46,30 +46,30 @@ const offsets = [
     x: -nodeGapWidth,
     y: -nodeGapWidth
   }
-];
+]
 
-let id = 0;
-const getNodeId = (): ElementId => (id++).toString();
+let id = 0
+const getNodeId = (): ElementId => (id++).toString()
 
 export function getElements(): Elements {
-  const initialElements = [];
+  const initialElements = []
 
   for (let sourceTargetIndex = 0; sourceTargetIndex < sourceTargetPositions.length; sourceTargetIndex++) {
-    const currSourceTargetPos = sourceTargetPositions[sourceTargetIndex];
+    const currSourceTargetPos = sourceTargetPositions[sourceTargetIndex]
 
     for (let edgeTypeIndex = 0; edgeTypeIndex < edgeTypes.length; edgeTypeIndex++) {
-      const currEdgeType = edgeTypes[edgeTypeIndex];
+      const currEdgeType = edgeTypes[edgeTypeIndex]
 
       for (let offsetIndex = 0; offsetIndex < offsets.length; offsetIndex++) {
-        const currOffset = offsets[offsetIndex];
+        const currOffset = offsets[offsetIndex]
 
-        const style = { ...nodeStyle, background: nodeColors[sourceTargetIndex][edgeTypeIndex] };
+        const style = { ...nodeStyle, background: nodeColors[sourceTargetIndex][edgeTypeIndex] }
         const sourcePosition = {
           x: offsetIndex * nodeWidth * 4,
           y: edgeTypeIndex * 300 + sourceTargetIndex * edgeTypes.length * 300
-        };
-        const sourceId = getNodeId();
-        const sourceData = { label: `Source ${sourceId}` };
+        }
+        const sourceId = getNodeId()
+        const sourceData = { label: `Source ${sourceId}` }
         const sourceNode = {
           id: sourceId,
           style,
@@ -77,14 +77,14 @@ export function getElements(): Elements {
           position: sourcePosition,
           sourcePosition: currSourceTargetPos.source,
           targetPosition: currSourceTargetPos.target
-        };
+        }
 
-        const targetId = getNodeId();
-        const targetData = { label: `Target ${targetId}` };
+        const targetId = getNodeId()
+        const targetData = { label: `Target ${targetId}` }
         const targetPosition = {
           x: sourcePosition.x + currOffset.x,
           y: sourcePosition.y + currOffset.y
-        };
+        }
         const targetNode = {
           id: targetId,
           style,
@@ -92,15 +92,15 @@ export function getElements(): Elements {
           position: targetPosition,
           sourcePosition: currSourceTargetPos.source,
           targetPosition: currSourceTargetPos.target
-        };
+        }
 
-        initialElements.push(sourceNode);
-        initialElements.push(targetNode);
+        initialElements.push(sourceNode)
+        initialElements.push(targetNode)
 
-        initialElements.push({ id: `${sourceId}-${targetId}`, source: sourceId, target: targetId, type: currEdgeType });
+        initialElements.push({ id: `${sourceId}-${targetId}`, source: sourceId, target: targetId, type: currEdgeType })
       }
     }
   }
 
-  return initialElements as Elements;
+  return initialElements as Elements
 }

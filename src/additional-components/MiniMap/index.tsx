@@ -1,23 +1,23 @@
-import { getRectOfNodes, getBoundsofRects } from '../../utils/graph';
-import { Node, Rect, RevueFlowStore } from '../../types';
-import MiniMapNode from './MiniMapNode';
-import { computed, defineComponent, HTMLAttributes, inject, PropType } from 'vue';
+import { getRectOfNodes, getBoundsofRects } from '../../utils/graph'
+import { Node, Rect, RevueFlowStore } from '../../types'
+import MiniMapNode from './MiniMapNode'
+import { computed, defineComponent, HTMLAttributes, inject, PropType } from 'vue'
 
-type StringFunc = (node: Node) => string;
+type StringFunc = (node: Node) => string
 
 export interface MiniMapProps extends HTMLAttributes {
-  nodeColor?: string | StringFunc;
-  nodeStrokeColor?: string | StringFunc;
-  nodeClassName?: string | StringFunc;
-  nodeBorderRadius?: number;
-  nodeStrokeWidth?: number;
-  maskColor?: string;
+  nodeColor?: string | StringFunc
+  nodeStrokeColor?: string | StringFunc
+  nodeClassName?: string | StringFunc
+  nodeBorderRadius?: number
+  nodeStrokeWidth?: number
+  maskColor?: string
 }
 
-declare const window: any;
+declare const window: any
 
-const defaultWidth = 200;
-const defaultHeight = 150;
+const defaultWidth = 200
+const defaultHeight = 150
 
 const MiniMap = defineComponent({
   name: 'MiniMap',
@@ -54,37 +54,39 @@ const MiniMap = defineComponent({
     }
   },
   setup(props, { attrs }: { attrs: Record<string, any> }) {
-    const store = inject<RevueFlowStore>('store')!;
-    const transform = computed(() => store.transform);
-    const elementWidth = computed(() => (attrs.style?.width || defaultWidth)! as number);
-    const elementHeight = computed(() => (attrs.style?.height || defaultHeight)! as number);
-    const nodeColorFunc = computed(() => (props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor) as StringFunc);
+    const store = inject<RevueFlowStore>('store')!
+    const transform = computed(() => store.transform)
+    const elementWidth = computed(() => (attrs.style?.width || defaultWidth)! as number)
+    const elementHeight = computed(() => (attrs.style?.height || defaultHeight)! as number)
+    const nodeColorFunc = computed(
+      () => (props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor) as StringFunc
+    )
     const nodeStrokeColorFunc = computed(
       () => (props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor) as StringFunc
-    );
+    )
     const nodeClassNameFunc = computed(
       () => (props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName) as StringFunc
-    );
-    const hasNodes = computed(() => store.nodes && store.nodes.length);
-    const bb = computed(() => getRectOfNodes(store.nodes));
+    )
+    const hasNodes = computed(() => store.nodes && store.nodes.length)
+    const bb = computed(() => getRectOfNodes(store.nodes))
     const viewBB = computed<Rect>(() => ({
       x: -transform.value[0] / transform.value[2],
       y: -transform.value[1] / transform.value[2],
       width: store.width / transform.value[2],
       height: store.height / transform.value[2]
-    }));
-    const boundingRect = computed(() => (hasNodes.value ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value));
-    const scaledWidth = computed(() => boundingRect.value.width / elementWidth.value);
-    const scaledHeight = computed(() => boundingRect.value.height / elementHeight.value);
-    const viewScale = computed(() => Math.max(scaledWidth.value, scaledHeight.value));
-    const viewWidth = computed(() => viewScale.value * elementWidth.value);
-    const viewHeight = computed(() => viewScale.value * elementHeight.value);
-    const offset = computed(() => 5 * viewScale.value);
-    const x = computed(() => boundingRect.value.x - (viewWidth.value - boundingRect.value.width) / 2 - offset.value);
-    const y = computed(() => boundingRect.value.y - (viewHeight.value - boundingRect.value.height) / 2 - offset.value);
-    const width = computed(() => viewWidth.value + offset.value * 2);
-    const height = computed(() => viewHeight.value + offset.value * 2);
-    const shapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision';
+    }))
+    const boundingRect = computed(() => (hasNodes.value ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value))
+    const scaledWidth = computed(() => boundingRect.value.width / elementWidth.value)
+    const scaledHeight = computed(() => boundingRect.value.height / elementHeight.value)
+    const viewScale = computed(() => Math.max(scaledWidth.value, scaledHeight.value))
+    const viewWidth = computed(() => viewScale.value * elementWidth.value)
+    const viewHeight = computed(() => viewScale.value * elementHeight.value)
+    const offset = computed(() => 5 * viewScale.value)
+    const x = computed(() => boundingRect.value.x - (viewWidth.value - boundingRect.value.width) / 2 - offset.value)
+    const y = computed(() => boundingRect.value.y - (viewHeight.value - boundingRect.value.height) / 2 - offset.value)
+    const width = computed(() => viewWidth.value + offset.value * 2)
+    const height = computed(() => viewHeight.value + offset.value * 2)
+    const shapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
     return () => (
       <svg
@@ -121,8 +123,8 @@ const MiniMap = defineComponent({
           fill-rule="evenodd"
         />
       </svg>
-    );
+    )
   }
-});
+})
 
-export default MiniMap;
+export default MiniMap

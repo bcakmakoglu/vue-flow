@@ -1,31 +1,30 @@
-import { defineComponent, onBeforeUnmount, onUpdated, PropType, provide, watch } from 'vue';
-import { useVModel } from '@vueuse/core';
-import '../../style.css';
-import '../../theme-default.css';
-import GraphView from '../GraphView';
-import DefaultNode from '../../components/Nodes/DefaultNode';
-import InputNode from '../../components/Nodes/InputNode';
-import OutputNode from '../../components/Nodes/OutputNode';
-import { createNodeTypes } from '../NodeRenderer/utils';
-import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '../../components/Edges';
-import { createEdgeTypes } from '../EdgeRenderer/utils';
-import { ConnectionMode, ConnectionLineType, PanOnScrollMode, RevueFlowStore, RevueFlowProps } from '../../types';
-import { initialState } from '../../store';
-import configureStore from '../../store/configure-store';
-import { RevueFlowHooks, useRevueFlow } from '../../hooks/RevueFlowHooks';
+import { PropType } from 'vue'
+import '../../style.css'
+import '../../theme-default.css'
+import GraphView from '../GraphView'
+import DefaultNode from '../../components/Nodes/DefaultNode'
+import InputNode from '../../components/Nodes/InputNode'
+import OutputNode from '../../components/Nodes/OutputNode'
+import { createNodeTypes } from '../NodeRenderer/utils'
+import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '../../components/Edges'
+import { createEdgeTypes } from '../EdgeRenderer/utils'
+import { ConnectionMode, ConnectionLineType, PanOnScrollMode, RevueFlowStore, RevueFlowProps } from '../../types'
+import { initialState } from '../../store'
+import configureStore from '../../store/configure-store'
+import { RevueFlowHooks, useRevueFlow } from '../../hooks/RevueFlowHooks'
 
 const defaultNodeTypes = {
   input: InputNode,
   default: DefaultNode,
   output: OutputNode
-};
+}
 
 const defaultEdgeTypes = {
   default: BezierEdge,
   straight: StraightEdge,
   step: StepEdge,
   smoothstep: SmoothStepEdge
-};
+}
 
 export default defineComponent({
   name: 'RevueFlow',
@@ -220,25 +219,25 @@ export default defineComponent({
   },
   emits: Object.keys(useRevueFlow()),
   setup(props, { emit, slots }) {
-    const store = configureStore(initialState)();
-    provide<RevueFlowStore>('store', store);
-    const hooks = useRevueFlow().bind(emit);
-    provide<RevueFlowHooks>('hooks', hooks);
-    const elements = useVModel(props, 'modelValue', emit);
+    const store = configureStore(initialState)()
+    provide<RevueFlowStore>('store', store)
+    const hooks = useRevueFlow().bind(emit)
+    provide<RevueFlowHooks>('hooks', hooks)
+    const elements = useVModel(props, 'modelValue', emit)
 
-    store.setElements(elements.value);
+    store.setElements(elements.value)
     watch(elements.value, () => {
-      store.setElements(elements.value);
-    });
+      store.setElements(elements.value)
+    })
 
     onUpdated(() => {
-      store.setElements(elements.value);
-    });
+      store.setElements(elements.value)
+    })
 
     onBeforeUnmount(() => {
-      store.$reset();
-      store.setElements([]);
-    });
+      store.$reset()
+      store.setElements([])
+    })
 
     return () => (
       <div class="revue-flow">
@@ -279,6 +278,6 @@ export default defineComponent({
         />
         {slots.default ? slots.default() : ''}
       </div>
-    );
+    )
   }
-});
+})

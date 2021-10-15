@@ -1,7 +1,7 @@
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
 
 interface MarkerProps {
-  id: string;
+  id: string
 }
 
 export default defineComponent({
@@ -25,6 +25,6 @@ export default defineComponent({
       >
         {slots.default ? slots.default() : ''}
       </marker>
-    );
+    )
   }
-});
+})

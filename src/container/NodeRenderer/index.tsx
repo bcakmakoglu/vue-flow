@@ -1,14 +1,14 @@
-import { defineComponent, inject, PropType } from 'vue';
-import Node from '../../components/Nodes/Node';
-import { getNodesInside } from '../../utils/graph';
-import { NodeType, RevueFlowStore } from '../../types';
+import { defineComponent, inject, PropType } from 'vue'
+import Node from '../../components/Nodes/Node'
+import { getNodesInside } from '../../utils/graph'
+import { NodeType, RevueFlowStore } from '../../types'
 
 interface NodeRendererProps {
-  nodeTypes: Record<string, NodeType>;
-  selectNodesOnDrag: boolean;
-  snapToGrid: boolean;
-  snapGrid: [number, number];
-  onlyRenderVisibleElements: boolean;
+  nodeTypes: Record<string, NodeType>
+  selectNodesOnDrag: boolean
+  snapToGrid: boolean
+  snapGrid: [number, number]
+  onlyRenderVisibleElements: boolean
 }
 
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = inject<RevueFlowStore>('store')!;
+    const store = inject<RevueFlowStore>('store')!
 
     const getNodes = () => {
       return props.onlyRenderVisibleElements
@@ -58,30 +58,8 @@ export default defineComponent({
               store.transform,
               true
             )
-        : store.nodes;
-    };
-
-    const visibleNodes = () =>
-      getNodes().map((node, i) => {
-        const nodeType = node.type || 'default';
-        if (props.nodeTypes) {
-          const type = props.nodeTypes[nodeType] || props.nodeTypes.default;
-          if (!props.nodeTypes[nodeType]) {
-            console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`);
-          }
-
-          return (
-            <Node
-              node={node}
-              snapGrid={props.snapGrid}
-              snapToGrid={props.snapToGrid}
-              selectNodesOnDrag={props.selectNodesOnDrag}
-              type={type}
-              key={node.id + i}
-            />
-          );
-        }
-      });
+        : store.nodes
+    }
 
     return () => (
       <div
@@ -90,8 +68,27 @@ export default defineComponent({
           transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`
         }}
       >
-        {visibleNodes()}
+        {getNodes().map((node, i) => {
+          const nodeType = node.type || 'default'
+          if (props.nodeTypes) {
+            const type = props.nodeTypes[nodeType] || props.nodeTypes.default
+            if (!props.nodeTypes[nodeType]) {
+              console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`)
+            }
+
+            return (
+              <Node
+                node={node}
+                snapGrid={props.snapGrid}
+                snapToGrid={props.snapToGrid}
+                selectNodesOnDrag={props.selectNodesOnDrag}
+                type={type}
+                key={node.id + i}
+              />
+            )
+          }
+        })}
       </div>
-    );
+    )
   }
-});
+})

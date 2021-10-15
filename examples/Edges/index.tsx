@@ -1,6 +1,6 @@
-import { ref } from 'vue';
-import CustomEdge from './CustomEdge';
-import CustomEdge2 from './CustomEdge2';
+import { ref } from 'vue'
+import CustomEdge from './CustomEdge'
+import CustomEdge2 from './CustomEdge2'
 import RevueFlow, {
   Elements,
   FlowElement,
@@ -13,7 +13,7 @@ import RevueFlow, {
   Connection,
   Edge,
   removeElements
-} from '../../src';
+} from '../../src'
 
 const initialElements = [
   { id: '1', type: 'input', data: { label: 'Input 1' }, position: { x: 250, y: 0 } },
@@ -73,21 +73,21 @@ const initialElements = [
     type: 'custom2',
     data: { text: 'custom edge 2' }
   }
-];
+]
 
 const edgeTypes: Record<string, any> = {
   custom: CustomEdge,
   custom2: CustomEdge2
-};
+}
 
 const EdgesFlow = () => {
-  const elements = ref<Elements>(initialElements as Elements);
+  const elements = ref<Elements>(initialElements as Elements)
 
-  const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView();
-  const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
-  const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
-  const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value));
-  const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value));
+  const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
+  const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
+  const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
+  const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
+  const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
   return (
     <RevueFlow
@@ -104,7 +104,7 @@ const EdgesFlow = () => {
       <Controls />
       <Background />
     </RevueFlow>
-  );
-};
+  )
+}
 
-export default EdgesFlow;
+export default EdgesFlow

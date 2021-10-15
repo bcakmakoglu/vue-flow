@@ -1,12 +1,12 @@
-import { defineComponent, inject, PropType } from 'vue';
-import FlowRenderer from '../FlowRenderer';
-import NodeRenderer from '../NodeRenderer';
-import EdgeRenderer from '../EdgeRenderer';
-import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph';
-import { GraphViewProps, RevueFlowStore } from '../../types';
-import useZoomPanHelper from '../../hooks/useZoomPanHelper';
-import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
-import { tryOnMounted } from '@vueuse/core';
+import { defineComponent, inject, PropType } from 'vue'
+import FlowRenderer from '../FlowRenderer'
+import NodeRenderer from '../NodeRenderer'
+import EdgeRenderer from '../EdgeRenderer'
+import { onLoadProject, onLoadGetElements, onLoadToObject } from '../../utils/graph'
+import { GraphViewProps, RevueFlowStore } from '../../types'
+import useZoomPanHelper from '../../hooks/useZoomPanHelper'
+import { RevueFlowHooks } from '../../hooks/RevueFlowHooks'
+import { tryOnMounted } from '@vueuse/core'
 
 export default defineComponent({
   name: 'GraphView',
@@ -177,10 +177,10 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = inject<RevueFlowStore>('store')!;
-    const hooks = inject<RevueFlowHooks>('hooks')!;
+    const store = inject<RevueFlowStore>('store')!
+    const hooks = inject<RevueFlowHooks>('hooks')!
 
-    const { onReady } = useZoomPanHelper();
+    const { onReady } = useZoomPanHelper()
     onReady(({ zoomIn, zoomOut, zoomTo, transform, fitView }) => {
       hooks.load.trigger({
         fitView: (params = { padding: 0.1 }) => fitView(params),
@@ -191,52 +191,52 @@ export default defineComponent({
         project: onLoadProject(store),
         getElements: onLoadGetElements(store),
         toObject: onLoadToObject(store)
-      });
-    });
+      })
+    })
 
     const init = () => {
       if (typeof props.snapToGrid !== 'undefined') {
-        store.snapToGrid = props.snapToGrid;
+        store.snapToGrid = props.snapToGrid
       }
 
       if (typeof props.snapGrid !== 'undefined') {
-        store.snapGrid = props.snapGrid;
+        store.snapGrid = props.snapGrid
       }
 
       if (typeof props.minZoom !== 'undefined') {
-        store.setMinZoom(props.minZoom);
+        store.setMinZoom(props.minZoom)
       }
 
       if (typeof props.maxZoom !== 'undefined') {
-        store.setMaxZoom(props.maxZoom);
+        store.setMaxZoom(props.maxZoom)
       }
 
       if (typeof props.translateExtent !== 'undefined') {
-        store.setTranslateExtent(props.translateExtent);
+        store.setTranslateExtent(props.translateExtent)
       }
 
       if (typeof props.nodeExtent !== 'undefined') {
-        store.setNodeExtent(props.nodeExtent);
+        store.setNodeExtent(props.nodeExtent)
       }
 
       if (typeof props.nodesConnectable !== 'undefined') {
-        store.nodesConnectable = !!props.nodesConnectable;
+        store.nodesConnectable = !!props.nodesConnectable
       }
       if (typeof props.elementsSelectable !== 'undefined') {
-        store.elementsSelectable = !!props.elementsSelectable;
+        store.elementsSelectable = !!props.elementsSelectable
       }
       if (typeof props.nodesDraggable !== 'undefined') {
-        store.nodesDraggable = !!props.nodesDraggable;
+        store.nodesDraggable = !!props.nodesDraggable
       }
 
       if (typeof props.connectionMode !== 'undefined') {
-        store.connectionMode = props.connectionMode;
+        store.connectionMode = props.connectionMode
       }
-    };
+    }
 
     tryOnMounted(() => {
-      init();
-    });
+      init()
+    })
 
     return () => (
       <FlowRenderer
@@ -275,6 +275,6 @@ export default defineComponent({
           edgeUpdaterRadius={props.edgeUpdaterRadius}
         />
       </FlowRenderer>
-    );
+    )
   }
-});
+})
