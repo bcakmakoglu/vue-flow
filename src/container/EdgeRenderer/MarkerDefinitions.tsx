@@ -1,8 +1,8 @@
-import { defineComponent, PropType } from 'vue';
-import Marker from './Marker';
+import { defineComponent, PropType } from 'vue'
+import Marker from './Marker'
 
 interface MarkerDefinitionsProps {
-  color: string;
+  color: string
 }
 
 export default defineComponent({
@@ -38,6 +38,6 @@ export default defineComponent({
           />
         </Marker>
       </defs>
-    );
+    )
   }
-});
+})

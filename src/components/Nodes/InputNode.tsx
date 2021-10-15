@@ -1,6 +1,6 @@
-import Handle from '../../components/Handle';
-import { NodeProps, NodeType, Position } from '../../types';
-import { defineComponent, PropType } from 'vue';
+import Handle from '../../components/Handle'
+import { NodeProps, NodeType, Position } from '../../types'
+import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'InputNode',
@@ -29,6 +29,6 @@ export default defineComponent({
         {props.data?.label}
         <Handle type="source" position={props.sourcePosition} isConnectable={props.isConnectable} />
       </>
-    );
+    )
   }
-}) as NodeType;
+}) as NodeType

@@ -1,14 +1,14 @@
-import { defineComponent } from 'vue';
-import { routes } from './router';
-import { useRoute, useRouter } from 'vue-router';
+import { defineComponent } from 'vue'
+import { routes } from './router'
+import { useRoute, useRouter } from 'vue-router'
 
 const Header = defineComponent({
   setup() {
-    const router = useRouter();
-    const route = useRoute();
+    const router = useRouter()
+    const route = useRoute()
     const onChange = async (event: any) => {
-      await router.push(event.target.value);
-    };
+      await router.push(event.target.value)
+    }
 
     return () => (
       <header>
@@ -25,8 +25,8 @@ const Header = defineComponent({
           )}
         </select>
       </header>
-    );
+    )
   }
-});
+})
 
-export default Header;
+export default Header

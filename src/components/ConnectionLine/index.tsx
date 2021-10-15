@@ -1,13 +1,13 @@
-import { ref, defineComponent, CSSProperties, PropType, computed, inject, h } from 'vue';
+import { ref, defineComponent, CSSProperties, PropType, computed, inject, h } from 'vue'
 
-import { getBezierPath } from '../Edges/BezierEdge';
-import { getSmoothStepPath } from '../Edges/SmoothStepEdge';
-import { Node, HandleElement, Position, ConnectionLineType, ConnectionLineComponent, RevueFlowStore } from '../../types';
+import { getBezierPath } from '../Edges/BezierEdge'
+import { getSmoothStepPath } from '../Edges/SmoothStepEdge'
+import { Node, HandleElement, Position, ConnectionLineType, ConnectionLineComponent, RevueFlowStore } from '../../types'
 
 interface ConnectionLineProps {
-  connectionLineType: ConnectionLineType;
-  connectionLineStyle?: CSSProperties;
-  customConnectionLine?: ConnectionLineComponent;
+  connectionLineType: ConnectionLineType
+  connectionLineStyle?: CSSProperties
+  customConnectionLine?: ConnectionLineComponent
 }
 
 export default defineComponent({
@@ -29,35 +29,35 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = inject<RevueFlowStore>('store')!;
-    const sourceNode = ref<Node | null>(store.nodes.find((n) => n.id === store.connectionNodeId) || null);
-    const nodesConnectable = computed(() => store.nodesConnectable);
+    const store = inject<RevueFlowStore>('store')!
+    const sourceNode = ref<Node | null>(store.nodes.find((n) => n.id === store.connectionNodeId) || null)
+    const nodesConnectable = computed(() => store.nodesConnectable)
 
     const sourceHandle = computed(() =>
       store.connectionHandleId && store.connectionHandleType
         ? sourceNode.value?.__rf.handleBounds[store.connectionHandleType].find(
-          (d: HandleElement) => d.id === store.connectionHandleId
-        )
+            (d: HandleElement) => d.id === store.connectionHandleId
+          )
         : store.connectionHandleType && sourceNode.value?.__rf.handleBounds[store.connectionHandleType][0]
-    );
+    )
     const sourceHandleX = computed(() =>
       sourceHandle.value ? sourceHandle.value.x + sourceHandle.value.width / 2 : (sourceNode.value?.__rf.width as number) / 2
-    );
+    )
     const sourceHandleY = computed(() =>
       sourceHandle.value ? sourceHandle.value.y + sourceHandle.value.height / 2 : sourceNode.value?.__rf.height
-    );
-    const sourceX = computed(() => sourceNode.value?.__rf.position.x + sourceHandleX.value);
-    const sourceY = computed(() => sourceNode.value?.__rf.position.y + sourceHandleY.value);
+    )
+    const sourceX = computed(() => sourceNode.value?.__rf.position.x + sourceHandleX.value)
+    const sourceY = computed(() => sourceNode.value?.__rf.position.y + sourceHandleY.value)
 
-    const targetX = computed(() => (store.connectionPosition.x - store.transform[0]) / store.transform[2]);
-    const targetY = computed(() => (store.connectionPosition.y - store.transform[1]) / store.transform[2]);
+    const targetX = computed(() => (store.connectionPosition.x - store.transform[0]) / store.transform[2])
+    const targetY = computed(() => (store.connectionPosition.y - store.transform[1]) / store.transform[2])
 
     const isRightOrLeft = computed(
       () => sourceHandle.value?.position === Position.Left || sourceHandle.value?.position === Position.Right
-    );
-    const targetPosition = computed(() => (isRightOrLeft.value ? Position.Left : Position.Top));
+    )
+    const targetPosition = computed(() => (isRightOrLeft.value ? Position.Left : Position.Top))
 
-    let dAttr = computed(() => `M${sourceX.value},${sourceY.value} ${targetX.value},${targetY.value}`);
+    let dAttr = computed(() => `M${sourceX.value},${sourceY.value} ${targetX.value},${targetY.value}`)
 
     if (props.connectionLineType === ConnectionLineType.Bezier) {
       dAttr = computed(() =>
@@ -69,7 +69,7 @@ export default defineComponent({
           targetY: targetY.value,
           targetPosition: targetPosition.value
         })
-      );
+      )
     } else if (props.connectionLineType === ConnectionLineType.Step) {
       dAttr = computed(() =>
         getSmoothStepPath({
@@ -81,7 +81,7 @@ export default defineComponent({
           targetPosition: targetPosition.value,
           borderRadius: 0
         })
-      );
+      )
     } else if (props.connectionLineType === ConnectionLineType.SmoothStep) {
       dAttr = computed(() =>
         getSmoothStepPath({
@@ -92,7 +92,7 @@ export default defineComponent({
           targetY: targetY.value,
           targetPosition: targetPosition.value
         })
-      );
+      )
     }
 
     if (props.customConnectionLine) {
@@ -110,7 +110,7 @@ export default defineComponent({
               connectionLineStyle: props.connectionLineStyle
             })}
         </g>
-      );
+      )
     }
 
     return () =>
@@ -120,6 +120,6 @@ export default defineComponent({
         </g>
       ) : (
         ''
-      );
+      )
   }
-});
+})

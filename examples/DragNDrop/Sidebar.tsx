@@ -1,9 +1,9 @@
 const onDragStart = (event: DragEvent, nodeType: string) => {
   if (event.dataTransfer) {
-    event.dataTransfer.setData('application/revueflow', nodeType);
-    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('application/revueflow', nodeType)
+    event.dataTransfer.effectAllowed = 'move'
   }
-};
+}
 
 const Sidebar = () => {
   return (
@@ -19,7 +19,7 @@ const Sidebar = () => {
         Output Node
       </div>
     </aside>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

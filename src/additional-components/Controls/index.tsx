@@ -1,24 +1,24 @@
-import { defineComponent, HTMLAttributes, inject, onMounted, PropType, ref } from 'vue';
-import useZoomPanHelper from '../../hooks/useZoomPanHelper';
-import { FitViewParams, RevueFlowStore, ZoomPanHelperFunctions } from '../../types';
-import PlusIcon from '../../../assets/icons/plus.svg';
-import MinusIcon from '../../../assets/icons/minus.svg';
-import Fitview from '../../../assets/icons/fitview.svg';
-import Lock from '../../../assets/icons/lock.svg';
-import Unlock from '../../../assets/icons/unlock.svg';
+import { defineComponent, HTMLAttributes, inject, onMounted, PropType, ref } from 'vue'
+import useZoomPanHelper from '../../hooks/useZoomPanHelper'
+import { FitViewParams, RevueFlowStore, ZoomPanHelperFunctions } from '../../types'
+import PlusIcon from '../../../assets/icons/plus.svg'
+import MinusIcon from '../../../assets/icons/minus.svg'
+import Fitview from '../../../assets/icons/fitview.svg'
+import Lock from '../../../assets/icons/lock.svg'
+import Unlock from '../../../assets/icons/unlock.svg'
 
 export interface ControlProps extends HTMLAttributes {
-  showZoom?: boolean;
-  showFitView?: boolean;
-  showInteractive?: boolean;
-  fitViewParams?: FitViewParams;
-  onZoomIn?: () => void;
-  onZoomOut?: () => void;
-  onFitView?: () => void;
-  onInteractiveChange?: (interactiveStatus: boolean) => void;
+  showZoom?: boolean
+  showFitView?: boolean
+  showInteractive?: boolean
+  fitViewParams?: FitViewParams
+  onZoomIn?: () => void
+  onZoomOut?: () => void
+  onFitView?: () => void
+  onInteractiveChange?: (interactiveStatus: boolean) => void
 }
 
-export type ControlButtonProps = HTMLButtonElement;
+export type ControlButtonProps = HTMLButtonElement
 
 export const ControlButton = defineComponent({
   props: {
@@ -38,9 +38,9 @@ export const ControlButton = defineComponent({
       <button class={['revue-flow__controls-button']} {...props}>
         {slots.default ? slots.default() : ''}
       </button>
-    );
+    )
   }
-});
+})
 
 const Controls = defineComponent({
   name: 'Controls',
@@ -87,41 +87,41 @@ const Controls = defineComponent({
     }
   },
   setup(props, { slots }) {
-    const store = inject<RevueFlowStore>('store')!;
-    const isVisible = ref<boolean>(false);
-    const zoomHelper = ref<ZoomPanHelperFunctions>();
-    const { onReady } = useZoomPanHelper();
+    const store = inject<RevueFlowStore>('store')!
+    const isVisible = ref<boolean>(false)
+    const zoomHelper = ref<ZoomPanHelperFunctions>()
+    const { onReady } = useZoomPanHelper()
 
     onReady((helper) => {
-      zoomHelper.value = helper;
-    });
+      zoomHelper.value = helper
+    })
 
-    const isInteractive = store.nodesDraggable && store.nodesConnectable && store.elementsSelectable;
-    const mapClasses = ['revue-flow__controls'];
+    const isInteractive = store.nodesDraggable && store.nodesConnectable && store.elementsSelectable
+    const mapClasses = ['revue-flow__controls']
 
     const onZoomInHandler = () => {
-      zoomHelper.value?.zoomIn?.();
-      props.onZoomIn?.();
-    };
+      zoomHelper.value?.zoomIn?.()
+      props.onZoomIn?.()
+    }
 
     const onZoomOutHandler = () => {
-      zoomHelper.value?.zoomOut?.();
-      props.onZoomOut?.();
-    };
+      zoomHelper.value?.zoomOut?.()
+      props.onZoomOut?.()
+    }
 
     const onFitViewHandler = () => {
-      zoomHelper.value?.fitView?.(props.fitViewParams);
-      props.onFitView?.();
-    };
+      zoomHelper.value?.fitView?.(props.fitViewParams)
+      props.onFitView?.()
+    }
 
     const onInteractiveChangeHandler = () => {
-      store.setInteractive?.(!isInteractive);
-      props.onInteractiveChange?.(!isInteractive);
-    };
+      store.setInteractive?.(!isInteractive)
+      props.onInteractiveChange?.(!isInteractive)
+    }
 
     onMounted(() => {
-      isVisible.value = true;
-    });
+      isVisible.value = true
+    })
 
     return () => (
       <div class={mapClasses}>
@@ -147,8 +147,8 @@ const Controls = defineComponent({
         )}
         {slots.default ? slots.default() : ''}
       </div>
-    );
+    )
   }
-});
+})
 
-export default Controls;
+export default Controls

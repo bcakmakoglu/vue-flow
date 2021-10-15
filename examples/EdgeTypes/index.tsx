@@ -11,22 +11,22 @@ import RevueFlow, {
   Connection,
   Edge,
   Elements
-} from '../../src';
-import { getElements } from './utils';
-import { defineComponent, ref } from 'vue';
+} from '../../src'
+import { getElements } from './utils'
+import { defineComponent, ref } from 'vue'
 
 const onLoad = (reactFlowInstance: OnLoadParams) => {
-  reactFlowInstance.fitView();
-  console.log(reactFlowInstance.getElements());
-};
+  reactFlowInstance.fitView()
+  console.log(reactFlowInstance.getElements())
+}
 
-const initialElements = getElements();
+const initialElements = getElements()
 
 const EdgeTypesFlow = defineComponent({
   setup() {
-    const elements = ref<Elements>(initialElements);
-    const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value));
-    const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value));
+    const elements = ref<Elements>(initialElements)
+    const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
+    const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
     return () => (
       <RevueFlow
@@ -36,8 +36,8 @@ const EdgeTypesFlow = defineComponent({
         onConnect={onConnect}
         minZoom={0.2}
       ></RevueFlow>
-    );
+    )
   }
-});
+})
 
-export default EdgeTypesFlow;
+export default EdgeTypesFlow

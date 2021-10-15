@@ -1,6 +1,6 @@
-import { computed, defineComponent } from 'vue';
-import { EdgeText, getBezierPath, getEdgeCenter, getMarkerEnd } from '../../src';
-import { DefaultEdgeProps } from '../../src/components/Edges/utils';
+import { computed, defineComponent } from 'vue'
+import { EdgeText, getBezierPath, getEdgeCenter, getMarkerEnd } from '../../src'
+import { DefaultEdgeProps } from '../../src/components/Edges/utils'
 
 const CustomEdge = defineComponent({
   props: {
@@ -16,8 +16,8 @@ const CustomEdge = defineComponent({
         targetY: props.targetY,
         targetPosition: props.targetPosition
       })
-    );
-    const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId));
+    )
+    const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
     const center = computed(() =>
       getEdgeCenter({
         sourceX: props.sourceX,
@@ -25,7 +25,7 @@ const CustomEdge = defineComponent({
         targetX: props.targetX,
         targetY: props.targetY
       })
-    );
+    )
 
     return () => (
       <>
@@ -42,8 +42,8 @@ const CustomEdge = defineComponent({
           onClick={() => console.log(props.data)}
         />
       </>
-    );
+    )
   }
-});
+})
 
-export default CustomEdge;
+export default CustomEdge

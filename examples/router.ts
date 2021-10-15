@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router';
+import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router'
 
 export const routes: RouterOptions['routes'] = [
   {
@@ -45,9 +45,9 @@ export const routes: RouterOptions['routes'] = [
     path: '/interaction',
     component: () => import('./Interaction')
   }
-];
+]
 
 export const router = createRouter({
   history: createWebHashHistory(),
   routes
-});
+})

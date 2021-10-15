@@ -1,7 +1,7 @@
-import { defineComponent } from 'vue';
-import SmoothStepEdge from './SmoothStepEdge';
-import { EdgeSmoothProps } from './utils';
-import { EdgeType } from '../../types';
+import { defineComponent } from 'vue'
+import SmoothStepEdge from './SmoothStepEdge'
+import { EdgeSmoothProps } from './utils'
+import { EdgeType } from '../../types'
 
 export default defineComponent({
   components: { SmoothStepEdge },
@@ -10,6 +10,6 @@ export default defineComponent({
     ...EdgeSmoothProps
   },
   setup(props) {
-    return () => <SmoothStepEdge {...props} borderRadius={0} />;
+    return () => <SmoothStepEdge {...props} borderRadius={0} />
   }
-}) as EdgeType;
+}) as EdgeType

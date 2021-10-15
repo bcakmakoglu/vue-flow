@@ -1,22 +1,22 @@
 /**
  * The user selection rectangle gets displayed when a user drags the mouse while pressing shift
  */
-import { RevueFlowStore, XYPosition } from '../../types';
-import { computed, defineComponent, inject } from 'vue';
-import { templateRef, useEventListener } from '@vueuse/core';
+import { RevueFlowStore, XYPosition } from '../../types'
+import { computed, defineComponent, inject } from 'vue'
+import { templateRef, useEventListener } from '@vueuse/core'
 
 function getMousePosition(event: MouseEvent): XYPosition | void {
-  const revueFlowNode = (event.target as Element).closest('.revue-flow');
+  const revueFlowNode = (event.target as Element).closest('.revue-flow')
   if (!revueFlowNode) {
-    return;
+    return
   }
 
-  const containerBounds = revueFlowNode.getBoundingClientRect();
+  const containerBounds = revueFlowNode.getBoundingClientRect()
 
   return {
     x: event.clientX - containerBounds.left,
     y: event.clientY - containerBounds.top
-  };
+  }
 }
 
 const SelectionRect = (props: { width: number; height: number; x: number; y: number }) => {
@@ -29,51 +29,51 @@ const SelectionRect = (props: { width: number; height: number; x: number; y: num
         transform: `translate(${props.x}px, ${props.y}px)`
       }}
     />
-  );
-};
+  )
+}
 
 export default defineComponent({
   components: { SelectionRect },
   setup() {
-    const store = inject<RevueFlowStore>('store')!;
-    const el = templateRef('user-selection', null);
-    const shouldRender = computed(() => store.selectionActive || store.elementsSelectable);
+    const store = inject<RevueFlowStore>('store')!
+    const el = templateRef('user-selection', null)
+    const shouldRender = computed(() => store.selectionActive || store.elementsSelectable)
 
     const onMouseDown = (event: MouseEvent) => {
-      const mousePos = getMousePosition(event);
+      const mousePos = getMousePosition(event)
       if (!mousePos) {
-        return;
+        return
       }
 
-      store.setUserSelection(mousePos);
-    };
+      store.setUserSelection(mousePos)
+    }
 
     const onMouseMove = (event: MouseEvent) => {
       if (!store.selectionActive) {
-        return;
+        return
       }
-      const mousePos = getMousePosition(event);
+      const mousePos = getMousePosition(event)
       if (!mousePos) {
-        return;
+        return
       }
 
-      store.updateUserSelection(mousePos);
-    };
+      store.updateUserSelection(mousePos)
+    }
 
     const onMouseUp = () => {
-      store.unsetUserSelection();
-    };
+      store.unsetUserSelection()
+    }
 
     const onMouseLeave = () => {
-      store.unsetUserSelection();
-      store.unsetNodesSelection();
-    };
+      store.unsetUserSelection()
+      store.unsetNodesSelection()
+    }
 
-    useEventListener(el, 'mousedown', onMouseDown);
-    useEventListener(el, 'mousemove', onMouseMove);
-    useEventListener(el, 'click', onMouseUp);
-    useEventListener(el, 'mouseup', onMouseUp);
-    useEventListener(el, 'mouseleave', onMouseLeave);
+    useEventListener(el, 'mousedown', onMouseDown)
+    useEventListener(el, 'mousemove', onMouseMove)
+    useEventListener(el, 'click', onMouseUp)
+    useEventListener(el, 'mouseup', onMouseUp)
+    useEventListener(el, 'mouseleave', onMouseLeave)
 
     return () =>
       shouldRender.value ? (
@@ -91,6 +91,6 @@ export default defineComponent({
         </div>
       ) : (
         ''
-      );
+      )
   }
-});
+})

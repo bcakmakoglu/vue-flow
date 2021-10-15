@@ -1,6 +1,6 @@
-import { computed, defineComponent } from 'vue';
-import Header from './Header';
-import { useRoute } from 'vue-router';
+import { computed, defineComponent } from 'vue'
+import Header from './Header'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'App',
@@ -8,13 +8,13 @@ export default defineComponent({
     Header
   },
   setup() {
-    const route = useRoute();
-    const key = computed(() => route.fullPath);
+    const route = useRoute()
+    const key = computed(() => route.fullPath)
     return () => (
       <>
         <Header />
         <router-view ref="view" key={key.value} />
       </>
-    );
+    )
   }
-});
+})

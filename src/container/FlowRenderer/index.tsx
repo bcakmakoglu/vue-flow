@@ -1,11 +1,11 @@
-import { computed, defineComponent, inject, PropType } from 'vue';
-import ZoomPane from '../ZoomPane';
-import UserSelection from '../../components/UserSelection';
-import NodesSelection from '../../components/NodesSelection';
-import { RevueFlowStore, GraphViewProps } from '../../types';
-import useGlobalKeyHandler from '../../hooks/useGlobalKeyHandler';
-import useKeyPress from '../../hooks/useKeyPress';
-import { RevueFlowHooks } from '../../hooks/RevueFlowHooks';
+import { computed, defineComponent, inject, PropType } from 'vue'
+import ZoomPane from '../ZoomPane'
+import UserSelection from '../../components/UserSelection'
+import NodesSelection from '../../components/NodesSelection'
+import { RevueFlowStore, GraphViewProps } from '../../types'
+import useGlobalKeyHandler from '../../hooks/useGlobalKeyHandler'
+import useKeyPress from '../../hooks/useKeyPress'
+import { RevueFlowHooks } from '../../hooks/RevueFlowHooks'
 
 type FlowRendererProps = Omit<
   GraphViewProps,
@@ -18,7 +18,7 @@ type FlowRendererProps = Omit<
   | 'arrowHeadColor'
   | 'onlyRenderVisibleElements'
   | 'selectNodesOnDrag'
->;
+>
 
 export default defineComponent({
   name: 'FlowRenderer',
@@ -101,28 +101,28 @@ export default defineComponent({
     }
   },
   setup(props, { slots }) {
-    const store = inject<RevueFlowStore>('store')!;
-    const hooks = inject<RevueFlowHooks>('hooks')!;
-    const keyPressed = useKeyPress(props.selectionKeyCode);
+    const store = inject<RevueFlowStore>('store')!
+    const hooks = inject<RevueFlowHooks>('hooks')!
+    const keyPressed = useKeyPress(props.selectionKeyCode)
 
     useGlobalKeyHandler({
       store,
       onElementsRemove: hooks.elementsRemove.trigger,
       deleteKeyCode: props.deleteKeyCode || '',
       multiSelectionKeyCode: props.multiSelectionKeyCode || ''
-    });
+    })
 
     const onClick = (event: MouseEvent) => {
-      hooks.paneClick.trigger(event);
-      store.unsetNodesSelection();
-      store.resetSelectedElements();
-    };
+      hooks.paneClick.trigger(event)
+      store.unsetNodesSelection()
+      store.resetSelectedElements()
+    }
 
-    const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event);
+    const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event)
 
-    const onWheel = (event: WheelEvent) => hooks.paneScroll.trigger(event);
+    const onWheel = (event: WheelEvent) => hooks.paneScroll.trigger(event)
 
-    const selectionActive = computed(() => store.nodesSelectionActive);
+    const selectionActive = computed(() => store.nodesSelectionActive)
 
     return () => (
       <ZoomPane
@@ -145,6 +145,6 @@ export default defineComponent({
         {selectionActive.value ? <NodesSelection /> : ''}
         <div class="revue-flow__pane" onClick={onClick} onContextmenu={onContextMenu} onWheel={onWheel} />
       </ZoomPane>
-    );
+    )
   }
-});
+})

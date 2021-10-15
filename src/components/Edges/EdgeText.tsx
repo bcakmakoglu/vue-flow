@@ -1,5 +1,5 @@
-import { EdgeTextProps, Rect } from '../../types';
-import { defineComponent, PropType, ref, watchEffect } from 'vue';
+import { EdgeTextProps, Rect } from '../../types'
+import { defineComponent, PropType, ref, watchEffect } from 'vue'
 
 export default defineComponent({
   props: {
@@ -37,11 +37,11 @@ export default defineComponent({
     }
   },
   setup(props, { slots }) {
-    const edgeRef = ref<SVGTextElement | null>(null);
-    const edgeTextBox = ref<Rect>({ x: 0, y: 0, width: 0, height: 0 });
+    const edgeRef = ref<SVGTextElement | null>(null)
+    const edgeTextBox = ref<Rect>({ x: 0, y: 0, width: 0, height: 0 })
 
     watchEffect(() => {
-      const textBbox = edgeRef.value?.getBBox();
+      const textBbox = edgeRef.value?.getBBox()
 
       if (textBbox) {
         edgeTextBox.value = {
@@ -49,9 +49,9 @@ export default defineComponent({
           y: textBbox.y,
           width: textBbox.width,
           height: textBbox.height
-        };
+        }
       }
-    });
+    })
 
     return () => (
       <g
@@ -75,6 +75,6 @@ export default defineComponent({
         </text>
         {slots.default ? slots.default() : ''}
       </g>
-    );
+    )
   }
-});
+})

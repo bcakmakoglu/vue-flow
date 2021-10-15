@@ -1,39 +1,38 @@
-import typescript from 'rollup-plugin-typescript2';
-import { terser } from 'rollup-plugin-terser';
-import dts from 'rollup-plugin-dts';
-import { OutputOptions, RollupOptions } from 'rollup';
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import babel from '@rollup/plugin-babel';
+import typescript from 'rollup-plugin-typescript2'
+import { terser } from 'rollup-plugin-terser'
+import dts from 'rollup-plugin-dts'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import babel from '@rollup/plugin-babel'
 // @ts-ignore
-import svg from 'rollup-plugin-svg';
-import postcss from 'rollup-plugin-postcss';
+import svg from 'rollup-plugin-svg'
+import postcss from 'rollup-plugin-postcss'
 // @ts-ignore
-import { DEFAULT_EXTENSIONS as DEFAULT_BABEL_EXTENSIONS } from '@babel/core';
+import { DEFAULT_EXTENSIONS as DEFAULT_BABEL_EXTENSIONS } from '@babel/core'
 
-const configs: RollupOptions[] = [];
+const configs: any[] = []
 
 const activePackages = [
   {
     display: 'Revue-Flow',
     external: ['@vueuse/core']
   }
-];
+]
 
 // @ts-ignore
 for (const { external, iife } of activePackages) {
   const iifeGlobals = {
     vue: 'Vue',
     '@vueuse/core': 'VueUse'
-  };
+  }
 
-  const iifeName = 'RevueFlow';
-  const functionNames = ['revue-flow'];
+  const iifeName = 'RevueFlow'
+  const functionNames = ['revue-flow']
 
   for (const fn of functionNames) {
-    const input = 'src/index.ts';
+    const input = 'src/index.ts'
 
-    const output: OutputOptions[] = [
+    const output: any[] = [
       {
         file: `dist/${fn}.cjs.js`,
         format: 'cjs'
@@ -42,7 +41,7 @@ for (const { external, iife } of activePackages) {
         file: `dist/${fn}.esm.js`,
         format: 'es'
       }
-    ];
+    ]
 
     if (iife !== false) {
       output.push(
@@ -67,7 +66,7 @@ for (const { external, iife } of activePackages) {
             })
           ]
         }
-      );
+      )
     }
 
     configs.push({
@@ -95,7 +94,7 @@ for (const { external, iife } of activePackages) {
         })
       ],
       external: ['vue', ...(external || [])]
-    });
+    })
 
     configs.push({
       input,
@@ -105,8 +104,8 @@ for (const { external, iife } of activePackages) {
       },
       plugins: [dts()],
       external: ['vue', ...(external || []), /\.css$/]
-    });
+    })
   }
 }
 
-export default configs;
+export default configs

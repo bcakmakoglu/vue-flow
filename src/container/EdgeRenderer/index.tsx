@@ -1,19 +1,19 @@
-import { CSSProperties, defineComponent, inject, PropType } from 'vue';
-import { ConnectionLineType, ConnectionLineComponent, ConnectionMode, RevueFlowStore } from '../../types';
-import ConnectionLine from '../../components/ConnectionLine';
-import MarkerDefinitions from './MarkerDefinitions';
-import Edge from '../../components/Edges/Edge';
+import { CSSProperties, defineComponent, inject, PropType } from 'vue'
+import { ConnectionLineType, ConnectionLineComponent, ConnectionMode, RevueFlowStore } from '../../types'
+import ConnectionLine from '../../components/ConnectionLine'
+import MarkerDefinitions from './MarkerDefinitions'
+import Edge from '../../components/Edges/Edge'
 
 interface EdgeRendererProps {
-  edgeTypes: any;
-  connectionLineType: ConnectionLineType;
-  connectionLineStyle?: CSSProperties;
-  connectionLineComponent?: ConnectionLineComponent;
-  connectionMode?: ConnectionMode;
-  arrowHeadColor: string;
-  markerEndId?: string;
-  onlyRenderVisibleElements: boolean;
-  edgeUpdaterRadius?: number;
+  edgeTypes: any
+  connectionLineType: ConnectionLineType
+  connectionLineStyle?: CSSProperties
+  connectionLineComponent?: ConnectionLineComponent
+  connectionMode?: ConnectionMode
+  arrowHeadColor: string
+  markerEndId?: string
+  onlyRenderVisibleElements: boolean
+  edgeUpdaterRadius?: number
 }
 
 export default defineComponent({
@@ -70,7 +70,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = inject<RevueFlowStore>('store')!;
+    const store = inject<RevueFlowStore>('store')!
 
     return () => (
       <svg width={store.width} height={store.height} class="revue-flow__edges">
@@ -94,6 +94,6 @@ export default defineComponent({
           )}
         </g>
       </svg>
-    );
+    )
   }
-});
+})

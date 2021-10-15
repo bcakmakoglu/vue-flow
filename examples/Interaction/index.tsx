@@ -9,8 +9,8 @@ import RevueFlow, {
   Edge,
   PanOnScrollMode,
   FlowTransform
-} from '../../src';
-import { defineComponent, ref } from 'vue';
+} from '../../src'
+import { defineComponent, ref } from 'vue'
 
 const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
@@ -19,33 +19,33 @@ const initialElements: Elements = [
   { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 } },
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' }
-] as Elements;
+] as Elements
 
-const onNodeDragStart = (_: MouseEvent, node: Node) => console.log('drag start', node);
-const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
-const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
-const onPaneClick = (event: MouseEvent) => console.log('onPaneClick', event);
-const onPaneScroll = (event?: WheelEvent) => console.log('onPaneScroll', event);
-const onPaneContextMenu = (event: MouseEvent) => console.log('onPaneContextMenu', event);
-const onMoveEnd = (flowTranasform?: FlowTransform) => console.log('onMoveEnd', flowTranasform);
+const onNodeDragStart = (_: MouseEvent, node: Node) => console.log('drag start', node)
+const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
+const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
+const onPaneClick = (event: MouseEvent) => console.log('onPaneClick', event)
+const onPaneScroll = (event?: WheelEvent) => console.log('onPaneScroll', event)
+const onPaneContextMenu = (event: MouseEvent) => console.log('onPaneContextMenu', event)
+const onMoveEnd = (flowTranasform?: FlowTransform) => console.log('onMoveEnd', flowTranasform)
 
 const InteractionFlow = defineComponent({
   setup() {
-    const elements = ref<Elements>(initialElements);
-    const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value));
+    const elements = ref<Elements>(initialElements)
+    const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
-    const isSelectable = ref(false);
-    const isDraggable = ref(false);
-    const isConnectable = ref(false);
-    const zoomOnScroll = ref(false);
-    const zoomOnPinch = ref(false);
-    const panOnScroll = ref(false);
-    const panOnScrollMode = ref<PanOnScrollMode>(PanOnScrollMode.Free);
-    const zoomOnDoubleClick = ref(false);
-    const paneMoveable = ref(true);
-    const captureZoomClick = ref(false);
-    const captureZoomScroll = ref(false);
-    const captureElementClick = ref(false);
+    const isSelectable = ref(false)
+    const isDraggable = ref(false)
+    const isConnectable = ref(false)
+    const zoomOnScroll = ref(false)
+    const zoomOnPinch = ref(false)
+    const panOnScroll = ref(false)
+    const panOnScrollMode = ref<PanOnScrollMode>(PanOnScrollMode.Free)
+    const zoomOnDoubleClick = ref(false)
+    const paneMoveable = ref(true)
+    const captureZoomClick = ref(false)
+    const captureZoomScroll = ref(false)
+    const captureElementClick = ref(false)
 
     return () => (
       <RevueFlow
@@ -165,8 +165,8 @@ const InteractionFlow = defineComponent({
           </div>
         </div>
       </RevueFlow>
-    );
+    )
   }
-});
+})
 
-export default InteractionFlow;
+export default InteractionFlow
