@@ -1,6 +1,6 @@
 // global hooks
+import { EventHook } from '@vueuse/core'
 import { Connection, Edge, Elements, FlowTransform, Node, OnConnectStartParams, OnLoadParams } from '../types'
-import { createEventHook, EventHook } from '@vueuse/core'
 
 export interface RevueFlowHooks {
   elementClick: EventHook<{ event: MouseEvent; element: Node | Edge }>
@@ -84,7 +84,7 @@ export const useRevueFlow = (): RevueFlowHooks & { bind: (emit: (event: string, 
     edgeDoubleClick: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeClick: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeUpdateStart: createEventHook<{ event: MouseEvent; edge: Edge }>(),
-    edgeUpdateEnd: createEventHook<{ event: MouseEvent; edge: Edge }>()
+    edgeUpdateEnd: createEventHook<{ event: MouseEvent; edge: Edge }>(),
   }
 
   const bind = (emit: (event: string, args: any) => void) => {
@@ -99,6 +99,6 @@ export const useRevueFlow = (): RevueFlowHooks & { bind: (emit: (event: string, 
 
   return {
     ...eventHooks,
-    bind
+    bind,
   }
 }

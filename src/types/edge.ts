@@ -1,4 +1,4 @@
-import { ComponentPublicInstance, HTMLAttributes, VNode } from 'vue'
+import { DefineComponent, HTMLAttributes, VNode } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './types'
 import { Connection } from './connection'
 
@@ -64,6 +64,6 @@ export interface EdgeTextProps extends HTMLAttributes {
   labelBgBorderRadius?: number
 }
 
-export type EdgeType = ComponentPublicInstance<EdgeSmoothStepProps>
+export type EdgeType = DefineComponent<EdgeSmoothStepProps>
 
 export type OnEdgeUpdateFunc<T = any> = (oldEdge: Edge<T>, newConnection: Connection) => void

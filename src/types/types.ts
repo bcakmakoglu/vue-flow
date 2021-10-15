@@ -1,5 +1,8 @@
-import { Edge } from './edge'
-import { Node } from './node'
+import { CSSProperties, HTMLAttributes } from 'vue'
+import { Edge, EdgeType } from './edge'
+import { Node, NodeExtent, NodeType, TranslateExtent } from './node'
+import { ConnectionLineComponent, ConnectionLineType, ConnectionMode } from '~/types/connection'
+import { KeyCode, PanOnScrollMode } from '~/types/panel'
 
 export type ElementId = string
 
@@ -81,3 +84,41 @@ export type OnLoadParams<T = any> = {
 }
 
 export type OnLoadFunc<T = any> = (params: OnLoadParams<T>) => void
+
+export interface RevueFlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
+  nodeTypes?: Record<string, NodeType>
+  edgeTypes?: Record<string, EdgeType>
+  connectionMode?: ConnectionMode
+  connectionLineType?: ConnectionLineType
+  connectionLineStyle?: CSSProperties
+  connectionLineComponent?: ConnectionLineComponent
+  deleteKeyCode?: KeyCode
+  selectionKeyCode?: KeyCode
+  multiSelectionKeyCode?: KeyCode
+  zoomActivationKeyCode?: KeyCode
+  snapToGrid?: boolean
+  snapGrid?: [number, number]
+  onlyRenderVisibleElements?: boolean
+  nodesDraggable?: boolean
+  nodesConnectable?: boolean
+  elementsSelectable?: boolean
+  selectNodesOnDrag?: boolean
+  paneMoveable?: boolean
+  minZoom?: number
+  maxZoom?: number
+  defaultZoom?: number
+  defaultPosition?: [number, number]
+  translateExtent?: TranslateExtent
+  nodeExtent?: NodeExtent
+  arrowHeadColor?: string
+  markerEndId?: string
+  zoomOnScroll?: boolean
+  zoomOnPinch?: boolean
+  panOnScroll?: boolean
+  panOnScrollSpeed?: number
+  panOnScrollMode?: PanOnScrollMode
+  zoomOnDoubleClick?: boolean
+  edgeUpdaterRadius?: number
+  // nodeTypesId?: string
+  // edgeTypesId?: string / used by react-flow to detect a re-render of node components
+}

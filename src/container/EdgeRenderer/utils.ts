@@ -1,13 +1,13 @@
-import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '../../components/Edges'
-import { rectToBox } from '../../utils/graph'
-import { Position, Node, XYPosition, ElementId, HandleElement, Transform, Edge, EdgeType } from '../../types'
+import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '~/components/Edges'
+import { rectToBox } from '~/utils/graph'
+import { Position, Node, XYPosition, ElementId, HandleElement, Transform, Edge, EdgeType } from '~/types'
 
 export function createEdgeTypes(edgeTypes: Record<string, EdgeType>): Record<string, EdgeType> {
   const standardTypes: Record<string, EdgeType> = {
     default: edgeTypes.default || BezierEdge,
     straight: edgeTypes.bezier || StraightEdge,
     step: edgeTypes.step || StepEdge,
-    smoothstep: edgeTypes.step || SmoothStepEdge
+    smoothstep: edgeTypes.step || SmoothStepEdge,
   }
 
   const wrappedTypes = {} as Record<string, EdgeType>
@@ -21,7 +21,7 @@ export function createEdgeTypes(edgeTypes: Record<string, EdgeType>): Record<str
 
   return {
     ...standardTypes,
-    ...specialTypes
+    ...specialTypes,
   }
 }
 
@@ -35,22 +35,22 @@ export function getHandlePosition(position: Position, node: Node, handle: any | 
     case Position.Top:
       return {
         x: x + width / 2,
-        y
+        y,
       }
     case Position.Right:
       return {
         x: x + width,
-        y: y + height / 2
+        y: y + height / 2,
       }
     case Position.Bottom:
       return {
         x: x + width / 2,
-        y: y + height
+        y: y + height,
       }
     case Position.Left:
       return {
         x,
-        y: y + height / 2
+        y: y + height / 2,
       }
   }
 }
@@ -85,7 +85,7 @@ export const getEdgePositions = (
   sourcePosition: Position,
   targetNode: Node,
   targetHandle: HandleElement | unknown,
-  targetPosition: Position
+  targetPosition: Position,
 ): EdgePositions => {
   const sourceHandlePos = getHandlePosition(sourcePosition, sourceNode, sourceHandle)
   const targetHandlePos = getHandlePosition(targetPosition, targetNode, targetHandle)
@@ -94,7 +94,7 @@ export const getEdgePositions = (
     sourceX: sourceHandlePos.x,
     sourceY: sourceHandlePos.y,
     targetX: targetHandlePos.x,
-    targetY: targetHandlePos.y
+    targetY: targetHandlePos.y,
   }
 }
 
@@ -111,7 +111,7 @@ export function isEdgeVisible({ sourcePos, targetPos, width, height, transform }
     x: Math.min(sourcePos.x, targetPos.x),
     y: Math.min(sourcePos.y, targetPos.y),
     x2: Math.max(sourcePos.x, targetPos.x),
-    y2: Math.max(sourcePos.y, targetPos.y)
+    y2: Math.max(sourcePos.y, targetPos.y),
   }
 
   if (edgeBox.x === edgeBox.x2) {
@@ -126,7 +126,7 @@ export function isEdgeVisible({ sourcePos, targetPos, width, height, transform }
     x: (0 - transform[0]) / transform[2],
     y: (0 - transform[1]) / transform[2],
     width: width / transform[2],
-    height: height / transform[2]
+    height: height / transform[2],
   })
 
   const xOverlap = Math.max(0, Math.min(viewBox.x2, edgeBox.x2) - Math.max(viewBox.x, edgeBox.x))
@@ -152,6 +152,6 @@ export const getSourceTargetNodes = (edge: Edge, nodes: Node[]): SourceTargetNod
       }
       return res
     },
-    { sourceNode: null, targetNode: null } as SourceTargetNode
+    { sourceNode: null, targetNode: null } as SourceTargetNode,
   )
 }
