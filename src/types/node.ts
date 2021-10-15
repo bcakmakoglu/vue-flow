@@ -1,0 +1,60 @@
+import { ComponentPublicInstance } from 'vue'
+import { XYPosition } from './types'
+import { ElementId, Position } from './index'
+
+export interface Node<T = any> {
+  id: ElementId
+  position: XYPosition
+  type?: string
+  __rf: {
+    position: XYPosition
+    isDragging?: boolean
+    width: number | null
+    height: number | null
+    handleBounds?: any
+  }
+  data?: T
+  style?: any
+  className?: string
+  targetPosition?: Position
+  sourcePosition?: Position
+  isHidden?: boolean
+  draggable?: boolean
+  selectable?: boolean
+  connectable?: boolean
+}
+
+export type NodePosUpdate = {
+  id: ElementId
+  pos: XYPosition
+}
+
+export type NodeDiffUpdate = {
+  id?: ElementId
+  diff?: XYPosition
+  isDragging?: boolean
+}
+
+export type TranslateExtent = [[number, number], [number, number]]
+export type NodeExtent = TranslateExtent
+
+export type NodeDimensionUpdate = {
+  id: ElementId
+  nodeElement: HTMLDivElement
+  forceUpdate?: boolean
+}
+
+export interface NodeProps<T = any> {
+  id: ElementId
+  type: string
+  data: T
+  selected: boolean
+  isConnectable: boolean
+  xPos?: number
+  yPos?: number
+  targetPosition?: Position
+  sourcePosition?: Position
+  isDragging?: boolean
+}
+
+export type NodeType = ComponentPublicInstance<NodeProps>
