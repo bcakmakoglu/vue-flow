@@ -1,0 +1,77 @@
+<script lang="ts" setup>
+import { VNode } from 'vue'
+import EdgeText from './EdgeText.vue'
+import { ArrowHeadType, ElementId, Position } from '~/types'
+import { getMarkerEnd, getBezierPath } from '~/components/Edges/utils'
+
+interface StraightEdgeProps<T = any> {
+  id: ElementId
+  source: ElementId
+  target: ElementId
+  sourceX: number
+  sourceY: number
+  targetX: number
+  targetY: number
+  selected?: boolean
+  animated?: boolean
+  sourcePosition?: Position
+  targetPosition?: Position
+  label?: string | VNode
+  labelStyle?: any
+  labelShowBg?: boolean
+  labelBgStyle?: any
+  labelBgPadding?: [number, number]
+  labelBgBorderRadius?: number
+  style?: any
+  arrowHeadType?: ArrowHeadType
+  markerEndId?: string
+  data?: T
+  sourceHandleId?: ElementId | null
+  targetHandleId?: ElementId | null
+}
+
+const props = withDefaults(defineProps<StraightEdgeProps>(), {
+  selected: false,
+  sourcePosition: Position.Bottom,
+  targetPosition: Position.Top,
+  label: () => '',
+  labelStyle: () => ({}),
+  labelShowBg: true,
+  labelBgStyle: () => ({}),
+})
+
+const centerY = computed(() => {
+  const yOffset = Math.abs(props.targetY - props.sourceY) / 2
+  return props.targetY < props.sourceY ? props.targetY + yOffset : props.targetY - yOffset
+})
+const centerX = computed(() => {
+  const xOffset = Math.abs(props.targetX - props.sourceX) / 2
+  return props.targetX < props.sourceX ? props.targetX + xOffset : props.targetX - xOffset
+})
+const path = computed(() =>
+  getBezierPath({
+    ...props,
+  }),
+)
+
+const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
+</script>
+<template>
+  <path
+    :style="props.style"
+    class="revue-flow__edge-path"
+    :d="`M ${props.sourceX},${props.sourceY}L ${props.targetX},${props.targetY}`"
+    :marker-end="markerEnd"
+  />
+  <EdgeText
+    v-if="props.label"
+    :x="centerX"
+    :y="centerY"
+    :label="props.label"
+    :label-style="props.labelStyle"
+    :label-show-bg="props.labelShowBg"
+    :label-bg-style="props.labelBgStyle"
+    :label-bg-padding="props.labelBgPadding"
+    :label-bg-border-radius="props.labelBgBorderRadius"
+  />
+</template>

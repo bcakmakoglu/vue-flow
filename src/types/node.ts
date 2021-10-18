@@ -47,14 +47,14 @@ export type NodeDimensionUpdate = {
 export interface NodeProps<T = any> {
   id: ElementId
   type: string
-  data: T
-  selected: boolean
-  isConnectable: boolean
+  data?: T
+  selected?: boolean
+  connectable?: boolean
   xPos?: number
   yPos?: number
   targetPosition?: Position
   sourcePosition?: Position
-  isDragging?: boolean
+  dragging?: boolean
 }
 
 export type NodeType = DefineComponent<NodeProps>

@@ -1,5 +1,6 @@
-import { ComponentPublicInstance } from 'vue'
-import { ElementId, HandleType, Position } from './types'
+import { DefineComponent } from 'vue'
+import { ElementId, Position } from './types'
+import { HandleType } from '~/types/handle'
 
 export enum ConnectionLineType {
   Bezier = 'default',
@@ -26,13 +27,13 @@ export type ConnectionLineComponentProps = {
   connectionLineType: ConnectionLineType
 }
 
-export type ConnectionLineComponent = ComponentPublicInstance<ConnectionLineComponentProps>
+export type CustomConnectionLine = DefineComponent<ConnectionLineComponentProps>
 
 export type OnConnectFunc = (connection: Connection) => void
 export type OnConnectStartParams = {
-  nodeId: ElementId | null
-  handleId: ElementId | null
-  handleType: HandleType | null
+  nodeId: ElementId | undefined
+  handleId: ElementId | undefined
+  handleType: HandleType | undefined
 }
 export type OnConnectStartFunc = (event: MouseEvent, params: OnConnectStartParams) => void
 export type OnConnectStopFunc = (event: MouseEvent) => void
@@ -44,7 +45,7 @@ export enum ConnectionMode {
 }
 
 export type SetConnectionId = {
-  connectionNodeId: ElementId | null
-  connectionHandleId: ElementId | null
-  connectionHandleType: HandleType | null
+  connectionNodeId: ElementId | undefined
+  connectionHandleId: ElementId | undefined
+  connectionHandleType: HandleType | undefined
 }

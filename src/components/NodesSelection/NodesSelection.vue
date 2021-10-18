@@ -1,0 +1,88 @@
+<script lang="ts" setup>
+import { DraggableEventListener } from '@braks/revue-draggable'
+import { Node, RevueFlowStore } from '~/types'
+import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
+import { isNode } from '~/utils/graph'
+
+interface NodesSelectionProps {
+  onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void
+  onSelectionDrag?: (event: MouseEvent, nodes: Node[]) => void
+  onSelectionDragStop?: (event: MouseEvent, nodes: Node[]) => void
+  onSelectionContextMenu?: (event: MouseEvent, nodes: Node[]) => void
+}
+
+const props = defineProps<NodesSelectionProps>()
+
+const store = inject<RevueFlowStore>('store')!
+const hooks = inject<RevueFlowHooks>('hooks')!
+
+const selectedNodes = computed(() =>
+  store.selectedElements
+    ? store.selectedElements.filter(isNode).map((selectedNode) => {
+        const matchingNode = store.nodes.find((node) => node.id === selectedNode.id)
+
+        return {
+          ...matchingNode,
+          position: matchingNode?.__rf.position,
+        } as Node
+      })
+    : [],
+)
+
+const style = computed(() => ({
+  transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`,
+}))
+
+const innerStyle = computed(() => ({
+  width: `${store.selectedNodesBbox.width}px`,
+  height: `${store.selectedNodesBbox.height}px`,
+  top: `${store.selectedNodesBbox.y}px`,
+  left: `${store.selectedNodesBbox.x}px`,
+}))
+
+const onStart: DraggableEventListener = ({ event }) => {
+  hooks.selectionDragStart.trigger({ event, nodes: selectedNodes.value })
+}
+
+const onDrag: DraggableEventListener = ({ event, data }) => {
+  hooks.selectionDrag.trigger({ event, nodes: selectedNodes.value })
+
+  store.updateNodePosDiff({
+    diff: {
+      x: data.deltaX,
+      y: data.deltaY,
+    },
+    isDragging: true,
+  })
+}
+
+const onStop: DraggableEventListener = ({ event }) => {
+  store.updateNodePosDiff({
+    isDragging: false,
+  })
+
+  hooks.selectionDragStop.trigger({ event, nodes: selectedNodes.value })
+}
+
+const onContextMenu = (event: MouseEvent) => {
+  const selectedNodes = store.selectedElements
+    ? store.selectedElements.filter(isNode).map((selectedNode) => store.nodes.find((node) => node.id === selectedNode.id))
+    : []
+
+  if (selectedNodes) hooks.selectionContextMenu.trigger({ event, nodes: selectedNodes as Node[] })
+}
+</script>
+<template>
+  <div class="revue-flow__nodesselection" :style="style">
+    <Draggable
+      :scale="store.transform[2]"
+      :grid="store.snapToGrid ? store.snapGrid : undefined"
+      :enable-user-select-hack="false"
+      @start="onStart"
+      @move="onDrag"
+      @stop="onStop"
+    >
+      <div class="revue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
+    </Draggable>
+  </div>
+</template>

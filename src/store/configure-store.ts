@@ -24,12 +24,11 @@ export default function configureStore(
     getters: {},
     actions: {
       setElements(elements) {
-        const propElements = elements
         const nextElements: NextElements = {
           nextNodes: [],
           nextEdges: [],
         }
-        const { nextNodes, nextEdges } = propElements.reduce((res, propElement): NextElements => {
+        const { nextNodes, nextEdges } = elements.reduce((res, propElement): NextElements => {
           if (isNode(propElement)) {
             const storeNode = this.nodes.find((node) => node.id === propElement.id)
 
@@ -189,7 +188,7 @@ export default function configureStore(
         this.userSelectionRect.draw = false
 
         if (!selectedNodes || selectedNodes.length === 0) {
-          this.selectedElements = null
+          this.selectedElements = undefined
           this.nodesSelectionActive = false
         } else {
           this.selectedNodesBbox = getRectOfNodes(selectedNodes)
@@ -202,12 +201,11 @@ export default function configureStore(
         this.selectedElements = selectedElementsUpdated ? selectedElementsArr : this.selectedElements
       },
       initD3Zoom(payload) {
-        const { d3Zoom, d3Selection, d3ZoomHandler, transform } = payload
+        const { d3Zoom, d3Selection, d3ZoomHandler } = payload
 
         this.d3Zoom = d3Zoom
         this.d3Selection = d3Selection
         this.d3ZoomHandler = d3ZoomHandler
-        this.transform = transform
       },
       setMinZoom(minZoom) {
         this.d3Zoom?.scaleExtent([minZoom, this.maxZoom])
@@ -237,14 +235,13 @@ export default function configureStore(
         })
       },
       resetSelectedElements() {
-        this.selectedElements = null
+        this.selectedElements = undefined
       },
       unsetNodesSelection() {
         this.nodesSelectionActive = false
       },
       updateSize(size) {
-        this.height = size.height
-        this.width = size.width
+        this.dimensions = size
       },
       setConnectionNodeId(payload) {
         this.connectionNodeId = payload.connectionNodeId

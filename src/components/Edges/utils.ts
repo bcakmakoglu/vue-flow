@@ -1,5 +1,4 @@
-import { ArrowHeadType, Position, EdgeProps, EdgeSmoothStepProps } from '../../types'
-import { PropType } from 'vue'
+import { ArrowHeadType, Position } from '~/types'
 
 export const getMarkerEnd = (arrowHeadType?: ArrowHeadType, markerEndId?: string): string => {
   if (typeof markerEndId !== 'undefined' && markerEndId) {
@@ -26,7 +25,7 @@ export const getCenter = ({
   targetX,
   targetY,
   sourcePosition = Position.Bottom,
-  targetPosition = Position.Top
+  targetPosition = Position.Top,
 }: GetCenterParams): [number, number, number, number] => {
   const sourceIsLeftOrRight = LeftOrRight.includes(sourcePosition)
   const targetIsLeftOrRight = LeftOrRight.includes(targetPosition)
@@ -54,124 +53,129 @@ export const getCenter = ({
   return [centerX, centerY, xOffset, yOffset]
 }
 
-export const DefaultEdgeProps = {
-  id: {
-    type: String as PropType<EdgeProps['id']>,
-    required: true,
-    default: 0
-  },
-  sourceX: {
-    type: Number as PropType<EdgeProps['sourceX']>,
-    required: true,
-    default: 0
-  },
-  sourceY: {
-    type: Number as PropType<EdgeProps['sourceY']>,
-    required: true,
-    default: 0
-  },
-  source: {
-    type: String as PropType<EdgeProps['source']>,
-    required: true,
-    default: 0
-  },
-  target: {
-    type: String as PropType<EdgeProps['target']>,
-    required: true,
-    default: 0
-  },
-  selected: {
-    type: Boolean as PropType<EdgeProps['selected']>,
-    required: true,
-    default: false
-  },
-  targetX: {
-    type: Number as PropType<EdgeProps['targetX']>,
-    required: true,
-    default: 0
-  },
-  targetY: {
-    type: Number as PropType<EdgeProps['targetY']>,
-    required: true,
-    default: 0
-  },
-  sourcePosition: {
-    type: String as PropType<EdgeProps['sourcePosition']>,
-    required: false,
-    default: Position.Bottom
-  },
-  targetPosition: {
-    type: String as PropType<EdgeProps['targetPosition']>,
-    required: false,
-    default: Position.Top
-  },
-  label: {
-    type: [String, Object] as PropType<EdgeProps['label']>,
-    required: false,
-    default: () => {}
-  },
-  labelStyle: {
-    type: Object as PropType<EdgeProps['labelStyle']>,
-    required: false,
-    default: undefined
-  },
-  labelShowBg: {
-    type: Boolean as PropType<EdgeProps['labelShowBg']>,
-    required: false,
-    default: true
-  },
-  labelBgStyle: {
-    type: [String, Object] as PropType<EdgeProps['labelBgStyle']>,
-    required: false,
-    default: undefined
-  },
-  labelBgPadding: {
-    type: Array as unknown as PropType<[number, number]>,
-    required: false,
-    default: undefined
-  },
-  labelBgBorderRadius: {
-    type: Number as PropType<EdgeProps['labelBgBorderRadius']>,
-    required: false,
-    default: undefined
-  },
-  arrowHeadType: {
-    type: String as PropType<EdgeProps['arrowHeadType']>,
-    required: false,
-    default: undefined
-  },
-  markerEndId: {
-    type: String as PropType<EdgeProps['markerEndId']>,
-    required: false,
-    default: undefined
-  },
-  style: {
-    type: Object as PropType<EdgeProps['style']>,
-    required: false,
-    default: undefined
-  },
-  data: {
-    type: Object as PropType<EdgeProps['data']>,
-    required: false,
-    default: () => ({} as any)
-  },
-  sourceHandleId: {
-    type: String as PropType<EdgeProps['sourceHandleId']>,
-    required: false,
-    default: undefined
-  },
-  targetHandleId: {
-    type: String as PropType<EdgeProps['targetHandleId']>,
-    required: false,
-    default: undefined
-  }
+interface GetBezierPathParams {
+  sourceX: number
+  sourceY: number
+  sourcePosition?: Position
+  targetX: number
+  targetY: number
+  targetPosition?: Position
+  centerX?: number
+  centerY?: number
 }
 
-export const EdgeSmoothProps = {
-  ...DefaultEdgeProps,
-  borderRadius: {
-    type: Number as PropType<EdgeSmoothStepProps['borderRadius']>,
-    required: false,
-    default: 5
+export function getBezierPath({
+  sourceX,
+  sourceY,
+  sourcePosition = Position.Bottom,
+  targetX,
+  targetY,
+  targetPosition = Position.Top,
+  centerX,
+  centerY,
+}: GetBezierPathParams): string {
+  const [_centerX, _centerY] = getCenter({ sourceX, sourceY, targetX, targetY })
+  const leftAndRight = [Position.Left, Position.Right]
+
+  const cX = typeof centerX !== 'undefined' ? centerX : _centerX
+  const cY = typeof centerY !== 'undefined' ? centerY : _centerY
+
+  let path = `M${sourceX},${sourceY} C${sourceX},${cY} ${targetX},${cY} ${targetX},${targetY}`
+
+  if (leftAndRight.includes(sourcePosition) && leftAndRight.includes(targetPosition)) {
+    path = `M${sourceX},${sourceY} C${cX},${sourceY} ${cX},${targetY} ${targetX},${targetY}`
+  } else if (leftAndRight.includes(targetPosition)) {
+    path = `M${sourceX},${sourceY} C${sourceX},${targetY} ${sourceX},${targetY} ${targetX},${targetY}`
+  } else if (leftAndRight.includes(sourcePosition)) {
+    path = `M${sourceX},${sourceY} C${targetX},${sourceY} ${targetX},${sourceY} ${targetX},${targetY}`
   }
+
+  return path
+}
+
+// These are some helper methods for drawing the round corners
+// The name indicates the direction of the path. "bottomLeftCorner" goes
+// from bottom to the left and "leftBottomCorner" goes from left to the bottom.
+// We have to consider the direction of the paths because of the animated lines.
+export const bottomLeftCorner = (x: number, y: number, size: number): string => `L ${x},${y - size}Q ${x},${y} ${x + size},${y}`
+export const leftBottomCorner = (x: number, y: number, size: number): string => `L ${x + size},${y}Q ${x},${y} ${x},${y - size}`
+export const bottomRightCorner = (x: number, y: number, size: number): string => `L ${x},${y - size}Q ${x},${y} ${x - size},${y}`
+export const rightBottomCorner = (x: number, y: number, size: number): string => `L ${x - size},${y}Q ${x},${y} ${x},${y - size}`
+export const leftTopCorner = (x: number, y: number, size: number): string => `L ${x + size},${y}Q ${x},${y} ${x},${y + size}`
+export const topLeftCorner = (x: number, y: number, size: number): string => `L ${x},${y + size}Q ${x},${y} ${x + size},${y}`
+export const topRightCorner = (x: number, y: number, size: number): string => `L ${x},${y + size}Q ${x},${y} ${x - size},${y}`
+export const rightTopCorner = (x: number, y: number, size: number): string => `L ${x - size},${y}Q ${x},${y} ${x},${y + size}`
+
+export interface GetSmoothStepPathParams {
+  sourceX: number
+  sourceY: number
+  sourcePosition?: Position
+  targetX: number
+  targetY: number
+  targetPosition?: Position
+  borderRadius?: number
+  centerX?: number
+  centerY?: number
+}
+
+export function getSmoothStepPath({
+  sourceX,
+  sourceY,
+  sourcePosition = Position.Bottom,
+  targetX,
+  targetY,
+  targetPosition = Position.Top,
+  borderRadius = 5,
+  centerX,
+  centerY,
+}: GetSmoothStepPathParams): string {
+  const [_centerX, _centerY, offsetX, offsetY] = getCenter({ sourceX, sourceY, targetX, targetY })
+  const cornerWidth = Math.min(borderRadius, Math.abs(targetX - sourceX))
+  const cornerHeight = Math.min(borderRadius, Math.abs(targetY - sourceY))
+  const cornerSize = Math.min(cornerWidth, cornerHeight, offsetX, offsetY)
+  const leftAndRight = [Position.Left, Position.Right]
+  const cX = typeof centerX !== 'undefined' ? centerX : _centerX
+  const cY = typeof centerY !== 'undefined' ? centerY : _centerY
+
+  let firstCornerPath
+  let secondCornerPath
+
+  if (sourceX <= targetX) {
+    firstCornerPath = sourceY <= targetY ? bottomLeftCorner(sourceX, cY, cornerSize) : topLeftCorner(sourceX, cY, cornerSize)
+    secondCornerPath = sourceY <= targetY ? rightTopCorner(targetX, cY, cornerSize) : rightBottomCorner(targetX, cY, cornerSize)
+  } else {
+    firstCornerPath = sourceY < targetY ? bottomRightCorner(sourceX, cY, cornerSize) : topRightCorner(sourceX, cY, cornerSize)
+    secondCornerPath = sourceY < targetY ? leftTopCorner(targetX, cY, cornerSize) : leftBottomCorner(targetX, cY, cornerSize)
+  }
+
+  if (leftAndRight.includes(sourcePosition) && leftAndRight.includes(targetPosition)) {
+    if (sourceX <= targetX) {
+      firstCornerPath = sourceY <= targetY ? rightTopCorner(cX, sourceY, cornerSize) : rightBottomCorner(cX, sourceY, cornerSize)
+      secondCornerPath = sourceY <= targetY ? bottomLeftCorner(cX, targetY, cornerSize) : topLeftCorner(cX, targetY, cornerSize)
+    } else if (sourcePosition === Position.Right && targetPosition === Position.Left) {
+      // and sourceX > targetX
+      firstCornerPath = sourceY <= targetY ? leftTopCorner(cX, sourceY, cornerSize) : leftBottomCorner(cX, sourceY, cornerSize)
+      secondCornerPath = sourceY <= targetY ? bottomRightCorner(cX, targetY, cornerSize) : topRightCorner(cX, targetY, cornerSize)
+    }
+  } else if (leftAndRight.includes(sourcePosition) && !leftAndRight.includes(targetPosition)) {
+    if (sourceX <= targetX) {
+      firstCornerPath =
+        sourceY <= targetY ? rightTopCorner(targetX, sourceY, cornerSize) : rightBottomCorner(targetX, sourceY, cornerSize)
+    } else {
+      firstCornerPath =
+        sourceY <= targetY ? leftTopCorner(targetX, sourceY, cornerSize) : leftBottomCorner(targetX, sourceY, cornerSize)
+    }
+    secondCornerPath = ''
+  } else if (!leftAndRight.includes(sourcePosition) && leftAndRight.includes(targetPosition)) {
+    if (sourceX <= targetX) {
+      firstCornerPath =
+        sourceY <= targetY ? bottomLeftCorner(sourceX, targetY, cornerSize) : topLeftCorner(sourceX, targetY, cornerSize)
+    } else {
+      firstCornerPath =
+        sourceY <= targetY ? bottomRightCorner(sourceX, targetY, cornerSize) : topRightCorner(sourceX, targetY, cornerSize)
+    }
+    secondCornerPath = ''
+  }
+
+  return `M ${sourceX},${sourceY}${firstCornerPath}${secondCornerPath}L ${targetX},${targetY}`
 }

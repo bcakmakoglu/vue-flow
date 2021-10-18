@@ -1,5 +1,5 @@
 import { defineComponent, inject, PropType } from 'vue'
-import Node from '../../components/Nodes/Node'
+import Node from '../../components/Nodes/NodeDepr'
 import { getNodesInside } from '../../utils/graph'
 import { NodeType, RevueFlowStore } from '../../types'
 
@@ -18,28 +18,28 @@ export default defineComponent({
     nodeTypes: {
       type: Object as PropType<NodeRendererProps['nodeTypes']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     selectNodesOnDrag: {
       type: Boolean as PropType<NodeRendererProps['selectNodesOnDrag']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     snapToGrid: {
       type: Boolean as PropType<NodeRendererProps['snapToGrid']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     snapGrid: {
       type: Array as unknown as PropType<NodeRendererProps['snapGrid']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     onlyRenderVisibleElements: {
       type: Boolean as PropType<NodeRendererProps['onlyRenderVisibleElements']>,
       required: false,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   setup(props) {
     const store = inject<RevueFlowStore>('store')!
@@ -53,19 +53,19 @@ export default defineComponent({
                 x: 0,
                 y: 0,
                 width: store?.width,
-                height: store?.height
+                height: store?.height,
               },
               store.transform,
-              true
+              true,
             )
         : store.nodes
     }
 
     return () => (
       <div
-        class="revue-flow__nodes"
+        className="revue-flow__nodes"
         style={{
-          transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`
+          transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`,
         }}
       >
         {getNodes().map((node, i) => {
@@ -90,5 +90,5 @@ export default defineComponent({
         })}
       </div>
     )
-  }
+  },
 })

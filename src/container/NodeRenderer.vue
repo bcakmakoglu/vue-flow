@@ -1,37 +1,26 @@
 <script lang="ts" setup>
-import Node from '~/components/Node.vue'
-import { NodeType, Node as TNode, Transform, Dimensions, NodeDimensionUpdate } from '~/types'
+import Node from '~/components/Nodes/Node.vue'
+import { NodeType, Node as TNode, Transform, Dimensions, RevueFlowStore } from '~/types'
 import { getNodesInside } from '~/utils/graph'
-import { getDimensions } from '~/utils'
-import { getHandleBounds } from '~/components/Nodes/utils'
 
 interface NodeRendererProps {
-  nodes: TNode[]
-  transform: Transform
   nodeTypes: Record<string, NodeType>
-  selectNodesOnDrag: boolean
-  snapToGrid: boolean
-  snapGrid: [number, number]
-  onlyRenderVisibleElements: boolean
   dimensions: Dimensions
+  transform: Transform
 }
 
 const props = withDefaults(defineProps<NodeRendererProps>(), {
-  selectNodesOnDrag: true,
-  snapGrid: () => [15, 15],
-  snapToGrid: false,
-  onlyRenderVisibleElements: false,
   transform: () => [0, 0, 1],
-  nodes: () => [],
   dimensions: () => ({ width: 0, height: 0 }),
 })
 
-const nodes = ref(props.nodes)
-const getNodes = () =>
-  props.onlyRenderVisibleElements
-    ? nodes.value &&
+const store = inject<RevueFlowStore>('store')!
+
+const getNodes = computed(() =>
+  store.onlyRenderVisibleElements
+    ? store.nodes &&
       getNodesInside(
-        nodes.value,
+        store.nodes,
         {
           x: 0,
           y: 0,
@@ -41,9 +30,8 @@ const getNodes = () =>
         props.transform,
         true,
       )
-    : nodes.value
-
-const cNodes = computed(() => getNodes())
+    : store.nodes,
+)
 
 const type = (node: TNode) => {
   const nodeType = node.type || 'default'
@@ -54,65 +42,23 @@ const type = (node: TNode) => {
   return type
 }
 
-const updateNodeDimensions = (updates: NodeDimensionUpdate[]) => {
-  nodes.value = nodes.value.map((node) => {
-    const update = updates.find((u) => u.id === node.id)
-    if (update) {
-      const dimensions = getDimensions(update.nodeElement)
-      const doUpdate =
-        dimensions.width &&
-        dimensions.height &&
-        (node.__rf.width !== dimensions.width || node.__rf.height !== dimensions.height || update.forceUpdate)
-
-      if (doUpdate) {
-        const handleBounds = getHandleBounds(update.nodeElement, props.transform[2])
-
-        return {
-          ...node,
-          __rf: {
-            ...node.__rf,
-            ...dimensions,
-            handleBounds,
-          },
-        }
-      }
-    }
-
-    return node
-  })
-}
+const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id === nodeId)
 </script>
 <template>
   <div
     class="revue-flow__nodes"
     :style="{ transform: `translate(${props.transform[0]}px,${props.transform[1]}px) scale(${props.transform[2]})` }"
   >
-    <template v-for="(node, i) of cNodes" :key="`node-${i}`">
+    <template v-for="(node, i) of getNodes" :key="`node-${i}`">
       <Node
         :node="node"
-        :snap-grid="props.snapGrid"
-        :snap-to-grid="props.snapToGrid"
-        :select-nodes-on-drag="props.selectNodesOnDrag"
+        :type="type(node)"
         :scale="props.transform[2]"
-        @updateNodeDimensions="updateNodeDimensions"
-      >
-        <template #default="{ selected, isConnectable }">
-          <component
-            :is="type(node)"
-            v-bind="{
-              data: node.data,
-              type: node.type,
-              xPos: node.__rf.position.x,
-              yPos: node.__rf.position.y,
-              selected: selected,
-              isConnectable: isConnectable,
-              sourcePosition: node.sourcePosition,
-              targetPosition: node.targetPosition,
-              isDragging: node.__rf.isDragging,
-            }"
-          />
-        </template>
-      </Node>
+        :selected="selected(node.id)"
+        :selectable="node.selectable || store.elementsSelectable"
+        :connectable="node.connectable || store.nodesConnectable"
+        :draggable="node.draggable || store.nodesDraggable"
+      />
     </template>
   </div>
 </template>

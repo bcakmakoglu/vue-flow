@@ -17,5 +17,8 @@ export const clampPosition = (position: XYPosition, extent: NodeExtent): XYPosit
   y: clamp(position.y, extent[0][1], extent[1][1]),
 })
 
-export const getHostForElement = (element: HTMLElement): Document | ShadowRoot =>
-  (element.getRootNode() as Document | ShadowRoot) || window.document
+export const getHostForElement = (element: HTMLElement): Document => {
+  const doc = element.getRootNode() as Document
+  if ('getElementFromPoint' in doc) return doc
+  else return window.document
+}

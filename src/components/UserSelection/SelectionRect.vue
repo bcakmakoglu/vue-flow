@@ -1,0 +1,20 @@
+<script lang="ts" setup>
+interface SelectionRectProps {
+  width: number
+  height: number
+  x: number
+  y: number
+}
+
+const props = defineProps<SelectionRectProps>()
+</script>
+<template>
+  <div
+    class="revue-flow__selection"
+    :style="{
+      width: `${props.width}px`,
+      height: `${props.height}px`,
+      transform: `translate(${props.x}px, ${props.y}px)`,
+    }"
+  />
+</template>

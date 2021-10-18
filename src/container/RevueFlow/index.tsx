@@ -2,9 +2,9 @@ import { PropType } from 'vue'
 import '../../style.css'
 import '../../theme-default.css'
 import GraphView from '../GraphView'
-import DefaultNode from '../../components/Nodes/DefaultNode'
-import InputNode from '../../components/Nodes/InputNode'
-import OutputNode from '../../components/Nodes/OutputNode'
+import DefaultNode from '../../components/Nodes/DefaultNodeDepr'
+import InputNode from '../../components/Nodes/InputNodeDepr'
+import OutputNode from '../../components/Nodes/OutputNodeDepr'
 import { createNodeTypes } from '../NodeRenderer/utils'
 import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '../../components/Edges'
 import { createEdgeTypes } from '../EdgeRenderer/utils'
@@ -16,14 +16,14 @@ import { RevueFlowHooks, useRevueFlow } from '../../hooks/RevueFlowHooks'
 const defaultNodeTypes = {
   input: InputNode,
   default: DefaultNode,
-  output: OutputNode
+  output: OutputNode,
 }
 
 const defaultEdgeTypes = {
   default: BezierEdge,
   straight: StraightEdge,
   step: StepEdge,
-  smoothstep: SmoothStepEdge
+  smoothstep: SmoothStepEdge,
 }
 
 export default defineComponent({
@@ -33,189 +33,189 @@ export default defineComponent({
     modelValue: {
       type: Array as PropType<RevueFlowProps['modelValue']>,
       required: false,
-      default: () => []
+      default: () => [],
     },
     nodeTypesId: {
       type: String as PropType<RevueFlowProps['nodeTypesId']>,
       required: false,
-      default: '1'
+      default: '1',
     },
     edgeTypesId: {
       type: String as PropType<RevueFlowProps['edgeTypesId']>,
       required: false,
-      default: '1'
+      default: '1',
     },
     nodeTypes: {
       type: Object as PropType<RevueFlowProps['nodeTypes']>,
       required: false,
-      default: () => defaultNodeTypes
+      default: () => defaultNodeTypes,
     },
     edgeTypes: {
       type: Object as PropType<RevueFlowProps['edgeTypes']>,
       required: false,
-      default: () => defaultEdgeTypes
+      default: () => defaultEdgeTypes,
     },
     connectionMode: {
       type: String as PropType<RevueFlowProps['connectionMode']>,
       required: false,
-      default: ConnectionMode.Strict
+      default: ConnectionMode.Strict,
     },
     connectionLineType: {
       type: String as PropType<RevueFlowProps['connectionLineType']>,
       required: false,
-      default: ConnectionLineType.Bezier
+      default: ConnectionLineType.Bezier,
     },
     connectionLineStyle: {
       type: Object as PropType<RevueFlowProps['connectionLineStyle']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     connectionLineComponent: {
       type: Object as PropType<RevueFlowProps['connectionLineComponent']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     selectionKeyCode: {
       type: [Number, String] as PropType<RevueFlowProps['selectionKeyCode']>,
       required: false,
-      default: 'Shift'
+      default: 'Shift',
     },
     multiSelectionKeyCode: {
       type: [Number, String] as PropType<RevueFlowProps['multiSelectionKeyCode']>,
       required: false,
-      default: 'Meta'
+      default: 'Meta',
     },
     zoomActivationKeyCode: {
       type: [Number, String] as PropType<RevueFlowProps['zoomActivationKeyCode']>,
       required: false,
-      default: 'Meta'
+      default: 'Meta',
     },
     deleteKeyCode: {
       type: [Number, String] as PropType<RevueFlowProps['deleteKeyCode']>,
       required: false,
-      default: 'Backspace'
+      default: 'Backspace',
     },
     snapToGrid: {
       type: Boolean as PropType<RevueFlowProps['snapToGrid']>,
       required: false,
-      default: false
+      default: false,
     },
     snapGrid: {
       type: Array as unknown as PropType<RevueFlowProps['snapGrid']>,
       required: false,
-      default: () => [15, 15]
+      default: () => [15, 15],
     },
     onlyRenderVisibleElements: {
       type: Boolean as PropType<RevueFlowProps['onlyRenderVisibleElements']>,
       required: false,
-      default: false
+      default: false,
     },
     nodesDraggable: {
       type: Boolean as PropType<RevueFlowProps['nodesDraggable']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     nodesConnectable: {
       type: Boolean as PropType<RevueFlowProps['nodesConnectable']>,
       required: false,
-      default: true
+      default: true,
     },
     elementsSelectable: {
       type: Boolean as PropType<RevueFlowProps['elementsSelectable']>,
       required: false,
-      default: true
+      default: true,
     },
     selectNodesOnDrag: {
       type: Boolean as PropType<RevueFlowProps['selectNodesOnDrag']>,
       required: false,
-      default: true
+      default: true,
     },
     minZoom: {
       type: Number as PropType<RevueFlowProps['minZoom']>,
       required: false,
-      default: 0.5
+      default: 0.5,
     },
     maxZoom: {
       type: Number as PropType<RevueFlowProps['maxZoom']>,
       required: false,
-      default: 2
+      default: 2,
     },
     defaultZoom: {
       type: Number as PropType<RevueFlowProps['defaultZoom']>,
       required: false,
-      default: 1
+      default: 1,
     },
     defaultPosition: {
       type: Array as unknown as PropType<RevueFlowProps['defaultPosition']>,
       required: false,
-      default: () => [0, 0]
+      default: () => [0, 0],
     },
     translateExtent: {
       type: Array as unknown as PropType<RevueFlowProps['translateExtent']>,
       required: false,
       default: () => [
         [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-        [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY]
-      ]
+        [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
+      ],
     },
     nodeExtent: {
       type: Array as unknown as PropType<RevueFlowProps['nodeExtent']>,
       required: false,
       default: () => [
         [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-        [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY]
-      ]
+        [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
+      ],
     },
     arrowHeadColor: {
       type: String as PropType<RevueFlowProps['arrowHeadColor']>,
       required: false,
-      default: '#b1b1b7'
+      default: '#b1b1b7',
     },
     markerEndId: {
       type: String as PropType<RevueFlowProps['markerEndId']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     zoomOnScroll: {
       type: Boolean as PropType<RevueFlowProps['zoomOnScroll']>,
       required: false,
-      default: true
+      default: true,
     },
     zoomOnPinch: {
       type: Boolean as PropType<RevueFlowProps['zoomOnPinch']>,
       required: false,
-      default: true
+      default: true,
     },
     panOnScroll: {
       type: Boolean as PropType<RevueFlowProps['panOnScroll']>,
       required: false,
-      default: false
+      default: false,
     },
     panOnScrollSpeed: {
       type: Number as PropType<RevueFlowProps['panOnScrollSpeed']>,
       required: false,
-      default: 0.5
+      default: 0.5,
     },
     panOnScrollMode: {
       type: String as PropType<RevueFlowProps['panOnScrollMode']>,
       required: false,
-      default: PanOnScrollMode.Free
+      default: PanOnScrollMode.Free,
     },
     zoomOnDoubleClick: {
       type: Boolean as PropType<RevueFlowProps['zoomOnDoubleClick']>,
       required: false,
-      default: true
+      default: true,
     },
     paneMoveable: {
       type: Boolean as PropType<RevueFlowProps['paneMoveable']>,
       required: false,
-      default: true
+      default: true,
     },
     edgeUpdaterRadius: {
       type: Number as PropType<RevueFlowProps['edgeUpdaterRadius']>,
       required: false,
-      default: 10
-    }
+      default: 10,
+    },
   },
   emits: Object.keys(useRevueFlow()),
   setup(props, { emit, slots }) {
@@ -240,7 +240,7 @@ export default defineComponent({
     })
 
     return () => (
-      <div class="revue-flow">
+      <div className="revue-flow">
         <GraphView
           nodeTypes={createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })}
           edgeTypes={createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })}
@@ -279,5 +279,5 @@ export default defineComponent({
         {slots.default ? slots.default() : ''}
       </div>
     )
-  }
+  },
 })

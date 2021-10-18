@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import '~/style.css'
 import '~/theme-default.css'
-import { CSSProperties } from 'vue'
+import { CSSProperties, onBeforeUnmount } from 'vue'
 import ZoomPane from './ZoomPane.vue'
 import SelectionPane from './SelectionPane.vue'
 import NodeRenderer from '~/container/NodeRenderer.vue'
@@ -12,11 +12,9 @@ import {
   Elements,
   PanOnScrollMode,
   RevueFlowStore,
-  Node,
-  Edge,
   NodeType,
   EdgeType,
-  ConnectionLineComponent,
+  CustomConnectionLine,
   KeyCode,
   TranslateExtent,
   NodeExtent,
@@ -25,21 +23,18 @@ import { RevueFlowHooks, useRevueFlow } from '~/hooks/RevueFlowHooks'
 import configureStore from '~/store/configure-store'
 import { initialState } from '~/store'
 import { createNodeTypes } from '~/container/NodeRenderer/utils'
-import InputNode from '~/components/Nodes/InputNode'
-import DefaultNode from '~/components/Nodes/DefaultNode'
-import OutputNode from '~/components/Nodes/OutputNode'
+import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { createEdgeTypes } from '~/container/EdgeRenderer/utils'
-import { isEdge, isNode, parseEdge, parseNode } from '~/utils/graph'
 
 interface RevueFlowProps {
-  modelValue: Elements
+  elements: Elements
   nodeTypes?: Record<string, NodeType>
   edgeTypes?: Record<string, EdgeType>
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
-  connectionLineComponent?: ConnectionLineComponent
+  connectionLineComponent?: CustomConnectionLine
   deleteKeyCode?: KeyCode
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode
@@ -69,11 +64,6 @@ interface RevueFlowProps {
   edgeUpdaterRadius?: number
 }
 
-type NextElements = {
-  nextNodes: Node[]
-  nextEdges: Edge[]
-}
-
 const props = withDefaults(defineProps<RevueFlowProps>(), {
   modelValue: () => [] as Elements,
   connectionMode: ConnectionMode.Strict,
@@ -86,6 +76,7 @@ const props = withDefaults(defineProps<RevueFlowProps>(), {
   snapGrid: () => [15, 15],
   onlyRenderVisibleElements: false,
   nodesConnectable: true,
+  nodesDraggable: true,
   elementsSelectable: true,
   selectNodesOnDrag: true,
   minZoom: 0.5,
@@ -112,102 +103,65 @@ const props = withDefaults(defineProps<RevueFlowProps>(), {
 })
 const emit = defineEmits(Object.keys(useRevueFlow()))
 
-const store = configureStore(initialState)()
-provide<RevueFlowStore>('store', store)
+const defaultNodeTypes: Record<string, NodeType> = {
+  input: InputNode as NodeType,
+  default: DefaultNode as NodeType,
+  output: OutputNode as NodeType,
+}
+
+const defaultEdgeTypes: Record<string, EdgeType> = {
+  default: BezierEdge as EdgeType,
+  straight: StraightEdge as EdgeType,
+  step: StepEdge as EdgeType,
+  smoothstep: SmoothStepEdge as EdgeType,
+}
+
+let store = inject<RevueFlowStore>('store')
+if (!store) {
+  store = configureStore({
+    ...initialState,
+    ...props,
+  })()
+  provide<RevueFlowStore>('store', store)
+}
+
+onBeforeUnmount(() => store?.$dispose())
+
+store.setElements(props.elements)
+store.setMinZoom(props.minZoom)
+store.setMaxZoom(props.maxZoom)
+store.setTranslateExtent(props.translateExtent)
+store.setNodeExtent(props.nodeExtent)
 
 const hooks = useRevueFlow().bind(emit)
 provide<RevueFlowHooks>('hooks', hooks)
 
-const elements = useVModel(props, 'modelValue', emit)
-
-const defaultNodeTypes = {
-  input: InputNode,
-  default: DefaultNode,
-  output: OutputNode,
-}
-
-const defaultEdgeTypes = {
-  default: BezierEdge,
-  straight: StraightEdge,
-  step: StepEdge,
-  smoothstep: SmoothStepEdge,
-}
-
 const nodeTypes = createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })
 const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
-const nodes = ref<Node[]>([])
-const edges = ref<Edge[]>([])
-
-const setElements = (elements: Elements) => {
-  const propElements = elements
-  const nextElements: NextElements = {
-    nextNodes: [],
-    nextEdges: [],
-  }
-  const { nextNodes, nextEdges } = propElements.reduce((res, propElement): NextElements => {
-    if (isNode(propElement)) {
-      const storeNode = nodes.value.find((node) => node.id === propElement.id)
-
-      if (storeNode) {
-        const updatedNode: Node = {
-          ...storeNode,
-          ...propElement,
-        }
-
-        if (storeNode.position.x !== propElement.position.x || storeNode.position.y !== propElement.position.y) {
-          updatedNode.__rf.position = propElement.position
-        }
-
-        if (typeof propElement.type !== 'undefined' && propElement.type !== storeNode.type) {
-          // we reset the elements dimensions here in order to force a re-calculation of the bounds.
-          // When the type of a node changes it is possible that the number or positions of handles changes too.
-          updatedNode.__rf.width = null
-        }
-
-        res.nextNodes.push(updatedNode)
-      } else {
-        res.nextNodes.push(parseNode(propElement, props.nodeExtent))
-      }
-    } else if (isEdge(propElement)) {
-      const storeEdge = edges.value.find((se) => se.id === propElement.id)
-
-      if (storeEdge) {
-        res.nextEdges.push({
-          ...storeEdge,
-          ...propElement,
-        })
-      } else {
-        res.nextEdges.push(parseEdge(propElement))
-      }
-    }
-
-    return res
-  }, nextElements)
-
-  nodes.value = nextNodes
-  edges.value = nextEdges
-}
-
-setElements(elements.value)
 </script>
 <template>
   <div class="revue-flow">
-    <ZoomPane>
+    <ZoomPane
+      :selection-key-code="props.selectionKeyCode"
+      :zoom-activation-key-code="props.zoomActivationKeyCode"
+      :default-zoom="props.defaultZoom"
+      :default-position="props.defaultPosition"
+      :zoom-on-scroll="props.zoomOnScroll"
+      :zoom-on-pinch="props.zoomOnPinch"
+      :zoom-on-double-click="props.zoomOnDoubleClick"
+      :pan-on-scroll="props.panOnScroll"
+      :pan-on-scroll-speed="props.panOnScrollSpeed"
+      :pan-on-scroll-mode="props.panOnScrollMode"
+      :pane-moveable="props.paneMoveable"
+    >
       <template #default="{ transform, dimensions }">
         <SelectionPane
           :delete-key-code="props.deleteKeyCode"
           :multi-selection-key-code="props.multiSelectionKeyCode"
           :selection-key-code="props.selectionKeyCode"
         >
-          <NodeRenderer v-bind="props" :node-types="nodeTypes" :nodes="nodes" :transform="transform" :dimensions="dimensions" />
-          <EdgeRenderer
-            v-if="false"
-            v-bind="props"
-            :edge-types="edgeTypes"
-            :edges="edges"
-            :transform="transform"
-            :dimensions="dimensions"
-          />
+          <NodeRenderer :node-types="nodeTypes" :transform="transform" :dimensions="dimensions" />
+          <EdgeRenderer :edge-types="edgeTypes" :transform="transform" :dimensions="dimensions" />
         </SelectionPane>
       </template>
     </ZoomPane>

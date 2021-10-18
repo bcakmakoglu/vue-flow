@@ -1,3 +1,4 @@
+import { Ref } from 'vue'
 import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '~/components/Edges'
 import { rectToBox } from '~/utils/graph'
 import { Position, Node, XYPosition, ElementId, HandleElement, Transform, Edge, EdgeType } from '~/types'
@@ -137,12 +138,12 @@ export function isEdgeVisible({ sourcePos, targetPos, width, height, transform }
 }
 
 type SourceTargetNode = {
-  sourceNode: Node | null
-  targetNode: Node | null
+  sourceNode: Node
+  targetNode: Node
 }
 
-export const getSourceTargetNodes = (edge: Edge, nodes: Node[]): SourceTargetNode => {
-  return nodes.reduce(
+export const getSourceTargetNodes = (edge: Edge, nodes: Node[]): Ref<SourceTargetNode> => {
+  const sourceTargetNode: SourceTargetNode = nodes.reduce(
     (res, node) => {
       if (node.id === edge.source) {
         res.sourceNode = node
@@ -152,6 +153,8 @@ export const getSourceTargetNodes = (edge: Edge, nodes: Node[]): SourceTargetNod
       }
       return res
     },
-    { sourceNode: null, targetNode: null } as SourceTargetNode,
+    { sourceNode: null, targetNode: null } as any,
   )
+
+  return ref(sourceTargetNode)
 }
