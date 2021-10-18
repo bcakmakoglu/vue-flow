@@ -1,31 +1,29 @@
 <script lang="ts" setup>
-import { inject } from 'vue'
 import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 import useKeyPress from '~/hooks/useKeyPress'
-import { KeyCode } from '~/types'
+import { KeyCode, RevueFlowStore } from '~/types'
 import useGlobalKeyHandler from '~/hooks/useGlobalKeyHandler'
+import NodesSelection from '~/components/NodesSelection/NodesSelection.vue'
+import UserSelection from '~/components/UserSelection/UserSelection.vue'
 
-const props = withDefaults(
-  defineProps<{
-    selectionKeyCode: KeyCode
-    deleteKeyCode: KeyCode
-    multiSelectionKeyCode: KeyCode
-  }>(),
-  {
-    selectionKeyCode: 'Shift',
-    deleteKeyCode: 'Backspace',
-    multiSelectionKeyCode: 'Meta',
-  },
-)
+interface SelectionPaneProps {
+  selectionKeyCode?: KeyCode
+  deleteKeyCode?: KeyCode
+  multiSelectionKeyCode?: KeyCode
+}
+const props = withDefaults(defineProps<SelectionPaneProps>(), {
+  selectionKeyCode: 'Shift',
+  deleteKeyCode: 'Backspace',
+  multiSelectionKeyCode: 'Meta',
+})
+const store = inject<RevueFlowStore>('store')!
 const hooks = inject<RevueFlowHooks>('hooks')!
 const keyPressed = useKeyPress(props.selectionKeyCode)
-const nodeSelectionActive = ref(false)
-const selectedElements = ref([])
 
 const onClick = (event: MouseEvent) => {
   hooks.paneClick.trigger(event)
-  nodeSelectionActive.value = false
-  selectedElements.value = []
+  store.unsetNodesSelection()
+  store.resetSelectedElements()
 }
 
 const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event)
@@ -37,10 +35,13 @@ useGlobalKeyHandler({
   deleteKeyCode: props.deleteKeyCode,
   multiSelectionKeyCode: props.multiSelectionKeyCode,
 })
+
+const userSelectionVisible = computed(() => keyPressed.value && (store.selectionActive || store.elementsSelectable))
+const nodesSelectionVisible = computed(() => store.nodesSelectionActive)
 </script>
 <template>
   <slot></slot>
-  <div v-if="keyPressed" id="user-selection">User Selection</div>
-  <div v-if="nodeSelectionActive" id="nodes-selection">Nodes Selection</div>
+  <UserSelection v-if="userSelectionVisible" id="user-selection" />
+  <NodesSelection v-if="nodesSelectionVisible" id="nodes-selection" />
   <div class="revue-flow__pane" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
 </template>

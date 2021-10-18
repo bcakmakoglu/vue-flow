@@ -1,24 +1,23 @@
-import { ZoomBehavior, Selection } from 'd3'
 import { Store } from 'pinia'
-import { ElementId, Elements, Rect, SelectionRect, SnapGrid, Transform, XYPosition } from './types'
+import { Dimensions, ElementId, Elements, Rect, SelectionRect, SnapGrid, Transform, XYPosition } from './types'
 import { HandleType } from './handle'
 import { ConnectionMode, OnConnectEndFunc, OnConnectFunc, OnConnectStartFunc, OnConnectStopFunc } from './connection'
 import { Edge } from './edge'
 import { Node, NodeExtent, TranslateExtent } from './node'
 import { RevueFlowActions } from './actions'
+import { D3Selection, D3Zoom, D3ZoomHandler } from '~/types/panel'
 
 export interface RevueFlowState {
-  width: number
-  height: number
+  dimensions: Dimensions
   transform: Transform
   nodes: Node[]
   edges: Edge[]
-  selectedElements: Elements | null
+  selectedElements?: Elements
   selectedNodesBbox: Rect
 
-  d3Zoom: ZoomBehavior<Element, unknown> | null
-  d3Selection: Selection<Element, unknown, null, undefined> | null
-  d3ZoomHandler: ((this: Element, event: any, d: unknown) => void) | undefined
+  d3Zoom?: D3Zoom
+  d3Selection?: D3Selection
+  d3ZoomHandler?: D3ZoomHandler
   minZoom: number
   maxZoom: number
   translateExtent: TranslateExtent
@@ -29,10 +28,10 @@ export interface RevueFlowState {
 
   userSelectionRect: SelectionRect
 
-  connectionNodeId: ElementId | null
-  connectionHandleId: ElementId | null
-  connectionHandleType: HandleType | null
-  connectionPosition: XYPosition
+  connectionNodeId?: ElementId
+  connectionHandleId?: ElementId
+  connectionHandleType?: HandleType
+  connectionPosition?: XYPosition
   connectionMode: ConnectionMode
 
   snapToGrid: boolean

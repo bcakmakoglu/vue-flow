@@ -1,4 +1,4 @@
-import { DefineComponent, HTMLAttributes, VNode } from 'vue'
+import { DefineComponent, VNode } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './types'
 import { Connection } from './connection'
 
@@ -51,17 +51,6 @@ export interface EdgeProps<T = any> {
 
 export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
   borderRadius?: number
-}
-
-export interface EdgeTextProps extends HTMLAttributes {
-  x: number
-  y: number
-  label?: string | VNode
-  labelStyle?: any
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
 }
 
 export type EdgeType = DefineComponent<EdgeSmoothStepProps>

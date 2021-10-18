@@ -1,6 +1,4 @@
-import DefaultNode from '~/components/Nodes/DefaultNode'
-import InputNode from '~/components/Nodes/InputNode'
-import OutputNode from '~/components/Nodes/OutputNode'
+import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { NodeType } from '~/types'
 
 export function createNodeTypes(nodeTypes: Record<string, NodeType>): Record<string, NodeType> {

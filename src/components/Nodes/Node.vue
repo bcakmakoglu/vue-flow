@@ -1,37 +1,31 @@
 <script lang="ts" setup>
-import { computed, inject, onMounted, provide } from 'vue'
 import { DraggableEventListener } from '@braks/revue-draggable'
 import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
-import { Node, RevueFlowStore, NodeDimensionUpdate } from '~/types'
+import { Node, NodeDimensionUpdate, NodeType, RevueFlowStore } from '~/types'
 
 interface NodeProps {
   node: Node
-  snapToGrid?: boolean
-  snapGrid?: [number, number]
-  scale?: number
-  selectNodesOnDrag: boolean
+  type: NodeType
+  selected?: boolean
+  draggable?: boolean
+  selectable?: boolean
+  connectable?: boolean
+  selectNodesOnDrag?: boolean
 }
 
 const props = withDefaults(defineProps<NodeProps>(), {
+  selected: false,
+  draggable: true,
+  selectable: true,
+  connectable: true,
   selectNodesOnDrag: true,
-  scale: 1,
 })
-const emit = defineEmits(['updateNodeDimensions'])
 
 const store = inject<RevueFlowStore>('store')!
 const hooks = inject<RevueFlowHooks>('hooks')!
 provide('NodeIdContext', props.node.id)
 
-const nodeElement = templateRef<HTMLDivElement>('nodeElement', null)
-
-const selected = computed(() => store.selectedElements?.some(({ id }) => id === props.node.id) || false)
-const isDraggable = computed(() => props.node.draggable || (store.nodesDraggable && typeof props.node.draggable === 'undefined'))
-const isSelectable = computed(
-  () => props.node.selectable || (store.elementsSelectable && typeof props.node.selectable === 'undefined'),
-)
-const isConnectable = computed(
-  () => props.node.connectable || (store.nodesConnectable && typeof props.node.connectable === 'undefined'),
-)
+const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
 const onMouseEnterHandler = () => {
   if (props.node.__rf.isDragging) {
@@ -62,12 +56,12 @@ const onContextMenuHandler = () => {
 }
 
 const onSelectNodeHandler = (event: MouseEvent) => {
-  if (!isDraggable.value) {
+  if (!props.draggable) {
     const n = props.node
-    if (isSelectable.value) {
+    if (props.selectable) {
       store.unsetNodesSelection()
 
-      if (!selected.value) {
+      if (!props.selected) {
         store.addSelectedElements([n])
       }
     }
@@ -80,13 +74,13 @@ const onDragStart: DraggableEventListener = ({ event }) => {
   const n = props.node
   hooks.nodeDragStart.trigger({ event, node: n })
 
-  if (props.selectNodesOnDrag && isSelectable.value) {
+  if (props.selectNodesOnDrag && props.selectable) {
     store.unsetNodesSelection()
 
-    if (!selected.value) {
+    if (!props.selected) {
       store.addSelectedElements([n])
     }
-  } else if (!props.selectNodesOnDrag && !selected.value && isSelectable.value) {
+  } else if (!props.selectNodesOnDrag && !props.selected && props.selectable) {
     store.unsetNodesSelection()
     store.addSelectedElements([])
   }
@@ -98,8 +92,8 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
   n.position.y += data.deltaY
   hooks.nodeDrag.trigger({ event, node: n })
 
-  store?.updateNodePosDiff({
-    id: props.node.id as string,
+  store.updateNodePosDiff({
+    id: props.node.id,
     diff: {
       x: data.deltaX,
       y: data.deltaY,
@@ -113,7 +107,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
   if (!props.node.__rf.isDragging) {
-    if (isSelectable.value && !props.selectNodesOnDrag && !selected.value) {
+    if (props.selectable && !props.selectNodesOnDrag && !props.selected) {
       store.addSelectedElements([n])
     }
 
@@ -135,12 +129,11 @@ useResizeObserver(nodeElement, (entries) => {
     id: entry.target.getAttribute('data-id') as string,
     nodeElement: entry.target as HTMLDivElement,
   }))
-
-  emit('updateNodeDimensions', updates)
+  store.updateNodeDimensions(updates)
 })
 
 onMounted(() => {
-  emit('updateNodeDimensions', [
+  store.updateNodeDimensions([
     {
       id: props.node.id,
       nodeElement: nodeElement.value,
@@ -154,28 +147,28 @@ onMounted(() => {
   <DraggableCore
     v-if="!props.node.isHidden"
     cancel=".nodrag"
-    :scale="props.scale"
-    :disabled="!isDraggable"
-    :grid="props.snapGrid"
+    :disabled="!props.draggable"
+    :scale="store.transform[2]"
+    :grid="store.snapToGrid ? store.snapGrid : undefined"
     :enable-user-select-hack="false"
     @start="onDragStart"
     @move="onDrag"
     @stop="onDragStop"
   >
     <div
-      ref="nodeElement"
+      ref="node-element"
       :class="[
         'revue-flow__node',
         `revue-flow__node-${props.node.type}`,
         {
-          selected: selected,
-          selectable: isSelectable,
+          selected: props.selected,
+          selectable: props.selectable,
         },
       ]"
       :style="{
-        zIndex: selected ? 10 : 3,
+        zIndex: props.selected ? 10 : 3,
         transform: `translate(${props.node.__rf.position.x}px,${props.node.__rf.position.y}px)`,
-        pointerEvents: isSelectable || isDraggable ? 'all' : 'none',
+        pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
         opacity: props.node.__rf.width !== null && props.node.__rf.height !== null ? 1 : 0,
         ...props.node.style,
       }"
@@ -186,7 +179,20 @@ onMounted(() => {
       @contextmenu="onContextMenuHandler"
       @click="onSelectNodeHandler"
     >
-      <slot :selected="selected" :isConnectable="isConnectable"></slot>
+      <component
+        :is="props.type"
+        v-bind="{
+          data: props.node.data,
+          type: props.node.type,
+          xPos: props.node.__rf.position.x,
+          yPos: props.node.__rf.position.y,
+          selected: props.selected,
+          connectable: props.connectable,
+          sourcePosition: props.node.sourcePosition,
+          targetPosition: props.node.targetPosition,
+          dragging: props.node.__rf.isDragging,
+        }"
+      />
     </div>
   </DraggableCore>
 </template>

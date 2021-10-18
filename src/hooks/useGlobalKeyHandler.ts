@@ -1,7 +1,6 @@
-import { computed, watch } from 'vue'
 import useKeyPress from './useKeyPress'
 import { isNode, getConnectedEdges } from '~/utils/graph'
-import { Elements, KeyCode, ElementId, FlowElement, RevueFlowStore, Edge } from '~/types'
+import { Elements, KeyCode, ElementId, FlowElement, RevueFlowStore } from '~/types'
 
 interface HookParams {
   deleteKeyCode: KeyCode
@@ -9,19 +8,14 @@ interface HookParams {
   onElementsRemove?: (elements: Elements) => void
 }
 
-export default ({ deleteKeyCode, multiSelectionKeyCode, onElementsRemove }: HookParams): void => {
-  const selectedElements = ref([])
-  const deleteKeyPressed = useKeyPress(deleteKeyCode)
-  const multiSelectionKeyPressed = useKeyPress(multiSelectionKeyCode)
-  /**
-   *   const selectedElements = computed(() => store.selectedElements || [])
-   const edges = computed(() => store.edges)
+export default ({ deleteKeyCode, multiSelectionKeyCode, onElementsRemove = () => {} }: HookParams): void => {
+  const store = inject<RevueFlowStore>('store')!
 
-   watch(selectedElements, () => {
-    if (onElementsRemove && deleteKeyPressed.value && selectedElements.value.length > 0) {
-      const selectedNodes = selectedElements.value.filter(isNode)
-      const connectedEdges = getConnectedEdges(selectedNodes, edges.value as Edge[])
-      const elementsToRemove = [...selectedElements.value, ...connectedEdges].reduce(
+  useKeyPress(deleteKeyCode, (keyPressed) => {
+    if (keyPressed && store.selectedElements) {
+      const selectedNodes = store.selectedElements.filter(isNode)
+      const connectedEdges = getConnectedEdges(selectedNodes, store.edges)
+      const elementsToRemove = [...store.selectedElements, ...connectedEdges].reduce(
         (res, item) => res.set(item.id, item),
         new Map<ElementId, FlowElement>(),
       )
@@ -32,8 +26,5 @@ export default ({ deleteKeyCode, multiSelectionKeyCode, onElementsRemove }: Hook
     }
   })
 
-   watch(multiSelectionKeyPressed, () => {
-    store.multiSelectionActive = multiSelectionKeyPressed.value
-  })
-   */
+  useKeyPress(multiSelectionKeyCode, (keyPressed) => (store.multiSelectionActive = keyPressed))
 }

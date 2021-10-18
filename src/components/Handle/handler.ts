@@ -1,6 +1,6 @@
-import { getHostForElement } from '../../utils'
-import { ElementId, ConnectionMode, Connection, HandleType, RevueFlowStore } from '../../types'
-import { RevueFlowHooks } from '../../hooks/RevueFlowHooks'
+import { getHostForElement } from '~/utils'
+import { ElementId, ConnectionMode, Connection, HandleType, XYPosition, RevueFlowStore } from '~/types'
+import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 
 export type ValidConnectionFunc = (connection: Connection) => boolean
 
@@ -19,7 +19,7 @@ function checkElementBelowIsValid(
   nodeId: ElementId,
   handleId: ElementId | null,
   isValidConnection: ValidConnectionFunc,
-  doc: Document | ShadowRoot
+  doc: Document,
 ) {
   const elementBelow = doc.elementFromPoint(event.clientX, event.clientY)
   const elementBelowIsTarget = elementBelow?.classList.contains('target') || false
@@ -29,7 +29,7 @@ function checkElementBelowIsValid(
     elementBelow,
     isValid: false,
     connection: { source: null, target: null, sourceHandle: null, targetHandle: null },
-    isHoveringHandle: false
+    isHoveringHandle: false,
   }
 
   if (elementBelow && (elementBelowIsTarget || elementBelowIsSource)) {
@@ -47,13 +47,13 @@ function checkElementBelowIsValid(
             source: elementBelowNodeId,
             sourceHandle: elementBelowHandleId,
             target: nodeId,
-            targetHandle: handleId
+            targetHandle: handleId,
           }
         : {
             source: nodeId,
             sourceHandle: handleId,
             target: elementBelowNodeId,
-            targetHandle: elementBelowHandleId
+            targetHandle: elementBelowHandleId,
           }
 
       result.connection = connection
@@ -79,11 +79,11 @@ export function onMouseDown(
     connect: RevueFlowHooks['connect']
     edgeUpdateEnd: RevueFlowHooks['edgeUpdateEnd']
   },
-  handleId: ElementId | null,
+  handleId: ElementId,
   nodeId: ElementId,
   isTarget: boolean,
-  isValidConnection: ValidConnectionFunc,
-  elementEdgeUpdaterType?: HandleType
+  isValidConnection: ValidConnectionFunc = () => true,
+  elementEdgeUpdaterType?: HandleType,
 ): void {
   const revueFlowNode = (event.target as Element).closest('.revue-flow')
   // when revue-flow is used inside a shadow root we can't use document
@@ -101,23 +101,29 @@ export function onMouseDown(
     return
   }
 
-  const handleType = elementEdgeUpdaterType ? elementEdgeUpdaterType : elementBelowIsTarget ? 'target' : 'source'
+  const handleType = elementEdgeUpdaterType || (elementBelowIsTarget ? 'target' : 'source')
   const containerBounds = revueFlowNode.getBoundingClientRect()
   let recentHoveredHandle: Element
 
+  const connectionPosition = ref<XYPosition>({
+    x: event.clientX - containerBounds.left,
+    y: event.clientY - containerBounds.top,
+  })
+
+  if (!store.connectionPosition) store.connectionPosition = { x: 0, y: 0 }
   store.connectionPosition.x = event.clientX - containerBounds.left
   store.connectionPosition.y = event.clientY - containerBounds.top
 
   store.setConnectionNodeId({
     connectionNodeId: nodeId,
     connectionHandleId: handleId,
-    connectionHandleType: handleType
+    connectionHandleType: handleType,
   })
   hooks.connectStart.trigger({ event, params: { nodeId, handleId, handleType } })
 
   function onMouseMove(event: MouseEvent) {
-    store.connectionPosition.x = event.clientX - containerBounds.left
-    store.connectionPosition.y = event.clientY - containerBounds.top
+    connectionPosition.value.x = event.clientX - containerBounds.left
+    connectionPosition.value.y = event.clientY - containerBounds.top
 
     const { connection, elementBelow, isValid, isHoveringHandle } = checkElementBelowIsValid(
       event,
@@ -126,7 +132,7 @@ export function onMouseDown(
       nodeId,
       handleId,
       isValidConnection,
-      doc
+      doc,
     )
 
     if (!isHoveringHandle) {
@@ -150,7 +156,7 @@ export function onMouseDown(
       nodeId,
       handleId,
       isValidConnection,
-      doc
+      doc,
     )
 
     hooks.connectStop.trigger(event)
@@ -166,7 +172,7 @@ export function onMouseDown(
     }
 
     resetRecentHandle(recentHoveredHandle)
-    store.setConnectionNodeId({ connectionNodeId: null, connectionHandleId: null, connectionHandleType: null })
+    store.setConnectionNodeId({ connectionNodeId: undefined, connectionHandleId: undefined, connectionHandleType: undefined })
 
     doc.removeEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
     doc.removeEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)

@@ -1,7 +1,7 @@
 import { ref, defineComponent, CSSProperties, PropType, computed, inject, h } from 'vue'
 
-import { getBezierPath } from '../Edges/BezierEdge'
-import { getSmoothStepPath } from '../Edges/SmoothStepEdge'
+import { getBezierPath } from '../Edges/BezierEdgeDepr'
+import { getSmoothStepPath } from '../Edges/SmoothStepEdgeDepr'
 import { Node, HandleElement, Position, ConnectionLineType, ConnectionLineComponent, RevueFlowStore } from '../../types'
 
 interface ConnectionLineProps {
@@ -15,18 +15,18 @@ export default defineComponent({
     connectionLineStyle: {
       type: Object as PropType<ConnectionLineProps['connectionLineStyle']>,
       required: false,
-      default: () => {}
+      default: () => {},
     },
     connectionLineType: {
       type: String as PropType<ConnectionLineProps['connectionLineType']>,
       required: false,
-      default: ConnectionLineType.Bezier
+      default: ConnectionLineType.Bezier,
     },
     customConnectionLine: {
       type: Object as PropType<ConnectionLineProps['customConnectionLine']>,
       required: false,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   setup(props) {
     const store = inject<RevueFlowStore>('store')!
@@ -36,15 +36,15 @@ export default defineComponent({
     const sourceHandle = computed(() =>
       store.connectionHandleId && store.connectionHandleType
         ? sourceNode.value?.__rf.handleBounds[store.connectionHandleType].find(
-            (d: HandleElement) => d.id === store.connectionHandleId
+            (d: HandleElement) => d.id === store.connectionHandleId,
           )
-        : store.connectionHandleType && sourceNode.value?.__rf.handleBounds[store.connectionHandleType][0]
+        : store.connectionHandleType && sourceNode.value?.__rf.handleBounds[store.connectionHandleType][0],
     )
     const sourceHandleX = computed(() =>
-      sourceHandle.value ? sourceHandle.value.x + sourceHandle.value.width / 2 : (sourceNode.value?.__rf.width as number) / 2
+      sourceHandle.value ? sourceHandle.value.x + sourceHandle.value.width / 2 : (sourceNode.value?.__rf.width as number) / 2,
     )
     const sourceHandleY = computed(() =>
-      sourceHandle.value ? sourceHandle.value.y + sourceHandle.value.height / 2 : sourceNode.value?.__rf.height
+      sourceHandle.value ? sourceHandle.value.y + sourceHandle.value.height / 2 : sourceNode.value?.__rf.height,
     )
     const sourceX = computed(() => sourceNode.value?.__rf.position.x + sourceHandleX.value)
     const sourceY = computed(() => sourceNode.value?.__rf.position.y + sourceHandleY.value)
@@ -53,7 +53,7 @@ export default defineComponent({
     const targetY = computed(() => (store.connectionPosition.y - store.transform[1]) / store.transform[2])
 
     const isRightOrLeft = computed(
-      () => sourceHandle.value?.position === Position.Left || sourceHandle.value?.position === Position.Right
+      () => sourceHandle.value?.position === Position.Left || sourceHandle.value?.position === Position.Right,
     )
     const targetPosition = computed(() => (isRightOrLeft.value ? Position.Left : Position.Top))
 
@@ -67,8 +67,8 @@ export default defineComponent({
           sourcePosition: sourceHandle.value?.position,
           targetX: targetX.value,
           targetY: targetY.value,
-          targetPosition: targetPosition.value
-        })
+          targetPosition: targetPosition.value,
+        }),
       )
     } else if (props.connectionLineType === ConnectionLineType.Step) {
       dAttr = computed(() =>
@@ -79,8 +79,8 @@ export default defineComponent({
           targetX: targetX.value,
           targetY: targetY.value,
           targetPosition: targetPosition.value,
-          borderRadius: 0
-        })
+          borderRadius: 0,
+        }),
       )
     } else if (props.connectionLineType === ConnectionLineType.SmoothStep) {
       dAttr = computed(() =>
@@ -90,14 +90,14 @@ export default defineComponent({
           sourcePosition: sourceHandle.value?.position,
           targetX: targetX.value,
           targetY: targetY.value,
-          targetPosition: targetPosition.value
-        })
+          targetPosition: targetPosition.value,
+        }),
       )
     }
 
     if (props.customConnectionLine) {
       return () => (
-        <g class="revue-flow__connection">
+        <g className="revue-flow__connection">
           {props.customConnectionLine &&
             h(props.customConnectionLine, {
               sourceX: sourceX.value,
@@ -107,7 +107,7 @@ export default defineComponent({
               targetY: targetY.value,
               targetPosition: targetPosition.value,
               connectionLineType: props.connectionLineType,
-              connectionLineStyle: props.connectionLineStyle
+              connectionLineStyle: props.connectionLineStyle,
             })}
         </g>
       )
@@ -115,11 +115,11 @@ export default defineComponent({
 
     return () =>
       nodesConnectable.value && sourceNode.value ? (
-        <g class="revue-flow__connection">
-          <path d={dAttr.value} class="revue-flow__connection-path" style={props.connectionLineStyle} />
+        <g className="revue-flow__connection">
+          <path d={dAttr.value} className="revue-flow__connection-path" style={props.connectionLineStyle} />
         </g>
       ) : (
         ''
       )
-  }
+  },
 })

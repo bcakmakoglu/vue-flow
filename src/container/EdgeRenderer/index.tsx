@@ -1,8 +1,8 @@
 import { CSSProperties, defineComponent, inject, PropType } from 'vue'
 import { ConnectionLineType, ConnectionLineComponent, ConnectionMode, RevueFlowStore } from '../../types'
 import ConnectionLine from '../../components/ConnectionLine'
+import Edge from '../../components/Edges/EdgeDepr'
 import MarkerDefinitions from './MarkerDefinitions'
-import Edge from '../../components/Edges/Edge'
 
 interface EdgeRendererProps {
   edgeTypes: any
@@ -21,59 +21,59 @@ export default defineComponent({
   components: {
     Edge,
     ConnectionLine,
-    MarkerDefinitions
+    MarkerDefinitions,
   },
   props: {
     edgeTypes: {
       type: Object,
-      required: true
+      required: true,
     },
     connectionLineType: {
       type: String as PropType<EdgeRendererProps['connectionLineType']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     connectionLineStyle: {
       type: Object as PropType<EdgeRendererProps['connectionLineStyle']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     connectionLineComponent: {
       type: Object as PropType<EdgeRendererProps['connectionLineComponent']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     connectionMode: {
       type: String as PropType<EdgeRendererProps['connectionMode']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     arrowHeadColor: {
       type: String as PropType<EdgeRendererProps['arrowHeadColor']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     markerEndId: {
       type: String as PropType<EdgeRendererProps['markerEndId']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     onlyRenderVisibleElements: {
       type: Boolean as PropType<EdgeRendererProps['onlyRenderVisibleElements']>,
       required: false,
-      default: undefined
+      default: undefined,
     },
     edgeUpdaterRadius: {
       type: Number as PropType<EdgeRendererProps['edgeUpdaterRadius']>,
       required: false,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
   setup(props) {
     const store = inject<RevueFlowStore>('store')!
 
     return () => (
-      <svg width={store.width} height={store.height} class="revue-flow__edges">
+      <svg width={store.width} height={store.height} className="revue-flow__edges">
         <MarkerDefinitions color={props.arrowHeadColor} />
         <g transform={`translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`}>
           {store.edges.map((edge, i) => (
@@ -95,5 +95,5 @@ export default defineComponent({
         </g>
       </svg>
     )
-  }
+  },
 })

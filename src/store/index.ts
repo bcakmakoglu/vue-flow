@@ -1,16 +1,18 @@
 import { RevueFlowState, ConnectionMode } from '../types'
 
 export const initialState: RevueFlowState = {
-  width: 0,
-  height: 0,
+  dimensions: {
+    width: 0,
+    height: 0,
+  },
   transform: [0, 0, 1],
   nodes: [],
   edges: [],
-  selectedElements: null,
+  selectedElements: undefined,
   selectedNodesBbox: { x: 0, y: 0, width: 0, height: 0 },
 
-  d3Zoom: null,
-  d3Selection: null,
+  d3Zoom: undefined,
+  d3Selection: undefined,
   d3ZoomHandler: undefined,
   minZoom: 0.5,
   maxZoom: 2,
@@ -36,8 +38,8 @@ export const initialState: RevueFlowState = {
     height: 0,
     draw: false,
   },
-  connectionNodeId: null,
-  connectionHandleId: null,
+  connectionNodeId: undefined,
+  connectionHandleId: undefined,
   connectionHandleType: 'source',
   connectionPosition: { x: 0, y: 0 },
   connectionMode: ConnectionMode.Strict,
