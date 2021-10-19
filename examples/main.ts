@@ -1,9 +1,9 @@
 import { createApp } from 'vue'
 import './index.css'
-import App from './App'
-import { router } from './router'
 import { createPinia } from 'pinia'
 import { DraggablePlugin } from '@braks/revue-draggable'
+import App from './App.vue'
+import { router } from './router'
 
 const app = createApp(App)
 
