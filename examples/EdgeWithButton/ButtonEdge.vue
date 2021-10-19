@@ -59,12 +59,12 @@ const center = computed(() =>
 )
 </script>
 <template>
-  <path :id="props.id" :style="props.style" class="revue-flow__edge-path" :d="edgePath.value" :marker-end="markerEnd.value" />
+  <path :id="props.id" :style="props.style" class="revue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
   <foreignObject
-    width="foreignObjectSize"
-    height="foreignObjectSize"
-    :x="center.value[0] - foreignObjectSize / 2"
-    :y="center.value[1] - foreignObjectSize / 2"
+    :width="foreignObjectSize"
+    :height="foreignObjectSize"
+    :x="center[0] - foreignObjectSize / 2"
+    :y="center[1] - foreignObjectSize / 2"
     class="edgebutton-foreignobject"
     requiredExtensions="http://www.w3.org/1999/xhtml"
   >

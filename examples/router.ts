@@ -31,19 +31,19 @@ export const routes: RouterOptions['routes'] = [
   },
   {
     path: '/edge-types',
-    component: () => import('./EdgeTypes'),
+    component: () => import('./EdgeTypes/EdgeTypesExample.vue'),
   },
   {
     path: '/empty',
-    component: () => import('./Empty'),
+    component: () => import('./Empty/EmptyExample.vue'),
   },
   {
     path: '/hidden',
-    component: () => import('./Hidden'),
+    component: () => import('./Hidden/HiddenExample.vue'),
   },
   {
     path: '/interaction',
-    component: () => import('./Interaction'),
+    component: () => import('./Interaction/InteractionExample.vue'),
   },
   {
     path: '/super-flow',

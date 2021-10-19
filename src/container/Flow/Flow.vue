@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import '~/style.css'
 import '~/theme-default.css'
-import { CSSProperties, onBeforeUnmount } from 'vue'
+import { CSSProperties, onBeforeUnmount, watchPostEffect } from 'vue'
 import ZoomPane from '~/container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '~/container/SelectionPane/SelectionPane.vue'
 import NodeRenderer from '~/container/NodeRenderer/NodeRenderer.vue'
@@ -27,14 +27,14 @@ import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components
 import { createEdgeTypes } from '~/container/EdgeRenderer/utils'
 import { createNodeTypes } from '~/container/NodeRenderer/utils'
 
-interface RevueFlowProps {
+export interface FlowProps {
   elements: Elements
   nodeTypes?: Record<string, NodeType>
   edgeTypes?: Record<string, EdgeType>
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
-  connectionLineComponent?: CustomConnectionLine
+  customConnectionLine?: CustomConnectionLine
   deleteKeyCode?: KeyCode
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode
@@ -64,8 +64,8 @@ interface RevueFlowProps {
   edgeUpdaterRadius?: number
 }
 
-const props = withDefaults(defineProps<RevueFlowProps>(), {
-  modelValue: () => [] as Elements,
+const props = withDefaults(defineProps<FlowProps>(), {
+  elements: () => [],
   connectionMode: ConnectionMode.Strict,
   connectionLineType: ConnectionLineType.Bezier,
   selectionKeyCode: 'Shift',
@@ -116,7 +116,7 @@ const defaultEdgeTypes: Record<string, EdgeType> = {
   smoothstep: SmoothStepEdge as EdgeType,
 }
 
-let store = inject<RevueFlowStore>('store')
+let store = inject<RevueFlowStore>('store')!
 if (!store) {
   store = configureStore({
     ...initialState,
@@ -127,11 +127,13 @@ if (!store) {
 
 onBeforeUnmount(() => store?.$dispose())
 
-store.setElements(props.elements)
-store.setMinZoom(props.minZoom)
-store.setMaxZoom(props.maxZoom)
-store.setTranslateExtent(props.translateExtent)
-store.setNodeExtent(props.nodeExtent)
+watchPostEffect(() => {
+  store.setElements(props.elements)
+  store.setMinZoom(props.minZoom)
+  store.setMaxZoom(props.maxZoom)
+  store.setTranslateExtent(props.translateExtent)
+  store.setNodeExtent(props.nodeExtent)
+})
 
 const hooks = useRevueFlow().bind(emit)
 provide<RevueFlowHooks>('hooks', hooks)
@@ -161,9 +163,21 @@ const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
           :selection-key-code="props.selectionKeyCode"
         >
           <NodeRenderer :node-types="nodeTypes" :transform="transform" :dimensions="dimensions" />
-          <EdgeRenderer :edge-types="edgeTypes" :transform="transform" :dimensions="dimensions" />
+          <EdgeRenderer
+            :connection-line-type="props.connectionLineType"
+            :connection-line-style="props.connectionLineStyle"
+            :custom-connection-line="props.customConnectionLine"
+            :connection-mode="props.connectionMode"
+            :arrow-head-color="props.arrowHeadColor"
+            :marker-end-id="props.markerEndId"
+            :only-render-visible-elements="props.onlyRenderVisibleElements"
+            :edge-types="edgeTypes"
+            :transform="transform"
+            :dimensions="dimensions"
+          />
         </SelectionPane>
       </template>
     </ZoomPane>
+    <slot></slot>
   </div>
 </template>

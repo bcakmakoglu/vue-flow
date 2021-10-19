@@ -1,0 +1,22 @@
+<script lang="ts" setup>
+import { useRoute, useRouter } from 'vue-router'
+import { routes } from './router'
+
+const router = useRouter()
+const route = useRoute()
+const onChange = (event: any) => {
+  router.push(event.target.value)
+}
+</script>
+<template>
+  <header>
+    <a class="logo" href="https://github.com/bcakmakoglu/revue-flow"> Revue Flow Dev </a>
+    <select v-model="route.path" @change="onChange">
+      <template v-for="(r, i) of routes" :key="`route-${i}`">
+        <option v-if="r.path !== '/'" :value="r.path">
+          {{ r.path.substr(1, r.path.length) }}
+        </option>
+      </template>
+    </select>
+  </header>
+</template>
