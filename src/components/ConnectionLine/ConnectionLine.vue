@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ConnectionLineType, CustomConnectionLine, HandleElement, Position, RevueFlowStore, Node } from '~/types'
+import { ConnectionLineType, CustomConnectionLine, HandleElement, Node, Position, RevueFlowStore } from '~/types'
 import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 import { getBezierPath, getSmoothStepPath } from '~/components/Edges/utils'
 
@@ -16,76 +16,67 @@ const props = withDefaults(defineProps<ConnectionLineProps>(), {
   connectionLineStyle: () => ({}),
 })
 
-const store = inject<RevueFlowStore>('store')!
 const hooks = inject<RevueFlowHooks>('hooks')!
+const store = inject<RevueFlowStore>('store')!
 
-const sourceHandle = computed(() =>
+const sourceHandle =
   store.connectionHandleId && store.connectionHandleType
     ? props.sourceNode.__rf.handleBounds[store.connectionHandleType].find((d: HandleElement) => d.id === store.connectionHandleId)
-    : store.connectionHandleType && props.sourceNode.__rf.handleBounds[store.connectionHandleType][0],
-)
-const sourceHandleX = computed(() =>
-  sourceHandle.value ? sourceHandle.value.x + sourceHandle.value.width / 2 : (props.sourceNode.__rf.width as number) / 2,
-)
-const sourceHandleY = computed(() =>
-  sourceHandle.value ? sourceHandle.value.y + sourceHandle.value.height / 2 : props.sourceNode.__rf.height,
-)
-const sourceX = computed(() => props.sourceNode.__rf.position.x + sourceHandleX.value)
-const sourceY = computed(() => props.sourceNode.__rf.position.y + sourceHandleY.value)
+    : store.connectionHandleType && props.sourceNode.__rf.handleBounds[store.connectionHandleType][0]
+const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : (props.sourceNode.__rf.width as number) / 2
+const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.sourceNode.__rf.height
+const sourceX = props.sourceNode.__rf.position.x + sourceHandleX
+const sourceY = props.sourceNode.__rf.position.y + sourceHandleY
 
-const targetX = computed(() => (store.connectionPosition?.x - store.transform[0]) / store.transform[2])
-const targetY = computed(() => (store.connectionPosition?.y - store.transform[1]) / store.transform[2])
+const isRightOrLeft = sourceHandle.position === Position.Left || sourceHandle.position === Position.Right
+const targetPosition = isRightOrLeft ? Position.Left : Position.Top
 
-const isRightOrLeft = computed(
-  () => sourceHandle.value?.position === Position.Left || sourceHandle.value?.position === Position.Right,
-)
-const targetPosition = computed(() => (isRightOrLeft.value ? Position.Left : Position.Top))
+const targetX = computed(() => (store.connectionPosition.x - store.transform[0]) / store.transform[2])
+const targetY = computed(() => (store.connectionPosition.y - store.transform[1]) / store.transform[2])
 
-let dAttr = computed(() => `M${sourceX.value},${sourceY.value} ${targetX.value},${targetY.value}`)
-
-if (props.connectionLineType === ConnectionLineType.Bezier) {
-  dAttr = computed(() =>
-    getBezierPath({
-      sourceX: sourceX.value,
-      sourceY: sourceY.value,
-      sourcePosition: sourceHandle.value?.position,
-      targetX: targetX.value,
-      targetY: targetY.value,
-      targetPosition: targetPosition.value,
-    }),
-  )
-} else if (props.connectionLineType === ConnectionLineType.Step) {
-  dAttr = computed(() =>
-    getSmoothStepPath({
-      sourceX: sourceX.value,
-      sourceY: sourceY.value,
-      sourcePosition: sourceHandle.value?.position,
-      targetX: targetX.value,
-      targetY: targetY.value,
-      targetPosition: targetPosition.value,
-      borderRadius: 0,
-    }),
-  )
-} else if (props.connectionLineType === ConnectionLineType.SmoothStep) {
-  dAttr = computed(() =>
-    getSmoothStepPath({
-      sourceX: sourceX.value,
-      sourceY: sourceY.value,
-      sourcePosition: sourceHandle.value?.position,
-      targetX: targetX.value,
-      targetY: targetY.value,
-      targetPosition: targetPosition.value,
-    }),
-  )
-}
-watch(dAttr, () => console.log(dAttr.value))
+const dAttr = computed(() => {
+  let path = `M${sourceX.value},${sourceY.value} ${targetX.value},${targetY.value}`
+  switch (props.connectionLineType) {
+    case ConnectionLineType.Bezier:
+      path = getBezierPath({
+        sourceX,
+        sourceY,
+        sourcePosition: sourceHandle.position,
+        targetX: targetX.value,
+        targetY: targetY.value,
+        targetPosition,
+      })
+      break
+    case ConnectionLineType.Step:
+      path = getSmoothStepPath({
+        sourceX,
+        sourceY,
+        sourcePosition: sourceHandle.position,
+        targetX: targetX.value,
+        targetY: targetY.value,
+        targetPosition,
+        borderRadius: 0,
+      })
+      break
+    case ConnectionLineType.SmoothStep:
+      path = getSmoothStepPath({
+        sourceX,
+        sourceY,
+        sourcePosition: sourceHandle.position,
+        targetX: targetX.value,
+        targetY: targetY.value,
+        targetPosition,
+      })
+      break
+  }
+  return path
+})
 </script>
 <template>
-  <g>
+  <g class="revue-flow__connection">
     <component
       :is="props.customConnectionLine"
       v-if="props.customConnectionLine"
-      class="revue-flow__connection"
       v-bind="{
         sourceX: sourceX,
         sourceY: sourceY,

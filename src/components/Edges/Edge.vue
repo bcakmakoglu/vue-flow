@@ -4,7 +4,7 @@ import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
 import { isEdge } from '~/utils/graph'
 import { ConnectionMode, Dimensions, Edge, EdgeType, Elements, Position, RevueFlowStore, Transform } from '~/types'
-import { onMouseDown } from '~/components/Handle/handler'
+import { onMouseDown } from '~/components/Handle/utils'
 
 interface EdgeProps {
   type: EdgeType
@@ -12,7 +12,7 @@ interface EdgeProps {
   nodes: ReturnType<typeof getSourceTargetNodes>
   dimensions: Dimensions
   transform: Transform
-  selectedElements?: Elements | null
+  selectedElements?: Elements
   elementsSelectable?: boolean
   onlyRenderVisibleElements?: boolean
   connectionMode?: ConnectionMode
@@ -23,7 +23,6 @@ interface EdgeProps {
 const props = withDefaults(defineProps<EdgeProps>(), {
   elementsSelectable: true,
   onlyRenderVisibleElements: false,
-  selectedElements: () => null,
 })
 
 const store = inject<RevueFlowStore>('store')!

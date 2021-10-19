@@ -41,7 +41,7 @@ export const initialState: RevueFlowState = {
   connectionNodeId: undefined,
   connectionHandleId: undefined,
   connectionHandleType: 'source',
-  connectionPosition: { x: 0, y: 0 },
+  connectionPosition: { x: NaN, y: NaN },
   connectionMode: ConnectionMode.Strict,
 
   snapGrid: [15, 15],
