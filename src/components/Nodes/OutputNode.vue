@@ -16,7 +16,10 @@ const props = withDefaults(defineProps<OutputNodeProps>(), {
 </script>
 <template>
   <div class="revue-flow__node-output">
-    {{ props.data?.label }}
+    <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
+    <template v-else>
+      {{ props.data?.label }}
+    </template>
     <Handle type="source" :position="props.targetPosition" :is-connectable="props.connectable" />
   </div>
 </template>

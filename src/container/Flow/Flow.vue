@@ -2,10 +2,10 @@
 import '~/style.css'
 import '~/theme-default.css'
 import { CSSProperties, onBeforeUnmount } from 'vue'
-import ZoomPane from './ZoomPane.vue'
-import SelectionPane from './SelectionPane.vue'
-import NodeRenderer from '~/container/NodeRenderer.vue'
-import EdgeRenderer from '~/container/EdgeRenderer.vue'
+import ZoomPane from '~/container/ZoomPane/ZoomPane.vue'
+import SelectionPane from '~/container/SelectionPane/SelectionPane.vue'
+import NodeRenderer from '~/container/NodeRenderer/NodeRenderer.vue'
+import EdgeRenderer from '~/container/EdgeRenderer/EdgeRenderer.vue'
 import {
   ConnectionLineType,
   ConnectionMode,
@@ -22,10 +22,10 @@ import {
 import { RevueFlowHooks, useRevueFlow } from '~/hooks/RevueFlowHooks'
 import configureStore from '~/store/configure-store'
 import { initialState } from '~/store'
-import { createNodeTypes } from '~/container/NodeRenderer/utils'
 import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { createEdgeTypes } from '~/container/EdgeRenderer/utils'
+import { createNodeTypes } from '~/container/NodeRenderer/utils'
 
 interface RevueFlowProps {
   elements: Elements

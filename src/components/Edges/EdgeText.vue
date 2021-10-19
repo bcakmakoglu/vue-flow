@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { HTMLAttributes, ref, VNode, watchEffect } from 'vue'
-import { Rect } from '~/types'
+import { HTMLAttributes, VNode } from 'vue'
 
 interface EdgeTextProps extends HTMLAttributes {
   x: number
@@ -22,30 +21,14 @@ const props = withDefaults(defineProps<EdgeTextProps>(), {
 })
 
 const edgeRef = templateRef<SVGTextElement>('edge-text', null)
-const edgeTextBox = ref<Rect>({ x: 0, y: 0, width: 0, height: 0 })
-
-watchEffect(() => {
-  const textBbox = edgeRef.value?.getBBox()
-
-  if (textBbox) {
-    edgeTextBox.value = {
-      x: textBbox.x,
-      y: textBbox.y,
-      width: textBbox.width,
-      height: textBbox.height,
-    }
-  }
-})
+const { width = 0, height = 0, x = 0, y = 0 } = useElementBounding(edgeRef)
 </script>
 <template>
-  <g
-    :transform="`translate(${props.x - edgeTextBox.width / 2} ${props.y - edgeTextBox.height / 2})`"
-    class="revue-flow__edge-textwrapper"
-  >
+  <g :transform="`translate(${props.x - width / 2} ${props.y - height / 2})`" class="revue-flow__edge-textwrapper">
     <rect
       v-if="props.labelShowBg"
-      :width="edgeTextBox.width + 2 * props.labelBgPadding[0] + 'px'"
-      :height="edgeTextBox.height + 2 * props.labelBgPadding[1] + 'px'"
+      :width="width + 2 * props.labelBgPadding[0] + 'px'"
+      :height="height + 2 * props.labelBgPadding[1] + 'px'"
       :x="-props.labelBgPadding[0]"
       :y="-props.labelBgPadding[1]"
       class="revue-flow__edge-textbg"
@@ -53,8 +36,11 @@ watchEffect(() => {
       :rx="props.labelBgBorderRadius"
       :ry="props.labelBgBorderRadius"
     />
-    <text ref="edge-text" class="revue-flow__edge-text" :y="edgeTextBox.height / 2" dy="0.3em" :style="props.labelStyle">
-      {{ props.label }}
+    <text ref="edge-text" class="revue-flow__edge-text" :y="height / 2" dy="0.3em" :style="props.labelStyle">
+      <component :is="props.label" v-if="typeof props.label !== 'string'" />
+      <template v-else>
+        {{ props.label }}
+      </template>
     </text>
     <slot></slot>
   </g>
