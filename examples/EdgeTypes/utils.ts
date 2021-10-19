@@ -22,6 +22,30 @@ const offsets = [
     x: nodeGapWidth,
     y: -nodeGapWidth,
   },
+  {
+    x: nodeGapWidth,
+    y: 0,
+  },
+  {
+    x: nodeGapWidth,
+    y: nodeGapWidth,
+  },
+  {
+    x: 0,
+    y: nodeGapWidth,
+  },
+  {
+    x: -nodeGapWidth,
+    y: nodeGapWidth,
+  },
+  {
+    x: -nodeGapWidth,
+    y: 0,
+  },
+  {
+    x: -nodeGapWidth,
+    y: -nodeGapWidth,
+  },
 ]
 
 let id = 0

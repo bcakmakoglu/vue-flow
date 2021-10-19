@@ -15,5 +15,16 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
 <template>
-  <Flow :elements="elements" :on-load="onLoad" :on-elements-remove="onElementsRemove" :on-connect="onConnect" :min-zoom="0.2" />
+  <Flow
+    :elements="elements"
+    :only-render-visible-elements="true"
+    :min-zoom="0.2"
+    @load="onLoad"
+    @elements-remove="onElementsRemove"
+    @connect="onConnect"
+  >
+    <MiniMap />
+    <Controls />
+    <Background />
+  </Flow>
 </template>

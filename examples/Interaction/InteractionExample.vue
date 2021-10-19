@@ -56,15 +56,15 @@ const captureElementClick = ref(false)
     :pan-on-scroll="panOnScroll"
     :pan-on-scroll-mode="panOnScrollMode"
     :zoom-on-double-click="zoomOnDoubleClick"
-    :on-connect="onConnect"
-    :on-element-click="captureElementClick ? onElementClick : undefined"
-    :on-node-drag-start="onNodeDragStart"
-    :on-node-drag-stop="onNodeDragStop"
     :pane-moveable="paneMoveable"
-    :on-pane-click="captureZoomClick ? onPaneClick : undefined"
-    :on-pane-scroll="captureZoomScroll ? onPaneScroll : undefined"
-    :on-pane-context-menu="captureZoomClick ? onPaneContextMenu : undefined"
-    :on-move-end="onMoveEnd"
+    @connect="onConnect"
+    @element-click="captureElementClick ? onElementClick : undefined"
+    @node-drag-start="onNodeDragStart"
+    @node-drag-stop="onNodeDragStop"
+    @pane-click="captureZoomClick ? onPaneClick : undefined"
+    @pane-scroll="captureZoomScroll ? onPaneScroll : undefined"
+    @pane-context-menu="captureZoomClick ? onPaneContextMenu : undefined"
+    @move-end="onMoveEnd"
   >
     <MiniMap />
     <Controls />
