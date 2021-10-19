@@ -2,7 +2,8 @@
 import { HTMLAttributes } from 'vue'
 import MiniMapNode from './MiniMapNode.vue'
 import { getBoundsofRects, getRectOfNodes } from '~/utils/graph'
-import { Node, RevueFlowStore } from '~/types'
+import { Node } from '~/types'
+import { Store } from '~/context'
 
 type StringFunc = (node: Node) => string
 
@@ -30,7 +31,7 @@ declare const window: any
 const defaultWidth = 200
 const defaultHeight = 150
 
-const store = inject<RevueFlowStore>('store')!
+const store = inject(Store)!
 
 const elementWidth = attrs.style?.width ?? defaultWidth
 const elementHeight = attrs.style?.height ?? defaultHeight

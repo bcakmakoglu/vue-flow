@@ -60,13 +60,13 @@ const toggleClassnames = () => {
   <Flow
     class="revue-flow-basic-example"
     :elements="elements"
-    :on-elements-remove="onElementsRemove"
-    :on-connect="onConnect"
-    :on-node-drag-stop="onNodeDragStop"
-    :on-node-click="onElementClick"
     :default-zoom="1.5"
     :min-zoom="0.2"
     :max-zoom="4"
+    @elements-remove="onElementsRemove"
+    @connect="onConnect"
+    @node-drag-stop="onNodeDragStop"
+    @node-click="onElementClick"
     @elementClick="onElementClick"
     @load="onLoad"
   >

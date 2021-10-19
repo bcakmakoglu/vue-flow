@@ -2,7 +2,7 @@
 import { CSSProperties } from 'vue'
 import { ConnectionLineType, CustomConnectionLine, HandleElement, Node, Position } from '~/types'
 import { getBezierPath, getSmoothStepPath } from '~/components/Edges/utils'
-import { Hooks, Store } from '~/context/symbols'
+import { Hooks, Store } from '~/context'
 
 interface ConnectionLineProps {
   sourceNode: Node

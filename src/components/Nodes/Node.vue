@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DraggableEventListener } from '@braks/revue-draggable'
 import { Node, NodeDimensionUpdate, NodeType } from '~/types'
-import { Hooks, Store } from '~/context/symbols'
+import { Hooks, Store } from '~/context'
 
 interface NodeProps {
   node: Node

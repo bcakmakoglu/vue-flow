@@ -15,7 +15,7 @@ const onElementsRemove = (elementsToRemove: Elements) =>
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value as Elements))
 </script>
 <template>
-  <Flow :elements="elements" :custom-connection-line="ConnectionLine" @elementsRemove="onElementsRemove" @connect="onConnect">
+  <Flow :elements="elements" :custom-connection-line="ConnectionLine" @elements-remove="onElementsRemove" @connect="onConnect">
     <Background :variant="BackgroundVariant.Lines" />
   </Flow>
 </template>

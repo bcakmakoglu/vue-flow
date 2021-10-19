@@ -114,17 +114,17 @@ const onConnect = (params: Connection | Edge) =>
 <template>
   <Flow
     :elements="elements"
-    :on-element-click="onElementClick"
-    :on-elements-remove="onElementsRemove"
-    :on-connect="onConnect"
-    :on-node-drag-stop="onNodeDragStop"
     :style="`background: ${bgColor}`"
-    :on-load="onLoad"
     :node-types="nodeTypes"
     :connection-line-style="connectionLineStyle"
     :snap-to-grid="true"
     :snap-grid="snapGrid"
     :default-zoom="1.5"
+    @element-click="onElementClick"
+    @elements-remove="onElementsRemove"
+    @connect="onConnect"
+    @node-drag-stop="onNodeDragStop"
+    @load="onLoad"
   >
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
     <Controls />

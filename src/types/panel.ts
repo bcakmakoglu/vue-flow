@@ -13,7 +13,7 @@ export enum PanOnScrollMode {
   Horizontal = 'horizontal',
 }
 
-export interface ZoomPanHelperFunctions {
+export interface UseZoomPanHelper {
   zoomIn: () => void
   zoomOut: () => void
   zoomTo: (zoomLevel: number) => void

@@ -5,7 +5,7 @@ import MarkerDefinitions from './MarkerDefinitions.vue'
 import Edge from '~/components/Edges/Edge.vue'
 import ConnectionLine from '~/components/ConnectionLine/ConnectionLine.vue'
 import { ConnectionLineType, ConnectionMode, CustomConnectionLine, Dimensions, EdgeType, Transform } from '~/types'
-import { Store } from '~/context/symbols'
+import { Store } from '~/context'
 
 interface EdgeRendererProps {
   edgeTypes: Record<string, EdgeType>

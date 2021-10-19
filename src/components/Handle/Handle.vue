@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ElementId, Position } from '~/types'
 import { onMouseDown, ValidConnectionFunc } from '~/components/Handle/utils'
-import { Hooks, Store } from '~/context/symbols'
+import { Hooks, Store } from '~/context'
 
 interface HandleProps {
   id?: string

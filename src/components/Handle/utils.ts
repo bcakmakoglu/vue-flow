@@ -1,6 +1,5 @@
 import { getHostForElement } from '~/utils'
-import { ElementId, ConnectionMode, Connection, HandleType, RevueFlowStore } from '~/types'
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
+import { ElementId, ConnectionMode, Connection, HandleType, FlowStore, FlowHooks } from '~/types'
 
 export type ValidConnectionFunc = (connection: Connection) => boolean
 
@@ -71,13 +70,13 @@ function resetRecentHandle(hoveredHandle: Element): void {
 
 export function onMouseDown(
   event: MouseEvent,
-  store: RevueFlowStore,
+  store: FlowStore,
   hooks: {
-    connectStart: RevueFlowHooks['connectStart']
-    connectStop: RevueFlowHooks['connectStop']
-    connectEnd: RevueFlowHooks['connectEnd']
-    connect: RevueFlowHooks['connect']
-    edgeUpdateEnd: RevueFlowHooks['edgeUpdateEnd']
+    connectStart: FlowHooks['connectStart']
+    connectStop: FlowHooks['connectStop']
+    connectEnd: FlowHooks['connectEnd']
+    connect: FlowHooks['connect']
+    edgeUpdateEnd: FlowHooks['edgeUpdateEnd']
   },
   handleId: ElementId,
   nodeId: ElementId,

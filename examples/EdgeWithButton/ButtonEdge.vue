@@ -1,15 +1,5 @@
 <script lang="ts" setup>
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
-import {
-  getEdgeCenter,
-  getBezierPath,
-  getMarkerEnd,
-  ArrowHeadType,
-  EdgeProps,
-  ElementId,
-  Position,
-  RevueFlowStore,
-} from '~/index'
+import { getEdgeCenter, getBezierPath, getMarkerEnd, ArrowHeadType, EdgeProps, ElementId, Position, Hooks, Store } from '~/index'
 
 interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   id: ElementId
@@ -25,8 +15,8 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
 }
 
 const props = defineProps<CustomEdgeProps>()
-const store = inject<RevueFlowStore>('store')!
-const hooks = inject<RevueFlowHooks>('hooks')!
+const store = inject(Store)!
+const hooks = inject(Hooks)!
 const onEdgeClick = (evt: Event, id: string) => {
   const edge = store.edges.find((edge) => edge.id === id)
   if (edge) {

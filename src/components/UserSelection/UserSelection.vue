@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import SelectionRect from './SelectionRect.vue'
 import { getMousePosition } from '~/components/UserSelection/utils'
-import { Store } from '~/context/symbols'
+import { Store } from '~/context'
 
 const store = inject(Store)!
 const el = templateRef('user-selection', null)

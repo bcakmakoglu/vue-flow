@@ -6,8 +6,9 @@ import MinusIcon from '@/assets/icons/minus.svg'
 import Fitview from '@/assets/icons/fitview.svg'
 import Lock from '@/assets/icons/lock.svg'
 import Unlock from '@/assets/icons/unlock.svg'
-import { FitViewParams, RevueFlowStore, ZoomPanHelperFunctions } from '~/types'
-import useZoomPanHelper from '~/hooks/useZoomPanHelper'
+import { FitViewParams } from '~/types'
+import useZoomPanHelper from '~/composables/useZoomPanHelper'
+import { Store } from '~/context'
 
 export interface ControlProps extends HTMLAttributes {
   showZoom?: boolean
@@ -26,25 +27,24 @@ const props = withDefaults(defineProps<ControlProps>(), {
   showInteractive: true,
 })
 
-const store = inject<RevueFlowStore>('store')!
-// const { onReady } = useZoomPanHelper()
+const store = inject(Store)!
+const { zoomIn, zoomOut, fitView } = useZoomPanHelper()
 
 const isInteractive = store.nodesDraggable && store.nodesConnectable && store.elementsSelectable
 const mapClasses = ['revue-flow__controls']
 
-/*
-* const onZoomInHandler = () => {
-  zoomHelper.value?.zoomIn?.()
+const onZoomInHandler = () => {
+  zoomIn?.()
   props.onZoomIn?.()
 }
 
 const onZoomOutHandler = () => {
-  zoomHelper.value?.zoomOut?.()
+  zoomOut?.()
   props.onZoomOut?.()
 }
 
 const onFitViewHandler = () => {
-  zoomHelper.value?.fitView?.(props.fitViewParams)
+  fitView?.(props.fitViewParams)
   props.onFitView?.()
 }
 
@@ -52,7 +52,6 @@ const onInteractiveChangeHandler = () => {
   store.setInteractive?.(!isInteractive)
   props.onInteractiveChange?.(!isInteractive)
 }
-*/
 </script>
 <template>
   <div :class="mapClasses">

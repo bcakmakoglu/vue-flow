@@ -15,8 +15,9 @@ export {
   getTransformForBounds,
   getRectOfNodes,
 } from './utils/graph'
-export { default as useZoomPanHelper } from './hooks/useZoomPanHelper'
-export { default as useUpdateNodeInternals } from './hooks/useUpdateNodeInternals'
+export { default as useZoomPanHelper } from './composables/useZoomPanHelper'
+export { default as useUpdateNodeInternals } from './composables/useUpdateNodeInternals'
 
 export * from './additional-components'
 export * from './types'
+export * from './context'
