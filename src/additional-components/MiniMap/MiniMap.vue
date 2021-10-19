@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { HTMLAttributes } from 'vue'
 import MiniMapNode from './MiniMapNode.vue'
-import { getRectOfNodes, getBoundsofRects } from '~/utils/graph'
-import { Node, Rect, RevueFlowStore } from '~/types'
+import { getBoundsofRects, getRectOfNodes } from '~/utils/graph'
+import { Node, RevueFlowStore } from '~/types'
 
 type StringFunc = (node: Node) => string
 
@@ -31,48 +31,56 @@ const defaultWidth = 200
 const defaultHeight = 150
 
 const store = inject<RevueFlowStore>('store')!
-const transform = computed(() => store.transform)
-const elementWidth = computed(() => (attrs.style?.width ?? defaultWidth)! as number)
-const elementHeight = computed(() => (attrs.style?.height ?? defaultHeight)! as number)
-const nodeColorFunc = computed(
-  () => (props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor) as StringFunc,
-)
-const nodeStrokeColorFunc = computed(
-  () => (props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor) as StringFunc,
-)
-const nodeClassNameFunc = computed(
-  () => (props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName) as StringFunc,
-)
-const hasNodes = computed(() => store.nodes && store.nodes.length)
-const bb = computed(() => getRectOfNodes(store.nodes))
-const viewBB = computed<Rect>(() => ({
-  x: -transform.value[0] / transform.value[2],
-  y: -transform.value[1] / transform.value[2],
-  width: store.width / transform.value[2],
-  height: store.height / transform.value[2],
-}))
-const boundingRect = computed(() => (hasNodes.value ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value))
-const scaledWidth = computed(() => boundingRect.value.width / elementWidth.value)
-const scaledHeight = computed(() => boundingRect.value.height / elementHeight.value)
-const viewScale = computed(() => Math.max(scaledWidth.value, scaledHeight.value))
-const viewWidth = computed(() => viewScale.value * elementWidth.value)
-const viewHeight = computed(() => viewScale.value * elementHeight.value)
-const offset = computed(() => 5 * viewScale.value)
-const x = computed(() => boundingRect.value.x - (viewWidth.value - boundingRect.value.width) / 2 - offset.value)
-const y = computed(() => boundingRect.value.y - (viewHeight.value - boundingRect.value.height) / 2 - offset.value)
-const width = computed(() => viewWidth.value + offset.value * 2)
-const height = computed(() => viewHeight.value + offset.value * 2)
+
+const elementWidth = attrs.style?.width ?? defaultWidth
+const elementHeight = attrs.style?.height ?? defaultHeight
+const nodeColorFunc = props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor as StringFunc
+const nodeStrokeColorFunc =
+  props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor as StringFunc
+
+const nodeClassNameFunc = props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as StringFunc
+
 const shapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
+
+const viewBox = computed(() => {
+  const bb = getRectOfNodes(store.nodes)
+  const viewBB = {
+    x: -store.transform[0] / store.transform[2],
+    y: -store.transform[1] / store.transform[2],
+    width: store.dimensions.width / store.transform[2],
+    height: store.dimensions.height / store.transform[2],
+  }
+  const boundingRect = store.nodes && store.nodes.length ? getBoundsofRects(bb, viewBB) : viewBB
+  const scaledWidth = boundingRect.width / elementWidth
+  const scaledHeight = boundingRect.height / elementHeight
+  const viewScale = Math.max(scaledWidth, scaledHeight)
+  const viewWidth = viewScale * elementWidth
+  const viewHeight = viewScale * elementHeight
+  const offset = 5 * viewScale
+  return {
+    viewBB,
+    offset,
+    x: boundingRect.x - (viewWidth - boundingRect.width) / 2 - offset,
+    y: boundingRect.y - (viewHeight - boundingRect.height) / 2 - offset,
+    width: viewWidth + offset * 2,
+    height: viewHeight + offset * 2,
+  }
+})
 </script>
 <template>
-  <svg :width="elementWidth" :height="elementHeight" :viewBox="`${x} ${y} ${width} ${height}`" class="revue-flow__minimap">
+  <svg
+    :width="elementWidth"
+    :height="elementHeight"
+    :viewBox="`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`"
+    class="revue-flow__minimap"
+  >
     <template v-for="(node, i) of store.nodes" :key="`mini-map-node-${i}`">
       <MiniMapNode
         v-if="!node.isHidden"
         :x="node.__rf.position.x"
         :y="node.__rf.position.y"
-        :width="node.__rf.width || 0"
-        :height="node.__rf.height || 0"
+        :width="node.__rf.width"
+        :height="node.__rf.height"
         :style="node.style"
         :class="nodeClassNameFunc(node)"
         :color="nodeColorFunc(node)"
@@ -84,8 +92,11 @@ const shapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crisp
     </template>
     <path
       class="revue-flow__minimap-mask"
-      :d="`M${x - offset},${y - offset}h${width + offset * 2}v${height + offset * 2}h${-width - offset * 2}z
-      M${viewBB.x},${viewBB.y}h${viewBB.width}v${viewBB.height}h${-viewBB.width}z`"
+      :d="`
+      M${viewBox.x - viewBox.offset},${viewBox.y - viewBox.offset}h${viewBox.width + viewBox.offset * 2}
+      v${viewBox.height + viewBox.offset * 2}
+      h${-viewBox.width - viewBox.offset * 2}z
+      M${viewBox.viewBB.x},${viewBox.viewBB.y}h${viewBox.viewBB.width}v${viewBox.viewBB.height}h${-viewBox.viewBB.width}z`"
       :fill="props.maskColor"
       fill-rule="evenodd"
     />

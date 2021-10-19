@@ -1,7 +1,7 @@
 import { CSSProperties, HTMLAttributes } from 'vue'
 import { Edge, EdgeType } from './edge'
 import { Node, NodeExtent, NodeType, TranslateExtent } from './node'
-import { ConnectionLineComponent, ConnectionLineType, ConnectionMode } from '~/types/connection'
+import { CustomConnectionLine, ConnectionLineType, ConnectionMode } from '~/types/connection'
 import { KeyCode, PanOnScrollMode } from '~/types/panel'
 
 export type ElementId = string
@@ -27,6 +27,11 @@ export interface XYPosition {
 export interface Dimensions {
   width: number
   height: number
+}
+
+export interface Box extends XYPosition {
+  x2: number
+  y2: number
 }
 
 export interface Rect extends Dimensions, XYPosition {}
@@ -85,13 +90,13 @@ export type OnLoadParams<T = any> = {
 
 export type OnLoadFunc<T = any> = (params: OnLoadParams<T>) => void
 
-export interface RevueFlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
+export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
   nodeTypes?: Record<string, NodeType>
   edgeTypes?: Record<string, EdgeType>
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
-  connectionLineComponent?: ConnectionLineComponent
+  connectionLineComponent?: CustomConnectionLine
   deleteKeyCode?: KeyCode
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode

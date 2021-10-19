@@ -16,17 +16,11 @@ const isHidden = ref<boolean>(false)
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
 watchEffect(() => {
-  console.log(isHidden.value)
   elements.value = elements.value.map((e) => {
     e.isHidden = isHidden.value
     return e
   })
 })
-
-const toggle = (event: any) => {
-  console.log(event.target)
-  isHidden.value = event.target?.checked
-}
 </script>
 <template>
   <Flow :elements="elements" :on-connect="onConnect">
