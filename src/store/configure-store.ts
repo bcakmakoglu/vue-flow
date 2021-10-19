@@ -17,7 +17,7 @@ export default function configureStore(
   setActivePinia(pinia)
 
   return defineStore({
-    id: `revue-flow-${Math.random()}`,
+    id: `revue-flow-${Math.floor(Math.random() * 100)}`,
     state: () => ({
       ...preloadedState,
     }),

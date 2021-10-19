@@ -31,7 +31,7 @@ export interface RevueFlowState {
   connectionNodeId?: ElementId
   connectionHandleId?: ElementId
   connectionHandleType?: HandleType
-  connectionPosition?: XYPosition
+  connectionPosition: XYPosition
   connectionMode: ConnectionMode
 
   snapToGrid: boolean

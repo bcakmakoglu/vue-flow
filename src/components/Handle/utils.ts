@@ -1,5 +1,5 @@
 import { getHostForElement } from '~/utils'
-import { ElementId, ConnectionMode, Connection, HandleType, XYPosition, RevueFlowStore } from '~/types'
+import { ElementId, ConnectionMode, Connection, HandleType, RevueFlowStore } from '~/types'
 import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 
 export type ValidConnectionFunc = (connection: Connection) => boolean
@@ -82,7 +82,9 @@ export function onMouseDown(
   handleId: ElementId,
   nodeId: ElementId,
   isTarget: boolean,
-  isValidConnection: ValidConnectionFunc = () => true,
+  isValidConnection: ValidConnectionFunc = () => {
+    return true
+  },
   elementEdgeUpdaterType?: HandleType,
 ): void {
   const revueFlowNode = (event.target as Element).closest('.revue-flow')
@@ -105,12 +107,6 @@ export function onMouseDown(
   const containerBounds = revueFlowNode.getBoundingClientRect()
   let recentHoveredHandle: Element
 
-  const connectionPosition = ref<XYPosition>({
-    x: event.clientX - containerBounds.left,
-    y: event.clientY - containerBounds.top,
-  })
-
-  if (!store.connectionPosition) store.connectionPosition = { x: 0, y: 0 }
   store.connectionPosition.x = event.clientX - containerBounds.left
   store.connectionPosition.y = event.clientY - containerBounds.top
 
@@ -122,8 +118,8 @@ export function onMouseDown(
   hooks.connectStart.trigger({ event, params: { nodeId, handleId, handleType } })
 
   function onMouseMove(event: MouseEvent) {
-    connectionPosition.value.x = event.clientX - containerBounds.left
-    connectionPosition.value.y = event.clientY - containerBounds.top
+    store.connectionPosition.x = event.clientX - containerBounds.left
+    store.connectionPosition.y = event.clientY - containerBounds.top
 
     const { connection, elementBelow, isValid, isHoveringHandle } = checkElementBelowIsValid(
       event,
@@ -173,6 +169,7 @@ export function onMouseDown(
 
     resetRecentHandle(recentHoveredHandle)
     store.setConnectionNodeId({ connectionNodeId: undefined, connectionHandleId: undefined, connectionHandleType: undefined })
+    store.connectionPosition = { x: NaN, y: NaN }
 
     doc.removeEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
     doc.removeEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)

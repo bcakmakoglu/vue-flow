@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ConnectionMode, ElementId, Position, RevueFlowStore } from '~/types'
-import { onMouseDown, ValidConnectionFunc } from '~/components/Handle/handler'
+import { ElementId, Position, RevueFlowStore } from '~/types'
+import { onMouseDown, ValidConnectionFunc } from '~/components/Handle/utils'
 import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 
 interface HandleProps {
@@ -15,7 +15,6 @@ const props = withDefaults(defineProps<HandleProps>(), {
   id: '',
   type: 'source',
   position: Position.Top,
-  isValidConnection: () => true,
   connectable: true,
 })
 
@@ -24,7 +23,18 @@ const hooks = inject<RevueFlowHooks>('hooks')!
 const nodeId = inject<ElementId>('NodeIdContext')!
 
 const onMouseDownHandler = (event: MouseEvent) =>
-  onMouseDown(event, store, hooks, props.id, nodeId, props.type === 'target', props.isValidConnection)
+  onMouseDown(
+    event,
+    store,
+    hooks,
+    props.id,
+    nodeId,
+    props.type === 'target',
+    props.isValidConnection ??
+      function () {
+        return true
+      },
+  )
 </script>
 <template>
   <div
