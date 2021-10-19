@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ElementId, Position, RevueFlowStore } from '~/types'
+import { ElementId, Position } from '~/types'
 import { onMouseDown, ValidConnectionFunc } from '~/components/Handle/utils'
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
+import { Hooks, Store } from '~/context/symbols'
 
 interface HandleProps {
   id?: string
@@ -18,8 +18,8 @@ const props = withDefaults(defineProps<HandleProps>(), {
   connectable: true,
 })
 
-const store = inject<RevueFlowStore>('store')!
-const hooks = inject<RevueFlowHooks>('hooks')!
+const store = inject(Store)!
+const hooks = inject(Hooks)!
 const nodeId = inject<ElementId>('NodeIdContext')!
 
 const onMouseDownHandler = (event: MouseEvent) =>

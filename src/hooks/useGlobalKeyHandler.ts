@@ -1,6 +1,7 @@
 import useKeyPress from './useKeyPress'
 import { isNode, getConnectedEdges } from '~/utils/graph'
-import { Elements, KeyCode, ElementId, FlowElement, RevueFlowStore } from '~/types'
+import { Elements, KeyCode, ElementId, FlowElement } from '~/types'
+import { Store } from '~/context/symbols'
 
 interface HookParams {
   deleteKeyCode: KeyCode
@@ -9,7 +10,7 @@ interface HookParams {
 }
 
 export default ({ deleteKeyCode, multiSelectionKeyCode, onElementsRemove = () => {} }: HookParams): void => {
-  const store = inject<RevueFlowStore>('store')!
+  const store = inject(Store)!
 
   useKeyPress(deleteKeyCode, (keyPressed) => {
     if (keyPressed && store.selectedElements) {

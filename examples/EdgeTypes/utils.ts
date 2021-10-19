@@ -2,50 +2,26 @@ import { ElementId, Elements, Position } from '../../src'
 
 const nodeWidth = 80
 const nodeGapWidth = nodeWidth * 2
-const nodeStyle = { width: nodeWidth + 'px', fontSize: '11px', color: 'white' }
+const nodeStyle = { width: `${nodeWidth}px`, fontSize: '11px', color: 'white' }
 
 const sourceTargetPositions = [
   { source: Position.Bottom, target: Position.Top },
-  { source: Position.Right, target: Position.Left }
+  { source: Position.Right, target: Position.Left },
 ]
 const nodeColors = [
   ['#1e9e99', '#4cb3ac', '#6ec9c0', '#8ddfd4'],
-  ['#0f4c75', '#1b5d8b', '#276fa1', '#3282b8']
+  ['#0f4c75', '#1b5d8b', '#276fa1', '#3282b8'],
 ]
 const edgeTypes = ['default', 'step', 'smoothstep', 'straight']
 const offsets = [
   {
     x: 0,
-    y: -nodeGapWidth
+    y: -nodeGapWidth,
   },
   {
     x: nodeGapWidth,
-    y: -nodeGapWidth
+    y: -nodeGapWidth,
   },
-  {
-    x: nodeGapWidth,
-    y: 0
-  },
-  {
-    x: nodeGapWidth,
-    y: nodeGapWidth
-  },
-  {
-    x: 0,
-    y: nodeGapWidth
-  },
-  {
-    x: -nodeGapWidth,
-    y: nodeGapWidth
-  },
-  {
-    x: -nodeGapWidth,
-    y: 0
-  },
-  {
-    x: -nodeGapWidth,
-    y: -nodeGapWidth
-  }
 ]
 
 let id = 0
@@ -66,7 +42,7 @@ export function getElements(): Elements {
         const style = { ...nodeStyle, background: nodeColors[sourceTargetIndex][edgeTypeIndex] }
         const sourcePosition = {
           x: offsetIndex * nodeWidth * 4,
-          y: edgeTypeIndex * 300 + sourceTargetIndex * edgeTypes.length * 300
+          y: edgeTypeIndex * 300 + sourceTargetIndex * edgeTypes.length * 300,
         }
         const sourceId = getNodeId()
         const sourceData = { label: `Source ${sourceId}` }
@@ -76,14 +52,14 @@ export function getElements(): Elements {
           data: sourceData,
           position: sourcePosition,
           sourcePosition: currSourceTargetPos.source,
-          targetPosition: currSourceTargetPos.target
+          targetPosition: currSourceTargetPos.target,
         }
 
         const targetId = getNodeId()
         const targetData = { label: `Target ${targetId}` }
         const targetPosition = {
           x: sourcePosition.x + currOffset.x,
-          y: sourcePosition.y + currOffset.y
+          y: sourcePosition.y + currOffset.y,
         }
         const targetNode = {
           id: targetId,
@@ -91,7 +67,7 @@ export function getElements(): Elements {
           data: targetData,
           position: targetPosition,
           sourcePosition: currSourceTargetPos.source,
-          targetPosition: currSourceTargetPos.target
+          targetPosition: currSourceTargetPos.target,
         }
 
         initialElements.push(sourceNode)

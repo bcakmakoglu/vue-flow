@@ -4,15 +4,8 @@ import { getSourceTargetNodes } from './utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 import Edge from '~/components/Edges/Edge.vue'
 import ConnectionLine from '~/components/ConnectionLine/ConnectionLine.vue'
-import {
-  ConnectionLineType,
-  ConnectionMode,
-  CustomConnectionLine,
-  Dimensions,
-  EdgeType,
-  RevueFlowStore,
-  Transform,
-} from '~/types'
+import { ConnectionLineType, ConnectionMode, CustomConnectionLine, Dimensions, EdgeType, Transform } from '~/types'
+import { Store } from '~/context/symbols'
 
 interface EdgeRendererProps {
   edgeTypes: Record<string, EdgeType>
@@ -36,7 +29,7 @@ const props = withDefaults(defineProps<EdgeRendererProps>(), {
   connectionLineType: ConnectionLineType.Bezier,
 })
 
-const store = inject<RevueFlowStore>('store')!
+const store = inject(Store)!
 
 const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connectionNodeId))
 const connectionLineVisible = computed(

@@ -11,7 +11,6 @@ import {
   ConnectionMode,
   Elements,
   PanOnScrollMode,
-  RevueFlowStore,
   NodeType,
   EdgeType,
   CustomConnectionLine,
@@ -19,13 +18,14 @@ import {
   TranslateExtent,
   NodeExtent,
 } from '~/types'
-import { RevueFlowHooks, useRevueFlow } from '~/hooks/RevueFlowHooks'
 import configureStore from '~/store/configure-store'
 import { initialState } from '~/store'
 import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { createEdgeTypes } from '~/container/EdgeRenderer/utils'
 import { createNodeTypes } from '~/container/NodeRenderer/utils'
+import { useHooks } from '~/hooks/RevueFlowHooks'
+import { Hooks, Store } from '~/context/symbols'
 
 export interface FlowProps {
   elements: Elements
@@ -101,7 +101,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   paneMoveable: true,
   edgeUpdaterRadius: 10,
 })
-const emit = defineEmits(Object.keys(useRevueFlow()))
+const emit = defineEmits(Object.keys(useHooks()))
 
 const defaultNodeTypes: Record<string, NodeType> = {
   input: InputNode as NodeType,
@@ -116,13 +116,13 @@ const defaultEdgeTypes: Record<string, EdgeType> = {
   smoothstep: SmoothStepEdge as EdgeType,
 }
 
-let store = inject<RevueFlowStore>('store')!
+let store = inject(Store)!
 if (!store) {
   store = configureStore({
     ...initialState,
     ...props,
   })()
-  provide<RevueFlowStore>('store', store)
+  provide(Store, store)
 }
 
 const init = () => {
@@ -138,8 +138,8 @@ onBeforeUnmount(() => store?.$dispose())
 onUpdated(() => init())
 init()
 
-const hooks = useRevueFlow().bind(emit)
-provide<RevueFlowHooks>('hooks', hooks)
+const hooks = useHooks().bind(emit)
+provide(Hooks, hooks)
 
 const nodeTypes = createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })
 const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })

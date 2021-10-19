@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ConnectionLineType, CustomConnectionLine, HandleElement, Node, Position, RevueFlowStore } from '~/types'
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
+import { ConnectionLineType, CustomConnectionLine, HandleElement, Node, Position } from '~/types'
 import { getBezierPath, getSmoothStepPath } from '~/components/Edges/utils'
+import { Hooks, Store } from '~/context/symbols'
 
 interface ConnectionLineProps {
   sourceNode: Node
@@ -16,8 +16,8 @@ const props = withDefaults(defineProps<ConnectionLineProps>(), {
   connectionLineStyle: () => ({}),
 })
 
-const hooks = inject<RevueFlowHooks>('hooks')!
-const store = inject<RevueFlowStore>('store')!
+const hooks = inject(Hooks)!
+const store = inject(Store)!
 
 const sourceHandle =
   store.connectionHandleId && store.connectionHandleType

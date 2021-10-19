@@ -7,7 +7,7 @@ import { Node, NodeExtent, TranslateExtent } from './node'
 import { RevueFlowActions } from './actions'
 import { D3Selection, D3Zoom, D3ZoomHandler } from '~/types/panel'
 
-export interface RevueFlowState {
+export interface FlowState {
   dimensions: Dimensions
   transform: Transform
   nodes: Node[]
@@ -51,4 +51,4 @@ export interface RevueFlowState {
   onConnectEnd?: OnConnectEndFunc
 }
 
-export type RevueFlowStore = Store<string, RevueFlowState, any, RevueFlowActions>
+export type FlowStore = Store<string, FlowState, any, RevueFlowActions>
