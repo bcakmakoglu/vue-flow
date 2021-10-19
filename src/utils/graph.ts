@@ -10,9 +10,32 @@ import {
   Connection,
   FlowExportObject,
   NodeExtent,
-  RevueFlowStore,
-} from '../types'
-import { clampPosition, clamp } from './index'
+  Dimensions,
+  FlowStore,
+} from '~/types'
+
+export const isInputDOMNode = (e: KeyboardEvent | MouseEvent): boolean => {
+  const target = e.target as HTMLElement
+  return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.nodeName) || target.hasAttribute('contentEditable')
+}
+
+export const getDimensions = (node: HTMLElement): Dimensions => ({
+  width: node.offsetWidth,
+  height: node.offsetHeight,
+})
+
+export const clamp = (val: number, min = 0, max = 1): number => Math.min(Math.max(val, min), max)
+
+export const clampPosition = (position: XYPosition, extent: NodeExtent): XYPosition => ({
+  x: clamp(position.x, extent[0][0], extent[1][0]),
+  y: clamp(position.y, extent[0][1], extent[1][1]),
+})
+
+export const getHostForElement = (element: HTMLElement): Document => {
+  const doc = element.getRootNode() as Document
+  if ('getElementFromPoint' in doc) return doc
+  else return window.document
+}
 
 export const isEdge = (element: Node | Connection | Edge): element is Edge =>
   'id' in element && 'source' in element && 'target' in element
@@ -136,7 +159,7 @@ export const pointToRendererPoint = (
 }
 
 export const onLoadProject =
-  (currentStore: RevueFlowStore) =>
+  (currentStore: FlowStore) =>
   (position: XYPosition): XYPosition =>
     pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
 
@@ -256,10 +279,10 @@ const parseElements = (nodes: Node[], edges: Edge[]): Elements => [
   ...edges.map((e) => ({ ...e })),
 ]
 
-export const onLoadGetElements = (currentStore: RevueFlowStore) => (): Elements =>
+export const onLoadGetElements = (currentStore: FlowStore) => (): Elements =>
   parseElements(currentStore.nodes || [], currentStore.edges || [])
 
-export const onLoadToObject = (currentStore: RevueFlowStore) => (): FlowExportObject => ({
+export const onLoadToObject = (currentStore: FlowStore) => (): FlowExportObject => ({
   elements: parseElements(currentStore.nodes || [], currentStore.edges || []),
   position: [currentStore.transform[0], currentStore.transform[1]],
   zoom: currentStore.transform[2],

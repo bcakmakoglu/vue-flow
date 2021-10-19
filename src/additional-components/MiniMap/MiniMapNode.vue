@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, CSSProperties } from 'vue'
+import { CSSProperties } from 'vue'
 
 interface MiniMapNodeProps {
   x?: number
@@ -8,11 +8,13 @@ interface MiniMapNodeProps {
   height?: number
   borderRadius?: number
   color?: string
-  shapeRendering?: string
+  shapeRendering?: 'auto' | 'optimizeSpeed' | 'crispEdges' | 'geometricPrecision' | 'inherit'
   strokeColor?: string
   strokeWidth?: number
 }
-const props = defineProps<MiniMapNodeProps>()
+const props = withDefaults(defineProps<MiniMapNodeProps>(), {
+  shapeRendering: 'geometricPrecision',
+})
 const attrs = useAttrs()
 
 const styles = (attrs.style ?? {}) as CSSProperties

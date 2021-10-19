@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import useKeyPress from '~/hooks/useKeyPress'
+import useKeyPress from '~/composables/useKeyPress'
 import { KeyCode } from '~/types'
-import useGlobalKeyHandler from '~/hooks/useGlobalKeyHandler'
+import useGlobalKeyHandler from '~/composables/useGlobalKeyHandler'
 import NodesSelection from '~/components/NodesSelection/NodesSelection.vue'
 import UserSelection from '~/components/UserSelection/UserSelection.vue'
-import { Hooks, Store } from '~/context/symbols'
+import { Hooks, Store } from '~/context'
 
 interface SelectionPaneProps {
   selectionKeyCode?: KeyCode

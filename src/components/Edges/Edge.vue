@@ -4,7 +4,7 @@ import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from
 import { isEdge } from '~/utils/graph'
 import { ConnectionMode, Dimensions, Edge, EdgeType, Elements, Position, Transform } from '~/types'
 import { onMouseDown } from '~/components/Handle/utils'
-import { Hooks, Store } from '~/context/symbols'
+import { Hooks, Store } from '~/context'
 
 interface EdgeProps {
   type: EdgeType

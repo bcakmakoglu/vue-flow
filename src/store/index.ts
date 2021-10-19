@@ -1,6 +1,6 @@
-import { RevueFlowState, ConnectionMode } from '../types'
+import { ConnectionMode, FlowState } from '~/types'
 
-export const initialState: RevueFlowState = {
+export const initialState: FlowState = {
   dimensions: {
     width: 0,
     height: 0,

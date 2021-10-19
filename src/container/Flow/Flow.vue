@@ -24,8 +24,8 @@ import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { createEdgeTypes } from '~/container/EdgeRenderer/utils'
 import { createNodeTypes } from '~/container/NodeRenderer/utils'
-import { useHooks } from '~/hooks/RevueFlowHooks'
-import { Hooks, Store } from '~/context/symbols'
+import { useHooks } from '~/composables'
+import { Hooks, Store } from '~/context'
 
 export interface FlowProps {
   elements: Elements

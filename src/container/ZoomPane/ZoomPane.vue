@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { KeyCode, PanOnScrollMode } from '~/types'
-import useZoom from '~/composables/useZoom'
-import useResizeHandler from '~/hooks/useResizeHandler'
-import useZoomPanHelper from '~/hooks/useZoomPanHelper'
-import { Store } from '~/context/symbols'
+import { useZoom, useResizeHandler, useZoomPanHelper } from '~/composables'
+import { Hooks, Store } from '~/context'
+import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils/graph'
 
 interface ZoomPaneProps {
   selectionKeyCode?: KeyCode
@@ -33,25 +32,25 @@ const props = withDefaults(defineProps<ZoomPaneProps>(), {
   paneMoveable: true,
 })
 const store = inject(Store)!
-const zoomPaneEl = templateRef<HTMLDivElement>('zoom-pane', null)
-const { transform, d3Selection, d3Zoom } = useZoom(zoomPaneEl, props, (initD3ZoomPayload) => store.initD3Zoom(initD3ZoomPayload))
+const hooks = inject(Hooks)!
 
+const zoomPaneEl = templateRef<HTMLDivElement>('zoom-pane', null)
+const { transform } = useZoom(zoomPaneEl, props)
 watch(transform, (val) => (store.transform = val), { flush: 'post' })
 const dimensions = useResizeHandler(zoomPaneEl)
 watch(dimensions, (val) => (store.dimensions = val), { flush: 'post' })
 
-const getZoomPanHelper = reactify(useZoomPanHelper)
-const zoomPanHelper = getZoomPanHelper(
-  d3Zoom,
-  d3Selection,
-  store.nodes,
-  transform,
-  dimensions,
-  store.minZoom,
-  store.maxZoom,
-  store.snapToGrid,
-  store.snapGrid,
-)
+const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
+hooks.load.trigger({
+  fitView: (params = { padding: 0.1 }) => fitView(params),
+  zoomIn,
+  zoomOut,
+  zoomTo,
+  setTransform,
+  project: onLoadProject(store),
+  getElements: onLoadGetElements(store),
+  toObject: onLoadToObject(store),
+})
 </script>
 <template>
   <div ref="zoom-pane" class="revue-flow__renderer revue-flow__zoompane">

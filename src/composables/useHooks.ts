@@ -1,7 +1,7 @@
 // global hooks
 import { Connection, Edge, Elements, FlowHooks, FlowTransform, Node, OnConnectStartParams, OnLoadParams } from '~/types'
 
-export const useHooks = (): FlowHooks & { bind: (emit: (event: string, ...args: any[]) => void) => FlowHooks } => {
+export default (): FlowHooks & { bind: (emit: (event: string, ...args: any[]) => void) => FlowHooks } => {
   const eventHooks: FlowHooks = {
     elementClick: createEventHook<{ event: MouseEvent; element: Node | Edge }>(),
     elementsRemove: createEventHook<Elements>(),

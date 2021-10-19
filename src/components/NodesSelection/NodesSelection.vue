@@ -2,7 +2,7 @@
 import { DraggableEventListener } from '@braks/revue-draggable'
 import { Node } from '~/types'
 import { isNode } from '~/utils/graph'
-import { Hooks, Store } from '~/context/symbols'
+import { Hooks, Store } from '~/context'
 
 interface NodesSelectionProps {
   onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void

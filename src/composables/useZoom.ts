@@ -2,20 +2,10 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { Ref } from 'vue'
 import { get } from '@vueuse/core'
-import {
-  D3Selection,
-  D3Zoom,
-  FlowTransform,
-  InitD3ZoomPayload,
-  KeyCode,
-  PanOnScrollMode,
-  Transform,
-  TranslateExtent,
-} from '~/types'
+import { D3Selection, D3Zoom, FlowTransform, KeyCode, PanOnScrollMode, Transform } from '~/types'
 import { clamp } from '~/utils'
-import useKeyPress from '~/hooks/useKeyPress'
-import { Hooks } from '~/context/symbols'
-import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils/graph'
+import useKeyPress from '~/composables/useKeyPress'
+import { Hooks, Store } from '~/context'
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
   prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k
@@ -30,11 +20,8 @@ interface UseZoomOptions {
   selectionKeyCode?: KeyCode
   zoomActivationKeyCode?: KeyCode
   paneMoveable?: boolean
-  minZoom?: number
-  maxZoom?: number
   defaultZoom?: number
   defaultPosition?: [number, number]
-  translateExtent?: TranslateExtent
   zoomOnScroll?: boolean
   zoomOnPinch?: boolean
   panOnScroll?: boolean
@@ -49,22 +36,12 @@ interface UseZoom {
   d3Selection: Ref<D3Selection>
 }
 
-export default function (
-  el: Ref<HTMLDivElement>,
-  options: UseZoomOptions,
-  init: (initD3ZoomPayload: InitD3ZoomPayload) => void = () => {},
-): UseZoom {
+export default function (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZoom {
   const {
     selectionKeyCode = 'Shift',
     zoomActivationKeyCode = 'Meta',
-    minZoom = 0.5,
-    maxZoom = 2,
     defaultZoom = 1,
     defaultPosition = [0, 0],
-    translateExtent = [
-      [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-      [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
-    ],
     zoomOnScroll = true,
     zoomOnPinch = true,
     zoomOnDoubleClick = true,
@@ -74,13 +51,17 @@ export default function (
     paneMoveable = true,
   } = options
   const hooks = inject(Hooks)!
+  const store = inject(Store)!
   const prevTransform = ref<FlowTransform>({ x: 0, y: 0, zoom: 0 })
 
-  const clampedX = clamp(defaultPosition[0], translateExtent[0][0], translateExtent[1][0])
-  const clampedY = clamp(defaultPosition[1], translateExtent[0][1], translateExtent[1][1])
-  const clampedZoom = clamp(defaultZoom, minZoom, maxZoom)
+  const clampedX = clamp(defaultPosition[0], store.translateExtent[0][0], store.translateExtent[1][0])
+  const clampedY = clamp(defaultPosition[1], store.translateExtent[0][1], store.translateExtent[1][1])
+  const clampedZoom = clamp(defaultZoom, store.minZoom, store.maxZoom)
   const transform = ref<Transform>([clampedX, clampedY, clampedZoom])
-  const d3Zoom = ref(zoom<HTMLDivElement, any>().scaleExtent([minZoom, maxZoom]).translateExtent(translateExtent))
+  store.transform = transform.value
+  const d3Zoom = ref(
+    zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent),
+  )
   const d3Selection = ref()
 
   until(el)
@@ -93,8 +74,7 @@ export default function (
 
       const updatedTransform = zoomIdentity.translate(clampedX, clampedY).scale(clampedZoom)
       d3z.transform(d3s, updatedTransform)
-      init({ d3Zoom: d3z, d3ZoomHandler, d3Selection: d3s })
-
+      store.initD3Zoom({ d3Zoom: d3z, d3Selection: d3s, d3ZoomHandler })
       const applyZoomHandlers = () => {
         d3z.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
           if (viewChanged(prevTransform.value, event.transform)) {

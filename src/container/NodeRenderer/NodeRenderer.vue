@@ -2,7 +2,7 @@
 import Node from '~/components/Nodes/Node.vue'
 import { NodeType, Node as TNode, Transform, Dimensions } from '~/types'
 import { getNodesInside } from '~/utils/graph'
-import { Store } from '~/context/symbols'
+import { Store } from '~/context'
 
 interface NodeRendererProps {
   nodeTypes: Record<string, NodeType>

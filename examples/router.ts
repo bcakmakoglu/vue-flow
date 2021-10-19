@@ -45,10 +45,6 @@ export const routes: RouterOptions['routes'] = [
     path: '/interaction',
     component: () => import('./Interaction/InteractionExample.vue'),
   },
-  {
-    path: '/super-flow',
-    component: () => import('./Superflow/Superflow.vue'),
-  },
 ]
 
 export const router = createRouter({

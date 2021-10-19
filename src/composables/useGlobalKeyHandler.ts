@@ -1,7 +1,7 @@
 import useKeyPress from './useKeyPress'
 import { isNode, getConnectedEdges } from '~/utils/graph'
 import { Elements, KeyCode, ElementId, FlowElement } from '~/types'
-import { Store } from '~/context/symbols'
+import { Store } from '~/context'
 
 interface HookParams {
   deleteKeyCode: KeyCode
