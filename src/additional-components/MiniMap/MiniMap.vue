@@ -74,22 +74,24 @@ const viewBox = computed(() => {
     :viewBox="`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`"
     class="revue-flow__minimap"
   >
-    <template v-for="(node, i) of store.nodes" :key="`mini-map-node-${i}`">
-      <MiniMapNode
-        v-if="!node.isHidden"
-        :x="node.__rf.position.x"
-        :y="node.__rf.position.y"
-        :width="node.__rf.width"
-        :height="node.__rf.height"
-        :style="node.style"
-        :class="nodeClassNameFunc(node)"
-        :color="nodeColorFunc(node)"
-        :border-radius="props.nodeBorderRadius"
-        :stroke-color="nodeStrokeColorFunc(node)"
-        :stroke-width="props.nodeStrokeWidth"
-        :shape-rendering="shapeRendering"
-      />
-    </template>
+    <slot name="mini-map-nodes" :nodes="store.nodes" :view-box="viewBox">
+      <template v-for="(node, i) of store.nodes" :key="`mini-map-node-${i}`">
+        <MiniMapNode
+          v-if="!node.isHidden"
+          :x="node.__rf.position.x"
+          :y="node.__rf.position.y"
+          :width="node.__rf.width"
+          :height="node.__rf.height"
+          :style="node.style"
+          :class="nodeClassNameFunc(node)"
+          :color="nodeColorFunc(node)"
+          :border-radius="props.nodeBorderRadius"
+          :stroke-color="nodeStrokeColorFunc(node)"
+          :stroke-width="props.nodeStrokeWidth"
+          :shape-rendering="shapeRendering"
+        />
+      </template>
+    </slot>
     <path
       class="revue-flow__minimap-mask"
       :d="`

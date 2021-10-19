@@ -21,18 +21,17 @@ const defaultColors: Record<BackgroundVariant, string> = {
 }
 
 const store = inject<RevueFlowStore>('store')!
-const transform = computed(() => store.transform)
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
-const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
 
 const bgClasses = ['revue-flow__background']
-const scaledGap = computed(() => props.gap && props.gap * transform.value[2])
-const xOffset = computed(() => scaledGap.value && transform.value[0] % scaledGap.value)
-const yOffset = computed(() => scaledGap.value && transform.value[1] % scaledGap.value)
+const scaledGap = computed(() => props.gap && props.gap * store.transform[2])
+const xOffset = computed(() => scaledGap.value && store.transform[0] % scaledGap.value)
+const yOffset = computed(() => scaledGap.value && store.transform[1] % scaledGap.value)
+const size = computed(() => props.size || 0.4 * store.transform[2])
 
-const isLines = computed(() => props.variant === BackgroundVariant.Lines)
-const bgColor = computed(() => (props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]))
-const size = computed(() => props.size || 0.4 * transform.value[2])
+const isLines = props.variant === BackgroundVariant.Lines
+const bgColor = props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]
+const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
 </script>
 <template>
   <svg
@@ -55,5 +54,6 @@ const size = computed(() => props.size || 0.4 * transform.value[2])
       </template>
     </pattern>
     <rect x="0" y="0" width="100%" height="100%" :fill="`url(#${patternId})`" />
+    <slot></slot>
   </svg>
 </template>

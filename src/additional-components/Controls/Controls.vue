@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { HTMLAttributes } from 'vue'
-import PlusIcon from '../../../assets/icons/plus.svg'
-import MinusIcon from '../../../assets/icons/minus.svg'
-import Fitview from '../../../assets/icons/fitview.svg'
-import Lock from '../../../assets/icons/lock.svg'
-import Unlock from '../../../assets/icons/unlock.svg'
 import ControlButton from './ControlButton.vue'
+import PlusIcon from '@/assets/icons/plus.svg'
+import MinusIcon from '@/assets/icons/minus.svg'
+import Fitview from '@/assets/icons/fitview.svg'
+import Lock from '@/assets/icons/lock.svg'
+import Unlock from '@/assets/icons/unlock.svg'
 import { FitViewParams, RevueFlowStore, ZoomPanHelperFunctions } from '~/types'
 import useZoomPanHelper from '~/hooks/useZoomPanHelper'
 
@@ -57,20 +57,38 @@ const onInteractiveChangeHandler = () => {
 <template>
   <div :class="mapClasses">
     <template v-if="props.showZoom">
-      <ControlButton on-click="onZoomInHandler" class="revue-flow__controls-zoomin">
-        <PlusIcon />
-      </ControlButton>
-      <ControlButton on-click="onZoomOutHandler" class="revue-flow__controls-zoomout">
-        <MinusIcon />
-      </ControlButton>
+      <slot name="control-zoom-in">
+        <ControlButton class="revue-flow__controls-zoomin" @click="onZoomInHandler">
+          <slot name="icon-zoom-in">
+            <PlusIcon />
+          </slot>
+        </ControlButton>
+      </slot>
+      <slot name="control-zoom-out">
+        <ControlButton class="revue-flow__controls-zoomout" @click="onZoomOutHandler">
+          <slot name="icon-zoom-out">
+            <MinusIcon />
+          </slot>
+        </ControlButton>
+      </slot>
     </template>
-    <ControlButton v-if="props.showFitView" class="revue-flow__controls-fitview" on-click="onFitViewHandler">
-      <Fitview />
-    </ControlButton>
-    <ControlButton v-if="props.showInteractive" class="revue-flow__controls-interactive" on-click="onInteractiveChangeHandler">
-      <Unlock v-if="isInteractive" />
-      <Lock v-else />
-    </ControlButton>
+    <slot name="control-fitview">
+      <ControlButton v-if="props.showFitView" class="revue-flow__controls-fitview" @click="onFitViewHandler">
+        <slot name="icon-fitview">
+          <Fitview />
+        </slot>
+      </ControlButton>
+    </slot>
+    <slot name="control-interactive">
+      <ControlButton v-if="props.showInteractive" class="revue-flow__controls-interactive" @click="onInteractiveChangeHandler">
+        <slot name="icon-unlock">
+          <Unlock v-if="isInteractive" />
+        </slot>
+        <slot name="icon-lock">
+          <Lock v-if="!isInteractive" />
+        </slot>
+      </ControlButton>
+    </slot>
     <slot></slot>
   </div>
 </template>
