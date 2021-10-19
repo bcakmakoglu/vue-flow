@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import '~/style.css'
 import '~/theme-default.css'
-import { CSSProperties, onBeforeUnmount, watchPostEffect } from 'vue'
+import { CSSProperties, onBeforeUnmount } from 'vue'
 import ZoomPane from '~/container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '~/container/SelectionPane/SelectionPane.vue'
 import NodeRenderer from '~/container/NodeRenderer/NodeRenderer.vue'
@@ -125,15 +125,18 @@ if (!store) {
   provide<RevueFlowStore>('store', store)
 }
 
-onBeforeUnmount(() => store?.$dispose())
-
-watchPostEffect(() => {
+const init = () => {
   store.setElements(props.elements)
   store.setMinZoom(props.minZoom)
   store.setMaxZoom(props.maxZoom)
   store.setTranslateExtent(props.translateExtent)
   store.setNodeExtent(props.nodeExtent)
-})
+}
+
+onBeforeUnmount(() => store?.$dispose())
+
+onUpdated(() => init())
+init()
 
 const hooks = useRevueFlow().bind(emit)
 provide<RevueFlowHooks>('hooks', hooks)
