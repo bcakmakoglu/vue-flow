@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Flowy from '~/container/Flow.vue'
+import Flowy from '~/container/Flow/Flow.vue'
 import { Elements } from '~/types'
 
 const elements = ref<Elements>([

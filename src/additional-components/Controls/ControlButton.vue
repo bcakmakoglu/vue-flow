@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-export type ControlButtonProps = HTMLButtonElement
+export interface ControlButtonProps extends HTMLButtonElement {}
 
 const props = defineProps<ControlButtonProps>()
 </script>

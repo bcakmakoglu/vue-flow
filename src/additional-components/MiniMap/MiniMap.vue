@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { HTMLAttributes } from 'vue'
-import MiniMapNodeDepr from './MiniMapNodeDepr'
+import MiniMapNode from './MiniMapNode.vue'
 import { getRectOfNodes, getBoundsofRects } from '~/utils/graph'
 import { Node, Rect, RevueFlowStore } from '~/types'
 
@@ -67,7 +67,7 @@ const shapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crisp
 <template>
   <svg :width="elementWidth" :height="elementHeight" :viewBox="`${x} ${y} ${width} ${height}`" class="revue-flow__minimap">
     <template v-for="(node, i) of store.nodes" :key="`mini-map-node-${i}`">
-      <MiniMapNodeDepr
+      <MiniMapNode
         v-if="!node.isHidden"
         :x="node.__rf.position.x"
         :y="node.__rf.position.y"

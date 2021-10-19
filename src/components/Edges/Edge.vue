@@ -180,6 +180,8 @@ const visible = computed(() => !props.edge.isHidden && isVisible(edgePos.value))
         data: props.edge.data,
         style: props.edge.style,
         arrowHeadType: props.edge.arrowHeadType,
+        sourcePosition,
+        targetPosition,
         sourceX: edgePos.sourceX,
         sourceY: edgePos.sourceY,
         targetX: edgePos.targetX,

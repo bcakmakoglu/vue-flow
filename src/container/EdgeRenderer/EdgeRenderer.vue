@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { getSourceTargetNodes } from '~/container/EdgeRenderer/utils'
+import { getSourceTargetNodes } from './utils'
+import MarkerDefinitions from './MarkerDefinitions.vue'
 import Edge from '~/components/Edges/Edge.vue'
 import ConnectionLine from '~/components/ConnectionLine/ConnectionLine.vue'
 import {
@@ -12,7 +13,6 @@ import {
   RevueFlowStore,
   Transform,
 } from '~/types'
-import MarkerDefinitions from '~/container/MarkerDefinitions.vue'
 
 interface EdgeRendererProps {
   edgeTypes: Record<string, EdgeType>

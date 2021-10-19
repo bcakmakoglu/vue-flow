@@ -23,7 +23,7 @@ export const routes: RouterOptions['routes'] = [
   },
   {
     path: '/edges',
-    component: () => import('./Edges'),
+    component: () => import('./Edges/EdgesExample.vue'),
   },
   {
     path: '/button-edge',

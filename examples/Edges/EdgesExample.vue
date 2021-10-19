@@ -1,19 +1,19 @@
-import { ref } from 'vue'
-import CustomEdge from './CustomEdge'
-import CustomEdge2 from './CustomEdge2'
-import RevueFlow, {
-  Elements,
-  FlowElement,
-  OnLoadParams,
-  ArrowHeadType,
-  Background,
-  Controls,
+<script lang="ts" setup>
+import CustomEdge from './CustomEdge.vue'
+import CustomEdge2 from './CustomEdge2.vue'
+import Flow, {
   MiniMap,
-  addEdge,
+  Controls,
+  Background,
+  Elements,
+  OnLoadParams,
+  FlowElement,
+  removeElements,
   Connection,
   Edge,
-  removeElements
-} from '../../src'
+  addEdge,
+  ArrowHeadType,
+} from '~/index'
 
 const initialElements = [
   { id: '1', type: 'input', data: { label: 'Input 1' }, position: { x: 250, y: 0 } },
@@ -37,16 +37,9 @@ const initialElements = [
     id: 'e5-6',
     source: '5',
     target: '6',
-    label: (
-      <>
-        <tspan>i am using</tspan>
-        <tspan dy={10} x={0}>
-          {'<tspan>'}
-        </tspan>
-      </>
-    ),
+    label: 'foobar',
     labelStyle: { fill: 'red', fontWeight: 700 },
-    arrowHeadType: ArrowHeadType.Arrow
+    arrowHeadType: ArrowHeadType.Arrow,
   },
   {
     id: 'e5-7',
@@ -56,7 +49,7 @@ const initialElements = [
     labelBgPadding: [8, 4],
     labelBgBorderRadius: 4,
     labelBgStyle: { fill: '#FFCC00', color: '#fff', fillOpacity: 0.7 },
-    arrowHeadType: ArrowHeadType.ArrowClosed
+    arrowHeadType: ArrowHeadType.ArrowClosed,
   },
   {
     id: 'e5-8',
@@ -64,47 +57,43 @@ const initialElements = [
     target: '8',
     type: 'custom',
     data: { text: 'custom edge' },
-    arrowHeadType: ArrowHeadType.ArrowClosed
+    arrowHeadType: ArrowHeadType.ArrowClosed,
   },
   {
     id: 'e5-9',
     source: '5',
     target: '9',
     type: 'custom2',
-    data: { text: 'custom edge 2' }
-  }
+    data: { text: 'custom edge 2' },
+  },
 ]
 
 const edgeTypes: Record<string, any> = {
   custom: CustomEdge,
-  custom2: CustomEdge2
+  custom2: CustomEdge2,
 }
 
-const EdgesFlow = () => {
-  const elements = ref<Elements>(initialElements as Elements)
+const elements = ref<Elements>(initialElements as Elements)
 
-  const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
-  const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
-  const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
-  const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-  const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-
-  return (
-    <RevueFlow
-      v-model={elements.value}
-      onElementClick={onElementClick}
-      onElementsRemove={onElementsRemove}
-      onConnect={onConnect}
-      onNodeDragStop={onNodeDragStop}
-      onLoad={onLoad}
-      snapToGrid={true}
-      edgeTypes={edgeTypes}
-    >
-      <MiniMap />
-      <Controls />
-      <Background />
-    </RevueFlow>
-  )
-}
-
-export default EdgesFlow
+const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
+const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
+const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
+const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
+const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+</script>
+<template>
+  <Flow
+    :elements="elements"
+    :on-element-click="onElementClick"
+    :on-elements-remove="onElementsRemove"
+    :on-connect="onConnect"
+    :on-node-drag-stop="onNodeDragStop"
+    :on-load="onLoad"
+    :snap-to-grid="true"
+    :edge-types="edgeTypes"
+  >
+    <MiniMap />
+    <Controls />
+    <Background />
+  </Flow>
+</template>
