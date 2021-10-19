@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import Node from '~/components/Nodes/Node.vue'
-import { NodeType, Node as TNode, Transform, Dimensions, RevueFlowStore } from '~/types'
+import { NodeType, Node as TNode, Transform, Dimensions } from '~/types'
 import { getNodesInside } from '~/utils/graph'
+import { Store } from '~/context/symbols'
 
 interface NodeRendererProps {
   nodeTypes: Record<string, NodeType>
@@ -14,7 +15,7 @@ const props = withDefaults(defineProps<NodeRendererProps>(), {
   dimensions: () => ({ width: 0, height: 0 }),
 })
 
-const store = inject<RevueFlowStore>('store')!
+const store = inject(Store)!
 
 const getNodes = computed(() =>
   store.onlyRenderVisibleElements

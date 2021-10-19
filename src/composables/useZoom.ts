@@ -12,10 +12,10 @@ import {
   Transform,
   TranslateExtent,
 } from '~/types'
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 import { clamp } from '~/utils'
 import useKeyPress from '~/hooks/useKeyPress'
-// import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils/graph'
+import { Hooks } from '~/context/symbols'
+import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils/graph'
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
   prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k
@@ -73,7 +73,7 @@ export default function (
     panOnScrollMode = PanOnScrollMode.Free,
     paneMoveable = true,
   } = options
-  const hooks = inject<RevueFlowHooks>('hooks')!
+  const hooks = inject(Hooks)!
   const prevTransform = ref<FlowTransform>({ x: 0, y: 0, zoom: 0 })
 
   const clampedX = clamp(defaultPosition[0], translateExtent[0][0], translateExtent[1][0])

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { DraggableEventListener } from '@braks/revue-draggable'
-import { Node, RevueFlowStore } from '~/types'
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
+import { Node } from '~/types'
 import { isNode } from '~/utils/graph'
+import { Hooks, Store } from '~/context/symbols'
 
 interface NodesSelectionProps {
   onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void
@@ -13,8 +13,8 @@ interface NodesSelectionProps {
 
 const props = defineProps<NodesSelectionProps>()
 
-const store = inject<RevueFlowStore>('store')!
-const hooks = inject<RevueFlowHooks>('hooks')!
+const store = inject(Store)!
+const hooks = inject(Hooks)!
 
 const selectedNodes = computed(() =>
   store.selectedElements

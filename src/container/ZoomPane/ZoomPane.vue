@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { KeyCode, PanOnScrollMode, RevueFlowStore } from '~/types'
+import { KeyCode, PanOnScrollMode } from '~/types'
 import useZoom from '~/composables/useZoom'
 import useResizeHandler from '~/hooks/useResizeHandler'
 import useZoomPanHelper from '~/hooks/useZoomPanHelper'
+import { Store } from '~/context/symbols'
 
 interface ZoomPaneProps {
   selectionKeyCode?: KeyCode
@@ -31,7 +32,7 @@ const props = withDefaults(defineProps<ZoomPaneProps>(), {
   panOnScrollMode: PanOnScrollMode.Free,
   paneMoveable: true,
 })
-const store = inject<RevueFlowStore>('store')!
+const store = inject(Store)!
 const zoomPaneEl = templateRef<HTMLDivElement>('zoom-pane', null)
 const { transform, d3Selection, d3Zoom } = useZoom(zoomPaneEl, props, (initD3ZoomPayload) => store.initD3Zoom(initD3ZoomPayload))
 

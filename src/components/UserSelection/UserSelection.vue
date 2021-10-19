@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import SelectionRect from './SelectionRect.vue'
-import { RevueFlowStore } from '~/types'
 import { getMousePosition } from '~/components/UserSelection/utils'
+import { Store } from '~/context/symbols'
 
-const store = inject<RevueFlowStore>('store')!
+const store = inject(Store)!
 const el = templateRef('user-selection', null)
 
 const onMouseDown = (event: MouseEvent) => {

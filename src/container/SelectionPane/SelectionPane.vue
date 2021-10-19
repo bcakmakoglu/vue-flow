@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 import useKeyPress from '~/hooks/useKeyPress'
-import { KeyCode, RevueFlowStore } from '~/types'
+import { KeyCode } from '~/types'
 import useGlobalKeyHandler from '~/hooks/useGlobalKeyHandler'
 import NodesSelection from '~/components/NodesSelection/NodesSelection.vue'
 import UserSelection from '~/components/UserSelection/UserSelection.vue'
+import { Hooks, Store } from '~/context/symbols'
 
 interface SelectionPaneProps {
   selectionKeyCode?: KeyCode
@@ -16,8 +16,8 @@ const props = withDefaults(defineProps<SelectionPaneProps>(), {
   deleteKeyCode: 'Backspace',
   multiSelectionKeyCode: 'Meta',
 })
-const store = inject<RevueFlowStore>('store')!
-const hooks = inject<RevueFlowHooks>('hooks')!
+const store = inject(Store)!
+const hooks = inject(Hooks)!
 const keyPressed = useKeyPress(props.selectionKeyCode)
 
 const onClick = (event: MouseEvent) => {

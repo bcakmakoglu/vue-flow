@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import EdgeAnchor from './EdgeAnchor.vue'
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
 import { isEdge } from '~/utils/graph'
-import { ConnectionMode, Dimensions, Edge, EdgeType, Elements, Position, RevueFlowStore, Transform } from '~/types'
+import { ConnectionMode, Dimensions, Edge, EdgeType, Elements, Position, Transform } from '~/types'
 import { onMouseDown } from '~/components/Handle/utils'
+import { Hooks, Store } from '~/context/symbols'
 
 interface EdgeProps {
   type: EdgeType
@@ -25,8 +25,8 @@ const props = withDefaults(defineProps<EdgeProps>(), {
   onlyRenderVisibleElements: false,
 })
 
-const store = inject<RevueFlowStore>('store')!
-const hooks = inject<RevueFlowHooks>('hooks')!
+const store = inject(Store)!
+const hooks = inject(Hooks)!
 
 hooks.connect.on((connection) => {
   hooks.edgeUpdate.trigger({ edge: props.edge, connection })

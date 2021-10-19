@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DraggableEventListener } from '@braks/revue-draggable'
-import { RevueFlowHooks } from '~/hooks/RevueFlowHooks'
-import { Node, NodeDimensionUpdate, NodeType, RevueFlowStore } from '~/types'
+import { Node, NodeDimensionUpdate, NodeType } from '~/types'
+import { Hooks, Store } from '~/context/symbols'
 
 interface NodeProps {
   node: Node
@@ -21,8 +21,8 @@ const props = withDefaults(defineProps<NodeProps>(), {
   selectNodesOnDrag: true,
 })
 
-const store = inject<RevueFlowStore>('store')!
-const hooks = inject<RevueFlowHooks>('hooks')!
+const store = inject(Store)!
+const hooks = inject(Hooks)!
 provide('NodeIdContext', props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
