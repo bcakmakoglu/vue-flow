@@ -126,6 +126,7 @@ if (!store) {
 }
 
 const init = () => {
+  store.$state = { ...store.$state, ...props }
   store.setElements(props.elements)
   store.setMinZoom(props.minZoom)
   store.setMaxZoom(props.maxZoom)

@@ -23,7 +23,7 @@ watchEffect(() => {
 })
 </script>
 <template>
-  <Flow :elements="elements" :on-connect="onConnect">
+  <Flow :elements="elements" @connect="onConnect">
     <MiniMap />
     <Controls />
 

@@ -84,13 +84,13 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 <template>
   <Flow
     :elements="elements"
-    :on-element-click="onElementClick"
-    :on-elements-remove="onElementsRemove"
-    :on-connect="onConnect"
-    :on-node-drag-stop="onNodeDragStop"
-    :on-load="onLoad"
     :snap-to-grid="true"
     :edge-types="edgeTypes"
+    @element-click="onElementClick"
+    @elements-remove="onElementsRemove"
+    @connect="onConnect"
+    @node-drag-stop="onNodeDragStop"
+    @load="onLoad"
   >
     <MiniMap />
     <Controls />

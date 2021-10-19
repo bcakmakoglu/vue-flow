@@ -49,7 +49,7 @@ const onDrop = (event: DragEvent) => {
 <template>
   <div class="dndflow">
     <div class="revueflow-wrapper" @drop="onDrop">
-      <Flow :elements="elements" @elementsRemove="onElementsRemove" @load="onLoad" @connect="onConnect" @dragover="onDragOver">
+      <Flow :elements="elements" @elements-remove="onElementsRemove" @load="onLoad" @connect="onConnect" @dragover="onDragOver">
         <Controls />
       </Flow>
     </div>

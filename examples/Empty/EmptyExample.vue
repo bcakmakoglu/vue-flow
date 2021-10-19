@@ -37,12 +37,12 @@ const addRandomNode = () => {
 <template>
   <Flow
     :elements="elements"
-    :on-load="onLoad"
-    :on-element-click="onElementClick"
-    :on-elements-remove="onElementsRemove"
-    :on-connect="(p) => onConnect(p)"
-    :on-node-drag-stop="onNodeDragStop"
     :only-render-visible-elements="false"
+    @load="onLoad"
+    @element-click="onElementClick"
+    @elements-remove="onElementsRemove"
+    @connect="(p) => onConnect(p)"
+    @node-drag-stop="onNodeDragStop"
   >
     <MiniMap />
     <Controls />
