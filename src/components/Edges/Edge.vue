@@ -87,7 +87,9 @@ const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => {
 
 const updating = ref<boolean>(false)
 const onEdgeUpdaterMouseEnter = () => (updating.value = true)
+
 const onEdgeUpdaterMouseOut = () => (updating.value = false)
+
 const isVisible = ({ sourceX, sourceY, targetX, targetY }: ReturnType<typeof getEdgePositions>) => {
   return store.onlyRenderVisibleElements
     ? isEdgeVisible({
@@ -99,14 +101,14 @@ const isVisible = ({ sourceX, sourceY, targetX, targetY }: ReturnType<typeof get
       })
     : true
 }
+
 const edgePos = computed(() =>
   getEdgePositions(props.nodes.sourceNode, sourceHandle, sourcePosition, props.nodes.targetNode, targetHandle, targetPosition),
 )
-const visible = computed(() => !props.edge.isHidden && isVisible(edgePos.value))
 </script>
 <template>
   <g
-    v-if="visible"
+    v-if="!props.edge.isHidden && isVisible(edgePos)"
     :class="[
       'revue-flow__edge',
       `revue-flow__edge-${props.type.name || 'default'}`,
@@ -189,9 +191,9 @@ const visible = computed(() => !props.edge.isHidden && isVisible(edgePos.value))
     </g>
     <g @mousedown="onEdgeUpdaterTargetMouseDown" @mouseenter="onEdgeUpdaterMouseEnter" @mouseout="onEdgeUpdaterMouseOut">
       <EdgeAnchor
-        :position="sourcePosition"
-        :center-x="edgePos.sourceX"
-        :center-y="edgePos.sourceY"
+        :position="targetPosition"
+        :center-x="edgePos.targetX"
+        :center-y="edgePos.targetY"
         :radius="props.edgeUpdaterRadius"
       />
     </g>

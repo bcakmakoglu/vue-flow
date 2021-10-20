@@ -47,9 +47,7 @@ onMounted(() => {
       if (isEdge(e) || e.id !== '2') {
         return e
       }
-
       const color = (event.target as HTMLInputElement).value
-
       bgColor.value = color
 
       return {

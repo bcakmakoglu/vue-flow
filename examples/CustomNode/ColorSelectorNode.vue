@@ -25,11 +25,13 @@ const sourceHandleStyleB: CSSProperties = { ...targetHandleStyle, bottom: '10px'
 const onConnect = (params: Connection | Edge) => console.log('handle onConnect', params)
 </script>
 <template>
-  <Handle type="target" :position="Position.Left" :style="targetHandleStyle" :on-connect="onConnect" />
-  <div>
-    Custom Color Picker Node: <strong>{{ data.color }}</strong>
+  <div class="revue-flow__node-color-selector">
+    <Handle type="target" :position="Position.Left" :style="targetHandleStyle" :on-connect="onConnect" />
+    <div>
+      Custom Color Picker Node: <strong>{{ data.color }}</strong>
+    </div>
+    <input class="nodrag" type="color" :value="data.color" @input="props.data.onChange" />
+    <Handle id="a" type="source" :position="Position.Right" :style="sourceHandleStyleA" />
+    <Handle id="b" type="source" :position="Position.Right" :style="sourceHandleStyleB" />
   </div>
-  <input class="nodrag" type="color" :value="data.color" @input="props.data.onChange" />
-  <Handle id="a" type="source" :position="Position.Right" :style="sourceHandleStyleA" />
-  <Handle id="b" type="source" :position="Position.Right" :style="sourceHandleStyleB" />
 </template>

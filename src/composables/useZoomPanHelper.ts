@@ -5,8 +5,7 @@ import { Store } from '~/context'
 
 const DEFAULT_PADDING = 0.1
 
-export default function (): UseZoomPanHelper {
-  const store = inject(Store)!
+export default function (store = inject(Store)!): UseZoomPanHelper {
   return {
     zoomIn: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1.2),
     zoomOut: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1 / 1.2),

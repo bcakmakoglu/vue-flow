@@ -37,21 +37,15 @@ const hooks = inject(Hooks)!
 const zoomPaneEl = templateRef<HTMLDivElement>('zoom-pane', null)
 const { transform } = useZoom(zoomPaneEl, props)
 const { width, height } = useElementBounding(zoomPaneEl)
-watch(width, (val) => (store.dimensions.width = val), { flush: 'post' })
-watch(height, (val) => (store.dimensions.height = val), { flush: 'post' })
-watch(transform, (val) => (store.transform = val), { flush: 'post' })
+watch(width, (val) => (store.dimensions.width = val))
+watch(height, (val) => (store.dimensions.height = val))
+watch(transform, (val) => (store.transform = val))
 
-const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
-hooks.load.trigger({
-  fitView: (params = { padding: 0.1 }) => fitView(params),
-  zoomIn,
-  zoomOut,
-  zoomTo,
-  setTransform,
-  project: onLoadProject(store),
-  getElements: onLoadGetElements(store),
-  toObject: onLoadToObject(store),
-})
+store.transform = transform.value
+store.dimensions = {
+  width: width.value,
+  height: height.value,
+}
 </script>
 <template>
   <div ref="zoom-pane" class="revue-flow__renderer revue-flow__zoompane">
