@@ -164,8 +164,8 @@ const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
         :selection-key-code="props.selectionKeyCode"
       >
         <NodeRenderer :node-types="nodeTypes">
-          <template #default="nodeProps">
-            <slot name="node" v-bind="nodeProps"></slot>
+          <template v-for="nodeName of Object.keys(nodeTypes)" #[`node-${nodeName}`]="nodeProps">
+            <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
           </template>
         </NodeRenderer>
         <EdgeRenderer
@@ -175,8 +175,8 @@ const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
           :marker-end-id="props.markerEndId"
           :edge-types="edgeTypes"
         >
-          <template #edge="edgeProps">
-            <slot name="edge" v-bind="edgeProps"></slot>
+          <template v-for="edgeName of Object.keys(edgeTypes)" #[`edge-${edgeName}`]="edgeProps">
+            <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
           </template>
           <template #custom-connection-line="customConnectionLineProps">
             <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
