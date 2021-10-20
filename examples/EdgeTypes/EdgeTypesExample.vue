@@ -17,14 +17,14 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 <template>
   <Flow
     :elements="elements"
-    :only-render-visible-elements="true"
     :min-zoom="0.2"
+    :default-zoom="1.5"
     @load="onLoad"
     @elements-remove="onElementsRemove"
     @connect="onConnect"
   >
     <MiniMap />
     <Controls />
-    <Background />
+    <Background color="#aaa" :gap="8" />
   </Flow>
 </template>
