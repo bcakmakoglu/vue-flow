@@ -114,19 +114,19 @@ const defaultEdgeTypes: Record<string, EdgeType> = {
 const store = useStore(props)
 const hooks = useHooks(emit)
 
-const init = () => {
-  store.$state = { ...store.$state, ...props }
-  store.setElements(props.elements)
-  store.setMinZoom(props.minZoom)
-  store.setMaxZoom(props.maxZoom)
-  store.setTranslateExtent(props.translateExtent)
-  store.setNodeExtent(props.nodeExtent)
+const init = (opts: typeof props) => {
+  store.$state = { ...store.$state, ...opts }
+  store.setElements(opts.elements)
+  store.setMinZoom(opts.minZoom)
+  store.setMaxZoom(opts.maxZoom)
+  store.setTranslateExtent(opts.translateExtent)
+  store.setNodeExtent(opts.nodeExtent)
 }
 
 onBeforeUnmount(() => store?.$dispose())
 
-onUpdated(() => init())
-init()
+watch(props, (val) => init(val))
+init(props)
 
 const nodeTypes = createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })
 const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })

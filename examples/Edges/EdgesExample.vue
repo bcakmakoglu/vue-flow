@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
+import CustomLabel from './CustomLabel.vue'
 import Flow, {
   MiniMap,
   Controls,
@@ -37,7 +38,12 @@ const initialElements = [
     id: 'e5-6',
     source: '5',
     target: '6',
-    label: 'foobar',
+    label: {
+      component: CustomLabel,
+      props: {
+        text: 'custom label text',
+      },
+    },
     labelStyle: { fill: 'red', fontWeight: 700 },
     arrowHeadType: ArrowHeadType.Arrow,
   },

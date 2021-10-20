@@ -17,12 +17,10 @@ const props = withDefaults(defineProps<DefaultNodeProps>(), {
 })
 </script>
 <template>
-  <div class="revue-flow__node-default">
-    <Handle type="target" :position="props.targetPosition" :is-connectable="props.connectable" />
-    <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
-    <template v-else>
-      {{ props.data?.label }}
-    </template>
-    <Handle type="source" :position="props.sourcePosition" :is-connectable="props.connectable" />
-  </div>
+  <Handle type="target" :position="props.targetPosition" :is-connectable="props.connectable" />
+  <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
+  <template v-else>
+    {{ props.data?.label }}
+  </template>
+  <Handle type="source" :position="props.sourcePosition" :is-connectable="props.connectable" />
 </template>
