@@ -73,7 +73,7 @@ const viewBox = computed(() => {
     :width="elementWidth"
     :height="elementHeight"
     :viewBox="`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`"
-    class="revue-flow__minimap"
+    class="vue-flow__minimap"
   >
     <slot name="mini-map-nodes" :nodes="store.nodes" :view-box="viewBox">
       <template v-for="(node, i) of store.nodes" :key="`mini-map-node-${i}`">
@@ -94,7 +94,7 @@ const viewBox = computed(() => {
       </template>
     </slot>
     <path
-      class="revue-flow__minimap-mask"
+      class="vue-flow__minimap-mask"
       :d="`
       M${viewBox.x - viewBox.offset},${viewBox.y - viewBox.offset}h${viewBox.width + viewBox.offset * 2}
       v${viewBox.height + viewBox.offset * 2}

@@ -1,11 +1,11 @@
-.revue-flow__selection {
+.vue-flow__selection {
   background: rgba(0, 89, 220, 0.08);
   border: 1px dotted rgba(0, 89, 220, 0.8);
 }
 
-.revue-flow__edge {
+.vue-flow__edge {
   &.selected {
-    .revue-flow__edge-path {
+    .vue-flow__edge-path {
       stroke: #555;
     }
   }
@@ -16,37 +16,37 @@
   }
 
   &.updating {
-    .revue-flow__edge-path {
+    .vue-flow__edge-path {
       stroke: #777;
     }
   }
 }
 
-.revue-flow__edge-path {
+.vue-flow__edge-path {
   stroke: #b1b1b7;
   stroke-width: 1;
 }
 
-.revue-flow__edge-text {
+.vue-flow__edge-text {
   font-size: 10px;
 }
 
-.revue-flow__edge-textbg {
+.vue-flow__edge-textbg {
   fill: white;
 }
 
-.revue-flow__connection-path {
+.vue-flow__connection-path {
   stroke: #b1b1b7;
   stroke-width: 1;
 }
 
-.revue-flow__node {
+.vue-flow__node {
   cursor: grab;
 }
 
-.revue-flow__node-default,
-.revue-flow__node-input,
-.revue-flow__node-output {
+.vue-flow__node-default,
+.vue-flow__node-input,
+.vue-flow__node-output {
   padding: 10px;
   border-radius: 3px;
   width: 150px;
@@ -57,15 +57,15 @@
   border-style: solid;
 }
 
-.revue-flow__node-default.selectable,
-.revue-flow__node-input.selectable,
-.revue-flow__node-output.selectable {
+.vue-flow__node-default.selectable,
+.vue-flow__node-input.selectable,
+.vue-flow__node-output.selectable {
   &:hover {
     box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
   }
 }
 
-.revue-flow__node-input {
+.vue-flow__node-input {
   background: #fff;
   border-color: #0041d0;
 
@@ -74,12 +74,12 @@
     box-shadow: 0 0 0 0.5px #0041d0;
   }
 
-  .revue-flow__handle {
+  .vue-flow__handle {
     background: #0041d0;
   }
 }
 
-.revue-flow__node-default {
+.vue-flow__node-default {
   background: #fff;
   border-color: #1a192b;
 
@@ -88,12 +88,12 @@
     box-shadow: 0 0 0 0.5px #1a192b;
   }
 
-  .revue-flow__handle {
+  .vue-flow__handle {
     background: #1a192b;
   }
 }
 
-.revue-flow__node-output {
+.vue-flow__node-output {
   background: #fff;
   border-color: #ff0072;
 
@@ -102,17 +102,17 @@
     box-shadow: 0 0 0 0.5px #ff0072;
   }
 
-  .revue-flow__handle {
+  .vue-flow__handle {
     background: #ff0072;
   }
 }
 
-.revue-flow__nodesselection-rect {
+.vue-flow__nodesselection-rect {
   background: rgba(0, 89, 220, 0.08);
   border: 1px dotted rgba(0, 89, 220, 0.8);
 }
 
-.revue-flow__handle {
+.vue-flow__handle {
   position: absolute;
   width: 6px;
   height: 6px;
@@ -125,11 +125,11 @@
   }
 }
 
-.revue-flow__minimap {
+.vue-flow__minimap {
   background-color: #fff;
 }
 
-.revue-flow__controls {
+.vue-flow__controls {
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
 
   &-button {

@@ -32,7 +32,7 @@ const edgePath = computed(() =>
 const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
 </script>
 <template>
-  <path :id="props.id" class="revue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
+  <path :id="props.id" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
   <text>
     <textPath :href="`#${props.id}`" :style="{ fontSize: '12px' }" startOffset="50%" text-anchor="middle">
       {{ props.data.text }}

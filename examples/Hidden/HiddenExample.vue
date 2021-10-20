@@ -31,7 +31,7 @@ watchEffect(() => {
       <div>
         <label for="ishidden">
           isHidden
-          <input id="ishidden" v-model="isHidden" type="checkbox" class="revue-flow__ishidden" />
+          <input id="ishidden" v-model="isHidden" type="checkbox" class="vue-flow__ishidden" />
         </label>
       </div>
     </div>

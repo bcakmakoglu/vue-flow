@@ -58,7 +58,7 @@ hooks.load.trigger({
 })
 </script>
 <template>
-  <div ref="zoom-pane" class="revue-flow__renderer revue-flow__zoompane">
+  <div ref="zoom-pane" class="vue-flow__renderer vue-flow__zoompane">
     <slot v-bind="{ transform, dimensions: { width, height } }"></slot>
   </div>
 </template>

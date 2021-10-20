@@ -1,7 +1,7 @@
 import { XYPosition } from '~/types'
 
 export function getMousePosition(event: MouseEvent): XYPosition | void {
-  const revueFlowNode = (event.target as Element).closest('.revue-flow')
+  const revueFlowNode = (event.target as Element).closest('.vue-flow')
   if (!revueFlowNode) {
     return
   }

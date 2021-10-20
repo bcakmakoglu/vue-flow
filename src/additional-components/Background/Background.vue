@@ -24,7 +24,7 @@ const defaultColors: Record<BackgroundVariant, string> = {
 const store = useStore()
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
 
-const bgClasses = ['revue-flow__background']
+const bgClasses = ['vue-flow__background']
 const background = computed(() => {
   const scaledGap = props.gap && props.gap * store.transform[2]
   const xOffset = scaledGap && store.transform[0] % scaledGap

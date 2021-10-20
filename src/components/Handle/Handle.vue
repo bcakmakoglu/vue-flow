@@ -32,8 +32,8 @@ const onMouseDownHandler = (event: MouseEvent) =>
     :data-nodeid="nodeId"
     :data-handlepos="props.position"
     :class="[
-      'revue-flow__handle',
-      `revue-flow__handle-${props.position}`,
+      'vue-flow__handle',
+      `vue-flow__handle-${props.position}`,
       'nodrag',
       {
         source: props.type !== 'target',

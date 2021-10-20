@@ -9,13 +9,13 @@ const onDragStart = (event: DragEvent, nodeType: string) => {
 <template>
   <aside>
     <div class="description">You can drag these nodes to the pane on the left.</div>
-    <div class="revue-flow__node-input" :draggable="true" @dragstart="(event: DragEvent) => onDragStart(event, 'input')">
+    <div class="vue-flow__node-input" :draggable="true" @dragstart="(event: DragEvent) => onDragStart(event, 'input')">
       Input Node
     </div>
-    <div class="revue-flow__node-default" :draggable="true" @dragstart="(event: DragEvent) => onDragStart(event, 'default')">
+    <div class="vue-flow__node-default" :draggable="true" @dragstart="(event: DragEvent) => onDragStart(event, 'default')">
       Default Node
     </div>
-    <div class="revue-flow__node-output" :draggable="true" @dragstart="(event: DragEvent) => onDragStart(event, 'output')">
+    <div class="vue-flow__node-output" :draggable="true" @dragstart="(event: DragEvent) => onDragStart(event, 'output')">
       Output Node
     </div>
   </aside>

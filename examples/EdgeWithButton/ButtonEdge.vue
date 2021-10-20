@@ -59,7 +59,7 @@ const center = computed(() =>
 )
 </script>
 <template>
-  <path :id="props.id" :style="props.style" class="revue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
+  <path :id="props.id" :style="props.style" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
   <foreignObject
     :width="foreignObjectSize"
     :height="foreignObjectSize"

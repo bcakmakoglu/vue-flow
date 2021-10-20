@@ -30,7 +30,7 @@ const store = useStore()
 const { zoomIn, zoomOut, fitView } = useZoomPanHelper()
 
 const isInteractive = store.nodesDraggable && store.nodesConnectable && store.elementsSelectable
-const mapClasses = ['revue-flow__controls']
+const mapClasses = ['vue-flow__controls']
 
 const onZoomInHandler = () => {
   zoomIn?.()
@@ -56,14 +56,14 @@ const onInteractiveChangeHandler = () => {
   <div :class="mapClasses">
     <template v-if="props.showZoom">
       <slot name="control-zoom-in">
-        <ControlButton class="revue-flow__controls-zoomin" @click="onZoomInHandler">
+        <ControlButton class="vue-flow__controls-zoomin" @click="onZoomInHandler">
           <slot name="icon-zoom-in">
             <PlusIcon />
           </slot>
         </ControlButton>
       </slot>
       <slot name="control-zoom-out">
-        <ControlButton class="revue-flow__controls-zoomout" @click="onZoomOutHandler">
+        <ControlButton class="vue-flow__controls-zoomout" @click="onZoomOutHandler">
           <slot name="icon-zoom-out">
             <MinusIcon />
           </slot>
@@ -71,14 +71,14 @@ const onInteractiveChangeHandler = () => {
       </slot>
     </template>
     <slot name="control-fitview">
-      <ControlButton v-if="props.showFitView" class="revue-flow__controls-fitview" @click="onFitViewHandler">
+      <ControlButton v-if="props.showFitView" class="vue-flow__controls-fitview" @click="onFitViewHandler">
         <slot name="icon-fitview">
           <Fitview />
         </slot>
       </ControlButton>
     </slot>
     <slot name="control-interactive">
-      <ControlButton v-if="props.showInteractive" class="revue-flow__controls-interactive" @click="onInteractiveChangeHandler">
+      <ControlButton v-if="props.showInteractive" class="vue-flow__controls-interactive" @click="onInteractiveChangeHandler">
         <slot name="icon-unlock">
           <Unlock v-if="isInteractive" />
         </slot>

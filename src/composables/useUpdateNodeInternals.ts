@@ -5,7 +5,7 @@ export default (): UpdateNodeInternals => {
   const store = useStore()
 
   return (id: ElementId) => {
-    const nodeElement: HTMLDivElement | null = document.querySelector(`.revue-flow__node[data-id="${id}"]`)
+    const nodeElement: HTMLDivElement | null = document.querySelector(`.vue-flow__node[data-id="${id}"]`)
 
     if (nodeElement) {
       store.updateNodeDimensions([{ id, nodeElement, forceUpdate: true }])

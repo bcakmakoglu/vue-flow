@@ -14,20 +14,20 @@ const configs: any[] = []
 
 const activePackages = [
   {
-    display: 'Revue-Flow',
-    external: ['@vueuse/core']
-  }
+    display: 'vue-flow',
+    external: ['@vueuse/core'],
+  },
 ]
 
 // @ts-ignore
 for (const { external, iife } of activePackages) {
   const iifeGlobals = {
-    vue: 'Vue',
-    '@vueuse/core': 'VueUse'
+    'vue': 'Vue',
+    '@vueuse/core': 'VueUse',
   }
 
   const iifeName = 'RevueFlow'
-  const functionNames = ['revue-flow']
+  const functionNames = ['vue-flow']
 
   for (const fn of functionNames) {
     const input = 'src/index.ts'
@@ -35,12 +35,12 @@ for (const { external, iife } of activePackages) {
     const output: any[] = [
       {
         file: `dist/${fn}.cjs.js`,
-        format: 'cjs'
+        format: 'cjs',
       },
       {
         file: `dist/${fn}.esm.js`,
-        format: 'es'
-      }
+        format: 'es',
+      },
     ]
 
     if (iife !== false) {
@@ -50,7 +50,7 @@ for (const { external, iife } of activePackages) {
           format: 'iife',
           name: iifeName,
           extend: true,
-          globals: iifeGlobals
+          globals: iifeGlobals,
         },
         {
           file: `dist/${fn}.iife.min.js`,
@@ -61,11 +61,11 @@ for (const { external, iife } of activePackages) {
           plugins: [
             terser({
               format: {
-                comments: false
-              }
-            })
-          ]
-        }
+                comments: false,
+              },
+            }),
+          ],
+        },
       )
     }
 
@@ -76,34 +76,34 @@ for (const { external, iife } of activePackages) {
         typescript({
           tsconfigOverride: {
             compilerOptions: {
-              declaration: false
-            }
-          }
+              declaration: false,
+            },
+          },
         }),
         svg(),
         resolve(),
         postcss({
           inject: true,
-          minimize: true
+          minimize: true,
         }),
         commonjs({ include: 'node_modules/**' }),
         babel({
           extensions: [...DEFAULT_BABEL_EXTENSIONS, '.ts', '.tsx'],
           exclude: 'node_modules/**',
-          babelHelpers: 'bundled'
-        })
+          babelHelpers: 'bundled',
+        }),
       ],
-      external: ['vue', ...(external || [])]
+      external: ['vue', ...(external || [])],
     })
 
     configs.push({
       input,
       output: {
         file: `dist/${fn}.d.ts`,
-        format: 'es'
+        format: 'es',
       },
       plugins: [dts()],
-      external: ['vue', ...(external || []), /\.css$/]
+      external: ['vue', ...(external || []), /\.css$/],
     })
   }
 }

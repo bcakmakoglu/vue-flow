@@ -8,7 +8,7 @@ const props = defineProps<MarkerProps>()
 <template>
   <marker
     :id="props.id"
-    class="revue-flow__arrowhead"
+    class="vue-flow__arrowhead"
     markerWidth="12.5"
     markerHeight="12.5"
     viewBox="-10 -10 20 20"

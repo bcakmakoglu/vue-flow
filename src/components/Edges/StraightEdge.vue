@@ -59,7 +59,7 @@ const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerE
 <template>
   <path
     :style="props.style"
-    class="revue-flow__edge-path"
+    class="vue-flow__edge-path"
     :d="`M ${props.sourceX},${props.sourceY}L ${props.targetX},${props.targetY}`"
     :marker-end="markerEnd"
   />

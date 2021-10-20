@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<MarkerDefinitionsProps>(), {
 </script>
 <template>
   <defs>
-    <Marker id="revue-flow__arrowclosed">
+    <Marker id="vue-flow__arrowclosed">
       <polyline
         :stroke="props.color"
         stroke-linecap="round"
@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<MarkerDefinitionsProps>(), {
         points="-5,-4 0,0 -5,4 -5,-4"
       />
     </Marker>
-    <Marker id="revue-flow__arrow">
+    <Marker id="vue-flow__arrow">
       <polyline
         :stroke="props.color"
         stroke-linecap="round"

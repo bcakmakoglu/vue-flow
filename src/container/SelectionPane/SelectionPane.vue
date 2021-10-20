@@ -52,5 +52,5 @@ useKeyPress(props.multiSelectionKeyCode, (keyPressed) => (store.multiSelectionAc
   <slot></slot>
   <UserSelection v-if="selectionKeyPresed && (store.selectionActive || store.elementsSelectable)" id="user-selection" />
   <NodesSelection v-if="store.nodesSelectionActive" id="nodes-selection" />
-  <div class="revue-flow__pane" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
+  <div class="vue-flow__pane" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
 </template>

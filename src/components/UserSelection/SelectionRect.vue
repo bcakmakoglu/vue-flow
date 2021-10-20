@@ -10,7 +10,7 @@ const props = defineProps<SelectionRectProps>()
 </script>
 <template>
   <div
-    class="revue-flow__selection"
+    class="vue-flow__selection"
     :style="{
       width: `${props.width}px`,
       height: `${props.height}px`,

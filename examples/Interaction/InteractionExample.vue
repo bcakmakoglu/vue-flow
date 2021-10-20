@@ -73,43 +73,43 @@ const captureElementClick = ref(false)
       <div>
         <label for="draggable">
           nodesDraggable
-          <input id="draggable" v-model="isDraggable" type="checkbox" class="revue-flow__draggable" />
+          <input id="draggable" v-model="isDraggable" type="checkbox" class="vue-flow__draggable" />
         </label>
       </div>
       <div>
         <label for="connectable">
           nodesConnectable
-          <input id="connectable" v-model="isConnectable" type="checkbox" class="revue-flow__connectable" />
+          <input id="connectable" v-model="isConnectable" type="checkbox" class="vue-flow__connectable" />
         </label>
       </div>
       <div>
         <label for="selectable">
           elementsSelectable
-          <input id="selectable" v-model="isSelectable" type="checkbox" class="revue-flow__selectable" />
+          <input id="selectable" v-model="isSelectable" type="checkbox" class="vue-flow__selectable" />
         </label>
       </div>
       <div>
         <label for="zoomonscroll">
           zoomOnScroll
-          <input id="zoomonscroll" v-model="zoomOnScroll" type="checkbox" class="revue-flow__zoomonscroll" />
+          <input id="zoomonscroll" v-model="zoomOnScroll" type="checkbox" class="vue-flow__zoomonscroll" />
         </label>
       </div>
       <div>
         <label for="zoomonpinch">
           zoomOnPinch
-          <input id="zoomonpinch" v-model="zoomOnPinch" type="checkbox" class="revue-flow__zoomonpinch" />
+          <input id="zoomonpinch" v-model="zoomOnPinch" type="checkbox" class="vue-flow__zoomonpinch" />
         </label>
       </div>
       <div>
         <label for="panonscroll">
           panOnScroll
-          <input id="panonscroll" v-model="panOnScroll" type="checkbox" class="revue-flow__panonscroll" />
+          <input id="panonscroll" v-model="panOnScroll" type="checkbox" class="vue-flow__panonscroll" />
         </label>
       </div>
       <div>
         <label>
           panOnScrollMode
-          <select id="panonscrollmode" v-model="panOnScrollMode" class="revue-flow__panonscrollmode">
+          <select id="panonscrollmode" v-model="panOnScrollMode" class="vue-flow__panonscrollmode">
             <option value="free">free</option>
             <option value="horizontal">horizontal</option>
             <option value="vertical">vertical</option>
@@ -119,36 +119,31 @@ const captureElementClick = ref(false)
       <div>
         <label for="zoomondbl">
           zoomOnDoubleClick
-          <input id="zoomondbl" v-model="zoomOnDoubleClick" type="checkbox" class="revue-flow__zoomondbl" />
+          <input id="zoomondbl" v-model="zoomOnDoubleClick" type="checkbox" class="vue-flow__zoomondbl" />
         </label>
       </div>
       <div>
         <label for="panemoveable">
           paneMoveable
-          <input id="panemoveable" v-model="paneMoveable" type="checkbox" class="revue-flow__panemoveable" />
+          <input id="panemoveable" v-model="paneMoveable" type="checkbox" class="vue-flow__panemoveable" />
         </label>
       </div>
       <div>
         <label for="capturezoompaneclick">
           capture onPaneClick
-          <input id="capturezoompaneclick" v-model="captureZoomClick" type="checkbox" class="revue-flow__capturezoompaneclick" />
+          <input id="capturezoompaneclick" v-model="captureZoomClick" type="checkbox" class="vue-flow__capturezoompaneclick" />
         </label>
       </div>
       <div>
         <label for="capturezoompanescroll">
           capture onPaneScroll
-          <input
-            id="capturezoompanescroll"
-            v-model="captureZoomScroll"
-            type="checkbox"
-            class="revue-flow__capturezoompanescroll"
-          />
+          <input id="capturezoompanescroll" v-model="captureZoomScroll" type="checkbox" class="vue-flow__capturezoompanescroll" />
         </label>
       </div>
       <div>
         <label for="captureelementclick">
           capture onElementClick
-          <input id="captureelementclick" v-model="captureElementClick" type="checkbox" class="revue-flow__captureelementclick" />
+          <input id="captureelementclick" v-model="captureElementClick" type="checkbox" class="vue-flow__captureelementclick" />
         </label>
       </div>
     </div>

@@ -132,7 +132,7 @@ const nodeTypes = createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })
 const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
 </script>
 <template>
-  <div class="revue-flow">
+  <div class="vue-flow">
     <ZoomPane
       :selection-key-code="props.selectionKeyCode"
       :zoom-activation-key-code="props.zoomActivationKeyCode"

@@ -71,7 +71,7 @@ const dAttr = computed(() => {
 })
 </script>
 <template>
-  <g class="revue-flow__connection">
+  <g class="vue-flow__connection">
     <slot
       v-bind="{
         sourceX,
@@ -84,7 +84,7 @@ const dAttr = computed(() => {
         connectionLineStyle: props.connectionLineStyle,
       }"
     >
-      <path :d="dAttr" class="revue-flow__connection-path" :style="props.connectionLineStyle" />
+      <path :d="dAttr" class="vue-flow__connection-path" :style="props.connectionLineStyle" />
     </slot>
   </g>
 </template>

@@ -142,8 +142,8 @@ onMounted(() => {
     <div
       ref="node-element"
       :class="[
-        'revue-flow__node',
-        `revue-flow__node-${props.node.type}`,
+        'vue-flow__node',
+        `vue-flow__node-${props.node.type}`,
         {
           selected: props.selected,
           selectable: props.selectable,

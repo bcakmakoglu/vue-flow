@@ -29,7 +29,7 @@ const connectionLineVisible = computed(
 )
 </script>
 <template>
-  <svg :width="store.dimensions.width" :height="store.dimensions.height" class="revue-flow__edges">
+  <svg :width="store.dimensions.width" :height="store.dimensions.height" class="vue-flow__edges">
     <MarkerDefinitions :color="props.arrowHeadColor" />
     <g
       :transform="store.transform.length && `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`"
