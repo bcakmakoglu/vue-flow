@@ -4,7 +4,7 @@ import { getSourceTargetNodes } from './utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 import Edge from '~/components/Edges/Edge.vue'
 import ConnectionLine from '~/components/ConnectionLine/ConnectionLine.vue'
-import { ConnectionLineType, ConnectionMode, CustomConnectionLine, Dimensions, EdgeType, Transform } from '~/types'
+import { ConnectionLineType, CustomConnectionLine, Dimensions, EdgeType, Transform } from '~/types'
 import { Store } from '~/context'
 
 interface EdgeRendererProps {
@@ -14,19 +14,17 @@ interface EdgeRendererProps {
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
   customConnectionLine?: CustomConnectionLine
-  connectionMode?: ConnectionMode
   arrowHeadColor?: string
   markerEndId?: string
-  onlyRenderVisibleElements?: boolean
+  edgeUpdaterRadius?: number
 }
 
 const props = withDefaults(defineProps<EdgeRendererProps>(), {
   transform: () => [0, 0, 1],
   arrowHeadColor: '#b1b1b7',
   dimensions: () => ({ width: 0, height: 0 }),
-  onlyRenderVisibleElements: false,
-  connectionMode: ConnectionMode.Strict,
   connectionLineType: ConnectionLineType.Bezier,
+  edgeUpdaterRadius: 10,
 })
 
 const store = inject(Store)!
@@ -35,6 +33,9 @@ const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connect
 const connectionLineVisible = computed(
   () => store.nodesConnectable && sourceNode.value && store.connectionNodeId && store.connectionHandleType,
 )
+onRenderTracked((e) => {
+  console.log('edge-renderer', e)
+})
 </script>
 <template>
   <svg :width="props.dimensions.width" :height="props.dimensions.height" class="revue-flow__edges">
@@ -42,15 +43,16 @@ const connectionLineVisible = computed(
     <g
       :transform="props.transform.length && `translate(${props.transform[0]},${props.transform[1]}) scale(${props.transform[2]})`"
     >
-      <template v-for="(edge, i) of store.edges" :key="`edge-${i}`">
+      <template v-for="edge of store.edges" :key="edge.id">
         <Edge
+          v-if="!edge.isHidden"
           :edge="edge"
           :nodes="getSourceTargetNodes(edge, store.nodes)"
           :type="props.edgeTypes[edge.type || 'default']"
           :dimensions="props.dimensions"
           :transform="props.transform"
-          :only-render-visible-elements="props.onlyRenderVisibleElements"
           :marker-end-id="props.markerEndId"
+          :edge-updater-radius="props.edgeUpdaterRadius"
         />
       </template>
       <ConnectionLine

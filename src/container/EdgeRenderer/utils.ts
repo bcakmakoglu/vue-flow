@@ -1,7 +1,6 @@
-import { Ref } from 'vue'
-import { BezierEdge, StepEdge, SmoothStepEdge, StraightEdge } from '~/components/Edges'
+import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { rectToBox } from '~/utils/graph'
-import { Position, Node, XYPosition, ElementId, HandleElement, Transform, Edge, EdgeType } from '~/types'
+import { Edge, EdgeType, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '~/types'
 
 export function createEdgeTypes(edgeTypes: Record<string, EdgeType>): Record<string, EdgeType> {
   const standardTypes: Record<string, EdgeType> = {
@@ -142,8 +141,8 @@ type SourceTargetNode = {
   targetNode: Node
 }
 
-export const getSourceTargetNodes = (edge: Edge, nodes: Node[]): Ref<SourceTargetNode> => {
-  const sourceTargetNode: SourceTargetNode = nodes.reduce(
+export const getSourceTargetNodes = (edge: Edge, nodes: Node[]): SourceTargetNode => {
+  return nodes.reduce(
     (res, node) => {
       if (node.id === edge.source) {
         res.sourceNode = node
@@ -155,6 +154,4 @@ export const getSourceTargetNodes = (edge: Edge, nodes: Node[]): Ref<SourceTarge
     },
     { sourceNode: null, targetNode: null } as any,
   )
-
-  return ref(sourceTargetNode)
 }

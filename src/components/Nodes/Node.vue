@@ -1,16 +1,18 @@
 <script lang="ts" setup>
 import { DraggableEventListener } from '@braks/revue-draggable'
-import { Node, NodeDimensionUpdate, NodeType } from '~/types'
+import { Node, NodeDimensionUpdate, NodeType, SnapGrid } from '~/types'
 import { Hooks, Store } from '~/context'
 
 interface NodeProps {
   node: Node
   type: NodeType
+  scale?: number
   selected?: boolean
   draggable?: boolean
   selectable?: boolean
   connectable?: boolean
   selectNodesOnDrag?: boolean
+  snapGrid?: SnapGrid
 }
 
 const props = withDefaults(defineProps<NodeProps>(), {
@@ -19,6 +21,7 @@ const props = withDefaults(defineProps<NodeProps>(), {
   selectable: true,
   connectable: true,
   selectNodesOnDrag: true,
+  scale: 1,
 })
 
 const store = inject(Store)!
@@ -27,34 +30,16 @@ provide('NodeIdContext', props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const onMouseEnterHandler = () => {
-  if (props.node.__rf.isDragging) {
-    return
-  }
+const onMouseEnterHandler = () =>
+  props.node.__rf.isDragging && ((event: MouseEvent) => hooks.nodeMouseEnter.trigger({ event, node: props.node }))
 
-  return (event: MouseEvent) => hooks.nodeMouseEnter.trigger({ event, node: props.node })
-}
+const onMouseMoveHandler = () =>
+  props.node.__rf.isDragging && ((event: MouseEvent) => hooks.nodeMouseMove.trigger({ event, node: props.node }))
 
-const onMouseMoveHandler = () => {
-  if (props.node.__rf.isDragging) {
-    return
-  }
+const onMouseLeaveHandler = () =>
+  props.node.__rf.isDragging && ((event: MouseEvent) => hooks.nodeMouseLeave.trigger({ event, node: props.node }))
 
-  return (event: MouseEvent) => hooks.nodeMouseMove.trigger({ event, node: props.node })
-}
-
-const onMouseLeaveHandler = () => {
-  if (props.node.__rf.isDragging) {
-    return
-  }
-
-  return (event: MouseEvent) => hooks.nodeMouseLeave.trigger({ event, node: props.node })
-}
-
-const onContextMenuHandler = () => {
-  return (event: MouseEvent) => hooks.nodeContextMenu.trigger({ event, node: props.node })
-}
-
+const onContextMenuHandler = () => (event: MouseEvent) => hooks.nodeContextMenu.trigger({ event, node: props.node })
 const onSelectNodeHandler = (event: MouseEvent) => {
   if (!props.draggable) {
     const n = props.node
@@ -145,11 +130,10 @@ onMounted(() => {
 
 <template>
   <DraggableCore
-    v-if="!props.node.isHidden"
     cancel=".nodrag"
     :disabled="!props.draggable"
-    :scale="store.transform[2]"
-    :grid="store.snapToGrid ? store.snapGrid : undefined"
+    :scale="props.scale"
+    :grid="props.snapGrid"
     :enable-user-select-hack="false"
     @start="onDragStart"
     @move="onDrag"

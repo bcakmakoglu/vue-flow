@@ -44,17 +44,22 @@ const type = (node: TNode) => {
 }
 
 const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id === nodeId)
+onRenderTracked((e) => {
+  console.log('node-renderer', e)
+})
 </script>
 <template>
   <div
     class="revue-flow__nodes"
     :style="{ transform: `translate(${props.transform[0]}px,${props.transform[1]}px) scale(${props.transform[2]})` }"
   >
-    <template v-for="(node, i) of getNodes" :key="`node-${i}`">
+    <template v-for="node of getNodes" :key="node.id">
       <Node
+        v-if="!node.isHidden"
         :node="node"
         :type="type(node)"
         :scale="props.transform[2]"
+        :snap-grid="store.snapToGrid ? store.snapGrid : undefined"
         :selected="selected(node.id)"
         :selectable="node.selectable || store.elementsSelectable"
         :connectable="node.connectable || store.nodesConnectable"
