@@ -58,7 +58,7 @@ const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id
         :draggable="node.draggable || store.nodesDraggable"
       >
         <template #default="nodeProps">
-          <slot v-bind="nodeProps"></slot>
+          <slot :name="`node-${node.type}`" v-bind="nodeProps"></slot>
         </template>
       </Node>
     </template>

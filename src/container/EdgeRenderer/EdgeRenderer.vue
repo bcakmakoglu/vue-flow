@@ -45,7 +45,7 @@ const connectionLineVisible = computed(
           :edge-updater-radius="props.edgeUpdaterRadius"
         >
           <template #default="edgeProps">
-            <slot name="edge" v-bind="edgeProps"></slot>
+            <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
           </template>
         </Edge>
       </template>
