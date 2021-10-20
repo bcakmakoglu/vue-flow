@@ -7,8 +7,7 @@ import Fitview from '@/assets/icons/fitview.svg'
 import Lock from '@/assets/icons/lock.svg'
 import Unlock from '@/assets/icons/unlock.svg'
 import { FitViewParams } from '~/types'
-import useZoomPanHelper from '~/composables/useZoomPanHelper'
-import { Store } from '~/context'
+import { useZoomPanHelper, useStore } from '~/composables'
 
 export interface ControlProps extends HTMLAttributes {
   showZoom?: boolean
@@ -27,7 +26,7 @@ const props = withDefaults(defineProps<ControlProps>(), {
   showInteractive: true,
 })
 
-const store = inject(Store)!
+const store = useStore()
 const { zoomIn, zoomOut, fitView } = useZoomPanHelper()
 
 const isInteractive = store.nodesDraggable && store.nodesConnectable && store.elementsSelectable

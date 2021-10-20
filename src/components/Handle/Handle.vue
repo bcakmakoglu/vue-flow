@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ElementId, Position, ValidConnectionFunc } from '~/types'
-import { Hooks, Store } from '~/context'
-import { useHandle } from '~/composables'
+import { Position, ValidConnectionFunc } from '~/types'
+import { NodeIdContextKey } from '~/context'
+import { useHandle, useHooks, useStore } from '~/composables'
 
 interface HandleProps {
   id?: string
@@ -18,9 +18,9 @@ const props = withDefaults(defineProps<HandleProps>(), {
   connectable: true,
 })
 
-const store = inject(Store)!
-const hooks = inject(Hooks)!
-const nodeId = inject<ElementId>('NodeIdContext')!
+const store = useStore()
+const hooks = useHooks()
+const nodeId = inject(NodeIdContextKey)!
 
 const handler = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>

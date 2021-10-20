@@ -2,9 +2,8 @@
 import EdgeAnchor from './EdgeAnchor.vue'
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
 import { isEdge } from '~/utils/graph'
-import { ConnectionMode, Edge, EdgeType, HandleElement, Position, EdgePositions } from '~/types'
-import { Hooks, Store } from '~/context'
-import { useHandle } from '~/composables'
+import { ConnectionMode, Edge, EdgeType, Position } from '~/types'
+import { useHandle, useHooks, useStore } from '~/composables'
 
 interface EdgeProps {
   type: EdgeType
@@ -15,8 +14,8 @@ interface EdgeProps {
 
 const props = withDefaults(defineProps<EdgeProps>(), {})
 
-const store = inject(Store)!
-const hooks = inject(Hooks)!
+const store = useStore()
+const hooks = useHooks()
 
 hooks.connect.on((connection) => {
   hooks.edgeUpdate.trigger({ edge: props.edge, connection })

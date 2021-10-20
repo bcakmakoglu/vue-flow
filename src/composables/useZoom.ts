@@ -5,7 +5,8 @@ import { get } from '@vueuse/core'
 import { FlowTransform, PanOnScrollMode, Transform, UseZoom, UseZoomOptions } from '~/types'
 import { clamp } from '~/utils'
 import useKeyPress from '~/composables/useKeyPress'
-import { Hooks, Store } from '~/context'
+import useHooks from '~/composables/useHooks'
+import useStore from '~/composables/useStore'
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
   prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k
@@ -16,7 +17,7 @@ const eventToFlowTransform = (eventTransform: ZoomTransform): FlowTransform => (
   zoom: eventTransform.k,
 })
 
-export default function (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZoom {
+export default (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZoom => {
   const {
     selectionKeyCode = 'Shift',
     zoomActivationKeyCode = 'Meta',
@@ -30,8 +31,8 @@ export default function (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZ
     panOnScrollMode = PanOnScrollMode.Free,
     paneMoveable = true,
   } = options
-  const hooks = inject(Hooks)!
-  const store = inject(Store)!
+  const hooks = useHooks()
+  const store = useStore()
   const prevTransform = ref<FlowTransform>({ x: 0, y: 0, zoom: 0 })
 
   const clampedX = clamp(defaultPosition[0], store.translateExtent[0][0], store.translateExtent[1][0])

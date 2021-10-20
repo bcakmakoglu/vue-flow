@@ -17,14 +17,11 @@ import {
   TranslateExtent,
   NodeExtent,
 } from '~/types'
-import useFlowStore from '~/store/useFlowStore'
-import { initialState } from '~/store'
 import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { createEdgeTypes } from '~/container/EdgeRenderer/utils'
 import { createNodeTypes } from '~/container/NodeRenderer/utils'
-import { useHooks } from '~/composables'
-import { Hooks, Store } from '~/context'
+import { useHooks, useStore, createHooks } from '~/composables'
 
 export interface FlowProps {
   elements: Elements
@@ -99,7 +96,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   paneMoveable: true,
   edgeUpdaterRadius: 10,
 })
-const emit = defineEmits(Object.keys(useHooks()))
+const emit = defineEmits(Object.keys(createHooks()))
 
 const defaultNodeTypes: Record<string, NodeType> = {
   input: InputNode as NodeType,
@@ -114,14 +111,8 @@ const defaultEdgeTypes: Record<string, EdgeType> = {
   smoothstep: SmoothStepEdge as EdgeType,
 }
 
-let store = inject(Store)!
-if (!store) {
-  store = useFlowStore({
-    ...initialState,
-    ...props,
-  })()
-  provide(Store, store)
-}
+const store = useStore(props)
+const hooks = useHooks(emit)
 
 const init = () => {
   store.$state = { ...store.$state, ...props }
@@ -136,9 +127,6 @@ onBeforeUnmount(() => store?.$dispose())
 
 onUpdated(() => init())
 init()
-
-const hooks = useHooks().bind(emit)
-provide(Hooks, hooks)
 
 const nodeTypes = createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })
 const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
@@ -184,6 +172,6 @@ const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
         </EdgeRenderer>
       </SelectionPane>
     </ZoomPane>
-    <slot></slot>
+    <slot v-bind="{ flowProps: props, store, hooks }"></slot>
   </div>
 </template>

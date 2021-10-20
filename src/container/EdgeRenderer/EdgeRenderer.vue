@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { getSourceTargetNodes } from './utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 import Edge from '~/components/Edges/Edge.vue'
 import ConnectionLine from '~/components/ConnectionLine/ConnectionLine.vue'
 import { ConnectionLineType, EdgeType } from '~/types'
-import { Store } from '~/context'
+import { useStore } from '~/composables'
 
 interface EdgeRendererProps {
   edgeTypes: Record<string, EdgeType>
@@ -22,7 +21,7 @@ const props = withDefaults(defineProps<EdgeRendererProps>(), {
   edgeUpdaterRadius: 10,
 })
 
-const store = inject(Store)!
+const store = useStore()
 
 const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connectionNodeId))
 const connectionLineVisible = computed(

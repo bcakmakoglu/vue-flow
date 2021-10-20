@@ -2,7 +2,7 @@
 import Node from '~/components/Nodes/Node.vue'
 import { NodeType, Node as TNode } from '~/types'
 import { getNodesInside } from '~/utils/graph'
-import { Store } from '~/context'
+import { useStore } from '~/composables'
 
 interface NodeRendererProps {
   nodeTypes: Record<string, NodeType>
@@ -10,7 +10,7 @@ interface NodeRendererProps {
 
 const props = defineProps<NodeRendererProps>()
 
-const store = inject(Store)!
+const store = useStore()
 
 const getNodes = computed(() =>
   store.onlyRenderVisibleElements

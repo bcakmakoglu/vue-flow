@@ -2,7 +2,7 @@
 import { CSSProperties } from 'vue'
 import { ConnectionLineType, HandleElement, Node, Position } from '~/types'
 import { getBezierPath, getSmoothStepPath } from '~/components/Edges/utils'
-import { Store } from '~/context'
+import { useStore } from '~/composables'
 
 interface ConnectionLineProps {
   sourceNode: Node
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<ConnectionLineProps>(), {
   connectionLineStyle: () => ({}),
 })
 
-const store = inject(Store)!
+const store = useStore()
 
 const sourceHandle =
   store.connectionHandleId && store.connectionHandleType

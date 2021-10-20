@@ -1,6 +1,6 @@
 import { ConnectionMode, FlowState } from '~/types'
 
-export const initialState: FlowState = {
+export const initialState = (): FlowState => ({
   dimensions: {
     width: 0,
     height: 0,
@@ -54,4 +54,6 @@ export const initialState: FlowState = {
   multiSelectionActive: false,
 
   revueFlowVersion: typeof __REVUE_FLOW_VERSION__ !== 'undefined' ? __REVUE_FLOW_VERSION__ : '-',
-}
+})
+
+export { default as useFlowStore } from './useFlowStore'

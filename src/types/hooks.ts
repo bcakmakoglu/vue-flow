@@ -1,45 +1,48 @@
-// global hooks
 import { EventHook } from '@vueuse/core'
 import { Connection, Edge, Elements, FlowTransform, Node, OnConnectStartParams, OnLoadParams } from '../types'
 
+export type FlowHook<T = any> = EventHook<T>
+
 export interface FlowHooks {
-  elementClick: EventHook<{ event: MouseEvent; element: Node | Edge }>
-  elementsRemove: EventHook<Elements>
-  nodeDoubleClick: EventHook<{ event: MouseEvent; node: Node }>
-  nodeClick: EventHook<{ event: MouseEvent; node: Node }>
-  nodeMouseEnter: EventHook<{ event: MouseEvent; node: Node }>
-  nodeMouseMove: EventHook<{ event: MouseEvent; node: Node }>
-  nodeMouseLeave: EventHook<{ event: MouseEvent; node: Node }>
-  nodeContextMenu: EventHook<{ event: MouseEvent; node: Node }>
-  nodeDragStart: EventHook<{ event: MouseEvent; node: Node }>
-  nodeDrag: EventHook<{ event: MouseEvent; node: Node }>
-  nodeDragStop: EventHook<{ event: MouseEvent; node: Node }>
-  connect: EventHook<Connection>
-  connectStart: EventHook<{
+  elementClick: FlowHook<{ event: MouseEvent; element: Node | Edge }>
+  elementsRemove: FlowHook<Elements>
+  nodeDoubleClick: FlowHook<{ event: MouseEvent; node: Node }>
+  nodeClick: FlowHook<{ event: MouseEvent; node: Node }>
+  nodeMouseEnter: FlowHook<{ event: MouseEvent; node: Node }>
+  nodeMouseMove: FlowHook<{ event: MouseEvent; node: Node }>
+  nodeMouseLeave: FlowHook<{ event: MouseEvent; node: Node }>
+  nodeContextMenu: FlowHook<{ event: MouseEvent; node: Node }>
+  nodeDragStart: FlowHook<{ event: MouseEvent; node: Node }>
+  nodeDrag: FlowHook<{ event: MouseEvent; node: Node }>
+  nodeDragStop: FlowHook<{ event: MouseEvent; node: Node }>
+  connect: FlowHook<Connection>
+  connectStart: FlowHook<{
     event: MouseEvent
     params: OnConnectStartParams
   }>
-  connectStop: EventHook<MouseEvent>
-  connectEnd: EventHook<MouseEvent>
-  load: EventHook<OnLoadParams>
-  move: EventHook<FlowTransform | undefined>
-  moveStart: EventHook<FlowTransform | undefined>
-  moveEnd: EventHook<FlowTransform | undefined>
-  selectionChange: EventHook<Elements | null>
-  selectionDragStart: EventHook<{ event: MouseEvent; nodes: Node[] }>
-  selectionDrag: EventHook<{ event: MouseEvent; nodes: Node[] }>
-  selectionDragStop: EventHook<{ event: MouseEvent; nodes: Node[] }>
-  selectionContextMenu: EventHook<{ event: MouseEvent; nodes: Node[] }>
-  paneScroll: EventHook<WheelEvent | undefined>
-  paneClick: EventHook<MouseEvent>
-  paneContextMenu: EventHook<MouseEvent>
-  edgeUpdate: EventHook<{ edge: Edge; connection: Connection }>
-  edgeContextMenu: EventHook<{ event: MouseEvent; edge: Edge }>
-  edgeMouseEnter: EventHook<{ event: MouseEvent; edge: Edge }>
-  edgeMouseMove: EventHook<{ event: MouseEvent; edge: Edge }>
-  edgeMouseLeave: EventHook<{ event: MouseEvent; edge: Edge }>
-  edgeDoubleClick: EventHook<{ event: MouseEvent; edge: Edge }>
-  edgeClick: EventHook<{ event: MouseEvent; edge: Edge }>
-  edgeUpdateStart: EventHook<{ event: MouseEvent; edge: Edge }>
-  edgeUpdateEnd: EventHook<{ event: MouseEvent; edge: Edge }>
+  connectStop: FlowHook<MouseEvent>
+  connectEnd: FlowHook<MouseEvent>
+  load: FlowHook<OnLoadParams>
+  move: FlowHook<FlowTransform | undefined>
+  moveStart: FlowHook<FlowTransform | undefined>
+  moveEnd: FlowHook<FlowTransform | undefined>
+  selectionChange: FlowHook<Elements | null>
+  selectionDragStart: FlowHook<{ event: MouseEvent; nodes: Node[] }>
+  selectionDrag: FlowHook<{ event: MouseEvent; nodes: Node[] }>
+  selectionDragStop: FlowHook<{ event: MouseEvent; nodes: Node[] }>
+  selectionContextMenu: FlowHook<{ event: MouseEvent; nodes: Node[] }>
+  paneScroll: FlowHook<WheelEvent | undefined>
+  paneClick: FlowHook<MouseEvent>
+  paneContextMenu: FlowHook<MouseEvent>
+  edgeUpdate: FlowHook<{ edge: Edge; connection: Connection }>
+  edgeContextMenu: FlowHook<{ event: MouseEvent; edge: Edge }>
+  edgeMouseEnter: FlowHook<{ event: MouseEvent; edge: Edge }>
+  edgeMouseMove: FlowHook<{ event: MouseEvent; edge: Edge }>
+  edgeMouseLeave: FlowHook<{ event: MouseEvent; edge: Edge }>
+  edgeDoubleClick: FlowHook<{ event: MouseEvent; edge: Edge }>
+  edgeClick: FlowHook<{ event: MouseEvent; edge: Edge }>
+  edgeUpdateStart: FlowHook<{ event: MouseEvent; edge: Edge }>
+  edgeUpdateEnd: FlowHook<{ event: MouseEvent; edge: Edge }>
 }
+
+export type EmitFunc<T extends FlowHooks = FlowHooks> = (name: keyof T, ...args: any[]) => void

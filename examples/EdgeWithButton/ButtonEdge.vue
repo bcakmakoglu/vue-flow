@@ -1,5 +1,15 @@
 <script lang="ts" setup>
-import { getEdgeCenter, getBezierPath, getMarkerEnd, ArrowHeadType, EdgeProps, ElementId, Position, Hooks, Store } from '~/index'
+import {
+  useHooks,
+  useStore,
+  getEdgeCenter,
+  getBezierPath,
+  getMarkerEnd,
+  ArrowHeadType,
+  EdgeProps,
+  ElementId,
+  Position,
+} from '~/index'
 
 interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   id: ElementId
@@ -15,8 +25,8 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
 }
 
 const props = defineProps<CustomEdgeProps>()
-const store = inject(Store)!
-const hooks = inject(Hooks)!
+const store = useStore()
+const hooks = useHooks()
 const onEdgeClick = (evt: Event, id: string) => {
   const edge = store.edges.find((edge) => edge.id === id)
   if (edge) {

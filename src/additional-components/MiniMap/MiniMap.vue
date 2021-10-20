@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { HTMLAttributes } from 'vue'
 import MiniMapNode from './MiniMapNode.vue'
-import { getBoundsofRects, getRectOfNodes } from '~/utils/graph'
+import { getBoundsofRects, getRectOfNodes } from '~/utils'
 import { Node } from '~/types'
-import { Store } from '~/context'
+import { useStore } from '~/composables'
 
 type StringFunc = (node: Node) => string
 
@@ -31,7 +31,7 @@ declare const window: any
 const defaultWidth = 200
 const defaultHeight = 150
 
-const store = inject(Store)!
+const store = useStore()
 
 const elementWidth = attrs.style?.width ?? defaultWidth
 const elementHeight = attrs.style?.height ?? defaultHeight

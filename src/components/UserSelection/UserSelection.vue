@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import SelectionRect from './SelectionRect.vue'
 import { getMousePosition } from '~/components/UserSelection/utils'
-import { Store } from '~/context'
+import { useStore } from '~/composables'
 
-const store = inject(Store)!
+const store = useStore()
 const el = templateRef('user-selection', null)
 
 const onMouseDown = (event: MouseEvent) => {

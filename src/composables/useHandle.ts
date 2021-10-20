@@ -1,6 +1,7 @@
 import { getHostForElement } from '~/utils'
-import { Hooks, Store } from '~/context'
 import { Connection, ConnectionMode, ElementId, HandleType, ValidConnectionFunc } from '~/types'
+import useStore from '~/composables/useStore'
+import useHooks from '~/composables/useHooks'
 
 type Result = {
   elementBelow: Element | null
@@ -10,7 +11,7 @@ type Result = {
 }
 
 // checks if element below mouse is a handle and returns connection in form of an object { source: 123, target: 312 }
-export function checkElementBelowIsValid(
+export const checkElementBelowIsValid = (
   event: MouseEvent,
   connectionMode: ConnectionMode,
   isTarget: boolean,
@@ -18,7 +19,7 @@ export function checkElementBelowIsValid(
   handleId: ElementId | null,
   isValidConnection: ValidConnectionFunc,
   doc: Document,
-) {
+) => {
   const elementBelow = doc.elementFromPoint(event.clientX, event.clientY)
   const elementBelowIsTarget = elementBelow?.classList.contains('target') || false
   const elementBelowIsSource = elementBelow?.classList.contains('source') || false
@@ -62,14 +63,14 @@ export function checkElementBelowIsValid(
   return result
 }
 
-function resetRecentHandle(hoveredHandle: Element): void {
+const resetRecentHandle = (hoveredHandle: Element): void => {
   hoveredHandle?.classList.remove('revue-flow__handle-valid')
   hoveredHandle?.classList.remove('revue-flow__handle-connecting')
 }
 
-export default function () {
-  const store = inject(Store)!
-  const hooks = inject(Hooks)!
+export default () => {
+  const store = useStore()
+  const hooks = useHooks()
 
   return (
     event: MouseEvent,

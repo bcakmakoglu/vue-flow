@@ -2,7 +2,7 @@
 import { DraggableEventListener } from '@braks/revue-draggable'
 import { Node } from '~/types'
 import { isNode } from '~/utils/graph'
-import { Hooks, Store } from '~/context'
+import { useHooks, useStore } from '~/composables'
 
 interface NodesSelectionProps {
   onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void
@@ -13,8 +13,8 @@ interface NodesSelectionProps {
 
 const props = defineProps<NodesSelectionProps>()
 
-const store = inject(Store)!
-const hooks = inject(Hooks)!
+const store = useStore()
+const hooks = useHooks()
 
 const selectedNodes = computed(() =>
   store.selectedElements

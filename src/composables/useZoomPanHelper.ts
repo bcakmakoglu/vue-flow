@@ -1,11 +1,13 @@
 import { zoomIdentity } from 'd3-zoom'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils/graph'
 import { FitViewParams, FlowTransform, Rect, UseZoomPanHelper, XYPosition } from '~/types'
-import { Store } from '~/context'
+import useStore from '~/composables/useStore'
 
 const DEFAULT_PADDING = 0.1
 
-export default function (store = inject(Store)!): UseZoomPanHelper {
+export default (): UseZoomPanHelper => {
+  const store = useStore()
+
   return {
     zoomIn: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1.2),
     zoomOut: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1 / 1.2),
