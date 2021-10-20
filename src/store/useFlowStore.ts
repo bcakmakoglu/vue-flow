@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import isEqual from 'fast-deep-equal'
-import { Edge, FlowState, Node, NodeDiffUpdate, RevueFlowActions, XYPosition } from '~/types'
+import { Edge, FlowState, Node, RevueFlowActions } from '~/types'
 import { clampPosition, getDimensions } from '~/utils'
 import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '~/utils/graph'
 import { getHandleBounds } from '~/components/Nodes/utils'
@@ -69,83 +69,70 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         this.nodes = nextNodes
         this.edges = nextEdges
       },
-      updateNodeDimensions(updates) {
-        this.nodes = this.nodes.map((node) => {
-          const update = updates.find((u) => u.id === node.id)
-          if (update) {
-            const dimensions = getDimensions(update.nodeElement)
-            const doUpdate =
-              dimensions.width &&
-              dimensions.height &&
-              (node.__rf.width !== dimensions.width || node.__rf.height !== dimensions.height || update.forceUpdate)
+      updateNodeDimensions({ id, nodeElement, forceUpdate }) {
+        const i = this.nodes.map((x) => x.id).indexOf(id)
+        const node = this.nodes[i]
+        const dimensions = getDimensions(nodeElement)
+        const doUpdate =
+          dimensions.width &&
+          dimensions.height &&
+          (node.__rf.width !== dimensions.width || node.__rf.height !== dimensions.height || forceUpdate)
 
-            if (doUpdate) {
-              const handleBounds = getHandleBounds(update.nodeElement, this.transform[2])
+        if (doUpdate) {
+          const handleBounds = getHandleBounds(nodeElement, this.transform[2])
 
-              return {
-                ...node,
-                __rf: {
-                  ...node.__rf,
-                  ...dimensions,
-                  handleBounds,
-                },
-              }
-            }
-          }
-
-          return node
-        })
+          this.nodes.splice(i, 1, {
+            ...node,
+            __rf: {
+              ...node.__rf,
+              ...dimensions,
+              handleBounds,
+            },
+          })
+        }
       },
-      updateNodePos(payload) {
-        const { id, pos } = payload
-        let position: XYPosition = pos
+      updateNodePos({ id, pos }) {
+        const i = this.nodes.map((x) => x.id).indexOf(id)
+        const node = this.nodes[i]
 
         if (this.snapToGrid) {
           const [gridSizeX, gridSizeY] = this.snapGrid
-          position = {
+          pos = {
             x: gridSizeX * Math.round(pos.x / gridSizeX),
             y: gridSizeY * Math.round(pos.y / gridSizeY),
           }
         }
 
-        this.nodes = this.nodes.map((node) => {
-          if (node.id === id) {
-            return {
-              ...node,
-              __rf: {
-                ...node.__rf,
-                position,
-              },
-            }
-          }
-
-          return node
+        this.nodes.splice(i, 1, {
+          ...node,
+          __rf: {
+            ...node.__rf,
+            position: pos,
+          },
         })
       },
-      updateNodePosDiff(payload: NodeDiffUpdate) {
-        const { id, diff, isDragging } = payload
+      updateNodePosDiff({ id, diff, isDragging }) {
+        const i = this.nodes.map((x) => x.id || this.selectedElements?.find((sNode) => sNode.id === id)).indexOf(id)
+        const node = this.nodes[i]
 
-        this.nodes = this.nodes.map((node) => {
-          if (id === node.id || this.selectedElements?.find((sNode) => sNode.id === node.id)) {
-            const updatedNode = {
-              ...node,
-              __rf: {
-                ...node.__rf,
-                isDragging,
-              },
-            }
+        const updatedNode = {
+          ...node,
+          __rf: {
+            ...node.__rf,
+            isDragging,
+          },
+        }
 
-            if (diff) {
-              updatedNode.__rf.position = {
-                x: node.__rf.position.x + diff.x,
-                y: node.__rf.position.y + diff.y,
-              }
-            }
-
-            return updatedNode
+        if (diff) {
+          updatedNode.__rf.position = {
+            x: node.__rf.position.x + diff.x,
+            y: node.__rf.position.y + diff.y,
           }
+        }
 
-          return node
+        this.nodes.splice(i, 1, {
+          ...node,
+          ...updatedNode,
         })
       },
       setUserSelection(mousePos) {
@@ -198,26 +185,21 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         const selectedElementsUpdated = !isEqual(selectedElementsArr, this.selectedElements)
         this.selectedElements = selectedElementsUpdated ? selectedElementsArr : this.selectedElements
       },
-      initD3Zoom(payload) {
-        const { d3Zoom, d3Selection, d3ZoomHandler } = payload
-
+      initD3Zoom({ d3ZoomHandler, d3Zoom, d3Selection }) {
         this.d3Zoom = d3Zoom
         this.d3Selection = d3Selection
         this.d3ZoomHandler = d3ZoomHandler
       },
       setMinZoom(minZoom) {
         this.d3Zoom?.scaleExtent([minZoom, this.maxZoom])
-
         this.minZoom = minZoom
       },
       setMaxZoom(maxZoom) {
         this.d3Zoom?.scaleExtent([this.minZoom, maxZoom])
-
         this.maxZoom = maxZoom
       },
       setTranslateExtent(translateExtent) {
         this.d3Zoom?.translateExtent(translateExtent)
-
         this.translateExtent = translateExtent
       },
       setNodeExtent(nodeExtent) {
@@ -241,10 +223,10 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
       updateSize(size) {
         this.dimensions = size
       },
-      setConnectionNodeId(payload) {
-        this.connectionNodeId = payload.connectionNodeId
-        this.connectionHandleId = payload.connectionHandleId
-        this.connectionHandleType = payload.connectionHandleType
+      setConnectionNodeId({ connectionHandleId, connectionHandleType, connectionNodeId }) {
+        this.connectionNodeId = connectionNodeId
+        this.connectionHandleId = connectionHandleId
+        this.connectionHandleType = connectionHandleType
       },
       setInteractive(isInteractive) {
         this.nodesDraggable = isInteractive

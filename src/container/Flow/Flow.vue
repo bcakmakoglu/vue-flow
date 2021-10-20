@@ -151,7 +151,7 @@ const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
         :multi-selection-key-code="props.multiSelectionKeyCode"
         :selection-key-code="props.selectionKeyCode"
       >
-        <NodeRenderer :node-types="nodeTypes">
+        <NodeRenderer :node-types="nodeTypes" :select-nodes-on-drag="props.selectNodesOnDrag">
           <template v-for="nodeName of Object.keys(nodeTypes)" #[`node-${nodeName}`]="nodeProps">
             <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
           </template>

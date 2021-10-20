@@ -6,9 +6,12 @@ import { useStore } from '~/composables'
 
 interface NodeRendererProps {
   nodeTypes: Record<string, NodeType>
+  selectNodesOnDrag?: boolean
 }
 
-const props = defineProps<NodeRendererProps>()
+const props = withDefaults(defineProps<NodeRendererProps>(), {
+  selectNodesOnDrag: true,
+})
 
 const store = useStore()
 
@@ -49,12 +52,9 @@ const type = (node: TNode) => {
       <Node
         :node="node"
         :type="type(node)"
-        :scale="store.transform[2]"
         :snap-grid="store.snapToGrid ? store.snapGrid : undefined"
+        :select-nodes-on-drag="props.selectNodesOnDrag"
         :selected="store.selectedElements?.some(({ id }) => id === node.id)"
-        :selectable="node.selectable || store.elementsSelectable"
-        :connectable="node.connectable || store.nodesConnectable"
-        :draggable="node.draggable || store.nodesDraggable"
       >
         <template #default="nodeProps">
           <slot :name="`node-${node.type}`" v-bind="nodeProps"></slot>

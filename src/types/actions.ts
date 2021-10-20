@@ -5,7 +5,7 @@ import { SetConnectionId } from './connection'
 
 export interface RevueFlowActions {
   setElements: (elements: Elements) => void
-  updateNodeDimensions: (updates: NodeDimensionUpdate[]) => void
+  updateNodeDimensions: (update: NodeDimensionUpdate) => void
   updateNodePos: (payload: NodePosUpdate) => void
   updateNodePosDiff: (payload: NodeDiffUpdate) => void
   setUserSelection: (mousePos: XYPosition) => void
