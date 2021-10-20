@@ -4,7 +4,12 @@ import { HTMLAttributes, VNode } from 'vue'
 interface EdgeTextProps extends HTMLAttributes {
   x: number
   y: number
-  label?: string | VNode
+  label?:
+    | string
+    | {
+        component: VNode
+        props?: any
+      }
   labelStyle?: any
   labelShowBg?: boolean
   labelBgStyle?: any
@@ -38,7 +43,11 @@ const { width = 0, height = 0, x = 0, y = 0 } = useElementBounding(edgeRef)
       :ry="props.labelBgBorderRadius"
     />
     <text ref="edge-text" class="revue-flow__edge-text" :y="height / 2" dy="0.3em" :style="props.labelStyle">
-      <component :is="props.label" v-if="typeof props.label !== 'string'" />
+      <component
+        :is="props.label.component"
+        v-if="typeof props.label.component !== 'undefined'"
+        v-bind="{ ...props, ...props.label.props, width, height, x, y }"
+      />
       <template v-else>
         {{ props.label }}
       </template>

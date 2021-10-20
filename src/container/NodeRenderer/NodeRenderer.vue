@@ -37,8 +37,6 @@ const type = (node: TNode) => {
   }
   return type
 }
-
-const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id === nodeId)
 </script>
 <template>
   <div
@@ -52,7 +50,7 @@ const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id
         :type="type(node)"
         :scale="store.transform[2]"
         :snap-grid="store.snapToGrid ? store.snapGrid : undefined"
-        :selected="selected(node.id)"
+        :selected="store.selectedElements?.some(({ id }) => id === node.id)"
         :selectable="node.selectable || store.elementsSelectable"
         :connectable="node.connectable || store.nodesConnectable"
         :draggable="node.draggable || store.nodesDraggable"
