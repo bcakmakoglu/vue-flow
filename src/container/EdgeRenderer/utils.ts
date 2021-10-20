@@ -1,6 +1,6 @@
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { rectToBox } from '~/utils/graph'
-import { Edge, EdgeType, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '~/types'
+import { Edge, EdgePositions, EdgeType, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '~/types'
 
 export function createEdgeTypes(edgeTypes: Record<string, EdgeType>): Record<string, EdgeType> {
   const standardTypes: Record<string, EdgeType> = {
@@ -55,28 +55,19 @@ export function getHandlePosition(position: Position, node: Node, handle: any | 
   }
 }
 
-export function getHandle(bounds: HandleElement[], handleId: ElementId | null): HandleElement | null {
-  if (!bounds) {
-    return null
-  }
+export function getHandle(bounds: HandleElement[], handleId: ElementId | null): HandleElement | undefined {
+  if (!bounds) return undefined
 
   // there is no handleId when there are no multiple handles/ handles with ids
   // so we just pick the first one
-  let handle = null
+  let handle
   if (bounds.length === 1 || !handleId) {
     handle = bounds[0]
   } else if (handleId) {
     handle = bounds.find((d) => d.id === handleId)
   }
 
-  return typeof handle === 'undefined' ? null : handle
-}
-
-interface EdgePositions {
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
+  return typeof handle === 'undefined' ? undefined : handle
 }
 
 export const getEdgePositions = (

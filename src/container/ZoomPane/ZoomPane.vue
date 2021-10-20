@@ -46,6 +46,17 @@ store.dimensions = {
   width: width.value,
   height: height.value,
 }
+const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
+hooks.load.trigger({
+  fitView: (params = { padding: 0.1 }) => fitView(params),
+  zoomIn,
+  zoomOut,
+  zoomTo,
+  setTransform,
+  project: onLoadProject(store),
+  getElements: onLoadGetElements(store),
+  toObject: onLoadToObject(store),
+})
 </script>
 <template>
   <div ref="zoom-pane" class="revue-flow__renderer revue-flow__zoompane">

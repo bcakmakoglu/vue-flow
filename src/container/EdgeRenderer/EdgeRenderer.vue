@@ -39,7 +39,6 @@ const connectionLineVisible = computed(
         <Edge
           v-if="!edge.isHidden"
           :edge="edge"
-          :nodes="getSourceTargetNodes(edge, store.nodes)"
           :type="props.edgeTypes[edge.type || 'default']"
           :marker-end-id="props.markerEndId"
           :edge-updater-radius="props.edgeUpdaterRadius"

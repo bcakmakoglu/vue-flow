@@ -3,10 +3,9 @@ import { pointer, select } from 'd3-selection'
 import { Ref } from 'vue'
 import { get } from '@vueuse/core'
 import { FlowTransform, PanOnScrollMode, Transform, UseZoom, UseZoomOptions } from '~/types'
-import { clamp, onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils'
+import { clamp } from '~/utils'
 import useKeyPress from '~/composables/useKeyPress'
 import { Hooks, Store } from '~/context'
-import { useZoomPanHelper } from '~/composables/index'
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
   prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k
@@ -60,17 +59,6 @@ export default function (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZ
       const updatedTransform = zoomIdentity.translate(clampedX, clampedY).scale(clampedZoom)
       d3z.transform(d3s, updatedTransform)
       store.initD3Zoom({ d3Zoom: d3z, d3Selection: d3s, d3ZoomHandler })
-      const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
-      hooks.load.trigger({
-        fitView: (params = { padding: 0.1 }) => fitView(params),
-        zoomIn,
-        zoomOut,
-        zoomTo,
-        setTransform,
-        project: onLoadProject(store),
-        getElements: onLoadGetElements(store),
-        toObject: onLoadToObject(store),
-      })
 
       const applyZoomHandlers = () => {
         d3z.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
