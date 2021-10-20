@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { HTMLAttributes } from 'vue'
 import { BackgroundVariant } from '~/types'
-import { Store } from '~/context'
+import { useStore } from '~/composables'
 
 export interface BackgroundProps extends HTMLAttributes {
   variant?: BackgroundVariant
@@ -21,7 +21,7 @@ const defaultColors: Record<BackgroundVariant, string> = {
   [BackgroundVariant.Lines]: '#eee',
 }
 
-const store = inject(Store)!
+const store = useStore()
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
 
 const bgClasses = ['revue-flow__background']

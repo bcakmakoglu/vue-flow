@@ -3,8 +3,8 @@ import useKeyPress from '~/composables/useKeyPress'
 import { ElementId, FlowElement, KeyCode } from '~/types'
 import NodesSelection from '~/components/NodesSelection/NodesSelection.vue'
 import UserSelection from '~/components/UserSelection/UserSelection.vue'
-import { Hooks, Store } from '~/context'
 import { getConnectedEdges, isNode } from '~/utils/graph'
+import { useHooks, useStore } from '~/composables'
 
 interface SelectionPaneProps {
   selectionKeyCode?: KeyCode
@@ -16,8 +16,8 @@ const props = withDefaults(defineProps<SelectionPaneProps>(), {
   deleteKeyCode: 'Backspace',
   multiSelectionKeyCode: 'Meta',
 })
-const store = inject(Store)!
-const hooks = inject(Hooks)!
+const store = useStore()
+const hooks = useHooks()
 
 const onClick = (event: MouseEvent) => {
   hooks.paneClick.trigger(event)

@@ -1,8 +1,9 @@
-// global hooks
-import { Connection, Edge, Elements, FlowHooks, FlowTransform, Node, OnConnectStartParams, OnLoadParams } from '~/types'
+import { Connection, Edge, Elements, EmitFunc, FlowHooks, FlowTransform, Node, OnConnectStartParams, OnLoadParams } from '~/types'
+import { Hooks } from '~/context'
 
-export default (): FlowHooks & { bind: (emit: (event: string, ...args: any[]) => void) => FlowHooks } => {
-  const eventHooks: FlowHooks = {
+// flow event hooks
+const hooks = (): FlowHooks => {
+  return {
     elementClick: createEventHook<{ event: MouseEvent; element: Node | Edge }>(),
     elementsRemove: createEventHook<Elements>(),
     nodeDoubleClick: createEventHook<{ event: MouseEvent; node: Node }>(),
@@ -43,11 +44,13 @@ export default (): FlowHooks & { bind: (emit: (event: string, ...args: any[]) =>
     edgeUpdateStart: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeUpdateEnd: createEventHook<{ event: MouseEvent; edge: Edge }>(),
   }
-
-  const bind = (emit: (event: string, args: any) => void) => {
+}
+export const createHooks = (): FlowHooks & { bind: (emit: EmitFunc) => FlowHooks } => {
+  const eventHooks = hooks()
+  const bind = (emit: EmitFunc) => {
     for (const [key, value] of Object.entries(eventHooks)) {
-      value.on((data: any) => {
-        emit(key, data)
+      value.on((data: unknown) => {
+        emit(key as keyof FlowHooks, data)
       })
     }
 
@@ -58,4 +61,18 @@ export default (): FlowHooks & { bind: (emit: (event: string, ...args: any[]) =>
     ...eventHooks,
     bind,
   }
+}
+
+export default (emit?: EmitFunc) => {
+  let hooks = inject(Hooks)!
+  if (!hooks) {
+    console.warn('hooks context not found; creating default hooks')
+    if (!emit) console.error('no emit function found for hook context.')
+    else {
+      hooks = createHooks().bind(emit)
+      provide(Hooks, hooks)
+    }
+  }
+
+  return hooks
 }

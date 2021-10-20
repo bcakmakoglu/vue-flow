@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { KeyCode, PanOnScrollMode } from '~/types'
-import { useZoom, useZoomPanHelper } from '~/composables'
-import { Hooks, Store } from '~/context'
+import { useHooks, useStore, useZoom, useZoomPanHelper } from '~/composables'
 import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils/graph'
 
 interface ZoomPaneProps {
@@ -31,8 +30,8 @@ const props = withDefaults(defineProps<ZoomPaneProps>(), {
   panOnScrollMode: PanOnScrollMode.Free,
   paneMoveable: true,
 })
-const store = inject(Store)!
-const hooks = inject(Hooks)!
+const store = useStore()
+const hooks = useHooks()
 
 const zoomPaneEl = templateRef<HTMLDivElement>('zoom-pane', null)
 const { transform } = useZoom(zoomPaneEl, props)

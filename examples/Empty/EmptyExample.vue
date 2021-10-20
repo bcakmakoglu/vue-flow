@@ -12,8 +12,9 @@ import Flow, {
   FlowElement,
   Node,
   OnLoadParams,
+  addEdge,
+  removeElements,
 } from '~/index'
-import { addEdge, removeElements } from '~/utils/graph'
 
 const elements = ref<Elements>([])
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))

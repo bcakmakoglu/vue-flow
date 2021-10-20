@@ -14,9 +14,13 @@ export {
   updateEdge,
   getTransformForBounds,
   getRectOfNodes,
+  isInputDOMNode,
 } from './utils/graph'
 export { default as useZoomPanHelper } from './composables/useZoomPanHelper'
 export { default as useUpdateNodeInternals } from './composables/useUpdateNodeInternals'
+export { default as useStore } from './composables/useStore'
+export { default as useHooks } from './composables/useHooks'
+export { default as useHandle } from './composables/useHandle'
 
 export * from './additional-components'
 export * from './types'
