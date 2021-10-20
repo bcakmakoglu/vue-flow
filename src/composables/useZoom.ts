@@ -57,7 +57,11 @@ export default function (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZ
   const clampedX = clamp(defaultPosition[0], store.translateExtent[0][0], store.translateExtent[1][0])
   const clampedY = clamp(defaultPosition[1], store.translateExtent[0][1], store.translateExtent[1][1])
   const clampedZoom = clamp(defaultZoom, store.minZoom, store.maxZoom)
-  const transform = ref<Transform>([clampedX, clampedY, clampedZoom])
+  const transform = controlledRef<Transform>([clampedX, clampedY, clampedZoom], {
+    onBeforeChange(val, oldVal) {
+      if (val === oldVal) return false
+    },
+  })
   store.transform = transform.value
   const d3Zoom = ref(
     zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent),
@@ -99,7 +103,11 @@ export default function (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZ
             d3z.on('zoom', null)
           } else {
             d3z.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-              transform.value = [event.transform.x, event.transform.y, event.transform.k]
+              transform.value = [
+                clamp(event.transform.x, store.translateExtent[0][0], store.translateExtent[1][0]),
+                clamp(event.transform.y, store.translateExtent[0][1], store.translateExtent[1][1]),
+                clamp(event.transform.k, store.minZoom, store.maxZoom),
+              ]
               hooks.move.trigger(eventToFlowTransform(event.transform))
             })
           }
