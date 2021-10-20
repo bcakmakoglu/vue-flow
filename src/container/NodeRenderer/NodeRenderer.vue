@@ -44,9 +44,6 @@ const type = (node: TNode) => {
 }
 
 const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id === nodeId)
-onRenderTracked((e) => {
-  console.log('node-renderer', e)
-})
 </script>
 <template>
   <div
