@@ -16,7 +16,12 @@ export interface EdgeSmoothStepProps<T = any> {
   animated?: boolean
   sourcePosition?: Position
   targetPosition?: Position
-  label?: string | VNode
+  label?:
+    | string
+    | {
+        component: VNode
+        props?: any
+      }
   labelStyle?: any
   labelShowBg?: boolean
   labelBgStyle?: any

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import Node from '~/components/Nodes/Node.vue'
 import { NodeType, Node as TNode } from '~/types'
-import { getNodesInside } from '~/utils/graph'
+import { getNodesInside } from '~/utils'
 import { useStore } from '~/composables'
 
 interface NodeRendererProps {
@@ -12,8 +12,8 @@ const props = defineProps<NodeRendererProps>()
 
 const store = useStore()
 
-const getNodes = computed(() =>
-  store.onlyRenderVisibleElements
+const nodes = computed(() => {
+  const n = store.onlyRenderVisibleElements
     ? store.nodes &&
       getNodesInside(
         store.nodes,
@@ -26,8 +26,10 @@ const getNodes = computed(() =>
         store.transform,
         true,
       )
-    : store.nodes,
-)
+    : store.nodes
+
+  return n.filter((node) => !node.isHidden)
+})
 
 const type = (node: TNode) => {
   const nodeType = node.type || 'default'
@@ -43,9 +45,8 @@ const type = (node: TNode) => {
     class="vue-flow__nodes"
     :style="{ transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})` }"
   >
-    <template v-for="node of getNodes" :key="node.id">
+    <template v-for="node of nodes" :key="node.id">
       <Node
-        v-if="!node.isHidden"
         :node="node"
         :type="type(node)"
         :scale="store.transform[2]"

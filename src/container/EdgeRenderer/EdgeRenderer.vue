@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
+import { computed, CSSProperties } from 'vue'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 import Edge from '~/components/Edges/Edge.vue'
 import ConnectionLine from '~/components/ConnectionLine/ConnectionLine.vue'
@@ -27,6 +27,7 @@ const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connect
 const connectionLineVisible = computed(
   () => store.nodesConnectable && sourceNode.value && store.connectionNodeId && store.connectionHandleType,
 )
+const edges = computed(() => store.edges.filter((edge) => !edge.isHidden))
 </script>
 <template>
   <svg :width="store.dimensions.width" :height="store.dimensions.height" class="vue-flow__edges">
@@ -34,9 +35,8 @@ const connectionLineVisible = computed(
     <g
       :transform="store.transform.length && `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`"
     >
-      <template v-for="edge of store.edges" :key="edge.id">
+      <template v-for="edge of edges" :key="edge.id">
         <Edge
-          v-if="!edge.isHidden"
           :edge="edge"
           :type="props.edgeTypes[edge.type || 'default']"
           :marker-end-id="props.markerEndId"
