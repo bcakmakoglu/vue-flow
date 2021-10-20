@@ -91,6 +91,7 @@ export type OnLoadParams<T = any> = {
 export type OnLoadFunc<T = any> = (params: OnLoadParams<T>) => void
 
 export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
+  elements: Elements
   nodeTypes?: Record<string, NodeType>
   edgeTypes?: Record<string, EdgeType>
   connectionMode?: ConnectionMode
@@ -123,6 +124,6 @@ export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
   panOnScrollMode?: PanOnScrollMode
   zoomOnDoubleClick?: boolean
   edgeUpdaterRadius?: number
-  // nodeTypesId?: string
-  // edgeTypesId?: string / used by react-flow to detect a re-render of node components
+  nodeTypesId?: string
+  edgeTypesId?: string
 }

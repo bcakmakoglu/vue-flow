@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<ControlProps>(), {
 const store = useStore()
 const { zoomIn, zoomOut, fitView } = useZoomPanHelper()
 
-const isInteractive = store.nodesDraggable && store.nodesConnectable && store.elementsSelectable
+const isInteractive = computed(() => store.nodesDraggable && store.nodesConnectable && store.elementsSelectable)
 const mapClasses = ['vue-flow__controls']
 
 const onZoomInHandler = () => {
@@ -48,8 +48,8 @@ const onFitViewHandler = () => {
 }
 
 const onInteractiveChangeHandler = () => {
-  store.setInteractive?.(!isInteractive)
-  props.onInteractiveChange?.(!isInteractive)
+  store.setInteractive?.(!isInteractive.value)
+  props.onInteractiveChange?.(!isInteractive.value)
 }
 </script>
 <template>

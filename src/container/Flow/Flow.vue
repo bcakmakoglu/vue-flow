@@ -16,6 +16,7 @@ import {
   KeyCode,
   TranslateExtent,
   NodeExtent,
+  FlowOptions,
 } from '~/types'
 import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
@@ -23,7 +24,7 @@ import { createEdgeTypes } from '~/container/EdgeRenderer/utils'
 import { createNodeTypes } from '~/container/NodeRenderer/utils'
 import { useHooks, useStore, createHooks } from '~/composables'
 
-export interface FlowProps {
+export interface FlowProps extends FlowOptions {
   elements: Elements
   nodeTypes?: Record<string, NodeType>
   edgeTypes?: Record<string, EdgeType>
@@ -57,6 +58,8 @@ export interface FlowProps {
   panOnScrollMode?: PanOnScrollMode
   zoomOnDoubleClick?: boolean
   edgeUpdaterRadius?: number
+  edgeTypesId?: string
+  nodeTypesId?: string
 }
 
 const props = withDefaults(defineProps<FlowProps>(), {

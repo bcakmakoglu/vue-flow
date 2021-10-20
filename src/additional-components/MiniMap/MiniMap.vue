@@ -24,9 +24,8 @@ const props = withDefaults(defineProps<MiniMapProps>(), {
   nodeStrokeWidth: 2,
   maskColor: 'rgb(240, 242, 243, 0.7)',
 })
-const attrs: any = useAttrs()
 
-declare const window: any
+const attrs: any = useAttrs()
 
 const defaultWidth = 200
 const defaultHeight = 150
@@ -67,6 +66,8 @@ const viewBox = computed(() => {
     height: viewHeight + offset * 2,
   }
 })
+
+const nodes = computed(() => store.nodes.filter((node) => !node.isHidden))
 </script>
 <template>
   <svg
@@ -75,10 +76,9 @@ const viewBox = computed(() => {
     :viewBox="`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`"
     class="vue-flow__minimap"
   >
-    <slot name="mini-map-nodes" :nodes="store.nodes" :view-box="viewBox">
-      <template v-for="(node, i) of store.nodes" :key="`mini-map-node-${i}`">
+    <slot name="mini-map-nodes" :nodes="nodes" :view-box="viewBox">
+      <template v-for="(node, i) of nodes" :key="`mini-map-node-${i}`">
         <MiniMapNode
-          v-if="!node.isHidden"
           :x="node.__rf.position.x"
           :y="node.__rf.position.y"
           :width="node.__rf.width"

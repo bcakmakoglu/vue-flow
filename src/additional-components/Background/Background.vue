@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { HTMLAttributes } from 'vue'
+import { SVGAttributes } from 'vue'
 import { BackgroundVariant } from '~/types'
 import { useStore } from '~/composables'
 
-export interface BackgroundProps extends HTMLAttributes {
+export interface BackgroundProps extends SVGAttributes {
   variant?: BackgroundVariant
   gap?: number
   color?: string
