@@ -29,16 +29,12 @@ const selectedNodes = computed(() =>
     : [],
 )
 
-const style = computed(() => ({
-  transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`,
-}))
-
-const innerStyle = computed(() => ({
+const innerStyle = {
   width: `${store.selectedNodesBbox.width}px`,
   height: `${store.selectedNodesBbox.height}px`,
   top: `${store.selectedNodesBbox.y}px`,
   left: `${store.selectedNodesBbox.x}px`,
-}))
+}
 
 const onStart: DraggableEventListener = ({ event }) => {
   hooks.selectionDragStart.trigger({ event, nodes: selectedNodes.value })
@@ -73,7 +69,12 @@ const onContextMenu = (event: MouseEvent) => {
 }
 </script>
 <template>
-  <div class="revue-flow__nodesselection" :style="style">
+  <div
+    class="revue-flow__nodesselection"
+    :style="{
+      transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`,
+    }"
+  >
     <Draggable
       :scale="store.transform[2]"
       :grid="store.snapToGrid ? store.snapGrid : undefined"
