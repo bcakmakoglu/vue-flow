@@ -16,8 +16,6 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
-    "jsxFactory": "h",
     "types": [
       "vite/client",
       "@types/node"
@@ -34,6 +32,7 @@
   "exclude": [
     "node_modules",
     "build",
-    "dist"
+    "dist",
+    "examples"
   ]
 }

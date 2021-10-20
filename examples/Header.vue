@@ -12,7 +12,7 @@ const onChange = (event: any) => {
   <header>
     <a class="logo" href="https://github.com/bcakmakoglu/revue-flow"> Revue Flow Dev </a>
     <select v-model="route.path" @change="onChange">
-      <template v-for="(r, i) of routes" :key="`route-${i}`">
+      <template v-for="r of routes" :key="r.path">
         <option v-if="r.path !== '/'" :value="r.path">
           {{ r.path.substr(1, r.path.length) }}
         </option>

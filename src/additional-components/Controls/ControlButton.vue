@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-export interface ControlButtonProps extends HTMLButtonElement {}
+import { ButtonHTMLAttributes } from 'vue'
 
-const props = defineProps<ControlButtonProps>()
+export interface ControlButtonProps extends ButtonHTMLAttributes {}
+
+const props: any = defineProps<ControlButtonProps>()
 </script>
 <template>
   <button :class="['revue-flow__controls-button']" v-bind="props">
