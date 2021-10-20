@@ -3,12 +3,15 @@ import { terser } from 'rollup-plugin-terser'
 import dts from 'rollup-plugin-dts'
 import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
-import babel from '@rollup/plugin-babel'
+import { babel } from '@rollup/plugin-babel'
+import replace from '@rollup/plugin-replace'
 // @ts-ignore
 import svg from 'rollup-plugin-svg'
 import postcss from 'rollup-plugin-postcss'
 // @ts-ignore
 import { DEFAULT_EXTENSIONS as DEFAULT_BABEL_EXTENSIONS } from '@babel/core'
+
+import pkg from './package.json'
 
 const configs: any[] = []
 
@@ -88,9 +91,13 @@ for (const { external, iife } of activePackages) {
         }),
         commonjs({ include: 'node_modules/**' }),
         babel({
-          extensions: [...DEFAULT_BABEL_EXTENSIONS, '.ts', '.tsx'],
+          extensions: [...DEFAULT_BABEL_EXTENSIONS, '.ts'],
           exclude: 'node_modules/**',
           babelHelpers: 'bundled',
+        }),
+        replace({
+          __REACT_FLOW_VERSION__: JSON.stringify(pkg.version),
+          preventAssignment: true,
         }),
       ],
       external: ['vue', ...(external || [])],
