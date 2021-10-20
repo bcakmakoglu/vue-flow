@@ -1,13 +1,13 @@
-.revue-flow {
+.vue-flow {
   width: 100%;
   height: 100%;
   position: relative;
   overflow: hidden;
 }
 
-.revue-flow__renderer,
-.revue-flow__pane,
-.revue-flow__selectionpane {
+.vue-flow__renderer,
+.vue-flow__pane,
+.vue-flow__selectionpane {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -15,25 +15,25 @@
   left: 0;
 }
 
-.revue-flow__pane {
+.vue-flow__pane {
   z-index: 1;
 }
 
-.revue-flow__renderer {
+.vue-flow__renderer {
   z-index: 4;
 }
 
-.revue-flow__selectionpane {
+.vue-flow__selectionpane {
   z-index: 5;
 }
 
-.revue-flow__selection {
+.vue-flow__selection {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.revue-flow__edges {
+.vue-flow__edges {
   position: absolute;
   top: 0;
   left: 0;
@@ -41,7 +41,7 @@
   z-index: 2;
 }
 
-.revue-flow__edge {
+.vue-flow__edge {
   pointer-events: visibleStroke;
 
   &.inactive {
@@ -55,20 +55,20 @@
   }
 }
 
-.revue-flow__edge-path {
+.vue-flow__edge-path {
   fill: none;
 }
 
-.revue-flow__edge-textwrapper {
+.vue-flow__edge-textwrapper {
   pointer-events: all;
 }
 
-.revue-flow__edge-text {
+.vue-flow__edge-text {
   pointer-events: none;
   user-select: none;
 }
 
-.revue-flow__connection {
+.vue-flow__connection {
   pointer-events: none;
 
   .animated {
@@ -77,11 +77,11 @@
   }
 }
 
-.revue-flow__connection-path {
+.vue-flow__connection-path {
   fill: none;
 }
 
-.revue-flow__nodes {
+.vue-flow__nodes {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -90,14 +90,14 @@
   z-index: 3;
 }
 
-.revue-flow__node {
+.vue-flow__node {
   position: absolute;
   user-select: none;
   pointer-events: all;
   transform-origin: 0 0;
 }
 
-.revue-flow__nodesselection {
+.vue-flow__nodesselection {
   z-index: 3;
   position: absolute;
   width: 100%;
@@ -114,7 +114,7 @@
   }
 }
 
-.revue-flow__handle {
+.vue-flow__handle {
   pointer-events: none;
 
   &.connectable {
@@ -122,39 +122,39 @@
   }
 }
 
-.revue-flow__handle-bottom {
+.vue-flow__handle-bottom {
   top: auto;
   left: 50%;
   bottom: -4px;
   transform: translate(-50%, 0);
 }
 
-.revue-flow__handle-top {
+.vue-flow__handle-top {
   left: 50%;
   top: -4px;
   transform: translate(-50%, 0);
 }
 
-.revue-flow__handle-left {
+.vue-flow__handle-left {
   top: 50%;
   left: -4px;
   transform: translate(0, -50%);
 }
 
-.revue-flow__handle-right {
+.vue-flow__handle-right {
   right: -4px;
   top: 50%;
   transform: translate(0, -50%);
 }
 
-.revue-flow__edgeupdater {
+.vue-flow__edgeupdater {
   cursor: move;
   pointer-events: all;
 }
 
 /* additional components */
 
-.revue-flow__background {
+.vue-flow__background {
   position: absolute;
   top: 0;
   left: 0;
@@ -162,7 +162,7 @@
   height: 100%;
 }
 
-.revue-flow__controls {
+.vue-flow__controls {
   position: absolute;
   z-index: 5;
   bottom: 10px;
@@ -179,7 +179,7 @@
   }
 }
 
-.revue-flow__minimap {
+.vue-flow__minimap {
   position: absolute;
   z-index: 5;
   bottom: 10px;

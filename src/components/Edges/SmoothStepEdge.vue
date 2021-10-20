@@ -55,7 +55,7 @@ const path = computed(() =>
 const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
 </script>
 <template>
-  <path class="revue-flow__edge-path" :style="props.style" :d="path" :marker-end="markerEnd" />
+  <path class="vue-flow__edge-path" :style="props.style" :d="path" :marker-end="markerEnd" />
   <EdgeText
     v-if="props.label"
     :x="centered[0]"

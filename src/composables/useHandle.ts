@@ -64,8 +64,8 @@ export const checkElementBelowIsValid = (
 }
 
 const resetRecentHandle = (hoveredHandle: Element): void => {
-  hoveredHandle?.classList.remove('revue-flow__handle-valid')
-  hoveredHandle?.classList.remove('revue-flow__handle-connecting')
+  hoveredHandle?.classList.remove('vue-flow__handle-valid')
+  hoveredHandle?.classList.remove('vue-flow__handle-connecting')
 }
 
 export default () => {
@@ -82,8 +82,8 @@ export default () => {
     },
     elementEdgeUpdaterType?: HandleType,
   ) => {
-    const revueFlowNode = (event.target as Element).closest('.revue-flow')
-    // when revue-flow is used inside a shadow root we can't use document
+    const revueFlowNode = (event.target as Element).closest('.vue-flow')
+    // when vue-flow is used inside a shadow root we can't use document
     const doc = getHostForElement(event.target as HTMLElement)
 
     if (!doc) return
@@ -130,8 +130,8 @@ export default () => {
 
       if (!isOwnHandle && elementBelow) {
         recentHoveredHandle = elementBelow
-        elementBelow.classList.add('revue-flow__handle-connecting')
-        elementBelow.classList.toggle('revue-flow__handle-valid', isValid)
+        elementBelow.classList.add('vue-flow__handle-connecting')
+        elementBelow.classList.toggle('vue-flow__handle-valid', isValid)
       }
     }
 

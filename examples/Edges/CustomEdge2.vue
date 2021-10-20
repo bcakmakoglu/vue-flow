@@ -42,7 +42,7 @@ const center = computed(() =>
 )
 </script>
 <template>
-  <path :id="props.id" class="revue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
+  <path :id="props.id" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
   <EdgeText
     :x="center[0]"
     :y="center[1]"

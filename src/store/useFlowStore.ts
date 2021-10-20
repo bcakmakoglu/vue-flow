@@ -15,7 +15,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
   setActivePinia(pinia)
 
   return defineStore({
-    id: `revue-flow-${Math.floor(Math.random() * 100)}`,
+    id: `vue-flow-${Math.floor(Math.random() * 100)}`,
     state: () => ({
       ...preloadedState,
     }),

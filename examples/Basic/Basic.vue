@@ -54,7 +54,7 @@ const toggleClassnames = () => {
 </script>
 <template>
   <Flow
-    class="revue-flow-basic-example"
+    class="vue-flow-basic-example"
     :elements="elements"
     :default-zoom="1.5"
     :min-zoom="0.2"

@@ -122,8 +122,8 @@ const edgePos = computed(() =>
   <g
     v-if="!props.edge.isHidden && isVisible(edgePos)"
     :class="[
-      'revue-flow__edge',
-      `revue-flow__edge-${props.edge.type || 'default'}`,
+      'vue-flow__edge',
+      `vue-flow__edge-${props.edge.type || 'default'}`,
       {
         selected: isSelected,
         animated: props.edge.animated,

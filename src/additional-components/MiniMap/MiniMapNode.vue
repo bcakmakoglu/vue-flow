@@ -22,7 +22,7 @@ const fill = computed(() => (props.color || styles.background || styles.backgrou
 </script>
 <template>
   <rect
-    class="revue-flow__minimap-node"
+    class="vue-flow__minimap-node"
     :x="props.x"
     :y="props.y"
     :rx="props.borderRadius"

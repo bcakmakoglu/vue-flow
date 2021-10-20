@@ -25,7 +25,7 @@ const sourceHandleStyleB: CSSProperties = { ...targetHandleStyle, bottom: '10px'
 const onConnect = (params: Connection | Edge) => console.log('handle onConnect', params)
 </script>
 <template>
-  <div class="revue-flow__node-color-selector">
+  <div class="vue-flow__node-color-selector">
     <Handle type="target" :position="Position.Left" :style="targetHandleStyle" :on-connect="onConnect" />
     <div>
       Custom Color Picker Node: <strong>{{ data.color }}</strong>

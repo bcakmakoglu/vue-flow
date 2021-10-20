@@ -149,13 +149,13 @@ export default (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZoom => {
 
           // when the target element is a node, we still allow zooming
           if (
-            ((event.target as Element).closest('.revue-flow__node') || (event.target as Element).closest('.revue-flow__edge')) &&
+            ((event.target as Element).closest('.vue-flow__node') || (event.target as Element).closest('.vue-flow__edge')) &&
             event.type !== 'wheel'
           )
             return false
 
           // when the target element is a node selection, we still allow zooming
-          if ((event.target as Element).closest('.revue-flow__nodesselection') && event.type !== 'wheel') return false
+          if ((event.target as Element).closest('.vue-flow__nodesselection') && event.type !== 'wheel') return false
 
           if (!zoomOnPinch && event.ctrlKey && event.type === 'wheel') return false
 

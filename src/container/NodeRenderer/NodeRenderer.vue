@@ -40,7 +40,7 @@ const type = (node: TNode) => {
 </script>
 <template>
   <div
-    class="revue-flow__nodes"
+    class="vue-flow__nodes"
     :style="{ transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})` }"
   >
     <template v-for="node of getNodes" :key="node.id">

@@ -37,7 +37,7 @@ useEventListener(el, 'mouseup', onMouseUp)
 useEventListener(el, 'mouseleave', onMouseLeave)
 </script>
 <template>
-  <div ref="user-selection" class="revue-flow__selectionpane">
+  <div ref="user-selection" class="vue-flow__selectionpane">
     <SelectionRect
       v-if="store.userSelectionRect.draw"
       :width="store.userSelectionRect.width"

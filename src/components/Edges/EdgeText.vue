@@ -30,19 +30,19 @@ const edgeRef = templateRef<SVGTextElement>('edge-text', null)
 const { width = 0, height = 0, x = 0, y = 0 } = useElementBounding(edgeRef)
 </script>
 <template>
-  <g :transform="`translate(${props.x - width / 2} ${props.y - height / 2})`" class="revue-flow__edge-textwrapper">
+  <g :transform="`translate(${props.x - width / 2} ${props.y - height / 2})`" class="vue-flow__edge-textwrapper">
     <rect
       v-if="props.labelShowBg"
       :width="width + 2 * props.labelBgPadding[0] + 'px'"
       :height="height + 2 * props.labelBgPadding[1] + 'px'"
       :x="-props.labelBgPadding[0]"
       :y="-props.labelBgPadding[1]"
-      class="revue-flow__edge-textbg"
+      class="vue-flow__edge-textbg"
       :style="props.labelBgStyle"
       :rx="props.labelBgBorderRadius"
       :ry="props.labelBgBorderRadius"
     />
-    <text ref="edge-text" class="revue-flow__edge-text" :y="height / 2" dy="0.3em" :style="props.labelStyle">
+    <text ref="edge-text" class="vue-flow__edge-text" :y="height / 2" dy="0.3em" :style="props.labelStyle">
       <component
         :is="props.label.component"
         v-if="typeof props.label.component !== 'undefined'"

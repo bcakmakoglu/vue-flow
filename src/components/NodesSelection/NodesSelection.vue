@@ -70,7 +70,7 @@ const onContextMenu = (event: MouseEvent) => {
 </script>
 <template>
   <div
-    class="revue-flow__nodesselection"
+    class="vue-flow__nodesselection"
     :style="{
       transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`,
     }"
@@ -83,7 +83,7 @@ const onContextMenu = (event: MouseEvent) => {
       @move="onDrag"
       @stop="onStop"
     >
-      <div class="revue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
+      <div class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
     </Draggable>
   </div>
 </template>

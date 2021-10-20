@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<EdgeAnchorProps>(), {
 </script>
 <template>
   <circle
-    class="revue-flow__edgeupdater"
+    class="vue-flow__edgeupdater"
     :cx="shiftX(props.centerX, props.radius, props.position)"
     :cy="shiftY(props.centerY, props.radius, props.position)"
     :r="props.radius"

@@ -1,25 +1,25 @@
 {
-  "name": "@braks/revue-flow",
+  "name": "@braks/vue-flow",
   "version": "0.1.2",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/bcakmakoglu/revue-flow"
+    "url": "https://github.com/bcakmakoglu/vue-flow"
   },
   "license": "MIT",
   "author": "Burak Cakmakoglu",
   "exports": {
     ".": {
-      "import": "./dist/revue-flow.esm.js",
-      "require": "./dist/revue-flow.cjs.js"
+      "import": "./dist/vue-flow.esm.js",
+      "require": "./dist/vue-flow.cjs.js"
     },
     "./*": "./*"
   },
-  "main": "./dist/revue-flow.cjs.js",
-  "types": "./dist/revue-flow.d.ts",
-  "module": "./dist/revue-flow.esm.js",
-  "unpkg": "./dist/revue-flow.iife.min.js",
-  "jsdelivr": "./dist/revue-flow.iife.min.js",
+  "main": "./dist/vue-flow.cjs.js",
+  "types": "./dist/vue-flow.d.ts",
+  "module": "./dist/vue-flow.esm.js",
+  "unpkg": "./dist/vue-flow.iife.min.js",
+  "jsdelivr": "./dist/vue-flow.iife.min.js",
   "sideEffects": false,
   "files": [
     "dist"

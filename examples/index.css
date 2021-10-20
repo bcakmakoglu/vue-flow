@@ -58,22 +58,22 @@ header select {
   display: none;
 }
 
-.revue-flow__node a {
+.vue-flow__node a {
   font-weight: 700;
   color: #111;
 }
 
-.revue-flow__node.dark-node {
+.vue-flow__node.dark-node {
   background: #0041d0;
   color: #f8f8f8;
 }
 
-.revue-flow__node.dark {
+.vue-flow__node.dark {
   background: #557;
   color: #f8f8f8;
 }
 
-.revue-flow__node-selectorNode {
+.vue-flow__node-selectorNode {
   font-size: 14px;
   background: #f0f2f3;
   border: 1px solid #555;
@@ -81,7 +81,7 @@ header select {
   text-align: center;
 }
 
-.revue-flow__node-selectorNode .revue-flow__handle {
+.vue-flow__node-selectorNode .vue-flow__handle {
   border-color: #f0f2f3;
 }
 

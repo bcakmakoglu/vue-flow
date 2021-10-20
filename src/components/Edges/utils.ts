@@ -5,7 +5,7 @@ export const getMarkerEnd = (arrowHeadType?: ArrowHeadType, markerEndId?: string
     return `url(#${markerEndId})`
   }
 
-  return typeof arrowHeadType !== 'undefined' ? `url(#revue-flow__${arrowHeadType})` : 'none'
+  return typeof arrowHeadType !== 'undefined' ? `url(#vue-flow__${arrowHeadType})` : 'none'
 }
 
 export interface GetCenterParams {
