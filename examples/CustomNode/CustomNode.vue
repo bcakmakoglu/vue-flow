@@ -13,6 +13,7 @@ import Flow, {
   Position,
   SnapGrid,
   Connection,
+  ConnectionMode,
   Edge,
 } from '~/index'
 
@@ -114,6 +115,7 @@ const onConnect = (params: Connection | Edge) =>
     :elements="elements"
     :style="`background: ${bgColor}`"
     :node-types="nodeTypes"
+    :connection-mode="ConnectionMode.Loose"
     :connection-line-style="connectionLineStyle"
     :snap-to-grid="true"
     :snap-grid="snapGrid"

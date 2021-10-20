@@ -56,3 +56,10 @@ export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
 export type EdgeType = DefineComponent<EdgeSmoothStepProps>
 
 export type OnEdgeUpdateFunc<T = any> = (oldEdge: Edge<T>, newConnection: Connection) => void
+
+export interface EdgePositions {
+  sourceX: number
+  sourceY: number
+  targetX: number
+  targetY: number
+}

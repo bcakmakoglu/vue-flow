@@ -2,14 +2,13 @@
 import EdgeAnchor from './EdgeAnchor.vue'
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
 import { isEdge } from '~/utils/graph'
-import { ConnectionMode, Edge, EdgeType, Position } from '~/types'
+import { ConnectionMode, Edge, EdgeType, HandleElement, Position, EdgePositions } from '~/types'
 import { Hooks, Store } from '~/context'
 import { useHandle } from '~/composables'
 
 interface EdgeProps {
   type: EdgeType
   edge: Edge
-  nodes: ReturnType<typeof getSourceTargetNodes>
   markerEndId?: string
   edgeUpdaterRadius?: number
 }
@@ -23,27 +22,19 @@ hooks.connect.on((connection) => {
   hooks.edgeUpdate.trigger({ edge: props.edge, connection })
 })
 
-if (!props.nodes.sourceNode) {
-  console.warn(`couldn't create edge for source id: ${props.edge.source}; edge id: ${props.edge.id}`)
-}
+const nodes = computed(() => {
+  const n = getSourceTargetNodes(props.edge, store.nodes)
 
-if (!props.nodes.targetNode) {
-  console.warn(`couldn't create edge for target id: ${props.edge.target}; edge id: ${props.edge.id}`)
-}
+  if (!n.sourceNode) {
+    console.warn(`couldn't create edge for source id: ${props.edge.source}; edge id: ${props.edge.id}`)
+  }
 
-// when connection type is loose we can define all handles as sources
-const targetNodeHandles =
-  store.connectionMode === ConnectionMode.Strict
-    ? props.nodes.targetNode?.__rf.handleBounds.target
-    : props.nodes.targetNode?.__rf.handleBounds.target || props.nodes.targetNode?.__rf.handleBounds.source
+  if (!n.targetNode) {
+    console.warn(`couldn't create edge for target id: ${props.edge.target}; edge id: ${props.edge.id}`)
+  }
 
-const sourceHandle =
-  props.nodes.sourceNode && getHandle(props.nodes.sourceNode.__rf.handleBounds.source, props.edge.sourceHandle || null)
-const targetHandle = getHandle(targetNodeHandles, props.edge.targetHandle || null)
-const sourcePosition = sourceHandle ? sourceHandle.position : Position.Bottom
-const targetPosition = targetHandle ? targetHandle.position : Position.Top
-
-const isSelected = store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id) || false
+  return n
+})
 
 const onEdgeClick = (event: MouseEvent) => {
   if (store.elementsSelectable) {
@@ -102,8 +93,30 @@ const isVisible = ({ sourceX, sourceY, targetX, targetY }: ReturnType<typeof get
     : true
 }
 
+// when connection type is loose we can define all handles as sources
+const targetNodeHandles = computed(() =>
+  store.connectionMode === ConnectionMode.Strict
+    ? nodes.value.targetNode?.__rf.handleBounds.target
+    : nodes.value.targetNode?.__rf.handleBounds.target || nodes.value.targetNode?.__rf.handleBounds.source,
+)
+
+const sourceHandle = computed(
+  () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf.handleBounds.source, props.edge.sourceHandle || null),
+)
+const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle || null))
+const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
+const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
+
+const isSelected = computed(() => store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id) || false)
 const edgePos = computed(() =>
-  getEdgePositions(props.nodes.sourceNode, sourceHandle, sourcePosition, props.nodes.targetNode, targetHandle, targetPosition),
+  getEdgePositions(
+    nodes.value.sourceNode,
+    sourceHandle.value,
+    sourcePosition.value,
+    nodes.value.targetNode,
+    targetHandle.value,
+    targetPosition.value,
+  ),
 )
 </script>
 <template>
