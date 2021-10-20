@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ConnectionLineType, CustomConnectionLine, HandleElement, Node, Position } from '~/types'
+import { ConnectionLineType, HandleElement, Node, Position } from '~/types'
 import { getBezierPath, getSmoothStepPath } from '~/components/Edges/utils'
 import { Store } from '~/context'
 
@@ -8,7 +8,6 @@ interface ConnectionLineProps {
   sourceNode: Node
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
-  customConnectionLine?: CustomConnectionLine
 }
 
 const props = withDefaults(defineProps<ConnectionLineProps>(), {
@@ -73,20 +72,19 @@ const dAttr = computed(() => {
 </script>
 <template>
   <g class="revue-flow__connection">
-    <component
-      :is="props.customConnectionLine"
-      v-if="props.customConnectionLine"
+    <slot
       v-bind="{
-        sourceX: sourceX,
-        sourceY: sourceY,
+        sourceX,
+        sourceY,
         sourcePosition: sourceHandle.position,
-        targetX: targetX,
-        targetY: targetY,
-        targetPosition: targetPosition,
+        targetX,
+        targetY,
+        targetPosition,
         connectionLineType: props.connectionLineType,
         connectionLineStyle: props.connectionLineStyle,
       }"
-    />
-    <path v-else :d="dAttr" class="revue-flow__connection-path" :style="props.connectionLineStyle" />
+    >
+      <path :d="dAttr" class="revue-flow__connection-path" :style="props.connectionLineStyle" />
+    </slot>
   </g>
 </template>

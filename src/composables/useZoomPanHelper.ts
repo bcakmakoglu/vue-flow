@@ -13,13 +13,10 @@ export default function (): UseZoomPanHelper {
     zoomTo: (zoomLevel: number) => store.d3Selection && store.d3Zoom?.scaleTo(store.d3Selection, zoomLevel),
     transform: (transform: FlowTransform) => {
       const nextTransform = zoomIdentity.translate(transform.x, transform.y).scale(transform.zoom)
-
       store.d3Selection && store.d3Zoom?.transform(store.d3Selection, nextTransform)
     },
     fitView: (options: FitViewParams = { padding: DEFAULT_PADDING, includeHiddenNodes: false }) => {
-      if (!store.nodes.length) {
-        return
-      }
+      if (!store.nodes.length) return
 
       const bounds = getRectOfNodes(options.includeHiddenNodes ? store.nodes : store.nodes.filter((node) => !node.isHidden))
       const [x, y, zoom] = getTransformForBounds(
@@ -55,8 +52,6 @@ export default function (): UseZoomPanHelper {
 
       store.d3Selection && store.d3Zoom?.transform(store.d3Selection, transform)
     },
-    project: (position: XYPosition) => {
-      return pointToRendererPoint(position, store.transform, store.snapToGrid, store.snapGrid)
-    },
+    project: (position: XYPosition) => pointToRendererPoint(position, store.transform, store.snapToGrid, store.snapGrid),
   }
 }

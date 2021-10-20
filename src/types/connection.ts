@@ -1,4 +1,3 @@
-import { DefineComponent } from 'vue'
 import { ElementId, Position } from './types'
 import { HandleType } from '~/types/handle'
 
@@ -26,8 +25,6 @@ export type ConnectionLineComponentProps = {
   connectionLineStyle?: any
   connectionLineType: ConnectionLineType
 }
-
-export type CustomConnectionLine = DefineComponent<ConnectionLineComponentProps | any, any, any, any>
 
 export type OnConnectFunc = (connection: Connection) => void
 export type OnConnectStartParams = {

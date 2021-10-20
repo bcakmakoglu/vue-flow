@@ -38,7 +38,6 @@ const updatePos = () => {
         y: Math.random() * 400,
       }
     }
-
     return el
   })
 }
@@ -48,10 +47,7 @@ const resetTransform = () => rfInstance.value?.setTransform({ x: 0, y: 0, zoom: 
 
 const toggleClassnames = () => {
   elements.value = elements.value.map((el: FlowElement) => {
-    if (isNode(el)) {
-      el.className = el.className === 'light' ? 'dark' : 'light'
-    }
-
+    if (isNode(el)) el.className = el.className === 'light' ? 'dark' : 'light'
     return el
   })
 }

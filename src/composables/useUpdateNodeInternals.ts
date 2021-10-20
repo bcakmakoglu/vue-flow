@@ -1,7 +1,8 @@
-import { ElementId, RevueFlowStore, UpdateNodeInternals } from '../types'
+import { ElementId, UpdateNodeInternals } from '~/types'
+import { Store } from '~/context'
 
-function useUpdateNodeInternals(): UpdateNodeInternals {
-  const store = inject<RevueFlowStore>('store')!
+export default function (): UpdateNodeInternals {
+  const store = inject(Store)!
 
   return (id: ElementId) => {
     const nodeElement: HTMLDivElement | null = document.querySelector(`.revue-flow__node[data-id="${id}"]`)
@@ -11,5 +12,3 @@ function useUpdateNodeInternals(): UpdateNodeInternals {
     }
   }
 }
-
-export default useUpdateNodeInternals

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { KeyCode, PanOnScrollMode } from '~/types'
-import { useZoom, useResizeHandler, useZoomPanHelper } from '~/composables'
+import { useZoom, useZoomPanHelper } from '~/composables'
 import { Hooks, Store } from '~/context'
 import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils/graph'
 
@@ -36,9 +36,10 @@ const hooks = inject(Hooks)!
 
 const zoomPaneEl = templateRef<HTMLDivElement>('zoom-pane', null)
 const { transform } = useZoom(zoomPaneEl, props)
+const { width, height } = useElementBounding(zoomPaneEl)
+watch(width, (val) => (store.dimensions.width = val), { flush: 'post' })
+watch(height, (val) => (store.dimensions.height = val), { flush: 'post' })
 watch(transform, (val) => (store.transform = val), { flush: 'post' })
-const dimensions = useResizeHandler(zoomPaneEl)
-watch(dimensions, (val) => (store.dimensions = val), { flush: 'post' })
 
 const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
 hooks.load.trigger({
@@ -54,6 +55,6 @@ hooks.load.trigger({
 </script>
 <template>
   <div ref="zoom-pane" class="revue-flow__renderer revue-flow__zoompane">
-    <slot :transform="transform" :dimensions="dimensions"></slot>
+    <slot v-bind="{ transform, dimensions: { width, height } }"></slot>
   </div>
 </template>

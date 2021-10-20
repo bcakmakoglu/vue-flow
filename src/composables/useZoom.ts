@@ -2,7 +2,7 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { Ref } from 'vue'
 import { get } from '@vueuse/core'
-import { D3Selection, D3Zoom, FlowTransform, KeyCode, PanOnScrollMode, Transform } from '~/types'
+import { FlowTransform, PanOnScrollMode, Transform, UseZoom, UseZoomOptions } from '~/types'
 import { clamp } from '~/utils'
 import useKeyPress from '~/composables/useKeyPress'
 import { Hooks, Store } from '~/context'
@@ -15,26 +15,6 @@ const eventToFlowTransform = (eventTransform: ZoomTransform): FlowTransform => (
   y: eventTransform.y,
   zoom: eventTransform.k,
 })
-
-interface UseZoomOptions {
-  selectionKeyCode?: KeyCode
-  zoomActivationKeyCode?: KeyCode
-  paneMoveable?: boolean
-  defaultZoom?: number
-  defaultPosition?: [number, number]
-  zoomOnScroll?: boolean
-  zoomOnPinch?: boolean
-  panOnScroll?: boolean
-  panOnScrollSpeed?: number
-  panOnScrollMode?: PanOnScrollMode
-  zoomOnDoubleClick?: boolean
-}
-
-interface UseZoom {
-  transform: Ref<Transform>
-  d3Zoom: Ref<D3Zoom>
-  d3Selection: Ref<D3Selection>
-}
 
 export default function (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZoom {
   const {

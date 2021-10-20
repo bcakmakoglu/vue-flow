@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import useKeyPress from '~/composables/useKeyPress'
-import { KeyCode } from '~/types'
-import useGlobalKeyHandler from '~/composables/useGlobalKeyHandler'
+import { ElementId, FlowElement, KeyCode } from '~/types'
 import NodesSelection from '~/components/NodesSelection/NodesSelection.vue'
 import UserSelection from '~/components/UserSelection/UserSelection.vue'
 import { Hooks, Store } from '~/context'
+import { getConnectedEdges, isNode } from '~/utils/graph'
 
 interface SelectionPaneProps {
   selectionKeyCode?: KeyCode
@@ -18,7 +18,6 @@ const props = withDefaults(defineProps<SelectionPaneProps>(), {
 })
 const store = inject(Store)!
 const hooks = inject(Hooks)!
-const keyPressed = useKeyPress(props.selectionKeyCode)
 
 const onClick = (event: MouseEvent) => {
   hooks.paneClick.trigger(event)
@@ -30,18 +29,28 @@ const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event
 
 const onWheel = (event: WheelEvent) => hooks.paneScroll.trigger(event)
 
-useGlobalKeyHandler({
-  onElementsRemove: hooks.elementsRemove.trigger,
-  deleteKeyCode: props.deleteKeyCode,
-  multiSelectionKeyCode: props.multiSelectionKeyCode,
+const selectionKeyPresed = useKeyPress(props.selectionKeyCode)
+
+useKeyPress(props.deleteKeyCode, (keyPressed) => {
+  if (keyPressed && store.selectedElements) {
+    const selectedNodes = store.selectedElements.filter(isNode)
+    const connectedEdges = getConnectedEdges(selectedNodes, store.edges)
+    const elementsToRemove = [...store.selectedElements, ...connectedEdges].reduce(
+      (res, item) => res.set(item.id, item),
+      new Map<ElementId, FlowElement>(),
+    )
+
+    hooks.elementsRemove.trigger(Array.from(elementsToRemove.values()))
+    store.unsetNodesSelection()
+    store.resetSelectedElements()
+  }
 })
 
-const userSelectionVisible = computed(() => keyPressed.value && (store.selectionActive || store.elementsSelectable))
-const nodesSelectionVisible = computed(() => store.nodesSelectionActive)
+useKeyPress(props.multiSelectionKeyCode, (keyPressed) => (store.multiSelectionActive = keyPressed))
 </script>
 <template>
   <slot></slot>
-  <UserSelection v-if="userSelectionVisible" id="user-selection" />
-  <NodesSelection v-if="nodesSelectionVisible" id="nodes-selection" />
+  <UserSelection v-if="selectionKeyPresed && (store.selectionActive || store.elementsSelectable)" id="user-selection" />
+  <NodesSelection v-if="store.nodesSelectionActive" id="nodes-selection" />
   <div class="revue-flow__pane" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
 </template>

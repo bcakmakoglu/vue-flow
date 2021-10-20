@@ -2,16 +2,14 @@
 import EdgeAnchor from './EdgeAnchor.vue'
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
 import { isEdge } from '~/utils/graph'
-import { ConnectionMode, Dimensions, Edge, EdgeType, Position, Transform } from '~/types'
-import { onMouseDown } from '~/components/Handle/utils'
+import { ConnectionMode, Edge, EdgeType, Position } from '~/types'
 import { Hooks, Store } from '~/context'
+import { useHandle } from '~/composables'
 
 interface EdgeProps {
   type: EdgeType
   edge: Edge
   nodes: ReturnType<typeof getSourceTargetNodes>
-  dimensions: Dimensions
-  transform: Transform
   markerEndId?: string
   edgeUpdaterRadius?: number
 }
@@ -68,6 +66,7 @@ const onEdgeMouseMove = (event: MouseEvent) => hooks.edgeMouseMove.trigger({ eve
 
 const onEdgeMouseLeave = (event: MouseEvent) => hooks.edgeMouseLeave.trigger({ event, edge: props.edge })
 
+const handler = useHandle()
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const nodeId = isSourceHandle ? props.edge.target : props.edge.source
   const handleId = isSourceHandle ? props.edge.targetHandle : props.edge.sourceHandle
@@ -75,8 +74,7 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const isTarget = isSourceHandle
 
   hooks.edgeUpdateStart.trigger({ event, edge: props.edge })
-  handleId &&
-    onMouseDown(event, store, hooks, handleId, nodeId, isTarget, isValidConnection, isSourceHandle ? 'target' : 'source')
+  handleId && handler(event, handleId, nodeId, isTarget, isValidConnection, isSourceHandle ? 'target' : 'source')
 }
 
 const onEdgeUpdaterSourceMouseDown = (event: MouseEvent) => {
@@ -95,9 +93,9 @@ const isVisible = ({ sourceX, sourceY, targetX, targetY }: ReturnType<typeof get
     ? isEdgeVisible({
         sourcePos: { x: sourceX, y: sourceY },
         targetPos: { x: targetX, y: targetY },
-        width: props.dimensions.width,
-        height: props.dimensions.height,
-        transform: props.transform,
+        width: store.dimensions.width,
+        height: store.dimensions.height,
+        transform: store.transform,
       })
     : true
 }
@@ -125,8 +123,7 @@ const visible = computed(() => !props.edge.isHidden && isVisible(edgePos.value))
     @mousemove="onEdgeMouseMove"
     @mouseleave="onEdgeMouseLeave"
   >
-    <component
-      :is="props.type"
+    <slot
       v-bind="{
         id: props.edge.id,
         source: props.edge.source,
@@ -152,7 +149,36 @@ const visible = computed(() => !props.edge.isHidden && isVisible(edgePos.value))
         sourceHandleId: props.edge.sourceHandle,
         targetHandleId: props.edge.targetHandle,
       }"
-    />
+    >
+      <component
+        :is="props.type"
+        v-bind="{
+          id: props.edge.id,
+          source: props.edge.source,
+          target: props.edge.target,
+          selected: isSelected,
+          animated: props.edge.animated,
+          label: props.edge.label,
+          labelStyle: props.edge.labelStyle,
+          labelShowBg: props.edge.labelShowBg,
+          labelBgStyle: props.edge.labelBgStyle,
+          labelBgPadding: props.edge.labelBgPadding,
+          labelBgBorderRadius: props.edge.labelBgBorderRadius,
+          data: props.edge.data,
+          style: props.edge.style,
+          arrowHeadType: props.edge.arrowHeadType,
+          sourcePosition,
+          targetPosition,
+          sourceX: edgePos.sourceX,
+          sourceY: edgePos.sourceY,
+          targetX: edgePos.targetX,
+          targetY: edgePos.targetY,
+          markerEndId: props.markerEndId,
+          sourceHandleId: props.edge.sourceHandle,
+          targetHandleId: props.edge.targetHandle,
+        }"
+      />
+    </slot>
     <g @mousedown="onEdgeUpdaterSourceMouseDown" @mouseenter="onEdgeUpdaterMouseEnter" @mouseout="onEdgeUpdaterMouseOut">
       <EdgeAnchor
         :position="sourcePosition"
