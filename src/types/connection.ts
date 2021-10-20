@@ -27,7 +27,7 @@ export type ConnectionLineComponentProps = {
   connectionLineType: ConnectionLineType
 }
 
-export type CustomConnectionLine = DefineComponent<ConnectionLineComponentProps>
+export type CustomConnectionLine = DefineComponent<ConnectionLineComponentProps | any, any, any, any>
 
 export type OnConnectFunc = (connection: Connection) => void
 export type OnConnectStartParams = {
