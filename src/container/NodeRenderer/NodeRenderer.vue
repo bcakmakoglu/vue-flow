@@ -1,19 +1,14 @@
 <script lang="ts" setup>
 import Node from '~/components/Nodes/Node.vue'
-import { NodeType, Node as TNode, Transform, Dimensions } from '~/types'
+import { NodeType, Node as TNode } from '~/types'
 import { getNodesInside } from '~/utils/graph'
 import { Store } from '~/context'
 
 interface NodeRendererProps {
   nodeTypes: Record<string, NodeType>
-  dimensions: Dimensions
-  transform: Transform
 }
 
-const props = withDefaults(defineProps<NodeRendererProps>(), {
-  transform: () => [0, 0, 1],
-  dimensions: () => ({ width: 0, height: 0 }),
-})
+const props = defineProps<NodeRendererProps>()
 
 const store = inject(Store)!
 
@@ -25,10 +20,10 @@ const getNodes = computed(() =>
         {
           x: 0,
           y: 0,
-          width: props.dimensions.width,
-          height: props.dimensions.height,
+          width: store.dimensions.width,
+          height: store.dimensions.height,
         },
-        props.transform,
+        store.transform,
         true,
       )
     : store.nodes,
@@ -48,20 +43,24 @@ const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id
 <template>
   <div
     class="revue-flow__nodes"
-    :style="{ transform: `translate(${props.transform[0]}px,${props.transform[1]}px) scale(${props.transform[2]})` }"
+    :style="{ transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})` }"
   >
     <template v-for="node of getNodes" :key="node.id">
       <Node
         v-if="!node.isHidden"
         :node="node"
         :type="type(node)"
-        :scale="props.transform[2]"
+        :scale="store.transform[2]"
         :snap-grid="store.snapToGrid ? store.snapGrid : undefined"
         :selected="selected(node.id)"
         :selectable="node.selectable || store.elementsSelectable"
         :connectable="node.connectable || store.nodesConnectable"
         :draggable="node.draggable || store.nodesDraggable"
-      />
+      >
+        <template #default="nodeProps">
+          <slot v-bind="nodeProps"></slot>
+        </template>
+      </Node>
     </template>
   </div>
 </template>

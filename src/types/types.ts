@@ -1,7 +1,7 @@
 import { CSSProperties, HTMLAttributes } from 'vue'
 import { Edge, EdgeType } from './edge'
 import { Node, NodeExtent, NodeType, TranslateExtent } from './node'
-import { CustomConnectionLine, ConnectionLineType, ConnectionMode } from '~/types/connection'
+import { ConnectionLineType, ConnectionMode } from '~/types/connection'
 import { KeyCode, PanOnScrollMode } from '~/types/panel'
 
 export type ElementId = string
@@ -96,7 +96,6 @@ export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
-  connectionLineComponent?: CustomConnectionLine
   deleteKeyCode?: KeyCode
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode

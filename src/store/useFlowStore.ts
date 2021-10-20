@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import isEqual from 'fast-deep-equal'
-import { Edge, Node, NodeDiffUpdate, RevueFlowState, RevueFlowActions, XYPosition } from '~/types'
+import { Edge, FlowState, Node, NodeDiffUpdate, RevueFlowActions, XYPosition } from '~/types'
 import { clampPosition, getDimensions } from '~/utils'
 import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '~/utils/graph'
 import { getHandleBounds } from '~/components/Nodes/utils'
@@ -11,9 +11,7 @@ type NextElements = {
 }
 const pinia = createPinia()
 
-export default function configureStore(
-  preloadedState: RevueFlowState,
-): StoreDefinition<string, RevueFlowState, any, RevueFlowActions> {
+export default function useFlowStore(preloadedState: FlowState): StoreDefinition<string, FlowState, any, RevueFlowActions> {
   setActivePinia(pinia)
 
   return defineStore({
@@ -166,7 +164,7 @@ export default function configureStore(
         const startX = this.userSelectionRect.startX || 0
         const startY = this.userSelectionRect.startY || 0
 
-        const nextUserSelectRect: RevueFlowState['userSelectionRect'] = {
+        const nextUserSelectRect: FlowState['userSelectionRect'] = {
           ...this.userSelectionRect,
           x: mousePos.x < startX ? mousePos.x : this.userSelectionRect.x,
           y: mousePos.y < startY ? mousePos.y : this.userSelectionRect.y,

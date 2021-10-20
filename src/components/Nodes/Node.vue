@@ -95,7 +95,6 @@ const onDragStop: DraggableEventListener = ({ event }) => {
     if (props.selectable && !props.selectNodesOnDrag && !props.selected) {
       store.addSelectedElements([n])
     }
-
     hooks.nodeClick.trigger({ event, node: n })
 
     return
@@ -163,8 +162,7 @@ onMounted(() => {
       @contextmenu="onContextMenuHandler"
       @click="onSelectNodeHandler"
     >
-      <component
-        :is="props.type"
+      <slot
         v-bind="{
           data: props.node.data,
           type: props.node.type,
@@ -176,7 +174,22 @@ onMounted(() => {
           targetPosition: props.node.targetPosition,
           dragging: props.node.__rf.isDragging,
         }"
-      />
+      >
+        <component
+          :is="props.type"
+          v-bind="{
+            data: props.node.data,
+            type: props.node.type,
+            xPos: props.node.__rf.position.x,
+            yPos: props.node.__rf.position.y,
+            selected: props.selected,
+            connectable: props.connectable,
+            sourcePosition: props.node.sourcePosition,
+            targetPosition: props.node.targetPosition,
+            dragging: props.node.__rf.isDragging,
+          }"
+        />
+      </slot>
     </div>
   </DraggableCore>
 </template>

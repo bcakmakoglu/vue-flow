@@ -13,12 +13,11 @@ import {
   PanOnScrollMode,
   NodeType,
   EdgeType,
-  CustomConnectionLine,
   KeyCode,
   TranslateExtent,
   NodeExtent,
 } from '~/types'
-import configureStore from '~/store/configure-store'
+import useFlowStore from '~/store/useFlowStore'
 import { initialState } from '~/store'
 import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
@@ -34,7 +33,6 @@ export interface FlowProps {
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
-  customConnectionLine?: CustomConnectionLine
   deleteKeyCode?: KeyCode
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode
@@ -118,7 +116,7 @@ const defaultEdgeTypes: Record<string, EdgeType> = {
 
 let store = inject(Store)!
 if (!store) {
-  store = configureStore({
+  store = useFlowStore({
     ...initialState,
     ...props,
   })()
@@ -160,25 +158,31 @@ const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
       :pan-on-scroll-mode="props.panOnScrollMode"
       :pane-moveable="props.paneMoveable"
     >
-      <template #default="{ transform, dimensions }">
-        <SelectionPane
-          :delete-key-code="props.deleteKeyCode"
-          :multi-selection-key-code="props.multiSelectionKeyCode"
-          :selection-key-code="props.selectionKeyCode"
+      <SelectionPane
+        :delete-key-code="props.deleteKeyCode"
+        :multi-selection-key-code="props.multiSelectionKeyCode"
+        :selection-key-code="props.selectionKeyCode"
+      >
+        <NodeRenderer :node-types="nodeTypes">
+          <template #default="nodeProps">
+            <slot name="node" v-bind="nodeProps"></slot>
+          </template>
+        </NodeRenderer>
+        <EdgeRenderer
+          :connection-line-type="props.connectionLineType"
+          :connection-line-style="props.connectionLineStyle"
+          :arrow-head-color="props.arrowHeadColor"
+          :marker-end-id="props.markerEndId"
+          :edge-types="edgeTypes"
         >
-          <NodeRenderer :node-types="nodeTypes" :transform="transform" :dimensions="dimensions" />
-          <EdgeRenderer
-            :connection-line-type="props.connectionLineType"
-            :connection-line-style="props.connectionLineStyle"
-            :custom-connection-line="props.customConnectionLine"
-            :arrow-head-color="props.arrowHeadColor"
-            :marker-end-id="props.markerEndId"
-            :edge-types="edgeTypes"
-            :transform="transform"
-            :dimensions="dimensions"
-          />
-        </SelectionPane>
-      </template>
+          <template #edge="edgeProps">
+            <slot name="edge" v-bind="edgeProps"></slot>
+          </template>
+          <template #custom-connection-line="customConnectionLineProps">
+            <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
+          </template>
+        </EdgeRenderer>
+      </SelectionPane>
     </ZoomPane>
     <slot></slot>
   </div>

@@ -32,7 +32,6 @@
   "exclude": [
     "node_modules",
     "build",
-    "dist",
-    "examples"
+    "dist"
   ]
 }
