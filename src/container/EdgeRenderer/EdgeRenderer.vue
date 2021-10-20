@@ -33,9 +33,6 @@ const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connect
 const connectionLineVisible = computed(
   () => store.nodesConnectable && sourceNode.value && store.connectionNodeId && store.connectionHandleType,
 )
-onRenderTracked((e) => {
-  console.log('edge-renderer', e)
-})
 </script>
 <template>
   <svg :width="props.dimensions.width" :height="props.dimensions.height" class="revue-flow__edges">
