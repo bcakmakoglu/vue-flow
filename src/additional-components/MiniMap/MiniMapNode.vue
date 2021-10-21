@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<MiniMapNodeProps>(), {
 const attrs = useAttrs()
 
 const styles = (attrs.style ?? {}) as CSSProperties
-const fill = computed(() => (props.color || styles.background || styles.backgroundColor) as string)
+const fill = computed(() => props.color || styles.background || styles.backgroundColor)
 </script>
 <template>
   <rect

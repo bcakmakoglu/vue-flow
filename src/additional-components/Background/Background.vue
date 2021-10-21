@@ -22,9 +22,7 @@ const defaultColors: Record<BackgroundVariant, string> = {
 }
 
 const store = useStore()
-// when there are multiple flows on a page we need to make sure that every background gets its own pattern.
 
-const bgClasses = ['vue-flow__background']
 const background = computed(() => {
   const scaledGap = props.gap && props.gap * store.transform[2]
   const xOffset = scaledGap && store.transform[0] % scaledGap
@@ -39,13 +37,12 @@ const background = computed(() => {
   }
 })
 
-const isLines = props.variant === BackgroundVariant.Lines
-const bgColor = props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]
+// when there are multiple flows on a page we need to make sure that every background gets its own pattern.
 const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
 </script>
 <template>
   <svg
-    :class="bgClasses"
+    class="vue-flow__background"
     :style="{
       width: '100%',
       height: '100%',
@@ -59,9 +56,9 @@ const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
       :height="background.scaledGap"
       patternUnits="userSpaceOnUse"
     >
-      <template v-if="isLines">
+      <template v-if="props.variant === BackgroundVariant.Lines">
         <path
-          :stroke="bgColor"
+          :stroke="props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]"
           :stroke-width="props.size"
           :d="`M${background.scaledGap / 2} 0 V${background.scaledGap} M0 ${background.scaledGap / 2} H${background.scaledGap}`"
         />
