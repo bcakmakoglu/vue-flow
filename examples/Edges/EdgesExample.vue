@@ -81,9 +81,9 @@ const edgeTypes: Record<string, any> = {
 
 const elements = ref<Elements>(initialElements as Elements)
 
-const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
-const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
-const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
+const onLoad = (flowInstance: OnLoadParams) => flowInstance.fitView()
+const onNodeDragStop = (node: Node) => console.log('drag stop', node)
+const onElementClick = (element: FlowElement) => console.log('click', element)
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>

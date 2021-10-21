@@ -32,7 +32,7 @@ const elements = ref<Elements>([
   },
 ] as Elements)
 
-const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
+const onLoad = (flowInstance: OnLoadParams) => flowInstance.fitView()
 const onElementsRemove = (elementsToRemove: Elements) =>
   (elements.value = removeElements(elementsToRemove, elements.value as Elements))
 const onConnect = (params: Connection | Edge) =>

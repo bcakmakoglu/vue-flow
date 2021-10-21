@@ -35,9 +35,9 @@ const onSelectionContextMenu = (event: MouseEvent, nodes: Node[]) => {
 const onElementClick = (_: MouseEvent, element: FlowElement) =>
   console.log(`${isNode(element) ? 'node' : 'edge'} click:`, element)
 const onSelectionChange = (elements: Elements | null) => console.log('selection change', elements)
-const onLoad = (reactFlowInstance: OnLoadParams) => {
-  console.log('flow loaded:', reactFlowInstance)
-  reactFlowInstance.fitView()
+const onLoad = (flowInstance: OnLoadParams) => {
+  console.log('flow loaded:', flowInstance)
+  flowInstance.fitView()
 }
 
 const onMoveEnd = (transform?: FlowTransform) => console.log('zoom/move end', transform)

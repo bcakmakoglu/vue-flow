@@ -27,7 +27,7 @@ const elements = ref<Elements>(initialElements)
 
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
-const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
+const onLoad = (flowInstance: OnLoadParams) => flowInstance.fitView()
 
 const changeType = () => {
   elements.value = elements.value.map((el) => {

@@ -28,9 +28,9 @@ const rfInstance = ref<OnLoadParams | null>(null)
 const onElementsRemove = (elementsToRemove: Elements) =>
   (elements.value = removeElements(elementsToRemove, elements.value as Elements))
 const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value as Elements))
-const onLoad = (revueFlowInstance: OnLoadParams) => {
-  revueFlowInstance.fitView({ padding: 0.1 })
-  rfInstance.value = revueFlowInstance
+const onLoad = (flowInstance: OnLoadParams) => {
+  flowInstance.fitView({ padding: 0.1 })
+  rfInstance.value = flowInstance
 }
 
 const updatePos = () => {

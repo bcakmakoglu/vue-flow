@@ -5,9 +5,9 @@
 import { getElements } from './utils'
 import Flow, { removeElements, addEdge, MiniMap, Controls, Background, OnLoadParams, Connection, Edge, Elements } from '~/index'
 
-const onLoad = (reactFlowInstance: OnLoadParams) => {
-  reactFlowInstance.fitView()
-  console.log(reactFlowInstance.getElements())
+const onLoad = (flowInstance: OnLoadParams) => {
+  flowInstance.fitView()
+  console.log(flowInstance.getElements())
 }
 
 const elements = ref<Elements>(getElements())

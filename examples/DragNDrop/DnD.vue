@@ -3,7 +3,7 @@ import Sidebar from './Sidebar.vue'
 import Flow, { addEdge, removeElements, Controls, OnLoadParams, Elements, Connection, Edge, ElementId, Node } from '~/index'
 import './dnd.css'
 
-const revueFlowInstance = ref<OnLoadParams>()
+const flowInstance = ref<OnLoadParams>()
 const elements = ref<Elements>([
   {
     id: '1',
@@ -26,15 +26,15 @@ const onDragOver = (event: DragEvent) => {
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value as Elements))
 const onElementsRemove = (elementsToRemove: Elements) =>
   (elements.value = removeElements(elementsToRemove, elements.value as Elements))
-const onLoad = (instance: OnLoadParams) => (revueFlowInstance.value = instance)
+const onLoad = (instance: OnLoadParams) => (flowInstance.value = instance)
 
 const onDrop = (event: DragEvent) => {
   event.preventDefault()
 
-  if (revueFlowInstance.value) {
-    console.log(event.dataTransfer?.getData('application/revueflow'))
-    const type = event.dataTransfer?.getData('application/revueflow')
-    const position = revueFlowInstance.value.project({ x: event.clientX, y: event.clientY - 40 })
+  if (flowInstance.value) {
+    console.log(event.dataTransfer?.getData('application/vueflow'))
+    const type = event.dataTransfer?.getData('application/vueflow')
+    const position = flowInstance.value.project({ x: event.clientX, y: event.clientY - 40 })
     const newNode = {
       id: getId(),
       type,
@@ -48,7 +48,7 @@ const onDrop = (event: DragEvent) => {
 </script>
 <template>
   <div class="dndflow">
-    <div class="revueflow-wrapper" @drop="onDrop">
+    <div class="vueflow-wrapper" @drop="onDrop">
       <Flow :elements="elements" @elements-remove="onElementsRemove" @load="onLoad" @connect="onConnect" @dragover="onDragOver">
         <Controls />
       </Flow>

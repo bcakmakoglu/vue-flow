@@ -4,7 +4,7 @@ import { HandleType } from './handle'
 import { ConnectionMode, OnConnectEndFunc, OnConnectFunc, OnConnectStartFunc, OnConnectStopFunc } from './connection'
 import { Edge } from './edge'
 import { Node, NodeExtent, TranslateExtent } from './node'
-import { RevueFlowActions } from './actions'
+import { FlowActions } from './actions'
 import { D3Selection, D3Zoom, D3ZoomHandler } from '~/types/panel'
 
 export interface FlowState {
@@ -44,7 +44,7 @@ export interface FlowState {
 
   multiSelectionActive: boolean
 
-  revueFlowVersion: string
+  vueFlowVersion: string
 
   onConnect?: OnConnectFunc
   onConnectStart?: OnConnectStartFunc
@@ -52,4 +52,4 @@ export interface FlowState {
   onConnectEnd?: OnConnectEndFunc
 }
 
-export type FlowStore = Store<string, FlowState, any, RevueFlowActions>
+export type FlowStore = Store<string, FlowState, any, FlowActions>

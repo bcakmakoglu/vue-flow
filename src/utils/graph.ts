@@ -75,7 +75,7 @@ export const removeElements = (elementsToRemove: Elements, elements: Elements): 
 }
 
 const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection): ElementId =>
-  `revueflow__edge-${source}${sourceHandle}-${target}${targetHandle}`
+  `vueflow__edge-${source}${sourceHandle}-${target}${targetHandle}`
 
 const connectionExists = (edge: Edge, elements: Elements) => {
   return elements.some(

@@ -1,12 +1,10 @@
 import { XYPosition } from '~/types'
 
 export function getMousePosition(event: MouseEvent): XYPosition | void {
-  const revueFlowNode = (event.target as Element).closest('.vue-flow')
-  if (!revueFlowNode) {
-    return
-  }
+  const flowNode = (event.target as Element).closest('.vue-flow')
+  if (!flowNode) return
 
-  const containerBounds = revueFlowNode.getBoundingClientRect()
+  const containerBounds = flowNode.getBoundingClientRect()
 
   return {
     x: event.clientX - containerBounds.left,

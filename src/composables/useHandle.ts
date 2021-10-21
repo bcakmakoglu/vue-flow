@@ -82,7 +82,7 @@ export default () => {
     },
     elementEdgeUpdaterType?: HandleType,
   ) => {
-    const revueFlowNode = (event.target as Element).closest('.vue-flow')
+    const flowNode = (event.target as Element).closest('.vue-flow')
     // when vue-flow is used inside a shadow root we can't use document
     const doc = getHostForElement(event.target as HTMLElement)
 
@@ -92,10 +92,10 @@ export default () => {
     const elementBelowIsTarget = elementBelow?.classList.contains('target')
     const elementBelowIsSource = elementBelow?.classList.contains('source')
 
-    if (!revueFlowNode || (!elementBelowIsTarget && !elementBelowIsSource && !elementEdgeUpdaterType)) return
+    if (!flowNode || (!elementBelowIsTarget && !elementBelowIsSource && !elementEdgeUpdaterType)) return
 
     const handleType = elementEdgeUpdaterType || (elementBelowIsTarget ? 'target' : 'source')
-    const containerBounds = revueFlowNode.getBoundingClientRect()
+    const containerBounds = flowNode.getBoundingClientRect()
     let recentHoveredHandle: Element
 
     store.connectionPosition.x = event.clientX - containerBounds.left

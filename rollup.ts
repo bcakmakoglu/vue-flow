@@ -27,7 +27,7 @@ for (const { external, iife } of activePackages) {
     '@vueuse/core': 'VueUse',
   }
 
-  const iifeName = 'RevueFlow'
+  const iifeName = 'VueFlow'
   const functionNames = ['vue-flow']
 
   for (const fn of functionNames) {
@@ -89,7 +89,7 @@ for (const { external, iife } of activePackages) {
         }),
         commonjs({ include: 'node_modules/**' }),
         replace({
-          __REACT_FLOW_VERSION__: JSON.stringify(pkg.version),
+          __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
           preventAssignment: true,
         }),
       ],

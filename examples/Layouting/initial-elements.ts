@@ -56,16 +56,16 @@ const elements: Elements = [
     position,
   },
   { id: '7', type: 'output', data: { label: 'output' }, position: { x: 400, y: 450 } },
-  { id: 'e12', source: '1', target: '2', type: 'smoothstep' },
-  { id: 'e13', source: '1', target: '3', type: 'smoothstep' },
-  { id: 'e22a', source: '2', target: '2a', type: 'smoothstep' },
-  { id: 'e22b', source: '2', target: '2b', type: 'smoothstep' },
-  { id: 'e22c', source: '2', target: '2c', type: 'smoothstep' },
-  { id: 'e2c2d', source: '2c', target: '2d', type: 'smoothstep' },
+  { id: 'e12', source: '1', target: '2', type: 'smoothstep', animated: true },
+  { id: 'e13', source: '1', target: '3', type: 'smoothstep', animated: true },
+  { id: 'e22a', source: '2', target: '2a', type: 'smoothstep', animated: true },
+  { id: 'e22b', source: '2', target: '2b', type: 'smoothstep', animated: true },
+  { id: 'e22c', source: '2', target: '2c', type: 'smoothstep', animated: true },
+  { id: 'e2c2d', source: '2c', target: '2d', type: 'smoothstep', animated: true },
 
-  { id: 'e45', source: '4', target: '5', type: 'smoothstep' },
-  { id: 'e56', source: '5', target: '6', type: 'smoothstep' },
-  { id: 'e57', source: '5', target: '7', type: 'smoothstep' },
+  { id: 'e45', source: '4', target: '5', type: 'smoothstep', animated: true },
+  { id: 'e56', source: '5', target: '6', type: 'smoothstep', animated: true },
+  { id: 'e57', source: '5', target: '7', type: 'smoothstep', animated: true },
 ] as Elements
 
 export default elements

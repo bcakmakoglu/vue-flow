@@ -20,9 +20,9 @@ const elements = ref<Elements>([])
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
-const onLoad = (reactFlowInstance: OnLoadParams) => console.log('flow loaded:', reactFlowInstance)
-const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
-const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
+const onLoad = (flowInstance: OnLoadParams) => console.log('flow loaded:', flowInstance)
+const onElementClick = (element: FlowElement) => console.log('click', element)
+const onNodeDragStop = (node: Node) => console.log('drag stop', node)
 
 const buttonStyle: CSSProperties = { position: 'absolute', left: '10px', top: '10px', zIndex: 4 }
 const addRandomNode = () => {

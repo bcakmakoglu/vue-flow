@@ -54,7 +54,7 @@ export const initialState = (): FlowState => ({
 
   multiSelectionActive: false,
 
-  revueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
+  vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
 export { default as useFlowStore } from './useFlowStore'

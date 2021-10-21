@@ -20,7 +20,7 @@
   margin-bottom: 10px;
 }
 
-.dndflow .revueflow-wrapper {
+.dndflow .vue-flow-wrapper {
   flex-grow: 1;
   height: 100%;
 }

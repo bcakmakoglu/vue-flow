@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import isEqual from 'fast-deep-equal'
-import { Edge, FlowState, Node, RevueFlowActions } from '~/types'
+import { Edge, FlowState, Node, FlowActions } from '~/types'
 import { clampPosition, getDimensions } from '~/utils'
 import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '~/utils/graph'
 import { getHandleBounds } from '~/components/Nodes/utils'
@@ -11,7 +11,7 @@ type NextElements = {
 }
 const pinia = createPinia()
 
-export default function useFlowStore(preloadedState: FlowState): StoreDefinition<string, FlowState, any, RevueFlowActions> {
+export default function useFlowStore(preloadedState: FlowState): StoreDefinition<string, FlowState, any, FlowActions> {
   setActivePinia(pinia)
 
   return defineStore({

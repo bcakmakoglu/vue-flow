@@ -3,7 +3,7 @@ import { NodeDiffUpdate, NodeDimensionUpdate, NodeExtent, NodePosUpdate, Transla
 import { InitD3ZoomPayload } from './panel'
 import { SetConnectionId } from './connection'
 
-export interface RevueFlowActions {
+export interface FlowActions {
   setElements: (elements: Elements) => void
   updateNodeDimensions: (update: NodeDimensionUpdate) => void
   updateNodePos: (payload: NodePosUpdate) => void

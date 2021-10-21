@@ -25,9 +25,9 @@ const nodeTypes = {
   selectorNode: ColorSelectorNode,
 }
 
-const onLoad = (revueFlowInstance: OnLoadParams) => {
-  revueFlowInstance.fitView()
-  console.log('flow loaded:', revueFlowInstance)
+const onLoad = (flowInstance: OnLoadParams) => {
+  flowInstance.fitView()
+  console.log('flow loaded:', flowInstance)
 }
 const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
 const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
