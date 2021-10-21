@@ -4,15 +4,6 @@ import { Node } from '~/types'
 import { isNode } from '~/utils/graph'
 import { useHooks, useStore } from '~/composables'
 
-interface NodesSelectionProps {
-  onSelectionDragStart?: (event: MouseEvent, nodes: Node[]) => void
-  onSelectionDrag?: (event: MouseEvent, nodes: Node[]) => void
-  onSelectionDragStop?: (event: MouseEvent, nodes: Node[]) => void
-  onSelectionContextMenu?: (event: MouseEvent, nodes: Node[]) => void
-}
-
-const props = defineProps<NodesSelectionProps>()
-
 const store = useStore()
 const hooks = useHooks()
 
@@ -37,12 +28,13 @@ const innerStyle = {
 }
 
 const onStart: DraggableEventListener = ({ event }) => {
-  hooks.selectionDragStart.trigger({ event, nodes: selectedNodes.value })
+  const nodes = selectedNodes.value
+  hooks.selectionDragStart.trigger({ event, nodes })
 }
 
 const onDrag: DraggableEventListener = ({ event, data }) => {
-  hooks.selectionDrag.trigger({ event, nodes: selectedNodes.value })
-
+  const nodes = selectedNodes.value
+  hooks.selectionDrag.trigger({ event, nodes })
   store.updateNodePosDiff({
     diff: {
       x: data.deltaX,
@@ -53,19 +45,16 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
 }
 
 const onStop: DraggableEventListener = ({ event }) => {
+  const nodes = selectedNodes.value
+  hooks.selectionDragStop.trigger({ event, nodes })
   store.updateNodePosDiff({
     isDragging: false,
   })
-
-  hooks.selectionDragStop.trigger({ event, nodes: selectedNodes.value })
 }
 
 const onContextMenu = (event: MouseEvent) => {
-  const selectedNodes = store.selectedElements
-    ? store.selectedElements.filter(isNode).map((selectedNode) => store.nodes.find((node) => node.id === selectedNode.id))
-    : []
-
-  if (selectedNodes) hooks.selectionContextMenu.trigger({ event, nodes: selectedNodes as Node[] })
+  const nodes = selectedNodes.value
+  hooks.selectionContextMenu.trigger({ event, nodes })
 }
 </script>
 <template>

@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<SelectionPaneProps>(), {
   deleteKeyCode: 'Backspace',
   multiSelectionKeyCode: 'Meta',
 })
+
 const store = useStore()
 const hooks = useHooks()
 
