@@ -2,11 +2,9 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { Ref } from 'vue'
 import { get } from '@vueuse/core'
-import { FlowTransform, PanOnScrollMode, Transform, UseZoom, UseZoomOptions } from '~/types'
+import { FlowTransform, PanOnScrollMode, UseZoom, UseZoomOptions } from '~/types'
 import { clamp } from '~/utils'
-import useKeyPress from '~/composables/useKeyPress'
-import useHooks from '~/composables/useHooks'
-import useStore from '~/composables/useStore'
+import { useKeyPress, useHooks, useStore } from '~/composables'
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
   prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k
@@ -38,12 +36,9 @@ export default (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZoom => {
   const clampedX = clamp(defaultPosition[0], store.translateExtent[0][0], store.translateExtent[1][0])
   const clampedY = clamp(defaultPosition[1], store.translateExtent[0][1], store.translateExtent[1][1])
   const clampedZoom = clamp(defaultZoom, store.minZoom, store.maxZoom)
-  const transform = controlledRef<Transform>([clampedX, clampedY, clampedZoom], {
-    onBeforeChange(val, oldVal) {
-      if (val === oldVal) return false
-    },
-  })
-  store.transform = transform.value
+  const transform = ref({ x: clampedX, y: clampedY, zoom: clampedZoom })
+  biSyncRef(transform, prevTransform)
+
   const d3Zoom = ref(
     zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent),
   )
@@ -60,6 +55,7 @@ export default (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZoom => {
       const updatedTransform = zoomIdentity.translate(clampedX, clampedY).scale(clampedZoom)
       d3z.transform(d3s, updatedTransform)
       store.initD3Zoom({ d3Zoom: d3z, d3Selection: d3s, d3ZoomHandler })
+      store.transform = [updatedTransform.x, updatedTransform.y, updatedTransform.k]
 
       const applyZoomHandlers = () => {
         d3z.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
@@ -85,12 +81,10 @@ export default (el: Ref<HTMLDivElement>, options: UseZoomOptions): UseZoom => {
             d3z.on('zoom', null)
           } else {
             d3z.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-              transform.value = [
-                clamp(event.transform.x, store.translateExtent[0][0], store.translateExtent[1][0]),
-                clamp(event.transform.y, store.translateExtent[0][1], store.translateExtent[1][1]),
-                clamp(event.transform.k, store.minZoom, store.maxZoom),
-              ]
-              hooks.move.trigger(eventToFlowTransform(event.transform))
+              const flowTransform = eventToFlowTransform(event.transform)
+              prevTransform.value = flowTransform
+
+              hooks.move.trigger(flowTransform)
             })
           }
         })

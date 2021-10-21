@@ -1,5 +1,5 @@
 import { Ref } from 'vue'
-import { ElementId, Transform } from './types'
+import { ElementId, FlowTransform } from './types'
 import { D3Zoom, D3Selection, PanOnScrollMode, KeyCode } from './panel'
 import { Connection } from '@/src'
 
@@ -20,7 +20,7 @@ export interface UseZoomOptions {
 }
 
 export interface UseZoom {
-  transform: Ref<Transform>
+  transform: Ref<FlowTransform>
   d3Zoom: Ref<D3Zoom>
   d3Selection: Ref<D3Selection>
 }

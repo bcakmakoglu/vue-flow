@@ -28,7 +28,10 @@ const rfInstance = ref<OnLoadParams | null>(null)
 const onElementsRemove = (elementsToRemove: Elements) =>
   (elements.value = removeElements(elementsToRemove, elements.value as Elements))
 const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value as Elements))
-const onLoad = (revueFlowInstance: OnLoadParams) => (rfInstance.value = revueFlowInstance)
+const onLoad = (revueFlowInstance: OnLoadParams) => {
+  revueFlowInstance.fitView({ padding: 0.1 })
+  rfInstance.value = revueFlowInstance
+}
 
 const updatePos = () => {
   elements.value = elements.value.map((el: FlowElement) => {

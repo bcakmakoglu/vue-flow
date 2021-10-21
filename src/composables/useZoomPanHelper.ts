@@ -5,9 +5,7 @@ import useStore from '~/composables/useStore'
 
 const DEFAULT_PADDING = 0.1
 
-export default (): UseZoomPanHelper => {
-  const store = useStore()
-
+export default (store = useStore()): UseZoomPanHelper => {
   return {
     zoomIn: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1.2),
     zoomOut: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1 / 1.2),

@@ -192,7 +192,6 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         }
       },
       addSelectedElements(elements) {
-        console.log(elements)
         const selectedElementsArr = Array.isArray(elements) ? elements : [elements]
         const selectedElementsUpdated = !isEqual(selectedElementsArr, this.selectedElements)
         this.selectedElements = selectedElementsUpdated ? selectedElementsArr : this.selectedElements

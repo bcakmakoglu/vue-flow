@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { onMounted } from 'vue'
 import { KeyCode, PanOnScrollMode } from '~/types'
 import { useHooks, useStore, useZoom, useZoomPanHelper } from '~/composables'
 import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils/graph'
@@ -34,27 +35,38 @@ const store = useStore()
 const hooks = useHooks()
 
 const zoomPaneEl = templateRef<HTMLDivElement>('zoom-pane', null)
-const { transform } = useZoom(zoomPaneEl, props)
-const { width, height } = useElementBounding(zoomPaneEl)
-watch(width, (val) => (store.dimensions.width = val))
-watch(height, (val) => (store.dimensions.height = val))
-watch(transform, (val) => (store.transform = val))
 
-store.transform = transform.value
+const { width, height } = useElementBounding(zoomPaneEl)
 store.dimensions = {
   width: width.value,
   height: height.value,
 }
-const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
-hooks.load.trigger({
-  fitView: (params = { padding: 0.1 }) => fitView(params),
-  zoomIn,
-  zoomOut,
-  zoomTo,
-  setTransform,
-  project: onLoadProject(store),
-  getElements: onLoadGetElements(store),
-  toObject: onLoadToObject(store),
+
+const { transform } = useZoom(zoomPaneEl, props)
+store.transform = [transform.value.x, transform.value.y, transform.value.zoom]
+
+watch(width, (val) => (store.dimensions.width = val))
+watch(height, (val) => (store.dimensions.height = val))
+watch(transform, (val) => (store.transform = [val.x, val.y, val.zoom]))
+
+onMounted(() => {
+  const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
+
+  watchOnce(
+    () => width.value && height.value,
+    () => {
+      hooks.load.trigger({
+        fitView: (params = { padding: 0.1 }) => fitView(params),
+        zoomIn,
+        zoomOut,
+        zoomTo,
+        setTransform,
+        project: onLoadProject(store),
+        getElements: onLoadGetElements(store),
+        toObject: onLoadToObject(store),
+      })
+    },
+  )
 })
 </script>
 <template>
