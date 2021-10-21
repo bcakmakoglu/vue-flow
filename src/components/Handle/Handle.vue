@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',
   position: Position.Top,
   connectable: true,
+  isValidConnection: () => true,
 })
 
 const store = useStore()

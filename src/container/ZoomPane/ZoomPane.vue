@@ -50,7 +50,7 @@ watch(height, (val) => (store.dimensions.height = val))
 watch(transform, (val) => (store.transform = [val.x, val.y, val.zoom]))
 
 onMounted(() => {
-  const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
+  const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
 
   watchOnce(
     () => width.value && height.value,
