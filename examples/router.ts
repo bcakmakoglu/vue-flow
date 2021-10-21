@@ -45,6 +45,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/interaction',
     component: () => import('./Interaction/InteractionExample.vue'),
   },
+  {
+    path: '/layouting',
+    component: () => import('./Layouting/LayoutingExample.vue'),
+  },
 ]
 
 export const router = createRouter({
