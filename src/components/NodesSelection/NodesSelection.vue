@@ -1,39 +1,39 @@
 <script lang="ts" setup>
 import { DraggableEventListener } from '@braks/revue-draggable'
 import { Node } from '~/types'
-import { isNode } from '~/utils/graph'
+import { getRectOfNodes, isNode } from '~/utils/graph'
 import { useHooks, useStore } from '~/composables'
 
 const store = useStore()
 const hooks = useHooks()
 
-const selectedNodes = computed(() =>
-  store.selectedElements
-    ? store.selectedElements.filter(isNode).map((selectedNode) => {
-        const matchingNode = store.nodes.find((node) => node.id === selectedNode.id)
+const selectedNodes = store.selectedElements
+  ? store.selectedElements.filter(isNode).map((selectedNode) => {
+      const matchingNode = store.nodes.find((node) => node.id === selectedNode.id)
 
-        return {
-          ...matchingNode,
-          position: matchingNode?.__rf.position,
-        } as Node
-      })
-    : [],
-)
+      return {
+        ...matchingNode,
+        position: matchingNode?.__rf.position,
+      } as Node
+    })
+  : []
+
+const selectedNodesBBox = getRectOfNodes(selectedNodes)
 
 const innerStyle = {
-  width: `${store.selectedNodesBbox.width}px`,
-  height: `${store.selectedNodesBbox.height}px`,
-  top: `${store.selectedNodesBbox.y}px`,
-  left: `${store.selectedNodesBbox.x}px`,
+  width: `${selectedNodesBBox.width}px`,
+  height: `${selectedNodesBBox.height}px`,
+  top: `${selectedNodesBBox.y}px`,
+  left: `${selectedNodesBBox.x}px`,
 }
 
 const onStart: DraggableEventListener = ({ event }) => {
-  const nodes = selectedNodes.value
+  const nodes = selectedNodes
   hooks.selectionDragStart.trigger({ event, nodes })
 }
 
 const onDrag: DraggableEventListener = ({ event, data }) => {
-  const nodes = selectedNodes.value
+  const nodes = selectedNodes
   hooks.selectionDrag.trigger({ event, nodes })
   store.updateNodePosDiff({
     diff: {
@@ -45,7 +45,7 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
 }
 
 const onStop: DraggableEventListener = ({ event }) => {
-  const nodes = selectedNodes.value
+  const nodes = selectedNodes
   hooks.selectionDragStop.trigger({ event, nodes })
   store.updateNodePosDiff({
     isDragging: false,
@@ -53,7 +53,7 @@ const onStop: DraggableEventListener = ({ event }) => {
 }
 
 const onContextMenu = (event: MouseEvent) => {
-  const nodes = selectedNodes.value
+  const nodes = selectedNodes
   hooks.selectionContextMenu.trigger({ event, nodes })
 }
 </script>
