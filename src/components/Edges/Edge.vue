@@ -96,7 +96,7 @@ const isVisible = ({ sourceX, sourceY, targetX, targetY }: ReturnType<typeof get
 const targetNodeHandles = computed(() =>
   store.connectionMode === ConnectionMode.Strict
     ? nodes.value.targetNode?.__rf.handleBounds.target
-    : nodes.value.targetNode?.__rf.handleBounds.target || nodes.value.targetNode?.__rf.handleBounds.source,
+    : nodes.value.targetNode?.__rf.handleBounds.target ?? nodes.value.targetNode?.__rf.handleBounds.source,
 )
 
 const sourceHandle = computed(

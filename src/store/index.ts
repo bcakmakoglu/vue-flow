@@ -6,6 +6,7 @@ export const initialState = (): FlowState => ({
     height: 0,
   },
   transform: [0, 0, 1],
+  elements: [],
   nodes: [],
   edges: [],
   selectedElements: undefined,
@@ -42,7 +43,7 @@ export const initialState = (): FlowState => ({
   connectionHandleId: undefined,
   connectionHandleType: 'source',
   connectionPosition: { x: NaN, y: NaN },
-  connectionMode: ConnectionMode.Strict,
+  connectionMode: ConnectionMode.Loose,
 
   snapGrid: [15, 15],
   snapToGrid: false,

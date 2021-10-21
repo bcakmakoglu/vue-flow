@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import Flow, { addEdge, Connection, Elements, OnLoadParams, Position, Edge, isEdge } from '~/index'
-
-const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
+import Flow, { addEdge, Connection, Edge, Elements, isEdge, OnLoadParams, Position } from '~/index'
 
 const initialElements: Elements = [
   {
@@ -26,7 +24,11 @@ const initialElements: Elements = [
 const buttonStyle: CSSProperties = { position: 'absolute', right: 10, top: 30, zIndex: 4 }
 
 const elements = ref<Elements>(initialElements)
+
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+
+const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
+
 const changeType = () => {
   elements.value = elements.value.map((el) => {
     if (isEdge(el) || el.type === 'input') return el

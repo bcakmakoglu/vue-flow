@@ -10,6 +10,7 @@ import { D3Selection, D3Zoom, D3ZoomHandler } from '~/types/panel'
 export interface FlowState {
   dimensions: Dimensions
   transform: Transform
+  elements: Elements
   nodes: Node[]
   edges: Edge[]
   selectedElements?: Elements

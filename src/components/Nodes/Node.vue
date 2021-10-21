@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { DraggableEventListener } from '@braks/revue-draggable'
+import { watchPostEffect } from 'vue'
 import { Node, NodeType, SnapGrid } from '~/types'
 import { NodeIdContextKey } from '~/context'
 import { useHooks, useStore } from '~/composables'
@@ -122,6 +123,17 @@ onMounted(() => {
     }),
   )
 })
+
+watch(
+  () => props.node.type,
+  () => {
+    store.updateNodeDimensions({
+      id: props.node.id,
+      nodeElement: nodeElement.value,
+      forceUpdate: true,
+    })
+  },
+)
 </script>
 
 <template>

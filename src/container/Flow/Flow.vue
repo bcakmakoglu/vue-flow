@@ -64,7 +64,7 @@ export interface FlowProps extends FlowOptions {
 
 const props = withDefaults(defineProps<FlowProps>(), {
   elements: () => [],
-  connectionMode: ConnectionMode.Strict,
+  connectionMode: ConnectionMode.Loose,
   connectionLineType: ConnectionLineType.Bezier,
   selectionKeyCode: 'Shift',
   multiSelectionKeyCode: 'Meta',
@@ -175,6 +175,6 @@ const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
         </EdgeRenderer>
       </SelectionPane>
     </ZoomPane>
-    <slot v-bind="{ flowProps: props, store, hooks }"></slot>
+    <slot v-bind="{ ...props, store, hooks }"></slot>
   </div>
 </template>
