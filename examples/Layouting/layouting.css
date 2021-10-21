@@ -9,3 +9,7 @@
   top: 10px;
   z-index: 10;
 }
+
+.controls button {
+  margin-left: 10px;
+}
