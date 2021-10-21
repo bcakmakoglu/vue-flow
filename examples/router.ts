@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router'
 export const routes: RouterOptions['routes'] = [
   {
     path: '/',
-    redirect: '/basic',
+    redirect: '/overview',
   },
   {
     path: '/basic',
@@ -52,6 +52,14 @@ export const routes: RouterOptions['routes'] = [
   {
     path: '/multi-flows',
     component: () => import('./MultiFlows/MultiFlowsExample.vue'),
+  },
+  {
+    path: '/node-type-change',
+    component: () => import('./NodeTypeChange/NodeTypeChangeExample.vue'),
+  },
+  {
+    path: '/overview',
+    component: () => import('./Overview/Overview.vue'),
   },
 ]
 

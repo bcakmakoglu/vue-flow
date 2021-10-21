@@ -16,8 +16,6 @@ const props = withDefaults(defineProps<InputNodeProps>(), {
 </script>
 <template>
   <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
-  <template v-else>
-    {{ props.data?.label }}
-  </template>
+  <span v-else v-html="props.data?.label"></span>
   <Handle type="source" :position="props.sourcePosition" :connectable="props.connectable" />
 </template>

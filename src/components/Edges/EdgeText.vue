@@ -48,7 +48,7 @@ const { width = 0, height = 0, x = 0, y = 0 } = useElementBounding(edgeRef)
         v-if="typeof props.label.component !== 'undefined'"
         v-bind="{ ...props, ...props.label.props, width, height, x, y }"
       />
-      <template v-else>
+      <template v-else v-html="props.label">
         {{ props.label }}
       </template>
     </text>
