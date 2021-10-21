@@ -112,28 +112,39 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         })
       },
       updateNodePosDiff({ id, diff, isDragging }) {
-        const i = this.nodes.map((x) => x.id || this.selectedElements?.find((sNode) => sNode.id === id)).indexOf(id)
-        const node = this.nodes[i]
-
-        const updatedNode = {
-          ...node,
-          __rf: {
-            ...node.__rf,
-            isDragging,
-          },
-        }
-
-        if (diff) {
-          updatedNode.__rf.position = {
-            x: node.__rf.position.x + diff.x,
-            y: node.__rf.position.y + diff.y,
+        const update = (node: Node, i: number) => {
+          const updatedNode = {
+            ...node,
+            __rf: {
+              ...node.__rf,
+              isDragging,
+            },
           }
+
+          if (diff) {
+            updatedNode.__rf.position = {
+              x: node.__rf.position.x + diff.x,
+              y: node.__rf.position.y + diff.y,
+            }
+          }
+
+          this.nodes.splice(i, 1, {
+            ...node,
+            ...updatedNode,
+          })
         }
 
-        this.nodes.splice(i, 1, {
-          ...node,
-          ...updatedNode,
-        })
+        if (!id) {
+          const selectedNodes = this.nodes.filter((x) => this.selectedElements?.find((sNode) => sNode.id === x.id))
+          selectedNodes.forEach((node) => {
+            const i = this.nodes.map((x) => x.id).indexOf((node as Node).id)
+            update(node as Node, i)
+          })
+        } else {
+          const i = this.nodes.map((x) => x.id).indexOf(id)
+          const node = this.nodes[i]
+          update(node, i)
+        }
       },
       setUserSelection(mousePos) {
         this.selectionActive = true
@@ -181,6 +192,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         }
       },
       addSelectedElements(elements) {
+        console.log(elements)
         const selectedElementsArr = Array.isArray(elements) ? elements : [elements]
         const selectedElementsUpdated = !isEqual(selectedElementsArr, this.selectedElements)
         this.selectedElements = selectedElementsUpdated ? selectedElementsArr : this.selectedElements
