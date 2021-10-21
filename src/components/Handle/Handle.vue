@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',
   position: Position.Top,
   connectable: true,
-  isValidConnection: () => true,
 })
 
 const store = useStore()
@@ -25,7 +24,7 @@ const nodeId = inject(NodeIdContextKey)!
 
 const handler = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>
-  handler(event, props.id, nodeId, props.type === 'target', props.isValidConnection)
+  handler(event, props.id, nodeId, props.type === 'target', props.isValidConnection ?? (() => true))
 </script>
 <template>
   <div
