@@ -49,6 +49,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/layouting',
     component: () => import('./Layouting/LayoutingExample.vue'),
   },
+  {
+    path: '/multi-flows',
+    component: () => import('./MultiFlows/MultiFlowsExample.vue'),
+  },
 ]
 
 export const router = createRouter({
