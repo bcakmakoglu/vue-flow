@@ -70,7 +70,7 @@
   },
   "np": {
     "branch": "master",
-    "yarn": false,
+    "yarn": true,
     "message": "v%s"
   }
 }
