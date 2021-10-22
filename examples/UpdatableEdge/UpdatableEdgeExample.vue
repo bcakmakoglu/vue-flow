@@ -40,7 +40,7 @@ const initialElements: Elements = [
 ] as Elements
 
 const elements = ref(initialElements)
-const onLoad = (reactFlowInstance: OnLoadParams) => reactFlowInstance.fitView()
+const onLoad = (flowInstance: OnLoadParams) => flowInstance.fitView()
 const onEdgeUpdateStart = (edge: Edge) => console.log('start update', edge)
 const onEdgeUpdateEnd = (edge: Edge) => console.log('end update', edge)
 const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) =>

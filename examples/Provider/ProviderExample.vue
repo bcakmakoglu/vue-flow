@@ -15,8 +15,8 @@ import Flow, {
 
 import './provider.css'
 
-const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
-const onLoad = (reactFlowInstance: OnLoadParams) => console.log('flow loaded:', reactFlowInstance)
+const onElementClick = (element: FlowElement) => console.log('click', element)
+const onLoad = (flowInstance: OnLoadParams) => console.log('flow loaded:', flowInstance)
 
 const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
@@ -35,7 +35,7 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
 <template>
   <div class="providerflow">
     <Sidebar />
-    <div class="reactflow-wrapper">
+    <div class="vue-flow-wrapper">
       <Flow
         :elements="elements"
         :connection-mode="ConnectionMode.Loose"

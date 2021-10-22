@@ -24,7 +24,7 @@
   margin-bottom: 20px;
 }
 
-.providerflow .reactflow-wrapper {
+.providerflow .vue-flow-wrapper {
   flex-grow: 1;
   height: 100%;
 }
