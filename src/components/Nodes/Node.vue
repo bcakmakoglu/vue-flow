@@ -179,6 +179,7 @@ watch(
     >
       <slot
         v-bind="{
+          id: props.node.id,
           data: props.node.data,
           type: props.node.type,
           xPos: props.node.__rf.position.x,
@@ -193,6 +194,7 @@ watch(
         <component
           :is="props.type"
           v-bind="{
+            id: props.node.id,
             data: props.node.data,
             type: props.node.type,
             xPos: props.node.__rf.position.x,

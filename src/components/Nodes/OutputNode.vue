@@ -2,7 +2,7 @@
 import Handle from '~/components/Handle/Handle.vue'
 import { NodeProps, Position } from '~/types'
 
-interface OutputNodeProps {
+interface OutputNodeProps extends NodeProps {
   data?: NodeProps['data']
   connectable?: NodeProps['connectable']
   targetPosition?: NodeProps['targetPosition']
