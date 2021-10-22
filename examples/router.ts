@@ -77,6 +77,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/stress',
     component: () => import('./Stress/StressExample.vue'),
   },
+  {
+    path: '/switch',
+    component: () => import('./Switch/SwitchExample.vue'),
+  },
 ]
 
 export const router = createRouter({
