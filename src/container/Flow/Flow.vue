@@ -98,6 +98,8 @@ const props = withDefaults(defineProps<FlowProps>(), {
   panOnScrollMode: PanOnScrollMode.Free,
   paneMoveable: true,
   edgeUpdaterRadius: 10,
+  edgeTypesId: '1',
+  nodeTypesId: '1',
 })
 const emit = defineEmits(Object.keys(createHooks()))
 
@@ -131,8 +133,14 @@ onBeforeUnmount(() => store?.$dispose())
 watch(props, (val) => init(val))
 init(props)
 
-const nodeTypes = createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })
-const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
+const nodeTypes = controlledComputed(
+  () => props.nodeTypesId,
+  () => createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes }),
+)
+const edgeTypes = controlledComputed(
+  () => props.edgeTypesId,
+  () => createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes }),
+)
 </script>
 <template>
   <div class="vue-flow">

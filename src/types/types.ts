@@ -6,7 +6,7 @@ import { KeyCode, PanOnScrollMode } from '~/types/panel'
 
 export type ElementId = string
 
-export type FlowElement<T = any> = Node<T> | Edge<T>
+export type FlowElement<T = any> = Partial<Node<T>> | Partial<Edge<T>>
 
 export type Elements<T = any> = Array<FlowElement<T>>
 

@@ -58,6 +58,10 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./NodeTypeChange/NodeTypeChangeExample.vue'),
   },
   {
+    path: '/node-types-id-change',
+    component: () => import('./NodeTypesIdChange/NodeTypesIdChangeExample.vue'),
+  },
+  {
     path: '/overview',
     component: () => import('./Overview/Overview.vue'),
   },
