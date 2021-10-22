@@ -4,7 +4,7 @@ import Flow, {
   updateEdge,
   addEdge,
   Elements,
-  OnLoadParams,
+  FlowInstance,
   Connection,
   Edge,
   removeElements,
@@ -40,7 +40,7 @@ const initialElements: Elements = [
 ] as Elements
 
 const elements = ref(initialElements)
-const onLoad = (flowInstance: OnLoadParams) => flowInstance.fitView()
+const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
 const onEdgeUpdateStart = (edge: Edge) => console.log('start update', edge)
 const onEdgeUpdateEnd = (edge: Edge) => console.log('end update', edge)
 const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) =>

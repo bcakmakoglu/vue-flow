@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import localforage from 'localforage'
-import { useZoomPanHelper, OnLoadParams, FlowExportObject, Node } from '~/index'
+import { useZoomPanHelper, FlowInstance, FlowExportObject, Node } from '~/index'
 
 localforage.config({
   name: 'vue-flow',
@@ -14,7 +14,7 @@ const getNodeId = () => `randomnode_${+new Date()}`
 const { transform } = useZoomPanHelper()
 
 type ControlsProps = {
-  flowInstance?: OnLoadParams
+  flowInstance?: FlowInstance
 }
 
 const props = defineProps<ControlsProps>()

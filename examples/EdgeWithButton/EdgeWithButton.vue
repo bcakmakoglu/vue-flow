@@ -9,7 +9,7 @@ import Flow, {
   EdgeType,
   Elements,
   MiniMap,
-  OnLoadParams,
+  FlowInstance,
   removeElements,
 } from '~/index'
 const edgeTypes = {
@@ -32,7 +32,7 @@ const elements = ref<Elements>([
   },
 ] as Elements)
 
-const onLoad = (flowInstance: OnLoadParams) => flowInstance.fitView()
+const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
 const onElementsRemove = (elementsToRemove: Elements) =>
   (elements.value = removeElements(elementsToRemove, elements.value as Elements))
 const onConnect = (params: Connection | Edge) =>

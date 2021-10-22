@@ -7,7 +7,7 @@ import Flow, {
   Edge,
   Elements,
   FlowElement,
-  OnLoadParams,
+  FlowInstance,
   addEdge,
   isNode,
   removeElements,
@@ -24,11 +24,11 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ] as Elements)
-const rfInstance = ref<OnLoadParams | null>(null)
+const rfInstance = ref<FlowInstance | null>(null)
 const onElementsRemove = (elementsToRemove: Elements) =>
   (elements.value = removeElements(elementsToRemove, elements.value as Elements))
 const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value as Elements))
-const onLoad = (flowInstance: OnLoadParams) => {
+const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView({ padding: 0.1 })
   rfInstance.value = flowInstance
 }

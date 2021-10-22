@@ -8,7 +8,7 @@ import Flow, {
   Controls,
   Node,
   FlowElement,
-  OnLoadParams,
+  FlowInstance,
   Elements,
   Position,
   SnapGrid,
@@ -25,7 +25,7 @@ const nodeTypes = {
   selectorNode: ColorSelectorNode,
 }
 
-const onLoad = (flowInstance: OnLoadParams) => {
+const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
   console.log('flow loaded:', flowInstance)
 }

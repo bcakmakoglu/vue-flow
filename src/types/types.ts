@@ -77,7 +77,7 @@ export type FitViewFunc = (fitViewOptions?: FitViewParams) => void
 export type ProjectFunc = (position: XYPosition) => XYPosition
 export type ToObjectFunc<T = any> = () => FlowExportObject<T>
 
-export type OnLoadParams<T = any> = {
+export type FlowInstance<T = any> = {
   zoomIn: () => void
   zoomOut: () => void
   zoomTo: (zoomLevel: number) => void
@@ -86,9 +86,10 @@ export type OnLoadParams<T = any> = {
   getElements: () => Elements<T>
   setTransform: (transform: FlowTransform) => void
   toObject: ToObjectFunc<T>
+  updateNodeInternals: (id: ElementId) => void
 }
 
-export type OnLoadFunc<T = any> = (params: OnLoadParams<T>) => void
+export type OnLoadFunc<T = any> = (params: FlowInstance<T>) => void
 
 export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
   elements: Elements

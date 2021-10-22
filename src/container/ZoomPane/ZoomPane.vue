@@ -4,7 +4,7 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { get } from '@vueuse/core'
 import { pointer, select } from 'd3-selection'
 import { FlowTransform, KeyCode, PanOnScrollMode } from '~/types'
-import { useHooks, useKeyPress, useStore, useZoomPanHelper } from '~/composables'
+import { useHooks, useKeyPress, useStore, useUpdateNodeInternals, useZoomPanHelper } from '~/composables'
 import { clamp, onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils/graph'
 
 interface ZoomPaneProps {
@@ -208,6 +208,7 @@ onMounted(() => {
         zoomOut,
         zoomTo,
         setTransform,
+        updateNodeInternals: useUpdateNodeInternals(store),
         project: onLoadProject(store),
         getElements: onLoadGetElements(store),
         toObject: onLoadToObject(store),

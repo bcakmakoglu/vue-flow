@@ -8,7 +8,7 @@ import Flow, {
   isNode,
   Controls,
   Background,
-  OnLoadParams,
+  FlowInstance,
   Elements,
   Connection,
   Edge,
@@ -16,7 +16,7 @@ import Flow, {
 
 const buttonWrapperStyles: CSSProperties = { position: 'absolute', right: 10, top: 10, zIndex: 4 }
 
-const onLoad = (flowInstance: OnLoadParams) => {
+const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
   console.log(flowInstance.getElements())
 }

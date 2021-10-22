@@ -11,7 +11,7 @@ import Flow, {
   Elements,
   FlowElement,
   Node,
-  OnLoadParams,
+  FlowInstance,
   addEdge,
   removeElements,
 } from '~/index'
@@ -20,7 +20,7 @@ const elements = ref<Elements>([])
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
-const onLoad = (flowInstance: OnLoadParams) => console.log('flow loaded:', flowInstance)
+const onLoad = (flowInstance: FlowInstance) => console.log('flow loaded:', flowInstance)
 const onElementClick = (element: FlowElement) => console.log('click', element)
 const onNodeDragStop = (node: Node) => console.log('drag stop', node)
 

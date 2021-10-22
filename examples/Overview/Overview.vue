@@ -10,7 +10,7 @@ import Flow, {
   Node,
   Elements,
   FlowElement,
-  OnLoadParams,
+  FlowInstance,
   FlowTransform,
   SnapGrid,
   ArrowHeadType,
@@ -35,7 +35,7 @@ const onSelectionContextMenu = (event: MouseEvent, nodes: Node[]) => {
 const onElementClick = (_: MouseEvent, element: FlowElement) =>
   console.log(`${isNode(element) ? 'node' : 'edge'} click:`, element)
 const onSelectionChange = (elements: Elements | null) => console.log('selection change', elements)
-const onLoad = (flowInstance: OnLoadParams) => {
+const onLoad = (flowInstance: FlowInstance) => {
   console.log('flow loaded:', flowInstance)
   flowInstance.fitView()
 }

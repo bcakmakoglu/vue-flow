@@ -93,6 +93,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/update-node',
     component: () => import('./UpdateNode/UpdateNodeExample.vue'),
   },
+  {
+    path: '/update-node-internals',
+    component: () => import('./UpdateNodeInternals/UpdateNodeInternalsExample.vue'),
+  },
 ]
 
 export const router = createRouter({

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import Flow, { addEdge, Connection, Edge, Elements, isEdge, OnLoadParams, Position } from '~/index'
+import Flow, { addEdge, Connection, Edge, Elements, isEdge, FlowInstance, Position } from '~/index'
 
 const initialElements: Elements = [
   {
@@ -27,7 +27,7 @@ const elements = ref<Elements>(initialElements)
 
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
-const onLoad = (flowInstance: OnLoadParams) => flowInstance.fitView()
+const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
 
 const changeType = () => {
   elements.value = elements.value.map((el) => {

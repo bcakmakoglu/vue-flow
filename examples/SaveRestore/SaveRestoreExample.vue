@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Controls from './Controls.vue'
-import Flow, { addEdge, Connection, Node, Edge, Elements, OnLoadParams, removeElements } from '~/index'
+import Flow, { addEdge, Connection, Node, Edge, Elements, FlowInstance, removeElements } from '~/index'
 
 import './save.css'
 
@@ -15,7 +15,7 @@ const flowInstance = ref()
 
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-const onLoad = (instance: OnLoadParams) => (flowInstance.value = instance)
+const onLoad = (instance: FlowInstance) => (flowInstance.value = instance)
 const onRestore = (els: Elements) => (elements.value = els)
 const onAdd = (el: Node) => (elements.value = elements.value.concat(el))
 </script>

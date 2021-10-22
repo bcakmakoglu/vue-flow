@@ -4,7 +4,7 @@ import Flow, {
   addEdge,
   removeElements,
   Controls,
-  OnLoadParams,
+  FlowInstance,
   FlowElement,
   Connection,
   Edge,
@@ -16,7 +16,7 @@ import Flow, {
 import './provider.css'
 
 const onElementClick = (element: FlowElement) => console.log('click', element)
-const onLoad = (flowInstance: OnLoadParams) => console.log('flow loaded:', flowInstance)
+const onLoad = (flowInstance: FlowInstance) => console.log('flow loaded:', flowInstance)
 
 const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },

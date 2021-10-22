@@ -1,4 +1,4 @@
-import { Connection, Edge, Elements, EmitFunc, FlowHooks, FlowTransform, Node, OnConnectStartParams, OnLoadParams } from '~/types'
+import { Connection, Edge, Elements, EmitFunc, FlowHooks, FlowTransform, Node, OnConnectStartParams, FlowInstance } from '~/types'
 import { Hooks } from '~/context'
 
 // flow event hooks
@@ -22,7 +22,7 @@ const hooks = (): FlowHooks => {
     }>(),
     connectStop: createEventHook<MouseEvent>(),
     connectEnd: createEventHook<MouseEvent>(),
-    load: createEventHook<OnLoadParams>(),
+    load: createEventHook<FlowInstance>(),
     move: createEventHook<FlowTransform | undefined>(),
     moveStart: createEventHook<FlowTransform | undefined>(),
     moveEnd: createEventHook<FlowTransform | undefined>(),

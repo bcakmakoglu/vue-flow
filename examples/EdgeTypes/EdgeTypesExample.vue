@@ -3,9 +3,9 @@
  * Example for checking the different edge types and source and target positions
  */
 import { getElements } from './utils'
-import Flow, { removeElements, addEdge, MiniMap, Controls, Background, OnLoadParams, Connection, Edge, Elements } from '~/index'
+import Flow, { removeElements, addEdge, MiniMap, Controls, Background, FlowInstance, Connection, Edge, Elements } from '~/index'
 
-const onLoad = (flowInstance: OnLoadParams) => {
+const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
   console.log(flowInstance.getElements())
 }

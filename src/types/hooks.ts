@@ -1,5 +1,5 @@
 import { EventHook } from '@vueuse/core'
-import { Connection, Edge, Elements, FlowTransform, Node, OnConnectStartParams, OnLoadParams } from '../types'
+import { Connection, Edge, Elements, FlowTransform, Node, OnConnectStartParams, FlowInstance } from '../types'
 
 export type FlowHook<T = any> = EventHook<T>
 
@@ -22,7 +22,7 @@ export interface FlowEvents {
   }
   connectStop: MouseEvent
   connectEnd: MouseEvent
-  load: OnLoadParams
+  load: FlowInstance
   move: FlowTransform | undefined
   moveStart: FlowTransform | undefined
   moveEnd: FlowTransform | undefined

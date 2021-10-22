@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import Flow, { addEdge, removeElements, Controls, OnLoadParams, Elements, Connection, Edge, ElementId, Node } from '~/index'
+import Flow, { addEdge, removeElements, Controls, FlowInstance, Elements, Connection, Edge, ElementId, Node } from '~/index'
 import './dnd.css'
 
-const flowInstance = ref<OnLoadParams>()
+const flowInstance = ref<FlowInstance>()
 const elements = ref<Elements>([
   {
     id: '1',
@@ -26,7 +26,7 @@ const onDragOver = (event: DragEvent) => {
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value as Elements))
 const onElementsRemove = (elementsToRemove: Elements) =>
   (elements.value = removeElements(elementsToRemove, elements.value as Elements))
-const onLoad = (instance: OnLoadParams) => (flowInstance.value = instance)
+const onLoad = (instance: FlowInstance) => (flowInstance.value = instance)
 
 const onDrop = (event: DragEvent) => {
   event.preventDefault()

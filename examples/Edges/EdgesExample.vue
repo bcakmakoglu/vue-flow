@@ -7,7 +7,7 @@ import Flow, {
   Controls,
   Background,
   Elements,
-  OnLoadParams,
+  FlowInstance,
   FlowElement,
   removeElements,
   Connection,
@@ -81,7 +81,7 @@ const edgeTypes: Record<string, any> = {
 
 const elements = ref<Elements>(initialElements as Elements)
 
-const onLoad = (flowInstance: OnLoadParams) => flowInstance.fitView()
+const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
 const onNodeDragStop = (node: Node) => console.log('drag stop', node)
 const onElementClick = (element: FlowElement) => console.log('click', element)
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
