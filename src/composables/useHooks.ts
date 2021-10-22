@@ -1,5 +1,15 @@
-import { Connection, Edge, Elements, EmitFunc, FlowHooks, FlowTransform, Node, OnConnectStartParams, FlowInstance } from '~/types'
-import { Hooks } from '~/context'
+import {
+  Connection,
+  Edge,
+  Elements,
+  EmitFunc,
+  FlowHooks,
+  FlowTransform,
+  Node,
+  OnConnectStartParams,
+  FlowInstance,
+} from '../types'
+import { Hooks } from '../context'
 
 // flow event hooks
 const hooks = (): FlowHooks => {

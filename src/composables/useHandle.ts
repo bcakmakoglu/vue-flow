@@ -1,7 +1,7 @@
-import { getHostForElement } from '~/utils'
-import { Connection, ConnectionMode, ElementId, HandleType, ValidConnectionFunc } from '~/types'
-import useStore from '~/composables/useStore'
-import useHooks from '~/composables/useHooks'
+import { getHostForElement } from '../utils'
+import { Connection, ConnectionMode, ElementId, HandleType, ValidConnectionFunc } from '../types'
+import useStore from './useStore'
+import useHooks from './useHooks'
 
 type Result = {
   elementBelow: Element | null
@@ -157,6 +157,7 @@ export default () => {
       hooks.connectEnd.trigger(event)
 
       if (elementEdgeUpdaterType) {
+        // todo fix missing edge
         hooks.edgeUpdateEnd.trigger({ event } as any)
       }
 

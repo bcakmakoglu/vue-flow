@@ -4,13 +4,7 @@ import { CSSProperties, HTMLAttributes } from 'vue'
 interface EdgeTextProps extends HTMLAttributes {
   x: number
   y: number
-  label?:
-    | string
-    | {
-        component: any
-        props?: any
-      }
-    | any
+  label?: any
   labelStyle?: CSSProperties
   labelShowBg?: boolean
   labelBgStyle?: any

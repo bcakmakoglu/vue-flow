@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { zoomIdentity } from 'd3-zoom'
-import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils/graph'
-import { FitViewParams, FlowTransform, Node, Rect, UseZoomPanHelper, XYPosition } from '~/types'
-import useStore from '~/composables/useStore'
+import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '../utils'
+import { FitViewParams, FlowTransform, Node, Rect, UseZoomPanHelper, XYPosition } from '../types'
+import useStore from './useStore'
 
 const DEFAULT_PADDING = 0.1
 

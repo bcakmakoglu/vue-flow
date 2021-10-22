@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '../../container/EdgeRenderer/utils'
+import { isEdge } from '../../utils'
+import { ConnectionMode, Edge, EdgeType, Position } from '../../types'
+import { useHandle, useHooks, useStore } from '../../composables'
 import EdgeAnchor from './EdgeAnchor.vue'
-import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
-import { isEdge } from '~/utils/graph'
-import { ConnectionMode, Edge, EdgeType, Position } from '~/types'
-import { useHandle, useHooks, useStore } from '~/composables'
 
 interface EdgeProps {
   type: EdgeType

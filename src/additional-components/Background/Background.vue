@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { SVGAttributes } from 'vue'
-import { BackgroundVariant } from '~/types'
-import { useStore } from '~/composables'
+import { BackgroundVariant } from '../../types'
+import { useStore } from '../../composables'
 
 export interface BackgroundProps extends SVGAttributes {
   variant?: BackgroundVariant

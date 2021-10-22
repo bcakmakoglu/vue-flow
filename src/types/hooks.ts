@@ -1,5 +1,8 @@
 import { EventHook } from '@vueuse/core'
-import { Connection, Edge, Elements, FlowTransform, Node, OnConnectStartParams, FlowInstance } from '../types'
+import { Elements, FlowTransform, FlowInstance } from './types'
+import { Edge } from './edge'
+import { Node } from './node'
+import { Connection, OnConnectStartParams } from './connection'
 
 export type FlowHook<T = any> = EventHook<T>
 

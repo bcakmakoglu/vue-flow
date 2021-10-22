@@ -1,13 +1,11 @@
 <template>
-  <NuxtLayout name="default">
-    <Header />
-    <div class="h-full flex flex-row">
-      <Sidebar />
-      <div id="vue-flow-docs" class="flex-1">
-        <NuxtPage />
-      </div>
+  <Header />
+  <div class="h-full flex flex-row">
+    <Sidebar />
+    <div id="vue-flow-docs" class="flex-1">
+      <NuxtPage />
     </div>
-  </NuxtLayout>
+  </div>
 </template>
 <style>
 @import 'assets/index.css';

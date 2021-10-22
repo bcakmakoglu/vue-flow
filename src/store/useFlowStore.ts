@@ -1,9 +1,18 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import isEqual from 'fast-deep-equal'
-import { Edge, FlowState, Node, FlowActions } from '~/types'
-import { clampPosition, getDimensions } from '~/utils'
-import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '~/utils/graph'
-import { getHandleBounds } from '~/components/Nodes/utils'
+import { Edge, FlowState, Node, FlowActions } from '../types'
+import {
+  clampPosition,
+  getDimensions,
+  getConnectedEdges,
+  getNodesInside,
+  getRectOfNodes,
+  isEdge,
+  isNode,
+  parseEdge,
+  parseNode,
+} from '../utils'
+import { getHandleBounds } from '../components/Nodes/utils'
 
 type NextElements = {
   nextNodes: Node[]

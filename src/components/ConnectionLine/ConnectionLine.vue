@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ConnectionLineType, HandleElement, Node, Position } from '~/types'
-import { getBezierPath, getSmoothStepPath } from '~/components/Edges/utils'
-import { useStore } from '~/composables'
+import { ConnectionLineType, HandleElement, Node, Position } from '../../types'
+import { getBezierPath, getSmoothStepPath } from '../Edges/utils'
+import { useStore } from '../../composables'
 
 interface ConnectionLineProps {
   sourceNode: Node

@@ -5,7 +5,7 @@ import { ConnectionMode, OnConnectEndFunc, OnConnectFunc, OnConnectStartFunc, On
 import { Edge } from './edge'
 import { Node, NodeExtent, TranslateExtent } from './node'
 import { FlowActions } from './actions'
-import { D3Selection, D3Zoom, D3ZoomHandler } from '~/types/panel'
+import { D3Selection, D3Zoom, D3ZoomHandler } from './panel'
 
 export interface FlowState {
   dimensions: Dimensions

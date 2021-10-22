@@ -3,17 +3,13 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 import AutoImport from 'unplugin-auto-import/vite'
-import commonjs from '@rollup/plugin-commonjs'
 import replace from '@rollup/plugin-replace'
 import pkg from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    alias: {
-      '~/': `${resolve(__dirname, 'src')}/`,
-      '@/': `${resolve(__dirname)}/`,
-    },
+    extensions: ['*', '.ts', '.vue'],
   },
   build: {
     minify: 'terser',
@@ -26,7 +22,6 @@ export default defineConfig({
       // into your library
       external: ['vue'],
       plugins: [
-        commonjs({ include: 'node_modules/**/*' }),
         replace({
           __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
           preventAssignment: true,
