@@ -73,6 +73,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/save-restore',
     component: () => import('./SaveRestore/SaveRestoreExample.vue'),
   },
+  {
+    path: '/stress',
+    component: () => import('./Stress/StressExample.vue'),
+  },
 ]
 
 export const router = createRouter({
