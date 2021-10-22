@@ -1,6 +1,6 @@
 {
   "name": "@braks/vue-flow",
-  "version": "0.1.2",
+  "version": "0.0.0",
   "private": false,
   "repository": {
     "type": "git",
@@ -45,14 +45,11 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.9.0",
     "@rollup/plugin-replace": "^2.4.2",
-    "@types/dagre": "^0.7.46",
     "@vitejs/plugin-vue": "^1.9.3",
     "autoprefixer": "^10.3.7",
-    "dagre": "^0.8.5",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.1",
-    "localforage": "^1.10.0",
     "np": "^7.5.0",
     "pnpm": "^6.18.0",
     "postcss-nested": "^5.0.6",
@@ -73,7 +70,7 @@
   },
   "np": {
     "branch": "master",
-    "yarn": true,
+    "yarn": false,
     "message": "v%s"
   }
 }
