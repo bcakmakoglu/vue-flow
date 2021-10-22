@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { zoomIdentity } from 'd3-zoom'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils/graph'
-import { FitViewParams, FlowTransform, Rect, UseZoomPanHelper, XYPosition } from '~/types'
+import { FitViewParams, FlowTransform, Node, Rect, UseZoomPanHelper, XYPosition } from '~/types'
 import useStore from '~/composables/useStore'
 
 const DEFAULT_PADDING = 0.1
@@ -17,7 +18,7 @@ export default (store = useStore()): UseZoomPanHelper => {
     fitView: (options: FitViewParams = { padding: DEFAULT_PADDING, includeHiddenNodes: false }) => {
       if (!store.nodes.length) return
 
-      const bounds = getRectOfNodes(options.includeHiddenNodes ? store.nodes : store.nodes.filter((node) => !node.isHidden))
+      const bounds = getRectOfNodes(options.includeHiddenNodes ? store.nodes : store.nodes.filter((node: Node) => !node.isHidden))
       const [x, y, zoom] = getTransformForBounds(
         bounds,
         store.dimensions.width,

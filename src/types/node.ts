@@ -17,7 +17,7 @@ export interface Node<T = any> {
     | any
   data?: T
   style?: any
-  className?: string
+  class?: string
   targetPosition?: Position
   sourcePosition?: Position
   isHidden?: boolean

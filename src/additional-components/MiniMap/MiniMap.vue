@@ -41,7 +41,8 @@ const nodeStrokeColorFunc: StringFunc =
 
 const nodeClassNameFunc = props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as StringFunc
 
-const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
+const shapeRendering: ShapeRendering =
+  (window && typeof window === 'undefined') || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
 const viewBox = computed(() => {
   const bb = getRectOfNodes(store.nodes)

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CSSProperties, HTMLAttributes } from 'vue'
 import { Edge, EdgeType } from './edge'
 import { Node, NodeExtent, NodeType, TranslateExtent } from './node'

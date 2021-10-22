@@ -34,7 +34,7 @@ export const clampPosition = (position: XYPosition, extent: NodeExtent): XYPosit
 export const getHostForElement = (element: HTMLElement): Document => {
   const doc = element.getRootNode() as Document
   if ('getElementFromPoint' in doc) return doc
-  else return window.document
+  else return false as any
 }
 
 export const isEdge = (element: Node | Connection | Edge): element is Edge =>

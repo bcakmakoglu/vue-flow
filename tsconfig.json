@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2020",
@@ -17,8 +18,7 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "vite/client",
-      "@types/node"
+      "vite/client"
     ],
     "paths": {
       "~/*": [
@@ -32,6 +32,7 @@
   "exclude": [
     "node_modules",
     "build",
-    "dist"
+    "dist",
+    "examples"
   ]
 }
