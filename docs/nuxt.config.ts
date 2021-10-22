@@ -5,5 +5,7 @@ export default defineNuxtConfig({
     title: 'Vue Flow',
     description: 'Vue Flow Documentation',
   },
+  target: 'client',
+  ssr: false,
   buildModules: ['nuxt-windicss'],
 })
