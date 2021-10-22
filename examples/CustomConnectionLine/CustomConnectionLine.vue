@@ -9,10 +9,9 @@ const elements = ref<Elements>([
     data: { label: 'Node 1' },
     position: { x: 250, y: 5 },
   },
-] as Elements)
-const onElementsRemove = (elementsToRemove: Elements) =>
-  (elements.value = removeElements(elementsToRemove, elements.value as Elements))
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value as Elements))
+])
+const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
+const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
 <template>
   <Flow :elements="elements" @elements-remove="onElementsRemove" @connect="onConnect">

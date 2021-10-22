@@ -21,7 +21,7 @@ const initialElements: Elements = [
   { id: 'A', type: 'customnode', position: { x: 250, y: 0 } },
   { id: 'B', type: 'customnode', position: { x: 250, y: 150 } },
   { id: 'C', type: 'customnode', position: { x: 250, y: 300 } },
-] as Elements
+]
 
 const onLoad = (reactFlowInstance: FlowInstance) => reactFlowInstance.fitView()
 const onConnectStart = ({ nodeId, handleType }: OnConnectStartParams) => console.log('on connect start', { nodeId, handleType })

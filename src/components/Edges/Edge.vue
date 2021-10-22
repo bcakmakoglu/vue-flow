@@ -93,12 +93,12 @@ const nodes = computed(() => {
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() =>
   store.connectionMode === ConnectionMode.Strict
-    ? nodes.value.targetNode?.__rf.handleBounds.target
-    : nodes.value.targetNode?.__rf.handleBounds.target ?? nodes.value.targetNode?.__rf.handleBounds.source,
+    ? nodes.value.targetNode?.__rf?.handleBounds.target
+    : nodes.value.targetNode?.__rf?.handleBounds.target ?? nodes.value.targetNode?.__rf?.handleBounds.source,
 )
 
 const sourceHandle = computed(
-  () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf.handleBounds.source, props.edge.sourceHandle || null),
+  () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf?.handleBounds.source, props.edge.sourceHandle || null),
 )
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle || null))
 const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
@@ -126,7 +126,7 @@ const edgePos = computed(() =>
         selected: isSelected,
         animated: props.edge.animated,
         inactive: !store.elementsSelectable,
-        updating: updating.value,
+        updating,
       },
     ]"
     @click="onEdgeClick"

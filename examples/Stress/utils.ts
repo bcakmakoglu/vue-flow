@@ -26,5 +26,5 @@ export function getElements(xElements = 10, yElements = 10): Elements {
     }
   }
 
-  return initialElements as Elements
+  return initialElements
 }

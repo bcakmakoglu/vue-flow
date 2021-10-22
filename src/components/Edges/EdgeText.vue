@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { HTMLAttributes, VNode } from 'vue'
+import { CSSProperties, HTMLAttributes } from 'vue'
 
 interface EdgeTextProps extends HTMLAttributes {
   x: number
@@ -7,10 +7,11 @@ interface EdgeTextProps extends HTMLAttributes {
   label?:
     | string
     | {
-        component: VNode
+        component: any
         props?: any
       }
-  labelStyle?: any
+    | any
+  labelStyle?: CSSProperties
   labelShowBg?: boolean
   labelBgStyle?: any
   labelBgPadding?: [number, number]
@@ -26,17 +27,18 @@ const props = withDefaults(defineProps<EdgeTextProps>(), {
 })
 
 const edgeRef = templateRef<SVGTextElement>('edge-text', null)
-// @ts-ignore
-const { width = 0, height = 0, x = 0, y = 0 } = useElementBounding(edgeRef)
+const { width, height, x, y } = useElementBounding(edgeRef)
+const transform = computed(() => `translate(${props.x - width.value / 2} ${props.y - height.value / 2})`)
+const bgPadding = computed(() => [props.labelBgPadding[0], props.labelBgPadding[1]])
 </script>
 <template>
-  <g :transform="`translate(${props.x - width / 2} ${props.y - height / 2})`" class="vue-flow__edge-textwrapper">
+  <g :transform="transform" class="vue-flow__edge-textwrapper">
     <rect
       v-if="props.labelShowBg"
-      :width="width + 2 * props.labelBgPadding[0] + 'px'"
-      :height="height + 2 * props.labelBgPadding[1] + 'px'"
-      :x="-props.labelBgPadding[0]"
-      :y="-props.labelBgPadding[1]"
+      :width="width + 2 * bgPadding[0] + 'px'"
+      :height="height + 2 * bgPadding[1] + 'px'"
+      :x="-bgPadding[0]"
+      :y="-bgPadding[1]"
       class="vue-flow__edge-textbg"
       :style="props.labelBgStyle"
       :rx="props.labelBgBorderRadius"
@@ -46,7 +48,7 @@ const { width = 0, height = 0, x = 0, y = 0 } = useElementBounding(edgeRef)
       <component
         :is="props.label.component"
         v-if="typeof props.label.component !== 'undefined'"
-        v-bind="{ ...props, ...props.label.props, width, height, x, y }"
+        v-bind="{ ...props, ...props.label?.props, width, height, x, y }"
       />
       <template v-else v-html="props.label">
         {{ props.label }}

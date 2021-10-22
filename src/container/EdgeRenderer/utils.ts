@@ -26,10 +26,10 @@ export function createEdgeTypes(edgeTypes: Record<string, EdgeType>): Record<str
 }
 
 export function getHandlePosition(position: Position, node: Node, handle: any | null = null): XYPosition {
-  const x = (handle?.x || 0) + node.__rf.position.x
-  const y = (handle?.y || 0) + node.__rf.position.y
-  const width = handle?.width || node.__rf.width
-  const height = handle?.height || node.__rf.height
+  const x = (handle?.x || 0) + node.__rf?.position?.x
+  const y = (handle?.y || 0) + node.__rf?.position?.y
+  const width = handle?.width || node.__rf?.width
+  const height = handle?.height || node.__rf?.height
 
   switch (position) {
     case Position.Top:

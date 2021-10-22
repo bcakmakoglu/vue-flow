@@ -25,7 +25,7 @@ const initialElements: Elements = [
   { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 } },
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
-] as Elements
+]
 
 useStore()
 const elements = ref<Elements>(initialElements)

@@ -66,6 +66,6 @@ const elements: Elements = [
   { id: 'e45', source: '4', target: '5', type: 'smoothstep', animated: true },
   { id: 'e56', source: '5', target: '6', type: 'smoothstep', animated: true },
   { id: 'e57', source: '5', target: '7', type: 'smoothstep', animated: true },
-] as Elements
+]
 
 export default elements

@@ -169,8 +169,8 @@ export const parseNode = (node: Node, nodeExtent: NodeExtent): Node => ({
   type: node.type || 'default',
   __rf: {
     position: clampPosition(node.position, nodeExtent),
-    width: null,
-    height: null,
+    width: undefined,
+    height: undefined,
     handleBounds: {},
     isDragging: false,
   },
@@ -240,7 +240,9 @@ export const getNodesInside = (nodes: Node[], rect: Rect, [tx, ty, tScale]: Tran
     height: rect.height / tScale,
   })
 
-  return nodes.filter(({ __rf: { position, width, height, isDragging } }) => {
+  return nodes.filter((node) => {
+    if (!node.__rf) return false
+    const { position = { x: 0, y: 0 }, width = 0, height = 0, isDragging = false } = node.__rf
     const nBox = rectToBox({ ...position, width, height } as any)
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
     const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y))
@@ -271,7 +273,7 @@ const parseElements = (nodes: Node[], edges: Edge[]): Elements => [
   ...nodes.map((node) => {
     const n = { ...node }
 
-    n.position = n.__rf.position
+    if (n.__rf?.position) n.position = n.__rf?.position
 
     return n
   }),

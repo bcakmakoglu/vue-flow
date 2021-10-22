@@ -112,7 +112,7 @@ const initialElements: Elements = [
     animated: true,
     labelStyle: { fill: '#f6ab6c', fontWeight: 700 },
   },
-] as Elements
+]
 
 const connectionLineStyle: CSSProperties = { stroke: '#ddd' }
 const snapGrid: SnapGrid = [16, 16]

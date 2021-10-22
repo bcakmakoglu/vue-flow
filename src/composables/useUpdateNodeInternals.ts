@@ -1,6 +1,7 @@
-import { ElementId, FlowStore, UpdateNodeInternals } from '~/types'
+import { ElementId, UpdateNodeInternals } from '~/types'
+import useStore from '~/composables/useStore'
 
-export default (store: FlowStore): UpdateNodeInternals =>
+export default (store = useStore()): UpdateNodeInternals =>
   (id: ElementId) => {
     const nodeElement: HTMLDivElement | null = document.querySelector(`.vue-flow__node[data-id="${id}"]`)
 

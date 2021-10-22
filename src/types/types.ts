@@ -8,7 +8,7 @@ export type ElementId = string
 
 export type FlowElement<T = any> = Node<T> | Edge<T>
 
-export type Elements<T = any> = Array<FlowElement<T>>
+export type Elements<T = any> = FlowElement<T>[]
 
 export type Transform = [number, number, number]
 

@@ -38,7 +38,6 @@ const addRandomNode = () => {
 <template>
   <Flow
     :elements="elements"
-    :only-render-visible-elements="false"
     @load="onLoad"
     @element-click="onElementClick"
     @elements-remove="onElementsRemove"

@@ -11,7 +11,7 @@ const elements = ref<Elements>([
     data: { label: 'input node' },
     position: { x: 250, y: 5 },
   },
-] as Elements)
+])
 
 let id = 0
 const getId = (): ElementId => `dndnode_${id++}`
@@ -23,9 +23,8 @@ const onDragOver = (event: DragEvent) => {
   }
 }
 
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value as Elements))
-const onElementsRemove = (elementsToRemove: Elements) =>
-  (elements.value = removeElements(elementsToRemove, elements.value as Elements))
+const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 const onLoad = (instance: FlowInstance) => (flowInstance.value = instance)
 
 const onDrop = (event: DragEvent) => {

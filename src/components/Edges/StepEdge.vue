@@ -18,7 +18,7 @@ export interface EdgeStepProps<T = any> {
   label?:
     | string
     | {
-        component: VNode
+        component: any
         props?: any
       }
   labelStyle?: any

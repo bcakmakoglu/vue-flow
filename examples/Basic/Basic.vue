@@ -23,11 +23,10 @@ const elements = ref<Elements>([
   { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 } },
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
-] as Elements)
+])
 const rfInstance = ref<FlowInstance | null>(null)
-const onElementsRemove = (elementsToRemove: Elements) =>
-  (elements.value = removeElements(elementsToRemove, elements.value as Elements))
-const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value as Elements))
+const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
+const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value))
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView({ padding: 0.1 })
   rfInstance.value = flowInstance

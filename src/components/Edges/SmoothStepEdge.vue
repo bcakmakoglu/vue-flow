@@ -19,7 +19,7 @@ export interface EdgeSmoothStepProps<T = any> {
   label?:
     | string
     | {
-        component: VNode
+        component: any
         props?: any
       }
   labelStyle?: any

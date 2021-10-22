@@ -7,7 +7,7 @@ const initialElements: Elements = [
   { id: '1', data: { label: '-' }, position: { x: 100, y: 100 } },
   { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 200 } },
   { id: 'e1-2', source: '1', target: '2' },
-] as Elements
+]
 
 const elements = ref<Elements>(initialElements)
 const nodeName = ref<string>('Node 1')

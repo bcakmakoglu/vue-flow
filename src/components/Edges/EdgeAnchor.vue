@@ -24,14 +24,10 @@ interface EdgeAnchorProps extends HTMLAttributes {
 const props = withDefaults(defineProps<EdgeAnchorProps>(), {
   radius: 10,
 })
+
+const cx = computed(() => shiftX(props.centerX, props.radius, props.position))
+const cy = computed(() => shiftY(props.centerY, props.radius, props.position))
 </script>
 <template>
-  <circle
-    class="vue-flow__edgeupdater"
-    :cx="shiftX(props.centerX, props.radius, props.position)"
-    :cy="shiftY(props.centerY, props.radius, props.position)"
-    :r="props.radius"
-    stroke="transparent"
-    fill="transparent"
-  />
+  <circle class="vue-flow__edgeupdater" :cx="cx" :cy="cy" :r="props.radius" stroke="transparent" fill="transparent" />
 </template>

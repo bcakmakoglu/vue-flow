@@ -102,5 +102,5 @@ export function getElements(): Elements {
     }
   }
 
-  return initialElements as Elements
+  return initialElements
 }

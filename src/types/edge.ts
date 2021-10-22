@@ -9,7 +9,12 @@ export interface Edge<T = any> {
   target: ElementId
   sourceHandle?: ElementId | null
   targetHandle?: ElementId | null
-  label?: string | VNode
+  label?:
+    | string
+    | {
+        component: any
+        props?: any
+      }
   labelStyle?: any
   labelShowBg?: boolean
   labelBgStyle?: any
@@ -20,7 +25,7 @@ export interface Edge<T = any> {
   arrowHeadType?: ArrowHeadType
   isHidden?: boolean
   data?: T
-  className?: string
+  class?: string
 }
 
 export interface EdgeProps<T = any> {
@@ -35,7 +40,12 @@ export interface EdgeProps<T = any> {
   animated?: boolean
   sourcePosition: Position
   targetPosition: Position
-  label?: string | VNode
+  label?:
+    | string
+    | {
+        component: any
+        props?: any
+      }
   labelStyle?: any
   labelShowBg?: boolean
   labelBgStyle?: any

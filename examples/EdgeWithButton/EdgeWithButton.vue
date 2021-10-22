@@ -30,13 +30,12 @@ const elements = ref<Elements>([
     target: 'ewb-2',
     type: 'buttonedge',
   },
-] as Elements)
+])
 
 const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
-const onElementsRemove = (elementsToRemove: Elements) =>
-  (elements.value = removeElements(elementsToRemove, elements.value as Elements))
+const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 const onConnect = (params: Connection | Edge) =>
-  (elements.value = addEdge({ ...params, type: 'buttonedge' } as Edge, elements.value as Elements))
+  (elements.value = addEdge({ ...params, type: 'buttonedge' } as Edge, elements.value))
 </script>
 <template>
   <Flow

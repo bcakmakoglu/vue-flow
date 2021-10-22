@@ -16,7 +16,7 @@ import Flow, {
   ArrowHeadType,
 } from '~/index'
 
-const initialElements = [
+const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Input 1' }, position: { x: 250, y: 0 } },
   { id: '2', data: { label: 'Node 2' }, position: { x: 150, y: 100 } },
   { id: '2a', data: { label: 'Node 2a' }, position: { x: 0, y: 180 } },
@@ -79,7 +79,7 @@ const edgeTypes: Record<string, any> = {
   custom2: CustomEdge2,
 }
 
-const elements = ref<Elements>(initialElements as Elements)
+const elements = ref<Elements>(initialElements)
 
 const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
 const onNodeDragStop = (node: Node) => console.log('drag stop', node)

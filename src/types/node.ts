@@ -6,13 +6,15 @@ export interface Node<T = any> {
   id: ElementId
   position: XYPosition
   type?: string
-  __rf: {
-    position: XYPosition
-    isDragging?: boolean
-    width: number | null
-    height: number | null
-    handleBounds?: any
-  }
+  __rf?:
+    | {
+        position?: XYPosition
+        isDragging?: boolean
+        width?: number
+        height?: number
+        handleBounds?: any
+      }
+    | any
   data?: T
   style?: any
   className?: string
@@ -45,8 +47,8 @@ export type NodeDimensionUpdate = {
 }
 
 export interface NodeProps<T = any> {
-  id: ElementId
-  type: string
+  id?: ElementId
+  type?: string
   data?: T
   selected?: boolean
   connectable?: boolean
@@ -57,4 +59,4 @@ export interface NodeProps<T = any> {
   dragging?: boolean
 }
 
-export type NodeType = DefineComponent<NodeProps>
+export type NodeType = DefineComponent<NodeProps, any, any, any, any>

@@ -19,7 +19,7 @@ const initialElements: Elements = [
     position: { x: 250, y: 0 },
   },
   { id: 'e1-2', source: '1', type: 'smoothstep', target: '2', animated: true },
-] as Elements
+]
 
 const buttonStyle: CSSProperties = { position: 'absolute', right: 10, top: 30, zIndex: 4 }
 

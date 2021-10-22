@@ -35,6 +35,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
                 ...storeNode,
                 ...propElement,
               }
+              if (!updatedNode.__rf) updatedNode.__rf = {}
 
               if (storeNode.position.x !== propElement.position.x || storeNode.position.y !== propElement.position.y) {
                 updatedNode.__rf.position = propElement.position
@@ -43,7 +44,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
               if (typeof propElement.type !== 'undefined' && propElement.type !== storeNode.type) {
                 // we reset the elements dimensions here in order to force a re-calculation of the bounds.
                 // When the type of a node changes it is possible that the number or positions of handles changes too.
-                updatedNode.__rf.width = null
+                updatedNode.__rf.width = undefined
               }
 
               res.nextNodes.push(updatedNode)
@@ -73,6 +74,8 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         const i = this.nodes.map((x) => x.id).indexOf(id)
         const node = this.nodes[i]
         const dimensions = getDimensions(nodeElement)
+
+        if (!node.__rf) node.__rf = {}
         const doUpdate =
           dimensions.width &&
           dimensions.height &&
@@ -123,8 +126,8 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
 
           if (diff) {
             updatedNode.__rf.position = {
-              x: node.__rf.position.x + diff.x,
-              y: node.__rf.position.y + diff.y,
+              x: (node.__rf?.position?.x as number) + diff.x,
+              y: (node.__rf?.position?.y as number) + diff.y,
             }
           }
 
@@ -135,7 +138,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         }
 
         if (!id) {
-          const selectedNodes = this.nodes.filter((x) => this.selectedElements?.find((sNode) => sNode.id === x.id))
+          const selectedNodes = this.nodes.filter((x) => this.selectedElements?.find((sNode) => sNode?.id === x.id))
           selectedNodes.forEach((node) => {
             const i = this.nodes.map((x) => x.id).indexOf((node as Node).id)
             update(node as Node, i)
@@ -178,7 +181,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         this.selectedElements = nextSelectedElements
       },
       unsetUserSelection() {
-        const selectedNodes = this.selectedElements?.filter((node) => isNode(node) && node.__rf) as Node[]
+        const selectedNodes = this.selectedElements?.filter((node) => node && isNode(node) && node.__rf) as Node[]
 
         this.selectionActive = false
         this.userSelectionRect.draw = false
@@ -220,7 +223,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
             ...node,
             __rf: {
               ...node.__rf,
-              position: clampPosition(node.__rf.position, nodeExtent),
+              position: node.__rf?.position && clampPosition(node.__rf.position, nodeExtent),
             },
           }
         })

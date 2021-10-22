@@ -11,7 +11,7 @@ const elementsA: Elements = [
   { id: '4a', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, className: 'light' },
   { id: 'e1-2', source: '1a', target: '2a' },
   { id: 'e1-3', source: '1a', target: '3a' },
-] as Elements
+]
 
 const elementsB: Elements = [
   { id: 'inputb', type: 'input', data: { label: 'Input' }, position: { x: 300, y: 5 }, className: 'light' },
@@ -24,7 +24,7 @@ const elementsB: Elements = [
   { id: 'e2b', source: 'inputb', target: '2b' },
   { id: 'e3b', source: 'inputb', target: '3b' },
   { id: 'e4b', source: 'inputb', target: '4b' },
-] as Elements
+]
 
 const elements = ref(elementsA)
 

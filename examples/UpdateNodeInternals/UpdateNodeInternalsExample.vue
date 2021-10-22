@@ -24,7 +24,7 @@ const initialElements: Elements = [
     data: { label: 'Node 1', handleCount: initialHandleCount, handlePosition: 0 },
     position: { x: 250, y: 5 },
   },
-] as Elements
+]
 
 const buttonWrapperStyles: CSSProperties = { position: 'absolute', right: 10, top: 10, zIndex: 10 }
 
@@ -68,13 +68,15 @@ const onLoad = (instance: FlowInstance) => {
   instance.fitView()
   flowInstance.value = instance
 }
+
+const updateNodeInternals = () => flowInstance.value?.updateNodeInternals('1')
 </script>
 <template>
   <Flow :elements="elements" :node-types="nodeTypes" @connect="onConnect" @pane-click="onPaneClick" @load="onLoad">
     <div :style="buttonWrapperStyles">
       <button @click="toggleHandleCount">toggle handle count</button>
       <button @click="toggleHandlePosition">toggle handle position</button>
-      <button @click="() => flowInstance.updateNodeInternals('1')">update node internals</button>
+      <button @click="updateNodeInternals">update node internals</button>
     </div>
   </Flow>
 </template>

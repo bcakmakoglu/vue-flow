@@ -37,7 +37,7 @@ const initialElements: Elements = [
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
   { id: 'e1-2', source: '1', target: '2', label: 'Updateable edge' },
-] as Elements
+]
 
 const elements = ref(initialElements)
 const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()

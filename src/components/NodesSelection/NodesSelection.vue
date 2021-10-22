@@ -13,7 +13,7 @@ const selectedNodes = store.selectedElements
 
       return {
         ...matchingNode,
-        position: matchingNode?.__rf.position,
+        position: matchingNode?.__rf?.position,
       } as Node
     })
   : []

@@ -6,6 +6,7 @@ import { Node } from '~/types'
 import { useStore } from '~/composables'
 
 type StringFunc = (node: Node) => string
+type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
 
 export interface MiniMapProps extends HTMLAttributes {
   nodeColor?: string | StringFunc
@@ -34,13 +35,13 @@ const store = useStore()
 
 const elementWidth = attrs.style?.width ?? defaultWidth
 const elementHeight = attrs.style?.height ?? defaultHeight
-const nodeColorFunc = props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor as StringFunc
-const nodeStrokeColorFunc =
-  props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor as StringFunc
+const nodeColorFunc: StringFunc = props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor as string
+const nodeStrokeColorFunc: StringFunc =
+  props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor as string
 
 const nodeClassNameFunc = props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as StringFunc
 
-const shapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
+const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
 const viewBox = computed(() => {
   const bb = getRectOfNodes(store.nodes)

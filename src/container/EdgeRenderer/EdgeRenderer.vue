@@ -48,7 +48,7 @@ const edges = computed(() => store.edges.filter((edge) => !edge.isHidden))
         </Edge>
       </template>
       <ConnectionLine
-        v-if="connectionLineVisible"
+        v-if="connectionLineVisible && sourceNode"
         :source-node="sourceNode"
         :connection-line-style="props.connectionLineStyle"
         :connection-line-type="props.connectionLineType"

@@ -94,11 +94,10 @@ onMounted(() => {
     { id: 'e1-2', source: '1', target: '2', animated: true, style: { stroke: '#fff' } },
     { id: 'e2a-3', source: '2', sourceHandle: 'a', target: '3', animated: true, style: { stroke: '#fff' } },
     { id: 'e2b-4', source: '2', sourceHandle: 'b', target: '4', animated: true, style: { stroke: '#fff' } },
-  ] as Elements
+  ]
 })
 
-const onElementsRemove = (elementsToRemove: Elements) =>
-  (elements.value = removeElements(elementsToRemove, elements.value as Elements))
+const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 
 const onConnect = (params: Connection | Edge) =>
   (elements.value = addEdge(
@@ -107,7 +106,7 @@ const onConnect = (params: Connection | Edge) =>
       animated: true,
       style: { stroke: '#fff' },
     } as Edge,
-    elements.value as Elements,
+    elements.value,
   ))
 </script>
 <template>

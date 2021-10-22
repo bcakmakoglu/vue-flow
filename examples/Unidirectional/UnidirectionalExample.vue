@@ -169,10 +169,10 @@ const initialElements: Elements = [
     type: 'smoothstep',
     arrowHeadType: ArrowHeadType.Arrow,
   },
-] as Elements
+]
 
 const nodeTypes: Record<string, NodeType> = {
-  custom: CustomNode,
+  custom: CustomNode as NodeType,
 }
 
 let id = 4
