@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { DraggableEventListener } from '@braks/revue-draggable'
-import { watchPostEffect } from 'vue'
 import { Node, NodeType, SnapGrid } from '~/types'
 import { NodeIdContextKey } from '~/context'
 import { useHooks, useStore } from '~/composables'
@@ -45,11 +44,8 @@ const onSelectNodeHandler = (event: MouseEvent) => {
     if (selectable) {
       store.unsetNodesSelection()
 
-      if (!props.selected) {
-        store.addSelectedElements([n])
-      }
+      if (!props.selected) store.addSelectedElements([n])
     }
-
     hooks.nodeClick.trigger({ event, node: n })
   }
 }
@@ -61,9 +57,7 @@ const onDragStart: DraggableEventListener = ({ event }) => {
   if (props.selectNodesOnDrag && selectable) {
     store.unsetNodesSelection()
 
-    if (!props.selected) {
-      store.addSelectedElements([n])
-    }
+    if (!props.selected) store.addSelectedElements([n])
   } else if (!props.selectNodesOnDrag && !props.selected && selectable) {
     store.unsetNodesSelection()
     store.addSelectedElements([])
@@ -131,6 +125,18 @@ watch(
       id: props.node.id,
       nodeElement: nodeElement.value,
       forceUpdate: true,
+    })
+  },
+)
+watch(
+  () => props.node.sourcePosition && props.node.targetPosition,
+  () => {
+    nextTick(() => {
+      store.updateNodeDimensions({
+        id: props.node.id,
+        nodeElement: nodeElement.value,
+        forceUpdate: true,
+      })
     })
   },
 )

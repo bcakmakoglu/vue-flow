@@ -21,20 +21,6 @@ hooks.connect.on((connection) => {
   hooks.edgeUpdate.trigger({ edge: props.edge, connection })
 })
 
-const nodes = computed(() => {
-  const n = getSourceTargetNodes(props.edge, store.nodes)
-
-  if (!n.sourceNode) {
-    console.warn(`couldn't create edge for source id: ${props.edge.source}; edge id: ${props.edge.id}`)
-  }
-
-  if (!n.targetNode) {
-    console.warn(`couldn't create edge for target id: ${props.edge.target}; edge id: ${props.edge.id}`)
-  }
-
-  return n
-})
-
 const onEdgeClick = (event: MouseEvent) => {
   if (store.elementsSelectable) {
     store.unsetNodesSelection()
@@ -91,6 +77,20 @@ const isVisible = ({ sourceX, sourceY, targetX, targetY }: ReturnType<typeof get
       })
     : true
 }
+
+const nodes = computed(() => {
+  const n = getSourceTargetNodes(props.edge, store.nodes)
+
+  if (!n.sourceNode) {
+    console.warn(`couldn't create edge for source id: ${props.edge.source}; edge id: ${props.edge.id}`)
+  }
+
+  if (!n.targetNode) {
+    console.warn(`couldn't create edge for target id: ${props.edge.target}; edge id: ${props.edge.id}`)
+  }
+
+  return n
+})
 
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() =>

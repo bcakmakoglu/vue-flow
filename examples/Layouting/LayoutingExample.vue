@@ -3,7 +3,18 @@ import dagre from 'dagre'
 import initialElements from './initial-elements'
 import './layouting.css'
 
-import Flow, { Controls, addEdge, Connection, Edge, Elements, isNode, NodeExtent, Position, removeElements } from '~/index'
+import Flow, {
+  Controls,
+  addEdge,
+  ConnectionMode,
+  Connection,
+  Edge,
+  Elements,
+  isNode,
+  NodeExtent,
+  Position,
+  removeElements,
+} from '~/index'
 
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
@@ -42,6 +53,7 @@ const onLayout = (direction: string) => {
 
     return el
   })
+  console.log(elements.value)
 }
 </script>
 <template>
@@ -49,9 +61,10 @@ const onLayout = (direction: string) => {
     <Flow
       :elements="elements"
       :node-extent="nodeExtent"
+      :connection-mode="ConnectionMode.Loose"
       @connect="onConnect"
       @clements-remove="onElementsRemove"
-      @load="() => onLayout('LR')"
+      @load="() => onLayout('TB')"
     >
       <Controls />
     </Flow>

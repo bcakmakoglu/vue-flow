@@ -129,7 +129,7 @@ const init = (opts: typeof props) => {
 onBeforeUnmount(() => store?.$dispose())
 
 watch(props, (val) => init(val))
-onMounted(() => init(props))
+init(props)
 
 const nodeTypes = createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes })
 const edgeTypes = createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes })
