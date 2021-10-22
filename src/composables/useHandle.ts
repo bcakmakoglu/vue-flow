@@ -81,6 +81,7 @@ export default () => {
       return true
     },
     elementEdgeUpdaterType?: HandleType,
+    onEdgeUpdate?: (connection: Connection) => void,
   ) => {
     const flowNode = (event.target as Element).closest('.vue-flow')
     // when vue-flow is used inside a shadow root we can't use document
@@ -150,6 +151,7 @@ export default () => {
 
       if (isValid) {
         hooks.connect.trigger(connection)
+        onEdgeUpdate?.(connection)
       }
 
       hooks.connectEnd.trigger(event)

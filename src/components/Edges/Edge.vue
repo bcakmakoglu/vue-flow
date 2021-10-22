@@ -17,10 +17,6 @@ const props = withDefaults(defineProps<EdgeProps>(), {})
 const store = useStore()
 const hooks = useHooks()
 
-hooks.connect.on((connection) => {
-  hooks.edgeUpdate.trigger({ edge: props.edge, connection })
-})
-
 const onEdgeClick = (event: MouseEvent) => {
   if (store.elementsSelectable) {
     store.unsetNodesSelection()
@@ -45,12 +41,14 @@ const onEdgeMouseLeave = (event: MouseEvent) => hooks.edgeMouseLeave.trigger({ e
 const handler = useHandle()
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const nodeId = isSourceHandle ? props.edge.target : props.edge.source
-  const handleId = isSourceHandle ? props.edge.targetHandle : props.edge.sourceHandle
+  const handleId = (isSourceHandle ? props.edge.targetHandle : props.edge.sourceHandle) ?? ''
   const isValidConnection = () => true
   const isTarget = isSourceHandle
 
   hooks.edgeUpdateStart.trigger({ event, edge: props.edge })
-  handleId && handler(event, handleId, nodeId, isTarget, isValidConnection, isSourceHandle ? 'target' : 'source')
+  handler(event, handleId, nodeId, isTarget, isValidConnection, isSourceHandle ? 'target' : 'source', (connection) =>
+    hooks.edgeUpdate.trigger({ edge: props.edge, connection }),
+  )
 }
 
 const onEdgeUpdaterSourceMouseDown = (event: MouseEvent) => {

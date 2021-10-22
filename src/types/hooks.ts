@@ -3,46 +3,48 @@ import { Connection, Edge, Elements, FlowTransform, Node, OnConnectStartParams, 
 
 export type FlowHook<T = any> = EventHook<T>
 
-export interface FlowHooks {
-  elementClick: FlowHook<{ event: MouseEvent; element: Node | Edge }>
-  elementsRemove: FlowHook<Elements>
-  nodeDoubleClick: FlowHook<{ event: MouseEvent; node: Node }>
-  nodeClick: FlowHook<{ event: MouseEvent; node: Node }>
-  nodeMouseEnter: FlowHook<{ event: MouseEvent; node: Node }>
-  nodeMouseMove: FlowHook<{ event: MouseEvent; node: Node }>
-  nodeMouseLeave: FlowHook<{ event: MouseEvent; node: Node }>
-  nodeContextMenu: FlowHook<{ event: MouseEvent; node: Node }>
-  nodeDragStart: FlowHook<{ event: MouseEvent; node: Node }>
-  nodeDrag: FlowHook<{ event: MouseEvent; node: Node }>
-  nodeDragStop: FlowHook<{ event: MouseEvent; node: Node }>
-  connect: FlowHook<Connection>
-  connectStart: FlowHook<{
+export interface FlowEvents {
+  elementClick: { event: MouseEvent; element: Node | Edge }
+  elementsRemove: Elements
+  nodeDoubleClick: { event: MouseEvent; node: Node }
+  nodeClick: { event: MouseEvent; node: Node }
+  nodeMouseEnter: { event: MouseEvent; node: Node }
+  nodeMouseMove: { event: MouseEvent; node: Node }
+  nodeMouseLeave: { event: MouseEvent; node: Node }
+  nodeContextMenu: { event: MouseEvent; node: Node }
+  nodeDragStart: { event: MouseEvent; node: Node }
+  nodeDrag: { event: MouseEvent; node: Node }
+  nodeDragStop: { event: MouseEvent; node: Node }
+  connect: Connection
+  connectStart: {
     event: MouseEvent
     params: OnConnectStartParams
-  }>
-  connectStop: FlowHook<MouseEvent>
-  connectEnd: FlowHook<MouseEvent>
-  load: FlowHook<OnLoadParams>
-  move: FlowHook<FlowTransform | undefined>
-  moveStart: FlowHook<FlowTransform | undefined>
-  moveEnd: FlowHook<FlowTransform | undefined>
-  selectionChange: FlowHook<Elements | null>
-  selectionDragStart: FlowHook<{ event: MouseEvent; nodes: Node[] }>
-  selectionDrag: FlowHook<{ event: MouseEvent; nodes: Node[] }>
-  selectionDragStop: FlowHook<{ event: MouseEvent; nodes: Node[] }>
-  selectionContextMenu: FlowHook<{ event: MouseEvent; nodes: Node[] }>
-  paneScroll: FlowHook<WheelEvent | undefined>
-  paneClick: FlowHook<MouseEvent>
-  paneContextMenu: FlowHook<MouseEvent>
-  edgeUpdate: FlowHook<{ edge: Edge; connection: Connection }>
-  edgeContextMenu: FlowHook<{ event: MouseEvent; edge: Edge }>
-  edgeMouseEnter: FlowHook<{ event: MouseEvent; edge: Edge }>
-  edgeMouseMove: FlowHook<{ event: MouseEvent; edge: Edge }>
-  edgeMouseLeave: FlowHook<{ event: MouseEvent; edge: Edge }>
-  edgeDoubleClick: FlowHook<{ event: MouseEvent; edge: Edge }>
-  edgeClick: FlowHook<{ event: MouseEvent; edge: Edge }>
-  edgeUpdateStart: FlowHook<{ event: MouseEvent; edge: Edge }>
-  edgeUpdateEnd: FlowHook<{ event: MouseEvent; edge: Edge }>
+  }
+  connectStop: MouseEvent
+  connectEnd: MouseEvent
+  load: OnLoadParams
+  move: FlowTransform | undefined
+  moveStart: FlowTransform | undefined
+  moveEnd: FlowTransform | undefined
+  selectionChange: Elements | null
+  selectionDragStart: { event: MouseEvent; nodes: Node[] }
+  selectionDrag: { event: MouseEvent; nodes: Node[] }
+  selectionDragStop: { event: MouseEvent; nodes: Node[] }
+  selectionContextMenu: { event: MouseEvent; nodes: Node[] }
+  paneScroll: WheelEvent | undefined
+  paneClick: MouseEvent
+  paneContextMenu: MouseEvent
+  edgeUpdate: { edge: Edge; connection: Connection }
+  edgeContextMenu: { event: MouseEvent; edge: Edge }
+  edgeMouseEnter: { event: MouseEvent; edge: Edge }
+  edgeMouseMove: { event: MouseEvent; edge: Edge }
+  edgeMouseLeave: { event: MouseEvent; edge: Edge }
+  edgeDoubleClick: { event: MouseEvent; edge: Edge }
+  edgeClick: { event: MouseEvent; edge: Edge }
+  edgeUpdateStart: { event: MouseEvent; edge: Edge }
+  edgeUpdateEnd: { event: MouseEvent; edge: Edge }
 }
+
+export type FlowHooks = { [key in keyof FlowEvents]: FlowHook<FlowEvents[key]> }
 
 export type EmitFunc<T extends FlowHooks = FlowHooks> = (name: keyof T, ...args: any[]) => void
