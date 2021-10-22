@@ -1,7 +1,7 @@
 import { Ref } from 'vue'
 import { ElementId, FlowTransform } from './types'
 import { D3Zoom, D3Selection, PanOnScrollMode, KeyCode } from './panel'
-import { Connection } from '@/src'
+import { Connection } from './connection'
 
 export type UpdateNodeInternals = (nodeId: ElementId) => void
 

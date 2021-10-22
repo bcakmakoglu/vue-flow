@@ -1,5 +1,5 @@
-import { HandleElement, Position } from '~/types'
-import { getDimensions } from '~/utils'
+import { HandleElement, Position } from '../../types'
+import { getDimensions } from '../../utils'
 
 export const getHandleBoundsByHandleType = (
   selector: string,

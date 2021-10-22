@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { DraggableEventListener } from '@braks/revue-draggable'
-import { Node } from '~/types'
-import { getRectOfNodes, isNode } from '~/utils/graph'
-import { useHooks, useStore } from '~/composables'
+import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
+import { Node } from '../../types'
+import { getRectOfNodes, isNode } from '../../utils'
+import { useHooks, useStore } from '../../composables'
 
 const store = useStore()
 const hooks = useHooks()

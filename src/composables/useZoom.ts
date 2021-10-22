@@ -2,9 +2,11 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { Ref } from 'vue'
 import { get } from '@vueuse/core'
-import { FlowTransform, PanOnScrollMode, UseZoom, UseZoomOptions } from '~/types'
-import { clamp } from '~/utils'
-import { useKeyPress, useHooks, useStore } from '~/composables'
+import { FlowTransform, PanOnScrollMode, UseZoom, UseZoomOptions } from '../types'
+import { clamp } from '../utils'
+import useKeyPress from './useKeyPress'
+import useHooks from './useHooks'
+import useStore from './useStore'
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
   prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k

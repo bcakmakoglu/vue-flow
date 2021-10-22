@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { VNode } from 'vue'
+import { ArrowHeadType, ElementId, Position } from '../../types'
 import SmoothStepEdge from './SmoothStepEdge.vue'
-import { ArrowHeadType, ElementId, Position } from '~/types'
 
-export interface EdgeStepProps<T = any> {
+export interface EdgeStepProps {
   id: ElementId
   source: ElementId
   target: ElementId
@@ -29,7 +28,7 @@ export interface EdgeStepProps<T = any> {
   style?: any
   arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  data?: T
+  data?: any
   sourceHandleId?: ElementId | null
   targetHandleId?: ElementId | null
 }

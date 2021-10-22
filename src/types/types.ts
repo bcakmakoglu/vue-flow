@@ -1,9 +1,8 @@
-// @ts-nocheck
 import { CSSProperties, HTMLAttributes } from 'vue'
 import { Edge, EdgeType } from './edge'
 import { Node, NodeExtent, NodeType, TranslateExtent } from './node'
-import { ConnectionLineType, ConnectionMode } from '~/types/connection'
-import { KeyCode, PanOnScrollMode } from '~/types/panel'
+import { ConnectionLineType, ConnectionMode } from './connection'
+import { KeyCode, PanOnScrollMode } from './panel'
 
 export type ElementId = string
 

@@ -1,4 +1,4 @@
-import { ArrowHeadType, Position } from '~/types'
+import { ArrowHeadType, Position } from '../../types'
 
 export const getMarkerEnd = (arrowHeadType?: ArrowHeadType, markerEndId?: string): string => {
   if (typeof markerEndId !== 'undefined' && markerEndId) {

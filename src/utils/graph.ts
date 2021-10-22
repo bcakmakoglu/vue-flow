@@ -12,7 +12,7 @@ import {
   NodeExtent,
   Dimensions,
   FlowStore,
-} from '~/types'
+} from '../types'
 
 export const isInputDOMNode = (e: KeyboardEvent | MouseEvent): boolean => {
   const target = e.target as HTMLElement
@@ -34,7 +34,7 @@ export const clampPosition = (position: XYPosition, extent: NodeExtent): XYPosit
 export const getHostForElement = (element: HTMLElement): Document => {
   const doc = element.getRootNode() as Document
   if ('getElementFromPoint' in doc) return doc
-  else return false as any
+  else return window.document
 }
 
 export const isEdge = (element: Node | Connection | Edge): element is Edge =>

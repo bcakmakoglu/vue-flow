@@ -20,15 +20,8 @@
     "types": [
       "vite/client"
     ],
-    "paths": {
-      "~/*": [
-        "src/*"
-      ],
-      "@/*": [
-        "*"
-      ]
-    }
   },
+  "include": ["src"],
   "exclude": [
     "node_modules",
     "build",

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { HTMLAttributes } from 'vue'
+import PlusIcon from '../../assets/icons/plus.svg'
+import MinusIcon from '../../assets/icons/minus.svg'
+import Fitview from '../../assets/icons/fitview.svg'
+import Lock from '../../assets/icons/lock.svg'
+import Unlock from '../../assets/icons/unlock.svg'
+import { FitViewParams } from '../../types'
+import { useZoomPanHelper, useStore } from '../../composables'
 import ControlButton from './ControlButton.vue'
-import PlusIcon from '@/assets/icons/plus.svg'
-import MinusIcon from '@/assets/icons/minus.svg'
-import Fitview from '@/assets/icons/fitview.svg'
-import Lock from '@/assets/icons/lock.svg'
-import Unlock from '@/assets/icons/unlock.svg'
-import { FitViewParams } from '~/types'
-import { useZoomPanHelper, useStore } from '~/composables'
 
 export interface ControlProps extends HTMLAttributes {
   showZoom?: boolean

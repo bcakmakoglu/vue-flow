@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed, CSSProperties } from 'vue'
+import Edge from '../../components/Edges/Edge.vue'
+import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
+import { ConnectionLineType, EdgeType } from '../../types'
+import { useStore } from '../../composables'
 import MarkerDefinitions from './MarkerDefinitions.vue'
-import Edge from '~/components/Edges/Edge.vue'
-import ConnectionLine from '~/components/ConnectionLine/ConnectionLine.vue'
-import { ConnectionLineType, EdgeType } from '~/types'
-import { useStore } from '~/composables'
 
 interface EdgeRendererProps {
   edgeTypes: Record<string, EdgeType>
@@ -25,7 +25,7 @@ const store = useStore()
 
 const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connectionNodeId))
 const connectionLineVisible = computed(
-  () => store.nodesConnectable && sourceNode.value && store.connectionNodeId && store.connectionHandleType,
+  () => !!(store.nodesConnectable && sourceNode.value && store.connectionNodeId && store.connectionHandleType),
 )
 const edges = computed(() => store.edges.filter((edge) => !edge.isHidden))
 </script>

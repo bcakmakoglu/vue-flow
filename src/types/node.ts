@@ -1,6 +1,5 @@
 import { DefineComponent } from 'vue'
-import { XYPosition } from './types'
-import { ElementId, Position } from './index'
+import { XYPosition, ElementId, Position } from './types'
 
 export interface Node<T = any> {
   id: ElementId

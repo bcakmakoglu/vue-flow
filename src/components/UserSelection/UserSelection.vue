@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import { useStore } from '../../composables'
 import SelectionRect from './SelectionRect.vue'
-import { getMousePosition } from '~/components/UserSelection/utils'
-import { useStore } from '~/composables'
+import { getMousePosition } from './utils'
 
 const store = useStore()
 const el = templateRef('user-selection', null)

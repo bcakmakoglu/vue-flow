@@ -1,4 +1,4 @@
-import { DefineComponent, VNode } from 'vue'
+import { DefineComponent } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './types'
 import { Connection } from './connection'
 
@@ -63,7 +63,7 @@ export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
   borderRadius?: number
 }
 
-export type EdgeType = DefineComponent<EdgeSmoothStepProps>
+export type EdgeType = DefineComponent<EdgeSmoothStepProps, any, any, any, any, any>
 
 export type OnEdgeUpdateFunc<T = any> = (oldEdge: Edge<T>, newConnection: Connection) => void
 

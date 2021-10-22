@@ -1,5 +1,5 @@
 # Vue Flow
-[![vue flow](./assets/vue-flow.gif)](https://reactflow.dev/)
+[![vue flow](./src/assets/vue-flow.gif)](https://reactflow.dev/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow)
 [![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg)](https://david-dm.org/bcakmakoglu/vue-flow)
 [![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg?type=dev)](https://david-dm.org/bcakmakoglu/vue-flow?type=dev)

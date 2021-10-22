@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-import { VNode } from 'vue'
+import { ArrowHeadType, ElementId, Position } from '../../types'
 import EdgeText from './EdgeText.vue'
-import { ArrowHeadType, ElementId, Position } from '~/types'
-import { getMarkerEnd, getBezierPath } from '~/components/Edges/utils'
+import { getMarkerEnd, getBezierPath } from './utils'
 
-interface StraightEdgeProps<T = any> {
+interface StraightEdgeProps {
   id: ElementId
   source: ElementId
   target: ElementId
@@ -30,7 +29,7 @@ interface StraightEdgeProps<T = any> {
   style?: any
   arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  data?: T
+  data?: any
   sourceHandleId?: ElementId | null
   targetHandleId?: ElementId | null
 }

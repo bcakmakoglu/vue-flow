@@ -1,7 +1,6 @@
-import { FlowOptions } from '~/types'
-import useFlowStore from '~/store/useFlowStore'
-import { initialState } from '~/store'
-import { Store } from '~/context'
+import { FlowOptions } from '../types'
+import { useFlowStore, initialState } from '../store'
+import { Store } from '../context'
 
 export default (options?: Partial<FlowOptions>) => {
   let store = inject(Store)!

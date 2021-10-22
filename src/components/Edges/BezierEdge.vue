@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { CSSProperties, VNode } from 'vue'
+import { CSSProperties } from 'vue'
+import { ArrowHeadType, ElementId, Position } from '../../types'
+import { getCenter, getMarkerEnd, getBezierPath } from './utils'
 import EdgeText from './EdgeText.vue'
-import { ArrowHeadType, ElementId, Position } from '~/types'
-import { getCenter, getMarkerEnd, getBezierPath } from '~/components/Edges/utils'
 
-interface BezierEdgeProps<T = any> {
+interface BezierEdgeProps {
   id: ElementId
   source: ElementId
   target: ElementId
@@ -30,7 +30,7 @@ interface BezierEdgeProps<T = any> {
   style?: CSSProperties
   arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  data?: T
+  data?: any
   sourceHandleId?: ElementId
   targetHandleId?: ElementId
 }
