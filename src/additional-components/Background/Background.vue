@@ -39,6 +39,7 @@ const background = computed(() => {
 
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
 const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
+const bgColor = computed(() => (props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]))
 </script>
 <template>
   <svg
@@ -58,7 +59,7 @@ const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
     >
       <template v-if="props.variant === BackgroundVariant.Lines">
         <path
-          :stroke="props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]"
+          :stroke="bgColor"
           :stroke-width="props.size"
           :d="`M${background.scaledGap / 2} 0 V${background.scaledGap} M0 ${background.scaledGap / 2} H${background.scaledGap}`"
         />
