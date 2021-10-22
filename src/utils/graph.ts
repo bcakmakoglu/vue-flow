@@ -273,7 +273,6 @@ const parseElements = (nodes: Node[], edges: Edge[]): Elements => [
 
     n.position = n.__rf.position
 
-    n.__rf = {} as any
     return n
   }),
   ...edges.map((e) => ({ ...e })),
@@ -282,11 +281,16 @@ const parseElements = (nodes: Node[], edges: Edge[]): Elements => [
 export const onLoadGetElements = (currentStore: FlowStore) => (): Elements =>
   parseElements(currentStore.nodes || [], currentStore.edges || [])
 
-export const onLoadToObject = (currentStore: FlowStore) => (): FlowExportObject => ({
-  elements: parseElements(currentStore.nodes || [], currentStore.edges || []),
-  position: [currentStore.transform[0], currentStore.transform[1]],
-  zoom: currentStore.transform[2],
-})
+export const onLoadToObject = (currentStore: FlowStore) => (): FlowExportObject => {
+  // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
+  return JSON.parse(
+    JSON.stringify({
+      elements: parseElements(currentStore.nodes || [], currentStore.edges || []),
+      position: [currentStore.transform[0], currentStore.transform[1]],
+      zoom: currentStore.transform[2],
+    }),
+  )
+}
 
 export const getTransformForBounds = (
   bounds: Rect,

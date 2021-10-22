@@ -65,6 +65,14 @@ export const routes: RouterOptions['routes'] = [
     path: '/overview',
     component: () => import('./Overview/Overview.vue'),
   },
+  {
+    path: '/provider',
+    component: () => import('./Provider/ProviderExample.vue'),
+  },
+  {
+    path: '/save-restore',
+    component: () => import('./SaveRestore/SaveRestoreExample.vue'),
+  },
 ]
 
 export const router = createRouter({
