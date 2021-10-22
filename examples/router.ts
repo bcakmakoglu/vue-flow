@@ -81,6 +81,14 @@ export const routes: RouterOptions['routes'] = [
     path: '/switch',
     component: () => import('./Switch/SwitchExample.vue'),
   },
+  {
+    path: '/unidirectional',
+    component: () => import('./Unidirectional/UnidirectionalExample.vue'),
+  },
+  {
+    path: '/updateable-edge',
+    component: () => import('./UpdatableEdge/UpdatableEdgeExample.vue'),
+  },
 ]
 
 export const router = createRouter({
