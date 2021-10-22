@@ -1,4 +1,5 @@
 const baseRules = {
+  'no-console': 0,
   'vue/valid-v-slot': [
     'error',
     {
