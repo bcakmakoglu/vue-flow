@@ -37,9 +37,11 @@ export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref
     },
   )
 
-  useEventListener(window, 'blur', () => {
-    isPressed.value = false
-  })
+  if (window && typeof window !== 'undefined') {
+    useEventListener(window, 'blur', () => {
+      isPressed.value = false
+    })
+  }
 
   if (onChange && typeof onChange === 'function') onChange(isPressed.value)
 
