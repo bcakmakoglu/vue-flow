@@ -97,6 +97,14 @@ export const routes: RouterOptions['routes'] = [
     path: '/update-node-internals',
     component: () => import('./UpdateNodeInternals/UpdateNodeInternalsExample.vue'),
   },
+  {
+    path: '/validation',
+    component: () => import('./Validation/ValidationExample.vue'),
+  },
+  {
+    path: '/zoom-pan-helper',
+    component: () => import('./ZoomPanHelper/ZoomPanHelperExample.vue'),
+  },
 ]
 
 export const router = createRouter({

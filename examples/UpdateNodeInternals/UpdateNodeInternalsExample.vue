@@ -64,7 +64,10 @@ const toggleHandlePosition = () =>
     return { ...el, data: { ...el.data, handlePosition: el.data?.handlePosition === 0 ? 1 : 0 } }
   }))
 
-const onLoad = (instance: FlowInstance) => (flowInstance.value = instance)
+const onLoad = (instance: FlowInstance) => {
+  instance.fitView()
+  flowInstance.value = instance
+}
 </script>
 <template>
   <Flow :elements="elements" :node-types="nodeTypes" @connect="onConnect" @pane-click="onPaneClick" @load="onLoad">
