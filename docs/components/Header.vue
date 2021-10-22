@@ -11,6 +11,6 @@
     <div class="flex-1">
       <router-link to="/examples"> Examples </router-link>
     </div>
-    <div class="flex-1">Github</div>
+    <div class="flex-1"><a href="https://github.com/bcakmakoglu/vue-flow">Github</a></div>
   </header>
 </template>

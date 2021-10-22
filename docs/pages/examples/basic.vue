@@ -26,7 +26,10 @@ const elements = ref<Elements>([
 ])
 const rfInstance = ref<FlowInstance | null>(null)
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value))
+const onConnect = (params: Edge | Connection) => {
+  elements.value = addEdge(params, elements.value)
+  console.log(params)
+}
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView({ padding: 0.1 })
   rfInstance.value = flowInstance
@@ -49,7 +52,7 @@ const resetTransform = () => rfInstance.value?.setTransform({ x: 0, y: 0, zoom: 
 
 const toggleClassnames = () => {
   elements.value = elements.value.map((el: FlowElement) => {
-    if (isNode(el)) el.class = el.class === 'light' ? 'dark' : 'light'
+    if (isNode(el)) el.class = el.class === 'dark' ? 'light' : 'dark'
     return el
   })
 }
@@ -71,11 +74,20 @@ const toggleClassnames = () => {
     <MiniMap />
     <Controls />
     <Background color="#aaa" :gap="8" />
-    <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
-      <button style="margin-right: 5px" @click="resetTransform">reset transform</button>
-      <button style="margin-right: 5px" @click="updatePos">change pos</button>
-      <button style="margin-right: 5px" @click="toggleClassnames">toggle classnames</button>
-      <button @click="logToObject">toObject</button>
+    <div class="absolute right-[10px] top-[10px] z-4">
+      <button class="button" @click="resetTransform">reset transform</button>
+      <button class="button" @click="updatePos">change pos</button>
+      <button class="button" @click="toggleClassnames">toggle classnames</button>
+      <button class="button" @click="logToObject">toObject</button>
     </div>
   </Flow>
 </template>
+<style>
+.vue-flow--node .light {
+  @apply bg-white;
+}
+
+.vue-flow--node .dark {
+  @apply bg-black;
+}
+</style>

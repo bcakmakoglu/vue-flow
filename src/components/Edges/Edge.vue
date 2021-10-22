@@ -128,6 +128,7 @@ const edgePos = computed(() =>
         inactive: !store.elementsSelectable,
         updating,
       },
+      props.edge.class,
     ]"
     @click="onEdgeClick"
     @contextmenu="onEdgeContextMenu"

@@ -128,10 +128,7 @@ const init = (opts: typeof props) => {
 
 onBeforeUnmount(() => store?.$dispose())
 
-watch(
-  () => props,
-  (val) => init(val),
-)
+watch(props, (val) => init(val))
 init(props)
 
 const nodeTypes = controlledComputed(

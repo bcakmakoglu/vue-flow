@@ -162,6 +162,7 @@ watch(
           selected: props.selected,
           selectable: selectable,
         },
+        props.node.class,
       ]"
       :style="{
         zIndex: props.selected ? 10 : 3,

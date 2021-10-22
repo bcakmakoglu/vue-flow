@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <div class="h-full flex flex-row">
+  <div class="flex h-full">
     <Sidebar />
     <div id="vue-flow-docs" class="flex-1">
       <NuxtPage />

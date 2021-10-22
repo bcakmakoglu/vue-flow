@@ -81,7 +81,7 @@ const examples = [
     label: 'Unidirectional',
   },
   {
-    path: '/updateable-edge',
+    path: '/updatable-edge',
     label: 'Updatable Edge',
   },
   {
@@ -119,7 +119,7 @@ const examples = [
 </template>
 <style>
 .example-link {
-  @apply text-md text-white hover:text-black mt-2 p-2 underline;
+  @apply text-lg text-white hover:text-black py-2 underline;
 }
 aside {
   border-right: 1px solid #eee;
