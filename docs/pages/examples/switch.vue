@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Flow, { removeElements, addEdge, Node, FlowElement, Elements, Connection, Edge } from '@braks/vue-flow'
+import { Flow, removeElements, addEdge, Node, FlowElement, Elements, Connection, Edge } from '@braks/vue-flow'
 
 const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
 const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import Flow, { Elements, Position, NodeType, Connection, Edge, addEdge } from '@braks/vue-flow'
+import { Flow, Elements, Position, NodeType, Connection, Edge, addEdge } from '@braks/vue-flow'
 import NodeA from '../../components/NodeA.vue'
 import NodeB from '../../components/NodeB.vue'
 

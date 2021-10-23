@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import Flow, {
+import {
+  Flow,
   NodeType,
   addEdge,
   useZoomPanHelper,

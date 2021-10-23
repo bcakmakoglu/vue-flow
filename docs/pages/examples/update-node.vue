@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Flow, { Elements } from '@braks/vue-flow'
+import { Flow, Elements } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   { id: '1', data: { label: '-' }, position: { x: 100, y: 100 } },

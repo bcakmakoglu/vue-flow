@@ -13,6 +13,7 @@ import {
   Dimensions,
   FlowStore,
 } from '../types'
+import { useWindow } from '../composables'
 
 export const isInputDOMNode = (e: KeyboardEvent | MouseEvent): boolean => {
   const target = e.target as HTMLElement
@@ -33,6 +34,8 @@ export const clampPosition = (position: XYPosition, extent: NodeExtent): XYPosit
 
 export const getHostForElement = (element: HTMLElement): Document => {
   const doc = element.getRootNode() as Document
+  const window = useWindow()
+
   if ('getElementFromPoint' in doc) return doc
   else return window.document
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import Flow, { addEdge, Connection, Edge, Elements, isEdge, FlowInstance, Position } from '@braks/vue-flow'
+import { Flow, addEdge, Connection, Edge, Elements, isEdge, FlowInstance, Position } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   {

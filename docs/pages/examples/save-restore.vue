@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Flow, { addEdge, Connection, Node, Edge, Elements, FlowInstance, removeElements } from '@braks/vue-flow'
+import { Flow, addEdge, Connection, Node, Edge, Elements, FlowInstance, removeElements } from '@braks/vue-flow'
 import Controls from '../../components/SaveControls.vue'
 
 const initialElements: Elements = [

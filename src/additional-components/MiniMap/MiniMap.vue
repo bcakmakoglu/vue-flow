@@ -2,7 +2,7 @@
 import { HTMLAttributes } from 'vue'
 import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import { Node } from '../../types'
-import { useStore } from '../../composables'
+import { useStore, useWindow } from '../../composables'
 import MiniMapNode from './MiniMapNode.vue'
 
 type StringFunc = (node: Node) => string
@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<MiniMapProps>(), {
 })
 
 const attrs: any = useAttrs()
+const window = useWindow()
 
 const defaultWidth = 200
 const defaultHeight = 150
@@ -41,8 +42,7 @@ const nodeStrokeColorFunc: StringFunc =
 
 const nodeClassNameFunc = props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as StringFunc
 
-const shapeRendering: ShapeRendering =
-  (window && typeof window === 'undefined') || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
+const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
 const viewBox = computed(() => {
   const bb = getRectOfNodes(store.nodes)

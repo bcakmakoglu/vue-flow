@@ -1,4 +1,4 @@
-export { default } from './container/Flow/Flow.vue'
+export { default as Flow } from './container/Flow/Flow.vue'
 export { default as Handle } from './components/Handle/Handle.vue'
 export { default as EdgeText } from './components/Edges/EdgeText.vue'
 export { getBezierPath, getSmoothStepPath, getMarkerEnd, getCenter as getEdgeCenter } from './components/Edges/utils'

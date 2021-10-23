@@ -13,9 +13,10 @@ html,
 body,
 #root,
 #__nuxt {
+  height: 100vh;
   margin: 0;
-  height: 100%;
   color: #111;
+  overflow: hidden;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

@@ -1,9 +1,11 @@
 import { Ref } from 'vue'
 import { onKeyDown, onKeyPressed, onKeyUp } from '@vueuse/core'
 import { KeyCode } from '../types'
+import useWindow from './useWindow'
 
 // todo cancel keypress for input dom nodes
 export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
+  const window = useWindow()
   const isPressed = controlledRef<boolean>(false, {
     onBeforeChange(val, oldVal) {
       if (val === oldVal) return false
@@ -37,11 +39,9 @@ export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref
     },
   )
 
-  if (window && typeof window !== 'undefined') {
-    useEventListener(window, 'blur', () => {
-      isPressed.value = false
-    })
-  }
+  useEventListener(window, 'blur', () => {
+    isPressed.value = false
+  })
 
   if (onChange && typeof onChange === 'function') onChange(isPressed.value)
 

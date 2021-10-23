@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import dagre from 'dagre'
-import Flow, {
+import {
+  Flow,
   Controls,
   addEdge,
   ConnectionMode,
