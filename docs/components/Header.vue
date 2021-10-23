@@ -1,5 +1,5 @@
 <template>
-  <header class="flex items-center py-4 px-8 text-white">
+  <header class="flex items-center py-4 px-8 text-white h-[92px]">
     <div class="flex flex-col">
       <a class="logo text-xl" href="https://github.com/bcakmakoglu/vue-flow"> Vue Flow </a>
       <span class="text-xs text-gray-800 mt-2"

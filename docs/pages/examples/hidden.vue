@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Flow, { MiniMap, Controls, Connection, Edge, Elements, addEdge } from '@braks/vue-flow'
+import { Flow, MiniMap, Controls, Connection, Edge, Elements, addEdge } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },

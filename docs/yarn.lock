@@ -369,6 +369,11 @@
     unctx "^1.0.2"
     untyped "^0.2.9"
 
+"@nuxt/nitro@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@nuxt/nitro/-/nitro-0.10.0.tgz#e2157be377f6131ec72484153d56908da8704094"
+  integrity sha512-3ffdZMD0WK7UNgrkBhOyPr3fyOfmy2nPMxDOaX6eUCamr5NuY7cHQhWnum/BwSm1vIOm4b9/rnd/cgYcg9qiag==
+
 "@nuxt/nitro@npm:@nuxt/nitro-edge@3.0.0-27249044.7d918e1":
   version "3.0.0-27249044.7d918e1"
   resolved "https://registry.yarnpkg.com/@nuxt/nitro-edge/-/nitro-edge-3.0.0-27249044.7d918e1.tgz#340dc19a58d295a0009add91ca2467a2598d8072"

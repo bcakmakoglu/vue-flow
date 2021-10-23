@@ -2,7 +2,8 @@
 /**
  * Example for checking the different edge types and source and target positions
  */
-import Flow, {
+import {
+  Flow,
   removeElements,
   addEdge,
   MiniMap,

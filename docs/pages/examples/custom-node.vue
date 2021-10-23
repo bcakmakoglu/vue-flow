@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import Flow, {
+import {
+  Flow,
   isEdge,
   removeElements,
   addEdge,

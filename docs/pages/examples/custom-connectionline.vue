@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Flow, { removeElements, addEdge, Background, BackgroundVariant, Elements, Connection, Edge } from '@braks/vue-flow'
+import { Flow, removeElements, addEdge, Background, BackgroundVariant, Elements, Connection, Edge } from '@braks/vue-flow'
 import CustomConnectionLine from '../../components/CustomConnectionLine.vue'
 
 const elements = ref<Elements>([
