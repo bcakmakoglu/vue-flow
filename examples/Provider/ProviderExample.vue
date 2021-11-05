@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import Flow, {
+import {
+  Flow,
   addEdge,
   removeElements,
   Controls,

@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<ZoomPaneProps>(), {
 const store = useStore()
 const hooks = useHooks()
 
-const zoomPaneEl = templateRef<HTMLDivElement>('zoom-pane', null)
+const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
   prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k
@@ -218,7 +218,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div ref="zoom-pane" class="vue-flow__renderer vue-flow__zoompane">
+  <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
     <slot v-bind="{ transform, dimensions: { width, height } }"></slot>
   </div>
 </template>

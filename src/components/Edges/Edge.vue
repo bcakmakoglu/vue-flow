@@ -118,7 +118,6 @@ const edgePos = computed(() =>
 </script>
 <template>
   <g
-    v-if="!props.edge.isHidden && isVisible(edgePos)"
     :class="[
       'vue-flow__edge',
       `vue-flow__edge-${props.edge.type || 'default'}`,
@@ -137,6 +136,7 @@ const edgePos = computed(() =>
     @mouseleave="onEdgeMouseLeave"
   >
     <slot
+      v-if="!props.edge.isHidden && isVisible(edgePos)"
       v-bind="{
         id: props.edge.id,
         source: props.edge.source,

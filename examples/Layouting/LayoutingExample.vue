@@ -3,7 +3,8 @@ import dagre from 'dagre'
 import initialElements from './initial-elements'
 import './layouting.css'
 
-import Flow, {
+import {
+  Flow,
   Controls,
   addEdge,
   ConnectionMode,

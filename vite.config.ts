@@ -9,13 +9,15 @@ import pkg from './package.json'
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    extensions: ['*', '.ts', '.vue'],
+    dedupe: ['vue'],
+    extensions: ['.ts', '.vue'],
   },
   build: {
-    minify: 'terser',
+    emptyOutDir: true,
     lib: {
+      formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'vue-flow',
+      name: 'vueFlow',
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
@@ -45,4 +47,7 @@ export default defineConfig({
       dts: 'src/auto-imports.d.ts',
     }),
   ],
+  optimizeDeps: {
+    include: ['vue', '@vueuse/core'],
+  },
 })

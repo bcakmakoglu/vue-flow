@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Controls from './Controls.vue'
-import Flow, { addEdge, Connection, Node, Edge, Elements, FlowInstance, removeElements } from '~/index'
+import { Flow, addEdge, Connection, Node, Edge, Elements, FlowInstance, removeElements } from '~/index'
 
 import './save.css'
 

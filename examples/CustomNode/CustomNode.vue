@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ColorSelectorNode from './ColorSelectorNode.vue'
-import Flow, {
+import {
+  Flow,
   isEdge,
   removeElements,
   addEdge,

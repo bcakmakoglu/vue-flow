@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
-import Flow, {
+import {
+  Flow,
   addEdge,
   Handle,
   Connection,

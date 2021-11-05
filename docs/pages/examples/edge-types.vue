@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-/**
- * Example for checking the different edge types and source and target positions
- */
 import {
   Flow,
   removeElements,

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import Flow, { addEdge, removeElements, Controls, FlowInstance, Elements, Connection, Edge, ElementId, Node } from '~/index'
+import { Flow, addEdge, removeElements, Controls, FlowInstance, Elements, Connection, Edge, ElementId, Node } from '~/index'
 import './dnd.css'
 
 const flowInstance = ref<FlowInstance>()

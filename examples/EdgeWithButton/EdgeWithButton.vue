@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ButtonEdge from './ButtonEdge.vue'
-import Flow, {
+import {
+  Flow,
   addEdge,
   Background,
   Connection,

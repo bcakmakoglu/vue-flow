@@ -2,7 +2,8 @@
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomLabel from './CustomLabel.vue'
-import Flow, {
+import {
+  Flow,
   MiniMap,
   Controls,
   Background,

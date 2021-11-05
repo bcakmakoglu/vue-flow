@@ -2,7 +2,7 @@
 import { CSSProperties } from 'vue'
 import NodeA from './NodeA.vue'
 import NodeB from './NodeB.vue'
-import Flow, { Elements, Position, NodeType, Connection, Edge, addEdge } from '~/index'
+import { Flow, Elements, Position, NodeType, Connection, Edge, addEdge } from '~/index'
 
 const initialElements: Elements = [
   {
