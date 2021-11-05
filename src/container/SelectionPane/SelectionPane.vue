@@ -29,24 +29,28 @@ const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event
 
 const onWheel = (event: WheelEvent) => hooks.paneScroll.trigger(event)
 
-const selectionKeyPresed = useKeyPress(props.selectionKeyCode)
+const selectionKeyPresed = ref(false)
 
-useKeyPress(props.deleteKeyCode, (keyPressed) => {
-  if (keyPressed && store.selectedElements) {
-    const selectedNodes = store.selectedElements.filter(isNode)
-    const connectedEdges = getConnectedEdges(selectedNodes, store.edges)
-    const elementsToRemove = [...store.selectedElements, ...connectedEdges].reduce(
-      (res, item) => res.set(item.id, item),
-      new Map<ElementId, FlowElement>(),
-    )
+onMounted(() => {
+  useKeyPress(props.deleteKeyCode, (keyPressed) => {
+    if (keyPressed && store.selectedElements) {
+      const selectedNodes = store.selectedElements.filter(isNode)
+      const connectedEdges = getConnectedEdges(selectedNodes, store.edges)
+      const elementsToRemove = [...store.selectedElements, ...connectedEdges].reduce(
+        (res, item) => res.set(item.id, item),
+        new Map<ElementId, FlowElement>(),
+      )
 
-    hooks.elementsRemove.trigger(Array.from(elementsToRemove.values()))
-    store.unsetNodesSelection()
-    store.resetSelectedElements()
-  }
+      hooks.elementsRemove.trigger(Array.from(elementsToRemove.values()))
+      store.unsetNodesSelection()
+      store.resetSelectedElements()
+    }
+  })
+
+  useKeyPress(props.multiSelectionKeyCode, (keyPressed) => (store.multiSelectionActive = keyPressed))
+
+  useKeyPress(props.selectionKeyCode, (keyPressed) => (selectionKeyPresed.value = keyPressed))
 })
-
-useKeyPress(props.multiSelectionKeyCode, (keyPressed) => (store.multiSelectionActive = keyPressed))
 </script>
 <template>
   <slot></slot>

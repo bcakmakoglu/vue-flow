@@ -128,7 +128,11 @@ const init = (opts: typeof props) => {
 
 onBeforeUnmount(() => store?.$dispose())
 
-watch(props, (val) => init(val))
+watch(
+  () => props,
+  (val) => init(val),
+  { flush: 'pre', deep: true },
+)
 init(props)
 
 const nodeTypes = controlledComputed(
@@ -180,8 +184,8 @@ const edgeTypes = controlledComputed(
           </template>
         </EdgeRenderer>
       </SelectionPane>
+      <slot v-bind="{ ...props, store, hooks }"></slot>
     </ZoomPane>
-    <slot v-bind="{ ...props, store, hooks }"></slot>
   </div>
 </template>
 <style>

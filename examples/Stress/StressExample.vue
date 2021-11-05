@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
 import { getElements } from './utils'
-import Flow, {
+import {
+  Flow,
   removeElements,
   addEdge,
   MiniMap,

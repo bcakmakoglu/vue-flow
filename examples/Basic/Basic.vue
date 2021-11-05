@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import Flow, {
+import {
+  Flow,
   MiniMap,
   Controls,
   Background,
@@ -12,7 +13,7 @@ import Flow, {
   isNode,
   removeElements,
   Node,
-} from '~/index'
+} from '@braks/vue-flow'
 
 const onNodeDragStop = ({ node }: { node: Node }) => console.log('drag stop', node)
 const onElementClick = ({ node }: { node: Node }) => console.log('click', node)

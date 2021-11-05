@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ConnectionLine from './ConnectionLine.vue'
-import Flow, { removeElements, addEdge, Background, BackgroundVariant, Elements, Connection, Edge } from '~/index'
+import { Flow, removeElements, addEdge, Background, BackgroundVariant, Elements, Connection, Edge } from '~/index'
 
 const elements = ref<Elements>([
   {

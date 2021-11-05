@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Flow, { Background, Connection, Elements, Edge, removeElements, addEdge } from '~/index'
+import { Flow, Background, Connection, Elements, Edge, removeElements, addEdge } from '~/index'
 const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, className: 'light' },
   { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, className: 'light' },

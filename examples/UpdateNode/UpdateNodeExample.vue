@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Flow, { Elements } from '~/index'
+import { Flow, Elements } from '~/index'
 
 import './updatenode.css'
 
