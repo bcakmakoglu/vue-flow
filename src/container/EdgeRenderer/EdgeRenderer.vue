@@ -32,9 +32,7 @@ const edges = computed(() => store.edges.filter((edge) => !edge.isHidden))
 <template>
   <svg :width="store.dimensions.width" :height="store.dimensions.height" class="vue-flow__edges">
     <MarkerDefinitions :color="props.arrowHeadColor" />
-    <g
-      :transform="store.transform.length && `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`"
-    >
+    <g :transform="`translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`">
       <template v-for="edge of edges" :key="edge.id">
         <Edge
           :edge="edge"

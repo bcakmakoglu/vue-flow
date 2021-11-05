@@ -12,7 +12,7 @@ import {
   Edge,
   ElementId,
 } from '@braks/vue-flow'
-import Sidebar from '../../components/DnDSidebar.vue'
+import Sidebar from './Sidebar.vue'
 
 const flowInstance = ref<FlowInstance>()
 const elements = ref<Elements>([
@@ -57,7 +57,7 @@ const onDrop = (event: DragEvent) => {
 }
 </script>
 <template>
-  <div class="flex flex-col md:flex-row w-full h-full">
+  <div class="flex flex-col md:flex-row h-full">
     <div class="flex-1 h-full" @drop="onDrop">
       <Flow :elements="elements" @elements-remove="onElementsRemove" @load="onLoad" @connect="onConnect" @dragover="onDragOver">
         <Controls />

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue'
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { get } from '@vueuse/core'
 import { pointer, select } from 'd3-selection'
@@ -40,7 +39,9 @@ const hooks = useHooks()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
-  prevTransform.x !== eventTransform.x || prevTransform.y !== eventTransform.y || prevTransform.zoom !== eventTransform.k
+  (prevTransform.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
+  (prevTransform.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
+  (prevTransform.zoom !== eventTransform.k && !isNaN(eventTransform.k))
 
 const eventToFlowTransform = (eventTransform: ZoomTransform): FlowTransform => ({
   x: eventTransform.x,
@@ -52,7 +53,6 @@ const clampedX = clamp(props.defaultPosition[0], store.translateExtent[0][0], st
 const clampedY = clamp(props.defaultPosition[1], store.translateExtent[0][1], store.translateExtent[1][1])
 const clampedZoom = clamp(props.defaultZoom, store.minZoom, store.maxZoom)
 const transform = ref({ x: clampedX, y: clampedY, zoom: clampedZoom })
-
 const d3Zoom = ref(zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent))
 const d3Selection = ref()
 
@@ -93,10 +93,12 @@ until(zoomPaneEl)
           d3z.on('zoom', null)
         } else {
           d3z.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-            const flowTransform = eventToFlowTransform(event.transform)
-            transform.value = flowTransform
+            if (viewChanged(transform.value, event.transform)) {
+              const flowTransform = eventToFlowTransform(event.transform)
+              transform.value = flowTransform
 
-            hooks.move.trigger(flowTransform)
+              hooks.move.trigger(flowTransform)
+            }
           })
         }
       })
@@ -190,7 +192,6 @@ store.dimensions = {
   width: width.value,
   height: height.value,
 }
-store.transform = [transform.value.x, transform.value.y, transform.value.zoom]
 
 watch(width, (val) => (store.dimensions.width = val))
 watch(height, (val) => (store.dimensions.height = val))
