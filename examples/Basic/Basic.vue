@@ -13,7 +13,7 @@ import {
   isNode,
   removeElements,
   Node,
-} from '@braks/vue-flow'
+} from '~/index'
 
 const onNodeDragStop = ({ node }: { node: Node }) => console.log('drag stop', node)
 const onElementClick = ({ node }: { node: Node }) => console.log('click', node)
@@ -48,9 +48,9 @@ const updatePos = () => {
 const logToObject = () => console.log(rfInstance.value?.toObject())
 const resetTransform = () => rfInstance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
 
-const toggleClassnames = () => {
+const toggleclasss = () => {
   elements.value = elements.value.map((el: FlowElement) => {
-    if (isNode(el)) el.className = el.className === 'light' ? 'dark' : 'light'
+    if (isNode(el)) el.class = el.class === 'light' ? 'dark' : 'light'
     return el
   })
 }
@@ -75,7 +75,7 @@ const toggleClassnames = () => {
     <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
       <button style="margin-right: 5px" @click="resetTransform">reset transform</button>
       <button style="margin-right: 5px" @click="updatePos">change pos</button>
-      <button style="margin-right: 5px" @click="toggleClassnames">toggle classnames</button>
+      <button style="margin-right: 5px" @click="toggleclasss">toggle classs</button>
       <button @click="logToObject">toObject</button>
     </div>
   </Flow>

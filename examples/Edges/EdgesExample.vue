@@ -29,7 +29,7 @@ const initialElements: Elements = [
   { id: '7', type: 'output', data: { label: 'Output 7' }, position: { x: 250, y: 550 } },
   { id: '8', type: 'output', data: { label: 'Output 8' }, position: { x: 525, y: 600 } },
   { id: '9', type: 'output', data: { label: 'Output 9' }, position: { x: 675, y: 500 } },
-  { id: 'e1-2', source: '1', target: '2', label: 'bezier edge (default)', className: 'normal-edge' },
+  { id: 'e1-2', source: '1', target: '2', label: 'bezier edge (default)', class: 'normal-edge' },
   { id: 'e2-2a', source: '2', target: '2a', type: 'smoothstep', label: 'smoothstep edge' },
   { id: 'e2-3', source: '2', target: '3', type: 'step', label: 'step edge' },
   { id: 'e3-4', source: '3', target: '4', type: 'straight', label: 'straight edge' },

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
-import { Node, NodeType, SnapGrid } from '../../types'
-import { NodeIdContextKey } from '../../context'
-import { useHooks, useStore } from '../../composables'
+import { Node, NodeType, SnapGrid } from '~/types'
+import { NodeIdContextKey } from '~/context'
+import { useHooks, useStore } from '~/composables'
 
 interface NodeProps {
   node: Node
@@ -23,9 +23,9 @@ provide(NodeIdContextKey, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const selectable = computed(() => props.node.selectable ?? store.elementsSelectable)
-const draggable = computed(() => props.node.draggable ?? store.nodesDraggable)
-const connectable = computed(() => props.node.connectable ?? store.nodesConnectable)
+const selectable = props.node.selectable ?? store.elementsSelectable
+const draggable = props.node.draggable ?? store.nodesDraggable
+const connectable = props.node.connectable ?? store.nodesConnectable
 
 const onMouseEnterHandler = () =>
   props.node.__rf?.isDragging && ((event: MouseEvent) => hooks.nodeMouseEnter.trigger({ event, node: props.node }))
@@ -116,21 +116,18 @@ onMounted(() => {
       })
     }),
   )
-})
 
-watch(
-  () => props.node.type,
-  () => {
-    store.updateNodeDimensions({
-      id: props.node.id,
-      nodeElement: nodeElement.value,
-      forceUpdate: true,
-    })
-  },
-)
-watch(
-  () => props.node.sourcePosition && props.node.targetPosition,
-  () => {
+  watch(
+    () => props.node.type,
+    () => {
+      store.updateNodeDimensions({
+        id: props.node.id,
+        nodeElement: nodeElement.value,
+        forceUpdate: true,
+      })
+    },
+  )
+  watch([() => props.node.sourcePosition, () => props.node.targetPosition], () => {
     nextTick(() => {
       store.updateNodeDimensions({
         id: props.node.id,
@@ -138,8 +135,8 @@ watch(
         forceUpdate: true,
       })
     })
-  },
-)
+  })
+})
 </script>
 
 <template>

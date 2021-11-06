@@ -1,4 +1,4 @@
-import { ConnectionMode, FlowState } from '../types'
+import { ConnectionMode, FlowState } from '~/types'
 
 export const initialState = (): FlowState => ({
   dimensions: {

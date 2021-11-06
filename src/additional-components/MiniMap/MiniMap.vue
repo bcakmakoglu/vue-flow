@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { HTMLAttributes } from 'vue'
-import { getBoundsofRects, getRectOfNodes } from '../../utils'
-import { Node } from '../../types'
-import { useStore, useWindow } from '../../composables'
 import MiniMapNode from './MiniMapNode.vue'
+import { getBoundsofRects, getRectOfNodes } from '~/utils'
+import { Node } from '~/types'
+import { useStore, useWindow } from '~/composables'
 
 type StringFunc = (node: Node) => string
 type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined

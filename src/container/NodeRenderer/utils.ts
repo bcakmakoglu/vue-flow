@@ -1,5 +1,5 @@
-import { DefaultNode, InputNode, OutputNode } from '../../components/Nodes'
-import { NodeType } from '../../types'
+import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
+import { NodeType } from '~/types'
 
 export function createNodeTypes(nodeTypes: Record<string, NodeType>): Record<string, NodeType> {
   const standardTypes: Record<string, NodeType> = {

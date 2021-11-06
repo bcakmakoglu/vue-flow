@@ -5,20 +5,20 @@ const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', n
 const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
 
 const elementsA: Elements = [
-  { id: '1a', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, className: 'light' },
-  { id: '2a', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, className: 'light' },
-  { id: '3a', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, className: 'light' },
-  { id: '4a', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, className: 'light' },
+  { id: '1a', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
+  { id: '2a', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, class: 'light' },
+  { id: '3a', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, class: 'light' },
+  { id: '4a', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, class: 'light' },
   { id: 'e1-2', source: '1a', target: '2a' },
   { id: 'e1-3', source: '1a', target: '3a' },
 ]
 
 const elementsB: Elements = [
-  { id: 'inputb', type: 'input', data: { label: 'Input' }, position: { x: 300, y: 5 }, className: 'light' },
-  { id: '1b', data: { label: 'Node 1' }, position: { x: 0, y: 100 }, className: 'light' },
-  { id: '2b', data: { label: 'Node 2' }, position: { x: 200, y: 100 }, className: 'light' },
-  { id: '3b', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, className: 'light' },
-  { id: '4b', data: { label: 'Node 4' }, position: { x: 600, y: 100 }, className: 'light' },
+  { id: 'inputb', type: 'input', data: { label: 'Input' }, position: { x: 300, y: 5 }, class: 'light' },
+  { id: '1b', data: { label: 'Node 1' }, position: { x: 0, y: 100 }, class: 'light' },
+  { id: '2b', data: { label: 'Node 2' }, position: { x: 200, y: 100 }, class: 'light' },
+  { id: '3b', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, class: 'light' },
+  { id: '4b', data: { label: 'Node 4' }, position: { x: 600, y: 100 }, class: 'light' },
 
   { id: 'e1b', source: 'inputb', target: '1b' },
   { id: 'e2b', source: 'inputb', target: '2b' },

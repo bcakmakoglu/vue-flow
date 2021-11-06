@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '../../container/EdgeRenderer/utils'
-import { isEdge } from '../../utils'
-import { ConnectionMode, Edge, EdgeType, Position } from '../../types'
-import { useHandle, useHooks, useStore } from '../../composables'
 import EdgeAnchor from './EdgeAnchor.vue'
+import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
+import { isEdge } from '~/utils'
+import { ConnectionMode, Edge, EdgeType, Position } from '~/types'
+import { useHandle, useHooks, useStore } from '~/composables'
 
 interface EdgeProps {
   type: EdgeType
@@ -97,14 +97,14 @@ const targetNodeHandles = computed(() =>
     : nodes.value.targetNode?.__rf?.handleBounds.target ?? nodes.value.targetNode?.__rf?.handleBounds.source,
 )
 
-const sourceHandle = computed(
-  () => nodes.value.sourceNode && getHandle(nodes.value.sourceNode.__rf?.handleBounds.source, props.edge.sourceHandle || null),
-)
-const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle || null))
+const sourceHandle = computed(() => {
+  if (nodes.value.sourceNode) return getHandle(nodes.value.sourceNode.__rf?.handleBounds.source, props.edge.sourceHandle ?? null)
+})
+const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle ?? null))
 const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
 
-const isSelected = computed(() => store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id) || false)
+const isSelected = computed(() => store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id) ?? false)
 const edgePos = computed(() =>
   getEdgePositions(
     nodes.value.sourceNode,

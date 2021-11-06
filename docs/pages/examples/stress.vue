@@ -43,8 +43,6 @@ function getElements(xElements = 10, yElements = 10): Elements {
   return initialElements
 }
 
-const buttonWrapperStyles: CSSProperties = { position: 'absolute', right: 10, top: 10, zIndex: 4 }
-
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
   console.log(flowInstance.getElements())
@@ -82,9 +80,9 @@ const updateElements = () => {
     <Controls />
     <Background />
 
-    <div :style="buttonWrapperStyles">
-      <button style="margin-right: 5px" @click="updatePos">change pos</button>
-      <button @click="updateElements">update elements</button>
+    <div class="absolute right-[10px] top-[10px] z-4">
+      <button class="button" @click="updatePos">change pos</button>
+      <button class="button" @click="updateElements">update elements</button>
     </div>
   </Flow>
 </template>

@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   },
   vite: {
     alias: {
+      dagre: resolve('./node_modules/dagre'),
       vue: resolve('./node_modules/vue'),
     },
     resolve: {
