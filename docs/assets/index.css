@@ -1,4 +1,3 @@
-#root,
 #__nuxt {
   text-transform: uppercase;
   font-family: 'JetBrains Mono', monospace;
@@ -11,8 +10,8 @@
 
 html,
 body,
-#root,
 #__nuxt {
+  position: relative;
   margin: 0;
   height: 100%;
   color: #111;
@@ -22,38 +21,11 @@ body,
   background-image: url('./polygon-scatter.svg');
 }
 
-#__nuxt {
-  position: relative;
-}
-
 .backround-img {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url('./polygon-scatter.svg');
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-}
-
-header {
-  font-weight: 700;
-}
-
-.logo {
-  text-decoration: none;
-  display: block;
-  line-height: 1;
-}
-
-header a:hover {
-  color: #c9c9c9;
-}
-
-header select {
-  margin-left: 1em;
 }
 
 .overview-example__add {
@@ -93,18 +65,8 @@ header select {
   }
 }
 
-.edgebutton {
-  border-radius: 999px;
-  cursor: pointer;
-}
-.edgebutton:hover {
-  box-shadow: 0 0 0 2px pink , 0 0 0 4px #f05f75;
-}
-
 #vue-flow-docs {
-  display: flex;
-  margin:0;
-  background: #fff;
+  @apply flex m-0 bg-white h-full;
 }
 
 .button {
