@@ -1,4 +1,5 @@
-# Vue Flow
+# Vue Flow 🌊
+
 [![vue flow](./src/assets/vue-flow.gif)](https://reactflow.dev/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow)
 [![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg)](https://david-dm.org/bcakmakoglu/vue-flow)
@@ -7,42 +8,68 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow)
 
-This repo is still a big construction site with nothing really finished.
-You can check the examples to see what's working and what's not.
-Please visit [React Flow](https://reactflow.dev/) and support them if you like the idea. 
-They did most of the heavy lifting by writing the library in the first place.
-All I did is bring it to Vue.
+__A customizable Vue3 Flowchart.__
 
-### Motivation
-Seeing as many libraries exist in the React ecosystem and Vue sadly does not get the same
-love and attention, I decided to port the React Flow library to Vue.js.
+### __🚧 This library is still under construction__
 
-## Usage
-Check the React Flow docs for usage. It's really the same.
+_Docs aren't available yet_ but if you still want to try it out, check the available [examples](./examples) to get an
+idea how to start using Vue Flow.
 
-### Vue 3
+## Features
+
+- 🎨 Customizable
+
+- 🦾 Fully written in TypeScript
+
+
+## Table of Contents
+
+* [🛠 Setup](#-setup)
+
+* [🎮 Quickstart](#-quickstart)
+
+* [🧪 Development](#-development)
+
+
+## 🛠 Setup
+
 ```bash
-# install vue flow
-$ pnpm add @braks/vue-flow
-
+$ npm i @braks/vue-flow
 # or
-$ npm i --save @braks/vue-flow
+$ yarn add @braks/vue-flow
 ```
 
-### Vue 2
-Vue Flow doesn't work with Vue 2, sorry.
+## 🎮 Quickstart
+
+```vue
+<template>
+  <Flow :elements="elements"></Flow>
+</template>
+<script setup>
+import { Flow, Elements } from '@braks/vue-flow'
+
+const elements = ref<Elements>([
+  {
+    id: '1',
+    data: {
+      label: 'This is a <strong>default node</strong>',
+    },
+    position: { x: 100, y: 100 },
+  },
+])
+</script>
+```
+
+### ▸ Vue 2
+
+**_This library doesn't work with Vue2._**
 
 ## 🧪 Development
+
 ```bash
 # start (dev)
-$ pnpm dev
-
-# build app
-$ pnpm build
-
-# serve app from build
-$ pnpm serve
+$ yarn dev
 
 # build dist
-$ pnpm build:dist
+$ yarn build
 ```

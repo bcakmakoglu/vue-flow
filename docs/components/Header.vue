@@ -27,7 +27,4 @@ a {
 .link {
   @apply bg-gray-200 rounded-lg px-4 py-2 !hover:text-yellow-500 text-black;
 }
-.router-link-active {
-  @apply rounded-lg bg-white font-semibold text-yellow-500;
-}
 </style>
