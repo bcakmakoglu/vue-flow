@@ -23,9 +23,9 @@ export default (store = useStore()): UseZoomPanHelper => {
         bounds,
         store.dimensions.width,
         store.dimensions.height,
-        options.minZoom || store.minZoom,
-        options.maxZoom || store.maxZoom,
-        options.padding || DEFAULT_PADDING,
+        options.minZoom ?? store.minZoom,
+        options.maxZoom ?? store.maxZoom,
+        options.padding ?? DEFAULT_PADDING,
       )
       const transform = zoomIdentity.translate(x, y).scale(zoom)
 
