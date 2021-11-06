@@ -112,19 +112,18 @@ const examples = [
         {{ e.label }}
       </router-link>
     </div>
-    <slot></slot>
   </aside>
 </template>
 <style scoped>
 .example-link {
-  @apply w-full text-lg text-white hover:text-yellow-500 px-3 py-2;
+  @apply w-full text-lg text-white hover:text-yellow-500 px-3 py-2 leading-tight;
 }
 .router-link-active {
-  @apply rounded-lg bg-white font-semibold text-yellow-500;
+  @apply rounded-lg bg-white font-semibold text-yellow-500 shadow-lg;
 }
 aside {
-  @apply w-[280px] h-full px-[10px] py-[15px];
-  background: rgba(0, 0, 0, 0.25);
+  @apply relative w-[280px] h-full px-[10px] py-[15px];
+  background: rgba(0, 0, 0, 0.25) !important;
   overflow-x: hidden; /* Disable horizontal scroll */
 }
 </style>
