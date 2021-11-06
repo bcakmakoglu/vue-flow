@@ -11,7 +11,6 @@ export default defineNuxtConfig({
   },
   vite: {
     alias: {
-      dagre: resolve('./node_modules/dagre'),
       vue: resolve('./node_modules/vue'),
     },
     resolve: {
@@ -19,5 +18,6 @@ export default defineNuxtConfig({
       preserveSymlinks: false,
     },
   },
+  ssr: true,
   buildModules: ['nuxt-windicss'],
 })

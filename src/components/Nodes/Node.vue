@@ -23,9 +23,9 @@ provide(NodeIdContextKey, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const selectable = props.node.selectable ?? store.elementsSelectable
-const draggable = props.node.draggable ?? store.nodesDraggable
-const connectable = props.node.connectable ?? store.nodesConnectable
+const selectable = computed(() => props.node.selectable ?? store.elementsSelectable)
+const draggable = computed(() => props.node.draggable ?? store.nodesDraggable)
+const connectable = computed(() => props.node.connectable ?? store.nodesConnectable)
 
 const onMouseEnterHandler = () =>
   props.node.__rf?.isDragging && ((event: MouseEvent) => hooks.nodeMouseEnter.trigger({ event, node: props.node }))
@@ -41,7 +41,7 @@ const onContextMenuHandler = () => (event: MouseEvent) => hooks.nodeContextMenu.
 const onSelectNodeHandler = (event: MouseEvent) => {
   if (!draggable) {
     const n = props.node
-    if (selectable) {
+    if (selectable.value) {
       store.unsetNodesSelection()
 
       if (!props.selected) store.addSelectedElements([n])
