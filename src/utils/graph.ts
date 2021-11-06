@@ -222,7 +222,7 @@ export const getRectOfNodes = (nodes: Node[]): Rect => {
           ...position,
           width,
           height,
-        } as any),
+        }),
       ),
     { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity },
   )
