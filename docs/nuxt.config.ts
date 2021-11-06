@@ -18,7 +18,6 @@ export default defineNuxtConfig({
       preserveSymlinks: false,
     },
   },
-  target: 'server',
   ssr: true,
   buildModules: ['nuxt-windicss'],
 })

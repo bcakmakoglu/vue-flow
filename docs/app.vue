@@ -1,14 +1,12 @@
 <template>
   <Header />
   <div id="app" class="flex">
-    <Sidebar />
-    <div id="vue-flow-docs" class="flex-1">
-      <NuxtPage />
-    </div>
+    <NuxtPage />
   </div>
 </template>
 <style>
 @import 'assets/index.css';
+
 /* these are necessary styles for vue flow */
 @import 'node_modules/@braks/vue-flow/dist/style.css';
 

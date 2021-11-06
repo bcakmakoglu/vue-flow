@@ -1,6 +1,4 @@
 #__nuxt {
-  text-transform: uppercase;
-  font-family: 'JetBrains Mono', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -13,7 +11,7 @@ body,
 #__nuxt {
   position: relative;
   margin: 0;
-  height: 100%;
+  min-height: 100%;
   color: #111;
   background-position: center;
   background-size: cover;
@@ -65,8 +63,38 @@ body,
   }
 }
 
+#vue-flow-examples {
+  @apply flex m-0 bg-white h-full;
+  height: 100vh;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 #vue-flow-docs {
   @apply flex m-0 bg-white h-full;
+
+  h1 {
+    @apply text-4xl mb-4 font-bold;
+  }
+
+  p {
+    @apply text-lg font-qtype;
+  }
+
+  p ~ h1 {
+    @apply mt-6;
+  }
+
+  a {
+    @apply text-green-500 font-semibold hover:text-green-300;
+  }
+
+  li {
+    @apply mt-2;
+    list-style-type: circle;
+  }
 }
 
 .button {
