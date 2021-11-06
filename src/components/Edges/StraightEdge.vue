@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ArrowHeadType, ElementId, Position } from '../../types'
 import EdgeText from './EdgeText.vue'
 import { getMarkerEnd, getBezierPath } from './utils'
+import { ArrowHeadType, ElementId, Position } from '~/types'
 
 interface StraightEdgeProps {
   id: ElementId

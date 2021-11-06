@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ElementId, FlowElement, KeyCode } from '../../types'
-import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
-import UserSelection from '../../components/UserSelection/UserSelection.vue'
-import { getConnectedEdges, isNode } from '../../utils'
-import { useHooks, useStore, useKeyPress } from '../../composables'
+import { ElementId, FlowElement, KeyCode } from '~/types'
+import NodesSelection from '~/components/NodesSelection/NodesSelection.vue'
+import UserSelection from '~/components/UserSelection/UserSelection.vue'
+import { getConnectedEdges, isNode } from '~/utils'
+import { useHooks, useStore, useKeyPress } from '~/composables'
 
 interface SelectionPaneProps {
   selectionKeyCode?: KeyCode

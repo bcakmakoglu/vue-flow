@@ -24,6 +24,7 @@
     "dist"
   ],
   "scripts": {
+    "dev": "vite",
     "build": "vite build && vue-tsc --declaration --emitDeclarationOnly",
     "prepublishOnly": "yarn build",
     "test": "exit 0;",
@@ -43,12 +44,15 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.9.0",
     "@rollup/plugin-replace": "^2.4.2",
+    "@types/dagre": "^0.7.46",
     "@vitejs/plugin-vue": "^1.9.3",
     "@vue/compiler-sfc": "^3.2.21",
     "autoprefixer": "^10.3.7",
+    "dagre": "^0.8.5",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.1",
+    "localforage": "^1.10.0",
     "np": "^7.5.0",
     "postcss-nested": "^5.0.6",
     "prettier": "^2.4.1",
@@ -57,6 +61,7 @@
     "vite": "^2.6.10",
     "vite-svg-loader": "^2.2.0",
     "vue": "^3.2.21",
+    "vue-router": "^4.0.12",
     "vue-tsc": "^0.28.7"
   },
   "peerDependencies": {

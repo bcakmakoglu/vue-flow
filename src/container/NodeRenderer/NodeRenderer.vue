@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import Node from '../../components/Nodes/Node.vue'
-import { NodeType, Node as TNode } from '../../types'
-import { getNodesInside } from '../../utils'
-import { useStore } from '../../composables'
+import Node from '~/components/Nodes/Node.vue'
+import { NodeType, Node as TNode } from '~/types'
+import { getNodesInside } from '~/utils'
+import { useStore } from '~/composables'
 
 interface NodeRendererProps {
   nodeTypes: Record<string, NodeType>

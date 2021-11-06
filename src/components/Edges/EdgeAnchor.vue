@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { HTMLAttributes } from 'vue'
-import { Position } from '../../types'
+import { Position } from '~/types'
 
 const shiftX = (x: number, shift: number, position: Position): number => {
   if (position === Position.Left) return x - shift

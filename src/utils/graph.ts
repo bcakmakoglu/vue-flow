@@ -12,8 +12,8 @@ import {
   NodeExtent,
   Dimensions,
   FlowStore,
-} from '../types'
-import { useWindow } from '../composables'
+} from '~/types'
+import { useWindow } from '~/composables'
 
 export const isInputDOMNode = (e: KeyboardEvent | MouseEvent): boolean => {
   const target = e.target as HTMLElement

@@ -1,6 +1,6 @@
-import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '../../components/Edges'
-import { rectToBox } from '../../utils'
-import { Edge, EdgePositions, EdgeType, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '../../types'
+import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
+import { rectToBox } from '~/utils'
+import { Edge, EdgePositions, EdgeType, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '~/types'
 
 export function createEdgeTypes(edgeTypes: Record<string, EdgeType>): Record<string, EdgeType> {
   const standardTypes: Record<string, EdgeType> = {

@@ -1,7 +1,7 @@
-import { getHostForElement } from '../utils'
-import { Connection, ConnectionMode, ElementId, HandleType, ValidConnectionFunc } from '../types'
 import useStore from './useStore'
 import useHooks from './useHooks'
+import { getHostForElement } from '~/utils'
+import { Connection, ConnectionMode, ElementId, HandleType, ValidConnectionFunc } from '~/types'
 
 type Result = {
   elementBelow: Element | null

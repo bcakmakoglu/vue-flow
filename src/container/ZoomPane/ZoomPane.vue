@@ -2,9 +2,9 @@
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { get } from '@vueuse/core'
 import { pointer, select } from 'd3-selection'
-import { FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
-import { useHooks, useKeyPress, useStore, useUpdateNodeInternals, useZoomPanHelper } from '../../composables'
-import { clamp, onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
+import { FlowTransform, KeyCode, PanOnScrollMode } from '~/types'
+import { useHooks, useKeyPress, useStore, useUpdateNodeInternals, useZoomPanHelper } from '~/composables'
+import { clamp, onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils'
 
 interface ZoomPaneProps {
   selectionKeyCode?: KeyCode
@@ -190,24 +190,22 @@ watch(height, (val) => (store.dimensions.height = val))
 watch(transform, (val) => (store.transform = [val.x, val.y, val.zoom]))
 
 const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
-onMounted(() => {
-  watchOnce(
-    () => width.value && height.value,
-    () => {
-      hooks.load.trigger({
-        fitView: (params = { padding: 0.1 }) => fitView(params),
-        zoomIn,
-        zoomOut,
-        zoomTo,
-        setTransform,
-        updateNodeInternals: useUpdateNodeInternals(store),
-        project: onLoadProject(store),
-        getElements: onLoadGetElements(store),
-        toObject: onLoadToObject(store),
-      })
-    },
-  )
-})
+watchOnce(
+  () => width.value && height.value,
+  () => {
+    hooks.load.trigger({
+      fitView: (params = { padding: 0.1 }) => fitView(params),
+      zoomIn,
+      zoomOut,
+      zoomTo,
+      setTransform,
+      updateNodeInternals: useUpdateNodeInternals(store),
+      project: onLoadProject(store),
+      getElements: onLoadGetElements(store),
+      toObject: onLoadToObject(store),
+    })
+  },
+)
 </script>
 <template>
   <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">

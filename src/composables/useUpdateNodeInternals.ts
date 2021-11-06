@@ -1,5 +1,5 @@
-import { ElementId, UpdateNodeInternals } from '../types'
 import useStore from './useStore'
+import { ElementId, UpdateNodeInternals } from '~/types'
 
 export default (store = useStore()): UpdateNodeInternals =>
   (id: ElementId) => {

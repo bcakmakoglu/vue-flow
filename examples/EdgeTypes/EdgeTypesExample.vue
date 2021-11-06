@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-/**
- * Example for checking the different edge types and source and target positions
- */
 import { getElements } from './utils'
 import { Flow, removeElements, addEdge, MiniMap, Controls, Background, FlowInstance, Connection, Edge, Elements } from '~/index'
 
