@@ -190,5 +190,4 @@ const edgeTypes = controlledComputed(
 </template>
 <style>
 @import '../../style.css';
-@import '../../theme-default.css';
 </style>

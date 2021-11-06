@@ -4,19 +4,21 @@ import vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 import AutoImport from 'unplugin-auto-import/vite'
 import replace from '@rollup/plugin-replace'
+import copy from 'rollup-plugin-copy'
 import pkg from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  alias: {
-    '~': resolve('src'),
-  },
   resolve: {
+    alias: {
+      '~': resolve('src'),
+    },
     dedupe: ['vue'],
     extensions: ['.ts', '.vue'],
   },
   build: {
-    emptyOutDir: true,
+    minify: 'esbuild',
+    emptyOutDir: false,
     lib: {
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
@@ -26,12 +28,6 @@ export default defineConfig({
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: ['vue'],
-      plugins: [
-        replace({
-          __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
-          preventAssignment: true,
-        }),
-      ],
       output: {
         dir: './dist',
         // Provide global variables to use in the UMD build
@@ -48,6 +44,18 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', '@vueuse/core'],
       dts: 'src/auto-imports.d.ts',
+    }),
+    replace({
+      __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
+      preventAssignment: true,
+    }),
+    copy({
+      targets: [
+        {
+          src: 'src/theme-default.css',
+          dest: 'dist',
+        },
+      ],
     }),
   ],
   optimizeDeps: {
