@@ -73,3 +73,12 @@ const center = computed(() =>
     </body>
   </foreignObject>
 </template>
+<style>
+.edgebutton {
+  border-radius: 999px;
+  cursor: pointer;
+}
+.edgebutton:hover {
+  box-shadow: 0 0 0 2px pink, 0 0 0 4px #f05f75;
+}
+</style>

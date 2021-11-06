@@ -44,10 +44,13 @@ const examples = [
     path: '/interaction',
     label: 'Interaction',
   },
+  /*
+  todo: layouting example not working with dagre for some reason so it's disabled for now
   {
     path: '/layouting',
     label: 'Layouting',
   },
+   */
   {
     path: '/multi-flows',
     label: 'Multi Flows',
@@ -104,28 +107,24 @@ const examples = [
 </script>
 <template>
   <aside>
-    <div class="flex flex-col justify-center items-start">
-      <router-link
-        v-for="(example, i) of examples"
-        :key="`example-link-${i}`"
-        class="example-link"
-        :to="`/examples${example.path}`"
-      >
-        {{ example.label }}
+    <div class="flex flex-col text-left items-start">
+      <router-link v-for="(e, i) of examples" :key="`example-link-${i}`" class="example-link" :to="`/examples${e.path}`">
+        {{ e.label }}
       </router-link>
     </div>
     <slot></slot>
   </aside>
 </template>
-<style>
+<style scoped>
 .example-link {
-  @apply text-lg text-white hover:text-black py-2 underline;
+  @apply w-full text-lg text-white hover:text-yellow-500 px-3 py-2;
+}
+.router-link-active {
+  @apply rounded-lg bg-white font-semibold text-yellow-500;
 }
 aside {
-  border-right: 1px solid #eee;
-  padding: 15px 10px;
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 280px; /* Set the width of the sidebar */
+  @apply w-[280px] h-full px-[10px] py-[15px];
+  background: rgba(0, 0, 0, 0.25);
   overflow-x: hidden; /* Disable horizontal scroll */
 }
 </style>
