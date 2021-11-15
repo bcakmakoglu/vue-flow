@@ -17,36 +17,34 @@ import {
   ArrowHeadType,
   Connection,
   Edge,
+  FlowEvents,
 } from '~/index'
 
-const onNodeDragStart = (_: MouseEvent, node: Node) => console.log('drag start', node)
-const onNodeDrag = (_: MouseEvent, node: Node) => console.log('drag', node)
-const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
-const onNodeDoubleClick = (_: MouseEvent, node: Node) => console.log('node double click', node)
-const onPaneClick = (event: MouseEvent) => console.log('pane click', event)
-const onPaneScroll = (event?: MouseEvent) => console.log('pane scroll', event)
-const onPaneContextMenu = (event: MouseEvent) => console.log('pane context menu', event)
-const onSelectionDrag = (_: MouseEvent, nodes: Node[]) => console.log('selection drag', nodes)
-const onSelectionDragStart = (_: MouseEvent, nodes: Node[]) => console.log('selection drag start', nodes)
-const onSelectionDragStop = (_: MouseEvent, nodes: Node[]) => console.log('selection drag stop', nodes)
-const onSelectionContextMenu = (event: MouseEvent, nodes: Node[]) => {
-  event.preventDefault()
-  console.log('selection context menu', nodes)
-}
-const onElementClick = (_: MouseEvent, element: FlowElement) =>
+const onNodeDragStart = (e: FlowEvents['nodeDragStart']) => console.log('drag start', e)
+const onNodeDrag = (e: FlowEvents['nodeDrag']) => console.log('drag', e)
+const onNodeDragStop = (e: FlowEvents['nodeDragStop']) => console.log('drag stop', e)
+const onNodeDoubleClick = (e: FlowEvents['nodeDoubleClick']) => console.log('node double click', e)
+const onPaneClick = (e: FlowEvents['paneClick']) => console.log('pane click', e)
+const onPaneScroll = (e: FlowEvents['paneScroll']) => console.log('pane scroll', e)
+const onPaneContextMenu = (e: FlowEvents['paneContextMenu']) => console.log('pane context menu', e)
+const onSelectionDrag = (e: FlowEvents['selectionDrag']) => console.log('selection drag', e)
+const onSelectionDragStart = (e: FlowEvents['selectionDragStart']) => console.log('selection drag start', e)
+const onSelectionDragStop = (e: FlowEvents['selectionDragStop']) => console.log('selection drag stop', e)
+const onSelectionContextMenu = (e: FlowEvents['selectionContextMenu']) => console.log('selection context menu', e)
+const onElementClick = ({ element }: FlowEvents['elementClick']) =>
   console.log(`${isNode(element) ? 'node' : 'edge'} click:`, element)
-const onSelectionChange = (elements: Elements | null) => console.log('selection change', elements)
+const onSelectionChange = (elements: FlowEvents['selectionChange']) => console.log('selection change', elements)
 const onLoad = (flowInstance: FlowInstance) => {
   console.log('flow loaded:', flowInstance)
   flowInstance.fitView()
 }
 
 const onMoveEnd = (transform?: FlowTransform) => console.log('zoom/move end', transform)
-const onEdgeContextMenu = (_: MouseEvent, edge: Edge) => console.log('edge context menu', edge)
-const onEdgeMouseEnter = (_: MouseEvent, edge: Edge) => console.log('edge mouse enter', edge)
-const onEdgeMouseMove = (_: MouseEvent, edge: Edge) => console.log('edge mouse move', edge)
-const onEdgeMouseLeave = (_: MouseEvent, edge: Edge) => console.log('edge mouse leave', edge)
-const onEdgeDoubleClick = (_: MouseEvent, edge: Edge) => console.log('edge double click', edge)
+const onEdgeContextMenu = (e: FlowEvents['edgeContextMenu']) => console.log('edge context menu', e)
+const onEdgeMouseEnter = (e: FlowEvents['edgeMouseEnter']) => console.log('edge mouse enter', e)
+const onEdgeMouseMove = (e: FlowEvents['edgeMouseMove']) => console.log('edge mouse move', e)
+const onEdgeMouseLeave = (e: FlowEvents['edgeMouseLeave']) => console.log('edge mouse leave', e)
+const onEdgeDoubleClick = (e: FlowEvents['edgeDoubleClick']) => console.log('edge double click', e)
 
 const initialElements: Elements = [
   {
