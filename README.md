@@ -12,15 +12,13 @@ __A customizable Vue3 Flowchart.__
 
 ### __🚧 This library is still under construction__
 
-_Docs aren't available yet_ but if you still want to try it out, check the available [examples](./examples) to get an
-idea how to start using Vue Flow.
+Check the [docs](https://vue-flow.vercel.app/docs) and [examples](https://vue-flow.vercel.app/examples) to get started.
 
 ## Features
 
 - 🎨 Customizable
 
 - 🦾 Fully written in TypeScript
-
 
 ## Table of Contents
 
@@ -29,7 +27,6 @@ idea how to start using Vue Flow.
 * [🎮 Quickstart](#-quickstart)
 
 * [🧪 Development](#-development)
-
 
 ## 🛠 Setup
 
@@ -42,13 +39,14 @@ $ yarn add @braks/vue-flow
 ## 🎮 Quickstart
 
 ```vue
+
 <template>
   <Flow :elements="elements"></Flow>
 </template>
 <script setup>
 import { Flow, Elements } from '@braks/vue-flow'
 
-const elements = ref<Elements>([
+const elements = ref < Elements > ([
   {
     id: '1',
     data: {
