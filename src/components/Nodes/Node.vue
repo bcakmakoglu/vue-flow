@@ -118,7 +118,7 @@ onMounted(() => {
     }),
   )
 
-  watch([props.node.type, props.node.sourcePosition, props.node.targetPosition], () => {
+  watch([() => props.node.type, () => props.node.sourcePosition, () => props.node.targetPosition], () => {
     nextTick(() => {
       store.updateNodeDimensions({
         id: props.node.id,

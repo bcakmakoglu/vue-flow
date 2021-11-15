@@ -166,6 +166,6 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
   >
     <MiniMap :node-stroke-color="nodeStrokeColor" :node-color="nodeColor" :node-border-radius="2" />
     <Controls />
-    <Background color="#aaa" gap="20" />
+    <Background color="#aaa" :gap="20" />
   </Flow>
 </template>
