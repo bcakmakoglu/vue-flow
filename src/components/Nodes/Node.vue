@@ -26,6 +26,7 @@ const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 const selectable = computed(() => props.node.selectable ?? store.elementsSelectable)
 const draggable = computed(() => props.node.draggable ?? store.nodesDraggable)
 const connectable = computed(() => props.node.connectable ?? store.nodesConnectable)
+const scale = computed(() => store.transform[2])
 
 const onMouseEnterHandler = () =>
   props.node.__rf?.isDragging && ((event: MouseEvent) => hooks.nodeMouseEnter.trigger({ event, node: props.node }))
@@ -117,17 +118,7 @@ onMounted(() => {
     }),
   )
 
-  watch(
-    () => props.node.type,
-    () => {
-      store.updateNodeDimensions({
-        id: props.node.id,
-        nodeElement: nodeElement.value,
-        forceUpdate: true,
-      })
-    },
-  )
-  watch([() => props.node.sourcePosition, () => props.node.targetPosition], () => {
+  watch([props.node.type, props.node.sourcePosition, props.node.targetPosition], () => {
     nextTick(() => {
       store.updateNodeDimensions({
         id: props.node.id,
@@ -143,7 +134,7 @@ onMounted(() => {
   <DraggableCore
     cancel=".nodrag"
     :disabled="!draggable"
-    :scale="store.transform[2]"
+    :scale="scale"
     :grid="props.snapGrid"
     :enable-user-select-hack="false"
     @start="onDragStart"

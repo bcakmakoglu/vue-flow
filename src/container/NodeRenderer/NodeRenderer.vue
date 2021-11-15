@@ -33,6 +33,8 @@ const nodes = computed(() => {
 
   return n.filter((node) => !node.isHidden)
 })
+const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
+const snapGrid = computed(() => (store.snapToGrid ? store.snapGrid : undefined))
 
 const type = (node: TNode) => {
   const nodeType = node.type || 'default'
@@ -42,19 +44,17 @@ const type = (node: TNode) => {
   }
   return type
 }
+const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id === nodeId)
 </script>
 <template>
-  <div
-    class="vue-flow__nodes"
-    :style="{ transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})` }"
-  >
+  <div class="vue-flow__nodes" :style="{ transform }">
     <template v-for="node of nodes" :key="node.id">
       <Node
         :node="node"
         :type="type(node)"
-        :snap-grid="store.snapToGrid ? store.snapGrid : undefined"
+        :snap-grid="snapGrid"
         :select-nodes-on-drag="props.selectNodesOnDrag"
-        :selected="store.selectedElements?.some(({ id }) => id === node.id)"
+        :selected="selected(node.id)"
       >
         <template #default="nodeProps">
           <slot :name="`node-${node.type}`" v-bind="nodeProps"></slot>

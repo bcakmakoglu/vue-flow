@@ -118,7 +118,6 @@ const store = useStore(props)
 const hooks = useHooks(emit)
 
 const init = (opts: typeof props) => {
-  store.$state = { ...store.$state, ...opts }
   store.setElements(opts.elements)
   store.setMinZoom(opts.minZoom)
   store.setMaxZoom(opts.maxZoom)

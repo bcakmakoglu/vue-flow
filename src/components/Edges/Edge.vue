@@ -99,6 +99,7 @@ const targetNodeHandles = computed(() =>
 
 const sourceHandle = computed(() => {
   if (nodes.value.sourceNode) return getHandle(nodes.value.sourceNode.__rf?.handleBounds.source, props.edge.sourceHandle ?? null)
+  else return null
 })
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle ?? null))
 const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
@@ -115,6 +116,7 @@ const edgePos = computed(() =>
     targetPosition.value,
   ),
 )
+const elementsSelectable = computed(() => store.elementsSelectable)
 </script>
 <template>
   <g
@@ -125,7 +127,7 @@ const edgePos = computed(() =>
       {
         selected: isSelected,
         animated: props.edge.animated,
-        inactive: !store.elementsSelectable,
+        inactive: !elementsSelectable,
         updating,
       },
       props.edge.class,

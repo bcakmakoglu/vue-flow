@@ -28,11 +28,13 @@ const connectionLineVisible = computed(
   () => !!(store.nodesConnectable && sourceNode.value && store.connectionNodeId && store.connectionHandleType),
 )
 const edges = computed(() => store.edges.filter((edge) => !edge.isHidden))
+const dimensions = computed(() => store.dimensions)
+const transform = computed(() => `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`)
 </script>
 <template>
-  <svg :width="store.dimensions.width" :height="store.dimensions.height" class="vue-flow__edges">
+  <svg :width="dimensions.width" :height="dimensions.height" class="vue-flow__edges">
     <MarkerDefinitions :color="props.arrowHeadColor" />
-    <g :transform="`translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`">
+    <g :transform="transform">
       <template v-for="edge of edges" :key="edge.id">
         <Edge
           :edge="edge"

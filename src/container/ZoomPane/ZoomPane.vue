@@ -55,6 +55,7 @@ const clampedZoom = clamp(props.defaultZoom, store.minZoom, store.maxZoom)
 const transform = ref({ x: clampedX, y: clampedY, zoom: clampedZoom })
 const d3Zoom = ref(zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent))
 const d3Selection = ref()
+store.transform = [transform.value.x, transform.value.y, transform.value.zoom]
 
 until(zoomPaneEl)
   .toBeTruthy()
@@ -185,8 +186,10 @@ store.dimensions = {
   height: height.value,
 }
 
-watch(width, (val) => (store.dimensions.width = val))
-watch(height, (val) => (store.dimensions.height = val))
+watch([width, height], ([newWidth, newHeight]) => {
+  store.dimensions.width = newWidth
+  store.dimensions.height = newHeight
+})
 watch(transform, (val) => (store.transform = [val.x, val.y, val.zoom]))
 
 const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
