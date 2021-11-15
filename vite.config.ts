@@ -20,7 +20,7 @@ export default defineConfig({
     minify: 'esbuild',
     emptyOutDir: false,
     lib: {
-      formats: ['es', 'umd', 'iife'],
+      formats: ['es', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'vueFlow',
     },

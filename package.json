@@ -9,13 +9,10 @@
   "license": "MIT",
   "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
   "exports": {
-    ".": {
-      "import": "./dist/vue-flow.es.js",
-      "require": "./dist/vue-flow.umd.js"
-    },
+    ".": "./dist/vue-flow.es.js",
     "./*": "./*"
   },
-  "main": "./dist/vue-flow.umd.js",
+  "main": "./dist/vue-flow.es.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/vue-flow.es.js",
   "unpkg": "./dist/vue-flow.iife.js",
