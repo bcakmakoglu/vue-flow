@@ -1,6 +1,6 @@
 # Vue Flow 🌊
 
-[![vue flow](./src/assets/vue-flow.gif)](https://reactflow.dev/)
+[![vue flow](./src/assets/vue-flow.gif)](https://vue-flow.vercel.app/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow)
 [![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg)](https://david-dm.org/bcakmakoglu/vue-flow)
 [![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg?type=dev)](https://david-dm.org/bcakmakoglu/vue-flow?type=dev)
@@ -10,13 +10,26 @@
 
 __A customizable Vue3 Flowchart.__
 
-### __🚧 This library is still under construction__
-
 Check the [docs](https://vue-flow.vercel.app/docs) and [examples](https://vue-flow.vercel.app/examples) to get started.
 
 ## Features
 
-- 🎨 Customizable
+- 👶 Easy to use: Seamless zooming & panning behaviour and single and multi-selections of
+  elements
+
+- 🎨 Customizable: Different and edge types and support for custom nodes with multiple handles and custom edges
+
+- 🚀 Fast rendering: Only nodes that have changed are re-rendered and only those that are in the viewport are displayed (optionally)
+
+- 🧲 Utils: Snap-to-grid and graph helper functions
+
+- 📦 Additional Components:
+
+  - 🖼 Background
+
+  - 🧭 Minimap
+
+  - 🕹 Controls
 
 - 🦾 Fully written in TypeScript
 
@@ -71,3 +84,7 @@ $ yarn dev
 # build dist
 $ yarn build
 ```
+
+## Credit
+
+Thanks to [webkid](https://webkid.io/) for creating React Flow! Without their work this would've been impossible for me.
