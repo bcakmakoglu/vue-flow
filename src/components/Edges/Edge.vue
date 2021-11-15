@@ -139,6 +139,7 @@ const elementsSelectable = computed(() => store.elementsSelectable)
     @mouseleave="onEdgeMouseLeave"
   >
     <slot
+      v-if="edgePos.sourceX && edgePos.sourceY && edgePos.targetX && edgePos.targetY"
       v-bind="{
         id: props.edge.id,
         source: props.edge.source,
