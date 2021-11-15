@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
 import {
-  Flow,
+  VueFlow,
   MiniMap,
   Controls,
   Background,
@@ -37,7 +37,7 @@ const addRandomNode = () => {
 }
 </script>
 <template>
-  <Flow
+  <VueFlow
     :elements="elements"
     @load="onLoad"
     @element-click="onElementClick"
@@ -50,5 +50,5 @@ const addRandomNode = () => {
     <Background :variant="BackgroundVariant.Lines" />
 
     <button type="button" :style="buttonStyle" @click="addRandomNode">add node</button>
-  </Flow>
+  </VueFlow>
 </template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ButtonEdge from './ButtonEdge.vue'
 import {
-  Flow,
+  VueFlow,
   addEdge,
   Background,
   Connection,
@@ -39,7 +39,7 @@ const onConnect = (params: Connection | Edge) =>
   (elements.value = addEdge({ ...params, type: 'buttonedge' } as Edge, elements.value))
 </script>
 <template>
-  <Flow
+  <VueFlow
     key="edge-with-button"
     :elements="elements"
     :snap-to-grid="true"
@@ -51,5 +51,5 @@ const onConnect = (params: Connection | Edge) =>
     <MiniMap />
     <Controls />
     <Background />
-  </Flow>
+  </VueFlow>
 </template>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import { Flow, addEdge, removeElements, Controls, FlowInstance, Elements, Connection, Edge, ElementId, Node } from '~/index'
+import { VueFlow, addEdge, removeElements, Controls, FlowInstance, Elements, Connection, Edge, ElementId, Node } from '~/index'
 import './dnd.css'
 
 const flowInstance = ref<FlowInstance>()
@@ -48,9 +48,15 @@ const onDrop = (event: DragEvent) => {
 <template>
   <div class="dndflow">
     <div class="vueflow-wrapper" @drop="onDrop">
-      <Flow :elements="elements" @elements-remove="onElementsRemove" @load="onLoad" @connect="onConnect" @dragover="onDragOver">
+      <VueFlow
+        :elements="elements"
+        @elements-remove="onElementsRemove"
+        @load="onLoad"
+        @connect="onConnect"
+        @dragover="onDragOver"
+      >
         <Controls />
-      </Flow>
+      </VueFlow>
     </div>
     <Sidebar />
   </div>

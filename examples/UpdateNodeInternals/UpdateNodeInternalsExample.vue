@@ -2,7 +2,7 @@
 import { CSSProperties } from 'vue'
 import CustomNode from './CustomNode.vue'
 import {
-  Flow,
+  VueFlow,
   NodeType,
   addEdge,
   useZoomPanHelper,
@@ -73,11 +73,11 @@ const onLoad = (instance: FlowInstance) => {
 const updateNodeInternals = () => flowInstance.value?.updateNodeInternals('1')
 </script>
 <template>
-  <Flow :elements="elements" :node-types="nodeTypes" @connect="onConnect" @pane-click="onPaneClick" @load="onLoad">
+  <VueFlow :elements="elements" :node-types="nodeTypes" @connect="onConnect" @pane-click="onPaneClick" @load="onLoad">
     <div :style="buttonWrapperStyles">
       <button @click="toggleHandleCount">toggle handle count</button>
       <button @click="toggleHandlePosition">toggle handle position</button>
       <button @click="updateNodeInternals">update node internals</button>
     </div>
-  </Flow>
+  </VueFlow>
 </template>

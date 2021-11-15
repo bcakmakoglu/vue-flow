@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Flow, Elements } from '~/index'
+import { VueFlow, Elements } from '~/index'
 
 import './updatenode.css'
 
@@ -35,7 +35,7 @@ watchEffect(() => {
 })
 </script>
 <template>
-  <Flow :elements="elements" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
+  <VueFlow :elements="elements" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
     <div class="updatenode__controls">
       <label>label:</label>
       <input v-model="nodeName" />
@@ -48,5 +48,5 @@ watchEffect(() => {
         <input v-model="nodeHidden" type="checkbox" />
       </div>
     </div>
-  </Flow>
+  </VueFlow>
 </template>

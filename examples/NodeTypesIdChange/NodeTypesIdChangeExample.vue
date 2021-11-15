@@ -2,7 +2,7 @@
 import { CSSProperties } from 'vue'
 import NodeA from './NodeA.vue'
 import NodeB from './NodeB.vue'
-import { Flow, Elements, Position, NodeType, Connection, Edge, addEdge } from '~/index'
+import { VueFlow, Elements, Position, NodeType, Connection, Edge, addEdge } from '~/index'
 
 const initialElements: Elements = [
   {
@@ -48,7 +48,7 @@ const changeType = () => {
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
 <template>
-  <Flow :elements="elements" :node-types="nodeTypesObjects[nodeTypesId]" :node-types-id="nodeTypesId" @connect="onConnect">
+  <VueFlow :elements="elements" :node-types="nodeTypesObjects[nodeTypesId]" :node-types-id="nodeTypesId" @connect="onConnect">
     <template #node-a>
       <NodeA :node-styles="nodeStyles" />
     </template>
@@ -56,5 +56,5 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
       <NodeB :node-styles="nodeStyles" />
     </template>
     <button :style="buttonStyle" @click="changeType">change type</button>
-  </Flow>
+  </VueFlow>
 </template>

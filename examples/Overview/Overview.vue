@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
 import {
-  Flow,
+  VueFlow,
   removeElements,
   addEdge,
   MiniMap,
@@ -51,7 +51,7 @@ const initialElements: Elements = [
     id: '1',
     type: 'input',
     data: {
-      label: 'Welcome to <strong>Vue Flow!</strong>',
+      label: 'Welcome to <strong>Vue VueFlow!</strong>',
     },
     position: { x: 250, y: 0 },
   },
@@ -136,7 +136,7 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
-  <Flow
+  <VueFlow
     :elements="elements"
     :connection-line-style="connectionLineStyle"
     :snap-to-grid="true"
@@ -167,5 +167,5 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
     <MiniMap :node-stroke-color="nodeStrokeColor" :node-color="nodeColor" :node-border-radius="2" />
     <Controls />
     <Background color="#aaa" :gap="20" />
-  </Flow>
+  </VueFlow>
 </template>

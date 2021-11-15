@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {
-  Flow,
+  VueFlow,
   MiniMap,
   Controls,
   Background,
@@ -56,7 +56,7 @@ const toggleclasss = () => {
 }
 </script>
 <template>
-  <Flow
+  <VueFlow
     class="vue-flow-basic-example"
     :elements="elements"
     :default-zoom="1.5"
@@ -78,5 +78,5 @@ const toggleclasss = () => {
       <button style="margin-right: 5px" @click="toggleclasss">toggle classs</button>
       <button @click="logToObject">toObject</button>
     </div>
-  </Flow>
+  </VueFlow>
 </template>

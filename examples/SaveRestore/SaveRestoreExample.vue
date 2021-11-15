@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Controls from './Controls.vue'
-import { Flow, addEdge, Connection, Node, Edge, Elements, FlowInstance, removeElements } from '~/index'
+import { VueFlow, addEdge, Connection, Node, Edge, Elements, FlowInstance, removeElements } from '~/index'
 
 import './save.css'
 
@@ -20,7 +20,7 @@ const onRestore = (els: Elements) => (elements.value = els)
 const onAdd = (el: Node) => (elements.value = elements.value.concat(el))
 </script>
 <template>
-  <Flow :elements="elements" @elements-remove="onElementsRemove" @connect="onConnect" @load="onLoad">
+  <VueFlow :elements="elements" @elements-remove="onElementsRemove" @connect="onConnect" @load="onLoad">
     <Controls :flow-instance="flowInstance" @restore="onRestore" @add="onAdd" />
-  </Flow>
+  </VueFlow>
 </template>

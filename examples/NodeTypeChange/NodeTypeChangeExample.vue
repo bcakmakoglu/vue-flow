@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { Flow, addEdge, Connection, Edge, Elements, isEdge, FlowInstance, Position } from '~/index'
+import { VueFlow, addEdge, Connection, Edge, Elements, isEdge, FlowInstance, Position } from '~/index'
 
 const initialElements: Elements = [
   {
@@ -41,7 +41,7 @@ const changeType = () => {
 }
 </script>
 <template>
-  <Flow :elements="elements" @connect="onConnect" @load="onLoad">
+  <VueFlow :elements="elements" @connect="onConnect" @load="onLoad">
     <button :style="buttonStyle" @click="changeType">change type</button>
-  </Flow>
+  </VueFlow>
 </template>

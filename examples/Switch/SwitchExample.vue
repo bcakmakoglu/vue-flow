@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Flow, removeElements, addEdge, Node, FlowElement, Elements, Connection, Edge } from '~/index'
+import { VueFlow, removeElements, addEdge, Node, FlowElement, Elements, Connection, Edge } from '~/index'
 
 const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
 const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
@@ -32,7 +32,7 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
-  <Flow
+  <VueFlow
     :elements="elements"
     @element-click="onElementClick"
     @elements-remove="onElementsRemove"
@@ -43,5 +43,5 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
       <button style="margin-right: 5px" @click="() => (elements = elementsA)">flow a</button>
       <button @click="() => (elements = elementsB)">flow b</button>
     </div>
-  </Flow>
+  </VueFlow>
 </template>

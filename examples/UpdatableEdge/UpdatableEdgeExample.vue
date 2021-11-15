@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {
-  Flow,
+  VueFlow,
   Controls,
   updateEdge,
   addEdge,
@@ -50,7 +50,7 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
-  <Flow
+  <VueFlow
     :elements="elements"
     :snap-to-grid="true"
     :connection-mode="ConnectionMode.Loose"
@@ -62,5 +62,5 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
     @edge-update-end="onEdgeUpdateEnd"
   >
     <Controls />
-  </Flow>
+  </VueFlow>
 </template>

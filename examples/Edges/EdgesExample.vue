@@ -3,7 +3,7 @@ import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomLabel from './CustomLabel.vue'
 import {
-  Flow,
+  VueFlow,
   MiniMap,
   Controls,
   Background,
@@ -89,7 +89,7 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
 <template>
-  <Flow
+  <VueFlow
     :elements="elements"
     :snap-to-grid="true"
     :edge-types="edgeTypes"
@@ -102,5 +102,5 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
     <MiniMap />
     <Controls />
     <Background />
-  </Flow>
+  </VueFlow>
 </template>

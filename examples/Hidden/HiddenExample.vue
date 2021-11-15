@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Flow, MiniMap, Controls, Connection, Edge, Elements, addEdge } from '~/index'
+import { VueFlow, MiniMap, Controls, Connection, Edge, Elements, addEdge } from '~/index'
 
 const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
@@ -23,7 +23,7 @@ watchEffect(() => {
 })
 </script>
 <template>
-  <Flow :elements="elements" @connect="onConnect">
+  <VueFlow :elements="elements" @connect="onConnect">
     <MiniMap />
     <Controls />
 
@@ -35,5 +35,5 @@ watchEffect(() => {
         </label>
       </div>
     </div>
-  </Flow>
+  </VueFlow>
 </template>

@@ -4,7 +4,7 @@ import initialElements from './initial-elements'
 import './layouting.css'
 
 import {
-  Flow,
+  VueFlow,
   Controls,
   addEdge,
   ConnectionMode,
@@ -59,7 +59,7 @@ const onLayout = (direction: string) => {
 </script>
 <template>
   <div class="layoutflow">
-    <Flow
+    <VueFlow
       :elements="elements"
       :node-extent="nodeExtent"
       :connection-mode="ConnectionMode.Loose"
@@ -68,7 +68,7 @@ const onLayout = (direction: string) => {
       @load="() => onLayout('TB')"
     >
       <Controls />
-    </Flow>
+    </VueFlow>
     <div class="controls">
       <button :style="{ marginRight: 10 }" @click="() => onLayout('TB')">vertical layout</button>
       <button @click="() => onLayout('LR')">horizontal layout</button>

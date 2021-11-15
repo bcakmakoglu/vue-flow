@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ColorSelectorNode from './ColorSelectorNode.vue'
 import {
-  Flow,
+  VueFlow,
   isEdge,
   removeElements,
   addEdge,
@@ -111,7 +111,7 @@ const onConnect = (params: Connection | Edge) =>
   ))
 </script>
 <template>
-  <Flow
+  <VueFlow
     :elements="elements"
     :style="`background: ${bgColor}`"
     :node-types="nodeTypes"
@@ -128,5 +128,5 @@ const onConnect = (params: Connection | Edge) =>
   >
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
     <Controls />
-  </Flow>
+  </VueFlow>
 </template>

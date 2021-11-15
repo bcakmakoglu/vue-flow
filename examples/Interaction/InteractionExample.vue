@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {
-  Flow,
+  VueFlow,
   addEdge,
   MiniMap,
   Controls,
@@ -47,7 +47,7 @@ const captureZoomScroll = ref(false)
 const captureElementClick = ref(false)
 </script>
 <template>
-  <Flow
+  <VueFlow
     :elements="elements"
     :elements-selectable="isSelectable"
     :nodes-connectable="isConnectable"
@@ -148,5 +148,5 @@ const captureElementClick = ref(false)
         </label>
       </div>
     </div>
-  </Flow>
+  </VueFlow>
 </template>

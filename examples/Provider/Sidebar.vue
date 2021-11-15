@@ -12,7 +12,9 @@ const selectAll = () => {
 </script>
 <template>
   <aside>
-    <div class="description">This is an example of how you can access the internal state outside of the Vue Flow component.</div>
+    <div class="description">
+      This is an example of how you can access the internal state outside of the Vue VueFlow component.
+    </div>
     <div class="title">Zoom & pan transform</div>
     <div class="transform">{{ [transform[0].toFixed(2), transform[1].toFixed(2), transform[2].toFixed(2)] }}</div>
     <div class="title">Nodes</div>

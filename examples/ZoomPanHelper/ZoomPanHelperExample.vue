@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {
-  Flow,
+  VueFlow,
   removeElements,
   addEdge,
   Background,
@@ -44,8 +44,8 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
-  <Flow :elements="elements" @elements-remove="onElementsRemove" @connect="onConnect" @pane-click="onPaneClick">
+  <VueFlow :elements="elements" @elements-remove="onElementsRemove" @connect="onConnect" @pane-click="onPaneClick">
     <Background />
     <MiniMap />
-  </Flow>
+  </VueFlow>
 </template>

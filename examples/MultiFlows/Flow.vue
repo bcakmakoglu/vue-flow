@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Flow, Background, Connection, Elements, Edge, removeElements, addEdge } from '~/index'
+import { VueFlow, Background, Connection, Elements, Edge, removeElements, addEdge } from '~/index'
 const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
   { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, class: 'light' },
@@ -14,7 +14,7 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
-  <Flow :elements="elements" @elements-remove="onElementsRemove" @connect="onConnect">
+  <VueFlow :elements="elements" @elements-remove="onElementsRemove" @connect="onConnect">
     <Background />
-  </Flow>
+  </VueFlow>
 </template>
