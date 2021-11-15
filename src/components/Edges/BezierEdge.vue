@@ -48,11 +48,13 @@ const centered = computed(() =>
     ...props,
   }),
 )
-const path = computed(() =>
-  getBezierPath({
-    ...props,
-  }),
-)
+const path = computed(() => {
+  if (props.sourceX && props.sourceY)
+    return getBezierPath({
+      ...props,
+    })
+  else return ''
+})
 
 const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
 </script>

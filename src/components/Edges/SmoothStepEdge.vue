@@ -50,11 +50,14 @@ const centered = computed(() =>
     ...props,
   }),
 )
-const path = computed(() =>
-  getSmoothStepPath({
-    ...props,
-  }),
-)
+
+const path = computed(() => {
+  if (props.sourceX && props.sourceY)
+    return getSmoothStepPath({
+      ...props,
+    })
+  else return ''
+})
 
 const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
 </script>

@@ -52,21 +52,19 @@ const centerX = computed(() => {
   const xOffset = Math.abs(props.targetX - props.sourceX) / 2
   return props.targetX < props.sourceX ? props.targetX + xOffset : props.targetX - xOffset
 })
-const path = computed(() =>
-  getBezierPath({
-    ...props,
-  }),
-)
+
+const path = computed(() => {
+  if (props.sourceX && props.sourceY)
+    return getBezierPath({
+      ...props,
+    })
+  else return ''
+})
 
 const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
 </script>
 <template>
-  <path
-    :style="props.style"
-    class="vue-flow__edge-path"
-    :d="`M ${props.sourceX},${props.sourceY}L ${props.targetX},${props.targetY}`"
-    :marker-end="markerEnd"
-  />
+  <path :style="props.style" class="vue-flow__edge-path" :d="path" :marker-end="markerEnd" />
   <EdgeText
     v-if="props.label"
     :x="centerX"

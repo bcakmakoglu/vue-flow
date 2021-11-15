@@ -23,10 +23,21 @@ interface EdgeAnchorProps extends HTMLAttributes {
 
 const props = withDefaults(defineProps<EdgeAnchorProps>(), {
   radius: 10,
+  centerX: 0,
+  centerY: 0,
+  position: Position.Top,
 })
 
-const cx = computed(() => shiftX(props.centerX, props.radius, props.position))
-const cy = computed(() => shiftY(props.centerY, props.radius, props.position))
+const cx = computed(() => {
+  const val = shiftX(props.centerX, props.radius, props.position)
+  if (isNaN(val)) return 0
+  else return val
+})
+const cy = computed(() => {
+  const val = shiftY(props.centerY, props.radius, props.position)
+  if (isNaN(val)) return 0
+  else return val
+})
 </script>
 <template>
   <circle class="vue-flow__edgeupdater" :cx="cx" :cy="cy" :r="props.radius" stroke="transparent" fill="transparent" />
