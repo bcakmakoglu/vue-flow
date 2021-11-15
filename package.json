@@ -11,11 +11,11 @@
   "exports": {
     ".": {
       "import": "./dist/vue-flow.es.js",
-      "require": "./dist/vue-flow.cjs.js"
+      "require": "./dist/vue-flow.umd.js"
     },
     "./*": "./*"
   },
-  "main": "./dist/vue-flow.cjs.js",
+  "main": "./dist/vue-flow.umd.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/vue-flow.es.js",
   "unpkg": "./dist/vue-flow.iife.js",
