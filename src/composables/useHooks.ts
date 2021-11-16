@@ -42,7 +42,7 @@ const hooks = (): FlowHooks => {
     edgeDoubleClick: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeClick: createEventHook<{ event: MouseEvent; edge: Edge }>(),
     edgeUpdateStart: createEventHook<{ event: MouseEvent; edge: Edge }>(),
-    edgeUpdateEnd: createEventHook<{ event: MouseEvent; edge: Edge }>(),
+    edgeUpdateEnd: createEventHook<MouseEvent>(),
   }
 }
 export const createHooks = (): FlowHooks & { bind: (emit: EmitFunc) => FlowHooks } => {
