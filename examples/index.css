@@ -1,4 +1,4 @@
-@import "../dist/theme-default.css";
+@import "../src/theme-default.css";
 
 body {
   color: #111;

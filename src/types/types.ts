@@ -93,8 +93,8 @@ export type OnLoadFunc<T = any> = (params: FlowInstance<T>) => void
 
 export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
   elements: Elements
-  nodeTypes?: Record<string, NodeType>
-  edgeTypes?: Record<string, EdgeType>
+  nodeTypes?: Record<string, NodeType> | string[]
+  edgeTypes?: Record<string, EdgeType> | string[]
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties

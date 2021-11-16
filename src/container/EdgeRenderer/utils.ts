@@ -1,29 +1,5 @@
-import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { rectToBox } from '~/utils'
-import { Edge, EdgePositions, EdgeType, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '~/types'
-
-export function createEdgeTypes(edgeTypes: Record<string, EdgeType>): Record<string, EdgeType> {
-  const standardTypes: Record<string, EdgeType> = {
-    default: edgeTypes.default || BezierEdge,
-    straight: edgeTypes.bezier || StraightEdge,
-    step: edgeTypes.step || StepEdge,
-    smoothstep: edgeTypes.step || SmoothStepEdge,
-  }
-
-  const wrappedTypes = {} as Record<string, EdgeType>
-  const specialTypes: Record<string, EdgeType> = Object.keys(edgeTypes)
-    .filter((k) => !['default', 'bezier'].includes(k))
-    .reduce((res, key) => {
-      res[key] = edgeTypes[key] || BezierEdge
-
-      return res
-    }, wrappedTypes)
-
-  return {
-    ...standardTypes,
-    ...specialTypes,
-  }
-}
+import { Edge, EdgePositions, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '~/types'
 
 export function getHandlePosition(position: Position, node: Node, handle: any | null = null): XYPosition {
   const x = (handle?.x || 0) + node.__rf?.position?.x

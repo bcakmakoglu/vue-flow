@@ -63,7 +63,7 @@ export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
   borderRadius?: number
 }
 
-export type EdgeType = DefineComponent<EdgeSmoothStepProps, any, any, any, any, any>
+export type EdgeType = DefineComponent<EdgeSmoothStepProps, any, any, any, any, any> | boolean
 
 export type OnEdgeUpdateFunc<T = any> = (oldEdge: Edge<T>, newConnection: Connection) => void
 

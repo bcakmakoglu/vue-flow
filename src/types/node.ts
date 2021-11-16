@@ -58,4 +58,4 @@ export interface NodeProps<T = any> {
   dragging?: boolean
 }
 
-export type NodeType = DefineComponent<NodeProps, any, any, any, any>
+export type NodeType = DefineComponent<NodeProps, any, any, any, any> | boolean

@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { CSSProperties, onBeforeUnmount } from 'vue'
-import { createEdgeTypes } from '../EdgeRenderer/utils'
-import { createNodeTypes } from '../NodeRenderer/utils'
 import ZoomPane from '~/container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '~/container/SelectionPane/SelectionPane.vue'
 import NodeRenderer from '~/container/NodeRenderer/NodeRenderer.vue'
@@ -24,8 +22,8 @@ import { useHooks, useStore, createHooks } from '~/composables'
 
 export interface FlowProps extends FlowOptions {
   elements: Elements
-  nodeTypes?: Record<string, NodeType>
-  edgeTypes?: Record<string, EdgeType>
+  nodeTypes?: Record<string, NodeType> | string[]
+  edgeTypes?: Record<string, EdgeType> | string[]
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
@@ -134,14 +132,18 @@ watch(
 )
 init(props)
 
-const nodeTypes = controlledComputed(
-  () => props.nodeTypesId,
-  () => createNodeTypes({ ...defaultNodeTypes, ...props.nodeTypes }),
-)
-const edgeTypes = controlledComputed(
-  () => props.edgeTypesId,
-  () => createEdgeTypes({ ...defaultEdgeTypes, ...props.edgeTypes }),
-)
+const nodeTypes = computed(() => {
+  let types = defaultNodeTypes
+  if (Array.isArray(props.nodeTypes)) props.nodeTypes.forEach((type) => (types[type] = true))
+  else types = { ...types, ...props.nodeTypes }
+  return types
+})
+const edgeTypes = computed(() => {
+  let types = defaultEdgeTypes
+  if (Array.isArray(props.edgeTypes)) props.edgeTypes.forEach((type) => (types[type] = true))
+  else types = { ...types, ...props.edgeTypes }
+  return types
+})
 </script>
 <template>
   <div class="vue-flow">

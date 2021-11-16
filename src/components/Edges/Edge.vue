@@ -2,7 +2,7 @@
 import EdgeAnchor from './EdgeAnchor.vue'
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
 import { isEdge } from '~/utils'
-import { ConnectionMode, Edge, EdgeType, Position } from '~/types'
+import { ConnectionMode, Edge, EdgePositions, EdgeType, Position } from '~/types'
 import { useHandle, useHooks, useStore } from '~/composables'
 
 interface EdgeProps {
@@ -64,7 +64,7 @@ const onEdgeUpdaterMouseEnter = () => (updating.value = true)
 
 const onEdgeUpdaterMouseOut = () => (updating.value = false)
 
-const isVisible = ({ sourceX, sourceY, targetX, targetY }: ReturnType<typeof getEdgePositions>) => {
+const isVisible = ({ sourceX, sourceY, targetX, targetY }: EdgePositions) => {
   return store.onlyRenderVisibleElements
     ? isEdgeVisible({
         sourcePos: { x: sourceX, y: sourceY },
