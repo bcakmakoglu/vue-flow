@@ -1,6 +1,5 @@
 import { DefineComponent } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './types'
-import { Connection } from './connection'
 
 export interface Edge<T = any> {
   id: ElementId
@@ -64,8 +63,6 @@ export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
 }
 
 export type EdgeType = DefineComponent<EdgeSmoothStepProps, any, any, any, any, any> | boolean
-
-export type OnEdgeUpdateFunc<T = any> = (oldEdge: Edge<T>, newConnection: Connection) => void
 
 export interface EdgePositions {
   sourceX: number

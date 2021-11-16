@@ -86,10 +86,7 @@ export type FlowInstance<T = any> = {
   getElements: () => Elements<T>
   setTransform: (transform: FlowTransform) => void
   toObject: ToObjectFunc<T>
-  updateNodeInternals: (id: ElementId) => void
 }
-
-export type OnLoadFunc<T = any> = (params: FlowInstance<T>) => void
 
 export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
   elements: Elements
