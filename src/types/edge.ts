@@ -1,4 +1,4 @@
-import { DefineComponent } from 'vue'
+import { CSSProperties, DefineComponent } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './types'
 
 export interface Edge<T = any> {
@@ -6,8 +6,15 @@ export interface Edge<T = any> {
   type?: string
   source: ElementId
   target: ElementId
+  sourceX: number
+  sourceY: number
+  targetX: number
+  targetY: number
   sourceHandle?: ElementId | null
   targetHandle?: ElementId | null
+  selected?: boolean
+  sourcePosition?: Position
+  targetPosition?: Position
   label?:
     | string
     | {
@@ -19,41 +26,24 @@ export interface Edge<T = any> {
   labelBgStyle?: any
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
-  style?: any
+  style?: CSSProperties
   animated?: boolean
   arrowHeadType?: ArrowHeadType
-  isHidden?: boolean
+  markerEndId?: string
   data?: T
   class?: string
+  isHidden?: boolean
 }
 
-export interface EdgeProps<T = any> {
-  id: ElementId
-  source: ElementId
-  target: ElementId
+export interface EdgeProps<T = any> extends Edge<T> {
   sourceX: number
   sourceY: number
   targetX: number
   targetY: number
   selected?: boolean
-  animated?: boolean
   sourcePosition: Position
   targetPosition: Position
-  label?:
-    | string
-    | {
-        component: any
-        props?: any
-      }
-  labelStyle?: any
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-  style?: any
-  arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  data?: T
   sourceHandleId?: ElementId | null
   targetHandleId?: ElementId | null
 }

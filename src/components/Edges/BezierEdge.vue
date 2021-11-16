@@ -2,9 +2,9 @@
 import { CSSProperties } from 'vue'
 import { getCenter, getMarkerEnd, getBezierPath } from './utils'
 import EdgeText from './EdgeText.vue'
-import { ArrowHeadType, ElementId, Position } from '~/types'
+import { ArrowHeadType, EdgeProps, ElementId, Position } from '~/types'
 
-interface BezierEdgeProps {
+interface BezierEdgeProps extends EdgeProps {
   id: ElementId
   source: ElementId
   target: ElementId
@@ -14,8 +14,8 @@ interface BezierEdgeProps {
   targetY: number
   selected?: boolean
   animated?: boolean
-  sourcePosition?: Position
-  targetPosition?: Position
+  sourcePosition: Position
+  targetPosition: Position
   label?:
     | string
     | {

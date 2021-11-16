@@ -1,17 +1,7 @@
 <script lang="ts" setup>
-import {
-  useHooks,
-  useStore,
-  getEdgeCenter,
-  getBezierPath,
-  getMarkerEnd,
-  ArrowHeadType,
-  EdgeProps,
-  ElementId,
-  Position,
-} from '~/index'
+import { useHooks, useStore, getEdgeCenter, getBezierPath, getMarkerEnd, ArrowHeadType, Edge, ElementId, Position } from '~/index'
 
-interface CustomEdgeProps<T = any> extends EdgeProps<T> {
+interface CustomEdgeProps<T = any> extends Edge<T> {
   id: ElementId
   sourceX: number
   sourceY: number

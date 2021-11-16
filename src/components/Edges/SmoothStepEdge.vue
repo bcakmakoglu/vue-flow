@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import EdgeText from './EdgeText.vue'
 import { getCenter, getMarkerEnd, getSmoothStepPath } from './utils'
-import { ArrowHeadType, ElementId, Position } from '~/types'
+import { ArrowHeadType, EdgeProps, ElementId, Position } from '~/types'
 
-export interface EdgeSmoothStepProps {
+interface SmoothStepEdgeProps extends EdgeProps {
   id: ElementId
   source: ElementId
   target: ElementId
@@ -13,8 +13,8 @@ export interface EdgeSmoothStepProps {
   targetY: number
   selected?: boolean
   animated?: boolean
-  sourcePosition?: Position
-  targetPosition?: Position
+  sourcePosition: Position
+  targetPosition: Position
   label?:
     | string
     | {
@@ -35,7 +35,7 @@ export interface EdgeSmoothStepProps {
   targetHandleId?: ElementId | null
 }
 
-const props = withDefaults(defineProps<EdgeSmoothStepProps>(), {
+const props = withDefaults(defineProps<SmoothStepEdgeProps>(), {
   selected: false,
   sourcePosition: Position.Bottom,
   targetPosition: Position.Top,

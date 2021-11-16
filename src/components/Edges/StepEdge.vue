@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import SmoothStepEdge from './SmoothStepEdge.vue'
-import { ArrowHeadType, ElementId, Position } from '~/types'
+import { ArrowHeadType, EdgeProps, ElementId, Position } from '~/types'
 
-export interface EdgeStepProps {
+export interface StepEdgeProps extends EdgeProps {
   id: ElementId
   source: ElementId
   target: ElementId
@@ -12,8 +12,8 @@ export interface EdgeStepProps {
   targetY: number
   selected?: boolean
   animated?: boolean
-  sourcePosition?: Position
-  targetPosition?: Position
+  sourcePosition: Position
+  targetPosition: Position
   label?:
     | string
     | {
@@ -33,7 +33,7 @@ export interface EdgeStepProps {
   targetHandleId?: ElementId | null
 }
 
-const props = withDefaults(defineProps<EdgeStepProps>(), {
+const props = withDefaults(defineProps<StepEdgeProps>(), {
   selected: false,
   sourcePosition: Position.Bottom,
   targetPosition: Position.Top,
