@@ -8,11 +8,17 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow)
 
-__A customizable Vue3 Flowchart.__
+### __Vue Flow: A highly customizable Vue3 Flowchart component.__
 
-Check the [docs](https://vue-flow.vercel.app/docs) and [examples](https://vue-flow.vercel.app/examples) to get started.
+With Vue Flow you can build your own, customized node-based applications like static diagrams or even more complex and
+interactive editors!
 
-## Features
+You can find a detailed explanation on how to get started in the [documentation](https://vue-flow.vercel.app/docs) or check
+the [examples](https://vue-flow.vercel.app/examples).
+
+If you want to see how it's used with Nuxt3, check out the [docs repo](https://github.com/bcakmakoglu/vue-flow-docs)!
+
+## ⭐️ Features
 
 - 👶 Easy to use: Seamless zooming & panning behaviour and single and multi-selections of
   elements
@@ -33,14 +39,6 @@ Check the [docs](https://vue-flow.vercel.app/docs) and [examples](https://vue-fl
 
 - 🦾 Fully written in TypeScript
 
-## Table of Contents
-
-* [🛠 Setup](#-setup)
-
-* [🎮 Quickstart](#-quickstart)
-
-* [🧪 Development](#-development)
-
 ## 🛠 Setup
 
 ```bash
@@ -52,7 +50,6 @@ $ yarn add @braks/vue-flow
 ## 🎮 Quickstart
 
 ```vue
-
 <template>
   <Flow :elements="elements"></Flow>
 </template>
@@ -85,6 +82,6 @@ $ yarn dev
 $ yarn build
 ```
 
-## Credit
+## 💝 Credit
 
 Thanks to [webkid](https://webkid.io/) for creating React Flow! Without their work this would've been impossible for me.
