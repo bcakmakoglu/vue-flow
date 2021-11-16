@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2020",
@@ -8,6 +7,8 @@
       "DOM",
       "ESNext"
     ],
+    "declaration": true,
+    "declarationDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "incremental": false,
@@ -24,9 +25,13 @@
       "~/*": [
         "src/*"
       ]
-    }
+    },
+    "plugins": [
+      // Transform paths in output .d.ts files (Include this line if you output declarations files)
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": [
     "node_modules",
     "build",
