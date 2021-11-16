@@ -51,18 +51,33 @@ $ yarn add @braks/vue-flow
 
 ```vue
 <template>
-  <Flow :elements="elements"></Flow>
+  <VueFlow :elements="elements"></VueFlow>
 </template>
 <script lang="ts" setup>
-import { Flow, Elements } from '@braks/vue-flow'
+import { VueFlow, Elements, Position } from '@braks/vue-flow'
 
 const elements = ref<Elements>([
   {
     id: '1',
     data: {
-      label: 'This is a <strong>default node</strong>',
+      label: 'node 1',
     },
     position: { x: 100, y: 100 },
+    targetPosition: Position.Right
+  },
+  {
+    id: '2',
+    data: {
+      label: 'node 2',
+    },
+    position: { x: 100, y: 200 },
+    sourcePosition: Position.Left
+  },
+  {
+    id: 'e1-2',
+    label: 'default edge',
+    target: '2',
+    source: '1',
   },
 ])
 </script>

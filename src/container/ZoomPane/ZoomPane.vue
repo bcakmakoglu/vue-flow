@@ -143,11 +143,11 @@ until(zoomPaneEl)
 
     const keyPress = useKeyPress(props.selectionKeyCode)
     d3z.filter((event: MouseEvent) => {
-      const zoomScroll = props.zoomOnScroll
       const pinchZoom = props.zoomOnPinch && event.ctrlKey
 
       // if all interactions are disabled, we prevent all zoom events
-      if (!props.paneMoveable && !zoomScroll && !props.panOnScroll && !props.zoomOnDoubleClick && !props.zoomOnPinch) return false
+      if (!props.paneMoveable && !props.zoomOnScroll && !props.panOnScroll && !props.zoomOnDoubleClick && !props.zoomOnPinch)
+        return false
 
       // during a selection we prevent all other interactions
       if (keyPress.value) return false
@@ -170,7 +170,7 @@ until(zoomPaneEl)
       if (!props.zoomOnPinch && event.ctrlKey && event.type === 'wheel') return false
 
       // when there is no scroll handling enabled, we prevent all wheel events
-      if (!zoomScroll && !props.panOnScroll && !pinchZoom && event.type === 'wheel') return false
+      if (!props.zoomOnScroll && !props.panOnScroll && !pinchZoom && event.type === 'wheel') return false
 
       // if the pane is not movable, we prevent dragging it with mousestart or touchstart
       if (!props.paneMoveable && (event.type === 'mousedown' || event.type === 'touchstart')) return false

@@ -36,7 +36,7 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 const isSelectable = ref(false)
 const isDraggable = ref(false)
 const isConnectable = ref(false)
-const zoomOnScroll = ref(false)
+const zoomOnScroll = ref(true)
 const zoomOnPinch = ref(false)
 const panOnScroll = ref(false)
 const panOnScrollMode = ref<PanOnScrollMode>(PanOnScrollMode.Free)
