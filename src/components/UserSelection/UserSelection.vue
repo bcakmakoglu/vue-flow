@@ -30,6 +30,8 @@ const onMouseLeave = () => {
   store.unsetNodesSelection()
 }
 
+const userSelectionRect = computed(() => store.userSelectionRect)
+
 useEventListener(el, 'mousedown', onMouseDown)
 useEventListener(el, 'mousemove', onMouseMove)
 useEventListener(el, 'click', onMouseUp)
@@ -39,11 +41,11 @@ useEventListener(el, 'mouseleave', onMouseLeave)
 <template>
   <div ref="user-selection" class="vue-flow__selectionpane">
     <SelectionRect
-      v-if="store.userSelectionRect.draw"
-      :width="store.userSelectionRect.width"
-      :height="store.userSelectionRect.height"
-      :x="store.userSelectionRect.x"
-      :y="store.userSelectionRect.y"
+      v-if="userSelectionRect.draw"
+      :width="userSelectionRect.width"
+      :height="userSelectionRect.height"
+      :x="userSelectionRect.x"
+      :y="userSelectionRect.y"
     />
   </div>
 </template>

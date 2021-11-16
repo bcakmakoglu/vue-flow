@@ -1,4 +1,4 @@
-import { XYPosition } from '../../types'
+import { XYPosition } from '~/types'
 
 export function getMousePosition(event: MouseEvent): XYPosition | void {
   const flowNode = (event.target as Element).closest('.vue-flow')

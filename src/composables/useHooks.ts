@@ -66,7 +66,7 @@ export const createHooks = (): FlowHooks & { bind: (emit: EmitFunc) => FlowHooks
 export default (emit?: EmitFunc) => {
   let hooks = inject(Hooks)!
   if (!hooks) {
-    console.warn('hooks context not found; creating default hooks')
+    if (import.meta.env.DEV) console.warn('hooks context not found; creating default hooks')
     if (!emit) console.error('no emit function found for hook context.')
     else {
       hooks = createHooks().bind(emit)

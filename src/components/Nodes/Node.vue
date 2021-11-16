@@ -129,7 +129,6 @@ onMounted(() => {
   })
 })
 </script>
-
 <template>
   <DraggableCore
     cancel=".nodrag"

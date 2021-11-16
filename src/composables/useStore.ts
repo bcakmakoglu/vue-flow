@@ -5,7 +5,7 @@ import { Store } from '~/context'
 export default (options?: Partial<FlowOptions>) => {
   let store = inject(Store)!
   if (!store) {
-    console.warn('store context not found; creating default store')
+    if (import.meta.env.DEV) console.warn('store context not found; creating default store')
     store = useFlowStore({
       ...initialState(),
       ...options,

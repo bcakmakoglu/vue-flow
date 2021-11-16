@@ -14,6 +14,11 @@ const props = withDefaults(defineProps<OutputNodeProps>(), {
   targetPosition: Position.Top,
 })
 </script>
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
 <template>
   <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
   <span v-else v-html="props.data?.label"></span>

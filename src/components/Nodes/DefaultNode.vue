@@ -16,6 +16,11 @@ const props = withDefaults(defineProps<DefaultNodeProps>(), {
   sourcePosition: Position.Bottom,
 })
 </script>
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
 <template>
   <Handle type="target" :position="props.targetPosition" :is-connectable="props.connectable" />
   <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
