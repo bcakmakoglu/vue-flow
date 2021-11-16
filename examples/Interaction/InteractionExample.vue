@@ -22,9 +22,9 @@ const initialElements: Elements = [
   { id: 'e1-3', source: '1', target: '3' },
 ]
 
-const onNodeDragStart = (_: MouseEvent, node: Node) => console.log('drag start', node)
-const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
-const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
+const onNodeDragStart = ({ node }) => console.log('drag start', node)
+const onNodeDragStop = ({ node }) => console.log('drag stop', node)
+const onElementClick = ({ element }) => console.log('click', element)
 const onPaneClick = (event: MouseEvent) => console.log('onPaneClick', event)
 const onPaneScroll = (event?: WheelEvent) => console.log('onPaneScroll', event)
 const onPaneContextMenu = (event: MouseEvent) => console.log('onPaneContextMenu', event)
