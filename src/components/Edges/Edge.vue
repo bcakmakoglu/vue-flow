@@ -120,7 +120,7 @@ const elementsSelectable = computed(() => store.elementsSelectable)
 </script>
 <template>
   <g
-    v-if="!props.edge.isHidden && isVisible(edgePos)"
+    v-show="!props.edge.isHidden && isVisible(edgePos)"
     :class="[
       'vue-flow__edge',
       `vue-flow__edge-${props.edge.type || 'default'}`,
