@@ -6,10 +6,6 @@ export interface Edge<T = any> {
   type?: string
   source: ElementId
   target: ElementId
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
   sourceHandle?: ElementId | null
   targetHandle?: ElementId | null
   selected?: boolean
