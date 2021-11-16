@@ -26,10 +26,9 @@ const nodeExtent: NodeExtent = [
 ]
 
 const elements = ref<Elements>(initialElements)
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge({ ...params, animated: true }, elements.value))
+const onConnect = (params: Connection) => (elements.value = addEdge({ ...params, animated: true }, elements.value))
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 
-// todo changing elements not properly updating flowchart...
 const onLayout = (direction: string) => {
   const isHorizontal = direction === 'LR'
   dagreGraph.setGraph({ rankdir: direction })

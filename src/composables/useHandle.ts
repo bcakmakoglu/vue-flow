@@ -156,10 +156,7 @@ export default () => {
 
       hooks.connectEnd.trigger(event)
 
-      if (elementEdgeUpdaterType) {
-        // todo fix missing edge
-        hooks.edgeUpdateEnd.trigger({ event } as any)
-      }
+      if (elementEdgeUpdaterType) hooks.edgeUpdateEnd.trigger(event)
 
       resetRecentHandle(recentHoveredHandle)
       store.setConnectionNodeId({ connectionNodeId: undefined, connectionHandleId: undefined, connectionHandleType: undefined })

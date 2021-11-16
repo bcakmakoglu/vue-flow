@@ -45,7 +45,7 @@ export interface FlowEvents {
   edgeDoubleClick: { event: MouseEvent; edge: Edge }
   edgeClick: { event: MouseEvent; edge: Edge }
   edgeUpdateStart: { event: MouseEvent; edge: Edge }
-  edgeUpdateEnd: { event: MouseEvent; edge: Edge }
+  edgeUpdateEnd: MouseEvent
 }
 
 export type FlowHooks = { [key in keyof FlowEvents]: FlowHook<FlowEvents[key]> }
