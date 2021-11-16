@@ -19,12 +19,13 @@ type NextElements = {
   nextEdges: Edge[]
 }
 const pinia = createPinia()
+let id = 0
 
 export default function useFlowStore(preloadedState: FlowState): StoreDefinition<string, FlowState, any, FlowActions> {
   setActivePinia(pinia)
 
   return defineStore({
-    id: `vue-flow-${Math.floor(Math.random() * 100)}`,
+    id: `vue-flow-${id++}`,
     state: () => ({
       ...preloadedState,
     }),
