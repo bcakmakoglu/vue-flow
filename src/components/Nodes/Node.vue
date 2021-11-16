@@ -23,9 +23,13 @@ provide(NodeIdContextKey, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const selectable = computed(() => props.node.selectable ?? store.elementsSelectable)
-const draggable = computed(() => props.node.draggable ?? store.nodesDraggable)
-const connectable = computed(() => props.node.connectable ?? store.nodesConnectable)
+const selectable = computed(() =>
+  typeof props.node.selectable === 'undefined' ? store.elementsSelectable : props.node.selectable,
+)
+const draggable = computed(() => (typeof props.node.draggable === 'undefined' ? store.nodesDraggable : props.node.draggable))
+const connectable = computed(() =>
+  typeof props.node.connectable === 'undefined' ? store.nodesConnectable : props.node.connectable,
+)
 const scale = computed(() => store.transform[2])
 
 const onMouseEnterHandler = () =>
@@ -40,7 +44,7 @@ const onMouseLeaveHandler = () =>
 const onContextMenuHandler = () => (event: MouseEvent) => hooks.nodeContextMenu.trigger({ event, node: props.node })
 
 const onSelectNodeHandler = (event: MouseEvent) => {
-  if (!draggable) {
+  if (!draggable.value) {
     const n = props.node
     if (selectable.value) {
       store.unsetNodesSelection()
@@ -59,7 +63,7 @@ const onDragStart: DraggableEventListener = ({ event }) => {
     store.unsetNodesSelection()
 
     if (!props.selected) store.addSelectedElements([n])
-  } else if (!props.selectNodesOnDrag && !props.selected && selectable) {
+  } else if (!props.selectNodesOnDrag && !props.selected && selectable.value) {
     store.unsetNodesSelection()
     store.addSelectedElements([])
   }
@@ -86,7 +90,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
   if (!props.node.__rf?.isDragging) {
-    if (selectable && !props.selectNodesOnDrag && !props.selected) {
+    if (selectable.value && !props.selectNodesOnDrag && !props.selected) {
       store.addSelectedElements([n])
     }
     hooks.nodeClick.trigger({ event, node: n })
