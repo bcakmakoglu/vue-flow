@@ -2,8 +2,8 @@ import { Ref } from 'vue'
 import { onKeyDown, onKeyPressed, onKeyUp } from '@vueuse/core'
 import useWindow from './useWindow'
 import { KeyCode } from '~/types'
+import { isInputDOMNode } from '~/utils'
 
-// todo cancel keypress for input dom nodes
 export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
   const isPressed = controlledRef<boolean>(false, {
@@ -16,7 +16,7 @@ export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref
   })
 
   onKeyPressed(
-    (e) => e.key === keyCode || e.keyCode === keyCode,
+    (e) => !isInputDOMNode(e) && (e.key === keyCode || e.keyCode === keyCode),
     (e) => {
       e.preventDefault()
       isPressed.value = true
@@ -24,7 +24,7 @@ export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref
   )
 
   onKeyDown(
-    (e) => e.key === keyCode || e.keyCode === keyCode,
+    (e) => !isInputDOMNode(e) && (e.key === keyCode || e.keyCode === keyCode),
     (e) => {
       e.preventDefault()
       isPressed.value = true
@@ -32,7 +32,7 @@ export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref
   )
 
   onKeyUp(
-    (event) => event.key === keyCode || event.keyCode === keyCode,
+    (e) => !isInputDOMNode(e) && (e.key === keyCode || e.keyCode === keyCode),
     (e) => {
       e.preventDefault()
       isPressed.value = false
