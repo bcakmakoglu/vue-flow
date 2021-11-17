@@ -5,7 +5,6 @@ import svgLoader from 'vite-svg-loader'
 import AutoImport from 'unplugin-auto-import/vite'
 import replace from '@rollup/plugin-replace'
 import copy from 'rollup-plugin-copy'
-import injectCss from 'vite-plugin-css-injected-by-js'
 import pkg from './package.json'
 
 // https://vitejs.dev/config/
@@ -58,7 +57,6 @@ export default defineConfig({
         },
       ],
     }),
-    injectCss(),
   ],
   optimizeDeps: {
     include: ['vue', '@vueuse/core'],
