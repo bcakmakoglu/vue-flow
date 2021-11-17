@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { Position, ValidConnectionFunc } from '~/types'
+import { useHandle, useHooks, useStore } from '../../composables'
+import { Position, ValidConnectionFunc } from '../../types'
 import { NodeIdContextKey } from '~/context'
-import { useHandle, useHooks, useStore } from '~/composables'
 
 interface HandleProps {
   id?: string

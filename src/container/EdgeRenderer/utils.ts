@@ -1,5 +1,5 @@
+import { Edge, EdgePositions, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '../../types'
 import { rectToBox } from '~/utils'
-import { Edge, EdgePositions, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '~/types'
 
 export function getHandlePosition(position: Position, node: Node, handle: any | null = null): XYPosition {
   const x = (handle?.x || 0) + node.__rf?.position?.x

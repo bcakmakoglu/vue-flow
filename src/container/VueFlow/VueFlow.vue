@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import { CSSProperties, onBeforeUnmount } from 'vue'
-import ZoomPane from '~/container/ZoomPane/ZoomPane.vue'
-import SelectionPane from '~/container/SelectionPane/SelectionPane.vue'
-import NodeRenderer from '~/container/NodeRenderer/NodeRenderer.vue'
-import EdgeRenderer from '~/container/EdgeRenderer/EdgeRenderer.vue'
 import {
   ConnectionLineType,
   ConnectionMode,
@@ -15,10 +11,14 @@ import {
   TranslateExtent,
   NodeExtent,
   FlowOptions,
-} from '~/types'
-import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
-import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
-import { useHooks, useStore, createHooks } from '~/composables'
+} from '../../types'
+import { useHooks, useStore, createHooks } from '../../composables'
+import ZoomPane from '../../container/ZoomPane/ZoomPane.vue'
+import SelectionPane from '../../container/SelectionPane/SelectionPane.vue'
+import NodeRenderer from '../../container/NodeRenderer/NodeRenderer.vue'
+import EdgeRenderer from '../../container/EdgeRenderer/EdgeRenderer.vue'
+import { DefaultNode, InputNode, OutputNode } from '../../components/Nodes'
+import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '../../components/Edges'
 
 export interface FlowProps extends FlowOptions {
   elements: Elements

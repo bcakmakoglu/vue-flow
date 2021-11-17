@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Handle from '../Handle/Handle.vue'
-import { NodeProps, Position } from '~/types'
+import { NodeProps, Position } from '../../types'
 
 interface InputNodeProps extends NodeProps {
   data?: NodeProps['data']

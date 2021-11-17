@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
+import { ConnectionLineType, EdgeType } from '../../types'
+import { useStore } from '../../composables'
+import Edge from '../../components/Edges/Edge.vue'
+import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import MarkerDefinitions from './MarkerDefinitions.vue'
-import Edge from '~/components/Edges/Edge.vue'
-import ConnectionLine from '~/components/ConnectionLine/ConnectionLine.vue'
-import { ConnectionLineType, EdgeType } from '~/types'
-import { useStore } from '~/composables'
 
 interface EdgeRendererProps {
   edgeTypes: Record<string, EdgeType>

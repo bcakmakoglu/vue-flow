@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { ArrowHeadType, EdgeProps, ElementId, Position } from '../../types'
 import SmoothStepEdge from './SmoothStepEdge.vue'
-import { ArrowHeadType, EdgeProps, ElementId, Position } from '~/types'
 
 export interface StepEdgeProps extends EdgeProps {
   id: ElementId

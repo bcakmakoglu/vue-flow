@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import { ArrowHeadType, EdgeProps, ElementId, Position } from '../../types'
 import EdgeText from './EdgeText.vue'
 import { getCenter, getMarkerEnd, getSmoothStepPath } from './utils'
-import { ArrowHeadType, EdgeProps, ElementId, Position } from '~/types'
 
 interface SmoothStepEdgeProps extends EdgeProps {
   id: ElementId

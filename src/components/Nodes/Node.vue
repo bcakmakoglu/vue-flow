@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
-import { Node, NodeType, SnapGrid } from '~/types'
+import { useHooks, useStore } from '../../composables'
+import { Node, NodeType, SnapGrid } from '../../types'
 import { NodeIdContextKey } from '~/context'
-import { useHooks, useStore } from '~/composables'
 
 interface NodeProps {
   node: Node
