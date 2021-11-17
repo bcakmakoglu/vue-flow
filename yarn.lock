@@ -5497,6 +5497,11 @@ validate-npm-package-name@^3.0.0:
   dependencies:
     builtins "^1.0.3"
 
+vite-plugin-css-injected-by-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-1.0.1.tgz#3cdef205a413ed39df2a8f4ff8160739ed656014"
+  integrity sha512-Z6tMEIeTesv/B23+1BDhoqRH1WXduat+P1aKMOpDMO/NLWlLF7c1TTJvXJebpH6HXSkrvySbfr5NnooeiSZsMQ==
+
 vite-svg-loader@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/vite-svg-loader/-/vite-svg-loader-2.2.0.tgz#b5d6ca948b03e45320cb4f96c44bf88f5bef0a2c"

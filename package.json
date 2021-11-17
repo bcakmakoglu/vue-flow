@@ -61,6 +61,7 @@
     "typescript-transform-paths": "^3.3.1",
     "unplugin-auto-import": "^0.4.12",
     "vite": "^2.6.10",
+    "vite-plugin-css-injected-by-js": "^1.0.1",
     "vite-svg-loader": "^2.2.0",
     "vue": "^3.2.21",
     "vue-router": "^4.0.12",
