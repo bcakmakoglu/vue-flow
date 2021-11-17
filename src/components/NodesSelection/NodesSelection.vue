@@ -2,7 +2,7 @@
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
 import { useHooks, useStore } from '../../composables'
 import { Node } from '../../types'
-import { getRectOfNodes, isNode } from '~/utils'
+import { getRectOfNodes, isNode } from '../../utils'
 
 const store = useStore()
 const hooks = useHooks()
@@ -56,22 +56,17 @@ const onContextMenu = (event: MouseEvent) => {
   const nodes = selectedNodes
   hooks.selectionContextMenu.trigger({ event, nodes })
 }
+
+const transform = computed(() => store.transform)
 </script>
 <template>
   <div
     class="vue-flow__nodesselection"
     :style="{
-      transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`,
+      transform: `translate(${transform[0]}px,${transform[1]}px) scale(${transform[2]})`,
     }"
   >
-    <Draggable
-      :scale="store.transform[2]"
-      :grid="store.snapToGrid ? store.snapGrid : undefined"
-      :enable-user-select-hack="false"
-      @start="onStart"
-      @move="onDrag"
-      @stop="onStop"
-    >
+    <Draggable @start="onStart" @move="onDrag" @stop="onStop">
       <div class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
     </Draggable>
   </div>

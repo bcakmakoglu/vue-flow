@@ -288,10 +288,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@braks/revue-draggable@0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@braks/revue-draggable/-/revue-draggable-0.2.5.tgz#28a94ee4633aab25bcee28877511e0c9ad262f59"
-  integrity sha512-iKGLFXaurfEqoyPbkANv8ZuO1229krVvUQDDYN9le5WlVssFWcQtA3hNvBD2TPuwil226qXv9SqXGp5kgDhAsA==
+"@braks/revue-draggable@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@braks/revue-draggable/-/revue-draggable-0.3.4.tgz#fd01a867c95148c0de2b951d76da1167e2e46d1a"
+  integrity sha512-94RqlmFPb/ARiOTrSwt0Zco5tFLK/pR6SgVl1efk3wWafngDY2GT7oa42UXuHtH2HmviCIZwWROgZG3H1G1ONA==
   dependencies:
     "@vueuse/core" "^5.1.3"
     vue-demi latest
@@ -5496,11 +5496,6 @@ validate-npm-package-name@^3.0.0:
   integrity sha1-X6kS2B630MdK/BQN5zF/DKffQ34=
   dependencies:
     builtins "^1.0.3"
-
-vite-plugin-css-injected-by-js@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-1.0.1.tgz#3cdef205a413ed39df2a8f4ff8160739ed656014"
-  integrity sha512-Z6tMEIeTesv/B23+1BDhoqRH1WXduat+P1aKMOpDMO/NLWlLF7c1TTJvXJebpH6HXSkrvySbfr5NnooeiSZsMQ==
 
 vite-svg-loader@^2.2.0:
   version "2.2.0"
