@@ -210,7 +210,9 @@ watchOnce(
 )
 </script>
 <template>
-  <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
-    <slot v-bind="{ transform, dimensions: { width, height } }"></slot>
-  </div>
+  <Suspense>
+    <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
+      <slot v-bind="{ transform, dimensions: { width, height } }"></slot>
+    </div>
+  </Suspense>
 </template>
