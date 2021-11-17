@@ -1,6 +1,6 @@
 # Vue Flow 🌊
 
-[![vue flow](./src/assets/vue-flow.gif)](https://vue-flow.vercel.app/)
+[![vue flow](./src/assets/vue-flow.gif)](https://vueflow.dev/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow)
 [![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg)](https://david-dm.org/bcakmakoglu/vue-flow)
 [![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg?type=dev)](https://david-dm.org/bcakmakoglu/vue-flow?type=dev)
@@ -13,8 +13,8 @@
 With Vue Flow you can build your own, customized node-based applications like static diagrams or even more complex and
 interactive editors!
 
-You can find a detailed explanation on how to get started in the [documentation](https://vue-flow.vercel.app/docs) or check
-the [examples](https://vue-flow.vercel.app/examples).
+You can find a detailed explanation on how to get started in the [documentation](https://vueflow.dev/docs) or check
+the [examples](https://vueflow.dev/examples).
 
 If you want to see how it's used with Nuxt3, check out the [docs repo](https://github.com/bcakmakoglu/vue-flow-docs)!
 

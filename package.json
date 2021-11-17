@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
+  "homepage": "https://vueflow.dev/",
   "exports": {
     ".": "./dist/vue-flow.es.js",
     "./*": "./*"
