@@ -56,6 +56,9 @@ $ yarn add @braks/vue-flow
 <script lang="ts" setup>
 import { VueFlow, Elements, Position } from '@braks/vue-flow'
 
+// import the default theme (optional)
+import 'node_modules/@braks/vue-flow/dist/theme-default.css'
+
 const elements = ref<Elements>([
   {
     id: '1',
