@@ -20,7 +20,7 @@ export default {
 }
 </script>
 <template>
-  <slot>
+  <slot v-bind="props">
     <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
     <span v-else v-html="props.data?.label"></span>
   </slot>

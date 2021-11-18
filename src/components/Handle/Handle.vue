@@ -43,6 +43,6 @@ const onMouseDownHandler = (event: MouseEvent) =>
     ]"
     @mousedown="onMouseDownHandler"
   >
-    <slot></slot>
+    <slot :node-id="nodeId" v-bind="props"></slot>
   </div>
 </template>
