@@ -44,5 +44,7 @@ const props = withDefaults(defineProps<StepEdgeProps>(), {
 })
 </script>
 <template>
-  <SmoothStepEdge v-bind="props" :border-radius="0" />
+  <SmoothStepEdge v-bind="props" :border-radius="0">
+    <slot />
+  </SmoothStepEdge>
 </template>

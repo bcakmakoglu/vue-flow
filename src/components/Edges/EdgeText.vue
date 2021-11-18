@@ -4,7 +4,12 @@ import { CSSProperties, HTMLAttributes } from 'vue'
 interface EdgeTextProps extends HTMLAttributes {
   x: number
   y: number
-  label?: any
+  label?:
+    | string
+    | {
+        component: any
+        props?: any
+      }
   labelStyle?: CSSProperties
   labelShowBg?: boolean
   labelBgStyle?: any
@@ -39,15 +44,16 @@ const bgPadding = computed(() => [props.labelBgPadding[0], props.labelBgPadding[
       :ry="props.labelBgBorderRadius"
     />
     <text ref="edge-text" class="vue-flow__edge-text" :y="height / 2" dy="0.3em" :style="props.labelStyle">
-      <component
-        :is="props.label.component"
-        v-if="typeof props.label.component !== 'undefined'"
-        v-bind="{ ...props, ...props.label?.props, width, height, x, y }"
-      />
-      <template v-else v-html="props.label">
-        {{ props.label }}
-      </template>
+      <slot>
+        <component
+          :is="props.label?.component"
+          v-if="typeof props.label !== 'string' && typeof props.label?.component !== 'undefined'"
+          v-bind="{ ...props, ...props.label?.props, width, height, x, y }"
+        />
+        <template v-else v-html="props.label">
+          {{ props.label }}
+        </template>
+      </slot>
     </text>
-    <slot></slot>
   </g>
 </template>

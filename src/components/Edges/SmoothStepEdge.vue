@@ -68,15 +68,17 @@ export default {
 </script>
 <template>
   <path class="vue-flow__edge-path" :style="props.style" :d="path" :marker-end="markerEnd" />
-  <EdgeText
-    v-if="props.label"
-    :x="centered[0]"
-    :y="centered[1]"
-    :label="props.label"
-    :label-style="props.labelStyle"
-    :label-show-bg="props.labelShowBg"
-    :label-bg-style="props.labelBgStyle"
-    :label-bg-padding="props.labelBgPadding"
-    :label-bg-border-radius="props.labelBgBorderRadius"
-  />
+  <slot>
+    <EdgeText
+      v-if="props.label"
+      :x="centered[0]"
+      :y="centered[1]"
+      :label="props.label"
+      :label-style="props.labelStyle"
+      :label-show-bg="props.labelShowBg"
+      :label-bg-style="props.labelBgStyle"
+      :label-bg-padding="props.labelBgPadding"
+      :label-bg-border-radius="props.labelBgBorderRadius"
+    />
+  </slot>
 </template>

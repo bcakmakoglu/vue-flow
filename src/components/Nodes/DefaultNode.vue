@@ -23,7 +23,9 @@ export default {
 </script>
 <template>
   <Handle type="target" :position="props.targetPosition" :is-connectable="props.connectable" />
-  <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
-  <span v-else v-html="props.data?.label"></span>
+  <slot>
+    <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
+    <span v-else v-html="props.data?.label"></span>
+  </slot>
   <Handle type="source" :position="props.sourcePosition" :is-connectable="props.connectable" />
 </template>
