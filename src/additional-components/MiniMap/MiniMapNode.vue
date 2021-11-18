@@ -8,7 +8,7 @@ interface MiniMapNodeProps {
   height?: number
   borderRadius?: number
   color?: string
-  shapeRendering?: 'auto' | 'optimizeSpeed' | 'crispEdges' | 'geometricPrecision' | 'inherit'
+  shapeRendering?: CSSProperties['shapeRendering']
   strokeColor?: string
   strokeWidth?: number
 }

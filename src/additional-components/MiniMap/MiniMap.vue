@@ -90,8 +90,20 @@ const d = computed(() => {
     :viewBox="`${viewBox.x || 0} ${viewBox.y || 0} ${viewBox.width || 0} ${viewBox.height || 0}`"
     class="vue-flow__minimap"
   >
-    <slot name="mini-map-nodes" :nodes="nodes" :view-box="viewBox">
-      <template v-for="(node, i) of nodes" :key="`mini-map-node-${i}`">
+    <template v-for="node of nodes" :key="`mini-map-node-${node.id}`">
+      <slot
+        :x="node.__rf.position.x"
+        :y="node.__rf.position.y"
+        :width="node.__rf.width"
+        :height="node.__rf.height"
+        :style="node.style"
+        :class="nodeClassNameFunc(node)"
+        :color="nodeColorFunc(node)"
+        :border-radius="props.nodeBorderRadius"
+        :stroke-color="nodeStrokeColorFunc(node)"
+        :stroke-width="props.nodeStrokeWidth"
+        :shape-rendering="shapeRendering"
+      >
         <MiniMapNode
           :x="node.__rf.position.x"
           :y="node.__rf.position.y"
@@ -105,8 +117,8 @@ const d = computed(() => {
           :stroke-width="props.nodeStrokeWidth"
           :shape-rendering="shapeRendering"
         />
-      </template>
-    </slot>
+      </slot>
+    </template>
     <path class="vue-flow__minimap-mask" :d="d" :fill="props.maskColor" fill-rule="evenodd" />
   </svg>
 </template>

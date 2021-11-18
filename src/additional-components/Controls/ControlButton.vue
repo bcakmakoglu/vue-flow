@@ -6,7 +6,7 @@ export interface ControlButtonProps extends ButtonHTMLAttributes {}
 const props: any = defineProps<ControlButtonProps>()
 </script>
 <template>
-  <button :class="['vue-flow__controls-button']" v-bind="props">
+  <button class="vue-flow__controls-button" v-bind="props">
     <slot></slot>
   </button>
 </template>
