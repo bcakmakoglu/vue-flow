@@ -212,7 +212,17 @@ watchOnce(
 <template>
   <Suspense>
     <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
-      <slot v-bind="{ transform, dimensions: { width, height } }"></slot>
+      <slot
+        v-bind="{
+          transform,
+          dimensions: { width, height },
+          zoomIn,
+          zoomOut,
+          zoomTo,
+          setTransform,
+          fitView,
+        }"
+      ></slot>
     </div>
   </Suspense>
 </template>

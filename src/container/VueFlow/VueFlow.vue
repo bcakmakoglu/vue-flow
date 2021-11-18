@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties, onBeforeUnmount } from 'vue'
+import { invoke } from '@vueuse/core'
 import {
   ConnectionLineType,
   ConnectionMode,
@@ -131,7 +132,10 @@ watch(
   (val) => init(val),
   { flush: 'pre', deep: true },
 )
-init(props)
+invoke(async () => {
+  await until(props.elements).toMatch((y) => y.length > 0)
+  init(props)
+})
 
 const nodeTypes = computed(() => {
   let types = defaultNodeTypes
@@ -148,48 +152,50 @@ const edgeTypes = computed(() => {
 </script>
 <template>
   <div class="vue-flow">
-    <ZoomPane
-      :selection-key-code="props.selectionKeyCode"
-      :zoom-activation-key-code="props.zoomActivationKeyCode"
-      :default-zoom="props.defaultZoom"
-      :default-position="props.defaultPosition"
-      :zoom-on-scroll="props.zoomOnScroll"
-      :zoom-on-pinch="props.zoomOnPinch"
-      :zoom-on-double-click="props.zoomOnDoubleClick"
-      :pan-on-scroll="props.panOnScroll"
-      :pan-on-scroll-speed="props.panOnScrollSpeed"
-      :pan-on-scroll-mode="props.panOnScrollMode"
-      :pane-moveable="props.paneMoveable"
-    >
-      <template #default="zoomPaneProps">
-        <SelectionPane
-          :delete-key-code="props.deleteKeyCode"
-          :multi-selection-key-code="props.multiSelectionKeyCode"
-          :selection-key-code="props.selectionKeyCode"
-        >
-          <NodeRenderer :node-types="nodeTypes" :select-nodes-on-drag="props.selectNodesOnDrag">
-            <template v-for="nodeName of Object.keys(nodeTypes)" #[`node-${nodeName}`]="nodeProps">
-              <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
-            </template>
-          </NodeRenderer>
-          <EdgeRenderer
-            :connection-line-type="props.connectionLineType"
-            :connection-line-style="props.connectionLineStyle"
-            :arrow-head-color="props.arrowHeadColor"
-            :marker-end-id="props.markerEndId"
-            :edge-types="edgeTypes"
+    <Suspense>
+      <ZoomPane
+        :selection-key-code="props.selectionKeyCode"
+        :zoom-activation-key-code="props.zoomActivationKeyCode"
+        :default-zoom="props.defaultZoom"
+        :default-position="props.defaultPosition"
+        :zoom-on-scroll="props.zoomOnScroll"
+        :zoom-on-pinch="props.zoomOnPinch"
+        :zoom-on-double-click="props.zoomOnDoubleClick"
+        :pan-on-scroll="props.panOnScroll"
+        :pan-on-scroll-speed="props.panOnScrollSpeed"
+        :pan-on-scroll-mode="props.panOnScrollMode"
+        :pane-moveable="props.paneMoveable"
+      >
+        <template #default="zoomPaneProps">
+          <SelectionPane
+            :delete-key-code="props.deleteKeyCode"
+            :multi-selection-key-code="props.multiSelectionKeyCode"
+            :selection-key-code="props.selectionKeyCode"
           >
-            <template v-for="edgeName of Object.keys(edgeTypes)" #[`edge-${edgeName}`]="edgeProps">
-              <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
-            </template>
-            <template #custom-connection-line="customConnectionLineProps">
-              <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
-            </template>
-          </EdgeRenderer>
-        </SelectionPane>
-        <slot name="zoom-pane" v-bind="zoomPaneProps"></slot>
-      </template>
-    </ZoomPane>
+            <NodeRenderer :node-types="nodeTypes" :select-nodes-on-drag="props.selectNodesOnDrag">
+              <template v-for="nodeName of Object.keys(nodeTypes)" #[`node-${nodeName}`]="nodeProps">
+                <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
+              </template>
+            </NodeRenderer>
+            <EdgeRenderer
+              :connection-line-type="props.connectionLineType"
+              :connection-line-style="props.connectionLineStyle"
+              :arrow-head-color="props.arrowHeadColor"
+              :marker-end-id="props.markerEndId"
+              :edge-types="edgeTypes"
+            >
+              <template v-for="edgeName of Object.keys(edgeTypes)" #[`edge-${edgeName}`]="edgeProps">
+                <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
+              </template>
+              <template #custom-connection-line="customConnectionLineProps">
+                <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
+              </template>
+            </EdgeRenderer>
+          </SelectionPane>
+          <slot name="zoom-pane" v-bind="zoomPaneProps"></slot>
+        </template>
+      </ZoomPane>
+    </Suspense>
     <slot v-bind="{ ...props, store, hooks }"></slot>
   </div>
 </template>

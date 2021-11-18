@@ -48,18 +48,20 @@ const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id
 </script>
 <template>
   <div class="vue-flow__nodes" :style="{ transform }">
-    <template v-for="node of nodes" :key="node.id">
-      <Node
-        :node="node"
-        :type="type(node)"
-        :snap-grid="snapGrid"
-        :select-nodes-on-drag="props.selectNodesOnDrag"
-        :selected="selected(node.id)"
-      >
-        <template #default="nodeProps">
-          <slot :name="`node-${node.type}`" v-bind="nodeProps"></slot>
-        </template>
-      </Node>
-    </template>
+    <Suspense>
+      <template v-for="node of nodes" :key="node.id">
+        <Node
+          :node="node"
+          :type="type(node)"
+          :snap-grid="snapGrid"
+          :select-nodes-on-drag="props.selectNodesOnDrag"
+          :selected="selected(node.id)"
+        >
+          <template #default="nodeProps">
+            <slot :name="`node-${node.type}`" v-bind="nodeProps"></slot>
+          </template>
+        </Node>
+      </template>
+    </Suspense>
   </div>
 </template>
