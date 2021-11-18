@@ -16,19 +16,24 @@ export interface ControlProps extends HTMLAttributes {
   fitViewParams?: FitViewParams
 }
 
+interface ControlEvents {
+  (event: 'zoom-in'): void
+  (event: 'zoom-out'): void
+  (event: 'fit-view'): void
+  (event: 'interaction-change', active: boolean): void
+}
+
 const props = withDefaults(defineProps<ControlProps>(), {
   showZoom: true,
   showFitView: true,
   showInteractive: true,
 })
-// todo define types for events
-const emit = defineEmits(['zoom-in', 'zoom-out', 'fit-view', 'interaction-change'])
+const emit = defineEmits<ControlEvents>()
 
 const store = useStore()
 const { zoomIn, zoomOut, fitView } = useZoomPanHelper()
 
 const isInteractive = computed(() => store.nodesDraggable && store.nodesConnectable && store.elementsSelectable)
-const mapClasses = ['vue-flow__controls']
 
 const onZoomInHandler = () => {
   zoomIn()
@@ -51,7 +56,7 @@ const onInteractiveChangeHandler = () => {
 }
 </script>
 <template>
-  <div :class="mapClasses">
+  <div class="vue-flow__controls">
     <template v-if="props.showZoom">
       <slot name="control-zoom-in">
         <ControlButton class="vue-flow__controls-zoomin" @click="onZoomInHandler">
