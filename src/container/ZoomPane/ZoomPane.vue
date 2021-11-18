@@ -190,7 +190,16 @@ watch(
   },
   { flush: 'pre' },
 )
-watch(transform, (val) => (store.transform = [val.x, val.y, val.zoom]), { flush: 'pre' })
+watch(
+  transform,
+  (val) =>
+    (store.transform = [
+      clamp(val.x, store.translateExtent[0][0], store.translateExtent[1][0]),
+      clamp(val.y, store.translateExtent[0][0], store.translateExtent[1][0]),
+      clamp(val.zoom, store.translateExtent[0][0], store.translateExtent[1][0]),
+    ]),
+  { flush: 'pre' },
+)
 
 const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
 watchOnce(
