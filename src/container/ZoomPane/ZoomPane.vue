@@ -55,6 +55,8 @@ const clampedZoom = clamp(props.defaultZoom, store.minZoom, store.maxZoom)
 const transform = ref({ x: clampedX, y: clampedY, zoom: clampedZoom })
 const d3Zoom = ref(zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent))
 const d3Selection = ref()
+
+const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
 store.transform = [transform.value.x, transform.value.y, transform.value.zoom]
 
 invoke(async () => {
@@ -182,6 +184,20 @@ store.dimensions = {
   height: height.value,
 }
 
+invoke(async () => {
+  await until(() => !isNaN(width.value) && width.value > 0 && !isNaN(height.value) && height.value > 0).toBeTruthy()
+  hooks.load.trigger({
+    fitView: (params = { padding: 0.1 }) => fitView(params),
+    zoomIn,
+    zoomOut,
+    zoomTo,
+    setTransform,
+    project: onLoadProject(store),
+    getElements: onLoadGetElements(store),
+    toObject: onLoadToObject(store),
+  })
+})
+
 watch(
   [width, height],
   ([newWidth, newHeight]) => {
@@ -199,23 +215,6 @@ watch(
       clamp(val.zoom, store.translateExtent[0][0], store.translateExtent[1][0]),
     ]),
   { flush: 'pre' },
-)
-
-const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
-watchOnce(
-  () => !isNaN(width.value) && width.value > 0 && !isNaN(height.value) && height.value > 0,
-  () => {
-    hooks.load.trigger({
-      fitView: (params = { padding: 0.1 }) => fitView(params),
-      zoomIn,
-      zoomOut,
-      zoomTo,
-      setTransform,
-      project: onLoadProject(store),
-      getElements: onLoadGetElements(store),
-      toObject: onLoadToObject(store),
-    })
-  },
 )
 </script>
 <template>
