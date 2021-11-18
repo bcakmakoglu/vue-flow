@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
-import { useHooks, useStore } from '../../composables'
+import { useStore } from '../../composables'
 import { Node, NodeType, SnapGrid } from '../../types'
-import { NodeId } from '~/context'
+import { NodeId } from '../../context'
 
 interface NodeProps {
   node: Node
@@ -18,7 +18,6 @@ const props = withDefaults(defineProps<NodeProps>(), {
 })
 
 const store = useStore()
-const hooks = useHooks()
 provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
@@ -33,15 +32,15 @@ const connectable = computed(() =>
 const scale = computed(() => store.transform[2])
 
 const onMouseEnterHandler = () =>
-  props.node.__rf?.isDragging && ((event: MouseEvent) => hooks.nodeMouseEnter.trigger({ event, node: props.node }))
+  props.node.__rf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
 
 const onMouseMoveHandler = () =>
-  props.node.__rf?.isDragging && ((event: MouseEvent) => hooks.nodeMouseMove.trigger({ event, node: props.node }))
+  props.node.__rf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
 
 const onMouseLeaveHandler = () =>
-  props.node.__rf?.isDragging && ((event: MouseEvent) => hooks.nodeMouseLeave.trigger({ event, node: props.node }))
+  props.node.__rf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
 
-const onContextMenuHandler = () => (event: MouseEvent) => hooks.nodeContextMenu.trigger({ event, node: props.node })
+const onContextMenuHandler = () => (event: MouseEvent) => store.hooks.nodeContextMenu.trigger({ event, node: props.node })
 
 const onSelectNodeHandler = (event: MouseEvent) => {
   if (!draggable.value) {
@@ -51,13 +50,13 @@ const onSelectNodeHandler = (event: MouseEvent) => {
 
       if (!props.selected) store.addSelectedElements([n])
     }
-    hooks.nodeClick.trigger({ event, node: n })
+    store.hooks.nodeClick.trigger({ event, node: n })
   }
 }
 
 const onDragStart: DraggableEventListener = ({ event }) => {
   const n = props.node
-  hooks.nodeDragStart.trigger({ event, node: n })
+  store.hooks.nodeDragStart.trigger({ event, node: n })
 
   if (props.selectNodesOnDrag && selectable) {
     store.unsetNodesSelection()
@@ -73,7 +72,7 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
   const n = props.node
   n.position.x += data.deltaX
   n.position.y += data.deltaY
-  hooks.nodeDrag.trigger({ event, node: n })
+  store.hooks.nodeDrag.trigger({ event, node: n })
 
   store.updateNodePosDiff({
     id: props.node.id,
@@ -93,7 +92,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
     if (selectable.value && !props.selectNodesOnDrag && !props.selected) {
       store.addSelectedElements([n])
     }
-    hooks.nodeClick.trigger({ event, node: n })
+    store.hooks.nodeClick.trigger({ event, node: n })
 
     return
   }
@@ -103,7 +102,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
     isDragging: false,
   })
 
-  hooks.nodeDragStop.trigger({ event, node: n })
+  store.hooks.nodeDragStop.trigger({ event, node: n })
 }
 
 onMounted(() => {

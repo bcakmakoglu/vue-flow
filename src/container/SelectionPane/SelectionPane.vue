@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ElementId, FlowElement, KeyCode } from '../../types'
-import { useHooks, useStore, useKeyPress } from '../../composables'
+import { useStore, useKeyPress } from '../../composables'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import { getConnectedEdges, isNode } from '../../utils'
@@ -17,17 +17,16 @@ const props = withDefaults(defineProps<SelectionPaneProps>(), {
 })
 
 const store = useStore()
-const hooks = useHooks()
 
 const onClick = (event: MouseEvent) => {
-  hooks.paneClick.trigger(event)
+  store.hooks.paneClick.trigger(event)
   store.unsetNodesSelection()
   store.resetSelectedElements()
 }
 
-const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event)
+const onContextMenu = (event: MouseEvent) => store.hooks.paneContextMenu.trigger(event)
 
-const onWheel = (event: WheelEvent) => hooks.paneScroll.trigger(event)
+const onWheel = (event: WheelEvent) => store.hooks.paneScroll.trigger(event)
 
 const selectionKeyPresed = ref(false)
 
@@ -41,7 +40,7 @@ onMounted(() => {
         new Map<ElementId, FlowElement>(),
       )
 
-      hooks.elementsRemove.trigger(Array.from(elementsToRemove.values()))
+      store.hooks.elementsRemove.trigger(Array.from(elementsToRemove.values()))
       store.unsetNodesSelection()
       store.resetSelectedElements()
     }

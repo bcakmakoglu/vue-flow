@@ -13,7 +13,6 @@ import {
   TranslateExtent,
   NodeExtent,
   FlowOptions,
-  FlowEvents,
 } from '../../types'
 import ZoomPane from '../../container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '../../container/SelectionPane/SelectionPane.vue'
@@ -21,7 +20,7 @@ import NodeRenderer from '../../container/NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../../container/EdgeRenderer/EdgeRenderer.vue'
 import { DefaultNode, InputNode, OutputNode } from '../../components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '../../components/Edges'
-import { initFlow } from '~/composables'
+import { createHooks, initFlow } from '../../composables'
 
 export interface FlowProps extends FlowOptions {
   elements: Elements
@@ -59,6 +58,7 @@ export interface FlowProps extends FlowOptions {
   edgeUpdaterRadius?: number
   edgeTypesId?: string
   nodeTypesId?: string
+  storage?: string
 }
 
 const props = withDefaults(defineProps<FlowProps>(), {
@@ -100,9 +100,8 @@ const props = withDefaults(defineProps<FlowProps>(), {
   edgeTypesId: '1',
   nodeTypesId: '1',
 })
-export type DefineFlowEvents = { (event: keyof FlowEvents, flowEvent: FlowEvents[keyof FlowEvents]): void }
 
-const emit = defineEmits<DefineFlowEvents>()
+const emit = defineEmits(Object.keys(createHooks()))
 
 const defaultNodeTypes: Record<string, NodeType> = {
   input: InputNode as NodeType,
@@ -117,11 +116,10 @@ const defaultEdgeTypes: Record<string, EdgeType> = {
   smoothstep: SmoothStepEdge as EdgeType,
 }
 
-const { store, hooks } = initFlow(emit)
+const { store, hooks } = initFlow(emit, props)
 
 const init = (opts: typeof props) => {
-  store.$state = { ...store.$state, ...opts }
-  store.setElements(opts.elements)
+  store.$state = { ...store.$state, ...(props as any) }
   store.setMinZoom(opts.minZoom)
   store.setMaxZoom(opts.maxZoom)
   store.setTranslateExtent(opts.translateExtent)
@@ -147,10 +145,12 @@ invoke(async () => {
 watch(
   elements,
   (val, oldVal) => {
-    const hasDiff = diff(val, oldVal)
-    if (hasDiff.length > 0) store.setElements(val)
+    nextTick(() => {
+      const hasDiff = diff(val, oldVal)
+      if (hasDiff.length > 0) store.setElements(val)
+    })
   },
-  { flush: 'pre', deep: true },
+  { flush: 'post', deep: true },
 )
 
 const nodeTypes = computed(() => {

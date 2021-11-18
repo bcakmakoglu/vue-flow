@@ -3,7 +3,7 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { get, invoke } from '@vueuse/core'
 import { pointer, select } from 'd3-selection'
 import { FlowInstance, FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
-import { useHooks, useKeyPress, useStore, useZoomPanHelper } from '../../composables'
+import { useKeyPress, useStore, useZoomPanHelper } from '../../composables'
 import { clamp, onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
 
 interface ZoomPaneProps {
@@ -34,7 +34,6 @@ const props = withDefaults(defineProps<ZoomPaneProps>(), {
   paneMoveable: true,
 })
 const store = useStore()
-const hooks = useHooks()
 
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
 
@@ -75,7 +74,7 @@ invoke(async () => {
     if (viewChanged(transform.value, event.transform)) {
       const flowTransform = eventToFlowTransform(event.transform)
       transform.value = flowTransform
-      hooks.moveStart.trigger(flowTransform)
+      store.hooks.moveStart.trigger(flowTransform)
     }
   })
 
@@ -83,7 +82,7 @@ invoke(async () => {
     if (viewChanged(transform.value, event.transform)) {
       const flowTransform = eventToFlowTransform(event.transform)
       transform.value = flowTransform
-      hooks.moveEnd.trigger(flowTransform)
+      store.hooks.moveEnd.trigger(flowTransform)
     }
   })
 
@@ -95,7 +94,7 @@ invoke(async () => {
         if (viewChanged(transform.value, event.transform)) {
           const flowTransform = eventToFlowTransform(event.transform)
           transform.value = flowTransform
-          hooks.move.trigger(flowTransform)
+          store.hooks.move.trigger(flowTransform)
         }
       })
     }
@@ -196,7 +195,7 @@ invoke(async () => {
     getElements: onLoadGetElements(store),
     toObject: onLoadToObject(store),
   }
-  hooks.load.trigger(instance)
+  store.hooks.load.trigger(instance)
 })
 
 watch(

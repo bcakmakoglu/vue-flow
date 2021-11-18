@@ -1,10 +1,10 @@
 import useHooks from './useHooks'
 import useStore from './useStore'
-import { EmitFunc } from '~/types'
+import { EmitFunc, FlowOptions } from '~/types'
 
-export const initFlow = (emit: EmitFunc) => {
-  const store = useStore()
-  const hooks = useHooks(emit)
+export const initFlow = (emit: EmitFunc, options: Partial<FlowOptions>) => {
+  const store = useStore(options)
+  const hooks = useHooks(store, emit)
 
   return {
     store,
@@ -12,4 +12,4 @@ export const initFlow = (emit: EmitFunc) => {
   }
 }
 
-export default () => useStore()
+export default (options?: Partial<FlowOptions>) => useStore(options)

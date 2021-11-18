@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useHooks, useStore, getEdgeCenter, getBezierPath, getMarkerEnd, ArrowHeadType, Edge, ElementId, Position } from '~/index'
+import { getEdgeCenter, getBezierPath, getMarkerEnd, ArrowHeadType, Edge, ElementId, Position, useVueFlow } from '~/index'
 
 interface CustomEdgeProps<T = any> extends Edge<T> {
   id: ElementId
@@ -15,12 +15,11 @@ interface CustomEdgeProps<T = any> extends Edge<T> {
 }
 
 const props = defineProps<CustomEdgeProps>()
-const store = useStore()
-const hooks = useHooks()
+const store = useVueFlow()
 const onEdgeClick = (evt: Event, id: string) => {
   const edge = store.edges.find((edge) => edge.id === id)
   if (edge) {
-    hooks.elementsRemove.trigger([edge])
+    store.hooks.elementsRemove.trigger([edge])
   }
   evt.stopPropagation()
   alert(`remove ${id}`)

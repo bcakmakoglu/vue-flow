@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useHandle, useHooks, useStore } from '../../composables'
+import { useHandle, useStore } from '../../composables'
 import { Position, ValidConnectionFunc } from '../../types'
-import { NodeId } from '~/context'
+import { NodeId } from '../../context'
 
 interface HandleProps {
   id?: string
@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<HandleProps>(), {
 })
 
 const store = useStore()
-const hooks = useHooks()
 const nodeId = inject(NodeId)!
 
 const handler = useHandle()

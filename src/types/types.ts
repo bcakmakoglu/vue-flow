@@ -124,4 +124,5 @@ export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
   edgeUpdaterRadius?: number
   nodeTypesId?: string
   edgeTypesId?: string
+  storageKey?: string
 }

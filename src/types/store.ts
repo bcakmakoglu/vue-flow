@@ -1,14 +1,14 @@
 import { Store } from 'pinia'
-import { Dimensions, ElementId, Elements, Rect, SelectionRect, SnapGrid, Transform, XYPosition } from './types'
+import { Dimensions, ElementId, Elements, FlowOptions, Rect, SelectionRect, SnapGrid, Transform, XYPosition } from './types'
 import { HandleType } from './handle'
 import { ConnectionMode, OnConnectEndFunc, OnConnectFunc, OnConnectStartFunc, OnConnectStopFunc } from './connection'
 import { Edge, EdgeType } from './edge'
 import { Node, NodeExtent, NodeType, TranslateExtent } from './node'
 import { FlowActions } from './actions'
 import { D3Selection, D3Zoom, D3ZoomHandler } from './panel'
-import { FlowHooks } from '~/types/hooks'
+import { FlowHooks } from './hooks'
 
-export interface FlowState {
+export interface FlowState extends FlowOptions {
   dimensions: Dimensions
   transform: Transform
   elements: Elements
@@ -56,6 +56,7 @@ export interface FlowState {
 
   isReady: boolean
   hooks: FlowHooks
+  storageKey?: string
 }
 
 export type FlowStore = Store<string, FlowState, any, FlowActions>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useHandle, useHooks, useStore } from '../../composables'
+import { useHandle, useStore } from '../../composables'
 import { ConnectionMode, Edge, EdgePositions, EdgeType, Position } from '../../types'
 import EdgeAnchor from './EdgeAnchor.vue'
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
@@ -15,7 +15,6 @@ interface EdgeProps {
 const props = withDefaults(defineProps<EdgeProps>(), {})
 
 const store = useStore()
-const hooks = useHooks()
 
 const onEdgeClick = (event: MouseEvent) => {
   if (store.elementsSelectable) {
@@ -23,20 +22,20 @@ const onEdgeClick = (event: MouseEvent) => {
     store.addSelectedElements([props.edge])
   }
 
-  hooks.edgeClick.trigger({ event, edge: props.edge })
+  store.hooks.edgeClick.trigger({ event, edge: props.edge })
 }
 
 const onEdgeContextMenu = (event: MouseEvent) =>
-  hooks.edgeContextMenu.trigger({
+  store.hooks.edgeContextMenu.trigger({
     event,
     edge: props.edge,
   })
 
-const onEdgeMouseEnter = (event: MouseEvent) => hooks.edgeMouseEnter.trigger({ event, edge: props.edge })
+const onEdgeMouseEnter = (event: MouseEvent) => store.hooks.edgeMouseEnter.trigger({ event, edge: props.edge })
 
-const onEdgeMouseMove = (event: MouseEvent) => hooks.edgeMouseMove.trigger({ event, edge: props.edge })
+const onEdgeMouseMove = (event: MouseEvent) => store.hooks.edgeMouseMove.trigger({ event, edge: props.edge })
 
-const onEdgeMouseLeave = (event: MouseEvent) => hooks.edgeMouseLeave.trigger({ event, edge: props.edge })
+const onEdgeMouseLeave = (event: MouseEvent) => store.hooks.edgeMouseLeave.trigger({ event, edge: props.edge })
 
 const handler = useHandle()
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
@@ -45,9 +44,9 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const isValidConnection = () => true
   const isTarget = isSourceHandle
 
-  hooks.edgeUpdateStart.trigger({ event, edge: props.edge })
+  store.hooks.edgeUpdateStart.trigger({ event, edge: props.edge })
   handler(event, handleId, nodeId, isTarget, isValidConnection, isSourceHandle ? 'target' : 'source', (connection) =>
-    hooks.edgeUpdate.trigger({ edge: props.edge, connection }),
+    store.hooks.edgeUpdate.trigger({ edge: props.edge, connection }),
   )
 }
 

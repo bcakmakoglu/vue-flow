@@ -1,5 +1,4 @@
 import useStore from './useStore'
-import useHooks from './useHooks'
 import { getHostForElement } from '~/utils'
 import { Connection, ConnectionMode, ElementId, HandleType, ValidConnectionFunc } from '~/types'
 
@@ -70,7 +69,6 @@ const resetRecentHandle = (hoveredHandle: Element): void => {
 
 export default () => {
   const store = useStore()
-  const hooks = useHooks()
 
   return (
     event: MouseEvent,
@@ -107,7 +105,7 @@ export default () => {
       connectionHandleId: handleId,
       connectionHandleType: handleType,
     })
-    hooks.connectStart.trigger({ event, params: { nodeId, handleId, handleType } })
+    store.hooks.connectStart.trigger({ event, params: { nodeId, handleId, handleType } })
 
     function onMouseMove(event: MouseEvent) {
       store.connectionPosition.x = event.clientX - containerBounds.left
@@ -147,16 +145,16 @@ export default () => {
         doc,
       )
 
-      hooks.connectStop.trigger(event)
+      store.hooks.connectStop.trigger(event)
 
       if (isValid) {
-        hooks.connect.trigger(connection)
+        store.hooks.connect.trigger(connection)
         onEdgeUpdate?.(connection)
       }
 
-      hooks.connectEnd.trigger(event)
+      store.hooks.connectEnd.trigger(event)
 
-      if (elementEdgeUpdaterType) hooks.edgeUpdateEnd.trigger(event)
+      if (elementEdgeUpdaterType) store.hooks.edgeUpdateEnd.trigger(event)
 
       resetRecentHandle(recentHoveredHandle)
       store.setConnectionNodeId({ connectionNodeId: undefined, connectionHandleId: undefined, connectionHandleType: undefined })

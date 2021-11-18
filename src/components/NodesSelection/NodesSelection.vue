@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
-import { useHooks, useStore } from '../../composables'
+import { useStore } from '../../composables'
 import { Node } from '../../types'
 import { getRectOfNodes, isNode } from '../../utils'
 
 const store = useStore()
-const hooks = useHooks()
 
 const selectedNodes = store.selectedElements
   ? store.selectedElements.filter(isNode).map((selectedNode) => {
@@ -29,12 +28,12 @@ const innerStyle = {
 
 const onStart: DraggableEventListener = ({ event }) => {
   const nodes = selectedNodes
-  hooks.selectionDragStart.trigger({ event, nodes })
+  store.hooks.selectionDragStart.trigger({ event, nodes })
 }
 
 const onDrag: DraggableEventListener = ({ event, data }) => {
   const nodes = selectedNodes
-  hooks.selectionDrag.trigger({ event, nodes })
+  store.hooks.selectionDrag.trigger({ event, nodes })
   store.updateNodePosDiff({
     diff: {
       x: data.deltaX,
@@ -46,7 +45,7 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
 
 const onStop: DraggableEventListener = ({ event }) => {
   const nodes = selectedNodes
-  hooks.selectionDragStop.trigger({ event, nodes })
+  store.hooks.selectionDragStop.trigger({ event, nodes })
   store.updateNodePosDiff({
     isDragging: false,
   })
@@ -54,7 +53,7 @@ const onStop: DraggableEventListener = ({ event }) => {
 
 const onContextMenu = (event: MouseEvent) => {
   const nodes = selectedNodes
-  hooks.selectionContextMenu.trigger({ event, nodes })
+  store.hooks.selectionContextMenu.trigger({ event, nodes })
 }
 
 const transform = computed(() => store.transform)

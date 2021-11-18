@@ -19,7 +19,6 @@ type NextElements = {
   nextEdges: Edge[]
 }
 const pinia = createPinia()
-let id = 0
 
 const parseElements = (elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) => {
   const nextElements: NextElements = {
@@ -68,11 +67,14 @@ const parseElements = (elements: Elements, nodes: Node[], edges: Edge[], nodeExt
   return nextElements
 }
 
-export default function flowStore(preloadedState: FlowState): StoreDefinition<string, FlowState, any, FlowActions> {
+export default function flowStore(id: string, preloadedState: FlowState): StoreDefinition<string, FlowState, any, FlowActions> {
   setActivePinia(pinia)
+  const { nextEdges, nextNodes } = parseElements(preloadedState.elements, [], [], preloadedState.nodeExtent)
+  preloadedState.nodes = nextNodes
+  preloadedState.edges = nextEdges
 
   return defineStore({
-    id: `vue-flow-${id++}`,
+    id: id ?? 'vue-flow',
     state: () => ({
       ...preloadedState,
     }),
