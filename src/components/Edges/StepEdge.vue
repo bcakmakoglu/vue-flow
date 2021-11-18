@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<StepEdgeProps>(), {
   selected: false,
   sourcePosition: Position.Bottom,
   targetPosition: Position.Top,
-  label: () => '',
+  label: '',
   labelStyle: () => ({}),
   labelShowBg: true,
   labelBgStyle: () => ({}),

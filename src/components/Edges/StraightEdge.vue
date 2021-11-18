@@ -38,7 +38,7 @@ const props = withDefaults(defineProps<StraightEdgeProps>(), {
   selected: false,
   sourcePosition: Position.Bottom,
   targetPosition: Position.Top,
-  label: () => '',
+  label: '',
   labelStyle: () => ({}),
   labelShowBg: true,
   labelBgStyle: () => ({}),
