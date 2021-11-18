@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-import localforage from 'localforage'
 import { useZoomPanHelper, FlowInstance, FlowExportObject, Node } from '~/index'
 
-localforage.config({
-  name: 'vue-flow',
-  storeName: 'flows',
-})
-
 const flowKey = 'example-flow'
+const state = useStorage(flowKey, {
+  elements: [],
+  position: [NaN, NaN],
+  zoom: 1,
+} as FlowExportObject)
 
 const getNodeId = () => `randomnode_${+new Date()}`
 
@@ -21,25 +20,17 @@ const props = defineProps<ControlsProps>()
 const emit = defineEmits(['restore', 'add'])
 
 const onSave = () => {
-  if (props.flowInstance) {
-    const flow = props.flowInstance.toObject()
-    localforage.setItem(flowKey, flow)
-  }
+  if (props.flowInstance) state.value = props.flowInstance.toObject()
 }
 
 const onRestore = () => {
-  const restoreFlow = async () => {
-    const flow: FlowExportObject | null = await localforage.getItem(flowKey)
+  const flow: FlowExportObject | null = state.value
 
-    console.log(flow)
-    if (flow) {
-      const [x = 0, y = 0] = flow.position
-      emit('restore', flow.elements ?? [])
-      transform({ x, y, zoom: flow.zoom || 0 })
-    }
+  if (flow) {
+    const [x = 0, y = 0] = flow.position
+    emit('restore', flow.elements ?? [])
+    transform({ x, y, zoom: flow.zoom || 0 })
   }
-
-  restoreFlow()
 }
 
 const onAdd = () => {

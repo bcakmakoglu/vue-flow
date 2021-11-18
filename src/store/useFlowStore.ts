@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
-import isEqual from 'fast-deep-equal'
+import diff from 'microdiff'
 import { Edge, FlowState, Node, FlowActions } from '~/types'
 import {
   clampPosition,
@@ -206,7 +206,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
       },
       addSelectedElements(elements) {
         const selectedElementsArr = Array.isArray(elements) ? elements : [elements]
-        const selectedElementsUpdated = !isEqual(selectedElementsArr, this.selectedElements)
+        const selectedElementsUpdated = diff(selectedElementsArr, this.selectedElements ?? []).length
         this.selectedElements = selectedElementsUpdated ? selectedElementsArr : this.selectedElements
       },
       initD3Zoom({ d3ZoomHandler, d3Zoom, d3Selection }) {

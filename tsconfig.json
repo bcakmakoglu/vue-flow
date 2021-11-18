@@ -32,7 +32,7 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src/**/*"],
+  "include": ["src"],
   "exclude": [
     "node_modules",
     "build",
