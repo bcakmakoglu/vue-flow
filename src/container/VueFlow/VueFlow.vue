@@ -161,31 +161,34 @@ const edgeTypes = computed(() => {
       :pan-on-scroll-mode="props.panOnScrollMode"
       :pane-moveable="props.paneMoveable"
     >
-      <SelectionPane
-        :delete-key-code="props.deleteKeyCode"
-        :multi-selection-key-code="props.multiSelectionKeyCode"
-        :selection-key-code="props.selectionKeyCode"
-      >
-        <NodeRenderer :node-types="nodeTypes" :select-nodes-on-drag="props.selectNodesOnDrag">
-          <template v-for="nodeName of Object.keys(nodeTypes)" #[`node-${nodeName}`]="nodeProps">
-            <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
-          </template>
-        </NodeRenderer>
-        <EdgeRenderer
-          :connection-line-type="props.connectionLineType"
-          :connection-line-style="props.connectionLineStyle"
-          :arrow-head-color="props.arrowHeadColor"
-          :marker-end-id="props.markerEndId"
-          :edge-types="edgeTypes"
+      <template #default="zoomPaneProps">
+        <SelectionPane
+          :delete-key-code="props.deleteKeyCode"
+          :multi-selection-key-code="props.multiSelectionKeyCode"
+          :selection-key-code="props.selectionKeyCode"
         >
-          <template v-for="edgeName of Object.keys(edgeTypes)" #[`edge-${edgeName}`]="edgeProps">
-            <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
-          </template>
-          <template #custom-connection-line="customConnectionLineProps">
-            <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
-          </template>
-        </EdgeRenderer>
-      </SelectionPane>
+          <NodeRenderer :node-types="nodeTypes" :select-nodes-on-drag="props.selectNodesOnDrag">
+            <template v-for="nodeName of Object.keys(nodeTypes)" #[`node-${nodeName}`]="nodeProps">
+              <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
+            </template>
+          </NodeRenderer>
+          <EdgeRenderer
+            :connection-line-type="props.connectionLineType"
+            :connection-line-style="props.connectionLineStyle"
+            :arrow-head-color="props.arrowHeadColor"
+            :marker-end-id="props.markerEndId"
+            :edge-types="edgeTypes"
+          >
+            <template v-for="edgeName of Object.keys(edgeTypes)" #[`edge-${edgeName}`]="edgeProps">
+              <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
+            </template>
+            <template #custom-connection-line="customConnectionLineProps">
+              <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
+            </template>
+          </EdgeRenderer>
+        </SelectionPane>
+        <slot name="zoom-pane" v-bind="zoomPaneProps"></slot>
+      </template>
     </ZoomPane>
     <slot v-bind="{ ...props, store, hooks }"></slot>
   </div>

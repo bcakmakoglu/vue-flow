@@ -73,7 +73,6 @@ invoke(async () => {
     if (viewChanged(transform.value, event.transform)) {
       const flowTransform = eventToFlowTransform(event.transform)
       transform.value = flowTransform
-
       hooks.moveStart.trigger(flowTransform)
     }
   })
@@ -82,7 +81,6 @@ invoke(async () => {
     if (viewChanged(transform.value, event.transform)) {
       const flowTransform = eventToFlowTransform(event.transform)
       transform.value = flowTransform
-
       hooks.moveEnd.trigger(flowTransform)
     }
   })
@@ -95,7 +93,6 @@ invoke(async () => {
         if (viewChanged(transform.value, event.transform)) {
           const flowTransform = eventToFlowTransform(event.transform)
           transform.value = flowTransform
-
           hooks.move.trigger(flowTransform)
         }
       })
@@ -185,11 +182,15 @@ store.dimensions = {
   height: height.value,
 }
 
-watch([width, height], ([newWidth, newHeight]) => {
-  store.dimensions.width = newWidth
-  store.dimensions.height = newHeight
-})
-watch(transform, (val) => (store.transform = [val.x, val.y, val.zoom]))
+watch(
+  [width, height],
+  ([newWidth, newHeight]) => {
+    store.dimensions.width = newWidth
+    store.dimensions.height = newHeight
+  },
+  { flush: 'pre' },
+)
+watch(transform, (val) => (store.transform = [val.x, val.y, val.zoom]), { flush: 'pre' })
 
 const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
 watchOnce(
