@@ -51,10 +51,17 @@ onMounted(() => {
 
   useKeyPress(props.selectionKeyCode, (keyPressed) => (selectionKeyPresed.value = keyPressed))
 })
+const userSelection = computed(() => selectionKeyPresed.value && (store.selectionActive || store.elementsSelectable))
+const nodesSelectionActive = computed(() => store.nodesSelectionActive)
+</script>
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
 </script>
 <template>
   <slot></slot>
-  <UserSelection v-if="selectionKeyPresed && (store.selectionActive || store.elementsSelectable)" id="user-selection" />
-  <NodesSelection v-if="store.nodesSelectionActive" id="nodes-selection" />
-  <div class="vue-flow__pane" @click.self="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
+  <UserSelection v-if="userSelection" id="user-selection" />
+  <NodesSelection v-if="nodesSelectionActive" id="nodes-selection" />
+  <div class="vue-flow__pane" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
 </template>

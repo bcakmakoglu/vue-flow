@@ -186,8 +186,8 @@ const edgeTypes = computed(() => {
           </template>
         </EdgeRenderer>
       </SelectionPane>
-      <slot v-bind="{ ...props, store, hooks }"></slot>
     </ZoomPane>
+    <slot v-bind="{ ...props, store, hooks }"></slot>
   </div>
 </template>
 <style>

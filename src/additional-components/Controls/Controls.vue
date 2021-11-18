@@ -31,22 +31,22 @@ const isInteractive = computed(() => store.nodesDraggable && store.nodesConnecta
 const mapClasses = ['vue-flow__controls']
 
 const onZoomInHandler = () => {
-  zoomIn?.()
+  zoomIn()
   emit('zoom-in')
 }
 
 const onZoomOutHandler = () => {
-  zoomOut?.()
+  zoomOut()
   emit('zoom-out')
 }
 
 const onFitViewHandler = () => {
-  fitView?.(props.fitViewParams)
+  fitView(props.fitViewParams)
   emit('fit-view')
 }
 
 const onInteractiveChangeHandler = () => {
-  store.setInteractive?.(!isInteractive.value)
+  store.setInteractive(!isInteractive.value)
   emit('interaction-change', !isInteractive.value)
 }
 </script>

@@ -142,6 +142,9 @@ invoke(async () => {
 
   const keyPress = useKeyPress(props.selectionKeyCode)
   d3z.filter((event: MouseEvent) => {
+    event.stopPropagation()
+    event.stopImmediatePropagation()
+    event.preventDefault()
     const pinchZoom = props.zoomOnPinch && event.ctrlKey
 
     // if all interactions are disabled, we prevent all zoom events
