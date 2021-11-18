@@ -2,7 +2,7 @@
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useHooks, useStore } from '../../composables'
 import { Node, NodeType, SnapGrid } from '../../types'
-import { NodeIdContextKey } from '~/context'
+import { NodeId } from '~/context'
 
 interface NodeProps {
   node: Node
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<NodeProps>(), {
 
 const store = useStore()
 const hooks = useHooks()
-provide(NodeIdContextKey, props.node.id)
+provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 

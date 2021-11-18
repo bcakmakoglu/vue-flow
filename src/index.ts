@@ -19,11 +19,9 @@ export {
   graphPosToZoomedPos,
 } from './utils/graph'
 export { default as useZoomPanHelper } from './composables/useZoomPanHelper'
-export { default as useStore } from './composables/useStore'
-export { default as useHooks } from './composables/useHooks'
+export { default as useVueFlow } from './composables/useVueFlow'
 export { default as useHandle } from './composables/useHandle'
 export { default as useKeyPress } from './composables/useKeyPress'
-export { default as useVueFlow } from './composables/useVueFlow'
 
 export * from './additional-components'
 export * from './types'

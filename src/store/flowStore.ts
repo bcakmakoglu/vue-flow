@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import diff from 'microdiff'
-import { Edge, FlowState, Node, FlowActions } from '~/types'
+import { Edge, FlowState, Node, FlowActions, Elements, NodeExtent } from '~/types'
 import {
   clampPosition,
   getDimensions,
@@ -21,7 +21,54 @@ type NextElements = {
 const pinia = createPinia()
 let id = 0
 
-export default function useFlowStore(preloadedState: FlowState): StoreDefinition<string, FlowState, any, FlowActions> {
+const parseElements = (elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) => {
+  const nextElements: NextElements = {
+    nextNodes: [],
+    nextEdges: [],
+  }
+  for (const element of elements) {
+    if (isNode(element)) {
+      const storeNode = nodes.find((node) => node.id === element.id)
+
+      if (storeNode) {
+        const updatedNode: Node = {
+          ...storeNode,
+          ...element,
+        }
+        if (!updatedNode.__rf) updatedNode.__rf = {}
+
+        if (storeNode.position.x !== element.position.x || storeNode.position.y !== element.position.y) {
+          updatedNode.__rf.position = element.position
+        }
+
+        if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
+          // we reset the elements dimensions here in order to force a re-calculation of the bounds.
+          // When the type of a node changes it is possible that the number or positions of handles changes too.
+          updatedNode.__rf.width = undefined
+        }
+
+        nextElements.nextNodes.push(updatedNode)
+      } else {
+        nextElements.nextNodes.push(parseNode(element, nodeExtent))
+      }
+    } else if (isEdge(element)) {
+      const storeEdge = edges.find((se) => se.id === element.id)
+
+      if (storeEdge) {
+        nextElements.nextEdges.push({
+          ...storeEdge,
+          ...element,
+        })
+      } else {
+        nextElements.nextEdges.push(parseEdge(element))
+      }
+    }
+  }
+
+  return nextElements
+}
+
+export default function flowStore(preloadedState: FlowState): StoreDefinition<string, FlowState, any, FlowActions> {
   setActivePinia(pinia)
 
   return defineStore({
@@ -32,51 +79,7 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
     getters: {},
     actions: {
       setElements(elements) {
-        const nextElements: NextElements = {
-          nextNodes: [],
-          nextEdges: [],
-        }
-        const { nextNodes, nextEdges } = elements.reduce((res, propElement): NextElements => {
-          if (isNode(propElement)) {
-            const storeNode = this.nodes.find((node) => node.id === propElement.id)
-
-            if (storeNode) {
-              const updatedNode: Node = {
-                ...storeNode,
-                ...propElement,
-              }
-              if (!updatedNode.__rf) updatedNode.__rf = {}
-
-              if (storeNode.position.x !== propElement.position.x || storeNode.position.y !== propElement.position.y) {
-                updatedNode.__rf.position = propElement.position
-              }
-
-              if (typeof propElement.type !== 'undefined' && propElement.type !== storeNode.type) {
-                // we reset the elements dimensions here in order to force a re-calculation of the bounds.
-                // When the type of a node changes it is possible that the number or positions of handles changes too.
-                updatedNode.__rf.width = undefined
-              }
-
-              res.nextNodes.push(updatedNode)
-            } else {
-              res.nextNodes.push(parseNode(propElement, this.nodeExtent))
-            }
-          } else if (isEdge(propElement)) {
-            const storeEdge = this.edges.find((se) => se.id === propElement.id)
-
-            if (storeEdge) {
-              res.nextEdges.push({
-                ...storeEdge,
-                ...propElement,
-              })
-            } else {
-              res.nextEdges.push(parseEdge(propElement))
-            }
-          }
-
-          return res
-        }, nextElements)
-
+        const { nextNodes, nextEdges } = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         this.nodes = nextNodes
         this.edges = nextEdges
       },
@@ -256,6 +259,11 @@ export default function useFlowStore(preloadedState: FlowState): StoreDefinition
         this.nodesDraggable = isInteractive
         this.nodesConnectable = isInteractive
         this.elementsSelectable = isInteractive
+      },
+      addElements(elements: Elements) {
+        const { nextNodes, nextEdges } = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+        this.nodes = [...this.nodes, ...nextNodes]
+        this.edges = [...this.edges, ...nextEdges]
       },
     },
   })

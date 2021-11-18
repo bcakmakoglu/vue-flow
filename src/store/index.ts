@@ -1,4 +1,5 @@
 import { ConnectionMode, FlowState } from '~/types'
+import { createHooks } from '~/composables'
 
 export const initialState = (): FlowState => ({
   dimensions: {
@@ -6,6 +7,8 @@ export const initialState = (): FlowState => ({
     height: 0,
   },
   transform: [0, 0, 1],
+  nodeTypes: [],
+  edgeTypes: [],
   elements: [],
   nodes: [],
   edges: [],
@@ -54,7 +57,10 @@ export const initialState = (): FlowState => ({
 
   multiSelectionActive: false,
 
+  isReady: false,
+  hooks: createHooks(),
+
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export { default as useFlowStore } from './useFlowStore'
+export { default as useFlowStore } from './flowStore'

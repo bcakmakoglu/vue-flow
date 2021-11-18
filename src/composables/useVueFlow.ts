@@ -1,22 +1,15 @@
 import useHooks from './useHooks'
 import useStore from './useStore'
-import { FlowInstance } from '~/types'
+import { EmitFunc } from '~/types'
 
-export default () => {
+export const initFlow = (emit: EmitFunc) => {
   const store = useStore()
-  const hooks = useHooks()
-  const isReady = ref(false)
-  const instance = ref<FlowInstance>()
-  hooks.load.on((flow) => {
-    isReady.value = true
-    instance.value = flow
-    if (import.meta.env.DEV) console.log(`vue flow ${store.$id} ready.`)
-  })
+  const hooks = useHooks(emit)
 
   return {
-    isReady,
-    instance,
     store,
     hooks,
   }
 }
+
+export default () => useStore()

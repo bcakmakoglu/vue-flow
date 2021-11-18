@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useHandle, useHooks, useStore } from '../../composables'
 import { Position, ValidConnectionFunc } from '../../types'
-import { NodeIdContextKey } from '~/context'
+import { NodeId } from '~/context'
 
 interface HandleProps {
   id?: string
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<HandleProps>(), {
 
 const store = useStore()
 const hooks = useHooks()
-const nodeId = inject(NodeIdContextKey)!
+const nodeId = inject(NodeId)!
 
 const handler = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { CSSProperties, onBeforeUnmount } from 'vue'
 import { invoke } from '@vueuse/core'
+import diff from 'microdiff'
 import {
   ConnectionLineType,
   ConnectionMode,
@@ -12,14 +13,15 @@ import {
   TranslateExtent,
   NodeExtent,
   FlowOptions,
+  FlowEvents,
 } from '../../types'
-import { useHooks, useStore, createHooks } from '../../composables'
 import ZoomPane from '../../container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '../../container/SelectionPane/SelectionPane.vue'
 import NodeRenderer from '../../container/NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../../container/EdgeRenderer/EdgeRenderer.vue'
 import { DefaultNode, InputNode, OutputNode } from '../../components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '../../components/Edges'
+import { initFlow } from '~/composables'
 
 export interface FlowProps extends FlowOptions {
   elements: Elements
@@ -98,7 +100,9 @@ const props = withDefaults(defineProps<FlowProps>(), {
   edgeTypesId: '1',
   nodeTypesId: '1',
 })
-const emit = defineEmits(Object.keys(createHooks()))
+export type DefineFlowEvents = { (event: keyof FlowEvents, flowEvent: FlowEvents[keyof FlowEvents]): void }
+
+const emit = defineEmits<DefineFlowEvents>()
 
 const defaultNodeTypes: Record<string, NodeType> = {
   input: InputNode as NodeType,
@@ -113,8 +117,7 @@ const defaultEdgeTypes: Record<string, EdgeType> = {
   smoothstep: SmoothStepEdge as EdgeType,
 }
 
-const store = useStore(props)
-const hooks = useHooks(emit)
+const { store, hooks } = initFlow(emit)
 
 const init = (opts: typeof props) => {
   store.$state = { ...store.$state, ...opts }
@@ -124,12 +127,16 @@ const init = (opts: typeof props) => {
   store.setTranslateExtent(opts.translateExtent)
   store.setNodeExtent(opts.nodeExtent)
 }
+const elements = useVModel(props, 'elements', emit)
 
 onBeforeUnmount(() => store?.$dispose())
 
 watch(
   () => props,
-  (val) => init(val),
+  (val, oldVal) => {
+    const hasDiff = diff(val, oldVal)
+    if (hasDiff.length > 0) init(val)
+  },
   { flush: 'pre', deep: true },
 )
 invoke(async () => {
@@ -137,16 +144,27 @@ invoke(async () => {
   init(props)
 })
 
+watch(
+  elements,
+  (val, oldVal) => {
+    const hasDiff = diff(val, oldVal)
+    if (hasDiff.length > 0) store.setElements(val)
+  },
+  { flush: 'pre', deep: true },
+)
+
 const nodeTypes = computed(() => {
   let types = defaultNodeTypes
   if (Array.isArray(props.nodeTypes)) props.nodeTypes.forEach((type) => (types[type] = true))
   else types = { ...types, ...props.nodeTypes }
+  store.$state.nodeTypes = types
   return types
 })
 const edgeTypes = computed(() => {
   let types = defaultEdgeTypes
   if (Array.isArray(props.edgeTypes)) props.edgeTypes.forEach((type) => (types[type] = true))
   else types = { ...types, ...props.edgeTypes }
+  store.$state.edgeTypes = types
   return types
 })
 </script>

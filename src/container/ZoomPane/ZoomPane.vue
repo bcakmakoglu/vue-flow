@@ -2,7 +2,7 @@
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { get, invoke } from '@vueuse/core'
 import { pointer, select } from 'd3-selection'
-import { FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
+import { FlowInstance, FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
 import { useHooks, useKeyPress, useStore, useZoomPanHelper } from '../../composables'
 import { clamp, onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
 
@@ -186,7 +186,7 @@ store.dimensions = {
 
 invoke(async () => {
   await until(() => !isNaN(width.value) && width.value > 0 && !isNaN(height.value) && height.value > 0).toBeTruthy()
-  hooks.load.trigger({
+  const instance: FlowInstance = {
     fitView: (params = { padding: 0.1 }) => fitView(params),
     zoomIn,
     zoomOut,
@@ -195,7 +195,8 @@ invoke(async () => {
     project: onLoadProject(store),
     getElements: onLoadGetElements(store),
     toObject: onLoadToObject(store),
-  })
+  }
+  hooks.load.trigger(instance)
 })
 
 watch(

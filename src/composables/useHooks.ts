@@ -1,8 +1,20 @@
-import { Connection, Edge, Elements, EmitFunc, FlowHooks, FlowTransform, Node, OnConnectStartParams, FlowInstance } from '~/types'
+import useStore from './useStore'
+import {
+  Connection,
+  Edge,
+  Elements,
+  EmitFunc,
+  FlowHooks,
+  FlowTransform,
+  Node,
+  OnConnectStartParams,
+  FlowInstance,
+  FlowEvents,
+} from '~/types'
 import { Hooks } from '~/context'
 
 // flow event hooks
-const hooks = (): FlowHooks => {
+export const createHooks = (): FlowHooks => {
   return {
     elementClick: createEventHook<{ event: MouseEvent; element: Node | Edge }>(),
     elementsRemove: createEventHook<Elements>(),
@@ -45,33 +57,23 @@ const hooks = (): FlowHooks => {
     edgeUpdateEnd: createEventHook<MouseEvent>(),
   }
 }
-export const createHooks = (): FlowHooks & { bind: (emit: EmitFunc) => FlowHooks } => {
-  const eventHooks = hooks()
-  const bind = (emit: EmitFunc) => {
-    for (const [key, value] of Object.entries(eventHooks)) {
-      value.on((data: unknown) => {
-        emit(key as keyof FlowHooks, data)
-      })
-    }
 
-    return eventHooks
-  }
-
-  return {
-    ...eventHooks,
-    bind,
+const bind = (emit: EmitFunc, hooks: FlowHooks) => {
+  for (const [key, value] of Object.entries(hooks)) {
+    value.on((data: FlowEvents[keyof FlowHooks]) => {
+      emit(key as keyof FlowHooks, data)
+    })
   }
 }
 
 export default (emit?: EmitFunc) => {
   let hooks = inject(Hooks)!
   if (!hooks) {
+    const store = useStore()
     if (import.meta.env.DEV) console.warn('hooks context not found; creating default hooks')
-    if (!emit) console.error('no emit function found for hook context.')
-    else {
-      hooks = createHooks().bind(emit)
-      provide(Hooks, hooks)
-    }
+    hooks = store.hooks
+    if (typeof emit === 'function') bind(emit, hooks)
+    provide(Hooks, hooks)
   }
 
   return hooks
