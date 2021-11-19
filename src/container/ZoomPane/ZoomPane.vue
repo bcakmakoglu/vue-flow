@@ -197,6 +197,7 @@ invoke(async () => {
   }
   store.hooks.load.trigger(instance)
   store.isReady = true
+  store.instance = instance
 })
 
 watch(

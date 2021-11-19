@@ -1,5 +1,16 @@
 import { Store } from 'pinia'
-import { Dimensions, ElementId, Elements, FlowOptions, Rect, SelectionRect, SnapGrid, Transform, XYPosition } from './types'
+import {
+  Dimensions,
+  ElementId,
+  Elements,
+  FlowInstance,
+  FlowOptions,
+  Rect,
+  SelectionRect,
+  SnapGrid,
+  Transform,
+  XYPosition,
+} from './types'
 import { HandleType } from './handle'
 import { ConnectionMode, OnConnectEndFunc, OnConnectFunc, OnConnectStartFunc, OnConnectStopFunc } from './connection'
 import { Edge, EdgeType } from './edge'
@@ -57,6 +68,7 @@ export interface FlowState extends FlowOptions {
   isReady: boolean
   hooks: FlowHooks
   storageKey?: string
+  instance?: FlowInstance
 }
 
 export interface FlowGetters {

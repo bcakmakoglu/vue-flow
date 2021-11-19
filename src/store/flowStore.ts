@@ -54,6 +54,7 @@ export default function flowStore(
     actions: {
       setElements(elements) {
         const { nextNodes, nextEdges } = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+        this.elements = elements
         this.nodes = nextNodes
         this.edges = nextEdges
       },
