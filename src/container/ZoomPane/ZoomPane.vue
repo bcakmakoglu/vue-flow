@@ -196,6 +196,7 @@ invoke(async () => {
     toObject: onLoadToObject(store),
   }
   store.hooks.load.trigger(instance)
+  store.isReady = true
 })
 
 watch(

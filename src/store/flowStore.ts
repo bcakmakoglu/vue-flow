@@ -4,21 +4,7 @@ import { parseElements } from './utils'
 import { FlowState, Node, FlowActions, Elements, NodeType, EdgeType, FlowGetters, Edge } from '~/types'
 import { clampPosition, getDimensions, getConnectedEdges, getNodesInside, getRectOfNodes, isNode } from '~/utils'
 import { getHandleBounds } from '~/components/Nodes/utils'
-import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
-import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
-
-const defaultNodeTypes: Record<string, NodeType> = {
-  input: InputNode as NodeType,
-  default: DefaultNode as NodeType,
-  output: OutputNode as NodeType,
-}
-
-const defaultEdgeTypes: Record<string, EdgeType> = {
-  default: BezierEdge as EdgeType,
-  straight: StraightEdge as EdgeType,
-  step: StepEdge as EdgeType,
-  smoothstep: SmoothStepEdge as EdgeType,
-}
+import { defaultEdgeTypes, defaultNodeTypes } from '~/store/index'
 
 const pinia = createPinia()
 
@@ -37,20 +23,14 @@ export default function flowStore(
       ...preloadedState,
     }),
     getters: {
-      getEdgeTypes() {
-        let edgeTypes = defaultEdgeTypes
-        if (Array.isArray(this.edgeTypes)) this.edgeTypes.forEach((type) => (edgeTypes[type] = true))
-        else edgeTypes = { ...edgeTypes, ...this.edgeTypes }
-        return edgeTypes
+      getEdgeTypes(): Record<string, EdgeType> {
+        return { ...defaultEdgeTypes, ...this.edgeTypes }
       },
-      getNodeTypes() {
-        let nodeTypes = defaultNodeTypes
-        if (Array.isArray(this.nodeTypes)) this.nodeTypes.forEach((type) => (nodeTypes[type] = true))
-        else nodeTypes = { ...nodeTypes, ...this.nodeTypes }
-        return nodeTypes
+      getNodeTypes(): Record<string, NodeType> {
+        return { ...defaultNodeTypes, ...this.nodeTypes }
       },
-      getNodes() {
-        const n: Node[] = this.onlyRenderVisibleElements
+      getNodes(): Node[] {
+        const n = this.onlyRenderVisibleElements
           ? this.nodes &&
             getNodesInside(
               this.nodes,
