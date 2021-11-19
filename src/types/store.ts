@@ -13,9 +13,9 @@ export interface FlowState extends FlowOptions {
   transform: Transform
   elements: Elements
   nodes: Node[]
-  nodeTypes: Record<string, NodeType> | string[]
+  nodeTypes: Record<string, NodeType>
   edges: Edge[]
-  edgeTypes: Record<string, EdgeType> | string[]
+  edgeTypes: Record<string, EdgeType>
   selectedElements?: Elements
   selectedNodesBbox: Rect
 
@@ -59,4 +59,11 @@ export interface FlowState extends FlowOptions {
   storageKey?: string
 }
 
-export type FlowStore = Store<string, FlowState, any, FlowActions>
+export interface FlowGetters {
+  getEdgeTypes: () => Record<string, EdgeType>
+  getNodeTypes: () => Record<string, NodeType>
+  getNodes: () => Node[]
+  getEdges: () => Edge[]
+}
+
+export type FlowStore = Store<string, FlowState, FlowGetters, FlowActions>

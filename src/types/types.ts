@@ -90,8 +90,8 @@ export type FlowInstance<T = any> = {
 
 export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
   elements: Elements
-  nodeTypes?: Record<string, NodeType> | string[]
-  edgeTypes?: Record<string, EdgeType> | string[]
+  nodeTypes?: Record<string, NodeType>
+  edgeTypes?: Record<string, EdgeType>
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties

@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-import { NodeType, Node as TNode } from '../../types'
+import { Node as TNode } from '../../types'
 import { useStore } from '../../composables'
 import Node from '../../components/Nodes/Node.vue'
-import { getNodesInside } from '~/utils'
 
 interface NodeRendererProps {
-  nodeTypes: Record<string, NodeType>
   selectNodesOnDrag?: boolean
 }
 
@@ -15,31 +13,13 @@ const props = withDefaults(defineProps<NodeRendererProps>(), {
 
 const store = useStore()
 
-const nodes = computed(() => {
-  const n = store.onlyRenderVisibleElements
-    ? store.nodes &&
-      getNodesInside(
-        store.nodes,
-        {
-          x: 0,
-          y: 0,
-          width: store.dimensions.width,
-          height: store.dimensions.height,
-        },
-        store.transform,
-        true,
-      )
-    : store.nodes
-
-  return n.filter((node) => !node.isHidden)
-})
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 const snapGrid = computed(() => (store.snapToGrid ? store.snapGrid : undefined))
 
 const type = (node: TNode) => {
   const nodeType = node.type || 'default'
-  const type = props.nodeTypes[nodeType] || props.nodeTypes.default
-  if (!props.nodeTypes[nodeType]) {
+  const type = store.getNodeTypes[nodeType] || store.getNodeTypes.default
+  if (!store.getNodeTypes[nodeType]) {
     console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`)
   }
   return type
@@ -49,7 +29,7 @@ const selected = (nodeId: string) => store.selectedElements?.some(({ id }) => id
 <template>
   <div class="vue-flow__nodes" :style="{ transform }">
     <Suspense>
-      <template v-for="node of nodes" :key="node.id">
+      <template v-for="node of store.getNodes" :key="node.id">
         <Node
           :node="node"
           :type="type(node)"

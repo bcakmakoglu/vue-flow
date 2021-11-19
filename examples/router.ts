@@ -6,6 +6,10 @@ export const routes: RouterOptions['routes'] = [
     redirect: '/overview',
   },
   {
+    path: '/rgb',
+    component: () => import('./RGBFlow/RGBFlow.vue'),
+  },
+  {
     path: '/basic',
     component: () => import('./Basic/Basic.vue'),
   },

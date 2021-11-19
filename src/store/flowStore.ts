@@ -1,73 +1,31 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import diff from 'microdiff'
-import { Edge, FlowState, Node, FlowActions, Elements, NodeExtent } from '~/types'
-import {
-  clampPosition,
-  getDimensions,
-  getConnectedEdges,
-  getNodesInside,
-  getRectOfNodes,
-  isEdge,
-  isNode,
-  parseEdge,
-  parseNode,
-} from '~/utils'
+import { parseElements } from './utils'
+import { FlowState, Node, FlowActions, Elements, NodeType, EdgeType, FlowGetters, Edge } from '~/types'
+import { clampPosition, getDimensions, getConnectedEdges, getNodesInside, getRectOfNodes, isNode } from '~/utils'
 import { getHandleBounds } from '~/components/Nodes/utils'
+import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
+import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 
-type NextElements = {
-  nextNodes: Node[]
-  nextEdges: Edge[]
+const defaultNodeTypes: Record<string, NodeType> = {
+  input: InputNode as NodeType,
+  default: DefaultNode as NodeType,
+  output: OutputNode as NodeType,
 }
+
+const defaultEdgeTypes: Record<string, EdgeType> = {
+  default: BezierEdge as EdgeType,
+  straight: StraightEdge as EdgeType,
+  step: StepEdge as EdgeType,
+  smoothstep: SmoothStepEdge as EdgeType,
+}
+
 const pinia = createPinia()
 
-const parseElements = (elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) => {
-  const nextElements: NextElements = {
-    nextNodes: [],
-    nextEdges: [],
-  }
-  for (const element of elements) {
-    if (isNode(element)) {
-      const storeNode = nodes.find((node) => node.id === element.id)
-
-      if (storeNode) {
-        const updatedNode: Node = {
-          ...storeNode,
-          ...element,
-        }
-        if (!updatedNode.__rf) updatedNode.__rf = {}
-
-        if (storeNode.position.x !== element.position.x || storeNode.position.y !== element.position.y) {
-          updatedNode.__rf.position = element.position
-        }
-
-        if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
-          // we reset the elements dimensions here in order to force a re-calculation of the bounds.
-          // When the type of a node changes it is possible that the number or positions of handles changes too.
-          updatedNode.__rf.width = undefined
-        }
-
-        nextElements.nextNodes.push(updatedNode)
-      } else {
-        nextElements.nextNodes.push(parseNode(element, nodeExtent))
-      }
-    } else if (isEdge(element)) {
-      const storeEdge = edges.find((se) => se.id === element.id)
-
-      if (storeEdge) {
-        nextElements.nextEdges.push({
-          ...storeEdge,
-          ...element,
-        })
-      } else {
-        nextElements.nextEdges.push(parseEdge(element))
-      }
-    }
-  }
-
-  return nextElements
-}
-
-export default function flowStore(id: string, preloadedState: FlowState): StoreDefinition<string, FlowState, any, FlowActions> {
+export default function flowStore(
+  id: string,
+  preloadedState: FlowState,
+): StoreDefinition<string, FlowState, FlowGetters, FlowActions> {
   setActivePinia(pinia)
   const { nextEdges, nextNodes } = parseElements(preloadedState.elements, [], [], preloadedState.nodeExtent)
   preloadedState.nodes = nextNodes
@@ -78,7 +36,41 @@ export default function flowStore(id: string, preloadedState: FlowState): StoreD
     state: () => ({
       ...preloadedState,
     }),
-    getters: {},
+    getters: {
+      getEdgeTypes() {
+        let edgeTypes = defaultEdgeTypes
+        if (Array.isArray(this.edgeTypes)) this.edgeTypes.forEach((type) => (edgeTypes[type] = true))
+        else edgeTypes = { ...edgeTypes, ...this.edgeTypes }
+        return edgeTypes
+      },
+      getNodeTypes() {
+        let nodeTypes = defaultNodeTypes
+        if (Array.isArray(this.nodeTypes)) this.nodeTypes.forEach((type) => (nodeTypes[type] = true))
+        else nodeTypes = { ...nodeTypes, ...this.nodeTypes }
+        return nodeTypes
+      },
+      getNodes() {
+        const n: Node[] = this.onlyRenderVisibleElements
+          ? this.nodes &&
+            getNodesInside(
+              this.nodes,
+              {
+                x: 0,
+                y: 0,
+                width: this.dimensions.width,
+                height: this.dimensions.height,
+              },
+              this.transform,
+              true,
+            )
+          : this.nodes
+
+        return n.filter((node) => !node.isHidden)
+      },
+      getEdges(): Edge[] {
+        return this.edges.filter((edge) => !edge.isHidden)
+      },
+    },
     actions: {
       setElements(elements) {
         const { nextNodes, nextEdges } = parseElements(elements, this.nodes, this.edges, this.nodeExtent)

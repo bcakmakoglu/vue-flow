@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ConnectionLineType, EdgeType } from '../../types'
+import { ConnectionLineType, Edge as TEdge } from '../../types'
 import { useStore } from '../../composables'
 import Edge from '../../components/Edges/Edge.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 interface EdgeRendererProps {
-  edgeTypes: Record<string, EdgeType>
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
   arrowHeadColor?: string
@@ -27,21 +26,23 @@ const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connect
 const connectionLineVisible = computed(
   () => !!(store.nodesConnectable && sourceNode.value && store.connectionNodeId && store.connectionHandleType),
 )
-const edges = computed(() => store.edges.filter((edge) => !edge.isHidden))
 const dimensions = computed(() => store.dimensions)
 const transform = computed(() => `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`)
+const type = (edge: TEdge) => {
+  const edgeType = edge.type || 'default'
+  const type = store.getEdgeTypes[edgeType] || store.getEdgeTypes.default
+  if (!store.getEdgeTypes[edgeType]) {
+    console.warn(`Edge type "${edgeType}" not found. Using fallback type "default".`)
+  }
+  return type
+}
 </script>
 <template>
   <svg :width="dimensions.width" :height="dimensions.height" class="vue-flow__edges">
     <MarkerDefinitions :color="props.arrowHeadColor" />
     <g :transform="transform">
-      <template v-for="edge of edges" :key="edge.id">
-        <Edge
-          :edge="edge"
-          :type="props.edgeTypes[edge.type || 'default']"
-          :marker-end-id="props.markerEndId"
-          :edge-updater-radius="props.edgeUpdaterRadius"
-        >
+      <template v-for="edge of store.getEdges" :key="edge.id">
+        <Edge :edge="edge" :type="type(edge)" :marker-end-id="props.markerEndId" :edge-updater-radius="props.edgeUpdaterRadius">
           <template #default="edgeProps">
             <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
           </template>

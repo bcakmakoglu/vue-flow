@@ -18,14 +18,12 @@ import ZoomPane from '../../container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '../../container/SelectionPane/SelectionPane.vue'
 import NodeRenderer from '../../container/NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../../container/EdgeRenderer/EdgeRenderer.vue'
-import { DefaultNode, InputNode, OutputNode } from '../../components/Nodes'
-import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '../../components/Edges'
 import { createHooks, initFlow } from '../../composables'
 
 export interface FlowProps extends FlowOptions {
   elements: Elements
-  nodeTypes?: Record<string, NodeType> | string[]
-  edgeTypes?: Record<string, EdgeType> | string[]
+  nodeTypes?: Record<string, NodeType>
+  edgeTypes?: Record<string, EdgeType>
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
@@ -58,7 +56,7 @@ export interface FlowProps extends FlowOptions {
   edgeUpdaterRadius?: number
   edgeTypesId?: string
   nodeTypesId?: string
-  storage?: string
+  storageKey?: string
 }
 
 const props = withDefaults(defineProps<FlowProps>(), {
@@ -103,30 +101,19 @@ const props = withDefaults(defineProps<FlowProps>(), {
 
 const emit = defineEmits(Object.keys(createHooks()))
 
-const defaultNodeTypes: Record<string, NodeType> = {
-  input: InputNode as NodeType,
-  default: DefaultNode as NodeType,
-  output: OutputNode as NodeType,
-}
-
-const defaultEdgeTypes: Record<string, EdgeType> = {
-  default: BezierEdge as EdgeType,
-  straight: StraightEdge as EdgeType,
-  step: StepEdge as EdgeType,
-  smoothstep: SmoothStepEdge as EdgeType,
-}
-
 const { store, hooks } = initFlow(emit, props)
-
 const init = (opts: typeof props) => {
-  store.$state = { ...store.$state, ...(props as any) }
+  store.elements = opts.elements
+  for (const opt of Object.keys(opts)) {
+    const val = opts[opt as keyof FlowProps]
+    if (val && typeof val !== 'undefined') (store.$state as any)[opt] = val
+  }
+  store.setElements(store.elements)
   store.setMinZoom(opts.minZoom)
   store.setMaxZoom(opts.maxZoom)
   store.setTranslateExtent(opts.translateExtent)
   store.setNodeExtent(opts.nodeExtent)
 }
-const elements = useVModel(props, 'elements', emit)
-
 onBeforeUnmount(() => store?.$dispose())
 
 watch(
@@ -140,32 +127,6 @@ watch(
 invoke(async () => {
   await until(props.elements).toMatch((y) => y.length > 0)
   init(props)
-})
-
-watch(
-  elements,
-  (val, oldVal) => {
-    nextTick(() => {
-      const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) store.setElements(val)
-    })
-  },
-  { flush: 'post', deep: true },
-)
-
-const nodeTypes = computed(() => {
-  let types = defaultNodeTypes
-  if (Array.isArray(props.nodeTypes)) props.nodeTypes.forEach((type) => (types[type] = true))
-  else types = { ...types, ...props.nodeTypes }
-  store.$state.nodeTypes = types
-  return types
-})
-const edgeTypes = computed(() => {
-  let types = defaultEdgeTypes
-  if (Array.isArray(props.edgeTypes)) props.edgeTypes.forEach((type) => (types[type] = true))
-  else types = { ...types, ...props.edgeTypes }
-  store.$state.edgeTypes = types
-  return types
 })
 </script>
 <template>
@@ -190,8 +151,8 @@ const edgeTypes = computed(() => {
             :multi-selection-key-code="props.multiSelectionKeyCode"
             :selection-key-code="props.selectionKeyCode"
           >
-            <NodeRenderer :node-types="nodeTypes" :select-nodes-on-drag="props.selectNodesOnDrag">
-              <template v-for="nodeName of Object.keys(nodeTypes)" #[`node-${nodeName}`]="nodeProps">
+            <NodeRenderer :select-nodes-on-drag="props.selectNodesOnDrag">
+              <template v-for="nodeName of Object.keys(store.getNodeTypes)" #[`node-${nodeName}`]="nodeProps">
                 <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
               </template>
             </NodeRenderer>
@@ -200,9 +161,8 @@ const edgeTypes = computed(() => {
               :connection-line-style="props.connectionLineStyle"
               :arrow-head-color="props.arrowHeadColor"
               :marker-end-id="props.markerEndId"
-              :edge-types="edgeTypes"
             >
-              <template v-for="edgeName of Object.keys(edgeTypes)" #[`edge-${edgeName}`]="edgeProps">
+              <template v-for="edgeName of Object.keys(store.getEdgeTypes)" #[`edge-${edgeName}`]="edgeProps">
                 <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
               </template>
               <template #custom-connection-line="customConnectionLineProps">
