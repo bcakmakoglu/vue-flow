@@ -39,8 +39,8 @@ const store = useVueFlow({
 })
 </script>
 <template>
-  <div ref="page" class="flex demo-flow justify-center items-center h-[80vh] w-full gap-4" style="height: 100%; border-radius: 0">
-    <VueFlow class="relative font-mono" :elements="elements" @load="onLoad">
+  <div ref="page" class="demo-flow">
+    <VueFlow :elements="elements" @load="onLoad">
       <template #node-rgb="props">
         <RGBNode v-bind="props" :amount="color" @change="onChange" />
       </template>
@@ -50,3 +50,13 @@ const store = useVueFlow({
     </VueFlow>
   </div>
 </template>
+<style>
+.demo-flow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  width: 100%;
+  border-radius: 0;
+}
+</style>

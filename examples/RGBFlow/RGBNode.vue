@@ -28,7 +28,7 @@ switch (props.data.color) {
 const onChange = (e: any) => emit('change', { color, val: e.target.value })
 </script>
 <template>
-  <div class="px-4 py-2 bg-white rounded-md border-2 border-solid border-black text-left transform scale-75 lg:scale-100">
+  <div class="wrapper">
     <div class="text-md" :style="{ color }">{{ `${color} Amount`.toUpperCase() }}</div>
     <input
       v-model="props.amount[color]"
@@ -43,9 +43,22 @@ const onChange = (e: any) => emit('change', { color, val: e.target.value })
   </div>
 </template>
 <style>
+.wrapper {
+  padding: 16px;
+  background: #fff;
+  border-radius: 10px;
+  border: 2px solid black;
+  text-align: left;
+}
+
 .slider {
   --color: red;
-  @apply bg-gray-200 w-full h-[10px] outline-none rounded-full;
+  margin-top: 12px;
+  background: gainsboro;
+  width: 100%;
+  height: 10px;
+  outline: none;
+  border-radius: 999px;
   -webkit-appearance: none;
   appearance: none;
 

@@ -8,8 +8,16 @@ interface RBGOutputNodeProps extends NodeProps {
 const props = defineProps<RBGOutputNodeProps>()
 </script>
 <template>
-  <div :style="{ backgroundColor: props.rgb }" class="p-3 rounded-xl text-left text-white">
+  <div :style="{ backgroundColor: props.rgb }" class="rgb-output-node">
     <div class="text-md uppercase">{{ props.rgb }}</div>
     <Handle type="source" :position="Position.Left" />
   </div>
 </template>
+<style>
+.rgb-output-node {
+  padding: 9px;
+  border-radius: 25px;
+  text-align: left;
+  color: white;
+}
+</style>
