@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { CSSProperties, onBeforeUnmount } from 'vue'
-import { invoke } from '@vueuse/core'
 import diff from 'microdiff'
 import {
   ConnectionLineType,
@@ -124,40 +123,37 @@ const init = (opts: typeof props) => {
 }
 onBeforeUnmount(() => store?.$dispose())
 
-invoke(async () => {
-  await until(elements.value).toMatch((y) => y.length > 0)
-  init(props)
+store.hooks.load.on(() => init(props))
+onMounted(() => {
+  watch(
+    elements,
+    (val, oldVal) => {
+      nextTick(() => {
+        const hasDiff = diff(val, oldVal)
+        if (hasDiff.length > 0) store.setElements(val)
+      })
+    },
+    { flush: 'pre', deep: true },
+  )
+  watch(
+    () => store.elements,
+    (val, oldVal) => {
+      nextTick(() => {
+        const hasDiff = diff(val, oldVal)
+        if (hasDiff.length > 0) elements.value = val
+      })
+    },
+    { flush: 'pre', deep: true },
+  )
+  watch(
+    () => props,
+    (val, oldVal) => {
+      const hasDiff = diff(val, oldVal)
+      if (hasDiff.length > 0) init(val)
+    },
+    { flush: 'pre', deep: true },
+  )
 })
-watch(
-  elements,
-  (val, oldVal) => {
-    nextTick(() => {
-      const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) store.setElements(val)
-    })
-  },
-  { flush: 'pre', deep: true },
-)
-
-watch(
-  () => store.elements,
-  (val, oldVal) => {
-    nextTick(() => {
-      const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) elements.value = val
-    })
-  },
-  { flush: 'pre', deep: true },
-)
-
-watch(
-  () => props,
-  (val, oldVal) => {
-    const hasDiff = diff(val, oldVal)
-    if (hasDiff.length > 0) init(val)
-  },
-  { flush: 'pre', deep: true },
-)
 </script>
 <template>
   <div class="vue-flow">
