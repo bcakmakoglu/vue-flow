@@ -4,15 +4,15 @@ import { Store } from '~/context'
 import { onLoadToObject } from '~/utils'
 
 let id = 0
-export default (options?: Partial<FlowOptions>) => {
+export default (options?: Partial<FlowOptions>, key?: string) => {
   let store = inject(Store, null)
 
   if (!store) {
-    const withStorage = options?.storageKey ?? false
+    const withStorage = options?.storageKey ?? key ?? false
     if (import.meta.env.DEV) console.warn('store context not found; creating default store')
     let storedState = ref<FlowExportObject>()
     const initial = initialState()
-    const storageKey = typeof options?.storageKey === 'string' ? options.storageKey : options?.id ?? `vue-flow-${id++}`
+    const storageKey = key ?? `vue-flow-${id++}`
     const preloadedState = {
       ...initial,
       ...options,
@@ -24,6 +24,7 @@ export default (options?: Partial<FlowOptions>) => {
         if (storedState.value.position && storedState.value.zoom)
           preloadedState.transform = [storedState.value.position[0], storedState.value.position[1], storedState.value.zoom]
       }
+      console.log(storedState.value)
     }
     store = useStateStore(storageKey, preloadedState)()
     if (withStorage && storageKey === store.$id) {

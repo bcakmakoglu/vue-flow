@@ -13,6 +13,7 @@ import {
   NodeTypes,
   EdgeTypes,
   FlowStore,
+  FlowState,
 } from '../../types'
 import ZoomPane from '../../container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '../../container/SelectionPane/SelectionPane.vue'
@@ -100,28 +101,28 @@ const props = withDefaults(defineProps<FlowProps>(), {
   paneMoveable: true,
   edgeUpdaterRadius: 10,
 })
-const store = initFlow(emit, props.store)
+const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id, props.store)
 const elements = useVModel(props, props.elements.length ? 'elements' : 'modelValue', emit)
 
-const options = Object.assign({}, props, store.$state)
+const options = Object.assign({}, props, store.$state, props)
 
 // if there are preloaded elements we overwrite the current elements with the stored ones
 if (store.elements.length) elements.value = store.elements
 
-const init = (opts: typeof props) => {
-  for (const opt of Object.keys(opts)) {
-    const val = opts[opt as keyof FlowProps]
-    if (val && typeof val !== 'undefined') {
+const init = (state: FlowState) => {
+  for (const opt of Object.keys(state)) {
+    const val = state[opt as keyof FlowState]
+    if (typeof val !== 'undefined') {
       if (typeof val === 'object' && !Array.isArray(val)) {
-        ;(store as any)[opt] = { ...(store.$state as any)[opt], ...val }
+        ;(store as any)[opt] = { ...(store as any)[opt], ...val }
       } else (store as any)[opt] = val
     }
   }
   store.setElements(elements.value)
-  store.setMinZoom(opts.minZoom)
-  store.setMaxZoom(opts.maxZoom)
-  store.setTranslateExtent(opts.translateExtent)
-  store.setNodeExtent(opts.nodeExtent)
+  store.setMinZoom(state.minZoom)
+  store.setMaxZoom(state.maxZoom)
+  store.setTranslateExtent(state.translateExtent)
+  store.setNodeExtent(state.nodeExtent)
 }
 onBeforeUnmount(() => store?.$dispose())
 
@@ -142,7 +143,7 @@ onMounted(() => {
     () => props,
     (val, oldVal) => {
       const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) init({ ...options, ...val })
+      if (hasDiff.length > 0) init({ ...store.$state, ...val } as FlowState)
     },
     { flush: 'pre', deep: true },
   )

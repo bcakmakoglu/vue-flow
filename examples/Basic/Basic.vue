@@ -55,7 +55,6 @@ const toggleclasss = () => {
     return el
   })
 }
-useVueFlow()
 </script>
 <template>
   <VueFlow
@@ -64,6 +63,7 @@ useVueFlow()
     :default-zoom="1.5"
     :min-zoom="0.2"
     :max-zoom="4"
+    :zoom-on-scroll="false"
     @elements-remove="onElementsRemove"
     @connect="onConnect"
     @node-drag-stop="onNodeDragStop"
