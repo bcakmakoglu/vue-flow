@@ -67,7 +67,7 @@ const bind = (emit: EmitFunc, hooks: FlowHooks) => {
 }
 
 export default (store: FlowStore, emit?: EmitFunc) => {
-  let hooks = inject(Hooks)!
+  let hooks = inject(Hooks, null)!
   if (!hooks) {
     if (import.meta.env.DEV) console.warn('hooks context not found; creating default hooks')
     hooks = store.hooks

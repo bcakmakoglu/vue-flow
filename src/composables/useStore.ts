@@ -5,7 +5,7 @@ import { onLoadToObject } from '~/utils'
 
 let id = 0
 export default (options?: Partial<FlowOptions>) => {
-  let store = inject(Store)!
+  let store = inject(Store, null)!
 
   if (!store) {
     const withStorage = options?.storageKey ?? false
