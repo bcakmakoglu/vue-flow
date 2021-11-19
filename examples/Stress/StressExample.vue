@@ -49,7 +49,7 @@ const updateElements = () => {
 }
 </script>
 <template>
-  <VueFlow :elements="elements" @load="onLoad" @elementsRemove="onElementsRemove" @connect="onConnect">
+  <VueFlow v-model="elements" @load="onLoad" @elementsRemove="onElementsRemove" @connect="onConnect">
     <MiniMap />
     <Controls />
     <Background />

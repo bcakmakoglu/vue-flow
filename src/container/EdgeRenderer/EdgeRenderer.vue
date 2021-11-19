@@ -41,13 +41,18 @@ const type = (edge: TEdge) => {
   <svg :width="dimensions.width" :height="dimensions.height" class="vue-flow__edges">
     <MarkerDefinitions :color="props.arrowHeadColor" />
     <g :transform="transform">
-      <template v-for="edge of store.getEdges" :key="edge.id">
-        <Edge :edge="edge" :type="type(edge)" :marker-end-id="props.markerEndId" :edge-updater-radius="props.edgeUpdaterRadius">
-          <template #default="edgeProps">
-            <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
-          </template>
-        </Edge>
-      </template>
+      <Edge
+        v-for="edge of store.getEdges"
+        :key="edge.id"
+        :edge="edge"
+        :type="type(edge)"
+        :marker-end-id="props.markerEndId"
+        :edge-updater-radius="props.edgeUpdaterRadius"
+      >
+        <template #default="edgeProps">
+          <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
+        </template>
+      </Edge>
       <ConnectionLine
         v-if="connectionLineVisible && sourceNode"
         :source-node="sourceNode"

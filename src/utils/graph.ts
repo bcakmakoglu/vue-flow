@@ -272,25 +272,13 @@ export const getConnectedEdges = (nodes: Node[], edges: Edge[]): Edge[] => {
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-const parseElements = (nodes: Node[], edges: Edge[]): Elements => [
-  ...nodes.map((node) => {
-    const n = { ...node }
-
-    if (n.__rf?.position) n.position = n.__rf?.position
-
-    return n
-  }),
-  ...edges.map((e) => ({ ...e })),
-]
-
-export const onLoadGetElements = (currentStore: FlowStore) => (): Elements =>
-  parseElements(currentStore.nodes || [], currentStore.edges || [])
+export const onLoadGetElements = (currentStore: FlowStore) => (): Elements => currentStore.elements
 
 export const onLoadToObject = (currentStore: FlowStore) => (): FlowExportObject => {
   // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
   return JSON.parse(
     JSON.stringify({
-      elements: parseElements(currentStore.nodes || [], currentStore.edges || []),
+      elements: currentStore.elements,
       position: [currentStore.transform[0], currentStore.transform[1]],
       zoom: currentStore.transform[2],
     }),

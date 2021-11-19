@@ -7,7 +7,6 @@ import { NodeId } from '../../context'
 interface NodeProps {
   node: Node
   type: NodeType
-  selected?: boolean
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
 }
@@ -30,6 +29,7 @@ const connectable = computed(() =>
   typeof props.node.connectable === 'undefined' ? store.nodesConnectable : props.node.connectable,
 )
 const scale = computed(() => store.transform[2])
+const selected = computed(() => selectable && store.selectedElements?.some(({ id }) => id === props.node.id))
 
 const onMouseEnterHandler = () =>
   props.node.__rf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
@@ -48,7 +48,7 @@ const onSelectNodeHandler = (event: MouseEvent) => {
     if (selectable.value) {
       store.unsetNodesSelection()
 
-      if (!props.selected) store.addSelectedElements([n])
+      if (!selected.value) store.addSelectedElements([n])
     }
     store.hooks.nodeClick.trigger({ event, node: n })
   }
@@ -61,8 +61,8 @@ const onDragStart: DraggableEventListener = ({ event }) => {
   if (props.selectNodesOnDrag && selectable) {
     store.unsetNodesSelection()
 
-    if (!props.selected) store.addSelectedElements([n])
-  } else if (!props.selectNodesOnDrag && !props.selected && selectable.value) {
+    if (!selected.value) store.addSelectedElements([n])
+  } else if (!props.selectNodesOnDrag && !selected.value && selectable.value) {
     store.unsetNodesSelection()
     store.addSelectedElements([])
   }
@@ -89,7 +89,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
   if (!props.node.__rf?.isDragging) {
-    if (selectable.value && !props.selectNodesOnDrag && !props.selected) {
+    if (selectable.value && !props.selectNodesOnDrag && !selected.value) {
       store.addSelectedElements([n])
     }
     store.hooks.nodeClick.trigger({ event, node: n })
@@ -150,13 +150,13 @@ onMounted(() => {
           'vue-flow__node',
           `vue-flow__node-${props.node.type}`,
           {
-            selected: props.selected,
+            selected,
             selectable: selectable,
           },
           props.node.class,
         ]"
         :style="{
-          zIndex: props.selected ? 10 : 3,
+          zIndex: selected ? 10 : 3,
           transform: `translate(${props.node.__rf?.position?.x}px,${props.node.__rf?.position?.y}px)`,
           pointerEvents: selectable || draggable ? 'all' : 'none',
           opacity: props.node.__rf?.width !== null && props.node.__rf?.height !== null ? 1 : 0,
@@ -176,7 +176,7 @@ onMounted(() => {
             type: props.node.type,
             xPos: props.node.__rf?.position?.x,
             yPos: props.node.__rf?.position?.y,
-            selected: props.selected,
+            selected,
             connectable,
             sourcePosition: props.node.sourcePosition,
             targetPosition: props.node.targetPosition,
@@ -191,7 +191,7 @@ onMounted(() => {
               type: props.node.type,
               xPos: props.node.__rf?.position?.x,
               yPos: props.node.__rf?.position?.y,
-              selected: props.selected,
+              selected,
               connectable,
               sourcePosition: props.node.sourcePosition,
               targetPosition: props.node.targetPosition,

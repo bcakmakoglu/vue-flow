@@ -130,9 +130,10 @@ invoke(async () => {
 })
 watch(
   elements,
-  (val) => {
+  (val, oldVal) => {
     nextTick(() => {
-      store.setElements(val)
+      const hasDiff = diff(val, oldVal)
+      if (hasDiff.length > 0) store.setElements(val)
     })
   },
   { flush: 'pre', deep: true },
@@ -140,9 +141,10 @@ watch(
 
 watch(
   () => store.elements,
-  (val) => {
+  (val, oldVal) => {
     nextTick(() => {
-      elements.value = val
+      const hasDiff = diff(val, oldVal)
+      if (hasDiff.length > 0) elements.value = val
     })
   },
   { flush: 'pre', deep: true },

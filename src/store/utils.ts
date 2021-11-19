@@ -13,7 +13,7 @@ export const parseElements = (elements: Elements, nodes: Node[], edges: Edge[], 
   }
   for (const element of elements) {
     if (isNode(element)) {
-      const storeNode = nodes.find((node) => node.id === element.id)
+      const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
 
       if (storeNode) {
         const updatedNode: Node = {
@@ -37,7 +37,7 @@ export const parseElements = (elements: Elements, nodes: Node[], edges: Edge[], 
         nextElements.nextNodes.push(parseNode(element, nodeExtent))
       }
     } else if (isEdge(element)) {
-      const storeEdge = edges.find((se) => se.id === element.id)
+      const storeEdge = edges[edges.map((x) => x.id).indexOf(element.id)]
 
       if (storeEdge) {
         nextElements.nextEdges.push({
