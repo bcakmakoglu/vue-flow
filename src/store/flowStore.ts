@@ -236,6 +236,7 @@ export default function flowStore(
       },
       addElements(elements: Elements) {
         const { nextNodes, nextEdges } = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+        this.elements = [...this.elements, ...elements]
         this.nodes = [...this.nodes, ...nextNodes]
         this.edges = [...this.edges, ...nextEdges]
       },
