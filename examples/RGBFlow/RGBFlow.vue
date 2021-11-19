@@ -30,7 +30,7 @@ const color = ref<Colors>({
   blue: 100,
 })
 const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (color.value[c] = Number(val))
-const { store } = useVueFlow({
+const store = useVueFlow({
   nodeTypes: {
     'rgb': true,
     'rgb-output': true,

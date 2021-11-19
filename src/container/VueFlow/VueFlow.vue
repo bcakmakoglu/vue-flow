@@ -103,7 +103,6 @@ const emit = defineEmits(Object.keys(createHooks()))
 
 const { store, hooks } = initFlow(emit, props)
 const init = (opts: typeof props) => {
-  store.elements = opts.elements
   for (const opt of Object.keys(opts)) {
     const val = opts[opt as keyof FlowProps]
     if (val && typeof val !== 'undefined') (store.$state as any)[opt] = val
@@ -115,6 +114,18 @@ const init = (opts: typeof props) => {
   store.setNodeExtent(opts.nodeExtent)
 }
 onBeforeUnmount(() => store?.$dispose())
+
+const elements = useVModel(props, 'elements', emit)
+watch(
+  elements,
+  (val, oldVal) => {
+    nextTick(() => {
+      const hasDiff = diff(val, oldVal)
+      if (hasDiff.length > 0) store.setElements(val)
+    })
+  },
+  { flush: 'post', deep: true },
+)
 
 watch(
   () => props,
