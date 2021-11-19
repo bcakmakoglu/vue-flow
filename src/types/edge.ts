@@ -22,7 +22,7 @@ export interface Edge<T = any> {
   labelBgStyle?: any
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
-  style?: CSSProperties
+  style?: CSSProperties | unknown
   animated?: boolean
   arrowHeadType?: ArrowHeadType
   markerEndId?: string

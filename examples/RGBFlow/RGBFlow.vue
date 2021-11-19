@@ -22,7 +22,7 @@ const elements = ref<Elements>([
 const el = templateRef<HTMLDivElement>('page', null)
 
 const onLoad = (flowInstance: FlowInstance) => {
-  flowInstance.setTransform({ x: el.value?.clientWidth / 2.2, y: el.value?.clientHeight / 3, zoom: 1.25 })
+  flowInstance.fitView({ padding: 1 })
 }
 const color = ref<Colors>({
   red: 100,
@@ -35,12 +35,15 @@ const store = useVueFlow({
     'rgb': true,
     'rgb-output': true,
   },
+  edgeTypes: {
+    pathfinding: true,
+  },
   zoomOnScroll: false,
 })
 </script>
 <template>
   <div ref="page" class="demo-flow">
-    <VueFlow :elements="elements" @load="onLoad">
+    <VueFlow v-model="elements" @load="onLoad">
       <template #node-rgb="props">
         <RGBNode v-bind="props" :amount="color" @change="onChange" />
       </template>

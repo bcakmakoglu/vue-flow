@@ -12,6 +12,7 @@ import {
   FlowOptions,
   NodeTypes,
   EdgeTypes,
+  FlowStore,
 } from '../../types'
 import ZoomPane from '../../container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '../../container/SelectionPane/SelectionPane.vue'
@@ -20,6 +21,8 @@ import EdgeRenderer from '../../container/EdgeRenderer/EdgeRenderer.vue'
 import { createHooks, initFlow } from '../../composables'
 
 export interface FlowProps extends Partial<FlowOptions> {
+  id?: string
+  store?: FlowStore
   modelValue?: Elements
   elements?: Elements
   nodeTypes?: NodeTypes
@@ -54,10 +57,10 @@ export interface FlowProps extends Partial<FlowOptions> {
   panOnScrollMode?: PanOnScrollMode
   zoomOnDoubleClick?: boolean
   edgeUpdaterRadius?: number
-  edgeTypesId?: string
-  nodeTypesId?: string
   storageKey?: string
 }
+
+const emit = defineEmits([...Object.keys(createHooks()), 'update:elements', 'update:modelValue'])
 
 const props = withDefaults(defineProps<FlowProps>(), {
   modelValue: () => [],
@@ -96,23 +99,22 @@ const props = withDefaults(defineProps<FlowProps>(), {
   panOnScrollMode: PanOnScrollMode.Free,
   paneMoveable: true,
   edgeUpdaterRadius: 10,
-  edgeTypesId: '1',
-  nodeTypesId: '1',
 })
-const emit = defineEmits([...Object.keys(createHooks()), 'update:elements', 'update:modelValue'])
-
-const { store, hooks } = initFlow(emit, props)
+const store = initFlow(emit, props.store)
 const elements = useVModel(props, props.elements.length ? 'elements' : 'modelValue', emit)
+
+const options = Object.assign({}, props, store.$state)
 
 // if there are preloaded elements we overwrite the current elements with the stored ones
 if (store.elements.length) elements.value = store.elements
+
 const init = (opts: typeof props) => {
   for (const opt of Object.keys(opts)) {
     const val = opts[opt as keyof FlowProps]
     if (val && typeof val !== 'undefined') {
       if (typeof val === 'object' && !Array.isArray(val)) {
-        ;(store.$state as any)[opt] = { ...(store.$state as any)[opt], ...val }
-      } else (store.$state as any)[opt] = val
+        ;(store as any)[opt] = { ...(store.$state as any)[opt], ...val }
+      } else (store as any)[opt] = val
     }
   }
   store.setElements(elements.value)
@@ -123,18 +125,9 @@ const init = (opts: typeof props) => {
 }
 onBeforeUnmount(() => store?.$dispose())
 
-store.hooks.load.on(() => init(props))
 onMounted(() => {
-  watch(
-    elements,
-    (val, oldVal) => {
-      nextTick(() => {
-        const hasDiff = diff(val, oldVal)
-        if (hasDiff.length > 0) store.setElements(val)
-      })
-    },
-    { flush: 'pre', deep: true },
-  )
+  init(options)
+  watch(elements, (val) => store.setElements(val), { flush: 'post', deep: true })
   watch(
     () => store.elements,
     (val, oldVal) => {
@@ -143,13 +136,13 @@ onMounted(() => {
         if (hasDiff.length > 0) elements.value = val
       })
     },
-    { flush: 'pre', deep: true },
+    { flush: 'post', deep: true },
   )
   watch(
     () => props,
     (val, oldVal) => {
       const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) init(val)
+      if (hasDiff.length > 0) init({ ...options, ...val })
     },
     { flush: 'pre', deep: true },
   )
@@ -159,34 +152,34 @@ onMounted(() => {
   <div class="vue-flow">
     <Suspense>
       <ZoomPane
-        :selection-key-code="props.selectionKeyCode"
-        :zoom-activation-key-code="props.zoomActivationKeyCode"
-        :default-zoom="props.defaultZoom"
-        :default-position="props.defaultPosition"
-        :zoom-on-scroll="props.zoomOnScroll"
-        :zoom-on-pinch="props.zoomOnPinch"
-        :zoom-on-double-click="props.zoomOnDoubleClick"
-        :pan-on-scroll="props.panOnScroll"
-        :pan-on-scroll-speed="props.panOnScrollSpeed"
-        :pan-on-scroll-mode="props.panOnScrollMode"
-        :pane-moveable="props.paneMoveable"
+        :selection-key-code="store.selectionKeyCode"
+        :zoom-activation-key-code="store.zoomActivationKeyCode"
+        :default-zoom="store.defaultZoom"
+        :default-position="store.defaultPosition"
+        :zoom-on-scroll="store.zoomOnScroll"
+        :zoom-on-pinch="store.zoomOnPinch"
+        :zoom-on-double-click="store.zoomOnDoubleClick"
+        :pan-on-scroll="store.panOnScroll"
+        :pan-on-scroll-speed="store.panOnScrollSpeed"
+        :pan-on-scroll-mode="store.panOnScrollMode"
+        :pane-moveable="store.paneMoveable"
       >
         <template #default="zoomPaneProps">
           <SelectionPane
-            :delete-key-code="props.deleteKeyCode"
-            :multi-selection-key-code="props.multiSelectionKeyCode"
-            :selection-key-code="props.selectionKeyCode"
+            :delete-key-code="store.deleteKeyCode"
+            :multi-selection-key-code="store.multiSelectionKeyCode"
+            :selection-key-code="store.selectionKeyCode"
           >
-            <NodeRenderer :select-nodes-on-drag="props.selectNodesOnDrag">
+            <NodeRenderer :select-nodes-on-drag="store.selectNodesOnDrag">
               <template v-for="nodeName of Object.keys(store.getNodeTypes)" #[`node-${nodeName}`]="nodeProps">
                 <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
               </template>
             </NodeRenderer>
             <EdgeRenderer
-              :connection-line-type="props.connectionLineType"
-              :connection-line-style="props.connectionLineStyle"
-              :arrow-head-color="props.arrowHeadColor"
-              :marker-end-id="props.markerEndId"
+              :connection-line-type="store.connectionLineType"
+              :connection-line-style="store.connectionLineStyle"
+              :arrow-head-color="store.arrowHeadColor"
+              :marker-end-id="store.markerEndId"
             >
               <template v-for="edgeName of Object.keys(store.getEdgeTypes)" #[`edge-${edgeName}`]="edgeProps">
                 <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
@@ -200,7 +193,7 @@ onMounted(() => {
         </template>
       </ZoomPane>
     </Suspense>
-    <slot v-bind="{ ...props, store, hooks }"></slot>
+    <slot v-bind="{ ...props, store }"></slot>
   </div>
 </template>
 <style>

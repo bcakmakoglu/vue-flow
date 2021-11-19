@@ -10,7 +10,7 @@ const props = defineProps<RBGOutputNodeProps>()
 <template>
   <div :style="{ backgroundColor: props.rgb }" class="rgb-output-node">
     <div class="text-md uppercase">{{ props.rgb }}</div>
-    <Handle type="source" :position="Position.Left" />
+    <Handle type="target" :position="Position.Left" />
   </div>
 </template>
 <style>

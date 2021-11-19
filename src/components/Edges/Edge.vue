@@ -20,6 +20,7 @@ const type = store.getEdgeTypes[edgeType] || store.getEdgeTypes.default
 if (!store.getEdgeTypes[edgeType]) {
   console.warn(`Edge type "${edgeType}" not found. Using fallback type "default".`)
 }
+const updating = ref<boolean>(false)
 
 const onEdgeClick = (event: MouseEvent) => {
   if (store.elementsSelectable) {
@@ -63,7 +64,6 @@ const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => {
   handleEdgeUpdater(event, false)
 }
 
-const updating = ref<boolean>(false)
 const onEdgeUpdaterMouseEnter = () => (updating.value = true)
 
 const onEdgeUpdaterMouseOut = () => (updating.value = false)

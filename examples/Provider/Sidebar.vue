@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useStore } from '~/index'
-const store = useStore()
+import { useVueFlow } from '~/index'
+const store = useVueFlow()
 
 const nodes = computed(() => store.nodes)
 const transform = computed(() => store.transform)

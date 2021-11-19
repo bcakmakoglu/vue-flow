@@ -1,4 +1,4 @@
-import { ConnectionMode, EdgeTypes, FlowState, NodeTypes } from '~/types'
+import { ConnectionMode, EdgeTypes, FlowState, NodeTypes, PanOnScrollMode } from '~/types'
 import { createHooks } from '~/composables'
 import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
@@ -22,8 +22,6 @@ export const initialState = (): FlowState => ({
     height: 0,
   },
   transform: [0, 0, 1],
-  nodeTypes: {},
-  edgeTypes: {},
   elements: [],
   nodes: [],
   edges: [],
@@ -44,6 +42,14 @@ export const initialState = (): FlowState => ({
     [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
     [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   ],
+  zoomOnScroll: true,
+  zoomOnPinch: true,
+  zoomOnDoubleClick: true,
+  panOnScroll: false,
+  panOnScrollSpeed: 0.5,
+  panOnScrollMode: PanOnScrollMode.Free,
+  paneMoveable: true,
+  edgeUpdaterRadius: 10,
 
   nodesSelectionActive: false,
   selectionActive: false,
@@ -57,6 +63,8 @@ export const initialState = (): FlowState => ({
     height: 0,
     draw: false,
   },
+
+  arrowHeadColor: '#b1b1b7',
   connectionNodeId: undefined,
   connectionHandleId: undefined,
   connectionHandleType: 'source',
@@ -80,4 +88,4 @@ export const initialState = (): FlowState => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export { default as useFlowStore } from './flowStore'
+export { default as useStateStore } from './stateStore'

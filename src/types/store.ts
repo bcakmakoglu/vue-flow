@@ -24,9 +24,9 @@ export interface FlowState extends FlowOptions {
   transform: Transform
   elements: Elements
   nodes: Node[]
-  nodeTypes: NodeTypes
+  nodeTypes?: NodeTypes
   edges: Edge[]
-  edgeTypes: EdgeTypes
+  edgeTypes?: EdgeTypes
   selectedElements?: Elements
   selectedNodesBbox: Rect
 

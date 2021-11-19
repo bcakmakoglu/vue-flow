@@ -1,11 +1,11 @@
 import { FlowExportObject, FlowOptions } from '~/types'
-import { useFlowStore, initialState } from '~/store'
+import { useStateStore, initialState } from '~/store'
 import { Store } from '~/context'
 import { onLoadToObject } from '~/utils'
 
 let id = 0
 export default (options?: Partial<FlowOptions>) => {
-  let store = inject(Store, null)!
+  let store = inject(Store, null)
 
   if (!store) {
     const withStorage = options?.storageKey ?? false
@@ -25,7 +25,7 @@ export default (options?: Partial<FlowOptions>) => {
           preloadedState.transform = [storedState.value.position[0], storedState.value.position[1], storedState.value.zoom]
       }
     }
-    store = useFlowStore(storageKey, preloadedState)()
+    store = useStateStore(storageKey, preloadedState)()
     if (withStorage && storageKey === store.$id) {
       const toObject = onLoadToObject(store)
       store.$subscribe(() => {

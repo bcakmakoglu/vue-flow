@@ -67,10 +67,8 @@ const resetRecentHandle = (hoveredHandle: Element): void => {
   hoveredHandle?.classList.remove('vue-flow__handle-connecting')
 }
 
-export default () => {
-  const store = useStore()
-
-  return (
+export default (store = useStore()) =>
+  (
     event: MouseEvent,
     handleId: ElementId,
     nodeId: ElementId,
@@ -93,7 +91,7 @@ export default () => {
 
     if (!flowNode || (!elementBelowIsTarget && !elementBelowIsSource && !elementEdgeUpdaterType)) return
 
-    const handleType = elementEdgeUpdaterType || (elementBelowIsTarget ? 'target' : 'source')
+    const handleType = elementEdgeUpdaterType ?? (elementBelowIsTarget ? 'target' : 'source')
     const containerBounds = flowNode.getBoundingClientRect()
     let recentHoveredHandle: Element
 
@@ -167,4 +165,3 @@ export default () => {
     doc.addEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
     doc.addEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)
   }
-}

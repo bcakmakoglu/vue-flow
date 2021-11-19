@@ -38,7 +38,7 @@ const addRandomNode = () => {
 </script>
 <template>
   <VueFlow
-    :elements="elements"
+    v-model="elements"
     @load="onLoad"
     @element-click="onElementClick"
     @elements-remove="onElementsRemove"

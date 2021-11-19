@@ -28,10 +28,7 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
 const onLoad = (instance: FlowInstance) => (flowInstance.value = instance)
 
 const onDrop = (event: DragEvent) => {
-  event.preventDefault()
-
   if (flowInstance.value) {
-    console.log(event.dataTransfer?.getData('application/vueflow'))
     const type = event.dataTransfer?.getData('application/vueflow')
     const position = flowInstance.value.project({ x: event.clientX, y: event.clientY - 40 })
     const newNode = {
@@ -40,24 +37,13 @@ const onDrop = (event: DragEvent) => {
       position,
       data: { label: `${type} node` },
     } as Node
-
     elements.value.push(newNode)
   }
 }
 </script>
 <template>
-  <div class="dndflow">
-    <div class="vueflow-wrapper" @drop="onDrop">
-      <VueFlow
-        :elements="elements"
-        @elements-remove="onElementsRemove"
-        @load="onLoad"
-        @connect="onConnect"
-        @dragover="onDragOver"
-      >
-        <Controls />
-      </VueFlow>
-    </div>
+  <div class="dndflow" @drop="onDrop">
+    <VueFlow v-model="elements" @elements-remove="onElementsRemove" @load="onLoad" @connect="onConnect" @dragover="onDragOver" />
     <Sidebar />
   </div>
 </template>

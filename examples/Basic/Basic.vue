@@ -13,6 +13,7 @@ import {
   isNode,
   removeElements,
   Node,
+  useVueFlow,
 } from '~/index'
 
 const onNodeDragStop = ({ node }: { node: Node }) => console.log('drag stop', node)
@@ -54,6 +55,7 @@ const toggleclasss = () => {
     return el
   })
 }
+useVueFlow()
 </script>
 <template>
   <VueFlow

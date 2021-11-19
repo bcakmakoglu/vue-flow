@@ -3,6 +3,7 @@ import { Edge, EdgeTypes } from './edge'
 import { Node, NodeExtent, NodeTypes, TranslateExtent } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode } from './panel'
+import { FlowStore } from './store'
 
 export type ElementId = string
 
@@ -89,7 +90,9 @@ export type FlowInstance<T = any> = {
 }
 
 export interface FlowOptions {
-  elements: Elements
+  id?: string
+  store?: FlowStore
+  elements?: Elements
   nodeTypes?: NodeTypes
   edgeTypes?: EdgeTypes
   connectionMode?: ConnectionMode
@@ -122,7 +125,5 @@ export interface FlowOptions {
   panOnScrollMode?: PanOnScrollMode
   zoomOnDoubleClick?: boolean
   edgeUpdaterRadius?: number
-  nodeTypesId?: string
-  edgeTypesId?: string
   storageKey?: string
 }
