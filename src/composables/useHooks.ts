@@ -11,7 +11,6 @@ import {
   FlowEvents,
   FlowStore,
 } from '~/types'
-import { Hooks } from '~/context'
 
 // flow event hooks
 export const createHooks = (): FlowHooks => {
@@ -66,14 +65,4 @@ const bind = (emit: EmitFunc, hooks: FlowHooks) => {
   }
 }
 
-export default (store: FlowStore, emit?: EmitFunc) => {
-  let hooks = inject(Hooks, null)!
-  if (!hooks) {
-    if (import.meta.env.DEV) console.warn('hooks context not found; creating default hooks')
-    hooks = store.hooks
-    if (typeof emit === 'function') bind(emit, hooks)
-    provide(Hooks, hooks)
-  }
-
-  return hooks
-}
+export default (store: FlowStore, emit: EmitFunc) => bind(emit, store.hooks)
