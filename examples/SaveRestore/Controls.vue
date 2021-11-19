@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useZoomPanHelper, FlowInstance, FlowExportObject, Node } from '~/index'
+import { useZoomPanHelper, FlowExportObject, Node, useVueFlow } from '~/index'
 
 const flowKey = 'example-flow'
 const state = useStorage(flowKey, {
@@ -12,15 +12,11 @@ const getNodeId = () => `randomnode_${+new Date()}`
 
 const { transform } = useZoomPanHelper()
 
-type ControlsProps = {
-  flowInstance?: FlowInstance
-}
-
-const props = defineProps<ControlsProps>()
+const flow = useVueFlow()
 const emit = defineEmits(['restore', 'add'])
 
 const onSave = () => {
-  if (props.flowInstance) state.value = props.flowInstance.toObject()
+  if (flow.instance) state.value = flow.instance.toObject()
 }
 
 const onRestore = () => {
@@ -39,7 +35,7 @@ const onAdd = () => {
     data: { label: 'Added node' },
     position: { x: Math.random() * window.innerWidth - 100, y: Math.random() * window.innerHeight },
   } as Node
-  emit('add', newNode)
+  flow.addElements([newNode])
 }
 </script>
 <template>

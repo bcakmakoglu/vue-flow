@@ -26,7 +26,6 @@ switch (props.data.color) {
     break
 }
 const onChange = (e: any) => emit('change', { color, val: e.target.value })
-console.log('rgb')
 </script>
 <template>
   <div class="px-4 py-2 bg-white rounded-md border-2 border-solid border-black text-left transform scale-75 lg:scale-100">
