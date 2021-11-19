@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { Node, NodeType, SnapGrid } from '../../types'
+import { Node, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 
 interface NodeProps {
   node: Node
-  type: NodeType
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
 }
@@ -20,6 +19,12 @@ const store = useStore()
 provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
+
+const nodeType = props.node.type || 'default'
+const type = store.getNodeTypes[nodeType] || store.getNodeTypes.default
+if (!store.getNodeTypes[nodeType]) {
+  console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`)
+}
 
 const selectable = computed(() =>
   typeof props.node.selectable === 'undefined' ? store.elementsSelectable : props.node.selectable,
@@ -184,7 +189,8 @@ onMounted(() => {
           }"
         >
           <component
-            :is="props.type"
+            :is="type"
+            v-if="typeof type !== 'boolean'"
             v-bind="{
               id: props.node.id,
               data: props.node.data,

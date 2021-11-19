@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { useHandle, useStore } from '../../composables'
-import { ConnectionMode, Edge, EdgePositions, EdgeType, Position } from '../../types'
+import { ConnectionMode, Edge, EdgePositions, Position } from '../../types'
 import EdgeAnchor from './EdgeAnchor.vue'
 import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '~/container/EdgeRenderer/utils'
 import { isEdge } from '~/utils'
 
 interface EdgeProps {
-  type: EdgeType
   edge: Edge
   markerEndId?: string
   edgeUpdaterRadius?: number
@@ -15,6 +14,12 @@ interface EdgeProps {
 const props = withDefaults(defineProps<EdgeProps>(), {})
 
 const store = useStore()
+
+const edgeType = props.edge.type || 'default'
+const type = store.getEdgeTypes[edgeType] || store.getEdgeTypes.default
+if (!store.getEdgeTypes[edgeType]) {
+  console.warn(`Edge type "${edgeType}" not found. Using fallback type "default".`)
+}
 
 const onEdgeClick = (event: MouseEvent) => {
   if (store.elementsSelectable) {
@@ -166,7 +171,8 @@ const elementsSelectable = computed(() => store.elementsSelectable)
       }"
     >
       <component
-        :is="props.type"
+        :is="type"
+        v-if="typeof type !== 'boolean'"
         v-bind="{
           id: props.edge.id,
           source: props.edge.source,

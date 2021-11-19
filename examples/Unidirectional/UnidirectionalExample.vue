@@ -14,6 +14,7 @@ import {
   ConnectionMode,
   updateEdge,
   ArrowHeadType,
+  NodeTypes,
 } from '~/index'
 
 const initialElements: Elements = [
@@ -172,8 +173,8 @@ const initialElements: Elements = [
   },
 ]
 
-const nodeTypes: Record<string, NodeType> = {
-  custom: CustomNode as NodeType,
+const nodeTypes: NodeTypes = {
+  custom: CustomNode,
 }
 
 let id = 4

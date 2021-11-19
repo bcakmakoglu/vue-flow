@@ -1,4 +1,4 @@
-import { CSSProperties, DefineComponent } from 'vue'
+import { Component, CSSProperties, DefineComponent } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './types'
 
 export interface Edge<T = any> {
@@ -48,7 +48,8 @@ export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
   borderRadius?: number
 }
 
-export type EdgeType = DefineComponent<EdgeSmoothStepProps, any, any, any, any, any> | boolean
+export type EdgeType = Component<EdgeProps> | DefineComponent<EdgeSmoothStepProps, any, any, any, any, any> | boolean
+export type EdgeTypes = Record<string, EdgeType>
 
 export interface EdgePositions {
   sourceX: number

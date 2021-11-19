@@ -1,7 +1,7 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import diff from 'microdiff'
 import { parseElements } from './utils'
-import { FlowState, Node, FlowActions, Elements, NodeType, EdgeType, FlowGetters, Edge } from '~/types'
+import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge, EdgeTypes, NodeTypes } from '~/types'
 import { clampPosition, getDimensions, getConnectedEdges, getNodesInside, getRectOfNodes, isNode } from '~/utils'
 import { getHandleBounds } from '~/components/Nodes/utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '~/store/index'
@@ -23,10 +23,10 @@ export default function flowStore(
       ...preloadedState,
     }),
     getters: {
-      getEdgeTypes(): Record<string, EdgeType> {
+      getEdgeTypes(): EdgeTypes {
         return { ...defaultEdgeTypes, ...this.edgeTypes }
       },
-      getNodeTypes(): Record<string, NodeType> {
+      getNodeTypes(): NodeTypes {
         return { ...defaultNodeTypes, ...this.nodeTypes }
       },
       getNodes(): Node[] {

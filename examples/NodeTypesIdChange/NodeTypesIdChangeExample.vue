@@ -2,7 +2,7 @@
 import { CSSProperties } from 'vue'
 import NodeA from './NodeA.vue'
 import NodeB from './NodeB.vue'
-import { VueFlow, Elements, Position, NodeType, Connection, Edge, addEdge } from '~/index'
+import { VueFlow, Elements, Position, Connection, Edge, addEdge, NodeTypes } from '~/index'
 
 const initialElements: Elements = [
   {
@@ -25,16 +25,13 @@ const initialElements: Elements = [
 const buttonStyle: CSSProperties = { position: 'absolute', right: 10, top: 30, zIndex: 4 }
 
 const nodeStyles: CSSProperties = { padding: '10px 15px', border: '1px solid #ddd' }
-type NodeTypesObject = {
-  [key: string]: Record<string, NodeType>
-}
 
-const nodeTypesObjects: NodeTypesObject = {
+const nodeTypesObjects: Record<string, NodeTypes> = {
   a: {
-    a: NodeA as NodeType,
+    a: NodeA,
   },
   b: {
-    b: NodeB as NodeType,
+    b: NodeB,
   },
 }
 

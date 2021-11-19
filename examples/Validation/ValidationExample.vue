@@ -13,6 +13,7 @@ import {
   NodeProps,
   FlowInstance,
   NodeType,
+  NodeTypes,
 } from '~/index'
 
 import './validation.css'
@@ -34,9 +35,9 @@ const onConnect = (params: Connection | Edge) => {
   console.log('on connect', params)
   elements.value = addEdge(params, elements.value)
 }
-const nodeTypes: Record<string, NodeType> = {
-  custominput: CustomInput as NodeType,
-  customnode: CustomNode as NodeType,
+const nodeTypes: NodeTypes = {
+  custominput: CustomInput,
+  customnode: CustomNode,
 }
 </script>
 <template>

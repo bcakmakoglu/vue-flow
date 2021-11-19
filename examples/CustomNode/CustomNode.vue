@@ -23,7 +23,7 @@ const bgColor = ref('#1A192B')
 const connectionLineStyle = { stroke: '#fff' }
 const snapGrid: SnapGrid = [16, 16]
 const nodeTypes = {
-  selectorNode: ColorSelectorNode,
+  selectorNode: markRaw(ColorSelectorNode),
 }
 
 const onLoad = (flowInstance: FlowInstance) => {

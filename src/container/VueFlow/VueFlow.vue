@@ -6,12 +6,12 @@ import {
   ConnectionMode,
   Elements,
   PanOnScrollMode,
-  NodeType,
-  EdgeType,
   KeyCode,
   TranslateExtent,
   NodeExtent,
   FlowOptions,
+  NodeTypes,
+  EdgeTypes,
 } from '../../types'
 import ZoomPane from '../../container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '../../container/SelectionPane/SelectionPane.vue'
@@ -22,8 +22,8 @@ import { createHooks, initFlow } from '../../composables'
 export interface FlowProps extends Partial<FlowOptions> {
   modelValue?: Elements
   elements?: Elements
-  nodeTypes?: Record<string, NodeType>
-  edgeTypes?: Record<string, EdgeType>
+  nodeTypes?: NodeTypes
+  edgeTypes?: EdgeTypes
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties

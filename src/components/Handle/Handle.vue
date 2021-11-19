@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<HandleProps>(), {
 })
 
 const store = useStore()
-const nodeId = inject(NodeId)!
+const nodeId = inject(NodeId, '')!
 
 const handler = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>

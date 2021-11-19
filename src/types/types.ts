@@ -1,6 +1,6 @@
-import { CSSProperties, HTMLAttributes } from 'vue'
-import { Edge, EdgeType } from './edge'
-import { Node, NodeExtent, NodeType, TranslateExtent } from './node'
+import { CSSProperties } from 'vue'
+import { Edge, EdgeTypes } from './edge'
+import { Node, NodeExtent, NodeTypes, TranslateExtent } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode } from './panel'
 
@@ -88,10 +88,10 @@ export type FlowInstance<T = any> = {
   toObject: ToObjectFunc<T>
 }
 
-export interface FlowOptions extends Omit<HTMLAttributes, 'onLoad'> {
+export interface FlowOptions {
   elements: Elements
-  nodeTypes?: Record<string, NodeType>
-  edgeTypes?: Record<string, EdgeType>
+  nodeTypes?: NodeTypes
+  edgeTypes?: EdgeTypes
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties

@@ -28,14 +28,6 @@ const connectionLineVisible = computed(
 )
 const dimensions = computed(() => store.dimensions)
 const transform = computed(() => `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`)
-const type = (edge: TEdge) => {
-  const edgeType = edge.type || 'default'
-  const type = store.getEdgeTypes[edgeType] || store.getEdgeTypes.default
-  if (!store.getEdgeTypes[edgeType]) {
-    console.warn(`Edge type "${edgeType}" not found. Using fallback type "default".`)
-  }
-  return type
-}
 </script>
 <template>
   <svg :width="dimensions.width" :height="dimensions.height" class="vue-flow__edges">
@@ -45,7 +37,6 @@ const type = (edge: TEdge) => {
         v-for="edge of store.getEdges"
         :key="edge.id"
         :edge="edge"
-        :type="type(edge)"
         :marker-end-id="props.markerEndId"
         :edge-updater-radius="props.edgeUpdaterRadius"
       >

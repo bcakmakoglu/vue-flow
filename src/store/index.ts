@@ -1,19 +1,19 @@
-import { ConnectionMode, EdgeType, FlowState, NodeType } from '~/types'
+import { ConnectionMode, EdgeTypes, FlowState, NodeTypes } from '~/types'
 import { createHooks } from '~/composables'
 import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 
-export const defaultNodeTypes: Record<string, NodeType> = {
-  input: InputNode as NodeType,
-  default: DefaultNode as NodeType,
-  output: OutputNode as NodeType,
+export const defaultNodeTypes: NodeTypes = {
+  input: markRaw(InputNode),
+  default: markRaw(DefaultNode),
+  output: markRaw(OutputNode),
 }
 
-export const defaultEdgeTypes: Record<string, EdgeType> = {
-  default: BezierEdge as EdgeType,
-  straight: StraightEdge as EdgeType,
-  step: StepEdge as EdgeType,
-  smoothstep: SmoothStepEdge as EdgeType,
+export const defaultEdgeTypes: EdgeTypes = {
+  default: markRaw(BezierEdge),
+  straight: markRaw(StraightEdge),
+  step: markRaw(StepEdge),
+  smoothstep: markRaw(SmoothStepEdge),
 }
 
 export const initialState = (): FlowState => ({

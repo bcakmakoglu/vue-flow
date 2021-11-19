@@ -14,6 +14,7 @@ import {
   Position,
   isEdge,
   FlowInstance,
+  NodeTypes,
 } from '~/index'
 
 const initialHandleCount = 1
@@ -29,8 +30,8 @@ const initialElements: Elements = [
 
 const buttonWrapperStyles: CSSProperties = { position: 'absolute', right: 10, top: 10, zIndex: 10 }
 
-const nodeTypes: Record<string, NodeType> = {
-  custom: CustomNode as NodeType,
+const nodeTypes: NodeTypes = {
+  custom: CustomNode,
 }
 
 let id = 5

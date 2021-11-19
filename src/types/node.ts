@@ -1,4 +1,4 @@
-import { DefineComponent } from 'vue'
+import { Component, DefineComponent } from 'vue'
 import { XYPosition, ElementId, Position } from './types'
 
 export interface Node<T = any> {
@@ -58,4 +58,5 @@ export interface NodeProps<T = any> {
   dragging?: boolean
 }
 
-export type NodeType = DefineComponent<NodeProps, any, any, any, any> | boolean
+export type NodeType = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | boolean
+export type NodeTypes = Record<string, NodeType>
