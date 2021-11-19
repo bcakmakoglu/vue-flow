@@ -105,7 +105,11 @@ const { store, hooks } = initFlow(emit, props)
 const init = (opts: typeof props) => {
   for (const opt of Object.keys(opts)) {
     const val = opts[opt as keyof FlowProps]
-    if (val && typeof val !== 'undefined') (store.$state as any)[opt] = val
+    if (val && typeof val !== 'undefined') {
+      if (typeof val === 'object' && !Array.isArray(val)) {
+        ;(store.$state as any)[opt] = { ...(store.$state as any)[opt], ...val }
+      } else (store.$state as any)[opt] = val
+    }
   }
   store.setElements(store.elements)
   store.setMinZoom(opts.minZoom)
