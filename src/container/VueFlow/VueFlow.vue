@@ -20,8 +20,9 @@ import NodeRenderer from '../../container/NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../../container/EdgeRenderer/EdgeRenderer.vue'
 import { createHooks, initFlow } from '../../composables'
 
-export interface FlowProps extends FlowOptions {
-  elements: Elements
+export interface FlowProps extends Partial<FlowOptions> {
+  modelValue?: Elements
+  elements?: Elements
   nodeTypes?: Record<string, NodeType>
   edgeTypes?: Record<string, EdgeType>
   connectionMode?: ConnectionMode
@@ -60,6 +61,7 @@ export interface FlowProps extends FlowOptions {
 }
 
 const props = withDefaults(defineProps<FlowProps>(), {
+  modelValue: () => [],
   elements: () => [],
   connectionMode: ConnectionMode.Loose,
   connectionLineType: ConnectionLineType.Bezier,
@@ -98,10 +100,13 @@ const props = withDefaults(defineProps<FlowProps>(), {
   edgeTypesId: '1',
   nodeTypesId: '1',
 })
-
-const emit = defineEmits(Object.keys(createHooks()))
+const emit = defineEmits([...Object.keys(createHooks()), 'update:elements', 'update:modelValue'])
 
 const { store, hooks } = initFlow(emit, props)
+const elements = useVModel(props, props.elements.length ? 'elements' : 'modelValue', emit)
+
+// if there are preloaded elements we overwrite the current elements with the stored ones
+if (store.elements.length) elements.value = store.elements
 const init = (opts: typeof props) => {
   for (const opt of Object.keys(opts)) {
     const val = opts[opt as keyof FlowProps]
@@ -111,7 +116,7 @@ const init = (opts: typeof props) => {
       } else (store.$state as any)[opt] = val
     }
   }
-  store.setElements(store.elements)
+  store.setElements(elements.value)
   store.setMinZoom(opts.minZoom)
   store.setMaxZoom(opts.maxZoom)
   store.setTranslateExtent(opts.translateExtent)
@@ -119,16 +124,28 @@ const init = (opts: typeof props) => {
 }
 onBeforeUnmount(() => store?.$dispose())
 
-const elements = useVModel(props, 'elements', emit)
+invoke(async () => {
+  await until(elements.value).toMatch((y) => y.length > 0)
+  init(props)
+})
 watch(
   elements,
-  (val, oldVal) => {
+  (val) => {
     nextTick(() => {
-      const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) store.setElements(val)
+      store.setElements(val)
     })
   },
-  { flush: 'post', deep: true },
+  { flush: 'pre', deep: true },
+)
+
+watch(
+  () => store.elements,
+  (val) => {
+    nextTick(() => {
+      elements.value = val
+    })
+  },
+  { flush: 'pre', deep: true },
 )
 
 watch(
@@ -139,10 +156,6 @@ watch(
   },
   { flush: 'pre', deep: true },
 )
-invoke(async () => {
-  await until(props.elements).toMatch((y) => y.length > 0)
-  init(props)
-})
 </script>
 <template>
   <div class="vue-flow">
