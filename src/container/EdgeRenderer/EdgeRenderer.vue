@@ -34,8 +34,8 @@ const transform = computed(() => `translate(${store.transform[0]},${store.transf
     <MarkerDefinitions :color="props.arrowHeadColor" />
     <g :transform="transform">
       <Edge
-        v-for="edge of store.getEdges"
-        :key="edge.id"
+        v-for="(edge, i) of store.getEdges"
+        :key="`${edge.id}-${i}`"
         :edge="edge"
         :marker-end-id="props.markerEndId"
         :edge-updater-radius="props.edgeUpdaterRadius"

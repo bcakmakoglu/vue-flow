@@ -13,8 +13,8 @@ import {
 } from './types'
 import { HandleType } from './handle'
 import { ConnectionMode, OnConnectEndFunc, OnConnectFunc, OnConnectStartFunc, OnConnectStopFunc } from './connection'
-import { Edge, EdgeTypes } from './edge'
-import { Node, NodeExtent, NodeTypes, TranslateExtent } from './node'
+import { Edge, EdgeComponent } from './edge'
+import { Node, NodeComponent, NodeExtent, TranslateExtent } from './node'
 import { FlowActions } from './actions'
 import { D3Selection, D3Zoom, D3ZoomHandler } from './panel'
 import { FlowHooks } from './hooks'
@@ -67,8 +67,8 @@ export interface FlowState extends FlowOptions {
 }
 
 export interface FlowGetters {
-  getEdgeTypes: () => EdgeTypes
-  getNodeTypes: () => NodeTypes
+  getEdgeTypes: () => Record<string, EdgeComponent>
+  getNodeTypes: () => Record<string, NodeComponent>
   getNodes: () => Node[]
   getEdges: () => Edge[]
 }

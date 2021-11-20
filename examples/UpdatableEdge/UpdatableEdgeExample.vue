@@ -51,7 +51,7 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
 </script>
 <template>
   <VueFlow
-    :elements="elements"
+    v-model="elements"
     :snap-to-grid="true"
     :connection-mode="ConnectionMode.Loose"
     @load="onLoad"

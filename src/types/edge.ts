@@ -14,8 +14,8 @@ export interface Edge<T = any> {
   label?:
     | string
     | {
-        component: any
-        props?: any
+        component: Component | DefineComponent
+        props?: Record<string, any>
       }
   labelStyle?: any
   labelShowBg?: boolean
@@ -48,8 +48,8 @@ export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
   borderRadius?: number
 }
 
-export type EdgeType = Component<EdgeProps> | DefineComponent<EdgeSmoothStepProps, any, any, any, any, any> | boolean
-export type EdgeTypes = Record<string, EdgeType>
+export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeSmoothStepProps, any, any, any, any, any> | string
+export type EdgeTypes = string[]
 
 export interface EdgePositions {
   sourceX: number

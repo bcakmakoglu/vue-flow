@@ -58,5 +58,5 @@ export interface NodeProps<T = any> {
   dragging?: boolean
 }
 
-export type NodeType = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | boolean
-export type NodeTypes = Record<string, NodeType>
+export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | string
+export type NodeTypes = string[]

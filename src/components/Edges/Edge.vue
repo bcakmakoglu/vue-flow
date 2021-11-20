@@ -16,13 +16,15 @@ const props = withDefaults(defineProps<EdgeProps>(), {})
 const store = useStore()
 
 const type = computed(() => {
-  const edgeType = props.edge.type || 'default'
-  const t = store.getEdgeTypes[edgeType] || store.getEdgeTypes.default
-  if (!store.getEdgeTypes[edgeType]) {
-    console.warn(`Edge type "${edgeType}" not found. Using fallback type "default".`)
+  const t = props.edge.type ?? 'default'
+  let edge = store.getEdgeTypes[t]
+  if (!edge) {
+    edge = store.getEdgeTypes.default
+    console.warn(`Edge type "${t}" not found. Using fallback type "default".`)
   }
-  return t
+  return edge
 })
+
 const updating = ref<boolean>(false)
 
 const onEdgeClick = (event: MouseEvent) => {

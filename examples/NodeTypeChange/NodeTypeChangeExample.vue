@@ -41,7 +41,7 @@ const changeType = () => {
 }
 </script>
 <template>
-  <VueFlow :elements="elements" @connect="onConnect" @load="onLoad">
+  <VueFlow v-model="elements" @connect="onConnect" @load="onLoad">
     <button :style="buttonStyle" @click="changeType">change type</button>
   </VueFlow>
 </template>

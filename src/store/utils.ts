@@ -1,25 +1,26 @@
-import { ConnectionMode, Edge, EdgeTypes, Elements, FlowState, Node, NodeExtent, NodeTypes, PanOnScrollMode } from '~/types'
+import { Component } from 'vue'
+import { ConnectionMode, Edge, EdgeProps, Elements, FlowState, Node, NodeExtent, NodeProps, PanOnScrollMode } from '~/types'
 import { isEdge, isNode, parseEdge, parseNode } from '~/utils'
 import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
 import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
 import { createHooks } from '~/composables'
 
-type NextElements = {
+export type NextElements = {
   nextNodes: Node[]
   nextEdges: Edge[]
 }
 
-export const defaultNodeTypes: NodeTypes = {
-  input: markRaw(InputNode),
-  default: markRaw(DefaultNode),
-  output: markRaw(OutputNode),
+export const defaultNodeTypes: Record<string, Component<NodeProps>> = {
+  input: InputNode,
+  default: DefaultNode,
+  output: OutputNode,
 }
 
-export const defaultEdgeTypes: EdgeTypes = {
-  default: markRaw(BezierEdge),
-  straight: markRaw(StraightEdge),
-  step: markRaw(StepEdge),
-  smoothstep: markRaw(SmoothStepEdge),
+export const defaultEdgeTypes: Record<string, Component<EdgeProps>> = {
+  default: BezierEdge,
+  straight: StraightEdge,
+  step: StepEdge,
+  smoothstep: SmoothStepEdge,
 }
 
 export const initialState = (): FlowState => ({
@@ -93,52 +94,52 @@ export const initialState = (): FlowState => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export const parseElements = (elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) => {
-  const nextElements: NextElements = {
-    nextNodes: [],
-    nextEdges: [],
-  }
-  for (const element of elements) {
-    if (isNode(element)) {
-      const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
+export const parseElements = async (elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) =>
+  new Promise<NextElements>((resolve) => {
+    const nextElements: NextElements = {
+      nextNodes: [],
+      nextEdges: [],
+    }
+    for (const element of elements) {
+      if (isNode(element)) {
+        const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
 
-      if (storeNode) {
-        const updatedNode: Node = {
-          ...storeNode,
-          ...element,
+        if (storeNode) {
+          const updatedNode: Node = {
+            ...storeNode,
+            ...element,
+          }
+          if (!updatedNode.__rf) updatedNode.__rf = {}
+
+          if (storeNode.position.x !== element.position.x || storeNode.position.y !== element.position.y) {
+            updatedNode.__rf.position = element.position
+          }
+
+          if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
+            // we reset the elements dimensions here in order to force a re-calculation of the bounds.
+            // When the type of a node changes it is possible that the number or positions of handles changes too.
+            updatedNode.__rf.width = undefined
+          }
+
+          nextElements.nextNodes.push(updatedNode)
+        } else {
+          nextElements.nextNodes.push(parseNode(element, nodeExtent))
         }
-        if (!updatedNode.__rf) updatedNode.__rf = {}
+      } else if (isEdge(element)) {
+        const storeEdge = edges[edges.map((x) => x.id).indexOf(element.id)]
 
-        if (storeNode.position.x !== element.position.x || storeNode.position.y !== element.position.y) {
-          updatedNode.__rf.position = element.position
+        if (storeEdge) {
+          nextElements.nextEdges.push({
+            ...storeEdge,
+            ...element,
+          })
+        } else {
+          nextElements.nextEdges.push(parseEdge(element))
         }
-
-        if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
-          // we reset the elements dimensions here in order to force a re-calculation of the bounds.
-          // When the type of a node changes it is possible that the number or positions of handles changes too.
-          updatedNode.__rf.width = undefined
-        }
-
-        nextElements.nextNodes.push(updatedNode)
-      } else {
-        nextElements.nextNodes.push(parseNode(element, nodeExtent))
-      }
-    } else if (isEdge(element)) {
-      const storeEdge = edges[edges.map((x) => x.id).indexOf(element.id)]
-
-      if (storeEdge) {
-        nextElements.nextEdges.push({
-          ...storeEdge,
-          ...element,
-        })
-      } else {
-        nextElements.nextEdges.push(parseEdge(element))
       }
     }
-  }
-
-  return nextElements
-}
+    resolve(nextElements)
+  })
 
 const isObject = (val: any) => val !== null && typeof val === 'object'
 const isArray = Array.isArray

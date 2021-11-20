@@ -3,7 +3,10 @@ import { CSSProperties } from 'vue'
 import { Handle, Position, NodeProps } from '~/index'
 
 interface CustomNodeProps extends NodeProps {
-  data: any
+  data: {
+    handleCount: number
+    handlePosition: number
+  }
 }
 const nodeStyles: CSSProperties = { padding: 10, border: '1px solid #ddd' }
 

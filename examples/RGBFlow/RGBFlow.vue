@@ -31,13 +31,8 @@ const color = ref<Colors>({
 })
 const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (color.value[c] = Number(val))
 const store = useVueFlow({
-  nodeTypes: {
-    'rgb': true,
-    'rgb-output': true,
-  },
-  edgeTypes: {
-    pathfinding: true,
-  },
+  nodeTypes: ['rgb', 'rgb-output'],
+  edgeTypes: ['pathfinding'],
   zoomOnScroll: false,
 })
 </script>

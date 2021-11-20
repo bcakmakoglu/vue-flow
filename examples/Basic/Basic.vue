@@ -58,8 +58,8 @@ const toggleclasss = () => {
 </script>
 <template>
   <VueFlow
+    v-model="elements"
     class="vue-flow-basic-example"
-    :elements="elements"
     :default-zoom="1.5"
     :min-zoom="0.2"
     :max-zoom="4"

@@ -48,7 +48,7 @@ const captureElementClick = ref(false)
 </script>
 <template>
   <VueFlow
-    :elements="elements"
+    v-model="elements"
     :elements-selectable="isSelectable"
     :nodes-connectable="isConnectable"
     :nodes-draggable="isDraggable"

@@ -7,15 +7,11 @@ import {
   Connection,
   Controls,
   Edge,
-  EdgeType,
   Elements,
   MiniMap,
   FlowInstance,
   removeElements,
 } from '~/index'
-const edgeTypes = {
-  buttonedge: ButtonEdge as EdgeType,
-}
 
 const elements = ref<Elements>([
   {
@@ -29,7 +25,7 @@ const elements = ref<Elements>([
     id: 'edge-1-2',
     source: 'ewb-1',
     target: 'ewb-2',
-    type: 'buttonedge',
+    type: 'button',
   },
 ])
 
@@ -41,13 +37,16 @@ const onConnect = (params: Connection | Edge) =>
 <template>
   <VueFlow
     key="edge-with-button"
-    :elements="elements"
+    v-model="elements"
     :snap-to-grid="true"
-    :edge-types="edgeTypes"
+    :edge-types="['button']"
     @load="onLoad"
     @elementsRemove="onElementsRemove"
     @connect="onConnect"
   >
+    <template #edge-button="props">
+      <ButtonEdge v-bind="props" />
+    </template>
     <MiniMap />
     <Controls />
     <Background />

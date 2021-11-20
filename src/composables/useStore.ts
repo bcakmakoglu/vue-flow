@@ -24,7 +24,6 @@ export default (options?: Partial<FlowOptions>, key?: string) => {
         if (storedState.value.position && storedState.value.zoom)
           preloadedState.transform = [storedState.value.position[0], storedState.value.position[1], storedState.value.zoom]
       }
-      console.log(storedState.value)
     }
     store = useStateStore(storageKey, preloadedState)()
     if (withStorage && storageKey === store.$id) {

@@ -2,7 +2,6 @@
 import CustomNode from './CustomNode.vue'
 import {
   VueFlow,
-  NodeType,
   addEdge,
   useZoomPanHelper,
   Elements,
@@ -14,7 +13,6 @@ import {
   ConnectionMode,
   updateEdge,
   ArrowHeadType,
-  NodeTypes,
 } from '~/index'
 
 const initialElements: Elements = [
@@ -173,10 +171,6 @@ const initialElements: Elements = [
   },
 ]
 
-const nodeTypes: NodeTypes = {
-  custom: CustomNode,
-}
-
 let id = 4
 const getId = (): ElementId => `${id++}`
 
@@ -195,12 +189,16 @@ const onPaneClick = (evt: MouseEvent) =>
 </script>
 <template>
   <VueFlow
-    :elements="elements"
-    :node-types="nodeTypes"
+    v-model="elements"
+    :node-types="['custom']"
     :connection-line-type="ConnectionLineType.SmoothStep"
     :connection-mode="ConnectionMode.Loose"
     @connect="onConnect"
     @pane-click="onPaneClick"
     @edge-pdate="onEdgeUpdate"
-  />
+  >
+    <template #node-custom="props">
+      <CustomNode v-bind="props" />
+    </template>
+  </VueFlow>
 </template>

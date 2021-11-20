@@ -23,7 +23,7 @@ watchEffect(() => {
 })
 </script>
 <template>
-  <VueFlow :elements="elements" @connect="onConnect">
+  <VueFlow v-model="elements" @connect="onConnect">
     <MiniMap />
     <Controls />
 

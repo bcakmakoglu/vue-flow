@@ -27,12 +27,8 @@ const buttonStyle: CSSProperties = { position: 'absolute', right: 10, top: 30, z
 const nodeStyles: CSSProperties = { padding: '10px 15px', border: '1px solid #ddd' }
 
 const nodeTypesObjects: Record<string, NodeTypes> = {
-  a: {
-    a: NodeA,
-  },
-  b: {
-    b: NodeB,
-  },
+  a: ['a'],
+  b: ['b'],
 }
 
 const elements = ref(initialElements)

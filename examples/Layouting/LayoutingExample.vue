@@ -59,7 +59,7 @@ const onLayout = (direction: string) => {
 <template>
   <div class="layoutflow">
     <VueFlow
-      :elements="elements"
+      v-model="elements"
       :node-extent="nodeExtent"
       :connection-mode="ConnectionMode.Loose"
       @connect="onConnect"

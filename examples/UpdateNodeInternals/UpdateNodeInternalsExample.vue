@@ -3,7 +3,6 @@ import { CSSProperties } from 'vue'
 import CustomNode from './CustomNode.vue'
 import {
   VueFlow,
-  NodeType,
   addEdge,
   useZoomPanHelper,
   Node,
@@ -14,7 +13,6 @@ import {
   Position,
   isEdge,
   FlowInstance,
-  NodeTypes,
 } from '~/index'
 
 const initialHandleCount = 1
@@ -29,10 +27,6 @@ const initialElements: Elements = [
 ]
 
 const buttonWrapperStyles: CSSProperties = { position: 'absolute', right: 10, top: 10, zIndex: 10 }
-
-const nodeTypes: NodeTypes = {
-  custom: CustomNode,
-}
 
 let id = 5
 const getId = (): ElementId => `${id++}`
@@ -72,7 +66,10 @@ const onLoad = (instance: FlowInstance) => {
 }
 </script>
 <template>
-  <VueFlow :elements="elements" :node-types="nodeTypes" @connect="onConnect" @pane-click="onPaneClick" @load="onLoad">
+  <VueFlow v-model="elements" :node-types="['custom']" @connect="onConnect" @pane-click="onPaneClick" @load="onLoad">
+    <template #node-custom="props">
+      <CustomNode v-bind="props" />
+    </template>
     <div :style="buttonWrapperStyles">
       <button @click="toggleHandleCount">toggle handle count</button>
       <button @click="toggleHandlePosition">toggle handle position</button>

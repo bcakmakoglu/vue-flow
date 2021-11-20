@@ -33,7 +33,7 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
 </script>
 <template>
   <VueFlow
-    :elements="elements"
+    v-model="elements"
     @element-click="onElementClick"
     @elements-remove="onElementsRemove"
     @connect="onConnect"

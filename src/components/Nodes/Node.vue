@@ -21,12 +21,13 @@ provide(NodeId, props.node.id)
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
 const type = computed(() => {
-  const nodeType = props.node.type ?? 'default'
-  const t = store.getNodeTypes[nodeType] || store.getNodeTypes.default
-  if (!store.getNodeTypes[nodeType]) {
-    console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`)
+  const t = props.node.type ?? 'default'
+  let node = store.getNodeTypes[t]
+  if (!node) {
+    node = store.getNodeTypes.default
+    console.warn(`Node type "${t}" not found. Using fallback type "default".`)
   }
-  return t
+  return node
 })
 
 const selectable = computed(() =>
@@ -192,7 +193,6 @@ onMounted(() => {
       >
         <component
           :is="type"
-          v-if="typeof type !== 'boolean'"
           v-bind="{
             id: props.node.id,
             data: props.node.data,

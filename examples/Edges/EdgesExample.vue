@@ -75,11 +75,6 @@ const initialElements: Elements = [
   },
 ]
 
-const edgeTypes: Record<string, any> = {
-  custom: CustomEdge,
-  custom2: CustomEdge2,
-}
-
 const elements = ref<Elements>(initialElements)
 
 const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
@@ -90,15 +85,21 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 </script>
 <template>
   <VueFlow
-    :elements="elements"
+    v-model="elements"
     :snap-to-grid="true"
-    :edge-types="edgeTypes"
+    :edge-types="['custom', 'custom2']"
     @element-click="onElementClick"
     @elements-remove="onElementsRemove"
     @connect="onConnect"
     @node-drag-stop="onNodeDragStop"
     @load="onLoad"
   >
+    <template #edge-custom="props">
+      <CustomEdge v-bind="props" />
+    </template>
+    <template #edge-custom2="props">
+      <CustomEdge2 v-bind="props" />
+    </template>
     <MiniMap />
     <Controls />
     <Background />

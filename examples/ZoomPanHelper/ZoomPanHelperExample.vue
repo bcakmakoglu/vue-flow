@@ -44,7 +44,7 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
-  <VueFlow :elements="elements" @elements-remove="onElementsRemove" @connect="onConnect" @pane-click="onPaneClick">
+  <VueFlow v-model="elements" @elements-remove="onElementsRemove" @connect="onConnect" @pane-click="onPaneClick">
     <Background />
     <MiniMap />
   </VueFlow>

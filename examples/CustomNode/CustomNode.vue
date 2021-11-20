@@ -22,9 +22,6 @@ const elements = ref<Elements>([])
 const bgColor = ref('#1A192B')
 const connectionLineStyle = { stroke: '#fff' }
 const snapGrid: SnapGrid = [16, 16]
-const nodeTypes = {
-  selectorNode: markRaw(ColorSelectorNode),
-}
 
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
@@ -114,7 +111,7 @@ const onConnect = (params: Connection | Edge) =>
   <VueFlow
     v-model="elements"
     :style="`background: ${bgColor}`"
-    :node-types="nodeTypes"
+    :node-types="['selectorNode']"
     :connection-mode="ConnectionMode.Loose"
     :connection-line-style="connectionLineStyle"
     :snap-to-grid="true"
@@ -126,6 +123,9 @@ const onConnect = (params: Connection | Edge) =>
     @node-drag-stop="onNodeDragStop"
     @load="onLoad"
   >
+    <template #node-selectorNode="props">
+      <ColorSelectorNode v-bind="props" />
+    </template>
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
     <Controls />
   </VueFlow>

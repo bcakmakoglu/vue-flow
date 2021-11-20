@@ -1,20 +1,7 @@
 <script lang="ts" setup>
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
-import {
-  VueFlow,
-  addEdge,
-  Handle,
-  Connection,
-  Position,
-  Elements,
-  Edge,
-  OnConnectStartParams,
-  NodeProps,
-  FlowInstance,
-  NodeType,
-  NodeTypes,
-} from '~/index'
+import { VueFlow, addEdge, Connection, Elements, Edge, OnConnectStartParams, FlowInstance } from '~/index'
 
 import './validation.css'
 
@@ -35,21 +22,24 @@ const onConnect = (params: Connection | Edge) => {
   console.log('on connect', params)
   elements.value = addEdge(params, elements.value)
 }
-const nodeTypes: NodeTypes = {
-  custominput: CustomInput,
-  customnode: CustomNode,
-}
 </script>
 <template>
   <VueFlow
-    :elements="elements"
+    v-model="elements"
     :select-nodes-on-drag="false"
+    :node-types="['custominput', 'customnode']"
     class="validationflow"
-    :node-types="nodeTypes"
     @connect="onConnect"
     @oad="onLoad"
     @connect-start="onConnectStart"
     @connect-stop="onConnectStop"
     @connect-end="onConnectEnd"
-  />
+  >
+    <template #node-custominput="props">
+      <CustomInput v-bind="props" />
+    </template>
+    <template #node-customnode="props">
+      <CustomNode v-bind="props" />
+    </template>
+  </VueFlow>
 </template>

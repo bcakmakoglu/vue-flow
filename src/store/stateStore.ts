@@ -1,7 +1,7 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import diff from 'microdiff'
-import { parseElements, defaultNodeTypes, defaultEdgeTypes, deepUnref } from './utils'
-import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge, EdgeTypes, NodeTypes } from '~/types'
+import { parseElements, defaultNodeTypes, defaultEdgeTypes, deepUnref, NextElements } from './utils'
+import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge } from '~/types'
 import { clampPosition, getDimensions, getConnectedEdges, getNodesInside, getRectOfNodes, isNode } from '~/utils'
 import { getHandleBounds } from '~/components/Nodes/utils'
 import parseElementsWorker from '~/workers/parseElements'
@@ -20,11 +20,19 @@ export default function flowStore(
       ...preloadedState,
     }),
     getters: {
-      getEdgeTypes(): EdgeTypes {
-        return { ...defaultEdgeTypes, ...this.edgeTypes }
+      getEdgeTypes() {
+        const edgeTypes: Record<string, any> = {
+          ...defaultEdgeTypes,
+        }
+        this.edgeTypes?.forEach((n) => (edgeTypes[n] = n))
+        return edgeTypes
       },
-      getNodeTypes(): NodeTypes {
-        return { ...defaultNodeTypes, ...this.nodeTypes }
+      getNodeTypes() {
+        const nodeTypes: Record<string, any> = {
+          ...defaultNodeTypes,
+        }
+        this.nodeTypes?.forEach((n) => (nodeTypes[n] = n))
+        return nodeTypes
       },
       getNodes(): Node[] {
         const n = this.onlyRenderVisibleElements
@@ -50,12 +58,12 @@ export default function flowStore(
     },
     actions: {
       async setElements(elements) {
-        let next: any = {
+        let next: NextElements = {
           nextEdges: [],
           nextNodes: [],
         }
         if (!this.worker || import.meta.env.SSR || typeof window === 'undefined') {
-          next = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+          next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         } else if (this.worker) {
           const { workerFn, workerTerminate } = parseElementsWorker()
           const res = await workerFn(
@@ -70,7 +78,7 @@ export default function flowStore(
           if (res) {
             workerTerminate('SUCCESS')
             next = res
-          } else next = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+          } else next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         }
         if (next) {
           this.elements = elements ?? []
@@ -255,8 +263,8 @@ export default function flowStore(
         this.nodesConnectable = isInteractive
         this.elementsSelectable = isInteractive
       },
-      addElements(elements: Elements) {
-        const { nextNodes, nextEdges } = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+      async addElements(elements: Elements) {
+        const { nextNodes, nextEdges } = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         this.elements = [...this.elements, ...elements]
         this.nodes = [...this.nodes, ...nextNodes]
         this.edges = [...this.edges, ...nextEdges]

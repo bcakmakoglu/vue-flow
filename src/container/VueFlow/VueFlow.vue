@@ -30,7 +30,6 @@ export interface FlowProps extends Partial<FlowOptions> {
   id?: string
   store?: FlowStore
   modelValue?: Elements
-  elements?: Elements
   nodeTypes?: NodeTypes
   edgeTypes?: EdgeTypes
   connectionMode?: ConnectionMode
@@ -72,7 +71,6 @@ const emit = defineEmits([...Object.keys(createHooks()), 'update:elements', 'upd
 
 const props = withDefaults(defineProps<FlowProps>(), {
   modelValue: () => [],
-  elements: () => [],
   connectionMode: ConnectionMode.Loose,
   connectionLineType: ConnectionLineType.Bezier,
   selectionKeyCode: 'Shift',
@@ -111,18 +109,18 @@ const props = withDefaults(defineProps<FlowProps>(), {
   worker: false,
 })
 const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id, props.store)
-const elements = useVModel(props, props.elements.length ? 'elements' : 'modelValue', emit)
-
-const options = Object.assign({}, props, store.$state)
+const elements = useVModel(props, 'modelValue', emit)
 
 // if there are preloaded elements we overwrite the current elements with the stored ones
 if (store.elements.length) elements.value = store.elements
+
+const options = Object.assign({}, store.$state, props)
 
 const init = (state: FlowState) => {
   // set state variables
   for (const opt of Object.keys(state)) {
     const val = state[opt as keyof FlowState]
-    if (typeof val !== 'undefined') {
+    if (typeof val !== 'undefined' && opt !== 'modelValue' && opt !== 'elements') {
       if (typeof val === 'object' && !Array.isArray(val)) {
         ;(store as any)[opt] = { ...(store as any)[opt], ...val }
       } else (store as any)[opt] = val
@@ -157,32 +155,13 @@ invoke(async () => {
   store.instance = instance
 })
 
+throttledWatch(elements, (val) => store.setElements(val), { flush: 'post', deep: true, throttle: 10 })
+throttledWatch(store.elements, (val) => (elements.value = val), { flush: 'post', deep: true, throttle: 10 })
+
 onMounted(() => {
   watch(
-    elements,
-    (val) => {
-      // if new elements are added or elements have been removed, we want to re-parse the elements
-      if (val.length !== store.elements.length) store.setElements(val)
-    },
-    { flush: 'post', deep: true },
-  )
-  watch(
-    store.elements,
-    (val) => {
-      // if stored elements change we want to update the v-model to notify parent about changes, i.e. there was a state manipulation
-      const hasDiff = diff(val, elements.value)
-      if (hasDiff.length > 0) elements.value = val
-    },
-    { flush: 'post', deep: true },
-  )
-
-  watch(
     () => props,
-    (val, oldVal) => {
-      const hasDiff = diff(val, oldVal)
-      // when props changed we want to update state variables
-      if (hasDiff.length > 0) init({ ...store.$state, ...props } as FlowState)
-    },
+    () => init({ ...store.$state, ...props } as FlowState),
     { flush: 'post', deep: true },
   )
 })
@@ -252,8 +231,8 @@ const transitionName = computed(() => {
             <slot name="zoom-pane" v-bind="zoomPaneProps"></slot>
           </template>
         </ZoomPane>
-        <template #fallback>
-          <slot v-if="store.loading" key="loading-indicator" name="loading-indicator">
+        <template v-if="store.loading" #fallback>
+          <slot key="loading-indicator" name="loading-indicator">
             <LoadingIndicator key="default-loading-indicator" v-bind="store.loading">
               <slot name="loading-label" />
             </LoadingIndicator>
