@@ -181,7 +181,8 @@ store.dimensions = {
   height: height.value,
 }
 
-await until(() => store.isReady).toBe(true)
+// skip waiting for ssr
+if (import.meta.env.SSR || typeof window === 'undefined') await until(() => store.isReady)
 
 watch(
   [width, height],

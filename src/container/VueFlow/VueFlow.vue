@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { CSSProperties, onBeforeUnmount } from 'vue'
-import diff from 'microdiff'
 import { invoke } from '@vueuse/core'
 import {
   ConnectionLineType,
@@ -155,7 +154,7 @@ invoke(async () => {
   store.instance = instance
 })
 
-throttledWatch(elements, (val) => store.setElements(val), { flush: 'post', deep: true, throttle: 10 })
+throttledWatch(elements, store.setElements, { flush: 'post', deep: true, throttle: 10 })
 throttledWatch(store.elements, (val) => (elements.value = val), { flush: 'post', deep: true, throttle: 10 })
 
 onMounted(() => {
@@ -179,58 +178,65 @@ const transitionName = computed(() => {
   <div class="vue-flow">
     <Transition key="vue-flow-transition" :name="transitionName">
       <Suspense>
-        <ZoomPane
-          key="zoom-pane"
-          :selection-key-code="store.selectionKeyCode"
-          :zoom-activation-key-code="store.zoomActivationKeyCode"
-          :default-zoom="store.defaultZoom"
-          :default-position="store.defaultPosition"
-          :zoom-on-scroll="store.zoomOnScroll"
-          :zoom-on-pinch="store.zoomOnPinch"
-          :zoom-on-double-click="store.zoomOnDoubleClick"
-          :pan-on-scroll="store.panOnScroll"
-          :pan-on-scroll-speed="store.panOnScrollSpeed"
-          :pan-on-scroll-mode="store.panOnScrollMode"
-          :pane-moveable="store.paneMoveable"
-        >
-          <template #default="zoomPaneProps">
-            <SelectionPane
-              key="selection-pane"
-              :delete-key-code="store.deleteKeyCode"
-              :multi-selection-key-code="store.multiSelectionKeyCode"
-              :selection-key-code="store.selectionKeyCode"
-            >
-              <NodeRenderer key="node-renderer" :select-nodes-on-drag="store.selectNodesOnDrag">
-                <template
-                  v-for="nodeName of Object.keys(store.getNodeTypes)"
-                  #[`node-${nodeName}`]="nodeProps"
-                  :key="`node-${nodeName}`"
-                >
-                  <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
-                </template>
-              </NodeRenderer>
-              <EdgeRenderer
-                key="edge-renderer"
-                :connection-line-type="store.connectionLineType"
-                :connection-line-style="store.connectionLineStyle"
-                :arrow-head-color="store.arrowHeadColor"
-                :marker-end-id="store.markerEndId"
+        <template #default>
+          <ZoomPane
+            v-show="store.isReady"
+            key="zoom-pane"
+            :selection-key-code="store.selectionKeyCode"
+            :zoom-activation-key-code="store.zoomActivationKeyCode"
+            :default-zoom="store.defaultZoom"
+            :default-position="store.defaultPosition"
+            :zoom-on-scroll="store.zoomOnScroll"
+            :zoom-on-pinch="store.zoomOnPinch"
+            :zoom-on-double-click="store.zoomOnDoubleClick"
+            :pan-on-scroll="store.panOnScroll"
+            :pan-on-scroll-speed="store.panOnScrollSpeed"
+            :pan-on-scroll-mode="store.panOnScrollMode"
+            :pane-moveable="store.paneMoveable"
+          >
+            <template #default="zoomPaneProps">
+              <SelectionPane
+                key="selection-pane"
+                :delete-key-code="store.deleteKeyCode"
+                :multi-selection-key-code="store.multiSelectionKeyCode"
+                :selection-key-code="store.selectionKeyCode"
               >
-                <template
-                  v-for="edgeName of Object.keys(store.getEdgeTypes)"
-                  #[`edge-${edgeName}`]="edgeProps"
-                  :key="`edge-${edgeName}`"
-                >
-                  <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
-                </template>
-                <template #custom-connection-line="customConnectionLineProps">
-                  <slot key="connection-line" name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
-                </template>
-              </EdgeRenderer>
-            </SelectionPane>
-            <slot name="zoom-pane" v-bind="zoomPaneProps"></slot>
-          </template>
-        </ZoomPane>
+                <slot name="node-renderer" v-bind="{ nodes: store.getNodes, nodeTypes: store.getNodeTypes }">
+                  <NodeRenderer key="node-renderer" :select-nodes-on-drag="store.selectNodesOnDrag">
+                    <template
+                      v-for="nodeName of Object.keys(store.getNodeTypes)"
+                      #[`node-${nodeName}`]="nodeProps"
+                      :key="`node-${nodeName}`"
+                    >
+                      <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
+                    </template>
+                  </NodeRenderer>
+                </slot>
+                <slot name="edge-renderer" v-bind="{ edges: store.getEdges, edgeTypes: store.getEdgeTypes }">
+                  <EdgeRenderer
+                    key="edge-renderer"
+                    :connection-line-type="store.connectionLineType"
+                    :connection-line-style="store.connectionLineStyle"
+                    :arrow-head-color="store.arrowHeadColor"
+                    :marker-end-id="store.markerEndId"
+                  >
+                    <template
+                      v-for="edgeName of Object.keys(store.getEdgeTypes)"
+                      #[`edge-${edgeName}`]="edgeProps"
+                      :key="`edge-${edgeName}`"
+                    >
+                      <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
+                    </template>
+                    <template #custom-connection-line="customConnectionLineProps">
+                      <slot key="connection-line" name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
+                    </template>
+                  </EdgeRenderer>
+                </slot>
+              </SelectionPane>
+              <slot name="zoom-pane" v-bind="zoomPaneProps"></slot>
+            </template>
+          </ZoomPane>
+        </template>
         <template v-if="store.loading" #fallback>
           <slot key="loading-indicator" name="loading-indicator">
             <LoadingIndicator key="default-loading-indicator" v-bind="store.loading">
