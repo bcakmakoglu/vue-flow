@@ -34,7 +34,6 @@ const props = withDefaults(defineProps<ZoomPaneProps>(), {
   paneMoveable: true,
 })
 const store = useStore()
-
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
@@ -185,22 +184,19 @@ store.dimensions = {
 
 invoke(async () => {
   await until(() => !isNaN(width.value) && width.value > 0 && !isNaN(height.value) && height.value > 0).toBeTruthy()
-  await until(store.elements).toMatch((y) => y.length > 0)
-  await nextTick(() => {
-    const instance: FlowInstance = {
-      fitView: (params = { padding: 0.1 }) => fitView(params),
-      zoomIn,
-      zoomOut,
-      zoomTo,
-      setTransform,
-      project: onLoadProject(store),
-      getElements: onLoadGetElements(store),
-      toObject: onLoadToObject(store),
-    }
-    store.hooks.load.trigger(instance)
-    store.isReady = true
-    store.instance = instance
-  })
+  const instance: FlowInstance = {
+    fitView: (params = { padding: 0.1 }) => fitView(params),
+    zoomIn,
+    zoomOut,
+    zoomTo,
+    setTransform,
+    project: onLoadProject(store),
+    getElements: onLoadGetElements(store),
+    toObject: onLoadToObject(store),
+  }
+  store.hooks.load.trigger(instance)
+  store.isReady = true
+  store.instance = instance
 })
 
 watch(
@@ -223,8 +219,8 @@ watch(
 )
 </script>
 <template>
-  <Suspense>
-    <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
+  <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
+    <Suspense>
       <slot
         v-bind="{
           transform,
@@ -235,7 +231,7 @@ watch(
           setTransform,
           fitView,
         }"
-      ></slot>
-    </div>
-  </Suspense>
+      />
+    </Suspense>
+  </div>
 </template>

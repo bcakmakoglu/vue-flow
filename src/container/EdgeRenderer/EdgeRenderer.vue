@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { invoke } from '@vueuse/core'
 import { ConnectionLineType } from '../../types'
 import { useStore } from '../../composables'
 import Edge from '../../components/Edges/Edge.vue'
@@ -22,11 +21,6 @@ const props = withDefaults(defineProps<EdgeRendererProps>(), {
 })
 
 const store = useStore()
-
-invoke(async () => {
-  await until(store.getNodes).toMatch((y) => y && y.length > 0)
-  await until(store.transform).toMatch(([x, y, z]) => !isNaN(x) && x !== 0 && !isNaN(y) && y !== 0 && isNaN(z) && z !== 1)
-})
 
 const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connectionNodeId))
 const connectionLineVisible = computed(
