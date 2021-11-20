@@ -119,6 +119,7 @@ const options = Object.assign({}, props, store.$state)
 if (store.elements.length) elements.value = store.elements
 
 const init = (state: FlowState) => {
+  // set state variables
   for (const opt of Object.keys(state)) {
     const val = state[opt as keyof FlowState]
     if (typeof val !== 'undefined') {
@@ -135,10 +136,10 @@ const init = (state: FlowState) => {
 onBeforeUnmount(() => store?.$dispose())
 
 invoke(async () => {
-  console.log('invoked')
   init(options)
   await store.setElements(elements.value)
   store.isReady = true
+
   await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
   const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
 
@@ -160,8 +161,17 @@ onMounted(() => {
   watch(
     elements,
     (val) => {
-      console.log('v-model watcher', val)
-      store.setElements(val)
+      // if new elements are added or elements have been removed, we want to re-parse the elements
+      if (val.length !== store.elements.length) store.setElements(val)
+    },
+    { flush: 'post', deep: true },
+  )
+  watch(
+    store.elements,
+    (val) => {
+      // if stored elements change we want to update the v-model to notify parent about changes, i.e. there was a state manipulation
+      const hasDiff = diff(val, elements.value)
+      if (hasDiff.length > 0) elements.value = val
     },
     { flush: 'post', deep: true },
   )
@@ -170,10 +180,8 @@ onMounted(() => {
     () => props,
     (val, oldVal) => {
       const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) {
-        console.log('props watcher')
-        init({ ...store.$state, ...props } as FlowState)
-      }
+      // when props changed we want to update state variables
+      if (hasDiff.length > 0) init({ ...store.$state, ...props } as FlowState)
     },
     { flush: 'post', deep: true },
   )
