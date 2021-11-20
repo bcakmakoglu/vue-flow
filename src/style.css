@@ -185,3 +185,10 @@
   bottom: 10px;
   right: 10px;
 }
+
+.vue-flow__loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 16px;
+}

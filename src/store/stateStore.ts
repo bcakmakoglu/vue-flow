@@ -64,8 +64,8 @@ export default function flowStore(
           workerTerminate('SUCCESS')
         }
         this.elements = elements
-        this.nodes = next.nextNodes
-        this.edges = next.nextEdges
+        this.nodes = next?.nextNodes ?? []
+        this.edges = next?.nextEdges ?? []
       },
       updateNodeDimensions({ id, nodeElement, forceUpdate }) {
         const i = this.nodes.map((x) => x.id).indexOf(id)

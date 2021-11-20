@@ -2,9 +2,9 @@
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { get, invoke } from '@vueuse/core'
 import { pointer, select } from 'd3-selection'
-import { FlowInstance, FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
-import { useKeyPress, useStore, useZoomPanHelper } from '../../composables'
-import { clamp, onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
+import { FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
+import { useKeyPress, useStore } from '../../composables'
+import { clamp } from '../../utils'
 
 interface ZoomPaneProps {
   selectionKeyCode?: KeyCode
@@ -181,9 +181,7 @@ store.dimensions = {
   height: height.value,
 }
 
-invoke(async () => {
-  await until(() => !isNaN(width.value) && width.value > 0 && !isNaN(height.value) && height.value > 0).toBeTruthy()
-})
+await until(() => store.isReady).toBe(true)
 
 watch(
   [width, height],
@@ -206,13 +204,11 @@ watch(
 </script>
 <template>
   <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
-    <Suspense>
-      <slot
-        v-bind="{
-          transform,
-          dimensions: { width, height },
-        }"
-      />
-    </Suspense>
+    <slot
+      v-bind="{
+        transform,
+        dimensions: { width, height },
+      }"
+    />
   </div>
 </template>

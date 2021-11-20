@@ -126,4 +126,5 @@ export interface FlowOptions {
   zoomOnDoubleClick?: boolean
   edgeUpdaterRadius?: number
   storageKey?: string
+  showLoadingIndicator?: boolean
 }

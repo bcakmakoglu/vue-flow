@@ -88,8 +88,7 @@ export const initialState = (): FlowState => ({
 
   isReady: false,
   hooks: createHooks(),
-  storageKey: undefined,
-  instance: undefined,
+  showLoadingIndicator: false,
 
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
