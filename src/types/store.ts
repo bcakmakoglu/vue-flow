@@ -20,13 +20,9 @@ import { D3Selection, D3Zoom, D3ZoomHandler } from './panel'
 import { FlowHooks } from './hooks'
 
 export interface FlowState extends FlowOptions {
-  dimensions: Dimensions
-  transform: Transform
   elements: Elements
   nodes: Node[]
-  nodeTypes?: NodeTypes
   edges: Edge[]
-  edgeTypes?: EdgeTypes
   selectedElements?: Elements
   selectedNodesBbox: Rect
 
@@ -37,11 +33,13 @@ export interface FlowState extends FlowOptions {
   maxZoom: number
   translateExtent: TranslateExtent
   nodeExtent: NodeExtent
+  dimensions: Dimensions
+  transform: Transform
 
   nodesSelectionActive: boolean
   selectionActive: boolean
-
   userSelectionRect: SelectionRect
+  multiSelectionActive: boolean
 
   connectionNodeId?: ElementId
   connectionHandleId?: ElementId
@@ -56,10 +54,6 @@ export interface FlowState extends FlowOptions {
   nodesConnectable: boolean
   elementsSelectable: boolean
 
-  multiSelectionActive: boolean
-
-  vueFlowVersion: string
-
   onConnect?: OnConnectFunc
   onConnectStart?: OnConnectStartFunc
   onConnectStop?: OnConnectStopFunc
@@ -67,8 +61,9 @@ export interface FlowState extends FlowOptions {
 
   isReady: boolean
   hooks: FlowHooks
-  storageKey?: string
   instance?: FlowInstance
+
+  vueFlowVersion: string
 }
 
 export interface FlowGetters {

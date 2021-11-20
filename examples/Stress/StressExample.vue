@@ -51,7 +51,7 @@ const updateElements = () => {
 <template>
   <VueFlow
     v-model="elements"
-    :show-loading-indicator="true"
+    :loading="{ label: 'Loading...', transition: { name: 'fade', mode: 'out-in' } }"
     @load="onLoad"
     @elementsRemove="onElementsRemove"
     @connect="onConnect"
@@ -66,3 +66,14 @@ const updateElements = () => {
     </div>
   </VueFlow>
 </template>
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.35s ease;
+}
+
+.fade-enter-from,
+.fade-leave-active {
+  opacity: 0;
+}
+</style>
