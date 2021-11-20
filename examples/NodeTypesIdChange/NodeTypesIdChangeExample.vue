@@ -45,7 +45,7 @@ const changeType = () => {
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
 <template>
-  <VueFlow :elements="elements" :node-types="nodeTypesObjects[nodeTypesId]" :node-types-id="nodeTypesId" @connect="onConnect">
+  <VueFlow v-model="elements" :node-types="nodeTypesObjects[nodeTypesId]" @connect="onConnect">
     <template #node-a>
       <NodeA :node-styles="nodeStyles" />
     </template>

@@ -140,11 +140,10 @@ watch(
 )
 watch(
   () => props,
-  (val, oldVal) => {
-    const hasDiff = diff(val, oldVal)
-    if (hasDiff.length > 0) init({ ...store.$state, ...val } as FlowState)
+  (val) => {
+    init({ ...store.$state, ...val } as FlowState)
   },
-  { flush: 'pre', deep: true },
+  { flush: 'post', deep: true },
 )
 init(options)
 </script>

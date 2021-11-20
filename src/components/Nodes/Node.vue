@@ -20,11 +20,14 @@ provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const nodeType = props.node.type || 'default'
-const type = store.getNodeTypes[nodeType] || store.getNodeTypes.default
-if (!store.getNodeTypes[nodeType]) {
-  console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`)
-}
+const type = computed(() => {
+  const nodeType = props.node.type ?? 'default'
+  const t = store.getNodeTypes[nodeType] || store.getNodeTypes.default
+  if (!store.getNodeTypes[nodeType]) {
+    console.warn(`Node type "${nodeType}" not found. Using fallback type "default".`)
+  }
+  return t
+})
 
 const selectable = computed(() =>
   typeof props.node.selectable === 'undefined' ? store.elementsSelectable : props.node.selectable,
@@ -34,7 +37,7 @@ const connectable = computed(() =>
   typeof props.node.connectable === 'undefined' ? store.nodesConnectable : props.node.connectable,
 )
 const scale = computed(() => store.transform[2])
-const selected = computed(() => selectable && store.selectedElements?.some(({ id }) => id === props.node.id))
+const selected = computed(() => selectable.value && store.selectedElements?.some(({ id }) => id === props.node.id))
 
 const onMouseEnterHandler = () =>
   props.node.__rf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
