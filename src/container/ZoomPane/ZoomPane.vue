@@ -185,6 +185,7 @@ store.dimensions = {
 
 invoke(async () => {
   await until(() => !isNaN(width.value) && width.value > 0 && !isNaN(height.value) && height.value > 0).toBeTruthy()
+  await until(store.elements).toMatch((y) => y.length > 0)
   const instance: FlowInstance = {
     fitView: (params = { padding: 0.1 }) => fitView(params),
     zoomIn,

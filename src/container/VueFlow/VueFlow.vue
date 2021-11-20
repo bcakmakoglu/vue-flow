@@ -126,28 +126,26 @@ const init = (state: FlowState) => {
 }
 onBeforeUnmount(() => store?.$dispose())
 
-onMounted(() => {
-  init(options)
-  watch(elements, (val) => store.setElements(val), { flush: 'post', deep: true })
-  watch(
-    () => store.elements,
-    (val, oldVal) => {
-      nextTick(() => {
-        const hasDiff = diff(val, oldVal)
-        if (hasDiff.length > 0) elements.value = val
-      })
-    },
-    { flush: 'post', deep: true },
-  )
-  watch(
-    () => props,
-    (val, oldVal) => {
+init(options)
+watch(elements, (val) => store.setElements(val), { flush: 'post', deep: true })
+watch(
+  () => store.elements,
+  (val, oldVal) => {
+    nextTick(() => {
       const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) init({ ...store.$state, ...val } as FlowState)
-    },
-    { flush: 'pre', deep: true },
-  )
-})
+      if (hasDiff.length > 0) elements.value = val
+    })
+  },
+  { flush: 'post', deep: true },
+)
+watch(
+  () => props,
+  (val, oldVal) => {
+    const hasDiff = diff(val, oldVal)
+    if (hasDiff.length > 0) init({ ...store.$state, ...val } as FlowState)
+  },
+  { flush: 'pre', deep: true },
+)
 </script>
 <template>
   <div class="vue-flow">
