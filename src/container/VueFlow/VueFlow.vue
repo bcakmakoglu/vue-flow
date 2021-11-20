@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { CSSProperties, onBeforeUnmount } from 'vue'
 import diff from 'microdiff'
+import { invoke } from '@vueuse/core'
 import {
   ConnectionLineType,
   ConnectionMode,
@@ -126,7 +127,7 @@ const init = (state: FlowState) => {
 }
 onBeforeUnmount(() => store?.$dispose())
 
-init(options)
+onMounted(() => init(options))
 watch(elements, (val) => store.setElements(val), { flush: 'post', deep: true })
 watch(
   () => store.elements,
@@ -146,6 +147,7 @@ watch(
   },
   { flush: 'pre', deep: true },
 )
+invoke(async () => await until(store.elements).toMatch((y) => y.length > 0))
 </script>
 <template>
   <div class="vue-flow">

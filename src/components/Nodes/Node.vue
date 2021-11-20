@@ -148,33 +148,48 @@ onMounted(() => {
     @move="onDrag"
     @stop="onDragStop"
   >
-    <Suspense>
-      <div
-        ref="node-element"
-        :class="[
-          'vue-flow__node',
-          `vue-flow__node-${props.node.type}`,
-          {
-            selected,
-            selectable: selectable,
-          },
-          props.node.class,
-        ]"
-        :style="{
-          zIndex: selected ? 10 : 3,
-          transform: `translate(${props.node.__rf?.position?.x}px,${props.node.__rf?.position?.y}px)`,
-          pointerEvents: selectable || draggable ? 'all' : 'none',
-          opacity: props.node.__rf?.width !== null && props.node.__rf?.height !== null ? 1 : 0,
-          ...props.node.style,
+    <div
+      ref="node-element"
+      :class="[
+        'vue-flow__node',
+        `vue-flow__node-${props.node.type}`,
+        {
+          selected,
+          selectable: selectable,
+        },
+        props.node.class,
+      ]"
+      :style="{
+        zIndex: selected ? 10 : 3,
+        transform: `translate(${props.node.__rf?.position?.x}px,${props.node.__rf?.position?.y}px)`,
+        pointerEvents: selectable || draggable ? 'all' : 'none',
+        opacity: props.node.__rf?.width !== null && props.node.__rf?.height !== null ? 1 : 0,
+        ...props.node.style,
+      }"
+      :data-id="props.node.id"
+      @mouseenter="onMouseEnterHandler"
+      @mousemove="onMouseMoveHandler"
+      @mouseleave="onMouseLeaveHandler"
+      @contextmenu="onContextMenuHandler"
+      @click="onSelectNodeHandler"
+    >
+      <slot
+        v-bind="{
+          id: props.node.id,
+          data: props.node.data,
+          type: props.node.type,
+          xPos: props.node.__rf?.position?.x,
+          yPos: props.node.__rf?.position?.y,
+          selected,
+          connectable,
+          sourcePosition: props.node.sourcePosition,
+          targetPosition: props.node.targetPosition,
+          dragging: props.node.__rf?.isDragging,
         }"
-        :data-id="props.node.id"
-        @mouseenter="onMouseEnterHandler"
-        @mousemove="onMouseMoveHandler"
-        @mouseleave="onMouseLeaveHandler"
-        @contextmenu="onContextMenuHandler"
-        @click="onSelectNodeHandler"
       >
-        <slot
+        <component
+          :is="type"
+          v-if="typeof type !== 'boolean'"
           v-bind="{
             id: props.node.id,
             data: props.node.data,
@@ -187,25 +202,8 @@ onMounted(() => {
             targetPosition: props.node.targetPosition,
             dragging: props.node.__rf?.isDragging,
           }"
-        >
-          <component
-            :is="type"
-            v-if="typeof type !== 'boolean'"
-            v-bind="{
-              id: props.node.id,
-              data: props.node.data,
-              type: props.node.type,
-              xPos: props.node.__rf?.position?.x,
-              yPos: props.node.__rf?.position?.y,
-              selected,
-              connectable,
-              sourcePosition: props.node.sourcePosition,
-              targetPosition: props.node.targetPosition,
-              dragging: props.node.__rf?.isDragging,
-            }"
-          />
-        </slot>
-      </div>
-    </Suspense>
+        />
+      </slot>
+    </div>
   </DraggableCore>
 </template>

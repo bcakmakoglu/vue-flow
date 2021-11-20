@@ -13,17 +13,16 @@ const props = withDefaults(defineProps<NodeRendererProps>(), {
 
 const store = useStore()
 
+invoke(async () => {
+  await until(store.getNodes).toMatch((y) => y && y.length > 0)
+  await until(store.transform).toMatch(([x, y, z]) => !isNaN(x) && x !== 0 && !isNaN(y) && y !== 0 && isNaN(z) && z !== 1)
+})
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 const snapGrid = computed(() => (store.snapToGrid ? store.snapGrid : undefined))
-
-invoke(async () => {
-  await until(store.getNodes).toMatch((y) => y.length > 0)
-  await until(store.transform).toMatch(([x, y, z]) => x !== 0 && y !== 0 && z !== 1)
-})
 </script>
 <template>
-  <div class="vue-flow__nodes" :style="{ transform }">
-    <Suspense>
+  <Suspense>
+    <div class="vue-flow__nodes" :style="{ transform }">
       <Node
         v-for="node of store.getNodes"
         :key="node.id"
@@ -35,6 +34,6 @@ invoke(async () => {
           <slot :name="`node-${node.type}`" v-bind="nodeProps"></slot>
         </template>
       </Node>
-    </Suspense>
-  </div>
+    </div>
+  </Suspense>
 </template>
