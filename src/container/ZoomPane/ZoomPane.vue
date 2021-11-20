@@ -54,7 +54,6 @@ const transform = ref({ x: clampedX, y: clampedY, zoom: clampedZoom })
 const d3Zoom = ref(zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent))
 const d3Selection = ref()
 
-const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper()
 store.transform = [transform.value.x, transform.value.y, transform.value.zoom]
 
 invoke(async () => {
@@ -184,19 +183,6 @@ store.dimensions = {
 
 invoke(async () => {
   await until(() => !isNaN(width.value) && width.value > 0 && !isNaN(height.value) && height.value > 0).toBeTruthy()
-  const instance: FlowInstance = {
-    fitView: (params = { padding: 0.1 }) => fitView(params),
-    zoomIn,
-    zoomOut,
-    zoomTo,
-    setTransform,
-    project: onLoadProject(store),
-    getElements: onLoadGetElements(store),
-    toObject: onLoadToObject(store),
-  }
-  store.hooks.load.trigger(instance)
-  store.isReady = true
-  store.instance = instance
 })
 
 watch(
@@ -225,11 +211,6 @@ watch(
         v-bind="{
           transform,
           dimensions: { width, height },
-          zoomIn,
-          zoomOut,
-          zoomTo,
-          setTransform,
-          fitView,
         }"
       />
     </Suspense>

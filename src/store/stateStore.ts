@@ -1,10 +1,10 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import diff from 'microdiff'
-import { parseElements } from './utils'
+import { parseElements, defaultNodeTypes, defaultEdgeTypes } from './utils'
 import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge, EdgeTypes, NodeTypes } from '~/types'
 import { clampPosition, getDimensions, getConnectedEdges, getNodesInside, getRectOfNodes, isNode } from '~/utils'
 import { getHandleBounds } from '~/components/Nodes/utils'
-import { defaultEdgeTypes, defaultNodeTypes } from '~/store/index'
+import parseElementsWorker from '~/workers/parseElements'
 
 const pinia = createPinia()
 
@@ -13,9 +13,6 @@ export default function flowStore(
   preloadedState: FlowState,
 ): StoreDefinition<string, FlowState, FlowGetters, FlowActions> {
   setActivePinia(pinia)
-  const { nextEdges, nextNodes } = parseElements(preloadedState.elements, [], [], preloadedState.nodeExtent)
-  preloadedState.nodes = nextNodes
-  preloadedState.edges = nextEdges
 
   return defineStore({
     id: id ?? 'vue-flow',
@@ -52,11 +49,23 @@ export default function flowStore(
       },
     },
     actions: {
-      setElements(elements) {
-        const { nextNodes, nextEdges } = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+      async setElements(elements) {
+        let next: any = {
+          nextEdges: [],
+          nextNodes: [],
+        }
+        if (import.meta.env.SSR || typeof window === 'undefined') {
+          next = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+        } else {
+          const { workerFn, workerTerminate } = parseElementsWorker()
+          next = await workerFn(toRaw(elements), toRaw(this.nodes), toRaw(this.edges), toRaw(this.nodeExtent)).catch(() =>
+            workerTerminate('ERROR'),
+          )
+          workerTerminate('SUCCESS')
+        }
         this.elements = elements
-        this.nodes = nextNodes
-        this.edges = nextEdges
+        this.nodes = next.nextNodes
+        this.edges = next.nextEdges
       },
       updateNodeDimensions({ id, nodeElement, forceUpdate }) {
         const i = this.nodes.map((x) => x.id).indexOf(id)

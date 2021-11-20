@@ -46,9 +46,13 @@ onMounted(() => {
     }
   })
 
-  useKeyPress(props.multiSelectionKeyCode, (keyPressed) => (store.multiSelectionActive = keyPressed))
+  useKeyPress(props.multiSelectionKeyCode, (keyPressed) => {
+    store.multiSelectionActive = keyPressed
+  })
 
-  useKeyPress(props.selectionKeyCode, (keyPressed) => (selectionKeyPresed.value = keyPressed))
+  useKeyPress(props.selectionKeyCode, (keyPressed) => {
+    selectionKeyPresed.value = keyPressed
+  })
 })
 const userSelection = computed(() => selectionKeyPresed.value && (store.selectionActive || store.elementsSelectable))
 const nodesSelectionActive = computed(() => store.nodesSelectionActive)

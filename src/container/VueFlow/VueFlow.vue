@@ -15,12 +15,14 @@ import {
   EdgeTypes,
   FlowStore,
   FlowState,
+  FlowInstance,
 } from '../../types'
 import ZoomPane from '../../container/ZoomPane/ZoomPane.vue'
 import SelectionPane from '../../container/SelectionPane/SelectionPane.vue'
 import NodeRenderer from '../../container/NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../../container/EdgeRenderer/EdgeRenderer.vue'
-import { createHooks, initFlow } from '../../composables'
+import { createHooks, initFlow, useZoomPanHelper } from '../../composables'
+import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils'
 
 export interface FlowProps extends Partial<FlowOptions> {
   id?: string
@@ -110,7 +112,7 @@ const options = Object.assign({}, props, store.$state, props)
 // if there are preloaded elements we overwrite the current elements with the stored ones
 if (store.elements.length) elements.value = store.elements
 
-const init = (state: FlowState) => {
+const init = async (state: FlowState) => {
   for (const opt of Object.keys(state)) {
     const val = state[opt as keyof FlowState]
     if (typeof val !== 'undefined') {
@@ -119,7 +121,7 @@ const init = (state: FlowState) => {
       } else (store as any)[opt] = val
     }
   }
-  store.setElements(elements.value)
+  await store.setElements(elements.value)
   store.setMinZoom(state.minZoom)
   store.setMaxZoom(state.maxZoom)
   store.setTranslateExtent(state.translateExtent)
@@ -145,7 +147,24 @@ watch(
   },
   { flush: 'post', deep: true },
 )
-init(options)
+const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
+
+invoke(async () => {
+  await init(options)
+  const instance: FlowInstance = {
+    fitView: (params = { padding: 0.1 }) => fitView(params),
+    zoomIn,
+    zoomOut,
+    zoomTo,
+    setTransform,
+    project: onLoadProject(store),
+    getElements: onLoadGetElements(store),
+    toObject: onLoadToObject(store),
+  }
+  store.hooks.load.trigger(instance)
+  store.isReady = true
+  store.instance = instance
+})
 </script>
 <template>
   <div class="vue-flow">
