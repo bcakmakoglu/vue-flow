@@ -65,6 +65,7 @@ export interface FlowProps extends Partial<FlowOptions> {
   edgeUpdaterRadius?: number
   storageKey?: string
   loading?: Loading
+  worker?: boolean
 }
 
 const emit = defineEmits([...Object.keys(createHooks()), 'update:elements', 'update:modelValue'])
@@ -107,16 +108,17 @@ const props = withDefaults(defineProps<FlowProps>(), {
   paneMoveable: true,
   edgeUpdaterRadius: 10,
   loading: false,
+  worker: false,
 })
 const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id, props.store)
 const elements = useVModel(props, props.elements.length ? 'elements' : 'modelValue', emit)
 
-const options = Object.assign({}, props, store.$state, props)
+const options = Object.assign({}, props, store.$state)
 
 // if there are preloaded elements we overwrite the current elements with the stored ones
 if (store.elements.length) elements.value = store.elements
 
-const init = async (state: FlowState) => {
+const init = (state: FlowState) => {
   for (const opt of Object.keys(state)) {
     const val = state[opt as keyof FlowState]
     if (typeof val !== 'undefined') {
@@ -125,7 +127,6 @@ const init = async (state: FlowState) => {
       } else (store as any)[opt] = val
     }
   }
-  await store.setElements(elements.value)
   store.setMinZoom(state.minZoom)
   store.setMaxZoom(state.maxZoom)
   store.setTranslateExtent(state.translateExtent)
@@ -133,27 +134,10 @@ const init = async (state: FlowState) => {
 }
 onBeforeUnmount(() => store?.$dispose())
 
-watch(elements, (val) => store.setElements(val), { flush: 'post', deep: true })
-watch(
-  () => store.elements,
-  (val, oldVal) => {
-    nextTick(() => {
-      const hasDiff = diff(val, oldVal)
-      if (hasDiff.length > 0) elements.value = val
-    })
-  },
-  { flush: 'post', deep: true },
-)
-watch(
-  () => props,
-  (val) => {
-    init({ ...store.$state, ...val } as FlowState)
-  },
-  { flush: 'post', deep: true },
-)
-
 invoke(async () => {
-  await init(options)
+  console.log('invoked')
+  init(options)
+  await store.setElements(elements.value)
   store.isReady = true
   await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
   const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
@@ -172,6 +156,29 @@ invoke(async () => {
   store.instance = instance
 })
 
+onMounted(() => {
+  watch(
+    elements,
+    (val) => {
+      console.log('v-model watcher', val)
+      store.setElements(val)
+    },
+    { flush: 'post', deep: true },
+  )
+
+  watch(
+    () => props,
+    (val, oldVal) => {
+      const hasDiff = diff(val, oldVal)
+      if (hasDiff.length > 0) {
+        console.log('props watcher')
+        init({ ...store.$state, ...props } as FlowState)
+      }
+    },
+    { flush: 'post', deep: true },
+  )
+})
+
 const transitionName = computed(() => {
   let name = ''
   if (typeof store.loading === 'object' && store.loading.transition) {
@@ -179,14 +186,6 @@ const transitionName = computed(() => {
     else name = store.loading.transition.name
   }
   return name
-})
-
-const transitionMode = computed(() => {
-  let mode = ''
-  if (typeof store.loading === 'object' && store.loading.transition) {
-    if (typeof store.loading.transition !== 'string') mode = store.loading.transition.mode
-  }
-  return mode
 })
 </script>
 <template>
@@ -245,8 +244,8 @@ const transitionMode = computed(() => {
             <slot name="zoom-pane" v-bind="zoomPaneProps"></slot>
           </template>
         </ZoomPane>
-        <template v-if="store.loading" #fallback>
-          <slot key="loading-indicator" name="loading-indicator">
+        <template #fallback>
+          <slot v-if="store.loading" key="loading-indicator" name="loading-indicator">
             <LoadingIndicator key="default-loading-indicator" v-bind="store.loading">
               <slot name="loading-label" />
             </LoadingIndicator>

@@ -139,3 +139,49 @@ export const parseElements = (elements: Elements, nodes: Node[], edges: Edge[], 
 
   return nextElements
 }
+
+const isObject = (val: any) => val !== null && typeof val === 'object'
+const isArray = Array.isArray
+
+const smartUnref = (val: any) => {
+  if (val !== null && !isRef(val) && typeof val === 'object') {
+    // eslint-disable-next-line no-use-before-define
+    return deepUnref(val)
+  }
+
+  return unref(val)
+}
+
+const unrefArray = (arr: any[]) => {
+  const unreffed: any[] = []
+
+  arr.forEach((val) => {
+    unreffed.push(smartUnref(val))
+  })
+
+  return unreffed
+}
+
+const unrefObject = (obj: Record<string, any>) => {
+  const unreffed: Record<string, any> = {}
+
+  Object.keys(obj).forEach((key) => {
+    unreffed[key] = smartUnref(obj[key])
+  })
+
+  return unreffed
+}
+
+export const deepUnref = (val: any) => {
+  const checkedVal = isRef(val) ? unref(val) : val
+
+  if (!isObject(checkedVal)) {
+    return checkedVal
+  }
+
+  if (isArray(checkedVal)) {
+    return unrefArray(checkedVal)
+  }
+
+  return unrefObject(checkedVal)
+}

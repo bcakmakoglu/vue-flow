@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import diff from 'microdiff'
-import { parseElements, defaultNodeTypes, defaultEdgeTypes } from './utils'
+import { parseElements, defaultNodeTypes, defaultEdgeTypes, deepUnref } from './utils'
 import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge, EdgeTypes, NodeTypes } from '~/types'
 import { clampPosition, getDimensions, getConnectedEdges, getNodesInside, getRectOfNodes, isNode } from '~/utils'
 import { getHandleBounds } from '~/components/Nodes/utils'
@@ -54,18 +54,29 @@ export default function flowStore(
           nextEdges: [],
           nextNodes: [],
         }
-        if (import.meta.env.SSR || typeof window === 'undefined') {
+        if (!this.worker || import.meta.env.SSR || typeof window === 'undefined') {
           next = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
-        } else {
+        } else if (this.worker) {
           const { workerFn, workerTerminate } = parseElementsWorker()
-          next = await workerFn(toRaw(elements), toRaw(this.nodes), toRaw(this.edges), toRaw(this.nodeExtent)).catch(() =>
-            workerTerminate('ERROR'),
-          )
-          workerTerminate('SUCCESS')
+          const res = await workerFn(
+            deepUnref(elements),
+            deepUnref(this.nodes),
+            deepUnref(this.edges),
+            deepUnref(this.nodeExtent),
+          ).catch((err) => {
+            console.error(err)
+            workerTerminate('ERROR')
+          })
+          if (res) {
+            workerTerminate('SUCCESS')
+            next = res
+          } else next = parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         }
-        this.elements = elements
-        this.nodes = next?.nextNodes ?? []
-        this.edges = next?.nextEdges ?? []
+        if (next) {
+          this.elements = elements ?? []
+          this.nodes = next?.nextNodes ?? []
+          this.edges = next?.nextEdges ?? []
+        }
       },
       updateNodeDimensions({ id, nodeElement, forceUpdate }) {
         const i = this.nodes.map((x) => x.id).indexOf(id)

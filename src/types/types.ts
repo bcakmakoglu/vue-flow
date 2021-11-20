@@ -141,4 +141,5 @@ export interface FlowOptions {
   edgeUpdaterRadius?: number
   storageKey?: string
   loading?: Loading
+  worker?: boolean
 }
