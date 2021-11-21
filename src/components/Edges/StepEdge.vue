@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Component, CSSProperties, DefineComponent } from 'vue'
 import { ArrowHeadType, EdgeProps, ElementId, Position } from '../../types'
 import SmoothStepEdge from './SmoothStepEdge.vue'
 
@@ -17,18 +18,16 @@ export interface StepEdgeProps extends EdgeProps {
   label?:
     | string
     | {
-        component: any
-        props?: any
+        component: Component | DefineComponent
+        props?: Record<string, any>
       }
-  labelStyle?: any
+  labelStyle?: CSSProperties
   labelShowBg?: boolean
-  labelBgStyle?: any
+  labelBgStyle?: CSSProperties
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
-  style?: any
   arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  data?: any
   sourceHandleId?: ElementId | null
   targetHandleId?: ElementId | null
 }
@@ -42,9 +41,10 @@ const props = withDefaults(defineProps<StepEdgeProps>(), {
   labelShowBg: true,
   labelBgStyle: () => ({}),
 })
+const attrs = useAttrs() as Record<'style', CSSProperties>
 </script>
 <template>
-  <SmoothStepEdge v-bind="props" :border-radius="0">
+  <SmoothStepEdge v-bind="{ ...props, ...attrs }" :border-radius="0">
     <slot />
   </SmoothStepEdge>
 </template>

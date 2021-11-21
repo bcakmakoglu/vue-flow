@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Component, CSSProperties, DefineComponent } from 'vue'
 import { ArrowHeadType, EdgeProps, ElementId, Position } from '../../types'
 import EdgeText from './EdgeText.vue'
 import { getMarkerEnd, getBezierPath } from './utils'
@@ -18,18 +19,16 @@ interface StraightEdgeProps extends EdgeProps {
   label?:
     | string
     | {
-        component: any
-        props?: any
+        component: Component | DefineComponent
+        props?: Record<string, any>
       }
-  labelStyle?: any
+  labelStyle?: CSSProperties
   labelShowBg?: boolean
-  labelBgStyle?: any
+  labelBgStyle?: CSSProperties
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
-  style?: any
   arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  data?: any
   sourceHandleId?: ElementId | null
   targetHandleId?: ElementId | null
 }
@@ -62,6 +61,8 @@ const path = computed(() => {
 })
 
 const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
+
+const attrs = useAttrs() as Record<'style', CSSProperties>
 </script>
 <script lang="ts">
 export default {
@@ -69,7 +70,7 @@ export default {
 }
 </script>
 <template>
-  <path :style="props.style" class="vue-flow__edge-path" :d="path" :marker-end="markerEnd" />
+  <path :style="attrs.style" class="vue-flow__edge-path" :d="path" :marker-end="markerEnd" />
   <slot
     :x="centerX"
     :y="centerY"

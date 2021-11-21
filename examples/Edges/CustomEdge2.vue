@@ -16,7 +16,9 @@ interface CustomEdgeProps extends EdgeProps {
   targetPosition: Position
   arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  data?: any
+  data?: {
+    text: string
+  }
 }
 
 const props = defineProps<CustomEdgeProps>()
@@ -40,6 +42,11 @@ const center = computed(() =>
     targetY: props.targetY,
   }),
 )
+</script>
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
 </script>
 <template>
   <path :id="props.id" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />

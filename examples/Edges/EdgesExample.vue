@@ -40,7 +40,7 @@ const initialElements: Elements = [
     source: '5',
     target: '6',
     label: {
-      component: CustomLabel,
+      component: markRaw(CustomLabel),
       props: {
         text: 'custom label text',
       },
