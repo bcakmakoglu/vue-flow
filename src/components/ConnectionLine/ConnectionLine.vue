@@ -19,14 +19,14 @@ const store = useStore()
 
 const sourceHandle =
   store.connectionHandleId && store.connectionHandleType
-    ? props.sourceNode.__rf?.handleBounds[store.connectionHandleType].find(
+    ? props.sourceNode.__vf?.handleBounds[store.connectionHandleType].find(
         (d: HandleElement) => d.id === store.connectionHandleId,
       )
-    : store.connectionHandleType && props.sourceNode.__rf?.handleBounds[store.connectionHandleType ?? 'source'][0]
-const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : (props.sourceNode.__rf?.width as number) / 2
-const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.sourceNode.__rf?.height
-const sourceX = props.sourceNode.__rf?.position?.x + sourceHandleX
-const sourceY = props.sourceNode.__rf?.position?.y + sourceHandleY
+    : store.connectionHandleType && props.sourceNode.__vf?.handleBounds[store.connectionHandleType ?? 'source'][0]
+const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : (props.sourceNode.__vf?.width as number) / 2
+const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.sourceNode.__vf?.height
+const sourceX = props.sourceNode.__vf?.position?.x + sourceHandleX
+const sourceY = props.sourceNode.__vf?.position?.y + sourceHandleY
 
 const isRightOrLeft = sourceHandle.position === Position.Left || sourceHandle.position === Position.Right
 const targetPosition = isRightOrLeft ? Position.Left : Position.Top

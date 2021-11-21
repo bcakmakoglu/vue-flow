@@ -102,12 +102,12 @@ const nodes = computed(() => {
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() =>
   store.connectionMode === ConnectionMode.Strict
-    ? nodes.value.targetNode?.__rf?.handleBounds.target
-    : nodes.value.targetNode?.__rf?.handleBounds.target ?? nodes.value.targetNode?.__rf?.handleBounds.source,
+    ? nodes.value.targetNode?.__vf?.handleBounds.target
+    : nodes.value.targetNode?.__vf?.handleBounds.target ?? nodes.value.targetNode?.__vf?.handleBounds.source,
 )
 
 const sourceHandle = computed(() => {
-  if (nodes.value.sourceNode) return getHandle(nodes.value.sourceNode.__rf?.handleBounds.source, props.edge.sourceHandle ?? null)
+  if (nodes.value.sourceNode) return getHandle(nodes.value.sourceNode.__vf?.handleBounds.source, props.edge.sourceHandle ?? null)
   else return null
 })
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle ?? null))

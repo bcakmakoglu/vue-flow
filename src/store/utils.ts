@@ -109,16 +109,16 @@ export const parseElements = async (elements: Elements, nodes: Node[], edges: Ed
             ...storeNode,
             ...element,
           }
-          if (!updatedNode.__rf) updatedNode.__rf = {}
+          if (!updatedNode.__vf) updatedNode.__vf = {}
 
           if (storeNode.position.x !== element.position.x || storeNode.position.y !== element.position.y) {
-            updatedNode.__rf.position = element.position
+            updatedNode.__vf.position = element.position
           }
 
           if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
             // we reset the elements dimensions here in order to force a re-calculation of the bounds.
             // When the type of a node changes it is possible that the number or positions of handles changes too.
-            updatedNode.__rf.width = undefined
+            updatedNode.__vf.width = undefined
           }
 
           nextElements.nextNodes.push(updatedNode)

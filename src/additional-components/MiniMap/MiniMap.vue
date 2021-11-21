@@ -92,10 +92,10 @@ const d = computed(() => {
   >
     <template v-for="node of nodes" :key="`mini-map-node-${node.id}`">
       <slot
-        :x="node.__rf.position.x"
-        :y="node.__rf.position.y"
-        :width="node.__rf.width"
-        :height="node.__rf.height"
+        :x="node.__vf.position.x"
+        :y="node.__vf.position.y"
+        :width="node.__vf.width"
+        :height="node.__vf.height"
         :style="node.style"
         :class="nodeClassNameFunc(node)"
         :color="nodeColorFunc(node)"
@@ -105,10 +105,10 @@ const d = computed(() => {
         :shape-rendering="shapeRendering"
       >
         <MiniMapNode
-          :x="node.__rf.position.x"
-          :y="node.__rf.position.y"
-          :width="node.__rf.width"
-          :height="node.__rf.height"
+          :x="node.__vf.position.x"
+          :y="node.__vf.position.y"
+          :width="node.__vf.width"
+          :height="node.__vf.height"
           :style="node.style"
           :class="nodeClassNameFunc(node)"
           :color="nodeColorFunc(node)"

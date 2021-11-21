@@ -170,7 +170,7 @@ export const parseNode = (node: Node, nodeExtent: NodeExtent): Node => ({
   ...node,
   id: node.id.toString(),
   type: node.type || 'default',
-  __rf: {
+  __vf: {
     position: clampPosition(node.position, nodeExtent),
     width: undefined,
     height: undefined,
@@ -215,7 +215,7 @@ export const getBoundsofRects = (rect1: Rect, rect2: Rect): Rect =>
 
 export const getRectOfNodes = (nodes: Node[]): Rect => {
   const box = nodes.reduce(
-    (currBox, { __rf: { position, width, height } = {} }) =>
+    (currBox, { __vf: { position, width, height } = {} }) =>
       getBoundsOfBoxes(
         currBox,
         rectToBox({
@@ -244,8 +244,8 @@ export const getNodesInside = (nodes: Node[], rect: Rect, [tx, ty, tScale]: Tran
   })
 
   return nodes.filter((node) => {
-    if (!node.__rf) return false
-    const { position = { x: 0, y: 0 }, width = 0, height = 0, isDragging = false } = node.__rf
+    if (!node.__vf) return false
+    const { position = { x: 0, y: 0 }, width = 0, height = 0, isDragging = false } = node.__vf
     const nBox = rectToBox({ ...position, width, height } as any)
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
     const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y))

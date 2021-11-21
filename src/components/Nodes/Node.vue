@@ -41,13 +41,13 @@ const scale = computed(() => store.transform[2])
 const selected = computed(() => selectable.value && store.selectedElements?.some(({ id }) => id === props.node.id))
 
 const onMouseEnterHandler = () =>
-  props.node.__rf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
+  props.node.__vf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
 
 const onMouseMoveHandler = () =>
-  props.node.__rf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
+  props.node.__vf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
 
 const onMouseLeaveHandler = () =>
-  props.node.__rf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
+  props.node.__vf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
 
 const onContextMenuHandler = () => (event: MouseEvent) => store.hooks.nodeContextMenu.trigger({ event, node: props.node })
 
@@ -97,7 +97,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
   const n = props.node
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
-  if (!props.node.__rf?.isDragging) {
+  if (!props.node.__vf?.isDragging) {
     if (selectable.value && !props.selectNodesOnDrag && !selected.value) {
       store.addSelectedElements([n])
     }
@@ -165,9 +165,9 @@ onMounted(() => {
       ]"
       :style="{
         zIndex: selected ? 10 : 3,
-        transform: `translate(${props.node.__rf?.position?.x}px,${props.node.__rf?.position?.y}px)`,
+        transform: `translate(${props.node.__vf?.position?.x}px,${props.node.__vf?.position?.y}px)`,
         pointerEvents: selectable || draggable ? 'all' : 'none',
-        opacity: props.node.__rf?.width !== null && props.node.__rf?.height !== null ? 1 : 0,
+        opacity: props.node.__vf?.width !== null && props.node.__vf?.height !== null ? 1 : 0,
         ...props.node.style,
       }"
       :data-id="props.node.id"
@@ -182,13 +182,13 @@ onMounted(() => {
           id: props.node.id,
           data: props.node.data,
           type: props.node.type,
-          xPos: props.node.__rf?.position?.x,
-          yPos: props.node.__rf?.position?.y,
+          xPos: props.node.__vf?.position?.x,
+          yPos: props.node.__vf?.position?.y,
           selected,
           connectable,
           sourcePosition: props.node.sourcePosition,
           targetPosition: props.node.targetPosition,
-          dragging: props.node.__rf?.isDragging,
+          dragging: props.node.__vf?.isDragging,
         }"
       >
         <component
@@ -197,13 +197,13 @@ onMounted(() => {
             id: props.node.id,
             data: props.node.data,
             type: props.node.type,
-            xPos: props.node.__rf?.position?.x,
-            yPos: props.node.__rf?.position?.y,
+            xPos: props.node.__vf?.position?.x,
+            yPos: props.node.__vf?.position?.y,
             selected,
             connectable,
             sourcePosition: props.node.sourcePosition,
             targetPosition: props.node.targetPosition,
-            dragging: props.node.__rf?.isDragging,
+            dragging: props.node.__vf?.isDragging,
           }"
         />
       </slot>

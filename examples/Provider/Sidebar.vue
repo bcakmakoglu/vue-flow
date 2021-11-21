@@ -19,7 +19,7 @@ const selectAll = () => {
     <div class="transform">{{ [transform[0].toFixed(2), transform[1].toFixed(2), transform[2].toFixed(2)] }}</div>
     <div class="title">Nodes</div>
     <div v-for="node of nodes" :key="node.id">
-      Node {{ node.id }} - x: {{ node.__rf.position.x.toFixed(2) }}, y: {{ node.__rf.position.y.toFixed(2) }}
+      Node {{ node.id }} - x: {{ node.__vf.position.x.toFixed(2) }}, y: {{ node.__vf.position.y.toFixed(2) }}
     </div>
 
     <div class="selectall">

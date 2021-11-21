@@ -5,7 +5,7 @@ export interface Node<T = any> {
   id: ElementId
   position: XYPosition
   type?: string
-  __rf?:
+  __vf?:
     | {
         position?: XYPosition
         isDragging?: boolean

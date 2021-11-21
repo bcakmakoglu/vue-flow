@@ -91,19 +91,19 @@ export default function flowStore(
         const node = this.nodes[i]
         const dimensions = getDimensions(nodeElement)
 
-        if (!node.__rf) node.__rf = {}
+        if (!node.__vf) node.__vf = {}
         const doUpdate =
           dimensions.width &&
           dimensions.height &&
-          (node.__rf.width !== dimensions.width || node.__rf.height !== dimensions.height || forceUpdate)
+          (node.__vf.width !== dimensions.width || node.__vf.height !== dimensions.height || forceUpdate)
 
         if (doUpdate) {
           const handleBounds = getHandleBounds(nodeElement, this.transform[2])
 
           this.nodes.splice(i, 1, {
             ...node,
-            __rf: {
-              ...node.__rf,
+            __vf: {
+              ...node.__vf,
               ...dimensions,
               handleBounds,
             },
@@ -124,8 +124,8 @@ export default function flowStore(
 
         this.nodes.splice(i, 1, {
           ...node,
-          __rf: {
-            ...node.__rf,
+          __vf: {
+            ...node.__vf,
             position: pos,
           },
         })
@@ -134,16 +134,16 @@ export default function flowStore(
         const update = (node: Node, i: number) => {
           const updatedNode = {
             ...node,
-            __rf: {
-              ...node.__rf,
+            __vf: {
+              ...node.__vf,
               isDragging,
             },
           }
 
           if (diff) {
-            updatedNode.__rf.position = {
-              x: (node.__rf?.position?.x as number) + diff.x,
-              y: (node.__rf?.position?.y as number) + diff.y,
+            updatedNode.__vf.position = {
+              x: (node.__vf?.position?.x as number) + diff.x,
+              y: (node.__vf?.position?.y as number) + diff.y,
             }
           }
 
@@ -197,7 +197,7 @@ export default function flowStore(
         this.selectedElements = nextSelectedElements
       },
       unsetUserSelection() {
-        const selectedNodes = this.selectedElements?.filter((node) => node && isNode(node) && node.__rf) as Node[]
+        const selectedNodes = this.selectedElements?.filter((node) => node && isNode(node) && node.__vf) as Node[]
 
         this.selectionActive = false
         this.userSelectionRect.draw = false
@@ -237,9 +237,9 @@ export default function flowStore(
         this.nodes = this.nodes.map((node) => {
           return {
             ...node,
-            __rf: {
-              ...node.__rf,
-              position: node.__rf?.position && clampPosition(node.__rf.position, nodeExtent),
+            __vf: {
+              ...node.__vf,
+              position: node.__vf?.position && clampPosition(node.__vf.position, nodeExtent),
             },
           }
         })

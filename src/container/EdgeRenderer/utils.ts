@@ -2,10 +2,10 @@ import { Edge, EdgePositions, ElementId, HandleElement, Node, Position, Transfor
 import { rectToBox } from '~/utils'
 
 export function getHandlePosition(position: Position, node: Node, handle: any | null = null): XYPosition {
-  const x = (handle?.x || 0) + node.__rf?.position?.x
-  const y = (handle?.y || 0) + node.__rf?.position?.y
-  const width = handle?.width || node.__rf?.width
-  const height = handle?.height || node.__rf?.height
+  const x = (handle?.x || 0) + node.__vf?.position?.x
+  const y = (handle?.y || 0) + node.__vf?.position?.y
+  const width = handle?.width || node.__vf?.width
+  const height = handle?.height || node.__vf?.height
 
   switch (position) {
     case Position.Top:
