@@ -26,6 +26,7 @@ export interface Node<T = any> {
   draggable?: boolean
   selectable?: boolean
   connectable?: boolean
+  dragHandle?: string
 }
 
 export interface GraphNode<T = any> extends Node<T> {

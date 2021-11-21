@@ -160,6 +160,7 @@ export default {
 <template>
   <DraggableCore
     cancel=".nodrag"
+    :handle="props.node.dragHandle"
     :disabled="!draggable"
     :scale="scale"
     :grid="props.snapGrid"

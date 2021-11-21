@@ -1,4 +1,4 @@
-import { CSSProperties } from 'vue'
+import { Component, CSSProperties, DefineComponent } from 'vue'
 import { BackgroundVariant, Dimensions, ElementId, FitViewParams, Position, XYPosition } from './flow'
 import { Connection } from './connection'
 import { Node } from './node'
@@ -55,4 +55,20 @@ export interface MiniMapNodeProps {
   shapeRendering?: CSSProperties['shapeRendering']
   strokeColor?: string
   strokeWidth?: number
+}
+
+export interface EdgeTextProps {
+  x: number
+  y: number
+  label?:
+    | string
+    | {
+        component: Component | DefineComponent
+        props?: Record<string, any>
+      }
+  labelStyle?: CSSProperties
+  labelShowBg?: boolean
+  labelBgStyle?: any
+  labelBgPadding?: [number, number]
+  labelBgBorderRadius?: number
 }

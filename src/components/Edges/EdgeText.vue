@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { CSSProperties, HTMLAttributes } from 'vue'
+import { Component, CSSProperties, DefineComponent } from 'vue'
 
-interface EdgeTextProps extends HTMLAttributes {
+interface EdgeTextProps {
   x: number
   y: number
   label?:
     | string
     | {
-        component: any
-        props?: any
+        component: Component | DefineComponent
+        props?: Record<string, any>
       }
   labelStyle?: CSSProperties
   labelShowBg?: boolean
