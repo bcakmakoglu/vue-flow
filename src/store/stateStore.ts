@@ -91,11 +91,10 @@ export default function flowStore(
         const node = this.nodes[i]
         const dimensions = getDimensions(nodeElement)
 
-        if (!node.__vf) node.__vf = {}
         const doUpdate =
           dimensions.width &&
           dimensions.height &&
-          (node.__vf.width !== dimensions.width || node.__vf.height !== dimensions.height || forceUpdate)
+          (node.__vf?.width !== dimensions.width || node.__vf?.height !== dimensions.height || forceUpdate)
 
         if (doUpdate) {
           const handleBounds = getHandleBounds(nodeElement, this.transform[2])
@@ -103,6 +102,7 @@ export default function flowStore(
           this.nodes.splice(i, 1, {
             ...node,
             __vf: {
+              position: { x: 0, y: 0 },
               ...node.__vf,
               ...dimensions,
               handleBounds,
@@ -125,6 +125,8 @@ export default function flowStore(
         this.nodes.splice(i, 1, {
           ...node,
           __vf: {
+            width: 0,
+            height: 0,
             ...node.__vf,
             position: pos,
           },
@@ -132,18 +134,21 @@ export default function flowStore(
       },
       updateNodePosDiff({ id, diff, isDragging }) {
         const update = (node: Node, i: number) => {
-          const updatedNode = {
+          const updatedNode: Node = {
             ...node,
             __vf: {
+              width: 0,
+              height: 0,
+              position: { x: 0, y: 0 },
               ...node.__vf,
               isDragging,
             },
           }
 
-          if (diff) {
-            updatedNode.__vf.position = {
-              x: (node.__vf?.position?.x as number) + diff.x,
-              y: (node.__vf?.position?.y as number) + diff.y,
+          if (diff && node.__vf) {
+            updatedNode.__vf!.position = {
+              x: node.__vf.position.x + diff.x,
+              y: node.__vf.position.y + diff.y,
             }
           }
 
@@ -238,8 +243,10 @@ export default function flowStore(
           return {
             ...node,
             __vf: {
+              height: 0,
+              width: 0,
               ...node.__vf,
-              position: node.__vf?.position && clampPosition(node.__vf.position, nodeExtent),
+              position: node.__vf?.position ? clampPosition(node.__vf.position, nodeExtent) : { x: 0, y: 0 },
             },
           }
         })

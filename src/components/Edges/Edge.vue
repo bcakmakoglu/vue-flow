@@ -102,15 +102,19 @@ const nodes = computed(() => {
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() =>
   store.connectionMode === ConnectionMode.Strict
-    ? nodes.value.targetNode?.__vf?.handleBounds.target
-    : nodes.value.targetNode?.__vf?.handleBounds.target ?? nodes.value.targetNode?.__vf?.handleBounds.source,
+    ? nodes.value.targetNode?.__vf?.handleBounds?.target
+    : nodes.value.targetNode?.__vf?.handleBounds?.target ?? nodes.value.targetNode?.__vf?.handleBounds?.source,
 )
 
 const sourceHandle = computed(() => {
-  if (nodes.value.sourceNode) return getHandle(nodes.value.sourceNode.__vf?.handleBounds.source, props.edge.sourceHandle ?? null)
+  if (nodes.value.sourceNode && nodes.value.sourceNode.__vf?.handleBounds?.source)
+    return getHandle(nodes.value.sourceNode.__vf.handleBounds.source, props.edge.sourceHandle ?? null)
   else return null
 })
-const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle ?? null))
+const targetHandle = computed(() => {
+  if (targetNodeHandles.value) return getHandle(targetNodeHandles.value, props.edge.targetHandle ?? null)
+  else return null
+})
 const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
 

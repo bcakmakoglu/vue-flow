@@ -172,8 +172,8 @@ export const parseNode = (node: Node, nodeExtent: NodeExtent): Node => ({
   type: node.type || 'default',
   __vf: {
     position: clampPosition(node.position, nodeExtent),
-    width: undefined,
-    height: undefined,
+    width: 0,
+    height: 0,
     handleBounds: {},
     isDragging: false,
   },
@@ -215,7 +215,7 @@ export const getBoundsofRects = (rect1: Rect, rect2: Rect): Rect =>
 
 export const getRectOfNodes = (nodes: Node[]): Rect => {
   const box = nodes.reduce(
-    (currBox, { __vf: { position, width, height } = {} }) =>
+    (currBox, { __vf: { position = { x: 0, y: 0 }, width = 0, height = 0 } = {} }) =>
       getBoundsOfBoxes(
         currBox,
         rectToBox({

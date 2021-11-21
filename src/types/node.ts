@@ -1,22 +1,24 @@
-import { Component, DefineComponent } from 'vue'
+import { Component, CSSProperties, DefineComponent } from 'vue'
 import { XYPosition, ElementId, Position } from './types'
+import { HandleElement } from '~/types/handle'
 
 export interface Node<T = any> {
   id: ElementId
   position: XYPosition
   type?: string
-  __vf?:
-    | {
-        position?: XYPosition
-        isDragging?: boolean
-        width?: number
-        height?: number
-        handleBounds?: any
-      }
-    | any
-  data?: T
-  style?: any
+  __vf?: {
+    position: XYPosition
+    isDragging?: boolean
+    width: number
+    height: number
+    handleBounds?: {
+      source?: HandleElement[] | null
+      target?: HandleElement[] | null
+    }
+  }
   class?: string
+  style?: CSSProperties
+  data?: T
   targetPosition?: Position
   sourcePosition?: Position
   isHidden?: boolean
