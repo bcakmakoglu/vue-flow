@@ -38,6 +38,11 @@ useEventListener(el, 'click', onMouseUp)
 useEventListener(el, 'mouseup', onMouseUp)
 useEventListener(el, 'mouseleave', onMouseLeave)
 </script>
+<script lang="ts">
+export default {
+  name: 'UserSelection',
+}
+</script>
 <template>
   <div ref="user-selection" class="vue-flow__selectionpane">
     <SelectionRect

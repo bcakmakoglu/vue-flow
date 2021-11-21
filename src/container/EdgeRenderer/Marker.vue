@@ -5,6 +5,11 @@ interface MarkerProps {
 
 const props = defineProps<MarkerProps>()
 </script>
+<script lang="ts">
+export default {
+  name: 'Marker',
+}
+</script>
 <template>
   <marker
     :id="props.id"

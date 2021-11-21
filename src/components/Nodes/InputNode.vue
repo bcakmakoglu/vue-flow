@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<InputNodeProps>(), {
 </script>
 <script lang="ts">
 export default {
+  name: 'InputNode',
   inheritAttrs: false,
 }
 </script>

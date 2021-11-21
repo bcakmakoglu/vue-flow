@@ -39,6 +39,11 @@ const cy = computed(() => {
   else return val
 })
 </script>
+<script lang="ts">
+export default {
+  name: 'EdgeAnchor',
+}
+</script>
 <template>
   <circle class="vue-flow__edgeupdater" :cx="cx" :cy="cy" :r="props.radius" stroke="transparent" fill="transparent" />
 </template>

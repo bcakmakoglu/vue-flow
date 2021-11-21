@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { HTMLAttributes } from 'vue'
 import { FitViewParams } from '../../types'
 import { useZoomPanHelper, useStore } from '../../composables'
 import ControlButton from './ControlButton.vue'
@@ -9,7 +8,7 @@ import Fitview from '~/assets/icons/fitview.svg'
 import Lock from '~/assets/icons/lock.svg'
 import Unlock from '~/assets/icons/unlock.svg'
 
-export interface ControlProps extends HTMLAttributes {
+interface ControlProps {
   showZoom?: boolean
   showFitView?: boolean
   showInteractive?: boolean
@@ -53,6 +52,11 @@ const onFitViewHandler = () => {
 const onInteractiveChangeHandler = () => {
   store.setInteractive(!isInteractive.value)
   emit('interaction-change', !isInteractive.value)
+}
+</script>
+<script lang="ts">
+export default {
+  name: 'Controls',
 }
 </script>
 <template>

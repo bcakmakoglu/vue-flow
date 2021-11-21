@@ -64,6 +64,7 @@ const attrs = useAttrs() as Record<'style', CSSProperties>
 </script>
 <script lang="ts">
 export default {
+  name: 'SmoothStepEdge',
   inheritAttrs: false,
 }
 </script>

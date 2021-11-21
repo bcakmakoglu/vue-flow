@@ -12,6 +12,7 @@ interface MiniMapNodeProps {
   strokeColor?: string
   strokeWidth?: number
 }
+
 const props = withDefaults(defineProps<MiniMapNodeProps>(), {
   shapeRendering: 'geometricPrecision',
 })
@@ -19,6 +20,11 @@ const attrs = useAttrs()
 
 const styles = (attrs.style ?? {}) as CSSProperties
 const fill = computed(() => props.color || (styles.background as string) || styles.backgroundColor)
+</script>
+<script lang="ts">
+export default {
+  name: 'MiniMapNode',
+}
 </script>
 <template>
   <rect

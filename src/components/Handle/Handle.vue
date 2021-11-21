@@ -25,6 +25,11 @@ const handler = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>
   handler(event, props.id, nodeId, props.type === 'target', props.isValidConnection ?? (() => true))
 </script>
+<script lang="ts">
+export default {
+  name: 'Handle',
+}
+</script>
 <template>
   <div
     :data-handleid="props.id"

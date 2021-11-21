@@ -203,6 +203,11 @@ watch(
   { flush: 'pre' },
 )
 </script>
+<script lang="ts">
+export default {
+  name: 'ZoomPane',
+}
+</script>
 <template>
   <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
     <slot

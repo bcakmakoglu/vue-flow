@@ -58,6 +58,11 @@ const onContextMenu = (event: MouseEvent) => {
 
 const transform = computed(() => store.transform)
 </script>
+<script lang="ts">
+export default {
+  name: 'NodesSelection',
+}
+</script>
 <template>
   <div
     class="vue-flow__nodesselection"

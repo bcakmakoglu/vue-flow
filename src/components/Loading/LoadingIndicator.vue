@@ -11,6 +11,11 @@ const props = withDefaults(defineProps<LoadingIndicatorProps>(), {
   label: 'Almost ready...',
 })
 </script>
+<script lang="ts">
+export default {
+  name: 'VueFlowLoading',
+}
+</script>
 <template>
   <div class="vue-flow__loading-indicator" :class="props.class" :style="props.style">
     <slot name="label"> {{ props.label }} </slot>

@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<DefaultNodeProps>(), {
 </script>
 <script lang="ts">
 export default {
+  name: 'DefaultNode',
   inheritAttrs: false,
 }
 </script>

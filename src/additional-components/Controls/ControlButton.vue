@@ -1,12 +1,10 @@
-<script lang="ts" setup>
-import { ButtonHTMLAttributes } from 'vue'
-
-export interface ControlButtonProps extends ButtonHTMLAttributes {}
-
-const props: any = defineProps<ControlButtonProps>()
+<script lang="ts">
+export default {
+  name: 'ControlButton',
+}
 </script>
 <template>
-  <button class="vue-flow__controls-button" v-bind="props">
+  <button class="vue-flow__controls-button">
     <slot></slot>
   </button>
 </template>

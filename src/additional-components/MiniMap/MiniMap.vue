@@ -1,14 +1,10 @@
 <script lang="ts" setup>
-import { HTMLAttributes } from 'vue'
-import { Node } from '../../types'
+import { ShapeRendering, StringFunc } from '../../types'
 import { useStore, useWindow } from '../../composables'
+import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import MiniMapNode from './MiniMapNode.vue'
-import { getBoundsofRects, getRectOfNodes } from '~/utils'
 
-type StringFunc = (node: Node) => string
-type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
-
-export interface MiniMapProps extends HTMLAttributes {
+interface MiniMapProps {
   nodeColor?: string | StringFunc
   nodeStrokeColor?: string | StringFunc
   nodeClassName?: string | StringFunc
@@ -81,6 +77,11 @@ const d = computed(() => {
     h${-viewBB.value.width}z`
   else return ''
 })
+</script>
+<script lang="ts">
+export default {
+  name: 'MiniMap',
+}
 </script>
 <template>
   <svg

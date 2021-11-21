@@ -18,6 +18,11 @@ const store = useStore()
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 const snapGrid = computed(() => (props.snapToGrid || store.snapToGrid ? props.snapGrid ?? store.snapGrid : undefined))
 </script>
+<script lang="ts">
+export default {
+  name: 'Nodes',
+}
+</script>
 <template>
   <div class="vue-flow__nodes" :style="{ transform }">
     <Node

@@ -43,6 +43,11 @@ const props = withDefaults(defineProps<StepEdgeProps>(), {
 })
 const attrs = useAttrs() as Record<'style', CSSProperties>
 </script>
+<script lang="ts">
+export default {
+  name: 'StepEdge',
+}
+</script>
 <template>
   <SmoothStepEdge v-bind="{ ...props, ...attrs }" :border-radius="0">
     <slot />

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { SVGAttributes } from 'vue'
 import { BackgroundVariant } from '../../types'
 import { useStore } from '../../composables'
 
-export interface BackgroundProps extends SVGAttributes {
+interface BackgroundProps {
   variant?: BackgroundVariant
   gap?: number
   color?: string
@@ -46,6 +45,11 @@ const d = computed(
       background.value.scaledGap
     }`,
 )
+</script>
+<script lang="ts">
+export default {
+  name: 'Background',
+}
 </script>
 <template>
   <svg class="vue-flow__background" style="width: 100%; height: 100%">

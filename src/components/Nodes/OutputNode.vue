@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<OutputNodeProps>(), {
 </script>
 <script lang="ts">
 export default {
+  name: 'OutputNode',
   inheritAttrs: false,
 }
 </script>

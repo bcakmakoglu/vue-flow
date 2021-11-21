@@ -29,6 +29,11 @@ const connectionLineVisible = computed(
 const dimensions = computed(() => store.dimensions)
 const transform = computed(() => `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`)
 </script>
+<script lang="ts">
+export default {
+  name: 'Edges',
+}
+</script>
 <template>
   <svg :width="dimensions.width" :height="dimensions.height" class="vue-flow__edges">
     <MarkerDefinitions :color="props.arrowHeadColor" />

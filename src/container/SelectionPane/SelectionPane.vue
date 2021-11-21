@@ -59,6 +59,7 @@ const nodesSelectionActive = computed(() => store.nodesSelectionActive)
 </script>
 <script lang="ts">
 export default {
+  name: 'SelectionPane',
   inheritAttrs: false,
 }
 </script>

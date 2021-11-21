@@ -9,6 +9,11 @@ const props = withDefaults(defineProps<MarkerDefinitionsProps>(), {
   color: '',
 })
 </script>
+<script lang="ts">
+export default {
+  name: 'MarkerDefinitions',
+}
+</script>
 <template>
   <defs>
     <Marker id="vue-flow__arrowclosed">

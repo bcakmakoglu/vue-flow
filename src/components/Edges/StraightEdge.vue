@@ -66,6 +66,7 @@ const attrs = useAttrs() as Record<'style', CSSProperties>
 </script>
 <script lang="ts">
 export default {
+  name: 'StraightEdge',
   inheritAttrs: false,
 }
 </script>

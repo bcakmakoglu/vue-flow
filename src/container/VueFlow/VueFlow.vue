@@ -9,7 +9,6 @@ import {
   KeyCode,
   TranslateExtent,
   NodeExtent,
-  FlowOptions,
   NodeTypes,
   EdgeTypes,
   FlowStore,
@@ -25,7 +24,7 @@ import LoadingIndicator from '../../components/Loading/LoadingIndicator.vue'
 import { createHooks, initFlow, useZoomPanHelper } from '../../composables'
 import { onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
 
-export interface FlowProps extends Partial<FlowOptions> {
+interface FlowProps {
   id?: string
   store?: FlowStore
   modelValue?: Elements

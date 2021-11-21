@@ -141,6 +141,11 @@ onMounted(() => {
   })
 })
 </script>
+<script lang="ts">
+export default {
+  name: 'Node',
+}
+</script>
 <template>
   <DraggableCore
     cancel=".nodrag"

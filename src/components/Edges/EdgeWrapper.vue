@@ -130,6 +130,11 @@ const edgePos = computed(() =>
 )
 const elementsSelectable = computed(() => store.elementsSelectable)
 </script>
+<script lang="ts">
+export default {
+  name: 'Edge',
+}
+</script>
 <template>
   <g
     v-show="!props.edge.isHidden && isVisible(edgePos)"

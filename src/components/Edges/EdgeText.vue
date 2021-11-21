@@ -30,6 +30,11 @@ const { width, height, x, y } = useElementBounding(edgeRef)
 const transform = computed(() => `translate(${props.x - width.value / 2 || 0} ${props.y - height.value / 2 || 0})`)
 const bgPadding = computed(() => [props.labelBgPadding[0], props.labelBgPadding[1]])
 </script>
+<script lang="ts">
+export default {
+  name: 'EdgeText',
+}
+</script>
 <template>
   <g :transform="transform" class="vue-flow__edge-textwrapper">
     <rect

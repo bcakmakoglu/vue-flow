@@ -72,6 +72,11 @@ const dAttr = computed(() => {
   return path
 })
 </script>
+<script lang="ts">
+export default {
+  name: 'ConnectionLine',
+}
+</script>
 <template>
   <g class="vue-flow__connection">
     <slot
