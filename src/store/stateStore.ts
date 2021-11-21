@@ -1,5 +1,5 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
-import diff from 'microdiff'
+import microDiff from 'microdiff'
 import { parseElements, defaultNodeTypes, defaultEdgeTypes, deepUnref, NextElements } from './utils'
 import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge } from '~/types'
 import { clampPosition, getDimensions, getConnectedEdges, getNodesInside, getRectOfNodes, isNode } from '~/utils'
@@ -212,7 +212,7 @@ export default function flowStore(
       },
       addSelectedElements(elements) {
         const selectedElementsArr = Array.isArray(elements) ? elements : [elements]
-        const selectedElementsUpdated = diff(selectedElementsArr, this.selectedElements ?? []).length
+        const selectedElementsUpdated = microDiff(selectedElementsArr, this.selectedElements ?? []).length
         this.selectedElements = selectedElementsUpdated ? selectedElementsArr : this.selectedElements
       },
       initD3Zoom({ d3ZoomHandler, d3Zoom, d3Selection }) {

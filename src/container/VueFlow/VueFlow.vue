@@ -115,7 +115,7 @@ if (store.elements.length) elements.value = store.elements
 
 const options = Object.assign({}, store.$state, props)
 
-const init = (state: FlowState) => {
+const init = async (state: FlowState) => {
   // set state variables
   for (const opt of Object.keys(state)) {
     const val = state[opt as keyof FlowState]
@@ -125,6 +125,7 @@ const init = (state: FlowState) => {
       } else (store as any)[opt] = val
     }
   }
+  await until(() => store.d3Zoom).not.toBeUndefined()
   store.setMinZoom(state.minZoom)
   store.setMaxZoom(state.maxZoom)
   store.setTranslateExtent(state.translateExtent)
