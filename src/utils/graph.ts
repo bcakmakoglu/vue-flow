@@ -12,12 +12,20 @@ import {
   NodeExtent,
   Dimensions,
   FlowStore,
+  GraphNode,
+  FlowElements,
+  FlowElement,
 } from '~/types'
 import { useWindow } from '~/composables'
 
+const isHTMLElement = (el: EventTarget): el is HTMLElement => ('nodeName' || 'hasAttribute') in el
+
 export const isInputDOMNode = (e: KeyboardEvent | MouseEvent): boolean => {
-  const target = e.target as HTMLElement
-  return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.nodeName) || target.hasAttribute('contentEditable')
+  const target = e.target
+  if (target && isHTMLElement(target)) {
+    return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.nodeName) || target.hasAttribute('contentEditable')
+  }
+  return false
 }
 
 export const getDimensions = (node: HTMLElement): Dimensions => ({
@@ -40,40 +48,30 @@ export const getHostForElement = (element: HTMLElement): Document => {
   else return window.document
 }
 
-export const isEdge = (element: Node | Connection | Edge): element is Edge =>
+export const isEdge = (element: Node | FlowElement | Connection): element is Edge =>
   'id' in element && 'source' in element && 'target' in element
 
-export const isNode = (element: Node | Connection | Edge): element is Node =>
+export const isNode = (element: Node | FlowElement | Connection): element is Node =>
   'id' in element && !('source' in element) && !('target' in element)
 
-export const getOutgoers = (node: Node, elements: Elements): Node[] => {
-  if (!isNode(node)) {
-    return []
-  }
+export const isGraphNode = (element: Node | FlowElement | Connection): element is GraphNode =>
+  isNode(element) && '__vf' in element
 
-  const outgoerIds = elements.filter((e) => isEdge(e) && e.source === node.id).map((e) => (e as Edge).target)
-  return elements.filter((e) => outgoerIds.includes(e.id)) as Node[]
+const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
+  if (!isNode(node)) return []
+  const ids = elements.filter((e) => isEdge(e) && e.source === node.id).map((e) => isEdge(e) && e[dir])
+  return elements.filter((e) => ids.includes(e.id))
 }
+export const getOutgoers = (node: GraphNode, elements: Elements) => getConnectedElements(node, elements, 'target')
 
-export const getIncomers = (node: Node, elements: Elements): Node[] => {
-  if (!isNode(node)) {
-    return []
-  }
+export const getIncomers = (node: GraphNode, elements: Elements) => getConnectedElements(node, elements, 'source')
 
-  const incomersIds = elements.filter((e) => isEdge(e) && e.target === node.id).map((e) => (e as Edge).source)
-  return elements.filter((e) => incomersIds.includes(e.id)) as Node[]
-}
-
-export const removeElements = (elementsToRemove: Elements, elements: Elements): Elements => {
+export const removeElements = (elementsToRemove: Elements, elements: Elements) => {
   const nodeIdsToRemove = elementsToRemove.map((n) => n.id)
 
   return elements.filter((element) => {
-    const edgeElement = element as Edge
-    return !(
-      nodeIdsToRemove.includes(element.id) ||
-      nodeIdsToRemove.includes(edgeElement.target) ||
-      nodeIdsToRemove.includes(edgeElement.source)
-    )
+    const { target, source } = isEdge(element) ? element : { target: '', source: '' }
+    return !(nodeIdsToRemove.includes(element.id) || nodeIdsToRemove.includes(target) || nodeIdsToRemove.includes(source))
   })
 }
 
@@ -91,13 +89,13 @@ const connectionExists = (edge: Edge, elements: Elements) => {
   )
 }
 
-export const addEdge = (edgeParams: Edge | Connection, elements: Elements): Elements => {
+export const addEdge = (edgeParams: Edge | Connection, elements: Elements) => {
   if (!edgeParams.source || !edgeParams.target) {
     console.log("Can't create edge. An edge needs a source and a target.")
     return elements
   }
 
-  let edge: Edge
+  let edge
   if (isEdge(edgeParams)) {
     edge = { ...edgeParams }
   } else {
@@ -114,13 +112,13 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements): Elem
   return elements.concat(edge)
 }
 
-export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: Elements): Elements => {
+export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: Elements) => {
   if (!newConnection.source || !newConnection.target) {
     console.warn("Can't create new edge. An edge needs a source and a target.")
     return elements
   }
 
-  const foundEdge = elements.find((e) => isEdge(e) && e.id === oldEdge.id) as Edge
+  const foundEdge = elements.find((e) => isEdge(e) && e.id === oldEdge.id)
 
   if (!foundEdge) {
     console.warn(`The old edge with id=${oldEdge.id} does not exist.`)
@@ -128,14 +126,14 @@ export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: E
   }
 
   // Remove old edge and create the new edge with parameters of old edge.
-  const edge = {
+  const edge: Edge = {
     ...oldEdge,
     id: getEdgeId(newConnection),
     source: newConnection.source,
     target: newConnection.target,
     sourceHandle: newConnection.sourceHandle,
     targetHandle: newConnection.targetHandle,
-  } as Edge
+  }
 
   return elements.filter((e) => e.id !== oldEdge.id).concat(edge)
 }
@@ -145,7 +143,7 @@ export const pointToRendererPoint = (
   [tx, ty, tScale]: Transform,
   snapToGrid: boolean,
   [snapX, snapY]: [number, number],
-): XYPosition => {
+) => {
   const position: XYPosition = {
     x: (x - tx) / tScale,
     y: (y - ty) / tScale,
@@ -161,12 +159,10 @@ export const pointToRendererPoint = (
   return position
 }
 
-export const onLoadProject =
-  (currentStore: FlowStore) =>
-  (position: XYPosition): XYPosition =>
-    pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
+export const onLoadProject = (currentStore: FlowStore) => (position: XYPosition) =>
+  pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
 
-export const parseNode = (node: Node, nodeExtent: NodeExtent): Node => ({
+export const parseNode = (node: Node, nodeExtent: NodeExtent): GraphNode => ({
   ...node,
   id: node.id.toString(),
   type: node.type || 'default',
@@ -174,7 +170,10 @@ export const parseNode = (node: Node, nodeExtent: NodeExtent): Node => ({
     position: clampPosition(node.position, nodeExtent),
     width: 0,
     height: 0,
-    handleBounds: {},
+    handleBounds: {
+      source: null,
+      target: null,
+    },
     isDragging: false,
   },
 })
@@ -210,10 +209,9 @@ export const boxToRect = ({ x, y, x2, y2 }: Box): Rect => ({
   height: y2 - y,
 })
 
-export const getBoundsofRects = (rect1: Rect, rect2: Rect): Rect =>
-  boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)))
+export const getBoundsofRects = (rect1: Rect, rect2: Rect) => boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)))
 
-export const getRectOfNodes = (nodes: Node[]): Rect => {
+export const getRectOfNodes = (nodes: GraphNode[]) => {
   const box = nodes.reduce(
     (currBox, { __vf: { position = { x: 0, y: 0 }, width = 0, height = 0 } = {} }) =>
       getBoundsOfBoxes(
@@ -235,7 +233,7 @@ export const graphPosToZoomedPos = ({ x, y }: XYPosition, [tx, ty, tScale]: Tran
   y: y * tScale + ty,
 })
 
-export const getNodesInside = (nodes: Node[], rect: Rect, [tx, ty, tScale]: Transform = [0, 0, 1], partially = false): Node[] => {
+export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]: Transform = [0, 0, 1], partially = false) => {
   const rBox = rectToBox({
     x: (rect.x - tx) / tScale,
     y: (rect.y - ty) / tScale,
@@ -266,13 +264,12 @@ export const getNodesInside = (nodes: Node[], rect: Rect, [tx, ty, tScale]: Tran
   })
 }
 
-export const getConnectedEdges = (nodes: Node[], edges: Edge[]): Edge[] => {
+export const getConnectedEdges = (nodes: GraphNode[], edges: Edge[]) => {
   const nodeIds = nodes.map((node) => node.id)
-
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-export const onLoadGetElements = (currentStore: FlowStore) => (): Elements => currentStore.elements
+export const onLoadGetElements = (currentStore: FlowStore) => (): FlowElements => currentStore.elements
 
 export const onLoadToObject = (currentStore: FlowStore) => (): FlowExportObject => {
   // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage

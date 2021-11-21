@@ -3,7 +3,7 @@ import { ElementId, FlowElement, KeyCode } from '../../types'
 import { useStore, useKeyPress } from '../../composables'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
-import { getConnectedEdges, isNode } from '../../utils'
+import { getConnectedEdges, isGraphNode } from '../../utils'
 
 interface SelectionPaneProps {
   selectionKeyCode?: KeyCode
@@ -33,7 +33,7 @@ const selectionKeyPresed = ref(false)
 onMounted(() => {
   useKeyPress(props.deleteKeyCode, (keyPressed) => {
     if (keyPressed && store.selectedElements) {
-      const selectedNodes = store.selectedElements.filter(isNode)
+      const selectedNodes = store.selectedElements.filter(isGraphNode)
       const connectedEdges = getConnectedEdges(selectedNodes, store.edges)
       const elementsToRemove = [...store.selectedElements, ...connectedEdges].reduce(
         (res, item) => res.set(item.id, item),

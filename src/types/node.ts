@@ -1,21 +1,22 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
-import { XYPosition, ElementId, Position } from './types'
-import { HandleElement } from '~/types/handle'
+import { XYPosition, ElementId, Position } from './flow'
+import { HandleElement } from './handle'
+
+interface VFInternals {
+  position: XYPosition
+  isDragging?: boolean
+  width: number
+  height: number
+  handleBounds: {
+    source: HandleElement[] | null
+    target: HandleElement[] | null
+  }
+}
 
 export interface Node<T = any> {
   id: ElementId
   position: XYPosition
   type?: string
-  __vf?: {
-    position: XYPosition
-    isDragging?: boolean
-    width: number
-    height: number
-    handleBounds?: {
-      source?: HandleElement[] | null
-      target?: HandleElement[] | null
-    }
-  }
   class?: string
   style?: CSSProperties
   data?: T
@@ -25,6 +26,10 @@ export interface Node<T = any> {
   draggable?: boolean
   selectable?: boolean
   connectable?: boolean
+}
+
+export interface GraphNode<T = any> extends Node<T> {
+  __vf: VFInternals
 }
 
 export type NodePosUpdate = {

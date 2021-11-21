@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { zoomIdentity } from 'd3-zoom'
 import useStore from './useStore'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils'

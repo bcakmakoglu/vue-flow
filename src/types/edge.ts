@@ -1,5 +1,5 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
-import { ArrowHeadType, ElementId, Position } from './types'
+import { ArrowHeadType, ElementId, Position } from './flow'
 
 export interface Edge<T = any> {
   id: ElementId

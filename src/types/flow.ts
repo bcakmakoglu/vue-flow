@@ -1,15 +1,18 @@
 import { CSSProperties } from 'vue'
 import { Edge, EdgeTypes } from './edge'
-import { Node, NodeExtent, NodeTypes, TranslateExtent } from './node'
+import { NodeExtent, GraphNode, NodeTypes, TranslateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
-import { KeyCode, PanOnScrollMode } from './panel'
+import { KeyCode, PanOnScrollMode } from './zoom'
 import { FlowStore } from './store'
 
 export type ElementId = string
-
-export type FlowElement<T = any> = Node<T> | Edge<T>
-
-export type Elements<T = any> = FlowElement<T>[]
+export type FlowElement<T = any> = GraphNode<T> | Edge<T>
+export type FlowElements<T = any> = FlowElement<T>[]
+export type Elements<T = any> = (Node<T> | Edge<T>)[]
+export type NextElements = {
+  nextNodes: GraphNode[]
+  nextEdges: Edge[]
+}
 
 export type Transform = [number, number, number]
 
@@ -63,7 +66,7 @@ export type FitViewParams = {
 }
 
 export type FlowExportObject<T = any> = {
-  elements: Elements<T>
+  elements: FlowElements<T>
   position: [number, number]
   zoom: number
 }
@@ -98,14 +101,13 @@ export type FlowInstance<T = any> = {
   zoomTo: (zoomLevel: number) => void
   fitView: FitViewFunc
   project: ProjectFunc
-  getElements: () => Elements<T>
+  getElements: () => FlowElements<T>
   setTransform: (transform: FlowTransform) => void
   toObject: ToObjectFunc<T>
 }
 
 export interface FlowOptions {
   id?: string
-  store?: FlowStore
   elements?: Elements
   nodeTypes?: NodeTypes
   edgeTypes?: EdgeTypes
@@ -142,4 +144,5 @@ export interface FlowOptions {
   storageKey?: string
   loading?: Loading
   worker?: boolean
+  store?: FlowStore
 }

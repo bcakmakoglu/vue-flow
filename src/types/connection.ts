@@ -1,4 +1,4 @@
-import { ElementId, Position } from './types'
+import { ElementId, Position } from './flow'
 import { HandleType } from './handle'
 
 export enum ConnectionLineType {

@@ -1,5 +1,5 @@
 import { HandleElement, Position } from '~/types'
-import { getDimensions } from '~/utils'
+import { getDimensions } from '~/utils/graph'
 
 export const getHandleBoundsByHandleType = (
   selector: string,
@@ -19,7 +19,7 @@ export const getHandleBoundsByHandleType = (
     const bounds = handle.getBoundingClientRect()
     const dimensions = getDimensions(handle)
     const handleId = handle.getAttribute('data-handleid')
-    const handlePosition = handle.getAttribute('data-handlepos') as unknown as Position
+    const handlePosition = handle.getAttribute('data-handlepos') as Position
 
     return {
       id: handleId,

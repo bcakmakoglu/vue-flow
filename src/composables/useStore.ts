@@ -1,7 +1,7 @@
-import { FlowExportObject, FlowOptions } from '~/types'
-import { useStateStore, initialState } from '~/store'
+import { FlowExportObject, FlowOptions, FlowState } from '~/types'
+import { useStateStore } from '~/store'
 import { Store } from '~/context'
-import { onLoadToObject } from '~/utils'
+import { onLoadToObject, initialState } from '~/utils'
 
 let id = 0
 export default (options?: Partial<FlowOptions>, key?: string) => {
@@ -15,10 +15,10 @@ export default (options?: Partial<FlowOptions>, key?: string) => {
     const storageKey = key ?? `vue-flow-${id++}`
     const preloadedState = {
       ...initial,
-      ...options,
+      ...(options as FlowState),
     }
     if (withStorage) {
-      storedState = useStorage(storageKey, {} as FlowExportObject)
+      storedState = useStorage<FlowExportObject>(storageKey, { elements: [], position: [0, 0], zoom: 0 })
       if (storedState.value) {
         preloadedState.elements = storedState.value.elements ?? options?.elements ?? []
         if (storedState.value.position && storedState.value.zoom)

@@ -1,7 +1,7 @@
-import { Connection, Edge, Elements, Node, NodeExtent, XYPosition } from '~/types'
+import { Connection, Edge, Elements, Node, NodeExtent, GraphNode, XYPosition, NextElements, FlowElement } from '~/types'
 
 export default () =>
-  useWebWorkerFn((elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) => {
+  useWebWorkerFn((elements: Elements, nodes: GraphNode[], edges: Edge[], nodeExtent: NodeExtent): NextElements => {
     const clamp = (val: number, min = 0, max = 1): number => Math.min(Math.max(val, min), max)
 
     const clampPosition = (position: XYPosition, extent: NodeExtent): XYPosition => ({
@@ -9,14 +9,14 @@ export default () =>
       y: clamp(position.y, extent[0][1], extent[1][1]),
     })
 
-    const parseNode = (node: Node, nodeExtent: NodeExtent): Node =>
-      Object.assign(node, {
+    const parseNode = (node: Node, nodeExtent: NodeExtent): GraphNode =>
+      Object.assign(node as GraphNode, {
         id: node.id.toString(),
         type: node.type || 'default',
         __vf: {
           position: clampPosition(node.position, nodeExtent),
-          width: undefined,
-          height: undefined,
+          width: 0,
+          height: 0,
           handleBounds: {},
           isDragging: false,
         },
@@ -32,13 +32,13 @@ export default () =>
         type: edge.type || 'default',
       })
 
-    const isEdge = (element: Node | Connection | Edge): element is Edge =>
+    const isEdge = (element: Node | FlowElement | Connection): element is Edge =>
       'id' in element && 'source' in element && 'target' in element
 
-    const isNode = (element: Node | Connection | Edge): element is Node =>
+    const isNode = (element: Node | FlowElement | Connection): element is Node =>
       'id' in element && !('source' in element) && !('target' in element)
 
-    const nextElements: any = {
+    const nextElements: NextElements = {
       nextNodes: [],
       nextEdges: [],
     }
@@ -48,17 +48,17 @@ export default () =>
         const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
 
         if (storeNode) {
-          const updatedNode: Node = Object.assign(storeNode, element)
-          if (!updatedNode.__vf) updatedNode.__vf = {}
+          const updatedNode = Object.assign(storeNode, element)
+          if (!updatedNode.__vf) updatedNode.__vf = {} as any
 
           if (storeNode.position.x !== element.position.x || storeNode.position.y !== element.position.y) {
-            updatedNode.__vf.position = element.position
+            updatedNode.__vf!.position = element.position
           }
 
           if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
             // we reset the elements dimensions here in order to force a re-calculation of the bounds.
             // When the type of a node changes it is possible that the number or positions of handles changes too.
-            updatedNode.__vf.width = undefined
+            updatedNode.__vf!.width = 0
           }
 
           nextElements.nextNodes.push(updatedNode)

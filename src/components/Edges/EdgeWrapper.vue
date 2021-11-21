@@ -1,17 +1,16 @@
 <script lang="ts" setup>
 import { useHandle, useStore } from '../../composables'
 import { ConnectionMode, Edge, EdgePositions, Position } from '../../types'
-import { getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '../../container/EdgeRenderer/utils'
-import { isEdge } from '../../utils'
+import { isEdge, getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
 
-interface EdgeProps {
+interface EdgeWrapper {
   edge: Edge
   markerEndId?: string
   edgeUpdaterRadius?: number
 }
 
-const props = withDefaults(defineProps<EdgeProps>(), {})
+const props = withDefaults(defineProps<EdgeWrapper>(), {})
 
 const store = useStore()
 

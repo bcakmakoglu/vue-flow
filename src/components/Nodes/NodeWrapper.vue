@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { Node, SnapGrid } from '../../types'
+import { GraphNode, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 
-interface NodeProps {
-  node: Node
+interface NodeWrapperProps {
+  node: GraphNode
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
 }
 
-const props = withDefaults(defineProps<NodeProps>(), {
+const props = withDefaults(defineProps<NodeWrapperProps>(), {
   selected: false,
   selectNodesOnDrag: true,
 })

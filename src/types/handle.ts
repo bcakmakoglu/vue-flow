@@ -1,5 +1,5 @@
-import { Dimensions, ElementId, Position, XYPosition } from './types'
-import { Connection } from '~/types/connection'
+import { Dimensions, ElementId, Position, XYPosition } from './flow'
+import { Connection } from './connection'
 
 export type HandleType = 'source' | 'target'
 

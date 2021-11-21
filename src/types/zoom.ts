@@ -1,5 +1,5 @@
 import { Selection, ZoomBehavior } from 'd3'
-import { FitViewFunc, FlowTransform, Rect, XYPosition } from './types'
+import { FitViewFunc, FlowTransform, Rect, XYPosition } from './flow'
 
 export type D3Zoom = ZoomBehavior<HTMLDivElement, unknown>
 export type D3Selection = Selection<HTMLDivElement, unknown, any, any>

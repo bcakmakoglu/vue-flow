@@ -44,8 +44,7 @@ const nodeClassNameFunc = props.nodeClassName instanceof Function ? props.nodeCl
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
-const nodes = computed(() => store.nodes.filter((node) => !node.isHidden))
-const bb = computed(() => getRectOfNodes(nodes.value))
+const bb = computed(() => getRectOfNodes(store.getNodes))
 const viewBB = computed(() => ({
   x: -store.transform[0] / store.transform[2],
   y: -store.transform[1] / store.transform[2],
@@ -90,7 +89,7 @@ const d = computed(() => {
     :viewBox="`${viewBox.x || 0} ${viewBox.y || 0} ${viewBox.width || 0} ${viewBox.height || 0}`"
     class="vue-flow__minimap"
   >
-    <template v-for="node of nodes" :key="`mini-map-node-${node.id}`">
+    <template v-for="node of store.getNodes" :key="`mini-map-node-${node.id}`">
       <slot
         :x="node.__vf.position.x"
         :y="node.__vf.position.y"

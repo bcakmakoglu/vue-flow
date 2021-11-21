@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { useStore } from '../../composables'
-import Node from '../../components/Nodes/Node.vue'
+import Node from '../../components/Nodes/NodeWrapper.vue'
+import { SnapGrid } from '../../types'
 
 interface NodeRendererProps {
   selectNodesOnDrag?: boolean
+  snapToGrid?: boolean
+  snapGrid?: SnapGrid
 }
 
 const props = withDefaults(defineProps<NodeRendererProps>(), {
@@ -13,7 +16,7 @@ const props = withDefaults(defineProps<NodeRendererProps>(), {
 const store = useStore()
 
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
-const snapGrid = computed(() => (store.snapToGrid ? store.snapGrid : undefined))
+const snapGrid = computed(() => (props.snapToGrid || store.snapToGrid ? props.snapGrid ?? store.snapGrid : undefined))
 </script>
 <template>
   <div class="vue-flow__nodes" :style="{ transform }">

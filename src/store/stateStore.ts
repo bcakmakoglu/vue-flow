@@ -1,9 +1,20 @@
 import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
 import microDiff from 'microdiff'
-import { parseElements, defaultNodeTypes, defaultEdgeTypes, deepUnref, NextElements } from './utils'
-import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge } from '~/types'
-import { clampPosition, getDimensions, getConnectedEdges, getNodesInside, getRectOfNodes, isNode } from '~/utils'
-import { getHandleBounds } from '~/components/Nodes/utils'
+import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge, GraphNode, NextElements } from '~/types'
+import {
+  clampPosition,
+  getDimensions,
+  getConnectedEdges,
+  getNodesInside,
+  getRectOfNodes,
+  isNode,
+  parseElements,
+  defaultNodeTypes,
+  defaultEdgeTypes,
+  deepUnref,
+  getHandleBounds,
+  isGraphNode,
+} from '~/utils'
 import parseElementsWorker from '~/workers/parseElements'
 
 const pinia = createPinia()
@@ -81,7 +92,7 @@ export default function flowStore(
           } else next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         }
         if (next) {
-          this.elements = elements ?? []
+          this.elements = [...next.nextNodes, ...next.nextEdges]
           this.nodes = next?.nextNodes ?? []
           this.edges = next?.nextEdges ?? []
         }
@@ -102,7 +113,6 @@ export default function flowStore(
           this.nodes.splice(i, 1, {
             ...node,
             __vf: {
-              position: { x: 0, y: 0 },
               ...node.__vf,
               ...dimensions,
               handleBounds,
@@ -125,21 +135,16 @@ export default function flowStore(
         this.nodes.splice(i, 1, {
           ...node,
           __vf: {
-            width: 0,
-            height: 0,
             ...node.__vf,
             position: pos,
           },
         })
       },
       updateNodePosDiff({ id, diff, isDragging }) {
-        const update = (node: Node, i: number) => {
-          const updatedNode: Node = {
+        const update = (node: GraphNode, i: number) => {
+          const updatedNode: GraphNode = {
             ...node,
             __vf: {
-              width: 0,
-              height: 0,
-              position: { x: 0, y: 0 },
               ...node.__vf,
               isDragging,
             },
@@ -161,8 +166,8 @@ export default function flowStore(
         if (!id) {
           const selectedNodes = this.nodes.filter((x) => this.selectedElements?.find((sNode) => sNode?.id === x.id))
           selectedNodes.forEach((node) => {
-            const i = this.nodes.map((x) => x.id).indexOf((node as Node).id)
-            update(node as Node, i)
+            const i = this.nodes.map((x) => x.id).indexOf(node.id)
+            update(node, i)
           })
         } else {
           const i = this.nodes.map((x) => x.id).indexOf(id)
@@ -202,7 +207,7 @@ export default function flowStore(
         this.selectedElements = nextSelectedElements
       },
       unsetUserSelection() {
-        const selectedNodes = this.selectedElements?.filter((node) => node && isNode(node) && node.__vf) as Node[]
+        const selectedNodes = this.selectedElements?.filter((node) => node && isGraphNode(node) && node.__vf) as GraphNode[]
 
         this.selectionActive = false
         this.userSelectionRect.draw = false
@@ -243,8 +248,6 @@ export default function flowStore(
           return {
             ...node,
             __vf: {
-              height: 0,
-              width: 0,
               ...node.__vf,
               position: node.__vf?.position ? clampPosition(node.__vf.position, nodeExtent) : { x: 0, y: 0 },
             },
@@ -272,7 +275,7 @@ export default function flowStore(
       },
       async addElements(elements: Elements) {
         const { nextNodes, nextEdges } = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
-        this.elements = [...this.elements, ...elements]
+        this.elements = [...this.elements, ...nextNodes, ...nextEdges]
         this.nodes = [...this.nodes, ...nextNodes]
         this.edges = [...this.edges, ...nextEdges]
       },

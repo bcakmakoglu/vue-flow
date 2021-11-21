@@ -181,7 +181,6 @@ const transitionName = computed(() => {
       <Suspense>
         <template #default>
           <ZoomPane
-            v-show="store.isReady"
             key="zoom-pane"
             :selection-key-code="store.selectionKeyCode"
             :zoom-activation-key-code="store.zoomActivationKeyCode"

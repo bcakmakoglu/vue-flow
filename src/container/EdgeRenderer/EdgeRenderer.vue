@@ -2,7 +2,7 @@
 import { CSSProperties } from 'vue'
 import { ConnectionLineType } from '../../types'
 import { useStore } from '../../composables'
-import Edge from '../../components/Edges/Edge.vue'
+import Edge from '../../components/Edges/EdgeWrapper.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 

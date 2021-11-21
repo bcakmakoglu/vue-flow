@@ -1,5 +1,5 @@
 import { EventHook } from '@vueuse/core'
-import { Elements, FlowTransform, FlowInstance } from './types'
+import { FlowTransform, FlowInstance, FlowElements } from './flow'
 import { Edge } from './edge'
 import { Node } from './node'
 import { Connection, OnConnectStartParams } from './connection'
@@ -8,7 +8,7 @@ export type FlowHook<T = any> = EventHook<T>
 
 export interface FlowEvents {
   elementClick: { event: MouseEvent; element: Node | Edge }
-  elementsRemove: Elements
+  elementsRemove: FlowElements
   nodeDoubleClick: { event: MouseEvent; node: Node }
   nodeClick: { event: MouseEvent; node: Node }
   nodeMouseEnter: { event: MouseEvent; node: Node }
@@ -29,7 +29,7 @@ export interface FlowEvents {
   move: FlowTransform | undefined
   moveStart: FlowTransform | undefined
   moveEnd: FlowTransform | undefined
-  selectionChange: Elements | null
+  selectionChange: FlowElements | null
   selectionDragStart: { event: MouseEvent; nodes: Node[] }
   selectionDrag: { event: MouseEvent; nodes: Node[] }
   selectionDragStop: { event: MouseEvent; nodes: Node[] }

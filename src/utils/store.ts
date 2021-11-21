@@ -1,14 +1,19 @@
 import { Component } from 'vue'
-import { ConnectionMode, Edge, EdgeProps, Elements, FlowState, Node, NodeExtent, NodeProps, PanOnScrollMode } from '~/types'
-import { isEdge, isNode, parseEdge, parseNode } from '~/utils'
-import { DefaultNode, InputNode, OutputNode } from '~/components/Nodes'
-import { BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components/Edges'
+import { isEdge, isNode, parseEdge, parseNode } from './graph'
+import {
+  ConnectionMode,
+  Edge,
+  EdgeProps,
+  Elements,
+  FlowState,
+  NextElements,
+  NodeExtent,
+  GraphNode,
+  NodeProps,
+  PanOnScrollMode,
+} from '~/types'
+import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
 import { createHooks } from '~/composables'
-
-export type NextElements = {
-  nextNodes: Node[]
-  nextEdges: Edge[]
-}
 
 export const defaultNodeTypes: Record<string, Component<NodeProps>> = {
   input: InputNode,
@@ -94,7 +99,7 @@ export const initialState = (): FlowState => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export const parseElements = async (elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) =>
+export const parseElements = async (elements: Elements, nodes: GraphNode[], edges: Edge[], nodeExtent: NodeExtent) =>
   new Promise<NextElements>((resolve) => {
     const nextElements: NextElements = {
       nextNodes: [],
@@ -105,20 +110,20 @@ export const parseElements = async (elements: Elements, nodes: Node[], edges: Ed
         const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
 
         if (storeNode) {
-          const updatedNode: Node = {
+          const updatedNode: GraphNode = {
             ...storeNode,
             ...element,
           }
-          if (!updatedNode.__vf) updatedNode.__vf = {}
+          if (!updatedNode.__vf) updatedNode.__vf = {} as any
 
           if (storeNode.position.x !== element.position.x || storeNode.position.y !== element.position.y) {
-            updatedNode.__vf.position = element.position
+            updatedNode.__vf!.position = element.position
           }
 
           if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
             // we reset the elements dimensions here in order to force a re-calculation of the bounds.
             // When the type of a node changes it is possible that the number or positions of handles changes too.
-            updatedNode.__vf.width = undefined
+            updatedNode.__vf!.width = 0
           }
 
           nextElements.nextNodes.push(updatedNode)

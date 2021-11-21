@@ -1,11 +1,11 @@
-import { Edge, EdgePositions, ElementId, HandleElement, Node, Position, Transform, XYPosition } from '../../types'
-import { rectToBox } from '~/utils'
+import { rectToBox } from './graph'
+import { Edge, EdgePositions, ElementId, GraphNode, HandleElement, Position, Transform, XYPosition } from '~/types'
 
-export function getHandlePosition(position: Position, node: Node, handle: any | null = null): XYPosition {
-  const x = (handle?.x || 0) + node.__vf?.position?.x
-  const y = (handle?.y || 0) + node.__vf?.position?.y
-  const width = handle?.width || node.__vf?.width
-  const height = handle?.height || node.__vf?.height
+export function getHandlePosition(position: Position, node: GraphNode, handle: any | null = null): XYPosition {
+  const x = (handle?.x || 0) + node.__vf.position.x
+  const y = (handle?.y || 0) + node.__vf.position.y
+  const width = handle?.width || node.__vf.width
+  const height = handle?.height || node.__vf.height
 
   switch (position) {
     case Position.Top:
@@ -47,10 +47,10 @@ export function getHandle(bounds: HandleElement[], handleId: ElementId | null): 
 }
 
 export const getEdgePositions = (
-  sourceNode: Node,
+  sourceNode: GraphNode,
   sourceHandle: HandleElement | unknown,
   sourcePosition: Position,
-  targetNode: Node,
+  targetNode: GraphNode,
   targetHandle: HandleElement | unknown,
   targetPosition: Position,
 ): EdgePositions => {
@@ -104,11 +104,11 @@ export function isEdgeVisible({ sourcePos, targetPos, width, height, transform }
 }
 
 type SourceTargetNode = {
-  sourceNode: Node
-  targetNode: Node
+  sourceNode: GraphNode
+  targetNode: GraphNode
 }
 
-export const getSourceTargetNodes = (edge: Edge, nodes: Node[]): SourceTargetNode => {
+export const getSourceTargetNodes = (edge: Edge, nodes: GraphNode[]): SourceTargetNode => {
   return nodes.reduce(
     (res, node) => {
       if (node.id === edge.source) {

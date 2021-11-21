@@ -35,7 +35,7 @@ const onLoad = (flowInstance: FlowInstance) => {
 }
 
 const updatePos = () => {
-  elements.value = elements.value.map((el: FlowElement) => {
+  elements.value = elements.value.map((el) => {
     if (isNode(el)) {
       el.position = {
         x: Math.random() * 400,
@@ -50,7 +50,7 @@ const logToObject = () => console.log(rfInstance.value?.toObject())
 const resetTransform = () => rfInstance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
 
 const toggleclasss = () => {
-  elements.value = elements.value.map((el: FlowElement) => {
+  elements.value = elements.value.map((el) => {
     if (isNode(el)) el.class = el.class === 'light' ? 'dark' : 'light'
     return el
   })

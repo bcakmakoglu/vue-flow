@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { Node } from '../../types'
-import { getRectOfNodes, isNode } from '../../utils'
+import { GraphNode } from '../../types'
+import { getRectOfNodes, isGraphNode } from '../../utils'
 
 const store = useStore()
 
-const selectedNodes = store.selectedElements
-  ? store.selectedElements.filter(isNode).map((selectedNode) => {
+const selectedNodes: GraphNode[] = store.selectedElements
+  ? store.selectedElements.filter(isGraphNode).map((selectedNode) => {
       const matchingNode = store.nodes.find((node) => node.id === selectedNode.id)
 
       return {
         ...matchingNode,
         position: matchingNode?.__vf?.position,
-      } as Node
+      } as GraphNode
     })
   : []
 
