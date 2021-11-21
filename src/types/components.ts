@@ -1,7 +1,7 @@
 import { CSSProperties } from 'vue'
 import { BackgroundVariant, Dimensions, ElementId, FitViewParams, Position, XYPosition } from './flow'
 import { Connection } from './connection'
-import { Node } from '~/types/node'
+import { Node } from './node'
 
 export type HandleType = 'source' | 'target'
 

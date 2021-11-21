@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { ConnectionLineComponentProps } from '~/index'
+import { ConnectionLineProps } from '~/index'
 
-interface ConnectionLineProps extends ConnectionLineComponentProps {
+interface CustomConnectionLineProps extends ConnectionLineProps {
   sourceX: number
   sourceY: number
   targetX: number
   targetY: number
 }
-const props = defineProps<ConnectionLineProps>()
+const props = defineProps<CustomConnectionLineProps>()
 </script>
 <template>
   <g>

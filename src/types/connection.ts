@@ -15,7 +15,7 @@ export interface Connection {
   targetHandle: ElementId | null
 }
 
-export type ConnectionLineComponentProps = {
+export type ConnectionLineProps = {
   sourceX: number
   sourceY: number
   sourcePosition?: Position
