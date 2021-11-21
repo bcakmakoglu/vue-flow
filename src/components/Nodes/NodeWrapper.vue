@@ -1,13 +1,22 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { GraphNode, SnapGrid } from '../../types'
+import { FlowEvents, GraphNode, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 
 interface NodeWrapperProps {
   node: GraphNode
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
+}
+
+interface NodeEvents {
+  (event: 'mouseEnter', data: FlowEvents['nodeMouseEnter']): void
+  (event: 'mouseMove', data: FlowEvents['nodeMouseMove']): void
+  (event: 'mouseLeave', data: FlowEvents['nodeMouseLeave']): void
+  (event: 'contextMenu', data: FlowEvents['nodeContextMenu']): void
+  (event: 'click', data: FlowEvents['nodeClick']): void
+  (event: 'click', data: FlowEvents['nodeClick']): void
 }
 
 const props = withDefaults(defineProps<NodeWrapperProps>(), {
@@ -41,26 +50,28 @@ const scale = computed(() => store.transform[2])
 const selected = computed(() => selectable.value && store.selectedElements?.some(({ id }) => id === props.node.id))
 
 const onMouseEnterHandler = () =>
-  props.node.__vf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
+  props.node.__vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
 
 const onMouseMoveHandler = () =>
-  props.node.__vf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
+  props.node.__vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
 
 const onMouseLeaveHandler = () =>
-  props.node.__vf?.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
+  props.node.__vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
 
 const onContextMenuHandler = () => (event: MouseEvent) => store.hooks.nodeContextMenu.trigger({ event, node: props.node })
 
+const onDoubleClick = () => (event: MouseEvent) => store.hooks.nodeDoubleClick.trigger({ event, node: props.node })
+
 const onSelectNodeHandler = (event: MouseEvent) => {
+  const n = props.node
   if (!draggable.value) {
-    const n = props.node
     if (selectable.value) {
       store.unsetNodesSelection()
-
       if (!selected.value) store.addSelectedElements([n])
     }
-    store.hooks.nodeClick.trigger({ event, node: n })
   }
+  store.hooks.elementClick.trigger({ event, element: n })
+  store.hooks.nodeClick.trigger({ event, node: n })
 }
 
 const onDragStart: DraggableEventListener = ({ event }) => {
@@ -97,7 +108,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
   const n = props.node
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
-  if (!props.node.__vf?.isDragging) {
+  if (!props.node.__vf.isDragging) {
     if (selectable.value && !props.selectNodesOnDrag && !selected.value) {
       store.addSelectedElements([n])
     }
@@ -181,6 +192,7 @@ export default {
       @mouseleave="onMouseLeaveHandler"
       @contextmenu="onContextMenuHandler"
       @click="onSelectNodeHandler"
+      @dblclick="onDoubleClick"
     >
       <slot
         v-bind="{

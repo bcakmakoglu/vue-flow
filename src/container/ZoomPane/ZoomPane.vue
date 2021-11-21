@@ -182,7 +182,7 @@ store.dimensions = {
 }
 
 // skip waiting for ssr
-if (import.meta.env.SSR || typeof window === 'undefined') await until(() => store.isReady)
+if (typeof window !== 'undefined') await until(() => store.isReady).toMatch((y) => y)
 
 watch(
   [width, height],
