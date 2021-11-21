@@ -1,4 +1,4 @@
-import { setActivePinia, createPinia, defineStore, StoreDefinition } from 'pinia'
+import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
 import microDiff from 'microdiff'
 import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge, GraphNode, NextElements } from '~/types'
 import {
@@ -7,7 +7,6 @@ import {
   getConnectedEdges,
   getNodesInside,
   getRectOfNodes,
-  isNode,
   parseElements,
   defaultNodeTypes,
   defaultEdgeTypes,
@@ -19,13 +18,10 @@ import parseElementsWorker from '~/workers/parseElements'
 
 const pinia = createPinia()
 
-export default function flowStore(
-  id: string,
-  preloadedState: FlowState,
-): StoreDefinition<string, FlowState, FlowGetters, FlowActions> {
+export default (id: string, preloadedState: FlowState) => {
   setActivePinia(pinia)
 
-  return defineStore({
+  const store: StoreDefinition<string, FlowState, FlowGetters, FlowActions> = defineStore({
     id: id ?? 'vue-flow',
     state: () => ({
       ...preloadedState,
@@ -281,4 +277,10 @@ export default function flowStore(
       },
     },
   })
+
+  if (import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(store, import.meta.hot))
+  }
+
+  return store
 }
