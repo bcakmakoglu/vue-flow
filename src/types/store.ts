@@ -12,7 +12,7 @@ import {
   Transform,
   XYPosition,
 } from './flow'
-import { HandleType } from './handle'
+import { HandleType } from './components'
 import {
   ConnectionMode,
   OnConnectEndFunc,

@@ -1,5 +1,5 @@
 import { ElementId, Position } from './flow'
-import { HandleType } from './handle'
+import { HandleType } from './components'
 
 export enum ConnectionLineType {
   Bezier = 'default',

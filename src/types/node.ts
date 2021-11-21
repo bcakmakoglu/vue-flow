@@ -1,6 +1,6 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
 import { XYPosition, ElementId, Position } from './flow'
-import { HandleElement } from './handle'
+import { HandleElement } from './components'
 
 interface VFInternals {
   position: XYPosition
