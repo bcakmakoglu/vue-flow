@@ -3,7 +3,7 @@ import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { get, invoke } from '@vueuse/core'
 import { pointer, select } from 'd3-selection'
 import { FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
-import { useKeyPress, useStore } from '../../composables'
+import { useKeyPress, useStore, useWindow } from '../../composables'
 import { clamp } from '../../utils'
 
 interface ZoomPaneProps {
@@ -182,7 +182,8 @@ store.dimensions = {
 }
 
 // skip waiting for ssr
-if (typeof window !== 'undefined') await until(() => store.isReady).toMatch((y) => y)
+const window = useWindow()
+if ('screen' in window) await until(() => store.isReady).toMatch((y) => y)
 
 watch(
   [width, height],

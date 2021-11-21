@@ -21,7 +21,7 @@ import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import LoadingIndicator from '../../components/Loading/LoadingIndicator.vue'
-import { createHooks, initFlow, useZoomPanHelper } from '../../composables'
+import { createHooks, initFlow, useWindow, useZoomPanHelper } from '../../composables'
 import { onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
 
 interface FlowProps {
@@ -137,9 +137,12 @@ invoke(async () => {
   await store.setElements(elements.value)
   store.isReady = true
 
-  await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
-  const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
+  // if ssr we can't wait for dimensions, they'll never really exist
+  const window = useWindow()
+  if ('screen' in window)
+    await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
 
+  const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
   const instance: FlowInstance = {
     fitView: (params = { padding: 0.1 }) => fitView(params),
     zoomIn,
@@ -173,11 +176,6 @@ const transitionName = computed(() => {
   }
   return name
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'VueFlow',
-}
 </script>
 <template>
   <div class="vue-flow">
