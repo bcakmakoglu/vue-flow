@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { ShapeRendering, StringFunc } from '../../types'
+import { GraphNode, ShapeRendering } from '../../types'
 import { useStore, useWindow } from '../../composables'
 import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import MiniMapNode from './MiniMapNode.vue'
 
+type StringFunc = (node: GraphNode) => string
 interface MiniMapProps {
   nodeColor?: string | StringFunc
   nodeStrokeColor?: string | StringFunc

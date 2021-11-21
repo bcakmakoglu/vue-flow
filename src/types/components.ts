@@ -36,7 +36,7 @@ export interface ControlEvents {
 export type StringFunc = (node: Node) => string
 export type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
 
-interface MiniMapProps {
+export interface MiniMapProps {
   nodeColor?: string | StringFunc
   nodeStrokeColor?: string | StringFunc
   nodeClassName?: string | StringFunc
@@ -45,7 +45,7 @@ interface MiniMapProps {
   maskColor?: string
 }
 
-interface MiniMapNodeProps {
+export interface MiniMapNodeProps {
   x?: number
   y?: number
   width?: number
