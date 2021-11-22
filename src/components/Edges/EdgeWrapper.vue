@@ -1,53 +1,18 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
 import { useHandle, useStore } from '../../composables'
-import {
-  ArrowHeadType,
-  ConnectionMode,
-  Edge,
-  EdgeTextProps,
-  ElementId,
-  SourceTargetNode,
-  Position,
-  FlowEvents,
-  EdgePositions,
-} from '../../types'
+import { ConnectionMode, Edge, SourceTargetNode, Position, FlowEvents, EdgePositions, Dimensions, Transform } from '../../types'
 import { isEdge, getEdgePositions, getHandle, isEdgeVisible } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
-  id: ElementId
   edge: Edge
   sourceTargetNodes: SourceTargetNode
-  type?: string
   component?: any
-  source: ElementId
-  target: ElementId
-  sourceHandle?: ElementId
-  targetHandle?: ElementId
-  selected?: boolean
-  sourcePosition?: Position
-  targetPosition?: Position
-  label?:
-    | string
-    | {
-        component: any
-        props?: EdgeTextProps | any
-      }
-  labelStyle?: any
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-  style?: CSSProperties | unknown
-  animated?: boolean
-  arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  data?: any
-  class?: string
-  isHidden?: boolean
   edgeUpdaterRadius?: number
   selectable?: boolean
+  dimensions: Dimensions
+  transform: Transform
 }
 
 interface EdgeEvents {
@@ -115,8 +80,8 @@ const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => {
 }
 
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
-  const nodeId = isSourceHandle ? props.target : props.source
-  const handleId = (isSourceHandle ? props.targetHandle : props.sourceHandle) ?? ''
+  const nodeId = isSourceHandle ? props.edge.target : props.edge.source
+  const handleId = (isSourceHandle ? props.edge.targetHandle : props.edge.sourceHandle) ?? ''
   const isValidConnection = () => true
   const isTarget = isSourceHandle
 
@@ -154,12 +119,12 @@ const sourceHandle = controlledComputed(
   () => props.sourceTargetNodes,
   () => {
     if (props.sourceTargetNodes.sourceNode && props.sourceTargetNodes.sourceNode.__vf.handleBounds.source)
-      return getHandle(props.sourceTargetNodes.sourceNode.__vf.handleBounds.source, props.sourceHandle)
+      return getHandle(props.sourceTargetNodes.sourceNode.__vf.handleBounds.source, props.edge.sourceHandle)
     else return null
   },
 )
 const targetHandle = computed(() => {
-  if (targetNodeHandles.value) return getHandle(targetNodeHandles.value, props.targetHandle)
+  if (targetNodeHandles.value) return getHandle(targetNodeHandles.value, props.edge.targetHandle)
   else return null
 })
 const sourcePosition = eagerComputed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
@@ -167,7 +132,7 @@ const targetPosition = eagerComputed(() => (targetHandle.value ? targetHandle.va
 
 const isSelected = controlledComputed(
   () => store.selectedElements,
-  () => (props.selectable && store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.id)) ?? false,
+  () => (props.selectable && store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id)) ?? false,
 )
 const edgePos = computed(() =>
   getEdgePositions(
@@ -185,9 +150,9 @@ const isVisible = ({ sourceX, sourceY, targetX, targetY }: EdgePositions) =>
     ? isEdgeVisible({
         sourcePos: { x: sourceX, y: sourceY },
         targetPos: { x: targetX, y: targetY },
-        width: store.dimensions.width,
-        height: store.dimensions.height,
-        transform: store.transform,
+        width: props.dimensions.width,
+        height: props.dimensions.height,
+        transform: props.transform,
       })
     : true
 </script>
@@ -201,14 +166,14 @@ export default {
     v-show="isVisible(edgePos)"
     :class="[
       'vue-flow__edge',
-      `vue-flow__edge-${props.type || 'default'}`,
+      `vue-flow__edge-${props.edge.type || 'default'}`,
       {
         selected: isSelected,
-        animated: props.animated,
+        animated: props.edge.animated,
         inactive: !props.selectable,
         updating,
       },
-      props.class,
+      props.edge.class,
     ]"
     @click="onEdgeClick"
     @dblClick="onDoubleClick"
@@ -220,20 +185,20 @@ export default {
     <slot
       v-if="edgePos.sourceX && edgePos.sourceY && edgePos.targetX && edgePos.targetY"
       v-bind="{
-        id: props.id,
-        source: props.source,
-        target: props.target,
+        id: props.edge.id,
+        source: props.edge.source,
+        target: props.edge.target,
         selected: isSelected,
-        animated: props.animated,
-        label: props.label,
-        labelStyle: props.labelStyle,
-        labelShowBg: props.labelShowBg,
-        labelBgStyle: props.labelBgStyle,
-        labelBgPadding: props.labelBgPadding,
-        labelBgBorderRadius: props.labelBgBorderRadius,
-        data: props.data,
-        style: props.style,
-        arrowHeadType: props.arrowHeadType,
+        animated: props.edge.animated,
+        label: props.edge.label,
+        labelStyle: props.edge.labelStyle,
+        labelShowBg: props.edge.labelShowBg,
+        labelBgStyle: props.edge.labelBgStyle,
+        labelBgPadding: props.edge.labelBgPadding,
+        labelBgBorderRadius: props.edge.labelBgBorderRadius,
+        data: props.edge.data,
+        style: props.edge.style,
+        arrowHeadType: props.edge.arrowHeadType,
         sourcePosition,
         targetPosition,
         sourceX: edgePos.sourceX,
@@ -241,28 +206,27 @@ export default {
         targetX: edgePos.targetX,
         targetY: edgePos.targetY,
         markerEndId: props.markerEndId,
-        sourceHandleId: props.sourceHandle,
-        targetHandleId: props.targetHandle,
+        sourceHandleId: props.edge.sourceHandle,
+        targetHandleId: props.edge.targetHandle,
       }"
     >
       <component
-        :is="props.component ?? props.type"
-        v-if="typeof type !== 'boolean'"
+        :is="props.component ?? props.edge.type"
         v-bind="{
-          id: props.id,
-          source: props.source,
-          target: props.target,
+          id: props.edge.id,
+          source: props.edge.source,
+          target: props.edge.target,
           selected: isSelected,
-          animated: props.animated,
-          label: props.label,
-          labelStyle: props.labelStyle,
-          labelShowBg: props.labelShowBg,
-          labelBgStyle: props.labelBgStyle,
-          labelBgPadding: props.labelBgPadding,
-          labelBgBorderRadius: props.labelBgBorderRadius,
-          data: props.data,
-          style: props.style,
-          arrowHeadType: props.arrowHeadType,
+          animated: props.edge.animated,
+          label: props.edge.label,
+          labelStyle: props.edge.labelStyle,
+          labelShowBg: props.edge.labelShowBg,
+          labelBgStyle: props.edge.labelBgStyle,
+          labelBgPadding: props.edge.labelBgPadding,
+          labelBgBorderRadius: props.edge.labelBgBorderRadius,
+          data: props.edge.data,
+          style: props.edge.style,
+          arrowHeadType: props.edge.arrowHeadType,
           sourcePosition,
           targetPosition,
           sourceX: edgePos.sourceX,
@@ -270,8 +234,8 @@ export default {
           targetX: edgePos.targetX,
           targetY: edgePos.targetY,
           markerEndId: props.markerEndId,
-          sourceHandleId: props.sourceHandle,
-          targetHandleId: props.targetHandle,
+          sourceHandleId: props.edge.sourceHandle,
+          targetHandleId: props.edge.targetHandle,
         }"
       />
     </slot>
