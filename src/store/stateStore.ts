@@ -1,5 +1,5 @@
-import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
 import microDiff from 'microdiff'
+import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
 import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge, GraphNode, NextElements } from '~/types'
 import {
   clampPosition,

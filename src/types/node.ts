@@ -33,6 +33,11 @@ export interface GraphNode<T = any> extends Node<T> {
   __vf: VFInternals
 }
 
+export type SourceTargetNode = {
+  sourceNode: GraphNode
+  targetNode: GraphNode
+}
+
 export type NodePosUpdate = {
   id: ElementId
   pos: XYPosition

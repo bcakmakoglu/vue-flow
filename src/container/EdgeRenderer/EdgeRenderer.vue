@@ -1,17 +1,26 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ConnectionLineType } from '../../types'
-import { useStore } from '../../composables'
-import Edge from '../../components/Edges/EdgeWrapper.vue'
+import { ConnectionLineType, Dimensions, Edge, EdgeComponent, GraphNode, HandleType, Transform } from '../../types'
+import { getSourceTargetNodes } from '../../utils'
+import EdgeWrapper from '../../components/Edges/EdgeWrapper.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 interface EdgeRendererProps {
+  edges: Edge[]
+  nodes: GraphNode[]
+  edgeTypes: Record<string, EdgeComponent>
+  transform: Transform
+  dimensions: Dimensions
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
   arrowHeadColor?: string
   markerEndId?: string
+  elementsSelectable?: boolean
   edgeUpdaterRadius?: number
+  connectionNodeId?: string
+  connectionHandleType?: HandleType
+  nodesConnectable?: boolean
 }
 
 const props = withDefaults(defineProps<EdgeRendererProps>(), {
@@ -20,14 +29,35 @@ const props = withDefaults(defineProps<EdgeRendererProps>(), {
   edgeUpdaterRadius: 10,
 })
 
-const store = useStore()
+const getType = (type: string) => {
+  const t = type ?? 'default'
+  let edgeType = props.edgeTypes[t]
+  if (!edgeType) {
+    edgeType = props.edgeTypes.default
+    console.warn(`Edge type "${type}" not found. Using fallback type "default".`)
+  }
+  return edgeType
+}
 
-const sourceNode = computed(() => store.nodes.find((n) => n.id === store.connectionNodeId))
+const sourceNode = computed(() => props.nodes.find((n) => n.id === props.connectionNodeId))
 const connectionLineVisible = computed(
-  () => !!(store.nodesConnectable && sourceNode.value && store.connectionNodeId && store.connectionHandleType),
+  () =>
+    !!(
+      sourceNode.value &&
+      (typeof sourceNode.value.selectable === 'undefined' ? props.nodesConnectable : sourceNode.value.selectable) &&
+      props.connectionNodeId &&
+      props.connectionHandleType
+    ),
 )
-const dimensions = computed(() => store.dimensions)
-const transform = computed(() => `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`)
+
+const transform = computed(() => `translate(${props.transform[0]},${props.transform[1]}) scale(${props.transform[2]})`)
+
+const sourceTargetNodes = (edge: Edge) => {
+  const { sourceNode, targetNode } = getSourceTargetNodes(edge, props.nodes)
+  if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+  if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+  return { sourceNode, targetNode }
+}
 </script>
 <script lang="ts">
 export default {
@@ -35,20 +65,23 @@ export default {
 }
 </script>
 <template>
-  <svg :width="dimensions.width" :height="dimensions.height" class="vue-flow__edges">
+  <svg :width="props.dimensions.width" :height="props.dimensions.height" class="vue-flow__edges">
     <MarkerDefinitions :color="props.arrowHeadColor" />
     <g :transform="transform">
-      <Edge
-        v-for="(edge, i) of store.getEdges"
+      <EdgeWrapper
+        v-for="(edge, i) of props.edges"
         :id="edge.id"
         :key="`${edge.id}-${i}`"
         :edge="edge"
+        :source-target-nodes="sourceTargetNodes(edge)"
         :type="edge.type"
+        :component="getType(edge.type)"
         :source="edge.source"
         :target="edge.target"
         :source-handle="edge.sourceHandle"
         :target-handle="edge.targetHandle"
         :selected="edge.selected"
+        :selectable="props.elementsSelectable"
         :source-position="edge.sourcePosition"
         :target-position="edge.targetPosition"
         :label="edge.label"
@@ -69,7 +102,7 @@ export default {
         <template #default="edgeProps">
           <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
         </template>
-      </Edge>
+      </EdgeWrapper>
       <ConnectionLine
         v-if="connectionLineVisible && sourceNode"
         :source-node="sourceNode"

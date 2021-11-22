@@ -231,6 +231,15 @@ const transitionName = computed(() => {
                 <slot name="edge-renderer" v-bind="{ edges: store.getEdges, edgeTypes: store.getEdgeTypes }">
                   <EdgeRenderer
                     :key="`edge-renderer-${store.$id}`"
+                    :transform="store.transform"
+                    :dimensions="store.dimensions"
+                    :edges="store.getEdges"
+                    :edge-types="store.getEdgeTypes"
+                    :nodes="store.getNodes"
+                    :elements-selectable="store.elementsSelectable"
+                    :connection-node-id="store.connectionNodeId"
+                    :connection-handle-type="store.connectionHandleType"
+                    :nodes-connectable="store.nodesConnectable"
                     :connection-line-type="store.connectionLineType"
                     :connection-line-style="store.connectionLineStyle"
                     :arrow-head-color="store.arrowHeadColor"

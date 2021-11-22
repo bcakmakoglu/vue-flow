@@ -42,6 +42,7 @@ const center = computed(() =>
     targetY: props.targetY,
   }),
 )
+const onClick = () => console.log(props.data)
 </script>
 <script lang="ts">
 export default {
@@ -59,6 +60,6 @@ export default {
     :label-bg-style="{ fill: 'red' }"
     :label-bg-padding="[2, 4]"
     :label-bg-border-radius="2"
-    @click="() => console.log(props.data)"
+    @click="onClick"
   />
 </template>

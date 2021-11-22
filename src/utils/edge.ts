@@ -1,5 +1,15 @@
 import { rectToBox } from './graph'
-import { Edge, EdgePositions, ElementId, GraphNode, HandleElement, Position, Transform, XYPosition } from '~/types'
+import {
+  Edge,
+  EdgePositions,
+  ElementId,
+  GraphNode,
+  HandleElement,
+  Position,
+  SourceTargetNode,
+  Transform,
+  XYPosition,
+} from '~/types'
 
 export function getHandlePosition(position: Position, node: GraphNode, handle: any | null = null): XYPosition {
   const x = (handle?.x || 0) + node.__vf.position.x
@@ -103,22 +113,18 @@ export function isEdgeVisible({ sourcePos, targetPos, width, height, transform }
   return overlappingArea > 0
 }
 
-type SourceTargetNode = {
-  sourceNode: GraphNode
-  targetNode: GraphNode
-}
-
 export const getSourceTargetNodes = (edge: Edge, nodes: GraphNode[]): SourceTargetNode => {
-  return nodes.reduce(
-    (res, node) => {
-      if (node.id === edge.source) {
-        res.sourceNode = node
-      }
-      if (node.id === edge.target) {
-        res.targetNode = node
-      }
-      return res
-    },
-    { sourceNode: null, targetNode: null } as any,
-  )
+  let { sourceNode, targetNode }: any = {
+    sourceNode: null,
+    targetNode: null,
+  }
+  for (const node of nodes) {
+    if (!sourceNode || !targetNode) {
+      if (node.id === edge.source) sourceNode = node
+      if (node.id === edge.target) targetNode = node
+    } else {
+      break
+    }
+  }
+  return { sourceNode, targetNode }
 }

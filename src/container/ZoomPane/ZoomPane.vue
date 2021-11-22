@@ -176,10 +176,6 @@ invoke(async () => {
 })
 
 const { width, height } = useElementBounding(zoomPaneEl)
-store.dimensions = {
-  width: width.value,
-  height: height.value,
-}
 
 // skip waiting for ssr
 const window = useWindow()
@@ -191,7 +187,7 @@ watch(
     store.dimensions.width = newWidth
     store.dimensions.height = newHeight
   },
-  { flush: 'pre' },
+  { flush: 'sync', immediate: true },
 )
 watch(
   transform,
@@ -201,7 +197,7 @@ watch(
       clamp(val.y, store.translateExtent[0][0], store.translateExtent[1][0]),
       clamp(val.zoom, store.translateExtent[0][0], store.translateExtent[1][0]),
     ]),
-  { flush: 'pre' },
+  { flush: 'sync', immediate: true },
 )
 </script>
 <script lang="ts">

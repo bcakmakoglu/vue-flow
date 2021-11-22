@@ -58,12 +58,12 @@ export interface MiniMapNodeProps {
 }
 
 export interface EdgeTextProps {
-  x: number
-  y: number
+  x?: number
+  y?: number
   label?:
     | string
     | {
-        component: Component | DefineComponent
+        component: any
         props?: Record<string, any>
       }
   labelStyle?: CSSProperties

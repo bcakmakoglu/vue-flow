@@ -42,7 +42,7 @@ const initialElements: Elements = [
     label: {
       component: markRaw(CustomLabel),
       props: {
-        text: 'custom label text',
+        label: 'custom label text',
       },
     },
     labelStyle: { fill: 'red', fontWeight: 700 },

@@ -38,7 +38,7 @@ const snapGrid = computed(() => (props.snapToGrid ? props.snapGrid : undefined))
 </script>
 <script lang="ts">
 export default {
-  name: 'Node',
+  name: 'Nodes',
 }
 </script>
 <template>

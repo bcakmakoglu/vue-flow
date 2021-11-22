@@ -1,14 +1,16 @@
 <script lang="ts" setup>
-import { CSSProperties, DefineComponent } from 'vue'
+import { CSSProperties } from 'vue'
 import { useHandle, useStore } from '../../composables'
-import { ArrowHeadType, ConnectionMode, Edge, EdgePositions, EdgeTextProps, ElementId, Position } from '../../types'
-import { isEdge, getEdgePositions, getHandle, getSourceTargetNodes, isEdgeVisible } from '../../utils'
+import { ArrowHeadType, ConnectionMode, Edge, EdgeTextProps, ElementId, SourceTargetNode, Position } from '../../types'
+import { isEdge, getEdgePositions, getHandle } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
   id: ElementId
   edge: Edge
+  sourceTargetNodes: SourceTargetNode
   type?: string
+  component?: any
   source: ElementId
   target: ElementId
   sourceHandle?: ElementId | null
@@ -19,7 +21,7 @@ interface EdgeWrapper {
   label?:
     | string
     | {
-        component: DefineComponent<EdgeTextProps>
+        component: any
         props?: EdgeTextProps
       }
   labelStyle?: any
@@ -35,23 +37,15 @@ interface EdgeWrapper {
   class?: string
   isHidden?: boolean
   edgeUpdaterRadius?: number
+  selectable?: boolean
 }
 
 const props = withDefaults(defineProps<EdgeWrapper>(), {})
 
 const store = useStore()
 
-const type = computed(() => {
-  const t = props.type ?? 'default'
-  let edge = store.getEdgeTypes[t]
-  if (!edge) {
-    edge = store.getEdgeTypes.default
-    console.warn(`Edge type "${t}" not found. Using fallback type "default".`)
-  }
-  return edge
-})
-
 const updating = ref<boolean>(false)
+const handler = useHandle()
 
 const onEdgeClick = (event: MouseEvent) => {
   if (store.elementsSelectable) {
@@ -61,24 +55,24 @@ const onEdgeClick = (event: MouseEvent) => {
   store.hooks.elementClick.trigger({ event, element: props.edge })
   store.hooks.edgeClick.trigger({ event, edge: props.edge })
 }
-
-const onDoubleClick = (event: MouseEvent) => {
-  store.hooks.edgeDoubleClick.trigger({ event, edge: props.edge })
-}
-
 const onEdgeContextMenu = (event: MouseEvent) =>
   store.hooks.edgeContextMenu.trigger({
     event,
     edge: props.edge,
   })
-
+const onDoubleClick = (event: MouseEvent) => store.hooks.edgeDoubleClick.trigger({ event, edge: props.edge })
 const onEdgeMouseEnter = (event: MouseEvent) => store.hooks.edgeMouseEnter.trigger({ event, edge: props.edge })
-
 const onEdgeMouseMove = (event: MouseEvent) => store.hooks.edgeMouseMove.trigger({ event, edge: props.edge })
-
 const onEdgeMouseLeave = (event: MouseEvent) => store.hooks.edgeMouseLeave.trigger({ event, edge: props.edge })
+const onEdgeUpdaterMouseEnter = () => (updating.value = true)
+const onEdgeUpdaterMouseOut = () => (updating.value = false)
+const onEdgeUpdaterSourceMouseDown = (event: MouseEvent) => {
+  handleEdgeUpdater(event, true)
+}
+const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => {
+  handleEdgeUpdater(event, false)
+}
 
-const handler = useHandle()
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const nodeId = isSourceHandle ? props.target : props.source
   const handleId = (isSourceHandle ? props.targetHandle : props.sourceHandle) ?? ''
@@ -91,75 +85,45 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   )
 }
 
-const onEdgeUpdaterSourceMouseDown = (event: MouseEvent) => {
-  handleEdgeUpdater(event, true)
-}
-
-const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => {
-  handleEdgeUpdater(event, false)
-}
-
-const onEdgeUpdaterMouseEnter = () => (updating.value = true)
-
-const onEdgeUpdaterMouseOut = () => (updating.value = false)
-
-const isVisible = ({ sourceX, sourceY, targetX, targetY }: EdgePositions) => {
-  return store.onlyRenderVisibleElements
-    ? isEdgeVisible({
-        sourcePos: { x: sourceX, y: sourceY },
-        targetPos: { x: targetX, y: targetY },
-        width: store.dimensions.width,
-        height: store.dimensions.height,
-        transform: store.transform,
-      })
-    : true
-}
-
-const nodes = computed(() => {
-  const n = getSourceTargetNodes(props.edge, store.nodes)
-
-  if (!n.sourceNode) {
-    console.warn(`couldn't create edge for source id: ${props.source}; edge id: ${props.id}`)
-  }
-
-  if (!n.targetNode) {
-    console.warn(`couldn't create edge for target id: ${props.target}; edge id: ${props.id}`)
-  }
-
-  return n
-})
-
 // when connection type is loose we can define all handles as sources
-const targetNodeHandles = computed(() =>
-  store.connectionMode === ConnectionMode.Strict
-    ? nodes.value.targetNode?.__vf?.handleBounds?.target
-    : nodes.value.targetNode?.__vf?.handleBounds?.target ?? nodes.value.targetNode?.__vf?.handleBounds?.source,
+const targetNodeHandles = controlledComputed(
+  () => props.sourceTargetNodes,
+  () =>
+    store.connectionMode === ConnectionMode.Strict
+      ? props.sourceTargetNodes.targetNode.__vf.handleBounds.target
+      : props.sourceTargetNodes.targetNode.__vf.handleBounds.target ??
+        props.sourceTargetNodes.targetNode.__vf.handleBounds.source,
 )
 
-const sourceHandle = computed(() => {
-  if (nodes.value.sourceNode && nodes.value.sourceNode.__vf?.handleBounds?.source)
-    return getHandle(nodes.value.sourceNode.__vf.handleBounds.source, props.sourceHandle ?? null)
-  else return null
-})
+const sourceHandle = controlledComputed(
+  () => props.sourceTargetNodes,
+  () => {
+    if (props.sourceTargetNodes.sourceNode && props.sourceTargetNodes.sourceNode.__vf.handleBounds.source)
+      return getHandle(props.sourceTargetNodes.sourceNode.__vf.handleBounds.source, props.sourceHandle ?? null)
+    else return null
+  },
+)
 const targetHandle = computed(() => {
   if (targetNodeHandles.value) return getHandle(targetNodeHandles.value, props.targetHandle ?? null)
   else return null
 })
-const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
-const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
+const sourcePosition = eagerComputed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
+const targetPosition = eagerComputed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
 
-const isSelected = computed(() => store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.id) ?? false)
+const isSelected = controlledComputed(
+  () => store.selectedElements,
+  () => (props.selectable && store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.id)) ?? false,
+)
 const edgePos = computed(() =>
   getEdgePositions(
-    nodes.value.sourceNode,
+    props.sourceTargetNodes.sourceNode,
     sourceHandle.value,
     sourcePosition.value,
-    nodes.value.targetNode,
+    props.sourceTargetNodes.targetNode,
     targetHandle.value,
     targetPosition.value,
   ),
 )
-const elementsSelectable = computed(() => store.elementsSelectable)
 </script>
 <script lang="ts">
 export default {
@@ -168,14 +132,13 @@ export default {
 </script>
 <template>
   <g
-    v-show="!props.isHidden && isVisible(edgePos)"
     :class="[
       'vue-flow__edge',
       `vue-flow__edge-${props.type || 'default'}`,
       {
         selected: isSelected,
         animated: props.animated,
-        inactive: !elementsSelectable,
+        inactive: !props.selectable,
         updating,
       },
       props.class,
@@ -216,7 +179,7 @@ export default {
       }"
     >
       <component
-        :is="type"
+        :is="props.component ?? props.type"
         v-if="typeof type !== 'boolean'"
         v-bind="{
           id: props.id,
