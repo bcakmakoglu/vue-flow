@@ -43,7 +43,7 @@ const props = withDefaults(defineProps<EdgeRendererProps>(), {
   edgeUpdaterRadius: 10,
 })
 
-const getType = (type: string) => {
+const getType = (type?: string) => {
   const t = type ?? 'default'
   let edgeType = props.edgeTypes[t]
   if (!edgeType) {
@@ -124,10 +124,10 @@ export default {
       </EdgeWrapper>
       <ConnectionLine
         v-if="connectionLineVisible && sourceNode"
+        :vf="sourceNode?.__vf"
         :connection-line-style="props.connectionLineStyle"
         :connection-line-type="props.connectionLineType"
         :connection-handle-id="props.connectionHandleId"
-        :vf="sourceNode?.__vf"
         :connection-node-id="props.connectionNodeId"
         :connection-handle-type="props.connectionHandleType"
         :connection-position="props.connectionPosition"

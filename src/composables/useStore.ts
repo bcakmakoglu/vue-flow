@@ -5,8 +5,7 @@ import { onLoadToObject, initialState } from '~/utils'
 
 let id = 0
 export default (options?: Partial<FlowOptions>, key?: string) => {
-  let store = inject(Store, null)
-
+  let store = inject(Store, undefined)
   if (!store) {
     const withStorage = options?.storageKey ?? key ?? false
     if (import.meta.env.DEV) console.warn('store context not found; creating default store')

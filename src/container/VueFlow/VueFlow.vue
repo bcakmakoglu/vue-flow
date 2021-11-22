@@ -224,7 +224,7 @@ const transitionName = computed(() => {
                       #[`node-${nodeName}`]="nodeProps"
                       :key="`node-${nodeName}-${store.$id}`"
                     >
-                      <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
+                      <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
                     </template>
                   </NodeRenderer>
                 </slot>
@@ -253,14 +253,14 @@ const transitionName = computed(() => {
                       #[`edge-${edgeName}`]="edgeProps"
                       :key="`edge-${edgeName}-${store.$id}`"
                     >
-                      <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
+                      <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
                     </template>
                     <template #custom-connection-line="customConnectionLineProps">
                       <slot
                         :key="`connection-line-${store.$id}`"
                         name="custom-connection-line"
                         v-bind="customConnectionLineProps"
-                      ></slot>
+                      />
                     </template>
                   </EdgeRenderer>
                 </slot>

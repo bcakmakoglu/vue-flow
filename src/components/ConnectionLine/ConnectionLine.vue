@@ -17,10 +17,10 @@ interface ConnectionLineProps {
   vf: VFInternals
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
-  connectionHandleId: ElementId
-  connectionNodeId: ElementId
-  connectionHandleType: HandleType
-  connectionPosition: XYPosition
+  connectionHandleId?: ElementId
+  connectionNodeId?: ElementId
+  connectionHandleType?: HandleType
+  connectionPosition?: XYPosition
   connectionMode: ConnectionMode
   transform: Transform
 }
@@ -42,8 +42,8 @@ const sourceY = props.vf.position.y + sourceHandleY
 const isRightOrLeft = sourceHandle?.position === Position.Left || sourceHandle?.position === Position.Right
 const targetPosition = isRightOrLeft ? Position.Left : Position.Top
 
-const targetX = computed(() => (props.connectionPosition.x - props.transform[0]) / props.transform[2])
-const targetY = computed(() => (props.connectionPosition.y - props.transform[1]) / props.transform[2])
+const targetX = computed(() => (props.connectionPosition?.x || 0 - props.transform[0]) / props.transform[2])
+const targetY = computed(() => (props.connectionPosition?.y || 0 - props.transform[1]) / props.transform[2])
 
 const dAttr = computed(() => {
   let path = `M${sourceX},${sourceY} ${targetX.value},${targetY.value}`

@@ -209,7 +209,11 @@ export default {
   <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
     <slot
       v-bind="{
-        transform,
+        transform: [
+          clamp(transform.x, store.translateExtent[0][0], store.translateExtent[1][0]),
+          clamp(transform.y, store.translateExtent[0][0], store.translateExtent[1][0]),
+          clamp(transform.zoom, store.translateExtent[0][0], store.translateExtent[1][0]),
+        ],
         dimensions: { width, height },
       }"
     />

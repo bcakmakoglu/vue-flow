@@ -7,7 +7,7 @@ import UserSelection from '../../components/UserSelection/UserSelection.vue'
 
 interface SelectionPaneProps {
   edges: Edge[]
-  selectedElements: FlowElements
+  selectedElements?: FlowElements
   selectionKeyCode?: KeyCode
   deleteKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode
@@ -20,6 +20,7 @@ const props = withDefaults(defineProps<SelectionPaneProps>(), {
   deleteKeyCode: 'Backspace',
   multiSelectionKeyCode: 'Meta',
   elementsSelectable: true,
+  selectedElements: () => [],
 })
 
 const store = useStore()

@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<NodeRendererProps>(), {
   snapGrid: () => [15, 15],
 })
 
-const getType = (type: string) => {
+const getType = (type?: string) => {
   const t = type ?? 'default'
   let nodeType = props.nodeTypes[t]
   if (!nodeType) {
