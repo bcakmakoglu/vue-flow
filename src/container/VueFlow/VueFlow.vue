@@ -206,66 +206,62 @@ const transitionName = computed(() => {
                 :multi-selection-key-code="store.multiSelectionKeyCode"
                 :selection-key-code="store.selectionKeyCode"
               >
-                <slot name="node-renderer" v-bind="{ nodes: store.getNodes, nodeTypes: store.getNodeTypes }">
-                  <NodeRenderer
-                    :key="`node-renderer-${store.$id}`"
-                    :nodes="store.getNodes"
-                    :node-types="store.getNodeTypes"
-                    :snap-to-grid="store.snapToGrid"
-                    :snap-grid="store.snapGrid"
-                    :select-nodes-on-drag="store.selectNodesOnDrag"
-                    :transform="store.transform"
-                    :elements-selectable="store.elementsSelectable"
-                    :nodes-draggable="store.nodesDraggable"
-                    :nodes-connectable="store.nodesConnectable"
+                <NodeRenderer
+                  :key="`node-renderer-${store.$id}`"
+                  :nodes="store.getNodes"
+                  :node-types="store.getNodeTypes"
+                  :snap-to-grid="store.snapToGrid"
+                  :snap-grid="store.snapGrid"
+                  :select-nodes-on-drag="store.selectNodesOnDrag"
+                  :transform="store.transform"
+                  :elements-selectable="store.elementsSelectable"
+                  :nodes-draggable="store.nodesDraggable"
+                  :nodes-connectable="store.nodesConnectable"
+                >
+                  <template
+                    v-for="nodeName of Object.keys(store.getNodeTypes)"
+                    #[`node-${nodeName}`]="nodeProps"
+                    :key="`node-${nodeName}-${store.$id}`"
                   >
-                    <template
-                      v-for="nodeName of Object.keys(store.getNodeTypes)"
-                      #[`node-${nodeName}`]="nodeProps"
-                      :key="`node-${nodeName}-${store.$id}`"
-                    >
-                      <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
-                    </template>
-                  </NodeRenderer>
-                </slot>
-                <slot name="edge-renderer" v-bind="{ edges: store.getEdges, edgeTypes: store.getEdgeTypes }">
-                  <EdgeRenderer
-                    :key="`edge-renderer-${store.$id}`"
-                    :transform="store.transform"
-                    :dimensions="store.dimensions"
-                    :edges="store.getEdges"
-                    :edge-types="store.getEdgeTypes"
-                    :nodes="store.getNodes"
-                    :selected-elements="store.selectedElements"
-                    :elements-selectable="store.elementsSelectable"
-                    :connection-node-id="store.connectionNodeId"
-                    :connction-handle-id="store.connectionHandleId"
-                    :connection-handle-type="store.connectionHandleType"
-                    :connection-position="store.connectionPosition"
-                    :connection-mode="store.connectionMode"
-                    :nodes-connectable="store.nodesConnectable"
-                    :connection-line-type="store.connectionLineType"
-                    :connection-line-style="store.connectionLineStyle"
-                    :arrow-head-color="store.arrowHeadColor"
-                    :marker-end-id="store.markerEndId"
-                    :only-render-visible-elements="store.onlyRenderVisibleElements"
+                    <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
+                  </template>
+                </NodeRenderer>
+                <EdgeRenderer
+                  :key="`edge-renderer-${store.$id}`"
+                  :transform="store.transform"
+                  :dimensions="store.dimensions"
+                  :edges="store.getEdges"
+                  :edge-types="store.getEdgeTypes"
+                  :nodes="store.getNodes"
+                  :selected-elements="store.selectedElements"
+                  :elements-selectable="store.elementsSelectable"
+                  :connection-node-id="store.connectionNodeId"
+                  :connction-handle-id="store.connectionHandleId"
+                  :connection-handle-type="store.connectionHandleType"
+                  :connection-position="store.connectionPosition"
+                  :connection-mode="store.connectionMode"
+                  :nodes-connectable="store.nodesConnectable"
+                  :connection-line-type="store.connectionLineType"
+                  :connection-line-style="store.connectionLineStyle"
+                  :arrow-head-color="store.arrowHeadColor"
+                  :marker-end-id="store.markerEndId"
+                  :only-render-visible-elements="store.onlyRenderVisibleElements"
+                >
+                  <template
+                    v-for="edgeName of Object.keys(store.getEdgeTypes)"
+                    #[`edge-${edgeName}`]="edgeProps"
+                    :key="`edge-${edgeName}-${store.$id}`"
                   >
-                    <template
-                      v-for="edgeName of Object.keys(store.getEdgeTypes)"
-                      #[`edge-${edgeName}`]="edgeProps"
-                      :key="`edge-${edgeName}-${store.$id}`"
-                    >
-                      <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
-                    </template>
-                    <template #custom-connection-line="customConnectionLineProps">
-                      <slot
-                        :key="`connection-line-${store.$id}`"
-                        name="custom-connection-line"
-                        v-bind="customConnectionLineProps"
-                      />
-                    </template>
-                  </EdgeRenderer>
-                </slot>
+                    <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
+                  </template>
+                  <template #custom-connection-line="customConnectionLineProps">
+                    <slot
+                      :key="`connection-line-${store.$id}`"
+                      name="custom-connection-line"
+                      v-bind="customConnectionLineProps"
+                    />
+                  </template>
+                </EdgeRenderer>
               </SelectionPane>
               <slot name="zoom-pane" v-bind="zoomPaneProps"></slot>
             </template>
@@ -280,7 +276,7 @@ const transitionName = computed(() => {
         </template>
       </Suspense>
     </Transition>
-    <slot v-bind="{ store }"></slot>
+    <slot v-bind="store"></slot>
   </div>
 </template>
 <style>
