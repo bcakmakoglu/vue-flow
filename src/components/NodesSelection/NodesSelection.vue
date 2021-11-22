@@ -1,21 +1,17 @@
 <script lang="ts" setup>
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { GraphNode } from '../../types'
+import { FlowElements, GraphNode } from '../../types'
 import { getRectOfNodes, isGraphNode } from '../../utils'
+
+interface NodesSelectionProps {
+  selectedElements: FlowElements
+}
 
 const store = useStore()
 
-const selectedNodes: GraphNode[] = store.selectedElements
-  ? store.selectedElements.filter(isGraphNode).map((selectedNode) => {
-      const matchingNode = store.nodes.find((node) => node.id === selectedNode.id)
-
-      return {
-        ...matchingNode,
-        position: matchingNode?.__vf?.position,
-      } as GraphNode
-    })
-  : []
+const props = defineProps<NodesSelectionProps>()
+const selectedNodes: GraphNode[] = props.selectedElements ? props.selectedElements.filter(isGraphNode) : []
 
 const selectedNodesBBox = getRectOfNodes(selectedNodes)
 
@@ -56,7 +52,7 @@ const onContextMenu = (event: MouseEvent) => {
   store.hooks.selectionContextMenu.trigger({ event, nodes })
 }
 
-const transform = computed(() => store.transform)
+const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 </script>
 <script lang="ts">
 export default {
@@ -64,14 +60,14 @@ export default {
 }
 </script>
 <template>
-  <div
-    class="vue-flow__nodesselection"
-    :style="{
-      transform: `translate(${transform[0]}px,${transform[1]}px) scale(${transform[2]})`,
-    }"
-  >
+  <div class="vue-flow__nodesselection" :style="{ transform }">
     <Draggable @start="onStart" @move="onDrag" @stop="onStop">
-      <div class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
+      <div
+        :key="`vue-flow-nodesselection-rect-${store.$id}`"
+        class="vue-flow__nodesselection-rect"
+        :style="innerStyle"
+        @contextmenu="onContextMenu"
+      />
     </Draggable>
   </div>
 </template>

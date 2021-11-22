@@ -70,6 +70,11 @@ export default {
 <template>
   <slot></slot>
   <UserSelection v-if="userSelection" id="user-selection" :key="`user-selection-${store.$id}`" />
-  <NodesSelection v-if="props.nodesSelectionActive" id="nodes-selection" :key="`nodes-selction-${store.$id}`" />
+  <NodesSelection
+    v-if="props.nodesSelectionActive"
+    id="nodes-selection"
+    :key="`nodes-selction-${store.$id}`"
+    :selected-elements="props.selectedElements"
+  />
   <div :key="`flow-pane-${store.$id}`" class="vue-flow__pane" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
 </template>
