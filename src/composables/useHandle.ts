@@ -78,6 +78,7 @@ export default (store = useStore()) =>
     },
     elementEdgeUpdaterType?: HandleType,
     onEdgeUpdate?: (connection: Connection) => void,
+    onEdgeUpdateEnd?: () => void,
   ) => {
     const flowNode = (event.target as Element).closest('.vue-flow')
     // when vue-flow is used inside a shadow root we can't use document
@@ -152,7 +153,10 @@ export default (store = useStore()) =>
 
       store.hooks.connectEnd.trigger(event)
 
-      if (elementEdgeUpdaterType) store.hooks.edgeUpdateEnd.trigger(event)
+      if (elementEdgeUpdaterType) {
+        store.hooks.edgeUpdateEnd.trigger(event)
+        onEdgeUpdateEnd?.()
+      }
 
       resetRecentHandle(recentHoveredHandle)
       store.setConnectionNodeId({ connectionNodeId: undefined, connectionHandleId: undefined, connectionHandleType: undefined })
