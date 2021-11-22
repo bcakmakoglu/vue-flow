@@ -9,10 +9,10 @@ export enum ConnectionLineType {
 }
 
 export interface Connection {
-  source: ElementId | null
-  target: ElementId | null
-  sourceHandle: ElementId | null
-  targetHandle: ElementId | null
+  source: ElementId
+  target: ElementId
+  sourceHandle: ElementId
+  targetHandle: ElementId
 }
 
 export type ConnectionLineProps = {

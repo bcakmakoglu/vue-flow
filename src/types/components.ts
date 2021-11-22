@@ -1,4 +1,4 @@
-import { Component, CSSProperties, DefineComponent } from 'vue'
+import { CSSProperties } from 'vue'
 import { BackgroundVariant, Dimensions, ElementId, FitViewParams, Position, XYPosition } from './flow'
 import { Connection } from './connection'
 import { Node } from './node'
@@ -6,7 +6,7 @@ import { Node } from './node'
 export type HandleType = 'source' | 'target'
 
 export interface HandleElement extends XYPosition, Dimensions {
-  id?: ElementId | null
+  id?: ElementId
   position: Position
 }
 
@@ -64,7 +64,7 @@ export interface EdgeTextProps {
     | string
     | {
         component: any
-        props?: Record<string, any>
+        props?: any
       }
   labelStyle?: CSSProperties
   labelShowBg?: boolean

@@ -41,7 +41,7 @@ export function getHandlePosition(position: Position, node: GraphNode, handle: a
   }
 }
 
-export function getHandle(bounds: HandleElement[], handleId: ElementId | null): HandleElement | undefined {
+export function getHandle(bounds: HandleElement[], handleId?: ElementId): HandleElement | undefined {
   if (!bounds) return undefined
 
   // there is no handleId when there are no multiple handles/ handles with ids
@@ -53,7 +53,7 @@ export function getHandle(bounds: HandleElement[], handleId: ElementId | null): 
     handle = bounds.find((d) => d.id === handleId)
   }
 
-  return typeof handle === 'undefined' ? undefined : handle
+  return !handle ? undefined : handle
 }
 
 export const getEdgePositions = (

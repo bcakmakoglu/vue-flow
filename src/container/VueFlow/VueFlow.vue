@@ -236,6 +236,7 @@ const transitionName = computed(() => {
                     :edges="store.getEdges"
                     :edge-types="store.getEdgeTypes"
                     :nodes="store.getNodes"
+                    :selected-elements="store.selectedElements"
                     :elements-selectable="store.elementsSelectable"
                     :connection-node-id="store.connectionNodeId"
                     :connction-handle-id="store.connectionHandleId"
@@ -247,6 +248,7 @@ const transitionName = computed(() => {
                     :connection-line-style="store.connectionLineStyle"
                     :arrow-head-color="store.arrowHeadColor"
                     :marker-end-id="store.markerEndId"
+                    :only-render-visible-elements="store.onlyRenderVisibleElements"
                   >
                     <template
                       v-for="edgeName of Object.keys(store.getEdgeTypes)"

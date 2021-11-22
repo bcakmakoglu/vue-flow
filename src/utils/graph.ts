@@ -171,8 +171,8 @@ export const parseNode = (node: Node, nodeExtent: NodeExtent): GraphNode => ({
     width: 0,
     height: 0,
     handleBounds: {
-      source: null,
-      target: null,
+      source: undefined,
+      target: undefined,
     },
     isDragging: false,
   },
@@ -182,8 +182,8 @@ export const parseEdge = (edge: Edge): Edge => ({
   ...edge,
   source: edge.source.toString(),
   target: edge.target.toString(),
-  sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : null,
-  targetHandle: edge.targetHandle ? edge.targetHandle.toString() : null,
+  sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : undefined,
+  targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
   id: edge.id.toString(),
   type: edge.type || 'default',
 })

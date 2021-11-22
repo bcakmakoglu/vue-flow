@@ -7,8 +7,8 @@ export interface Edge<T = any> {
   type?: string
   source: ElementId
   target: ElementId
-  sourceHandle?: ElementId | null
-  targetHandle?: ElementId | null
+  sourceHandle?: ElementId
+  targetHandle?: ElementId
   selected?: boolean
   sourcePosition?: Position
   targetPosition?: Position
