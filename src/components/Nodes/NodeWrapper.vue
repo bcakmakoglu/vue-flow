@@ -6,13 +6,14 @@ import { ElementId, FlowEvents, GraphNode, Position, SnapGrid, VFInternals, XYPo
 import { NodeId } from '../../context'
 
 interface NodeWrapperProps {
+  id: ElementId
+  position: XYPosition
   node: GraphNode
   vf: VFInternals
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
-  id: ElementId
-  position: XYPosition
   type?: string
+  component?: any
   class?: string
   style?: CSSProperties
   data?: any
@@ -23,6 +24,7 @@ interface NodeWrapperProps {
   selectable?: boolean
   connectable?: boolean
   dragHandle?: string
+  scale?: number
 }
 
 interface NodeEvents {
@@ -31,47 +33,61 @@ interface NodeEvents {
   (event: 'mouseLeave', data: FlowEvents['nodeMouseLeave']): void
   (event: 'contextMenu', data: FlowEvents['nodeContextMenu']): void
   (event: 'click', data: FlowEvents['nodeClick']): void
-  (event: 'click', data: FlowEvents['nodeClick']): void
+  (event: 'dblClick', data: FlowEvents['nodeDoubleClick']): void
+  (event: 'dragStart', data: FlowEvents['nodeDragStart']): void
+  (event: 'drag', data: FlowEvents['nodeDrag']): void
+  (event: 'dragStop', data: FlowEvents['nodeDragStop']): void
 }
 
-const props = withDefaults(defineProps<NodeWrapperProps>(), {
-  selected: false,
-  selectNodesOnDrag: true,
-})
+const props = defineProps<NodeWrapperProps>()
+const emit = defineEmits<NodeEvents>()
 
 const store = useStore()
 provide(NodeId, props.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const type = computed(() => {
-  const t = props.type ?? 'default'
-  let node = store.getNodeTypes[t]
-  if (!node) {
-    node = store.getNodeTypes.default
-    console.warn(`Node type "${t}" not found. Using fallback type "default".`)
-  }
-  return node
-})
-
 const selectable = computed(() => (typeof props.selectable === 'undefined' ? store.elementsSelectable : props.selectable))
 const draggable = computed(() => (typeof props.draggable === 'undefined' ? store.nodesDraggable : props.draggable))
 const connectable = computed(() => (typeof props.connectable === 'undefined' ? store.nodesConnectable : props.connectable))
-const scale = computed(() => store.transform[2])
+const scale = computed(() => props.scale)
 const selected = computed(() => selectable.value && store.selectedElements?.some(({ id }) => id === props.id))
 
 const onMouseEnterHandler = () =>
-  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
+  props.vf.isDragging &&
+  ((event: MouseEvent) => {
+    const data = { event, node: props.node }
+    emit('mouseEnter', data)
+    store.hooks.nodeMouseEnter.trigger(data)
+  })
 
 const onMouseMoveHandler = () =>
-  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
+  props.vf.isDragging &&
+  ((event: MouseEvent) => {
+    const data = { event, node: props.node }
+    emit('mouseMove', data)
+    store.hooks.nodeMouseMove.trigger(data)
+  })
 
 const onMouseLeaveHandler = () =>
-  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
+  props.vf.isDragging &&
+  ((event: MouseEvent) => {
+    const data = { event, node: props.node }
+    emit('mouseLeave', data)
+    store.hooks.nodeMouseLeave.trigger(data)
+  })
 
-const onContextMenuHandler = () => (event: MouseEvent) => store.hooks.nodeContextMenu.trigger({ event, node: props.node })
+const onContextMenuHandler = () => (event: MouseEvent) => {
+  const data = { event, node: props.node }
+  emit('contextMenu', data)
+  store.hooks.nodeContextMenu.trigger(data)
+}
 
-const onDoubleClick = () => (event: MouseEvent) => store.hooks.nodeDoubleClick.trigger({ event, node: props.node })
+const onDoubleClick = () => (event: MouseEvent) => {
+  const data = { event, node: props.node }
+  emit('dblClick', data)
+  store.hooks.nodeDoubleClick.trigger({ event, node: props.node })
+}
 
 const onSelectNodeHandler = (event: MouseEvent) => {
   const n = props.node
@@ -80,12 +96,14 @@ const onSelectNodeHandler = (event: MouseEvent) => {
       store.unsetNodesSelection()
       if (!selected.value) store.addSelectedElements([n])
     }
+    emit('click', { event, node: n })
     store.hooks.nodeClick.trigger({ event, node: n })
   }
 }
 
 const onDragStart: DraggableEventListener = ({ event }) => {
   const n = props.node
+  emit('dragStart', { event, node: n })
   store.hooks.nodeDragStart.trigger({ event, node: n })
 
   if (props.selectNodesOnDrag && selectable) {
@@ -102,6 +120,7 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
   const n = props.node
   n.position.x += data.deltaX
   n.position.y += data.deltaY
+  emit('drag', { event, node: n })
   store.hooks.nodeDrag.trigger({ event, node: n })
 
   store.updateNodePosDiff({
@@ -133,6 +152,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
     isDragging: false,
   })
 
+  emit('dragStop', { event, node: n })
   store.hooks.nodeDragStop.trigger({ event, node: n })
 }
 
@@ -221,7 +241,7 @@ export default {
         }"
       >
         <component
-          :is="type"
+          :is="props.component ?? props.type"
           v-bind="{
             id: props.id,
             data: props.data,

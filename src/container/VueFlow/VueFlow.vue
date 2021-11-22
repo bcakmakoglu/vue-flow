@@ -177,11 +177,11 @@ const transitionName = computed(() => {
 </script>
 <template>
   <div class="vue-flow">
-    <Transition key="vue-flow-transition" :name="transitionName">
+    <Transition :key="`vue-flow-transition-${store.$id}`" :name="transitionName">
       <Suspense>
         <template #default>
           <ZoomPane
-            key="zoom-pane"
+            :key="`zoom-pane-${store.$id}`"
             :selection-key-code="store.selectionKeyCode"
             :zoom-activation-key-code="store.zoomActivationKeyCode"
             :default-zoom="store.defaultZoom"
@@ -196,17 +196,33 @@ const transitionName = computed(() => {
           >
             <template #default="zoomPaneProps">
               <SelectionPane
-                key="selection-pane"
+                :key="`selection-pane-${store.$id}`"
+                :edges="store.getEdges"
+                :selected-elements="store.selectedElements"
+                :selection-active="store.selectionActive"
+                :nodes-selection-active="store.nodesSelectionActive"
+                :elements-selectable="store.elementsSelectable"
                 :delete-key-code="store.deleteKeyCode"
                 :multi-selection-key-code="store.multiSelectionKeyCode"
                 :selection-key-code="store.selectionKeyCode"
               >
                 <slot name="node-renderer" v-bind="{ nodes: store.getNodes, nodeTypes: store.getNodeTypes }">
-                  <NodeRenderer key="node-renderer" :select-nodes-on-drag="store.selectNodesOnDrag">
+                  <NodeRenderer
+                    :key="`node-renderer-${store.$id}`"
+                    :nodes="store.getNodes"
+                    :node-types="store.getNodeTypes"
+                    :snap-to-grid="store.snapToGrid"
+                    :snap-grid="store.snapGrid"
+                    :select-nodes-on-drag="store.selectNodesOnDrag"
+                    :transform="store.transform"
+                    :elements-selectable="store.elementsSelectable"
+                    :nodes-draggable="store.nodesDraggable"
+                    :nodes-connectable="store.nodesConnectable"
+                  >
                     <template
                       v-for="nodeName of Object.keys(store.getNodeTypes)"
                       #[`node-${nodeName}`]="nodeProps"
-                      :key="`node-${nodeName}`"
+                      :key="`node-${nodeName}-${store.$id}`"
                     >
                       <slot :name="`node-${nodeName}`" v-bind="nodeProps"></slot>
                     </template>
@@ -214,7 +230,7 @@ const transitionName = computed(() => {
                 </slot>
                 <slot name="edge-renderer" v-bind="{ edges: store.getEdges, edgeTypes: store.getEdgeTypes }">
                   <EdgeRenderer
-                    key="edge-renderer"
+                    :key="`edge-renderer-${store.$id}`"
                     :connection-line-type="store.connectionLineType"
                     :connection-line-style="store.connectionLineStyle"
                     :arrow-head-color="store.arrowHeadColor"
@@ -223,12 +239,16 @@ const transitionName = computed(() => {
                     <template
                       v-for="edgeName of Object.keys(store.getEdgeTypes)"
                       #[`edge-${edgeName}`]="edgeProps"
-                      :key="`edge-${edgeName}`"
+                      :key="`edge-${edgeName}-${store.$id}`"
                     >
                       <slot :name="`edge-${edgeName}`" v-bind="edgeProps"></slot>
                     </template>
                     <template #custom-connection-line="customConnectionLineProps">
-                      <slot key="connection-line" name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
+                      <slot
+                        :key="`connection-line-${store.$id}`"
+                        name="custom-connection-line"
+                        v-bind="customConnectionLineProps"
+                      ></slot>
                     </template>
                   </EdgeRenderer>
                 </slot>
@@ -238,8 +258,8 @@ const transitionName = computed(() => {
           </ZoomPane>
         </template>
         <template v-if="store.loading" #fallback>
-          <slot key="loading-indicator" name="loading-indicator">
-            <LoadingIndicator key="default-loading-indicator" v-bind="store.loading">
+          <slot :key="`loading-indicator-${store.$id}`" name="loading-indicator">
+            <LoadingIndicator :key="`default-loading-indicator-${store.$id}`" v-bind="store.loading">
               <slot name="loading-label" />
             </LoadingIndicator>
           </slot>
