@@ -1,13 +1,28 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
 import { getBezierPath, getSmoothStepPath } from '../Edges/utils'
-import { useStore } from '../../composables'
-import { ConnectionLineType, HandleElement, GraphNode, Position } from '../../types'
+import {
+  ConnectionLineType,
+  HandleElement,
+  Position,
+  ElementId,
+  HandleType,
+  XYPosition,
+  ConnectionMode,
+  VFInternals,
+  Transform,
+} from '../../types'
 
 interface ConnectionLineProps {
-  sourceNode: GraphNode
+  vf: VFInternals
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
+  connectionHandleId: ElementId
+  connectionNodeId: ElementId
+  connectionHandleType: HandleType
+  connectionPosition: XYPosition
+  connectionMode: ConnectionMode
+  transform: Transform
 }
 
 const props = withDefaults(defineProps<ConnectionLineProps>(), {
@@ -15,24 +30,20 @@ const props = withDefaults(defineProps<ConnectionLineProps>(), {
   connectionLineStyle: () => ({}),
 })
 
-const store = useStore()
-
 const sourceHandle =
-  store.connectionHandleId && store.connectionHandleType
-    ? props.sourceNode.__vf.handleBounds[store.connectionHandleType]?.find(
-        (d: HandleElement) => d.id === store.connectionHandleId,
-      )
-    : store.connectionHandleType && props.sourceNode.__vf.handleBounds[store.connectionHandleType ?? 'source']?.[0]
-const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : (props.sourceNode.__vf?.width as number) / 2
-const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.sourceNode.__vf?.height
-const sourceX = props.sourceNode.__vf?.position?.x + sourceHandleX
-const sourceY = props.sourceNode.__vf?.position?.y + sourceHandleY
+  props.connectionHandleId && props.connectionHandleType
+    ? props.vf.handleBounds[props.connectionHandleType]?.find((d: HandleElement) => d.id === props.connectionHandleId)
+    : props.connectionHandleType && props.vf.handleBounds[props.connectionHandleType ?? 'source']?.[0]
+const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : (props.vf.width as number) / 2
+const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.vf.height
+const sourceX = props.vf.position.x + sourceHandleX
+const sourceY = props.vf.position.y + sourceHandleY
 
 const isRightOrLeft = sourceHandle?.position === Position.Left || sourceHandle?.position === Position.Right
 const targetPosition = isRightOrLeft ? Position.Left : Position.Top
 
-const targetX = computed(() => (store.connectionPosition.x - store.transform[0]) / store.transform[2])
-const targetY = computed(() => (store.connectionPosition.y - store.transform[1]) / store.transform[2])
+const targetX = computed(() => (props.connectionPosition.x - props.transform[0]) / props.transform[2])
+const targetY = computed(() => (props.connectionPosition.y - props.transform[1]) / props.transform[2])
 
 const dAttr = computed(() => {
   let path = `M${sourceX},${sourceY} ${targetX.value},${targetY.value}`

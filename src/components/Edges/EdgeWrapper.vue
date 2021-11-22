@@ -22,7 +22,7 @@ interface EdgeWrapper {
     | string
     | {
         component: any
-        props?: EdgeTextProps
+        props?: EdgeTextProps | any
       }
   labelStyle?: any
   labelShowBg?: boolean

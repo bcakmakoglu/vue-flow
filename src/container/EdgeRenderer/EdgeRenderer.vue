@@ -1,6 +1,17 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ConnectionLineType, Dimensions, Edge, EdgeComponent, GraphNode, HandleType, Transform } from '../../types'
+import {
+  ConnectionLineType,
+  ConnectionMode,
+  Dimensions,
+  Edge,
+  EdgeComponent,
+  ElementId,
+  GraphNode,
+  HandleType,
+  Transform,
+  XYPosition,
+} from '../../types'
 import { getSourceTargetNodes } from '../../utils'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
@@ -18,8 +29,11 @@ interface EdgeRendererProps {
   markerEndId?: string
   elementsSelectable?: boolean
   edgeUpdaterRadius?: number
-  connectionNodeId?: string
+  connectionNodeId?: ElementId
   connectionHandleType?: HandleType
+  connectionHandleId?: ElementId
+  connectionPosition?: XYPosition
+  connectionMode: ConnectionMode
   nodesConnectable?: boolean
 }
 
@@ -39,17 +53,22 @@ const getType = (type: string) => {
   return edgeType
 }
 
-const sourceNode = computed(() => props.nodes.find((n) => n.id === props.connectionNodeId))
-const connectionLineVisible = computed(
+const sourceNode = controlledComputed(
+  () => props.connectionNodeId,
+  () => {
+    if (props.connectionNodeId) return props.nodes[props.nodes.map((n) => n.id).indexOf(props.connectionNodeId)]
+  },
+)
+const connectionLineVisible = controlledComputed(
+  () => props.connectionNodeId,
   () =>
     !!(
       sourceNode.value &&
-      (typeof sourceNode.value.selectable === 'undefined' ? props.nodesConnectable : sourceNode.value.selectable) &&
+      (typeof sourceNode.value.connectable === 'undefined' ? props.nodesConnectable : sourceNode.value.connectable) &&
       props.connectionNodeId &&
       props.connectionHandleType
     ),
 )
-
 const transform = computed(() => `translate(${props.transform[0]},${props.transform[1]}) scale(${props.transform[2]})`)
 
 const sourceTargetNodes = (edge: Edge) => {
@@ -105,9 +124,15 @@ export default {
       </EdgeWrapper>
       <ConnectionLine
         v-if="connectionLineVisible && sourceNode"
-        :source-node="sourceNode"
         :connection-line-style="props.connectionLineStyle"
         :connection-line-type="props.connectionLineType"
+        :connection-handle-id="props.connectionHandleId"
+        :vf="sourceNode?.__vf"
+        :connection-node-id="props.connectionNodeId"
+        :connection-handle-type="props.connectionHandleType"
+        :connection-position="props.connectionPosition"
+        :connection-mode="props.connectionMode"
+        :transform="props.transform"
       >
         <template #default="customConnectionLineProps">
           <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
