@@ -15,7 +15,7 @@ export const checkElementBelowIsValid = (
   connectionMode: ConnectionMode,
   isTarget: boolean,
   nodeId: ElementId,
-  handleId: ElementId | null,
+  handleId: ElementId,
   isValidConnection: ValidConnectionFunc,
   doc: Document,
 ) => {
@@ -26,7 +26,7 @@ export const checkElementBelowIsValid = (
   const result: Result = {
     elementBelow,
     isValid: false,
-    connection: { source: null, target: null, sourceHandle: null, targetHandle: null },
+    connection: { source: '', target: '', sourceHandle: '', targetHandle: '' },
     isHoveringHandle: false,
   }
 
@@ -38,8 +38,8 @@ export const checkElementBelowIsValid = (
       connectionMode === ConnectionMode.Strict ? (isTarget && elementBelowIsSource) || (!isTarget && elementBelowIsTarget) : true
 
     if (isValid) {
-      const elementBelowNodeId = elementBelow.getAttribute('data-nodeid')
-      const elementBelowHandleId = elementBelow.getAttribute('data-handleid')
+      const elementBelowNodeId = elementBelow.getAttribute('data-nodeid') ?? ''
+      const elementBelowHandleId = elementBelow.getAttribute('data-handleid') ?? ''
       const connection: Connection = isTarget
         ? {
             source: elementBelowNodeId,

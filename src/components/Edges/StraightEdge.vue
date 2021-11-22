@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CSSProperties, DefineComponent } from 'vue'
+import { CSSProperties } from 'vue'
 import { ArrowHeadType, EdgeProps, EdgeTextProps, ElementId, Position } from '../../types'
 import EdgeText from './EdgeText.vue'
 import { getMarkerEnd, getBezierPath } from './utils'
@@ -19,7 +19,7 @@ interface StraightEdgeProps extends EdgeProps {
   label?:
     | string
     | {
-        component: DefineComponent<EdgeTextProps>
+        component: any
         props?: EdgeTextProps
       }
   labelStyle?: CSSProperties

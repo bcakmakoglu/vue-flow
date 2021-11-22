@@ -58,8 +58,8 @@ export interface MiniMapNodeProps {
 }
 
 export interface EdgeTextProps {
-  x?: number
-  y?: number
+  x: number
+  y: number
   label?:
     | string
     | {

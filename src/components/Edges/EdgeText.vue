@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CSSProperties, DefineComponent } from 'vue'
+import { CSSProperties } from 'vue'
 
 interface EdgeTextProps {
   x: number
@@ -7,12 +7,12 @@ interface EdgeTextProps {
   label?:
     | string
     | {
-        component: DefineComponent
-        props?: Record<string, any>
+        component: any
+        props?: EdgeTextProps
       }
   labelStyle?: CSSProperties
   labelShowBg?: boolean
-  labelBgStyle?: any
+  labelBgStyle?: CSSProperties
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
 }
@@ -28,7 +28,6 @@ const props = withDefaults(defineProps<EdgeTextProps>(), {
 const edgeRef = templateRef<SVGTextElement>('edge-text', null)
 const { width, height, x, y } = useElementBounding(edgeRef)
 const transform = computed(() => `translate(${props.x - width.value / 2 || 0} ${props.y - height.value / 2 || 0})`)
-const bgPadding = computed(() => [props.labelBgPadding[0], props.labelBgPadding[1]])
 </script>
 <script lang="ts">
 export default {
@@ -39,11 +38,11 @@ export default {
   <g :transform="transform" class="vue-flow__edge-textwrapper">
     <rect
       v-if="props.labelShowBg"
-      :width="width + 2 * bgPadding[0] + 'px'"
-      :height="height + 2 * bgPadding[1] + 'px'"
-      :x="-bgPadding[0]"
-      :y="-bgPadding[1]"
       class="vue-flow__edge-textbg"
+      :width="width + 2 * props.labelBgPadding[0] + 'px'"
+      :height="height + 2 * props.labelBgPadding[1] + 'px'"
+      :x="-props.labelBgPadding[0]"
+      :y="-props.labelBgPadding[1]"
       :style="props.labelBgStyle"
       :rx="props.labelBgBorderRadius"
       :ry="props.labelBgBorderRadius"

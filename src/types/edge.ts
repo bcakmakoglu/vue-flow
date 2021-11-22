@@ -15,8 +15,8 @@ export interface Edge<T = any> {
   label?:
     | string
     | {
-        component: DefineComponent<EdgeTextProps> | any
-        props?: EdgeTextProps | any
+        component: any
+        props?: EdgeTextProps
       }
   labelStyle?: any
   labelShowBg?: boolean
