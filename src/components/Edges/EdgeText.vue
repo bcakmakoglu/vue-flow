@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Component, CSSProperties, DefineComponent } from 'vue'
+import { CSSProperties, DefineComponent } from 'vue'
 
 interface EdgeTextProps {
   x: number
@@ -7,7 +7,7 @@ interface EdgeTextProps {
   label?:
     | string
     | {
-        component: Component | DefineComponent
+        component: DefineComponent
         props?: Record<string, any>
       }
   labelStyle?: CSSProperties

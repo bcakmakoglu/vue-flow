@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useStore } from '../../composables'
-import Node from '../../components/Nodes/NodeWrapper.vue'
 import { SnapGrid } from '../../types'
+import Node from '../../components/Nodes/NodeWrapper.vue'
 
 interface NodeRendererProps {
   selectNodesOnDrag?: boolean
@@ -20,15 +20,29 @@ const snapGrid = computed(() => (props.snapToGrid || store.snapToGrid ? props.sn
 </script>
 <script lang="ts">
 export default {
-  name: 'Nodes',
+  name: 'Node',
 }
 </script>
 <template>
   <div class="vue-flow__nodes" :style="{ transform }">
     <Node
       v-for="node of store.getNodes"
+      :id="node.id"
       :key="node.id"
       :node="node"
+      :vf="node.__vf"
+      :position="node.position"
+      :type="node.type"
+      :class="node.class"
+      :style="node.style"
+      :data="node.data"
+      :target-position="node.targetPosition"
+      :source-position="node.sourcePosition"
+      :is-hidden="node.isHidden"
+      :draggable="node.draggable"
+      :selectable="node.selectable"
+      :connectable="node.connectable"
+      :drag-handle="node.dragHandle"
       :snap-grid="snapGrid"
       :select-nodes-on-drag="props.selectNodesOnDrag"
     >

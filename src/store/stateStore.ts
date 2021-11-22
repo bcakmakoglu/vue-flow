@@ -87,11 +87,9 @@ export default (id: string, preloadedState: FlowState) => {
             next = res
           } else next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         }
-        if (next) {
-          this.elements = [...next.nextNodes, ...next.nextEdges]
-          this.nodes = next?.nextNodes ?? []
-          this.edges = next?.nextEdges ?? []
-        }
+        this.elements = [...next.nextNodes, ...next.nextEdges]
+        this.nodes = next.nextNodes ?? []
+        this.edges = next.nextEdges ?? []
       },
       updateNodeDimensions({ id, nodeElement, forceUpdate }) {
         const i = this.nodes.map((x) => x.id).indexOf(id)

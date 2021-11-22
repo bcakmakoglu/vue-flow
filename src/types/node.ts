@@ -2,7 +2,7 @@ import { Component, CSSProperties, DefineComponent } from 'vue'
 import { XYPosition, ElementId, Position } from './flow'
 import { HandleElement } from './components'
 
-interface VFInternals {
+export interface VFInternals {
   position: XYPosition
   isDragging?: boolean
   width: number

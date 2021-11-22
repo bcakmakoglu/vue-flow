@@ -116,15 +116,16 @@ const options = Object.assign({}, store.$state, props)
 
 const init = async (state: FlowState) => {
   // set state variables
+  const skip = ['modelValue', 'd3Zoom', 'd3Selection', 'd3ZoomHandler', 'minZoom', 'maxZoom', 'translateExtent', 'nodeExtent']
   for (const opt of Object.keys(state)) {
     const val = state[opt as keyof FlowState]
-    if (typeof val !== 'undefined' && opt !== 'modelValue' && opt !== 'elements') {
+    if (typeof val !== 'undefined' && !skip.includes(opt)) {
       if (typeof val === 'object' && !Array.isArray(val)) {
         ;(store as any)[opt] = { ...(store as any)[opt], ...val }
       } else (store as any)[opt] = val
     }
   }
-  await until(() => store.d3Zoom).not.toBeUndefined()
+  if (!store.isReady) await until(() => store.d3Zoom).not.toBeUndefined()
   store.setMinZoom(state.minZoom)
   store.setMaxZoom(state.maxZoom)
   store.setTranslateExtent(state.translateExtent)
@@ -155,18 +156,15 @@ invoke(async () => {
   }
   store.hooks.load.trigger(instance)
   store.instance = instance
-})
-
-throttledWatch(elements, store.setElements, { flush: 'post', deep: true, throttle: 10 })
-throttledWatch(store.elements, (val) => (elements.value = val), { flush: 'post', deep: true, throttle: 10 })
-
-onMounted(() => {
   watch(
     () => props,
     () => init({ ...store.$state, ...props } as FlowState),
     { flush: 'post', deep: true },
   )
 })
+
+throttledWatch(elements, store.setElements, { flush: 'post', deep: true, throttle: 10 })
+throttledWatch(store.elements, (val) => (elements.value = val), { flush: 'post', deep: true, throttle: 10 })
 
 const transitionName = computed(() => {
   let name = ''

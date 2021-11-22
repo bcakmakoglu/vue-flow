@@ -49,11 +49,7 @@ export default () =>
 
         if (storeNode) {
           const updatedNode = Object.assign(storeNode, element)
-          if (!updatedNode.__vf) updatedNode.__vf = {} as any
-
-          if (storeNode.position.x !== element.position.x || storeNode.position.y !== element.position.y) {
-            updatedNode.__vf!.position = element.position
-          }
+          updatedNode.__vf!.position = element.position
 
           if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
             // we reset the elements dimensions here in order to force a re-calculation of the bounds.

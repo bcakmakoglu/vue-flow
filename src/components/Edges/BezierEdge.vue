@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Component, CSSProperties, DefineComponent } from 'vue'
-import { ArrowHeadType, EdgeProps, ElementId, Position } from '../../types'
+import { CSSProperties, DefineComponent } from 'vue'
+import { ArrowHeadType, EdgeProps, EdgeTextProps, ElementId, Position } from '../../types'
 import { getCenter, getMarkerEnd, getBezierPath } from './utils'
 import EdgeText from './EdgeText.vue'
 
@@ -19,8 +19,8 @@ interface BezierEdgeProps extends EdgeProps {
   label?:
     | string
     | {
-        component: Component | DefineComponent
-        props?: Record<string, any>
+        component: DefineComponent<EdgeTextProps>
+        props?: EdgeTextProps
       }
   labelStyle?: CSSProperties
   labelShowBg?: boolean

@@ -1,13 +1,28 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
+import { CSSProperties } from 'vue'
 import { useStore } from '../../composables'
-import { FlowEvents, GraphNode, SnapGrid } from '../../types'
+import { ElementId, FlowEvents, GraphNode, Position, SnapGrid, VFInternals, XYPosition } from '../../types'
 import { NodeId } from '../../context'
 
 interface NodeWrapperProps {
   node: GraphNode
+  vf: VFInternals
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
+  id: ElementId
+  position: XYPosition
+  type?: string
+  class?: string
+  style?: CSSProperties
+  data?: any
+  targetPosition?: Position
+  sourcePosition?: Position
+  isHidden?: boolean
+  draggable?: boolean
+  selectable?: boolean
+  connectable?: boolean
+  dragHandle?: string
 }
 
 interface NodeEvents {
@@ -25,12 +40,12 @@ const props = withDefaults(defineProps<NodeWrapperProps>(), {
 })
 
 const store = useStore()
-provide(NodeId, props.node.id)
+provide(NodeId, props.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
 const type = computed(() => {
-  const t = props.node.type ?? 'default'
+  const t = props.type ?? 'default'
   let node = store.getNodeTypes[t]
   if (!node) {
     node = store.getNodeTypes.default
@@ -39,24 +54,20 @@ const type = computed(() => {
   return node
 })
 
-const selectable = computed(() =>
-  typeof props.node.selectable === 'undefined' ? store.elementsSelectable : props.node.selectable,
-)
-const draggable = computed(() => (typeof props.node.draggable === 'undefined' ? store.nodesDraggable : props.node.draggable))
-const connectable = computed(() =>
-  typeof props.node.connectable === 'undefined' ? store.nodesConnectable : props.node.connectable,
-)
+const selectable = computed(() => (typeof props.selectable === 'undefined' ? store.elementsSelectable : props.selectable))
+const draggable = computed(() => (typeof props.draggable === 'undefined' ? store.nodesDraggable : props.draggable))
+const connectable = computed(() => (typeof props.connectable === 'undefined' ? store.nodesConnectable : props.connectable))
 const scale = computed(() => store.transform[2])
-const selected = computed(() => selectable.value && store.selectedElements?.some(({ id }) => id === props.node.id))
+const selected = computed(() => selectable.value && store.selectedElements?.some(({ id }) => id === props.id))
 
 const onMouseEnterHandler = () =>
-  props.node.__vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
+  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
 
 const onMouseMoveHandler = () =>
-  props.node.__vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
+  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
 
 const onMouseLeaveHandler = () =>
-  props.node.__vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
+  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
 
 const onContextMenuHandler = () => (event: MouseEvent) => store.hooks.nodeContextMenu.trigger({ event, node: props.node })
 
@@ -69,9 +80,8 @@ const onSelectNodeHandler = (event: MouseEvent) => {
       store.unsetNodesSelection()
       if (!selected.value) store.addSelectedElements([n])
     }
+    store.hooks.nodeClick.trigger({ event, node: n })
   }
-  store.hooks.elementClick.trigger({ event, element: n })
-  store.hooks.nodeClick.trigger({ event, node: n })
 }
 
 const onDragStart: DraggableEventListener = ({ event }) => {
@@ -95,7 +105,7 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
   store.hooks.nodeDrag.trigger({ event, node: n })
 
   store.updateNodePosDiff({
-    id: props.node.id,
+    id: props.id,
     diff: {
       x: data.deltaX,
       y: data.deltaY,
@@ -108,11 +118,12 @@ const onDragStop: DraggableEventListener = ({ event }) => {
   const n = props.node
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
-  if (!props.node.__vf.isDragging) {
+  if (!props.vf.isDragging) {
     if (selectable.value && !props.selectNodesOnDrag && !selected.value) {
       store.addSelectedElements([n])
     }
     store.hooks.nodeClick.trigger({ event, node: n })
+    store.hooks.elementClick.trigger({ event, element: n })
 
     return
   }
@@ -127,7 +138,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
 
 onMounted(() => {
   store.updateNodeDimensions({
-    id: props.node.id,
+    id: props.id,
     nodeElement: nodeElement.value,
     forceUpdate: true,
   })
@@ -141,10 +152,10 @@ onMounted(() => {
     }),
   )
 
-  watch([() => props.node.type, () => props.node.sourcePosition, () => props.node.targetPosition], () => {
+  watch([() => props.type, () => props.sourcePosition, () => props.targetPosition], () => {
     nextTick(() => {
       store.updateNodeDimensions({
-        id: props.node.id,
+        id: props.id,
         nodeElement: nodeElement.value,
         forceUpdate: true,
       })
@@ -160,7 +171,7 @@ export default {
 <template>
   <DraggableCore
     cancel=".nodrag"
-    :handle="props.node.dragHandle"
+    :handle="props.dragHandle"
     :disabled="!draggable"
     :scale="scale"
     :grid="props.snapGrid"
@@ -173,21 +184,21 @@ export default {
       ref="node-element"
       :class="[
         'vue-flow__node',
-        `vue-flow__node-${props.node.type}`,
+        `vue-flow__node-${props.type}`,
         {
           selected,
           selectable: selectable,
         },
-        props.node.class,
+        props.class,
       ]"
       :style="{
         zIndex: selected ? 10 : 3,
-        transform: `translate(${props.node.__vf?.position?.x}px,${props.node.__vf?.position?.y}px)`,
+        transform: `translate(${props.vf.position.x}px,${props.vf.position.y}px)`,
         pointerEvents: selectable || draggable ? 'all' : 'none',
-        opacity: props.node.__vf?.width !== null && props.node.__vf?.height !== null ? 1 : 0,
-        ...props.node.style,
+        opacity: props.vf.width !== null && props.vf.height !== null ? 1 : 0,
+        ...props.style,
       }"
-      :data-id="props.node.id"
+      :data-id="props.id"
       @mouseenter="onMouseEnterHandler"
       @mousemove="onMouseMoveHandler"
       @mouseleave="onMouseLeaveHandler"
@@ -197,31 +208,31 @@ export default {
     >
       <slot
         v-bind="{
-          id: props.node.id,
-          data: props.node.data,
-          type: props.node.type,
-          xPos: props.node.__vf?.position?.x,
-          yPos: props.node.__vf?.position?.y,
+          id: props.id,
+          data: props.data,
+          type: props.type,
+          xPos: props.vf.position.x,
+          yPos: props.vf.position.y,
           selected,
           connectable,
-          sourcePosition: props.node.sourcePosition,
-          targetPosition: props.node.targetPosition,
-          dragging: props.node.__vf?.isDragging,
+          sourcePosition: props.sourcePosition,
+          targetPosition: props.targetPosition,
+          dragging: props.vf.isDragging,
         }"
       >
         <component
           :is="type"
           v-bind="{
-            id: props.node.id,
-            data: props.node.data,
-            type: props.node.type,
-            xPos: props.node.__vf?.position?.x,
-            yPos: props.node.__vf?.position?.y,
+            id: props.id,
+            data: props.data,
+            type: props.type,
+            xPos: props.vf.position.x,
+            yPos: props.vf.position.y,
             selected,
             connectable,
-            sourcePosition: props.node.sourcePosition,
-            targetPosition: props.node.targetPosition,
-            dragging: props.node.__vf?.isDragging,
+            sourcePosition: props.sourcePosition,
+            targetPosition: props.targetPosition,
+            dragging: props.vf.isDragging,
           }"
         />
       </slot>

@@ -1,5 +1,6 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './flow'
+import { EdgeTextProps } from '~/types/components'
 
 export interface Edge<T = any> {
   id: ElementId
@@ -14,8 +15,8 @@ export interface Edge<T = any> {
   label?:
     | string
     | {
-        component: Component | DefineComponent
-        props?: Record<string, any>
+        component: DefineComponent<EdgeTextProps>
+        props?: EdgeTextProps
       }
   labelStyle?: any
   labelShowBg?: boolean
