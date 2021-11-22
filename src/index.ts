@@ -1,6 +1,4 @@
 export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
-export { default as NodeRenderer } from './container/NodeRenderer/NodeRenderer.vue'
-export { default as EdgeRenderer } from './container/EdgeRenderer/EdgeRenderer.vue'
 export { default as Handle } from './components/Handle/Handle.vue'
 export * from './components/Edges'
 export * from './components/Nodes'
