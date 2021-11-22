@@ -1,29 +1,18 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { ElementId, FlowEvents, GraphNode, Position, SnapGrid, VFInternals, XYPosition } from '../../types'
+import { FlowEvents, GraphNode, SnapGrid, VFInternals } from '../../types'
 import { NodeId } from '../../context'
 
 interface NodeWrapperProps {
-  id: ElementId
-  position: XYPosition
   node: GraphNode
   vf: VFInternals
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
-  type?: string
   component?: any
-  class?: string
-  style?: CSSProperties
-  data?: any
-  targetPosition?: Position
-  sourcePosition?: Position
-  isHidden?: boolean
   draggable?: boolean
   selectable?: boolean
   connectable?: boolean
-  dragHandle?: string
   scale?: number
 }
 
@@ -43,11 +32,11 @@ const props = defineProps<NodeWrapperProps>()
 const emit = defineEmits<NodeEvents>()
 
 const store = useStore()
-provide(NodeId, props.id)
+provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const selected = computed(() => props.selectable && store.selectedElements?.some(({ id }) => id === props.id))
+const selected = computed(() => props.selectable && store.selectedElements?.some(({ id }) => id === props.node.id))
 
 const onMouseEnterHandler = () =>
   props.vf.isDragging &&
@@ -120,7 +109,7 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
   store.hooks.nodeDrag.trigger({ event, node: n })
 
   store.updateNodePosDiff({
-    id: props.id,
+    id: props.node.id,
     diff: {
       x: data.deltaX,
       y: data.deltaY,
@@ -154,7 +143,7 @@ const onDragStop: DraggableEventListener = ({ event }) => {
 
 onMounted(() => {
   store.updateNodeDimensions({
-    id: props.id,
+    id: props.node.id,
     nodeElement: nodeElement.value,
     forceUpdate: true,
   })
@@ -168,10 +157,10 @@ onMounted(() => {
     }),
   )
 
-  watch([() => props.type, () => props.sourcePosition, () => props.targetPosition], () => {
+  watch([() => props.node.type, () => props.node.sourcePosition, () => props.node.targetPosition], () => {
     nextTick(() => {
       store.updateNodeDimensions({
-        id: props.id,
+        id: props.node.id,
         nodeElement: nodeElement.value,
         forceUpdate: true,
       })
@@ -187,8 +176,8 @@ export default {
 <template>
   <DraggableCore
     cancel=".nodrag"
-    :handle="props.dragHandle"
-    :disabled="!draggable"
+    :handle="props.node.dragHandle"
+    :disabled="!props.draggable"
     :scale="props.scale"
     :grid="props.snapGrid"
     :enable-user-select-hack="false"
@@ -200,21 +189,21 @@ export default {
       ref="node-element"
       :class="[
         'vue-flow__node',
-        `vue-flow__node-${props.type}`,
+        `vue-flow__node-${props.node.type}`,
         {
           selected,
           selectable: props.selectable,
         },
-        props.class,
+        props.node.class,
       ]"
       :style="{
         zIndex: selected ? 10 : 3,
         transform: `translate(${props.vf.position.x}px,${props.vf.position.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
         opacity: props.vf.width !== null && props.vf.height !== null ? 1 : 0,
-        ...props.style,
+        ...props.node.style,
       }"
-      :data-id="props.id"
+      :data-id="props.node.id"
       @mouseenter="onMouseEnterHandler"
       @mousemove="onMouseMoveHandler"
       @mouseleave="onMouseLeaveHandler"
@@ -224,30 +213,30 @@ export default {
     >
       <slot
         v-bind="{
-          id: props.id,
-          data: props.data,
-          type: props.type,
+          id: props.node.id,
+          data: props.node.data,
+          type: props.node.type,
           xPos: props.vf.position.x,
           yPos: props.vf.position.y,
           selected,
           connectable: props.connectable,
-          sourcePosition: props.sourcePosition,
-          targetPosition: props.targetPosition,
+          sourcePosition: props.node.sourcePosition,
+          targetPosition: props.node.targetPosition,
           dragging: props.vf.isDragging,
         }"
       >
         <component
-          :is="props.component ?? props.type"
+          :is="props.component ?? props.node.type"
           v-bind="{
-            id: props.id,
-            data: props.data,
-            type: props.type,
+            id: props.node.id,
+            data: props.node.data,
+            type: props.node.type,
             xPos: props.vf.position.x,
             yPos: props.vf.position.y,
             selected,
             connectable: props.connectable,
-            sourcePosition: props.sourcePosition,
-            targetPosition: props.targetPosition,
+            sourcePosition: props.node.sourcePosition,
+            targetPosition: props.node.targetPosition,
             dragging: props.vf.isDragging,
           }"
         />
