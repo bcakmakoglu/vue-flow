@@ -64,6 +64,7 @@ export default {
     <Draggable
       :grid="store.snapToGrid ? store.snapGrid : undefined"
       :enable-user-select-hack="false"
+      :scale="store.transform[2]"
       @start="onStart"
       @move="onDrag"
       @stop="onStop"
