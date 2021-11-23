@@ -242,7 +242,7 @@ export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]:
   })
 
   return nodes.filter((node) => {
-    if (!node.__vf || !node.selectable) return false
+    if (!node.__vf || node.selectable === false) return false
     const { position = { x: 0, y: 0 }, width = 0, height = 0, isDragging = false } = node.__vf
     const nBox = rectToBox({ ...position, width, height } as any)
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
