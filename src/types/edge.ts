@@ -1,6 +1,7 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './flow'
 import { EdgeTextProps } from './components'
+import { SourceTargetNode } from './node'
 
 export interface Edge<T = any> {
   id: ElementId
@@ -30,6 +31,10 @@ export interface Edge<T = any> {
   data?: T
   class?: string
   isHidden?: boolean
+}
+
+export interface GraphEdge<T = any> extends Edge<T> {
+  sourceTargetNodes: SourceTargetNode
 }
 
 export interface EdgeProps<T = any> extends Edge<T> {

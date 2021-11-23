@@ -21,7 +21,7 @@ import {
   OnConnectStopFunc,
   SetConnectionId,
 } from './connection'
-import { Edge, EdgeComponent } from './edge'
+import { EdgeComponent, GraphEdge } from './edge'
 import { NodeComponent, NodeDiffUpdate, NodeDimensionUpdate, NodeExtent, GraphNode, NodePosUpdate, TranslateExtent } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload } from './zoom'
 import { FlowHooks } from './hooks'
@@ -29,7 +29,7 @@ import { FlowHooks } from './hooks'
 export interface FlowState extends FlowOptions {
   elements: FlowElements
   nodes: GraphNode[]
-  edges: Edge[]
+  edges: GraphEdge[]
   selectedElements?: FlowElements
   selectedNodesBbox: Rect
 
@@ -99,7 +99,7 @@ export interface FlowGetters {
   getEdgeTypes: () => Record<string, EdgeComponent>
   getNodeTypes: () => Record<string, NodeComponent>
   getNodes: () => GraphNode[]
-  getEdges: () => Edge[]
+  getEdges: () => GraphEdge[]
 }
 
 export type FlowStore = Store<string, FlowState, FlowGetters, FlowActions>

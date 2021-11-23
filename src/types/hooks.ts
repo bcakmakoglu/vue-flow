@@ -1,13 +1,13 @@
 import { EventHook } from '@vueuse/core'
 import { FlowTransform, FlowInstance, FlowElements } from './flow'
-import { Edge } from './edge'
+import { GraphEdge } from './edge'
 import { Node } from './node'
 import { Connection, OnConnectStartParams } from './connection'
 
 export type FlowHook<T = any> = EventHook<T>
 
 export interface FlowEvents {
-  elementClick: { event: MouseEvent; element: Node | Edge }
+  elementClick: { event: MouseEvent; element: Node | GraphEdge }
   elementsRemove: FlowElements
   nodeDoubleClick: { event: MouseEvent; node: Node }
   nodeClick: { event: MouseEvent; node: Node }
@@ -37,14 +37,14 @@ export interface FlowEvents {
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent
-  edgeUpdate: { edge: Edge; connection: Connection }
-  edgeContextMenu: { event: MouseEvent; edge: Edge }
-  edgeMouseEnter: { event: MouseEvent; edge: Edge }
-  edgeMouseMove: { event: MouseEvent; edge: Edge }
-  edgeMouseLeave: { event: MouseEvent; edge: Edge }
-  edgeDoubleClick: { event: MouseEvent; edge: Edge }
-  edgeClick: { event: MouseEvent; edge: Edge }
-  edgeUpdateStart: { event: MouseEvent; edge: Edge }
+  edgeUpdate: { edge: GraphEdge; connection: Connection }
+  edgeContextMenu: { event: MouseEvent; edge: GraphEdge }
+  edgeMouseEnter: { event: MouseEvent; edge: GraphEdge }
+  edgeMouseMove: { event: MouseEvent; edge: GraphEdge }
+  edgeMouseLeave: { event: MouseEvent; edge: GraphEdge }
+  edgeDoubleClick: { event: MouseEvent; edge: GraphEdge }
+  edgeClick: { event: MouseEvent; edge: GraphEdge }
+  edgeUpdateStart: { event: MouseEvent; edge: GraphEdge }
   edgeUpdateEnd: MouseEvent
 }
 
