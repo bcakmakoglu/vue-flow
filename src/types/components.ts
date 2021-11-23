@@ -1,7 +1,19 @@
 import { CSSProperties } from 'vue'
-import { BackgroundVariant, Dimensions, ElementId, FitViewParams, Position, XYPosition } from './flow'
-import { Connection, ConnectionLineType } from './connection'
-import { GraphNode, Node } from './node'
+import {
+  BackgroundVariant,
+  Dimensions,
+  ElementId,
+  Elements,
+  FitViewParams,
+  FlowOptions, Loading,
+  Position,
+  XYPosition,
+} from './flow'
+import { Connection, ConnectionLineType, ConnectionMode } from './connection'
+import { GraphNode, Node, NodeExtent, NodeTypes, TranslateExtent } from './node'
+import { FlowStore } from '~/types/store'
+import { EdgeTypes } from '~/types/edge'
+import { KeyCode, PanOnScrollMode } from '~/types/zoom'
 
 export type HandleType = 'source' | 'target'
 
@@ -73,7 +85,7 @@ export interface EdgeTextProps {
   labelBgBorderRadius?: number
 }
 
-interface CustomConnectionLineProps {
+export interface CustomConnectionLineProps {
   sourceX: number
   sourceY: number
   sourcePosition: Position
@@ -85,4 +97,46 @@ interface CustomConnectionLineProps {
   nodes: GraphNode[]
   sourceNode: GraphNode
   sourceHandle: HandleElement
+}
+
+export interface FlowProps extends FlowOptions {
+  id?: string
+  store?: FlowStore
+  modelValue?: Elements
+  nodeTypes?: NodeTypes
+  edgeTypes?: EdgeTypes
+  connectionMode?: ConnectionMode
+  connectionLineType?: ConnectionLineType
+  connectionLineStyle?: CSSProperties
+  deleteKeyCode?: KeyCode
+  selectionKeyCode?: KeyCode
+  multiSelectionKeyCode?: KeyCode
+  zoomActivationKeyCode?: KeyCode
+  preventScrolling?: boolean
+  snapToGrid?: boolean
+  snapGrid?: [number, number]
+  onlyRenderVisibleElements?: boolean
+  nodesDraggable?: boolean
+  nodesConnectable?: boolean
+  elementsSelectable?: boolean
+  selectNodesOnDrag?: boolean
+  paneMoveable?: boolean
+  minZoom?: number
+  maxZoom?: number
+  defaultZoom?: number
+  defaultPosition?: [number, number]
+  translateExtent?: TranslateExtent
+  nodeExtent?: NodeExtent
+  arrowHeadColor?: string
+  markerEndId?: string
+  zoomOnScroll?: boolean
+  zoomOnPinch?: boolean
+  panOnScroll?: boolean
+  panOnScrollSpeed?: number
+  panOnScrollMode?: PanOnScrollMode
+  zoomOnDoubleClick?: boolean
+  edgeUpdaterRadius?: number
+  storageKey?: string
+  loading?: Loading
+  worker?: boolean
 }
