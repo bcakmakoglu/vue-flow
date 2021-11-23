@@ -166,8 +166,9 @@ invoke(async () => {
   )
 })
 
-throttledWatch(elements, store.setElements, { flush: 'post', throttle: 10 })
-throttledWatch(store.elements, (val) => (elements.value = val), { flush: 'post', throttle: 10 })
+watch(elements, store.setElements, { flush: 'post' })
+watch(() => elements.value.length, () => store.setElements(elements.value), { flush: 'post' })
+watch(store.elements, (val) => (elements.value = val), { flush: 'post' })
 
 const transitionName = computed(() => {
   let name = ''
