@@ -86,6 +86,8 @@ export default (id: string, preloadedState: FlowState) => {
             workerTerminate('SUCCESS')
             next = res
           } else next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+        } else {
+          next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         }
         this.elements = [...next.nextNodes, ...next.nextEdges]
         this.nodes = next.nextNodes ?? []

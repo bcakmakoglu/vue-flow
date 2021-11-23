@@ -64,7 +64,6 @@ const toggleclasss = () => {
     :min-zoom="0.2"
     :max-zoom="4"
     :zoom-on-scroll="false"
-    :worker="true"
     @elements-remove="onElementsRemove"
     @connect="onConnect"
     @node-drag-stop="onNodeDragStop"
