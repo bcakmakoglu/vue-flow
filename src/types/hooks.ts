@@ -1,23 +1,23 @@
 import { EventHook } from '@vueuse/core'
 import { FlowTransform, FlowInstance, FlowElements } from './flow'
 import { GraphEdge } from './edge'
-import { Node } from './node'
+import { GraphNode } from './node'
 import { Connection, OnConnectStartParams } from './connection'
 
 export type FlowHook<T = any> = EventHook<T>
 
 export interface FlowEvents {
-  elementClick: { event: MouseEvent; element: Node | GraphEdge }
+  elementClick: { event: MouseEvent; element: GraphNode | GraphEdge }
   elementsRemove: FlowElements
-  nodeDoubleClick: { event: MouseEvent; node: Node }
-  nodeClick: { event: MouseEvent; node: Node }
-  nodeMouseEnter: { event: MouseEvent; node: Node }
-  nodeMouseMove: { event: MouseEvent; node: Node }
-  nodeMouseLeave: { event: MouseEvent; node: Node }
-  nodeContextMenu: { event: MouseEvent; node: Node }
-  nodeDragStart: { event: MouseEvent; node: Node }
-  nodeDrag: { event: MouseEvent; node: Node }
-  nodeDragStop: { event: MouseEvent; node: Node }
+  nodeDoubleClick: { event: MouseEvent; node: GraphNode }
+  nodeClick: { event: MouseEvent; node: GraphNode }
+  nodeMouseEnter: { event: MouseEvent; node: GraphNode }
+  nodeMouseMove: { event: MouseEvent; node: GraphNode }
+  nodeMouseLeave: { event: MouseEvent; node: GraphNode }
+  nodeContextMenu: { event: MouseEvent; node: GraphNode }
+  nodeDragStart: { event: MouseEvent; node: GraphNode }
+  nodeDrag: { event: MouseEvent; node: GraphNode }
+  nodeDragStop: { event: MouseEvent; node: GraphNode }
   connect: Connection
   connectStart: {
     event: MouseEvent
@@ -30,10 +30,10 @@ export interface FlowEvents {
   moveStart: FlowTransform | undefined
   moveEnd: FlowTransform | undefined
   selectionChange: FlowElements | null
-  selectionDragStart: { event: MouseEvent; nodes: Node[] }
-  selectionDrag: { event: MouseEvent; nodes: Node[] }
-  selectionDragStop: { event: MouseEvent; nodes: Node[] }
-  selectionContextMenu: { event: MouseEvent; nodes: Node[] }
+  selectionDragStart: { event: MouseEvent; nodes: GraphNode[] }
+  selectionDrag: { event: MouseEvent; nodes: GraphNode[] }
+  selectionDragStop: { event: MouseEvent; nodes: GraphNode[] }
+  selectionContextMenu: { event: MouseEvent; nodes: GraphNode[] }
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent
