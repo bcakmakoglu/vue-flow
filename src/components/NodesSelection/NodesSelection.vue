@@ -61,7 +61,13 @@ export default {
 </script>
 <template>
   <div class="vue-flow__nodesselection" :style="{ transform }">
-    <Draggable @start="onStart" @move="onDrag" @stop="onStop">
+    <Draggable
+      :grid="store.snapToGrid ? store.snapGrid : undefined"
+      :enable-user-select-hack="false"
+      @start="onStart"
+      @move="onDrag"
+      @stop="onStop"
+    >
       <div
         :key="`vue-flow-nodesselection-rect-${store.$id}`"
         class="vue-flow__nodesselection-rect"
