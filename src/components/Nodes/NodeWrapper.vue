@@ -40,6 +40,7 @@ const onSelectNodeHandler = (event: MouseEvent) => {
       store.unsetNodesSelection()
       if (!selected.value) store.addSelectedElements([n])
     }
+    store.hooks.elementClick.trigger({ event, element: n })
     store.hooks.nodeClick.trigger({ event, node: n })
   }
 }
