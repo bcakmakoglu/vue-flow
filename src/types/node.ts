@@ -1,5 +1,6 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
-import { XYPosition, ElementId, Position } from './flow'
+import { DraggableOptions } from '@braks/revue-draggable'
+import { XYPosition, ElementId, Position, SnapGrid } from './flow'
 import { HandleElement } from './components'
 
 export interface VFInternals {
@@ -13,10 +14,27 @@ export interface VFInternals {
   }
 }
 
+export interface NodeProps<T = any> {
+  id: ElementId
+  type?: string
+  data?: T
+  selected?: boolean
+  connectable?: boolean
+  xPos?: number
+  yPos?: number
+  targetPosition?: Position
+  sourcePosition?: Position
+  dragging?: boolean
+}
+
+export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | string
+export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: Component<NodeProps> }
+export type NodeTypes = (keyof DefaultNodeTypes | string)[]
+
 export interface Node<T = any> {
   id: ElementId
   position: XYPosition
-  type?: string
+  type?: NodeTypes[number]
   class?: string
   style?: CSSProperties
   data?: T
@@ -57,19 +75,3 @@ export type NodeDimensionUpdate = {
   nodeElement: HTMLDivElement
   forceUpdate?: boolean
 }
-
-export interface NodeProps<T = any> {
-  id?: ElementId
-  type?: string
-  data?: T
-  selected?: boolean
-  connectable?: boolean
-  xPos?: number
-  yPos?: number
-  targetPosition?: Position
-  sourcePosition?: Position
-  dragging?: boolean
-}
-
-export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | string
-export type NodeTypes = string[]

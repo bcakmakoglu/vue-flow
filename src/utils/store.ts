@@ -1,28 +1,27 @@
-import { Component } from 'vue'
 import { isEdge, isNode, parseEdge, parseNode } from './graph'
 import {
   ConnectionMode,
-  EdgeProps,
   Elements,
   FlowState,
   NextElements,
   NodeExtent,
   GraphNode,
-  NodeProps,
   PanOnScrollMode,
   Node,
   Edge,
+  DefaultNodeTypes,
+  DefaultEdgeTypes,
 } from '~/types'
 import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
 import { createHooks } from '~/composables'
 
-export const defaultNodeTypes: Record<string, Component<NodeProps>> = {
+export const defaultNodeTypes: DefaultNodeTypes = {
   input: InputNode,
   default: DefaultNode,
   output: OutputNode,
 }
 
-export const defaultEdgeTypes: Record<string, Component<EdgeProps>> = {
+export const defaultEdgeTypes: DefaultEdgeTypes = {
   default: BezierEdge,
   straight: StraightEdge,
   step: StepEdge,

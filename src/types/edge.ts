@@ -3,9 +3,13 @@ import { ArrowHeadType, ElementId, Position } from './flow'
 import { EdgeTextProps } from './components'
 import { SourceTargetNode } from './node'
 
+// eslint-disable-next-line no-use-before-define
+export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: Component<EdgeProps> }
+export type EdgeTypes = (keyof DefaultEdgeTypes | string)[]
+
 export interface Edge<T = any> {
   id: ElementId
-  type?: string
+  type?: EdgeTypes[number]
   source: ElementId
   target: ElementId
   sourceHandle?: ElementId
@@ -54,12 +58,11 @@ export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
   borderRadius?: number
 }
 
-export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeSmoothStepProps, any, any, any, any, any> | string
-export type EdgeTypes = string[]
-
 export interface EdgePositions {
   sourceX: number
   sourceY: number
   targetX: number
   targetY: number
 }
+
+export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, any, any, any, any, any> | string
