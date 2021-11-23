@@ -22,16 +22,7 @@ const initialElements: Elements = [
   { id: 'e1-3', source: '1', target: '3' },
 ]
 
-const onNodeDragStart = ({ node }) => console.log('drag start', node)
-const onNodeDragStop = ({ node }) => console.log('drag stop', node)
-const onElementClick = ({ element }) => console.log('click', element)
-const onPaneClick = (event: MouseEvent) => console.log('onPaneClick', event)
-const onPaneScroll = (event?: WheelEvent) => console.log('onPaneScroll', event)
-const onPaneContextMenu = (event: MouseEvent) => console.log('onPaneContextMenu', event)
-const onMoveEnd = (flowTranasform?: FlowTransform) => console.log('onMoveEnd', flowTranasform)
-
 const elements = ref<Elements>(initialElements)
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
 const isSelectable = ref(false)
 const isDraggable = ref(false)
@@ -45,6 +36,15 @@ const paneMoveable = ref(true)
 const captureZoomClick = ref(false)
 const captureZoomScroll = ref(false)
 const captureElementClick = ref(false)
+
+const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+const onNodeDragStart = ({ node }) => console.log('drag start', node)
+const onNodeDragStop = ({ node }) => console.log('drag stop', node)
+const onElementClick = ({ element }) => (captureElementClick.value ? console.log('click', element) : undefined)
+const onPaneClick = (event: MouseEvent) => console.log('onPaneClick', event)
+const onPaneScroll = (event?: WheelEvent) => console.log('onPaneScroll', event)
+const onPaneContextMenu = (event: MouseEvent) => console.log('onPaneContextMenu', event)
+const onMoveEnd = (flowTranasform?: FlowTransform) => console.log('onMoveEnd', flowTranasform)
 </script>
 <template>
   <VueFlow
@@ -59,12 +59,12 @@ const captureElementClick = ref(false)
     :zoom-on-double-click="zoomOnDoubleClick"
     :pane-moveable="paneMoveable"
     @connect="onConnect"
-    @element-click="captureElementClick ? onElementClick : undefined"
+    @element-click="onElementClick"
     @node-drag-start="onNodeDragStart"
     @node-drag-stop="onNodeDragStop"
-    @pane-click="captureZoomClick ? onPaneClick : undefined"
-    @pane-scroll="captureZoomScroll ? onPaneScroll : undefined"
-    @pane-context-menu="captureZoomClick ? onPaneContextMenu : undefined"
+    @pane-click="(e) => (captureZoomClick ? onPaneClick(e) : undefined)"
+    @pane-scroll="(e) => (captureZoomScroll ? onPaneScroll(e) : undefined)"
+    @pane-context-menu="(e) => (captureZoomClick ? onPaneContextMenu(e) : undefined)"
     @move-end="onMoveEnd"
   >
     <MiniMap />
