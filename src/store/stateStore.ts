@@ -184,8 +184,8 @@ export default (id: string, preloadedState: FlowState) => {
         }
       },
       updateUserSelection(mousePos) {
-        const startX = this.userSelectionRect.startX || 0
-        const startY = this.userSelectionRect.startY || 0
+        const startX = this.userSelectionRect.startX
+        const startY = this.userSelectionRect.startY
 
         const nextUserSelectRect: FlowState['userSelectionRect'] = {
           ...this.userSelectionRect,
