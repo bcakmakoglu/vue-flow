@@ -38,6 +38,7 @@ interface FlowProps extends FlowOptions {
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode
   zoomActivationKeyCode?: KeyCode
+  preventScrolling?: boolean
   snapToGrid?: boolean
   snapGrid?: [number, number]
   onlyRenderVisibleElements?: boolean
@@ -176,6 +177,11 @@ const transitionName = computed(() => {
   }
   return name
 })
+</script>
+<script lang="ts">
+export default {
+  name: 'VueFlow'
+}
 </script>
 <template>
   <div class="vue-flow">

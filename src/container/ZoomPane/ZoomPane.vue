@@ -106,7 +106,6 @@ invoke(async () => {
     if (props.panOnScroll && keyPress) {
       d3s
         ?.on('wheel', (event: WheelEvent) => {
-          console.log('wheel')
           if (noWheel(event)) return
           event.preventDefault()
           event.stopImmediatePropagation()
