@@ -5,15 +5,16 @@ import {
   ElementId,
   Elements,
   FitViewParams,
-  FlowOptions, Loading,
+  FlowOptions,
+  Loading,
   Position,
   XYPosition,
 } from './flow'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { GraphNode, Node, NodeExtent, NodeTypes, TranslateExtent } from './node'
-import { FlowStore } from '~/types/store'
-import { EdgeTypes } from '~/types/edge'
-import { KeyCode, PanOnScrollMode } from '~/types/zoom'
+import { FlowStore } from './store'
+import { EdgeTypes } from './edge'
+import { KeyCode, PanOnScrollMode } from './zoom'
 
 export type HandleType = 'source' | 'target'
 

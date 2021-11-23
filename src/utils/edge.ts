@@ -9,6 +9,8 @@ import {
   SourceTargetNode,
   Transform,
   XYPosition,
+  Elements,
+  FlowElements,
 } from '~/types'
 
 export function getHandlePosition(position: Position, node: GraphNode, handle: any | null = null): XYPosition {
@@ -113,15 +115,15 @@ export function isEdgeVisible({ sourcePos, targetPos, width, height, transform }
   return overlappingArea > 0
 }
 
-export const getSourceTargetNodes = (edge: Edge, nodes: GraphNode[]): SourceTargetNode => {
+export const getSourceTargetNodes = (edge: Edge, elements: FlowElements | Elements): SourceTargetNode => {
   let { sourceNode, targetNode }: any = {
     sourceNode: null,
     targetNode: null,
   }
-  for (const node of nodes) {
+  for (const el of elements) {
     if (!sourceNode || !targetNode) {
-      if (node.id === edge.source) sourceNode = node
-      if (node.id === edge.target) targetNode = node
+      if (el.id === edge.source) sourceNode = el
+      if (el.id === edge.target) targetNode = el
     } else {
       break
     }

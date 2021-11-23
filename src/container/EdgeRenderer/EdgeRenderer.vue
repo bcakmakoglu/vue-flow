@@ -4,21 +4,20 @@ import {
   ConnectionLineType,
   ConnectionMode,
   Dimensions,
-  Edge,
   EdgeComponent,
   ElementId,
+  GraphEdge,
   GraphNode,
   HandleType,
   Transform,
   XYPosition,
 } from '../../types'
-import { getSourceTargetNodes } from '../../utils'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 interface EdgeRendererProps {
-  edges: Edge[]
+  edges: GraphEdge[]
   nodes: GraphNode[]
   edgeTypes: Record<string, EdgeComponent>
   transform: Transform
@@ -70,13 +69,6 @@ const connectionLineVisible = controlledComputed(
     ),
 )
 const transform = computed(() => `translate(${props.transform[0]},${props.transform[1]}) scale(${props.transform[2]})`)
-
-const sourceTargetNodes = (edge: Edge) => {
-  const { sourceNode, targetNode } = getSourceTargetNodes(edge, props.nodes)
-  if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-  if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
-  return { sourceNode, targetNode }
-}
 </script>
 <script lang="ts">
 export default {
@@ -91,7 +83,6 @@ export default {
         v-for="(edge, i) of props.edges"
         :key="`${edge.id}-${i}`"
         :edge="edge"
-        :source-target-nodes="sourceTargetNodes(edge)"
         :component="getType(edge.type)"
         :selectable="props.elementsSelectable"
         :edge-updater-radius="props.edgeUpdaterRadius"

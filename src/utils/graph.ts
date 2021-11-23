@@ -15,6 +15,7 @@ import {
   GraphNode,
   FlowElements,
   FlowElement,
+  GraphEdge,
 } from '~/types'
 import { useWindow } from '~/composables'
 
@@ -48,14 +49,15 @@ export const getHostForElement = (element: HTMLElement): Document => {
   else return window.document
 }
 
-export const isEdge = (element: Node | FlowElement | Connection): element is Edge =>
+export const isEdge = (element: Node | Edge | Connection): element is Edge =>
   'id' in element && 'source' in element && 'target' in element
 
-export const isNode = (element: Node | FlowElement | Connection): element is Node =>
+export const isNode = (element: Node | Edge | Connection): element is Node =>
   'id' in element && !('source' in element) && !('target' in element)
 
-export const isGraphNode = (element: Node | FlowElement | Connection): element is GraphNode =>
-  isNode(element) && '__vf' in element
+export const isGraphNode = (element: FlowElement | Connection): element is GraphNode => isNode(element) && '__vf' in element
+export const isGraphEdge = (element: FlowElement | Connection): element is GraphEdge =>
+  isEdge(element) && 'sourceTargetNodes' in element
 
 const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
   if (!isNode(node)) return []

@@ -1,17 +1,17 @@
 import { CSSProperties } from 'vue'
-import { Edge, EdgeTypes, GraphEdge } from './edge'
+import { Edge, EdgeTypes } from './edge'
 import { NodeExtent, GraphNode, NodeTypes, TranslateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode } from './zoom'
 import { FlowStore } from './store'
 
 export type ElementId = string
-export type FlowElement<T = any> = GraphNode<T> | GraphEdge<T>
+export type FlowElement<T = any> = GraphNode<T> | Edge<T>
 export type FlowElements<T = any> = FlowElement<T>[]
 export type Elements<T = any> = (Node<T> | Edge<T>)[]
 export type NextElements = {
   nextNodes: GraphNode[]
-  nextEdges: GraphEdge[]
+  nextEdges: Edge[]
 }
 
 export type Transform = [number, number, number]

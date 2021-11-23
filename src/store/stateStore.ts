@@ -1,6 +1,6 @@
 import microDiff from 'microdiff'
 import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
-import { FlowState, Node, FlowActions, Elements, FlowGetters, Edge, GraphNode, NextElements } from '~/types'
+import { FlowState, Node, FlowActions, Elements, FlowGetters, GraphNode, NextElements, GraphEdge } from '~/types'
 import {
   clampPosition,
   getDimensions,
@@ -13,6 +13,7 @@ import {
   deepUnref,
   getHandleBounds,
   isGraphNode,
+  getSourceTargetNodes,
 } from '~/utils'
 import parseElementsWorker from '~/workers/parseElements'
 
@@ -59,8 +60,23 @@ export default (id: string, preloadedState: FlowState) => {
 
         return n.filter((node) => !node.isHidden)
       },
-      getEdges(): Edge[] {
-        return this.edges.filter((edge) => !edge.isHidden)
+      getEdges(): GraphEdge[] {
+        return this.edges
+          .filter((edge) => !edge.isHidden)
+          .map((edge) => {
+            const { sourceNode, targetNode } = getSourceTargetNodes(edge, this.getNodes)
+            if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+            if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+
+            return {
+              ...edge,
+              sourceTargetNodes: {
+                sourceNode,
+                targetNode,
+              },
+            }
+          })
+          .filter(({ sourceTargetNodes: { sourceNode, targetNode } }) => !!(sourceNode && targetNode))
       },
     },
     actions: {

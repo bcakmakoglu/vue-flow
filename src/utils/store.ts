@@ -2,7 +2,6 @@ import { Component } from 'vue'
 import { isEdge, isNode, parseEdge, parseNode } from './graph'
 import {
   ConnectionMode,
-  Edge,
   EdgeProps,
   Elements,
   FlowState,
@@ -11,6 +10,8 @@ import {
   GraphNode,
   NodeProps,
   PanOnScrollMode,
+  Node,
+  Edge,
 } from '~/types'
 import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
 import { createHooks } from '~/composables'
@@ -100,9 +101,9 @@ export const initialState = (): FlowState => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export const parseElements = async (elements: Elements, nodes: GraphNode[], edges: Edge[], nodeExtent: NodeExtent) =>
+export const parseElements = async (elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) =>
   new Promise<NextElements>((resolve) => {
-    const nextElements: NextElements = {
+    const { nextEdges, nextNodes }: NextElements = {
       nextNodes: [],
       nextEdges: [],
     }
@@ -111,10 +112,10 @@ export const parseElements = async (elements: Elements, nodes: GraphNode[], edge
         const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
 
         if (storeNode) {
-          const updatedNode: GraphNode = {
+          const updatedNode = {
             ...storeNode,
             ...element,
-          }
+          } as GraphNode
           updatedNode.__vf!.position = element.position
 
           if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
@@ -123,24 +124,24 @@ export const parseElements = async (elements: Elements, nodes: GraphNode[], edge
             updatedNode.__vf!.width = 0
           }
 
-          nextElements.nextNodes.push(updatedNode)
+          nextNodes.push(updatedNode)
         } else {
-          nextElements.nextNodes.push(parseNode(element, nodeExtent))
+          nextNodes.push(parseNode(element, nodeExtent))
         }
       } else if (isEdge(element)) {
         const storeEdge = edges[edges.map((x) => x.id).indexOf(element.id)]
 
         if (storeEdge) {
-          nextElements.nextEdges.push({
+          nextEdges.push({
             ...storeEdge,
             ...element,
           })
         } else {
-          nextElements.nextEdges.push(parseEdge(element))
+          nextEdges.push(parseEdge(element))
         }
       }
     }
-    resolve(nextElements)
+    resolve({ nextEdges, nextNodes })
   })
 
 const isObject = (val: any) => val !== null && typeof val === 'object'

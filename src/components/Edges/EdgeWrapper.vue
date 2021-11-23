@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { useHandle, useStore } from '../../composables'
-import { ConnectionMode, Edge, SourceTargetNode, Position, FlowEvents, EdgePositions, Dimensions, Transform } from '../../types'
+import { ConnectionMode, Position, EdgePositions, Dimensions, Transform, GraphEdge } from '../../types'
 import { isEdge, getEdgePositions, getHandle, isEdgeVisible } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
-  edge: Edge
-  sourceTargetNodes: SourceTargetNode
+  edge: GraphEdge
   component?: any
   markerEndId?: string
   edgeUpdaterRadius?: number
@@ -15,20 +14,7 @@ interface EdgeWrapper {
   transform: Transform
 }
 
-interface EdgeEvents {
-  (event: 'mouseEnter', data: FlowEvents['edgeMouseEnter']): void
-  (event: 'mouseMove', data: FlowEvents['edgeMouseMove']): void
-  (event: 'mouseLeave', data: FlowEvents['edgeMouseLeave']): void
-  (event: 'contextMenu', data: FlowEvents['edgeContextMenu']): void
-  (event: 'click', data: FlowEvents['edgeClick']): void
-  (event: 'dblClick', data: FlowEvents['edgeDoubleClick']): void
-  (event: 'updateStart', data: FlowEvents['edgeUpdateStart']): void
-  (event: 'update', data: FlowEvents['edgeUpdate']): void
-  (event: 'updateEnd', data: FlowEvents['edgeUpdateEnd']): void
-}
-
 const props = withDefaults(defineProps<EdgeWrapper>(), {})
-const emit = defineEmits<EdgeEvents>()
 
 const store = useStore()
 
@@ -41,43 +27,18 @@ const onEdgeClick = (event: MouseEvent) => {
     store.unsetNodesSelection()
     store.addSelectedElements([props.edge])
   }
-  emit('click', data)
   store.hooks.edgeClick.trigger(data)
   store.hooks.elementClick.trigger({ event, element: props.edge })
 }
-const onEdgeContextMenu = (event: MouseEvent) => {
-  const data = { event, edge: props.edge }
-  emit('contextMenu', data)
-  store.hooks.edgeContextMenu.trigger(data)
-}
-const onDoubleClick = (event: MouseEvent) => {
-  const data = { event, edge: props.edge }
-  emit('dblClick', data)
-  store.hooks.edgeDoubleClick.trigger(data)
-}
-const onEdgeMouseEnter = (event: MouseEvent) => {
-  const data = { event, edge: props.edge }
-  emit('mouseEnter', data)
-  store.hooks.edgeMouseEnter.trigger({ event, edge: props.edge })
-}
-const onEdgeMouseMove = (event: MouseEvent) => {
-  const data = { event, edge: props.edge }
-  emit('mouseMove', data)
-  store.hooks.edgeMouseMove.trigger(data)
-}
-const onEdgeMouseLeave = (event: MouseEvent) => {
-  const data = { event, edge: props.edge }
-  emit('mouseLeave', data)
-  store.hooks.edgeMouseLeave.trigger(data)
-}
+const onEdgeContextMenu = (event: MouseEvent) => store.hooks.edgeContextMenu.trigger({ event, edge: props.edge })
+const onDoubleClick = (event: MouseEvent) => store.hooks.edgeDoubleClick.trigger({ event, edge: props.edge })
+const onEdgeMouseEnter = (event: MouseEvent) => store.hooks.edgeMouseEnter.trigger({ event, edge: props.edge })
+const onEdgeMouseMove = (event: MouseEvent) => store.hooks.edgeMouseMove.trigger({ event, edge: props.edge })
+const onEdgeMouseLeave = (event: MouseEvent) => store.hooks.edgeMouseLeave.trigger({ event, edge: props.edge })
 const onEdgeUpdaterMouseEnter = () => (updating.value = true)
 const onEdgeUpdaterMouseOut = () => (updating.value = false)
-const onEdgeUpdaterSourceMouseDown = (event: MouseEvent) => {
-  handleEdgeUpdater(event, true)
-}
-const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => {
-  handleEdgeUpdater(event, false)
-}
+const onEdgeUpdaterSourceMouseDown = (event: MouseEvent) => handleEdgeUpdater(event, true)
+const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => handleEdgeUpdater(event, false)
 
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const nodeId = isSourceHandle ? props.edge.target : props.edge.source
@@ -85,7 +46,6 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const isValidConnection = () => true
   const isTarget = isSourceHandle
 
-  emit('updateStart', { event, edge: props.edge })
   store.hooks.edgeUpdateStart.trigger({ event, edge: props.edge })
   handler(
     event,
@@ -94,32 +54,26 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
     isTarget,
     isValidConnection,
     isSourceHandle ? 'target' : 'source',
-    (connection) => {
-      emit('update', { edge: props.edge, connection })
-      store.hooks.edgeUpdate.trigger({ edge: props.edge, connection })
-    },
-    () => {
-      emit('updateEnd', event)
-      store.hooks.edgeUpdateEnd.trigger(event)
-    },
+    (connection) => store.hooks.edgeUpdate.trigger({ edge: props.edge, connection }),
+    () => store.hooks.edgeUpdateEnd.trigger(event),
   )
 }
 
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = controlledComputed(
-  () => props.sourceTargetNodes,
+  () => props.edge.sourceTargetNodes,
   () =>
     store.connectionMode === ConnectionMode.Strict
-      ? props.sourceTargetNodes.targetNode.__vf.handleBounds.target
-      : props.sourceTargetNodes.targetNode.__vf.handleBounds.target ??
-        props.sourceTargetNodes.targetNode.__vf.handleBounds.source,
+      ? props.edge.sourceTargetNodes.targetNode.__vf.handleBounds.target
+      : props.edge.sourceTargetNodes.targetNode.__vf.handleBounds.target ??
+        props.edge.sourceTargetNodes.targetNode.__vf.handleBounds.source,
 )
 
 const sourceHandle = controlledComputed(
-  () => props.sourceTargetNodes,
+  () => props.edge.sourceTargetNodes,
   () => {
-    if (props.sourceTargetNodes.sourceNode && props.sourceTargetNodes.sourceNode.__vf.handleBounds.source)
-      return getHandle(props.sourceTargetNodes.sourceNode.__vf.handleBounds.source, props.edge.sourceHandle)
+    if (props.edge.sourceTargetNodes.sourceNode && props.edge.sourceTargetNodes.sourceNode.__vf.handleBounds.source)
+      return getHandle(props.edge.sourceTargetNodes.sourceNode.__vf.handleBounds.source, props.edge.sourceHandle)
     else return null
   },
 )
@@ -136,10 +90,10 @@ const isSelected = controlledComputed(
 )
 const edgePos = computed(() =>
   getEdgePositions(
-    props.sourceTargetNodes.sourceNode,
+    props.edge.sourceTargetNodes.sourceNode,
     sourceHandle.value,
     sourcePosition.value,
-    props.sourceTargetNodes.targetNode,
+    props.edge.sourceTargetNodes.targetNode,
     targetHandle.value,
     targetPosition.value,
   ),
@@ -186,6 +140,7 @@ export default {
       v-if="edgePos.sourceX && edgePos.sourceY && edgePos.targetX && edgePos.targetY"
       v-bind="{
         id: props.edge.id,
+        sourceTargetNodes: props.edge.sourceTargetNodes,
         source: props.edge.source,
         target: props.edge.target,
         selected: isSelected,
@@ -214,6 +169,7 @@ export default {
         :is="props.component ?? props.edge.type"
         v-bind="{
           id: props.edge.id,
+          sourceTargetNodes: props.edge.sourceTargetNodes,
           source: props.edge.source,
           target: props.edge.target,
           selected: isSelected,
