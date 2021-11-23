@@ -30,6 +30,7 @@ export interface NodeProps<T = any> {
 export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | string
 export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: Component<NodeProps> }
 export type NodeTypes = (keyof DefaultNodeTypes | string)[]
+export type Draggable = Omit<DraggableOptions, 'scale' | 'grid' | 'enableUserSelectHack' | 'enableTransformFix'> | boolean
 
 export interface Node<T = any> {
   id: ElementId
@@ -41,7 +42,7 @@ export interface Node<T = any> {
   targetPosition?: Position
   sourcePosition?: Position
   isHidden?: boolean
-  draggable?: boolean
+  draggable?: Draggable
   selectable?: boolean
   connectable?: boolean
   dragHandle?: string

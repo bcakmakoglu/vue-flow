@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { FlowEvents, GraphNode, SnapGrid, VFInternals } from '../../types'
+import { GraphNode, SnapGrid, VFInternals, Draggable } from '../../types'
 import { NodeId } from '../../context'
 
 interface NodeWrapperProps {
@@ -10,26 +10,13 @@ interface NodeWrapperProps {
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
   component?: any
-  draggable?: boolean
+  draggable?: Draggable
   selectable?: boolean
   connectable?: boolean
   scale?: number
 }
 
-interface NodeEvents {
-  (event: 'mouseEnter', data: FlowEvents['nodeMouseEnter']): void
-  (event: 'mouseMove', data: FlowEvents['nodeMouseMove']): void
-  (event: 'mouseLeave', data: FlowEvents['nodeMouseLeave']): void
-  (event: 'contextMenu', data: FlowEvents['nodeContextMenu']): void
-  (event: 'click', data: FlowEvents['nodeClick']): void
-  (event: 'dblClick', data: FlowEvents['nodeDoubleClick']): void
-  (event: 'dragStart', data: FlowEvents['nodeDragStart']): void
-  (event: 'drag', data: FlowEvents['nodeDrag']): void
-  (event: 'dragStop', data: FlowEvents['nodeDragStop']): void
-}
-
 const props = defineProps<NodeWrapperProps>()
-const emit = defineEmits<NodeEvents>()
 
 const store = useStore()
 provide(NodeId, props.node.id)
@@ -39,41 +26,13 @@ const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 const selected = computed(() => props.selectable && store.selectedElements?.some(({ id }) => id === props.node.id))
 
 const onMouseEnterHandler = () =>
-  props.vf.isDragging &&
-  ((event: MouseEvent) => {
-    const data = { event, node: props.node }
-    emit('mouseEnter', data)
-    store.hooks.nodeMouseEnter.trigger(data)
-  })
-
+  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: props.node }))
 const onMouseMoveHandler = () =>
-  props.vf.isDragging &&
-  ((event: MouseEvent) => {
-    const data = { event, node: props.node }
-    emit('mouseMove', data)
-    store.hooks.nodeMouseMove.trigger(data)
-  })
-
+  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
 const onMouseLeaveHandler = () =>
-  props.vf.isDragging &&
-  ((event: MouseEvent) => {
-    const data = { event, node: props.node }
-    emit('mouseLeave', data)
-    store.hooks.nodeMouseLeave.trigger(data)
-  })
-
-const onContextMenuHandler = () => (event: MouseEvent) => {
-  const data = { event, node: props.node }
-  emit('contextMenu', data)
-  store.hooks.nodeContextMenu.trigger(data)
-}
-
-const onDoubleClick = () => (event: MouseEvent) => {
-  const data = { event, node: props.node }
-  emit('dblClick', data)
-  store.hooks.nodeDoubleClick.trigger({ event, node: props.node })
-}
-
+  props.vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
+const onContextMenuHandler = () => (event: MouseEvent) => store.hooks.nodeContextMenu.trigger({ event, node: props.node })
+const onDoubleClick = () => (event: MouseEvent) => store.hooks.nodeDoubleClick.trigger({ event, node: props.node })
 const onSelectNodeHandler = (event: MouseEvent) => {
   const n = props.node
   if (!props.draggable) {
@@ -81,14 +40,11 @@ const onSelectNodeHandler = (event: MouseEvent) => {
       store.unsetNodesSelection()
       if (!selected.value) store.addSelectedElements([n])
     }
-    emit('click', { event, node: n })
     store.hooks.nodeClick.trigger({ event, node: n })
   }
 }
-
 const onDragStart: DraggableEventListener = ({ event }) => {
   const n = props.node
-  emit('dragStart', { event, node: n })
   store.hooks.nodeDragStart.trigger({ event, node: n })
 
   if (props.selectNodesOnDrag && props.selectable) {
@@ -100,12 +56,10 @@ const onDragStart: DraggableEventListener = ({ event }) => {
     store.addSelectedElements([])
   }
 }
-
 const onDrag: DraggableEventListener = ({ event, data }) => {
   const n = props.node
   n.position.x += data.deltaX
   n.position.y += data.deltaY
-  emit('drag', { event, node: n })
   store.hooks.nodeDrag.trigger({ event, node: n })
 
   store.updateNodePosDiff({
@@ -117,7 +71,6 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
     isDragging: true,
   })
 }
-
 const onDragStop: DraggableEventListener = ({ event }) => {
   const n = props.node
   // onDragStop also gets called when user just clicks on a node.
@@ -128,16 +81,12 @@ const onDragStop: DraggableEventListener = ({ event }) => {
     }
     store.hooks.nodeClick.trigger({ event, node: n })
     store.hooks.elementClick.trigger({ event, element: n })
-
     return
   }
-
   store.updateNodePosDiff({
     id: n.id,
     isDragging: false,
   })
-
-  emit('dragStop', { event, node: n })
   store.hooks.nodeDragStop.trigger({ event, node: n })
 }
 
@@ -181,6 +130,7 @@ export default {
     :scale="props.scale"
     :grid="props.snapGrid"
     :enable-user-select-hack="false"
+    v-bind="props.draggable"
     @start="onDragStart"
     @move="onDrag"
     @stop="onDragStop"
