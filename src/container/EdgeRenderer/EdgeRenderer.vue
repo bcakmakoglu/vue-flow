@@ -112,6 +112,7 @@ export default {
         :connection-handle-type="props.connectionHandleType"
         :connection-position="props.connectionPosition"
         :connection-mode="props.connectionMode"
+        :nodes="props.nodes"
         :transform="props.transform"
       >
         <template #default="customConnectionLineProps">

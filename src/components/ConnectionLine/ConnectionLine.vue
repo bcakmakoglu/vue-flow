@@ -11,6 +11,7 @@ import {
   ConnectionMode,
   VFInternals,
   Transform,
+  GraphNode,
 } from '../../types'
 
 interface ConnectionLineProps {
@@ -22,6 +23,7 @@ interface ConnectionLineProps {
   connectionHandleType?: HandleType
   connectionPosition?: XYPosition
   connectionMode: ConnectionMode
+  nodes: GraphNode[]
   transform: Transform
 }
 
@@ -31,6 +33,7 @@ const props = withDefaults(defineProps<ConnectionLineProps>(), {
   connectionPosition: () => ({ x: 0, y: 0 }),
 })
 
+const sourceNode = props.nodes.find((n) => n.id === props.connectionNodeId)
 const sourceHandle =
   props.connectionHandleId && props.connectionHandleType
     ? props.vf.handleBounds[props.connectionHandleType]?.find((d: HandleElement) => d.id === props.connectionHandleId)
@@ -101,6 +104,9 @@ export default {
         targetPosition,
         connectionLineType: props.connectionLineType,
         connectionLineStyle: props.connectionLineStyle,
+        nodes: props.nodes,
+        sourceNode,
+        sourceHandle,
       }"
     >
       <path :d="dAttr" class="vue-flow__connection-path" :style="props.connectionLineStyle" />

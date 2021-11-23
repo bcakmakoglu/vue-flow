@@ -1,7 +1,7 @@
 import { CSSProperties } from 'vue'
 import { BackgroundVariant, Dimensions, ElementId, FitViewParams, Position, XYPosition } from './flow'
-import { Connection } from './connection'
-import { Node } from './node'
+import { Connection, ConnectionLineType } from './connection'
+import { GraphNode, Node } from './node'
 
 export type HandleType = 'source' | 'target'
 
@@ -33,7 +33,7 @@ export interface ControlEvents {
   (event: 'interaction-change', active: boolean): void
 }
 
-export type StringFunc = (node: Node) => string
+export type StringFunc = (node: Node | GraphNode) => string
 export type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
 
 export interface MiniMapProps {
@@ -71,4 +71,18 @@ export interface EdgeTextProps {
   labelBgStyle?: any
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
+}
+
+interface CustomConnectionLineProps {
+  sourceX: number
+  sourceY: number
+  sourcePosition: Position
+  targetX: number
+  targetY: number
+  targetPosition: Position
+  connectionLineType: ConnectionLineType
+  connectionLineStyle: CSSProperties
+  nodes: GraphNode[]
+  sourceNode: GraphNode
+  sourceHandle: HandleElement
 }
