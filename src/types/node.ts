@@ -45,6 +45,7 @@ export interface Node<T = any> {
   selectable?: boolean
   connectable?: boolean
   dragHandle?: string
+  snapGrid?: SnapGrid
 }
 
 export interface GraphNode<T = any> extends Node<T> {

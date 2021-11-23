@@ -34,7 +34,7 @@ const getType = (type?: string) => {
 }
 
 const transform = computed(() => `translate(${props.transform[0]}px,${props.transform[1]}px) scale(${props.transform[2]})`)
-const snapGrid = computed(() => (props.snapToGrid ? props.snapGrid : undefined))
+const snapGrid = (node: GraphNode) => node.snapGrid ?? (props.snapToGrid ? props.snapGrid : undefined)
 </script>
 <script lang="ts">
 export default {
@@ -52,7 +52,7 @@ export default {
       :draggable="typeof node.draggable === 'undefined' ? props.elementsSelectable : node.draggable"
       :selectable="typeof node.selectable === 'undefined' ? props.elementsSelectable : node.selectable"
       :connectable="typeof node.connectable === 'undefined' ? props.elementsSelectable : node.connectable"
-      :snap-grid="snapGrid"
+      :snap-grid="snapGrid(node)"
       :select-nodes-on-drag="props.selectNodesOnDrag"
       :scale="props.transform[2]"
     >
