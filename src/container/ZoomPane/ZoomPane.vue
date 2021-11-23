@@ -139,7 +139,7 @@ invoke(async () => {
     } else if (typeof d3ZoomHandler !== 'undefined') {
       d3s
         ?.on('wheel', (event: WheelEvent) => {
-          if (!props.preventScrolling || noWheel(event)) return
+          if ((!props.zoomOnScroll && props.preventScrolling) || !props.preventScrolling || noWheel(event)) return
           event.preventDefault()
         })
         .on('wheel.zoom', d3ZoomHandler)
