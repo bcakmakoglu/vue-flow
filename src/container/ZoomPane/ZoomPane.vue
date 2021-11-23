@@ -18,6 +18,7 @@ interface ZoomPaneProps {
   panOnScrollSpeed?: number
   panOnScrollMode?: PanOnScrollMode
   zoomOnDoubleClick?: boolean
+  preventScrolling?: boolean
 }
 
 const props = withDefaults(defineProps<ZoomPaneProps>(), {
@@ -32,6 +33,7 @@ const props = withDefaults(defineProps<ZoomPaneProps>(), {
   panOnScrollSpeed: 0.5,
   panOnScrollMode: PanOnScrollMode.Free,
   paneMoveable: true,
+  preventScrolling: true,
 })
 const store = useStore()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
@@ -46,6 +48,8 @@ const eventToFlowTransform = (eventTransform: ZoomTransform): FlowTransform => (
   y: eventTransform.y,
   zoom: eventTransform.k,
 })
+
+const noWheel = (event: Event) => (event.target as Element).closest('.nowheel')
 
 const clampedX = clamp(props.defaultPosition[0], store.translateExtent[0][0], store.translateExtent[1][0])
 const clampedY = clamp(props.defaultPosition[1], store.translateExtent[0][1], store.translateExtent[1][1])
@@ -102,6 +106,8 @@ invoke(async () => {
     if (props.panOnScroll && keyPress) {
       d3s
         ?.on('wheel', (event: WheelEvent) => {
+          console.log('wheel')
+          if (noWheel(event)) return
           event.preventDefault()
           event.stopImmediatePropagation()
 
@@ -132,7 +138,12 @@ invoke(async () => {
         })
         .on('wheel.zoom', null)
     } else if (typeof d3ZoomHandler !== 'undefined') {
-      d3s?.on('wheel', null).on('wheel.zoom', d3ZoomHandler)
+      d3s
+        ?.on('wheel', (event: WheelEvent) => {
+          if (!props.preventScrolling || noWheel(event)) return
+          event.preventDefault()
+        })
+        .on('wheel.zoom', d3ZoomHandler)
     }
   })
 
@@ -150,7 +161,7 @@ invoke(async () => {
     // if zoom on double click is disabled, we prevent the double click event
     if (!props.zoomOnDoubleClick && event.type === 'dblclick') return false
 
-    if ((event.target as Element).closest('.nowheel') && event.type === 'wheel') return false
+    if (noWheel(event) && event.type === 'wheel') return false
 
     // when the target element is a node, we still allow zooming
     if (
@@ -209,11 +220,7 @@ export default {
   <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
     <slot
       v-bind="{
-        transform: [
-          clamp(transform.x, store.translateExtent[0][0], store.translateExtent[1][0]),
-          clamp(transform.y, store.translateExtent[0][0], store.translateExtent[1][0]),
-          clamp(transform.zoom, store.translateExtent[0][0], store.translateExtent[1][0]),
-        ],
+        transform: store.transform,
         dimensions: { width, height },
       }"
     />

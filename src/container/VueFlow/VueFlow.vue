@@ -15,6 +15,7 @@ import {
   FlowState,
   FlowInstance,
   Loading,
+  FlowOptions,
 } from '../../types'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
@@ -24,7 +25,7 @@ import LoadingIndicator from '../../components/Loading/LoadingIndicator.vue'
 import { createHooks, initFlow, useWindow, useZoomPanHelper } from '../../composables'
 import { onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
 
-interface FlowProps {
+interface FlowProps extends FlowOptions {
   id?: string
   store?: FlowStore
   modelValue?: Elements
@@ -95,6 +96,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
     [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   ],
   arrowHeadColor: '#b1b1b7',
+  preventScrolling: true,
   zoomOnScroll: true,
   zoomOnPinch: true,
   zoomOnDoubleClick: true,
@@ -182,6 +184,7 @@ const transitionName = computed(() => {
         <template #default>
           <ZoomPane
             :key="`zoom-pane-${store.$id}`"
+            :prevent-scrolling="store.preventScrolling"
             :selection-key-code="store.selectionKeyCode"
             :zoom-activation-key-code="store.zoomActivationKeyCode"
             :default-zoom="store.defaultZoom"

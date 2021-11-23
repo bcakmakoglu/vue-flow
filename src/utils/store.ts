@@ -54,6 +54,7 @@ export const initialState = (): FlowState => ({
     [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
     [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   ],
+  preventScrolling: true,
   zoomOnScroll: true,
   zoomOnPinch: true,
   zoomOnDoubleClick: true,

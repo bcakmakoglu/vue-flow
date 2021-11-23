@@ -140,6 +140,7 @@ export interface FlowOptions {
   panOnScrollSpeed?: number
   panOnScrollMode?: PanOnScrollMode
   zoomOnDoubleClick?: boolean
+  preventScrolling?: boolean
   edgeUpdaterRadius?: number
   storageKey?: string
   loading?: Loading
