@@ -1,7 +1,7 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
 import { ArrowHeadType, ElementId, Position } from './flow'
 import { EdgeTextProps } from './components'
-import { SourceTargetNode } from './node'
+import { GraphNode } from './node'
 
 // eslint-disable-next-line no-use-before-define
 export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: Component<EdgeProps> }
@@ -38,7 +38,8 @@ export interface Edge<T = any> {
 }
 
 export interface GraphEdge<T = any> extends Edge<T> {
-  sourceTargetNodes: SourceTargetNode
+  sourceNode: GraphNode
+  targetNode: GraphNode
 }
 
 export interface EdgeProps<T = any> extends Edge<T> {

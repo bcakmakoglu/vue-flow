@@ -70,13 +70,11 @@ export default (id: string, preloadedState: FlowState) => {
 
                 return {
                   ...edge,
-                  sourceTargetNodes: {
-                    sourceNode,
-                    targetNode,
-                  },
+                  sourceNode,
+                  targetNode,
                 }
               })
-              .filter(({ sourceTargetNodes: { sourceNode, targetNode } }) => !!(sourceNode && targetNode)) ?? []
+              .filter(({ sourceNode, targetNode }) => !!(sourceNode && targetNode)) ?? []
           )
         }
         return []

@@ -14,7 +14,6 @@ import {
   FlowStore,
   GraphNode,
   FlowElements,
-  FlowElement,
   GraphEdge,
 } from '~/types'
 import { useWindow } from '~/composables'
@@ -55,10 +54,8 @@ export const isEdge = (element: Node | Edge | Connection): element is Edge =>
 export const isNode = (element: Node | Edge | Connection): element is Node =>
   'id' in element && !('source' in element) && !('target' in element)
 
-export const isGraphNode = (element: Node | FlowElement | Connection): element is GraphNode =>
-  isNode(element) && '__vf' in element
-export const isGraphEdge = (element: Edge | FlowElement | Connection): element is GraphEdge =>
-  isEdge(element) && 'sourceTargetNodes' in element
+export const isGraphNode = (element: any): element is GraphNode => isNode(element) && '__vf' in element
+export const isGraphEdge = (element: any): element is GraphEdge => isEdge(element) && 'sourceTargetNodes' in element
 
 const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
   if (!isNode(node)) return []
@@ -173,15 +170,15 @@ export const parseNode = (node: Node, nodeExtent: NodeExtent): GraphNode => ({
     width: 0,
     height: 0,
     handleBounds: {
-      source: undefined,
-      target: undefined,
+      source: [],
+      target: [],
     },
     isDragging: false,
   },
   position: clampPosition(node.position, nodeExtent),
 })
 
-export const parseEdge = (edge: Edge): Edge => ({
+export const parseEdge = (edge: Edge): GraphEdge => ({
   ...edge,
   source: edge.source.toString(),
   target: edge.target.toString(),
@@ -189,6 +186,8 @@ export const parseEdge = (edge: Edge): Edge => ({
   targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
   id: edge.id.toString(),
   type: edge.type ?? 'default',
+  sourceNode: {} as any,
+  targetNode: {} as any,
 })
 
 const getBoundsOfBoxes = (box1: Box, box2: Box): Box => ({
@@ -270,7 +269,7 @@ export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]:
   })
 }
 
-export const getConnectedEdges = (nodes: GraphNode[], edges: Edge[]) => {
+export const getConnectedEdges = (nodes: GraphNode[], edges: GraphEdge[]) => {
   const nodeIds = nodes.map((node) => node.id)
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }

@@ -60,26 +60,23 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
 }
 
 // when connection type is loose we can define all handles as sources
-const targetNodeHandles = controlledComputed(
-  () => props.edge.sourceTargetNodes,
-  () =>
-    store.connectionMode === ConnectionMode.Strict
-      ? props.edge.sourceTargetNodes.targetNode.__vf.handleBounds.target
-      : props.edge.sourceTargetNodes.targetNode.__vf.handleBounds.target ??
-        props.edge.sourceTargetNodes.targetNode.__vf.handleBounds.source,
+const targetNodeHandles = computed(() =>
+  store.connectionMode === ConnectionMode.Strict
+    ? props.edge.targetNode.__vf.handleBounds.target
+    : props.edge.targetNode.__vf.handleBounds.target ?? props.edge.targetNode.__vf.handleBounds.source,
 )
 
 const sourceHandle = controlledComputed(
-  () => props.edge.sourceTargetNodes,
+  () => props.edge,
   () => {
-    if (props.edge.sourceTargetNodes.sourceNode && props.edge.sourceTargetNodes.sourceNode.__vf.handleBounds.source)
-      return getHandle(props.edge.sourceTargetNodes.sourceNode.__vf.handleBounds.source, props.edge.sourceHandle)
-    else return null
+    if (props.edge.sourceNode && props.edge.sourceNode.__vf.handleBounds.source)
+      return getHandle(props.edge.sourceNode.__vf.handleBounds.source, props.edge.sourceHandle)
+    else return undefined
   },
 )
 const targetHandle = computed(() => {
   if (targetNodeHandles.value) return getHandle(targetNodeHandles.value, props.edge.targetHandle)
-  else return null
+  else return undefined
 })
 const sourcePosition = eagerComputed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = eagerComputed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
@@ -90,10 +87,10 @@ const isSelected = controlledComputed(
 )
 const edgePos = computed(() =>
   getEdgePositions(
-    props.edge.sourceTargetNodes.sourceNode,
+    props.edge.sourceNode,
     sourceHandle.value,
     sourcePosition.value,
-    props.edge.sourceTargetNodes.targetNode,
+    props.edge.targetNode,
     targetHandle.value,
     targetPosition.value,
   ),
@@ -140,7 +137,8 @@ export default {
       v-if="edgePos.sourceX && edgePos.sourceY && edgePos.targetX && edgePos.targetY"
       v-bind="{
         id: props.edge.id,
-        sourceTargetNodes: props.edge.sourceTargetNodes,
+        sourceNode: props.edge.sourceNode,
+        targetNode: props.edge.targetNode,
         source: props.edge.source,
         target: props.edge.target,
         selected: isSelected,
@@ -169,7 +167,8 @@ export default {
         :is="props.component ?? props.edge.type"
         v-bind="{
           id: props.edge.id,
-          sourceTargetNodes: props.edge.sourceTargetNodes,
+          sourceNode: props.edge.sourceNode,
+          targetNode: props.edge.targetNode,
           source: props.edge.source,
           target: props.edge.target,
           selected: isSelected,
