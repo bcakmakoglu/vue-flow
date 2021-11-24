@@ -95,7 +95,7 @@ const elements = ref<Elements>([
 /* main.css */
 
 /* import the required styles */
-@import "node_modules/@braks/vue-flow/dist/styles.css";
+@import "node_modules/@braks/vue-flow/dist/style.css";
 
 /* import the default theme (optional) */
 @import "node_modules/@braks/vue-flow/dist/theme-default.css";
