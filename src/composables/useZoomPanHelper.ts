@@ -1,7 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
 import useStore from './useStore'
-import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils'
-import { FitViewParams, FlowTransform, Node, Rect, UseZoomPanHelper, XYPosition } from '~/types'
+import { getRectOfNodes, pointToRendererPoint, getTransformForBounds, isGraphNode } from '~/utils'
+import { FitViewParams, FlowTransform, Rect, UseZoomPanHelper, XYPosition } from '~/types'
 
 const DEFAULT_PADDING = 0.1
 
@@ -15,9 +15,9 @@ export default (store = useStore()): UseZoomPanHelper => {
       store.d3Selection && store.d3Zoom?.transform(store.d3Selection, nextTransform)
     },
     fitView: (options: FitViewParams = { padding: DEFAULT_PADDING, includeHiddenNodes: false }) => {
-      if (!store.nodes.length) return
+      if (!store.getNodes.length) return
 
-      const bounds = getRectOfNodes(options.includeHiddenNodes ? store.nodes : store.nodes.filter((node: Node) => !node.isHidden))
+      const bounds = getRectOfNodes(options.includeHiddenNodes ? store.elements.filter(isGraphNode) : store.getNodes)
       const [x, y, zoom] = getTransformForBounds(
         bounds,
         store.dimensions.width,
