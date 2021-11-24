@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { Edge, ElementId, FlowElement, FlowElements, KeyCode } from '../../types'
+import { ElementId, FlowElement, FlowElements, GraphEdge, KeyCode } from '../../types'
 import { useStore, useKeyPress } from '../../composables'
 import { getConnectedEdges, isGraphNode } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 
 interface SelectionPaneProps {
-  edges: Edge[]
+  edges: GraphEdge[]
   selectedElements?: FlowElements
   selectionKeyCode?: KeyCode
   deleteKeyCode?: KeyCode
