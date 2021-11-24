@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { FlowElements, GraphNode } from '../../types'
-import { getRectOfNodes, isGraphNode } from '../../utils'
+import { FlowElements } from '../../types'
+import { getRectOfNodes } from '../../utils'
 
 interface NodesSelectionProps {
   selectedElements: FlowElements
@@ -11,46 +11,30 @@ interface NodesSelectionProps {
 const store = useStore()
 
 const props = defineProps<NodesSelectionProps>()
-const selectedNodes: GraphNode[] = props.selectedElements ? props.selectedElements.filter(isGraphNode) : []
-
-const selectedNodesBBox = getRectOfNodes(selectedNodes)
-
+const selectedNodesBBox = getRectOfNodes(store.getSelectedNodes)
 const innerStyle = {
   width: `${selectedNodesBBox.width}px`,
   height: `${selectedNodesBBox.height}px`,
   top: `${selectedNodesBBox.y}px`,
   left: `${selectedNodesBBox.x}px`,
 }
-
-const onStart: DraggableEventListener = ({ event }) => {
-  const nodes = selectedNodes
-  store.hooks.selectionDragStart.trigger({ event, nodes })
-}
-
+const onStart: DraggableEventListener = ({ event }) =>
+  store.hooks.selectionDragStart.trigger({ event, nodes: store.getSelectedNodes })
 const onDrag: DraggableEventListener = ({ event, data }) => {
-  const nodes = selectedNodes
-  store.hooks.selectionDrag.trigger({ event, nodes })
-  store.updateNodePosDiff({
-    diff: {
-      x: data.deltaX,
-      y: data.deltaY,
-    },
-    isDragging: true,
+  store.hooks.selectionDrag.trigger({ event, nodes: store.getSelectedNodes })
+  store.getSelectedNodes.forEach((node) => {
+    node.position = {
+      x: node.position.x + data.deltaX,
+      y: node.position.y + data.deltaY,
+    }
+    node.__vf.isDragging = true
   })
 }
-
 const onStop: DraggableEventListener = ({ event }) => {
-  const nodes = selectedNodes
-  store.hooks.selectionDragStop.trigger({ event, nodes })
-  store.updateNodePosDiff({
-    isDragging: false,
-  })
+  store.hooks.selectionDragStop.trigger({ event, nodes: store.getSelectedNodes })
+  store.getSelectedNodes.forEach((node) => (node.__vf.isDragging = false))
 }
-
-const onContextMenu = (event: MouseEvent) => {
-  const nodes = selectedNodes
-  store.hooks.selectionContextMenu.trigger({ event, nodes })
-}
+const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: store.getSelectedNodes })
 
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 </script>
