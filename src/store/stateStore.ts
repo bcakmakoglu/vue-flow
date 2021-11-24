@@ -1,9 +1,8 @@
 import microDiff from 'microdiff'
 import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
-import { FlowState, Node, FlowActions, Elements, FlowGetters, GraphNode, NextElements, GraphEdge } from '~/types'
+import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, NextElements, GraphEdge, FlowElements } from '~/types'
 import {
   clampPosition,
-  getDimensions,
   getConnectedEdges,
   getNodesInside,
   getRectOfNodes,
@@ -11,9 +10,9 @@ import {
   defaultNodeTypes,
   defaultEdgeTypes,
   deepUnref,
-  getHandleBounds,
   isGraphNode,
   getSourceTargetNodes,
+  isEdge,
 } from '~/utils'
 import parseElementsWorker from '~/workers/parseElements'
 
@@ -42,11 +41,12 @@ export default (id: string, preloadedState: FlowState) => {
         this.nodeTypes?.forEach((n) => (nodeTypes[n] = n))
         return nodeTypes
       },
-      getNodes(): Node[] {
+      getNodes(): GraphNode[] {
+        const nodes = this.elements.filter(isGraphNode)
         const n = this.onlyRenderVisibleElements
-          ? this.nodes &&
+          ? nodes &&
             getNodesInside(
-              this.nodes,
+              nodes,
               {
                 x: 0,
                 y: 0,
@@ -56,12 +56,13 @@ export default (id: string, preloadedState: FlowState) => {
               this.transform,
               true,
             )
-          : this.nodes
+          : nodes
 
         return n.filter((node) => !node.isHidden)
       },
       getEdges(): GraphEdge[] {
-        return this.edges
+        const edges = this.elements.filter(isEdge)
+        return edges
           .filter((edge) => !edge.isHidden)
           .map((edge) => {
             const { sourceNode, targetNode } = getSourceTargetNodes(edge, this.getNodes)
@@ -77,6 +78,9 @@ export default (id: string, preloadedState: FlowState) => {
             }
           })
           .filter(({ sourceTargetNodes: { sourceNode, targetNode } }) => !!(sourceNode && targetNode))
+      },
+      getSelectedNodes(): GraphNode[] {
+        return this.selectedElements?.filter(isGraphNode) ?? []
       },
     },
     actions: {
@@ -106,86 +110,6 @@ export default (id: string, preloadedState: FlowState) => {
           next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
         }
         this.elements = [...next.nextNodes, ...next.nextEdges]
-        this.nodes = next.nextNodes ?? []
-        this.edges = next.nextEdges ?? []
-      },
-      updateNodeDimensions({ id, nodeElement, forceUpdate }) {
-        const i = this.nodes.map((x) => x.id).indexOf(id)
-        const node = this.nodes[i]
-        const dimensions = getDimensions(nodeElement)
-
-        const doUpdate =
-          dimensions.width &&
-          dimensions.height &&
-          (node.__vf?.width !== dimensions.width || node.__vf?.height !== dimensions.height || forceUpdate)
-
-        if (doUpdate) {
-          const handleBounds = getHandleBounds(nodeElement, this.transform[2])
-
-          this.nodes.splice(i, 1, {
-            ...node,
-            __vf: {
-              ...node.__vf,
-              ...dimensions,
-              handleBounds,
-            },
-          })
-        }
-      },
-      updateNodePos({ id, pos }) {
-        const i = this.nodes.map((x) => x.id).indexOf(id)
-        const node = this.nodes[i]
-
-        if (this.snapToGrid) {
-          const [gridSizeX, gridSizeY] = this.snapGrid
-          pos = {
-            x: gridSizeX * Math.round(pos.x / gridSizeX),
-            y: gridSizeY * Math.round(pos.y / gridSizeY),
-          }
-        }
-
-        this.nodes.splice(i, 1, {
-          ...node,
-          __vf: {
-            ...node.__vf,
-            position: pos,
-          },
-        })
-      },
-      updateNodePosDiff({ id, diff, isDragging }) {
-        const update = (node: GraphNode, i: number) => {
-          const updatedNode: GraphNode = {
-            ...node,
-            __vf: {
-              ...node.__vf,
-              isDragging,
-            },
-          }
-
-          if (diff && node.__vf) {
-            updatedNode.__vf!.position = {
-              x: node.__vf.position.x + diff.x,
-              y: node.__vf.position.y + diff.y,
-            }
-          }
-
-          this.nodes.splice(i, 1, {
-            ...node,
-            ...updatedNode,
-          })
-        }
-
-        if (!id) {
-          const selectedNodes = this.nodes.filter((x) => this.selectedElements?.find((sNode) => sNode?.id === x.id))
-          selectedNodes.forEach((node) => {
-            const i = this.nodes.map((x) => x.id).indexOf(node.id)
-            update(node, i)
-          })
-        } else {
-          const i = this.nodes.map((x) => x.id).indexOf(id)
-          const node = this.nodes[i]
-          update(node, i)
-        }
       },
       setUserSelection(mousePos) {
         this.selectionActive = true
@@ -210,25 +134,22 @@ export default (id: string, preloadedState: FlowState) => {
           width: Math.abs(mousePos.x - startX),
           height: Math.abs(mousePos.y - startY),
         }
-
-        const selectedNodes = getNodesInside(this.nodes, nextUserSelectRect, this.transform)
-        const selectedEdges = getConnectedEdges(selectedNodes, this.edges)
+        const selectedNodes = getNodesInside(this.getNodes, this.userSelectionRect, this.transform)
+        const selectedEdges = getConnectedEdges(selectedNodes, this.getEdges)
 
         const nextSelectedElements = [...selectedNodes, ...selectedEdges]
         this.userSelectionRect = nextUserSelectRect
         this.selectedElements = nextSelectedElements
       },
       unsetUserSelection() {
-        const selectedNodes = this.selectedElements?.filter((node) => node && isGraphNode(node) && node.__vf) as GraphNode[]
-
         this.selectionActive = false
         this.userSelectionRect.draw = false
 
-        if (!selectedNodes || selectedNodes.length === 0) {
+        if (!this.getSelectedNodes || this.getSelectedNodes.length === 0) {
           this.selectedElements = undefined
           this.nodesSelectionActive = false
         } else {
-          this.selectedNodesBbox = getRectOfNodes(selectedNodes)
+          this.selectedNodesBbox = getRectOfNodes(this.getSelectedNodes)
           this.nodesSelectionActive = true
         }
       },
@@ -259,10 +180,7 @@ export default (id: string, preloadedState: FlowState) => {
         this.nodes = this.nodes.map((node) => {
           return {
             ...node,
-            __vf: {
-              ...node.__vf,
-              position: node.__vf?.position ? clampPosition(node.__vf.position, nodeExtent) : { x: 0, y: 0 },
-            },
+            position: node.position ? clampPosition(node.position, nodeExtent) : { x: 0, y: 0 },
           }
         })
       },
