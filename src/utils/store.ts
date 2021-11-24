@@ -8,7 +8,7 @@ import {
   PanOnScrollMode,
   DefaultNodeTypes,
   DefaultEdgeTypes,
-  Edge,
+  GraphEdge,
 } from '~/types'
 import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
 import { createHooks } from '~/composables'
@@ -96,7 +96,7 @@ export const initialState = (): FlowState => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export const parseElements = (elements: Elements, nodes: GraphNode[], edges: Edge[], nodeExtent: NodeExtent) => {
+export const parseElements = (elements: Elements, nodes: GraphNode[], edges: GraphEdge[], nodeExtent: NodeExtent) => {
   const parsedElements = []
   for (const element of elements) {
     if (isNode(element)) {
@@ -125,7 +125,7 @@ export const parseElements = (elements: Elements, nodes: GraphNode[], edges: Edg
         parsedElements.push({
           ...storeEdge,
           ...element,
-        })
+        } as GraphEdge)
       } else {
         parsedElements.push(parseEdge(element))
       }

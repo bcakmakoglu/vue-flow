@@ -8,7 +8,7 @@ export interface VFInternals {
   width: number
   height: number
   handleBounds: {
-    source?: HandleElement[]
+    source: HandleElement[]
     target?: HandleElement[]
   }
 }
@@ -50,11 +50,6 @@ export interface Node<T = any> {
 
 export interface GraphNode<T = any> extends Node<T> {
   __vf: VFInternals
-}
-
-export type SourceTargetNode = {
-  sourceNode: GraphNode
-  targetNode: GraphNode
 }
 
 export type TranslateExtent = [[number, number], [number, number]]

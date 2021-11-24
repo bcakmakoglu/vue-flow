@@ -26,7 +26,7 @@ import { NodeComponent, NodeExtent, GraphNode, TranslateExtent } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload } from './zoom'
 import { FlowHooks } from './hooks'
 
-export interface FlowState extends FlowOptions {
+export interface FlowState extends Omit<FlowOptions, 'elements'> {
   hooks: FlowHooks
   instance?: FlowInstance
 
