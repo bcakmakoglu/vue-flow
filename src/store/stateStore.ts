@@ -1,16 +1,18 @@
 import microDiff from 'microdiff'
 import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
-import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, GraphEdge, Edge } from '~/types'
+import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, GraphEdge, Edge, NextElements } from '~/types'
 import {
   getConnectedEdges,
   getNodesInside,
   getRectOfNodes,
-  parseElements,
   defaultNodeTypes,
   defaultEdgeTypes,
   isGraphNode,
   getSourceTargetNodes,
   isEdge,
+  processElements,
+  parseElement,
+  parseElements,
 } from '~/utils'
 
 const pinia = createPinia()
@@ -84,8 +86,19 @@ export default (id: string, preloadedState: FlowState) => {
       },
     },
     actions: {
-      setElements(elements) {
-        const { nodes, edges } = parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
+      async setElements(elements) {
+        const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
+        edges.forEach((edge: Edge, i, arr) => {
+          const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
+          if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+          if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+
+          arr[i] = {
+            ...edge,
+            sourceNode,
+            targetNode,
+          }
+        })
         this.elements = [...nodes, ...edges]
       },
       setUserSelection(mousePos) {
@@ -175,34 +188,52 @@ export default (id: string, preloadedState: FlowState) => {
         this.elementsSelectable = isInteractive
       },
       addElements(elements: Elements) {
-        const { nodes, edges } = parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
+        const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
+        edges.forEach((edge: Edge, i, arr) => {
+          const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
+          if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+          if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+
+          arr[i] = {
+            ...edge,
+            sourceNode,
+            targetNode,
+          }
+        })
         this.elements = [...this.elements, ...nodes, ...edges]
       },
       async setState(state) {
-        // set state variables
-        const skip = [
-          'modelValue',
-          'd3Zoom',
-          'd3Selection',
-          'd3ZoomHandler',
-          'minZoom',
-          'maxZoom',
-          'translateExtent',
-          'nodeExtent',
-        ]
-        for (const opt of Object.keys(state)) {
-          const val = state[opt as keyof FlowState]
-          if (typeof val !== 'undefined' && !skip.includes(opt)) {
-            if (typeof val === 'object' && !Array.isArray(val)) {
-              ;(store as any)[opt] = { ...(store as any)[opt], ...val }
-            } else (store as any)[opt] = val
-          }
-        }
+        if (state.panOnScroll) this.panOnScroll = state.panOnScroll
+        if (state.panOnScrollMode) this.panOnScrollMode = state.panOnScrollMode
+        if (state.panOnScrollSpeed) this.panOnScrollSpeed = state.panOnScrollSpeed
+        if (state.paneMoveable) this.paneMoveable = state.paneMoveable
+        if (state.zoomOnScroll) this.zoomOnScroll = state.zoomOnScroll
+        if (state.preventScrolling) this.preventScrolling = state.preventScrolling
+        if (state.zoomOnDoubleClick) this.zoomOnDoubleClick = state.zoomOnDoubleClick
+        if (state.zoomOnPinch) this.zoomOnPinch = state.zoomOnPinch
+        if (state.defaultZoom) this.defaultZoom = state.defaultZoom
+        if (state.defaultPosition) this.defaultPosition = state.defaultPosition
+        if (state.edgeTypes) this.edgeTypes = state.edgeTypes
+        if (state.nodeTypes) this.nodeTypes = state.nodeTypes
+        if (state.storageKey) this.storageKey = state.storageKey
+        if (state.edgeUpdaterRadius) this.edgeUpdaterRadius = state.edgeUpdaterRadius
+        if (state.elementsSelectable) this.elementsSelectable = state.elementsSelectable
+        if (state.onlyRenderVisibleElements) this.onlyRenderVisibleElements = state.onlyRenderVisibleElements
+        if (state.nodesConnectable) this.nodesConnectable = state.nodesConnectable
+        if (state.nodesDraggable) this.nodesDraggable = state.nodesDraggable
+        if (state.arrowHeadColor) this.arrowHeadColor = state.arrowHeadColor
+        if (state.markerEndId) this.markerEndId = state.markerEndId
+        if (state.deleteKeyCode) this.deleteKeyCode = state.deleteKeyCode
+        if (state.selectionKeyCode) this.selectionKeyCode = state.selectionKeyCode
+        if (state.zoomActivationKeyCode) this.zoomActivationKeyCode = state.zoomActivationKeyCode
+        if (state.multiSelectionKeyCode) this.multiSelectionKeyCode = state.multiSelectionKeyCode
+        if (state.snapToGrid) this.snapToGrid = state.snapToGrid
+        if (state.snapGrid) this.snapGrid = state.snapGrid
         if (!this.isReady) await until(() => this.d3Zoom).not.toBeUndefined()
-        this.setMinZoom(state.minZoom)
-        this.setMaxZoom(state.maxZoom)
-        this.setTranslateExtent(state.translateExtent)
-        this.setNodeExtent(state.nodeExtent)
+        if (state.maxZoom) this.setMaxZoom(state.maxZoom)
+        if (state.minZoom) this.setMinZoom(state.minZoom)
+        if (state.translateExtent) this.setTranslateExtent(state.translateExtent)
+        if (state.nodeExtent) this.setNodeExtent(state.nodeExtent)
       },
     },
   })

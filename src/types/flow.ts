@@ -9,6 +9,11 @@ export type FlowElement<T = any> = GraphNode<T> | GraphEdge<T>
 export type FlowElements<T = any> = FlowElement<T>[]
 export type Elements<T = any> = (Node<T> | Edge<T>)[]
 
+export type NextElements = {
+  nodes: GraphNode[]
+  edges: GraphEdge[]
+}
+
 export type Transform = [number, number, number]
 
 export enum Position {

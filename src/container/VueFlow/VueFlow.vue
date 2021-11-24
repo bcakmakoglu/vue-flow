@@ -11,7 +11,6 @@ import {
   NodeExtent,
   NodeTypes,
   EdgeTypes,
-  FlowState,
   FlowInstance,
   Loading,
   FlowOptions,
@@ -116,7 +115,7 @@ const options = Object.assign({}, store.$state, props)
 
 invoke(async () => {
   store.setState(options)
-  store.setElements(elements.value)
+  await store.setElements(elements.value)
   store.isReady = true
 
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -139,25 +138,24 @@ invoke(async () => {
   store.instance = instance
   watch(
     () => props,
-    () => store.setState({ ...store.$state, ...props } as FlowState),
+    () => store.setState(props),
+    { flush: 'post', deep: true },
+  )
+  watch(
+    () => props.modelValue.length,
+    () => store.setElements(elements.value),
+  )
+  const { pause, resume } = pausableWatch(elements, store.setElements, { flush: 'post' })
+  watch(
+    () => store.elements,
+    (val) => {
+      pause()
+      elements.value = val
+      nextTick(resume)
+    },
     { flush: 'post', deep: true },
   )
 })
-
-watch(
-  () => props.modelValue.length,
-  () => store.setElements(elements.value),
-)
-const { pause, resume } = pausableWatch(elements, store.setElements, { flush: 'post' })
-watch(
-  () => store.elements,
-  (val) => {
-    pause()
-    elements.value = val
-    nextTick(resume)
-  },
-  { flush: 'post', deep: true },
-)
 
 const transitionName = computed(() => {
   let name = ''
@@ -169,6 +167,11 @@ const transitionName = computed(() => {
 })
 
 onBeforeUnmount(() => store?.$dispose())
+</script>
+<script lang="ts">
+export default {
+  name: 'VueFlow'
+}
 </script>
 <template>
   <div class="vue-flow">

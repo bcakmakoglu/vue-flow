@@ -15,6 +15,7 @@ import {
   GraphNode,
   FlowElements,
   GraphEdge,
+  NextElements,
 } from '~/types'
 import { useWindow } from '~/composables'
 import { getSourceTargetNodes } from '~/utils/edge'
@@ -312,46 +313,74 @@ export const getTransformForBounds = (
   return [x, y, clampedZoom]
 }
 
-type NextElements = {
-  nodes: GraphNode[]
-  edges: GraphEdge[]
+export const processElements = (elements: Elements, fn: (element: Node | Edge) => void) => {
+  return new Promise((resolve) => {
+    const chunk = 50
+    let index = 0
+    function doChunk() {
+      let cnt = chunk
+      while (cnt-- && index < elements.length) {
+        fn(elements[index])
+        ++index
+      }
+      if (index < elements.length) {
+        // set Timeout for async iteration
+        nextTick(doChunk)
+      } else {
+        resolve(true)
+      }
+    }
+    doChunk()
+  })
 }
-export const parseElements = (elements: Elements, nodes: GraphNode[], edges: GraphEdge[], nodeExtent: NodeExtent) => {
+
+export const parseElement = (element: Node | Edge, prevElements: FlowElements, nodeExtent: NodeExtent) => {
+  let parsed: GraphEdge | GraphNode = {} as any
+  const index = prevElements.map((x) => x.id).indexOf(element.id)
+  if (isNode(element)) {
+    const storeNode = prevElements[index]
+
+    if (storeNode) {
+      const updatedNode = {
+        ...storeNode,
+        ...element,
+      } as GraphNode
+
+      if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
+        // we reset the elements dimensions here in order to force a re-calculation of the bounds.
+        // When the type of a node changes it is possible that the number or positions of handles changes too.
+        updatedNode.__vf.width = 0
+      }
+
+      parsed = updatedNode
+    } else {
+      parsed = parseNode(element, nodeExtent)
+    }
+  } else if (isEdge(element)) {
+    const storeEdge = prevElements[index]
+
+    if (storeEdge) {
+      parsed = {
+        ...storeEdge,
+        ...element,
+      } as GraphEdge
+    } else {
+      parsed = parseEdge(element)
+    }
+  }
+  return { parsed, index }
+}
+
+export const parseElements = (elements: Elements, prevElements: FlowElements, nodeExtent: NodeExtent) => {
   const next: NextElements = {
     nodes: [],
     edges: [],
   }
   for (const element of elements) {
-    if (isNode(element)) {
-      const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
-
-      if (storeNode) {
-        const updatedNode = {
-          ...storeNode,
-          ...element,
-        } as GraphNode
-
-        if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
-          // we reset the elements dimensions here in order to force a re-calculation of the bounds.
-          // When the type of a node changes it is possible that the number or positions of handles changes too.
-          updatedNode.__vf.width = 0
-        }
-
-        next.nodes.push(updatedNode)
-      } else {
-        next.nodes.push(parseNode(element, nodeExtent))
-      }
-    } else if (isEdge(element)) {
-      const storeEdge = edges[edges.map((x) => x.id).indexOf(element.id)]
-
-      if (storeEdge) {
-        next.edges.push({
-          ...storeEdge,
-          ...element,
-        } as GraphEdge)
-      } else {
-        next.edges.push(parseEdge(element))
-      }
+    const { parsed } = parseElement(element, prevElements, nodeExtent)
+    if (parsed) {
+      if (isEdge(parsed)) next.edges.push(parsed)
+      else next.nodes.push(parsed)
     }
   }
   next.edges.forEach((edge, i, arr) => {
