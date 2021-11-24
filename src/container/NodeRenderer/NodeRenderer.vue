@@ -47,7 +47,6 @@ export default {
       v-for="(node, i) of props.nodes"
       :key="`${node.id}-${i}`"
       :node="node"
-      :vf="node.__vf"
       :component="getType(node.type)"
       :draggable="typeof node.draggable === 'undefined' ? props.nodesDraggable : node.draggable"
       :selectable="typeof node.selectable === 'undefined' ? props.elementsSelectable : node.selectable"
