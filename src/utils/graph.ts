@@ -55,8 +55,9 @@ export const isEdge = (element: Node | Edge | Connection): element is Edge =>
 export const isNode = (element: Node | Edge | Connection): element is Node =>
   'id' in element && !('source' in element) && !('target' in element)
 
-export const isGraphNode = (element: FlowElement | Connection): element is GraphNode => isNode(element) && '__vf' in element
-export const isGraphEdge = (element: FlowElement | Connection): element is GraphEdge =>
+export const isGraphNode = (element: Node | FlowElement | Connection): element is GraphNode =>
+  isNode(element) && '__vf' in element
+export const isGraphEdge = (element: Edge | FlowElement | Connection): element is GraphEdge =>
   isEdge(element) && 'sourceTargetNodes' in element
 
 const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
@@ -167,9 +168,8 @@ export const onLoadProject = (currentStore: FlowStore) => (position: XYPosition)
 export const parseNode = (node: Node, nodeExtent: NodeExtent): GraphNode => ({
   ...node,
   id: node.id.toString(),
-  type: node.type || 'default',
+  type: node.type ?? 'default',
   __vf: {
-    position: clampPosition(node.position, nodeExtent),
     width: 0,
     height: 0,
     handleBounds: {
@@ -178,6 +178,7 @@ export const parseNode = (node: Node, nodeExtent: NodeExtent): GraphNode => ({
     },
     isDragging: false,
   },
+  position: clampPosition(node.position, nodeExtent),
 })
 
 export const parseEdge = (edge: Edge): Edge => ({
@@ -187,7 +188,7 @@ export const parseEdge = (edge: Edge): Edge => ({
   sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : undefined,
   targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
   id: edge.id.toString(),
-  type: edge.type || 'default',
+  type: edge.type ?? 'default',
 })
 
 const getBoundsOfBoxes = (box1: Box, box2: Box): Box => ({
@@ -215,7 +216,7 @@ export const getBoundsofRects = (rect1: Rect, rect2: Rect) => boxToRect(getBound
 
 export const getRectOfNodes = (nodes: GraphNode[]) => {
   const box = nodes.reduce(
-    (currBox, { __vf: { position = { x: 0, y: 0 }, width = 0, height = 0 } = {} }) =>
+    (currBox, { position = { x: 0, y: 0 }, __vf: { width = 0, height = 0 } = {} }) =>
       getBoundsOfBoxes(
         currBox,
         rectToBox({
@@ -245,7 +246,10 @@ export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]:
 
   return nodes.filter((node) => {
     if (!node.__vf || node.selectable === false) return false
-    const { position = { x: 0, y: 0 }, width = 0, height = 0, isDragging = false } = node.__vf
+    const {
+      position = { x: 0, y: 0 },
+      __vf: { width = 0, height = 0, isDragging = false },
+    } = node
     const nBox = rectToBox({ ...position, width, height } as any)
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
     const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y))

@@ -13,9 +13,9 @@ import {
   FlowElements,
 } from '~/types'
 
-export function getHandlePosition(position: Position, node: GraphNode, handle: any | null = null): XYPosition {
-  const x = (handle?.x || 0) + node.__vf.position.x
-  const y = (handle?.y || 0) + node.__vf.position.y
+export function getHandlePosition(position: Position, node: GraphNode, handle?: HandleElement): XYPosition {
+  const x = (handle?.x ?? 0) + node.position.x
+  const y = (handle?.y ?? 0) + node.position.y
   const width = handle?.width || node.__vf.width
   const height = handle?.height || node.__vf.height
 
@@ -60,10 +60,10 @@ export function getHandle(bounds: HandleElement[], handleId?: ElementId): Handle
 
 export const getEdgePositions = (
   sourceNode: GraphNode,
-  sourceHandle: HandleElement | unknown,
+  sourceHandle: HandleElement | undefined,
   sourcePosition: Position,
   targetNode: GraphNode,
-  targetHandle: HandleElement | unknown,
+  targetHandle: HandleElement | undefined,
   targetPosition: Position,
 ): EdgePositions => {
   const sourceHandlePos = getHandlePosition(sourcePosition, sourceNode, sourceHandle)

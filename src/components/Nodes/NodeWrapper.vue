@@ -17,7 +17,6 @@ interface NodeWrapperProps {
 }
 
 const props = defineProps<NodeWrapperProps>()
-
 const store = useStore()
 provide(NodeId, props.node.id)
 
@@ -149,7 +148,7 @@ export default {
       ]"
       :style="{
         zIndex: selected ? 10 : 3,
-        transform: `translate(${props.vf.position.x}px,${props.vf.position.y}px)`,
+        transform: `translate(${props.node.position.x}px,${props.node.position.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
         opacity: props.vf.width !== null && props.vf.height !== null ? 1 : 0,
         ...props.node.style,
@@ -167,8 +166,8 @@ export default {
           id: props.node.id,
           data: props.node.data,
           type: props.node.type,
-          xPos: props.vf.position.x,
-          yPos: props.vf.position.y,
+          xPos: props.node.position.x,
+          yPos: props.node.position.y,
           selected,
           connectable: props.connectable,
           sourcePosition: props.node.sourcePosition,
@@ -182,8 +181,8 @@ export default {
             id: props.node.id,
             data: props.node.data,
             type: props.node.type,
-            xPos: props.vf.position.x,
-            yPos: props.vf.position.y,
+            xPos: props.node.position.x,
+            yPos: props.node.position.y,
             selected,
             connectable: props.connectable,
             sourcePosition: props.node.sourcePosition,

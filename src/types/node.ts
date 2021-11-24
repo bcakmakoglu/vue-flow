@@ -4,7 +4,6 @@ import { XYPosition, ElementId, Position, SnapGrid } from './flow'
 import { HandleElement } from './components'
 
 export interface VFInternals {
-  position: XYPosition
   isDragging?: boolean
   width: number
   height: number
