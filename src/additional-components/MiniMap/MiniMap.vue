@@ -49,7 +49,7 @@ const viewBB = computed(() => ({
   height: store.dimensions.height / store.transform[2],
 }))
 const viewBox = computed(() => {
-  const boundingRect = store.nodes && store.nodes.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value
+  const boundingRect = store.getNodes && store.getNodes.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value
   const scaledWidth = boundingRect.width / elementWidth
   const scaledHeight = boundingRect.height / elementHeight
   const viewScale = Math.max(scaledWidth, scaledHeight)
@@ -93,8 +93,8 @@ export default {
   >
     <template v-for="node of store.getNodes" :key="`mini-map-node-${node.id}`">
       <slot
-        :x="node.__vf.position.x"
-        :y="node.__vf.position.y"
+        :x="node.position.x"
+        :y="node.position.y"
         :width="node.__vf.width"
         :height="node.__vf.height"
         :style="node.style"
@@ -106,8 +106,8 @@ export default {
         :shape-rendering="shapeRendering"
       >
         <MiniMapNode
-          :x="node.__vf.position.x"
-          :y="node.__vf.position.y"
+          :x="node.position.x"
+          :y="node.position.y"
           :width="node.__vf.width"
           :height="node.__vf.height"
           :style="node.style"
