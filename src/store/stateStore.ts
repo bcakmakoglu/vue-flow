@@ -1,6 +1,6 @@
 import microDiff from 'microdiff'
 import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
-import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, GraphEdge, Edge, NextElements } from '~/types'
+import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, GraphEdge, Edge } from '~/types'
 import {
   getConnectedEdges,
   getNodesInside,
@@ -10,8 +10,6 @@ import {
   isGraphNode,
   getSourceTargetNodes,
   isEdge,
-  processElements,
-  parseElement,
   parseElements,
 } from '~/utils'
 
@@ -86,7 +84,7 @@ export default (id: string, preloadedState: FlowState) => {
       },
     },
     actions: {
-      async setElements(elements) {
+      setElements(elements) {
         const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
         edges.forEach((edge: Edge, i, arr) => {
           const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
