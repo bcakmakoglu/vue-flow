@@ -178,6 +178,32 @@ export default (id: string, preloadedState: FlowState) => {
         const { nodes, edges } = parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
         this.elements = [...this.elements, ...nodes, ...edges]
       },
+      async setState(state) {
+        // set state variables
+        const skip = [
+          'modelValue',
+          'd3Zoom',
+          'd3Selection',
+          'd3ZoomHandler',
+          'minZoom',
+          'maxZoom',
+          'translateExtent',
+          'nodeExtent',
+        ]
+        for (const opt of Object.keys(state)) {
+          const val = state[opt as keyof FlowState]
+          if (typeof val !== 'undefined' && !skip.includes(opt)) {
+            if (typeof val === 'object' && !Array.isArray(val)) {
+              ;(store as any)[opt] = { ...(store as any)[opt], ...val }
+            } else (store as any)[opt] = val
+          }
+        }
+        if (!this.isReady) await until(() => this.d3Zoom).not.toBeUndefined()
+        this.setMinZoom(state.minZoom)
+        this.setMaxZoom(state.maxZoom)
+        this.setTranslateExtent(state.translateExtent)
+        this.setNodeExtent(state.nodeExtent)
+      },
     },
   })
 
