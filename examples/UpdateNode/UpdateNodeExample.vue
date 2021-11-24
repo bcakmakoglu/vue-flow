@@ -29,23 +29,20 @@ const updateNode = () => {
     return el
   })
 }
-
-watchEffect(() => {
-  updateNode()
-})
+onMounted(updateNode)
 </script>
 <template>
   <VueFlow v-model="elements" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
     <div class="updatenode__controls">
       <label>label:</label>
-      <input v-model="nodeName" />
+      <input v-model="nodeName" @input="updateNode" />
 
       <label class="updatenode__bglabel">background:</label>
-      <input v-model="nodeBg" type="color" />
+      <input v-model="nodeBg" type="color" @input="updateNode" />
 
       <div class="updatenode__checkboxwrapper">
         <label>hidden:</label>
-        <input v-model="nodeHidden" type="checkbox" />
+        <input v-model="nodeHidden" type="checkbox" @input="updateNode" />
       </div>
     </div>
   </VueFlow>

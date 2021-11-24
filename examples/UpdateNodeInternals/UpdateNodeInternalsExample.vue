@@ -47,10 +47,7 @@ const onPaneClick = (evt: MouseEvent) =>
 
 const toggleHandleCount = () =>
   (elements.value = elements.value.map((el) => {
-    if (isEdge(el)) {
-      return el
-    }
-
+    if (isEdge(el)) return el
     return { ...el, data: { ...el.data, handleCount: el.data?.handleCount === 1 ? 2 : 1 } }
   }))
 
