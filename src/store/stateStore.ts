@@ -1,6 +1,6 @@
 import microDiff from 'microdiff'
 import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
-import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, NextElements, GraphEdge, FlowElements } from '~/types'
+import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, NextElements, GraphEdge } from '~/types'
 import {
   clampPosition,
   getConnectedEdges,
@@ -13,6 +13,7 @@ import {
   isGraphNode,
   getSourceTargetNodes,
   isEdge,
+  isGraphEdge,
 } from '~/utils'
 import parseElementsWorker from '~/workers/parseElements'
 
@@ -58,26 +59,31 @@ export default (id: string, preloadedState: FlowState) => {
             )
           : nodes
 
-        return n.filter((node) => !node.isHidden)
+        return n.filter((node) => !node.isHidden) ?? []
       },
       getEdges(): GraphEdge[] {
         const edges = this.elements.filter(isEdge)
-        return edges
-          .filter((edge) => !edge.isHidden)
-          .map((edge) => {
-            const { sourceNode, targetNode } = getSourceTargetNodes(edge, this.getNodes)
-            if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-            if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+        return (
+          edges
+            .filter((edge) => !edge.isHidden)
+            .map((edge) => {
+              if (!isGraphEdge(edge)) {
+                const { sourceNode, targetNode } = getSourceTargetNodes(edge, this.getNodes)
+                if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+                if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
-            return {
-              ...edge,
-              sourceTargetNodes: {
-                sourceNode,
-                targetNode,
-              },
-            }
-          })
-          .filter(({ sourceTargetNodes: { sourceNode, targetNode } }) => !!(sourceNode && targetNode))
+                return {
+                  ...edge,
+                  sourceTargetNodes: {
+                    sourceNode,
+                    targetNode,
+                  },
+                }
+              }
+              return edge
+            })
+            .filter(({ sourceTargetNodes: { sourceNode, targetNode } }) => !!(sourceNode && targetNode)) ?? []
+        )
       },
       getSelectedNodes(): GraphNode[] {
         return this.selectedElements?.filter(isGraphNode) ?? []
@@ -90,13 +96,13 @@ export default (id: string, preloadedState: FlowState) => {
           nextNodes: [],
         }
         if (!this.worker || import.meta.env.SSR || typeof window === 'undefined') {
-          next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+          next = await parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
         } else if (this.worker) {
           const { workerFn, workerTerminate } = parseElementsWorker()
           const res = await workerFn(
             deepUnref(elements),
-            deepUnref(this.nodes),
-            deepUnref(this.edges),
+            deepUnref(this.getNodes),
+            deepUnref(this.getEdges),
             deepUnref(this.nodeExtent),
           ).catch((err) => {
             console.error(err)
@@ -105,9 +111,9 @@ export default (id: string, preloadedState: FlowState) => {
           if (res) {
             workerTerminate('SUCCESS')
             next = res
-          } else next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+          } else next = await parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
         } else {
-          next = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+          next = await parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
         }
         this.elements = [...next.nextNodes, ...next.nextEdges]
       },
@@ -177,12 +183,6 @@ export default (id: string, preloadedState: FlowState) => {
       },
       setNodeExtent(nodeExtent) {
         this.nodeExtent = nodeExtent
-        this.nodes = this.nodes.map((node) => {
-          return {
-            ...node,
-            position: node.position ? clampPosition(node.position, nodeExtent) : { x: 0, y: 0 },
-          }
-        })
       },
       resetSelectedElements() {
         this.selectedElements = undefined
@@ -204,10 +204,8 @@ export default (id: string, preloadedState: FlowState) => {
         this.elementsSelectable = isInteractive
       },
       async addElements(elements: Elements) {
-        const { nextNodes, nextEdges } = await parseElements(elements, this.nodes, this.edges, this.nodeExtent)
+        const { nextNodes, nextEdges } = await parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
         this.elements = [...this.elements, ...nextNodes, ...nextEdges]
-        this.nodes = [...this.nodes, ...nextNodes]
-        this.edges = [...this.edges, ...nextEdges]
       },
     },
   })
