@@ -8,7 +8,7 @@ export interface VFInternals {
   width: number
   height: number
   handleBounds: {
-    source: HandleElement[]
+    source?: HandleElement[]
     target?: HandleElement[]
   }
 }
