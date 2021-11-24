@@ -31,8 +31,6 @@ export interface FlowState extends FlowOptions {
   instance?: FlowInstance
 
   elements: FlowElements
-  nodes: GraphNode[]
-  edges: Edge[]
 
   d3Zoom?: D3Zoom
   d3Selection?: D3Selection

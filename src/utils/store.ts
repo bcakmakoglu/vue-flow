@@ -7,9 +7,9 @@ import {
   NodeExtent,
   GraphNode,
   PanOnScrollMode,
-  GraphEdge,
   DefaultNodeTypes,
   DefaultEdgeTypes,
+  Edge,
 } from '~/types'
 import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
 import { createHooks } from '~/composables'
@@ -34,8 +34,6 @@ export const initialState = (): FlowState => ({
   },
   transform: [0, 0, 1],
   elements: [],
-  nodes: [],
-  edges: [],
   selectedElements: undefined,
   selectedNodesBbox: { x: 0, y: 0, width: 0, height: 0 },
 
@@ -99,7 +97,7 @@ export const initialState = (): FlowState => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export const parseElements = async (elements: Elements, nodes: GraphNode[], edges: GraphEdge[], nodeExtent: NodeExtent) =>
+export const parseElements = async (elements: Elements, nodes: GraphNode[], edges: Edge[], nodeExtent: NodeExtent) =>
   new Promise<NextElements>((resolve) => {
     const { nextEdges, nextNodes }: NextElements = {
       nextNodes: [],
