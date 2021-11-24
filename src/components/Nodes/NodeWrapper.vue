@@ -3,7 +3,7 @@ import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
 import { GraphNode, SnapGrid, Draggable, NodeDimensionUpdate } from '../../types'
 import { NodeId } from '../../context'
-import { getDimensions, getHandleBounds } from '~/utils'
+import { getDimensions, getHandleBounds } from '../../utils'
 
 interface NodeWrapperProps {
   node: GraphNode
