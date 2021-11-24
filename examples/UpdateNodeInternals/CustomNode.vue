@@ -22,7 +22,7 @@ const props = defineProps<CustomNodeProps>()
       :key="`handle-${i}`"
       type="source"
       :position="Position.Right"
-      :style="{ top: 10 * i + props.data.handlePosition * 10 }"
+      :style="{ top: `${10 * i + props.data.handlePosition * 10}px` }"
     />
   </div>
 </template>
