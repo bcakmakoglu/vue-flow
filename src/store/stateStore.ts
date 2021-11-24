@@ -85,7 +85,8 @@ export default (id: string, preloadedState: FlowState) => {
     },
     actions: {
       setElements(elements) {
-        this.elements = parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
+        const { nodes, edges } = parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
+        this.elements = [...nodes, ...edges]
       },
       setUserSelection(mousePos) {
         this.selectionActive = true
@@ -173,8 +174,9 @@ export default (id: string, preloadedState: FlowState) => {
         this.nodesConnectable = isInteractive
         this.elementsSelectable = isInteractive
       },
-      async addElements(elements: Elements) {
-        this.elements = [...this.elements, ...parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)]
+      addElements(elements: Elements) {
+        const { nodes, edges } = parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
+        this.elements = [...this.elements, ...nodes, ...edges]
       },
     },
   })

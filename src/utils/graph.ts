@@ -17,6 +17,7 @@ import {
   GraphEdge,
 } from '~/types'
 import { useWindow } from '~/composables'
+import { getSourceTargetNodes } from '~/utils/edge'
 
 const isHTMLElement = (el: EventTarget): el is HTMLElement => ('nodeName' || 'hasAttribute') in el
 
@@ -104,12 +105,9 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements) => {
       id: getEdgeId(edgeParams),
     } as Edge
   }
+  if (connectionExists(edge, elements)) return elements
 
-  if (connectionExists(edge, elements)) {
-    return elements
-  }
-
-  return elements.concat(edge)
+  return elements.push(edge)
 }
 
 export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: Elements) => {
@@ -309,4 +307,60 @@ export const getTransformForBounds = (
   const y = height / 2 - boundsCenterY * clampedZoom + (offset.y ?? 0)
 
   return [x, y, clampedZoom]
+}
+
+type NextElements = {
+  nodes: GraphNode[]
+  edges: GraphEdge[]
+}
+export const parseElements = (elements: Elements, nodes: GraphNode[], edges: GraphEdge[], nodeExtent: NodeExtent) => {
+  const next: NextElements = {
+    nodes: [],
+    edges: [],
+  }
+  for (const element of elements) {
+    if (isNode(element)) {
+      const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
+
+      if (storeNode) {
+        const updatedNode = {
+          ...storeNode,
+          ...element,
+        } as GraphNode
+
+        if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
+          // we reset the elements dimensions here in order to force a re-calculation of the bounds.
+          // When the type of a node changes it is possible that the number or positions of handles changes too.
+          updatedNode.__vf.width = 0
+        }
+
+        next.nodes.push(updatedNode)
+      } else {
+        next.nodes.push(parseNode(element, nodeExtent))
+      }
+    } else if (isEdge(element)) {
+      const storeEdge = edges[edges.map((x) => x.id).indexOf(element.id)]
+
+      if (storeEdge) {
+        next.edges.push({
+          ...storeEdge,
+          ...element,
+        } as GraphEdge)
+      } else {
+        next.edges.push(parseEdge(element))
+      }
+    }
+  }
+  next.edges.forEach((edge, i, arr) => {
+    const { sourceNode, targetNode } = getSourceTargetNodes(edge, next.nodes)
+    if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+    if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+
+    arr[i] = {
+      ...edge,
+      sourceNode,
+      targetNode,
+    }
+  })
+  return next
 }
