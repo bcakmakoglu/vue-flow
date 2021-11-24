@@ -24,6 +24,7 @@ import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import LoadingIndicator from '../../components/Loading/LoadingIndicator.vue'
 import { createHooks, initFlow, useWindow, useZoomPanHelper } from '../../composables'
 import { onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
+import microDiff from 'microdiff'
 
 interface FlowProps extends FlowOptions {
   id?: string
@@ -166,8 +167,14 @@ invoke(async () => {
   )
 })
 
-watch(elements, store.setElements, { flush: 'post' })
-watch(() => elements.value.length, () => store.setElements(elements.value), { flush: 'post' })
+watch(props.modelValue, (val) => {
+  const diff = microDiff(val, store.elements, { cyclesFix: false })
+  if (diff.length) store.setElements(val)
+}, { flush: 'post' })
+watch(elements, (val) =>{
+  const diff = microDiff(val, store.elements, { cyclesFix: false })
+  if (diff.length) store.setElements(val)
+}, { flush: 'post' })
 watch(store.elements, (val) => (elements.value = val), { flush: 'post' })
 
 const transitionName = computed(() => {
