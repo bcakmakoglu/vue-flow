@@ -51,7 +51,6 @@ const updateElements = () => {
 <template>
   <VueFlow
     v-model="elements"
-    :worker="true"
     :loading="{ label: 'Loading...', transition: { name: 'fade', mode: 'out-in' } }"
     @load="onLoad"
     @elementsRemove="onElementsRemove"
