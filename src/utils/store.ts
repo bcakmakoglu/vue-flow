@@ -100,7 +100,7 @@ export const initialState = (): FlowState => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export const parseElements = async (elements: Elements, nodes: Node[], edges: Edge[], nodeExtent: NodeExtent) =>
+export const parseElements = async (elements: Elements, nodes: GraphNode[], edges: GraphEdge[], nodeExtent: NodeExtent) =>
   new Promise<NextElements>((resolve) => {
     const { nextEdges, nextNodes }: NextElements = {
       nextNodes: [],
@@ -115,12 +115,11 @@ export const parseElements = async (elements: Elements, nodes: Node[], edges: Ed
             ...storeNode,
             ...element,
           } as GraphNode
-          updatedNode.__vf!.position = element.position
 
           if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
             // we reset the elements dimensions here in order to force a re-calculation of the bounds.
             // When the type of a node changes it is possible that the number or positions of handles changes too.
-            updatedNode.__vf!.width = 0
+            updatedNode.__vf.width = 0
           }
 
           nextNodes.push(updatedNode)
