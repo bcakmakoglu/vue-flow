@@ -11,7 +11,6 @@ import {
   NodeExtent,
   NodeTypes,
   EdgeTypes,
-  FlowStore,
   FlowState,
   FlowInstance,
   Loading,
@@ -24,11 +23,9 @@ import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import LoadingIndicator from '../../components/Loading/LoadingIndicator.vue'
 import { createHooks, initFlow, useWindow, useZoomPanHelper } from '../../composables'
 import { onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
-import microDiff from 'microdiff'
 
 interface FlowProps extends FlowOptions {
   id?: string
-  store?: FlowStore
   modelValue?: Elements
   nodeTypes?: NodeTypes
   edgeTypes?: EdgeTypes
@@ -65,10 +62,9 @@ interface FlowProps extends FlowOptions {
   edgeUpdaterRadius?: number
   storageKey?: string
   loading?: Loading
-  worker?: boolean
 }
 
-const emit = defineEmits([...Object.keys(createHooks()), 'update:elements', 'update:modelValue'])
+const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue'])
 
 const props = withDefaults(defineProps<FlowProps>(), {
   modelValue: () => [],
@@ -110,7 +106,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   loading: false,
   worker: false,
 })
-const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id, props.store)
+const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id)
 const elements = useVModel(props, 'modelValue', emit)
 
 // if there are preloaded elements we overwrite the current elements with the stored ones
@@ -139,7 +135,7 @@ onBeforeUnmount(() => store?.$dispose())
 
 invoke(async () => {
   init(options)
-  await store.setElements(elements.value)
+  store.setElements(elements.value)
   store.isReady = true
 
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -167,15 +163,20 @@ invoke(async () => {
   )
 })
 
-watch(props.modelValue, (val) => {
-  const diff = microDiff(val, store.elements, { cyclesFix: false })
-  if (diff.length) store.setElements(val)
-}, { flush: 'post' })
-watch(elements, (val) =>{
-  const diff = microDiff(val, store.elements, { cyclesFix: false })
-  if (diff.length) store.setElements(val)
-}, { flush: 'post' })
-watch(store.elements, (val) => (elements.value = val), { flush: 'post' })
+watch(
+  () => props.modelValue.length,
+  () => store.setElements(elements.value),
+)
+const { pause, resume } = pausableWatch(elements, store.setElements, { flush: 'post' })
+watch(
+  () => store.elements,
+  (val) => {
+    pause()
+    elements.value = val
+    nextTick(resume)
+  },
+  { flush: 'post', deep: true },
+)
 
 const transitionName = computed(() => {
   let name = ''
@@ -185,11 +186,6 @@ const transitionName = computed(() => {
   }
   return name
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'VueFlow'
-}
 </script>
 <template>
   <div class="vue-flow">

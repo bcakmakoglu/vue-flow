@@ -1,21 +1,17 @@
 import microDiff from 'microdiff'
 import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
-import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, NextElements, GraphEdge } from '~/types'
+import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, GraphEdge, Edge } from '~/types'
 import {
-  clampPosition,
   getConnectedEdges,
   getNodesInside,
   getRectOfNodes,
   parseElements,
   defaultNodeTypes,
   defaultEdgeTypes,
-  deepUnref,
   isGraphNode,
   getSourceTargetNodes,
   isEdge,
-  isGraphEdge,
 } from '~/utils'
-import parseElementsWorker from '~/workers/parseElements'
 
 const pinia = createPinia()
 
@@ -43,31 +39,31 @@ export default (id: string, preloadedState: FlowState) => {
         return nodeTypes
       },
       getNodes(): GraphNode[] {
-        const nodes = this.elements.filter(isGraphNode)
-        const n = this.onlyRenderVisibleElements
-          ? nodes &&
-            getNodesInside(
-              nodes,
-              {
-                x: 0,
-                y: 0,
-                width: this.dimensions.width,
-                height: this.dimensions.height,
-              },
-              this.transform,
-              true,
-            )
-          : nodes
-
-        return n.filter((node) => !node.isHidden) ?? []
+        if (this.isReady) {
+          const nodes = this.elements.filter((n) => isGraphNode(n) && !n.isHidden) as GraphNode[]
+          return this.onlyRenderVisibleElements
+            ? nodes &&
+                getNodesInside(
+                  nodes,
+                  {
+                    x: 0,
+                    y: 0,
+                    width: this.dimensions.width,
+                    height: this.dimensions.height,
+                  },
+                  this.transform,
+                  true,
+                )
+            : nodes ?? []
+        }
+        return []
       },
       getEdges(): GraphEdge[] {
-        const edges = this.elements.filter(isEdge)
-        return (
-          edges
-            .filter((edge) => !edge.isHidden)
-            .map((edge) => {
-              if (!isGraphEdge(edge)) {
+        const edges = this.elements.filter((e) => isEdge(e) && !e.isHidden) as Edge[]
+        if (this.isReady) {
+          return (
+            edges
+              .map((edge) => {
                 const { sourceNode, targetNode } = getSourceTargetNodes(edge, this.getNodes)
                 if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
                 if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
@@ -79,43 +75,19 @@ export default (id: string, preloadedState: FlowState) => {
                     targetNode,
                   },
                 }
-              }
-              return edge
-            })
-            .filter(({ sourceTargetNodes: { sourceNode, targetNode } }) => !!(sourceNode && targetNode)) ?? []
-        )
+              })
+              .filter(({ sourceTargetNodes: { sourceNode, targetNode } }) => !!(sourceNode && targetNode)) ?? []
+          )
+        }
+        return []
       },
       getSelectedNodes(): GraphNode[] {
         return this.selectedElements?.filter(isGraphNode) ?? []
       },
     },
     actions: {
-      async setElements(elements) {
-        let next: NextElements = {
-          nextEdges: [],
-          nextNodes: [],
-        }
-        if (!this.worker || import.meta.env.SSR || typeof window === 'undefined') {
-          next = await parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
-        } else if (this.worker) {
-          const { workerFn, workerTerminate } = parseElementsWorker()
-          const res = await workerFn(
-            deepUnref(elements),
-            deepUnref(this.getNodes),
-            deepUnref(this.getEdges),
-            deepUnref(this.nodeExtent),
-          ).catch((err) => {
-            console.error(err)
-            workerTerminate('ERROR')
-          })
-          if (res) {
-            workerTerminate('SUCCESS')
-            next = res
-          } else next = await parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
-        } else {
-          next = await parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
-        }
-        this.elements = [...next.nextNodes, ...next.nextEdges]
+      setElements(elements) {
+        this.elements = parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
       },
       setUserSelection(mousePos) {
         this.selectionActive = true
@@ -204,8 +176,7 @@ export default (id: string, preloadedState: FlowState) => {
         this.elementsSelectable = isInteractive
       },
       async addElements(elements: Elements) {
-        const { nextNodes, nextEdges } = await parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)
-        this.elements = [...this.elements, ...nextNodes, ...nextEdges]
+        this.elements = [...this.elements, ...parseElements(elements, this.getNodes, this.getEdges, this.nodeExtent)]
       },
     },
   })

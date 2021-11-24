@@ -3,7 +3,6 @@ import {
   ConnectionMode,
   Elements,
   FlowState,
-  NextElements,
   NodeExtent,
   GraphNode,
   PanOnScrollMode,
@@ -97,48 +96,43 @@ export const initialState = (): FlowState => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export const parseElements = async (elements: Elements, nodes: GraphNode[], edges: Edge[], nodeExtent: NodeExtent) =>
-  new Promise<NextElements>((resolve) => {
-    const { nextEdges, nextNodes }: NextElements = {
-      nextNodes: [],
-      nextEdges: [],
-    }
-    for (const element of elements) {
-      if (isNode(element)) {
-        const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
+export const parseElements = (elements: Elements, nodes: GraphNode[], edges: Edge[], nodeExtent: NodeExtent) => {
+  const parsedElements = []
+  for (const element of elements) {
+    if (isNode(element)) {
+      const storeNode = nodes[nodes.map((x) => x.id).indexOf(element.id)]
 
-        if (storeNode) {
-          const updatedNode = {
-            ...storeNode,
-            ...element,
-          } as GraphNode
+      if (storeNode) {
+        const updatedNode = {
+          ...storeNode,
+          ...element,
+        } as GraphNode
 
-          if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
-            // we reset the elements dimensions here in order to force a re-calculation of the bounds.
-            // When the type of a node changes it is possible that the number or positions of handles changes too.
-            updatedNode.__vf.width = 0
-          }
-
-          nextNodes.push(updatedNode)
-        } else {
-          nextNodes.push(parseNode(element, nodeExtent))
+        if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
+          // we reset the elements dimensions here in order to force a re-calculation of the bounds.
+          // When the type of a node changes it is possible that the number or positions of handles changes too.
+          updatedNode.__vf.width = 0
         }
-      } else if (isEdge(element)) {
-        const storeEdge = edges[edges.map((x) => x.id).indexOf(element.id)]
 
-        if (storeEdge) {
-          nextEdges.push({
-            ...storeEdge,
-            ...element,
-          })
-        } else {
-          nextEdges.push(parseEdge(element))
-        }
+        parsedElements.push(updatedNode)
+      } else {
+        parsedElements.push(parseNode(element, nodeExtent))
+      }
+    } else if (isEdge(element)) {
+      const storeEdge = edges[edges.map((x) => x.id).indexOf(element.id)]
+
+      if (storeEdge) {
+        parsedElements.push({
+          ...storeEdge,
+          ...element,
+        })
+      } else {
+        parsedElements.push(parseEdge(element))
       }
     }
-    resolve({ nextEdges, nextNodes })
-  })
-
+  }
+  return parsedElements
+}
 const isObject = (val: any) => val !== null && typeof val === 'object'
 const isArray = Array.isArray
 

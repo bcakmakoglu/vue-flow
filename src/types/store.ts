@@ -21,7 +21,7 @@ import {
   OnConnectStopFunc,
   SetConnectionId,
 } from './connection'
-import { Edge, EdgeComponent, GraphEdge } from './edge'
+import { EdgeComponent, GraphEdge } from './edge'
 import { NodeComponent, NodeExtent, GraphNode, TranslateExtent } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload } from './zoom'
 import { FlowHooks } from './hooks'
@@ -73,7 +73,7 @@ export interface FlowState extends FlowOptions {
 }
 
 export interface FlowActions {
-  setElements: (elements: Elements) => Promise<void>
+  setElements: (elements: Elements) => void
   setUserSelection: (mousePos: XYPosition) => void
   updateUserSelection: (mousePos: XYPosition) => void
   unsetUserSelection: () => void

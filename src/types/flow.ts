@@ -3,16 +3,11 @@ import { Edge, EdgeTypes } from './edge'
 import { NodeExtent, GraphNode, NodeTypes, TranslateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode } from './zoom'
-import { FlowStore } from './store'
 
 export type ElementId = string
 export type FlowElement<T = any> = GraphNode<T> | Edge<T>
 export type FlowElements<T = any> = FlowElement<T>[]
 export type Elements<T = any> = (Node<T> | Edge<T>)[]
-export type NextElements = {
-  nextNodes: GraphNode[]
-  nextEdges: Edge[]
-}
 
 export type Transform = [number, number, number]
 
@@ -148,6 +143,4 @@ export interface FlowOptions {
   edgeUpdaterRadius?: number
   storageKey?: string
   loading?: Loading
-  worker?: boolean
-  store?: FlowStore
 }
