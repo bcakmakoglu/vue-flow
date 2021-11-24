@@ -69,11 +69,14 @@ export const getIncomers = (node: GraphNode, elements: Elements) => getConnected
 
 export const removeElements = (elementsToRemove: Elements, elements: Elements) => {
   const nodeIdsToRemove = elementsToRemove.map((n) => n.id)
-
-  return elements.filter((element) => {
+  const shouldRemove = (element: Node | Edge) => {
     const { target, source } = isEdge(element) ? element : { target: '', source: '' }
-    return !(nodeIdsToRemove.includes(element.id) || nodeIdsToRemove.includes(target) || nodeIdsToRemove.includes(source))
+    return nodeIdsToRemove.includes(element.id) || nodeIdsToRemove.includes(target) || nodeIdsToRemove.includes(source)
+  }
+  elements.forEach((element, i) => {
+    if (shouldRemove(element)) elements.splice(i, 1)
   })
+  return elements.filter((element) => !shouldRemove(element))
 }
 
 const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection): ElementId =>
@@ -106,8 +109,8 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements) => {
     } as Edge
   }
   if (connectionExists(edge, elements)) return elements
-
-  return elements.push(edge)
+  elements.push(edge)
+  return [...elements, edge]
 }
 
 export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: Elements) => {

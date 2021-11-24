@@ -15,7 +15,6 @@ export {
   updateEdge,
   getTransformForBounds,
   getRectOfNodes,
-  isInputDOMNode,
   graphPosToZoomedPos,
 } from './utils/graph'
 export { defaultEdgeTypes, defaultNodeTypes } from './utils/store'

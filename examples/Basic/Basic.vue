@@ -7,13 +7,10 @@ import {
   Connection,
   Edge,
   Elements,
-  FlowElement,
   FlowInstance,
   addEdge,
   isNode,
   removeElements,
-  Node,
-  useVueFlow,
 } from '~/index'
 
 const onNodeDragStop = (e) => console.log('drag stop', e)
@@ -27,8 +24,8 @@ const elements = ref<Elements>([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 const vfInstance = ref<FlowInstance>()
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value))
+const onElementsRemove = (elementsToRemove: Elements) => removeElements(elementsToRemove, elements.value)
+const onConnect = (params: Edge | Connection) => addEdge(params, elements.value)
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView({ padding: 0.1 })
   vfInstance.value = flowInstance
