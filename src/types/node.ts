@@ -57,17 +57,6 @@ export type SourceTargetNode = {
   targetNode: GraphNode
 }
 
-export type NodePosUpdate = {
-  id: ElementId
-  pos: XYPosition
-}
-
-export type NodeDiffUpdate = {
-  id?: ElementId
-  diff?: XYPosition
-  isDragging?: boolean
-}
-
 export type TranslateExtent = [[number, number], [number, number]]
 export type NodeExtent = TranslateExtent
 

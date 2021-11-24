@@ -22,16 +22,17 @@ import {
   SetConnectionId,
 } from './connection'
 import { Edge, EdgeComponent, GraphEdge } from './edge'
-import { NodeComponent, NodeDiffUpdate, NodeDimensionUpdate, NodeExtent, GraphNode, NodePosUpdate, TranslateExtent } from './node'
+import { NodeComponent, NodeExtent, GraphNode, TranslateExtent } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload } from './zoom'
 import { FlowHooks } from './hooks'
 
 export interface FlowState extends FlowOptions {
+  hooks: FlowHooks
+  instance?: FlowInstance
+
   elements: FlowElements
   nodes: GraphNode[]
   edges: Edge[]
-  selectedElements?: FlowElements
-  selectedNodesBbox: Rect
 
   d3Zoom?: D3Zoom
   d3Selection?: D3Selection
@@ -43,6 +44,8 @@ export interface FlowState extends FlowOptions {
   dimensions: Dimensions
   transform: Transform
 
+  selectedElements?: FlowElements
+  selectedNodesBbox?: Rect
   nodesSelectionActive: boolean
   selectionActive: boolean
   userSelectionRect: SelectionRect
@@ -67,17 +70,12 @@ export interface FlowState extends FlowOptions {
   onConnectEnd?: OnConnectEndFunc
 
   isReady: boolean
-  hooks: FlowHooks
-  instance?: FlowInstance
 
   vueFlowVersion: string
 }
 
 export interface FlowActions {
   setElements: (elements: Elements) => Promise<void>
-  updateNodeDimensions: (update: NodeDimensionUpdate) => void
-  updateNodePos: (payload: NodePosUpdate) => void
-  updateNodePosDiff: (payload: NodeDiffUpdate) => void
   setUserSelection: (mousePos: XYPosition) => void
   updateUserSelection: (mousePos: XYPosition) => void
   unsetUserSelection: () => void
@@ -100,6 +98,7 @@ export interface FlowGetters {
   getNodeTypes: () => Record<string, NodeComponent>
   getNodes: () => GraphNode[]
   getEdges: () => GraphEdge[]
+  getSelectedNodes: () => GraphNode[]
 }
 
 export type FlowStore = Store<string, FlowState, FlowGetters, FlowActions>

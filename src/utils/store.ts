@@ -7,8 +7,7 @@ import {
   NodeExtent,
   GraphNode,
   PanOnScrollMode,
-  Node,
-  Edge,
+  GraphEdge,
   DefaultNodeTypes,
   DefaultEdgeTypes,
 } from '~/types'
