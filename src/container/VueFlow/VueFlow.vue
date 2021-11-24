@@ -114,27 +114,8 @@ if (store.elements.length) elements.value = store.elements
 
 const options = Object.assign({}, store.$state, props)
 
-const init = async (state: FlowState) => {
-  // set state variables
-  const skip = ['modelValue', 'd3Zoom', 'd3Selection', 'd3ZoomHandler', 'minZoom', 'maxZoom', 'translateExtent', 'nodeExtent']
-  for (const opt of Object.keys(state)) {
-    const val = state[opt as keyof FlowState]
-    if (typeof val !== 'undefined' && !skip.includes(opt)) {
-      if (typeof val === 'object' && !Array.isArray(val)) {
-        ;(store as any)[opt] = { ...(store as any)[opt], ...val }
-      } else (store as any)[opt] = val
-    }
-  }
-  if (!store.isReady) await until(() => store.d3Zoom).not.toBeUndefined()
-  store.setMinZoom(state.minZoom)
-  store.setMaxZoom(state.maxZoom)
-  store.setTranslateExtent(state.translateExtent)
-  store.setNodeExtent(state.nodeExtent)
-}
-onBeforeUnmount(() => store?.$dispose())
-
 invoke(async () => {
-  init(options)
+  store.setState(options)
   store.setElements(elements.value)
   store.isReady = true
 
@@ -158,7 +139,7 @@ invoke(async () => {
   store.instance = instance
   watch(
     () => props,
-    () => init({ ...store.$state, ...props } as FlowState),
+    () => store.setState({ ...store.$state, ...props } as FlowState),
     { flush: 'post', deep: true },
   )
 })
@@ -186,6 +167,8 @@ const transitionName = computed(() => {
   }
   return name
 })
+
+onBeforeUnmount(() => store?.$dispose())
 </script>
 <template>
   <div class="vue-flow">

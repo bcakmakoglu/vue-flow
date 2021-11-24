@@ -88,7 +88,7 @@ export interface FlowActions {
   updateSize: (size: Dimensions) => void
   setConnectionNodeId: (payload: SetConnectionId) => void
   setInteractive: (isInteractive: boolean) => void
-  addElements: (elements: Elements) => Promise<void>
+  addElements: (elements: Elements) => void
 }
 
 export interface FlowGetters {
