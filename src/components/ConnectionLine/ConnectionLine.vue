@@ -9,13 +9,12 @@ import {
   HandleType,
   XYPosition,
   ConnectionMode,
-  VFInternals,
   Transform,
   GraphNode,
 } from '../../types'
 
 interface ConnectionLineProps {
-  vf: VFInternals
+  sourceNode: GraphNode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
   connectionHandleId?: ElementId
@@ -33,15 +32,16 @@ const props = withDefaults(defineProps<ConnectionLineProps>(), {
   connectionPosition: () => ({ x: 0, y: 0 }),
 })
 
-const sourceNode = props.nodes.find((n) => n.id === props.connectionNodeId)
 const sourceHandle =
   props.connectionHandleId && props.connectionHandleType
-    ? props.vf.handleBounds[props.connectionHandleType]?.find((d: HandleElement) => d.id === props.connectionHandleId)
-    : props.connectionHandleType && props.vf.handleBounds[props.connectionHandleType ?? 'source']?.[0]
-const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : (props.vf.width as number) / 2
-const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.vf.height
-const sourceX = props.vf.position.x + sourceHandleX
-const sourceY = props.vf.position.y + sourceHandleY
+    ? props.sourceNode.__vf.handleBounds[props.connectionHandleType]?.find(
+        (d: HandleElement) => d.id === props.connectionHandleId,
+      )
+    : props.connectionHandleType && props.sourceNode.__vf.handleBounds[props.connectionHandleType ?? 'source']?.[0]
+const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : (props.sourceNode.__vf.width as number) / 2
+const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.sourceNode.__vf.height
+const sourceX = props.sourceNode.position.x + sourceHandleX
+const sourceY = props.sourceNode.position.y + sourceHandleY
 
 const isRightOrLeft = sourceHandle?.position === Position.Left || sourceHandle?.position === Position.Right
 const targetPosition = isRightOrLeft ? Position.Left : Position.Top
@@ -105,7 +105,7 @@ export default {
         connectionLineType: props.connectionLineType,
         connectionLineStyle: props.connectionLineStyle,
         nodes: props.nodes,
-        sourceNode,
+        sourceNode: props.sourceNode,
         sourceHandle,
       }"
     >

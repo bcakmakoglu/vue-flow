@@ -95,7 +95,7 @@ export default {
       </EdgeWrapper>
       <ConnectionLine
         v-if="connectionLineVisible && sourceNode"
-        :vf="sourceNode?.__vf"
+        :source-node="sourceNode"
         :connection-line-style="props.connectionLineStyle"
         :connection-line-type="props.connectionLineType"
         :connection-handle-id="props.connectionHandleId"
