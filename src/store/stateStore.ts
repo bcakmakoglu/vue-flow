@@ -211,7 +211,7 @@ export default (id: string, preloadedState: FlowState) => {
         if (typeof state.multiSelectionKeyCode !== 'undefined') this.multiSelectionKeyCode = state.multiSelectionKeyCode
         if (typeof state.snapToGrid !== 'undefined') this.snapToGrid = state.snapToGrid
         if (typeof state.snapGrid !== 'undefined') this.snapGrid = state.snapGrid
-        if (typeof !this.isReady)
+        if (!this.isReady)
           until(() => this.d3Zoom)
             .not.toBeUndefined()
             .then(() => {
