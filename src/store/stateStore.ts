@@ -86,17 +86,6 @@ export default (id: string, preloadedState: FlowState) => {
     actions: {
       setElements(elements) {
         const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
-        edges.forEach((edge, i, arr) => {
-          const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
-          if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-          if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
-
-          arr[i] = {
-            ...edge,
-            sourceNode,
-            targetNode,
-          }
-        })
         this.elements = [...nodes, ...edges]
       },
       setUserSelection(mousePos) {
@@ -187,17 +176,6 @@ export default (id: string, preloadedState: FlowState) => {
       },
       addElements(elements: Elements) {
         const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
-        edges.forEach((edge, i, arr) => {
-          const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
-          if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-          if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
-
-          arr[i] = {
-            ...edge,
-            sourceNode,
-            targetNode,
-          }
-        })
         this.elements = [...this.elements, ...nodes, ...edges]
       },
       async setState(state) {
