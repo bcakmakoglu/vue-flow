@@ -340,10 +340,12 @@ export const parseElement = (element: Node | Edge, prevElements: FlowElements, n
   if (isNode(element)) {
     const storeNode = prevElements[index]
 
+    if (!isGraphNode(element)) parsed = parseNode(element, nodeExtent)
+    else parsed = element
     if (storeNode) {
       const updatedNode = {
         ...storeNode,
-        ...element,
+        ...parsed,
       } as GraphNode
 
       if (typeof element.type !== 'undefined' && element.type !== storeNode.type) {
@@ -353,38 +355,36 @@ export const parseElement = (element: Node | Edge, prevElements: FlowElements, n
       }
 
       parsed = updatedNode
-    } else {
-      parsed = parseNode(element, nodeExtent)
     }
   } else if (isEdge(element)) {
     const storeEdge = prevElements[index]
 
+    if (!isGraphEdge(element)) parsed = parseEdge(element)
+    else parsed = element
     if (storeEdge) {
       parsed = {
         ...storeEdge,
-        ...element,
+        ...parsed,
       } as GraphEdge
-    } else {
-      parsed = parseEdge(element)
     }
   }
   return { parsed, index }
 }
 
 export const parseElements = (elements: Elements, prevElements: FlowElements, nodeExtent: NodeExtent) => {
-  const next: NextElements = {
+  const { nodes, edges }: NextElements = {
     nodes: [],
     edges: [],
   }
   for (const element of elements) {
     const { parsed } = parseElement(element, prevElements, nodeExtent)
     if (parsed) {
-      if (isEdge(parsed)) next.edges.push(parsed)
-      else next.nodes.push(parsed)
+      if (isEdge(parsed)) edges.push(parsed)
+      else nodes.push(parsed)
     }
   }
-  next.edges.forEach((edge, i, arr) => {
-    const { sourceNode, targetNode } = getSourceTargetNodes(edge, next.nodes)
+  edges.forEach((edge, i, arr) => {
+    const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
     if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
     if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
@@ -394,5 +394,5 @@ export const parseElements = (elements: Elements, prevElements: FlowElements, no
       targetNode,
     }
   })
-  return next
+  return { nodes, edges }
 }
