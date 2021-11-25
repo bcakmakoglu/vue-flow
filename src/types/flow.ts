@@ -1,8 +1,9 @@
 import { CSSProperties } from 'vue'
-import { Edge, EdgeTypes, GraphEdge } from './edge'
-import { NodeExtent, GraphNode, NodeTypes, TranslateExtent, Node } from './node'
+import { Edge, GraphEdge } from './edge'
+import { NodeExtent, GraphNode, TranslateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode } from './zoom'
+import { EdgeTypes, NodeTypes } from './components'
 
 export type ElementId = string
 export type FlowElement<T = any> = GraphNode<T> | GraphEdge<T>

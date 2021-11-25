@@ -1,4 +1,4 @@
-import { CSSProperties } from 'vue'
+import { Component, CSSProperties, DefineComponent } from 'vue'
 import {
   BackgroundVariant,
   Dimensions,
@@ -11,10 +11,17 @@ import {
   XYPosition,
 } from './flow'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
-import { GraphNode, Node, NodeExtent, NodeTypes, TranslateExtent } from './node'
+import { GraphNode, Node, NodeExtent, NodeProps, TranslateExtent } from './node'
 import { FlowStore } from './store'
-import { EdgeTypes } from './edge'
+import { EdgeProps } from './edge'
 import { KeyCode, PanOnScrollMode } from './zoom'
+
+export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: Component<EdgeProps> }
+export type EdgeTypes = (keyof DefaultEdgeTypes | string)[]
+export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | string
+export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: Component<NodeProps> }
+export type NodeTypes = (keyof DefaultNodeTypes | string)[]
+export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, any, any, any, any, any> | string
 
 export type HandleType = 'source' | 'target'
 
