@@ -13,13 +13,13 @@ import {
   Loading,
   FlowOptions,
 } from '../../types'
+import Renderer from '../Renderer/Renderer.vue'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import LoadingIndicator from '../../components/Loading/LoadingIndicator.vue'
 import { createHooks, initFlow } from '../../composables'
-import Renderer from '~/container/Renderer/Renderer.vue'
 
 interface FlowProps extends FlowOptions {
   id?: string
