@@ -12,7 +12,7 @@ import {
   Transform,
   XYPosition,
 } from './flow'
-import { HandleType } from './components'
+import { HandleType, EdgeComponent, NodeComponent } from './components'
 import {
   ConnectionMode,
   OnConnectEndFunc,
@@ -21,8 +21,8 @@ import {
   OnConnectStopFunc,
   SetConnectionId,
 } from './connection'
-import { EdgeComponent, GraphEdge } from './edge'
-import { NodeComponent, NodeExtent, GraphNode, TranslateExtent } from './node'
+import { GraphEdge } from './edge'
+import { NodeExtent, GraphNode, TranslateExtent } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload } from './zoom'
 import { FlowHooks } from './hooks'
 
