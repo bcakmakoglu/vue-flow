@@ -11,6 +11,7 @@ import {
   getSourceTargetNodes,
   isEdge,
   parseElements,
+  processElements,
 } from '~/utils'
 
 const pinia = createPinia()
@@ -84,9 +85,11 @@ export default (id: string, preloadedState: FlowState) => {
       },
     },
     actions: {
-      setElements(elements) {
+      async setElements(elements) {
         const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
-        this.elements = [...nodes, ...edges]
+        await processElements([...nodes, ...edges], (processed) => {
+          this.elements = [...this.elements, ...processed]
+        })
       },
       setUserSelection(mousePos) {
         this.selectionActive = true
@@ -179,6 +182,7 @@ export default (id: string, preloadedState: FlowState) => {
         this.elements = [...this.elements, ...nodes, ...edges]
       },
       setState(state) {
+        if (typeof state.loading !== 'undefined') this.loading = state.loading
         if (typeof state.panOnScroll !== 'undefined') this.panOnScroll = state.panOnScroll
         if (typeof state.panOnScrollMode !== 'undefined') this.panOnScrollMode = state.panOnScrollMode
         if (typeof state.panOnScrollSpeed !== 'undefined') this.panOnScrollSpeed = state.panOnScrollSpeed

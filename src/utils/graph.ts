@@ -313,19 +313,18 @@ export const getTransformForBounds = (
   return [x, y, clampedZoom]
 }
 
-export const processElements = (elements: Elements, fn: (element: Node | Edge) => void) => {
+export const processElements = (elements: FlowElements, fn: (elements: FlowElements) => void) => {
   return new Promise((resolve) => {
     const chunk = 50
     let index = 0
     function doChunk() {
-      let cnt = chunk
-      while (cnt-- && index < elements.length) {
-        fn(elements[index])
-        ++index
-      }
-      if (index < elements.length) {
-        // set Timeout for async iteration
-        nextTick(doChunk)
+      const chunkPos = chunk * index
+      const lastChunk = elements.length - chunkPos < chunkPos
+      const cnt = !lastChunk ? chunk : elements.length - chunkPos
+      fn(elements.slice(chunkPos, chunkPos + cnt))
+      index++
+      if (!lastChunk) {
+        setTimeout(doChunk, 1)
       } else {
         resolve(true)
       }
