@@ -73,7 +73,7 @@ export interface FlowState extends Omit<FlowOptions, 'elements'> {
 }
 
 export interface FlowActions {
-  setElements: (elements: Elements) => Promise<void>
+  setElements: (elements: Elements, init?: boolean) => Promise<void>
   setUserSelection: (mousePos: XYPosition) => void
   updateUserSelection: (mousePos: XYPosition) => void
   unsetUserSelection: () => void

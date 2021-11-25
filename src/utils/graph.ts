@@ -53,8 +53,7 @@ export const getHostForElement = (element: HTMLElement): Document => {
 export const isEdge = (element: Node | Edge | Connection): element is Edge =>
   'id' in element && 'source' in element && 'target' in element
 
-export const isNode = (element: Node | Edge | Connection): element is Node =>
-  'id' in element && !('source' in element) && !('target' in element)
+export const isNode = (element: Node | Edge | Connection): element is Node => 'id' in element && !isEdge(element)
 
 export const isGraphNode = (element: any): element is GraphNode => isNode(element) && '__vf' in element
 export const isGraphEdge = (element: any): element is GraphEdge => isEdge(element) && 'sourceTargetNodes' in element

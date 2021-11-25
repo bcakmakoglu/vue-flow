@@ -116,19 +116,22 @@ const { pause: pauseModel, resume: resumeModel } = pausableWatch(
   async () => await store.setElements(elements.value),
 )
 const { pause, resume } = pausableWatch(elements, async (val) => await store.setElements(val), { flush: 'post' })
-watch(
-  () => store.elements,
-  (val) => {
-    pause()
-    pauseModel()
-    elements.value = val
-    setTimeout(() => {
-      resume()
-      resumeModel()
-    }, 1)
-  },
-  { flush: 'post', deep: true },
-)
+
+until(() => store.isReady).toBe(true).then(() => {
+  watch(
+    () => store.elements,
+    (val) => {
+      pause()
+      pauseModel()
+      elements.value = val
+      setTimeout(() => {
+        resume()
+        resumeModel()
+      }, 1)
+    },
+    { flush: 'post', deep: true },
+  )
+})
 
 const transitionName = computed(() => {
   let name = ''
@@ -149,9 +152,9 @@ export default {
 <template>
   <div class="vue-flow">
     <Transition :key="`vue-flow-transition-${store.$id}`" :name="transitionName">
-      <Suspense>
+      <Suspense timeout="0">
         <template #default>
-          <Renderer :elements="elements">
+          <Renderer :key="`renderer-${store.$id}`" :elements="elements">
             <ZoomPane
               :key="`zoom-pane-${store.$id}`"
               :prevent-scrolling="store.preventScrolling"

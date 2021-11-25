@@ -85,8 +85,9 @@ export default (id: string, preloadedState: FlowState) => {
       },
     },
     actions: {
-      async setElements(elements) {
+      async setElements(elements, force = true) {
         const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
+        if (force) this.elements = []
         await processElements([...nodes, ...edges], (processed) => {
           this.elements = [...this.elements, ...processed]
         })

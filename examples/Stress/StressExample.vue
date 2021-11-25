@@ -17,8 +17,10 @@ import {
 
 const buttonWrapperStyles: CSSProperties = { position: 'absolute', right: 10, top: 10, zIndex: 4 }
 
+const instance = ref<FlowInstance>()
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
+  instance.value = flowInstance
   console.log(flowInstance.getElements())
 }
 
@@ -46,6 +48,7 @@ const updatePos = () => {
 const updateElements = () => {
   const grid = Math.ceil(Math.random() * 10)
   elements.value = getElements(grid, grid)
+  setTimeout(() => instance.value.fitView({ padding: 0.5 }))
 }
 </script>
 <template>

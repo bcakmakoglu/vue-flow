@@ -98,12 +98,17 @@ const updateNodeDimensions = ({ nodeElement, forceUpdate }: NodeDimensionUpdate)
 }
 
 onMounted(() => {
-  updateNodeDimensions({
-    id: props.node.id,
-    nodeElement: nodeElement.value,
-    forceUpdate: true,
-  })
-
+  watch(
+    () => props.node.__vf.width,
+    () => {
+      updateNodeDimensions({
+        id: props.node.id,
+        nodeElement: nodeElement.value,
+        forceUpdate: true,
+      })
+    },
+    { immediate: true },
+  )
   useResizeObserver(nodeElement, (entries) =>
     entries.forEach((entry) => {
       updateNodeDimensions({
