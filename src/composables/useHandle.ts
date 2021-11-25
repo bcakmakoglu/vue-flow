@@ -145,7 +145,6 @@ export default (store = useStore()) =>
         validConnectFunc,
         doc,
       )
-      console.log(isValidConnection)
 
       store.hooks.connectStop.trigger(event)
 
