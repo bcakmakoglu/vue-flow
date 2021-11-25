@@ -179,37 +179,38 @@ export default (id: string, preloadedState: FlowState) => {
         this.elements = [...this.elements, ...nodes, ...edges]
       },
       async setState(state) {
-        if (state.panOnScroll) this.panOnScroll = state.panOnScroll
-        if (state.panOnScrollMode) this.panOnScrollMode = state.panOnScrollMode
-        if (state.panOnScrollSpeed) this.panOnScrollSpeed = state.panOnScrollSpeed
-        if (state.paneMoveable) this.paneMoveable = state.paneMoveable
-        if (state.zoomOnScroll) this.zoomOnScroll = state.zoomOnScroll
-        if (state.preventScrolling) this.preventScrolling = state.preventScrolling
-        if (state.zoomOnDoubleClick) this.zoomOnDoubleClick = state.zoomOnDoubleClick
-        if (state.zoomOnPinch) this.zoomOnPinch = state.zoomOnPinch
-        if (state.defaultZoom) this.defaultZoom = state.defaultZoom
-        if (state.defaultPosition) this.defaultPosition = state.defaultPosition
-        if (state.edgeTypes) this.edgeTypes = state.edgeTypes
-        if (state.nodeTypes) this.nodeTypes = state.nodeTypes
-        if (state.storageKey) this.storageKey = state.storageKey
-        if (state.edgeUpdaterRadius) this.edgeUpdaterRadius = state.edgeUpdaterRadius
-        if (state.elementsSelectable) this.elementsSelectable = state.elementsSelectable
-        if (state.onlyRenderVisibleElements) this.onlyRenderVisibleElements = state.onlyRenderVisibleElements
-        if (state.nodesConnectable) this.nodesConnectable = state.nodesConnectable
-        if (state.nodesDraggable) this.nodesDraggable = state.nodesDraggable
-        if (state.arrowHeadColor) this.arrowHeadColor = state.arrowHeadColor
-        if (state.markerEndId) this.markerEndId = state.markerEndId
-        if (state.deleteKeyCode) this.deleteKeyCode = state.deleteKeyCode
-        if (state.selectionKeyCode) this.selectionKeyCode = state.selectionKeyCode
-        if (state.zoomActivationKeyCode) this.zoomActivationKeyCode = state.zoomActivationKeyCode
-        if (state.multiSelectionKeyCode) this.multiSelectionKeyCode = state.multiSelectionKeyCode
-        if (state.snapToGrid) this.snapToGrid = state.snapToGrid
-        if (state.snapGrid) this.snapGrid = state.snapGrid
-        if (!this.isReady) await until(() => this.d3Zoom).not.toBeUndefined()
-        if (state.maxZoom) this.setMaxZoom(state.maxZoom)
-        if (state.minZoom) this.setMinZoom(state.minZoom)
-        if (state.translateExtent) this.setTranslateExtent(state.translateExtent)
-        if (state.nodeExtent) this.setNodeExtent(state.nodeExtent)
+        if (typeof state.panOnScroll !== 'undefined') this.panOnScroll = state.panOnScroll
+        if (typeof state.panOnScrollMode !== 'undefined') this.panOnScrollMode = state.panOnScrollMode
+        if (typeof state.panOnScrollSpeed !== 'undefined') this.panOnScrollSpeed = state.panOnScrollSpeed
+        if (typeof state.paneMoveable !== 'undefined') this.paneMoveable = state.paneMoveable
+        if (typeof state.zoomOnScroll !== 'undefined') this.zoomOnScroll = state.zoomOnScroll
+        if (typeof state.preventScrolling !== 'undefined') this.preventScrolling = state.preventScrolling
+        if (typeof state.zoomOnDoubleClick !== 'undefined') this.zoomOnDoubleClick = state.zoomOnDoubleClick
+        if (typeof state.zoomOnPinch !== 'undefined') this.zoomOnPinch = state.zoomOnPinch
+        if (typeof state.defaultZoom !== 'undefined') this.defaultZoom = state.defaultZoom
+        if (typeof state.defaultPosition !== 'undefined') this.defaultPosition = state.defaultPosition
+        if (typeof state.edgeTypes !== 'undefined') this.edgeTypes = state.edgeTypes
+        if (typeof state.nodeTypes !== 'undefined') this.nodeTypes = state.nodeTypes
+        if (typeof state.storageKey !== 'undefined') this.storageKey = state.storageKey
+        if (typeof state.edgeUpdaterRadius !== 'undefined') this.edgeUpdaterRadius = state.edgeUpdaterRadius
+        if (typeof state.elementsSelectable !== 'undefined') this.elementsSelectable = state.elementsSelectable
+        if (typeof state.onlyRenderVisibleElements !== 'undefined')
+          this.onlyRenderVisibleElements = state.onlyRenderVisibleElements
+        if (typeof state.nodesConnectable !== 'undefined') this.nodesConnectable = state.nodesConnectable
+        if (typeof state.nodesDraggable !== 'undefined') this.nodesDraggable = state.nodesDraggable
+        if (typeof state.arrowHeadColor !== 'undefined') this.arrowHeadColor = state.arrowHeadColor
+        if (typeof state.markerEndId !== 'undefined') this.markerEndId = state.markerEndId
+        if (typeof state.deleteKeyCode !== 'undefined') this.deleteKeyCode = state.deleteKeyCode
+        if (typeof state.selectionKeyCode !== 'undefined') this.selectionKeyCode = state.selectionKeyCode
+        if (typeof state.zoomActivationKeyCode !== 'undefined') this.zoomActivationKeyCode = state.zoomActivationKeyCode
+        if (typeof state.multiSelectionKeyCode !== 'undefined') this.multiSelectionKeyCode = state.multiSelectionKeyCode
+        if (typeof state.snapToGrid !== 'undefined') this.snapToGrid = state.snapToGrid
+        if (typeof state.snapGrid !== 'undefined') this.snapGrid = state.snapGrid
+        if (typeof !this.isReady) await until(() => this.d3Zoom).not.toBeUndefined()
+        if (typeof state.maxZoom !== 'undefined') this.setMaxZoom(state.maxZoom)
+        if (typeof state.minZoom !== 'undefined') this.setMinZoom(state.minZoom)
+        if (typeof state.translateExtent !== 'undefined') this.setTranslateExtent(state.translateExtent)
+        if (typeof state.nodeExtent !== 'undefined') this.setNodeExtent(state.nodeExtent)
       },
     },
   })
