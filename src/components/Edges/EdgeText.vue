@@ -8,7 +8,7 @@ interface EdgeTextProps {
     | string
     | {
         component: any
-        props?: EdgeTextProps
+        props?: Record<string, any> & Partial<EdgeTextProps>
       }
   labelStyle?: CSSProperties
   labelShowBg?: boolean
