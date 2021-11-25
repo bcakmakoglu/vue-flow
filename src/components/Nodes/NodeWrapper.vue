@@ -180,6 +180,8 @@ export default {
           sourcePosition: props.node.sourcePosition,
           targetPosition: props.node.targetPosition,
           dragging: props.node.__vf.isDragging,
+          isValidTargetPos: props.node.isValidTargetPos,
+          isValidSourcePos: props.node.isValidSourcePos,
         }"
       >
         <component
@@ -195,6 +197,8 @@ export default {
             sourcePosition: props.node.sourcePosition,
             targetPosition: props.node.targetPosition,
             dragging: props.node.__vf.isDragging,
+            isValidTargetPos: props.node.isValidTargetPos,
+            isValidSourcePos: props.node.isValidSourcePos,
           }"
         />
       </slot>

@@ -11,8 +11,8 @@ export enum ConnectionLineType {
 export interface Connection {
   source: ElementId
   target: ElementId
-  sourceHandle: ElementId
-  targetHandle: ElementId
+  sourceHandle?: ElementId
+  targetHandle?: ElementId
 }
 
 export type ConnectionLineProps = {
@@ -28,9 +28,9 @@ export type ConnectionLineProps = {
 
 export type OnConnectFunc = (connection: Connection) => void
 export type OnConnectStartParams = {
-  nodeId: ElementId | undefined
-  handleId: ElementId | undefined
-  handleType: HandleType | undefined
+  nodeId?: ElementId
+  handleId?: ElementId
+  handleType?: HandleType
 }
 export type OnConnectStartFunc = (event: MouseEvent, params: OnConnectStartParams) => void
 export type OnConnectStopFunc = (event: MouseEvent) => void

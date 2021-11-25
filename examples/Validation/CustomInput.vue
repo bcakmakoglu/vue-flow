@@ -1,9 +1,12 @@
 <script lang="ts" setup>
-import { Position, Handle, Connection } from '~/index'
+import { Position, Handle, ValidConnectionFunc } from '~/index'
 
-const isValidConnection = (connection: Connection) => connection.target === 'B'
+interface CustomInputProps {
+  isValidTargetPos: ValidConnectionFunc
+}
+const props = defineProps<CustomInputProps>()
 </script>
 <template>
   <div>Only connectable with B</div>
-  <Handle type="source" :position="Position.Right" :is-valid-connection="isValidConnection" />
+  <Handle type="source" :position="Position.Right" :is-valid-connection="props.isValidTargetPos" />
 </template>

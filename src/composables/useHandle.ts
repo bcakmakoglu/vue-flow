@@ -73,9 +73,7 @@ export default (store = useStore()) =>
     handleId: ElementId,
     nodeId: ElementId,
     isTarget: boolean,
-    isValidConnection: ValidConnectionFunc = () => {
-      return true
-    },
+    isValidConnection?: ValidConnectionFunc,
     elementEdgeUpdaterType?: HandleType,
     onEdgeUpdate?: (connection: Connection) => void,
     onEdgeUpdateEnd?: () => void,
@@ -85,7 +83,11 @@ export default (store = useStore()) =>
     const doc = getHostForElement(event.target as HTMLElement)
 
     if (!doc) return
-
+    let validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
+    if (!isValidConnection) {
+      const node = store.getNodes.find((n) => n.id === nodeId)
+      if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) ?? (() => true)
+    }
     const elementBelow = doc.elementFromPoint(event.clientX, event.clientY)
     const elementBelowIsTarget = elementBelow?.classList.contains('target')
     const elementBelowIsSource = elementBelow?.classList.contains('source')
@@ -104,7 +106,7 @@ export default (store = useStore()) =>
       connectionHandleId: handleId,
       connectionHandleType: handleType,
     })
-    store.hooks.connectStart.trigger({ event, params: { nodeId, handleId, handleType } })
+    store.hooks.connectStart.trigger({ event, nodeId, handleId, handleType })
 
     function onMouseMove(event: MouseEvent) {
       store.connectionPosition.x = event.clientX - containerBounds.left
@@ -116,7 +118,7 @@ export default (store = useStore()) =>
         isTarget,
         nodeId,
         handleId,
-        isValidConnection,
+        validConnectFunc,
         doc,
       )
 
@@ -140,9 +142,10 @@ export default (store = useStore()) =>
         isTarget,
         nodeId,
         handleId,
-        isValidConnection,
+        validConnectFunc,
         doc,
       )
+      console.log(isValidConnection)
 
       store.hooks.connectStop.trigger(event)
 

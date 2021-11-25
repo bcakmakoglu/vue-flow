@@ -1,7 +1,7 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
 import { DraggableOptions } from '@braks/revue-draggable'
 import { XYPosition, ElementId, Position, SnapGrid } from './flow'
-import { HandleElement } from './components'
+import { HandleElement, ValidConnectionFunc } from './components'
 
 export interface VFInternals {
   isDragging?: boolean
@@ -24,6 +24,8 @@ export interface NodeProps<T = any> {
   targetPosition?: Position
   sourcePosition?: Position
   dragging?: boolean
+  isValidTargetPos?: ValidConnectionFunc
+  isValidSourcePos?: ValidConnectionFunc
 }
 
 export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | string
@@ -46,6 +48,8 @@ export interface Node<T = any> {
   connectable?: boolean
   dragHandle?: string
   snapGrid?: SnapGrid
+  isValidTargetPos?: ValidConnectionFunc
+  isValidSourcePos?: ValidConnectionFunc
 }
 
 export interface GraphNode<T = any> extends Node<T> {

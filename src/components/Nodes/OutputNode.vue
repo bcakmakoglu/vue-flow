@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import Handle from '../Handle/Handle.vue'
-import { NodeProps, Position } from '../../types'
+import { NodeProps, Position, ValidConnectionFunc } from '../../types'
 
 interface OutputNodeProps extends NodeProps {
   data?: NodeProps['data']
   connectable?: NodeProps['connectable']
   targetPosition?: NodeProps['targetPosition']
+  isValidTargetPos?: ValidConnectionFunc
 }
 
 const props = withDefaults(defineProps<OutputNodeProps>(), {
@@ -25,5 +26,10 @@ export default {
     <component :is="props.data?.label" v-if="typeof props.data?.label !== 'string'" />
     <span v-else v-html="props.data?.label"></span>
   </slot>
-  <Handle type="source" :position="props.targetPosition" :is-connectable="props.connectable" />
+  <Handle
+    type="source"
+    :position="props.targetPosition"
+    :is-connectable="props.connectable"
+    :is-valid-connection="props.isValidTargetPos"
+  />
 </template>

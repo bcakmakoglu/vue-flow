@@ -21,8 +21,7 @@ export interface FlowEvents {
   connect: Connection
   connectStart: {
     event: MouseEvent
-    params: OnConnectStartParams
-  }
+  } & { [key in keyof OnConnectStartParams]: OnConnectStartParams[key] }
   connectStop: MouseEvent
   connectEnd: MouseEvent
   load: FlowInstance
