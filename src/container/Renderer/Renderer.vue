@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useStore, useWindow, useZoomPanHelper } from '~/composables'
-import { Elements, FlowInstance } from '~/types'
-import { onLoadGetElements, onLoadProject, onLoadToObject } from '~/utils'
+import { useStore, useWindow, useZoomPanHelper } from '../../composables'
+import { Elements, FlowInstance } from '../../types'
+import { onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
 
 interface RendererProps {
   elements: Elements
