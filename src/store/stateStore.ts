@@ -1,6 +1,6 @@
 import microDiff from 'microdiff'
 import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
-import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, GraphEdge, Edge } from '~/types'
+import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, GraphEdge } from '~/types'
 import {
   getConnectedEdges,
   getNodesInside,
@@ -59,7 +59,7 @@ export default (id: string, preloadedState: FlowState) => {
         return []
       },
       getEdges(): GraphEdge[] {
-        const edges = this.elements.filter((e) => isEdge(e) && !e.isHidden) as Edge[]
+        const edges = this.elements.filter((e) => isEdge(e) && !e.isHidden) as GraphEdge[]
         if (this.isReady) {
           return (
             edges
@@ -86,7 +86,7 @@ export default (id: string, preloadedState: FlowState) => {
     actions: {
       setElements(elements) {
         const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
-        edges.forEach((edge: Edge, i, arr) => {
+        edges.forEach((edge, i, arr) => {
           const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
           if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
           if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
@@ -187,7 +187,7 @@ export default (id: string, preloadedState: FlowState) => {
       },
       addElements(elements: Elements) {
         const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
-        edges.forEach((edge: Edge, i, arr) => {
+        edges.forEach((edge, i, arr) => {
           const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
           if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
           if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
