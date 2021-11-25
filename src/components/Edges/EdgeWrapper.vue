@@ -43,16 +43,14 @@ const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => handleEdgeUpdater(ev
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const nodeId = isSourceHandle ? props.edge.target : props.edge.source
   const handleId = (isSourceHandle ? props.edge.targetHandle : props.edge.sourceHandle) ?? ''
-  const isValidConnection = () => true
-  const isTarget = isSourceHandle
 
   store.hooks.edgeUpdateStart.trigger({ event, edge: props.edge })
   handler(
     event,
     handleId,
     nodeId,
-    isTarget,
-    isValidConnection,
+    isSourceHandle,
+    undefined,
     isSourceHandle ? 'target' : 'source',
     (connection) => store.hooks.edgeUpdate.trigger({ edge: props.edge, connection }),
     () => store.hooks.edgeUpdateEnd.trigger({ event, edge: props.edge }),

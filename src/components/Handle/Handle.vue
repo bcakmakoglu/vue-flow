@@ -22,7 +22,7 @@ const nodeId = inject(NodeId, '')
 
 const handler = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>
-  handler(event, props.id, nodeId, props.type === 'target', props.isValidConnection ?? (() => true))
+  handler(event, props.id, nodeId, props.type === 'target', props.isValidConnection)
 </script>
 <script lang="ts">
 export default {
