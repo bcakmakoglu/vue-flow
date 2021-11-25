@@ -103,11 +103,9 @@ const props = withDefaults(defineProps<FlowProps>(), {
   paneMoveable: true,
   edgeUpdaterRadius: 10,
   loading: false,
-  worker: false,
 })
 const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id)
 const elements = useVModel(props, 'modelValue', emit)
-
 const options = Object.assign({}, store.$state, props)
 
 invoke(async () => {
