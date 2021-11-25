@@ -136,7 +136,7 @@ export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: E
     sourceHandle: newConnection.sourceHandle,
     targetHandle: newConnection.targetHandle,
   }
-
+  elements.splice(elements.indexOf(foundEdge), 1, edge)
   return elements.filter((e) => e.id !== oldEdge.id).concat(edge)
 }
 
