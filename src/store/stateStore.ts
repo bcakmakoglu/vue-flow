@@ -178,7 +178,7 @@ export default (id: string, preloadedState: FlowState) => {
         const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
         this.elements = [...this.elements, ...nodes, ...edges]
       },
-      async setState(state) {
+      setState(state) {
         if (typeof state.panOnScroll !== 'undefined') this.panOnScroll = state.panOnScroll
         if (typeof state.panOnScrollMode !== 'undefined') this.panOnScrollMode = state.panOnScrollMode
         if (typeof state.panOnScrollSpeed !== 'undefined') this.panOnScrollSpeed = state.panOnScrollSpeed
@@ -206,11 +206,15 @@ export default (id: string, preloadedState: FlowState) => {
         if (typeof state.multiSelectionKeyCode !== 'undefined') this.multiSelectionKeyCode = state.multiSelectionKeyCode
         if (typeof state.snapToGrid !== 'undefined') this.snapToGrid = state.snapToGrid
         if (typeof state.snapGrid !== 'undefined') this.snapGrid = state.snapGrid
-        if (typeof !this.isReady) await until(() => this.d3Zoom).not.toBeUndefined()
-        if (typeof state.maxZoom !== 'undefined') this.setMaxZoom(state.maxZoom)
-        if (typeof state.minZoom !== 'undefined') this.setMinZoom(state.minZoom)
-        if (typeof state.translateExtent !== 'undefined') this.setTranslateExtent(state.translateExtent)
-        if (typeof state.nodeExtent !== 'undefined') this.setNodeExtent(state.nodeExtent)
+        if (typeof !this.isReady)
+          until(() => this.d3Zoom)
+            .not.toBeUndefined()
+            .then(() => {
+              if (typeof state.maxZoom !== 'undefined') this.setMaxZoom(state.maxZoom)
+              if (typeof state.minZoom !== 'undefined') this.setMinZoom(state.minZoom)
+              if (typeof state.translateExtent !== 'undefined') this.setTranslateExtent(state.translateExtent)
+              if (typeof state.nodeExtent !== 'undefined') this.setNodeExtent(state.nodeExtent)
+            })
       },
     },
   })

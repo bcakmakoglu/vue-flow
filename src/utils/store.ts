@@ -22,6 +22,8 @@ export const initialState = (): FlowState => ({
   },
   transform: [0, 0, 1],
   elements: [],
+  nodeTypes: [],
+  edgeTypes: [],
   selectedElements: undefined,
   selectedNodesBbox: { x: 0, y: 0, width: 0, height: 0 },
 

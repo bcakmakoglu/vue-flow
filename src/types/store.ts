@@ -89,7 +89,7 @@ export interface FlowActions {
   setConnectionNodeId: (payload: SetConnectionId) => void
   setInteractive: (isInteractive: boolean) => void
   addElements: (elements: Elements) => void
-  setState: (state: FlowOptions) => Promise<void>
+  setState: (state: FlowOptions) => void
 }
 
 export interface FlowGetters {
