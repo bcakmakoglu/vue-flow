@@ -153,10 +153,7 @@ export default (store = useStore()) =>
 
       store.hooks.connectEnd.trigger(event)
 
-      if (elementEdgeUpdaterType) {
-        store.hooks.edgeUpdateEnd.trigger(event)
-        onEdgeUpdateEnd?.()
-      }
+      if (elementEdgeUpdaterType) onEdgeUpdateEnd?.()
 
       resetRecentHandle(recentHoveredHandle)
       store.setConnectionNodeId({ connectionNodeId: undefined, connectionHandleId: undefined, connectionHandleType: undefined })
