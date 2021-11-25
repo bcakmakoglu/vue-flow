@@ -216,7 +216,7 @@ export default {
 }
 </script>
 <template>
-  <div ref="zoomPane" class="vue-flow__renderer vue-flow__zoompane">
+  <div ref="zoomPane" class="vue-flow__zoompane">
     <slot
       v-bind="{
         transform: store.transform,

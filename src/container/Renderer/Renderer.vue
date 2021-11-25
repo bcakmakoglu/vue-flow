@@ -11,11 +11,7 @@ const props = defineProps<RendererProps>()
 const store = useStore()
 
 // if there are preloaded elements we overwrite the current elements with the stored ones and reset the stored elements (so we can properly parse them)
-const hasInitialElements = store.elements.length
-const initialElements = hasInitialElements ? store.elements : props.elements
-if (hasInitialElements) store.elements = []
-
-await store.setElements(initialElements)
+await store.setElements(props.elements, false)
 store.isReady = true
 
 nextTick(async () => {
@@ -45,5 +41,7 @@ export default {
 }
 </script>
 <template>
-  <slot />
+  <div class="vue-flow__renderer">
+    <slot />
+  </div>
 </template>
