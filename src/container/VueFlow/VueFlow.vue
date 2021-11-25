@@ -116,6 +116,7 @@ const options = Object.assign({}, store.$state, props)
 invoke(async () => {
   store.setState(options)
   await store.setElements(elements.value)
+  elements.value = store.elements
   store.isReady = true
 
   // if ssr we can't wait for dimensions, they'll never really exist
