@@ -108,15 +108,12 @@ const props = withDefaults(defineProps<FlowProps>(), {
 const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id)
 const elements = useVModel(props, 'modelValue', emit)
 
-// if there are preloaded elements we overwrite the current elements with the stored ones
-if (store.elements.length) elements.value = store.elements
-
 const options = Object.assign({}, store.$state, props)
 
 invoke(async () => {
   store.setState(options)
-  await store.setElements(elements.value)
-  elements.value = store.elements
+  // if there are preloaded elements we overwrite the current elements with the stored ones
+  await store.setElements(store.elements.length ? store.elements : elements.value)
   store.isReady = true
 
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -137,26 +134,27 @@ invoke(async () => {
   }
   store.hooks.load.trigger(instance)
   store.instance = instance
-  watch(
-    () => props,
-    () => store.setState(props),
-    { flush: 'post', deep: true },
-  )
-  watch(
-    () => props.modelValue.length,
-    () => store.setElements(elements.value),
-  )
-  const { pause, resume } = pausableWatch(elements, store.setElements, { flush: 'post' })
-  watch(
-    () => store.elements,
-    (val) => {
-      pause()
-      elements.value = val
-      nextTick(resume)
-    },
-    { flush: 'post', deep: true },
-  )
 })
+
+watch(
+  () => props,
+  () => store.setState(props),
+  { flush: 'post', deep: true },
+)
+watch(
+  () => props.modelValue.length,
+  () => store.setElements(elements.value),
+)
+const { pause, resume } = pausableWatch(elements, store.setElements, { flush: 'post' })
+watch(
+  () => store.elements,
+  (val) => {
+    pause()
+    elements.value = val
+    nextTick(resume)
+  },
+  { flush: 'post', deep: true },
+)
 
 const transitionName = computed(() => {
   let name = ''
