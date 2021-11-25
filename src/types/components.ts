@@ -12,7 +12,6 @@ import {
 } from './flow'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { GraphNode, Node, NodeExtent, NodeProps, TranslateExtent } from './node'
-import { FlowStore } from './store'
 import { EdgeProps } from './edge'
 import { KeyCode, PanOnScrollMode } from './zoom'
 
@@ -31,6 +30,14 @@ export interface HandleElement extends XYPosition, Dimensions {
 }
 
 export type ValidConnectionFunc = (connection: Connection) => boolean
+
+export interface HandleProps {
+  id?: string
+  type?: string
+  position?: Position
+  isValidConnection?: ValidConnectionFunc
+  connectable?: boolean
+}
 
 export interface BackgroundProps {
   variant?: BackgroundVariant
@@ -109,7 +116,6 @@ export interface CustomConnectionLineProps {
 
 export interface FlowProps extends FlowOptions {
   id?: string
-  store?: FlowStore
   modelValue?: Elements
   nodeTypes?: NodeTypes
   edgeTypes?: EdgeTypes
@@ -146,5 +152,4 @@ export interface FlowProps extends FlowOptions {
   edgeUpdaterRadius?: number
   storageKey?: string
   loading?: Loading
-  worker?: boolean
 }
