@@ -91,6 +91,7 @@ export default (id: string, preloadedState: FlowState) => {
         await processElements([...nodes, ...edges], (processed) => {
           this.elements = [...this.elements, ...processed]
         })
+        this.hooks.elementsProcessed.trigger(this.elements)
       },
       setUserSelection(mousePos) {
         this.selectionActive = true
@@ -128,6 +129,7 @@ export default (id: string, preloadedState: FlowState) => {
 
         if (!this.getSelectedNodes || this.getSelectedNodes.length === 0) {
           this.selectedElements = undefined
+          this.hooks.selectionChange.trigger(undefined)
           this.nodesSelectionActive = false
         } else {
           this.selectedNodesBbox = getRectOfNodes(this.getSelectedNodes)
@@ -138,6 +140,7 @@ export default (id: string, preloadedState: FlowState) => {
         const selectedElementsArr = Array.isArray(elements) ? elements : [elements]
         const selectedElementsUpdated = microDiff(selectedElementsArr, this.selectedElements ?? []).length
         this.selectedElements = selectedElementsUpdated ? selectedElementsArr : this.selectedElements
+        if (selectedElementsUpdated) this.hooks.selectionChange.trigger(selectedElementsArr)
       },
       initD3Zoom({ d3ZoomHandler, d3Zoom, d3Selection }) {
         this.d3Zoom = d3Zoom

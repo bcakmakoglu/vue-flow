@@ -17,6 +17,7 @@ export const createHooks = (): FlowHooks => ({
   connectStart: createEventHook(),
   connectStop: createEventHook(),
   connectEnd: createEventHook(),
+  elementsProcessed: createEventHook(),
   load: createEventHook(),
   move: createEventHook(),
   moveStart: createEventHook(),

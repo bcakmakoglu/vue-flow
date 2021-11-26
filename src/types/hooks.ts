@@ -25,10 +25,11 @@ export interface FlowEvents {
   connectStop: MouseEvent
   connectEnd: MouseEvent
   load: FlowInstance
+  elementsProcessed: FlowElements
   move: FlowTransform | undefined
   moveStart: FlowTransform | undefined
   moveEnd: FlowTransform | undefined
-  selectionChange: FlowElements | null
+  selectionChange: FlowElements | undefined
   selectionDragStart: { event: MouseEvent; nodes: GraphNode[] }
   selectionDrag: { event: MouseEvent; nodes: GraphNode[] }
   selectionDragStop: { event: MouseEvent; nodes: GraphNode[] }
