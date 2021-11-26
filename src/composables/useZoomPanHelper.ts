@@ -1,7 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
 import useStore from './useStore'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds, isGraphNode } from '~/utils'
-import { FitViewParams, FlowTransform, Rect, UseZoomPanHelper, XYPosition } from '~/types'
+import { FitViewParams, FlowTransform, GraphNode, Rect, UseZoomPanHelper, XYPosition } from '~/types'
 
 const DEFAULT_PADDING = 0.1
 
@@ -14,10 +14,22 @@ export default (store = useStore()): UseZoomPanHelper => {
       const nextTransform = zoomIdentity.translate(transform.x, transform.y).scale(transform.zoom)
       store.d3Selection && store.d3Zoom?.transform(store.d3Selection, nextTransform)
     },
-    fitView: (options: FitViewParams = { padding: DEFAULT_PADDING, includeHiddenNodes: false }) => {
+    fitView: (options: FitViewParams = { padding: DEFAULT_PADDING, includeHiddenNodes: false, transitionDuration: 0 }) => {
       if (!store.getNodes.length) return
 
-      const bounds = getRectOfNodes(options.includeHiddenNodes ? store.elements.filter(isGraphNode) : store.getNodes)
+      let nodes: GraphNode[] = []
+      if (options.nodes) {
+        const storedNodes = store.elements.filter((n) => options.nodes?.includes(n.id))
+        if (storedNodes) {
+          storedNodes.forEach((n) => {
+            if (isGraphNode(n)) nodes.push(n)
+          })
+        }
+      }
+      if (!nodes.length) {
+        nodes = options.includeHiddenNodes ? store.elements.filter(isGraphNode) : store.getNodes
+      }
+      const bounds = getRectOfNodes(nodes)
       const [x, y, zoom] = getTransformForBounds(
         bounds,
         store.dimensions.width,
@@ -29,7 +41,13 @@ export default (store = useStore()): UseZoomPanHelper => {
       )
       const transform = zoomIdentity.translate(x, y).scale(zoom)
 
-      store.d3Selection && store.d3Zoom?.transform(store.d3Selection, transform)
+      store.d3Selection &&
+        store.d3Zoom?.transform(
+          options.transitionDuration
+            ? store.d3Selection.selection().transition().duration(options.transitionDuration)
+            : store.d3Selection,
+          transform,
+        )
     },
     setCenter: (x: number, y: number, zoom?: number) => {
       const nextZoom = typeof zoom !== 'undefined' ? zoom : store.maxZoom

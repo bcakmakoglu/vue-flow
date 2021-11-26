@@ -68,6 +68,8 @@ export type FitViewParams = {
     x?: number
     y?: number
   }
+  transitionDuration?: number
+  nodes?: ElementId[]
 }
 
 export type FlowExportObject<T = any> = {
