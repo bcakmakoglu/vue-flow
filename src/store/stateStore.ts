@@ -179,8 +179,7 @@ export default (id: string, preloadedState: FlowState) => {
         this.elementsSelectable = isInteractive
       },
       addElements(elements: Elements) {
-        const { nodes, edges } = parseElements(elements, this.elements, this.nodeExtent)
-        this.elements = [...this.elements, ...nodes, ...edges]
+        this.setElements(elements, false)
       },
       setState(state) {
         if (typeof state.loading !== 'undefined') this.loading = state.loading

@@ -102,7 +102,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   edgeUpdaterRadius: 10,
   loading: false,
 })
-const emit = defineEmits([...Object.keys(createHooks()).filter((key) => key !== 'edgeUpdate'), 'update:modelValue'])
+const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue'])
 const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id)
 const elements = useVModel(props, 'modelValue', emit)
 const options = Object.assign({}, store.$state, props)
@@ -147,7 +147,11 @@ const transitionName = computed(() => {
 
 onBeforeUnmount(() => store?.$dispose())
 </script>
-
+<script lang="ts">
+export default {
+  name: 'VueFlow'
+}
+</script>
 <template>
   <div class="vue-flow">
     <Transition :key="`vue-flow-transition-${store.$id}`" :name="transitionName">
