@@ -37,6 +37,7 @@ interface FlowProps extends FlowOptions {
   snapToGrid?: boolean
   snapGrid?: [number, number]
   onlyRenderVisibleElements?: boolean
+  edgesUpdatable?: boolean
   nodesDraggable?: boolean
   nodesConnectable?: boolean
   elementsSelectable?: boolean
@@ -61,8 +62,6 @@ interface FlowProps extends FlowOptions {
   loading?: Loading
 }
 
-const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue'])
-
 const props = withDefaults(defineProps<FlowProps>(), {
   modelValue: () => [],
   connectionMode: ConnectionMode.Loose,
@@ -74,6 +73,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: false,
   snapGrid: () => [15, 15],
   onlyRenderVisibleElements: false,
+  edgesUpdatable: false,
   nodesConnectable: true,
   nodesDraggable: true,
   elementsSelectable: true,
@@ -102,6 +102,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   edgeUpdaterRadius: 10,
   loading: false,
 })
+const emit = defineEmits([...Object.keys(createHooks()).filter((key) => key !== 'edgeUpdate'), 'update:modelValue'])
 const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id)
 const elements = useVModel(props, 'modelValue', emit)
 const options = Object.assign({}, store.$state, props)
@@ -117,21 +118,23 @@ const { pause: pauseModel, resume: resumeModel } = pausableWatch(
 )
 const { pause, resume } = pausableWatch(elements, async (val) => await store.setElements(val), { flush: 'post' })
 
-until(() => store.isReady).toBe(true).then(() => {
-  watch(
-    () => store.elements,
-    (val) => {
-      pause()
-      pauseModel()
-      elements.value = val
-      setTimeout(() => {
-        resume()
-        resumeModel()
-      }, 1)
-    },
-    { flush: 'post', deep: true },
-  )
-})
+until(() => store.isReady)
+  .toBe(true)
+  .then(() => {
+    watch(
+      () => store.elements,
+      (val) => {
+        pause()
+        pauseModel()
+        elements.value = val
+        setTimeout(() => {
+          resume()
+          resumeModel()
+        }, 1)
+      },
+      { flush: 'post', deep: true },
+    )
+  })
 
 const transitionName = computed(() => {
   let name = ''
@@ -144,11 +147,7 @@ const transitionName = computed(() => {
 
 onBeforeUnmount(() => store?.$dispose())
 </script>
-<script lang="ts">
-export default {
-  name: 'VueFlow'
-}
-</script>
+
 <template>
   <div class="vue-flow">
     <Transition :key="`vue-flow-transition-${store.$id}`" :name="transitionName">
@@ -222,6 +221,7 @@ export default {
                     :arrow-head-color="store.arrowHeadColor"
                     :marker-end-id="store.markerEndId"
                     :only-render-visible-elements="store.onlyRenderVisibleElements"
+                    :edges-updatable="store.edgesUpdatable"
                   >
                     <template
                       v-for="edgeName of Object.keys(store.getEdgeTypes)"

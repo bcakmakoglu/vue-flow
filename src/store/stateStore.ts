@@ -201,6 +201,7 @@ export default (id: string, preloadedState: FlowState) => {
         if (typeof state.elementsSelectable !== 'undefined') this.elementsSelectable = state.elementsSelectable
         if (typeof state.onlyRenderVisibleElements !== 'undefined')
           this.onlyRenderVisibleElements = state.onlyRenderVisibleElements
+        if (typeof state.edgesUpdatable !== 'undefined') this.edgesUpdatable = state.edgesUpdatable
         if (typeof state.nodesConnectable !== 'undefined') this.nodesConnectable = state.nodesConnectable
         if (typeof state.nodesDraggable !== 'undefined') this.nodesDraggable = state.nodesDraggable
         if (typeof state.arrowHeadColor !== 'undefined') this.arrowHeadColor = state.arrowHeadColor

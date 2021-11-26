@@ -58,6 +58,7 @@ export interface FlowState extends Omit<FlowOptions, 'elements'> {
   snapToGrid: boolean
   snapGrid: SnapGrid
 
+  edgesUpdatable: boolean
   nodesDraggable: boolean
   nodesConnectable: boolean
   elementsSelectable: boolean

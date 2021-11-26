@@ -74,6 +74,7 @@ export const initialState = (): FlowState => ({
   snapGrid: [15, 15],
   snapToGrid: false,
 
+  edgesUpdatable: false,
   nodesDraggable: true,
   nodesConnectable: true,
   elementsSelectable: true,

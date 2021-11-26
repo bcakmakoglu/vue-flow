@@ -29,7 +29,6 @@ export const createHooks = (): FlowHooks => ({
   paneScroll: createEventHook(),
   paneClick: createEventHook(),
   paneContextMenu: createEventHook(),
-  edgeUpdate: createEventHook(),
   edgeContextMenu: createEventHook(),
   edgeMouseEnter: createEventHook(),
   edgeMouseMove: createEventHook(),
@@ -37,6 +36,7 @@ export const createHooks = (): FlowHooks => ({
   edgeDoubleClick: createEventHook(),
   edgeClick: createEventHook(),
   edgeUpdateStart: createEventHook(),
+  edgeUpdate: createEventHook(),
   edgeUpdateEnd: createEventHook(),
 })
 

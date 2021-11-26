@@ -10,6 +10,7 @@ interface EdgeWrapper {
   markerEndId?: string
   edgeUpdaterRadius?: number
   selectable?: boolean
+  updatable?: boolean
   dimensions: Dimensions
   transform: Transform
 }
@@ -192,7 +193,12 @@ export default {
         }"
       />
     </slot>
-    <g @mousedown="onEdgeUpdaterSourceMouseDown" @mouseenter="onEdgeUpdaterMouseEnter" @mouseout="onEdgeUpdaterMouseOut">
+    <g
+      v-if="props.updatable"
+      @mousedown="onEdgeUpdaterSourceMouseDown"
+      @mouseenter="onEdgeUpdaterMouseEnter"
+      @mouseout="onEdgeUpdaterMouseOut"
+    >
       <EdgeAnchor
         :position="sourcePosition"
         :center-x="edgePos.sourceX"
@@ -200,7 +206,12 @@ export default {
         :radius="props.edgeUpdaterRadius"
       />
     </g>
-    <g @mousedown="onEdgeUpdaterTargetMouseDown" @mouseenter="onEdgeUpdaterMouseEnter" @mouseout="onEdgeUpdaterMouseOut">
+    <g
+      v-if="props.updatable"
+      @mousedown="onEdgeUpdaterTargetMouseDown"
+      @mouseenter="onEdgeUpdaterMouseEnter"
+      @mouseout="onEdgeUpdaterMouseOut"
+    >
       <EdgeAnchor
         :position="targetPosition"
         :center-x="edgePos.targetX"

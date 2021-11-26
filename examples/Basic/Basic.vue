@@ -65,6 +65,7 @@ const toggleclasss = () => {
     @connect="onConnect"
     @node-drag-stop="onNodeDragStop"
     @node-click="onElementClick"
+    @edge-update="log"
     @load="onLoad"
   >
     <MiniMap />

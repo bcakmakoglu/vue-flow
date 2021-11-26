@@ -36,7 +36,6 @@ export interface FlowEvents {
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent
-  edgeUpdate: { edge: GraphEdge; connection: Connection }
   edgeContextMenu: { event: MouseEvent; edge: GraphEdge }
   edgeMouseEnter: { event: MouseEvent; edge: GraphEdge }
   edgeMouseMove: { event: MouseEvent; edge: GraphEdge }
@@ -44,6 +43,7 @@ export interface FlowEvents {
   edgeDoubleClick: { event: MouseEvent; edge: GraphEdge }
   edgeClick: { event: MouseEvent; edge: GraphEdge }
   edgeUpdateStart: { event: MouseEvent; edge: GraphEdge }
+  edgeUpdate: { edge: GraphEdge; connection: Connection }
   edgeUpdateEnd: { event: MouseEvent; edge: GraphEdge }
 }
 

@@ -34,12 +34,14 @@ interface EdgeRendererProps {
   connectionPosition?: XYPosition
   connectionMode: ConnectionMode
   nodesConnectable?: boolean
+  edgesUpdatable?: boolean
 }
 
 const props = withDefaults(defineProps<EdgeRendererProps>(), {
   arrowHeadColor: '#b1b1b7',
   connectionLineType: ConnectionLineType.Bezier,
   edgeUpdaterRadius: 10,
+  handleEdgeUpdate: false,
 })
 
 const getType = (type?: string) => {
@@ -85,6 +87,7 @@ export default {
         :edge="edge"
         :component="getType(edge.type)"
         :selectable="props.elementsSelectable"
+        :updatable="typeof edge.updatable === 'undefined' ? props.edgesUpdatable : edge.updatable"
         :edge-updater-radius="props.edgeUpdaterRadius"
         :dimensions="props.dimensions"
         :transform="props.transform"
