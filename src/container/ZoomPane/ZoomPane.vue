@@ -204,8 +204,8 @@ watch(
   (val) =>
     (store.transform = [
       clamp(val.x, store.translateExtent[0][0], store.translateExtent[1][0]),
-      clamp(val.y, store.translateExtent[0][0], store.translateExtent[1][0]),
-      clamp(val.zoom, store.translateExtent[0][0], store.translateExtent[1][0]),
+      clamp(val.y, store.translateExtent[0][1], store.translateExtent[1][1]),
+      clamp(val.zoom, store.minZoom, store.maxZoom),
     ]),
   { flush: 'sync', immediate: true },
 )
