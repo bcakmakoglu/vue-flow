@@ -21,8 +21,8 @@ const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
 
 const nodeExtent: NodeExtent = [
-  [0, 0],
-  [1000, 1000],
+  [0, -100],
+  [1000, 500],
 ]
 
 const elements = ref<Elements>(initialElements)

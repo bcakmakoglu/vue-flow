@@ -3,7 +3,7 @@ import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
 import { GraphNode, SnapGrid, Draggable, NodeDimensionUpdate } from '../../types'
 import { NodeId } from '../../context'
-import { getDimensions, getHandleBounds } from '../../utils'
+import { clampPosition, getDimensions, getHandleBounds } from '../../utils'
 
 interface NodeWrapperProps {
   node: GraphNode
@@ -56,9 +56,14 @@ const onDragStart: DraggableEventListener = ({ event }) => {
     store.addSelectedElements([])
   }
 }
-const onDrag: DraggableEventListener = ({ event, data }) => {
-  node.value.position.x += data.deltaX
-  node.value.position.y += data.deltaY
+const onDrag: DraggableEventListener = ({ event, data: { deltaY, deltaX } }) => {
+  node.value.position = clampPosition(
+    {
+      x: (node.value.position.x += deltaX),
+      y: (node.value.position.y += deltaY),
+    },
+    store.nodeExtent,
+  )
   node.value.__vf.isDragging = true
   store.hooks.nodeDrag.trigger({ event, node: props.node })
 }
