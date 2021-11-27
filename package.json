@@ -53,6 +53,7 @@
     "dagre": "^0.8.5",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
     "eslint-plugin-prettier": "^3.4.1",
     "np": "^7.5.0",
     "postcss-nested": "^5.0.6",

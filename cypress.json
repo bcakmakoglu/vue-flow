@@ -2,5 +2,5 @@
   "testFiles": "**/*.spec.ts",
   "componentFolder": ".",
   "video": false,
-  "screenshotOnRunFailure": false,
+  "screenshotOnRunFailure": false
 }
