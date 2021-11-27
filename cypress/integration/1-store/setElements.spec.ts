@@ -34,12 +34,14 @@ describe('test store action setElements', () => {
     })
 
     it('parses elements to flow-elements', () => {
-      store.elements.forEach((el) => expect(isGraphNode(el) || isGraphEdge(el)).to.eq(true))
+      store.getEdges.forEach((edge) => expect(!isGraphNode(edge)).to.be.true)
+      store.getNodes.forEach((node) => expect(!isGraphEdge(node)).to.be.true)
     })
 
     it('parses elements to flow-elements (199 elements - stress test)', async () => {
       await store.setElements(getElements())
-      store.elements.forEach((el) => expect(isGraphNode(el) || isGraphEdge(el)).to.eq(true))
+      store.getEdges.forEach((edge) => expect(!isGraphNode(edge)).to.be.true)
+      store.getNodes.forEach((node) => expect(!isGraphEdge(node)).to.be.true)
     })
 
     it('has correct element ids', () => {
@@ -51,47 +53,35 @@ describe('test store action setElements', () => {
     })
 
     it('nodes have correct label', () => {
-      store.elements.forEach((el) => {
-        if (isGraphNode(el)) {
-          if (el.id === '1') expect(el.data.label).to.eq('Node 1')
-          else expect(el.data.label).to.eq('Node 2')
-        }
+      store.getNodes.forEach((el) => {
+        if (el.id === '1') expect(el.data.label).to.eq('Node 1')
+        else expect(el.data.label).to.eq('Node 2')
       })
     })
 
     it('nodes have correct position', () => {
-      store.elements.forEach((el) => {
-        if (isGraphNode(el)) {
-          if (el.id === '1') expect(JSON.stringify(el.position)).to.eq(JSON.stringify({ x: 250, y: 5 }))
-          else expect(JSON.stringify(el.position)).to.eq(JSON.stringify({ x: 100, y: 100 }))
-        }
+      store.getNodes.forEach((el) => {
+        if (el.id === '1') expect(JSON.stringify(el.position)).to.eq(JSON.stringify({ x: 250, y: 5 }))
+        else expect(JSON.stringify(el.position)).to.eq(JSON.stringify({ x: 100, y: 100 }))
       })
     })
 
     it('edge has correct target and source', () => {
-      store.elements.forEach((el) => {
-        if (isGraphEdge(el)) {
-          expect(el.source).to.eq('1')
-          expect(el.target).to.eq('2')
-        }
+      store.getEdges.forEach((el) => {
+        expect(el.source).to.eq('1')
+        expect(el.target).to.eq('2')
       })
     })
 
     it('edge has correct targetnode and sourceNode', () => {
-      store.elements.forEach((el) => {
-        if (isGraphEdge(el)) {
-          expect(el.sourceNode.id).to.eq('1')
-          expect(el.targetNode.id).to.eq('2')
-        }
+      store.getEdges.forEach((el) => {
+        expect(el.sourceNode.id).to.eq('1')
+        expect(el.targetNode.id).to.eq('2')
       })
     })
 
     it('edge is animated', () => {
-      store.elements.forEach((el) => {
-        if (isGraphEdge(el)) {
-          expect(el.animated).to.eq(true)
-        }
-      })
+      store.getEdges.forEach((el) => expect(el.animated).to.eq(true))
     })
   })
 })

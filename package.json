@@ -52,6 +52,7 @@
     "autoprefixer": "^10.3.7",
     "cypress": "^9.1.0",
     "dagre": "^0.8.5",
+    "esbuild": "0.13.4",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-chai-friendly": "^0.7.2",

@@ -27,11 +27,25 @@ describe('test store state', () => {
     expect(store.zoomOnScroll).to.eq(false)
   })
 
-  it('takes options', () => {
+  it('takes initial options', () => {
     const store = useStore({
       zoomOnScroll: false,
     })
     expect(store.zoomOnScroll).to.eq(false)
     store.$dispose()
+  })
+
+  it('gets custom node types', () => {
+    store.setState({
+      nodeTypes: ['custom'],
+    })
+    expect(Object.keys(store.getNodeTypes)).to.contain('custom')
+  })
+
+  it('gets custom edge types', () => {
+    store.setState({
+      edgeTypes: ['custom'],
+    })
+    expect(Object.keys(store.getEdgeTypes)).to.contain('custom')
   })
 })
