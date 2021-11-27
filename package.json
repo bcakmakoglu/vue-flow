@@ -26,12 +26,13 @@
     "dev": "vite",
     "build": "vite build && vue-tsc --declaration --emitDeclarationOnly && tsc && rm -rf tmp",
     "prepublishOnly": "yarn build",
-    "test": "exit 0;",
+    "test": "cypress run-ct",
     "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
     "lint": "yarn lint:js"
   },
   "dependencies": {
     "@braks/revue-draggable": "^0.3.9",
+    "@cypress/vue": "^3.0.5",
     "@types/d3": "^7.1.0",
     "@vueuse/core": "^6.9.1",
     "d3": "^7.1.1",
@@ -42,11 +43,13 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.9.0",
+    "@cypress/vite-dev-server": "^2.2.1",
     "@rollup/plugin-replace": "^2.4.2",
     "@types/dagre": "^0.7.46",
     "@vitejs/plugin-vue": "^1.9.3",
     "@vue/compiler-sfc": "^3.2.22",
     "autoprefixer": "^10.3.7",
+    "cypress": "^9.1.0",
     "dagre": "^0.8.5",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
