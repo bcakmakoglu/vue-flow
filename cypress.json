@@ -1,5 +1,5 @@
 {
-  "testFiles": "**/*.spec.ts",
+  "testFiles": "cypress/**/*.spec.ts",
   "componentFolder": ".",
   "video": false,
   "screenshotOnRunFailure": false
