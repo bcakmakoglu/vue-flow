@@ -12,8 +12,8 @@ describe('flow store', () => {
     const store = useStore()
     const initial = initialState()
     Object.keys(store.$state).forEach((state) => {
-      const storedState = store[state]
-      const initialVal: any = initial[state as keyof FlowState]
+      const storedState = store[<keyof FlowState>state]
+      const initialVal = initial[<keyof FlowState>state]
       expect(JSON.stringify(storedState)).to.eq(JSON.stringify(initialVal))
     })
     store.$dispose()
