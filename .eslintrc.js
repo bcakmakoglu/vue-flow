@@ -7,11 +7,13 @@ const baseRules = {
       allowModifiers: true,
     },
   ],
+  'no-unused-expressions': ['off', { allowTernary: true }],
+  'chai-friendly/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
   'prettier/prettier': ['error', {}, { usePrettierrc: true }],
 }
 
 module.exports = {
   extends: ['@antfu', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
+  plugins: ['chai-friendly', 'prettier'],
   rules: baseRules,
 }

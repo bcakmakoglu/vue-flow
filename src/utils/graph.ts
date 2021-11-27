@@ -56,7 +56,8 @@ export const isEdge = (element: Node | Edge | Connection): element is Edge =>
 export const isNode = (element: Node | Edge | Connection): element is Node => 'id' in element && !isEdge(element)
 
 export const isGraphNode = (element: any): element is GraphNode => isNode(element) && '__vf' in element
-export const isGraphEdge = (element: any): element is GraphEdge => isEdge(element) && 'sourceTargetNodes' in element
+export const isGraphEdge = (element: any): element is GraphEdge =>
+  isEdge(element) && 'sourceNode' in element && 'targetNode' in element
 
 const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
   if (!isNode(node)) return []

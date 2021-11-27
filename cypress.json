@@ -1,0 +1,6 @@
+{
+  "testFiles": "cypress/**/*.spec.ts",
+  "componentFolder": ".",
+  "video": false,
+  "screenshotOnRunFailure": false
+}

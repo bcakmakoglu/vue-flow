@@ -20,7 +20,8 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "vite/client"
+      "vite/client",
+      "cypress"
     ],
     "paths": {
       "~/*": [
@@ -32,7 +33,7 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src"],
+  "include": ["src", "cypress/**/*.spec.ts"],
   "exclude": [
     "node_modules",
     "build",

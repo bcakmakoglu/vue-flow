@@ -27,7 +27,7 @@ const vfInstance = ref<FlowInstance>()
 const onElementsRemove = (elementsToRemove: Elements) => removeElements(elementsToRemove, elements.value)
 const onConnect = (params: Edge | Connection) => addEdge(params, elements.value)
 const onLoad = (flowInstance: FlowInstance) => {
-  flowInstance.fitView({ padding: 0.1 })
+  flowInstance.fitView({ padding: 0.1, nodes: ['2'] })
   vfInstance.value = flowInstance
 }
 
