@@ -1,8 +1,9 @@
+import { getElements } from '../../../examples/Stress/utils'
 import { useStore } from '~/composables'
 import { FlowStore } from '~/types'
 import { isGraphEdge, isGraphNode } from '~/utils'
 
-describe('flow store', () => {
+describe('test store action setElements', () => {
   const setElements = async (store: FlowStore) => {
     const elements = [
       { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
@@ -27,7 +28,17 @@ describe('flow store', () => {
     })
     afterEach(() => store.$dispose())
 
+    it('adds elements', () => {
+      store.addElements([{ id: '4', data: { label: 'Node 4' }, position: { x: 500, y: 500 } }])
+      expect(store.elements).to.have.length(4)
+    })
+
     it('parses elements to flow-elements', () => {
+      store.elements.forEach((el) => expect(isGraphNode(el) || isGraphEdge(el)).to.eq(true))
+    })
+
+    it('parses elements to flow-elements (199 elements - stress test)', async () => {
+      await store.setElements(getElements())
       store.elements.forEach((el) => expect(isGraphNode(el) || isGraphEdge(el)).to.eq(true))
     })
 
@@ -62,6 +73,15 @@ describe('flow store', () => {
         if (isGraphEdge(el)) {
           expect(el.source).to.eq('1')
           expect(el.target).to.eq('2')
+        }
+      })
+    })
+
+    it('edge has correct targetnode and sourceNode', () => {
+      store.elements.forEach((el) => {
+        if (isGraphEdge(el)) {
+          expect(el.sourceNode.id).to.eq('1')
+          expect(el.targetNode.id).to.eq('2')
         }
       })
     })
