@@ -223,6 +223,12 @@ export default (id: string, preloadedState: FlowState) => {
               if (typeof state.translateExtent !== 'undefined') this.setTranslateExtent(state.translateExtent)
               if (typeof state.nodeExtent !== 'undefined') this.setNodeExtent(state.nodeExtent)
             })
+        else {
+          if (typeof state.maxZoom !== 'undefined') this.setMaxZoom(state.maxZoom)
+          if (typeof state.minZoom !== 'undefined') this.setMinZoom(state.minZoom)
+          if (typeof state.translateExtent !== 'undefined') this.setTranslateExtent(state.translateExtent)
+          if (typeof state.nodeExtent !== 'undefined') this.setNodeExtent(state.nodeExtent)
+        }
       },
     },
   })

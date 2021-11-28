@@ -189,7 +189,7 @@ const { width, height } = useElementBounding(zoomPaneEl)
 
 // skip waiting for ssr
 const window = useWindow()
-if ('screen' in window) await until(() => store.isReady).toMatch((y) => y)
+if ('screen' in window) await until(() => store.isReady).toBe(true)
 
 watch(
   [width, height],
