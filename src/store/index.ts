@@ -1,1 +1,1 @@
-export { default as useStateStore } from './stateStore'
+export { default as useNewStore } from './store'

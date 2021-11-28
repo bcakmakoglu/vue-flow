@@ -1,11 +1,11 @@
 import { zoomIdentity } from 'd3-zoom'
 import useStore from './useStore'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds, isGraphNode } from '~/utils'
-import { FitViewParams, FlowTransform, GraphNode, Rect, UseZoomPanHelper, XYPosition } from '~/types'
+import { FitViewParams, FlowTransform, GraphNode, ReactiveFlowStore, Rect, UseZoomPanHelper, XYPosition } from '~/types'
 
 const DEFAULT_PADDING = 0.1
 
-export default (store = useStore()): UseZoomPanHelper => {
+export default (store: ReactiveFlowStore = useStore()): UseZoomPanHelper => {
   return {
     zoomIn: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1.2),
     zoomOut: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1 / 1.2),
@@ -14,7 +14,13 @@ export default (store = useStore()): UseZoomPanHelper => {
       const nextTransform = zoomIdentity.translate(transform.x, transform.y).scale(transform.zoom)
       store.d3Selection && store.d3Zoom?.transform(store.d3Selection, nextTransform)
     },
-    fitView: (options: FitViewParams = { padding: DEFAULT_PADDING, includeHiddenNodes: false, transitionDuration: 0 }) => {
+    fitView: (
+      options: FitViewParams = {
+        padding: DEFAULT_PADDING,
+        includeHiddenNodes: false,
+        transitionDuration: 0,
+      },
+    ) => {
       if (!store.getNodes.length) return
 
       let nodes: GraphNode[] = []

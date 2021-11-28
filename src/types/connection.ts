@@ -32,9 +32,6 @@ export type OnConnectStartParams = {
   handleId?: ElementId
   handleType?: HandleType
 }
-export type OnConnectStartFunc = (event: MouseEvent, params: OnConnectStartParams) => void
-export type OnConnectStopFunc = (event: MouseEvent) => void
-export type OnConnectEndFunc = (event: MouseEvent) => void
 
 export enum ConnectionMode {
   Strict = 'strict',
