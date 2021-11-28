@@ -54,7 +54,7 @@ export default {
       @stop="onStop"
     >
       <div
-        :key="`vue-flow-nodesselection-rect-${store.$id}`"
+        :key="`vue-flow-nodesselection-rect-${store.id}`"
         class="vue-flow__nodesselection-rect"
         :style="innerStyle"
         @contextmenu="onContextMenu"

@@ -1,4 +1,5 @@
-import { Store } from 'pinia'
+import { ComputedRef, ToRefs } from 'vue'
+import { UnwrapNestedRefs } from '@vue/reactivity'
 import {
   Dimensions,
   ElementId,
@@ -13,14 +14,7 @@ import {
   XYPosition,
 } from './flow'
 import { HandleType, EdgeComponent, NodeComponent } from './components'
-import {
-  ConnectionMode,
-  OnConnectEndFunc,
-  OnConnectFunc,
-  OnConnectStartFunc,
-  OnConnectStopFunc,
-  SetConnectionId,
-} from './connection'
+import { ConnectionMode, SetConnectionId } from './connection'
 import { GraphEdge } from './edge'
 import { NodeExtent, GraphNode, TranslateExtent } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload } from './zoom'
@@ -28,13 +22,13 @@ import { FlowHooks } from './hooks'
 
 export interface FlowState extends Omit<FlowOptions, 'elements'> {
   hooks: FlowHooks
-  instance?: FlowInstance
+  instance: FlowInstance | undefined
 
   elements: FlowElements
 
-  d3Zoom?: D3Zoom
-  d3Selection?: D3Selection
-  d3ZoomHandler?: D3ZoomHandler
+  d3Zoom: D3Zoom | undefined
+  d3Selection: D3Selection | undefined
+  d3ZoomHandler: D3ZoomHandler | undefined
   minZoom: number
   maxZoom: number
   translateExtent: TranslateExtent
@@ -42,16 +36,16 @@ export interface FlowState extends Omit<FlowOptions, 'elements'> {
   dimensions: Dimensions
   transform: Transform
 
-  selectedElements?: FlowElements
-  selectedNodesBbox?: Rect
+  selectedElements: FlowElements | undefined
+  selectedNodesBbox: Rect | undefined
   nodesSelectionActive: boolean
   selectionActive: boolean
   userSelectionRect: SelectionRect
   multiSelectionActive: boolean
 
-  connectionNodeId?: ElementId
-  connectionHandleId?: ElementId
-  connectionHandleType?: HandleType
+  connectionNodeId: ElementId | undefined
+  connectionHandleId: ElementId | undefined
+  connectionHandleType: HandleType | undefined
   connectionPosition: XYPosition
   connectionMode: ConnectionMode
 
@@ -62,11 +56,6 @@ export interface FlowState extends Omit<FlowOptions, 'elements'> {
   nodesDraggable: boolean
   nodesConnectable: boolean
   elementsSelectable: boolean
-
-  onConnect?: OnConnectFunc
-  onConnectStart?: OnConnectStartFunc
-  onConnectStop?: OnConnectStopFunc
-  onConnectEnd?: OnConnectEndFunc
 
   isReady: boolean
 
@@ -83,22 +72,22 @@ export interface FlowActions {
   setMinZoom: (zoom: number) => void
   setMaxZoom: (zoom: number) => void
   setTranslateExtent: (translateExtent: TranslateExtent) => void
-  setNodeExtent: (nodeExtent: NodeExtent) => void
   resetSelectedElements: () => void
   unsetNodesSelection: () => void
   updateSize: (size: Dimensions) => void
   setConnectionNodeId: (payload: SetConnectionId) => void
   setInteractive: (isInteractive: boolean) => void
   addElements: (elements: Elements) => void
-  setState: (state: FlowOptions) => void
+  setState: (state: Partial<FlowOptions>) => void
 }
 
 export interface FlowGetters {
-  getEdgeTypes: () => Record<string, EdgeComponent>
-  getNodeTypes: () => Record<string, NodeComponent>
-  getNodes: () => GraphNode[]
-  getEdges: () => GraphEdge[]
-  getSelectedNodes: () => GraphNode[]
+  getEdgeTypes: ComputedRef<Record<string, EdgeComponent>>
+  getNodeTypes: ComputedRef<Record<string, NodeComponent>>
+  getNodes: ComputedRef<GraphNode[]>
+  getEdges: ComputedRef<GraphEdge[]>
+  getSelectedNodes: ComputedRef<GraphNode[]>
 }
 
-export type FlowStore = Store<string, FlowState, FlowGetters, FlowActions>
+export type FlowStore = { state: FlowState } & ToRefs<FlowState> & FlowActions & FlowGetters
+export type ReactiveFlowStore = UnwrapNestedRefs<FlowStore>

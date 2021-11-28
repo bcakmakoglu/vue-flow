@@ -1,10 +1,12 @@
 import useStore from './useStore'
 import useHooks from './useHooks'
-import { EmitFunc, FlowOptions, FlowStore } from '~/types'
+import { EmitFunc, ReactiveFlowStore } from '~/types'
 
-export const initFlow = (emit: EmitFunc, key?: string, store = useStore(undefined, key)) => {
+let key = 0
+export const initFlow = (emit: EmitFunc, id = `vue-flow-${key++}`): ReactiveFlowStore => {
+  const store = useStore({ id })
   useHooks(store, emit)
   return store
 }
 
-export default (options?: Partial<FlowOptions>): FlowStore => useStore(options)
+export default useStore

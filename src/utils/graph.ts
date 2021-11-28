@@ -16,6 +16,8 @@ import {
   FlowElements,
   GraphEdge,
   NextElements,
+  ReactiveFlowStore,
+  FlowState,
 } from '~/types'
 import { useWindow } from '~/composables'
 import { getSourceTargetNodes } from '~/utils/edge'
@@ -161,7 +163,7 @@ export const pointToRendererPoint = (
   return position
 }
 
-export const onLoadProject = (currentStore: FlowStore) => (position: XYPosition) =>
+export const onLoadProject = (currentStore: ReactiveFlowStore) => (position: XYPosition) =>
   pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
 
 export const parseNode = (node: Node, nodeExtent: NodeExtent): GraphNode => ({
@@ -276,9 +278,9 @@ export const getConnectedEdges = (nodes: GraphNode[], edges: GraphEdge[]) => {
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-export const onLoadGetElements = (currentStore: FlowStore) => (): FlowElements => currentStore.elements
+export const onLoadGetElements = (currentStore: ReactiveFlowStore) => (): FlowElements => currentStore.elements
 
-export const onLoadToObject = (currentStore: FlowStore) => (): FlowExportObject => {
+export const onLoadToObject = (currentStore: FlowState) => (): FlowExportObject => {
   // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
   return JSON.parse(
     JSON.stringify({

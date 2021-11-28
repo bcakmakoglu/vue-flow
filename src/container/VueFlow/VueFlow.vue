@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CSSProperties, onBeforeUnmount } from 'vue'
+import { CSSProperties } from 'vue'
 import {
   ConnectionLineType,
   ConnectionMode,
@@ -64,6 +64,8 @@ interface FlowProps extends FlowOptions {
 
 const props = withDefaults(defineProps<FlowProps>(), {
   modelValue: () => [],
+  edgeTypes: () => [],
+  nodeTypes: () => [],
   connectionMode: ConnectionMode.Loose,
   connectionLineType: ConnectionLineType.Bezier,
   selectionKeyCode: 'Shift',
@@ -103,10 +105,9 @@ const props = withDefaults(defineProps<FlowProps>(), {
   loading: false,
 })
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue'])
-const store = initFlow(emit, typeof props.storageKey === 'string' ? props.storageKey : props.id)
+const store = initFlow(emit, props.id)
 const elements = useVModel(props, 'modelValue', emit)
-const options = Object.assign({}, store.$state, props)
-store.setState(options)
+store.setState(props)
 watch(
   () => props,
   () => store.setState(props),
@@ -144,22 +145,16 @@ const transitionName = computed(() => {
   }
   return name
 })
+</script>
 
-onBeforeUnmount(() => store?.$dispose())
-</script>
-<script lang="ts">
-export default {
-  name: 'VueFlow'
-}
-</script>
 <template>
   <div class="vue-flow">
-    <Transition :key="`vue-flow-transition-${store.$id}`" :name="transitionName">
+    <Transition :key="`vue-flow-transition-${store.id}`" :name="transitionName">
       <Suspense timeout="0">
         <template #default>
-          <Renderer :key="`renderer-${store.$id}`" :elements="elements">
+          <Renderer :key="`renderer-${store.id}`" :elements="elements">
             <ZoomPane
-              :key="`zoom-pane-${store.$id}`"
+              :key="`zoom-pane-${store.id}`"
               :prevent-scrolling="store.preventScrolling"
               :selection-key-code="store.selectionKeyCode"
               :zoom-activation-key-code="store.zoomActivationKeyCode"
@@ -175,7 +170,7 @@ export default {
             >
               <template #default="zoomPaneProps">
                 <SelectionPane
-                  :key="`selection-pane-${store.$id}`"
+                  :key="`selection-pane-${store.id}`"
                   :edges="store.getEdges"
                   :selected-elements="store.selectedElements"
                   :selection-active="store.selectionActive"
@@ -186,7 +181,7 @@ export default {
                   :selection-key-code="store.selectionKeyCode"
                 >
                   <NodeRenderer
-                    :key="`node-renderer-${store.$id}`"
+                    :key="`node-renderer-${store.id}`"
                     :nodes="store.getNodes"
                     :node-types="store.getNodeTypes"
                     :snap-to-grid="store.snapToGrid"
@@ -200,13 +195,13 @@ export default {
                     <template
                       v-for="nodeName of Object.keys(store.getNodeTypes)"
                       #[`node-${nodeName}`]="nodeProps"
-                      :key="`node-${nodeName}-${store.$id}`"
+                      :key="`node-${nodeName}-${store.id}`"
                     >
                       <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
                     </template>
                   </NodeRenderer>
                   <EdgeRenderer
-                    :key="`edge-renderer-${store.$id}`"
+                    :key="`edge-renderer-${store.id}`"
                     :transform="store.transform"
                     :dimensions="store.dimensions"
                     :edges="store.getEdges"
@@ -230,13 +225,13 @@ export default {
                     <template
                       v-for="edgeName of Object.keys(store.getEdgeTypes)"
                       #[`edge-${edgeName}`]="edgeProps"
-                      :key="`edge-${edgeName}-${store.$id}`"
+                      :key="`edge-${edgeName}-${store.id}`"
                     >
                       <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
                     </template>
                     <template #custom-connection-line="customConnectionLineProps">
                       <slot
-                        :key="`connection-line-${store.$id}`"
+                        :key="`connection-line-${store.id}`"
                         name="custom-connection-line"
                         v-bind="customConnectionLineProps"
                       />
@@ -249,8 +244,8 @@ export default {
           </Renderer>
         </template>
         <template v-if="store.loading" #fallback>
-          <slot :key="`loading-indicator-${store.$id}`" name="loading-indicator">
-            <LoadingIndicator :key="`default-loading-indicator-${store.$id}`" v-bind="store.loading">
+          <slot :key="`loading-indicator-${store.id}`" name="loading-indicator">
+            <LoadingIndicator :key="`default-loading-indicator-${store.id}`" v-bind="store.loading">
               <slot name="loading-label" />
             </LoadingIndicator>
           </slot>

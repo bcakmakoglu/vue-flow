@@ -16,6 +16,8 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
 }
 
 export const initialState = (): FlowState => ({
+  isReady: false,
+  instance: undefined,
   dimensions: {
     width: 0,
     height: 0,
@@ -50,6 +52,9 @@ export const initialState = (): FlowState => ({
   panOnScrollMode: PanOnScrollMode.Free,
   paneMoveable: true,
   edgeUpdaterRadius: 10,
+  onlyRenderVisibleElements: undefined,
+  defaultZoom: undefined,
+  defaultPosition: undefined,
 
   nodesSelectionActive: false,
   selectionActive: false,
@@ -65,6 +70,8 @@ export const initialState = (): FlowState => ({
   },
 
   arrowHeadColor: '#b1b1b7',
+  connectionLineStyle: {},
+  connectionLineType: undefined,
   connectionNodeId: undefined,
   connectionHandleId: undefined,
   connectionHandleType: 'source',
@@ -78,12 +85,18 @@ export const initialState = (): FlowState => ({
   nodesDraggable: true,
   nodesConnectable: true,
   elementsSelectable: true,
-
+  selectNodesOnDrag: undefined,
   multiSelectionActive: false,
+  deleteKeyCode: undefined,
+  selectionKeyCode: undefined,
+  multiSelectionKeyCode: undefined,
+  zoomActivationKeyCode: undefined,
 
-  isReady: false,
   hooks: createHooks(),
   loading: false,
+
+  markerEndId: undefined,
+  storageKey: undefined,
 
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })

@@ -15,8 +15,8 @@ import {
 export function getHandlePosition(position: Position, node: GraphNode, handle?: HandleElement): XYPosition {
   const x = (handle?.x ?? 0) + node.position.x
   const y = (handle?.y ?? 0) + node.position.y
-  const width = handle?.width || node.__vf.width
-  const height = handle?.height || node.__vf.height
+  const width = handle?.width ?? node.__vf.width
+  const height = handle?.height ?? node.__vf.height
 
   switch (position) {
     case Position.Top:
@@ -48,7 +48,7 @@ export function getHandle(bounds: HandleElement[], handleId?: ElementId): Handle
   // there is no handleId when there are no multiple handles/ handles with ids
   // so we just pick the first one
   let handle
-  if (bounds.length === 1 || !handleId) {
+  if (bounds.length === 1 ?? !handleId) {
     handle = bounds[0]
   } else if (handleId) {
     handle = bounds.find((d) => d.id === handleId)
