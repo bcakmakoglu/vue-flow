@@ -1,5 +1,5 @@
 import microDiff from 'microdiff'
-import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate } from 'pinia'
+import { setActivePinia, createPinia, defineStore, StoreDefinition, acceptHMRUpdate, getActivePinia } from 'pinia'
 import { FlowState, FlowActions, Elements, FlowGetters, GraphNode, GraphEdge } from '~/types'
 import {
   getConnectedEdges,
@@ -17,7 +17,7 @@ import {
 const pinia = createPinia()
 
 export default (id: string, preloadedState: FlowState) => {
-  setActivePinia(pinia)
+  setActivePinia(getActivePinia() ?? pinia)
 
   const store: StoreDefinition<string, FlowState, FlowGetters, FlowActions> = defineStore({
     id: id ?? 'vue-flow',
