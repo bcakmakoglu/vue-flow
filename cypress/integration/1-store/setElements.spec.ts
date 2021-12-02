@@ -1,11 +1,11 @@
 import { getElements } from '../../../examples/Stress/utils'
 import { useStore } from '~/composables'
-import { FlowStore } from '~/types'
+import { Elements, FlowStore } from '~/types'
 import { isGraphEdge, isGraphNode } from '~/utils'
 
 describe('test store action setElements', () => {
   const setElements = async (store: FlowStore) => {
-    const elements = [
+    const elements: Elements = [
       { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
       { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 } },
       { id: 'e1-2', source: '1', target: '2', animated: true },
@@ -17,7 +17,6 @@ describe('test store action setElements', () => {
     const store = useStore()
     await setElements(store)
     expect(store.elements).to.have.length(3)
-    store.$dispose()
   })
 
   context('elements pre-set', () => {
@@ -26,7 +25,6 @@ describe('test store action setElements', () => {
       store = useStore()
       await setElements(store)
     })
-    afterEach(() => store.$dispose())
 
     it('adds elements', () => {
       store.addElements([{ id: '4', data: { label: 'Node 4' }, position: { x: 500, y: 500 } }])
