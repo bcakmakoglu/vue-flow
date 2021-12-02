@@ -1,4 +1,3 @@
-import microDiff from 'microdiff'
 import { Elements, FlowActions, FlowGetters, FlowState } from '~/types'
 import { getConnectedEdges, getNodesInside, getRectOfNodes, parseElements, processElements } from '~/utils'
 
@@ -56,7 +55,9 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
   }
   const addSelectedElements: FlowActions['addSelectedElements'] = (elements: any) => {
     const selectedElementsArr = Array.isArray(elements) ? elements : [elements]
-    const selectedElementsUpdated = microDiff(selectedElementsArr, state.selectedElements ?? []).length
+    const selectedElementsUpdated = selectedElementsArr.filter(
+      (el) => !state.selectedElements?.some((e) => el.id === e.id),
+    ).length
     state.selectedElements = selectedElementsUpdated ? selectedElementsArr : state.selectedElements
     if (selectedElementsUpdated) state.hooks.selectionChange.trigger(selectedElementsArr)
   }

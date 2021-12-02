@@ -4339,11 +4339,6 @@ merge2@^1.2.3, merge2@^1.3.0:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-microdiff@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/microdiff/-/microdiff-1.2.0.tgz#351097c06065a8acfd67ed903fc9ce1e4bb683a0"
-  integrity sha512-+1YdMSpYobO8ZbxeklW/Lvt4+F9Pf7vexRrS3wgI42bmdQz5ygunDjTJrgcFJ8haCLJZ03SlmQDvi0BKEcZvFQ==
-
 micromatch@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.4.tgz#896d519dfe9db25fce94ceb7a500919bf881ebf9"
@@ -4925,14 +4920,6 @@ pify@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha1-7RQaasBDqEnqWISY59yosVMw6Qw=
-
-pinia@^2.0.0-rc.10:
-  version "2.0.0-rc.10"
-  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.0-rc.10.tgz#81e823931897a4cf5c53c113d0c0e63b7bba9973"
-  integrity sha512-WY0KQoHxSBylhGc6aBQKPFfAupYHWpI1QBQKJSyK9btwwMTVQpwCdePgPho+ZoEMl832jb7RwfI5TN1srV5VEA==
-  dependencies:
-    "@vue/devtools-api" "^6.0.0-beta.18"
-    vue-demi "*"
 
 pkg-dir@^2.0.0:
   version "2.0.0"
