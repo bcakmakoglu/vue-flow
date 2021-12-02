@@ -22,13 +22,13 @@ import { FlowHooks } from './hooks'
 
 export interface FlowState extends Omit<FlowOptions, 'elements'> {
   hooks: FlowHooks
-  instance: FlowInstance | undefined
+  instance?: FlowInstance
 
   elements: FlowElements
 
-  d3Zoom: D3Zoom | undefined
-  d3Selection: D3Selection | undefined
-  d3ZoomHandler: D3ZoomHandler | undefined
+  d3Zoom?: D3Zoom
+  d3Selection?: D3Selection
+  d3ZoomHandler?: D3ZoomHandler
   minZoom: number
   maxZoom: number
   translateExtent: TranslateExtent
@@ -36,16 +36,16 @@ export interface FlowState extends Omit<FlowOptions, 'elements'> {
   dimensions: Dimensions
   transform: Transform
 
-  selectedElements: FlowElements | undefined
-  selectedNodesBbox: Rect | undefined
+  selectedElements?: FlowElements
+  selectedNodesBbox?: Rect
   nodesSelectionActive: boolean
   selectionActive: boolean
   userSelectionRect: SelectionRect
   multiSelectionActive: boolean
 
-  connectionNodeId: ElementId | undefined
-  connectionHandleId: ElementId | undefined
-  connectionHandleType: HandleType | undefined
+  connectionNodeId?: ElementId
+  connectionHandleId?: ElementId
+  connectionHandleType?: HandleType
   connectionPosition: XYPosition
   connectionMode: ConnectionMode
 
