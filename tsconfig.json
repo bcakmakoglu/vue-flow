@@ -3,7 +3,7 @@
     "outDir": "./tmp",
     "baseUrl": ".",
     "module": "ESNext",
-    "target": "es2020",
+    "target": "es2017",
     "lib": [
       "DOM",
       "ESNext"

@@ -10,10 +10,13 @@
   "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
   "homepage": "https://vueflow.dev/",
   "exports": {
-    ".": "./dist/vue-flow.es.js",
+    ".": {
+      "import": "./dist/vue-flow.es.js",
+      "require": "./dist/vue-flow.cjs.js"
+    },
     "./*": "./*"
   },
-  "main": "./dist/vue-flow.es.js",
+  "main": "./dist/vue-flow.cjs.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/vue-flow.es.js",
   "unpkg": "./dist/vue-flow.iife.js",
