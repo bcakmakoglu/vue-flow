@@ -5,15 +5,14 @@ describe('test store state', () => {
   let store: FlowStore
 
   beforeEach(() => (store = useStore()))
-  afterEach(() => store.$dispose())
 
   it('has any initial state', () => {
-    expect(store.$state).to.exist
+    expect(store.state).to.exist
   })
 
   it('has default initial state', () => {
     const initial = initialState()
-    Object.keys(store.$state).forEach((state) => {
+    Object.keys(store.state).forEach((state) => {
       const storedState = store[<keyof FlowState>state]
       const initialVal = initial[<keyof FlowState>state]
       expect(JSON.stringify(storedState)).to.eq(JSON.stringify(initialVal))
@@ -32,7 +31,6 @@ describe('test store state', () => {
       zoomOnScroll: false,
     })
     expect(store.zoomOnScroll).to.eq(false)
-    store.$dispose()
   })
 
   it('gets custom node types', () => {
