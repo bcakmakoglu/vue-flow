@@ -1,4 +1,4 @@
-import { EmitFunc, FlowHooks, FlowEvents, FlowStore, ReactiveFlowStore } from '~/types'
+import { EmitFunc, FlowHooks, FlowEvents, FlowStore } from '~/types'
 
 // flow event hooks
 export const createHooks = (): FlowHooks => ({
@@ -49,4 +49,4 @@ const bind = (emit: EmitFunc, hooks: FlowHooks) => {
   }
 }
 
-export default (store: ReactiveFlowStore, emit: EmitFunc) => bind(emit, store.hooks)
+export default (store: FlowStore, emit: EmitFunc) => bind(emit, store.hooks)

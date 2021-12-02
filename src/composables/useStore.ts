@@ -1,6 +1,6 @@
-import { FlowExportObject, FlowOptions, FlowState, ReactiveFlowStore } from '~/types'
+import { FlowExportObject, FlowOptions, FlowState, FlowStore } from '~/types'
 import { useNewStore } from '~/store'
-import { Store } from '~/context'
+import { StoreSymbol } from '~/context'
 import { onLoadToObject, initialState } from '~/utils'
 
 let id = 0
@@ -35,12 +35,12 @@ export const createStore = (options?: FlowOptions) => {
   return store
 }
 
-export default (options?: FlowOptions): ReactiveFlowStore => {
-  let store = options?.id ? createStore(options) : inject(Store, undefined)
+export default (options?: FlowOptions): FlowStore => {
+  let store = options?.id ? createStore(options) : inject(StoreSymbol, undefined)
   if (!store) {
     store = createStore(options)
   }
-  provide(Store, store)
+  provide(StoreSymbol, store)
 
   return reactive(store)
 }
