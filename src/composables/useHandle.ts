@@ -1,6 +1,6 @@
 import useStore from './useStore'
 import { getHostForElement } from '~/utils'
-import { Connection, ConnectionMode, ElementId, HandleType, ReactiveFlowStore, ValidConnectionFunc } from '~/types'
+import { Connection, ConnectionMode, ElementId, HandleType, FlowStore, ValidConnectionFunc } from '~/types'
 
 type Result = {
   elementBelow: Element | null
@@ -67,7 +67,7 @@ const resetRecentHandle = (hoveredHandle: Element): void => {
   hoveredHandle?.classList.remove('vue-flow__handle-connecting')
 }
 
-export default (store: ReactiveFlowStore = useStore()) =>
+export default (store: FlowStore = useStore()) =>
   (
     event: MouseEvent,
     handleId: ElementId,

@@ -89,5 +89,5 @@ export interface FlowGetters {
   getSelectedNodes: ComputedRef<GraphNode[]>
 }
 
-export type FlowStore = { state: FlowState } & ToRefs<FlowState> & FlowActions & FlowGetters
-export type ReactiveFlowStore = UnwrapNestedRefs<FlowStore>
+export type Store = { state: FlowState } & ToRefs<FlowState> & FlowActions & FlowGetters
+export type FlowStore = UnwrapNestedRefs<Store>
