@@ -146,10 +146,14 @@ const transitionName = computed(() => {
   return name
 })
 </script>
-
+<script lang="ts">
+export default {
+  name: 'VueFlow',
+}
+</script>
 <template>
   <div class="vue-flow">
-    <Transition :key="`vue-flow-transition-${store.id}`" :name="transitionName">
+    <Transition :name="transitionName">
       <Suspense timeout="0">
         <template #default>
           <Renderer :key="`renderer-${store.id}`" :elements="elements">
@@ -230,11 +234,7 @@ const transitionName = computed(() => {
                       <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
                     </template>
                     <template #custom-connection-line="customConnectionLineProps">
-                      <slot
-                        :key="`connection-line-${store.id}`"
-                        name="custom-connection-line"
-                        v-bind="customConnectionLineProps"
-                      />
+                      <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
                     </template>
                   </EdgeRenderer>
                 </SelectionPane>
@@ -244,8 +244,8 @@ const transitionName = computed(() => {
           </Renderer>
         </template>
         <template v-if="store.loading" #fallback>
-          <slot :key="`loading-indicator-${store.id}`" name="loading-indicator">
-            <LoadingIndicator :key="`default-loading-indicator-${store.id}`" v-bind="store.loading">
+          <slot name="loading-indicator">
+            <LoadingIndicator v-bind="store.loading">
               <slot name="loading-label" />
             </LoadingIndicator>
           </slot>
