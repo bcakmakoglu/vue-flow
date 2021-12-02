@@ -1,3 +1,4 @@
+import { getCurrentInstance } from 'vue'
 import { FlowExportObject, FlowOptions, FlowState, FlowStore } from '~/types'
 import { useNewStore } from '~/store'
 import { StoreSymbol } from '~/context'
@@ -36,11 +37,12 @@ export const createStore = (options?: FlowOptions) => {
 }
 
 export default (options?: FlowOptions): FlowStore => {
-  let store = options?.id ? createStore(options) : inject(StoreSymbol, undefined)
-  if (!store) {
+  const currentInstance = getCurrentInstance()
+  let store = currentInstance ? inject(StoreSymbol, undefined) : false
+  if (!store || (store && options?.id && options.id !== store.id?.value)) {
     store = createStore(options)
   }
-  provide(StoreSymbol, store)
+  if (currentInstance) provide(StoreSymbol, store)
 
   return reactive(store)
 }
