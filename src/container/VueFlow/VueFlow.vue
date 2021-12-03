@@ -244,8 +244,8 @@ export default {
           </Renderer>
         </template>
         <template v-if="store.loading" #fallback>
-          <slot name="loading-indicator">
-            <LoadingIndicator v-bind="store.loading">
+          <slot :key="`loading-indicator-${store.id}`" name="loading-indicator">
+            <LoadingIndicator :key="`default-loading-indicator-${store.id}`" v-bind="store.loading">
               <slot name="loading-label" />
             </LoadingIndicator>
           </slot>

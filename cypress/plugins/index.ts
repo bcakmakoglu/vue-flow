@@ -6,6 +6,7 @@ export default ((on, config) => {
     startDevServer({
       options,
       viteConfig: {
+        mode: 'test',
         configFile: resolve(__dirname, '..', '..', 'vite.config.ts'),
       },
     }),
