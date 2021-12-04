@@ -102,7 +102,7 @@ const updateNodeDimensions = ({ nodeElement, forceUpdate }: NodeDimensionUpdate)
   }
 }
 
-onMounted(() => {
+tryOnMounted(() => {
   watch(
     [() => props.node.__vf.width, () => props.node.__vf.height],
     () => {

@@ -37,7 +37,7 @@ const onWheel = (event: WheelEvent) => store.hooks.paneScroll.trigger(event)
 
 const userSelection = ref(false)
 
-onMounted(() => {
+tryOnMounted(() => {
   useKeyPress(props.deleteKeyCode, (keyPressed) => {
     if (keyPressed && props.selectedElements) {
       const selectedNodes = props.selectedElements.filter(isGraphNode)
