@@ -20,7 +20,7 @@ import { NodeExtent, GraphNode, TranslateExtent } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload } from './zoom'
 import { FlowHooks } from './hooks'
 
-export interface FlowState extends Omit<FlowOptions, 'elements'> {
+export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
   hooks: FlowHooks
   instance?: FlowInstance
 
@@ -89,5 +89,5 @@ export interface FlowGetters {
   getSelectedNodes: ComputedRef<GraphNode[]>
 }
 
-export type Store = { state: FlowState } & ToRefs<FlowState> & FlowActions & FlowGetters
+export type Store = { id: string; state: FlowState } & ToRefs<FlowState> & FlowActions & FlowGetters
 export type FlowStore = UnwrapNestedRefs<Store>
