@@ -1,15 +1,5 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
-import {
-  BackgroundVariant,
-  Dimensions,
-  ElementId,
-  Elements,
-  FitViewParams,
-  FlowOptions,
-  Loading,
-  Position,
-  XYPosition,
-} from './flow'
+import { BackgroundVariant, Dimensions, ElementId, Elements, FitViewParams, FlowOptions, Position, XYPosition } from './flow'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { GraphNode, Node, NodeExtent, NodeProps, TranslateExtent } from './node'
 import { EdgeProps } from './edge'
@@ -151,5 +141,5 @@ export interface FlowProps extends FlowOptions {
   zoomOnDoubleClick?: boolean
   edgeUpdaterRadius?: number
   storageKey?: string
-  loading?: Loading
+  loading?: string
 }
