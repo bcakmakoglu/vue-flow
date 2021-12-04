@@ -1,1 +1,1 @@
-export { default as useNewStore } from './store'
+export { default as useFlowStore } from './store'

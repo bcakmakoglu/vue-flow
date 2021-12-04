@@ -97,7 +97,7 @@ const connectionExists = (edge: Edge, elements: Elements) => {
 
 export const addEdge = (edgeParams: Edge | Connection, elements: Elements) => {
   if (!edgeParams.source || !edgeParams.target) {
-    console.log("Can't create edge. An edge needs a source and a target.")
+    console.warn("Can't create edge. An edge needs a source and a target.")
     return elements
   }
 
