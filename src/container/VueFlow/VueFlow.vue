@@ -231,8 +231,8 @@ export default {
           </ZoomPane>
         </Renderer>
       </template>
-      <template #fallback>
-        <slot name="loading-indicator">
+      <template v-if="store.loading" #fallback>
+        <slot v-if="!store.isReady" name="loading-indicator">
           <LoadingIndicator :label="store.loading">
             <slot name="loading-label" />
           </LoadingIndicator>
