@@ -1,6 +1,6 @@
 import { getCurrentInstance } from 'vue'
 import { FlowExportObject, FlowOptions, FlowState, FlowStore } from '~/types'
-import { useNewStore } from '~/store'
+import { useFlowStore } from '~/store'
 import { StoreSymbol } from '~/context'
 import { onLoadToObject, initialState } from '~/utils'
 
@@ -10,6 +10,7 @@ export const createStore = (options?: FlowOptions) => {
   let storedState = ref<FlowExportObject>()
   const initial = initialState()
   const storageKey = options?.id ?? `vue-flow-${id++}`
+  delete options?.id
   const preloadedState = {
     ...initial,
     ...(options as FlowState),
@@ -22,7 +23,7 @@ export const createStore = (options?: FlowOptions) => {
         preloadedState.transform = [storedState.value.position[0], storedState.value.position[1], storedState.value.zoom]
     }
   }
-  const store = useNewStore(storageKey, preloadedState)
+  const store = useFlowStore(storageKey, preloadedState)
   if (withStorage && storageKey === store.id) {
     const toObject = onLoadToObject(store.state)
     watch(
