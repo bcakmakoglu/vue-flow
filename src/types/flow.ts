@@ -88,20 +88,6 @@ export type FitViewFunc = (fitViewOptions?: FitViewParams) => void
 export type ProjectFunc = (position: XYPosition) => XYPosition
 export type ToObjectFunc<T = any> = () => FlowExportObject<T>
 
-export type Loading =
-  | {
-      label: string
-      transition?:
-        | string
-        | {
-            name: string
-            mode: string
-          }
-      style: CSSProperties
-      class: string
-    }
-  | boolean
-
 export type FlowInstance<T = any> = {
   zoomIn: () => void
   zoomOut: () => void
@@ -151,5 +137,5 @@ export interface FlowOptions {
   preventScrolling?: boolean
   edgeUpdaterRadius?: number
   storageKey?: string
-  loading?: Loading
+  loading?: string
 }

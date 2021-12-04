@@ -93,7 +93,7 @@ export const initialState = (): FlowState => ({
   zoomActivationKeyCode: undefined,
 
   hooks: createHooks(),
-  loading: false,
+  loading: undefined,
 
   markerEndId: undefined,
   storageKey: undefined,
