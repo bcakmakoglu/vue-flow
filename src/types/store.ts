@@ -13,11 +13,11 @@ import {
   Transform,
   XYPosition,
 } from './flow'
-import { HandleType, EdgeComponent, NodeComponent } from './components'
-import { ConnectionMode, SetConnectionId } from './connection'
+import { HandleType, EdgeComponent, NodeComponent, NodeTypes, EdgeTypes } from './components'
+import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
 import { GraphEdge } from './edge'
 import { NodeExtent, GraphNode, TranslateExtent } from './node'
-import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload } from './zoom'
+import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks } from './hooks'
 
 export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
@@ -25,16 +25,21 @@ export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
   instance?: FlowInstance
 
   elements: FlowElements
+  nodeTypes: NodeTypes
+  edgeTypes: EdgeTypes
 
   d3Zoom?: D3Zoom
   d3Selection?: D3Selection
   d3ZoomHandler?: D3ZoomHandler
   minZoom: number
   maxZoom: number
+  defaultZoom: number
   translateExtent: TranslateExtent
   nodeExtent: NodeExtent
   dimensions: Dimensions
   transform: Transform
+  onlyRenderVisibleElements: boolean
+  defaultPosition: [number, number]
 
   selectedElements?: FlowElements
   selectedNodesBbox?: Rect
@@ -42,20 +47,36 @@ export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
   selectionActive: boolean
   userSelectionRect: SelectionRect
   multiSelectionActive: boolean
+  deleteKeyCode: KeyCode
+  selectionKeyCode: KeyCode
+  multiSelectionKeyCode: KeyCode
+  zoomActivationKeyCode: KeyCode
 
   connectionNodeId?: ElementId
   connectionHandleId?: ElementId
   connectionHandleType?: HandleType
   connectionPosition: XYPosition
   connectionMode: ConnectionMode
+  connectionLineType: ConnectionLineType
+  edgeUpdaterRadius: number
 
   snapToGrid: boolean
   snapGrid: SnapGrid
+  arrowHeadColor: string
 
   edgesUpdatable: boolean
   nodesDraggable: boolean
   nodesConnectable: boolean
   elementsSelectable: boolean
+  selectNodesOnDrag: boolean
+  paneMoveable: boolean
+  zoomOnScroll: boolean
+  zoomOnPinch: boolean
+  panOnScroll: boolean
+  panOnScrollSpeed: number
+  panOnScrollMode: PanOnScrollMode
+  zoomOnDoubleClick: boolean
+  preventScrolling: boolean
 
   isReady: boolean
 
