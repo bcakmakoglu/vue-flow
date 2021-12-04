@@ -27,7 +27,7 @@ const vfInstance = ref<FlowInstance>()
 const onElementsRemove = (elementsToRemove: Elements) => removeElements(elementsToRemove, elements.value)
 const onConnect = (params: Edge | Connection) => addEdge(params, elements.value)
 const onLoad = (flowInstance: FlowInstance) => {
-  flowInstance.fitView({ padding: 0.1, nodes: ['2'] })
+  flowInstance.fitView({ padding: 0.1 })
   vfInstance.value = flowInstance
 }
 
@@ -65,12 +65,8 @@ const toggleclasss = () => {
     @connect="onConnect"
     @node-drag-stop="onNodeDragStop"
     @node-click="onElementClick"
-    @edge-update="log"
     @load="onLoad"
   >
-    <MiniMap />
-    <Controls />
-    <Background color="#aaa" :gap="8" />
     <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
       <button style="margin-right: 5px" @click="resetTransform">reset transform</button>
       <button style="margin-right: 5px" @click="updatePos">change pos</button>
