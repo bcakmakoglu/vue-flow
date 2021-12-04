@@ -63,44 +63,19 @@ interface FlowProps extends FlowOptions {
 
 const props = withDefaults(defineProps<FlowProps>(), {
   modelValue: () => [],
-  edgeTypes: () => [],
-  nodeTypes: () => [],
-  connectionMode: ConnectionMode.Loose,
-  connectionLineType: ConnectionLineType.Bezier,
-  selectionKeyCode: 'Shift',
-  multiSelectionKeyCode: 'Meta',
-  zoomActivationKeyCode: 'Meta',
-  deleteKeyCode: 'Backspace',
   snapToGrid: false,
-  snapGrid: () => [15, 15],
   onlyRenderVisibleElements: false,
   edgesUpdatable: false,
   nodesConnectable: true,
   nodesDraggable: true,
   elementsSelectable: true,
   selectNodesOnDrag: true,
-  minZoom: 0.5,
-  maxZoom: 2,
-  defaultZoom: 1,
-  defaultPosition: () => [0, 0],
-  translateExtent: () => [
-    [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-    [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
-  ],
-  nodeExtent: () => [
-    [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-    [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
-  ],
-  arrowHeadColor: '#b1b1b7',
   preventScrolling: true,
   zoomOnScroll: true,
   zoomOnPinch: true,
   zoomOnDoubleClick: true,
   panOnScroll: false,
-  panOnScrollSpeed: 0.5,
-  panOnScrollMode: PanOnScrollMode.Free,
   paneMoveable: true,
-  edgeUpdaterRadius: 10,
 })
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue'])
 const store = initFlow(emit, props.id)
@@ -231,9 +206,9 @@ export default {
           </ZoomPane>
         </Renderer>
       </template>
-      <template v-if="store.loading" #fallback>
-        <slot v-if="!store.isReady" name="loading-indicator">
-          <LoadingIndicator :label="store.loading">
+      <template #fallback>
+        <slot name="loading-indicator">
+          <LoadingIndicator v-if="store.loading && store.loading !== '' && !store.isReady" :label="store.loading">
             <slot name="loading-label" />
           </LoadingIndicator>
         </slot>

@@ -104,49 +104,48 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
   const addElements: FlowActions['addElements'] = (elements: Elements) => {
     setElements(elements, false)
   }
-  const setState: FlowActions['setState'] = (newState) => {
-    if (typeof newState.loading !== 'undefined') state.loading = newState.loading
-    if (typeof newState.panOnScroll !== 'undefined') state.panOnScroll = newState.panOnScroll
-    if (typeof newState.panOnScrollMode !== 'undefined') state.panOnScrollMode = newState.panOnScrollMode
-    if (typeof newState.panOnScrollSpeed !== 'undefined') state.panOnScrollSpeed = newState.panOnScrollSpeed
-    if (typeof newState.paneMoveable !== 'undefined') state.paneMoveable = newState.paneMoveable
-    if (typeof newState.zoomOnScroll !== 'undefined') state.zoomOnScroll = newState.zoomOnScroll
-    if (typeof newState.preventScrolling !== 'undefined') state.preventScrolling = newState.preventScrolling
-    if (typeof newState.zoomOnDoubleClick !== 'undefined') state.zoomOnDoubleClick = newState.zoomOnDoubleClick
-    if (typeof newState.zoomOnPinch !== 'undefined') state.zoomOnPinch = newState.zoomOnPinch
-    if (typeof newState.defaultZoom !== 'undefined') state.defaultZoom = newState.defaultZoom
-    if (typeof newState.defaultPosition !== 'undefined') state.defaultPosition = newState.defaultPosition
-    if (typeof newState.edgeTypes !== 'undefined') state.edgeTypes = newState.edgeTypes
-    if (typeof newState.nodeTypes !== 'undefined') state.nodeTypes = newState.nodeTypes
-    if (typeof newState.storageKey !== 'undefined') state.storageKey = newState.storageKey
-    if (typeof newState.edgeUpdaterRadius !== 'undefined') state.edgeUpdaterRadius = newState.edgeUpdaterRadius
-    if (typeof newState.elementsSelectable !== 'undefined') state.elementsSelectable = newState.elementsSelectable
-    if (typeof newState.onlyRenderVisibleElements !== 'undefined')
-      state.onlyRenderVisibleElements = newState.onlyRenderVisibleElements
-    if (typeof newState.edgesUpdatable !== 'undefined') state.edgesUpdatable = newState.edgesUpdatable
-    if (typeof newState.nodesConnectable !== 'undefined') state.nodesConnectable = newState.nodesConnectable
-    if (typeof newState.nodesDraggable !== 'undefined') state.nodesDraggable = newState.nodesDraggable
-    if (typeof newState.arrowHeadColor !== 'undefined') state.arrowHeadColor = newState.arrowHeadColor
-    if (typeof newState.markerEndId !== 'undefined') state.markerEndId = newState.markerEndId
-    if (typeof newState.deleteKeyCode !== 'undefined') state.deleteKeyCode = newState.deleteKeyCode
-    if (typeof newState.selectionKeyCode !== 'undefined') state.selectionKeyCode = newState.selectionKeyCode
-    if (typeof newState.zoomActivationKeyCode !== 'undefined') state.zoomActivationKeyCode = newState.zoomActivationKeyCode
-    if (typeof newState.multiSelectionKeyCode !== 'undefined') state.multiSelectionKeyCode = newState.multiSelectionKeyCode
-    if (typeof newState.snapToGrid !== 'undefined') state.snapToGrid = newState.snapToGrid
-    if (typeof newState.snapGrid !== 'undefined') state.snapGrid = newState.snapGrid
-    if (typeof newState.nodeExtent !== 'undefined') state.nodeExtent = newState.nodeExtent
+  const setState: FlowActions['setState'] = (opts) => {
+    if (typeof opts.loading !== 'undefined') state.loading = opts.loading
+    if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll
+    if (typeof opts.panOnScrollMode !== 'undefined') state.panOnScrollMode = opts.panOnScrollMode
+    if (typeof opts.panOnScrollSpeed !== 'undefined') state.panOnScrollSpeed = opts.panOnScrollSpeed
+    if (typeof opts.paneMoveable !== 'undefined') state.paneMoveable = opts.paneMoveable
+    if (typeof opts.zoomOnScroll !== 'undefined') state.zoomOnScroll = opts.zoomOnScroll
+    if (typeof opts.preventScrolling !== 'undefined') state.preventScrolling = opts.preventScrolling
+    if (typeof opts.zoomOnDoubleClick !== 'undefined') state.zoomOnDoubleClick = opts.zoomOnDoubleClick
+    if (typeof opts.zoomOnPinch !== 'undefined') state.zoomOnPinch = opts.zoomOnPinch
+    if (typeof opts.defaultZoom !== 'undefined') state.defaultZoom = opts.defaultZoom
+    if (typeof opts.defaultPosition !== 'undefined') state.defaultPosition = opts.defaultPosition
+    if (typeof opts.edgeTypes !== 'undefined') state.edgeTypes = opts.edgeTypes
+    if (typeof opts.nodeTypes !== 'undefined') state.nodeTypes = opts.nodeTypes
+    if (typeof opts.storageKey !== 'undefined') state.storageKey = opts.storageKey
+    if (typeof opts.edgeUpdaterRadius !== 'undefined') state.edgeUpdaterRadius = opts.edgeUpdaterRadius
+    if (typeof opts.elementsSelectable !== 'undefined') state.elementsSelectable = opts.elementsSelectable
+    if (typeof opts.onlyRenderVisibleElements !== 'undefined') state.onlyRenderVisibleElements = opts.onlyRenderVisibleElements
+    if (typeof opts.edgesUpdatable !== 'undefined') state.edgesUpdatable = opts.edgesUpdatable
+    if (typeof opts.nodesConnectable !== 'undefined') state.nodesConnectable = opts.nodesConnectable
+    if (typeof opts.nodesDraggable !== 'undefined') state.nodesDraggable = opts.nodesDraggable
+    if (typeof opts.arrowHeadColor !== 'undefined') state.arrowHeadColor = opts.arrowHeadColor
+    if (typeof opts.markerEndId !== 'undefined') state.markerEndId = opts.markerEndId
+    if (typeof opts.deleteKeyCode !== 'undefined') state.deleteKeyCode = opts.deleteKeyCode
+    if (typeof opts.selectionKeyCode !== 'undefined') state.selectionKeyCode = opts.selectionKeyCode
+    if (typeof opts.zoomActivationKeyCode !== 'undefined') state.zoomActivationKeyCode = opts.zoomActivationKeyCode
+    if (typeof opts.multiSelectionKeyCode !== 'undefined') state.multiSelectionKeyCode = opts.multiSelectionKeyCode
+    if (typeof opts.snapToGrid !== 'undefined') state.snapToGrid = opts.snapToGrid
+    if (typeof opts.snapGrid !== 'undefined') state.snapGrid = opts.snapGrid
+    if (typeof opts.nodeExtent !== 'undefined') state.nodeExtent = opts.nodeExtent
     if (!state.isReady)
       until(() => state.d3Zoom)
         .not.toBeUndefined()
         .then(() => {
-          if (typeof newState.maxZoom !== 'undefined') setMaxZoom(newState.maxZoom)
-          if (typeof newState.minZoom !== 'undefined') setMinZoom(newState.minZoom)
-          if (typeof newState.translateExtent !== 'undefined') setTranslateExtent(newState.translateExtent)
+          if (typeof opts.maxZoom !== 'undefined') setMaxZoom(opts.maxZoom)
+          if (typeof opts.minZoom !== 'undefined') setMinZoom(opts.minZoom)
+          if (typeof opts.translateExtent !== 'undefined') setTranslateExtent(opts.translateExtent)
         })
     else {
-      if (typeof newState.maxZoom !== 'undefined') setMaxZoom(newState.maxZoom)
-      if (typeof newState.minZoom !== 'undefined') setMinZoom(newState.minZoom)
-      if (typeof newState.translateExtent !== 'undefined') setTranslateExtent(newState.translateExtent)
+      if (typeof opts.maxZoom !== 'undefined') setMaxZoom(opts.maxZoom)
+      if (typeof opts.minZoom !== 'undefined') setMinZoom(opts.minZoom)
+      if (typeof opts.translateExtent !== 'undefined') setTranslateExtent(opts.translateExtent)
     }
   }
   return {
