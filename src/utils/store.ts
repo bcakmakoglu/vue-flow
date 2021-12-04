@@ -1,4 +1,4 @@
-import { ConnectionMode, FlowState, PanOnScrollMode, DefaultNodeTypes, DefaultEdgeTypes } from '~/types'
+import { ConnectionMode, FlowState, PanOnScrollMode, DefaultNodeTypes, DefaultEdgeTypes, ConnectionLineType } from '~/types'
 import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
 import { createHooks } from '~/composables'
 
@@ -52,9 +52,9 @@ export const initialState = (): FlowState => ({
   panOnScrollMode: PanOnScrollMode.Free,
   paneMoveable: true,
   edgeUpdaterRadius: 10,
-  onlyRenderVisibleElements: undefined,
-  defaultZoom: undefined,
-  defaultPosition: undefined,
+  onlyRenderVisibleElements: false,
+  defaultZoom: 1,
+  defaultPosition: [0, 0],
 
   nodesSelectionActive: false,
   selectionActive: false,
@@ -71,7 +71,7 @@ export const initialState = (): FlowState => ({
 
   arrowHeadColor: '#b1b1b7',
   connectionLineStyle: {},
-  connectionLineType: undefined,
+  connectionLineType: ConnectionLineType.Bezier,
   connectionNodeId: undefined,
   connectionHandleId: undefined,
   connectionHandleType: 'source',
@@ -82,15 +82,15 @@ export const initialState = (): FlowState => ({
   snapToGrid: false,
 
   edgesUpdatable: false,
-  nodesDraggable: true,
   nodesConnectable: true,
+  nodesDraggable: true,
   elementsSelectable: true,
-  selectNodesOnDrag: undefined,
+  selectNodesOnDrag: true,
   multiSelectionActive: false,
-  deleteKeyCode: undefined,
-  selectionKeyCode: undefined,
-  multiSelectionKeyCode: undefined,
-  zoomActivationKeyCode: undefined,
+  selectionKeyCode: 'Shift',
+  multiSelectionKeyCode: 'Meta',
+  zoomActivationKeyCode: 'Meta',
+  deleteKeyCode: 'Backspace',
 
   hooks: createHooks(),
   loading: undefined,
