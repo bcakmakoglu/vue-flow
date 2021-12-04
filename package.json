@@ -11,7 +11,7 @@
   "homepage": "https://vueflow.dev/",
   "exports": {
     ".": {
-      "import": "./dist/vue-flow.es.js",
+      "default": "./dist/vue-flow.es.js",
       "require": "./dist/vue-flow.cjs.js"
     },
     "./*": "./*"
