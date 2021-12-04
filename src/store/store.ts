@@ -8,6 +8,7 @@ export default (id: string, preloadedState: FlowState): Store => {
   const getters = useGetters(state)
   const actions = useActions(state, getters)
   return {
+    id,
     state,
     ...toRefs(state),
     ...getters,

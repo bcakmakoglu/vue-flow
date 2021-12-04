@@ -23,7 +23,7 @@ export const createStore = (options?: FlowOptions) => {
     }
   }
   const store = useNewStore(storageKey, preloadedState)
-  if (withStorage && storageKey === store.id?.value) {
+  if (withStorage && storageKey === store.id) {
     const toObject = onLoadToObject(store.state)
     watch(
       store.state,
@@ -39,7 +39,7 @@ export const createStore = (options?: FlowOptions) => {
 export default (options?: FlowOptions): FlowStore => {
   const currentInstance = getCurrentInstance()
   let store = currentInstance ? inject(StoreSymbol, undefined) : false
-  if (!store || (store && options?.id && options.id !== store.id?.value)) {
+  if (!store || (store && options?.id && options.id !== store.id)) {
     store = createStore(options)
   }
   if (currentInstance) provide(StoreSymbol, store)
