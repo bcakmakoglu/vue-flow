@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
-import { get, invoke } from '@vueuse/core'
 import { pointer, select } from 'd3-selection'
 import { FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
 import { useKeyPress, useStore, useWindow } from '../../composables'
@@ -60,11 +59,11 @@ const d3Selection = ref()
 
 store.transform = [transform.value.x, transform.value.y, transform.value.zoom]
 
-invoke(async () => {
+nextTick(async () => {
   await until(zoomPaneEl).toBeTruthy()
-  const d3z = get(d3Zoom)!
+  const d3z = d3Zoom.value!
   d3Selection.value = select(zoomPaneEl.value).call(d3z)
-  const d3s = get(d3Selection)!
+  const d3s = d3Selection.value!
   const d3ZoomHandler = d3s.on('wheel.zoom')
 
   const updatedTransform = zoomIdentity.translate(clampedX, clampedY).scale(clampedZoom)
