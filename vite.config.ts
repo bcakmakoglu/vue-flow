@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vueTypes from 'vite-plugin-vue-type-imports'
 import svgLoader from 'vite-svg-loader'
 import AutoImport from 'unplugin-auto-import/vite'
 import replace from '@rollup/plugin-replace'
@@ -40,6 +41,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    vueTypes(),
     svgLoader(),
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({

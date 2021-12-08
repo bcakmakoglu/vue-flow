@@ -1,3 +1,4 @@
+import { getSourceTargetNodes } from './edge'
 import {
   ElementId,
   Node,
@@ -19,7 +20,6 @@ import {
   FlowState,
 } from '~/types'
 import { useWindow } from '~/composables'
-import { getSourceTargetNodes } from '~/utils/edge'
 
 const isHTMLElement = (el: EventTarget): el is HTMLElement => ('nodeName' || 'hasAttribute') in el
 

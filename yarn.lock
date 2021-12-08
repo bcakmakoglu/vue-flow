@@ -994,7 +994,7 @@
     "@vue/compiler-core" "3.2.22"
     "@vue/shared" "3.2.22"
 
-"@vue/compiler-sfc@3.2.22", "@vue/compiler-sfc@^3.2.22":
+"@vue/compiler-sfc@3.2.22":
   version "3.2.22"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.2.22.tgz#ffd0e5e35479b6ade18d12fefec369cbaf2f7718"
   integrity sha512-tWRQ5ge1tsTDhUwHgueicKJ8rYm6WUVAPTaIpFW3GSwZKcOEJ2rXdfkHFShNVGupeRALz2ET2H84OL0GeRxY0A==
@@ -6137,6 +6137,11 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
+vite-plugin-vue-type-imports@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-vue-type-imports/-/vite-plugin-vue-type-imports-0.1.2.tgz#be0037f7ebce25e160a2bfbfaedd4eab6ae522bd"
+  integrity sha512-uUuDUZnM/3muh4eKm81uYMWB+e+8J920fWe369hIOG8idQpiaki3BrPXvBfuweZEFYrPGyj35ciUEOLRhc5q+g==
+
 vite-svg-loader@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/vite-svg-loader/-/vite-svg-loader-2.2.0.tgz#b5d6ca948b03e45320cb4f96c44bf88f5bef0a2c"
@@ -6324,7 +6329,7 @@ vue-tsc@^0.29.5:
     "@volar/shared" "0.29.5"
     vscode-vue-languageservice "0.29.5"
 
-vue@^3.2.22:
+vue@3.2.22:
   version "3.2.22"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.22.tgz#46e4dd89e98cc4b851ae1eb35f00ced413a34bb7"
   integrity sha512-KD5nZpXVZquOC6926Xnp3zOvswrUyO9Rya7ZUoxWFQEjFDW4iACtwzubRB4Um2Om9kj6CaJOqAVRDSFlqLpdgw==

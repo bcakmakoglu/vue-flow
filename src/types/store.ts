@@ -7,16 +7,18 @@ import {
   FlowElements,
   FlowInstance,
   FlowOptions,
+  NodeExtent,
   Rect,
   SelectionRect,
   SnapGrid,
   Transform,
+  TranslateExtent,
   XYPosition,
 } from './flow'
 import { HandleType, EdgeComponent, NodeComponent, NodeTypes, EdgeTypes } from './components'
 import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
 import { GraphEdge } from './edge'
-import { NodeExtent, GraphNode, TranslateExtent } from './node'
+import { GraphNode } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks } from './hooks'
 
