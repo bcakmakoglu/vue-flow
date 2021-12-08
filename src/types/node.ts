@@ -54,9 +54,6 @@ export interface NodeProps<T = any> extends GraphNode {
   __vf: VFInternals
 }
 
-export type TranslateExtent = [[number, number], [number, number]]
-export type NodeExtent = TranslateExtent
-
 export type NodeDimensionUpdate = {
   id: ElementId
   nodeElement: HTMLDivElement
