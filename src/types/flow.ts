@@ -6,9 +6,9 @@ import { KeyCode, PanOnScrollMode } from './zoom'
 import { EdgeTypes, NodeTypes } from './components'
 
 export type ElementId = string
-export type FlowElement<T = any> = GraphNode<T> | GraphEdge<T>
-export type FlowElements<T = any> = FlowElement<T>[]
-export type Elements<T = any> = (Node<T> | Edge<T>)[]
+export type FlowElement<DataNode = any, DataEdge = any> = GraphNode<DataNode> | GraphEdge<DataEdge>
+export type FlowElements<DataNode = any, DataEdge = any> = FlowElement<DataNode, DataEdge>[]
+export type Elements<DataNode = any, DataEdge = any> = (Node<DataNode> | Edge<DataEdge>)[]
 
 export type NextElements = {
   nodes: GraphNode[]
