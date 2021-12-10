@@ -1,7 +1,6 @@
-import { CSSProperties } from 'vue'
 import { DraggableOptions } from '@braks/revue-draggable'
-import { XYPosition, ElementId, Position, SnapGrid } from './flow'
-import { HandleElement, NodeTypes, ValidConnectionFunc } from './components'
+import { XYPosition, ElementId, Position, SnapGrid, Element } from './flow'
+import { HandleElement, ValidConnectionFunc } from './components'
 
 export interface VFInternals {
   isDragging?: boolean
@@ -15,16 +14,10 @@ export interface VFInternals {
 
 export type Draggable = Omit<DraggableOptions, 'scale' | 'grid' | 'enableUserSelectHack' | 'enableTransformFix'> | boolean
 
-export interface Node<T = any> {
-  id: ElementId
+export interface Node<T = any> extends Element<T> {
   position: XYPosition
-  type?: NodeTypes[number]
-  class?: string
-  style?: CSSProperties
-  data?: T
   targetPosition?: Position
   sourcePosition?: Position
-  isHidden?: boolean
   draggable?: Draggable
   selectable?: boolean
   connectable?: boolean

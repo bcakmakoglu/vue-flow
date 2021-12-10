@@ -20,7 +20,7 @@ export default (state: FlowState): FlowGetters => {
 
   const getNodes = computed<GraphNode[]>(() => {
     if (state.isReady) {
-      const nodes = state.elements.filter((n) => isGraphNode(n) && !n.isHidden) as GraphNode[]
+      const nodes = state.elements.filter((n) => isGraphNode(n) && !n.hidden) as GraphNode[]
       return state.onlyRenderVisibleElements
         ? nodes &&
             getNodesInside(
@@ -40,7 +40,7 @@ export default (state: FlowState): FlowGetters => {
   })
 
   const getEdges = computed<GraphEdge[]>(() => {
-    const edges = state.elements.filter((e) => isEdge(e) && !e.isHidden) as GraphEdge[]
+    const edges = state.elements.filter((e) => isEdge(e) && !e.hidden) as GraphEdge[]
     if (state.isReady) {
       return (
         edges
