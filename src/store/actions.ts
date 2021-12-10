@@ -1,5 +1,5 @@
 import { Elements, FlowActions, FlowGetters, FlowState } from '~/types'
-import { getConnectedEdges, getNodesInside, getRectOfNodes, parseElements, processElements } from '~/utils'
+import { getConnectedEdges, getNodesInside, getRectOfNodes, isGraphNode, parseElements, processElements } from '~/utils'
 
 export default (state: FlowState, getters: FlowGetters): FlowActions => {
   const setElements: FlowActions['setElements'] = async (elements, force = true) => {
@@ -26,6 +26,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     const startX = state.userSelectionRect.startX
     const startY = state.userSelectionRect.startY
 
+    state.selectedElements?.forEach((el) => isGraphNode(el) && (el.selected = undefined))
     const nextUserSelectRect: FlowState['userSelectionRect'] = {
       ...state.userSelectionRect,
       x: mousePos.x < startX ? mousePos.x : state.userSelectionRect.x,
@@ -37,6 +38,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     const selectedEdges = getConnectedEdges(selectedNodes, getters.getEdges.value)
 
     const nextSelectedElements = [...selectedNodes, ...selectedEdges]
+    nextSelectedElements.forEach((el) => isGraphNode(el) && (el.selected = true))
     state.userSelectionRect = nextUserSelectRect
     state.selectedElements = nextSelectedElements
   }

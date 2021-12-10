@@ -1,17 +1,17 @@
 import { DraggableOptions } from '@braks/revue-draggable'
-import { XYPosition, Position, SnapGrid, Element } from './flow'
+import { XYPosition, Position, SnapGrid, Element, Dimensions, XYZPosition } from './flow'
 import { HandleElement, ValidConnectionFunc } from './components'
 
 export type CoordinateExtent = [[number, number], [number, number]]
 
-export interface VFInternals {
-  isDragging?: boolean
-  width: number
-  height: number
+export interface VFInternals extends Dimensions {
   handleBounds: {
     source?: HandleElement[]
     target?: HandleElement[]
   }
+  parentNode?: any
+  isParent?: boolean
+  position: XYZPosition
 }
 
 export type Draggable = Omit<DraggableOptions, 'scale' | 'grid' | 'enableUserSelectHack' | 'enableTransformFix'> | boolean
@@ -33,6 +33,8 @@ export interface Node<T = any> extends Element<T> {
 
 export interface GraphNode<T = any> extends Node<T> {
   __vf: VFInternals
+  selected?: boolean
+  dragging?: boolean
 }
 
 export interface NodeProps<T = any> extends GraphNode {

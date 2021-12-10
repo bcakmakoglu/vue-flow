@@ -37,6 +37,8 @@ export interface XYPosition {
   y: number
 }
 
+export type XYZPosition = XYPosition & { z: number }
+
 export interface Dimensions {
   width: number
   height: number
