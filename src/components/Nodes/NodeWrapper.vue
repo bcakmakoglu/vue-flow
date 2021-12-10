@@ -32,7 +32,11 @@ const onMouseMoveHandler = () =>
   props.node.__vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: props.node }))
 const onMouseLeaveHandler = () =>
   props.node.__vf.isDragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: props.node }))
-const onContextMenuHandler = () => (event: MouseEvent) => store.hooks.nodeContextMenu.trigger({ event, node: props.node })
+const onContextMenuHandler = () => (event: MouseEvent) =>
+  store.hooks.nodeContextMenu.trigger({
+    event,
+    node: props.node,
+  })
 const onDoubleClick = () => (event: MouseEvent) => store.hooks.nodeDoubleClick.trigger({ event, node: props.node })
 const onSelectNodeHandler = (event: MouseEvent) => {
   if (!props.draggable) {
@@ -92,7 +96,7 @@ const updateNodeDimensions = ({ nodeElement, forceUpdate }: NodeDimensionUpdate)
     (props.node.__vf.width !== dimensions.width || props.node.__vf.height !== dimensions.height || forceUpdate)
 
   if (doUpdate) {
-    const handleBounds = getHandleBounds(nodeElement, store.transform[2])
+    const handleBounds = getHandleBounds(nodeElement, store.transform[2], store.id)
 
     node.value.__vf = {
       ...node.value.__vf,
@@ -103,17 +107,13 @@ const updateNodeDimensions = ({ nodeElement, forceUpdate }: NodeDimensionUpdate)
 }
 
 tryOnMounted(() => {
-  watch(
-    [() => props.node.__vf.width, () => props.node.__vf.height],
-    () => {
-      updateNodeDimensions({
-        id: props.node.id,
-        nodeElement: nodeElement.value,
-        forceUpdate: true,
-      })
-    },
-    { immediate: true },
-  )
+  watch([() => props.node.__vf.width, () => props.node.__vf.height], () => {
+    updateNodeDimensions({
+      id: props.node.id,
+      nodeElement: nodeElement.value,
+      forceUpdate: true,
+    })
+  })
   useResizeObserver(nodeElement, (entries) =>
     entries.forEach((entry) => {
       updateNodeDimensions({
@@ -124,12 +124,10 @@ tryOnMounted(() => {
   )
 
   watch([() => props.node.type, () => props.node.sourcePosition, () => props.node.targetPosition], () => {
-    nextTick(() => {
-      updateNodeDimensions({
-        id: props.node.id,
-        nodeElement: nodeElement.value,
-        forceUpdate: true,
-      })
+    updateNodeDimensions({
+      id: props.node.id,
+      nodeElement: nodeElement.value,
+      forceUpdate: true,
     })
   })
 })
@@ -183,8 +181,7 @@ export default {
           id: props.node.id,
           data: props.node.data,
           type: props.node.type,
-          xPos: props.node.position.x,
-          yPos: props.node.position.y,
+          position: node.position,
           __vf: props.node.__vf,
           selected,
           connectable: props.connectable,
@@ -201,8 +198,7 @@ export default {
             id: props.node.id,
             data: props.node.data,
             type: props.node.type,
-            xPos: props.node.position.x,
-            yPos: props.node.position.y,
+            position: node.position,
             __vf: props.node.__vf,
             selected,
             connectable: props.connectable,
