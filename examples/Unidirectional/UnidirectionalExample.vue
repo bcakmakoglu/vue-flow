@@ -7,7 +7,6 @@ import {
   Elements,
   Connection,
   Edge,
-  ElementId,
   Node,
   ConnectionLineType,
   ConnectionMode,
@@ -172,7 +171,7 @@ const initialElements: Elements = [
 ]
 
 let id = 4
-const getId = (): ElementId => `${id++}`
+const getId = () => `${id++}`
 
 const elements = ref(initialElements)
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge({ ...params, type: 'smoothstep' }, elements.value))

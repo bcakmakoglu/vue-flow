@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ArrowHeadType, EdgeProps, EdgeTextProps, ElementId, Position } from '../../types'
+import { ArrowHeadType, EdgeProps, Position } from '../../types'
 import SmoothStepEdge from './SmoothStepEdge.vue'
 
 interface StepEdgeProps extends EdgeProps {
-  id: ElementId
-  source: ElementId
-  target: ElementId
+  id: string
+  source: string
+  target: string
   sourceX: number
   sourceY: number
   targetX: number
@@ -15,12 +15,7 @@ interface StepEdgeProps extends EdgeProps {
   animated?: boolean
   sourcePosition: Position
   targetPosition: Position
-  label?:
-    | string
-    | {
-        component: any
-        props?: Record<string, any> & Partial<EdgeTextProps>
-      }
+  label?: string
   labelStyle?: CSSProperties
   labelShowBg?: boolean
   labelBgStyle?: CSSProperties
@@ -28,8 +23,8 @@ interface StepEdgeProps extends EdgeProps {
   labelBgBorderRadius?: number
   arrowHeadType?: ArrowHeadType
   markerEndId?: string
-  sourceHandleId?: ElementId | null
-  targetHandleId?: ElementId | null
+  sourceHandleId?: string
+  targetHandleId?: string
 }
 
 const props = withDefaults(defineProps<StepEdgeProps>(), {

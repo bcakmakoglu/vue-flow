@@ -2,7 +2,6 @@ import { ComputedRef, ToRefs } from 'vue'
 import { UnwrapNestedRefs } from '@vue/reactivity'
 import {
   Dimensions,
-  ElementId,
   Elements,
   FlowElements,
   FlowInstance,
@@ -52,8 +51,8 @@ export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
   multiSelectionKeyCode: KeyCode
   zoomActivationKeyCode: KeyCode
 
-  connectionNodeId?: ElementId
-  connectionHandleId?: ElementId
+  connectionNodeId?: string
+  connectionHandleId?: string
   connectionHandleType?: HandleType
   connectionPosition: XYPosition
   connectionMode: ConnectionMode

@@ -1,6 +1,5 @@
 import { getSourceTargetNodes } from './edge'
 import {
-  ElementId,
   Node,
   Edge,
   Elements,
@@ -81,7 +80,7 @@ export const removeElements = (elementsToRemove: Elements, elements: Elements) =
   return elements.filter((element) => !shouldRemove(element))
 }
 
-const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection): ElementId =>
+const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection) =>
   `vueflow__edge-${source}${sourceHandle}-${target}${targetHandle}`
 
 const connectionExists = (edge: Edge, elements: Elements) => {

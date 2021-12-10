@@ -5,7 +5,6 @@ import {
   ConnectionLineType,
   HandleElement,
   Position,
-  ElementId,
   HandleType,
   XYPosition,
   ConnectionMode,
@@ -17,8 +16,8 @@ interface ConnectionLineProps {
   sourceNode: GraphNode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
-  connectionHandleId?: ElementId
-  connectionNodeId?: ElementId
+  connectionHandleId?: string
+  connectionNodeId?: string
   connectionHandleType?: HandleType
   connectionPosition?: XYPosition
   connectionMode: ConnectionMode

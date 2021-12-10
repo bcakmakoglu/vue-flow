@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import { VueFlow, addEdge, removeElements, Controls, FlowInstance, Elements, Connection, Edge, ElementId, Node } from '~/index'
+import { VueFlow, addEdge, removeElements, Controls, FlowInstance, Elements, Connection, Edge, Node } from '~/index'
 import './dnd.css'
 
 const flowInstance = ref<FlowInstance>()
@@ -14,7 +14,7 @@ const elements = ref<Elements>([
 ])
 
 let id = 0
-const getId = (): ElementId => `dndnode_${id++}`
+const getId = () => `dndnode_${id++}`
 
 const onDragOver = (event: DragEvent) => {
   event.preventDefault()

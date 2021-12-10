@@ -8,7 +8,6 @@ import {
   BackgroundVariant,
   Connection,
   Edge,
-  ElementId,
   Elements,
   FlowElement,
   Node,
@@ -27,7 +26,7 @@ const onNodeDragStop = (node: Node) => console.log('drag stop', node)
 
 const buttonStyle: CSSProperties = { position: 'absolute', left: '10px', top: '10px', zIndex: 4 }
 const addRandomNode = () => {
-  const nodeId: ElementId = (elements.value.length + 1).toString()
+  const nodeId = (elements.value.length + 1).toString()
   const newNode: Node = {
     id: nodeId,
     data: { label: `Node: ${nodeId}` },

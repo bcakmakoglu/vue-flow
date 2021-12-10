@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { ElementId, Store as TStore } from '~/types'
+import { Store as TStore } from '~/types'
 
 export const StoreSymbol: InjectionKey<TStore> = Symbol('store')
-export const NodeId: InjectionKey<ElementId> = Symbol('nodeId')
+export const NodeId: InjectionKey<string> = Symbol('nodeId')

@@ -1,6 +1,6 @@
 import useStore from './useStore'
 import { getHostForElement } from '~/utils'
-import { Connection, ConnectionMode, ElementId, HandleType, FlowStore, ValidConnectionFunc } from '~/types'
+import { Connection, ConnectionMode, HandleType, FlowStore, ValidConnectionFunc } from '~/types'
 
 type Result = {
   elementBelow: Element | null
@@ -14,8 +14,8 @@ export const checkElementBelowIsValid = (
   event: MouseEvent,
   connectionMode: ConnectionMode,
   isTarget: boolean,
-  nodeId: ElementId,
-  handleId: ElementId,
+  nodeId: string,
+  handleId: string,
   isValidConnection: ValidConnectionFunc,
   doc: Document,
 ) => {
@@ -70,8 +70,8 @@ const resetRecentHandle = (hoveredHandle: Element): void => {
 export default (store: FlowStore = useStore()) =>
   (
     event: MouseEvent,
-    handleId: ElementId,
-    nodeId: ElementId,
+    handleId: string,
+    nodeId: string,
     isTarget: boolean,
     isValidConnection?: ValidConnectionFunc,
     elementEdgeUpdaterType?: HandleType,

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ElementId, FlowElement, FlowElements, GraphEdge, KeyCode } from '../../types'
+import { FlowElement, FlowElements, GraphEdge, KeyCode } from '../../types'
 import { useStore, useKeyPress } from '../../composables'
 import { getConnectedEdges, isGraphNode } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
@@ -44,7 +44,7 @@ tryOnMounted(() => {
       const connectedEdges = getConnectedEdges(selectedNodes, props.edges)
       const elementsToRemove = [...props.selectedElements, ...connectedEdges].reduce(
         (res, item) => res.set(item.id, item),
-        new Map<ElementId, FlowElement>(),
+        new Map<string, FlowElement>(),
       )
 
       store.hooks.elementsRemove.trigger(Array.from(elementsToRemove.values()))
