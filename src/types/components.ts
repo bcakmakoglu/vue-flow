@@ -1,5 +1,5 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
-import { BackgroundVariant, Dimensions, ElementId, Elements, FitViewParams, FlowOptions, Position, XYPosition } from './flow'
+import { BackgroundVariant, Dimensions, Elements, FitViewParams, FlowOptions, Position, XYPosition } from './flow'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { GraphNode, Node, NodeProps, CoordinateExtent } from './node'
 import { EdgeProps } from './edge'
@@ -15,7 +15,7 @@ export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, an
 export type HandleType = 'source' | 'target'
 
 export interface HandleElement extends XYPosition, Dimensions {
-  id?: ElementId
+  id?: string
   position: Position
 }
 

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { ArrowHeadType, ElementId, getBezierPath, getMarkerEnd, Position, EdgeProps } from '~/index'
+import { ArrowHeadType, getBezierPath, getMarkerEnd, Position, EdgeProps } from '~/index'
 
 interface CustomEdgeProps<T = { text: string }> extends EdgeProps<T> {
-  source: ElementId
-  target: ElementId
-  sourceHandleId?: ElementId
-  targetHandleId?: ElementId
-  id: ElementId
+  source: string
+  target: string
+  sourceHandleId?: string
+  targetHandleId?: string
+  id: string
   sourceX: number
   sourceY: number
   targetX: number

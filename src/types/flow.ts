@@ -5,11 +5,10 @@ import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode } from './zoom'
 import { EdgeTypes, NodeTypes } from './components'
 
-export type ElementId = string
 export type FlowElement<DataNode = any, DataEdge = any> = GraphNode<DataNode> | GraphEdge<DataEdge>
 export type FlowElements<DataNode = any, DataEdge = any> = FlowElement<DataNode, DataEdge>[]
 export interface Element<Data = any> {
-  id: ElementId
+  id: string
   label?: string
   type?: string
   data?: Data
@@ -78,7 +77,7 @@ export type FitViewParams = {
     y?: number
   }
   transitionDuration?: number
-  nodes?: ElementId[]
+  nodes?: string[]
 }
 
 export type FlowExportObject<T = any> = {

@@ -1,11 +1,11 @@
-import { ArrowHeadType, ElementId, Position, Element } from './flow'
+import { ArrowHeadType, Position, Element } from './flow'
 import { GraphNode } from './node'
 
 export interface Edge<T = any> extends Element<T> {
-  source: ElementId
-  target: ElementId
-  sourceHandle?: ElementId
-  targetHandle?: ElementId
+  source: string
+  target: string
+  sourceHandle?: string
+  targetHandle?: string
   sourcePosition?: Position
   targetPosition?: Position
   labelStyle?: any
@@ -33,8 +33,8 @@ export interface EdgeProps<T = any> extends GraphEdge<T> {
   sourcePosition: Position
   targetPosition: Position
   markerEndId?: string
-  sourceHandleId?: ElementId | null
-  targetHandleId?: ElementId | null
+  sourceHandleId?: string
+  targetHandleId?: string
 }
 
 export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {

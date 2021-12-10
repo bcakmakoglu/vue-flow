@@ -1,4 +1,4 @@
-import { ElementId, Elements, Position } from '../../src'
+import { Elements, Position } from '../../src'
 
 const nodeWidth = 80
 const nodeGapWidth = nodeWidth * 2
@@ -49,7 +49,7 @@ const offsets = [
 ]
 
 let id = 0
-const getNodeId = (): ElementId => (id++).toString()
+const getNodeId = () => (id++).toString()
 
 export function getElements(): Elements {
   const initialElements = []

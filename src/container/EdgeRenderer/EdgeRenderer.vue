@@ -5,7 +5,6 @@ import {
   ConnectionMode,
   Dimensions,
   EdgeComponent,
-  ElementId,
   GraphEdge,
   GraphNode,
   HandleType,
@@ -28,9 +27,9 @@ interface EdgeRendererProps {
   markerEndId?: string
   elementsSelectable?: boolean
   edgeUpdaterRadius?: number
-  connectionNodeId?: ElementId
+  connectionNodeId?: string
   connectionHandleType?: HandleType
-  connectionHandleId?: ElementId
+  connectionHandleId?: string
   connectionPosition?: XYPosition
   connectionMode: ConnectionMode
   nodesConnectable?: boolean

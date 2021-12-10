@@ -7,7 +7,6 @@ import {
   MiniMap,
   useZoomPanHelper,
   Elements,
-  ElementId,
   Connection,
   Edge,
   Node,
@@ -23,7 +22,7 @@ const initialElements: Elements = [
 ]
 
 let id = 5
-const getId = (): ElementId => `${id++}`
+const getId = () => `${id++}`
 
 const { project } = useZoomPanHelper()
 

@@ -1,6 +1,8 @@
 import { DraggableOptions } from '@braks/revue-draggable'
-import { XYPosition, ElementId, Position, SnapGrid, Element } from './flow'
+import { XYPosition, Position, SnapGrid, Element } from './flow'
 import { HandleElement, ValidConnectionFunc } from './components'
+
+export type CoordinateExtent = [[number, number], [number, number]]
 
 export interface VFInternals {
   isDragging?: boolean
@@ -25,6 +27,8 @@ export interface Node<T = any> extends Element<T> {
   snapGrid?: SnapGrid
   isValidTargetPos?: ValidConnectionFunc
   isValidSourcePos?: ValidConnectionFunc
+  extent?: 'parent' | CoordinateExtent
+  parentNode?: string
 }
 
 export interface GraphNode<T = any> extends Node<T> {
@@ -32,7 +36,7 @@ export interface GraphNode<T = any> extends Node<T> {
 }
 
 export interface NodeProps<T = any> extends GraphNode {
-  id: ElementId
+  id: string
   position: XYPosition
   type?: string
   data?: T
@@ -46,10 +50,8 @@ export interface NodeProps<T = any> extends GraphNode {
   __vf: VFInternals
 }
 
-export type CoordinateExtent = [[number, number], [number, number]]
-
 export type NodeDimensionUpdate = {
-  id: ElementId
+  id: string
   nodeElement: HTMLDivElement
   forceUpdate?: boolean
 }

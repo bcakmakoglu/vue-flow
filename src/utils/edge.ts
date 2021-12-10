@@ -1,16 +1,5 @@
 import { isGraphNode, rectToBox } from './graph'
-import {
-  Edge,
-  EdgePositions,
-  ElementId,
-  GraphNode,
-  HandleElement,
-  Position,
-  Transform,
-  XYPosition,
-  FlowElements,
-  GraphEdge,
-} from '~/types'
+import { Edge, EdgePositions, GraphNode, HandleElement, Position, Transform, XYPosition, FlowElements, GraphEdge } from '~/types'
 
 export function getHandlePosition(position: Position, node: GraphNode, handle?: HandleElement): XYPosition {
   const x = (handle?.x ?? 0) + node.position.x
@@ -42,7 +31,7 @@ export function getHandlePosition(position: Position, node: GraphNode, handle?: 
   }
 }
 
-export function getHandle(bounds: HandleElement[], handleId?: ElementId): HandleElement | undefined {
+export function getHandle(bounds: HandleElement[], handleId?: string): HandleElement | undefined {
   if (!bounds) return undefined
 
   // there is no handleId when there are no multiple handles/ handles with ids

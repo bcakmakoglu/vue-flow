@@ -61,12 +61,13 @@ const onDragStart: DraggableEventListener = ({ event }) => {
   }
 }
 const onDrag: DraggableEventListener = ({ event, data: { deltaY, deltaX } }) => {
+  const extent = node.value.extent ?? store.nodeExtent
   node.value.position = clampPosition(
     {
       x: (node.value.position.x += deltaX),
       y: (node.value.position.y += deltaY),
     },
-    store.nodeExtent,
+    extent,
   )
   node.value.__vf.isDragging = true
   store.hooks.nodeDrag.trigger({ event, node: props.node })

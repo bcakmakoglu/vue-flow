@@ -9,7 +9,6 @@ import {
   Elements,
   Connection,
   Edge,
-  ElementId,
   Position,
   isEdge,
   FlowInstance,
@@ -29,7 +28,7 @@ const initialElements: Elements = [
 const buttonWrapperStyles: CSSProperties = { position: 'absolute', right: 10, top: 10, zIndex: 10 }
 
 let id = 5
-const getId = (): ElementId => `${id++}`
+const getId = () => `${id++}`
 
 const elements = ref<Elements>(initialElements)
 const flowInstance = ref<FlowInstance>()
