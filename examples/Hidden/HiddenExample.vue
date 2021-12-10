@@ -17,7 +17,7 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
 
 watchEffect(() => {
   elements.value = elements.value.map((e) => {
-    e.isHidden = isHidden.value
+    e.hidden = isHidden.value
     return e
   })
 })

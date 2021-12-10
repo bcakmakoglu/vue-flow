@@ -8,6 +8,15 @@ import { EdgeTypes, NodeTypes } from './components'
 export type ElementId = string
 export type FlowElement<DataNode = any, DataEdge = any> = GraphNode<DataNode> | GraphEdge<DataEdge>
 export type FlowElements<DataNode = any, DataEdge = any> = FlowElement<DataNode, DataEdge>[]
+export interface Element<Data = any> {
+  id: ElementId
+  label?: string
+  type?: string
+  data?: Data
+  class?: string
+  style?: CSSProperties
+  hidden?: boolean
+}
 export type Elements<DataNode = any, DataEdge = any> = (Node<DataNode> | Edge<DataEdge>)[]
 
 export type NextElements = {

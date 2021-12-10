@@ -25,7 +25,7 @@ const updateNode = () => {
         label: opts.value.name,
       }
       el.style = { backgroundColor: opts.value.bg }
-      el.isHidden = opts.value.hidden
+      el.hidden = opts.value.hidden
     }
 
     return el
