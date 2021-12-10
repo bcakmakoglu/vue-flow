@@ -67,6 +67,9 @@ const toggleclasss = () => {
     @node-click="onElementClick"
     @load="onLoad"
   >
+    <Background />
+    <MiniMap />
+    <Controls />
     <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
       <button style="margin-right: 5px" @click="resetTransform">reset transform</button>
       <button style="margin-right: 5px" @click="updatePos">change pos</button>
