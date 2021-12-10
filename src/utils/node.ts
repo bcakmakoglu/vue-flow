@@ -9,9 +9,7 @@ export const getHandleBoundsByHandleType = (
 ): HandleElement[] | null => {
   const handles = nodeElement.querySelectorAll(selector)
 
-  if (!handles || !handles.length) {
-    return null
-  }
+  if (!handles || !handles.length) return null
 
   const handlesArray = Array.from(handles) as HTMLDivElement[]
 
@@ -31,11 +29,11 @@ export const getHandleBoundsByHandleType = (
   })
 }
 
-export const getHandleBounds = (nodeElement: HTMLDivElement, scale: number) => {
+export const getHandleBounds = (nodeElement: HTMLDivElement, scale: number, id?: string) => {
   const bounds = nodeElement.getBoundingClientRect()
 
   return {
-    source: getHandleBoundsByHandleType('.source', nodeElement, bounds, scale) ?? undefined,
-    target: getHandleBoundsByHandleType('.target', nodeElement, bounds, scale) ?? undefined,
+    source: getHandleBoundsByHandleType(`.source${id ? `.vue-flow__handle-${id}` : ''}`, nodeElement, bounds, scale) ?? undefined,
+    target: getHandleBoundsByHandleType(`.target${id ? `.vue-flow__handle-${id}` : ''}`, nodeElement, bounds, scale) ?? undefined,
   }
 }
