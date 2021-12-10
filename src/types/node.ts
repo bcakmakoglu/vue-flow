@@ -40,12 +40,11 @@ export interface GraphNode<T = any> extends Node<T> {
 
 export interface NodeProps<T = any> extends GraphNode {
   id: ElementId
+  position: XYPosition
   type?: string
   data?: T
   selected?: boolean
   connectable?: boolean
-  xPos?: number
-  yPos?: number
   targetPosition?: Position
   sourcePosition?: Position
   dragging?: boolean
