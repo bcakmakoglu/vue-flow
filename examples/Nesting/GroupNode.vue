@@ -19,7 +19,6 @@ store.hooks.nodeDragStop.on(({ node }) => {
     node.data.label = `In ${props.id}`
     node.data.group = props.id
   } else if (node.data.group === props.id) {
-    console.log(node)
     node.data.group = undefined
     node.data.label = node.id
   }
