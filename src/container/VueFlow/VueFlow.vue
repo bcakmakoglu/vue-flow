@@ -1,4 +1,16 @@
 <script lang="ts" setup>
+import { CSSProperties } from 'vue'
+import {
+  ConnectionLineType,
+  ConnectionMode,
+  Elements,
+  PanOnScrollMode,
+  KeyCode,
+  CoordinateExtent,
+  NodeTypes,
+  EdgeTypes,
+  FlowOptions,
+} from '../../types'
 import Renderer from '../Renderer/Renderer.vue'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
@@ -6,7 +18,47 @@ import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import LoadingIndicator from '../../components/Loading/LoadingIndicator.vue'
 import { createHooks, initFlow } from '../../composables'
-import type { FlowProps } from '../../types/flow'
+
+interface FlowProps extends FlowOptions {
+  id?: string
+  modelValue?: Elements
+  nodeTypes?: NodeTypes
+  edgeTypes?: EdgeTypes
+  connectionMode?: ConnectionMode
+  connectionLineType?: ConnectionLineType
+  connectionLineStyle?: CSSProperties
+  deleteKeyCode?: KeyCode
+  selectionKeyCode?: KeyCode
+  multiSelectionKeyCode?: KeyCode
+  zoomActivationKeyCode?: KeyCode
+  preventScrolling?: boolean
+  snapToGrid?: boolean
+  snapGrid?: [number, number]
+  onlyRenderVisibleElements?: boolean
+  edgesUpdatable?: boolean
+  nodesDraggable?: boolean
+  nodesConnectable?: boolean
+  elementsSelectable?: boolean
+  selectNodesOnDrag?: boolean
+  paneMoveable?: boolean
+  minZoom?: number
+  maxZoom?: number
+  defaultZoom?: number
+  defaultPosition?: [number, number]
+  translateExtent?: CoordinateExtent
+  nodeExtent?: CoordinateExtent
+  arrowHeadColor?: string
+  markerEndId?: string
+  zoomOnScroll?: boolean
+  zoomOnPinch?: boolean
+  panOnScroll?: boolean
+  panOnScrollSpeed?: number
+  panOnScrollMode?: PanOnScrollMode
+  zoomOnDoubleClick?: boolean
+  edgeUpdaterRadius?: number
+  storageKey?: string
+  loading?: string
+}
 
 const props = withDefaults(defineProps<FlowProps>(), {
   modelValue: () => [],

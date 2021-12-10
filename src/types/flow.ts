@@ -1,6 +1,6 @@
 import { CSSProperties } from 'vue'
 import { Edge, GraphEdge } from './edge'
-import { GraphNode, Node } from './node'
+import { GraphNode, Node, CoordinateExtent } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode } from './zoom'
 import { EdgeTypes, NodeTypes } from './components'
@@ -14,9 +14,6 @@ export type NextElements = {
   nodes: GraphNode[]
   edges: GraphEdge[]
 }
-
-export type TranslateExtent = [[number, number], [number, number]]
-export type NodeExtent = [[number, number], [number, number]]
 
 export type Transform = [number, number, number]
 
@@ -102,9 +99,9 @@ export type FlowInstance<T = any> = {
   toObject: ToObjectFunc<T>
 }
 
-export interface FlowProps {
-  modelValue?: Elements
+export interface FlowOptions {
   id?: string
+  elements?: Elements
   nodeTypes?: NodeTypes
   edgeTypes?: EdgeTypes
   connectionMode?: ConnectionMode
@@ -127,8 +124,8 @@ export interface FlowProps {
   maxZoom?: number
   defaultZoom?: number
   defaultPosition?: [number, number]
-  translateExtent?: TranslateExtent
-  nodeExtent?: NodeExtent
+  translateExtent?: CoordinateExtent
+  nodeExtent?: CoordinateExtent
   arrowHeadColor?: string
   markerEndId?: string
   zoomOnScroll?: boolean
@@ -141,8 +138,4 @@ export interface FlowProps {
   edgeUpdaterRadius?: number
   storageKey?: string
   loading?: string
-}
-
-export interface FlowOptions extends Omit<FlowProps, 'modelValue'> {
-  elements?: Elements
 }

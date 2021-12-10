@@ -12,7 +12,7 @@ import {
   Edge,
   Elements,
   isNode,
-  NodeExtent,
+  CoordinateExtent,
   Position,
   removeElements,
 } from '~/index'
@@ -20,7 +20,7 @@ import {
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
 
-const nodeExtent: NodeExtent = [
+const nodeExtent: CoordinateExtent = [
   [0, -100],
   [1000, 500],
 ]

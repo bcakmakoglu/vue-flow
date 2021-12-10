@@ -10,7 +10,7 @@ import {
   Box,
   Connection,
   FlowExportObject,
-  NodeExtent,
+  CoordinateExtent,
   Dimensions,
   GraphNode,
   FlowElements,
@@ -38,7 +38,7 @@ export const getDimensions = (node: HTMLElement): Dimensions => ({
 
 export const clamp = (val: number, min = 0, max = 1): number => Math.min(Math.max(val, min), max)
 
-export const clampPosition = (position: XYPosition, extent: NodeExtent): XYPosition => ({
+export const clampPosition = (position: XYPosition, extent: CoordinateExtent): XYPosition => ({
   x: clamp(position.x, extent[0][0], extent[1][0]),
   y: clamp(position.y, extent[0][1], extent[1][1]),
 })
@@ -165,7 +165,7 @@ export const pointToRendererPoint = (
 export const onLoadProject = (currentStore: FlowStore) => (position: XYPosition) =>
   pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
 
-export const parseNode = (node: Node, nodeExtent: NodeExtent): GraphNode => ({
+export const parseNode = (node: Node, nodeExtent: CoordinateExtent): GraphNode => ({
   ...node,
   id: node.id.toString(),
   type: node.type ?? 'default',
@@ -334,7 +334,7 @@ export const processElements = (elements: FlowElements, fn: (elements: FlowEleme
   })
 }
 
-export const parseElement = (element: Node | Edge, prevElements: FlowElements, nodeExtent: NodeExtent) => {
+export const parseElement = (element: Node | Edge, prevElements: FlowElements, nodeExtent: CoordinateExtent) => {
   let parsed: GraphEdge | GraphNode = {} as any
   const index = prevElements.map((x) => x.id).indexOf(element.id)
   if (isNode(element)) {
@@ -371,7 +371,7 @@ export const parseElement = (element: Node | Edge, prevElements: FlowElements, n
   return { parsed, index }
 }
 
-export const parseElements = (elements: Elements, prevElements: FlowElements, nodeExtent: NodeExtent) => {
+export const parseElements = (elements: Elements, prevElements: FlowElements, nodeExtent: CoordinateExtent) => {
   const { nodes, edges }: NextElements = {
     nodes: [],
     edges: [],
