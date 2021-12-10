@@ -16,6 +16,7 @@ export {
   getTransformForBounds,
   getRectOfNodes,
   graphPosToZoomedPos,
+  getNodesInside,
 } from './utils/graph'
 export { defaultEdgeTypes, defaultNodeTypes } from './utils/store'
 export { default as useZoomPanHelper } from './composables/useZoomPanHelper'
