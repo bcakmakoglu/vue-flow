@@ -7,18 +7,16 @@ import {
   FlowElements,
   FlowInstance,
   FlowOptions,
-  NodeExtent,
   Rect,
   SelectionRect,
   SnapGrid,
   Transform,
-  TranslateExtent,
   XYPosition,
 } from './flow'
 import { HandleType, EdgeComponent, NodeComponent, NodeTypes, EdgeTypes } from './components'
 import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
 import { GraphEdge } from './edge'
-import { GraphNode } from './node'
+import { GraphNode, CoordinateExtent } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks } from './hooks'
 
@@ -36,8 +34,8 @@ export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
   minZoom: number
   maxZoom: number
   defaultZoom: number
-  translateExtent: TranslateExtent
-  nodeExtent: NodeExtent
+  translateExtent: CoordinateExtent
+  nodeExtent: CoordinateExtent
   dimensions: Dimensions
   transform: Transform
   onlyRenderVisibleElements: boolean
@@ -94,7 +92,7 @@ export interface FlowActions {
   initD3Zoom: (payload: InitD3ZoomPayload) => void
   setMinZoom: (zoom: number) => void
   setMaxZoom: (zoom: number) => void
-  setTranslateExtent: (translateExtent: TranslateExtent) => void
+  setTranslateExtent: (translateExtent: CoordinateExtent) => void
   resetSelectedElements: () => void
   unsetNodesSelection: () => void
   updateSize: (size: Dimensions) => void
