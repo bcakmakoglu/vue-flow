@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useHandle } from '../../composables'
+import { useHandle, useStore } from '../../composables'
 import { Position, ValidConnectionFunc } from '../../types'
 import { NodeId } from '../../context'
 
@@ -11,6 +11,7 @@ interface HandleProps {
   connectable?: boolean
 }
 
+const store = useStore()
 const props = withDefaults(defineProps<HandleProps>(), {
   id: '',
   type: 'source',
@@ -37,6 +38,7 @@ export default {
     :class="[
       'vue-flow__handle',
       `vue-flow__handle-${props.position}`,
+      `vue-flow__handle-${store.id}`,
       'nodrag',
       {
         source: props.type !== 'target',
