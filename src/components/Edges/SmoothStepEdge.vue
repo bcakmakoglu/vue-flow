@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Position } from '../../types'
 import type { SmoothStepEdgeProps } from '../../types/edge'
-import { getCenter, getMarkerEnd, getSmoothStepPath } from './utils'
+import { getCenter, getSmoothStepPath } from './utils'
 import EdgeText from './EdgeText.vue'
 
 const props = withDefaults(defineProps<SmoothStepEdgeProps>(), {
@@ -27,8 +27,6 @@ const path = computed(() => {
     })
   else return ''
 })
-
-const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
 </script>
 <script lang="ts">
 export default {
@@ -37,7 +35,13 @@ export default {
 }
 </script>
 <template>
-  <path class="vue-flow__edge-path" :style="props.style" :d="path" :marker-end="markerEnd" />
+  <path
+    class="vue-flow__edge-path"
+    :style="props.style"
+    :d="path"
+    :marker-end="props.markerEnd"
+    :marker-start="props.markerStart"
+  />
   <slot :x="centered[0]" :y="centered[1]" v-bind="props">
     <EdgeText
       v-if="props.label"

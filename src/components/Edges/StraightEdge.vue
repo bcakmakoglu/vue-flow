@@ -2,7 +2,7 @@
 import { Position } from '../../types'
 import type { EdgeProps } from '../../types/edge'
 import EdgeText from './EdgeText.vue'
-import { getMarkerEnd, getBezierPath } from './utils'
+import { getBezierPath } from './utils'
 
 const props = withDefaults(defineProps<EdgeProps>(), {
   selected: false,
@@ -30,8 +30,6 @@ const path = computed(() => {
     })
   else return ''
 })
-
-const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
 </script>
 <script lang="ts">
 export default {
@@ -40,7 +38,13 @@ export default {
 }
 </script>
 <template>
-  <path class="vue-flow__edge-path" :style="props.style" :d="path" :marker-end="markerEnd" />
+  <path
+    class="vue-flow__edge-path"
+    :style="props.style"
+    :d="path"
+    :marker-end="props.markerEnd"
+    :marker-start="props.markerStart"
+  />
   <slot :x="centerX" :y="centerY" v-bind="props">
     <EdgeText
       v-if="props.label"
