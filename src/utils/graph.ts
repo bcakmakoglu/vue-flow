@@ -4,6 +4,7 @@ import {
   CoordinateExtent,
   Dimensions,
   Edge,
+  EdgeMarkerType,
   Elements,
   FlowElements,
   FlowExportObject,
@@ -184,6 +185,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
         ...defaults,
       }
     : defaults
+
   return {
     ...node,
     ...(defaults as GraphNode),
@@ -202,9 +204,11 @@ export const parseEdge = (
         type: edge.type ?? 'default',
         source: edge.source.toString(),
         target: edge.target.toString(),
+        z: typeof edge.style?.zIndex === 'string' ? parseInt(edge.style?.zIndex) : edge.style?.zIndex ?? 0,
         ...defaults,
       }
     : defaults
+
   return {
     ...edge,
     ...defaults,
@@ -266,24 +270,21 @@ export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]:
 
   return nodes.filter((node) => {
     if (!node || node.selectable === false) return false
-    const { position = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 }, dragging = false } = node
-    const nBox = rectToBox({ ...position, ...dimensions })
+    const { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 }, dragging = false } = node
+    const nBox = rectToBox({ ...computedPosition, ...dimensions })
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
     const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y))
     const overlappingArea = Math.ceil(xOverlap * yOverlap)
+    const notInitialized =
+      typeof dimensions.width === 'undefined' ||
+      typeof dimensions.height === 'undefined' ||
+      dimensions.width === 0 ||
+      dimensions.height === 0 ||
+      dragging
 
-    if (dimensions.width === null || dimensions.height === null || dragging) {
-      // nodes are initialized with width and height = null
-      return true
-    }
-
-    if (partially) {
-      return overlappingArea > 0
-    }
-
+    const partiallyVisible = partially && overlappingArea > 0
     const area = dimensions.width * dimensions.height
-
-    return overlappingArea >= area
+    return notInitialized || partiallyVisible || overlappingArea >= area
   })
 }
 
@@ -331,9 +332,9 @@ export const getTransformForBounds = (
   return [x, y, clampedZoom]
 }
 
-export function calculateXYZPosition(node: GraphNode, result: XYZPosition): XYZPosition {
+export const getXYZPos = (node: GraphNode, result: XYZPosition): XYZPosition => {
   if (!node.parentNode) return result
-  return calculateXYZPosition(node.parentNode, {
+  return getXYZPos(node.parentNode, {
     x: result.x + node.parentNode.position.x,
     y: result.y + node.parentNode.position.y,
     z:
@@ -341,9 +342,23 @@ export function calculateXYZPosition(node: GraphNode, result: XYZPosition): XYZP
   })
 }
 
-export function isParentSelected(node: GraphNode): boolean {
-  if (!node.parentNode) return false
+export const isParentSelected = (node: GraphNode): boolean => {
   if (!node.parentNode) return false
   if (node.parentNode.selected) return true
   return isParentSelected(node.parentNode)
+}
+
+export const getMarkerId = (marker: EdgeMarkerType | undefined): string => {
+  if (typeof marker === 'undefined') {
+    return ''
+  }
+
+  if (typeof marker === 'string') {
+    return marker
+  }
+
+  return Object.keys(marker)
+    .sort()
+    .map((key: string) => `${key}=${(marker as any)[key]}`)
+    .join('&')
 }
