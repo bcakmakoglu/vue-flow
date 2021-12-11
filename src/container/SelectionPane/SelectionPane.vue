@@ -4,6 +4,8 @@ import { useStore, useKeyPress } from '../../composables'
 import { getConnectedEdges } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
+import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
+import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 
 const store = useStore()
 const userSelection = ref(false)
@@ -49,7 +51,27 @@ export default {
 }
 </script>
 <template>
-  <slot></slot>
+  <NodeRenderer :key="`node-renderer-${store.id}`">
+    <template
+      v-for="nodeName of Object.keys(store.getNodeTypes)"
+      #[`node-${nodeName}`]="nodeProps"
+      :key="`node-${nodeName}-${store.id}`"
+    >
+      <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
+    </template>
+  </NodeRenderer>
+  <EdgeRenderer :key="`edge-renderer-${store.id}`">
+    <template
+      v-for="edgeName of Object.keys(store.getEdgeTypes)"
+      #[`edge-${edgeName}`]="edgeProps"
+      :key="`edge-${edgeName}-${store.id}`"
+    >
+      <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
+    </template>
+    <template #custom-connection-line="customConnectionLineProps">
+      <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
+    </template>
+  </EdgeRenderer>
   <UserSelection v-if="userSelection" :key="`user-selection-${store.id}`" />
   <NodesSelection v-if="store.nodesSelectionActive" :key="`nodes-selction-${store.id}`" />
   <div :key="`flow-pane-${store.id}`" class="vue-flow__pane" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />

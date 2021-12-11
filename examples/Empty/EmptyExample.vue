@@ -29,10 +29,10 @@ const addRandomNode = () => {
   const nodeId = (elements.value.length + 1).toString()
   const newNode: Node = {
     id: nodeId,
-    data: { label: `Node: ${nodeId}` },
+    label: `Node: ${nodeId}`,
     position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
   } as Node
-  elements.value = [...elements.value, newNode]
+  elements.value.push(newNode)
 }
 </script>
 <template>
@@ -41,7 +41,7 @@ const addRandomNode = () => {
     @load="onLoad"
     @element-click="onElementClick"
     @elements-remove="onElementsRemove"
-    @connect="(p) => onConnect(p)"
+    @connect="onConnect"
     @node-drag-stop="onNodeDragStop"
   >
     <MiniMap />
