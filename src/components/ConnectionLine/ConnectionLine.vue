@@ -12,8 +12,8 @@ const sourceHandle =
   store.connectionHandleId && store.connectionHandleType
     ? props.sourceNode.handleBounds[store.connectionHandleType]?.find((d: HandleElement) => d.id === store.connectionHandleId)
     : store.connectionHandleType && props.sourceNode.handleBounds[store.connectionHandleType ?? 'source']?.[0]
-const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : (props.sourceNode.width as number) / 2
-const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.sourceNode.height
+const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : props.sourceNode.dimensions.width / 2
+const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.sourceNode.dimensions.height
 const sourceX = props.sourceNode.position.x + sourceHandleX
 const sourceY = props.sourceNode.position.y + sourceHandleY
 

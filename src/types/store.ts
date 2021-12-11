@@ -23,7 +23,9 @@ export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
   hooks: FlowHooks
   instance?: FlowInstance
 
-  elements: FlowElements
+  elements: Elements
+  nodes: GraphNode[]
+  edges: GraphEdge[]
   nodeTypes: NodeTypes
   edgeTypes: EdgeTypes
 
@@ -83,7 +85,6 @@ export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
 }
 
 export interface FlowActions {
-  setElements: (elements: Elements, init?: boolean) => Promise<void>
   setUserSelection: (mousePos: XYPosition) => void
   updateUserSelection: (mousePos: XYPosition) => void
   unsetUserSelection: () => void
@@ -97,7 +98,6 @@ export interface FlowActions {
   updateSize: (size: Dimensions) => void
   setConnectionNodeId: (payload: SetConnectionId) => void
   setInteractive: (isInteractive: boolean) => void
-  addElements: (elements: Elements) => void
   setState: (state: Partial<FlowOptions>) => void
 }
 
@@ -106,6 +106,8 @@ export interface FlowGetters {
   getNodeTypes: ComputedRef<Record<string, NodeComponent>>
   getNodes: ComputedRef<GraphNode[]>
   getEdges: ComputedRef<GraphEdge[]>
+  getNode: ComputedRef<(id: string) => GraphNode | undefined>
+  getEdge: ComputedRef<(id: string) => GraphEdge | undefined>
   getSelectedNodes: ComputedRef<GraphNode[]>
 }
 

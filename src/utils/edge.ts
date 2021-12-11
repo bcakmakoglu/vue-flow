@@ -4,8 +4,8 @@ import { Edge, EdgePositions, GraphNode, HandleElement, Position, Transform, XYP
 export function getHandlePosition(position: Position, node: GraphNode, handle?: HandleElement): XYPosition {
   const x = (handle?.x ?? 0) + node.position.x
   const y = (handle?.y ?? 0) + node.position.y
-  const width = handle?.width ?? node.width
-  const height = handle?.height ?? node.height
+  const width = handle?.width ?? node.dimensions.width
+  const height = handle?.height ?? node.dimensions.height
 
   switch (position) {
     case Position.Top:

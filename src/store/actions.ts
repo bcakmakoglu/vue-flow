@@ -1,15 +1,7 @@
-import { Elements, FlowActions, FlowGetters, FlowState } from '~/types'
-import { getConnectedEdges, getNodesInside, getRectOfNodes, isGraphNode, parseElements, processElements } from '~/utils'
+import { CoordinateExtent, Edge, FlowActions, FlowGetters, FlowState, GraphNode, Node } from '~/types'
+import { getConnectedEdges, getNodesInside, getRectOfNodes, isNode, parseEdge, parseNode } from '~/utils'
 
 export default (state: FlowState, getters: FlowGetters): FlowActions => {
-  const setElements: FlowActions['setElements'] = async (elements, force = true) => {
-    const { nodes, edges } = parseElements(elements, state.elements, state.nodeExtent)
-    if (force) state.elements = []
-    await processElements([...nodes, ...edges], (processed) => {
-      state.elements = [...state.elements, ...processed]
-    })
-    state.hooks.elementsProcessed.trigger(state.elements)
-  }
   const setUserSelection: FlowActions['setUserSelection'] = (mousePos) => {
     state.selectionActive = true
     state.userSelectionRect = {
@@ -26,7 +18,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     const startX = state.userSelectionRect.startX
     const startY = state.userSelectionRect.startY
 
-    state.selectedElements?.forEach((el) => isGraphNode(el) && (el.selected = undefined))
+    state.selectedElements?.forEach((el) => isNode(el) && (el.selected = undefined))
     const nextUserSelectRect: FlowState['userSelectionRect'] = {
       ...state.userSelectionRect,
       x: mousePos.x < startX ? mousePos.x : state.userSelectionRect.x,
@@ -38,7 +30,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     const selectedEdges = getConnectedEdges(selectedNodes, getters.getEdges.value)
 
     const nextSelectedElements = [...selectedNodes, ...selectedEdges]
-    nextSelectedElements.forEach((el) => isGraphNode(el) && (el.selected = true))
+    nextSelectedElements.forEach((el) => isNode(el) && (el.selected = true))
     state.userSelectionRect = nextUserSelectRect
     state.selectedElements = nextSelectedElements
   }
@@ -103,10 +95,48 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     state.nodesConnectable = isInteractive
     state.elementsSelectable = isInteractive
   }
-  const addElements: FlowActions['addElements'] = (elements: Elements) => {
-    setElements(elements, false)
+  const setNodes = (nodes: Node[], extent: CoordinateExtent) => {
+    const parseChildren = (n: Node, arr: GraphNode[] = []) => {
+      arr.concat(parseNode(n, extent))
+      if (n.children && n.children.length) {
+        n.children.forEach((c) => parseChildren(c))
+      } else {
+        return arr
+      }
+    }
+    nodes = nodes.flatMap((node) => {
+      console.log('flatmap')
+      const parsed = parseNode(node, extent)
+      const children: GraphNode[] = []
+      if (node.children && node.children.length) {
+        node.children.forEach((c) => parseChildren(c, children))
+      }
+      return [parsed, ...children]
+    })
+    state.nodes = <GraphNode[]>nodes
   }
+  const setEdges = (edges: Edge[]) => {
+    state.edges = edges.flatMap((edge) => {
+      const parsed = parseEdge(edge)
+
+      const sourceNode = getters.getNode.value(edge.source)!
+      const targetNode = getters.getNode.value(edge.target)!
+      if (!sourceNode || typeof sourceNode === 'undefined')
+        console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+      if (!targetNode || typeof targetNode === 'undefined')
+        console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+
+      return {
+        ...parsed,
+        sourceNode,
+        targetNode,
+      }
+    })
+  }
+
   const setState: FlowActions['setState'] = (opts) => {
+    if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
+    if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
     if (typeof opts.loading !== 'undefined') state.loading = opts.loading
     if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll
     if (typeof opts.panOnScrollMode !== 'undefined') state.panOnScrollMode = opts.panOnScrollMode
@@ -151,7 +181,6 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     }
   }
   return {
-    setElements,
     setUserSelection,
     updateUserSelection,
     unsetUserSelection,
@@ -165,7 +194,6 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     updateSize,
     setConnectionNodeId,
     setInteractive,
-    addElements,
     setState,
   }
 }

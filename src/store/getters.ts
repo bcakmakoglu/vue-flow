@@ -1,5 +1,5 @@
-import { FlowGetters, FlowState, GraphEdge, GraphNode, Node } from '~/types'
-import { defaultEdgeTypes, defaultNodeTypes, getNodesInside, getSourceTargetNodes, isEdge, isGraphNode } from '~/utils'
+import { FlowGetters, FlowState, GraphEdge, GraphNode } from '~/types'
+import { defaultEdgeTypes, defaultNodeTypes, getNodesInside, getSourceTargetNodes, isGraphNode } from '~/utils'
 
 export default (state: FlowState): FlowGetters => {
   const getEdgeTypes = computed(() => {
@@ -20,15 +20,8 @@ export default (state: FlowState): FlowGetters => {
 
   const getNodes = computed<GraphNode[]>(() => {
     if (state.isReady && state.dimensions.width && state.dimensions.height) {
-      console.log('getter')
-      const nodes: GraphNode[] = []
-      const parseNode = (n: Node) => {
-        nodes.push(<GraphNode>n)
-        if (n.children && n.children.length) {
-          n.children.forEach((c) => parseNode(c))
-        }
-      }
-      state.elements.filter((n) => isGraphNode(n) && !n.hidden).forEach((node) => parseNode(<GraphNode>node))
+      console.log('getNodes')
+      const nodes = state.nodes.filter((n) => !n.hidden)
       return state.onlyRenderVisibleElements
         ? nodes &&
             getNodesInside(
@@ -48,9 +41,8 @@ export default (state: FlowState): FlowGetters => {
   })
 
   const getEdges = computed<GraphEdge[]>(() => {
-    const edges = state.elements.filter((e) => isEdge(e) && !e.hidden) as GraphEdge[]
+    const edges = state.edges.filter((e) => !e.hidden)
     if (state.isReady && state.dimensions.width && state.dimensions.height) {
-      console.log('getter2')
       return (
         edges
           .map((edge) => {
@@ -72,7 +64,12 @@ export default (state: FlowState): FlowGetters => {
 
   const getSelectedNodes = computed<GraphNode[]>(() => state.selectedElements?.filter(isGraphNode) ?? [])
 
+  const getNode: FlowGetters['getNode'] = computed(() => (id: string) => state.nodes.find((node) => node.id === id))
+  const getEdge: FlowGetters['getEdge'] = computed(() => (id: string) => state.edges.find((edge) => edge.id === id))
+
   return {
+    getNode,
+    getEdge,
     getEdgeTypes,
     getNodeTypes,
     getEdges,
