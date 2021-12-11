@@ -1,16 +1,13 @@
-import { DraggableOptions } from '@braks/revue-draggable'
 import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions } from './flow'
 import { HandleElement, ValidConnectionFunc } from './components'
 
 export type CoordinateExtent = [[number, number], [number, number]]
 
-export type Draggable = Omit<DraggableOptions, 'scale' | 'grid' | 'enableUserSelectHack' | 'enableTransformFix'> | boolean
-
 export interface Node<T = any> extends Element<T> {
   position: XYPosition
   targetPosition?: Position
   sourcePosition?: Position
-  draggable?: Draggable
+  draggable?: boolean
   selectable?: boolean
   connectable?: boolean
   dragHandle?: string

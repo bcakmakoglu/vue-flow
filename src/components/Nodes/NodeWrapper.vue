@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { Draggable, GraphNode, SnapGrid, XYPosition } from '../../types'
+import { GraphNode, SnapGrid, XYPosition } from '../../types'
 import { NodeId } from '../../context'
 import { calculateXYZPosition, clampPosition, getDimensions, getHandleBounds, isParentSelected } from '../../utils'
 
@@ -10,7 +10,7 @@ interface NodeWrapperProps {
   selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
   component?: any
-  draggable?: Draggable
+  draggable?: boolean
   selectable?: boolean
   connectable?: boolean
   scale?: number
