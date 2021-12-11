@@ -43,8 +43,8 @@ export default {
     <MarkerDefinitions :color="store.arrowHeadColor" />
     <g :transform="transform">
       <EdgeWrapper
-        v-for="(edge, i) of store.getEdges"
-        :key="`${edge.id}-${i}`"
+        v-for="edge of store.getEdges"
+        :key="edge.id"
         :edge="edge"
         :component="getType(edge.type)"
         :selectable="store.elementsSelectable"
