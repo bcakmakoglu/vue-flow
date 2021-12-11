@@ -105,6 +105,7 @@ export type FlowInstance<DataNode = any, DataEdge = DataNode> = {
   zoomTo: (zoomLevel: number) => void
   fitView: FitViewFunc
   project: ProjectFunc
+  getElements: () => FlowElements
   getNodes: () => GraphNode[]
   getEdges: () => GraphEdge[]
   setTransform: (transform: FlowTransform) => void
@@ -112,8 +113,8 @@ export type FlowInstance<DataNode = any, DataEdge = DataNode> = {
 }
 
 export interface FlowProps<DataNode = any, DataEdge = DataNode> {
-  nodes: GraphNode<DataNode>[]
-  edges?: GraphEdge<DataEdge>[]
+  nodes: Node<DataNode>[]
+  edges?: Edge<DataEdge>[]
   elements?: Elements
   id?: string
   nodeTypes?: NodeTypes
