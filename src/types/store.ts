@@ -19,7 +19,7 @@ import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks } from './hooks'
 
-export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
+export interface FlowState extends Omit<FlowOptions, 'id'> {
   hooks: FlowHooks
   instance?: FlowInstance
 
