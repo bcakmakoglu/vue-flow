@@ -36,20 +36,6 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
-        plugins: [
-          replace({
-            __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
-            preventAssignment: true,
-          }),
-          copy({
-            targets: [
-              {
-                src: 'src/theme-default.css',
-                dest: 'dist',
-              },
-            ],
-          }),
-        ],
       },
     },
   },
@@ -61,6 +47,18 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', '@vueuse/core'],
       dts: 'src/auto-imports.d.ts',
+    }),
+    replace({
+      __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
+      preventAssignment: true,
+    }),
+    copy({
+      targets: [
+        {
+          src: 'src/theme-default.css',
+          dest: 'dist',
+        },
+      ],
     }),
   ],
   optimizeDeps: {
