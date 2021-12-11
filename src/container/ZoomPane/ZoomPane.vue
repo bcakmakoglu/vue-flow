@@ -1,10 +1,19 @@
 <script lang="ts" setup>
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { FlowTransform, PanOnScrollMode } from '../../types'
-import { useKeyPress, useStore } from '../../composables'
-import { clamp, clampPosition } from '../../utils'
+import { FlowInstance, FlowTransform, PanOnScrollMode } from '../../types'
+import { useKeyPress, useStore, useWindow, useZoomPanHelper } from '../../composables'
+import {
+  clamp,
+  clampPosition,
+  onLoadGetEdges,
+  onLoadGetElements,
+  onLoadGetNodes,
+  onLoadProject,
+  onLoadToObject,
+} from '../../utils'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
+import TransformationPane from '~/container/TransformationPane/TransformationPane.vue'
 
 const store = useStore()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
@@ -41,7 +50,9 @@ onMounted(() => {
 
   const updatedTransform = zoomIdentity.translate(transform.value.x, transform.value.y).scale(transform.value.zoom)
   d3z.transform(d3s, updatedTransform)
-  store.initD3Zoom({ d3Zoom: d3z, d3Selection: d3s, d3ZoomHandler })
+  store.d3Zoom = d3z
+  store.d3Selection = d3s
+  store.d3ZoomHandler = d3ZoomHandler
   store.transform = [updatedTransform.x, updatedTransform.y, updatedTransform.k]
 
   d3z.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
@@ -172,8 +183,31 @@ onMounted(() => {
       const { x, y } = clampPosition(val, store.translateExtent)
       nextTick(() => (store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]))
     },
-    { flush: 'sync', immediate: true },
+    { flush: 'pre', immediate: true },
   )
+})
+nextTick(async () => {
+  store.isReady = true
+  // if ssr we can't wait for dimensions, they'll never really exist
+  const window = useWindow()
+  if ('screen' in window)
+    await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
+
+  const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
+  const instance: FlowInstance = {
+    fitView: (params = { padding: 0.1 }) => fitView(params),
+    zoomIn,
+    zoomOut,
+    zoomTo,
+    setTransform,
+    project: onLoadProject(store),
+    getElements: onLoadGetElements(store),
+    getNodes: onLoadGetNodes(store),
+    getEdges: onLoadGetEdges(store),
+    toObject: onLoadToObject(store),
+  }
+  store.hooks.load.trigger(instance)
+  store.instance = instance
 })
 </script>
 <script lang="ts">
@@ -182,8 +216,8 @@ export default {
 }
 </script>
 <template>
-  <div ref="zoomPane" class="vue-flow__zoompane">
-    <SelectionPane :key="`selection-pane-${store.id}`">
+  <div ref="zoomPane" class="vue-flow__renderer vue-flow__container">
+    <TransformationPane>
       <template
         v-for="nodeName of Object.keys(store.getNodeTypes)"
         #[`node-${nodeName}`]="nodeProps"
@@ -201,6 +235,7 @@ export default {
       <template #custom-connection-line="customConnectionLineProps">
         <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
       </template>
-    </SelectionPane>
+    </TransformationPane>
+    <SelectionPane :key="`selection-pane-${store.id}`" />
   </div>
 </template>

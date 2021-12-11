@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import Renderer from '../Renderer/Renderer.vue'
 import { createHooks, initFlow } from '../../composables'
 import type { FlowProps } from '../../types/flow'
+import ZoomPane from '../ZoomPane/ZoomPane.vue'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: false,
@@ -34,7 +34,7 @@ export default {
 </script>
 <template>
   <div class="vue-flow">
-    <Renderer :key="`renderer-${store.id}`">
+    <ZoomPane :key="`renderer-${store.id}`">
       <template
         v-for="nodeName of Object.keys(store.getNodeTypes)"
         #[`node-${nodeName}`]="nodeProps"
@@ -52,7 +52,7 @@ export default {
       <template #custom-connection-line="customConnectionLineProps">
         <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
       </template>
-    </Renderer>
+    </ZoomPane>
     <slot v-bind="store"></slot>
   </div>
 </template>
