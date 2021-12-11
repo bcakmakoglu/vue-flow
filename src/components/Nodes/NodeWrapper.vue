@@ -80,10 +80,10 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
 
 const xyzPos = computed(() => {
   if (node.value.parentNode) {
-    return getXYZPos(node.value, {
+    return (node.value.computedPosition = getXYZPos(node.value, {
       ...node.value.position,
       z: node.value.computedPosition.z,
-    })
+    }))
   } else {
     return node.value.computedPosition
   }

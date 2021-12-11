@@ -335,8 +335,8 @@ export const getTransformForBounds = (
 export const getXYZPos = (node: GraphNode, result: XYZPosition): XYZPosition => {
   if (!node.parentNode) return result
   return getXYZPos(node.parentNode, {
-    x: result.x + node.parentNode.position.x,
-    y: result.y + node.parentNode.position.y,
+    x: result.x + node.parentNode.computedPosition.x,
+    y: result.y + node.parentNode.computedPosition.y,
     z:
       node.parentNode.computedPosition.z > node.computedPosition.z ? node.parentNode.computedPosition.z : node.computedPosition.z,
   })

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useHandle, useStore } from '../../composables'
-import { ConnectionMode, Position, EdgePositions, Dimensions, Transform, GraphEdge } from '../../types'
-import { isEdge, getEdgePositions, getHandle, isEdgeVisible } from '../../utils'
+import { ConnectionMode, Position, GraphEdge } from '../../types'
+import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
@@ -119,8 +119,8 @@ export default {
         labelBgBorderRadius: props.edge.labelBgBorderRadius,
         data: props.edge.data,
         style: props.edge.style,
-        markerEnd: props.edge.markerEnd,
-        markerStart: props.edge.markerStart,
+        markerStart: `url(#${getMarkerId(props.edge.markerStart)})`,
+        markerEnd: `url(#${getMarkerId(props.edge.markerEnd)})`,
         sourcePosition,
         targetPosition,
         sourceX: edgePos.sourceX,
@@ -150,8 +150,8 @@ export default {
           labelBgBorderRadius: props.edge.labelBgBorderRadius,
           data: props.edge.data,
           style: props.edge.style,
-          markerEnd: props.edge.markerEnd,
-          markerStart: props.edge.markerStart,
+          markerStart: `url(#${getMarkerId(props.edge.markerStart)})`,
+          markerEnd: `url(#${getMarkerId(props.edge.markerEnd)})`,
           sourcePosition,
           targetPosition,
           sourceX: edgePos.sourceX,

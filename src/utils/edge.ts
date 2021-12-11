@@ -150,7 +150,7 @@ export const groupEdgesByZLevel = (edges: GraphEdge[], nodes: GraphNode[]) => {
     return tree
   }, {})
 
-  return Object.entries(levelLookup).map(([key, edges]) => {
+  return Object.entries(Object.keys(levelLookup).length ? levelLookup : { 0: [] }).map(([key, edges]) => {
     const level = +key
 
     return {
