@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getEdgeCenter, getBezierPath, getMarkerEnd, ArrowHeadType, Position, useVueFlow, EdgeProps } from '~/index'
+import { getEdgeCenter, getBezierPath, getMarkerEnd, Position, useVueFlow, EdgeProps } from '~/index'
 
 interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   id: string
@@ -9,7 +9,6 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   targetY: number
   sourcePosition: Position
   targetPosition: Position
-  arrowHeadType?: ArrowHeadType
   markerEndId?: string
   data?: T
 }
@@ -37,7 +36,7 @@ const edgePath = computed(() =>
     targetPosition: props.targetPosition,
   }),
 )
-const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
+const markerEnd = computed(() => getMarkerEnd(props.markerEnd, props.markerEndId))
 const center = computed(() =>
   getEdgeCenter({
     sourceX: props.sourceX,

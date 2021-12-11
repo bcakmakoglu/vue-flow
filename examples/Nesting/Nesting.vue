@@ -7,7 +7,6 @@ const elements = ref<Elements<{ label: string; group?: string }>>([
   {
     id: 'group-a',
     style: { zIndex: 2, width: '300px', height: '300px' },
-    selectable: false,
     label: 'A',
     position: { x: 50, y: 100 },
     children: [
