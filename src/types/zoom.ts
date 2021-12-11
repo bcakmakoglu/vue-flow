@@ -23,9 +23,3 @@ export interface UseZoomPanHelper {
   fitBounds: (bounds: Rect, padding?: number) => void
   project: (position: XYPosition) => XYPosition
 }
-
-export type InitD3ZoomPayload = {
-  d3Zoom: D3Zoom
-  d3Selection: D3Selection
-  d3ZoomHandler: D3ZoomHandler
-}
