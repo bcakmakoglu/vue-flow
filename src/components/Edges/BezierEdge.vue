@@ -1,37 +1,14 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { ArrowHeadType, EdgeProps, Position } from '../../types'
+import { Position } from '../../types/flow'
+import type { EdgeProps } from '../../types/edge'
 import { getCenter, getMarkerEnd, getBezierPath } from './utils'
 import EdgeText from './EdgeText.vue'
 
-interface BezierEdgeProps extends EdgeProps {
-  id: string
-  source: string
-  target: string
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  selected?: boolean
-  animated?: boolean
-  sourcePosition: Position
-  targetPosition: Position
-  label?: string
-  labelStyle?: CSSProperties
-  labelShowBg?: boolean
-  labelBgStyle?: CSSProperties
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-  arrowHeadType?: ArrowHeadType
-  markerEndId?: string
-  sourceHandleId?: string
-  targetHandleId?: string
-}
-
-const props = withDefaults(defineProps<BezierEdgeProps>(), {
+const props = withDefaults(defineProps<EdgeProps>(), {
   selected: false,
-  sourcePosition: Position.Bottom,
-  targetPosition: Position.Top,
+  sourcePosition: 'bottom' as Position,
+  targetPosition: 'top' as Position,
   labelStyle: () => ({}),
   labelShowBg: true,
   labelBgStyle: () => ({}),
@@ -62,16 +39,7 @@ export default {
 </script>
 <template>
   <path class="vue-flow__edge-path" :style="attrs.style" :d="path" :marker-end="markerEnd" />
-  <slot
-    :x="centered[0]"
-    :y="centered[1]"
-    :label="props.label"
-    :label-style="props.labelStyle"
-    :label-show-bg="props.labelShowBg"
-    :label-bg-style="props.labelBgStyle"
-    :label-bg-padding="props.labelBgPadding"
-    :label-bg-border-radius="props.labelBgBorderRadius"
-  >
+  <slot :x="centered[0]" :y="centered[1]" v-bind="props">
     <EdgeText
       v-if="props.label"
       :x="centered[0]"

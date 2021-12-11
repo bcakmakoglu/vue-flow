@@ -1,37 +1,13 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
-import { ArrowHeadType, EdgeProps, Position } from '../../types'
+import { Position } from '../../types'
+import type { EdgeProps } from '../../types/edge'
 import EdgeText from './EdgeText.vue'
 import { getMarkerEnd, getBezierPath } from './utils'
 
-interface StraightEdgeProps extends EdgeProps {
-  id: string
-  source: string
-  target: string
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  selected?: boolean
-  animated?: boolean
-  sourcePosition: Position
-  targetPosition: Position
-  label?: string
-  labelStyle?: CSSProperties
-  labelShowBg?: boolean
-  labelBgStyle?: CSSProperties
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-  arrowHeadType?: ArrowHeadType
-  markerEndId?: string
-  sourceHandleId?: string
-  targetHandleId?: string
-}
-
-const props = withDefaults(defineProps<StraightEdgeProps>(), {
+const props = withDefaults(defineProps<EdgeProps>(), {
   selected: false,
-  sourcePosition: Position.Bottom,
-  targetPosition: Position.Top,
+  sourcePosition: 'bottom' as Position,
+  targetPosition: 'top' as Position,
   label: '',
   labelStyle: () => ({}),
   labelShowBg: true,
@@ -56,8 +32,6 @@ const path = computed(() => {
 })
 
 const markerEnd = computed(() => getMarkerEnd(props.arrowHeadType, props.markerEndId))
-
-const attrs = useAttrs() as Record<'style', CSSProperties>
 </script>
 <script lang="ts">
 export default {
@@ -66,17 +40,8 @@ export default {
 }
 </script>
 <template>
-  <path :style="attrs.style" class="vue-flow__edge-path" :d="path" :marker-end="markerEnd" />
-  <slot
-    :x="centerX"
-    :y="centerY"
-    :label="props.label"
-    :label-style="props.labelStyle"
-    :label-show-bg="props.labelShowBg"
-    :label-bg-style="props.labelBgStyle"
-    :label-bg-padding="props.labelBgPadding"
-    :label-bg-border-radius="props.labelBgBorderRadius"
-  >
+  <path class="vue-flow__edge-path" :style="props.style" :d="path" :marker-end="markerEnd" />
+  <slot :x="centerX" :y="centerY" v-bind="props">
     <EdgeText
       v-if="props.label"
       :x="centerX"
