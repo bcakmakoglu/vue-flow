@@ -1,5 +1,6 @@
-import { FlowGetters, FlowState, GraphEdge, GraphNode } from '~/types'
-import { defaultEdgeTypes, defaultNodeTypes, getNodesInside, isGraphNode } from '~/utils'
+import { defaultEdgeTypes, defaultNodeTypes } from './state'
+import { FlowElements, FlowGetters, FlowState, GraphEdge, GraphNode } from '~/types'
+import { getNodesInside, isEdgeVisible } from '~/utils'
 
 export default (state: FlowState): FlowGetters => {
   const getEdgeTypes = computed(() => {
@@ -41,12 +42,32 @@ export default (state: FlowState): FlowGetters => {
 
   const getEdges = computed<GraphEdge[]>(() => {
     if (state.isReady && state.dimensions.width && state.dimensions.height) {
-      return state.edges.filter((e) => !e.hidden)
+      if (!state.onlyRenderVisibleElements) return state.edges
+      else
+        return state.edges.filter(
+          (e) =>
+            !e.hidden &&
+            e.sourceNode.dimensions.width &&
+            e.sourceNode.dimensions.height &&
+            e.targetNode.dimensions.width &&
+            e.targetNode.dimensions.height &&
+            isEdgeVisible({
+              sourcePos: e.sourceNode.position || { x: 0, y: 0 },
+              targetPos: e.targetNode.position || { x: 0, y: 0 },
+              sourceWidth: e.sourceNode.dimensions.width,
+              sourceHeight: e.sourceNode.dimensions.height,
+              targetWidth: e.targetNode.dimensions.width,
+              targetHeight: e.targetNode.dimensions.height,
+              width: state.dimensions.width,
+              height: state.dimensions.height,
+              transform: state.transform,
+            }),
+        )
     }
     return []
   })
 
-  const getSelectedNodes = computed<GraphNode[]>(() => state.selectedElements?.filter(isGraphNode) ?? [])
+  const getSelectedElements = computed<FlowElements>(() => [...(state.selectedNodes ?? []), ...(state.selectedEdges ?? [])])
 
   const getNode: FlowGetters['getNode'] = computed(() => (id: string) => state.nodes.find((node) => node.id === id))
   const getEdge: FlowGetters['getEdge'] = computed(() => (id: string) => state.edges.find((edge) => edge.id === id))
@@ -58,6 +79,6 @@ export default (state: FlowState): FlowGetters => {
     getNodeTypes,
     getEdges,
     getNodes,
-    getSelectedNodes,
+    getSelectedElements,
   }
 }
