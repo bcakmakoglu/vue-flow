@@ -95,22 +95,37 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     state.nodesConnectable = isInteractive
     state.elementsSelectable = isInteractive
   }
+
+  function getParent(root: Node[], id: string): GraphNode | undefined {
+    let node
+
+    root.some((n) => {
+      if (n.id === id) {
+        return (node = n)
+      }
+      if (n.children) {
+        return (node = getParent(n.children, id))
+      }
+      return false
+    })
+    return node
+  }
+
   const setNodes: FlowActions['setNodes'] = (nodes, extent: CoordinateExtent) => {
-    const parseChildren = (n: Node, arr: GraphNode[] = []) => {
-      arr.concat(parseNode(n, extent))
+    const parseChildren = (n: Node, p?: GraphNode, arr: GraphNode[] = []) => {
+      const parent = typeof p === 'undefined' || typeof p !== 'object' ? getParent(arr, n.id) : p
+      const parsed = parseNode(n, extent, {
+        parentNode: parent,
+      })
+      arr.push(parsed)
       if (n.children && n.children.length) {
-        n.children.forEach((c) => parseChildren(c))
-      } else {
-        return arr
+        n.children.forEach((c) => parseChildren(c, parsed, arr))
       }
     }
     nodes = nodes.flatMap((node) => {
-      const parsed = parseNode(node, extent)
       const children: GraphNode[] = []
-      if (node.children && node.children.length) {
-        node.children.forEach((c) => parseChildren(c, children))
-      }
-      return [parsed, ...children]
+      parseChildren(node, undefined, children)
+      return children
     })
     state.nodes = <GraphNode[]>nodes
   }
@@ -136,6 +151,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
   }
 
   const setState: FlowActions['setState'] = (opts) => {
+    if (typeof opts.modelValue !== 'undefined') setElements(opts.modelValue, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.elements !== 'undefined') setElements(opts.elements, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.edges !== 'undefined') setEdges(opts.edges)

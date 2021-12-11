@@ -113,7 +113,8 @@ export type FlowInstance<DataNode = any, DataEdge = DataNode> = {
 }
 
 export interface FlowProps<DataNode = any, DataEdge = DataNode> {
-  nodes: Node<DataNode>[]
+  modelValue?: any
+  nodes?: Node<DataNode>[]
   edges?: Edge<DataEdge>[]
   elements?: Elements
   id?: string

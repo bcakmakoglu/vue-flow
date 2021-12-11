@@ -3,27 +3,27 @@ import GroupNode from './GroupNode.vue'
 import { VueFlow, Elements, Node, Edge, Connection, addEdge } from '~/index'
 
 const elements = ref<Elements<{ label: string; group?: string }>>([
-  {
-    id: 'node-1',
-    data: { label: 'node-1', group: undefined },
-    position: { x: 250, y: 5 },
-    parentNode: 'group-a',
-    extent: 'parent',
-  },
-  { id: 'node-2', data: { label: 'node-2', group: undefined }, position: { x: 50, y: 5 } },
+  { id: 'node-2', label: 'node-2', position: { x: 50, y: 5 } },
   {
     id: 'group-a',
     style: { zIndex: 2, width: '300px', height: '300px' },
     selectable: false,
-    data: { label: 'A' },
+    label: 'A',
     position: { x: 50, y: 100 },
+    children: [
+      {
+        id: 'node-1',
+        label: 'node-1',
+        position: { x: 250, y: 5 },
+        extent: 'parent',
+      },
+    ],
   },
   {
     id: 'group-b',
-    type: 'group-b',
     style: { zIndex: 2 },
     selectable: false,
-    data: { label: 'B' },
+    label: 'B',
     position: { x: 500, y: 100 },
   },
 ])
