@@ -6,7 +6,7 @@ const nodes = computed(() => store.getNodes)
 const transform = computed(() => store.transform)
 
 const selectAll = () => {
-  store.selectedElements = nodes.value
+  store.addSelectedNodes(nodes.value)
   store.unsetUserSelection()
 }
 </script>
