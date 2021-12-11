@@ -37,10 +37,6 @@ export default defineConfig({
           vue: 'Vue',
         },
         plugins: [
-          replace({
-            __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
-            preventAssignment: true,
-          }),
           copy({
             targets: [
               {
@@ -61,6 +57,10 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', '@vueuse/core'],
       dts: 'src/auto-imports.d.ts',
+    }),
+    replace({
+      __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
+      preventAssignment: true,
     }),
   ],
   optimizeDeps: {
