@@ -30,7 +30,7 @@ export interface FlowEvents {
   move: FlowTransform | undefined
   moveStart: FlowTransform | undefined
   moveEnd: FlowTransform | undefined
-  selectionChange: FlowElements | undefined
+  selectionChange: { nodes?: GraphNode[]; edges?: GraphEdge[] }
   selectionDragStart: { event: MouseTouchEvent; nodes: GraphNode[] }
   selectionDrag: { event: MouseTouchEvent; nodes: GraphNode[] }
   selectionDragStop: { event: MouseTouchEvent; nodes: GraphNode[] }
