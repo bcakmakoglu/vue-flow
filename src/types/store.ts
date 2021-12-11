@@ -1,25 +1,15 @@
 import { ComputedRef, ToRefs } from 'vue'
 import { UnwrapNestedRefs } from '@vue/reactivity'
-import {
-  Dimensions,
-  Elements,
-  FlowElements,
-  FlowInstance,
-  FlowOptions,
-  Rect,
-  SelectionRect,
-  SnapGrid,
-  Transform,
-  XYPosition,
-} from './flow'
+import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, SnapGrid, Transform, XYPosition } from './flow'
 import { HandleType, EdgeComponent, NodeComponent, NodeTypes, EdgeTypes } from './components'
 import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
 import { Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
-import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload, KeyCode, PanOnScrollMode } from './zoom'
+import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks } from './hooks'
 
-export interface FlowState extends Omit<FlowOptions, 'id'> {
+export interface FlowState<N = any, E = N> extends FlowOptions<N, E> {
+  id?: never
   hooks: FlowHooks
   instance?: FlowInstance
 
@@ -42,11 +32,10 @@ export interface FlowState extends Omit<FlowOptions, 'id'> {
   onlyRenderVisibleElements: boolean
   defaultPosition: [number, number]
 
-  selectedElements?: FlowElements
-  selectedNodesBbox?: Rect
+  selectedNodes: GraphNode[]
+  selectedEdges: GraphEdge[]
   nodesSelectionActive: boolean
   selectionActive: boolean
-  userSelectionRect: SelectionRect
   multiSelectionActive: boolean
   deleteKeyCode: KeyCode
   selectionKeyCode: KeyCode
@@ -63,7 +52,7 @@ export interface FlowState extends Omit<FlowOptions, 'id'> {
 
   snapToGrid: boolean
   snapGrid: SnapGrid
-  arrowHeadColor: string
+  defaultMarkerColor: string
 
   edgesUpdatable: boolean
   nodesDraggable: boolean
@@ -88,20 +77,17 @@ export interface FlowActions {
   setElements: (elements: Elements, extent: CoordinateExtent) => void
   setNodes: (nodes: Node[], extent: CoordinateExtent) => void
   setEdges: (edges: Edge[]) => void
-  setUserSelection: (mousePos: XYPosition) => void
-  updateUserSelection: (mousePos: XYPosition) => void
-  unsetUserSelection: () => void
   addSelectedElements: (elements: FlowElements) => void
-  initD3Zoom: (payload: InitD3ZoomPayload) => void
+  addSelectedEdges: (edges: GraphEdge[]) => void
+  addSelectedNodes: (nodes: GraphNode[]) => void
   setMinZoom: (zoom: number) => void
   setMaxZoom: (zoom: number) => void
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
   resetSelectedElements: () => void
-  unsetNodesSelection: () => void
-  updateSize: (size: Dimensions) => void
   setConnectionNodeId: (payload: SetConnectionId) => void
   setInteractive: (isInteractive: boolean) => void
   setState: (state: Partial<FlowOptions>) => void
+  updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
 }
 
 export interface FlowGetters {
@@ -111,7 +97,7 @@ export interface FlowGetters {
   getEdges: ComputedRef<GraphEdge[]>
   getNode: ComputedRef<(id: string) => GraphNode | undefined>
   getEdge: ComputedRef<(id: string) => GraphEdge | undefined>
-  getSelectedNodes: ComputedRef<GraphNode[]>
+  getSelectedElements: ComputedRef<FlowElements>
 }
 
 export type Store = { id: string; state: FlowState } & ToRefs<FlowState> & FlowActions & FlowGetters
