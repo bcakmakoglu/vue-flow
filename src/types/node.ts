@@ -1,6 +1,6 @@
+import { CSSProperties } from 'vue'
 import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions } from './flow'
 import { HandleElement, ValidConnectionFunc } from './components'
-import { CSSProperties } from 'vue'
 
 export type CoordinateExtent = [[number, number], [number, number]]
 

@@ -1,5 +1,5 @@
-import { CoordinateExtent, Edge, FlowActions, FlowGetters, FlowState, GraphNode, Node } from '~/types'
-import { getConnectedEdges, getNodesInside, getRectOfNodes, isNode, parseEdge, parseNode } from '~/utils'
+import { CoordinateExtent, FlowActions, FlowGetters, FlowState, GraphNode, Node } from '~/types'
+import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '~/utils'
 
 export default (state: FlowState, getters: FlowGetters): FlowActions => {
   const setUserSelection: FlowActions['setUserSelection'] = (mousePos) => {
@@ -95,7 +95,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     state.nodesConnectable = isInteractive
     state.elementsSelectable = isInteractive
   }
-  const setNodes = (nodes: Node[], extent: CoordinateExtent) => {
+  const setNodes: FlowActions['setNodes'] = (nodes, extent: CoordinateExtent) => {
     const parseChildren = (n: Node, arr: GraphNode[] = []) => {
       arr.concat(parseNode(n, extent))
       if (n.children && n.children.length) {
@@ -105,7 +105,6 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
       }
     }
     nodes = nodes.flatMap((node) => {
-      console.log('flatmap')
       const parsed = parseNode(node, extent)
       const children: GraphNode[] = []
       if (node.children && node.children.length) {
@@ -115,7 +114,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     })
     state.nodes = <GraphNode[]>nodes
   }
-  const setEdges = (edges: Edge[]) => {
+  const setEdges: FlowActions['setEdges'] = (edges) => {
     state.edges = edges.flatMap((edge) => {
       const parsed = parseEdge(edge)
 
@@ -134,7 +133,13 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     })
   }
 
+  const setElements: FlowActions['setElements'] = (elements, extent) => {
+    setNodes(elements.filter(isNode), extent)
+    setEdges(elements.filter(isEdge))
+  }
+
   const setState: FlowActions['setState'] = (opts) => {
+    if (typeof opts.elements !== 'undefined') setElements(opts.elements, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
     if (typeof opts.loading !== 'undefined') state.loading = opts.loading
@@ -181,6 +186,9 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     }
   }
   return {
+    setElements,
+    setNodes,
+    setEdges,
     setUserSelection,
     updateUserSelection,
     unsetUserSelection,
