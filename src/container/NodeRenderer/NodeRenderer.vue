@@ -25,8 +25,8 @@ export default {
 <template>
   <div class="vue-flow__nodes" :style="{ transform }">
     <NodeWrapper
-      v-for="(node, i) of store.getNodes"
-      :key="`${node.id}-${i}`"
+      v-for="node of store.getNodes"
+      :key="node.id"
       :node="node"
       :component="getType(node.type)"
       :draggable="typeof node.draggable === 'undefined' ? store.nodesDraggable : node.draggable"
