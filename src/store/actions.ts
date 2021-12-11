@@ -1,64 +1,75 @@
-import { CoordinateExtent, FlowActions, FlowGetters, FlowState, GraphNode, Node } from '~/types'
-import { getConnectedEdges, getNodesInside, getRectOfNodes, isEdge, isNode, parseEdge, parseNode } from '~/utils'
+import { CoordinateExtent, FlowActions, FlowGetters, FlowState, GraphNode, Node, XYPosition } from '~/types'
+import { clampPosition, isEdge, isGraphEdge, isGraphNode, isNode, isParentSelected, parseEdge, parseNode } from '~/utils'
+
+const getParent = (root: Node[], id: string): GraphNode | undefined => {
+  let node
+  root.some((n) => {
+    if (n.id === id) return (node = n)
+    if (n.children) return (node = getParent(n.children, id))
+    return false
+  })
+  return node
+}
+
+const updatePosition = (node: GraphNode, { x, y }: XYPosition = { x: 0, y: 0 }, extent: CoordinateExtent, dragging?: boolean) => {
+  let position = {
+    x: node.position.x + x,
+    y: node.position.y + y,
+    z: node.computedPosition.z,
+  }
+
+  if (node.extent === 'parent' && node.parentNode && node.dimensions.width && node.dimensions.height) {
+    const parent = node.parentNode
+    extent =
+      parent.dimensions.width && parent.dimensions.height
+        ? [
+            [0, 0],
+            [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
+          ]
+        : extent
+  }
+  node.dragging = dragging
+  const clamped = clampPosition(position, extent)
+  position = { ...position, ...clamped }
+  node.computedPosition = position
+  node.position = position
+}
 
 export default (state: FlowState, getters: FlowGetters): FlowActions => {
-  const setUserSelection: FlowActions['setUserSelection'] = (mousePos) => {
-    state.selectionActive = true
-    state.userSelectionRect = {
-      width: 0,
-      height: 0,
-      startX: mousePos.x,
-      startY: mousePos.y,
-      x: mousePos.x,
-      y: mousePos.y,
-      draw: true,
-    }
+  const updateNodePosition: FlowActions['updateNodePosition'] = ({ id, diff = { x: 0, y: 0 }, dragging }) => {
+    state.nodes.forEach((node) => {
+      if (node.selected) {
+        if (!node.parentNode) {
+          updatePosition(node, diff, state.nodeExtent, dragging)
+        } else if (!isParentSelected(node)) {
+          updatePosition(node, diff, state.nodeExtent, dragging)
+        }
+      } else if (node.id === id) {
+        updatePosition(node, diff, state.nodeExtent, dragging)
+      }
+    })
   }
-  const updateUserSelection: FlowActions['updateUserSelection'] = (mousePos) => {
-    const startX = state.userSelectionRect.startX
-    const startY = state.userSelectionRect.startY
-
-    state.selectedElements?.forEach((el) => isNode(el) && (el.selected = undefined))
-    const nextUserSelectRect: FlowState['userSelectionRect'] = {
-      ...state.userSelectionRect,
-      x: mousePos.x < startX ? mousePos.x : state.userSelectionRect.x,
-      y: mousePos.y < startY ? mousePos.y : state.userSelectionRect.y,
-      width: Math.abs(mousePos.x - startX),
-      height: Math.abs(mousePos.y - startY),
-    }
-    const selectedNodes = getNodesInside(getters.getNodes.value, state.userSelectionRect, state.transform)
-    const selectedEdges = getConnectedEdges(selectedNodes, getters.getEdges.value)
-
-    const nextSelectedElements = [...selectedNodes, ...selectedEdges]
-    nextSelectedElements.forEach((el) => isNode(el) && (el.selected = true))
-    state.userSelectionRect = nextUserSelectRect
-    state.selectedElements = nextSelectedElements
+  const addSelectedNodes: FlowActions['addSelectedNodes'] = (nodes) => {
+    const selectedElementsUpdated = nodes.filter((el) => !state.selectedNodes.some((e) => el.id === e.id)).length
+    const selectedNodes = !nodes.length || selectedElementsUpdated ? nodes : state.selectedNodes
+    const selectedNodesIds = selectedNodes.map((n) => n.id)
+    state.nodes.forEach(
+      (n) => (n.selected = selectedNodesIds.includes(n.id) || (n.parentNode && selectedNodesIds.includes(n.parentNode?.id))),
+    )
+    state.selectedNodes = selectedNodes
+    if (selectedElementsUpdated) state.hooks.selectionChange.trigger({ nodes })
   }
-  const unsetUserSelection: FlowActions['unsetUserSelection'] = () => {
-    state.selectionActive = false
-    state.userSelectionRect.draw = false
-
-    if (!getters.getSelectedNodes || getters.getSelectedNodes.value.length === 0) {
-      state.selectedElements = undefined
-      state.hooks.selectionChange.trigger(undefined)
-      state.nodesSelectionActive = false
-    } else {
-      state.selectedNodesBbox = getRectOfNodes(getters.getSelectedNodes.value)
-      state.nodesSelectionActive = true
-    }
+  const addSelectedEdges: FlowActions['addSelectedEdges'] = (edges) => {
+    const selectedElementsUpdated = edges.filter((el) => !state.selectedEdges.some((e) => el.id === e.id)).length
+    const selectedEdges = !edges.length || selectedElementsUpdated ? edges : state.selectedEdges
+    const selectedEdgesIds = selectedEdges.map((e) => e.id)
+    state.edges.forEach((e) => (e.selected = selectedEdgesIds.includes(e.id)))
+    state.selectedEdges = selectedEdges
+    if (selectedElementsUpdated) state.hooks.selectionChange.trigger({ edges })
   }
-  const addSelectedElements: FlowActions['addSelectedElements'] = (elements: any) => {
-    const selectedElementsArr = Array.isArray(elements) ? elements : [elements]
-    const selectedElementsUpdated = selectedElementsArr.filter(
-      (el) => !state.selectedElements?.some((e) => el.id === e.id),
-    ).length
-    state.selectedElements = selectedElementsUpdated ? selectedElementsArr : state.selectedElements
-    if (selectedElementsUpdated) state.hooks.selectionChange.trigger(selectedElementsArr)
-  }
-  const initD3Zoom: FlowActions['initD3Zoom'] = ({ d3ZoomHandler, d3Zoom, d3Selection }) => {
-    state.d3Zoom = d3Zoom
-    state.d3Selection = d3Selection
-    state.d3ZoomHandler = d3ZoomHandler
+  const addSelectedElements: FlowActions['addSelectedElements'] = (elements) => {
+    addSelectedNodes(elements.filter(isGraphNode))
+    addSelectedEdges(elements.filter(isGraphEdge))
   }
   const setMinZoom: FlowActions['setMinZoom'] = (minZoom: any) => {
     state.d3Zoom?.scaleExtent([minZoom, state.maxZoom])
@@ -73,13 +84,8 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     state.translateExtent = translateExtent
   }
   const resetSelectedElements: FlowActions['resetSelectedElements'] = () => {
-    state.selectedElements = undefined
-  }
-  const unsetNodesSelection: FlowActions['unsetNodesSelection'] = () => {
-    state.nodesSelectionActive = false
-  }
-  const updateSize: FlowActions['updateSize'] = (size) => {
-    state.dimensions = size
+    addSelectedNodes([])
+    addSelectedEdges([])
   }
   const setConnectionNodeId: FlowActions['setConnectionNodeId'] = ({
     connectionHandleId,
@@ -94,16 +100,6 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     state.nodesDraggable = isInteractive
     state.nodesConnectable = isInteractive
     state.elementsSelectable = isInteractive
-  }
-
-  const getParent = (root: Node[], id: string): GraphNode | undefined => {
-    let node
-    root.some((n) => {
-      if (n.id === id) return (node = n)
-      if (n.children) return (node = getParent(n.children, id))
-      return false
-    })
-    return node
   }
 
   const parseChildren = (n: Node, p: GraphNode | undefined, arr: GraphNode[], extent: CoordinateExtent) => {
@@ -173,8 +169,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     if (typeof opts.edgesUpdatable !== 'undefined') state.edgesUpdatable = opts.edgesUpdatable
     if (typeof opts.nodesConnectable !== 'undefined') state.nodesConnectable = opts.nodesConnectable
     if (typeof opts.nodesDraggable !== 'undefined') state.nodesDraggable = opts.nodesDraggable
-    if (typeof opts.arrowHeadColor !== 'undefined') state.arrowHeadColor = opts.arrowHeadColor
-    if (typeof opts.markerEndId !== 'undefined') state.markerEndId = opts.markerEndId
+    if (typeof opts.defaultMarkerColor !== 'undefined') state.defaultMarkerColor = opts.defaultMarkerColor
     if (typeof opts.deleteKeyCode !== 'undefined') state.deleteKeyCode = opts.deleteKeyCode
     if (typeof opts.selectionKeyCode !== 'undefined') state.selectionKeyCode = opts.selectionKeyCode
     if (typeof opts.zoomActivationKeyCode !== 'undefined') state.zoomActivationKeyCode = opts.zoomActivationKeyCode
@@ -197,20 +192,17 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     }
   }
   return {
+    updateNodePosition,
     setElements,
     setNodes,
     setEdges,
-    setUserSelection,
-    updateUserSelection,
-    unsetUserSelection,
     addSelectedElements,
-    initD3Zoom,
+    addSelectedNodes,
+    addSelectedEdges,
     setMinZoom,
     setMaxZoom,
     setTranslateExtent,
     resetSelectedElements,
-    unsetNodesSelection,
-    updateSize,
     setConnectionNodeId,
     setInteractive,
     setState,
