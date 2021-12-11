@@ -14,8 +14,8 @@ import {
 } from './flow'
 import { HandleType, EdgeComponent, NodeComponent, NodeTypes, EdgeTypes } from './components'
 import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
-import { GraphEdge } from './edge'
-import { GraphNode, CoordinateExtent } from './node'
+import { Edge, GraphEdge } from './edge'
+import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, InitD3ZoomPayload, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks } from './hooks'
 
@@ -85,6 +85,9 @@ export interface FlowState extends Omit<FlowOptions, 'elements' | 'id'> {
 }
 
 export interface FlowActions {
+  setElements: (elements: Elements, extent: CoordinateExtent) => void
+  setNodes: (nodes: Node[], extent: CoordinateExtent) => void
+  setEdges: (edges: Edge[]) => void
   setUserSelection: (mousePos: XYPosition) => void
   updateUserSelection: (mousePos: XYPosition) => void
   unsetUserSelection: () => void

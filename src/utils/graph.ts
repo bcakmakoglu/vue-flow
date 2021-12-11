@@ -1,4 +1,3 @@
-import { getSourceTargetNodes } from './edge'
 import {
   Box,
   Connection,
@@ -12,7 +11,6 @@ import {
   FlowStore,
   GraphEdge,
   GraphNode,
-  NextElements,
   Node,
   Rect,
   Transform,
@@ -53,12 +51,12 @@ export const getHostForElement = (element: HTMLElement): Document => {
 
 export const isEdge = (element: Node | Edge | Connection): element is Edge =>
   'id' in element && 'source' in element && 'target' in element
-
-export const isNode = (element: Node | Edge | Connection): element is Node => 'id' in element && !isEdge(element)
-
-export const isGraphNode = (element: any): element is GraphNode => isNode(element) && '__vf' in element
 export const isGraphEdge = (element: any): element is GraphEdge =>
   isEdge(element) && 'sourceNode' in element && 'targetNode' in element
+
+export const isNode = (element: Node | Edge | Connection): element is Node => 'id' in element && !isEdge(element)
+export const isGraphNode = (element: Node | Edge | Connection): element is GraphNode =>
+  isNode(element) && 'computedPosition' in element
 
 const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
   if (!isNode(node)) return []
@@ -277,8 +275,9 @@ export const getConnectedEdges = (nodes: GraphNode[], edges: GraphEdge[]) => {
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-export const onLoadGetNodes = (currentStore: FlowStore) => (): FlowElements => currentStore.nodes
-export const onLoadGetEdges = (currentStore: FlowStore) => (): FlowElements => currentStore.edges
+export const onLoadGetNodes = (currentStore: FlowStore) => (): GraphNode[] => currentStore.nodes
+export const onLoadGetEdges = (currentStore: FlowStore) => (): GraphEdge[] => currentStore.edges
+export const onLoadGetElements = (currentStore: FlowStore) => (): FlowElements => [...currentStore.nodes, ...currentStore.edges]
 
 export const onLoadToObject = (currentStore: FlowState) => (): FlowExportObject => {
   // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
@@ -315,55 +314,6 @@ export const getTransformForBounds = (
   return [x, y, clampedZoom]
 }
 
-export const processElements = (elements: FlowElements, fn: (elements: FlowElements) => void) => {
-  return new Promise((resolve) => {
-    const chunk = 100
-    let index = 0
-    function doChunk() {
-      const chunkPos = chunk * index
-      const lastChunk = elements.length - chunkPos < chunk * (index > 0 ? index : 1)
-      const cnt = !lastChunk ? chunk : elements.length - chunkPos
-      fn(elements.slice(chunkPos, chunkPos + cnt))
-      index++
-      if (!lastChunk) {
-        setTimeout(doChunk, 1)
-      } else {
-        resolve(true)
-      }
-    }
-    doChunk()
-  })
-}
-
-export const parseElement = (element: Node | Edge, prevElements: FlowElements, nodeExtent: CoordinateExtent) => {
-  let parsed: GraphEdge | GraphNode = {} as any
-  const index = prevElements.map((x) => x.id).indexOf(element.id)
-  if (isNode(element)) {
-    const storeNode = prevElements[index]
-
-    if (!isGraphNode(element)) parsed = parseNode(element, nodeExtent)
-    else parsed = element
-    if (storeNode) {
-      parsed = {
-        ...storeNode,
-        ...parsed,
-      } as GraphNode
-    }
-  } else if (isEdge(element)) {
-    const storeEdge = prevElements[index]
-
-    if (!isGraphEdge(element)) parsed = parseEdge(element)
-    else parsed = element
-    if (storeEdge) {
-      parsed = {
-        ...storeEdge,
-        ...parsed,
-      } as GraphEdge
-    }
-  }
-  return { parsed, index }
-}
-
 export function calculateXYZPosition(node: GraphNode, result: XYZPosition): XYZPosition {
   if (!node.parentNode) return result
   return calculateXYZPosition(node.parentNode, {
@@ -374,45 +324,6 @@ export function calculateXYZPosition(node: GraphNode, result: XYZPosition): XYZP
         ? node.parentNode.computedPosition.z + 1
         : node.computedPosition.z,
   })
-}
-
-export const parseElements = (elements: Elements, prevElements: FlowElements, nodeExtent: CoordinateExtent) => {
-  const { nodes, edges }: NextElements = {
-    nodes: [],
-    edges: [],
-  }
-  for (const element of elements) {
-    const { parsed } = parseElement(element, prevElements, nodeExtent)
-    if (parsed) {
-      if (isEdge(parsed)) edges.push(parsed)
-      else nodes.push(parsed)
-    }
-  }
-
-  nodes.forEach((n) => {
-    if (n.parentNode) {
-      const parent = nodes.find((p) => p.id === n.parentNode?.id)
-      if (n.parentNode && !parent) {
-        console.error(`Parent node ${n.parentNode} not found`)
-      } else if (parent) {
-        n.parentNode = parent
-        parent.isParent = true
-      }
-    }
-  })
-
-  edges.forEach((edge, i, arr) => {
-    const { sourceNode, targetNode } = getSourceTargetNodes(edge, nodes)
-    if (!sourceNode) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-    if (!targetNode) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
-
-    arr[i] = {
-      ...edge,
-      sourceNode,
-      targetNode,
-    }
-  })
-  return { nodes, edges }
 }
 
 export function isParentSelected(node: GraphNode): boolean {

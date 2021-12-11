@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { FlowElement, FlowElements, GraphEdge, KeyCode } from '../../types'
+import { FlowElement } from '../../types'
 import { useStore, useKeyPress } from '../../composables'
-import { getConnectedEdges, isGraphNode } from '../../utils'
+import { getConnectedEdges } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 
 const store = useStore()
+const userSelection = ref(false)
 
 const onClick = (event: MouseEvent) => {
   store.hooks.paneClick.trigger(event)
@@ -17,13 +18,10 @@ const onContextMenu = (event: MouseEvent) => store.hooks.paneContextMenu.trigger
 
 const onWheel = (event: WheelEvent) => store.hooks.paneScroll.trigger(event)
 
-const userSelection = ref(false)
-
-tryOnMounted(() => {
+onMounted(() => {
   useKeyPress(store.deleteKeyCode, (keyPressed) => {
     if (keyPressed && store.selectedElements) {
-      const selectedNodes = store.selectedElements.filter(isGraphNode)
-      const connectedEdges = getConnectedEdges(selectedNodes, store.getEdges)
+      const connectedEdges = getConnectedEdges(store.getSelectedNodes, store.getEdges)
       const elementsToRemove = [...store.selectedElements, ...connectedEdges].reduce(
         (res, item) => res.set(item.id, item),
         new Map<string, FlowElement>(),
