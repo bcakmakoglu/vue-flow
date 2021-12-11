@@ -116,8 +116,6 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
   }
   const setEdges: FlowActions['setEdges'] = (edges) => {
     state.edges = edges.flatMap((edge) => {
-      const parsed = parseEdge(edge)
-
       const sourceNode = getters.getNode.value(edge.source)!
       const targetNode = getters.getNode.value(edge.target)!
       if (!sourceNode || typeof sourceNode === 'undefined')
@@ -125,11 +123,10 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
       if (!targetNode || typeof targetNode === 'undefined')
         console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
-      return {
-        ...parsed,
+      return parseEdge(edge, {
         sourceNode,
         targetNode,
-      }
+      })
     })
   }
 
