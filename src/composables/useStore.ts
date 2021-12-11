@@ -1,8 +1,8 @@
 import { getCurrentInstance } from 'vue'
 import { FlowExportObject, FlowOptions, FlowState, FlowStore } from '~/types'
-import { useFlowStore } from '~/store'
+import { useFlowStore, initialState } from '~/store'
 import { StoreSymbol } from '~/context'
-import { onLoadToObject, initialState } from '~/utils'
+import { onLoadToObject } from '~/utils'
 
 let id = 0
 export const createStore = (options?: FlowOptions) => {
@@ -16,9 +16,12 @@ export const createStore = (options?: FlowOptions) => {
     ...(options as FlowState),
   }
   if (withStorage) {
-    storedState = useStorage<FlowExportObject>(storageKey, { elements: [], position: [0, 0], zoom: 0 })
+    storedState = useStorage<FlowExportObject>(storageKey, { edges: [], nodes: [], position: [0, 0], zoom: 0 })
     if (storedState.value) {
-      preloadedState.elements = storedState.value.elements ?? options?.elements ?? []
+      preloadedState.elements =
+        storedState.value.nodes || storedState.value.edges
+          ? [...storedState.value.nodes, ...storedState.value.edges]
+          : options?.elements ?? []
       if (storedState.value.position && storedState.value.zoom)
         preloadedState.transform = [storedState.value.position[0], storedState.value.position[1], storedState.value.zoom]
     }
