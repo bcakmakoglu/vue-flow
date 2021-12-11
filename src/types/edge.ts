@@ -1,3 +1,4 @@
+import { CSSProperties } from 'vue'
 import { ArrowHeadType, Position, Element } from './flow'
 import { GraphNode } from './node'
 
@@ -24,7 +25,14 @@ export interface GraphEdge<T = any> extends Edge<T> {
   targetNode: GraphNode
 }
 
-export interface EdgeProps<T = any> extends GraphEdge<T> {
+export interface EdgeProps<Data = any> {
+  id: string
+  label?: string
+  type?: string
+  data?: Data
+  class?: string
+  style?: CSSProperties
+  hidden?: boolean
   sourceX: number
   sourceY: number
   targetX: number
@@ -35,9 +43,21 @@ export interface EdgeProps<T = any> extends GraphEdge<T> {
   markerEndId?: string
   sourceHandleId?: string
   targetHandleId?: string
+  source: string
+  target: string
+  sourceHandle?: string
+  targetHandle?: string
+  labelStyle?: any
+  labelShowBg?: boolean
+  labelBgStyle?: any
+  labelBgPadding?: [number, number]
+  labelBgBorderRadius?: number
+  animated?: boolean
+  arrowHeadType?: ArrowHeadType
+  updatable?: boolean
 }
 
-export interface EdgeSmoothStepProps<T = any> extends EdgeProps<T> {
+export interface SmoothStepEdgeProps<T = any> extends EdgeProps<T> {
   borderRadius?: number
 }
 
