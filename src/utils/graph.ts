@@ -183,7 +183,11 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent): GraphNode =
   dragging: false,
 })
 
-export const parseEdge = (edge: Edge): GraphEdge => ({
+export const parseEdge = (
+  edge: Edge,
+  defaults: Partial<GraphEdge> & { sourceNode: GraphNode; targetNode: GraphNode },
+): GraphEdge => ({
+  ...defaults,
   ...edge,
   source: edge.source.toString(),
   target: edge.target.toString(),
@@ -191,8 +195,6 @@ export const parseEdge = (edge: Edge): GraphEdge => ({
   targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
   id: edge.id.toString(),
   type: edge.type ?? 'default',
-  sourceNode: {} as any,
-  targetNode: {} as any,
 })
 
 const getBoundsOfBoxes = (box1: Box, box2: Box): Box => ({
