@@ -1,6 +1,6 @@
 import { useStore } from '~/composables'
-import { initialState } from '~/utils'
 import { FlowState, FlowStore } from '~/types'
+import { initialState } from '~/store'
 describe('test store state', () => {
   let store: FlowStore
 

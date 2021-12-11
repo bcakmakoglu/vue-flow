@@ -1,16 +1,19 @@
 import { getElements } from '../../../examples/Stress/utils'
 import { useStore } from '~/composables'
-import { Elements, FlowStore } from '~/types'
-import { isGraphEdge, isGraphNode } from '~/utils'
+import { Edge, FlowStore, Node } from '~/types'
+import { isEdge, isNode } from '~/utils'
 
 describe('test store action setElements', () => {
   const setElements = async (store: FlowStore) => {
-    const elements: Elements = [
+    const nodes: Node[] = [
       { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
       { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 } },
-      { id: 'e1-2', source: '1', target: '2', animated: true },
     ]
-    await store.setElements(elements)
+    const edges: Edge[] = [{ id: 'e1-2', source: '1', target: '2', animated: true }]
+    store.setState({
+      nodes,
+      edges,
+    })
   }
 
   it('sets elements', async () => {
@@ -26,20 +29,19 @@ describe('test store action setElements', () => {
       await setElements(store)
     })
 
-    it('adds elements', () => {
-      store.addElements([{ id: '4', data: { label: 'Node 4' }, position: { x: 500, y: 500 } }])
-      expect(store.elements).to.have.length(4)
-    })
-
     it('parses elements to flow-elements', () => {
-      store.getEdges.forEach((edge) => expect(!isGraphNode(edge)).to.be.true)
-      store.getNodes.forEach((node) => expect(!isGraphEdge(node)).to.be.true)
+      store.getEdges.forEach((edge) => expect(!isEdge(edge)).to.be.true)
+      store.getNodes.forEach((node) => expect(!isNode(node)).to.be.true)
     })
 
     it('parses elements to flow-elements (199 elements - stress test)', async () => {
-      await store.setElements(getElements())
-      store.getEdges.forEach((edge) => expect(!isGraphNode(edge)).to.be.true)
-      store.getNodes.forEach((node) => expect(!isGraphEdge(node)).to.be.true)
+      const { nodes, edges } = getElements()
+      store.setState({
+        nodes,
+        edges,
+      })
+      store.getEdges.forEach((edge) => expect(!isEdge(edge)).to.be.true)
+      store.getNodes.forEach((node) => expect(!isNode(node)).to.be.true)
     })
 
     it('has correct element ids', () => {
