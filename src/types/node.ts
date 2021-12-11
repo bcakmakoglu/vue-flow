@@ -1,5 +1,6 @@
 import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions } from './flow'
 import { HandleElement, ValidConnectionFunc } from './components'
+import { CSSProperties } from 'vue'
 
 export type CoordinateExtent = [[number, number], [number, number]]
 
@@ -32,7 +33,11 @@ export interface GraphNode<T = any> extends Node<T> {
   dimensions: Dimensions
 }
 
-export interface NodeProps<T = any> extends GraphNode {
+export interface NodeProps<T = any> {
+  label?: string
+  class?: string
+  style?: CSSProperties
+  hidden?: boolean
   id: string
   type?: string
   data?: T
@@ -47,13 +52,13 @@ export interface NodeProps<T = any> extends GraphNode {
     source?: HandleElement[]
     target?: HandleElement[]
   }
-  parentNode?: GraphNode
+  // todo plugin not allowing for nested types currently
+  parentNode?: any
   isParent?: boolean
-  position: XYZPosition
-}
-
-export type NodeDimensionUpdate = {
-  id: string
-  nodeElement: HTMLDivElement
-  dimensions: Dimensions
+  computedPosition: XYZPosition
+  position: XYPosition
+  draggable?: boolean
+  selectable?: boolean
+  children?: any[]
+  dimensions?: Dimensions
 }
