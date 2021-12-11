@@ -61,15 +61,15 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() =>
   store.connectionMode === ConnectionMode.Strict
-    ? props.edge.targetNode.__vf.handleBounds.target
-    : props.edge.targetNode.__vf.handleBounds.target ?? props.edge.targetNode.__vf.handleBounds.source,
+    ? props.edge.targetNode.handleBounds.target
+    : props.edge.targetNode.handleBounds.target ?? props.edge.targetNode.handleBounds.source,
 )
 
 const sourceHandle = controlledComputed(
   () => props.edge,
   () => {
-    if (props.edge.sourceNode && props.edge.sourceNode.__vf.handleBounds.source)
-      return getHandle(props.edge.sourceNode.__vf.handleBounds.source, props.edge.sourceHandle)
+    if (props.edge.sourceNode && props.edge.sourceNode.handleBounds.source)
+      return getHandle(props.edge.sourceNode.handleBounds.source, props.edge.sourceHandle)
     else return undefined
   },
 )

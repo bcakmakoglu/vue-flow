@@ -93,10 +93,10 @@ export default {
   >
     <template v-for="node of store.getNodes" :key="`mini-map-node-${node.id}`">
       <slot
-        :x="node.position.x"
-        :y="node.position.y"
-        :width="node.__vf.width"
-        :height="node.__vf.height"
+        :x="node.computedPosition.x"
+        :y="node.computedPosition.y"
+        :width="node.width"
+        :height="node.height"
         :style="node.style"
         :class="nodeClassNameFunc(node)"
         :color="nodeColorFunc(node)"
@@ -106,10 +106,10 @@ export default {
         :shape-rendering="shapeRendering"
       >
         <MiniMapNode
-          :x="node.position.x"
-          :y="node.position.y"
-          :width="node.__vf.width"
-          :height="node.__vf.height"
+          :x="node.computedPosition.x"
+          :y="node.computedPosition.y"
+          :width="node.width"
+          :height="node.height"
           :style="node.style"
           :class="nodeClassNameFunc(node)"
           :color="nodeColorFunc(node)"

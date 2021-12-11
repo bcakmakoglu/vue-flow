@@ -5,24 +5,6 @@ import { getConnectedEdges, isGraphNode } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 
-interface SelectionPaneProps {
-  edges: GraphEdge[]
-  selectedElements?: FlowElements
-  selectionKeyCode?: KeyCode
-  deleteKeyCode?: KeyCode
-  multiSelectionKeyCode?: KeyCode
-  elementsSelectable?: boolean
-  nodesSelectionActive?: boolean
-  selectionActive?: boolean
-}
-const props = withDefaults(defineProps<SelectionPaneProps>(), {
-  selectionKeyCode: 'Shift',
-  deleteKeyCode: 'Backspace',
-  multiSelectionKeyCode: 'Meta',
-  elementsSelectable: true,
-  selectedElements: () => [],
-})
-
 const store = useStore()
 
 const onClick = (event: MouseEvent) => {
@@ -38,11 +20,11 @@ const onWheel = (event: WheelEvent) => store.hooks.paneScroll.trigger(event)
 const userSelection = ref(false)
 
 tryOnMounted(() => {
-  useKeyPress(props.deleteKeyCode, (keyPressed) => {
-    if (keyPressed && props.selectedElements) {
-      const selectedNodes = props.selectedElements.filter(isGraphNode)
-      const connectedEdges = getConnectedEdges(selectedNodes, props.edges)
-      const elementsToRemove = [...props.selectedElements, ...connectedEdges].reduce(
+  useKeyPress(store.deleteKeyCode, (keyPressed) => {
+    if (keyPressed && store.selectedElements) {
+      const selectedNodes = store.selectedElements.filter(isGraphNode)
+      const connectedEdges = getConnectedEdges(selectedNodes, store.getEdges)
+      const elementsToRemove = [...store.selectedElements, ...connectedEdges].reduce(
         (res, item) => res.set(item.id, item),
         new Map<string, FlowElement>(),
       )
@@ -53,12 +35,12 @@ tryOnMounted(() => {
     }
   })
 
-  useKeyPress(props.multiSelectionKeyCode, (keyPressed) => {
+  useKeyPress(store.multiSelectionKeyCode, (keyPressed) => {
     store.multiSelectionActive = keyPressed
   })
 
-  useKeyPress(props.selectionKeyCode, (keyPressed) => {
-    userSelection.value = keyPressed && (props.selectionActive || props.elementsSelectable)
+  useKeyPress(store.selectionKeyCode, (keyPressed) => {
+    userSelection.value = keyPressed && (store.selectionActive || store.elementsSelectable)
   })
 })
 </script>
@@ -70,12 +52,7 @@ export default {
 </script>
 <template>
   <slot></slot>
-  <UserSelection v-if="userSelection" id="user-selection" :key="`user-selection-${store.id}`" />
-  <NodesSelection
-    v-if="props.nodesSelectionActive"
-    id="nodes-selection"
-    :key="`nodes-selction-${store.id}`"
-    :selected-elements="props.selectedElements"
-  />
+  <UserSelection v-if="userSelection" :key="`user-selection-${store.id}`" />
+  <NodesSelection v-if="store.nodesSelectionActive" :key="`nodes-selction-${store.id}`" />
   <div :key="`flow-pane-${store.id}`" class="vue-flow__pane" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
 </template>

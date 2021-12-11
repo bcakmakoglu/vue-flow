@@ -169,20 +169,17 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent): GraphNode =
   ...node,
   id: node.id.toString(),
   type: node.type ?? 'default',
-  __vf: {
-    width: 0,
-    height: 0,
-    handleBounds: {
-      source: [],
-      target: [],
-    },
-    position: {
-      z: typeof node.style?.zIndex === 'string' ? parseInt(node.style?.zIndex) : node.style?.zIndex ?? 0,
-      ...clampPosition(node.position, nodeExtent),
-    },
+  width: 0,
+  height: 0,
+  handleBounds: {
+    source: [],
+    target: [],
+  },
+  computedPosition: {
+    z: typeof node.style?.zIndex === 'string' ? parseInt(node.style?.zIndex) : node.style?.zIndex ?? 0,
+    ...clampPosition(node.position, nodeExtent),
   },
   dragging: false,
-  position: clampPosition(node.position, nodeExtent),
 })
 
 export const parseEdge = (edge: Edge): GraphEdge => ({
@@ -222,7 +219,7 @@ export const getBoundsofRects = (rect1: Rect, rect2: Rect) => boxToRect(getBound
 
 export const getRectOfNodes = (nodes: GraphNode[]) => {
   const box = nodes.reduce(
-    (currBox, { position = { x: 0, y: 0 }, __vf: { width = 0, height = 0 } = {} }) =>
+    (currBox, { position = { x: 0, y: 0 }, width = 0, height = 0 } = {} as any) =>
       getBoundsOfBoxes(
         currBox,
         rectToBox({
@@ -251,12 +248,8 @@ export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]:
   })
 
   return nodes.filter((node) => {
-    if (!node.__vf || node.selectable === false) return false
-    const {
-      position = { x: 0, y: 0 },
-      __vf: { width = 0, height = 0 },
-      dragging = false,
-    } = node
+    if (!node || node.selectable === false) return false
+    const { position = { x: 0, y: 0 }, width = 0, height = 0, dragging = false } = node
     const nBox = rectToBox({ ...position, width, height } as any)
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
     const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y))
@@ -321,11 +314,11 @@ export const getTransformForBounds = (
 
 export const processElements = (elements: FlowElements, fn: (elements: FlowElements) => void) => {
   return new Promise((resolve) => {
-    const chunk = 50
+    const chunk = 100
     let index = 0
     function doChunk() {
       const chunkPos = chunk * index
-      const lastChunk = elements.length - chunkPos < chunkPos
+      const lastChunk = elements.length - chunkPos < chunk * (index > 0 ? index : 1)
       const cnt = !lastChunk ? chunk : elements.length - chunkPos
       fn(elements.slice(chunkPos, chunkPos + cnt))
       index++
@@ -370,10 +363,13 @@ export const parseElement = (element: Node | Edge, prevElements: FlowElements, n
 
 export function calculateXYZPosition(node: GraphNode, result: XYZPosition): XYZPosition {
   if (!node.parentNode) return result
-  return calculateXYZPosition(node.__vf.parentNode, {
-    x: result.x + node.__vf.parentNode.position.x,
-    y: result.y + node.__vf.parentNode.position.y,
-    z: node.__vf.parentNode.__vf.z > node.__vf.position.z ? node.__vf.parentNode.__vf.z + 1 : node.__vf.position.z,
+  return calculateXYZPosition(node.parentNode, {
+    x: result.x + node.parentNode.position.x,
+    y: result.y + node.parentNode.position.y,
+    z:
+      node.parentNode.computedPosition.z > node.computedPosition.z
+        ? node.parentNode.computedPosition.z + 1
+        : node.computedPosition.z,
   })
 }
 
@@ -392,12 +388,12 @@ export const parseElements = (elements: Elements, prevElements: FlowElements, no
 
   nodes.forEach((n) => {
     if (n.parentNode) {
-      const parent = nodes.find((p) => p.id === n.parentNode)
+      const parent = nodes.find((p) => p.id === n.parentNode?.id)
       if (n.parentNode && !parent) {
         console.error(`Parent node ${n.parentNode} not found`)
       } else if (parent) {
-        n.__vf.parentNode = parent
-        parent.__vf.isParent = true
+        n.parentNode = parent
+        parent.isParent = true
       }
     }
   })
@@ -418,7 +414,7 @@ export const parseElements = (elements: Elements, prevElements: FlowElements, no
 
 export function isParentSelected(node: GraphNode): boolean {
   if (!node.parentNode) return false
-  if (!node.__vf.parentNode) return false
-  if (node.__vf.parentNode.selected) return true
-  return isParentSelected(node.__vf.parentNode)
+  if (!node.parentNode) return false
+  if (node.parentNode.selected) return true
+  return isParentSelected(node.parentNode)
 }

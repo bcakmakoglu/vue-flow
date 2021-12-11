@@ -1,16 +1,4 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
-import {
-  ConnectionLineType,
-  ConnectionMode,
-  Elements,
-  PanOnScrollMode,
-  KeyCode,
-  CoordinateExtent,
-  NodeTypes,
-  EdgeTypes,
-  FlowOptions,
-} from '../../types'
 import Renderer from '../Renderer/Renderer.vue'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
@@ -18,47 +6,7 @@ import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import LoadingIndicator from '../../components/Loading/LoadingIndicator.vue'
 import { createHooks, initFlow } from '../../composables'
-
-interface FlowProps extends FlowOptions {
-  id?: string
-  modelValue?: Elements
-  nodeTypes?: NodeTypes
-  edgeTypes?: EdgeTypes
-  connectionMode?: ConnectionMode
-  connectionLineType?: ConnectionLineType
-  connectionLineStyle?: CSSProperties
-  deleteKeyCode?: KeyCode
-  selectionKeyCode?: KeyCode
-  multiSelectionKeyCode?: KeyCode
-  zoomActivationKeyCode?: KeyCode
-  preventScrolling?: boolean
-  snapToGrid?: boolean
-  snapGrid?: [number, number]
-  onlyRenderVisibleElements?: boolean
-  edgesUpdatable?: boolean
-  nodesDraggable?: boolean
-  nodesConnectable?: boolean
-  elementsSelectable?: boolean
-  selectNodesOnDrag?: boolean
-  paneMoveable?: boolean
-  minZoom?: number
-  maxZoom?: number
-  defaultZoom?: number
-  defaultPosition?: [number, number]
-  translateExtent?: CoordinateExtent
-  nodeExtent?: CoordinateExtent
-  arrowHeadColor?: string
-  markerEndId?: string
-  zoomOnScroll?: boolean
-  zoomOnPinch?: boolean
-  panOnScroll?: boolean
-  panOnScrollSpeed?: number
-  panOnScrollMode?: PanOnScrollMode
-  zoomOnDoubleClick?: boolean
-  edgeUpdaterRadius?: number
-  storageKey?: string
-  loading?: string
-}
+import type { FlowProps } from '../../types/flow'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   modelValue: () => [],
@@ -119,45 +67,10 @@ export default {
     <Suspense timeout="0">
       <template #default>
         <Renderer :key="`renderer-${store.id}`" :elements="elements">
-          <ZoomPane
-            :key="`zoom-pane-${store.id}`"
-            :prevent-scrolling="store.preventScrolling"
-            :selection-key-code="store.selectionKeyCode"
-            :zoom-activation-key-code="store.zoomActivationKeyCode"
-            :default-zoom="store.defaultZoom"
-            :default-position="store.defaultPosition"
-            :zoom-on-scroll="store.zoomOnScroll"
-            :zoom-on-pinch="store.zoomOnPinch"
-            :zoom-on-double-click="store.zoomOnDoubleClick"
-            :pan-on-scroll="store.panOnScroll"
-            :pan-on-scroll-speed="store.panOnScrollSpeed"
-            :pan-on-scroll-mode="store.panOnScrollMode"
-            :pane-moveable="store.paneMoveable"
-          >
+          <ZoomPane :key="`zoom-pane-${store.id}`">
             <template #default="zoomPaneProps">
-              <SelectionPane
-                :key="`selection-pane-${store.id}`"
-                :edges="store.getEdges"
-                :selected-elements="store.selectedElements"
-                :selection-active="store.selectionActive"
-                :nodes-selection-active="store.nodesSelectionActive"
-                :elements-selectable="store.elementsSelectable"
-                :delete-key-code="store.deleteKeyCode"
-                :multi-selection-key-code="store.multiSelectionKeyCode"
-                :selection-key-code="store.selectionKeyCode"
-              >
-                <NodeRenderer
-                  :key="`node-renderer-${store.id}`"
-                  :nodes="store.getNodes"
-                  :node-types="store.getNodeTypes"
-                  :snap-to-grid="store.snapToGrid"
-                  :snap-grid="store.snapGrid"
-                  :select-nodes-on-drag="store.selectNodesOnDrag"
-                  :transform="store.transform"
-                  :elements-selectable="store.elementsSelectable"
-                  :nodes-draggable="store.nodesDraggable"
-                  :nodes-connectable="store.nodesConnectable"
-                >
+              <SelectionPane :key="`selection-pane-${store.id}`">
+                <NodeRenderer :key="`node-renderer-${store.id}`">
                   <template
                     v-for="nodeName of Object.keys(store.getNodeTypes)"
                     #[`node-${nodeName}`]="nodeProps"
@@ -166,28 +79,7 @@ export default {
                     <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
                   </template>
                 </NodeRenderer>
-                <EdgeRenderer
-                  :key="`edge-renderer-${store.id}`"
-                  :transform="store.transform"
-                  :dimensions="store.dimensions"
-                  :edges="store.getEdges"
-                  :edge-types="store.getEdgeTypes"
-                  :nodes="store.getNodes"
-                  :selected-elements="store.selectedElements"
-                  :elements-selectable="store.elementsSelectable"
-                  :connection-node-id="store.connectionNodeId"
-                  :connction-handle-id="store.connectionHandleId"
-                  :connection-handle-type="store.connectionHandleType"
-                  :connection-position="store.connectionPosition"
-                  :connection-mode="store.connectionMode"
-                  :nodes-connectable="store.nodesConnectable"
-                  :connection-line-type="store.connectionLineType"
-                  :connection-line-style="store.connectionLineStyle"
-                  :arrow-head-color="store.arrowHeadColor"
-                  :marker-end-id="store.markerEndId"
-                  :only-render-visible-elements="store.onlyRenderVisibleElements"
-                  :edges-updatable="store.edgesUpdatable"
-                >
+                <EdgeRenderer :key="`edge-renderer-${store.id}`">
                   <template
                     v-for="edgeName of Object.keys(store.getEdgeTypes)"
                     #[`edge-${edgeName}`]="edgeProps"

@@ -1,16 +1,9 @@
 <script lang="ts" setup>
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { FlowElements } from '../../types'
 import { getRectOfNodes } from '../../utils'
 
-interface NodesSelectionProps {
-  selectedElements: FlowElements
-}
-
 const store = useStore()
-
-const props = defineProps<NodesSelectionProps>()
 const selectedNodesBBox = getRectOfNodes(store.getSelectedNodes)
 const innerStyle = {
   width: `${selectedNodesBBox.width}px`,
@@ -27,12 +20,12 @@ const onDrag: DraggableEventListener = ({ event, data }) => {
       x: node.position.x + data.deltaX,
       y: node.position.y + data.deltaY,
     }
-    node.__vf.isDragging = true
+    node.dragging = true
   })
 }
 const onStop: DraggableEventListener = ({ event }) => {
   store.hooks.selectionDragStop.trigger({ event, nodes: store.getSelectedNodes })
-  store.getSelectedNodes.forEach((node) => (node.__vf.isDragging = false))
+  store.getSelectedNodes.forEach((node) => (node.dragging = false))
 }
 const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: store.getSelectedNodes })
 
