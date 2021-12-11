@@ -172,10 +172,6 @@ export default {
     >
       <slot
         v-bind="{
-          id: node.id,
-          data: node.data,
-          type: node.type,
-          position: node.position,
           selected,
           connectable: props.connectable,
           sourcePosition: node.sourcePosition,
@@ -183,15 +179,28 @@ export default {
           dragging: node.dragging,
           isValidTargetPos: node.isValidTargetPos,
           isValidSourcePos: node.isValidSourcePos,
+          label: node.label,
+          class: node.class,
+          style: node.style,
+          hidden: node.hidden,
+          id: node.id,
+          type: node.type,
+          data: node.data,
+          dragging: node.dragging,
+          handleBounds: node.handleBounds,
+          parentNode: node.parentNode,
+          isParent: node.isParent,
+          computedPosition: node.computedPosition,
+          position: node.position,
+          draggable: props.draggable,
+          selectable: props.selectable,
+          children: node.children,
+          dimensions: node.dimensions,
         }"
       >
         <component
           :is="props.component ?? node.type"
           v-bind="{
-            id: node.id,
-            data: node.data,
-            type: node.type,
-            position: node.position,
             selected,
             connectable: props.connectable,
             sourcePosition: node.sourcePosition,
@@ -199,6 +208,23 @@ export default {
             dragging: node.dragging,
             isValidTargetPos: node.isValidTargetPos,
             isValidSourcePos: node.isValidSourcePos,
+            label: node.label,
+            class: node.class,
+            style: node.style,
+            hidden: node.hidden,
+            id: node.id,
+            type: node.type,
+            data: node.data,
+            dragging: node.dragging,
+            handleBounds: node.handleBounds,
+            parentNode: node.parentNode,
+            isParent: node.isParent,
+            computedPosition: node.computedPosition,
+            position: node.position,
+            draggable: props.draggable,
+            selectable: props.selectable,
+            children: node.children,
+            dimensions: node.dimensions,
           }"
         />
       </slot>
