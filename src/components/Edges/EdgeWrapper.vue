@@ -16,7 +16,6 @@ interface EdgeWrapper {
 }
 
 const props = withDefaults(defineProps<EdgeWrapper>(), {})
-
 const store = useStore()
 
 const updating = ref<boolean>(false)
@@ -64,19 +63,8 @@ const targetNodeHandles = computed(() =>
     ? props.edge.targetNode.handleBounds.target
     : props.edge.targetNode.handleBounds.target ?? props.edge.targetNode.handleBounds.source,
 )
-
-const sourceHandle = controlledComputed(
-  () => props.edge,
-  () => {
-    if (props.edge.sourceNode && props.edge.sourceNode.handleBounds.source)
-      return getHandle(props.edge.sourceNode.handleBounds.source, props.edge.sourceHandle)
-    else return undefined
-  },
-)
-const targetHandle = computed(() => {
-  if (targetNodeHandles.value) return getHandle(targetNodeHandles.value, props.edge.targetHandle)
-  else return undefined
-})
+const sourceHandle = computed(() => getHandle(props.edge.sourceNode.handleBounds.source, props.edge.sourceHandle))
+const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle))
 const sourcePosition = eagerComputed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = eagerComputed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
 
@@ -94,17 +82,17 @@ const edgePos = computed(() =>
     targetPosition.value,
   ),
 )
-
-const isVisible = ({ sourceX, sourceY, targetX, targetY }: EdgePositions) =>
+const isVisible = computed(() =>
   store.onlyRenderVisibleElements
     ? isEdgeVisible({
-        sourcePos: { x: sourceX, y: sourceY },
-        targetPos: { x: targetX, y: targetY },
+        sourcePos: { x: edgePos.value.sourceX, y: edgePos.value.sourceY },
+        targetPos: { x: edgePos.value.targetX, y: edgePos.value.targetY },
         width: props.dimensions.width,
         height: props.dimensions.height,
         transform: props.transform,
       })
-    : true
+    : true,
+)
 </script>
 <script lang="ts">
 export default {
@@ -113,7 +101,7 @@ export default {
 </script>
 <template>
   <g
-    v-show="isVisible(edgePos)"
+    v-show="isVisible"
     :class="[
       'vue-flow__edge',
       `vue-flow__edge-${props.edge.type || 'default'}`,
