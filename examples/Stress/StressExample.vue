@@ -1,21 +1,6 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
 import { getElements } from './utils'
-import {
-  VueFlow,
-  removeElements,
-  addEdge,
-  MiniMap,
-  isNode,
-  Controls,
-  Background,
-  FlowInstance,
-  Elements,
-  Connection,
-  Edge,
-} from '~/index'
-
-const buttonWrapperStyles: CSSProperties = { position: 'absolute', right: 10, top: 10, zIndex: 4 }
+import { VueFlow, FlowInstance } from '~/index'
 
 const instance = ref<FlowInstance>()
 const onLoad = (flowInstance: FlowInstance) => {
@@ -24,50 +9,10 @@ const onLoad = (flowInstance: FlowInstance) => {
   console.log(flowInstance.getNodes())
 }
 
-const initialElements: Elements = getElements(50, 20)
-const elements = ref(initialElements)
-
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-const updatePos = () => {
-  elements.value = elements.value.map((el) => {
-    if (isNode(el)) {
-      return {
-        ...el,
-        position: {
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-        },
-      }
-    }
-
-    return el
-  })
-}
-
-const updateElements = () => {
-  const grid = Math.ceil(Math.random() * 10)
-  elements.value = getElements(grid, grid)
-  setTimeout(() => instance.value.fitView({ padding: 0.5 }))
-}
+const { nodes, edges } = getElements(5, 5)
 </script>
 <template>
-  <VueFlow
-    v-model="elements"
-    loading="One moment please..."
-    @load="onLoad"
-    @elementsRemove="onElementsRemove"
-    @connect="onConnect"
-  >
-    <MiniMap />
-    <Controls />
-    <Background />
-
-    <div :style="buttonWrapperStyles">
-      <button style="margin-right: 5px" @click="updatePos">change pos</button>
-      <button @click="updateElements">update elements</button>
-    </div>
-  </VueFlow>
+  <VueFlow :nodes="nodes" :edges="edges" @load="onLoad"> </VueFlow>
 </template>
 <style>
 .fade-enter-active,

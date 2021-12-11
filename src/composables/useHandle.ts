@@ -85,7 +85,7 @@ export default (store: FlowStore = useStore()) =>
     if (!doc) return
     let validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
     if (!isValidConnection) {
-      const node = store.getNodes.find((n) => n.id === nodeId)
+      const node = store.getNode(nodeId)
       if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) ?? (() => true)
     }
     const elementBelow = doc.elementFromPoint(event.clientX, event.clientY)

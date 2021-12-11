@@ -2,6 +2,7 @@
 import { useStore, useWindow, useZoomPanHelper } from '../../composables'
 import { FlowInstance } from '../../types'
 import { onLoadGetEdges, onLoadGetElements, onLoadGetNodes, onLoadProject, onLoadToObject } from '../../utils'
+import ZoomPane from '../ZoomPane/ZoomPane.vue'
 
 const store = useStore()
 
@@ -36,6 +37,24 @@ export default {
 </script>
 <template>
   <div class="vue-flow__renderer">
-    <slot />
+    <ZoomPane :key="`zoom-pane-${store.id}`">
+      <template
+        v-for="nodeName of Object.keys(store.getNodeTypes)"
+        #[`node-${nodeName}`]="nodeProps"
+        :key="`node-${nodeName}-${store.id}`"
+      >
+        <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
+      </template>
+      <template
+        v-for="edgeName of Object.keys(store.getEdgeTypes)"
+        #[`edge-${edgeName}`]="edgeProps"
+        :key="`edge-${edgeName}-${store.id}`"
+      >
+        <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
+      </template>
+      <template #custom-connection-line="customConnectionLineProps">
+        <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
+      </template>
+    </ZoomPane>
   </div>
 </template>

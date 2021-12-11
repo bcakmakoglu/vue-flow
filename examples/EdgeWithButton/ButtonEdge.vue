@@ -17,7 +17,7 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
 const props = defineProps<CustomEdgeProps>()
 const store = useVueFlow()
 const onEdgeClick = (evt: Event, id: string) => {
-  const edge = store.getEdges.find((edge) => edge.id === id)
+  const edge = store.getEdge(id)
   if (edge) {
     store.hooks.elementsRemove.trigger([edge])
   }

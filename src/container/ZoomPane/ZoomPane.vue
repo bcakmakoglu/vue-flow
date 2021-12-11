@@ -2,8 +2,9 @@
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { FlowTransform, PanOnScrollMode } from '../../types'
-import { useKeyPress, useStore, useWindow } from '../../composables'
+import { useKeyPress, useStore } from '../../composables'
 import { clamp, clampPosition } from '../../utils'
+import SelectionPane from '../SelectionPane/SelectionPane.vue'
 
 const store = useStore()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
@@ -30,9 +31,9 @@ const d3Zoom = ref(zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store
 const d3Selection = ref()
 
 store.transform = [transform.value.x, transform.value.y, transform.value.zoom]
+const { width, height } = useElementBounding(zoomPaneEl)
 
-nextTick(async () => {
-  await until(zoomPaneEl).toBeTruthy()
+onMounted(() => {
   const d3z = d3Zoom.value!
   d3Selection.value = select(zoomPaneEl.value).call(d3z)
   const d3s = d3Selection.value!
@@ -154,20 +155,14 @@ nextTick(async () => {
     // default filter for d3-zoom
     return (!event.ctrlKey || event.type === 'wheel') && !event.button
   })
-})
 
-const { width, height } = useElementBounding(zoomPaneEl)
-
-// skip waiting for ssr
-const window = useWindow()
-if ('screen' in window) await until(() => store.isReady).toBe(true)
-
-nextTick(() => {
   watch(
     [width, height],
     ([newWidth, newHeight]) => {
-      store.dimensions.width = newWidth
-      store.dimensions.height = newHeight
+      nextTick(() => {
+        store.dimensions.width = newWidth
+        store.dimensions.height = newHeight
+      })
     },
     { flush: 'sync', immediate: true },
   )
@@ -175,7 +170,7 @@ nextTick(() => {
     transform,
     (val) => {
       const { x, y } = clampPosition(val, store.translateExtent)
-      store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]
+      nextTick(() => (store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]))
     },
     { flush: 'sync', immediate: true },
   )
@@ -188,6 +183,24 @@ export default {
 </script>
 <template>
   <div ref="zoomPane" class="vue-flow__zoompane">
-    <slot />
+    <SelectionPane :key="`selection-pane-${store.id}`">
+      <template
+        v-for="nodeName of Object.keys(store.getNodeTypes)"
+        #[`node-${nodeName}`]="nodeProps"
+        :key="`node-${nodeName}-${store.id}`"
+      >
+        <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
+      </template>
+      <template
+        v-for="edgeName of Object.keys(store.getEdgeTypes)"
+        #[`edge-${edgeName}`]="edgeProps"
+        :key="`edge-${edgeName}-${store.id}`"
+      >
+        <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
+      </template>
+      <template #custom-connection-line="customConnectionLineProps">
+        <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
+      </template>
+    </SelectionPane>
   </div>
 </template>
