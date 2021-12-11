@@ -14,7 +14,6 @@ const getType = (type?: string) => {
   return nodeType
 }
 
-const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 const snapGrid = (node: GraphNode) => node.snapGrid ?? (store.snapToGrid ? store.snapGrid : undefined)
 </script>
 <script lang="ts">
@@ -23,7 +22,7 @@ export default {
 }
 </script>
 <template>
-  <div class="vue-flow__nodes" :style="{ transform }">
+  <div class="vue-flow__nodes vue-flow__container">
     <NodeWrapper
       v-for="node of store.getNodes"
       :key="node.id"
