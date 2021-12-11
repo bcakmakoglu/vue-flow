@@ -84,24 +84,24 @@ const updateNodePosition = (node: GraphNode, { x, y }: XYPosition) => {
   const position = {
     x: node.position.x + x,
     y: node.position.y + y,
-    z: node.__vf.position.z,
+    z: node.computedPosition.z,
   }
 
   let extent = store.nodeExtent
-  if (node.extent === 'parent' && node.parentNode && node.__vf.width && node.__vf.height) {
-    const parent = node.__vf.parentNode
+  if (node.extent === 'parent' && node.parentNode && node.width && node.height) {
+    const parent = node.parentNode
     extent =
-      parent.__vf.width && parent.__vf.height
+      parent.width && parent.height
         ? [
             [0, 0],
-            [parent.__vf.width - node.__vf.width, parent.__vf.height - node.__vf.height],
+            [parent.width - node.width, parent.height - node.height],
           ]
         : extent
   }
   node.position = clampPosition(position, extent)
-  if (node.parentNode || node.__vf.isParent) {
-    node.__vf.position = calculateXYZPosition(node, { z: position.z, ...node.position })
-  } else node.__vf.position = { z: position.z, ...node.position }
+  if (node.parentNode || node.isParent) {
+    node.computedPosition = calculateXYZPosition(node, { z: position.z, ...node.position })
+  } else node.computedPosition = { ...node.position, z: position.z }
 }
 
 const updateNodeDimensions = ({ nodeElement, forceUpdate }: NodeDimensionUpdate) => {
@@ -110,42 +110,36 @@ const updateNodeDimensions = ({ nodeElement, forceUpdate }: NodeDimensionUpdate)
   const doUpdate =
     dimensions.width &&
     dimensions.height &&
-    (node.value.__vf.width !== dimensions.width || node.value.__vf.height !== dimensions.height || forceUpdate)
+    (node.value.width !== dimensions.width || node.value.height !== dimensions.height || forceUpdate)
 
   if (doUpdate) {
     const handleBounds = getHandleBounds(nodeElement, store.transform[2], store.id)
 
-    node.value.__vf = {
-      ...node.value.__vf,
+    node.value = {
+      ...node.value,
       ...dimensions,
       handleBounds,
     }
   }
 }
 
-tryOnMounted(() => {
-  watch([() => node.value.__vf.width, () => node.value.__vf.height], () => {
+onRenderTriggered(() => console.log(node.value.id))
+onMounted(() => {
+  nextTick(() => {
     updateNodeDimensions({
-      id: node.value.id,
+      id: props.node.id,
       nodeElement: nodeElement.value,
       forceUpdate: true,
     })
-  })
-  useResizeObserver(nodeElement, (entries) =>
-    entries.forEach((entry) => {
-      updateNodeDimensions({
-        id: entry.target.getAttribute('data-id') as string,
-        nodeElement: entry.target as HTMLDivElement,
-      })
-    }),
-  )
 
-  watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () => {
-    updateNodeDimensions({
-      id: node.value.id,
-      nodeElement: nodeElement.value,
-      forceUpdate: true,
-    })
+    useResizeObserver(nodeElement, (entries) =>
+      entries.forEach((entry) => {
+        updateNodeDimensions({
+          id: entry.target.getAttribute('data-id') as string,
+          nodeElement: entry.target as HTMLDivElement,
+        })
+      }),
+    )
   })
 })
 </script>
@@ -180,10 +174,10 @@ export default {
         node.class,
       ]"
       :style="{
-        zIndex: node.dragging || selected ? 1000 : node.__vf.position.z,
-        transform: `translate(${node.__vf.position.x}px,${node.__vf.position.y}px)`,
+        zIndex: node.dragging || selected ? 1000 : node.computedPosition.z,
+        transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-        opacity: node.__vf.width !== null && node.__vf.height !== null ? 1 : 0,
+        opacity: node.width !== null && node.height !== null ? 1 : 0,
         ...node.style,
       }"
       :data-id="node.id"
@@ -200,7 +194,6 @@ export default {
           data: node.data,
           type: node.type,
           position: node.position,
-          __vf: node.__vf,
           selected,
           connectable: props.connectable,
           sourcePosition: node.sourcePosition,
@@ -217,7 +210,6 @@ export default {
             data: node.data,
             type: node.type,
             position: node.position,
-            __vf: node.__vf,
             selected,
             connectable: props.connectable,
             sourcePosition: node.sourcePosition,

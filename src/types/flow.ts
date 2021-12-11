@@ -109,9 +109,9 @@ export type FlowInstance<T = any> = {
   toObject: ToObjectFunc<T>
 }
 
-export interface FlowOptions {
+export interface FlowProps {
+  modelValue?: Elements
   id?: string
-  elements?: Elements
   nodeTypes?: NodeTypes
   edgeTypes?: EdgeTypes
   connectionMode?: ConnectionMode
@@ -148,4 +148,8 @@ export interface FlowOptions {
   edgeUpdaterRadius?: number
   storageKey?: string
   loading?: string
+}
+
+export interface FlowOptions extends Omit<FlowProps, 'modelValue'> {
+  elements?: Elements
 }

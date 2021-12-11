@@ -24,7 +24,7 @@ const onLoad = (flowInstance: FlowInstance) => {
   console.log(flowInstance.getElements())
 }
 
-const initialElements: Elements = getElements(10, 10)
+const initialElements: Elements = getElements(50, 20)
 const elements = ref(initialElements)
 
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))

@@ -1,4 +1,4 @@
-import { FlowGetters, FlowState, GraphEdge, GraphNode } from '~/types'
+import { FlowGetters, FlowState, GraphEdge, GraphNode, Node } from '~/types'
 import { defaultEdgeTypes, defaultNodeTypes, getNodesInside, getSourceTargetNodes, isEdge, isGraphNode } from '~/utils'
 
 export default (state: FlowState): FlowGetters => {
@@ -19,8 +19,16 @@ export default (state: FlowState): FlowGetters => {
   })
 
   const getNodes = computed<GraphNode[]>(() => {
-    if (state.isReady) {
-      const nodes = state.elements.filter((n) => isGraphNode(n) && !n.hidden) as GraphNode[]
+    if (state.isReady && state.dimensions.width && state.dimensions.height) {
+      console.log('getter')
+      const nodes: GraphNode[] = []
+      const parseNode = (n: Node) => {
+        nodes.push(<GraphNode>n)
+        if (n.children && n.children.length) {
+          n.children.forEach((c) => parseNode(c))
+        }
+      }
+      state.elements.filter((n) => isGraphNode(n) && !n.hidden).forEach((node) => parseNode(<GraphNode>node))
       return state.onlyRenderVisibleElements
         ? nodes &&
             getNodesInside(
@@ -41,7 +49,8 @@ export default (state: FlowState): FlowGetters => {
 
   const getEdges = computed<GraphEdge[]>(() => {
     const edges = state.elements.filter((e) => isEdge(e) && !e.hidden) as GraphEdge[]
-    if (state.isReady) {
+    if (state.isReady && state.dimensions.width && state.dimensions.height) {
+      console.log('getter2')
       return (
         edges
           .map((edge) => {

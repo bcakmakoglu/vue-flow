@@ -1,39 +1,10 @@
 <script lang="ts" setup>
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { FlowTransform, KeyCode, PanOnScrollMode } from '../../types'
+import { FlowTransform, PanOnScrollMode } from '../../types'
 import { useKeyPress, useStore, useWindow } from '../../composables'
-import { clamp } from '../../utils'
+import { clamp, clampPosition } from '../../utils'
 
-interface ZoomPaneProps {
-  selectionKeyCode?: KeyCode
-  zoomActivationKeyCode?: KeyCode
-  paneMoveable?: boolean
-  defaultZoom?: number
-  defaultPosition?: [number, number]
-  zoomOnScroll?: boolean
-  zoomOnPinch?: boolean
-  panOnScroll?: boolean
-  panOnScrollSpeed?: number
-  panOnScrollMode?: PanOnScrollMode
-  zoomOnDoubleClick?: boolean
-  preventScrolling?: boolean
-}
-
-const props = withDefaults(defineProps<ZoomPaneProps>(), {
-  selectionKeyCode: 'Shift',
-  zoomActivationKeyCode: 'Meta',
-  defaultZoom: 1,
-  defaultPosition: () => [0, 0],
-  zoomOnScroll: true,
-  zoomOnPinch: true,
-  zoomOnDoubleClick: true,
-  panOnScroll: false,
-  panOnScrollSpeed: 0.5,
-  panOnScrollMode: PanOnScrollMode.Free,
-  paneMoveable: true,
-  preventScrolling: true,
-})
 const store = useStore()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
 
@@ -50,10 +21,11 @@ const eventToFlowTransform = (eventTransform: ZoomTransform): FlowTransform => (
 
 const noWheel = (event: Event) => (event.target as Element).closest('.nowheel')
 
-const clampedX = clamp(props.defaultPosition[0], store.translateExtent[0][0], store.translateExtent[1][0])
-const clampedY = clamp(props.defaultPosition[1], store.translateExtent[0][1], store.translateExtent[1][1])
-const clampedZoom = clamp(props.defaultZoom, store.minZoom, store.maxZoom)
-const transform = ref({ x: clampedX, y: clampedY, zoom: clampedZoom })
+const clampedZoom = clamp(store.defaultZoom, store.minZoom, store.maxZoom)
+const transform = ref({
+  ...clampPosition({ x: store.defaultPosition[0], y: store.defaultPosition[1] }, store.translateExtent),
+  zoom: clampedZoom,
+})
 const d3Zoom = ref(zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent))
 const d3Selection = ref()
 
@@ -66,7 +38,7 @@ nextTick(async () => {
   const d3s = d3Selection.value!
   const d3ZoomHandler = d3s.on('wheel.zoom')
 
-  const updatedTransform = zoomIdentity.translate(clampedX, clampedY).scale(clampedZoom)
+  const updatedTransform = zoomIdentity.translate(transform.value.x, transform.value.y).scale(transform.value.zoom)
   d3z.transform(d3s, updatedTransform)
   store.initD3Zoom({ d3Zoom: d3z, d3Selection: d3s, d3ZoomHandler })
   store.transform = [updatedTransform.x, updatedTransform.y, updatedTransform.k]
@@ -87,7 +59,7 @@ nextTick(async () => {
     }
   })
 
-  useKeyPress(props.selectionKeyCode, (keyPress) => {
+  useKeyPress(store.selectionKeyCode, (keyPress) => {
     if (keyPress) {
       d3z.on('zoom', null)
     } else {
@@ -101,8 +73,8 @@ nextTick(async () => {
     }
   })
 
-  useKeyPress(props.zoomActivationKeyCode, (keyPress) => {
-    if (props.panOnScroll && keyPress) {
+  useKeyPress(store.zoomActivationKeyCode, (keyPress) => {
+    if (store.panOnScroll && keyPress) {
       d3s
         ?.on('wheel', (event: WheelEvent) => {
           if (noWheel(event)) return
@@ -111,7 +83,7 @@ nextTick(async () => {
 
           const currentZoom = d3s?.property('__zoom').k || 1
 
-          if (event.ctrlKey && props.zoomOnPinch) {
+          if (event.ctrlKey && store.zoomOnPinch) {
             const point = pointer(event)
             // taken from https://github.com/d3/d3-zoom/blob/master/src/zoom.js
             const pinchDelta = -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * 10
@@ -124,40 +96,40 @@ nextTick(async () => {
           // increase scroll speed in firefox
           // firefox: deltaMode === 1; chrome: deltaMode === 0
           const deltaNormalize = event.deltaMode === 1 ? 20 : 1
-          const deltaX = props.panOnScrollMode === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize
-          const deltaY = props.panOnScrollMode === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
+          const deltaX = store.panOnScrollMode === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize
+          const deltaY = store.panOnScrollMode === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
 
-          if (d3s && props.panOnScrollSpeed)
+          if (d3s && store.panOnScrollSpeed)
             d3z?.translateBy(
               d3s,
-              -(deltaX / currentZoom) * props.panOnScrollSpeed,
-              -(deltaY / currentZoom) * props.panOnScrollSpeed,
+              -(deltaX / currentZoom) * store.panOnScrollSpeed,
+              -(deltaY / currentZoom) * store.panOnScrollSpeed,
             )
         })
         .on('wheel.zoom', null)
     } else if (typeof d3ZoomHandler !== 'undefined') {
       d3s
         ?.on('wheel', (event: WheelEvent) => {
-          if ((!props.zoomOnScroll && props.preventScrolling) || !props.preventScrolling || noWheel(event)) return
+          if ((!store.zoomOnScroll && store.preventScrolling) || !store.preventScrolling || noWheel(event)) return
           event.preventDefault()
         })
         .on('wheel.zoom', d3ZoomHandler)
     }
   })
 
-  const keyPress = useKeyPress(props.selectionKeyCode)
+  const keyPress = useKeyPress(store.selectionKeyCode)
   d3z.filter((event: MouseEvent) => {
-    const pinchZoom = props.zoomOnPinch && event.ctrlKey
+    const pinchZoom = store.zoomOnPinch && event.ctrlKey
 
     // if all interactions are disabled, we prevent all zoom events
-    if (!props.paneMoveable && !props.zoomOnScroll && !props.panOnScroll && !props.zoomOnDoubleClick && !props.zoomOnPinch)
+    if (!store.paneMoveable && !store.zoomOnScroll && !store.panOnScroll && !store.zoomOnDoubleClick && !store.zoomOnPinch)
       return false
 
     // during a selection we prevent all other interactions
     if (keyPress.value) return false
 
     // if zoom on double click is disabled, we prevent the double click event
-    if (!props.zoomOnDoubleClick && event.type === 'dblclick') return false
+    if (!store.zoomOnDoubleClick && event.type === 'dblclick') return false
 
     if (noWheel(event) && event.type === 'wheel') return false
 
@@ -171,13 +143,13 @@ nextTick(async () => {
     // when the target element is a node selection, we still allow zooming
     if ((event.target as Element).closest('.vue-flow__nodesselection') && event.type !== 'wheel') return false
 
-    if (!props.zoomOnPinch && event.ctrlKey && event.type === 'wheel') return false
+    if (!store.zoomOnPinch && event.ctrlKey && event.type === 'wheel') return false
 
     // when there is no scroll handling enabled, we prevent all wheel events
-    if (!props.zoomOnScroll && !props.panOnScroll && !pinchZoom && event.type === 'wheel') return false
+    if (!store.zoomOnScroll && !store.panOnScroll && !pinchZoom && event.type === 'wheel') return false
 
     // if the pane is not movable, we prevent dragging it with mousestart or touchstart
-    if (!props.paneMoveable && (event.type === 'mousedown' || event.type === 'touchstart')) return false
+    if (!store.paneMoveable && (event.type === 'mousedown' || event.type === 'touchstart')) return false
 
     // default filter for d3-zoom
     return (!event.ctrlKey || event.type === 'wheel') && !event.button
@@ -190,24 +162,24 @@ const { width, height } = useElementBounding(zoomPaneEl)
 const window = useWindow()
 if ('screen' in window) await until(() => store.isReady).toBe(true)
 
-watch(
-  [width, height],
-  ([newWidth, newHeight]) => {
-    store.dimensions.width = newWidth
-    store.dimensions.height = newHeight
-  },
-  { flush: 'sync', immediate: true },
-)
-watch(
-  transform,
-  (val) =>
-    (store.transform = [
-      clamp(val.x, store.translateExtent[0][0], store.translateExtent[1][0]),
-      clamp(val.y, store.translateExtent[0][1], store.translateExtent[1][1]),
-      clamp(val.zoom, store.minZoom, store.maxZoom),
-    ]),
-  { flush: 'sync', immediate: true },
-)
+nextTick(() => {
+  watch(
+    [width, height],
+    ([newWidth, newHeight]) => {
+      store.dimensions.width = newWidth
+      store.dimensions.height = newHeight
+    },
+    { flush: 'sync', immediate: true },
+  )
+  watch(
+    transform,
+    (val) => {
+      const { x, y } = clampPosition(val, store.translateExtent)
+      store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]
+    },
+    { flush: 'sync', immediate: true },
+  )
+})
 </script>
 <script lang="ts">
 export default {
@@ -216,11 +188,6 @@ export default {
 </script>
 <template>
   <div ref="zoomPane" class="vue-flow__zoompane">
-    <slot
-      v-bind="{
-        transform: store.transform,
-        dimensions: { width, height },
-      }"
-    />
+    <slot />
   </div>
 </template>

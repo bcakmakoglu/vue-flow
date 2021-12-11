@@ -8,8 +8,8 @@ store.hooks.nodeDragStop.on(({ node }) => {
   const nodes = getNodesInside(
     store.getNodes,
     {
-      height: props.__vf.height,
-      width: props.__vf.width,
+      height: props.height,
+      width: props.width,
       x: props.position.x,
       y: props.position.y,
     },
