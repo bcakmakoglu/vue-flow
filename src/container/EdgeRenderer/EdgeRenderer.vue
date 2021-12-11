@@ -47,7 +47,7 @@ export default {
     :width="store.dimensions.width"
     :height="store.dimensions.height"
     class="vue-flow__edges vue-flow__container"
-    :style="{ zIndex: level.z }"
+    :style="`z-index: ${parseInt(level.level)}`"
   >
     <MarkerDefinitions v-if="level.isMaxLevel" :default-color="store.defaultMarkerColor" />
     <g>

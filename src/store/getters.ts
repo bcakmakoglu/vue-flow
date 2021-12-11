@@ -52,8 +52,8 @@ export default (state: FlowState): FlowGetters => {
             e.targetNode.dimensions.width &&
             e.targetNode.dimensions.height &&
             isEdgeVisible({
-              sourcePos: e.sourceNode.position || { x: 0, y: 0 },
-              targetPos: e.targetNode.position || { x: 0, y: 0 },
+              sourcePos: e.sourceNode.computedPosition || { x: 0, y: 0 },
+              targetPos: e.targetNode.computedPosition || { x: 0, y: 0 },
               sourceWidth: e.sourceNode.dimensions.width,
               sourceHeight: e.sourceNode.dimensions.height,
               targetWidth: e.targetNode.dimensions.width,
