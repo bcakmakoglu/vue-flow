@@ -96,35 +96,32 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     state.elementsSelectable = isInteractive
   }
 
-  function getParent(root: Node[], id: string): GraphNode | undefined {
+  const getParent = (root: Node[], id: string): GraphNode | undefined => {
     let node
-
     root.some((n) => {
-      if (n.id === id) {
-        return (node = n)
-      }
-      if (n.children) {
-        return (node = getParent(n.children, id))
-      }
+      if (n.id === id) return (node = n)
+      if (n.children) return (node = getParent(n.children, id))
       return false
     })
     return node
   }
 
-  const setNodes: FlowActions['setNodes'] = (nodes, extent: CoordinateExtent) => {
-    const parseChildren = (n: Node, p?: GraphNode, arr: GraphNode[] = []) => {
-      const parent = typeof p === 'undefined' || typeof p !== 'object' ? getParent(arr, n.id) : p
-      const parsed = parseNode(n, extent, {
-        parentNode: parent,
-      })
-      arr.push(parsed)
-      if (n.children && n.children.length) {
-        n.children.forEach((c) => parseChildren(c, parsed, arr))
-      }
+  const parseChildren = (n: Node, p: GraphNode | undefined, arr: GraphNode[], extent: CoordinateExtent) => {
+    const parent = typeof p === 'undefined' || typeof p !== 'object' ? getParent(arr, n.id) : p
+    const parsed = parseNode(n, extent, {
+      ...getters.getNode.value(n.id),
+      parentNode: parent,
+    })
+    arr.push(parsed)
+    if (n.children && n.children.length) {
+      n.children.forEach((c) => parseChildren(c, parsed, arr, extent))
     }
+  }
+
+  const setNodes: FlowActions['setNodes'] = (nodes, extent: CoordinateExtent) => {
     nodes = nodes.flatMap((node) => {
       const children: GraphNode[] = []
-      parseChildren(node, undefined, children)
+      parseChildren(node, undefined, children, extent)
       return children
     })
     state.nodes = <GraphNode[]>nodes
@@ -139,6 +136,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
         console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
       return parseEdge(edge, {
+        ...getters.getEdge.value(edge.id),
         sourceNode,
         targetNode,
       })
