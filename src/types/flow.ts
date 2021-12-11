@@ -1,6 +1,6 @@
 import { CSSProperties } from 'vue'
-import { Edge, GraphEdge } from './edge'
-import { GraphNode, Node, CoordinateExtent } from './node'
+import { GraphEdge, Edge } from './edge'
+import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode } from './zoom'
 import { EdgeTypes, NodeTypes } from './components'
@@ -82,8 +82,9 @@ export type FitViewParams = {
   nodes?: string[]
 }
 
-export type FlowExportObject<T = any> = {
-  elements: FlowElements<T>
+export type FlowExportObject<DataNode = any, DataEdge = DataNode> = {
+  nodes: GraphNode<DataNode>[]
+  edges: GraphEdge<DataEdge>[]
   position: [number, number]
   zoom: number
 }
@@ -96,21 +97,24 @@ export type FlowTransform = {
 
 export type FitViewFunc = (fitViewOptions?: FitViewParams) => void
 export type ProjectFunc = (position: XYPosition) => XYPosition
-export type ToObjectFunc<T = any> = () => FlowExportObject<T>
+export type ToObjectFunc<DataNode = any, DataEdge = DataNode> = () => FlowExportObject<DataNode, DataEdge>
 
-export type FlowInstance<T = any> = {
+export type FlowInstance<DataNode = any, DataEdge = DataNode> = {
   zoomIn: () => void
   zoomOut: () => void
   zoomTo: (zoomLevel: number) => void
   fitView: FitViewFunc
   project: ProjectFunc
-  getElements: () => FlowElements<T>
+  getNodes: () => GraphNode[]
+  getEdges: () => GraphEdge[]
   setTransform: (transform: FlowTransform) => void
-  toObject: ToObjectFunc<T>
+  toObject: ToObjectFunc<DataNode, DataEdge>
 }
 
-export interface FlowProps {
-  modelValue?: Elements
+export interface FlowProps<DataNode = any, DataEdge = DataNode> {
+  nodes: GraphNode<DataNode>[]
+  edges?: GraphEdge<DataEdge>[]
+  elements?: Elements
   id?: string
   nodeTypes?: NodeTypes
   edgeTypes?: EdgeTypes
@@ -150,6 +154,4 @@ export interface FlowProps {
   loading?: string
 }
 
-export interface FlowOptions extends Omit<FlowProps, 'modelValue'> {
-  elements?: Elements
-}
+export type FlowOptions = FlowProps

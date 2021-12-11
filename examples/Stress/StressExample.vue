@@ -21,7 +21,7 @@ const instance = ref<FlowInstance>()
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
   instance.value = flowInstance
-  console.log(flowInstance.getElements())
+  console.log(flowInstance.getNodes())
 }
 
 const initialElements: Elements = getElements(50, 20)

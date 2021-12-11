@@ -169,8 +169,10 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent): GraphNode =
   ...node,
   id: node.id.toString(),
   type: node.type ?? 'default',
-  width: 0,
-  height: 0,
+  dimensions: {
+    width: 0,
+    height: 0,
+  },
   handleBounds: {
     source: [],
     target: [],
@@ -179,6 +181,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent): GraphNode =
     z: typeof node.style?.zIndex === 'string' ? parseInt(node.style?.zIndex) : node.style?.zIndex ?? 0,
     ...clampPosition(node.position, nodeExtent),
   },
+  isParent: !!(node.children && node.children.length),
   dragging: false,
 })
 
@@ -219,13 +222,12 @@ export const getBoundsofRects = (rect1: Rect, rect2: Rect) => boxToRect(getBound
 
 export const getRectOfNodes = (nodes: GraphNode[]) => {
   const box = nodes.reduce(
-    (currBox, { position = { x: 0, y: 0 }, width = 0, height = 0 } = {} as any) =>
+    (currBox, { position = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 } } = {} as any) =>
       getBoundsOfBoxes(
         currBox,
         rectToBox({
           ...position,
-          width,
-          height,
+          ...dimensions,
         }),
       ),
     { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity },
@@ -249,13 +251,13 @@ export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]:
 
   return nodes.filter((node) => {
     if (!node || node.selectable === false) return false
-    const { position = { x: 0, y: 0 }, width = 0, height = 0, dragging = false } = node
-    const nBox = rectToBox({ ...position, width, height } as any)
+    const { position = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 }, dragging = false } = node
+    const nBox = rectToBox({ ...position, ...dimensions })
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
     const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y))
     const overlappingArea = Math.ceil(xOverlap * yOverlap)
 
-    if (width === null || height === null || dragging) {
+    if (dimensions.width === null || dimensions.height === null || dragging) {
       // nodes are initialized with width and height = null
       return true
     }
@@ -264,7 +266,7 @@ export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]:
       return overlappingArea > 0
     }
 
-    const area = width * height
+    const area = dimensions.width * dimensions.height
 
     return overlappingArea >= area
   })
@@ -275,7 +277,8 @@ export const getConnectedEdges = (nodes: GraphNode[], edges: GraphEdge[]) => {
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-export const onLoadGetElements = (currentStore: FlowStore) => (): FlowElements => currentStore.elements
+export const onLoadGetNodes = (currentStore: FlowStore) => (): FlowElements => currentStore.nodes
+export const onLoadGetEdges = (currentStore: FlowStore) => (): FlowElements => currentStore.edges
 
 export const onLoadToObject = (currentStore: FlowState) => (): FlowExportObject => {
   // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage

@@ -16,16 +16,20 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
 }
 
 export const initialState = (): FlowState => ({
+  elements: [],
+  nodes: [],
+  edges: [],
+  nodeTypes: [],
+  edgeTypes: [],
+
   isReady: false,
   instance: undefined,
+
   dimensions: {
     width: 0,
     height: 0,
   },
   transform: [0, 0, 1],
-  elements: [],
-  nodeTypes: [],
-  edgeTypes: [],
   selectedElements: undefined,
   selectedNodesBbox: { x: 0, y: 0, width: 0, height: 0 },
 

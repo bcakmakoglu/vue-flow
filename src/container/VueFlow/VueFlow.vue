@@ -9,7 +9,6 @@ import { createHooks, initFlow } from '../../composables'
 import type { FlowProps } from '../../types/flow'
 
 const props = withDefaults(defineProps<FlowProps>(), {
-  modelValue: () => [],
   snapToGrid: false,
   onlyRenderVisibleElements: false,
   edgesUpdatable: false,
@@ -24,38 +23,15 @@ const props = withDefaults(defineProps<FlowProps>(), {
   panOnScroll: false,
   paneMoveable: true,
 })
-const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue'])
+const emit = defineEmits([...Object.keys(createHooks()), 'update:nodes', 'update:edges'])
 const store = initFlow(emit, props.id)
-const elements = useVModel(props, 'modelValue', emit)
+const { nodes, edges } = useVModels(props, emit)
 store.setState(props)
 watch(
   () => props,
   () => store.setState(props),
   { flush: 'post', deep: true },
 )
-const { pause: pauseModel, resume: resumeModel } = pausableWatch(
-  () => props.modelValue.length,
-  async () => await store.setElements(elements.value),
-)
-const { pause, resume } = pausableWatch(elements, async (val) => await store.setElements(val), { flush: 'post' })
-
-until(() => store.isReady)
-  .toBe(true)
-  .then(() => {
-    watch(
-      () => store.elements,
-      (val) => {
-        pause()
-        pauseModel()
-        elements.value = val
-        setTimeout(() => {
-          resume()
-          resumeModel()
-        }, 1)
-      },
-      { flush: 'post', deep: true },
-    )
-  })
 </script>
 <script lang="ts">
 export default {
@@ -66,7 +42,7 @@ export default {
   <div class="vue-flow">
     <Suspense timeout="0">
       <template #default>
-        <Renderer :key="`renderer-${store.id}`" :elements="elements">
+        <Renderer :key="`renderer-${store.id}`">
           <ZoomPane :key="`zoom-pane-${store.id}`">
             <template #default="zoomPaneProps">
               <SelectionPane :key="`selection-pane-${store.id}`">

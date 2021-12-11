@@ -1,9 +1,8 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
-import { BackgroundVariant, Dimensions, Elements, FitViewParams, FlowOptions, Position, XYPosition } from './flow'
-import { Connection, ConnectionLineType, ConnectionMode } from './connection'
-import { GraphNode, Node, NodeProps, CoordinateExtent } from './node'
+import { BackgroundVariant, Dimensions, FitViewParams, Position, XYPosition } from './flow'
+import { Connection, ConnectionLineType } from './connection'
+import { GraphNode, Node, NodeProps } from './node'
 import { EdgeProps } from './edge'
-import { KeyCode, PanOnScrollMode } from './zoom'
 
 export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: Component<EdgeProps> }
 export type EdgeTypes = (keyof DefaultEdgeTypes | string)[]
@@ -63,10 +62,8 @@ export interface MiniMapProps {
 }
 
 export interface MiniMapNodeProps {
-  x?: number
-  y?: number
-  width?: number
-  height?: number
+  position: XYPosition
+  dimensions: Dimensions
   borderRadius?: number
   color?: string
   shapeRendering?: CSSProperties['shapeRendering']
@@ -102,44 +99,4 @@ export interface CustomConnectionLineProps {
   nodes: GraphNode[]
   sourceNode: GraphNode
   sourceHandle: HandleElement
-}
-
-export interface FlowProps extends FlowOptions {
-  id?: string
-  modelValue?: Elements
-  nodeTypes?: NodeTypes
-  edgeTypes?: EdgeTypes
-  connectionMode?: ConnectionMode
-  connectionLineType?: ConnectionLineType
-  connectionLineStyle?: CSSProperties
-  deleteKeyCode?: KeyCode
-  selectionKeyCode?: KeyCode
-  multiSelectionKeyCode?: KeyCode
-  zoomActivationKeyCode?: KeyCode
-  preventScrolling?: boolean
-  snapToGrid?: boolean
-  snapGrid?: [number, number]
-  onlyRenderVisibleElements?: boolean
-  nodesDraggable?: boolean
-  nodesConnectable?: boolean
-  elementsSelectable?: boolean
-  selectNodesOnDrag?: boolean
-  paneMoveable?: boolean
-  minZoom?: number
-  maxZoom?: number
-  defaultZoom?: number
-  defaultPosition?: [number, number]
-  translateExtent?: CoordinateExtent
-  nodeExtent?: CoordinateExtent
-  arrowHeadColor?: string
-  markerEndId?: string
-  zoomOnScroll?: boolean
-  zoomOnPinch?: boolean
-  panOnScroll?: boolean
-  panOnScrollSpeed?: number
-  panOnScrollMode?: PanOnScrollMode
-  zoomOnDoubleClick?: boolean
-  edgeUpdaterRadius?: number
-  storageKey?: string
-  loading?: string
 }

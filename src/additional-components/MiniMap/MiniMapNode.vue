@@ -1,17 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-
-interface MiniMapNodeProps {
-  x?: number
-  y?: number
-  width?: number
-  height?: number
-  borderRadius?: number
-  color?: string
-  shapeRendering?: CSSProperties['shapeRendering']
-  strokeColor?: string
-  strokeWidth?: number
-}
+import type { MiniMapNodeProps } from '../../types/components'
 
 const props = withDefaults(defineProps<MiniMapNodeProps>(), {
   shapeRendering: 'geometricPrecision',
@@ -29,12 +18,12 @@ export default {
 <template>
   <rect
     class="vue-flow__minimap-node"
-    :x="props.x"
-    :y="props.y"
+    :x="props.position.x"
+    :y="props.position.y"
     :rx="props.borderRadius"
     :ry="props.borderRadius"
-    :width="props.width"
-    :height="props.height"
+    :width="props.dimensions.width"
+    :height="props.dimensions.height"
     :fill="fill"
     :stroke="props.strokeColor"
     :stroke-width="props.strokeWidth"

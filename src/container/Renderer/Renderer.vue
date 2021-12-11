@@ -1,17 +1,9 @@
 <script lang="ts" setup>
 import { useStore, useWindow, useZoomPanHelper } from '../../composables'
-import { Elements, FlowInstance } from '../../types'
-import { onLoadGetElements, onLoadProject, onLoadToObject } from '../../utils'
+import { FlowInstance } from '../../types'
+import { onLoadGetEdges, onLoadGetNodes, onLoadProject, onLoadToObject } from '../../utils'
 
-interface RendererProps {
-  elements: Elements
-}
-
-const props = defineProps<RendererProps>()
 const store = useStore()
-
-// if there are preloaded elements we overwrite the current elements with the stored ones and reset the stored elements (so we can properly parse them)
-await store.setElements(props.elements, false)
 store.isReady = true
 
 nextTick(async () => {
@@ -28,7 +20,8 @@ nextTick(async () => {
     zoomTo,
     setTransform,
     project: onLoadProject(store),
-    getElements: onLoadGetElements(store),
+    getNodes: onLoadGetNodes(store),
+    getEdges: onLoadGetEdges(store),
     toObject: onLoadToObject(store),
   }
   store.hooks.load.trigger(instance)

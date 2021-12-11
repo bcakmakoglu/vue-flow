@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { Draggable, GraphNode, NodeDimensionUpdate, SnapGrid, XYPosition } from '../../types'
+import { Draggable, GraphNode, SnapGrid, XYPosition } from '../../types'
 import { NodeId } from '../../context'
 import { calculateXYZPosition, clampPosition, getDimensions, getHandleBounds, isParentSelected } from '../../utils'
 
@@ -17,7 +17,7 @@ interface NodeWrapperProps {
 }
 
 const props = defineProps<NodeWrapperProps>()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:node'])
 const node = useVModel(props, 'node', emit)
 const store = useStore()
 provide(NodeId, props.node.id)
@@ -65,7 +65,7 @@ const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => 
   node.value.dragging = true
   store.hooks.nodeDrag.trigger({ event, node: node.value })
 }
-const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
+const onDragStop: DraggableEventListener = ({ event }) => {
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
   if (!node.value.dragging) {
@@ -80,7 +80,7 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 }
 
-const updateNodePosition = (node: GraphNode, { x, y }: XYPosition) => {
+const updateNodePosition = (node: GraphNode, { x, y }: XYPosition = { x: 0, y: 0 }) => {
   const position = {
     x: node.position.x + x,
     y: node.position.y + y,
@@ -88,13 +88,13 @@ const updateNodePosition = (node: GraphNode, { x, y }: XYPosition) => {
   }
 
   let extent = store.nodeExtent
-  if (node.extent === 'parent' && node.parentNode && node.width && node.height) {
+  if (node.extent === 'parent' && node.parentNode && node.dimensions.width && node.dimensions.height) {
     const parent = node.parentNode
     extent =
-      parent.width && parent.height
+      parent.dimensions.width && parent.dimensions.height
         ? [
             [0, 0],
-            [parent.width - node.width, parent.height - node.height],
+            [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
           ]
         : extent
   }
@@ -104,43 +104,25 @@ const updateNodePosition = (node: GraphNode, { x, y }: XYPosition) => {
   } else node.computedPosition = { ...node.position, z: position.z }
 }
 
-const updateNodeDimensions = ({ nodeElement, forceUpdate }: NodeDimensionUpdate) => {
-  const dimensions = getDimensions(nodeElement)
-
-  const doUpdate =
-    dimensions.width &&
-    dimensions.height &&
-    (node.value.width !== dimensions.width || node.value.height !== dimensions.height || forceUpdate)
-
-  if (doUpdate) {
-    const handleBounds = getHandleBounds(nodeElement, store.transform[2], store.id)
-
-    node.value = {
-      ...node.value,
-      ...dimensions,
-      handleBounds,
-    }
-  }
-}
-
-onRenderTriggered(() => console.log(node.value.id))
+updateNodePosition(node.value)
 onMounted(() => {
-  nextTick(() => {
-    updateNodeDimensions({
-      id: props.node.id,
-      nodeElement: nodeElement.value,
-      forceUpdate: true,
-    })
+  const dimensions = ref(getDimensions(nodeElement.value))
+  useResizeObserver(nodeElement, () => (dimensions.value = getDimensions(nodeElement.value)))
+  watch(
+    dimensions,
+    ({ width: w, height: h }) => {
+      if (w > 0 && h > 0) {
+        const handleBounds = getHandleBounds(nodeElement.value, store.transform[2], store.id)
 
-    useResizeObserver(nodeElement, (entries) =>
-      entries.forEach((entry) => {
-        updateNodeDimensions({
-          id: entry.target.getAttribute('data-id') as string,
-          nodeElement: entry.target as HTMLDivElement,
-        })
-      }),
-    )
-  })
+        node.value.dimensions = {
+          width: w,
+          height: h,
+        }
+        node.value.handleBounds = handleBounds
+      }
+    },
+    { immediate: true },
+  )
 })
 </script>
 <script lang="ts">
@@ -177,7 +159,7 @@ export default {
         zIndex: node.dragging || selected ? 1000 : node.computedPosition.z,
         transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-        opacity: node.width !== null && node.height !== null ? 1 : 0,
+        opacity: node.dimensions.width !== 0 && node.dimensions.height !== 0 ? 1 : 0,
         ...node.style,
       }"
       :data-id="node.id"
