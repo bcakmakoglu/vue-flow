@@ -1,11 +1,11 @@
 import { rectToBox } from './graph'
-import { EdgePositions, GraphNode, HandleElement, Position, Transform, XYPosition } from '~/types'
+import { EdgePositions, GraphNode, HandleElement, Position, Rect, Transform, XYPosition } from '~/types'
 
-export function getHandlePosition(position: Position, node: GraphNode, handle?: HandleElement): XYPosition {
-  const x = (handle?.x ?? 0) + node.position.x
-  const y = (handle?.y ?? 0) + node.position.y
-  const width = handle?.width ?? node.dimensions.width
-  const height = handle?.height ?? node.dimensions.height
+export function getHandlePosition(position: Position, rect: Rect, handle?: HandleElement): XYPosition {
+  const x = (handle?.x ?? 0) + rect.x
+  const y = (handle?.y ?? 0) + rect.y
+  const width = handle?.width ?? rect.width
+  const height = handle?.height ?? rect.height
 
   switch (position) {
     case Position.Top:
@@ -31,19 +31,16 @@ export function getHandlePosition(position: Position, node: GraphNode, handle?: 
   }
 }
 
-export function getHandle(bounds: HandleElement[], handleId?: string): HandleElement | undefined {
+export function getHandle(bounds?: HandleElement[], handleId?: string): HandleElement | undefined {
   if (!bounds) return undefined
 
   // there is no handleId when there are no multiple handles/ handles with ids
   // so we just pick the first one
   let handle
-  if (bounds.length === 1 ?? !handleId) {
-    handle = bounds[0]
-  } else if (handleId) {
-    handle = bounds.find((d) => d.id === handleId)
-  }
+  if (bounds.length === 1 ?? !handleId) handle = bounds[0]
+  else if (handleId) handle = bounds.find((d) => d.id === handleId)
 
-  return !handle ? undefined : handle
+  return handle
 }
 
 export const getEdgePositions = (
@@ -54,8 +51,22 @@ export const getEdgePositions = (
   targetHandle: HandleElement | undefined,
   targetPosition: Position,
 ): EdgePositions => {
-  const sourceHandlePos = getHandlePosition(sourcePosition, sourceNode, sourceHandle)
-  const targetHandlePos = getHandlePosition(targetPosition, targetNode, targetHandle)
+  const sourceHandlePos = getHandlePosition(
+    sourcePosition,
+    {
+      ...sourceNode.dimensions,
+      ...sourceNode.computedPosition,
+    },
+    sourceHandle,
+  )
+  const targetHandlePos = getHandlePosition(
+    targetPosition,
+    {
+      ...targetNode.dimensions,
+      ...targetNode.computedPosition,
+    },
+    targetHandle,
+  )
 
   return {
     sourceX: sourceHandlePos.x,
