@@ -1,20 +1,8 @@
-import { ArrowHeadType, Position } from '~/types'
+import { GetBezierPathParams, GetCenterParams, GetSmoothStepPathParams, MarkerType, Position } from '~/types'
 
-export const getMarkerEnd = (arrowHeadType?: ArrowHeadType, markerEndId?: string): string => {
-  if (typeof markerEndId !== 'undefined' && markerEndId) {
-    return `url(#${markerEndId})`
-  }
-
-  return typeof arrowHeadType !== 'undefined' ? `url(#vue-flow__${arrowHeadType})` : 'none'
-}
-
-export interface GetCenterParams {
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  sourcePosition?: Position
-  targetPosition?: Position
+export const getMarkerEnd = (markerType?: MarkerType, markerEndId?: string): string => {
+  if (typeof markerEndId !== 'undefined' && markerEndId) return `url(#${markerEndId})`
+  return typeof markerType !== 'undefined' ? `url(#vue-flow__${markerType})` : 'none'
 }
 
 const LeftOrRight = [Position.Left, Position.Right]
@@ -51,17 +39,6 @@ export const getCenter = ({
   const centerY = targetY < sourceY ? targetY + yOffset : targetY - yOffset
 
   return [centerX, centerY, xOffset, yOffset]
-}
-
-interface GetBezierPathParams {
-  sourceX: number
-  sourceY: number
-  sourcePosition?: Position
-  targetX: number
-  targetY: number
-  targetPosition?: Position
-  centerX?: number
-  centerY?: number
 }
 
 export function getBezierPath({
@@ -105,18 +82,6 @@ export const leftTopCorner = (x: number, y: number, size: number): string => `L 
 export const topLeftCorner = (x: number, y: number, size: number): string => `L ${x},${y + size}Q ${x},${y} ${x + size},${y}`
 export const topRightCorner = (x: number, y: number, size: number): string => `L ${x},${y + size}Q ${x},${y} ${x - size},${y}`
 export const rightTopCorner = (x: number, y: number, size: number): string => `L ${x - size},${y}Q ${x},${y} ${x},${y + size}`
-
-export interface GetSmoothStepPathParams {
-  sourceX: number
-  sourceY: number
-  sourcePosition?: Position
-  targetX: number
-  targetY: number
-  targetPosition?: Position
-  borderRadius?: number
-  centerX?: number
-  centerY?: number
-}
 
 export function getSmoothStepPath({
   sourceX,

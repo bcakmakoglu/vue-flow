@@ -7,12 +7,9 @@ import EdgeAnchor from './EdgeAnchor.vue'
 interface EdgeWrapper {
   edge: GraphEdge
   component?: any
-  markerEndId?: string
   edgeUpdaterRadius?: number
   selectable?: boolean
   updatable?: boolean
-  dimensions: Dimensions
-  transform: Transform
 }
 
 const props = withDefaults(defineProps<EdgeWrapper>(), {})
@@ -24,8 +21,8 @@ const handler = useHandle()
 const onEdgeClick = (event: MouseEvent) => {
   const data = { event, edge: props.edge }
   if (store.elementsSelectable) {
-    store.unsetNodesSelection()
-    store.addSelectedElements([props.edge])
+    store.nodesSelectionActive = false
+    store.addSelectedEdges([props.edge])
   }
   store.hooks.edgeClick.trigger(data)
   store.hooks.elementClick.trigger({ event, element: props.edge })
@@ -67,11 +64,6 @@ const sourceHandle = computed(() => getHandle(props.edge.sourceNode.handleBounds
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, props.edge.targetHandle))
 const sourcePosition = eagerComputed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = eagerComputed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
-
-const isSelected = controlledComputed(
-  () => store.selectedElements,
-  () => (props.selectable && store.selectedElements?.some((elm) => isEdge(elm) && elm.id === props.edge.id)) ?? false,
-)
 const edgePos = computed(() =>
   getEdgePositions(
     props.edge.sourceNode,
@@ -82,17 +74,6 @@ const edgePos = computed(() =>
     targetPosition.value,
   ),
 )
-const isVisible = computed(() =>
-  store.onlyRenderVisibleElements
-    ? isEdgeVisible({
-        sourcePos: { x: edgePos.value.sourceX, y: edgePos.value.sourceY },
-        targetPos: { x: edgePos.value.targetX, y: edgePos.value.targetY },
-        width: props.dimensions.width,
-        height: props.dimensions.height,
-        transform: props.transform,
-      })
-    : true,
-)
 </script>
 <script lang="ts">
 export default {
@@ -101,12 +82,11 @@ export default {
 </script>
 <template>
   <g
-    v-show="isVisible"
     :class="[
       'vue-flow__edge',
       `vue-flow__edge-${props.edge.type || 'default'}`,
       {
-        selected: isSelected,
+        selected: props.edge.selected,
         animated: props.edge.animated,
         inactive: !props.selectable,
         updating,
@@ -128,7 +108,7 @@ export default {
         targetNode: props.edge.targetNode,
         source: props.edge.source,
         target: props.edge.target,
-        selected: isSelected,
+        selected: props.edge.selected,
         animated: props.edge.animated,
         updatable: props.updatable,
         label: props.edge.label,
@@ -139,14 +119,14 @@ export default {
         labelBgBorderRadius: props.edge.labelBgBorderRadius,
         data: props.edge.data,
         style: props.edge.style,
-        arrowHeadType: props.edge.arrowHeadType,
+        markerEnd: props.edge.markerEnd,
+        markerStart: props.edge.markerStart,
         sourcePosition,
         targetPosition,
         sourceX: edgePos.sourceX,
         sourceY: edgePos.sourceY,
         targetX: edgePos.targetX,
         targetY: edgePos.targetY,
-        markerEndId: props.markerEndId,
         sourceHandleId: props.edge.sourceHandle,
         targetHandleId: props.edge.targetHandle,
       }"
@@ -160,7 +140,7 @@ export default {
           source: props.edge.source,
           target: props.edge.target,
           updatable: props.updatable,
-          selected: isSelected,
+          selected: props.edge.selected,
           animated: props.edge.animated,
           label: props.edge.label,
           labelStyle: props.edge.labelStyle,
@@ -170,14 +150,14 @@ export default {
           labelBgBorderRadius: props.edge.labelBgBorderRadius,
           data: props.edge.data,
           style: props.edge.style,
-          arrowHeadType: props.edge.arrowHeadType,
+          markerEnd: props.edge.markerEnd,
+          markerStart: props.edge.markerStart,
           sourcePosition,
           targetPosition,
           sourceX: edgePos.sourceX,
           sourceY: edgePos.sourceY,
           targetX: edgePos.targetX,
           targetY: edgePos.targetY,
-          markerEndId: props.markerEndId,
           sourceHandleId: props.edge.sourceHandle,
           targetHandleId: props.edge.targetHandle,
         }"
