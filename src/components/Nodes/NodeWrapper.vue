@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
-import { GraphNode, SnapGrid, XYPosition } from '../../types'
+import { GraphNode, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
-import { calculateXYZPosition, clampPosition, getDimensions, getHandleBounds, isParentSelected } from '../../utils'
+import { getDimensions, getHandleBounds, getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
   node: GraphNode
@@ -24,8 +24,6 @@ provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const selected = computed(() => props.selectable && store.selectedElements?.some(({ id }) => id === node.value.id))
-
 const onMouseEnterHandler = () =>
   node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: node.value }))
 const onMouseMoveHandler = () =>
@@ -41,70 +39,57 @@ const onDoubleClick = () => (event: MouseEvent) => store.hooks.nodeDoubleClick.t
 const onSelectNodeHandler = (event: MouseEvent) => {
   if (!props.draggable) {
     if (props.selectable) {
-      store.unsetNodesSelection()
-      if (!selected.value) store.addSelectedElements([node.value])
+      store.nodesSelectionActive = false
+      if (!node.value.selected) store.addSelectedNodes([node.value])
     }
     store.hooks.elementClick.trigger({ event, element: node.value })
     store.hooks.nodeClick.trigger({ event, node: node.value })
   }
 }
 const onDragStart: DraggableEventListener = ({ event }) => {
+  store.addSelectedNodes([])
   store.hooks.nodeDragStart.trigger({ event, node: node.value })
 
   if (props.selectNodesOnDrag && props.selectable) {
-    store.unsetNodesSelection()
+    store.nodesSelectionActive = false
 
-    if (!selected.value) store.addSelectedElements([node.value])
-  } else if (!props.selectNodesOnDrag && !selected.value && props.selectable) {
-    store.unsetNodesSelection()
-    store.addSelectedElements([])
+    if (!node.value.selected) store.addSelectedNodes([node.value])
+  } else if (!props.selectNodesOnDrag && !node.value.selected && props.selectable) {
+    store.nodesSelectionActive = false
+    store.addSelectedNodes([])
   }
 }
 const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
-  updateNodePosition(node.value, { x: deltaX, y: deltaY })
-  node.value.dragging = true
+  store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: true })
   store.hooks.nodeDrag.trigger({ event, node: node.value })
 }
-const onDragStop: DraggableEventListener = ({ event }) => {
+const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
   if (!node.value.dragging) {
-    if (props.selectable && !props.selectNodesOnDrag && !selected.value) {
-      store.addSelectedElements([node.value])
+    if (props.selectable && !props.selectNodesOnDrag && !node.value.selected) {
+      store.addSelectedNodes([node.value])
     }
     store.hooks.nodeClick.trigger({ event, node: node.value })
     store.hooks.elementClick.trigger({ event, element: node.value })
     return
   }
-  node.value.dragging = false
+  store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: false })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 }
 
-const updateNodePosition = (node: GraphNode, { x, y }: XYPosition = { x: 0, y: 0 }) => {
-  const position = {
-    x: node.position.x + x,
-    y: node.position.y + y,
-    z: node.computedPosition.z,
+const xyzPos = computed(() => {
+  if (node.value.parentNode) {
+    return getXYZPos(node.value, {
+      ...node.value.position,
+      z: node.value.computedPosition.z,
+    })
+  } else {
+    return node.value.computedPosition
   }
+})
 
-  let extent = store.nodeExtent
-  if (node.extent === 'parent' && node.parentNode && node.dimensions.width && node.dimensions.height) {
-    const parent = node.parentNode
-    extent =
-      parent.dimensions.width && parent.dimensions.height
-        ? [
-            [0, 0],
-            [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
-          ]
-        : extent
-  }
-  node.position = clampPosition(position, extent)
-  if (node.parentNode || node.isParent) {
-    node.computedPosition = calculateXYZPosition(node, { z: position.z, ...node.position })
-  } else node.computedPosition = { ...node.position, z: position.z }
-}
-
-updateNodePosition(node.value)
+store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 onMounted(() => {
   const dimensions = ref(getDimensions(nodeElement.value))
   useResizeObserver(nodeElement, () => (dimensions.value = getDimensions(nodeElement.value)))
@@ -150,14 +135,14 @@ export default {
         `vue-flow__node-${node.type}`,
         {
           dragging: node.dragging,
-          selected,
+          selected: node.selected,
           selectable: props.selectable,
         },
         node.class,
       ]"
       :style="{
-        zIndex: node.dragging || selected ? 1000 : node.computedPosition.z,
-        transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
+        zIndex: node.dragging || node.selected ? 1000 : xyzPos.z,
+        transform: `translate(${xyzPos.x}px,${xyzPos.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
         opacity: node.dimensions.width !== 0 && node.dimensions.height !== 0 ? 1 : 0,
         ...node.style,
@@ -172,7 +157,7 @@ export default {
     >
       <slot
         v-bind="{
-          selected,
+          selected: node.selected,
           connectable: props.connectable,
           sourcePosition: node.sourcePosition,
           targetPosition: node.targetPosition,
@@ -190,7 +175,7 @@ export default {
           handleBounds: node.handleBounds,
           parentNode: node.parentNode,
           isParent: node.isParent,
-          computedPosition: node.computedPosition,
+          computedPosition: xyzPos,
           position: node.position,
           draggable: props.draggable,
           selectable: props.selectable,
@@ -201,7 +186,7 @@ export default {
         <component
           :is="props.component ?? node.type"
           v-bind="{
-            selected,
+            selected: node.selected,
             connectable: props.connectable,
             sourcePosition: node.sourcePosition,
             targetPosition: node.targetPosition,
@@ -219,7 +204,7 @@ export default {
             handleBounds: node.handleBounds,
             parentNode: node.parentNode,
             isParent: node.isParent,
-            computedPosition: node.computedPosition,
+            computedPosition: xyzPos,
             position: node.position,
             draggable: props.draggable,
             selectable: props.selectable,
