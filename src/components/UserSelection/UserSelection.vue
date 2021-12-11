@@ -1,16 +1,47 @@
 <script lang="ts" setup>
 import { useStore } from '../../composables'
+import { SelectionRect as Rect } from '../../types'
+import { getConnectedEdges, getNodesInside } from '../../utils'
 import SelectionRect from './SelectionRect.vue'
 import { getMousePosition } from './utils'
 
 const store = useStore()
 const el = templateRef('user-selection', null)
 
+const prevNodes = ref(0)
+const prevEdges = ref(0)
+const initialRect = () => ({
+  width: 0,
+  height: 0,
+  startX: 0,
+  startY: 0,
+  x: 0,
+  y: 0,
+  draw: false,
+})
+const rect = ref<Rect>(initialRect())
+
+const reset = () => {
+  rect.value = initialRect()
+  store.selectionActive = false
+  prevNodes.value = 0
+  prevEdges.value = 0
+}
 const onMouseDown = (event: MouseEvent) => {
   const mousePos = getMousePosition(event)
   if (!mousePos) return
 
-  store.setUserSelection(mousePos)
+  rect.value = {
+    width: 0,
+    height: 0,
+    startX: mousePos.x,
+    startY: mousePos.y,
+    x: mousePos.x,
+    y: mousePos.y,
+    draw: true,
+  }
+  store.selectionActive = true
+  store.nodesSelectionActive = false
 }
 
 const onMouseMove = (event: MouseEvent) => {
@@ -18,19 +49,34 @@ const onMouseMove = (event: MouseEvent) => {
   const mousePos = getMousePosition(event)
   if (!mousePos) return
 
-  store.updateUserSelection(mousePos)
+  const startX = rect.value.startX
+  const startY = rect.value.startY
+
+  const nextUserSelectRect: Rect = {
+    ...rect.value,
+    x: mousePos.x < startX ? mousePos.x : rect.value.x,
+    y: mousePos.y < startY ? mousePos.y : rect.value.y,
+    width: Math.abs(mousePos.x - startX),
+    height: Math.abs(mousePos.y - startY),
+  }
+  const selectedNodes = getNodesInside(store.getNodes, rect.value, store.transform)
+  const selectedEdges = getConnectedEdges(selectedNodes, store.getEdges)
+  rect.value = nextUserSelectRect
+  store.addSelectedNodes(selectedNodes)
+  store.addSelectedEdges(selectedEdges)
+  prevNodes.value = selectedNodes.length
+  prevEdges.value = selectedEdges.length
 }
 
 const onMouseUp = () => {
-  store.unsetUserSelection()
+  store.nodesSelectionActive = prevNodes.value > 0
+  reset()
 }
 
 const onMouseLeave = () => {
-  store.unsetUserSelection()
-  store.unsetNodesSelection()
+  store.nodesSelectionActive = false
+  reset()
 }
-
-const userSelectionRect = computed(() => store.userSelectionRect)
 
 useEventListener(el, 'mousedown', onMouseDown)
 useEventListener(el, 'mousemove', onMouseMove)
@@ -44,13 +90,7 @@ export default {
 }
 </script>
 <template>
-  <div ref="user-selection" class="vue-flow__selectionpane">
-    <SelectionRect
-      v-if="userSelectionRect.draw"
-      :width="userSelectionRect.width"
-      :height="userSelectionRect.height"
-      :x="userSelectionRect.x"
-      :y="userSelectionRect.y"
-    />
+  <div ref="user-selection" class="vue-flow__selectionpane vue-flow__container">
+    <SelectionRect v-if="rect.draw" :width="rect.width" :height="rect.height" :x="rect.x" :y="rect.y" />
   </div>
 </template>

@@ -2,32 +2,30 @@
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
 import { useStore } from '../../composables'
 import { getRectOfNodes } from '../../utils'
+import { GraphNode } from '../../types'
 
+interface Props {
+  nodes: GraphNode[]
+}
 const store = useStore()
-const selectedNodesBBox = getRectOfNodes(store.getSelectedNodes)
+const props = defineProps<Props>()
+const selectedNodesBBox = getRectOfNodes(props.nodes)
 const innerStyle = {
   width: `${selectedNodesBBox.width}px`,
   height: `${selectedNodesBBox.height}px`,
   top: `${selectedNodesBBox.y}px`,
   left: `${selectedNodesBBox.x}px`,
 }
-const onStart: DraggableEventListener = ({ event }) =>
-  store.hooks.selectionDragStart.trigger({ event, nodes: store.getSelectedNodes })
-const onDrag: DraggableEventListener = ({ event, data }) => {
-  store.hooks.selectionDrag.trigger({ event, nodes: store.getSelectedNodes })
-  store.getSelectedNodes.forEach((node) => {
-    node.position = {
-      x: node.position.x + data.deltaX,
-      y: node.position.y + data.deltaY,
-    }
-    node.dragging = true
-  })
+const onStart: DraggableEventListener = ({ event }) => store.hooks.selectionDragStart.trigger({ event, nodes: props.nodes })
+const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
+  store.hooks.selectionDrag.trigger({ event, nodes: props.nodes })
+  store.updateNodePosition({ diff: { x: deltaX, y: deltaY }, dragging: true })
 }
 const onStop: DraggableEventListener = ({ event }) => {
-  store.hooks.selectionDragStop.trigger({ event, nodes: store.getSelectedNodes })
-  store.getSelectedNodes.forEach((node) => (node.dragging = false))
+  store.hooks.selectionDragStop.trigger({ event, nodes: props.nodes })
+  props.nodes.forEach((node) => (node.dragging = false))
 }
-const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: store.getSelectedNodes })
+const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: props.nodes })
 
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 </script>
@@ -37,7 +35,7 @@ export default {
 }
 </script>
 <template>
-  <div class="vue-flow__nodesselection" :style="{ transform }">
+  <div class="vue-flow__nodesselection vue-flow__container" :style="{ transform }">
     <Draggable
       :grid="store.snapToGrid ? store.snapGrid : undefined"
       :enable-user-select-hack="false"
