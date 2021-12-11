@@ -52,7 +52,7 @@ export default {
 }
 </script>
 <template>
-  <svg class="vue-flow__background" style="width: 100%; height: 100%">
+  <svg class="vue-flow__background vue-flow__container">
     <pattern
       :id="patternId"
       :x="background.xOffset"
