@@ -9,7 +9,6 @@ import {
   Elements,
   FlowInstance,
   addEdge,
-  isNode,
   removeElements,
 } from '~/index'
 
@@ -21,7 +20,10 @@ const nodes = ref<Elements>([
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
   { id: '4', label: 'Node 4', position: { x: 400, y: 200 } },
 ])
-const edges = ref<Elements>([])
+const edges = ref<Elements>([
+  { id: 'e1-2', source: '1', target: '2', animated: true },
+  { id: 'e1-3', source: '1', target: '3' },
+])
 const vfInstance = ref<FlowInstance>()
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView({ padding: 0.1 })

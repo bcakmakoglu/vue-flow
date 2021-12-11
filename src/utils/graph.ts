@@ -163,7 +163,8 @@ export const pointToRendererPoint = (
 export const onLoadProject = (currentStore: FlowStore) => (position: XYPosition) =>
   pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
 
-export const parseNode = (node: Node, nodeExtent: CoordinateExtent): GraphNode => ({
+export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: Partial<GraphNode>): GraphNode => ({
+  ...defaults,
   ...node,
   id: node.id.toString(),
   type: node.type ?? 'default',
@@ -322,9 +323,7 @@ export function calculateXYZPosition(node: GraphNode, result: XYZPosition): XYZP
     x: result.x + node.parentNode.position.x,
     y: result.y + node.parentNode.position.y,
     z:
-      node.parentNode.computedPosition.z > node.computedPosition.z
-        ? node.parentNode.computedPosition.z + 1
-        : node.computedPosition.z,
+      node.parentNode.computedPosition.z > node.computedPosition.z ? node.parentNode.computedPosition.z : node.computedPosition.z,
   })
 }
 
