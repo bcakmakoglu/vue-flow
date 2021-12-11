@@ -70,7 +70,6 @@ export interface EdgeProps<Data = any> {
   selected?: boolean
   sourcePosition: Position
   targetPosition: Position
-  markerEndId?: string
   sourceHandleId?: string
   targetHandleId?: string
   source: string
