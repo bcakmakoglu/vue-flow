@@ -1,6 +1,34 @@
 import { CSSProperties } from 'vue'
-import { ArrowHeadType, Position, Element } from './flow'
+import { Position, Element } from './flow'
 import { GraphNode } from './node'
+
+export enum MarkerType {
+  Arrow = 'arrow',
+  ArrowClosed = 'arrowclosed',
+}
+
+export interface EdgeMarker {
+  type: MarkerType
+  color?: string
+  width?: number
+  height?: number
+  markerUnits?: string
+  orient?: string
+  strokeWidth?: number
+}
+
+export interface MarkerProps {
+  id: string
+  type: MarkerType
+  color?: string
+  width?: number
+  height?: number
+  markerUnits?: string
+  orient?: string
+  strokeWidth?: number
+}
+
+export type EdgeMarkerType = string | EdgeMarker
 
 export interface Edge<T = any> extends Element<T> {
   source: string
@@ -15,14 +43,16 @@ export interface Edge<T = any> extends Element<T> {
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
   animated?: boolean
-  arrowHeadType?: ArrowHeadType
-  markerEndId?: string
+  markerStart?: EdgeMarkerType
+  markerEnd?: EdgeMarkerType
   updatable?: boolean
 }
 
 export interface GraphEdge<T = any> extends Edge<T> {
   sourceNode: GraphNode
   targetNode: GraphNode
+  selected?: boolean
+  z?: number
 }
 
 export interface EdgeProps<Data = any> {
@@ -53,8 +83,9 @@ export interface EdgeProps<Data = any> {
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
   animated?: boolean
-  arrowHeadType?: ArrowHeadType
   updatable?: boolean
+  markerStart?: EdgeMarkerType
+  markerEnd?: any
 }
 
 export interface SmoothStepEdgeProps<T = any> extends EdgeProps<T> {
@@ -66,4 +97,36 @@ export interface EdgePositions {
   sourceY: number
   targetX: number
   targetY: number
+}
+
+export interface GetCenterParams {
+  sourceX: number
+  sourceY: number
+  targetX: number
+  targetY: number
+  sourcePosition?: Position
+  targetPosition?: Position
+}
+
+export interface GetBezierPathParams {
+  sourceX: number
+  sourceY: number
+  sourcePosition?: Position
+  targetX: number
+  targetY: number
+  targetPosition?: Position
+  centerX?: number
+  centerY?: number
+}
+
+export interface GetSmoothStepPathParams {
+  sourceX: number
+  sourceY: number
+  sourcePosition?: Position
+  targetX: number
+  targetY: number
+  targetPosition?: Position
+  borderRadius?: number
+  centerX?: number
+  centerY?: number
 }

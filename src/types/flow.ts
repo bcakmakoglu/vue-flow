@@ -53,11 +53,6 @@ export interface Rect extends Dimensions, XYPosition {}
 
 export type SnapGrid = [number, number]
 
-export enum ArrowHeadType {
-  Arrow = 'arrow',
-  ArrowClosed = 'arrowclosed',
-}
-
 export enum BackgroundVariant {
   Lines = 'lines',
   Dots = 'dots',
@@ -142,8 +137,7 @@ export interface FlowProps<DataNode = any, DataEdge = DataNode> {
   defaultPosition?: [number, number]
   translateExtent?: CoordinateExtent
   nodeExtent?: CoordinateExtent
-  arrowHeadColor?: string
-  markerEndId?: string
+  defaultMarkerColor?: string
   zoomOnScroll?: boolean
   zoomOnPinch?: boolean
   panOnScroll?: boolean
@@ -156,4 +150,4 @@ export interface FlowProps<DataNode = any, DataEdge = DataNode> {
   loading?: string
 }
 
-export type FlowOptions = FlowProps
+export type FlowOptions<N = any, E = N> = FlowProps<N, E>
