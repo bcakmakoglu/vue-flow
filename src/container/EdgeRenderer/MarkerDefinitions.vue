@@ -1,12 +1,33 @@
 <script lang="ts" setup>
+import { useStore } from '../../composables'
+import type { MarkerProps } from '../../types/edge'
 import Marker from './Marker.vue'
+import { getMarkerId } from '~/utils'
 
 interface MarkerDefinitionsProps {
-  color: string
+  defaultColor: string
 }
 
 const props = withDefaults(defineProps<MarkerDefinitionsProps>(), {
-  color: '',
+  defaultColor: '',
+})
+const store = useStore()
+
+const markers = computed(() => {
+  const ids: string[] = []
+
+  return store.edges.reduce<MarkerProps[]>((markers, edge) => {
+    ;[edge.markerStart, edge.markerEnd].forEach((marker) => {
+      if (marker && typeof marker === 'object') {
+        const markerId = getMarkerId(marker)
+        if (!ids.includes(markerId)) {
+          markers.push({ id: markerId, color: marker.color || props.defaultColor, ...marker })
+          ids.push(markerId)
+        }
+      }
+    })
+    return markers.sort((a, b) => a.id.localeCompare(b.id))
+  }, [])
 })
 </script>
 <script lang="ts">
@@ -16,25 +37,17 @@ export default {
 </script>
 <template>
   <defs>
-    <Marker id="vue-flow__arrowclosed">
-      <polyline
-        :stroke="props.color"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1"
-        :fill="props.color"
-        points="-5,-4 0,0 -5,4 -5,-4"
-      />
-    </Marker>
-    <Marker id="vue-flow__arrow">
-      <polyline
-        :stroke="props.color"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
-        fill="none"
-        points="-5,-4 0,0 -5,4"
-      />
-    </Marker>
+    <Marker
+      v-for="marker of markers"
+      :id="marker.id"
+      :key="marker.id"
+      :type="marker.type"
+      :color="marker.color"
+      :width="marker.width"
+      :height="marker.height"
+      :markerUnits="marker.markerUnits"
+      :stroke-width="marker.strokeWidth"
+      :orient="marker.orient"
+    />
   </defs>
 </template>

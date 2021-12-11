@@ -1,9 +1,14 @@
 <script lang="ts" setup>
-interface MarkerProps {
-  id: string
-}
+import type { MarkerProps } from '../../types/edge'
 
-const props = defineProps<MarkerProps>()
+const props = withDefaults(defineProps<MarkerProps>(), {
+  width: 12.5,
+  height: 12.5,
+  markerUnits: 'strokeWidth',
+  orient: 'auto',
+  strokeWidth: 1,
+  color: 'none',
+})
 </script>
 <script lang="ts">
 export default {
@@ -14,13 +19,31 @@ export default {
   <marker
     :id="props.id"
     class="vue-flow__arrowhead"
-    markerWidth="12.5"
-    markerHeight="12.5"
     viewBox="-10 -10 20 20"
-    orient="auto"
     refX="0"
     refY="0"
+    :marker-width="`${props.width}`"
+    :marker-height="`${props.height}`"
+    :marker-units="props.markerUnits"
+    :orient="props.orient"
   >
-    <slot></slot>
+    <polyline
+      v-if="props.type === 'arrowclosed'"
+      :stroke="props.color"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      :stroke-width="props.strokeWidth"
+      :fill="props.color"
+      points="-5,-4 0,0 -5,4 -5,-4"
+    />
+    <polyline
+      v-if="props.type === 'arrow'"
+      :stroke="props.color"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      :stroke-width="props.strokeWidth"
+      fill="none"
+      points="-5,-4 0,0 -5,4"
+    />
   </marker>
 </template>
