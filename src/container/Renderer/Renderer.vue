@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { useStore, useWindow, useZoomPanHelper } from '../../composables'
 import { FlowInstance } from '../../types'
-import { onLoadGetEdges, onLoadGetNodes, onLoadProject, onLoadToObject } from '../../utils'
+import { onLoadGetEdges, onLoadGetElements, onLoadGetNodes, onLoadProject, onLoadToObject } from '../../utils'
 
 const store = useStore()
-store.isReady = true
 
 nextTick(async () => {
+  store.isReady = true
   // if ssr we can't wait for dimensions, they'll never really exist
   const window = useWindow()
   if ('screen' in window)
@@ -20,6 +20,7 @@ nextTick(async () => {
     zoomTo,
     setTransform,
     project: onLoadProject(store),
+    getElements: onLoadGetElements(store),
     getNodes: onLoadGetNodes(store),
     getEdges: onLoadGetEdges(store),
     toObject: onLoadToObject(store),
