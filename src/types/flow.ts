@@ -2,11 +2,11 @@ import { CSSProperties } from 'vue'
 import { GraphEdge, Edge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
-import { KeyCode, PanOnScrollMode } from './zoom'
+import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { EdgeTypes, NodeTypes } from './components'
 
-export type FlowElement<DataNode = any, DataEdge = any> = GraphNode<DataNode> | GraphEdge<DataEdge>
-export type FlowElements<DataNode = any, DataEdge = any> = FlowElement<DataNode, DataEdge>[]
+export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
+export type FlowElements<N = any, E = any> = FlowElement<N, E>[]
 export interface Element<Data = any> {
   id: string
   label?: string
@@ -16,12 +16,7 @@ export interface Element<Data = any> {
   style?: CSSProperties
   hidden?: boolean
 }
-export type Elements<DataNode = any, DataEdge = any> = (Node<DataNode> | Edge<DataEdge>)[]
-
-export type NextElements = {
-  nodes: GraphNode[]
-  edges: GraphEdge[]
-}
+export type Elements<N = any, E = any> = (Node<N> | Edge<E>)[]
 
 export type Transform = [number, number, number]
 
@@ -64,53 +59,26 @@ export interface SelectionRect extends Rect {
   draw: boolean
 }
 
-export type FitViewParams = {
-  padding?: number
-  includeHiddenNodes?: boolean
-  minZoom?: number
-  maxZoom?: number
-  offset?: {
-    x?: number
-    y?: number
-  }
-  transitionDuration?: number
-  nodes?: string[]
-}
-
-export type FlowExportObject<DataNode = any, DataEdge = DataNode> = {
-  nodes: GraphNode<DataNode>[]
-  edges: GraphEdge<DataEdge>[]
+export type FlowExportObject<N = any, E = N> = {
+  nodes: GraphNode<N>[]
+  edges: GraphEdge<E>[]
   position: [number, number]
   zoom: number
 }
 
-export type FlowTransform = {
-  x: number
-  y: number
-  zoom: number
-}
+export type ToObject<N = any, E = N> = () => FlowExportObject<N, E>
 
-export type FitViewFunc = (fitViewOptions?: FitViewParams) => void
-export type ProjectFunc = (position: XYPosition) => XYPosition
-export type ToObjectFunc<DataNode = any, DataEdge = DataNode> = () => FlowExportObject<DataNode, DataEdge>
+export type FlowInstance<N = any, E = N> = {
+  getElements: () => FlowElements<N, E>
+  getNodes: () => GraphNode<N>[]
+  getEdges: () => GraphEdge<E>[]
+  toObject: ToObject<N, E>
+} & UseZoomPanHelper
 
-export type FlowInstance<DataNode = any, DataEdge = DataNode> = {
-  zoomIn: () => void
-  zoomOut: () => void
-  zoomTo: (zoomLevel: number) => void
-  fitView: FitViewFunc
-  project: ProjectFunc
-  getElements: () => FlowElements
-  getNodes: () => GraphNode[]
-  getEdges: () => GraphEdge[]
-  setTransform: (transform: FlowTransform) => void
-  toObject: ToObjectFunc<DataNode, DataEdge>
-}
-
-export interface FlowProps<DataNode = any, DataEdge = DataNode> {
+export interface FlowProps<N = any, E = N> {
   modelValue?: any[]
-  nodes?: Node<DataNode>[]
-  edges?: Edge<DataEdge>[]
+  nodes?: Node<N>[]
+  edges?: Edge<E>[]
   elements?: Elements
   id?: string
   nodeTypes?: NodeTypes

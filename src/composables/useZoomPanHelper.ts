@@ -1,76 +1,76 @@
 import { zoomIdentity } from 'd3-zoom'
 import useStore from './useStore'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils'
-import { FitViewParams, FlowTransform, GraphNode, FlowStore, Rect, UseZoomPanHelper, XYPosition } from '~/types'
+import { GraphNode, FlowStore, UseZoomPanHelper, D3Selection } from '~/types'
 
 const DEFAULT_PADDING = 0.1
 
-export default (store: FlowStore = useStore()): UseZoomPanHelper => {
-  return {
-    zoomIn: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1.2),
-    zoomOut: () => store.d3Selection && store.d3Zoom?.scaleBy(store.d3Selection, 1 / 1.2),
-    zoomTo: (zoomLevel: number) => store.d3Selection && store.d3Zoom?.scaleTo(store.d3Selection, zoomLevel),
-    transform: (transform: FlowTransform) => {
-      const nextTransform = zoomIdentity.translate(transform.x, transform.y).scale(transform.zoom)
-      store.d3Selection && store.d3Zoom?.transform(store.d3Selection, nextTransform)
-    },
-    fitView: (
-      options: FitViewParams = {
-        padding: DEFAULT_PADDING,
-        includeHiddenNodes: false,
-        transitionDuration: 0,
-      },
-    ) => {
-      if (!store.getNodes.length) return
+const transition = (selection: D3Selection, ms = 0) => selection.transition().duration(ms)
 
-      let nodes: GraphNode[] = []
-      if (options.nodes) {
-        nodes = store.nodes.filter((n) => options.nodes?.includes(n.id))
-      }
-      if (!nodes || !nodes.length) {
-        nodes = options.includeHiddenNodes ? store.nodes : store.getNodes
-      }
-      const bounds = getRectOfNodes(nodes)
-      const [x, y, zoom] = getTransformForBounds(
-        bounds,
-        store.dimensions.width,
-        store.dimensions.height,
-        options.minZoom ?? store.minZoom,
-        options.maxZoom ?? store.maxZoom,
-        options.padding ?? DEFAULT_PADDING,
-        options.offset,
-      )
-      const transform = zoomIdentity.translate(x, y).scale(zoom)
-
-      store.d3Selection &&
-        store.d3Zoom?.transform(
-          options.transitionDuration
-            ? store.d3Selection.selection().transition().duration(options.transitionDuration)
-            : store.d3Selection,
-          transform,
-        )
+export default (store: FlowStore = useStore()): UseZoomPanHelper => ({
+  zoomIn: (options) => store.d3Selection && store.d3Zoom?.scaleBy(transition(store.d3Selection, options?.duration), 1.2),
+  zoomOut: (options) => store.d3Selection && store.d3Zoom?.scaleBy(transition(store.d3Selection, options?.duration), 1 / 1.2),
+  zoomTo: (zoomLevel, options) =>
+    store.d3Selection && store.d3Zoom?.scaleTo(transition(store.d3Selection, options?.duration), zoomLevel),
+  setTransform: (transform, options) => {
+    const nextTransform = zoomIdentity.translate(transform.x, transform.y).scale(transform.zoom)
+    store.d3Selection && store.d3Zoom?.transform(transition(store.d3Selection, options?.duration), nextTransform)
+  },
+  getTransform: () => ({
+    x: store.transform[0],
+    y: store.transform[1],
+    zoom: store.transform[2],
+  }),
+  fitView: (
+    options = {
+      padding: DEFAULT_PADDING,
+      includeHiddenNodes: false,
+      duration: 0,
     },
-    setCenter: (x: number, y: number, zoom?: number) => {
-      const nextZoom = typeof zoom !== 'undefined' ? zoom : store.maxZoom
-      const centerX = store.dimensions.width / 2 - x * nextZoom
-      const centerY = store.dimensions.height / 2 - y * nextZoom
-      const transform = zoomIdentity.translate(centerX, centerY).scale(nextZoom)
+  ) => {
+    if (!store.getNodes.length) return
 
-      store.d3Selection && store.d3Zoom?.transform(store.d3Selection, transform)
-    },
-    fitBounds: (bounds: Rect, padding = DEFAULT_PADDING) => {
-      const [x, y, zoom] = getTransformForBounds(
-        bounds,
-        store.dimensions.width,
-        store.dimensions.height,
-        store.minZoom,
-        store.maxZoom,
-        padding,
-      )
-      const transform = zoomIdentity.translate(x, y).scale(zoom)
+    let nodes: GraphNode[] = []
+    if (options.nodes) {
+      nodes = store.nodes.filter((n) => options.nodes?.includes(n.id))
+    }
+    if (!nodes || !nodes.length) {
+      nodes = options.includeHiddenNodes ? store.nodes : store.getNodes
+    }
+    const bounds = getRectOfNodes(nodes)
+    const [x, y, zoom] = getTransformForBounds(
+      bounds,
+      store.dimensions.width,
+      store.dimensions.height,
+      options.minZoom ?? store.minZoom,
+      options.maxZoom ?? store.maxZoom,
+      options.padding ?? DEFAULT_PADDING,
+      options.offset,
+    )
+    const transform = zoomIdentity.translate(x, y).scale(zoom)
 
-      store.d3Selection && store.d3Zoom?.transform(store.d3Selection, transform)
-    },
-    project: (position: XYPosition) => pointToRendererPoint(position, store.transform, store.snapToGrid, store.snapGrid),
-  }
-}
+    store.d3Selection && store.d3Zoom?.transform(transition(store.d3Selection, options?.duration), transform)
+  },
+  setCenter: (x, y, options) => {
+    const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : store.maxZoom
+    const centerX = store.dimensions.width / 2 - x * nextZoom
+    const centerY = store.dimensions.height / 2 - y * nextZoom
+    const transform = zoomIdentity.translate(centerX, centerY).scale(nextZoom)
+
+    store.d3Selection && store.d3Zoom?.transform(transition(store.d3Selection, options?.duration), transform)
+  },
+  fitBounds: (bounds, options = { padding: DEFAULT_PADDING }) => {
+    const [x, y, zoom] = getTransformForBounds(
+      bounds,
+      store.dimensions.width,
+      store.dimensions.height,
+      store.minZoom,
+      store.maxZoom,
+      options.padding,
+    )
+    const transform = zoomIdentity.translate(x, y).scale(zoom)
+
+    store.d3Selection && store.d3Zoom?.transform(transition(store.d3Selection, options.duration), transform)
+  },
+  project: (position) => pointToRendererPoint(position, store.transform, store.snapToGrid, store.snapGrid),
+})
