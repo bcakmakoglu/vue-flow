@@ -18,8 +18,8 @@ export default (options?: FlowOptions): UseVueFlow => {
     vueFlow = {
       id: store.id,
       store,
-      useNodesState: (nodes, applyDefault) => useNodesState(store, applyNodes)({ nodes, applyDefault }),
-      useEdgesState: (edges, applyDefault) => useEdgesState(store, applyEdges)({ edges, applyDefault }),
+      useNodesState: (nodes, applyDefault = true) => useNodesState(store, applyNodes)({ nodes, applyDefault }),
+      useEdgesState: (edges, applyDefault = true) => useEdgesState(store, applyEdges)({ edges, applyDefault }),
       applyNodeChanges: applyNodes,
       applyEdgeChanges: applyEdges,
       ...store.hooksOn,
