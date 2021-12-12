@@ -1,4 +1,3 @@
-import useHooks from './useHooks'
 import {
   EdgeChange,
   EmitFunc,
@@ -10,8 +9,9 @@ import {
   FlowElement,
   GraphNode,
   GraphEdge,
+  SelectionChange,
 } from '~/types'
-import { useStore } from '~/store'
+import { useStore, useHooks } from '~/store'
 import { isGraphNode } from '~/utils'
 
 const applyChanges = (changes: NodeChange[] | EdgeChange[], elements: FlowElements): FlowElements => {
@@ -64,15 +64,16 @@ export const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]): Gra
 export const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]): GraphEdge[] =>
   <GraphEdge[]>applyChanges(changes, edges)
 
-export const createSelectionChange = (id: string, selected: boolean) => ({
+export const createSelectionChange = (id: string, selected: boolean): SelectionChange => ({
   id,
   type: 'select',
   selected,
 })
 
-export const getSelectionChanges = (items: any[], selectedIds: string[]) => {
+export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
   return items.reduce((res, item) => {
-    const willBeSelected = selectedIds.includes(item.id)
+    const willBeSelected =
+      selectedIds.includes(item.id) || (isGraphNode(item) && item.parentNode && selectedIds.includes(item.parentNode?.id))
 
     if (!item.selected && willBeSelected) {
       item.selected = true
@@ -83,7 +84,7 @@ export const getSelectionChanges = (items: any[], selectedIds: string[]) => {
     }
 
     return res
-  }, [])
+  }, [] as SelectionChange[])
 }
 
 export const initFlow = (emit: EmitFunc, id?: string): FlowStore => {

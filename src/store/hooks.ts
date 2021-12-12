@@ -22,7 +22,6 @@ export const createHooks = (): FlowHooks => ({
   move: createEventHook(),
   moveStart: createEventHook(),
   moveEnd: createEventHook(),
-  selectionChange: createEventHook(),
   selectionDragStart: createEventHook(),
   selectionDrag: createEventHook(),
   selectionDragStop: createEventHook(),
