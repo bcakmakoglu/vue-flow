@@ -19,8 +19,6 @@ export const initialState = (): FlowState => ({
   elements: [],
   nodes: [],
   edges: [],
-  nodeTypes: [],
-  edgeTypes: [],
 
   isReady: false,
   instance: undefined,

@@ -3,7 +3,6 @@ import { GraphEdge, Edge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
-import { EdgeTypes, NodeTypes } from './components'
 
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
 export type FlowElements<N = any, E = any> = FlowElement<N, E>[]
@@ -81,8 +80,6 @@ export interface FlowProps<N = any, E = N> {
   edges?: Edge<E>[]
   elements?: Elements
   id?: string
-  nodeTypes?: NodeTypes
-  edgeTypes?: EdgeTypes
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties
