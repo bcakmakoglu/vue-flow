@@ -83,8 +83,8 @@ export interface EdgeProps<Data = any> {
   labelBgBorderRadius?: number
   animated?: boolean
   updatable?: boolean
-  markerStart?: EdgeMarkerType
-  markerEnd?: any
+  markerStart?: string
+  markerEnd?: string
 }
 
 export interface SmoothStepEdgeProps<T = any> extends EdgeProps<T> {
