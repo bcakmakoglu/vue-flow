@@ -3,7 +3,7 @@ import { GraphEdge, Edge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
-import { FlowStore } from './store'
+import { FlowActions, FlowStore } from './store'
 import { EdgeChange, FlowHooksOn, NodeChange } from './hooks'
 
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
@@ -119,10 +119,21 @@ export interface FlowProps<N = any, E = N> {
 
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>
 
+export type UseNodesState = {
+  nodes: GraphNode[]
+  setNodes: FlowActions['setNodes']
+  OnNodesChange: (applyDefault?: boolean) => FlowHooksOn['OnNodesChange']
+}
+export type UseEdgeState = {
+  edges: GraphEdge[]
+  setEdges: FlowActions['setEdges']
+  OnEdgesChange: (applyDefault: boolean) => FlowHooksOn['OnEdgesChange']
+}
 export type UseVueFlow = {
+  id: string
   store: FlowStore
-  useNodesState: (nodes: Node[]) => GraphNode[]
-  useEdgesState: (edges: Edge[]) => GraphEdge[]
+  useNodesState: (nodes: Node[]) => UseNodesState
+  useEdgesState: (edges: Edge[]) => UseEdgeState
   applyNodeChanges: (changes: NodeChange[]) => void
   applyEdgeChanges: (changes: EdgeChange[]) => void
 } & FlowHooksOn

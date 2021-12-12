@@ -9,21 +9,38 @@ const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyCha
 
 export default (options?: FlowOptions): UseVueFlow => {
   const currentInstance = getCurrentInstance()
-  let vueFlow = currentInstance ? inject(VueFlow, undefined) : false
+  let vueFlow: UseVueFlow | false | undefined = currentInstance ? inject(VueFlow, undefined) : false
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.store.id)) {
     const store = reactive(useStore(options))
+    const applyNodes = (changes: NodeChange[]) => applyNodeChanges(changes, store.nodes)
+    const applyEdges = (changes: EdgeChange[]) => applyEdgeChanges(changes, store.edges)
     vueFlow = {
+      id: store.id,
       store,
       useNodesState: (nodes) => {
         store.setNodes(nodes)
-        return store.nodes
+        return {
+          nodes: store.nodes,
+          setNodes: store.setNodes,
+          OnNodesChange: (applyDefault = false) => {
+            if (applyDefault) store.hooksOn.OnNodesChange((e) => applyNodes(e))
+            return store.hooksOn.OnNodesChange
+          },
+        }
       },
       useEdgesState: (edges) => {
         store.setEdges(edges)
-        return store.edges
+        return {
+          edges: store.edges,
+          setEdges: store.setEdges,
+          OnEdgesChange: (applyDefault = false) => {
+            if (applyDefault) store.hooksOn.OnEdgesChange((e) => applyEdges(e))
+            return store.hooksOn.OnEdgesChange
+          },
+        }
       },
-      applyNodeChanges: (changes) => applyNodeChanges(changes, store.nodes),
-      applyEdgeChanges: (changes) => applyEdgeChanges(changes, store.edges),
+      applyNodeChanges: applyNodes,
+      applyEdgeChanges: applyEdges,
       ...store.hooksOn,
     }
   }
