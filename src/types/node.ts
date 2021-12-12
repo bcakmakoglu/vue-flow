@@ -4,6 +4,11 @@ import { HandleElement, ValidConnectionFunc } from './components'
 
 export type CoordinateExtent = [[number, number], [number, number]]
 
+export type HandleBounds = {
+  source?: HandleElement[]
+  target?: HandleElement[]
+}
+
 export interface Node<T = any> extends Element<T> {
   position: XYPosition
   targetPosition?: Position
