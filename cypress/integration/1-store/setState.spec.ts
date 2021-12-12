@@ -35,14 +35,27 @@ describe('test store state', () => {
 
   it('gets custom node types', () => {
     store.setState({
-      nodeTypes: ['custom'],
+      nodes: [
+        {
+          id: '1',
+          position: { x: 0, y: 0 },
+          type: 'custom',
+        },
+      ],
     })
     expect(Object.keys(store.getNodeTypes)).to.contain('custom')
   })
 
   it('gets custom edge types', () => {
     store.setState({
-      edgeTypes: ['custom'],
+      edges: [
+        {
+          id: '1',
+          source: '1',
+          target: '2',
+          type: 'custom',
+        },
+      ],
     })
     expect(Object.keys(store.getEdgeTypes)).to.contain('custom')
   })
