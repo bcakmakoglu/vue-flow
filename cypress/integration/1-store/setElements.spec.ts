@@ -19,7 +19,8 @@ describe('test store action setElements', () => {
   it('sets elements', async () => {
     const store = useStore()
     await setElements(store)
-    expect(store.elements).to.have.length(3)
+    expect(store.nodes).to.have.length(2)
+    expect(store.edges).to.have.length(1)
   })
 
   context('elements pre-set', () => {
@@ -45,11 +46,12 @@ describe('test store action setElements', () => {
     })
 
     it('has correct element ids', () => {
-      store.elements.forEach((el) => expect(['1', '2', 'e1-2']).to.include(el.id))
+      store.nodes.forEach((el) => expect(['1', '2']).to.include(el.id))
+      store.edges.forEach((el) => expect(['e1-2']).to.include(el.id))
     })
 
     it('has correct element types', () => {
-      store.elements.forEach((el) => expect(['input', 'default']).to.include(el.type))
+      store.nodes.forEach((el) => expect(['input', 'default']).to.include(el.type))
     })
 
     it('nodes have correct label', () => {
