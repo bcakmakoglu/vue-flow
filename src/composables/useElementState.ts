@@ -60,7 +60,7 @@ export const useEdgesState = (
   store: FlowStore,
   apply: (changes: EdgeChange[]) => GraphEdge[],
 ): ((options?: UseEdgesStateOptions) => UseEdgeState) => {
-  return ({ edges, applyDefault } = { applyDefault: false }) => {
+  return ({ edges, applyDefault } = { applyDefault: true }) => {
     if (edges && edges.length) store.setEdges(edges)
     if (applyDefault) store.hooksOn.OnEdgesChange((e) => apply(e))
     return {
@@ -96,7 +96,7 @@ export const useNodesState = (
   store: FlowStore,
   apply: (changes: NodeChange[]) => GraphNode[],
 ): ((options?: UseNodesStateOptions) => UseNodesState) => {
-  return ({ nodes, applyDefault } = { applyDefault: false }) => {
+  return ({ nodes, applyDefault } = { applyDefault: true }) => {
     if (nodes && nodes.length) store.setNodes(nodes)
     if (applyDefault) store.hooksOn.OnNodesChange((e) => apply(e))
     return {
