@@ -1,10 +1,10 @@
-import { useStore } from '~/composables'
+import { useVueFlow } from '~/composables'
 import { FlowState, FlowStore } from '~/types'
 import { initialState } from '~/store'
 describe('test store state', () => {
   let store: FlowStore
 
-  beforeEach(() => (store = useStore()))
+  beforeEach(() => ({ store } = useVueFlow()))
 
   it('has any initial state', () => {
     expect(store.state).to.exist
@@ -27,7 +27,7 @@ describe('test store state', () => {
   })
 
   it('takes initial options', () => {
-    const store = useStore({
+    const { store } = useVueFlow({
       zoomOnScroll: false,
     })
     expect(store.zoomOnScroll).to.eq(false)

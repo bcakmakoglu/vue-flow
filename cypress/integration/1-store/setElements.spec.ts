@@ -1,5 +1,5 @@
 import { getElements } from '../../../examples/Stress/utils'
-import { useStore } from '~/composables'
+import { useVueFlow } from '~/composables'
 import { Edge, FlowStore, Node } from '~/types'
 import { isEdge, isNode } from '~/utils'
 
@@ -17,7 +17,7 @@ describe('test store action setElements', () => {
   }
 
   it('sets elements', async () => {
-    const store = useStore()
+    const { store } = useVueFlow()
     await setElements(store)
     expect(store.nodes).to.have.length(2)
     expect(store.edges).to.have.length(1)
@@ -26,7 +26,7 @@ describe('test store action setElements', () => {
   context('elements pre-set', () => {
     let store: FlowStore
     beforeEach(async () => {
-      store = useStore()
+      const { store } = useVueFlow()
       await setElements(store)
     })
 
