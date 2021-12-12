@@ -241,11 +241,11 @@ export const getBoundsofRects = (rect1: Rect, rect2: Rect) => boxToRect(getBound
 
 export const getRectOfNodes = (nodes: GraphNode[]) => {
   const box = nodes.reduce(
-    (currBox, { position = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 } } = {} as any) =>
+    (currBox, { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 } } = {} as any) =>
       getBoundsOfBoxes(
         currBox,
         rectToBox({
-          ...position,
+          ...computedPosition,
           ...dimensions,
         }),
       ),
