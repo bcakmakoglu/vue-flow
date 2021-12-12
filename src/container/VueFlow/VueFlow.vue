@@ -21,8 +21,9 @@ const props = withDefaults(defineProps<FlowProps>(), {
 })
 const emit = defineEmits([...Object.keys(createHooks())])
 
-const { store } = useVueFlow(props)
+const { store } = useVueFlow()
 useHooks(store, emit)
+nextTick(() => store.setState(props))
 watch(
   () => props,
   (v) => nextTick(() => store.setState(v)),
@@ -51,8 +52,8 @@ export default {
       >
         <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
       </template>
-      <template #custom-connection-line="customConnectionLineProps">
-        <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
+      <template #connection-line="customConnectionLineProps">
+        <slot name="connection-line" v-bind="customConnectionLineProps" />
       </template>
       <slot name="zoom-pane" />
     </ZoomPane>

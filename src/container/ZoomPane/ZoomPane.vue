@@ -237,8 +237,8 @@ export default {
       >
         <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
       </template>
-      <template #custom-connection-line="customConnectionLineProps">
-        <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
+      <template #connection-line="customConnectionLineProps">
+        <slot name="connection-line" v-bind="customConnectionLineProps" />
       </template>
     </TransformationPane>
     <SelectionPane :key="`selection-pane-${store.id}`" />

@@ -64,9 +64,9 @@ export default {
           <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
         </template>
       </EdgeWrapper>
-      <ConnectionLine v-if="group.isMaxLevel && connectionLineVisible && sourceNode" :source-node="sourceNode">
+      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode">
         <template #default="customConnectionLineProps">
-          <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
+          <slot name="connection-line" v-bind="customConnectionLineProps"></slot>
         </template>
       </ConnectionLine>
     </g>
