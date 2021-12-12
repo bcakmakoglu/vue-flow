@@ -48,6 +48,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
       }
     })
   }
+  const emit = ref(true)
   const addSelectedNodes: FlowActions['addSelectedNodes'] = (nodes) => {
     const selectedElementsUpdated = nodes.filter((el) => !state.selectedNodes.some((e) => el.id === e.id)).length
     const selectedNodes = !nodes.length || selectedElementsUpdated ? nodes : state.selectedNodes
@@ -56,7 +57,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
       (n) => (n.selected = selectedNodesIds.includes(n.id) || (n.parentNode && selectedNodesIds.includes(n.parentNode?.id))),
     )
     state.selectedNodes = selectedNodes
-    if (selectedElementsUpdated) state.hooks.selectionChange.trigger({ nodes })
+    if (emit.value && selectedElementsUpdated) state.hooks.selectionChange.trigger({ nodes })
   }
   const addSelectedEdges: FlowActions['addSelectedEdges'] = (edges) => {
     const selectedElementsUpdated = edges.filter((el) => !state.selectedEdges.some((e) => el.id === e.id)).length
@@ -64,11 +65,13 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     const selectedEdgesIds = selectedEdges.map((e) => e.id)
     state.edges.forEach((e) => (e.selected = selectedEdgesIds.includes(e.id)))
     state.selectedEdges = selectedEdges
-    if (selectedElementsUpdated) state.hooks.selectionChange.trigger({ edges })
+    if (emit.value && selectedElementsUpdated) state.hooks.selectionChange.trigger({ edges })
   }
   const addSelectedElements: FlowActions['addSelectedElements'] = (elements) => {
+    emit.value = false
     addSelectedNodes(elements.filter(isGraphNode))
     addSelectedEdges(elements.filter(isGraphEdge))
+    state.hooks.selectionChange.trigger({ nodes: state.selectedNodes, edges: state.selectedEdges })
   }
   const setMinZoom: FlowActions['setMinZoom'] = (minZoom: any) => {
     state.d3Zoom?.scaleExtent([minZoom, state.maxZoom])
