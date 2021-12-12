@@ -25,7 +25,6 @@ const onEdgeClick = (event: MouseEvent) => {
     store.addSelectedEdges([props.edge])
   }
   store.hooks.edgeClick.trigger(data)
-  store.hooks.elementClick.trigger({ event, element: props.edge })
 }
 const onEdgeContextMenu = (event: MouseEvent) => store.hooks.edgeContextMenu.trigger({ event, edge: props.edge })
 const onDoubleClick = (event: MouseEvent) => store.hooks.edgeDoubleClick.trigger({ event, edge: props.edge })
