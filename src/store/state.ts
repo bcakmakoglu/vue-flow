@@ -62,6 +62,7 @@ export const initialState = (): FlowState => ({
 
   nodesSelectionActive: false,
   selectionActive: false,
+  selectedNodesBbox: { x: 0, y: 0, width: 0, height: 0 },
 
   defaultMarkerColor: '#b1b1b7',
   connectionLineStyle: {},

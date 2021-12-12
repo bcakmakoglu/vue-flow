@@ -9,13 +9,14 @@ interface Props {
 }
 const store = useStore()
 const props = defineProps<Props>()
-const selectedNodesBBox = getRectOfNodes(props.nodes)
-const innerStyle = {
-  width: `${selectedNodesBBox.width}px`,
-  height: `${selectedNodesBBox.height}px`,
-  top: `${selectedNodesBBox.y}px`,
-  left: `${selectedNodesBBox.x}px`,
-}
+const selectedNodesBBox = computed(() => getRectOfNodes(props.nodes))
+const innerStyle = computed(() => ({
+  width: `${selectedNodesBBox.value.width}px`,
+  height: `${selectedNodesBBox.value.height}px`,
+  top: `${selectedNodesBBox.value.y}px`,
+  left: `${selectedNodesBBox.value.x}px`,
+}))
+watch(selectedNodesBBox, (v) => (store.selectedNodesBbox = v))
 const onStart: DraggableEventListener = ({ event }) => store.hooks.selectionDragStart.trigger({ event, nodes: props.nodes })
 const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
   store.hooks.selectionDrag.trigger({ event, nodes: props.nodes })

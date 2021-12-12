@@ -1,6 +1,6 @@
 import { ComputedRef, ToRefs } from 'vue'
 import { UnwrapNestedRefs } from '@vue/reactivity'
-import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, SnapGrid, Transform, XYPosition } from './flow'
+import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
 import { HandleType, EdgeComponent, NodeComponent, NodeTypes, EdgeTypes } from './components'
 import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
 import { Edge, GraphEdge } from './edge'
@@ -31,6 +31,7 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'>
   onlyRenderVisibleElements: boolean
   defaultPosition: [number, number]
 
+  selectedNodesBbox: Rect
   selectedNodes: GraphNode[]
   selectedEdges: GraphEdge[]
   nodesSelectionActive: boolean
