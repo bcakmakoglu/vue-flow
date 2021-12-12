@@ -60,7 +60,7 @@ const onDragStart: DraggableEventListener = ({ event }) => {
   }
 }
 const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
-  store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: true })
+  nextTick(() => store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: true }))
   store.hooks.nodeDrag.trigger({ event, node: node.value })
 }
 const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
@@ -96,15 +96,17 @@ onMounted(() => {
   watch(
     dimensions,
     ({ width: w, height: h }) => {
-      if (w > 0 && h > 0) {
-        const handleBounds = getHandleBounds(nodeElement.value, store.transform[2], store.id)
+      nextTick(() => {
+        if (w > 0 && h > 0) {
+          const handleBounds = getHandleBounds(nodeElement.value, store.transform[2], store.id)
 
-        node.value.dimensions = {
-          width: w,
-          height: h,
+          node.value.dimensions = {
+            width: w,
+            height: h,
+          }
+          node.value.handleBounds = handleBounds
         }
-        node.value.handleBounds = handleBounds
-      }
+      })
     },
     { immediate: true },
   )
