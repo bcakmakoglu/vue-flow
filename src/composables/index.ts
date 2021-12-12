@@ -1,6 +1,4 @@
 export { default as useHandle } from './useHandle'
-export { default as useHooks } from './useHooks'
-export * from './useHooks'
 export { default as useKeyPress } from './useKeyPress'
 export { default as useZoomPanHelper } from './useZoomPanHelper'
 export { default as useWindow } from './useWindow'

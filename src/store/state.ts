@@ -1,6 +1,6 @@
+import { createHooks } from './hooks'
 import { ConnectionMode, FlowState, PanOnScrollMode, DefaultNodeTypes, DefaultEdgeTypes, ConnectionLineType } from '~/types'
 import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
-import { createHooks } from '~/composables'
 
 export const defaultNodeTypes: DefaultNodeTypes = {
   input: InputNode,
