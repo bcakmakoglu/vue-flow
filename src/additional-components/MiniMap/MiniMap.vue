@@ -5,6 +5,8 @@ import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import type { MiniMapProps } from '../../types/components'
 import MiniMapNode from './MiniMapNode.vue'
 
+type StringFunc = (node: GraphNode) => string
+
 const props = withDefaults(defineProps<MiniMapProps>(), {
   nodeStrokeColor: '#555',
   nodeColor: '#fff',

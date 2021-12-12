@@ -23,7 +23,7 @@ const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'u
 const { modelValue, nodes, edges } = useVModels(props, emit)
 
 const { store } = useVueFlow(props)
-useHooks(store, emit)
+useHooks(store.hooks, emit)
 
 nextTick(() => {
   modelValue && (modelValue.value = [...store.nodes, ...store.edges])
@@ -33,13 +33,11 @@ nextTick(() => {
   modelValue && (modelValue.value = [...store.nodes, ...store.edges])
   edges && (edges.value = store.edges)
 })
-onMounted(() => {
-  watch(
-    () => props,
-    (v) => nextTick(() => store.setState(v)),
-    { flush: 'sync' },
-  )
-})
+watch(
+  () => props,
+  (v) => nextTick(() => store.setState(v)),
+  { flush: 'sync', deep: true, immediate: true },
+)
 </script>
 <script lang="ts">
 export default {

@@ -15,7 +15,7 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
   smoothstep: SmoothStepEdge,
 }
 
-export default (): FlowState => ({
+export default (preloadedState?: Partial<FlowState>): FlowState => ({
   nodes: [],
   edges: [],
 
@@ -87,4 +87,5 @@ export default (): FlowState => ({
   storageKey: undefined,
 
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
+  ...preloadedState,
 })

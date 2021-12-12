@@ -1,4 +1,4 @@
-import { CSSProperties } from 'vue'
+import { CSSProperties, ToRefs } from 'vue'
 import { GraphEdge, Edge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
@@ -153,4 +153,5 @@ export type UseVueFlow = {
   useEdgesState: (edges?: Edge[], applyDefault?: boolean) => UseEdgeState
   applyNodeChanges: (changes: NodeChange[]) => void
   applyEdgeChanges: (changes: EdgeChange[]) => void
-} & FlowHooksOn
+} & FlowHooksOn &
+  ToRefs<FlowStore>
