@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   panOnScroll: false,
   paneMoveable: true,
 })
-const emit = defineEmits([...Object.keys(createHooks()), 'update:nodes', 'update:edges', 'update:elements', 'update:modelValue'])
+const emit = defineEmits([...Object.keys(createHooks())])
 const store = initFlow(emit, props.id)
 nextTick(() => store.setState(props))
 watch(
