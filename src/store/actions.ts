@@ -8,9 +8,8 @@ import {
   Node,
   NodeChange,
   NodeDimensionChange,
-  XYPosition,
 } from '~/types'
-import { clampPosition, isEdge, isGraphEdge, isGraphNode, isNode, isParentSelected, parseEdge, parseNode } from '~/utils'
+import { isEdge, isGraphEdge, isGraphNode, isNode, isParentSelected, parseEdge, parseNode } from '~/utils'
 import { createPositionChange, createSelectionChange, getSelectionChanges } from '~/composables/useVueFlow'
 
 const getParent = (root: Node[], id: string): GraphNode | undefined => {

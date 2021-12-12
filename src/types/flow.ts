@@ -121,6 +121,8 @@ export type FlowOptions<N = any, E = N> = FlowProps<N, E>
 
 export type UseVueFlow = {
   store: FlowStore
+  useNodesState: (nodes: Node[]) => GraphNode[]
+  useEdgesState: (edges: Edge[]) => GraphEdge[]
   applyNodeChanges: (changes: NodeChange[]) => void
   applyEdgeChanges: (changes: EdgeChange[]) => void
 } & FlowHooksOn
