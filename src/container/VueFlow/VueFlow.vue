@@ -52,8 +52,9 @@ export default {
       <template #custom-connection-line="customConnectionLineProps">
         <slot name="custom-connection-line" v-bind="customConnectionLineProps" />
       </template>
+      <slot name="zoom-pane" />
     </ZoomPane>
-    <slot v-bind="store"></slot>
+    <slot v-bind="store" />
   </div>
 </template>
 <style>
