@@ -42,7 +42,6 @@ const onSelectNodeHandler = (event: MouseEvent) => {
       store.nodesSelectionActive = false
       if (!node.value.selected) store.addSelectedNodes([node.value])
     }
-    store.hooks.elementClick.trigger({ event, element: node.value })
     store.hooks.nodeClick.trigger({ event, node: node.value })
   }
 }
@@ -71,7 +70,6 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
       store.addSelectedNodes([node.value])
     }
     store.hooks.nodeClick.trigger({ event, node: node.value })
-    store.hooks.elementClick.trigger({ event, element: node.value })
     return
   }
   store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: false })

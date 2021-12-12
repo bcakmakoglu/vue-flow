@@ -68,18 +68,6 @@ export const getOutgoers = (node: GraphNode, elements: Elements) => getConnected
 
 export const getIncomers = (node: GraphNode, elements: Elements) => getConnectedElements(node, elements, 'source')
 
-export const removeElements = (elementsToRemove: Elements, elements: Elements) => {
-  const nodeIdsToRemove = elementsToRemove.map((n) => n.id)
-  const shouldRemove = (element: Node | Edge) => {
-    const { target, source } = isEdge(element) ? element : { target: '', source: '' }
-    return nodeIdsToRemove.includes(element.id) || nodeIdsToRemove.includes(target) || nodeIdsToRemove.includes(source)
-  }
-  elements.forEach((element, i) => {
-    if (shouldRemove(element)) elements.splice(i, 1)
-  })
-  return elements.filter((element) => !shouldRemove(element))
-}
-
 const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection) =>
   `vueflow__edge-${source}${sourceHandle}-${target}${targetHandle}`
 

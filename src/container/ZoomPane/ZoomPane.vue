@@ -212,6 +212,7 @@ nextTick(async () => {
   }
   store.hooks.paneReady.trigger(instance)
   store.instance = instance
+  store.fitViewOnInit && instance.fitView()
 })
 </script>
 <script lang="ts">

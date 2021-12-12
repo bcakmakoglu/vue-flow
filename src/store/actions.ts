@@ -1,5 +1,17 @@
-import { CoordinateExtent, FlowActions, FlowGetters, FlowState, GraphNode, Node, XYPosition } from '~/types'
+import {
+  CoordinateExtent,
+  EdgeChange,
+  FlowActions,
+  FlowGetters,
+  FlowState,
+  GraphNode,
+  Node,
+  NodeChange,
+  NodeDimensionChange,
+  XYPosition,
+} from '~/types'
 import { clampPosition, isEdge, isGraphEdge, isGraphNode, isNode, isParentSelected, parseEdge, parseNode } from '~/utils'
+import { createPositionChange, createSelectionChange, getSelectionChanges } from '~/composables/useVueFlow'
 
 const getParent = (root: Node[], id: string): GraphNode | undefined => {
   let node
@@ -11,67 +23,45 @@ const getParent = (root: Node[], id: string): GraphNode | undefined => {
   return node
 }
 
-const updatePosition = (node: GraphNode, { x, y }: XYPosition = { x: 0, y: 0 }, extent: CoordinateExtent, dragging?: boolean) => {
-  let position = {
-    x: node.position.x + x,
-    y: node.position.y + y,
-    z: node.computedPosition.z,
-  }
-
-  if (node.extent === 'parent' && node.parentNode && node.dimensions.width && node.dimensions.height) {
-    const parent = node.parentNode
-    extent =
-      parent.dimensions.width && parent.dimensions.height
-        ? [
-            [0, 0],
-            [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
-          ]
-        : extent
-  }
-  node.dragging = dragging
-  const clamped = clampPosition(position, extent)
-  position = { ...position, ...clamped }
-  node.position = position
-}
-
 export default (state: FlowState, getters: FlowGetters): FlowActions => {
   const updateNodePosition: FlowActions['updateNodePosition'] = ({ id, diff = { x: 0, y: 0 }, dragging }) => {
+    const changes: NodeDimensionChange[] = []
+
     state.nodes.forEach((node) => {
       if (node.selected) {
         if (!node.parentNode) {
-          updatePosition(node, diff, state.nodeExtent, dragging)
+          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }))
         } else if (!isParentSelected(node)) {
-          updatePosition(node, diff, state.nodeExtent, dragging)
+          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }))
         }
       } else if (node.id === id) {
-        updatePosition(node, diff, state.nodeExtent, dragging)
+        changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }))
       }
     })
+
+    if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
-  const emit = ref(true)
   const addSelectedNodes: FlowActions['addSelectedNodes'] = (nodes) => {
-    const selectedElementsUpdated = nodes.filter((el) => !state.selectedNodes.some((e) => el.id === e.id)).length
-    const selectedNodes = !nodes.length || selectedElementsUpdated ? nodes : state.selectedNodes
-    const selectedNodesIds = selectedNodes.map((n) => n.id)
-    state.nodes.forEach(
-      (n) => (n.selected = selectedNodesIds.includes(n.id) || (n.parentNode && selectedNodesIds.includes(n.parentNode?.id))),
-    )
-    state.selectedNodes = selectedNodes
-    if (emit.value && selectedElementsUpdated) state.hooks.selectionChange.trigger({ nodes })
+    const selectedNodesIds = nodes.map((n) => n.id)
+
+    let changedNodes: NodeChange[]
+    if (state.multiSelectionActive) changedNodes = selectedNodesIds.map((nodeId) => createSelectionChange(nodeId, true))
+    else changedNodes = getSelectionChanges(state.nodes, selectedNodesIds)
+
+    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
   }
   const addSelectedEdges: FlowActions['addSelectedEdges'] = (edges) => {
-    const selectedElementsUpdated = edges.filter((el) => !state.selectedEdges.some((e) => el.id === e.id)).length
-    const selectedEdges = !edges.length || selectedElementsUpdated ? edges : state.selectedEdges
-    const selectedEdgesIds = selectedEdges.map((e) => e.id)
-    state.edges.forEach((e) => (e.selected = selectedEdgesIds.includes(e.id)))
-    state.selectedEdges = selectedEdges
-    if (emit.value && selectedElementsUpdated) state.hooks.selectionChange.trigger({ edges })
+    const selectedEdgesIds = edges.map((e) => e.id)
+
+    let changedEdges: EdgeChange[]
+    if (state.multiSelectionActive) changedEdges = selectedEdgesIds.map((nodeId) => createSelectionChange(nodeId, true))
+    else changedEdges = getSelectionChanges(state.nodes, selectedEdgesIds)
+
+    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
   const addSelectedElements: FlowActions['addSelectedElements'] = (elements) => {
-    emit.value = false
     addSelectedNodes(elements.filter(isGraphNode))
     addSelectedEdges(elements.filter(isGraphEdge))
-    state.hooks.selectionChange.trigger({ nodes: state.selectedNodes, edges: state.selectedEdges })
   }
   const setMinZoom: FlowActions['setMinZoom'] = (minZoom: any) => {
     state.d3Zoom?.scaleExtent([minZoom, state.maxZoom])
@@ -116,10 +106,10 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     }
   }
 
-  const setNodes: FlowActions['setNodes'] = (nodes, extent: CoordinateExtent) => {
+  const setNodes: FlowActions['setNodes'] = (nodes, extent?: CoordinateExtent) => {
     nodes = nodes.flatMap((node) => {
       const children: GraphNode[] = []
-      parseChildren(node, undefined, children, extent)
+      parseChildren(node, undefined, children, extent ?? state.nodeExtent)
       return children
     })
     state.nodes = <GraphNode[]>nodes
@@ -151,7 +141,6 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     if (typeof opts.elements !== 'undefined') setElements(opts.elements, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
-    if (typeof opts.loading !== 'undefined') state.loading = opts.loading
     if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll
     if (typeof opts.panOnScrollMode !== 'undefined') state.panOnScrollMode = opts.panOnScrollMode
     if (typeof opts.panOnScrollSpeed !== 'undefined') state.panOnScrollSpeed = opts.panOnScrollSpeed

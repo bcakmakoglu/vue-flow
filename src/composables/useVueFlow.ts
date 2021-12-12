@@ -1,8 +1,6 @@
 import {
   EdgeChange,
-  EmitFunc,
   FlowOptions,
-  FlowStore,
   NodeChange,
   UseVueFlow,
   FlowElements,
@@ -10,65 +8,82 @@ import {
   GraphNode,
   GraphEdge,
   SelectionChange,
+  NodeDimensionChange,
+  CreatePositionChangeParams,
 } from '~/types'
-import { useStore, useHooks } from '~/store'
-import { isGraphNode } from '~/utils'
+import { useStore } from '~/store'
+import { clampPosition, isGraphNode } from '~/utils'
 
-const applyChanges = (changes: NodeChange[] | EdgeChange[], elements: FlowElements): FlowElements => {
-  const initElements: FlowElements = []
-
-  return elements.reduce((res: FlowElements, item: FlowElement) => {
-    const currentChange = changes.find((c) => c.id === item.id)
-
-    if (currentChange) {
-      switch (currentChange.type) {
-        case 'select': {
-          res.push({ ...item, selected: currentChange.selected })
-          return res
-        }
-        case 'dimensions': {
-          const updateItem = { ...item }
-
-          if (isGraphNode(updateItem)) {
-            if (typeof currentChange.dimensions !== 'undefined') {
-              updateItem.dimensions.width = currentChange.dimensions.width
-              updateItem.dimensions.height = currentChange.dimensions.height
-            }
-
-            if (typeof currentChange.position !== 'undefined') {
-              updateItem.position = currentChange.position
-            }
-
-            if (typeof currentChange.dragging !== 'undefined') {
-              updateItem.dragging = currentChange.dragging
-            }
+const applyChanges = <T extends FlowElement = GraphNode, C extends NodeChange = T extends GraphNode ? NodeChange : EdgeChange>(
+  changes: C[],
+  elements: T[],
+): T[] => {
+  let elementIds = elements.map((el) => el.id)
+  changes.forEach((change) => {
+    const i = elementIds.indexOf(change.id)
+    const el = elements[i]
+    if (el) {
+      switch (change.type) {
+        case 'select':
+          el.selected = change.selected
+          break
+        case 'dimensions':
+          if (isGraphNode(el)) {
+            if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
+            if (typeof change.position !== 'undefined') el.position = change.position
+            if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
           }
-
-          res.push(updateItem)
-          return res
-        }
-        case 'remove': {
-          return res
-        }
+          break
+        case 'remove':
+          elements.splice(i, 1)
+          elementIds = elements.map((el) => el.id)
+          break
       }
     }
+  })
 
-    res.push(item)
-    return res
-  }, initElements)
+  return elements
 }
 
-export const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]): GraphNode[] =>
-  <GraphNode[]>applyChanges(changes, nodes)
-
-export const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]): GraphEdge[] =>
-  <GraphEdge[]>applyChanges(changes, edges)
+const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
+const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
 
 export const createSelectionChange = (id: string, selected: boolean): SelectionChange => ({
   id,
   type: 'select',
   selected,
 })
+
+export const createPositionChange = ({ node, diff, dragging, nodeExtent }: CreatePositionChangeParams): NodeDimensionChange => {
+  const change: NodeDimensionChange = {
+    id: node.id,
+    type: 'dimensions',
+    dragging: !!dragging,
+    handleBounds: node.handleBounds,
+  }
+
+  if (diff) {
+    const nextPosition = { x: node.position.x + diff.x, y: node.position.y + diff.y }
+    let currentExtent = nodeExtent || node.extent
+
+    if (node.extent === 'parent' && node.parentNode && node.dimensions.width && node.dimensions.height) {
+      currentExtent =
+        node.parentNode?.dimensions.width && node.parentNode?.dimensions.height
+          ? [
+              [0, 0],
+              [
+                node.parentNode.dimensions.width - node.dimensions.width,
+                node.parentNode.dimensions.height - node.dimensions.height,
+              ],
+            ]
+          : currentExtent
+    }
+
+    change.position = currentExtent ? clampPosition(nextPosition, currentExtent) : nextPosition
+  }
+
+  return change
+}
 
 export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
   return items.reduce((res, item) => {
@@ -85,12 +100,6 @@ export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) 
 
     return res
   }, [] as SelectionChange[])
-}
-
-export const initFlow = (emit: EmitFunc, id?: string): FlowStore => {
-  const store = useStore({ id })
-  useHooks(store, emit)
-  return store
 }
 
 export default (options?: FlowOptions): UseVueFlow => {

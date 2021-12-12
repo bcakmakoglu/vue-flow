@@ -114,7 +114,7 @@ export interface FlowProps<N = any, E = N> {
   preventScrolling?: boolean
   edgeUpdaterRadius?: number
   storageKey?: string
-  loading?: string
+  fitViewOnInit?: boolean
 }
 
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>

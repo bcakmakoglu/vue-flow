@@ -7,7 +7,6 @@ export { getBezierPath, getSmoothStepPath, getMarkerEnd, getCenter as getEdgeCen
 export {
   isNode,
   isEdge,
-  removeElements,
   addEdge,
   getOutgoers,
   getIncomers,

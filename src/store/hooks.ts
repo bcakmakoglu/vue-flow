@@ -4,7 +4,6 @@ import { EmitFunc, FlowHooks, FlowEvents, FlowStore } from '~/types'
 export const createHooks = (): FlowHooks => ({
   edgesChange: createEventHook(),
   nodesChange: createEventHook(),
-  elementClick: createEventHook(),
   nodeDoubleClick: createEventHook(),
   nodeClick: createEventHook(),
   nodeMouseEnter: createEventHook(),
