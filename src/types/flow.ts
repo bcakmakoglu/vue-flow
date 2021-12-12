@@ -10,7 +10,12 @@ export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
 export type FlowElements<N = any, E = any> = FlowElement<N, E>[]
 export interface Element<Data = any> {
   id: string
-  label?: string
+  label?:
+    | string
+    | {
+        props?: any
+        component: any
+      }
   type?: string
   data?: Data
   class?: string

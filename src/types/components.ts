@@ -74,10 +74,15 @@ export interface MiniMapNodeProps {
 export interface EdgeTextProps {
   x: number
   y: number
-  label?: string
+  label?:
+    | string
+    | {
+        component: any
+        props?: any
+      }
   labelStyle?: CSSProperties
   labelShowBg?: boolean
-  labelBgStyle?: any
+  labelBgStyle?: CSSProperties
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
 }

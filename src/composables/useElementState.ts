@@ -108,7 +108,7 @@ export const useNodesState = (
           parseChildren(node, undefined, children, extent ?? store.nodeExtent, store.getNode)
           return children
         })
-        store.nodes.concat(parsed)
+        store.nodes.push(...parsed)
         return store.nodes
       },
       OnNodesChange: store.hooksOn.OnNodesChange,
