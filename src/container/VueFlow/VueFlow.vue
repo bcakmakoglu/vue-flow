@@ -19,16 +19,27 @@ const props = withDefaults(defineProps<FlowProps>(), {
   panOnScroll: false,
   paneMoveable: true,
 })
-const emit = defineEmits([...Object.keys(createHooks())])
+const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:edges', 'update:nodes'])
+const { modelValue, nodes, edges } = useVModels(props, emit)
 
-const { store } = useVueFlow()
+const { store } = useVueFlow(props)
 useHooks(store, emit)
-nextTick(() => store.setState(props))
-watch(
-  () => props,
-  (v) => nextTick(() => store.setState(v)),
-  { flush: 'sync', deep: true },
-)
+
+nextTick(() => {
+  modelValue && (modelValue.value = [...store.nodes, ...store.edges])
+  nodes && (nodes.value = store.nodes)
+})
+nextTick(() => {
+  modelValue && (modelValue.value = [...store.nodes, ...store.edges])
+  edges && (edges.value = store.edges)
+})
+onMounted(() => {
+  watch(
+    () => props,
+    (v) => nextTick(() => store.setState(v)),
+    { flush: 'sync' },
+  )
+})
 </script>
 <script lang="ts">
 export default {
