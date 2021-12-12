@@ -2,7 +2,7 @@ import { getCurrentInstance } from 'vue'
 import useState, { initialState } from './state'
 import useActions from './actions'
 import useGetters from './getters'
-import { FlowExportObject, FlowOptions, FlowState, FlowStore, Store } from '~/types'
+import { FlowExportObject, FlowHooksOn, FlowOptions, FlowState, FlowStore, Store } from '~/types'
 import { StoreSymbol } from '~/context'
 import { onLoadToObject } from '~/utils'
 
@@ -10,9 +10,15 @@ const useFlowStore = (id: string, preloadedState: FlowState): Store => {
   const state = reactive(useState(preloadedState))
   const getters = useGetters(state)
   const actions = useActions(state, getters)
+  const hooksOn: FlowHooksOn = <any>{}
+  Object.entries(state.hooks).forEach(([n, h]) => {
+    const name = `On${n.charAt(0).toUpperCase() + n.slice(1)}`
+    hooksOn[<keyof FlowHooksOn>name] = h.on as any
+  })
   return {
     id,
     state,
+    hooksOn,
     ...toRefs(state),
     ...getters,
     ...actions,

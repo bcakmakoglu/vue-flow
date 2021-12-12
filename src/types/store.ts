@@ -6,7 +6,7 @@ import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connectio
 import { Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
-import { FlowHooks } from './hooks'
+import { FlowHooks, FlowHooksOn } from './hooks'
 
 export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'> {
   hooks: FlowHooks
@@ -100,7 +100,7 @@ export interface FlowGetters<N = any, E = N> {
   getSelectedEdges: ComputedRef<GraphEdge<E>[]>
 }
 
-export type Store<N = any, E = N> = { id: string; state: FlowState<N, E> } & ToRefs<FlowState<N, E>> &
+export type Store<N = any, E = N> = { id: string; state: FlowState<N, E>; hooksOn: FlowHooksOn } & ToRefs<FlowState<N, E>> &
   FlowActions<N, E> &
   FlowGetters<N, E>
 export type FlowStore<N = any, E = N> = UnwrapNestedRefs<Store<N, E>>
