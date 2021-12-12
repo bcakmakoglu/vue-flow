@@ -22,7 +22,7 @@ export default (state: FlowState): FlowGetters => {
   })
 
   const getNodes = computed<GraphNode[]>(() => {
-    if (state.isReady && state.dimensions.width && state.dimensions.height) {
+    if (state.paneReady && state.dimensions.width && state.dimensions.height) {
       const nodes = state.nodes.filter((n) => !n.hidden)
       return state.onlyRenderVisibleElements
         ? nodes &&
@@ -43,8 +43,8 @@ export default (state: FlowState): FlowGetters => {
   })
 
   const getEdges = computed<GraphEdge[]>(() => {
-    if (state.isReady && state.dimensions.width && state.dimensions.height) {
-      if (!state.onlyRenderVisibleElements) return state.edges
+    if (state.paneReady && state.dimensions.width && state.dimensions.height) {
+      if (!state.onlyRenderVisibleElements) return state.edges.filter((e) => !e.hidden)
       else
         return state.edges.filter(
           (e) =>

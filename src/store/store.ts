@@ -1,7 +1,7 @@
 import useState from './state'
 import useActions from './actions'
 import useGetters from './getters'
-import { FlowExportObject, FlowHooksOn, FlowOptions, FlowState, Store } from '~/types'
+import { FlowExportObject, FlowHooksOn, FlowOptions, FlowState, GraphEdge, GraphNode, Store } from '~/types'
 import { onLoadToObject } from '~/utils'
 
 const useFlowStore = (id: string, preloadedState: FlowState): Store => {
@@ -30,7 +30,6 @@ export default (options?: FlowOptions) => {
   let storedState = ref<FlowExportObject>()
   const initial = useState()
   const storageKey = options?.id ?? `vue-flow-${id++}`
-  delete options?.id
   const preloadedState = {
     ...initial,
     ...(options as FlowState),
@@ -38,10 +37,8 @@ export default (options?: FlowOptions) => {
   if (withStorage) {
     storedState = useStorage<FlowExportObject>(storageKey, { edges: [], nodes: [], position: [0, 0], zoom: 0 })
     if (storedState.value) {
-      preloadedState.elements =
-        storedState.value.nodes || storedState.value.edges
-          ? [...storedState.value.nodes, ...storedState.value.edges]
-          : options?.elements ?? []
+      preloadedState.nodes = (storedState.value.nodes ? storedState.value.nodes : options?.nodes ?? []) as GraphNode[]
+      preloadedState.edges = (storedState.value.edges ? storedState.value.edges : options?.edges ?? []) as GraphEdge[]
       if (storedState.value.position && storedState.value.zoom)
         preloadedState.transform = [storedState.value.position[0], storedState.value.position[1], storedState.value.zoom]
     }
