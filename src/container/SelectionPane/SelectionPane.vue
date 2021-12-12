@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { EdgeChange, FlowElement, NodeChange } from '../../types'
-import { useStore, useKeyPress } from '../../composables'
+import { EdgeChange, NodeChange } from '../../types'
+import { useVueFlow, useKeyPress } from '../../composables'
 import { getConnectedEdges } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 
-const store = useStore()
+const { store } = useVueFlow()
 
 const onClick = (event: MouseEvent) => {
   store.hooks.paneClick.trigger(event)

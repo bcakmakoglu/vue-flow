@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 import { GraphNode, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 import { getDimensions, getHandleBounds, getXYZPos } from '../../utils'
@@ -19,7 +19,7 @@ interface NodeWrapperProps {
 const props = defineProps<NodeWrapperProps>()
 const emit = defineEmits(['update:node'])
 const node = useVModel(props, 'node', emit)
-const store = useStore()
+const { store } = useVueFlow()
 provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 
-const store = useStore()
+const { store } = useVueFlow()
 </script>
 <template>
   <div

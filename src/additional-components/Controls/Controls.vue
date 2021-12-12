@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { FitViewParams } from '../../types'
-import { useZoomPanHelper, useStore } from '../../composables'
+import { useZoomPanHelper, useVueFlow } from '../../composables'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from '~/assets/icons/plus.svg'
 import MinusIcon from '~/assets/icons/minus.svg'
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<ControlProps>(), {
 })
 const emit = defineEmits<ControlEvents>()
 
-const store = useStore()
+const { store } = useVueFlow()
 const { zoomIn, zoomOut, fitView } = useZoomPanHelper()
 
 const isInteractive = computed(() => store.nodesDraggable && store.nodesConnectable && store.elementsSelectable)

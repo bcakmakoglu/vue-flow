@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { getBezierPath, getSmoothStepPath } from '../Edges/utils'
 import { ConnectionLineType, GraphNode, HandleElement, Position } from '../../types'
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 
 interface ConnectionLineProps {
   sourceNode: GraphNode
 }
 const props = defineProps<ConnectionLineProps>()
-const store = useStore()
+const { store } = useVueFlow()
 const sourceHandle =
   store.connectionHandleId && store.connectionHandleType
     ? props.sourceNode.handleBounds[store.connectionHandleType]?.find((d: HandleElement) => d.id === store.connectionHandleId)

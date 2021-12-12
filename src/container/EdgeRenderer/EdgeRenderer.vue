@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import EdgeWrapper from '../../components/Edges/EdgeWrapper.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 import { groupEdgesByZLevel } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
-const store = useStore()
+const { store } = useVueFlow()
 const getType = (type?: string) => {
   const t = type ?? 'default'
   let edgeType = store.getEdgeTypes[t]
