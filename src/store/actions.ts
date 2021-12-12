@@ -31,7 +31,6 @@ const updatePosition = (node: GraphNode, { x, y }: XYPosition = { x: 0, y: 0 }, 
   node.dragging = dragging
   const clamped = clampPosition(position, extent)
   position = { ...position, ...clamped }
-  node.computedPosition = position
   node.position = position
 }
 
@@ -160,8 +159,6 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     if (typeof opts.zoomOnPinch !== 'undefined') state.zoomOnPinch = opts.zoomOnPinch
     if (typeof opts.defaultZoom !== 'undefined') state.defaultZoom = opts.defaultZoom
     if (typeof opts.defaultPosition !== 'undefined') state.defaultPosition = opts.defaultPosition
-    if (typeof opts.edgeTypes !== 'undefined') state.edgeTypes = opts.edgeTypes
-    if (typeof opts.nodeTypes !== 'undefined') state.nodeTypes = opts.nodeTypes
     if (typeof opts.storageKey !== 'undefined') state.storageKey = opts.storageKey
     if (typeof opts.edgeUpdaterRadius !== 'undefined') state.edgeUpdaterRadius = opts.edgeUpdaterRadius
     if (typeof opts.elementsSelectable !== 'undefined') state.elementsSelectable = opts.elementsSelectable

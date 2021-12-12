@@ -78,14 +78,15 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 }
 
-const xyzPos = computed(() => {
+watch([() => node.value.position, () => node.value.parentNode?.position], () => {
+  const xyzPos = {
+    ...node.value.position,
+    z: node.value.computedPosition.z,
+  }
   if (node.value.parentNode) {
-    return (node.value.computedPosition = getXYZPos(node.value, {
-      ...node.value.position,
-      z: node.value.computedPosition.z,
-    }))
+    node.value.computedPosition = getXYZPos(node.value, xyzPos)
   } else {
-    return node.value.computedPosition
+    node.value.computedPosition = xyzPos
   }
 })
 
@@ -143,10 +144,13 @@ export default {
         node.class,
       ]"
       :style="{
-        zIndex: node.dragging || node.selected ? 1000 : xyzPos.z,
-        transform: `translate(${xyzPos.x}px,${xyzPos.y}px)`,
+        zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
+        transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-        opacity: node.dimensions.width !== 0 && node.dimensions.height !== 0 ? 1 : 0,
+        opacity:
+          store.dimensions.width !== 0 &&
+          store.dimensions.height !== 0 &&
+          (node.dimensions.width !== 0 && node.dimensions.height !== 0 ? 1 : 0),
         ...node.style,
       }"
       :data-id="node.id"
@@ -176,7 +180,7 @@ export default {
           handleBounds: node.handleBounds,
           parentNode: node.parentNode,
           isParent: node.isParent,
-          computedPosition: xyzPos,
+          computedPosition: node.computedPosition,
           position: node.position,
           draggable: props.draggable,
           selectable: props.selectable,
@@ -204,7 +208,7 @@ export default {
             handleBounds: node.handleBounds,
             parentNode: node.parentNode,
             isParent: node.isParent,
-            computedPosition: xyzPos,
+            computedPosition: node.computedPosition,
             position: node.position,
             draggable: props.draggable,
             selectable: props.selectable,
