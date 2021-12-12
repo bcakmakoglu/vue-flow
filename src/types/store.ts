@@ -1,7 +1,7 @@
 import { ComputedRef, ToRefs } from 'vue'
 import { UnwrapNestedRefs } from '@vue/reactivity'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
-import { HandleType, EdgeComponent, NodeComponent, NodeTypes, EdgeTypes } from './components'
+import { HandleType, EdgeComponent, NodeComponent } from './components'
 import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
 import { Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
@@ -15,8 +15,6 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'>
   elements: Elements
   nodes: GraphNode[]
   edges: GraphEdge[]
-  nodeTypes: NodeTypes
-  edgeTypes: EdgeTypes
 
   d3Zoom?: D3Zoom
   d3Selection?: D3Selection

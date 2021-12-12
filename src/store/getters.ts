@@ -7,7 +7,8 @@ export default (state: FlowState): FlowGetters => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
     }
-    state.edgeTypes?.forEach((n) => (edgeTypes[n] = n))
+    const keys = Object.keys(edgeTypes)
+    state.edges?.forEach((e) => e.type && !keys.includes(e.type) && (edgeTypes[e.type] = e.type))
     return edgeTypes
   })
 
@@ -15,7 +16,8 @@ export default (state: FlowState): FlowGetters => {
     const nodeTypes: Record<string, any> = {
       ...defaultNodeTypes,
     }
-    state.nodeTypes?.forEach((n) => (nodeTypes[n] = n))
+    const keys = Object.keys(nodeTypes)
+    state.nodes?.forEach((n) => n.type && !keys.includes(n.type) && (nodeTypes[n.type] = n.type))
     return nodeTypes
   })
 

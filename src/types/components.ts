@@ -1,15 +1,15 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
-import { BackgroundVariant, Dimensions, FitViewParams, Position, XYPosition } from './flow'
+import { BackgroundVariant, Dimensions, Position, XYPosition } from './flow'
 import { Connection, ConnectionLineType } from './connection'
 import { GraphNode, Node, NodeProps } from './node'
 import { EdgeProps } from './edge'
+import { FitViewParams } from './zoom'
 
+type GlobalComponentName = string
 export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: Component<EdgeProps> }
-export type EdgeTypes = (keyof DefaultEdgeTypes | string)[]
-export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | string
+export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | GlobalComponentName
 export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: Component<NodeProps> }
-export type NodeTypes = (keyof DefaultNodeTypes | string)[]
-export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, any, any, any, any, any> | string
+export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, any, any, any, any, any> | GlobalComponentName
 
 export type HandleType = 'source' | 'target'
 
@@ -49,13 +49,13 @@ export interface ControlEvents {
   (event: 'interaction-change', active: boolean): void
 }
 
-export type StringFunc = (node: Node | GraphNode) => string
+export type StringFunc<N = any> = (node: Node<N> | GraphNode<N>) => string
 export type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
 
-export interface MiniMapProps {
-  nodeColor?: string | StringFunc
-  nodeStrokeColor?: string | StringFunc
-  nodeClassName?: string | StringFunc
+export interface MiniMapProps<N = any> {
+  nodeColor?: string | StringFunc<N>
+  nodeStrokeColor?: string | StringFunc<N>
+  nodeClassName?: string | StringFunc<N>
   nodeBorderRadius?: number
   nodeStrokeWidth?: number
   maskColor?: string
@@ -74,12 +74,7 @@ export interface MiniMapNodeProps {
 export interface EdgeTextProps {
   x: number
   y: number
-  label?:
-    | string
-    | {
-        component: any
-        props?: any
-      }
+  label?: string
   labelStyle?: CSSProperties
   labelShowBg?: boolean
   labelBgStyle?: any
@@ -87,7 +82,7 @@ export interface EdgeTextProps {
   labelBgBorderRadius?: number
 }
 
-export interface CustomConnectionLineProps {
+export interface CustomConnectionLineProps<N = any> {
   sourceX: number
   sourceY: number
   sourcePosition: Position
@@ -96,7 +91,7 @@ export interface CustomConnectionLineProps {
   targetPosition: Position
   connectionLineType: ConnectionLineType
   connectionLineStyle: CSSProperties
-  nodes: GraphNode[]
-  sourceNode: GraphNode
+  nodes: GraphNode<N>[]
+  sourceNode: GraphNode<N>
   sourceHandle: HandleElement
 }

@@ -9,19 +9,8 @@ const onLoad = (flowInstance: FlowInstance) => {
   console.log(flowInstance.getNodes())
 }
 
-const { nodes, edges } = getElements(5, 5)
+const { nodes, edges } = getElements(30, 30)
 </script>
 <template>
   <VueFlow :nodes="nodes" :edges="edges" @load="onLoad"> </VueFlow>
 </template>
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.35s ease;
-}
-
-.fade-enter-from,
-.fade-leave-active {
-  opacity: 0;
-}
-</style>
