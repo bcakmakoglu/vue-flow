@@ -53,9 +53,9 @@ export type StringFunc<N = any> = (node: Node<N> | GraphNode<N>) => string
 export type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
 
 export interface MiniMapProps<N = any> {
-  nodeColor?: string | StringFunc<N>
-  nodeStrokeColor?: string | StringFunc<N>
-  nodeClassName?: string | StringFunc<N>
+  nodeColor?: string | ((node: Node<N> | GraphNode<N>) => string)
+  nodeStrokeColor?: string | ((node: Node<N> | GraphNode<N>) => string)
+  nodeClassName?: string | ((node: Node<N> | GraphNode<N>) => string)
   nodeBorderRadius?: number
   nodeStrokeWidth?: number
   maskColor?: string
@@ -87,7 +87,7 @@ export interface EdgeTextProps {
   labelBgBorderRadius?: number
 }
 
-export interface CustomConnectionLineProps<N = any> {
+export interface ConnectionLineProps<N = any> {
   sourceX: number
   sourceY: number
   sourcePosition: Position

@@ -1,26 +1,12 @@
 <script lang="ts" setup>
-import { FitViewParams } from '../../types'
 import { useZoomPanHelper, useVueFlow } from '../../composables'
+import type { ControlProps, ControlEvents } from '../../types/components'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from '~/assets/icons/plus.svg'
 import MinusIcon from '~/assets/icons/minus.svg'
 import Fitview from '~/assets/icons/fitview.svg'
 import Lock from '~/assets/icons/lock.svg'
 import Unlock from '~/assets/icons/unlock.svg'
-
-interface ControlProps {
-  showZoom?: boolean
-  showFitView?: boolean
-  showInteractive?: boolean
-  fitViewParams?: FitViewParams
-}
-
-interface ControlEvents {
-  (event: 'zoom-in'): void
-  (event: 'zoom-out'): void
-  (event: 'fit-view'): void
-  (event: 'interaction-change', active: boolean): void
-}
 
 const props = withDefaults(defineProps<ControlProps>(), {
   showZoom: true,

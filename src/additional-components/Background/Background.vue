@@ -1,16 +1,10 @@
 <script lang="ts" setup>
 import { BackgroundVariant } from '../../types'
 import { useVueFlow } from '../../composables'
-
-interface BackgroundProps {
-  variant?: BackgroundVariant
-  gap?: number
-  color?: string
-  size?: number
-}
+import type { BackgroundProps } from '../../types/components'
 
 const props = withDefaults(defineProps<BackgroundProps>(), {
-  variant: BackgroundVariant.Dots,
+  variant: 'dots' as BackgroundVariant,
   gap: 10,
   size: 0.4,
 })
