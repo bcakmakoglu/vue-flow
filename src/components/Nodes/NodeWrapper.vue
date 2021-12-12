@@ -150,7 +150,10 @@ export default {
         opacity:
           store.dimensions.width !== 0 &&
           store.dimensions.height !== 0 &&
-          (node.dimensions.width !== 0 && node.dimensions.height !== 0 ? 1 : 0),
+          node.dimensions.width !== 0 &&
+          node.dimensions.height !== 0
+            ? 1
+            : 0,
         ...node.style,
       }"
       :data-id="node.id"
