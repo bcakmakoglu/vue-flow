@@ -96,6 +96,8 @@ export default (options?: FlowOptions): UseVueFlow => {
   const store = useStore(options)
   return {
     store,
-    hooks: store.hooks,
+    applyNodeChanges: (changes) => applyNodeChanges(changes, store.nodes),
+    applyEdgeChanges: (changes) => applyEdgeChanges(changes, store.edges),
+    ...store.hooksOn,
   }
 }

@@ -1,16 +1,42 @@
 import { EventHook } from '@vueuse/core'
 import { MouseTouchEvent } from '@braks/revue-draggable'
-import { FlowInstance, FlowElements } from './flow'
+import { FlowInstance, Dimensions, XYPosition, XYZPosition } from './flow'
 import { GraphEdge } from './edge'
-import { GraphNode } from './node'
+import { GraphNode, HandleBounds } from './node'
 import { Connection, OnConnectStartParams } from './connection'
 import { FlowTransform } from './zoom'
 
-export type FlowHook<T = any> = EventHook<T>
+export type NodeDimensionChange = {
+  id: string
+  type: 'dimensions'
+  dimensions?: Dimensions
+  position?: XYPosition
+  handleBounds?: HandleBounds
+  computedPosition?: XYZPosition
+  dragging?: boolean
+}
+
+export type NodeSelectionChange = {
+  id: string
+  type: 'select'
+  selected: boolean
+}
+
+export type NodeRemoveChange = {
+  id: string
+  type: 'remove'
+}
+
+export type NodeChange = NodeDimensionChange | NodeSelectionChange | NodeRemoveChange
+
+export type EdgeSelectionChange = NodeSelectionChange
+export type EdgeRemoveChange = NodeRemoveChange
+export type EdgeChange = EdgeSelectionChange | EdgeRemoveChange
 
 export interface FlowEvents {
+  nodesChange: NodeChange[]
+  edgesChange: EdgeChange[]
   elementClick: { event: MouseTouchEvent; element: GraphNode | GraphEdge }
-  elementsRemove: FlowElements
   nodeDoubleClick: { event: MouseTouchEvent; node: GraphNode }
   nodeClick: { event: MouseTouchEvent; node: GraphNode }
   nodeMouseEnter: { event: MouseEvent; node: GraphNode }
@@ -26,8 +52,7 @@ export interface FlowEvents {
   } & { [key in keyof OnConnectStartParams]: OnConnectStartParams[key] }
   connectStop: MouseEvent
   connectEnd: MouseEvent
-  load: FlowInstance
-  elementsProcessed: FlowElements
+  paneReady: FlowInstance
   move: FlowTransform | undefined
   moveStart: FlowTransform | undefined
   moveEnd: FlowTransform | undefined
@@ -50,6 +75,9 @@ export interface FlowEvents {
   edgeUpdateEnd: { event: MouseEvent; edge: GraphEdge }
 }
 
+export type FlowHook<T = any> = EventHook<T>
+
 export type FlowHooks = { [key in keyof FlowEvents]: FlowHook<FlowEvents[key]> }
+export type FlowHooksOn = { [key in keyof FlowEvents as `On${Capitalize<key>}`]: FlowHook<FlowEvents[key]>['on'] }
 
 export type EmitFunc<T extends FlowHooks = FlowHooks> = (name: keyof T, ...args: any[]) => void
