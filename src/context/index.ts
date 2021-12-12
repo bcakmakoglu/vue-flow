@@ -1,5 +1,5 @@
 import { InjectionKey } from 'vue'
-import { Store as TStore } from '~/types'
+import { UseVueFlow } from '~/types'
 
-export const StoreSymbol: InjectionKey<TStore> = Symbol('store')
+export const VueFlow: InjectionKey<UseVueFlow> = Symbol('vueFlow')
 export const NodeId: InjectionKey<string> = Symbol('nodeId')
