@@ -2,17 +2,8 @@
 import { GraphNode, ShapeRendering } from '../../types'
 import { useVueFlow, useWindow } from '../../composables'
 import { getBoundsofRects, getRectOfNodes } from '../../utils'
+import type { MiniMapProps } from '../../types/components'
 import MiniMapNode from './MiniMapNode.vue'
-
-type StringFunc = (node: GraphNode) => string
-interface MiniMapProps {
-  nodeColor?: string | StringFunc
-  nodeStrokeColor?: string | StringFunc
-  nodeClassName?: string | StringFunc
-  nodeBorderRadius?: number
-  nodeStrokeWidth?: number
-  maskColor?: string
-}
 
 const props = withDefaults(defineProps<MiniMapProps>(), {
   nodeStrokeColor: '#555',
