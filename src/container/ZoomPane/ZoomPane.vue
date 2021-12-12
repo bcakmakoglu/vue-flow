@@ -193,13 +193,16 @@ nextTick(async () => {
   if ('screen' in window)
     await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
 
-  const { zoomIn, zoomOut, zoomTo, transform: setTransform, fitView } = useZoomPanHelper(store)
+  const { zoomIn, zoomOut, zoomTo, setTransform, getTransform, fitView, fitBounds, setCenter } = useZoomPanHelper(store)
   const instance: FlowInstance = {
     fitView: (params = { padding: 0.1 }) => fitView(params),
     zoomIn,
     zoomOut,
     zoomTo,
     setTransform,
+    getTransform,
+    setCenter,
+    fitBounds,
     project: onLoadProject(store),
     getElements: onLoadGetElements(store),
     getNodes: onLoadGetNodes(store),
