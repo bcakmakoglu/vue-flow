@@ -187,7 +187,7 @@ onMounted(() => {
   )
 })
 nextTick(async () => {
-  store.isReady = true
+  store.paneReady = true
 
   // if ssr we can't wait for dimensions, they'll never really exist
   const window = useWindow()

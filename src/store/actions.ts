@@ -181,7 +181,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     if (typeof opts.snapToGrid !== 'undefined') state.snapToGrid = opts.snapToGrid
     if (typeof opts.snapGrid !== 'undefined') state.snapGrid = opts.snapGrid
     if (typeof opts.nodeExtent !== 'undefined') state.nodeExtent = opts.nodeExtent
-    if (!state.isReady)
+    if (!state.paneReady)
       until(() => state.d3Zoom)
         .not.toBeUndefined()
         .then(() => {

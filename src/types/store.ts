@@ -8,11 +8,10 @@ import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks, FlowHooksOn } from './hooks'
 
-export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'> {
+export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'elements'> {
   hooks: FlowHooks
   instance?: FlowInstance
 
-  elements: Elements
   nodes: GraphNode<N>[]
   edges: GraphEdge<E>[]
 
@@ -64,7 +63,7 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'>
   zoomOnDoubleClick: boolean
   preventScrolling: boolean
 
-  isReady: boolean
+  paneReady: boolean
 
   vueFlowVersion: string
 }

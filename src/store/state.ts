@@ -16,11 +16,10 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
 }
 
 export default (): FlowState => ({
-  elements: [],
   nodes: [],
   edges: [],
 
-  isReady: false,
+  paneReady: false,
   instance: undefined,
 
   dimensions: {
