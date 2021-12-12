@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 import type { MarkerProps } from '../../types/edge'
+import { getMarkerId } from '../../utils'
 import Marker from './Marker.vue'
-import { getMarkerId } from '~/utils'
 
 interface MarkerDefinitionsProps {
   defaultColor: string
@@ -11,7 +11,7 @@ interface MarkerDefinitionsProps {
 const props = withDefaults(defineProps<MarkerDefinitionsProps>(), {
   defaultColor: '',
 })
-const store = useStore()
+const { store } = useVueFlow()
 
 const markers = computed(() => {
   const ids: string[] = []

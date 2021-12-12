@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { GraphNode } from '../../types'
 import NodeWrapper from '../../components/Nodes/NodeWrapper.vue'
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 
-const store = useStore()
+const { store } = useVueFlow()
 const getType = (type?: string) => {
   const t = type ?? 'default'
   let nodeType = store.getNodeTypes[t]

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useHandle, useStore } from '../../composables'
+import { useHandle, useVueFlow } from '../../composables'
 import { Position, ValidConnectionFunc } from '../../types'
 import { NodeId } from '../../context'
 
@@ -11,7 +11,7 @@ interface HandleProps {
   connectable?: boolean
 }
 
-const store = useStore()
+const { store } = useVueFlow()
 const props = withDefaults(defineProps<HandleProps>(), {
   id: '',
   type: 'source',

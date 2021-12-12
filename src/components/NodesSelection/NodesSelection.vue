@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 import { GraphNode } from '../../types'
 
 interface Props {
   nodes: GraphNode[]
 }
-const store = useStore()
+const { store } = useVueFlow()
 const props = defineProps<Props>()
 const selectedNodesBBox = computed(() => getRectOfNodes(props.nodes))
 const innerStyle = computed(() => ({

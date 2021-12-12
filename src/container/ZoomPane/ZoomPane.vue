@@ -2,7 +2,7 @@
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { FlowInstance, FlowTransform, PanOnScrollMode } from '../../types'
-import { useKeyPress, useStore, useWindow, useZoomPanHelper } from '../../composables'
+import { useKeyPress, useWindow, useZoomPanHelper, useVueFlow } from '../../composables'
 import {
   clamp,
   clampPosition,
@@ -13,9 +13,9 @@ import {
   onLoadToObject,
 } from '../../utils'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
-import TransformationPane from '~/container/TransformationPane/TransformationPane.vue'
+import TransformationPane from '../TransformationPane/TransformationPane.vue'
 
-const store = useStore()
+const { store } = useVueFlow()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
@@ -188,6 +188,7 @@ onMounted(() => {
 })
 nextTick(async () => {
   store.isReady = true
+
   // if ssr we can't wait for dimensions, they'll never really exist
   const window = useWindow()
   if ('screen' in window)

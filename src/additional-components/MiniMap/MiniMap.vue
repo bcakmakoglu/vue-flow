@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { GraphNode, ShapeRendering } from '../../types'
-import { useStore, useWindow } from '../../composables'
+import { useVueFlow, useWindow } from '../../composables'
 import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import MiniMapNode from './MiniMapNode.vue'
 
@@ -29,7 +29,7 @@ const window = useWindow()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const store = useStore()
+const { store } = useVueFlow()
 
 const elementWidth = attrs.style?.width ?? defaultWidth
 const elementHeight = attrs.style?.height ?? defaultHeight

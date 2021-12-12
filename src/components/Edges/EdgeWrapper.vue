@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useHandle, useStore } from '../../composables'
+import { useHandle, useVueFlow } from '../../composables'
 import { ConnectionMode, Position, GraphEdge } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
@@ -13,7 +13,7 @@ interface EdgeWrapper {
 }
 
 const props = withDefaults(defineProps<EdgeWrapper>(), {})
-const store = useStore()
+const { store } = useVueFlow()
 
 const updating = ref<boolean>(false)
 const handler = useHandle()

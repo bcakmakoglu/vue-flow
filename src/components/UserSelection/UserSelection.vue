@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 import { SelectionRect as Rect } from '../../types'
 import { getConnectedEdges, getNodesInside } from '../../utils'
 import SelectionRect from './SelectionRect.vue'
 import { getMousePosition } from './utils'
 
-const store = useStore()
+const { store } = useVueFlow()
 const el = templateRef('user-selection', null)
 
 const prevNodes = ref(0)

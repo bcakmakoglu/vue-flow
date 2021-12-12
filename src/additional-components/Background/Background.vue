@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { BackgroundVariant } from '../../types'
-import { useStore } from '../../composables'
+import { useVueFlow } from '../../composables'
 
 interface BackgroundProps {
   variant?: BackgroundVariant
@@ -20,7 +20,7 @@ const defaultColors: Record<BackgroundVariant, string> = {
   [BackgroundVariant.Lines]: '#eee',
 }
 
-const store = useStore()
+const { store } = useVueFlow()
 
 const background = computed(() => {
   const scaledGap = props.gap && props.gap * store.transform[2]
