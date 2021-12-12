@@ -16,7 +16,7 @@ export interface Node<T = any> extends Element<T> {
   isValidTargetPos?: ValidConnectionFunc
   isValidSourcePos?: ValidConnectionFunc
   extent?: 'parent' | CoordinateExtent
-  children?: Node[]
+  children?: Node<T>[]
   dimensions?: Dimensions
 }
 
@@ -25,7 +25,7 @@ export interface GraphNode<T = any> extends Node<T> {
     source?: HandleElement[]
     target?: HandleElement[]
   }
-  parentNode?: GraphNode
+  parentNode?: GraphNode<T>
   isParent?: boolean
   computedPosition: XYZPosition
   selected?: boolean
