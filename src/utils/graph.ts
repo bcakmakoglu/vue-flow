@@ -59,6 +59,55 @@ export const isNode = (element: Node | Edge | Connection): element is Node => 'i
 export const isGraphNode = (element: Node | Edge | Connection): element is GraphNode =>
   isNode(element) && 'computedPosition' in element
 
+export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: Partial<GraphNode>): GraphNode => {
+  defaults = !isGraphNode(node)
+    ? {
+        type: node.type ?? 'default',
+        dimensions: {
+          width: 0,
+          height: 0,
+        },
+        handleBounds: {
+          source: [],
+          target: [],
+        },
+        computedPosition: {
+          z: typeof node.style?.zIndex === 'string' ? parseInt(node.style?.zIndex) : node.style?.zIndex ?? 0,
+          ...clampPosition(node.position, nodeExtent),
+        },
+        isParent: !!(node.children && node.children.length),
+        dragging: false,
+        ...defaults,
+      }
+    : defaults
+
+  return {
+    ...node,
+    ...(defaults as GraphNode),
+    id: node.id.toString(),
+  }
+}
+
+export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge => {
+  defaults = !isGraphEdge(edge)
+    ? {
+        sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : undefined,
+        targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
+        type: edge.type ?? 'default',
+        source: edge.source.toString(),
+        target: edge.target.toString(),
+        z: typeof edge.style?.zIndex === 'string' ? parseInt(edge.style?.zIndex) : edge.style?.zIndex ?? 0,
+        ...defaults,
+      }
+    : defaults
+
+  return {
+    ...edge,
+    ...(defaults as GraphEdge),
+    id: edge.id.toString(),
+  }
+}
+
 const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
   if (!isNode(node)) return []
   const ids = elements.filter((e) => isEdge(e) && e.source === node.id).map((e) => isEdge(e) && e[dir])
@@ -68,11 +117,11 @@ export const getOutgoers = (node: GraphNode, elements: Elements) => getConnected
 
 export const getIncomers = (node: GraphNode, elements: Elements) => getConnectedElements(node, elements, 'source')
 
-const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection) =>
+export const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection) =>
   `vueflow__edge-${source}${sourceHandle}-${target}${targetHandle}`
 
-const connectionExists = (edge: Edge, elements: Elements) => {
-  return elements.some(
+export const connectionExists = (edge: Edge, elements: Elements) =>
+  elements.some(
     (el) =>
       isEdge(el) &&
       el.source === edge.source &&
@@ -80,7 +129,6 @@ const connectionExists = (edge: Edge, elements: Elements) => {
       (el.sourceHandle === edge.sourceHandle || (!el.sourceHandle && !edge.sourceHandle)) &&
       (el.targetHandle === edge.targetHandle || (!el.targetHandle && !edge.targetHandle)),
   )
-}
 
 export const addEdge = (edgeParams: Edge | Connection, elements: Elements) => {
   if (!edgeParams.source || !edgeParams.target) {
@@ -97,6 +145,7 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements) => {
       id: getEdgeId(edgeParams),
     } as Edge
   }
+  edge = parseEdge(edge)
   if (connectionExists(edge, elements)) return elements
   elements.push(edge)
   return [...elements, edge]
@@ -151,58 +200,6 @@ export const pointToRendererPoint = (
 
 export const onLoadProject = (currentStore: FlowStore) => (position: XYPosition) =>
   pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
-
-export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: Partial<GraphNode>): GraphNode => {
-  defaults = !isGraphNode(node)
-    ? {
-        type: node.type ?? 'default',
-        dimensions: {
-          width: 0,
-          height: 0,
-        },
-        handleBounds: {
-          source: [],
-          target: [],
-        },
-        computedPosition: {
-          z: typeof node.style?.zIndex === 'string' ? parseInt(node.style?.zIndex) : node.style?.zIndex ?? 0,
-          ...clampPosition(node.position, nodeExtent),
-        },
-        isParent: !!(node.children && node.children.length),
-        dragging: false,
-        ...defaults,
-      }
-    : defaults
-
-  return {
-    ...node,
-    ...(defaults as GraphNode),
-    id: node.id.toString(),
-  }
-}
-
-export const parseEdge = (
-  edge: Edge,
-  defaults: Partial<GraphEdge> & { sourceNode: GraphNode; targetNode: GraphNode },
-): GraphEdge => {
-  defaults = !isGraphEdge(edge)
-    ? {
-        sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : undefined,
-        targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
-        type: edge.type ?? 'default',
-        source: edge.source.toString(),
-        target: edge.target.toString(),
-        z: typeof edge.style?.zIndex === 'string' ? parseInt(edge.style?.zIndex) : edge.style?.zIndex ?? 0,
-        ...defaults,
-      }
-    : defaults
-
-  return {
-    ...edge,
-    ...defaults,
-    id: edge.id.toString(),
-  }
-}
 
 const getBoundsOfBoxes = (box1: Box, box2: Box): Box => ({
   x: Math.min(box1.x, box2.x),

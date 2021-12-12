@@ -1,7 +1,7 @@
 import { CSSProperties } from 'vue'
 import { GraphEdge, Edge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
-import { ConnectionLineType, ConnectionMode } from './connection'
+import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { FlowActions, FlowStore } from './store'
 import { EdgeChange, FlowHooksOn, NodeChange } from './hooks'
@@ -119,21 +119,33 @@ export interface FlowProps<N = any, E = N> {
 
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>
 
+type UseStateOptions = {
+  applyDefault?: boolean
+}
 export type UseNodesState = {
   nodes: GraphNode[]
   setNodes: FlowActions['setNodes']
-  OnNodesChange: (applyDefault?: boolean) => FlowHooksOn['OnNodesChange']
+  addNodes: (nodes: Node[], extent?: CoordinateExtent) => GraphNode[]
+  OnNodesChange: FlowHooksOn['OnNodesChange']
+}
+export interface UseNodesStateOptions extends UseStateOptions {
+  nodes?: Node[]
+}
+export interface UseEdgesStateOptions extends UseStateOptions {
+  edges?: Edge[]
 }
 export type UseEdgeState = {
   edges: GraphEdge[]
   setEdges: FlowActions['setEdges']
-  OnEdgesChange: (applyDefault: boolean) => FlowHooksOn['OnEdgesChange']
+  addEdges: (params: (Edge | Connection)[]) => GraphEdge[]
+  updateEdge: (oldEdge: GraphEdge, newConnection: Connection) => GraphEdge | false
+  OnEdgesChange: FlowHooksOn['OnEdgesChange']
 }
 export type UseVueFlow = {
   id: string
   store: FlowStore
-  useNodesState: (nodes: Node[]) => UseNodesState
-  useEdgesState: (edges: Edge[]) => UseEdgeState
+  useNodesState: (nodes?: Node[], applyDefault?: boolean) => UseNodesState
+  useEdgesState: (edges?: Edge[], applyDefault?: boolean) => UseEdgeState
   applyNodeChanges: (changes: NodeChange[]) => void
   applyEdgeChanges: (changes: EdgeChange[]) => void
 } & FlowHooksOn

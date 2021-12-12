@@ -1,4 +1,5 @@
 import { getCurrentInstance } from 'vue'
+import { useEdgesState, useNodesState } from './useElementState'
 import { EdgeChange, FlowOptions, GraphEdge, GraphNode, NodeChange, UseVueFlow } from '~/types'
 import { applyChanges } from '~/utils'
 import { VueFlow } from '~/context'
@@ -17,28 +18,8 @@ export default (options?: FlowOptions): UseVueFlow => {
     vueFlow = {
       id: store.id,
       store,
-      useNodesState: (nodes) => {
-        store.setNodes(nodes)
-        return {
-          nodes: store.nodes,
-          setNodes: store.setNodes,
-          OnNodesChange: (applyDefault = false) => {
-            if (applyDefault) store.hooksOn.OnNodesChange((e) => applyNodes(e))
-            return store.hooksOn.OnNodesChange
-          },
-        }
-      },
-      useEdgesState: (edges) => {
-        store.setEdges(edges)
-        return {
-          edges: store.edges,
-          setEdges: store.setEdges,
-          OnEdgesChange: (applyDefault = false) => {
-            if (applyDefault) store.hooksOn.OnEdgesChange((e) => applyEdges(e))
-            return store.hooksOn.OnEdgesChange
-          },
-        }
-      },
+      useNodesState: (nodes, applyDefault) => useNodesState(store, applyNodes)({ nodes, applyDefault }),
+      useEdgesState: (edges, applyDefault) => useEdgesState(store, applyEdges)({ edges, applyDefault }),
       applyNodeChanges: applyNodes,
       applyEdgeChanges: applyEdges,
       ...store.hooksOn,

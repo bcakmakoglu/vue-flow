@@ -32,6 +32,24 @@ const getParent = (root: Node[], id: string): GraphNode | undefined => {
   return node
 }
 
+export const parseChildren = (
+  n: Node,
+  p: GraphNode | undefined,
+  arr: GraphNode[],
+  extent: CoordinateExtent,
+  getNode: (id: string) => GraphNode | undefined,
+) => {
+  const parent = typeof p === 'undefined' || typeof p !== 'object' ? getParent(arr, n.id) : p
+  const parsed = parseNode(n, extent, {
+    ...getNode(n.id),
+    parentNode: parent,
+  })
+  arr.push(parsed)
+  if (n.children && n.children.length) {
+    n.children.forEach((c) => parseChildren(c, parsed, arr, extent, getNode))
+  }
+}
+
 export default (state: FlowState, getters: FlowGetters): FlowActions => {
   const updateNodePosition: FlowActions['updateNodePosition'] = ({ id, diff = { x: 0, y: 0 }, dragging }) => {
     const changes: NodeDimensionChange[] = []
@@ -103,28 +121,16 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
     state.elementsSelectable = isInteractive
   }
 
-  const parseChildren = (n: Node, p: GraphNode | undefined, arr: GraphNode[], extent: CoordinateExtent) => {
-    const parent = typeof p === 'undefined' || typeof p !== 'object' ? getParent(arr, n.id) : p
-    const parsed = parseNode(n, extent, {
-      ...getters.getNode.value(n.id),
-      parentNode: parent,
-    })
-    arr.push(parsed)
-    if (n.children && n.children.length) {
-      n.children.forEach((c) => parseChildren(c, parsed, arr, extent))
-    }
-  }
-
   const setNodes: FlowActions['setNodes'] = (nodes, extent?: CoordinateExtent) => {
     nodes = nodes.flatMap((node) => {
       const children: GraphNode[] = []
-      parseChildren(node, undefined, children, extent ?? state.nodeExtent)
+      parseChildren(node, undefined, children, extent ?? state.nodeExtent, getters.getNode.value)
       return children
     })
     state.nodes = <GraphNode[]>nodes
   }
   const setEdges: FlowActions['setEdges'] = (edges) => {
-    state.edges = edges.flatMap((edge) => {
+    state.edges = edges.map((edge) => {
       const sourceNode = getters.getNode.value(edge.source)!
       const targetNode = getters.getNode.value(edge.target)!
       if (!sourceNode || typeof sourceNode === 'undefined')
