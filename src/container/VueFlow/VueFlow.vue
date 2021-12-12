@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { createHooks, initFlow } from '../../store'
+import { createHooks, useHooks } from '../../store'
 import type { FlowProps } from '../../types/flow'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
+import { useVueFlow } from '../../composables'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: false,
@@ -19,8 +20,9 @@ const props = withDefaults(defineProps<FlowProps>(), {
   paneMoveable: true,
 })
 const emit = defineEmits([...Object.keys(createHooks())])
-const store = initFlow(emit, props.id)
-nextTick(() => store.setState(props))
+
+const { store } = useVueFlow(props)
+useHooks(store, emit)
 watch(
   () => props,
   (v) => nextTick(() => store.setState(v)),

@@ -15,7 +15,7 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
   smoothstep: SmoothStepEdge,
 }
 
-export const initialState = (): FlowState => ({
+export default (): FlowState => ({
   elements: [],
   nodes: [],
   edges: [],
@@ -84,13 +84,8 @@ export const initialState = (): FlowState => ({
   deleteKeyCode: 'Backspace',
 
   hooks: createHooks(),
-  loading: undefined,
 
   storageKey: undefined,
 
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
-})
-
-export default (preloadedState: FlowState) => ({
-  ...preloadedState,
 })

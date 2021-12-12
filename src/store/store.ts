@@ -1,14 +1,11 @@
-import { getCurrentInstance } from 'vue'
-import useState, { initialState } from './state'
+import useState from './state'
 import useActions from './actions'
 import useGetters from './getters'
-import { EmitFunc, FlowExportObject, FlowHooksOn, FlowOptions, FlowState, FlowStore, Store } from '~/types'
-import { StoreSymbol } from '~/context'
+import { FlowExportObject, FlowHooksOn, FlowOptions, FlowState, Store } from '~/types'
 import { onLoadToObject } from '~/utils'
-import { useHooks, useStore } from '~/store/index'
 
 const useFlowStore = (id: string, preloadedState: FlowState): Store => {
-  const state = reactive(useState(preloadedState))
+  const state = reactive(useState())
   const getters = useGetters(state)
   const actions = useActions(state, getters)
   const hooksOn: FlowHooksOn = <any>{}
@@ -16,6 +13,7 @@ const useFlowStore = (id: string, preloadedState: FlowState): Store => {
     const name = `On${n.charAt(0).toUpperCase() + n.slice(1)}`
     hooksOn[<keyof FlowHooksOn>name] = h.on as any
   })
+  actions.setState(preloadedState)
   return {
     id,
     state,
@@ -27,10 +25,10 @@ const useFlowStore = (id: string, preloadedState: FlowState): Store => {
 }
 
 let id = 0
-export const createStore = (options?: FlowOptions) => {
+export default (options?: FlowOptions) => {
   const withStorage = options?.storageKey ?? false
   let storedState = ref<FlowExportObject>()
-  const initial = initialState()
+  const initial = useState()
   const storageKey = options?.id ?? `vue-flow-${id++}`
   delete options?.id
   const preloadedState = {
@@ -60,21 +58,4 @@ export const createStore = (options?: FlowOptions) => {
     )
   }
   return store
-}
-
-export const initFlow = (emit: EmitFunc, id?: string): FlowStore => {
-  const store = useStore({ id })
-  useHooks(store, emit)
-  return store
-}
-
-export default (options?: FlowOptions): FlowStore => {
-  const currentInstance = getCurrentInstance()
-  let store = currentInstance ? inject(StoreSymbol, undefined) : false
-  if (!store || (store && options?.id && options.id !== store.id)) {
-    store = createStore(options)
-  }
-  if (currentInstance) provide(StoreSymbol, store)
-
-  return reactive(store)
 }

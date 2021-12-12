@@ -1,121 +1,33 @@
-import {
-  EdgeChange,
-  FlowOptions,
-  NodeChange,
-  UseVueFlow,
-  FlowElements,
-  FlowElement,
-  GraphNode,
-  GraphEdge,
-  SelectionChange,
-  NodeDimensionChange,
-  CreatePositionChangeParams,
-} from '~/types'
+import { getCurrentInstance } from 'vue'
+import { EdgeChange, FlowOptions, GraphEdge, GraphNode, NodeChange, UseVueFlow } from '~/types'
+import { applyChanges } from '~/utils'
+import { VueFlow } from '~/context'
 import { useStore } from '~/store'
-import { clampPosition, isGraphNode } from '~/utils'
-
-const applyChanges = <T extends FlowElement = GraphNode, C extends NodeChange = T extends GraphNode ? NodeChange : EdgeChange>(
-  changes: C[],
-  elements: T[],
-): T[] => {
-  let elementIds = elements.map((el) => el.id)
-  changes.forEach((change) => {
-    const i = elementIds.indexOf(change.id)
-    const el = elements[i]
-    if (el) {
-      switch (change.type) {
-        case 'select':
-          el.selected = change.selected
-          break
-        case 'dimensions':
-          if (isGraphNode(el)) {
-            if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-            if (typeof change.position !== 'undefined') el.position = change.position
-            if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
-          }
-          break
-        case 'remove':
-          elements.splice(i, 1)
-          elementIds = elements.map((el) => el.id)
-          break
-      }
-    }
-  })
-
-  return elements
-}
 
 const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
 const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
 
-export const createSelectionChange = (id: string, selected: boolean): SelectionChange => ({
-  id,
-  type: 'select',
-  selected,
-})
-
-export const createPositionChange = ({ node, diff, dragging, nodeExtent }: CreatePositionChangeParams): NodeDimensionChange => {
-  const change: NodeDimensionChange = {
-    id: node.id,
-    type: 'dimensions',
-    dragging: !!dragging,
-    handleBounds: node.handleBounds,
-  }
-
-  if (diff) {
-    const nextPosition = { x: node.position.x + diff.x, y: node.position.y + diff.y }
-    let currentExtent = nodeExtent || node.extent
-
-    if (node.extent === 'parent' && node.parentNode && node.dimensions.width && node.dimensions.height) {
-      currentExtent =
-        node.parentNode?.dimensions.width && node.parentNode?.dimensions.height
-          ? [
-              [0, 0],
-              [
-                node.parentNode.dimensions.width - node.dimensions.width,
-                node.parentNode.dimensions.height - node.dimensions.height,
-              ],
-            ]
-          : currentExtent
-    }
-
-    change.position = currentExtent ? clampPosition(nextPosition, currentExtent) : nextPosition
-  }
-
-  return change
-}
-
-export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
-  return items.reduce((res, item) => {
-    const willBeSelected =
-      selectedIds.includes(item.id) || (isGraphNode(item) && item.parentNode && selectedIds.includes(item.parentNode?.id))
-
-    if (!item.selected && willBeSelected) {
-      item.selected = true
-      res.push(createSelectionChange(item.id, true))
-    } else if (item.selected && !willBeSelected) {
-      item.selected = false
-      res.push(createSelectionChange(item.id, false))
-    }
-
-    return res
-  }, [] as SelectionChange[])
-}
-
 export default (options?: FlowOptions): UseVueFlow => {
-  const store = useStore(options)
-  return {
-    store,
-    useNodesState: (nodes) => {
-      store.setNodes(nodes)
-      return store.nodes
-    },
-    useEdgesState: (edges) => {
-      store.setEdges(edges)
-      return store.edges
-    },
-    applyNodeChanges: (changes) => applyNodeChanges(changes, store.nodes),
-    applyEdgeChanges: (changes) => applyEdgeChanges(changes, store.edges),
-    ...store.hooksOn,
+  const currentInstance = getCurrentInstance()
+  let vueFlow = currentInstance ? inject(VueFlow, undefined) : false
+  if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.store.id)) {
+    const store = reactive(useStore(options))
+    vueFlow = {
+      store,
+      useNodesState: (nodes) => {
+        store.setNodes(nodes)
+        return store.nodes
+      },
+      useEdgesState: (edges) => {
+        store.setEdges(edges)
+        return store.edges
+      },
+      applyNodeChanges: (changes) => applyNodeChanges(changes, store.nodes),
+      applyEdgeChanges: (changes) => applyEdgeChanges(changes, store.edges),
+      ...store.hooksOn,
+    }
   }
+  if (currentInstance) provide(VueFlow, vueFlow)
+
+  return vueFlow
 }
