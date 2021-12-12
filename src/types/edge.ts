@@ -48,16 +48,21 @@ export interface Edge<T = any> extends Element<T> {
   updatable?: boolean
 }
 
-export interface GraphEdge<T = any> extends Edge<T> {
-  sourceNode: GraphNode
-  targetNode: GraphNode
+export interface GraphEdge<T = any, N = T> extends Edge<T> {
+  sourceNode: GraphNode<N>
+  targetNode: GraphNode<N>
   selected?: boolean
   z?: number
 }
 
 export interface EdgeProps<Data = any> {
   id: string
-  label?: string
+  label?:
+    | string
+    | {
+        props?: any
+        component: any
+      }
   type?: string
   data?: Data
   class?: string
@@ -87,7 +92,41 @@ export interface EdgeProps<Data = any> {
   markerEnd?: string
 }
 
-export interface SmoothStepEdgeProps<T = any> extends EdgeProps<T> {
+export interface SmoothStepEdgeProps<Data = any> extends EdgeProps<Data> {
+  id: string
+  label?:
+    | string
+    | {
+        props?: any
+        component: any
+      }
+  type?: string
+  data?: Data
+  class?: string
+  style?: CSSProperties
+  hidden?: boolean
+  sourceX: number
+  sourceY: number
+  targetX: number
+  targetY: number
+  selected?: boolean
+  sourcePosition: Position
+  targetPosition: Position
+  sourceHandleId?: string
+  targetHandleId?: string
+  source: string
+  target: string
+  sourceHandle?: string
+  targetHandle?: string
+  labelStyle?: any
+  labelShowBg?: boolean
+  labelBgStyle?: any
+  labelBgPadding?: [number, number]
+  labelBgBorderRadius?: number
+  animated?: boolean
+  updatable?: boolean
+  markerStart?: string
+  markerEnd?: string
   borderRadius?: number
 }
 

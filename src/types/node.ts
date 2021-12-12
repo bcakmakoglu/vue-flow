@@ -39,7 +39,12 @@ export interface GraphNode<T = any> extends Node<T> {
 }
 
 export interface NodeProps<T = any> {
-  label?: string
+  label?:
+    | string
+    | {
+        props?: any
+        component: any
+      }
   class?: string
   style?: CSSProperties
   hidden?: boolean
