@@ -6,7 +6,7 @@ const elements = ref<Elements<{ label: string; group?: string }>>([
   { id: 'node-2', label: 'node-2', position: { x: 50, y: 5 } },
   {
     id: 'group-a',
-    style: { zIndex: 2, width: '300px', height: '300px' },
+    type: 'group',
     label: 'A',
     position: { x: 50, y: 100 },
     children: [
@@ -30,12 +30,9 @@ const elements = ref<Elements<{ label: string; group?: string }>>([
 const onConnect = (params: Edge | Connection) => addEdge(params, elements.value)
 </script>
 <template>
-  <VueFlow v-model="elements" :node-types="['group-a', 'group-b']" @connect="onConnect">
-    <template #node-group-a="aProps">
+  <VueFlow v-model="elements" @connect="onConnect">
+    <template #node-group="aProps">
       <GroupNode v-bind="aProps" />
-    </template>
-    <template #node-group-b="bProps">
-      <GroupNode v-bind="bProps" />
     </template>
   </VueFlow>
 </template>
