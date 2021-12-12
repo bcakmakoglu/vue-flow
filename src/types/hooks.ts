@@ -1,9 +1,10 @@
 import { EventHook } from '@vueuse/core'
 import { MouseTouchEvent } from '@braks/revue-draggable'
-import { FlowTransform, FlowInstance, FlowElements } from './flow'
+import { FlowInstance, FlowElements } from './flow'
 import { GraphEdge } from './edge'
 import { GraphNode } from './node'
 import { Connection, OnConnectStartParams } from './connection'
+import { FlowTransform } from './zoom'
 
 export type FlowHook<T = any> = EventHook<T>
 
