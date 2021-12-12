@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { createHooks, initFlow } from '../../composables'
+import { createHooks, initFlow } from '../../store'
 import type { FlowProps } from '../../types/flow'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 

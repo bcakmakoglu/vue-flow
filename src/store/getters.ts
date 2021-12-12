@@ -69,12 +69,12 @@ export default (state: FlowState): FlowGetters => {
     return []
   })
 
-  const getSelectedElements: FlowGetters['getSelectedElements'] = computed(() => [
-    ...(state.selectedNodes ?? []),
-    ...(state.selectedEdges ?? []),
-  ])
   const getSelectedNodes: FlowGetters['getSelectedNodes'] = computed(() => state.nodes.filter((n) => n.selected))
   const getSelectedEdges: FlowGetters['getSelectedEdges'] = computed(() => state.edges.filter((e) => e.selected))
+  const getSelectedElements: FlowGetters['getSelectedElements'] = computed(() => [
+    ...(getSelectedNodes.value ?? []),
+    ...(getSelectedEdges.value ?? []),
+  ])
 
   const nodeIds = computed(() => state.nodes.map((n) => n.id))
   const edgeIds = computed(() => state.edges.map((e) => e.id))

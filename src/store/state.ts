@@ -28,8 +28,6 @@ export const initialState = (): FlowState => ({
     height: 0,
   },
   transform: [0, 0, 1],
-  selectedNodes: [],
-  selectedEdges: [],
 
   d3Zoom: undefined,
   d3Selection: undefined,

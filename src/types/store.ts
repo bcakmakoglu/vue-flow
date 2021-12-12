@@ -30,8 +30,6 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'>
   defaultPosition: [number, number]
 
   selectedNodesBbox: Rect
-  selectedNodes: GraphNode[]
-  selectedEdges: GraphEdge[]
   nodesSelectionActive: boolean
   selectionActive: boolean
   multiSelectionActive: boolean
@@ -72,8 +70,8 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'>
 }
 
 export interface FlowActions<N = any, E = N> {
-  setElements: (elements: Elements<N, E>, extent: CoordinateExtent) => void
-  setNodes: (nodes: Node<N>[], extent: CoordinateExtent) => void
+  setElements: (elements: Elements<N, E>, extent?: CoordinateExtent) => void
+  setNodes: (nodes: Node<N>[], extent?: CoordinateExtent) => void
   setEdges: (edges: Edge<E>[]) => void
   addSelectedElements: (elements: FlowElements<N, E>) => void
   addSelectedEdges: (edges: GraphEdge<E>[]) => void

@@ -33,6 +33,7 @@ onMounted(() => {
       store.hooks.nodesChange.trigger(nodeChanges)
       store.hooks.edgesChange.trigger(edgeChanges)
       store.nodesSelectionActive = false
+
       store.resetSelectedElements()
     }
   })
@@ -56,9 +57,8 @@ export default {
 <template>
   <UserSelection v-if="store.selectionActive" :key="`user-selection-${store.id}`" />
   <NodesSelection
-    v-if="store.selectedNodes.length && !store.selectionActive && store.nodesSelectionActive"
+    v-if="store.getSelectedNodes.length && !store.selectionActive && store.nodesSelectionActive"
     :key="`nodes-selction-${store.id}`"
-    :nodes="store.selectedNodes"
   />
   <div
     :key="`flow-pane-${store.id}`"

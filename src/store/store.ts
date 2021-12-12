@@ -2,9 +2,10 @@ import { getCurrentInstance } from 'vue'
 import useState, { initialState } from './state'
 import useActions from './actions'
 import useGetters from './getters'
-import { FlowExportObject, FlowHooksOn, FlowOptions, FlowState, FlowStore, Store } from '~/types'
+import { EmitFunc, FlowExportObject, FlowHooksOn, FlowOptions, FlowState, FlowStore, Store } from '~/types'
 import { StoreSymbol } from '~/context'
 import { onLoadToObject } from '~/utils'
+import { useHooks, useStore } from '~/store/index'
 
 const useFlowStore = (id: string, preloadedState: FlowState): Store => {
   const state = reactive(useState(preloadedState))
@@ -58,6 +59,12 @@ export const createStore = (options?: FlowOptions) => {
       { deep: true },
     )
   }
+  return store
+}
+
+export const initFlow = (emit: EmitFunc, id?: string): FlowStore => {
+  const store = useStore({ id })
+  useHooks(store, emit)
   return store
 }
 

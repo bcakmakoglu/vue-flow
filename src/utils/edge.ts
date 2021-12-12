@@ -136,8 +136,8 @@ export const groupEdgesByZLevel = (edges: GraphEdge[], nodes: GraphNode[]) => {
     const z = edge.z
       ? edge.z
       : Math.max(
-          nodes[nodeIds.indexOf(edge.source)].computedPosition.z || 0,
-          nodes[nodeIds.indexOf(edge.target)].computedPosition.z || 0,
+          nodes[nodeIds.indexOf(edge.source)]?.computedPosition.z || 0,
+          nodes[nodeIds.indexOf(edge.target)]?.computedPosition.z || 0,
         )
     if (tree[z]) {
       tree[z].push(edge)

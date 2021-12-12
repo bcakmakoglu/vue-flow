@@ -2,31 +2,27 @@
 import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
-import { GraphNode } from '../../types'
 
-interface Props {
-  nodes: GraphNode[]
-}
 const { store } = useVueFlow()
-const props = defineProps<Props>()
-const selectedNodesBBox = computed(() => getRectOfNodes(props.nodes))
+const selectedNodesBBox = computed(() => getRectOfNodes(store.getSelectedNodes))
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
   height: `${selectedNodesBBox.value.height}px`,
   top: `${selectedNodesBBox.value.y}px`,
   left: `${selectedNodesBBox.value.x}px`,
 }))
-watch(selectedNodesBBox, (v) => (store.selectedNodesBbox = v))
-const onStart: DraggableEventListener = ({ event }) => store.hooks.selectionDragStart.trigger({ event, nodes: props.nodes })
+watch(selectedNodesBBox, (v) => nextTick(() => (store.selectedNodesBbox = v)))
+const onStart: DraggableEventListener = ({ event }) =>
+  store.hooks.selectionDragStart.trigger({ event, nodes: store.getSelectedNodes })
 const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
-  store.hooks.selectionDrag.trigger({ event, nodes: props.nodes })
+  store.hooks.selectionDrag.trigger({ event, nodes: store.getSelectedNodes })
   store.updateNodePosition({ diff: { x: deltaX, y: deltaY }, dragging: true })
 }
 const onStop: DraggableEventListener = ({ event }) => {
-  store.hooks.selectionDragStop.trigger({ event, nodes: props.nodes })
-  props.nodes.forEach((node) => (node.dragging = false))
+  store.hooks.selectionDragStop.trigger({ event, nodes: store.getSelectedNodes })
+  store.getSelectedNodes.forEach((node) => (node.dragging = false))
 }
-const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: props.nodes })
+const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: store.getSelectedNodes })
 
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 </script>
