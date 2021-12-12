@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { FlowElement } from '../../types'
+import { EdgeChange, FlowElement, NodeChange } from '../../types'
 import { useStore, useKeyPress } from '../../composables'
 import { getConnectedEdges } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
@@ -19,14 +19,19 @@ const onWheel = (event: WheelEvent) => store.hooks.paneScroll.trigger(event)
 
 onMounted(() => {
   useKeyPress(store.deleteKeyCode, (keyPressed) => {
-    if (keyPressed && (store.selectedNodes || store.selectedEdges)) {
-      const connectedEdges = (store.selectedNodes && getConnectedEdges(store.selectedNodes, store.getEdges)) ?? []
-      const elementsToRemove = [...(store.selectedNodes ?? []), ...(store.selectedEdges ?? []), ...connectedEdges].reduce(
-        (res, item) => res.set(item.id, item),
-        new Map<string, FlowElement>(),
-      )
+    const selectedNodes = store.getSelectedNodes
+    const selectedEdges = store.getSelectedEdges
+    if (keyPressed && (selectedNodes || selectedEdges)) {
+      const connectedEdges = (selectedNodes && getConnectedEdges(selectedNodes, store.edges)) ?? []
 
-      store.hooks.elementsRemove.trigger(Array.from(elementsToRemove.values()))
+      const nodeChanges: NodeChange[] = selectedNodes.map((n) => ({ id: n.id, type: 'remove' }))
+      const edgeChanges: EdgeChange[] = [...selectedEdges, ...connectedEdges].map((e) => ({
+        id: e.id,
+        type: 'remove',
+      }))
+
+      store.hooks.nodesChange.trigger(nodeChanges)
+      store.hooks.edgesChange.trigger(edgeChanges)
       store.nodesSelectionActive = false
       store.resetSelectedElements()
     }

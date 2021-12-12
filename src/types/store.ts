@@ -13,8 +13,8 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'>
   instance?: FlowInstance
 
   elements: Elements
-  nodes: GraphNode[]
-  edges: GraphEdge[]
+  nodes: GraphNode<N>[]
+  edges: GraphEdge<E>[]
 
   d3Zoom?: D3Zoom
   d3Selection?: D3Selection
@@ -71,32 +71,36 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id'>
   vueFlowVersion: string
 }
 
-export interface FlowActions {
-  setElements: (elements: Elements, extent: CoordinateExtent) => void
-  setNodes: (nodes: Node[], extent: CoordinateExtent) => void
-  setEdges: (edges: Edge[]) => void
-  addSelectedElements: (elements: FlowElements) => void
-  addSelectedEdges: (edges: GraphEdge[]) => void
-  addSelectedNodes: (nodes: GraphNode[]) => void
+export interface FlowActions<N = any, E = N> {
+  setElements: (elements: Elements<N, E>, extent: CoordinateExtent) => void
+  setNodes: (nodes: Node<N>[], extent: CoordinateExtent) => void
+  setEdges: (edges: Edge<E>[]) => void
+  addSelectedElements: (elements: FlowElements<N, E>) => void
+  addSelectedEdges: (edges: GraphEdge<E>[]) => void
+  addSelectedNodes: (nodes: GraphNode<N>[]) => void
   setMinZoom: (zoom: number) => void
   setMaxZoom: (zoom: number) => void
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
   resetSelectedElements: () => void
   setConnectionNodeId: (payload: SetConnectionId) => void
   setInteractive: (isInteractive: boolean) => void
-  setState: (state: Partial<FlowOptions>) => void
+  setState: (state: Partial<FlowOptions<N, E>>) => void
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
 }
 
-export interface FlowGetters {
+export interface FlowGetters<N = any, E = N> {
   getEdgeTypes: ComputedRef<Record<string, EdgeComponent>>
   getNodeTypes: ComputedRef<Record<string, NodeComponent>>
-  getNodes: ComputedRef<GraphNode[]>
-  getEdges: ComputedRef<GraphEdge[]>
-  getNode: ComputedRef<(id: string) => GraphNode | undefined>
-  getEdge: ComputedRef<(id: string) => GraphEdge | undefined>
-  getSelectedElements: ComputedRef<FlowElements>
+  getNodes: ComputedRef<GraphNode<N>[]>
+  getEdges: ComputedRef<GraphEdge<E>[]>
+  getNode: ComputedRef<(id: string) => GraphNode<N> | undefined>
+  getEdge: ComputedRef<(id: string) => GraphEdge<E> | undefined>
+  getSelectedElements: ComputedRef<FlowElements<N, E>>
+  getSelectedNodes: ComputedRef<GraphNode<N>[]>
+  getSelectedEdges: ComputedRef<GraphEdge<E>[]>
 }
 
-export type Store = { id: string; state: FlowState } & ToRefs<FlowState> & FlowActions & FlowGetters
-export type FlowStore = UnwrapNestedRefs<Store>
+export type Store<N = any, E = N> = { id: string; state: FlowState<N, E> } & ToRefs<FlowState<N, E>> &
+  FlowActions<N, E> &
+  FlowGetters<N, E>
+export type FlowStore<N = any, E = N> = UnwrapNestedRefs<Store<N, E>>

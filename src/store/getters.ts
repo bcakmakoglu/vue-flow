@@ -1,5 +1,5 @@
 import { defaultEdgeTypes, defaultNodeTypes } from './state'
-import { FlowElements, FlowGetters, FlowState, GraphEdge, GraphNode } from '~/types'
+import { FlowGetters, FlowState, GraphEdge, GraphNode } from '~/types'
 import { getNodesInside, isEdgeVisible } from '~/utils'
 
 export default (state: FlowState): FlowGetters => {
@@ -69,10 +69,17 @@ export default (state: FlowState): FlowGetters => {
     return []
   })
 
-  const getSelectedElements = computed<FlowElements>(() => [...(state.selectedNodes ?? []), ...(state.selectedEdges ?? [])])
+  const getSelectedElements: FlowGetters['getSelectedElements'] = computed(() => [
+    ...(state.selectedNodes ?? []),
+    ...(state.selectedEdges ?? []),
+  ])
+  const getSelectedNodes: FlowGetters['getSelectedNodes'] = computed(() => state.nodes.filter((n) => n.selected))
+  const getSelectedEdges: FlowGetters['getSelectedEdges'] = computed(() => state.edges.filter((e) => e.selected))
 
-  const getNode: FlowGetters['getNode'] = computed(() => (id: string) => state.nodes.find((node) => node.id === id))
-  const getEdge: FlowGetters['getEdge'] = computed(() => (id: string) => state.edges.find((edge) => edge.id === id))
+  const nodeIds = computed(() => state.nodes.map((n) => n.id))
+  const edgeIds = computed(() => state.edges.map((e) => e.id))
+  const getNode: FlowGetters['getNode'] = computed(() => (id: string) => state.nodes[nodeIds.value.indexOf(id)])
+  const getEdge: FlowGetters['getEdge'] = computed(() => (id: string) => state.edges[edgeIds.value.indexOf(id)])
 
   return {
     getNode,
@@ -82,5 +89,7 @@ export default (state: FlowState): FlowGetters => {
     getEdges,
     getNodes,
     getSelectedElements,
+    getSelectedNodes,
+    getSelectedEdges,
   }
 }

@@ -209,7 +209,7 @@ nextTick(async () => {
     getEdges: onLoadGetEdges(store),
     toObject: onLoadToObject(store),
   }
-  store.hooks.load.trigger(instance)
+  store.hooks.paneReady.trigger(instance)
   store.instance = instance
 })
 </script>
