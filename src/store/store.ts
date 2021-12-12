@@ -2,10 +2,10 @@ import useState from './state'
 import useActions from './actions'
 import useGetters from './getters'
 import { FlowExportObject, FlowHooksOn, FlowOptions, FlowState, GraphEdge, GraphNode, Store } from '~/types'
-import { onLoadToObject } from '~/utils'
+import { isEdge, isNode, onLoadToObject } from '~/utils'
 
-const useFlowStore = (id: string, preloadedState: FlowState): Store => {
-  const state = reactive(useState())
+const useFlowStore = (preloadedState: FlowState): Store => {
+  const state = reactive(useState(preloadedState))
   const getters = useGetters(state)
   const actions = useActions(state, getters)
   const hooksOn: FlowHooksOn = <any>{}
@@ -15,7 +15,6 @@ const useFlowStore = (id: string, preloadedState: FlowState): Store => {
   })
   actions.setState(preloadedState)
   return {
-    id,
     state,
     hooksOn,
     ...toRefs(state),
@@ -24,27 +23,40 @@ const useFlowStore = (id: string, preloadedState: FlowState): Store => {
   }
 }
 
-let id = 0
-export default (options?: FlowOptions) => {
+export default (id: string, options?: FlowOptions) => {
   const withStorage = options?.storageKey ?? false
   let storedState = ref<FlowExportObject>()
-  const initial = useState()
-  const storageKey = options?.id ?? `vue-flow-${id++}`
+  const storageKey = id ?? options?.id
   const preloadedState = {
-    ...initial,
     ...(options as FlowState),
   }
   if (withStorage) {
     storedState = useStorage<FlowExportObject>(storageKey, { edges: [], nodes: [], position: [0, 0], zoom: 0 })
     if (storedState.value) {
-      preloadedState.nodes = (storedState.value.nodes ? storedState.value.nodes : options?.nodes ?? []) as GraphNode[]
-      preloadedState.edges = (storedState.value.edges ? storedState.value.edges : options?.edges ?? []) as GraphEdge[]
+      preloadedState.nodes = (
+        storedState.value.nodes
+          ? storedState.value.nodes
+          : options?.nodes
+          ? options.nodes
+          : options?.elements
+          ? options?.elements.filter((el) => isNode(el))
+          : []
+      ) as GraphNode[]
+      preloadedState.edges = (
+        storedState.value.edges
+          ? storedState.value.edges
+          : options?.edges
+          ? options.edges
+          : options?.elements
+          ? options?.elements.filter((el) => isEdge(el))
+          : []
+      ) as GraphEdge[]
       if (storedState.value.position && storedState.value.zoom)
         preloadedState.transform = [storedState.value.position[0], storedState.value.position[1], storedState.value.zoom]
     }
   }
-  const store = useFlowStore(storageKey, preloadedState)
-  if (withStorage && storageKey === store.id) {
+  const store = useFlowStore(preloadedState)
+  if (withStorage && storageKey === id) {
     const toObject = onLoadToObject(store.state)
     watch(
       store.state,

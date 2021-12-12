@@ -97,7 +97,7 @@ export interface FlowGetters<N = any, E = N> {
   getSelectedEdges: ComputedRef<GraphEdge<E>[]>
 }
 
-export type Store<N = any, E = N> = { id: string; state: FlowState<N, E>; hooksOn: FlowHooksOn } & ToRefs<FlowState<N, E>> &
+export type Store<N = any, E = N> = { state: FlowState<N, E>; hooksOn: FlowHooksOn } & ToRefs<FlowState<N, E>> &
   FlowActions<N, E> &
   FlowGetters<N, E>
 export type FlowStore<N = any, E = N> = UnwrapNestedRefs<Store<N, E>>
