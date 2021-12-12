@@ -33,7 +33,7 @@ const connectionLineVisible = controlledComputed(
     ),
 )
 const transform = computed(() => `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`)
-const edgeLevels = computed(() => groupEdgesByZLevel(store.getEdges, store.getNodes))
+const groups = computed(() => groupEdgesByZLevel(store.getEdges, store.getNodes))
 </script>
 <script lang="ts">
 export default {
@@ -42,17 +42,17 @@ export default {
 </script>
 <template>
   <svg
-    v-for="level of edgeLevels"
-    :key="level.z"
+    v-for="group of groups"
+    :key="group.level"
     :width="store.dimensions.width"
     :height="store.dimensions.height"
     class="vue-flow__edges vue-flow__container"
-    :style="`z-index: ${parseInt(level.level)}`"
+    :style="`z-index: ${group.level}`"
   >
-    <MarkerDefinitions v-if="level.isMaxLevel" :default-color="store.defaultMarkerColor" />
+    <MarkerDefinitions v-if="group.isMaxLevel" :default-color="store.defaultMarkerColor" />
     <g>
       <EdgeWrapper
-        v-for="edge of level.edges"
+        v-for="edge of group.edges"
         :key="edge.id"
         :edge="edge"
         :component="getType(edge.type)"
@@ -64,7 +64,7 @@ export default {
           <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
         </template>
       </EdgeWrapper>
-      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode">
+      <ConnectionLine v-if="group.isMaxLevel && connectionLineVisible && sourceNode" :source-node="sourceNode">
         <template #default="customConnectionLineProps">
           <slot name="custom-connection-line" v-bind="customConnectionLineProps"></slot>
         </template>
