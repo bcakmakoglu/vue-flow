@@ -24,7 +24,8 @@ export default {
     :is-valid-connection="props.isValidTargetPos"
   />
   <slot v-bind="props">
-    <span v-if="props.label" v-html="props.label" />
+    <component :is="props.label" v-if="typeof props.label !== 'string'" />
+    <span v-else v-html="props.label"></span>
   </slot>
   <Handle
     type="source"

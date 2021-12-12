@@ -1,16 +1,5 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
-
-interface EdgeTextProps {
-  x: number
-  y: number
-  label?: string
-  labelStyle?: CSSProperties
-  labelShowBg?: boolean
-  labelBgStyle?: CSSProperties
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-}
+import type { EdgeTextProps } from '../../types/components'
 
 const props = withDefaults(defineProps<EdgeTextProps>(), {
   labelStyle: () => ({}),
@@ -43,7 +32,16 @@ export default {
       :ry="props.labelBgBorderRadius"
     />
     <text ref="edge-text" class="vue-flow__edge-text" :y="height / 2" dy="0.3em" :style="props.labelStyle">
-      {{ props.label }}
+      <slot v-bind="props">
+        <component
+          :is="props.label?.component"
+          v-if="typeof props.label !== 'string' && typeof props.label?.component !== 'undefined'"
+          v-bind="{ ...props, ...props.label?.props, width, height, x, y }"
+        />
+        <template v-else v-html="props.label">
+          {{ props.label }}
+        </template>
+      </slot>
     </text>
   </g>
 </template>
