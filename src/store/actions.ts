@@ -147,13 +147,13 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
   }
 
   const setElements: FlowActions['setElements'] = (elements, extent) => {
+    if (!state.initialized && !elements.length) return
     setNodes(elements.filter(isNode), extent)
     setEdges(elements.filter(isEdge))
   }
 
   const setState: FlowActions['setState'] = (opts) => {
     if (typeof opts.modelValue !== 'undefined') setElements(opts.modelValue, opts.nodeExtent ?? state.nodeExtent)
-    if (typeof opts.elements !== 'undefined') setElements(opts.elements, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
     if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll
@@ -194,6 +194,7 @@ export default (state: FlowState, getters: FlowGetters): FlowActions => {
       if (typeof opts.minZoom !== 'undefined') setMinZoom(opts.minZoom)
       if (typeof opts.translateExtent !== 'undefined') setTranslateExtent(opts.translateExtent)
     }
+    if (!state.initialized) state.initialized = true
   }
   return {
     updateNodePosition,

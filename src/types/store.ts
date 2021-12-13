@@ -64,6 +64,7 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' 
   preventScrolling: boolean
 
   paneReady: boolean
+  initialized: boolean
 
   vueFlowVersion: string
 }

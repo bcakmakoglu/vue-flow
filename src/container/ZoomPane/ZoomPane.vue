@@ -175,7 +175,7 @@ onMounted(() => {
         store.dimensions.height = newHeight
       })
     },
-    { flush: 'sync', immediate: true },
+    { flush: 'post', immediate: true },
   )
   watch(
     transform,
@@ -183,7 +183,7 @@ onMounted(() => {
       const { x, y } = clampPosition(val, store.translateExtent)
       nextTick(() => (store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]))
     },
-    { flush: 'pre', immediate: true },
+    { flush: 'post', immediate: true },
   )
 })
 nextTick(async () => {
