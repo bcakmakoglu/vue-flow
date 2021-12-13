@@ -1,29 +1,16 @@
 <script lang="ts" setup>
 import { getElements } from './utils'
-import {
-  VueFlow,
-  removeElements,
-  addEdge,
-  MiniMap,
-  Controls,
-  Background,
-  FlowInstance,
-  Connection,
-  Edge,
-  Elements,
-} from '~/index'
+import { VueFlow, MiniMap, Controls, Background, FlowInstance } from '~/index'
 
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
   console.log(flowInstance.getElements())
 }
 
-const elements = ref<Elements>(getElements())
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+const elements = getElements()
 </script>
 <template>
-  <VueFlow v-model="elements" :min-zoom="0.2" @load="onLoad" @elements-remove="onElementsRemove" @connect="onConnect">
+  <VueFlow v-model="elements" :min-zoom="0.2" @pane-ready="onLoad">
     <MiniMap />
     <Controls />
   </VueFlow>

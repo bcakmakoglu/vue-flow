@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, removeElements, addEdge, Node, FlowElement, Elements, Connection, Edge } from '~/index'
+import { VueFlow, addEdge, Node, FlowElement, Elements, Connection, Edge } from '~/index'
 
 const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node)
 const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element)
@@ -29,16 +29,9 @@ const elementsB: Elements = [
 const elements = ref(elementsA)
 
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
-  <VueFlow
-    v-model="elements"
-    @element-click="onElementClick"
-    @elements-remove="onElementsRemove"
-    @connect="onConnect"
-    @node-drag-stop="onNodeDragStop"
-  >
+  <VueFlow v-model="elements" @element-click="onElementClick" @connect="onConnect" @node-drag-stop="onNodeDragStop">
     <div :style="{ position: 'absolute', right: 10, top: 10, zIndex: 4 }">
       <button style="margin-right: 5px" @click="() => (elements = elementsA)">flow a</button>
       <button @click="() => (elements = elementsB)">flow b</button>

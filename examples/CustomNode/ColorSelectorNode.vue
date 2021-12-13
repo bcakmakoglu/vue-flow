@@ -24,6 +24,11 @@ const sourceHandleStyleB: CSSProperties = { ...targetHandleStyle, bottom: '10px'
 
 const onConnect = (params: Connection | Edge) => console.log('handle onConnect', params)
 </script>
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
 <template>
   <Handle type="target" :position="Position.Left" :style="targetHandleStyle" :on-connect="onConnect" />
   <div>

@@ -2,33 +2,23 @@
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomLabel from './CustomLabel.vue'
-import {
-  VueFlow,
-  MiniMap,
-  Controls,
-  Background,
-  Elements,
-  FlowInstance,
-  FlowElement,
-  removeElements,
-  Connection,
-  Edge,
-  addEdge,
-  MarkerType,
-} from '~/index'
+import { VueFlow, MiniMap, Controls, Background, MarkerType, useVueFlow } from '~/index'
 
-const initialElements: Elements = [
-  { id: '1', type: 'input', data: { label: 'Input 1' }, position: { x: 250, y: 0 } },
-  { id: '2', data: { label: 'Node 2' }, position: { x: 150, y: 100 } },
-  { id: '2a', data: { label: 'Node 2a' }, position: { x: 0, y: 180 } },
-  { id: '3', data: { label: 'Node 3' }, position: { x: 250, y: 200 } },
-  { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 300 } },
-  { id: '3a', data: { label: 'Node 3a' }, position: { x: 150, y: 300 } },
-  { id: '5', data: { label: 'Node 5' }, position: { x: 250, y: 400 } },
-  { id: '6', type: 'output', data: { label: 'Output 6' }, position: { x: 50, y: 550 } },
-  { id: '7', type: 'output', data: { label: 'Output 7' }, position: { x: 250, y: 550 } },
-  { id: '8', type: 'output', data: { label: 'Output 8' }, position: { x: 525, y: 600 } },
-  { id: '9', type: 'output', data: { label: 'Output 9' }, position: { x: 675, y: 500 } },
+const initialNodes = [
+  { id: '1', type: 'input', label: 'Input 1', position: { x: 250, y: 0 } },
+  { id: '2', label: 'Node 2', position: { x: 150, y: 100 } },
+  { id: '2a', label: 'Node 2a', position: { x: 0, y: 180 } },
+  { id: '3', label: 'Node 3', position: { x: 250, y: 200 } },
+  { id: '4', label: 'Node 4', position: { x: 400, y: 300 } },
+  { id: '3a', label: 'Node 3a', position: { x: 150, y: 300 } },
+  { id: '5', label: 'Node 5', position: { x: 250, y: 400 } },
+  { id: '6', type: 'output', label: 'Output 6', position: { x: 50, y: 550 } },
+  { id: '7', type: 'output', label: 'Output 7', position: { x: 250, y: 550 } },
+  { id: '8', type: 'output', label: 'Output 8', position: { x: 525, y: 600 } },
+  { id: '9', type: 'output', label: 'Output 9', position: { x: 675, y: 500 } },
+]
+
+const initialEdges = [
   { id: 'e1-2', source: '1', target: '2', label: 'bezier edge (default)', class: 'normal-edge' },
   { id: 'e2-2a', source: '2', target: '2a', type: 'smoothstep', label: 'smoothstep edge' },
   { id: 'e2-3', source: '2', target: '3', type: 'step', label: 'step edge' },
@@ -75,25 +65,16 @@ const initialElements: Elements = [
   },
 ]
 
-const elements = ref<Elements>(initialElements)
+const { useNodesState, useEdgesState, OnPaneReady, OnNodeDragStop, OnConnect } = useVueFlow()
+const { nodes } = useNodesState(initialNodes)
+const { edges, addEdges } = useEdgesState(initialEdges)
 
-const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
-const onNodeDragStop = (node: Node) => console.log('drag stop', node)
-const onElementClick = (element: FlowElement) => console.log('click', element)
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+OnPaneReady((flowInstance) => flowInstance.fitView())
+OnNodeDragStop((node) => console.log('drag stop', node))
+OnConnect((params) => addEdges([params]))
 </script>
 <template>
-  <VueFlow
-    v-model="elements"
-    :snap-to-grid="true"
-    :edge-types="['custom', 'custom2']"
-    @element-click="onElementClick"
-    @elements-remove="onElementsRemove"
-    @connect="onConnect"
-    @node-drag-stop="onNodeDragStop"
-    @load="onLoad"
-  >
+  <VueFlow :snap-to-grid="true">
     <template #edge-custom="props">
       <CustomEdge v-bind="props" />
     </template>

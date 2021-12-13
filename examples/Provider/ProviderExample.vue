@@ -3,7 +3,6 @@ import Sidebar from './Sidebar.vue'
 import {
   VueFlow,
   addEdge,
-  removeElements,
   Controls,
   FlowInstance,
   FlowElement,

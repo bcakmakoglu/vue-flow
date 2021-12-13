@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Controls from './Controls.vue'
-import { VueFlow, addEdge, Connection, Edge, Elements, removeElements } from '~/index'
+import { VueFlow, addEdge, Connection, Edge, Elements } from '~/index'
 
 import './save.css'
 
@@ -13,11 +13,10 @@ const initialElements: Elements = [
 const elements = ref(initialElements)
 
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 const onRestore = (els: Elements) => (elements.value = els)
 </script>
 <template>
-  <VueFlow v-model="elements" storage-key="vue-flow-123" @elements-remove="onElementsRemove" @connect="onConnect">
+  <VueFlow v-model="elements" storage-key="vue-flow-123" @connect="onConnect">
     <Controls @restore="onRestore" />
   </VueFlow>
 </template>

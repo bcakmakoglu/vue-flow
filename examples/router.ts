@@ -30,10 +30,6 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./Edges/EdgesExample.vue'),
   },
   {
-    path: '/button-edge',
-    component: () => import('./EdgeWithButton/EdgeWithButton.vue'),
-  },
-  {
     path: '/edge-types',
     component: () => import('./EdgeTypes/EdgeTypesExample.vue'),
   },
@@ -60,10 +56,6 @@ export const routes: RouterOptions['routes'] = [
   {
     path: '/node-type-change',
     component: () => import('./NodeTypeChange/NodeTypeChangeExample.vue'),
-  },
-  {
-    path: '/node-types-id-change',
-    component: () => import('./NodeTypesIdChange/NodeTypesIdChangeExample.vue'),
   },
   {
     path: '/overview',
@@ -96,10 +88,6 @@ export const routes: RouterOptions['routes'] = [
   {
     path: '/update-node',
     component: () => import('./UpdateNode/UpdateNodeExample.vue'),
-  },
-  {
-    path: '/update-node-internals',
-    component: () => import('./UpdateNodeInternals/UpdateNodeInternalsExample.vue'),
   },
   {
     path: '/validation',

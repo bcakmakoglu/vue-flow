@@ -1,72 +1,51 @@
 <script lang="ts" setup>
-import {
-  VueFlow,
-  addEdge,
-  MiniMap,
-  Controls,
-  Elements,
-  Node,
-  FlowElement,
-  Connection,
-  Edge,
-  PanOnScrollMode,
-  FlowTransform,
-} from '~/index'
+import { VueFlow, MiniMap, Controls, useVueFlow } from '~/index'
 
-const initialElements: Elements = [
-  { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
-  { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 } },
-  { id: '3', data: { label: 'Node 3' }, position: { x: 400, y: 100 } },
-  { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 } },
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-  { id: 'e1-3', source: '1', target: '3' },
-]
+const {
+  nodesDraggable,
+  nodesConnectable,
+  elementsSelectable,
+  zoomOnScroll,
+  zoomOnDoubleClick,
+  zoomOnPinch,
+  panOnScroll,
+  panOnScrollMode,
+  paneMoveable,
+  useNodesState,
+  useEdgesState,
+  OnConnect,
+  OnNodeDragStart,
+  OnNodeDragStop,
+  OnPaneClick,
+  OnPaneScroll,
+  OnPaneContextMenu,
+  OnMoveEnd,
+} = useVueFlow({
+  modelValue: [
+    { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
+    { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
+    { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
+    { id: '4', label: 'Node 4', position: { x: 400, y: 200 } },
+    { id: 'e1-2', source: '1', target: '2', animated: true },
+    { id: 'e1-3', source: '1', target: '3' },
+  ],
+})
 
-const elements = ref<Elements>(initialElements)
-
-const isSelectable = ref(false)
-const isDraggable = ref(false)
-const isConnectable = ref(false)
-const zoomOnScroll = ref(true)
-const zoomOnPinch = ref(false)
-const panOnScroll = ref(false)
-const panOnScrollMode = ref<PanOnScrollMode>(PanOnScrollMode.Free)
-const zoomOnDoubleClick = ref(false)
-const paneMoveable = ref(true)
+const { nodes } = useNodesState()
+const { edges, addEdges } = useEdgesState()
 const captureZoomClick = ref(false)
 const captureZoomScroll = ref(false)
-const captureElementClick = ref(false)
 
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-const onNodeDragStart = ({ node }) => console.log('drag start', node)
-const onNodeDragStop = ({ node }) => console.log('drag stop', node)
-const onElementClick = ({ element }) => (captureElementClick.value ? console.log('click', element) : undefined)
-const onPaneClick = (event: MouseEvent) => console.log('onPaneClick', event)
-const onPaneScroll = (event?: WheelEvent) => console.log('onPaneScroll', event)
-const onPaneContextMenu = (event: MouseEvent) => console.log('onPaneContextMenu', event)
-const onMoveEnd = (flowTranasform?: FlowTransform) => console.log('onMoveEnd', flowTranasform)
+OnConnect((params) => addEdges([params]))
+OnNodeDragStart((e) => console.log('drag start', e))
+OnNodeDragStop((e) => console.log('drag stop', e))
+OnPaneClick((event) => captureZoomClick.value && console.log('pane click', event))
+OnPaneScroll((event) => captureZoomScroll.value && console.log('pane scroll', event))
+OnPaneContextMenu((event) => captureZoomClick && console.log('pane ctx menu', event))
+OnMoveEnd((flowTransform) => console.log('move end', flowTransform))
 </script>
 <template>
-  <VueFlow
-    v-model="elements"
-    :elements-selectable="isSelectable"
-    :nodes-connectable="isConnectable"
-    :nodes-draggable="isDraggable"
-    :zoom-on-scroll="zoomOnScroll"
-    :zoom-on-pinch="zoomOnPinch"
-    :pan-on-scroll="panOnScroll"
-    :pan-on-scroll-mode="panOnScrollMode"
-    :zoom-on-double-click="zoomOnDoubleClick"
-    :pane-moveable="paneMoveable"
-    @connect="onConnect"
-    @element-click="onElementClick"
-    @node-drag-start="onNodeDragStart"
-    @node-drag-stop="onNodeDragStop"
-    @pane-click="(e) => (captureZoomClick ? onPaneClick(e) : undefined)"
-    @pane-scroll="(e) => (captureZoomScroll ? onPaneScroll(e) : undefined)"
-    @pane-context-menu="(e) => (captureZoomClick ? onPaneContextMenu(e) : undefined)"
-    @move-end="onMoveEnd"
-  >
+  <VueFlow :nodes-draggable="captureZoomScroll">
     <MiniMap />
     <Controls />
 
@@ -74,19 +53,19 @@ const onMoveEnd = (flowTranasform?: FlowTransform) => console.log('onMoveEnd', f
       <div>
         <label for="draggable">
           nodesDraggable
-          <input id="draggable" v-model="isDraggable" type="checkbox" class="vue-flow__draggable" />
+          <input id="draggable" type="checkbox" class="vue-flow__draggable" />
         </label>
       </div>
       <div>
         <label for="connectable">
           nodesConnectable
-          <input id="connectable" v-model="isConnectable" type="checkbox" class="vue-flow__connectable" />
+          <input id="connectable" v-model="nodesConnectable" type="checkbox" class="vue-flow__connectable" />
         </label>
       </div>
       <div>
         <label for="selectable">
           elementsSelectable
-          <input id="selectable" v-model="isSelectable" type="checkbox" class="vue-flow__selectable" />
+          <input id="selectable" v-model="elementsSelectable" type="checkbox" class="vue-flow__selectable" />
         </label>
       </div>
       <div>
@@ -139,12 +118,6 @@ const onMoveEnd = (flowTranasform?: FlowTransform) => console.log('onMoveEnd', f
         <label for="capturezoompanescroll">
           capture onPaneScroll
           <input id="capturezoompanescroll" v-model="captureZoomScroll" type="checkbox" class="vue-flow__capturezoompanescroll" />
-        </label>
-      </div>
-      <div>
-        <label for="captureelementclick">
-          capture onElementClick
-          <input id="captureelementclick" v-model="captureElementClick" type="checkbox" class="vue-flow__captureelementclick" />
         </label>
       </div>
     </div>

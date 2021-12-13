@@ -2,7 +2,6 @@
 import { CSSProperties } from 'vue'
 import {
   VueFlow,
-  removeElements,
   addEdge,
   MiniMap,
   Controls,
@@ -10,7 +9,6 @@ import {
   isNode,
   Node,
   Elements,
-  FlowElement,
   FlowInstance,
   FlowTransform,
   SnapGrid,
@@ -133,7 +131,6 @@ const nodeColor = (n: Node): string => {
 
 const elements = ref<Elements>(initialElements)
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
   <VueFlow
@@ -142,7 +139,6 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
     :snap-to-grid="true"
     :snap-grid="snapGrid"
     @element-click="onElementClick"
-    @elements-remove="onElementsRemove"
     @connect="onConnect"
     @pane-click="onPaneClick"
     @pane-scroll="onPaneScroll"
