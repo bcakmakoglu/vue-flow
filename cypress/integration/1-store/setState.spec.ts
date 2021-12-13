@@ -15,6 +15,7 @@ describe('test store state', () => {
     Object.keys(store.state).forEach((state) => {
       const storedState = store[<keyof FlowState>state]
       const initialVal = initial[<keyof FlowState>state]
+      if (state === 'initialized') return expect(storedState).to.be.true
       expect(JSON.stringify(storedState)).to.eq(JSON.stringify(initialVal))
     })
   })
