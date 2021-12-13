@@ -5,7 +5,7 @@ import { useStore } from '~/store'
 
 let id = 0
 export default (options?: FlowOptions): UseVueFlow => {
-  const currentInstance = getCurrentInstance()
+  const currentInstance: any = getCurrentInstance()
   let vueFlow: UseVueFlow | false | undefined = currentInstance
     ? inject(VueFlow, undefined) ?? (currentInstance.vueFlow as UseVueFlow)
     : false
