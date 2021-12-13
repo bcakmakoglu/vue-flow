@@ -97,6 +97,10 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         source: edge.source.toString(),
         target: edge.target.toString(),
         z: typeof edge.style?.zIndex === 'string' ? parseInt(edge.style?.zIndex) : edge.style?.zIndex ?? 0,
+        sourceX: 0,
+        sourceY: 0,
+        targetX: 0,
+        targetY: 0,
         ...defaults,
       }
     : defaults

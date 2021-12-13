@@ -4,13 +4,11 @@ import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import { useVueFlow } from '../../composables'
 
 const { id, store } = useVueFlow()
+
+const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 </script>
 <template>
-  <div
-    :key="`transformation-pane-${id}`"
-    class="vue-flow__transformation-pane vue-flow__container"
-    :style="{ transform: `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})` }"
-  >
+  <div :key="`transformation-pane-${id}`" class="vue-flow__transformation-pane vue-flow__container" :style="{ transform }">
     <NodeRenderer :key="`node-renderer-${id}`">
       <template
         v-for="nodeName of Object.keys(store.getNodeTypes)"
@@ -32,5 +30,6 @@ const { id, store } = useVueFlow()
         <slot name="connection-line" v-bind="customConnectionLineProps" />
       </template>
     </EdgeRenderer>
+    <slot />
   </div>
 </template>

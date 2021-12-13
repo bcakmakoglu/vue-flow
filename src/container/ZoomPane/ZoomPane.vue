@@ -38,11 +38,9 @@ const transform = ref({
 })
 const d3Zoom = ref(zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent))
 const d3Selection = ref()
-
-store.transform = [transform.value.x, transform.value.y, transform.value.zoom]
 const { width, height } = useElementBounding(zoomPaneEl)
 
-onMounted(() => {
+onMounted(async () => {
   const d3z = d3Zoom.value!
   d3Selection.value = select(zoomPaneEl.value).call(d3z)
   const d3s = d3Selection.value!
@@ -170,23 +168,20 @@ onMounted(() => {
   watch(
     [width, height],
     ([newWidth, newHeight]) => {
-      nextTick(() => {
-        store.dimensions.width = newWidth
-        store.dimensions.height = newHeight
-      })
+      store.dimensions.width = newWidth
+      store.dimensions.height = newHeight
     },
-    { flush: 'post', immediate: true },
+    { immediate: true },
   )
   watch(
     transform,
     (val) => {
       const { x, y } = clampPosition(val, store.translateExtent)
-      nextTick(() => (store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]))
+      store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]
     },
-    { flush: 'post', immediate: true },
+    { immediate: true },
   )
-})
-nextTick(async () => {
+
   store.paneReady = true
 
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -222,7 +217,7 @@ export default {
 </script>
 <template>
   <div ref="zoomPane" class="vue-flow__renderer vue-flow__container">
-    <TransformationPane>
+    <TransformationPane v-if="store.getNodes.length">
       <template
         v-for="nodeName of Object.keys(store.getNodeTypes)"
         #[`node-${nodeName}`]="nodeProps"
@@ -240,6 +235,7 @@ export default {
       <template #connection-line="customConnectionLineProps">
         <slot name="connection-line" v-bind="customConnectionLineProps" />
       </template>
+      <slot />
     </TransformationPane>
     <SelectionPane :key="`selection-pane-${id}`" />
   </div>

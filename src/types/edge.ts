@@ -48,12 +48,19 @@ export interface Edge<T = any> extends Element<T> {
   updatable?: boolean
 }
 
-export interface GraphEdge<T = any, N = T> extends Edge<T> {
+export interface EdgePositions {
+  sourceX: number
+  sourceY: number
+  targetX: number
+  targetY: number
+}
+
+export type GraphEdge<T = any, N = T> = Edge<T> & {
   sourceNode: GraphNode<N>
   targetNode: GraphNode<N>
   selected?: boolean
   z?: number
-}
+} & EdgePositions
 
 export interface EdgeProps<Data = any> {
   id: string
@@ -128,13 +135,6 @@ export interface SmoothStepEdgeProps<Data = any> extends EdgeProps<Data> {
   markerStart?: string
   markerEnd?: string
   borderRadius?: number
-}
-
-export interface EdgePositions {
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
 }
 
 export interface GetCenterParams {

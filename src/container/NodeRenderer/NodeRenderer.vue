@@ -33,7 +33,6 @@ export default {
       :connectable="typeof node.connectable === 'undefined' ? store.nodesConnectable : node.connectable"
       :snap-grid="snapGrid(node)"
       :select-nodes-on-drag="store.selectNodesOnDrag"
-      :scale="store.transform[2]"
     >
       <template #default="nodeProps">
         <slot :name="`node-${node.type}`" v-bind="nodeProps"></slot>
