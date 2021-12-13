@@ -88,6 +88,7 @@ export default (opts?: Partial<FlowState>): FlowState => {
     hooks: createHooks(),
 
     storageKey: undefined,
+    applyDefault: true,
 
     vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
   }
@@ -127,6 +128,7 @@ export default (opts?: Partial<FlowState>): FlowState => {
     if (typeof opts.maxZoom !== 'undefined') state.maxZoom = opts.maxZoom
     if (typeof opts.minZoom !== 'undefined') state.minZoom = opts.minZoom
     if (typeof opts.translateExtent !== 'undefined') state.translateExtent = opts.translateExtent
+    if (typeof opts.applyDefault !== 'undefined') state.applyDefault = opts.applyDefault
   }
 
   return state

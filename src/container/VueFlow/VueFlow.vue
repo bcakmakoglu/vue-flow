@@ -2,7 +2,7 @@
 import { createHooks, useHooks } from '../../store'
 import type { FlowProps } from '../../types/flow'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
-import { useVueFlow } from '../../composables'
+import { useVueFlow, applyNodeChanges, applyEdgeChanges } from '../../composables'
 import useWatch from './watch'
 
 const props = withDefaults(defineProps<FlowProps>(), {
@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   zoomOnDoubleClick: true,
   panOnScroll: false,
   paneMoveable: true,
+  applyDefault: true,
 })
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:edges', 'update:nodes'])
 const { modelValue, nodes, edges } = useVModels(props, emit)
@@ -26,6 +27,10 @@ const { modelValue, nodes, edges } = useVModels(props, emit)
 const { id, store } = useVueFlow(props)
 useHooks(store.hooks, emit)
 
+if (store.applyDefault) {
+  store.hooks.nodesChange.on((c) => applyNodeChanges(c, store.nodes))
+  store.hooks.edgesChange.on((c) => applyEdgeChanges(c, store.edges))
+}
 if (modelValue?.value && !store.nodes.length) store.setElements(modelValue.value)
 if (nodes?.value && !store.nodes.length) store.setNodes(nodes.value)
 if (edges?.value && !store.edges.length) store.setEdges(edges.value)

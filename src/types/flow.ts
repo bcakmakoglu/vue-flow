@@ -119,6 +119,7 @@ export interface FlowProps<N = any, E = N> {
   edgeUpdaterRadius?: number
   storageKey?: string
   fitViewOnInit?: boolean
+  applyDefault?: boolean
 }
 
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>
