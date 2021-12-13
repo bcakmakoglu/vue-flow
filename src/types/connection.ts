@@ -1,4 +1,3 @@
-import { Position } from './flow'
 import { HandleType } from './components'
 
 export enum ConnectionLineType {
