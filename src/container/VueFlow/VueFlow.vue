@@ -58,7 +58,7 @@ export default {
       </template>
       <slot name="zoom-pane" />
     </ZoomPane>
-    <slot v-bind="store" />
+    <slot />
   </div>
 </template>
 <style>

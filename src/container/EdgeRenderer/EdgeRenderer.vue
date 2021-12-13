@@ -32,8 +32,10 @@ const connectionLineVisible = controlledComputed(
       store.connectionHandleType
     ),
 )
-const transform = computed(() => `translate(${store.transform[0]},${store.transform[1]}) scale(${store.transform[2]})`)
-const groups = computed(() => groupEdgesByZLevel(store.getEdges, store.getNodes))
+const groups = controlledComputed(
+  () => store.getEdges,
+  () => groupEdgesByZLevel(store.edges, store.nodes),
+)
 </script>
 <script lang="ts">
 export default {

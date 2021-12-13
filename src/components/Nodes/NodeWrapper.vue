@@ -13,7 +13,6 @@ interface NodeWrapperProps {
   draggable?: boolean
   selectable?: boolean
   connectable?: boolean
-  scale?: number
 }
 
 const props = defineProps<NodeWrapperProps>()
@@ -121,7 +120,7 @@ export default {
     cancel=".nodrag"
     :handle="node.dragHandle"
     :disabled="!props.draggable"
-    :scale="props.scale"
+    :scale="store.transform[2]"
     :grid="props.snapGrid"
     :enable-user-select-hack="false"
     v-bind="props.draggable"
