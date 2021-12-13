@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:edges', 'update:nodes'])
 const { modelValue, nodes, edges } = useVModels(props, emit)
 
-const { store } = useVueFlow(props)
+const { id, store } = useVueFlow(props)
 useHooks(store.hooks, emit)
 
 onMounted(() => useWatch(modelValue, nodes, edges, props, store))
@@ -38,18 +38,18 @@ export default {
 </script>
 <template>
   <div class="vue-flow">
-    <ZoomPane :key="`renderer-${store.id}`">
+    <ZoomPane :key="`renderer-${id}`">
       <template
         v-for="nodeName of Object.keys(store.getNodeTypes)"
         #[`node-${nodeName}`]="nodeProps"
-        :key="`node-${nodeName}-${store.id}`"
+        :key="`node-${nodeName}-${id}`"
       >
         <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
       </template>
       <template
         v-for="edgeName of Object.keys(store.getEdgeTypes)"
         #[`edge-${edgeName}`]="edgeProps"
-        :key="`edge-${edgeName}-${store.id}`"
+        :key="`edge-${edgeName}-${id}`"
       >
         <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
       </template>

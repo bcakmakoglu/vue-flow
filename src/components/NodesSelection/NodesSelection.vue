@@ -3,7 +3,7 @@ import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 
-const { store } = useVueFlow()
+const { id, store } = useVueFlow()
 const selectedNodesBBox = computed(() => getRectOfNodes(store.getSelectedNodes))
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
@@ -42,7 +42,7 @@ export default {
       @stop="onStop"
     >
       <div
-        :key="`vue-flow-nodesselection-rect-${store.id}`"
+        :key="`vue-flow-nodesselection-rect-${id}`"
         class="vue-flow__nodesselection-rect"
         :style="innerStyle"
         @contextmenu="onContextMenu"

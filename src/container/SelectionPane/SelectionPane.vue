@@ -5,7 +5,7 @@ import { getConnectedEdges } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 
-const { store } = useVueFlow()
+const { id, store } = useVueFlow()
 
 const onClick = (event: MouseEvent) => {
   store.hooks.paneClick.trigger(event)
@@ -55,13 +55,13 @@ export default {
 }
 </script>
 <template>
-  <UserSelection v-if="store.selectionActive" :key="`user-selection-${store.id}`" />
+  <UserSelection v-if="store.selectionActive" :key="`user-selection-${id}`" />
   <NodesSelection
     v-if="store.getSelectedNodes.length && !store.selectionActive && store.nodesSelectionActive"
-    :key="`nodes-selction-${store.id}`"
+    :key="`nodes-selction-${id}`"
   />
   <div
-    :key="`flow-pane-${store.id}`"
+    :key="`flow-pane-${id}`"
     class="vue-flow__pane vue-flow__container"
     @click="onClick"
     @contextmenu="onContextMenu"
