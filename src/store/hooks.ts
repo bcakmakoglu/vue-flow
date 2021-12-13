@@ -1,4 +1,4 @@
-import { EmitFunc, FlowHooks, FlowEvents, FlowStore } from '~/types'
+import { EmitFunc, FlowHooks, FlowEvents } from '~/types'
 
 // flow event hooks
 export const createHooks = (): FlowHooks => ({
