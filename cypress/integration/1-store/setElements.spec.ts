@@ -26,7 +26,8 @@ describe('test store action setElements', () => {
   context('elements pre-set', () => {
     let store: FlowStore
     beforeEach(async () => {
-      const { store } = useVueFlow()
+      const { store: flowStore } = useVueFlow()
+      store = flowStore
       await setElements(store)
     })
 
