@@ -1,16 +1,5 @@
 <script lang="ts" setup>
-import {
-  VueFlow,
-  removeElements,
-  addEdge,
-  Background,
-  MiniMap,
-  useZoomPanHelper,
-  Elements,
-  Connection,
-  Edge,
-  Node,
-} from '~/index'
+import { VueFlow, addEdge, Background, MiniMap, useZoomPanHelper, Elements, Connection, Edge, Node } from '~/index'
 
 const initialElements: Elements = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
@@ -40,10 +29,9 @@ const onPaneClick = (evt: MouseEvent) => {
   } as Node)
 }
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
-  <VueFlow v-model="elements" @elements-remove="onElementsRemove" @connect="onConnect" @pane-click="onPaneClick">
+  <VueFlow v-model="elements" @connect="onConnect" @pane-click="onPaneClick">
     <Background />
     <MiniMap />
   </VueFlow>

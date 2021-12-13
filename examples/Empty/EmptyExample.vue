@@ -1,53 +1,32 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
-import {
-  VueFlow,
-  MiniMap,
-  Controls,
-  Background,
-  BackgroundVariant,
-  Connection,
-  Edge,
-  Elements,
-  FlowElement,
-  Node,
-  FlowInstance,
-  addEdge,
-  removeElements,
-} from '~/index'
+import { VueFlow, MiniMap, Controls, Background, BackgroundVariant, Node, useVueFlow } from '~/index'
 
-const elements = ref<Elements>([])
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+const { useNodesState, useEdgesState, OnConnect, OnPaneReady, OnNodeDragStop } = useVueFlow()
+const { nodes, addNodes } = useNodesState()
+const { edges, addEdges } = useEdgesState()
 
-const onLoad = (flowInstance: FlowInstance) => console.log('flow loaded:', flowInstance)
-const onElementClick = (element: FlowElement) => console.log('click', element)
-const onNodeDragStop = (node: Node) => console.log('drag stop', node)
+OnConnect((params) => addEdges[params])
+OnPaneReady((flowInstance) => console.log('flow loaded:', flowInstance))
+OnNodeDragStop((node) => console.log('drag stop', node))
 
-const buttonStyle: CSSProperties = { position: 'absolute', left: '10px', top: '10px', zIndex: 4 }
 const addRandomNode = () => {
-  const nodeId = (elements.value.length + 1).toString()
+  const nodeId = (nodes.length + 1).toString()
   const newNode: Node = {
     id: nodeId,
     label: `Node: ${nodeId}`,
     position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
   } as Node
-  elements.value.push(newNode)
+  addNodes([newNode])
 }
 </script>
 <template>
-  <VueFlow
-    v-model="elements"
-    @load="onLoad"
-    @element-click="onElementClick"
-    @elements-remove="onElementsRemove"
-    @connect="onConnect"
-    @node-drag-stop="onNodeDragStop"
-  >
+  <VueFlow>
     <MiniMap />
     <Controls />
     <Background :variant="BackgroundVariant.Lines" />
 
-    <button type="button" :style="buttonStyle" @click="addRandomNode">add node</button>
+    <button type="button" :style="{ position: 'absolute', left: '10px', top: '10px', zIndex: 4 }" @click="addRandomNode">
+      add node
+    </button>
   </VueFlow>
 </template>

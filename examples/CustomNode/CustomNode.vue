@@ -3,7 +3,6 @@ import ColorSelectorNode from './ColorSelectorNode.vue'
 import {
   VueFlow,
   isEdge,
-  removeElements,
   addEdge,
   MiniMap,
   Controls,
@@ -16,6 +15,7 @@ import {
   Connection,
   ConnectionMode,
   Edge,
+  useVueFlow,
 } from '~/index'
 
 const elements = ref<Elements>([])
@@ -23,12 +23,6 @@ const bgColor = ref('#1A192B')
 const connectionLineStyle = { stroke: '#fff' }
 const snapGrid: SnapGrid = [16, 16]
 
-const onLoad = (flowInstance: FlowInstance) => {
-  flowInstance.fitView()
-  console.log('flow loaded:', flowInstance)
-}
-const onNodeDragStop = ({ node }) => console.log('drag stop', node)
-const onElementClick = ({ element }) => console.log('click', element)
 const nodeStroke = (n: Node): string => {
   if (n.type === 'input') return '#0041d0'
   if (n.type === 'selectorNode') return bgColor.value
@@ -95,33 +89,33 @@ onMounted(() => {
   ]
 })
 
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-
-const onConnect = (params: Connection | Edge) =>
-  (elements.value = addEdge(
+const { useNodesState, OnPaneReady, OnNodeDragStop, OnConnect } = useVueFlow()
+useNodesState(undefined, true)
+OnPaneReady((flowInstance) => {
+  flowInstance.fitView()
+  console.log('flow loaded:', flowInstance)
+})
+OnNodeDragStop(({ node }) => console.log('drag stop', node))
+OnConnect((params) =>
+  addEdge(
     {
       ...params,
       animated: true,
       style: { stroke: '#fff' },
     } as Edge,
     elements.value,
-  ))
+  ),
+)
 </script>
 <template>
   <VueFlow
     v-model="elements"
     :style="`background: ${bgColor}`"
-    :node-types="['selectorNode']"
     :connection-mode="ConnectionMode.Loose"
     :connection-line-style="connectionLineStyle"
     :snap-to-grid="true"
     :snap-grid="snapGrid"
     :default-zoom="1.5"
-    @element-click="onElementClick"
-    @elements-remove="onElementsRemove"
-    @connect="onConnect"
-    @node-drag-stop="onNodeDragStop"
-    @load="onLoad"
   >
     <template #node-selectorNode="props">
       <ColorSelectorNode v-bind="props" />

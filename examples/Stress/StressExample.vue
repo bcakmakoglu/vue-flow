@@ -9,8 +9,8 @@ const onLoad = (flowInstance: FlowInstance) => {
   console.log(flowInstance.getNodes())
 }
 
-const { nodes, edges } = getElements(30, 30)
+const { nodes, edges } = getElements(10, 10)
 </script>
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" @load="onLoad"> </VueFlow>
+  <VueFlow :nodes="nodes" :edges="edges" @pane-ready="onLoad"> </VueFlow>
 </template>

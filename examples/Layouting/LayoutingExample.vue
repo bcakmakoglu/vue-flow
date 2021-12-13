@@ -14,7 +14,6 @@ import {
   isNode,
   CoordinateExtent,
   Position,
-  removeElements,
 } from '~/index'
 
 const dagreGraph = new dagre.graphlib.Graph()
@@ -27,7 +26,6 @@ const nodeExtent: CoordinateExtent = [
 
 const elements = ref<Elements>(initialElements)
 const onConnect = (params: Connection) => (elements.value = addEdge({ ...params, animated: true }, elements.value))
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 
 const onLayout = (direction: string) => {
   const isHorizontal = direction === 'LR'
@@ -63,7 +61,6 @@ const onLayout = (direction: string) => {
       :node-extent="nodeExtent"
       :connection-mode="ConnectionMode.Loose"
       @connect="onConnect"
-      @clements-remove="onElementsRemove"
       @load="() => onLayout('TB')"
     >
       <Controls />

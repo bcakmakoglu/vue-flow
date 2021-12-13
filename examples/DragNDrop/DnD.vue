@@ -1,21 +1,27 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import { VueFlow, addEdge, removeElements, Controls, FlowInstance, Elements, Connection, Edge, Node } from '~/index'
-import './dnd.css'
-
-const flowInstance = ref<FlowInstance>()
-const elements = ref<Elements>([
-  {
-    id: '1',
-    type: 'input',
-    data: { label: 'input node' },
-    position: { x: 250, y: 5 },
-  },
-])
+import { VueFlow, Controls, FlowInstance, Node, useVueFlow } from '~/index'
 
 let id = 0
 const getId = () => `dndnode_${id++}`
 
+const flowInstance = ref<FlowInstance>()
+
+const { useNodesState, useEdgesState, OnPaneReady, OnConnect } = useVueFlow()
+const { edges, addEdges } = useEdgesState()
+const { nodes, addNodes } = useNodesState(
+  [
+    {
+      id: '1',
+      type: 'input',
+      label: 'input node',
+      position: { x: 250, y: 5 },
+    },
+  ],
+  true,
+)
+
+OnPaneReady((instance) => (flowInstance.value = instance))
 const onDragOver = (event: DragEvent) => {
   event.preventDefault()
   if (event.dataTransfer) {
@@ -23,9 +29,7 @@ const onDragOver = (event: DragEvent) => {
   }
 }
 
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
-const onLoad = (instance: FlowInstance) => (flowInstance.value = instance)
+OnConnect((params) => addEdges([params]))
 
 const onDrop = (event: DragEvent) => {
   if (flowInstance.value) {
@@ -35,15 +39,18 @@ const onDrop = (event: DragEvent) => {
       id: getId(),
       type,
       position,
-      data: { label: `${type} node` },
+      label: `${type} node`,
     } as Node
-    elements.value.push(newNode)
+    addNodes([newNode])
   }
 }
 </script>
 <template>
   <div class="dndflow" @drop="onDrop">
-    <VueFlow v-model="elements" @elements-remove="onElementsRemove" @load="onLoad" @connect="onConnect" @dragover="onDragOver" />
+    <VueFlow @dragover="onDragOver" />
     <Sidebar />
   </div>
 </template>
+<style>
+@import './dnd.css';
+</style>

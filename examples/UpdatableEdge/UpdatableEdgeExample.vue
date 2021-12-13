@@ -8,7 +8,6 @@ import {
   FlowInstance,
   Connection,
   Edge,
-  removeElements,
   FlowEvents,
   ConnectionMode,
 } from '~/index'
@@ -47,7 +46,6 @@ const onEdgeUpdateEnd = (edge: Edge) => console.log('end update', edge)
 const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) =>
   (elements.value = updateEdge(edge, connection, elements.value))
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
-const onElementsRemove = (elementsToRemove: Elements) => (elements.value = removeElements(elementsToRemove, elements.value))
 </script>
 <template>
   <VueFlow
@@ -58,7 +56,6 @@ const onElementsRemove = (elementsToRemove: Elements) => (elements.value = remov
     @edge-update="onEdgeUpdate"
     @connect="onConnect"
     @edge-update-start="onEdgeUpdateStart"
-    @elements-remove="onElementsRemove"
     @edge-update-end="onEdgeUpdateEnd"
   >
     <Controls />
