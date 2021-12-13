@@ -100,7 +100,6 @@ onMounted(() => {
     )
   })
 })
-onRenderTriggered(console.log)
 </script>
 <script lang="ts">
 export default {
