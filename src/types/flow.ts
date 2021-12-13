@@ -85,7 +85,6 @@ export interface FlowProps<N = any, E = N> {
   modelValue?: any[]
   nodes?: Node<N>[]
   edges?: Edge<E>[]
-  elements?: Elements
   id?: string
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType

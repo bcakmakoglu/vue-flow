@@ -3,6 +3,7 @@ import { createHooks, useHooks } from '../../store'
 import type { FlowProps } from '../../types/flow'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import { useVueFlow } from '../../composables'
+import useWatch from './watch'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: false,
@@ -25,19 +26,10 @@ const { modelValue, nodes, edges } = useVModels(props, emit)
 const { store } = useVueFlow(props)
 useHooks(store.hooks, emit)
 
-nextTick(() => {
-  modelValue && (modelValue.value = [...store.nodes, ...store.edges])
-  nodes && (nodes.value = store.nodes)
-})
-nextTick(() => {
-  modelValue && (modelValue.value = [...store.nodes, ...store.edges])
-  edges && (edges.value = store.edges)
-})
-watch(
-  () => props,
-  (v) => nextTick(() => store.setState(v)),
-  { flush: 'sync', deep: true, immediate: true },
-)
+onMounted(() => useWatch(modelValue, nodes, edges, props, store))
+modelValue && (modelValue.value = [...store.nodes, ...store.edges])
+nodes && (nodes.value = store.nodes)
+edges && (edges.value = store.edges)
 </script>
 <script lang="ts">
 export default {

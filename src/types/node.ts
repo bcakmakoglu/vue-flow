@@ -62,13 +62,12 @@ export interface NodeProps<T = any> {
     source?: HandleElement[]
     target?: HandleElement[]
   }
-  // todo plugin not allowing for nested types currently
-  parentNode?: any
+  parentNode?: GraphNode[]
   isParent?: boolean
   computedPosition: XYZPosition
   position: XYPosition
   draggable?: boolean
   selectable?: boolean
-  children?: any[]
+  children?: Node[]
   dimensions?: Dimensions
 }
