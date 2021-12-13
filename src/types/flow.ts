@@ -4,7 +4,7 @@ import { GraphNode, CoordinateExtent, Node } from './node'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { FlowActions, FlowStore } from './store'
-import { EdgeChange, FlowHooksOn, NodeChange } from './hooks'
+import { FlowHooksOn } from './hooks'
 
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
 export type FlowElements<N = any, E = any> = FlowElement<N, E>[]
