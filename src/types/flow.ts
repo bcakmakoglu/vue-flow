@@ -126,31 +126,32 @@ export type FlowOptions<N = any, E = N> = FlowProps<N, E>
 type UseStateOptions = {
   applyDefault?: boolean
 }
-export type UseNodesState = {
-  nodes: GraphNode[]
-  setNodes: FlowActions['setNodes']
-  addNodes: (nodes: Node[], extent?: CoordinateExtent) => GraphNode[]
-  OnNodesChange: FlowHooksOn['OnNodesChange']
-}
 export interface UseNodesStateOptions extends UseStateOptions {
   nodes?: Node[]
 }
 export interface UseEdgesStateOptions extends UseStateOptions {
   edges?: Edge[]
 }
-export type UseEdgeState = {
+export interface UseElementsStateOptions extends UseStateOptions {
+  edges?: Edge[]
+  nodes?: Node[]
+}
+export type UseNodesState = {
+  nodes: GraphNode[]
+  setNodes: FlowActions['setNodes']
+  addNodes: (nodes: Node[], extent?: CoordinateExtent) => GraphNode[]
+  OnNodesChange: FlowHooksOn['OnNodesChange']
+}
+export type UseEdgesState = {
   edges: GraphEdge[]
   setEdges: FlowActions['setEdges']
   addEdges: (params: (Edge | Connection)[]) => GraphEdge[]
   updateEdge: (oldEdge: GraphEdge, newConnection: Connection) => GraphEdge | false
   OnEdgesChange: FlowHooksOn['OnEdgesChange']
 }
+export type UseElementsState = UseNodesState & UseEdgesState
 export type UseVueFlow = {
   id: string
   store: FlowStore
-  useNodesState: (nodes?: Node[], applyDefault?: boolean) => UseNodesState
-  useEdgesState: (edges?: Edge[], applyDefault?: boolean) => UseEdgeState
-  applyNodeChanges: (changes: NodeChange[]) => void
-  applyEdgeChanges: (changes: EdgeChange[]) => void
 } & FlowHooksOn &
   ToRefs<FlowStore>
