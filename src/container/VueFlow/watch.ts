@@ -187,4 +187,9 @@ export default (
     (v) => isDef(v) && (store.edgeUpdaterRadius = v),
     { immediate: true },
   )
+  watch(
+    () => props.applyDefault,
+    (v) => isDef(v) && (store.applyDefault = v),
+    { immediate: true },
+  )
 }

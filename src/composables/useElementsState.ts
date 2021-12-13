@@ -58,13 +58,13 @@ const updateEdge = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge
   return edge
 }
 
-const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
-const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
+export const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
+export const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
 
 export const useEdgesState = ({ edges, applyDefault }: UseEdgesStateOptions = { applyDefault: true }): UseEdgesState => {
   const { store } = useVueFlow()
   if (edges && edges.length) store.setEdges(edges)
-  if (applyDefault) store.hooksOn.OnEdgesChange((e) => applyEdgeChanges(e, store.edges))
+  if (applyDefault && !store.applyDefault) store.hooksOn.OnEdgesChange((e) => applyEdgeChanges(e, store.edges))
   return {
     edges: store.edges,
     applyEdgeChanges: (changes) => applyEdgeChanges(changes, store.edges),
@@ -97,7 +97,7 @@ export const useEdgesState = ({ edges, applyDefault }: UseEdgesStateOptions = { 
 export const useNodesState = ({ nodes, applyDefault }: UseNodesStateOptions = { applyDefault: true }): UseNodesState => {
   const { store } = useVueFlow()
   if (nodes && nodes.length) store.setNodes(nodes)
-  if (applyDefault) store.hooksOn.OnNodesChange((c) => applyNodeChanges(c, store.nodes))
+  if (applyDefault && !store.applyDefault) store.hooksOn.OnNodesChange((c) => applyNodeChanges(c, store.nodes))
   return {
     nodes: store.nodes,
     applyNodeChanges: (changes) => applyNodeChanges(changes, store.nodes),
