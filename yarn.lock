@@ -6137,10 +6137,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite-plugin-vue-type-imports@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/vite-plugin-vue-type-imports/-/vite-plugin-vue-type-imports-0.1.2.tgz#be0037f7ebce25e160a2bfbfaedd4eab6ae522bd"
-  integrity sha512-uUuDUZnM/3muh4eKm81uYMWB+e+8J920fWe369hIOG8idQpiaki3BrPXvBfuweZEFYrPGyj35ciUEOLRhc5q+g==
+vite-plugin-vue-type-imports@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/vite-plugin-vue-type-imports/-/vite-plugin-vue-type-imports-0.1.3.tgz#06edf2da7abdd3367217842e69b6ed7f506a3919"
+  integrity sha512-iF5NgeQc2MZ6wDUS1tnN7rglkWmm+WhK9rCQb3FudsrMTqLazbtN6shyrEcsGBdqYAqH9c5HhiwU3gOIrFcVHA==
 
 vite-svg-loader@^2.2.0:
   version "2.2.0"
