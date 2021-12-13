@@ -1,6 +1,6 @@
 import { useVueFlow } from '~/composables'
 import { FlowState, FlowStore } from '~/types'
-import { initialState } from '~/store'
+import useState from '~/store/state'
 describe('test store state', () => {
   let store: FlowStore
 
@@ -11,7 +11,7 @@ describe('test store state', () => {
   })
 
   it('has default initial state', () => {
-    const initial = initialState()
+    const initial = useState()
     Object.keys(store.state).forEach((state) => {
       const storedState = store[<keyof FlowState>state]
       const initialVal = initial[<keyof FlowState>state]
