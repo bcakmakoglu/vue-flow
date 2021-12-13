@@ -15,17 +15,6 @@ export interface Connection {
   targetHandle?: string
 }
 
-export type ConnectionLineProps = {
-  sourceX: number
-  sourceY: number
-  sourcePosition?: Position
-  targetX: number
-  targetY: number
-  targetPosition?: Position
-  connectionLineStyle?: any
-  connectionLineType: ConnectionLineType
-}
-
 export type OnConnectFunc = (connection: Connection) => void
 export type OnConnectStartParams = {
   nodeId?: string

@@ -19,7 +19,7 @@ interface NodeWrapperProps {
 const props = defineProps<NodeWrapperProps>()
 const emit = defineEmits(['update:node'])
 const node = useVModel(props, 'node', emit)
-const { store } = useVueFlow()
+const { id, store } = useVueFlow()
 provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
@@ -97,7 +97,7 @@ onMounted(() => {
     ({ width: w, height: h }) => {
       nextTick(() => {
         if (w > 0 && h > 0) {
-          const handleBounds = getHandleBounds(nodeElement.value, store.transform[2], store.id)
+          const handleBounds = getHandleBounds(nodeElement.value, store.transform[2], id)
 
           node.value.dimensions = {
             width: w,

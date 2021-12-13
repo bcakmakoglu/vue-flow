@@ -15,7 +15,7 @@ import {
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import TransformationPane from '../TransformationPane/TransformationPane.vue'
 
-const { store } = useVueFlow()
+const { id, store } = useVueFlow()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
@@ -226,14 +226,14 @@ export default {
       <template
         v-for="nodeName of Object.keys(store.getNodeTypes)"
         #[`node-${nodeName}`]="nodeProps"
-        :key="`node-${nodeName}-${store.id}`"
+        :key="`node-${nodeName}-${id}`"
       >
         <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
       </template>
       <template
         v-for="edgeName of Object.keys(store.getEdgeTypes)"
         #[`edge-${edgeName}`]="edgeProps"
-        :key="`edge-${edgeName}-${store.id}`"
+        :key="`edge-${edgeName}-${id}`"
       >
         <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
       </template>
@@ -241,6 +241,6 @@ export default {
         <slot name="connection-line" v-bind="customConnectionLineProps" />
       </template>
     </TransformationPane>
-    <SelectionPane :key="`selection-pane-${store.id}`" />
+    <SelectionPane :key="`selection-pane-${id}`" />
   </div>
 </template>
