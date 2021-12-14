@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useVueFlow } from '~/index'
+import { VueFlow, MiniMap, Controls, useVueFlow, useElementsState } from '~/index'
 
 const {
   nodesDraggable,
@@ -11,8 +11,6 @@ const {
   panOnScroll,
   panOnScrollMode,
   paneMoveable,
-  useNodesState,
-  useEdgesState,
   OnConnect,
   OnNodeDragStart,
   OnNodeDragStop,
@@ -31,8 +29,7 @@ const {
   ],
 })
 
-const { nodes } = useNodesState()
-const { edges, addEdges } = useEdgesState()
+const { nodes, edges, addEdges } = useElementsState()
 const captureZoomClick = ref(false)
 const captureZoomScroll = ref(false)
 
@@ -45,7 +42,7 @@ OnPaneContextMenu((event) => captureZoomClick && console.log('pane ctx menu', ev
 OnMoveEnd((flowTransform) => console.log('move end', flowTransform))
 </script>
 <template>
-  <VueFlow :nodes-draggable="captureZoomScroll">
+  <VueFlow>
     <MiniMap />
     <Controls />
 
@@ -53,7 +50,7 @@ OnMoveEnd((flowTransform) => console.log('move end', flowTransform))
       <div>
         <label for="draggable">
           nodesDraggable
-          <input id="draggable" type="checkbox" class="vue-flow__draggable" />
+          <input id="draggable" v-model="nodesDraggable" type="checkbox" class="vue-flow__draggable" />
         </label>
       </div>
       <div>

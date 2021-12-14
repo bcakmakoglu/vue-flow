@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, BackgroundVariant, Node, useVueFlow } from '~/index'
+import { VueFlow, MiniMap, Controls, Background, BackgroundVariant, Node, useVueFlow, useElementsState } from '~/index'
 
-const { useNodesState, useEdgesState, OnConnect, OnPaneReady, OnNodeDragStop } = useVueFlow()
-const { nodes, addNodes } = useNodesState()
-const { edges, addEdges } = useEdgesState()
+const { OnConnect, OnPaneReady, OnNodeDragStop, dimensions } = useVueFlow()
+const { nodes, addNodes, edges, addEdges } = useElementsState()
 
 OnConnect((params) => addEdges[params])
 OnPaneReady((flowInstance) => console.log('flow loaded:', flowInstance))
@@ -14,8 +13,8 @@ const addRandomNode = () => {
   const newNode: Node = {
     id: nodeId,
     label: `Node: ${nodeId}`,
-    position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
-  } as Node
+    position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
+  }
   addNodes([newNode])
 }
 </script>

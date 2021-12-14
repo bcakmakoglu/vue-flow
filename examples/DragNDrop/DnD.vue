@@ -1,16 +1,15 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import { VueFlow, Controls, FlowInstance, Node, useVueFlow } from '~/index'
+import { VueFlow, Controls, FlowInstance, Node, useVueFlow, useElementsState } from '~/index'
 
 let id = 0
 const getId = () => `dndnode_${id++}`
 
 const flowInstance = ref<FlowInstance>()
 
-const { useNodesState, useEdgesState, OnPaneReady, OnConnect } = useVueFlow()
-const { edges, addEdges } = useEdgesState()
-const { nodes, addNodes } = useNodesState(
-  [
+const { OnPaneReady, OnConnect } = useVueFlow()
+const { nodes, edges, addEdges, addNodes } = useElementsState({
+  nodes: [
     {
       id: '1',
       type: 'input',
@@ -18,9 +17,7 @@ const { nodes, addNodes } = useNodesState(
       position: { x: 250, y: 5 },
     },
   ],
-  true,
-)
-
+})
 OnPaneReady((instance) => (flowInstance.value = instance))
 const onDragOver = (event: DragEvent) => {
   event.preventDefault()

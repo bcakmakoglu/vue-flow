@@ -7,14 +7,6 @@ interface ColorSelectorNodeProps extends NodeProps {
     color: string
     onChange: (event: any) => void
   }
-  type: string
-  selected?: boolean
-  connectable?: boolean
-  xPos?: number
-  yPos?: number
-  targetPosition?: Position
-  sourcePosition?: Position
-  dragging?: boolean
 }
 const props = defineProps<ColorSelectorNodeProps>()
 

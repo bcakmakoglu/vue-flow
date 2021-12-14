@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Connection, Edge, Elements } from '~/index'
+import { VueFlow, MiniMap, Controls, Elements } from '~/index'
 
 const initialElements: Elements = [
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
