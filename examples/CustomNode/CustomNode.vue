@@ -3,19 +3,16 @@ import ColorSelectorNode from './ColorSelectorNode.vue'
 import {
   VueFlow,
   isEdge,
-  addEdge,
   MiniMap,
   Controls,
   Node,
   FlowElement,
-  FlowInstance,
   Elements,
   Position,
   SnapGrid,
-  Connection,
   ConnectionMode,
-  Edge,
   useVueFlow,
+  useNodesState,
 } from '~/index'
 
 const elements = ref<Elements>([])
@@ -89,23 +86,12 @@ onMounted(() => {
   ]
 })
 
-const { useNodesState, OnPaneReady, OnNodeDragStop, OnConnect } = useVueFlow()
-useNodesState(undefined, true)
+const { OnPaneReady } = useVueFlow()
+useNodesState()
 OnPaneReady((flowInstance) => {
   flowInstance.fitView()
   console.log('flow loaded:', flowInstance)
 })
-OnNodeDragStop(({ node }) => console.log('drag stop', node))
-OnConnect((params) =>
-  addEdge(
-    {
-      ...params,
-      animated: true,
-      style: { stroke: '#fff' },
-    } as Edge,
-    elements.value,
-  ),
-)
 </script>
 <template>
   <VueFlow

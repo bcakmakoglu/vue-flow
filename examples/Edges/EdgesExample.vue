@@ -2,7 +2,7 @@
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomLabel from './CustomLabel.vue'
-import { VueFlow, MiniMap, Controls, Background, MarkerType, useVueFlow } from '~/index'
+import { VueFlow, MiniMap, Controls, Background, MarkerType, useVueFlow, useElementsState } from '~/index'
 
 const initialNodes = [
   { id: '1', type: 'input', label: 'Input 1', position: { x: 250, y: 0 } },
@@ -65,13 +65,13 @@ const initialEdges = [
   },
 ]
 
-const { useNodesState, useEdgesState, OnPaneReady, OnNodeDragStop, OnConnect } = useVueFlow()
-const { nodes } = useNodesState(initialNodes)
-const { edges, addEdges } = useEdgesState(initialEdges)
+const { OnPaneReady } = useVueFlow()
+const { nodes, edges, addEdges } = useElementsState({
+  nodes: initialNodes,
+  edges: initialEdges,
+})
 
 OnPaneReady((flowInstance) => flowInstance.fitView())
-OnNodeDragStop((node) => console.log('drag stop', node))
-OnConnect((params) => addEdges([params]))
 </script>
 <template>
   <VueFlow :snap-to-grid="true">

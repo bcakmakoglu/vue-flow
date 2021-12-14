@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ConnectionLine from './ConnectionLine.vue'
-import { VueFlow, addEdge, Background, BackgroundVariant, Elements, useVueFlow } from '~/index'
+import { VueFlow, Background, BackgroundVariant, Elements } from '~/index'
 
 const elements = ref<Elements>([
   {
@@ -10,9 +10,6 @@ const elements = ref<Elements>([
     position: { x: 250, y: 5 },
   },
 ])
-const { applyNodeChanges, OnNodesChange, OnConnect } = useVueFlow()
-OnNodesChange(applyNodeChanges)
-OnConnect((params) => (elements.value = addEdge(params, elements.value)))
 </script>
 <template>
   <VueFlow v-model="elements">
