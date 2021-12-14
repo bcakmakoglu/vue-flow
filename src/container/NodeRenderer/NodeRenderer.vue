@@ -32,7 +32,6 @@ export default {
       :selectable="typeof node.selectable === 'undefined' ? store.elementsSelectable : node.selectable"
       :connectable="typeof node.connectable === 'undefined' ? store.nodesConnectable : node.connectable"
       :snap-grid="snapGrid(node)"
-      :select-nodes-on-drag="store.selectNodesOnDrag"
     >
       <template #default="nodeProps">
         <slot :name="`node-${node.type}`" v-bind="nodeProps"></slot>

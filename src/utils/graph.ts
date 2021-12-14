@@ -77,6 +77,9 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
         },
         isParent: !!(node.children && node.children.length),
         dragging: false,
+        draggable: undefined,
+        selectable: undefined,
+        connectable: undefined,
         ...defaults,
       }
     : defaults
@@ -101,6 +104,8 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         sourceY: 0,
         targetX: 0,
         targetY: 0,
+        updatable: undefined,
+        selectable: undefined,
         ...defaults,
       }
     : defaults
