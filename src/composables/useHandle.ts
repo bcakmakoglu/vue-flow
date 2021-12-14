@@ -79,13 +79,14 @@ export default (store: FlowStore = useVueFlow().store) =>
     onEdgeUpdateEnd?: () => void,
   ) => {
     const flowNode = (event.target as Element).closest('.vue-flow')
-    // when vue-flow is used inside a shadow root we can't use document
     const doc = getHostForElement(event.target as HTMLElement)
-
     if (!doc) return
+
     let validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
+    const node = store.getNode(nodeId)
+
+    if (node && (typeof node.connectable === 'undefined' ? store.nodesConnectable : node.connectable) === false) return
     if (!isValidConnection) {
-      const node = store.getNode(nodeId)
       if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) ?? (() => true)
     }
     const elementBelow = doc.elementFromPoint(event.clientX, event.clientY)
@@ -122,9 +123,7 @@ export default (store: FlowStore = useVueFlow().store) =>
         doc,
       )
 
-      if (!isHoveringHandle) {
-        return resetRecentHandle(recentHoveredHandle)
-      }
+      if (!isHoveringHandle) return resetRecentHandle(recentHoveredHandle)
 
       const isOwnHandle = connection.source === connection.target
 
@@ -147,8 +146,9 @@ export default (store: FlowStore = useVueFlow().store) =>
       )
 
       store.hooks.connectStop.trigger(event)
+      const isOwnHandle = connection.source === connection.target
 
-      if (isValid) {
+      if (isValid && !isOwnHandle) {
         store.hooks.connect.trigger(connection)
         onEdgeUpdate?.(connection)
       }
