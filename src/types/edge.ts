@@ -46,6 +46,7 @@ export interface Edge<T = any> extends Element<T> {
   markerStart?: EdgeMarkerType
   markerEnd?: EdgeMarkerType
   updatable?: boolean
+  selectable?: boolean
 }
 
 export interface EdgePositions {

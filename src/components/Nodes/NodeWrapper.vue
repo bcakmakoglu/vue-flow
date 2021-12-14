@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
-import { GraphNode, SnapGrid } from '../../types'
+import { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 import { getDimensions, getHandleBounds, getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
   node: GraphNode
-  selectNodesOnDrag?: boolean
   snapGrid?: SnapGrid
-  component?: any
+  component?: NodeComponent
   draggable?: boolean
   selectable?: boolean
   connectable?: boolean
@@ -22,6 +21,22 @@ const { id, store } = useVueFlow()
 provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
+
+const scale = controlledComputed(
+  () => store.transform[2],
+  () => store.transform[2],
+)
+watch([() => node.value.position, () => node.value.parentNode?.position], () => {
+  const xyzPos = {
+    ...node.value.position,
+    z: node.value.computedPosition.z,
+  }
+  if (node.value.parentNode) {
+    node.value.computedPosition = getXYZPos(node.value, xyzPos)
+  } else {
+    node.value.computedPosition = xyzPos
+  }
+})
 
 const onMouseEnterHandler = () =>
   node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: node.value }))
@@ -48,11 +63,11 @@ const onDragStart: DraggableEventListener = ({ event }) => {
   store.addSelectedNodes([])
   store.hooks.nodeDragStart.trigger({ event, node: node.value })
 
-  if (props.selectNodesOnDrag && props.selectable) {
+  if (store.selectNodesOnDrag && props.selectable) {
     store.nodesSelectionActive = false
 
     if (!node.value.selected) store.addSelectedNodes([node.value])
-  } else if (!props.selectNodesOnDrag && !node.value.selected && props.selectable) {
+  } else if (!store.selectNodesOnDrag && !node.value.selected && props.selectable) {
     store.nodesSelectionActive = false
     store.addSelectedNodes([])
   }
@@ -65,7 +80,7 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
   if (!node.value.dragging) {
-    if (props.selectable && !props.selectNodesOnDrag && !node.value.selected) {
+    if (props.selectable && !store.selectNodesOnDrag && !node.value.selected) {
       store.addSelectedNodes([node.value])
     }
     store.hooks.nodeClick.trigger({ event, node: node.value })
@@ -74,18 +89,6 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
   store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: false })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 }
-
-watch([() => node.value.position, () => node.value.parentNode?.position], () => {
-  const xyzPos = {
-    ...node.value.position,
-    z: node.value.computedPosition.z,
-  }
-  if (node.value.parentNode) {
-    node.value.computedPosition = getXYZPos(node.value, xyzPos)
-  } else {
-    node.value.computedPosition = xyzPos
-  }
-})
 
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 onMounted(() => {
@@ -96,7 +99,7 @@ onMounted(() => {
     ({ width: w, height: h }) => {
       nextTick(() => {
         if (w > 0 && h > 0) {
-          const handleBounds = getHandleBounds(nodeElement.value, store.transform[2], id)
+          const handleBounds = getHandleBounds(nodeElement.value, scale.value, id)
 
           node.value.dimensions = {
             width: w,
@@ -120,16 +123,16 @@ export default {
     cancel=".nodrag"
     :handle="node.dragHandle"
     :disabled="!props.draggable"
-    :scale="store.transform[2]"
+    :scale="scale"
     :grid="props.snapGrid"
     :enable-user-select-hack="false"
-    v-bind="props.draggable"
     @start="onDragStart"
     @move="onDrag"
     @stop="onDragStop"
   >
     <div
       ref="node-element"
+      :key="`node-${node.id}`"
       :class="[
         'vue-flow__node',
         `vue-flow__node-${node.type}`,
