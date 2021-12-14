@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, Position, GraphEdge } from '../../types'
+import { ConnectionMode, Position, GraphEdge, EdgeComponent } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
   edge: GraphEdge
-  component?: any
-  edgeUpdaterRadius?: number
+  component?: EdgeComponent
   selectable?: boolean
   updatable?: boolean
 }
@@ -22,7 +21,7 @@ const handler = useHandle()
 
 const onEdgeClick = (event: MouseEvent) => {
   const data = { event, edge: edge.value }
-  if (store.elementsSelectable) {
+  if (props.selectable) {
     store.nodesSelectionActive = false
     store.addSelectedEdges([edge.value])
   }
@@ -68,6 +67,7 @@ const sourceHandle = controlledComputed(
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.value.targetHandle))
 const sourcePosition = eagerComputed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = eagerComputed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
+const edgeUpdaterRadius = computed(() => store.edgeUpdaterRadius)
 
 onMounted(() => {
   nextTick(() => {
@@ -108,6 +108,7 @@ export default {
 </script>
 <template>
   <g
+    :key="`edge-${edge.id}`"
     :class="[
       'vue-flow__edge',
       `vue-flow__edge-${edge.type || 'default'}`,
@@ -194,12 +195,7 @@ export default {
       @mouseenter="onEdgeUpdaterMouseEnter"
       @mouseout="onEdgeUpdaterMouseOut"
     >
-      <EdgeAnchor
-        :position="sourcePosition"
-        :center-x="edge.sourceX"
-        :center-y="edge.sourceY"
-        :radius="props.edgeUpdaterRadius"
-      />
+      <EdgeAnchor :position="sourcePosition" :center-x="edge.sourceX" :center-y="edge.sourceY" :radius="edgeUpdaterRadius" />
     </g>
     <g
       v-if="props.updatable"
@@ -207,12 +203,7 @@ export default {
       @mouseenter="onEdgeUpdaterMouseEnter"
       @mouseout="onEdgeUpdaterMouseOut"
     >
-      <EdgeAnchor
-        :position="targetPosition"
-        :center-x="edge.targetX"
-        :center-y="edge.targetY"
-        :radius="props.edgeUpdaterRadius"
-      />
+      <EdgeAnchor :position="targetPosition" :center-x="edge.targetX" :center-y="edge.targetY" :radius="edgeUpdaterRadius" />
     </g>
   </g>
 </template>

@@ -58,9 +58,8 @@ export default {
         :key="edge.id"
         :edge="edge"
         :component="getType(edge.type)"
-        :selectable="store.elementsSelectable"
+        :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
-        :edge-updater-radius="store.edgeUpdaterRadius"
       >
         <template #default="edgeProps">
           <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
