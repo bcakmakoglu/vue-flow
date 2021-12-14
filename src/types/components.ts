@@ -6,10 +6,17 @@ import { EdgeProps } from './edge'
 import { FitViewParams } from './zoom'
 
 type GlobalComponentName = string
-export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: Component<EdgeProps> }
-export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | GlobalComponentName
-export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: Component<NodeProps> }
-export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, any, any, any, any, any> | GlobalComponentName
+export type NodeComponent<N = any> =
+  | Component<NodeProps<N>>
+  | DefineComponent<NodeProps<N>, any, any, any, any>
+  | GlobalComponentName
+export type EdgeComponent<E = any> =
+  | Component<EdgeProps<E>>
+  | DefineComponent<EdgeProps<E>, any, any, any, any, any>
+  | GlobalComponentName
+
+export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: EdgeComponent }
+export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: NodeComponent }
 
 export type HandleType = 'source' | 'target'
 
@@ -53,9 +60,9 @@ export type StringFunc<N = any> = (node: Node<N> | GraphNode<N>) => string
 export type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
 
 export interface MiniMapProps<N = any> {
-  nodeColor?: string | ((node: Node<N> | GraphNode<N>) => string)
-  nodeStrokeColor?: string | ((node: Node<N> | GraphNode<N>) => string)
-  nodeClassName?: string | ((node: Node<N> | GraphNode<N>) => string)
+  nodeColor?: string | (<NC = N>(node: Node<NC> | GraphNode<NC>) => string)
+  nodeStrokeColor?: string | (<NSC = N>(node: Node<NSC> | GraphNode<NSC>) => string)
+  nodeClassName?: string | (<NCM = N>(node: Node<NCM> | GraphNode<NCM>) => string)
   nodeBorderRadius?: number
   nodeStrokeWidth?: number
   maskColor?: string

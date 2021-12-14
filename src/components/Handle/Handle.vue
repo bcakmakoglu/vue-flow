@@ -1,21 +1,14 @@
 <script lang="ts" setup>
 import { useHandle, useVueFlow } from '../../composables'
-import { Position, ValidConnectionFunc } from '../../types'
+import { Position } from '../../types'
 import { NodeId } from '../../context'
-
-interface HandleProps {
-  id?: string
-  type?: string
-  position?: Position
-  isValidConnection?: ValidConnectionFunc
-  connectable?: boolean
-}
+import type { HandleProps } from '../../types/components'
 
 const { id } = useVueFlow()
 const props = withDefaults(defineProps<HandleProps>(), {
   id: '',
   type: 'source',
-  position: Position.Top,
+  position: 'top' as Position,
   connectable: true,
 })
 
