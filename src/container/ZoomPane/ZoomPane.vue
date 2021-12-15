@@ -217,7 +217,7 @@ export default {
 </script>
 <template>
   <div ref="zoomPane" class="vue-flow__renderer vue-flow__container">
-    <TransformationPane v-if="store.getNodes.length">
+    <TransformationPane>
       <template
         v-for="nodeName of Object.keys(store.getNodeTypes)"
         #[`node-${nodeName}`]="nodeProps"

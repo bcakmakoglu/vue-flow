@@ -65,6 +65,7 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'e
 
   paneReady: boolean
   initialized: boolean
+  applyDefault: boolean
 
   vueFlowVersion: string
 }

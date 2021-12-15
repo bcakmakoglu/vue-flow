@@ -9,7 +9,7 @@ const transform = computed(() => `translate(${store.transform[0]}px,${store.tran
 </script>
 <template>
   <div :key="`transformation-pane-${id}`" class="vue-flow__transformation-pane vue-flow__container" :style="{ transform }">
-    <NodeRenderer :key="`node-renderer-${id}`">
+    <NodeRenderer v-if="store.getNodes.length" :key="`node-renderer-${id}`">
       <template
         v-for="nodeName of Object.keys(store.getNodeTypes)"
         #[`node-${nodeName}`]="nodeProps"
@@ -18,7 +18,7 @@ const transform = computed(() => `translate(${store.transform[0]}px,${store.tran
         <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
       </template>
     </NodeRenderer>
-    <EdgeRenderer :key="`edge-renderer-${id}`">
+    <EdgeRenderer v-if="store.getEdges.length" :key="`edge-renderer-${id}`">
       <template
         v-for="edgeName of Object.keys(store.getEdgeTypes)"
         #[`edge-${edgeName}`]="edgeProps"
