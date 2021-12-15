@@ -125,7 +125,7 @@ export interface FlowProps<N = any, E = N> {
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>
 
 type UseStateOptions = {
-  applyDefault?: boolean
+  options?: FlowOptions
 }
 export interface UseNodesStateOptions extends UseStateOptions {
   nodes?: Node[]
