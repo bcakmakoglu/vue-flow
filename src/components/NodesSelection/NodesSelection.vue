@@ -4,14 +4,14 @@ import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 
 const { id, store } = useVueFlow()
-const selectedNodesBBox = computed(() => getRectOfNodes(store.getSelectedNodes))
-const innerStyle = computed(() => ({
-  width: `${selectedNodesBBox.value.width}px`,
-  height: `${selectedNodesBBox.value.height}px`,
-  top: `${selectedNodesBBox.value.y}px`,
-  left: `${selectedNodesBBox.value.x}px`,
-}))
-watch(selectedNodesBBox, (v) => nextTick(() => (store.selectedNodesBbox = v)))
+const selectedNodesBBox = getRectOfNodes(store.getSelectedNodes)
+const innerStyle = {
+  width: `${selectedNodesBBox.width}px`,
+  height: `${selectedNodesBBox.height}px`,
+  top: `${selectedNodesBBox.y}px`,
+  left: `${selectedNodesBBox.x}px`,
+}
+store.selectedNodesBbox = selectedNodesBBox
 const onStart: DraggableEventListener = ({ event }) =>
   store.hooks.selectionDragStart.trigger({ event, nodes: store.getSelectedNodes })
 const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
@@ -24,7 +24,10 @@ const onStop: DraggableEventListener = ({ event }) => {
 }
 const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: store.getSelectedNodes })
 
-const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
+const scale = controlledComputed(
+  () => store.transform[2],
+  () => store.transform[2],
+)
 </script>
 <script lang="ts">
 export default {
@@ -32,11 +35,11 @@ export default {
 }
 </script>
 <template>
-  <div class="vue-flow__nodesselection vue-flow__container" :style="{ transform }">
+  <div class="vue-flow__nodesselection vue-flow__container">
     <Draggable
       :grid="store.snapToGrid ? store.snapGrid : undefined"
       :enable-user-select-hack="false"
-      :scale="store.transform[2]"
+      :scale="scale"
       @start="onStart"
       @move="onDrag"
       @stop="onStop"
