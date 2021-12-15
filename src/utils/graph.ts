@@ -8,7 +8,7 @@ import {
   Elements,
   FlowElements,
   FlowExportObject,
-  FlowState,
+  State,
   FlowStore,
   GraphEdge,
   GraphNode,
@@ -291,7 +291,7 @@ export const onLoadGetNodes = (store: FlowStore) => (): GraphNode[] => store.nod
 export const onLoadGetEdges = (store: FlowStore) => (): GraphEdge[] => store.edges
 export const onLoadGetElements = (store: FlowStore) => (): FlowElements => [...store.nodes, ...store.edges]
 
-export const onLoadToObject = (store: FlowState) => (): FlowExportObject => {
+export const onLoadToObject = (store: State) => (): FlowExportObject => {
   // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
   return JSON.parse(
     JSON.stringify({

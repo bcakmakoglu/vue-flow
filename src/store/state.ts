@@ -1,5 +1,5 @@
 import { createHooks } from './hooks'
-import { ConnectionMode, FlowState, PanOnScrollMode, DefaultNodeTypes, DefaultEdgeTypes, ConnectionLineType } from '~/types'
+import { ConnectionMode, State, PanOnScrollMode, DefaultNodeTypes, DefaultEdgeTypes, ConnectionLineType } from '~/types'
 import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
 import { isEdge, isNode } from '~/utils'
 
@@ -16,8 +16,8 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
   smoothstep: SmoothStepEdge,
 }
 
-export default (opts?: Partial<FlowState>): FlowState => {
-  const state: FlowState = {
+export default (opts?: Partial<State>): State => {
+  const state: State = {
     nodes: [],
     edges: [],
 
@@ -129,6 +129,7 @@ export default (opts?: Partial<FlowState>): FlowState => {
     if (typeof opts.minZoom !== 'undefined') state.minZoom = opts.minZoom
     if (typeof opts.translateExtent !== 'undefined') state.translateExtent = opts.translateExtent
     if (typeof opts.applyDefault !== 'undefined') state.applyDefault = opts.applyDefault
+    if (typeof opts.fitViewOnInit !== 'undefined') state.fitViewOnInit = opts.fitViewOnInit
   }
 
   return state

@@ -1,10 +1,10 @@
 import useState from './state'
 import useActions from './actions'
 import useGetters from './getters'
-import { FlowExportObject, FlowHooksOn, FlowOptions, FlowState, GraphEdge, GraphNode, Store } from '~/types'
+import { FlowExportObject, FlowHooksOn, FlowOptions, State, GraphEdge, GraphNode, Store } from '~/types'
 import { isEdge, isNode, onLoadToObject } from '~/utils'
 
-const useFlowStore = (preloadedState: FlowState): Store => {
+const useFlowStore = (preloadedState: State): Store => {
   const state = reactive(useState(preloadedState))
   const getters = useGetters(state)
   const actions = useActions(state, getters)
@@ -17,6 +17,8 @@ const useFlowStore = (preloadedState: FlowState): Store => {
 
   return {
     state,
+    actions,
+    getters,
     hooksOn,
     ...toRefs(state),
     ...getters,
@@ -24,11 +26,11 @@ const useFlowStore = (preloadedState: FlowState): Store => {
   }
 }
 
-export default (id: string, options?: FlowOptions) => {
+export default (id: string, options?: FlowOptions): Store => {
   const withStorage = options?.storageKey ?? false
   let storedState = ref<FlowExportObject>()
   const storageKey = id ?? options?.id
-  const preloadedState = options as FlowState
+  const preloadedState = options as State
   if (withStorage) {
     storedState = useStorage<FlowExportObject>(storageKey, { edges: [], nodes: [], position: [0, 0], zoom: 0 })
     if (storedState.value) {
