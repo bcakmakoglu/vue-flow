@@ -1,4 +1,4 @@
-import { EventHook } from '@vueuse/core'
+import { EventHook, EventHookOn } from '@vueuse/core'
 import { MouseTouchEvent } from '@braks/revue-draggable'
 import { FlowInstance, Dimensions, XYPosition } from './flow'
 import { GraphEdge } from './edge'
@@ -81,10 +81,11 @@ export interface FlowEvents<N = any, E = N> {
 
 export type FlowEvent = FlowEvents[keyof FlowEvents]
 export type FlowHook<T extends FlowEvent = any> = EventHook<T>
+export type FlowHookOn<T extends FlowEvent = any> = EventHookOn<T>
 
 export type FlowHooks<N = any, E = N> = { [key in keyof FlowEvents<N, E>]: FlowHook<FlowEvents<N, E>[key]> }
 export type FlowHooksOn<N = any, E = N> = {
-  [key in keyof FlowEvents<N, E> as `On${Capitalize<key>}`]: FlowHook<FlowEvents<N, E>[key]>['on']
+  [key in keyof FlowEvents<N, E> as `on${Capitalize<key>}`]: FlowHookOn<FlowEvents<N, E>[key]>
 }
 
 export type EmitFunc<T extends FlowHooks = FlowHooks> = (name: keyof T, ...args: any[]) => void
