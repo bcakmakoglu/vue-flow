@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { Draggable, DraggableEventListener } from '@braks/revue-draggable'
+import { DraggableCore, DraggableEventListener } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 
 const { id, store } = useVueFlow()
-const selectedNodesBBox = getRectOfNodes(store.getSelectedNodes)
-const innerStyle = {
-  width: `${selectedNodesBBox.width}px`,
-  height: `${selectedNodesBBox.height}px`,
-  top: `${selectedNodesBBox.y}px`,
-  left: `${selectedNodesBBox.x}px`,
-}
-store.selectedNodesBbox = selectedNodesBBox
+const selectedNodesBBox = computed(() => getRectOfNodes(store.getSelectedNodes))
+const innerStyle = computed(() => ({
+  width: `${selectedNodesBBox.value.width}px`,
+  height: `${selectedNodesBBox.value.height}px`,
+  top: `${selectedNodesBBox.value.y}px`,
+  left: `${selectedNodesBBox.value.x}px`,
+}))
+watch(selectedNodesBBox, (v) => (store.selectedNodesBbox = v))
 const onStart: DraggableEventListener = ({ event }) =>
   store.hooks.selectionDragStart.trigger({ event, nodes: store.getSelectedNodes })
 const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
@@ -24,6 +24,7 @@ const onStop: DraggableEventListener = ({ event }) => {
 }
 const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: store.getSelectedNodes })
 
+const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 const scale = controlledComputed(
   () => store.transform[2],
   () => store.transform[2],
@@ -35,8 +36,8 @@ export default {
 }
 </script>
 <template>
-  <div :key="`nodesselection-${id}`" class="vue-flow__nodesselection vue-flow__container">
-    <Draggable
+  <div class="vue-flow__nodesselection vue-flow__container" :style="{ transform }">
+    <DraggableCore
       :grid="store.snapToGrid ? store.snapGrid : undefined"
       :enable-user-select-hack="false"
       :scale="scale"
@@ -44,12 +45,7 @@ export default {
       @move="onDrag"
       @stop="onStop"
     >
-      <div
-        :key="`vue-flow-nodesselection-rect-${id}`"
-        class="vue-flow__nodesselection-rect"
-        :style="innerStyle"
-        @contextmenu="onContextMenu"
-      />
-    </Draggable>
+      <div class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
+    </DraggableCore>
   </div>
 </template>
