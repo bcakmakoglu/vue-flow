@@ -1,20 +1,8 @@
 <script lang="ts" setup>
 import dagre from 'dagre'
 import initialElements from './initial-elements'
-import './layouting.css'
 
-import {
-  VueFlow,
-  Controls,
-  addEdge,
-  ConnectionMode,
-  Connection,
-  Edge,
-  Elements,
-  isNode,
-  CoordinateExtent,
-  Position,
-} from '~/index'
+import { VueFlow, Controls, ConnectionMode, Elements, isNode, CoordinateExtent, Position } from '~/index'
 
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
@@ -25,7 +13,6 @@ const nodeExtent: CoordinateExtent = [
 ]
 
 const elements = ref<Elements>(initialElements)
-const onConnect = (params: Connection) => (elements.value = addEdge({ ...params, animated: true }, elements.value))
 
 const onLayout = (direction: string) => {
   const isHorizontal = direction === 'LR'
@@ -41,33 +28,27 @@ const onLayout = (direction: string) => {
 
   dagre.layout(dagreGraph)
 
-  elements.value = elements.value.map((el) => {
+  elements.value.forEach((el) => {
     if (isNode(el)) {
       const nodeWithPosition = dagreGraph.node(el.id)
       el.targetPosition = isHorizontal ? Position.Left : Position.Top
       el.sourcePosition = isHorizontal ? Position.Right : Position.Bottom
       el.position = { x: nodeWithPosition.x, y: nodeWithPosition.y }
     }
-
-    return el
   })
-  console.log(elements.value)
 }
 </script>
 <template>
   <div class="layoutflow">
-    <VueFlow
-      v-model="elements"
-      :node-extent="nodeExtent"
-      :connection-mode="ConnectionMode.Loose"
-      @connect="onConnect"
-      @load="() => onLayout('TB')"
-    >
+    <VueFlow v-model="elements" :node-extent="nodeExtent" :connection-mode="ConnectionMode.Loose" @pane-ready="onLayout('TB')">
       <Controls />
     </VueFlow>
     <div class="controls">
-      <button :style="{ marginRight: 10 }" @click="() => onLayout('TB')">vertical layout</button>
-      <button @click="() => onLayout('LR')">horizontal layout</button>
+      <button :style="{ marginRight: 10 }" @click="onLayout('TB')">vertical layout</button>
+      <button @click="onLayout('LR')">horizontal layout</button>
     </div>
   </div>
 </template>
+<style>
+@import './layouting.css';
+</style>

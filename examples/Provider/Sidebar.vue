@@ -1,13 +1,10 @@
 <script lang="ts" setup>
 import { useVueFlow } from '~/index'
-const store = useVueFlow()
-
-const nodes = computed(() => store.getNodes)
-const transform = computed(() => store.transform)
+const { nodesSelectionActive, addSelectedNodes, getNodes, transform } = useVueFlow()
 
 const selectAll = () => {
-  store.addSelectedNodes(nodes.value)
-  store.unsetUserSelection()
+  addSelectedNodes(getNodes.value)
+  nodesSelectionActive.value = true
 }
 </script>
 <template>
@@ -18,7 +15,7 @@ const selectAll = () => {
     <div class="title">Zoom & pan transform</div>
     <div class="transform">{{ [transform[0].toFixed(2), transform[1].toFixed(2), transform[2].toFixed(2)] }}</div>
     <div class="title">Nodes</div>
-    <div v-for="node of nodes" :key="node.id">
+    <div v-for="node of getNodes" :key="node.id">
       Node {{ node.id }} - x: {{ node.position.x.toFixed(2) }}, y: {{ node.position.y.toFixed(2) }}
     </div>
 

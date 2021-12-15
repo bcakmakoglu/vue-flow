@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import GroupNode from './GroupNode.vue'
-import { VueFlow, Elements, Node, Edge, Connection, addEdge } from '~/index'
+import { VueFlow, Elements, Edge, Connection, addEdge } from '~/index'
 
 const elements = ref<Elements<{ label: string; group?: string }>>([
   { id: 'node-2', label: 'node-2', position: { x: 50, y: 5 } },

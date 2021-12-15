@@ -30,15 +30,10 @@ const color = ref<Colors>({
   blue: 100,
 })
 const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (color.value[c] = Number(val))
-const store = useVueFlow({
-  nodeTypes: ['rgb', 'rgb-output'],
-  edgeTypes: ['pathfinding'],
-  zoomOnScroll: false,
-})
 </script>
 <template>
   <div ref="page" class="demo-flow">
-    <VueFlow v-model="elements" @load="onLoad">
+    <VueFlow v-model="elements" @pane-ready="onLoad">
       <template #node-rgb="props">
         <RGBNode v-bind="props" :amount="color" @change="onChange" />
       </template>

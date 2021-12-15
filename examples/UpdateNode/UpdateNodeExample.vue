@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { VueFlow, Elements } from '~/index'
 
-import './updatenode.css'
-
 const initialElements: Elements = [
-  { id: '1', data: { label: '-' }, position: { x: 100, y: 100 } },
-  { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 200 } },
+  { id: '1', label: '-', position: { x: 100, y: 100 } },
+  { id: '2', label: 'Node 2', position: { x: 100, y: 200 } },
   { id: 'e1-2', source: '1', target: '2' },
 ]
 
@@ -17,18 +15,13 @@ const opts = ref({
 })
 
 const updateNode = () => {
-  elements.value = elements.value.map((el) => {
+  elements.value.forEach((el) => {
     if (el.id === '1') {
       // it's important that you create a new object here in order to notify react flow about the change
-      el.data = {
-        ...el.data,
-        label: opts.value.name,
-      }
+      el.label = opts.value.name
       el.style = { backgroundColor: opts.value.bg }
       el.hidden = opts.value.hidden
     }
-
-    return el
   })
 }
 
@@ -50,3 +43,6 @@ onMounted(updateNode)
     </div>
   </VueFlow>
 </template>
+<style>
+@import './updatenode.css';
+</style>

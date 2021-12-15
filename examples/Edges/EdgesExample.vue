@@ -65,16 +65,13 @@ const initialEdges = [
   },
 ]
 
-const { OnPaneReady } = useVueFlow()
-const { nodes, edges, addEdges } = useElementsState({
+const { nodes, edges } = useElementsState({
   nodes: initialNodes,
   edges: initialEdges,
 })
-
-OnPaneReady((flowInstance) => flowInstance.fitView())
 </script>
 <template>
-  <VueFlow :snap-to-grid="true">
+  <VueFlow :fit-view-on-init="true" :snap-to-grid="true">
     <template #edge-custom="props">
       <CustomEdge v-bind="props" />
     </template>
