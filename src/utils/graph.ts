@@ -85,8 +85,8 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
     : defaults
 
   return {
-    ...node,
     ...(defaults as GraphNode),
+    ...node,
     id: node.id.toString(),
   }
 }
@@ -111,8 +111,8 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
     : defaults
 
   return {
-    ...edge,
     ...(defaults as GraphEdge),
+    ...edge,
     id: edge.id.toString(),
   }
 }
