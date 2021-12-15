@@ -84,13 +84,11 @@ export const createPositionChange = ({ node, diff, dragging, nodeExtent }: Creat
 export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
   return items.reduce((res, item) => {
     const willBeSelected =
-      selectedIds.includes(item.id) || (isGraphNode(item) && item.parentNode && selectedIds.includes(item.parentNode?.id))
+      selectedIds.includes(item.id) || !!(isGraphNode(item) && item.parentNode && selectedIds.includes(item.parentNode?.id))
 
     if (!item.selected && willBeSelected) {
-      item.selected = true
       res.push(createSelectionChange(item.id, true))
     } else if (item.selected && !willBeSelected) {
-      item.selected = false
       res.push(createSelectionChange(item.id, false))
     }
 
