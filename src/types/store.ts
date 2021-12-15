@@ -8,7 +8,7 @@ import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks, FlowHooksOn } from './hooks'
 
-export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'elements'> {
+export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'elements'> {
   hooks: FlowHooks
   instance?: FlowInstance
 
@@ -69,7 +69,7 @@ export interface FlowState<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' 
   vueFlowVersion: string
 }
 
-export interface FlowActions<N = any, E = N> {
+export interface Actions<N = any, E = N> {
   setElements: (elements: Elements<N, E>, extent?: CoordinateExtent) => void
   setNodes: (nodes: Node<N>[], extent?: CoordinateExtent) => void
   setEdges: (edges: Edge<E>[]) => void
@@ -86,7 +86,7 @@ export interface FlowActions<N = any, E = N> {
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
 }
 
-export interface FlowGetters<N = any, E = N> {
+export interface Getters<N = any, E = N> {
   getEdgeTypes: ComputedRef<Record<string, EdgeComponent>>
   getNodeTypes: ComputedRef<Record<string, NodeComponent>>
   getNodes: ComputedRef<GraphNode<N>[]>
@@ -97,8 +97,11 @@ export interface FlowGetters<N = any, E = N> {
   getSelectedNodes: ComputedRef<GraphNode<N>[]>
   getSelectedEdges: ComputedRef<GraphEdge<E>[]>
 }
-
-export type Store<N = any, E = N> = { state: FlowState<N, E>; hooksOn: FlowHooksOn } & ToRefs<FlowState<N, E>> &
-  FlowActions<N, E> &
-  FlowGetters<N, E>
+interface StoreBase<N = any, E = N> {
+  state: State<N, E>
+  actions: Actions<N, E>
+  getters: Getters<N, E>
+  hooksOn: FlowHooksOn<N, E>
+}
+export type Store<N = any, E = N> = StoreBase & ToRefs<State<N, E>> & Actions<N, E> & Getters<N, E>
 export type FlowStore<N = any, E = N> = UnwrapNestedRefs<Store<N, E>>
