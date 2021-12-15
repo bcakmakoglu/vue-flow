@@ -35,7 +35,7 @@ export default {
 }
 </script>
 <template>
-  <div class="vue-flow__nodesselection vue-flow__container">
+  <div :key="`nodesselection-${id}`" class="vue-flow__nodesselection vue-flow__container">
     <Draggable
       :grid="store.snapToGrid ? store.snapGrid : undefined"
       :enable-user-select-hack="false"
