@@ -10,7 +10,7 @@ const useFlowStore = (preloadedState: State): Store => {
   const actions = useActions(state, getters)
   const hooksOn: FlowHooksOn = <any>{}
   Object.entries(state.hooks).forEach(([n, h]) => {
-    const name = `On${n.charAt(0).toUpperCase() + n.slice(1)}`
+    const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
     hooksOn[<keyof FlowHooksOn>name] = h.on as any
   })
   actions.setState(state)

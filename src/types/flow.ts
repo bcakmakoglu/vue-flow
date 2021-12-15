@@ -142,7 +142,7 @@ export type UseNodesState<N = any> = {
   applyNodeChanges: <ND = N>(changes: NodeChange[]) => GraphNode<ND>[]
   setNodes: Actions['setNodes']
   addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => GraphNode<NA>[]
-  OnNodesChange: FlowHooksOn['OnNodesChange']
+  onNodesChange: FlowHooksOn['onNodesChange']
 }
 export type UseEdgesState<E = any> = {
   edges: GraphEdge[]
@@ -150,7 +150,7 @@ export type UseEdgesState<E = any> = {
   setEdges: Actions['setEdges']
   addEdges: <EA = E>(params: (Edge<EA> | Connection)[]) => GraphEdge<EA>[]
   updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => GraphEdge<EU> | false
-  OnEdgesChange: FlowHooksOn['OnEdgesChange']
+  onEdgesChange: FlowHooksOn['onEdgesChange']
 }
 export type UseElementsState<N = any, E = N> = UseNodesState<N> & UseEdgesState<E>
 
