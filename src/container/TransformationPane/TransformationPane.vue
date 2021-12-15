@@ -18,7 +18,7 @@ const transform = computed(() => `translate(${store.transform[0]}px,${store.tran
         <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
       </template>
     </NodeRenderer>
-    <EdgeRenderer v-if="store.getEdges.length" :key="`edge-renderer-${id}`">
+    <EdgeRenderer :key="`edge-renderer-${id}`">
       <template
         v-for="edgeName of Object.keys(store.getEdgeTypes)"
         #[`edge-${edgeName}`]="edgeProps"
