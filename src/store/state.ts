@@ -1,7 +1,14 @@
 import { createHooks } from './hooks'
-import { ConnectionMode, State, PanOnScrollMode, DefaultNodeTypes, DefaultEdgeTypes, ConnectionLineType } from '~/types'
+import {
+  ConnectionMode,
+  State,
+  PanOnScrollMode,
+  DefaultNodeTypes,
+  DefaultEdgeTypes,
+  ConnectionLineType,
+  FlowOptions,
+} from '~/types'
 import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
-import { isEdge, isNode } from '~/utils'
 
 export const defaultNodeTypes: DefaultNodeTypes = {
   input: InputNode,
@@ -16,7 +23,7 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
   smoothstep: SmoothStepEdge,
 }
 
-export default (opts?: Partial<State>): State => {
+export default (opts?: FlowOptions): State => {
   const state: State = {
     nodes: [],
     edges: [],
@@ -94,12 +101,6 @@ export default (opts?: Partial<State>): State => {
   }
 
   if (opts) {
-    if (typeof opts.modelValue !== 'undefined') {
-      state.nodes = opts.modelValue.filter((el) => isNode(el))
-      state.edges = opts.modelValue.filter((el) => isEdge(el))
-    }
-    if (typeof opts.nodes !== 'undefined') state.nodes = opts.nodes
-    if (typeof opts.edges !== 'undefined') state.edges = opts.edges
     if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll
     if (typeof opts.panOnScrollMode !== 'undefined') state.panOnScrollMode = opts.panOnScrollMode
     if (typeof opts.panOnScrollSpeed !== 'undefined') state.panOnScrollSpeed = opts.panOnScrollSpeed
