@@ -174,10 +174,7 @@ let id = 4
 const getId = () => `${id++}`
 
 const elements = ref(initialElements)
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge({ ...params, type: 'smoothstep' }, elements.value))
 const { project } = useZoomPanHelper()
-const onEdgeUpdate = (oldEdge: Edge, newConnection: Connection) =>
-  (elements.value = updateEdge(oldEdge, newConnection, elements.value))
 
 const onPaneClick = (evt: MouseEvent) =>
   (elements.value = elements.value.concat({
@@ -189,12 +186,9 @@ const onPaneClick = (evt: MouseEvent) =>
 <template>
   <VueFlow
     v-model="elements"
-    :node-types="['custom']"
     :connection-line-type="ConnectionLineType.SmoothStep"
     :connection-mode="ConnectionMode.Loose"
-    @connect="onConnect"
     @pane-click="onPaneClick"
-    @edge-pdate="onEdgeUpdate"
   >
     <template #node-custom="props">
       <CustomNode v-bind="props" />

@@ -3,18 +3,17 @@ import { Handle, Position, getNodesInside, useVueFlow } from '~/index'
 import type { NodeProps } from '~/types/node'
 
 const props = defineProps<NodeProps>()
-const store = useVueFlow()
-store.hooks.nodeDragStop.on(({ node }) => {
+const { onNodeDragStop, getNodes, transform } = useVueFlow()
+onNodeDragStop(({ node }) => {
   const nodes = getNodesInside(
-    store.getNodes,
+    getNodes.value,
     {
       ...props.dimensions,
       x: props.computedPosition.x,
       y: props.computedPosition.y,
     },
-    store.transform,
+    transform.value,
   )
-  console.log(nodes)
   if (nodes.some((n) => n.id === node.id && n.id !== props.id)) {
     node.label = `In ${props.id}`
     node.data = {

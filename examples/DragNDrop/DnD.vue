@@ -7,7 +7,7 @@ const getId = () => `dndnode_${id++}`
 
 const flowInstance = ref<FlowInstance>()
 
-const { OnPaneReady, OnConnect } = useVueFlow()
+const { onPaneReady, onConnect } = useVueFlow()
 const { nodes, edges, addEdges, addNodes } = useElementsState({
   nodes: [
     {
@@ -18,7 +18,7 @@ const { nodes, edges, addEdges, addNodes } = useElementsState({
     },
   ],
 })
-OnPaneReady((instance) => (flowInstance.value = instance))
+onPaneReady((instance) => (flowInstance.value = instance))
 const onDragOver = (event: DragEvent) => {
   event.preventDefault()
   if (event.dataTransfer) {
@@ -26,7 +26,7 @@ const onDragOver = (event: DragEvent) => {
   }
 }
 
-OnConnect((params) => addEdges([params]))
+onConnect((params) => addEdges([params]))
 
 const onDrop = (event: DragEvent) => {
   if (flowInstance.value) {

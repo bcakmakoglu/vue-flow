@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, FlowInstance, useVueFlow, useNodesState, useEdgesState } from '~/index'
+import { VueFlow, MiniMap, Controls, Background, useVueFlow, useNodesState, useEdgesState } from '~/index'
 
 const initialNodes = [
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -11,17 +11,14 @@ const initialEdges = [
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ]
-const vfInstance = ref<FlowInstance>()
-
-const { OnPaneReady, OnNodeDragStop, OnConnect } = useVueFlow()
+const { onPaneReady, onNodeDragStop, onConnect, instance } = useVueFlow()
 const { nodes } = useNodesState({ nodes: initialNodes, applyDefault: true })
 const { edges, addEdges } = useEdgesState({ edges: initialEdges, applyDefault: true })
-OnPaneReady((flowInstance) => {
-  flowInstance.fitView({ padding: 0.1 })
-  vfInstance.value = flowInstance
+onPaneReady(({ fitView }) => {
+  fitView({ padding: 0.1 })
 })
-OnNodeDragStop((e) => console.log('drag stop', e))
-OnConnect((params) => addEdges([params]))
+onNodeDragStop((e) => console.log('drag stop', e))
+onConnect((params) => addEdges([params]))
 
 const updatePos = () => {
   nodes.forEach((el) => {
@@ -32,8 +29,8 @@ const updatePos = () => {
   })
 }
 
-const logToObject = () => console.log(vfInstance.value?.toObject())
-const resetTransform = () => vfInstance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
+const logToObject = () => console.log(instance.value?.toObject())
+const resetTransform = () => instance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
 const toggleclasss = () => {
   nodes.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 }

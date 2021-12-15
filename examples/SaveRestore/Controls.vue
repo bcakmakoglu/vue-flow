@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import { useZoomPanHelper, FlowExportObject, Node, useVueFlow } from '~/index'
+import { useZoomPanHelper, FlowExportObject, Node, useVueFlow, useElementsState } from '~/index'
 
 const flowKey = 'example-flow'
 const state = useStorage(flowKey, {
-  elements: [],
+  nodes: [],
+  edges: [],
   position: [NaN, NaN],
   zoom: 1,
 } as FlowExportObject)
 
 const getNodeId = () => `randomnode_${+new Date()}`
 
-const { transform } = useZoomPanHelper()
-
-const flow = useVueFlow()
-const emit = defineEmits(['restore', 'add'])
+const { setTransform } = useZoomPanHelper()
+const { instance, dimensions } = useVueFlow()
+const { nodes, edges, addNodes, setNodes, setEdges } = useElementsState()
 
 const onSave = () => {
-  if (flow.instance) state.value = flow.instance.toObject()
+  state.value = instance.value.toObject()
 }
 
 const onRestore = () => {
@@ -24,18 +24,19 @@ const onRestore = () => {
 
   if (flow) {
     const [x = 0, y = 0] = flow.position
-    emit('restore', flow.elements ?? [])
-    transform({ x, y, zoom: flow.zoom || 0 })
+    setNodes(state.value.nodes)
+    setEdges(state.value.edges)
+    setTransform({ x, y, zoom: flow.zoom || 0 })
   }
 }
 
 const onAdd = () => {
   const newNode = {
     id: `random_node-${getNodeId()}`,
-    data: { label: 'Added node' },
-    position: { x: Math.random() * window.innerWidth - 100, y: Math.random() * window.innerHeight },
+    label: 'Added node',
+    position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
   } as Node
-  flow.addElements([newNode])
+  addNodes([newNode])
 }
 </script>
 <template>

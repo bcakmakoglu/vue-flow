@@ -1,10 +1,9 @@
 import useState from './state'
 import useActions from './actions'
 import useGetters from './getters'
-import { FlowExportObject, FlowHooksOn, FlowOptions, State, GraphEdge, GraphNode, Store } from '~/types'
-import { isEdge, isNode, onLoadToObject } from '~/utils'
+import { FlowHooksOn, State, Store } from '~/types'
 
-const useFlowStore = (preloadedState: State): Store => {
+export default (preloadedState: State): Store => {
   const state = reactive(useState(preloadedState))
   const getters = useGetters(state)
   const actions = useActions(state, getters)
@@ -24,48 +23,4 @@ const useFlowStore = (preloadedState: State): Store => {
     ...getters,
     ...actions,
   }
-}
-
-export default (id: string, options?: FlowOptions): Store => {
-  const withStorage = options?.storageKey ?? false
-  let storedState = ref<FlowExportObject>()
-  const storageKey = id ?? options?.id
-  const preloadedState = options as State
-  if (withStorage) {
-    storedState = useStorage<FlowExportObject>(storageKey, { edges: [], nodes: [], position: [0, 0], zoom: 0 })
-    if (storedState.value) {
-      preloadedState.nodes = (
-        storedState.value.nodes
-          ? storedState.value.nodes
-          : options?.nodes
-          ? options.nodes
-          : options?.modelValue
-          ? options?.modelValue.filter((el) => isNode(el))
-          : []
-      ) as GraphNode[]
-      preloadedState.edges = (
-        storedState.value.edges
-          ? storedState.value.edges
-          : options?.edges
-          ? options.edges
-          : options?.modelValue
-          ? options?.modelValue.filter((el) => isEdge(el))
-          : []
-      ) as GraphEdge[]
-      if (storedState.value.position && storedState.value.zoom)
-        preloadedState.transform = [storedState.value.position[0], storedState.value.position[1], storedState.value.zoom]
-    }
-  }
-  const store = useFlowStore(preloadedState)
-  if (withStorage && storageKey === id) {
-    const toObject = onLoadToObject(store.state)
-    watch(
-      store.state,
-      () => {
-        storedState.value = toObject()
-      },
-      { deep: true },
-    )
-  }
-  return store
 }

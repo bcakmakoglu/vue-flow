@@ -94,10 +94,6 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./Validation/ValidationExample.vue'),
   },
   {
-    path: '/zoom-pan-helper',
-    component: () => import('./ZoomPanHelper/ZoomPanHelperExample.vue'),
-  },
-  {
     path: '/nesting',
     component: () => import('./Nesting/Nesting.vue'),
   },

@@ -1,18 +1,17 @@
 <script lang="ts" setup>
 import ColorSelectorNode from './ColorSelectorNode.vue'
 import {
-  VueFlow,
+  ConnectionMode,
+  Elements,
+  FlowElement,
   isEdge,
   MiniMap,
-  Controls,
   Node,
-  FlowElement,
-  Elements,
   Position,
   SnapGrid,
-  ConnectionMode,
-  useVueFlow,
   useNodesState,
+  useVueFlow,
+  VueFlow,
 } from '~/index'
 
 const elements = ref<Elements>([])
@@ -31,25 +30,14 @@ const nodeColor = (n: Node): string => {
   return '#fff'
 }
 
+const onChange = (event: Event) => {
+  elements.value.forEach((e: FlowElement) => {
+    if (isEdge(e) || e.id !== '2') return e
+    bgColor.value = (event.target as HTMLInputElement).value
+  })
+}
+
 onMounted(() => {
-  const onChange = (event: Event) => {
-    elements.value = elements.value.map((e: FlowElement) => {
-      if (isEdge(e) || e.id !== '2') {
-        return e
-      }
-      const color = (event.target as HTMLInputElement).value
-      bgColor.value = color
-
-      return {
-        ...e,
-        data: {
-          ...e.data,
-          color,
-        },
-      }
-    })
-  }
-
   elements.value = [
     {
       id: '1',
@@ -61,7 +49,7 @@ onMounted(() => {
     {
       id: '2',
       type: 'selectorNode',
-      data: { onChange, color: bgColor.value },
+      data: { onChange, color: bgColor },
       style: { border: '1px solid #777', padding: '10px' },
       position: { x: 250, y: 50 },
     },
@@ -86,9 +74,9 @@ onMounted(() => {
   ]
 })
 
-const { OnPaneReady } = useVueFlow()
+const { onPaneReady } = useVueFlow()
 useNodesState()
-OnPaneReady((flowInstance) => {
+onPaneReady((flowInstance) => {
   flowInstance.fitView()
   console.log('flow loaded:', flowInstance)
 })

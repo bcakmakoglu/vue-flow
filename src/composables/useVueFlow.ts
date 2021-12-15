@@ -1,5 +1,5 @@
 import { getCurrentInstance } from 'vue'
-import { FlowOptions, UseVueFlow } from '~/types'
+import { FlowOptions, State, UseVueFlow } from '~/types'
 import { VueFlow } from '~/context'
 import { useStore } from '~/store'
 
@@ -11,7 +11,7 @@ export default (options?: FlowOptions): UseVueFlow => {
     : false
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
     const name = options?.id ?? `vue-flow-${id++}`
-    const store = useStore(name, options)
+    const store = useStore(options as State)
     vueFlow = {
       id: name,
       store: reactive(store),

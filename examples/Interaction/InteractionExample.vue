@@ -11,13 +11,13 @@ const {
   panOnScroll,
   panOnScrollMode,
   paneMoveable,
-  OnConnect,
-  OnNodeDragStart,
-  OnNodeDragStop,
-  OnPaneClick,
-  OnPaneScroll,
-  OnPaneContextMenu,
-  OnMoveEnd,
+  onConnect,
+  onNodeDragStart,
+  onNodeDragStop,
+  onPaneClick,
+  onPaneScroll,
+  onPaneContextMenu,
+  onMoveEnd,
 } = useVueFlow({
   modelValue: [
     { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -33,13 +33,13 @@ const { nodes, edges, addEdges } = useElementsState()
 const captureZoomClick = ref(false)
 const captureZoomScroll = ref(false)
 
-OnConnect((params) => addEdges([params]))
-OnNodeDragStart((e) => console.log('drag start', e))
-OnNodeDragStop((e) => console.log('drag stop', e))
-OnPaneClick((event) => captureZoomClick.value && console.log('pane click', event))
-OnPaneScroll((event) => captureZoomScroll.value && console.log('pane scroll', event))
-OnPaneContextMenu((event) => captureZoomClick && console.log('pane ctx menu', event))
-OnMoveEnd((flowTransform) => console.log('move end', flowTransform))
+onConnect((params) => addEdges([params]))
+onNodeDragStart((e) => console.log('drag start', e))
+onNodeDragStop((e) => console.log('drag stop', e))
+onPaneClick((event) => captureZoomClick.value && console.log('pane click', event))
+onPaneScroll((event) => captureZoomScroll.value && console.log('pane scroll', event))
+onPaneContextMenu((event) => captureZoomClick && console.log('pane ctx menu', event))
+onMoveEnd((flowTransform) => console.log('move end', flowTransform))
 </script>
 <template>
   <VueFlow>

@@ -1,16 +1,13 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-// @ts-ignore
-import { Handle, NodeProps, Position } from '~/index'
+import { Handle, Position } from '~/index'
+import type { NodeProps } from '~/types/node'
 
-interface CustomNodeProps extends NodeProps {
-  id: string
-}
-const props = defineProps<CustomNodeProps>()
+const props = defineProps<NodeProps>()
 const nodeStyles: CSSProperties = { padding: '10px 15px', border: '1px solid #ddd' }
 </script>
 <template>
-  <div :style="nodeStyles">
+  <div :key="props.id" :style="nodeStyles">
     <div>node {{ props.id }}</div>
     <Handle id="left" type="source" :position="Position.Left" />
     <Handle id="right" type="source" :position="Position.Right" />
