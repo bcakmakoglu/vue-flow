@@ -61,10 +61,9 @@ const updateEdge = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge
 export const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
 export const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
 
-export const useEdgesState = ({ edges, applyDefault }: UseEdgesStateOptions = { applyDefault: true }): UseEdgesState => {
-  const { store } = useVueFlow()
+export const useEdgesState = ({ edges, options }: UseEdgesStateOptions = { options: { applyDefault: true } }): UseEdgesState => {
+  const { store } = useVueFlow(options)
   if (edges && edges.length) store.setEdges(edges)
-  if (applyDefault && !store.applyDefault) store.hooksOn.onEdgesChange((e) => applyEdgeChanges(e, store.edges))
   return {
     edges: store.edges,
     applyEdgeChanges: (changes) => applyEdgeChanges(changes, store.edges),
@@ -94,10 +93,9 @@ export const useEdgesState = ({ edges, applyDefault }: UseEdgesStateOptions = { 
   }
 }
 
-export const useNodesState = ({ nodes, applyDefault }: UseNodesStateOptions = { applyDefault: true }): UseNodesState => {
-  const { store } = useVueFlow()
+export const useNodesState = ({ nodes, options }: UseNodesStateOptions = { options: { applyDefault: true } }): UseNodesState => {
+  const { store } = useVueFlow(options)
   if (nodes && nodes.length) store.setNodes(nodes)
-  if (applyDefault && !store.applyDefault) store.hooksOn.onNodesChange((c) => applyNodeChanges(c, store.nodes))
   return {
     nodes: store.nodes,
     applyNodeChanges: (changes) => applyNodeChanges(changes, store.nodes),
@@ -116,10 +114,10 @@ export const useNodesState = ({ nodes, applyDefault }: UseNodesStateOptions = { 
 }
 
 export const useElementsState = (
-  { edges, nodes, applyDefault }: UseElementsStateOptions = { applyDefault: true },
+  { edges, nodes, options }: UseElementsStateOptions = { options: { applyDefault: true } },
 ): UseElementsState => {
-  const nodesState = useNodesState({ nodes, applyDefault })
-  const edgesState = useEdgesState({ edges, applyDefault })
+  const nodesState = useNodesState({ nodes, options })
+  const edgesState = useEdgesState({ edges, options })
 
   return {
     ...nodesState,
