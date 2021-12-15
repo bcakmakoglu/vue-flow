@@ -65,8 +65,8 @@ const sourceHandle = controlledComputed(
   () => getHandle(edge.value.sourceNode.handleBounds.source, edge.value.sourceHandle),
 )
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.value.targetHandle))
-const sourcePosition = eagerComputed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
-const targetPosition = eagerComputed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
+const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
+const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
 const edgeUpdaterRadius = computed(() => store.edgeUpdaterRadius)
 
 onMounted(() => {

@@ -90,27 +90,23 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 }
 
+const updatePosition = (width: number, height: number) => {
+  const handleBounds = getHandleBounds(nodeElement.value, scale.value, id)
+  node.value.dimensions = {
+    width,
+    height,
+  }
+  node.value.handleBounds = handleBounds
+}
+
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 onMounted(() => {
   const dimensions = ref(getDimensions(nodeElement.value))
   useResizeObserver(nodeElement, () => (dimensions.value = getDimensions(nodeElement.value)))
-  watch(
-    dimensions,
-    ({ width: w, height: h }) => {
-      nextTick(() => {
-        if (w > 0 && h > 0) {
-          const handleBounds = getHandleBounds(nodeElement.value, scale.value, id)
-
-          node.value.dimensions = {
-            width: w,
-            height: h,
-          }
-          node.value.handleBounds = handleBounds
-        }
-      })
-    },
-    { immediate: true },
+  watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () =>
+    nextTick(() => updatePosition(dimensions.value.width, dimensions.value.height)),
   )
+  watch(dimensions, ({ width: w, height: h }) => nextTick(() => w > 0 && h > 0 && updatePosition(w, h)), { immediate: true })
 })
 </script>
 <script lang="ts">
