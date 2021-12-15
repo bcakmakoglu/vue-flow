@@ -11,11 +11,13 @@ export default (options?: FlowOptions): UseVueFlow => {
     : false
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
     const name = options?.id ?? `vue-flow-${id++}`
-    const store = reactive(useStore(name, options))
+    const store = useStore(name, options)
     vueFlow = {
       id: name,
-      store,
-      ...toRefs(store),
+      store: reactive(store),
+      ...toRefs(store.state),
+      ...store.getters,
+      ...store.actions,
       ...store.hooksOn,
     }
   }
