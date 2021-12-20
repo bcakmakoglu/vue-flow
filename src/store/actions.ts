@@ -112,6 +112,7 @@ export default (state: State, getters: Getters): Actions => {
   }
 
   const setNodes: Actions['setNodes'] = (nodes, extent?: CoordinateExtent) => {
+    if (!state.initialized && !nodes.length) return
     nodes = nodes.flatMap((node) => {
       const children: GraphNode[] = []
       parseChildren(node, undefined, children, extent ?? state.nodeExtent, getters.getNode.value)
@@ -120,6 +121,7 @@ export default (state: State, getters: Getters): Actions => {
     state.nodes = <GraphNode[]>nodes
   }
   const setEdges: Actions['setEdges'] = (edges) => {
+    if (!state.initialized && !edges.length) return
     state.edges = edges.map((edge) => {
       const sourceNode = getters.getNode.value(edge.source)!
       const targetNode = getters.getNode.value(edge.target)!
@@ -128,11 +130,13 @@ export default (state: State, getters: Getters): Actions => {
       if (!targetNode || typeof targetNode === 'undefined')
         console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
-      return parseEdge(edge, {
-        ...getters.getEdge.value(edge.id),
+      return {
+        ...parseEdge(edge, {
+          ...getters.getEdge.value(edge.id),
+        }),
         sourceNode,
         targetNode,
-      })
+      }
     })
   }
 

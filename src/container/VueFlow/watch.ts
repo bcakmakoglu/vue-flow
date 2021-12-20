@@ -1,37 +1,49 @@
 import { Ref } from 'vue'
-import { FlowProps, FlowStore } from '~/types'
+import { FlowProps, FlowStore, Node, Edge, Elements } from '~/types'
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 export default (
-  modelValue: Ref<any[] | undefined> | undefined,
-  nodes: Ref<any[] | undefined> | undefined,
-  edges: Ref<any[] | undefined> | undefined,
+  {
+    modelValue,
+    nodes,
+    edges,
+  }: {
+    modelValue?: Ref<Elements>
+    nodes?: Ref<Node[] | undefined>
+    edges?: Ref<Edge[] | undefined>
+  },
   props: FlowProps,
   store: FlowStore,
 ) => {
-  if (isDefined(modelValue)) {
-    const { pause, resume } = pausableWatch(modelValue, (v) => {
-      if (v) {
+  if (isDefined(props.modelValue)) {
+    const { pause, resume } = pausableWatch([() => props.modelValue, () => props.modelValue.length], async ([v]) => {
+      if (v && Array.isArray(v)) {
         pause()
         store.setElements(v)
+        if (modelValue) modelValue.value = [...store.nodes, ...store.edges]
+        await nextTick()
         resume()
       }
     })
   }
-  if (isDefined(nodes)) {
-    const { pause, resume } = pausableWatch(nodes, (v) => {
-      if (v) {
+  if (isDefined(props.nodes)) {
+    const { pause, resume } = pausableWatch([() => props.nodes, () => props.nodes?.length], async ([v]) => {
+      if (v && Array.isArray(v)) {
         pause()
         store.setNodes(v)
+        if (nodes) nodes.value = store.nodes
+        await nextTick()
         resume()
       }
     })
   }
-  if (isDefined(edges)) {
-    const { pause, resume } = pausableWatch(edges, (v) => {
-      if (v) {
+  if (isDefined(props.edges)) {
+    const { pause, resume } = pausableWatch([() => props.edges, () => props.edges?.length], async ([v]) => {
+      if (v && Array.isArray(v)) {
         pause()
         store.setEdges(v)
+        if (edges) edges.value = store.edges
+        await nextTick()
         resume()
       }
     })
@@ -190,6 +202,11 @@ export default (
   watch(
     () => props.applyDefault,
     (v) => isDef(v) && (store.applyDefault = v),
+    { immediate: true },
+  )
+  watch(
+    () => props.fitViewOnInit,
+    (v) => isDef(v) && (store.fitViewOnInit = v),
     { immediate: true },
   )
 }
