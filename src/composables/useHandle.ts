@@ -149,7 +149,6 @@ export default (store: FlowStore = useVueFlow().store) =>
       const isOwnHandle = connection.source === connection.target
 
       if (isValid && !isOwnHandle) {
-        store.hooks.connect.trigger(connection)
         onEdgeUpdate?.(connection)
       }
 

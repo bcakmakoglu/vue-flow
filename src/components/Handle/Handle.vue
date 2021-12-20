@@ -4,7 +4,7 @@ import { Position } from '../../types'
 import { NodeId } from '../../context'
 import type { HandleProps } from '../../types/components'
 
-const { id } = useVueFlow()
+const { id, hooks } = useVueFlow()
 const props = withDefaults(defineProps<HandleProps>(), {
   id: '',
   type: 'source',
@@ -16,7 +16,9 @@ const nodeId = inject(NodeId, '')
 
 const handler = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>
-  handler(event, props.id, nodeId, props.type === 'target', props.isValidConnection)
+  handler(event, props.id, nodeId, props.type === 'target', props.isValidConnection, undefined, (connection) =>
+    hooks.value.connect.trigger(connection),
+  )
 </script>
 <script lang="ts">
 export default {
