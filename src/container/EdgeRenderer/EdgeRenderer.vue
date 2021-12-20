@@ -34,7 +34,7 @@ const connectionLineVisible = controlledComputed(
 )
 const groups = controlledComputed(
   () => store.getEdges,
-  () => groupEdgesByZLevel(store.edges, store.nodes),
+  () => groupEdgesByZLevel(store.getEdges, store.getNodes),
 )
 </script>
 <script lang="ts">
