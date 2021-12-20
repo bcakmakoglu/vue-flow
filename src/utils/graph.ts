@@ -327,14 +327,12 @@ export const getTransformForBounds = (
   return [x, y, clampedZoom]
 }
 
-export const getXYZPos = (node: GraphNode, result: XYZPosition): XYZPosition => {
-  if (!node.parentNode) return result
-  return getXYZPos(node.parentNode, {
-    x: result.x + node.parentNode.computedPosition.x,
-    y: result.y + node.parentNode.computedPosition.y,
-    z:
-      node.parentNode.computedPosition.z > node.computedPosition.z ? node.parentNode.computedPosition.z : node.computedPosition.z,
-  })
+export const getXYZPos = (parentNode: GraphNode, computedPosition: XYZPosition): XYZPosition => {
+  return {
+    x: computedPosition.x + parentNode.computedPosition.x,
+    y: computedPosition.y + parentNode.computedPosition.y,
+    z: parentNode.computedPosition.z > computedPosition.z ? parentNode.computedPosition.z : computedPosition.z,
+  }
 }
 
 export const isParentSelected = (node: GraphNode): boolean => {

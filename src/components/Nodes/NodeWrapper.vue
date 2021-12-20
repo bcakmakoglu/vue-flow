@@ -32,7 +32,7 @@ watch([() => node.value.position, () => node.value.parentNode?.position], () => 
     z: node.value.computedPosition.z,
   }
   if (node.value.parentNode) {
-    node.value.computedPosition = getXYZPos(node.value, xyzPos)
+    node.value.computedPosition = getXYZPos(node.value.parentNode, xyzPos)
   } else {
     node.value.computedPosition = xyzPos
   }

@@ -61,7 +61,7 @@ export interface NodeProps<T = any> {
   dragging?: boolean
   isValidTargetPos?: ValidConnectionFunc
   isValidSourcePos?: ValidConnectionFunc
-  parentNode?: GraphNode<T>[]
+  parentNode?: any
   isParent?: boolean
   children?: Node<T>[]
 }

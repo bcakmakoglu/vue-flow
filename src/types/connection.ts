@@ -14,7 +14,6 @@ export interface Connection {
   targetHandle?: string
 }
 
-export type OnConnectFunc = (connection: Connection) => void
 export type OnConnectStartParams = {
   nodeId?: string
   handleId?: string
