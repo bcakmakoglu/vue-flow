@@ -160,7 +160,6 @@ export default (state: State, getters: Getters): Actions => {
     if (typeof opts.zoomOnPinch !== 'undefined') state.zoomOnPinch = opts.zoomOnPinch
     if (typeof opts.defaultZoom !== 'undefined') state.defaultZoom = opts.defaultZoom
     if (typeof opts.defaultPosition !== 'undefined') state.defaultPosition = opts.defaultPosition
-    if (typeof opts.storageKey !== 'undefined') state.storageKey = opts.storageKey
     if (typeof opts.edgeUpdaterRadius !== 'undefined') state.edgeUpdaterRadius = opts.edgeUpdaterRadius
     if (typeof opts.elementsSelectable !== 'undefined') state.elementsSelectable = opts.elementsSelectable
     if (typeof opts.onlyRenderVisibleElements !== 'undefined') state.onlyRenderVisibleElements = opts.onlyRenderVisibleElements

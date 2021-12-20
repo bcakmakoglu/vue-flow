@@ -82,7 +82,7 @@ export type FlowInstance<N = any, E = N> = {
 } & UseZoomPanHelper
 
 export interface FlowProps<N = any, E = N> {
-  modelValue: Elements
+  modelValue?: Elements<N, E>
   nodes?: Node<N>[]
   edges?: Edge<E>[]
   id?: string
@@ -94,7 +94,7 @@ export interface FlowProps<N = any, E = N> {
   multiSelectionKeyCode?: KeyCode
   zoomActivationKeyCode?: KeyCode
   snapToGrid?: boolean
-  snapGrid?: [number, number]
+  snapGrid?: SnapGrid
   onlyRenderVisibleElements?: boolean
   edgesUpdatable?: boolean
   nodesDraggable?: boolean
@@ -117,26 +117,46 @@ export interface FlowProps<N = any, E = N> {
   zoomOnDoubleClick?: boolean
   preventScrolling?: boolean
   edgeUpdaterRadius?: number
-  storageKey?: string
   fitViewOnInit?: boolean
   applyDefault?: boolean
 }
 
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>
 
-type UseStateOptions = {
-  options?: FlowOptions
+export interface UseNodesStateOptions<Data = any> {
+  nodes: Node<Data>[]
+  options?: Pick<
+    FlowOptions<Data, any>,
+    | 'applyDefault'
+    | 'snapToGrid'
+    | 'snapGrid'
+    | 'nodesConnectable'
+    | 'nodesDraggable'
+    | 'elementsSelectable'
+    | 'selectNodesOnDrag'
+    | 'defaultPosition'
+    | 'onlyRenderVisibleElements'
+    | 'nodeExtent'
+    | 'edgeUpdaterRadius'
+  >
 }
-export interface UseNodesStateOptions extends UseStateOptions {
-  nodes?: Node[]
+export interface UseEdgesStateOptions<Data = any> {
+  edges: Edge<Data>[]
+  options?: Pick<
+    FlowOptions<any, Data>,
+    | 'applyDefault'
+    | 'connectionMode'
+    | 'connectionLineType'
+    | 'connectionLineStyle'
+    | 'elementsSelectable'
+    | 'selectNodesOnDrag'
+    | 'defaultPosition'
+    | 'onlyRenderVisibleElements'
+    | 'edgesUpdatable'
+  >
 }
-export interface UseEdgesStateOptions extends UseStateOptions {
-  edges?: Edge[]
-}
-export interface UseElementsStateOptions extends UseStateOptions {
-  edges?: Edge[]
-  nodes?: Node[]
-}
+export type UseElementsStateOptions = UseNodesStateOptions & UseEdgesStateOptions
+
 export type UseNodesState<N = any> = {
   nodes: GraphNode<N>[]
   applyNodeChanges: <ND = N>(changes: NodeChange[]) => GraphNode<ND>[]
