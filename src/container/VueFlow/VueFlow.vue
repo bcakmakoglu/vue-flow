@@ -49,7 +49,7 @@ if (props.modelValue && !storedNodes.value.length) setElements(props.modelValue)
 if (props.nodes && !storedNodes.value.length) setNodes(props.nodes)
 if (props.edges && !storedEdges.value.length) setEdges(props.edges)
 
-if (modelValue.value) modelValue.value = [...store.nodes, ...store.edges]
+if (modelValue && modelValue.value) modelValue.value = [...store.nodes, ...store.edges]
 if (nodes && nodes.value) nodes.value = store.nodes
 if (edges && edges.value) edges.value = store.edges
 

@@ -8,7 +8,7 @@ import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks, FlowHooksOn } from './hooks'
 
-export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'elements'> {
+export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'modelValue'> {
   hooks: FlowHooks
   instance?: FlowInstance
 

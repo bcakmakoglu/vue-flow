@@ -8,7 +8,7 @@ export default (
     nodes,
     edges,
   }: {
-    modelValue?: Ref<Elements>
+    modelValue?: Ref<Elements | undefined>
     nodes?: Ref<Node[] | undefined>
     edges?: Ref<Edge[] | undefined>
   },
@@ -16,7 +16,7 @@ export default (
   store: FlowStore,
 ) => {
   if (isDefined(props.modelValue)) {
-    const { pause, resume } = pausableWatch([() => props.modelValue, () => props.modelValue.length], async ([v]) => {
+    const { pause, resume } = pausableWatch([() => props.modelValue, () => props.modelValue?.length], async ([v]) => {
       if (v && Array.isArray(v)) {
         pause()
         store.setElements(v)
