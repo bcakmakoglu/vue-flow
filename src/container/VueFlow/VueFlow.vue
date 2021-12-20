@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { createHooks, useHooks } from '../../store'
-import type { FlowProps } from '../../types/flow'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
+import { createHooks, useHooks } from '../../store'
 import { useVueFlow, applyNodeChanges, applyEdgeChanges } from '../../composables'
+import type { FlowProps } from '../../types/flow'
 import useWatch from './watch'
 
 const props = withDefaults(defineProps<FlowProps>(), {
@@ -21,23 +21,39 @@ const props = withDefaults(defineProps<FlowProps>(), {
   paneMoveable: true,
   applyDefault: true,
 })
-const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:edges', 'update:nodes'])
+const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:elements', 'update:edges', 'update:nodes'])
+
+const {
+  id,
+  store,
+  hooks,
+  applyDefault,
+  setElements,
+  setEdges,
+  setNodes,
+  getNodeTypes,
+  getEdgeTypes,
+  onNodesChange,
+  onEdgesChange,
+  nodes: storedNodes,
+  edges: storedEdges,
+} = useVueFlow(props)
+useHooks(hooks.value, emit)
 const { modelValue, nodes, edges } = useVModels(props, emit)
 
-const { id, store } = useVueFlow(props)
-useHooks(store.hooks, emit)
-
-if (store.applyDefault) {
-  store.hooks.nodesChange.on((c) => applyNodeChanges(c, store.nodes))
-  store.hooks.edgesChange.on((c) => applyEdgeChanges(c, store.edges))
+if (applyDefault.value) {
+  onNodesChange((c) => applyNodeChanges(c, storedNodes.value))
+  onEdgesChange((c) => applyEdgeChanges(c, storedEdges.value))
 }
-if (modelValue?.value && !store.nodes.length) store.setElements(modelValue.value)
-if (nodes?.value && !store.nodes.length) store.setNodes(nodes.value)
-if (edges?.value && !store.edges.length) store.setEdges(edges.value)
-onMounted(() => useWatch(modelValue, nodes, edges, props, store))
-modelValue && (modelValue.value = [...store.nodes, ...store.edges])
-nodes && (nodes.value = store.nodes)
-edges && (edges.value = store.edges)
+if (props.modelValue && !storedNodes.value.length) setElements(props.modelValue)
+if (props.nodes && !storedNodes.value.length) setNodes(props.nodes)
+if (props.edges && !storedEdges.value.length) setEdges(props.edges)
+
+if (modelValue.value) modelValue.value = [...store.nodes, ...store.edges]
+if (nodes && nodes.value) nodes.value = store.nodes
+if (edges && edges.value) edges.value = store.edges
+
+onMounted(() => useWatch({ modelValue, nodes, edges }, props, store))
 </script>
 <script lang="ts">
 export default {
@@ -47,18 +63,10 @@ export default {
 <template>
   <div class="vue-flow">
     <ZoomPane :key="`renderer-${id}`">
-      <template
-        v-for="nodeName of Object.keys(store.getNodeTypes)"
-        #[`node-${nodeName}`]="nodeProps"
-        :key="`node-${nodeName}-${id}`"
-      >
+      <template v-for="nodeName of Object.keys(getNodeTypes)" #[`node-${nodeName}`]="nodeProps" :key="`node-${nodeName}-${id}`">
         <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
       </template>
-      <template
-        v-for="edgeName of Object.keys(store.getEdgeTypes)"
-        #[`edge-${edgeName}`]="edgeProps"
-        :key="`edge-${edgeName}-${id}`"
-      >
+      <template v-for="edgeName of Object.keys(getEdgeTypes)" #[`edge-${edgeName}`]="edgeProps" :key="`edge-${edgeName}-${id}`">
         <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
       </template>
       <template #connection-line="customConnectionLineProps">
