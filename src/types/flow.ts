@@ -124,7 +124,7 @@ export interface FlowProps<N = any, E = N> {
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>
 
 export interface UseNodesStateOptions<Data = any> {
-  nodes: Node<Data>[]
+  nodes?: Node<Data>[]
   options?: Pick<
     FlowOptions<Data, any>,
     | 'applyDefault'
@@ -141,7 +141,7 @@ export interface UseNodesStateOptions<Data = any> {
   >
 }
 export interface UseEdgesStateOptions<Data = any> {
-  edges: Edge<Data>[]
+  edges?: Edge<Data>[]
   options?: Pick<
     FlowOptions<any, Data>,
     | 'applyDefault'

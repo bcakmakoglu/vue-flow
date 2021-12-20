@@ -61,7 +61,7 @@ const updateEdge = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge
 export const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
 export const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
 
-export const useEdgesState = ({ edges, options }: UseEdgesStateOptions): UseEdgesState => {
+export const useEdgesState = ({ edges, options }: UseEdgesStateOptions = {}): UseEdgesState => {
   const { store } = useVueFlow(options)
   if (edges && edges.length) store.setEdges(edges)
   return {
@@ -93,7 +93,7 @@ export const useEdgesState = ({ edges, options }: UseEdgesStateOptions): UseEdge
   }
 }
 
-export const useNodesState = ({ nodes, options }: UseNodesStateOptions): UseNodesState => {
+export const useNodesState = ({ nodes, options }: UseNodesStateOptions = {}): UseNodesState => {
   const { store } = useVueFlow(options)
   if (nodes && nodes.length) store.setNodes(nodes)
   return {
