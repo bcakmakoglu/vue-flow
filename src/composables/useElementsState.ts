@@ -113,7 +113,7 @@ export const useNodesState = ({ nodes, options }: UseNodesStateOptions = {}): Us
   }
 }
 
-export const useElementsState = ({ edges, nodes, options }: UseElementsStateOptions): UseElementsState => {
+export const useElementsState = ({ edges, nodes, options }: UseElementsStateOptions = {}): UseElementsState => {
   const nodesState = useNodesState({ nodes, options })
   const edgesState = useEdgesState({ edges, options })
 
