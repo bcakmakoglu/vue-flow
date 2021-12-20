@@ -81,10 +81,16 @@ export const createPositionChange = ({ node, diff, dragging, nodeExtent }: Creat
   return change
 }
 
+const isParentSelected = (node: GraphNode, selectedIds: string[]): boolean => {
+  if (!node.parentNode) return false
+  if (selectedIds.includes(node.parentNode.id)) return true
+  return isParentSelected(node.parentNode, selectedIds)
+}
+
 export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
   return items.reduce((res, item) => {
     const willBeSelected =
-      selectedIds.includes(item.id) || !!(isGraphNode(item) && item.parentNode && selectedIds.includes(item.parentNode?.id))
+      selectedIds.includes(item.id) || !!(isGraphNode(item) && item.parentNode && isParentSelected(item, selectedIds))
 
     if (!item.selected && willBeSelected) {
       res.push(createSelectionChange(item.id, true))

@@ -26,17 +26,21 @@ const scale = controlledComputed(
   () => store.transform[2],
   () => store.transform[2],
 )
-watch([() => node.value.position, () => node.value.parentNode?.position], () => {
-  const xyzPos = {
-    ...node.value.position,
-    z: node.value.computedPosition.z,
-  }
-  if (node.value.parentNode) {
-    node.value.computedPosition = getXYZPos(node.value.parentNode, xyzPos)
-  } else {
-    node.value.computedPosition = xyzPos
-  }
-})
+watch(
+  [() => node.value.position, () => node.value.parentNode],
+  ([pos, parent]) => {
+    const xyzPos = {
+      ...pos,
+      z: node.value.computedPosition.z,
+    }
+    if (parent) {
+      node.value.computedPosition = getXYZPos(parent, xyzPos)
+    } else {
+      node.value.computedPosition = xyzPos
+    }
+  },
+  { deep: true },
+)
 
 const onMouseEnterHandler = () =>
   node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: node.value }))
