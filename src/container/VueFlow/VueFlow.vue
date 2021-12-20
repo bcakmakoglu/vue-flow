@@ -6,20 +6,21 @@ import type { FlowProps } from '../../types/flow'
 import useWatch from './watch'
 
 const props = withDefaults(defineProps<FlowProps>(), {
-  snapToGrid: false,
-  onlyRenderVisibleElements: false,
-  edgesUpdatable: false,
-  nodesConnectable: true,
-  nodesDraggable: true,
-  elementsSelectable: true,
-  selectNodesOnDrag: true,
-  preventScrolling: true,
-  zoomOnScroll: true,
-  zoomOnPinch: true,
-  zoomOnDoubleClick: true,
-  panOnScroll: false,
-  paneMoveable: true,
-  applyDefault: true,
+  snapToGrid: undefined,
+  onlyRenderVisibleElements: undefined,
+  edgesUpdatable: undefined,
+  nodesConnectable: undefined,
+  nodesDraggable: undefined,
+  elementsSelectable: undefined,
+  selectNodesOnDrag: undefined,
+  preventScrolling: undefined,
+  zoomOnScroll: undefined,
+  zoomOnPinch: undefined,
+  zoomOnDoubleClick: undefined,
+  panOnScroll: undefined,
+  paneMoveable: undefined,
+  applyDefault: undefined,
+  fitViewOnInit: undefined,
 })
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:elements', 'update:edges', 'update:nodes'])
 
