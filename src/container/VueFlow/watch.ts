@@ -52,161 +52,161 @@ export default (
   watch(
     () => props.maxZoom,
     (v) => isDef(v) && store.setMaxZoom(v),
-    { immediate: true },
+    { immediate: isDef(props.maxZoom) },
   )
   watch(
     () => props.minZoom,
     (v) => isDef(v) && store.setMinZoom(v),
-    { immediate: true },
+    { immediate: isDef(props.minZoom) },
   )
   watch(
     () => props.edgesUpdatable,
     (v) => isDef(v) && (store.edgesUpdatable = v),
-    { immediate: true },
+    { immediate: isDef(props.edgesUpdatable) },
   )
   watch(
     () => props.elementsSelectable,
     (v) => isDef(v) && (store.elementsSelectable = v),
-    { immediate: true },
+    { immediate: isDef(props.elementsSelectable) },
   )
   watch(
     () => props.nodesDraggable,
     (v) => isDef(v) && (store.nodesDraggable = v),
-    { immediate: true },
+    { immediate: isDef(props.nodesDraggable) },
   )
   watch(
     () => props.nodesConnectable,
     (v) => isDef(v) && (store.nodesConnectable = v),
-    { immediate: true },
+    { immediate: isDef(props.nodesConnectable) },
   )
   watch(
     () => props.onlyRenderVisibleElements,
     (v) => isDef(v) && (store.onlyRenderVisibleElements = v),
-    { immediate: true },
+    { immediate: isDef(props.onlyRenderVisibleElements) },
   )
   watch(
     () => props.snapToGrid,
     (v) => isDef(v) && (store.snapToGrid = v),
-    { immediate: true },
+    { immediate: isDef(props.snapToGrid) },
   )
   watch(
     () => props.snapGrid,
     (v) => isDef(v) && (store.snapGrid = v),
-    { immediate: true },
+    { immediate: isDef(props.snapGrid) },
   )
   watch(
     () => props.paneMoveable,
     (v) => isDef(v) && (store.paneMoveable = v),
-    { immediate: true },
+    { immediate: isDef(props.paneMoveable) },
   )
   watch(
     () => props.panOnScroll,
     (v) => isDef(v) && (store.panOnScroll = v),
-    { immediate: true },
+    { immediate: isDef(props.panOnScroll) },
   )
   watch(
     () => props.panOnScrollMode,
     (v) => isDef(v) && (store.panOnScrollMode = v),
-    { immediate: true },
+    { immediate: isDef(props.panOnScrollMode) },
   )
   watch(
     () => props.panOnScrollSpeed,
     (v) => isDef(v) && (store.panOnScrollSpeed = v),
-    { immediate: true },
+    { immediate: isDef(props.panOnScrollSpeed) },
   )
   watch(
     () => props.zoomOnPinch,
     (v) => isDef(v) && (store.zoomOnPinch = v),
-    { immediate: true },
+    { immediate: isDef(props.zoomOnPinch) },
   )
   watch(
     () => props.zoomOnDoubleClick,
     (v) => isDef(v) && (store.zoomOnDoubleClick = v),
-    { immediate: true },
+    { immediate: isDef(props.zoomOnDoubleClick) },
   )
   watch(
     () => props.zoomOnScroll,
     (v) => isDef(v) && (store.zoomOnScroll = v),
-    { immediate: true },
+    { immediate: isDef(props.zoomOnScroll) },
   )
   watch(
     () => props.deleteKeyCode,
     (v) => isDef(v) && (store.deleteKeyCode = v),
-    { immediate: true },
+    { immediate: isDef(props.deleteKeyCode) },
   )
   watch(
     () => props.zoomActivationKeyCode,
     (v) => isDef(v) && (store.zoomActivationKeyCode = v),
-    { immediate: true },
+    { immediate: isDef(props.zoomActivationKeyCode) },
   )
   watch(
     () => props.selectionKeyCode,
     (v) => isDef(v) && (store.selectionKeyCode = v),
-    { immediate: true },
+    { immediate: isDef(props.selectionKeyCode) },
   )
   watch(
     () => props.multiSelectionKeyCode,
     (v) => isDef(v) && (store.multiSelectionKeyCode = v),
-    { immediate: true },
+    { immediate: isDef(props.multiSelectionKeyCode) },
   )
   watch(
     () => props.connectionLineStyle,
     (v) => isDef(v) && (store.connectionLineStyle = v),
-    { immediate: true },
+    { immediate: isDef(props.connectionLineStyle) },
   )
   watch(
     () => props.connectionMode,
     (v) => isDef(v) && (store.connectionMode = v),
-    { immediate: true },
+    { immediate: isDef(props.connectionMode) },
   )
   watch(
     () => props.connectionLineType,
     (v) => isDef(v) && (store.connectionLineType = v),
-    { immediate: true },
+    { immediate: isDef(props.connectionLineType) },
   )
   watch(
     () => props.defaultMarkerColor,
     (v) => isDef(v) && (store.defaultMarkerColor = v),
-    { immediate: true },
+    { immediate: isDef(props.defaultMarkerColor) },
   )
   watch(
     () => props.defaultPosition,
     (v) => isDef(v) && (store.defaultPosition = v),
-    { immediate: true },
+    { immediate: isDef(props.defaultPosition) },
   )
   watch(
     () => props.defaultZoom,
     (v) => isDef(v) && (store.defaultZoom = v),
-    { immediate: true },
+    { immediate: isDef(props.defaultZoom) },
   )
   watch(
     () => props.translateExtent,
     (v) => isDef(v) && (store.translateExtent = v),
-    { immediate: true },
+    { immediate: isDef(props.translateExtent) },
   )
   watch(
     () => props.nodeExtent,
     (v) => isDef(v) && (store.nodeExtent = v),
-    { immediate: true },
+    { immediate: isDef(props.nodeExtent) },
   )
   watch(
     () => props.selectNodesOnDrag,
     (v) => isDef(v) && (store.selectNodesOnDrag = v),
-    { immediate: true },
+    { immediate: isDef(props.selectNodesOnDrag) },
   )
   watch(
     () => props.edgeUpdaterRadius,
     (v) => isDef(v) && (store.edgeUpdaterRadius = v),
-    { immediate: true },
+    { immediate: isDef(props.edgeUpdaterRadius) },
   )
   watch(
     () => props.applyDefault,
     (v) => isDef(v) && (store.applyDefault = v),
-    { immediate: true },
+    { immediate: isDef(props.applyDefault) },
   )
   watch(
     () => props.fitViewOnInit,
     (v) => isDef(v) && (store.fitViewOnInit = v),
-    { immediate: true },
+    { immediate: isDef(props.fitViewOnInit) },
   )
 }
