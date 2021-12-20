@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { getBezierPath, getMarkerEnd } from '~/components/Edges/utils'
-import { getEdgeCenter, Position, EdgeText, EdgeProps } from '~/index'
+import { getEdgeCenter, getBezierPath, getMarkerId, Position, EdgeProps, EdgeText } from '~/index'
 
 interface CustomEdgeProps extends EdgeProps {
   source: string
@@ -32,7 +31,7 @@ const edgePath = computed(() =>
     targetPosition: props.targetPosition,
   }),
 )
-const markerEnd = computed(() => getMarkerEnd(props.markerEnd, props.markerEndId))
+const markerEnd = computed(() => getMarkerId(props.markerEnd))
 const center = computed(() =>
   getEdgeCenter({
     sourceX: props.sourceX,

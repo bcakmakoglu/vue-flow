@@ -37,8 +37,9 @@ const elements = ref(initialElements)
 const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
 const onEdgeUpdateStart = (edge: Edge) => console.log('start update', edge)
 const onEdgeUpdateEnd = (edge: Edge) => console.log('end update', edge)
-const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) =>
-  (elements.value = updateEdge(edge, connection, elements.value))
+const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {
+  elements.value = updateEdge(edge, connection, elements.value)
+}
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
 <template>
