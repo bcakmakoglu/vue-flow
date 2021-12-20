@@ -5,13 +5,14 @@ import {
   Elements,
   FlowElement,
   isEdge,
-  MiniMap,
   Node,
   Position,
   SnapGrid,
   useNodesState,
   useVueFlow,
   VueFlow,
+  Controls,
+  MiniMap,
 } from '~/index'
 
 const elements = ref<Elements>([])
@@ -84,7 +85,7 @@ onPaneReady((flowInstance) => {
 <template>
   <VueFlow
     v-model="elements"
-    :style="`background: ${bgColor}`"
+    :style="{ backgroundColor: bgColor }"
     :connection-mode="ConnectionMode.Loose"
     :connection-line-style="connectionLineStyle"
     :snap-to-grid="true"

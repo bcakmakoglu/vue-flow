@@ -2,9 +2,9 @@
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomLabel from './CustomLabel.vue'
-import { VueFlow, MiniMap, Controls, Background, MarkerType, useVueFlow, useElementsState } from '~/index'
+import { VueFlow, MiniMap, Controls, Background, MarkerType, useVueFlow, useElementsState, Edge, Node } from '~/index'
 
-const initialNodes = [
+const initialNodes: Node[] = [
   { id: '1', type: 'input', label: 'Input 1', position: { x: 250, y: 0 } },
   { id: '2', label: 'Node 2', position: { x: 150, y: 100 } },
   { id: '2a', label: 'Node 2a', position: { x: 0, y: 180 } },
@@ -18,7 +18,7 @@ const initialNodes = [
   { id: '9', type: 'output', label: 'Output 9', position: { x: 675, y: 500 } },
 ]
 
-const initialEdges = [
+const initialEdges: Edge[] = [
   { id: 'e1-2', source: '1', target: '2', label: 'bezier edge (default)', class: 'normal-edge' },
   { id: 'e2-2a', source: '2', target: '2a', type: 'smoothstep', label: 'smoothstep edge' },
   { id: 'e2-3', source: '2', target: '3', type: 'step', label: 'step edge' },
@@ -36,7 +36,9 @@ const initialEdges = [
       },
     },
     labelStyle: { fill: 'red', fontWeight: 700 },
-    markerEnd: MarkerType.Arrow,
+    markerEnd: {
+      type: MarkerType.Arrow,
+    },
   },
   {
     id: 'e5-7',
@@ -46,7 +48,9 @@ const initialEdges = [
     labelBgPadding: [8, 4],
     labelBgBorderRadius: 4,
     labelBgStyle: { fill: '#FFCC00', color: '#fff', fillOpacity: 0.7 },
-    markerEnd: MarkerType.ArrowClosed,
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+    },
   },
   {
     id: 'e5-8',
@@ -54,7 +58,9 @@ const initialEdges = [
     target: '8',
     type: 'custom',
     data: { text: 'custom edge' },
-    markerEnd: MarkerType.ArrowClosed,
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+    },
   },
   {
     id: 'e5-9',
