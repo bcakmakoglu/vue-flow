@@ -2,7 +2,7 @@ export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
 export { default as Handle } from './components/Handle/Handle.vue'
 export * from './components/Edges'
 export * from './components/Nodes'
-export { getBezierPath, getSmoothStepPath, getMarkerEnd, getCenter as getEdgeCenter } from './components/Edges/utils'
+export { getBezierPath, getSmoothStepPath, getCenter as getEdgeCenter } from './components/Edges/utils'
 
 export {
   isNode,
@@ -16,6 +16,7 @@ export {
   getRectOfNodes,
   graphPosToZoomedPos,
   getNodesInside,
+  getMarkerId,
 } from './utils/graph'
 export { defaultEdgeTypes, defaultNodeTypes } from './store'
 export { default as useZoomPanHelper } from './composables/useZoomPanHelper'

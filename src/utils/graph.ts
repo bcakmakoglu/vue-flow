@@ -344,16 +344,11 @@ export const isParentSelected = (node: GraphNode): boolean => {
 }
 
 export const getMarkerId = (marker: EdgeMarkerType | undefined): string => {
-  if (typeof marker === 'undefined') {
-    return ''
-  }
-
-  if (typeof marker === 'string') {
-    return marker
-  }
+  if (typeof marker === 'undefined') return ''
+  if (typeof marker === 'string') return marker
 
   return Object.keys(marker)
     .sort()
-    .map((key: string) => `${key}=${(marker as any)[key]}`)
+    .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
     .join('&')
 }

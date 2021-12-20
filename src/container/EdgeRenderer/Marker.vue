@@ -22,9 +22,9 @@ export default {
     viewBox="-10 -10 20 20"
     refX="0"
     refY="0"
-    :marker-width="`${props.width}`"
-    :marker-height="`${props.height}`"
-    :marker-units="props.markerUnits"
+    :markerWidth="`${props.width}`"
+    :markerHeight="`${props.height}`"
+    :markerUnits="props.markerUnits"
     :orient="props.orient"
   >
     <polyline
