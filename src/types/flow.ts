@@ -179,5 +179,5 @@ export type UseVueFlow<N = any, E = N> = {
   store: FlowStore<N, E>
 } & FlowHooksOn<N, E> &
   ToRefs<State<N, E>> &
-  Getters &
+  Getters<N, E> &
   Actions<N, E>

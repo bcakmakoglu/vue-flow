@@ -205,9 +205,9 @@ onMounted(async () => {
     getEdges: onLoadGetEdges(store),
     toObject: onLoadToObject(store),
   }
-  store.hooks.paneReady.trigger(instance)
   store.instance = instance
   store.fitViewOnInit && instance.fitView()
+  store.hooks.paneReady.trigger(instance)
 })
 </script>
 <script lang="ts">
