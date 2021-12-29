@@ -1,7 +1,23 @@
-import { CoordinateExtent, EdgeChange, Actions, Getters, State, GraphNode, Node, NodeChange, NodeDimensionChange } from '~/types'
 import {
+  CoordinateExtent,
+  EdgeChange,
+  Actions,
+  Getters,
+  State,
+  GraphNode,
+  Node,
+  NodeChange,
+  NodeDimensionChange,
+  Edge,
+  Connection,
+  GraphEdge,
+} from '~/types'
+import {
+  applyChanges,
+  connectionExists,
   createPositionChange,
   createSelectionChange,
+  getEdgeId,
   getSelectionChanges,
   isEdge,
   isGraphEdge,
@@ -21,6 +37,51 @@ const getParent = (root: Node[], id: string): GraphNode | undefined => {
   })
   return node
 }
+
+const addEdge = (edgeParams: Edge | Connection, edges: Edge[]) => {
+  if (!edgeParams.source || !edgeParams.target) {
+    console.warn("Can't create edge. An edge needs a source and a target.")
+    return false
+  }
+
+  let edge
+  if (isEdge(edgeParams)) {
+    edge = { ...edgeParams }
+  } else {
+    edge = {
+      ...edgeParams,
+      id: getEdgeId(edgeParams),
+    } as Edge
+  }
+  edge = parseEdge(edge)
+  if (connectionExists(edge, edges)) return false
+  return edge
+}
+
+const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]) => {
+  if (!newConnection.source || !newConnection.target) {
+    console.warn("Can't create new edge. An edge needs a source and a target.")
+    return false
+  }
+
+  const foundEdge = edges.find((e) => isGraphEdge(e) && e.id === edge.id)
+
+  if (!foundEdge) {
+    console.warn(`The old edge with id=${edge.id} does not exist.`)
+    return false
+  }
+
+  edge.id = getEdgeId(newConnection)
+  edge.source = newConnection.source
+  edge.target = newConnection.target
+  edge.sourceHandle = newConnection.sourceHandle
+  edge.targetHandle = newConnection.targetHandle
+
+  return edge
+}
+
+export const applyEdgeChangesAction = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
+export const applyNodeChangesAction = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
 
 export const parseChildren = (
   n: Node,
@@ -146,6 +207,39 @@ export default (state: State, getters: Getters): Actions => {
     setEdges(elements.filter(isEdge))
   }
 
+  const addNodes: Actions['addNodes'] = (nodes, extent) => {
+    const parsed = nodes.flatMap((node) => {
+      const children: GraphNode[] = []
+      parseChildren(node, undefined, children, extent ?? state.nodeExtent, getters.getNode.value)
+      return children
+    })
+    state.nodes.push(...parsed)
+  }
+
+  const addEdges: Actions['addEdges'] = (params) => {
+    params.forEach((param) => {
+      const edge = addEdge(param, state.edges)
+      if (edge) {
+        const sourceNode = getters.getNode.value(edge.source)!
+        const targetNode = getters.getNode.value(edge.target)!
+        if (!sourceNode || typeof sourceNode === 'undefined')
+          console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+        if (!targetNode || typeof targetNode === 'undefined')
+          console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+
+        state.edges.push({
+          ...edge,
+          sourceNode,
+          targetNode,
+        })
+      }
+    })
+  }
+
+  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) => updateEdgeAction(oldEdge, newConnection, state.edges)
+  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyNodeChangesAction(changes, state.nodes)
+  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyEdgeChangesAction(changes, state.edges)
+
   const setState: Actions['setState'] = (opts) => {
     if (typeof opts.modelValue !== 'undefined') setElements(opts.modelValue, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
@@ -195,6 +289,11 @@ export default (state: State, getters: Getters): Actions => {
     setElements,
     setNodes,
     setEdges,
+    addNodes,
+    addEdges,
+    updateEdge,
+    applyEdgeChanges,
+    applyNodeChanges,
     addSelectedElements,
     addSelectedNodes,
     addSelectedEdges,
