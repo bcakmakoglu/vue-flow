@@ -2,11 +2,11 @@ import { ComputedRef, ToRefs } from 'vue'
 import { UnwrapNestedRefs } from '@vue/reactivity'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
 import { HandleType, EdgeComponent, NodeComponent } from './components'
-import { ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
+import { Connection, ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
 import { Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
-import { FlowHooks, FlowHooksOn } from './hooks'
+import { EdgeChange, FlowHooks, FlowHooksOn, NodeChange } from './hooks'
 
 export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'modelValue'> {
   hooks: FlowHooks
@@ -74,6 +74,11 @@ export interface Actions<N = any, E = N> {
   setElements: (elements: Elements<N, E>, extent?: CoordinateExtent) => void
   setNodes: (nodes: Node<N>[], extent?: CoordinateExtent) => void
   setEdges: (edges: Edge<E>[]) => void
+  addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
+  addEdges: <EA = E>(params: (Edge<EA> | Connection)[]) => void
+  updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => GraphEdge<EU> | false
+  applyEdgeChanges: <ED = E>(changes: EdgeChange[]) => GraphEdge<ED>[]
+  applyNodeChanges: <ND = N>(changes: NodeChange[]) => GraphNode<ND>[]
   addSelectedElements: (elements: FlowElements<N, E>) => void
   addSelectedEdges: (edges: GraphEdge<E>[]) => void
   addSelectedNodes: (nodes: GraphNode<N>[]) => void

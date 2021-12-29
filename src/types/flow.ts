@@ -1,10 +1,10 @@
 import { CSSProperties, ToRefs } from 'vue'
 import { GraphEdge, Edge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
-import { Connection, ConnectionLineType, ConnectionMode } from './connection'
+import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { Actions, Getters, State, FlowStore } from './store'
-import { EdgeChange, FlowHooksOn, NodeChange } from './hooks'
+import { FlowHooksOn } from './hooks'
 
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
 export type FlowElements<N = any, E = any> = FlowElement<N, E>[]
@@ -122,57 +122,6 @@ export interface FlowProps<N = any, E = N> {
 }
 
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>
-
-export interface UseNodesStateOptions<Data = any> {
-  nodes?: Node<Data>[]
-  options?: Pick<
-    FlowOptions<Data, any>,
-    | 'applyDefault'
-    | 'snapToGrid'
-    | 'snapGrid'
-    | 'nodesConnectable'
-    | 'nodesDraggable'
-    | 'elementsSelectable'
-    | 'selectNodesOnDrag'
-    | 'defaultPosition'
-    | 'onlyRenderVisibleElements'
-    | 'nodeExtent'
-    | 'edgeUpdaterRadius'
-  >
-}
-export interface UseEdgesStateOptions<Data = any> {
-  edges?: Edge<Data>[]
-  options?: Pick<
-    FlowOptions<any, Data>,
-    | 'applyDefault'
-    | 'connectionMode'
-    | 'connectionLineType'
-    | 'connectionLineStyle'
-    | 'elementsSelectable'
-    | 'selectNodesOnDrag'
-    | 'defaultPosition'
-    | 'onlyRenderVisibleElements'
-    | 'edgesUpdatable'
-  >
-}
-export type UseElementsStateOptions = UseNodesStateOptions & UseEdgesStateOptions
-
-export type UseNodesState<N = any> = {
-  nodes: GraphNode<N>[]
-  applyNodeChanges: <ND = N>(changes: NodeChange[]) => GraphNode<ND>[]
-  setNodes: Actions['setNodes']
-  addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => GraphNode<NA>[]
-  onNodesChange: FlowHooksOn['onNodesChange']
-}
-export type UseEdgesState<E = any> = {
-  edges: GraphEdge[]
-  applyEdgeChanges: <ED = E>(changes: EdgeChange[]) => GraphEdge<ED>[]
-  setEdges: Actions['setEdges']
-  addEdges: <EA = E>(params: (Edge<EA> | Connection)[]) => GraphEdge<EA>[]
-  updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => GraphEdge<EU> | false
-  onEdgesChange: FlowHooksOn['onEdgesChange']
-}
-export type UseElementsState<N = any, E = N> = UseNodesState<N> & UseEdgesState<E>
 
 export type UseVueFlow<N = any, E = N> = {
   id: string
