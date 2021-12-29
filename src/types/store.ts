@@ -10,14 +10,14 @@ import { FlowHooks, FlowHooksOn } from './hooks'
 
 export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'modelValue'> {
   hooks: FlowHooks
-  instance?: FlowInstance
+  instance: FlowInstance | undefined
 
   nodes: GraphNode<N>[]
   edges: GraphEdge<E>[]
 
-  d3Zoom?: D3Zoom
-  d3Selection?: D3Selection
-  d3ZoomHandler?: D3ZoomHandler
+  d3Zoom: D3Zoom | undefined
+  d3Selection: D3Selection | undefined
+  d3ZoomHandler: D3ZoomHandler | undefined
   minZoom: number
   maxZoom: number
   defaultZoom: number
@@ -37,9 +37,9 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   multiSelectionKeyCode: KeyCode
   zoomActivationKeyCode: KeyCode
 
-  connectionNodeId?: string
-  connectionHandleId?: string
-  connectionHandleType?: HandleType
+  connectionNodeId: string | undefined
+  connectionHandleId: string | undefined
+  connectionHandleType: HandleType | undefined
   connectionPosition: XYPosition
   connectionMode: ConnectionMode
   connectionLineType: ConnectionLineType
