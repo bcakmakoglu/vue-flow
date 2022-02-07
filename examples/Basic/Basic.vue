@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, addEdge } from '~/index'
+import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '~/index'
 
-const elements = ref([
+const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
@@ -9,12 +9,12 @@ const elements = ref([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onPaneReady, onNodeDragStop, onConnect, instance } = useVueFlow()
+const { nodes, onPaneReady, onNodeDragStop, onConnect, instance, addEdges, store } = useVueFlow()
 onPaneReady(({ fitView }) => {
   fitView({ padding: 0.1 })
 })
 onNodeDragStop((e) => console.log('drag stop', e))
-onConnect((params) => addEdge(params, elements.value))
+onConnect((params) => addEdges([params]))
 
 const updatePos = () =>
   elements.value.forEach((el) => {
@@ -26,7 +26,7 @@ const updatePos = () =>
     }
   })
 
-const logToObject = () => console.log(instance.value.toObject())
+const logToObject = () => console.log(instance.value?.toObject())
 const resetTransform = () => elements.value.push({ id: '1234', position: { x: 50, y: 50 }, label: 'Foobar' })
 const toggleclasss = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>

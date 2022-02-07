@@ -35,10 +35,10 @@
   },
   "include": ["src"],
   "exclude": [
+    "examples",
     "node_modules",
     "build",
     "dist",
-    "examples",
     "cypress"
   ]
 }

@@ -1,22 +1,21 @@
 <script lang="ts" setup>
-import { useZoomPanHelper, FlowExportObject, Node, useVueFlow, useElementsState } from '~/index'
+import { useZoomPanHelper, FlowExportObject, Node, useVueFlow } from '~/index'
 
 const flowKey = 'example-flow'
-const state = useStorage(flowKey, {
+const state = useStorage<FlowExportObject>(flowKey, {
   nodes: [],
   edges: [],
   position: [NaN, NaN],
   zoom: 1,
-} as FlowExportObject)
+})
 
 const getNodeId = () => `randomnode_${+new Date()}`
 
 const { setTransform } = useZoomPanHelper()
-const { instance, dimensions } = useVueFlow()
-const { nodes, edges, addNodes, setNodes, setEdges } = useElementsState()
+const { nodes, edges, addNodes, setNodes, setEdges, instance, dimensions } = useVueFlow()
 
 const onSave = () => {
-  state.value = instance.value.toObject()
+  state.value = instance.value?.toObject()
 }
 
 const onRestore = () => {

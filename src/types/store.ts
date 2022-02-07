@@ -9,8 +9,8 @@ import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './
 import { EdgeChange, FlowHooks, FlowHooksOn, NodeChange } from './hooks'
 
 export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'modelValue'> {
-  hooks: FlowHooks
-  instance: FlowInstance | undefined
+  hooks: FlowHooks<N, E>
+  instance: FlowInstance<N, E> | undefined
 
   nodes: GraphNode<N>[]
   edges: GraphEdge<E>[]
@@ -75,7 +75,7 @@ export interface Actions<N = any, E = N> {
   setNodes: (nodes: Node<N>[], extent?: CoordinateExtent) => void
   setEdges: (edges: Edge<E>[]) => void
   addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
-  addEdges: <EA = E>(params: (Edge<EA> | Connection)[]) => void
+  addEdges: <EA = E>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
   updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => GraphEdge<EU> | false
   applyEdgeChanges: <ED = E>(changes: EdgeChange[]) => GraphEdge<ED>[]
   applyNodeChanges: <ND = N>(changes: NodeChange[]) => GraphNode<ND>[]

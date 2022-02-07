@@ -6,9 +6,7 @@ import { useStore } from '~/store'
 let id = 0
 export default (options?: Partial<FlowOptions>): UseVueFlow => {
   const currentInstance: any = getCurrentInstance()
-  let vueFlow: UseVueFlow | false | undefined = currentInstance
-    ? inject(VueFlow, undefined) ?? (currentInstance.vueFlow as UseVueFlow)
-    : false
+  let vueFlow = currentInstance ? inject(VueFlow) ?? (currentInstance.vueFlow as UseVueFlow) : false
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
     const name = options?.id ?? `vue-flow-${id++}`
     const store = useStore(options)
@@ -26,5 +24,5 @@ export default (options?: Partial<FlowOptions>): UseVueFlow => {
     currentInstance.vueFlow = vueFlow
   }
 
-  return vueFlow
+  return vueFlow as UseVueFlow
 }

@@ -2,7 +2,7 @@
 import { templateRef } from '@vueuse/core'
 import RGBNode from './RGBNode.vue'
 import RGBOutputNode from './RGBOutputNode.vue'
-import { Elements, FlowInstance, VueFlow, useVueFlow } from '~/index'
+import { Elements, FlowInstance, VueFlow } from '~/index'
 
 type Colors = {
   red: number

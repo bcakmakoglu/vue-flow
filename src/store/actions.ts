@@ -58,7 +58,7 @@ const addEdge = (edgeParams: Edge | Connection, edges: Edge[]) => {
   return edge
 }
 
-const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]) => {
+const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]): GraphEdge | false => {
   if (!newConnection.source || !newConnection.target) {
     console.warn("Can't create new edge. An edge needs a source and a target.")
     return false
@@ -80,8 +80,8 @@ const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: Gra
   return edge
 }
 
-export const applyEdgeChangesAction = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
-export const applyNodeChangesAction = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
+const applyEdgeChangesAction = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
+const applyNodeChangesAction = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
 
 export const parseChildren = (
   n: Node,

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getElements } from './utils'
-import { VueFlow, MiniMap, Controls, Background, FlowInstance } from '~/index'
+import { VueFlow, MiniMap, Controls, FlowInstance } from '~/index'
 
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()

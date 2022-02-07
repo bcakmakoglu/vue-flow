@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
-import { VueFlow, Connection, OnConnectStartParams, FlowInstance, useElementsState } from '~/index'
+import { VueFlow, Connection, OnConnectStartParams, FlowInstance, useVueFlow } from '~/index'
 
-const { nodes, edges, addEdges } = useElementsState({
+const { nodes, edges, addEdges } = useVueFlow({
   nodes: [
     { id: '0', type: 'custominput', position: { x: 0, y: 150 }, isValidTargetPos: (connection) => connection.target === 'B' },
     {
@@ -28,7 +28,6 @@ const onConnect = (params: Connection) => {
 </script>
 <template>
   <VueFlow
-    v-model="elements"
     :select-nodes-on-drag="false"
     class="validationflow"
     @connect="onConnect"

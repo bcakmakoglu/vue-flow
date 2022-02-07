@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { ConnectionLineProps } from '~/index'
-
-interface CustomConnectionLineProps extends ConnectionLineProps {
+interface CustomConnectionLineProps {
   sourceX: number
   sourceY: number
   targetX: number
