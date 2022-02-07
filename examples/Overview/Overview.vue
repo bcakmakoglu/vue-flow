@@ -5,7 +5,6 @@ import {
   MiniMap,
   Controls,
   Background,
-  isNode,
   Node,
   Elements,
   FlowInstance,
@@ -28,9 +27,6 @@ const onSelectionDrag = (e: FlowEvents['selectionDrag']) => console.log('selecti
 const onSelectionDragStart = (e: FlowEvents['selectionDragStart']) => console.log('selection drag start', e)
 const onSelectionDragStop = (e: FlowEvents['selectionDragStop']) => console.log('selection drag stop', e)
 const onSelectionContextMenu = (e: FlowEvents['selectionContextMenu']) => console.log('selection context menu', e)
-const onElementClick = ({ element }: FlowEvents['elementClick']) =>
-  console.log(`${isNode(element) ? 'node' : 'edge'} click:`, element)
-const onSelectionChange = (elements: FlowEvents['selectionChange']) => console.log('selection change', elements)
 const onLoad = (flowInstance: FlowInstance) => {
   console.log('flow loaded:', flowInstance)
   flowInstance.fitView()
@@ -124,7 +120,6 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
     :connection-line-style="{ stroke: '#ddd' }"
     :snap-to-grid="true"
     :snap-grid="snapGrid"
-    @element-click="onElementClick"
     @connect="onConnect"
     @pane-ready="onLoad"
     @pane-click="onPaneClick"
@@ -138,7 +133,6 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
     @selection-drag="onSelectionDrag"
     @selection-drag-stop="onSelectionDragStop"
     @selection-context-menu="onSelectionContextMenu"
-    @selection-change="onSelectionChange"
     @move-end="onMoveEnd"
     @edge-update="onEdgeMouseMove"
     @edge-context-menu="onEdgeContextMenu"

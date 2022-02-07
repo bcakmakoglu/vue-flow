@@ -21,7 +21,7 @@ export default defineConfig({
     minify: 'esbuild',
     emptyOutDir: false,
     lib: {
-      formats: ['es', 'iife', 'cjs'],
+      formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'vueFlow',
     },
@@ -30,6 +30,7 @@ export default defineConfig({
       // into your library
       external: ['vue'],
       output: {
+        format: 'esm',
         dir: './dist',
         // Provide global variables to use in the UMD build
         // for externalized deps

@@ -41,7 +41,7 @@ export default {
   <path :id="props.id" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
   <text>
     <textPath :href="`#${props.id}`" :style="{ fontSize: '12px' }" startOffset="50%" text-anchor="middle">
-      {{ props.data.text }}
+      {{ props.data?.text }}
     </textPath>
   </text>
 </template>

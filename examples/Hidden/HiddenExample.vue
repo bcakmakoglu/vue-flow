@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useElementsState } from '~/index'
+import { VueFlow, MiniMap, Controls, useVueFlow } from '~/index'
 
 const isHidden = ref(false)
 
-const { nodes, edges } = useElementsState({
+const { nodes, edges } = useVueFlow({
   nodes: [
     { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
     { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
@@ -17,8 +17,8 @@ const { nodes, edges } = useElementsState({
   ],
 })
 watchEffect(() => {
-  nodes.forEach((n) => (n.hidden = isHidden.value))
-  edges.forEach((e) => (e.hidden = isHidden.value))
+  nodes.value.forEach((n) => (n.hidden = isHidden.value))
+  edges.value.forEach((e) => (e.hidden = isHidden.value))
 })
 </script>
 <template>

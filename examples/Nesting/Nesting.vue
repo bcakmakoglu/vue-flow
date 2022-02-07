@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-import { ConnectionMode, useElementsState, useVueFlow, VueFlow, MiniMap, Background, Controls } from '~/index'
+import { ConnectionMode, useVueFlow, VueFlow, MiniMap, Background, Controls } from '~/index'
 
-const { onConnect } = useVueFlow({
+const { onConnect, nodes, edges, addEdges } = useVueFlow({
   fitViewOnInit: true,
   connectionMode: ConnectionMode.Loose,
-})
-const { nodes, edges, addEdges } = useElementsState({
   nodes: [
     { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
     {

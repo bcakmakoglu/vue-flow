@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import { VueFlow, Controls, FlowInstance, Node, useVueFlow, useElementsState } from '~/index'
+import { VueFlow, FlowInstance, Node, useVueFlow } from '~/index'
 
 let id = 0
 const getId = () => `dndnode_${id++}`
 
 const flowInstance = ref<FlowInstance>()
 
-const { onPaneReady, onConnect } = useVueFlow()
-const { nodes, edges, addEdges, addNodes } = useElementsState({
+const { onPaneReady, onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
   nodes: [
     {
       id: '1',

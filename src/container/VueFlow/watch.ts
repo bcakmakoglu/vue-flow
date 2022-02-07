@@ -49,11 +49,7 @@ export default (
     })
   }
 
-  watch(
-    () => props.maxZoom,
-    (v) => isDef(v) && store.setMaxZoom(v),
-    { immediate: isDef(props.maxZoom) },
-  )
+  watch([() => props.maxZoom], (v) => isDef(v) && store.setMaxZoom(v), { immediate: isDef(props.maxZoom) })
   watch(
     () => props.minZoom,
     (v) => isDef(v) && store.setMinZoom(v),

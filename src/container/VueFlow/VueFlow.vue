@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import { createHooks, useHooks } from '../../store'
-import { useVueFlow, applyNodeChanges, applyEdgeChanges } from '../../composables'
+import { useVueFlow } from '../../composables'
 import type { FlowProps } from '../../types/flow'
 import useWatch from './watch'
 
@@ -36,15 +36,19 @@ const {
   getEdgeTypes,
   onNodesChange,
   onEdgesChange,
+  applyNodeChanges,
+  applyEdgeChanges,
   nodes: storedNodes,
   edges: storedEdges,
+  state,
 } = useVueFlow(props)
 useHooks(hooks.value, emit)
 const { modelValue, nodes, edges } = useVModels(props, emit)
 
+const foo = store.nodes
 if (applyDefault.value) {
-  onNodesChange((c) => applyNodeChanges(c, storedNodes.value))
-  onEdgesChange((c) => applyEdgeChanges(c, storedEdges.value))
+  onNodesChange(applyNodeChanges)
+  onEdgesChange(applyEdgeChanges)
 }
 if (props.modelValue && !storedNodes.value.length) setElements(props.modelValue)
 if (props.nodes && !storedNodes.value.length) setNodes(props.nodes)

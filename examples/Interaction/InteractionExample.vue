@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useVueFlow, useElementsState } from '~/index'
+import { VueFlow, MiniMap, Controls, useVueFlow } from '~/index'
 
 const {
   nodesDraggable,
@@ -18,6 +18,9 @@ const {
   onPaneScroll,
   onPaneContextMenu,
   onMoveEnd,
+  nodes,
+  edges,
+  addEdges,
 } = useVueFlow({
   modelValue: [
     { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -29,7 +32,6 @@ const {
   ],
 })
 
-const { nodes, edges, addEdges } = useElementsState()
 const captureZoomClick = ref(false)
 const captureZoomScroll = ref(false)
 

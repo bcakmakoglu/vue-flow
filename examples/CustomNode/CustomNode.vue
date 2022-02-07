@@ -8,7 +8,6 @@ import {
   Node,
   Position,
   SnapGrid,
-  useNodesState,
   useVueFlow,
   VueFlow,
   Controls,
@@ -76,7 +75,6 @@ onMounted(() => {
 })
 
 const { onPaneReady } = useVueFlow()
-useNodesState()
 onPaneReady((flowInstance) => {
   flowInstance.fitView()
   console.log('flow loaded:', flowInstance)
