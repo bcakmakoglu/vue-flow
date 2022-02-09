@@ -1,4 +1,5 @@
-import { CSSProperties, ToRefs } from 'vue'
+import { CSSProperties } from 'vue'
+import { ToRefs } from '@vue/reactivity'
 import { GraphEdge, Edge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
