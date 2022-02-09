@@ -9,7 +9,7 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { nodes, onPaneReady, onNodeDragStop, onConnect, instance, addEdges, store } = useVueFlow()
+const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges } = useVueFlow()
 onPaneReady(({ fitView }) => {
   fitView({ padding: 0.1 })
 })
@@ -28,7 +28,7 @@ const updatePos = () =>
 
 const logToObject = () => console.log(instance.value?.toObject())
 const resetTransform = () => elements.value.push({ id: '1234', position: { x: 50, y: 50 }, label: 'Foobar' })
-const toggleclasss = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
 <template>
   <VueFlow
@@ -45,7 +45,7 @@ const toggleclasss = () => elements.value.forEach((el) => (el.class = el.class =
     <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
       <button style="margin-right: 5px" @click="resetTransform">reset transform</button>
       <button style="margin-right: 5px" @click="updatePos">change pos</button>
-      <button style="margin-right: 5px" @click="toggleclasss">toggle classs</button>
+      <button style="margin-right: 5px" @click="toggleclass">toggle class</button>
       <button @click="logToObject">toObject</button>
     </div>
   </VueFlow>
