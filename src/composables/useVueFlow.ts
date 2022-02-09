@@ -19,7 +19,7 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
       ...store.getters,
       ...store.actions,
       ...store.hooksOn,
-    } as unknown as UseVueFlow<N, E>
+    } as unknown as UseVueFlow
   }
   if (currentInstance) {
     provide(VueFlow, vueFlow)

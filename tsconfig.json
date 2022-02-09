@@ -33,8 +33,9 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src", "examples"],
+  "include": ["src"],
   "exclude": [
+    "examples",
     "node_modules",
     "build",
     "dist",

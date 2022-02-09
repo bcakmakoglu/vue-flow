@@ -2,7 +2,7 @@ import {
   CoordinateExtent,
   EdgeChange,
   Actions,
-  Getters,
+  ComputedGetters,
   State,
   GraphNode,
   Node,
@@ -101,7 +101,7 @@ export const parseChildren = (
   }
 }
 
-export default (state: State, getters: Getters): Actions => {
+export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodePosition: Actions['updateNodePosition'] = ({ id, diff = { x: 0, y: 0 }, dragging }) => {
     const changes: NodeDimensionChange[] = []
 

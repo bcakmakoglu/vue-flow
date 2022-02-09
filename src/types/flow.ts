@@ -4,7 +4,7 @@ import { GraphEdge, Edge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
-import { Actions, Getters, State, FlowStore } from './store'
+import { Actions, ComputedGetters, State, FlowStore } from './store'
 import { FlowHooksOn } from './hooks'
 
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
@@ -129,5 +129,5 @@ export type UseVueFlow<N = any, E = N> = {
   store: FlowStore<N, E>
 } & FlowHooksOn<N, E> &
   ToRefs<State<N, E>> &
-  Getters<N, E> &
+  ComputedGetters<N, E> &
   Actions<N, E>

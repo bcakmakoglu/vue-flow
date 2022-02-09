@@ -14,6 +14,10 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./Basic/Basic.vue'),
   },
   {
+    path: '/basic-options-api',
+    component: () => import('./Basic/BasicOptionsAPI.vue'),
+  },
+  {
     path: '/custom-connectionline',
     component: () => import('./CustomConnectionLine/CustomConnectionLine.vue'),
   },
