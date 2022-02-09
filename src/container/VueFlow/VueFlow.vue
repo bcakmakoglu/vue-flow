@@ -40,12 +40,10 @@ const {
   applyEdgeChanges,
   nodes: storedNodes,
   edges: storedEdges,
-  state,
 } = useVueFlow(props)
 useHooks(hooks.value, emit)
 const { modelValue, nodes, edges } = useVModels(props, emit)
 
-const foo = store.nodes
 if (applyDefault.value) {
   onNodesChange(applyNodeChanges)
   onEdgesChange(applyEdgeChanges)

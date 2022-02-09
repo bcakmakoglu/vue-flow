@@ -1,5 +1,5 @@
-import { ComputedRef, ToRefs } from 'vue'
-import { UnwrapNestedRefs } from '@vue/reactivity'
+import { ComputedRef } from 'vue'
+import { UnwrapNestedRefs, ToRefs } from '@vue/reactivity'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
 import { HandleType, EdgeComponent, NodeComponent } from './components'
 import { Connection, ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
@@ -103,6 +103,7 @@ export interface Getters<N = any, E = N> {
   getSelectedNodes: ComputedRef<GraphNode<N>[]>
   getSelectedEdges: ComputedRef<GraphEdge<E>[]>
 }
+
 interface StoreBase<N = any, E = N> {
   state: State<N, E>
   actions: Actions<N, E>

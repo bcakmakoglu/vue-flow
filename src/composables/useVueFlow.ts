@@ -4,9 +4,11 @@ import { VueFlow } from '~/context'
 import { useStore } from '~/store'
 
 let id = 0
-export default (options?: Partial<FlowOptions>): UseVueFlow => {
+export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlow<N, E> => {
   const currentInstance: any = getCurrentInstance()
-  let vueFlow = currentInstance ? inject(VueFlow) ?? (currentInstance.vueFlow as UseVueFlow) : false
+  let vueFlow: false | UseVueFlow = currentInstance
+    ? inject(VueFlow, undefined) ?? (currentInstance.vueFlow as UseVueFlow)
+    : false
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
     const name = options?.id ?? `vue-flow-${id++}`
     const store = useStore(options)
@@ -17,12 +19,12 @@ export default (options?: Partial<FlowOptions>): UseVueFlow => {
       ...store.getters,
       ...store.actions,
       ...store.hooksOn,
-    }
+    } as unknown as UseVueFlow<N, E>
   }
   if (currentInstance) {
     provide(VueFlow, vueFlow)
     currentInstance.vueFlow = vueFlow
   }
 
-  return vueFlow as UseVueFlow
+  return <UseVueFlow<N, E>>vueFlow
 }
