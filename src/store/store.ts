@@ -27,5 +27,5 @@ export default (preloadedState?: FlowOptions): Store => {
     ...toRefs(state),
     ...getters,
     ...actions,
-  }
+  } as unknown as Store
 }

@@ -1,5 +1,5 @@
 import { ComputedRef } from 'vue'
-import { UnwrapNestedRefs, ToRefs } from '@vue/reactivity'
+import { ToRefs } from '@vue/reactivity'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
 import { HandleType, EdgeComponent, NodeComponent } from './components'
 import { Connection, ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
@@ -93,22 +93,25 @@ export interface Actions<N = any, E = N> {
 }
 
 export interface Getters<N = any, E = N> {
-  getEdgeTypes: ComputedRef<Record<string, EdgeComponent>>
-  getNodeTypes: ComputedRef<Record<string, NodeComponent>>
-  getNodes: ComputedRef<GraphNode<N>[]>
-  getEdges: ComputedRef<GraphEdge<E>[]>
-  getNode: ComputedRef<(id: string) => GraphNode<N> | undefined>
-  getEdge: ComputedRef<(id: string) => GraphEdge<E> | undefined>
-  getSelectedElements: ComputedRef<FlowElements<N, E>>
-  getSelectedNodes: ComputedRef<GraphNode<N>[]>
-  getSelectedEdges: ComputedRef<GraphEdge<E>[]>
+  getEdgeTypes: Record<string, EdgeComponent>
+  getNodeTypes: Record<string, NodeComponent>
+  getNodes: GraphNode<N>[]
+  getEdges: GraphEdge<E>[]
+  getNode: (id: string) => GraphNode<N> | undefined
+  getEdge: (id: string) => GraphEdge<E> | undefined
+  getSelectedElements: FlowElements<N, E>
+  getSelectedNodes: GraphNode<N>[]
+  getSelectedEdges: GraphEdge<E>[]
 }
+
+export type ComputedGetters<N = any, E = N> = { [key in keyof Getters<N, E>]: ComputedRef<Getters<N, E>[key]> }
 
 interface StoreBase<N = any, E = N> {
   state: State<N, E>
   actions: Actions<N, E>
-  getters: Getters<N, E>
+  getters: ComputedGetters<N, E>
   hooksOn: FlowHooksOn<N, E>
 }
-export type Store<N = any, E = N> = StoreBase & ToRefs<State<N, E>> & Actions<N, E> & Getters<N, E>
-export type FlowStore<N = any, E = N> = UnwrapNestedRefs<Store<N, E>>
+
+export type Store<N = any, E = N> = StoreBase<N, E> & ToRefs<State<N, E>> & Actions<N, E> & ComputedGetters<N, E>
+export type FlowStore<N = any, E = N> = StoreBase<N, E> & State<N, E> & Actions<N, E> & Getters<N, E>

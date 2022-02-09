@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<EdgeProps>(), {
   sourcePosition: 'bottom' as Position,
   targetPosition: 'top' as Position,
   labelStyle: () => ({}),
+  label: () => '',
   labelShowBg: true,
   labelBgStyle: () => ({}),
 })
