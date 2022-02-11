@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Handle, NodeProps, Position } from '~/index'
+import { Handle, NodeProps, Position } from '@braks/vue-flow'
 
 interface RGBNodeProps extends NodeProps {
   data: {
@@ -33,7 +33,7 @@ const onChange = (e: any) => emit('change', { color, val: e.target.value })
     <input
       v-model="props.amount[color]"
       class="slider nodrag"
-      :style="{ '--color': color }"
+      :style="{ '--color': color } as any"
       type="range"
       min="0"
       max="255"

@@ -36,6 +36,7 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
+    "@braks/vue-flow": "file:./",
     "@braks/revue-draggable": "^0.4.2",
     "@types/d3": "^7.1.0",
     "@vueuse/core": "^7.5.5",
