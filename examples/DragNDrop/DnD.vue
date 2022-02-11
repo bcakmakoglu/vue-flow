@@ -1,13 +1,11 @@
 <script lang="ts" setup>
+import { VueFlow, FlowInstance, Node, useVueFlow } from '@braks/vue-flow'
 import Sidebar from './Sidebar.vue'
-import { VueFlow, FlowInstance, Node, useVueFlow } from '~/index'
 
 let id = 0
 const getId = () => `dndnode_${id++}`
 
-const flowInstance = ref<FlowInstance>()
-
-const { onPaneReady, onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
+const { instance, onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
   nodes: [
     {
       id: '1',
@@ -17,7 +15,6 @@ const { onPaneReady, onConnect, nodes, edges, addEdges, addNodes } = useVueFlow(
     },
   ],
 })
-onPaneReady((instance) => (flowInstance.value = instance))
 const onDragOver = (event: DragEvent) => {
   event.preventDefault()
   if (event.dataTransfer) {
@@ -28,9 +25,9 @@ const onDragOver = (event: DragEvent) => {
 onConnect((params) => addEdges([params]))
 
 const onDrop = (event: DragEvent) => {
-  if (flowInstance.value) {
+  if (instance.value) {
     const type = event.dataTransfer?.getData('application/vueflow')
-    const position = flowInstance.value.project({ x: event.clientX, y: event.clientY - 40 })
+    const position = instance.value.project({ x: event.clientX, y: event.clientY - 40 })
     const newNode = {
       id: getId(),
       type,

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, Background, Elements } from '~/index'
+import { VueFlow, Background, Elements } from '@braks/vue-flow'
 const initialElements: Elements = [
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },

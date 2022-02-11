@@ -1,11 +1,17 @@
 <script lang="ts" setup>
-import { useVueFlow } from '~/index'
+import { useVueFlow } from '@braks/vue-flow'
 const { nodesSelectionActive, addSelectedNodes, getNodes, transform } = useVueFlow()
 
 const selectAll = () => {
   addSelectedNodes(getNodes.value)
   nodesSelectionActive.value = true
 }
+
+const transformString = computed(() => [
+  transform.value[0].toFixed(2),
+  transform.value[1].toFixed(2),
+  transform.value[2].toFixed(2),
+])
 </script>
 <template>
   <aside>
@@ -13,7 +19,9 @@ const selectAll = () => {
       This is an example of how you can access the internal state outside of the Vue VueFlow component.
     </div>
     <div class="title">Zoom & pan transform</div>
-    <div class="transform">{{ [transform[0].toFixed(2), transform[1].toFixed(2), transform[2].toFixed(2)] }}</div>
+    <div class="transform">
+      {{ transformString }}
+    </div>
     <div class="title">Nodes</div>
     <div v-for="node of getNodes" :key="node.id">
       Node {{ node.id }} - x: {{ node.position.x.toFixed(2) }}, y: {{ node.position.y.toFixed(2) }}

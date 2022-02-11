@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useVueFlow } from '~/index'
+import { VueFlow, MiniMap, Controls, useVueFlow } from '@braks/vue-flow'
 
 const {
   nodesDraggable,
@@ -18,8 +18,6 @@ const {
   onPaneScroll,
   onPaneContextMenu,
   onMoveEnd,
-  nodes,
-  edges,
   addEdges,
 } = useVueFlow({
   modelValue: [

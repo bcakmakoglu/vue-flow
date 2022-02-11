@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import ColorSelectorNode from './ColorSelectorNode.vue'
 import {
   ConnectionMode,
   Elements,
-  FlowElement,
   isEdge,
   Node,
   Position,
@@ -12,7 +10,8 @@ import {
   VueFlow,
   Controls,
   MiniMap,
-} from '~/index'
+} from '@braks/vue-flow'
+import ColorSelectorNode from './ColorSelectorNode.vue'
 
 const elements = ref<Elements>([])
 const bgColor = ref('#1A192B')
@@ -31,7 +30,7 @@ const nodeColor = (n: Node): string => {
 }
 
 const onChange = (event: Event) => {
-  elements.value.forEach((e: FlowElement) => {
+  elements.value.forEach((e) => {
     if (isEdge(e) || e.id !== '2') return e
     bgColor.value = (event.target as HTMLInputElement).value
   })
