@@ -1,5 +1,4 @@
-import { ComputedRef } from 'vue'
-import { ToRefs } from '@vue/reactivity'
+import { ComputedRef, CSSProperties, ToRefs } from 'vue'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
 import { HandleType, EdgeComponent, NodeComponent } from './components'
 import { Connection, ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
@@ -43,6 +42,7 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   connectionPosition: XYPosition
   connectionMode: ConnectionMode
   connectionLineType: ConnectionLineType
+  connectionLineStyle: CSSProperties | undefined
   edgeUpdaterRadius: number
 
   snapToGrid: boolean
@@ -90,6 +90,7 @@ export interface Actions<N = any, E = N> {
   setInteractive: (isInteractive: boolean) => void
   setState: (state: Partial<FlowOptions<N, E>>) => void
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
+  $destroy: () => void
 }
 
 export interface Getters<N = any, E = N> {
