@@ -15,6 +15,8 @@ import {
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import TransformationPane from '../TransformationPane/TransformationPane.vue'
 
+const props = defineProps<{ fitViewOnInit?: boolean }>()
+
 const { id, store } = useVueFlow()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
 
@@ -206,7 +208,7 @@ onMounted(async () => {
     toObject: onLoadToObject(store),
   }
   store.instance = instance
-  store.fitViewOnInit && instance.fitView()
+  props.fitViewOnInit && instance.fitView()
   store.hooks.paneReady.trigger(instance)
 })
 </script>
