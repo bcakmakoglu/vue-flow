@@ -305,7 +305,7 @@
   version "0.4.0-0"
   dependencies:
     "@braks/revue-draggable" "^0.4.2"
-    "@braks/vue-flow" "file:../../../Library/Caches/Yarn/v6/npm-@braks-vue-flow-0.4.0-0-82c09b22-99a3-47c5-b788-6368f57f2185-1644498505992/node_modules/@braks/vue-flow"
+    "@braks/vue-flow" "file:../../../Library/Caches/Yarn/v6/npm-@braks-vue-flow-0.4.0-0-a629adb0-fb60-4dbe-a3e8-6727e591b4ec-1644589861831/node_modules/@braks/vue-flow"
     "@types/d3" "^7.1.0"
     "@vueuse/core" "^7.5.5"
     d3 "^7.1.1"
