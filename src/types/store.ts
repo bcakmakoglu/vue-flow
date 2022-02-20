@@ -90,7 +90,7 @@ export interface Actions<N = any, E = N> {
   setInteractive: (isInteractive: boolean) => void
   setState: (state: Partial<FlowOptions<N, E>>) => void
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
-  $destroy: () => void
+  $reset: () => void
 }
 
 export interface Getters<N = any, E = N> {

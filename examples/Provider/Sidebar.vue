@@ -6,12 +6,6 @@ const selectAll = () => {
   addSelectedNodes(getNodes.value)
   nodesSelectionActive.value = true
 }
-
-const transformString = computed(() => [
-  transform.value[0].toFixed(2),
-  transform.value[1].toFixed(2),
-  transform.value[2].toFixed(2),
-])
 </script>
 <template>
   <aside>
@@ -20,7 +14,7 @@ const transformString = computed(() => [
     </div>
     <div class="title">Zoom & pan transform</div>
     <div class="transform">
-      {{ transformString }}
+      {{ [transform[0].toFixed(2), transform[1].toFixed(2), transform[2].toFixed(2)] }}
     </div>
     <div class="title">Nodes</div>
     <div v-for="node of getNodes" :key="node.id">
