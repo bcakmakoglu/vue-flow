@@ -1,3 +1,4 @@
+import useState from './state'
 import {
   CoordinateExtent,
   EdgeChange,
@@ -304,5 +305,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
     setConnectionNodeId,
     setInteractive,
     setState,
+    $reset: () => {
+      setState(useState())
+    },
   }
 }

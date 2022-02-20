@@ -166,4 +166,9 @@ export default (store: FlowStore = useVueFlow().store) =>
 
     doc.addEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
     doc.addEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)
+
+    onScopeDispose(() => {
+      doc.removeEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
+      doc.removeEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)
+    })
   }

@@ -97,7 +97,7 @@ export default (opts?: FlowOptions): State => {
     applyDefault: true,
 
     vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
-  }
+  } as State
 
   if (opts) {
     if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll

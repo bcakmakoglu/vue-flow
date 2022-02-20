@@ -1,17 +1,17 @@
-import { getCurrentInstance } from 'vue'
-import { FlowOptions, UseVueFlow } from '~/types'
+import { EffectScope } from 'vue'
+import { FlowOptions, UseVueFlow, Store } from '~/types'
 import { VueFlow } from '~/context'
 import { useStore } from '~/store'
 
 let id = 0
+
+type Scope = EffectScope & { vueFlow: UseVueFlow }
 export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlow<N, E> => {
-  const currentInstance: any = getCurrentInstance()
-  let vueFlow: false | UseVueFlow = currentInstance
-    ? inject(VueFlow, undefined) ?? (currentInstance.vueFlow as UseVueFlow)
-    : false
+  const scope = getCurrentScope() as Scope
+  let vueFlow: UseVueFlow | null = scope ? inject(VueFlow, null) ?? (scope.vueFlow as UseVueFlow) : null
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
     const name = options?.id ?? `vue-flow-${id++}`
-    const store = useStore(options)
+    let store: Store = useStore(options)
     vueFlow = {
       id: name,
       store: reactive(store),
@@ -20,11 +20,19 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
       ...store.actions,
       ...store.hooksOn,
     } as unknown as UseVueFlow
+
+    if (scope) {
+      provide(VueFlow, vueFlow)
+      scope.vueFlow = vueFlow
+    }
+
+    onScopeDispose(() => {
+      vueFlow = null as UseVueFlow
+      scope.vueFlow = null as UseVueFlow
+      store = null as Store
+    })
   }
-  if (currentInstance) {
-    provide(VueFlow, vueFlow)
-    currentInstance.vueFlow = vueFlow
-  }
+  if (!vueFlow) throw new Error('VueFlow instance not found.')
 
   return <UseVueFlow<N, E>>vueFlow
 }

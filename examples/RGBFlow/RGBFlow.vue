@@ -38,7 +38,7 @@ const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (c
         <RGBNode v-bind="props" :amount="color" @change="onChange" />
       </template>
       <template #node-rgb-output="props">
-        <RGBOutputNode :v-bind="props" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
+        <RGBOutputNode v-bind="props" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
       </template>
     </VueFlow>
   </div>
