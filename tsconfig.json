@@ -33,11 +33,12 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src", "examples"],
+  "include": ["src"],
   "exclude": [
     "node_modules",
     "build",
     "dist",
-    "cypress"
+    "cypress",
+    "examples"
   ]
 }
