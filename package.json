@@ -28,7 +28,7 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "dev": "vite",
-    "build": "export NODE_OPTIONS=\"--max-old-space-size=5120\" && vite build && vue-tsc --declaration --emitDeclarationOnly && tsc && rm -rf tmp",
+    "build": "export NODE_OPTIONS=\"--max-old-space-size=5120\" && vite build && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && rm -rf tmp",
     "prepublishOnly": "yarn build",
     "test": "cypress run-ct",
     "test:open": "cypress open-ct",
