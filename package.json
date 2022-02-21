@@ -1,6 +1,6 @@
 {
   "name": "@braks/vue-flow",
-  "version": "0.4.0-0",
+  "version": "0.4.0-1",
   "private": false,
   "repository": {
     "type": "git",
@@ -36,8 +36,8 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
-    "@braks/vue-flow": "link:./",
     "@braks/revue-draggable": "^0.4.2",
+    "@braks/vue-flow": "link:./",
     "@types/d3": "^7.1.0",
     "@vueuse/core": "^7.5.5",
     "d3": "^7.1.1",
