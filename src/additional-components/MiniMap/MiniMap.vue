@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<MiniMapProps>(), {
   maskColor: 'rgb(240, 242, 243, 0.7)',
 })
 
-const attrs = useAttrs()
+const attrs: Record<string, any> = useAttrs()
 const window = useWindow()
 
 const defaultWidth = 200
