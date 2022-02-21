@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { CSSProperties } from 'vue'
 import { Handle, NodeProps, Position } from '@braks/vue-flow'
 
 interface RGBNodeProps extends NodeProps {
@@ -33,11 +34,13 @@ const colorVal = computed({
     emit('change', { color, val })
   },
 })
+
+const style = { '--color': color } as CSSProperties
 </script>
 <template>
   <div class="wrapper">
     <div class="text-md" :style="{ color }">{{ `${color} Amount`.toUpperCase() }}</div>
-    <input v-model="colorVal" class="slider nodrag" :style="{ '--color': color }" type="range" min="0" max="255" />
+    <input v-model="colorVal" class="slider nodrag" :style="style" type="range" min="0" max="255" />
     <Handle type="source" :position="Position.Right" :style="{ backgroundColor: color }" />
   </div>
 </template>
