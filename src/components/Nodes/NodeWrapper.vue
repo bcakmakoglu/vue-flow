@@ -103,6 +103,8 @@ const updatePosition = (width: number, height: number) => {
   node.value.handleBounds = handleBounds
 }
 
+const removeEmpty = (obj: Record<string, any>) => Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null))
+
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 onMounted(() => {
   const dimensions = ref(getDimensions(nodeElement.value))
@@ -166,57 +168,15 @@ export default {
     >
       <slot
         v-bind="{
-          selected: node.selected,
           connectable: props.connectable,
-          sourcePosition: node.sourcePosition,
-          targetPosition: node.targetPosition,
-          isValidTargetPos: node.isValidTargetPos,
-          isValidSourcePos: node.isValidSourcePos,
-          label: node.label,
-          class: node.class,
-          style: node.style,
-          hidden: node.hidden,
-          id: node.id,
-          type: node.type,
-          data: node.data,
-          dragging: node.dragging,
-          handleBounds: node.handleBounds,
-          parentNode: node.parentNode,
-          isParent: node.isParent,
-          computedPosition: node.computedPosition,
-          position: node.position,
-          draggable: props.draggable,
-          selectable: props.selectable,
-          children: node.children,
-          dimensions: node.dimensions,
+          ...removeEmpty(node),
         }"
       >
         <component
           :is="props.component ?? node.type"
           v-bind="{
-            selected: node.selected,
             connectable: props.connectable,
-            sourcePosition: node.sourcePosition,
-            targetPosition: node.targetPosition,
-            isValidTargetPos: node.isValidTargetPos,
-            isValidSourcePos: node.isValidSourcePos,
-            label: node.label,
-            class: node.class,
-            style: node.style,
-            hidden: node.hidden,
-            id: node.id,
-            type: node.type,
-            data: node.data,
-            dragging: node.dragging,
-            handleBounds: node.handleBounds,
-            parentNode: node.parentNode,
-            isParent: node.isParent,
-            computedPosition: node.computedPosition,
-            position: node.position,
-            draggable: props.draggable,
-            selectable: props.selectable,
-            children: node.children,
-            dimensions: node.dimensions,
+            ...removeEmpty(node),
           }"
         />
       </slot>
