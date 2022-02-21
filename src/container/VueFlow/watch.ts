@@ -33,7 +33,7 @@ export default (
         if (v && Array.isArray(v)) {
           pause()
           store.setNodes(v)
-          if (nodes) nodes = store.nodes
+          if (nodes) nodes.value = store.nodes
           await nextTick()
           resume()
         }
@@ -44,7 +44,7 @@ export default (
         if (v && Array.isArray(v)) {
           pause()
           store.setEdges(v)
-          if (edges) edges = store.edges
+          if (edges) edges.value = store.edges
           await nextTick()
           resume()
         }

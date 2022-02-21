@@ -11,6 +11,7 @@ interface RGBNodeProps extends NodeProps {
     blue: number
   }
 }
+
 const props = defineProps<RGBNodeProps>()
 const emit = defineEmits(['change'])
 let color = 'red'
@@ -25,20 +26,18 @@ switch (props.data.color) {
     color = 'blue'
     break
 }
-const onChange = (e: any) => emit('change', { color, val: e.target.value })
+
+const colorVal = computed({
+  get: () => props.amount[color as 'red' | 'green' | 'blue'],
+  set: (val) => {
+    emit('change', { color, val })
+  },
+})
 </script>
 <template>
   <div class="wrapper">
     <div class="text-md" :style="{ color }">{{ `${color} Amount`.toUpperCase() }}</div>
-    <input
-      v-model="props.amount[color]"
-      class="slider nodrag"
-      :style="{ '--color': color } as any"
-      type="range"
-      min="0"
-      max="255"
-      @input="onChange"
-    />
+    <input v-model="colorVal" class="slider nodrag" :style="{ '--color': color }" type="range" min="0" max="255" />
     <Handle type="source" :position="Position.Right" :style="{ backgroundColor: color }" />
   </div>
 </template>
@@ -62,11 +61,7 @@ const onChange = (e: any) => emit('change', { color, val: e.target.value })
   -webkit-appearance: none;
   appearance: none;
 
-  &::-moz-range-thumb {
-    @apply w-[15px] h-[15px] cursor-pointer border-1 border-solid border-white rounded-full;
-    -webkit-appearance: none;
-    background: var(--color);
-  }
+  &::-moz-range-thumb,
   &::-webkit-slider-thumb {
     @apply w-[15px] h-[15px] cursor-pointer border-1 border-solid border-white rounded-full;
     -webkit-appearance: none;
