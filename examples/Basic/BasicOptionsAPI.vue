@@ -1,5 +1,5 @@
 <script lang="ts">
-import { VueFlow, Background, MiniMap, Controls, Elements, FlowEvents, FlowInstance, isNode, addEdge } from '@braks/vue-flow'
+import { VueFlow, Background, MiniMap, Controls, Elements, FlowEvents, FlowInstance, isNode, addEdge } from '~/index'
 
 export default defineComponent({
   name: 'BasicOptionsAPI',

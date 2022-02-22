@@ -14,7 +14,7 @@ import {
   Edge,
   FlowEvents,
   MarkerType,
-} from '@braks/vue-flow'
+} from '~/index'
 
 const onNodeDragStart = (e: FlowEvents['nodeDragStart']) => console.log('drag start', e)
 const onNodeDrag = (e: FlowEvents['nodeDrag']) => console.log('drag', e)

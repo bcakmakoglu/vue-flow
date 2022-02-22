@@ -1,17 +1,6 @@
 <script lang="ts" setup>
-import {
-  ConnectionMode,
-  Elements,
-  isEdge,
-  Node,
-  Position,
-  SnapGrid,
-  useVueFlow,
-  VueFlow,
-  Controls,
-  MiniMap,
-} from '@braks/vue-flow'
 import ColorSelectorNode from './ColorSelectorNode.vue'
+import { ConnectionMode, Elements, isEdge, Node, Position, SnapGrid, useVueFlow, VueFlow, Controls, MiniMap } from '~/index'
 
 const elements = ref<Elements>([])
 const bgColor = ref('#1A192B')

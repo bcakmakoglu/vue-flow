@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, Elements } from '@braks/vue-flow'
+import { VueFlow, Elements } from '~/index'
 
 const elementsA: Elements = [
   { id: '1a', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },

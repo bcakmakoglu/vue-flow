@@ -10,7 +10,7 @@ import {
   Edge,
   FlowEvents,
   ConnectionMode,
-} from '@braks/vue-flow'
+} from '~/index'
 
 const initialElements: Elements = [
   {

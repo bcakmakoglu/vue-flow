@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '@braks/vue-flow'
+import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '~/index'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },

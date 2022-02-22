@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, MiniMap, Controls, useVueFlow } from '~/index'
 
 const isHidden = ref(false)
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, Background, BackgroundVariant, Elements } from '@braks/vue-flow'
 import ConnectionLine from './ConnectionLine.vue'
+import { VueFlow, Background, BackgroundVariant, Elements } from '~/index'
 
 const elements = ref<Elements>([
   {

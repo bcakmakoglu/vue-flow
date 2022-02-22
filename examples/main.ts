@@ -4,10 +4,10 @@ import { DraggablePlugin } from '@braks/revue-draggable'
 import App from './App.vue'
 import { router } from './router'
 /* import the required styles */
-import '@braks/vue-flow/dist/style.css'
+import '../src/style.css'
 
 /* import the default theme (optional) */
-import '@braks/vue-flow/dist/theme-default.css'
+import '../src/theme-default.css'
 
 const app = createApp(App)
 

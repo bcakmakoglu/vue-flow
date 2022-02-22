@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, MarkerType, useVueFlow, Edge, Node } from '@braks/vue-flow'
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomLabel from './CustomLabel.vue'
+import { VueFlow, MiniMap, Controls, Background, MarkerType, useVueFlow, Edge, Node } from '~/index'
 
 const initialNodes: Node[] = [
   { id: '1', type: 'input', label: 'Input 1', position: { x: 250, y: 0 } },

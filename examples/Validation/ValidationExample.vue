@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { VueFlow, Connection, OnConnectStartParams, FlowInstance, useVueFlow } from '@braks/vue-flow'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
+import { VueFlow, Connection, OnConnectStartParams, FlowInstance, useVueFlow } from '~/index'
 
 const { nodes, edges, addEdges } = useVueFlow({
   nodes: [
