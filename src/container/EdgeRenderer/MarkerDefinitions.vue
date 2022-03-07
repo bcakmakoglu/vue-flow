@@ -2,6 +2,7 @@
 import { useVueFlow } from '../../composables'
 import type { MarkerProps } from '../../types/edge'
 import { getMarkerId } from '../../utils'
+import { MarkerType } from '../../types/edge'
 import Marker from './Marker.vue'
 
 interface MarkerDefinitionsProps {
@@ -18,10 +19,11 @@ const markers = computed(() => {
 
   return store.edges.reduce<MarkerProps[]>((markers, edge) => {
     ;[edge.markerStart, edge.markerEnd].forEach((marker) => {
-      if (marker && typeof marker === 'object') {
+      if (marker) {
         const markerId = getMarkerId(marker)
         if (!ids.includes(markerId)) {
-          markers.push({ id: markerId, color: marker.color || props.defaultColor, ...marker })
+          if (typeof marker === 'object') markers.push({ id: markerId, color: marker.color || props.defaultColor, ...marker })
+          else markers.push({ id: markerId, color: props.defaultColor, type: marker as MarkerType })
           ids.push(markerId)
         }
       }
