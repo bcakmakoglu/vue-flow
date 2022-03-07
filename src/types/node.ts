@@ -64,4 +64,5 @@ export interface NodeProps<T = any> {
   parentNode?: any
   isParent?: boolean
   children?: Node<T>[]
+  nodeElement: HTMLDivElement
 }

@@ -168,6 +168,7 @@ export default {
     >
       <slot
         v-bind="{
+          nodeElement,
           connectable: props.connectable,
           ...removeEmpty(node),
         }"
@@ -175,6 +176,7 @@ export default {
         <component
           :is="props.component ?? node.type"
           v-bind="{
+            nodeElement,
             connectable: props.connectable,
             ...removeEmpty(node),
           }"
