@@ -71,6 +71,7 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
 }
 
 export interface Actions<N = any, E = N> {
+  /** @deprecated use setNodes / setEdges instead */
   setElements: (elements: Elements<N, E>, extent?: CoordinateExtent) => void
   setNodes: (nodes: Node<N>[], extent?: CoordinateExtent) => void
   setEdges: (edges: Edge<E>[]) => void
