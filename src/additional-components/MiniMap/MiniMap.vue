@@ -84,6 +84,7 @@ export default {
   >
     <template v-for="node of store.getNodes" :key="`mini-map-node-${node.id}`">
       <slot
+        :name="`node-${node.type}`"
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :style="node.style"
