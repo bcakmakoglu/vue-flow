@@ -1,18 +1,6 @@
 <script lang="ts" setup>
 import CustomNode from './CustomNode.vue'
-import {
-  VueFlow,
-  addEdge,
-  useZoomPanHelper,
-  Elements,
-  Connection,
-  Edge,
-  Node,
-  ConnectionLineType,
-  ConnectionMode,
-  updateEdge,
-  MarkerType,
-} from '~/index'
+import { VueFlow, useZoomPanHelper, Elements, Node, ConnectionLineType, ConnectionMode, MarkerType } from '~/index'
 
 const initialElements: Elements = [
   {
@@ -66,7 +54,7 @@ const initialElements: Elements = [
     target: '01',
     sourceHandle: 'left',
     targetHandle: 'bottom',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -75,7 +63,7 @@ const initialElements: Elements = [
     target: '01',
     sourceHandle: 'top',
     targetHandle: 'right',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -84,7 +72,7 @@ const initialElements: Elements = [
     target: '02',
     sourceHandle: 'top',
     targetHandle: 'left',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -93,7 +81,7 @@ const initialElements: Elements = [
     target: '02',
     sourceHandle: 'right',
     targetHandle: 'bottom',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -102,7 +90,7 @@ const initialElements: Elements = [
     target: '03',
     sourceHandle: 'right',
     targetHandle: 'top',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -111,7 +99,7 @@ const initialElements: Elements = [
     target: '03',
     sourceHandle: 'bottom',
     targetHandle: 'left',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -120,7 +108,7 @@ const initialElements: Elements = [
     target: '04',
     sourceHandle: 'bottom',
     targetHandle: 'right',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -129,7 +117,7 @@ const initialElements: Elements = [
     target: '04',
     sourceHandle: 'left',
     targetHandle: 'top',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -138,7 +126,7 @@ const initialElements: Elements = [
     target: '10',
     sourceHandle: 'top',
     targetHandle: 'bottom',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -147,7 +135,7 @@ const initialElements: Elements = [
     target: '20',
     sourceHandle: 'right',
     targetHandle: 'left',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -156,7 +144,7 @@ const initialElements: Elements = [
     target: '30',
     sourceHandle: 'bottom',
     targetHandle: 'top',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
   {
@@ -165,7 +153,7 @@ const initialElements: Elements = [
     target: '40',
     sourceHandle: 'left',
     targetHandle: 'right',
-    type: 'smoothstep',
+    type: 'step',
     markerEnd: MarkerType.Arrow,
   },
 ]
@@ -189,6 +177,7 @@ const onPaneClick = (evt: MouseEvent) =>
     :connection-line-type="ConnectionLineType.SmoothStep"
     :connection-mode="ConnectionMode.Loose"
     @pane-click="onPaneClick"
+    @pane-ready="({ fitView }) => fitView()"
   >
     <template #node-custom="props">
       <CustomNode v-bind="props" />

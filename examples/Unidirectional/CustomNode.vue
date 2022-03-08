@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
 import { Handle, Position } from '~/index'
-import type { NodeProps } from '~/index'
 
-const props = defineProps<NodeProps>()
+interface Props {
+  id: string
+}
+
+const props = defineProps<Props>()
 const nodeStyles: CSSProperties = { padding: '10px 15px', border: '1px solid #ddd' }
 </script>
 <template>
