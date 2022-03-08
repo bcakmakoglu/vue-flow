@@ -62,7 +62,6 @@
     "np": "^7.5.0",
     "postcss-nested": "^5.0.6",
     "prettier": "^2.4.1",
-    "rollup-plugin-copy": "^3.4.0",
     "ts-patch": "^2.0.1",
     "typescript": "^4.5.5",
     "typescript-transform-paths": "^3.3.1",

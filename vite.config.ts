@@ -5,7 +5,6 @@ import vueTypes from 'vite-plugin-vue-type-imports'
 import svgLoader from 'vite-svg-loader'
 import AutoImport from 'unplugin-auto-import/vite'
 import replace from '@rollup/plugin-replace'
-import copy from 'rollup-plugin-copy'
 import pkg from './package.json'
 
 // https://vitejs.dev/config/
