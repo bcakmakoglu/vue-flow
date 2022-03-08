@@ -53,14 +53,6 @@ export default defineConfig({
       __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
       preventAssignment: true,
     }),
-    copy({
-      targets: [
-        {
-          src: 'src/theme-default.css',
-          dest: 'dist',
-        },
-      ],
-    }),
   ],
   optimizeDeps: {
     include: ['vue', '@vueuse/core', '@braks/revue-draggable', 'd3-zoom', 'd3-selection'],

@@ -82,4 +82,5 @@ export default {
 </template>
 <style>
 @import '../../style.css';
+@import '../../theme-default.css';
 </style>
