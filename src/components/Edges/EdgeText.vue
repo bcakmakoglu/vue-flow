@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { EdgeTextProps } from '../../types/components'
+import { useVueFlow } from '../../composables'
 
 const props = withDefaults(defineProps<EdgeTextProps>(), {
   labelStyle: () => ({}),
@@ -9,9 +10,10 @@ const props = withDefaults(defineProps<EdgeTextProps>(), {
   labelBgBorderRadius: 2,
 })
 
+const { transform: paneTransform } = useVueFlow()
 const edgeRef = templateRef<SVGTextElement>('edge-text', null)
-const { width, height, x, y } = useElementBounding(edgeRef)
-const transform = computed(() => `translate(${props.x - width.value / 2 || 0} ${props.y - height.value / 2 || 0})`)
+const { width, height } = useElementBounding(edgeRef)
+const transform = computed(() => `translate(${props.x - width.value / paneTransform.value[2] / 2} ${props.y - height.value / 2})`)
 </script>
 <script lang="ts">
 export default {
@@ -23,7 +25,7 @@ export default {
     <rect
       v-if="props.labelShowBg"
       class="vue-flow__edge-textbg"
-      :width="width + 2 * props.labelBgPadding[0] + 'px'"
+      :width="width / paneTransform[2] + 2 * props.labelBgPadding[0] + 'px'"
       :height="height + 2 * props.labelBgPadding[1] + 'px'"
       :x="-props.labelBgPadding[0]"
       :y="-props.labelBgPadding[1]"
@@ -36,7 +38,7 @@ export default {
         <component
           :is="props.label?.component"
           v-if="typeof props.label !== 'string' && typeof props.label?.component !== 'undefined'"
-          v-bind="{ ...props, ...props.label?.props, width, height, x, y }"
+          v-bind="{ ...props, ...props.label?.props, width, height }"
         />
         <template v-else v-html="props.label">
           {{ props.label }}

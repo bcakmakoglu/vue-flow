@@ -1,9 +1,4 @@
-import { GetBezierPathParams, GetCenterParams, GetSmoothStepPathParams, MarkerType, Position } from '~/types'
-
-export const getMarkerEnd = (markerType?: MarkerType, markerEndId?: string): string => {
-  if (typeof markerEndId !== 'undefined' && markerEndId) return `url(#${markerEndId})`
-  return typeof markerType !== 'undefined' ? `url(#vue-flow__${markerType})` : 'none'
-}
+import { GetBezierPathParams, GetCenterParams, GetSmoothStepPathParams, Position } from '~/types'
 
 const LeftOrRight = [Position.Left, Position.Right]
 
