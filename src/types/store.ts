@@ -76,7 +76,7 @@ export interface Actions<N = any, E = N> {
   setEdges: (edges: Edge<E>[]) => void
   addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
   addEdges: <EA = E>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
-  updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => GraphEdge<EU> | false
+  updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => boolean
   applyEdgeChanges: <ED = E>(changes: EdgeChange[]) => GraphEdge<ED>[]
   applyNodeChanges: <ND = N>(changes: NodeChange[]) => GraphNode<ND>[]
   addSelectedElements: (elements: FlowElements<N, E>) => void

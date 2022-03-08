@@ -59,7 +59,7 @@ const addEdge = (edgeParams: Edge | Connection, edges: Edge[]) => {
   return edge
 }
 
-const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]): GraphEdge | false => {
+const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[], add: Actions['addEdges']): boolean => {
   if (!newConnection.source || !newConnection.target) {
     console.warn("Can't create new edge. An edge needs a source and a target.")
     return false
@@ -72,13 +72,19 @@ const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: Gra
     return false
   }
 
-  edge.id = getEdgeId(newConnection)
-  edge.source = newConnection.source
-  edge.target = newConnection.target
-  edge.sourceHandle = newConnection.sourceHandle
-  edge.targetHandle = newConnection.targetHandle
+  edges.splice(edges.indexOf(edge), 1)
+  add([
+    {
+      ...edge,
+      id: getEdgeId(newConnection),
+      source: newConnection.source,
+      target: newConnection.target,
+      sourceHandle: newConnection.sourceHandle,
+      targetHandle: newConnection.targetHandle,
+    },
+  ])
 
-  return edge
+  return true
 }
 
 const applyEdgeChangesAction = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
@@ -237,7 +243,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
     })
   }
 
-  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) => updateEdgeAction(oldEdge, newConnection, state.edges)
+  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>
+    updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
   const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyNodeChangesAction(changes, state.nodes)
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyEdgeChangesAction(changes, state.edges)
 
