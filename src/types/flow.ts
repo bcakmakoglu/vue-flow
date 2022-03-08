@@ -82,6 +82,7 @@ export type FlowInstance<N = any, E = N> = {
 } & UseZoomPanHelper
 
 export interface FlowProps<N = any, E = N> {
+  /** @deprecated use nodes / edges instead */
   modelValue?: Elements<N, E>
   nodes?: Node<N>[]
   edges?: Edge<E>[]
