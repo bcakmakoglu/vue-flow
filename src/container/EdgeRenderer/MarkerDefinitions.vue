@@ -22,7 +22,7 @@ const markers = computed(() => {
       if (marker) {
         const markerId = getMarkerId(marker)
         if (!ids.includes(markerId)) {
-          if (typeof marker === 'object') markers.push({ id: markerId, color: marker.color || props.defaultColor, ...marker })
+          if (typeof marker === 'object') markers.push({ ...marker, id: markerId, color: marker.color || props.defaultColor })
           else markers.push({ id: markerId, color: props.defaultColor, type: marker as MarkerType })
           ids.push(markerId)
         }

@@ -8,6 +8,7 @@ export enum MarkerType {
 }
 
 export interface EdgeMarker {
+  id?: string
   type: MarkerType
   color?: string
   width?: number
