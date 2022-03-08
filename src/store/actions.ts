@@ -248,7 +248,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll
     if (typeof opts.panOnScrollMode !== 'undefined') state.panOnScrollMode = opts.panOnScrollMode
     if (typeof opts.panOnScrollSpeed !== 'undefined') state.panOnScrollSpeed = opts.panOnScrollSpeed
-    if (typeof opts.paneMoveable !== 'undefined') state.paneMoveable = opts.paneMoveable
+    if (typeof opts.paneMovable !== 'undefined') state.paneMoveable = opts.paneMovable
     if (typeof opts.zoomOnScroll !== 'undefined') state.zoomOnScroll = opts.zoomOnScroll
     if (typeof opts.preventScrolling !== 'undefined') state.preventScrolling = opts.preventScrolling
     if (typeof opts.zoomOnDoubleClick !== 'undefined') state.zoomOnDoubleClick = opts.zoomOnDoubleClick

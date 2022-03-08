@@ -97,9 +97,9 @@ export default (
       { immediate: isDef(props.snapGrid) },
     )
     watch(
-      () => props.paneMoveable,
+      () => props.paneMovable,
       (v) => isDef(v) && (store.paneMoveable = v),
-      { immediate: isDef(props.paneMoveable) },
+      { immediate: isDef(props.paneMovable) },
     )
     watch(
       () => props.panOnScroll,

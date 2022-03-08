@@ -101,7 +101,7 @@ export interface FlowProps<N = any, E = N> {
   nodesConnectable?: boolean
   elementsSelectable?: boolean
   selectNodesOnDrag?: boolean
-  paneMoveable?: boolean
+  paneMovable?: boolean
   minZoom?: number
   maxZoom?: number
   defaultZoom?: number
