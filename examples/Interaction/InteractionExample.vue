@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useVueFlow } from '~/index'
+import { VueFlow, MiniMap, Controls, useVueFlow, useWindow } from '~/index'
+
+const window: any = useWindow()
+const isWindows = window.navigator.oscpu.includes('Windows')
 
 const {
   nodesDraggable,
@@ -28,7 +31,7 @@ const {
     { id: 'e1-2', source: '1', target: '2', animated: true },
     { id: 'e1-3', source: '1', target: '3' },
   ],
-  panOnScroll: true,
+  zoomActivationKeyCode: isWindows ? 'Shift' : 'Meta',
 })
 
 const captureZoomClick = ref(false)
