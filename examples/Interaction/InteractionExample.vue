@@ -10,7 +10,7 @@ const {
   zoomOnPinch,
   panOnScroll,
   panOnScrollMode,
-  paneMoveable,
+  paneMovable,
   onConnect,
   onNodeDragStart,
   onNodeDragStop,
@@ -28,6 +28,7 @@ const {
     { id: 'e1-2', source: '1', target: '2', animated: true },
     { id: 'e1-3', source: '1', target: '3' },
   ],
+  panOnScroll: true,
 })
 
 const captureZoomClick = ref(false)
@@ -101,8 +102,8 @@ onMoveEnd((flowTransform) => console.log('move end', flowTransform))
       </div>
       <div>
         <label for="panemoveable">
-          paneMoveable
-          <input id="panemoveable" v-model="paneMoveable" type="checkbox" class="vue-flow__panemoveable" />
+          paneMovable
+          <input id="panemoveable" v-model="paneMovable" type="checkbox" class="vue-flow__panemoveable" />
         </label>
       </div>
       <div>

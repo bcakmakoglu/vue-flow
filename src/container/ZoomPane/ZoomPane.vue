@@ -143,7 +143,7 @@ onMounted(async () => {
     // if zoom on double click is disabled, we prevent the double click event
     if (!store.zoomOnDoubleClick && event.type === 'dblclick') return false
 
-    if (noWheel(event) && event.type === 'wheel') return false
+    if ((!store.zoomOnScroll || noWheel(event)) && event.type === 'wheel') return false
 
     // when the target element is a node, we still allow zooming
     if (
