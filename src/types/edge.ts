@@ -2,19 +2,29 @@ import { CSSProperties } from 'vue'
 import { Position, Element } from './flow'
 import { GraphNode } from './node'
 
+/** Edge markers */
 export enum MarkerType {
   Arrow = 'arrow',
   ArrowClosed = 'arrowclosed',
 }
 
+/** Edge marker definition */
 export interface EdgeMarker {
+  /** Unique marker id */
   id?: string
+  /** Marker type */
   type: MarkerType
+  /** Marker color */
   color?: string
+  /** Marker width */
   width?: number
+  /** Marker height */
   height?: number
+  /** Marker units */
   markerUnits?: string
+  /** Marker orientation */
   orient?: string
+  /** Marker stroke width */
   strokeWidth?: number
 }
 
@@ -29,24 +39,40 @@ export interface MarkerProps {
   strokeWidth?: number
 }
 
-export type EdgeMarkerType = string | EdgeMarker
+export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
 export interface Edge<T = any> extends Element<T> {
+  /** Source node id */
   source: string
+  /** Target node id */
   target: string
+  /** Source handle id */
   sourceHandle?: string
+  /** Target handle id */
   targetHandle?: string
+  /** Source position */
   sourcePosition?: Position
+  /** Target position */
   targetPosition?: Position
-  labelStyle?: any
+  /** Label styles (CSSProperties) */
+  labelStyle?: CSSProperties
+  /** Show label bg */
   labelShowBg?: boolean
-  labelBgStyle?: any
+  /** Label Bg styles (CSSProperties) */
+  labelBgStyle?: CSSProperties
+  /** Label Bg padding */
   labelBgPadding?: [number, number]
+  /** Label Bg border radius */
   labelBgBorderRadius?: number
+  /** Animated edge */
   animated?: boolean
+  /** EdgeMarker */
   markerStart?: EdgeMarkerType
+  /** EdgeMarker */
   markerEnd?: EdgeMarkerType
+  /** Disable/enable updating edge */
   updatable?: boolean
+  /** Disable/enable selecting edge */
   selectable?: boolean
 }
 

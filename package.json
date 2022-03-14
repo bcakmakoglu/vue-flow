@@ -23,8 +23,7 @@
   "unpkg": "./dist/vue-flow.iife.js",
   "jsdelivr": "./dist/vue-flow.iife.js",
   "files": [
-    "dist",
-    "docs"
+    "dist"
   ],
   "scripts": {
     "prepare": "ts-patch install -s",
