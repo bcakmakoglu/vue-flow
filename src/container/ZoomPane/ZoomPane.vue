@@ -71,7 +71,7 @@ onMounted(async () => {
     }
   })
 
-  useKeyPress(store.selectionKeyCode, (keyPress) => {
+  const selectionKeyPressed = useKeyPress(store.selectionKeyCode, (keyPress) => {
     if (keyPress) {
       d3z.on('zoom', null)
     } else {
@@ -85,10 +85,12 @@ onMounted(async () => {
     }
   })
 
-  useKeyPress(store.zoomActivationKeyCode, (keyPress) => {
-    if (store.panOnScroll && keyPress) {
-      d3s
-        ?.on('wheel', (event: WheelEvent) => {
+  const zoomKeyPressed = store.zoomActivationKeyCode ? useKeyPress(store.zoomActivationKeyCode) : ref(true)
+
+  d3s
+    ?.on('wheel', (event: WheelEvent) => {
+      if (zoomKeyPressed.value) {
+        if (store.panOnScroll) {
           if (noWheel(event)) return
           event.preventDefault()
           event.stopImmediatePropagation()
@@ -117,19 +119,14 @@ onMounted(async () => {
               -(deltaX / currentZoom) * store.panOnScrollSpeed,
               -(deltaY / currentZoom) * store.panOnScrollSpeed,
             )
-        })
-        .on('wheel.zoom', null)
-    } else if (typeof d3ZoomHandler !== 'undefined') {
-      d3s
-        ?.on('wheel', (event: WheelEvent) => {
+        } else {
           if ((!store.zoomOnScroll && store.preventScrolling) || !store.preventScrolling || noWheel(event)) return
           event.preventDefault()
-        })
-        .on('wheel.zoom', d3ZoomHandler)
-    }
-  })
+        }
+      }
+    })
+    .on('wheel.zoom', store.panOnScroll || typeof d3ZoomHandler === 'undefined' ? null : d3ZoomHandler)
 
-  const keyPress = useKeyPress(store.selectionKeyCode)
   d3z.filter((event: MouseEvent) => {
     const pinchZoom = store.zoomOnPinch && event.ctrlKey
 
@@ -138,7 +135,7 @@ onMounted(async () => {
       return false
 
     // during a selection we prevent all other interactions
-    if (keyPress.value) return false
+    if (selectionKeyPressed.value) return false
 
     // if zoom on double click is disabled, we prevent the double click event
     if (!store.zoomOnDoubleClick && event.type === 'dblclick') return false

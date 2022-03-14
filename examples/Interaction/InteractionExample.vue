@@ -31,7 +31,6 @@ const {
     { id: 'e1-2', source: '1', target: '2', animated: true },
     { id: 'e1-3', source: '1', target: '3' },
   ],
-  zoomActivationKeyCode: isWindows ? 'Shift' : 'Meta',
 })
 
 const captureZoomClick = ref(false)
