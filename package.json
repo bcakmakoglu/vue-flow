@@ -23,17 +23,20 @@
   "unpkg": "./dist/vue-flow.iife.js",
   "jsdelivr": "./dist/vue-flow.iife.js",
   "files": [
-    "dist"
+    "dist",
+    "docs"
   ],
   "scripts": {
     "prepare": "ts-patch install -s",
     "dev": "vite",
-    "build": "export NODE_OPTIONS=\"--max-old-space-size=5120\" && vite build && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && rm -rf tmp",
+    "build": "vite build && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json",
+    "postbuild": "shx rm -rf tmp && yarn docs",
     "prepublishOnly": "yarn build",
     "test": "cypress run-ct",
     "test:open": "cypress open-ct",
     "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
-    "lint": "yarn lint:js"
+    "lint": "yarn lint:js",
+    "docs": "typedoc --tsconfig ./tsconfig.docs.json dist/index.d.ts"
   },
   "dependencies": {
     "@braks/revue-draggable": "^0.4.2",
@@ -62,7 +65,9 @@
     "np": "^7.5.0",
     "postcss-nested": "^5.0.6",
     "prettier": "^2.4.1",
+    "shx": "^0.3.4",
     "ts-patch": "^2.0.1",
+    "typedoc": "^0.22.13",
     "typescript": "^4.5.5",
     "typescript-transform-paths": "^3.3.1",
     "unplugin-auto-import": "^0.5.11",

@@ -97,3 +97,4 @@ hasura/db_data/
 types/types.ts
 
 build
+docs
