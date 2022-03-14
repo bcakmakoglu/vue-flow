@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "ESNext",
+    "target": "es2017",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    "declaration": true,
+    "declarationDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "incremental": false,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "vite/client",
+      "cypress"
+    ],
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    },
+  },
+  "include": ["src", "dist"],
+  "exclude": [
+    "examples",
+    "node_modules",
+    "cypress"
+  ]
+}
