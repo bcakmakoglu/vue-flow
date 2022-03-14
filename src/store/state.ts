@@ -89,7 +89,7 @@ export default (opts?: FlowOptions): State => {
     multiSelectionActive: false,
     selectionKeyCode: 'Shift',
     multiSelectionKeyCode: 'Meta',
-    zoomActivationKeyCode: 'Meta',
+    zoomActivationKeyCode: undefined,
     deleteKeyCode: 'Backspace',
 
     hooks: createHooks(),

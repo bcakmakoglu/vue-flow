@@ -34,7 +34,7 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   deleteKeyCode: KeyCode
   selectionKeyCode: KeyCode
   multiSelectionKeyCode: KeyCode
-  zoomActivationKeyCode: KeyCode
+  zoomActivationKeyCode: KeyCode | undefined
 
   connectionNodeId: string | undefined
   connectionHandleId: string | undefined
