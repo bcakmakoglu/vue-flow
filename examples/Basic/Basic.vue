@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '~/index'
+import { VueFlow, MiniMap, Controls, Background, BackgroundVariant, isNode, useVueFlow, Elements } from '~/index'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -39,7 +39,15 @@ const toggleclass = () => elements.value.forEach((el) => (el.class = el.class ==
     :max-zoom="4"
     :zoom-on-scroll="false"
   >
-    <Background />
+    <Background :variant="BackgroundVariant.None" :height="33" bg-color="pink">
+      <text fill="#000000" font-size="22" font-family="ARIAL" x="120" y="110"> LEVEL 1 </text>
+    </Background>
+    <Background :height="33" bg-color="purple">
+      <text fill="white" font-size="22" font-family="ARIAL" x="120" y="110"> LEVEL 2 </text>
+    </Background>
+    <Background :height="33" bg-color="crimson">
+      <text fill="white" font-size="22" font-family="ARIAL" x="120" y="110"> LEVEL 3 </text>
+    </Background>
     <MiniMap />
     <Controls />
     <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
