@@ -7,11 +7,16 @@ const props = withDefaults(defineProps<BackgroundProps>(), {
   variant: 'dots' as BackgroundVariant,
   gap: 10,
   size: 0.4,
+  height: 100,
+  width: 100,
+  x: 0,
+  y: 0,
 })
 
 const defaultColors: Record<BackgroundVariant, string> = {
   [BackgroundVariant.Dots]: '#81818a',
   [BackgroundVariant.Lines]: '#eee',
+  [BackgroundVariant.None]: '#eee',
 }
 
 const { store } = useVueFlow()
@@ -32,7 +37,9 @@ const background = computed(() => {
 
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
 const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
-const bgColor = computed(() => (props.color ? props.color : defaultColors[props.variant || BackgroundVariant.Dots]))
+const patternColor = computed(() =>
+  props.patternColor ? props.patternColor : defaultColors[props.variant || BackgroundVariant.Dots],
+)
 const d = computed(
   () =>
     `M${background.value.scaledGap / 2} 0 V${background.value.scaledGap} M0 ${background.value.scaledGap / 2} H${
@@ -46,8 +53,16 @@ export default {
 }
 </script>
 <template>
-  <svg class="vue-flow__background vue-flow__container">
+  <svg
+    class="vue-flow__background"
+    :style="{
+      height: `${props.height > 100 ? 100 : props.height}%`,
+      width: `${props.width > 100 ? 100 : props.width}%`,
+      backgroundColor: props.bgColor ?? '#fff',
+    }"
+  >
     <pattern
+      v-if="props.variant !== BackgroundVariant.None"
       :id="patternId"
       :x="background.xOffset"
       :y="background.yOffset"
@@ -56,13 +71,13 @@ export default {
       patternUnits="userSpaceOnUse"
     >
       <template v-if="props.variant === BackgroundVariant.Lines">
-        <path :stroke="bgColor" :stroke-width="props.size" :d="d" />
+        <path :stroke="patternColor" :stroke-width="props.size" :d="d" />
       </template>
-      <template v-else>
-        <circle :cx="background.size" :cy="background.size" :r="background.size" :fill="bgColor" />
+      <template v-else-if="props.variant === BackgroundVariant.Dots">
+        <circle :cx="background.size" :cy="background.size" :r="background.size" :fill="patternColor" />
       </template>
     </pattern>
-    <rect x="0" y="0" width="100%" height="100%" :fill="`url(#${patternId})`" />
+    <rect :x="props.x" :y="props.y" width="100%" height="100%" :fill="`url(#${patternId})`" />
     <slot></slot>
   </svg>
 </template>

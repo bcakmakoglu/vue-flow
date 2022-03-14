@@ -38,8 +38,13 @@ export interface HandleProps {
 export interface BackgroundProps {
   variant?: BackgroundVariant
   gap?: number
-  color?: string
+  patternColor?: string
+  bgColor?: string
   size?: number
+  height?: number
+  width?: number
+  x?: number
+  y?: number
 }
 
 export interface ControlProps {

@@ -57,6 +57,7 @@ export type SnapGrid = [number, number]
 export enum BackgroundVariant {
   Lines = 'lines',
   Dots = 'dots',
+  None = 'none',
 }
 
 export interface SelectionRect extends Rect {
