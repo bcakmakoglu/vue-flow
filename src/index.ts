@@ -22,7 +22,6 @@ export { defaultEdgeTypes, defaultNodeTypes } from './store'
 export { default as useZoomPanHelper } from './composables/useZoomPanHelper'
 export { default as useVueFlow } from './composables/useVueFlow'
 export { default as useHandle } from './composables/useHandle'
-export { default as useWindow } from './composables/useWindow'
 
 export * from './additional-components'
 export * from './types'
