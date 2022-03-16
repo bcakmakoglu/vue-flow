@@ -66,7 +66,7 @@ export default {
 </script>
 <template>
   <div class="vue-flow">
-    <ZoomPane :key="`renderer-${id}`" :fit-view-on-init="fitViewOnInit">
+    <ZoomPane :key="`renderer-${id}`">
       <template v-for="nodeName of Object.keys(getNodeTypes)" #[`node-${nodeName}`]="nodeProps" :key="`node-${nodeName}-${id}`">
         <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
       </template>

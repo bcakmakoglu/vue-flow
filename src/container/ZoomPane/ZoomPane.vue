@@ -1,21 +1,11 @@
 <script lang="ts" setup>
 import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { FlowInstance, FlowTransform, PanOnScrollMode } from '../../types'
-import { useKeyPress, useWindow, useZoomPanHelper, useVueFlow } from '../../composables'
-import {
-  clamp,
-  clampPosition,
-  onLoadGetEdges,
-  onLoadGetElements,
-  onLoadGetNodes,
-  onLoadProject,
-  onLoadToObject,
-} from '../../utils'
+import { FlowTransform, PanOnScrollMode } from '../../types'
+import { useKeyPress, useVueFlow } from '../../composables'
+import { clamp, clampPosition } from '../../utils'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import TransformationPane from '../TransformationPane/TransformationPane.vue'
-
-const props = defineProps<{ fitViewOnInit?: boolean }>()
 
 const { id, store } = useVueFlow()
 const zoomPaneEl = templateRef<HTMLDivElement>('zoomPane', null)
@@ -55,22 +45,6 @@ onMounted(async () => {
   store.d3ZoomHandler = d3ZoomHandler
   store.transform = [updatedTransform.x, updatedTransform.y, updatedTransform.k]
 
-  d3z.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-    if (viewChanged(transform.value, event.transform)) {
-      const flowTransform = eventToFlowTransform(event.transform)
-      transform.value = flowTransform
-      store.hooks.moveStart.trigger(flowTransform)
-    }
-  })
-
-  d3z.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-    if (viewChanged(transform.value, event.transform)) {
-      const flowTransform = eventToFlowTransform(event.transform)
-      transform.value = flowTransform
-      store.hooks.moveEnd.trigger(flowTransform)
-    }
-  })
-
   const selectionKeyPressed = useKeyPress(store.selectionKeyCode, (keyPress) => {
     if (keyPress) {
       d3z.on('zoom', null)
@@ -86,6 +60,22 @@ onMounted(async () => {
   })
 
   const zoomKeyPressed = store.zoomActivationKeyCode ? useKeyPress(store.zoomActivationKeyCode) : ref(true)
+
+  d3z.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+    if (viewChanged(transform.value, event.transform)) {
+      const flowTransform = eventToFlowTransform(event.transform)
+      transform.value = flowTransform
+      store.hooks.moveStart.trigger(flowTransform)
+    }
+  })
+
+  d3z.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+    if (viewChanged(transform.value, event.transform)) {
+      const flowTransform = eventToFlowTransform(event.transform)
+      transform.value = flowTransform
+      store.hooks.moveEnd.trigger(flowTransform)
+    }
+  })
 
   d3s
     ?.on('wheel', (event: WheelEvent) => {
@@ -163,51 +153,24 @@ onMounted(async () => {
     // default filter for d3-zoom
     return (!event.ctrlKey || event.type === 'wheel') && !event.button
   })
-
-  watch(
-    [width, height],
-    ([newWidth, newHeight]) => {
-      store.dimensions.width = newWidth
-      store.dimensions.height = newHeight
-    },
-    { immediate: true },
-  )
-  watch(
-    transform,
-    (val) => {
-      const { x, y } = clampPosition(val, store.translateExtent)
-      store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]
-    },
-    { immediate: true },
-  )
-
-  store.paneReady = true
-
-  // if ssr we can't wait for dimensions, they'll never really exist
-  const window = useWindow()
-  if ('screen' in window)
-    await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
-
-  const { zoomIn, zoomOut, zoomTo, setTransform, getTransform, fitView, fitBounds, setCenter } = useZoomPanHelper(store)
-  const instance: FlowInstance = {
-    fitView: (params = { padding: 0.1 }) => fitView(params),
-    zoomIn,
-    zoomOut,
-    zoomTo,
-    setTransform,
-    getTransform,
-    setCenter,
-    fitBounds,
-    project: onLoadProject(store),
-    getElements: onLoadGetElements(store),
-    getNodes: onLoadGetNodes(store),
-    getEdges: onLoadGetEdges(store),
-    toObject: onLoadToObject(store),
-  }
-  store.instance = instance
-  props.fitViewOnInit && instance.fitView()
-  store.hooks.paneReady.trigger(instance)
 })
+
+watch(
+  [width, height],
+  ([newWidth, newHeight]) => {
+    store.dimensions.width = newWidth
+    store.dimensions.height = newHeight
+  },
+  { immediate: true },
+)
+watch(
+  transform,
+  (val) => {
+    const { x, y } = clampPosition(val, store.translateExtent)
+    store.transform = [x, y, clamp(val.zoom, store.minZoom, store.maxZoom)]
+  },
+  { immediate: true },
+)
 </script>
 <script lang="ts">
 export default {

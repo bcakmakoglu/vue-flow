@@ -1,5 +1,6 @@
 import { zoomIdentity } from 'd3-zoom'
 import useVueFlow from './useVueFlow'
+import useWindow from './useWindow'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils'
 import { GraphNode, FlowStore, UseZoomPanHelper, D3Selection } from '~/types'
 
@@ -21,13 +22,18 @@ export default (store: FlowStore = useVueFlow().store): UseZoomPanHelper => ({
     y: store.transform[1],
     zoom: store.transform[2],
   }),
-  fitView: (
+  fitView: async (
     options = {
       padding: DEFAULT_PADDING,
       includeHiddenNodes: false,
       duration: 0,
     },
   ) => {
+    // if ssr we can't wait for dimensions, they'll never really exist
+    const window = useWindow()
+    if ('screen' in window)
+      await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
+
     if (!store.getNodes.length) return
 
     let nodes: GraphNode[] = []
