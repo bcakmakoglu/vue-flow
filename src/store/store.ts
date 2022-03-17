@@ -1,7 +1,7 @@
 import useState from './state'
 import useActions from './actions'
 import useGetters from './getters'
-import { FlowHooksOn, FlowOptions, Store, State } from '~/types'
+import { FlowHooksOn, FlowOptions, State, Store } from '~/types'
 
 export default (preloadedState?: FlowOptions): Store => {
   const state: State = useState(preloadedState)
@@ -20,7 +20,7 @@ export default (preloadedState?: FlowOptions): Store => {
     if (preloadedState.edges) actions.setEdges(preloadedState.edges)
   }
 
-  const store = {
+  return {
     state: reactiveState,
     actions,
     getters,
@@ -29,10 +29,4 @@ export default (preloadedState?: FlowOptions): Store => {
     ...getters,
     ...actions,
   } as unknown as Store
-
-  onScopeDispose(() => {
-    store.$reset()
-  })
-
-  return store
 }
