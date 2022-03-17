@@ -58,11 +58,9 @@ export default {
     :style="{
       height: `${props.height > 100 ? 100 : props.height}%`,
       width: `${props.width > 100 ? 100 : props.width}%`,
-      backgroundColor: props.bgColor ?? '#fff',
     }"
   >
     <pattern
-      v-if="props.variant !== BackgroundVariant.None"
       :id="patternId"
       :x="background.xOffset"
       :y="background.yOffset"
@@ -76,6 +74,9 @@ export default {
       <template v-else-if="props.variant === BackgroundVariant.Dots">
         <circle :cx="background.size" :cy="background.size" :r="background.size" :fill="patternColor" />
       </template>
+      <svg height="100" width="100">
+        <rect width="100%" height="100%" :fill="props.bgColor" />
+      </svg>
     </pattern>
     <rect :x="props.x" :y="props.y" width="100%" height="100%" :fill="`url(#${patternId})`" />
     <slot></slot>
