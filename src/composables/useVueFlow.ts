@@ -57,8 +57,8 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
     const name = options?.id ?? `vue-flow-${id++}`
 
+    vueFlow = storage.create(name, options)
     if (scope) {
-      vueFlow = storage.create(name, options)
       provide(VueFlow, storage.get(name))
       scope.vueFlowId = name
     }
