@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useVueFlow, useWindow } from '~/index'
-
-const window: any = useWindow()
-const isWindows = window.navigator.oscpu.includes('Windows')
+import { VueFlow, MiniMap, Controls, useVueFlow } from '~/index'
 
 const {
   nodesDraggable,
