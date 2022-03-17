@@ -64,7 +64,6 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
     }
 
     onScopeDispose(() => {
-      console.log(scope)
       storage.remove(name)
     })
   }
