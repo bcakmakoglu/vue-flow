@@ -74,7 +74,7 @@ export default {
       <template v-else-if="props.variant === BackgroundVariant.Dots">
         <circle :cx="background.size" :cy="background.size" :r="background.size" :fill="patternColor" />
       </template>
-      <svg height="100" width="100">
+      <svg v-if="props.bgColor" height="100" width="100">
         <rect width="100%" height="100%" :fill="props.bgColor" />
       </svg>
     </pattern>
