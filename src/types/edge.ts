@@ -181,6 +181,7 @@ export interface GetBezierPathParams {
   targetX: number
   targetY: number
   targetPosition?: Position
+  curvature?: number
   centerX?: number
   centerY?: number
 }
