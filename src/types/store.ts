@@ -1,6 +1,6 @@
 import { ComputedRef, CSSProperties, ToRefs } from 'vue'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
-import { HandleType, EdgeComponent, NodeComponent } from './components'
+import { HandleType, EdgeComponent, NodeComponent, DefaultNodeTypes, DefaultEdgeTypes } from './components'
 import { Connection, ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
 import { Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
@@ -54,7 +54,7 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   nodesConnectable: boolean
   elementsSelectable: boolean
   selectNodesOnDrag: boolean
-  paneMoveable: boolean
+  paneMovable: boolean
   zoomOnScroll: boolean
   zoomOnPinch: boolean
   panOnScroll: boolean
@@ -95,8 +95,8 @@ export interface Actions<N = any, E = N> {
 }
 
 export interface Getters<N = any, E = N> {
-  getEdgeTypes: Record<string, EdgeComponent>
-  getNodeTypes: Record<string, NodeComponent>
+  getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
+  getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
   getNodes: GraphNode<N>[]
   getEdges: GraphEdge<E>[]
   getNode: (id: string) => GraphNode<N> | undefined

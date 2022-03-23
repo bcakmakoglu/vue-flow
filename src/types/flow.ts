@@ -5,6 +5,7 @@ import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { Actions, ComputedGetters, State, FlowStore } from './store'
 import { FlowHooksOn } from './hooks'
+import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from "~/types/components";
 
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
 export type FlowElements<N = any, E = any> = FlowElement<N, E>[]
@@ -83,11 +84,13 @@ export type FlowInstance<N = any, E = N> = {
 } & UseZoomPanHelper
 
 export interface FlowProps<N = any, E = N> {
+  id?: string
   /** @deprecated use nodes / edges instead */
   modelValue?: Elements<N, E>
   nodes?: Node<N>[]
   edges?: Edge<E>[]
-  id?: string
+  edgeTypes?: { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & { [key: string]: EdgeComponent }
+  nodeTypes?: { [key in keyof DefaultNodeTypes]?: NodeComponent } & { [key: string]: NodeComponent }
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties

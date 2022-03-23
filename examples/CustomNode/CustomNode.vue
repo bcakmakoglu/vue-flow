@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ColorSelectorNode from './ColorSelectorNode.vue'
-import { ConnectionMode, Elements, isEdge, Node, Position, SnapGrid, useVueFlow, VueFlow, Controls, MiniMap } from '~/index'
+import { ConnectionMode, Controls, Elements, isEdge, MiniMap, Node, Position, SnapGrid, useVueFlow, VueFlow } from '~/index'
 
 const elements = ref<Elements>([])
 const bgColor = ref('#1A192B')
@@ -62,25 +62,23 @@ onMounted(() => {
   ]
 })
 
-const { onPaneReady } = useVueFlow()
-onPaneReady((flowInstance) => {
-  flowInstance.fitView()
-  console.log('flow loaded:', flowInstance)
+const { onPaneReady } = useVueFlow({
+  connectionMode: ConnectionMode.Loose,
+  connectionLineStyle,
+  snapToGrid: true,
+  snapGrid,
+  defaultZoom: 1.5,
+  nodeTypes: {
+    selectorNode: markRaw(ColorSelectorNode),
+  },
+})
+onPaneReady((i) => {
+  i.fitView()
+  console.log('flow loaded:', i)
 })
 </script>
 <template>
-  <VueFlow
-    v-model="elements"
-    :style="{ backgroundColor: bgColor }"
-    :connection-mode="ConnectionMode.Loose"
-    :connection-line-style="connectionLineStyle"
-    :snap-to-grid="true"
-    :snap-grid="snapGrid"
-    :default-zoom="1.5"
-  >
-    <template #node-selectorNode="props">
-      <ColorSelectorNode v-bind="props" />
-    </template>
+  <VueFlow v-model="elements" :style="{ backgroundColor: bgColor }">
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
     <Controls />
   </VueFlow>

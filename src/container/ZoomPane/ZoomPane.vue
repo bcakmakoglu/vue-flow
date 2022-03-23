@@ -121,7 +121,7 @@ onMounted(async () => {
     const pinchZoom = store.zoomOnPinch && event.ctrlKey
 
     // if all interactions are disabled, we prevent all zoom events
-    if (!store.paneMoveable && !store.zoomOnScroll && !store.panOnScroll && !store.zoomOnDoubleClick && !store.zoomOnPinch)
+    if (!store.paneMovable && !store.zoomOnScroll && !store.panOnScroll && !store.zoomOnDoubleClick && !store.zoomOnPinch)
       return false
 
     // during a selection we prevent all other interactions
@@ -148,7 +148,7 @@ onMounted(async () => {
     if (!store.zoomOnScroll && !store.panOnScroll && !pinchZoom && event.type === 'wheel') return false
 
     // if the pane is not movable, we prevent dragging it with mousestart or touchstart
-    if (!store.paneMoveable && (event.type === 'mousedown' || event.type === 'touchstart')) return false
+    if (!store.paneMovable && (event.type === 'mousedown' || event.type === 'touchstart')) return false
 
     // default filter for d3-zoom
     return (!event.ctrlKey || event.type === 'wheel') && !event.button

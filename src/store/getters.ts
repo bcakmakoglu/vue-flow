@@ -6,6 +6,7 @@ export default (state: State): ComputedGetters => {
   const getEdgeTypes = computed(() => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
+      ...state.edgeTypes,
     }
     const keys = Object.keys(edgeTypes)
     state.edges?.forEach((e) => e.type && !keys.includes(e.type) && (edgeTypes[e.type] = e.type))
@@ -15,6 +16,7 @@ export default (state: State): ComputedGetters => {
   const getNodeTypes = computed(() => {
     const nodeTypes: Record<string, any> = {
       ...defaultNodeTypes,
+      ...state.nodeTypes,
     }
     const keys = Object.keys(nodeTypes)
     state.nodes?.forEach((n) => n.type && !keys.includes(n.type) && (nodeTypes[n.type] = n.type))

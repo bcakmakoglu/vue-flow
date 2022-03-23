@@ -98,7 +98,7 @@ export default (
     )
     watch(
       () => props.paneMovable,
-      (v) => isDef(v) && (store.paneMoveable = v),
+      (v) => isDef(v) && (store.paneMovable = v),
       { immediate: isDef(props.paneMovable) },
     )
     watch(
@@ -205,6 +205,16 @@ export default (
       () => props.applyDefault,
       (v) => isDef(v) && (store.applyDefault = v),
       { immediate: isDef(props.applyDefault) },
+    )
+    watch(
+      () => props.nodeTypes,
+      (v) => isDef(v) && (store.nodeTypes = v),
+      { immediate: isDef(props.nodeTypes) },
+    )
+    watch(
+      () => props.edgeTypes,
+      (v) => isDef(v) && (store.edgeTypes = v),
+      { immediate: isDef(props.edgeTypes) },
     )
   })
 }
