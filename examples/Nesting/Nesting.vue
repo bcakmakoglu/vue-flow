@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ConnectionMode, useVueFlow, VueFlow, MiniMap, Background, Controls } from '~/index'
 
-const { onConnect, nodes, edges, addEdges } = useVueFlow({
+const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
   fitViewOnInit: true,
   connectionMode: ConnectionMode.Loose,
   nodes: [
@@ -72,6 +72,13 @@ const { onConnect, nodes, edges, addEdges } = useVueFlow({
 })
 
 onConnect((params) => addEdges([params]))
+
+onMounted(() => {
+  // dynamically add nodes to parent
+  addNodes([{ id: '999', type: 'input', label: 'Node 1', position: { x: 20, y: 100 }, class: 'light', extent: 'parent' }], {
+    parentNode: '2',
+  })
+})
 </script>
 <template>
   <VueFlow>

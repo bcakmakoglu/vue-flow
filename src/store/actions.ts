@@ -214,10 +214,12 @@ export default (state: State, getters: ComputedGetters): Actions => {
     setEdges(elements.filter(isEdge))
   }
 
-  const addNodes: Actions['addNodes'] = (nodes, extent) => {
+  const addNodes: Actions['addNodes'] = (nodes, options) => {
     const parsed = nodes.flatMap((node) => {
       const children: GraphNode[] = []
-      parseChildren(node, undefined, children, extent ?? state.nodeExtent, getters.getNode.value)
+      const parent =
+        options && (typeof options.parentNode === 'string' ? getters.getNode.value(options.parentNode) : options.parentNode)
+      parseChildren(node, parent, children, options?.extent ?? state.nodeExtent, getters.getNode.value)
       return children
     })
     state.nodes.push(...parsed)
