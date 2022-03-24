@@ -2,42 +2,10 @@ import { EventHook, EventHookOn } from '@vueuse/core'
 import { MouseTouchEvent } from '@braks/revue-draggable'
 import { FlowInstance, Dimensions, XYPosition } from './flow'
 import { GraphEdge } from './edge'
-import { CoordinateExtent, GraphNode, HandleBounds } from './node'
+import { GraphNode } from './node'
 import { Connection, OnConnectStartParams } from './connection'
 import { FlowTransform } from './zoom'
-
-export type NodeDimensionChange = {
-  id: string
-  type: 'dimensions'
-  dimensions?: Dimensions
-  position?: XYPosition
-  handleBounds?: HandleBounds
-  dragging?: boolean
-}
-export type NodeSelectionChange = {
-  id: string
-  type: 'select'
-  selected: boolean
-}
-export type NodeRemoveChange = {
-  id: string
-  type: 'remove'
-}
-export type NodeChange = NodeDimensionChange | NodeSelectionChange | NodeRemoveChange
-
-export type EdgeSelectionChange = NodeSelectionChange
-export type EdgeRemoveChange = NodeRemoveChange
-export type EdgeChange = EdgeSelectionChange | EdgeRemoveChange
-
-export type SelectionChange = EdgeSelectionChange | NodeSelectionChange
-export type RemoveChange = EdgeRemoveChange | NodeRemoveChange
-
-export type CreatePositionChangeParams = {
-  node: GraphNode
-  nodeExtent: CoordinateExtent
-  diff?: XYPosition
-  dragging?: boolean
-}
+import { EdgeChange, NodeChange } from './changes'
 
 export interface FlowEvents<N = any, E = N> {
   nodesChange: NodeChange[]

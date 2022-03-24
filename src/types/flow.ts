@@ -5,7 +5,7 @@ import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { Actions, ComputedGetters, State, FlowStore } from './store'
 import { FlowHooksOn } from './hooks'
-import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from "~/types/components";
+import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
 export type FlowElements<N = any, E = any> = FlowElement<N, E>[]

@@ -1,16 +1,17 @@
 import { CSSProperties } from 'vue'
 import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions } from './flow'
-import { HandleElement, ValidConnectionFunc } from './components'
+import { DefaultNodeTypes, HandleElement, ValidConnectionFunc } from './components'
 
 export type CoordinateExtent = [[number, number], [number, number]]
 
-export type HandleBounds = {
+export type NodeHandleBounds = {
   source?: HandleElement[]
   target?: HandleElement[]
 }
 
 export interface Node<T = any> extends Element<T> {
   position: XYPosition
+  type?: keyof DefaultNodeTypes | string
   targetPosition?: Position
   sourcePosition?: Position
   draggable?: boolean
@@ -21,29 +22,36 @@ export interface Node<T = any> extends Element<T> {
   isValidTargetPos?: ValidConnectionFunc
   isValidSourcePos?: ValidConnectionFunc
   extent?: 'parent' | CoordinateExtent
+  expandParent?: boolean
   children?: Node<T>[]
-  dimensions?: Dimensions
 }
 
-export interface GraphNode<T = any> extends Node<T> {
+export interface GraphNode<T = any, P = any> extends Node<T> {
   computedPosition: XYZPosition
-  handleBounds: HandleBounds
+  handleBounds: NodeHandleBounds
   dimensions: Dimensions
-  parentNode?: GraphNode<T>
-  isParent?: boolean
-  selected?: boolean
-  dragging?: boolean
+  isParent: boolean
+  selected: boolean
+  dragging: boolean
+  parentNode?: GraphNode<P extends infer U ? U : never>
 }
 
 export interface NodeProps<T = any> {
   id: string
   dimensions: Dimensions
-  handleBounds: HandleBounds
+  handleBounds: NodeHandleBounds
+  /** computed position is the position relative to the node's extent (i.e. parent or CoordinateExtent) */
   computedPosition: XYZPosition
+  /** x and y position on the graph */
   position: XYPosition
-  draggable?: boolean
-  selectable?: boolean
-  connectable?: boolean
+  draggable: boolean
+  selectable: boolean
+  connectable: boolean
+  selected: boolean
+  dragging: boolean
+  hidden: boolean
+  nodeElement: HTMLDivElement
+  zIndex: number
   label?:
     | string
     | {
@@ -52,17 +60,19 @@ export interface NodeProps<T = any> {
       }
   class?: string
   style?: CSSProperties
-  hidden?: boolean
   type?: string
   data?: T
-  selected?: boolean
   targetPosition?: Position
   sourcePosition?: Position
-  dragging?: boolean
   isValidTargetPos?: ValidConnectionFunc
   isValidSourcePos?: ValidConnectionFunc
-  parentNode?: any
+  parentNode?: string
   isParent?: boolean
   children?: Node<T>[]
-  nodeElement: HTMLDivElement
+  dragHandle?: string
+}
+
+export type NodeBounds = XYPosition & {
+  width: number | null
+  height: number | null
 }

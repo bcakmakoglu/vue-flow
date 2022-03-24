@@ -12,13 +12,16 @@ import {
   Edge,
   Connection,
   GraphEdge,
+  NodePositionChange,
 } from '~/types'
 import {
   applyChanges,
   connectionExists,
   createPositionChange,
   createSelectionChange,
+  getDimensions,
   getEdgeId,
+  getHandleBounds,
   getSelectionChanges,
   isEdge,
   isGraphEdge,
@@ -110,7 +113,7 @@ export const parseChildren = (
 
 export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodePosition: Actions['updateNodePosition'] = ({ id, diff = { x: 0, y: 0 }, dragging }) => {
-    const changes: NodeDimensionChange[] = []
+    const changes: NodePositionChange[] = []
 
     state.nodes.forEach((node) => {
       if (node.selected) {
@@ -123,6 +126,36 @@ export default (state: State, getters: ComputedGetters): Actions => {
         changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }))
       }
     })
+
+    if (changes.length) state.hooks.nodesChange.trigger(changes)
+  }
+  const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
+    const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
+      const node = getters.getNode.value(update.id)
+
+      if (node) {
+        const dimensions = getDimensions(update.nodeElement)
+        const doUpdate = !!(
+          dimensions.width &&
+          dimensions.height &&
+          (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height || update.forceUpdate)
+        )
+
+        if (doUpdate) {
+          const handleBounds = getHandleBounds(update.nodeElement, state.transform[2])
+          node.dimensions = dimensions
+          node.handleBounds = handleBounds
+
+          res.push({
+            id: node.id,
+            type: 'dimensions',
+            dimensions,
+          })
+        }
+      }
+
+      return res
+    }, [])
 
     if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
@@ -296,6 +329,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
   return {
     updateNodePosition,
+    updateNodeDimensions,
     setElements,
     setNodes,
     setEdges,

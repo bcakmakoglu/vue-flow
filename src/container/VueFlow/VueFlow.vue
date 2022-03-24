@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   applyDefault: undefined,
   fitViewOnInit: undefined,
 })
-const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:elements', 'update:edges', 'update:nodes'])
+const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:edges', 'update:nodes'])
 
 const {
   id,

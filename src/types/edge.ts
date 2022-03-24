@@ -76,6 +76,11 @@ export interface Edge<T = any> extends Element<T> {
   selectable?: boolean
 }
 
+export type DefaultEdgeOptions = Omit<
+  Edge,
+  'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle' | 'sourceNode' | 'targetNode'
+>
+
 export interface EdgePositions {
   sourceX: number
   sourceY: number
@@ -125,6 +130,24 @@ export interface EdgeProps<Data = any> {
   updatable?: boolean
   markerStart?: string
   markerEnd?: string
+  curvature?: number
+}
+
+export type BaseEdgeProps = Pick<
+  EdgeProps,
+  | 'label'
+  | 'labelStyle'
+  | 'labelShowBg'
+  | 'labelBgStyle'
+  | 'labelBgPadding'
+  | 'labelBgBorderRadius'
+  | 'style'
+  | 'markerStart'
+  | 'markerEnd'
+> & {
+  centerX: number
+  centerY: number
+  path: string
 }
 
 export interface SmoothStepEdgeProps<Data = any> extends EdgeProps<Data> {
