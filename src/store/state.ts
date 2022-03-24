@@ -31,7 +31,7 @@ export default (opts?: FlowOptions): State => {
 
     paneReady: false,
     initialized: false,
-    instance: undefined,
+    instance: null,
 
     dimensions: {
       width: 0,
@@ -39,9 +39,9 @@ export default (opts?: FlowOptions): State => {
     },
     transform: [0, 0, 1],
 
-    d3Zoom: undefined,
-    d3Selection: undefined,
-    d3ZoomHandler: undefined,
+    d3Zoom: null,
+    d3Selection: null,
+    d3ZoomHandler: null,
     minZoom: 0.5,
     maxZoom: 2,
     translateExtent: [
@@ -73,11 +73,13 @@ export default (opts?: FlowOptions): State => {
     defaultMarkerColor: '#b1b1b7',
     connectionLineStyle: {},
     connectionLineType: ConnectionLineType.Bezier,
-    connectionNodeId: undefined,
-    connectionHandleId: undefined,
-    connectionHandleType: 'source',
+    connectionNodeId: null,
+    connectionHandleId: null,
+    connectionHandleType: null,
     connectionPosition: { x: NaN, y: NaN },
     connectionMode: ConnectionMode.Loose,
+    connectionStartHandle: null,
+    connectOnClick: true,
 
     snapGrid: [15, 15],
     snapToGrid: false,
@@ -90,7 +92,7 @@ export default (opts?: FlowOptions): State => {
     multiSelectionActive: false,
     selectionKeyCode: 'Shift',
     multiSelectionKeyCode: 'Meta',
-    zoomActivationKeyCode: undefined,
+    zoomActivationKeyCode: null,
     deleteKeyCode: 'Backspace',
 
     hooks: createHooks(),

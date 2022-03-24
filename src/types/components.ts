@@ -1,6 +1,5 @@
 import { Component, CSSProperties, DefineComponent } from 'vue'
-import { BackgroundVariant, Dimensions, Position, XYPosition } from './flow'
-import { Connection, ConnectionLineType } from './connection'
+import { BackgroundVariant, Dimensions, XYPosition } from './flow'
 import { GraphNode, Node, NodeProps } from './node'
 import { EdgeProps } from './edge'
 import { FitViewParams } from './zoom'
@@ -22,29 +21,6 @@ export type EdgeComponent<E = any> =
 
 export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: EdgeComponent }
 export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: NodeComponent }
-
-export type HandleType = 'source' | 'target'
-
-export interface HandleElement extends XYPosition, Dimensions {
-  id?: string
-  position: Position
-}
-
-/** A valid connection function can determine if an attempted connection is valid or not, i.e. abort creating a new edge */
-export type ValidConnectionFunc = (connection: Connection) => boolean
-
-export interface HandleProps {
-  /** Unique id of handle element */
-  id?: string
-  /** Handle type (source / target) {@link HandleType} */
-  type?: string
-  /** Handle position (top, bottom, left, right) {@link Position} */
-  position?: Position
-  /** A valid connection func {@link ValidConnectionFunc} */
-  isValidConnection?: ValidConnectionFunc
-  /** Enable/disable connecting to handle */
-  connectable?: boolean
-}
 
 export interface BackgroundProps {
   /** The background pattern */
@@ -127,27 +103,4 @@ export interface EdgeTextProps {
   labelBgStyle?: CSSProperties
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
-}
-
-export interface ConnectionLineProps<N = any> {
-  /** Source X position of the connection line */
-  sourceX: number
-  /** Source Y position of the connection line */
-  sourceY: number
-  /** Source position of the connection line */
-  sourcePosition: Position
-  /** Target X position of the connection line */
-  targetX: number
-  /** Target Y position of the connection line */
-  targetY: number
-  /** Target position of the connection line */
-  targetPosition: Position
-  connectionLineType: ConnectionLineType
-  connectionLineStyle: CSSProperties
-  /** All currently stored nodes */
-  nodes: GraphNode<N>[]
-  /** The source node of the connection line */
-  sourceNode: GraphNode<N>
-  /** The source handle element of the connection line */
-  sourceHandle: HandleElement
 }

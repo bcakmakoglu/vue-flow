@@ -1,4 +1,7 @@
-import { HandleType } from './components'
+import { CSSProperties } from 'vue'
+import { Position } from './flow'
+import { GraphNode } from './node'
+import { HandleElement, HandleType } from './handle'
 
 /** Connection line types (same as default edge types */
 export enum ConnectionLineType {
@@ -11,13 +14,13 @@ export enum ConnectionLineType {
 /** Connection params that are passed when onConnect is called */
 export interface Connection {
   /** Source node id */
-  source: string
+  source: string | null
   /** Target node id */
-  target: string
+  target: string | null
   /** Source handle id */
-  sourceHandle?: string
+  sourceHandle: string | null
   /** Target handle id */
-  targetHandle?: string
+  targetHandle: string | null
 }
 
 /** The source nodes params when connection is initiated */
@@ -40,4 +43,27 @@ export type SetConnectionId = {
   connectionNodeId: string | undefined
   connectionHandleId: string | undefined
   connectionHandleType: HandleType | undefined
+}
+
+export interface ConnectionLineProps<N = any> {
+  /** Source X position of the connection line */
+  sourceX: number
+  /** Source Y position of the connection line */
+  sourceY: number
+  /** Source position of the connection line */
+  sourcePosition: Position
+  /** Target X position of the connection line */
+  targetX: number
+  /** Target Y position of the connection line */
+  targetY: number
+  /** Target position of the connection line */
+  targetPosition: Position
+  connectionLineType: ConnectionLineType
+  connectionLineStyle: CSSProperties
+  /** All currently stored nodes */
+  nodes: GraphNode<N>[]
+  /** The source node of the connection line */
+  sourceNode: GraphNode<N>
+  /** The source handle element of the connection line */
+  sourceHandle: HandleElement
 }

@@ -1,23 +1,24 @@
 import { ComputedRef, CSSProperties, ToRefs } from 'vue'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
-import { HandleType, EdgeComponent, NodeComponent, DefaultNodeTypes, DefaultEdgeTypes } from './components'
-import { Connection, ConnectionLineType, ConnectionMode, SetConnectionId } from './connection'
+import { EdgeComponent, NodeComponent, DefaultNodeTypes, DefaultEdgeTypes } from './components'
+import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks, FlowHooksOn } from './hooks'
 import { NodeChange, EdgeChange } from './changes'
+import { StartHandle, HandleType } from './handle'
 
 export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'modelValue'> {
   hooks: FlowHooks<N, E>
-  instance: FlowInstance<N, E> | undefined
+  instance: FlowInstance<N, E> | null
 
   nodes: GraphNode<N>[]
   edges: GraphEdge<E>[]
 
-  d3Zoom: D3Zoom | undefined
-  d3Selection: D3Selection | undefined
-  d3ZoomHandler: D3ZoomHandler | undefined
+  d3Zoom: D3Zoom | null
+  d3Selection: D3Selection | null
+  d3ZoomHandler: D3ZoomHandler | null
   minZoom: number
   maxZoom: number
   defaultZoom: number
@@ -35,15 +36,17 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   deleteKeyCode: KeyCode
   selectionKeyCode: KeyCode
   multiSelectionKeyCode: KeyCode
-  zoomActivationKeyCode: KeyCode | undefined
+  zoomActivationKeyCode: KeyCode | null
 
-  connectionNodeId: string | undefined
-  connectionHandleId: string | undefined
-  connectionHandleType: HandleType | undefined
+  connectionNodeId: string | null
+  connectionHandleId: string | null
+  connectionHandleType: HandleType | null
   connectionPosition: XYPosition
   connectionMode: ConnectionMode
   connectionLineType: ConnectionLineType
-  connectionLineStyle: CSSProperties | undefined
+  connectionLineStyle: CSSProperties | null
+  connectionStartHandle: StartHandle | null
+  connectOnClick: boolean
   edgeUpdaterRadius: number
 
   snapToGrid: boolean
@@ -88,9 +91,8 @@ export interface Actions<N = any, E = N> {
   setMaxZoom: (zoom: number) => void
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
   resetSelectedElements: () => void
-  setConnectionNodeId: (payload: SetConnectionId) => void
   setInteractive: (isInteractive: boolean) => void
-  setState: (state: Partial<FlowOptions<N, E>>) => void
+  setState: (state: Partial<FlowOptions<N, E> & Omit<State, 'nodes' | 'edges' | 'modelValue'>>) => void
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
   updateNodeDimensions: (
     update: {

@@ -199,15 +199,6 @@ export default (state: State, getters: ComputedGetters): Actions => {
     addSelectedNodes([])
     addSelectedEdges([])
   }
-  const setConnectionNodeId: Actions['setConnectionNodeId'] = ({
-    connectionHandleId,
-    connectionHandleType,
-    connectionNodeId,
-  }) => {
-    state.connectionNodeId = connectionNodeId
-    state.connectionHandleId = connectionHandleId
-    state.connectionHandleType = connectionHandleType
-  }
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
     state.nodesDraggable = isInteractive
     state.nodesConnectable = isInteractive
@@ -327,7 +318,6 @@ export default (state: State, getters: ComputedGetters): Actions => {
     setMaxZoom,
     setTranslateExtent,
     resetSelectedElements,
-    setConnectionNodeId,
     setInteractive,
     setState,
     $reset: () => {

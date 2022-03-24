@@ -26,7 +26,7 @@ export const checkElementBelowIsValid = (
   const result: Result = {
     elementBelow,
     isValid: false,
-    connection: { source: '', target: '', sourceHandle: '', targetHandle: '' },
+    connection: { source: null, target: null, sourceHandle: null, targetHandle: null },
     isHoveringHandle: false,
   }
 
@@ -99,14 +99,16 @@ export default (store: FlowStore = useVueFlow().store) =>
     const containerBounds = flowNode.getBoundingClientRect()
     let recentHoveredHandle: Element
 
-    store.connectionPosition.x = event.clientX - containerBounds.left
-    store.connectionPosition.y = event.clientY - containerBounds.top
-
-    store.setConnectionNodeId({
+    store.setState({
+      connectionPosition: {
+        x: event.clientX - containerBounds.left,
+        y: event.clientY - containerBounds.top,
+      },
       connectionNodeId: nodeId,
       connectionHandleId: handleId,
       connectionHandleType: handleType,
     })
+
     store.hooks.connectStart.trigger({ event, nodeId, handleId, handleType })
 
     function onMouseMove(event: MouseEvent) {
@@ -157,8 +159,12 @@ export default (store: FlowStore = useVueFlow().store) =>
       if (elementEdgeUpdaterType) onEdgeUpdateEnd?.()
 
       resetRecentHandle(recentHoveredHandle)
-      store.setConnectionNodeId({ connectionNodeId: undefined, connectionHandleId: undefined, connectionHandleType: undefined })
-      store.connectionPosition = { x: NaN, y: NaN }
+      store.setState({
+        connectionNodeId: null,
+        connectionHandleId: null,
+        connectionHandleType: null,
+        connectionPosition: { x: NaN, y: NaN },
+      })
 
       doc.removeEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
       doc.removeEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)

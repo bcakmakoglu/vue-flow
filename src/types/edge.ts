@@ -47,9 +47,9 @@ export interface Edge<T = any> extends Element<T> {
   /** Target node id */
   target: string
   /** Source handle id */
-  sourceHandle?: string
+  sourceHandle: string | null
   /** Target handle id */
-  targetHandle?: string
+  targetHandle: string | null
   /** Source position */
   sourcePosition?: Position
   /** Target position */
