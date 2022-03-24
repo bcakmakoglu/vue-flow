@@ -159,6 +159,7 @@ export default {
             selected: !!node.selected,
             hidden: !!node.hidden,
             dragging: !!node.dragging,
+            parentNode: node.parentNode ? node.parentNode.id : undefined,
         }"
       >
         <component
@@ -173,6 +174,7 @@ export default {
             selected: !!node.selected,
             hidden: !!node.hidden,
             dragging: !!node.dragging,
+            parentNode: node.parentNode ? node.parentNode.id : undefined,
           }"
         />
       </slot>
