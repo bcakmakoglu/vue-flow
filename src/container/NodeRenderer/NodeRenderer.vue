@@ -27,10 +27,10 @@ export default {
       v-for="node of store.getNodes"
       :key="node.id"
       :node="node"
-      :component="getType(node.type)"
-      :draggable="typeof node.draggable === 'undefined' ? store.nodesDraggable : node.draggable"
-      :selectable="typeof node.selectable === 'undefined' ? store.elementsSelectable : node.selectable"
-      :connectable="typeof node.connectable === 'undefined' ? store.nodesConnectable : node.connectable"
+      :type="getType(node.type)"
+      :draggable="typeof node.draggable === 'undefined' ? store.nodesDraggable : !!node.draggable"
+      :selectable="typeof node.selectable === 'undefined' ? store.elementsSelectable : !!node.selectable"
+      :connectable="typeof node.connectable === 'undefined' ? store.nodesConnectable : !!node.connectable"
       :snap-grid="snapGrid(node)"
     >
       <template #default="nodeProps">

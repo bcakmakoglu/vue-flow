@@ -47,7 +47,9 @@ export default (state: State): ComputedGetters => {
   const getEdges = computed<GraphEdge[]>(() => {
     if (state.paneReady && state.dimensions.width && state.dimensions.height) {
       if (!state.onlyRenderVisibleElements)
-        return state.edges.filter((e) => !e.hidden && !e.targetNode.hidden && !e.sourceNode.hidden)
+        return state.edges.filter(
+          (e) => !e.hidden && e.targetNode && !e.targetNode.hidden && e.sourceNode && !e.sourceNode.hidden,
+        )
       else
         return state.edges.filter(
           (e) =>

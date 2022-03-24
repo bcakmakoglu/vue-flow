@@ -3,20 +3,19 @@ import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
-import { getDimensions, getHandleBounds, getXYZPos } from '../../utils'
+import { getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
   node: GraphNode
+  type: NodeComponent
+  draggable: boolean
+  selectable: boolean
+  connectable: boolean
   snapGrid?: SnapGrid
-  component?: NodeComponent
-  draggable?: boolean
-  selectable?: boolean
-  connectable?: boolean
 }
 
 const props = defineProps<NodeWrapperProps>()
-const emit = defineEmits(['update:node'])
-const node = useVModel(props, 'node', emit)
+const node = useVModel(props, 'node')
 const { id, store } = useVueFlow()
 provide(NodeId, props.node.id)
 
@@ -139,13 +138,6 @@ export default {
         zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
         transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-        opacity:
-          store.dimensions.width !== 0 &&
-          store.dimensions.height !== 0 &&
-          node.dimensions.width !== 0 &&
-          node.dimensions.height !== 0
-            ? 1
-            : 0,
         ...node.style,
       }"
       :data-id="node.id"
@@ -158,17 +150,29 @@ export default {
     >
       <slot
         v-bind="{
-          nodeElement,
-          connectable: props.connectable,
-          ...removeEmpty(node),
+          ...node,
+            nodeElement,
+            connectable: props.connectable,
+            draggable: props.draggable,
+            selectable: props.selectable,
+            zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
+            selected: !!node.selected,
+            hidden: !!node.hidden,
+            dragging: !!node.dragging,
         }"
       >
         <component
-          :is="props.component ?? node.type"
+          :is="props.type ?? node.type"
           v-bind="{
+            ...node,
             nodeElement,
             connectable: props.connectable,
-            ...removeEmpty(node),
+            draggable: props.draggable,
+            selectable: props.selectable,
+            zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
+            selected: !!node.selected,
+            hidden: !!node.hidden,
+            dragging: !!node.dragging,
           }"
         />
       </slot>
