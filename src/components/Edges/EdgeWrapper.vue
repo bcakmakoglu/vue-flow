@@ -17,7 +17,7 @@ const edge = useVModel(props, 'edge', emit)
 const { store } = useVueFlow()
 
 const updating = ref(false)
-const handler = useHandle()
+const { onMouseDown } = useHandle()
 
 const onEdgeClick = (event: MouseEvent) => {
   const data = { event, edge: edge.value }
@@ -42,7 +42,7 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const handleId = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? ''
 
   store.hooks.edgeUpdateStart.trigger({ event, edge: edge.value })
-  handler(
+  onMouseDown(
     event,
     handleId,
     nodeId,
