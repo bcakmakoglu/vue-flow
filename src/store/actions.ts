@@ -292,7 +292,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
     Object.keys(opts).forEach((o) => {
       const option = opts[o as keyof typeof opts]
-      if (!skip.indexOf(o) && isDef(option)) (<any>state)[o] = option
+      if (!skip.includes(o) && isDef(option)) (<any>state)[o] = option
     })
     if (!state.paneReady)
       until(() => state.d3Zoom)

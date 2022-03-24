@@ -64,7 +64,7 @@ export default (
 
     const skip = ['modelValue', 'edges', 'nodes', 'maxZoom', 'minZoom']
     Object.keys(props).forEach((p) => {
-      if (!skip.indexOf(p)) {
+      if (!skip.includes(p)) {
         const prop = props[p as keyof typeof props]
         watch(
           () => prop,

@@ -66,8 +66,10 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
     onScopeDispose(() => {
       storage.remove(name)
     })
+  } else {
+    if (options) vueFlow.setState(options)
   }
-  if (!vueFlow) throw new Error('VueFlow instance not found.')
+  if (!vueFlow) throw new Error('vue flow store instance not found.')
 
   return vueFlow
 }
