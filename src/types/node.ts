@@ -72,8 +72,3 @@ export interface NodeProps<T = any> {
   children?: Node<T>[]
   dragHandle?: string
 }
-
-export type NodeBounds = XYPosition & {
-  width: number | null
-  height: number | null
-}

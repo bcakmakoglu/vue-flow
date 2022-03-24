@@ -1,5 +1,5 @@
 import { CSSProperties, ToRefs } from 'vue'
-import { GraphEdge, Edge, DefaultEdgeOptions } from "./edge";
+import { GraphEdge, Edge, DefaultEdgeOptions } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'

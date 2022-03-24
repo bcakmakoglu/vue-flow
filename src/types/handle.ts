@@ -21,7 +21,7 @@ export interface HandleProps {
   /** Unique id of handle element */
   id?: string
   /** Handle type (source / target) {@link HandleType} */
-  type?: string
+  type?: HandleType
   /** Handle position (top, bottom, left, right) {@link Position} */
   position?: Position
   /** A valid connection func {@link ValidConnectionFunc} */
