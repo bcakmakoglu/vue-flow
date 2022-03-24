@@ -23,6 +23,7 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
   smoothstep: SmoothStepEdge,
 }
 
+const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 export default (opts?: FlowOptions): State => {
   const state: State = {
     nodes: [],
@@ -97,40 +98,13 @@ export default (opts?: FlowOptions): State => {
     applyDefault: true,
 
     vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
-  } as State
+  }
 
   if (opts) {
-    if (typeof opts.nodeTypes !== 'undefined') state.nodeTypes = opts.nodeTypes
-    if (typeof opts.edgeTypes !== 'undefined') state.edgeTypes = opts.edgeTypes
-    if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll
-    if (typeof opts.panOnScrollMode !== 'undefined') state.panOnScrollMode = opts.panOnScrollMode
-    if (typeof opts.panOnScrollSpeed !== 'undefined') state.panOnScrollSpeed = opts.panOnScrollSpeed
-    if (typeof opts.paneMovable !== 'undefined') state.paneMovable = opts.paneMovable
-    if (typeof opts.zoomOnScroll !== 'undefined') state.zoomOnScroll = opts.zoomOnScroll
-    if (typeof opts.preventScrolling !== 'undefined') state.preventScrolling = opts.preventScrolling
-    if (typeof opts.zoomOnDoubleClick !== 'undefined') state.zoomOnDoubleClick = opts.zoomOnDoubleClick
-    if (typeof opts.zoomOnPinch !== 'undefined') state.zoomOnPinch = opts.zoomOnPinch
-    if (typeof opts.defaultZoom !== 'undefined') state.defaultZoom = opts.defaultZoom
-    if (typeof opts.defaultPosition !== 'undefined') state.defaultPosition = opts.defaultPosition
-    if (typeof opts.edgeUpdaterRadius !== 'undefined') state.edgeUpdaterRadius = opts.edgeUpdaterRadius
-    if (typeof opts.elementsSelectable !== 'undefined') state.elementsSelectable = opts.elementsSelectable
-    if (typeof opts.onlyRenderVisibleElements !== 'undefined') state.onlyRenderVisibleElements = opts.onlyRenderVisibleElements
-    if (typeof opts.edgesUpdatable !== 'undefined') state.edgesUpdatable = opts.edgesUpdatable
-    if (typeof opts.nodesConnectable !== 'undefined') state.nodesConnectable = opts.nodesConnectable
-    if (typeof opts.nodesDraggable !== 'undefined') state.nodesDraggable = opts.nodesDraggable
-    if (typeof opts.defaultMarkerColor !== 'undefined') state.defaultMarkerColor = opts.defaultMarkerColor
-    if (typeof opts.deleteKeyCode !== 'undefined') state.deleteKeyCode = opts.deleteKeyCode
-    if (typeof opts.selectionKeyCode !== 'undefined') state.selectionKeyCode = opts.selectionKeyCode
-    if (typeof opts.zoomActivationKeyCode !== 'undefined') state.zoomActivationKeyCode = opts.zoomActivationKeyCode
-    if (typeof opts.multiSelectionKeyCode !== 'undefined') state.multiSelectionKeyCode = opts.multiSelectionKeyCode
-    if (typeof opts.snapToGrid !== 'undefined') state.snapToGrid = opts.snapToGrid
-    if (typeof opts.snapGrid !== 'undefined') state.snapGrid = opts.snapGrid
-    if (typeof opts.nodeExtent !== 'undefined') state.nodeExtent = opts.nodeExtent
-    if (typeof opts.maxZoom !== 'undefined') state.maxZoom = opts.maxZoom
-    if (typeof opts.minZoom !== 'undefined') state.minZoom = opts.minZoom
-    if (typeof opts.translateExtent !== 'undefined') state.translateExtent = opts.translateExtent
-    if (typeof opts.applyDefault !== 'undefined') state.applyDefault = opts.applyDefault
-    if (typeof opts.fitViewOnInit !== 'undefined') state.fitViewOnInit = opts.fitViewOnInit
+    Object.keys(opts).forEach((o) => {
+      const option = opts[o as keyof typeof opts]
+      if (isDef(option)) (state as any)[o] = option
+    })
   }
 
   return state
