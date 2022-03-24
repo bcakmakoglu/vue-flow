@@ -31,8 +31,8 @@ export const getHandlePosition = (position: Position, rect: Rect, handle?: Handl
   }
 }
 
-export const getHandle = (bounds?: HandleElement[], handleId?: string): HandleElement | undefined => {
-  if (!bounds) return undefined
+export const getHandle = (bounds: HandleElement[] = [], handleId: string | null): HandleElement | undefined => {
+  if (!bounds.length) return undefined
 
   // there is no handleId when there are no multiple handles/ handles with ids
   // so we just pick the first one

@@ -28,7 +28,7 @@ export type OnConnectStartParams = {
   /** Source node id */
   nodeId?: string
   /** Source handle id */
-  handleId?: string
+  handleId: string | null
   /** Source handle type */
   handleType?: HandleType
 }

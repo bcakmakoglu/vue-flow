@@ -4,7 +4,7 @@ import { Position } from '../../types'
 import { NodeId } from '../../context'
 import type { HandleProps } from '../../types/handle'
 
-const { id, hooks } = useVueFlow()
+const { id, hooks, connectionStartHandle } = useVueFlow()
 const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',
   position: 'top' as Position,
@@ -13,11 +13,12 @@ const props = withDefaults(defineProps<HandleProps>(), {
 
 const nodeId = inject(NodeId, '')
 
-const handler = useHandle()
+const { onMouseDown, onClick } = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>
-  handler(event, props.id, nodeId, props.type === 'target', props.isValidConnection, undefined, (connection) =>
+  onMouseDown(event, props.id ?? null, nodeId, props.type === 'target', props.isValidConnection, undefined, (connection) =>
     hooks.value.connect.trigger(connection),
   )
+const onClickHandler = (event: MouseEvent) => onClick(event, props.id ?? null, nodeId, props.type, props.isValidConnection)
 </script>
 <script lang="ts">
 export default {
@@ -38,9 +39,14 @@ export default {
         source: props.type !== 'target',
         target: props.type === 'target',
         connectable: props.connectable,
+        connecting:
+          connectionStartHandle?.nodeId === nodeId &&
+          connectionStartHandle?.handleId === props.id &&
+          connectionStartHandle?.type === props.type,
       },
     ]"
     @mousedown="onMouseDownHandler"
+    @click="onClickHandler"
   >
     <slot :node-id="nodeId" v-bind="props"></slot>
   </div>
