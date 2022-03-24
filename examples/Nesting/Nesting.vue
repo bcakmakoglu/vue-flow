@@ -74,10 +74,22 @@ const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
 onConnect((params) => addEdges([params]))
 
 onMounted(() => {
-  // dynamically add nodes to parent
-  addNodes([{ id: '999', type: 'input', label: 'Node 1', position: { x: 20, y: 100 }, class: 'light', extent: 'parent' }], {
-    parentNode: '2',
-  })
+  // add nodes to parent
+  addNodes(
+    [
+      {
+        id: '999',
+        type: 'input',
+        label: 'Added after mount',
+        position: { x: 20, y: 100 },
+        class: 'light',
+        expandParent: true,
+      },
+    ],
+    {
+      parentNode: '2',
+    },
+  )
 })
 </script>
 <template>

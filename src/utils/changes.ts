@@ -1,3 +1,4 @@
+import { clampPosition, isGraphNode } from './graph'
 import {
   CreatePositionChangeParams,
   EdgeChange,
@@ -10,9 +11,9 @@ import {
   NodeSelectionChange,
   NodePositionChange,
 } from '~/types'
-import { clampPosition, isGraphNode } from '~/utils/graph'
 
-function handleParentExpand(parent: GraphNode, updateItem: GraphNode) {
+function handleParentExpand(updateItem: GraphNode) {
+  const parent = updateItem.parentNode
   if (parent) {
     const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
@@ -24,27 +25,47 @@ function handleParentExpand(parent: GraphNode, updateItem: GraphNode) {
         if (!parent.style.width) {
           parent.style.width = parent.dimensions.width
         }
-        ;(<number>parent.style.width) += extendWidth
+        if (typeof parent.style.width === 'string') {
+          const currWidth = parseInt(parent.style.width, 10)
+          parent.style.width = `${currWidth + extendWidth}px`
+        } else {
+          parent.style.width += extendWidth
+        }
       }
 
       if (extendHeight > 0) {
         if (!parent.style.height) {
           parent.style.height = parent.dimensions.height
         }
-        ;(<number>parent.style.height) += extendHeight
+        if (typeof parent.style.height === 'string') {
+          const currWidth = parseInt(parent.style.height, 10)
+          parent.style.height = `${currWidth + extendHeight}px`
+        } else {
+          parent.style.height += extendHeight
+        }
       }
 
       if (updateItem.position.x < 0) {
         const xDiff = Math.abs(updateItem.position.x)
         parent.position.x = parent.position.x - xDiff
-        ;(<number>parent.style.width) += xDiff
+        if (typeof parent.style.width === 'string') {
+          const currWidth = parseInt(parent.style.width, 10)
+          parent.style.width = `${currWidth + xDiff}px`
+        } else {
+          ;(parent.style as any).width += xDiff
+        }
         updateItem.position.x = 0
       }
 
       if (updateItem.position.y < 0) {
         const yDiff = Math.abs(updateItem.position.y)
         parent.position.y = parent.position.y - yDiff
-        ;(<number>parent.style.height) += yDiff
+        if (typeof parent.style.height === 'string') {
+          const currWidth = parseInt(parent.style.height, 10)
+          parent.style.height = `${currWidth + yDiff}px`
+        } else {
+          ;(parent.style as any).height += yDiff
+        }
         updateItem.position.y = 0
       }
 
@@ -74,13 +95,13 @@ export const applyChanges = <
         if (isGraphNode(el)) {
           if (typeof change.position !== 'undefined') el.position = change.position
           if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
-          if (el.expandParent && el.parentNode) handleParentExpand(el, el.parentNode)
+          if (el.expandParent && el.parentNode) handleParentExpand(el)
         }
         break
       case 'dimensions':
         if (isGraphNode(el)) {
           if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-          if (el.expandParent && el.parentNode) handleParentExpand(el, el.parentNode)
+          if (el.expandParent && el.parentNode) handleParentExpand(el)
         }
         break
       case 'remove':
