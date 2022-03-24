@@ -2,11 +2,10 @@
 import { useHandle, useVueFlow } from '../../composables'
 import { Position } from '../../types'
 import { NodeId } from '../../context'
-import type { HandleProps } from '../../types/components'
+import type { HandleProps } from '../../types/handle'
 
 const { id, hooks } = useVueFlow()
 const props = withDefaults(defineProps<HandleProps>(), {
-  id: '',
   type: 'source',
   position: 'top' as Position,
   connectable: true,

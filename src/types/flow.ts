@@ -1,5 +1,5 @@
 import { CSSProperties, ToRefs } from 'vue'
-import { GraphEdge, Edge } from './edge'
+import { GraphEdge, Edge, DefaultEdgeOptions } from "./edge";
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
@@ -93,11 +93,11 @@ export interface FlowProps<N = any, E = N> {
   nodeTypes?: { [key in keyof DefaultNodeTypes]?: NodeComponent } & { [key: string]: NodeComponent }
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
-  connectionLineStyle?: CSSProperties
+  connectionLineStyle?: CSSProperties | null
   deleteKeyCode?: KeyCode
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode
-  zoomActivationKeyCode?: KeyCode
+  zoomActivationKeyCode?: KeyCode | null
   snapToGrid?: boolean
   snapGrid?: SnapGrid
   onlyRenderVisibleElements?: boolean
@@ -116,6 +116,7 @@ export interface FlowProps<N = any, E = N> {
   defaultMarkerColor?: string
   zoomOnScroll?: boolean
   zoomOnPinch?: boolean
+  panOnDrag?: boolean
   panOnScroll?: boolean
   panOnScrollSpeed?: number
   panOnScrollMode?: PanOnScrollMode
@@ -123,7 +124,13 @@ export interface FlowProps<N = any, E = N> {
   preventScrolling?: boolean
   edgeUpdaterRadius?: number
   fitViewOnInit?: boolean
+  connectOnClick?: boolean
+  /** apply default change handlers for position, dimensions, adding/removing nodes. set this to false if you want to apply the changes manually */
   applyDefault?: boolean
+  noDragClassName?: string
+  noWheelClassName?: string
+  noPanClassName?: string
+  defaultEdgeOptions?: DefaultEdgeOptions
 }
 
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>

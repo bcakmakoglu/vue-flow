@@ -21,6 +21,8 @@ const props = withDefaults(defineProps<FlowProps>(), {
   paneMovable: undefined,
   applyDefault: undefined,
   fitViewOnInit: undefined,
+  zoomActivationKeyCode: () => null,
+  connectionLineStyle: () => null,
 })
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:edges', 'update:nodes'])
 
