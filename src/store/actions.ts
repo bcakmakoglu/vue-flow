@@ -32,6 +32,8 @@ import {
   parseNode,
 } from '~/utils'
 
+const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
+
 const getParent = (root: Node[], id: string): GraphNode | undefined => {
   let node
   root.some((n) => {
@@ -284,34 +286,14 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyEdgeChangesAction(changes, state.edges)
 
   const setState: Actions['setState'] = (opts) => {
+    const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent']
     if (typeof opts.modelValue !== 'undefined') setElements(opts.modelValue, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
-    if (typeof opts.panOnScroll !== 'undefined') state.panOnScroll = opts.panOnScroll
-    if (typeof opts.panOnScrollMode !== 'undefined') state.panOnScrollMode = opts.panOnScrollMode
-    if (typeof opts.panOnScrollSpeed !== 'undefined') state.panOnScrollSpeed = opts.panOnScrollSpeed
-    if (typeof opts.paneMovable !== 'undefined') state.paneMovable = opts.paneMovable
-    if (typeof opts.zoomOnScroll !== 'undefined') state.zoomOnScroll = opts.zoomOnScroll
-    if (typeof opts.preventScrolling !== 'undefined') state.preventScrolling = opts.preventScrolling
-    if (typeof opts.zoomOnDoubleClick !== 'undefined') state.zoomOnDoubleClick = opts.zoomOnDoubleClick
-    if (typeof opts.zoomOnPinch !== 'undefined') state.zoomOnPinch = opts.zoomOnPinch
-    if (typeof opts.defaultZoom !== 'undefined') state.defaultZoom = opts.defaultZoom
-    if (typeof opts.defaultPosition !== 'undefined') state.defaultPosition = opts.defaultPosition
-    if (typeof opts.edgeUpdaterRadius !== 'undefined') state.edgeUpdaterRadius = opts.edgeUpdaterRadius
-    if (typeof opts.elementsSelectable !== 'undefined') state.elementsSelectable = opts.elementsSelectable
-    if (typeof opts.onlyRenderVisibleElements !== 'undefined') state.onlyRenderVisibleElements = opts.onlyRenderVisibleElements
-    if (typeof opts.edgesUpdatable !== 'undefined') state.edgesUpdatable = opts.edgesUpdatable
-    if (typeof opts.nodesConnectable !== 'undefined') state.nodesConnectable = opts.nodesConnectable
-    if (typeof opts.nodesDraggable !== 'undefined') state.nodesDraggable = opts.nodesDraggable
-    if (typeof opts.defaultMarkerColor !== 'undefined') state.defaultMarkerColor = opts.defaultMarkerColor
-    if (typeof opts.deleteKeyCode !== 'undefined') state.deleteKeyCode = opts.deleteKeyCode
-    if (typeof opts.selectionKeyCode !== 'undefined') state.selectionKeyCode = opts.selectionKeyCode
-    if (typeof opts.zoomActivationKeyCode !== 'undefined') state.zoomActivationKeyCode = opts.zoomActivationKeyCode
-    if (typeof opts.multiSelectionKeyCode !== 'undefined') state.multiSelectionKeyCode = opts.multiSelectionKeyCode
-    if (typeof opts.snapToGrid !== 'undefined') state.snapToGrid = opts.snapToGrid
-    if (typeof opts.snapGrid !== 'undefined') state.snapGrid = opts.snapGrid
-    if (typeof opts.nodeExtent !== 'undefined') state.nodeExtent = opts.nodeExtent
-    if (typeof opts.fitViewOnInit !== 'undefined') state.fitViewOnInit = opts.fitViewOnInit
+    Object.keys(opts).forEach((o) => {
+      const option = opts[o as keyof typeof opts]
+      if (!skip.indexOf(o) && isDef(option)) (<any>state)[o] = option
+    })
     if (!state.paneReady)
       until(() => state.d3Zoom)
         .not.toBeUndefined()
