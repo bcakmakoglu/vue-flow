@@ -1,61 +1,109 @@
 import {
   CreatePositionChangeParams,
   EdgeChange,
+  EdgeSelectionChange,
+  ElementChange,
   FlowElement,
   FlowElements,
   GraphNode,
   NodeChange,
-  NodeDimensionChange,
-  SelectionChange,
+  NodeSelectionChange,
+  NodePositionChange,
 } from '~/types'
 import { clampPosition, isGraphNode } from '~/utils/graph'
 
+function handleParentExpand(parent: GraphNode, updateItem: GraphNode) {
+  if (parent) {
+    const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
+    const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
+
+    if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
+      parent.style = { ...parent.style } || {}
+
+      if (extendWidth > 0) {
+        if (!parent.style.width) {
+          parent.style.width = parent.dimensions.width
+        }
+        ;(<number>parent.style.width) += extendWidth
+      }
+
+      if (extendHeight > 0) {
+        if (!parent.style.height) {
+          parent.style.height = parent.dimensions.height
+        }
+        ;(<number>parent.style.height) += extendHeight
+      }
+
+      if (updateItem.position.x < 0) {
+        const xDiff = Math.abs(updateItem.position.x)
+        parent.position.x = parent.position.x - xDiff
+        ;(<number>parent.style.width) += xDiff
+        updateItem.position.x = 0
+      }
+
+      if (updateItem.position.y < 0) {
+        const yDiff = Math.abs(updateItem.position.y)
+        parent.position.y = parent.position.y - yDiff
+        ;(<number>parent.style.height) += yDiff
+        updateItem.position.y = 0
+      }
+
+      parent.dimensions.width = <number>parent.style.width
+      parent.dimensions.height = <number>parent.style.height
+    }
+  }
+}
+
 export const applyChanges = <
   T extends FlowElement = GraphNode,
-  C extends NodeChange = T extends GraphNode ? NodeChange : EdgeChange,
+  C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(
   changes: C[],
   elements: T[],
 ): T[] => {
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
-    const i = elementIds.indexOf(change.id)
+    if (change.type === 'add') return elements.push(change.item as any)
+    const i = elementIds.indexOf((<any>change).id)
     const el = elements[i]
-    if (el) {
-      switch (change.type) {
-        case 'select':
-          el.selected = change.selected
-          break
-        case 'dimensions':
-          if (isGraphNode(el)) {
-            if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-            if (typeof change.position !== 'undefined') el.position = change.position
-            if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
-          }
-          break
-        case 'remove':
-          elements.splice(i, 1)
-          elementIds = elements.map((el) => el.id)
-          break
-      }
+    switch (change.type) {
+      case 'select':
+        el.selected = change.selected
+        break
+      case 'position':
+        if (isGraphNode(el)) {
+          if (typeof change.position !== 'undefined') el.position = change.position
+          if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
+          if (el.expandParent && el.parentNode) handleParentExpand(el, el.parentNode)
+        }
+        break
+      case 'dimensions':
+        if (isGraphNode(el)) {
+          if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
+          if (el.expandParent && el.parentNode) handleParentExpand(el, el.parentNode)
+        }
+        break
+      case 'remove':
+        elements.splice(i, 1)
+        elementIds = elements.map((el) => el.id)
+        break
     }
   })
 
   return elements
 }
 
-export const createSelectionChange = (id: string, selected: boolean): SelectionChange => ({
+export const createSelectionChange = (id: string, selected: boolean): NodeSelectionChange | EdgeSelectionChange => ({
   id,
   type: 'select',
   selected,
 })
 
-export const createPositionChange = ({ node, diff, dragging, nodeExtent }: CreatePositionChangeParams): NodeDimensionChange => {
-  const change: NodeDimensionChange = {
+export const createPositionChange = ({ node, diff, dragging, nodeExtent }: CreatePositionChangeParams): NodePositionChange => {
+  const change: NodePositionChange = {
     id: node.id,
-    type: 'dimensions',
+    type: 'position',
     dragging: !!dragging,
-    handleBounds: node.handleBounds,
   }
 
   if (diff) {
@@ -99,5 +147,5 @@ export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) 
     }
 
     return res
-  }, [] as SelectionChange[])
+  }, [] as (NodeSelectionChange | EdgeSelectionChange)[])
 }

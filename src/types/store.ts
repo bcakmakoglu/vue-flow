@@ -5,7 +5,8 @@ import { Connection, ConnectionLineType, ConnectionMode, SetConnectionId } from 
 import { Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
-import { EdgeChange, FlowHooks, FlowHooksOn, NodeChange } from './hooks'
+import { FlowHooks, FlowHooksOn } from './hooks'
+import { NodeChange, EdgeChange } from './changes'
 
 export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'modelValue'> {
   hooks: FlowHooks<N, E>
@@ -91,6 +92,13 @@ export interface Actions<N = any, E = N> {
   setInteractive: (isInteractive: boolean) => void
   setState: (state: Partial<FlowOptions<N, E>>) => void
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
+  updateNodeDimensions: (
+    update: {
+      id: string
+      nodeElement: HTMLDivElement
+      forceUpdate?: boolean
+    }[],
+  ) => void
   $reset: () => void
 }
 
