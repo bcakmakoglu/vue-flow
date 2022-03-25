@@ -5,8 +5,11 @@ import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
+/** an internal element  */
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
 export type FlowElements<N = any, E = any> = FlowElement<N, E>[]
+
+/** base element props */
 export interface Element<Data = any> {
   id: string
   label?:
@@ -23,8 +26,10 @@ export interface Element<Data = any> {
 }
 export type Elements<N = any, E = any> = (Node<N> | Edge<E>)[]
 
+/** Transform x, y, z */
 export type Transform = [number, number, number]
 
+/** Handle Positions */
 export enum Position {
   Left = 'left',
   Top = 'top',

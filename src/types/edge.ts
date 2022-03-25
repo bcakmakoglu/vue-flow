@@ -30,7 +30,7 @@ export interface EdgeMarker {
 
 export interface MarkerProps {
   id: string
-  type: MarkerType
+  type: MarkerType | string
   color?: string
   width?: number
   height?: number
@@ -88,6 +88,7 @@ export interface EdgePositions {
   targetY: number
 }
 
+/** Internal edge type */
 export type GraphEdge<T = any, N = T> = Edge<T> & {
   sourceNode: GraphNode<N>
   targetNode: GraphNode<N>
@@ -95,10 +96,11 @@ export type GraphEdge<T = any, N = T> = Edge<T> & {
   z?: number
 } & EdgePositions
 
+/** these props are passed to edge components */
 export interface EdgeProps<Data = any> {
   id: string
-  sourceNode: any
-  targetNode: any
+  sourceNode: GraphNode
+  targetNode: GraphNode
   label?:
     | string
     | {
@@ -121,7 +123,7 @@ export interface EdgeProps<Data = any> {
   target: string
   sourceHandle?: string
   targetHandle?: string
-  labelStyle?: any
+  labelStyle?: CSSProperties
   labelShowBg?: boolean
   labelBgStyle?: any
   labelBgPadding?: [number, number]
@@ -133,10 +135,11 @@ export interface EdgeProps<Data = any> {
   curvature?: number
 }
 
+/** these props are passed to smooth step edges */
 export interface SmoothStepEdgeProps<Data = any> extends EdgeProps<Data> {
   id: string
-  sourceNode: any
-  targetNode: any
+  sourceNode: GraphNode
+  targetNode: GraphNode
   label?:
     | string
     | {

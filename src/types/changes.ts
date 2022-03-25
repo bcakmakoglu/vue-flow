@@ -2,13 +2,6 @@ import { XYPosition, Dimensions } from './flow'
 import { NodeHandleBounds, Node, GraphNode, CoordinateExtent } from './node'
 import { Edge } from './edge'
 
-export type CreatePositionChangeParams = {
-  node: GraphNode
-  nodeExtent: CoordinateExtent
-  diff?: XYPosition
-  dragging?: boolean
-}
-
 export type NodeDimensionChange = {
   id: string
   type: 'dimensions'

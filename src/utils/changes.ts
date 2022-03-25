@@ -1,6 +1,5 @@
 import { clampPosition, isGraphNode } from './graph'
 import {
-  CreatePositionChangeParams,
   EdgeChange,
   EdgeSelectionChange,
   ElementChange,
@@ -11,7 +10,16 @@ import {
   NodeSelectionChange,
   NodePositionChange,
   Getters,
+  CoordinateExtent,
+  XYPosition,
 } from '~/types'
+
+type CreatePositionChangeParams = {
+  node: GraphNode
+  nodeExtent: CoordinateExtent
+  diff?: XYPosition
+  dragging?: boolean
+}
 
 function handleParentExpand(updateItem: GraphNode, getNode: Getters['getNode']) {
   const parent = updateItem.parentNode ? getNode(updateItem.parentNode) : undefined
