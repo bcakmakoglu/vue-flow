@@ -48,7 +48,7 @@ type Scope = EffectScope & { vueFlowId: string }
 export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlow<N, E> => {
   const storage = Storage.getInstance()
   const scope = getCurrentScope() as Scope
-  let vueFlow =
+  let vueFlow: UseVueFlow | null | undefined =
     typeof inject(VueFlow, undefined) !== 'undefined'
       ? inject(VueFlow, undefined)!
       : scope && scope.vueFlowId
@@ -65,6 +65,7 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
 
     onScopeDispose(() => {
       storage.remove(name)
+      vueFlow = null
     })
   } else {
     if (options) vueFlow.setState(options)
