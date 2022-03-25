@@ -48,29 +48,31 @@ type Scope = EffectScope & { vueFlowId: string }
 export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlow<N, E> => {
   const storage = Storage.getInstance()
   const scope = getCurrentScope() as Scope
-  let vueFlow: UseVueFlow | null | undefined =
-    typeof inject(VueFlow, undefined) !== 'undefined'
-      ? inject(VueFlow, undefined)!
-      : scope && scope.vueFlowId
-      ? storage.get(scope.vueFlowId)
-      : undefined
+  let vueFlow: UseVueFlow | null | undefined
+  if (scope) {
+    const injection = inject(VueFlow, null)
+    const id = scope.vueFlowId || options?.id
+    if (typeof injection !== 'undefined' && injection !== null) vueFlow = injection
+    else if (id) vueFlow = storage.get(scope.vueFlowId)
+  }
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
     const name = options?.id ?? `vue-flow-${id++}`
 
     vueFlow = storage.create(name, options)
-    if (scope) {
-      provide(VueFlow, storage.get(name))
-      scope.vueFlowId = name
-    }
-
-    onScopeDispose(() => {
-      storage.remove(name)
-      vueFlow = null
-    })
   } else {
     if (options) vueFlow.setState(options)
   }
   if (!vueFlow) throw new Error('vue flow store instance not found.')
+
+  if (scope) {
+    provide(VueFlow, storage.get(vueFlow.id))
+    scope.vueFlowId = vueFlow.id
+
+    onScopeDispose(() => {
+      storage.remove(vueFlow!.id)
+      vueFlow = null
+    })
+  }
 
   return vueFlow
 }
