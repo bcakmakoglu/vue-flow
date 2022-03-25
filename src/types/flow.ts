@@ -83,11 +83,12 @@ export type FlowInstance<N = any, E = N> = {
 
 export interface FlowProps<N = any, E = N> {
   id?: string
-  /** @deprecated use nodes / edges instead */
   modelValue?: Elements<N, E>
   nodes?: Node<N>[]
   edges?: Edge<E>[]
+  /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
   edgeTypes?: { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & { [key: string]: EdgeComponent }
+  /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
   nodeTypes?: { [key in keyof DefaultNodeTypes]?: NodeComponent } & { [key: string]: NodeComponent }
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
@@ -104,6 +105,7 @@ export interface FlowProps<N = any, E = N> {
   nodesConnectable?: boolean
   elementsSelectable?: boolean
   selectNodesOnDrag?: boolean
+  /** move pane on drag, replaced prop `paneMovable` */
   panOnDrag?: boolean
   minZoom?: number
   maxZoom?: number
@@ -118,15 +120,18 @@ export interface FlowProps<N = any, E = N> {
   panOnScrollSpeed?: number
   panOnScrollMode?: PanOnScrollMode
   zoomOnDoubleClick?: boolean
+  /** enable this to prevent vue flow from scrolling inside the container, i.e. allow for the page to scroll */
   preventScrolling?: boolean
   edgeUpdaterRadius?: number
   fitViewOnInit?: boolean
+  /** allow connection with click handlers, i.e. support touch devices */
   connectOnClick?: boolean
   /** apply default change handlers for position, dimensions, adding/removing nodes. set this to false if you want to apply the changes manually */
   applyDefault?: boolean
   noDragClassName?: string
   noWheelClassName?: string
   noPanClassName?: string
+  /** does not work for the `addEdge` utility! */
   defaultEdgeOptions?: DefaultEdgeOptions
 }
 
