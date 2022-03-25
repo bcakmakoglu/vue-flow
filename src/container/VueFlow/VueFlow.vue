@@ -41,7 +41,6 @@ const {
   applyEdgeChanges,
   nodes: storedNodes,
   edges: storedEdges,
-  fitViewOnInit,
 } = useVueFlow(props)
 useHooks(hooks.value, emit)
 const { modelValue, nodes, edges } = useVModels(props, emit)
