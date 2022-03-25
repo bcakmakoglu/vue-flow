@@ -36,7 +36,7 @@ export default {
 }
 </script>
 <template>
-  <div class="vue-flow__nodesselection vue-flow__container" :style="{ transform }">
+  <div class="vue-flow__nodesselection vue-flow__container" :class="store.noPanClassName" :style="{ transform }">
     <DraggableCore
       :grid="store.snapToGrid ? store.snapGrid : undefined"
       :enable-user-select-hack="false"
