@@ -133,3 +133,11 @@ interface StoreBase<N = any, E = N> {
 
 export type Store<N = any, E = N> = StoreBase<N, E> & ToRefs<State<N, E>> & Actions<N, E> & ComputedGetters<N, E>
 export type FlowStore<N = any, E = N> = StoreBase<N, E> & State<N, E> & Actions<N, E> & Getters<N, E>
+
+export type UseVueFlow<N = any, E = N> = {
+  id: string
+  store: FlowStore<N, E>
+} & FlowHooksOn<N, E> &
+  ToRefs<State<N, E>> &
+  ComputedGetters<N, E> &
+  Actions<N, E>

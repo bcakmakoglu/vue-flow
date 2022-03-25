@@ -1,10 +1,8 @@
-import { CSSProperties, ToRefs } from 'vue'
+import { CSSProperties } from 'vue'
 import { GraphEdge, Edge, DefaultEdgeOptions } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
-import { Actions, ComputedGetters, State, FlowStore } from './store'
-import { FlowHooksOn } from './hooks'
 import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
 export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
@@ -133,11 +131,3 @@ export interface FlowProps<N = any, E = N> {
 }
 
 export type FlowOptions<N = any, E = N> = FlowProps<N, E>
-
-export type UseVueFlow<N = any, E = N> = {
-  id: string
-  store: FlowStore<N, E>
-} & FlowHooksOn<N, E> &
-  ToRefs<State<N, E>> &
-  ComputedGetters<N, E> &
-  Actions<N, E>
