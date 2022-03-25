@@ -1,6 +1,7 @@
 import { EventHook, EventHookOn } from '@vueuse/core'
 import { MouseTouchEvent } from '@braks/revue-draggable'
-import { FlowInstance, Dimensions, XYPosition } from './flow'
+import { D3ZoomEvent } from 'd3-zoom'
+import { FlowInstance } from './flow'
 import { GraphEdge } from './edge'
 import { GraphNode } from './node'
 import { Connection, OnConnectStartParams } from './connection'
@@ -26,9 +27,9 @@ export interface FlowEvents<N = any, E = N> {
   connectStop: MouseEvent
   connectEnd: MouseEvent
   paneReady: FlowInstance<N, E>
-  move: FlowTransform | undefined
-  moveStart: FlowTransform | undefined
-  moveEnd: FlowTransform | undefined
+  move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
+  moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
+  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   selectionDragStart: { event: MouseTouchEvent; nodes: GraphNode<N>[] }
   selectionDrag: { event: MouseTouchEvent; nodes: GraphNode<N>[] }
   selectionDragStop: { event: MouseTouchEvent; nodes: GraphNode<N>[] }
