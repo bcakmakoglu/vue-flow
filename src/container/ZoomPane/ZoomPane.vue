@@ -105,7 +105,12 @@ onMounted(async () => {
             -(deltaY / currentZoom) * store.panOnScrollSpeed,
           )
       } else {
-        if (!store.preventScrolling || isWrappedWithClass(event, store.noWheelClassName)) return null
+        if (
+          (!store.zoomOnScroll && store.preventScrolling) ||
+          !store.preventScrolling ||
+          isWrappedWithClass(event, store.noWheelClassName)
+        )
+          return null
         event.preventDefault()
       }
     })
@@ -116,8 +121,7 @@ onMounted(async () => {
     const pinchZoom = store.zoomOnPinch && event.ctrlKey
 
     // if all interactions are disabled, we prevent all zoom events
-    if (!store.panOnDrag && !zoomScroll && !store.panOnScroll && !store.zoomOnDoubleClick && !store.zoomOnPinch)
-      return false
+    if (!store.panOnDrag && !zoomScroll && !store.panOnScroll && !store.zoomOnDoubleClick && !store.zoomOnPinch) return false
 
     // during a selection we prevent all other interactions
     if (selectionKeyPressed.value) return false
