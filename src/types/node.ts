@@ -23,7 +23,7 @@ export interface Node<T = any> extends Element<T> {
   isValidSourcePos?: ValidConnectionFunc
   extent?: 'parent' | CoordinateExtent
   expandParent?: boolean
-  children?: Node<T>[]
+  parentNode?: string
 }
 
 export interface GraphNode<T = any> extends Node<T> {
@@ -33,7 +33,6 @@ export interface GraphNode<T = any> extends Node<T> {
   isParent: boolean
   selected: boolean
   dragging: boolean
-  parentNode?: GraphNode<T>
 }
 
 export interface NodeProps<T = any> {
