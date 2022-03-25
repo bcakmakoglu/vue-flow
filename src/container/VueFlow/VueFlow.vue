@@ -45,6 +45,7 @@ const {
 } = useVueFlow(props)
 useHooks(hooks.value, emit)
 const { modelValue, nodes, edges } = useVModels(props, emit)
+onMounted(() => useWatch({ modelValue, nodes, edges }, props, store))
 
 if (applyDefault.value) {
   onNodesChange(applyNodeChanges)
@@ -57,8 +58,6 @@ if (props.edges && !storedEdges.value.length) setEdges(props.edges)
 if (modelValue && modelValue.value) modelValue.value = [...store.nodes, ...store.edges]
 if (nodes && nodes.value) nodes.value = store.nodes
 if (edges && edges.value) edges.value = store.edges
-
-onMounted(() => useWatch({ modelValue, nodes, edges }, props, store))
 </script>
 <script lang="ts">
 export default {

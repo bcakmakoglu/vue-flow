@@ -7,9 +7,7 @@ import { onLoadGetEdges, onLoadGetElements, onLoadGetNodes, onLoadProject, onLoa
 
 const { id, store } = useVueFlow()
 
-const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
-
-onMounted(async () => {
+onMounted(() => {
   const { zoomIn, zoomOut, zoomTo, setTransform, getTransform, fitView, fitBounds, setCenter } = useZoomPanHelper(store)
   const instance: FlowInstance = {
     fitView: (params = { padding: 0.1 }) => fitView(params),
@@ -31,6 +29,8 @@ onMounted(async () => {
   store.paneReady = true
   store.hooks.paneReady.trigger(instance)
 })
+
+const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 </script>
 <template>
   <div :key="`transformation-pane-${id}`" class="vue-flow__transformation-pane vue-flow__container" :style="{ transform }">

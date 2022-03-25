@@ -30,7 +30,7 @@ const transform = ref({
 })
 const { width, height } = useElementBounding(zoomPaneEl)
 
-onMounted(async () => {
+onMounted(() => {
   const d3Zoom = zoom<HTMLDivElement, any>().scaleExtent([store.minZoom, store.maxZoom]).translateExtent(store.translateExtent)
   const d3Selection = select(zoomPaneEl.value).call(d3Zoom)
   const d3ZoomHandler = d3Selection.on('wheel.zoom')
