@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<EdgeProps>(), {
 })
 
 const centered = computed(() =>
-  getSimpleBezierPath({
+  getSimpleBezierCenter({
     sourceX: props.sourceX,
     sourceY: props.sourceY,
     targetX: props.targetX,
@@ -26,7 +26,7 @@ const centered = computed(() =>
 )
 const path = computed(() => {
   if (props.sourceX && props.sourceY)
-    return getSimpleBezierCenter({
+    return getSimpleBezierPath({
       sourceX: props.sourceX,
       sourceY: props.sourceY,
       targetX: props.targetX,
