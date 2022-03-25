@@ -47,9 +47,9 @@ export interface Edge<T = any> extends Element<T> {
   /** Target node id */
   target: string
   /** Source handle id */
-  sourceHandle: string | null
+  sourceHandle?: string | null
   /** Target handle id */
-  targetHandle: string | null
+  targetHandle?: string | null
   /** Source position */
   sourcePosition?: Position
   /** Target position */
@@ -97,6 +97,8 @@ export type GraphEdge<T = any, N = T> = Edge<T> & {
 
 export interface EdgeProps<Data = any> {
   id: string
+  sourceNode: any
+  targetNode: any
   label?:
     | string
     | {
@@ -105,9 +107,7 @@ export interface EdgeProps<Data = any> {
       }
   type?: string
   data?: Data
-  class?: string
   style?: CSSProperties
-  hidden?: boolean
   sourceX: number
   sourceY: number
   targetX: number
@@ -133,23 +133,6 @@ export interface EdgeProps<Data = any> {
   curvature?: number
 }
 
-export type BaseEdgeProps = Pick<
-  EdgeProps,
-  | 'label'
-  | 'labelStyle'
-  | 'labelShowBg'
-  | 'labelBgStyle'
-  | 'labelBgPadding'
-  | 'labelBgBorderRadius'
-  | 'style'
-  | 'markerStart'
-  | 'markerEnd'
-> & {
-  centerX: number
-  centerY: number
-  path: string
-}
-
 export interface SmoothStepEdgeProps<Data = any> extends EdgeProps<Data> {
   id: string
   label?:
@@ -160,9 +143,7 @@ export interface SmoothStepEdgeProps<Data = any> extends EdgeProps<Data> {
       }
   type?: string
   data?: Data
-  class?: string
   style?: CSSProperties
-  hidden?: boolean
   sourceX: number
   sourceY: number
   targetX: number
@@ -219,4 +200,13 @@ export interface GetSmoothStepPathParams {
   borderRadius?: number
   centerX?: number
   centerY?: number
+}
+
+export interface GetControlWithCurvatureParams {
+  pos: Position
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  c: number
 }

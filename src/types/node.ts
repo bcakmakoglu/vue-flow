@@ -27,14 +27,14 @@ export interface Node<T = any> extends Element<T> {
   children?: Node<T>[]
 }
 
-export interface GraphNode<T = any, P = any> extends Node<T> {
+export interface GraphNode<T = any> extends Node<T> {
   computedPosition: XYZPosition
   handleBounds: NodeHandleBounds
   dimensions: Dimensions
   isParent: boolean
   selected: boolean
   dragging: boolean
-  parentNode?: GraphNode<P extends infer U ? U : never>
+  parentNode?: GraphNode<T>
 }
 
 export interface NodeProps<T = any> {
