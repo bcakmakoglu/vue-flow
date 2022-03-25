@@ -16,8 +16,9 @@ import {
   Rect,
   Transform,
   XYPosition,
-  XYZPosition, Getters
-} from "~/types";
+  XYZPosition,
+  Getters,
+} from '~/types'
 import { useWindow } from '~/composables'
 
 const isHTMLElement = (el: EventTarget): el is HTMLElement => ('nodeName' || 'hasAttribute') in el
