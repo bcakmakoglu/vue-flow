@@ -2,7 +2,7 @@
 import { Position } from '../../types'
 import type { SmoothStepEdgeProps } from '../../types/edge'
 import { getCenter, getSmoothStepPath } from './utils'
-import EdgeText from './EdgeText.vue'
+import BaseEdge from './BaseEdge.vue'
 
 const props = withDefaults(defineProps<SmoothStepEdgeProps>(), {
   selected: false,
@@ -16,14 +16,25 @@ const props = withDefaults(defineProps<SmoothStepEdgeProps>(), {
 
 const centered = computed(() =>
   getCenter({
-    ...props,
+    sourceX: props.sourceX,
+    sourceY: props.sourceY,
+    targetX: props.targetX,
+    targetY: props.targetY,
+    sourcePosition: props.sourcePosition,
+    targetPosition: props.targetPosition,
   }),
 )
 
 const path = computed(() => {
   if (props.sourceX && props.sourceY)
     return getSmoothStepPath({
-      ...props,
+      sourceX: props.sourceX,
+      sourceY: props.sourceY,
+      targetX: props.targetX,
+      targetY: props.targetY,
+      sourcePosition: props.sourcePosition,
+      targetPosition: props.targetPosition,
+      borderRadius: props.borderRadius,
     })
   else return ''
 })
@@ -31,28 +42,21 @@ const path = computed(() => {
 <script lang="ts">
 export default {
   name: 'SmoothStepEdge',
-  inheritAttrs: false,
 }
 </script>
 <template>
-  <path
-    class="vue-flow__edge-path"
+  <BaseEdge
+    :path="path"
+    :center-x="centered[0]"
+    :center-y="centered[1]"
+    :label="props.label"
+    :label-style="props.labelStyle"
+    :label-show-bg="props.labelShowBg"
+    :label-bg-style="props.labelBgStyle"
+    :label-bg-padding="props.labelBgPadding"
+    :label-bg-border-radius="props.labelBgBorderRadius"
     :style="props.style"
-    :d="path"
     :marker-end="props.markerEnd"
     :marker-start="props.markerStart"
   />
-  <slot :x="centered[0]" :y="centered[1]" v-bind="props">
-    <EdgeText
-      v-if="props.label"
-      :x="centered[0]"
-      :y="centered[1]"
-      :label="props.label"
-      :label-style="props.labelStyle"
-      :label-show-bg="props.labelShowBg"
-      :label-bg-style="props.labelBgStyle"
-      :label-bg-padding="props.labelBgPadding"
-      :label-bg-border-radius="props.labelBgBorderRadius"
-    />
-  </slot>
 </template>

@@ -8,7 +8,16 @@ import {
   ConnectionLineType,
   FlowOptions,
 } from '~/types'
-import { DefaultNode, InputNode, OutputNode, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
+import {
+  DefaultNode,
+  InputNode,
+  OutputNode,
+  BezierEdge,
+  SmoothStepEdge,
+  StepEdge,
+  StraightEdge,
+  SimpleBezierEdge,
+} from '~/components'
 
 export const defaultNodeTypes: DefaultNodeTypes = {
   input: InputNode,
@@ -21,6 +30,7 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
   straight: StraightEdge,
   step: StepEdge,
   smoothstep: SmoothStepEdge,
+  simplebezier: SimpleBezierEdge,
 }
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'

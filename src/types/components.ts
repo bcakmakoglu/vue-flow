@@ -19,7 +19,7 @@ export type EdgeComponent<E = any> =
   | DefineComponent<EdgeProps<E>, any, any, any, any, any>
   | GlobalComponentName
 
-export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step']: EdgeComponent }
+export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step' | 'simplebezier']: EdgeComponent }
 export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: NodeComponent }
 
 export interface BackgroundProps {
