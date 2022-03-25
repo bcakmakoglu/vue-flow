@@ -32,8 +32,8 @@ export default {
 <template>
   <BaseEdge
     :path="path"
-    :center-x="centered[0]"
-    :center-y="centered[1]"
+    :center-x="centerX"
+    :center-y="centerY"
     :label="props.label"
     :label-style="props.labelStyle"
     :label-show-bg="props.labelShowBg"
