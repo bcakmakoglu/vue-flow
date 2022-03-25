@@ -135,6 +135,8 @@ export interface EdgeProps<Data = any> {
 
 export interface SmoothStepEdgeProps<Data = any> extends EdgeProps<Data> {
   id: string
+  sourceNode: any
+  targetNode: any
   label?:
     | string
     | {
