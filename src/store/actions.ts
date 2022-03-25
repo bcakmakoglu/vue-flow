@@ -13,6 +13,7 @@ import {
   Connection,
   GraphEdge,
   NodePositionChange,
+  Getters,
 } from '~/types'
 import {
   applyChanges,
@@ -33,16 +34,6 @@ import {
 } from '~/utils'
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
-
-const getParent = (root: Node[], id: string): GraphNode | undefined => {
-  let node
-  root.some((n) => {
-    if (n.id === id) return (node = n)
-    if (n.children) return (node = getParent(n.children, id))
-    return false
-  })
-  return node
-}
 
 const addEdge = (edgeParams: Edge | Connection, edges: Edge[]) => {
   if (!edgeParams.source || !edgeParams.target) {
@@ -92,25 +83,41 @@ const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: Gra
   return true
 }
 
-const applyEdgeChangesAction = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
-const applyNodeChangesAction = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
+const applyEdgeChangesAction = (changes: EdgeChange[], edges: GraphEdge[], getNode: Getters['getNode']) =>
+  applyChanges(changes, edges, getNode)
+const applyNodeChangesAction = (changes: NodeChange[], nodes: GraphNode[], getNode: Getters['getNode']) =>
+  applyChanges(changes, nodes, getNode)
 
-export const parseChildren = (
-  n: Node,
-  p: GraphNode | undefined,
-  arr: GraphNode[],
-  extent: CoordinateExtent,
-  getNode: (id: string) => GraphNode | undefined,
-) => {
-  const parent = typeof p === 'undefined' || typeof p !== 'object' ? getParent(arr, n.id) : p
-  const parsed = parseNode(n, extent, {
-    ...getNode(n.id),
-    parentNode: parent,
+const createGraphNodes = (nodes: Node[], getNode: Getters['getNode'], currGraphNodes: GraphNode[], extent: CoordinateExtent) => {
+  const parentNodes: Record<string, true> = {}
+
+  const graphNodes = nodes.map((node) => {
+    const parsed = parseNode(node, extent, {
+      ...getNode(node.id),
+      parentNode: node.parentNode,
+    })
+    if (node.parentNode) {
+      parentNodes[node.parentNode] = true
+    }
+
+    return parsed
   })
-  arr.push(parsed)
-  if (n.children && n.children.length) {
-    n.children.forEach((c) => parseChildren(c, parsed, arr, extent, getNode))
-  }
+
+  graphNodes.forEach((node) => {
+    if (node.parentNode && ![...graphNodes, ...currGraphNodes].find((n) => n.id === node.parentNode)) {
+      throw new Error(`Parent node ${node.parentNode} not found`)
+    }
+
+    if (node.parentNode || parentNodes[node.id]) {
+      if (parentNodes[node.id]) {
+        node.isParent = true
+      }
+      const parent = node.parentNode ? getNode(node.parentNode) : undefined
+      if (parent) parent.isParent = true
+    }
+  })
+
+  return graphNodes
 }
 
 export default (state: State, getters: ComputedGetters): Actions => {
@@ -120,12 +127,12 @@ export default (state: State, getters: ComputedGetters): Actions => {
     state.nodes.forEach((node) => {
       if (node.selected) {
         if (!node.parentNode) {
-          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }))
-        } else if (!isParentSelected(node)) {
-          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }))
+          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, getters.getNode.value))
+        } else if (!isParentSelected(node, getters.getNode.value)) {
+          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, getters.getNode.value))
         }
       } else if (node.id === id) {
-        changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }))
+        changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, getters.getNode.value))
       }
     })
 
@@ -166,7 +173,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     let changedNodes: NodeChange[]
     if (state.multiSelectionActive) changedNodes = selectedNodesIds.map((nodeId) => createSelectionChange(nodeId, true))
-    else changedNodes = getSelectionChanges(state.nodes, selectedNodesIds)
+    else changedNodes = getSelectionChanges(state.nodes, selectedNodesIds, getters.getNode.value)
 
     if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
   }
@@ -175,7 +182,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     let changedEdges: EdgeChange[]
     if (state.multiSelectionActive) changedEdges = selectedEdgesIds.map((nodeId) => createSelectionChange(nodeId, true))
-    else changedEdges = getSelectionChanges(state.edges, selectedEdgesIds)
+    else changedEdges = getSelectionChanges(state.edges, selectedEdgesIds, getters.getNode.value)
 
     if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
@@ -207,12 +214,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const setNodes: Actions['setNodes'] = (nodes, extent?: CoordinateExtent) => {
     if (!state.initialized && !nodes.length) return
-    nodes = nodes.flatMap((node) => {
-      const children: GraphNode[] = []
-      parseChildren(node, undefined, children, extent ?? state.nodeExtent, getters.getNode.value)
-      return children
-    })
-    state.nodes = <GraphNode[]>nodes
+    state.nodes = createGraphNodes(nodes, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
   }
   const setEdges: Actions['setEdges'] = (edges) => {
     if (!state.initialized && !edges.length) return
@@ -241,15 +243,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
     setEdges(elements.filter(isEdge))
   }
 
-  const addNodes: Actions['addNodes'] = (nodes, options) => {
-    const parsed = nodes.flatMap((node) => {
-      const children: GraphNode[] = []
-      const parent =
-        options && (typeof options.parentNode === 'string' ? getters.getNode.value(options.parentNode) : options.parentNode)
-      parseChildren(node, parent, children, options?.extent ?? state.nodeExtent, getters.getNode.value)
-      return children
-    })
-    state.nodes.push(...parsed)
+  const addNodes: Actions['addNodes'] = (nodes, extent) => {
+    state.nodes.push(...createGraphNodes(nodes, getters.getNode.value, state.nodes, extent ?? state.nodeExtent))
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
@@ -275,8 +270,10 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>
     updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
-  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyNodeChangesAction(changes, state.nodes)
-  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyEdgeChangesAction(changes, state.edges)
+  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) =>
+    applyNodeChangesAction(changes, state.nodes, getters.getNode.value)
+  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) =>
+    applyEdgeChangesAction(changes, state.edges, getters.getNode.value)
 
   const setState: Actions['setState'] = (opts) => {
     const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent']

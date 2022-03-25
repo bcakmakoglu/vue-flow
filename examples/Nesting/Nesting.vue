@@ -12,13 +12,12 @@ const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
       position: { x: 100, y: 100 },
       class: 'light',
       style: { backgroundColor: 'rgba(255, 0, 0, 0.8)', width: '200px', height: '200px' },
-      children: [
-        {
-          id: '2a',
-          label: 'Node 2a',
-          position: { x: 10, y: 50 },
-        },
-      ],
+    },
+    {
+      id: '2a',
+      label: 'Node 2a',
+      position: { x: 10, y: 50 },
+      parentNode: '2',
     },
     { id: '3', label: 'Node 3', position: { x: 320, y: 100 }, class: 'light' },
     {
@@ -27,36 +26,36 @@ const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
       position: { x: 320, y: 200 },
       class: 'light',
       style: { backgroundColor: 'rgba(255, 0, 0, 0.7)', width: '300px', height: '300px' },
-      children: [
-        {
-          id: '4a',
-          label: 'Node 4a',
-          position: { x: 15, y: 65 },
-          class: 'light',
-          extent: 'parent',
-        },
-        {
-          id: '4b',
-          label: 'Node 4b',
-          position: { x: 15, y: 120 },
-          class: 'light',
-          style: { backgroundColor: 'rgba(255, 0, 255, 0.7)', height: '150px', width: '270px' },
-          children: [
-            {
-              id: '4b1',
-              label: 'Node 4b1',
-              position: { x: 20, y: 40 },
-              class: 'light',
-            },
-            {
-              id: '4b2',
-              label: 'Node 4b2',
-              position: { x: 100, y: 100 },
-              class: 'light',
-            },
-          ],
-        },
-      ],
+    },
+    {
+      id: '4a',
+      label: 'Node 4a',
+      position: { x: 15, y: 65 },
+      class: 'light',
+      extent: 'parent',
+      parentNode: '4',
+    },
+    {
+      id: '4b',
+      label: 'Node 4b',
+      position: { x: 15, y: 120 },
+      class: 'light',
+      style: { backgroundColor: 'rgba(255, 0, 255, 0.7)', height: '150px', width: '270px' },
+      parentNode: '4',
+    },
+    {
+      id: '4b1',
+      label: 'Node 4b1',
+      position: { x: 20, y: 40 },
+      class: 'light',
+      parentNode: '4b',
+    },
+    {
+      id: '4b2',
+      label: 'Node 4b2',
+      position: { x: 100, y: 100 },
+      class: 'light',
+      parentNode: '4b',
     },
   ],
   edges: [
@@ -75,21 +74,17 @@ onConnect((params) => addEdges([params]))
 
 onMounted(() => {
   // add nodes to parent
-  addNodes(
-    [
-      {
-        id: '999',
-        type: 'input',
-        label: 'Added after mount',
-        position: { x: 20, y: 100 },
-        class: 'light',
-        expandParent: true,
-      },
-    ],
+  addNodes([
     {
+      id: '999',
+      type: 'input',
+      label: 'Added after mount',
+      position: { x: 20, y: 100 },
+      class: 'light',
+      expandParent: true,
       parentNode: '2',
     },
-  )
+  ])
 })
 </script>
 <template>

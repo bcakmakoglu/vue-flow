@@ -10,10 +10,11 @@ import {
   NodeChange,
   NodeSelectionChange,
   NodePositionChange,
+  Getters,
 } from '~/types'
 
-function handleParentExpand(updateItem: GraphNode) {
-  const parent = updateItem.parentNode
+function handleParentExpand(updateItem: GraphNode, getNode: Getters['getNode']) {
+  const parent = updateItem.parentNode ? getNode(updateItem.parentNode) : undefined
   if (parent) {
     const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
@@ -69,8 +70,12 @@ function handleParentExpand(updateItem: GraphNode) {
         updateItem.position.y = 0
       }
 
-      parent.dimensions.width = <number>parent.style.width
-      parent.dimensions.height = <number>parent.style.height
+      parent.dimensions.width = (
+        typeof parent.style.width === 'string' ? parseInt((<string>parent.style.width)!, 10) : parent.style.width
+      )!
+      parent.dimensions.height = (
+        typeof parent.style.height === 'string' ? parseInt((<string>parent.style.height)!, 10) : parent.style.height
+      )!
     }
   }
 }
@@ -81,6 +86,7 @@ export const applyChanges = <
 >(
   changes: C[],
   elements: T[],
+  getNode: Getters['getNode'],
 ): T[] => {
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
@@ -95,13 +101,13 @@ export const applyChanges = <
         if (isGraphNode(el)) {
           if (typeof change.position !== 'undefined') el.position = change.position
           if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
-          if (el.expandParent && el.parentNode) handleParentExpand(el)
+          if (el.expandParent && el.parentNode) handleParentExpand(el, getNode)
         }
         break
       case 'dimensions':
         if (isGraphNode(el)) {
           if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-          if (el.expandParent && el.parentNode) handleParentExpand(el)
+          if (el.expandParent && el.parentNode) handleParentExpand(el, getNode)
         }
         break
       case 'remove':
@@ -120,7 +126,11 @@ export const createSelectionChange = (id: string, selected: boolean): NodeSelect
   selected,
 })
 
-export const createPositionChange = ({ node, diff, dragging, nodeExtent }: CreatePositionChangeParams): NodePositionChange => {
+export const createPositionChange = (
+  { node, diff, dragging, nodeExtent }: CreatePositionChangeParams,
+  getNode: Getters['getNode'],
+): NodePositionChange => {
+  const parent = node.parentNode ? getNode(node.parentNode) : undefined
   const change: NodePositionChange = {
     id: node.id,
     type: 'position',
@@ -131,15 +141,12 @@ export const createPositionChange = ({ node, diff, dragging, nodeExtent }: Creat
     const nextPosition = { x: node.position.x + diff.x, y: node.position.y + diff.y }
     let currentExtent = nodeExtent || node.extent
 
-    if (node.extent === 'parent' && node.parentNode && node.dimensions.width && node.dimensions.height) {
+    if (node.extent === 'parent' && parent && node.dimensions.width && node.dimensions.height) {
       currentExtent =
-        node.parentNode?.dimensions.width && node.parentNode?.dimensions.height
+        parent.dimensions.width && parent.dimensions.height
           ? [
               [0, 0],
-              [
-                node.parentNode.dimensions.width - node.dimensions.width,
-                node.parentNode.dimensions.height - node.dimensions.height,
-              ],
+              [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
             ]
           : currentExtent
     }
@@ -150,16 +157,17 @@ export const createPositionChange = ({ node, diff, dragging, nodeExtent }: Creat
   return change
 }
 
-const isParentSelected = (node: GraphNode, selectedIds: string[]): boolean => {
-  if (!node.parentNode) return false
-  if (selectedIds.includes(node.parentNode.id)) return true
-  return isParentSelected(node.parentNode, selectedIds)
+const isParentSelected = (node: GraphNode, selectedIds: string[], getNode: Getters['getNode']): boolean => {
+  const parent = node.parentNode ? getNode(node.parentNode) : undefined
+  if (!node.parentNode || !parent) return false
+  if (selectedIds.includes(node.parentNode)) return true
+  return isParentSelected(parent, selectedIds, getNode)
 }
 
-export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
+export const getSelectionChanges = (items: FlowElements, selectedIds: string[], getNode: Getters['getNode']) => {
   return items.reduce((res, item) => {
     const willBeSelected =
-      selectedIds.includes(item.id) || !!(isGraphNode(item) && item.parentNode && isParentSelected(item, selectedIds))
+      selectedIds.includes(item.id) || !!(isGraphNode(item) && item.parentNode && isParentSelected(item, selectedIds, getNode))
 
     if (!item.selected && willBeSelected) {
       res.push(createSelectionChange(item.id, true))

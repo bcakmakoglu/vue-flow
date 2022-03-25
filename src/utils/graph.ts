@@ -16,8 +16,8 @@ import {
   Rect,
   Transform,
   XYPosition,
-  XYZPosition,
-} from '~/types'
+  XYZPosition, Getters
+} from "~/types";
 import { useWindow } from '~/composables'
 
 const isHTMLElement = (el: EventTarget): el is HTMLElement => ('nodeName' || 'hasAttribute') in el
@@ -75,7 +75,6 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
           z: typeof node.style?.zIndex === 'string' ? parseInt(node.style?.zIndex as string) : node.style?.zIndex ?? 0,
           ...clampPosition(node.position, nodeExtent),
         },
-        isParent: !!(node.children && node.children.length),
         dragging: false,
         draggable: undefined,
         selectable: undefined,
@@ -335,10 +334,12 @@ export const getXYZPos = (parentNode: GraphNode, computedPosition: XYZPosition):
   }
 }
 
-export const isParentSelected = (node: GraphNode): boolean => {
+export const isParentSelected = (node: GraphNode, getNode: Getters['getNode']): boolean => {
   if (!node.parentNode) return false
-  if (node.parentNode.selected) return true
-  return isParentSelected(node.parentNode)
+  const parent = getNode(node.parentNode)
+  if (!parent) return false
+  if (parent.selected) return true
+  return isParentSelected(parent, getNode)
 }
 
 export const getMarkerId = (marker: EdgeMarkerType | undefined): string => {

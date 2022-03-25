@@ -85,7 +85,7 @@ export interface Actions<N = any, E = N> {
   setElements: (elements: Elements<N, E>, extent?: CoordinateExtent) => void
   setNodes: (nodes: Node<N>[], extent?: CoordinateExtent) => void
   setEdges: (edges: Edge<E>[]) => void
-  addNodes: <NA = N>(nodes: Node<NA>[], options?: { extent?: CoordinateExtent; parentNode: GraphNode | string }) => void
+  addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
   addEdges: <EA = E>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
   updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => boolean
   applyEdgeChanges: <ED = E>(changes: EdgeChange[]) => GraphEdge<ED>[]
