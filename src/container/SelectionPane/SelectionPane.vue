@@ -17,35 +17,33 @@ const onContextMenu = (event: MouseEvent) => store.hooks.paneContextMenu.trigger
 
 const onWheel = (event: WheelEvent) => store.hooks.paneScroll.trigger(event)
 
-onMounted(() => {
-  useKeyPress(store.deleteKeyCode, (keyPressed) => {
-    const selectedNodes = store.getSelectedNodes
-    const selectedEdges = store.getSelectedEdges
-    if (keyPressed && (selectedNodes || selectedEdges)) {
-      const connectedEdges = (selectedNodes && getConnectedEdges(selectedNodes, store.edges)) ?? []
+useKeyPress(store.deleteKeyCode, (keyPressed) => {
+  const selectedNodes = store.getSelectedNodes
+  const selectedEdges = store.getSelectedEdges
+  if (keyPressed && (selectedNodes || selectedEdges)) {
+    const connectedEdges = (selectedNodes && getConnectedEdges(selectedNodes, store.edges)) ?? []
 
-      const nodeChanges: NodeChange[] = selectedNodes.map((n) => ({ id: n.id, type: 'remove' }))
-      const edgeChanges: EdgeChange[] = [...selectedEdges, ...connectedEdges].map((e) => ({
-        id: e.id,
-        type: 'remove',
-      }))
+    const nodeChanges: NodeChange[] = selectedNodes.map((n) => ({ id: n.id, type: 'remove' }))
+    const edgeChanges: EdgeChange[] = [...selectedEdges, ...connectedEdges].map((e) => ({
+      id: e.id,
+      type: 'remove',
+    }))
 
-      store.hooks.nodesChange.trigger(nodeChanges)
-      store.hooks.edgesChange.trigger(edgeChanges)
-      store.nodesSelectionActive = false
+    store.hooks.nodesChange.trigger(nodeChanges)
+    store.hooks.edgesChange.trigger(edgeChanges)
+    store.nodesSelectionActive = false
 
-      store.resetSelectedElements()
-    }
-  })
+    store.resetSelectedElements()
+  }
+})
 
-  useKeyPress(store.multiSelectionKeyCode, (keyPressed) => {
-    store.multiSelectionActive = keyPressed
-  })
+useKeyPress(store.multiSelectionKeyCode, (keyPressed) => {
+  store.multiSelectionActive = keyPressed
+})
 
-  useKeyPress(store.selectionKeyCode, (keyPressed) => {
-    store.selectionActive =
-      store.selectionActive === true && keyPressed ? true : keyPressed && (store.selectionActive || store.elementsSelectable)
-  })
+useKeyPress(store.selectionKeyCode, (keyPressed) => {
+  store.selectionActive =
+    store.selectionActive === true && keyPressed ? true : keyPressed && (store.selectionActive || store.elementsSelectable)
 })
 </script>
 <script lang="ts">
