@@ -12,14 +12,11 @@ const props = withDefaults(defineProps<NodeProps>(), {
 <script lang="ts">
 export default {
   name: 'InputNode',
-  inheritAttrs: false,
 }
 </script>
 <template>
-  <slot v-bind="props">
-    <component :is="props.label" v-if="typeof props.label !== 'string'" />
-    <span v-else v-html="props.label"></span>
-  </slot>
+  <component :is="props.label.component" v-bind="props.label.props" v-if="typeof props.label !== 'string'" />
+  <span v-else v-html="props.label" />
   <Handle
     type="source"
     :position="props.sourcePosition"
