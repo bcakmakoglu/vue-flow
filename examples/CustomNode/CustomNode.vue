@@ -68,9 +68,6 @@ const { onPaneReady } = useVueFlow({
   snapToGrid: true,
   snapGrid,
   defaultZoom: 1.5,
-  nodeTypes: {
-    selectorNode: markRaw(ColorSelectorNode),
-  },
 })
 onPaneReady((i) => {
   i.fitView()
@@ -79,6 +76,9 @@ onPaneReady((i) => {
 </script>
 <template>
   <VueFlow v-model="elements" :style="{ backgroundColor: bgColor }">
+    <template #node-selectorNode="props">
+      <ColorSelectorNode v-bind="props" />
+    </template>
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
     <Controls />
   </VueFlow>

@@ -9,7 +9,7 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges } = useVueFlow()
+const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges, store } = useVueFlow()
 onPaneReady(({ fitView }) => {
   fitView({ padding: 0.1 })
 })
@@ -37,7 +37,6 @@ const toggleclass = () => elements.value.forEach((el) => (el.class = el.class ==
     :default-zoom="1.5"
     :min-zoom="0.2"
     :max-zoom="4"
-    :zoom-on-scroll="false"
   >
     <Background :variant="BackgroundVariant.None" :height="33" bg-color="pink">
       <text fill="#000000" font-size="22" font-family="ARIAL" x="120" y="110"> LEVEL 1 </text>
