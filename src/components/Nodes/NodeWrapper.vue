@@ -109,7 +109,7 @@ export default {
 </script>
 <template>
   <DraggableCore
-    cancel=".nodrag"
+    :cancel="`.${store.noDragClassName}`"
     :handle="node.dragHandle"
     :disabled="!props.draggable"
     :scale="scale"
@@ -125,6 +125,7 @@ export default {
       :class="[
         'vue-flow__node',
         `vue-flow__node-${node.type}`,
+        store.noPanClassName,
         {
           dragging: node.dragging,
           selected: node.selected,
