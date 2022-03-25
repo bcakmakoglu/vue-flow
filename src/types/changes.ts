@@ -1,5 +1,5 @@
 import { XYPosition, Dimensions } from './flow'
-import { NodeHandleBounds, Node, GraphNode, CoordinateExtent } from './node'
+import { NodeHandleBounds, Node } from './node'
 import { Edge } from './edge'
 
 export type NodeDimensionChange = {
