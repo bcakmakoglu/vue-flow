@@ -1,4 +1,3 @@
-import { CSSProperties } from 'vue'
 import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions } from './flow'
 import { DefaultNodeTypes } from './components'
 import { HandleElement, ValidConnectionFunc } from './handle'
