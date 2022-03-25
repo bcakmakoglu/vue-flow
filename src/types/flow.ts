@@ -97,7 +97,7 @@ export interface FlowProps<N = any, E = N> {
   deleteKeyCode?: KeyCode
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode
-  zoomActivationKeyCode?: KeyCode | null
+  zoomActivationKeyCode?: KeyCode
   snapToGrid?: boolean
   snapGrid?: SnapGrid
   onlyRenderVisibleElements?: boolean
