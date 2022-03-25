@@ -2,7 +2,7 @@ import { ComputedRef, CSSProperties, ToRefs } from 'vue'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
 import { EdgeComponent, NodeComponent, DefaultNodeTypes, DefaultEdgeTypes } from './components'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
-import { Edge, GraphEdge } from './edge'
+import { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
 import { FlowHooks, FlowHooksOn } from './hooks'
@@ -70,6 +70,12 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   paneReady: boolean
   initialized: boolean
   applyDefault: boolean
+
+  fitViewOnInit?: boolean
+  noDragClassName?: string
+  noWheelClassName?: string
+  noPanClassName?: string
+  defaultEdgeOptions?: DefaultEdgeOptions
 
   vueFlowVersion: string
 }
