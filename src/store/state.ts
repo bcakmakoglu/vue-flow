@@ -99,6 +99,12 @@ export default (opts?: FlowOptions): State => {
 
     applyDefault: true,
 
+    fitViewOnInit: false,
+    noDragClassName: undefined,
+    noWheelClassName: undefined,
+    noPanClassName: undefined,
+    defaultEdgeOptions: undefined,
+
     vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
   }
 

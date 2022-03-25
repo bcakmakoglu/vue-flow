@@ -226,6 +226,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
       return {
         ...parseEdge(edge, {
+          ...state.defaultEdgeOptions,
           ...getters.getEdge.value(edge.id),
         }),
         sourceNode,
@@ -263,6 +264,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
           console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
         state.edges.push({
+          ...state.defaultEdgeOptions,
           ...edge,
           sourceNode,
           targetNode,
