@@ -1,32 +1,45 @@
 <script lang="ts" setup>
-import { Position } from '../../types'
+import { Position } from '../../types/flow'
 import type { EdgeProps } from '../../types/edge'
+import { getSimpleBezierPath, getSimpleBezierCenter } from './utils'
 import BaseEdge from './BaseEdge.vue'
 
 const props = withDefaults(defineProps<EdgeProps>(), {
   selected: false,
   sourcePosition: 'bottom' as Position,
   targetPosition: 'top' as Position,
-  label: () => '',
   labelStyle: () => ({}),
+  label: () => '',
   labelShowBg: true,
   labelBgStyle: () => ({}),
 })
 
-const centerY = computed(() => {
-  const yOffset = Math.abs(props.targetY - props.sourceY) / 2
-  return props.targetY < props.sourceY ? props.targetY + yOffset : props.targetY - yOffset
+const centered = computed(() =>
+  getSimpleBezierPath({
+    sourceX: props.sourceX,
+    sourceY: props.sourceY,
+    targetX: props.targetX,
+    targetY: props.targetY,
+    sourcePosition: props.sourcePosition,
+    targetPosition: props.targetPosition,
+  }),
+)
+const path = computed(() => {
+  if (props.sourceX && props.sourceY)
+    return getSimpleBezierCenter({
+      sourceX: props.sourceX,
+      sourceY: props.sourceY,
+      targetX: props.targetX,
+      targetY: props.targetY,
+      sourcePosition: props.sourcePosition,
+      targetPosition: props.targetPosition,
+    })
+  else return ''
 })
-const centerX = computed(() => {
-  const xOffset = Math.abs(props.targetX - props.sourceX) / 2
-  return props.targetX < props.sourceX ? props.targetX + xOffset : props.targetX - xOffset
-})
-
-const path = computed(() => `M ${props.sourceX},${props.sourceY}L ${props.targetX},${props.targetY}`)
 </script>
 <script lang="ts">
 export default {
-  name: 'StraightEdge',
+  name: 'SimpleBezierEdge',
 }
 </script>
 <template>

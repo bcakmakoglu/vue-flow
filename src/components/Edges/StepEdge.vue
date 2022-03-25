@@ -19,7 +19,5 @@ export default {
 }
 </script>
 <template>
-  <SmoothStepEdge v-bind="props" :border-radius="0">
-    <slot />
-  </SmoothStepEdge>
+  <SmoothStepEdge v-bind="props" :border-radius="0" />
 </template>

@@ -1,132 +1,16 @@
-import { GetBezierPathParams, GetCenterParams, GetControlWithCurvatureParams, GetSmoothStepPathParams, Position } from '~/types'
+import { getCenter } from './general'
+import { Position } from '~/types'
 
-const LeftOrRight = [Position.Left, Position.Right]
-
-export const getCenter = ({
-  sourceX,
-  sourceY,
-  targetX,
-  targetY,
-  sourcePosition = Position.Bottom,
-  targetPosition = Position.Top,
-}: GetCenterParams): [number, number, number, number] => {
-  const sourceIsLeftOrRight = LeftOrRight.includes(sourcePosition)
-  const targetIsLeftOrRight = LeftOrRight.includes(targetPosition)
-
-  // we expect flows to be horizontal or vertical (all handles left or right respectively top or bottom)
-  // a mixed edge is when one the source is on the left and the target is on the top for example.
-  const mixedEdge = (sourceIsLeftOrRight && !targetIsLeftOrRight) || (targetIsLeftOrRight && !sourceIsLeftOrRight)
-
-  if (mixedEdge) {
-    const xOffset = sourceIsLeftOrRight ? Math.abs(targetX - sourceX) : 0
-    const centerX = sourceX > targetX ? sourceX - xOffset : sourceX + xOffset
-
-    const yOffset = sourceIsLeftOrRight ? 0 : Math.abs(targetY - sourceY)
-    const centerY = sourceY < targetY ? sourceY + yOffset : sourceY - yOffset
-
-    return [centerX, centerY, xOffset, yOffset]
-  }
-
-  const xOffset = Math.abs(targetX - sourceX) / 2
-  const centerX = targetX < sourceX ? targetX + xOffset : targetX - xOffset
-
-  const yOffset = Math.abs(targetY - sourceY) / 2
-  const centerY = targetY < sourceY ? targetY + yOffset : targetY - yOffset
-
-  return [centerX, centerY, xOffset, yOffset]
-}
-
-function calculateControlOffset(distance: number, curvature: number): number {
-  if (distance >= 0) {
-    return 0.5 * distance
-  } else {
-    return curvature * 25 * Math.sqrt(-distance)
-  }
-}
-
-function getControlWithCurvature({ pos, x1, y1, x2, y2, c }: GetControlWithCurvatureParams): [number, number] {
-  let ctX: number, ctY: number
-  switch (pos) {
-    case Position.Left:
-      ctX = x1 - calculateControlOffset(x1 - x2, c)
-      ctY = y1
-      break
-    case Position.Right:
-      ctX = x1 + calculateControlOffset(x2 - x1, c)
-      ctY = y1
-      break
-    case Position.Top:
-      ctX = x1
-      ctY = y1 - calculateControlOffset(y1 - y2, c)
-      break
-    case Position.Bottom:
-      ctX = x1
-      ctY = y1 + calculateControlOffset(y2 - y1, c)
-      break
-  }
-  return [ctX, ctY]
-}
-
-export function getBezierPath({
-  sourceX,
-  sourceY,
-  sourcePosition = Position.Bottom,
-  targetX,
-  targetY,
-  targetPosition = Position.Top,
-  curvature = 0.25,
-}: GetBezierPathParams): string {
-  const [sourceControlX, sourceControlY] = getControlWithCurvature({
-    pos: sourcePosition,
-    x1: sourceX,
-    y1: sourceY,
-    x2: targetX,
-    y2: targetY,
-    c: curvature,
-  })
-  const [targetControlX, targetControlY] = getControlWithCurvature({
-    pos: targetPosition,
-    x1: targetX,
-    y1: targetY,
-    x2: sourceX,
-    y2: sourceY,
-    c: curvature,
-  })
-  return `M${sourceX},${sourceY} C${sourceControlX},${sourceControlY} ${targetControlX},${targetControlY} ${targetX},${targetY}`
-}
-
-export function getBezierCenter({
-  sourceX,
-  sourceY,
-  sourcePosition = Position.Bottom,
-  targetX,
-  targetY,
-  targetPosition = Position.Top,
-  curvature = 0.25,
-}: GetBezierPathParams): [number, number, number, number] {
-  const [sourceControlX, sourceControlY] = getControlWithCurvature({
-    pos: sourcePosition,
-    x1: sourceX,
-    y1: sourceY,
-    x2: targetX,
-    y2: targetY,
-    c: curvature,
-  })
-  const [targetControlX, targetControlY] = getControlWithCurvature({
-    pos: targetPosition,
-    x1: targetX,
-    y1: targetY,
-    x2: sourceX,
-    y2: sourceY,
-    c: curvature,
-  })
-  // cubic bezier t=0.5 mid point, not the actual mid point, but easy to calculate
-  // https://stackoverflow.com/questions/67516101/how-to-find-distance-mid-point-of-bezier-curve
-  const centerX = sourceX * 0.125 + sourceControlX * 0.375 + targetControlX * 0.375 + targetX * 0.125
-  const centerY = sourceY * 0.125 + sourceControlY * 0.375 + targetControlY * 0.375 + targetY * 0.125
-  const xOffset = Math.abs(centerX - sourceX)
-  const yOffset = Math.abs(centerY - sourceY)
-  return [centerX, centerY, xOffset, yOffset]
+export interface GetSmoothStepPathParams {
+  sourceX: number
+  sourceY: number
+  sourcePosition?: Position
+  targetX: number
+  targetY: number
+  targetPosition?: Position
+  borderRadius?: number
+  centerX?: number
+  centerY?: number
 }
 
 // These are some helper methods for drawing the round corners
