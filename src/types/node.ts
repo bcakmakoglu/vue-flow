@@ -47,6 +47,8 @@ export interface NodeProps<T = any> {
   computedPosition: XYZPosition
   /** x and y position on the graph */
   position: XYPosition
+  /** node dimensions (width, height) */
+  dimensions: Dimensions
   label?:
     | string
     | {
