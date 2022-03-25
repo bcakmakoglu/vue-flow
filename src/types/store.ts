@@ -31,7 +31,7 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
 
   selectedNodesBbox: Rect
   nodesSelectionActive: boolean
-  selectionActive: boolean
+  userSelectionActive: boolean
   multiSelectionActive: boolean
   deleteKeyCode: KeyCode
   selectionKeyCode: KeyCode

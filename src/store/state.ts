@@ -77,7 +77,7 @@ export default (opts?: FlowOptions): State => {
     defaultPosition: [0, 0],
 
     nodesSelectionActive: false,
-    selectionActive: false,
+    userSelectionActive: false,
     selectedNodesBbox: { x: 0, y: 0, width: 0, height: 0 },
 
     defaultMarkerColor: '#b1b1b7',
