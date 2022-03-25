@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { EdgeTextProps } from '../../types/components'
-import { useVueFlow } from '../../composables'
+import { Rect } from '../../types'
 
 const props = withDefaults(defineProps<EdgeTextProps>(), {
   labelStyle: () => ({}),
@@ -10,12 +10,14 @@ const props = withDefaults(defineProps<EdgeTextProps>(), {
   labelBgBorderRadius: 2,
 })
 
-const { transform: paneTransform } = useVueFlow()
 const edgeRef = templateRef<SVGTextElement>('edge-text', null)
-const { width, height } = useElementBounding(edgeRef)
-const transform = computed(
-  () => `translate(${props.x - width.value / paneTransform.value[2] / 2} ${props.y - height.value / paneTransform.value[2] / 2})`,
-)
+
+const edgeRefBbox = ref<Rect>({ x: 0, y: 0, width: 0, height: 0 })
+
+onMounted(() => {
+  edgeRefBbox.value = edgeRef.value.getBBox()
+})
+const transform = computed(() => `translate(${props.x - edgeRefBbox.value.width / 2} ${props.y - edgeRefBbox.value.height / 2})`)
 </script>
 <script lang="ts">
 export default {
@@ -23,24 +25,24 @@ export default {
 }
 </script>
 <template>
-  <g :transform="transform" class="vue-flow__edge-textwrapper">
+  <g :transform="transform" :class="props.class" class="vue-flow__edge-textwrapper">
     <rect
       v-if="props.labelShowBg"
       class="vue-flow__edge-textbg"
-      :width="width / paneTransform[2] + 2 * props.labelBgPadding[0] + 'px'"
-      :height="height / paneTransform[2] + 2 * props.labelBgPadding[1] + 'px'"
+      :width="edgeRefBbox.width + 2 * props.labelBgPadding[0] + 'px'"
+      :height="edgeRefBbox.height + 2 * props.labelBgPadding[1] + 'px'"
       :x="-props.labelBgPadding[0]"
       :y="-props.labelBgPadding[1]"
       :style="props.labelBgStyle"
       :rx="props.labelBgBorderRadius"
       :ry="props.labelBgBorderRadius"
     />
-    <text ref="edge-text" class="vue-flow__edge-text" :y="height / paneTransform[2] / 2" dy="0.3em" :style="props.labelStyle">
+    <text ref="edge-text" class="vue-flow__edge-text" :y="edgeRefBbox.height / 2" dy="0.3em" :style="props.labelStyle">
       <slot v-bind="props">
         <component
           :is="props.label?.component"
           v-if="typeof props.label !== 'string' && typeof props.label?.component !== 'undefined'"
-          v-bind="{ ...props, ...props.label?.props, width, height }"
+          v-bind="props.label?.props"
         />
         <template v-else v-html="props.label">
           {{ props.label }}
