@@ -39,36 +39,27 @@ export interface GraphNode<T = any, P = any> extends Node<T> {
 
 export interface NodeProps<T = any> {
   id: string
-  dimensions: Dimensions
-  handleBounds: NodeHandleBounds
+  nodeElement: HTMLDivElement
+  type: string
+  data: T
+  selected: boolean
+  connectable: boolean
   /** computed position is the position relative to the node's extent (i.e. parent or CoordinateExtent) */
   computedPosition: XYZPosition
   /** x and y position on the graph */
   position: XYPosition
-  draggable: boolean
-  selectable: boolean
-  connectable: boolean
-  selected: boolean
-  dragging: boolean
-  hidden: boolean
-  nodeElement: HTMLDivElement
-  zIndex: number
   label?:
     | string
     | {
         props?: any
         component: any
       }
-  class?: string
-  style?: CSSProperties
-  type?: string
-  data?: T
-  targetPosition?: Position
-  sourcePosition?: Position
   isValidTargetPos?: ValidConnectionFunc
   isValidSourcePos?: ValidConnectionFunc
   parentNode?: string
-  isParent?: boolean
-  children?: Node<T>[]
+  dragging: boolean
+  zIndex: number
+  targetPosition?: Position
+  sourcePosition?: Position
   dragHandle?: string
 }

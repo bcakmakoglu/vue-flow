@@ -16,7 +16,7 @@ interface NodeWrapperProps {
 
 const props = defineProps<NodeWrapperProps>()
 const node = useVModel(props, 'node')
-const { id, store } = useVueFlow()
+const { store } = useVueFlow()
 provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
@@ -93,8 +93,6 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 }
 
-const removeEmpty = (obj: Record<string, any>) => Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null))
-
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 onMounted(() => {
   useResizeObserver(nodeElement, () => store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]))
@@ -150,31 +148,45 @@ export default {
     >
       <slot
         v-bind="{
-          ...node,
-            nodeElement,
-            connectable: props.connectable,
-            draggable: props.draggable,
-            selectable: props.selectable,
-            zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
-            selected: !!node.selected,
-            hidden: !!node.hidden,
-            dragging: !!node.dragging,
-            parentNode: node.parentNode ? node.parentNode.id : undefined,
+             nodeElement,
+             id: node.id,
+             type: node.type,
+             data: node.data,
+             selected: !!node.selected,
+             isConnectable: props.connectable,
+             position: node.position,
+             computedPosition: node.computedPosition,
+             isValidTargetPos: node.isValidTargetPos,
+             isValidSourcePos: node.isValidSourcePos,
+             parentNode: node.parentNode ? node.parentNode.id : undefined,
+             dragging: !!node.dragging,
+             zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
+             targetPosition: node.targetPosition,
+             sourcePosition: node.sourcePosition,
+             label: node.label,
+             dragHandle: node.dragHandle,
         }"
       >
         <component
           :is="props.type ?? node.type"
           v-bind="{
-            ...node,
-            nodeElement,
-            connectable: props.connectable,
-            draggable: props.draggable,
-            selectable: props.selectable,
-            zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
-            selected: !!node.selected,
-            hidden: !!node.hidden,
-            dragging: !!node.dragging,
-            parentNode: node.parentNode ? node.parentNode.id : undefined,
+             nodeElement,
+             id: node.id,
+             type: node.type,
+             data: node.data,
+             selected: !!node.selected,
+             connectable: props.connectable,
+             position: node.position,
+             computedPosition: node.computedPosition,
+             isValidTargetPos: node.isValidTargetPos,
+             isValidSourcePos: node.isValidSourcePos,
+             parentNode: node.parentNode ? node.parentNode.id : undefined,
+             dragging: !!node.dragging,
+             zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
+             targetPosition: node.targetPosition,
+             sourcePosition: node.sourcePosition,
+             label: node.label,
+             dragHandle: node.dragHandle,
           }"
         />
       </slot>

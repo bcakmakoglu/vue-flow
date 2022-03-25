@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<NodeProps>(), {
 <script lang="ts">
 export default {
   name: 'DefaultNode',
-  inheritAttrs: false,
 }
 </script>
 <template>
@@ -23,10 +22,8 @@ export default {
     :is-connectable="props.connectable"
     :is-valid-connection="props.isValidTargetPos"
   />
-  <slot v-bind="props">
-    <component :is="props.label" v-if="typeof props.label !== 'string'" />
-    <span v-else v-html="props.label"></span>
-  </slot>
+  <component :is="props.label.component" v-bind="props.label.props" v-if="typeof props.label !== 'string'" />
+  <span v-else v-html="props.label" />
   <Handle
     type="source"
     :position="props.sourcePosition"
