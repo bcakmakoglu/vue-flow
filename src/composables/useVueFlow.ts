@@ -59,20 +59,20 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
     const name = options?.id ?? `vue-flow-${id++}`
 
     vueFlow = storage.create(name, options)
+
+    if (scope) {
+      provide(VueFlow, storage.get(name))
+      scope.vueFlowId = name
+
+      onScopeDispose(() => {
+        storage.remove(name)
+        vueFlow = null
+      })
+    }
   } else {
     if (options) vueFlow.setState(options)
   }
   if (!vueFlow) throw new Error('vue flow store instance not found.')
-
-  if (scope) {
-    provide(VueFlow, storage.get(vueFlow.id))
-    scope.vueFlowId = vueFlow.id
-
-    onScopeDispose(() => {
-      storage.remove(vueFlow!.id)
-      vueFlow = null
-    })
-  }
 
   return vueFlow
 }
