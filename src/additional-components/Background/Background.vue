@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<BackgroundProps>(), {
 const defaultColors: Record<BackgroundVariant, string> = {
   [BackgroundVariant.Dots]: '#81818a',
   [BackgroundVariant.Lines]: '#eee',
-  [BackgroundVariant.None]: '#eee',
 }
 
 const { store } = useVueFlow()
