@@ -42,8 +42,8 @@ useKeyPress(store.multiSelectionKeyCode, (keyPressed) => {
 })
 
 useKeyPress(store.selectionKeyCode, (keyPressed) => {
-  store.selectionActive =
-    store.selectionActive === true && keyPressed ? true : keyPressed && (store.selectionActive || store.elementsSelectable)
+  if (store.userSelectionActive && keyPressed) return
+  store.userSelectionActive = keyPressed && store.elementsSelectable
 })
 </script>
 <script lang="ts">
@@ -53,11 +53,8 @@ export default {
 }
 </script>
 <template>
-  <UserSelection v-if="store.selectionActive" :key="`user-selection-${id}`" />
-  <NodesSelection
-    v-if="store.getSelectedNodes.length && !store.selectionActive && store.nodesSelectionActive"
-    :key="`nodes-selction-${id}`"
-  />
+  <UserSelection v-if="store.userSelectionActive" :key="`user-selection-${id}`" />
+  <NodesSelection v-if="store.nodesSelectionActive" :key="`nodes-selection-${id}`" />
   <div
     :key="`flow-pane-${id}`"
     class="vue-flow__pane vue-flow__container"

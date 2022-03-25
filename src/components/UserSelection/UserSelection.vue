@@ -23,7 +23,7 @@ const rect = ref<Rect>(initialRect())
 
 const reset = () => {
   rect.value = initialRect()
-  store.selectionActive = false
+  store.userSelectionActive = false
   prevNodes.value = 0
   prevEdges.value = 0
 }
@@ -40,12 +40,12 @@ const onMouseDown = (event: MouseEvent) => {
     y: mousePos.y,
     draw: true,
   }
-  store.selectionActive = true
+  store.userSelectionActive = true
   store.nodesSelectionActive = false
 }
 
 const onMouseMove = (event: MouseEvent) => {
-  if (!store.selectionActive) return
+  if (!store.userSelectionActive) return
   const mousePos = getMousePosition(event)
   if (!mousePos) return
 

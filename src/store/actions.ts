@@ -175,7 +175,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     let changedEdges: EdgeChange[]
     if (state.multiSelectionActive) changedEdges = selectedEdgesIds.map((nodeId) => createSelectionChange(nodeId, true))
-    else changedEdges = getSelectionChanges(state.nodes, selectedEdgesIds)
+    else changedEdges = getSelectionChanges(state.edges, selectedEdgesIds)
 
     if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
