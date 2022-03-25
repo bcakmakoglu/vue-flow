@@ -28,9 +28,8 @@ const edgePath = computed(() =>
     targetPosition: props.targetPosition,
   }),
 )
-console.log(props)
+
 const markerEnd = computed(() => getMarkerId(props.markerEnd))
-console.log(markerEnd.value)
 </script>
 <script lang="ts">
 export default {
