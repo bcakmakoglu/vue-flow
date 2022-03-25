@@ -39,12 +39,6 @@ export enum ConnectionMode {
   Loose = 'loose',
 }
 
-export type SetConnectionId = {
-  connectionNodeId: string | undefined
-  connectionHandleId: string | undefined
-  connectionHandleType: HandleType | undefined
-}
-
 export interface ConnectionLineProps<N = any> {
   /** Source X position of the connection line */
   sourceX: number
@@ -58,7 +52,9 @@ export interface ConnectionLineProps<N = any> {
   targetY: number
   /** Target position of the connection line */
   targetPosition: Position
+  /** the shape of the connection line when active */
   connectionLineType: ConnectionLineType
+  /** extra styles */
   connectionLineStyle: CSSProperties
   /** All currently stored nodes */
   nodes: GraphNode<N>[]

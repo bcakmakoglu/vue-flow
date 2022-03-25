@@ -10,10 +10,13 @@ import { NodeChange, EdgeChange } from './changes'
 import { StartHandle, HandleType } from './handle'
 
 export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'modelValue'> {
+  /** Event hooks, you can manipulate the triggers on your own peril */
   hooks: FlowHooks<N, E>
   instance: FlowInstance<N, E> | null
 
+  /** all stored nodes */
   nodes: GraphNode<N>[]
+  /** all stored edges */
   edges: GraphEdge<E>[]
 
   d3Zoom: D3Zoom | null
@@ -24,7 +27,9 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   defaultZoom: number
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent
+  /** zoom pane dimensions */
   dimensions: Dimensions
+  /** transform x, y, z */
   transform: Transform
   onlyRenderVisibleElements: boolean
   defaultPosition: [number, number]
@@ -83,9 +88,13 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
 export interface Actions<N = any, E = N> {
   /** @deprecated use setNodes / setEdges instead */
   setElements: (elements: Elements<N, E>, extent?: CoordinateExtent) => void
+  /** parses nodes and re-sets the state */
   setNodes: (nodes: Node<N>[], extent?: CoordinateExtent) => void
+  /** parses edges and re-sets the state */
   setEdges: (edges: Edge<E>[]) => void
+  /** parses nodes and adds to state */
   addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
+  /** parses edges and adds to state */
   addEdges: <EA = E>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
   updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => boolean
   applyEdgeChanges: <ED = E>(changes: EdgeChange[]) => GraphEdge<ED>[]
@@ -113,7 +122,9 @@ export interface Actions<N = any, E = N> {
 export interface Getters<N = any, E = N> {
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
+  /** filters hidden nodes */
   getNodes: GraphNode<N>[]
+  /** filters hidden edges */
   getEdges: GraphEdge<E>[]
   getNode: (id: string) => GraphNode<N> | undefined
   getEdge: (id: string) => GraphEdge<E> | undefined

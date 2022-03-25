@@ -23,7 +23,7 @@ export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' |
 export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: NodeComponent }
 
 export interface BackgroundProps {
-  /** The background pattern */
+  /** The background pattern variant, {@link BackgroundVariant} */
   variant?: BackgroundVariant
   /** Background pattern gap */
   gap?: number
@@ -61,6 +61,7 @@ export interface ControlEvents {
   (event: 'interaction-change', active: boolean): void
 }
 
+/** expects a node and returns a color value */
 export type StringFunc<N = any> = (node: Node<N> | GraphNode<N>) => string
 export type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
 
@@ -79,6 +80,7 @@ export interface MiniMapProps<N = any> {
   maskColor?: string
 }
 
+/** these props are passed to mini map node slots */
 export interface MiniMapNodeProps {
   position: XYPosition
   dimensions: Dimensions
@@ -89,6 +91,7 @@ export interface MiniMapNodeProps {
   strokeWidth?: number
 }
 
+/** these props are passed to edge texts */
 export interface EdgeTextProps extends HTMLAttributes {
   x: number
   y: number
