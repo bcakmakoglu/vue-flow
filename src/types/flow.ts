@@ -106,7 +106,7 @@ export interface FlowProps<N = any, E = N> {
   nodesConnectable?: boolean
   elementsSelectable?: boolean
   selectNodesOnDrag?: boolean
-  paneMovable?: boolean
+  panOnDrag?: boolean
   minZoom?: number
   maxZoom?: number
   defaultZoom?: number
@@ -116,7 +116,6 @@ export interface FlowProps<N = any, E = N> {
   defaultMarkerColor?: string
   zoomOnScroll?: boolean
   zoomOnPinch?: boolean
-  panOnDrag?: boolean
   panOnScroll?: boolean
   panOnScrollSpeed?: number
   panOnScrollMode?: PanOnScrollMode

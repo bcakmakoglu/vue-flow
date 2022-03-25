@@ -60,7 +60,7 @@ export default (opts?: FlowOptions): State => {
     panOnScroll: false,
     panOnScrollSpeed: 0.5,
     panOnScrollMode: PanOnScrollMode.Free,
-    paneMovable: true,
+    panOnDrag: true,
     edgeUpdaterRadius: 10,
     onlyRenderVisibleElements: false,
     defaultZoom: 1,
@@ -92,7 +92,7 @@ export default (opts?: FlowOptions): State => {
     multiSelectionActive: false,
     selectionKeyCode: 'Shift',
     multiSelectionKeyCode: 'Meta',
-    zoomActivationKeyCode: null,
+    zoomActivationKeyCode: 'Meta',
     deleteKeyCode: 'Backspace',
 
     hooks: createHooks(),
@@ -100,9 +100,9 @@ export default (opts?: FlowOptions): State => {
     applyDefault: true,
 
     fitViewOnInit: false,
-    noDragClassName: undefined,
-    noWheelClassName: undefined,
-    noPanClassName: undefined,
+    noDragClassName: 'nodrag',
+    noWheelClassName: 'nowheel',
+    noPanClassName: 'nopan',
     defaultEdgeOptions: undefined,
 
     vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
