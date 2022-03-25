@@ -1,4 +1,4 @@
-import { Component, CSSProperties, DefineComponent } from 'vue'
+import { Component, CSSProperties, DefineComponent, HTMLAttributes } from "vue";
 import { BackgroundVariant, Dimensions, XYPosition } from './flow'
 import { GraphNode, Node, NodeProps } from './node'
 import { EdgeProps } from './edge'
@@ -89,7 +89,7 @@ export interface MiniMapNodeProps {
   strokeWidth?: number
 }
 
-export interface EdgeTextProps {
+export interface EdgeTextProps extends HTMLAttributes {
   x: number
   y: number
   label?:
