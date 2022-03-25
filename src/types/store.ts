@@ -36,7 +36,7 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   deleteKeyCode: KeyCode
   selectionKeyCode: KeyCode
   multiSelectionKeyCode: KeyCode
-  zoomActivationKeyCode: KeyCode | null
+  zoomActivationKeyCode: KeyCode
 
   connectionNodeId: string | null
   connectionHandleId: string | null
@@ -58,7 +58,7 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   nodesConnectable: boolean
   elementsSelectable: boolean
   selectNodesOnDrag: boolean
-  paneMovable: boolean
+  panOnDrag: boolean
   zoomOnScroll: boolean
   zoomOnPinch: boolean
   panOnScroll: boolean
