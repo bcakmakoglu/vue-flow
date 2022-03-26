@@ -1,9 +1,15 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, BackgroundVariant, isNode, useVueFlow, Elements } from '~/index'
+import ResizableNode from './ResizableNode.vue'
+import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '~/index'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
+  {
+    id: '2',
+    type: 'resize',
+    label: 'Node 2',
+    position: { x: 100, y: 100 },
+  },
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
   { id: '4', label: 'Node 4', position: { x: 400, y: 200 } },
   { id: 'e1-2', source: '1', target: '2', animated: true },
@@ -31,14 +37,11 @@ const resetTransform = () => elements.value.push({ id: '1234', position: { x: 50
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
 <template>
-  <VueFlow
-    v-model="elements"
-    class="vue-flow-basic-example"
-    :default-zoom="1.5"
-    :min-zoom="0.2"
-    :max-zoom="4"
-  >
-    <Background :variant="BackgroundVariant.None" :height="33" bg-color="pink">
+  <VueFlow v-model="elements" class="vue-flow-basic-example" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
+    <template #node-resize="props">
+      <ResizableNode v-bind="props" />
+    </template>
+    <Background :height="33" bg-color="pink">
       <text fill="#000000" font-size="22" font-family="ARIAL" x="120" y="110"> LEVEL 1 </text>
     </Background>
     <Background :height="33" bg-color="purple">
