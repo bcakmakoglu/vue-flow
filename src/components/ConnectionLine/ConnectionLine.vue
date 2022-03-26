@@ -68,6 +68,22 @@ export default {
 </script>
 <template>
   <g class="vue-flow__connection">
-    <path :d="dAttr" class="vue-flow__connection-path" :style="store.connectionLineStyle || {}" />
+    <slot
+      v-bind="{
+        sourceX,
+        sourceY,
+        sourcePosition: sourceHandle?.position,
+        targetX,
+        targetY,
+        targetPosition,
+        connectionLineType: store.connectionLineType,
+        connectionLineStyle: store.connectionLineStyle,
+        nodes: store.getNodes,
+        sourceNode: props.sourceNode,
+        sourceHandle,
+      }"
+    >
+      <path :d="dAttr" class="vue-flow__connection-path" :style="store.connectionLineStyle || {}" />
+    </slot>
   </g>
 </template>
