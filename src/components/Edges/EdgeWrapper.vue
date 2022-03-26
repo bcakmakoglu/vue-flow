@@ -70,35 +70,33 @@ const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.p
 const edgeUpdaterRadius = computed(() => store.edgeUpdaterRadius)
 
 onMounted(() => {
-  nextTick(() => {
-    watch(
-      [
-        sourcePosition,
-        targetPosition,
-        () => edge.value.sourceNode.position,
-        () => edge.value.targetNode.position,
-        () => edge.value.sourceNode.computedPosition,
-        () => edge.value.targetNode.computedPosition,
-        () => edge.value.sourceNode.dimensions,
-        () => edge.value.targetNode.dimensions,
-      ],
-      () => {
-        const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-          edge.value.sourceNode,
-          sourceHandle.value,
-          sourcePosition.value,
-          edge.value.targetNode,
-          targetHandle.value,
-          targetPosition.value,
-        )
-        if (edge.value.sourceX !== sourceX) edge.value.sourceX = sourceX
-        if (edge.value.sourceY !== sourceY) edge.value.sourceY = sourceY
-        if (edge.value.targetX !== targetX) edge.value.targetX = targetX
-        if (edge.value.targetY !== targetY) edge.value.targetY = targetY
-      },
-      { immediate: true, deep: true },
-    )
-  })
+  watch(
+    [
+      sourcePosition,
+      targetPosition,
+      () => edge.value.sourceNode.position,
+      () => edge.value.targetNode.position,
+      () => edge.value.sourceNode.computedPosition,
+      () => edge.value.targetNode.computedPosition,
+      () => edge.value.sourceNode.dimensions,
+      () => edge.value.targetNode.dimensions,
+    ],
+    () => {
+      const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
+        edge.value.sourceNode,
+        sourceHandle.value,
+        sourcePosition.value,
+        edge.value.targetNode,
+        targetHandle.value,
+        targetPosition.value,
+      )
+      if (edge.value.sourceX !== sourceX) edge.value.sourceX = sourceX
+      if (edge.value.sourceY !== sourceY) edge.value.sourceY = sourceY
+      if (edge.value.targetX !== targetX) edge.value.targetX = targetX
+      if (edge.value.targetY !== targetY) edge.value.targetY = targetY
+    },
+    { immediate: true, deep: true },
+  )
 })
 </script>
 <script lang="ts">
@@ -112,6 +110,7 @@ export default {
     :class="[
       'vue-flow__edge',
       `vue-flow__edge-${edge.type || 'default'}`,
+      store.noPanClassName,
       {
         selected: edge.selected,
         animated: edge.animated,
