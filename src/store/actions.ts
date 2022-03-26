@@ -1,19 +1,19 @@
 import useState from './state'
 import {
-  CoordinateExtent,
-  EdgeChange,
   Actions,
   ComputedGetters,
-  State,
+  Connection,
+  CoordinateExtent,
+  Edge,
+  EdgeChange,
+  Getters,
+  GraphEdge,
   GraphNode,
   Node,
   NodeChange,
   NodeDimensionChange,
-  Edge,
-  Connection,
-  GraphEdge,
   NodePositionChange,
-  Getters,
+  State,
 } from '~/types'
 import {
   applyChanges,
@@ -149,11 +149,10 @@ export default (state: State, getters: ComputedGetters): Actions => {
           dimensions.height &&
           (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height || update.forceUpdate)
         )
+        node.handleBounds = getHandleBounds(update.nodeElement, state.transform[2])
 
         if (doUpdate) {
-          const handleBounds = getHandleBounds(update.nodeElement, state.transform[2])
           node.dimensions = dimensions
-          node.handleBounds = handleBounds
 
           res.push({
             id: node.id,
