@@ -48,13 +48,19 @@ type Scope = EffectScope & { vueFlowId: string }
 export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlow<N, E> => {
   const storage = Storage.getInstance()
   const scope = getCurrentScope() as Scope
+  const vueFlowId = scope.vueFlowId || options?.id
+
   let vueFlow: UseVueFlow | null | undefined
+
   if (scope) {
     const injection = inject(VueFlow, null)
-    const id = scope.vueFlowId || options?.id
     if (typeof injection !== 'undefined' && injection !== null) vueFlow = injection
-    else if (id) vueFlow = storage.get(scope.vueFlowId)
   }
+
+  if (!vueFlow) {
+    if (vueFlowId) vueFlow = storage.get(scope.vueFlowId)
+  }
+
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
     const name = options?.id ?? `vue-flow-${id++}`
 
@@ -72,6 +78,7 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
   } else {
     if (options) vueFlow.setState(options)
   }
+
   if (!vueFlow) throw new Error('vue flow store instance not found.')
 
   return vueFlow
