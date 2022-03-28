@@ -21,26 +21,6 @@ provide(NodeId, props.node.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
 
-const scale = controlledComputed(
-  () => store.transform[2],
-  () => store.transform[2],
-)
-watch(
-  [() => node.value.position, () => store.getNode(node.value.parentNode!)],
-  ([pos, parent]) => {
-    const xyzPos = {
-      ...pos,
-      z: node.value.dragging || node.value.selected ? 1000 : node.value.computedPosition.z,
-    }
-    if (parent) {
-      node.value.computedPosition = getXYZPos(parent, xyzPos)
-    } else {
-      node.value.computedPosition = xyzPos
-    }
-  },
-  { deep: true },
-)
-
 const onMouseEnterHandler = () =>
   node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: node.value }))
 const onMouseMoveHandler = () =>
@@ -93,16 +73,40 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 }
 
-store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 onMounted(() => {
   useResizeObserver(nodeElement, () =>
     store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]),
   )
+
   watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () =>
     nextTick(() => store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])),
   )
+
   store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])
 })
+
+const scale = controlledComputed(
+  () => store.transform[2],
+  () => store.transform[2],
+)
+
+watch(
+  [() => node.value.position, () => store.getNode(node.value.parentNode!)],
+  ([pos, parent]) => {
+    const xyzPos = {
+      ...pos,
+      z: node.value.dragging || node.value.selected ? 1000 : node.value.computedPosition.z,
+    }
+    if (parent) {
+      node.value.computedPosition = getXYZPos(parent, xyzPos)
+    } else {
+      node.value.computedPosition = xyzPos
+    }
+  },
+  { deep: true },
+)
+
+store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 </script>
 <script lang="ts">
 export default {
