@@ -4,6 +4,7 @@ import { VueFlow } from '~/context'
 import { useStore } from '~/store'
 
 export class Storage {
+  public currentId = 0
   public flows = new Map<string, UseVueFlow>()
   static instance: Storage
 
@@ -40,17 +41,21 @@ export class Storage {
     this.set(id, flow)
     return flow
   }
+
+  public getId() {
+    return `vue-flow-${this.currentId++}`
+  }
 }
 
-let id = 0
+type Injection = UseVueFlow | null | undefined
+type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
-type Scope = EffectScope & { vueFlowId: string }
 export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlow<N, E> => {
   const storage = Storage.getInstance()
   const scope = getCurrentScope() as Scope
-  const vueFlowId = scope.vueFlowId || options?.id
+  const vueFlowId = scope?.vueFlowId || options?.id
 
-  let vueFlow: UseVueFlow | null | undefined
+  let vueFlow: Injection
 
   if (scope) {
     const injection = inject(VueFlow, null)
@@ -58,11 +63,11 @@ export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlo
   }
 
   if (!vueFlow) {
-    if (vueFlowId) vueFlow = storage.get(scope.vueFlowId)
+    if (vueFlowId) vueFlow = storage.get(vueFlowId)
   }
 
   if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
-    const name = options?.id ?? `vue-flow-${id++}`
+    const name = options?.id ?? storage.getId()
 
     vueFlow = storage.create(name, options)
 
