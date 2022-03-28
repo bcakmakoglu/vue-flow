@@ -110,7 +110,7 @@ export interface Actions<N = any, E = N> {
   setState: (state: Partial<FlowOptions<N, E> & Omit<State, 'nodes' | 'edges' | 'modelValue'>>) => void
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
   updateNodeDimensions: (
-    update: {
+    updates: {
       id: string
       nodeElement: HTMLDivElement
       forceUpdate?: boolean
