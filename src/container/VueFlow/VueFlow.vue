@@ -54,9 +54,25 @@ if (props.modelValue && !storedNodes.value.length) setElements(props.modelValue)
 if (props.nodes && !storedNodes.value.length) setNodes(props.nodes)
 if (props.edges && !storedEdges.value.length) setEdges(props.edges)
 
-if (modelValue && modelValue.value) modelValue.value = [...store.nodes, ...store.edges]
-if (nodes && nodes.value) nodes.value = store.nodes
-if (edges && edges.value) edges.value = store.edges
+if (modelValue && modelValue.value) {
+  watch([() => storedEdges.value.length, () => storedNodes.value.length], () => {
+    modelValue.value = [...storedNodes.value, ...storedEdges.value]
+  })
+}
+
+if (nodes && nodes.value) {
+  watch(
+    () => storedNodes.value.length,
+    () => (nodes.value = [...storedNodes.value]),
+  )
+}
+
+if (edges && edges.value) {
+  watch(
+    () => storedEdges.value.length,
+    () => (edges.value = [...storedEdges.value]),
+  )
+}
 </script>
 <script lang="ts">
 export default {
