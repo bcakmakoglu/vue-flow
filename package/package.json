@@ -22,15 +22,14 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "prepare": "ts-patch install -s",
-    "prebuild": "shx cp ../README.md .",
     "build": "vite build && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && yarn theme",
-    "postbuild": "shx rm -rf tmp",
-    "prepublishOnly": "yarn build",
-    "postpublish": "shx rm README.md",
+    "postbuild": "shx rm -rf tmp && yarn lint",
     "test": "yarn --cwd .. test",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
-    "theme": "postcss src/theme-default.css -o dist/theme-default.css"
+    "lint": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
+    "theme": "postcss src/theme-default.css -o dist/theme-default.css",
+    "prepare": "ts-patch install -s",
+    "prepublishOnly": "shx cp ../README.md . && yarn build",
+    "postpublish": "shx rm README.md"
   },
   "dependencies": {
     "@braks/revue-draggable": "^0.4.2",
