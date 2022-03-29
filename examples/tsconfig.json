@@ -21,6 +21,11 @@
     "types": [
       "vite/client"
     ],
+    "paths": {
+      "~/*": [
+        "../package/src/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
