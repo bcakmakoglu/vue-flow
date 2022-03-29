@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   panOnDrag: undefined,
   applyDefault: undefined,
   fitViewOnInit: undefined,
+  connectOnClick: undefined,
   connectionLineStyle: () => null,
 })
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:edges', 'update:nodes'])
