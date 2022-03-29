@@ -21,13 +21,7 @@
     "types": [
       "vite/client"
     ],
-    "paths": {
-      "~/*": [
-        "src/*"
-      ]
-    }
   },
-  "include": ["src", "server"],
   "exclude": [
     "node_modules",
     "dist"

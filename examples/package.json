@@ -10,7 +10,7 @@
     "serve": "vite serve"
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*"
+    "@braks/vue-flow": "^0.4.0-17"
   },
   "devDependencies": {
     "@types/dagre": "^0.7.46",
