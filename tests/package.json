@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "cypress run-ct",
-    "test:open": "cypress open-ct"
+    "open": "cypress open-ct"
   },
   "dependencies": {
     "@braks/vue-flow": "^0.4.0-17"
