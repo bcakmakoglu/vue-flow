@@ -43,7 +43,7 @@ const {
   nodes: storedNodes,
   edges: storedEdges,
 } = useVueFlow(props)
-useHooks(hooks.value, emit)
+useHooks(emit, hooks.value)
 const { modelValue, nodes, edges } = useVModels(props, emit)
 onMounted(() => useWatch({ modelValue, nodes, edges }, props, store))
 

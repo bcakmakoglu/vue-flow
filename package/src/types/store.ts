@@ -96,6 +96,7 @@ export interface Actions<N = any, E = N> {
   addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
   /** parses edges and adds to state */
   addEdges: <EA = E>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
+  /** updates an edge */
   updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => boolean
   applyEdgeChanges: <ED = E>(changes: EdgeChange[]) => GraphEdge<ED>[]
   applyNodeChanges: <ND = N>(changes: NodeChange[]) => GraphNode<ND>[]
@@ -137,17 +138,13 @@ export type ComputedGetters<N = any, E = N> = { [key in keyof Getters<N, E>]: Co
 
 interface StoreBase<N = any, E = N> {
   state: State<N, E>
-  actions: Actions<N, E>
-  getters: ComputedGetters<N, E>
-  hooksOn: FlowHooksOn<N, E>
 }
 
-export type Store<N = any, E = N> = StoreBase<N, E> & ToRefs<State<N, E>> & Actions<N, E> & ComputedGetters<N, E>
-export type FlowStore<N = any, E = N> = StoreBase<N, E> & State<N, E> & Actions<N, E> & Getters<N, E>
+export type Store<N = any, E = N> = StoreBase<N, E> & State<N, E> & Actions<N, E> & Getters<N, E>
 
 export type UseVueFlow<N = any, E = N> = {
   id: string
-  store: FlowStore<N, E>
+  store: Store<N, E>
 } & FlowHooksOn<N, E> &
   ToRefs<State<N, E>> &
   ComputedGetters<N, E> &

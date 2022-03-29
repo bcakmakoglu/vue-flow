@@ -9,7 +9,7 @@ import {
   FlowElements,
   FlowExportObject,
   State,
-  FlowStore,
+  Store,
   GraphEdge,
   GraphNode,
   Node,
@@ -207,7 +207,7 @@ export const pointToRendererPoint = (
   return position
 }
 
-export const onLoadProject = (currentStore: FlowStore) => (position: XYPosition) =>
+export const onLoadProject = (currentStore: Store) => (position: XYPosition) =>
   pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
 
 const getBoundsOfBoxes = (box1: Box, box2: Box): Box => ({
@@ -287,9 +287,9 @@ export const getConnectedEdges = (nodes: GraphNode[], edges: GraphEdge[]) => {
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-export const onLoadGetNodes = (store: FlowStore) => (): GraphNode[] => store.nodes
-export const onLoadGetEdges = (store: FlowStore) => (): GraphEdge[] => store.edges
-export const onLoadGetElements = (store: FlowStore) => (): FlowElements => [...store.nodes, ...store.edges]
+export const onLoadGetNodes = (store: Store) => (): GraphNode[] => store.nodes
+export const onLoadGetEdges = (store: Store) => (): GraphEdge[] => store.edges
+export const onLoadGetElements = (store: Store) => (): FlowElements => [...store.nodes, ...store.edges]
 
 export const onLoadToObject = (store: State) => (): FlowExportObject => {
   // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage

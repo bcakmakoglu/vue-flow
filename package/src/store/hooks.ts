@@ -47,4 +47,4 @@ const bind = (emit: EmitFunc, hooks: FlowHooks) => {
   }
 }
 
-export default (hooks: FlowHooks, emit: EmitFunc) => bind(emit, hooks)
+export default (emit: EmitFunc, hooks: FlowHooks) => bind(emit, hooks)
