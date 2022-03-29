@@ -30,14 +30,12 @@ export class Storage {
 
   public create(id: string, options?: Partial<FlowOptions>) {
     const store = useStore(options)
-    const flow = {
+    const flow: UseVueFlow = {
       id,
-      store: reactive(store),
+      store,
+      ...(store as any),
       ...toRefs(store.state),
-      ...store.getters,
-      ...store.actions,
-      ...store.hooksOn,
-    } as unknown as UseVueFlow
+    }
     this.set(id, flow)
     return flow
   }

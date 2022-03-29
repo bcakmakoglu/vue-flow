@@ -1,5 +1,5 @@
 import { Ref } from 'vue'
-import { FlowProps, FlowStore, Node, Edge, Elements } from '~/types'
+import { FlowProps, Store, Node, Edge, Elements } from '~/types'
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 export default (
@@ -13,7 +13,7 @@ export default (
     edges?: Ref<Edge[] | undefined>
   },
   props: FlowProps,
-  store: FlowStore,
+  store: Store,
 ) => {
   const scope = getCurrentScope()
   scope?.run(() => {
