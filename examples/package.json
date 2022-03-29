@@ -2,20 +2,15 @@
   "name": "examples",
   "version": "0.0.0",
   "private": true,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bcakmakoglu/vue-flow"
-  },
   "license": "MIT",
   "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
-  "homepage": "https://vueflow.dev/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite serve"
   },
   "dependencies": {
-    "@braks/vue-flow": "^0.4.0-17"
+    "@braks/vue-flow": "workspace:*"
   },
   "devDependencies": {
     "@types/dagre": "^0.7.46",

@@ -1,5 +1,5 @@
 {
-  "name": "vue-flow",
+  "name": "@braks/vue-flow-monorepo",
   "version": "0.0.0",
   "private": true,
   "workspaces": ["tests", "examples", "package"],
