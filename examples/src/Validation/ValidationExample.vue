@@ -45,5 +45,5 @@ const onConnect = (params: Connection) => {
   </VueFlow>
 </template>
 <style>
-@import './validation.css';
+@import 'validation.css';
 </style>

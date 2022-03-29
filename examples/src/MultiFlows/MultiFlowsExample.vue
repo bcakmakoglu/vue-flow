@@ -8,5 +8,5 @@ import Flow from './Flow.vue'
   </div>
 </template>
 <style>
-@import './multiflows.css';
+@import 'multiflows.css';
 </style>

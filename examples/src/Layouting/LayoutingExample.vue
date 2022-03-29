@@ -49,5 +49,5 @@ const onLayout = (direction: string) => {
   </div>
 </template>
 <style>
-@import './layouting.css';
+@import 'layouting.css';
 </style>

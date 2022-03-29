@@ -16,5 +16,5 @@ const elements = ref(initialElements)
   </VueFlow>
 </template>
 <style>
-@import './save.css';
+@import 'save.css';
 </style>
