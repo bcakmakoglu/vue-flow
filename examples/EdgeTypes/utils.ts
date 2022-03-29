@@ -1,4 +1,4 @@
-import { Elements, Position } from '../../src'
+import { Elements, Position } from '../../package/src'
 
 const nodeWidth = 80
 const nodeGapWidth = nodeWidth * 2

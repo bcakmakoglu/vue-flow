@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Controls from './Controls.vue'
-import { VueFlow, Elements } from '~/index'
+import { VueFlow, Elements } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   { id: '1', label: 'Node 1', position: { x: 100, y: 100 } },

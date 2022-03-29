@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useZoomPanHelper, FlowExportObject, Node, useVueFlow } from '~/index'
+import { useZoomPanHelper, FlowExportObject, Node, useVueFlow } from '@braks/vue-flow'
 
 const flowKey = 'example-flow'
 const state = useStorage<FlowExportObject>(flowKey, {

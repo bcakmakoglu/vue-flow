@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Sidebar from './Sidebar.vue'
-import { VueFlow, FlowInstance, Node, useVueFlow } from '~/index'
+import { VueFlow, FlowInstance, Node, useVueFlow } from '@braks/vue-flow'
 
 let id = 0
 const getId = () => `dndnode_${id++}`

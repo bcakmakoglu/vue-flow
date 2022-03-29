@@ -7,7 +7,7 @@ export default ((on, config) => {
       options,
       viteConfig: {
         mode: 'test',
-        configFile: resolve(__dirname, '..', '..', 'vite.config.ts'),
+        configFile: resolve(__dirname, 'vite.config.ts'),
       },
     }),
   )

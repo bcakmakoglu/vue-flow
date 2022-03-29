@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVueFlow } from '~/index'
+import { useVueFlow } from '@braks/vue-flow'
 const { nodesSelectionActive, addSelectedNodes, getNodes, transform } = useVueFlow()
 
 const selectAll = () => {

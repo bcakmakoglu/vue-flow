@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '@braks/vue-flow'
 import ResizableNode from './ResizableNode.vue'
-import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '~/index'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -33,7 +33,7 @@ const updatePos = () =>
   })
 
 const logToObject = () => console.log(instance.value?.toObject())
-const resetTransform = () => elements.value.push({ id: '1234', position: { x: 50, y: 50 }, label: 'Foobar' })
+const resetTransform = () => instance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
 <template>

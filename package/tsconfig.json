@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "./tmp",
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
@@ -8,8 +7,6 @@
       "DOM",
       "ESNext"
     ],
-    "declaration": true,
-    "declarationDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "incremental": false,
@@ -19,26 +16,21 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
+    "declarationDir": "./dist",
     "types": [
-      "vite/client",
-      "cypress"
+      "vite/client"
     ],
     "paths": {
       "~/*": [
         "src/*"
       ]
-    },
-    "plugins": [
-      // Transform paths in output .d.ts files (Include this line if you output declarations files)
-      { "transform": "typescript-transform-paths", "afterDeclarations": true }
-    ]
+    }
   },
-  "include": ["src"],
+  "include": [
+    "./src"
+  ],
   "exclude": [
-    "examples",
     "node_modules",
-    "build",
-    "dist",
-    "cypress"
+    "dist"
   ]
 }

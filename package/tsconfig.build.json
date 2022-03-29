@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "./tmp",
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
@@ -27,11 +28,16 @@
         "src/*"
       ]
     },
+    "plugins": [
+      // Transform paths in output .d.ts files (Include this line if you output declarations files)
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
   },
-  "include": ["src", "dist"],
+  "include": [
+    "src"
+  ],
   "exclude": [
-    "examples",
     "node_modules",
-    "cypress"
+    "dist",
   ]
 }

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { Handle, NodeProps, Position } from '~/index'
+import { Handle, NodeProps, Position } from '@braks/vue-flow'
 
 interface RGBNodeProps extends NodeProps {
   data: {
