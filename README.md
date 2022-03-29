@@ -20,12 +20,12 @@ If you want to see how it's used with Nuxt3, check out the [docs repo](https://g
 
 ## ⭐️ Features
 
-- 👶 Easy to use: Seamless zooming & panning behaviour and single and multi-selections of
-  elements
+- 👶 Easy to use: Seamless zooming & panning behaviour and single and multi-selections of elements
 
 - 🎨 Customizable: Different and edge types and support for custom nodes with multiple handles and custom edges
 
-- 🚀 Fast rendering: Only nodes that have changed are re-rendered and only those that are in the viewport are displayed (optionally)
+- 🚀 Fast rendering: Only nodes that have changed are re-rendered and only those that are in the viewport are
+  displayed (optionally)
 
 - 🧲 Utils: Snap-to-grid and graph helper functions
 
@@ -51,9 +51,8 @@ $ yarn add @braks/vue-flow
 
 A flow consists of **nodes** and **edges** (or just nodes). Together we call them
 **elements**. You can pass a set of elements as a prop to the Flow component.
-**Each element needs a unique id.** A node needs a position and a label and an
-edge needs a source (node id) and a target (node id). These are the most basic parameters for a flow. A simple setup could
-look like this:
+**Each element needs a unique id.** A node needs a position and a label and an edge needs a source (node id) and a
+target (node id). These are the most basic parameters for a flow. A simple setup could look like this:
 
 ```vue
 <!-- Flowchart.vue -->
@@ -61,24 +60,18 @@ look like this:
   <VueFlow :elements="elements"></VueFlow>
 </template>
 <script lang="ts" setup>
-import { VueFlow, Elements, Position } from '@braks/vue-flow'
+import { VueFlow, Elements } from '@braks/vue-flow'
 
 const elements = ref<Elements>([
   {
     id: '1',
-    data: {
-      label: 'node 1',
-    },
+    label: 'node 1',
     position: { x: 100, y: 100 },
-    targetPosition: Position.Right
   },
   {
     id: '2',
-    data: {
-      label: 'node 2',
-    },
+    label: 'node 2',
     position: { x: 100, y: 200 },
-    sourcePosition: Position.Left
   },
   {
     id: 'e1-2',
@@ -91,6 +84,7 @@ const elements = ref<Elements>([
 ```
 
 **Make sure to import the necessary styles:**
+
 ```css
 /* main.css */
 
@@ -115,6 +109,13 @@ $ yarn dev
 $ yarn build
 ```
 
-## 💝 Credit
+## ⭐ Stargazers
 
-Thanks to [webkid](https://webkid.io/) for creating React Flow! Without their work this would've been impossible for me.
+Thanks for your star!
+
+[![Stargazers repo roster for @braks/vue-flow](https://reporoster.com/stars/bcakmakoglu/vue-flow)](https://github.com/bcakmakoglu/vue-flow/stargazers)
+
+## 💝 Acknowledgement
+
+This project is based on [webkid's](https://webkid.io/) [react flow](https://reactflow.dev/). I wholeheartedly thank
+them for their amazing work! Without them this project would've been impossible for me.
