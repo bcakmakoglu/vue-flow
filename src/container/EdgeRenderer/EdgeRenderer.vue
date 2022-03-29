@@ -6,15 +6,6 @@ import { groupEdgesByZLevel } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 const { store } = useVueFlow()
-const getType = (type?: string) => {
-  const t = type ?? 'default'
-  let edgeType = store.getEdgeTypes[t]
-  if (!edgeType) {
-    edgeType = store.getEdgeTypes.default
-    console.warn(`Edge type "${type}" not found. Using fallback type "default".`)
-  }
-  return edgeType
-}
 
 const sourceNode = controlledComputed(
   () => store.connectionNodeId,
@@ -52,14 +43,13 @@ export default {
     <g>
       <EdgeWrapper
         v-for="edge of group.edges"
+        :id="edge.id"
         :key="edge.id"
-        :edge="edge"
-        :component="getType(edge.type)"
         :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
       >
         <template #default="edgeProps">
-          <slot :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
+          <slot v-if="edge.type" :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
         </template>
       </EdgeWrapper>
       <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode">

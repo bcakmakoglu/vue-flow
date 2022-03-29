@@ -1,47 +1,46 @@
 <script lang="ts" setup>
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, Position, GraphEdge, EdgeComponent } from '../../types'
+import { ConnectionMode, Position, EdgeComponent } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
-  edge: GraphEdge
-  component?: EdgeComponent
+  id: string
   selectable?: boolean
   updatable?: boolean
 }
 
 const props = defineProps<EdgeWrapper>()
-const emit = defineEmits(['update:edge'])
-const edge = useVModel(props, 'edge', emit)
 const { store } = useVueFlow()
+const edge = store.getEdge(props.id)
+if (!edge) throw new Error(`Edge with ${props.id} not found!`)
 
 const updating = ref(false)
 const { onMouseDown } = useHandle()
 
 const onEdgeClick = (event: MouseEvent) => {
-  const data = { event, edge: edge.value }
+  const data = { event, edge }
   if (props.selectable) {
     store.nodesSelectionActive = false
-    store.addSelectedEdges([edge.value])
+    store.addSelectedEdges([edge])
   }
   store.hooks.edgeClick.trigger(data)
 }
-const onEdgeContextMenu = (event: MouseEvent) => store.hooks.edgeContextMenu.trigger({ event, edge: edge.value })
-const onDoubleClick = (event: MouseEvent) => store.hooks.edgeDoubleClick.trigger({ event, edge: edge.value })
-const onEdgeMouseEnter = (event: MouseEvent) => store.hooks.edgeMouseEnter.trigger({ event, edge: edge.value })
-const onEdgeMouseMove = (event: MouseEvent) => store.hooks.edgeMouseMove.trigger({ event, edge: edge.value })
-const onEdgeMouseLeave = (event: MouseEvent) => store.hooks.edgeMouseLeave.trigger({ event, edge: edge.value })
+const onEdgeContextMenu = (event: MouseEvent) => store.hooks.edgeContextMenu.trigger({ event, edge })
+const onDoubleClick = (event: MouseEvent) => store.hooks.edgeDoubleClick.trigger({ event, edge })
+const onEdgeMouseEnter = (event: MouseEvent) => store.hooks.edgeMouseEnter.trigger({ event, edge })
+const onEdgeMouseMove = (event: MouseEvent) => store.hooks.edgeMouseMove.trigger({ event, edge })
+const onEdgeMouseLeave = (event: MouseEvent) => store.hooks.edgeMouseLeave.trigger({ event, edge })
 const onEdgeUpdaterMouseEnter = () => (updating.value = true)
 const onEdgeUpdaterMouseOut = () => (updating.value = false)
 const onEdgeUpdaterSourceMouseDown = (event: MouseEvent) => handleEdgeUpdater(event, true)
 const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => handleEdgeUpdater(event, false)
 
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
-  const nodeId = isSourceHandle ? edge.value.target : edge.value.source
-  const handleId = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? ''
+  const nodeId = isSourceHandle ? edge.target : edge.source
+  const handleId = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
 
-  store.hooks.edgeUpdateStart.trigger({ event, edge: edge.value })
+  store.hooks.edgeUpdateStart.trigger({ event, edge })
   onMouseDown(
     event,
     handleId,
@@ -49,22 +48,22 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
     isSourceHandle,
     undefined,
     isSourceHandle ? 'target' : 'source',
-    (connection) => store.hooks.edgeUpdate.trigger({ edge: edge.value, connection }),
-    () => store.hooks.edgeUpdateEnd.trigger({ event, edge: edge.value }),
+    (connection) => store.hooks.edgeUpdate.trigger({ edge, connection }),
+    () => store.hooks.edgeUpdateEnd.trigger({ event, edge }),
   )
 }
 
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() =>
   store.connectionMode === ConnectionMode.Strict
-    ? edge.value.targetNode.handleBounds.target
-    : edge.value.targetNode.handleBounds.target ?? edge.value.targetNode.handleBounds.source,
+    ? edge.targetNode.handleBounds.target
+    : edge.targetNode.handleBounds.target ?? edge.targetNode.handleBounds.source,
 )
 const sourceHandle = controlledComputed(
-  () => edge.value.sourceNode.handleBounds,
-  () => getHandle(edge.value.sourceNode.handleBounds.source, edge.value.sourceHandle),
+  () => edge.sourceNode.handleBounds,
+  () => getHandle(edge.sourceNode.handleBounds.source, edge.sourceHandle),
 )
-const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.value.targetHandle))
+const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.targetHandle))
 const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
 const edgeUpdaterRadius = computed(() => store.edgeUpdaterRadius)
@@ -74,29 +73,43 @@ onMounted(() => {
     [
       sourcePosition,
       targetPosition,
-      () => edge.value.sourceNode.position,
-      () => edge.value.targetNode.position,
-      () => edge.value.sourceNode.computedPosition,
-      () => edge.value.targetNode.computedPosition,
-      () => edge.value.sourceNode.dimensions,
-      () => edge.value.targetNode.dimensions,
+      () => edge.sourceNode.position,
+      () => edge.targetNode.position,
+      () => edge.sourceNode.computedPosition,
+      () => edge.targetNode.computedPosition,
+      () => edge.sourceNode.dimensions,
+      () => edge.targetNode.dimensions,
     ],
     () => {
       const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-        edge.value.sourceNode,
+        edge.sourceNode,
         sourceHandle.value,
         sourcePosition.value,
-        edge.value.targetNode,
+        edge.targetNode,
         targetHandle.value,
         targetPosition.value,
       )
-      if (edge.value.sourceX !== sourceX) edge.value.sourceX = sourceX
-      if (edge.value.sourceY !== sourceY) edge.value.sourceY = sourceY
-      if (edge.value.targetX !== targetX) edge.value.targetX = targetX
-      if (edge.value.targetY !== targetY) edge.value.targetY = targetY
+      if (edge.sourceX !== sourceX) edge.sourceX = sourceX
+      if (edge.sourceY !== sourceY) edge.sourceY = sourceY
+      if (edge.targetX !== targetX) edge.targetX = targetX
+      if (edge.targetY !== targetY) edge.targetY = targetY
     },
     { immediate: true, deep: true },
   )
+})
+
+const name = ref(edge.type ?? 'default')
+const type = computed(() => {
+  let edgeType = store.getEdgeTypes[name.value]
+  if (typeof edgeType === 'string') edgeType = resolveComponent(name.value, false) as EdgeComponent
+  if (typeof edgeType !== 'string') return edgeType
+
+  const slot = useSlots()?.[name.value]?.({})
+  if (!slot || !slot[0].key?.toString().includes(name.value)) {
+    console.warn(`Node type "${edge.type}" not found and no slot detected. Using fallback type "default".`)
+    name.value = 'default'
+    return store.getEdgeTypes.default
+  }
 })
 </script>
 <script lang="ts">
@@ -109,7 +122,7 @@ export default {
     :key="`edge-${edge.id}`"
     :class="[
       'vue-flow__edge',
-      `vue-flow__edge-${edge.type || 'default'}`,
+      `vue-flow__edge-${name}`,
       store.noPanClassName,
       {
         selected: edge.selected,
@@ -157,7 +170,8 @@ export default {
       }"
     >
       <component
-        :is="props.component ?? edge.type"
+        :is="type"
+        v-if="type"
         v-bind="{
           id: edge.id,
           sourceNode: edge.sourceNode,
