@@ -22,8 +22,7 @@
     "build": "vite build && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && yarn theme",
     "postbuild": "shx rm -rf tmp",
     "prepublishOnly": "yarn build",
-    "test": "cypress run-ct",
-    "test:open": "cypress open-ct",
+    "test": "yarn --cwd .. test",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
     "theme": "postcss src/theme-default.css -o dist/theme-default.css"
   },
