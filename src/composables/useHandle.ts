@@ -68,6 +68,8 @@ const resetRecentHandle = (hoveredHandle: Element): void => {
 }
 
 export default (store: FlowStore = useVueFlow().store) => {
+  let recentHoveredHandle: Element
+
   const onMouseDown = (
     event: MouseEvent,
     handleId: string | null,
@@ -97,7 +99,6 @@ export default (store: FlowStore = useVueFlow().store) => {
 
     const handleType = elementEdgeUpdaterType ?? (elementBelowIsTarget ? 'target' : 'source')
     const containerBounds = flowNode.getBoundingClientRect()
-    let recentHoveredHandle: Element
 
     store.setState({
       connectionPosition: {
@@ -194,7 +195,7 @@ export default (store: FlowStore = useVueFlow().store) => {
         if (node) validConnectFunc = (handleType !== 'target' ? node.isValidTargetPos : node.isValidSourcePos) ?? (() => true)
       }
       const doc = getHostForElement(event.target as HTMLElement)
-      const { connection, isValid } = checkElementBelowIsValid(
+      const { connection, isValid, elementBelow } = checkElementBelowIsValid(
         event as MouseEvent,
         store.connectionMode,
         store.connectionStartHandle.type === 'target',
@@ -204,9 +205,17 @@ export default (store: FlowStore = useVueFlow().store) => {
         doc,
       )
 
+      const isOwnHandle = connection.source === connection.target
+
+      if (!isOwnHandle && elementBelow) {
+        recentHoveredHandle = elementBelow
+        elementBelow.classList.add('vue-flow__handle-connecting')
+        elementBelow.classList.toggle('vue-flow__handle-valid', isValid)
+      }
+
       store.hooks.connectStop.trigger(event)
 
-      if (isValid) store.hooks.connect.trigger(connection)
+      if (isValid && !isOwnHandle) store.hooks.connect.trigger(connection)
 
       store.hooks.connectEnd.trigger(event)
 
