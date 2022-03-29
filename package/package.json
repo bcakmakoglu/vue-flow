@@ -24,11 +24,12 @@
   "scripts": {
     "build": "vite build && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && yarn theme",
     "postbuild": "shx rm -rf tmp && yarn lint",
+    "pretest": "yarn build",
     "test": "yarn --cwd .. test",
     "lint": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
     "theme": "postcss src/theme-default.css -o dist/theme-default.css",
     "prepare": "ts-patch install -s",
-    "prepublishOnly": "shx cp ../README.md . && yarn build",
+    "prepublish": "shx cp ../README.md .",
     "postpublish": "shx rm README.md"
   },
   "dependencies": {
