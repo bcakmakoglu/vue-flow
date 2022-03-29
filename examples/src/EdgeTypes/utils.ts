@@ -1,4 +1,4 @@
-import { Elements, Position } from '../../package/src'
+import { Elements, Position } from '@braks/vue-flow/src'
 
 const nodeWidth = 80
 const nodeGapWidth = nodeWidth * 2

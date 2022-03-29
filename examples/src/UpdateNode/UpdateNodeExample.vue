@@ -44,5 +44,5 @@ onMounted(updateNode)
   </VueFlow>
 </template>
 <style>
-@import './updatenode.css';
+@import 'updatenode.css';
 </style>

@@ -27,5 +27,5 @@ const elements = ref<Elements>(initialElements)
   </div>
 </template>
 <style>
-@import './provider.css';
+@import 'provider.css';
 </style>

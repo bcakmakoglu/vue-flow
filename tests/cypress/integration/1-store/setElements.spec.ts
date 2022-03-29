@@ -1,5 +1,5 @@
 import { useVueFlow, isEdge, isNode, Edge, FlowStore, Node } from '@braks/vue-flow'
-import { getElements } from '../../../../examples/Stress/utils'
+import { getElements } from '../../../../examples/src/Stress/utils'
 
 describe('test store action setElements', () => {
   const setElements = async (store: FlowStore) => {

@@ -45,5 +45,5 @@ const onDrop = (event: DragEvent) => {
   </div>
 </template>
 <style>
-@import './dnd.css';
+@import 'dnd.css';
 </style>

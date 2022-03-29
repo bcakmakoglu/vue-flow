@@ -7,99 +7,99 @@ export const routes: RouterOptions['routes'] = [
   },
   {
     path: '/rgb',
-    component: () => import('./RGBFlow/RGBFlow.vue'),
+    component: () => import('./src/RGBFlow/RGBFlow.vue'),
   },
   {
     path: '/basic',
-    component: () => import('./Basic/Basic.vue'),
+    component: () => import('./src/Basic/Basic.vue'),
   },
   {
     path: '/basic-options-api',
-    component: () => import('./Basic/BasicOptionsAPI.vue'),
+    component: () => import('./src/Basic/BasicOptionsAPI.vue'),
   },
   {
     path: '/custom-connectionline',
-    component: () => import('./CustomConnectionLine/CustomConnectionLine.vue'),
+    component: () => import('./src/CustomConnectionLine/CustomConnectionLine.vue'),
   },
   {
     path: '/custom-node',
-    component: () => import('./CustomNode/CustomNode.vue'),
+    component: () => import('./src/CustomNode/CustomNode.vue'),
   },
   {
     path: '/drag-n-drop',
-    component: () => import('./DragNDrop/DnD.vue'),
+    component: () => import('./src/DragNDrop/DnD.vue'),
   },
   {
     path: '/edges',
-    component: () => import('./Edges/EdgesExample.vue'),
+    component: () => import('./src/Edges/EdgesExample.vue'),
   },
   {
     path: '/edge-types',
-    component: () => import('./EdgeTypes/EdgeTypesExample.vue'),
+    component: () => import('./src/EdgeTypes/EdgeTypesExample.vue'),
   },
   {
     path: '/empty',
-    component: () => import('./Empty/EmptyExample.vue'),
+    component: () => import('./src/Empty/EmptyExample.vue'),
   },
   {
     path: '/hidden',
-    component: () => import('./Hidden/HiddenExample.vue'),
+    component: () => import('./src/Hidden/HiddenExample.vue'),
   },
   {
     path: '/interaction',
-    component: () => import('./Interaction/InteractionExample.vue'),
+    component: () => import('./src/Interaction/InteractionExample.vue'),
   },
   {
     path: '/layouting',
-    component: () => import('./Layouting/LayoutingExample.vue'),
+    component: () => import('./src/Layouting/LayoutingExample.vue'),
   },
   {
     path: '/multi-flows',
-    component: () => import('./MultiFlows/MultiFlowsExample.vue'),
+    component: () => import('./src/MultiFlows/MultiFlowsExample.vue'),
   },
   {
     path: '/node-type-change',
-    component: () => import('./NodeTypeChange/NodeTypeChangeExample.vue'),
+    component: () => import('./src/NodeTypeChange/NodeTypeChangeExample.vue'),
   },
   {
     path: '/overview',
-    component: () => import('./Overview/Overview.vue'),
+    component: () => import('./src/Overview/Overview.vue'),
   },
   {
     path: '/provider',
-    component: () => import('./Provider/ProviderExample.vue'),
+    component: () => import('./src/Provider/ProviderExample.vue'),
   },
   {
     path: '/save-restore',
-    component: () => import('./SaveRestore/SaveRestoreExample.vue'),
+    component: () => import('./src/SaveRestore/SaveRestoreExample.vue'),
   },
   {
     path: '/stress',
-    component: () => import('./Stress/StressExample.vue'),
+    component: () => import('./src/Stress/StressExample.vue'),
   },
   {
     path: '/switch',
-    component: () => import('./Switch/SwitchExample.vue'),
+    component: () => import('./src/Switch/SwitchExample.vue'),
   },
   {
     path: '/unidirectional',
-    component: () => import('./Unidirectional/UnidirectionalExample.vue'),
+    component: () => import('./src/Unidirectional/UnidirectionalExample.vue'),
   },
   {
     path: '/updateable-edge',
-    component: () => import('./UpdatableEdge/UpdatableEdgeExample.vue'),
+    component: () => import('./src/UpdatableEdge/UpdatableEdgeExample.vue'),
   },
   {
     path: '/update-node',
-    component: () => import('./UpdateNode/UpdateNodeExample.vue'),
+    component: () => import('./src/UpdateNode/UpdateNodeExample.vue'),
   },
   {
     path: '/validation',
-    component: () => import('./Validation/ValidationExample.vue'),
+    component: () => import('./src/Validation/ValidationExample.vue'),
   },
   {
     path: '/nesting',
-    component: () => import('./Nesting/Nesting.vue'),
+    component: () => import('./src/Nesting/Nesting.vue'),
   },
 ]
 
