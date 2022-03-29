@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
-import { Handle, Position, Connection, Edge, NodeProps } from '~/index'
+import { Handle, Position, Connection, Edge, NodeProps } from '@braks/vue-flow'
 
 interface ColorSelectorNodeProps extends NodeProps {
   data: {

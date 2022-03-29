@@ -1,9 +1,9 @@
-import { useVueFlow } from '~/composables'
-import { State, FlowStore } from '~/types'
-import useState from '~/store/state'
+import { useVueFlow, State, FlowStore } from '@braks/vue-flow'
+
 describe('test store state', () => {
   let store: FlowStore
 
+  const { store: initial } = useVueFlow()
   beforeEach(() => ({ store } = useVueFlow()))
 
   it('has any initial state', () => {
@@ -11,7 +11,6 @@ describe('test store state', () => {
   })
 
   it('has default initial state', () => {
-    const initial = useState()
     Object.keys(store.state).forEach((state) => {
       const storedState = store[<keyof State>state]
       const initialVal = initial[<keyof State>state]

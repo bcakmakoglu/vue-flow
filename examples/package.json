@@ -1,0 +1,30 @@
+{
+  "name": "examples",
+  "version": "0.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bcakmakoglu/vue-flow"
+  },
+  "license": "MIT",
+  "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
+  "homepage": "https://vueflow.dev/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite serve"
+  },
+  "dependencies": {
+    "@braks/vue-flow": "^0.4.0-17"
+  },
+  "devDependencies": {
+    "@types/dagre": "^0.7.46",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "@vue/compiler-sfc": "3.2.22",
+    "dagre": "^0.8.5",
+    "vite": "2.5.x",
+    "vite-plugin-vue-type-imports": "^0.1.3",
+    "vue": "3.2.21",
+    "vue-router": "^4.0.12"
+  }
+}

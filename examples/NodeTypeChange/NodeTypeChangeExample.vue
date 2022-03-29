@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, addEdge, Connection, Edge, Elements, isEdge, FlowInstance, Position } from '~/index'
+import { VueFlow, addEdge, Connection, Edge, Elements, isEdge, FlowInstance, Position } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   {

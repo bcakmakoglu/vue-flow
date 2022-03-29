@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Position, Handle, NodeProps, ValidConnectionFunc } from '~/index'
+import { Position, Handle, NodeProps, ValidConnectionFunc } from '@braks/vue-flow'
 
 interface CustomNodeProps extends NodeProps {
   id: string
