@@ -74,7 +74,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
           target: [],
         },
         computedPosition: {
-          z: typeof node.style?.zIndex === 'string' ? parseInt(node.style?.zIndex as string) : node.style?.zIndex ?? 0,
+          z: 0,
           ...clampPosition(node.position, nodeExtent),
         },
         dragging: false,
@@ -100,7 +100,7 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         type: edge.type ?? 'default',
         source: edge.source.toString(),
         target: edge.target.toString(),
-        z: typeof edge.style?.zIndex === 'string' ? parseInt(edge.style?.zIndex as string) : edge.style?.zIndex ?? 0,
+        z: 0,
         sourceX: 0,
         sourceY: 0,
         targetX: 0,
