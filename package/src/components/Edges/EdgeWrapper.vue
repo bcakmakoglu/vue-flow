@@ -150,7 +150,7 @@ export default {
         labelBgPadding: edge.labelBgPadding,
         labelBgBorderRadius: edge.labelBgBorderRadius,
         data: edge.data,
-        style: edge.style,
+        style: getStyle(),
         markerStart: `url(#${getMarkerId(edge.markerStart)})`,
         markerEnd: `url(#${getMarkerId(edge.markerEnd)})`,
         sourcePosition,
