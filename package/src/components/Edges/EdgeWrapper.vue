@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, Position } from '../../types'
+import { ConnectionMode, GraphEdge, Position } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
   id: string
   name: string
+  edge: GraphEdge
   selectable?: boolean
   updatable?: boolean
 }
 
 const props = defineProps<EdgeWrapper>()
 const { store } = useVueFlow()
-const edge = computed(() => store.getEdge(props.id)!)
-if (!edge.value) throw new Error(`Edge with ${props.id} not found!`)
+const edge = useVModel(props, 'edge')
 
 const updating = ref(false)
 
