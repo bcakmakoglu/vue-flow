@@ -41,14 +41,18 @@ export default {
   >
     <MarkerDefinitions v-if="group.isMaxLevel" :default-color="store.defaultMarkerColor" />
     <g>
-      <EdgeWrapper
-        v-for="edge of group.edges"
-        :id="edge.id"
-        :key="edge.id"
-        :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
-        :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
-      />
-      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode" />
+      <template v-if="store.getEdges.length">
+        <EdgeWrapper
+          v-for="edge of group.edges"
+          :id="edge.id"
+          :key="edge.id"
+          :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
+          :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
+        />
+      </template>
+      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode">
+        <slot name="connection-line" />
+      </ConnectionLine>
     </g>
   </svg>
 </template>
