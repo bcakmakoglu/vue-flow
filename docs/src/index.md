@@ -1,3 +1,9 @@
+---
+home: true
+navbar: false
+footer: MIT Licensed | Copyright © 2021-present Burak Cakmakoglu
+---
+
 # Hello World
 
-<demo src="./Basic/Basic.vue" language="vue"></demo>
+<Home />
