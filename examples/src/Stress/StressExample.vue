@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { getElements } from './utils'
 import { VueFlow, FlowInstance } from '@braks/vue-flow'
+import { getElements } from './utils'
 
 const instance = ref<FlowInstance>()
 const onLoad = (flowInstance: FlowInstance) => {
