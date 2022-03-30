@@ -76,8 +76,7 @@ if (edges && edges.value) {
   )
 }
 
-const slots = useSlots()
-provide(Slots, slots)
+provide(Slots, useSlots())
 </script>
 <script lang="ts">
 export default {
