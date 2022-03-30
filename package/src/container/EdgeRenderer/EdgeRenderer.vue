@@ -75,20 +75,19 @@ export default {
   >
     <MarkerDefinitions v-if="group.isMaxLevel" :default-color="store.defaultMarkerColor" />
     <g>
-      <template v-if="store.getEdges.length">
-        <EdgeWrapper
-          v-for="edge of group.edges"
-          :id="edge.id"
-          :key="edge.id"
-          :name="names[edge.type] || 'default'"
-          :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
-          :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
-        >
-          <template #default="props">
-            <component :is="getType(edge.type)" v-bind="props" />
-          </template>
-        </EdgeWrapper>
-      </template>
+      <EdgeWrapper
+        v-for="edge of group.edges"
+        :id="edge.id"
+        :key="edge.id"
+        :edge="edge"
+        :name="names[edge.type] || 'default'"
+        :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
+        :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
+      >
+        <template #default="props">
+          <component :is="getType(edge.type)" v-bind="props" />
+        </template>
+      </EdgeWrapper>
       <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode">
         <slot name="connection-line" />
       </ConnectionLine>

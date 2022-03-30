@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable/src/index'
 import { useVueFlow } from '../../composables'
-import { SnapGrid } from '../../types'
+import { GraphNode, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 import { getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
   id: string
   name: string
+  node: GraphNode
   draggable: boolean
   selectable: boolean
   connectable: boolean
@@ -16,8 +17,7 @@ interface NodeWrapperProps {
 
 const props = defineProps<NodeWrapperProps>()
 const { store } = useVueFlow()
-const node = computed(() => store.getNode(props.id)!)
-if (!node.value) throw new Error(`[vueflow]: Node with ${props.id} not found!`)
+const node = useVModel(props, 'node')
 provide(NodeId, props.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)

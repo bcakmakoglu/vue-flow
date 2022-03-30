@@ -48,6 +48,7 @@ export default {
       v-for="node of store.getNodes"
       :id="node.id"
       :key="`vue-flow__node-${node.id}`"
+      :node="node"
       :name="names[node.type] || 'default'"
       :draggable="typeof node.draggable === 'undefined' ? store.nodesDraggable : !!node.draggable"
       :selectable="typeof node.selectable === 'undefined' ? store.elementsSelectable : !!node.selectable"
