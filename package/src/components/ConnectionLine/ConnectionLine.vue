@@ -10,11 +10,8 @@ interface ConnectionLineProps {
 const props = defineProps<ConnectionLineProps>()
 const { store } = useVueFlow()
 
-const slots = inject(Slots)?.['connection-line']?.({})
-const slot = slots?.[0]
-if (slots && slots.length > 1) {
-  console.warn('[vue-flow]: More than one element in connection-line-slot detected. Using fallback to first slot item.')
-}
+const slots = inject(Slots)?.['connection-line']
+const hasSlot = slots?.({})
 
 const sourceHandle =
   store.connectionHandleId && store.connectionHandleType
@@ -77,8 +74,8 @@ export default {
 <template>
   <g class="vue-flow__connection">
     <component
-      :is="slot"
-      v-if="slot"
+      :is="slots"
+      v-if="hasSlot"
       v-bind="{
         sourceX,
         sourceY,
