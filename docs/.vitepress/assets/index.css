@@ -5,12 +5,11 @@ body {
   height: 100%;
   overflow: hidden;
   color: #111;
-  /* background-color: #31475e;
+  background-color: #31475e;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url('./polygon-scatter.svg');
-   */
 }
 
 .backround-img {
