@@ -1,60 +1,233 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { VueFlow, MiniMap, Background, Controls, Elements, MarkerType, FlowEvents } from '@braks/vue-flow'
+import { ref } from "vue";
+import { Elements, VueFlow, MiniMap, Controls, Background, FlowInstance, Position } from "@braks/vue-flow";
+import { useBreakpoints, whenever } from "@vueuse/core";
 
-interface Props {
-  next: (node: string[], duration: number) => void
-}
-const props = defineProps<Props>()
+const breakpoints = useBreakpoints({
+  mobile: 360,
+  tablet: 640,
+  laptop: 1024,
+  desktop: 1280
+});
 
 const elements = ref<Elements>([
-  { id: '1', type: 'input', label: 'Back To The Start', position: { x: 200, y: 0 } },
-  { id: '2', label: 'Node 2', position: { x: 0, y: 130 } },
-  { id: '3', label: 'Node 3', position: { x: 400, y: 130 } },
-  { id: 'e1-2', source: '1', target: '2', markerEnd: MarkerType.Arrow },
-  { id: 'e1-3', source: '1', target: '3', markerEnd: MarkerType.Arrow },
-])
+  {
+    id: "1",
+    type: "input",
+    label: "input",
+    position: { x: 250, y: 5 },
+    class: "font-semibold",
+    style: { border: "2px solid var(--primary)" }
+  },
+  {
+    id: "2",
+    label: "default",
+    position: { x: 100, y: 100 },
+    class: "font-semibold !border-2 !border-secondary/80",
+    style: (el) => el.selected ? { boxShadow: "none" } : undefined
+  },
+  { id: "3", label: "default", position: { x: 400, y: 100 }, class: "font-semibold !border-2 !border-red-500" },
+  { id: "4", type: "output", label: "output", position: { x: 250, y: 225 }, class: "font-semibold" },
+  {
+    id: "e1-2",
+    source: "1",
+    label: "animated edge",
+    target: "2",
+    animated: true,
+    style: { stroke: "var(--secondary)" }
+  },
+  { id: "e1-3", source: "1", label: "default edge", target: "3", style: { stroke: "red" } },
+  { id: "e2-4", source: "2", type: "step", target: "4", animated: true, style: { stroke: "var(--secondary)" } }
+]);
 
-const onLoad = ({ fitView }) => fitView({ padding: 0.5 })
-const onNodeClick = ({ node }: FlowEvents['nodeClick']) => {
-  if (node.type === 'input') props.next(['intro', 'examples', 'tour', 'documentation'], 4000)
-}
+const customizableElements = ref<Elements>([
+  { id: "1", type: "text-input", label: "First Name", position: { x: 0, y: 0 } },
+  { id: "2", type: "text-input", label: "Last Name", position: { x: 400, y: 0 } },
+  { id: "3", type: "text-output", label: "Node 3", position: { x: 240, y: 200 } },
+  { id: "e1-3", source: "1", target: "3", animated: true },
+  { id: "e2-3", source: "2", target: "3", animated: true }
+]);
+
+const additionalElements = ref<Elements>([
+  {
+    id: "1",
+    type: "input",
+    sourcePosition: Position.Right,
+    label: "input",
+    style: { width: "75px" },
+    position: { x: 25, y: 120 }
+  },
+  {
+    id: "2",
+    label: "A",
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
+    position: { x: 150, y: 25 },
+    style: { width: "75px" }
+  },
+  {
+    id: "3",
+    label: "B",
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
+    position: { x: 250, y: 25 },
+    style: { width: "75px" }
+  },
+  {
+    id: "4",
+    label: "C",
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
+    position: { x: 350, y: 25 },
+    style: { width: "75px" }
+  },
+  {
+    id: "5",
+    label: "D",
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
+    position: { x: 150, y: 220 },
+    style: { width: "75px" }
+  },
+  {
+    id: "6",
+    label: "E",
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
+    position: { x: 250, y: 220 },
+    style: { width: "75px" }
+  },
+  {
+    id: "7",
+    label: "F",
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
+    position: { x: 350, y: 220 },
+    style: { width: "75px" }
+  },
+  {
+    id: "8",
+    type: "output",
+    label: "Output",
+    targetPosition: Position.Left,
+    position: { x: 500, y: 120 },
+    style: { width: "75px" }
+  },
+  { id: "e1-2", type: "step", source: "1", target: "2" },
+  { id: "e2-3", type: "step", source: "2", target: "3" },
+  { id: "e3-4", type: "step", source: "3", target: "4" },
+  { id: "e4-8", type: "step", source: "4", target: "8" },
+  { id: "e1-5", type: "step", source: "1", target: "5", animated: true },
+  { id: "e5-6", type: "step", source: "5", target: "6", animated: true },
+  { id: "e6-7", type: "step", source: "6", target: "7", animated: true },
+  { id: "e6-8", type: "step", source: "7", target: "8", animated: true }
+]);
+
+const label = ref({
+  first: "",
+  last: ""
+});
+const instance = ref<FlowInstance>();
+const onChange = ({ name, val }: { name: "first" | "last"; val: string }) => (label.value[name] = val);
+const onLoad = (vf: FlowInstance) => {
+  if (!instance.value) instance.value = vf;
+  vf.fitView();
+};
+whenever(breakpoints.greater("tablet"), () => onLoad(instance.value));
+whenever(breakpoints.smaller("tablet"), () => onLoad(instance.value));
 </script>
 <template>
   <div
-    ref="page"
-    class="!pointer-events-auto font-mono flex flex flex-col md:flex-row bg-white w-[100vw] h-[80vh]"
-    :style="{ borderRadius: 0 }"
+    class="
+      p-4
+      py-8
+      md:p-8 md:py-12
+      lg:p-16 lg:py-24
+      w-full
+      h-full
+      min-h-full
+      bg-gray-100
+      text-black
+      normal-case
+      flex flex-col
+      gap-12
+      md:gap-24
+      lg:gap-48
+    "
   >
-    <VueFlow
-      id="features-flow"
-      v-model="elements"
-      class="relative font-mono"
-      :pane-moveable="true"
-      @pane-ready="onLoad"
-      @node-click="onNodeClick"
-    >
-      <Controls />
-      <Background />
-      <MiniMap />
-    </VueFlow>
-    <div class="flex bg-light-800 flex-col justify-center gap-2 md:gap-4 p-6 w-full md:w-1/3">
-      <h1 class="pointer-events-none text-xl lg:text-4xl">Everything you need</h1>
-      <h2 class="pointer-events-none text-sm lg:text-xl text-black font-normal">
-        Vue Flow ships with a <strong>Minimap-, Background- and Controls-Component</strong>. On top of that we add
-        <strong>Zoom & Pan utilities</strong> with which you can create the exact same transitions that are used on this site!
-      </h2>
-      <div class="!pointer-events-auto transform scale-75 lg:scale-100 flex flex-row justify-center items-center gap-4">
-        <a class="p-4 bg-green-500 hover:bg-black rounded-xl !text-white font-semibold text-lg" href="/docs">
+    <div class="flex flex-col md:flex-row gap-12">
+      <div class="gap-2 md:w-2/3 lg:w-[unset] flex flex-col justify-center items-center">
+        <h1>Feature-rich</h1>
+        <p class="w-2/3">
+          Vue Flow comes with seamless zooming & panning, different edge and node types, single and multi-selection,
+          controls,
+          several event handlers and more.
+        </p>
+        <a class="button" href="/docs">
           Documentation
         </a>
-        <a
-          class="!pointer-events-auto p-4 bg-white hover:bg-black rounded-xl bg-blue-500 !text-white font-semibold text-lg"
-          href="/examples"
+      </div>
+      <div class="w-full min-h-[300px] shadow-xl rounded-xl font-mono uppercase">
+        <VueFlow v-model="elements" @pane-ready="onLoad">
+          <Controls />
+          <Background color="#aaa" :gap="8" />
+        </VueFlow>
+      </div>
+    </div>
+    <div class="flex flex-col-reverse md:flex-row flex-unwrap gap-12">
+      <div
+        class="w-full h-[300px] shadow-xl bg-gray-800 border-1 border-solid border-gray-300 rounded-xl font-mono uppercase">
+        <VueFlow
+          v-model="customizableElements"
+          :snap-grid="[25, 25]"
+          :snap-to-grid="true"
+          :zoom-on-scroll="false"
+          :pane-moveable="false"
+          @pane-ready="onLoad"
         >
-          Examples
-        </a>
+          <template #node-text-output="props">
+            <TextOutputNode v-bind="props" :label="`${label.first} ${label.last}`" />
+          </template>
+          <template #node-text-input="props">
+            <TextInputNode v-bind="props" @change="onChange" />
+          </template>
+          <Background variant="lines" color="#aaa" :gap="46" />
+        </VueFlow>
+      </div>
+      <div class="md:w-2/3 lg:w-[unset] gap-2 flex flex-col justify-center items-center">
+        <h1>Customizable</h1>
+        <p class="w-2/3">
+          You can create your own node and edge types or just pass a custom style. You can implement custom UIs inside
+          your nodes
+          and add functionality to your edges.
+        </p>
+        <a class="button" href="/docs">Documentation</a>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row gap-12">
+      <div class="md:w-2/3 lg:w-[unset] gap-2 flex flex-col justify-center items-center">
+        <h1>Additional Components</h1>
+        <p class="w-2/3">
+          Vue Flow includes a MiniMap, Controls and Background, as well as a ton of utilities to control the internal
+          state
+          outside the Vue Flow component.
+        </p>
+        <a class="button" href="/docs">Documentation</a>
+      </div>
+      <div
+        class="w-full h-[300px] shadow-xl bg-white border-1 border-solid border-gray-300 rounded-xl font-mono uppercase">
+        <VueFlow v-model="additionalElements" :zoom-on-scroll="false" :pane-moveable="false" @pane-ready="onLoad">
+          <Controls :show-interactive="false" />
+          <MiniMap mask-color="rgba(16, 185, 129, 0.5)" class="transform scale-60 origin-bottom-right opacity-75" />
+          <Background variant="lines" color="#aaa" :gap="46" />
+        </VueFlow>
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+.button {
+  @apply
+  shadow-lg transition-colors duration-200 hover:bg-black font-semibold text-lg mt-4 px-5 py-3 rounded-xl bg-green-500 text-white;
+}
+</style>
