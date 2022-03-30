@@ -86,11 +86,15 @@ export default {
 <template>
   <div class="vue-flow">
     <ZoomPane :key="`renderer-${id}`">
-      <template v-for="nodeName of Object.keys(getNodeTypes)" :key="`node-${nodeName}-${id}`">
-        <slot :name="`node-${nodeName}`" />
+      <template #nodes>
+        <template v-for="nodeName of Object.keys(getNodeTypes)" :key="`node-${nodeName}-${id}`">
+          <slot :name="`node-${nodeName}`" />
+        </template>
       </template>
-      <template v-for="edgeName of Object.keys(getEdgeTypes)" :key="`edge-${edgeName}-${id}`">
-        <slot :name="`edge-${edgeName}`" />
+      <template #edges>
+        <template v-for="edgeName of Object.keys(getEdgeTypes)" :key="`edge-${edgeName}-${id}`">
+          <slot :name="`edge-${edgeName}`" />
+        </template>
       </template>
       <slot name="connection-line" />
       <slot name="zoom-pane" />
