@@ -80,7 +80,7 @@ export default {
         :id="edge.id"
         :key="edge.id"
         :edge="edge"
-        :name="names[edge.type] || 'default'"
+        :name="edge.type ? names[edge.type] : 'default'"
         :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
       >
