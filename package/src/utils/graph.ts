@@ -18,6 +18,7 @@ import {
   XYPosition,
   XYZPosition,
   Getters,
+  DefaultEdgeOptions,
 } from '~/types'
 import { useWindow } from '~/composables'
 
@@ -139,7 +140,11 @@ export const connectionExists = (edge: Edge, elements: Elements) =>
       (el.targetHandle === edge.targetHandle || (!el.targetHandle && !edge.targetHandle)),
   )
 
-export const addEdge = (edgeParams: Edge | Connection, elements: Elements) => {
+/**
+ * Intended for options API
+ * In composition API you can access utilities from `useVueFlow`
+ */
+export const addEdge = (edgeParams: Edge | Connection, elements: Elements, defaults?: DefaultEdgeOptions) => {
   if (!edgeParams.source || !edgeParams.target) {
     console.warn("Can't create edge. An edge needs a source and a target.")
     return elements
@@ -154,12 +159,16 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements) => {
       id: getEdgeId(edgeParams),
     } as Edge
   }
-  edge = parseEdge(edge)
+  edge = parseEdge(edge, defaults)
   if (connectionExists(edge, elements)) return elements
   elements.push(edge)
   return [...elements, edge]
 }
 
+/**
+ * Intended for options API
+ * In composition API you can access utilities from `useVueFlow`
+ */
 export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: Elements) => {
   if (!newConnection.source || !newConnection.target) {
     console.warn("Can't create new edge. An edge needs a source and a target.")

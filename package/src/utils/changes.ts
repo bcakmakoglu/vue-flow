@@ -12,6 +12,7 @@ import {
   Getters,
   CoordinateExtent,
   XYPosition,
+  GraphEdge,
 } from '~/types'
 
 type CreatePositionChangeParams = {
@@ -21,8 +22,8 @@ type CreatePositionChangeParams = {
   dragging?: boolean
 }
 
-function handleParentExpand(updateItem: GraphNode, getNode: Getters['getNode']) {
-  const parent = updateItem.parentNode ? getNode(updateItem.parentNode) : undefined
+function handleParentExpand(updateItem: GraphNode, curr: GraphNode[]) {
+  const parent = updateItem.parentNode ? curr.find((el) => el.id === updateItem.parentNode) : undefined
   if (parent) {
     const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
@@ -94,7 +95,6 @@ export const applyChanges = <
 >(
   changes: C[],
   elements: T[],
-  getNode: Getters['getNode'],
 ): T[] => {
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
@@ -109,13 +109,13 @@ export const applyChanges = <
         if (isGraphNode(el)) {
           if (typeof change.position !== 'undefined') el.position = change.position
           if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
-          if (el.expandParent && el.parentNode) handleParentExpand(el, getNode)
+          if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
         }
         break
       case 'dimensions':
         if (isGraphNode(el)) {
           if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-          if (el.expandParent && el.parentNode) handleParentExpand(el, getNode)
+          if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
         }
         break
       case 'remove':
@@ -128,6 +128,9 @@ export const applyChanges = <
   return elements
 }
 
+export const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
+export const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
+
 export const createSelectionChange = (id: string, selected: boolean): NodeSelectionChange | EdgeSelectionChange => ({
   id,
   type: 'select',
@@ -136,9 +139,9 @@ export const createSelectionChange = (id: string, selected: boolean): NodeSelect
 
 export const createPositionChange = (
   { node, diff, dragging, nodeExtent }: CreatePositionChangeParams,
-  getNode: Getters['getNode'],
+  curr: GraphNode[],
 ): NodePositionChange => {
-  const parent = node.parentNode ? getNode(node.parentNode) : undefined
+  const parent = node.parentNode ? curr.find((el) => el.id === node.parentNode) : undefined
   const change: NodePositionChange = {
     id: node.id,
     type: 'position',

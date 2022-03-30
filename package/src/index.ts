@@ -20,16 +20,22 @@ export {
   isNode,
   isEdge,
   addEdge,
+  updateEdge,
   getOutgoers,
   getIncomers,
   getConnectedEdges,
-  updateEdge,
   getTransformForBounds,
   getRectOfNodes,
   graphPosToZoomedPos,
   getNodesInside,
   getMarkerId,
 } from './utils/graph'
+
+/**
+ * Intended for options API
+ * In composition API you can access apply utilities from `useVueFlow`
+ */
+export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes'
 
 export { defaultEdgeTypes, defaultNodeTypes } from './store'
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
