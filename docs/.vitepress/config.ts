@@ -4,6 +4,7 @@ import { defineConfig, HeadConfig } from 'vitepress'
 import head from './head'
 import WindiCSS from 'vite-plugin-windicss'
 import Components from 'unplugin-vue-components/vite'
+import svgLoader from 'vite-svg-loader'
 
 config({ path: resolve(__dirname, '.env') })
 
@@ -14,7 +15,13 @@ export default defineConfig({
   head: head as HeadConfig[],
 
   vite: {
+    resolve: {
+      alias: {
+        '~': resolve('../../package/src'),
+      },
+    },
     plugins: [
+      svgLoader(),
       WindiCSS({
         config: resolve(__dirname, './windi.config.ts'),
       }) as any,
