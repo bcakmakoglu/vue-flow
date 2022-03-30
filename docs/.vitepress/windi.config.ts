@@ -6,7 +6,7 @@ import windiColors from 'windicss/colors'
 
 export default defineConfig({
   extract: {
-    include: [resolve(__dirname, 'components/**/*.{ts,md,vue}')],
+    include: [resolve(__dirname, 'components/**/*.{ts,md,vue}'), resolve(__dirname, '../src/**/*.{ts,md,vue}')],
   },
 
   attributify: true,
