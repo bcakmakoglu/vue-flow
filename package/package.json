@@ -29,7 +29,7 @@
     "lint": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "prepare": "ts-patch install -s",
-    "prepublish": "shx cp ../README.md .",
+    "prepublishOnly": "shx cp ../README.md .",
     "postpublish": "shx rm README.md"
   },
   "dependencies": {

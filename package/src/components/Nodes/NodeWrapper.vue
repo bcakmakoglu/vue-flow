@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable/src/index'
+import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { GraphNode, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
@@ -90,6 +90,7 @@ const scale = controlledComputed(
   () => store.transform[2],
   () => store.transform[2],
 )
+const scaleDebounced = debouncedRef(scale, 5)
 
 watch(
   [() => node.value.position, () => store.getNode(node.value.parentNode!)],
@@ -120,7 +121,7 @@ export default {
     :cancel="`.${store.noDragClassName}`"
     :handle="node.dragHandle"
     :disabled="!props.draggable"
-    :scale="scale"
+    :scale="scaleDebounced"
     :grid="props.snapGrid"
     :enable-user-select-hack="false"
     @start="onDragStart"
