@@ -1,4 +1,4 @@
-import { ComputedRef, CSSProperties, ToRefs } from 'vue'
+import { CSSProperties, ToRefs } from 'vue'
 import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
 import { EdgeComponent, NodeComponent, DefaultNodeTypes, DefaultEdgeTypes } from './components'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
