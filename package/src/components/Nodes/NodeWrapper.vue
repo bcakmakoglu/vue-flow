@@ -2,7 +2,7 @@
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { NodeComponent, SnapGrid } from '../../types'
-import { NodeId } from '../../context'
+import { NodeId, Slots } from '../../context'
 import { getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
@@ -16,7 +16,7 @@ interface NodeWrapperProps {
 const props = defineProps<NodeWrapperProps>()
 const { store } = useVueFlow()
 const node = computed(() => store.getNode(props.id)!)
-if (!node.value) throw new Error(`Node with ${props.id} not found!`)
+if (!node.value) throw new Error(`[vueflow]: Node with ${props.id} not found!`)
 provide(NodeId, props.id)
 
 const nodeElement = templateRef<HTMLDivElement>('node-element', null)
@@ -108,18 +108,38 @@ watch(
 
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 
+const slots = inject(Slots)
+
 const name = ref(node.value.type ?? 'default')
+watch(
+  () => node.value.type,
+  (v) => v && (name.value = v),
+)
+
 const type = computed(() => {
+  const instance = getCurrentInstance()
   let nodeType = store.getNodeTypes[name.value]
-  if (typeof nodeType === 'string') nodeType = resolveComponent(name.value, false) as NodeComponent
+  if (typeof nodeType === 'string') {
+    if (instance) {
+      const components = Object.keys(instance.appContext.components)
+      if (components && components.includes(name.value)) {
+        nodeType = resolveComponent(name.value, false) as NodeComponent
+      }
+    }
+  }
   if (typeof nodeType !== 'string') return nodeType
 
-  const slot = useSlots()?.[name.value]?.({})
-  if (!slot || !slot[0].key?.toString().includes(name.value)) {
-    console.warn(`Node type "${node.value.type}" not found and no slot detected. Using fallback type "default".`)
+  const slot = slots?.[`node-${name.value}`]?.({})
+  if (!slot) {
+    console.warn(`[vueflow]: Node type "${node.value.type}" not found and no node-slot detected. Using fallback type "default".`)
     name.value = 'default'
     return store.getNodeTypes.default
   }
+  if (slot.length > 1) {
+    console.warn('[vue-flow]: More than one element in node-slots detected. Using fallback to first slot item.')
+  }
+
+  return slot[0]
 })
 </script>
 <script lang="ts">
@@ -167,14 +187,16 @@ export default {
       @click="onSelectNodeHandler"
       @dblclick="onDoubleClick"
     >
-      <slot
+      <component
+        :is="type"
+        v-if="type"
         v-bind="{
           nodeElement,
           id: node.id,
           type: node.type,
           data: node.data,
           selected: !!node.selected,
-          isConnectable: props.connectable,
+          connectable: props.connectable,
           position: node.position,
           computedPosition: node.computedPosition,
           dimensions: node.dimensions,
@@ -188,32 +210,7 @@ export default {
           label: node.label,
           dragHandle: node.dragHandle,
         }"
-      >
-        <component
-          :is="type"
-          v-if="type"
-          v-bind="{
-            nodeElement,
-            id: node.id,
-            type: node.type,
-            data: node.data,
-            selected: !!node.selected,
-            connectable: props.connectable,
-            position: node.position,
-            computedPosition: node.computedPosition,
-            dimensions: node.dimensions,
-            isValidTargetPos: node.isValidTargetPos,
-            isValidSourcePos: node.isValidSourcePos,
-            parentNode: node.parentNode,
-            dragging: !!node.dragging,
-            zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
-            targetPosition: node.targetPosition,
-            sourcePosition: node.sourcePosition,
-            label: node.label,
-            dragHandle: node.dragHandle,
-          }"
-        />
-      </slot>
+      />
     </div>
   </DraggableCore>
 </template>

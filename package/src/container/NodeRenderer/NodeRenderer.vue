@@ -14,7 +14,7 @@ export default {
     <NodeWrapper
       v-for="node of store.getNodes"
       :id="node.id"
-      :key="node.id"
+      :key="`vue-flow__node-${node.id}`"
       :draggable="typeof node.draggable === 'undefined' ? store.nodesDraggable : !!node.draggable"
       :selectable="typeof node.selectable === 'undefined' ? store.elementsSelectable : !!node.selectable"
       :connectable="typeof node.connectable === 'undefined' ? store.nodesConnectable : !!node.connectable"
