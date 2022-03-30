@@ -96,7 +96,9 @@ export default {
           <slot :name="`edge-${edgeName}`" />
         </template>
       </template>
-      <slot name="connection-line" />
+      <template #connection-name>
+        <slot name="connection-line" />
+      </template>
       <slot name="zoom-pane" />
     </ZoomPane>
     <slot />
