@@ -1,6 +1,16 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import { Elements, VueFlow, MiniMap, Controls, Background, FlowInstance, Position } from "@braks/vue-flow";
+import {
+  Elements,
+  VueFlow,
+  MiniMap,
+  Controls,
+  Background,
+  FlowInstance,
+  Position,
+  GraphEdge,
+  GraphNode
+} from "@braks/vue-flow";
 import { useBreakpoints, whenever } from "@vueuse/core";
 
 const breakpoints = useBreakpoints({
@@ -10,34 +20,68 @@ const breakpoints = useBreakpoints({
   desktop: 1280
 });
 
+const getStyle = (el: GraphNode) => {
+  const classes = ["font-semibold", "!border-2", "transition-colors", "duration-300", "ease-in-out"];
+  if (el.selected) classes.push(...["!border-green-500/80", "!shadow-md", "!shadow-green-500/50", "!bg-green-100/45", "!text-gray-700"]);
+  if (el.selected && !el.dragging) classes.push("animate-pulse");
+  return classes.join(" ");
+};
+
 const elements = ref<Elements>([
   {
     id: "1",
     type: "input",
     label: "input",
     position: { x: 250, y: 5 },
-    class: "font-semibold",
-    style: { border: "2px solid var(--primary)" }
+    class: getStyle
   },
   {
     id: "2",
     label: "default",
     position: { x: 100, y: 100 },
-    class: "font-semibold !border-2 !border-secondary/80",
-    style: (el) => el.selected ? { boxShadow: "none" } : undefined
+    class: getStyle
   },
-  { id: "3", label: "default", position: { x: 400, y: 100 }, class: "font-semibold !border-2 !border-red-500" },
-  { id: "4", type: "output", label: "output", position: { x: 250, y: 225 }, class: "font-semibold" },
+  { id: "3", label: "default", position: { x: 400, y: 100 }, class: getStyle },
+  {
+    id: "4",
+    type: "output",
+    label: "output",
+    position: { x: 250, y: 225 },
+    class: getStyle
+  },
   {
     id: "e1-2",
     source: "1",
     label: "animated edge",
     target: "2",
     animated: true,
-    style: { stroke: "var(--secondary)" }
+    class: "transition-all duration-1000",
+    style: (el: GraphEdge) => {
+      const sourceNodeSelected = el.sourceNode.selected;
+      return {
+        transition: "stroke ease-in-out 300ms",
+        stroke: el.selected || sourceNodeSelected ? "var(--secondary)" : undefined
+      };
+    }
   },
-  { id: "e1-3", source: "1", label: "default edge", target: "3", style: { stroke: "red" } },
-  { id: "e2-4", source: "2", type: "step", target: "4", animated: true, style: { stroke: "var(--secondary)" } }
+  {
+    id: "e1-3", source: "1", label: "default edge", target: "3", style: (el: GraphEdge) => {
+      const sourceNodeSelected = el.sourceNode.selected;
+      return {
+        transition: "stroke ease-in-out 300ms",
+        stroke: el.selected || sourceNodeSelected ? "red" : undefined
+      };
+    }
+  },
+  {
+    id: "e2-4", source: "2", type: "step", target: "4", animated: true, style: (el: GraphEdge) => {
+      const sourceNodeSelected = el.sourceNode.selected;
+      return {
+        transition: "stroke ease-in-out 300ms",
+        stroke: el.selected || sourceNodeSelected ? "var(--secondary)" : undefined
+      };
+    }
+  }
 ]);
 
 const customizableElements = ref<Elements>([
@@ -170,7 +214,7 @@ whenever(breakpoints.smaller("tablet"), () => onLoad(instance.value));
       <div class="w-full min-h-[300px] shadow-xl rounded-xl font-mono uppercase">
         <VueFlow v-model="elements" @pane-ready="onLoad">
           <Controls />
-          <Background color="#aaa" :gap="8" />
+          <Background pattern-color="#aaa" style="background: #f8f8f8" :gap="8" />
         </VueFlow>
       </div>
     </div>
