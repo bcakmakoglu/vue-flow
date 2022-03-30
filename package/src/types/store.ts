@@ -134,8 +134,6 @@ export interface Getters<N = any, E = N> {
   getSelectedEdges: GraphEdge<E>[]
 }
 
-export type ComputedGetters<N = any, E = N> = { [key in keyof Getters<N, E>]: ComputedRef<Getters<N, E>[key]> }
-
 interface StoreBase<N = any, E = N> {
   state: State<N, E>
 }
@@ -147,5 +145,5 @@ export type UseVueFlow<N = any, E = N> = {
   store: Store<N, E>
 } & FlowHooksOn<N, E> &
   ToRefs<State<N, E>> &
-  ComputedGetters<N, E> &
+  Getters<N, E> &
   Actions<N, E>
