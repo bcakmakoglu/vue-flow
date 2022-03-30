@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
+import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable/src/index'
 import { useVueFlow } from '../../composables'
-import { NodeComponent, SnapGrid } from '../../types'
-import { NodeId, Slots } from '../../context'
+import { SnapGrid } from '../../types'
+import { NodeId } from '../../context'
 import { getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
   id: string
+  name: string
   draggable: boolean
   selectable: boolean
   connectable: boolean
@@ -107,44 +108,11 @@ watch(
 )
 
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
-
-const slots = inject(Slots)
-
-const name = ref(node.value.type ?? 'default')
-watch(
-  () => node.value.type,
-  (v) => v && (name.value = v),
-)
-
-const type = computed(() => {
-  const instance = getCurrentInstance()
-  let nodeType = store.getNodeTypes[name.value]
-  if (typeof nodeType === 'string') {
-    if (instance) {
-      const components = Object.keys(instance.appContext.components)
-      if (components && components.includes(name.value)) {
-        nodeType = resolveComponent(name.value, false) as NodeComponent
-      }
-    }
-  }
-  if (typeof nodeType !== 'string') return nodeType
-
-  const slot = slots?.[`node-${name.value}`]?.({})
-  if (!slot) {
-    console.warn(`[vueflow]: Node type "${node.value.type}" not found and no node-slot detected. Using fallback type "default".`)
-    name.value = 'default'
-    return store.getNodeTypes.default
-  }
-  if (slot.length > 1) {
-    console.warn('[vue-flow]: More than one element in node-slot detected. Using fallback to first slot item.')
-  }
-
-  return slot[0]
-})
 </script>
 <script lang="ts">
 export default {
   name: 'Node',
+  inheritAttrs: false,
 }
 </script>
 <template>
@@ -164,7 +132,7 @@ export default {
       :key="`node-${node.id}`"
       :class="[
         'vue-flow__node',
-        `vue-flow__node-${name}`,
+        `vue-flow__node-${props.name}`,
         store.noPanClassName,
         {
           dragging: node.dragging,
@@ -187,8 +155,7 @@ export default {
       @click="onSelectNodeHandler"
       @dblclick="onDoubleClick"
     >
-      <component
-        :is="type"
+      <slot
         v-bind="{
           nodeElement,
           id: node.id,
