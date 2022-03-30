@@ -165,23 +165,6 @@ export default {
 <template>
   <div ref="zoomPane" class="vue-flow__renderer vue-flow__container">
     <TransformationPane>
-      <template
-        v-for="nodeName of Object.keys(store.getNodeTypes)"
-        #[`node-${nodeName}`]="nodeProps"
-        :key="`node-${nodeName}-${id}`"
-      >
-        <slot :name="`node-${nodeName}`" v-bind="nodeProps" />
-      </template>
-      <template
-        v-for="edgeName of Object.keys(store.getEdgeTypes)"
-        #[`edge-${edgeName}`]="edgeProps"
-        :key="`edge-${edgeName}-${id}`"
-      >
-        <slot :name="`edge-${edgeName}`" v-bind="edgeProps" />
-      </template>
-      <template #connection-line="customConnectionLineProps">
-        <slot name="connection-line" v-bind="customConnectionLineProps" />
-      </template>
       <slot />
     </TransformationPane>
     <SelectionPane :key="`selection-pane-${id}`" />
