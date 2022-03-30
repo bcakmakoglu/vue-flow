@@ -2,6 +2,7 @@
 import { useHandle, useVueFlow } from '../../composables'
 import { ConnectionMode, Position, EdgeComponent } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
+import { Slots } from '../../context'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
@@ -98,18 +99,38 @@ onMounted(() => {
   )
 })
 
+const slots = inject(Slots)
+
 const name = ref(edge.value.type ?? 'default')
+watch(
+  () => edge.value.type,
+  (v) => v && (name.value = v),
+)
+
 const type = computed(() => {
+  const instance = getCurrentInstance()
   let edgeType = store.getEdgeTypes[name.value]
-  if (typeof edgeType === 'string') edgeType = resolveComponent(name.value, false) as EdgeComponent
+  if (typeof edgeType === 'string') {
+    if (instance) {
+      const components = Object.keys(instance.appContext.components)
+      if (components && components.includes(name.value)) {
+        edgeType = resolveComponent(name.value, false) as EdgeComponent
+      }
+    }
+  }
   if (typeof edgeType !== 'string') return edgeType
 
-  const slot = useSlots()?.[name.value]?.({})
-  if (!slot || !slot[0].key?.toString().includes(name.value)) {
-    console.warn(`Node type "${edge.value.type}" not found and no slot detected. Using fallback type "default".`)
+  const slot = slots?.[`edge-${name.value}`]?.({})
+  if (!slot) {
+    console.warn(`[vueflow]: Edge type "${edge.value.type}" not found and no edge-slot detected. Using fallback type "default".`)
     name.value = 'default'
     return store.getEdgeTypes.default
   }
+  if (slot.length > 1) {
+    console.warn('[vue-flow]: More than one element in edge-slot detected. Using fallback to first slot item.')
+  }
+
+  return slot[0]
 })
 </script>
 <script lang="ts">
@@ -139,16 +160,17 @@ export default {
     @mousemove="onEdgeMouseMove"
     @mouseleave="onEdgeMouseLeave"
   >
-    <slot
+    <component
+      :is="type"
       v-bind="{
         id: edge.id,
         sourceNode: edge.sourceNode,
         targetNode: edge.targetNode,
         source: edge.source,
         target: edge.target,
+        updatable: props.updatable,
         selected: edge.selected,
         animated: edge.animated,
-        updatable: props.updatable,
         label: edge.label,
         labelStyle: edge.labelStyle,
         labelShowBg: edge.labelShowBg,
@@ -157,51 +179,18 @@ export default {
         labelBgBorderRadius: edge.labelBgBorderRadius,
         data: edge.data,
         style: edge.style,
-        sourceX: edge.sourceX,
-        sourceY: edge.sourceY,
-        targetX: edge.targetX,
-        targetY: edge.targetY,
         markerStart: `url(#${getMarkerId(edge.markerStart)})`,
         markerEnd: `url(#${getMarkerId(edge.markerEnd)})`,
         sourcePosition,
         targetPosition,
+        sourceX: edge.sourceX,
+        sourceY: edge.sourceY,
+        targetX: edge.targetX,
+        targetY: edge.targetY,
         sourceHandleId: edge.sourceHandle,
         targetHandleId: edge.targetHandle,
       }"
-    >
-      <component
-        :is="type"
-        v-if="type"
-        v-bind="{
-          id: edge.id,
-          sourceNode: edge.sourceNode,
-          targetNode: edge.targetNode,
-          source: edge.source,
-          target: edge.target,
-          updatable: props.updatable,
-          selected: edge.selected,
-          animated: edge.animated,
-          label: edge.label,
-          labelStyle: edge.labelStyle,
-          labelShowBg: edge.labelShowBg,
-          labelBgStyle: edge.labelBgStyle,
-          labelBgPadding: edge.labelBgPadding,
-          labelBgBorderRadius: edge.labelBgBorderRadius,
-          data: edge.data,
-          style: edge.style,
-          markerStart: `url(#${getMarkerId(edge.markerStart)})`,
-          markerEnd: `url(#${getMarkerId(edge.markerEnd)})`,
-          sourcePosition,
-          targetPosition,
-          sourceX: edge.sourceX,
-          sourceY: edge.sourceY,
-          targetX: edge.targetX,
-          targetY: edge.targetY,
-          sourceHandleId: edge.sourceHandle,
-          targetHandleId: edge.targetHandle,
-        }"
-      />
-    </slot>
+    />
     <g
       v-if="props.updatable"
       @mousedown="onEdgeUpdaterSourceMouseDown"

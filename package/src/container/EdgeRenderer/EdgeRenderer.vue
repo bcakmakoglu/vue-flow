@@ -47,11 +47,7 @@ export default {
         :key="edge.id"
         :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
-      >
-        <template #default="edgeProps">
-          <slot v-if="edge.type" :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
-        </template>
-      </EdgeWrapper>
+      />
       <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode" />
     </g>
   </svg>
