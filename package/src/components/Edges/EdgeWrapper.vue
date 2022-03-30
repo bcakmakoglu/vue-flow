@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, Position, EdgeComponent } from '../../types'
+import { ConnectionMode, Position } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
-import { Slots } from '../../context'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
   id: string
+  name: string
   selectable?: boolean
   updatable?: boolean
 }
@@ -98,44 +98,11 @@ onMounted(() => {
     { immediate: true, deep: true },
   )
 })
-
-const slots = inject(Slots)
-
-const name = ref(edge.value.type ?? 'default')
-watch(
-  () => edge.value.type,
-  (v) => v && (name.value = v),
-)
-
-const type = computed(() => {
-  const instance = getCurrentInstance()
-  let edgeType = store.getEdgeTypes[name.value]
-  if (typeof edgeType === 'string') {
-    if (instance) {
-      const components = Object.keys(instance.appContext.components)
-      if (components && components.includes(name.value)) {
-        edgeType = resolveComponent(name.value, false) as EdgeComponent
-      }
-    }
-  }
-  if (typeof edgeType !== 'string') return edgeType
-
-  const slot = slots?.[`edge-${name.value}`]?.({})
-  if (!slot) {
-    console.warn(`[vueflow]: Edge type "${edge.value.type}" not found and no edge-slot detected. Using fallback type "default".`)
-    name.value = 'default'
-    return store.getEdgeTypes.default
-  }
-  if (slot.length > 1) {
-    console.warn('[vue-flow]: More than one element in edge-slot detected. Using fallback to first slot item.')
-  }
-
-  return slot[0]
-})
 </script>
 <script lang="ts">
 export default {
   name: 'Edge',
+  inheritAttrs: false,
 }
 </script>
 <template>
@@ -143,7 +110,7 @@ export default {
     :key="`edge-${edge.id}`"
     :class="[
       'vue-flow__edge',
-      `vue-flow__edge-${name}`,
+      `vue-flow__edge-${props.name}`,
       store.noPanClassName,
       {
         selected: edge.selected,
@@ -160,8 +127,7 @@ export default {
     @mousemove="onEdgeMouseMove"
     @mouseleave="onEdgeMouseLeave"
   >
-    <component
-      :is="type"
+    <slot
       v-bind="{
         id: edge.id,
         sourceNode: edge.sourceNode,
