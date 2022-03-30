@@ -23,7 +23,6 @@
       "@types/node"
     ],
   },
-  "include": ["./.vitepress", "."],
   "exclude": [
     "node_modules",
     "dist"
