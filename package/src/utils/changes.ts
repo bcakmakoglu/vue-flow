@@ -150,7 +150,7 @@ export const createPositionChange = (
 
   if (diff) {
     const nextPosition = { x: node.position.x + diff.x, y: node.position.y + diff.y }
-    let currentExtent = nodeExtent || node.extent
+    let currentExtent = node.extent === 'parent' ? nodeExtent : node.extent
 
     if (node.extent === 'parent' && parent && node.dimensions.width && node.dimensions.height) {
       currentExtent =
