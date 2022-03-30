@@ -16,6 +16,7 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
+    "declaration": true,
     "declarationDir": "./dist",
     "types": [
       "vite/client"
