@@ -136,7 +136,7 @@ const type = computed(() => {
     return store.getNodeTypes.default
   }
   if (slot.length > 1) {
-    console.warn('[vue-flow]: More than one element in node-slots detected. Using fallback to first slot item.')
+    console.warn('[vue-flow]: More than one element in node-slot detected. Using fallback to first slot item.')
   }
 
   return slot[0]
@@ -189,7 +189,6 @@ export default {
     >
       <component
         :is="type"
-        v-if="type"
         v-bind="{
           nodeElement,
           id: node.id,
