@@ -35,8 +35,7 @@ const transform = computed(() => `translate(${store.transform[0]}px,${store.tran
 <template>
   <div :key="`transformation-pane-${id}`" class="vue-flow__transformation-pane vue-flow__container" :style="{ transform }">
     <NodeRenderer v-if="store.getNodes.length" :key="`node-renderer-${id}`" />
-    <EdgeRenderer :key="`edge-renderer-${id}`">
-    </EdgeRenderer>
+    <EdgeRenderer :key="`edge-renderer-${id}`" />
     <slot />
   </div>
 </template>

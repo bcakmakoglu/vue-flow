@@ -52,11 +52,7 @@ export default {
           <slot v-if="edge.type" :name="`edge-${edge.type}`" v-bind="edgeProps"></slot>
         </template>
       </EdgeWrapper>
-      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode">
-        <template #default="customConnectionLineProps">
-          <slot name="connection-line" v-bind="customConnectionLineProps"></slot>
-        </template>
-      </ConnectionLine>
+      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode" />
     </g>
   </svg>
 </template>
