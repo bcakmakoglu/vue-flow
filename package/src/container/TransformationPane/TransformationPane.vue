@@ -31,14 +31,9 @@ onMounted(() => {
 })
 
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
-const keyPressed = useKeyPress(store.selectionKeyCode)
 </script>
 <template>
-  <div
-    :key="`transformation-pane-${id}`"
-    class="vue-flow__transformation-pane vue-flow__container"
-    :style="{ transform, pointerEvents: keyPressed ? 'none' : 'all' }"
-  >
+  <div :key="`transformation-pane-${id}`" class="vue-flow__transformation-pane vue-flow__container" :style="{ transform }">
     <NodeRenderer :key="`node-renderer-${id}`" />
     <EdgeRenderer :key="`edge-renderer-${id}`" />
     <slot />
