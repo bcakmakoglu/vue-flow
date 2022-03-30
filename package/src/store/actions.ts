@@ -16,7 +16,8 @@ import {
   State,
 } from '~/types'
 import {
-  applyChanges,
+  applyNodeChanges as applyNodes,
+  applyEdgeChanges as applyEdges,
   connectionExists,
   createPositionChange,
   createSelectionChange,
@@ -83,11 +84,6 @@ const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: Gra
   return true
 }
 
-const applyEdgeChangesAction = (changes: EdgeChange[], edges: GraphEdge[], getNode: Getters['getNode']) =>
-  applyChanges(changes, edges, getNode)
-const applyNodeChangesAction = (changes: NodeChange[], nodes: GraphNode[], getNode: Getters['getNode']) =>
-  applyChanges(changes, nodes, getNode)
-
 const createGraphNodes = (nodes: Node[], getNode: Getters['getNode'], currGraphNodes: GraphNode[], extent: CoordinateExtent) => {
   const parentNodes: Record<string, true> = {}
 
@@ -127,17 +123,18 @@ export default (state: State, getters: ComputedGetters): Actions => {
     state.nodes.forEach((node) => {
       if (node.selected) {
         if (!node.parentNode) {
-          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, getters.getNode.value))
+          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, state.nodes))
         } else if (!isParentSelected(node, getters.getNode.value)) {
-          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, getters.getNode.value))
+          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, state.nodes))
         }
       } else if (node.id === id) {
-        changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, getters.getNode.value))
+        changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, state.nodes))
       }
     })
 
     if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
+
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
       const node = getters.getNode.value(update.id)
@@ -167,6 +164,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
+
   const addSelectedNodes: Actions['addSelectedNodes'] = (nodes) => {
     const selectedNodesIds = nodes.map((n) => n.id)
 
@@ -176,6 +174,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
   }
+
   const addSelectedEdges: Actions['addSelectedEdges'] = (edges) => {
     const selectedEdgesIds = edges.map((e) => e.id)
 
@@ -185,26 +184,32 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
+
   const addSelectedElements: Actions['addSelectedElements'] = (elements) => {
     addSelectedNodes(elements.filter(isGraphNode))
     addSelectedEdges(elements.filter(isGraphEdge))
   }
+
   const setMinZoom: Actions['setMinZoom'] = (minZoom: any) => {
     state.d3Zoom?.scaleExtent([minZoom, state.maxZoom])
     state.minZoom = minZoom
   }
+
   const setMaxZoom: Actions['setMaxZoom'] = (maxZoom: any) => {
     state.d3Zoom?.scaleExtent([state.minZoom, maxZoom])
     state.maxZoom = maxZoom
   }
+
   const setTranslateExtent: Actions['setTranslateExtent'] = (translateExtent: any) => {
     state.d3Zoom?.translateExtent(translateExtent)
     state.translateExtent = translateExtent
   }
+
   const resetSelectedElements: Actions['resetSelectedElements'] = () => {
     addSelectedNodes([])
     addSelectedEdges([])
   }
+
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
     state.nodesDraggable = isInteractive
     state.nodesConnectable = isInteractive
@@ -215,6 +220,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     if (!state.initialized && !nodes.length) return
     state.nodes = createGraphNodes(nodes, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
   }
+
   const setEdges: Actions['setEdges'] = (edges) => {
     if (!state.initialized && !edges.length) return
     state.edges = edges.map((edge) => {
@@ -269,10 +275,10 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>
     updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
-  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) =>
-    applyNodeChangesAction(changes, state.nodes, getters.getNode.value)
-  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) =>
-    applyEdgeChangesAction(changes, state.edges, getters.getNode.value)
+
+  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyNodes(changes, state.nodes)
+
+  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyEdges(changes, state.edges)
 
   const setState: Actions['setState'] = (opts) => {
     const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent']
@@ -298,6 +304,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     }
     if (!state.initialized) state.initialized = true
   }
+
   return {
     updateNodePosition,
     updateNodeDimensions,
