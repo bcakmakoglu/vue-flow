@@ -149,7 +149,7 @@ export default {
         zIndex: node.computedPosition.z,
         transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-        ...node.style,
+        ...getStyle(),
       }"
       :data-id="node.id"
       @mouseenter="onMouseEnterHandler"
