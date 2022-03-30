@@ -49,7 +49,7 @@ export default {
       :id="node.id"
       :key="`vue-flow__node-${node.id}`"
       :node="node"
-      :name="node.type ? names[node.type] : 'default'"
+      :name="typeof node.type !== 'undefined' && typeof names[node.type] !== 'undefined' ? names[node.type] : 'default'"
       :draggable="typeof node.draggable === 'undefined' ? store.nodesDraggable : !!node.draggable"
       :selectable="typeof node.selectable === 'undefined' ? store.elementsSelectable : !!node.selectable"
       :connectable="typeof node.connectable === 'undefined' ? store.nodesConnectable : !!node.connectable"
