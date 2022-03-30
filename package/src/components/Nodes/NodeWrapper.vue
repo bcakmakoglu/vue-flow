@@ -86,6 +86,9 @@ onMounted(() => {
   store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])
 })
 
+const getClass = () => (node.value.class instanceof Function ? node.value.class(node.value) : node.value.class)
+const getStyle = () => (node.value.style instanceof Function ? node.value.style(node.value) : node.value.style)
+
 const scale = controlledComputed(
   () => store.transform[2],
   () => store.transform[2],
@@ -140,7 +143,7 @@ export default {
           selected: node.selected,
           selectable: props.selectable,
         },
-        node.class,
+        getClass(),
       ]"
       :style="{
         zIndex: node.computedPosition.z,

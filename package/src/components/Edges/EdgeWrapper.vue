@@ -54,19 +54,25 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   )
 }
 
+const getClass = () => (edge.value.class instanceof Function ? edge.value.class(edge.value) : edge.value.class)
+const getStyle = () => (edge.value.style instanceof Function ? edge.value.style(edge.value) : edge.value.style)
+
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() =>
   store.connectionMode === ConnectionMode.Strict
     ? edge.value.targetNode.handleBounds.target
     : edge.value.targetNode.handleBounds.target ?? edge.value.targetNode.handleBounds.source,
 )
+
 const sourceHandle = controlledComputed(
   () => edge.value.sourceNode.handleBounds,
   () => getHandle(edge.value.sourceNode.handleBounds.source, edge.value.sourceHandle),
 )
+
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.value.targetHandle))
 const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
+
 const edgeUpdaterRadius = computed(() => store.edgeUpdaterRadius)
 
 onMounted(() => {
@@ -118,7 +124,7 @@ export default {
         inactive: !props.selectable,
         updating,
       },
-      edge.class,
+      getClass(),
     ]"
     @click="onEdgeClick"
     @dblClick="onDoubleClick"

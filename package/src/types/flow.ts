@@ -6,8 +6,11 @@ import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
 /** an internal element  */
-export type FlowElement<N = any, E = any> = GraphNode<N> | GraphEdge<E>
-export type FlowElements<N = any, E = any> = FlowElement<N, E>[]
+export type FlowElement<Data = any> = GraphNode<Data> | GraphEdge<Data>
+export type FlowElements<N = any, E = N> = (FlowElement<N> | FlowElement<E>)[]
+
+type ClassFunc<Data = any> = (element: FlowElement<Data>) => string
+type StyleFunc<Data = any> = (element: FlowElement<Data>) => CSSProperties
 
 /** base element props */
 export interface Element<Data = any> {
@@ -20,8 +23,8 @@ export interface Element<Data = any> {
       }
   type?: string
   data?: Data
-  class?: string
-  style?: CSSProperties
+  class?: string | ClassFunc
+  style?: CSSProperties | StyleFunc
   hidden?: boolean
 }
 export type Elements<N = any, E = any> = (Node<N> | Edge<E>)[]
