@@ -15,8 +15,10 @@ watch(selectedNodesBBox, (v) => (store.selectedNodesBbox = v))
 const onStart: DraggableEventListener = ({ event }) =>
   store.hooks.selectionDragStart.trigger({ event, nodes: store.getSelectedNodes })
 const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
-  store.hooks.selectionDrag.trigger({ event, nodes: store.getSelectedNodes })
-  store.updateNodePosition({ diff: { x: deltaX, y: deltaY }, dragging: true })
+  nextTick(() => {
+    store.hooks.selectionDrag.trigger({ event, nodes: store.getSelectedNodes })
+    store.updateNodePosition({ diff: { x: deltaX, y: deltaY }, dragging: true })
+  })
 }
 const onStop: DraggableEventListener = ({ event }) => {
   store.hooks.selectionDragStop.trigger({ event, nodes: store.getSelectedNodes })
@@ -29,6 +31,12 @@ const scale = controlledComputed(
   () => store.transform[2],
   () => store.transform[2],
 )
+const scaleDebounced = debouncedRef(scale, 5)
+
+const el = templateRef<HTMLDivElement>('el', null)
+onMounted(() => {
+  el.value.click()
+})
 </script>
 <script lang="ts">
 export default {
@@ -36,11 +44,11 @@ export default {
 }
 </script>
 <template>
-  <div class="vue-flow__nodesselection vue-flow__container" :class="store.noPanClassName" :style="{ transform }">
+  <div ref="el" class="vue-flow__nodesselection vue-flow__container" :class="store.noPanClassName" :style="{ transform }">
     <DraggableCore
       :grid="store.snapToGrid ? store.snapGrid : undefined"
       :enable-user-select-hack="false"
-      :scale="scale"
+      :scale="scaleDebounced"
       @start="onStart"
       @move="onDrag"
       @stop="onStop"
