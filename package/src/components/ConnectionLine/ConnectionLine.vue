@@ -2,12 +2,20 @@
 import { getBezierPath, getSmoothStepPath } from '../Edges/utils'
 import { ConnectionLineType, GraphNode, HandleElement, Position } from '../../types'
 import { useVueFlow } from '../../composables'
+import { Slots } from '../../context'
 
 interface ConnectionLineProps {
   sourceNode: GraphNode
 }
 const props = defineProps<ConnectionLineProps>()
 const { store } = useVueFlow()
+
+const slots = inject(Slots)?.['connection-line']?.({})
+const slot = slots?.[0]
+if (slots && slots.length > 1) {
+  console.warn('[vue-flow]: More than one element in connection-line-slot detected. Using fallback to first slot item.')
+}
+
 const sourceHandle =
   store.connectionHandleId && store.connectionHandleType
     ? props.sourceNode.handleBounds[store.connectionHandleType]?.find((d: HandleElement) => d.id === store.connectionHandleId)
@@ -68,7 +76,9 @@ export default {
 </script>
 <template>
   <g class="vue-flow__connection">
-    <slot
+    <component
+      :is="slot"
+      v-if="slot"
       v-bind="{
         sourceX,
         sourceY,
@@ -82,8 +92,7 @@ export default {
         sourceNode: props.sourceNode,
         sourceHandle,
       }"
-    >
-      <path :d="dAttr" class="vue-flow__connection-path" :style="store.connectionLineStyle || {}" />
-    </slot>
+    />
+    <path v-else :d="dAttr" class="vue-flow__connection-path" :style="store.connectionLineStyle || {}" />
   </g>
 </template>
