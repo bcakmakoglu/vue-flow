@@ -1,7 +1,7 @@
 import useState from './state'
+import { ComputedGetters } from './getters'
 import {
   Actions,
-  ComputedGetters,
   Connection,
   CoordinateExtent,
   Edge,

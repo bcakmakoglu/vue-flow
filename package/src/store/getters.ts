@@ -1,6 +1,9 @@
+import { ComputedRef } from 'vue'
 import { defaultEdgeTypes, defaultNodeTypes } from './state'
-import { ComputedGetters, State, GraphEdge, GraphNode } from '~/types'
+import { State, GraphEdge, GraphNode, Getters } from '~/types'
 import { getNodesInside, isEdgeVisible } from '~/utils'
+
+export type ComputedGetters<N = any, E = N> = { [key in keyof Getters<N, E>]: ComputedRef<Getters<N, E>[key]> }
 
 export default (state: State): ComputedGetters => {
   const getEdgeTypes = computed(() => {
