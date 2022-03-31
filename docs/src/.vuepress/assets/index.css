@@ -7,9 +7,12 @@ html, body {
   @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-gray-300;
 }
 
-.home-content {
+.home {
   max-width: 100% !important;
-  padding: 0 !important;
+  @apply !px-0;
+}
+
+.container {
 }
 
 h1 {
@@ -26,32 +29,6 @@ p {
 
 p ~ h1, p ~ h2 {
   @apply mt-6;
-}
-
-ul {
-  @apply md:p-[revert];
-}
-
-li {
-  @apply mt-2 text-md lg:text-lg;
-  list-style: inside;
-  list-style-type: circle;
-}
-
-.backround-img {
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: url('./polygon-scatter.svg');
-}
-
-.overview-example__add {
-  display: none;
-}
-
-.vue-flow__node.dark-node {
-  background: #0041d0;
-  color: #f8f8f8;
 }
 
 .vue-flow__node.dark {

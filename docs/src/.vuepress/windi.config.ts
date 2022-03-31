@@ -6,13 +6,13 @@ import scrollbar from '@windicss/plugin-scrollbar'
 export default defineConfig({
   extract: {
     include: [
-      resolve(__dirname, 'components/**/*.{ts,md,vue}'),
+      resolve(__dirname, '../../components/**/*.{ts,md,vue}'),
       resolve(__dirname, '../src/**/*.{ts,md,vue}')
     ],
   },
 
   attributify: true,
-  darkMode: 'media',
+  darkMode: 'class',
 
   plugins: [
     typography({

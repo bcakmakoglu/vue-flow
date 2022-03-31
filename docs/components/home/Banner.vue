@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import data from '../../../.data.json'
+import data from '../../.data.json'
 import Star from '~icons/carbon/star'
 import Download from '~icons/carbon/download'
-
 </script>
 <template>
-  <div class="w-full bg-gray-900 text-white">
+  <div class="w-full bg-black text-white">
     <div class="max-w-9/12 md:max-w-3/4 lg:max-w-4xl m-auto py-4 md:py-12">
       <div class="grid md:grid-cols-3 gap-3 md:gap-0 text-center <md:divide-y md:divide-x divide-blue-200">
         <div class="grid grid-rows-auto gap-2 py-4 md:py-0">
