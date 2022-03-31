@@ -7,7 +7,7 @@ import {
   Controls,
   MiniMap,
   GraphNode,
-  StringFunc,
+  MiniMapNodeFunc,
   useVueFlow
 } from "@braks/vue-flow";
 import { templateRef } from "@vueuse/core";
@@ -52,7 +52,7 @@ const color = ref<Colors>({
 
 const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (color.value[c] = Number(val));
 
-const nodeColor: StringFunc = (node: GraphNode) => {
+const nodeColor: MiniMapNodeFunc = (node: GraphNode) => {
   switch (node.id) {
     case "1":
       return "green";
