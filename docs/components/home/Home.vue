@@ -54,8 +54,8 @@ onPaneReady(async ({ fitView }) => {
 })
 </script>
 <template>
-  <div class="bg-white h-[90vh] md:h-[75vh]">
-    <VueFlow class="dark:bg-black bg-white">
+  <div class="h-[90vh] md:h-[75vh]">
+    <VueFlow class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
       <template #node-box="props">
         <template v-if="props.id === 'intro'">
           <div class="max-w-[500px]">
