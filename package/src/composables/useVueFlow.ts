@@ -31,10 +31,10 @@ export class Storage {
   public create(id: string, options?: Partial<FlowOptions>) {
     const store = useStore(options)
     const flow: UseVueFlow = {
-      id,
-      store,
       ...(store as any),
       ...toRefs(store.state),
+      id,
+      store,
     }
     this.set(id, flow)
     return flow
