@@ -166,34 +166,32 @@ export default {
   >
     <component
       :is="type"
-      v-bind="{
-        id: edge.id,
-        sourceNode: edge.sourceNode,
-        targetNode: edge.targetNode,
-        source: edge.source,
-        target: edge.target,
-        updatable: props.updatable,
-        selected: edge.selected,
-        animated: edge.animated,
-        label: edge.label,
-        labelStyle: edge.labelStyle,
-        labelShowBg: edge.labelShowBg,
-        labelBgStyle: edge.labelBgStyle,
-        labelBgPadding: edge.labelBgPadding,
-        labelBgBorderRadius: edge.labelBgBorderRadius,
-        data: edge.data,
-        style: getStyle(),
-        markerStart: `url(#${getMarkerId(edge.markerStart)})`,
-        markerEnd: `url(#${getMarkerId(edge.markerEnd)})`,
-        sourcePosition,
-        targetPosition,
-        sourceX: edge.sourceX,
-        sourceY: edge.sourceY,
-        targetX: edge.targetX,
-        targetY: edge.targetY,
-        sourceHandleId: edge.sourceHandle,
-        targetHandleId: edge.targetHandle,
-      }"
+      :id="edge.id"
+      :source-node="edge.sourceNode"
+      :target-node="edge.targetNode"
+      :source="edge.source"
+      :target="edge.target"
+      :updatable="props.updatable"
+      :selected="edge.selected"
+      :animated="edge.animated"
+      :label="edge.label"
+      :label-style="edge.labelStyle"
+      :label-show-bg="edge.labelShowBg"
+      :label-bg-style="edge.labelBgStyle"
+      :label-bg-padding="edge.labelBgPadding"
+      :label-bg-border-radius="edge.labelBgBorderRadius"
+      :data="edge.data"
+      :style="getStyle()"
+      :marker-start="`url(#${getMarkerId(edge.markerStart)})`"
+      :marker-end="`url(#${getMarkerId(edge.markerEnd)})`"
+      :source-position="sourcePosition"
+      :target-position="targetPosition"
+      :source-x="edge.sourceX"
+      :source-y="edge.sourceY"
+      :target-x="edge.targetX"
+      :target-y="edge.targetY"
+      :source-handle-id="edge.sourceHandle"
+      :target-handle-id="edge.targetHandle"
     />
     <g
       v-if="props.updatable"

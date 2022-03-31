@@ -191,26 +191,24 @@ export default {
     >
       <component
         :is="type"
-        v-bind="{
-          nodeElement,
-          id: node.id,
-          type: node.type,
-          data: node.data,
-          selected: !!node.selected,
-          connectable: props.connectable,
-          position: node.position,
-          computedPosition: node.computedPosition,
-          dimensions: node.dimensions,
-          isValidTargetPos: node.isValidTargetPos,
-          isValidSourcePos: node.isValidSourcePos,
-          parentNode: node.parentNode,
-          dragging: !!node.dragging,
-          zIndex: node.dragging || node.selected ? 1000 : node.computedPosition.z,
-          targetPosition: node.targetPosition,
-          sourcePosition: node.sourcePosition,
-          label: node.label,
-          dragHandle: node.dragHandle,
-        }"
+        :id="node.id"
+        :node-element="nodeElement"
+        :type="node.type"
+        :data="node.data"
+        :selected="!!node.selected"
+        :connectable="props.connectable"
+        :position="node.position"
+        :computed-position="node.computedPosition"
+        :dimensions="node.dimensions"
+        :is-valid-target-pos="node.isValidTargetPos"
+        :is-valid-source-pos="node.isValidSourcePos"
+        :parent-node="node.parentNode"
+        :dragging="!!node.dragging"
+        :z-index="node.computedPosition.z"
+        :target-position="node.targetPosition"
+        :source-position="node.sourcePosition"
+        :label="node.label"
+        :drag-handle="node.dragHandle"
       />
     </div>
   </DraggableCore>
