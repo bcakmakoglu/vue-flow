@@ -1,5 +1,5 @@
 import { Component, CSSProperties, DefineComponent, HTMLAttributes } from 'vue'
-import { BackgroundVariant, Dimensions, XYPosition } from './flow'
+import { BackgroundVariant, Dimensions, ElementData, XYPosition } from './flow'
 import { GraphNode, Node, NodeProps } from './node'
 import { EdgeProps } from './edge'
 import { FitViewParams } from './zoom'
@@ -8,15 +8,15 @@ import { FitViewParams } from './zoom'
 type GlobalComponentName = string
 
 /** Node Components can either be a component definition or a string name */
-export type NodeComponent<N = any> =
-  | Component<NodeProps<N>>
-  | DefineComponent<NodeProps<N>, any, any, any, any>
+export type NodeComponent<Data = ElementData> =
+  | Component<NodeProps<Data>>
+  | DefineComponent<NodeProps<Data>, any, any, any, any>
   | GlobalComponentName
 
 /** Edge Components can either be a component definition or a string name */
-export type EdgeComponent<E = any> =
-  | Component<EdgeProps<E>>
-  | DefineComponent<EdgeProps<E>, any, any, any, any, any>
+export type EdgeComponent<Data = ElementData> =
+  | Component<EdgeProps<Data>>
+  | DefineComponent<EdgeProps<Data>, any, any, any, any, any>
   | GlobalComponentName
 
 export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step' | 'simplebezier']: EdgeComponent }
@@ -62,16 +62,20 @@ export interface ControlEvents {
 }
 
 /** expects a node and returns a color value */
-export type StringFunc<N = any> = (node: Node<N> | GraphNode<N>) => string
+export type MiniMapNodeFunc<Data = any> = (node: Node<Data> | GraphNode<Data>) => string
+// hack for vue-type imports
+type MiniMapNodeFunc2<Data = any> = (node: Node<Data> | GraphNode<Data>) => string
+type MiniMapNodeFunc3<Data = any> = (node: Node<Data> | GraphNode<Data>) => string
+
 export type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
 
-export interface MiniMapProps<N = any> {
+export interface MiniMapProps<Data = any> {
   /** Node color, can be either a string or a string func that receives the current node */
-  nodeColor?: string | (<NC = N>(node: Node<NC> | GraphNode<NC>) => string)
+  nodeColor?: string | MiniMapNodeFunc<Data>
   /** Node stroke color, can be either a string or a string func that receives the current node */
-  nodeStrokeColor?: string | (<NSC = N>(node: Node<NSC> | GraphNode<NSC>) => string)
+  nodeStrokeColor?: string | MiniMapNodeFunc2<Data>
   /** Additional node class name, can be either a string or a string func that receives the current node */
-  nodeClassName?: string | (<NCM = N>(node: Node<NCM> | GraphNode<NCM>) => string)
+  nodeClassName?: string | MiniMapNodeFunc3<Data>
   /** Node border radius */
   nodeBorderRadius?: number
   /** Node stroke width */

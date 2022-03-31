@@ -5,15 +5,17 @@ import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
-/** an internal element  */
-export type FlowElement<Data = any> = GraphNode<Data> | GraphEdge<Data>
-export type FlowElements<N = any, E = N> = (FlowElement<N> | FlowElement<E>)[]
+export type ElementData = Record<any, any>
 
-type ClassFunc<Data = any> = (element: FlowElement<Data>) => string
-type StyleFunc<Data = any> = (element: FlowElement<Data>) => CSSProperties
+/** an internal element  */
+export type FlowElement<NodeData = ElementData, EdgeData = ElementData> = GraphNode<NodeData> | GraphEdge<EdgeData>
+export type FlowElements<NodeData = ElementData, EdgeData = ElementData> = (FlowElement<NodeData> | FlowElement<EdgeData>)[]
+
+export type ClassFunc<Data = ElementData> = (element: FlowElement<Data>) => string
+export type StyleFunc<Data = ElementData> = (element: FlowElement<Data>) => CSSProperties
 
 /** base element props */
-export interface Element<Data = any> {
+export interface Element<Data extends ElementData = ElementData> {
   id: string
   label?:
     | string
@@ -23,11 +25,11 @@ export interface Element<Data = any> {
       }
   type?: string
   data?: Data
-  class?: string | ClassFunc
-  style?: CSSProperties | StyleFunc
+  class?: string | ClassFunc<Data>
+  style?: CSSProperties | StyleFunc<Data>
   hidden?: boolean
 }
-export type Elements<N = any, E = any> = (Node<N> | Edge<E>)[]
+export type Elements<NodeData = ElementData, EdgeData = ElementData> = (Node<NodeData> | Edge<EdgeData>)[]
 
 /** Transform x, y, z */
 export type Transform = [number, number, number]
@@ -72,27 +74,27 @@ export interface SelectionRect extends Rect {
   draw: boolean
 }
 
-export type FlowExportObject<N = any, E = N> = {
-  nodes: GraphNode<N>[]
-  edges: GraphEdge<E>[]
+export type FlowExportObject<NodeData = ElementData, EdgeData = ElementData> = {
+  nodes: GraphNode<NodeData>[]
+  edges: GraphEdge<EdgeData>[]
   position: [number, number]
   zoom: number
 }
 
-export type ToObject<N = any, E = N> = () => FlowExportObject<N, E>
+export type ToObject<NodeData = ElementData, EdgeData = ElementData> = () => FlowExportObject<NodeData, EdgeData>
 
-export type FlowInstance<N = any, E = N> = {
-  getElements: () => FlowElements<N, E>
-  getNodes: () => GraphNode<N>[]
-  getEdges: () => GraphEdge<E>[]
-  toObject: ToObject<N, E>
+export type FlowInstance<NodeData = ElementData, EdgeData = ElementData> = {
+  getElements: () => FlowElements<NodeData, EdgeData>
+  getNodes: () => GraphNode<NodeData>[]
+  getEdges: () => GraphEdge<EdgeData>[]
+  toObject: ToObject<NodeData, EdgeData>
 } & UseZoomPanHelper
 
-export interface FlowProps<N = any, E = N> {
+export interface FlowProps<NodeData = ElementData, EdgeData = ElementData> {
   id?: string
-  modelValue?: Elements<N, E>
-  nodes?: Node<N>[]
-  edges?: Edge<E>[]
+  modelValue?: Elements<NodeData, EdgeData>
+  nodes?: Node<NodeData>[]
+  edges?: Edge<EdgeData>[]
   /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
   edgeTypes?: { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & { [key: string]: EdgeComponent }
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
@@ -142,4 +144,4 @@ export interface FlowProps<N = any, E = N> {
   defaultEdgeOptions?: DefaultEdgeOptions
 }
 
-export type FlowOptions<N = any, E = N> = FlowProps<N, E>
+export type FlowOptions<NodeData = ElementData, EdgeData = ElementData> = FlowProps<NodeData, EdgeData>

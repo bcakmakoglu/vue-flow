@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '@braks/vue-flow/src/index'
+import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '@braks/vue-flow'
 import ResizableNode from './ResizableNode.vue'
 
 const elements = ref<Elements>([
@@ -9,21 +9,13 @@ const elements = ref<Elements>([
     type: 'resize',
     label: 'Node 2',
     position: { x: 100, y: 100 },
-    data: { foo: 'bar' },
-    class: (el) => {
-      return ''
-    },
   },
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
   { id: '4', label: 'Node 4', position: { x: 400, y: 200 } },
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges, store } = useVueFlow({
-  defaultZoom: 1.5,
-  minZoom: 0.2,
-  maxZoom: 4,
-})
+const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges, store } = useVueFlow()
 onPaneReady(({ fitView }) => {
   fitView()
 })
@@ -45,7 +37,7 @@ const resetTransform = () => instance.value?.setTransform({ x: 0, y: 0, zoom: 1 
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
 <template>
-  <VueFlow v-model="elements" class="vue-flow-basic-example">
+  <VueFlow v-model="elements" class="vue-flow-basic-example" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
     <template #node-resize="props">
       <ResizableNode v-bind="props" />
     </template>

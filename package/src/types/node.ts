@@ -1,4 +1,4 @@
-import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions } from './flow'
+import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions, ElementData } from './flow'
 import { DefaultNodeTypes } from './components'
 import { HandleElement, ValidConnectionFunc } from './handle'
 
@@ -10,7 +10,7 @@ export type NodeHandleBounds = {
   target?: HandleElement[]
 }
 
-export interface Node<T = any> extends Element<T> {
+export interface Node<T = ElementData> extends Element<T> {
   /** node position x, y */
   position: XYPosition
   /** node type, can be a default type or a custom type */
@@ -37,7 +37,7 @@ export interface Node<T = any> extends Element<T> {
   parentNode?: string
 }
 
-export interface GraphNode<T = any> extends Node<T> {
+export interface GraphNode<T = ElementData> extends Node<T> {
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
   handleBounds: NodeHandleBounds
@@ -49,7 +49,7 @@ export interface GraphNode<T = any> extends Node<T> {
 }
 
 /** these props are passed to node components */
-export interface NodeProps<T = any> {
+export interface NodeProps<T = ElementData> {
   id: string
   /** node DOM-element */
   nodeElement: HTMLDivElement

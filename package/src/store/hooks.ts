@@ -1,4 +1,4 @@
-import { EmitFunc, FlowHooks, FlowEvents } from '~/types'
+import { EmitFunc, FlowHooks } from '~/types'
 
 // flow event hooks
 export const createHooks = (): FlowHooks => ({
@@ -41,7 +41,7 @@ export const createHooks = (): FlowHooks => ({
 
 const bind = (emit: EmitFunc, hooks: FlowHooks) => {
   for (const [key, value] of Object.entries(hooks)) {
-    value.on((data: FlowEvents[keyof FlowHooks]) => {
+    value.on((data) => {
       emit(key as keyof FlowHooks, data)
     })
   }
