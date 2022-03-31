@@ -1,4 +1,4 @@
-import { CSSProperties, ToRefs } from 'vue'
+import { ComputedRef, CSSProperties, ToRefs } from 'vue'
 import {
   Dimensions,
   ElementData,
@@ -146,10 +146,11 @@ export interface Getters<NodeData = ElementData, EdgeData = ElementData> {
   getSelectedEdges: GraphEdge<EdgeData>[]
 }
 
-export type Store<NodeData = ElementData, EdgeData = ElementData> = { state: State<NodeData, EdgeData> } & State<
-  NodeData,
-  EdgeData
-> &
+export type ComputedGetters<NodeData = ElementData, EdgeData = ElementData> = {
+  [key in keyof Getters<NodeData, EdgeData>]: ComputedRef<Getters<NodeData, EdgeData>[key]>
+}
+
+export type Store<NodeData = ElementData, EdgeData = ElementData> = State<NodeData, EdgeData> &
   Actions<NodeData, EdgeData> &
   Getters<NodeData, EdgeData>
 
@@ -158,5 +159,5 @@ export type UseVueFlow<NodeData = ElementData, EdgeData = ElementData> = {
   store: Store<NodeData, EdgeData>
 } & FlowHooksOn<NodeData, EdgeData> &
   ToRefs<State<NodeData, EdgeData>> &
-  Getters<NodeData, EdgeData> &
+  ComputedGetters<NodeData, EdgeData> &
   Actions<NodeData, EdgeData>

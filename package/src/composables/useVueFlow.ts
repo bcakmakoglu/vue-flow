@@ -1,7 +1,9 @@
 import { EffectScope } from 'vue'
-import { ElementData, FlowOptions, UseVueFlow } from '~/types'
+import { ElementData, FlowHooksOn, FlowOptions, State, UseVueFlow } from '~/types'
 import { VueFlow } from '~/context'
-import { useStore } from '~/store'
+import useState from '~/store/state'
+import useGetters from '~/store/getters'
+import useActions from '~/store/actions'
 
 export class Storage {
   public currentId = 0
@@ -28,11 +30,34 @@ export class Storage {
     this.flows.delete(id)
   }
 
-  public create(id: string, options?: Partial<FlowOptions>): UseVueFlow {
-    const store = useStore(options)
+  public create(id: string, preloadedState?: Partial<FlowOptions>): UseVueFlow {
+    const state: State = useState(preloadedState)
+    const reactiveState = reactive(state)
+    const getters = useGetters(reactiveState)
+    const actions = useActions(reactiveState, getters)
+    const hooksOn: FlowHooksOn = <any>{}
+    Object.entries(reactiveState.hooks).forEach(([n, h]) => {
+      const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}` as keyof FlowHooksOn
+      hooksOn[name] = h.on as any
+    })
+    actions.setState(reactiveState)
+    if (preloadedState) {
+      if (preloadedState.modelValue) actions.setElements(preloadedState.modelValue)
+      if (preloadedState.nodes) actions.setNodes(preloadedState.nodes)
+      if (preloadedState.edges) actions.setEdges(preloadedState.edges)
+    }
+
+    const store = reactive({
+      ...hooksOn,
+      ...toRefs(reactiveState),
+      ...getters,
+      ...actions,
+    })
     const flow: UseVueFlow = {
-      ...(store as any),
-      ...toRefs(store.state),
+      ...hooksOn,
+      ...getters,
+      ...actions,
+      ...toRefs(reactiveState),
       id,
       store,
     }

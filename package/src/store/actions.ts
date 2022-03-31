@@ -1,5 +1,4 @@
 import useState from './state'
-import { ComputedGetters } from './getters'
 import {
   Actions,
   Connection,
@@ -14,6 +13,7 @@ import {
   NodeDimensionChange,
   NodePositionChange,
   State,
+  ComputedGetters,
 } from '~/types'
 import {
   applyNodeChanges as applyNodes,
