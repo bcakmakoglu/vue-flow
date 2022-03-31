@@ -1,5 +1,16 @@
 import { CSSProperties, ToRefs } from 'vue'
-import { Dimensions, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, Transform, XYPosition } from './flow'
+import {
+  Dimensions,
+  ElementData,
+  Elements,
+  FlowElements,
+  FlowInstance,
+  FlowOptions,
+  Rect,
+  SnapGrid,
+  Transform,
+  XYPosition,
+} from './flow'
 import { EdgeComponent, NodeComponent, DefaultNodeTypes, DefaultEdgeTypes } from './components'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
@@ -9,15 +20,16 @@ import { FlowHooks, FlowHooksOn } from './hooks'
 import { NodeChange, EdgeChange } from './changes'
 import { StartHandle, HandleType } from './handle'
 
-export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'modelValue'> {
+export interface State<NodeData = ElementData, EdgeData = ElementData>
+  extends Omit<FlowOptions<NodeData, EdgeData>, 'id' | 'modelValue'> {
   /** Event hooks, you can manipulate the triggers on your own peril */
-  hooks: FlowHooks<N, E>
-  instance: FlowInstance<N, E> | null
+  hooks: FlowHooks<NodeData, EdgeData>
+  instance: FlowInstance<NodeData, EdgeData> | null
 
   /** all stored nodes */
-  nodes: GraphNode<N>[]
+  nodes: GraphNode<NodeData>[]
   /** all stored edges */
-  edges: GraphEdge<E>[]
+  edges: GraphEdge<EdgeData>[]
 
   d3Zoom: D3Zoom | null
   d3Selection: D3Selection | null
@@ -85,30 +97,30 @@ export interface State<N = any, E = N> extends Omit<FlowOptions<N, E>, 'id' | 'm
   vueFlowVersion: string
 }
 
-export interface Actions<N = any, E = N> {
+export interface Actions<NodeData = ElementData, EdgeData = ElementData> {
   /** @deprecated use setNodes / setEdges instead */
-  setElements: (elements: Elements<N, E>, extent?: CoordinateExtent) => void
+  setElements: (elements: Elements<NodeData, EdgeData>, extent?: CoordinateExtent) => void
   /** parses nodes and re-sets the state */
-  setNodes: (nodes: Node<N>[], extent?: CoordinateExtent) => void
+  setNodes: (nodes: Node<NodeData>[], extent?: CoordinateExtent) => void
   /** parses edges and re-sets the state */
-  setEdges: (edges: Edge<E>[]) => void
+  setEdges: (edges: Edge<EdgeData>[]) => void
   /** parses nodes and adds to state */
-  addNodes: <NA = N>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
+  addNodes: <NA = NodeData>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
   /** parses edges and adds to state */
-  addEdges: <EA = E>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
+  addEdges: <EA = EdgeData>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
   /** updates an edge */
-  updateEdge: <EU = E>(oldEdge: GraphEdge<EU>, newConnection: Connection) => boolean
-  applyEdgeChanges: <ED = E>(changes: EdgeChange[]) => GraphEdge<ED>[]
-  applyNodeChanges: <ND = N>(changes: NodeChange[]) => GraphNode<ND>[]
-  addSelectedElements: (elements: FlowElements<N, E>) => void
-  addSelectedEdges: (edges: GraphEdge<E>[]) => void
-  addSelectedNodes: (nodes: GraphNode<N>[]) => void
+  updateEdge: <EU = EdgeData>(oldEdge: GraphEdge<EU>, newConnection: Connection) => boolean
+  applyEdgeChanges: <ED = EdgeData>(changes: EdgeChange[]) => GraphEdge<ED>[]
+  applyNodeChanges: <ND = NodeData>(changes: NodeChange[]) => GraphNode<ND>[]
+  addSelectedElements: (elements: FlowElements<NodeData, EdgeData>) => void
+  addSelectedEdges: (edges: GraphEdge<EdgeData>[]) => void
+  addSelectedNodes: (nodes: GraphNode<NodeData>[]) => void
   setMinZoom: (zoom: number) => void
   setMaxZoom: (zoom: number) => void
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
   resetSelectedElements: () => void
   setInteractive: (isInteractive: boolean) => void
-  setState: (state: Partial<FlowOptions<N, E> & Omit<State, 'nodes' | 'edges' | 'modelValue'>>) => void
+  setState: (state: Partial<FlowOptions<NodeData, EdgeData> & Omit<State, 'nodes' | 'edges' | 'modelValue'>>) => void
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
   updateNodeDimensions: (
     updates: {
@@ -120,26 +132,31 @@ export interface Actions<N = any, E = N> {
   $reset: () => void
 }
 
-export interface Getters<N = any, E = N> {
+export interface Getters<NodeData = ElementData, EdgeData = ElementData> {
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
   /** filters hidden nodes */
-  getNodes: GraphNode<N>[]
+  getNodes: GraphNode<NodeData>[]
   /** filters hidden edges */
-  getEdges: GraphEdge<E>[]
-  getNode: (id: string) => GraphNode<N> | undefined
-  getEdge: (id: string) => GraphEdge<E> | undefined
-  getSelectedElements: FlowElements<N, E>
-  getSelectedNodes: GraphNode<N>[]
-  getSelectedEdges: GraphEdge<E>[]
+  getEdges: GraphEdge<EdgeData>[]
+  getNode: (id: string) => GraphNode<NodeData> | undefined
+  getEdge: (id: string) => GraphEdge<EdgeData> | undefined
+  getSelectedElements: FlowElements<NodeData, EdgeData>
+  getSelectedNodes: GraphNode<NodeData>[]
+  getSelectedEdges: GraphEdge<EdgeData>[]
 }
 
-export type Store<N = any, E = N> = State<N, E> & Actions<N, E> & Getters<N, E>
+export type Store<NodeData = ElementData, EdgeData = ElementData> = { state: State<NodeData, EdgeData> } & State<
+  NodeData,
+  EdgeData
+> &
+  Actions<NodeData, EdgeData> &
+  Getters<NodeData, EdgeData>
 
-export type UseVueFlow<N = any, E = N> = {
+export type UseVueFlow<NodeData = ElementData, EdgeData = ElementData> = {
   id: string
-  store: Store<N, E>
-} & FlowHooksOn<N, E> &
-  ToRefs<State<N, E>> &
-  Getters<N, E> &
-  Actions<N, E>
+  store: Store<NodeData, EdgeData>
+} & FlowHooksOn<NodeData, EdgeData> &
+  ToRefs<State<NodeData, EdgeData>> &
+  Getters<NodeData, EdgeData> &
+  Actions<NodeData, EdgeData>

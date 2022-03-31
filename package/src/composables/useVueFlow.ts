@@ -1,5 +1,5 @@
 import { EffectScope } from 'vue'
-import { FlowOptions, UseVueFlow } from '~/types'
+import { ElementData, FlowOptions, UseVueFlow } from '~/types'
 import { VueFlow } from '~/context'
 import { useStore } from '~/store'
 
@@ -28,7 +28,7 @@ export class Storage {
     this.flows.delete(id)
   }
 
-  public create(id: string, options?: Partial<FlowOptions>) {
+  public create(id: string, options?: Partial<FlowOptions>): UseVueFlow {
     const store = useStore(options)
     const flow: UseVueFlow = {
       ...(store as any),
@@ -45,15 +45,17 @@ export class Storage {
   }
 }
 
-type Injection = UseVueFlow | null | undefined
+type Injection<NodeData = ElementData, EdgeData = ElementData> = UseVueFlow<NodeData, EdgeData> | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
-export default <N = any, E = N>(options?: Partial<FlowOptions<N, E>>): UseVueFlow<N, E> => {
+export default <NodeData = ElementData, EdgeData = ElementData>(
+  options?: Partial<FlowOptions<NodeData, EdgeData>>,
+): UseVueFlow<NodeData, EdgeData> => {
   const storage = Storage.getInstance()
   const scope = getCurrentScope() as Scope
   const vueFlowId = scope?.vueFlowId || options?.id
 
-  let vueFlow: Injection
+  let vueFlow: Injection<any, any>
 
   if (scope) {
     const injection = inject(VueFlow, null)
