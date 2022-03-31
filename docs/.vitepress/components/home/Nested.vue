@@ -8,6 +8,9 @@ const childClasses = nodeClasses + " !bg-green-500/70 !border-white";
 const { onPaneReady } = useVueFlow({
   fitViewOnInit: true,
   connectionMode: ConnectionMode.Loose,
+  zoomOnScroll: false,
+  preventScrolling: false,
+  translateExtent: [[-500, -100], [600, 500]],
   nodes: [
     { id: "1", type: "input", label: "Outer Node", position: { x: 0, y: 0 }, class: childClasses },
     {
