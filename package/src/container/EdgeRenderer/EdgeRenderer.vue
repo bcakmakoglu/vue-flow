@@ -3,43 +3,9 @@ import EdgeWrapper from '../../components/Edges/EdgeWrapper.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import { useVueFlow } from '../../composables'
 import { groupEdgesByZLevel } from '../../utils'
-import { Slots } from '../../context'
-import { EdgeComponent } from '../../types'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 const { store } = useVueFlow()
-
-const slots = inject(Slots)
-
-const names: Record<string, string> = reactive({})
-
-const getType = (name = 'default') => {
-  const instance = getCurrentInstance()
-  let edgeType = store.getEdgeTypes[name]
-  if (typeof edgeType === 'string') {
-    if (instance) {
-      const components = Object.keys(instance.appContext.components)
-      if (components && components.includes(name)) {
-        edgeType = resolveComponent(name, false) as EdgeComponent
-      }
-    }
-  }
-
-  if (typeof edgeType !== 'string') {
-    names[name] = name
-    return edgeType
-  }
-
-  const slot = slots?.[`node-${name}`]
-  if (!slot?.({})) {
-    console.warn(`[vueflow]: Edge type "${name}" not found and no edge-slot detected. Using fallback type "default".`)
-    names[name] = 'default'
-    return store.getEdgeTypes.default
-  }
-
-  names[name] = name
-  return slot
-}
 
 const sourceNode = controlledComputed(
   () => store.connectionNodeId,
@@ -80,17 +46,10 @@ export default {
         :id="edge.id"
         :key="edge.id"
         :edge="edge"
-        :name="typeof edge.type !== 'undefined' && typeof names[edge.type] !== 'undefined' ? names[edge.type] : 'default'"
         :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
-      >
-        <template #default="props">
-          <component :is="getType(edge.type)" v-bind="props" />
-        </template>
-      </EdgeWrapper>
-      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode">
-        <slot name="connection-line" />
-      </ConnectionLine>
+      />
+      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode" />
     </g>
   </svg>
 </template>

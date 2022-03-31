@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
-import { GraphNode, SnapGrid } from '../../types'
-import { NodeId } from '../../context'
+import { GraphNode, NodeComponent, SnapGrid } from '../../types'
+import { NodeId, Slots } from '../../context'
 import { getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
   id: string
-  name: string
   node: GraphNode
   draggable: boolean
   selectable: boolean
@@ -112,6 +111,37 @@ watch(
 )
 
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
+
+const slots = inject(Slots)
+
+const name = ref(node.value.type ?? 'default')
+watch(
+  () => node.value.type,
+  (v) => v && (name.value = v),
+)
+
+const type = computed(() => {
+  const instance = getCurrentInstance()
+  let nodeType = store.getNodeTypes[name.value]
+  if (typeof nodeType === 'string') {
+    if (instance) {
+      const components = Object.keys(instance.appContext.components)
+      if (components && components.includes(name.value)) {
+        nodeType = resolveComponent(name.value, false) as NodeComponent
+      }
+    }
+  }
+  if (typeof nodeType !== 'string') return nodeType
+
+  const slot = slots?.[`node-${name.value}`]
+  if (!slot?.({})) {
+    console.warn(`[vueflow]: Node type "${node.value.type}" not found and no node-slot detected. Using fallback type "default".`)
+    name.value = 'default'
+    return store.getNodeTypes.default
+  }
+
+  return slot
+})
 </script>
 <script lang="ts">
 export default {
@@ -136,7 +166,7 @@ export default {
       :key="`node-${node.id}`"
       :class="[
         'vue-flow__node',
-        `vue-flow__node-${props.name}`,
+        `vue-flow__node-${name}`,
         store.noPanClassName,
         {
           dragging: node.dragging,
@@ -159,7 +189,8 @@ export default {
       @click="onSelectNodeHandler"
       @dblclick="onDoubleClick"
     >
-      <slot
+      <component
+        :is="type"
         v-bind="{
           nodeElement,
           id: node.id,
