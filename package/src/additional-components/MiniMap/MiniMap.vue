@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ShapeRendering, StringFunc } from '../../types'
+import { ShapeRendering, MiniMapNodeFunc } from '../../types'
 import { useVueFlow, useWindow } from '../../composables'
 import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import type { MiniMapProps } from '../../types/components'
@@ -24,11 +24,11 @@ const { store } = useVueFlow()
 
 const elementWidth = attrs.style?.width ?? defaultWidth
 const elementHeight = attrs.style?.height ?? defaultHeight
-const nodeColorFunc: StringFunc = props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor as string
-const nodeStrokeColorFunc: StringFunc =
+const nodeColorFunc: MiniMapNodeFunc = props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor as string
+const nodeStrokeColorFunc: MiniMapNodeFunc =
   props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor as string
 
-const nodeClassNameFunc = props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as StringFunc
+const nodeClassNameFunc = props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as MiniMapNodeFunc
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 

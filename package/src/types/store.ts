@@ -134,11 +134,7 @@ export interface Getters<N = any, E = N> {
   getSelectedEdges: GraphEdge<E>[]
 }
 
-interface StoreBase<N = any, E = N> {
-  state: State<N, E>
-}
-
-export type Store<N = any, E = N> = StoreBase<N, E> & State<N, E> & Actions<N, E> & Getters<N, E>
+export type Store<N = any, E = N> = State<N, E> & Actions<N, E> & Getters<N, E>
 
 export type UseVueFlow<N = any, E = N> = {
   id: string
