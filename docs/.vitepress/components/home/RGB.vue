@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import {
   BackgroundVariant,
   VueFlow,
@@ -39,8 +39,6 @@ const { id, onPaneReady, store } = useVueFlow({
   zoomOnScroll: false,
   nodeExtent: [[-50, -150], [500, 300]]
 });
-
-onMounted(() => console.log(id));
 
 onPaneReady((i) => emit("pane", i));
 
