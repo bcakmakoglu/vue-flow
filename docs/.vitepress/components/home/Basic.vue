@@ -25,7 +25,7 @@ const { onPaneReady } = useVueFlow({
       type: "input",
       label: "input",
       position: { x: 250, y: 5 },
-      class: getClass,
+      class: getClass
     },
     {
       id: "2",
@@ -47,7 +47,10 @@ const { onPaneReady } = useVueFlow({
       label: "animated edge",
       target: "2",
       animated: true,
-      class: "transition-all duration-1000",
+      class: (el: GraphEdge) => {
+        const classes = ["transition-colors duration-300", el.sourceNode.selected ? "font-semibold" : ""];
+        return classes.join(" ");
+      },
       style: (el: GraphEdge) => {
         const sourceNodeSelected = el.sourceNode.selected;
         return {
@@ -57,7 +60,15 @@ const { onPaneReady } = useVueFlow({
       }
     },
     {
-      id: "e1-3", source: "1", label: "default edge", target: "3", style: (el: GraphEdge) => {
+      id: "e1-3",
+      source: "1",
+      target: "3",
+      label: "default edge",
+      class: (el: GraphEdge) => {
+        const classes = ["transition-colors duration-300", el.sourceNode.selected ? 'font-semibold' : '']
+        return classes.join(" ")
+      },
+      style: (el: GraphEdge) => {
         const sourceNodeSelected = el.sourceNode.selected;
         return {
           transition: "stroke ease-in-out 300ms",
@@ -66,7 +77,16 @@ const { onPaneReady } = useVueFlow({
       }
     },
     {
-      id: "e2-4", source: "2", type: "step", target: "4", animated: true, style: (el: GraphEdge) => {
+      id: "e2-4",
+      source: "2",
+      target: "4",
+      type: "step",
+      animated: true,
+      class: (el: GraphEdge) => {
+        const classes = ["transition-colors duration-300", el.sourceNode.selected ? 'font-semibold' : '']
+        return classes.join(" ")
+      },
+      style: (el: GraphEdge) => {
         const sourceNodeSelected = el.sourceNode.selected;
         return {
           transition: "stroke ease-in-out 300ms",
@@ -95,9 +115,22 @@ onPaneReady((i) => emit("pane", i));
   </div>
   <div
     class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden">
-    <VueFlow>
+    <VueFlow class="basic">
       <Controls class="md:!left-auto md:!right-[10px]" />
       <Background pattern-color="#aaa" :gap="16" />
     </VueFlow>
   </div>
 </template>
+<style>
+.basic .vue-flow__node-input.selected .vue-flow__handle {
+  @apply bg-green-500;
+}
+
+.basic .vue-flow__node-default.selected .vue-flow__handle {
+  @apply bg-green-500;
+}
+
+.basic .vue-flow__node-output.selected .vue-flow__handle {
+  @apply bg-green-500;
+}
+</style>

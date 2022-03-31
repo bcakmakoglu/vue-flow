@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { VueFlow, Handle, Position, useVueFlow } from "@braks/vue-flow";
 import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
-import Book from "~icons/codicon/book";
 import BoxNode from "./nodes/Box.vue";
 import { watch } from "vue";
 
@@ -81,7 +80,6 @@ onPaneReady(({ fitView }) => {
         <template v-else-if="props.id === 'documentation'">
           <div class="flex">
             <a class="link group bg-orange-500" href="/docs">
-              <Book class="text-blue-700 group-hover:text-emerald-500" />
               Read The Documentation
             </a>
           </div>
@@ -91,7 +89,7 @@ onPaneReady(({ fitView }) => {
         <template v-else-if="props.id === 'examples'">
           <div class="flex">
             <a class="link group bg-purple-500" href="/examples">
-              <i class="icon-sun icon-sm !text-yellow-300" />Check The Examples
+              Check The Examples
             </a>
           </div>
           <Handle type="target" :position="Position.Top" />

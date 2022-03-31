@@ -41,7 +41,7 @@ const { onPaneReady } = useVueFlow({
 onPaneReady((i) => emit('pane', i))
 </script>
 <template>
-  <div class="md:max-w-1/3 flex flex-col justify-center">
+  <div class="md:max-w-1/3 flex flex-col justify-center <md:pt-12">
     <div class="flex flex-col gap-2 items-center md:items-start">
       <h1>Nested- & Subflows</h1>
       <p>
