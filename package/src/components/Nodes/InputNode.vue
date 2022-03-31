@@ -4,7 +4,6 @@ import { Position } from '../../types'
 import type { NodeProps } from '../../types/node'
 
 const props = withDefaults(defineProps<NodeProps>(), {
-  data: () => {},
   connectable: false,
   sourcePosition: 'bottom' as Position,
 })
