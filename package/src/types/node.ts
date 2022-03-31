@@ -2,6 +2,7 @@ import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions } from
 import { DefaultNodeTypes } from './components'
 import { HandleElement, ValidConnectionFunc } from './handle'
 
+/** Defined as [[x-from, y-from], [x-to, y-to]] **/
 export type CoordinateExtent = [[number, number], [number, number]]
 
 export type NodeHandleBounds = {
