@@ -54,15 +54,16 @@ const defaultState = (): State => ({
   d3ZoomHandler: null,
   minZoom: 0.5,
   maxZoom: 2,
+
   translateExtent: [
     [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
     [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   ],
-
   nodeExtent: [
     [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
     [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   ],
+
   preventScrolling: true,
   zoomOnScroll: true,
   zoomOnPinch: true,
