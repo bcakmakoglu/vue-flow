@@ -43,7 +43,6 @@ export default defineConfig({
     vue(),
     vueTypes(),
     svgLoader(),
-    // https://github.com/antfu/unplugin-auto-import
     AutoImport({
       imports: ['vue', '@vueuse/core'],
       dts: 'src/auto-imports.d.ts',

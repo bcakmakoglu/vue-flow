@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<EdgeProps>(), {
 <script lang="ts">
 export default {
   name: 'StepEdge',
+  inheritAttrs: false,
 }
 </script>
 <template>

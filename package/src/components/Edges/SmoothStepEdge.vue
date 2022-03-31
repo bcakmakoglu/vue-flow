@@ -42,6 +42,7 @@ const path = computed(() => {
 <script lang="ts">
 export default {
   name: 'SmoothStepEdge',
+  inheritAttrs: false,
 }
 </script>
 <template>
