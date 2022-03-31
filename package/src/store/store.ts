@@ -21,6 +21,7 @@ export default (preloadedState?: FlowOptions): Store => {
   }
 
   return reactive({
+    state: reactiveState,
     ...hooksOn,
     ...toRefs(reactiveState),
     ...getters,
