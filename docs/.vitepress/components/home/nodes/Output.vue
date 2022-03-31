@@ -8,16 +8,9 @@ const emit = defineEmits(['next'])
 const next = () => emit('next')
 </script>
 <template>
-  <div :style="{ backgroundColor: props.rgb }" class="rgb-output-node" @click="next">
-    <div class="text-md uppercase">{{ props.rgb }}</div>
+  <div :style="{ backgroundColor: props.rgb }" class="px-6 py-2 rounded-xl text-white text-center" @click="next">
+    <div class="text-xl font-bold">Color Output</div>
+    <div class="font-semibold">{{ props.rgb }}</div>
     <Handle type="target" :position="Position.Left" />
   </div>
 </template>
-<style>
-.rgb-output-node {
-  padding: 9px;
-  border-radius: 25px;
-  text-align: left;
-  color: white;
-}
-</style>
