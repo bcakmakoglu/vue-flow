@@ -21,6 +21,7 @@
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^16.0.0",
     "ohmyfetch": "^0.4.15",
+    "unplugin-auto-import": "^0.6.9",
     "unplugin-icons": "^0.14.1",
     "unplugin-vue-components": "^0.18.5",
     "vite-plugin-windicss": "^1.8.3",
