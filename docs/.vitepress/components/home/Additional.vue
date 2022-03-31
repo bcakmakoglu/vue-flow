@@ -97,7 +97,7 @@ onPaneReady((i) => emit('pane', i))
       <Background variant="lines" pattern-color="#aaa" :gap="46" />
     </VueFlow>
   </div>
-  <div class="md:max-w-1/3 flex flex-col gap-12 justify-center">
+  <div class="md:max-w-1/3 flex flex-col gap-12 justify-center <md:pt-12">
     <div class="flex flex-col gap-2 items-center md:items-start">
       <h1>Additional Components</h1>
       <p>

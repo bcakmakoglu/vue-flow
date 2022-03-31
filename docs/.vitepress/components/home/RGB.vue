@@ -89,7 +89,7 @@ const nodeColor: MiniMapNodeFunc = (node: GraphNode) => {
                :node-color="nodeColor" />
     </VueFlow>
   </div>
-  <div class="md:max-w-1/3 flex flex-col gap-12 justify-center">
+  <div class="md:max-w-1/3 flex flex-col gap-12 justify-center <md:pt-12">
     <div class="flex flex-col gap-2 items-center md:items-start">
       <h1>Customizable</h1>
       <p>
