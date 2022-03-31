@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, GraphEdge, Position } from '../../types'
+import { ConnectionMode, EdgeComponent, GraphEdge, Position } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
+import { Slots } from '../../context'
 import EdgeAnchor from './EdgeAnchor.vue'
 
 interface EdgeWrapper {
   id: string
-  name: string
   edge: GraphEdge
   selectable?: boolean
   updatable?: boolean
@@ -104,6 +104,37 @@ onMounted(() => {
     { immediate: true, deep: true },
   )
 })
+
+const slots = inject(Slots)
+
+const name = ref(edge.value.type ?? 'default')
+watch(
+  () => edge.value.type,
+  (v) => v && (name.value = v),
+)
+
+const type = computed(() => {
+  const instance = getCurrentInstance()
+  let edgeType = store.getEdgeTypes[name.value]
+  if (typeof edgeType === 'string') {
+    if (instance) {
+      const components = Object.keys(instance.appContext.components)
+      if (components && components.includes(name.value)) {
+        edgeType = resolveComponent(name.value, false) as EdgeComponent
+      }
+    }
+  }
+  if (typeof edgeType !== 'string') return edgeType
+
+  const slot = slots?.[`edge-${name.value}`]
+  if (!slot?.({})) {
+    console.warn(`[vueflow]: Edge type "${edge.value.type}" not found and no edge-slot detected. Using fallback type "default".`)
+    name.value = 'default'
+    return store.getEdgeTypes.default
+  }
+
+  return slot
+})
 </script>
 <script lang="ts">
 export default {
@@ -116,7 +147,7 @@ export default {
     :key="`edge-${edge.id}`"
     :class="[
       'vue-flow__edge',
-      `vue-flow__edge-${props.name}`,
+      `vue-flow__edge-${name}`,
       store.noPanClassName,
       {
         selected: edge.selected,
@@ -133,7 +164,8 @@ export default {
     @mousemove="onEdgeMouseMove"
     @mouseleave="onEdgeMouseLeave"
   >
-    <slot
+    <component
+      :is="type"
       v-bind="{
         id: edge.id,
         sourceNode: edge.sourceNode,
