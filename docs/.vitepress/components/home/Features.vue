@@ -171,100 +171,58 @@ const label = ref({
   first: "",
   last: ""
 });
+
 const instance = ref<FlowInstance>();
 const onChange = ({ name, val }: { name: "first" | "last"; val: string }) => (label.value[name] = val);
 const onLoad = (vf: FlowInstance) => {
   if (!instance.value) instance.value = vf;
   vf.fitView();
 };
-whenever(breakpoints.greater("tablet"), () => onLoad(instance.value));
-whenever(breakpoints.smaller("tablet"), () => onLoad(instance.value));
+whenever(breakpoints.greater("tablet"), () => instance.value.fitView());
+whenever(breakpoints.smaller("tablet"), () => instance.value.fitView());
 </script>
 <template>
-  <div
-    class="
-      p-4
-      py-8
-      md:p-8 md:py-12
-      lg:p-16 lg:py-24
-      w-full
-      h-full
-      min-h-full
-      bg-gray-100
-      text-black
-      normal-case
-      flex flex-col
-      gap-12
-      md:gap-24
-      lg:gap-48
-    "
-  >
-    <div class="flex flex-col md:flex-row gap-12">
-      <div class="gap-2 md:w-2/3 lg:w-[unset] flex flex-col justify-center items-center">
-        <h1>Feature-rich</h1>
-        <p class="w-2/3">
-          Vue Flow comes with seamless zooming & panning, different edge and node types, single and multi-selection,
-          controls,
-          several event handlers and more.
-        </p>
-        <a class="button" href="/docs">
-          Documentation
-        </a>
+  <div class="w-full">
+    <div
+      class="flex flex-col gap-12 md:gap-24 lg:gap-36 max-w-9/12 md:max-w-11/12 lg:max-w-9/12 m-auto py-12 md:py-24 text-center md:text-left">
+      <div class="flex flex-col md:flex-row gap-12 md:gap-24">
+        <div class="md:max-w-1/3 flex flex-col justify-center">
+          <div class="flex flex-col gap-2 items-center md:items-start">
+            <h1>Feature-rich</h1>
+            <p>
+              Vue Flow comes with seamless zooming & panning, different edge and node types, single and multi-selection,
+              controls,
+              several event handlers and more.
+            </p>
+            <a class="button max-w-max" href="/docs">
+              Documentation
+            </a>
+          </div>
+        </div>
+        <div
+          class="w-full md:min-h-[300px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden">
+          <VueFlow v-model="elements" @pane-ready="onLoad">
+            <Controls />
+            <Background pattern-color="#aaa" style="background: #f8f8f8" :gap="8" />
+          </VueFlow>
+        </div>
       </div>
-      <div class="w-full min-h-[300px] shadow-xl rounded-xl font-mono uppercase">
-        <VueFlow v-model="elements" @pane-ready="onLoad">
-          <Controls />
-          <Background pattern-color="#aaa" style="background: #f8f8f8" :gap="8" />
-        </VueFlow>
-      </div>
-    </div>
-    <div class="flex flex-col-reverse md:flex-row flex-unwrap gap-12">
-      <div
-        class="w-full h-[300px] shadow-xl bg-gray-800 border-1 border-solid border-gray-300 rounded-xl font-mono uppercase">
-        <VueFlow
-          v-model="customizableElements"
-          :snap-grid="[25, 25]"
-          :snap-to-grid="true"
-          :zoom-on-scroll="false"
-          :pane-moveable="false"
-          @pane-ready="onLoad"
-        >
-          <template #node-text-output="props">
-            <TextOutputNode v-bind="props" :label="`${label.first} ${label.last}`" />
-          </template>
-          <template #node-text-input="props">
-            <TextInputNode v-bind="props" @change="onChange" />
-          </template>
-          <Background variant="lines" color="#aaa" :gap="46" />
-        </VueFlow>
-      </div>
-      <div class="md:w-2/3 lg:w-[unset] gap-2 flex flex-col justify-center items-center">
-        <h1>Customizable</h1>
-        <p class="w-2/3">
-          You can create your own node and edge types or just pass a custom style. You can implement custom UIs inside
-          your nodes
-          and add functionality to your edges.
-        </p>
-        <a class="button" href="/docs">Documentation</a>
-      </div>
-    </div>
-    <div class="flex flex-col md:flex-row gap-12">
-      <div class="md:w-2/3 lg:w-[unset] gap-2 flex flex-col justify-center items-center">
-        <h1>Additional Components</h1>
-        <p class="w-2/3">
-          Vue Flow includes a MiniMap, Controls and Background, as well as a ton of utilities to control the internal
-          state
-          outside the Vue Flow component.
-        </p>
-        <a class="button" href="/docs">Documentation</a>
-      </div>
-      <div
-        class="w-full h-[300px] shadow-xl bg-white border-1 border-solid border-gray-300 rounded-xl font-mono uppercase">
-        <VueFlow v-model="additionalElements" :zoom-on-scroll="false" :pane-moveable="false" @pane-ready="onLoad">
-          <Controls :show-interactive="false" />
-          <MiniMap mask-color="rgba(16, 185, 129, 0.5)" class="transform scale-60 origin-bottom-right opacity-75" />
-          <Background variant="lines" color="#aaa" :gap="46" />
-        </VueFlow>
+      <div class="flex flex-col-reverse md:flex-row flex-unwrap gap-12 md:gap-24">
+        <div
+          class="w-full md:min-h-[300px] shadow-xl rounded-xl font-mono uppercase overflow-hidden bg-gray-800 border-2 border-solid border-purple-500">
+          <RGB />
+        </div>
+        <div class="md:max-w-1/3 flex flex-col md:flex-row gap-12 justify-end">
+          <div class="gap-2 flex flex-col justify-center">
+            <h1>Customizable</h1>
+            <p>
+              You can create your own node and edge types or just pass a custom style. You can implement custom UIs
+              inside your nodes
+              and add functionality to your edges.
+            </p>
+            <a class="button max-w-max" href="/docs">Documentation</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

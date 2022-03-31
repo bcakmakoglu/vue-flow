@@ -67,10 +67,6 @@ li {
   border-color: #f0f2f3;
 }
 
-.vue-flow {
-  @apply bg-white h-[80vh];
-}
-
 .slider {
   --color: red;
   @apply bg-gray-200 w-full h-[10px] outline-none rounded-full;
