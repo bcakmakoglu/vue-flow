@@ -7,6 +7,7 @@ import svgLoader from 'vite-svg-loader'
 
 export default defineConfig({
   resolve: {
+    dedupe: ['vue'],
     alias: {
       '~': resolve('../package/src'),
     },
