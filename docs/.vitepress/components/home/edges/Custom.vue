@@ -32,8 +32,6 @@ const edgePath = computed(() =>
     targetPosition: props.targetPosition,
   }),
 )
-
-console.log(props)
 </script>
 <script lang="ts">
 export default {
