@@ -96,8 +96,8 @@ onPaneReady((i) => emit("pane", i));
   <div
     class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden">
     <VueFlow>
-      <Controls class="!left-auto !right-[10px]" />
-      <Background pattern-color="#aaa" style="background: #f8f8f8" :gap="8" />
+      <Controls class="md:!left-auto md:!right-[10px]" />
+      <Background pattern-color="#aaa" :gap="16" />
     </VueFlow>
   </div>
 </template>
