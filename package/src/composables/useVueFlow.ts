@@ -72,7 +72,6 @@ export default <NodeData = ElementData, EdgeData = ElementData>(
     vueFlow = storage.create(name, options)
 
     if (scope) {
-      provide(VueFlow, storage.get(name))
       scope.vueFlowId = name
 
       onScopeDispose(() => {
@@ -85,6 +84,7 @@ export default <NodeData = ElementData, EdgeData = ElementData>(
   }
 
   if (!vueFlow) throw new Error('vue flow store instance not found.')
+  provide(VueFlow, vueFlow)
 
   return vueFlow
 }
