@@ -1,17 +1,17 @@
-import { useVueFlow, State, FlowStore } from '@braks/vue-flow'
+import { useVueFlow, State, Store } from '@braks/vue-flow'
 
 describe('test store state', () => {
-  let store: FlowStore
+  let store: Store
 
   const { store: initial } = useVueFlow()
   beforeEach(() => ({ store } = useVueFlow()))
 
   it('has any initial state', () => {
-    expect(store.state).to.exist
+    expect(store).to.exist
   })
 
   it('has default initial state', () => {
-    Object.keys(store.state).forEach((state) => {
+    Object.keys(store).forEach((state) => {
       const storedState = store[<keyof State>state]
       const initialVal = initial[<keyof State>state]
       if (state === 'initialized') return expect(storedState).to.be.true
