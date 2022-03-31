@@ -1,17 +1,11 @@
 <script lang="ts" setup>
 import { VueFlow, Handle, Position, useVueFlow } from "@braks/vue-flow";
-import { useBreakpoints } from "@vueuse/core";
+import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
 import Book from "~icons/codicon/book";
 import BoxNode from "./nodes/Box.vue";
+import { watch } from "vue";
 
-const breakpoints = useBreakpoints({
-  mobile: 320,
-  tablet: 640,
-  laptop: 1024,
-  desktop: 1280
-});
-
-const desktop = breakpoints.greater("tablet");
+const breakpoints = useBreakpoints(breakpointsTailwind);
 
 const { dimensions, instance, onPaneReady, getNode } = useVueFlow({
   nodes: [
@@ -45,6 +39,19 @@ const { dimensions, instance, onPaneReady, getNode } = useVueFlow({
   zoomOnScroll: false
 });
 
+watch(
+  [
+    breakpoints.sm,
+    breakpoints.md,
+    breakpoints.lg,
+    breakpoints.xl,
+    breakpoints["2xl"]
+  ],
+  () => setTimeout(() => {
+    instance.value?.fitView();
+  }, 1)
+);
+
 onPaneReady(({ fitView }) => {
   setTimeout(() => {
     fitView({
@@ -52,12 +59,6 @@ onPaneReady(({ fitView }) => {
       duration: 1500
     });
   });
-});
-
-const nextNode = (id: string[], duration = 2000, padding = 0) => instance.value.fitView({
-  padding,
-  nodes: id,
-  duration
 });
 </script>
 <template>
