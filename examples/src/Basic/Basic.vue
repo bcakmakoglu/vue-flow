@@ -17,7 +17,7 @@ const elements = ref<Elements>([
 ])
 const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges, store } = useVueFlow()
 onPaneReady(({ fitView }) => {
-  fitView({ padding: 0.1 })
+  fitView()
 })
 onNodeDragStop((e) => console.log('drag stop', e))
 onConnect((params) => addEdges([params]))
