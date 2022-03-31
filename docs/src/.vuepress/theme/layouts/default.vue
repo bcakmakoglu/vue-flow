@@ -10,7 +10,16 @@ import ParentLayout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 <template>
   <ParentLayout>
     <template #page-bottom>
-      <div class="my-footer">This is my custom page footer</div>
+      <div class="page-footer">MIT Licensed | Copyright © 2021-present Burak Cakmakoglu</div>
     </template>
   </ParentLayout>
 </template>
+<style>
+.page-footer {
+  padding: 2.5rem;
+  border-top: 1px solid var(--c-border);
+  text-align: center;
+  color: var(--c-text-lighter);
+  transition: border-color var(--t-color);
+}
+</style>
