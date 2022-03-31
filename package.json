@@ -2,11 +2,16 @@
   "name": "@braks/vue-flow-monorepo",
   "version": "0.0.0",
   "private": true,
-  "workspaces": ["tests", "examples", "docs", "package"],
+  "workspaces": [
+    "tests",
+    "examples",
+    "docs",
+    "package"
+  ],
   "scripts": {
     "prepare": "ts-patch install -s",
     "dev": "yarn --cwd examples dev",
-    "dev:docs": "yarn --cwd docs dev",
+    "docs": "yarn --cwd docs dev",
     "build": "yarn --cwd package build",
     "postbuild": "yarn typedoc",
     "release": "yarn --cwd package np",
