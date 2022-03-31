@@ -209,14 +209,15 @@ whenever(breakpoints.smaller("tablet"), () => instance.value.fitView());
       </div>
       <div class="flex flex-col-reverse md:flex-row flex-unwrap gap-12 md:gap-24">
         <div
-          class="w-full md:min-h-[300px] shadow-xl rounded-xl font-mono uppercase overflow-hidden bg-gray-800 border-2 border-solid border-purple-500">
+          class="w-full md:min-h-[300px] shadow-xl rounded-xl font-mono uppercase overflow-hidden bg-gray-800">
           <RGB />
         </div>
         <div class="md:max-w-1/3 flex flex-col md:flex-row gap-12 justify-end">
           <div class="gap-2 flex flex-col justify-center">
             <h1>Customizable</h1>
             <p>
-              You can create your own node and edge types or just pass a custom style. You can implement custom UIs
+              You can create your own node and edge types or just pass a custom style.
+              Implement custom UIs
               inside your nodes
               and add functionality to your edges.
             </p>

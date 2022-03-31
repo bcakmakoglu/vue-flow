@@ -51,7 +51,7 @@ export default {
   <text>
     <textPath
       :href="`#${props.id}`"
-      :style="{ fontSize: '12px', fill: props.data?.color }"
+      :style="{ fontSize: '1.25rem', fill: 'white' }"
       startOffset="50%"
       text-anchor="middle"
     >
