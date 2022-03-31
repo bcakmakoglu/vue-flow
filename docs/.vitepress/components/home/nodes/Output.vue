@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import { Handle, NodeProps, Position } from '@braks/vue-flow'
+import { Handle, NodeProps, Position } from "@braks/vue-flow";
+
 interface RBGOutputNodeProps extends NodeProps {
-  rgb: string
+  rgb: string;
 }
-const props = defineProps<RBGOutputNodeProps>()
-const emit = defineEmits(['next'])
-const next = () => emit('next')
+
+const props = defineProps<RBGOutputNodeProps>();
 </script>
 <template>
-  <div :style="{ backgroundColor: props.rgb }" class="px-6 py-2 rounded-xl text-white text-center" @click="next">
+  <div :style="{ backgroundColor: props.rgb }"
+       class="px-6 py-2 rounded-xl text-white text-center min-w-[220px] border-2 border-white">
     <div class="text-xl font-bold">Color Output</div>
     <div class="font-semibold">{{ props.rgb }}</div>
     <Handle type="target" :position="Position.Left" />

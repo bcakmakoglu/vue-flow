@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import {
-  Elements,
-  FlowInstance,
+  BackgroundVariant,
   VueFlow,
   Background,
   Controls,
   MiniMap,
-  BackgroundVariant,
-  GraphNode, StringFunc
+  GraphNode,
+  StringFunc,
+  useVueFlow
 } from "@braks/vue-flow";
-import { templateRef, useBreakpoints, useElementBounding, whenever } from "@vueuse/core";
+import { templateRef } from "@vueuse/core";
 import CustomEdge from "./edges/Custom.vue";
 import RGBNode from "./nodes/Input.vue";
 import RGBOutputNode from "./nodes/Output.vue";
@@ -21,45 +21,38 @@ type Colors = {
   blue: number
 }
 
-const breakpoints = useBreakpoints({
-  mobile: 360,
-  tablet: 640,
-  laptop: 1024,
-  desktop: 1280
+const emit = defineEmits(["pane"]);
+
+const { id, onPaneReady, store } = useVueFlow({
+  id: "rgb-flow",
+  nodes: [
+    { id: "1", type: "rgb", data: { color: "g" }, position: { x: -25, y: 0 } },
+    { id: "2", type: "rgb", data: { color: "r" }, position: { x: 50, y: -110 } },
+    { id: "3", type: "rgb", data: { color: "b" }, position: { x: 0, y: 110 } },
+    { id: "4", type: "rgb-output", label: "RGB", position: { x: 400, y: -25 } }
+  ],
+  edges: [
+    { id: "e1-4", type: "rgb-line", data: { color: "green" }, source: "1", target: "4", animated: true },
+    { id: "e2-4", type: "rgb-line", data: { color: "red" }, source: "2", target: "4", animated: true },
+    { id: "e3-4", type: "rgb-line", data: { color: "blue" }, source: "3", target: "4", animated: true }
+  ],
+  zoomOnScroll: false,
+  nodeExtent: [[-50, -150], [500, 300]]
 });
 
-const elements = ref<Elements>([
-  { id: "1", type: "rgb", data: { color: "g" }, position: { x: -25, y: 0 } },
-  { id: "2", type: "rgb", data: { color: "r" }, position: { x: 50, y: -110 } },
-  { id: "3", type: "rgb", data: { color: "b" }, position: { x: 0, y: 110 } },
-  { id: "4", type: "rgb-output", label: "RGB", position: { x: 400, y: -25 } },
-  { id: "e1-4", type: "rgb-line", data: { color: "green" }, source: "1", target: "4", animated: true },
-  { id: "e2-4", type: "rgb-line", data: { color: "red" }, source: "2", target: "4", animated: true },
-  { id: "e3-4", type: "rgb-line", data: { color: "blue" }, source: "3", target: "4", animated: true }
-]);
-const instance = ref<FlowInstance>();
+onMounted(() => console.log(id));
 
-const el = templateRef<HTMLDivElement>("page", null);
+onPaneReady((i) => emit("pane", i));
 
-const bounds = useElementBounding(el);
-const onLoad = (flowInstance: FlowInstance) => {
-  instance.value = flowInstance;
-  instance.value.fitView();
-};
-whenever(breakpoints.greater("tablet"), () => onLoad(instance.value));
-whenever(breakpoints.smaller("tablet"), () => onLoad(instance.value));
+const el = templateRef<HTMLDivElement>("el", null);
 
 const color = ref<Colors>({
-  red: 100,
-  green: 150,
-  blue: 100
+  red: 222,
+  green: 45,
+  blue: 140
 });
+
 const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (color.value[c] = Number(val));
-const bg = ref(BackgroundVariant.Lines);
-const bgSize = ref(1);
-const bgGap = ref(48);
-const backgroundChange = (variant: BackgroundVariant) => (bg.value = variant);
-const sizeChange = (size: number) => (bgSize.value = size);
 
 const nodeColor: StringFunc = (node: GraphNode) => {
   switch (node.id) {
@@ -75,27 +68,39 @@ const nodeColor: StringFunc = (node: GraphNode) => {
 };
 </script>
 <template>
-  <div ref="page" class="flex flex-col-reverse md:flex-row flex-unwrap gap-12 md:gap-24">
-    <div
-      class="w-full md:min-h-[300px] shadow-xl rounded-xl font-mono uppercase overflow-hidden bg-gray-800 border-2"
-      :style="{ borderColor: `rgb(${color.red}, ${color.green}, ${color.blue})` }">
-      <VueFlow id="rgb-flow" v-model="elements" class="relative font-mono" :zoom-on-scroll="false"
-               :node-extent="[[-50, -150], [500, 300]]" @pane-ready="onLoad">
-        <template #edge-rgb-line="rgbLineProps">
-          <CustomEdge
-            v-bind="{ ...rgbLineProps, data: { text: color[rgbLineProps.data?.color], ...rgbLineProps.data } }" />
-        </template>
-        <template #node-rgb="rgbProps">
-          <RGBNode v-bind="rgbProps" :amount="color" @change="onChange" />
-        </template>
-        <template #node-rgb-output="rgbOutputProps">
-          <RGBOutputNode v-bind="rgbOutputProps" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
-        </template>
-        <Controls />
-        <Background :variant="bg" :pattern-color="`rgb(${color.red}, ${color.green}, ${color.blue})`" :gap="bgGap"
-                    :size="bgSize" />
-        <MiniMap class="transform scale-75 origin-bottom-right" :node-color="nodeColor" />
-      </VueFlow>
+  <div
+    ref="el"
+    class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase overflow-hidden bg-gray-800 border-2"
+    :style="{ borderColor: `rgb(${color.red}, ${color.green}, ${color.blue})` }">
+    <VueFlow class="relative font-mono">
+      <template #edge-rgb-line="rgbLineProps">
+        <CustomEdge
+          v-bind="{ ...rgbLineProps, data: { text: color[rgbLineProps.data?.color], ...rgbLineProps.data } }" />
+      </template>
+      <template #node-rgb="rgbProps">
+        <RGBNode v-bind="rgbProps" :amount="color" @change="onChange" />
+      </template>
+      <template #node-rgb-output="rgbOutputProps">
+        <RGBOutputNode v-bind="rgbOutputProps" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
+      </template>
+      <Controls class="transform scale-75 md:scale-100 origin-bottom-left" />
+      <Background :variant="BackgroundVariant.Lines" :pattern-color="`rgb(${color.red}, ${color.green}, ${color.blue})`"
+                  :gap="48"
+                  :size="1" />
+      <MiniMap class="hidden sm:block transform scale-25 md:scale-50 lg:scale-75 origin-bottom-right"
+               :node-color="nodeColor" />
+    </VueFlow>
+  </div>
+  <div class="md:max-w-1/3 flex flex-col gap-12 justify-center">
+    <div class="flex flex-col gap-2 items-center md:items-start">
+      <h1>Customizable</h1>
+      <p>
+        You can create your own node and edge types or just pass a custom style.
+        Implement custom UIs
+        inside your nodes
+        and add functionality to your edges.
+      </p>
+      <a class="button max-w-max" href="/docs">Documentation</a>
     </div>
   </div>
 </template>
