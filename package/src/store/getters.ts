@@ -1,9 +1,6 @@
-import { ComputedRef } from 'vue'
 import { defaultEdgeTypes, defaultNodeTypes } from './state'
-import { State, GraphEdge, GraphNode, Getters } from '~/types'
+import { State, GraphEdge, GraphNode, ComputedGetters } from '~/types'
 import { getNodesInside, isEdgeVisible } from '~/utils'
-
-export type ComputedGetters<N = any, E = N> = { [key in keyof Getters<N, E>]: ComputedRef<Getters<N, E>[key]> }
 
 export default (state: State): ComputedGetters => {
   const getEdgeTypes = computed(() => {
@@ -27,7 +24,7 @@ export default (state: State): ComputedGetters => {
   })
 
   const getNodes = computed<GraphNode[]>(() => {
-    if (state.paneReady && state.dimensions.width && state.dimensions.height) {
+    if (state.paneReady) {
       const nodes = state.nodes.filter((n) => !n.hidden)
       return state.onlyRenderVisibleElements
         ? nodes &&
@@ -48,7 +45,7 @@ export default (state: State): ComputedGetters => {
   })
 
   const getEdges = computed<GraphEdge[]>(() => {
-    if (state.paneReady && state.dimensions.width && state.dimensions.height) {
+    if (state.paneReady) {
       if (!state.onlyRenderVisibleElements)
         return state.edges.filter(
           (e) => !e.hidden && e.targetNode && !e.targetNode.hidden && e.sourceNode && !e.sourceNode.hidden,
