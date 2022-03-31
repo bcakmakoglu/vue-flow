@@ -25,7 +25,9 @@
     ]
   },
   "include": [
-    "**/*"
+    "components",
+    "src",
+    "src/.vuepress/auto-imports.d.ts"
   ],
   "exclude": [
     "node_modules",

@@ -7140,7 +7140,7 @@ unplugin-auto-import@^0.5.11:
     resolve "^1.21.0"
     unplugin "^0.3.0"
 
-unplugin-auto-import@^0.6.8:
+unplugin-auto-import@^0.6.8, unplugin-auto-import@^0.6.9:
   version "0.6.9"
   resolved "https://registry.yarnpkg.com/unplugin-auto-import/-/unplugin-auto-import-0.6.9.tgz#0ecdc7cf38aaf94f22358b56703e059f41b6f367"
   integrity sha512-IqgT7AoRrNQwNhiF/wDH3sMEDX8SqCYBEgJzwdg5441b5aiC5VwZz0J0wYqkaKu89YkZE9DG6rQ2JpFfZv1iiQ==

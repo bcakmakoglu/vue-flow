@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
 import { VueFlow, Handle, Position, useVueFlow } from '@braks/vue-flow'
 import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 import BoxNode from './nodes/Box.vue'

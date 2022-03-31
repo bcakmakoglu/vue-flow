@@ -6,6 +6,7 @@ import type { DefaultThemeOptions, HeadConfig } from 'vuepress'
 import WindiCSS from 'vite-plugin-windicss'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
+import AutoImport from 'unplugin-auto-import/vite'
 import head from './head'
 
 config({ path: resolve(__dirname, '.env') })
@@ -18,6 +19,10 @@ export default defineUserConfig<DefaultThemeOptions>({
   bundlerConfig: {
     viteOptions: {
       plugins: [
+        AutoImport({
+          imports: ['vue', '@vueuse/core'],
+          dts: resolve(__dirname, './auto-imports.d.ts')
+        }),
         WindiCSS({
           config: resolve(__dirname, './windi.config.ts'),
         }),
@@ -64,7 +69,7 @@ export default defineUserConfig<DefaultThemeOptions>({
       { text: 'Guide', link: '/', activeMatch: '^/$|^/guide/' },
       {
         text: 'Examples',
-        link: '/examples/basic',
+        link: '/examples/',
         activeMatch: '^/examples/',
       },
     ],
