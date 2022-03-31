@@ -61,7 +61,7 @@ const nextNode = (id: string[], duration = 2000, padding = 0) => instance.value.
 });
 </script>
 <template>
-  <div class="home-page">
+  <div class="bg-white h-[80vh]">
     <VueFlow>
       <template #node-box="props">
         <template v-if="props.id === 'intro'">

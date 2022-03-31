@@ -10,7 +10,6 @@ const next = () => emit('next')
 <template>
   <div :style="{ backgroundColor: props.rgb }" class="rgb-output-node" @click="next">
     <div class="text-md uppercase">{{ props.rgb }}</div>
-    Click me to continue.
     <Handle type="target" :position="Position.Left" />
   </div>
 </template>
