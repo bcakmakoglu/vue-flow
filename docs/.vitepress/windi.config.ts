@@ -1,8 +1,7 @@
 import { defineConfig } from 'windicss/helpers'
 import { resolve } from 'path'
-import icons from '@windicss/plugin-icons'
 import typography from 'windicss/plugin/typography'
-import windiColors from 'windicss/colors'
+import scrollbar from '@windicss/plugin-scrollbar'
 
 export default defineConfig({
   extract: {
@@ -13,10 +12,10 @@ export default defineConfig({
   darkMode: 'media',
 
   plugins: [
-    icons,
     typography({
       dark: true,
     }),
+    scrollbar,
   ],
 
   shortcuts: {
