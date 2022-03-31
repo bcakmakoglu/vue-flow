@@ -25,7 +25,6 @@
     "unplugin-icons": "^0.14.1",
     "unplugin-vue-components": "^0.18.5",
     "vite-plugin-windicss": "^1.8.3",
-    "vue-demi": "^0.12.5",
     "vuepress": "^2.0.0-beta.37",
     "windicss": "^3.5.1"
   }

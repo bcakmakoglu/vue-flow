@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   applyDefault: undefined,
   fitViewOnInit: undefined,
   connectOnClick: undefined,
-  connectionLineStyle: () => null,
+  connectionLineStyle: null,
 })
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:edges', 'update:nodes'])
 
