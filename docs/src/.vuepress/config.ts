@@ -19,7 +19,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     viteOptions: {
       plugins: [
         WindiCSS({
-          config: resolve(__dirname, './windi.config.ts')
+          config: resolve(__dirname, './windi.config.ts'),
         }),
         Components({
           dirs: [resolve(__dirname, '../../components')],
@@ -31,8 +31,18 @@ export default defineUserConfig<DefaultThemeOptions>({
         }),
         Icons(),
       ],
-    }
+    },
   },
+
+  plugins: [
+    [
+      '@vuepress/docsearch',
+      {
+        apiKey: process.env.ALGOLIA_API_KEY,
+        indexName: 'YCY25RSLA8',
+      },
+    ],
+  ],
 
   theme: resolve(__dirname, './theme/index.ts'),
 

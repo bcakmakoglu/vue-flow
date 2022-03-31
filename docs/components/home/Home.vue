@@ -8,7 +8,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const { dimensions, instance, onPaneReady, getNodes, getNode } = useVueFlow({
   nodes: [
-    { id: 'intro', type: 'box', position: { x: 0, y: 0 }, draggable: true },
+    { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
     { id: 'documentation', type: 'box', position: { x: 300, y: 400 } },
   ],
@@ -38,7 +38,7 @@ const { dimensions, instance, onPaneReady, getNodes, getNode } = useVueFlow({
   zoomOnScroll: false,
 })
 
-onPaneReady(async ({ fitView }) => {
+onPaneReady(({ fitView }) => {
   fitView({
     nodes: ['intro', 'examples', 'documentation'],
     duration: 1500,
@@ -59,7 +59,7 @@ onPaneReady(async ({ fitView }) => {
       <template #node-box="props">
         <template v-if="props.id === 'intro'">
           <div class="max-w-[500px]">
-            <BoxNode class="bg-green-500 text-white">
+            <BoxNode class="intro">
               <div class="font-mono flex flex-col gap-4 p-4 items-center">
                 <h1 class="pointer-events-none text-2xl lg:text-4xl text-center">Visualize your ideas with Vue Flow</h1>
                 <h2 class="pointer-events-none text-lg lg:text-xl font-normal">
@@ -88,6 +88,16 @@ onPaneReady(async ({ fitView }) => {
   </div>
 </template>
 <style scoped>
+.intro {
+  @apply cursor-pointer
+  bg-green-500
+  text-white
+  transform
+  transition-transform
+  duration-300
+  hover:(scale-105 ring ring-white);
+}
+
 .link {
   @apply flex
   gap-3
@@ -97,11 +107,10 @@ onPaneReady(async ({ fitView }) => {
   transform
   transition-transform
   duration-300
-  hover:scale-102
+  hover:(scale-102 bg-black dark:(bg-white text-black))
   transition-colors
   ease-in-out
   rounded-lg
-  hover:bg-black
   text-white
   font-semibold
   text-lg;
