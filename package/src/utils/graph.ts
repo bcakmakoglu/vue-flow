@@ -94,7 +94,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
 
 export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge => {
   defaults = !isGraphEdge(edge)
-    ? {
+    ? ({
         sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : undefined,
         targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
         type: edge.type ?? 'default',
@@ -107,8 +107,9 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         targetY: 0,
         updatable: undefined,
         selectable: undefined,
+        data: undefined,
         ...defaults,
-      }
+      } as GraphEdge)
     : defaults
 
   return {
