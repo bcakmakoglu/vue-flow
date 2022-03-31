@@ -26,7 +26,7 @@ watch(
   ],
   () => setTimeout(() => {
     fitViews()
-  }, 1)
+  }, 5)
 );
 </script>
 <template>
