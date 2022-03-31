@@ -1,28 +1,33 @@
 <script lang="ts" setup>
-import { reactive } from "vue";
-import { useBreakpoints, whenever } from "@vueuse/core";
+import { reactive, watch } from "vue";
+import { useBreakpoints, breakpointsTailwind } from "@vueuse/core";
 import { FlowInstance } from "@braks/vue-flow";
 
-const breakpoints = useBreakpoints({
-  mobile: 360,
-  tablet: 640,
-  laptop: 1024,
-  desktop: 1280
-});
+const breakpoints = useBreakpoints(breakpointsTailwind);
 
-const instances = reactive<FlowInstance[]>([])
+const instances = reactive<FlowInstance[]>([]);
 
 const onLoad = (instance: FlowInstance) => {
-  instances.push(instance)
-  instance.fitView()
+  instances.push(instance);
+  instance.fitView();
 };
 
 const fitViews = () => {
-  instances.forEach(i => i.fitView())
-}
+  instances.forEach(i => i.fitView());
+};
 
-whenever(breakpoints.greater("tablet"), fitViews);
-whenever(breakpoints.smaller("tablet"), fitViews);
+watch(
+  [
+    breakpoints.sm,
+    breakpoints.md,
+    breakpoints.lg,
+    breakpoints.xl,
+    breakpoints["2xl"]
+  ],
+  () => setTimeout(() => {
+    fitViews()
+  }, 1)
+);
 </script>
 <template>
   <div class="w-full">
@@ -33,6 +38,9 @@ whenever(breakpoints.smaller("tablet"), fitViews);
       </div>
       <div class="flex flex-col-reverse md:flex-row flex-unwrap gap-12 md:gap-24">
         <RGB @pane="onLoad" />
+      </div>
+      <div class="flex flex-col-reverse md:flex-row flex-unwrap gap-12 md:gap-24">
+        <Nested @pane="onLoad" />
       </div>
     </div>
   </div>

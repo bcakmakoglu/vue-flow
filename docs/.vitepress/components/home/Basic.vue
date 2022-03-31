@@ -1,14 +1,22 @@
 <script lang="ts" setup>
-import { GraphEdge, GraphNode, useVueFlow, VueFlow, Background, Controls } from "@braks/vue-flow";
+import { GraphEdge, useVueFlow, VueFlow, Background, Controls, ClassFunc } from "@braks/vue-flow";
 
-const getStyle = (el: GraphNode) => {
+const getClass: ClassFunc = (el) => {
   const classes = ["font-semibold", "!border-2", "transition-colors", "duration-300", "ease-in-out"];
-  if (el.selected) classes.push(...["!border-green-500/80", "!shadow-md", "!shadow-green-500/50", "!bg-green-100/45", "!text-gray-700"]);
-  if (el.selected && !el.dragging) classes.push("animate-pulse");
+  if (el.selected) classes.push(
+    ...[
+      "!border-green-500/80",
+      "!shadow-md",
+      "!shadow-green-500/50",
+      "!bg-green-100/45",
+      "!text-gray-700"
+    ]
+  );
+
   return classes.join(" ");
 };
 
-const emit = defineEmits(['pane'])
+const emit = defineEmits(["pane"]);
 
 const { onPaneReady } = useVueFlow({
   modelValue: [
@@ -17,21 +25,21 @@ const { onPaneReady } = useVueFlow({
       type: "input",
       label: "input",
       position: { x: 250, y: 5 },
-      class: getStyle
+      class: getClass,
     },
     {
       id: "2",
       label: "default",
       position: { x: 100, y: 100 },
-      class: getStyle
+      class: getClass
     },
-    { id: "3", label: "default", position: { x: 400, y: 100 }, class: getStyle },
+    { id: "3", label: "default", position: { x: 400, y: 100 }, class: getClass },
     {
       id: "4",
       type: "output",
       label: "output",
       position: { x: 250, y: 225 },
-      class: getStyle
+      class: getClass
     },
     {
       id: "e1-2",
@@ -69,7 +77,7 @@ const { onPaneReady } = useVueFlow({
   ]
 });
 
-onPaneReady((i) => emit('pane', i))
+onPaneReady((i) => emit("pane", i));
 </script>
 <template>
   <div class="md:max-w-1/3 flex flex-col justify-center">
