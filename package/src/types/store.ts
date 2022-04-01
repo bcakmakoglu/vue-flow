@@ -109,7 +109,7 @@ export interface Actions<NodeData = ElementData, EdgeData = ElementData> {
   /** parses edges and adds to state */
   addEdges: <EA = EdgeData>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
   /** updates an edge */
-  updateEdge: <EU = EdgeData>(oldEdge: GraphEdge<EU>, newConnection: Connection) => boolean
+  updateEdge: <EU = EdgeData>(oldEdge: GraphEdge<EU>, newConnection: Connection) => GraphEdge | false
   applyEdgeChanges: <ED = EdgeData>(changes: EdgeChange[]) => GraphEdge<ED>[]
   applyNodeChanges: <ND = NodeData>(changes: NodeChange[]) => GraphNode<ND>[]
   addSelectedElements: (elements: FlowElements<NodeData, EdgeData>) => void

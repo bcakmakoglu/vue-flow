@@ -56,7 +56,7 @@ const addEdge = (edgeParams: Edge | Connection, edges: Edge[]) => {
   return edge
 }
 
-const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[], add: Actions['addEdges']): boolean => {
+const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[], add: Actions['addEdges']) => {
   if (!newConnection.source || !newConnection.target) {
     console.warn("Can't create new edge. An edge needs a source and a target.")
     return false
@@ -70,18 +70,17 @@ const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: Gra
   }
 
   edges.splice(edges.indexOf(edge), 1)
-  add([
-    {
-      ...edge,
-      id: getEdgeId(newConnection),
-      source: newConnection.source,
-      target: newConnection.target,
-      sourceHandle: newConnection.sourceHandle,
-      targetHandle: newConnection.targetHandle,
-    },
-  ])
+  const newEdge = {
+    ...edge,
+    id: getEdgeId(newConnection),
+    source: newConnection.source,
+    target: newConnection.target,
+    sourceHandle: newConnection.sourceHandle,
+    targetHandle: newConnection.targetHandle,
+  }
+  add([newEdge])
 
-  return true
+  return newEdge
 }
 
 const createGraphNodes = (nodes: Node[], getNode: Getters['getNode'], currGraphNodes: GraphNode[], extent: CoordinateExtent) => {
