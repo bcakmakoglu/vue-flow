@@ -74,20 +74,20 @@ export interface SelectionRect extends Rect {
   draw: boolean
 }
 
-export type FlowExportObject<NodeData = ElementData, EdgeData = ElementData> = {
-  nodes: GraphNode<NodeData>[]
-  edges: GraphEdge<EdgeData>[]
+export type FlowExportObject = {
+  nodes: GraphNode[]
+  edges: GraphEdge[]
   position: [number, number]
   zoom: number
 }
 
-export type ToObject<NodeData = ElementData, EdgeData = ElementData> = () => FlowExportObject<NodeData, EdgeData>
+export type ToObject = () => FlowExportObject
 
-export type FlowInstance<NodeData = ElementData, EdgeData = ElementData> = {
-  getElements: () => FlowElements<NodeData, EdgeData>
-  getNodes: () => GraphNode<NodeData>[]
-  getEdges: () => GraphEdge<EdgeData>[]
-  toObject: ToObject<NodeData, EdgeData>
+export type FlowInstance = {
+  getElements: () => FlowElements
+  getNodes: () => GraphNode[]
+  getEdges: () => GraphEdge[]
+  toObject: ToObject
 } & UseZoomPanHelper
 
 export interface FlowProps<NodeData = ElementData, EdgeData = ElementData> {

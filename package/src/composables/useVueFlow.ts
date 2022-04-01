@@ -74,7 +74,7 @@ type Injection<NodeData = ElementData, EdgeData = ElementData> = UseVueFlow<Node
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 export default <NodeData = ElementData, EdgeData = ElementData>(
-  options?: Partial<FlowOptions<NodeData, EdgeData>>,
+  options?: Partial<FlowOptions>,
 ): UseVueFlow<NodeData, EdgeData> => {
   const storage = Storage.getInstance()
   const scope = getCurrentScope() as Scope
