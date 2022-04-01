@@ -62,14 +62,14 @@ export interface ControlEvents {
 }
 
 /** expects a node and returns a color value */
-export type MiniMapNodeFunc<Data = any> = (node: Node<Data> | GraphNode<Data>) => string
+export type MiniMapNodeFunc<Data = ElementData> = (node: Node<Data> | GraphNode<Data>) => string
 // hack for vue-type imports
-type MiniMapNodeFunc2<Data = any> = (node: Node<Data> | GraphNode<Data>) => string
-type MiniMapNodeFunc3<Data = any> = (node: Node<Data> | GraphNode<Data>) => string
+type MiniMapNodeFunc2<Data = ElementData> = (node: Node<Data> | GraphNode<Data>) => string
+type MiniMapNodeFunc3<Data = ElementData> = (node: Node<Data> | GraphNode<Data>) => string
 
-export type ShapeRendering = 'inherit' | 'auto' | 'geometricPrecision' | 'optimizeSpeed' | 'crispEdges' | undefined
+export type ShapeRendering = CSSProperties['shapeRendering']
 
-export interface MiniMapProps<Data = any> {
+export interface MiniMapProps<Data = ElementData> {
   /** Node color, can be either a string or a string func that receives the current node */
   nodeColor?: string | MiniMapNodeFunc<Data>
   /** Node stroke color, can be either a string or a string func that receives the current node */
@@ -90,7 +90,7 @@ export interface MiniMapNodeProps {
   dimensions: Dimensions
   borderRadius?: number
   color?: string
-  shapeRendering?: CSSProperties['shapeRendering']
+  shapeRendering?: ShapeRendering
   strokeColor?: string
   strokeWidth?: number
 }

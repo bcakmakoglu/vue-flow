@@ -10,7 +10,7 @@ export type NodeHandleBounds = {
   target?: HandleElement[]
 }
 
-export interface Node<T = ElementData> extends Element<T> {
+export interface Node<Data = ElementData> extends Element<Data> {
   /** node position x, y */
   position: XYPosition
   /** node type, can be a default type or a custom type */
@@ -37,7 +37,7 @@ export interface Node<T = ElementData> extends Element<T> {
   parentNode?: string
 }
 
-export interface GraphNode<T = ElementData> extends Node<T> {
+export interface GraphNode<Data = ElementData> extends Node<Data> {
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
   handleBounds: NodeHandleBounds
@@ -49,12 +49,12 @@ export interface GraphNode<T = ElementData> extends Node<T> {
 }
 
 /** these props are passed to node components */
-export interface NodeProps<T = ElementData> {
+export interface NodeProps<Data = ElementData> {
   id: string
   /** node DOM-element */
   nodeElement: HTMLDivElement
   type: string
-  data: T
+  data: Data
   selected: boolean
   connectable: boolean
   /** absolute position in relation to parent elements + z-index */
