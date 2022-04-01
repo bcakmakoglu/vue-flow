@@ -21,9 +21,10 @@ export default defineUserConfig<DefaultThemeOptions>({
       plugins: [
         AutoImport({
           imports: ['vue', '@vueuse/core'],
-          dts: resolve(__dirname, './auto-imports.d.ts')
+          dts: resolve(__dirname, './auto-imports.d.ts'),
         }),
         WindiCSS({
+          transformCSS: 'pre',
           config: resolve(__dirname, './windi.config.ts'),
         }),
         Components({
