@@ -13,6 +13,7 @@ config({ path: resolve(__dirname, '.env') })
 
 export default defineUserConfig<DefaultThemeOptions>({
   title: 'Vue Flow',
+  description: 'Visualize your ideas with Vue Flow, a highly customizable Vue3 Flowchart library.',
   head: head as HeadConfig[],
 
   bundler: '@vuepress/bundler-vite',
