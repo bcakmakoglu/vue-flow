@@ -1,10 +1,16 @@
 :root {
   --primary: #BB86FC;
   --secondary: #03dac5;
+  --content-width: 100%;
+}
+
+.dark {
+  --c-text-lighter: white !important;
+  --c-text: white !important;
 }
 
 html, body {
-  @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-gray-300;
+  @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
 }
 
 .home {
@@ -12,7 +18,16 @@ html, body {
   @apply !px-0;
 }
 
-.container {
+.page, .page-meta, .footer, .sidebar {
+  @apply dark:(!bg-black text-white);
+}
+
+.theme-default-content {
+  @apply overflow-scroll md:overflow-hidden;
+}
+
+.navbar {
+  @apply dark:bg-gray-900;
 }
 
 h1 {
