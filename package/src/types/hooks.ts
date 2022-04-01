@@ -26,7 +26,7 @@ export interface FlowEvents<NodeData = ElementData, EdgeData = ElementData> {
   } & OnConnectStartParams
   connectStop: MouseEvent
   connectEnd: MouseEvent
-  paneReady: FlowInstance<NodeData, EdgeData>
+  paneReady: FlowInstance
   move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   moveEnd: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }

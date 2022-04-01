@@ -24,7 +24,7 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   extends Omit<FlowOptions<NodeData, EdgeData>, 'id' | 'modelValue'> {
   /** Event hooks, you can manipulate the triggers on your own peril */
   hooks: FlowHooks<NodeData, EdgeData>
-  instance: FlowInstance<NodeData, EdgeData> | null
+  instance: FlowInstance | null
 
   /** all stored nodes */
   nodes: GraphNode<NodeData>[]
