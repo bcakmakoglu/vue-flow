@@ -1,4 +1,4 @@
-import { XYPosition, Dimensions } from './flow'
+import { XYPosition, Dimensions, ElementData } from './flow'
 import { NodeHandleBounds, Node } from './node'
 import { Edge } from './edge'
 
@@ -27,12 +27,12 @@ export type NodeRemoveChange = {
   type: 'remove'
 }
 
-export type NodeAddChange<NodeData = any> = {
+export type NodeAddChange<NodeData = ElementData> = {
   item: Node<NodeData>
   type: 'add'
 }
 
-export type NodeResetChange<NodeData = any> = {
+export type NodeResetChange<NodeData = ElementData> = {
   item: Node<NodeData>
   type: 'reset'
 }
@@ -47,11 +47,11 @@ export type NodeChange =
 
 export type EdgeSelectionChange = NodeSelectionChange
 export type EdgeRemoveChange = NodeRemoveChange
-export type EdgeAddChange<EdgeData = any> = {
+export type EdgeAddChange<EdgeData = ElementData> = {
   item: Edge<EdgeData>
   type: 'add'
 }
-export type EdgeResetChange<EdgeData = any> = {
+export type EdgeResetChange<EdgeData = ElementData> = {
   item: Edge<EdgeData>
   type: 'reset'
 }
