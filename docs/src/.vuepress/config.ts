@@ -35,6 +35,7 @@ export default defineUserConfig<DefaultThemeOptions>({
           extensions: ['vue', 'md'],
           // allow auto import and register components used in markdown
           include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+          dts: resolve(__dirname, './components.d.ts'),
         }),
         Icons(),
       ],
