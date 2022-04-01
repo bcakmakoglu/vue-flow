@@ -57,15 +57,20 @@ if (props.nodes && !storedNodes.value.length) setNodes(props.nodes)
 if (props.edges && !storedEdges.value.length) setEdges(props.edges)
 
 if (modelValue && modelValue.value) {
-  watch([() => storedEdges.value.length, () => storedNodes.value.length], () => {
-    modelValue.value = [...storedNodes.value, ...storedEdges.value]
-  })
+  watch(
+    [() => storedEdges.value.length, () => storedNodes.value.length],
+    () => {
+      modelValue.value = [...storedNodes.value, ...storedEdges.value]
+    },
+    { immediate: true },
+  )
 }
 
 if (nodes && nodes.value) {
   watch(
     () => storedNodes.value.length,
     () => (nodes.value = [...storedNodes.value]),
+    { immediate: true },
   )
 }
 
@@ -73,6 +78,7 @@ if (edges && edges.value) {
   watch(
     () => storedEdges.value.length,
     () => (edges.value = [...storedEdges.value]),
+    { immediate: true },
   )
 }
 
