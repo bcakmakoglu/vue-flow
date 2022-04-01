@@ -42,12 +42,12 @@ const { onPaneReady } = useVueFlow({
       label: 'animated edge',
       target: '2',
       animated: true,
-      class: (el: GraphEdge) => {
-        const classes = ['transition-colors duration-300', el.sourceNode.selected ? 'font-semibold' : '']
+      class: (el) => {
+        const classes = ['transition-colors duration-300', (<GraphEdge>el).sourceNode.selected ? 'font-semibold' : '']
         return classes.join(' ')
       },
-      style: (el: GraphEdge) => {
-        const sourceNodeSelected = el.sourceNode.selected
+      style: (el) => {
+        const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
           stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : undefined,
@@ -59,12 +59,12 @@ const { onPaneReady } = useVueFlow({
       source: '1',
       target: '3',
       label: 'default edge',
-      class: (el: GraphEdge) => {
-        const classes = ['transition-colors duration-300', el.sourceNode.selected ? 'font-semibold' : '']
+      class: (el) => {
+        const classes = ['transition-colors duration-300', (<GraphEdge>el).sourceNode.selected ? 'font-semibold' : '']
         return classes.join(' ')
       },
-      style: (el: GraphEdge) => {
-        const sourceNodeSelected = el.sourceNode.selected
+      style: (el) => {
+        const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
           stroke: el.selected || sourceNodeSelected ? 'red' : undefined,
@@ -77,12 +77,12 @@ const { onPaneReady } = useVueFlow({
       target: '4',
       type: 'step',
       animated: true,
-      class: (el: GraphEdge) => {
-        const classes = ['transition-colors duration-300', el.sourceNode.selected ? 'font-semibold' : '']
+      class: (el) => {
+        const classes = ['transition-colors duration-300', (<GraphEdge>el).sourceNode.selected ? 'font-semibold' : '']
         return classes.join(' ')
       },
-      style: (el: GraphEdge) => {
-        const sourceNodeSelected = el.sourceNode.selected
+      style: (el) => {
+        const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
           stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : undefined,

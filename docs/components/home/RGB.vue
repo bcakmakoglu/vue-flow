@@ -89,7 +89,7 @@ const nodeColor: MiniMapNodeFunc = (node) => {
       <template #node-rgb-output="rgbOutputProps">
         <RGBOutputNode v-bind="rgbOutputProps" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
       </template>
-      <Controls class="transform scale-75 md:scale-100 origin-bottom-left" />
+      <Controls class="hidden md:block" />
       <Background
         :variant="BackgroundVariant.Lines"
         :pattern-color="`rgb(${color.red}, ${color.green}, ${color.blue})`"
