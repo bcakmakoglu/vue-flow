@@ -5,7 +5,7 @@ import BoxNode from './nodes/Box.vue'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const { dimensions, instance, onPaneReady, getNodes, getNode } = useVueFlow({
+const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -37,19 +37,77 @@ const { dimensions, instance, onPaneReady, getNodes, getNode } = useVueFlow({
   zoomOnScroll: false,
 })
 
+const init = ref(false)
+const edgeId = ref('eintro-documentation')
 onPaneReady(({ fitView }) => {
   fitView({
     nodes: ['intro', 'examples', 'documentation'],
     duration: 1500,
   })
 
-  setTimeout(() => {
-    watch([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']], () =>
-      setTimeout(() => {
-        instance.value?.fitView()
-      }, 5),
-    )
-  }, 1500)
+  watch(
+    [breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']],
+    () => {
+      if (breakpoints.isSmaller('md')) {
+        nextTick(() => {
+          getNodes.value.forEach((node) => {
+            switch (node.id) {
+              case 'intro':
+                node.position = { x: 0, y: -50 }
+                break
+              case 'examples':
+                node.position = { x: getNode.value('intro')!.dimensions.width / 2 - node.dimensions.width / 2, y: 300 }
+                break
+              case 'documentation':
+                node.position = { x: getNode.value('intro')!.dimensions.width / 2 - node.dimensions.width / 2, y: 500 }
+                break
+            }
+          })
+
+          const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
+            source: 'examples',
+            target: 'documentation',
+            sourceHandle: null,
+            targetHandle: null,
+          })
+          if (newEdge) edgeId.value = newEdge.id
+        })
+      } else {
+        nextTick(() => {
+          getNodes.value.forEach((node) => {
+            switch (node.id) {
+              case 'intro':
+                node.position = { x: 0, y: 0 }
+                break
+              case 'examples':
+                node.position = { x: -node.dimensions.width / 2, y: 400 }
+                break
+              case 'documentation':
+                node.position = { x: getNode.value('intro')!.dimensions.width / 2 + node.dimensions.width / 2, y: 400 }
+                break
+            }
+          })
+
+          const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
+            source: 'intro',
+            target: 'documentation',
+            sourceHandle: null,
+            targetHandle: null,
+          })
+          if (newEdge) edgeId.value = newEdge.id
+        })
+      }
+
+      setTimeout(
+        () => {
+          if (!init.value) init.value = true
+          instance.value?.fitView()
+        },
+        init.value ? 5 : 1505,
+      )
+    },
+    { immediate: true },
+  )
 })
 </script>
 <template>
@@ -73,14 +131,12 @@ onPaneReady(({ fitView }) => {
             <a class="link group bg-orange-500" href="/docs"> Read The Documentation </a>
           </div>
           <Handle type="target" :position="Position.Top" />
-          <Handle type="source" :position="Position.Bottom" />
         </template>
         <template v-else-if="props.id === 'examples'">
           <div class="flex">
             <a class="link group bg-purple-500" href="/examples"> Check The Examples </a>
           </div>
           <Handle type="target" :position="Position.Top" />
-          <Handle type="source" :position="Position.Bottom" />
         </template>
       </template>
     </VueFlow>
