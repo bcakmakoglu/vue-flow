@@ -15,7 +15,7 @@ type Colors = {
 
 const emit = defineEmits(['pane'])
 
-const { onPaneReady, getNode } = useVueFlow({
+const { onPaneReady, getNode, panOnDrag } = useVueFlow({
   id: 'rgb-flow',
   nodes: [
     { id: '1', type: 'rgb', data: { color: 'g' }, position: { x: -25, y: 0 } },
@@ -48,9 +48,11 @@ const color = ref<Colors>({
 watch(
   [breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']],
   () => {
-    if (breakpoints.isSmaller('md')) {
+    const mobile = breakpoints.isSmaller('md')
+    if (mobile) {
       getNode.value('4')!.position = { x: 300, y: -25 }
     }
+    panOnDrag.value = !mobile
   },
   { immediate: true },
 )

@@ -1,17 +1,19 @@
 <script lang="ts" setup>
 import { ConnectionMode, useVueFlow, VueFlow, Background, Controls } from '@braks/vue-flow'
+import { breakpointsTailwind } from '@vueuse/core'
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const emit = defineEmits(['pane'])
 
 const nodeClasses = ['!normal-case font-semibold !text-white', '!border-1', 'shadow-md'].join(' ')
 const childClasses = `${nodeClasses} !bg-green-500/70 !border-white`
 
-const { onPaneReady } = useVueFlow({
+const { onPaneReady, panOnDrag } = useVueFlow({
   fitViewOnInit: true,
   connectionMode: ConnectionMode.Loose,
   zoomOnScroll: false,
   preventScrolling: false,
-  panOnDrag: false,
   translateExtent: [
     [-500, -100],
     [600, 500],
@@ -42,6 +44,14 @@ const { onPaneReady } = useVueFlow({
     { id: 'e2-3', source: '2', target: '3', type: 'smoothstep', style: { stroke: 'white', strokeWidth: '2' } },
   ],
 })
+
+watch(
+  [breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']],
+  () => {
+    panOnDrag.value = !breakpoints.isSmaller('md')
+  },
+  { immediate: true },
+)
 
 onPaneReady((i) => emit('pane', i))
 </script>
