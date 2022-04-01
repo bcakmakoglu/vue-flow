@@ -12,6 +12,7 @@
     "prepare": "ts-patch install -s",
     "dev": "yarn --cwd examples dev",
     "docs": "yarn --cwd docs dev",
+    "docs:build": "yarn --cwd docs build",
     "build": "yarn --cwd package build",
     "postbuild": "yarn typedoc",
     "release": "yarn --cwd package np",
