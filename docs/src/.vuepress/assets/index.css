@@ -47,8 +47,7 @@ p ~ h1, p ~ h2 {
 }
 
 .vue-flow__node.dark {
-  background: #557;
-  color: #f8f8f8;
+  @apply bg-gray-800 text-white;
 }
 
 .vue-flow__node-selector {
@@ -69,14 +68,14 @@ p ~ h1, p ~ h2 {
   -webkit-appearance: none;
   appearance: none;
 
-&::-moz-range-thumb {
-   @apply w-[15px] h-[15px] cursor-pointer border-1 border-solid border-white rounded-full;
-   -webkit-appearance: none;
-   background: var(--color);
- }
-&::-webkit-slider-thumb {
-   @apply w-[15px] h-[15px] cursor-pointer border-1 border-solid border-white rounded-full;
-   -webkit-appearance: none;
-   background: var(--color);
- }
+  &::-moz-range-thumb {
+     @apply w-[15px] h-[15px] cursor-pointer border-1 border-solid border-white rounded-full;
+     -webkit-appearance: none;
+     background: var(--color);
+   }
+  &::-webkit-slider-thumb {
+     @apply w-[15px] h-[15px] cursor-pointer border-1 border-solid border-white rounded-full;
+     -webkit-appearance: none;
+     background: var(--color);
+   }
 }
