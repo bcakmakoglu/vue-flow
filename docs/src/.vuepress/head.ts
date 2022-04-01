@@ -1,7 +1,7 @@
 const meta = {
   title: '🌊 Vue Flow - A Vue3 Flowchart library',
   description: 'Visualize your ideas with Vue Flow, a highly customizable Vue3 Flowchart library.',
-  img: 'https://images.prismic.io/bcakmakoglu/7cca6d1f-2d05-4ed6-a0a9-af9df54943ac_vue-flow.png',
+  img: 'https://images.prismic.io/bcakmakoglu/8fbdad18-3cd4-46a9-83cf-dbd9fbf60484_vue-flow.png?auto=compress,format',
   url: 'https://vueflow.dev/',
 }
 
