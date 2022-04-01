@@ -137,6 +137,7 @@ onPaneReady(({ fitView }) => {
             <a class="link group bg-purple-500" href="/examples"> Check The Examples </a>
           </div>
           <Handle type="target" :position="Position.Top" />
+          <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
         </template>
       </template>
     </VueFlow>
