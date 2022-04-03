@@ -7,7 +7,6 @@
   --c-text-lighter: white !important;
   --c-text: white !important;
   --c-bg: black !important;
-  --c-bg-lighter: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
 }
 
 .dark .tip {
