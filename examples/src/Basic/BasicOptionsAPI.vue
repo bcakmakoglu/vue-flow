@@ -22,7 +22,7 @@ export default defineComponent({
       console.log(this.instance?.toObject())
     },
     resetTransform() {
-      //
+      this.instance?.setTransform({ x: 0, y: 0, zoom: 1 })
     },
     toggleclass() {
       this.elements.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))

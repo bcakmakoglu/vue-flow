@@ -46,8 +46,9 @@ export default defineUserConfig<DefaultThemeOptions>({
     [
       '@vuepress/docsearch',
       {
+        appId: 'F7BJNSM4M5',
         apiKey: process.env.ALGOLIA_API_KEY,
-        indexName: 'YCY25RSLA8',
+        indexName: 'vueflow',
       },
     ],
   ],
@@ -61,15 +62,8 @@ export default defineUserConfig<DefaultThemeOptions>({
     lastUpdated: true,
     contributors: true,
     darkMode: true,
-
-    algolia: {
-      appId: 'YCY25RSLA8',
-      apiKey: process.env.ALGOLIA_API_KEY,
-      indexName: (process.env.NODE_ENV !== 'production' ? 'dev_' : 'prod_') + 'VUE-FLOW',
-    },
-
     navbar: [
-      { text: 'Guide', link: '/', activeMatch: '^/$|^/guide/' },
+      { text: 'Guide', link: '/guide/', activeMatch: '^/guide/' },
       {
         text: 'Examples',
         link: '/examples/',
