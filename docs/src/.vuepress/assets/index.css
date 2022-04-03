@@ -31,7 +31,6 @@ html, body {
 
 .examples .page {
   --content-width: 100%;
-  @apply max-w-3/4;
 }
 
 .theme-default-content {
