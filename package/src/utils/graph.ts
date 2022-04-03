@@ -87,7 +87,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
 
   return {
     ...(defaults as GraphNode),
-    ...node,
+    ...(node as GraphNode),
     id: node.id.toString(),
   }
 }
