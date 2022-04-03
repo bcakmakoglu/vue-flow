@@ -8,9 +8,11 @@ import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import head from './head'
+import { useVueFlow } from '@braks/vue-flow'
 
 config({ path: resolve(__dirname, '.env') })
 
+const { vueFlowVersion } = useVueFlow()
 export default defineUserConfig<DefaultThemeOptions>({
   title: 'Vue Flow',
   description: 'Visualize your ideas with Vue Flow, a highly customizable Vue3 Flowchart library.',
@@ -62,13 +64,29 @@ export default defineUserConfig<DefaultThemeOptions>({
     lastUpdated: true,
     contributors: true,
     darkMode: true,
+    sidebar: {
+      '/guide/': [
+        {
+          text: 'Guide',
+          children: ['/guide/', '/guide/getting-started', '/guide/theming'],
+        },
+      ],
+      '/examples/': [
+        {
+          text: 'Examples',
+          children: ['/examples/'],
+        },
+      ],
+    },
     navbar: [
+      { text: `v${vueFlowVersion.value}`, link: '' },
       { text: 'Guide', link: '/guide/', activeMatch: '^/guide/' },
       {
         text: 'Examples',
         link: '/examples/',
         activeMatch: '^/examples/',
       },
+      { text: 'TypeDocs', link: 'https://types.vueflow.dev/' },
     ],
   },
 })
