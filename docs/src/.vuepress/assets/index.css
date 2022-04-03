@@ -7,8 +7,15 @@
   --c-text-lighter: white !important;
   --c-text: white !important;
   --c-bg: black !important;
-  --c-bg-light: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
   --c-bg-lighter: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
+}
+
+.dark .tip {
+  --c-bg-light: gray;
+}
+
+.tip {
+  --c-bg-light: white;
 }
 
 html, body {
@@ -50,9 +57,8 @@ h2 {
 }
 
 p {
-  @apply text-md lg:text-lg;
   line-height: inherit;
-  margin: inherit;
+  margin: revert;
 }
 
 ul li {
