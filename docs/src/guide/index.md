@@ -1,6 +1,5 @@
 ---
 title: Introduction
-
 ---
 
 # Introduction
@@ -11,8 +10,8 @@ a background.
 
 Check out the [examples](/examples/) if you want to dive directly into the code.
 
-# Features
-
+## Key Features
+ 
 - 👶 __Easy to use__: Seamless zooming & panning behaviour and single and multi-selections of
   elements
 
