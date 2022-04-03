@@ -106,7 +106,7 @@ const nodeColor: MiniMapNodeFunc = (node) => {
         You can create your own node and edge types or just pass a custom style. Implement custom UIs inside your nodes and add
         functionality to your edges.
       </p>
-      <a class="button max-w-max" href="/docs">Documentation</a>
+      <router-link class="button max-w-max" to="/guide/">Documentation</router-link>
     </div>
   </div>
 </template>

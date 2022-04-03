@@ -60,7 +60,7 @@ onPaneReady((i) => emit('pane', i))
     <div class="flex flex-col gap-2 items-center md:items-start">
       <h1>Nested- & Subflows</h1>
       <p>Vue Flow comes with built-in support for nested nodes and nested flows.</p>
-      <a class="button max-w-max" href="/docs"> Documentation </a>
+      <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
     </div>
   </div>
   <div

@@ -102,7 +102,7 @@ onPaneReady((i) => emit('pane', i))
         Vue Flow includes a MiniMap, Controls and Background, as well as a ton of utilities and a supercharged composable to
         control the internal state outside the Vue Flow component.
       </p>
-      <a class="button max-w-max" href="/docs"> Documentation </a>
+      <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
     </div>
   </div>
 </template>
