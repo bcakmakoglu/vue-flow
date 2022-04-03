@@ -128,13 +128,13 @@ onPaneReady(({ fitView }) => {
         </template>
         <template v-else-if="props.id === 'documentation'">
           <div class="flex">
-            <a class="link group bg-orange-500" href="/docs"> Read The Documentation </a>
+            <router-link class="link group bg-orange-500" to="/guide/"> Read The Documentation </router-link>
           </div>
           <Handle type="target" :position="Position.Top" />
         </template>
         <template v-else-if="props.id === 'examples'">
           <div class="flex">
-            <a class="link group bg-purple-500" href="/examples"> Check The Examples </a>
+            <router-link class="link group bg-purple-500" to="/examples/"> Check The Examples </router-link>
           </div>
           <Handle type="target" :position="Position.Top" />
           <Handle class="block md:hidden" type="source" :position="Position.Bottom" />

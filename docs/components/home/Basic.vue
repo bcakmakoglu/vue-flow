@@ -102,7 +102,7 @@ onPaneReady((i) => emit('pane', i))
         Vue Flow comes with seamless zooming & panning, different edge and node types, single and multi-selection, controls,
         several event handlers and more.
       </p>
-      <a class="button max-w-max" href="/docs"> Documentation </a>
+      <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
     </div>
   </div>
   <div
