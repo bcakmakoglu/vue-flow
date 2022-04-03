@@ -9,7 +9,7 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges, store } = useVueFlow({
+const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges } = useVueFlow({
   defaultZoom: 1.5,
   minZoom: 0.2,
   maxZoom: 4,
