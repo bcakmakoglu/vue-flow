@@ -40,8 +40,9 @@ export default defineComponent({
     onNodeDragStop(e: FlowEvents['nodeDragStop']) {
       console.log('drag stop', e)
     },
-    onPaneReady({ fitView }: FlowEvents['paneReady']) {
-      fitView({ padding: 0.1 })
+    onPaneReady(instance: FlowEvents['paneReady']) {
+      instance.fitView()
+      this.instance = instance
     },
     onConnect(params: FlowEvents['connect']) {
       addEdge(params, this.elements)
