@@ -1,12 +1,14 @@
 :root {
   --primary: #BB86FC;
   --secondary: #03dac5;
-  --content-width: 100%;
 }
 
 .dark {
   --c-text-lighter: white !important;
   --c-text: white !important;
+  --c-bg: black !important;
+  --c-bg-light: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
+  --c-bg-lighter: rgba(17, 24, 39, var(--tw-bg-opacity)) !important;
 }
 
 html, body {
@@ -14,12 +16,22 @@ html, body {
 }
 
 .home {
+  --content-width: 100%;
   max-width: 100% !important;
   @apply !px-0;
 }
 
-.page, .page-meta, .footer, .sidebar {
+.page a {
+  @apply text-green-500 font-semibold;
+}
+
+.examples .page, .examples .page-meta, .footer, .sidebar {
   @apply dark:(!bg-black text-white);
+}
+
+.examples .page {
+  --content-width: 100%;
+  @apply max-w-3/4;
 }
 
 .theme-default-content {
@@ -39,11 +51,13 @@ h2 {
 }
 
 p {
-  @apply text-md lg:text-lg font-qtype;
+  @apply text-md lg:text-lg;
+  line-height: inherit;
+  margin: inherit;
 }
 
-p ~ h1, p ~ h2 {
-  @apply mt-6;
+ul li {
+  @apply mt-2;
 }
 
 .vue-flow__node.dark {

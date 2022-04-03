@@ -143,7 +143,7 @@ onPaneReady(({ fitView }) => {
     </VueFlow>
   </div>
 </template>
-<style scoped>
+<style>
 .intro {
   @apply cursor-pointer
   bg-green-500
@@ -174,5 +174,22 @@ onPaneReady(({ fitView }) => {
 
 button:focus {
   outline: none;
+}
+
+h1 {
+  @apply text-xl lg:text-4xl mb-4 font-bold;
+}
+
+h2 {
+  @apply text-lg lg:text-2xl mb-4 font-semibold;
+}
+
+p {
+  @apply text-md lg:text-lg;
+}
+
+p ~ h1,
+p ~ h2 {
+  @apply mt-6;
 }
 </style>

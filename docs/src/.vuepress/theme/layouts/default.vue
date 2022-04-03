@@ -16,9 +16,8 @@ import ParentLayout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 </template>
 <style>
 .page-footer {
-  @apply dark:(text-white bg-black) pt-[2rem];
+  @apply dark:(text-white bg-black) pt-[2rem] text-center;
   border-top: 1px solid var(--c-border);
-  text-align: center;
   transition: border-color var(--t-color);
 }
 </style>

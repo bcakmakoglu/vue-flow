@@ -1,6 +1,6 @@
 ---
 title: Basic Example
-tags: ['examples', 'basic', 'get-started', 'quickstart']
+pageClass: examples
 ---
 
 # Basic Example
