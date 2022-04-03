@@ -73,6 +73,8 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 }
 
+const size = ref<Record<string, string>>()
+
 onMounted(() => {
   useResizeObserver(nodeElement, () =>
     store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]),
@@ -81,6 +83,18 @@ onMounted(() => {
   watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () =>
     nextTick(() => store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])),
   )
+
+  const { width, height } = nodeElement.value.getBoundingClientRect()
+
+  const hasCustomSize = node.value.dimensions && node.value.dimensions.width !== 0 && node.value.dimensions.height !== 0
+  const widthMatch = width === node.value.dimensions.width
+  const heightMatch = height === node.value.dimensions.height
+
+  if (hasCustomSize && (!widthMatch || !heightMatch)) {
+    size.value = {}
+    if (!widthMatch) size.value!.width = `${node.value.dimensions.width}px`
+    if (!heightMatch) size.value!.height = `${node.value.dimensions.height}px`
+  }
 
   store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])
 })
@@ -179,6 +193,7 @@ export default {
         zIndex: node.computedPosition.z,
         transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
         pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
+        ...size,
         ...getStyle(),
       }"
       :data-id="node.id"

@@ -35,6 +35,7 @@ export interface Node<Data = ElementData> extends Element<Data> {
   expandParent?: boolean
   /** define node as a child node by setting a parent node id */
   parentNode?: string
+  dimensions?: Partial<Dimensions>
 }
 
 export interface GraphNode<Data = ElementData> extends Node<Data> {
@@ -54,7 +55,7 @@ export interface NodeProps<Data = ElementData> {
   /** node DOM-element */
   nodeElement: HTMLDivElement
   type: string
-  data: Data
+  data?: Data
   selected: boolean
   connectable: boolean
   /** absolute position in relation to parent elements + z-index */
