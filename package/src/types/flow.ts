@@ -11,8 +11,18 @@ export type ElementData = Record<any, any>
 export type FlowElement<NodeData = ElementData, EdgeData = ElementData> = GraphNode<NodeData> | GraphEdge<EdgeData>
 export type FlowElements<NodeData = ElementData, EdgeData = ElementData> = (FlowElement<NodeData> | FlowElement<EdgeData>)[]
 
+export type CustomThemeVars = Record<string, string | number>
+export type CSSVars =
+  | '--vf-node-color'
+  | '--vf-box-shadow'
+  | '--vf-node-bg'
+  | '--vf-node-text'
+  | '--vf-connection-path'
+  | '--vf-handle'
+export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] }
+export type Styles = CSSProperties & ThemeVars & CustomThemeVars
 export type ClassFunc<Data = ElementData> = (element: FlowElement<Data>) => string
-export type StyleFunc<Data = ElementData> = (element: FlowElement<Data>) => CSSProperties
+export type StyleFunc<Data = ElementData> = (element: FlowElement<Data>) => Styles
 
 /** base element props */
 export interface Element<Data extends ElementData = ElementData> {
@@ -26,7 +36,7 @@ export interface Element<Data extends ElementData = ElementData> {
   type?: string
   data?: Data
   class?: string | ClassFunc<Data>
-  style?: CSSProperties | StyleFunc<Data>
+  style?: Styles | StyleFunc<Data>
   hidden?: boolean
 }
 export type Elements<NodeData = ElementData, EdgeData = ElementData> = (Node<NodeData> | Edge<EdgeData>)[]

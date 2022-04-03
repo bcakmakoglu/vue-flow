@@ -1,3 +1,10 @@
+:root {
+  --vf-node-bg: #fff;
+  --vf-node-text: #222;
+  --vf-connection-path:  #b1b1b7;
+  --vf-handle: #555;
+}
+
 .vue-flow__selection {
   background: rgba(0, 89, 220, 0.08);
   border: 1px dotted rgba(0, 89, 220, 0.8);
@@ -32,11 +39,11 @@
 }
 
 .vue-flow__edge-textbg {
-  fill: white;
+  fill: #fff;
 }
 
 .vue-flow__connection-path {
-  stroke: #b1b1b7;
+  stroke: var(--vf-connection-path);
   stroke-width: 1;
 }
 
@@ -51,10 +58,22 @@
   border-radius: 3px;
   width: 150px;
   font-size: 12px;
-  color: #222;
+  color: var(--vf-node-text);
   text-align: center;
   border-width: 1px;
   border-style: solid;
+
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color);
+
+  &.selected,
+  &.selected:hover {
+     box-shadow: 0 0 0 0.5px var(--vf-box-shadow);
+   }
+
+  .vue-flow__handle {
+    background: var(--vf-handle);
+  }
 }
 
 .vue-flow__node-default.selectable,
@@ -66,45 +85,27 @@
 }
 
 .vue-flow__node-input {
-  background: #fff;
-  border-color: #0041d0;
+  --vf-node-color: #0041d0;
+  --vf-handle: var(--vf-node-color);
+  --vf-box-shadow: var(--vf-node-color);
 
-  &.selected,
-  &.selected:hover {
-    box-shadow: 0 0 0 0.5px #0041d0;
-  }
-
-  .vue-flow__handle {
-    background: #0041d0;
-  }
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color);
 }
 
 .vue-flow__node-default {
-  background: #fff;
-  border-color: #1a192b;
+  --vf-node-color: #1a192b;
+  --vf-handle: var(--vf-node-color);
+  --vf-box-shadow: var(--vf-node-color);
 
-  &.selected,
-  &.selected:hover {
-    box-shadow: 0 0 0 0.5px #1a192b;
-  }
-
-  .vue-flow__handle {
-    background: #1a192b;
-  }
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color);
 }
 
 .vue-flow__node-output {
-  background: #fff;
-  border-color: #ff0072;
-
-  &.selected,
-  &.selected:hover {
-    box-shadow: 0 0 0 0.5px #ff0072;
-  }
-
-  .vue-flow__handle {
-    background: #ff0072;
-  }
+  --vf-node-color: #ff0072;
+  --vf-handle: var(--vf-node-color);
+  --vf-box-shadow: var(--vf-node-color);
 }
 
 .vue-flow__nodesselection-rect {
@@ -116,8 +117,8 @@
   position: absolute;
   width: 6px;
   height: 6px;
-  background: #555;
-  border: 1px solid white;
+  background: var(--vf-handle);
+  border: 1px solid #fff;
   border-radius: 100%;
 
   &.connectable {
