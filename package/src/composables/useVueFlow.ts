@@ -109,7 +109,8 @@ export default <NodeData = ElementData, EdgeData = ElementData>(
   }
 
   if (!vueFlow) throw new Error('vue flow store instance not found.')
-  provide(VueFlow, vueFlow)
+
+  if (scope) provide(VueFlow, vueFlow)
 
   return vueFlow
 }
