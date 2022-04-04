@@ -8,8 +8,7 @@ Each node <span class="font-bold text-blue-500">requires a unique id and
 a [xy-position](https://types.vueflow.dev/interfaces/XYPosition.html).</span>
 Anything else is optional.
 
-You can check the full options for a node element in the TypeDocs [here](https://types.vueflow.dev/interfaces/Node.html)
-.
+You can check the full options for a node element in the TypeDocs [here](https://types.vueflow.dev/interfaces/Node.html).
 
 ## Usage
 
