@@ -89,7 +89,7 @@ If you have multiple store instances in the same context, make sure to give them
 Otherwise `useVueFlow` will try to inject the first instance it can find in the current context, which would usually be the last one that has been injected.
 ::: 
 
-## Updates
+## State updates
 
 State updates like removing elements or updating positions are applied by default.
 If you want to strictly control state changes you can disable this behavior by setting the `applyDefault` option/prop to `false`.
