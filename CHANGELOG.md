@@ -2,7 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.4.0] - 2022-04-04
+
+[f3b3062](f3b306297032412e9bc1b46571aada7dd26dc9cb)...[1c429fc](1c429fc637f788fb7c2afb227ac4323bf81c1527)
 
 ### Bug Fixes
 
