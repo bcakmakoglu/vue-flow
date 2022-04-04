@@ -15,6 +15,7 @@
     "docs:build": "yarn --cwd docs build",
     "build": "yarn --cwd package build",
     "postbuild": "yarn typedoc",
+    "prerelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
     "release": "yarn --cwd package np",
     "test": "yarn --cwd tests test",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
