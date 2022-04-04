@@ -8,7 +8,6 @@
     "dev": "vuepress dev src",
     "prebuild": "yarn data",
     "build": "vuepress build src",
-    "serve": "vuepress serve",
     "data": "node data.js"
   },
   "dependencies": {
