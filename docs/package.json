@@ -11,7 +11,7 @@
     "data": "node data.js"
   },
   "dependencies": {
-    "@braks/vue-flow": "^0.4.0-29",
+    "@braks/vue-flow": "^0.4.0",
     "blobity": "^0.1.7"
   },
   "devDependencies": {
