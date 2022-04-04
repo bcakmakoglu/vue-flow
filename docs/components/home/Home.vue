@@ -8,17 +8,19 @@ const dark = useDark({
   selector: 'html',
 })
 
-const blobity = new Blobity({
-  color: dark.value ? '#ffffff' : '#000000',
-  invert: true,
-  zIndex: 0,
-  magnetic: false,
-  dotColor: '#10b981',
-  radius: 8,
-})
+onMounted(() => {
+  const blobity = new Blobity({
+    color: dark.value ? '#ffffff' : '#000000',
+    invert: true,
+    zIndex: 0,
+    magnetic: false,
+    dotColor: '#10b981',
+    radius: 8,
+  })
 
-onBeforeUnmount(() => {
-  blobity.destroy()
+  onBeforeUnmount(() => {
+    blobity.destroy()
+  })
 })
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
