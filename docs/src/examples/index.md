@@ -1,9 +1,9 @@
 ---
-title: Basic Example
 pageClass: examples
+
 ---
 
-# Basic Example
+# Basic
 
 This is a basic example to help you quickly get started building your own graphs. On the bottom left you see the
 Controls and on the bottom right the MiniMap component. You can see different node types (input, default, output), edge
