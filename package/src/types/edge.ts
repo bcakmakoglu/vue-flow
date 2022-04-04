@@ -121,8 +121,6 @@ export interface EdgeProps<Data = ElementData, SourceNodeData = any, TargetNodeD
   targetHandleId?: string
   source: string
   target: string
-  sourceHandle?: string
-  targetHandle?: string
   labelStyle?: CSSProperties
   labelShowBg?: boolean
   labelBgStyle?: any
