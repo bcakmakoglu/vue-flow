@@ -186,7 +186,7 @@ const nodes = [
 ]
 ```
 
-Vue Flow will now try to resolve this node type to a component.
+Vue Flow will now try to resolve this node-type to a component.
 First and foremost we will look for a definition in the `nodeTypes` object of the state.
 After that we will try to resolve the component to a globally registered one that matches the exact name.
 Finally, we will check if a template slot has been provided to fill the node-type.
