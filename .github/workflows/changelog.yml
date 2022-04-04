@@ -25,10 +25,10 @@ jobs:
         uses: orhun/git-cliff-action@v1
         id: git-cliff
         with:
-          config: config/cliff.toml
-          args: -vv --latest --strip header
+          config: cliff.toml
+          args: --output CHANGELOG.md
         env:
-          OUTPUT: CHANGES.md
+          OUTPUT: CHANGELOG.md
       - name: Set the release body
         id: release
         shell: bash
