@@ -1,4 +1,170 @@
-# Custom Nodes
+# Nodes
+
+Nodes are the building blocks of your graph. They represent any sort of data you want to present in your graph.
+
+They can exist on their own but can be connected to each other with edges to create a map.
+
+Each node <span class="font-bold text-blue-500">requires a unique id and
+a [xy-position](https://types.vueflow.dev/interfaces/XYPosition.html).</span>
+Anything else is optional.
+
+You can check the full options for a node element in the TypeDocs [here](https://types.vueflow.dev/interfaces/Node.html).
+
+## Usage
+
+Generally you create nodes by adding them to the model-value or the nodes prop of the Vue Flow component.
+
+```vue:no-line-numbers
+<script>
+import { VueFlow } from '@braks/vue-flow'
+
+export default defineComponent({
+  components: { VueFlow },
+  data() {
+    return {
+      elements: [
+        {
+          id: '1',
+          position: { x: 50, y: 50 },
+          label: 'Node 1',
+        }
+      ]
+    }
+  },
+  mounted() {
+    // Add an element after mount
+    this.elements.push(
+      {
+        id: '2',
+        position: { x: 150, y: 50 },
+        label: 'Node 2',
+      }
+    )
+  }
+})
+</script>
+<template>
+  <div style="height: 300px">
+    <VueFlow v-model="elements" />
+  </div>
+</template>
+```
+
+For more
+advanced graphs that require more state access you will want to use the useVueFlow composable. UseVueFlow will provide
+you with an
+`addNodes` utility function, which you can use to add nodes directly to the state.
+
+```vue:no-line-numbers
+<script setup>
+import { VueFlow, useVueFlow } from '@braks/vue-flow'
+
+const initialNodes = ref([
+  {
+    id: '1',
+    position: { x: 50, y: 50 },
+    label: 'Node 1',
+  }
+])
+const { addNodes } = useVueFlow({
+  nodes: initialNodes,
+})
+
+onMounted(() => {
+  // Add an element after mount
+  addNodes([
+    {
+      id: '2',
+      position: { x: 150, y: 50 },
+      label: 'Node 2',
+    }
+  ])
+})
+</script>
+<template>
+  <div style="height: 300px">
+    <VueFlow />
+  </div>
+</template>
+```
+
+You can also apply changes (like removing elements safely) using the `applyNodeChanges` utility function, which expects an array of changes to be
+applied to the currently stored nodes.
+
+```vue:no-line-numbers
+<script setup>
+import { VueFlow, useVueFlow } from '@braks/vue-flow'
+
+const initialNodes = ref([
+  {
+    id: '1',
+    position: { x: 50, y: 50 },
+    label: 'Node 1',
+  }
+])
+const { applyNodeChanges } = useVueFlow({
+  nodes: initialNodes,
+})
+
+onMounted(() => {
+  // Remove an element after mount
+  applyNodeChanges([
+    {
+      id: '1',
+      type: 'remove',
+    }
+  ])
+})
+</script>
+<template>
+  <div style="height: 300px">
+    <VueFlow />
+  </div>
+</template>
+```
+
+## Default Node-Types
+
+Vue Flow comes with built-in nodes that you can use right out of the box.
+These node types include `default`, `input` and `output`.
+
+You can set a label on each of these types.
+
+### Default Node
+
+![vue flow default node](https://images.prismic.io/bcakmakoglu/235b4a10-5bdc-41c0-ba3f-4fb402fba65f_Default-node.png?auto=compress,format)
+
+A default node comes with two handles.
+It represents a branching point in your map.
+
+You can specify the position of handles in the node definition.
+
+```js:no-line-numbers{5-6}
+const nodes = [
+  {
+    id: '1',
+    label: 'Node 1',
+    targetHandle: Position.Top, // or Bottom, Left, Right,
+    sourceHandle: Position.Right,
+  }
+]
+```
+
+### Input Node
+
+![vue flow input node](https://images.prismic.io/bcakmakoglu/fd871fe3-6c5f-4ef1-8e71-fb66d947866b_Input-node.png?auto=compress,format)
+
+An input node has a single handle, located at the bottom by default.
+It represents a starting point of your map.
+
+### Output Node
+
+![vue flow output node](https://images.prismic.io/bcakmakoglu/abe32a60-d0a4-40ee-a710-092570d4d128_Output-node.png?auto=compress,format)
+
+An output node has a single handle, located at the top by default.
+It represents an ending point of your map.
+
+## Custom Nodes
 
 In addition to the default node types from the previous chapter, you can define any amount of custom node-types.
 Node-types are inferred from your node's definition.
@@ -100,9 +266,9 @@ const elements = ref([
 You can find a more advanced example <router-link to="/examples/custom-node/">here</router-link>.
 :::
 
-## Custom Node Props
+### Custom Node Props
 
-Your custom nodes are wrapped so that the basic functions like dragging or selecting work. 
+Your custom nodes are wrapped so that the basic functions like dragging or selecting work.
 But you might want to extend on that functionality or implement your own business logic inside of nodes, therefore
 your nodes receive the following props:
 
@@ -129,3 +295,27 @@ your nodes receive the following props:
 
 
 You can find the TypeDocs [here](https://types.vueflow.dev/interfaces/NodeProps.html).
+
+## Styling
+
+::: tip
+To overwrite default theme styles check the [Theming section](/guide/theming/).
+:::
+
+### Custom Nodes
+
+When you create a new node type you also need to implement some styling. Your custom node has no default styles.
+
+```css:no-line-numbers
+.vue-flow__node-custom {
+  background: #9CA8B3;
+  color: #fff;
+  padding: 10px;
+}
+```
+
+### Allow scrolling inside a node
+
+You can use the `noWheelClassName` prop to define a class which will prevent zoom-on-scroll or pan-on-scroll behavior on that element.
+By default the `noWheelClassName` is `.nowheel`.
+By adding this class you can also enable scrolling inside a node.

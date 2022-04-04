@@ -68,18 +68,7 @@ export default defineUserConfig<DefaultThemeOptions>({
       '/guide/': [
         {
           text: 'Guide',
-          children: [
-            '/guide/',
-            '/guide/getting-started',
-            '/guide/theming',
-            '/guide/state',
-            {
-              text: 'Nodes',
-              link: '/guide/node/',
-              activeMatch: '^/guide/node/',
-              children: ['/guide/node/defaults', '/guide/node/custom', '/guide/node/styling'],
-            },
-          ],
+          children: ['/guide/', '/guide/getting-started', '/guide/theming', '/guide/config', '/guide/state', '/guide/node.md'],
         },
       ],
       '/examples/': [
