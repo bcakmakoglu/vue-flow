@@ -49,6 +49,7 @@ commit_parsers = [
     { message = "^style", group = "Styling"},
     { message = "^tests", group = "Testing"},
     { message = "^chore\\(release\\): prepare for", skip = true},
+    { message = "^chore: Update CHANGELOG.md", skip = true },
     { message = "^chore", group = "Miscellaneous Tasks"},
     { body = ".*security", group = "Security"},
 ]
