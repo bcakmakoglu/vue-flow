@@ -76,6 +76,7 @@ export default defineUserConfig<DefaultThemeOptions>({
             '/guide/state',
             '/guide/node',
             '/guide/edge',
+            { text: 'Utilities', children: ['/guide/utils/graph', '/guide/utils/instance', '/guide/utils/edge'] },
           ],
         },
       ],
