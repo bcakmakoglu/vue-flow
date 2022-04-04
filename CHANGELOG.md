@@ -7,11 +7,17 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 - Remove usage link from sidebar ([19eb154](19eb15461904960536c9bf505a5577f353eabc89))
+- Move node docs into single page ([7655288](76552886d6ec90b6f730121216b9093d1c4788ad))
 
 ### Features
 
 - Add cliff.toml for git-cliff ([6064bfd](6064bfd1bdd378662dd13e0cf79245e3b20b3914))
 - Add changelog.yml for changelog generation ([3580aa9](3580aa9ad56a51f4d31c0ff4ad41db03ae84e7d4))
+- Add changelog.md ([a44311d](a44311d5cd7c50c3d6f02771f2515102b42068d7))
+
+### Miscellaneous Tasks
+
+- Update changelog.yml ([fc339b2](fc339b2271dd5b3a7168ee051fa1503fef0cf371))
 
 ## [0.4.0-34] - 2022-04-04
 
