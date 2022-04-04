@@ -1,7 +1,25 @@
 <script lang="ts" setup>
 import { VueFlow, Handle, Position, useVueFlow } from '@braks/vue-flow'
 import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
+import Blobity from 'blobity'
 import BoxNode from './nodes/Box.vue'
+
+const dark = useDark({
+  selector: 'html',
+})
+
+const blobity = new Blobity({
+  color: dark.value ? '#ffffff' : '#000000',
+  invert: true,
+  zIndex: 0,
+  magnetic: false,
+  dotColor: '#10b981',
+  radius: 8,
+})
+
+onBeforeUnmount(() => {
+  blobity.destroy()
+})
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
@@ -163,7 +181,7 @@ onPaneReady(({ fitView }) => {
   transform
   transition-transform
   duration-300
-  hover:(scale-102 bg-black dark:(bg-white text-black))
+  hover:(scale-102)
   transition-colors
   ease-in-out
   rounded-lg

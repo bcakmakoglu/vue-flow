@@ -1907,6 +1907,14 @@ blob-util@^2.0.2:
   resolved "https://registry.yarnpkg.com/blob-util/-/blob-util-2.0.2.tgz#3b4e3c281111bb7f11128518006cdc60b403a1eb"
   integrity sha512-T7JQa+zsXXEa6/8ZhHcQEW1UFfVM49Ts65uBkFL6fz2QmrElqmbajIDJvuA0tEhRe5eIjpV9ZF+0RfZR9voJFQ==
 
+blobity@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/blobity/-/blobity-0.1.7.tgz#ab64e6af02855f30df9e878ec3f5a75ab8e2e3c5"
+  integrity sha512-4pIUWS99ldLtCSKDAwaz3SqGH4ExfaUo8Bq8BXNKPyvR3z6gyr8G4uHvV/exwu2OOyBser+vIXMMeC1l1kNWiQ==
+  dependencies:
+    kinet "^2.2.1"
+    lodash "^4.17.21"
+
 bluebird@^3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
@@ -4730,6 +4738,11 @@ kind-of@^6.0.0, kind-of@^6.0.2, kind-of@^6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
+
+kinet@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/kinet/-/kinet-2.2.1.tgz#25aa218fb510e7c649197041ed5a8901d3f29e08"
+  integrity sha512-UmnTPmnEokjxBeB3gPkOnTwRlIUaAeB+t21E+HJGzRKCGdJTUF3CTztK5yzzEuBQ1BZ0I0ovrY73+ctpPWFIOg==
 
 klona@^2.0.4:
   version "2.0.5"
