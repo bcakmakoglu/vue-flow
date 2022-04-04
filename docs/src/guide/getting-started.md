@@ -85,20 +85,6 @@ A basic setup would look like this:
   </CodeGroupItem>
 </CodeGroup>
 
-### State updates
-
-State updates like removing elements or updating positions are done by default. If you want to strictly control state
-changes you can disable this behavior by setting the `applyDefault` option/prop to `false`.
-
-```vue:no-line-numbers
-<div style="height: 300px">
-  <VueFlow v-model="elements" :apply-default="false" />
-</div>
-```
-
-To take control of state changes you can implement your own state update handlers or use the state helper functions that
-come with the library to mix it up.
-
 ## TypeScript
 
 Vue Flow is fully written in [TypeScript](https://www.typescriptlang.org/), so it is highly recommended to use TypeScript to have the best possible DX and

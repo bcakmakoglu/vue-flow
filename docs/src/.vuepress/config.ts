@@ -72,6 +72,7 @@ export default defineUserConfig<DefaultThemeOptions>({
             '/guide/',
             '/guide/getting-started',
             '/guide/theming',
+            '/guide/state',
             {
               text: 'Nodes',
               link: '/guide/node/',
