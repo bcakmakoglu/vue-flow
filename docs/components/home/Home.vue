@@ -16,6 +16,9 @@ onMounted(() => {
     magnetic: false,
     dotColor: '#10b981',
     radius: 8,
+    focusableElementsOffsetX: 2,
+    focusableElementsOffsetY: 2,
+    mode: 'bouncy',
   })
 
   onBeforeUnmount(() => {
