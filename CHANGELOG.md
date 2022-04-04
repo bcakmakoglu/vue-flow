@@ -4,504 +4,223 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+### Bug Fixes
+
+- Pass all required props to node components ([c818a58](c818a5863c21c95a3c3b3b767194e24c33381f90))
+- Pass parentNode id instead of parentNode to components ([266678d](266678d6a8fe9bc453e141d77707fa559cd83d97))
+- Expand nodes correctly when prop enabled ([4644af5](4644af5736a5b928fe538439cd5c0bb26adcff19))
+- Setting store state after init ([188156d](188156dd0bbadce65fb8fad125544b2f9a9007d7))
+- Connection line style prop ([66a166d](66a166dea991e0a9f8fcd00e27bd3844b2e839f7))
+- Destructure useHandle ([cd6b03d](cd6b03d4aea28ff013d66f275fc77c605656912b))
+- Source/targetHandle type ([e9f4b5f](e9f4b5f0222e8ebc7c66fbf58d5a7fa0762c6476))
+- Default prop value for zoomActivationKeyCode ([2b2aad8](2b2aad8cdc5dd6bb83c809af5ac654d040665d33))
+- Use correct functions for center/path in simple bezier edge ([3acb43d](3acb43d0001795851f95a22461610b0901db1e2e))
+- Use correct vars for center in straight edge ([6674350](66743501af762b175147d427fe8670153299e2f4))
+- Check if prop label exists before using dynamic component ([f30288d](f30288da78b6ab174a768815d01d80cc918694e3))
+- Missing source/target node props on smoothstep edges ([de534e9](de534e9a5f9d84d52dcc783268321333e6df6ee9))
+- Prevent scroll when zoom on scroll is false ([70a349f](70a349f7e1949e8c4c2f191fc93db9004317b196))
+- Edges not selected on user selection ([271d793](271d7933274ba3f4cc6fd711ebf352a4deeb74b2))
+- Add no pan class name to nodes selection ([43692aa](43692aa8ef66a397fb30b4961abf0fa2dcb9689a))
+- Check for scope before trying injection ([0d0ac9d](0d0ac9d2e6c93e30c54dff1a036618e883230ea1))
+- Cleanup of state ([fddebb9](fddebb93938da2c034868df0b00a44d765d24e07))
+- Check if window exists before binding event listener for keypress ([fa6c7b7](fa6c7b736c8d6e0c9d30b89169e6466081c0f86e))
+- Change modelValue/node-/edge-prop when elements are added to state ([cb3e123](cb3e1232b2cefe4f6a1b25dad871d78245f39f99))
+- Use empty string instead of null when source-/target-handle is not present ([9b94014](9b940142a74b9777b0717a4f1f39a1ee3b06c21a))
+- Check if scope exists before accessing id ([e136c28](e136c28f0e631c227c7b9e0740c93bd0e98d9668))
+- Try to resolve component before falling back to default ([0d6bc39](0d6bc39e4920a3e54031cca6cc47b82df49d886d))
+- Prevent onClick from creating edges inside same node ([2027731](202773144f677be0183ba5b45a8f29ed2ee195df))
+- Set default prop as undefined for connectOnClick ([9a87543](9a875430ec01de994e1492b94318e7c871ecf7eb))
+- Store & usevueflow types ([95bc46e](95bc46e61659df1a679ac832beeced6373128b35))
+- Check if type exists before using as index ([bf3506d](bf3506d50f20e37363c9bbda0afece17ef1145e8))
+- Check if type exists before using as index ([c12e07b](c12e07bcda25620fb2f0df8a5d90f26a4ab5ed1c))
+- Use node.extent before trying global nodeExtent ([d1e8c0f](d1e8c0f16ee8d0893475c1f9f43fcb496a098129))
+- Short circuit passing slots to renderer ([74bc231](74bc231844f2abfed8eeb91eeee71ef25128fb1b))
+- Force focus into node selection ([ddeb70a](ddeb70a08f2c3998e292fec7dc79a5b935783c87))
+- Getter type ([73a9016](73a9016aff86717a5d307b0e6a0309c5e7692ec7))
+- Use  global nodeExtent if node.extent is undefined ([8e6e85a](8e6e85a007c8cc4daff475cf1e60721339f12fcd))
+- Compute type in wrapper ([546dd4b](546dd4baaf65d298410741019393cf4fc4b89ea9))
+- No transform of id to ref ([71e21e5](71e21e50d9569a592b5fdb43a170cfd59a9e7dba))
+- Injection missing ([ca74d7b](ca74d7b470406e82e6fdcf1baf4bb047a933d726))
+- Computed getter type ([981511c](981511c76f9a6a61cff35b3b936d7dd8e9abc853))
+- Dont inherit attrs on smoothstep/stepedges ([c68b1bf](c68b1bf424c84bc0798db5f53e05fe2df61b8a1d))
+- Initial state tests ([a686d62](a686d62528060fbd0723dbffe034ad191695c597))
+- Remove vue from dev-deps ([9b08271](9b08271696a1ad0856bbe2b649ffae8f4434d968))
+- Immediate execution of watchers ([041f22d](041f22dd58ff4582fb458364d86a2a0b5254052f))
+- Check for scope before providing store ([3d66775](3d66775678a7fc3ef84867d4dd5ce2f4b7c49c9b))
+- Remove duplicate source/targetHandle prop ([453f155](453f155954b5f51f300dfb02ea29d64f71f10bf7))
+
 ### Documentation
 
-- Remove usage link from sidebar ([19eb154](19eb15461904960536c9bf505a5577f353eabc89))
-- Move node docs into single page ([7655288](76552886d6ec90b6f730121216b9093d1c4788ad))
-
-### Features
-
-- Add cliff.toml for git-cliff ([6064bfd](6064bfd1bdd378662dd13e0cf79245e3b20b3914))
-- Add changelog.yml for changelog generation ([3580aa9](3580aa9ad56a51f4d31c0ff4ad41db03ae84e7d4))
-- Add changelog.md ([a44311d](a44311d5cd7c50c3d6f02771f2515102b42068d7))
-
-### Miscellaneous Tasks
-
-- Update changelog.yml ([fc339b2](fc339b2271dd5b3a7168ee051fa1503fef0cf371))
-
-## [0.4.0-34] - 2022-04-04
-
-[4be3954](4be39548cfc943190337a2a6ae49d1a8b643594b)...[bc85bad](bc85bade89d293f9867562769a631ac11059925e)
-
-### Features
-
-- Add guide index page ([5779e10](5779e105224402809e1098aa1903d53d9e8a4944))
-- Add getting started page ([a4b2aa3](a4b2aa3aaef64c4d776c6cb60bfb357e37903bae))
-- Add theming ([bc08e28](bc08e284164c438c78151c103480e05dc91da5e4))
-- Add css vars for overwriting node colors ([b86012b](b86012bd442fceb1d0b1cd144013a27fb4b441bd))
-- Add node pages ([691bcc4](691bcc4d7806d5e0c6db91a927b6d1db14cf9b78))
-- Allow pre-defined dimensions of a node ([c480172](c480172e8d91272cd88744c3d1cef01fc7ae0610))
-- Add state page ([0eb5fcf](0eb5fcf3258e9bfcfa4b3a456bd063246dfe62fd))
-- Add blobity to home ([0d05352](0d053527946408a9b971e9ea6c7235adcc3f3198))
-
-### Miscellaneous Tasks
-
-- Update algolia config ([8e880dd](8e880dd5486a23b835d14dc541c1bd5dc240ce10))
-- Remove max-w from examples page ([5ccb0ae](5ccb0ae389d1d6be85683c567cafa7a1535b06d4))
-- Uniform basic example ([ad4289a](ad4289a7b3df06ca185bb9db9e511f51926bb941))
-- Update sidebar conf ([6336501](6336501e76668f26a809677d94315a315c8a4277))
-- Update styles ([bdea46c](bdea46c2b9a9246b3a83c3dc51dfcc3360e9a3a2))
-- Remove lighter var ([6cf9565](6cf9565b82e198c2537a0127ec0f011445433658))
-- Replace a-tags with router-links ([9596d27](9596d272bab012313218f7ec780a13b9996a11a6))
-- Remove unused var ([92dd0b3](92dd0b3cfbd1b7fe969686b39de5749b5b5de405))
-
-### Update
-
-- Add css vars to theming page ([a8fd776](a8fd776de21100f6857cba92f29f3cafb93f9556))
-
-## [0.4.0-33] - 2022-04-03
-
-[a39272c](a39272c1fee1b79b1864a9d29263f023b4ec633d)...[4be3954](4be39548cfc943190337a2a6ae49d1a8b643594b)
-
-### Bug Fixes
-
-- Check for scope before providing store ([5273dcf](5273dcf80e7c67e8c319aa37bf76c72abc0ba5a5))
-
-### Miscellaneous Tasks
-
-- Update meta img ([f8668a0](f8668a072a10f9e1e659fcc5b55aa5123ee2c8fa))
-- Banner size & gap ([1997c6b](1997c6b5705ea100765f393e58db55b6aeb956ba))
-
-## [0.4.0-32] - 2022-04-01
-
-[99bf978](99bf978d0689c5529e5980c78d95983db4f5f93c)...[a39272c](a39272c1fee1b79b1864a9d29263f023b4ec633d)
-
-### Features
-
-- Return new edge from updateEdge utility ([30873fb](30873fb2ca1a498f76fd749767fd1335a780c2db))
-- Responsive pos of elements ([d4f2c17](d4f2c176aef3e9b03f05c8b0aed6e1f995d96e58))
-- Disable pan on mobile ([a096a31](a096a31233906daafdc49485eb503393b1712552))
-
-### Miscellaneous Tasks
-
-- Preprocess css ([07c0103](07c01039ae8655fc6903aae0a981c4cfbc5bc979))
-- Add docs build script to root package.json ([7fd2dca](7fd2dcad22f8851bed62b58e9b6e8dd5bc26a3ab))
-- Add description to config ([aa2b4df](aa2b4df913a7c594a053c3b14c05231affb87f2b))
-- Place components.d.ts in .vitepress dir ([08bf457](08bf457e7386e1cad87820938fbeec8614ffeea7))
-- Add element data typing ([d43e0bd](d43e0bdab995ac90c3ec892953c5315ef54ae0d3))
-- Remove some unnecessary generics ([ed34aec](ed34aece18d6b52943cbce3e2e0be663eac946a5))
-- Type fix ([b6d5b63](b6d5b63aeebd6d97c2bb34603849d08588b7eb07))
-
-## [0.4.0-31] - 2022-04-01
-
-[70044a2](70044a29ee205521c6bd44fa0f75f7d916728ae2)...[99bf978](99bf978d0689c5529e5980c78d95983db4f5f93c)
-
-### Bug Fixes
-
-- Immediate execution of watchers ([ded9856](ded9856f515fed2f6b79aa1b0f803de8de6a0bf3))
-
-### Features
-
-- Layout styles ([68c2faa](68c2faa5bedc62ae56ea11d3df405b557fd323df))
-
-## [0.4.0-30] - 2022-03-31
-
-[6531be1](6531be1294bbc73df8725c158a7d93261fd2f546)...[70044a2](70044a29ee205521c6bd44fa0f75f7d916728ae2)
-
-### Bug Fixes
-
-- Computed getter type ([f3db0f3](f3db0f34241c15b4dff14b90e1af785b3e1e85a6))
-- Dont inherit attrs on smoothstep/stepedges ([373bb0a](373bb0aee0d0fb8262d225664e05443b678a70fd))
-- Initial state tests ([d334f17](d334f17f049ca7daf7b8c76cc574281555a50e24))
-- Remove vue from dev-deps ([d701b9a](d701b9a3c01cd1df78942ac4b3660c5397d1a66d))
-
-### Features
-
-- Add additional demo ([db841a6](db841a6f57067483b69bd3d5d654777671c1faa0))
-- Replace vitepress with vuepress ([7c3c555](7c3c5557e3645fa9e0e7fe5417c09744c1e31a83))
-- Add docsearch plugin ([b979721](b979721cb15951e78141105468cdc0324cc8ade8))
-- Add auto import plugin ([c5ff817](c5ff8172caf3d9a7980def0e0e92702a4934c131))
-- Add page footer ([b619642](b6196424cc16e26143eb69ce6bc7a2abf96f70bc))
-
-### Update
-
-- Footer ([ca12a15](ca12a15d2baaa278d13f5d7ba02e2f61d59ea90c))
-- Mobile styles ([9cebd39](9cebd392b14cc9e1158f2e86067082de43cce280))
-- Dark mode colors for home ([ecac7c9](ecac7c98da6acf5aec8e588c680c4f04f6c86e91))
-
-## [0.4.0-29] - 2022-03-31
-
-[c394f2d](c394f2d8dccd36c820579835c207f2b2c6ccb199)...[6531be1](6531be1294bbc73df8725c158a7d93261fd2f546)
-
-### Bug Fixes
-
-- Use  global nodeExtent if node.extent is undefined ([1b50373](1b50373c00d560ef1005aab607b3efe04e228f40))
-- Compute type in wrapper ([24858df](24858dffdf634e815fdb8ede3147ff16f2f9affc))
-- No transform of id to ref ([bac2bd6](bac2bd659aa1feb17872a001ef53028dcca7e7cc))
-- Injection missing ([262b902](262b902ca714655e60ead5e48574feee198188a0))
-
-### Features
-
-- RGB demo coloring ([899bed8](899bed8a5bb1808a2a4d0efdc3a32ca7e312bb85))
-- Add windicss scrollbar plugin ([2a92960](2a92960cc786cabee2ff22c4420aab8ffcdb5359))
-- Nested demo ([2f84361](2f84361a495aae3601c9a1e2967f5a6138ef15c0))
-
-### Miscellaneous Tasks
-
-- Remove default data value from default nodes ([ee480fa](ee480fa0a35285f7a7e71771e8223fa3b96e9f57))
-- Remove v-bind ([10aaadc](10aaadc10c4d389ebba4b317ef1fd6019c4c6755))
-
-### Update
-
-- RGB demo ([8b87156](8b87156a42d7e5a3a98e1560ff05a4acee44a14f))
-- Import order ([d108867](d108867dd85ee5ffd02be1c2ffe9596c6075bd41))
-- Split features into separate files ([c8201ca](c8201ca61c5dafab81b1e6a6f55ded952927942d))
-- Remove logs ([6263b69](6263b69b2d938008be55f95a9eeaab8b1831ebe0))
-- Remove unnecessary type exports ([f08cabb](f08cabb2b2ffb4927cae89890e5d246354113cc3))
-- Generic types ([8706f3b](8706f3bf8e26d01ab7ab5a7b931f55d431ed0e40))
-- Fitview on breakpoint change ([329e0b7](329e0b70a889fce7fb7929c8c32ecf22defa7fbd))
-- Add button edge example ([9d32e48](9d32e482e2470fbae5b66e2169d802e75c923e15))
-
-## [0.4.0-28] - 2022-03-30
-
-[407418b](407418b8ad4f0667b8cf5a962ba876bb5459c5e3)...[c394f2d](c394f2d8dccd36c820579835c207f2b2c6ccb199)
-
-### Miscellaneous Tasks
-
-- Add useStyle to wrappers ([92a28b0](92a28b06af953e0700441687b0ad8a186c941408))
-- Remove unused export ([8e06ae4](8e06ae4cd08abb08fffe0aba74f99cf1cb0f70e2))
-
-### Update
-
-- Color transitions ([75934af](75934affdf0cae1783b1ee63799ad566a2caade7))
-
-## [0.4.0-27] - 2022-03-30
-
-[9fe50d2](9fe50d2e9fd07cf2ae12ebd250e6d5e01728ae28)...[407418b](407418b8ad4f0667b8cf5a962ba876bb5459c5e3)
-
-### Bug Fixes
-
-- Getter type ([35b756f](35b756f237c64b2357c76c171ac11b24d7e08cb2))
-
-### Features
-
-- Allow class or styles to be bound with function ([66484f5](66484f564daecd83d5d97058b107cdf7b5d4419d))
-- Add data script ([fa2b094](fa2b094eb921cc84b56f191076b31e2eece218f3))
-
-### Miscellaneous Tasks
-
-- Update yarn.lock ([6b36a12](6b36a12c65ee08c40b2171122b54b08d32768635))
-
-### Regression
-
-- Enable pointer events on zoom pane ([07a6367](07a6367e744e40a1c65ebb9df05da17326f9dcc1))
-
-### Update
-
-- Short circuit connection line slot ([e1e68f7](e1e68f74108f3314929806d8f0c213554fbbebdc))
-- Update stress example syntax ([6c594a7](6c594a78dd4e56f531761befadd7a07406430475))
-- Set zindex to 0 on initial parse ([b3f618e](b3f618eb3342fe39a3b85e5225ffbeea4052c620))
-
-## [0.4.0-26] - 2022-03-30
-
-[df23216](df2321600969a8635753e19cd0b4f5584094ac5c)...[9fe50d2](9fe50d2e9fd07cf2ae12ebd250e6d5e01728ae28)
-
-### Bug Fixes
-
-- Use node.extent before trying global nodeExtent ([8aa1acb](8aa1acb321d12ddb3aaca26ecd9473548d8c21ee))
-- Short circuit passing slots to renderer ([d68daa2](d68daa20c4944ce0ca8788897a6738cee77b6e35))
-- Force focus into node selection ([45cc53a](45cc53a31cd554d2835c45466aa4e92525f100b6))
-
-### Features
-
-- Add icons ([f2dbfea](f2dbfea3932897afa0b734c9384a2f29b876e511))
-
-### Update
-
-- Disable pointer events on zoom pane when zoom key is active ([c2803f2](c2803f2671c00d6acf6dd854efe2483345c68e1c))
-
-## [0.4.0-25] - 2022-03-30
-
-[3935e35](3935e35b9b20ebca9f38f564d37acef2169d693c)...[df23216](df2321600969a8635753e19cd0b4f5584094ac5c)
-
-### Bug Fixes
-
-- Check if type exists before using as index ([ca36a86](ca36a866b89d2db9cfd274379b298eb93e14a591))
-
-## [0.4.0-24] - 2022-03-30
-
-[4d3f04e](4d3f04e3822e5ab8b2b4a6dbf0651586a5fbdeac)...[3935e35](3935e35b9b20ebca9f38f564d37acef2169d693c)
-
-### Bug Fixes
-
-- Check if type exists before using as index ([7ffebba](7ffebbaa65d584cdaab6ea064eb6beb12b0bd3c4))
-
-### Features
-
-- Debounce scaling to avoid lag spikes ([2928612](2928612f6fccd20398ac72276d7515d963ccd494))
-
-### Regression
-
-- Add slots to vue flow container to indicate possible slot names ([9d052de](9d052de1133197131b9547b489ce377e7ab185c3))
-- Removing nodes/edges breaks renderer ([0628444](06284449a0b4ffb57bd7cd3b0d3d281ce630a0c6))
-
-### Update
-
-- V-if on existing edges before looping wrapper ([e647cf6](e647cf6c27fe8bb89725c517d642b134cdb59338))
-- Support fragments as node slots ([1ed3456](1ed34565fc10fac1605bf33f3dbb3bff45c5b3a9))
-- Support fragments as edge slots ([e920ebc](e920ebc6db3cdfd0805cbdbd92785eae5d450485))
-- Support fragments as connection line slot ([7873877](7873877b2d92611f708272c1b8a50368833adb84))
-- Add windicss ([5995f95](5995f950f1f447ac81f4c919ed41687d27cf187c))
-
-## [0.4.0-23] - 2022-03-30
-
-[8463650](84636503aa84dce3bacf9bfe8c99b0cc07a3fdb5)...[4d3f04e](4d3f04e3822e5ab8b2b4a6dbf0651586a5fbdeac)
-
-### Features
-
-- Pass node slots as injections to wrapper ([49121f3](49121f3bac548a4648972e1e2e162fe3b5d6b79f))
-- Use slot injection for custom connection lines ([1652113](165211382142ffd654a84f456e8c9d4fbe17cfd9))
-- Use slot injection for custom edges ([d1b8c23](d1b8c23a75a1025e10678cb4b54963f080e654f9))
-- Export apply changes utilities for options api ([7b5326c](7b5326cf27e15ce122b5053634f2e1c2fb651fbf))
-- Add vitepress for docs & docs workspace ([9f8b09e](9f8b09e65a3916515f5bf1e65b87d115bc57aee3))
-
-### Miscellaneous Tasks
-
-- Add vite plugins to examples ([b51851e](b51851ebb5babcf0e81ea38e87f3d5e4249e2680))
-- Shorten provide ([d8c7494](d8c7494db4c7a38a2c6d5a855778c568c3068de4))
-- Update tsconfig.json ([bae303d](bae303d54bf0585f3762fea6b4f39a23e73ad0b5))
-- Add tsconfig.node.json ([069b896](069b896ef221c38b46df76db40b9ea36053e294b))
-
-### Update
-
-- Parse style.css with postcss instead of including it with vite ([a64b98a](a64b98a2753ffec6f39fff2eae972e5709d8b3cf))
-
-## [0.4.0-22] - 2022-03-29
-
-[0eca8e8](0eca8e85dffd4922d216d9054527aa307f7b2b2a)...[8463650](84636503aa84dce3bacf9bfe8c99b0cc07a3fdb5)
-
-### Bug Fixes
-
-- Store & usevueflow types ([f0c3506](f0c3506c63877d6345472679c0041b348dc1f386))
-
-### Features
-
-- Add path alias for local dev ([220a3c4](220a3c455c3adfca57d2bc2555ccdb0abd2da481))
-
-### Miscellaneous Tasks
-
-- Remove README.md after publish ([2c4759d](2c4759d3a0cc7fd98b9062dbbe00e5e3782266e8))
-- Lint ts def files after build ([cd9141b](cd9141b99d94b091c16961de8dfc5d4049602574))
-- Update package.json files ([5a3caa1](5a3caa1043174bd6927a67341a9cd6f3ce62fb1c))
-
-### Update
-
-- Move examples into src dir ([e3436f8](e3436f8ecf05237ed7103ad7ff20d7dcd849753c))
-
-## [0.4.0-21] - 2022-03-29
-
-[a137afe](a137afea68d4394732ba1d2f9064e3552d458d53)...[0eca8e8](0eca8e85dffd4922d216d9054527aa307f7b2b2a)
-
-### Miscellaneous Tasks
-
-- Copy README for pkg release ([1a240a4](1a240a430c43d08ebdf0d2b221e425f6de503e37))
-
-## [0.4.0-19] - 2022-03-29
-
-[04bfa4b](04bfa4bb6d34032f871a7777ffb99e39cc0bf899)...[8edf535](8edf5351a793b2f285c4e4041f92bfd47dd3e129)
-
-### Miscellaneous Tasks
-
-- Update package.json files ([59931f0](59931f09c5e6ca03adae0175d9c2034e5cddee5a))
-
-## [0.4.0-18] - 2022-03-29
-
-[ee06364](ee06364ca8612e36ff4685880dff6b17fa43050c)...[04bfa4b](04bfa4bb6d34032f871a7777ffb99e39cc0bf899)
-
-### Features
-
-- Implement workspaces ([f8e2008](f8e200848e0d7ea5147bba4dcd4d4db929985394))
-- Add publish script ([eeb5c71](eeb5c710eae5e9864a131df59c7879aa79a21e99))
-
-### Miscellaneous Tasks
-
-- Update README.md ([8cf4622](8cf4622b412aca0c1f75722d9e235725b70bbed0))
-
-### Update
-
-- Rename typedocs out dir to typedocs ([119b26d](119b26d0374d5687c8ad09e529e4febc528262cd))
-
-## [0.4.0-17] - 2022-03-29
-
-[a66fc1f](a66fc1f37e45e1ab213314404b8985da03997c12)...[ee06364](ee06364ca8612e36ff4685880dff6b17fa43050c)
-
-### Bug Fixes
-
-- Set default prop as undefined for connectOnClick ([60aefad](60aefad85516f8975fe0b49d453433dd242e0d5e))
-
-### Miscellaneous Tasks
-
-- Remove setting elementBelow style onClick ([906b9e0](906b9e06999c638ecebea3ad8dceafdf635c25dd))
-- Update auto-imports.d.ts ([c660be2](c660be22646489fc5ed882b331f9e46b180a0b78))
-
-## [0.4.0-16] - 2022-03-29
-
-[e9b97d5](e9b97d5879cd7c2845150694732f0400e56298a7)...[a66fc1f](a66fc1f37e45e1ab213314404b8985da03997c12)
-
-### Bug Fixes
-
-- Prevent onClick from creating edges inside same node ([c1105ff](c1105ff7bfff042a092f281a38c7ee7c467371e8))
-
-### Regression
-
-- Use computed to get current node/edge ([fc45029](fc4502915b336df7b23ef7981d77d636ed331dbc))
-
-## [0.4.0-15] - 2022-03-29
-
-[f2062b7](f2062b743cea6a584cb3b2ecd6f529def3332c80)...[e9b97d5](e9b97d5879cd7c2845150694732f0400e56298a7)
-
-### Bug Fixes
-
-- Try to resolve component before falling back to default ([d5cea2d](d5cea2d7dfac94c62ca973072179ba2309369c17))
-
-## [0.4.0-14] - 2022-03-28
-
-[c9a739c](c9a739c85c7e93703f06a898a7f293b3e9ff9451)...[f2062b7](f2062b743cea6a584cb3b2ecd6f529def3332c80)
-
-### Bug Fixes
-
-- Check if window exists before binding event listener for keypress ([a4d46a7](a4d46a76cd52098c0f499855fd6425f1a5c92ea9))
-- Change modelValue/node-/edge-prop when elements are added to state ([87ea2b4](87ea2b4484a3d1ed23329ebbc09d0032c2e57586))
-- Use empty string instead of null when source-/target-handle is not present ([67df80b](67df80b83bdc3be39f50ae0e897b3b8b48835f41))
-- Check if scope exists before accessing id ([4383684](438368460de75e4b74f7b08e31f5ce5a8add2664))
-
-### Miscellaneous Tasks
-
-- Move watcher and computed to bottom ([d5bb57f](d5bb57fa6971c98184b0a5c579ec810bd6e87ebd))
-
-### Update
-
-- Try fetching instance when out of scope ([777e8bd](777e8bddc792a127bc98527ba3088523b2b17968))
-- Rename update to updates (to fit arr type) ([c1dcf22](c1dcf223f4999d552af5d5e3d4f230fcfe1d0c78))
-
-## [0.4.0-13] - 2022-03-26
-
-[4ca63e3](4ca63e3673a8ac238ee88ffe998a6e0e9c715c81)...[c9a739c](c9a739c85c7e93703f06a898a7f293b3e9ff9451)
-
-### Features
-
-- Add ResizableNode to Basic example ([ff265e9](ff265e90763d5597f3aef3aa57d76c106a4e745d))
-
-### Miscellaneous Tasks
-
-- Add comments ([2a716f0](2a716f00c15d30a3aa45ce0666f05b701a84d4d5))
-- Fix lint issues ([d5a0f64](d5a0f64f95813446826d0f6262810367bd9ccce2))
-
-### Refactor
-
-- Remove background variant none ([6a6d077](6a6d077110db3530bb8efaf21cb2818bf42477e7))
-
-### Regression
-
-- Add slot to connection line ([cfa1ea4](cfa1ea46735634819120442887699590f4ff1fb2))
-- Calculate handle bounds regardless of update ([8037884](8037884976eab8d9ebd56bbac251041f7e287fac))
-
-## [0.4.0-12] - 2022-03-25
-
-[db35cd3](db35cd3a9c90fe51b96404468a0d1f86d1911ee1)...[4ca63e3](4ca63e3673a8ac238ee88ffe998a6e0e9c715c81)
-
-### Bug Fixes
-
-- Check for scope before trying injection ([c78b072](c78b07283f19f745d5c1d99d4e32b77b26405f24))
-- Cleanup of state ([6a9c475](6a9c4759ad681237084019fc5785d44214cb04fc))
-
-### Miscellaneous Tasks
-
-- Remove unused var ([f8eeb87](f8eeb87177e38b99c422701018bc97de1c927596))
-- Add comments to flow props ([50293bc](50293bc17a30a29a7a22443c6f28d237eb6cf8cc))
-
-### Refactor
-
-- Change children API to parentNode API ([b03d761](b03d761291f245d70c9e89c7ac5570a88d76a708))
-
-## [0.4.0-11] - 2022-03-25
-
-[ed3d9fc](ed3d9fc8e83508b74cae5200323e17cb505204df)...[db35cd3](db35cd3a9c90fe51b96404468a0d1f86d1911ee1)
-
-### Bug Fixes
-
-- Edges not selected on user selection ([5b10224](5b10224170d764b34a6a046f576ee41d2b6d6d98))
-- Add no pan class name to nodes selection ([f0ec6cc](f0ec6cca8e303d049d370415507d93b886edecb6))
-
-### Features
-
-- Add dimensions to nodeprops ([3b344e5](3b344e57eca6531eb8cda9f24fae1541b1de3692))
-
-### Miscellaneous Tasks
-
-- Remove unused var ([c7d4d37](c7d4d37bcdb5cef899680aa9b2bd914eb45ddbdf))
-
-### Refactor
-
-- Rename selectionActive to userSelectionActive ([25123e1](25123e1902569109511e788a7622ee579aa8626a))
-
-### Update
-
-- Move mounted hooks up ([7cc0232](7cc0232b5d2eb545d8c6f8121de3ddd2cdc7bd1f))
-
-## [0.4.0-10] - 2022-03-25
-
-[94efd63](94efd639c62200777bd3c6a0e22dd837aab40c13)...[ed3d9fc](ed3d9fc8e83508b74cae5200323e17cb505204df)
-
-### Bug Fixes
-
-- Missing source/target node props on smoothstep edges ([4317101](43171011c43f7354cf4401d13698f7afe1c6f17b))
-- Prevent scroll when zoom on scroll is false ([b5f9497](b5f94976c04e589adfaf86cc7012485cf7f51e75))
-
-## [0.4.0-9] - 2022-03-25
-
-[f3b3062](f3b306297032412e9bc1b46571aada7dd26dc9cb)...[94efd63](94efd639c62200777bd3c6a0e22dd837aab40c13)
-
-### Bug Fixes
-
-- Pass all required props to node components ([b0a45ea](b0a45eac1a3f343da04534fa9efb46994d65d252))
-- Pass parentNode id instead of parentNode to components ([64127c7](64127c7ae431a016769704770dc6f588a5dfc4a3))
-- Expand nodes correctly when prop enabled ([0b43e45](0b43e458d4549ec9e53cdce5323af7c352791806))
-- Setting store state after init ([f8fa76c](f8fa76ce55ec926107bd44f05dd96dfd64e8e058))
-- Connection line style prop ([e55cbc8](e55cbc8c580bccb79291b75ae120f780ac4ebd46))
-- Destructure useHandle ([4ef0363](4ef03639320511919958a4048c11f9d8cf096983))
-- Source/targetHandle type ([6fdaf7c](6fdaf7c5a3aa96808f8e0f15821a220f7b646c7f))
-- Default prop value for zoomActivationKeyCode ([fc5d23b](fc5d23b53e4aed3bc25172913e49f4c4fcba7250))
-- Use correct functions for center/path in simple bezier edge ([c5fff3a](c5fff3ae31f430828bfe67a08339f98af0a46f01))
-- Use correct vars for center in straight edge ([8ef7c9e](8ef7c9e5bf5a62ab44939d1a9e9b02b8168246fa))
-- Check if prop label exists before using dynamic component ([b0af70b](b0af70bf77401cecbc04056d046e1ec280332039))
+- Remove usage link from sidebar ([5af3d16](5af3d16dc1ee680b83be97baa0c356e66e361309))
+- Move node docs into single page ([efa7583](efa75839f93a53e0260ddc6891a2b0cf8490a2a5))
+- Move blobity to mounted hook ([be24731](be24731aa1344e2ad7f2baac8a07309a2809399d))
+- Remove serve script ([f912d4f](f912d4f5e8193a4f2f757428c63c5bcabbc4f412))
+- Add config page ([601bb9a](601bb9a9b7e55e960982980d360c6864ad789478))
+- Add offset to blobity highlights ([d9d0701](d9d0701f28c2dc35a302c18a8e3f3f4cce951280))
+- Change divider color of banner to white ([114a110](114a1109924ec299885ee7ed28a8d5a79436bdac))
+- Add edge page ([891eca4](891eca4a23c2507b79e283dd3f9fde32c7fdfaf5))
+- Add utils pages ([75e1da1](75e1da14d75c0054d292f97c85dbb5bd6a1845ac))
+- Add composables page ([0291f77](0291f771fb58795f3db290e6bfb5de30cf9a2945))
+- Add additional component pages ([b2375bd](b2375bd81a3cdcd3502d3b029eb368aa00f410fe))
+- Add favicons ([6d7b5da](6d7b5daadd42d2aa41229c711dadffd78e65defa))
+- Add examples ([1ad66be](1ad66be474f8f4256401fa2947aeb300f7085698))
 
 ### Features
 
 - Enable passing components as node/edge-types ([6a2c1b0](6a2c1b00d738a2fde0bf11d09cb3a2c3c2d4210d))
 - Enable using a parentNode / parentNodeId to add child nodes ([9a8caf4](9a8caf444ca6396288caee3138d05582f79f3698))
-- Add updateNodeDimensions actions ([f1b52d9](f1b52d947792aa01723c48c32ec9dac3d493ff3f))
-- Add onClick handler ([c97578a](c97578a820d42aafd44d9c6809a086d76ca9d735))
-- Add & export bezierCenter function ([6ced48e](6ced48e14b917c23123634665613894012b61395))
-- Add base edge ([13cd501](13cd5019599963b44925f6c0dac936654d98e4e6))
-- Add default edge options ([10feee7](10feee79a12666f3285ddc9e741fb1c62463ccc8))
-- Add noPanClassName, noWheelClassName & noDragClassName ([ce81cea](ce81cea1c04a83e7553d765062b5db7a48f61d60))
-- Add d3zoom event to hooks ([cf9c3ef](cf9c3ef01e9bb2290ac8efcf5d0864385b7b364e))
-- Add SimpleBezierEdge ([8b1ccad](8b1ccade4da9d69fbd7af7fd725bcd2ef4a5c095))
+- Add updateNodeDimensions actions ([0093df4](0093df43a9396f1e1464e6e5a970e911eb8fc964))
+- Add onClick handler ([b42c1b0](b42c1b02deca673c7d0b76ef6211e146f0fc69dd))
+- Add & export bezierCenter function ([18758fa](18758facbd8272fa25a51005a721a2f7d75c31c5))
+- Add base edge ([aba67a4](aba67a485261f919b2a1739c84b4bcf9d899e7be))
+- Add default edge options ([9a8bf69](9a8bf69848fde063dd4a40dd7eb4ae8802b62343))
+- Add noPanClassName, noWheelClassName & noDragClassName ([c544a02](c544a02344e5444a5d0f986ae3f202bb5cbb1e9a))
+- Add d3zoom event to hooks ([a5e853c](a5e853cdc34c82bbb9408060910a303ed18e2527))
+- Add SimpleBezierEdge ([56f7e3b](56f7e3b0c2251674a6340d17aa0757712209ca0e))
+- Add dimensions to nodeprops ([7747456](7747456771584190be568461cb24a9c07c5d2f04))
+- Add ResizableNode to Basic example ([88a8ecb](88a8ecbdeb1875c5cef5774844b2588c3d24db00))
+- Implement workspaces ([cd817b7](cd817b7f531e1985022aca34a02e97c2197cecdc))
+- Add publish script ([57f8428](57f8428a35c29ee772c28190df9ea52076649825))
+- Add path alias for local dev ([8362d7f](8362d7fd7acc4d30906db177d9cf195ba1254b82))
+- Pass node slots as injections to wrapper ([4cbdf0c](4cbdf0ccc1b5ad075c2fb7298ae86445eb4f00cd))
+- Use slot injection for custom connection lines ([3079170](307917011ae74ddd7090f7e328bac729352b9558))
+- Use slot injection for custom edges ([3f15983](3f15983f3efab984c0c2819d5aee765804255329))
+- Export apply changes utilities for options api ([d95a833](d95a83349bf5dcc9f01b5bcd57ca6d979275d853))
+- Add vitepress for docs & docs workspace ([e71b9d5](e71b9d5e4851e78443fa3cdbe5bfb6912f425f3d))
+- Debounce scaling to avoid lag spikes ([e97d9a1](e97d9a1dc976cecd47e50d519f6461d3bafdbe12))
+- Add icons ([9230f32](9230f3279e0fb1908cbc367939de4cea4e707645))
+- Allow class or styles to be bound with function ([a50101b](a50101bfd3c1dd77391d0c9d7977e6e0ebc4216e))
+- Add data script ([4d668f8](4d668f8b6d13ee8da88a00cc458f8abe7a3d522a))
+- RGB demo coloring ([4e8b03d](4e8b03d05915bb33c1850fab7f00f7491766777f))
+- Add windicss scrollbar plugin ([631a764](631a76415222c56301347e74150494e84c3f446f))
+- Nested demo ([31cb99b](31cb99b7c87bd1b681f2b4e790409a9853e6f200))
+- Add additional demo ([e27ab86](e27ab862496b6164b02554b5d9d973e61e3eef68))
+- Replace vitepress with vuepress ([3bbe92a](3bbe92a4ea0886f2a9ae4a2c10e35188126769a2))
+- Add docsearch plugin ([4cc3199](4cc319981fc850fc8171371adac042336cdeb691))
+- Add auto import plugin ([0d2c165](0d2c1658029b5824392dad11f29067473df228e2))
+- Add page footer ([39683ca](39683ca3acb3b24416a253cfcf56c9e7c08b718e))
+- Layout styles ([c05c737](c05c737776e2498effdeb880e1940dd43767bc71))
+- Return new edge from updateEdge utility ([d02ade0](d02ade03e9a6b37e3d44dcaf3022486e72a9f6d5))
+- Responsive pos of elements ([3c48913](3c48913090a4e9e6c9dee55e2df356c6d2bbc0af))
+- Disable pan on mobile ([59ac645](59ac64564a61796a7ec0a8a0418f173847c49fb7))
+- Add guide index page ([3bc0e87](3bc0e878a2a8a29793fcc7aa2d172d21f5dbf84b))
+- Add getting started page ([13fea5e](13fea5e0a9be1adb063f2c038d06d20308bba137))
+- Add theming ([e91af56](e91af5665342535e1a541fdd2a345f57cad665b6))
+- Add css vars for overwriting node colors ([d179838](d179838f643bec9ee9ba10b47a96d67b18445b84))
+- Add node pages ([47e3336](47e3336c01747521df4ec35bbb9728a71abdb042))
+- Allow pre-defined dimensions of a node ([094c4ff](094c4ff9ae4f7a3e7ddc82976619e601ad3187d3))
+- Add state page ([91416c9](91416c9898145e570bdf99e621c432059f02f488))
+- Add blobity to home ([9aa42ed](9aa42ed8f8fc2a2dc7f350a6f9292a992392a7d3))
+- Add cliff.toml for git-cliff ([3c838b9](3c838b9ddbe718f0742c441c334607883da05937))
+- Add changelog.yml for changelog generation ([f52f626](f52f626b0e0cfc9a24bf6999640ae7940a757c5b))
+- Add changelog.md ([9adf6d1](9adf6d1b09c85c9daca86d4ba646ed11c11c2597))
+- Add prerelease script to generate fresh changelog ([035cf69](035cf69240332d24a0bbfe9277f67d6476cb9327))
 
 ### Miscellaneous Tasks
 
-- Fix lint issues ([97bfa2a](97bfa2a85b7ffe2599ef7315c1494a9f78796d27))
-- Remove logs ([3e5667f](3e5667fbb6214682e00bf090887fb04882d097d3))
+- Fix lint issues ([38b910b](38b910ba3bf959fe092f5bc825486b15a876ab95))
+- Remove logs ([afdf0b1](afdf0b1d99a3bbc04389585e2b01620a2b6f211e))
+- Remove unused var ([3738288](37382881af2c941082d2065eb9ebf16bb7e3ff15))
+- Remove unused var ([095afc6](095afc63abe15c98abc578da6490e735840dd33f))
+- Add comments to flow props ([8b213df](8b213dfee870080def6cd4972d21ef2d4265c2df))
+- Add comments ([7623ad4](7623ad47159337d700345f58431a74b4338644c1))
+- Fix lint issues ([ae28679](ae2867976c1d0388138a11f8c312ea86e5d20fdf))
+- Move watcher and computed to bottom ([b46445e](b46445e204a45629ed0493ce5c9c52c2c1b4567b))
+- Remove setting elementBelow style onClick ([25d769d](25d769d55361cf3ec33b03e4301e1b8b09ba8683))
+- Update auto-imports.d.ts ([6d9f198](6d9f19873745dec29c3c345d80c9907d21308e51))
+- Update README.md ([1fe8fd3](1fe8fd334b8ecd905ce966a673438cedef12a79d))
+- Update package.json files ([1762861](1762861ab04051519a000f9de251e38ef66e59f0))
+- Copy README for pkg release ([85fc6fc](85fc6fcf0f51eeab3d51528150616576231d7c5c))
+- Remove README.md after publish ([7aea432](7aea432ff7251fd87a1f961a385ab839f921e507))
+- Lint ts def files after build ([9539d7f](9539d7f263e607efc6bbde0b011898b72dcdfea8))
+- Update package.json files ([b6216a8](b6216a849b971ea1b5f5ff714de97514e1d10f35))
+- Add vite plugins to examples ([b47197f](b47197f498a0c3727a72d697669f3840d28ed829))
+- Shorten provide ([4b0ac0a](4b0ac0a9b87442694f65f9c55ef5aa475d71edbc))
+- Update tsconfig.json ([bf3ca8b](bf3ca8bfda63bf979d304567452740b83aaa1952))
+- Add tsconfig.node.json ([194d16e](194d16e34304793df06666447922654fe2a15772))
+- Update yarn.lock ([7e47da4](7e47da4de935b0e974ce9bffe5a86e4479155709))
+- Add useStyle to wrappers ([444bf0a](444bf0a879a981fff35eda8497cb496075969317))
+- Remove unused export ([be8d4af](be8d4afa86cbb0e2ba3d3aa981dce42a87a4a23d))
+- Remove default data value from default nodes ([55588c3](55588c3988fd8eb4875e14eb423211f4ac3b9416))
+- Remove v-bind ([af23f73](af23f733c025a36196a9836bf24f79e7578623a5))
+- Preprocess css ([6276022](6276022eea9fba38d541e3c73be2cad85c596301))
+- Add docs build script to root package.json ([5e0128c](5e0128c5f14ddb3554af6ff1e7182e103b70b55d))
+- Add description to config ([d1a9abb](d1a9abbf6f9595f47831c80842c15fe99c18905f))
+- Place components.d.ts in .vitepress dir ([73ce6f2](73ce6f207b9f8b4825441b69f1b7696e72cf8b35))
+- Add element data typing ([4d901ae](4d901ae4e8a77d44e8ce759b0e4dce6a2f494619))
+- Remove some unnecessary generics ([7d50948](7d509487c3641e69f061297031735d5c0fc6353e))
+- Type fix ([9c902b0](9c902b00fbda58b086cc6f5abc24d616d91823ce))
+- Update meta img ([2a7c58f](2a7c58f22aa4a9aca36b7569b7deaf027e4bf4c2))
+- Banner size & gap ([c560a31](c560a312b8409f08ac2ae27342f4f0cb3bb0cc5a))
+- Update algolia config ([ae18d23](ae18d231b04fb3038c2466fcafb11b3d39daac66))
+- Remove max-w from examples page ([95a34a2](95a34a2ba6df5afc1f27935805b1a1d83b5e2b37))
+- Uniform basic example ([ffd3b67](ffd3b672f14947449b42c8852aebe897a616ee58))
+- Update sidebar conf ([88bb146](88bb146f1f97231406149ec1b5e2f041257701fa))
+- Update styles ([fbff892](fbff89258c3180858df022e139b3069cbb93021b))
+- Remove lighter var ([5b98f3c](5b98f3ccd890f2e7ce49b1251f9403dd14bd7338))
+- Replace a-tags with router-links ([09e636c](09e636c278817bb480045d4097ee136e1fe051dd))
+- Remove unused var ([7aa1f43](7aa1f4368e3c1c5dfae3d042d85e132978d5ef68))
+- Update changelog.yml ([01deaeb](01deaeb3ede56823213061e58c29a8f904f15183))
+- Disable auto run of changelog.yml ([94dd8c8](94dd8c8dd57084a47935d05085ce24bb3d1bf26a))
 
 ### Refactor
 
 - Shorten default state setter function ([3539937](3539937752f241d780d18219c76632bcb4244c4d))
 - Shorten watcher ([5cc0da2](5cc0da29c09140316ade884224333a4c00d7f3eb))
-- Shorten setState ([0352acb](0352acb8dad4b2b73458930f2e7ecaef4082d786))
-- Use null instead of undefined for optional state properties ([f3d6168](f3d616834bcc541360ca8804364de9691ef7ae6e))
-- Reduce node props ([0b321b4](0b321b4bad74f716ea4102385fa2675233d28c55))
-- Remove node and edges export ([09ade19](09ade1915d0a7d938e0c9525c86e9b69abf9a13f))
-- Remove scaling from edge text ([631b6aa](631b6aa35204ce5a0bea6cc58429f465a146f8e3))
-- Rename paneMovable to panOnDrag ([4a0df4a](4a0df4a28a33f557564bb5698a0f37398168c805))
-- Make zoomActivationKeyCode non-optional again ([23b9b45](23b9b45740431a2c96456c9614a29c2b5e0cc4d0))
-- Make zoomActivationKeyCode non-optional again ([bca4b56](bca4b56c941972bb727f536b2e267e260a35e9b5))
+- Shorten setState ([7d4a5fd](7d4a5fdead38cb480121524775c6cd8762e2b7bb))
+- Use null instead of undefined for optional state properties ([7280465](728046505caf60ce626883c3c96de41367ae38e7))
+- Reduce node props ([35f3d89](35f3d892400de105a4ccb700ec6b623642a95f58))
+- Remove node and edges export ([c75f00a](c75f00a7442aeb7ef1fec0aa5f27ba3896913fa8))
+- Remove scaling from edge text ([e5f6b45](e5f6b4593ca198eb73df9a7f62c100e8fa846aa1))
+- Rename paneMovable to panOnDrag ([0bb54d6](0bb54d6d36b18cf072bd7b569c12104843446457))
+- Make zoomActivationKeyCode non-optional again ([4af0ee0](4af0ee02c186c8b42b3b5649bc58ca64923debc5))
+- Make zoomActivationKeyCode non-optional again ([7d91aa2](7d91aa28c211f5a3fb11ec9cedb79f67f731b2ea))
+- Rename selectionActive to userSelectionActive ([da2e95a](da2e95a517f8997d13ba19f571f7f5ccc3cbab8f))
+- Change children API to parentNode API ([0a079af](0a079afcee20cb13d9756a97810e143b1f6ac0da))
+- Remove background variant none ([aaba123](aaba123bbc029257d9d3f58fb13ea67e99142f56))
+
+### Regression
+
+- Add slot to connection line ([9a47c15](9a47c15662bdc5053a72d3ab73dbbd1a2954f2d9))
+- Calculate handle bounds regardless of update ([0e48b77](0e48b77e148d33fb40a146edab31748e540abd24))
+- Use computed to get current node/edge ([a5a918a](a5a918a39b4f053ad2f83e40901a58d5f211809e))
+- Add slots to vue flow container to indicate possible slot names ([37fc1fc](37fc1fc040dddded58c327d899ad6d16338d7289))
+- Removing nodes/edges breaks renderer ([528cac5](528cac5d339761c4558cafc102c762e2330e7ad2))
+- Enable pointer events on zoom pane ([85f563a](85f563ac520c96461b0e5c633840c916898fb1b7))
 
 ### Update
 
-- Set vueFlow var to null on scope dispose ([c9b19ef](c9b19ef641f74b8e50e250eb6a9f3b8b35ea74a1))
-- Remove typecast ([1649369](1649369fe5912aac26959cc114e69396e9a44bc5))
-- Add edge text to exports ([2aad21d](2aad21dc3f5dc45d262e7764134a94cfdf5e6c39))
+- Set vueFlow var to null on scope dispose ([833cf5e](833cf5e489c7bb2dad125ccbe5fdbb044f61f89d))
+- Remove typecast ([af5b048](af5b048391f8b04bb80e2cb531b62be420c3eddf))
+- Add edge text to exports ([2b4dbba](2b4dbba737eabd745148652066b0fccd33451ab3))
+- Move mounted hooks up ([024a434](024a4349181b85670189994e968ac557d4fd1ed0))
+- Try fetching instance when out of scope ([544a62e](544a62ecc48bcc3708bcf8a32453066d85785fde))
+- Rename update to updates (to fit arr type) ([c955d19](c955d19263c079d0e4c1df100e226204dc3a66da))
+- Rename typedocs out dir to typedocs ([cc96739](cc96739c3807a86b67ca03b3948cc4322e11c9f8))
+- Move examples into src dir ([c1594b0](c1594b00717cf2d0f16d9c00f3729f5f9861aa57))
+- Parse style.css with postcss instead of including it with vite ([8f3a2b9](8f3a2b9d5469a8cead0b41310f708b92f59e660c))
+- V-if on existing edges before looping wrapper ([9dd71c2](9dd71c25281a44a83e12430892e93506a2fec2df))
+- Support fragments as node slots ([1347304](13473046670a5947ef450e2b17cf2a37c6350eaf))
+- Support fragments as edge slots ([70646c5](70646c5f951173cbe104e0b2c7d533a18e151fd1))
+- Support fragments as connection line slot ([0bfca93](0bfca93a7b1e883d2e2e63d6cbae7ebb79d065e2))
+- Add windicss ([36e3299](36e32996810b9438ce47603cd58a8236c92ffcc7))
+- Disable pointer events on zoom pane when zoom key is active ([fb1c828](fb1c828deab9786279cf1681e470fb258ac3f9a0))
+- Short circuit connection line slot ([83ea905](83ea90555eb52ac3127ddc01c50cfa5a92c7420b))
+- Update stress example syntax ([94e5bda](94e5bda77e901e38c27f79dbd6ac68c6450eb98b))
+- Set zindex to 0 on initial parse ([9344365](9344365aff3469f8cf6af21193a3a49b549ef063))
+- Color transitions ([611aee5](611aee5269ce84d287257f0e84ac4489ddba7bdf))
+- RGB demo ([39c8f60](39c8f608181c8b142d981af0cfe97e3374d65652))
+- Import order ([d913df6](d913df6187936dfb14fd33954bebb307b440d27d))
+- Split features into separate files ([6cb13f1](6cb13f1646c921b230b5c72db7415eaf5d28339f))
+- Remove logs ([349ecf8](349ecf82544a2f17e556eb885f55def3aee228a2))
+- Remove unnecessary type exports ([ade61ca](ade61ca2e1bff269ad530e2162abd747b28c1073))
+- Generic types ([186b96f](186b96f87d44ddd4fbf63f650988e25d4399948b))
+- Fitview on breakpoint change ([6fd1ebc](6fd1ebc3c1eb72bde91c103d6f1fecfc61a7b401))
+- Add button edge example ([d6b41af](d6b41afefda1b0280b9b702a74d5ea1deaeb7334))
+- Footer ([39df62f](39df62f1333220f86528adcca19ef6863a3d9db8))
+- Mobile styles ([13aae6a](13aae6aa3f1d0cfa824b7d9d72154596206c5e38))
+- Dark mode colors for home ([6c7fde0](6c7fde01c9aa3e0842a7924184952a99f0430f35))
+- Add css vars to theming page ([14ffbaf](14ffbaf1d0db7feb4238069466ee17038449885a))
 
 ## [0.4.0-8] - 2022-03-23
 
