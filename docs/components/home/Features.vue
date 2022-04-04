@@ -44,6 +44,6 @@ watch([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoin
 </template>
 <style>
 .button {
-  @apply shadow-lg transition-colors duration-200 hover:(dark:(bg-white text-black) bg-black) text-white font-semibold text-lg mt-4 px-5 py-3 rounded-xl bg-green-500;
+  @apply z-1 shadow-lg transition-colors duration-200 text-white font-semibold text-lg mt-4 px-5 py-3 rounded-lg bg-green-500;
 }
 </style>

@@ -38,8 +38,11 @@ Together we call them
 A node also needs a [xy-position](https://types.vueflow.dev/interfaces/XYPosition.html). An edge needs at least a
 source (node id) and a target (node id).
 
-```ts:no-line-numbers
-const elements = ref<Elements>([
+```vue:no-line-numbers
+<script setup>
+import { VueFlow  } from '@braks/vue-flow'
+
+const elements = ref([
   // Nodes
   // An input node, specified by using `type: 'input'`
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -58,6 +61,10 @@ const elements = ref<Elements>([
   // An animated edge
   { id: 'e1-2', source: '1', target: '2', animated: true },
 ])
+</script>
+<template>
+  <VueFlow v-model="elements" />
+</template>
 ```
 
 ## Quickstart
