@@ -76,14 +76,6 @@ const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } })
 const size = ref<Record<string, string>>()
 
 onMounted(() => {
-  useResizeObserver(nodeElement, () =>
-    store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]),
-  )
-
-  watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () =>
-    nextTick(() => store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])),
-  )
-
   const { width, height } = nodeElement.value.getBoundingClientRect()
 
   const hasCustomSize = node.value.dimensions && node.value.dimensions.width !== 0 && node.value.dimensions.height !== 0
@@ -96,7 +88,15 @@ onMounted(() => {
     if (!heightMatch) size.value!.height = `${node.value.dimensions.height}px`
   }
 
-  store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])
+  useResizeObserver(nodeElement, () =>
+    store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]),
+  )
+
+  watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () =>
+    nextTick(() => store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])),
+  )
+
+  store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }])
 })
 
 const getClass = () => (node.value.class instanceof Function ? node.value.class(node.value) : node.value.class)
