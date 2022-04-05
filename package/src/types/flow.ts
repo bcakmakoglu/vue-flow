@@ -5,7 +5,7 @@ import { ConnectionLineType, ConnectionMode } from './connection'
 import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
 import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
-export type ElementData = Record<any, any>
+export type ElementData = any
 
 /** an internal element  */
 export type FlowElement<NodeData = ElementData, EdgeData = ElementData> = GraphNode<NodeData> | GraphEdge<EdgeData>
