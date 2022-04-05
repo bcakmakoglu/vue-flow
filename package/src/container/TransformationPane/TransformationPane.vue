@@ -32,6 +32,11 @@ onMounted(() => {
 
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 </script>
+<script lang="ts">
+export default {
+  name: 'TransformationPane',
+}
+</script>
 <template>
   <div :key="`transformation-pane-${id}`" class="vue-flow__transformation-pane vue-flow__container" :style="{ transform }">
     <NodeRenderer :key="`node-renderer-${id}`" />
