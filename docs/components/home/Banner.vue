@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-import data from '../../.data.json'
+import { $fetch } from 'ohmyfetch'
 import Star from '~icons/carbon/star'
 import Download from '~icons/carbon/download'
+
+const githubData = await $fetch('https://api.github.com/repos/bcakmakoglu/vue-flow?page=$i&per_page=100')
+const npmData = await $fetch('https://api.npmjs.org/downloads/point/last-month/@braks/vue-flow')
 </script>
 <template>
   <div class="w-full bg-black text-white border-b-1 border-white">
@@ -9,16 +12,16 @@ import Download from '~icons/carbon/download'
       <div class="grid md:grid-cols-3 gap-3 text-center <md:divide-y md:divide-x divide-white">
         <div class="grid grid-rows-auto gap-2 py-4 md:py-0">
           <div class="text-gray-400 font-semibold text-lg">Stargazers</div>
-          <div class="font-bold text-3xl flex gap-2 items-center justify-center"><Star /> {{ data.stargazers_count }}</div>
+          <div class="font-bold text-3xl flex gap-2 items-center justify-center"><Star /> {{ githubData.stargazers_count }}</div>
         </div>
         <div class="grid grid-rows-2 gap-2 py-4 md:py-0">
           <div class="text-gray-400 font-semibold text-lg">Downloads (last month)</div>
-          <div class="font-bold text-3xl flex gap-2 items-center justify-center"><Download /> {{ data.downloads }}</div>
+          <div class="font-bold text-3xl flex gap-2 items-center justify-center"><Download /> {{ npmData.downloads }}</div>
         </div>
         <div class="grid grid-rows-2 gap-2 py-4 md:py-0">
           <div class="text-gray-400 font-semibold text-lg">License</div>
           <div class="font-bold text-3xl">
-            {{ data.license.key.toUpperCase() }}
+            {{ githubData.license.key.toUpperCase() }}
           </div>
         </div>
       </div>

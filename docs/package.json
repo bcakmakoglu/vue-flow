@@ -6,9 +6,7 @@
   "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
   "scripts": {
     "dev": "vuepress dev src",
-    "prebuild": "yarn data",
-    "build": "vuepress build src",
-    "data": "node data.js"
+    "build": "vuepress build src"
   },
   "dependencies": {
     "@braks/vue-flow": "^0.4.0",
