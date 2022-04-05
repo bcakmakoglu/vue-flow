@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Documentation
+
+- Update vue flow version ([cc76a76](cc76a764158fd25ffbbef7c5597c44788a25bc4a))
+- Remove data script and fetch data in Banner.vue ([bec26f3](bec26f3363b8db25da50ad887dc0cd34abb35e8c))
+
+### Features
+
+- Add name to TransformationPane.vue ([fdf2a6e](fdf2a6e0ffb3eeee5b9c3ff4674992f6408c67d8))
+
+### Miscellaneous Tasks
+
+- Update lock file ([cb14acd](cb14acd99a2660ac6422e13d93c207ea92d494a5))
+- Move custom size check up above watcher ([908657c](908657c7ce48e5031d037e2dd03ea4ab0f27e9bf))
+
+### Refactor
+
+- ElementData as any type ([92a0817](92a0817c4820e3c3487d29eba1f4dc46866b1842))
+
 ## [0.4.0] - 2022-04-04
 
 [f3b3062](f3b306297032412e9bc1b46571aada7dd26dc9cb)...[1c429fc](1c429fc637f788fb7c2afb227ac4323bf81c1527)
