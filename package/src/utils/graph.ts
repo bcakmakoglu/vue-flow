@@ -62,31 +62,33 @@ export const isGraphNode = (element: Node | Edge | Connection): element is Graph
   isNode(element) && 'computedPosition' in element
 
 export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: Partial<GraphNode>): GraphNode => {
-  defaults = !isGraphNode(node)
-    ? {
-        type: node.type ?? 'default',
-        dimensions: {
-          width: 0,
-          height: 0,
-        },
-        handleBounds: {
-          source: [],
-          target: [],
-        },
-        computedPosition: {
-          z: 0,
-          ...clampPosition(node.position, nodeExtent),
-        },
-        dragging: false,
-        draggable: undefined,
-        selectable: undefined,
-        connectable: undefined,
-        ...defaults,
-      }
-    : defaults
+  let defaultValues = defaults
+  if (!isGraphNode(node)) {
+    defaultValues = {
+      type: node.type ?? 'default',
+      dimensions: {
+        width: 0,
+        height: 0,
+      },
+      handleBounds: {
+        source: [],
+        target: [],
+      },
+      computedPosition: {
+        z: 0,
+        x: 0,
+        y: 0,
+      },
+      dragging: false,
+      draggable: undefined,
+      selectable: undefined,
+      connectable: undefined,
+      ...defaults,
+    }
+  }
 
   return {
-    ...(defaults as GraphNode),
+    ...defaultValues,
     ...(node as GraphNode),
     id: node.id.toString(),
   }
