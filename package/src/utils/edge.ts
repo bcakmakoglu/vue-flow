@@ -34,13 +34,11 @@ export const getHandlePosition = (position: Position, rect: Rect, handle?: Handl
 export const getHandle = (bounds: HandleElement[] = [], handleId?: string | null): HandleElement | undefined => {
   if (!bounds.length) return undefined
 
-  // there is no handleId when there are no multiple handles/ handles with ids
-  // so we just pick the first one
   let handle
   if (!handleId && bounds.length === 1) handle = bounds[0]
   else if (handleId) handle = bounds.find((d) => d.id === handleId)
 
-  return handle
+  return handle || bounds[0]
 }
 
 export const getEdgePositions = (

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { useHandle, useVueFlow } from '../../composables'
-import { Position } from '../../types'
+import { ConnectionMode, Position } from '../../types'
 import { NodeId } from '../../context'
 import type { HandleProps } from '../../types/handle'
 
-const { id, hooks, connectionStartHandle } = useVueFlow()
+const { id, hooks, connectionStartHandle, connectionMode } = useVueFlow()
 const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',
   position: 'top' as Position,
@@ -13,11 +13,13 @@ const props = withDefaults(defineProps<HandleProps>(), {
 
 const nodeId = inject(NodeId, '')
 
-const handleId = props.id ?? `${nodeId}__handle-${props.position}`
+const handleId = computed(() =>
+  props.id ?? connectionMode.value === ConnectionMode.Strict ? null : `${nodeId}__handle-${props.position}`,
+)
 
 const { onMouseDown, onClick } = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>
-  onMouseDown(event, handleId, nodeId, props.type === 'target', props.isValidConnection, undefined)
+  onMouseDown(event, handleId.value, nodeId, props.type === 'target', props.isValidConnection, undefined)
 const onClickHandler = (event: MouseEvent) => onClick(event, props.id ?? null, nodeId, props.type, props.isValidConnection)
 </script>
 <script lang="ts">
