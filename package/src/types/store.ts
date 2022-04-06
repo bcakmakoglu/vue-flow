@@ -84,7 +84,6 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   zoomOnDoubleClick: boolean
   preventScrolling: boolean
 
-  paneReady: boolean
   initialized: boolean
   applyDefault: boolean
 
