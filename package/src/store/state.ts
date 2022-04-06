@@ -39,7 +39,6 @@ const defaultState = (): State => ({
   nodes: [],
   edges: [],
 
-  paneReady: false,
   initialized: false,
   instance: null,
 

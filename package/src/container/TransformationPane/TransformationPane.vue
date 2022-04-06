@@ -26,7 +26,6 @@ onMounted(() => {
   }
   store.instance = instance
   store.fitViewOnInit && instance.fitView()
-  store.paneReady = true
   store.hooks.paneReady.trigger(instance)
 })
 

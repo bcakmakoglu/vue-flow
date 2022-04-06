@@ -24,56 +24,48 @@ export default (state: State): ComputedGetters => {
   })
 
   const getNodes = computed<GraphNode[]>(() => {
-    if (state.paneReady) {
-      const nodes = state.nodes.filter((n) => !n.hidden)
-      return state.onlyRenderVisibleElements
-        ? nodes &&
-            getNodesInside(
-              nodes,
-              {
-                x: 0,
-                y: 0,
-                width: state.dimensions.width,
-                height: state.dimensions.height,
-              },
-              state.transform,
-              true,
-            )
-        : nodes ?? []
-    }
-    return []
+    const nodes = state.nodes.filter((n) => !n.hidden)
+    return state.onlyRenderVisibleElements
+      ? nodes &&
+          getNodesInside(
+            nodes,
+            {
+              x: 0,
+              y: 0,
+              width: state.dimensions.width,
+              height: state.dimensions.height,
+            },
+            state.transform,
+            true,
+          )
+      : nodes ?? []
   })
 
   const getEdges = computed<GraphEdge[]>(() => {
-    if (state.paneReady) {
-      if (!state.onlyRenderVisibleElements)
-        return state.edges.filter(
-          (e) => !e.hidden && e.targetNode && !e.targetNode.hidden && e.sourceNode && !e.sourceNode.hidden,
-        )
-      else
-        return state.edges.filter(
-          (e) =>
-            !e.hidden &&
-            e.sourceNode.dimensions.width &&
-            e.sourceNode.dimensions.height &&
-            e.targetNode.dimensions.width &&
-            e.targetNode.dimensions.height &&
-            !e.targetNode.hidden &&
-            !e.sourceNode.hidden &&
-            isEdgeVisible({
-              sourcePos: e.sourceNode.computedPosition || { x: 0, y: 0 },
-              targetPos: e.targetNode.computedPosition || { x: 0, y: 0 },
-              sourceWidth: e.sourceNode.dimensions.width,
-              sourceHeight: e.sourceNode.dimensions.height,
-              targetWidth: e.targetNode.dimensions.width,
-              targetHeight: e.targetNode.dimensions.height,
-              width: state.dimensions.width,
-              height: state.dimensions.height,
-              transform: state.transform,
-            }),
-        )
-    }
-    return []
+    if (!state.onlyRenderVisibleElements)
+      return state.edges.filter((e) => !e.hidden && e.targetNode && !e.targetNode.hidden && e.sourceNode && !e.sourceNode.hidden)
+    else
+      return state.edges.filter(
+        (e) =>
+          !e.hidden &&
+          e.sourceNode.dimensions.width &&
+          e.sourceNode.dimensions.height &&
+          e.targetNode.dimensions.width &&
+          e.targetNode.dimensions.height &&
+          !e.targetNode.hidden &&
+          !e.sourceNode.hidden &&
+          isEdgeVisible({
+            sourcePos: e.sourceNode.computedPosition || { x: 0, y: 0 },
+            targetPos: e.targetNode.computedPosition || { x: 0, y: 0 },
+            sourceWidth: e.sourceNode.dimensions.width,
+            sourceHeight: e.sourceNode.dimensions.height,
+            targetWidth: e.targetNode.dimensions.width,
+            targetHeight: e.targetNode.dimensions.height,
+            width: state.dimensions.width,
+            height: state.dimensions.height,
+            transform: state.transform,
+          }),
+      )
   })
 
   const getSelectedNodes: ComputedGetters['getSelectedNodes'] = computed(() => state.nodes.filter((n) => n.selected))
