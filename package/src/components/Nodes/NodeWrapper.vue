@@ -121,6 +121,7 @@ const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement,
   grid: props.snapGrid,
   cancel: `.${store.noDragClassName}`,
   enableUserSelectHack: false,
+  scale: store.transform[2],
 })
 
 onMounted(() => {
