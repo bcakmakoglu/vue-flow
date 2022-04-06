@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { CSSProperties } from 'vue'
 import { useHandle, useVueFlow } from '../../composables'
 import { ConnectionMode, EdgeComponent, GraphEdge, Position } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
@@ -161,7 +162,7 @@ const getClass = computed(() => {
   ]
 })
 
-const getStyle = () => (edge.value.style instanceof Function ? edge.value.style(edge.value) : edge.value.style)
+const getStyle = () => (edge.value.style instanceof Function ? edge.value.style(edge.value) : edge.value.style) as CSSProperties
 </script>
 <script lang="ts">
 export default {
