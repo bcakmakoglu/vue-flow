@@ -19,6 +19,7 @@ const initialRect = () => ({
   y: 0,
   draw: false,
 })
+
 const rect = ref<Rect>(initialRect())
 
 const reset = () => {
@@ -27,6 +28,7 @@ const reset = () => {
   prevNodes.value = 0
   prevEdges.value = 0
 }
+
 const onMouseDown = (event: MouseEvent) => {
   const mousePos = getMousePosition(event)
   if (!mousePos) return
@@ -40,12 +42,14 @@ const onMouseDown = (event: MouseEvent) => {
     y: mousePos.y,
     draw: true,
   }
+
   store.userSelectionActive = true
   store.nodesSelectionActive = false
 }
 
 const onMouseMove = (event: MouseEvent) => {
-  if (!store.userSelectionActive) return
+  if (!store.userSelectionActive || !rect.value.draw) return
+
   const mousePos = getMousePosition(event)
   if (!mousePos) return
 
@@ -59,18 +63,23 @@ const onMouseMove = (event: MouseEvent) => {
     width: Math.abs(mousePos.x - startX),
     height: Math.abs(mousePos.y - startY),
   }
+
   const selectedNodes = getNodesInside(store.getNodes, rect.value, store.transform)
   const selectedEdges = getConnectedEdges(selectedNodes, store.getEdges)
+
   rect.value = nextUserSelectRect
+
   store.addSelectedNodes(selectedNodes)
   store.addSelectedEdges(selectedEdges)
+
   prevNodes.value = selectedNodes.length
   prevEdges.value = selectedEdges.length
 }
 
 const onMouseUp = () => {
   store.nodesSelectionActive = prevNodes.value > 0
-  reset()
+  rect.value = initialRect()
+  store.userSelectionActive = false
 }
 
 const onMouseLeave = () => {
@@ -78,11 +87,17 @@ const onMouseLeave = () => {
   reset()
 }
 
-useEventListener(el, 'mousedown', onMouseDown)
-useEventListener(el, 'mousemove', onMouseMove)
-useEventListener(el, 'click', onMouseUp)
-useEventListener(el, 'mouseup', onMouseUp)
-useEventListener(el, 'mouseleave', onMouseLeave)
+onMounted(() => {
+  useEventListener(el, 'mousedown', onMouseDown)
+  useEventListener(el, 'mousemove', onMouseMove)
+  useEventListener(el, 'click', onMouseUp)
+  useEventListener(el, 'mouseup', onMouseUp)
+  useEventListener(el, 'mouseleave', onMouseLeave)
+})
+
+onBeforeUnmount(() => {
+  reset()
+})
 </script>
 <script lang="ts">
 export default {

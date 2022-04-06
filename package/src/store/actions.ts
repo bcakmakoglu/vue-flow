@@ -100,7 +100,7 @@ const createGraphNodes = (nodes: Node[], getNode: Getters['getNode'], currGraphN
 
   graphNodes.forEach((node) => {
     if (node.parentNode && ![...graphNodes, ...currGraphNodes].find((n) => n.id === node.parentNode)) {
-      throw new Error(`Parent node ${node.parentNode} not found`)
+      console.warn(`[vueflow]: Parent node ${node.parentNode} not found`)
     }
 
     if (node.parentNode || parentNodes[node.id]) {
@@ -223,28 +223,35 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const setNodes: Actions['setNodes'] = (nodes, extent?: CoordinateExtent) => {
     if (!state.initialized && !nodes.length) return
+    if (!state.nodes) state.nodes = []
     state.nodes = createGraphNodes(nodes, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
     if (!state.initialized && !edges.length) return
-    state.edges = edges.map((edge) => {
+
+    state.edges = edges.reduce<GraphEdge[]>((res, edge) => {
       const sourceNode = getters.getNode.value(edge.source)!
       const targetNode = getters.getNode.value(edge.target)!
-      if (!sourceNode || typeof sourceNode === 'undefined')
-        console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-      if (!targetNode || typeof targetNode === 'undefined')
-        console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
-      return {
+      const missingSource = !sourceNode || typeof sourceNode === 'undefined'
+      const missingTarget = !targetNode || typeof targetNode === 'undefined'
+      if (missingSource) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+      if (missingTarget) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+
+      const storedEdge = getters.getEdge.value(edge.id)
+
+      res.push({
         ...parseEdge(edge, {
           ...state.defaultEdgeOptions,
-          ...getters.getEdge.value(edge.id),
+          ...storedEdge,
         }),
         sourceNode,
         targetNode,
-      }
-    })
+      })
+
+      return res
+    }, [])
   }
 
   const setElements: Actions['setElements'] = (elements, extent) => {
@@ -263,10 +270,11 @@ export default (state: State, getters: ComputedGetters): Actions => {
       if (edge) {
         const sourceNode = getters.getNode.value(edge.source)!
         const targetNode = getters.getNode.value(edge.target)!
-        if (!sourceNode || typeof sourceNode === 'undefined')
-          console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-        if (!targetNode || typeof targetNode === 'undefined')
-          console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+
+        const missingSource = !sourceNode || typeof sourceNode === 'undefined'
+        const missingTarget = !targetNode || typeof targetNode === 'undefined'
+        if (missingSource) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+        if (missingTarget) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
         state.edges.push({
           ...state.defaultEdgeOptions,
