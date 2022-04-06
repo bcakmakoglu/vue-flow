@@ -10,6 +10,10 @@ export type NodeHandleBounds = {
   target?: HandleElement[]
 }
 
+type WidthHeight = number | `${`parent` | string}(${`+` | `-`}${number})`
+type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
+type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
+
 export interface Node<Data = ElementData> extends Element<Data> {
   /** node position x, y */
   position: XYPosition
@@ -35,7 +39,20 @@ export interface Node<Data = ElementData> extends Element<Data> {
   expandParent?: boolean
   /** define node as a child node by setting a parent node id */
   parentNode?: string
-  dimensions?: Partial<Dimensions>
+
+  /**
+   * Fixed width of node, applied as style
+   * You can pass a number which will be used in pixel values (width: 300 -> width: 300px)
+   * or pass a string with units (width: `10rem` -> width: 10rem)
+   */
+  width?: number | string | WidthFunc
+
+  /**
+   * Fixed height of node, applied as style
+   * You can pass a number which will be used in pixel values (height: 300 -> height: 300px)
+   * or pass a string with units (height: `10rem` -> height: 10rem)
+   */
+  height?: number | string | HeightFunc
 }
 
 export interface GraphNode<Data = ElementData> extends Node<Data> {
