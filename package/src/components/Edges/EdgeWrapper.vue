@@ -64,9 +64,9 @@ const targetNodeHandles = computed(() => {
     return edge.value.targetNode.handleBounds.target
   }
 
-  const targetBounds = edge.value.targetNode.handleBounds.target || []
-  const sourceBounds = edge.value.targetNode.handleBounds.source || []
-  return [...sourceBounds, ...targetBounds]
+  const targetBounds = edge.value.targetNode.handleBounds.target
+  const sourceBounds = edge.value.targetNode.handleBounds.source
+  return targetBounds ?? sourceBounds
 })
 
 const sourceNodeHandles = computed(() => {
@@ -74,17 +74,14 @@ const sourceNodeHandles = computed(() => {
     return edge.value.sourceNode.handleBounds.source
   }
 
-  const targetBounds = edge.value.sourceNode.handleBounds.target || []
-  const sourceBounds = edge.value.sourceNode.handleBounds.source || []
-  return [...sourceBounds, ...targetBounds]
+  const targetBounds = edge.value.sourceNode.handleBounds.target
+  const sourceBounds = edge.value.sourceNode.handleBounds.source
+  return sourceBounds ?? targetBounds
 })
 
-const sourceHandle = controlledComputed(
-  () => edge.value.sourceNode.handleBounds,
-  () => getHandle(sourceNodeHandles.value, edge.value.sourceHandle),
-)
-
+const sourceHandle = computed(() => getHandle(sourceNodeHandles.value, edge.value.sourceHandle))
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.value.targetHandle))
+
 const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
 const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
 
