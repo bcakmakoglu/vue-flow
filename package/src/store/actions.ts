@@ -38,7 +38,7 @@ const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 
 const addEdge = (edgeParams: Edge | Connection, edges: Edge[]) => {
   if (!edgeParams.source || !edgeParams.target) {
-    console.warn("Can't create edge. An edge needs a source and a target.")
+    console.warn("[vueflow]: Can't create edge. An edge needs a source and a target.")
     return false
   }
 
@@ -58,14 +58,14 @@ const addEdge = (edgeParams: Edge | Connection, edges: Edge[]) => {
 
 const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[], add: Actions['addEdges']) => {
   if (!newConnection.source || !newConnection.target) {
-    console.warn("Can't create new edge. An edge needs a source and a target.")
+    console.warn("[vueflow]: Can't create new edge. An edge needs a source and a target.")
     return false
   }
 
   const foundEdge = edges.find((e) => isGraphEdge(e) && e.id === edge.id)
 
   if (!foundEdge) {
-    console.warn(`The old edge with id=${edge.id} does not exist.`)
+    console.warn(`[vueflow]: The old edge with id=${edge.id} does not exist.`)
     return false
   }
 
@@ -236,8 +236,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
       const missingSource = !sourceNode || typeof sourceNode === 'undefined'
       const missingTarget = !targetNode || typeof targetNode === 'undefined'
-      if (missingSource) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-      if (missingTarget) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+      if (missingSource) console.warn(`[vueflow]: Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+      if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
       const storedEdge = getters.getEdge.value(edge.id)
 
@@ -273,8 +273,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
         const missingSource = !sourceNode || typeof sourceNode === 'undefined'
         const missingTarget = !targetNode || typeof targetNode === 'undefined'
-        if (missingSource) console.warn(`couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-        if (missingTarget) console.warn(`couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+        if (missingSource) console.warn(`[vueflow]: Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+        if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
 
         state.edges.push({
           ...state.defaultEdgeOptions,

@@ -40,7 +40,6 @@ export const getHandle = (bounds: HandleElement[] = [], handleId?: string | null
   if (!handleId && bounds.length === 1) handle = bounds[0]
   else if (handleId) handle = bounds.find((d) => d.id === handleId)
 
-  console.log(handleId, handle, bounds)
   return handle
 }
 
