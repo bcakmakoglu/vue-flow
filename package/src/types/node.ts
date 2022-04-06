@@ -52,8 +52,6 @@ export interface GraphNode<Data = ElementData> extends Node<Data> {
 /** these props are passed to node components */
 export interface NodeProps<Data = ElementData> {
   id: string
-  /** node DOM-element */
-  nodeElement: HTMLDivElement
   type: string
   data?: Data
   selected: boolean
@@ -62,7 +60,7 @@ export interface NodeProps<Data = ElementData> {
   computedPosition: XYZPosition
   /** x, y position */
   position: XYPosition
-  /** node dimensions (width, height) */
+  /** dom element dimensions (width, height) */
   dimensions: Dimensions
   label?:
     | string
