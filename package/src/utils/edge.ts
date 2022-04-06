@@ -37,9 +37,10 @@ export const getHandle = (bounds: HandleElement[] = [], handleId?: string | null
   // there is no handleId when there are no multiple handles/ handles with ids
   // so we just pick the first one
   let handle
-  if (bounds.length === 1 ?? !handleId) handle = bounds[0]
+  if (!handleId && bounds.length === 1) handle = bounds[0]
   else if (handleId) handle = bounds.find((d) => d.id === handleId)
 
+  console.log(handleId, handle, bounds)
   return handle
 }
 
