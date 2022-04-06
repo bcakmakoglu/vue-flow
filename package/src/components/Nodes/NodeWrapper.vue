@@ -44,18 +44,6 @@ const onSelectNodeHandler = (event: MouseEvent) => {
 }
 
 onMounted(() => {
-  const { width, height } = nodeElement.value.getBoundingClientRect()
-
-  const hasCustomSize = node.value.dimensions && node.value.dimensions.width !== 0 && node.value.dimensions.height !== 0
-  const widthMatch = width === node.value.dimensions.width
-  const heightMatch = height === node.value.dimensions.height
-
-  if (hasCustomSize && (!widthMatch || !heightMatch)) {
-    size.value = {}
-    if (!widthMatch) size.value!.width = `${node.value.dimensions.width}px`
-    if (!heightMatch) size.value!.height = `${node.value.dimensions.height}px`
-  }
-
   useResizeObserver(nodeElement, () =>
     store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]),
   )
@@ -68,13 +56,15 @@ onMounted(() => {
 })
 
 const getClass = () => (node.value.class instanceof Function ? node.value.class(node.value) : node.value.class)
-const getStyle = () => (node.value.style instanceof Function ? node.value.style(node.value) : node.value.style)
+const getStyle = () => {
+  const styles = (node.value.style instanceof Function ? node.value.style(node.value) : node.value.style) || {}
+  const width = node.value.width instanceof Function ? node.value.width(node.value) : node.value.width
+  const height = node.value.height instanceof Function ? node.value.height(node.value) : node.value.height
+  if (width) styles.width = typeof width === 'string' ? width : `${width}px`
+  if (height) styles.height = typeof height === 'string' ? height : `${height}px`
 
-const scale = controlledComputed(
-  () => store.transform[2],
-  () => store.transform[2],
-)
-const scaleDebounced = debouncedRef(scale, 5)
+  return styles
+}
 
 watch(
   [() => node.value.position, () => store.getNode(node.value.parentNode!)],
