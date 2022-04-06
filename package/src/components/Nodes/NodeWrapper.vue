@@ -55,17 +55,6 @@ onMounted(() => {
   store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }])
 })
 
-const getClass = () => (node.value.class instanceof Function ? node.value.class(node.value) : node.value.class)
-const getStyle = () => {
-  const styles = (node.value.style instanceof Function ? node.value.style(node.value) : node.value.style) || {}
-  const width = node.value.width instanceof Function ? node.value.width(node.value) : node.value.width
-  const height = node.value.height instanceof Function ? node.value.height(node.value) : node.value.height
-  if (width) styles.width = typeof width === 'string' ? width : `${width}px`
-  if (height) styles.height = typeof height === 'string' ? height : `${height}px`
-
-  return styles
-}
-
 watch(
   [() => node.value.position, () => store.getNode(node.value.parentNode!)],
   ([pos, parent]) => {
@@ -149,7 +138,7 @@ onDragStart(({ event }) => {
 })
 
 onDrag(({ event, data: { deltaX, deltaY } }) => {
-  nextTick(() => store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: true }))
+  store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: true })
   store.hooks.nodeDrag.trigger({ event, node: node.value })
 })
 
@@ -166,6 +155,36 @@ onDragStop(({ event, data: { deltaX, deltaY } }) => {
   store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: false })
   store.hooks.nodeDragStop.trigger({ event, node: node.value })
 })
+
+const getClass = computed(() => {
+  const extraClass = node.value.class instanceof Function ? node.value.class(node.value) : node.value.class
+  return [
+    'vue-flow__node',
+    `vue-flow__node-${name.value}`,
+    store.noPanClassName,
+    {
+      dragging: node.value.dragging,
+      selected: node.value.selected,
+      selectable: props.selectable,
+    },
+    extraClass,
+  ]
+})
+
+const getStyle = computed(() => {
+  const styles = (node.value.style instanceof Function ? node.value.style(node.value) : node.value.style) || {}
+  const width = node.value.width instanceof Function ? node.value.width(node.value) : node.value.width
+  const height = node.value.height instanceof Function ? node.value.height(node.value) : node.value.height
+  if (width) styles.width = typeof width === 'string' ? width : `${width}px`
+  if (height) styles.height = typeof height === 'string' ? height : `${height}px`
+
+  return {
+    zIndex: node.value.computedPosition.z,
+    transform: `translate(${node.value.computedPosition.x}px,${node.value.computedPosition.y}px)`,
+    pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
+    ...styles,
+  }
+})
 </script>
 <script lang="ts">
 export default {
@@ -177,23 +196,8 @@ export default {
   <div
     ref="node-element"
     :key="`node-${node.id}`"
-    :class="[
-      'vue-flow__node',
-      `vue-flow__node-${name}`,
-      store.noPanClassName,
-      {
-        dragging: node.dragging,
-        selected: node.selected,
-        selectable: props.selectable,
-      },
-      getClass(),
-    ]"
-    :style="{
-      zIndex: node.computedPosition.z,
-      transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
-      pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-      ...getStyle(),
-    }"
+    :class="getClass"
+    :style="getStyle"
     :data-id="node.id"
     @mouseenter="onMouseEnterHandler"
     @mousemove="onMouseMoveHandler"
