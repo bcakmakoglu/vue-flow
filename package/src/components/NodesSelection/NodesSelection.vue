@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useDraggableCore } from '@braks/revue-draggable'
-import { watchDebounced } from '@vueuse/core'
 import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 
@@ -30,7 +29,7 @@ const { onDragStart, onDrag, onDragStop, scale } = useDraggableCore(el, {
 })
 
 onMounted(() => {
-  watchDebounced(
+  debouncedWatch(
     () => store.transform[2],
     () => {
       scale.value = store.transform[2]
