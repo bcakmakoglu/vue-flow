@@ -21,8 +21,8 @@ export type CSSVars =
   | '--vf-handle'
 export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] }
 export type Styles = CSSProperties & ThemeVars & CustomThemeVars
-export type ClassFunc<Data = ElementData> = (element: FlowElement<Data>) => string
-export type StyleFunc<Data = ElementData> = (element: FlowElement<Data>) => Styles
+export type ClassFunc<Data = ElementData> = (element: FlowElement<Data>) => string | void
+export type StyleFunc<Data = ElementData> = (element: FlowElement<Data>) => Styles | void
 
 /** base element props */
 export interface Element<Data extends ElementData = ElementData> {
