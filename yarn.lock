@@ -416,6 +416,18 @@
     "@vueuse/core" "^7.0.1"
     vue-demi latest
 
+"@braks/vue-flow@^0.4.0-17":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@braks/vue-flow/-/vue-flow-0.4.1.tgz#81ce05e6a47f7232f09ec78f93ea371105b85b43"
+  integrity sha512-EOTo/zAvtnP7ZtXVJ8DSKJrQWMoajVVaFgzx5/ghVTn2KWU846S2AIaahy2L95x8gyzob0YmsJ73tkgoPgmuJg==
+  dependencies:
+    "@braks/revue-draggable" "^0.4.2"
+    "@types/d3" "^7.1.0"
+    "@vueuse/core" "^7.5.5"
+    d3 "^7.1.1"
+    d3-selection "^3.0.0"
+    d3-zoom "^3.0.0"
+
 "@cypress/mount-utils@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@cypress/mount-utils/-/mount-utils-1.0.2.tgz#afbc4f8c350b7cd86edc5ad0db0cbe1e0181edc8"
@@ -1505,7 +1517,7 @@
     ora "^5.4.1"
     upath "^2.0.1"
 
-"@vueuse/core@^7.0.1":
+"@vueuse/core@^7.0.1", "@vueuse/core@^7.5.5":
   version "7.7.1"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-7.7.1.tgz#fc284f4103de73c7fb79bc06579d8066790db511"
   integrity sha512-PRRgbATMpoeUmkCEBtUeJgOwtew8s+4UsEd+Pm7MhkjL2ihCNrSqxNVtM6NFE4uP2sWnkGcZpCjPuNSxowJ1Ow==
@@ -1513,7 +1525,7 @@
     "@vueuse/shared" "7.7.1"
     vue-demi "*"
 
-"@vueuse/core@^8.2.1", "@vueuse/core@^8.2.4":
+"@vueuse/core@^8.2.1", "@vueuse/core@^8.2.5":
   version "8.2.5"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.5.tgz#ca6a59091ecf16e6739c53f3d857b11967a5eb06"
   integrity sha512-5prZAA1Ji2ltwNUnzreu6WIXYqHYP/9U2BiY5mD/650VYLpVcwVlYznJDFcLCmEWI3o3Vd34oS1FUf+6Mh68GQ==
@@ -2644,7 +2656,7 @@ d3-zoom@3, d3-zoom@^3.0.0:
     d3-selection "2 - 3"
     d3-transition "2 - 3"
 
-d3@^7.4.2:
+d3@^7.1.1, d3@^7.4.2:
   version "7.4.2"
   resolved "https://registry.yarnpkg.com/d3/-/d3-7.4.2.tgz#c5d1001459dc9517bc774949f71b95e8735b3b4e"
   integrity sha512-7VK+QBAWtNDbP2EU/ThkXgjd0u1MsXYYgCK2ElQ4BBWh0usE75tHVVeYx47m2pqQEy4isYKAA0tAFSln0l+9EQ==

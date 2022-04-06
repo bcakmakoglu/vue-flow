@@ -9,7 +9,7 @@
     "build": "vuepress build src"
   },
   "dependencies": {
-    "@braks/vue-flow": "^0.4.0",
+    "@braks/vue-flow": "^0.4.2-0",
     "blobity": "^0.1.7"
   },
   "devDependencies": {
