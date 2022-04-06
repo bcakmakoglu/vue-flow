@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+### Bug Fixes
+
+- Selection not working twice in a row ([bcfa05f](bcfa05f30a4d9336abf1d7b8e5bd672b1ca79539))
+
+### Features
+
+- Promisify updateNodePosition ([493ea47](493ea47c5e88c5a15c408158621a94b66c1195fd))
+- Assign default handle id and allow for actual loose connections ([e853d68](e853d68e52dffd2deaa12ff49f2d925868ff97da))
+- Add PositionFunc as node position type ([67461ed](67461eda2f14ee0026cedecefa17b2b9c51b25e5))
+
+### Miscellaneous Tasks
+
+- Update package dependencies ([9c869b9](9c869b9b0048f55c922c1dd3823f6e55a2902029))
+- Add prefix to console messages ([c29a48b](c29a48b56b66743fe8ba49901880dcc86b7cdc7d))
+- Disable no-use-before-define rule ([56bff4c](56bff4ccf577ad85b60bdb75f49e9ff790211e30))
+- Run yarn upgrade ([95958fb](95958fb24aa70c46ed971d6e851dfbc1a9e678a3))
+
+### Refactor
+
+- Remove width/height attribute ([0c44455](0c44455e10d8fce08c1a04518f6a8efc1ef35064))
+- Remove DraggableCore component and use composable ([b3bc4e7](b3bc4e7a0e13ebf08459fbc0122d30d5ed7d0f7f))
+- Remove dimensions option, replace with width and height ([2b67e85](2b67e85906ee272f3c876bab5a995b60fc34d28f))
+- Replace DraggableCore with composable ([eb7bf9f](eb7bf9fbef8e555ab8bfbd347aa7ec8c88f25641))
+
+## [0.4.1] - 2022-04-05
+
+[1c429fc](1c429fc637f788fb7c2afb227ac4323bf81c1527)...[8f4d1b3](8f4d1b3beb63a86822e846aa7773672baab8dc50)
+
 ### Documentation
 
 - Update vue flow version ([cc76a76](cc76a764158fd25ffbbef7c5597c44788a25bc4a))
