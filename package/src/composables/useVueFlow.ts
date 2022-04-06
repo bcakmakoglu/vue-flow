@@ -61,7 +61,9 @@ export class Storage {
       id,
       store,
     }
+
     this.set(id, flow)
+
     return flow
   }
 
@@ -80,7 +82,7 @@ export default <NodeData = ElementData, EdgeData = ElementData>(
   const scope = getCurrentScope() as Scope
   const vueFlowId = scope?.vueFlowId || options?.id
 
-  let vueFlow: Injection<any, any>
+  let vueFlow: Injection
 
   if (scope) {
     const injection = inject(VueFlow, null)
@@ -108,7 +110,7 @@ export default <NodeData = ElementData, EdgeData = ElementData>(
     if (options) vueFlow.setState(options)
   }
 
-  if (!vueFlow) throw new Error('vue flow store instance not found.')
+  if (!vueFlow) throw new Error('[vueflow]: store instance not found.')
 
   if (scope) provide(VueFlow, vueFlow)
 

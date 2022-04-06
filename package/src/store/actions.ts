@@ -117,21 +117,27 @@ const createGraphNodes = (nodes: Node[], getNode: Getters['getNode'], currGraphN
 
 export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodePosition: Actions['updateNodePosition'] = ({ id, diff = { x: 0, y: 0 }, dragging }) => {
-    const changes: NodePositionChange[] = []
+    const nodePosPromise = new Promise<NodePositionChange[]>((resolve) => {
+      const changes: NodePositionChange[] = []
 
-    state.nodes.forEach((node) => {
-      if (node.selected) {
-        if (!node.parentNode) {
-          changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, state.nodes))
-        } else if (!isParentSelected(node, getters.getNode.value)) {
+      state.nodes.forEach((node) => {
+        if (node.selected) {
+          if (!node.parentNode) {
+            changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, state.nodes))
+          } else if (!isParentSelected(node, getters.getNode.value)) {
+            changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, state.nodes))
+          }
+        } else if (node.id === id) {
           changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, state.nodes))
         }
-      } else if (node.id === id) {
-        changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent, dragging }, state.nodes))
-      }
+      })
+
+      if (changes.length) resolve(changes)
     })
 
-    if (changes.length) state.hooks.nodesChange.trigger(changes)
+    nodePosPromise.then((changes) => {
+      state.hooks.nodesChange.trigger(changes)
+    })
   }
 
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
