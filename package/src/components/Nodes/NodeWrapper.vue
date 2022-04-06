@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useDraggableCore } from '@braks/revue-draggable'
+import { CSSProperties } from 'vue'
 import { useVueFlow } from '../../composables'
 import { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId, Slots } from '../../context'
@@ -183,7 +184,7 @@ const getStyle = computed(() => {
     transform: `translate(${node.value.computedPosition.x}px,${node.value.computedPosition.y}px)`,
     pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
     ...styles,
-  }
+  } as CSSProperties
 })
 </script>
 <script lang="ts">
