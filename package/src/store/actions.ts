@@ -308,7 +308,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
       const option = opts[o as keyof typeof opts]
       if (!skip.includes(o) && isDef(option)) (<any>state)[o] = option
     })
-    if (!state.paneReady)
+    if (!state.d3Zoom)
       until(() => state.d3Zoom)
         .not.toBeUndefined()
         .then(() => {
