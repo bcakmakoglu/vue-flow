@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DraggableEventListener, DraggableCore } from '@braks/revue-draggable'
+import { useDraggableCore } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId, Slots } from '../../context'
@@ -42,38 +42,6 @@ const onSelectNodeHandler = (event: MouseEvent) => {
     store.hooks.nodeClick.trigger({ event, node: node.value })
   }
 }
-const onDragStart: DraggableEventListener = ({ event }) => {
-  store.addSelectedNodes([])
-  store.hooks.nodeDragStart.trigger({ event, node: node.value })
-
-  if (store.selectNodesOnDrag && props.selectable) {
-    store.nodesSelectionActive = false
-
-    if (!node.value.selected) store.addSelectedNodes([node.value])
-  } else if (!store.selectNodesOnDrag && !node.value.selected && props.selectable) {
-    store.nodesSelectionActive = false
-    store.addSelectedNodes([])
-  }
-}
-const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
-  nextTick(() => store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: true }))
-  store.hooks.nodeDrag.trigger({ event, node: node.value })
-}
-const onDragStop: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
-  // onDragStop also gets called when user just clicks on a node.
-  // Because of that we set dragging to true inside the onDrag handler and handle the click here
-  if (!node.value.dragging) {
-    if (props.selectable && !store.selectNodesOnDrag && !node.value.selected) {
-      store.addSelectedNodes([node.value])
-    }
-    store.hooks.nodeClick.trigger({ event, node: node.value })
-    return
-  }
-  store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: false })
-  store.hooks.nodeDragStop.trigger({ event, node: node.value })
-}
-
-const size = ref<Record<string, string>>()
 
 onMounted(() => {
   const { width, height } = nodeElement.value.getBoundingClientRect()
@@ -156,6 +124,57 @@ const type = computed(() => {
 
   return slot
 })
+
+const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement, {
+  handle: node.value.dragHandle,
+  disabled: !props.draggable,
+  grid: props.snapGrid,
+  cancel: `.${store.noDragClassName}`,
+  enableUserSelectHack: false,
+})
+
+onMounted(() => {
+  watchDebounced(
+    () => store.transform[2],
+    () => {
+      scale.value = store.transform[2]
+    },
+    { debounce: 5 },
+  )
+})
+
+onDragStart(({ event }) => {
+  store.addSelectedNodes([])
+  store.hooks.nodeDragStart.trigger({ event, node: node.value })
+
+  if (store.selectNodesOnDrag && props.selectable) {
+    store.nodesSelectionActive = false
+
+    if (!node.value.selected) store.addSelectedNodes([node.value])
+  } else if (!store.selectNodesOnDrag && !node.value.selected && props.selectable) {
+    store.nodesSelectionActive = false
+    store.addSelectedNodes([])
+  }
+})
+
+onDrag(({ event, data: { deltaX, deltaY } }) => {
+  nextTick(() => store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: true }))
+  store.hooks.nodeDrag.trigger({ event, node: node.value })
+})
+
+onDragStop(({ event, data: { deltaX, deltaY } }) => {
+  // onDragStop also gets called when user just clicks on a node.
+  // Because of that we set dragging to true inside the onDrag handler and handle the click here
+  if (!node.value.dragging) {
+    if (props.selectable && !store.selectNodesOnDrag && !node.value.selected) {
+      store.addSelectedNodes([node.value])
+    }
+    store.hooks.nodeClick.trigger({ event, node: node.value })
+    return
+  }
+  store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: false })
+  store.hooks.nodeDragStop.trigger({ event, node: node.value })
+})
 </script>
 <script lang="ts">
 export default {
@@ -164,67 +183,53 @@ export default {
 }
 </script>
 <template>
-  <DraggableCore
-    :cancel="`.${store.noDragClassName}`"
-    :handle="node.dragHandle"
-    :disabled="!props.draggable"
-    :scale="scaleDebounced"
-    :grid="props.snapGrid"
-    :enable-user-select-hack="false"
-    @start="onDragStart"
-    @move="onDrag"
-    @stop="onDragStop"
+  <div
+    ref="node-element"
+    :key="`node-${node.id}`"
+    :class="[
+      'vue-flow__node',
+      `vue-flow__node-${name}`,
+      store.noPanClassName,
+      {
+        dragging: node.dragging,
+        selected: node.selected,
+        selectable: props.selectable,
+      },
+      getClass(),
+    ]"
+    :style="{
+      zIndex: node.computedPosition.z,
+      transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
+      pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
+      ...getStyle(),
+    }"
+    :data-id="node.id"
+    @mouseenter="onMouseEnterHandler"
+    @mousemove="onMouseMoveHandler"
+    @mouseleave="onMouseLeaveHandler"
+    @contextmenu="onContextMenuHandler"
+    @click="onSelectNodeHandler"
+    @dblclick="onDoubleClick"
   >
-    <div
-      ref="node-element"
-      :key="`node-${node.id}`"
-      :class="[
-        'vue-flow__node',
-        `vue-flow__node-${name}`,
-        store.noPanClassName,
-        {
-          dragging: node.dragging,
-          selected: node.selected,
-          selectable: props.selectable,
-        },
-        getClass(),
-      ]"
-      :style="{
-        zIndex: node.computedPosition.z,
-        transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
-        pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-        ...size,
-        ...getStyle(),
-      }"
-      :data-id="node.id"
-      @mouseenter="onMouseEnterHandler"
-      @mousemove="onMouseMoveHandler"
-      @mouseleave="onMouseLeaveHandler"
-      @contextmenu="onContextMenuHandler"
-      @click="onSelectNodeHandler"
-      @dblclick="onDoubleClick"
-    >
-      <component
-        :is="type"
-        :id="node.id"
-        :node-element="nodeElement"
-        :type="node.type"
-        :data="node.data"
-        :selected="!!node.selected"
-        :connectable="props.connectable"
-        :position="node.position"
-        :computed-position="node.computedPosition"
-        :dimensions="node.dimensions"
-        :is-valid-target-pos="node.isValidTargetPos"
-        :is-valid-source-pos="node.isValidSourcePos"
-        :parent-node="node.parentNode"
-        :dragging="!!node.dragging"
-        :z-index="node.computedPosition.z"
-        :target-position="node.targetPosition"
-        :source-position="node.sourcePosition"
-        :label="node.label"
-        :drag-handle="node.dragHandle"
-      />
-    </div>
-  </DraggableCore>
+    <component
+      :is="type"
+      :id="node.id"
+      :type="node.type"
+      :data="node.data"
+      :selected="!!node.selected"
+      :connectable="props.connectable"
+      :position="node.position"
+      :computed-position="node.computedPosition"
+      :dimensions="node.dimensions"
+      :is-valid-target-pos="node.isValidTargetPos"
+      :is-valid-source-pos="node.isValidSourcePos"
+      :parent-node="node.parentNode"
+      :dragging="!!node.dragging"
+      :z-index="node.computedPosition.z"
+      :target-position="node.targetPosition"
+      :source-position="node.sourcePosition"
+      :label="node.label"
+      :drag-handle="node.dragHandle"
+    />
+  </div>
 </template>
