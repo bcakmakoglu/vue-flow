@@ -42,6 +42,7 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const handleId = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? ''
 
   store.hooks.edgeUpdateStart.trigger({ event, edge: edge.value })
+
   onMouseDown(
     event,
     handleId,
@@ -58,15 +59,29 @@ const getClass = () => (edge.value.class instanceof Function ? edge.value.class(
 const getStyle = () => (edge.value.style instanceof Function ? edge.value.style(edge.value) : edge.value.style)
 
 // when connection type is loose we can define all handles as sources
-const targetNodeHandles = computed(() =>
-  store.connectionMode === ConnectionMode.Strict
-    ? edge.value.targetNode.handleBounds.target
-    : edge.value.targetNode.handleBounds.target ?? edge.value.targetNode.handleBounds.source,
-)
+const targetNodeHandles = computed(() => {
+  if (store.connectionMode === ConnectionMode.Strict) {
+    return edge.value.targetNode.handleBounds.target
+  }
+
+  const targetBounds = edge.value.targetNode.handleBounds.target || []
+  const sourceBounds = edge.value.targetNode.handleBounds.source || []
+  return [...sourceBounds, ...targetBounds]
+})
+
+const sourceNodeHandles = computed(() => {
+  if (store.connectionMode === ConnectionMode.Strict) {
+    return edge.value.sourceNode.handleBounds.source
+  }
+
+  const targetBounds = edge.value.sourceNode.handleBounds.target || []
+  const sourceBounds = edge.value.sourceNode.handleBounds.source || []
+  return [...sourceBounds, ...targetBounds]
+})
 
 const sourceHandle = controlledComputed(
   () => edge.value.sourceNode.handleBounds,
-  () => getHandle(edge.value.sourceNode.handleBounds.source, edge.value.sourceHandle),
+  () => getHandle(sourceNodeHandles.value, edge.value.sourceHandle),
 )
 
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.value.targetHandle))

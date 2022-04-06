@@ -13,11 +13,11 @@ const props = withDefaults(defineProps<HandleProps>(), {
 
 const nodeId = inject(NodeId, '')
 
+const handleId = props.id ?? `${nodeId}__handle-${props.position}`
+
 const { onMouseDown, onClick } = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>
-  onMouseDown(event, props.id ?? null, nodeId, props.type === 'target', props.isValidConnection, undefined, (connection) =>
-    hooks.value.connect.trigger(connection),
-  )
+  onMouseDown(event, handleId, nodeId, props.type === 'target', props.isValidConnection, undefined)
 const onClickHandler = (event: MouseEvent) => onClick(event, props.id ?? null, nodeId, props.type, props.isValidConnection)
 </script>
 <script lang="ts">
@@ -27,7 +27,7 @@ export default {
 </script>
 <template>
   <div
-    :data-handleid="props.id"
+    :data-handleid="handleId"
     :data-nodeid="nodeId"
     :data-handlepos="props.position"
     :class="[
