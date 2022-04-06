@@ -31,14 +31,7 @@ export default {
 }
 </script>
 <template>
-  <svg
-    v-for="group of groups"
-    :key="group.level"
-    :width="store.dimensions.width"
-    :height="store.dimensions.height"
-    class="vue-flow__edges vue-flow__container"
-    :style="`z-index: ${group.level}`"
-  >
+  <svg v-for="group of groups" :key="group.level" class="vue-flow__edges vue-flow__container" :style="`z-index: ${group.level}`">
     <MarkerDefinitions v-if="group.isMaxLevel" :default-color="store.defaultMarkerColor" />
     <g>
       <EdgeWrapper
