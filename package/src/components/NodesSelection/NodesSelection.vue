@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useDraggableCore } from '@braks/revue-draggable'
+import { watchDebounced } from '@vueuse/core'
 import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 

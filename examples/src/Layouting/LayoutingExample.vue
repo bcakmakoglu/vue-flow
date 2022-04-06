@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import dagre from 'dagre'
-import initialElements from './initial-elements'
 import { VueFlow, Controls, ConnectionMode, Elements, isNode, CoordinateExtent, Position } from '@braks/vue-flow'
+import initialElements from './initial-elements'
 
 const dagreGraph = new dagre.graphlib.Graph()
 dagreGraph.setDefaultEdgeLabel(() => ({}))
