@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { DraggableCore, DraggableEventListener } from '@braks/revue-draggable'
+import { useDraggableCore } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 
 const { store } = useVueFlow()
+
+const el = templateRef<HTMLDivElement>('el', null)
 
 const selectedNodesBBox = computed(() => getRectOfNodes(store.getSelectedNodes))
 
@@ -16,28 +18,37 @@ const innerStyle = computed(() => ({
 
 const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
 
-const scale = controlledComputed(
-  () => store.transform[2],
-  () => store.transform[2],
-)
-const scaleDebounced = debouncedRef(scale, 5)
-
 watch(selectedNodesBBox, (v) => (store.selectedNodesBbox = v))
 
-const onStart: DraggableEventListener = ({ event }) =>
-  store.hooks.selectionDragStart.trigger({ event, nodes: store.getSelectedNodes })
+const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: store.getSelectedNodes })
 
-const onDrag: DraggableEventListener = ({ event, data: { deltaX, deltaY } }) => {
+const { onDragStart, onDrag, onDragStop, scale } = useDraggableCore(el, {
+  grid: store.snapToGrid ? store.snapGrid : undefined,
+  enableUserSelectHack: false,
+  scale: store.transform[2],
+})
+
+onMounted(() => {
+  watchDebounced(
+    () => store.transform[2],
+    () => {
+      scale.value = store.transform[2]
+    },
+    { debounce: 5 },
+  )
+})
+
+onDragStart(({ event }) => store.hooks.selectionDragStart.trigger({ event, nodes: store.getSelectedNodes }))
+
+onDrag(({ event, data: { deltaX, deltaY } }) => {
   store.hooks.selectionDrag.trigger({ event, nodes: store.getSelectedNodes })
   store.updateNodePosition({ diff: { x: deltaX, y: deltaY }, dragging: true })
-}
+})
 
-const onStop: DraggableEventListener = ({ event }) => {
+onDragStop(({ event }) => {
   store.hooks.selectionDragStop.trigger({ event, nodes: store.getSelectedNodes })
   store.getSelectedNodes.forEach((node) => (node.dragging = false))
-}
-
-const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.trigger({ event, nodes: store.getSelectedNodes })
+})
 </script>
 <script lang="ts">
 export default {
@@ -46,15 +57,6 @@ export default {
 </script>
 <template>
   <div class="vue-flow__nodesselection vue-flow__container" :class="store.noPanClassName" :style="{ transform }">
-    <DraggableCore
-      :grid="store.snapToGrid ? store.snapGrid : undefined"
-      :enable-user-select-hack="false"
-      :scale="scaleDebounced"
-      @start="onStart"
-      @move="onDrag"
-      @stop="onStop"
-    >
-      <div class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
-    </DraggableCore>
+    <div ref="el" class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
   </div>
 </template>
