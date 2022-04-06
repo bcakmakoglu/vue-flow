@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useDraggableCore } from '@braks/revue-draggable'
-import { watchDebounced } from '@vueuse/core'
 import { useVueFlow } from '../../composables'
 import { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId, Slots } from '../../context'
@@ -126,7 +125,7 @@ const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement,
 })
 
 onMounted(() => {
-  watchDebounced(
+  debouncedWatch(
     () => store.transform[2],
     () => {
       scale.value = store.transform[2]
