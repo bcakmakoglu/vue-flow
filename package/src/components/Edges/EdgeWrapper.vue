@@ -55,9 +55,6 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   )
 }
 
-const getClass = () => (edge.value.class instanceof Function ? edge.value.class(edge.value) : edge.value.class)
-const getStyle = () => (edge.value.style instanceof Function ? edge.value.style(edge.value) : edge.value.style)
-
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() => {
   if (store.connectionMode === ConnectionMode.Strict) {
@@ -147,6 +144,24 @@ const type = computed(() => {
 
   return slot
 })
+
+const getClass = computed(() => {
+  const extraClass = edge.value.class instanceof Function ? edge.value.class(edge.value) : edge.value.class
+  return [
+    'vue-flow__edge',
+    `vue-flow__edge-${name.value}`,
+    store.noPanClassName,
+    {
+      selected: edge.value.selected,
+      animated: edge.value.animated,
+      inactive: !props.selectable,
+      updating: updating.value,
+    },
+    extraClass,
+  ]
+})
+
+const getStyle = () => (edge.value.style instanceof Function ? edge.value.style(edge.value) : edge.value.style)
 </script>
 <script lang="ts">
 export default {
@@ -157,18 +172,7 @@ export default {
 <template>
   <g
     :key="`edge-${edge.id}`"
-    :class="[
-      'vue-flow__edge',
-      `vue-flow__edge-${name}`,
-      store.noPanClassName,
-      {
-        selected: edge.selected,
-        animated: edge.animated,
-        inactive: !props.selectable,
-        updating,
-      },
-      getClass(),
-    ]"
+    :class="getClass"
     @click="onEdgeClick"
     @dblClick="onDoubleClick"
     @contextmenu="onEdgeContextMenu"
