@@ -10,17 +10,12 @@ export type NodeHandleBounds = {
   target?: HandleElement[]
 }
 
-type PositionFunc = <Data = ElementData>(
-  node: GraphNode<Data>,
-  currNodes: GraphNode<Data>[],
-  parentNode: GraphNode<Data>,
-) => XYPosition
 type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
 type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
 
 export interface Node<Data = ElementData> extends Element<Data> {
   /** initial node position x, y */
-  position: XYPosition | PositionFunc
+  position: XYPosition
   /** node type, can be a default type or a custom type */
   type?: keyof DefaultNodeTypes | string
   /** handle position */
@@ -60,8 +55,6 @@ export interface Node<Data = ElementData> extends Element<Data> {
 }
 
 export interface GraphNode<Data = ElementData> extends Node<Data> {
-  /** current node position x, y */
-  position: XYPosition
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
   handleBounds: NodeHandleBounds

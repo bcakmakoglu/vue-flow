@@ -103,12 +103,7 @@ const createGraphNodes = (nodes: Node[], getNode: Getters['getNode'], currGraphN
     if (node.parentNode && !nextNodes.find((n) => n.id === node.parentNode)) {
       console.warn(`[vueflow]: Parent node ${node.parentNode} not found`)
     }
-    const position =
-      (<any>node).position instanceof Function
-        ? (<any>node).position(node, currGraphNodes, node.parentNode ? getNode(node.parentNode) : undefined)
-        : node.position
 
-    if (position) node.position = position
     if (node.parentNode || parentNodes[node.id]) {
       if (parentNodes[node.id]) {
         node.isParent = true
