@@ -20,7 +20,7 @@ const handleId = computed(() =>
 const { onMouseDown, onClick } = useHandle()
 const onMouseDownHandler = (event: MouseEvent) =>
   onMouseDown(event, handleId.value, nodeId, props.type === 'target', props.isValidConnection, undefined)
-const onClickHandler = (event: MouseEvent) => onClick(event, props.id ?? null, nodeId, props.type, props.isValidConnection)
+const onClickHandler = (event: MouseEvent) => onClick(event, handleId.value ?? null, nodeId, props.type, props.isValidConnection)
 </script>
 <script lang="ts">
 export default {
@@ -35,7 +35,7 @@ export default {
     :class="[
       'vue-flow__handle',
       `vue-flow__handle-${props.position}`,
-      `vue-flow__handle-${id}`,
+      `vue-flow__handle-${handleId}`,
       'nodrag',
       {
         source: props.type !== 'target',
@@ -43,7 +43,7 @@ export default {
         connectable: props.connectable,
         connecting:
           connectionStartHandle?.nodeId === nodeId &&
-          connectionStartHandle?.handleId === props.id &&
+          connectionStartHandle?.handleId === handleId &&
           connectionStartHandle?.type === props.type,
       },
     ]"
