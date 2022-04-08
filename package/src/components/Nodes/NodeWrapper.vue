@@ -20,7 +20,7 @@ const { store } = useVueFlow()
 const node = useVModel(props, 'node')
 provide(NodeId, props.id)
 
-const nodeElement = templateRef<HTMLDivElement>('node-element', null)
+const nodeElement = ref()
 
 const onMouseEnterHandler = () =>
   node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: node.value }))
@@ -195,7 +195,7 @@ export default {
 </script>
 <template>
   <div
-    ref="node-element"
+    ref="nodeElement"
     :key="`node-${node.id}`"
     :class="getClass"
     :style="getStyle"
@@ -209,6 +209,7 @@ export default {
   >
     <component
       :is="type"
+      v-if="nodeElement"
       :id="node.id"
       :type="node.type"
       :data="node.data"
@@ -226,6 +227,7 @@ export default {
       :source-position="node.sourcePosition"
       :label="node.label"
       :drag-handle="node.dragHandle"
+      :node-element="nodeElement"
     />
   </div>
 </template>

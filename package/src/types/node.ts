@@ -94,4 +94,6 @@ export interface NodeProps<Data = ElementData> {
   targetPosition?: Position
   sourcePosition?: Position
   dragHandle?: string
+
+  nodeElement: HTMLDivElement
 }
