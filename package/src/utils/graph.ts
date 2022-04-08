@@ -339,11 +339,11 @@ export const getTransformForBounds = (
   return [x, y, clampedZoom]
 }
 
-export const getXYZPos = (parentNode: GraphNode, computedPosition: XYZPosition): XYZPosition => {
+export const getXYZPos = (parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition => {
   return {
-    x: computedPosition.x + parentNode.computedPosition.x,
-    y: computedPosition.y + parentNode.computedPosition.y,
-    z: parentNode.computedPosition.z > computedPosition.z ? parentNode.computedPosition.z : computedPosition.z,
+    x: computedPosition.x + parentPos.x,
+    y: computedPosition.y + parentPos.y,
+    z: parentPos.z > computedPosition.z ? parentPos.z : computedPosition.z,
   }
 }
 

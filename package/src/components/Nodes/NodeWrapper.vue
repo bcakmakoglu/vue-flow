@@ -57,12 +57,18 @@ onMounted(() => {
 })
 
 watch(
-  [() => node.value.position, () => store.getNode(node.value.parentNode!)],
+  [
+    () => node.value.position,
+    () => store.getNode(node.value.parentNode!)?.computedPosition,
+    () => node.value.selected,
+    () => store.getNode(node.value.parentNode!)?.selected,
+  ],
   ([pos, parent]) => {
     const xyzPos = {
       ...pos,
-      z: node.value.dragging || node.value.selected ? 1000 : node.value.computedPosition.z,
+      z: node.value.dragging || node.value.selected ? 1000 : 0,
     }
+
     if (parent) {
       node.value.computedPosition = getXYZPos(parent, xyzPos)
     } else {
