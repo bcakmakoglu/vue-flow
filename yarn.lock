@@ -1456,6 +1456,14 @@
     "@vuepress/core" "2.0.0-beta.38"
     prismjs "^1.27.0"
 
+"@vuepress/plugin-shiki@^2.0.0-beta.38":
+  version "2.0.0-beta.38"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-shiki/-/plugin-shiki-2.0.0-beta.38.tgz#931e33f2eb0dc0d594d3ddec4830eabc4843f240"
+  integrity sha512-ws5TpKsNDls2BPDtQLkUfeO1IB06BXzXAADe54u/ELTf7C9bE5teU6f9ETUwi+UhtySUtokm7UoJbx9rmu5o+A==
+  dependencies:
+    "@vuepress/core" "2.0.0-beta.38"
+    shiki "^0.10.1"
+
 "@vuepress/plugin-theme-data@2.0.0-beta.38":
   version "2.0.0-beta.38"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-theme-data/-/plugin-theme-data-2.0.0-beta.38.tgz#6c3358bbc00147fcf1a7199e3da057d9952047c6"

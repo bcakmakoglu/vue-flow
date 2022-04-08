@@ -48,6 +48,8 @@
     "postcss": "^8.4.8",
     "postcss-cli": "^9.1.0",
     "postcss-nested": "^5.0.6",
+    "ts-patch": "^2.0.1",
+    "typescript-transform-paths": "^3.3.1",
     "unplugin-auto-import": "^0.6.9",
     "vite": "2.5.x",
     "vite-plugin-vue-type-imports": "^0.1.3",

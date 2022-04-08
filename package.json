@@ -9,7 +9,6 @@
     "package"
   ],
   "scripts": {
-    "prepare": "ts-patch install -s",
     "dev": "yarn --cwd examples dev",
     "docs": "yarn --cwd docs dev",
     "docs:build": "yarn --cwd docs build",
@@ -29,9 +28,7 @@
     "eslint-plugin-prettier": "^3.4.1",
     "prettier": "^2.4.1",
     "shx": "^0.3.4",
-    "ts-patch": "^2.0.1",
     "typedoc": "^0.22.13",
-    "typescript": "^4.5.5",
-    "typescript-transform-paths": "^3.3.1"
+    "typescript": "^4.5.5"
   }
 }
