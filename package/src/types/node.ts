@@ -67,10 +67,15 @@ export interface GraphNode<Data = ElementData> extends Node<Data> {
 
 /** these props are passed to node components */
 export interface NodeProps<Data = ElementData> {
+  /** unique node id */
   id: string
-  type: string
+  /** node type */
+  type: keyof DefaultNodeTypes | string
+  /** additional data of node */
   data?: Data
+  /** is node selected */
   selected: boolean
+  /** can node be connected */
   connectable: boolean
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
@@ -88,12 +93,19 @@ export interface NodeProps<Data = ElementData> {
   isValidTargetPos?: ValidConnectionFunc
   /** called when used as source for new connection */
   isValidSourcePos?: ValidConnectionFunc
+  /** parent node id */
   parentNode?: string
+  /** is node currently dragging */
   dragging: boolean
+  /** node z-index */
   zIndex: number
+  /** handle position */
   targetPosition?: Position
+  /** handle position */
   sourcePosition?: Position
+  /** drag handle query selector */
   dragHandle?: string
 
+  /** node DOM-element */
   nodeElement: HTMLDivElement
 }
