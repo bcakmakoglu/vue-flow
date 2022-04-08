@@ -6,6 +6,35 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- Trigger computedPosition watcher when selected changes ([ecff009](ecff009c0eb2de221a68949b0a986136fdbe830d))
+
+### Documentation
+
+- Add pwa plugin & update manifest ([c8332ca](c8332cac158d69ec2b9cae9973c66dd831190776))
+
+### Features
+
+- Add floating edges example ([3258257](3258257c489e6fc2e09ff5784ada078e0920b68d))
+
+### Miscellaneous Tasks
+
+- Move ts-patch and typescript-transform-paths to package dev-deps ([e01d788](e01d78836c0ab669769e5a02a23ed4c662fd31d4))
+
+### Refactor
+
+- Add nodeElements prop again ([11bf3ee](11bf3eed715f8e96a3555937955be425fece9788))
+- Change label-type to string | VNode | Object ([0b6521a](0b6521a36210d006815ac63dcf6f28bd0f5f1953))
+
+### Update
+
+- NodeProps comments ([544e199](544e1991fade1eae064c84458b66a9dcf7dc8a81))
+
+## [0.4.2-1] - 2022-04-08
+
+[93aff14](93aff14aaef089faefcfc295f38c1195aabc9d66)...[7b6e6a1](7b6e6a1395c851c79aeb0cc52ac986190b7b667e)
+
+### Bug Fixes
+
 - Import paths ([1289f38](1289f388ec7b27a2de61a5a1a749ed53267d39b3))
 - Replace watchDebounced with debouncedWatch ([ddc39db](ddc39dbffe9cd17b5e3a404507146a18f42dd3e9))
 - Await until d3zoom is rdy ([f4071a8](f4071a8d9a8dd0ccc761073b6a73e89efc4fe41a))
