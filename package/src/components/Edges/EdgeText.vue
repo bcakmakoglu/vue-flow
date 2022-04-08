@@ -39,11 +39,7 @@ export default {
     />
     <text ref="edge-text" class="vue-flow__edge-text" :y="edgeRefBbox.height / 2" dy="0.3em" :style="props.labelStyle">
       <slot v-bind="props">
-        <component
-          :is="props.label?.component"
-          v-if="typeof props.label !== 'string' && typeof props.label?.component !== 'undefined'"
-          v-bind="props.label?.props"
-        />
+        <component :is="props.label" v-if="typeof props.label !== 'string' && typeof props.label" />
         <template v-else v-html="props.label">
           {{ props.label }}
         </template>

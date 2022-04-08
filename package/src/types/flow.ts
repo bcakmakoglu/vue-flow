@@ -1,4 +1,4 @@
-import { CSSProperties } from 'vue'
+import { CSSProperties, VNode } from 'vue'
 import { GraphEdge, Edge, DefaultEdgeOptions } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
@@ -27,12 +27,7 @@ export type StyleFunc<Data = ElementData> = (element: FlowElement<Data>) => Styl
 /** base element props */
 export interface Element<Data extends ElementData = ElementData> {
   id: string
-  label?:
-    | string
-    | {
-        props?: any
-        component: any
-      }
+  label?: string | VNode
   type?: string
   data?: Data
   class?: string | ClassFunc<Data>

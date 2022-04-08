@@ -21,7 +21,7 @@ export default {
     :is-connectable="props.connectable"
     :is-valid-connection="props.isValidTargetPos"
   />
-  <component :is="props.label.component" v-bind="props.label.props" v-if="typeof props.label !== 'string' && props.label" />
+  <component :is="props.label" v-if="typeof props.label !== 'string' && props.label" />
   <span v-else v-html="props.label" />
   <Handle
     type="source"

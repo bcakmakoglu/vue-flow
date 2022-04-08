@@ -1,3 +1,4 @@
+import { VNode } from 'vue'
 import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions, ElementData } from './flow'
 import { DefaultNodeTypes } from './components'
 import { HandleElement, ValidConnectionFunc } from './handle'
@@ -79,16 +80,16 @@ export interface NodeProps<Data = ElementData> {
   connectable: boolean
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
-  /** x, y position */
+  /** node x, y (relative) position on graph */
   position: XYPosition
   /** dom element dimensions (width, height) */
   dimensions: Dimensions
-  label?:
-    | string
-    | {
-        props?: any
-        component: any
-      }
+  /**
+   * node label, either pass a string or a VNode
+   * For example like this: `h('div', props, children)`)
+   * Object is just a type-hack for Vue, ignore that
+   */
+  label?: string | VNode | Object
   /** called when used as target for new connection */
   isValidTargetPos?: ValidConnectionFunc
   /** called when used as source for new connection */
