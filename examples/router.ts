@@ -62,6 +62,10 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./src/NodeTypeChange/NodeTypeChangeExample.vue'),
   },
   {
+    path: '/floating-edges',
+    component: () => import('./src/FloatingEdges/FloatingEdges.vue'),
+  },
+  {
     path: '/overview',
     component: () => import('./src/Overview/Overview.vue'),
   },
