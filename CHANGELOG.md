@@ -6,6 +6,37 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- Import paths ([1289f38](1289f388ec7b27a2de61a5a1a749ed53267d39b3))
+- Replace watchDebounced with debouncedWatch ([ddc39db](ddc39dbffe9cd17b5e3a404507146a18f42dd3e9))
+- Await until d3zoom is rdy ([f4071a8](f4071a8d9a8dd0ccc761073b6a73e89efc4fe41a))
+- Cast styles to css properties ([82b1376](82b1376815d55d8f9a411e00ba40490f649f1abf))
+- Use correct handleId ([758b533](758b5334c5f12cf3207cc6a5614468d70eb6cce2))
+- Parenthesis in handleId computed ([ec7c21f](ec7c21f9586e85625b41e50837e031ab36cf895f))
+
+### Miscellaneous Tasks
+
+- Update deps ([37f12cc](37f12cc8ebbc3d4fa152db489670765b4f7835bc))
+- Update vue to 3.2.25 ([5c91438](5c9143872d6d2e07e418b8a7ee40e369d4f948fd))
+- Import sort ([248dfda](248dfdae767993d11a703f3e3c38740c35848bad))
+
+### Refactor
+
+- Remove paneReady state value ([bdb0af0](bdb0af0bb9f97e4345de71bc313b26af1c64a86e))
+- Use computed properties for class and styles ([4fcad18](4fcad18f8a5223c7a5d4e9247629a32d476383e0))
+- Use computed properties for class and styles ([98651d6](98651d60a85eb838f6f5218980b04d15a6a22dce))
+- Remove position func ([fef1a72](fef1a72dcb6fc7459a4aff48261fcdb5b9f893fe))
+
+### Update
+
+- Use proper handle bounds ([45d3a2a](45d3a2abf3347acd97c0258f651763561739f5a7))
+- Allow void return for styles/class func ([8001031](800103126cb87aa99bb2169233945b220395eb9d))
+
+## [0.4.2-0] - 2022-04-06
+
+[8f4d1b3](8f4d1b3beb63a86822e846aa7773672baab8dc50)...[93aff14](93aff14aaef089faefcfc295f38c1195aabc9d66)
+
+### Bug Fixes
+
 - Selection not working twice in a row ([bcfa05f](bcfa05f30a4d9336abf1d7b8e5bd672b1ca79539))
 
 ### Features
