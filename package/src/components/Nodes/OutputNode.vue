@@ -14,7 +14,7 @@ export default {
 }
 </script>
 <template>
-  <component :is="props.label.component" v-bind="props.label.props" v-if="typeof props.label !== 'string' && props.label" />
+  <component :is="props.label" v-bind="props.label" v-if="typeof props.label !== 'string' && props.label" />
   <span v-else v-html="props.label" />
   <Handle
     type="source"
