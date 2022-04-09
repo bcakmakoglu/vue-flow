@@ -111,7 +111,6 @@ props.d3Selection
   .on('wheel.zoom', store.panOnScroll || typeof props.d3ZoomHandler === 'undefined' ? null : (props.d3ZoomHandler as any))
 
 props.d3Zoom.filter((event: MouseEvent) => {
-  console.log(event)
   const zoomScroll = zoomKeyPressed.value || store.zoomOnScroll
   const pinchZoom = store.zoomOnPinch && event.ctrlKey
 
