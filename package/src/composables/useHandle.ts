@@ -26,7 +26,7 @@ export const checkElementBelowIsValid = (
   const result: Result = {
     elementBelow,
     isValid: false,
-    connection: { source: null, target: null, sourceHandle: null, targetHandle: null },
+    connection: { source: '', target: '', sourceHandle: null, targetHandle: null },
     isHoveringHandle: false,
   }
 
@@ -55,7 +55,7 @@ export const checkElementBelowIsValid = (
           }
 
       result.connection = connection
-      result.isValid = isValidConnection(connection)
+      result.isValid = isValidConnection(connection) || !result.connection.target || !result.connection.source
     }
   }
 
