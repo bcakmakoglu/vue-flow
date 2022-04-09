@@ -47,17 +47,20 @@ export class Storage {
       if (preloadedState.edges) actions.setEdges(preloadedState.edges)
     }
 
+    const refs = { ...toRefs(reactiveState) }
+
     const store = reactive({
       ...hooksOn,
-      ...toRefs(reactiveState),
+      ...refs,
       ...getters,
       ...actions,
     })
+
     const flow: UseVueFlow = {
       ...hooksOn,
       ...getters,
       ...actions,
-      ...toRefs(reactiveState),
+      ...refs,
       id,
       store,
     }
