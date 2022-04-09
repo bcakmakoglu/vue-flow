@@ -116,37 +116,37 @@ const elements = ref<Elements>([
 
 ## Classes
 
-| Name                           | Container                                                |
-|--------------------------------|----------------------------------------------------------|
-| .vue-flow                      | Outer container                                          |
-| .vue-flow__container           | Wrapping container elements                              |
-| .vue-flow__renderer            | Inner container                                          |
-| .vue-flow__transformation-pane | Zoom & pan pane                                          |
-| .vue-flow__selectionpane       | Selection pane                                           |
-| .vue-flow__selection           | User selection                                           |
-| .vue-flow__edges               | Edges renderer wrapper                                   |
-| .vue-flow__edge                | Edge element wrapper                                     |
-| .vue-flow__edge-{$type}        | Edge type, either a custom or default type               |
-| .vue-flow__edge .selected      | Selected Edge                                            |
-| .vue-flow__edge .animated      | Animated edge                                            |
-| .vue-flow__edge-path           | Edge element svg path                                    |
-| .vue-flow__edge-text           | Edge label wrapper                                       |
-| .vue-flow__edge-textbg         | Edge label wrapper background                            |
-| .vue-flow__connection          | Connection line element                                  |
-| .vue-flow__connection-path     | Connection line svg path                                 |
-| .vue-flow__nodes               | Nodes renderer wrapper                                   |
-| .vue-flow__node                | Node element wrapper                                     |
-| .vue-flow__node .selected      | Selected Node                                            |
-| .vue-flow__node-{$type}        | Node type, either a custom or default type               |
-| .vue-flow__nodesselection      | Nodes selection rect                                     |
-| .vue-flow__handle              | Node handle element wrapper                              |
-| .vue-flow__handle-bottom       | Handle position bottom                                   |
-| .vue-flow__handle-top          | Handle position top                                      |
-| .vue-flow__handle-left         | Handle position left                                     |
-| .vue-flow__handle-right        | Handle position right                                    |
-| .vue-flow__handle-connecting   | Connectionline is above handle                           |
-| .vue-flow__handle-valid        | Connectionline is above handle & the connection is valid |
-| .vue-flow__background          | Background component                                     |
-| .vue-flow__minimap             | Mini map component                                       |
-| .vue-flow__controls            | Controls component                                       |
+| Name                          | Container                                                |
+|-------------------------------|----------------------------------------------------------|
+| .vue-flow                     | Outer container                                          |
+| .vue-flow__container          | Wrapping container elements                              |
+| .vue-flow__viewport           | Inner container                                          |
+| .vue-flow__transformationpane | Zoom & pan pane                                          |
+| .vue-flow__selectionpane      | Selection pane                                           |
+| .vue-flow__selection          | User selection                                           |
+| .vue-flow__edges              | Edges renderer wrapper                                   |
+| .vue-flow__edge               | Edge element wrapper                                     |
+| .vue-flow__edge-{$type}       | Edge type, either a custom or default type               |
+| .vue-flow__edge .selected     | Selected Edge                                            |
+| .vue-flow__edge .animated     | Animated edge                                            |
+| .vue-flow__edge-path          | Edge element svg path                                    |
+| .vue-flow__edge-text          | Edge label wrapper                                       |
+| .vue-flow__edge-textbg        | Edge label wrapper background                            |
+| .vue-flow__connection         | Connection line element                                  |
+| .vue-flow__connection-path    | Connection line svg path                                 |
+| .vue-flow__nodes              | Nodes renderer wrapper                                   |
+| .vue-flow__node               | Node element wrapper                                     |
+| .vue-flow__node .selected     | Selected Node                                            |
+| .vue-flow__node-{$type}       | Node type, either a custom or default type               |
+| .vue-flow__nodesselection     | Nodes selection rect                                     |
+| .vue-flow__handle             | Node handle element wrapper                              |
+| .vue-flow__handle-bottom      | Handle position bottom                                   |
+| .vue-flow__handle-top         | Handle position top                                      |
+| .vue-flow__handle-left        | Handle position left                                     |
+| .vue-flow__handle-right       | Handle position right                                    |
+| .vue-flow__handle-connecting  | Connectionline is above handle                           |
+| .vue-flow__handle-valid       | Connectionline is above handle & the connection is valid |
+| .vue-flow__background         | Background component                                     |
+| .vue-flow__minimap            | Mini map component                                       |
+| .vue-flow__controls           | Controls component                                       |
  
