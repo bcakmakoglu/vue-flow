@@ -53,6 +53,7 @@ export class Storage {
       ...getters,
       ...actions,
     })
+
     const flow: UseVueFlow = {
       ...hooksOn,
       ...getters,

@@ -3,6 +3,10 @@ import { State, GraphEdge, GraphNode, ComputedGetters } from '~/types'
 import { getNodesInside, isEdgeVisible } from '~/utils'
 
 export default (state: State): ComputedGetters => {
+  const paneReady = ref(false)
+
+  state.hooks.paneReady.on(() => (paneReady.value = true))
+
   const getEdgeTypes = computed(() => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
@@ -24,6 +28,8 @@ export default (state: State): ComputedGetters => {
   })
 
   const getNodes = computed<GraphNode[]>(() => {
+    if (!paneReady.value) return []
+
     const nodes = state.nodes.filter((n) => !n.hidden)
     return state.onlyRenderVisibleElements
       ? nodes &&
@@ -42,6 +48,8 @@ export default (state: State): ComputedGetters => {
   })
 
   const getEdges = computed<GraphEdge[]>(() => {
+    if (!paneReady.value) return []
+
     if (!state.onlyRenderVisibleElements)
       return state.edges.filter((e) => !e.hidden && e.targetNode && !e.targetNode.hidden && e.sourceNode && !e.sourceNode.hidden)
     else
