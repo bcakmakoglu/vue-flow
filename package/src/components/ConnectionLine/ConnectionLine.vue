@@ -27,8 +27,8 @@ const sourceY = props.sourceNode.computedPosition.y + sourceHandleY
 const isRightOrLeft = sourceHandle?.position === Position.Left || sourceHandle?.position === Position.Right
 const targetPosition = isRightOrLeft ? Position.Left : Position.Top
 
-const targetX = computed(() => (store.connectionPosition.x - store.transform[0]) / store.transform[2])
-const targetY = computed(() => (store.connectionPosition.y - store.transform[1]) / store.transform[2])
+const targetX = computed(() => (store.connectionPosition.x - store.viewport.x) / store.viewport.zoom)
+const targetY = computed(() => (store.connectionPosition.y - store.viewport.y) / store.viewport.zoom)
 
 const dAttr = computed(() => {
   let path = `M${sourceX},${sourceY} ${targetX.value},${targetY.value}`

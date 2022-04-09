@@ -331,9 +331,9 @@ const edges = ref([
 
 - Details:
 
-  Trigger fit view when transformation-pane is mounted.
+  Trigger fit view when viewport is mounted.
 
-## Zoom & Pan Options
+## Viewport Options
 
 ### zoom-activation-key-code <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
@@ -475,7 +475,7 @@ const edges = ref([
 
 - Details:
 
-  Default zoom pane position on initial load.
+  Default viewport position on initial load.
 
 ### translate-extent <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
@@ -492,7 +492,7 @@ const edges = ref([
 
 - Details:
 
-  The area in which the zoom pane can be moved around.
+  The area in which the viewport can be moved around.
 
 ## Selection Pane Options
 

@@ -1,21 +1,10 @@
 import { ComputedRef, CSSProperties, ToRefs } from 'vue'
-import {
-  Dimensions,
-  ElementData,
-  Elements,
-  FlowElements,
-  FlowInstance,
-  FlowOptions,
-  Rect,
-  SnapGrid,
-  Transform,
-  XYPosition,
-} from './flow'
+import { Dimensions, ElementData, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, XYPosition } from './flow'
 import { EdgeComponent, NodeComponent, DefaultNodeTypes, DefaultEdgeTypes } from './components'
 import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
-import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode } from './zoom'
+import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
 import { FlowHooks, FlowHooksOn } from './hooks'
 import { NodeChange, EdgeChange } from './changes'
 import { StartHandle, HandleType } from './handle'
@@ -44,7 +33,7 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   /** viewport dimensions */
   dimensions: Dimensions
   /** viewport transform x, y, z */
-  transform: Transform
+  viewport: Viewport
 
   onlyRenderVisibleElements: boolean
   defaultPosition: [number, number]

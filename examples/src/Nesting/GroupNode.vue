@@ -3,7 +3,7 @@ import { Handle, Position, getNodesInside, useVueFlow } from '@braks/vue-flow'
 import type { NodeProps } from '@braks/vue-flow'
 
 const props = defineProps<NodeProps>()
-const { onNodeDragStop, getNodes, transform } = useVueFlow()
+const { onNodeDragStop, getNodes, viewport } = useVueFlow()
 onNodeDragStop(({ node }) => {
   const nodes = getNodesInside(
     getNodes.value,
@@ -12,7 +12,7 @@ onNodeDragStop(({ node }) => {
       x: props.computedPosition.x,
       y: props.computedPosition.y,
     },
-    transform.value,
+    viewport.value,
   )
   if (nodes.some((n) => n.id === node.id && n.id !== props.id)) {
     node.label = `In ${props.id}`

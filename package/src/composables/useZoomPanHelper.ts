@@ -2,13 +2,13 @@ import { zoomIdentity } from 'd3-zoom'
 import useVueFlow from './useVueFlow'
 import useWindow from './useWindow'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils'
-import { GraphNode, Store, Viewport, D3Selection } from '~/types'
+import { GraphNode, Store, ViewportFuncs, D3Selection } from '~/types'
 
 const DEFAULT_PADDING = 0.1
 
 const transition = (selection: D3Selection, ms = 0) => selection.transition().duration(ms)
 
-export default (store: Store = useVueFlow().store): Viewport => ({
+export default (store: Store = useVueFlow().store): ViewportFuncs => ({
   zoomIn: (options) => store.d3Selection && store.d3Zoom?.scaleBy(transition(store.d3Selection, options?.duration), 1.2),
   zoomOut: (options) => store.d3Selection && store.d3Zoom?.scaleBy(transition(store.d3Selection, options?.duration), 1 / 1.2),
   zoomTo: (zoomLevel, options) =>
@@ -18,9 +18,9 @@ export default (store: Store = useVueFlow().store): Viewport => ({
     store.d3Selection && store.d3Zoom?.transform(transition(store.d3Selection, options?.duration), nextTransform)
   },
   getTransform: () => ({
-    x: store.transform[0],
-    y: store.transform[1],
-    zoom: store.transform[2],
+    x: store.viewport.x,
+    y: store.viewport.y,
+    zoom: store.viewport.zoom,
   }),
   fitView: async (
     options = {
@@ -44,7 +44,7 @@ export default (store: Store = useVueFlow().store): Viewport => ({
       nodes = options.includeHiddenNodes ? store.nodes : store.getNodes
     }
     const bounds = getRectOfNodes(nodes)
-    const [x, y, zoom] = getTransformForBounds(
+    const { x, y, zoom } = getTransformForBounds(
       bounds,
       store.dimensions.width,
       store.dimensions.height,
@@ -66,7 +66,7 @@ export default (store: Store = useVueFlow().store): Viewport => ({
     store.d3Selection && store.d3Zoom?.transform(transition(store.d3Selection, options?.duration), transform)
   },
   fitBounds: (bounds, options = { padding: DEFAULT_PADDING }) => {
-    const [x, y, zoom] = getTransformForBounds(
+    const { x, y, zoom } = getTransformForBounds(
       bounds,
       store.dimensions.width,
       store.dimensions.height,
@@ -78,5 +78,5 @@ export default (store: Store = useVueFlow().store): Viewport => ({
 
     store.d3Selection && store.d3Zoom?.transform(transition(store.d3Selection, options.duration), transform)
   },
-  project: (position) => pointToRendererPoint(position, store.transform, store.snapToGrid, store.snapGrid),
+  project: (position) => pointToRendererPoint(position, store.viewport, store.snapToGrid, store.snapGrid),
 })

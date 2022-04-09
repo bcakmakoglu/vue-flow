@@ -154,7 +154,7 @@ const onEdgeUpdate = ({ edge, connection }) => {
 
 - Details:
 
-  Returns a transformation for the zoom pane according to input bounds.
+  Returns a transformation for the viewport according to input bounds.
 
 ### getRectOfNodes
 

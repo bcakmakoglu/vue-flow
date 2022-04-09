@@ -28,16 +28,17 @@ const nodeColorFunc: MiniMapNodeFunc = props.nodeColor instanceof Function ? pro
 const nodeStrokeColorFunc: MiniMapNodeFunc =
   props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor as string
 
-const nodeClassNameFunc = props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as MiniMapNodeFunc
+const nodeClassNameFunc =
+  props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as MiniMapNodeFunc
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
 const bb = computed(() => getRectOfNodes(store.getNodes))
 const viewBB = computed(() => ({
-  x: -store.transform[0] / store.transform[2],
-  y: -store.transform[1] / store.transform[2],
-  width: store.dimensions.width / store.transform[2],
-  height: store.dimensions.height / store.transform[2],
+  x: -store.viewport.x / store.viewport.zoom,
+  y: -store.viewport.y / store.viewport.zoom,
+  width: store.dimensions.width / store.viewport.zoom,
+  height: store.dimensions.height / store.viewport.zoom,
 }))
 const viewBox = computed(() => {
   const boundingRect = store.getNodes && store.getNodes.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value
