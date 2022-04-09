@@ -95,16 +95,21 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
 }
 
 export interface Actions<NodeData = ElementData, EdgeData = ElementData> {
-  /** @deprecated use setNodes / setEdges instead */
-  setElements: (elements: Elements<NodeData, EdgeData>, extent?: CoordinateExtent) => void
+  /** parses elements (nodes + edges) and re-sets the state */
+  setElements: (
+    elements: Elements<NodeData, EdgeData> | ((elements: FlowElements<NodeData, EdgeData>) => Elements<NodeData>),
+    extent?: CoordinateExtent,
+  ) => void
   /** parses nodes and re-sets the state */
-  setNodes: (nodes: Node<NodeData>[], extent?: CoordinateExtent) => void
+  setNodes: (nodes: Node<NodeData>[] | ((nodes: GraphNode<NodeData>[]) => Node<NodeData>[]), extent?: CoordinateExtent) => void
   /** parses edges and re-sets the state */
-  setEdges: (edges: Edge<EdgeData>[]) => void
+  setEdges: (edges: Edge<EdgeData>[] | ((edges: GraphEdge<EdgeData>[]) => Edge<EdgeData>[])) => void
   /** parses nodes and adds to state */
-  addNodes: <NA = NodeData>(nodes: Node<NA>[], extent?: CoordinateExtent) => void
+  addNodes: <NA = NodeData>(nodes: Node<NA>[] | ((nodes: GraphNode<NA>[]) => Node<NA>[]), extent?: CoordinateExtent) => void
   /** parses edges and adds to state */
-  addEdges: <EA = EdgeData>(edgesOrConnections: (Edge<EA> | Connection)[]) => void
+  addEdges: <EA = EdgeData>(
+    edgesOrConnections: (Edge<EA> | Connection)[] | ((edges: GraphEdge<EA>[]) => (Edge<EA> | Connection)[]),
+  ) => void
   /** updates an edge */
   updateEdge: <EU = EdgeData>(oldEdge: GraphEdge<EU>, newConnection: Connection) => GraphEdge | false
   applyEdgeChanges: <ED = EdgeData>(changes: EdgeChange[]) => GraphEdge<ED>[]
@@ -117,7 +122,14 @@ export interface Actions<NodeData = ElementData, EdgeData = ElementData> {
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
   resetSelectedElements: () => void
   setInteractive: (isInteractive: boolean) => void
-  setState: (state: Partial<FlowOptions<NodeData, EdgeData> & Omit<State, 'nodes' | 'edges' | 'modelValue'>>) => void
+  setState: (
+    state:
+      | Partial<FlowOptions<NodeData, EdgeData> & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
+      | ((
+          state: State<NodeData, EdgeData>,
+        ) => Partial<FlowOptions<NodeData, EdgeData> & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
+  ) => void
+
   updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
   updateNodeDimensions: (
     updates: {

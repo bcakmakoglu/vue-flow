@@ -225,13 +225,15 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const setNodes: Actions['setNodes'] = (nodes, extent?: CoordinateExtent) => {
     if (!state.initialized && !nodes.length) return
     if (!state.nodes) state.nodes = []
-    state.nodes = createGraphNodes(nodes, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
+    const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
+    state.nodes = createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
     if (!state.initialized && !edges.length) return
+    const curr = edges instanceof Function ? edges(state.edges) : edges
 
-    state.edges = edges.reduce<GraphEdge[]>((res, edge) => {
+    state.edges = curr.reduce<GraphEdge[]>((res, edge) => {
       const sourceNode = getters.getNode.value(edge.source)!
       const targetNode = getters.getNode.value(edge.target)!
 
@@ -257,16 +259,22 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const setElements: Actions['setElements'] = (elements, extent) => {
     if ((!state.initialized && !elements.length) || !elements) return
-    setNodes(elements.filter(isNode), extent)
-    setEdges(elements.filter(isEdge))
+    const curr = elements instanceof Function ? elements([...state.nodes, ...state.edges]) : elements
+
+    setNodes(curr.filter(isNode), extent)
+    setEdges(curr.filter(isEdge))
   }
 
   const addNodes: Actions['addNodes'] = (nodes, extent) => {
-    state.nodes.push(...createGraphNodes(nodes, getters.getNode.value, state.nodes, extent ?? state.nodeExtent))
+    const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
+
+    state.nodes.push(...createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent))
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
-    params.forEach((param) => {
+    const curr = params instanceof Function ? params(state.edges) : params
+
+    curr.forEach((param) => {
       const edge = addEdge(param, state.edges)
       if (edge) {
         const sourceNode = getters.getNode.value(edge.source)!
@@ -294,11 +302,14 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyEdges(changes, state.edges)
 
-  const setState: Actions['setState'] = (opts) => {
+  const setState: Actions['setState'] = (options) => {
     const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent']
+    const opts = options instanceof Function ? options(state) : options
+
     if (typeof opts.modelValue !== 'undefined') setElements(opts.modelValue, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
+
     Object.keys(opts).forEach((o) => {
       const option = opts[o as keyof typeof opts]
       if (!skip.includes(o) && isDef(option)) (<any>state)[o] = option
