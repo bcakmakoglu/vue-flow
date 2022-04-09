@@ -494,7 +494,7 @@ const edges = ref([
 
   The area in which the viewport can be moved around.
 
-## Selection Pane Options
+## Selection Options
 
 ### selection-key-code <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
@@ -527,7 +527,6 @@ const edges = ref([
 - Details:
 
   Define a key which can be used to activate remove elements from the pane.
-
 
 
 ## Global Node Options
