@@ -33,7 +33,7 @@ const transform = computed(() => `translate(${store.transform[0]}px,${store.tran
 </script>
 <script lang="ts">
 export default {
-  name: 'TransformationPane',
+  name: 'Transform',
 }
 </script>
 <template>
