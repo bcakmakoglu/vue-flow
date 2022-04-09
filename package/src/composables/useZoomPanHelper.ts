@@ -2,13 +2,13 @@ import { zoomIdentity } from 'd3-zoom'
 import useVueFlow from './useVueFlow'
 import useWindow from './useWindow'
 import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils'
-import { GraphNode, Store, UseZoomPanHelper, D3Selection } from '~/types'
+import { GraphNode, Store, Viewport, D3Selection } from '~/types'
 
 const DEFAULT_PADDING = 0.1
 
 const transition = (selection: D3Selection, ms = 0) => selection.transition().duration(ms)
 
-export default (store: Store = useVueFlow().store): UseZoomPanHelper => ({
+export default (store: Store = useVueFlow().store): Viewport => ({
   zoomIn: (options) => store.d3Selection && store.d3Zoom?.scaleBy(transition(store.d3Selection, options?.duration), 1.2),
   zoomOut: (options) => store.d3Selection && store.d3Zoom?.scaleBy(transition(store.d3Selection, options?.duration), 1 / 1.2),
   zoomTo: (zoomLevel, options) =>
