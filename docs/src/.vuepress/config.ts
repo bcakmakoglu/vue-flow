@@ -59,7 +59,7 @@ export default defineUserConfig<DefaultThemeOptions>({
 
   themeConfig: {
     repo: 'bcakmakoglu/vue-flow',
-    docsDir: 'docs',
+    docsDir: 'docs/src/',
     docsBranch: 'master',
     lastUpdated: true,
     contributors: true,
