@@ -11,7 +11,9 @@ export type NodeHandleBounds = {
   target?: HandleElement[]
 }
 
+// eslint-disable-next-line no-use-before-define
 type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
+// eslint-disable-next-line no-use-before-define
 type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
 
 export interface Node<Data = ElementData> extends Element<Data> {

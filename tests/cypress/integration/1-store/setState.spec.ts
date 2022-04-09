@@ -6,9 +6,7 @@ describe('test store state', () => {
   const { store: initial } = useVueFlow()
   beforeEach(() => ({ store } = useVueFlow()))
 
-  it('has any initial state', () => {
-    expect(store).to.exist
-  })
+  it('has any initial state', () => expect(store).to.exist)
 
   it('has default initial state', () => {
     Object.keys(store).forEach((state) => {
