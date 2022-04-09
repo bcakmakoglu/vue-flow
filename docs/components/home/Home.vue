@@ -8,25 +8,27 @@ const dark = useDark({
   selector: 'html',
 })
 
-onMounted(() => {
-  const blobity = new Blobity({
-    color: dark.value ? '#ffffff' : '#000000',
-    invert: true,
-    zIndex: 0,
-    magnetic: false,
-    dotColor: '#10b981',
-    radius: 8,
-    focusableElementsOffsetX: 2,
-    focusableElementsOffsetY: 2,
-    mode: 'bouncy',
-  })
-
-  onBeforeUnmount(() => {
-    blobity.destroy()
-  })
-})
-
 const breakpoints = useBreakpoints(breakpointsTailwind)
+
+onMounted(() => {
+  if (!breakpoints.isSmaller('md')) {
+    const blobity = new Blobity({
+      color: dark.value ? '#ffffff' : '#000000',
+      invert: true,
+      zIndex: 0,
+      magnetic: false,
+      dotColor: '#10b981',
+      radius: 8,
+      focusableElementsOffsetX: 2,
+      focusableElementsOffsetY: 2,
+      mode: 'bouncy',
+    })
+
+    onBeforeUnmount(() => {
+      blobity.destroy()
+    })
+  }
+})
 
 const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges } = useVueFlow({
   nodes: [
