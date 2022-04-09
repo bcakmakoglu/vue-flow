@@ -37,7 +37,7 @@ export default {
 }
 </script>
 <template>
-  <div :key="`transformation-pane-${id}`" class="vue-flow__transformation-pane vue-flow__container" :style="{ transform }">
+  <div :key="`transformation-pane-${id}`" class="vue-flow__transformationpane vue-flow__container" :style="{ transform }">
     <NodeRenderer :key="`node-renderer-${id}`" />
     <EdgeRenderer :key="`edge-renderer-${id}`" />
     <slot />
