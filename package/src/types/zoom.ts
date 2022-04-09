@@ -52,7 +52,7 @@ export type ZoomTo = (zoomLevel: number, options?: UseZoomPanHelperOptions) => v
 export type GetTransform = () => FlowTransform
 export type SetTransform = (transform: FlowTransform, options?: UseZoomPanHelperOptions) => void
 
-export interface UseZoomPanHelper {
+export interface Viewport {
   zoomIn: ZoomInOut
   zoomOut: ZoomInOut
   zoomTo: ZoomTo

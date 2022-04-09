@@ -2,7 +2,7 @@ import { CSSProperties, VNode } from 'vue'
 import { GraphEdge, Edge, DefaultEdgeOptions } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
-import { KeyCode, PanOnScrollMode, UseZoomPanHelper } from './zoom'
+import { KeyCode, PanOnScrollMode, Viewport } from './zoom'
 import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
 export type ElementData = any
@@ -86,14 +86,14 @@ export type FlowExportObject = {
   zoom: number
 }
 
-export type ToObject = () => FlowExportObject
-
-export type FlowInstance = {
+interface Exports {
   getElements: () => FlowElements
   getNodes: () => GraphNode[]
   getEdges: () => GraphEdge[]
-  toObject: ToObject
-} & UseZoomPanHelper
+  toObject: () => FlowExportObject
+}
+
+export type FlowInstance = Exports & Viewport
 
 export interface FlowProps<NodeData = ElementData, EdgeData = ElementData> {
   id?: string

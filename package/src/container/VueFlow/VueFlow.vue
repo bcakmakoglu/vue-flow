@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ZoomPane from '../ZoomPane/ZoomPane.vue'
+import Viewport from '../Viewport/Viewport.vue'
 import { createHooks, useHooks } from '../../store'
 import { useVueFlow } from '../../composables'
 import type { FlowProps } from '../../types/flow'
@@ -91,7 +91,7 @@ export default {
 </script>
 <template>
   <div class="vue-flow">
-    <ZoomPane :key="`renderer-${id}`">
+    <Viewport :key="`renderer-${id}`">
       <template #nodes>
         <template v-for="nodeName of Object.keys(getNodeTypes)" :key="`node-${nodeName}-${id}`">
           <slot :name="`node-${nodeName}`" />
@@ -106,7 +106,7 @@ export default {
         <slot name="connection-line" />
       </template>
       <slot name="zoom-pane" />
-    </ZoomPane>
+    </Viewport>
     <slot />
   </div>
 </template>
