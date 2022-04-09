@@ -14,9 +14,9 @@ export enum ConnectionLineType {
 /** Connection params that are passed when onConnect is called */
 export interface Connection {
   /** Source node id */
-  source: string | null
+  source: string
   /** Target node id */
-  target: string | null
+  target: string
   /** Source handle id */
   sourceHandle: string | null
   /** Target handle id */
