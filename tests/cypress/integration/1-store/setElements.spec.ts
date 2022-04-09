@@ -1,8 +1,8 @@
-import { useVueFlow, isEdge, isNode, Edge, FlowStore, Node } from '@braks/vue-flow'
+import { useVueFlow, isEdge, isNode, Edge, Store, Node } from '@braks/vue-flow'
 import { getElements } from '../../../../examples/src/Stress/utils'
 
 describe('test store action setElements', () => {
-  const setElements = async (store: FlowStore) => {
+  const setElements = async (store: Store) => {
     const nodes: Node[] = [
       { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 } },
       { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 } },
@@ -22,7 +22,7 @@ describe('test store action setElements', () => {
   })
 
   context('elements pre-set', () => {
-    let store: FlowStore
+    let store: Store
     beforeEach(async () => {
       const { store: flowStore } = useVueFlow()
       store = flowStore
@@ -30,8 +30,9 @@ describe('test store action setElements', () => {
     })
 
     it('parses elements to flow-elements', () => {
-      store.getEdges.forEach((edge) => expect(!isEdge(edge)).to.be.true)
-      store.getNodes.forEach((node) => expect(!isNode(node)).to.be.true)
+      console.log(store.getEdges)
+      store.getEdges.forEach((edge) => expect(isEdge(edge)).to.be.true)
+      store.getNodes.forEach((node) => expect(isNode(node)).to.be.true)
     })
 
     it('parses elements to flow-elements (199 elements - stress test)', async () => {
@@ -40,8 +41,8 @@ describe('test store action setElements', () => {
         nodes,
         edges,
       })
-      store.getEdges.forEach((edge) => expect(!isEdge(edge)).to.be.true)
-      store.getNodes.forEach((node) => expect(!isNode(node)).to.be.true)
+      store.getEdges.forEach((edge) => expect(isEdge(edge)).to.be.true)
+      store.getNodes.forEach((node) => expect(isNode(node)).to.be.true)
     })
 
     it('has correct element ids', () => {
