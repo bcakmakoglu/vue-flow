@@ -30,7 +30,6 @@ describe('test store action setElements', () => {
     })
 
     it('parses elements to flow-elements', () => {
-      console.log(store.getEdges)
       store.getEdges.forEach((edge) => expect(isEdge(edge)).to.be.true)
       store.getNodes.forEach((node) => expect(isNode(node)).to.be.true)
     })

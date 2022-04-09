@@ -39,9 +39,12 @@ describe('Render VueFlow', () => {
     cy.get('.vue-flow__node').each((node) => expect(elements.some((el) => el.label === node.text())).to.be.true))
 
   it('renders nodes at correct position', () =>
-    cy.get('.vue-flow__node').each((node) => {
-      expect(
-        elements.filter(isNode).some((el) => el.position.x === node.position().left && el.position.y === node.position().top),
-      ).to.be.true
-    }))
+    cy
+      .get('.vue-flow__node')
+      .each(
+        (node) =>
+          expect(
+            elements.filter(isNode).some((el) => el.position.x === node.position().left && el.position.y === node.position().top),
+          ).to.be.true,
+      ))
 })
