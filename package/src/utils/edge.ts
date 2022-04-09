@@ -1,5 +1,5 @@
 import { rectToBox } from './graph'
-import { EdgePositions, GraphEdge, GraphNode, HandleElement, Position, Rect, Transform, XYPosition } from '~/types'
+import { EdgePositions, GraphEdge, GraphNode, HandleElement, Position, Rect, Viewport, XYPosition } from '~/types'
 
 export const getHandlePosition = (position: Position, rect: Rect, handle?: HandleElement): XYPosition => {
   const x = (handle?.x ?? 0) + rect.x
@@ -83,7 +83,7 @@ interface IsEdgeVisibleParams {
   targetHeight: number
   width: number
   height: number
-  transform: Transform
+  viewport: Viewport
 }
 
 export function isEdgeVisible({
@@ -95,7 +95,7 @@ export function isEdgeVisible({
   targetHeight,
   width,
   height,
-  transform,
+  viewport,
 }: IsEdgeVisibleParams): boolean {
   const edgeBox = {
     x: Math.min(sourcePos.x, targetPos.x),
@@ -113,10 +113,10 @@ export function isEdgeVisible({
   }
 
   const viewBox = rectToBox({
-    x: (0 - transform[0]) / transform[2],
-    y: (0 - transform[1]) / transform[2],
-    width: width / transform[2],
-    height: height / transform[2],
+    x: (0 - viewport.x) / viewport.zoom,
+    y: (0 - viewport.y) / viewport.zoom,
+    width: width / viewport.zoom,
+    height: height / viewport.zoom,
   })
 
   const xOverlap = Math.max(0, Math.min(viewBox.x2, edgeBox.x2) - Math.max(viewBox.x, edgeBox.x))

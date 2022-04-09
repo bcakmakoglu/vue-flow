@@ -2,7 +2,7 @@ import { CSSProperties, VNode } from 'vue'
 import { GraphEdge, Edge, DefaultEdgeOptions } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { ConnectionLineType, ConnectionMode } from './connection'
-import { KeyCode, PanOnScrollMode, Viewport } from './zoom'
+import { KeyCode, PanOnScrollMode, ViewportFuncs } from './zoom'
 import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
 export type ElementData = any
@@ -35,9 +35,6 @@ export interface Element<Data extends ElementData = ElementData> {
   hidden?: boolean
 }
 export type Elements<NodeData = ElementData, EdgeData = ElementData> = (Node<NodeData> | Edge<EdgeData>)[]
-
-/** Transform x, y, z */
-export type Transform = [number, number, number]
 
 /** Handle Positions */
 export enum Position {
@@ -93,7 +90,7 @@ interface Exports {
   toObject: () => FlowExportObject
 }
 
-export type FlowInstance = Exports & Viewport
+export type FlowInstance = Exports & ViewportFuncs
 
 export interface FlowProps<NodeData = ElementData, EdgeData = ElementData> {
   id?: string

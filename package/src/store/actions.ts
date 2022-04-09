@@ -152,7 +152,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
           dimensions.height &&
           (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height || update.forceUpdate)
         )
-        node.handleBounds = getHandleBounds(update.nodeElement, state.transform[2])
+        node.handleBounds = getHandleBounds(update.nodeElement, state.viewport.zoom)
 
         if (doUpdate) {
           node.dimensions = dimensions

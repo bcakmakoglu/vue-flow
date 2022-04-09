@@ -46,7 +46,7 @@ const defaultState = (): State => ({
     width: 0,
     height: 0,
   },
-  transform: [0, 0, 1],
+  viewport: { x: 0, y: 0, zoom: 1 },
 
   d3Zoom: null,
   d3Selection: null,

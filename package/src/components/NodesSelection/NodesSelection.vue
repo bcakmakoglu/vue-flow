@@ -16,7 +16,7 @@ const innerStyle = computed(() => ({
   left: `${selectedNodesBBox.value.x}px`,
 }))
 
-const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
+const transform = computed(() => `translate(${store.viewport.x}px,${store.viewport.y}px) scale(${store.viewport.zoom})`)
 
 watch(selectedNodesBBox, (v) => (store.selectedNodesBbox = v))
 
@@ -25,14 +25,14 @@ const onContextMenu = (event: MouseEvent) => store.hooks.selectionContextMenu.tr
 const { onDragStart, onDrag, onDragStop, scale } = useDraggableCore(el, {
   grid: store.snapToGrid ? store.snapGrid : undefined,
   enableUserSelectHack: false,
-  scale: store.transform[2],
+  scale: store.viewport.zoom,
 })
 
 onMounted(() => {
   debouncedWatch(
-    () => store.transform[2],
+    () => store.viewport.zoom,
     () => {
-      scale.value = store.transform[2]
+      scale.value = store.viewport.zoom
     },
     { debounce: 5 },
   )

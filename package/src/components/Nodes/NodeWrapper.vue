@@ -117,14 +117,14 @@ const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement,
   grid: props.snapGrid,
   cancel: `.${store.noDragClassName}`,
   enableUserSelectHack: false,
-  scale: store.transform[2],
+  scale: store.viewport.zoom,
 })
 
 onMounted(() => {
   debouncedWatch(
-    () => store.transform[2],
+    () => store.viewport.zoom,
     () => {
-      scale.value = store.transform[2]
+      scale.value = store.viewport.zoom
     },
     { debounce: 5 },
   )
