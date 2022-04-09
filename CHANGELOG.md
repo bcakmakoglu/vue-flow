@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+### Documentation
+
+- Add floating edges example ([2ce92b4](2ce92b4abd3729e591ca93ce4ab143708a71462c))
+- Document changed classnames ([223db76](223db76ca2f282a71911390a88f830850a613299))
+
+### Miscellaneous Tasks
+
+- Remove log ([5cb4ae1](5cb4ae180244ade04dcb8f3871b651a45074972b))
+
+### Refactor
+
+- Change zoom pane into viewport ([1a546e3](1a546e34d7e89036e0a2f2224523faf963c99dee))
+- Transformation-pane class renamed to `transformationpane` ([c4f9a9d](c4f9a9d39981be8f1c018cd87223c25b398d8f2f))
+
+### Update
+
+- Connection target and source as non-nullable strings ([6d86a77](6d86a77fbb5c66160378c8eb59ed83eef3876fce))
+- Default nodrag/nowheel/nopan class as type ([08c10b7](08c10b7e085a17fcadfd672845903a93f95c4c22))
+
+## [0.4.2-2] - 2022-04-08
+
+[7b6e6a1](7b6e6a1395c851c79aeb0cc52ac986190b7b667e)...[f7db235](f7db235523346f7f9e6ba641f6d71783e765cde8)
+
 ### Bug Fixes
 
 - Trigger computedPosition watcher when selected changes ([ecff009](ecff009c0eb2de221a68949b0a986136fdbe830d))
