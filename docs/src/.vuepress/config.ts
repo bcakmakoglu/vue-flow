@@ -64,6 +64,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     lastUpdated: true,
     contributors: true,
     darkMode: true,
+    logo: '/favicons/android-chrome-512x512.png',
     sidebar: {
       '/guide/': [
         {
