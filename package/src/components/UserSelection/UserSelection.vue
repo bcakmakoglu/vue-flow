@@ -64,7 +64,7 @@ const onMouseMove = (event: MouseEvent) => {
     height: Math.abs(mousePos.y - startY),
   }
 
-  const selectedNodes = getNodesInside(store.getNodes, rect.value, store.transform)
+  const selectedNodes = getNodesInside(store.getNodes, rect.value, store.viewport)
   const selectedEdges = getConnectedEdges(selectedNodes, store.getEdges)
 
   rect.value = nextUserSelectRect

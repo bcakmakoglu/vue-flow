@@ -16,7 +16,7 @@ import {
   Rect,
   State,
   Store,
-  Transform,
+  Viewport,
   XYPosition,
   XYZPosition,
 } from '~/types'
@@ -200,7 +200,7 @@ export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: E
 
 export const pointToRendererPoint = (
   { x, y }: XYPosition,
-  [tx, ty, tScale]: Transform,
+  { x: tx, y: ty, zoom: tScale }: Viewport,
   snapToGrid: boolean,
   [snapX, snapY]: [number, number],
 ) => {
@@ -220,7 +220,7 @@ export const pointToRendererPoint = (
 }
 
 export const onLoadProject = (currentStore: Store) => (position: XYPosition) =>
-  pointToRendererPoint(position, currentStore.transform, currentStore.snapToGrid, currentStore.snapGrid)
+  pointToRendererPoint(position, currentStore.viewport, currentStore.snapToGrid, currentStore.snapGrid)
 
 const getBoundsOfBoxes = (box1: Box, box2: Box): Box => ({
   x: Math.min(box1.x, box2.x),
@@ -261,12 +261,17 @@ export const getRectOfNodes = (nodes: GraphNode[]) => {
   return boxToRect(box)
 }
 
-export const graphPosToZoomedPos = ({ x, y }: XYPosition, [tx, ty, tScale]: Transform): XYPosition => ({
+export const graphPosToZoomedPos = ({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: Viewport): XYPosition => ({
   x: x * tScale + tx,
   y: y * tScale + ty,
 })
 
-export const getNodesInside = (nodes: GraphNode[], rect: Rect, [tx, ty, tScale]: Transform = [0, 0, 1], partially = false) => {
+export const getNodesInside = (
+  nodes: GraphNode[],
+  rect: Rect,
+  { x: tx, y: ty, zoom: tScale }: Viewport = { x: 0, y: 0, zoom: 1 },
+  partially = false,
+) => {
   const rBox = rectToBox({
     x: (rect.x - tx) / tScale,
     y: (rect.y - ty) / tScale,
@@ -309,8 +314,8 @@ export const onLoadToObject = (store: State) => (): FlowExportObject => {
     JSON.stringify({
       nodes: store.nodes,
       edges: store.edges,
-      position: [store.transform[0], store.transform[1]],
-      zoom: store.transform[2],
+      position: [store.viewport.x, store.viewport.y],
+      zoom: store.viewport.zoom,
     } as FlowExportObject),
   )
 }
@@ -326,7 +331,7 @@ export const getTransformForBounds = (
     x?: number
     y?: number
   } = { x: 0, y: 0 },
-): Transform => {
+): Viewport => {
   const xZoom = width / (bounds.width * (1 + padding))
   const yZoom = height / (bounds.height * (1 + padding))
   const zoom = Math.min(xZoom, yZoom)
@@ -336,7 +341,7 @@ export const getTransformForBounds = (
   const x = width / 2 - boundsCenterX * clampedZoom + (offset.x ?? 0)
   const y = height / 2 - boundsCenterY * clampedZoom + (offset.y ?? 0)
 
-  return [x, y, clampedZoom]
+  return { x, y, zoom: clampedZoom }
 }
 
 export const getXYZPos = (parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition => {

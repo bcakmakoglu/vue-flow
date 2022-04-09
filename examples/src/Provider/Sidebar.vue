@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useVueFlow } from '@braks/vue-flow'
-const { nodesSelectionActive, addSelectedNodes, getNodes, transform } = useVueFlow()
+const { nodesSelectionActive, addSelectedNodes, getNodes, viewport } = useVueFlow()
 
 const selectAll = () => {
   addSelectedNodes(getNodes.value)
@@ -14,7 +14,7 @@ const selectAll = () => {
     </div>
     <div class="title">Zoom & pan transform</div>
     <div class="transform">
-      {{ [transform[0].toFixed(2), transform[1].toFixed(2), transform[2].toFixed(2)] }}
+      {{ [viewport.x.toFixed(2), viewport.y.toFixed(2), viewport.zoom.toFixed(2)] }}
     </div>
     <div class="title">Nodes</div>
     <div v-for="node of getNodes" :key="node.id">

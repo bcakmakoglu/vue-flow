@@ -35,7 +35,7 @@ export default (state: State): ComputedGetters => {
               width: state.dimensions.width,
               height: state.dimensions.height,
             },
-            state.transform,
+            state.viewport,
             true,
           )
       : nodes ?? []
@@ -63,7 +63,7 @@ export default (state: State): ComputedGetters => {
             targetHeight: e.targetNode.dimensions.height,
             width: state.dimensions.width,
             height: state.dimensions.height,
-            transform: state.transform,
+            viewport: state.viewport,
           }),
       )
   })

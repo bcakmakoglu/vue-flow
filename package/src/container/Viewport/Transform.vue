@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import { useKeyPress, useVueFlow, useZoomPanHelper } from '../../composables'
+import { useVueFlow, useZoomPanHelper } from '../../composables'
 import { FlowInstance } from '../../types'
 import { onLoadGetEdges, onLoadGetElements, onLoadGetNodes, onLoadProject, onLoadToObject } from '../../utils'
 
@@ -29,7 +29,7 @@ onMounted(() => {
   store.hooks.paneReady.trigger(instance)
 })
 
-const transform = computed(() => `translate(${store.transform[0]}px,${store.transform[1]}px) scale(${store.transform[2]})`)
+const transform = computed(() => `translate(${store.viewport.x}px,${store.viewport.y}px) scale(${store.viewport.zoom})`)
 </script>
 <script lang="ts">
 export default {

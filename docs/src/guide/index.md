@@ -5,7 +5,7 @@ title: Introduction
 # Introduction
 
 Vue Flow is a library for building node-based applications. These can be simple static diagrams or complex node-based
-editors. You can implement custom nodes and edges. It also comes with components like a mini-map, zoom pane controls and
+editors. You can implement custom nodes and edges. It also comes with components like a mini-map, viewport controls and
 a background. 
 
 Check out the [examples](/examples/) if you want to dive directly into the code.

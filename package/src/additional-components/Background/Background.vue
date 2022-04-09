@@ -21,10 +21,10 @@ const defaultColors: Record<BackgroundVariant, string> = {
 const { store } = useVueFlow()
 
 const background = computed(() => {
-  const scaledGap = props.gap && props.gap * store.transform[2]
-  const xOffset = scaledGap && store.transform[0] % scaledGap
-  const yOffset = scaledGap && store.transform[1] % scaledGap
-  const size = props.size || 0.4 * store.transform[2]
+  const scaledGap = props.gap && props.gap * store.viewport.zoom
+  const xOffset = scaledGap && store.viewport.x % scaledGap
+  const yOffset = scaledGap && store.viewport.y % scaledGap
+  const size = props.size || 0.4 * store.viewport.zoom
 
   return {
     scaledGap,
