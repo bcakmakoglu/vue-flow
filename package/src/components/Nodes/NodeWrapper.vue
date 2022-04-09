@@ -215,7 +215,6 @@ export default {
   >
     <component
       :is="type"
-      v-if="nodeElement"
       :id="node.id"
       :type="node.type"
       :data="node.data"
