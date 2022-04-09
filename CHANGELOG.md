@@ -4,24 +4,39 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+### Bug Fixes
+
+- Remove v-if ([32c0f59](32c0f593293c551302b4bd762f77c78246fb6ca2))
+- Return empty arrays if pane isn't ready yet ([6829efc](6829efc21de64017695461e051edcc3f8600168e))
+
 ### Documentation
 
 - Add floating edges example ([2ce92b4](2ce92b4abd3729e591ca93ce4ab143708a71462c))
-- Document changed classnames ([223db76](223db76ca2f282a71911390a88f830850a613299))
+- Document changed classnames ([4049bd1](4049bd1cc5970b8d3294b5cf829fd0b9df1bd0fa))
+
+### Features
+
+- Allow add and set actions to have a setter input ([3348908](334890857e2297931e49eb9a1ae21123b4412809))
 
 ### Miscellaneous Tasks
 
-- Remove log ([5cb4ae1](5cb4ae180244ade04dcb8f3871b651a45074972b))
+- Remove log ([03c082d](03c082d8df740cf470340bd986d21a48ff3e7c18))
 
 ### Refactor
 
-- Change zoom pane into viewport ([1a546e3](1a546e34d7e89036e0a2f2224523faf963c99dee))
-- Transformation-pane class renamed to `transformationpane` ([c4f9a9d](c4f9a9d39981be8f1c018cd87223c25b398d8f2f))
+- Change zoom pane into viewport ([572456e](572456eb73091a14160ca329d970e4c1d0a15226))
+- Transformation-pane class renamed to `transformationpane` ([df00a8d](df00a8db7fb5551895abc7c092b5e542b0f1122a))
+- Change transform to viewport ([929aacb](929aacb2f22376244d0fe01c6e99c920da369284))
+
+### Testing
+
+- Fix test checking for wrong element type ([b5f4ecc](b5f4ecc5e4bace3ec59c4d7f1e423d6c1a31cdc0))
 
 ### Update
 
 - Connection target and source as non-nullable strings ([6d86a77](6d86a77fbb5c66160378c8eb59ed83eef3876fce))
 - Default nodrag/nowheel/nopan class as type ([08c10b7](08c10b7e085a17fcadfd672845903a93f95c4c22))
+- Typeguard input type ([c295a83](c295a833a22f89e9b7121c0fc83e0e81985a90c4))
 
 ## [0.4.2-2] - 2022-04-08
 
