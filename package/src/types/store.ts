@@ -34,15 +34,18 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   d3Zoom: D3Zoom | null
   d3Selection: D3Selection | null
   d3ZoomHandler: D3ZoomHandler | null
+
   minZoom: number
   maxZoom: number
   defaultZoom: number
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent
-  /** zoom pane dimensions */
+
+  /** viewport dimensions */
   dimensions: Dimensions
-  /** transform x, y, z */
+  /** viewport transform x, y, z */
   transform: Transform
+
   onlyRenderVisibleElements: boolean
   defaultPosition: [number, number]
 
@@ -50,6 +53,7 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   nodesSelectionActive: boolean
   userSelectionActive: boolean
   multiSelectionActive: boolean
+
   deleteKeyCode: KeyCode
   selectionKeyCode: KeyCode
   multiSelectionKeyCode: KeyCode
@@ -63,6 +67,7 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   connectionLineType: ConnectionLineType
   connectionLineStyle: CSSProperties | null
   connectionStartHandle: StartHandle | null
+
   connectOnClick: boolean
   edgeUpdaterRadius: number
 
@@ -73,8 +78,10 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   edgesUpdatable: boolean
   nodesDraggable: boolean
   nodesConnectable: boolean
+
   elementsSelectable: boolean
   selectNodesOnDrag: boolean
+
   panOnDrag: boolean
   zoomOnScroll: boolean
   zoomOnPinch: boolean
@@ -88,9 +95,11 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   applyDefault: boolean
 
   fitViewOnInit?: boolean
+
   noDragClassName?: 'nodrag' | string
   noWheelClassName?: 'nowheel' | string
   noPanClassName?: 'nopan' | string
+
   defaultEdgeOptions?: DefaultEdgeOptions
 
   vueFlowVersion: string

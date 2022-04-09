@@ -23,7 +23,7 @@
   z-index: 1;
 }
 
-.vue-flow__renderer {
+.vue-flow__viewport {
   z-index: 4;
 }
 
