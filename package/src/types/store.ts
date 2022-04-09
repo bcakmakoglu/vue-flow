@@ -88,9 +88,9 @@ export interface State<NodeData = ElementData, EdgeData = ElementData>
   applyDefault: boolean
 
   fitViewOnInit?: boolean
-  noDragClassName?: string
-  noWheelClassName?: string
-  noPanClassName?: string
+  noDragClassName?: 'nodrag' | string
+  noWheelClassName?: 'nowheel' | string
+  noPanClassName?: 'nopan' | string
   defaultEdgeOptions?: DefaultEdgeOptions
 
   vueFlowVersion: string
