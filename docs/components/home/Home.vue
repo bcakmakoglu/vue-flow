@@ -64,6 +64,8 @@ const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdg
 
 const init = ref(false)
 const edgeId = ref('eintro-documentation')
+const el = templateRef<HTMLDivElement>('el', null)
+
 onPaneReady(({ fitView }) => {
   fitView({
     duration: 1500,
@@ -78,7 +80,10 @@ onPaneReady(({ fitView }) => {
             node.position = { x: 0, y: 0 }
             break
           case 'examples':
-            node.position = { x: mainNode.dimensions.width / 2 - node.dimensions.width / 2, y: mainNode.dimensions.height * 1.5 }
+            node.position = {
+              x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
+              y: mainNode.dimensions.height * 1.5,
+            }
             break
           case 'documentation':
             node.position = {
@@ -105,6 +110,7 @@ onPaneReady(({ fitView }) => {
             node.position = { x: -node.dimensions.width / 2, y: mainNode.dimensions.height * 1.5 }
             break
           case 'documentation':
+            console.log(mainNode.dimensions.width, node.dimensions.width)
             node.position = {
               x: mainNode.dimensions.width - node.dimensions.width / 2,
               y: mainNode.dimensions.height * 1.5,
@@ -129,11 +135,11 @@ onPaneReady(({ fitView }) => {
     )
   }
 
-  watch([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']], setNodes, { immediate: true })
+  useResizeObserver(el, setNodes)
 })
 </script>
 <template>
-  <div class="h-[90vh] md:h-[75vh]">
+  <div ref="el" class="h-[90vh] md:h-[75vh]">
     <VueFlow class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
       <template #node-box="props">
         <template v-if="props.id === 'intro'">
