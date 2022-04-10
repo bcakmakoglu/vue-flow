@@ -24,8 +24,7 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "build": "vite build",
-    "postbuild": "shx rm -rf tmp",
-    "types": "vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json",
+    "types": "vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && shx rm -rf tmp && yarn lint:dist",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "test": "yarn --cwd .. tests",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../.gitignore .",
