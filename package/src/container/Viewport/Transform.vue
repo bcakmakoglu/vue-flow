@@ -11,15 +11,23 @@ const untilDimensions = async (store: Store) => {
   // if ssr we can't wait for dimensions, they'll never really exist
   const window = useWindow()
   if ('screen' in window) {
+    // wait until viewport dimensions has been established
     await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
-    await until(store.getNodes).toMatch(
-      (nodes) =>
-        !!nodes.filter(({ dimensions: { width, height } }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0).length,
-    )
+
+    // if initial nodes are present, wait until the node dimensions have been established
+    if (store.getNodes.length > 0) {
+      await until(store.getNodes).toMatch(
+        (nodes) =>
+          !!nodes.filter(({ dimensions: { width, height } }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
+            .length,
+      )
+    }
   }
+
   return true
 }
 
+const ready = ref(false)
 onMounted(async () => {
   const { zoomIn, zoomOut, zoomTo, setTransform, getTransform, fitView, fitBounds, setCenter } = useZoomPanHelper(store)
   const instance: FlowInstance = {
@@ -40,6 +48,7 @@ onMounted(async () => {
 
   await untilDimensions(store)
 
+  ready.value = true
   store.instance = instance
   store.fitViewOnInit && instance.fitView()
   store.hooks.paneReady.trigger(instance)
@@ -53,7 +62,11 @@ export default {
 }
 </script>
 <template>
-  <div :key="`transformation-pane-${id}`" class="vue-flow__transformationpane vue-flow__container" :style="{ transform }">
+  <div
+    :key="`transformation-pane-${id}`"
+    class="vue-flow__transformationpane vue-flow__container"
+    :style="{ transform, opacity: ready ? undefined : 0 }"
+  >
     <NodeRenderer :key="`node-renderer-${id}`" />
     <EdgeRenderer :key="`edge-renderer-${id}`" />
     <slot />
