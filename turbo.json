@@ -4,17 +4,17 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build", "types", "theme"],
-      "outputs": ["dist/**", ".vuepress/dist/**"]
+      "outputs": ["dist/**"]
     },
 
     "types": {
-      "outputs": []
+      "outputs": ["dist/**"]
     },
     "typedoc": {
       "dependsOn": ["types"]
     },
     "theme": {
-      "outputs": []
+      "outputs": ["dist/**"]
     },
 
     "test": {
