@@ -66,73 +66,66 @@ const init = ref(false)
 const edgeId = ref('eintro-documentation')
 onPaneReady(({ fitView }) => {
   fitView({
-    nodes: ['intro', 'examples', 'documentation'],
     duration: 1500,
   })
 
-  watch(
-    [breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']],
-    () => {
-      if (breakpoints.isSmaller('md')) {
-        nextTick(() => {
-          getNodes.value.forEach((node) => {
-            switch (node.id) {
-              case 'intro':
-                node.position = { x: 0, y: -50 }
-                break
-              case 'examples':
-                node.position = { x: getNode.value('intro')!.dimensions.width / 2 - node.dimensions.width / 2, y: 300 }
-                break
-              case 'documentation':
-                node.position = { x: getNode.value('intro')!.dimensions.width / 2 - node.dimensions.width / 2, y: 500 }
-                break
-            }
-          })
+  const setNodes = () => {
+    if (breakpoints.isSmaller('md')) {
+      getNodes.value.forEach((node) => {
+        switch (node.id) {
+          case 'intro':
+            node.position = { x: 0, y: -50 }
+            break
+          case 'examples':
+            node.position = { x: getNode.value('intro')!.dimensions.width / 2 - node.dimensions.width / 2, y: 300 }
+            break
+          case 'documentation':
+            node.position = { x: getNode.value('intro')!.dimensions.width / 2 - node.dimensions.width / 2, y: 500 }
+            break
+        }
+      })
 
-          const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
-            source: 'examples',
-            target: 'documentation',
-            sourceHandle: null,
-            targetHandle: null,
-          })
-          if (newEdge) edgeId.value = newEdge.id
-        })
-      } else {
-        nextTick(() => {
-          getNodes.value.forEach((node) => {
-            switch (node.id) {
-              case 'intro':
-                node.position = { x: 0, y: 0 }
-                break
-              case 'examples':
-                node.position = { x: -node.dimensions.width / 2, y: 400 }
-                break
-              case 'documentation':
-                node.position = { x: getNode.value('intro')!.dimensions.width / 2 + node.dimensions.width / 2, y: 400 }
-                break
-            }
-          })
+      const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
+        source: 'examples',
+        target: 'documentation',
+        sourceHandle: null,
+        targetHandle: null,
+      })
+      if (newEdge) edgeId.value = newEdge.id
+    } else {
+      getNodes.value.forEach((node) => {
+        switch (node.id) {
+          case 'intro':
+            node.position = { x: 0, y: 0 }
+            break
+          case 'examples':
+            node.position = { x: -node.dimensions.width / 2, y: 400 }
+            break
+          case 'documentation':
+            node.position = { x: getNode.value('intro')!.dimensions.width / 2 + node.dimensions.width / 2, y: 400 }
+            break
+        }
+      })
 
-          const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
-            source: 'intro',
-            target: 'documentation',
-            sourceHandle: null,
-            targetHandle: null,
-          })
-          if (newEdge) edgeId.value = newEdge.id
-        })
-      }
+      const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
+        source: 'intro',
+        target: 'documentation',
+        sourceHandle: null,
+        targetHandle: null,
+      })
+      if (newEdge) edgeId.value = newEdge.id
+    }
 
-      setTimeout(
-        () => {
-          if (!init.value) init.value = true
-          instance.value?.fitView()
-        },
-        init.value ? 5 : 1505,
-      )
-    },
-    { immediate: true },
-  )
+    setTimeout(
+      () => {
+        if (!init.value) init.value = true
+        else instance.value?.fitView()
+      },
+      init.value ? 5 : 1505,
+    )
+  }
+
+  watch([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']], setNodes, { immediate: true })
 })
 </script>
 <template>
