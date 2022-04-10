@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite serve",
-    "lint": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist"
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore ."
   },
   "dependencies": {
     "@braks/vue-flow": "^0.4.2-3"
