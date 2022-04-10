@@ -12,12 +12,10 @@
     "dev": "yarn --cwd examples dev",
     "docs": "yarn --cwd docs dev",
     "build": "yarn turbo run build",
-    "postbuild": "yarn typedoc",
     "prerelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
     "release": "yarn turbo run release",
     "test": "yarn turbo run test",
-    "lint": "yarn turbo run lint",
-    "typedoc": "typedoc --tsconfig ./package/tsconfig.docs.json ./package/dist/index.d.ts --out typedocs"
+    "lint": "yarn turbo run lint"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.9.0",
@@ -28,7 +26,6 @@
     "prettier": "^2.4.1",
     "shx": "^0.3.4",
     "turbo": "^1.2.1",
-    "typedoc": "^0.22.13",
     "typescript": "^4.5.5"
   }
 }
