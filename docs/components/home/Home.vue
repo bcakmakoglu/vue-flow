@@ -97,6 +97,8 @@ onPaneReady(({ fitView }) => {
       const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
         source: 'examples',
         target: 'documentation',
+        targetHandle: null,
+        sourceHandle: null,
       })
       if (newEdge) edgeId.value = newEdge.id
     } else {
@@ -122,6 +124,8 @@ onPaneReady(({ fitView }) => {
       const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
         source: 'intro',
         target: 'documentation',
+        targetHandle: null,
+        sourceHandle: null,
       })
       if (newEdge) edgeId.value = newEdge.id
     }
