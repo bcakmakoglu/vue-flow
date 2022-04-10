@@ -45,7 +45,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies 👨🏻‍💻
-        run: yarn
+        run: yarn install --frozen-lockfile
 
       - name: Run linter 🧹
         run: yarn lint
