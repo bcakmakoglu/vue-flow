@@ -6,12 +6,7 @@ interface Props {
   centerX: number
   centerY: number
   path: string
-  label?:
-    | string
-    | {
-        props?: any
-        component: any
-      }
+  label?: any
   style?: CSSProperties
   labelStyle?: any
   labelShowBg?: boolean

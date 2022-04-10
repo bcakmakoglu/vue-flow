@@ -106,7 +106,7 @@ export interface EdgeProps<Data = ElementData, SourceNodeData = any, TargetNodeD
   id: string
   sourceNode: GraphNode<SourceNodeData>
   targetNode: GraphNode<TargetNodeData>
-  label?: string | VNode
+  label?: string | VNode | Component<EdgeTextProps> | Object
   type?: string
   data?: Data
   style?: CSSProperties
@@ -139,7 +139,7 @@ export interface SmoothStepEdgeProps<Data = ElementData, SourceNodeData = any, T
   id: string
   sourceNode: GraphNode<SourceNodeData>
   targetNode: GraphNode<TargetNodeData>
-  label?: string | VNode
+  label?: string | VNode | Component<EdgeTextProps> | Object
   type?: string
   data?: Data
   style?: CSSProperties
