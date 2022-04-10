@@ -6,8 +6,12 @@
       "dependsOn": ["^build", "types", "theme"],
       "outputs": ["dist/**", ".vuepress/dist/**"]
     },
+
     "types": {
       "outputs": []
+    },
+    "typedoc": {
+      "dependsOn": ["types"]
     },
     "theme": {
       "outputs": []
