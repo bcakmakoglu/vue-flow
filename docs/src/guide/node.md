@@ -266,6 +266,44 @@ const elements = ref([
 You can find a more advanced example <router-link to="/examples/custom-node/">here</router-link>.
 :::
 
+### Node Template
+
+You can also set a template per node, which will overwrite the node-type component but will retain
+the type otherwise.
+
+```vue:no-line-numbers
+<script setup>
+import { markRaw } from 'vue'
+import CustomNode from './CustomNode.vue'
+import CustomNode from './OverwriteCustomNode.vue'
+import SpecialNode from './SpecialNode.vue'
+
+const nodeTypes = {
+  custom: markRaw(CustomNode),
+  special: markRaw(SpecialNode),
+}
+
+const elements = ref([
+  {
+    id: '1',
+    label: 'Node 1',
+    type: 'custom',
+    template: markRaw(OverwriteCustomNode),
+  },
+  {
+    id: '1',
+    label: 'Node 1',
+    type: 'special',
+  }
+])
+</script>
+<template>
+  <div style="height: 300px">
+    <VueFlow v-model="elements" :node-types="nodeTypes" />
+  </div>
+</template>
+```
+
 ### Custom Node Props
 
 Your custom nodes are wrapped so that the basic functions like dragging or selecting work.

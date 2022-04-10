@@ -1,6 +1,6 @@
-import { VNode } from 'vue'
+import { Component, VNode } from 'vue'
 import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions, ElementData } from './flow'
-import { DefaultNodeTypes } from './components'
+import { DefaultNodeTypes, NodeComponent } from './components'
 import { HandleElement, ValidConnectionFunc } from './handle'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
@@ -55,6 +55,9 @@ export interface Node<Data = ElementData> extends Element<Data> {
    * or pass a string with units (height: `10rem` -> height: 10rem)
    */
   height?: number | string | HeightFunc
+
+  /** overwrites current node type */
+  template?: NodeComponent
 }
 
 export interface GraphNode<Data = ElementData> extends Node<Data> {

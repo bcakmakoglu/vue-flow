@@ -1,4 +1,5 @@
 const baseRules = {
+  'no-console': 0,
   'chai-friendly/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
   'prettier/prettier': ['error', {}, { usePrettierrc: true }],
 }

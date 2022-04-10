@@ -124,8 +124,9 @@ watch(
 )
 
 const type = computed(() => {
+  let edgeType = edge.value.template ?? store.getEdgeTypes[name.value]
   const instance = getCurrentInstance()
-  let edgeType = store.getEdgeTypes[name.value]
+
   if (typeof edgeType === 'string') {
     if (instance) {
       const components = Object.keys(instance.appContext.components)
