@@ -23,6 +23,11 @@ interface Props {
 }
 const props = defineProps<Props>()
 </script>
+<script lang="ts">
+export default {
+  name: 'BaseEdge',
+}
+</script>
 <template>
   <path
     :style="props.style"
