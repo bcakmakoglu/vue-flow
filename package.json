@@ -15,7 +15,8 @@
     "prerelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
     "release": "yarn turbo run release",
     "test": "yarn turbo run test",
-    "lint": "yarn turbo run lint"
+    "lint": "yarn turbo run lint",
+    "typedocs": "yarn turbo run typedoc"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.9.0",

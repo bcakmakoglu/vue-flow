@@ -19,6 +19,7 @@ export default defineUserConfig<DefaultThemeOptions>({
   description: 'Visualize your ideas with Vue Flow, a highly customizable Vue3 Flowchart library.',
   head: head as HeadConfig[],
 
+  dest: resolve(__dirname, '../../dist'),
   bundler: '@vuepress/bundler-vite',
   bundlerConfig: {
     viteOptions: {
