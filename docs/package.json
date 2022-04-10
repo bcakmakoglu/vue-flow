@@ -6,7 +6,8 @@
   "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
   "scripts": {
     "dev": "vuepress dev src",
-    "build": "vuepress build src"
+    "build": "vuepress build src",
+    "lint": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist"
   },
   "dependencies": {
     "@braks/vue-flow": "^0.4.2-3",
