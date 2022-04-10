@@ -12,6 +12,7 @@ declare module 'vue' {
     Features: typeof import('./../../components/home/Features.vue')['default']
     Home: typeof import('./../../components/home/Home.vue')['default']
     Input: typeof import('./../../components/home/nodes/Input.vue')['default']
+    Intro: typeof import('./../../components/home/flows/Intro.vue')['default']
     Nested: typeof import('./../../components/home/Nested.vue')['default']
     Output: typeof import('./../../components/home/nodes/Output.vue')['default']
     RGB: typeof import('./../../components/home/RGB.vue')['default']

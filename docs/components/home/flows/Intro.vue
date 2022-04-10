@@ -122,8 +122,8 @@ onPaneReady(({ fitView }) => {
       <template v-if="props.id === 'intro'">
         <div class="max-w-[500px]">
           <BoxNode class="intro">
-            <div class="font-mono flex flex-col gap-4 p-4 items-center">
-              <h1 class="pointer-events-none text-2xl lg:text-4xl text-center">Visualize your ideas with Vue Flow</h1>
+            <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
+              <h1 class="pointer-events-none text-2xl lg:text-4xl">Visualize your ideas with Vue Flow</h1>
               <h2 class="pointer-events-none text-lg lg:text-xl font-normal">
                 A customizable Vue.js library for building node-based editors and diagrams.
               </h2>
