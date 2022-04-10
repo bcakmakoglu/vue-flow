@@ -8,7 +8,7 @@ const DEFAULT_PADDING = 0.1
 
 const transition = (selection: D3Selection, ms = 0) => selection.transition().duration(ms)
 
-export const untilDimensions = async (store: Store) => {
+const untilDimensions = async (store: Store) => {
   // if ssr we can't wait for dimensions, they'll never really exist
   const window = useWindow()
   if ('screen' in window) {

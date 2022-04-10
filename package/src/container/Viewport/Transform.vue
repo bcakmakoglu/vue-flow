@@ -1,11 +1,22 @@
 <script lang="ts" setup>
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import { useVueFlow, useZoomPanHelper, untilDimensions } from '../../composables'
-import { FlowInstance } from '../../types'
+import { useVueFlow, useZoomPanHelper, useWindow } from '../../composables'
+import { FlowInstance, Store } from '../../types'
 import { onLoadGetEdges, onLoadGetElements, onLoadGetNodes, onLoadProject, onLoadToObject } from '../../utils'
 
 const { id, store } = useVueFlow()
+
+const untilDimensions = async (store: Store) => {
+  // if ssr we can't wait for dimensions, they'll never really exist
+  const window = useWindow()
+  if ('screen' in window) {
+    // wait until viewport dimensions has been established
+    await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
+  }
+
+  return true
+}
 
 const ready = ref(false)
 onMounted(async () => {
