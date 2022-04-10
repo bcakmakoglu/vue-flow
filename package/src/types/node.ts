@@ -94,7 +94,7 @@ export interface NodeProps<Data = ElementData> {
    * For example like this: `h('div', props, children)`)
    * Object is just a type-hack for Vue, ignore that
    */
-  label?: string | VNode | Object
+  label?: string | VNode | Component | Object
   /** called when used as target for new connection */
   isValidTargetPos?: ValidConnectionFunc
   /** called when used as source for new connection */

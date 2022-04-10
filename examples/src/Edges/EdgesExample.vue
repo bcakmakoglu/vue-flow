@@ -29,12 +29,7 @@ const initialEdges: Edge[] = [
     id: 'e5-6',
     source: '5',
     target: '6',
-    label: {
-      component: markRaw(CustomLabel),
-      props: {
-        label: 'custom label text',
-      },
-    },
+    label: h(CustomLabel, { label: 'custom label text' }, {}),
     labelStyle: { fill: 'red', fontWeight: 700 },
     markerEnd: {
       type: MarkerType.Arrow,

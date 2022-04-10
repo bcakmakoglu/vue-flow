@@ -41,6 +41,7 @@ export default {
       <slot v-bind="props">
         <component :is="props.label" v-if="typeof props.label !== 'string' && typeof props.label" />
         <template v-else v-html="props.label">
+          Floo
           {{ props.label }}
         </template>
       </slot>
