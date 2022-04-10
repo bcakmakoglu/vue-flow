@@ -1,5 +1,5 @@
 export { default as useHandle } from './useHandle'
 export { default as useKeyPress } from './useKeyPress'
-export { default as useZoomPanHelper } from './useZoomPanHelper'
+export { default as useZoomPanHelper, untilDimensions } from './useZoomPanHelper'
 export { default as useWindow } from './useWindow'
 export { default as useVueFlow } from './useVueFlow'
