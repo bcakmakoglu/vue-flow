@@ -11,7 +11,8 @@
       "outputs": ["dist/**"]
     },
     "typedoc": {
-      "dependsOn": ["types"]
+      "dependsOn": ["types"],
+      "outputs": ["typedocs/**"]
     },
     "theme": {
       "outputs": ["dist/**"]
