@@ -11,23 +11,24 @@
   "scripts": {
     "dev": "yarn --cwd examples dev",
     "docs": "yarn --cwd docs dev",
-    "docs:build": "yarn --cwd docs build",
-    "build": "yarn --cwd package build",
+    "build": "yarn turbo run build",
     "postbuild": "yarn typedoc",
     "prerelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
-    "release": "yarn --cwd package np",
-    "test": "yarn --cwd tests test",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
+    "release": "yarn turbo run release",
+    "test": "yarn turbo run test",
+    "lint": "yarn turbo run lint",
     "typedoc": "typedoc --tsconfig ./package/tsconfig.docs.json ./package/dist/index.d.ts --out typedocs"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.9.0",
+    "@changesets/cli": "^2.22.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-chai-friendly": "^0.7.2",
     "eslint-plugin-prettier": "^3.4.1",
     "prettier": "^2.4.1",
     "shx": "^0.3.4",
+    "turbo": "^1.2.1",
     "typedoc": "^0.22.13",
     "typescript": "^4.5.5"
   }

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "cypress run-ct",
+    "tests": "cypress run-ct",
     "open": "cypress open-ct"
   },
   "dependencies": {
