@@ -2,8 +2,6 @@
   "name": "docs",
   "version": "0.0.0",
   "private": true,
-  "license": "MIT",
-  "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
   "scripts": {
     "dev": "vuepress dev src",
     "build": "vuepress build src",
