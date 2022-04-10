@@ -71,16 +71,20 @@ onPaneReady(({ fitView }) => {
 
   const setNodes = () => {
     if (breakpoints.isSmaller('md')) {
+      const mainNode = getNode.value('intro')!
       getNodes.value.forEach((node) => {
         switch (node.id) {
           case 'intro':
-            node.position = { x: 0, y: -50 }
+            node.position = { x: 0, y: 0 }
             break
           case 'examples':
-            node.position = { x: getNode.value('intro')!.dimensions.width / 2 - node.dimensions.width / 2, y: 300 }
+            node.position = { x: mainNode.dimensions.width / 2 - node.dimensions.width / 2, y: mainNode.dimensions.height * 1.5 }
             break
           case 'documentation':
-            node.position = { x: getNode.value('intro')!.dimensions.width / 2 - node.dimensions.width / 2, y: 500 }
+            node.position = {
+              x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
+              y: mainNode.dimensions.height * 2 + 50,
+            }
             break
         }
       })
@@ -88,21 +92,23 @@ onPaneReady(({ fitView }) => {
       const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
         source: 'examples',
         target: 'documentation',
-        sourceHandle: null,
-        targetHandle: null,
       })
       if (newEdge) edgeId.value = newEdge.id
     } else {
       getNodes.value.forEach((node) => {
+        const mainNode = getNode.value('intro')!
         switch (node.id) {
           case 'intro':
             node.position = { x: 0, y: 0 }
             break
           case 'examples':
-            node.position = { x: -node.dimensions.width / 2, y: 400 }
+            node.position = { x: -node.dimensions.width / 2, y: mainNode.dimensions.height * 1.5 }
             break
           case 'documentation':
-            node.position = { x: getNode.value('intro')!.dimensions.width / 2 + node.dimensions.width / 2, y: 400 }
+            node.position = {
+              x: mainNode.dimensions.width - node.dimensions.width / 2,
+              y: mainNode.dimensions.height * 1.5,
+            }
             break
         }
       })
@@ -110,8 +116,6 @@ onPaneReady(({ fitView }) => {
       const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
         source: 'intro',
         target: 'documentation',
-        sourceHandle: null,
-        targetHandle: null,
       })
       if (newEdge) edgeId.value = newEdge.id
     }
