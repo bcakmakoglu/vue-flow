@@ -5,6 +5,7 @@ import type { DefaultThemeOptions, HeadConfig } from 'vuepress'
 
 import WindiCSS from 'vite-plugin-windicss'
 import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import head from './head'
@@ -38,8 +39,11 @@ export default defineUserConfig<DefaultThemeOptions>({
           // allow auto import and register components used in markdown
           include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
           dts: resolve(__dirname, './components.d.ts'),
+          resolvers: [IconsResolver()],
         }),
-        Icons(),
+        Icons({
+          compiler: 'vue3',
+        }),
       ],
     },
   },
