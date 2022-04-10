@@ -1,13 +1,26 @@
 <script lang="ts" setup>
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import { useVueFlow, useZoomPanHelper } from '../../composables'
-import { FlowInstance } from '../../types'
+import { useVueFlow, useZoomPanHelper, useWindow } from '../../composables'
+import { FlowInstance, Store } from '../../types'
 import { onLoadGetEdges, onLoadGetElements, onLoadGetNodes, onLoadProject, onLoadToObject } from '../../utils'
 
 const { id, store } = useVueFlow()
 
-onMounted(() => {
+const untilDimensions = async (store: Store) => {
+  // if ssr we can't wait for dimensions, they'll never really exist
+  const window = useWindow()
+  if ('screen' in window) {
+    await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
+    await until(store.getNodes).toMatch(
+      (nodes) =>
+        !!nodes.filter(({ dimensions: { width, height } }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0).length,
+    )
+  }
+  return true
+}
+
+onMounted(async () => {
   const { zoomIn, zoomOut, zoomTo, setTransform, getTransform, fitView, fitBounds, setCenter } = useZoomPanHelper(store)
   const instance: FlowInstance = {
     fitView: (params = { padding: 0.1 }) => fitView(params),
@@ -24,6 +37,9 @@ onMounted(() => {
     getEdges: onLoadGetEdges(store),
     toObject: onLoadToObject(store),
   }
+
+  await untilDimensions(store)
+
   store.instance = instance
   store.fitViewOnInit && instance.fitView()
   store.hooks.paneReady.trigger(instance)
