@@ -1,6 +1,7 @@
-import { CSSProperties } from 'vue'
+import { Component, CSSProperties, VNode } from 'vue'
 import { Position, Element, ElementData } from './flow'
 import { GraphNode } from './node'
+import { EdgeComponent, EdgeTextProps } from './components'
 
 /** Edge markers */
 export enum MarkerType {
@@ -42,6 +43,7 @@ export interface MarkerProps {
 export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
 export interface Edge<Data = ElementData> extends Element<Data> {
+  label?: string | VNode | Component<EdgeTextProps>
   /** Source node id */
   source: string
   /** Target node id */
@@ -74,6 +76,9 @@ export interface Edge<Data = ElementData> extends Element<Data> {
   updatable?: boolean
   /** Disable/enable selecting edge */
   selectable?: boolean
+
+  /** overwrites current edge type */
+  template?: EdgeComponent
 }
 
 export type DefaultEdgeOptions = Omit<
@@ -101,12 +106,7 @@ export interface EdgeProps<Data = ElementData, SourceNodeData = any, TargetNodeD
   id: string
   sourceNode: GraphNode<SourceNodeData>
   targetNode: GraphNode<TargetNodeData>
-  label?:
-    | string
-    | {
-        props?: any
-        component: any
-      }
+  label?: string | VNode
   type?: string
   data?: Data
   style?: CSSProperties
@@ -139,12 +139,7 @@ export interface SmoothStepEdgeProps<Data = ElementData, SourceNodeData = any, T
   id: string
   sourceNode: GraphNode<SourceNodeData>
   targetNode: GraphNode<TargetNodeData>
-  label?:
-    | string
-    | {
-        props?: any
-        component: any
-      }
+  label?: string | VNode
   type?: string
   data?: Data
   style?: CSSProperties
@@ -159,8 +154,6 @@ export interface SmoothStepEdgeProps<Data = ElementData, SourceNodeData = any, T
   targetHandleId?: string
   source: string
   target: string
-  sourceHandle?: string
-  targetHandle?: string
   labelStyle?: any
   labelShowBg?: boolean
   labelBgStyle?: any

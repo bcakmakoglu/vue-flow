@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useDraggableCore } from '@braks/revue-draggable'
-import { CSSProperties } from 'vue'
+import { CSSProperties, isVNode } from 'vue'
 import { useVueFlow } from '../../composables'
 import { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId, Slots } from '../../context'
@@ -89,8 +89,9 @@ watch(
 )
 
 const type = computed(() => {
+  let nodeType = node.value.template ?? store.getNodeTypes[name.value]
   const instance = getCurrentInstance()
-  let nodeType = store.getNodeTypes[name.value]
+
   if (typeof nodeType === 'string') {
     if (instance) {
       const components = Object.keys(instance.appContext.components)

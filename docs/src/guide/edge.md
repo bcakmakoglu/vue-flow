@@ -271,6 +271,52 @@ const elements = ref([
 </template>
 ```
 
+### Edge Template
+
+You can also set a template per edge, which will overwrite the edge-type component but will retain
+the type otherwise.
+
+```vue:no-line-numbers
+<script setup>
+import { markRaw } from 'vue'
+import CustomEdge from './CustomEdge.vue'
+
+const elements = ref([
+  {
+    id: '1',
+    label: 'Node 1',
+    position: { x: 0, y: 0 },
+  },
+  {
+    id: '2',
+    label: 'Node 2',
+    position: { x: 0, y: 150 },
+  },
+    {
+    id: '3',
+    label: 'Node 3',
+    position: { x: 0, y: 300 },
+  },
+  {
+    id: 'e1-2',
+    source: '1',
+    target: '2',
+  },
+  {
+    id: 'e1-3',
+    source: '1',
+    target: '2',
+    template: markRaw(CustomEdge),
+  },
+])
+</script>
+<template>
+  <div style="height: 300px">
+    <VueFlow v-model="elements" />
+  </div>
+</template>
+```
+
 ### Custom Edge Props
 
 Your custom edges are wrapped so that the basic functions like selecting work.
