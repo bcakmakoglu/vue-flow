@@ -1,19 +1,18 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "baseBranch": "origin/main",
+  "baseBranch": "origin/master",
   "pipeline": {
-    "package#build": {
-      "dependsOn": ["build", "types", "theme", "lint:dist"],
+    "build": {
+      "dependsOn": ["^build", "types", "theme"],
       "outputs": ["dist/**", ".vuepress/dist/**"]
     },
-    "docs#build": {
-      "dependsOn": ["^build"],
-      "outputs": [".vuepress/dist/**"]
+    "types": {
+      "outputs": []
     },
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+    "theme": {
+      "outputs": []
     },
+
     "test": {
       "dependsOn": ["^build"],
       "outputs": []
