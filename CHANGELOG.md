@@ -6,175 +6,110 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
-- Emit paneReady when dimensions are ready ([fcfe5a3](fcfe5a368272d8bb47dbe1618c4b0fdf3f15d988))
-- Await dimensions before using zoompan utils ([427acd5](427acd5dc72ff7c0b85a7740c83c21a4f3a6ddf8))
-- Remove waiting for node dimensions in transformation pane ([44ef6e8](44ef6e85788eb9ead8d20f2f7c0b1e8d3c02db8b))
-- Node/edge label type ([6e6c154](6e6c15452772abc862d47240909bc2ba663216b4))
-- Lint scripts ([312d7d1](312d7d1bad08de606b9f68c69eaf614d9409dfad))
+- Selection not working twice in a row ([ec0f3ef](ec0f3ef0e428cceafc63da9523128f34aeb46d48))
+- Import paths ([1e23893](1e23893e585a13780d7f95ec1255031da5df3643))
+- Replace watchDebounced with debouncedWatch ([2d7e2a7](2d7e2a710fafae6f15cc3d0513782a66dcc99a4e))
+- Await until d3zoom is rdy ([8c22271](8c2227132f59c01fffcc210a0afbb3631629fd56))
+- Cast styles to css properties ([b206ff1](b206ff160fa2e384d037c36a639d72de0e2314c2))
+- Use correct handleId ([8627fef](8627fef5af2520b4046289765b00e5f25f456fcc))
+- Parenthesis in handleId computed ([38b7e07](38b7e0757d515c1d1707d775c34abcda15fd8c02))
+- Trigger computedPosition watcher when selected changes ([3064e28](3064e287e75efab62eaf8657173ca4cc54345f77))
+- Remove v-if ([3838ffc](3838ffc2fbc47e92509448aeff640a8188dded00))
+- Return empty arrays if pane isn't ready yet ([ea69dc5](ea69dc58ee3f84f0e58ce5fb2004c328a5c337f7))
+- Emit paneReady when dimensions are ready ([e14cf12](e14cf124ff26ee4f48e89976efd471a1add12c06))
+- Await dimensions before using zoompan utils ([c0c67c6](c0c67c6ee6371ef31513c8ca400914cbe8b92ec4))
+- Remove waiting for node dimensions in transformation pane ([ca2a72c](ca2a72c3a8b2afd98e74a005f22560e8f4026b13))
+- Node/edge label type ([440ad3c](440ad3c68100cfe842897d984bdf41c0249419f7))
+- Lint scripts ([3937d56](3937d564a894971adacda07ced6fc6902b7fb17e))
 
 ### Documentation
 
-- Disable blobity for mobile ([7e98339](7e98339273d7d05a670ed455e8a0f79847f5355f))
-- Rename section to Selection Options ([3c4103b](3c4103b63cbcaa2473a6d199c771d83c8d32feac))
-- Update docsDir in themeConfig ([6ba0b9d](6ba0b9d82b07a0bce1e104c83fdb802dc8f547a3))
-- Add logo to header ([2f9cedc](2f9cedcca8a064cdb489982ace7b573222dcbeb0))
-- Remove next tick cb in Home.vue ([b9f3c98](b9f3c98a1daa0aded8ce036604998367b36bed90))
-- Update node positions ([c6b9c78](c6b9c78110d6dfdc3250c39332013ff4352c8875))
-- Fix node pos on resize ([43e3580](43e35808826e8c61a55cfc1a86711479c16eea39))
-- Fix missing handles in new connection ([d434262](d43426258ec24011166b626a8ddc88d5af613a4f))
-- Add icon resolver ([bb24f36](bb24f3643c4aa23ffa9070ba810a7ce8c356410c))
-- Center intro text ([4d3ee35](4d3ee352b72152bd487024fb571e8465b074ee26))
-- Fitview mixing edges up on resize ([663dc5a](663dc5a9ae5cb8e8e5c7c2ad11fcfbedf292235d))
+- Add pwa plugin & update manifest ([f63e157](f63e1571ae682737af7fffbaafee9146384942df))
+- Add floating edges example ([eb81b9d](eb81b9d1574cd21ab0743f39061c551137a7c029))
+- Document changed classnames ([e5dbbe6](e5dbbe6b41072b2adda4c31e4a22e8b96f1956c1))
+- Disable blobity for mobile ([f06b224](f06b224aa94f078e2d364072ca1b980b89e69421))
+- Rename section to Selection Options ([cb99000](cb99000c9770ab84f7e726edcaf9fd0de9a15fe1))
+- Update docsDir in themeConfig ([ff4f110](ff4f110f5d96b005997b7ada087f7b98196c83d2))
+- Add logo to header ([4fbb16f](4fbb16f6add2c3f9e427be21e4ccedc4bf035356))
+- Remove next tick cb in Home.vue ([969dd87](969dd87e7173c6dba206966dffaceb123236b199))
+- Update node positions ([07ee6ed](07ee6eddf701b8a998f5f293383f6d0a5e510b69))
+- Fix node pos on resize ([c4ddeeb](c4ddeebe91d367281cfbed9593f49e032e830e85))
+- Fix missing handles in new connection ([8508423](85084231966353d5b2518d1fe3ad62969bddab2d))
+- Add icon resolver ([dc5ca5d](dc5ca5d1d622b025c572a2feda04b06b44236fe8))
+- Center intro text ([b704bc6](b704bc6e1187a67ee1eaac55266cc276af29f1db))
+- Fitview mixing edges up on resize ([0184cdd](0184cdd2a9f27cbcb5a529608a6f29974d623aba))
+- Update examples wordings ([670a4fc](670a4fc04f9d0241c1298aad155c0749ce4ce2cc))
+- Update guide wordings ([297586d](297586d5ad1889f67a2081b3ff6703284b895a9a))
 
 ### Features
 
-- Add name to BaseEdge.vue ([f56e57a](f56e57a4383182ebbe4a3a7bd5e1c4f4dbbb7b7c))
-- Allow node/edge template per element ([1fc6868](1fc6868e13bcb278de59af936646c5a299384de7))
-- Add turbo to root deps-dev ([008d27e](008d27ee195a3426e47910a25a40711b1883382f))
-- Use frozen-lockfile in build-and-test.yml ([7eddc5a](7eddc5a3fa5af7462cc4bc8ee558de798764528a))
-- Add turbo pipelines for types and themes ([7d7ac5a](7d7ac5aa0c191457c35341d0493802401b9401b9))
-- Test pipeline ([6b2be6d](6b2be6d28d54974f90a2cab5bccceecb27f656db))
-- Add dependency to dev pipeline ([29293e2](29293e2fa321766e0076a5c4bbfb048672b64e66))
-- Add dependency to dev pipeline ([3f9a841](3f9a84191cbc84616642061058f1714db22bdd54))
-- Add turbo repo cache to workflow ([a723a99](a723a9943a62ea1e4f6af7a56029b07260867244))
+- Promisify updateNodePosition ([bf2c77f](bf2c77fb59bba3991e073a7eaf9038e14f8cd1e1))
+- Assign default handle id and allow for actual loose connections ([158be8a](158be8a515b32d9967076c350cda2a457cde290f))
+- Add PositionFunc as node position type ([1e9cbc0](1e9cbc064320bc09662661843b7e819cd7a5d5bd))
+- Add floating edges example ([7aa1773](7aa1773e0246d76335553f67dede8dac584f9c48))
+- Allow add and set actions to have a setter input ([aae37a5](aae37a541651c9337e549fe9ee54597e77764de1))
+- Add name to BaseEdge.vue ([2cc387f](2cc387fb2f66a856dd476d8b215d360854bad6e3))
+- Allow node/edge template per element ([88f8087](88f808711a52ce3a9fc03097d4d03a54efc445f5))
+- Add turbo to root deps-dev ([2a836d7](2a836d705ddaaf2f5bdac88817660a08c0e02d49))
+- Use frozen-lockfile in build-and-test.yml ([b2d5196](b2d51969445760cfdde750100530dcaadc504d5e))
+- Add turbo pipelines for types and themes ([ca5033b](ca5033b27267966cad6e6b150b9db9bae7e1eaac))
+- Test pipeline ([08204fd](08204fdcbbcdfd4db6a39aa6c98a3f08c5889481))
+- Add dependency to dev pipeline ([82fd35c](82fd35c315cb58b7a0cd8128105f9614581c05ce))
+- Add dependency to dev pipeline ([c40d17c](c40d17c7d627a9a02ef3154cac088cc8df9d92f5))
+- Add turbo repo cache to workflow ([1628cf4](1628cf4e645d1969fadc8b318491d2ff3649ae0d))
 
 ### Miscellaneous Tasks
 
-- Remove unused eslint-rules & lint files ([2248e06](2248e0624fe09f23b5acd84c9d1ca9a5d9eea8a1))
-- Remove export ([ed4f9ba](ed4f9ba27578eec87f4b4abed0c3ef5a0005ff12))
-- Update author field ([a0b0589](a0b058984df97c26ef6b2771feab1b70bb61cb55))
-- Move typedoc to package ([02da2d5](02da2d5e9e7cb74c7c476fdf48bcfa7dd53cbd5b))
-- Change destination dir for docs output ([f95b4e4](f95b4e49d7175d77f6d95ff38d07098da85080d1))
-- Add typedoc pipeline output ([f560ebf](f560ebf9ccd86213d0716e66f9704d0e9bc4a6fa))
-- Remove lint pipeline dependency ([7659386](765938661af8b40b6f925db0fe30243f64612124))
-- Remove .vscode dir ([35706b4](35706b472cb8abc637b16a815792559c0a88c86e))
-- Update release script ([1798d21](1798d218a70b1ef8627469a5e76efd7d281c6bac))
-
-## [0.4.2-4] - 2022-04-09
-
-[f7db235](f7db235523346f7f9e6ba641f6d71783e765cde8)...[be535ba](be535baae4112179dad7800bd0dd2aab3d6f0ce6)
-
-### Bug Fixes
-
-- Remove v-if ([32c0f59](32c0f593293c551302b4bd762f77c78246fb6ca2))
-- Return empty arrays if pane isn't ready yet ([6829efc](6829efc21de64017695461e051edcc3f8600168e))
-
-### Documentation
-
-- Add floating edges example ([2ce92b4](2ce92b4abd3729e591ca93ce4ab143708a71462c))
-- Document changed classnames ([4049bd1](4049bd1cc5970b8d3294b5cf829fd0b9df1bd0fa))
-
-### Features
-
-- Allow add and set actions to have a setter input ([3348908](334890857e2297931e49eb9a1ae21123b4412809))
-
-### Miscellaneous Tasks
-
-- Remove log ([03c082d](03c082d8df740cf470340bd986d21a48ff3e7c18))
+- Update package dependencies ([3be164b](3be164b20e4db6eeb66780dcb19f9a7dffbc0eaf))
+- Add prefix to console messages ([06b0c14](06b0c143b5ab2926acb2c145b8eeb57b5921aad5))
+- Disable no-use-before-define rule ([676c984](676c984e07fb5e87ee9e8b673f363f5d3540c623))
+- Run yarn upgrade ([a0bd8b9](a0bd8b9afdd847ac7146ac2893fbbc7887308761))
+- Update deps ([59870a3](59870a3a55830ff8932d0961a3f66ba134e8baab))
+- Update vue to 3.2.25 ([c617494](c617494bb8dc5f341a880451d64055dcdce59bc0))
+- Import sort ([c6b8aa8](c6b8aa88eaad4ddd1b23e6a5433cdb454601ce4a))
+- Move ts-patch and typescript-transform-paths to package dev-deps ([c52b870](c52b870a3d6e3e59bb53bbcb41f2c8ca007d005a))
+- Remove log ([553355d](553355dd861a58f647ab4f308862e7df617b3ebf))
+- Remove unused eslint-rules & lint files ([f011ea6](f011ea61b11189d6ead8be8065230fa2f531b316))
+- Remove export ([367c7fd](367c7fdf4017cc4197e1a8e3be91b605dd9b4057))
+- Update author field ([3142388](31423889d2c0bc340add322502d01110c24f3726))
+- Move typedoc to package ([e558ad5](e558ad5bc54de2e0b881f169d0c8daf694500637))
+- Change destination dir for docs output ([de75e25](de75e257a5fca746e287c974584b98ac2ec10047))
+- Add typedoc pipeline output ([38103a2](38103a25e014cf034f527bfb630f34d9db0cac11))
+- Remove lint pipeline dependency ([4ebfb2a](4ebfb2ada5557763964e94efdfcadb8aa6732b85))
+- Remove .vscode dir ([914db33](914db337cf0256979110b60336542933c131bef4))
+- Update release script ([8e83d6a](8e83d6a2afdc28ececc54fd93ca0e8e4360c5f70))
+- Update LICENSE ([63596c5](63596c5d318ef533aa73dfd996eb42b836dc94cb))
+- Remove comment ([817f5fb](817f5fb0275240fc45cd3fff5678aa006768ddd6))
+- Type fix in examples ([53355e8](53355e88bfa11cb3fa593591b92f5f34241a635c))
 
 ### Refactor
 
-- Change zoom pane into viewport ([572456e](572456eb73091a14160ca329d970e4c1d0a15226))
-- Transformation-pane class renamed to `transformationpane` ([df00a8d](df00a8db7fb5551895abc7c092b5e542b0f1122a))
-- Change transform to viewport ([929aacb](929aacb2f22376244d0fe01c6e99c920da369284))
+- Remove width/height attribute ([fdde631](fdde631f7029ff97fbd40570f9f2ae0abb6ada23))
+- Remove DraggableCore component and use composable ([4f026e8](4f026e841aade40eedff26f73a0984c936a43ece))
+- Remove dimensions option, replace with width and height ([8f2d94a](8f2d94ae556d5851bcc39442828c4a24a86ddd52))
+- Replace DraggableCore with composable ([342d030](342d0305a6941e97a6b80349d7dadb5fb77a1642))
+- Remove paneReady state value ([60feb5d](60feb5d6614f9a568a2c3deddee0a4add66ee8ef))
+- Use computed properties for class and styles ([2048423](2048423ab01b7d21531938211b823df4b42624cc))
+- Use computed properties for class and styles ([5f6a805](5f6a805baacbcf575cfc87319e58d25debbfccf5))
+- Remove position func ([c964fb6](c964fb6b7d82d26e94eba42469cc0ae4c4d29ba0))
+- Add nodeElements prop again ([6b76b8b](6b76b8be069d7e41e74bff5043696c7e3bd1847a))
+- Change label-type to string | VNode | Object ([8e3fef5](8e3fef504cc0fe802ded4c0b2edac8ed4060bacd))
+- Change zoom pane into viewport ([3d67d29](3d67d29347d51305ffe93c02db25db5753b40a33))
+- Transformation-pane class renamed to `transformationpane` ([30d66a6](30d66a6e29b895a209815c1602451ddc7be9adb0))
+- Change transform to viewport ([fcdbc21](fcdbc21d341b06ac35a240d2f384aa31133e8c7e))
 
 ### Testing
 
-- Fix test checking for wrong element type ([b5f4ecc](b5f4ecc5e4bace3ec59c4d7f1e423d6c1a31cdc0))
+- Fix test checking for wrong element type ([e877643](e877643354e9304b029983b1423dd1497e3fadfd))
 
 ### Update
 
-- Connection target and source as non-nullable strings ([6d86a77](6d86a77fbb5c66160378c8eb59ed83eef3876fce))
-- Default nodrag/nowheel/nopan class as type ([08c10b7](08c10b7e085a17fcadfd672845903a93f95c4c22))
-- Typeguard input type ([c295a83](c295a833a22f89e9b7121c0fc83e0e81985a90c4))
-
-## [0.4.2-2] - 2022-04-08
-
-[7b6e6a1](7b6e6a1395c851c79aeb0cc52ac986190b7b667e)...[f7db235](f7db235523346f7f9e6ba641f6d71783e765cde8)
-
-### Bug Fixes
-
-- Trigger computedPosition watcher when selected changes ([ecff009](ecff009c0eb2de221a68949b0a986136fdbe830d))
-
-### Documentation
-
-- Add pwa plugin & update manifest ([c8332ca](c8332cac158d69ec2b9cae9973c66dd831190776))
-
-### Features
-
-- Add floating edges example ([3258257](3258257c489e6fc2e09ff5784ada078e0920b68d))
-
-### Miscellaneous Tasks
-
-- Move ts-patch and typescript-transform-paths to package dev-deps ([e01d788](e01d78836c0ab669769e5a02a23ed4c662fd31d4))
-
-### Refactor
-
-- Add nodeElements prop again ([11bf3ee](11bf3eed715f8e96a3555937955be425fece9788))
-- Change label-type to string | VNode | Object ([0b6521a](0b6521a36210d006815ac63dcf6f28bd0f5f1953))
-
-### Update
-
-- NodeProps comments ([544e199](544e1991fade1eae064c84458b66a9dcf7dc8a81))
-
-## [0.4.2-1] - 2022-04-08
-
-[93aff14](93aff14aaef089faefcfc295f38c1195aabc9d66)...[7b6e6a1](7b6e6a1395c851c79aeb0cc52ac986190b7b667e)
-
-### Bug Fixes
-
-- Import paths ([1289f38](1289f388ec7b27a2de61a5a1a749ed53267d39b3))
-- Replace watchDebounced with debouncedWatch ([ddc39db](ddc39dbffe9cd17b5e3a404507146a18f42dd3e9))
-- Await until d3zoom is rdy ([f4071a8](f4071a8d9a8dd0ccc761073b6a73e89efc4fe41a))
-- Cast styles to css properties ([82b1376](82b1376815d55d8f9a411e00ba40490f649f1abf))
-- Use correct handleId ([758b533](758b5334c5f12cf3207cc6a5614468d70eb6cce2))
-- Parenthesis in handleId computed ([ec7c21f](ec7c21f9586e85625b41e50837e031ab36cf895f))
-
-### Miscellaneous Tasks
-
-- Update deps ([37f12cc](37f12cc8ebbc3d4fa152db489670765b4f7835bc))
-- Update vue to 3.2.25 ([5c91438](5c9143872d6d2e07e418b8a7ee40e369d4f948fd))
-- Import sort ([248dfda](248dfdae767993d11a703f3e3c38740c35848bad))
-
-### Refactor
-
-- Remove paneReady state value ([bdb0af0](bdb0af0bb9f97e4345de71bc313b26af1c64a86e))
-- Use computed properties for class and styles ([4fcad18](4fcad18f8a5223c7a5d4e9247629a32d476383e0))
-- Use computed properties for class and styles ([98651d6](98651d60a85eb838f6f5218980b04d15a6a22dce))
-- Remove position func ([fef1a72](fef1a72dcb6fc7459a4aff48261fcdb5b9f893fe))
-
-### Update
-
-- Use proper handle bounds ([45d3a2a](45d3a2abf3347acd97c0258f651763561739f5a7))
-- Allow void return for styles/class func ([8001031](800103126cb87aa99bb2169233945b220395eb9d))
-
-## [0.4.2-0] - 2022-04-06
-
-[8f4d1b3](8f4d1b3beb63a86822e846aa7773672baab8dc50)...[93aff14](93aff14aaef089faefcfc295f38c1195aabc9d66)
-
-### Bug Fixes
-
-- Selection not working twice in a row ([bcfa05f](bcfa05f30a4d9336abf1d7b8e5bd672b1ca79539))
-
-### Features
-
-- Promisify updateNodePosition ([493ea47](493ea47c5e88c5a15c408158621a94b66c1195fd))
-- Assign default handle id and allow for actual loose connections ([e853d68](e853d68e52dffd2deaa12ff49f2d925868ff97da))
-- Add PositionFunc as node position type ([67461ed](67461eda2f14ee0026cedecefa17b2b9c51b25e5))
-
-### Miscellaneous Tasks
-
-- Update package dependencies ([9c869b9](9c869b9b0048f55c922c1dd3823f6e55a2902029))
-- Add prefix to console messages ([c29a48b](c29a48b56b66743fe8ba49901880dcc86b7cdc7d))
-- Disable no-use-before-define rule ([56bff4c](56bff4ccf577ad85b60bdb75f49e9ff790211e30))
-- Run yarn upgrade ([95958fb](95958fb24aa70c46ed971d6e851dfbc1a9e678a3))
-
-### Refactor
-
-- Remove width/height attribute ([0c44455](0c44455e10d8fce08c1a04518f6a8efc1ef35064))
-- Remove DraggableCore component and use composable ([b3bc4e7](b3bc4e7a0e13ebf08459fbc0122d30d5ed7d0f7f))
-- Remove dimensions option, replace with width and height ([2b67e85](2b67e85906ee272f3c876bab5a995b60fc34d28f))
-- Replace DraggableCore with composable ([eb7bf9f](eb7bf9fbef8e555ab8bfbd347aa7ec8c88f25641))
+- Use proper handle bounds ([bc88e18](bc88e18f22eae4c641e3ab8a7a214016cbf911e7))
+- Allow void return for styles/class func ([106d287](106d2879ce282eecce6ecb086f8232f33c3e2b15))
+- NodeProps comments ([817f69c](817f69ccb550e09057daca302a535ebdff85890d))
+- Connection target and source as non-nullable strings ([8fbb1cf](8fbb1cf505ada13fcf6a598fb5f73ee3ee955624))
+- Default nodrag/nowheel/nopan class as type ([365a8a8](365a8a80fa912db580b725cc931dd87ba05f126d))
+- Typeguard input type ([636598b](636598ba1a360f74129f766ef99bd1437b166dc6))
 
 ## [0.4.1] - 2022-04-05
 
