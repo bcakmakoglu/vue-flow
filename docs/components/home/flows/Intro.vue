@@ -133,7 +133,7 @@ onPaneReady(({ fitView }) => {
             <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
               <h1 class="text-2xl lg:text-4xl">Vue Flow</h1>
               <h2 class="text-lg lg:text-xl font-normal !border-0">
-                A customizable Vue.js library for building node-based editors and diagrams.
+                The customizable Vue 3 component bringing interactivity to flowcharts and graphs.
               </h2>
             </div>
           </BoxNode>
