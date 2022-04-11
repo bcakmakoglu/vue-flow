@@ -36,6 +36,5 @@ Check out the [examples](/examples/) if you want to dive directly into the code.
 - 🦾 __Reliable__: Fully written in TypeScript
 
 ::: warning Vue Flow is still version 0.x.x.
-
 Expect breaking changes between versions!
 :::

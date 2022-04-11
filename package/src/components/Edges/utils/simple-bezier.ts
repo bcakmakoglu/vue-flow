@@ -59,10 +59,6 @@ export function getSimpleBezierPath({
   return `M${sourceX},${sourceY} C${sourceControlX},${sourceControlY} ${targetControlX},${targetControlY} ${targetX},${targetY}`
 }
 
-// @TODO: this function will recalculate the control points
-// one option is to let getXXXPath() return center points
-// but will introduce breaking changes
-// the getCenter() of other types of edges might need to change, too
 export function getSimpleBezierCenter({
   sourceX,
   sourceY,
