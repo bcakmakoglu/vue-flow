@@ -8,7 +8,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow)
 
-### __Vue Flow: A highly customizable Vue3 Flowchart component.__
+### __Vue Flow: A highly customizable Vue 3 Flowchart component.__
 
 With Vue Flow you can build your own, customized node-based applications like static diagrams or even more complex and
 interactive editors!
@@ -16,53 +16,56 @@ interactive editors!
 You can find a detailed explanation on how to get started in the [documentation](https://vueflow.dev/docs) or check
 the [examples](https://vueflow.dev/examples).
 
-If you want to see how it's used with Nuxt3, check out the [docs repo](https://github.com/bcakmakoglu/vue-flow-docs)!
-
 ## ⭐️ Features
 
-- 👶 Easy to use: Seamless zooming & panning behaviour and single and multi-selections of elements
+- 👶 __Easy setup__: Get started hassle-free - Built-in zoom- & pan features, element dragging, selection and much more
 
-- 🎨 Customizable: Different and edge types and support for custom nodes with multiple handles and custom edges
+- 🎨 __Customizable__: Use your own custom nodes, edges, connection lines and expand on the Vue Flows functionality
 
-- 🚀 Fast rendering: Only nodes that have changed are re-rendered and only those that are in the viewport are
-  displayed (optionally)
+- 🚀 __Fast__: Tracks changes reactively and only re-renders the appropriate elements
 
-- 🧲 Utils: Snap-to-grid and graph helper functions
+- 🧲 __Utils & Composition__: Comes with graph helper and state composable functions for advanced uses
 
-- 📦 Additional Components:
+- 📦 __Additional Components__:
 
-  - 🖼 Background
+  - 🖼 Background: With two built-in patterns and some configuration options like height, width or color.
 
-  - 🧭 Minimap
+  - 🧭 Minimap: Shows current nodes in a small map shape in the bottom right corner
 
-  - 🕹 Controls
+  - 🕹 Controls: Control zoom behavior from a panel on the bottom left
 
-- 🦾 Fully written in TypeScript
+- 🦾 __Reliable__: Fully written in TypeScript
 
 ## 🛠 Setup
 
 ```bash
 $ npm i @braks/vue-flow
+
 # or
 $ yarn add @braks/vue-flow
 ```
 
 ## 🎮 Quickstart
 
-A flow consists of **nodes** and **edges** (or just nodes). Together we call them
-**elements**. You can pass a set of elements as a prop to the Flow component.
-**Each element needs a unique id.** A node needs a position and a label and an edge needs a source (node id) and a
-target (node id). These are the most basic parameters for a flow. A simple setup could look like this:
+A flow consists of __nodes__ and __edges__ (or just nodes). Together we call them
+__elements__.
+
+__Each element needs a unique id.__ 
+
+A node also needs a xy-position.
+An edge needs a source (node id) and a target (node id). 
+
+A simple setup could look like this:
 
 ```vue
 <!-- Flowchart.vue -->
 <template>
   <VueFlow :elements="elements"></VueFlow>
 </template>
-<script lang="ts" setup>
-import { VueFlow, Elements } from '@braks/vue-flow'
+<script setup>
+import { VueFlow } from '@braks/vue-flow'
 
-const elements = ref<Elements>([
+const elements = ref([
   {
     id: '1',
     label: 'node 1',
@@ -75,7 +78,6 @@ const elements = ref<Elements>([
   },
   {
     id: 'e1-2',
-    label: 'default edge',
     target: '2',
     source: '1',
   },
@@ -83,16 +85,16 @@ const elements = ref<Elements>([
 </script>
 ```
 
-**Make sure to import the necessary styles:**
+### __Make sure to import the necessary styles:__
 
 ```css
 /* main.css */
 
 /* import the required styles */
-@import "node_modules/@braks/vue-flow/dist/style.css";
+@import "@braks/vue-flow/dist/style.css";
 
 /* import the default theme (optional) */
-@import "node_modules/@braks/vue-flow/dist/theme-default.css";
+@import "@braks/vue-flow/dist/theme-default.css";
 ```
 
 ### ▸ Vue 2
@@ -119,3 +121,4 @@ Thanks for your star!
 
 This project is based on [webkid's](https://webkid.io/) [react flow](https://reactflow.dev/). I wholeheartedly thank
 them for their amazing work! Without them this project would've been impossible for me.
+Please consider [donating](https://github.com/sponsors/wbkd) to them if you like Vue Flow.
