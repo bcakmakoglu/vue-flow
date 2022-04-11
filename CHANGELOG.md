@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - Remove waiting for node dimensions in transformation pane ([ca2a72c](ca2a72c3a8b2afd98e74a005f22560e8f4026b13))
 - Node/edge label type ([440ad3c](440ad3c68100cfe842897d984bdf41c0249419f7))
 - Lint scripts ([3937d56](3937d564a894971adacda07ced6fc6902b7fb17e))
+- Remove 'Floo' from EdgeText.vue ([7d8db1a](7d8db1a3049dc18476fbdeeabd4bb3c532403b2a))
 
 ### Documentation
 
@@ -38,8 +39,10 @@ All notable changes to this project will be documented in this file.
 - Add icon resolver ([dc5ca5d](dc5ca5d1d622b025c572a2feda04b06b44236fe8))
 - Center intro text ([b704bc6](b704bc6e1187a67ee1eaac55266cc276af29f1db))
 - Fitview mixing edges up on resize ([0184cdd](0184cdd2a9f27cbcb5a529608a6f29974d623aba))
-- Update examples wordings ([670a4fc](670a4fc04f9d0241c1298aad155c0749ce4ce2cc))
-- Update guide wordings ([297586d](297586d5ad1889f67a2081b3ff6703284b895a9a))
+- Update examples wordings ([b83c1f4](b83c1f49a4cdde7df212aade3a280fbad59c960c))
+- Update guide wordings ([0ab4eac](0ab4eac01a6c60d374ca55ff14b914d5b373da38))
+- Update README.md ([f770738](f7707384705b538305763445ab9a601f41d6bf59))
+- Add acknowledgement node to intro ([bfe0e0d](bfe0e0db24d998fb03592b01381d054f78dda004))
 
 ### Features
 
@@ -78,9 +81,9 @@ All notable changes to this project will be documented in this file.
 - Remove lint pipeline dependency ([4ebfb2a](4ebfb2ada5557763964e94efdfcadb8aa6732b85))
 - Remove .vscode dir ([914db33](914db337cf0256979110b60336542933c131bef4))
 - Update release script ([8e83d6a](8e83d6a2afdc28ececc54fd93ca0e8e4360c5f70))
-- Update LICENSE ([63596c5](63596c5d318ef533aa73dfd996eb42b836dc94cb))
-- Remove comment ([817f5fb](817f5fb0275240fc45cd3fff5678aa006768ddd6))
-- Type fix in examples ([53355e8](53355e88bfa11cb3fa593591b92f5f34241a635c))
+- Update LICENSE ([533855c](533855c08e5a6b6cf8af2d7b769b50384eeae7f3))
+- Remove comment ([7712ee4](7712ee40a7d9588d1567412ad76c2da27e7098f9))
+- Type fix in examples ([eb408d8](eb408d8d1353b0c22aa3f3d4756021872239ee0d))
 
 ### Refactor
 
