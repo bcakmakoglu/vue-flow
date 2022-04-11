@@ -97,10 +97,10 @@ onPaneReady((i) => emit('pane', i))
 <template>
   <div class="md:max-w-1/3 flex flex-col justify-center">
     <div class="flex flex-col gap-2 items-center md:items-start">
-      <h1>Feature-rich</h1>
+      <h1>Batteries-included</h1>
       <p>
-        Vue Flow comes with seamless zooming & panning, different edge and node types, single and multi-selection, controls,
-        several event handlers and more.
+        Vue Flow comes with several built-in features including zooming, panning, zoom & pan controls, single & multi-selections, element dragging,
+        node and edge components and event handlers.
       </p>
       <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
     </div>

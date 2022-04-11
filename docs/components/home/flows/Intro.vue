@@ -2,35 +2,47 @@
 import { useVueFlow, VueFlow, Handle, Position } from '@braks/vue-flow'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import BoxNode from '../nodes/Box.vue'
+import Heart from '~icons/mdi/heart'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges } = useVueFlow({
+const initialEdges = [
+  {
+    id: 'eintro-examples',
+    type: 'smoothstep',
+    sourceHandle: 'a',
+    source: 'intro',
+    target: 'examples',
+    animated: true,
+    style: { strokeWidth: 2, stroke: '#8b5cf6' },
+  },
+  {
+    id: 'eintro-documentation',
+    type: 'smoothstep',
+    sourceHandle: 'a',
+    source: 'intro',
+    target: 'documentation',
+    animated: true,
+    style: { strokeWidth: 2, stroke: '#f97316' },
+  },
+  {
+    id: 'eintro-acknowledgement',
+    type: 'smoothstep',
+    sourceHandle: 'a',
+    source: 'intro',
+    target: 'acknowledgement',
+    animated: true,
+    style: { strokeWidth: 2, stroke: '#0ea5e9' },
+  },
+]
+const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
     { id: 'documentation', type: 'box', position: { x: 300, y: 400 } },
+    { id: 'acknowledgement', type: 'box', position: { x: 150, y: 500 } },
   ],
-  edges: [
-    {
-      id: 'eintro-examples',
-      type: 'smoothstep',
-      sourceHandle: 'a',
-      source: 'intro',
-      target: 'examples',
-      animated: true,
-      style: { strokeWidth: 2, stroke: '#8b5cf6' },
-    },
-    {
-      id: 'eintro-documentation',
-      type: 'smoothstep',
-      sourceHandle: 'a',
-      source: 'intro',
-      target: 'documentation',
-      animated: true,
-      style: { strokeWidth: 2, stroke: '#f97316' },
-    },
-  ],
+  edges: initialEdges,
   elementsSelectable: true,
   nodesDraggable: false,
   panOnDrag: false,
@@ -62,27 +74,51 @@ onPaneReady(({ fitView }) => {
               y: mainNode.dimensions.height * 2 + 50,
             }
             break
+          case 'acknowledgement':
+            node.position = {
+              x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
+              y: mainNode.dimensions.height * 3,
+            }
+            break
         }
       })
 
       nextTick(() => {
-        const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
-          source: 'examples',
-          target: 'documentation',
-          targetHandle: null,
-          sourceHandle: null,
+        setEdges(() => {
+          return [
+            {
+              id: 'eintro-examples',
+              type: 'smoothstep',
+              sourceHandle: 'a',
+              source: 'intro',
+              target: 'examples',
+              animated: true,
+              style: { strokeWidth: 2, stroke: '#8b5cf6' },
+            },
+            {
+              id: 'eexamples-documentation',
+              type: 'smoothstep',
+              source: 'examples',
+              target: 'documentation',
+              animated: true,
+              style: { strokeWidth: 2, stroke: '#f97316' },
+            },
+            {
+              id: 'edocumentation-acknowledgement',
+              type: 'smoothstep',
+              source: 'documentation',
+              target: 'acknowledgement',
+              animated: true,
+              style: { strokeWidth: 2, stroke: '#0ea5e9' },
+            },
+          ]
         })
-        if (newEdge) edgeId.value = newEdge.id
 
         fitView({
           duration: 1500,
         })
       })
     } else {
-      fitView({
-        duration: 1500,
-      })
-
       getNodes.value.forEach((node) => {
         const mainNode = getNode.value('intro')!
         switch (node.id) {
@@ -98,17 +134,20 @@ onPaneReady(({ fitView }) => {
               y: mainNode.dimensions.height * 1.5,
             }
             break
+          case 'acknowledgement':
+            node.position = {
+              x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
+              y: mainNode.dimensions.height * 2,
+            }
+            break
         }
       })
 
       nextTick(() => {
-        const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
-          source: 'intro',
-          target: 'documentation',
-          targetHandle: null,
-          sourceHandle: null,
+        setEdges(initialEdges)
+        fitView({
+          duration: 1500,
         })
-        if (newEdge) edgeId.value = newEdge.id
       })
     }
 
@@ -123,6 +162,13 @@ onPaneReady(({ fitView }) => {
 
   useResizeObserver(el, setNodes)
 })
+
+const scrollTo = () => {
+  const el = document.getElementById('acknowledgement')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 </script>
 <template>
   <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
@@ -144,6 +190,7 @@ onPaneReady(({ fitView }) => {
           <router-link class="link group bg-orange-500" to="/guide/"> Read The Documentation </router-link>
         </div>
         <Handle type="target" :position="Position.Top" />
+        <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
       </template>
       <template v-else-if="props.id === 'examples'">
         <div class="flex">
@@ -151,6 +198,12 @@ onPaneReady(({ fitView }) => {
         </div>
         <Handle type="target" :position="Position.Top" />
         <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
+      </template>
+      <template v-else-if="props.id === 'acknowledgement'">
+        <div class="flex" @click="scrollTo">
+          <div class="link group bg-sky-500"><Heart class="text-red-500" /> Acknowledgement</div>
+        </div>
+        <Handle type="target" :position="Position.Top" />
       </template>
     </template>
   </VueFlow>

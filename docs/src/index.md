@@ -11,6 +11,6 @@ footer: MIT Licensed | Copyright © 2021-present Burak Cakmakoglu
   <Banner />
 </Suspense>
 
-<Acknowledgement />
-
 <Features />
+
+<Acknowledgement />
