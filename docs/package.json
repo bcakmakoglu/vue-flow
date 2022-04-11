@@ -8,7 +8,7 @@
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore ."
   },
   "dependencies": {
-    "@braks/vue-flow": "^0.4.3",
+    "@braks/vue-flow": "^0.4.4",
     "blobity": "^0.1.7"
   },
   "devDependencies": {
