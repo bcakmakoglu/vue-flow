@@ -97,10 +97,12 @@ onPaneReady((i) => emit('pane', i))
   </div>
   <div class="md:max-w-1/3 flex flex-col gap-12 justify-center <md:pt-12">
     <div class="flex flex-col gap-2 items-center md:items-start">
-      <h1>Additional Components</h1>
+      <h1>Additional Features</h1>
       <p>
-        Vue Flow includes a MiniMap, Controls and Background, as well as a ton of utilities and a supercharged composable to
-        control the internal state outside the Vue Flow component.
+        On top of all the features Vue Flow comes with several components like a Background, Minimap or Controls.
+
+        <br />
+        Plus it's built for composition, making the access of the internal state easy as can be!
       </p>
       <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
     </div>

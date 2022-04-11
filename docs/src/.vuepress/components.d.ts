@@ -5,18 +5,18 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Acknowledgement: typeof import('./../../components/home/Acknowledgement.vue')['default']
-    Additional: typeof import('./../../components/home/Additional.vue')['default']
+    Additional: typeof import('./../../components/home/flows/Additional.vue')['default']
     Banner: typeof import('./../../components/home/Banner.vue')['default']
-    Basic: typeof import('./../../components/home/Basic.vue')['default']
+    Basic: typeof import('./../../components/home/flows/Basic.vue')['default']
     Box: typeof import('./../../components/home/nodes/Box.vue')['default']
     Custom: typeof import('./../../components/home/edges/Custom.vue')['default']
     Features: typeof import('./../../components/home/Features.vue')['default']
     Home: typeof import('./../../components/home/Home.vue')['default']
     Input: typeof import('./../../components/home/nodes/Input.vue')['default']
     Intro: typeof import('./../../components/home/flows/Intro.vue')['default']
-    Nested: typeof import('./../../components/home/Nested.vue')['default']
+    Nested: typeof import('./../../components/home/flows/Nested.vue')['default']
     Output: typeof import('./../../components/home/nodes/Output.vue')['default']
-    RGB: typeof import('./../../components/home/RGB.vue')['default']
+    RGB: typeof import('./../../components/home/flows/RGB.vue')['default']
   }
 }
 

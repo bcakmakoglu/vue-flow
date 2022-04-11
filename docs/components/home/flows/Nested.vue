@@ -58,8 +58,12 @@ onPaneReady((i) => emit('pane', i))
 <template>
   <div class="md:max-w-1/3 flex flex-col justify-center <md:pt-12">
     <div class="flex flex-col gap-2 items-center md:items-start">
-      <h1>Nested- & Subflows</h1>
-      <p>Vue Flow comes with built-in support for nested nodes and nested flows.</p>
+      <h1>Complex Flows</h1>
+      <p>
+        You want to visualize more complex ideas?
+        <br />
+        No worries! Vue Flow supports creating nested nodes and nested graphs out-of-the-box.
+      </p>
       <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
     </div>
   </div>
