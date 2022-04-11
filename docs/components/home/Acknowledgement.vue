@@ -1,8 +1,11 @@
+<script lang="ts" setup>
+import Heart from '~icons/mdi/heart'
+</script>
 <template>
-  <div class="w-full bg-black text-white border-b-1 border-white">
+  <div id="acknowledgement" class="w-full bg-black text-white border-y-1 border-white">
     <div class="max-w-11/12 md:max-w-6/12 m-auto py-4 md:(pb-12 pt-6) text-center">
       <div>
-        <div class="font-bold text-4xl mb-4">Acknowledgement</div>
+        <h1 class="md:mb-8 flex justify-center items-center"><Heart class="text-red-500" /> Acknowledgement</h1>
         <strong>First off</strong>: A big thank you to the developers of
         <a href="https://webkid.io" target="_blank" class="text-green-500">Webkid</a>. Their amazing work made it possible for me
         to create this port to Vue 3 - without them there is no Vue Flow.
