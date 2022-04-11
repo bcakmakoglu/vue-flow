@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Acknowledgement: typeof import('./../../components/home/Acknowledgement.vue')['default']
     Additional: typeof import('./../../components/home/Additional.vue')['default']
     Banner: typeof import('./../../components/home/Banner.vue')['default']
     Basic: typeof import('./../../components/home/Basic.vue')['default']

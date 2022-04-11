@@ -4,7 +4,10 @@ pageClass: examples
 ---
 # Interaction
 
-This is an example showing the different interaction options Vue Flow provides. 
+Vue Flow provides options to interact and limit interaction with the viewport and graph.
+This includes enabling/disabling zoom-scroll, pan-scroll, dragging etc.
+
+In the sandbox below you can find an example showing you how to toggle interaction options.
 
 <div class="mt-6">
   <iframe src="https://codesandbox.io/embed/vue-flow-interaction-example-pqzf7p?eslint=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FFlow.vue&theme=dark"

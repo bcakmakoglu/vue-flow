@@ -10,8 +10,9 @@ __Changes from 0.3.x to 0.4.x__
 The "built-in" storage feature has been fully removed.
 :::
 
-Storing nodes and loading is easy to handle. 
-This example demonstrates a save & restore functionality using the `LocalStorage` of the browser.
+There is no built-in storage feature, however creating a save & restore feature is simple.
+
+This example demonstrates save & restore functionality using the `LocalStorage` of the browser.
 You are of course free to implement your own logic (for example fetching the data from an API that's connected to a database).
 
 <div class="mt-6">

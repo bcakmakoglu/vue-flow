@@ -5,10 +5,13 @@ pageClass: examples
 
 # Updatable Edge
 
+Existing edges can be updated, meaning their source / target position can be changed interactively.
+
+Update an edge by simply dragging it from one node to another at the edge-anchor (handles).
+
 You can enable updating edges either globally by passing the `edgesUpdatable` prop or you can enable it
 for specific edges by using the `updatable` attribute.
 
-Edges can be updated by simply dragging them from one node to another at the edge-anchor.
 
 <div class="mt-6">
   <iframe src="https://codesandbox.io/embed/eager-tree-c7igf6?eslint=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FFlow.vue&theme=dark"

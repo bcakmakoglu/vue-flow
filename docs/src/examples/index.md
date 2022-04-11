@@ -5,9 +5,10 @@ pageClass: examples
 
 # Basic
 
-This is a basic example to help you quickly get started building your own graphs. On the bottom left you see the
-Controls and on the bottom right the MiniMap component. You can see different node types (input, default, output), edge
-types (bezier, step and smoothstep), edge labels and custom styles.
+This is a basic example to help you familiarize with the basic features of Vue Flow. 
+
+On the bottom left you see the viewport-controls and on the bottom right the minimap.
+You can also see the built-in node (default, input, output) and edge (bezier, straight, step, smoothstep) types.
 
 <div class="mt-6">
   <iframe src="https://codesandbox.io/embed/vue-flow-basic-example-3hq147?eslint=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FBasic.vue&moduleview=1&theme=dark"
