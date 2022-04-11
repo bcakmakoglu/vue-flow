@@ -17,13 +17,13 @@ Check out the [examples](/examples/) if you want to dive directly into the code.
 
 ## Key Features
 
-- 👶 __Simple use__: Get started hassle-free - Built-in zoom- & pan features, element dragging, selection and much more
+- 👶 __Easy setup__: Get started hassle-free - Built-in zoom- & pan features, element dragging, selection and much more
 
 - 🎨 __Customizable__: Use your own custom nodes, edges, connection lines and expand on the Vue Flows functionality
 
 - 🚀 __Fast__: Tracks changes reactively and only re-renders the appropriate elements
 
-- 🧲 __Utils & Composables__: Comes with graph helper and state composable functions for advanced uses
+- 🧲 __Utils & Composition__: Comes with graph helper and state composable functions for advanced uses
 
 - 📦 __Additional Components__:
 
