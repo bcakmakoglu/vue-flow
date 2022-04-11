@@ -4,22 +4,26 @@ title: Introduction
 
 # Introduction
 
-Vue Flow is a library for building node-based applications. These can be simple static diagrams or complex node-based
-editors. You can implement custom nodes and edges. It also comes with components like a mini-map, viewport controls and
-a background. 
+## What is Vue Flow?
+
+Vue Flow is a Vue 3 library that brings interactivity to flowcharts and graphs.
+
+It is a tool to build your own diagrams, editors and whatever your imagination allows for.
+
+Easily implement your own custom nodes and edges and expand on the basic functionality and on top of that Vue Flow comes
+with a couple of additional components like a Background, a Minimap and Controls.
 
 Check out the [examples](/examples/) if you want to dive directly into the code.
 
 ## Key Features
- 
-- 👶 __Easy to use__: Seamless zooming & panning behaviour and single and multi-selections of
-  elements
 
-- 🎨 __Customizable__: Different and edge types and support for custom nodes with multiple handles and custom edges
+- 👶 __Simple use__: Get started hassle-free - Built-in zoom- & pan features, element dragging, selection and much more
 
-- 🚀 __Fast rendering__: Only nodes that have changed are re-rendered and only those that are in the viewport are displayed (optionally)
+- 🎨 __Customizable__: Use your own custom nodes, edges, connection lines and expand on the Vue Flows functionality
 
-- 🧲 __Handy utilities__: Comes with graph helper and state composable functions for advanced uses
+- 🚀 __Fast__: Tracks changes reactively and only re-renders the appropriate elements
+
+- 🧲 __Utils & Composables__: Comes with graph helper and state composable functions for advanced uses
 
 - 📦 __Additional Components__:
 
@@ -31,8 +35,7 @@ Check out the [examples](/examples/) if you want to dive directly into the code.
 
 - 🦾 __Reliable__: Fully written in TypeScript
 
-::: warning
-  Vue Flow is still version 0.x.x.
-  
-  Expect breaking changes between versions!
+::: warning Vue Flow is still version 0.x.x.
+
+Expect breaking changes between versions!
 :::
