@@ -21,12 +21,6 @@ jobs:
         node: [14]
 
     steps:
-      - name: TurboRepo local server
-        uses: felixmosh/turborepo-gh-artifacts@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          server-token: ${{ secrets.TURBO_SERVER_TOKEN }}
-
       - name: Checkout 🛎
         uses: actions/checkout@master
 
@@ -54,6 +48,12 @@ jobs:
 
       - name: Run linter 🧹
         run: yarn lint
+
+      - name: Turborepo local server
+        uses: felixmosh/turborepo-gh-artifacts@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          server-token: ${{ secrets.TURBO_SERVER_TOKEN }}
 
       - name: Build Library 👷
         run: yarn build --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}"
