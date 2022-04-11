@@ -6,6 +6,56 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- Emit paneReady when dimensions are ready ([fcfe5a3](fcfe5a368272d8bb47dbe1618c4b0fdf3f15d988))
+- Await dimensions before using zoompan utils ([427acd5](427acd5dc72ff7c0b85a7740c83c21a4f3a6ddf8))
+- Remove waiting for node dimensions in transformation pane ([44ef6e8](44ef6e85788eb9ead8d20f2f7c0b1e8d3c02db8b))
+- Node/edge label type ([6e6c154](6e6c15452772abc862d47240909bc2ba663216b4))
+- Lint scripts ([312d7d1](312d7d1bad08de606b9f68c69eaf614d9409dfad))
+
+### Documentation
+
+- Disable blobity for mobile ([7e98339](7e98339273d7d05a670ed455e8a0f79847f5355f))
+- Rename section to Selection Options ([3c4103b](3c4103b63cbcaa2473a6d199c771d83c8d32feac))
+- Update docsDir in themeConfig ([6ba0b9d](6ba0b9d82b07a0bce1e104c83fdb802dc8f547a3))
+- Add logo to header ([2f9cedc](2f9cedcca8a064cdb489982ace7b573222dcbeb0))
+- Remove next tick cb in Home.vue ([b9f3c98](b9f3c98a1daa0aded8ce036604998367b36bed90))
+- Update node positions ([c6b9c78](c6b9c78110d6dfdc3250c39332013ff4352c8875))
+- Fix node pos on resize ([43e3580](43e35808826e8c61a55cfc1a86711479c16eea39))
+- Fix missing handles in new connection ([d434262](d43426258ec24011166b626a8ddc88d5af613a4f))
+- Add icon resolver ([bb24f36](bb24f3643c4aa23ffa9070ba810a7ce8c356410c))
+- Center intro text ([4d3ee35](4d3ee352b72152bd487024fb571e8465b074ee26))
+- Fitview mixing edges up on resize ([663dc5a](663dc5a9ae5cb8e8e5c7c2ad11fcfbedf292235d))
+
+### Features
+
+- Add name to BaseEdge.vue ([f56e57a](f56e57a4383182ebbe4a3a7bd5e1c4f4dbbb7b7c))
+- Allow node/edge template per element ([1fc6868](1fc6868e13bcb278de59af936646c5a299384de7))
+- Add turbo to root deps-dev ([008d27e](008d27ee195a3426e47910a25a40711b1883382f))
+- Use frozen-lockfile in build-and-test.yml ([7eddc5a](7eddc5a3fa5af7462cc4bc8ee558de798764528a))
+- Add turbo pipelines for types and themes ([7d7ac5a](7d7ac5aa0c191457c35341d0493802401b9401b9))
+- Test pipeline ([6b2be6d](6b2be6d28d54974f90a2cab5bccceecb27f656db))
+- Add dependency to dev pipeline ([29293e2](29293e2fa321766e0076a5c4bbfb048672b64e66))
+- Add dependency to dev pipeline ([3f9a841](3f9a84191cbc84616642061058f1714db22bdd54))
+- Add turbo repo cache to workflow ([a723a99](a723a9943a62ea1e4f6af7a56029b07260867244))
+
+### Miscellaneous Tasks
+
+- Remove unused eslint-rules & lint files ([2248e06](2248e0624fe09f23b5acd84c9d1ca9a5d9eea8a1))
+- Remove export ([ed4f9ba](ed4f9ba27578eec87f4b4abed0c3ef5a0005ff12))
+- Update author field ([a0b0589](a0b058984df97c26ef6b2771feab1b70bb61cb55))
+- Move typedoc to package ([02da2d5](02da2d5e9e7cb74c7c476fdf48bcfa7dd53cbd5b))
+- Change destination dir for docs output ([f95b4e4](f95b4e49d7175d77f6d95ff38d07098da85080d1))
+- Add typedoc pipeline output ([f560ebf](f560ebf9ccd86213d0716e66f9704d0e9bc4a6fa))
+- Remove lint pipeline dependency ([7659386](765938661af8b40b6f925db0fe30243f64612124))
+- Remove .vscode dir ([35706b4](35706b472cb8abc637b16a815792559c0a88c86e))
+- Update release script ([1798d21](1798d218a70b1ef8627469a5e76efd7d281c6bac))
+
+## [0.4.2-4] - 2022-04-09
+
+[f7db235](f7db235523346f7f9e6ba641f6d71783e765cde8)...[be535ba](be535baae4112179dad7800bd0dd2aab3d6f0ce6)
+
+### Bug Fixes
+
 - Remove v-if ([32c0f59](32c0f593293c551302b4bd762f77c78246fb6ca2))
 - Return empty arrays if pane isn't ready yet ([6829efc](6829efc21de64017695461e051edcc3f8600168e))
 
