@@ -50,7 +50,7 @@ const { onPaneReady } = useVueFlow({
         const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
-          stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : undefined,
+          stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
         }
       },
     },
@@ -67,7 +67,7 @@ const { onPaneReady } = useVueFlow({
         const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
-          stroke: el.selected || sourceNodeSelected ? 'red' : undefined,
+          stroke: el.selected || sourceNodeSelected ? 'red' : '',
         }
       },
     },
@@ -85,7 +85,7 @@ const { onPaneReady } = useVueFlow({
         const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
-          stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : undefined,
+          stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
         }
       },
     },
