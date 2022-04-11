@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { BackgroundVariant, VueFlow, Background, Controls, MiniMap, MiniMapNodeFunc, useVueFlow } from '@braks/vue-flow'
 import { breakpointsTailwind } from '@vueuse/core'
-import CustomEdge from './edges/Custom.vue'
-import RGBNode from './nodes/Input.vue'
-import RGBOutputNode from './nodes/Output.vue'
+import CustomEdge from '../edges/Custom.vue'
+import RGBNode from '../nodes/Input.vue'
+import RGBOutputNode from '../nodes/Output.vue'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
@@ -103,8 +103,7 @@ const nodeColor: MiniMapNodeFunc = (node) => {
     <div class="flex flex-col gap-2 items-center md:items-start">
       <h1>Customizable</h1>
       <p>
-        You can create your own node and edge types or just pass a custom style. Implement custom UIs inside your nodes and add
-        functionality to your edges.
+        You can expand on the existing features by using your own custom nodes and edges and implement any design and functionality you want.
       </p>
       <router-link class="button max-w-max" to="/guide/">Documentation</router-link>
     </div>
