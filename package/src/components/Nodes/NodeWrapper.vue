@@ -4,7 +4,7 @@ import { CSSProperties, isVNode } from 'vue'
 import { useVueFlow } from '../../composables'
 import { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId, Slots } from '../../context'
-import { getXYZPos } from '../../utils'
+import { getHandleBounds, getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
   id: string
@@ -74,6 +74,8 @@ watch(
     } else {
       node.value.computedPosition = xyzPos
     }
+
+    node.value.handleBounds = getHandleBounds(nodeElement.value, scale.value)
   },
   { deep: true },
 )
