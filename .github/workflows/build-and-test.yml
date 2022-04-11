@@ -1,4 +1,4 @@
-name: build-and-test
+name: Build and test
 
 on:
   push:
@@ -53,10 +53,16 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run linter 🧹
-        run: yarn lint
+        run: yarn lint --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}" --team="foo"
 
       - name: Build Library 👷
-        run: yarn build --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}"
+        run: yarn build --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}" --team="foo"
 
       - name: Run tests 🧪
-        run: yarn test
+        run: yarn test --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}" --team="foo"
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: package/dist

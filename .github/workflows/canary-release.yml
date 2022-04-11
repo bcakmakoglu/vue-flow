@@ -1,0 +1,24 @@
+name: canary-release
+
+on:
+  workflow_run:
+    workflows: [Build and test]
+    types: [completed]
+    branches: [develop]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+
+    steps:
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          workflow_conclusion: success
+
