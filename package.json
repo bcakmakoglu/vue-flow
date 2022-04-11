@@ -13,7 +13,7 @@
     "docs": "yarn --cwd docs dev",
     "build": "yarn turbo run build",
     "prerelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
-    "release": "yarn turbo run release",
+    "release": "yarn --cwd package release",
     "test": "yarn turbo run test",
     "lint": "yarn turbo run lint",
     "typedocs": "yarn turbo run typedoc"
