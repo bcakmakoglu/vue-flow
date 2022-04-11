@@ -2,8 +2,6 @@
 import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 import Blobity from 'blobity'
 import Intro from './flows/Intro.vue'
-import ArrowLeft from '~icons/carbon/arrow-left'
-import ArrowRight from '~icons/carbon/arrow-right'
 
 const dark = useDark({
   selector: 'html',

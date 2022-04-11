@@ -42,10 +42,6 @@ const edgeId = ref('eintro-documentation')
 const el = templateRef<HTMLDivElement>('el', null)
 
 onPaneReady(({ fitView }) => {
-  fitView({
-    duration: 1500,
-  })
-
   const setNodes = () => {
     if (breakpoints.isSmaller('md')) {
       const mainNode = getNode.value('intro')!
@@ -69,14 +65,24 @@ onPaneReady(({ fitView }) => {
         }
       })
 
-      const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
-        source: 'examples',
-        target: 'documentation',
-        targetHandle: null,
-        sourceHandle: null,
+      nextTick(() => {
+        const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
+          source: 'examples',
+          target: 'documentation',
+          targetHandle: null,
+          sourceHandle: null,
+        })
+        if (newEdge) edgeId.value = newEdge.id
+
+        fitView({
+          duration: 1500,
+        })
       })
-      if (newEdge) edgeId.value = newEdge.id
     } else {
+      fitView({
+        duration: 1500,
+      })
+
       getNodes.value.forEach((node) => {
         const mainNode = getNode.value('intro')!
         switch (node.id) {
@@ -95,13 +101,15 @@ onPaneReady(({ fitView }) => {
         }
       })
 
-      const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
-        source: 'intro',
-        target: 'documentation',
-        targetHandle: null,
-        sourceHandle: null,
+      nextTick(() => {
+        const newEdge = updateEdge(getEdge.value(edgeId.value)!, {
+          source: 'intro',
+          target: 'documentation',
+          targetHandle: null,
+          sourceHandle: null,
+        })
+        if (newEdge) edgeId.value = newEdge.id
       })
-      if (newEdge) edgeId.value = newEdge.id
     }
 
     setTimeout(
