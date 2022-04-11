@@ -5,12 +5,12 @@ pageClass: examples
 
 # Custom Node
 
-One of the key features is implementing custom elements (nodes / edges) that allow you to handle any logic you want inside your nodes.
+One of the key features of Vue Flow is implementing custom elements (nodes / edges) that allow you to expand on the basic node functionality (dragging, selection etc).
 
 You can display any content and functionality inside a custom node. More documentation about how to set
 up a custom node can be found on the [custom nodes page](/guide/node.html#custom-nodes/).
 
-This example shows a basic implementation of a custom node.
+You can see a working example in the sandbox below.
 
 <div class="mt-6">
   <iframe src="https://codesandbox.io/embed/vue-flow-custom-node-example-wznb3q?eslint=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FFlow.vue&theme=dark"

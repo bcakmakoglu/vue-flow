@@ -5,7 +5,8 @@ pageClass: examples
 
 # Empty
 
-You can add elements to your modelValue or push them to the state using the [graph utilities](/guide/utilities/graph).
+Similar to the drag and drop example, we can also add nodes to an empty graph on a button click, 
+which triggers a push into our elements / nodes array.
 
 <div class="mt-6">
   <iframe src="https://codesandbox.io/embed/vue-flow-empty-example-bcxxdv?eslint=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FFlow.vue&theme=dark"

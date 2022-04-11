@@ -5,9 +5,22 @@ pageClass: examples
 
 # Custom Connection Line
 
-This example shows how you can implement a custom connection line. 
+If the default connection lines aren't to your liking, or you want to expand on the existing 
+functionality you can pass a custom connection line component to Vue Flow.
 
-Pass the connection line component into the template slot of the `VueFlow` component.
+Simply pass a component in the designated template slot, and you're good to go.
+
+```vue:no-line-numbers
+<template>
+  <VueFlow>
+    <template #connection-line="props">
+      <MyCustomConnectionLine v-bind="props" />
+    </template>
+  </VueFlow>
+</template>
+```
+
+You can see a working example in the sandbox.
 
 <div class="mt-6">
   <iframe src="https://codesandbox.io/embed/vue-flow-custom-connection-line-0okgze?eslint=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FFlow.vue&theme=dark"
