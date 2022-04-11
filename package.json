@@ -11,12 +11,12 @@
   "scripts": {
     "dev": "yarn --cwd examples dev",
     "docs": "yarn --cwd docs dev",
-    "build": "yarn turbo run build",
+    "build": "turbo run build",
     "prerelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
     "release": "yarn --cwd package release",
-    "test": "yarn turbo run test",
-    "lint": "yarn turbo run lint",
-    "typedocs": "yarn turbo run typedoc"
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typedocs": "turbo run typedoc"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.9.0",
