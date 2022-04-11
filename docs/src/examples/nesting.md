@@ -5,7 +5,7 @@ pageClass: examples
 
 # Nested Nodes
 
-One of the big new features in 0.4.0 is nested nodes. 
+Another key feature is nested nodes (or even nested flows).
 
 You can define parents of a node, which are then nested inside that node. 
 You can also define the boundaries of a node, i.e. if the node can be dragged outside it's parent or if it's contained to the parent 

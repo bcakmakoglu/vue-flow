@@ -5,7 +5,9 @@ pageClass: examples
 
 # Stress
 
-Vue Flow is built to be fast and tries to minimize re-renders so that your application can stay smooth as possible.
+Vue Flow is built to be fast but there are limits.
+
+Try out how many nodes you can get to render before your browser crashes.
 
 <div class="mt-6">
   <iframe src="https://codesandbox.io/embed/vue-flow-stress-zyr01z?eslint=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FFlow.vue&theme=dark"

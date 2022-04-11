@@ -5,7 +5,13 @@ pageClass: examples
 
 # Update Node
 
-Updating internal node data is easy. Just manipulate your node and the changes will be reflected in the graph.
+Updating internal node data is simple.
+After initializing your elements and parsing them into either `GraphNode` or `GraphEdge`
+Vue Flow will emit the changes back into your initial `ref`.
+
+That means you can manipulate any property of your original nodes, and it will trigger changes in the graph.
+
+You can of course also access the nodes directly from the state and change their properties from there.
 
 <div class="mt-6">
   <iframe src="https://codesandbox.io/embed/vue-flow-update-node-example-q5hjp3?eslint=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2Fcomponents%2FFlow.vue&theme=dark"
