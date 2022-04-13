@@ -1,5 +1,7 @@
 import { Dimensions, Position, XYPosition } from './flow'
 import { Connection } from './connection'
+import { GraphEdge } from './edge'
+import { GraphNode } from './node'
 
 export type HandleType = 'source' | 'target'
 
@@ -15,7 +17,10 @@ export interface StartHandle {
 }
 
 /** A valid connection function can determine if an attempted connection is valid or not, i.e. abort creating a new edge */
-export type ValidConnectionFunc = (connection: Connection) => boolean
+export type ValidConnectionFunc = (
+  connection: Connection,
+  elements: { edges: GraphEdge[]; sourceNode: GraphNode; targetNode: GraphNode },
+) => boolean
 
 export interface HandleProps {
   /** Unique id of handle element */
