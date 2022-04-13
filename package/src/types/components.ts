@@ -86,6 +86,10 @@ export interface MiniMapProps<Data = ElementData> {
 
 /** these props are passed to mini map node slots */
 export interface MiniMapNodeProps {
+  id: string
+  parentNode?: string
+  selected?: boolean
+  dragging?: boolean
   position: XYPosition
   dimensions: Dimensions
   borderRadius?: number
