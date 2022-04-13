@@ -84,8 +84,7 @@ export default {
     class="vue-flow__minimap"
   >
     <template v-for="node of store.getNodes" :key="`mini-map-node-${node.id}`">
-      <slot
-        :name="`node-${node.type}`"
+      <MiniMapNode
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :style="node.style"
@@ -96,18 +95,14 @@ export default {
         :stroke-width="props.nodeStrokeWidth"
         :shape-rendering="shapeRendering"
       >
-        <MiniMapNode
+        <slot
+          :name="`node-${node.type}`"
           :position="node.computedPosition"
           :dimensions="node.dimensions"
-          :style="node.style"
-          :class="nodeClassNameFunc(node)"
-          :color="nodeColorFunc(node)"
-          :border-radius="props.nodeBorderRadius"
-          :stroke-color="nodeStrokeColorFunc(node)"
-          :stroke-width="props.nodeStrokeWidth"
-          :shape-rendering="shapeRendering"
+          :selected="node.selected"
+          :dragging="node.dragging"
         />
-      </slot>
+      </MiniMapNode>
     </template>
     <path class="vue-flow__minimap-mask" :d="d" :fill="props.maskColor" fill-rule="evenodd" />
   </svg>
