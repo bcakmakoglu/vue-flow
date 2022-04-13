@@ -21,7 +21,8 @@ All notable changes to this project will be documented in this file.
 - Remove waiting for node dimensions in transformation pane ([ca2a72c](ca2a72c3a8b2afd98e74a005f22560e8f4026b13))
 - Node/edge label type ([440ad3c](440ad3c68100cfe842897d984bdf41c0249419f7))
 - Lint scripts ([3937d56](3937d564a894971adacda07ced6fc6902b7fb17e))
-- Remove 'Floo' from EdgeText.vue ([7d8db1a](7d8db1a3049dc18476fbdeeabd4bb3c532403b2a))
+- Remove 'Floo' from EdgeText.vue ([1e1ee65](1e1ee65de771256334f3932e94e7f87f32c84bf7))
+- Recalculate handle bounds on position change ([3febe99](3febe992f93942f9112b3dc038993c624c9b18c2))
 
 ### Documentation
 
@@ -39,10 +40,10 @@ All notable changes to this project will be documented in this file.
 - Add icon resolver ([dc5ca5d](dc5ca5d1d622b025c572a2feda04b06b44236fe8))
 - Center intro text ([b704bc6](b704bc6e1187a67ee1eaac55266cc276af29f1db))
 - Fitview mixing edges up on resize ([0184cdd](0184cdd2a9f27cbcb5a529608a6f29974d623aba))
-- Update examples wordings ([b83c1f4](b83c1f49a4cdde7df212aade3a280fbad59c960c))
-- Update guide wordings ([0ab4eac](0ab4eac01a6c60d374ca55ff14b914d5b373da38))
-- Update README.md ([f770738](f7707384705b538305763445ab9a601f41d6bf59))
-- Add acknowledgement node to intro ([bfe0e0d](bfe0e0db24d998fb03592b01381d054f78dda004))
+- Update examples wordings ([d35eb96](d35eb96c1f1d95e2ba04a27fdaff96374b176f3e))
+- Update guide wordings ([b94c0ab](b94c0ab607b8869cc8793cf2cf5c865d11de7f9e))
+- Update README.md ([3925e24](3925e24aa18755068605ead346ea45080a6569fe))
+- Add acknowledgement node to intro ([9b11d8f](9b11d8f4f2ced70c550f30010354451270cea69f))
 
 ### Features
 
@@ -60,6 +61,7 @@ All notable changes to this project will be documented in this file.
 - Add dependency to dev pipeline ([82fd35c](82fd35c315cb58b7a0cd8128105f9614581c05ce))
 - Add dependency to dev pipeline ([c40d17c](c40d17c7d627a9a02ef3154cac088cc8df9d92f5))
 - Add turbo repo cache to workflow ([1628cf4](1628cf4e645d1969fadc8b318491d2ff3649ae0d))
+- MiniMapNode slot ([c2cb9d8](c2cb9d8a591338c972ffec98c83a9fae30fe635e))
 
 ### Miscellaneous Tasks
 
@@ -81,9 +83,10 @@ All notable changes to this project will be documented in this file.
 - Remove lint pipeline dependency ([4ebfb2a](4ebfb2ada5557763964e94efdfcadb8aa6732b85))
 - Remove .vscode dir ([914db33](914db337cf0256979110b60336542933c131bef4))
 - Update release script ([8e83d6a](8e83d6a2afdc28ececc54fd93ca0e8e4360c5f70))
-- Update LICENSE ([533855c](533855c08e5a6b6cf8af2d7b769b50384eeae7f3))
-- Remove comment ([7712ee4](7712ee40a7d9588d1567412ad76c2da27e7098f9))
-- Type fix in examples ([eb408d8](eb408d8d1353b0c22aa3f3d4756021872239ee0d))
+- Update LICENSE ([ae4cefe](ae4cefefbc155410c2d21561e0edb0159c19494c))
+- Remove comment ([e17fb80](e17fb8094b2ed14466585807ef3bbaedd788b75e))
+- Type fix in examples ([efe68d7](efe68d7b547d67c1c7fe4029e1a2ad1c818c2ed9))
+- Bump versions ([cc95348](cc95348a19b3e99150bc00346281576cfe916201))
 
 ### Refactor
 
