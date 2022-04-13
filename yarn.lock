@@ -136,6 +136,23 @@
   version "0.23.0"
   resolved "https://registry.yarnpkg.com/@antfu/eslint-config-basic/-/eslint-config-basic-0.23.0.tgz#9763f9900afd553bf2a74bd3b5398662f2bae62e"
   integrity sha512-Jygnpgq+9Rb7gBjeQjWx5SNUBPfcHtCh87nydHKXc3hly/wi2pwebp0lZMJahSfIH38DYpVTj4q4pl4lAh1sNA==
+"@animxyz/core@^0.6.6":
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/@animxyz/core/-/core-0.6.6.tgz#2c5eae54c7a6b98c3be79ae16fc1ec68991f67cc"
+  integrity sha512-NtAA/G0Gq3hzAiL6yuE/4U8IgHMPUl3MxbWUbhO443T9UCsf9rBY94P5aK79Zd+/529FeoNdDphIOcOZLsI2sA==
+
+"@animxyz/vue3@^0.6.6":
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/@animxyz/vue3/-/vue3-0.6.6.tgz#473b788d07842db7dd78cf317cc7a6b4bc9fbc89"
+  integrity sha512-ljHz97eNJMBLA2qVX3UDFHQbwIVKFUbKb6w6QbKUrkITY8oMwBz08ZYTYJguSUERXbpazftMSiaHsgRVnEbV/Q==
+  dependencies:
+    "@animxyz/core" "^0.6.6"
+    clsx "^1.1.1"
+
+"@antfu/eslint-config-basic@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@antfu/eslint-config-basic/-/eslint-config-basic-0.9.0.tgz#88e6c272df2e359dbd4e90f824d8959480f7dd92"
+  integrity sha512-jiNycDenS19pppDvaa0oO3wWr4WDIog5Dz6WernBk+FsCyC7UzPfnG1KB3L/sovNVBB80wLZ7anGXZn0gKEHrQ==
   dependencies:
     eslint-plugin-antfu "0.23.0"
     eslint-plugin-eslint-comments "^3.2.0"
@@ -3153,6 +3170,11 @@ clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
+
+clsx@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
 
 code-point-at@^1.0.0:
   version "1.1.0"

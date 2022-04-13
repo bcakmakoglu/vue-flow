@@ -1,5 +1,6 @@
 <script>
 import 'virtual:windi.css'
+import '@animxyz/core'
 import '@braks/vue-flow/dist/style.css'
 import '@braks/vue-flow/dist/theme-default.css'
 import '../../assets/index.css'

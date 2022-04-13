@@ -8,7 +8,6 @@ declare module 'vue' {
     Additional: typeof import('./../../components/home/flows/Additional.vue')['default']
     Banner: typeof import('./../../components/home/Banner.vue')['default']
     Basic: typeof import('./../../components/home/flows/Basic.vue')['default']
-    Box: typeof import('./../../components/home/nodes/Box.vue')['default']
     Custom: typeof import('./../../components/home/edges/Custom.vue')['default']
     Features: typeof import('./../../components/home/Features.vue')['default']
     Home: typeof import('./../../components/home/Home.vue')['default']
