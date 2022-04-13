@@ -13,6 +13,8 @@ export const createHooks = (): FlowHooks => ({
   nodeDragStart: createEventHook(),
   nodeDrag: createEventHook(),
   nodeDragStop: createEventHook(),
+  miniMapNodeClick: createEventHook(),
+  miniMapNodeDoubleClick: createEventHook(),
   connect: createEventHook(),
   connectStart: createEventHook(),
   connectStop: createEventHook(),
