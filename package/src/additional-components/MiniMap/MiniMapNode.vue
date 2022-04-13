@@ -18,6 +18,7 @@ export default {
 <template>
   <rect
     class="vue-flow__minimap-node"
+    :class="attrs.class"
     :x="props.position.x"
     :y="props.position.y"
     :rx="props.borderRadius"
@@ -29,4 +30,5 @@ export default {
     :stroke-width="props.strokeWidth"
     :shape-rendering="props.shapeRendering"
   />
+  <slot />
 </template>

@@ -1,6 +1,6 @@
 import { Component, CSSProperties, DefineComponent, HTMLAttributes, VNode } from 'vue'
 import { BackgroundVariant, Dimensions, ElementData, XYPosition } from './flow'
-import { GraphNode, Node, NodeProps } from './node'
+import { GraphNode, NodeProps } from './node'
 import { EdgeProps } from './edge'
 import { FitViewParams } from './zoom'
 
@@ -62,10 +62,10 @@ export interface ControlEvents {
 }
 
 /** expects a node and returns a color value */
-export type MiniMapNodeFunc<Data = ElementData> = (node: Node<Data> | GraphNode<Data>) => string
+export type MiniMapNodeFunc<Data = ElementData> = (node: GraphNode<Data>) => string
 // hack for vue-type imports
-type MiniMapNodeFunc2<Data = ElementData> = (node: Node<Data> | GraphNode<Data>) => string
-type MiniMapNodeFunc3<Data = ElementData> = (node: Node<Data> | GraphNode<Data>) => string
+type MiniMapNodeFunc2<Data = ElementData> = (node: GraphNode<Data>) => string
+type MiniMapNodeFunc3<Data = ElementData> = (node: GraphNode<Data>) => string
 
 export type ShapeRendering = CSSProperties['shapeRendering']
 
