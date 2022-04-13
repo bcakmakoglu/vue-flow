@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
+### Features
+
+- Add mini map node events ([a3b4423](a3b4423c44a418f60ca2fb19dc1b6cc1253f2632))
+- Extend minimap node type ([8ea9301](8ea93015c336d40ae37e0a29d7f5dfe6366f979f))
+- Extend ValidConnectionFunc ([77eb1eb](77eb1eb4f2187fb0c21781076cc60f885bd4b8e1))
+
+## [0.4.5] - 2022-04-13
+
+[8f4d1b3](8f4d1b3beb63a86822e846aa7773672baab8dc50)...[9df4a26](9df4a26aa1392fe8492b243fcbbff5069848f75d)
+
 ### Bug Fixes
 
 - Selection not working twice in a row ([ec0f3ef](ec0f3ef0e428cceafc63da9523128f34aeb46d48))
