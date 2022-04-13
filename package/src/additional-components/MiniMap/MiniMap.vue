@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ShapeRendering, MiniMapNodeFunc } from '../../types'
+import { ShapeRendering, MiniMapNodeFunc, GraphNode } from '../../types'
 import { useVueFlow, useWindow } from '../../composables'
 import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import type { MiniMapProps } from '../../types/components'
@@ -70,6 +70,14 @@ const d = computed(() => {
     h${-viewBB.value.width}z`
   else return ''
 })
+
+const onNodeClick = (event: MouseEvent, node: GraphNode) => {
+  store.hooks.miniMapNodeClick.trigger({ event, node })
+}
+
+const onNodeDblClick = (event: MouseEvent, node: GraphNode) => {
+  store.hooks.miniMapNodeDoubleClick.trigger({ event, node })
+}
 </script>
 <script lang="ts">
 export default {
@@ -85,6 +93,7 @@ export default {
   >
     <template v-for="node of store.getNodes" :key="`mini-map-node-${node.id}`">
       <MiniMapNode
+        :id="node.id"
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :style="node.style"
@@ -94,13 +103,24 @@ export default {
         :stroke-color="nodeStrokeColorFunc(node)"
         :stroke-width="props.nodeStrokeWidth"
         :shape-rendering="shapeRendering"
+        @click="(e) => onNodeClick(e, node)"
+        @dblclick="(e) => onNodeDblClick(e, node)"
       >
         <slot
+          :id="node.id"
           :name="`node-${node.type}`"
-          :position="node.computedPosition"
-          :dimensions="node.dimensions"
+          :parent-node="node.parentNode"
           :selected="node.selected"
           :dragging="node.dragging"
+          :position="node.computedPosition"
+          :dimensions="node.dimensions"
+          :style="node.style"
+          :class="nodeClassNameFunc(node)"
+          :color="nodeColorFunc(node)"
+          :border-radius="props.nodeBorderRadius"
+          :stroke-color="nodeStrokeColorFunc(node)"
+          :stroke-width="props.nodeStrokeWidth"
+          :shape-rendering="shapeRendering"
         />
       </MiniMapNode>
     </template>

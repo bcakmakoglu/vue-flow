@@ -20,6 +20,8 @@ export interface FlowEvents<NodeData = ElementData, EdgeData = ElementData> {
   nodeDragStart: { event: MouseTouchEvent; node: GraphNode<NodeData> }
   nodeDrag: { event: MouseTouchEvent; node: GraphNode<NodeData> }
   nodeDragStop: { event: MouseTouchEvent; node: GraphNode<NodeData> }
+  miniMapNodeClick: { event: MouseTouchEvent; node: GraphNode<NodeData> }
+  miniMapNodeDoubleClick: { event: MouseTouchEvent; node: GraphNode<NodeData> }
   connect: Connection
   connectStart: {
     event: MouseEvent

@@ -5,7 +5,10 @@ import type { MiniMapNodeProps } from '../../types/components'
 const props = withDefaults(defineProps<MiniMapNodeProps>(), {
   shapeRendering: 'geometricPrecision',
 })
-const attrs = useAttrs()
+
+const emit = defineEmits(['click', 'dblClick'])
+
+const attrs: any = useAttrs()
 
 const styles = (attrs.style ?? {}) as CSSProperties
 const fill = computed(() => props.color || (styles.background as string) || styles.backgroundColor)
@@ -19,6 +22,7 @@ export default {
   <rect
     class="vue-flow__minimap-node"
     :class="attrs.class"
+    :style="attrs.style"
     :x="props.position.x"
     :y="props.position.y"
     :rx="props.borderRadius"
@@ -29,6 +33,8 @@ export default {
     :stroke="props.strokeColor"
     :stroke-width="props.strokeWidth"
     :shape-rendering="props.shapeRendering"
+    @click="emit('click')"
+    @dblClick="emit('dblClick')"
   />
   <slot />
 </template>
