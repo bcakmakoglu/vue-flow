@@ -12,13 +12,21 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
+  "exports": {
+    ".": {
+      "require": "./dist/vue-flow.cjs.js",
+      "import": "./dist/vue-flow.es.js"
+    },
+    "./dist/*": "./dist/*"
+  },
   "main": "./dist/vue-flow.cjs.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/vue-flow.es.js",
   "unpkg": "./dist/vue-flow.iife.js",
   "jsdelivr": "./dist/vue-flow.iife.js",
   "files": [
-    "dist"
+    "dist",
+    "dist/*.css"
   ],
   "sideEffects": false,
   "scripts": {
