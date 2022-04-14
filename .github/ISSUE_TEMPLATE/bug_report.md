@@ -1,4 +1,13 @@
-Issue tracker is **ONLY** used for reporting bugs. 
+---
+name: Bug report
+about: Create a bug report
+title: ''
+labels: ''
+assignees: ''
+
+---
+
+Issue tracker is **ONLY** used for reporting bugs.
 
 New features should be discussed in the [discussions](https://github.com/bcakmakoglu/vue-flow/discussions).
 
