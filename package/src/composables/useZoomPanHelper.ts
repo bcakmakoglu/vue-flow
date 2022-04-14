@@ -1,7 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
 import useVueFlow from './useVueFlow'
 import useWindow from './useWindow'
-import { getRectOfNodes, pointToRendererPoint, getTransformForBounds } from '~/utils'
+import { getRectOfNodes, pointToRendererPoint, getTransformForBounds, clampPosition } from '~/utils'
 import { GraphNode, Store, ViewportFuncs, D3Selection } from '~/types'
 
 const DEFAULT_PADDING = 0.1
@@ -57,7 +57,12 @@ export default (store: Store = useVueFlow().store): ViewportFuncs => {
   }
 
   const transformViewport = (x: number, y: number, zoom: number, duration?: number) => {
-    const nextTransform = zoomIdentity.translate(x, y).scale(zoom)
+    const { x: clampedX, y: clampedY } = clampPosition(
+      { x: store.viewport.x - x, y: store.viewport.y - y },
+      store.translateExtent,
+    )
+
+    const nextTransform = zoomIdentity.translate(-clampedX, -clampedY).scale(zoom)
     if (store.d3Selection && store.d3Zoom) {
       store.d3Zoom.transform(transition(store.d3Selection, duration), nextTransform)
     }
