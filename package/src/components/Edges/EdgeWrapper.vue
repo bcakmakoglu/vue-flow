@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, EdgeComponent, GraphEdge, Position } from '../../types'
+import { ConnectionMode, EdgeComponent, GraphEdge, GraphNode, Position } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import { Slots } from '../../context'
 import EdgeAnchor from './EdgeAnchor.vue'
@@ -9,6 +9,8 @@ import EdgeAnchor from './EdgeAnchor.vue'
 interface EdgeWrapper {
   id: string
   edge: GraphEdge
+  sourceNode: GraphNode
+  targetNode: GraphNode
   selectable?: boolean
   updatable?: boolean
 }
@@ -59,21 +61,21 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
 // when connection type is loose we can define all handles as sources
 const targetNodeHandles = computed(() => {
   if (store.connectionMode === ConnectionMode.Strict) {
-    return edge.value.targetNode.handleBounds.target
+    return props.targetNode.handleBounds.target
   }
 
-  const targetBounds = edge.value.targetNode.handleBounds.target
-  const sourceBounds = edge.value.targetNode.handleBounds.source
+  const targetBounds = props.targetNode.handleBounds.target
+  const sourceBounds = props.targetNode.handleBounds.source
   return targetBounds ?? sourceBounds
 })
 
 const sourceNodeHandles = computed(() => {
   if (store.connectionMode === ConnectionMode.Strict) {
-    return edge.value.sourceNode.handleBounds.source
+    return props.sourceNode.handleBounds.source
   }
 
-  const targetBounds = edge.value.sourceNode.handleBounds.target
-  const sourceBounds = edge.value.sourceNode.handleBounds.source
+  const targetBounds = props.sourceNode.handleBounds.target
+  const sourceBounds = props.sourceNode.handleBounds.source
   return sourceBounds ?? targetBounds
 })
 
@@ -90,19 +92,19 @@ onMounted(() => {
     [
       sourcePosition,
       targetPosition,
-      () => edge.value.sourceNode.position,
-      () => edge.value.targetNode.position,
-      () => edge.value.sourceNode.computedPosition,
-      () => edge.value.targetNode.computedPosition,
-      () => edge.value.sourceNode.dimensions,
-      () => edge.value.targetNode.dimensions,
+      () => props.sourceNode.position,
+      () => props.targetNode.position,
+      () => props.sourceNode.computedPosition,
+      () => props.targetNode.computedPosition,
+      () => props.sourceNode.dimensions,
+      () => props.targetNode.dimensions,
     ],
     () => {
       const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-        edge.value.sourceNode,
+        props.sourceNode,
         sourceHandle.value,
         sourcePosition.value,
-        edge.value.targetNode,
+        props.targetNode,
         targetHandle.value,
         targetPosition.value,
       )
@@ -185,8 +187,8 @@ export default {
     <component
       :is="type"
       :id="edge.id"
-      :source-node="edge.sourceNode"
-      :target-node="edge.targetNode"
+      :source-node="props.sourceNode"
+      :target-node="props.targetNode"
       :source="edge.source"
       :target="edge.target"
       :updatable="props.updatable"

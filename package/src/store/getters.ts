@@ -3,6 +3,11 @@ import { State, GraphEdge, GraphNode, ComputedGetters } from '~/types'
 import { getNodesInside, isEdgeVisible } from '~/utils'
 
 export default (state: State): ComputedGetters => {
+  const nodeIds = computed(() => state.nodes.map((n) => n.id))
+  const edgeIds = computed(() => state.edges.map((e) => e.id))
+  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => state.nodes[nodeIds.value.indexOf(id)])
+  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => state.edges[edgeIds.value.indexOf(id)])
+
   const getEdgeTypes = computed(() => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
@@ -41,31 +46,50 @@ export default (state: State): ComputedGetters => {
       : nodes ?? []
   })
 
+  const edgeHidden = (e: GraphEdge) => {
+    const source = getNode.value(e.source)
+    const target = getNode.value(e.target)
+
+    if (!source || !target) {
+      console.warn(`[vue-flow]: Orphaned edge ${e.id} will be removed.`)
+      state.edges.splice(state.edges.indexOf(e), 1)
+      return true
+    }
+
+    return (
+      !e.hidden &&
+      target &&
+      !target.hidden &&
+      source &&
+      !source.hidden &&
+      source.dimensions.width &&
+      source.dimensions.height &&
+      target.dimensions.width &&
+      target.dimensions.height
+    )
+  }
   const getEdges = computed<GraphEdge[]>(() => {
-    if (!state.onlyRenderVisibleElements)
-      return state.edges.filter((e) => !e.hidden && e.targetNode && !e.targetNode.hidden && e.sourceNode && !e.sourceNode.hidden)
-    else
-      return state.edges.filter(
-        (e) =>
-          !e.hidden &&
-          e.sourceNode.dimensions.width &&
-          e.sourceNode.dimensions.height &&
-          e.targetNode.dimensions.width &&
-          e.targetNode.dimensions.height &&
-          !e.targetNode.hidden &&
-          !e.sourceNode.hidden &&
-          isEdgeVisible({
-            sourcePos: e.sourceNode.computedPosition || { x: 0, y: 0 },
-            targetPos: e.targetNode.computedPosition || { x: 0, y: 0 },
-            sourceWidth: e.sourceNode.dimensions.width,
-            sourceHeight: e.sourceNode.dimensions.height,
-            targetWidth: e.targetNode.dimensions.width,
-            targetHeight: e.targetNode.dimensions.height,
-            width: state.dimensions.width,
-            height: state.dimensions.height,
-            viewport: state.viewport,
-          }),
+    if (!state.onlyRenderVisibleElements) return state.edges.filter(edgeHidden)
+
+    return state.edges.filter((e) => {
+      const source = getNode.value(e.source)!
+      const target = getNode.value(e.target)!
+
+      return (
+        edgeHidden(e) &&
+        isEdgeVisible({
+          sourcePos: source.computedPosition || { x: 0, y: 0 },
+          targetPos: target.computedPosition || { x: 0, y: 0 },
+          sourceWidth: source.dimensions.width,
+          sourceHeight: source.dimensions.height,
+          targetWidth: target.dimensions.width,
+          targetHeight: target.dimensions.height,
+          width: state.dimensions.width,
+          height: state.dimensions.height,
+          viewport: state.viewport,
+        })
       )
+    })
   })
 
   const getSelectedNodes: ComputedGetters['getSelectedNodes'] = computed(() => state.nodes.filter((n) => n.selected))
@@ -74,11 +98,6 @@ export default (state: State): ComputedGetters => {
     ...(getSelectedNodes.value ?? []),
     ...(getSelectedEdges.value ?? []),
   ])
-
-  const nodeIds = computed(() => state.nodes.map((n) => n.id))
-  const edgeIds = computed(() => state.edges.map((e) => e.id))
-  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => state.nodes[nodeIds.value.indexOf(id)])
-  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => state.edges[edgeIds.value.indexOf(id)])
 
   return {
     getNode,

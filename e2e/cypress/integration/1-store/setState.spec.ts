@@ -46,6 +46,16 @@ describe('test store state', () => {
 
   it('gets custom edge types', () => {
     store.setState({
+      nodes: [
+        {
+          id: '1',
+          position: { x: 0, y: 0 },
+        },
+        {
+          id: '2',
+          position: { x: 50, y: 50 },
+        },
+      ],
       edges: [
         {
           id: '1',

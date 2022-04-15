@@ -94,9 +94,7 @@ export interface EdgePositions {
 }
 
 /** Internal edge type */
-export type GraphEdge<Data = ElementData, SourceNodeData = any, TargetNodeData = SourceNodeData> = Edge<Data> & {
-  sourceNode: GraphNode<SourceNodeData>
-  targetNode: GraphNode<TargetNodeData>
+export type GraphEdge<Data = ElementData> = Edge<Data> & {
   selected?: boolean
   z?: number
 } & EdgePositions
