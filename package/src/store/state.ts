@@ -38,6 +38,8 @@ const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 const defaultState = (): State => ({
   nodes: [],
   edges: [],
+  nodeTypes: {},
+  edgeTypes: {},
 
   initialized: false,
   instance: null,
