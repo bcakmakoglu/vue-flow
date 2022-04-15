@@ -6,7 +6,7 @@ import { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
 import { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
-import { NodeChange, EdgeChange } from './changes'
+import { NodeChange, EdgeChange, ChangeHistory, ElementChange } from './changes'
 import { StartHandle, HandleType } from './handle'
 
 export type UpdateNodeDimensionsParams = {
@@ -30,6 +30,12 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   readonly d3Zoom: D3Zoom | null
   readonly d3Selection: D3Selection | null
   readonly d3ZoomHandler: D3ZoomHandler | null
+
+  history: {
+    changes: ChangeHistory[]
+    undo: (type?: ElementChange['type']) => void
+    clear: () => void
+  }
 
   /** use setMinZoom action to change minZoom */
   minZoom: number

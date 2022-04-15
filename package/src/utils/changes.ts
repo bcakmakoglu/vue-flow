@@ -1,15 +1,16 @@
 import { clampPosition, isGraphEdge, isGraphNode } from './graph'
 import {
+  ChangeHistory,
+  CoordinateExtent,
   EdgeChange,
   EdgeSelectionChange,
   ElementChange,
   FlowElements,
+  Getters,
   GraphNode,
   NodeChange,
-  NodeSelectionChange,
   NodePositionChange,
-  Getters,
-  CoordinateExtent,
+  NodeSelectionChange,
   XYPosition,
   GraphEdge,
   Node,
@@ -24,8 +25,7 @@ type CreatePositionChangeParams = {
   dragging?: boolean
 }
 
-function handleParentExpand(updateItem: GraphNode, curr: GraphNode[]) {
-  const parent = updateItem.parentNode ? curr.find((el) => el.id === updateItem.parentNode) : undefined
+function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   if (parent) {
     const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
@@ -96,45 +96,100 @@ export const applyChanges = <
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(
   changes: C[],
-  elements: T[],
-  addElement?: (els: T[]) => void,
-): T[] => {
+  elements: FlowElements,
+): ChangeHistory<C>[] => {
   let elementIds = elements.map((el) => el.id)
-  changes.forEach((change) => {
-    if (change.type === 'add') {
-      if (addElement) return addElement([change.item as any])
-      else return elements.push(change.item as any)
-    }
+  const rollback: any[] = []
 
+  changes.forEach((change) => {
     const i = elementIds.indexOf((<any>change).id)
     const el = elements[i]
-    switch (change.type) {
-      case 'select':
-        if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
-        break
-      case 'position':
-        if (isGraphNode(el)) {
-          if (typeof change.position !== 'undefined') el.position = change.position
-          if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
-          if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
-        }
-        break
-      case 'dimensions':
-        if (isGraphNode(el)) {
-          if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-          if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
-        }
-        break
-      case 'remove':
-        if (elementIds.includes(change.id)) {
-          elements.splice(i, 1)
-          elementIds = elements.map((el) => el.id)
-        }
-        break
+    const copy = el ? JSON.parse(JSON.stringify(el)) : null
+
+    let rollbackFn = () => {
+      if (copy) elements[i] = copy
     }
+
+    const apply = () => {
+      if (change.type === 'add') {
+        const item = <FlowElement>change.item
+        elements.push(item)
+
+        rollbackFn = () => {
+          elements.splice(
+            elements.findIndex((el) => el.id === item.id),
+            1,
+          )
+        }
+      }
+
+      switch (change.type) {
+        case 'select':
+          if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
+          break
+        case 'position':
+          if (isGraphNode(el)) {
+            if (typeof change.position !== 'undefined') el.position = change.position
+            if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
+            if (el.expandParent && el.parentNode) {
+              const parent = elements.find((parent) => parent.id === el.parentNode)
+
+              if (parent && isGraphNode(parent)) {
+                const parentCopy = JSON.parse(JSON.stringify(parent))
+
+                rollbackFn = () => {
+                  elements[elements.indexOf(parent)] = parentCopy
+                  rollbackFn()
+                }
+
+                handleParentExpand(el, parent)
+              }
+            }
+          }
+          break
+        case 'dimensions':
+          if (isGraphNode(el)) {
+            if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
+            if (el.expandParent && el.parentNode) {
+              const parent = elements.find((parent) => parent.id === el.parentNode)
+
+              if (parent && isGraphNode(parent)) {
+                const parentCopy = JSON.parse(JSON.stringify(parent))
+
+                rollbackFn = () => {
+                  elements[elements.indexOf(parent)] = parentCopy
+                  rollbackFn()
+                }
+
+                handleParentExpand(el, parent)
+              }
+            }
+          }
+          break
+        case 'remove':
+          if (elementIds.includes(change.id)) {
+          elements.splice(i, 1)
+          elementIds = elements.map((el) => el.id)}
+
+          rollbackFn = () => {
+            if (copy) {
+              elements.push(copy)
+            }
+          }
+          break
+      }
+    }
+
+    apply()
+
+    rollback.push({
+      change,
+      undo: rollbackFn,
+      redo: apply,
+    })
   })
 
-  return elements
+  return rollback
 }
 
 export const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
@@ -162,13 +217,12 @@ export const createPositionChange = (
     let currentExtent = node.extent === 'parent' || typeof node.extent === 'undefined' ? nodeExtent : node.extent
 
     if (node.extent === 'parent' && parent && node.dimensions.width && node.dimensions.height) {
-      currentExtent =
-        parent.dimensions.width && parent.dimensions.height
-          ? [
-              [0, 0],
-              [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
-            ]
-          : currentExtent
+      if (parent.dimensions.width && parent.dimensions.height) {
+        currentExtent = [
+          [0, 0],
+          [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
+        ]
+      }
     }
 
     change.position = currentExtent ? clampPosition(nextPosition, currentExtent) : nextPosition
@@ -176,6 +230,11 @@ export const createPositionChange = (
 
   return change
 }
+
+export const createAdditionChange = (item: any): any => ({
+  item,
+  type: 'add',
+})
 
 const isParentSelected = (node: GraphNode, selectedIds: string[], getNode: Getters['getNode']): boolean => {
   const parent = node.parentNode ? getNode(node.parentNode) : undefined

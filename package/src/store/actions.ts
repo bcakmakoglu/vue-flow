@@ -18,6 +18,7 @@ import {
 import {
   applyChanges,
   connectionExists,
+  createAdditionChange,
   createPositionChange,
   createSelectionChange,
   getDimensions,
@@ -268,13 +269,17 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const addNodes: Actions['addNodes'] = (nodes, extent) => {
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    state.nodes = [...state.nodes, ...createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)]
+    const graphNodes = createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
+    const changes = graphNodes.map(createAdditionChange)
+
+    if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
     const curr = params instanceof Function ? params(state.edges) : params
+    const changes: any[] = []
 
-    curr.reduce<GraphEdge[]>((acc, param) => {
+    curr.forEach((param) => {
       const edge = addEdge(param, state.edges)
       if (edge) {
         const sourceNode = getters.getNode.value(edge.source)!
@@ -284,26 +289,34 @@ export default (state: State, getters: ComputedGetters): Actions => {
         const missingTarget = !targetNode || typeof targetNode === 'undefined'
         if (missingSource) console.warn(`[vueflow]: Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
         if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
-        if (missingTarget || missingSource) return acc
+        if (missingTarget || missingSource) return
 
-        acc.push({
+        changes.push({
           ...state.defaultEdgeOptions,
           ...edge,
           sourceNode,
           targetNode,
         })
       }
+    })
 
-      return acc
-    }, state.edges)
+    if (changes.length) state.hooks.edgesChange.trigger(changes)
   }
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>
     updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
 
-  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyChanges(changes, state.nodes, addNodes)
+  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => {
+    const history = applyChanges(changes, state.nodes, addNodes)
+    state.history.changes.unshift(...history)
+    return history
+  }
 
-  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges, addEdges)
+  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => {
+    const history = applyChanges(changes, state.edges, addEdges)
+    state.history.changes.unshift(...history)
+    return history
+  }
 
   const setState: Actions['setState'] = (options) => {
     const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent']

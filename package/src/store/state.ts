@@ -41,6 +41,15 @@ const defaultState = (): State => ({
   nodeTypes: {},
   edgeTypes: {},
 
+  nodeTypes: {},
+  edgeTypes: {},
+
+  history: {
+    changes: [],
+    undo: () => {},
+    clear: () => {},
+  },
+
   initialized: false,
   instance: null,
 

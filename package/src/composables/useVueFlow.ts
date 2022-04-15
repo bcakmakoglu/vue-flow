@@ -1,6 +1,6 @@
 import { EffectScope } from 'vue'
 import { MaybeRef } from '@vueuse/core'
-import { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
+import { ElementChange, FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
 import useState from '~/store/state'
 import useGetters from '~/store/getters'
@@ -68,6 +68,26 @@ export class Storage {
       ...toRefs(reactiveState),
       emits,
       id,
+    }
+
+    flow.history.value.undo = (type?: ElementChange['type']) => {
+      if (!flow.history.value.changes.length) return
+
+      let i = 0
+      if (type) {
+        i = flow.history.value.changes.findIndex((historyChanges) => historyChanges.change.type === type)
+      }
+
+      const change = flow.history.value.changes[i]
+      if (change) {
+        change.undo()
+
+        flow.history.value.changes.splice(i, 1)
+      }
+    }
+
+    flow.history.value.clear = () => {
+      flow.history.value.changes = []
     }
 
     this.set(id, flow)
