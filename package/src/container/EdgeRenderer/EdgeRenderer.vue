@@ -23,7 +23,11 @@ const connectionLineVisible = controlledComputed(
       store.connectionHandleType
     ),
 )
-const groups = computed(() => groupEdgesByZLevel(store.getEdges, store.getNodes))
+
+const getNode = computed(() => (node: string) => store.getNode(node)!)
+
+const memoizedGroups = useMemoize(groupEdgesByZLevel)
+const groups = computed(() => memoizedGroups(store.getEdges, getNode.value))
 </script>
 <script lang="ts">
 export default {
@@ -39,6 +43,8 @@ export default {
         :id="edge.id"
         :key="edge.id"
         :edge="edge"
+        :source-node="getNode(edge.source)"
+        :target-node="getNode(edge.target)"
         :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
       />

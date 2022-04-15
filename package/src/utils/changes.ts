@@ -1,9 +1,8 @@
-import { clampPosition, isGraphNode } from './graph'
+import { clampPosition, isGraphEdge, isGraphNode } from './graph'
 import {
   EdgeChange,
   EdgeSelectionChange,
   ElementChange,
-  FlowElement,
   FlowElements,
   GraphNode,
   NodeChange,
@@ -13,6 +12,9 @@ import {
   CoordinateExtent,
   XYPosition,
   GraphEdge,
+  Node,
+  FlowElement,
+  Edge,
 } from '~/types'
 
 type CreatePositionChangeParams = {
@@ -90,20 +92,25 @@ function handleParentExpand(updateItem: GraphNode, curr: GraphNode[]) {
 }
 
 export const applyChanges = <
-  T extends FlowElement = GraphNode,
+  T extends Node | Edge | FlowElement = Node,
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(
   changes: C[],
   elements: T[],
+  addElement?: (els: T[]) => void,
 ): T[] => {
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
-    if (change.type === 'add') return elements.push(change.item as any)
+    if (change.type === 'add') {
+      if (addElement) addElement([change.item as any])
+      else elements.push(change.item as any)
+    }
+
     const i = elementIds.indexOf((<any>change).id)
     const el = elements[i]
     switch (change.type) {
       case 'select':
-        el.selected = change.selected
+        if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
         break
       case 'position':
         if (isGraphNode(el)) {
