@@ -1,5 +1,5 @@
 import { rectToBox } from './graph'
-import { EdgePositions, GraphEdge, GraphNode, HandleElement, Position, Rect, Viewport, XYPosition } from '~/types'
+import { EdgePositions, Getters, GraphEdge, GraphNode, HandleElement, Position, Rect, Viewport, XYPosition } from '~/types'
 
 export const getHandlePosition = (position: Position, rect: Rect, handle?: HandleElement): XYPosition => {
   const x = (handle?.x ?? 0) + rect.x
@@ -126,17 +126,16 @@ export function isEdgeVisible({
   return overlappingArea > 0
 }
 
-export const groupEdgesByZLevel = (edges: GraphEdge[], nodes: GraphNode[]) => {
+export const groupEdgesByZLevel = (edges: GraphEdge[], getNode: Getters['getNode']) => {
   let maxLevel = -1
-  const nodeIds = nodes.map((n) => n.id)
 
   const levelLookup = edges.reduce<Record<string, GraphEdge[]>>((tree, edge) => {
-    const z = edge.z
-      ? edge.z
-      : Math.max(
-          nodes[nodeIds.indexOf(edge.source)]?.computedPosition.z || 0,
-          nodes[nodeIds.indexOf(edge.target)]?.computedPosition.z || 0,
-        )
+    const source = getNode(edge.source)
+    const target = getNode(edge.target)
+
+    if (!source || !target) return tree
+
+    const z = edge.z ? edge.z : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
     if (tree[z]) {
       tree[z].push(edge)
     } else {
