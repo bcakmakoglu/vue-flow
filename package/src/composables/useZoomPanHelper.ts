@@ -57,12 +57,11 @@ export default (store: Store = useVueFlow().store): ViewportFuncs => {
   }
 
   const transformViewport = (x: number, y: number, zoom: number, duration?: number) => {
-    const { x: clampedX, y: clampedY } = clampPosition(
-      { x: store.viewport.x - x, y: store.viewport.y - y },
-      store.translateExtent,
-    )
+    // enforce translate extent
+    const { x: clampedX, y: clampedY } = clampPosition({ x: -x, y: -y }, store.translateExtent)
 
     const nextTransform = zoomIdentity.translate(-clampedX, -clampedY).scale(zoom)
+
     if (store.d3Selection && store.d3Zoom) {
       store.d3Zoom.transform(transition(store.d3Selection, duration), nextTransform)
     }
