@@ -1,4 +1,4 @@
-import { clampPosition, isGraphNode } from './graph'
+import { clamp, clampPosition, isGraphNode } from './graph'
 import {
   EdgeChange,
   EdgeSelectionChange,
@@ -141,7 +141,6 @@ export const createPositionChange = (
   { node, diff, dragging, nodeExtent }: CreatePositionChangeParams,
   curr: GraphNode[],
 ): NodePositionChange => {
-  const parent = node.parentNode ? curr.find((el) => el.id === node.parentNode) : undefined
   const change: NodePositionChange = {
     id: node.id,
     type: 'position',
@@ -151,15 +150,29 @@ export const createPositionChange = (
   if (diff) {
     const nextPosition = { x: node.position.x + diff.x, y: node.position.y + diff.y }
     let currentExtent = node.extent === 'parent' || typeof node.extent === 'undefined' ? nodeExtent : node.extent
+    const parent = node.parentNode ? curr.find((el) => el.id === node.parentNode) : undefined
 
-    if (node.extent === 'parent' && parent && node.dimensions.width && node.dimensions.height) {
-      currentExtent =
-        parent.dimensions.width && parent.dimensions.height
-          ? [
-              [0, 0],
-              [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
-            ]
-          : currentExtent
+    if (parent) {
+      if (node.extent === 'parent' && node.dimensions.width && node.dimensions.height) {
+        if (parent.dimensions.width && parent.dimensions.height) {
+          currentExtent = [
+            [0, 0],
+            [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
+          ]
+        }
+
+        if (parent.childExtent) {
+          const childExtent = parent.childExtent instanceof Function ? parent.childExtent(parent, node) : parent.childExtent
+
+          currentExtent = [
+            [clamp(childExtent[0][0], 0, currentExtent[1][0]), clamp(childExtent[0][1], 0, currentExtent[1][1])],
+            [
+              currentExtent[1][0] - clamp(childExtent[1][0], 0, currentExtent[1][0]),
+              currentExtent[1][1] - clamp(childExtent[1][1], 0, currentExtent[1][1]),
+            ],
+          ]
+        }
+      }
     }
 
     change.position = currentExtent ? clampPosition(nextPosition, currentExtent) : nextPosition

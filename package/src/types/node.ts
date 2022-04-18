@@ -16,6 +16,8 @@ type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string 
 // eslint-disable-next-line no-use-before-define
 type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
 
+type CoordinateExtent2 = [[number, number], [number, number]]
+
 export interface Node<Data = ElementData> extends Element<Data> {
   /** initial node position x, y */
   position: XYPosition
@@ -41,6 +43,9 @@ export interface Node<Data = ElementData> extends Element<Data> {
   expandParent?: boolean
   /** define node as a child node by setting a parent node id */
   parentNode?: string
+
+  // eslint-disable-next-line no-use-before-define
+  childExtent?: ChildExtent
 
   /**
    * Fixed width of node, applied as style
@@ -70,6 +75,8 @@ export interface GraphNode<Data = ElementData> extends Node<Data> {
   selected: boolean
   dragging: boolean
 }
+
+type ChildExtent = CoordinateExtent2 | ((parent: GraphNode, child: GraphNode) => CoordinateExtent2)
 
 /** these props are passed to node components */
 export interface NodeProps<Data = ElementData> {
