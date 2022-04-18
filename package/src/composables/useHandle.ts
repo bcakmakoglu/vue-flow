@@ -160,8 +160,8 @@ export default (store: Store = useVueFlow().store) => {
       const isOwnHandle = connection.source === connection.target
 
       if (isValid && !isOwnHandle) {
-        store.hooks.connect.trigger(connection)
-        onEdgeUpdate?.(connection)
+        if (!onEdgeUpdate) store.hooks.connect.trigger(connection)
+        else onEdgeUpdate(connection)
       }
 
       store.hooks.connectEnd.trigger(event)
