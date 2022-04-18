@@ -4,7 +4,6 @@
 
 - [Node.js v12+](https://nodejs.org/)
 - [Vue 3](https://vuejs.org/)
-- [Yarn v1 classic](https://classic.yarnpkg.com/en/) (Optional)
 
 ## Installation
 
@@ -22,6 +21,14 @@ yarn add @braks/vue-flow
 
 ```bash:no-line-numbers
 npm i --save @braks/vue-flow
+```
+
+  </CodeGroupItem>
+
+ <CodeGroupItem title="PNPM">
+
+```bash:no-line-numbers
+pnpm add @braks/vue-flow
 ```
 
   </CodeGroupItem>

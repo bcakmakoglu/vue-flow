@@ -7,7 +7,7 @@
     "open": "cypress open-ct"
   },
   "dependencies": {
-    "@braks/vue-flow": "^0.4.4"
+    "@braks/vue-flow": "workspace:*"
   },
   "devDependencies": {
     "@cypress/vite-dev-server": "^2.2.1",

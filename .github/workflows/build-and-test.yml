@@ -36,27 +36,26 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
 
-      - name: Get yarn cache directory path 🛠
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache node_modules 📦
+      - name: Cache pnpm modules
         uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-
 
-      - name: Install dependencies 👨🏻‍💻
-        run: yarn install --frozen-lockfile
+      - uses: pnpm/action-setup@v2.1.0
+        with:
+          version: 6.0.2
+          run_install: |
+            - recursive: true
+              args: [--frozen-lockfile]
 
       - name: Run linter 🧹
-        run: yarn lint
+        run: pnpm lint
 
       - name: Build Library 👷
-        run: yarn build --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}"
+        run: pnpm build --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}"
 
       - name: Run tests 🧪
-        run: yarn test
+        run: pnpm test

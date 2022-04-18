@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { templateRef } from '@vueuse/core'
+import { Elements, FlowInstance, VueFlow } from '@braks/vue-flow'
 import RGBNode from './RGBNode.vue'
 import RGBOutputNode from './RGBOutputNode.vue'
-import { Elements, FlowInstance, VueFlow } from '@braks/vue-flow'
 
 type Colors = {
   red: number

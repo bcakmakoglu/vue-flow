@@ -2,8 +2,6 @@
 
 [![vue flow](package/src/assets/vue-flow.gif)](https://vueflow.dev/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow)
-[![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg)](https://david-dm.org/bcakmakoglu/vue-flow)
-[![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg?type=dev)](https://david-dm.org/bcakmakoglu/vue-flow?type=dev)
 ![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/bcakmakoglu/vue-flow)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow)
@@ -103,12 +101,22 @@ const elements = ref([
 
 ## 🧪 Development
 
+### Prerequisites
+
+- [Node.js v12+](https://nodejs.org/)
+- [Vue 3](https://vuejs.org/)
+- [pnpm](https://pnpm.io/) (Optional)
+
+
 ```bash
+# install pnpm
+$ npm i -g pnpm
+
 # start (dev)
-$ yarn dev
+$ pnpm dev
 
 # build dist
-$ yarn build
+$ pnpm build
 ```
 
 ## ⭐ Stargazers
