@@ -5,7 +5,7 @@ import { getConnectedEdges } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 
-const { id, store } = useVueFlow()
+const { id, store, deleteKeyCode, selectionKeyCode, multiSelectionKeyCode } = useVueFlow()
 
 const onClick = (event: MouseEvent) => {
   store.hooks.paneClick.trigger(event)
@@ -17,7 +17,7 @@ const onContextMenu = (event: MouseEvent) => store.hooks.paneContextMenu.trigger
 
 const onWheel = (event: WheelEvent) => store.hooks.paneScroll.trigger(event)
 
-useKeyPress(store.deleteKeyCode, (keyPressed) => {
+useKeyPress(deleteKeyCode, (keyPressed) => {
   const selectedNodes = store.getSelectedNodes
   const selectedEdges = store.getSelectedEdges
   if (keyPressed && (selectedNodes || selectedEdges)) {
@@ -37,11 +37,11 @@ useKeyPress(store.deleteKeyCode, (keyPressed) => {
   }
 })
 
-useKeyPress(store.multiSelectionKeyCode, (keyPressed) => {
+useKeyPress(multiSelectionKeyCode, (keyPressed) => {
   store.multiSelectionActive = keyPressed
 })
 
-const selectionKeyPressed = useKeyPress(store.selectionKeyCode, (keyPressed) => {
+const selectionKeyPressed = useKeyPress(selectionKeyCode, (keyPressed) => {
   if (store.userSelectionActive && keyPressed) return
   store.userSelectionActive = keyPressed && store.elementsSelectable
 })

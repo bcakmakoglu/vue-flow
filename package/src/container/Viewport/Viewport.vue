@@ -7,7 +7,7 @@ import { clamp, clampPosition } from '../../utils'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import Transform from './Transform.vue'
 
-const { id, store } = useVueFlow()
+const { id, store, zoomActivationKeyCode, selectionKeyCode } = useVueFlow()
 const viewportEl = templateRef<HTMLDivElement>('viewport', null)
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
@@ -54,7 +54,7 @@ onMounted(() => {
     viewport: { x: updatedTransform.x, y: updatedTransform.y, zoom: updatedTransform.k },
   })
 
-  const selectionKeyPressed = useKeyPress(store.selectionKeyCode, (keyPress) => {
+  const selectionKeyPressed = useKeyPress(selectionKeyCode, (keyPress) => {
     if (keyPress) {
       d3Zoom.on('zoom', null)
     } else {
@@ -66,7 +66,7 @@ onMounted(() => {
     }
   })
 
-  const zoomKeyPressed = useKeyPress(store.zoomActivationKeyCode)
+  const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
   d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
     const flowTransform = eventToFlowTransform(event.transform)
