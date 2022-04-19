@@ -4,8 +4,9 @@ import useWindow from './useWindow'
 import { KeyCode } from '~/types'
 import { isInputDOMNode } from '~/utils'
 
-export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
+export default (keyCode: Ref<KeyCode>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
+
   const isPressed = controlledRef<boolean>(false, {
     onBeforeChange(val, oldVal) {
       if (val === oldVal) return false
@@ -16,23 +17,21 @@ export default (keyCode: KeyCode, onChange?: (keyPressed: boolean) => void): Ref
   })
 
   onKeyPressed(
-    (e) => !isInputDOMNode(e) && (e.key === keyCode || e.keyCode === keyCode),
+    (e) => !isInputDOMNode(e) && (e.key === keyCode.value || e.keyCode === keyCode.value),
     (e) => {
       e.preventDefault()
       isPressed.value = true
     },
   )
-
   onKeyDown(
-    (e) => !isInputDOMNode(e) && (e.key === keyCode || e.keyCode === keyCode),
+    (e) => !isInputDOMNode(e) && (e.key === keyCode.value || e.keyCode === keyCode.value),
     (e) => {
       e.preventDefault()
       isPressed.value = true
     },
   )
-
   onKeyUp(
-    (e) => !isInputDOMNode(e) && (e.key === keyCode || e.keyCode === keyCode),
+    (e) => !isInputDOMNode(e) && (e.key === keyCode.value || e.keyCode === keyCode.value),
     (e) => {
       e.preventDefault()
       isPressed.value = false
