@@ -2,7 +2,7 @@
 import EdgeWrapper from '../../components/Edges/EdgeWrapper.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import { useVueFlow } from '../../composables'
-import { groupEdgesByZLevel } from '../../utils'
+import { getRectOfNodes, groupEdgesByZLevel } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 const { store } = useVueFlow()
@@ -28,6 +28,21 @@ const getNode = computed(() => (node: string) => store.getNode(node)!)
 
 const memoizedGroups = useMemoize(groupEdgesByZLevel)
 const groups = computed(() => memoizedGroups(store.getEdges, getNode.value))
+
+const rect = computed(() => {
+  const bounds = getRectOfNodes(store.getNodes)
+  const y = (bounds.y === 0 ? -50 : bounds.y) * 2
+  const x = (bounds.x === 0 ? -50 : bounds.x) * 2
+  const width = bounds.width + Math.abs(x) * 1.5
+  const height = bounds.height + Math.abs(y) * 1.5
+
+  return {
+    width: `${width}px`,
+    height: `${height}px`,
+    transformSvg: `translateY(${y}px) translateX(${x}px)`,
+    transformPath: `translateY(${Math.abs(y)}px) translateX(${Math.abs(x)}px)`,
+  }
+})
 </script>
 <script lang="ts">
 export default {
@@ -35,9 +50,19 @@ export default {
 }
 </script>
 <template>
-  <svg v-for="group of groups" :key="group.level" class="vue-flow__edges vue-flow__container" :style="`z-index: ${group.level}`">
+  <svg
+    v-for="group of groups"
+    :key="group.level"
+    class="vue-flow__edges vue-flow__container"
+    :style="{
+      zIndex: group.level,
+      transform: rect.transformSvg,
+      width: rect.width,
+      height: rect.height,
+    }"
+  >
     <MarkerDefinitions v-if="group.isMaxLevel" :default-color="store.defaultMarkerColor" />
-    <g>
+    <g :style="{ transform: rect.transformPath }">
       <EdgeWrapper
         v-for="edge of group.edges"
         :id="edge.id"
