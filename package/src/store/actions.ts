@@ -248,6 +248,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
         ...parseEdge(edge, {
           ...state.defaultEdgeOptions,
           ...storedEdge,
+          sourceNode,
+          targetNode,
         }),
       })
 
@@ -287,6 +289,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
         state.edges.push({
           ...state.defaultEdgeOptions,
           ...edge,
+          sourceNode,
+          targetNode,
         })
       }
     })
