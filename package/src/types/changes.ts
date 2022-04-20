@@ -27,13 +27,13 @@ export type NodeRemoveChange = {
   type: 'remove'
 }
 
-export type NodeAddChange<NodeData = ElementData> = {
-  item: Node<NodeData>
+export type NodeAddChange<Data = ElementData> = {
+  item: Node<Data>
   type: 'add'
 }
 
-export type NodeResetChange<NodeData = ElementData> = {
-  item: Node<NodeData>
+export type NodeResetChange<Data = ElementData> = {
+  item: Node<Data>
   type: 'reset'
 }
 
@@ -47,12 +47,12 @@ export type NodeChange =
 
 export type EdgeSelectionChange = NodeSelectionChange
 export type EdgeRemoveChange = NodeRemoveChange
-export type EdgeAddChange<EdgeData = ElementData> = {
-  item: Edge<EdgeData>
+export type EdgeAddChange<Data = ElementData> = {
+  item: Edge<Data>
   type: 'add'
 }
-export type EdgeResetChange<EdgeData = ElementData> = {
-  item: Edge<EdgeData>
+export type EdgeResetChange<Data = ElementData> = {
+  item: Edge<Data>
   type: 'reset'
 }
 export type EdgeChange = EdgeSelectionChange | EdgeRemoveChange | EdgeAddChange | EdgeResetChange

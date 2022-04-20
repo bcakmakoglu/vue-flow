@@ -1,27 +1,27 @@
 import { EventHook, EventHookOn } from '@vueuse/core'
 import { MouseTouchEvent } from '@braks/revue-draggable'
 import { D3ZoomEvent } from 'd3-zoom'
-import { ElementData, FlowInstance } from './flow'
+import { FlowInstance } from './flow'
 import { GraphEdge } from './edge'
 import { GraphNode } from './node'
 import { Connection, OnConnectStartParams } from './connection'
 import { FlowTransform } from './zoom'
 import { EdgeChange, NodeChange } from './changes'
 
-export interface FlowEvents<NodeData = ElementData, EdgeData = ElementData> {
+export interface FlowEvents {
   nodesChange: NodeChange[]
   edgesChange: EdgeChange[]
-  nodeDoubleClick: { event: MouseTouchEvent; node: GraphNode<NodeData> }
-  nodeClick: { event: MouseTouchEvent; node: GraphNode<NodeData> }
-  nodeMouseEnter: { event: MouseEvent; node: GraphNode<NodeData> }
-  nodeMouseMove: { event: MouseEvent; node: GraphNode<NodeData> }
-  nodeMouseLeave: { event: MouseEvent; node: GraphNode<NodeData> }
-  nodeContextMenu: { event: MouseEvent; node: GraphNode<NodeData> }
-  nodeDragStart: { event: MouseTouchEvent; node: GraphNode<NodeData> }
-  nodeDrag: { event: MouseTouchEvent; node: GraphNode<NodeData> }
-  nodeDragStop: { event: MouseTouchEvent; node: GraphNode<NodeData> }
-  miniMapNodeClick: { event: MouseTouchEvent; node: GraphNode<NodeData> }
-  miniMapNodeDoubleClick: { event: MouseTouchEvent; node: GraphNode<NodeData> }
+  nodeDoubleClick: { event: MouseTouchEvent; node: GraphNode }
+  nodeClick: { event: MouseTouchEvent; node: GraphNode }
+  nodeMouseEnter: { event: MouseEvent; node: GraphNode }
+  nodeMouseMove: { event: MouseEvent; node: GraphNode }
+  nodeMouseLeave: { event: MouseEvent; node: GraphNode }
+  nodeContextMenu: { event: MouseEvent; node: GraphNode }
+  nodeDragStart: { event: MouseTouchEvent; node: GraphNode }
+  nodeDrag: { event: MouseTouchEvent; node: GraphNode }
+  nodeDragStop: { event: MouseTouchEvent; node: GraphNode }
+  miniMapNodeClick: { event: MouseTouchEvent; node: GraphNode }
+  miniMapNodeDoubleClick: { event: MouseTouchEvent; node: GraphNode }
   connect: Connection
   connectStart: {
     event: MouseEvent
@@ -32,29 +32,29 @@ export interface FlowEvents<NodeData = ElementData, EdgeData = ElementData> {
   move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   moveEnd: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
-  selectionDragStart: { event: MouseTouchEvent; nodes: GraphNode<NodeData>[] }
-  selectionDrag: { event: MouseTouchEvent; nodes: GraphNode<NodeData>[] }
-  selectionDragStop: { event: MouseTouchEvent; nodes: GraphNode<NodeData>[] }
-  selectionContextMenu: { event: MouseEvent; nodes: GraphNode<NodeData>[] }
+  selectionDragStart: { event: MouseTouchEvent; nodes: GraphNode[] }
+  selectionDrag: { event: MouseTouchEvent; nodes: GraphNode[] }
+  selectionDragStop: { event: MouseTouchEvent; nodes: GraphNode[] }
+  selectionContextMenu: { event: MouseEvent; nodes: GraphNode[] }
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent
-  edgeContextMenu: { event: MouseEvent; edge: GraphEdge<EdgeData> }
-  edgeMouseEnter: { event: MouseEvent; edge: GraphEdge<EdgeData> }
-  edgeMouseMove: { event: MouseEvent; edge: GraphEdge<EdgeData> }
-  edgeMouseLeave: { event: MouseEvent; edge: GraphEdge<EdgeData> }
-  edgeDoubleClick: { event: MouseEvent; edge: GraphEdge<EdgeData> }
-  edgeClick: { event: MouseEvent; edge: GraphEdge<EdgeData> }
-  edgeUpdateStart: { event: MouseEvent; edge: GraphEdge<EdgeData> }
-  edgeUpdate: { edge: GraphEdge<EdgeData>; connection: Connection }
-  edgeUpdateEnd: { event: MouseEvent; edge: GraphEdge<EdgeData> }
+  edgeContextMenu: { event: MouseEvent; edge: GraphEdge }
+  edgeMouseEnter: { event: MouseEvent; edge: GraphEdge }
+  edgeMouseMove: { event: MouseEvent; edge: GraphEdge }
+  edgeMouseLeave: { event: MouseEvent; edge: GraphEdge }
+  edgeDoubleClick: { event: MouseEvent; edge: GraphEdge }
+  edgeClick: { event: MouseEvent; edge: GraphEdge }
+  edgeUpdateStart: { event: MouseEvent; edge: GraphEdge }
+  edgeUpdate: { edge: GraphEdge; connection: Connection }
+  edgeUpdateEnd: { event: MouseEvent; edge: GraphEdge }
 }
 
-export type FlowHooks<NodeData = ElementData, EdgeData = ElementData> = {
-  [key in keyof FlowEvents<NodeData, EdgeData>]: EventHook<FlowEvents<NodeData, EdgeData>[key]>
+export type FlowHooks = {
+  [key in keyof FlowEvents]: EventHook<FlowEvents[key]>
 }
-export type FlowHooksOn<NodeData = ElementData, EdgeData = ElementData> = {
-  [key in keyof FlowEvents<NodeData, EdgeData> as `on${Capitalize<key>}`]: EventHookOn<FlowEvents<NodeData, EdgeData>[key]>
+export type FlowHooksOn = {
+  [key in keyof FlowEvents as `on${Capitalize<key>}`]: EventHookOn<FlowEvents[key]>
 }
 
 export type EmitFunc = (name: keyof FlowHooks, ...args: FlowEvents[keyof FlowEvents][]) => void

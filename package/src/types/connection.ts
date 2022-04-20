@@ -39,7 +39,7 @@ export enum ConnectionMode {
   Loose = 'loose',
 }
 
-export interface ConnectionLineProps<N = any> {
+export interface ConnectionLineProps {
   /** Source X position of the connection line */
   sourceX: number
   /** Source Y position of the connection line */
@@ -57,9 +57,9 @@ export interface ConnectionLineProps<N = any> {
   /** extra styles */
   connectionLineStyle: CSSProperties
   /** All currently stored nodes */
-  nodes: GraphNode<N>[]
+  nodes: GraphNode[]
   /** The source node of the connection line */
-  sourceNode: GraphNode<N>
+  sourceNode: GraphNode
   /** The source handle element of the connection line */
   sourceHandle: HandleElement
 }
