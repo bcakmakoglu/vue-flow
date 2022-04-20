@@ -1,5 +1,5 @@
 import { Component, VNode } from 'vue'
-import { XYPosition, Position, SnapGrid, Element, XYZPosition, Dimensions, ElementData } from './flow'
+import { XYPosition, Position, SnapGrid, BaseElement, XYZPosition, Dimensions, ElementData } from './flow'
 import { DefaultNodeTypes, NodeComponent } from './components'
 import { HandleElement, ValidConnectionFunc } from './handle'
 
@@ -16,7 +16,7 @@ type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string 
 // eslint-disable-next-line no-use-before-define
 type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
 
-export interface Node<Data = ElementData> extends Element<Data> {
+export interface Node<Data = ElementData> extends BaseElement<Data> {
   /** initial node position x, y */
   position: XYPosition
   /** node type, can be a default type or a custom type */
