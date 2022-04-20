@@ -21,6 +21,7 @@ const props = defineProps<Props>()
 <script lang="ts">
 export default {
   name: 'BaseEdge',
+  inheritAttrs: false,
 }
 </script>
 <template>
