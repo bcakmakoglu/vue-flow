@@ -97,6 +97,8 @@ export interface EdgePositions {
 export type GraphEdge<Data = ElementData> = Edge<Data> & {
   selected?: boolean
   z?: number
+  sourceNode: GraphNode
+  targetNode: GraphNode
 } & EdgePositions
 
 /** these props are passed to edge components */
