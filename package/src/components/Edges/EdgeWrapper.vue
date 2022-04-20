@@ -175,7 +175,6 @@ export default {
 </script>
 <template>
   <g
-    :key="`edge-${edge.id}`"
     :class="getClass"
     @click="onEdgeClick"
     @dblClick="onDoubleClick"

@@ -205,7 +205,6 @@ export default {
 <template>
   <div
     ref="nodeElement"
-    :key="`node-${node.id}`"
     :class="getClass"
     :style="getStyle"
     :data-id="node.id"
