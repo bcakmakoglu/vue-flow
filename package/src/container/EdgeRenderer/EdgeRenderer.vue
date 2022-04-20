@@ -39,8 +39,8 @@ const rect = computed(() => {
   return {
     width: `${width}px`,
     height: `${height}px`,
-    transformSvg: `translateY(${y}px) translateX(${x}px)`,
-    transformPath: `translateY(${Math.abs(y)}px) translateX(${Math.abs(x)}px)`,
+    transformSvg: y && x > 0 ? undefined : `translateY(${y > 0 ? 0 : y}px) translateX(${x > 0 ? 0 : x}px)`,
+    transformPath: y && x > 0 ? undefined : `translateY(${Math.abs(y > 0 ? 0 : y)}px) translateX(${Math.abs(x > 0 ? 0 : x)}px)`,
   }
 })
 </script>
