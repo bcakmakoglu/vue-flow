@@ -24,10 +24,9 @@ const connectionLineVisible = controlledComputed(
     ),
 )
 
-const getNode = computed(() => (node: string) => store.getNode(node)!)
+const getNode = (node: string) => store.getNode(node)!
 
-const memoizedGroups = useMemoize(groupEdgesByZLevel)
-const groups = computed(() => memoizedGroups(store.getEdges, getNode.value))
+const groups = computed(() => groupEdgesByZLevel(store.getEdges, getNode))
 </script>
 <script lang="ts">
 export default {
