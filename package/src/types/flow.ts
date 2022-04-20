@@ -8,8 +8,8 @@ import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from
 export type ElementData = any
 
 /** an internal element  */
-export type FlowElement<NodeData = ElementData, EdgeData = ElementData> = GraphNode<NodeData> | GraphEdge<EdgeData>
-export type FlowElements<NodeData = ElementData, EdgeData = ElementData> = (FlowElement<NodeData> | FlowElement<EdgeData>)[]
+export type FlowElement<Data = ElementData> = GraphNode<Data> | GraphEdge<Data>
+export type FlowElements<Data = ElementData> = FlowElement<Data>[]
 
 export type CustomThemeVars = Record<string, string | number>
 export type CSSVars =
@@ -25,7 +25,7 @@ export type ClassFunc<Data = ElementData> = (element: FlowElement<Data>) => stri
 export type StyleFunc<Data = ElementData> = (element: FlowElement<Data>) => Styles | void
 
 /** base element props */
-export interface Element<Data extends ElementData = ElementData> {
+export interface BaseElement<Data extends ElementData = ElementData> {
   id: string
   label?: string | VNode | Component
   type?: string
@@ -34,7 +34,8 @@ export interface Element<Data extends ElementData = ElementData> {
   style?: Styles | StyleFunc<Data>
   hidden?: boolean
 }
-export type Elements<NodeData = ElementData, EdgeData = ElementData> = (Node<NodeData> | Edge<EdgeData>)[]
+export type Element<Data = ElementData> = Node<Data> | Edge<Data>
+export type Elements<Data = ElementData> = Element<Data>[]
 
 /** Handle Positions */
 export enum Position {
@@ -92,11 +93,11 @@ interface Exports {
 
 export type FlowInstance = Exports & ViewportFuncs
 
-export interface FlowProps<NodeData = ElementData, EdgeData = ElementData> {
+export interface FlowProps {
   id?: string
-  modelValue?: Elements<NodeData, EdgeData>
-  nodes?: Node<NodeData>[]
-  edges?: Edge<EdgeData>[]
+  modelValue?: Elements
+  nodes?: Node[]
+  edges?: Edge[]
   /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
   edgeTypes?: { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & { [key: string]: EdgeComponent }
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
@@ -146,4 +147,4 @@ export interface FlowProps<NodeData = ElementData, EdgeData = ElementData> {
   defaultEdgeOptions?: DefaultEdgeOptions
 }
 
-export type FlowOptions<NodeData = ElementData, EdgeData = ElementData> = FlowProps<NodeData, EdgeData>
+export type FlowOptions = FlowProps

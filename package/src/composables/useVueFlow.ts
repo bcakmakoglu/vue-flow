@@ -1,5 +1,5 @@
 import { EffectScope } from 'vue'
-import { ElementData, FlowHooksOn, FlowOptions, State, UseVueFlow } from '~/types'
+import { FlowHooksOn, FlowOptions, State, UseVueFlow } from '~/types'
 import { VueFlow } from '~/context'
 import useState from '~/store/state'
 import useGetters from '~/store/getters'
@@ -73,12 +73,10 @@ export class Storage {
   }
 }
 
-type Injection<NodeData = ElementData, EdgeData = ElementData> = UseVueFlow<NodeData, EdgeData> | null | undefined
+type Injection = UseVueFlow | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
-export default <NodeData = ElementData, EdgeData = ElementData>(
-  options?: Partial<FlowOptions>,
-): UseVueFlow<NodeData, EdgeData> => {
+export default (options?: Partial<FlowOptions>): UseVueFlow => {
   const storage = Storage.getInstance()
   const scope = getCurrentScope() as Scope
   const vueFlowId = scope?.vueFlowId || options?.id

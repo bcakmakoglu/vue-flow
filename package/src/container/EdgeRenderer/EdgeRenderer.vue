@@ -10,9 +10,11 @@ const { store } = useVueFlow()
 const sourceNode = controlledComputed(
   () => store.connectionNodeId,
   () => {
-    if (store.connectionNodeId) return store.getNodes[store.getNodes.map((n) => n.id).indexOf(store.connectionNodeId)]
+    if (store.connectionNodeId) return store.getNode(store.connectionNodeId)
+    return false
   },
 )
+
 const connectionLineVisible = controlledComputed(
   () => store.connectionNodeId,
   () =>
@@ -48,7 +50,7 @@ export default {
         :selectable="typeof edge.selectable === 'undefined' ? store.elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? store.edgesUpdatable : edge.updatable"
       />
-      <ConnectionLine v-if="connectionLineVisible && sourceNode" :source-node="sourceNode" />
+      <ConnectionLine v-if="connectionLineVisible && !!sourceNode" :source-node="sourceNode" />
     </g>
   </svg>
 </template>

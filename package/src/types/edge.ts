@@ -1,5 +1,5 @@
 import { Component, CSSProperties, VNode } from 'vue'
-import { Position, Element, ElementData } from './flow'
+import { Position, BaseElement, ElementData } from './flow'
 import { GraphNode } from './node'
 import { EdgeComponent, EdgeTextProps } from './components'
 
@@ -42,7 +42,7 @@ export interface MarkerProps {
 
 export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
-export interface Edge<Data = ElementData> extends Element<Data> {
+export interface Edge<Data = ElementData> extends BaseElement<Data> {
   label?: string | VNode | Component<EdgeTextProps>
   /** Source node id */
   source: string
@@ -100,10 +100,10 @@ export type GraphEdge<Data = ElementData> = Edge<Data> & {
 } & EdgePositions
 
 /** these props are passed to edge components */
-export interface EdgeProps<Data = ElementData, SourceNodeData = any, TargetNodeData = SourceNodeData> {
+export interface EdgeProps<Data = ElementData> {
   id: string
-  sourceNode: GraphNode<SourceNodeData>
-  targetNode: GraphNode<TargetNodeData>
+  sourceNode: GraphNode
+  targetNode: GraphNode
   label?: string | VNode | Component<EdgeTextProps> | Object
   type?: string
   data?: Data
@@ -132,11 +132,10 @@ export interface EdgeProps<Data = ElementData, SourceNodeData = any, TargetNodeD
 }
 
 /** these props are passed to smooth step edges */
-export interface SmoothStepEdgeProps<Data = ElementData, SourceNodeData = any, TargetNodeData = SourceNodeData>
-  extends EdgeProps<Data> {
+export interface SmoothStepEdgeProps<Data = ElementData> extends EdgeProps<Data> {
   id: string
-  sourceNode: GraphNode<SourceNodeData>
-  targetNode: GraphNode<TargetNodeData>
+  sourceNode: GraphNode
+  targetNode: GraphNode
   label?: string | VNode | Component<EdgeTextProps> | Object
   type?: string
   data?: Data
