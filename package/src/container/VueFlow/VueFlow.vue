@@ -33,7 +33,10 @@ const modelProps = useVModels(props, emit)
 const { id, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow()
 
 const dispose = useWatch(modelProps, { id, hooks, getNodeTypes, getEdgeTypes, ...rest })
-onUnmounted(() => dispose())
+
+onUnmounted(() => {
+  dispose()
+})
 
 useHooks(emit, hooks.value)
 
@@ -46,14 +49,14 @@ export default {
 </script>
 <template>
   <div class="vue-flow">
-    <Viewport :key="`renderer-${id}`">
+    <Viewport>
       <template #nodes>
-        <template v-for="nodeName of Object.keys(getNodeTypes)" :key="`node-${nodeName}-${id}`">
+        <template v-for="nodeName of Object.keys(getNodeTypes)">
           <slot :name="`node-${nodeName}`" />
         </template>
       </template>
       <template #edges>
-        <template v-for="edgeName of Object.keys(getEdgeTypes)" :key="`edge-${edgeName}-${id}`">
+        <template v-for="edgeName of Object.keys(getEdgeTypes)">
           <slot :name="`edge-${edgeName}`" />
         </template>
       </template>

@@ -55,7 +55,7 @@ const onSelectNodeHandler = (event: MouseEvent) => {
 }
 
 onMounted(() => {
-  useResizeObserver(nodeElement, () =>
+  const observer = useResizeObserver(nodeElement, () =>
     store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]),
   )
 
@@ -66,6 +66,8 @@ onMounted(() => {
     },
     { flush: 'post' },
   )
+
+  onBeforeUnmount(() => observer.stop())
 
   store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }])
 })
@@ -91,8 +93,12 @@ watch(
 
     node.value.handleBounds = getHandleBounds(nodeElement.value, scale.value)
   },
-  { deep: true },
 )
+
+onUnmounted(() => {
+  nodeElement.value = undefined
+  node.value = null
+})
 
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
 

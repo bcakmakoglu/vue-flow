@@ -113,8 +113,12 @@ onMounted(() => {
       if (edge.value.targetX !== targetX) edge.value.targetX = targetX
       if (edge.value.targetY !== targetY) edge.value.targetY = targetY
     },
-    { immediate: true, deep: true },
+    { immediate: true },
   )
+})
+
+onUnmounted(() => {
+  edge.value = null
 })
 
 const slots = inject(Slots)

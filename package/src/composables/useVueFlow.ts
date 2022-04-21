@@ -106,7 +106,8 @@ export default (options?: Options): UseVueFlow => {
       scope.vueFlowId = name
 
       onScopeDispose(() => {
-        storage.remove(name)
+        vueFlow!.$reset()
+        storage.remove(vueFlow!.id)
         vueFlow = null
       })
     }
@@ -116,7 +117,9 @@ export default (options?: Options): UseVueFlow => {
 
   if (!vueFlow) throw new Error('[vueflow]: store instance not found.')
 
-  if (scope) provide(VueFlow, vueFlow)
+  if (scope) {
+    provide(VueFlow, vueFlow)
+  }
 
   return vueFlow
 }
