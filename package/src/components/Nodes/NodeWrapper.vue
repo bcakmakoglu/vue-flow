@@ -93,6 +93,7 @@ watch(
 
     node.value.handleBounds = getHandleBounds(nodeElement.value, scale.value)
   },
+  { deep: true },
 )
 
 onUnmounted(() => {
