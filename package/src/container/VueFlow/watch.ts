@@ -4,9 +4,9 @@ import { FlowProps, UseVueFlow } from '~/types'
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 export default (models: ToRefs<FlowProps>, store: UseVueFlow) => {
-  const scope = getCurrentScope()
+  const scope = effectScope()
 
-  scope?.run(() => {
+  scope.run(() => {
     const watchModelValue = () => {
       scope.run(() => {
         let pauseModel: WatchPausableReturn
@@ -185,4 +185,6 @@ export default (models: ToRefs<FlowProps>, store: UseVueFlow) => {
       }
     })
   })
+
+  return () => scope.stop()
 }
