@@ -109,8 +109,8 @@ export default {
       :stroke-color="nodeStrokeColorFunc(node)"
       :stroke-width="props.nodeStrokeWidth"
       :shape-rendering="shapeRendering"
-      @click="(e) => onNodeClick(e, node)"
-      @dblclick="(e) => onNodeDblClick(e, node)"
+      @click="(e: MouseEvent) => onNodeClick(e, node)"
+      @dblclick="(e: MouseEvent) => onNodeDblClick(e, node)"
     >
       <slot
         :id="node.id"
