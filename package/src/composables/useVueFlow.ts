@@ -1,5 +1,6 @@
 import { EffectScope } from 'vue'
-import { FlowHooksOn, FlowOptions, State, UseVueFlow } from '~/types'
+import { MaybeRef } from '@vueuse/core'
+import { FlowHooksOn, FlowOptions, FlowProps, State, UseVueFlow } from '~/types'
 import { VueFlow } from '~/context'
 import useState from '~/store/state'
 import useGetters from '~/store/getters'
@@ -19,7 +20,7 @@ export class Storage {
   }
 
   public set(id: string, flow: UseVueFlow) {
-    this.flows.set(id, flow)
+    return this.flows.set(id, flow)
   }
 
   public get(id: string) {
@@ -27,10 +28,10 @@ export class Storage {
   }
 
   public remove(id: string) {
-    this.flows.delete(id)
+    return this.flows.delete(id)
   }
 
-  public create(id: string, preloadedState?: Partial<FlowOptions>): UseVueFlow {
+  public create(id: string, preloadedState?: FlowOptions): UseVueFlow {
     const state: State = useState(preloadedState)
     const reactiveState = reactive(state)
     const getters = useGetters(reactiveState)
@@ -75,11 +76,15 @@ export class Storage {
 
 type Injection = UseVueFlow | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
+type Options = { [key in keyof FlowProps]: MaybeRef<FlowProps[key]> }
 
-export default (options?: Partial<FlowOptions>): UseVueFlow => {
+export default (options?: Options): UseVueFlow => {
+  const reactiveOptions = options ? reactive(options) : undefined
   const storage = Storage.getInstance()
   const scope = getCurrentScope() as Scope
-  const vueFlowId = scope?.vueFlowId || options?.id
+
+  const id = reactiveOptions?.id
+  const vueFlowId = scope?.vueFlowId || id
 
   let vueFlow: Injection
 
@@ -92,10 +97,10 @@ export default (options?: Partial<FlowOptions>): UseVueFlow => {
     if (vueFlowId) vueFlow = storage.get(vueFlowId)
   }
 
-  if (!vueFlow || (vueFlow && options?.id && options.id !== vueFlow.id)) {
-    const name = options?.id ?? storage.getId()
+  if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
+    const name = id ?? storage.getId()
 
-    vueFlow = storage.create(name, options)
+    vueFlow = storage.create(name, reactiveOptions)
 
     if (scope) {
       scope.vueFlowId = name
@@ -106,7 +111,7 @@ export default (options?: Partial<FlowOptions>): UseVueFlow => {
       })
     }
   } else {
-    if (options) vueFlow.setState(options)
+    if (reactiveOptions) vueFlow.setState(reactiveOptions)
   }
 
   if (!vueFlow) throw new Error('[vueflow]: store instance not found.')
