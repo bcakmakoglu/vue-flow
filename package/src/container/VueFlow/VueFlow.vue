@@ -32,7 +32,8 @@ const modelProps = useVModels(props, emit)
 
 const { id, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow()
 
-useWatch(modelProps, { id, hooks, getNodeTypes, getEdgeTypes, ...rest })
+const dispose = useWatch(modelProps, { id, hooks, getNodeTypes, getEdgeTypes, ...rest })
+onUnmounted(() => dispose())
 
 useHooks(emit, hooks.value)
 
