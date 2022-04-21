@@ -6,6 +6,7 @@ export { default as StepEdge } from './components/Edges/StepEdge.vue'
 export { default as BezierEdge } from './components/Edges/BezierEdge.vue'
 export { default as SimpleBezierEdge } from './components/Edges/SimpleBezierEdge.vue'
 export { default as SmoothStepEdge } from './components/Edges/SmoothStepEdge.vue'
+export { default as BaseEdge } from './components/Edges/BaseEdge'
 
 export {
   getBezierPath,
