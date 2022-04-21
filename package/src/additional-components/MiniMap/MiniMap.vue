@@ -82,8 +82,6 @@ const onNodeClick = (event: MouseEvent, node: GraphNode) => {
 const onNodeDblClick = (event: MouseEvent, node: GraphNode) => {
   store.hooks.miniMapNodeDoubleClick.trigger({ event, node })
 }
-
-onRenderTriggered(console.log)
 </script>
 <script lang="ts">
 export default {
