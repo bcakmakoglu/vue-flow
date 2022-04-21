@@ -5,7 +5,7 @@ import { useVueFlow, useZoomPanHelper, useWindow } from '../../composables'
 import { FlowExportObject, FlowInstance, Store, XYPosition } from '../../types'
 import { pointToRendererPoint } from '../../utils'
 
-const { store } = useVueFlow()
+const { id, store } = useVueFlow()
 
 const untilDimensions = async (store: Store) => {
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -55,9 +55,9 @@ onMounted(async () => {
   await untilDimensions(store)
 
   ready.value = true
-  store.instance = instance as FlowInstance
+  store.instance = instance
   store.fitViewOnInit && instance.fitView()
-  store.hooks.paneReady.trigger(instance as FlowInstance)
+  store.hooks.paneReady.trigger(instance)
 })
 
 const transform = computed(() => `translate(${store.viewport.x}px,${store.viewport.y}px) scale(${store.viewport.zoom})`)
@@ -68,15 +68,12 @@ export default {
 }
 </script>
 <template>
-  <div class="vue-flow__transformationpane vue-flow__container" :style="{ transform, opacity: ready ? undefined : 0 }">
-    <NodeRenderer
-      :draggable="store.nodesDraggable"
-      :selectable="store.elementsSelectable"
-      :connectable="store.nodesConnectable"
-      :nodes="store.getNodes"
-      :snap-to-grid="store.snapToGrid"
-      :snap-grid="store.snapGrid"
-    />
+  <div
+    :key="`transform-${id}`"
+    class="vue-flow__transformationpane vue-flow__container"
+    :style="{ transform, opacity: ready ? undefined : 0 }"
+  >
+    <NodeRenderer />
     <EdgeRenderer />
     <slot />
   </div>

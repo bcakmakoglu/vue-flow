@@ -4,7 +4,7 @@ import { useHandle, useVueFlow } from '../../composables'
 import { ConnectionMode, EdgeComponent, GraphEdge, GraphNode, Position } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import { Slots } from '../../context'
-import EdgeAnchor from './EdgeAnchor.vue'
+import EdgeAnchor from './EdgeAnchor'
 
 interface EdgeWrapper {
   id: string
