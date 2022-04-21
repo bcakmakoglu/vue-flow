@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Position } from '../../types'
 import type { EdgeProps } from '../../types/edge'
-import BaseEdge from './BaseEdge.vue'
+import EdgeText from './EdgeText.vue'
 
 const props = withDefaults(defineProps<EdgeProps>(), {
   selected: false,
@@ -30,18 +30,22 @@ export default {
 }
 </script>
 <template>
-  <BaseEdge
-    :path="path"
-    :center-x="centerX"
-    :center-y="centerY"
+  <path
+    :style="props.style"
+    :d="path"
+    class="vue-flow__edge-path"
+    :marker-end="props.markerEnd"
+    :marker-start="props.markerStart"
+  />
+  <EdgeText
+    v-if="props.label"
+    :x="centerX"
+    :y="centerY"
     :label="props.label"
     :label-style="props.labelStyle"
     :label-show-bg="props.labelShowBg"
     :label-bg-style="props.labelBgStyle"
     :label-bg-padding="props.labelBgPadding"
     :label-bg-border-radius="props.labelBgBorderRadius"
-    :style="props.style"
-    :marker-end="props.markerEnd"
-    :marker-start="props.markerStart"
   />
 </template>
