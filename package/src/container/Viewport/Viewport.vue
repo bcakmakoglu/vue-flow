@@ -167,6 +167,6 @@ export default {
     <Transform>
       <slot />
     </Transform>
-    <SelectionPane :key="`selection-${id}`" />
+    <SelectionPane />
   </div>
 </template>
