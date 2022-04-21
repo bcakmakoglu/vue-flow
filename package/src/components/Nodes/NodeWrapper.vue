@@ -97,7 +97,6 @@ watch(
 
 onUnmounted(() => {
   nodeElement.value = undefined
-  node.value = null
 })
 
 store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
