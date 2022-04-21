@@ -33,14 +33,18 @@ const nodeClassNameFunc =
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
-const bb = computed(() => getRectOfNodes(store.getNodes))
-const viewBB = computed(() => ({
+const bb = computed(() => {
+  return getRectOfNodes(store.getNodes)
+})
+
+const viewBB = controlledComputed(bb, () => ({
   x: -store.viewport.x / store.viewport.zoom,
   y: -store.viewport.y / store.viewport.zoom,
   width: store.dimensions.width / store.viewport.zoom,
   height: store.dimensions.height / store.viewport.zoom,
 }))
-const viewBox = computed(() => {
+
+const viewBox = controlledComputed(viewBB, () => {
   const boundingRect = store.getNodes && store.getNodes.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value
   const scaledWidth = boundingRect.width / elementWidth
   const scaledHeight = boundingRect.height / elementHeight
@@ -57,7 +61,7 @@ const viewBox = computed(() => {
   }
 })
 
-const d = computed(() => {
+const d = controlledComputed(viewBox, () => {
   if (viewBox.value.x && viewBox.value.y)
     return `
     M${viewBox.value.x - viewBox.value.offset},${viewBox.value.y - viewBox.value.offset}
@@ -78,6 +82,8 @@ const onNodeClick = (event: MouseEvent, node: GraphNode) => {
 const onNodeDblClick = (event: MouseEvent, node: GraphNode) => {
   store.hooks.miniMapNodeDoubleClick.trigger({ event, node })
 }
+
+onRenderTriggered(console.log)
 </script>
 <script lang="ts">
 export default {
@@ -88,12 +94,32 @@ export default {
   <svg
     :width="elementWidth"
     :height="elementHeight"
-    :viewBox="`${viewBox.x || 0} ${viewBox.y || 0} ${viewBox.width || 0} ${viewBox.height || 0}`"
+    :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height]"
     class="vue-flow__minimap"
   >
-    <template v-for="node of store.getNodes" :key="`mini-map-node-${node.id}`">
-      <MiniMapNode
+    <MiniMapNode
+      v-for="node of store.getNodes"
+      :id="node.id"
+      :key="node.id"
+      v-memo="[node.computedPosition, node.dimensions]"
+      :position="node.computedPosition"
+      :dimensions="node.dimensions"
+      :style="node.style"
+      :class="nodeClassNameFunc(node)"
+      :color="nodeColorFunc(node)"
+      :border-radius="props.nodeBorderRadius"
+      :stroke-color="nodeStrokeColorFunc(node)"
+      :stroke-width="props.nodeStrokeWidth"
+      :shape-rendering="shapeRendering"
+      @click="(e) => onNodeClick(e, node)"
+      @dblclick="(e) => onNodeDblClick(e, node)"
+    >
+      <slot
         :id="node.id"
+        :name="`node-${node.type}`"
+        :parent-node="node.parentNode"
+        :selected="node.selected"
+        :dragging="node.dragging"
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :style="node.style"
@@ -103,27 +129,8 @@ export default {
         :stroke-color="nodeStrokeColorFunc(node)"
         :stroke-width="props.nodeStrokeWidth"
         :shape-rendering="shapeRendering"
-        @click="(e) => onNodeClick(e, node)"
-        @dblclick="(e) => onNodeDblClick(e, node)"
-      >
-        <slot
-          :id="node.id"
-          :name="`node-${node.type}`"
-          :parent-node="node.parentNode"
-          :selected="node.selected"
-          :dragging="node.dragging"
-          :position="node.computedPosition"
-          :dimensions="node.dimensions"
-          :style="node.style"
-          :class="nodeClassNameFunc(node)"
-          :color="nodeColorFunc(node)"
-          :border-radius="props.nodeBorderRadius"
-          :stroke-color="nodeStrokeColorFunc(node)"
-          :stroke-width="props.nodeStrokeWidth"
-          :shape-rendering="shapeRendering"
-        />
-      </MiniMapNode>
-    </template>
+      />
+    </MiniMapNode>
     <path class="vue-flow__minimap-mask" :d="d" :fill="props.maskColor" fill-rule="evenodd" />
   </svg>
 </template>

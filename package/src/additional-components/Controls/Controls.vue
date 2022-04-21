@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useZoomPanHelper, useVueFlow } from '../../composables'
+import { useVueFlow } from '../../composables'
 import type { ControlProps } from '../../types/components'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from '~/assets/icons/plus.svg'
@@ -20,23 +20,22 @@ const emit = defineEmits<{
   (event: 'interaction-change', active: boolean): void
 }>()
 
-const { store } = useVueFlow()
-const { zoomIn, zoomOut, fitView } = useZoomPanHelper()
+const { store, instance } = useVueFlow()
 
 const isInteractive = computed(() => store.nodesDraggable && store.nodesConnectable && store.elementsSelectable)
 
 const onZoomInHandler = () => {
-  zoomIn()
+  instance.value?.zoomIn()
   emit('zoom-in')
 }
 
 const onZoomOutHandler = () => {
-  zoomOut()
+  instance.value?.zoomOut()
   emit('zoom-out')
 }
 
 const onFitViewHandler = () => {
-  fitView(props.fitViewParams)
+  instance.value?.fitView(props.fitViewParams)
   emit('fit-view')
 }
 
