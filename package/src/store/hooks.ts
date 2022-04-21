@@ -43,8 +43,14 @@ export const createHooks = (): FlowHooks => ({
 
 const bind = (emit: EmitFunc, hooks: FlowHooks) => {
   for (const [key, value] of Object.entries(hooks)) {
-    value.on((data) => {
+    const listener = (data: any) => {
       emit(key as keyof FlowHooks, data)
+    }
+
+    value.on(listener)
+
+    onScopeDispose(() => {
+      value.off(listener)
     })
   }
 }
