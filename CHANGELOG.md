@@ -4,16 +4,6 @@ All notable changes to this project will be documented in this file.
 
 ## [unreleased]
 
-### Features
-
-- Add mini map node events ([a3b4423](a3b4423c44a418f60ca2fb19dc1b6cc1253f2632))
-- Extend minimap node type ([8ea9301](8ea93015c336d40ae37e0a29d7f5dfe6366f979f))
-- Extend ValidConnectionFunc ([77eb1eb](77eb1eb4f2187fb0c21781076cc60f885bd4b8e1))
-
-## [0.4.5] - 2022-04-13
-
-[8f4d1b3](8f4d1b3beb63a86822e846aa7773672baab8dc50)...[9df4a26](9df4a26aa1392fe8492b243fcbbff5069848f75d)
-
 ### Bug Fixes
 
 - Selection not working twice in a row ([ec0f3ef](ec0f3ef0e428cceafc63da9523128f34aeb46d48))
@@ -32,7 +22,13 @@ All notable changes to this project will be documented in this file.
 - Node/edge label type ([440ad3c](440ad3c68100cfe842897d984bdf41c0249419f7))
 - Lint scripts ([3937d56](3937d564a894971adacda07ced6fc6902b7fb17e))
 - Remove 'Floo' from EdgeText.vue ([1e1ee65](1e1ee65de771256334f3932e94e7f87f32c84bf7))
-- Recalculate handle bounds on position change ([3febe99](3febe992f93942f9112b3dc038993c624c9b18c2))
+- Recalculate handle bounds on position change ([79ede4c](79ede4cf845bcc81d4754c0542702dd7b872aae4))
+- Clamp zoom pan helper transformations ([86c72ab](86c72ab08a0c1deca0a1eb940f363537b98689b1))
+- Enforce extent on viewport transforms ([f35167c](f35167ca720cbd9c1b33843ed9db9bb0e4161e68))
+- Remove orphaned edges ([ee38f4a](ee38f4af9be69220c72d72d2d2e5078dff6ea7e6))
+- Reactive key bindings for delete, select etc. ([5951beb](5951beb85a458082a4132970f5aa3f26d8452f38))
+- Base-edge throwing attrs warnings for curvature ([8b3acda](8b3acda42e91c8822bd42c400e7652513ad77508))
+- Duplicate setState on vue flow mount ([12e42e6](12e42e687111f54e8a3f47d5ec72400afe9d92cd))
 
 ### Documentation
 
@@ -71,7 +67,12 @@ All notable changes to this project will be documented in this file.
 - Add dependency to dev pipeline ([82fd35c](82fd35c315cb58b7a0cd8128105f9614581c05ce))
 - Add dependency to dev pipeline ([c40d17c](c40d17c7d627a9a02ef3154cac088cc8df9d92f5))
 - Add turbo repo cache to workflow ([1628cf4](1628cf4e645d1969fadc8b318491d2ff3649ae0d))
-- MiniMapNode slot ([c2cb9d8](c2cb9d8a591338c972ffec98c83a9fae30fe635e))
+- MiniMapNode slot ([567ce96](567ce96640ee82ca2146b579999b714dd539fd11))
+- Add mini map node events ([e178a3c](e178a3ce44e32b8fb1803bc9d211301ca0ad7541))
+- Extend minimap node type ([2eacdc9](2eacdc9830d36d830df4cc0d9c1f9a1550c3cf54))
+- Extend ValidConnectionFunc ([2d43806](2d438065235a324ebfcf9dc61e301107ad7f30ce))
+- Add issue and pr templates ([7cb7eb2](7cb7eb2dfda946696b1dab0042a9af3e01133208))
+- Add source/target nodes to graph edges ([a19474c](a19474c3416959ba4e56543176310d9b2a58a5bd))
 
 ### Miscellaneous Tasks
 
@@ -96,7 +97,10 @@ All notable changes to this project will be documented in this file.
 - Update LICENSE ([ae4cefe](ae4cefefbc155410c2d21561e0edb0159c19494c))
 - Remove comment ([e17fb80](e17fb8094b2ed14466585807ef3bbaedd788b75e))
 - Type fix in examples ([efe68d7](efe68d7b547d67c1c7fe4029e1a2ad1c818c2ed9))
-- Bump versions ([cc95348](cc95348a19b3e99150bc00346281576cfe916201))
+- Bump versions ([0dba691](0dba6913a8dbd21ee5dcc6be7ded1869ebb91de2))
+- Update issue templates ([71fbc2b](71fbc2b8a4d50f79a1653738b61b76f3d981a21e))
+- Update vue flow version in docs/tests/examples ([99d0627](99d062728acb93949361acc98ced630360ee0844))
+- Remove duplicate keys on nodes/edges ([0a21f3c](0a21f3c06893edc03ff35bbf21d29930187acabe))
 
 ### Refactor
 
@@ -113,10 +117,16 @@ All notable changes to this project will be documented in this file.
 - Change zoom pane into viewport ([3d67d29](3d67d29347d51305ffe93c02db25db5753b40a33))
 - Transformation-pane class renamed to `transformationpane` ([30d66a6](30d66a6e29b895a209815c1602451ddc7be9adb0))
 - Change transform to viewport ([fcdbc21](fcdbc21d341b06ac35a240d2f384aa31133e8c7e))
+- Remove memoization of group edges fn ([c1b6fc0](c1b6fc01d5ee21141298e74b1050c08071fbf147))
+- Remove generics from types except nodes, edges, elements ([e3270d5](e3270d5f94935e7286f3ca2cd4e969584b09ff69))
 
 ### Testing
 
 - Fix test checking for wrong element type ([e877643](e877643354e9304b029983b1423dd1497e3fadfd))
+
+### Regression
+
+- Edge update also triggering new connection ([9a5b546](9a5b5465b69b1a343d8332d4d49533f206c887f7))
 
 ### Update
 
