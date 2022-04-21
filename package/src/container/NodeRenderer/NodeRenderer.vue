@@ -1,22 +1,14 @@
 <script lang="ts" setup>
 import NodeWrapper from '../../components/Nodes/NodeWrapper.vue'
-import { GraphNode, SnapGrid } from '../../types'
+import { SnapGrid } from '../../types'
+import { useVueFlow } from '../../composables'
 
-interface Props {
-  draggable?: boolean
-  selectable?: boolean
-  connectable?: boolean
-  snapToGrid?: boolean
-  snapGrid?: SnapGrid
-  nodes: GraphNode[]
-}
+const { store } = useVueFlow()
 
-const props = defineProps<Props>()
-
-const draggable = (d?: boolean) => (typeof d === 'undefined' ? props.draggable : d)
-const selectable = (s?: boolean) => (typeof s === 'undefined' ? props.selectable : s)
-const connectable = (c?: boolean) => (typeof c === 'undefined' ? props.connectable : c)
-const snapGrid = (sg?: SnapGrid) => (sg ?? props.snapToGrid ? props.snapGrid : undefined)
+const draggable = (d?: boolean) => (typeof d === 'undefined' ? store.nodesDraggable : d)
+const selectable = (s?: boolean) => (typeof s === 'undefined' ? store.elementsSelectable : s)
+const connectable = (c?: boolean) => (typeof c === 'undefined' ? store.nodesConnectable : c)
+const snapGrid = (sg?: SnapGrid) => (sg ?? store.snapToGrid ? store.snapGrid : undefined)
 </script>
 <script lang="ts">
 export default {
@@ -26,7 +18,7 @@ export default {
 <template>
   <div class="vue-flow__nodes vue-flow__container">
     <NodeWrapper
-      v-for="node of props.nodes"
+      v-for="node of store.getNodes"
       :id="node.id"
       :key="node.id"
       :node="node"

@@ -117,10 +117,6 @@ onMounted(() => {
   )
 })
 
-onUnmounted(() => {
-  edge.value = null
-})
-
 const slots = inject(Slots)
 
 const name = ref(edge.value.type ?? 'default')
