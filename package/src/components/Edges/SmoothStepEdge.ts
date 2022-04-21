@@ -74,5 +74,6 @@ SmoothStepEdge.props = [
   'markerStart',
   'style',
 ]
+SmoothStepEdge.inheritAttrs = false
 
 export default SmoothStepEdge
