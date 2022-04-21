@@ -17,10 +17,20 @@ interface NodeWrapperProps {
 
 const props = defineProps<NodeWrapperProps>()
 const { store } = useVueFlow()
-const node = useVModel(props, 'node')
-provide(NodeId, props.id)
 
+const node = useVModel(props, 'node')
 const nodeElement = ref()
+
+const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement, {
+  handle: node.value.dragHandle,
+  disabled: !props.draggable,
+  grid: props.snapGrid,
+  cancel: `.${store.noDragClassName}`,
+  enableUserSelectHack: false,
+  scale: store.viewport.zoom,
+})
+
+provide(NodeId, props.id)
 
 const onMouseEnterHandler = () =>
   node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: node.value }))
@@ -49,8 +59,12 @@ onMounted(() => {
     store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]),
   )
 
-  watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () =>
-    nextTick(() => store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])),
+  watch(
+    [() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition],
+    () => {
+      store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])
+    },
+    { flush: 'post' },
   )
 
   store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }])
@@ -114,22 +128,13 @@ const type = computed(() => {
   return slot
 })
 
-const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement, {
-  handle: node.value.dragHandle,
-  disabled: !props.draggable,
-  grid: props.snapGrid,
-  cancel: `.${store.noDragClassName}`,
-  enableUserSelectHack: false,
-  scale: store.viewport.zoom,
-})
-
 onMounted(() => {
   debouncedWatch(
     () => store.viewport.zoom,
     () => {
       scale.value = store.viewport.zoom
     },
-    { debounce: 5 },
+    { debounce: 5, flush: 'post' },
   )
 })
 
