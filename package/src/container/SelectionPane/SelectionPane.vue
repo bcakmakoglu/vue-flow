@@ -53,13 +53,7 @@ export default {
 }
 </script>
 <template>
-  <UserSelection v-if="selectionKeyPressed" :key="`user-selection-${id}`" />
-  <NodesSelection v-if="store.nodesSelectionActive" :key="`nodes-selection-${id}`" />
-  <div
-    :key="`flow-pane-${id}`"
-    class="vue-flow__pane vue-flow__container"
-    @click="onClick"
-    @contextmenu="onContextMenu"
-    @wheel="onWheel"
-  />
+  <UserSelection v-if="selectionKeyPressed" />
+  <NodesSelection v-if="store.nodesSelectionActive" />
+  <div class="vue-flow__pane vue-flow__container" @click="onClick" @contextmenu="onContextMenu" @wheel="onWheel" />
 </template>

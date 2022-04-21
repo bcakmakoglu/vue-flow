@@ -274,7 +274,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const addEdges: Actions['addEdges'] = (params) => {
     const curr = params instanceof Function ? params(state.edges) : params
 
-    curr.forEach((param) => {
+    curr.reduce<GraphEdge[]>((acc, param) => {
       const edge = addEdge(param, state.edges)
       if (edge) {
         const sourceNode = getters.getNode.value(edge.source)!
@@ -284,16 +284,18 @@ export default (state: State, getters: ComputedGetters): Actions => {
         const missingTarget = !targetNode || typeof targetNode === 'undefined'
         if (missingSource) console.warn(`[vueflow]: Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
         if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
-        if (missingTarget || missingSource) return
+        if (missingTarget || missingSource) return acc
 
-        state.edges.push({
+        acc.push({
           ...state.defaultEdgeOptions,
           ...edge,
           sourceNode,
           targetNode,
         })
       }
-    })
+
+      return acc
+    }, state.edges)
   }
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>

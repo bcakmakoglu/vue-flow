@@ -7,7 +7,7 @@ import { clamp, clampPosition } from '../../utils'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import Transform from './Transform.vue'
 
-const { id, store, zoomActivationKeyCode, selectionKeyCode } = useVueFlow()
+const { store, zoomActivationKeyCode, selectionKeyCode } = useVueFlow()
 const viewportEl = templateRef<HTMLDivElement>('viewport', null)
 
 const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
@@ -83,7 +83,7 @@ onMounted(() => {
   })
 
   d3Selection
-    ?.on('wheel', (event: WheelEvent) => {
+    .on('wheel', (event: WheelEvent) => {
       if (store.panOnScroll && !zoomKeyPressed.value) {
         if (isWrappedWithClass(event, store.noWheelClassName)) return
         event.preventDefault()
@@ -108,7 +108,7 @@ onMounted(() => {
         const deltaY = store.panOnScrollMode === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
 
         if (d3Selection && store.panOnScrollSpeed)
-          d3Zoom?.translateBy(
+          d3Zoom.translateBy(
             d3Selection,
             -(deltaX / currentZoom) * store.panOnScrollSpeed,
             -(deltaY / currentZoom) * store.panOnScrollSpeed,
@@ -163,10 +163,10 @@ export default {
 }
 </script>
 <template>
-  <div ref="viewport" :key="`viewport-${id}`" class="vue-flow__viewport vue-flow__container">
+  <div ref="viewport" class="vue-flow__viewport vue-flow__container">
     <Transform>
       <slot />
     </Transform>
-    <SelectionPane :key="`selection-pane-${id}`" />
+    <SelectionPane />
   </div>
 </template>
