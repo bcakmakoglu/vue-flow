@@ -15,5 +15,6 @@ const InputNode: FunctionalComponent<NodeProps> = function ({
 }
 
 InputNode.props = ['sourcePosition', 'label', 'isValidSourcePos', 'connectable']
+InputNode.inheritAttrs = false
 
 export default InputNode

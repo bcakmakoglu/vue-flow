@@ -57,5 +57,6 @@ StraightEdge.props = [
   'markerStart',
   'style',
 ]
+StraightEdge.inheritAttrs = false
 
 export default StraightEdge

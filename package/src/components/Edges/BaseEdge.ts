@@ -53,4 +53,20 @@ const BaseEdge: FunctionalComponent<Props> = function ({
   ]
 }
 
+BaseEdge.props = [
+  'path',
+  'centerX',
+  'centerY',
+  'label',
+  'labelBgBorderRadius',
+  'labelBgPadding',
+  'labelBgStyle',
+  'labelShowBg',
+  'labelStyle',
+  'markerStart',
+  'markerEnd',
+  'style',
+]
+BaseEdge.inheritAttrs = false
+
 export default BaseEdge
