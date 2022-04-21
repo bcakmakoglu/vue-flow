@@ -76,5 +76,6 @@ BezierEdge.props = [
   'markerStart',
   'style',
 ]
+BezierEdge.inheritAttrs = false
 
 export default BezierEdge

@@ -23,5 +23,6 @@ StepEdge.props = [
   'markerStart',
   'style',
 ]
+StepEdge.inheritAttrs = false
 
 export default StepEdge

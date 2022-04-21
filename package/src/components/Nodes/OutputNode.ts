@@ -15,5 +15,6 @@ const OutputNode: FunctionalComponent<NodeProps> = function ({
 }
 
 OutputNode.props = ['targetPosition', 'label', 'isValidTargetPos', 'connectable']
+OutputNode.inheritAttrs = false
 
 export default OutputNode

@@ -37,7 +37,7 @@ const bb = computed(() => {
   return getRectOfNodes(store.getNodes)
 })
 
-const viewBB = controlledComputed(bb, () => ({
+const viewBB = computed(() => ({
   x: -store.viewport.x / store.viewport.zoom,
   y: -store.viewport.y / store.viewport.zoom,
   width: store.dimensions.width / store.viewport.zoom,
@@ -92,7 +92,7 @@ export default {
   <svg
     :width="elementWidth"
     :height="elementHeight"
-    :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(',')"
+    :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(' ')"
     class="vue-flow__minimap"
   >
     <MiniMapNode
