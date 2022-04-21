@@ -92,7 +92,7 @@ export default {
   <svg
     :width="elementWidth"
     :height="elementHeight"
-    :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height]"
+    :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(',')"
     class="vue-flow__minimap"
   >
     <MiniMapNode
