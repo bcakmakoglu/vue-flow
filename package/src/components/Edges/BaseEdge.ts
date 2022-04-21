@@ -16,26 +16,41 @@ interface Props {
   markerEnd?: string
 }
 
-export default (function BaseEdge(props: Props, { attrs }) {
+const BaseEdge: FunctionalComponent<Props> = function ({
+  path,
+  centerX,
+  centerY,
+  label,
+  labelBgBorderRadius,
+  labelBgPadding,
+  labelBgStyle,
+  labelShowBg,
+  labelStyle,
+  markerStart,
+  markerEnd,
+  style,
+}) {
   return [
     h('path', {
-      style: attrs.style,
-      d: props.path,
+      style: { ...style },
+      d: path,
       class: 'vue-flow__edge-path',
-      markerEnd: props.markerEnd,
-      markerStart: props.markerStart,
+      markerEnd,
+      markerStart,
     }),
-    props.label
+    label
       ? h(EdgeText, {
-          x: props.centerX,
-          y: props.centerY,
-          label: props.label,
-          labelStyle: props.labelStyle,
-          labelShowBg: props.labelShowBg,
-          labelBgStyle: props.labelBgStyle,
-          labelBgPadding: props.labelBgPadding,
-          labelBgBorderRadius: props.labelBgBorderRadius,
+          x: centerX,
+          y: centerY,
+          label,
+          labelStyle,
+          labelShowBg,
+          labelBgStyle,
+          labelBgPadding,
+          labelBgBorderRadius,
         })
       : null,
   ]
-} as FunctionalComponent)
+}
+
+export default BaseEdge
