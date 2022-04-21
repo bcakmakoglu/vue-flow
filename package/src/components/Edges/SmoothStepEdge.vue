@@ -2,7 +2,7 @@
 import { Position } from '../../types'
 import type { SmoothStepEdgeProps } from '../../types/edge'
 import { getCenter, getSmoothStepPath } from './utils'
-import BaseEdge from './BaseEdge.vue'
+import EdgeText from './EdgeText.vue'
 
 const props = withDefaults(defineProps<SmoothStepEdgeProps>(), {
   selected: false,
@@ -46,18 +46,22 @@ export default {
 }
 </script>
 <template>
-  <BaseEdge
-    :path="path"
-    :center-x="centered[0]"
-    :center-y="centered[1]"
+  <path
+    :style="props.style"
+    :d="path"
+    class="vue-flow__edge-path"
+    :marker-end="props.markerEnd"
+    :marker-start="props.markerStart"
+  />
+  <EdgeText
+    v-if="props.label"
+    :x="centered[0]"
+    :y="centered[1]"
     :label="props.label"
     :label-style="props.labelStyle"
     :label-show-bg="props.labelShowBg"
     :label-bg-style="props.labelBgStyle"
     :label-bg-padding="props.labelBgPadding"
     :label-bg-border-radius="props.labelBgBorderRadius"
-    :style="props.style"
-    :marker-end="props.markerEnd"
-    :marker-start="props.markerStart"
   />
 </template>
