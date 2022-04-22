@@ -2,8 +2,8 @@
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import { useVueFlow, useZoomPanHelper, useWindow } from '../../composables'
-import { FlowInstance, Store } from '../../types'
-import { onLoadGetEdges, onLoadGetElements, onLoadGetNodes, onLoadProject, onLoadToObject } from '../../utils'
+import { FlowExportObject, FlowInstance, Store, XYPosition } from '../../types'
+import { pointToRendererPoint } from '../../utils'
 
 const { id, store } = useVueFlow()
 
@@ -20,22 +20,37 @@ const untilDimensions = async (store: Store) => {
 
 const ready = ref(false)
 onMounted(async () => {
-  const { zoomIn, zoomOut, zoomTo, setTransform, getTransform, fitView, fitBounds, setCenter } = useZoomPanHelper(store)
-  const instance: FlowInstance = {
+  const { fitView, ...rest } = useZoomPanHelper(store)
+  let instance: FlowInstance | null = {
     fitView: (params = { padding: 0.1 }) => fitView(params),
-    zoomIn,
-    zoomOut,
-    zoomTo,
-    setTransform,
-    getTransform,
-    setCenter,
-    fitBounds,
-    project: onLoadProject(store),
-    getElements: onLoadGetElements(store),
-    getNodes: onLoadGetNodes(store),
-    getEdges: onLoadGetEdges(store),
-    toObject: onLoadToObject(store),
+    ...rest,
+
+    project(position: XYPosition) {
+      return pointToRendererPoint(position, store.viewport, store.snapToGrid, store.snapGrid)
+    },
+    getElements() {
+      return [...store.nodes, ...store.edges]
+    },
+    getNodes() {
+      return store.nodes
+    },
+    getEdges() {
+      return store.edges
+    },
+    toObject() {
+      // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
+      return JSON.parse(
+        JSON.stringify({
+          nodes: store.nodes,
+          edges: store.edges,
+          position: [store.viewport.x, store.viewport.y],
+          zoom: store.viewport.zoom,
+        } as FlowExportObject),
+      )
+    },
   }
+
+  onScopeDispose(() => (instance = null))
 
   await untilDimensions(store)
 

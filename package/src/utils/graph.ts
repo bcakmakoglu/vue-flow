@@ -8,15 +8,11 @@ import {
   EdgeMarkerType,
   Elements,
   FlowElement,
-  FlowElements,
-  FlowExportObject,
   Getters,
   GraphEdge,
   GraphNode,
   Node,
   Rect,
-  State,
-  Store,
   Viewport,
   XYPosition,
   XYZPosition,
@@ -219,9 +215,6 @@ export const pointToRendererPoint = (
   return position
 }
 
-export const onLoadProject = (currentStore: Store) => (position: XYPosition) =>
-  pointToRendererPoint(position, currentStore.viewport, currentStore.snapToGrid, currentStore.snapGrid)
-
 const getBoundsOfBoxes = (box1: Box, box2: Box): Box => ({
   x: Math.min(box1.x, box2.x),
   y: Math.min(box1.y, box2.y),
@@ -302,22 +295,6 @@ export const getNodesInside = (
 export const getConnectedEdges = (nodes: GraphNode[], edges: GraphEdge[]) => {
   const nodeIds = nodes.map((node) => node.id)
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
-}
-
-export const onLoadGetNodes = (store: Store) => (): GraphNode[] => store.nodes
-export const onLoadGetEdges = (store: Store) => (): GraphEdge[] => store.edges
-export const onLoadGetElements = (store: Store) => (): FlowElements => [...store.nodes, ...store.edges]
-
-export const onLoadToObject = (store: State) => (): FlowExportObject => {
-  // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
-  return JSON.parse(
-    JSON.stringify({
-      nodes: store.nodes,
-      edges: store.edges,
-      position: [store.viewport.x, store.viewport.y],
-      zoom: store.viewport.zoom,
-    } as FlowExportObject),
-  )
 }
 
 export const getTransformForBounds = (
