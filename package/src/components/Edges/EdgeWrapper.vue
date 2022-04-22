@@ -113,8 +113,8 @@ const targetPosition = $(controlledComputed($$(targetHandle), () => (targetHandl
 onMounted(() => {
   watch(
     [
-      sourcePosition,
-      targetPosition,
+      $$(sourcePosition),
+      $$(targetPosition),
       () => sourceNode.position,
       () => targetNode.position,
       () => sourceNode.computedPosition,
