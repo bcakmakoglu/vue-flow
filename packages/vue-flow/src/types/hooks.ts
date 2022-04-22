@@ -1,5 +1,4 @@
 import type { EventHook, EventHookOn, EventHookTrigger } from '@vueuse/core'
-import type { MouseTouchEvent } from '@braks/revue-draggable'
 import type { D3ZoomEvent } from 'd3-zoom'
 import type { FlowInstance } from './flow'
 import type { GraphEdge } from './edge'
@@ -7,6 +6,8 @@ import type { GraphNode } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
 import type { FlowTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
+
+export type MouseTouchEvent = MouseEvent | TouchEvent | PointerEvent
 
 export interface NodeMouseEvent {
   event: MouseTouchEvent
