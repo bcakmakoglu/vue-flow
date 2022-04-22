@@ -54,13 +54,6 @@ export interface ControlProps {
   fitViewParams?: FitViewParams
 }
 
-export interface ControlEvents {
-  (event: 'zoom-in'): void
-  (event: 'zoom-out'): void
-  (event: 'fit-view'): void
-  (event: 'interaction-change', active: boolean): void
-}
-
 /** expects a node and returns a color value */
 export type MiniMapNodeFunc<Data = ElementData> = (node: GraphNode<Data>) => string
 // hack for vue-type imports
