@@ -18,7 +18,7 @@ const innerStyle = computed(() => ({
 
 const transform = computed(() => `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})`)
 
-watch(selectedNodesBBox, (v) => {
+watch($$(selectedNodesBBox), (v) => {
   setState({
     selectedNodesBbox: v,
   })

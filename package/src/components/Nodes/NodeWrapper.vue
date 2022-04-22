@@ -43,7 +43,7 @@ watch(
 
 const nodeElement = ref()
 
-const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement, {
+const { scale, disabled, handle, cancel, grid, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement, {
   handle: node.dragHandle,
   disabled: !draggable,
   grid: snapGrid,
@@ -63,6 +63,31 @@ onMounted(() => {
       scale.value = viewport.zoom
     },
     { debounce: 5, flush: 'post' },
+  )
+
+  watch(
+    () => draggable,
+    () => {
+      disabled.value = !draggable
+    },
+  )
+
+  watch(
+    () => node.dragHandle,
+    () => {
+      if (node.dragHandle) handle.value = node.dragHandle
+    },
+  )
+
+  watch($$(noDragClassName), () => {
+    if (noDragClassName) cancel.value = noDragClassName as any
+  })
+
+  watch(
+    () => snapGrid,
+    () => {
+      if (grid) grid.value = snapGrid
+    },
   )
 })
 
