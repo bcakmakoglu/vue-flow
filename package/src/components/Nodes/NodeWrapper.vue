@@ -15,9 +15,9 @@ interface NodeWrapperProps {
   snapGrid?: SnapGrid
 }
 
-const props = defineProps<NodeWrapperProps>()
+const { id, node, draggable, selectable, connectable, snapGrid } = defineProps<NodeWrapperProps>()
 
-provide(NodeId, props.id)
+provide(NodeId, id)
 
 const slots = inject(Slots)
 
@@ -35,8 +35,6 @@ const {
   addSelectedNodes,
 } = $(useVueFlow())
 
-const node = $(useVModel(props, 'node'))
-
 let name = $ref(node.type ?? 'default')
 watch(
   () => node.type,
@@ -47,8 +45,8 @@ const nodeElement = ref()
 
 const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement, {
   handle: node.dragHandle,
-  disabled: !props.draggable,
-  grid: props.snapGrid,
+  disabled: !draggable,
+  grid: snapGrid,
   cancel: `.${noDragClassName}`,
   enableUserSelectHack: false,
   scale: viewport.zoom,
@@ -100,12 +98,12 @@ watch(
     }
 
     if (parent) {
-      node.computedPosition = getXYZPos(parent, xyzPos)
+      getNode(id)!.computedPosition = getXYZPos(parent, xyzPos)
     } else {
-      node.computedPosition = xyzPos
+      getNode(id)!.computedPosition = xyzPos
     }
 
-    node.handleBounds = getHandleBounds(nodeElement.value, scale.value)
+    getNode(id)!.handleBounds = getHandleBounds(nodeElement.value, scale.value)
   },
   { deep: true, flush: 'post' },
 )
@@ -142,8 +140,8 @@ const onContextMenu = (event: MouseEvent) => {
 const onDoubleClick = (event: MouseEvent) => hooks.nodeDoubleClick.trigger({ event, node })
 
 const onSelectNode = (event: MouseEvent) => {
-  if (!props.draggable) {
-    if (props.selectable) {
+  if (!draggable) {
+    if (selectable) {
       setState({
         nodesSelectionActive: false,
       })
@@ -182,13 +180,13 @@ onDragStart(({ event }) => {
   addSelectedNodes([])
   hooks.nodeDragStart.trigger({ event, node })
 
-  if (selectNodesOnDrag && props.selectable) {
+  if (selectNodesOnDrag && selectable) {
     setState({
       nodesSelectionActive: false,
     })
 
     if (!node.selected) addSelectedNodes([node])
-  } else if (!selectNodesOnDrag && !node.selected && props.selectable) {
+  } else if (!selectNodesOnDrag && !node.selected && selectable) {
     setState({
       nodesSelectionActive: false,
     })
@@ -206,7 +204,7 @@ onDragStop(({ event, data: { deltaX, deltaY } }) => {
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
   if (!node.dragging) {
-    if (props.selectable && !selectNodesOnDrag && !node.selected) {
+    if (selectable && !selectNodesOnDrag && !node.selected) {
       addSelectedNodes([node])
     }
     hooks.nodeClick.trigger({ event, node })
@@ -225,7 +223,7 @@ const getClass = computed(() => {
     {
       dragging: node.dragging,
       selected: node.selected,
-      selectable: props.selectable,
+      selectable,
     },
     extraClass,
   ]
@@ -241,7 +239,7 @@ const getStyle = computed(() => {
   return {
     zIndex: node.computedPosition.z,
     transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
-    pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
+    pointerEvents: selectable || draggable ? 'all' : 'none',
     ...styles,
   } as CSSProperties
 })
@@ -271,7 +269,7 @@ export default {
       :type="node.type"
       :data="node.data"
       :selected="!!node.selected"
-      :connectable="props.connectable"
+      :connectable="connectable"
       :position="node.position"
       :computed-position="node.computedPosition"
       :dimensions="node.dimensions"
