@@ -1,19 +1,29 @@
-import { useVueFlow, State, Store } from '@braks/vue-flow'
+import { isRef } from 'vue'
+import { useVueFlow, State } from '@braks/vue-flow'
 
 describe('test store state', () => {
-  let store: Store
+  let store = useVueFlow()
 
-  const { store: initial } = useVueFlow()
-  beforeEach(() => ({ store } = useVueFlow()))
+  const initial = useVueFlow({ id: 'initial' })
+
+  beforeEach(() => (store = useVueFlow()))
 
   it('has any initial state', () => expect(store).to.exist)
 
   it('has default initial state', () => {
     Object.keys(store).forEach((state) => {
-      const storedState = store[<keyof State>state]
-      const initialVal = initial[<keyof State>state]
+      const storedState = store[<keyof State>state]?.value
+      const initialVal = initial[<keyof State>state]?.value
+
       if (state === 'initialized') return expect(storedState).to.be.true
-      expect(JSON.stringify(storedState)).to.eq(JSON.stringify(initialVal))
+
+      if (state === 'getEdgeTypes' || state === 'getNodeTypes' || state === 'nodeTypes' || state === 'edgeTypes') return
+
+      if (Array.isArray(initialVal)) return expect((storedState as any[]).length).to.eq(initialVal.length)
+
+      if (!(initialVal instanceof Function) && !isRef(initialVal)) {
+        return expect(JSON.stringify(storedState)).to.eq(JSON.stringify(initialVal))
+      }
     })
   })
 
@@ -21,14 +31,14 @@ describe('test store state', () => {
     store.setState({
       zoomOnScroll: false,
     })
-    expect(store.zoomOnScroll).to.eq(false)
+    expect(store.zoomOnScroll.value).to.eq(false)
   })
 
   it('takes initial options', () => {
-    const { store } = useVueFlow({
+    store = useVueFlow({
       zoomOnScroll: false,
     })
-    expect(store.zoomOnScroll).to.eq(false)
+    expect(store.zoomOnScroll.value).to.eq(false)
   })
 
   it('gets custom node types', () => {
@@ -41,7 +51,7 @@ describe('test store state', () => {
         },
       ],
     })
-    expect(Object.keys(store.getNodeTypes)).to.contain('custom')
+    expect(Object.keys(store.getNodeTypes.value)).to.contain('custom')
   })
 
   it('gets custom edge types', () => {
@@ -65,6 +75,6 @@ describe('test store state', () => {
         },
       ],
     })
-    expect(Object.keys(store.getEdgeTypes)).to.contain('custom')
+    expect(Object.keys(store.getEdgeTypes.value)).to.contain('custom')
   })
 })
