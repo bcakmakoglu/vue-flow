@@ -28,11 +28,13 @@ const props = withDefaults(defineProps<FlowProps>(), {
 
 const emit = defineEmits([...Object.keys(createHooks()), 'update:modelValue', 'update:nodes', 'update:edges'])
 
-const modelProps = useVModels(props, emit)
+const modelValue = useVModel(props, 'modelValue', emit)
+const modelNodes = useVModel(props, 'nodes', emit)
+const modelEdges = useVModel(props, 'edges', emit)
 
 const { id, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow()
 
-const dispose = useWatch(modelProps, { id, hooks, getNodeTypes, getEdgeTypes, ...rest })
+const dispose = useWatch({ modelValue, nodes: modelNodes, edges: modelEdges }, props,{ id, hooks, getNodeTypes, getEdgeTypes, ...rest })
 
 onUnmounted(() => {
   dispose()
