@@ -2,8 +2,6 @@
 
 [![vue flow](package/src/assets/vue-flow.gif)](https://vueflow.dev/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow)
-[![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg)](https://david-dm.org/bcakmakoglu/vue-flow)
-[![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow.svg?type=dev)](https://david-dm.org/bcakmakoglu/vue-flow?type=dev)
 ![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/bcakmakoglu/vue-flow)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow)
@@ -13,7 +11,7 @@
 With Vue Flow you can build your own, customized node-based applications like static diagrams or even more complex and
 interactive editors!
 
-You can find a detailed explanation on how to get started in the [documentation](https://vueflow.dev/docs) or check
+You can find a detailed explanation on how to get started in the [documentation](https://vueflow.dev/guide) or check
 the [examples](https://vueflow.dev/examples).
 
 ## ⭐️ Features
@@ -60,7 +58,7 @@ A simple setup could look like this:
 ```vue
 <!-- Flowchart.vue -->
 <template>
-  <VueFlow :elements="elements"></VueFlow>
+  <VueFlow v-model="elements"></VueFlow>
 </template>
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
@@ -117,8 +115,18 @@ Thanks for your star!
 
 [![Stargazers repo roster for @braks/vue-flow](https://reporoster.com/stars/bcakmakoglu/vue-flow)](https://github.com/bcakmakoglu/vue-flow/stargazers)
 
-## 💝 Acknowledgement
+## 💝 Special Thanks
 
-This project is based on [webkid's](https://webkid.io/) [react flow](https://reactflow.dev/). I wholeheartedly thank
-them for their amazing work! Without them this project would've been impossible for me.
-Please consider [donating](https://github.com/sponsors/wbkd) to them if you like Vue Flow.
+This project is built with
+
+- [React Flow](https://reactflow.dev/)
+  - Vue flow is heavily based on [webkid's](https://webkid.io/) [react flow](https://reactflow.dev/). I wholeheartedly thank
+  them for their amazing work! Without them this vue flow would not exist.
+  Please consider [donating](https://github.com/sponsors/wbkd) to them!
+
+- [D3.js](https://d3js.org/)
+  - D3 makes all the zoom and pan actions in the graph possible.
+    Check it out to see if you can find other uses for it too!
+
+- [VueUse](https://vueuse.org/)
+  - VueUse is a collection of helpful utilities/composables that have been battle tested.
