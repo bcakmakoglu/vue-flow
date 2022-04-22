@@ -12,12 +12,13 @@ interface MarkerDefinitionsProps {
 const props = withDefaults(defineProps<MarkerDefinitionsProps>(), {
   defaultColor: '',
 })
-const { store } = useVueFlow()
+
+const { edges } = $(useVueFlow())
 
 const markers = computed(() => {
   const ids: string[] = []
 
-  return store.edges.reduce<MarkerProps[]>((markers, edge) => {
+  return edges.reduce<MarkerProps[]>((markers, edge) => {
     ;[edge.markerStart, edge.markerEnd].forEach((marker) => {
       if (marker) {
         const markerId = getMarkerId(marker)

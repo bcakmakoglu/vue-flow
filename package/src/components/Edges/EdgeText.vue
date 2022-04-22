@@ -12,12 +12,12 @@ const props = withDefaults(defineProps<EdgeTextProps>(), {
 
 const edgeRef = templateRef<SVGTextElement>('edge-text', null)
 
-const edgeRefBbox = ref<Rect>({ x: 0, y: 0, width: 0, height: 0 })
+let edgeRefBbox = $ref<Rect>({ x: 0, y: 0, width: 0, height: 0 })
 
 onMounted(() => {
-  edgeRefBbox.value = edgeRef.value.getBBox()
+  edgeRefBbox = edgeRef.value.getBBox()
 })
-const transform = computed(() => `translate(${props.x - edgeRefBbox.value.width / 2} ${props.y - edgeRefBbox.value.height / 2})`)
+const transform = computed(() => `translate(${props.x - edgeRefBbox.width / 2} ${props.y - edgeRefBbox.height / 2})`)
 </script>
 <script lang="ts">
 export default {
