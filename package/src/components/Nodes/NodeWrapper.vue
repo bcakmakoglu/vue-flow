@@ -16,9 +16,21 @@ interface NodeWrapperProps {
 }
 
 const props = defineProps<NodeWrapperProps>()
+
+provide(NodeId, props.id)
+
+const slots = inject(Slots)
+
 const { store } = useVueFlow()
 
 const node = useVModel(props, 'node')
+
+const name = ref(node.value.type ?? 'default')
+watch(
+  () => node.value.type,
+  (v) => v && (name.value = v),
+)
+
 const nodeElement = ref()
 
 const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement, {
@@ -30,29 +42,19 @@ const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement,
   scale: store.viewport.zoom,
 })
 
-provide(NodeId, props.id)
+onBeforeMount(() => {
+  store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
+})
 
-const onMouseEnterHandler = () =>
-  node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseEnter.trigger({ event, node: node.value }))
-const onMouseMoveHandler = () =>
-  node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseMove.trigger({ event, node: node.value }))
-const onMouseLeaveHandler = () =>
-  node.value.dragging && ((event: MouseEvent) => store.hooks.nodeMouseLeave.trigger({ event, node: node.value }))
-const onContextMenuHandler = () => (event: MouseEvent) =>
-  store.hooks.nodeContextMenu.trigger({
-    event,
-    node: node.value,
-  })
-const onDoubleClick = () => (event: MouseEvent) => store.hooks.nodeDoubleClick.trigger({ event, node: node.value })
-const onSelectNodeHandler = (event: MouseEvent) => {
-  if (!props.draggable) {
-    if (props.selectable) {
-      store.nodesSelectionActive = false
-      if (!node.value.selected) store.addSelectedNodes([node.value])
-    }
-    store.hooks.nodeClick.trigger({ event, node: node.value })
-  }
-}
+onMounted(() => {
+  debouncedWatch(
+    () => store.viewport.zoom,
+    () => {
+      scale.value = store.viewport.zoom
+    },
+    { debounce: 5, flush: 'post' },
+  )
+})
 
 onMounted(() => {
   const observer = useResizeObserver(nodeElement, () =>
@@ -93,22 +95,49 @@ watch(
 
     node.value.handleBounds = getHandleBounds(nodeElement.value, scale.value)
   },
-  { deep: true },
+  { deep: true, flush: 'post' },
 )
 
 onUnmounted(() => {
   nodeElement.value = undefined
 })
 
-store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
+const onMouseEnter = (event: MouseEvent) => {
+  if (!node.value.dragging) {
+    store.hooks.nodeMouseEnter.trigger({ event, node: node.value })
+  }
+}
 
-const slots = inject(Slots)
+const onMouseMove = (event: MouseEvent) => {
+  if (!node.value.dragging) {
+    store.hooks.nodeMouseMove.trigger({ event, node: node.value })
+  }
+}
 
-const name = ref(node.value.type ?? 'default')
-watch(
-  () => node.value.type,
-  (v) => v && (name.value = v),
-)
+const onMouseLeave = (event: MouseEvent) => {
+  if (!node.value.dragging) {
+    store.hooks.nodeMouseLeave.trigger({ event, node: node.value })
+  }
+}
+
+const onContextMenu = (event: MouseEvent) => {
+  store.hooks.nodeContextMenu.trigger({
+    event,
+    node: node.value,
+  })
+}
+
+const onDoubleClick = (event: MouseEvent) => store.hooks.nodeDoubleClick.trigger({ event, node: node.value })
+
+const onSelectNode = (event: MouseEvent) => {
+  if (!props.draggable) {
+    if (props.selectable) {
+      store.nodesSelectionActive = false
+      if (!node.value.selected) store.addSelectedNodes([node.value])
+    }
+    store.hooks.nodeClick.trigger({ event, node: node.value })
+  }
+}
 
 const type = computed(() => {
   let nodeType = node.value.template ?? store.getNodeTypes[name.value]
@@ -132,16 +161,6 @@ const type = computed(() => {
   }
 
   return slot
-})
-
-onMounted(() => {
-  debouncedWatch(
-    () => store.viewport.zoom,
-    () => {
-      scale.value = store.viewport.zoom
-    },
-    { debounce: 5, flush: 'post' },
-  )
 })
 
 onDragStart(({ event }) => {
@@ -219,11 +238,11 @@ export default {
     :class="getClass"
     :style="getStyle"
     :data-id="node.id"
-    @mouseenter="onMouseEnterHandler"
-    @mousemove="onMouseMoveHandler"
-    @mouseleave="onMouseLeaveHandler"
-    @contextmenu="onContextMenuHandler"
-    @click="onSelectNodeHandler"
+    @mouseenter="onMouseEnter"
+    @mousemove="onMouseMove"
+    @mouseleave="onMouseLeave"
+    @contextmenu="onContextMenu"
+    @click="onSelectNode"
     @dblclick="onDoubleClick"
   >
     <component
