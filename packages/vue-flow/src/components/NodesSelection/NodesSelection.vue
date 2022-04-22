@@ -1,11 +1,25 @@
 <script lang="ts" setup>
-import { useDraggableCore } from '@braks/revue-draggable'
-import { useVueFlow } from '../../composables'
+import { useVueFlow, useDrag } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 
 const { emits, setState, viewport, getSelectedNodes, snapToGrid, snapGrid, updateNodePosition, noPanClassName } = $(useVueFlow())
 
 const el = templateRef<HTMLDivElement>('el', null)
+
+useDrag({
+  el,
+  onStart(event) {
+    emits.selectionDragStart({ event: event.sourceEvent, nodes: getSelectedNodes })
+  },
+  onDrag(event, { dx, dy }) {
+    emits.selectionDrag({ event: event.sourceEvent, nodes: getSelectedNodes })
+    updateNodePosition({ diff: { x: dx, y: dy }, dragging: true })
+  },
+  onStop(event) {
+    emits.selectionDragStop({ event: event.sourceEvent, nodes: getSelectedNodes })
+    getSelectedNodes.forEach((node) => (node.dragging = false))
+  },
+})
 
 const selectedNodesBBox = $computed(() => getRectOfNodes(getSelectedNodes))
 
@@ -25,34 +39,6 @@ watch($$(selectedNodesBBox), (v) => {
 })
 
 const onContextMenu = (event: MouseEvent) => emits.selectionContextMenu({ event, nodes: getSelectedNodes })
-
-const { onDragStart, onDrag, onDragStop, scale } = useDraggableCore(el, {
-  grid: snapToGrid ? snapGrid : undefined,
-  enableUserSelectHack: false,
-  scale: viewport.zoom,
-})
-
-onMounted(() => {
-  debouncedWatch(
-    () => viewport.zoom,
-    () => {
-      scale.value = viewport.zoom
-    },
-    { debounce: 5 },
-  )
-})
-
-onDragStart(({ event }) => emits.selectionDragStart({ event, nodes: getSelectedNodes }))
-
-onDrag(({ event, data: { deltaX, deltaY } }) => {
-  emits.selectionDrag({ event, nodes: getSelectedNodes })
-  updateNodePosition({ diff: { x: deltaX, y: deltaY }, dragging: true })
-})
-
-onDragStop(({ event }) => {
-  emits.selectionDragStop({ event, nodes: getSelectedNodes })
-  getSelectedNodes.forEach((node) => (node.dragging = false))
-})
 </script>
 
 <script lang="ts">
