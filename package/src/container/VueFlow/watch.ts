@@ -1,9 +1,9 @@
 import { Ref, ToRefs } from 'vue'
 import { WatchPausableReturn } from '@vueuse/core'
-import { FlowProps, VueFlowStore } from '~/types'
+import { FlowProps, GraphEdge, GraphNode, VueFlowStore } from '~/types'
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
-export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
+export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>, props: FlowProps, store: VueFlowStore) => {
   const scope = effectScope()
 
   scope.run(() => {
@@ -23,11 +23,12 @@ export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
               store.setElements(v)
 
               pauseStore = watchPausable(
-                [() => store.edges.value.length, () => store.nodes.value.length],
-                () => {
-                  models.modelValue!.value = [...store.nodes.value, ...store.edges.value]
+                [store.edges, store.nodes, () => store.edges.value.length, () => store.nodes.value.length],
+                ([e, n]) => {
+                  const val = [...(n as GraphNode[]), ...(e as GraphEdge[])]
+                  if (val.length) models.modelValue!.value = val
                 },
-                { immediate: true },
+                { immediate: true, flush: 'post' },
               )
 
               nextTick(() => {
@@ -58,7 +59,9 @@ export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
 
               pauseStore = watchPausable(
                 () => store.nodes.value.length,
-                () => (models.nodes!.value = [...store.nodes.value]),
+                () => {
+                  if (store.nodes.value.length) models.nodes!.value = [...store.nodes.value]
+                },
                 { immediate: true },
               )
 
@@ -90,7 +93,9 @@ export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
 
               pauseStore = watchPausable(
                 () => store.edges.value.length,
-                () => (models.edges!.value = [...store.edges.value]),
+                () => {
+                  if (store.edges.value.length) models.edges!.value = [...store.edges.value]
+                },
                 { immediate: true },
               )
 
@@ -108,13 +113,13 @@ export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
     const watchMaxZoom = () => {
       scope.run(() => {
         watch(
-          [() => models.maxZoom, models.maxZoom],
+          () => props.maxZoom,
           () => {
-            if (models.maxZoom && isDef(models.maxZoom.value)) {
-              store.setMaxZoom(models.maxZoom.value)
+            if (props.maxZoom && isDef(props.maxZoom)) {
+              store.setMaxZoom(props.maxZoom)
             }
           },
-          { immediate: isDef(models.maxZoom?.value) },
+          { immediate: isDef(props.maxZoom) },
         )
       })
     }
@@ -122,13 +127,13 @@ export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
     const watchMinZoom = () => {
       scope.run(() => {
         watch(
-          [() => models.minZoom, models.minZoom],
+          () => props.minZoom,
           () => {
-            if (models.minZoom && isDef(models.minZoom.value)) {
-              store.setMinZoom(models.minZoom.value)
+            if (props.minZoom && isDef(props.minZoom)) {
+              store.setMinZoom(props.minZoom)
             }
           },
-          { immediate: isDef(models.minZoom?.value) },
+          { immediate: isDef(props.minZoom) },
         )
       })
     }
@@ -136,13 +141,13 @@ export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
     const watchApplyDefault = () => {
       scope.run(() => {
         watch(
-          [() => models.applyDefault, models.applyDefault],
+          () => props.applyDefault,
           () => {
-            if (models.applyDefault && isDef(models.applyDefault.value)) {
-              store.applyDefault.value = models.applyDefault.value
+            if (props.applyDefault && isDef(props.applyDefault)) {
+              store.applyDefault.value = props.applyDefault
             }
           },
-          { immediate: isDef(models.applyDefault?.value) },
+          { immediate: isDef(props.applyDefault) },
         )
 
         watch(
@@ -158,32 +163,31 @@ export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
       })
     }
 
-    watchModelValue()
-    watchNodesValue()
-    watchEdgesValue()
-    watchMaxZoom()
-    watchMinZoom()
-    watchApplyDefault()
+    const watchRest = () => {
+      const skip = ['id', 'modelValue', 'edges', 'nodes', 'maxZoom', 'minZoom', 'applyDefault']
+      Object.keys(props).forEach((prop) => {
+        if (!skip.includes(prop)) {
+          const model = props[prop as keyof typeof props]
+          const storedValue = (<any>store)[prop] as Ref
 
-    const skip = ['id', 'modelValue', 'edges', 'nodes', 'maxZoom', 'minZoom', 'applyDefault']
-    Object.keys(models).forEach((m) => {
-      if (!skip.includes(m)) {
-        const model = models[m as keyof typeof models]
-        const storedValue = (<any>store)[m] as Ref
+          scope.run(() => {
+            watch(
+              () => model,
+              () => {
+                if (model && isDef(model)) {
+                  storedValue.value = model
+                }
+              },
+              { immediate: isDef(model) },
+            )
+          })
+        }
+      })
+    }
 
-        scope.run(() => {
-          watch(
-            [() => model, model],
-            () => {
-              if (model && isDef(model.value)) {
-                storedValue.value = model.value
-              }
-            },
-            { immediate: isDef(model?.value) },
-          )
-        })
-      }
-    })
+    ;[watchModelValue, watchNodesValue, watchEdgesValue, watchMinZoom, watchMaxZoom, watchApplyDefault, watchRest].forEach(
+      (watch) => watch(),
+    )
   })
 
   return () => scope.stop()
