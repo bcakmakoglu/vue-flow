@@ -44,7 +44,7 @@ export default (store: Store = useVueFlow().store): ViewportFuncs => {
     if (!hasDimensions.value) await untilDimensions(store)
 
     if (store.d3Selection && store.d3Zoom) {
-      store.d3Zoom.scaleTo(transition(store.d3Selection, duration), scale)
+      store.d3Zoom.scaleBy(transition(store.d3Selection, duration), scale)
     }
   }
 
