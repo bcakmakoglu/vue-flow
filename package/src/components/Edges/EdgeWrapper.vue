@@ -16,12 +16,53 @@ interface EdgeWrapper {
 }
 
 const props = defineProps<EdgeWrapper>()
+
+const slots = inject(Slots)
+
 const { store } = useVueFlow()
+
 const edge = useVModel(props, 'edge')
+
+const name = ref(edge.value.type ?? 'default')
+watch(
+  () => edge.value.type,
+  (v) => v && (name.value = v),
+)
 
 const updating = ref(false)
 
+onMounted(() => {
+  watch(
+    [
+      sourcePosition,
+      targetPosition,
+      () => props.sourceNode.position,
+      () => props.targetNode.position,
+      () => props.sourceNode.computedPosition,
+      () => props.targetNode.computedPosition,
+      () => props.sourceNode.dimensions,
+      () => props.targetNode.dimensions,
+    ],
+    () => {
+      const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
+        props.sourceNode,
+        sourceHandle.value,
+        sourcePosition.value,
+        props.targetNode,
+        targetHandle.value,
+        targetPosition.value,
+      )
+      if (edge.value.sourceX !== sourceX) edge.value.sourceX = sourceX
+      if (edge.value.sourceY !== sourceY) edge.value.sourceY = sourceY
+      if (edge.value.targetX !== targetX) edge.value.targetX = targetX
+      if (edge.value.targetY !== targetY) edge.value.targetY = targetY
+    },
+    { immediate: true },
+  )
+})
+
 const { onMouseDown } = useHandle()
+
 const onEdgeClick = (event: MouseEvent) => {
   const data = { event, edge: edge.value }
   if (props.selectable) {
@@ -30,14 +71,23 @@ const onEdgeClick = (event: MouseEvent) => {
   }
   store.hooks.edgeClick.trigger(data)
 }
+
 const onEdgeContextMenu = (event: MouseEvent) => store.hooks.edgeContextMenu.trigger({ event, edge: edge.value })
+
 const onDoubleClick = (event: MouseEvent) => store.hooks.edgeDoubleClick.trigger({ event, edge: edge.value })
+
 const onEdgeMouseEnter = (event: MouseEvent) => store.hooks.edgeMouseEnter.trigger({ event, edge: edge.value })
+
 const onEdgeMouseMove = (event: MouseEvent) => store.hooks.edgeMouseMove.trigger({ event, edge: edge.value })
+
 const onEdgeMouseLeave = (event: MouseEvent) => store.hooks.edgeMouseLeave.trigger({ event, edge: edge.value })
+
 const onEdgeUpdaterMouseEnter = () => (updating.value = true)
+
 const onEdgeUpdaterMouseOut = () => (updating.value = false)
+
 const onEdgeUpdaterSourceMouseDown = (event: MouseEvent) => handleEdgeUpdater(event, true)
+
 const onEdgeUpdaterTargetMouseDown = (event: MouseEvent) => handleEdgeUpdater(event, false)
 
 const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
@@ -80,50 +130,16 @@ const sourceNodeHandles = computed(() => {
 })
 
 const sourceHandle = computed(() => getHandle(sourceNodeHandles.value, edge.value.sourceHandle))
+
 const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.value.targetHandle))
 
-const sourcePosition = computed(() => (sourceHandle.value ? sourceHandle.value.position : Position.Bottom))
-const targetPosition = computed(() => (targetHandle.value ? targetHandle.value.position : Position.Top))
+const sourcePosition = controlledComputed(sourceHandle, () =>
+  sourceHandle.value ? sourceHandle.value.position : Position.Bottom,
+)
+
+const targetPosition = controlledComputed(targetHandle, () => (targetHandle.value ? targetHandle.value.position : Position.Top))
 
 const edgeUpdaterRadius = computed(() => store.edgeUpdaterRadius)
-
-onMounted(() => {
-  watch(
-    [
-      sourcePosition,
-      targetPosition,
-      () => props.sourceNode.position,
-      () => props.targetNode.position,
-      () => props.sourceNode.computedPosition,
-      () => props.targetNode.computedPosition,
-      () => props.sourceNode.dimensions,
-      () => props.targetNode.dimensions,
-    ],
-    () => {
-      const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-        props.sourceNode,
-        sourceHandle.value,
-        sourcePosition.value,
-        props.targetNode,
-        targetHandle.value,
-        targetPosition.value,
-      )
-      if (edge.value.sourceX !== sourceX) edge.value.sourceX = sourceX
-      if (edge.value.sourceY !== sourceY) edge.value.sourceY = sourceY
-      if (edge.value.targetX !== targetX) edge.value.targetX = targetX
-      if (edge.value.targetY !== targetY) edge.value.targetY = targetY
-    },
-    { immediate: true },
-  )
-})
-
-const slots = inject(Slots)
-
-const name = ref(edge.value.type ?? 'default')
-watch(
-  () => edge.value.type,
-  (v) => v && (name.value = v),
-)
 
 const type = computed(() => {
   let edgeType = edge.value.template ?? store.getEdgeTypes[name.value]
