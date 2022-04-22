@@ -3,23 +3,24 @@ import { useDraggableCore } from '@braks/revue-draggable'
 import { CSSProperties } from 'vue'
 import { useVueFlow } from '../../composables'
 import { GraphNode, NodeComponent, SnapGrid } from '../../types'
-import { NodeId, Slots } from '../../context'
+import { NodeId } from '../../context'
 import { getHandleBounds, getXYZPos } from '../../utils'
 
 interface NodeWrapperProps {
   id: string
   node: GraphNode
+  parentNode?: GraphNode
   draggable: boolean
   selectable: boolean
   connectable: boolean
   snapGrid?: SnapGrid
+  type: NodeComponent | Function | Object | false
+  name: string
 }
 
-const { id, node, draggable, selectable, connectable, snapGrid } = defineProps<NodeWrapperProps>()
+const { id, type, name, node, parentNode, draggable, selectable, connectable, snapGrid } = defineProps<NodeWrapperProps>()
 
 provide(NodeId, id)
-
-const slots = inject(Slots)
 
 const {
   viewport,
@@ -34,12 +35,6 @@ const {
   getNodeTypes,
   addSelectedNodes,
 } = $(useVueFlow())
-
-let name = $ref(node.type ?? 'default')
-watch(
-  () => node.type,
-  (v) => v && (name = v),
-)
 
 const nodeElement = ref()
 
@@ -91,6 +86,8 @@ onMounted(() => {
   )
 })
 
+const parent = $computed(() => (node.parentNode ? getNode(node.parentNode) : undefined))
+
 onMounted(() => {
   const observer = useResizeObserver(nodeElement, () =>
     updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value, forceUpdate: true }]),
@@ -109,29 +106,27 @@ onMounted(() => {
   updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value, forceUpdate: true }])
 })
 
-watch(
-  [
-    () => node.position,
-    () => getNode(node.parentNode!)?.computedPosition,
-    () => node.selected,
-    () => getNode(node.parentNode!)?.selected,
-  ],
-  ([pos, parent]) => {
-    const xyzPos = {
-      ...pos,
-      z: node.dragging || node.selected ? 1000 : 0,
-    }
+onMounted(() => {
+  watch(
+    [() => node.position, () => parent?.computedPosition, () => node.selected, () => parent?.selected],
+    ([pos, parent]) => {
+      const xyzPos = {
+        ...pos,
+        z: node.dragging || node.selected ? 1000 : 0,
+      }
+      const graphNode = getNode(id)!
 
-    if (parent) {
-      getNode(id)!.computedPosition = getXYZPos(parent, xyzPos)
-    } else {
-      getNode(id)!.computedPosition = xyzPos
-    }
+      if (parent) {
+        graphNode.computedPosition = getXYZPos(parent, xyzPos)
+      } else {
+        graphNode.computedPosition = xyzPos
+      }
 
-    getNode(id)!.handleBounds = getHandleBounds(nodeElement.value, scale.value)
-  },
-  { deep: true, flush: 'post' },
-)
+      graphNode.handleBounds = getHandleBounds(nodeElement.value, scale.value)
+    },
+    { deep: true, flush: 'post' },
+  )
+})
 
 onUnmounted(() => {
   nodeElement.value = undefined
@@ -176,30 +171,6 @@ const onSelectNode = (event: MouseEvent) => {
     hooks.nodeClick.trigger({ event, node })
   }
 }
-
-const type = computed(() => {
-  let nodeType = node.template ?? getNodeTypes[name]
-  const instance = getCurrentInstance()
-
-  if (typeof nodeType === 'string') {
-    if (instance) {
-      const components = Object.keys(instance.appContext.components)
-      if (components && components.includes(name)) {
-        nodeType = resolveComponent(name, false) as NodeComponent
-      }
-    }
-  }
-  if (typeof nodeType !== 'string') return nodeType
-
-  const slot = slots?.[`node-${name}`]
-  if (!slot?.({})) {
-    console.warn(`[vueflow]: Node type "${node.type}" not found and no node-slot detected. Using fallback type "default".`)
-    name = 'default'
-    return getNodeTypes.default
-  }
-
-  return slot
-})
 
 onDragStart(({ event }) => {
   addSelectedNodes([])
@@ -280,7 +251,7 @@ export default {
     ref="nodeElement"
     :class="getClass"
     :style="getStyle"
-    :data-id="node.id"
+    :data-id="id"
     @mouseenter="onMouseEnter"
     @mousemove="onMouseMove"
     @mouseleave="onMouseLeave"
