@@ -9,7 +9,7 @@ const InputNode: FunctionalComponent<NodeProps> = function ({
   isValidSourcePos,
 }) {
   return [
-    typeof label !== 'string' && label ? h(label) : h('span', {}, label),
+    typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
     h(Handle, { type: 'source', position: sourcePosition, isConnectable: connectable, isValidConnection: isValidSourcePos }),
   ]
 }
