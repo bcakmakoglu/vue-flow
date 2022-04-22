@@ -13,11 +13,13 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
+    vue({
+      reactivityTransform: true,
+    }),
     vueTypes(),
     svgLoader(),
     AutoImport({
-      imports: ['vue', '@vueuse/core'],
+      imports: ['vue', '@vueuse/core', 'vue/macros'],
       dts: resolve('src/auto-imports.d.ts'),
     }),
   ],
