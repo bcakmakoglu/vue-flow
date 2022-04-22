@@ -2,49 +2,51 @@
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import { useVueFlow, useZoomPanHelper, useWindow } from '../../composables'
-import { FlowExportObject, FlowInstance, Store, XYPosition } from '../../types'
+import { Dimensions, FlowExportObject, FlowInstance, XYPosition } from '../../types'
 import { pointToRendererPoint } from '../../utils'
 
-const { id, store } = useVueFlow()
+const { id, nodes, edges, viewport, snapToGrid, snapGrid, dimensions, setState, fitViewOnInit, hooks } = $(useVueFlow())
 
-const untilDimensions = async (store: Store) => {
+const untilDimensions = async (dim: Dimensions) => {
   // if ssr we can't wait for dimensions, they'll never really exist
   const window = useWindow()
   if ('screen' in window) {
     // wait until viewport dimensions has been established
-    await until(store.dimensions).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
+    await until(dim).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
   }
 
   return true
 }
 
-const ready = ref(false)
+let ready = $ref(false)
 onMounted(async () => {
-  const { fitView, ...rest } = useZoomPanHelper(store)
+  // create new instance and set to state
+  const { fitView, ...rest } = useZoomPanHelper()
+
   let instance: FlowInstance | null = {
     fitView: (params = { padding: 0.1 }) => fitView(params),
     ...rest,
 
     project(position: XYPosition) {
-      return pointToRendererPoint(position, store.viewport, store.snapToGrid, store.snapGrid)
+      return pointToRendererPoint(position, viewport, snapToGrid, snapGrid)
     },
     getElements() {
-      return [...store.nodes, ...store.edges]
+      return [...nodes, ...edges]
     },
     getNodes() {
-      return store.nodes
+      return nodes
     },
     getEdges() {
-      return store.edges
+      return edges
     },
     toObject() {
       // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
       return JSON.parse(
         JSON.stringify({
-          nodes: store.nodes,
-          edges: store.edges,
-          position: [store.viewport.x, store.viewport.y],
-          zoom: store.viewport.zoom,
+          nodes,
+          edges,
+          position: [viewport.x, viewport.y],
+          zoom: viewport.zoom,
         } as FlowExportObject),
       )
     },
@@ -52,15 +54,21 @@ onMounted(async () => {
 
   onScopeDispose(() => (instance = null))
 
-  await untilDimensions(store)
+  // wait until proper dimensions have been established, otherwise fitView will have wrong bounds when called at paneReady
+  await untilDimensions(dimensions)
 
-  ready.value = true
-  store.instance = instance
-  store.fitViewOnInit && instance.fitView()
-  store.hooks.paneReady.trigger(instance)
+  // hide graph until dimensions are ready, so we don't have jumping graphs (ssr for example)
+  ready = true
+
+  setState({
+    instance,
+  })
+
+  fitViewOnInit && instance.fitView()
+  hooks.paneReady.trigger(instance)
 })
 
-const transform = computed(() => `translate(${store.viewport.x}px,${store.viewport.y}px) scale(${store.viewport.zoom})`)
+const transform = computed(() => `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})`)
 </script>
 <script lang="ts">
 export default {

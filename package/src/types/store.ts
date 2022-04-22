@@ -185,11 +185,8 @@ export type ComputedGetters = {
   [key in keyof Getters]: ComputedRef<Getters[key]>
 }
 
-export type Store = State & Actions & Getters
-
-export type UseVueFlow = {
+export type VueFlowStore = {
   id: string
-  store: Store
 } & FlowHooksOn &
   ToRefs<State> &
   ComputedGetters &

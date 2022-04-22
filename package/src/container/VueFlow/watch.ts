@@ -1,9 +1,9 @@
 import { Ref, ToRefs } from 'vue'
 import { WatchPausableReturn } from '@vueuse/core'
-import { FlowProps, UseVueFlow } from '~/types'
+import { FlowProps, VueFlowStore } from '~/types'
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
-export default (models: ToRefs<FlowProps>, store: UseVueFlow) => {
+export default (models: ToRefs<FlowProps>, store: VueFlowStore) => {
   const scope = effectScope()
 
   scope.run(() => {
