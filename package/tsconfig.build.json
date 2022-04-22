@@ -21,7 +21,7 @@
     "forceConsistentCasingInFileNames": true,
     "types": [
       "vite/client",
-      "cypress"
+      "vue/macros"
     ],
     "paths": {
       "~/*": [

@@ -19,7 +19,8 @@
     "declaration": true,
     "declarationDir": "./dist",
     "types": [
-      "vite/client"
+      "vite/client",
+      "vue/macros"
     ],
     "paths": {
       "~/*": [
