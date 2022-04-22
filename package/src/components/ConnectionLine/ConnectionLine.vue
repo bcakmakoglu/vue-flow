@@ -8,7 +8,7 @@ interface ConnectionLineProps {
   sourceNode: GraphNode
 }
 
-const props = defineProps<ConnectionLineProps>()
+const { sourceNode } = defineProps<ConnectionLineProps>()
 
 const {
   getNodes,
@@ -27,14 +27,14 @@ const hasSlot = slots?.({})
 
 const sourceHandle =
   connectionHandleId && connectionHandleType
-    ? props.sourceNode.handleBounds[connectionHandleType as HandleType]?.find((d: HandleElement) => d.id === connectionHandleId)
-    : connectionHandleType && props.sourceNode.handleBounds[(connectionHandleType as HandleType) ?? 'source']?.[0]
+    ? sourceNode.handleBounds[connectionHandleType as HandleType]?.find((d: HandleElement) => d.id === connectionHandleId)
+    : connectionHandleType && sourceNode.handleBounds[(connectionHandleType as HandleType) ?? 'source']?.[0]
 
-const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : props.sourceNode.dimensions.width / 2
-const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : props.sourceNode.dimensions.height
+const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2
+const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height
 
-const sourceX = props.sourceNode.computedPosition.x + sourceHandleX
-const sourceY = props.sourceNode.computedPosition.y + sourceHandleY
+const sourceX = sourceNode.computedPosition.x + sourceHandleX
+const sourceY = sourceNode.computedPosition.y + sourceHandleY
 
 const isRightOrLeft = sourceHandle?.position === Position.Left || sourceHandle?.position === Position.Right
 
@@ -101,7 +101,7 @@ export default {
         connectionLineType,
         connectionLineStyle,
         nodes: getNodes,
-        sourceNode: props.sourceNode,
+        sourceNode,
         sourceHandle,
       }"
     />
