@@ -268,7 +268,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const addNodes: Actions['addNodes'] = (nodes, extent) => {
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    state.nodes.push(...createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent))
+    state.nodes = [...state.nodes, ...createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)]
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
