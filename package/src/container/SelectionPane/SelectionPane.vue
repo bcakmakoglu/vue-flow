@@ -5,23 +5,39 @@ import { getConnectedEdges } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 
-const { id, store, deleteKeyCode, selectionKeyCode, multiSelectionKeyCode } = useVueFlow()
+const {
+  id,
+  edges,
+  deleteKeyCode,
+  selectionKeyCode,
+  multiSelectionKeyCode,
+  hooks,
+  nodesSelectionActive,
+  userSelectionActive,
+  elementsSelectable,
+  resetSelectedElements,
+  setState,
+  getSelectedEdges,
+  getSelectedNodes,
+} = $(useVueFlow())
 
 const onClick = (event: MouseEvent) => {
-  store.hooks.paneClick.trigger(event)
-  store.nodesSelectionActive = false
-  store.resetSelectedElements()
+  hooks.paneClick.trigger(event)
+  setState({
+    nodesSelectionActive: false,
+  })
+  resetSelectedElements()
 }
 
-const onContextMenu = (event: MouseEvent) => store.hooks.paneContextMenu.trigger(event)
+const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event)
 
-const onWheel = (event: WheelEvent) => store.hooks.paneScroll.trigger(event)
+const onWheel = (event: WheelEvent) => hooks.paneScroll.trigger(event)
 
-useKeyPress(deleteKeyCode, (keyPressed) => {
-  const selectedNodes = store.getSelectedNodes
-  const selectedEdges = store.getSelectedEdges
+useKeyPress($$(deleteKeyCode), (keyPressed) => {
+  const selectedNodes = getSelectedNodes
+  const selectedEdges = getSelectedEdges
   if (keyPressed && (selectedNodes || selectedEdges)) {
-    const connectedEdges = (selectedNodes && getConnectedEdges(selectedNodes, store.edges)) ?? []
+    const connectedEdges = (selectedNodes && getConnectedEdges(selectedNodes, edges)) ?? []
 
     const nodeChanges: NodeChange[] = selectedNodes.map((n) => ({ id: n.id, type: 'remove' }))
     const edgeChanges: EdgeChange[] = [...selectedEdges, ...connectedEdges].map((e) => ({
@@ -29,21 +45,28 @@ useKeyPress(deleteKeyCode, (keyPressed) => {
       type: 'remove',
     }))
 
-    store.hooks.nodesChange.trigger(nodeChanges)
-    store.hooks.edgesChange.trigger(edgeChanges)
-    store.nodesSelectionActive = false
+    hooks.nodesChange.trigger(nodeChanges)
+    hooks.edgesChange.trigger(edgeChanges)
 
-    store.resetSelectedElements()
+    setState({
+      nodesSelectionActive: false,
+    })
+
+    resetSelectedElements()
   }
 })
 
-useKeyPress(multiSelectionKeyCode, (keyPressed) => {
-  store.multiSelectionActive = keyPressed
+useKeyPress($$(multiSelectionKeyCode), (keyPressed) => {
+  setState({
+    multiSelectionActive: keyPressed,
+  })
 })
 
-const selectionKeyPressed = useKeyPress(selectionKeyCode, (keyPressed) => {
-  if (store.userSelectionActive && keyPressed) return
-  store.userSelectionActive = keyPressed && store.elementsSelectable
+const selectionKeyPressed = useKeyPress($$(selectionKeyCode), (keyPressed) => {
+  if (userSelectionActive && keyPressed) return
+  setState({
+    userSelectionActive: keyPressed && elementsSelectable,
+  })
 })
 </script>
 <script lang="ts">
@@ -54,7 +77,7 @@ export default {
 </script>
 <template>
   <UserSelection v-if="selectionKeyPressed" :key="`user-selection-${id}`" />
-  <NodesSelection v-if="store.nodesSelectionActive" :key="`nodes-selection-${id}`" />
+  <NodesSelection v-if="nodesSelectionActive" :key="`nodes-selection-${id}`" />
   <div
     :key="`pane-${id}`"
     class="vue-flow__pane vue-flow__container"

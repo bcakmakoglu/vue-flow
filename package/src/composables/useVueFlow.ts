@@ -1,14 +1,17 @@
 import { EffectScope } from 'vue'
 import { MaybeRef } from '@vueuse/core'
-import { FlowHooksOn, FlowOptions, FlowProps, State, UseVueFlow } from '~/types'
+import { FlowHooksOn, FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
 import useState from '~/store/state'
 import useGetters from '~/store/getters'
 import useActions from '~/store/actions'
 
+/**
+ * Stores all currently created store instances
+ */
 export class Storage {
   public currentId = 0
-  public flows = new Map<string, UseVueFlow>()
+  public flows = new Map<string, VueFlowStore>()
   static instance: Storage
 
   public static getInstance(): Storage {
@@ -19,7 +22,7 @@ export class Storage {
     return Storage.instance
   }
 
-  public set(id: string, flow: UseVueFlow) {
+  public set(id: string, flow: VueFlowStore) {
     return this.flows.set(id, flow)
   }
 
@@ -31,16 +34,21 @@ export class Storage {
     return this.flows.delete(id)
   }
 
-  public create(id: string, preloadedState?: FlowOptions): UseVueFlow {
+  public create(id: string, preloadedState?: FlowOptions): VueFlowStore {
     const state: State = useState(preloadedState)
+
     const reactiveState = reactive(state)
+
     const getters = useGetters(reactiveState)
+
     const actions = useActions(reactiveState, getters)
+
     const hooksOn: FlowHooksOn = <any>{}
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
       const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}` as keyof FlowHooksOn
       hooksOn[name] = h.on as any
     })
+
     actions.setState(reactiveState)
     if (preloadedState) {
       if (preloadedState.modelValue) actions.setElements(preloadedState.modelValue)
@@ -48,20 +56,12 @@ export class Storage {
       if (preloadedState.edges) actions.setEdges(preloadedState.edges)
     }
 
-    const store = reactive({
-      ...hooksOn,
-      ...toRefs(reactiveState),
-      ...getters,
-      ...actions,
-    })
-
-    const flow: UseVueFlow = {
+    const flow: VueFlowStore = {
       ...hooksOn,
       ...getters,
       ...actions,
       ...toRefs(reactiveState),
       id,
-      store,
     }
 
     this.set(id, flow)
@@ -74,13 +74,15 @@ export class Storage {
   }
 }
 
-type Injection = UseVueFlow | null | undefined
+type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 type Options = { [key in keyof FlowProps]: MaybeRef<FlowProps[key]> }
 
-export default (options?: Options): UseVueFlow => {
+export default (options?: Options): VueFlowStore => {
   const reactiveOptions = options ? reactive(options) : undefined
+
   const storage = Storage.getInstance()
+
   const scope = getCurrentScope() as Scope
 
   const id = reactiveOptions?.id
@@ -88,15 +90,28 @@ export default (options?: Options): UseVueFlow => {
 
   let vueFlow: Injection
 
+  /**
+   * check if we can get a store instance through injections
+   * this should be the regular way after initialization
+   */
   if (scope) {
     const injection = inject(VueFlow, null)
     if (typeof injection !== 'undefined' && injection !== null) vueFlow = injection
   }
 
+  /**
+   * check if we can get a store instance through storage
+   * this requires options id or an id on the current scope
+   */
   if (!vueFlow) {
     if (vueFlowId) vueFlow = storage.get(vueFlowId)
   }
 
+  /**
+   * If we cannot find any store instance in the previous steps
+   * _or_ if the store instance we found does not match up with provided ids
+   * create a new store instance and register it in storage
+   */
   if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
     const name = id ?? storage.getId()
 
@@ -105,18 +120,32 @@ export default (options?: Options): UseVueFlow => {
     if (scope) {
       scope.vueFlowId = name
 
+      // dispose of state values and storage entry
       onScopeDispose(() => {
-        vueFlow!.$reset()
-        storage.remove(vueFlow!.id)
+        vueFlow?.$reset()
+        storage.remove(name)
         vueFlow = null
       })
+
+      if (reactiveOptions) {
+        scope.run(() => {
+          watch(reactiveOptions, (opts) => {
+            vueFlow?.setState(opts)
+          })
+        })
+      }
     }
   } else {
+    // if composable was called with additional options after initialization, overwrite state with the options values
     if (reactiveOptions) vueFlow.setState(reactiveOptions)
   }
 
+  /**
+   * Vue flow wasn't able to find any store instance - we can't proceed
+   */
   if (!vueFlow) throw new Error('[vueflow]: store instance not found.')
 
+  // always provide a fresh instance into context on call
   if (scope) {
     provide(VueFlow, vueFlow)
   }

@@ -18,13 +18,13 @@ const defaultColors: Record<BackgroundVariant, string> = {
   [BackgroundVariant.Lines]: '#eee',
 }
 
-const { store } = useVueFlow()
+const { viewport } = $(useVueFlow())
 
-const background = computed(() => {
-  const scaledGap = props.gap && props.gap * store.viewport.zoom
-  const xOffset = scaledGap && store.viewport.x % scaledGap
-  const yOffset = scaledGap && store.viewport.y % scaledGap
-  const size = props.size || 0.4 * store.viewport.zoom
+const background = $computed(() => {
+  const scaledGap = props.gap && props.gap * viewport.zoom
+  const xOffset = scaledGap && viewport.x % scaledGap
+  const yOffset = scaledGap && viewport.y % scaledGap
+  const size = props.size || 0.4 * viewport.zoom
 
   return {
     scaledGap,
@@ -36,14 +36,13 @@ const background = computed(() => {
 
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
 const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
+
 const patternColor = computed(() =>
   props.patternColor ? props.patternColor : defaultColors[props.variant || BackgroundVariant.Dots],
 )
+
 const d = computed(
-  () =>
-    `M${background.value.scaledGap / 2} 0 V${background.value.scaledGap} M0 ${background.value.scaledGap / 2} H${
-      background.value.scaledGap
-    }`,
+  () => `M${background.scaledGap / 2} 0 V${background.scaledGap} M0 ${background.scaledGap / 2} H${background.scaledGap}`,
 )
 </script>
 <script lang="ts">

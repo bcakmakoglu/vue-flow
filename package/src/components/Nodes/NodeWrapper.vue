@@ -21,36 +21,48 @@ provide(NodeId, props.id)
 
 const slots = inject(Slots)
 
-const { store } = useVueFlow()
+const {
+  viewport,
+  noDragClassName,
+  noPanClassName,
+  hooks,
+  selectNodesOnDrag,
+  setState,
+  updateNodePosition,
+  updateNodeDimensions,
+  getNode,
+  getNodeTypes,
+  addSelectedNodes,
+} = $(useVueFlow())
 
-const node = useVModel(props, 'node')
+const node = $(useVModel(props, 'node'))
 
-const name = ref(node.value.type ?? 'default')
+let name = $ref(node.type ?? 'default')
 watch(
-  () => node.value.type,
-  (v) => v && (name.value = v),
+  () => node.type,
+  (v) => v && (name = v),
 )
 
 const nodeElement = ref()
 
 const { scale, onDrag, onDragStart, onDragStop } = useDraggableCore(nodeElement, {
-  handle: node.value.dragHandle,
+  handle: node.dragHandle,
   disabled: !props.draggable,
   grid: props.snapGrid,
-  cancel: `.${store.noDragClassName}`,
+  cancel: `.${noDragClassName}`,
   enableUserSelectHack: false,
-  scale: store.viewport.zoom,
+  scale: viewport.zoom,
 })
 
 onBeforeMount(() => {
-  store.updateNodePosition({ id: node.value.id, diff: { x: 0, y: 0 } })
+  updateNodePosition({ id: node.id, diff: { x: 0, y: 0 } })
 })
 
 onMounted(() => {
   debouncedWatch(
-    () => store.viewport.zoom,
+    () => viewport.zoom,
     () => {
-      scale.value = store.viewport.zoom
+      scale.value = viewport.zoom
     },
     { debounce: 5, flush: 'post' },
   )
@@ -58,42 +70,42 @@ onMounted(() => {
 
 onMounted(() => {
   const observer = useResizeObserver(nodeElement, () =>
-    store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }]),
+    updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value, forceUpdate: true }]),
   )
 
   watch(
-    [() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition],
+    [() => node.type, () => node.sourcePosition, () => node.targetPosition],
     () => {
-      store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value }])
+      updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value }])
     },
     { flush: 'post' },
   )
 
   onBeforeUnmount(() => observer.stop())
 
-  store.updateNodeDimensions([{ id: node.value.id, nodeElement: nodeElement.value, forceUpdate: true }])
+  updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value, forceUpdate: true }])
 })
 
 watch(
   [
-    () => node.value.position,
-    () => store.getNode(node.value.parentNode!)?.computedPosition,
-    () => node.value.selected,
-    () => store.getNode(node.value.parentNode!)?.selected,
+    () => node.position,
+    () => getNode(node.parentNode!)?.computedPosition,
+    () => node.selected,
+    () => getNode(node.parentNode!)?.selected,
   ],
   ([pos, parent]) => {
     const xyzPos = {
       ...pos,
-      z: node.value.dragging || node.value.selected ? 1000 : 0,
+      z: node.dragging || node.selected ? 1000 : 0,
     }
 
     if (parent) {
-      node.value.computedPosition = getXYZPos(parent, xyzPos)
+      node.computedPosition = getXYZPos(parent, xyzPos)
     } else {
-      node.value.computedPosition = xyzPos
+      node.computedPosition = xyzPos
     }
 
-    node.value.handleBounds = getHandleBounds(nodeElement.value, scale.value)
+    node.handleBounds = getHandleBounds(nodeElement.value, scale.value)
   },
   { deep: true, flush: 'post' },
 )
@@ -103,108 +115,116 @@ onUnmounted(() => {
 })
 
 const onMouseEnter = (event: MouseEvent) => {
-  if (!node.value.dragging) {
-    store.hooks.nodeMouseEnter.trigger({ event, node: node.value })
+  if (!node.dragging) {
+    hooks.nodeMouseEnter.trigger({ event, node })
   }
 }
 
 const onMouseMove = (event: MouseEvent) => {
-  if (!node.value.dragging) {
-    store.hooks.nodeMouseMove.trigger({ event, node: node.value })
+  if (!node.dragging) {
+    hooks.nodeMouseMove.trigger({ event, node })
   }
 }
 
 const onMouseLeave = (event: MouseEvent) => {
-  if (!node.value.dragging) {
-    store.hooks.nodeMouseLeave.trigger({ event, node: node.value })
+  if (!node.dragging) {
+    hooks.nodeMouseLeave.trigger({ event, node })
   }
 }
 
 const onContextMenu = (event: MouseEvent) => {
-  store.hooks.nodeContextMenu.trigger({
+  hooks.nodeContextMenu.trigger({
     event,
-    node: node.value,
+    node,
   })
 }
 
-const onDoubleClick = (event: MouseEvent) => store.hooks.nodeDoubleClick.trigger({ event, node: node.value })
+const onDoubleClick = (event: MouseEvent) => hooks.nodeDoubleClick.trigger({ event, node })
 
 const onSelectNode = (event: MouseEvent) => {
   if (!props.draggable) {
     if (props.selectable) {
-      store.nodesSelectionActive = false
-      if (!node.value.selected) store.addSelectedNodes([node.value])
+      setState({
+        nodesSelectionActive: false,
+      })
+
+      if (!node.selected) addSelectedNodes([node])
     }
-    store.hooks.nodeClick.trigger({ event, node: node.value })
+    hooks.nodeClick.trigger({ event, node })
   }
 }
 
 const type = computed(() => {
-  let nodeType = node.value.template ?? store.getNodeTypes[name.value]
+  let nodeType = node.template ?? getNodeTypes[name]
   const instance = getCurrentInstance()
 
   if (typeof nodeType === 'string') {
     if (instance) {
       const components = Object.keys(instance.appContext.components)
-      if (components && components.includes(name.value)) {
-        nodeType = resolveComponent(name.value, false) as NodeComponent
+      if (components && components.includes(name)) {
+        nodeType = resolveComponent(name, false) as NodeComponent
       }
     }
   }
   if (typeof nodeType !== 'string') return nodeType
 
-  const slot = slots?.[`node-${name.value}`]
+  const slot = slots?.[`node-${name}`]
   if (!slot?.({})) {
-    console.warn(`[vueflow]: Node type "${node.value.type}" not found and no node-slot detected. Using fallback type "default".`)
-    name.value = 'default'
-    return store.getNodeTypes.default
+    console.warn(`[vueflow]: Node type "${node.type}" not found and no node-slot detected. Using fallback type "default".`)
+    name = 'default'
+    return getNodeTypes.default
   }
 
   return slot
 })
 
 onDragStart(({ event }) => {
-  store.addSelectedNodes([])
-  store.hooks.nodeDragStart.trigger({ event, node: node.value })
+  addSelectedNodes([])
+  hooks.nodeDragStart.trigger({ event, node })
 
-  if (store.selectNodesOnDrag && props.selectable) {
-    store.nodesSelectionActive = false
+  if (selectNodesOnDrag && props.selectable) {
+    setState({
+      nodesSelectionActive: false,
+    })
 
-    if (!node.value.selected) store.addSelectedNodes([node.value])
-  } else if (!store.selectNodesOnDrag && !node.value.selected && props.selectable) {
-    store.nodesSelectionActive = false
-    store.addSelectedNodes([])
+    if (!node.selected) addSelectedNodes([node])
+  } else if (!selectNodesOnDrag && !node.selected && props.selectable) {
+    setState({
+      nodesSelectionActive: false,
+    })
+
+    addSelectedNodes([])
   }
 })
 
 onDrag(({ event, data: { deltaX, deltaY } }) => {
-  store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: true })
-  store.hooks.nodeDrag.trigger({ event, node: node.value })
+  updateNodePosition({ id: node.id, diff: { x: deltaX, y: deltaY }, dragging: true })
+  hooks.nodeDrag.trigger({ event, node })
 })
 
 onDragStop(({ event, data: { deltaX, deltaY } }) => {
   // onDragStop also gets called when user just clicks on a node.
   // Because of that we set dragging to true inside the onDrag handler and handle the click here
-  if (!node.value.dragging) {
-    if (props.selectable && !store.selectNodesOnDrag && !node.value.selected) {
-      store.addSelectedNodes([node.value])
+  if (!node.dragging) {
+    if (props.selectable && !selectNodesOnDrag && !node.selected) {
+      addSelectedNodes([node])
     }
-    store.hooks.nodeClick.trigger({ event, node: node.value })
+    hooks.nodeClick.trigger({ event, node })
     return
   }
-  store.updateNodePosition({ id: node.value.id, diff: { x: deltaX, y: deltaY }, dragging: false })
-  store.hooks.nodeDragStop.trigger({ event, node: node.value })
+  updateNodePosition({ id: node.id, diff: { x: deltaX, y: deltaY }, dragging: false })
+  hooks.nodeDragStop.trigger({ event, node })
 })
 
 const getClass = computed(() => {
-  const extraClass = node.value.class instanceof Function ? node.value.class(node.value) : node.value.class
+  const extraClass = node.class instanceof Function ? node.class(node) : node.class
   return [
     'vue-flow__node',
-    `vue-flow__node-${name.value}`,
-    store.noPanClassName,
+    `vue-flow__node-${name}`,
+    noPanClassName,
     {
-      dragging: node.value.dragging,
-      selected: node.value.selected,
+      dragging: node.dragging,
+      selected: node.selected,
       selectable: props.selectable,
     },
     extraClass,
@@ -212,15 +232,15 @@ const getClass = computed(() => {
 })
 
 const getStyle = computed(() => {
-  const styles = (node.value.style instanceof Function ? node.value.style(node.value) : node.value.style) || {}
-  const width = node.value.width instanceof Function ? node.value.width(node.value) : node.value.width
-  const height = node.value.height instanceof Function ? node.value.height(node.value) : node.value.height
+  const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
+  const width = node.width instanceof Function ? node.width(node) : node.width
+  const height = node.height instanceof Function ? node.height(node) : node.height
   if (width) styles.width = typeof width === 'string' ? width : `${width}px`
   if (height) styles.height = typeof height === 'string' ? height : `${height}px`
 
   return {
-    zIndex: node.value.computedPosition.z,
-    transform: `translate(${node.value.computedPosition.x}px,${node.value.computedPosition.y}px)`,
+    zIndex: node.computedPosition.z,
+    transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
     pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
     ...styles,
   } as CSSProperties

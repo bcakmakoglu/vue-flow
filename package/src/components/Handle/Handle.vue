@@ -4,38 +4,45 @@ import { ConnectionMode, Position } from '../../types'
 import { NodeId } from '../../context'
 import type { HandleProps } from '../../types/handle'
 
-const { id, hooks, connectionStartHandle, connectionMode } = useVueFlow()
 const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',
   position: 'top' as Position,
   connectable: true,
 })
 
+const { id, hooks, connectionStartHandle, connectionMode } = $(useVueFlow())
+
 const nodeId = inject(NodeId, '')
 
-const handleId = computed(
-  () => props.id ?? (connectionMode.value === ConnectionMode.Strict ? null : `${nodeId}__handle-${props.position}`),
+const handleId = $computed(
+  () => props.id ?? (connectionMode === ConnectionMode.Strict ? null : `${nodeId}__handle-${props.position}`),
 )
 
 const { onMouseDown, onClick } = useHandle()
-const onMouseDownHandler = (event: MouseEvent) =>
-  onMouseDown(event, handleId.value, nodeId, props.type === 'target', props.isValidConnection, undefined)
-const onClickHandler = (event: MouseEvent) => onClick(event, handleId.value ?? null, nodeId, props.type, props.isValidConnection)
+
+const onMouseDownHandler = (event: MouseEvent) => {
+  onMouseDown(event, handleId, nodeId, props.type === 'target', props.isValidConnection, undefined)
+}
+
+const onClickHandler = (event: MouseEvent) => {
+  onClick(event, handleId ?? null, nodeId, props.type, props.isValidConnection)
+}
 
 const getClasses = computed(() => {
   return [
     'vue-flow__handle',
     `vue-flow__handle-${props.position}`,
-    `vue-flow__handle-${handleId.value}`,
+    `vue-flow__handle-${handleId}`,
     'nodrag',
     {
       source: props.type !== 'target',
       target: props.type === 'target',
       connectable: props.connectable,
       connecting:
-        connectionStartHandle.value?.nodeId === nodeId &&
-        connectionStartHandle.value?.handleId === handleId.value &&
-        connectionStartHandle.value?.type === props.type,
+        connectionStartHandle &&
+        connectionStartHandle.nodeId === nodeId &&
+        connectionStartHandle.handleId === handleId &&
+        connectionStartHandle.type === props.type,
     },
   ]
 })
