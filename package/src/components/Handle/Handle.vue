@@ -4,45 +4,47 @@ import { ConnectionMode, Position } from '../../types'
 import { NodeId } from '../../context'
 import type { HandleProps } from '../../types/handle'
 
-const props = withDefaults(defineProps<HandleProps>(), {
-  type: 'source',
-  position: 'top' as Position,
-  connectable: true,
-})
+const {
+  type = 'source',
+  position = 'top' as Position,
+  connectable = true,
+  id,
+  isValidConnection = function () {
+    return true
+  },
+} = defineProps<HandleProps>()
 
-const { id, hooks, connectionStartHandle, connectionMode } = $(useVueFlow())
+const { hooks, connectionStartHandle, connectionMode } = $(useVueFlow())
 
 const nodeId = inject(NodeId, '')
 
-const handleId = $computed(
-  () => props.id ?? (connectionMode === ConnectionMode.Strict ? null : `${nodeId}__handle-${props.position}`),
-)
+const handleId = $computed(() => id ?? (connectionMode === ConnectionMode.Strict ? null : `${nodeId}__handle-${position}`))
 
 const { onMouseDown, onClick } = useHandle()
 
 const onMouseDownHandler = (event: MouseEvent) => {
-  onMouseDown(event, handleId, nodeId, props.type === 'target', props.isValidConnection, undefined)
+  onMouseDown(event, handleId, nodeId, type === 'target', isValidConnection, undefined)
 }
 
 const onClickHandler = (event: MouseEvent) => {
-  onClick(event, handleId ?? null, nodeId, props.type, props.isValidConnection)
+  onClick(event, handleId ?? null, nodeId, type, isValidConnection)
 }
 
 const getClasses = computed(() => {
   return [
     'vue-flow__handle',
-    `vue-flow__handle-${props.position}`,
+    `vue-flow__handle-${position}`,
     `vue-flow__handle-${handleId}`,
     'nodrag',
     {
-      source: props.type !== 'target',
-      target: props.type === 'target',
-      connectable: props.connectable,
+      source: type !== 'target',
+      target: type === 'target',
+      connectable,
       connecting:
         connectionStartHandle &&
         connectionStartHandle.nodeId === nodeId &&
         connectionStartHandle.handleId === handleId &&
-        connectionStartHandle.type === props.type,
+        connectionStartHandle.type === type,
     },
   ]
 })
@@ -56,11 +58,18 @@ export default {
   <div
     :data-handleid="handleId"
     :data-nodeid="nodeId"
-    :data-handlepos="props.position"
+    :data-handlepos="position"
     :class="getClasses"
     @mousedown="onMouseDownHandler"
     @click="onClickHandler"
   >
-    <slot :node-id="nodeId" v-bind="props"></slot>
+    <slot
+      :id="id"
+      :node-id="nodeId"
+      :type="type"
+      :position="position"
+      :connectable="connectable"
+      :is-valid-connection="isValidConnection"
+    />
   </div>
 </template>

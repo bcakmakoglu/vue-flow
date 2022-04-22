@@ -9,9 +9,7 @@ interface MarkerDefinitionsProps {
   defaultColor: string
 }
 
-const props = withDefaults(defineProps<MarkerDefinitionsProps>(), {
-  defaultColor: '',
-})
+const { defaultColor = '' } = defineProps<MarkerDefinitionsProps>()
 
 const { edges } = $(useVueFlow())
 
@@ -23,8 +21,8 @@ const markers = computed(() => {
       if (marker) {
         const markerId = getMarkerId(marker)
         if (!ids.includes(markerId)) {
-          if (typeof marker === 'object') markers.push({ ...marker, id: markerId, color: marker.color || props.defaultColor })
-          else markers.push({ id: markerId, color: props.defaultColor, type: marker as MarkerType })
+          if (typeof marker === 'object') markers.push({ ...marker, id: markerId, color: marker.color || defaultColor })
+          else markers.push({ id: markerId, color: defaultColor, type: marker as MarkerType })
           ids.push(markerId)
         }
       }

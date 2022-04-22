@@ -5,14 +5,14 @@ import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import type { MiniMapProps } from '../../types/components'
 import MiniMapNode from './MiniMapNode'
 
-const props = withDefaults(defineProps<MiniMapProps>(), {
-  nodeStrokeColor: '#555',
-  nodeColor: '#fff',
-  nodeClassName: '',
-  nodeBorderRadius: 5,
-  nodeStrokeWidth: 2,
-  maskColor: 'rgb(240, 242, 243, 0.7)',
-})
+const {
+  nodeStrokeColor = '#555',
+  nodeColor = '#fff',
+  nodeClassName,
+  nodeBorderRadius = 5,
+  nodeStrokeWidth = 2,
+  maskColor = 'rgb(240, 242, 243, 0.7)',
+} = defineProps<MiniMapProps>()
 
 const attrs: Record<string, any> = useAttrs()
 
@@ -27,13 +27,12 @@ const elementWidth = attrs.style?.width ?? defaultWidth
 
 const elementHeight = attrs.style?.height ?? defaultHeight
 
-const nodeColorFunc: MiniMapNodeFunc = props.nodeColor instanceof Function ? props.nodeColor : () => props.nodeColor as string
+const nodeColorFunc: MiniMapNodeFunc = nodeColor instanceof Function ? nodeColor : () => nodeColor as string
 
 const nodeStrokeColorFunc: MiniMapNodeFunc =
-  props.nodeStrokeColor instanceof Function ? props.nodeStrokeColor : () => props.nodeStrokeColor as string
+  nodeStrokeColor instanceof Function ? nodeStrokeColor : () => nodeStrokeColor as string
 
-const nodeClassNameFunc =
-  props.nodeClassName instanceof Function ? props.nodeClassName : () => props.nodeClassName as MiniMapNodeFunc
+const nodeClassNameFunc = nodeClassName instanceof Function ? nodeClassName : ((() => nodeClassName) as MiniMapNodeFunc)
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
@@ -113,9 +112,9 @@ export default {
       :style="node.style"
       :class="nodeClassNameFunc(node)"
       :color="nodeColorFunc(node)"
-      :border-radius="props.nodeBorderRadius"
+      :border-radius="nodeBorderRadius"
       :stroke-color="nodeStrokeColorFunc(node)"
-      :stroke-width="props.nodeStrokeWidth"
+      :stroke-width="nodeStrokeWidth"
       :shape-rendering="shapeRendering"
       @click="(e: MouseEvent) => onNodeClick(e, node)"
       @dblclick="(e: MouseEvent) => onNodeDblClick(e, node)"
@@ -131,12 +130,12 @@ export default {
         :style="node.style"
         :class="nodeClassNameFunc(node)"
         :color="nodeColorFunc(node)"
-        :border-radius="props.nodeBorderRadius"
+        :border-radius="nodeBorderRadius"
         :stroke-color="nodeStrokeColorFunc(node)"
-        :stroke-width="props.nodeStrokeWidth"
+        :stroke-width="nodeStrokeWidth"
         :shape-rendering="shapeRendering"
       />
     </MiniMapNode>
-    <path class="vue-flow__minimap-mask" :d="d" :fill="props.maskColor" fill-rule="evenodd" />
+    <path class="vue-flow__minimap-mask" :d="d" :fill="maskColor" fill-rule="evenodd" />
   </svg>
 </template>

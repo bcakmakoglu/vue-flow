@@ -6,7 +6,7 @@ interface SelectionRectProps {
   y: number
 }
 
-const props = defineProps<SelectionRectProps>()
+const { width, height, x, y } = defineProps<SelectionRectProps>()
 </script>
 <script lang="ts">
 export default {
@@ -17,9 +17,9 @@ export default {
   <div
     class="vue-flow__selection"
     :style="{
-      width: `${props.width}px`,
-      height: `${props.height}px`,
-      transform: `translate(${props.x}px, ${props.y}px)`,
+      width: `${width}px`,
+      height: `${height}px`,
+      transform: `translate(${x}px, ${y}px)`,
     }"
   />
 </template>

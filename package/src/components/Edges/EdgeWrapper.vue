@@ -15,13 +15,13 @@ interface EdgeWrapper {
   updatable?: boolean
 }
 
-const props = defineProps<EdgeWrapper>()
+const { id, edge, sourceNode, targetNode, selectable, updatable } = defineProps<EdgeWrapper>()
 
 const slots = inject(Slots)
 
-const { hooks, connectionMode, setState, addSelectedEdges, getEdgeTypes, edgeUpdaterRadius, noPanClassName } = $(useVueFlow())
-
-const edge = $(useVModel(props, 'edge'))
+const { hooks, connectionMode, edgeUpdaterRadius, noPanClassName, setState, getEdge, addSelectedEdges, getEdgeTypes } = $(
+  useVueFlow(),
+)
 
 let name = $ref(edge.type ?? 'default')
 watch(
@@ -31,41 +31,11 @@ watch(
 
 let updating = $ref(false)
 
-onMounted(() => {
-  watch(
-    [
-      sourcePosition,
-      targetPosition,
-      () => props.sourceNode.position,
-      () => props.targetNode.position,
-      () => props.sourceNode.computedPosition,
-      () => props.targetNode.computedPosition,
-      () => props.sourceNode.dimensions,
-      () => props.targetNode.dimensions,
-    ],
-    () => {
-      const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-        props.sourceNode,
-        sourceHandle.value,
-        sourcePosition.value,
-        props.targetNode,
-        targetHandle.value,
-        targetPosition.value,
-      )
-      if (edge.sourceX !== sourceX) edge.sourceX = sourceX
-      if (edge.sourceY !== sourceY) edge.sourceY = sourceY
-      if (edge.targetX !== targetX) edge.targetX = targetX
-      if (edge.targetY !== targetY) edge.targetY = targetY
-    },
-    { immediate: true },
-  )
-})
-
 const { onMouseDown } = useHandle()
 
 const onEdgeClick = (event: MouseEvent) => {
   const data = { event, edge }
-  if (props.selectable) {
+  if (selectable) {
     setState({
       nodesSelectionActive: false,
     })
@@ -112,35 +82,66 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
 }
 
 // when connection type is loose we can define all handles as sources
-const targetNodeHandles = computed(() => {
+const targetNodeHandles = $computed(() => {
   if (connectionMode === ConnectionMode.Strict) {
-    return props.targetNode.handleBounds.target
+    return targetNode.handleBounds.target
   }
 
-  const targetBounds = props.targetNode.handleBounds.target
-  const sourceBounds = props.targetNode.handleBounds.source
+  const targetBounds = targetNode.handleBounds.target
+  const sourceBounds = targetNode.handleBounds.source
   return targetBounds ?? sourceBounds
 })
 
-const sourceNodeHandles = computed(() => {
+const sourceNodeHandles = $computed(() => {
   if (connectionMode === ConnectionMode.Strict) {
-    return props.sourceNode.handleBounds.source
+    return sourceNode.handleBounds.source
   }
 
-  const targetBounds = props.sourceNode.handleBounds.target
-  const sourceBounds = props.sourceNode.handleBounds.source
+  const targetBounds = sourceNode.handleBounds.target
+  const sourceBounds = sourceNode.handleBounds.source
   return sourceBounds ?? targetBounds
 })
 
-const sourceHandle = computed(() => getHandle(sourceNodeHandles.value, edge.sourceHandle))
+const sourceHandle = $computed(() => getHandle(sourceNodeHandles, edge.sourceHandle))
 
-const targetHandle = computed(() => getHandle(targetNodeHandles.value, edge.targetHandle))
+const targetHandle = $computed(() => getHandle(targetNodeHandles, edge.targetHandle))
 
-const sourcePosition = controlledComputed(sourceHandle, () =>
-  sourceHandle.value ? sourceHandle.value.position : Position.Bottom,
-)
+const sourcePosition = $(controlledComputed($$(sourceHandle), () => (sourceHandle ? sourceHandle.position : Position.Bottom)))
 
-const targetPosition = controlledComputed(targetHandle, () => (targetHandle.value ? targetHandle.value.position : Position.Top))
+const targetPosition = $(controlledComputed($$(targetHandle), () => (targetHandle ? targetHandle.position : Position.Top)))
+
+onMounted(() => {
+  watch(
+    [
+      sourcePosition,
+      targetPosition,
+      () => sourceNode.position,
+      () => targetNode.position,
+      () => sourceNode.computedPosition,
+      () => targetNode.computedPosition,
+      () => sourceNode.dimensions,
+      () => targetNode.dimensions,
+    ],
+    () => {
+      const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
+        sourceNode,
+        sourceHandle,
+        sourcePosition,
+        targetNode,
+        targetHandle,
+        targetPosition,
+      )
+
+      const edge = getEdge(id)!
+
+      if (edge.sourceX !== sourceX) edge.sourceX = sourceX
+      if (edge.sourceY !== sourceY) edge.sourceY = sourceY
+      if (edge.targetX !== targetX) edge.targetX = targetX
+      if (edge.targetY !== targetY) edge.targetY = targetY
+    },
+    { immediate: true },
+  )
+})
 
 const type = computed(() => {
   let edgeType = edge.template ?? getEdgeTypes[name]
@@ -175,7 +176,7 @@ const getClass = computed(() => {
     {
       selected: edge.selected,
       animated: edge.animated,
-      inactive: !props.selectable,
+      inactive: !selectable,
       updating,
     },
     extraClass,
@@ -203,11 +204,11 @@ export default {
     <component
       :is="type"
       :id="edge.id"
-      :source-node="props.sourceNode"
-      :target-node="props.targetNode"
+      :source-node="sourceNode"
+      :target-node="targetNode"
       :source="edge.source"
       :target="edge.target"
-      :updatable="props.updatable"
+      :updatable="updatable"
       :selected="edge.selected"
       :animated="edge.animated"
       :label="edge.label"
@@ -230,7 +231,7 @@ export default {
       :target-handle-id="edge.targetHandle"
     />
     <g
-      v-if="props.updatable"
+      v-if="updatable"
       @mousedown="onEdgeUpdaterSourceMouseDown"
       @mouseenter="onEdgeUpdaterMouseEnter"
       @mouseout="onEdgeUpdaterMouseOut"
@@ -238,7 +239,7 @@ export default {
       <EdgeAnchor :position="sourcePosition" :center-x="edge.sourceX" :center-y="edge.sourceY" :radius="edgeUpdaterRadius" />
     </g>
     <g
-      v-if="props.updatable"
+      v-if="updatable"
       @mousedown="onEdgeUpdaterTargetMouseDown"
       @mouseenter="onEdgeUpdaterMouseEnter"
       @mouseout="onEdgeUpdaterMouseOut"

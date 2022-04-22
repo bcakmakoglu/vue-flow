@@ -8,11 +8,8 @@ import Fitview from '~/assets/icons/fitview.svg'
 import Lock from '~/assets/icons/lock.svg'
 import Unlock from '~/assets/icons/unlock.svg'
 
-const props = withDefaults(defineProps<ControlProps>(), {
-  showZoom: true,
-  showFitView: true,
-  showInteractive: true,
-})
+const { showZoom = true, showFitView = true, showInteractive = true, fitViewParams } = defineProps<ControlProps>()
+
 const emit = defineEmits<{
   (event: 'zoom-in'): void
   (event: 'zoom-out'): void
@@ -35,7 +32,7 @@ const onZoomOutHandler = () => {
 }
 
 const onFitViewHandler = () => {
-  instance?.fitView(props.fitViewParams)
+  instance?.fitView(fitViewParams)
   emit('fit-view')
 }
 
@@ -51,7 +48,7 @@ export default {
 </script>
 <template>
   <div class="vue-flow__controls">
-    <template v-if="props.showZoom">
+    <template v-if="showZoom">
       <slot name="control-zoom-in">
         <ControlButton class="vue-flow__controls-zoomin" @click="onZoomInHandler">
           <slot name="icon-zoom-in">
@@ -68,14 +65,14 @@ export default {
       </slot>
     </template>
     <slot name="control-fitview">
-      <ControlButton v-if="props.showFitView" class="vue-flow__controls-fitview" @click="onFitViewHandler">
+      <ControlButton v-if="showFitView" class="vue-flow__controls-fitview" @click="onFitViewHandler">
         <slot name="icon-fitview">
           <Fitview />
         </slot>
       </ControlButton>
     </slot>
     <slot name="control-interactive">
-      <ControlButton v-if="props.showInteractive" class="vue-flow__controls-interactive" @click="onInteractiveChangeHandler">
+      <ControlButton v-if="showInteractive" class="vue-flow__controls-interactive" @click="onInteractiveChangeHandler">
         <slot name="icon-unlock">
           <Unlock v-if="isInteractive" />
         </slot>
