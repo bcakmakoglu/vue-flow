@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useZoomPanHelper, useVueFlow } from '../../composables'
-import type { ControlProps, ControlEvents } from '../../types/components'
+import type { ControlProps } from '../../types/components'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from '~/assets/icons/plus.svg'
 import MinusIcon from '~/assets/icons/minus.svg'
@@ -13,7 +13,12 @@ const props = withDefaults(defineProps<ControlProps>(), {
   showFitView: true,
   showInteractive: true,
 })
-const emit = defineEmits<ControlEvents>()
+const emit = defineEmits<{
+  (event: 'zoom-in'): void
+  (event: 'zoom-out'): void
+  (event: 'fit-view'): void
+  (event: 'interaction-change', active: boolean): void
+}>()
 
 const { store } = useVueFlow()
 const { zoomIn, zoomOut, fitView } = useZoomPanHelper()
