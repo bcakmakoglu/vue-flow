@@ -9,8 +9,16 @@ import { FlowHooks, FlowHooksOn } from './hooks'
 import { NodeChange, EdgeChange } from './changes'
 import { StartHandle, HandleType } from './handle'
 
+export type UpdateNodeDimensionsParams = {
+  id: string
+  nodeElement: HTMLDivElement
+  forceUpdate?: boolean
+}
+
+export type UpdateNodePositionsParams = { id?: string; diff?: XYPosition; dragging?: boolean }
+
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
-  /** Event hooks, you can manipulate the triggers on your own peril */
+  /** Event hooks, you can manipulate the triggers at your own peril */
   hooks: FlowHooks
   instance: FlowInstance | null
 
@@ -93,57 +101,83 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   vueFlowVersion: string
 }
 
+export type SetElements = (elements: Elements | ((elements: FlowElements) => Elements), extent?: CoordinateExtent) => void
+export type SetNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
+export type SetEdges = (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
+export type AddNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
+export type AddEdges = (edgesOrConnections: (Edge | Connection)[] | ((edges: GraphEdge[]) => (Edge | Connection)[])) => void
+export type UpdateEdge = (oldEdge: GraphEdge, newConnection: Connection) => GraphEdge | false
+export type SetState = (
+  state:
+    | Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
+    | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
+) => void
+export type UpdateNodePosition = ({ id, diff, dragging }: UpdateNodePositionsParams) => void
+export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
+
 export interface Actions {
   /** parses elements (nodes + edges) and re-sets the state */
-  setElements: (elements: Elements | ((elements: FlowElements) => Elements), extent?: CoordinateExtent) => void
+  setElements: SetElements
   /** parses nodes and re-sets the state */
-  setNodes: (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
+  setNodes: SetNodes
   /** parses edges and re-sets the state */
-  setEdges: (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
+  setEdges: SetEdges
   /** parses nodes and adds to state */
-  addNodes: (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
+  addNodes: AddNodes
   /** parses edges and adds to state */
-  addEdges: (edgesOrConnections: (Edge | Connection)[] | ((edges: GraphEdge[]) => (Edge | Connection)[])) => void
+  addEdges: AddEdges
   /** updates an edge */
-  updateEdge: (oldEdge: GraphEdge, newConnection: Connection) => GraphEdge | false
+  updateEdge: UpdateEdge
+  /** applies default edge change handler */
   applyEdgeChanges: (changes: EdgeChange[]) => GraphEdge[]
+  /** applies default node change handler */
   applyNodeChanges: (changes: NodeChange[]) => GraphNode[]
+  /** manually select elements and add to state */
   addSelectedElements: (elements: FlowElements) => void
+  /** manually select edges and add to state */
   addSelectedEdges: (edges: GraphEdge[]) => void
+  /** manually select nodes and add to state */
   addSelectedNodes: (nodes: GraphNode[]) => void
-  setMinZoom: (zoom: number) => void
-  setMaxZoom: (zoom: number) => void
-  setTranslateExtent: (translateExtent: CoordinateExtent) => void
+  /** unselect all selected elements */
   resetSelectedElements: () => void
+  /** apply min zoom value to d3 */
+  setMinZoom: (zoom: number) => void
+  /** apply max zoom value to d3 */
+  setMaxZoom: (zoom: number) => void
+  /** apply translate extent to d3 */
+  setTranslateExtent: (translateExtent: CoordinateExtent) => void
+  /** enable node interaction (dragging, selecting etc) */
   setInteractive: (isInteractive: boolean) => void
-  setState: (
-    state:
-      | Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
-      | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
-  ) => void
+  /** set new state */
+  setState: SetState
 
-  updateNodePosition: ({ id, diff, dragging }: { id?: string; diff?: XYPosition; dragging?: boolean }) => void
-  updateNodeDimensions: (
-    updates: {
-      id: string
-      nodeElement: HTMLDivElement
-      forceUpdate?: boolean
-    }[],
-  ) => void
+  /** internal position updater, you probably don't want to use this */
+  updateNodePosition: UpdateNodePosition
+  /** internal dimensions' updater, you probably don't want to use this */
+  updateNodeDimensions: UpdateNodeDimensions
+
+  /** reset state to defaults */
   $reset: () => void
 }
 
 export interface Getters {
+  /** returns object containing current edge types */
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
+  /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
   /** filters hidden nodes */
   getNodes: GraphNode[]
   /** filters hidden edges */
   getEdges: GraphEdge[]
+  /** returns a node by id */
   getNode: <Data = ElementData>(id: string) => GraphNode<Data> | undefined
+  /** returns an edge by id */
   getEdge: <Data = ElementData>(id: string) => GraphEdge<Data> | undefined
+  /** returns all currently selected elements */
   getSelectedElements: FlowElements
+  /** returns all currently selected nodes */
   getSelectedNodes: GraphNode[]
+  /** returns all currently selected edges */
   getSelectedEdges: GraphEdge[]
 }
 
