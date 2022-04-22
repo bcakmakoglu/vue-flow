@@ -8,6 +8,8 @@ import type { Connection, OnConnectStartParams } from './connection'
 import type { FlowTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 
+export type MouseTouchEvent = MouseEvent | TouchEvent | PointerEvent
+
 export interface FlowEvents {
   nodesChange: NodeChange[]
   edgesChange: EdgeChange[]
