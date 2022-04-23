@@ -79,7 +79,7 @@ export default () => {
     connectionStartHandle,
     connectionPosition,
     connectionMode,
-    hooks,
+    emits,
     setState,
     getNode,
   } = $(useVueFlow())
@@ -131,7 +131,7 @@ export default () => {
       connectionHandleType: handleType,
     })
 
-    hooks.connectStart.trigger({ event, nodeId, handleId, handleType })
+    emits.connectStart({ event, nodeId, handleId, handleType })
 
     function onMouseMove(event: MouseEvent) {
       connectionPosition.x = event.clientX - containerBounds.left
@@ -173,16 +173,16 @@ export default () => {
         getNode,
       )
 
-      hooks.connectStop.trigger(event)
+      emits.connectStop(event)
 
       const isOwnHandle = connection.source === connection.target
 
       if (isValid && !isOwnHandle) {
-        if (!onEdgeUpdate) hooks.connect.trigger(connection)
+        if (!onEdgeUpdate) emits.connect(connection)
         else onEdgeUpdate(connection)
       }
 
-      hooks.connectEnd.trigger(event)
+      emits.connectEnd(event)
 
       if (elementEdgeUpdaterType) onEdgeUpdateEnd?.()
 
@@ -212,7 +212,7 @@ export default () => {
   ) => {
     if (!connectOnClick) return
     if (!connectionStartHandle) {
-      hooks.connectStart.trigger({ event, nodeId, handleId, handleType })
+      emits.connectStart({ event, nodeId, handleId, handleType })
       setState({ connectionStartHandle: { nodeId, type: handleType, handleId } })
     } else {
       let validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
@@ -241,11 +241,11 @@ export default () => {
 
       const isOwnHandle = connection.source === connection.target
 
-      hooks.connectStop.trigger(event)
+      emits.connectStop(event)
 
-      if (isValid && !isOwnHandle) hooks.connect.trigger(connection)
+      if (isValid && !isOwnHandle) emits.connect(connection)
 
-      hooks.connectEnd.trigger(event)
+      emits.connectEnd(event)
 
       setState({ connectionStartHandle: null })
     }

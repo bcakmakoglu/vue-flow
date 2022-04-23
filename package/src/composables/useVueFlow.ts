@@ -1,6 +1,6 @@
 import { EffectScope } from 'vue'
 import { MaybeRef } from '@vueuse/core'
-import { FlowHooksOn, FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
+import { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
 import useState from '~/store/state'
 import useGetters from '~/store/getters'
@@ -43,10 +43,15 @@ export class Storage {
 
     const actions = useActions(reactiveState, getters)
 
-    const hooksOn: FlowHooksOn = <any>{}
+    const hooksOn = <any>{}
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
-      const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}` as keyof FlowHooksOn
-      hooksOn[name] = h.on as any
+      const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
+      hooksOn[name] = h.on
+    })
+
+    const emits = <any>{}
+    Object.entries(reactiveState.hooks).forEach(([n, h]) => {
+      emits[n] = h.trigger
     })
 
     actions.setState(reactiveState)
@@ -61,6 +66,7 @@ export class Storage {
       ...getters,
       ...actions,
       ...toRefs(reactiveState),
+      emits,
       id,
     }
 

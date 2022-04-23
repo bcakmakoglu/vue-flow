@@ -28,7 +28,7 @@ const {
   noWheelClassName,
   noPanClassName,
   setState,
-  hooks,
+  emits,
 } = $(useVueFlow())
 
 const viewportEl = templateRef<HTMLDivElement>('viewport', null)
@@ -86,7 +86,7 @@ onMounted(() => {
       d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
         setState({ viewport: { x: event.transform.x, y: event.transform.y, zoom: event.transform.k } })
         const flowTransform = eventToFlowTransform(event.transform)
-        hooks.move.trigger({ event, flowTransform })
+        emits.move({ event, flowTransform })
       })
     }
   })
@@ -96,14 +96,14 @@ onMounted(() => {
   d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
     const flowTransform = eventToFlowTransform(event.transform)
     transform = flowTransform
-    hooks.moveStart.trigger({ event, flowTransform })
+    emits.moveStart({ event, flowTransform })
   })
 
   d3Zoom.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
     if (viewChanged(transform, event.transform)) {
       const flowTransform = eventToFlowTransform(event.transform)
       transform = flowTransform
-      hooks.moveEnd.trigger({ event, flowTransform })
+      emits.moveEnd({ event, flowTransform })
     }
   })
 
