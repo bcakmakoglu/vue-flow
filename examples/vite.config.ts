@@ -14,7 +14,7 @@ export default defineConfig({
   },
   plugins: [
     vue({
-      reactivityTransform: true,
+      reactivityTransform: './src/',
     }),
     vueTypes(),
     svgLoader(),

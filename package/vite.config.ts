@@ -13,11 +13,9 @@ export default defineConfig({
     alias: {
       '~': resolve('src'),
     },
-    dedupe: ['vue'],
     extensions: ['.ts', '.vue'],
   },
   build: {
-    minify: 'esbuild',
     emptyOutDir: false,
     lib: {
       formats: ['es', 'cjs', 'iife'],

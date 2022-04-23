@@ -10,13 +10,16 @@ import MarkerDefinitions from './MarkerDefinitions.vue'
 const slots = inject(Slots)
 
 const {
+  onPaneReady,
   connectionNodeId,
   nodesConnectable,
   connectionHandleType,
   defaultMarkerColor,
   edgesUpdatable,
   elementsSelectable,
+  getSelectedNodes,
   getNode,
+  getNodes,
   getEdges,
   getEdgeTypes,
 } = $(useVueFlow())
@@ -44,11 +47,22 @@ const connectionLineVisible = $(
   ),
 )
 
-const getNodeWrapped = (node: string) => getNode(node)!
+let groups = $ref<ReturnType<typeof groupEdgesByZLevel>>([])
 
-const groups = computed(() => groupEdgesByZLevel(getEdges, getNodeWrapped))
+onPaneReady(() => {
+  watch(
+    [$$(getSelectedNodes), $$(getEdges), $$(getNodes)],
+    () => {
+      nextTick(() => (groups = groupEdgesByZLevel(getEdges, getNode)))
+    },
+    {
+      flush: 'post',
+      immediate: true,
+    },
+  )
+})
 
-const getType = $computed(() => (edge: GraphEdge) => {
+const getType = (edge: GraphEdge) => {
   const name = edge.type || 'default'
   let edgeType = edge.template ?? getEdgeTypes[name]
   const instance = getCurrentInstance()
@@ -70,7 +84,7 @@ const getType = $computed(() => (edge: GraphEdge) => {
   }
 
   return slot
-})
+}
 </script>
 <script lang="ts">
 export default {
@@ -88,8 +102,6 @@ export default {
         :edge="edge"
         :name="getType(edge) ? edge.type ?? 'default' : 'default'"
         :type="getType(edge)"
-        :source-node="getNodeWrapped(edge.source)"
-        :target-node="getNodeWrapped(edge.target)"
         :selectable="typeof edge.selectable === 'undefined' ? elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? edgesUpdatable : edge.updatable"
       />
