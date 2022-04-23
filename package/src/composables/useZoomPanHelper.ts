@@ -29,12 +29,23 @@ const untilDimensions = async (dimensions: Dimensions, getNodes: Getters['getNod
 }
 
 export default (): ViewportFuncs => {
-  const { hooks, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid, getNodes } =
-    $(useVueFlow())
+  const {
+    onPaneReady,
+    d3Zoom,
+    d3Selection,
+    dimensions,
+    translateExtent,
+    minZoom,
+    maxZoom,
+    viewport,
+    snapToGrid,
+    snapGrid,
+    getNodes,
+  } = $(useVueFlow())
 
   let hasDimensions = $ref(false)
 
-  hooks.paneReady.on(() => (hasDimensions = true))
+  onPaneReady(() => (hasDimensions = true))
 
   const zoomTo: ViewportFuncs['zoomTo'] = async (zoomLevel, options) => {
     if (!hasDimensions) await untilDimensions(dimensions, getNodes)

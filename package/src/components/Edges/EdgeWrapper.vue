@@ -18,7 +18,7 @@ interface EdgeWrapper {
 
 const { id, edge, name, sourceNode, targetNode, selectable, updatable, type } = defineProps<EdgeWrapper>()
 
-const { hooks, connectionMode, edgeUpdaterRadius, noPanClassName, setState, getEdge, addSelectedEdges } = $(useVueFlow())
+const { emits, connectionMode, edgeUpdaterRadius, noPanClassName, setState, getEdge, addSelectedEdges } = $(useVueFlow())
 
 let updating = $ref(false)
 
@@ -33,18 +33,18 @@ const onEdgeClick = (event: MouseEvent) => {
 
     addSelectedEdges([edge])
   }
-  hooks.edgeClick.trigger(data)
+  emits.edgeClick(data)
 }
 
-const onEdgeContextMenu = (event: MouseEvent) => hooks.edgeContextMenu.trigger({ event, edge })
+const onEdgeContextMenu = (event: MouseEvent) => emits.edgeContextMenu({ event, edge })
 
-const onDoubleClick = (event: MouseEvent) => hooks.edgeDoubleClick.trigger({ event, edge })
+const onDoubleClick = (event: MouseEvent) => emits.edgeDoubleClick({ event, edge })
 
-const onEdgeMouseEnter = (event: MouseEvent) => hooks.edgeMouseEnter.trigger({ event, edge })
+const onEdgeMouseEnter = (event: MouseEvent) => emits.edgeMouseEnter({ event, edge })
 
-const onEdgeMouseMove = (event: MouseEvent) => hooks.edgeMouseMove.trigger({ event, edge })
+const onEdgeMouseMove = (event: MouseEvent) => emits.edgeMouseMove({ event, edge })
 
-const onEdgeMouseLeave = (event: MouseEvent) => hooks.edgeMouseLeave.trigger({ event, edge })
+const onEdgeMouseLeave = (event: MouseEvent) => emits.edgeMouseLeave({ event, edge })
 
 const onEdgeUpdaterMouseEnter = () => (updating = true)
 
@@ -58,7 +58,7 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   const nodeId = isSourceHandle ? edge.target : edge.source
   const handleId = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
 
-  hooks.edgeUpdateStart.trigger({ event, edge })
+  emits.edgeUpdateStart({ event, edge })
 
   onMouseDown(
     event,
@@ -67,8 +67,8 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
     isSourceHandle,
     undefined,
     isSourceHandle ? 'target' : 'source',
-    (connection) => hooks.edgeUpdate.trigger({ edge, connection }),
-    () => hooks.edgeUpdateEnd.trigger({ event, edge }),
+    (connection) => emits.edgeUpdate({ edge, connection }),
+    () => emits.edgeUpdateEnd({ event, edge }),
   )
 }
 

@@ -14,7 +14,7 @@ const {
   },
 } = defineProps<HandleProps>()
 
-const { hooks, connectionStartHandle, connectionMode } = $(useVueFlow())
+const { connectionStartHandle, connectionMode } = $(useVueFlow())
 
 const nodeId = inject(NodeId, '')
 

@@ -26,7 +26,7 @@ const {
   viewport,
   noDragClassName,
   noPanClassName,
-  hooks,
+  emits,
   selectNodesOnDrag,
   setState,
   updateNodePosition,
@@ -134,30 +134,30 @@ onUnmounted(() => {
 
 const onMouseEnter = (event: MouseEvent) => {
   if (!node.dragging) {
-    hooks.nodeMouseEnter.trigger({ event, node })
+    emits.nodeMouseEnter({ event, node })
   }
 }
 
 const onMouseMove = (event: MouseEvent) => {
   if (!node.dragging) {
-    hooks.nodeMouseMove.trigger({ event, node })
+    emits.nodeMouseMove({ event, node })
   }
 }
 
 const onMouseLeave = (event: MouseEvent) => {
   if (!node.dragging) {
-    hooks.nodeMouseLeave.trigger({ event, node })
+    emits.nodeMouseLeave({ event, node })
   }
 }
 
 const onContextMenu = (event: MouseEvent) => {
-  hooks.nodeContextMenu.trigger({
+  emits.nodeContextMenu({
     event,
     node,
   })
 }
 
-const onDoubleClick = (event: MouseEvent) => hooks.nodeDoubleClick.trigger({ event, node })
+const onDoubleClick = (event: MouseEvent) => emits.nodeDoubleClick({ event, node })
 
 const onSelectNode = (event: MouseEvent) => {
   if (!draggable) {
@@ -168,13 +168,13 @@ const onSelectNode = (event: MouseEvent) => {
 
       if (!node.selected) addSelectedNodes([node])
     }
-    hooks.nodeClick.trigger({ event, node })
+    emits.nodeClick({ event, node })
   }
 }
 
 onDragStart(({ event }) => {
   addSelectedNodes([])
-  hooks.nodeDragStart.trigger({ event, node })
+  emits.nodeDragStart({ event, node })
 
   if (selectNodesOnDrag && selectable) {
     setState({
@@ -193,7 +193,7 @@ onDragStart(({ event }) => {
 
 onDrag(({ event, data: { deltaX, deltaY } }) => {
   updateNodePosition({ id: node.id, diff: { x: deltaX, y: deltaY }, dragging: true })
-  hooks.nodeDrag.trigger({ event, node })
+  emits.nodeDrag({ event, node })
 })
 
 onDragStop(({ event, data: { deltaX, deltaY } }) => {
@@ -203,11 +203,11 @@ onDragStop(({ event, data: { deltaX, deltaY } }) => {
     if (selectable && !selectNodesOnDrag && !node.selected) {
       addSelectedNodes([node])
     }
-    hooks.nodeClick.trigger({ event, node })
+    emits.nodeClick({ event, node })
     return
   }
   updateNodePosition({ id: node.id, diff: { x: deltaX, y: deltaY }, dragging: false })
-  hooks.nodeDragStop.trigger({ event, node })
+  emits.nodeDragStop({ event, node })
 })
 
 const getClass = computed(() => {
