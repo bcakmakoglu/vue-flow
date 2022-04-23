@@ -104,9 +104,7 @@ onMounted(() => {
   onBeforeUnmount(() => observer.stop())
 
   updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value, forceUpdate: true }])
-})
 
-onMounted(() => {
   watch(
     [() => node.position, () => parent?.computedPosition, () => node.selected, () => parent?.selected],
     ([pos, parent]) => {

@@ -146,9 +146,9 @@ export const createSelectionChange = (id: string, selected: boolean): NodeSelect
 
 export const createPositionChange = (
   { node, diff, dragging, nodeExtent }: CreatePositionChangeParams,
-  curr: GraphNode[],
+  getNode: Getters['getNode'],
 ): NodePositionChange => {
-  const parent = node.parentNode ? curr.find((el) => el.id === node.parentNode) : undefined
+  const parent = node.parentNode ? getNode(node.parentNode) : undefined
   const change: NodePositionChange = {
     id: node.id,
     type: 'position',
