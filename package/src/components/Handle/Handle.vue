@@ -63,13 +63,6 @@ export default {
     @mousedown="onMouseDownHandler"
     @click="onClickHandler"
   >
-    <slot
-      :id="id"
-      :node-id="nodeId"
-      :type="type"
-      :position="position"
-      :connectable="connectable"
-      :is-valid-connection="isValidConnection"
-    />
+    <slot :id="id" />
   </div>
 </template>
