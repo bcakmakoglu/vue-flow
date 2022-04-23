@@ -2,7 +2,7 @@
 import { CSSProperties } from 'vue'
 import { useHandle, useVueFlow } from '../../composables'
 import { ConnectionMode, EdgeComponent, GraphEdge, Position } from '../../types'
-import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
+import { connectionExists, getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
 
 interface EdgeWrapper {
@@ -16,12 +16,14 @@ interface EdgeWrapper {
 
 const { id, edge, name, selectable, updatable, type } = defineProps<EdgeWrapper>()
 
-const { emits, connectionMode, edgeUpdaterRadius, noPanClassName, setState, getEdge, getNode, addSelectedEdges } = $(useVueFlow())
+const { emits, connectionMode, edgeUpdaterRadius, noPanClassName, setState, getEdges, getEdge, getNode, addSelectedEdges } = $(
+  useVueFlow(),
+)
 
 let updating = $ref(false)
 
-const sourceNode = $computed(() => getNode(edge.source)!)
-const targetNode = $computed(() => getNode(edge.target)!)
+const sourceNode = $computed(() => getNode(edge.source))
+const targetNode = $computed(() => getNode(edge.target))
 
 const { onMouseDown } = useHandle()
 
@@ -68,46 +70,38 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
     isSourceHandle,
     undefined,
     isSourceHandle ? 'target' : 'source',
-    (connection) => emits.edgeUpdate({ edge, connection }),
+    (connection) => {
+      if (!connectionExists(edge, getEdges)) emits.edgeUpdate({ edge, connection })
+    },
     () => emits.edgeUpdateEnd({ event, edge }),
   )
 }
 
-const sourceHandle = $(
-  controlledComputed(
-    () => sourceNode,
-    () => {
-      if (!sourceNode) return
+const sourceHandle = $computed(() => {
+  if (!sourceNode) return
 
-      let sourceNodeHandles
-      if (connectionMode === ConnectionMode.Strict) {
-        sourceNodeHandles = sourceNode.handleBounds.source
-      } else {
-        sourceNodeHandles = sourceNode.handleBounds.source ?? sourceNode.handleBounds.target
-      }
+  let sourceNodeHandles
+  if (connectionMode === ConnectionMode.Strict) {
+    sourceNodeHandles = sourceNode.handleBounds.source
+  } else {
+    sourceNodeHandles = sourceNode.handleBounds.source ?? sourceNode.handleBounds.target
+  }
 
-      return getHandle(sourceNodeHandles, edge.sourceHandle)
-    },
-  ),
-)
+  return getHandle(sourceNodeHandles, edge.sourceHandle)
+})
 
-const targetHandle = $(
-  controlledComputed(
-    () => targetNode,
-    () => {
-      if (!targetNode) return
+const targetHandle = $computed(() => {
+  if (!targetNode) return
 
-      let targetNodeHandles
-      if (connectionMode === ConnectionMode.Strict) {
-        targetNodeHandles = targetNode.handleBounds.target
-      } else {
-        targetNodeHandles = targetNode.handleBounds.target ?? targetNode.handleBounds.source
-      }
+  let targetNodeHandles
+  if (connectionMode === ConnectionMode.Strict) {
+    targetNodeHandles = targetNode.handleBounds.target
+  } else {
+    targetNodeHandles = targetNode.handleBounds.target ?? targetNode.handleBounds.source
+  }
 
-      return getHandle(targetNodeHandles, edge.targetHandle)
-    },
-  ),
-)
+  return getHandle(targetNodeHandles, edge.targetHandle)
+})
 
 const sourcePosition = $(controlledComputed($$(sourceHandle), () => (sourceHandle ? sourceHandle.position : Position.Bottom)))
 
@@ -118,26 +112,30 @@ onMounted(() => {
     [
       $$(sourcePosition),
       $$(targetPosition),
-      () => sourceNode.computedPosition,
-      () => targetNode.computedPosition,
-      () => sourceNode.dimensions,
-      () => targetNode.dimensions,
+      () => sourceNode?.computedPosition,
+      () => targetNode?.computedPosition,
+      () => sourceNode?.dimensions,
+      () => targetNode?.dimensions,
     ],
     () => {
-      const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-        sourceNode,
-        sourceHandle,
-        sourcePosition,
-        targetNode,
-        targetHandle,
-        targetPosition,
-      )
+      if (sourceNode && targetNode) {
+        const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
+          sourceNode,
+          sourceHandle,
+          sourcePosition,
+          targetNode,
+          targetHandle,
+          targetPosition,
+        )
 
-      const storedEdge = getEdge(id)!
-      if (edge.sourceX !== sourceX) storedEdge.sourceX = sourceX
-      if (edge.sourceY !== sourceY) storedEdge.sourceY = sourceY
-      if (edge.targetX !== targetX) storedEdge.targetX = targetX
-      if (edge.targetY !== targetY) storedEdge.targetY = targetY
+        const storedEdge = getEdge(id)!
+        if (storedEdge) {
+          if (edge.sourceX !== sourceX) storedEdge.sourceX = sourceX
+          if (edge.sourceY !== sourceY) storedEdge.sourceY = sourceY
+          if (edge.targetX !== targetX) storedEdge.targetX = targetX
+          if (edge.targetY !== targetY) storedEdge.targetY = targetY
+        }
+      }
     },
     { immediate: true, flush: 'pre' },
   )

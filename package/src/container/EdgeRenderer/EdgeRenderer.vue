@@ -75,7 +75,7 @@ const getType = (edge: GraphEdge) => {
       }
     }
   }
-  if (typeof edgeType !== 'string') return edgeType
+  if (edgeType && typeof edgeType !== 'string') return edgeType
 
   const slot = slots?.[`edge-${name}`]
   if (!slot?.({})) {
