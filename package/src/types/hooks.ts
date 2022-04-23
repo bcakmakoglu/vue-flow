@@ -1,4 +1,4 @@
-import { EventHook, EventHookOn } from '@vueuse/core'
+import { EventHook, EventHookOn, EventHookTrigger } from '@vueuse/core'
 import { MouseTouchEvent } from '@braks/revue-draggable'
 import { D3ZoomEvent } from 'd3-zoom'
 import { FlowInstance } from './flow'
@@ -50,11 +50,16 @@ export interface FlowEvents {
   edgeUpdateEnd: { event: MouseEvent; edge: GraphEdge }
 }
 
-export type FlowHooks = {
+export type FlowHooks = Readonly<{
   [key in keyof FlowEvents]: EventHook<FlowEvents[key]>
-}
-export type FlowHooksOn = {
+}>
+
+export type FlowHooksOn = Readonly<{
   [key in keyof FlowEvents as `on${Capitalize<key>}`]: EventHookOn<FlowEvents[key]>
-}
+}>
+
+export type FlowHooksEmit = Readonly<{
+  [key in keyof FlowEvents]: EventHookTrigger<FlowEvents[key]>
+}>
 
 export type EmitFunc = (name: keyof FlowHooks, ...args: FlowEvents[keyof FlowEvents][]) => void

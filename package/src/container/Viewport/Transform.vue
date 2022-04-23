@@ -5,7 +5,7 @@ import { useVueFlow, useZoomPanHelper, useWindow } from '../../composables'
 import { Dimensions, FlowExportObject, FlowInstance, XYPosition } from '../../types'
 import { pointToRendererPoint } from '../../utils'
 
-const { id, nodes, edges, viewport, snapToGrid, snapGrid, dimensions, setState, fitViewOnInit, hooks } = $(useVueFlow())
+const { id, nodes, edges, viewport, snapToGrid, snapGrid, dimensions, setState, fitViewOnInit, emits } = $(useVueFlow())
 
 const untilDimensions = async (dim: Dimensions) => {
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -65,7 +65,7 @@ onMounted(async () => {
   })
 
   fitViewOnInit && instance.fitView()
-  hooks.paneReady.trigger(instance)
+  emits.paneReady(instance)
 })
 
 const transform = computed(() => `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})`)

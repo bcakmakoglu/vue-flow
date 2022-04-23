@@ -5,7 +5,7 @@ import { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
-import { FlowHooks, FlowHooksOn } from './hooks'
+import { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import { NodeChange, EdgeChange } from './changes'
 import { StartHandle, HandleType } from './handle'
 
@@ -19,29 +19,32 @@ export type UpdateNodePositionsParams = { id?: string; diff?: XYPosition; draggi
 
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** Event hooks, you can manipulate the triggers at your own peril */
-  hooks: FlowHooks
-  instance: FlowInstance | null
+  readonly hooks: FlowHooks
+  readonly instance: FlowInstance | null
 
   /** all stored nodes */
   nodes: GraphNode[]
   /** all stored edges */
   edges: GraphEdge[]
 
-  d3Zoom: D3Zoom | null
-  d3Selection: D3Selection | null
-  d3ZoomHandler: D3ZoomHandler | null
+  readonly d3Zoom: D3Zoom | null
+  readonly d3Selection: D3Selection | null
+  readonly d3ZoomHandler: D3ZoomHandler | null
 
+  /** use setMinZoom action to change minZoom */
   minZoom: number
+  /** use setMaxZoom action to change maxZoom */
   maxZoom: number
   defaultZoom: number
+  /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent
 
-  /** viewport dimensions */
-  dimensions: Dimensions
-  /** viewport transform x, y, z */
-  viewport: Viewport
-
+  /** viewport dimensions - do not change! */
+  readonly dimensions: Dimensions
+  /** viewport transform x, y, z - do not change!  */
+  readonly viewport: Viewport
+  /** if true will skip rendering any elements currently not inside viewport until they become visible */
   onlyRenderVisibleElements: boolean
   defaultPosition: [number, number]
 
@@ -98,7 +101,8 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
 
   defaultEdgeOptions?: DefaultEdgeOptions
 
-  vueFlowVersion: string
+  /** current vue flow version you're using */
+  readonly vueFlowVersion: string
 }
 
 export type SetElements = (elements: Elements | ((elements: FlowElements) => Elements), extent?: CoordinateExtent) => void
@@ -146,7 +150,7 @@ export interface Actions {
   setMaxZoom: (zoom: number) => void
   /** apply translate extent to d3 */
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
-  /** enable node interaction (dragging, selecting etc) */
+  /** enable/disable node interaction (dragging, selecting etc) */
   setInteractive: (isInteractive: boolean) => void
   /** set new state */
   setState: SetState
@@ -186,8 +190,9 @@ export type ComputedGetters = {
 }
 
 export type VueFlowStore = {
-  id: string
+  readonly id: string
+  readonly emits: FlowHooksEmit
 } & FlowHooksOn &
   ToRefs<State> &
-  ComputedGetters &
-  Actions
+  Readonly<ComputedGetters> &
+  Readonly<Actions>

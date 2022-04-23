@@ -11,7 +11,7 @@ const {
   deleteKeyCode,
   selectionKeyCode,
   multiSelectionKeyCode,
-  hooks,
+  emits,
   nodesSelectionActive,
   userSelectionActive,
   elementsSelectable,
@@ -22,16 +22,16 @@ const {
 } = $(useVueFlow())
 
 const onClick = (event: MouseEvent) => {
-  hooks.paneClick.trigger(event)
+  emits.paneClick(event)
   setState({
     nodesSelectionActive: false,
   })
   resetSelectedElements()
 }
 
-const onContextMenu = (event: MouseEvent) => hooks.paneContextMenu.trigger(event)
+const onContextMenu = (event: MouseEvent) => emits.paneContextMenu(event)
 
-const onWheel = (event: WheelEvent) => hooks.paneScroll.trigger(event)
+const onWheel = (event: WheelEvent) => emits.paneScroll(event)
 
 useKeyPress($$(deleteKeyCode), (keyPressed) => {
   const selectedNodes = getSelectedNodes
@@ -45,8 +45,8 @@ useKeyPress($$(deleteKeyCode), (keyPressed) => {
       type: 'remove',
     }))
 
-    hooks.nodesChange.trigger(nodeChanges)
-    hooks.edgesChange.trigger(edgeChanges)
+    emits.nodesChange(nodeChanges)
+    emits.edgesChange(edgeChanges)
 
     setState({
       nodesSelectionActive: false,

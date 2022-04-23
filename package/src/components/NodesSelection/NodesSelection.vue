@@ -3,7 +3,7 @@ import { useDraggableCore } from '@braks/revue-draggable'
 import { useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 
-const { hooks, setState, viewport, getSelectedNodes, snapToGrid, snapGrid, updateNodePosition, noPanClassName } = $(useVueFlow())
+const { emits, setState, viewport, getSelectedNodes, snapToGrid, snapGrid, updateNodePosition, noPanClassName } = $(useVueFlow())
 
 const el = templateRef<HTMLDivElement>('el', null)
 
@@ -24,7 +24,7 @@ watch($$(selectedNodesBBox), (v) => {
   })
 })
 
-const onContextMenu = (event: MouseEvent) => hooks.selectionContextMenu.trigger({ event, nodes: getSelectedNodes })
+const onContextMenu = (event: MouseEvent) => emits.selectionContextMenu({ event, nodes: getSelectedNodes })
 
 const { onDragStart, onDrag, onDragStop, scale } = useDraggableCore(el, {
   grid: snapToGrid ? snapGrid : undefined,
@@ -42,15 +42,15 @@ onMounted(() => {
   )
 })
 
-onDragStart(({ event }) => hooks.selectionDragStart.trigger({ event, nodes: getSelectedNodes }))
+onDragStart(({ event }) => emits.selectionDragStart({ event, nodes: getSelectedNodes }))
 
 onDrag(({ event, data: { deltaX, deltaY } }) => {
-  hooks.selectionDrag.trigger({ event, nodes: getSelectedNodes })
+  emits.selectionDrag({ event, nodes: getSelectedNodes })
   updateNodePosition({ diff: { x: deltaX, y: deltaY }, dragging: true })
 })
 
 onDragStop(({ event }) => {
-  hooks.selectionDragStop.trigger({ event, nodes: getSelectedNodes })
+  emits.selectionDragStop({ event, nodes: getSelectedNodes })
   getSelectedNodes.forEach((node) => (node.dragging = false))
 })
 </script>
