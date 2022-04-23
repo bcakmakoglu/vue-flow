@@ -23,31 +23,29 @@ const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectab
 const connectable = (c?: boolean) => (typeof c === 'undefined' ? nodesConnectable : c)
 const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid ? snapGrid : undefined)
 
-const getType = $computed(() => {
-  return (node: GraphNode) => {
-    const name = node.type || 'default'
-    let nodeType = node.template ?? getNodeTypes[name]
-    const instance = getCurrentInstance()
+const getType = (node: GraphNode) => {
+  const name = node.type || 'default'
+  let nodeType = node.template ?? getNodeTypes[name]
+  const instance = getCurrentInstance()
 
-    if (typeof nodeType === 'string') {
-      if (instance) {
-        const components = Object.keys(instance.appContext.components)
-        if (components && components.includes(name)) {
-          nodeType = resolveComponent(name, false) as NodeComponent
-        }
+  if (typeof nodeType === 'string') {
+    if (instance) {
+      const components = Object.keys(instance.appContext.components)
+      if (components && components.includes(name)) {
+        nodeType = resolveComponent(name, false) as NodeComponent
       }
     }
-    if (typeof nodeType !== 'string') return nodeType
-
-    const slot = slots?.[`node-${name}`]
-    if (!slot?.({})) {
-      console.warn(`[vueflow]: Node type "${node.type}" not found and no node-slot detected. Using fallback type "default".`)
-      return false
-    }
-
-    return slot
   }
-})
+  if (typeof nodeType !== 'string') return nodeType
+
+  const slot = slots?.[`node-${name}`]
+  if (!slot?.({})) {
+    console.warn(`[vueflow]: Node type "${node.type}" not found and no node-slot detected. Using fallback type "default".`)
+    return false
+  }
+
+  return slot
+}
 </script>
 <script lang="ts">
 export default {

@@ -1,26 +1,27 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, EdgeComponent, GraphEdge, GraphNode, Position } from '../../types'
+import { ConnectionMode, EdgeComponent, GraphEdge, Position } from '../../types'
 import { getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
 
 interface EdgeWrapper {
   id: string
   edge: GraphEdge
-  sourceNode: GraphNode
-  targetNode: GraphNode
   selectable?: boolean
   updatable?: boolean
   type: EdgeComponent | Function | Object | false
   name: string
 }
 
-const { id, edge, name, sourceNode, targetNode, selectable, updatable, type } = defineProps<EdgeWrapper>()
+const { id, edge, name, selectable, updatable, type } = defineProps<EdgeWrapper>()
 
-const { emits, connectionMode, edgeUpdaterRadius, noPanClassName, setState, getEdge, addSelectedEdges } = $(useVueFlow())
+const { emits, connectionMode, edgeUpdaterRadius, noPanClassName, setState, getEdge, getNode, addSelectedEdges } = $(useVueFlow())
 
 let updating = $ref(false)
+
+const sourceNode = $computed(() => getNode(edge.source)!)
+const targetNode = $computed(() => getNode(edge.target)!)
 
 const { onMouseDown } = useHandle()
 
@@ -72,34 +73,48 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
   )
 }
 
-const sourceHandle = $computed(() => {
-  let sourceNodeHandles
-  if (connectionMode === ConnectionMode.Strict) {
-    sourceNodeHandles = sourceNode.handleBounds.source
-  } else {
-    sourceNodeHandles = sourceNode.handleBounds.source ?? sourceNode.handleBounds.target
-  }
+const sourceHandle = $(
+  controlledComputed(
+    () => sourceNode,
+    () => {
+      if (!sourceNode) return
 
-  return getHandle(sourceNodeHandles, edge.sourceHandle)
-})
+      let sourceNodeHandles
+      if (connectionMode === ConnectionMode.Strict) {
+        sourceNodeHandles = sourceNode.handleBounds.source
+      } else {
+        sourceNodeHandles = sourceNode.handleBounds.source ?? sourceNode.handleBounds.target
+      }
 
-const targetHandle = $computed(() => {
-  let targetNodeHandles
-  if (connectionMode === ConnectionMode.Strict) {
-    targetNodeHandles = targetNode.handleBounds.target
-  } else {
-    targetNodeHandles = targetNode.handleBounds.target ?? targetNode.handleBounds.source
-  }
+      return getHandle(sourceNodeHandles, edge.sourceHandle)
+    },
+  ),
+)
 
-  return getHandle(targetNodeHandles, edge.targetHandle)
-})
+const targetHandle = $(
+  controlledComputed(
+    () => targetNode,
+    () => {
+      if (!targetNode) return
+
+      let targetNodeHandles
+      if (connectionMode === ConnectionMode.Strict) {
+        targetNodeHandles = targetNode.handleBounds.target
+      } else {
+        targetNodeHandles = targetNode.handleBounds.target ?? targetNode.handleBounds.source
+      }
+
+      return getHandle(targetNodeHandles, edge.targetHandle)
+    },
+  ),
+)
 
 const sourcePosition = $(controlledComputed($$(sourceHandle), () => (sourceHandle ? sourceHandle.position : Position.Bottom)))
 
 const targetPosition = $(controlledComputed($$(targetHandle), () => (targetHandle ? targetHandle.position : Position.Top)))
 
 onMounted(() => {
-  watch(
+  const stop = watch(
     [
       $$(sourcePosition),
       $$(targetPosition),
@@ -124,8 +139,10 @@ onMounted(() => {
       if (edge.targetX !== targetX) storedEdge.targetX = targetX
       if (edge.targetY !== targetY) storedEdge.targetY = targetY
     },
-    { immediate: true, flush: 'post' },
+    { immediate: true, flush: 'pre' },
   )
+
+  onBeforeUnmount(() => stop())
 })
 
 const getClass = () => {

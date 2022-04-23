@@ -84,7 +84,7 @@ export interface Edge<Data = ElementData> extends BaseElement<Data> {
 export type DefaultEdgeOptions = Omit<
   Edge,
   'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle' | 'sourceNode' | 'targetNode'
->
+  >
 
 export interface EdgePositions {
   sourceX: number
