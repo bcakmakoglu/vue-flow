@@ -6,6 +6,77 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
+- Use scaleBy instead of scaleTo for zoom ([fa23617](fa23617ff12c14a6a2f8614632cc775082642516))
+- Dispose effects on unmount ([ad07b5b](ad07b5b6ead909f686e248c29e8b5c147d8dd96c))
+- Watcher not re-binding when initialized with empty arr ([f69118e](f69118e2651c7d2f552569b168180586019009db))
+- Add draggable watchers ([4eb7754](4eb775477fdcfdc1e0c7594caf3dd3b56e5ef036))
+- Use label content as inner html ([14ef119](14ef119a953da1f4f9c96ba121e4d2a9e9e5f450))
+- Missing mouseevent on minimap node click ([c6840a3](c6840a31ad333898a63a609eef98dd4530b0af54))
+- Cancel edge update if connection exists ([9cc7806](9cc7806972d2c0f738027f7ecbca913c8418b7d2))
+- Ensure scope dispose is run ([c4f9b2c](c4f9b2c780b074b2febaf426f1754bd61dcf681c))
+
+### Features
+
+- Add emits property to store ([f5d2453](f5d245322b74c5a861c524c9e5041e2d925735d6))
+
+### Miscellaneous Tasks
+
+- Flush watcher on post hook ([4e3f454](4e3f4541a18733f65ef949c7d2d1b1b99bb19843))
+- Remove control events type ([b06ef3f](b06ef3f9abac1044030dd9b3b84cd3f822a60a13))
+- Performance optimizations ([b6d8b57](b6d8b57859adba781f8a391e515560a911a743f9))
+- Remove casting node/edge to null on unmount ([0519bd0](0519bd0f2586efc35f2aefe7aa33124ec7efc7d3))
+- Remove log ([4c86e3e](4c86e3e2bbea879390b39408726a229a0dfabd17))
+- Remove unused attrs ([2157020](21570209d87d232fa8295d7ea42412d1b971e9cd))
+- Disable inheriting attrs ([cd85eb1](cd85eb1842e4f5b6578e4d5eaeb5d07963640b95))
+- Shorten exports ([7e80033](7e80033080ac8792846383d194c25657df0fe67b))
+- Cb event type ([73beef8](73beef8079ac0208dd953215a8f8b8ade7da35ed))
+- Reorganize nodewrapper ([869d88c](869d88cdcf612743c571987f3183535ed0833320))
+- Reorganize edgewrapper ([3bc972a](3bc972a1d134b3652737be553d7d424087046a18))
+- Update tsconfig ([5ce711e](5ce711e6d9018b3dc903942aa7c0ffb60915851b))
+- Correct watcher ([6d1fb96](6d1fb963b3adfd78acfc4202b8a337a25abe840d))
+- Update auto imports ([19bc4fd](19bc4fda240b16c2dbc7179f93ec1d49df5c817c))
+- Update README.md ([aaccbb4](aaccbb4b3e4c2f60f96a373a285b531d2dccc860))
+- Move changelog update to postrelease ([18f0d2f](18f0d2f1ce42a7aec0752852780831c5613bae7d))
+
+### Refactor
+
+- Accept maybe refs as options for usevueflow ([04fcd08](04fcd082d1ef856407648b2e9c35b653705a4ecd))
+- Directly bind instance functions ([7ff48b8](7ff48b8dfa2d7fbf561674acc5af9ef0037fbdf2))
+- Controlled computed in minimap ([6c2c7c4](6c2c7c4fd4c8518c6c1b1ad2fc94f135a70dbf63))
+- Change base edge to functional component ([f1bbed1](f1bbed1751f2d41ce742b343ca99e06612eafae2))
+- Remove base edge from default edge types ([7f54d3a](7f54d3a38e6809214ad107e6691456bf7e5038cf))
+- Change defaults to functional components ([8d33014](8d33014291aa5c15bd7f72e7dcd6797eb51301ee))
+- Change minimap nodes to functional components ([f5174eb](f5174ebe10dd91008820c05e7e67dc7d6d6f3c2f))
+- Use reactivity transform and remove store property ([e722f49](e722f49e6e5e4bb74d858aa2e3b02f18c554c126))
+- Destructure props with reactivity transform ([dc1d71d](dc1d71d0bd1324ca9b2adfa6143e2fbb007718eb))
+- Re-set nodes arr on addNodes ([cf7a8ec](cf7a8ec6d9cc9869ed97753373f245fff7376e54))
+- Pass type component as prop ([b6848e3](b6848e37c88ab722f9de06da050572cca510d6c6))
+- Defer grouping to next tick ([e2fd3b4](e2fd3b44efb64f5329687ca06eab9396b965002e))
+- Minimize position change loops ([0becad7](0becad73ad7ceea67cc445cf72c9ef86bec23a9e))
+- Remove scoped slot props from handles ([1b97109](1b97109b94d81d466513ef42ac8297ff996b6e25))
+
+### Testing
+
+- Update tests to work with removed store property ([2918b68](2918b689fed4b64c5d618071401d3ab705c0b7fc))
+
+### Examples
+
+- Add initial class to basic ([bb30db7](bb30db7c08708672e7981736c505a1f27ea3a688))
+
+### Regression
+
+- Reassign keys ([4e73c5b](4e73c5b2fb48d85173e4c51e11dc9fb647b10279))
+
+### Update
+
+- Add explicit action types ([0b23112](0b231124623b2eca03e16ea9bfa8acff8855fef5))
+
+## [0.4.7] - 2022-04-21
+
+[8f4d1b3](8f4d1b3beb63a86822e846aa7773672baab8dc50)...[233d585](233d585a92ac68b6b55202926a0893aa8acac9e7)
+
+### Bug Fixes
+
 - Selection not working twice in a row ([ec0f3ef](ec0f3ef0e428cceafc63da9523128f34aeb46d48))
 - Import paths ([1e23893](1e23893e585a13780d7f95ec1255031da5df3643))
 - Replace watchDebounced with debouncedWatch ([2d7e2a7](2d7e2a710fafae6f15cc3d0513782a66dcc99a4e))
