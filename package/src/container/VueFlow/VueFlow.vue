@@ -32,12 +32,20 @@ const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const { id, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow()
+const { id, hooks, getNodeTypes, getEdgeTypes, $reset, ...rest } = useVueFlow({ id: props.id })
 
-const dispose = useWatch({ modelValue, nodes: modelNodes, edges: modelEdges }, props,{ id, hooks, getNodeTypes, getEdgeTypes, ...rest })
+const dispose = useWatch({ modelValue, nodes: modelNodes, edges: modelEdges }, props, {
+  id,
+  hooks,
+  getNodeTypes,
+  getEdgeTypes,
+  $reset,
+  ...rest,
+})
 
 onUnmounted(() => {
   dispose()
+  $reset()
 })
 
 useHooks(emit, hooks.value)

@@ -126,20 +126,15 @@ export default (options?: Options): VueFlowStore => {
     if (scope) {
       scope.vueFlowId = name
 
-      // dispose of state values and storage entry
-      onScopeDispose(() => {
-        vueFlow?.$reset()
-        storage.remove(name)
-        vueFlow = null
-      })
-
-      if (reactiveOptions) {
-        scope.run(() => {
-          watch(reactiveOptions, (opts) => {
-            vueFlow?.setState(opts)
+      onBeforeMount(() => {
+        if (reactiveOptions) {
+          scope.run(() => {
+            watch(reactiveOptions, (opts) => {
+              vueFlow?.setState(opts)
+            })
           })
-        })
-      }
+        }
+      })
     }
   } else {
     // if composable was called with additional options after initialization, overwrite state with the options values
@@ -154,6 +149,14 @@ export default (options?: Options): VueFlowStore => {
   // always provide a fresh instance into context on call
   if (scope) {
     provide(VueFlow, vueFlow)
+
+    // dispose of state values and storage entry
+    onScopeDispose(() => {
+      if (storage.get(vueFlow!.id)) {
+        storage.remove(vueFlow!.id)
+      }
+      vueFlow = null
+    })
   }
 
   return vueFlow
