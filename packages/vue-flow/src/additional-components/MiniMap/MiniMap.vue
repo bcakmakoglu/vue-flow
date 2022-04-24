@@ -6,6 +6,8 @@ import type { MiniMapProps } from '../../types/components'
 import MiniMapNode from './MiniMapNode'
 
 const {
+  width,
+  height,
   nodeStrokeColor = '#555',
   nodeColor = '#fff',
   nodeClassName,
@@ -23,9 +25,9 @@ const defaultHeight = 150
 
 const { edges, viewport, dimensions, hooks, getNodes } = $(useVueFlow())
 
-const elementWidth = attrs.style?.width ?? defaultWidth
+const elementWidth = $computed(() => width ?? attrs.style?.width ?? defaultWidth)
 
-const elementHeight = attrs.style?.height ?? defaultHeight
+const elementHeight = $computed(() => height ?? attrs.style?.height ?? defaultHeight)
 
 const nodeColorFunc: MiniMapNodeFunc = nodeColor instanceof Function ? nodeColor : () => nodeColor as string
 
