@@ -1,9 +1,15 @@
 <script lang="ts" setup>
 import { Handle, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import confetti from 'canvas-confetti'
+import { cheer, fireworks } from './confetti'
 import Heart from '~icons/mdi/heart'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
+
+const dark = useDark({
+  selector: 'html',
+})
 
 const initialEdges = [
   {
@@ -34,7 +40,7 @@ const initialEdges = [
     style: { strokeWidth: 2, stroke: '#0ea5e9' },
   },
 ]
-const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
+const { dimensions, instance, onNodeClick, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -48,8 +54,40 @@ const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdg
   zoomOnScroll: false,
 })
 
+const clickInterval = ref()
+const clicks = ref(0)
+const disabled = ref(false)
+
+onNodeClick(async ({ node }) => {
+  if (node.id === 'intro') {
+    if (disabled.value) return
+
+    if (clickInterval.value) {
+      clearInterval(clickInterval.value)
+    }
+
+    clickInterval.value = setInterval(() => {
+      clearInterval(clickInterval.value)
+      clicks.value = 0
+    }, 1000)
+
+    clicks.value++
+    if (clicks.value < 10) {
+      confetti()
+    } else if (clicks.value < 20) {
+      console.log('cheer')
+      await cheer(['#10b981', dark.value ? '#ffffff' : '#000000'])
+    } else if (clicks.value === 20) {
+      disabled.value = true
+      await fireworks()
+      disabled.value = false
+    } else {
+      clicks.value = 0
+    }
+  }
+})
+
 const init = ref(false)
-const edgeId = ref('eintro-documentation')
 const el = templateRef<HTMLDivElement>('el', null)
 
 onPaneReady(({ fitView }) => {
