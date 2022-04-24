@@ -75,6 +75,9 @@ export interface MiniMapProps<Data = ElementData> {
   nodeStrokeWidth?: number
   /** Background color of minimap */
   maskColor?: string
+
+  width?: number
+  height?: number
 }
 
 /** these props are passed to mini map node slots */
