@@ -31,6 +31,7 @@ const untilDimensions = async (dimensions: Dimensions, getNodes: Getters['getNod
 export default (): ViewportFuncs => {
   const {
     onPaneReady,
+    nodes,
     d3Zoom,
     d3Selection,
     dimensions,
@@ -106,16 +107,16 @@ export default (): ViewportFuncs => {
 
       if (!getNodes.length) return
 
-      let nodes: GraphNode[] = []
+      let nodeBounds: GraphNode[] = []
       if (options.nodes) {
-        nodes = nodes.filter((n) => options.nodes?.includes(n.id))
+        nodeBounds = nodes.filter((n) => options.nodes?.includes(n.id))
       }
 
-      if (!nodes || !nodes.length) {
-        nodes = options.includeHiddenNodes ? nodes : getNodes
+      if (!nodeBounds || !nodeBounds.length) {
+        nodeBounds = options.includeHiddenNodes ? nodeBounds : getNodes
       }
 
-      const bounds = getRectOfNodes(nodes)
+      const bounds = getRectOfNodes(nodeBounds)
 
       const { x, y, zoom } = getTransformForBounds(
         bounds,
