@@ -2,6 +2,7 @@
 import { Handle, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import confetti from 'canvas-confetti'
+import colors from 'windicss/colors'
 import { cheer, fireworks } from './confetti'
 import Heart from '~icons/mdi/heart'
 
@@ -52,11 +53,18 @@ const { dimensions, instance, onNodeClick, onPaneReady, getNodes, getNode, getEd
   nodesDraggable: false,
   panOnDrag: false,
   zoomOnScroll: false,
+  zoomOnDoubleClick: false,
+  zoomOnPinch: false,
 })
 
 const clickInterval = ref()
 const clicks = ref(0)
 const disabled = ref(false)
+
+const confettiColors = Object.values(colors).flatMap((color) => {
+  if (typeof color === 'string') return color
+  else return Object.values(color).flatMap((c) => c)
+})
 
 onNodeClick(async ({ node }) => {
   if (node.id === 'intro') {
@@ -73,13 +81,18 @@ onNodeClick(async ({ node }) => {
 
     clicks.value++
     if (clicks.value < 10) {
-      confetti()
+      confetti({
+        startVelocity: 25,
+        spread: 360,
+        angle: 270,
+        origin: { y: 0.1 },
+        colors: confettiColors,
+      })
     } else if (clicks.value < 20) {
-      console.log('cheer')
       await cheer(['#10b981', dark.value ? '#ffffff' : '#000000'])
     } else if (clicks.value === 20) {
       disabled.value = true
-      await fireworks()
+      await fireworks(confettiColors)
       disabled.value = false
     } else {
       clicks.value = 0

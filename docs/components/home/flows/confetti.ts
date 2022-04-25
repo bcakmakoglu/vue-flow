@@ -1,10 +1,10 @@
 import confetti from 'canvas-confetti'
 
-export const fireworks = () => {
+export const fireworks = (colors?: string[]) => {
   return new Promise((resolve) => {
     const duration = 15 * 1000
     const animationEnd = Date.now() + duration
-    const defaults = { startVelocity: 40, spread: 360, ticks: 20, zIndex: 0 }
+    const defaults = { startVelocity: 60, spread: 360, ticks: 20, zIndex: 0 }
 
     function randomInRange(min: number, max: number) {
       return Math.random() * (max - min) + min
@@ -24,21 +24,23 @@ export const fireworks = () => {
         Object.assign({}, defaults, {
           particleCount,
           origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+          colors,
         }),
       )
       confetti(
         Object.assign({}, defaults, {
           particleCount,
           origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+          colors,
         }),
       )
     }, 250)
   })
 }
 
-export const cheer = (colors: [string, string]) => {
+export const cheer = (colors: string[]) => {
   return new Promise((resolve) => {
-    const end = Date.now() + 1 * 1000
+    const end = Date.now() + 2 * 1000
 
     function frame() {
       confetti({
