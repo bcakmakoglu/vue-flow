@@ -275,7 +275,13 @@ export default (state: State, getters: ComputedGetters): Actions => {
     const curr = params instanceof Function ? params(state.edges) : params
 
     curr.reduce<GraphEdge[]>((acc, param) => {
-      const edge = addEdge(param, state.edges)
+      const edge = addEdge(
+        {
+          ...param,
+          ...state.defaultEdgeOptions,
+        },
+        state.edges,
+      )
       if (edge) {
         const sourceNode = getters.getNode.value(edge.source)!
         const targetNode = getters.getNode.value(edge.target)!
@@ -287,7 +293,6 @@ export default (state: State, getters: ComputedGetters): Actions => {
         if (missingTarget || missingSource) return acc
 
         acc.push({
-          ...state.defaultEdgeOptions,
           ...edge,
           sourceNode,
           targetNode,
