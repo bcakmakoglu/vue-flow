@@ -307,13 +307,13 @@ export default (state: State, getters: ComputedGetters): Actions => {
     updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
 
   const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => {
-    const history = applyChanges(changes, state.nodes, addNodes)
+    const history = applyChanges(changes, state.nodes)
     state.history.changes.unshift(...history)
     return history
   }
 
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => {
-    const history = applyChanges(changes, state.edges, addEdges)
+    const history = applyChanges(changes, state.edges)
     state.history.changes.unshift(...history)
     return history
   }

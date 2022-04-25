@@ -139,9 +139,9 @@ export interface Actions {
   /** updates an edge */
   updateEdge: UpdateEdge
   /** applies default edge change handler */
-  applyEdgeChanges: (changes: EdgeChange[]) => GraphEdge[]
+  applyEdgeChanges: (changes: EdgeChange[]) => ChangeHistory[]
   /** applies default node change handler */
-  applyNodeChanges: (changes: NodeChange[]) => GraphNode[]
+  applyNodeChanges: (changes: NodeChange[]) => ChangeHistory[]
   /** manually select elements and add to state */
   addSelectedElements: (elements: FlowElements) => void
   /** manually select edges and add to state */
