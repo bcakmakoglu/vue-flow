@@ -102,8 +102,8 @@ export const applyChanges = <
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
     if (change.type === 'add') {
-      if (addElement) addElement([change.item as any])
-      else elements.push(change.item as any)
+      if (addElement) return addElement([change.item as any])
+      else return elements.push(change.item as any)
     }
 
     const i = elementIds.indexOf((<any>change).id)
@@ -126,8 +126,10 @@ export const applyChanges = <
         }
         break
       case 'remove':
-        elements.splice(i, 1)
-        elementIds = elements.map((el) => el.id)
+        if (elementIds.includes(change.id)) {
+          elements.splice(i, 1)
+          elementIds = elements.map((el) => el.id)
+        }
         break
     }
   })
