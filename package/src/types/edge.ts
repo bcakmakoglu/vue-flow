@@ -1,7 +1,7 @@
 import { Component, CSSProperties, VNode } from 'vue'
 import { Position, BaseElement, ElementData } from './flow'
 import { GraphNode } from './node'
-import { EdgeComponent, EdgeTextProps } from './components'
+import { DefaultEdgeTypes, EdgeComponent, EdgeTextProps } from './components'
 
 /** Edge markers */
 export enum MarkerType {
@@ -44,6 +44,8 @@ export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
 export interface Edge<Data = ElementData> extends BaseElement<Data> {
   label?: string | VNode | Component<EdgeTextProps>
+  /** node type, can be a default type or a custom type */
+  type?: keyof DefaultEdgeTypes | string
   /** Source node id */
   source: string
   /** Target node id */
@@ -84,7 +86,7 @@ export interface Edge<Data = ElementData> extends BaseElement<Data> {
 export type DefaultEdgeOptions = Omit<
   Edge,
   'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle' | 'sourceNode' | 'targetNode'
-  >
+>
 
 export interface EdgePositions {
   sourceX: number
