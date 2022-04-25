@@ -6,7 +6,7 @@ import { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import { GraphNode, CoordinateExtent, Node } from './node'
 import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
 import { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
-import { NodeChange, EdgeChange, ChangeHistory, ElementChange } from './changes'
+import { NodeChange, EdgeChange, ChangeHistory } from './changes'
 import { StartHandle, HandleType } from './handle'
 
 export type UpdateNodeDimensionsParams = {
@@ -33,7 +33,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
 
   history: {
     changes: ChangeHistory[]
-    undo: (type?: ElementChange['type']) => void
+    undo: (changes: ChangeHistory[]) => void
     clear: () => void
   }
 

@@ -99,7 +99,7 @@ export const applyChanges = <
   elements: FlowElements,
 ): ChangeHistory<C>[] => {
   let elementIds = elements.map((el) => el.id)
-  const rollback: any[] = []
+  const rollback: ChangeHistory<C>[] = []
 
   changes.forEach((change) => {
     const i = elementIds.indexOf((<any>change).id)
@@ -168,8 +168,9 @@ export const applyChanges = <
           break
         case 'remove':
           if (elementIds.includes(change.id)) {
-          elements.splice(i, 1)
-          elementIds = elements.map((el) => el.id)}
+            elements.splice(i, 1)
+            elementIds = elements.map((el) => el.id)
+          }
 
           rollbackFn = () => {
             if (copy) {
@@ -186,6 +187,7 @@ export const applyChanges = <
       change,
       undo: rollbackFn,
       redo: apply,
+      timestamp: Date.now(),
     })
   })
 

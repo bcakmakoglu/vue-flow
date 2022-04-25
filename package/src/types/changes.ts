@@ -58,4 +58,9 @@ export type EdgeResetChange<Data = ElementData> = {
 export type EdgeChange = EdgeSelectionChange | EdgeRemoveChange | EdgeAddChange | EdgeResetChange
 export type ElementChange = NodeChange | EdgeChange
 
-export type ChangeHistory<C extends ElementChange = ElementChange> = { change: C; undo: () => void; redo: () => void }
+export type ChangeHistory<C extends ElementChange = ElementChange> = {
+  change: C
+  undo: () => void
+  redo: () => void
+  timestamp: number
+}
