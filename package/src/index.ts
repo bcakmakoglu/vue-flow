@@ -40,7 +40,7 @@ export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './contex
 
 export { default as useZoomPanHelper } from './composables/useZoomPanHelper'
 
-export { default as useVueFlow } from './composables/useVueFlow'
+export { default as useVueFlow, Storage as GlobalVueFlowStorage } from './composables/useVueFlow'
 
 export { default as useHandle } from './composables/useHandle'
 
