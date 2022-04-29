@@ -100,36 +100,38 @@ export const applyChanges = <
 ): T[] => {
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
-    if (change.type === 'add') {
-      if (addElement) return addElement([change.item as any])
-      else return elements.push(change.item as any)
-    }
+    nextTick(() => {
+      if (change.type === 'add') {
+        if (addElement) return addElement([change.item as any])
+        else return elements.push(change.item as any)
+      }
 
-    const i = elementIds.indexOf((<any>change).id)
-    const el = elements[i]
-    switch (change.type) {
-      case 'select':
-        if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
-        break
-      case 'position':
-        if (isGraphNode(el)) {
-          if (typeof change.position !== 'undefined') el.position = change.position
-          if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
-        }
-        break
-      case 'dimensions':
-        if (isGraphNode(el)) {
-          if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-          if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
-        }
-        break
-      case 'remove':
-        if (elementIds.includes(change.id)) {
-          elements.splice(i, 1)
-          elementIds = elements.map((el) => el.id)
-        }
-        break
-    }
+      const i = elementIds.indexOf((<any>change).id)
+      const el = elements[i]
+      switch (change.type) {
+        case 'select':
+          if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
+          break
+        case 'position':
+          if (isGraphNode(el)) {
+            if (typeof change.position !== 'undefined') el.position = change.position
+            if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
+          }
+          break
+        case 'dimensions':
+          if (isGraphNode(el)) {
+            if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
+            if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
+          }
+          break
+        case 'remove':
+          if (elementIds.includes(change.id)) {
+            elements.splice(i, 1)
+            elementIds = elements.map((el) => el.id)
+          }
+          break
+      }
+    })
   })
   return elements
 }

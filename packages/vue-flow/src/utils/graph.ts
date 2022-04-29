@@ -62,19 +62,18 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
   if (!isGraphNode(node)) {
     defaultValues = {
       type: node.type ?? 'default',
-      dimensions: {
+      dimensions: markRaw({
         width: 0,
         height: 0,
-      },
+      }),
       handleBounds: {
         source: [],
         target: [],
       },
-      computedPosition: {
+      computedPosition: markRaw({
         z: 0,
-        x: 0,
-        y: 0,
-      },
+        ...node.position,
+      }),
       draggable: undefined,
       selectable: undefined,
       connectable: undefined,
