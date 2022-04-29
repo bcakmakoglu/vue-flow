@@ -23,9 +23,9 @@ const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectab
 const connectable = (c?: boolean) => (typeof c === 'undefined' ? nodesConnectable : c)
 const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid ? snapGrid : undefined)
 
-const getType = (node: GraphNode) => {
-  const name = node.type || 'default'
-  let nodeType = node.template ?? getNodeTypes[name]
+const getType = (type?: string, template?: GraphNode['template']) => {
+  const name = type || 'default'
+  let nodeType = template ?? getNodeTypes[name]
   const instance = getCurrentInstance()
 
   if (typeof nodeType === 'string') {
@@ -40,7 +40,7 @@ const getType = (node: GraphNode) => {
 
   const slot = slots?.[`node-${name}`]
   if (!slot?.({})) {
-    console.warn(`[vueflow]: Node type "${node.type}" not found and no node-slot detected. Using fallback type "default".`)
+    console.warn(`[vueflow]: Node type "${type}" not found and no node-slot detected. Using fallback type "default".`)
     return false
   }
 
@@ -60,7 +60,8 @@ export default {
       v-for="node of getNodes"
       :id="node.id"
       :key="node.id"
-      :type="getType(node)"
+      v-model="node.computedPosition"
+      :type="getType(node.type, node.template)"
       :name="node.type || 'default'"
       :draggable="draggable(node.draggable)"
       :selectable="selectable(node.selectable)"
