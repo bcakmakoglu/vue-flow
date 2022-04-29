@@ -58,7 +58,6 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   onlyRenderVisibleElements: boolean
   defaultPosition: [number, number]
 
-  selectedNodesBbox: Rect
   nodesSelectionActive: boolean
   userSelectionActive: boolean
   multiSelectionActive: boolean
