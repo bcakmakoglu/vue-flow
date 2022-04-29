@@ -61,6 +61,33 @@ function useDrag(params: UseDragParams) {
   let lastPos = $ref<Partial<XYPosition>>({ x: undefined, y: undefined })
   let parentPos = $ref<XYPosition>({ x: 0, y: 0 })
 
+  const handleDrag = (event: UseDragEvent) => {
+    const pos = pointToRendererPoint(
+      {
+        x: event.x - startPos.x,
+        y: event.y - startPos.y,
+      },
+      viewport.value,
+      snapToGrid.value,
+      snapGrid.value,
+    )
+
+    pos.x -= parentPos.x
+    pos.y -= parentPos.y
+
+    // skip events without movement
+    if (lastPos.x !== pos.x || lastPos.y !== pos.y) {
+      if (lastPos.x && lastPos.y) {
+        onDrag(event, {
+          dx: pos.x - lastPos.x,
+          dy: pos.y - lastPos.y,
+        })
+      }
+    }
+
+    lastPos = pos
+  }
+
   return watch(
     [() => disabled, () => noDragClassName, () => id, () => el],
     () => {
@@ -83,33 +110,11 @@ function useDrag(params: UseDragParams) {
 
               onStart(event)
             })
-            .on('drag', (event: UseDragEvent) => {
-              const pos = pointToRendererPoint(
-                {
-                  x: event.x - startPos.x,
-                  y: event.y - startPos.y,
-                },
-                viewport.value,
-                snapToGrid.value,
-                snapGrid.value,
-              )
-
-              pos.x -= parentPos.x
-              pos.y -= parentPos.y
-
-              // skip events without movement
-              if (lastPos.x !== pos.x || lastPos.y !== pos.y) {
-                if (lastPos.x && lastPos.y) {
-                  onDrag(event, {
-                    dx: pos.x - lastPos.x,
-                    dy: pos.y - lastPos.y,
-                  })
-                }
-
-                lastPos = pos
-              }
+            .on('drag', handleDrag)
+            .on('end', (event: UseDragEvent) => {
+              if (node) lastPos = node.position
+              onStop(event)
             })
-            .on('end', onStop)
             .filter((event: any) => {
               const filter = !event.ctrlKey && !event.button && !event.target.className.includes(noDragClassName)
 
