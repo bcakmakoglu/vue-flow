@@ -111,10 +111,13 @@ function useDrag(params: UseDragParams) {
             })
             .on('end', onStop)
             .filter((event: any) => {
+              const filter = !event.ctrlKey && !event.button && !event.target.className.includes(noDragClassName)
+
               if (handleSelector) {
-                return !hasSelector(event.sourceEvent.target, handleSelector, $$(el))
+                return !hasSelector(event.sourceEvent.target, handleSelector, $$(el)) && filter
               }
-              return !event.ctrlKey && !event.button && !event.target.className.includes(noDragClassName)
+
+              return filter
             })
 
           selection.call(dragHandler)
