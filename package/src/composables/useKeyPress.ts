@@ -7,44 +7,46 @@ import { isInputDOMNode } from '~/utils'
 export default (keyCode: Ref<KeyCode>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
 
-  const isPressed = controlledRef<boolean>(false, {
-    onBeforeChange(val, oldVal) {
-      if (val === oldVal) return false
+  let isPressed = $ref(false)
+
+  watchEffect(
+    () => {
+      if (onChange && typeof onChange === 'function') onChange(isPressed)
     },
-    onChanged() {
-      if (onChange && typeof onChange === 'function') onChange(isPressed.value)
-    },
-  })
+    { flush: 'post' },
+  )
 
   onKeyPressed(
     (e) => !isInputDOMNode(e) && (e.key === keyCode.value || e.keyCode === keyCode.value),
     (e) => {
       e.preventDefault()
-      isPressed.value = true
+      isPressed = true
     },
   )
+
   onKeyDown(
     (e) => !isInputDOMNode(e) && (e.key === keyCode.value || e.keyCode === keyCode.value),
     (e) => {
       e.preventDefault()
-      isPressed.value = true
+      isPressed = true
     },
   )
+
   onKeyUp(
     (e) => !isInputDOMNode(e) && (e.key === keyCode.value || e.keyCode === keyCode.value),
     (e) => {
       e.preventDefault()
-      isPressed.value = false
+      isPressed = false
     },
   )
 
   if (typeof window.addEventListener !== 'undefined') {
     useEventListener(window, 'blur', () => {
-      isPressed.value = false
+      isPressed = false
     })
   }
 
-  if (onChange && typeof onChange === 'function') onChange(isPressed.value)
+  if (onChange && typeof onChange === 'function') onChange(isPressed)
 
-  return isPressed
+  return $$(isPressed)
 }
