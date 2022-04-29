@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { CSSProperties } from 'vue'
 import { useVueFlow, useDrag } from '../../composables'
-import { GraphNode, NodeComponent, SnapGrid } from '../../types'
+import { NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 import { getConnectedEdges, getHandleBounds, getXYZPos } from '../../utils'
 
@@ -79,10 +79,6 @@ useDrag({
   },
 })
 
-onBeforeMount(() => {
-  updateNodePosition({ id, diff: { x: 0, y: 0 } })
-})
-
 onMounted(() => {
   const observer = useResizeObserver(nodeElement, () =>
     updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }]),
@@ -98,8 +94,6 @@ onMounted(() => {
 
   onBeforeUnmount(() => observer.stop())
 
-  updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
-
   watch(
     [() => node.position, () => parentNode?.computedPosition, () => node.selected, () => parentNode?.selected],
     ([pos, parent]) => {
@@ -107,15 +101,14 @@ onMounted(() => {
         ...pos,
         z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
       }
-      const graphNode = getNode(id)!
 
       if (parent) {
-        graphNode.computedPosition = getXYZPos(parent, xyzPos)
+        node.computedPosition = getXYZPos(parent, xyzPos)
       } else {
-        graphNode.computedPosition = xyzPos
+        node.computedPosition = xyzPos
       }
 
-      graphNode.handleBounds = getHandleBounds(nodeElement.value, viewport.zoom)
+      node.handleBounds = getHandleBounds(nodeElement.value, viewport.zoom)
     },
     { deep: true, flush: 'post' },
   )
@@ -210,7 +203,7 @@ export default {
     ref="nodeElement"
     :class="getClass"
     :style="getStyle"
-    :data-id="id"
+    :data-id="node.id"
     @mouseenter="onMouseEnter"
     @mousemove="onMouseMove"
     @mouseleave="onMouseLeave"
