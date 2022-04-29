@@ -100,10 +100,11 @@ export const applyChanges = <
 ): T[] => {
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
-    if (change.type === 'add') {
-      const item = <T>change.item
-      return elements.push(item)
-    }
+    nextTick(() => {
+      if (change.type === 'add') {
+        const item = <T>change.item
+        return elements.push(item)
+      }
 
     const i = elementIds.indexOf((<any>change).id)
     const el = elements[i]
@@ -142,6 +143,7 @@ export const applyChanges = <
         }
         break
     }
+    })
   })
 
   return elements
