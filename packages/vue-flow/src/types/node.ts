@@ -68,7 +68,6 @@ export interface GraphNode<Data = ElementData> extends Node<Data> {
   dimensions: Dimensions
   isParent: boolean
   selected: boolean
-  dragging: boolean
 }
 
 /** these props are passed to node components */
