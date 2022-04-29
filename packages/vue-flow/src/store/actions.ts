@@ -87,10 +87,12 @@ const createGraphNodes = (nodes: Node[], getNode: Getters['getNode'], currGraphN
   const parentNodes: Record<string, true> = {}
 
   const graphNodes = nodes.map((node) => {
-    const parsed = parseNode(node, extent, {
-      ...getNode(node.id),
-      parentNode: node.parentNode,
-    })
+    const parsed = shallowReactive(
+      parseNode(node, extent, {
+        ...getNode(node.id),
+        parentNode: node.parentNode,
+      }),
+    )
     if (node.parentNode) {
       parentNodes[node.parentNode] = true
     }
@@ -245,11 +247,11 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
       const storedEdge = getters.getEdge.value(edge.id)
 
-      res.push({
-        ...parseEdge(edge, Object.assign({}, storedEdge, state.defaultEdgeOptions)),
-        sourceNode,
-        targetNode,
-      })
+      res.push(
+        shallowReactive({
+          ...parseEdge(edge, Object.assign({}, storedEdge, state.defaultEdgeOptions)),
+        }),
+      )
 
       return res
     }, [])
@@ -288,12 +290,10 @@ export default (state: State, getters: ComputedGetters): Actions => {
         if (missingTarget || missingSource) return acc
 
         acc.push(
-          createAdditionChange<GraphEdge>({
+          createAdditionChange<GraphEdge>(shallowReactive({
             ...state.defaultEdgeOptions,
             ...edge,
-            sourceNode,
-            targetNode,
-          }),
+          })),
         )
       }
 
