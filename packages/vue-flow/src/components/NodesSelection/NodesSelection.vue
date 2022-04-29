@@ -13,11 +13,10 @@ useDrag({
   },
   onDrag(event, { dx, dy }) {
     emits.selectionDrag({ event: event.sourceEvent, nodes: getSelectedNodes })
-    updateNodePosition({ diff: { x: dx, y: dy }, dragging: true })
+    updateNodePosition({ diff: { x: dx, y: dy } })
   },
   onStop(event) {
     emits.selectionDragStop({ event: event.sourceEvent, nodes: getSelectedNodes })
-    getSelectedNodes.forEach((node) => (node.dragging = false))
   },
 })
 

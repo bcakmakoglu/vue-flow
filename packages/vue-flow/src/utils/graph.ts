@@ -75,7 +75,6 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
         x: 0,
         y: 0,
       },
-      dragging: false,
       draggable: undefined,
       selectable: undefined,
       connectable: undefined,
@@ -274,7 +273,7 @@ export const getNodesInside = (
 
   return nodes.filter((node) => {
     if (!node || node.selectable === false) return false
-    const { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 }, dragging = false } = node
+    const { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 } } = node
     const nBox = rectToBox({ ...computedPosition, ...dimensions })
     const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
     const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y))
@@ -283,8 +282,7 @@ export const getNodesInside = (
       typeof dimensions.width === 'undefined' ||
       typeof dimensions.height === 'undefined' ||
       dimensions.width === 0 ||
-      dimensions.height === 0 ||
-      dragging
+      dimensions.height === 0
 
     const partiallyVisible = partially && overlappingArea > 0
     const area = dimensions.width * dimensions.height

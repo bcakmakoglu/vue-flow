@@ -126,7 +126,6 @@ export default {
         :name="`node-${node.type}`"
         :parent-node="node.parentNode"
         :selected="node.selected"
-        :dragging="node.dragging"
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :style="node.style"

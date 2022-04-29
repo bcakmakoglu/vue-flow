@@ -21,7 +21,6 @@ interface CreatePositionChangeParams {
   node: GraphNode
   nodeExtent: CoordinateExtent
   diff?: XYPosition
-  dragging?: boolean
 }
 
 function handleParentExpand(updateItem: GraphNode, curr: GraphNode[]) {
@@ -115,7 +114,6 @@ export const applyChanges = <
       case 'position':
         if (isGraphNode(el)) {
           if (typeof change.position !== 'undefined') el.position = change.position
-          if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
           if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
         }
         break
@@ -133,7 +131,6 @@ export const applyChanges = <
         break
     }
   })
-
   return elements
 }
 
@@ -147,14 +144,13 @@ export const createSelectionChange = (id: string, selected: boolean): NodeSelect
 })
 
 export const createPositionChange = (
-  { node, diff, dragging, nodeExtent }: CreatePositionChangeParams,
+  { node, diff, nodeExtent }: CreatePositionChangeParams,
   getNode: Getters['getNode'],
 ): NodePositionChange => {
   const parent = node.parentNode ? getNode(node.parentNode) : undefined
   const change: NodePositionChange = {
     id: node.id,
     type: 'position',
-    dragging: !!dragging,
   }
 
   if (diff) {
