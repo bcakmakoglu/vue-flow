@@ -5,10 +5,8 @@ import { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 import { getHandleBounds, getXYZPos } from '../../utils'
 
-const { id, type, name, node, parentNode, draggable, selectable, connectable, snapGrid } = defineProps<{
+const { id, type, name, draggable, selectable, connectable, snapGrid } = defineProps<
   id: string
-  node: GraphNode
-  parentNode?: GraphNode
   draggable: boolean
   selectable: boolean
   connectable: boolean
@@ -34,6 +32,9 @@ const {
   multiSelectionActive,
   resetSelectedElements,
 } = $(useVueFlow())
+
+const node = $computed(() => getNode(id)!)
+const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) : undefined))
 
 const nodeElement = ref()
 
@@ -69,38 +70,35 @@ useDrag({
   },
   onDrag(event, { dx, dy }) {
     dragging = true
-    updateNodePosition({ id: node.id, diff: { x: dx, y: dy } })
+    updateNodePosition({ id, diff: { x: dx, y: dy } })
     emits.nodeDrag({ event: event.sourceEvent, node })
   },
   onStop(event) {
     dragging = false
-
-    updateNodePosition({ id: node.id })
-
     emits.nodeDragStop({ event: event.sourceEvent, node })
   },
 })
 
 onBeforeMount(() => {
-  updateNodePosition({ id: node.id, diff: { x: 0, y: 0 } })
+  updateNodePosition({ id, diff: { x: 0, y: 0 } })
 })
 
 onMounted(() => {
   const observer = useResizeObserver(nodeElement, () =>
-    updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value, forceUpdate: true }]),
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }]),
   )
 
   watch(
     [() => node.type, () => node.sourcePosition, () => node.targetPosition],
     () => {
-      updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value }])
+      updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
     },
     { flush: 'post' },
   )
 
   onBeforeUnmount(() => observer.stop())
 
-  updateNodeDimensions([{ id: node.id, nodeElement: nodeElement.value, forceUpdate: true }])
+  updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
   watch(
     [() => node.position, () => parentNode?.computedPosition, () => node.selected, () => parentNode?.selected],
@@ -231,7 +229,7 @@ export default {
       :is-valid-target-pos="node.isValidTargetPos"
       :is-valid-source-pos="node.isValidSourcePos"
       :parent-node="node.parentNode"
-      :dragging="!!node.dragging"
+      :dragging="dragging"
       :z-index="node.computedPosition.z"
       :target-position="node.targetPosition"
       :source-position="node.sourcePosition"
