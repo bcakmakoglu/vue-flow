@@ -24,18 +24,15 @@ const {
 } = $(useVueFlow())
 
 const sourceNode = $(
-  controlledComputed(
-    () => connectionNodeId,
-    () => {
-      if (connectionNodeId) return getNode(connectionNodeId)
-      return false
-    },
-  ),
+  controlledComputed($$(connectionNodeId), () => {
+    if (connectionNodeId) return getNode(connectionNodeId)
+    return false
+  }),
 )
 
 const connectionLineVisible = $(
   controlledComputed(
-    () => connectionNodeId,
+    $$(connectionNodeId),
     () =>
       !!(
         sourceNode &&
@@ -101,7 +98,7 @@ export default {
         :id="edge.id"
         :key="edge.id"
         :edge="edge"
-        :name="getType(edge) ? edge.type ?? 'default' : 'default'"
+        :name="edge.type || 'default'"
         :type="getType(edge)"
         :selectable="typeof edge.selectable === 'undefined' ? elementsSelectable : edge.selectable"
         :updatable="typeof edge.updatable === 'undefined' ? edgesUpdatable : edge.updatable"
