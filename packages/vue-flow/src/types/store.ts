@@ -25,11 +25,7 @@ export interface UpdateNodeDimensionsParams {
   forceUpdate?: boolean
 }
 
-export interface UpdateNodePositionsParams {
-  id?: string
-  diff?: XYPosition
-  dragging?: boolean
-}
+export type UpdateNodePositionsParams = { id?: string; diff?: XYPosition }
 
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** Event hooks, you can manipulate the triggers at your own peril */
@@ -130,7 +126,7 @@ export type SetState = (
     | Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
     | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
 ) => void
-export type UpdateNodePosition = ({ id, diff, dragging }: UpdateNodePositionsParams) => void
+export type UpdateNodePosition = (params: UpdateNodePositionsParams) => void
 export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
 
 export interface Actions {
