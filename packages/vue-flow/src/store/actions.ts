@@ -18,6 +18,7 @@ import type {
 import {
   applyChanges,
   connectionExists,
+  createAdditionChange,
   createPositionChange,
   createSelectionChange,
   getDimensions,
@@ -265,20 +266,17 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const addNodes: Actions['addNodes'] = (nodes, extent) => {
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    state.nodes = [...state.nodes, ...createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)]
+    const graphNodes = createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
+    const changes = graphNodes.map(createAdditionChange)
+
+    if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
     const curr = params instanceof Function ? params(state.edges) : params
 
-    curr.reduce<GraphEdge[]>((acc, param) => {
-      const edge = addEdge(
-        {
-          ...param,
-          ...state.defaultEdgeOptions,
-        },
-        state.edges,
-      )
+    const changes = curr.reduce((acc, param) => {
+      const edge = addEdge(param, state.edges)
       if (edge) {
         const sourceNode = getters.getNode.value(edge.source)!
         const targetNode = getters.getNode.value(edge.target)!
@@ -289,23 +287,28 @@ export default (state: State, getters: ComputedGetters): Actions => {
         if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
         if (missingTarget || missingSource) return acc
 
-        acc.push({
-          ...edge,
-          sourceNode,
-          targetNode,
-        })
+        acc.push(
+          createAdditionChange<GraphEdge>({
+            ...state.defaultEdgeOptions,
+            ...edge,
+            sourceNode,
+            targetNode,
+          }),
+        )
       }
 
       return acc
-    }, state.edges)
+    }, [] as EdgeChange[])
+
+    if (changes.length) state.hooks.edgesChange.trigger(changes)
   }
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>
     updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
 
-  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyChanges(changes, state.nodes, addNodes)
+  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyChanges(changes, state.nodes)
 
-  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges, addEdges)
+  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges)
 
   const setState: Actions['setState'] = (options) => {
     const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent']

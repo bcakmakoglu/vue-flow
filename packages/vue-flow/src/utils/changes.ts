@@ -14,6 +14,8 @@ import type {
   NodeChange,
   NodePositionChange,
   NodeSelectionChange,
+  NodeAddChange,
+  EdgeAddChange,
   XYPosition,
 } from '~/types'
 
@@ -24,8 +26,7 @@ interface CreatePositionChangeParams {
   dragging?: boolean
 }
 
-function handleParentExpand(updateItem: GraphNode, curr: GraphNode[]) {
-  const parent = updateItem.parentNode ? curr.find((el) => el.id === updateItem.parentNode) : undefined
+function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   if (parent) {
     const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
@@ -97,13 +98,12 @@ export const applyChanges = <
 >(
   changes: C[],
   elements: T[],
-  addElement?: (els: T[]) => void,
 ): T[] => {
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
     if (change.type === 'add') {
-      if (addElement) return addElement([change.item as any])
-      else return elements.push(change.item as any)
+      const item = <T>change.item
+      return elements.push(item)
     }
 
     const i = elementIds.indexOf((<any>change).id)
@@ -116,13 +116,25 @@ export const applyChanges = <
         if (isGraphNode(el)) {
           if (typeof change.position !== 'undefined') el.position = change.position
           if (typeof change.dragging !== 'undefined') el.dragging = change.dragging
-          if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
+          if (el.expandParent && el.parentNode) {
+            const parent = elements.find((parent) => parent.id === el.parentNode)
+
+            if (parent && isGraphNode(parent)) {
+              handleParentExpand(el, parent)
+            }
+          }
         }
         break
       case 'dimensions':
         if (isGraphNode(el)) {
           if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-          if (el.expandParent && el.parentNode) handleParentExpand(el, elements as GraphNode[])
+          if (el.expandParent && el.parentNode) {
+            const parent = elements.find((parent) => parent.id === el.parentNode)
+
+            if (parent && isGraphNode(parent)) {
+              handleParentExpand(el, parent)
+            }
+          }
         }
         break
       case 'remove':
@@ -162,13 +174,12 @@ export const createPositionChange = (
     let currentExtent = node.extent === 'parent' || typeof node.extent === 'undefined' ? nodeExtent : node.extent
 
     if (node.extent === 'parent' && parent && node.dimensions.width && node.dimensions.height) {
-      currentExtent =
-        parent.dimensions.width && parent.dimensions.height
-          ? [
-              [0, 0],
-              [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
-            ]
-          : currentExtent
+      if (parent.dimensions.width && parent.dimensions.height) {
+        currentExtent = [
+          [0, 0],
+          [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
+        ]
+      }
     }
 
     change.position = currentExtent ? clampPosition(nextPosition, currentExtent) : nextPosition
@@ -176,6 +187,17 @@ export const createPositionChange = (
 
   return change
 }
+
+export const createAdditionChange = <
+  T extends GraphNode | GraphEdge = GraphNode,
+  C extends NodeAddChange | EdgeAddChange = T extends GraphNode ? NodeAddChange : EdgeAddChange,
+>(
+  item: T,
+): C =>
+  <C>{
+    item,
+    type: 'add',
+  }
 
 const isParentSelected = (node: GraphNode, selectedIds: string[], getNode: Getters['getNode']): boolean => {
   const parent = node.parentNode ? getNode(node.parentNode) : undefined
