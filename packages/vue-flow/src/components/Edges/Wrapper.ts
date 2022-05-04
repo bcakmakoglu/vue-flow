@@ -9,10 +9,10 @@ interface Props {
   name: string
   source: string
   target: string
-  sourceNode: GraphNode
-  targetNode: GraphNode
-  targetHandleId: string | null
-  sourceHandleId: string | null
+  sourceNode?: GraphNode
+  targetNode?: GraphNode
+  targetHandleId?: string | null
+  sourceHandleId?: string | null
   selectable?: boolean
   updatable?: boolean
   label?: string | VNode | Component<EdgeTextProps> | Object
