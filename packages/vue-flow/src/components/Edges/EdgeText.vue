@@ -2,22 +2,21 @@
 import type { EdgeTextProps } from '../../types/components'
 import type { Rect } from '../../types'
 
-const props = withDefaults(defineProps<EdgeTextProps>(), {
-  labelStyle: () => ({}),
-  labelShowBg: true,
-  labelBgStyle: () => ({}),
-  labelBgPadding: () => [2, 4],
-  labelBgBorderRadius: 2,
-})
+const {
+  x,
+  y,
+  label,
+  labelStyle = {},
+  labelShowBg = true,
+  labelBgStyle = {},
+  labelBgPadding = [2, 4],
+  labelBgBorderRadius = 2,
+} = defineProps<EdgeTextProps>()
 
-const edgeRef = templateRef<SVGTextElement>('edge-text', null)
+const el = templateRef<SVGTextElement>('el', null)
+const box = $(useElementBounding(el))
 
-let edgeRefBbox = $ref<Rect>({ x: 0, y: 0, width: 0, height: 0 })
-
-onMounted(() => {
-  edgeRefBbox = edgeRef.value.getBBox()
-})
-const transform = computed(() => `translate(${props.x - edgeRefBbox.width / 2} ${props.y - edgeRefBbox.height / 2})`)
+const transform = computed(() => `translate(${x - box.width / 2} ${y - box.height / 2})`)
 </script>
 
 <script lang="ts">
@@ -27,23 +26,23 @@ export default {
 </script>
 
 <template>
-  <g :transform="transform" :class="props.class" class="vue-flow__edge-textwrapper">
+  <g :transform="transform" class="vue-flow__edge-textwrapper">
     <rect
-      v-if="props.labelShowBg"
+      v-if="labelShowBg"
       class="vue-flow__edge-textbg"
-      :width="`${edgeRefBbox.width + 2 * props.labelBgPadding[0]}px`"
-      :height="`${edgeRefBbox.height + 2 * props.labelBgPadding[1]}px`"
-      :x="-props.labelBgPadding[0]"
-      :y="-props.labelBgPadding[1]"
-      :style="props.labelBgStyle"
-      :rx="props.labelBgBorderRadius"
-      :ry="props.labelBgBorderRadius"
+      :width="`${box.width + 2 * labelBgPadding[0]}px`"
+      :height="`${box.height + 2 * labelBgPadding[1]}px`"
+      :x="-labelBgPadding[0]"
+      :y="-labelBgPadding[1]"
+      :style="labelBgStyle"
+      :rx="labelBgBorderRadius"
+      :ry="labelBgBorderRadius"
     />
-    <text ref="edge-text" class="vue-flow__edge-text" :y="edgeRefBbox.height / 2" dy="0.3em" :style="props.labelStyle">
-      <slot v-bind="props">
-        <component :is="props.label" v-if="typeof props.label !== 'string' && typeof props.label" />
-        <template v-else v-html="props.label">
-          {{ props.label }}
+    <text v-bind="$attrs" ref="el" class="vue-flow__edge-text" :y="box.height / 2" dy="0.3em" :style="labelStyle">
+      <slot>
+        <component :is="label" v-if="typeof label !== 'string' && typeof label" />
+        <template v-else v-html="label">
+          {{ label }}
         </template>
       </slot>
     </text>
