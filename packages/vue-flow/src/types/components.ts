@@ -1,4 +1,4 @@
-import type { CSSProperties, Component, DefineComponent, HTMLAttributes, VNode } from 'vue'
+import type { CSSProperties, Component, DefineComponent, HTMLAttributes, SVGAttributes, VNode } from 'vue'
 import type { BackgroundVariant, Dimensions, ElementData, XYPosition } from './flow'
 import type { GraphNode, NodeProps } from './node'
 import type { EdgeProps } from './edge'
@@ -93,7 +93,7 @@ export interface MiniMapNodeProps {
 }
 
 /** these props are passed to edge texts */
-export interface EdgeTextProps extends HTMLAttributes {
+export interface EdgeTextProps extends SVGAttributes {
   x: number
   y: number
   label?: string | VNode | Object
