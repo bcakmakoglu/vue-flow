@@ -1,3 +1,4 @@
+export { default as BaseEdge } from './BaseEdge'
 export { default as BezierEdge } from './BezierEdge'
 export { default as SimpleBezierEdge } from './SimpleBezierEdge'
 export { default as StepEdge } from './StepEdge'
