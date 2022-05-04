@@ -129,6 +129,8 @@ export interface FlowProps {
   noPanClassName?: string
   /** does not work for the `addEdge` utility! */
   defaultEdgeOptions?: DefaultEdgeOptions
+  /** elevates edges when selected and applies z-Index to put them above their nodes */
+  elevateEdgesOnSelect?: boolean
 }
 
 export type FlowOptions = FlowProps
