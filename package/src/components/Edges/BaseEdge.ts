@@ -16,6 +16,10 @@ interface Props {
   markerEnd?: string
 }
 
+/**
+ * The base edge is a simple wrapper for svg path
+ * You can use the base edge in your custom edges and just pass down the necessary props
+ */
 const BaseEdge: FunctionalComponent<Props> = function ({
   path,
   centerX,
