@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "declarationDir": "./dist",
-    "types": ["vite/client", "vue/macros"],
+    "types": ["vite", "vue/macros"],
     "jsx": "preserve",
     "paths": {
       "~/*": ["src/*"]

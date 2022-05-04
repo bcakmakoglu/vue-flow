@@ -1,11 +1,12 @@
+import { connectionExists, getEdgeId, isEdge, isGraphEdge, parseEdge, parseNode } from './graph'
+import { warn } from './log'
 import type { Connection, CoordinateExtent, Edge, Getters, GraphEdge, GraphNode, Node } from '~/types'
-import { connectionExists, getEdgeId, isEdge, isGraphEdge, parseEdge, parseNode } from '~/utils/graph'
 
 export const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 
 export const addEdgeToStore = (edgeParams: Edge | Connection, edges: Edge[]) => {
   if (!edgeParams.source || !edgeParams.target) {
-    console.warn("[vueflow]: Can't create edge. An edge needs a source and a target.")
+    warn("Can't create edge. An edge needs a source and a target.")
     return false
   }
 
@@ -25,14 +26,14 @@ export const addEdgeToStore = (edgeParams: Edge | Connection, edges: Edge[]) => 
 
 export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]) => {
   if (!newConnection.source || !newConnection.target) {
-    console.warn("[vueflow]: Can't create new edge. An edge needs a source and a target.")
+    warn("Can't create new edge. An edge needs a source and a target.")
     return false
   }
 
   const foundEdge = edges.find((e) => isGraphEdge(e) && e.id === edge.id)
 
   if (!foundEdge) {
-    console.warn(`[vueflow]: The old edge with id=${edge.id} does not exist.`)
+    warn(`The old edge with id=${edge.id} does not exist.`)
     return false
   }
 
@@ -75,7 +76,7 @@ export const createGraphNodes = (
   graphNodes.forEach((node) => {
     const nextNodes = [...graphNodes, ...currGraphNodes]
     if (node.parentNode && !nextNodes.find((n) => n.id === node.parentNode)) {
-      console.warn(`[vueflow]: Parent node ${node.parentNode} not found`)
+      warn(`Parent node ${node.parentNode} not found`)
     }
 
     if (node.parentNode || parentNodes[node.id]) {
