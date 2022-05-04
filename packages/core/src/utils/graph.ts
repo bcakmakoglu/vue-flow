@@ -1,3 +1,4 @@
+import { warn } from './log'
 import type {
   Box,
   Connection,
@@ -140,7 +141,7 @@ export const connectionExists = (edge: Edge | Connection, elements: Elements) =>
  */
 export const addEdge = (edgeParams: Edge | Connection, elements: Elements, defaults?: DefaultEdgeOptions) => {
   if (!edgeParams.source || !edgeParams.target) {
-    console.warn("[vueflow]: Can't create edge. An edge needs a source and a target.")
+    warn("Can't create edge. An edge needs a source and a target.")
     return elements
   }
 
@@ -165,14 +166,14 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements, defau
  */
 export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: Elements) => {
   if (!newConnection.source || !newConnection.target) {
-    console.warn("[vueflow]: Can't create new edge. An edge needs a source and a target.")
+    warn("Can't create new edge. An edge needs a source and a target.")
     return elements
   }
 
   const foundEdge = elements.find((e) => isEdge(e) && e.id === oldEdge.id)
 
   if (!foundEdge) {
-    console.warn(`[vueflow]: The old edge with id=${oldEdge.id} does not exist.`)
+    warn(`The old edge with id=${oldEdge.id} does not exist.`)
     return elements
   }
 

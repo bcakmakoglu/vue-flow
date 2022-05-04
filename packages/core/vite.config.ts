@@ -14,6 +14,9 @@ export default defineConfig({
     },
     extensions: ['.ts', '.vue'],
   },
+  define: {
+    'process.env.NODE_ENV': 'process.env.NODE_ENV',
+  },
   build: {
     emptyOutDir: false,
     lib: {
@@ -47,6 +50,7 @@ export default defineConfig({
       dts: 'src/auto-imports.d.ts',
     }),
     replace({
+      __ENV__: 'process.env.NODE_ENV',
       __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
       preventAssignment: true,
     }),

@@ -1,6 +1,6 @@
 import { defaultEdgeTypes, defaultNodeTypes } from './state'
 import type { ComputedGetters, GraphEdge, GraphNode, State } from '~/types'
-import { getNodesInside, isEdgeVisible } from '~/utils'
+import { getNodesInside, isEdgeVisible, warn } from '~/utils'
 
 export default (state: State): ComputedGetters => {
   const nodeIds = computed(() => state.nodes.map((n) => n.id))
@@ -61,7 +61,7 @@ export default (state: State): ComputedGetters => {
     if (!source || !target) {
       state.edges = state.edges.filter((edge) => edge.id !== e.id)
 
-      console.warn(`[vue-flow]: Orphaned edge ${e.id} removed.`)
+      warn(`Orphaned edge ${e.id} removed.`)
       return
     }
 

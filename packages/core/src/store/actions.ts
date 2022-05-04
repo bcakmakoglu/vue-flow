@@ -36,6 +36,7 @@ import {
   parseEdge,
   pointToRendererPoint,
   updateEdgeAction,
+  warn,
 } from '~/utils'
 import { useZoomPanHelper } from '~/composables'
 
@@ -283,8 +284,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
       const missingSource = !sourceNode || typeof sourceNode === 'undefined'
       const missingTarget = !targetNode || typeof targetNode === 'undefined'
-      if (missingSource) console.warn(`[vue-flow]: Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-      if (missingTarget) console.warn(`[vue-flow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+      if (missingSource) warn(`Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+      if (missingTarget) warn(`Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
       if (missingSource || missingTarget) return res
 
       const storedEdge = getters.getEdge.value(edge.id)
@@ -335,8 +336,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
         const missingSource = !sourceNode || typeof sourceNode === 'undefined'
         const missingTarget = !targetNode || typeof targetNode === 'undefined'
-        if (missingSource) console.warn(`[vueflow]: Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-        if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+        if (missingSource) warn(`Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+        if (missingTarget) warn(`Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
         if (missingTarget || missingSource) return acc
 
         acc.push(
