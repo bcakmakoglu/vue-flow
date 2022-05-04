@@ -109,6 +109,7 @@ const defaultState = (): State => ({
   noWheelClassName: 'nowheel',
   noPanClassName: 'nopan',
   defaultEdgeOptions: undefined,
+  elevateEdgesOnSelect: false,
 
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })

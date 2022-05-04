@@ -21,6 +21,7 @@ const {
   getNodes,
   getEdges,
   getEdgeTypes,
+  elevateEdgesOnSelect,
 } = $(useVueFlow())
 
 const sourceNode = $(
@@ -93,20 +94,45 @@ export default {
 </script>
 
 <template>
-  <svg v-for="group of groups" :key="group.level" class="vue-flow__edges vue-flow__container" :style="`z-index: ${group.level}`">
-    <MarkerDefinitions v-if="group.isMaxLevel" :default-color="defaultMarkerColor" />
-    <g>
-      <EdgeWrapper
-        v-for="edge of group.edges"
-        :id="edge.id"
-        :key="edge.id"
-        :edge="edge"
-        :name="getType(edge) ? edge.type ?? 'default' : 'default'"
-        :type="getType(edge)"
-        :selectable="typeof edge.selectable === 'undefined' ? elementsSelectable : edge.selectable"
-        :updatable="typeof edge.updatable === 'undefined' ? edgesUpdatable : edge.updatable"
-      />
-      <ConnectionLine v-if="connectionLineVisible && !!sourceNode" :source-node="sourceNode" />
-    </g>
-  </svg>
+  <template v-if="elevateEdgesOnSelect">
+    <svg
+      v-for="group of groups"
+      :key="group.level"
+      class="vue-flow__edges vue-flow__container"
+      :style="`z-index: ${group.level}`"
+    >
+      <MarkerDefinitions v-if="group.isMaxLevel" :default-color="defaultMarkerColor" />
+      <g>
+        <EdgeWrapper
+          v-for="edge of group.edges"
+          :id="edge.id"
+          :key="edge.id"
+          :edge="edge"
+          :name="getType(edge) ? edge.type ?? 'default' : 'default'"
+          :type="getType(edge)"
+          :selectable="typeof edge.selectable === 'undefined' ? elementsSelectable : edge.selectable"
+          :updatable="typeof edge.updatable === 'undefined' ? edgesUpdatable : edge.updatable"
+        />
+        <ConnectionLine v-if="connectionLineVisible && !!sourceNode" :source-node="sourceNode" />
+      </g>
+    </svg>
+  </template>
+  <template v-else>
+    <svg class="vue-flow__edges vue-flow__container">
+      <MarkerDefinitions :default-color="defaultMarkerColor" />
+      <g>
+        <EdgeWrapper
+          v-for="edge of getEdges"
+          :id="edge.id"
+          :key="edge.id"
+          :edge="edge"
+          :name="getType(edge) ? edge.type ?? 'default' : 'default'"
+          :type="getType(edge)"
+          :selectable="typeof edge.selectable === 'undefined' ? elementsSelectable : edge.selectable"
+          :updatable="typeof edge.updatable === 'undefined' ? edgesUpdatable : edge.updatable"
+        />
+        <ConnectionLine v-if="connectionLineVisible && !!sourceNode" :source-node="sourceNode" />
+      </g>
+    </svg>
+  </template>
 </template>
