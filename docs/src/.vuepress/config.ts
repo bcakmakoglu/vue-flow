@@ -23,6 +23,9 @@ export default defineUserConfig<DefaultThemeOptions>({
   bundler: '@vuepress/bundler-vite',
   bundlerConfig: {
     viteOptions: {
+      optimizeDeps: {
+        include: ['@stackblitz/sdk'],
+      },
       plugins: [
         AutoImport({
           imports: ['vue', '@vueuse/core'],
@@ -110,6 +113,7 @@ export default defineUserConfig<DefaultThemeOptions>({
             '/examples/interaction',
             '/examples/multi',
             '/examples/stress',
+            '/examples/test',
           ],
         },
       ],

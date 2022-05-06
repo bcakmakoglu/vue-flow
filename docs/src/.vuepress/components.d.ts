@@ -9,6 +9,7 @@ declare module 'vue' {
     Banner: typeof import('./../../components/home/Banner.vue')['default']
     Basic: typeof import('./../../components/home/flows/Basic.vue')['default']
     Custom: typeof import('./../../components/home/edges/Custom.vue')['default']
+    Editor: typeof import('./../../components/stackblitz/Editor.vue')['default']
     Features: typeof import('./../../components/home/Features.vue')['default']
     Home: typeof import('./../../components/home/Home.vue')['default']
     Input: typeof import('./../../components/home/nodes/Input.vue')['default']
