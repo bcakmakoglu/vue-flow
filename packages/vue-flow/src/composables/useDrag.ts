@@ -115,7 +115,7 @@ function useDrag(params: UseDragParams) {
               if (node) lastPos = node.position
               onStop(event)
             })
-            .filter((event: any) => {
+            .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
               const filter = !event.ctrlKey && !event.button && !event.target.className.includes(noDragClassName)
 
               if (handleSelector) {
