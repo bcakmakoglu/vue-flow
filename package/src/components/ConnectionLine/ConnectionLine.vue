@@ -5,11 +5,9 @@ import { ConnectionLineType, Position } from '../../types'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
 
-interface ConnectionLineProps {
+const { sourceNode } = defineProps<{
   sourceNode: GraphNode
-}
-
-const { sourceNode } = defineProps<ConnectionLineProps>()
+}>()
 
 const {
   getNodes,

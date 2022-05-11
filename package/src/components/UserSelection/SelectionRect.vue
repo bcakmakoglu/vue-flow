@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-interface SelectionRectProps {
+const { width, height, x, y } = defineProps<{
   width: number
   height: number
   x: number
   y: number
-}
-
-const { width, height, x, y } = defineProps<SelectionRectProps>()
+}>()
 </script>
 
 <script lang="ts">
