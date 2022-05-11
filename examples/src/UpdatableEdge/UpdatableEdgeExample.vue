@@ -1,16 +1,6 @@
 <script lang="ts" setup>
-import {
-  VueFlow,
-  Controls,
-  updateEdge,
-  addEdge,
-  Elements,
-  FlowInstance,
-  Connection,
-  Edge,
-  FlowEvents,
-  ConnectionMode,
-} from '@braks/vue-flow'
+import type { Connection, Edge, Elements, FlowEvents, FlowInstance } from '@braks/vue-flow'
+import { ConnectionMode, Controls, VueFlow, addEdge, updateEdge } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   {
@@ -42,6 +32,7 @@ const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {
 }
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
+
 <template>
   <VueFlow
     v-model="elements"

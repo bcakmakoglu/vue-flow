@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { Elements } from '@braks/vue-flow'
+import { VueFlow } from '@braks/vue-flow'
 import Controls from './Controls.vue'
-import { VueFlow, Elements } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   { id: '1', label: 'Node 1', position: { x: 100, y: 100 } },
@@ -10,11 +11,13 @@ const initialElements: Elements = [
 
 const elements = ref(initialElements)
 </script>
+
 <template>
   <VueFlow v-model="elements">
     <Controls />
   </VueFlow>
 </template>
+
 <style>
 @import 'save.css';
 </style>

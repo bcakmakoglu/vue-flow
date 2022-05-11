@@ -1,5 +1,6 @@
 import { rectToBox } from './graph'
-import { EdgePositions, Getters, GraphEdge, GraphNode, HandleElement, Position, Rect, Viewport, XYPosition } from '~/types'
+import type { EdgePositions, Getters, GraphEdge, GraphNode, HandleElement, Rect, Viewport, XYPosition } from '~/types'
+import { Position } from '~/types'
 
 export const getHandlePosition = (position: Position, rect: Rect, handle?: HandleElement): XYPosition => {
   const x = (handle?.x ?? 0) + rect.x

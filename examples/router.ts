@@ -1,4 +1,5 @@
-import { createRouter, createWebHashHistory, RouterOptions } from 'vue-router'
+import type { RouterOptions } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 export const routes: RouterOptions['routes'] = [
   {

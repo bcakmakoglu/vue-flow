@@ -1,7 +1,7 @@
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { onKeyDown, onKeyPressed, onKeyUp } from '@vueuse/core'
 import useWindow from './useWindow'
-import { KeyCode } from '~/types'
+import type { KeyCode } from '~/types'
 import { isInputDOMNode } from '~/utils'
 
 export default (keyCode: Ref<KeyCode>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {

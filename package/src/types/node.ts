@@ -1,12 +1,12 @@
-import { Component, VNode } from 'vue'
-import { XYPosition, Position, SnapGrid, BaseElement, XYZPosition, Dimensions, ElementData } from './flow'
-import { DefaultNodeTypes, NodeComponent } from './components'
-import { HandleElement, ValidConnectionFunc } from './handle'
+import type { Component, VNode } from 'vue'
+import type { BaseElement, Dimensions, ElementData, Position, SnapGrid, XYPosition, XYZPosition } from './flow'
+import type { DefaultNodeTypes, NodeComponent } from './components'
+import type { HandleElement, ValidConnectionFunc } from './handle'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
 export type CoordinateExtent = [[number, number], [number, number]]
 
-export type NodeHandleBounds = {
+export interface NodeHandleBounds {
   source?: HandleElement[]
   target?: HandleElement[]
 }

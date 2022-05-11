@@ -1,8 +1,9 @@
 import useVueFlow from './useVueFlow'
 import { getHostForElement } from '~/utils'
-import { Connection, ConnectionMode, Getters, GraphEdge, HandleType, ValidConnectionFunc } from '~/types'
+import type { Connection, Getters, GraphEdge, HandleType, ValidConnectionFunc } from '~/types'
+import { ConnectionMode } from '~/types'
 
-type Result = {
+interface Result {
   elementBelow: Element | null
   isValid: boolean
   connection: Connection

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
-import { Handle, Position, Connection, Edge, NodeProps } from '@braks/vue-flow'
+import type { CSSProperties } from 'vue'
+import type { Connection, Edge, NodeProps } from '@braks/vue-flow'
+import { Handle, Position } from '@braks/vue-flow'
 
 interface ColorSelectorNodeProps extends NodeProps {
   data: {
@@ -16,11 +17,13 @@ const sourceHandleStyleB: CSSProperties = { ...targetHandleStyle, bottom: '10px'
 
 const onConnect = (params: Connection | Edge) => console.log('handle onConnect', params)
 </script>
+
 <script lang="ts">
 export default {
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <Handle type="target" :position="Position.Left" :style="targetHandleStyle" :on-connect="onConnect" />
   <div>

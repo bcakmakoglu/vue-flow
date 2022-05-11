@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
-import { getBezierPath, GraphNode, EdgeProps, MarkerType } from '@braks/vue-flow'
+import type { CSSProperties } from 'vue'
+import type { EdgeProps, GraphNode, MarkerType } from '@braks/vue-flow'
+import { getBezierPath } from '@braks/vue-flow'
 import { getEdgeParams } from './floating-edge-utils'
 
 interface FloatingEdgeProps extends EdgeProps {
@@ -33,6 +34,7 @@ const d = computed(
     '',
 )
 </script>
+
 <template>
   <g class="vue-flow__connection">
     <path

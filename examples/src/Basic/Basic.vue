@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, isNode, useVueFlow, Elements } from '@braks/vue-flow'
+import type { Elements } from '@braks/vue-flow'
+import { Background, Controls, MiniMap, VueFlow, isNode, useVueFlow } from '@braks/vue-flow'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
@@ -35,6 +36,7 @@ const logToObject = () => console.log(instance.value?.toObject())
 const resetTransform = () => instance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
+
 <template>
   <VueFlow v-model="elements" class="vue-flow-basic-example">
     <Background />

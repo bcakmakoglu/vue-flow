@@ -1,5 +1,5 @@
 import { defaultEdgeTypes, defaultNodeTypes } from './state'
-import { State, GraphEdge, GraphNode, ComputedGetters } from '~/types'
+import type { ComputedGetters, GraphEdge, GraphNode, State } from '~/types'
 import { getNodesInside, isEdgeVisible } from '~/utils'
 
 export default (state: State): ComputedGetters => {

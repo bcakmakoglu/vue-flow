@@ -7,6 +7,7 @@ const selectAll = () => {
   nodesSelectionActive.value = true
 }
 </script>
+
 <template>
   <aside>
     <div class="description">

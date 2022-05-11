@@ -45,11 +45,13 @@ const d = computed(
   () => `M${background.scaledGap / 2} 0 V${background.scaledGap} M0 ${background.scaledGap / 2} H${background.scaledGap}`,
 )
 </script>
+
 <script lang="ts">
 export default {
   name: 'Background',
 }
 </script>
+
 <template>
   <svg
     class="vue-flow__background"

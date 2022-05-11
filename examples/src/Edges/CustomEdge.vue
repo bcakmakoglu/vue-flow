@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { getEdgeCenter, getBezierPath, Position, useVueFlow, EdgeProps } from '@braks/vue-flow'
+import type { EdgeProps, Position } from '@braks/vue-flow'
+import { getBezierPath, getEdgeCenter, useVueFlow } from '@braks/vue-flow'
 
 interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   id: string
@@ -42,11 +43,13 @@ const center = computed(() =>
   }),
 )
 </script>
+
 <script lang="ts">
 export default {
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <path :id="props.id" :style="props.style" class="vue-flow__edge-path" :d="edgePath" :marker-end="props.markerEnd" />
   <foreignObject
@@ -62,6 +65,7 @@ export default {
     </body>
   </foreignObject>
 </template>
+
 <style>
 .edgebutton {
   border-radius: 999px;

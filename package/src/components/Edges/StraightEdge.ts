@@ -1,6 +1,6 @@
-import { FunctionalComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 import BaseEdge from './BaseEdge'
-import { EdgeProps } from '~/types'
+import type { EdgeProps } from '~/types'
 
 const StraightEdge: FunctionalComponent<EdgeProps> = function ({
   label,

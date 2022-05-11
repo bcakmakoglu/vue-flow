@@ -1,6 +1,6 @@
-import { Ref, ToRefs } from 'vue'
-import { WatchPausableReturn } from '@vueuse/core'
-import { FlowProps, GraphEdge, GraphNode, VueFlowStore } from '~/types'
+import type { Ref, ToRefs } from 'vue'
+import type { WatchPausableReturn } from '@vueuse/core'
+import type { FlowProps, GraphEdge, GraphNode, VueFlowStore } from '~/types'
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>, props: FlowProps, store: VueFlowStore) => {

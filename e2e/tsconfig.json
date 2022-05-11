@@ -3,10 +3,7 @@
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
+    "lib": ["DOM", "ESNext"],
     "noEmit": true,
     "declaration": false,
     "strict": true,
@@ -18,12 +15,8 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "types": [
-      "vite/client"
-    ],
+    "types": ["vite/client"]
   },
   "include": ["cypress"],
-  "exclude": [
-    "node_modules",
-  ],
+  "exclude": ["node_modules"]
 }

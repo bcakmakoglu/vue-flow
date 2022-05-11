@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import type { Connection, FlowInstance, OnConnectStartParams } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@braks/vue-flow'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
-import { VueFlow, Connection, OnConnectStartParams, FlowInstance, useVueFlow } from '@braks/vue-flow'
 
 const { nodes, edges, addEdges } = useVueFlow({
   nodes: [
@@ -26,6 +27,7 @@ const onConnect = (params: Connection) => {
   addEdges([params])
 }
 </script>
+
 <template>
   <VueFlow
     :select-nodes-on-drag="false"
@@ -44,6 +46,7 @@ const onConnect = (params: Connection) => {
     </template>
   </VueFlow>
 </template>
+
 <style>
 @import 'validation.css';
 </style>

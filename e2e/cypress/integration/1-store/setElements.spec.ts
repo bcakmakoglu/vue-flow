@@ -1,4 +1,5 @@
-import { useVueFlow, isEdge, isNode, Edge, Node, SetState, VueFlowStore } from '@braks/vue-flow'
+import type { Edge, Node, SetState, VueFlowStore } from '@braks/vue-flow'
+import { isEdge, isNode, useVueFlow } from '@braks/vue-flow'
 import { getElements } from '../../../../examples/src/Stress/utils'
 
 describe('test store action setElements', () => {

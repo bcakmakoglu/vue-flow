@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useDraggableCore } from '@braks/revue-draggable'
-import { CSSProperties } from 'vue'
+import type { CSSProperties } from 'vue'
 import { useVueFlow } from '../../composables'
-import { GraphNode, NodeComponent, SnapGrid } from '../../types'
+import type { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 import { getHandleBounds, getXYZPos } from '../../utils'
 
@@ -238,12 +238,14 @@ const getStyle = computed(() => {
   } as CSSProperties
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'Node',
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <div
     ref="nodeElement"

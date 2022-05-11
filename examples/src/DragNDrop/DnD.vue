@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, Node, useVueFlow } from '@braks/vue-flow'
+import type { Node } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@braks/vue-flow'
 import Sidebar from './Sidebar.vue'
 
 let id = 0
@@ -38,12 +39,14 @@ const onDrop = (event: DragEvent) => {
   }
 }
 </script>
+
 <template>
   <div class="dndflow" @drop="onDrop">
     <VueFlow @dragover="onDragOver" />
     <Sidebar />
   </div>
 </template>
+
 <style>
 @import 'dnd.css';
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useVueFlow } from '@braks/vue-flow'
+import { Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
 
 const isHidden = ref(false)
 
@@ -21,6 +21,7 @@ watchEffect(() => {
   edges.value.forEach((e) => (e.hidden = isHidden.value))
 })
 </script>
+
 <template>
   <VueFlow>
     <MiniMap />

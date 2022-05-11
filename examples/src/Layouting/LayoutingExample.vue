@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import dagre from 'dagre'
-import { VueFlow, Controls, ConnectionMode, Elements, isNode, CoordinateExtent, Position } from '@braks/vue-flow'
+import type { CoordinateExtent, Elements } from '@braks/vue-flow'
+import { ConnectionMode, Controls, Position, VueFlow, isNode } from '@braks/vue-flow'
 import initialElements from './initial-elements'
 
 const dagreGraph = new dagre.graphlib.Graph()
@@ -37,6 +38,7 @@ const onLayout = (direction: string) => {
   })
 }
 </script>
+
 <template>
   <div class="layoutflow">
     <VueFlow v-model="elements" :node-extent="nodeExtent" :connection-mode="ConnectionMode.Loose" @pane-ready="onLayout('TB')">
@@ -48,6 +50,7 @@ const onLayout = (direction: string) => {
     </div>
   </div>
 </template>
+
 <style>
 @import 'layouting.css';
 </style>

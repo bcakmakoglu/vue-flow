@@ -1,22 +1,15 @@
 import { createHooks } from './hooks'
+import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '~/types'
+import { ConnectionLineType, ConnectionMode, PanOnScrollMode } from '~/types'
 import {
-  ConnectionMode,
-  State,
-  PanOnScrollMode,
-  DefaultNodeTypes,
-  DefaultEdgeTypes,
-  ConnectionLineType,
-  FlowOptions,
-} from '~/types'
-import {
+  BezierEdge,
   DefaultNode,
   InputNode,
   OutputNode,
-  BezierEdge,
+  SimpleBezierEdge,
   SmoothStepEdge,
   StepEdge,
   StraightEdge,
-  SimpleBezierEdge,
 } from '~/components'
 
 export const defaultNodeTypes: DefaultNodeTypes = {

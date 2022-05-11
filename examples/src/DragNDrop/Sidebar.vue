@@ -6,6 +6,7 @@ const onDragStart = (event: DragEvent, nodeType: string) => {
   }
 }
 </script>
+
 <template>
   <aside>
     <div class="description">You can drag these nodes to the pane on the left.</div>

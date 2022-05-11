@@ -1,6 +1,7 @@
-import { FunctionalComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 import Handle from '../Handle/Handle.vue'
-import { NodeProps, Position } from '~/types'
+import type { NodeProps } from '~/types'
+import { Position } from '~/types'
 
 const DefaultNode: FunctionalComponent<NodeProps> = function ({
   sourcePosition = Position.Bottom,

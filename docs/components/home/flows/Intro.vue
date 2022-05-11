@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVueFlow, VueFlow, Handle, Position } from '@braks/vue-flow'
+import { Handle, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import BoxNode from '../nodes/Box.vue'
 import Heart from '~icons/mdi/heart'
@@ -170,6 +170,7 @@ const scrollTo = () => {
   }
 }
 </script>
+
 <template>
   <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
     <template #node-box="props">
@@ -208,6 +209,7 @@ const scrollTo = () => {
     </template>
   </VueFlow>
 </template>
+
 <style>
 .intro {
   @apply cursor-pointer

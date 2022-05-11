@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useVueFlow } from '../../composables'
-import { SelectionRect as Rect } from '../../types'
+import type { SelectionRect as Rect } from '../../types'
 import { getConnectedEdges, getNodesInside } from '../../utils'
 import SelectionRect from './SelectionRect.vue'
 import { getMousePosition } from './utils'
@@ -110,11 +110,13 @@ onBeforeUnmount(() => {
   reset()
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'UserSelection',
 }
 </script>
+
 <template>
   <div ref="user-selection" class="vue-flow__selectionpane vue-flow__container">
     <SelectionRect v-if="rect.draw" :width="rect.width" :height="rect.height" :x="rect.x" :y="rect.y" />

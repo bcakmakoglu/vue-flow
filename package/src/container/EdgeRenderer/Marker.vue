@@ -12,11 +12,13 @@ const {
   color = 'none',
 } = defineProps<MarkerProps>()
 </script>
+
 <script lang="ts">
 export default {
   name: 'Marker',
 }
 </script>
+
 <template>
   <marker
     :id="id"

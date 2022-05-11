@@ -1,20 +1,6 @@
 <script lang="ts" setup>
-import {
-  VueFlow,
-  addEdge,
-  MiniMap,
-  Controls,
-  Background,
-  Node,
-  Elements,
-  FlowInstance,
-  FlowTransform,
-  SnapGrid,
-  Connection,
-  Edge,
-  FlowEvents,
-  MarkerType,
-} from '@braks/vue-flow'
+import type { Connection, Edge, Elements, FlowEvents, FlowInstance, FlowTransform, Node, SnapGrid } from '@braks/vue-flow'
+import { Background, Controls, MarkerType, MiniMap, VueFlow, addEdge } from '@braks/vue-flow'
 
 const onNodeDragStart = (e: FlowEvents['nodeDragStart']) => console.log('drag start', e)
 const onNodeDrag = (e: FlowEvents['nodeDrag']) => console.log('drag', e)
@@ -114,6 +100,7 @@ const nodeColor = (n: Node): string => {
 const elements = ref<Elements>(initialElements)
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
+
 <template>
   <VueFlow
     v-model="elements"

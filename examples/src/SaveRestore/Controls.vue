@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { useZoomPanHelper, FlowExportObject, Node, useVueFlow } from '@braks/vue-flow'
+import type { FlowExportObject, Node } from '@braks/vue-flow'
+import { useVueFlow, useZoomPanHelper } from '@braks/vue-flow'
 
 const flowKey = 'example-flow'
 const state = useStorage<FlowExportObject>(flowKey, {
@@ -38,6 +39,7 @@ const onAdd = () => {
   addNodes([newNode])
 }
 </script>
+
 <template>
   <div class="save__controls">
     <button @click="onSave">save</button>
