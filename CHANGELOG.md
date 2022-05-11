@@ -2,7 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.4.9] - 2022-05-11
+
+[233d585](233d585a92ac68b6b55202926a0893aa8acac9e7)...[bcaf346](bcaf346926c6b82905fdf142ab5d6f54584e7d24)
 
 ### Bug Fixes
 
@@ -14,10 +16,16 @@ All notable changes to this project will be documented in this file.
 - Missing mouseevent on minimap node click ([c6840a3](c6840a31ad333898a63a609eef98dd4530b0af54))
 - Cancel edge update if connection exists ([9cc7806](9cc7806972d2c0f738027f7ecbca913c8418b7d2))
 - Ensure scope dispose is run ([c4f9b2c](c4f9b2c780b074b2febaf426f1754bd61dcf681c))
+- Wrong elements removed when index can't be found ([b68dc4c](b68dc4c0327a586018c763abfa57020b7c6bc841))
+- Fit view not respecting options nodes ([5fb0280](5fb0280e5bb7886ea01b22398e08cb3fe267b76a))
+- Add edges not respecting default edge options ([e2e3a65](e2e3a650c18d930695747e757d7d9aefb823d92a))
 
 ### Features
 
 - Add emits property to store ([f5d2453](f5d245322b74c5a861c524c9e5041e2d925735d6))
+- Add pattern slot to background ([152801e](152801edacf1d48a665e446351f8a13c474c6d23))
+- Export storage class ([412c0e5](412c0e500fe84744978a4d4aaad14cb917f9e232))
+- Export base edge ([be2a372](be2a37246a3a1bb5743363d699a2f3be25e9ab48))
 
 ### Miscellaneous Tasks
 
@@ -37,6 +45,14 @@ All notable changes to this project will be documented in this file.
 - Update auto imports ([19bc4fd](19bc4fda240b16c2dbc7179f93ec1d49df5c817c))
 - Update README.md ([aaccbb4](aaccbb4b3e4c2f60f96a373a285b531d2dccc860))
 - Move changelog update to postrelease ([18f0d2f](18f0d2f1ce42a7aec0752852780831c5613bae7d))
+- Update eslint, prettier & antfu/eslint-config ([447d24c](447d24c5a8d1a86b28a2bc1b32080446acc858b7))
+- Lint files ([22845c2](22845c210da8a48dc489fcee31bd482479639e5f))
+- Update eslint config ([ca552dc](ca552dc8aef2b37ea5fc7601ef4b6a347588b92a))
+- Explicitly export defaults from vue files ([69ed530](69ed530198fb84044b1985f4b7e6daf639c2611c))
+- Update pkg and root deps ([c396b4f](c396b4fc3cc1263504f1ccf7e492c5dc0d6487ae))
+- Remove "private" interfaces from components ([75a94e7](75a94e7b2274e19f07932c44c3204a30275cf846))
+- Update vite ([75390a7](75390a75e79b5600110582f36aff1445f9cdf1ff))
+- Update typedoc & unplugin-auto-import ([36de50e](36de50ede916b3f9b4a9f87bbaa2725ba7aff397))
 
 ### Refactor
 
@@ -54,6 +70,8 @@ All notable changes to this project will be documented in this file.
 - Defer grouping to next tick ([e2fd3b4](e2fd3b44efb64f5329687ca06eab9396b965002e))
 - Minimize position change loops ([0becad7](0becad73ad7ceea67cc445cf72c9ef86bec23a9e))
 - Remove scoped slot props from handles ([1b97109](1b97109b94d81d466513ef42ac8297ff996b6e25))
+- Update edge type to include default edge types ([1fab031](1fab0317d5630e73a514223f200653407835a702))
+- Use watchEffect for keypress ([8e91e4a](8e91e4a8e5385d2a97bc6f94d0f6fb69792aea01))
 
 ### Testing
 
