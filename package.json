@@ -26,7 +26,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.6.2",
     "shx": "^0.3.4",
-    "turbo": "^1.2.1",
-    "typescript": "^4.5.5"
+    "turbo": "^1.2.8",
+    "typescript": "^4.6.4"
   }
 }
