@@ -2,8 +2,7 @@
 import type { EdgeChange, NodeChange } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
 import { getConnectedEdges } from '../../utils'
-import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
-import UserSelection from '../../components/UserSelection/UserSelection.vue'
+import { NodesSelection, UserSelection } from '../../components'
 
 const {
   id,

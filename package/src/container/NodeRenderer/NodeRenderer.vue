@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import NodeWrapper from '../../components/Nodes/NodeWrapper.vue'
+import { NodeWrapper } from '../../components'
 import type { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
