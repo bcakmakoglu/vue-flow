@@ -4,11 +4,9 @@ import type { MarkerProps, MarkerType } from '../../types/edge'
 import { getMarkerId } from '../../utils'
 import Marker from './Marker.vue'
 
-interface MarkerDefinitionsProps {
+const { defaultColor = '' } = defineProps<{
   defaultColor: string
-}
-
-const { defaultColor = '' } = defineProps<MarkerDefinitionsProps>()
+}>()
 
 const { edges } = $(useVueFlow())
 
