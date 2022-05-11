@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import EdgeWrapper from '../../components/Edges/EdgeWrapper.vue'
-import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
+import { ConnectionLine, EdgeWrapper } from '../../components'
 import { useVueFlow } from '../../composables'
 import { groupEdgesByZLevel } from '../../utils'
 import type { EdgeComponent, GraphEdge } from '../../types'
