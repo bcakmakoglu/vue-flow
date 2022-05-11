@@ -53,6 +53,6 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['vue', '@vueuse/core', '@braks/revue-draggable', 'd3-zoom', 'd3-selection'],
+    include: ['vue', '@vueuse/core', '@braks/revue-draggable', 'd3', 'd3-zoom', 'd3-selection'],
   },
 })
