@@ -24,7 +24,7 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "build": "vite build",
-    "types": "yarn prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && shx rm -rf tmp && yarn lint:dist",
+    "types": "yarn prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && shx rm -rf tmp",
     "typedoc": "typedoc --tsconfig tsconfig.docs.json dist/index.d.ts --out typedocs",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../.gitignore .",
