@@ -4,4 +4,5 @@ module.exports = {
     'vue/no-setup-props-destructure': 0,
   },
   extends: ['../.eslintrc.js'],
+  ignorePatterns: ['!**/*'],
 }
