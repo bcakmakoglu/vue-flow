@@ -54,11 +54,13 @@ onDragStop(({ event }) => {
   getSelectedNodes.forEach((node) => (node.dragging = false))
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'NodesSelection',
 }
 </script>
+
 <template>
   <div class="vue-flow__nodesselection vue-flow__container" :class="noPanClassName" :style="{ transform }">
     <div ref="el" class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />

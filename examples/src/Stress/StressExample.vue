@@ -16,6 +16,7 @@ onPaneReady((i) => {
   console.log(i.getElements())
 })
 </script>
+
 <template>
   <VueFlow />
 </template>

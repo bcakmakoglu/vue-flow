@@ -1,7 +1,7 @@
-import { Dimensions, Position, XYPosition } from './flow'
-import { Connection } from './connection'
-import { GraphEdge } from './edge'
-import { GraphNode } from './node'
+import type { Dimensions, Position, XYPosition } from './flow'
+import type { Connection } from './connection'
+import type { GraphEdge } from './edge'
+import type { GraphNode } from './node'
 
 export type HandleType = 'source' | 'target'
 

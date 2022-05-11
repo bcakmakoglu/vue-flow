@@ -61,16 +61,16 @@ This is how the default handle component is built:
 
 ```vue
 <script lang="ts" setup>
-import { useHandle, useVueFlow, Position, NodeId } from '@braks/vue-flow'
-import type { HandleProps } from '@braks/vue-flow'
+import { NodeId, useHandle, useVueFlow } from '@braks/vue-flow'
+import type { HandleProps, Position } from '@braks/vue-flow'
 
-const { id, hooks, connectionStartHandle } = useVueFlow()
 const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',
   position: 'top' as Position,
   connectable: true,
 })
 
+const { id, hooks, connectionStartHandle } = useVueFlow()
 const nodeId = inject(NodeId, '')
 
 const { onMouseDown, onClick } = useHandle()
@@ -80,21 +80,22 @@ const onMouseDownHandler = (event: MouseEvent) =>
   )
 const onClickHandler = (event: MouseEvent) => onClick(event, props.id ?? null, nodeId, props.type, props.isValidConnection)
 </script>
+
 <script lang="ts">
 export default {
   name: 'Handle',
 }
 </script>
+
 <template>
   <div
     :data-handleid="props.id"
     :data-nodeid="nodeId"
     :data-handlepos="props.position"
+    class="vue-flow__handle nodrag"
     :class="[
-      'vue-flow__handle',
       `vue-flow__handle-${props.position}`,
       `vue-flow__handle-${id}`,
-      'nodrag',
       {
         source: props.type !== 'target',
         target: props.type === 'target',

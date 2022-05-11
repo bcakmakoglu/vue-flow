@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, Elements } from '@braks/vue-flow'
+import type { Elements } from '@braks/vue-flow'
+import { VueFlow } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   { id: '1', label: '-', position: { x: 100, y: 100 } },
@@ -27,6 +28,7 @@ const updateNode = () => {
 
 onMounted(updateNode)
 </script>
+
 <template>
   <VueFlow v-model="elements" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
     <div class="updatenode__controls">
@@ -43,6 +45,7 @@ onMounted(updateNode)
     </div>
   </VueFlow>
 </template>
+
 <style>
 @import 'updatenode.css';
 </style>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { EdgeChange, NodeChange } from '../../types'
-import { useVueFlow, useKeyPress } from '../../composables'
+import type { EdgeChange, NodeChange } from '../../types'
+import { useKeyPress, useVueFlow } from '../../composables'
 import { getConnectedEdges } from '../../utils'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
@@ -69,12 +69,14 @@ const selectionKeyPressed = useKeyPress($$(selectionKeyCode), (keyPressed) => {
   })
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'SelectionPane',
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <UserSelection v-if="selectionKeyPressed" :key="`user-selection-${id}`" />
   <NodesSelection v-if="nodesSelectionActive" :key="`nodes-selection-${id}`" />

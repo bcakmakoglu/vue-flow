@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Position, Elements, VueFlow, Controls, MiniMap, Background, useVueFlow } from '@braks/vue-flow'
+import type { Elements } from '@braks/vue-flow'
+import { Background, Controls, MiniMap, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
+
+const emit = defineEmits(['pane'])
 
 const elements = ref<Elements>([
   {
@@ -77,8 +80,6 @@ const elements = ref<Elements>([
   { id: 'e6-8', type: 'step', source: '7', target: '8', animated: true },
 ])
 
-const emit = defineEmits(['pane'])
-
 const { onPaneReady } = useVueFlow({
   modelValue: elements.value,
   zoomOnScroll: false,
@@ -87,6 +88,7 @@ const { onPaneReady } = useVueFlow({
 
 onPaneReady((i) => emit('pane', i))
 </script>
+
 <template>
   <div class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase overflow-hidden border-2">
     <VueFlow>

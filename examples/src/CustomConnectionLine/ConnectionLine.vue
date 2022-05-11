@@ -7,6 +7,7 @@ interface CustomConnectionLineProps {
 }
 const props = defineProps<CustomConnectionLineProps>()
 </script>
+
 <template>
   <g>
     <path

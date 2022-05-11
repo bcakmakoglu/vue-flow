@@ -1,12 +1,16 @@
-import { Selection, ZoomBehavior } from 'd3'
-import { Rect, XYPosition } from './flow'
+import type { Selection, ZoomBehavior } from 'd3'
+import type { Rect, XYPosition } from './flow'
 
 export type D3Zoom = ZoomBehavior<HTMLDivElement, unknown>
 export type D3Selection = Selection<HTMLDivElement, unknown, any, any>
 export type D3ZoomHandler = (this: HTMLDivElement, event: any, d: unknown) => void
 
 /** Transform x, y, z */
-export type Viewport = { x: number; y: number; zoom: number }
+export interface Viewport {
+  x: number
+  y: number
+  zoom: number
+}
 
 export type KeyCode = number | string
 
@@ -16,7 +20,7 @@ export enum PanOnScrollMode {
   Horizontal = 'horizontal',
 }
 
-export type ViewportFuncsOptions = {
+export interface ViewportFuncsOptions {
   duration?: number
 }
 
@@ -32,7 +36,7 @@ export type FitViewParams = {
   nodes?: string[]
 } & ViewportFuncsOptions
 
-export type FlowTransform = {
+export interface FlowTransform {
   x: number
   y: number
   zoom: number

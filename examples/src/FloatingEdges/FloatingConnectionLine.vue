@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { getBezierPath, GraphNode, Position } from '@braks/vue-flow'
+import type { GraphNode, Position } from '@braks/vue-flow'
+import { getBezierPath } from '@braks/vue-flow'
 import { getEdgeParams } from './floating-edge-utils'
 
 interface FloatingConnectionLineProps {
@@ -30,6 +31,7 @@ const d = computed(() =>
   }),
 )
 </script>
+
 <template>
   <g>
     <path fill="none" stroke="#222" :stroke-width="1.5" class="animated" :d="d" />

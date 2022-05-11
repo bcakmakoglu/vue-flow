@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, addEdge, Connection, Edge, Elements, isEdge, FlowInstance, Position } from '@braks/vue-flow'
+import type { Connection, Edge, Elements, FlowInstance } from '@braks/vue-flow'
+import { Position, VueFlow, addEdge, isEdge } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   {
@@ -33,6 +34,7 @@ const changeType = () => {
   })
 }
 </script>
+
 <template>
   <VueFlow v-model="elements" @connect="onConnect" @pane-ready="onLoad">
     <button :style="{ position: 'absolute', right: 10, top: 30, zIndex: 4 }" @click="changeType">change type</button>

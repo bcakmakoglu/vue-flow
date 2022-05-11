@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { reactive, watch } from 'vue'
-import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
-import { FlowInstance } from '@braks/vue-flow'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import type { FlowInstance } from '@braks/vue-flow'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
@@ -22,6 +22,7 @@ watch([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoin
   }, 5),
 )
 </script>
+
 <template>
   <div class="w-full dark:(bg-black text-white)">
     <div
@@ -42,6 +43,7 @@ watch([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoin
     </div>
   </div>
 </template>
+
 <style>
 .button {
   @apply z-1 shadow-lg transition-colors duration-200 text-white font-semibold text-lg mt-4 px-5 py-3 rounded-lg bg-green-500;

@@ -1,23 +1,23 @@
 import { clampPosition, isGraphEdge, isGraphNode } from './graph'
-import {
+import type {
+  CoordinateExtent,
+  Edge,
   EdgeChange,
   EdgeSelectionChange,
   ElementChange,
-  FlowElements,
-  GraphNode,
-  NodeChange,
-  NodeSelectionChange,
-  NodePositionChange,
-  Getters,
-  CoordinateExtent,
-  XYPosition,
-  GraphEdge,
-  Node,
   FlowElement,
-  Edge,
+  FlowElements,
+  Getters,
+  GraphEdge,
+  GraphNode,
+  Node,
+  NodeChange,
+  NodePositionChange,
+  NodeSelectionChange,
+  XYPosition,
 } from '~/types'
 
-type CreatePositionChangeParams = {
+interface CreatePositionChangeParams {
   node: GraphNode
   nodeExtent: CoordinateExtent
   diff?: XYPosition

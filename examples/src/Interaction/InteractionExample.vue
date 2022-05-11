@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, useVueFlow } from '@braks/vue-flow'
+import { Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
 
 const {
   nodesDraggable,
@@ -41,6 +41,7 @@ onPaneScroll((event) => captureZoomScroll.value && console.log('pane scroll', ev
 onPaneContextMenu((event) => captureZoomClick && console.log('pane ctx menu', event))
 onMoveEnd((flowTransform) => console.log('move end', flowTransform))
 </script>
+
 <template>
   <VueFlow>
     <MiniMap />

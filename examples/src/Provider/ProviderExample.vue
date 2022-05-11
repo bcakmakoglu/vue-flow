@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { Elements, FlowInstance } from '@braks/vue-flow'
+import { ConnectionMode, Controls, VueFlow, useVueFlow } from '@braks/vue-flow'
 import Sidebar from './Sidebar.vue'
-import { VueFlow, Controls, FlowInstance, Elements, ConnectionMode, useVueFlow } from '@braks/vue-flow'
 
 const onLoad = (flowInstance: FlowInstance) => console.log('flow loaded:', flowInstance)
 
@@ -16,6 +17,7 @@ const initialElements: Elements = [
 useVueFlow()
 const elements = ref<Elements>(initialElements)
 </script>
+
 <template>
   <div class="providerflow">
     <Sidebar />
@@ -26,6 +28,7 @@ const elements = ref<Elements>(initialElements)
     </div>
   </div>
 </template>
+
 <style>
 @import 'provider.css';
 </style>

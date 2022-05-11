@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
+import type { CSSProperties } from 'vue'
 import { Handle, Position } from '@braks/vue-flow'
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
 const props = defineProps<Props>()
 const nodeStyles: CSSProperties = { padding: '10px 15px', border: '1px solid #ddd' }
 </script>
+
 <template>
   <div :key="props.id" :style="nodeStyles">
     <div>node {{ props.id }}</div>

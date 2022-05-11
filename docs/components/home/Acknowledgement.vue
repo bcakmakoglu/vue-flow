@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Heart from '~icons/mdi/heart'
 </script>
+
 <template>
   <div id="acknowledgement" class="w-full bg-black text-white border-y-1 border-white">
     <div class="max-w-11/12 md:max-w-6/12 m-auto py-4 md:(pb-12 pt-6) text-center">

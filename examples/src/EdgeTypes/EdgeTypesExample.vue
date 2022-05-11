@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { FlowInstance } from '@braks/vue-flow'
+import { Controls, MiniMap, VueFlow } from '@braks/vue-flow'
 import { getElements } from './utils'
-import { VueFlow, MiniMap, Controls, FlowInstance } from '@braks/vue-flow'
 
 const onLoad = (flowInstance: FlowInstance) => {
   flowInstance.fitView()
@@ -9,6 +10,7 @@ const onLoad = (flowInstance: FlowInstance) => {
 
 const elements = getElements()
 </script>
+
 <template>
   <VueFlow v-model="elements" :min-zoom="0.2" @pane-ready="onLoad">
     <MiniMap />

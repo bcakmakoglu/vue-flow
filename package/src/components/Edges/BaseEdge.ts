@@ -1,4 +1,4 @@
-import { CSSProperties, FunctionalComponent } from 'vue'
+import type { CSSProperties, FunctionalComponent } from 'vue'
 import EdgeText from './EdgeText.vue'
 
 interface Props {

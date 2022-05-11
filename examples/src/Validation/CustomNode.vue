@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { Position, Handle, NodeProps, ValidConnectionFunc } from '@braks/vue-flow'
+import type { NodeProps, ValidConnectionFunc } from '@braks/vue-flow'
+import { Handle, Position } from '@braks/vue-flow'
 
 interface CustomNodeProps extends NodeProps {
   id: string
@@ -8,11 +9,13 @@ interface CustomNodeProps extends NodeProps {
 
 const props = defineProps<CustomNodeProps>()
 </script>
+
 <script lang="ts">
 export default {
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <Handle type="target" :position="Position.Left" :is-valid-connection="props.isValidSourcePos" />
   <div>{{ props.id }}</div>

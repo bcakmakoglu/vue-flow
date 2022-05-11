@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { templateRef } from '@vueuse/core'
+import type { Elements, FlowInstance } from '@braks/vue-flow'
+import { VueFlow } from '@braks/vue-flow'
 import RGBNode from './RGBNode.vue'
 import RGBOutputNode from './RGBOutputNode.vue'
-import { Elements, FlowInstance, VueFlow } from '@braks/vue-flow'
 
-type Colors = {
+interface Colors {
   red: number
   green: number
   blue: number
@@ -31,6 +32,7 @@ const color = ref<Colors>({
 })
 const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (color.value[c] = Number(val))
 </script>
+
 <template>
   <div ref="page" class="demo-flow">
     <VueFlow v-model="elements" @pane-ready="onLoad">
@@ -43,6 +45,7 @@ const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (c
     </VueFlow>
   </div>
 </template>
+
 <style>
 .demo-flow {
   display: flex;

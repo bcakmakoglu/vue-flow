@@ -1,21 +1,35 @@
-import { ComputedRef, CSSProperties, ToRefs } from 'vue'
-import { Dimensions, ElementData, Elements, FlowElements, FlowInstance, FlowOptions, Rect, SnapGrid, XYPosition } from './flow'
-import { EdgeComponent, NodeComponent, DefaultNodeTypes, DefaultEdgeTypes } from './components'
-import { Connection, ConnectionLineType, ConnectionMode } from './connection'
-import { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
-import { GraphNode, CoordinateExtent, Node } from './node'
-import { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
-import { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
-import { NodeChange, EdgeChange } from './changes'
-import { StartHandle, HandleType } from './handle'
+import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
+import type {
+  Dimensions,
+  ElementData,
+  Elements,
+  FlowElements,
+  FlowInstance,
+  FlowOptions,
+  Rect,
+  SnapGrid,
+  XYPosition,
+} from './flow'
+import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
+import type { Connection, ConnectionLineType, ConnectionMode } from './connection'
+import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
+import type { CoordinateExtent, GraphNode, Node } from './node'
+import type { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
+import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
+import type { EdgeChange, NodeChange } from './changes'
+import type { HandleType, StartHandle } from './handle'
 
-export type UpdateNodeDimensionsParams = {
+export interface UpdateNodeDimensionsParams {
   id: string
   nodeElement: HTMLDivElement
   forceUpdate?: boolean
 }
 
-export type UpdateNodePositionsParams = { id?: string; diff?: XYPosition; dragging?: boolean }
+export interface UpdateNodePositionsParams {
+  id?: string
+  diff?: XYPosition
+  dragging?: boolean
+}
 
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** Event hooks, you can manipulate the triggers at your own peril */

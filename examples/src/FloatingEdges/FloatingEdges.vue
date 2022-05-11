@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, Background, MiniMap, Controls, MarkerType, useVueFlow } from '@braks/vue-flow'
+import { Background, Controls, MarkerType, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
 import FloatingEdge from './FloatingEdge.vue'
 import FloatingConnectionLine from './FloatingConnectionLine.vue'
 import { createElements } from './floating-edge-utils'
@@ -10,6 +10,7 @@ const { addEdges, onConnect, onPaneReady, getNodes } = useVueFlow({
 onPaneReady(({ fitView }) => fitView())
 onConnect((params) => addEdges([{ ...params, type: 'floating', markerEnd: MarkerType.Arrow }]))
 </script>
+
 <template>
   <div class="floatingedges">
     <VueFlow>
@@ -26,6 +27,7 @@ onConnect((params) => addEdges([{ ...params, type: 'floating', markerEnd: Marker
     </VueFlow>
   </div>
 </template>
+
 <style>
 .floatingedges {
   flex-direction: column;

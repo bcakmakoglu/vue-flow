@@ -41,11 +41,13 @@ const onInteractiveChangeHandler = () => {
   emit('interaction-change', !isInteractive.value)
 }
 </script>
+
 <script lang="ts">
 export default {
   name: 'Controls',
 }
 </script>
+
 <template>
   <div class="vue-flow__controls">
     <template v-if="showZoom">

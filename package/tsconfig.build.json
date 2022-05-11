@@ -4,10 +4,7 @@
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
+    "lib": ["DOM", "ESNext"],
     "declaration": true,
     "declarationDir": "./dist",
     "strict": true,
@@ -19,25 +16,15 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "types": [
-      "vite/client",
-      "vue/macros"
-    ],
+    "types": ["vite/client", "vue/macros"],
     "paths": {
-      "~/*": [
-        "src/*"
-      ]
+      "~/*": ["src/*"]
     },
     "plugins": [
       // Transform paths in output .d.ts files (Include this line if you output declarations files)
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -22,10 +22,10 @@ const nodes = [
   {
     id: '1',
     label: 'Node 1',
-    position: { x: 0 , y: 0 },
+    position: { x: 0, y: 0 },
     isValidSourcePos: (connection) => {
       return connection.target === '2'
-    }
+    },
   },
 ]
 ```

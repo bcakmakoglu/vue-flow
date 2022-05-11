@@ -1,9 +1,9 @@
-import { Component, CSSProperties, VNode } from 'vue'
-import { GraphEdge, Edge, DefaultEdgeOptions } from './edge'
-import { GraphNode, CoordinateExtent, Node } from './node'
-import { ConnectionLineType, ConnectionMode } from './connection'
-import { KeyCode, PanOnScrollMode, ViewportFuncs } from './zoom'
-import { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
+import type { CSSProperties, Component, VNode } from 'vue'
+import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
+import type { CoordinateExtent, GraphNode, Node } from './node'
+import type { ConnectionLineType, ConnectionMode } from './connection'
+import type { KeyCode, PanOnScrollMode, ViewportFuncs } from './zoom'
+import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
 export type ElementData = any
 
@@ -77,7 +77,7 @@ export interface SelectionRect extends Rect {
   draw: boolean
 }
 
-export type FlowExportObject = {
+export interface FlowExportObject {
   nodes: GraphNode[]
   edges: GraphEdge[]
   position: [number, number]
@@ -99,9 +99,9 @@ export interface FlowProps {
   nodes?: Node[]
   edges?: Edge[]
   /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
-  edgeTypes?: { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & { [key: string]: EdgeComponent }
+  edgeTypes?: { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & Record<string, EdgeComponent>
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
-  nodeTypes?: { [key in keyof DefaultNodeTypes]?: NodeComponent } & { [key: string]: NodeComponent }
+  nodeTypes?: { [key in keyof DefaultNodeTypes]?: NodeComponent } & Record<string, NodeComponent>
   connectionMode?: ConnectionMode
   connectionLineType?: ConnectionLineType
   connectionLineStyle?: CSSProperties | null

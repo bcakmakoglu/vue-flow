@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import { useVueFlow, useZoomPanHelper, useWindow } from '../../composables'
-import { Dimensions, FlowExportObject, FlowInstance, XYPosition } from '../../types'
+import { useVueFlow, useWindow, useZoomPanHelper } from '../../composables'
+import type { Dimensions, FlowExportObject, FlowInstance, XYPosition } from '../../types'
 import { pointToRendererPoint } from '../../utils'
 
 const { id, nodes, edges, viewport, snapToGrid, snapGrid, dimensions, setState, fitViewOnInit, emits } = $(useVueFlow())
@@ -68,11 +68,13 @@ onMounted(async () => {
   emits.paneReady(instance)
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'Transform',
 }
 </script>
+
 <template>
   <div
     :key="`transform-${id}`"

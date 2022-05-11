@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import type { Elements, Node } from '@braks/vue-flow'
+import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow, useZoomPanHelper } from '@braks/vue-flow'
 import CustomNode from './CustomNode.vue'
-import { VueFlow, useZoomPanHelper, Elements, Node, ConnectionLineType, ConnectionMode, MarkerType } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   {
@@ -171,6 +172,7 @@ const onPaneClick = (evt: MouseEvent) =>
     type: 'custom',
   } as Node))
 </script>
+
 <template>
   <VueFlow
     v-model="elements"

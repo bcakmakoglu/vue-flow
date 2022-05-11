@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { MarkerType, getBezierPath, Position, EdgeProps } from '@braks/vue-flow'
+import type { EdgeProps, MarkerType, Position } from '@braks/vue-flow'
+import { getBezierPath } from '@braks/vue-flow'
 
 interface CustomEdgeProps extends EdgeProps {
   source: string
@@ -33,11 +34,13 @@ const edgePath = computed(() =>
   }),
 )
 </script>
+
 <script lang="ts">
 export default {
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <path
     :id="props.id"
@@ -47,12 +50,7 @@ export default {
     :marker-end="props.markerEnd"
   />
   <text>
-    <textPath
-      :href="`#${props.id}`"
-      :style="{ fontSize: '1.25rem', fill: 'white' }"
-      startOffset="50%"
-      text-anchor="middle"
-    >
+    <textPath :href="`#${props.id}`" :style="{ fontSize: '1.25rem', fill: 'white' }" startOffset="50%" text-anchor="middle">
       {{ props.data?.text }}
     </textPath>
   </text>

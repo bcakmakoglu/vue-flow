@@ -3,6 +3,7 @@ import { Handle, Position } from '@braks/vue-flow'
 
 const emit = defineEmits(['next'])
 </script>
+
 <template>
   <div class="px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
     <slot />

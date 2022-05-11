@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { EdgeTextProps } from '../../types/components'
-import { Rect } from '../../types'
+import type { Rect } from '../../types'
 
 const props = withDefaults(defineProps<EdgeTextProps>(), {
   labelStyle: () => ({}),
@@ -19,18 +19,20 @@ onMounted(() => {
 })
 const transform = computed(() => `translate(${props.x - edgeRefBbox.width / 2} ${props.y - edgeRefBbox.height / 2})`)
 </script>
+
 <script lang="ts">
 export default {
   name: 'EdgeText',
 }
 </script>
+
 <template>
   <g :transform="transform" :class="props.class" class="vue-flow__edge-textwrapper">
     <rect
       v-if="props.labelShowBg"
       class="vue-flow__edge-textbg"
-      :width="edgeRefBbox.width + 2 * props.labelBgPadding[0] + 'px'"
-      :height="edgeRefBbox.height + 2 * props.labelBgPadding[1] + 'px'"
+      :width="`${edgeRefBbox.width + 2 * props.labelBgPadding[0]}px`"
+      :height="`${edgeRefBbox.height + 2 * props.labelBgPadding[1]}px`"
       :x="-props.labelBgPadding[0]"
       :y="-props.labelBgPadding[1]"
       :style="props.labelBgStyle"

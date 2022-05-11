@@ -1,7 +1,7 @@
-import { Component, CSSProperties, VNode } from 'vue'
-import { Position, BaseElement, ElementData } from './flow'
-import { GraphNode } from './node'
-import { DefaultEdgeTypes, EdgeComponent, EdgeTextProps } from './components'
+import type { CSSProperties, Component, VNode } from 'vue'
+import type { BaseElement, ElementData, Position } from './flow'
+import type { GraphNode } from './node'
+import type { DefaultEdgeTypes, EdgeComponent, EdgeTextProps } from './components'
 
 /** Edge markers */
 export enum MarkerType {

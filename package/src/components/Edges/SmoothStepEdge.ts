@@ -1,7 +1,8 @@
-import { FunctionalComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 import { getCenter, getSmoothStepPath } from './utils'
 import BaseEdge from './BaseEdge'
-import { Position, SmoothStepEdgeProps } from '~/types'
+import type { SmoothStepEdgeProps } from '~/types'
+import { Position } from '~/types'
 
 const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
   sourcePosition = Position.Bottom,

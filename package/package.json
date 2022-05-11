@@ -2,19 +2,19 @@
   "name": "@braks/vue-flow",
   "version": "0.4.8",
   "private": false,
+  "license": "MIT",
+  "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bcakmakoglu/vue-flow"
   },
-  "license": "MIT",
-  "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
   "homepage": "https://github.com/bcakmakoglu/vue-flow#readme",
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
   "main": "./dist/vue-flow.cjs.js",
-  "types": "./dist/index.d.ts",
   "module": "./dist/vue-flow.es.js",
+  "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow.iife.js",
   "jsdelivr": "./dist/vue-flow.iife.js",
   "files": [
@@ -32,6 +32,9 @@
     "prepublishOnly": "shx cp ../README.md .",
     "release": "yarn np",
     "postpublish": "shx rm README.md"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.25"
   },
   "dependencies": {
     "@braks/revue-draggable": "^0.4.2",
@@ -57,9 +60,6 @@
     "vite-plugin-vue-type-imports": "^0.1.3",
     "vite-svg-loader": "^2.2.0",
     "vue-tsc": "^0.33.9"
-  },
-  "peerDependencies": {
-    "vue": "^3.2.25"
   },
   "publishConfig": {
     "access": "public",

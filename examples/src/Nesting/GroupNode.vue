@@ -25,6 +25,7 @@ onNodeDragStop(({ node }) => {
   }
 })
 </script>
+
 <template>
   <div class="vue-flow__group-node">
     <Handle type="target" :position="Position.Top" />
@@ -32,6 +33,7 @@ onNodeDragStop(({ node }) => {
     <Handle type="source" :position="Position.Bottom" />
   </div>
 </template>
+
 <style>
 .vue-flow__group-node {
   padding: 15px;
