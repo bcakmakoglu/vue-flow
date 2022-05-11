@@ -1,16 +1,6 @@
 <script lang="ts" setup>
-import {
-  ConnectionMode,
-  Controls,
-  Elements,
-  isEdge,
-  MiniMap,
-  Node,
-  Position,
-  SnapGrid,
-  useVueFlow,
-  VueFlow,
-} from '@braks/vue-flow'
+import type { Elements, Node, SnapGrid } from '@braks/vue-flow'
+import { ConnectionMode, Controls, MiniMap, Position, VueFlow, isEdge, useVueFlow } from '@braks/vue-flow'
 import ColorSelectorNode from './ColorSelectorNode.vue'
 
 const elements = ref<Elements>([])
@@ -85,6 +75,7 @@ onPaneReady((i) => {
   console.log('flow loaded:', i)
 })
 </script>
+
 <template>
   <VueFlow v-model="elements" :style="{ backgroundColor: bgColor }">
     <template #node-selectorNode="props">

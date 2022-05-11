@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, Elements } from '@braks/vue-flow'
+import type { Elements } from '@braks/vue-flow'
+import { VueFlow } from '@braks/vue-flow'
 
 const elementsA: Elements = [
   { id: '1a', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
@@ -25,6 +26,7 @@ const elementsB: Elements = [
 
 const elements = ref(elementsA)
 </script>
+
 <template>
   <VueFlow v-model="elements">
     <div :style="{ position: 'absolute', right: 10, top: 10, zIndex: 4 }">

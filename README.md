@@ -57,9 +57,6 @@ A simple setup could look like this:
 
 ```vue
 <!-- Flowchart.vue -->
-<template>
-  <VueFlow v-model="elements"></VueFlow>
-</template>
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -81,6 +78,10 @@ const elements = ref([
   },
 ])
 </script>
+
+<template>
+  <VueFlow v-model="elements"></VueFlow>
+</template>
 ```
 
 ### __Make sure to import the necessary styles:__

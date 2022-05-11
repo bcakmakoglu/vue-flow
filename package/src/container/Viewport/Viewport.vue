@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { D3ZoomEvent, zoom, zoomIdentity, ZoomTransform } from 'd3-zoom'
+import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
+import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { FlowTransform, PanOnScrollMode } from '../../types'
+import type { FlowTransform } from '../../types'
+import { PanOnScrollMode } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
 import { clamp, clampPosition } from '../../utils'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
@@ -177,11 +179,13 @@ onMounted(() => {
   })
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'Viewport',
 }
 </script>
+
 <template>
   <div ref="viewport" :key="`viewport-${id}`" class="vue-flow__viewport vue-flow__container">
     <Transform>

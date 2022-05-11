@@ -6,6 +6,7 @@ import Download from '~icons/carbon/download'
 const githubData = await $fetch('https://api.github.com/repos/bcakmakoglu/vue-flow?page=$i&per_page=100')
 const npmData = await $fetch('https://api.npmjs.org/downloads/point/last-month/@braks/vue-flow')
 </script>
+
 <template>
   <div class="w-full bg-black text-white border-b-1 border-white">
     <div class="max-w-full md:max-w-11/12 m-auto py-4 md:py-12 <md:(dark:border-t-1 border-white)">

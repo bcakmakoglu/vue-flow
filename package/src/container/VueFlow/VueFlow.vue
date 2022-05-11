@@ -52,11 +52,13 @@ useHooks(emit, hooks.value)
 
 provide(Slots, useSlots())
 </script>
+
 <script lang="ts">
 export default {
   name: 'VueFlow',
 }
 </script>
+
 <template>
   <div class="vue-flow">
     <Viewport>

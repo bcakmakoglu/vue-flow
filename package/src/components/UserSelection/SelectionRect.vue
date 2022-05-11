@@ -8,11 +8,13 @@ interface SelectionRectProps {
 
 const { width, height, x, y } = defineProps<SelectionRectProps>()
 </script>
+
 <script lang="ts">
 export default {
   name: 'SelectionRect',
 }
 </script>
+
 <template>
   <div
     class="vue-flow__selection"

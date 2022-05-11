@@ -17,6 +17,7 @@ const computedRoutes = computed(() => {
     }))
 })
 </script>
+
 <template>
   <header>
     <a class="logo" href="https://github.com/bcakmakoglu/vue-flow"> Vue Flow Dev </a>

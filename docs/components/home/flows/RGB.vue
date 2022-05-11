@@ -1,19 +1,20 @@
 <script lang="ts" setup>
-import { BackgroundVariant, VueFlow, Background, Controls, MiniMap, MiniMapNodeFunc, useVueFlow } from '@braks/vue-flow'
+import type { MiniMapNodeFunc } from '@braks/vue-flow'
+import { Background, BackgroundVariant, Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
 import { breakpointsTailwind } from '@vueuse/core'
 import CustomEdge from '../edges/Custom.vue'
 import RGBNode from '../nodes/Input.vue'
 import RGBOutputNode from '../nodes/Output.vue'
 
+const emit = defineEmits(['pane'])
+
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-type Colors = {
+interface Colors {
   red: number
   green: number
   blue: number
 }
-
-const emit = defineEmits(['pane'])
 
 const { onPaneReady, getNode, panOnDrag } = useVueFlow({
   id: 'rgb-flow',
@@ -73,6 +74,7 @@ const nodeColor: MiniMapNodeFunc = (node) => {
   return ''
 }
 </script>
+
 <template>
   <div
     ref="el"
@@ -103,7 +105,8 @@ const nodeColor: MiniMapNodeFunc = (node) => {
     <div class="flex flex-col gap-2 items-center md:items-start">
       <h1>Customizable</h1>
       <p>
-        You can expand on the existing features by using your own custom nodes and edges and implement any design and functionality you want.
+        You can expand on the existing features by using your own custom nodes and edges and implement any design and
+        functionality you want.
       </p>
       <router-link class="button max-w-max" to="/guide/">Documentation</router-link>
     </div>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ShapeRendering, MiniMapNodeFunc, GraphNode } from '../../types'
+import type { GraphNode, MiniMapNodeFunc, ShapeRendering } from '../../types'
 import { useVueFlow, useWindow } from '../../composables'
 import { getBoundsofRects, getRectOfNodes } from '../../utils'
 import type { MiniMapProps } from '../../types/components'
@@ -90,11 +90,13 @@ const onNodeDblClick = (event: MouseEvent, node: GraphNode) => {
   hooks.miniMapNodeDoubleClick.trigger({ event, node })
 }
 </script>
+
 <script lang="ts">
 export default {
   name: 'MiniMap',
 }
 </script>
+
 <template>
   <svg
     :width="elementWidth"

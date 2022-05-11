@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
+import type { CSSProperties } from 'vue'
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, EdgeComponent, GraphEdge, Position } from '../../types'
+import type { EdgeComponent, GraphEdge } from '../../types'
+import { ConnectionMode, Position } from '../../types'
 import { connectionExists, getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
 
@@ -161,12 +162,14 @@ const getClass = () => {
 
 const getStyle = () => (edge.style instanceof Function ? edge.style(edge) : edge.style) as CSSProperties
 </script>
+
 <script lang="ts">
 export default {
   name: 'Edge',
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <g
     :class="getClass()"

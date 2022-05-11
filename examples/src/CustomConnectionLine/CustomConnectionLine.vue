@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, Background, BackgroundVariant, Elements } from '@braks/vue-flow'
+import type { Elements } from '@braks/vue-flow'
+import { Background, BackgroundVariant, VueFlow } from '@braks/vue-flow'
 import ConnectionLine from './ConnectionLine.vue'
 
 const elements = ref<Elements>([
@@ -11,6 +12,7 @@ const elements = ref<Elements>([
   },
 ])
 </script>
+
 <template>
   <VueFlow v-model="elements">
     <template #connection-line="props">

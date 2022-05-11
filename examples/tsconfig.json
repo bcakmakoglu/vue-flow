@@ -3,10 +3,7 @@
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
+    "lib": ["DOM", "ESNext"],
     "noEmit": true,
     "declaration": false,
     "strict": true,
@@ -18,18 +15,11 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "types": [
-      "vite/client"
-    ],
+    "types": ["vite/client"],
     "paths": {
-      "~/*": [
-        "../package/src/*"
-      ]
+      "~/*": ["../package/src/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
+  "exclude": ["node_modules", "dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

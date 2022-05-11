@@ -1,5 +1,6 @@
 import { mount } from '@cypress/vue'
-import { VueFlow, isEdge, isNode, Elements } from '@braks/vue-flow'
+import type { Elements } from '@braks/vue-flow'
+import { VueFlow, isEdge, isNode } from '@braks/vue-flow'
 import '@braks/vue-flow/dist/style.css'
 import '@braks/vue-flow/dist/theme-default.css'
 

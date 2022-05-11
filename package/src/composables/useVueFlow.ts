@@ -1,10 +1,8 @@
-import { EffectScope } from 'vue'
-import { MaybeRef } from '@vueuse/core'
-import { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
+import type { EffectScope } from 'vue'
+import type { MaybeRef } from '@vueuse/core'
+import type { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
-import useState from '~/store/state'
-import useGetters from '~/store/getters'
-import useActions from '~/store/actions'
+import { useActions, useGetters, useState } from '~/store'
 
 /**
  * Stores all currently created store instances

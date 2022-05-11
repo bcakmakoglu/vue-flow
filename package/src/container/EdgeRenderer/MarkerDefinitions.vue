@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { useVueFlow } from '../../composables'
-import type { MarkerProps } from '../../types/edge'
+import type { MarkerProps, MarkerType } from '../../types/edge'
 import { getMarkerId } from '../../utils'
-import { MarkerType } from '../../types/edge'
 import Marker from './Marker.vue'
 
 interface MarkerDefinitionsProps {
@@ -31,11 +30,13 @@ const markers = computed(() => {
   }, [])
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'MarkerDefinitions',
 }
 </script>
+
 <template>
   <defs>
     <Marker

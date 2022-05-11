@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, MarkerType, useVueFlow, Edge, Node } from '@braks/vue-flow'
+import type { Edge, Node } from '@braks/vue-flow'
+import { Background, Controls, MarkerType, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomLabel from './CustomLabel.vue'
@@ -71,6 +72,7 @@ useVueFlow({
   edges: initialEdges,
 })
 </script>
+
 <template>
   <VueFlow :fit-view-on-init="true" :snap-to-grid="true">
     <template #edge-custom="props">

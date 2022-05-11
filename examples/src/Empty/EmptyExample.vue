@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, BackgroundVariant, Node, useVueFlow } from '@braks/vue-flow'
+import type { Node } from '@braks/vue-flow'
+import { Background, BackgroundVariant, Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
 
 const { nodes, addNodes, edges, addEdges, onConnect, onPaneReady, onNodeDragStop, dimensions } = useVueFlow()
 
@@ -17,6 +18,7 @@ const addRandomNode = () => {
   addNodes([newNode])
 }
 </script>
+
 <template>
   <VueFlow>
     <MiniMap />

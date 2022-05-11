@@ -1,12 +1,12 @@
-import { EventHook, EventHookOn, EventHookTrigger } from '@vueuse/core'
-import { MouseTouchEvent } from '@braks/revue-draggable'
-import { D3ZoomEvent } from 'd3-zoom'
-import { FlowInstance } from './flow'
-import { GraphEdge } from './edge'
-import { GraphNode } from './node'
-import { Connection, OnConnectStartParams } from './connection'
-import { FlowTransform } from './zoom'
-import { EdgeChange, NodeChange } from './changes'
+import type { EventHook, EventHookOn, EventHookTrigger } from '@vueuse/core'
+import type { MouseTouchEvent } from '@braks/revue-draggable'
+import type { D3ZoomEvent } from 'd3-zoom'
+import type { FlowInstance } from './flow'
+import type { GraphEdge } from './edge'
+import type { GraphNode } from './node'
+import type { Connection, OnConnectStartParams } from './connection'
+import type { FlowTransform } from './zoom'
+import type { EdgeChange, NodeChange } from './changes'
 
 export interface FlowEvents {
   nodesChange: NodeChange[]

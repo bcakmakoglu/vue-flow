@@ -1,38 +1,38 @@
-import { XYPosition, Dimensions, ElementData } from './flow'
-import { NodeHandleBounds, Node } from './node'
-import { Edge } from './edge'
+import type { Dimensions, ElementData, XYPosition } from './flow'
+import type { Node, NodeHandleBounds } from './node'
+import type { Edge } from './edge'
 
-export type NodeDimensionChange = {
+export interface NodeDimensionChange {
   id: string
   type: 'dimensions'
   dimensions: Dimensions
   handleBounds?: NodeHandleBounds
 }
 
-export type NodePositionChange = {
+export interface NodePositionChange {
   id: string
   type: 'position'
   position?: XYPosition
   dragging?: boolean
 }
 
-export type NodeSelectionChange = {
+export interface NodeSelectionChange {
   id: string
   type: 'select'
   selected: boolean
 }
 
-export type NodeRemoveChange = {
+export interface NodeRemoveChange {
   id: string
   type: 'remove'
 }
 
-export type NodeAddChange<Data = ElementData> = {
+export interface NodeAddChange<Data = ElementData> {
   item: Node<Data>
   type: 'add'
 }
 
-export type NodeResetChange<Data = ElementData> = {
+export interface NodeResetChange<Data = ElementData> {
   item: Node<Data>
   type: 'reset'
 }
@@ -47,11 +47,11 @@ export type NodeChange =
 
 export type EdgeSelectionChange = NodeSelectionChange
 export type EdgeRemoveChange = NodeRemoveChange
-export type EdgeAddChange<Data = ElementData> = {
+export interface EdgeAddChange<Data = ElementData> {
   item: Edge<Data>
   type: 'add'
 }
-export type EdgeResetChange<Data = ElementData> = {
+export interface EdgeResetChange<Data = ElementData> {
   item: Edge<Data>
   type: 'reset'
 }

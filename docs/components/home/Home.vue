@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Blobity from 'blobity'
 import Intro from './flows/Intro.vue'
 
@@ -29,11 +29,13 @@ onMounted(() => {
   }
 })
 </script>
+
 <template>
   <div class="relative h-[90vh] md:h-[75vh]">
     <Intro />
   </div>
 </template>
+
 <style>
 button:focus {
   outline: none;

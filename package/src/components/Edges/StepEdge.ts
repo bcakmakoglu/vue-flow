@@ -1,6 +1,6 @@
-import { FunctionalComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 import SmoothStepEdge from './SmoothStepEdge'
-import { EdgeProps } from '~/types'
+import type { EdgeProps } from '~/types'
 
 const StepEdge: FunctionalComponent<EdgeProps> = function (props) {
   return h(SmoothStepEdge, { ...props, borderRadius: 0 })

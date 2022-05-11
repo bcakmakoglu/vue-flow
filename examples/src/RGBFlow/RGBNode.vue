@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
-import { Handle, NodeProps, Position } from '@braks/vue-flow'
+import type { CSSProperties } from 'vue'
+import type { NodeProps } from '@braks/vue-flow'
+import { Handle, Position } from '@braks/vue-flow'
 
 interface RGBNodeProps extends NodeProps {
   data: {
@@ -37,6 +38,7 @@ const colorVal = computed({
 
 const style = { '--color': color } as CSSProperties
 </script>
+
 <template>
   <div class="wrapper">
     <div class="text-md" :style="{ color }">{{ `${color} Amount`.toUpperCase() }}</div>
@@ -44,6 +46,7 @@ const style = { '--color': color } as CSSProperties
     <Handle type="source" :position="Position.Right" :style="{ backgroundColor: color }" />
   </div>
 </template>
+
 <style>
 .wrapper {
   padding: 16px;

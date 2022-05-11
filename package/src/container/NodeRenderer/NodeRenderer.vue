@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import NodeWrapper from '../../components/Nodes/NodeWrapper.vue'
-import { GraphNode, NodeComponent, SnapGrid } from '../../types'
+import type { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
 
@@ -47,11 +47,13 @@ const getType = (node: GraphNode) => {
   return slot
 }
 </script>
+
 <script lang="ts">
 export default {
   name: 'Nodes',
 }
 </script>
+
 <template>
   <div class="vue-flow__nodes vue-flow__container">
     <NodeWrapper

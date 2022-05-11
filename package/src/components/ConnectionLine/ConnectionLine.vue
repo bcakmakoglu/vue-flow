@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { getBezierPath, getSmoothStepPath } from '../Edges/utils'
-import { ConnectionLineType, GraphNode, HandleElement, HandleType, Position } from '../../types'
+import type { GraphNode, HandleElement, HandleType } from '../../types'
+import { ConnectionLineType, Position } from '../../types'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
 
@@ -81,11 +82,13 @@ const dAttr = computed(() => {
   return path
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'ConnectionLine',
 }
 </script>
+
 <template>
   <g class="vue-flow__connection">
     <component

@@ -1,7 +1,7 @@
-import { CSSProperties } from 'vue'
-import { Position } from './flow'
-import { GraphNode } from './node'
-import { HandleElement, HandleType } from './handle'
+import type { CSSProperties } from 'vue'
+import type { Position } from './flow'
+import type { GraphNode } from './node'
+import type { HandleElement, HandleType } from './handle'
 
 /** Connection line types (same as default edge types */
 export enum ConnectionLineType {
@@ -24,7 +24,7 @@ export interface Connection {
 }
 
 /** The source nodes params when connection is initiated */
-export type OnConnectStartParams = {
+export interface OnConnectStartParams {
   /** Source node id */
   nodeId?: string
   /** Source handle id */

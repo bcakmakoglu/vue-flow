@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ConnectionMode, useVueFlow, VueFlow, Background, Controls } from '@braks/vue-flow'
+import { Background, ConnectionMode, Controls, VueFlow, useVueFlow } from '@braks/vue-flow'
 import { breakpointsTailwind } from '@vueuse/core'
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
-
 const emit = defineEmits(['pane'])
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const nodeClasses = ['!normal-case font-semibold !text-white', '!border-1', 'shadow-md'].join(' ')
 const childClasses = `${nodeClasses} !bg-green-500/70 !border-white`
@@ -55,6 +55,7 @@ watch(
 
 onPaneReady((i) => emit('pane', i))
 </script>
+
 <template>
   <div class="md:max-w-1/3 flex flex-col justify-center <md:pt-12">
     <div class="flex flex-col gap-2 items-center md:items-start">
@@ -76,6 +77,7 @@ onPaneReady((i) => emit('pane', i))
     </VueFlow>
   </div>
 </template>
+
 <style>
 .nested .vue-flow__handle {
   opacity: 0;

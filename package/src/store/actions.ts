@@ -1,6 +1,7 @@
 import useState from './state'
-import {
+import type {
   Actions,
+  ComputedGetters,
   Connection,
   CoordinateExtent,
   Edge,
@@ -13,7 +14,6 @@ import {
   NodeDimensionChange,
   NodePositionChange,
   State,
-  ComputedGetters,
 } from '~/types'
 import {
   applyChanges,

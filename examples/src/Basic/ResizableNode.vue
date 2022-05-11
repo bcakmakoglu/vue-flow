@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { Position, Handle, ValidConnectionFunc } from '@braks/vue-flow'
+import type { Position, ValidConnectionFunc } from '@braks/vue-flow'
+import { Handle } from '@braks/vue-flow'
 
 interface Props {
   id: string
@@ -17,12 +18,14 @@ const props = withDefaults(defineProps<Props>(), {
   targetPosition: 'top' as Position,
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'ResizableNode',
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <Handle
     type="target"
@@ -41,6 +44,7 @@ export default {
     :is-valid-connection="props.isValidSourcePos"
   />
 </template>
+
 <style>
 .resize-node {
   padding: 1rem;

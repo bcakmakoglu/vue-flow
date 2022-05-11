@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { getEdgeCenter, getBezierPath, getMarkerId, Position, EdgeProps, EdgeText } from '@braks/vue-flow'
+import type { EdgeProps, Position } from '@braks/vue-flow'
+import { EdgeText, getBezierPath, getEdgeCenter, getMarkerId } from '@braks/vue-flow'
 
 interface CustomEdgeProps extends EdgeProps {
   source: string
@@ -42,11 +43,13 @@ const center = computed(() =>
 )
 const onClick = () => console.log(props.data)
 </script>
+
 <script lang="ts">
 export default {
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <path :id="props.id" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
   <EdgeText

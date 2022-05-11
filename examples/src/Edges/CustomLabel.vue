@@ -5,6 +5,7 @@ interface CustomLabelProps {
 
 const props = defineProps<CustomLabelProps>()
 </script>
+
 <template>
   <tspan dy="10" x="0">{{ props.label }}</tspan>
 </template>

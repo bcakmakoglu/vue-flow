@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useHandle, useVueFlow } from '../../composables'
-import { ConnectionMode, Position } from '../../types'
+import type { Position } from '../../types'
+import { ConnectionMode } from '../../types'
 import { NodeId } from '../../context'
 import type { HandleProps } from '../../types/handle'
 
@@ -49,11 +50,13 @@ const getClasses = computed(() => {
   ]
 })
 </script>
+
 <script lang="ts">
 export default {
   name: 'Handle',
 }
 </script>
+
 <template>
   <div
     :data-handleid="handleId"

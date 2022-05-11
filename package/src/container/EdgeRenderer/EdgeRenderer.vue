@@ -3,7 +3,7 @@ import EdgeWrapper from '../../components/Edges/EdgeWrapper.vue'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import { useVueFlow } from '../../composables'
 import { groupEdgesByZLevel } from '../../utils'
-import { EdgeComponent, GraphEdge } from '../../types'
+import type { EdgeComponent, GraphEdge } from '../../types'
 import { Slots } from '../../context'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
@@ -86,11 +86,13 @@ const getType = (edge: GraphEdge) => {
   return slot
 }
 </script>
+
 <script lang="ts">
 export default {
   name: 'Edges',
 }
 </script>
+
 <template>
   <svg v-for="group of groups" :key="group.level" class="vue-flow__edges vue-flow__container" :style="`z-index: ${group.level}`">
     <MarkerDefinitions v-if="group.isMaxLevel" :default-color="defaultMarkerColor" />

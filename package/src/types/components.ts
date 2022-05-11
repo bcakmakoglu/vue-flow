@@ -1,8 +1,8 @@
-import { Component, CSSProperties, DefineComponent, HTMLAttributes, VNode } from 'vue'
-import { BackgroundVariant, Dimensions, ElementData, XYPosition } from './flow'
-import { GraphNode, NodeProps } from './node'
-import { EdgeProps } from './edge'
-import { FitViewParams } from './zoom'
+import type { CSSProperties, Component, DefineComponent, HTMLAttributes, VNode } from 'vue'
+import type { BackgroundVariant, Dimensions, ElementData, XYPosition } from './flow'
+import type { GraphNode, NodeProps } from './node'
+import type { EdgeProps } from './edge'
+import type { FitViewParams } from './zoom'
 
 /** Global component names are components registered to the vue instance and are "autoloaded" by their string name */
 type GlobalComponentName = string
