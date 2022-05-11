@@ -6,16 +6,14 @@ import { ConnectionMode, Position } from '../../types'
 import { connectionExists, getEdgePositions, getHandle, getMarkerId } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
 
-interface EdgeWrapper {
+const { id, edge, name, selectable, updatable, type } = defineProps<{
   id: string
   edge: GraphEdge
   selectable?: boolean
   updatable?: boolean
   type: EdgeComponent | Function | Object | false
   name: string
-}
-
-const { id, edge, name, selectable, updatable, type } = defineProps<EdgeWrapper>()
+}>()
 
 const { emits, connectionMode, edgeUpdaterRadius, noPanClassName, setState, getEdges, getEdge, getNode, addSelectedEdges } = $(
   useVueFlow(),

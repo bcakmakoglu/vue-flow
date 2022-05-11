@@ -6,7 +6,7 @@ import type { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 import { getHandleBounds, getXYZPos } from '../../utils'
 
-interface NodeWrapperProps {
+const { id, type, name, node, parentNode, draggable, selectable, connectable, snapGrid } = defineProps<{
   id: string
   node: GraphNode
   parentNode?: GraphNode
@@ -16,9 +16,7 @@ interface NodeWrapperProps {
   snapGrid?: SnapGrid
   type: NodeComponent | Function | Object | false
   name: string
-}
-
-const { id, type, name, node, parentNode, draggable, selectable, connectable, snapGrid } = defineProps<NodeWrapperProps>()
+}>()
 
 provide(NodeId, id)
 
