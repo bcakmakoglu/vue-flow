@@ -9,8 +9,8 @@ const initialElements: Elements = [
 ]
 
 const elements = ref<Elements>(initialElements)
-const opts = ref({
-  bg: '#eee',
+const opts = reactive({
+  bg: '#eeeeee',
   name: 'Node 1',
   hidden: false,
 })
@@ -19,9 +19,9 @@ const updateNode = () => {
   elements.value.forEach((el) => {
     if (el.id === '1') {
       // it's important that you create a new object here in order to notify react flow about the change
-      el.label = opts.value.name
-      el.style = { backgroundColor: opts.value.bg }
-      el.hidden = opts.value.hidden
+      el.label = opts.name
+      el.style = { backgroundColor: opts.bg }
+      el.hidden = opts.hidden
     }
   })
 }
