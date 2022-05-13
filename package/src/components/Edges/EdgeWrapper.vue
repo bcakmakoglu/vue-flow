@@ -70,7 +70,7 @@ const handleEdgeUpdater = (event: MouseEvent, isSourceHandle: boolean) => {
     undefined,
     isSourceHandle ? 'target' : 'source',
     (connection) => {
-      if (!connectionExists(edge, getEdges)) emits.edgeUpdate({ edge, connection })
+      if (!connectionExists(connection, getEdges)) emits.edgeUpdate({ edge, connection })
     },
     () => emits.edgeUpdateEnd({ event, edge }),
   )
@@ -172,7 +172,7 @@ export default {
   <g
     :class="getClass()"
     @click="onEdgeClick"
-    @dblClick="onDoubleClick"
+    @dbl-click="onDoubleClick"
     @contextmenu="onEdgeContextMenu"
     @mouseenter="onEdgeMouseEnter"
     @mousemove="onEdgeMouseMove"
