@@ -129,7 +129,7 @@ export const getIncomers = (node: GraphNode, elements: Elements) => getConnected
 export const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection) =>
   `vueflow__edge-${source}${sourceHandle ?? ''}-${target}${targetHandle ?? ''}`
 
-export const connectionExists = (edge: Edge, elements: Elements) =>
+export const connectionExists = (edge: Edge | Connection, elements: Elements) =>
   elements.some(
     (el) =>
       isEdge(el) &&
