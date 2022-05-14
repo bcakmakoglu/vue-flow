@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.10] - 2022-05-14
+
+[bcaf346](bcaf346926c6b82905fdf142ab5d6f54584e7d24)...[9627f23](9627f236c7bbc99ae1ef2e417f4be73c72ae5743)
+
+### Bug Fixes
+
+- Check if connection exists for new connection ([d36402e](d36402e537f0bd593782169ac2f842358c0ed7b6))
+
+### Examples
+
+- Update node example color ([1d2322e](1d2322eb46a802bb3a296915f070d3a7a696ab49))
+
 ## [0.4.9] - 2022-05-11
 
 [233d585](233d585a92ac68b6b55202926a0893aa8acac9e7)...[bcaf346](bcaf346926c6b82905fdf142ab5d6f54584e7d24)
