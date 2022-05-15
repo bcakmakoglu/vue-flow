@@ -26,7 +26,8 @@
     "prepublishOnly": "yarn build",
     "test": "exit 0;",
     "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
-    "lint": "yarn lint:js"
+    "lint": "yarn lint:js",
+    "release": "yarn np --no-release-draft"
   },
   "dependencies": {
     "@vueuse/core": "^8.4.2",
