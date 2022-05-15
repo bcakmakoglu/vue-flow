@@ -27,9 +27,9 @@
     "types": "yarn prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && shx rm -rf tmp && yarn lint:dist",
     "typedoc": "typedoc --tsconfig tsconfig.docs.json dist/index.d.ts --out typedocs",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../.gitignore .",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
-    "prepublishOnly": "shx cp ../README.md .",
+    "prepublishOnly": "shx cp ../../README.md .",
     "release": "yarn np",
     "postpublish": "shx rm README.md"
   },

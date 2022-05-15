@@ -6,13 +6,13 @@
     "e2e",
     "examples",
     "docs",
-    "package"
+    "packages/**"
   ],
   "scripts": {
     "dev": "yarn --cwd examples dev",
     "docs": "yarn --cwd docs dev",
     "postrelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
-    "release": "yarn --cwd package release",
+    "release": "turbo run release",
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
