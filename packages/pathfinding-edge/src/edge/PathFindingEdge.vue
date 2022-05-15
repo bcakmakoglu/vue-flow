@@ -8,46 +8,47 @@ import { generatePath } from './generatePath'
 import { getBoundingBoxes } from './getBoundingBoxes'
 import { gridToGraphPoint } from './pointConversion'
 
-interface PathFindingEdgeProps extends EdgeProps {
-  nodes: GraphNode[]
-  id: string
-  source: string
-  target: string
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  selected?: boolean
-  animated?: boolean
-  sourcePosition: Position
-  targetPosition: Position
-  label?:
-    | string
-    | {
-        component: Component<EdgeTextProps> | DefineComponent<EdgeTextProps>
-        props?: EdgeTextProps
-      }
-  labelStyle?: any
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-  style?: CSSProperties
-  markerEnd?: string
-  markerStart?: string
-  data?: any
-  sourceHandleId?: string
-  targetHandleId?: string
-}
-
-const props = withDefaults(defineProps<PathFindingEdgeProps>(), {
-  selected: false,
-  sourcePosition: Position.Bottom,
-  targetPosition: Position.Top,
-  labelStyle: () => ({}),
-  labelShowBg: true,
-  labelBgStyle: () => ({}),
-})
+const props = withDefaults(
+  defineProps<{
+    nodes: GraphNode[]
+    id: string
+    source: string
+    target: string
+    sourceX: number
+    sourceY: number
+    targetX: number
+    targetY: number
+    selected?: boolean
+    animated?: boolean
+    sourcePosition: Position
+    targetPosition: Position
+    label?:
+      | string
+      | {
+          component: Component<EdgeTextProps> | DefineComponent<EdgeTextProps>
+          props?: EdgeTextProps
+        }
+    labelStyle?: any
+    labelShowBg?: boolean
+    labelBgStyle?: any
+    labelBgPadding?: [number, number]
+    labelBgBorderRadius?: number
+    style?: CSSProperties
+    markerEnd?: string
+    markerStart?: string
+    data?: any
+    sourceHandleId?: string
+    targetHandleId?: string
+  }>(),
+  {
+    selected: false,
+    sourcePosition: Position.Bottom,
+    targetPosition: Position.Top,
+    labelStyle: () => ({}),
+    labelShowBg: true,
+    labelBgStyle: () => ({}),
+  },
+)
 
 const nodePadding = 10
 const graphPadding = 20

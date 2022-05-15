@@ -1,47 +1,50 @@
 <script lang="ts" setup>
-import { EdgeProps, EdgeTextProps, getEdgeCenter, Position, EdgeText } from '@braks/vue-flow'
-import { CSSProperties, DefineComponent } from 'vue'
-import { ArrowOptions, getArrow } from 'perfect-arrows'
+import type { EdgeTextProps, Position } from '@braks/vue-flow'
+import { EdgeText, getEdgeCenter } from '@braks/vue-flow'
+import type { CSSProperties, DefineComponent } from 'vue'
+import type { ArrowOptions } from 'perfect-arrows'
+import { getArrow } from 'perfect-arrows'
 
-interface PerfectArrowProps extends EdgeProps {
-  id: string
-  source: string
-  target: string
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  selected?: boolean
-  animated?: boolean
-  sourcePosition: Position
-  targetPosition: Position
-  label?:
-    | string
-    | {
-        component: DefineComponent<EdgeTextProps>
-        props?: EdgeTextProps
-      }
-  labelStyle?: any
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-  style?: CSSProperties
-  markerEnd?: string
-  markerStart?: string
-  data?: any
-  sourceHandleId?: string
-  targetHandleId?: string
-  options?: ArrowOptions
-}
-
-const props = withDefaults(defineProps<PerfectArrowProps>(), {
-  options: () => ({
-    padStart: 3,
-    padEnd: 3,
-    stretch: 0.2,
-  }),
-})
+const props = withDefaults(
+  defineProps<{
+    id: string
+    source: string
+    target: string
+    sourceX: number
+    sourceY: number
+    targetX: number
+    targetY: number
+    selected?: boolean
+    animated?: boolean
+    sourcePosition: Position
+    targetPosition: Position
+    label?:
+      | string
+      | {
+          component: DefineComponent<EdgeTextProps>
+          props?: EdgeTextProps
+        }
+    labelStyle?: any
+    labelShowBg?: boolean
+    labelBgStyle?: any
+    labelBgPadding?: [number, number]
+    labelBgBorderRadius?: number
+    style?: CSSProperties
+    markerEnd?: string
+    markerStart?: string
+    data?: any
+    sourceHandleId?: string
+    targetHandleId?: string
+    options?: ArrowOptions
+  }>(),
+  {
+    options: () => ({
+      padStart: 3,
+      padEnd: 3,
+      stretch: 0.2,
+    }),
+  },
+)
 
 const centered = computed(() =>
   getEdgeCenter({
@@ -57,12 +60,14 @@ const arrow = computed(() => {
 
 const attrs = useAttrs() as { style: CSSProperties }
 </script>
+
 <script lang="ts">
 export default {
   name: 'PerfectArrow',
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <path
     :style="{ ...props.style, ...attrs.style }"

@@ -20,7 +20,8 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "dev": "vite",
-    "build": "yarn prepare && vite build && vue-tsc --declaration --emitDeclarationOnly && tsc",
+    "build": "vite build",
+    "types": "yarn prepare && vue-tsc --declaration --emitDeclarationOnly && shx rm -rf tmp",
     "postbuild": "shx rm -rf tmp",
     "prepublishOnly": "yarn build",
     "test": "exit 0;",
@@ -28,6 +29,7 @@
     "lint": "yarn lint:js"
   },
   "dependencies": {
+    "@braks/vue-flow": "^0.4.10",
     "@vueuse/core": "^8.4.2",
     "pathfinding": "^0.4.18",
     "perfect-arrows": "^0.3.7"

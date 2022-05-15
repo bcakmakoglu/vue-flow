@@ -1,7 +1,8 @@
-/**
- * Draws a SVG path from a list of points, using straight lines.
- */
 import type { XYPosition } from '@braks/vue-flow'
+
+/**
+ * Draws an SVG path from a list of points, using straight lines.
+ */
 
 const getMidPoint = (Ax: number, Ay: number, Bx: number, By: number) => {
   const Zx = (Ax - Bx) / 2 + Bx
