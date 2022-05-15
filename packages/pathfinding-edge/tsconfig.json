@@ -1,15 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "./tmp",
     "baseUrl": ".",
     "module": "ESNext",
-    "target": "es2020",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
-    "declaration": true,
-    "declarationDir": "./dist",
+    "target": "es2017",
+    "lib": ["DOM", "ESNext"],
     "strict": true,
     "esModuleInterop": true,
     "incremental": false,
@@ -19,24 +13,18 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "types": [
-      "vite/client"
-    ],
+    "declaration": true,
+    "declarationDir": "./dist",
+    "types": ["vite/client", "vue/macros"],
     "paths": {
-      "~/*": [
-        "src/*"
-      ]
+      "~/*": ["src/*"]
     },
     "plugins": [
       // Transform paths in output .d.ts files (Include this line if you output declarations files)
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["src/**/*"],
-  "exclude": [
-    "node_modules",
-    "build",
-    "dist",
-    "examples"
-  ]
+  "include": ["./src"],
+  "exclude": ["node_modules", "dist"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
