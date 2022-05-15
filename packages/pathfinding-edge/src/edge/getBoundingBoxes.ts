@@ -1,7 +1,7 @@
-import { XYPosition, GraphNode } from '@braks/vue-flow'
-import { roundUp, roundDown } from './utils'
+import type { GraphNode, XYPosition } from '@braks/vue-flow'
+import { roundDown, roundUp } from './utils'
 
-export type NodeBoundingBox = {
+export interface NodeBoundingBox {
   id: string
   width: number
   height: number
@@ -11,7 +11,7 @@ export type NodeBoundingBox = {
   bottomRight: XYPosition
 }
 
-export type GraphBoundingBox = {
+export interface GraphBoundingBox {
   width: number
   height: number
   topLeft: XYPosition
