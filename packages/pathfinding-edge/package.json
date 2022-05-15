@@ -4,9 +4,9 @@
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/bcakmakoglu/vue-flow-pathfinding-edge"
+    "url": "https://github.com/bcakmakoglu/vue-flow/packages/pathfinding-edge"
   },
-  "homepage": "https//vueflow.dev/docs/addons/pathfinding",
+  "homepage": "https://github.com/bcakmakoglu/vue-flow/packages/pathfinding-edge#readme",
   "license": "MIT",
   "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
   "main": "./dist/vue-flow-pathfinding-edge.cjs.js",
@@ -20,7 +20,7 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "dev": "vite",
-    "build": "vite build && vue-tsc --declaration --emitDeclarationOnly && tsc",
+    "build": "yarn prepare && vite build && vue-tsc --declaration --emitDeclarationOnly && tsc",
     "postbuild": "shx rm -rf tmp",
     "prepublishOnly": "yarn build",
     "test": "exit 0;",
@@ -33,7 +33,6 @@
     "perfect-arrows": "^0.3.7"
   },
   "devDependencies": {
-    "@braks/vue-flow": "^0.4.10",
     "@types/pathfinding": "^0.0.5",
     "@vitejs/plugin-vue": "^2.3.3",
     "np": "^7.5.0",
