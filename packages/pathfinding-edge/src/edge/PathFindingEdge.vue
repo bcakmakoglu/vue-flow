@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties, Component, DefineComponent } from 'vue'
-import type { EdgeProps, EdgeTextProps, GraphNode } from '@braks/vue-flow'
+import type { EdgeTextProps, GraphNode } from '@braks/vue-flow'
 import { BezierEdge, EdgeText, Position, getEdgeCenter } from '@braks/vue-flow'
 import { createGrid, gridRatio } from './createGrid'
 import { drawSmoothLinePath } from './drawSvgPath'
