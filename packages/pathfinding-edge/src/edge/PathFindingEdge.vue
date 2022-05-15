@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { Component, CSSProperties, DefineComponent } from 'vue'
-import { getEdgeCenter, BezierEdge, EdgeText, Position, EdgeProps, EdgeTextProps, GraphNode } from '@braks/vue-flow'
+import type { CSSProperties, Component, DefineComponent } from 'vue'
+import type { EdgeProps, EdgeTextProps, GraphNode } from '@braks/vue-flow'
+import { BezierEdge, EdgeText, Position, getEdgeCenter } from '@braks/vue-flow'
 import { createGrid, gridRatio } from './createGrid'
 import { drawSmoothLinePath } from './drawSvgPath'
 import { generatePath } from './generatePath'
@@ -39,10 +40,6 @@ interface PathFindingEdgeProps extends EdgeProps {
   targetHandleId?: string
 }
 
-const nodePadding = 10
-const graphPadding = 20
-const roundCoordinatesTo = gridRatio
-
 const props = withDefaults(defineProps<PathFindingEdgeProps>(), {
   selected: false,
   sourcePosition: Position.Bottom,
@@ -51,6 +48,10 @@ const props = withDefaults(defineProps<PathFindingEdgeProps>(), {
   labelShowBg: true,
   labelBgStyle: () => ({}),
 })
+
+const nodePadding = 10
+const graphPadding = 20
+const roundCoordinatesTo = gridRatio
 
 const centered = computed(() =>
   getEdgeCenter({
@@ -104,12 +105,14 @@ const path = computed(() => {
 })
 const attrs: any = useAttrs()
 </script>
+
 <script lang="ts">
 export default {
   name: 'PathFindingEdge',
   inheritAttrs: false,
 }
 </script>
+
 <template>
   <BezierEdge v-if="gridPath && gridPath.length <= 2" v-bind="{ ...props, ...attrs }" />
   <template v-else>

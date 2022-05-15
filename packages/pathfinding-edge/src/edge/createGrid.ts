@@ -1,13 +1,13 @@
 import { Grid } from 'pathfinding'
-import { Position } from '@braks/vue-flow'
-import { guaranteeWalkablePath, getNextPointFromPosition } from './guaranteeWalkablePath'
+import type { Position } from '@braks/vue-flow'
+import { getNextPointFromPosition, guaranteeWalkablePath } from './guaranteeWalkablePath'
 import { graphToGridPoint } from './pointConversion'
 import { round } from './utils'
-import type { NodeBoundingBox, GraphBoundingBox } from './getBoundingBoxes'
+import type { GraphBoundingBox, NodeBoundingBox } from './getBoundingBoxes'
 
 export const gridRatio = 10
 
-export type PointInfo = {
+export interface PointInfo {
   x: number
   y: number
   position: Position
