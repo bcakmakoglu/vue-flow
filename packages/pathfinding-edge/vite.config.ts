@@ -42,6 +42,6 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['vue', '@vueuse/core'],
+    include: ['@braks/vue-flow', 'vue', '@vueuse/core'],
   },
 })
