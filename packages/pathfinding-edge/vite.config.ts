@@ -37,11 +37,11 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      imports: ['vue', '@vueuse/core'],
+      imports: ['vue'],
       dts: 'src/auto-imports.d.ts',
     }),
   ],
   optimizeDeps: {
-    include: ['@braks/vue-flow', 'vue', '@vueuse/core'],
+    include: ['@braks/vue-flow', 'vue'],
   },
 })

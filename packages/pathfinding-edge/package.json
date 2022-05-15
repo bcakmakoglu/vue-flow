@@ -30,7 +30,6 @@
     "release": "yarn np --no-release-draft"
   },
   "dependencies": {
-    "@vueuse/core": "^8.4.2",
     "pathfinding": "^0.4.18",
     "perfect-arrows": "^0.3.7"
   },
