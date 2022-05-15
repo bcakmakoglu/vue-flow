@@ -27,8 +27,8 @@ const onLoad = (flowInstance: FlowInstance) => {
 </template>
 
 <style>
-@import '../node_modules/@braks/vue-flow/dist/style.css';
-@import '../node_modules/@braks/vue-flow/dist/theme-default.css';
+@import '@braks/vue-flow/dist/style.css';
+@import '@braks/vue-flow/dist/theme-default.css';
 
 html,
 body,
