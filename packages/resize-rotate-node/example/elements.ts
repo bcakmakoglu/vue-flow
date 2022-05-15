@@ -1,5 +1,5 @@
 import type { Elements } from '@braks/vue-flow'
-import { MarkerType } from '@braks/vue-flow'
+// import { MarkerType } from '@braks/vue-flow'
 
 // const markerEnd = MarkerType.Arrow
 
