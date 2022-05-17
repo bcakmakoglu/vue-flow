@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { Connection, Edge, Elements, FlowInstance } from '@braks/vue-flow'
 import { Background, Controls, MiniMap, VueFlow, addEdge } from '@braks/vue-flow'
+import { ResizeRotateNode } from '../src'
 import initialElements from './elements'
-import { ResizeRotateNode } from '~/index'
 
 const elements = ref<Elements>(initialElements)
 const rfInstance = ref<FlowInstance | null>(null)
@@ -39,5 +39,6 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-transform: uppercase;
+  color: white;
 }
 </style>
