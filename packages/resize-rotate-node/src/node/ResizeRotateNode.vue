@@ -39,8 +39,8 @@ const onResize = (e: MoveableEvents['resize']) => {
   const translateX = `translateX(${beforeTranslate[0]}px)`
   const translateY = `translateY(${beforeTranslate[1]}px)`
 
-  const hasTranslateX = nextTranslation.match(/translateX\((-?\d+\.\d+?(?:px))\)/)
-  const hasTranslateY = nextTranslation.match(/translateY\((-?\d+\.\d+?(?:px))\)/)
+  const hasTranslateX = nextTranslation.match(/translateX\((-?\d+(?:\.\d+)?px)\)/)
+  const hasTranslateY = nextTranslation.match(/translateY\((-?\d+(?:\.\d+)?px)\)/)
 
   if (!nextTranslation) return (e.target.style.transform = `${translateX} ${translateY}`)
 
@@ -71,7 +71,7 @@ const onRotate = (e: MoveableEvents['rotate']) => {
   if (!e.target.style.transform) {
     e.target.style.transform = rotation
   } else {
-    const hasRotation = e.target.style.transform.match(/rotate\(\d+\.\d+?deg\)/)
+    const hasRotation = e.target.style.transform.match(/rotate\(-?\d+(\.\d+)?deg\)/)
     if (hasRotation) {
       e.target.style.transform = e.target.style.transform.replace(hasRotation[0], rotation)
     } else {
