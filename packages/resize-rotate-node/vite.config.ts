@@ -2,12 +2,13 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
+import vueTypes from 'vite-plugin-vue-type-imports'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
-      '~': resolve('src'),
+      '~': resolve('../vue-flow/src'),
     },
     dedupe: ['vue'],
     extensions: ['.ts', '.vue'],
@@ -35,13 +36,16 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
+    vue({
+      reactivityTransform: true,
+    }),
+    vueTypes(),
     AutoImport({
       imports: ['vue', '@vueuse/core'],
       dts: 'src/auto-imports.d.ts',
     }),
   ],
   optimizeDeps: {
-    include: ['@braks/vue-flow', 'vue', '@vueuse/core'],
+    include: ['vue', '@vueuse/core'],
   },
 })
