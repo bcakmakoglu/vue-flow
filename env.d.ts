@@ -1,3 +1,4 @@
+/// <reference types="vite-svg-loader" />
 /// <reference types="vite/client" />
 /// <reference types="vue/macros-global" />
 
