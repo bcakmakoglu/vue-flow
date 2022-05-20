@@ -24,6 +24,6 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['@braks/vue-flow'],
+    exclude: ['@braks/vue-flow'],
   },
 })

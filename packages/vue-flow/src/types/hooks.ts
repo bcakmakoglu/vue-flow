@@ -1,5 +1,4 @@
 import type { EventHook, EventHookOn, EventHookTrigger } from '@vueuse/core'
-import type { MouseTouchEvent } from '@braks/revue-draggable'
 import type { D3ZoomEvent } from 'd3-zoom'
 import type { FlowInstance } from './flow'
 import type { GraphEdge } from './edge'

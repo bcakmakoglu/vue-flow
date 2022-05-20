@@ -252,7 +252,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
             ...state.defaultEdgeOptions,
             ...storedEdge,
           }),
-        })
+        }),
       )
 
       return res
