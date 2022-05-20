@@ -13,7 +13,7 @@ const props = defineProps<{
   data: any
 }>()
 
-const { viewport, updateNodeDimensions } = useVueFlow()
+const { viewport, updateNodeDimensions, onPaneClick, onPaneScroll, onPaneContextMenu } = useVueFlow()
 
 const el = ref()
 const visible = ref(false)
@@ -24,7 +24,7 @@ const frame = ref({
 })
 
 const onResizeStart = (e: MoveableEvents['resizeStart']) => {
-  e.setOrigin(['%', '%'])
+  e.setOrigin(['0', '0'])
   e.dragStart && e.dragStart.set(frame.value.translate)
 }
 
@@ -35,7 +35,7 @@ const onResize = (e: MoveableEvents['resize']) => {
   e.target.style.width = `${e.width}px`
   e.target.style.height = `${e.height}px`
 
-  let nextTranslation = String(e.target.style.transform)
+  let nextTranslation = String(props.nodeElement.style.transform)
   const translateX = `translateX(${beforeTranslate[0]}px)`
   const translateY = `translateY(${beforeTranslate[1]}px)`
 
@@ -56,7 +56,8 @@ const onResize = (e: MoveableEvents['resize']) => {
     nextTranslation += ` ${translateY}`
   }
 
-  e.target.style.transform = nextTranslation
+  // eslint-disable-next-line vue/no-mutating-props
+  props.nodeElement.style.transform = nextTranslation
 }
 
 const onRotateStart = (e: MoveableEvents['rotateStart']) => {
@@ -85,9 +86,14 @@ const onClick = () => {
   visible.value = true
 }
 
-onClickOutside(el, () => {
+const hideMoveable = () => {
   visible.value = false
-})
+}
+
+onClickOutside(el, hideMoveable)
+onPaneClick(hideMoveable)
+onPaneScroll(hideMoveable)
+onPaneContextMenu(hideMoveable)
 </script>
 
 <script lang="ts">
@@ -118,7 +124,7 @@ export default {
     :edge="true"
     :throttle-resize="1"
     :render-directions="['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']"
-    :zoom="1"
+    :zoom="0.75"
     @resize-start="onResizeStart"
     @resize="onResize"
     @rotate-start="onRotateStart"
