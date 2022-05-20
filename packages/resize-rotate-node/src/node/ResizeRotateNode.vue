@@ -13,72 +13,20 @@ const props = defineProps<{
   data: any
 }>()
 
-const { viewport, updateNodeDimensions, onPaneClick, onPaneScroll, onPaneContextMenu } = useVueFlow()
+const { viewport, updateNodeDimensions, onPaneClick, onPaneScroll, onPaneContextMenu, getNode } = useVueFlow()
 
 const el = ref()
 const visible = ref(false)
 
-const frame = ref({
-  translate: [0, 0],
-  rotate: 0,
-})
-
-const onResizeStart = (e: MoveableEvents['resizeStart']) => {
-  e.setOrigin(['0', '0'])
-  e.dragStart && e.dragStart.set(frame.value.translate)
-}
-
 const onResize = (e: MoveableEvents['resize']) => {
-  const beforeTranslate = e.drag.beforeTranslate
-
-  frame.value.translate = beforeTranslate
   e.target.style.width = `${e.width}px`
   e.target.style.height = `${e.height}px`
-
-  let nextTranslation = String(props.nodeElement.style.transform)
-  const translateX = `translateX(${beforeTranslate[0]}px)`
-  const translateY = `translateY(${beforeTranslate[1]}px)`
-
-  const hasTranslateX = nextTranslation.match(/translateX\((-?\d+(?:\.\d+)?px)\)/)
-  const hasTranslateY = nextTranslation.match(/translateY\((-?\d+(?:\.\d+)?px)\)/)
-
-  if (!nextTranslation) return (e.target.style.transform = `${translateX} ${translateY}`)
-
-  if (hasTranslateX) {
-    nextTranslation = nextTranslation.replace(hasTranslateX[0], translateX)
-  } else {
-    nextTranslation += ` ${translateX}`
-  }
-
-  if (hasTranslateY) {
-    nextTranslation = nextTranslation.replace(hasTranslateY[0], translateY)
-  } else {
-    nextTranslation += ` ${translateY}`
-  }
-
-  // eslint-disable-next-line vue/no-mutating-props
-  props.nodeElement.style.transform = nextTranslation
-}
-
-const onRotateStart = (e: MoveableEvents['rotateStart']) => {
-  e.set(frame.value.rotate)
+  e.target.style.left = `${e.drag.left}px`
+  e.target.style.top = `${e.drag.top}px`
 }
 
 const onRotate = (e: MoveableEvents['rotate']) => {
-  frame.value.rotate = e.beforeRotate
-
-  const rotation = ` rotate(${e.beforeRotate}deg)`
-
-  if (!e.target.style.transform) {
-    e.target.style.transform = rotation
-  } else {
-    const hasRotation = e.target.style.transform.match(/rotate\(-?\d+(\.\d+)?deg\)/)
-    if (hasRotation) {
-      e.target.style.transform = e.target.style.transform.replace(hasRotation[0], rotation)
-    } else {
-      e.target.style.transform += ` ${rotation}`
-    }
-  }
+  e.target.style.transform = e.transform
   updateNodeDimensions([{ id: props.id, nodeElement: props.nodeElement, forceUpdate: true }])
 }
 
@@ -103,7 +51,16 @@ export default {
 </script>
 
 <template>
-  <div :data-moveable-id="props.id" :style="data.style" @click="onClick">
+  <div
+    ref="el"
+    :data-moveable-id="props.id"
+    :style="{
+      cursor: 'grab',
+      ...data.style,
+    }"
+    style="position: relative"
+    @click="onClick"
+  >
     <Handle type="target" :position="props.targetPosition" />
     <slot>
       {{ props.label }}
@@ -111,7 +68,6 @@ export default {
     <Handle type="source" :position="props.sourcePosition" />
   </div>
   <Moveable
-    ref="el"
     class-name="nodrag"
     :style="visible ? '' : 'display: none !important'"
     :target="[`[data-moveable-id='${props.id}']`]"
@@ -125,9 +81,7 @@ export default {
     :throttle-resize="1"
     :render-directions="['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']"
     :zoom="0.75"
-    @resize-start="onResizeStart"
     @resize="onResize"
-    @rotate-start="onRotateStart"
     @rotate="onRotate"
   />
 </template>
