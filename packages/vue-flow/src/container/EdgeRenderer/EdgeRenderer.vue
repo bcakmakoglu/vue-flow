@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { CSSProperties } from 'vue'
+import type { CSSProperties } from 'vue'
 import EdgeWrapper from '../../components/Edges/Wrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import { useHandle, useVueFlow } from '../../composables'
 import { connectionExists, groupEdgesByZLevel } from '../../utils'
-import { EdgeComponent, GraphEdge } from '../../types'
+import type { EdgeComponent, GraphEdge } from '../../types'
 import { Slots } from '../../context'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
@@ -143,16 +143,7 @@ const handleEdgeUpdater = (event: MouseEvent, edge: GraphEdge, isSourceHandle: b
 
 const getClass = (edge: GraphEdge) => {
   const extraClass = edge.class instanceof Function ? edge.class(edge) : edge.class
-  return [
-    'vue-flow__edge',
-    noPanClassName,
-    {
-      selected: edge.selected,
-      animated: edge.animated,
-      inactive: !selectable,
-    },
-    extraClass,
-  ]
+  return [noPanClassName, extraClass]
 }
 
 const getStyle = (edge: GraphEdge) => (edge.style instanceof Function ? edge.style(edge) : edge.style) as CSSProperties
@@ -195,7 +186,7 @@ export default {
         :style="getStyle(edge)"
         :class="getClass(edge)"
         @click="(e: MouseEvent) => onEdgeClick(e, edge)"
-        @dblClick="(e: MouseEvent) => onDoubleClick(e, edge)"
+        @dbl-click="(e: MouseEvent) => onDoubleClick(e, edge)"
         @contextmenu="(e: MouseEvent) => onEdgeContextMenu(e, edge)"
         @mouseenter="(e: MouseEvent) => onEdgeMouseEnter(e, edge)"
         @mousemove="(e: MouseEvent) => onEdgeMouseMove(e, edge)"

@@ -47,6 +47,7 @@ const Wrapper: FunctionalComponent<Props> = function (
     animated,
     label,
     updatable,
+    selectable,
     target,
     source,
     sourceNode,
@@ -104,68 +105,83 @@ const Wrapper: FunctionalComponent<Props> = function (
     targetPosition,
   )
 
-  return h('g', { class: [`vue-flow__node-${name}`, { updating }] }, [
-    h(type as any, {
-      id,
-      sourceNode,
-      targetNode,
-      source,
-      target,
-      updatable,
-      selected,
-      animated,
-      label,
-      labelStyle,
-      labelShowBg,
-      labelBgStyle,
-      labelBgPadding,
-      labelBgBorderRadius,
-      data,
-      style,
-      markerStart: `url(#${getMarkerId(markerStart)})`,
-      markerEnd: `url(#${getMarkerId(markerEnd)})`,
-      sourcePosition,
-      targetPosition,
-      sourceX,
-      sourceY,
-      targetX,
-      targetY,
-      sourceHandleId,
-      targetHandleId,
-    }),
-    updatable
-      ? [
-          h(
-            'g',
-            {
-              onMouseDown: onEdgeUpdaterSourceMouseDown,
-              onMouseEnter: onEdgeUpdaterMouseEnter,
-              onMouseOut: onEdgeUpdaterMouseOut,
-            },
-            h(EdgeAnchor, {
-              position: sourcePosition,
-              centerX: sourceX,
-              centerY: sourceY,
-              radius: edgeUpdaterRadius,
-            }),
-          ),
-          h(
-            'g',
-            {
-              onMouseDown: onEdgeUpdaterTargetMouseDown,
-              onMouseEnter: onEdgeUpdaterMouseEnter,
-              onMouseOut: onEdgeUpdaterMouseOut,
-            },
-            h(EdgeAnchor, {
-              position: targetPosition,
-              centerX: targetX,
-              centerY: targetY,
-              radius: edgeUpdaterRadius,
-            }),
-          ),
-        ]
-      : null,
-  ])
+  return h(
+    'g',
+    {
+      class: [
+        'vue-flow__edge',
+        `vue-flow__edge-${name}`,
+        {
+          updating,
+          selected,
+          animated,
+          inactive: !selectable,
+        },
+      ],
+    },
+    [
+      h(type as any, {
+        id,
+        sourceNode,
+        targetNode,
+        source,
+        target,
+        updatable,
+        selected,
+        animated,
+        label,
+        labelStyle,
+        labelShowBg,
+        labelBgStyle,
+        labelBgPadding,
+        labelBgBorderRadius,
+        data,
+        style,
+        markerStart: `url(#${getMarkerId(markerStart)})`,
+        markerEnd: `url(#${getMarkerId(markerEnd)})`,
+        sourcePosition,
+        targetPosition,
+        sourceX,
+        sourceY,
+        targetX,
+        targetY,
+        sourceHandleId,
+        targetHandleId,
+      }),
+      updatable
+        ? [
+            h(
+              'g',
+              {
+                onMouseDown: onEdgeUpdaterSourceMouseDown,
+                onMouseEnter: onEdgeUpdaterMouseEnter,
+                onMouseOut: onEdgeUpdaterMouseOut,
+              },
+              h(EdgeAnchor, {
+                position: sourcePosition,
+                centerX: sourceX,
+                centerY: sourceY,
+                radius: edgeUpdaterRadius,
+              }),
+            ),
+            h(
+              'g',
+              {
+                onMouseDown: onEdgeUpdaterTargetMouseDown,
+                onMouseEnter: onEdgeUpdaterMouseEnter,
+                onMouseOut: onEdgeUpdaterMouseOut,
+              },
+              h(EdgeAnchor, {
+                position: targetPosition,
+                centerX: targetX,
+                centerY: targetY,
+                radius: edgeUpdaterRadius,
+              }),
+            ),
+          ]
+        : null,
+    ],
+  )
 }
 
 Wrapper.props = [
