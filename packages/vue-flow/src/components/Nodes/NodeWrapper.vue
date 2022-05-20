@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useVueFlow, useDrag } from '../../composables'
-import { NodeComponent, SnapGrid, XYZPosition } from '../../types'
+import { useDrag, useVueFlow } from '../../composables'
+import type { NodeComponent, SnapGrid, XYZPosition } from '../../types'
 import { NodeId } from '../../context'
 import { getConnectedEdges, getHandleBounds, getXYZPos } from '../../utils'
 
@@ -14,7 +14,6 @@ const { id, type, name, draggable, selectable, connectable, snapGrid, ...props }
   type: NodeComponent | Function | Object | false
   name: string
 }>()
-
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -102,27 +101,30 @@ onMounted(() => {
   updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
   watch(
-    [() => node.position, () => parentNode?.computedPosition],
-    ([pos, parent]) => {
+    [
+      () => node.position.x,
+      () => node.position.y,
+      () => parentNode?.computedPosition.x,
+      () => parentNode?.computedPosition.y,
+      () => parentNode?.computedPosition.z,
+    ],
+    ([newX, newY, parentX, parentY, parentZ]) => {
       const xyzPos = {
-        ...pos,
+        x: newX,
+        y: newY,
         z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
       }
 
-      if (parent) {
-        computedPosition = getXYZPos(parent, xyzPos)
+      if (parentX && parentY) {
+        computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
       } else {
         computedPosition = xyzPos
       }
 
       node.handleBounds = getHandleBounds(nodeElement.value, viewport.zoom)
     },
-    { immediate: true, deep: true, flush: 'post' },
+    { immediate: true, flush: 'post' },
   )
-})
-
-onUnmounted(() => {
-  nodeElement.value = undefined
 })
 
 const onMouseEnter = (event: MouseEvent) => {
@@ -167,11 +169,11 @@ const onSelectNode = (event: MouseEvent) => {
   }
 }
 
-const getClass = () => {
+const getClass = computed(() => {
   return node.class instanceof Function ? node.class(node) : node.class
-}
+})
 
-const getStyle = () => {
+const getStyle = computed(() => {
   const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
   const width = node.width instanceof Function ? node.width(node) : node.width
   const height = node.height instanceof Function ? node.height(node) : node.height
@@ -179,7 +181,7 @@ const getStyle = () => {
   if (height) styles.height = typeof height === 'string' ? height : `${height}px`
 
   return styles
-}
+})
 </script>
 
 <script lang="ts">
@@ -192,8 +194,8 @@ export default {
 <template>
   <div
     ref="nodeElement"
+    class="vue-flow__node"
     :class="[
-      'vue-flow__node',
       `vue-flow__node-${name}`,
       noPanClassName,
       {
@@ -201,13 +203,13 @@ export default {
         selected: node.selected,
         selectable,
       },
-      getClass(),
+      getClass,
     ]"
     :style="{
       zIndex: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
       transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
       pointerEvents: selectable || draggable ? 'all' : 'none',
-      ...getStyle(),
+      ...getStyle,
     }"
     :data-id="node.id"
     @mouseenter="onMouseEnter"

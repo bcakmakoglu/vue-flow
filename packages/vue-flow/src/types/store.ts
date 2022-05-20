@@ -1,15 +1,5 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
-import type {
-  Dimensions,
-  ElementData,
-  Elements,
-  FlowElements,
-  FlowInstance,
-  FlowOptions,
-  Rect,
-  SnapGrid,
-  XYPosition,
-} from './flow'
+import type { Dimensions, ElementData, Elements, FlowElements, FlowInstance, FlowOptions, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 import type { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
@@ -25,7 +15,10 @@ export interface UpdateNodeDimensionsParams {
   forceUpdate?: boolean
 }
 
-export type UpdateNodePositionsParams = { id?: string; diff?: XYPosition }
+export interface UpdateNodePositionsParams {
+  id?: string
+  diff?: XYPosition
+}
 
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** Event hooks, you can manipulate the triggers at your own peril */
