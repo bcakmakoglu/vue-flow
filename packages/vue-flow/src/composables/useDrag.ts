@@ -1,15 +1,19 @@
-import { D3DragEvent, drag, SubjectPosition } from 'd3-drag'
+import type { D3DragEvent, SubjectPosition } from 'd3-drag'
+import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
-import { Ref } from 'vue'
-import { MaybeRef } from '@vueuse/core'
+import type { Ref } from 'vue'
+import type { MaybeRef } from '@vueuse/core'
 import useVueFlow from './useVueFlow'
 import { pointToRendererPoint } from '~/utils'
-import { GraphNode, XYPosition } from '~/types'
+import type { GraphNode, XYPosition } from '~/types'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
-export type UseDragData = { dx: number; dy: number }
+export interface UseDragData {
+  dx: number
+  dy: number
+}
 
-type UseDragParams = {
+interface UseDragParams {
   onStart: (event: UseDragEvent) => void
   onDrag: (event: UseDragEvent, data: UseDragData) => void
   onStop: (event: UseDragEvent) => void
