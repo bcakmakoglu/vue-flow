@@ -135,7 +135,7 @@ const handleEdgeUpdater = (event: MouseEvent, edge: GraphEdge, isSourceHandle: b
     undefined,
     isSourceHandle ? 'target' : 'source',
     (connection) => {
-      if (!connectionExists(edge, getEdges)) emits.edgeUpdate({ edge, connection })
+      if (!connectionExists(connection, getEdges)) emits.edgeUpdate({ edge, connection })
     },
     () => emits.edgeUpdateEnd({ event, edge }),
   )
