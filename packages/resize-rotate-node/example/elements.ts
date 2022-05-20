@@ -1,7 +1,4 @@
 import type { Elements } from '@braks/vue-flow'
-// import { MarkerType } from '@braks/vue-flow'
-
-// const markerEnd = MarkerType.Arrow
 
 export default [
   {
@@ -13,6 +10,10 @@ export default [
     position: {
       x: 0,
       y: 0,
+    },
+    dragHandle: `[data-moveable-id='1']`,
+    style: {
+      cursor: 'default',
     },
     data: {
       style: {
