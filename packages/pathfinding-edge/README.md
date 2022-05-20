@@ -1,15 +1,6 @@
 # Vue Flow Pathfinding Edge 🧲
 
-![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow-pathfinding-edge)
-[![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow-pathfinding-edge.svg)](https://david-dm.org/bcakmakoglu/vue-flow-pathfinding-edge)
-[![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow-pathfinding-edge.svg?type=dev)](https://david-dm.org/bcakmakoglu/vue-flow-pathfinding-edge?type=dev)
-![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/bcakmakoglu/vue-flow-pathfinding-edge)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow-pathfinding-edge)
-![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow-pathfinding-edge)
-
-### **Custom Edge that avoids crossing other Nodes**
-
-Check the [documentation](https://vueflow.dev/docs/addons/pathfinding) for more info on how to use this custom edge.
+### Custom Edge that avoids crossing other Nodes
 
 ## 🛠 Setup
 
@@ -24,26 +15,20 @@ $ npm i --save @braks/vue-flow-pathfinding-edge
 ## 🎮 Quickstart
 
 ```vue
-<script lang="ts" setup>
-import {
-  VueFlow,
-  Elements,
-  useVueFlow
-} from '@braks/vue-flow'
+<script setup>
+import { VueFlow, useVueFlow } from '@braks/vue-flow'
 import { PathFindingEdge } from '@braks/vue-flow-pathfinding-edge'
 import initialElements from './initial-elements'
 
-const elements = ref<Elements>(initialElements)
+const elements = ref(initialElements)
 
 // create a new context so we can fetch nodes
-const { getNodes } = useVueFlow({
-  modelValue: elements.value
-})
+const { getNodes } = useVueFlow()
 </script>
 <template>
   <div style="height: 300px">
-    <VueFlow>
-      <template #edge-pathFinding="props">
+    <VueFlow v-model="elements">
+      <template #edge-pathfinding="props">
         <PathFindingEdge v-bind="props" :nodes="getNodes" />
       </template>
     </VueFlow>
@@ -51,8 +36,8 @@ const { getNodes } = useVueFlow({
 </template>
 ```
 
-```typescript
-// initial-elements.ts
+```js
+// initial-elements.js
 export default [
   {
     id: '1',
@@ -76,7 +61,8 @@ export default [
     target: '2',
     label: 'Smart Edge',
     style: { stroke: 'red' },
-    type: 'pathFinding'
+    // assign pathfinding edge type
+    type: 'pathfinding'
   },
 ]
 ```
