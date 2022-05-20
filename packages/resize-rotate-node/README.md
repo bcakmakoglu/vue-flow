@@ -1,82 +1,84 @@
-# Vue Flow Pathfinding Edge 🧲
+# Vue Flow Resizable Rotatable Node
 
-![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow-pathfinding-edge)
-[![dependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow-pathfinding-edge.svg)](https://david-dm.org/bcakmakoglu/vue-flow-pathfinding-edge)
-[![devDependencies Status](https://status.david-dm.org/gh/bcakmakoglu/vue-flow-pathfinding-edge.svg?type=dev)](https://david-dm.org/bcakmakoglu/vue-flow-pathfinding-edge?type=dev)
-![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/bcakmakoglu/vue-flow-pathfinding-edge)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow-pathfinding-edge)
-![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow-pathfinding-edge)
-
-### **Custom Edge that avoids crossing other Nodes**
-
-Check the [documentation](https://vueflow.dev/docs/addons/pathfinding) for more info on how to use this custom edge.
+### Custom Node that can be resized and rotated
 
 ## 🛠 Setup
 
 ```bash
 # install
-$ yarn add @braks/vue-flow-pathfinding-edge
+$ yarn add @braks/vue-flow-resize-rotate-node
 
 # or
-$ npm i --save @braks/vue-flow-pathfinding-edge
+$ npm i --save @braks/vue-flow-resize-rotate-node
 ```
 
 ## 🎮 Quickstart
 
 ```vue
-<script lang="ts" setup>
-import {
-  VueFlow,
-  Elements,
-  useVueFlow
-} from '@braks/vue-flow'
-import { PathFindingEdge } from '@braks/vue-flow-pathfinding-edge'
+
+<script setup>
+import { VueFlow } from '@braks/vue-flow'
+import { ResizeRotateNode } from '@braks/vue-flow-resize-rotate-node'
 import initialElements from './initial-elements'
 
-const elements = ref<Elements>(initialElements)
-
-// create a new context so we can fetch nodes
-const { getNodes } = useVueFlow({
-  modelValue: elements.value
-})
+const elements = ref(initialElements)
 </script>
 <template>
   <div style="height: 300px">
-    <VueFlow>
-      <template #edge-pathFinding="props">
-        <PathFindingEdge v-bind="props" :nodes="getNodes" />
+    <VueFlow v-model="elements">
+      <template #node-resize-rotate="props">
+        <ResizeRotateNode v-bind="props" />
       </template>
     </VueFlow>
   </div>
 </template>
 ```
 
-```typescript
-// initial-elements.ts
+```js
+// initial-elements.js
 export default [
   {
     id: '1',
     label: 'Node 1',
+    type: 'resize-rotate',
+    targetPosition: 'left',
+    sourcePosition: 'right',
     position: {
-      x: 430,
+      x: 0,
       y: 0,
+    },
+    data: {
+      // additional styles for the node
+      // cannot use the regular style tag as those apply to the node wrapper
+      style: {
+        background: 'rgb(255, 0, 114) none repeat scroll 0% 0%',
+        padding: '20px',
+        borderRadius: '20px',
+      },
     },
   },
   {
     id: '2',
     label: 'Node 2',
+    type: 'resize-rotate',
+    targetPosition: 'left',
     position: {
-      x: 230,
-      y: 90,
+      x: 330,
+      y: 50,
+    },
+    data: {
+      style: {
+        background: 'rgb(50, 188, 188) none repeat scroll 0% 0%',
+        padding: '20px',
+        borderRadius: '20px',
+      },
     },
   },
   {
-    id: 'e12',
+    id: 'e1-2',
     source: '1',
     target: '2',
-    label: 'Smart Edge',
-    style: { stroke: 'red' },
-    type: 'pathFinding'
+    type: 'smoothstep',
   },
 ]
 ```
