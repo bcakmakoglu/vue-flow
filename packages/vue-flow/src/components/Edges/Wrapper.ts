@@ -1,6 +1,7 @@
-import { Component, CSSProperties, FunctionalComponent, VNode } from 'vue'
+import type { CSSProperties, Component, FunctionalComponent, VNode } from 'vue'
 import EdgeAnchor from './EdgeAnchor'
-import { ConnectionMode, EdgeComponent, EdgeMarkerType, EdgeTextProps, GraphNode, Position } from '~/types'
+import type { EdgeComponent, EdgeMarkerType, EdgeTextProps, GraphNode } from '~/types'
+import { ConnectionMode, Position } from '~/types'
 import { getEdgePositions, getHandle, getMarkerId } from '~/utils'
 
 interface Props {
