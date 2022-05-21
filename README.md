@@ -1,24 +1,42 @@
 # Vue Flow 🌊
 
-[![vue flow](package/src/assets/vue-flow.gif)](https://vueflow.dev/)
+[![Vue flow](vue-flow.gif)](https://vueflow.dev/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow)
 ![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/bcakmakoglu/vue-flow)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow)
 
-### __Vue Flow: A highly customizable Vue 3 Flowchart component.__
+__Vue Flow: A highly customizable Vue 3 Flowchart component.__
 
-With Vue Flow you can build your own, customized node-based applications like static diagrams or even more complex and
+With Vue Flow, you can build your own, customized node-based applications like static diagrams or even more complex and
 interactive editors!
 
-You can find a detailed explanation on how to get started in the [documentation](https://vueflow.dev/guide) or check
+You can find a detailed explanation of how to get started in the [documentation](https://vueflow.dev/guide) or check
 the [examples](https://vueflow.dev/examples).
+
+## Table of contents
+
+* [⭐️ Features](#-features)
+
+* [🛠 Setup](#-setup)
+
+* [🎮 Quickstart](#-quickstart)
+  
+  + [▸ Vue 2](#-vue-2)
+
+* [🧪 Development](#-development)
+  
+  + [🐳 Dev Container](#-dev-container)
+
+* [⭐ Stargazers](#-stargazers)
+
+* [💝 Special Thanks](#-special-thanks)
 
 ## ⭐️ Features
 
 - 👶 __Easy setup__: Get started hassle-free - Built-in zoom- & pan features, element dragging, selection and much more
 
-- 🎨 __Customizable__: Use your own custom nodes, edges, connection lines and expand on the Vue Flows functionality
+- 🎨 __Customizable__: Use your custom nodes, edges and connection lines and expand on Vue Flows' functionality
 
 - 🚀 __Fast__: Tracks changes reactively and only re-renders the appropriate elements
 
@@ -45,15 +63,15 @@ $ yarn add @braks/vue-flow
 
 ## 🎮 Quickstart
 
-A flow consists of __nodes__ and __edges__ (or just nodes). Together we call them
-__elements__.
+A flow consists of __nodes__ and __edges__ (or just nodes). 
+Together they are called __elements__.
 
 __Each element needs a unique id.__ 
 
-A node also needs a xy-position.
+A node also needs an XY position.
 An edge needs a source (node id) and a target (node id). 
 
-A simple setup could look like this:
+A basic setup looks like this:
 
 ```vue
 <!-- Flowchart.vue -->
@@ -84,11 +102,10 @@ const elements = ref([
 </template>
 ```
 
-### __Make sure to import the necessary styles:__
+
+⚠️ __Make sure to import the necessary styles:__
 
 ```css
-/* main.css */
-
 /* import the required styles */
 @import "@braks/vue-flow/dist/style.css";
 
@@ -96,9 +113,12 @@ const elements = ref([
 @import "@braks/vue-flow/dist/theme-default.css";
 ```
 
-### ▸ Vue 2
+### 🪴 Vue 2
 
-**_This library doesn't work with Vue2._**
+**_This library doesn't work with Vue 2._**
+
+Vue Flow uses features that are exclusive to Vue 3, therefore
+there is no support for Vue 2, nor will there be any support in the future, sorry.
 
 ## 🧪 Development
 
@@ -110,19 +130,24 @@ $ yarn dev
 $ yarn build
 ```
 
-## ⭐ Stargazers
+### 🐳 Dev Container
 
-Thanks for your star!
+To start using development containers, install the `Docker` extension
+for VSCode.
+After installing the extension, open the connection menu either
+on the bottom left or open it via the commands tab.
+Select the `Open Folder in Container` option to mount the project.
 
-[![Stargazers repo roster for @braks/vue-flow](https://reporoster.com/stars/bcakmakoglu/vue-flow)](https://github.com/bcakmakoglu/vue-flow/stargazers)
+The development container will spin up all packages example apps and forward
+the ports to your machine.
 
 ## 💝 Special Thanks
 
 This project is built with
 
 - [React Flow](https://reactflow.dev/)
-  - Vue flow is heavily based on [webkid's](https://webkid.io/) [react flow](https://reactflow.dev/). I wholeheartedly thank
-  them for their amazing work! Without them this vue flow would not exist.
+  - Vue flow is heavily based on [webkids'](https://webkid.io/) [react flow](https://reactflow.dev/). I wholeheartedly thank
+  them for their amazing work! Without them, Vue Flow would not exist.
   Please consider [donating](https://github.com/sponsors/wbkd) to them!
 
 - [D3.js](https://d3js.org/)
@@ -130,4 +155,11 @@ This project is built with
     Check it out to see if you can find other uses for it too!
 
 - [VueUse](https://vueuse.org/)
-  - VueUse is a collection of helpful utilities/composables that have been battle tested.
+  - VueUse is a collection of helpful utilities/composables that have been battle-tested.
+
+## ⭐ Stargazers
+
+Many thanks to the kind individuals who leave a star.
+Your support is much appreciated!
+
+[![Stargazers for @braks/vue-flow](https://reporoster.com/stars/bcakmakoglu/vue-flow)](https://github.com/bcakmakoglu/vue-flow/stargazers)
