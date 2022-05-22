@@ -119,7 +119,7 @@ export default {
       :stroke-width="nodeStrokeWidth"
       :shape-rendering="shapeRendering"
       @click="(e: MouseEvent) => onNodeClick(e, node)"
-      @dblclick="(e: MouseEvent) => onNodeDblClick(e, node)"
+      @dbl-click="(e: MouseEvent) => onNodeDblClick(e, node)"
     >
       <slot
         :id="node.id"
