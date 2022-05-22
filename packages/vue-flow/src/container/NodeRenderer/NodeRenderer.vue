@@ -60,7 +60,6 @@ export default {
       v-for="node of getNodes"
       :id="node.id"
       :key="node.id"
-      v-model="node.computedPosition"
       :type="getType(node.type, node.template)"
       :name="node.type || 'default'"
       :draggable="draggable(node.draggable)"
