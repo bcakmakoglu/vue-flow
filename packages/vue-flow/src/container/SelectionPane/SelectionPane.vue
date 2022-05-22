@@ -14,7 +14,7 @@ const {
   nodesSelectionActive,
   userSelectionActive,
   elementsSelectable,
-  resetSelectedElements,
+  removeSelectedElements,
   setState,
   getSelectedEdges,
   getSelectedNodes,
@@ -25,7 +25,7 @@ const onClick = (event: MouseEvent) => {
   setState({
     nodesSelectionActive: false,
   })
-  resetSelectedElements()
+  removeSelectedElements()
 }
 
 const onContextMenu = (event: MouseEvent) => emits.paneContextMenu(event)
@@ -51,7 +51,7 @@ useKeyPress($$(deleteKeyCode), (keyPressed) => {
       nodesSelectionActive: false,
     })
 
-    resetSelectedElements()
+    removeSelectedElements()
   }
 })
 

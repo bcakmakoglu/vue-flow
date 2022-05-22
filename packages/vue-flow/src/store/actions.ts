@@ -187,7 +187,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     const selectedEdgesIds = edges.map((e) => e.id)
 
     let changedEdges: EdgeChange[]
-    if (state.multiSelectionActive) changedEdges = selectedEdgesIds.map((nodeId) => createSelectionChange(nodeId, true))
+    if (state.multiSelectionActive) changedEdges = selectedEdgesIds.map((edgeId) => createSelectionChange(edgeId, true))
     else changedEdges = getSelectionChanges(state.edges, selectedEdgesIds, getters.getNode.value)
 
     if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
@@ -196,6 +196,36 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const addSelectedElements: Actions['addSelectedElements'] = (elements) => {
     addSelectedNodes(elements.filter(isGraphNode))
     addSelectedEdges(elements.filter(isGraphEdge))
+  }
+
+  const removeSelectedNodes: Actions['removeSelectedNodes'] = (nodes) => {
+    const unselectedNodesIds = nodes.map((n) => n.id)
+
+    let changedNodes: NodeChange[]
+    if (state.multiSelectionActive) changedNodes = unselectedNodesIds.map((nodeId) => createSelectionChange(nodeId, false))
+    else changedNodes = getSelectionChanges(state.nodes, unselectedNodesIds, getters.getNode.value)
+
+    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
+  }
+
+  const removeSelectedEdges: Actions['removeSelectedEdges'] = (edges) => {
+    const unselectedEdgesIds = edges.map((e) => e.id)
+
+    let changedEdges: EdgeChange[]
+    if (state.multiSelectionActive) changedEdges = unselectedEdgesIds.map((edgeId) => createSelectionChange(edgeId, false))
+    else changedEdges = getSelectionChanges(state.edges, unselectedEdgesIds, getters.getNode.value)
+
+    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+  }
+
+  const removeSelectedElements: Actions['removeSelectedElements'] = (elements) => {
+    if (!elements) {
+      addSelectedNodes([])
+      addSelectedEdges([])
+    } else {
+      if (elements.nodes) removeSelectedNodes(elements.nodes.filter(isGraphNode))
+      if (elements.edges) removeSelectedEdges(elements.edges.filter(isGraphEdge))
+    }
   }
 
   const setMinZoom: Actions['setMinZoom'] = (minZoom: any) => {
@@ -211,11 +241,6 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const setTranslateExtent: Actions['setTranslateExtent'] = (translateExtent: any) => {
     state.d3Zoom?.translateExtent(translateExtent)
     state.translateExtent = translateExtent
-  }
-
-  const resetSelectedElements: Actions['resetSelectedElements'] = () => {
-    addSelectedNodes([])
-    addSelectedEdges([])
   }
 
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
@@ -355,7 +380,9 @@ export default (state: State, getters: ComputedGetters): Actions => {
     setMinZoom,
     setMaxZoom,
     setTranslateExtent,
-    resetSelectedElements,
+    removeSelectedElements,
+    removeSelectedNodes,
+    removeSelectedEdges,
     setInteractive,
     setState,
     $reset: () => {

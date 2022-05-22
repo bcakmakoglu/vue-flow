@@ -144,8 +144,12 @@ export interface Actions {
   addSelectedEdges: (edges: GraphEdge[]) => void
   /** manually select nodes and add to state */
   addSelectedNodes: (nodes: GraphNode[]) => void
-  /** unselect all selected elements */
-  resetSelectedElements: () => void
+  /** manually unselect edges and remove from state */
+  removeSelectedEdges: (edges: GraphEdge[]) => void
+  /** manually unselect nodes and remove from state */
+  removeSelectedNodes: (nodes: GraphNode[]) => void
+  /** unselect selected elements (if none are passed, all elements are unselected) */
+  removeSelectedElements: (elements?: { nodes?: GraphNode[]; edges?: GraphEdge[] }) => void
   /** apply min zoom value to d3 */
   setMinZoom: (zoom: number) => void
   /** apply max zoom value to d3 */
