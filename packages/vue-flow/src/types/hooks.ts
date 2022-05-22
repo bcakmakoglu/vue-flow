@@ -15,6 +15,12 @@ export interface NodeMouseEvent {
   connectedEdges: GraphEdge[]
 }
 
+export interface NodeDragEvent {
+  event: MouseEvent
+  node: GraphNode
+  nodes: GraphNode[]
+}
+
 export interface EdgeMouseEvent {
   event: MouseEvent
   edge: GraphEdge
@@ -34,9 +40,9 @@ export interface FlowEvents {
   nodeMouseMove: NodeMouseEvent
   nodeMouseLeave: NodeMouseEvent
   nodeContextMenu: NodeMouseEvent
-  nodeDragStart: NodeMouseEvent
-  nodeDrag: NodeMouseEvent
-  nodeDragStop: NodeMouseEvent
+  nodeDragStart: NodeDragEvent
+  nodeDrag: NodeDragEvent
+  nodeDragStop: NodeDragEvent
   miniMapNodeClick: NodeMouseEvent
   miniMapNodeDoubleClick: NodeMouseEvent
   miniMapNodeMouseEnter: NodeMouseEvent
@@ -52,9 +58,9 @@ export interface FlowEvents {
   move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   moveEnd: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
-  selectionDragStart: { event: MouseTouchEvent; nodes: GraphNode[] }
-  selectionDrag: { event: MouseTouchEvent; nodes: GraphNode[] }
-  selectionDragStop: { event: MouseTouchEvent; nodes: GraphNode[] }
+  selectionDragStart: NodeDragEvent
+  selectionDrag: NodeDragEvent
+  selectionDragStop: NodeDragEvent
   selectionContextMenu: { event: MouseEvent; nodes: GraphNode[] }
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
