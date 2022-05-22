@@ -2,6 +2,19 @@ import type { Dimensions, ElementData, XYPosition } from './flow'
 import type { GraphNode, NodeHandleBounds } from './node'
 import type { GraphEdge } from './edge'
 
+export interface NodeDragItem {
+  id: string
+  // relative node position
+  position: XYPosition
+  // distance from the mouse cursor to the node when start dragging
+  distance: XYPosition
+  // delta to previous position
+  delta: XYPosition
+  dimensions: Dimensions
+  extent?: Node['extent']
+  parentNode?: string
+}
+
 export interface NodeDimensionChange {
   id: string
   type: 'dimensions'
