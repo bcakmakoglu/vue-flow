@@ -16,7 +16,6 @@ import {
   applyChanges,
   createAdditionChange,
   createGraphNodes,
-  createPositionChange,
   createSelectionChange,
   getDimensions,
   getHandleBounds,
@@ -26,34 +25,26 @@ import {
   isGraphEdge,
   isGraphNode,
   isNode,
-  isParentSelected,
   parseEdge,
   updateEdgeAction,
 } from '~/utils'
 
 export default (state: State, getters: ComputedGetters): Actions => {
-  const updateNodePosition: Actions['updateNodePosition'] = ({ id, diff = { x: 0, y: 0 } }) => {
-    const nodePosPromise = new Promise<NodePositionChange[]>((resolve) => {
-      const changes: NodePositionChange[] = []
-      const curr = id ? getters.getNode.value(id)! : undefined
-      if (curr) {
-        changes.push(createPositionChange({ node: curr, diff, nodeExtent: state.nodeExtent }, getters.getNode.value))
-      } else {
-        getters.getSelectedNodes.value.forEach((node) => {
-          if (!node.parentNode) {
-            changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent }, getters.getNode.value))
-          } else if (!isParentSelected(node, getters.getNode.value)) {
-            changes.push(createPositionChange({ node, diff, nodeExtent: state.nodeExtent }, getters.getNode.value))
-          }
-        })
+  const updateNodePositions: Actions['updateNodePositions'] = (dragItems) => {
+    const changes: NodePositionChange[] = []
+
+    dragItems.forEach((node) => {
+      const change: NodePositionChange = {
+        id: node.id,
+        type: 'position',
+        position: node.position,
       }
-
-      if (changes.length) resolve(changes)
+      changes.push(change)
     })
 
-    nodePosPromise.then((changes) => {
+    if (changes?.length) {
       state.hooks.nodesChange.trigger(changes)
-    })
+    }
   }
 
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
@@ -274,7 +265,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
 
   return {
-    updateNodePosition,
+    updateNodePositions,
     updateNodeDimensions,
     setElements,
     setNodes,

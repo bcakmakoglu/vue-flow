@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useDrag, useVueFlow } from '../../composables'
-import type { NodeComponent, SnapGrid, XYZPosition } from '../../types'
+import type { NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
-import { getConnectedEdges, getHandleBounds, getXYZPos } from '../../utils'
+import { getConnectedEdges, getHandleBounds, getXYZPos, handleNodeClick } from '../../utils'
 
 const { id, type, name, draggable, selectable, connectable, snapGrid, ...props } = defineProps<{
   id: string
@@ -14,8 +14,6 @@ const { id, type, name, draggable, selectable, connectable, snapGrid, ...props }
   name: string
 }>()
 
-const emit = defineEmits(['update:modelValue'])
-
 provide(NodeId, id)
 
 const {
@@ -26,7 +24,6 @@ const {
   emits,
   selectNodesOnDrag,
   setState,
-  updateNodePosition,
   updateNodeDimensions,
   getNode,
   addSelectedNodes,
@@ -40,45 +37,20 @@ const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) :
 
 const nodeElement = ref()
 
-let dragging = $ref(false)
-
-useDrag({
+const dragging = useDrag({
   id,
   el: nodeElement,
   disabled: computed(() => !draggable),
   noDragClassName: $$(noDragClassName) as any,
   handleSelector: node.dragHandle,
-  onStart(event) {
-    removeSelectedElements()
-    if (selectNodesOnDrag && selectable) {
-      setState({
-        nodesSelectionActive: false,
-      })
-
-      if (!node.selected) {
-        addSelectedNodes([node])
-      }
-    } else if (!selectNodesOnDrag && !node.selected && selectable) {
-      if (multiSelectionActive) {
-        addSelectedNodes([node])
-      } else {
-        removeSelectedElements()
-        setState({
-          nodesSelectionActive: false,
-        })
-      }
-    }
-
-    emits.nodeDragStart({ event: event.sourceEvent, node, nodes: [] })
+  onStart(event, node, nodes) {
+    emits.nodeDragStart({ event, node, nodes })
   },
-  onDrag(event, { dx, dy }) {
-    dragging = true
-    updateNodePosition({ id, diff: { x: dx, y: dy } })
-    emits.nodeDrag({ event: event.sourceEvent, node, nodes: [] })
+  onDrag(event, node, nodes) {
+    emits.nodeDrag({ event, node, nodes })
   },
-  onStop(event) {
-    dragging = false
-    emits.nodeDragStop({ event: event.sourceEvent, node, nodes: [] })
+  onStop(event, node, nodes) {
+    emits.nodeDragStop({ event, node, nodes })
   },
 })
 
@@ -156,22 +128,10 @@ const onDoubleClick = (event: MouseEvent) =>
   emits.nodeDoubleClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 
 const onSelectNode = (event: MouseEvent) => {
-  if (!dragging) {
-    if (selectable && !selectNodesOnDrag && !node.selected) {
-      setState({
-        nodesSelectionActive: false,
-      })
-
-      if (!node.selected) {
-        addSelectedNodes([node])
-      } else if (node.selected && multiSelectionActive) {
-        // todo add action to unselect nodes/edges easily
-        getSelectedNodes.splice(getSelectedNodes.indexOf(node), 1)
-        node.selected = false
-      }
-    }
-    emits.nodeClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+  if (selectable && (!selectNodesOnDrag || !draggable)) {
+    handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, setState)
   }
+  emits.nodeClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 }
 
 const getClass = computed(() => {
