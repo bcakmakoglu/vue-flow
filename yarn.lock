@@ -8506,6 +8506,11 @@ vite-plugin-vue-type-imports@^0.1.3:
   resolved "https://registry.yarnpkg.com/vite-plugin-vue-type-imports/-/vite-plugin-vue-type-imports-0.1.3.tgz#06edf2da7abdd3367217842e69b6ed7f506a3919"
   integrity sha512-iF5NgeQc2MZ6wDUS1tnN7rglkWmm+WhK9rCQb3FudsrMTqLazbtN6shyrEcsGBdqYAqH9c5HhiwU3gOIrFcVHA==
 
+vite-plugin-vue-type-imports@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-vue-type-imports/-/vite-plugin-vue-type-imports-0.2.0.tgz#bf2925ad730aa9f658c1f4b447bce12a6f641152"
+  integrity sha512-6rukBj1MP27WfsY5gqMZJg/Z8whK7f9oLbpICBDwzwOK2Oj7KkbP7IgFc2p3qInuB51SvUuxIIcJQVoUPaW6Nw==
+
 vite-plugin-windicss@^1.8.3:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/vite-plugin-windicss/-/vite-plugin-windicss-1.8.3.tgz#d5fe923ad60f5d80f153a4fae5f837d56caa25cb"

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { VueFlow, MiniMap, Controls, Background, Connection, Edge, Elements, FlowInstance, addEdge } from '@braks/vue-flow'
+import type { Connection, Edge, Elements, FlowInstance } from '@braks/vue-flow'
+import { Background, VueFlow, addEdge } from '@braks/vue-flow'
 import initialElements from './elements'
-import { PathFindingEdge } from '~/index'
+import { PathFindingEdge, PerfectArrow } from '~/index'
 
 const elements = ref<Elements>(initialElements)
 const rfInstance = ref<FlowInstance | null>(null)
@@ -11,21 +12,31 @@ const onLoad = (flowInstance: FlowInstance) => {
   rfInstance.value = flowInstance
 }
 </script>
+
 <template>
   <div style="height: 100%">
-    <VueFlow v-model="elements" class="vue-flow-basic-example" @connect="onConnect" @pane-ready="onLoad">
+    <VueFlow
+      v-model="elements"
+      :default-edge-options="{ type: 'perfectArrow' }"
+      class="vue-flow-basic-example"
+      @connect="onConnect"
+      @pane-ready="onLoad"
+    >
       <template #edge-pathFinding="props">
         <PathFindingEdge v-bind="props" />
       </template>
-      <Controls />
-      <MiniMap />
+      <template #edge-perfectArrow="props">
+        <PerfectArrow v-bind="props" />
+      </template>
+
       <Background color="#aaa" :gap="8" />
     </VueFlow>
   </div>
 </template>
+
 <style>
-@import '../node_modules/@braks/vue-flow/dist/style.css';
-@import '../node_modules/@braks/vue-flow/dist/theme-default.css';
+@import '@braks/vue-flow/dist/style.css';
+@import '@braks/vue-flow/dist/theme-default.css';
 
 html,
 body,

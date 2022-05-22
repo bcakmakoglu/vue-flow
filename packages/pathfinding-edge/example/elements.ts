@@ -1,7 +1,7 @@
-import type { Elements } from '@braks/vue-flow'
+import type { EdgeMarkerType, Elements } from '@braks/vue-flow'
 import { MarkerType } from '@braks/vue-flow'
 
-const markerEnd = MarkerType.Arrow
+const markerEnd: EdgeMarkerType = MarkerType.Arrow
 
 export default [
   {
@@ -101,7 +101,8 @@ export default [
     id: 'e2c2d',
     source: '2c',
     target: '2d',
-    type: 'pathFinding',
+    type: 'perfectArrow',
+    label: 'perfect arrow',
     markerEnd,
   },
   {
