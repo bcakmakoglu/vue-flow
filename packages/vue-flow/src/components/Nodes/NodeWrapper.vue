@@ -35,6 +35,7 @@ const {
   addSelectedNodes,
   multiSelectionActive,
   resetSelectedElements,
+  getSelectedNodes,
 } = $(useVueFlow())
 
 const node = $computed(() => getNode(id)!)
@@ -161,7 +162,13 @@ const onSelectNode = (event: MouseEvent) => {
         nodesSelectionActive: false,
       })
 
-      if (!node.selected) addSelectedNodes([node])
+      if (!node.selected) {
+        addSelectedNodes([node])
+      } else if (node.selected && multiSelectionActive) {
+        // todo add action to unselect nodes/edges easily
+        getSelectedNodes.splice(getSelectedNodes.indexOf(node), 1)
+        node.selected = false
+      }
     }
     emits.nodeClick({ event, node })
   }
