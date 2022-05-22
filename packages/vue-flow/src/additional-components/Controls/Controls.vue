@@ -4,7 +4,7 @@ import type { ControlProps } from '../../types/components'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from '~/assets/icons/plus.svg'
 import MinusIcon from '~/assets/icons/minus.svg'
-import Fitview from '~/assets/icons/fitview.svg'
+import FitView from '~/assets/icons/fitview.svg'
 import Lock from '~/assets/icons/lock.svg'
 import Unlock from '~/assets/icons/unlock.svg'
 
@@ -50,6 +50,7 @@ export default {
 
 <template>
   <div class="vue-flow__controls">
+    <slot name="top"></slot>
     <template v-if="showZoom">
       <slot name="control-zoom-in">
         <ControlButton class="vue-flow__controls-zoomin" @click="onZoomInHandler">
@@ -69,7 +70,7 @@ export default {
     <slot name="control-fitview">
       <ControlButton v-if="showFitView" class="vue-flow__controls-fitview" @click="onFitViewHandler">
         <slot name="icon-fitview">
-          <Fitview />
+          <FitView />
         </slot>
       </ControlButton>
     </slot>
