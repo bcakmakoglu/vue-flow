@@ -1,58 +1,27 @@
 <script lang="ts" setup>
-import type { CSSProperties, Component, DefineComponent } from 'vue'
-import type { EdgeTextProps, GraphNode } from '@braks/vue-flow'
-import { BezierEdge, EdgeText, Position, getEdgeCenter } from '@braks/vue-flow'
+import type { Position } from '@braks/vue-flow'
+import { BezierEdge, EdgeText, getEdgeCenter, useVueFlow } from '@braks/vue-flow'
+import type { PathFindingEdgeProps } from '../types'
 import { createGrid, gridRatio } from './createGrid'
 import { drawSmoothLinePath } from './drawSvgPath'
 import { generatePath } from './generatePath'
 import { getBoundingBoxes } from './getBoundingBoxes'
 import { gridToGraphPoint } from './pointConversion'
 
-const props = withDefaults(
-  defineProps<{
-    nodes: GraphNode[]
-    id: string
-    source: string
-    target: string
-    sourceX: number
-    sourceY: number
-    targetX: number
-    targetY: number
-    selected?: boolean
-    animated?: boolean
-    sourcePosition: Position
-    targetPosition: Position
-    label?:
-      | string
-      | {
-          component: Component<EdgeTextProps> | DefineComponent<EdgeTextProps>
-          props?: EdgeTextProps
-        }
-    labelStyle?: any
-    labelShowBg?: boolean
-    labelBgStyle?: any
-    labelBgPadding?: [number, number]
-    labelBgBorderRadius?: number
-    style?: CSSProperties
-    markerEnd?: string
-    markerStart?: string
-    data?: any
-    sourceHandleId?: string
-    targetHandleId?: string
-  }>(),
-  {
-    selected: false,
-    sourcePosition: Position.Bottom,
-    targetPosition: Position.Top,
-    labelStyle: () => ({}),
-    labelShowBg: true,
-    labelBgStyle: () => ({}),
-  },
-)
+const props = withDefaults(defineProps<PathFindingEdgeProps>(), {
+  selected: false,
+  sourcePosition: 'bottom' as Position,
+  targetPosition: 'top' as Position,
+  labelStyle: () => ({}),
+  labelShowBg: true,
+  labelBgStyle: () => ({}),
+})
 
 const nodePadding = 10
 const graphPadding = 20
 const roundCoordinatesTo = gridRatio
+
+const { getNodes } = useVueFlow()
 
 const centered = computed(() =>
   getEdgeCenter({
@@ -70,14 +39,14 @@ const target = computed(() => ({
   position: props.targetPosition,
 }))
 
-// We use the nodes information to generate bounding boxes for them
+// We use the nodes' information to generate bounding boxes for them
 // and the graph
-const bb = computed(() => getBoundingBoxes(props.nodes, nodePadding, graphPadding, roundCoordinatesTo))
+const bb = computed(() => getBoundingBoxes(getNodes.value, nodePadding, graphPadding, roundCoordinatesTo))
 
 const gridPath = computed(() => {
   let path: number[][] = []
 
-  if (target.value.x && source.value.x && props.nodes.length) {
+  if (target.value.x && source.value.x && getNodes.value.length) {
     // We then can use the grid representation to do pathfinding
     // With this information, we can create a 2D grid representation of
     // our graph, that tells us where in the graph there is a "free" space or not

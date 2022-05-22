@@ -1,6 +1,6 @@
 # Vue Flow Pathfinding Edge 🧲
 
-### Custom Edge that avoids crossing other Nodes
+__Custom edge that avoids crossing nodes__
 
 ## 🛠 Setup
 

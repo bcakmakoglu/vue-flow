@@ -1,50 +1,16 @@
 <script lang="ts" setup>
-import type { EdgeTextProps, Position } from '@braks/vue-flow'
 import { EdgeText, getEdgeCenter } from '@braks/vue-flow'
-import type { CSSProperties, DefineComponent } from 'vue'
-import type { ArrowOptions } from 'perfect-arrows'
+import type { CSSProperties } from 'vue'
 import { getArrow } from 'perfect-arrows'
+import type { PerfectArrowProps } from '../types'
 
-const props = withDefaults(
-  defineProps<{
-    id: string
-    source: string
-    target: string
-    sourceX: number
-    sourceY: number
-    targetX: number
-    targetY: number
-    selected?: boolean
-    animated?: boolean
-    sourcePosition: Position
-    targetPosition: Position
-    label?:
-      | string
-      | {
-          component: DefineComponent<EdgeTextProps>
-          props?: EdgeTextProps
-        }
-    labelStyle?: any
-    labelShowBg?: boolean
-    labelBgStyle?: any
-    labelBgPadding?: [number, number]
-    labelBgBorderRadius?: number
-    style?: CSSProperties
-    markerEnd?: string
-    markerStart?: string
-    data?: any
-    sourceHandleId?: string
-    targetHandleId?: string
-    options?: ArrowOptions
-  }>(),
-  {
-    options: () => ({
-      padStart: 3,
-      padEnd: 3,
-      stretch: 0.2,
-    }),
-  },
-)
+const props = withDefaults(defineProps<PerfectArrowProps>(), {
+  options: () => ({
+    padStart: 3,
+    padEnd: 3,
+    stretch: 0.2,
+  }),
+})
 
 const centered = computed(() =>
   getEdgeCenter({

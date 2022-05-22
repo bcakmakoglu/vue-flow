@@ -42,6 +42,7 @@
     "typescript-transform-paths": "^3.3.1",
     "unplugin-auto-import": "^0.7.1",
     "vite": "^2.9.9",
+    "vite-plugin-vue-type-imports": "^0.2.0",
     "vue-tsc": "^0.34.12"
   },
   "peerDependencies": {
