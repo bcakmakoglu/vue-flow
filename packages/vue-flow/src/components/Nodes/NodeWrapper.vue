@@ -6,7 +6,6 @@ import { getHandleBounds, getXYZPos } from '../../utils'
 
 const { id, type, name, draggable, selectable, connectable, snapGrid, ...props } = defineProps<{
   id: string
-  modelValue: XYZPosition
   draggable: boolean
   selectable: boolean
   connectable: boolean
@@ -16,8 +15,6 @@ const { id, type, name, draggable, selectable, connectable, snapGrid, ...props }
 }>()
 
 const emit = defineEmits(['update:modelValue'])
-
-let computedPosition = $(useVModel(props, 'modelValue', emit))
 
 provide(NodeId, id)
 
@@ -117,9 +114,9 @@ onMounted(() => {
       }
 
       if (parentX && parentY) {
-        computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
+        node.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
       } else {
-        computedPosition = xyzPos
+        node.computedPosition = xyzPos
       }
 
       node.handleBounds = getHandleBounds(nodeElement.value, viewport.zoom)
