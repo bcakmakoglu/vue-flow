@@ -2,121 +2,35 @@ import useState from './state'
 import type {
   Actions,
   ComputedGetters,
-  Connection,
   CoordinateExtent,
-  Edge,
   EdgeChange,
-  Getters,
   GraphEdge,
   GraphNode,
-  Node,
   NodeChange,
   NodeDimensionChange,
   NodePositionChange,
   State,
 } from '~/types'
 import {
+  addEdgeToStore,
   applyChanges,
+  createGraphNodes,
   connectionExists,
   createAdditionChange,
   createPositionChange,
   createSelectionChange,
   getDimensions,
-  getEdgeId,
   getHandleBounds,
   getSelectionChanges,
+  isDef,
   isEdge,
   isGraphEdge,
   isGraphNode,
   isNode,
   isParentSelected,
   parseEdge,
-  parseNode,
+  updateEdgeAction,
 } from '~/utils'
-
-const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
-
-const addEdge = (edgeParams: Edge | Connection, edges: Edge[]) => {
-  if (!edgeParams.source || !edgeParams.target) {
-    console.warn("[vueflow]: Can't create edge. An edge needs a source and a target.")
-    return false
-  }
-
-  let edge
-  if (isEdge(edgeParams)) {
-    edge = { ...edgeParams }
-  } else {
-    edge = {
-      ...edgeParams,
-      id: getEdgeId(edgeParams),
-    } as Edge
-  }
-  edge = parseEdge(edge)
-  if (connectionExists(edge, edges)) return false
-  return edge
-}
-
-const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[], add: Actions['addEdges']) => {
-  if (!newConnection.source || !newConnection.target) {
-    console.warn("[vueflow]: Can't create new edge. An edge needs a source and a target.")
-    return false
-  }
-
-  const foundEdge = edges.find((e) => isGraphEdge(e) && e.id === edge.id)
-
-  if (!foundEdge) {
-    console.warn(`[vueflow]: The old edge with id=${edge.id} does not exist.`)
-    return false
-  }
-
-  edges.splice(edges.indexOf(edge), 1)
-  const newEdge = {
-    ...edge,
-    id: getEdgeId(newConnection),
-    source: newConnection.source,
-    target: newConnection.target,
-    sourceHandle: newConnection.sourceHandle,
-    targetHandle: newConnection.targetHandle,
-  }
-  add([newEdge])
-
-  return newEdge
-}
-
-const createGraphNodes = (nodes: Node[], getNode: Getters['getNode'], currGraphNodes: GraphNode[], extent: CoordinateExtent) => {
-  const parentNodes: Record<string, true> = {}
-
-  const graphNodes = nodes.map((node) => {
-    const parsed = shallowReactive(
-      parseNode(node, extent, {
-        ...getNode(node.id),
-        parentNode: node.parentNode,
-      }),
-    )
-    if (node.parentNode) {
-      parentNodes[node.parentNode] = true
-    }
-
-    return parsed
-  })
-
-  graphNodes.forEach((node) => {
-    const nextNodes = [...graphNodes, ...currGraphNodes]
-    if (node.parentNode && !nextNodes.find((n) => n.id === node.parentNode)) {
-      console.warn(`[vueflow]: Parent node ${node.parentNode} not found`)
-    }
-
-    if (node.parentNode || parentNodes[node.id]) {
-      if (parentNodes[node.id]) {
-        node.isParent = true
-      }
-      const parent = node.parentNode ? getNode(node.parentNode) : undefined
-      if (parent) parent.isParent = true
-    }
-  })
-
-  return graphNodes
-}
 
 export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodePosition: Actions['updateNodePosition'] = ({ id, diff = { x: 0, y: 0 } }) => {
@@ -173,24 +87,32 @@ export default (state: State, getters: ComputedGetters): Actions => {
     if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
 
-  const addSelectedNodes: Actions['addSelectedNodes'] = (nodes) => {
-    const selectedNodesIds = nodes.map((n) => n.id)
+  const nodeSelectionHandler = (nodes: GraphNode[], selected: boolean) => {
+    const nodeIds = nodes.map((n) => n.id)
 
     let changedNodes: NodeChange[]
-    if (state.multiSelectionActive) changedNodes = selectedNodesIds.map((nodeId) => createSelectionChange(nodeId, true))
-    else changedNodes = getSelectionChanges(state.nodes, selectedNodesIds, getters.getNode.value)
+    if (state.multiSelectionActive) changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
+    else changedNodes = getSelectionChanges(state.nodes, nodeIds, getters.getNode.value)
 
     if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
   }
 
-  const addSelectedEdges: Actions['addSelectedEdges'] = (edges) => {
-    const selectedEdgesIds = edges.map((e) => e.id)
+  const edgeSelectionHandler = (edges: GraphEdge[], selected: boolean) => {
+    const edgeIds = edges.map((e) => e.id)
 
     let changedEdges: EdgeChange[]
-    if (state.multiSelectionActive) changedEdges = selectedEdgesIds.map((edgeId) => createSelectionChange(edgeId, true))
-    else changedEdges = getSelectionChanges(state.edges, selectedEdgesIds, getters.getNode.value)
+    if (state.multiSelectionActive) changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
+    else changedEdges = getSelectionChanges(state.edges, edgeIds, getters.getNode.value)
 
     if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+  }
+
+  const addSelectedNodes: Actions['addSelectedNodes'] = (nodes) => {
+    nodeSelectionHandler(nodes, true)
+  }
+
+  const addSelectedEdges: Actions['addSelectedEdges'] = (edges) => {
+    edgeSelectionHandler(edges, true)
   }
 
   const addSelectedElements: Actions['addSelectedElements'] = (elements) => {
@@ -199,23 +121,11 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
 
   const removeSelectedNodes: Actions['removeSelectedNodes'] = (nodes) => {
-    const unselectedNodesIds = nodes.map((n) => n.id)
-
-    let changedNodes: NodeChange[]
-    if (state.multiSelectionActive) changedNodes = unselectedNodesIds.map((nodeId) => createSelectionChange(nodeId, false))
-    else changedNodes = getSelectionChanges(state.nodes, unselectedNodesIds, getters.getNode.value)
-
-    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
+    nodeSelectionHandler(nodes, false)
   }
 
   const removeSelectedEdges: Actions['removeSelectedEdges'] = (edges) => {
-    const unselectedEdgesIds = edges.map((e) => e.id)
-
-    let changedEdges: EdgeChange[]
-    if (state.multiSelectionActive) changedEdges = unselectedEdgesIds.map((edgeId) => createSelectionChange(edgeId, false))
-    else changedEdges = getSelectionChanges(state.edges, unselectedEdgesIds, getters.getNode.value)
-
-    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+    edgeSelectionHandler(edges, false)
   }
 
   const removeSelectedElements: Actions['removeSelectedElements'] = (elements) => {
@@ -303,7 +213,13 @@ export default (state: State, getters: ComputedGetters): Actions => {
     const curr = params instanceof Function ? params(state.edges) : params
 
     const changes = curr.reduce((acc, param) => {
-      const edge = addEdge(param, state.edges)
+      const edge = addEdgeToStore(
+        {
+          ...param,
+          ...state.defaultEdgeOptions,
+        },
+        state.edges,
+      )
       if (edge) {
         const sourceNode = getters.getNode.value(edge.source)!
         const targetNode = getters.getNode.value(edge.target)!
@@ -315,10 +231,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
         if (missingTarget || missingSource) return acc
 
         acc.push(
-          createAdditionChange<GraphEdge>(shallowReactive({
-            ...state.defaultEdgeOptions,
-            ...edge,
-          })),
+          createAdditionChange<GraphEdge>(shallowReactive(edge)),
         )
       }
 
