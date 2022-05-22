@@ -31,7 +31,7 @@ const {
   getNodeTypes,
   addSelectedNodes,
   multiSelectionActive,
-  resetSelectedElements,
+  removeSelectedElements,
   getSelectedNodes,
 } = $(useVueFlow())
 
@@ -61,7 +61,7 @@ useDrag({
       if (multiSelectionActive) {
         addSelectedNodes([node])
       } else {
-        resetSelectedElements()
+        removeSelectedElements()
         setState({
           nodesSelectionActive: false,
         })
