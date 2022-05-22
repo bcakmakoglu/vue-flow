@@ -1,5 +1,5 @@
 import { getDimensions } from './graph'
-import type { HandleElement, Position } from '~/types'
+import type { Actions, GraphNode, HandleElement, Position } from '~/types'
 
 export const getHandleBoundsByHandleType = (
   selector: string,
@@ -35,5 +35,21 @@ export const getHandleBounds = (nodeElement: HTMLDivElement, scale: number, id?:
   return {
     source: getHandleBoundsByHandleType(`.source${id ? `.vue-flow__handle-${id}` : ''}`, nodeElement, bounds, scale) ?? undefined,
     target: getHandleBoundsByHandleType(`.target${id ? `.vue-flow__handle-${id}` : ''}`, nodeElement, bounds, scale) ?? undefined,
+  }
+}
+
+export const handleNodeClick = (
+  node: GraphNode,
+  multiSelectionActive: boolean,
+  addSelectedNodes: Actions['addSelectedNodes'],
+  removeSelectedElements: Actions['removeSelectedElements'],
+  setState: Actions['setState'],
+) => {
+  setState({ nodesSelectionActive: false })
+
+  if (!node.selected) {
+    addSelectedNodes([node])
+  } else if (node.selected && multiSelectionActive) {
+    removeSelectedElements({ nodes: [node] })
   }
 }

@@ -1,6 +1,5 @@
-import { clampPosition, isGraphEdge, isGraphNode } from './graph'
+import { isGraphEdge, isGraphNode } from './graph'
 import type {
-  CoordinateExtent,
   Edge,
   EdgeAddChange,
   EdgeChange,
@@ -14,18 +13,11 @@ import type {
   Node,
   NodeAddChange,
   NodeChange,
-  NodePositionChange,
   NodeSelectionChange,
-  XYPosition,
 } from '~/types'
 
-interface CreatePositionChangeParams {
-  node: GraphNode
-  nodeExtent: CoordinateExtent
-  diff?: XYPosition
-}
-
-function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
+function handleParentExpand(updateItem: GraphNode, curr: GraphNode[]) {
+  const parent = updateItem.parentNode ? curr.find((el) => el.id === updateItem.parentNode) : undefined
   if (parent) {
     const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
@@ -158,39 +150,10 @@ export const createSelectionChange = (id: string, selected: boolean): NodeSelect
   selected,
 })
 
-export const createPositionChange = (
-  { node, diff, nodeExtent }: CreatePositionChangeParams,
-  getNode: Getters['getNode'],
-): NodePositionChange => {
-  const parent = node.parentNode ? getNode(node.parentNode) : undefined
-  const change: NodePositionChange = {
-    id: node.id,
-    type: 'position',
-  }
-
-  if (diff) {
-    const nextPosition = { x: node.position.x + diff.x, y: node.position.y + diff.y }
-    let currentExtent = node.extent === 'parent' || typeof node.extent === 'undefined' ? nodeExtent : node.extent
-
-    if (node.extent === 'parent' && parent && node.dimensions.width && node.dimensions.height) {
-      if (parent.dimensions.width && parent.dimensions.height) {
-        currentExtent = [
-          [0, 0],
-          [parent.dimensions.width - node.dimensions.width, parent.dimensions.height - node.dimensions.height],
-        ]
-      }
-    }
-
-    change.position = currentExtent ? clampPosition(nextPosition, currentExtent) : nextPosition
-  }
-
-  return change
-}
-
 export const createAdditionChange = <
   T extends GraphNode | GraphEdge = GraphNode,
   C extends NodeAddChange | EdgeAddChange = T extends GraphNode ? NodeAddChange : EdgeAddChange,
->(
+  >(
   item: T,
 ): C =>
   <C>{

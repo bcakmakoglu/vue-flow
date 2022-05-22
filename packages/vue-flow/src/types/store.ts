@@ -6,18 +6,13 @@ import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
-import type { EdgeChange, NodeChange } from './changes'
+import type { EdgeChange, NodeChange, NodeDragItem } from "./changes";
 import type { HandleType, StartHandle } from './handle'
 
 export interface UpdateNodeDimensionsParams {
   id: string
   nodeElement: HTMLDivElement
   forceUpdate?: boolean
-}
-
-export interface UpdateNodePositionsParams {
-  id?: string
-  diff?: XYPosition
 }
 
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
@@ -118,7 +113,7 @@ export type SetState = (
     | Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
     | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
 ) => void
-export type UpdateNodePosition = (params: UpdateNodePositionsParams) => void
+export type UpdateNodePosition = (dragItems: NodeDragItem[]) => void
 export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
 
 export interface Actions {
@@ -162,7 +157,7 @@ export interface Actions {
   setState: SetState
 
   /** internal position updater, you probably don't want to use this */
-  updateNodePosition: UpdateNodePosition
+  updateNodePositions: UpdateNodePosition
   /** internal dimensions' updater, you probably don't want to use this */
   updateNodeDimensions: UpdateNodeDimensions
 

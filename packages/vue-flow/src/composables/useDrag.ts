@@ -4,19 +4,16 @@ import { select } from 'd3-selection'
 import type { Ref } from 'vue'
 import type { MaybeRef } from '@vueuse/core'
 import useVueFlow from './useVueFlow'
-import { pointToRendererPoint } from '~/utils'
-import type { GraphNode, XYPosition } from '~/types'
+import { handleNodeClick, pointToRendererPoint } from '~/utils'
+import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
+import { getDragItems, getEventHandlerParams, getParentNodePosition, hasSelector, updatePosition } from '~/utils/drag'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
-export interface UseDragData {
-  dx: number
-  dy: number
-}
 
 interface UseDragParams {
-  onStart: (event: UseDragEvent) => void
-  onDrag: (event: UseDragEvent, data: UseDragData) => void
-  onStop: (event: UseDragEvent) => void
+  onStart: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
+  onDrag: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
+  onStop: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
   el: Ref<Element>
   disabled?: MaybeRef<boolean>
   noDragClassName?: MaybeRef<string>
@@ -24,103 +21,124 @@ interface UseDragParams {
   id?: string
 }
 
-function getOffset(event: UseDragEvent, el: Element): XYPosition {
-  const bounds = el.getBoundingClientRect() || { x: 0, y: 0 }
-
-  const parent = (el as HTMLDivElement).offsetParent
-
-  const parentBounds = parent?.getBoundingClientRect() || { x: 0, y: 0 }
-
-  return {
-    x: event.x - (bounds.x - parentBounds.x - (parent?.scrollLeft || 0)),
-    y: event.y - (bounds.y - parentBounds.y - (parent?.scrollTop || 0)),
-  }
-}
-
-function getParentNodePosition(parent?: GraphNode): XYPosition {
-  return {
-    x: parent?.computedPosition?.x || 0,
-    y: parent?.computedPosition?.y || 0,
-  }
-}
-
-function hasSelector(target: Element, selector: string, node: Ref<Element>): boolean {
-  let current = target
-
-  do {
-    if (current && current.matches(selector)) return true
-    else if (current === node.value) return false
-
-    current = current.parentElement as Element
-  } while (current)
-
-  return false
-}
-
 function useDrag(params: UseDragParams) {
-  const { viewport, snapToGrid, snapGrid, getNode } = useVueFlow()
+  const {
+    viewport,
+    snapToGrid,
+    snapGrid,
+    nodes,
+    nodeExtent,
+    getNode,
+    multiSelectionActive,
+    selectNodesOnDrag,
+    removeSelectedElements,
+    addSelectedNodes,
+    setState,
+    updateNodePositions,
+  } = $(useVueFlow())
   const { onStart, onDrag, onStop, el, disabled = false, noDragClassName, id, handleSelector } = $(params)
 
-  let startPos = $ref<XYPosition>({ x: 0, y: 0 })
+  const dragging = ref(false)
+  let dragItems = $ref<NodeDragItem[]>()
   let lastPos = $ref<Partial<XYPosition>>({ x: undefined, y: undefined })
   let parentPos = $ref<XYPosition>({ x: 0, y: 0 })
+  let dragHandler = $ref<any>()
 
-  const handleDrag = (event: UseDragEvent) => {
-    const pos = pointToRendererPoint(
+  const getMousePosition = (event: UseDragEvent) => {
+    const mousePos = pointToRendererPoint(
       {
-        x: event.x - startPos.x,
-        y: event.y - startPos.y,
+        x: event.sourceEvent.clientX,
+        y: event.sourceEvent.clientY,
       },
-      viewport.value,
-      snapToGrid.value,
-      snapGrid.value,
+      viewport,
+      snapToGrid,
+      snapGrid,
     )
 
-    pos.x -= parentPos.x
-    pos.y -= parentPos.y
+    mousePos.x -= parentPos.x
+    mousePos.y -= parentPos.y
 
-    // skip events without movement
-    if (lastPos.x !== pos.x || lastPos.y !== pos.y) {
-      if (lastPos.x && lastPos.y) {
-        onDrag(event, {
-          dx: pos.x - lastPos.x,
-          dy: pos.y - lastPos.y,
-        })
-      }
-    }
-
-    lastPos = pos
+    return mousePos
   }
 
-  return watch(
+  watch(
     [() => disabled, () => noDragClassName, () => id, () => el],
     () => {
       if (el) {
         const selection = select(el)
-        const node = id ? getNode.value(id) : undefined
+        const node = id ? getNode(id) : undefined
 
         if (disabled) {
           selection.on('.drag', null)
         } else {
-          const dragHandler = drag()
+          dragHandler = drag()
             .on('start', (event: UseDragEvent) => {
-              const offset = getOffset(event, el)
-              parentPos = getParentNodePosition(node && node.parentNode ? getNode.value(node!.parentNode!) : undefined)
+              parentPos = getParentNodePosition(node && node.parentNode ? getNode(node!.parentNode!) : undefined)
 
-              startPos = {
-                x: offset.x - viewport.value.x,
-                y: offset.y - viewport.value.y,
+              if (!selectNodesOnDrag && !multiSelectionActive && id) {
+                if (!node?.selected) {
+                  removeSelectedElements()
+                }
               }
 
-              onStart(event)
+              if (node && !disabled && selectNodesOnDrag) {
+                handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, setState)
+              }
+
+              const mousePos = getMousePosition(event)
+              dragItems = getDragItems(nodes, mousePos, getNode, id)
+
+              if (onStart && dragItems) {
+                const [currentNode, nodes] = getEventHandlerParams({
+                  id,
+                  dragItems,
+                  node: node!,
+                })
+                onStart(event.sourceEvent, currentNode, nodes)
+              }
             })
-            .on('drag', handleDrag)
-            .on('end', (event: UseDragEvent) => {
-              if (node) lastPos = node.position
-              onStop(event)
+            .on('drag', (event: UseDragEvent) => {
+              const mousePos = getMousePosition(event)
+
+              console.log(node?.label)
+
+              // skip events without movement
+              if ((lastPos.x !== mousePos.x || lastPos.y !== mousePos.y) && dragItems) {
+                lastPos = mousePos
+                dragItems = dragItems.map((n) =>
+                  updatePosition(n, mousePos, n.parentNode ? getNode(n.parentNode) : undefined, nodeExtent),
+                )
+
+                updateNodePositions(dragItems)
+                dragging.value = true
+
+                if (onDrag) {
+                  const [currentNode, nodes] = getEventHandlerParams({
+                    id,
+                    dragItems,
+                    node: node!,
+                  })
+                  onDrag(event.sourceEvent, currentNode, nodes)
+                }
+              }
+
+              event.on('end', (event) => {
+                if (onStop && dragItems) {
+                  const [currentNode, nodes] = getEventHandlerParams({
+                    id,
+                    dragItems,
+                    node: node!,
+                  })
+                  onStop(event.sourceEvent, currentNode, nodes)
+                }
+              })
+            })
+            .on('end', (_: UseDragEvent) => {
+              // if (node) lastPos = node.position
             })
             .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
-              const filter = !event.ctrlKey && !event.button && !event.target.className.includes(noDragClassName)
+              const filter =
+                !event.ctrlKey && !event.button && (!noDragClassName || !event.target.className.includes(noDragClassName))
 
               if (handleSelector) {
                 return !hasSelector(event.sourceEvent.target, handleSelector, $$(el)) && filter
@@ -135,6 +153,8 @@ function useDrag(params: UseDragParams) {
     },
     { flush: 'post' },
   )
+
+  return dragging
 }
 
 export default useDrag
