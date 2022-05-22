@@ -11,10 +11,10 @@ import Unlock from '~/assets/icons/unlock.svg'
 const { showZoom = true, showFitView = true, showInteractive = true, fitViewParams } = defineProps<ControlProps>()
 
 const emit = defineEmits<{
-  (event: 'zoom-in'): void
-  (event: 'zoom-out'): void
-  (event: 'fit-view'): void
-  (event: 'interaction-change', active: boolean): void
+  (event: 'zoomIn'): void
+  (event: 'zoomOut'): void
+  (event: 'fitView'): void
+  (event: 'interactionChange', active: boolean): void
 }>()
 
 const { instance, nodesDraggable, nodesConnectable, elementsSelectable, setInteractive } = $(useVueFlow())
@@ -23,22 +23,22 @@ const isInteractive = computed(() => nodesDraggable && nodesConnectable && eleme
 
 const onZoomInHandler = () => {
   instance?.zoomIn()
-  emit('zoom-in')
+  emit('zoomIn')
 }
 
 const onZoomOutHandler = () => {
   instance?.zoomOut()
-  emit('zoom-out')
+  emit('zoomOut')
 }
 
 const onFitViewHandler = () => {
   instance?.fitView(fitViewParams)
-  emit('fit-view')
+  emit('fitView')
 }
 
 const onInteractiveChangeHandler = () => {
   setInteractive(!isInteractive.value)
-  emit('interaction-change', !isInteractive.value)
+  emit('interactionChange', !isInteractive.value)
 }
 </script>
 
