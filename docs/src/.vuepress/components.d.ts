@@ -11,11 +11,13 @@ declare module 'vue' {
     Custom: typeof import('./../../components/home/edges/Custom.vue')['default']
     Editor: typeof import('./../../components/stackblitz/Editor.vue')['default']
     Features: typeof import('./../../components/home/Features.vue')['default']
+    Foo: typeof import('./../../components/Foo.vue')['default']
     Home: typeof import('./../../components/home/Home.vue')['default']
     Input: typeof import('./../../components/home/nodes/Input.vue')['default']
     Intro: typeof import('./../../components/home/flows/Intro.vue')['default']
     Nested: typeof import('./../../components/home/flows/Nested.vue')['default']
     Output: typeof import('./../../components/home/nodes/Output.vue')['default']
+    Repl: typeof import('./../../components/Repl.vue')['default']
     RGB: typeof import('./../../components/home/flows/RGB.vue')['default']
   }
 }

@@ -25,6 +25,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     viteOptions: {
       optimizeDeps: {
         include: ['@stackblitz/sdk'],
+        exclude: ['@animxyz/vue3'],
       },
       plugins: [
         AutoImport({

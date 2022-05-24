@@ -1,1 +1,10 @@
-<Editor />
+---
+pageClass: examples
+
+---
+
+# Test
+
+<Suspense>
+  <Repl />
+</Suspense>
