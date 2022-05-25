@@ -1,18 +1,13 @@
 <script lang="ts" setup>
 import { Repl, ReplStore } from '@vue/repl'
+import pkg from '../package.json'
 import Foo from './Foo.vue?raw'
 import css from './main.css'
 import '@vue/repl/style.css'
 
-// retrieve some configuration options from the URL
-const query = new URLSearchParams(location.search)
-
 const store = new ReplStore({
-  // starts on the output pane (mobile only) if the URL has a showOutput query
-  showOutput: query.has('showOutput'),
-  // starts on a different tab on the output pane if the URL has a outputMode query
-  // and default to the "preview" tab
-  outputMode: query.get('outputMode') || 'preview',
+  showOutput: true,
+  outputMode: 'preview',
 })
 
 await store.setFiles(
@@ -26,15 +21,30 @@ await store.setFiles(
 // pre-set import map
 store.setImportMap({
   imports: {
-    '@braks/vue-flow': `https://cdn.jsdelivr.net/npm/@braks/vue-flow@0.4.11/dist/vue-flow.es.js`,
+    '@braks/vue-flow': `https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/vue-flow.es.js`,
   },
 })
 
 store.setVueVersion('3.2.25')
+
+const sfcOptions = {
+  script: {
+    reactivityTransform: true,
+  },
+}
 </script>
 
 <template>
-  <Repl style="height: 90vh; width: 100%" :clear-console="false" :auto-resize="true" :store="store" :show-compile-output="true" />
+  <Repl
+    style="height: 90vh; width: 100%"
+    :clear-console="true"
+    :auto-resize="true"
+    :store="store"
+    :show-compile-output="true"
+    :sfc-options="sfcOptions"
+    @keydown.ctrl.s.prevent
+    @keydown.meta.s.prevent
+  />
 </template>
 
 <style>
