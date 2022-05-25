@@ -1,21 +1,57 @@
 <script lang="ts" setup>
 import { Repl, ReplStore } from '@vue/repl'
 import pkg from '../package.json'
-import Foo from './Foo.vue?raw'
-import css from './main.css'
 import '@vue/repl/style.css'
+
+const props = defineProps<{ mainFile?: string; files: { filename: string; file: string }[] }>()
+
+let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/style.css';
+@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/theme-default.css';
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+}
+
+#app {
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}`
 
 const store = new ReplStore({
   showOutput: true,
   outputMode: 'preview',
 })
 
+watchEffect(
+  () => {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`)
+  },
+  { flush: 'post' },
+)
+
+const files: any = {}
+
+for (const curr of props.files) {
+  if (curr.file.includes('.css')) {
+    css += `${(await import(`./examples/${curr.file}`)).default}`
+  } else {
+    files[curr.filename] = (await import(`./examples/${curr.file}?raw`)).default
+  }
+}
+
 await store.setFiles(
   {
-    'App.vue': Foo,
+    ...files,
     'main.css': css,
   },
-  'App.vue',
+  props.mainFile ?? 'App.vue',
 )
 
 // pre-set import map
@@ -36,11 +72,11 @@ const sfcOptions = {
 
 <template>
   <Repl
-    style="height: 90vh; width: 100%"
     :clear-console="true"
     :auto-resize="true"
     :store="store"
-    :show-compile-output="true"
+    :show-compile-output="false"
+    :show-import-map="false"
     :sfc-options="sfcOptions"
     @keydown.ctrl.s.prevent
     @keydown.meta.s.prevent
@@ -49,6 +85,12 @@ const sfcOptions = {
 
 <style>
 .file-selector {
-  min-height: 50px;
+  @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
+}
+
+.vue-repl {
+  @apply rounded-lg border-1 border-solid dark:border-gray-200/10 border-gray-200;
+
+  height: calc(var(--vh) - var(--navbar-height));
 }
 </style>
