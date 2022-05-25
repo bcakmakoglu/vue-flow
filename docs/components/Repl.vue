@@ -2,8 +2,9 @@
 import { Repl, ReplStore } from '@vue/repl'
 import pkg from '../package.json'
 import '@vue/repl/style.css'
+import { exampleImports } from './examples'
 
-const props = defineProps<{ mainFile?: string; files: { filename: string; file: string; ext: string }[] }>()
+const props = defineProps<{ example: keyof typeof exampleImports }>()
 
 let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/style.css';
 @import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/theme-default.css';
@@ -37,18 +38,13 @@ watchEffect(
 )
 
 const files: any = {}
+const imports = exampleImports[props.example]
 
-for (const curr of props.files) {
-  switch (curr.ext) {
-    case 'css':
-      css += `${(await import(`./examples/${curr.file}.css`)).default}`
-      break
-    case 'js':
-      files[curr.filename] = (await import(`./examples/${curr.file}.js`)).default
-      break
-    case 'vue':
-      files[curr.filename] = (await import(`./examples/${curr.file}.vue`)).default
-      break
+for (const example of Object.keys(imports)) {
+  if (example.includes('css')) {
+    css += `${imports[example as keyof typeof imports]}`
+  } else {
+    files[example] = imports[example as keyof typeof imports]
   }
 }
 
@@ -57,7 +53,7 @@ await store.setFiles(
     ...files,
     'main.css': css,
   },
-  props.mainFile ?? 'App.vue',
+  'App.vue',
 )
 
 // pre-set import map
@@ -78,7 +74,7 @@ const sfcOptions = {
 
 <template>
   <Repl
-    :clear-console="true"
+    :clear-console="false"
     :auto-resize="true"
     :store="store"
     :show-compile-output="false"
