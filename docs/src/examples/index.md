@@ -15,9 +15,9 @@ You can also see the built-in node (default, input, output) and edge (bezier, st
     <Repl 
       main-file="Basic.vue" 
       :files="[
-        { file: 'basic/Basic.vue', filename: 'Basic.vue' }, 
-        { file: 'basic/initial-elements.js', filename: 'initial-elements.js' }, 
-        { file: 'basic/style.css', filename: 'style.css' }
+        { file: 'basic/Basic.vue', filename: 'Basic', ext: 'vue' }, 
+        { file: 'basic/initial-elements.js', filename: 'initial-elements', ext: 'js' }, 
+        { file: 'basic/style.css', filename: 'style', ext: 'css' }
       ]"></Repl>
   </Suspense>
 </div>

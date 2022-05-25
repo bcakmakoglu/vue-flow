@@ -3,7 +3,7 @@ import { Repl, ReplStore } from '@vue/repl'
 import pkg from '../package.json'
 import '@vue/repl/style.css'
 
-const props = defineProps<{ mainFile?: string; files: { filename: string; file: string }[] }>()
+const props = defineProps<{ mainFile?: string; files: { filename: string; file: string; ext: string }[] }>()
 
 let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/style.css';
 @import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/theme-default.css';
@@ -39,10 +39,16 @@ watchEffect(
 const files: any = {}
 
 for (const curr of props.files) {
-  if (curr.file.includes('.css')) {
-    css += `${(await import(`./examples/${curr.file}`)).default}`
-  } else {
-    files[curr.filename] = (await import(`./examples/${curr.file}?raw`)).default
+  switch (curr.ext) {
+    case 'css':
+      css += `${(await import(`./examples/${curr.file}.css`)).default}`
+      break
+    case 'js':
+      files[curr.filename] = (await import(`./examples/${curr.file}.js?raw`)).default
+      break
+    case 'vue':
+      files[curr.filename] = (await import(`./examples/${curr.file}.vue?raw`)).default
+      break
   }
 }
 
