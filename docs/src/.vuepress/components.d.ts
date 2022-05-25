@@ -6,9 +6,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     Acknowledgement: typeof import('./../../components/home/Acknowledgement.vue')['default']
     Additional: typeof import('./../../components/home/flows/Additional.vue')['default']
+    App: typeof import('./../../components/examples/basic/App.vue')['default']
     Banner: typeof import('./../../components/home/Banner.vue')['default']
-    Basic: typeof import('./../../components/examples/basic/Basic.vue')['default']
+    Basic: typeof import('./../../components/home/flows/Basic.vue')['default']
     Custom: typeof import('./../../components/home/edges/Custom.vue')['default']
+    CustomNode: typeof import('./../../components/examples/customNode/CustomNode.vue')['default']
     Features: typeof import('./../../components/home/Features.vue')['default']
     Home: typeof import('./../../components/home/Home.vue')['default']
     Input: typeof import('./../../components/home/nodes/Input.vue')['default']

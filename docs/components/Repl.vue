@@ -74,7 +74,7 @@ const sfcOptions = {
 
 <template>
   <Repl
-    :clear-console="false"
+    :clear-console="true"
     :auto-resize="true"
     :store="store"
     :show-compile-output="false"
