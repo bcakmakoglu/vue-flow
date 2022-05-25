@@ -36,11 +36,11 @@ const BaseEdge: FunctionalComponent<Props> = function ({
 }) {
   return [
     h('path', {
-      style: { ...style },
-      d: path,
-      class: 'vue-flow__edge-path',
-      markerEnd,
-      markerStart,
+      'style': { ...style },
+      'd': path,
+      'class': 'vue-flow__edge-path',
+      'marker-end': markerEnd,
+      'marker-start': markerStart,
     }),
     label
       ? h(EdgeText, {
