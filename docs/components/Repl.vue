@@ -95,4 +95,8 @@ const sfcOptions = {
 
   height: calc(var(--vh) - var(--navbar-height));
 }
+
+.msg.err {
+  display: none;
+}
 </style>

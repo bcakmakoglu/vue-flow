@@ -108,7 +108,6 @@ export default {
       v-for="node of getNodes"
       :id="node.id"
       :key="node.id"
-      v-memo="[node.computedPosition, node.dimensions]"
       :position="node.computedPosition"
       :dimensions="node.dimensions"
       :style="node.style"

@@ -1,5 +1,5 @@
 <script setup>
-import { ConnectionMode, Controls, MiniMap, Position, VueFlow } from '@braks/vue-flow'
+import { Background, ConnectionMode, MiniMap, Position, VueFlow } from '@braks/vue-flow'
 import { h, onMounted, ref } from 'vue'
 import ColorSelectorNode from './CustomNode.vue'
 import { presets } from './presets.js'
@@ -15,12 +15,12 @@ const snapGrid = [16, 16]
 
 const nodeStroke = (n) => {
   if (n.type === 'input') return '#0041d0'
-  if (n.type === 'selectorNode') return bgColor.value
+  if (n.type === 'custom') return presets.sumi
   if (n.type === 'output') return '#ff0072'
   return '#eee'
 }
 const nodeColor = (n) => {
-  if (n.type === 'selectorNode') return bgColor.value
+  if (n.type === 'custom') return bgColor.value
   return '#fff'
 }
 
@@ -76,7 +76,7 @@ onMounted(() => {
     <template #node-custom="props">
       <ColorSelectorNode v-bind="props" @change="onChange" />
     </template>
+    <Background :size="0.7" pattern-color="black" />
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
-    <Controls />
   </VueFlow>
 </template>
