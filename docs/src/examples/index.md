@@ -13,11 +13,10 @@ You can also see the built-in node (default, input, output) and edge (bezier, st
 <div class="mt-6">
   <Suspense>
     <Repl 
-      main-file="Basic.vue" 
       :files="[
-        { file: 'basic/Basic.vue', filename: 'Basic', ext: 'vue' }, 
-        { file: 'basic/initial-elements.js', filename: 'initial-elements', ext: 'js' }, 
-        { file: 'basic/style.css', filename: 'style', ext: 'css' }
+        { file: 'basic/Basic', filename: 'App.vue', ext: 'vue' }, 
+        { file: 'basic/initial-elements', filename: 'initial-elements.js', ext: 'js' }, 
+        { file: 'basic/style', filename: 'style.css', ext: 'css' }
       ]"></Repl>
   </Suspense>
 </div>

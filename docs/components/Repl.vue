@@ -44,10 +44,10 @@ for (const curr of props.files) {
       css += `${(await import(`./examples/${curr.file}.css`)).default}`
       break
     case 'js':
-      files[curr.filename] = (await import(`./examples/${curr.file}.js?raw`)).default
+      files[curr.filename] = (await import(`./examples/${curr.file}.js`)).default
       break
     case 'vue':
-      files[curr.filename] = (await import(`./examples/${curr.file}.vue?raw`)).default
+      files[curr.filename] = (await import(`./examples/${curr.file}.vue`)).default
       break
   }
 }
@@ -63,7 +63,7 @@ await store.setFiles(
 // pre-set import map
 store.setImportMap({
   imports: {
-    '@braks/vue-flow': `https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/vue-flow.es.js`,
+    '@braks/vue-flow': `${location.origin}/vue-flow.es.js`,
   },
 })
 
