@@ -13,10 +13,11 @@ const {
   labelBgBorderRadius = 2,
 } = defineProps<EdgeTextProps>()
 
-const el = templateRef<SVGTextElement>('el', null)
-const box = $(useElementBounding(el))
+const edgeRef = templateRef<SVGTextElement>('el', null)
 
-const transform = computed(() => `translate(${x - box.width / 2} ${y - box.height / 2})`)
+const { width, height } = $(useElementBounding(edgeRef))
+
+const transform = computed(() => `translate(${x - width / 2} ${y - height / 2})`)
 </script>
 
 <script lang="ts">
@@ -30,15 +31,15 @@ export default {
     <rect
       v-if="labelShowBg"
       class="vue-flow__edge-textbg"
-      :width="`${box.width + 2 * labelBgPadding[0]}px`"
-      :height="`${box.height + 2 * labelBgPadding[1]}px`"
+      :width="`${width + 2 * labelBgPadding[0]}px`"
+      :height="`${height + 2 * labelBgPadding[1]}px`"
       :x="-labelBgPadding[0]"
       :y="-labelBgPadding[1]"
       :style="labelBgStyle"
       :rx="labelBgBorderRadius"
       :ry="labelBgBorderRadius"
     />
-    <text v-bind="$attrs" ref="el" class="vue-flow__edge-text" :y="box.height / 2" dy="0.3em" :style="labelStyle">
+    <text v-bind="$attrs" ref="el" class="vue-flow__edge-text" :y="height / 2" dy="0.3em" :style="labelStyle">
       <slot>
         <component :is="label" v-if="typeof label !== 'string' && typeof label" />
         <template v-else v-html="label">
