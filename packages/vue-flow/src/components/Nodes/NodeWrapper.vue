@@ -4,7 +4,7 @@ import type { CSSProperties } from 'vue'
 import { useVueFlow } from '../../composables'
 import type { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
-import { getHandleBounds, getXYZPos } from '../../utils'
+import { getConnectedEdges, getHandleBounds, getXYZPos } from '../../utils'
 
 const { id, type, name, node, draggable, selectable, connectable, snapGrid } = defineProps<{
   id: string
@@ -20,6 +20,7 @@ const { id, type, name, node, draggable, selectable, connectable, snapGrid } = d
 provide(NodeId, id)
 
 const {
+  edges,
   viewport,
   noDragClassName,
   noPanClassName,
@@ -128,19 +129,19 @@ onUnmounted(() => {
 
 const onMouseEnter = (event: MouseEvent) => {
   if (!node.dragging) {
-    emits.nodeMouseEnter({ event, node })
+    emits.nodeMouseEnter({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
 const onMouseMove = (event: MouseEvent) => {
   if (!node.dragging) {
-    emits.nodeMouseMove({ event, node })
+    emits.nodeMouseMove({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
 const onMouseLeave = (event: MouseEvent) => {
   if (!node.dragging) {
-    emits.nodeMouseLeave({ event, node })
+    emits.nodeMouseLeave({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
@@ -148,10 +149,12 @@ const onContextMenu = (event: MouseEvent) => {
   emits.nodeContextMenu({
     event,
     node,
+    connectedEdges: getConnectedEdges([node], edges),
   })
 }
 
-const onDoubleClick = (event: MouseEvent) => emits.nodeDoubleClick({ event, node })
+const onDoubleClick = (event: MouseEvent) =>
+  emits.nodeDoubleClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 
 const onSelectNode = (event: MouseEvent) => {
   if (!draggable) {
@@ -162,13 +165,13 @@ const onSelectNode = (event: MouseEvent) => {
 
       if (!node.selected) addSelectedNodes([node])
     }
-    emits.nodeClick({ event, node })
+    emits.nodeClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
 onDragStart(({ event }) => {
   addSelectedNodes([])
-  emits.nodeDragStart({ event, node })
+  emits.nodeDragStart({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 
   if (selectNodesOnDrag && selectable) {
     setState({
@@ -187,7 +190,7 @@ onDragStart(({ event }) => {
 
 onDrag(({ event, data: { deltaX, deltaY } }) => {
   updateNodePosition({ id: node.id, diff: { x: deltaX, y: deltaY }, dragging: true })
-  emits.nodeDrag({ event, node })
+  emits.nodeDrag({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 })
 
 onDragStop(({ event, data: { deltaX, deltaY } }) => {
@@ -197,11 +200,11 @@ onDragStop(({ event, data: { deltaX, deltaY } }) => {
     if (selectable && !selectNodesOnDrag && !node.selected) {
       addSelectedNodes([node])
     }
-    emits.nodeClick({ event, node })
+    emits.nodeClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
     return
   }
   updateNodePosition({ id: node.id, diff: { x: deltaX, y: deltaY }, dragging: false })
-  emits.nodeDragStop({ event, node })
+  emits.nodeDragStop({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 })
 
 const getClass = computed(() => {
