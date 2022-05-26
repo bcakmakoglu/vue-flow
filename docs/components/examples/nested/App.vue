@@ -12,7 +12,7 @@ const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
       label: 'parent node',
       position: { x: 100, y: 100 },
       class: 'light',
-      style: { backgroundColor: '#10b981', width: '200px', height: '200px' },
+      style: { backgroundColor: 'rgba(16, 185, 129, 0.5)', width: '200px', height: '200px' },
     },
     {
       id: '2a',

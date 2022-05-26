@@ -9,12 +9,14 @@ declare module 'vue' {
     App: typeof import('./../../components/examples/basic/App.vue')['default']
     Banner: typeof import('./../../components/home/Banner.vue')['default']
     Basic: typeof import('./../../components/home/flows/Basic.vue')['default']
+    Controls: typeof import('./../../components/examples/save-restore/Controls.vue')['default']
     Custom: typeof import('./../../components/home/edges/Custom.vue')['default']
     CustomConnectionLine: typeof import('./../../components/examples/connectionline/CustomConnectionLine.vue')['default']
     CustomEdge: typeof import('./../../components/examples/edges/CustomEdge.vue')['default']
     CustomEdge2: typeof import('./../../components/examples/edges/CustomEdge2.vue')['default']
     CustomEdgeLabel: typeof import('./../../components/examples/edges/CustomEdgeLabel.vue')['default']
-    CustomNode: typeof import('./../../components/examples/customNode/CustomNode.vue')['default']
+    CustomInput: typeof import('./../../components/examples/validation/CustomInput.vue')['default']
+    CustomNode: typeof import('./../../components/examples/custom-node/CustomNode.vue')['default']
     Features: typeof import('./../../components/home/Features.vue')['default']
     Home: typeof import('./../../components/home/Home.vue')['default']
     Input: typeof import('./../../components/home/nodes/Input.vue')['default']
@@ -23,6 +25,7 @@ declare module 'vue' {
     Output: typeof import('./../../components/home/nodes/Output.vue')['default']
     Repl: typeof import('./../../components/Repl.vue')['default']
     RGB: typeof import('./../../components/home/flows/RGB.vue')['default']
+    Sidebar: typeof import('./../../components/examples/dnd/Sidebar.vue')['default']
   }
 }
 
