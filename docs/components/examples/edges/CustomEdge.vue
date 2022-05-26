@@ -93,7 +93,7 @@ export default {
   >
     <body style="display: flex; align-items: center; justify-content: center">
       <div>
-        <button ref="btn" class="edgebutton animated-text-gradient" @click="(event) => onClick(event, id)">×</button>
+        <button ref="btn" class="edgebutton" @click="(event) => onClick(event, id)">×</button>
       </div>
     </body>
   </foreignObject>

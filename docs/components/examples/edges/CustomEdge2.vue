@@ -89,7 +89,7 @@ export default {
     :label="props.data?.text"
     :label-style="{ fill: 'white' }"
     :label-show-bg="true"
-    :label-bg-style="{ fill: 'red' }"
+    :label-bg-style="{ fill: '#10b981' }"
     :label-bg-padding="[2, 4]"
     :label-bg-border-radius="2"
     @click="onClick"

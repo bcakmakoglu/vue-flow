@@ -1,4 +1,6 @@
 export const presets = {
+  sumi: '#1C1C1C',
+  gofun: '#FFFFFB',
   byakuroku: '#A8D8B9',
   mizu: '#81C7D4',
   asagi: '#33A6B8',
@@ -11,10 +13,8 @@ export const presets = {
   konjyo: '#113285',
   fuji: '#8B81C3',
   ayame: '#6F3381',
-  gofun: '#FFFFFB',
   torinoko: '#DAC9A6',
   kurotsurubami: '#0B1013',
-  sumi: '#1C1C1C',
   ohni: '#F05E1C',
   kokikuchinashi: '#FB9966',
   beniukon: '#E98B2A',

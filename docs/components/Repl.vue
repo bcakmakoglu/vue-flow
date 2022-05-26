@@ -26,7 +26,7 @@ body,
 }
 
 .vue-flow__minimap {
-  transform: scale(50%)
+  transform: scale(75%);
   transform-origin: bottom right;
 }`
 
