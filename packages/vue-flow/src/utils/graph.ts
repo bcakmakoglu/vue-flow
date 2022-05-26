@@ -95,7 +95,7 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
     ? ({
         sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : undefined,
         targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
-        type: edge.type ?? 'default',
+        type: edge.type,
         source: edge.source.toString(),
         target: edge.target.toString(),
         z: 0,
@@ -103,18 +103,14 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         sourceY: 0,
         targetX: 0,
         targetY: 0,
-        updatable: undefined,
-        selectable: undefined,
-        data: undefined,
+        updatable: edge.updatable,
+        selectable: edge.selectable,
+        data: edge.data,
         ...defaults,
       } as GraphEdge)
     : defaults
 
-  return {
-    ...(defaults as GraphEdge),
-    ...edge,
-    id: edge.id.toString(),
-  }
+  return Object.assign({ id: edge.id.toString() }, edge, defaults) as GraphEdge
 }
 
 const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
