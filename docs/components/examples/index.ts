@@ -2,6 +2,7 @@ import { BasicApp, BasicCSS, BasicElements } from './basic'
 import { ColorPresets, CustomNode, CustomNodeApp, CustomNodeCSS } from './customNode'
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline'
 import { CustomEdge, CustomEdge2, CustomEdgeLabel, EdgeCSS, EdgesApp } from './edges'
+import { NestedApp } from './nested'
 
 export const exampleImports = {
   basic: {
@@ -25,5 +26,8 @@ export const exampleImports = {
     'CustomEdge2.vue': CustomEdge2,
     'CustomEdgeLabel.vue': CustomEdgeLabel,
     'style.css': EdgeCSS,
+  },
+  nested: {
+    'App.vue': NestedApp,
   },
 }
