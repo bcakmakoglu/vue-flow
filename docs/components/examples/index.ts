@@ -10,6 +10,7 @@ import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNo
 import { SaveRestoreApp, SaveRestoreCSS, SaveRestoreControls } from './save-restore'
 import { DndApp, DndCSS, DndSidebar } from './dnd'
 import { EmptyApp } from "./empty";
+import { HiddenApp } from "./hidden";
 
 export const exampleImports = {
   basic: {
@@ -67,5 +68,8 @@ export const exampleImports = {
   },
   empty: {
     'App.vue': EmptyApp,
-  }
+  },
+  hidden: {
+    'App.vue': HiddenApp,
+  },
 }
