@@ -57,24 +57,26 @@ const connectionLineVisible = $(
 
 let groups = $ref<ReturnType<typeof groupEdgesByZLevel>>([])
 
-onPaneReady(() => {
-  const stop = watch(
-    [$$(elevateEdgesOnSelect), $$(getSelectedNodes), $$(getEdges), $$(getNodes)],
-    () => {
-      if (elevateEdgesOnSelect) {
-        nextTick(() => (groups = groupEdgesByZLevel(getEdges, getNode)))
-      }
-    },
-    {
-      flush: 'post',
-      immediate: true,
-    },
-  )
+const scope = effectScope()
 
-  onBeforeUnmount(() => {
-    stop()
+onPaneReady(() => {
+  scope.run(() => {
+    watch(
+      [$$(getSelectedNodes), $$(getEdges), $$(getNodes)],
+      () => {
+        if (elevateEdgesOnSelect) {
+          nextTick(() => (groups = groupEdgesByZLevel(getEdges, getNode)))
+        }
+      },
+      {
+        flush: 'post',
+        immediate: true,
+      },
+    )
   })
 })
+
+onBeforeUnmount(() => scope.stop())
 
 const getType = (type?: string, template?: GraphEdge['template']) => {
   const name = type || 'default'
