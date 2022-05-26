@@ -58,9 +58,6 @@ export interface Node<Data = ElementData> extends BaseElement<Data> {
 
   /** overwrites current node type */
   template?: NodeComponent
-
-  /** teleports node element to specified dom location */
-  teleport?: TeleportProps['to']
 }
 
 export interface GraphNode<Data = ElementData> extends Node<Data> {
@@ -72,6 +69,9 @@ export interface GraphNode<Data = ElementData> extends Node<Data> {
   isParent: boolean
   selected: boolean
   dragging: boolean
+
+  /** teleports node element to specified dom location, this property is _not_ available on initial load, only after viewpane is ready */
+  teleport?: TeleportProps['to']
 }
 
 /** these props are passed to node components */
