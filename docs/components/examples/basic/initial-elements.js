@@ -1,7 +1,10 @@
-import { ref } from 'vue'
 import { MarkerType } from '@braks/vue-flow'
 
-export const initialElements = ref([
+/**
+ * You can pass elements together as a v-model value
+ * or split them up into nodes and edges and pass them to the `nodes` and `edges` props of Vue Flow (or useVueFlow composable)
+ */
+export const initialElements = [
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
   { id: '2', type: 'output', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 }, class: 'light' },
@@ -19,4 +22,4 @@ export const initialElements = ref([
     labelBgStyle: { fill: 'orange' },
   },
   { id: 'e3-4', type: 'smoothstep', label: 'smoothstep-edge', source: '3', target: '4' },
-])
+]
