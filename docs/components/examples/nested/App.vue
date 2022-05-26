@@ -5,6 +5,8 @@ import { onMounted } from 'vue'
 const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
   fitViewOnInit: true,
   connectionMode: ConnectionMode.Loose,
+  // set this to true so edges get elevated when selected, defaults to false
+  elevateEdgesOnSelect: true,
   nodes: [
     { id: '1', type: 'input', label: 'node', position: { x: 250, y: 0 } },
     {
