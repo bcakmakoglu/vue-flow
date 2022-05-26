@@ -14,6 +14,7 @@ import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
 import { HorizontalApp, HorizontalElements } from './horizontal'
+import { TeleportApp, TeleportSidebar, TeleportCSS } from './teleport'
 
 export const exampleImports = {
   basic: {
@@ -88,5 +89,10 @@ export const exampleImports = {
   horizontal: {
     'App.vue': HorizontalApp,
     'initial-elements.js': HorizontalElements,
+  },
+  teleport: {
+    'App.vue': TeleportApp,
+    'Sidebar.vue': TeleportSidebar,
+    'style.css': TeleportCSS,
   },
 }
