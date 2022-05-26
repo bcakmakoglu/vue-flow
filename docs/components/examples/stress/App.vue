@@ -3,7 +3,7 @@ import { VueFlow, isNode, useVueFlow } from '@braks/vue-flow'
 import { ref } from 'vue'
 import { getElements } from './utils.js'
 
-const { nodes, edges } = getElements(10, 10)
+const { nodes, edges } = getElements(15, 15)
 const elements = ref([...nodes, ...edges])
 
 const { onPaneReady } = useVueFlow()
@@ -29,7 +29,7 @@ const updatePos = () =>
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow v-model="elements" :min-zoom="0.1">
     <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
       <button style="margin-right: 5px" @click="updatePos">update positions</button>
       <button style="margin-right: 5px" @click="toggleClass">toggle class</button>

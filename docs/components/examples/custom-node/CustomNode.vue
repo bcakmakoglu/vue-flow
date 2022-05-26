@@ -10,16 +10,16 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['change'])
-
-const targetHandleStyle = { background: '#555' }
-const sourceHandleStyleA = { ...targetHandleStyle, top: '10px' }
-const sourceHandleStyleB = { ...targetHandleStyle, bottom: '10px', top: 'auto' }
+const emit = defineEmits(['change', 'gradient'])
 
 const onConnect = (params) => console.log('handle onConnect', params)
 
 const onSelect = (color) => {
   emit('change', color)
+}
+
+const onGradient = () => {
+  emit('gradient')
 }
 
 const colors = computed(() => {
@@ -34,30 +34,25 @@ const colors = computed(() => {
 const selectedColor = computed(() => {
   return colors.value.find((color) => color.value === props.data.color)
 })
-</script>
 
-<script>
-export default {
-  inheritAttrs: false,
-}
+const sourceHandleStyleA = computed(() => ({ backgroundColor: props.data.color, filter: 'invert(100%)', top: '10px' }))
+const sourceHandleStyleB = computed(() => ({
+  backgroundColor: props.data.color,
+  filter: 'invert(100%)',
+  bottom: '10px',
+  top: 'auto',
+}))
 </script>
 
 <template>
-  <div v-if="selectedColor">
-    Select a color
-  </div>
+  <div>Select a color</div>
   <div
     style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; max-width: 90%; margin: auto; gap: 3px"
   >
     <template v-for="color of colors" :key="color.name">
-      <button
-        :title="color.name"
-        :style="{ backgroundColor: color.value }"
-        style="padding: 3px; width: 25px; height: 25px"
-        type="button"
-        @click="onSelect(color)"
-      ></button>
+      <button :title="color.name" :style="{ backgroundColor: color.value }" type="button" @click="onSelect(color)"></button>
     </template>
+    <button class="animated-bg-gradient" title="gradient" type="button" @click="onGradient"></button>
   </div>
   <Handle id="a" type="source" :position="Position.Right" :style="sourceHandleStyleA" />
   <Handle id="b" type="source" :position="Position.Right" :style="sourceHandleStyleB" />
