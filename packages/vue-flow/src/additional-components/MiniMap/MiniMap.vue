@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { GraphNode, MiniMapNodeFunc, ShapeRendering } from '../../types'
 import { useVueFlow, useWindow } from '../../composables'
-import { getBoundsofRects, getRectOfNodes } from '../../utils'
+import { getBoundsofRects, getConnectedEdges, getRectOfNodes } from '../../utils'
 import type { MiniMapProps } from '../../types/components'
 import MiniMapNode from './MiniMapNode'
 
@@ -21,7 +21,7 @@ const window = useWindow()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { viewport, dimensions, hooks, getNodes } = $(useVueFlow())
+const { edges, viewport, dimensions, hooks, getNodes } = $(useVueFlow())
 
 const elementWidth = attrs.style?.width ?? defaultWidth
 
@@ -83,11 +83,11 @@ const d = controlledComputed($$(viewBox), () => {
 })
 
 const onNodeClick = (event: MouseEvent, node: GraphNode) => {
-  hooks.miniMapNodeClick.trigger({ event, node })
+  hooks.miniMapNodeClick.trigger({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 }
 
 const onNodeDblClick = (event: MouseEvent, node: GraphNode) => {
-  hooks.miniMapNodeDoubleClick.trigger({ event, node })
+  hooks.miniMapNodeDoubleClick.trigger({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 }
 </script>
 
@@ -117,8 +117,8 @@ export default {
       :stroke-color="nodeStrokeColorFunc(node)"
       :stroke-width="nodeStrokeWidth"
       :shape-rendering="shapeRendering"
-      @click="(e: MouseEvent) => onNodeClick(e, node)"
-      @dbl-click="(e: MouseEvent) => onNodeDblClick(e, node)"
+      @click="onNodeClick($event, node)"
+      @dblclick="onNodeDblClick($event, node)"
     >
       <slot
         :id="node.id"

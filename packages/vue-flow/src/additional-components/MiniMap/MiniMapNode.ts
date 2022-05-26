@@ -30,7 +30,7 @@ const MiniMapNode: FunctionalComponent<MiniMapNodeProps> = function (
       strokeWidth,
       shapeRendering,
       onClick: (e: MouseEvent) => emit('click', e),
-      onDblClick: (e: MouseEvent) => emit('dbl-click', e),
+      onDblClick: (e: MouseEvent) => emit('dblclick', e),
     }),
     slots?.default?.(),
   ]
@@ -39,6 +39,6 @@ const MiniMapNode: FunctionalComponent<MiniMapNodeProps> = function (
 MiniMapNode.props = ['position', 'dimensions', 'strokeWidth', 'strokeColor', 'borderRadius', 'color', 'shapeRendering']
 
 // @todo add mouseover events
-MiniMapNode.emits = ['click', 'dbl-click']
+MiniMapNode.emits = ['click', 'dblclick']
 
 export default MiniMapNode
