@@ -2,6 +2,64 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.12] - 2022-05-26
+
+[e714fe6](e714fe66dd7fe9387f97ea1ff0a7a43e4e76922d)...[f6d2509](f6d250956e304beceb8ff4b0558dd8c3c7bab437)
+
+### Bug Fixes
+
+- Pass markers to correct attributes ([6494b65](6494b65b3e7e0eb84d96b22520ba8892a5a72d2a))
+
+### Documentation
+
+- Replace codesandbox embed with repl (#122) ([98a8931](98a893108c2fe1875b9457468658aa735f3ae141))
+
+## [0.4.11] - 2022-05-22
+
+[9627f23](9627f236c7bbc99ae1ef2e417f4be73c72ae5743)...[e714fe6](e714fe66dd7fe9387f97ea1ff0a7a43e4e76922d)
+
+### Bug Fixes
+
+- Regexp for replacing transform values ([f0e2bc0](f0e2bc02d582c6bb41ac664b2c99c697b39f9a2b))
+
+### Features
+
+- Add pathfinding edge pkg to packages dir ([4ee7eb9](4ee7eb909a4c9a1c15bbf5d8571e5cb4e4897113))
+- Add resize-rotate-node pkg ([66312b5](66312b5d4b2cc19ecea379a4b34c03212e8fee69))
+- Add moveable to ResizeRotateNode.vue ([b120c22](b120c22174347a65c661ee72bb634aa8b3cfd6e7))
+- Add onResize handler ([37bc17f](37bc17f6c0aeb3bf88e018948383f94e1145af84))
+- Implement onResize & onRotate handlers ([b4c12fb](b4c12fb028c911e78561e98b45eb6bdc3749726d))
+- Hide moveable on pane interaction ([8246e6e](8246e6e8d370a5e9440c0b70a2fd2068903539b8))
+- Add devcontainer files ([e4c296a](e4c296ad4658eae7ec637d8fb881fba8774ba761))
+- Export `ControlButton.vue` ([0702fb8](0702fb80f4db44beb9d68670e99a3028aaacbb0f))
+- Add `top` slot to `Controls.vue` ([045a768](045a768ab13449fb511fe9a4f90835f1d4e5af0f))
+- Add and export props type ([0a285d6](0a285d63c70fe1bcdd0fd9477326e305ed51cfbd))
+
+### Miscellaneous Tasks
+
+- Lint files ([a90bbb9](a90bbb9b5e4a51fdda5b084875a37a6e2f52618b))
+- Update tsconfig, remove license ([cbb94ba](cbb94ba7c8aad1348e065c44e39cab7019d62375))
+- Update pathfinding edge pkg ([36b3729](36b3729a2b4daa3dc1d49062340f570696ff4081))
+- Add dependency to types pipeline ([3b0e301](3b0e301bf15ecbf4e84e775c6d29e58566514849))
+- Move vue-flow to dev-deps ([70a148d](70a148d082aceec4a73438e18ead6717626fe1ab))
+- Add release script ([796aeaa](796aeaa139fb6dcbc8ecd33d0203c7af2ad3cdef))
+- Cleanup deps ([0e00a41](0e00a41d44414cd60846a2d25c9cd42c5114943e))
+- Update vue-flow pkg alias path ([233f5cd](233f5cd0789bd3d6902ad31562da0c8bdf0b693c))
+- Move env.d.ts to root ([bc0bd3a](bc0bd3a812e72477690e9d39caa2993b01c94c89))
+- Add vue-types to deps dev ([efad878](efad878cd45ad38910ae711d01b601e4e8a764ea))
+- Update examples ([827469e](827469ec405936d259a1eb0edc6787ae50146dc1))
+- Update README.md ([728d27c](728d27c6892da8cb366b9b8ec5f798d4ffbdf919))
+- Update README.md ([e847e2c](e847e2cb3fdc35dbe994622694fb043804e74149))
+- Cleanup unused refs ([6879c44](6879c44a12899ef71b61897dcbe35abe06248894))
+- Update README.md ([e2d66a4](e2d66a4233a657b5534462c0429440acb104e20a))
+- Move gif to root ([b263c10](b263c1089d065264328fdf51d8f7ffcd6b7901d6))
+- Use correct dbl click casing ([18cf579](18cf57937c8a91d10f18c0b97585623f59692335))
+
+### Refactor
+
+- Move vue-flow into separate pkg directory ([b9dbb97](b9dbb973748d1adc40480d0ed871d9f1aff022fe))
+- CamelCase custom events in `Controls.vue` ([263b6df](263b6dff9f423f1f3bb3353cf5e865101d15dbda))
+
 ## [0.4.10] - 2022-05-14
 
 [bcaf346](bcaf346926c6b82905fdf142ab5d6f54584e7d24)...[9627f23](9627f236c7bbc99ae1ef2e417f4be73c72ae5743)
