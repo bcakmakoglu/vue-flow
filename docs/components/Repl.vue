@@ -23,6 +23,11 @@ body,
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.vue-flow__minimap {
+  transform: scale(50%)
+  transform-origin: bottom right;
 }`
 
 const store = new ReplStore({
