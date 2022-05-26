@@ -6,10 +6,9 @@ import type { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { NodeId } from '../../context'
 import { getHandleBounds, getXYZPos } from '../../utils'
 
-const { id, type, name, node, parentNode, draggable, selectable, connectable, snapGrid } = defineProps<{
+const { id, type, name, node, draggable, selectable, connectable, snapGrid } = defineProps<{
   id: string
   node: GraphNode
-  parentNode?: GraphNode
   draggable: boolean
   selectable: boolean
   connectable: boolean
@@ -30,7 +29,6 @@ const {
   updateNodePosition,
   updateNodeDimensions,
   getNode,
-  getNodeTypes,
   addSelectedNodes,
 } = $(useVueFlow())
 

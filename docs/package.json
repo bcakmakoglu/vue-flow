@@ -8,11 +8,17 @@
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore ."
   },
   "dependencies": {
-    "@braks/vue-flow": "^0.4.6",
-    "blobity": "^0.1.7"
+    "@animxyz/core": "^0.6.6",
+    "@animxyz/vue3": "^0.6.6",
+    "@braks/vue-flow": "^0.4.11",
+    "@stackblitz/sdk": "^1.6.0",
+    "@vue/repl": "^1.1.2",
+    "blobity": "^0.1.7",
+    "canvas-confetti": "^1.5.1"
   },
   "devDependencies": {
     "@iconify/json": "^2.1.22",
+    "@types/canvas-confetti": "^1.4.2",
     "@types/node": "^17.0.23",
     "@vuepress/bundler-vite": "^2.0.0-beta.37",
     "@vuepress/plugin-docsearch": "^2.0.0-beta.37",
