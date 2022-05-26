@@ -13,6 +13,7 @@ import { EmptyApp } from './empty'
 import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
+import { HorizontalApp, HorizontalElements } from './horizontal'
 
 export const exampleImports = {
   basic: {
@@ -83,5 +84,9 @@ export const exampleImports = {
     'App.vue': MultiApp,
     'Flow.vue': MultiFlow,
     'style.css': MultiCSS,
+  },
+  horizontal: {
+    'App.vue': HorizontalApp,
+    'initial-elements.js': HorizontalElements,
   },
 }
