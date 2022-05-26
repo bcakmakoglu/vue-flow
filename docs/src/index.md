@@ -13,4 +13,6 @@ footer: MIT Licensed | Copyright © 2021-present Burak Cakmakoglu
 
 <Features />
 
-<Acknowledgement />
+<XyzTransition :appear-visible="true" xyz="fade down ease-out-back">
+  <Acknowledgement />
+</XyzTransition>
