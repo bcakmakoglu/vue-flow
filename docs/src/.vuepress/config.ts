@@ -115,7 +115,6 @@ export default defineUserConfig<DefaultThemeOptions>({
             '/examples/interaction',
             '/examples/multi',
             '/examples/stress',
-            '/examples/test',
           ],
         },
       ],

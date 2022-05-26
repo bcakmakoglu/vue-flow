@@ -1,6 +1,7 @@
 import { BasicApp, BasicCSS, BasicElements } from './basic'
 import { ColorPresets, CustomNode, CustomNodeApp, CustomNodeCSS } from './customNode'
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline'
+import { CustomEdge, CustomEdge2, CustomEdgeLabel, EdgeCSS, EdgesApp } from './edges'
 
 export const exampleImports = {
   basic: {
@@ -17,5 +18,12 @@ export const exampleImports = {
   connectionline: {
     'App.vue': CustomConnectionLineApp,
     'CustomConnectionLine.vue': CustomConnectionLine,
+  },
+  edges: {
+    'App.vue': EdgesApp,
+    'CustomEdge.vue': CustomEdge,
+    'CustomEdge2.vue': CustomEdge2,
+    'CustomEdgeLabel.vue': CustomEdgeLabel,
+    'style.css': EdgeCSS,
   },
 }

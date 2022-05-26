@@ -1,0 +1,34 @@
+.edgebutton {
+  color: whitesmoke;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.edgebutton:hover {
+  box-shadow: 0 0 0 2px pink, 0 0 0 4px #f05f75;
+}
+
+.animated-text-gradient {
+  background: linear-gradient(237deg, #6f3381, #33a6b8);
+  background-size: 400% 400%;
+
+  -webkit-animation: textgradient 9s ease infinite;
+  -moz-animation: textgradient 9s ease infinite;
+  animation: textgradient 9s ease infinite;
+}
+
+@-webkit-keyframes textgradient {
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
+@-moz-keyframes textgradient {
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
+@keyframes textgradient {
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
