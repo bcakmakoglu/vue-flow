@@ -22,15 +22,15 @@ the [examples](https://vueflow.dev/examples).
 
 * [🎮 Quickstart](#-quickstart)
   
-  + [▸ Vue 2](#-vue-2)
+  + [🪴 Vue 2](#-vue-2)
 
 * [🧪 Development](#-development)
   
   + [🐳 Dev Container](#-dev-container)
 
-* [⭐ Stargazers](#-stargazers)
-
 * [💝 Special Thanks](#-special-thanks)
+
+* [⭐ Stargazers](#-stargazers)
 
 ## ⭐️ Features
 
@@ -49,6 +49,8 @@ the [examples](https://vueflow.dev/examples).
   - 🧭 Minimap: Shows current nodes in a small map shape in the bottom right corner
 
   - 🕹 Controls: Control zoom behavior from a panel on the bottom left
+
+  - 🤖 And (many) more to come...
 
 - 🦾 __Reliable__: Fully written in TypeScript
 
@@ -147,15 +149,14 @@ This project is built with
 
 - [React Flow](https://reactflow.dev/)
   - Vue flow is heavily based on [webkids'](https://webkid.io/) [react flow](https://reactflow.dev/). I wholeheartedly thank
-  them for their amazing work! Without them, Vue Flow would not exist.
-  Please consider [donating](https://github.com/sponsors/wbkd) to them!
+  them for their amazing work! Without them Vue Flow would not exist.
+  Please consider [donating](https://github.com/sponsors/wbkd) to them.
 
 - [D3.js](https://d3js.org/)
-  - D3 makes all the zoom and pan actions in the graph possible.
-    Check it out to see if you can find other uses for it too!
+  - D3 makes all the zoom and pan actions in Vue Flow possible.
 
 - [VueUse](https://vueuse.org/)
-  - VueUse is a collection of helpful utilities/composables that have been battle-tested.
+  - VueUse is a collection of essential vue composition utilities
 
 ## ⭐ Stargazers
 
