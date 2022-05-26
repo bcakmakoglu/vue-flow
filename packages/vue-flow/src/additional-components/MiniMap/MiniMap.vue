@@ -16,6 +16,8 @@ const {
   maskColor = 'rgb(240, 242, 243, 0.7)',
 } = defineProps<MiniMapProps>()
 
+const emit = defineEmits(['nodeClick', 'nodeDblclick', 'nodeMouseenter', 'nodeMousemove', 'nodeMouseleave'])
+
 const attrs: Record<string, any> = useAttrs()
 
 const window = useWindow()
@@ -85,23 +87,33 @@ const d = controlledComputed($$(viewBox), () => {
 })
 
 const onNodeClick = (event: MouseEvent, node: GraphNode) => {
-  emits.miniMapNodeClick({ event, node })
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  emits.miniMapNodeClick(param)
+  emit('nodeClick', param)
 }
 
 const onNodeDblClick = (event: MouseEvent, node: GraphNode) => {
-  emits.miniMapNodeDoubleClick({ event, node })
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  emits.miniMapNodeDoubleClick(param)
+  emit('nodeDblclick', param)
 }
 
 const onNodeMouseEnter = (event: MouseEvent, node: GraphNode) => {
-  emits.miniMapNodeDoubleClick({ event, node })
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  emits.miniMapNodeMouseEnter(param)
+  emit('nodeMouseenter', param)
 }
 
 const onNodeMouseMove = (event: MouseEvent, node: GraphNode) => {
-  emits.miniMapNodeDoubleClick({ event, node })
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  emits.miniMapNodeMouseMove(param)
+  emit('nodeMousemove', param)
 }
 
 const onNodeMouseLeave = (event: MouseEvent, node: GraphNode) => {
-  emits.miniMapNodeDoubleClick({ event, node })
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  emits.miniMapNodeMouseLeave(param)
+  emit('nodeMouseleave', param)
 }
 </script>
 
@@ -131,11 +143,11 @@ export default {
       :stroke-color="nodeStrokeColorFunc(node)"
       :stroke-width="nodeStrokeWidth"
       :shape-rendering="shapeRendering"
-      @click="(e: MouseEvent) => onNodeClick(e, node)"
-      @dblclick="(e: MouseEvent) => onNodeDblClick(e, node)"
-      @mouseenter="(e: MouseEvent) => onNodeMouseEnter(e, node)"
-      @mousemove="(e: MouseEvent) => onNodeMouseMove(e, node)"
-      @mouseleave="(e: MouseEvent) => onNodeMouseLeave(e, node)"
+      @click="onNodeClick($event, node)"
+      @dblclick="onNodeDblClick($event, node)"
+      @mouseenter="onNodeMouseEnter($event, node)"
+      @mousemove="onNodeMouseMove($event, node)"
+      @mouseleave="onNodeMouseLeave($event, node)"
     >
       <slot
         :id="node.id"

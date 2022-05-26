@@ -38,9 +38,9 @@ export interface FlowEvents {
   nodeDragStop: NodeMouseEvent
   miniMapNodeClick: NodeMouseEvent
   miniMapNodeDoubleClick: NodeMouseEvent
-  miniMapNodeMouseEnter: { event: MouseEvent; node: GraphNode }
-  miniMapNodeMouseMove: { event: MouseEvent; node: GraphNode }
-  miniMapNodeMouseLeave: { event: MouseEvent; node: GraphNode }
+  miniMapNodeMouseEnter: NodeMouseEvent
+  miniMapNodeMouseMove: NodeMouseEvent
+  miniMapNodeMouseLeave: NodeMouseEvent
   connect: Connection
   connectStart: {
     event: MouseEvent
