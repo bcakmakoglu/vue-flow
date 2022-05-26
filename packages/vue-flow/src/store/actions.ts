@@ -245,10 +245,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
       const storedEdge = getters.getEdge.value(edge.id)
 
       res.push({
-        ...parseEdge(edge, {
-          ...state.defaultEdgeOptions,
-          ...storedEdge,
-        }),
+        ...parseEdge(edge, Object.assign({}, storedEdge, state.defaultEdgeOptions)),
         sourceNode,
         targetNode,
       })
