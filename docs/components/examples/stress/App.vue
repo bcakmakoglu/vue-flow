@@ -31,8 +31,7 @@ const updatePos = () => {
   })
 }
 
-onNodeClick(({ node }) => {
-  const connectedEdges = getConnectedEdges([node], getEdges.value)
+onNodeClick(({ connectedEdges }) => {
   connectedEdges.forEach((edge) => {
     edge.style = { stroke: '#10b981', strokeWidth: 3 }
   })
