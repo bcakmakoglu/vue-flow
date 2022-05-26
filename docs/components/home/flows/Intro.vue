@@ -191,9 +191,7 @@ onPaneReady(({ fitView }) => {
     }
 
     nextTick(() => {
-      fitView({
-        duration: init.value ? 0 : 1500,
-      })
+      fitView()
       if (!init.value) init.value = true
     })
   }
