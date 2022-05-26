@@ -9,7 +9,7 @@ export function getElements(xElements = 10, yElements = 10) {
       const position = { x: x * 75, y: y * 75 }
       const node = {
         id: nodeId.toString(),
-        style: { width: `50px`, fontSize: `11px` },
+        style: { width: `50px`, fontSize: `11px`, zIndex: 1 },
         label: `Node ${nodeId}`,
         class: 'light',
         position,
