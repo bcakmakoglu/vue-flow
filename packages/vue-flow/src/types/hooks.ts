@@ -8,20 +8,36 @@ import type { Connection, OnConnectStartParams } from './connection'
 import type { FlowTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 
+export interface NodeMouseEvent {
+  event: MouseTouchEvent
+  node: GraphNode
+  connectedEdges: GraphEdge[]
+}
+
+export interface EdgeMouseEvent {
+  event: MouseEvent
+  edge: GraphEdge
+}
+
+export interface EdgeUpdateEvent {
+  edge: GraphEdge
+  connection: Connection
+}
+
 export interface FlowEvents {
   nodesChange: NodeChange[]
   edgesChange: EdgeChange[]
-  nodeDoubleClick: { event: MouseTouchEvent; node: GraphNode }
-  nodeClick: { event: MouseTouchEvent; node: GraphNode }
-  nodeMouseEnter: { event: MouseEvent; node: GraphNode }
-  nodeMouseMove: { event: MouseEvent; node: GraphNode }
-  nodeMouseLeave: { event: MouseEvent; node: GraphNode }
-  nodeContextMenu: { event: MouseEvent; node: GraphNode }
-  nodeDragStart: { event: MouseTouchEvent; node: GraphNode }
-  nodeDrag: { event: MouseTouchEvent; node: GraphNode }
-  nodeDragStop: { event: MouseTouchEvent; node: GraphNode }
-  miniMapNodeClick: { event: MouseTouchEvent; node: GraphNode }
-  miniMapNodeDoubleClick: { event: MouseTouchEvent; node: GraphNode }
+  nodeDoubleClick: NodeMouseEvent
+  nodeClick: NodeMouseEvent
+  nodeMouseEnter: NodeMouseEvent
+  nodeMouseMove: NodeMouseEvent
+  nodeMouseLeave: NodeMouseEvent
+  nodeContextMenu: NodeMouseEvent
+  nodeDragStart: NodeMouseEvent
+  nodeDrag: NodeMouseEvent
+  nodeDragStop: NodeMouseEvent
+  miniMapNodeClick: NodeMouseEvent
+  miniMapNodeDoubleClick: NodeMouseEvent
   connect: Connection
   connectStart: {
     event: MouseEvent
@@ -39,15 +55,15 @@ export interface FlowEvents {
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent
-  edgeContextMenu: { event: MouseEvent; edge: GraphEdge }
-  edgeMouseEnter: { event: MouseEvent; edge: GraphEdge }
-  edgeMouseMove: { event: MouseEvent; edge: GraphEdge }
-  edgeMouseLeave: { event: MouseEvent; edge: GraphEdge }
-  edgeDoubleClick: { event: MouseEvent; edge: GraphEdge }
-  edgeClick: { event: MouseEvent; edge: GraphEdge }
-  edgeUpdateStart: { event: MouseEvent; edge: GraphEdge }
-  edgeUpdate: { edge: GraphEdge; connection: Connection }
-  edgeUpdateEnd: { event: MouseEvent; edge: GraphEdge }
+  edgeContextMenu: EdgeMouseEvent
+  edgeMouseEnter: EdgeMouseEvent
+  edgeMouseMove: EdgeMouseEvent
+  edgeMouseLeave: EdgeMouseEvent
+  edgeDoubleClick: EdgeMouseEvent
+  edgeClick: EdgeMouseEvent
+  edgeUpdateStart: EdgeMouseEvent
+  edgeUpdate: EdgeUpdateEvent
+  edgeUpdateEnd: EdgeMouseEvent
 }
 
 export type FlowHooks = Readonly<{
