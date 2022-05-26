@@ -11,7 +11,9 @@ On the bottom left you see the viewport-controls and on the bottom right the min
 You can also see the built-in node (default, input, output) and edge (bezier, straight, step, smoothstep) types.
 
 <div class="mt-6">
-  <Suspense>
-    <Repl example="basic"></Repl>
-  </Suspense>
+  <client-only>
+    <Suspense>
+      <Repl example="basic"></Repl>
+    </Suspense>
+  </client-only>
 </div>
