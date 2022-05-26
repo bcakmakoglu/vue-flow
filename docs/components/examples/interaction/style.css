@@ -1,4 +1,4 @@
-.controls {
+.interactionflow .controls {
   position: absolute;
   left: 0;
   top: 0;
@@ -9,7 +9,7 @@
   padding: 12px;
 }
 
-.label {
+.interactionflow .controls .label {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,6 +17,6 @@
   cursor: pointer;
 }
 
-.label input {
+.interactionflow .controls .label input {
   cursor: pointer;
 }

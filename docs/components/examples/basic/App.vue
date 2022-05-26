@@ -64,7 +64,7 @@ const toggleClass = () => {
 </script>
 
 <template>
-  <VueFlow v-model="elements" class="vue-flow-basic-example" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
+  <VueFlow v-model="elements" class="basicflow" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
     <Background pattern-color="#aaa" gap="8" />
     <MiniMap />
     <Controls />

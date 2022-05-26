@@ -3,7 +3,7 @@ import Flow from './Flow.vue'
 </script>
 
 <template>
-  <div class="vue-flow__example-multiflows">
+  <div class="multiflows">
     <Flow />
     <Flow />
   </div>

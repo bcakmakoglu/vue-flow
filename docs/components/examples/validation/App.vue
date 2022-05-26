@@ -29,6 +29,7 @@ const onConnect = (params) => {
 
 <template>
   <VueFlow
+    class="validationflow"
     v-model="elements"
     @connect="onConnect"
     @pane-ready="onLoad"

@@ -15,7 +15,7 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
 }
 
 const props = defineProps<CustomEdgeProps>()
-const { id: storeId, applyEdgeChanges, store, getEdges } = useVueFlow()
+const { id: storeId, applyEdgeChanges, getEdges } = useVueFlow()
 
 const onClick = (evt: Event, id: string) => {
   applyEdgeChanges([{ type: 'remove', id }])

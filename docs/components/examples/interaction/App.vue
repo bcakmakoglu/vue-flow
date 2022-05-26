@@ -14,7 +14,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements" :fit-view-on-init="true">
+  <VueFlow class="interactionflow" v-model="elements" :fit-view-on-init="true">
     <InteractionControls />
   </VueFlow>
 </template>
