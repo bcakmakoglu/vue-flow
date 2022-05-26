@@ -9,26 +9,26 @@
 }
 
 .animated-text-gradient {
-  background: linear-gradient(237deg, #6f3381, #33a6b8);
-  background-size: 400% 400%;
+  background: linear-gradient(122deg, #6f3381, #81c7d4, #fedfe1, #fffffb);
+  background-size: 800% 800%;
 
-  -webkit-animation: textgradient 9s ease infinite;
-  -moz-animation: textgradient 9s ease infinite;
-  animation: textgradient 9s ease infinite;
+  -webkit-animation: textgradient 4s ease infinite;
+  -moz-animation: textgradient 4s ease infinite;
+  animation: textgradient 4s ease infinite;
 }
 
 @-webkit-keyframes textgradient {
-  0%{background-position:0% 51%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 51%}
+  0%{background-position:0% 22%}
+  50%{background-position:100% 79%}
+  100%{background-position:0% 22%}
 }
 @-moz-keyframes textgradient {
-  0%{background-position:0% 51%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 51%}
+  0%{background-position:0% 22%}
+  50%{background-position:100% 79%}
+  100%{background-position:0% 22%}
 }
 @keyframes textgradient {
-  0%{background-position:0% 51%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 51%}
+  0%{background-position:0% 22%}
+  50%{background-position:100% 79%}
+  100%{background-position:0% 22%}
 }
