@@ -1,9 +1,12 @@
 import { BasicApp, BasicCSS, BasicElements } from './basic'
-import { ColorPresets, CustomNode, CustomNodeApp, CustomNodeCSS } from './customNode'
+import { ColorPresets, CustomNode, CustomNodeApp, CustomNodeCSS } from './custom-node'
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline'
 import { CustomEdge, CustomEdge2, CustomEdgeLabel, EdgeCSS, EdgesApp } from './edges'
 import { NestedApp } from './nested'
 import { StressApp, StressCSS, StressUtils } from './stress'
+import { UpdateEdgeApp } from './update-edge'
+import { UpdateNodeApp, UpdateNodeCSS } from './update-node'
+import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode } from './validation'
 
 export const exampleImports = {
   basic: {
@@ -35,5 +38,18 @@ export const exampleImports = {
     'App.vue': StressApp,
     'utils.js': StressUtils,
     'style.css': StressCSS,
+  },
+  updateEdge: {
+    'App.vue': UpdateEdgeApp,
+  },
+  updateNode: {
+    'App.vue': UpdateNodeApp,
+    'style.css': UpdateNodeCSS,
+  },
+  validation: {
+    'App.vue': ValidationApp,
+    'CustomInput.vue': ValidationCustomInput,
+    'CustomNode.vue': ValidationCustomNode,
+    'style.css': ValidationCSS,
   },
 }
