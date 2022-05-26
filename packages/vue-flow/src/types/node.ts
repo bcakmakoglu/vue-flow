@@ -1,4 +1,4 @@
-import type { Component, TeleportProps, VNode } from 'vue'
+import type { Component, VNode } from 'vue'
 import type { BaseElement, Dimensions, ElementData, Position, SnapGrid, XYPosition, XYZPosition } from './flow'
 import type { DefaultNodeTypes, NodeComponent } from './components'
 import type { HandleElement, ValidConnectionFunc } from './handle'
@@ -69,9 +69,6 @@ export interface GraphNode<Data = ElementData> extends Node<Data> {
   isParent: boolean
   selected: boolean
   dragging: boolean
-
-  /** teleports node element to specified dom location, this property is _not_ available on initial load, only after viewpane is ready */
-  teleport?: TeleportProps['to']
 }
 
 /** these props are passed to node components */

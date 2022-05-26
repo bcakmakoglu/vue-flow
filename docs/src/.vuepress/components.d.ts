@@ -29,6 +29,7 @@ declare module 'vue' {
     Repl: typeof import('./../../components/Repl.vue')['default']
     RGB: typeof import('./../../components/home/flows/RGB.vue')['default']
     Sidebar: typeof import('./../../components/examples/dnd/Sidebar.vue')['default']
+    TeleportableNode: typeof import('./../../components/examples/teleport/TeleportableNode.vue')['default']
   }
 }
 
