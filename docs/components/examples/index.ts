@@ -7,6 +7,7 @@ import { StressApp, StressCSS, StressUtils } from './stress'
 import { UpdateEdgeApp } from './update-edge'
 import { UpdateNodeApp, UpdateNodeCSS } from './update-node'
 import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode } from './validation'
+import { SaveRestoreApp, SaveRestoreControls, SaveRestoreCSS } from "./save-restore";
 
 export const exampleImports = {
   basic: {
@@ -51,5 +52,10 @@ export const exampleImports = {
     'CustomInput.vue': ValidationCustomInput,
     'CustomNode.vue': ValidationCustomNode,
     'style.css': ValidationCSS,
+  },
+  saveRestore: {
+    'App.vue': SaveRestoreApp,
+    'Controls.vue': SaveRestoreControls,
+    'style.css': SaveRestoreCSS,
   },
 }
