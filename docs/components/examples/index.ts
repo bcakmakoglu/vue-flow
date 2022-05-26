@@ -9,6 +9,7 @@ import { UpdateNodeApp, UpdateNodeCSS } from './update-node'
 import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode } from './validation'
 import { SaveRestoreApp, SaveRestoreCSS, SaveRestoreControls } from './save-restore'
 import { DndApp, DndCSS, DndSidebar } from './dnd'
+import { EmptyApp } from "./empty";
 
 export const exampleImports = {
   basic: {
@@ -64,4 +65,7 @@ export const exampleImports = {
     'Sidebar.vue': DndSidebar,
     'style.css': DndCSS,
   },
+  empty: {
+    'App.vue': EmptyApp,
+  }
 }
