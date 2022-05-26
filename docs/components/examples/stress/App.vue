@@ -1,12 +1,12 @@
 <script setup>
-import { VueFlow, isNode, useVueFlow } from '@braks/vue-flow'
-import { ref } from 'vue'
+import { VueFlow, isNode, useVueFlow, getConnectedEdges } from "@braks/vue-flow";
+import { nextTick, ref } from 'vue'
 import { getElements } from './utils.js'
 
 const { nodes, edges } = getElements(15, 15)
 const elements = ref([...nodes, ...edges])
 
-const { onPaneReady } = useVueFlow()
+const { onPaneReady, dimensions, instance, onNodeClick, getEdges } = useVueFlow()
 
 onPaneReady((i) => {
   i.fitView({
@@ -17,15 +17,26 @@ onPaneReady((i) => {
 
 const toggleClass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 
-const updatePos = () =>
+const updatePos = () => {
   elements.value.forEach((el) => {
     if (isNode(el)) {
       el.position = {
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
+        x: Math.random() * 10 * dimensions.value.width,
+        y: Math.random() * 10 * dimensions.value.height,
       }
     }
   })
+  nextTick(() => {
+    instance.value.fitView({ duration: 1000, padding: 0.5 })
+  })
+}
+
+onNodeClick(({ node }) => {
+  const connectedEdges = getConnectedEdges([node], getEdges.value)
+  connectedEdges.forEach((edge) => {
+    edge.style = { stroke: '#10b981', strokeWidth: 3 }
+  })
+})
 </script>
 
 <template>
