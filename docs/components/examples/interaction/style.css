@@ -1,0 +1,22 @@
+.controls {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 4;
+  font-size: 11px;
+  background-color: lightgray;
+  border-bottom-right-radius: 10px;
+  padding: 12px;
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.label input {
+  cursor: pointer;
+}

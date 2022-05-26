@@ -9,8 +9,9 @@ import { UpdateNodeApp, UpdateNodeCSS } from './update-node'
 import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode } from './validation'
 import { SaveRestoreApp, SaveRestoreCSS, SaveRestoreControls } from './save-restore'
 import { DndApp, DndCSS, DndSidebar } from './dnd'
-import { EmptyApp } from "./empty";
-import { HiddenApp } from "./hidden";
+import { EmptyApp } from './empty'
+import { HiddenApp } from './hidden'
+import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
 
 export const exampleImports = {
   basic: {
@@ -71,5 +72,10 @@ export const exampleImports = {
   },
   hidden: {
     'App.vue': HiddenApp,
+  },
+  interaction: {
+    'App.vue': InteractionApp,
+    'InteractionControls.vue': InteractionControls,
+    'style.css': InteractionCSS,
   },
 }
