@@ -12,6 +12,7 @@ import { DndApp, DndCSS, DndSidebar } from './dnd'
 import { EmptyApp } from './empty'
 import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
+import { MultiApp, MultiCSS, MultiFlow } from './multi'
 
 export const exampleImports = {
   basic: {
@@ -77,5 +78,10 @@ export const exampleImports = {
     'App.vue': InteractionApp,
     'InteractionControls.vue': InteractionControls,
     'style.css': InteractionCSS,
+  },
+  multi: {
+    'App.vue': MultiApp,
+    'Flow.vue': MultiFlow,
+    'style.css': MultiCSS,
   },
 }
