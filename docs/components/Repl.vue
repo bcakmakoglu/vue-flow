@@ -4,7 +4,7 @@ import pkg from '../package.json'
 import '@vue/repl/style.css'
 import { exampleImports } from './examples'
 
-const props = defineProps<{ example: keyof typeof exampleImports }>()
+const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string; dependencies?: Record<string, string> }>()
 
 let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/style.css';
 @import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/theme-default.css';
@@ -58,7 +58,7 @@ await store.setFiles(
     ...files,
     'main.css': css,
   },
-  'App.vue',
+  props.mainFile ?? 'App.vue',
 )
 
 // pre-set import map

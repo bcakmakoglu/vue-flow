@@ -114,6 +114,7 @@ export default defineUserConfig<DefaultThemeOptions>({
             '/examples/hidden',
             '/examples/interaction',
             '/examples/multi',
+            '/examples/pinia',
             '/examples/stress',
           ],
         },
