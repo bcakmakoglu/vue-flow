@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { GraphEdge, useVueFlow, VueFlow, Background, Controls, ClassFunc } from '@braks/vue-flow'
+import { Background, ClassFunc, ConnectionLineType, Controls, GraphEdge, useVueFlow, VueFlow } from "@braks/vue-flow";
+import Cross from "~icons/mdi/window-close";
 
 const getClass: ClassFunc = (el) => {
   const classes = ['font-semibold', '!border-2', 'transition-colors', 'duration-300', 'ease-in-out']
@@ -13,26 +14,31 @@ const getClass: ClassFunc = (el) => {
 
 const emit = defineEmits(['pane'])
 
-const { onPaneReady } = useVueFlow({
+const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
+  connectionLineType: ConnectionLineType.SmoothStep,
+  connectionLineStyle: {
+    strokeDasharray: 5,
+    animation: 'dashdraw 0.5s linear infinite',
+  },
   modelValue: [
     {
       id: '1',
       type: 'input',
-      label: 'input',
+      label: 'Start',
       position: { x: 250, y: 5 },
       class: getClass,
     },
     {
       id: '2',
-      label: 'default',
+      label: 'Waypoint',
       position: { x: 100, y: 100 },
       class: getClass,
     },
-    { id: '3', label: 'default', position: { x: 400, y: 100 }, class: getClass },
+    { id: '3', label: 'Waypoint', position: { x: 400, y: 100 }, class: getClass },
     {
       id: '4',
       type: 'output',
-      label: 'output',
+      label: 'End',
       position: { x: 250, y: 225 },
       class: getClass,
     },
@@ -93,14 +99,21 @@ const { onPaneReady } = useVueFlow({
 })
 
 onPaneReady((i) => emit('pane', i))
+onConnect((param) => {
+  addEdges([{
+    ...param,
+    type: 'smoothstep',
+    animated: true,
+  }])
+})
 </script>
 <template>
   <div class="md:max-w-1/3 flex flex-col justify-center">
-    <div class="flex flex-col gap-2 items-center md:items-start">
-      <h1>Batteries-included</h1>
+    <div class="flex flex-col items-center md:items-start">
+      <h1>Interactive Graphs</h1>
       <p>
-        Vue Flow comes with several built-in features including zooming, panning, zoom & pan controls, single & multi-selections, element dragging,
-        node and edge components and event handlers.
+        Vue Flow comes with built-in features like zoom & pan and dedicated controls, single & multi-selections, draggable elements,
+        customizable nodes and edges and a bunch of event handlers.
       </p>
       <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
     </div>
@@ -109,8 +122,12 @@ onPaneReady((i) => emit('pane', i))
     class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden"
   >
     <VueFlow class="basic">
-      <Controls class="md:!left-auto md:!right-[10px]" />
-      <Background pattern-color="#aaa" :gap="16" />
+      <Controls class="md:(!left-auto !right-[10px])" />
+      <Background pattern-color="#aaa" :gap="60">
+        <template #pattern>
+          <Cross :style="{ fontSize: `${8 * viewport.zoom || 1}px` }" class="text-[#10b981] opacity-50" />
+        </template>
+      </Background>
     </VueFlow>
   </div>
 </template>

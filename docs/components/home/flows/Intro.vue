@@ -1,10 +1,16 @@
 <script lang="ts" setup>
 import { Handle, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import BoxNode from '../nodes/Box.vue'
+import confetti from 'canvas-confetti'
+import colors from 'windicss/colors'
+import { cheer, fireworks } from './confetti'
 import Heart from '~icons/mdi/heart'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
+
+const dark = useDark({
+  selector: 'html',
+})
 
 const initialEdges = [
   {
@@ -35,7 +41,7 @@ const initialEdges = [
     style: { strokeWidth: 2, stroke: '#0ea5e9' },
   },
 ]
-const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
+const { dimensions, instance, onNodeClick, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -47,10 +53,54 @@ const { dimensions, instance, onPaneReady, getNodes, getNode, getEdge, updateEdg
   nodesDraggable: false,
   panOnDrag: false,
   zoomOnScroll: false,
+  zoomOnDoubleClick: false,
+  zoomOnPinch: false,
+})
+
+const clickInterval = ref()
+const clicks = ref(0)
+const disabled = ref(false)
+
+const confettiColors = Object.values(colors).flatMap((color) => {
+  if (typeof color === 'string') return color
+  else return Object.values(color).flatMap((c) => c)
+})
+
+onNodeClick(async ({ node }) => {
+  if (node.id === 'intro') {
+    if (disabled.value) return
+
+    if (clickInterval.value) {
+      clearInterval(clickInterval.value)
+    }
+
+    clickInterval.value = setInterval(() => {
+      clearInterval(clickInterval.value)
+      clicks.value = 0
+    }, 1000)
+
+    clicks.value++
+    if (clicks.value < 10) {
+      confetti({
+        startVelocity: 25,
+        spread: 360,
+        angle: 270,
+        origin: { y: 0.1 },
+        colors: confettiColors,
+      })
+    } else if (clicks.value < 20) {
+      await cheer(['#10b981', dark.value ? '#ffffff' : '#000000'])
+    } else if (clicks.value === 20) {
+      disabled.value = true
+      await fireworks(confettiColors)
+      disabled.value = false
+    } else {
+      clicks.value = 0
+    }
+  }
 })
 
 const init = ref(false)
-const edgeId = ref('eintro-documentation')
 const el = templateRef<HTMLDivElement>('el', null)
 
 onPaneReady(({ fitView }) => {
@@ -83,40 +133,34 @@ onPaneReady(({ fitView }) => {
         }
       })
 
-      nextTick(() => {
-        setEdges(() => {
-          return [
-            {
-              id: 'eintro-examples',
-              type: 'smoothstep',
-              sourceHandle: 'a',
-              source: 'intro',
-              target: 'examples',
-              animated: true,
-              style: { strokeWidth: 2, stroke: '#8b5cf6' },
-            },
-            {
-              id: 'eexamples-documentation',
-              type: 'smoothstep',
-              source: 'examples',
-              target: 'documentation',
-              animated: true,
-              style: { strokeWidth: 2, stroke: '#f97316' },
-            },
-            {
-              id: 'edocumentation-acknowledgement',
-              type: 'smoothstep',
-              source: 'documentation',
-              target: 'acknowledgement',
-              animated: true,
-              style: { strokeWidth: 2, stroke: '#0ea5e9' },
-            },
-          ]
-        })
-
-        fitView({
-          duration: 1500,
-        })
+      setEdges(() => {
+        return [
+          {
+            id: 'eintro-examples',
+            type: 'smoothstep',
+            sourceHandle: 'a',
+            source: 'intro',
+            target: 'examples',
+            animated: true,
+            style: { strokeWidth: 2, stroke: '#8b5cf6' },
+          },
+          {
+            id: 'eexamples-documentation',
+            type: 'smoothstep',
+            source: 'examples',
+            target: 'documentation',
+            animated: true,
+            style: { strokeWidth: 2, stroke: '#f97316' },
+          },
+          {
+            id: 'edocumentation-acknowledgement',
+            type: 'smoothstep',
+            source: 'documentation',
+            target: 'acknowledgement',
+            animated: true,
+            style: { strokeWidth: 2, stroke: '#0ea5e9' },
+          },
+        ]
       })
     } else {
       getNodes.value.forEach((node) => {
@@ -143,24 +187,16 @@ onPaneReady(({ fitView }) => {
         }
       })
 
-      nextTick(() => {
-        setEdges(initialEdges)
-        fitView({
-          duration: 1500,
-        })
-      })
+      setEdges(initialEdges)
     }
 
-    setTimeout(
-      () => {
-        if (!init.value) init.value = true
-        else instance.value?.fitView()
-      },
-      init.value ? 5 : 1505,
-    )
+    nextTick(() => {
+      fitView()
+      if (!init.value) init.value = true
+    })
   }
 
-  useResizeObserver(el, setNodes)
+  useResizeObserver(el, useDebounceFn(setNodes, 5))
 })
 
 const scrollTo = () => {
@@ -175,34 +211,35 @@ const scrollTo = () => {
   <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
     <template #node-box="props">
       <template v-if="props.id === 'intro'">
-        <div class="max-w-[500px]">
-          <BoxNode class="intro">
+        <div class="box max-w-[500px]">
+          <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
             <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
               <h1 class="text-2xl lg:text-4xl">Vue Flow</h1>
               <h2 class="text-lg lg:text-xl font-normal !border-0">
                 The customizable Vue 3 component bringing interactivity to flowcharts and graphs.
               </h2>
             </div>
-          </BoxNode>
+            <Handle id="a" type="source" :position="Position.Bottom" />
+          </div>
         </div>
       </template>
       <template v-else-if="props.id === 'documentation'">
         <div class="flex">
-          <router-link class="link group bg-orange-500" to="/guide/"> Read The Documentation </router-link>
+          <router-link class="link group bg-[#f15a16]" to="/guide/"> Read The Documentation </router-link>
         </div>
         <Handle type="target" :position="Position.Top" />
         <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
       </template>
       <template v-else-if="props.id === 'examples'">
         <div class="flex">
-          <router-link class="link group bg-purple-500" to="/examples/"> Check The Examples </router-link>
+          <router-link class="link group bg-[#ef467e]" to="/examples/"> Check The Examples </router-link>
         </div>
         <Handle type="target" :position="Position.Top" />
         <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
       </template>
       <template v-else-if="props.id === 'acknowledgement'">
         <div class="flex" @click="scrollTo">
-          <div class="link group bg-sky-500"><Heart class="text-red-500" /> Acknowledgement</div>
+          <button class="link group bg-sky-500"><Heart class="text-red-500" /> Acknowledgement</button>
         </div>
         <Handle type="target" :position="Position.Top" />
       </template>

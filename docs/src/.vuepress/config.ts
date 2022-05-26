@@ -10,6 +10,7 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import head from './head'
 import { useVueFlow } from '@braks/vue-flow'
+import { copyVueFlowPlugin } from "./copy-plugin";
 
 config({ path: resolve(__dirname, '.env') })
 
@@ -23,7 +24,11 @@ export default defineUserConfig<DefaultThemeOptions>({
   bundler: '@vuepress/bundler-vite',
   bundlerConfig: {
     viteOptions: {
+      optimizeDeps: {
+        exclude: ['@animxyz/vue3'],
+      },
       plugins: [
+        copyVueFlowPlugin(),
         AutoImport({
           imports: ['vue', '@vueuse/core'],
           dts: resolve(__dirname, './auto-imports.d.ts'),
@@ -109,6 +114,7 @@ export default defineUserConfig<DefaultThemeOptions>({
             '/examples/hidden',
             '/examples/interaction',
             '/examples/multi',
+            '/examples/pinia',
             '/examples/stress',
           ],
         },

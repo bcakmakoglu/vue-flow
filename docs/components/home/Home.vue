@@ -18,9 +18,11 @@ onMounted(() => {
       magnetic: false,
       dotColor: '#10b981',
       radius: 8,
-      focusableElementsOffsetX: 2,
-      focusableElementsOffsetY: 2,
+      focusableElementsOffsetX: 5,
+      focusableElementsOffsetY: 4,
       mode: 'bouncy',
+      focusableElements:
+        '[data-blobity], a:not([data-no-blobity]), button:not([data-no-blobity]), [data-blobity-tooltip], .back-to-top, .intro',
     })
 
     onBeforeUnmount(() => {
