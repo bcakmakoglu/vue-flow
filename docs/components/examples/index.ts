@@ -3,6 +3,7 @@ import { ColorPresets, CustomNode, CustomNodeApp, CustomNodeCSS } from './custom
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline'
 import { CustomEdge, CustomEdge2, CustomEdgeLabel, EdgeCSS, EdgesApp } from './edges'
 import { NestedApp } from './nested'
+import { StressApp, StressCSS, StressUtils } from './stress'
 
 export const exampleImports = {
   basic: {
@@ -29,5 +30,10 @@ export const exampleImports = {
   },
   nested: {
     'App.vue': NestedApp,
+  },
+  stress: {
+    'App.vue': StressApp,
+    'utils.js': StressUtils,
+    'style.css': StressCSS,
   },
 }
