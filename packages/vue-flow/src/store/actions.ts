@@ -14,9 +14,8 @@ import type {
 import {
   addEdgeToStore,
   applyChanges,
-  createGraphNodes,
-  connectionExists,
   createAdditionChange,
+  createGraphNodes,
   createPositionChange,
   createSelectionChange,
   getDimensions,
@@ -230,9 +229,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
         if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
         if (missingTarget || missingSource) return acc
 
-        acc.push(
-          createAdditionChange<GraphEdge>(shallowReactive(edge)),
-        )
+        acc.push(createAdditionChange<GraphEdge>(shallowReactive(edge)))
       }
 
       return acc
