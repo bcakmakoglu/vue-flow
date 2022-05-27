@@ -5,7 +5,7 @@ import Sidebar from './Sidebar.vue'
 let id = 0
 const getId = () => `dndnode_${id++}`
 
-const { instance, onConnect, nodes, edges, addEdges, addNodes, viewport } = useVueFlow({
+const { onConnect, nodes, edges, addEdges, addNodes, viewport, project } = useVueFlow({
   nodes: [
     {
       id: '1',
@@ -25,17 +25,15 @@ const onDragOver = (event) => {
 onConnect((params) => addEdges([params]))
 
 const onDrop = (event) => {
-  if (instance.value) {
-    const type = event.dataTransfer?.getData('application/vueflow')
-    const position = instance.value.project({ x: event.clientX - 40, y: event.clientY - 18 })
-    const newNode = {
-      id: getId(),
-      type,
-      position,
-      label: `${type} node`,
-    }
-    addNodes([newNode])
+  const type = event.dataTransfer?.getData('application/vueflow')
+  const position = project({ x: event.clientX - 40, y: event.clientY - 18 })
+  const newNode = {
+    id: getId(),
+    type,
+    position,
+    label: `${type} node`,
   }
+  addNodes([newNode])
 }
 </script>
 
