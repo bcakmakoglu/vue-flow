@@ -175,6 +175,7 @@ export default {
         :data="edge.data"
         :animated="edge.animated"
         :selectable="selectable(edge.selectable)"
+        :selected="edge.selected"
         :updatable="updatable(edge.updatable)"
         :label-style="edge.labelStyle"
         :label-show-bg="edge.labelShowBg"
