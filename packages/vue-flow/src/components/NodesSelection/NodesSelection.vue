@@ -1,22 +1,21 @@
 <script lang="ts" setup>
-import { useVueFlow, useDrag } from '../../composables'
+import { useDrag, useVueFlow } from '../../composables'
 import { getRectOfNodes } from '../../utils'
 
-const { emits, setState, viewport, getSelectedNodes, snapToGrid, snapGrid, updateNodePosition, noPanClassName } = $(useVueFlow())
+const { emits, setState, viewport, getSelectedNodes, snapToGrid, snapGrid, noPanClassName } = $(useVueFlow())
 
 const el = ref()
 
 useDrag({
   el,
-  onStart(event) {
-    emits.selectionDragStart({ event: event.sourceEvent, nodes: getSelectedNodes })
+  onStart(event, node, nodes) {
+    emits.selectionDragStart({ event, node, nodes })
   },
-  onDrag(event, { dx, dy }) {
-    updateNodePosition({ diff: { x: dx, y: dy } })
-    emits.selectionDrag({ event: event.sourceEvent, nodes: getSelectedNodes })
+  onDrag(event, node, nodes) {
+    emits.selectionDrag({ event, node, nodes })
   },
-  onStop(event) {
-    emits.selectionDragStop({ event: event.sourceEvent, nodes: getSelectedNodes })
+  onStop(event, node, nodes) {
+    emits.selectionDragStop({ event, node, nodes })
   },
 })
 
