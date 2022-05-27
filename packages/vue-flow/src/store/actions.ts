@@ -175,6 +175,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
       res.push(
         shallowReactive({
           ...parseEdge(edge, Object.assign({}, storedEdge, state.defaultEdgeOptions)),
+          sourceNode,
+          targetNode,
         }),
       )
 
@@ -220,7 +222,15 @@ export default (state: State, getters: ComputedGetters): Actions => {
         if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
         if (missingTarget || missingSource) return acc
 
-        acc.push(createAdditionChange<GraphEdge>(shallowReactive(edge)))
+        acc.push(
+          createAdditionChange<GraphEdge>(
+            shallowReactive({
+              ...edge,
+              sourceNode,
+              targetNode,
+            }),
+          ),
+        )
       }
 
       return acc
