@@ -49,6 +49,7 @@ useDrag({
   noDragClassName: $$(noDragClassName) as any,
   handleSelector: node.dragHandle,
   onStart(event) {
+    removeSelectedElements()
     if (selectNodesOnDrag && selectable) {
       setState({
         nodesSelectionActive: false,
@@ -68,16 +69,16 @@ useDrag({
       }
     }
 
-    emits.nodeDragStart({ event: event.sourceEvent, node, connectedEdges: getConnectedEdges([node], edges) })
+    emits.nodeDragStart({ event: event.sourceEvent, node, nodes: [] })
   },
   onDrag(event, { dx, dy }) {
     dragging = true
     updateNodePosition({ id, diff: { x: dx, y: dy } })
-    emits.nodeDrag({ event: event.sourceEvent, node, connectedEdges: getConnectedEdges([node], edges) })
+    emits.nodeDrag({ event: event.sourceEvent, node, nodes: [] })
   },
   onStop(event) {
     dragging = false
-    emits.nodeDragStop({ event: event.sourceEvent, node, connectedEdges: getConnectedEdges([node], edges) })
+    emits.nodeDragStop({ event: event.sourceEvent, node, nodes: [] })
   },
 })
 
