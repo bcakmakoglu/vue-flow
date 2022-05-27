@@ -98,6 +98,13 @@ function useDrag(params: UseDragParams) {
               }
             })
             .on('drag', (event: UseDragEvent) => {
+              parentPos = getParentNodePosition(node && node.parentNode ? getNode(node!.parentNode!) : undefined)
+
+              if (node && (lastPos.x !== node.position.x || lastPos.y !== node.position.y)) {
+                lastPos.x = node.position.x
+                lastPos.y = node.position.y
+              }
+
               const mousePos = getMousePosition(event)
 
               // skip events without movement
