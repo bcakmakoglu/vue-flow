@@ -80,18 +80,18 @@ export function updatePosition(
   let currentExtent = dragItem.extent || nodeExtent
   let nextPosition = { x: mousePos.x - dragItem.distance.x, y: mousePos.y - dragItem.distance.y }
 
-  if (dragItem.extent === 'parent') {
+  if (dragItem.extent === 'parent' && parent) {
     if (dragItem.parentNode && dragItem.dimensions.width && dragItem.dimensions.height) {
       currentExtent =
-        parent?.width && parent?.height
+        parent.dimensions.width && parent.dimensions.height
           ? [
               [0, 0],
               [parent.dimensions.width - dragItem.dimensions.width, parent.dimensions.height - dragItem.dimensions.height],
             ]
           : currentExtent
-    } else {
-      currentExtent = nodeExtent
     }
+  } else {
+    currentExtent = nodeExtent
   }
 
   nextPosition = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
