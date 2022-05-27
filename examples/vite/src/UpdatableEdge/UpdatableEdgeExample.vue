@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowEvents, FlowInstance } from '@braks/vue-flow'
+import type { Connection, Edge, Elements, FlowEvents, VueFlowStore } from '@braks/vue-flow'
 import { ConnectionMode, Controls, VueFlow, addEdge, updateEdge } from '@braks/vue-flow'
 
 const initialElements: Elements = [
@@ -24,7 +24,7 @@ const initialElements: Elements = [
 ]
 
 const elements = ref(initialElements)
-const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
+const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
 const onEdgeUpdateStart = (edge: Edge) => console.log('start update', edge)
 const onEdgeUpdateEnd = (edge: Edge) => console.log('end update', edge)
 const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {

@@ -1,9 +1,7 @@
-# Instance
+# Viewport Functions
 
-The Vue Flow instance provides easy access to zoom-pan-helper functions.
-It can be accessed either directly from the state using `useVueFlow` or
-you can receive the instance with a `onPaneReady` event handler.
-
+Viewport Functions can be accessed via the `useVueFlow` utility or with the `VueFlowStore` instance provided by
+`onPaneReady`.
 
 <CodeGroup>
   <CodeGroupItem title="Composition API" active>
@@ -12,15 +10,10 @@ you can receive the instance with a `onPaneReady` event handler.
 <script setup>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 
-const { onPaneReady, instance } = useVueFlow()
+const { onPaneReady } = useVueFlow()
 
 // event handler
 onPaneReady((instance) => instance.fitView())
-
-onMounted(() => {
-  // or directly try to access the instance
-  instance.value?.fitView()
-})
 </script>
 ```
 

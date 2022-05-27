@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Elements, FlowEvents, FlowInstance } from '@braks/vue-flow'
+import type { Elements, FlowEvents, VueFlowStore } from '@braks/vue-flow'
 import { Background, Controls, MiniMap, VueFlow, addEdge, isNode } from '@braks/vue-flow'
 
 export default defineComponent({
@@ -7,7 +7,7 @@ export default defineComponent({
   components: { VueFlow, Background, MiniMap, Controls },
   data() {
     return {
-      instance: null as FlowInstance | null,
+      instance: null as VueFlowStore | null,
       elements: [
         { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
         { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
