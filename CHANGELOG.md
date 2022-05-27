@@ -2,6 +2,90 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.13] - 2022-05-27
+
+[f6d2509](f6d250956e304beceb8ff4b0558dd8c3c7bab437)...[30db19b](30db19bb50680d38d878e8f13ee42408d09dd33b)
+
+### Bug Fixes
+
+- Default edge options not applied on new edges ([b846a3f](b846a3f76304102e1d78fbf46fa69b617dddb7df))
+- Destruct bounding box ([567b55b](567b55b8e4d881bf084db97e60dec8b44bae3771))
+- Jumping when drag is out of sync with last pos ([de60d92](de60d924ff19154f02069b5981f852f30536a2c5))
+- Check if connection exists ([975d551](975d5519a4c9bfc8586d6187a99fac96fc295225))
+- Unselect nodes on click when multi selection active ([ddac5b0](ddac5b0e58cb67f08bf10f4190a9012428c7bb00))
+- Unselect nodes on drag start ([660c0bc](660c0bceab937c89e4444ce80b0f9006276afdfa))
+- Update xyz on select ([b63d3da](b63d3da0c03f66f82d0d22c80b4a4467751b6f27))
+- Check if node position was manually changed since last drag ([128c1a4](128c1a4a845cf81103f71a922feee32474358fe5))
+- Extent not applied ([7479534](7479534647f66b634405d1b6f28940d6f9906895))
+- Set dragging to false after drag ([957918e](957918e7c75fc6893f60b6a7dd9fc5f0771b46d2))
+- Properly expand parent ([048775d](048775df2930301760d752af1edb6b1b23be224c))
+- Missing source / target node ([a3f3077](a3f307708b8e01c4b1ebff1109a6f05550deac64))
+- Use correct bbox for edge text ([008929a](008929a939237252a2678a91ab4777233f6d3122))
+
+### Documentation
+
+- Update examples ([8e3f1a3](8e3f1a394d86dc69b1988f561cf7a72757dd414b))
+- Add horizontal layout example ([488b632](488b632e2e88d7e5edeeeac175f34385ca42d406))
+- Update stress example ([4e9ad11](4e9ad11fc5b9660922b6fa54f68792688e0cde85))
+- Update stress example ([a6e6f31](a6e6f31e9c5d5a421d02aaab65b98209320bf492))
+- Add teleport example ([d9e7c7a](d9e7c7a0b089841f645e019ad85d758066110eab))
+- Add teleportable example ([5d94a98](5d94a988c7fa10b2217b9cebb4c13f7bc0296121))
+- Remove unused edges from nested example ([643f752](643f75273da0d600a0218128eb2226feddd7f792))
+- Pin repl version to 1.1.2 ([1b8d9cf](1b8d9cfa413c56ae2f1d7b82976e2a1964a40131))
+
+### Features
+
+- Add connected edges to node mouse events ([5b307b5](5b307b548a71f8b3fab25fc45f746f034700ec57))
+- Add width and height options to minimap ([0cd6eaf](0cd6eaff359793a02c1b783bd8f84c2351e54f32))
+- Add mouse over events for minimap nodes ([7c360bb](7c360bb5c177036b68a6a7a7c6e3eab1353e2f89))
+- Add mouseover events for minimap nodes ([d519eba](d519eba4303e1169fd7c743ad7cc0b20506a4c22))
+- Add teleport option to nodes ([0d35f1c](0d35f1c7e3c24407241fab6f24cc66c0fcaf2c95))
+- Only allow teleport on graph nodes ([e38cb4e](e38cb4e0c2fabe67af60f4d82bf48453afc9a2f0))
+- Implement `useDrag` in `NodesSelection.vue` ([674a657](674a65788e85c0f0c38e4dd3aea434173391ebda))
+
+### Miscellaneous Tasks
+
+- Filter on drag ([1e506dc](1e506dc15130bb9d3b47cba76b517537816aaee7))
+- Fix prop types in edge wrapper ([dd86e04](dd86e04a034e54b4d450ef157c137a2770e5e5e8))
+- Lint ([bae5d1e](bae5d1e26d0ed1d6ab6f85c5c35b7c77e49776a3))
+- Move store utils to separate file ([78d8190](78d8190f585fa35215b6e7451049fa73f91da1c9))
+- Lint ([fe6114c](fe6114c738c58880378777995fe3d44116f8fd7f))
+- Remove passing getters to `getSelectionChanges` ([9816269](98162699ae9abe83fd8c9992d0d1743ee4c54a67))
+- Add missing selected prop ([e3c7424](e3c7424aa78cdf295aea3948d28e19cbd7ba9ba6))
+- Remove old edge wrapper component ([8af7425](8af74259ec103117e034afa4443046bd0900aab1))
+- Update yarn lock ([fd7fe86](fd7fe8620426204bded33fac2ed4f2950a19f3a6))
+
+### Refactor
+
+- Change edge-text prop type to extend svgattributes ([0d17d00](0d17d006442949bab670096c9dfff4174fd77146))
+- Use reactivity transform in edge-texts ([0a2a467](0a2a467e563b29194141bc85cff1af1c54f1f35a))
+- Add node/edge add changes ([1ddeffe](1ddeffe1afc491054d5ed3e9dc9eacaf138a0246))
+- Move pull request template to up a directory ([ce7569d](ce7569da5f3f81e6782c1bb12afe7ee45ab0ffa9))
+- Use d3-drag ([95e36d0](95e36d0c2c1a65ae76a38a6540e20d8e3b2f4867))
+- Remove dragging from graph nodes ([86ba26f](86ba26fe9a86ebdbed7ca29c8959eb964e6ea2cc))
+- Remove node and parent node props from wrapper ([80878a2](80878a228c2478bb4b2d8bc143386c60a362e826))
+- Remove selectedNodesBbox from store ([f9671b1](f9671b1ec4c58d32e2b46e8fa2dd244b1ccf4a47))
+- Remove get type call for names ([4cb4d9c](4cb4d9c0f41314f86a86da39fa0eaef19bb65eea))
+- Mark nodes edges as shallow reactive ([3312739](33127395b67c05d47c478109919cca000e913590))
+- Reduce nodewrapper re-render ([a65d856](a65d85687d8c09044c8e829d3f7e0bce8c149ddd))
+- Make edge wrapper functional component ([ce13007](ce13007dbf04fd69d839688af1a5a911f036ebaa))
+- Move classes to `Wrapper.ts` ([d5a19cd](d5a19cd1d89ffccd73572f8d6a2fa678d7ea8443))
+- Remove v-model ([c059b59](c059b5929a9fd8f50e763601c26d30b45128f107))
+- Add remove selected elements actions ([ec7901e](ec7901ef340c0fc5f2604e5c2eba4c173cf47f38))
+- Simplify event defs ([9cdad4d](9cdad4d9fcaab3e5e7f56d28fc5a9e8001e1b1b6))
+- Use absolute positions instead of deltas ([cec8f4d](cec8f4d77e6ef8645ae2427061c2908e21952e59))
+- Remove reactive options ([e2f3da8](e2f3da8e1bf6a03f042a3bb115adcd55c27fd81b))
+- Watch dimensions for xyzpos ([e483da2](e483da24432ca92ab2fc3b261c4438e69fa12c89))
+- Remove v-html  from template tag ([d4ce7b8](d4ce7b835cbe410e08398c6d033b5ecd7bbe2881))
+
+### Examples
+
+- Fix import path ([ee78e92](ee78e925e041877cc02faf0e2655c02270f236a8))
+
+### Update
+
+- Add drag filter type ([9510f3d](9510f3dd5422fe2b8b30f9585c805acc9d2694de))
+
 ## [0.4.12] - 2022-05-26
 
 [e714fe6](e714fe66dd7fe9387f97ea1ff0a7a43e4e76922d)...[f6d2509](f6d250956e304beceb8ff4b0558dd8c3c7bab437)
