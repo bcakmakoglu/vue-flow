@@ -3,10 +3,10 @@ import { useVueFlow } from '@braks/vue-flow'
 
 const flowKey = 'example-flow'
 
-const { nodes, addNodes, setNodes, setEdges, instance, dimensions } = useVueFlow()
+const { nodes, addNodes, setNodes, setEdges, dimensions, setTransform, toObject } = useVueFlow()
 
 const onSave = () => {
-  localStorage.setItem(flowKey, JSON.stringify(instance.value?.toObject()))
+  localStorage.setItem(flowKey, JSON.stringify(toObject()))
 }
 
 const onRestore = () => {
@@ -16,7 +16,7 @@ const onRestore = () => {
     const [x = 0, y = 0] = flow.position
     setNodes(flow.nodes)
     setEdges(flow.edges)
-    instance.value.setTransform({ x, y, zoom: flow.zoom || 0 })
+    setTransform({ x, y, zoom: flow.zoom || 0 })
   }
 }
 
@@ -35,6 +35,6 @@ const onAdd = () => {
   <div class="save__controls">
     <button style="background-color: #33a6b8" @click="onSave">save</button>
     <button style="background-color: #113285" @click="onRestore">restore</button>
-    <button style="background-color: #6F3381" @click="onAdd">add node</button>
+    <button style="background-color: #6f3381" @click="onAdd">add node</button>
   </div>
 </template>

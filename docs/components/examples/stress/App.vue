@@ -6,13 +6,13 @@ import { getElements } from './utils.js'
 const { nodes, edges } = getElements(15, 15)
 const elements = ref([...nodes, ...edges])
 
-const { onPaneReady, dimensions, instance, onNodeClick, getEdges } = useVueFlow()
+const { onPaneReady, dimensions, onNodeClick, getEdges, fitView } = useVueFlow()
 
 onPaneReady((i) => {
   i.fitView({
     padding: 0.2,
   })
-  console.log(i.getElements())
+  console.log(i.getElements.value)
 })
 
 const toggleClass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
@@ -27,7 +27,7 @@ const updatePos = () => {
     }
   })
   nextTick(() => {
-    instance.value.fitView({ duration: 1000, padding: 0.5 })
+    fitView({ duration: 1000, padding: 0.5 })
   })
 }
 

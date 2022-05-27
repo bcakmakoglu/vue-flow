@@ -7,7 +7,7 @@ import { initialElements } from './initial-elements.js'
  * useVueFlow provides all event handlers and store properties
  * You can pass the composable an object that has the same properties as the VueFlow component props
  */
-const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges } = useVueFlow()
+const { onPaneReady, onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow()
 
 /**
  * Our elements
@@ -50,12 +50,12 @@ const updatePos = () =>
 /**
  * toObject transforms your current graph data to an easily persist-able object
  */
-const logToObject = () => console.log(instance.value?.toObject())
+const logToObject = () => console.log(toObject())
 
 /**
  * Resets the current viewpane transformation (zoom & pan)
  */
-const resetTransform = () => instance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
+const resetTransform = () => setTransform({ x: 0, y: 0, zoom: 1 })
 
 const toggleClass = () => {
   dark.value = !dark.value
