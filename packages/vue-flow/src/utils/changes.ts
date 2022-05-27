@@ -70,13 +70,6 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         }
         updateItem.position.y = 0
       }
-
-      parent.dimensions.width = (
-        typeof parent.style.width === 'string' ? parseInt((<string>parent.style.width)!, 10) : parent.style.width
-      )!
-      parent.dimensions.height = (
-        typeof parent.style.height === 'string' ? parseInt((<string>parent.style.height)!, 10) : parent.style.height
-      )!
     }
   }
 }
