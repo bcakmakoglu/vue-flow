@@ -98,10 +98,7 @@ function useDrag(params: UseDragParams) {
               }
             })
             .on('drag', (event: UseDragEvent) => {
-              if (node && (lastPos.x !== node.position.x || lastPos.y !== node.position.y)) {
-                lastPos.x = node.position.x
-                lastPos.y = node.position.y
-              }
+              parentPos = getParentNodePosition(node && node.parentNode ? getNode(node!.parentNode!) : undefined)
 
               const mousePos = getMousePosition(event)
 
