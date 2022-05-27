@@ -7,7 +7,6 @@ import type {
   ElementChange,
   FlowElement,
   FlowElements,
-  Getters,
   GraphEdge,
   GraphNode,
   Node,
@@ -16,8 +15,7 @@ import type {
   NodeSelectionChange,
 } from '~/types'
 
-function handleParentExpand(updateItem: GraphNode, curr: GraphNode[]) {
-  const parent = updateItem.parentNode ? curr.find((el) => el.id === updateItem.parentNode) : undefined
+function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   if (parent) {
     const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
@@ -92,50 +90,48 @@ export const applyChanges = <
 ): T[] => {
   let elementIds = elements.map((el) => el.id)
   changes.forEach((change) => {
-    nextTick(() => {
-      if (change.type === 'add') {
-        const item = <T>change.item
-        return elements.push(item)
-      }
+    if (change.type === 'add') {
+      const item = <T>change.item
+      return elements.push(item)
+    }
 
-      const i = elementIds.indexOf((<any>change).id)
-      const el = elements[i]
-      switch (change.type) {
-        case 'select':
-          if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
-          break
-        case 'position':
-          if (isGraphNode(el)) {
-            if (typeof change.position !== 'undefined') el.position = change.position
-            if (el.expandParent && el.parentNode) {
-              const parent = elements.find((parent) => parent.id === el.parentNode)
+    const i = elementIds.indexOf((<any>change).id)
+    const el = elements[i]
+    switch (change.type) {
+      case 'select':
+        if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
+        break
+      case 'position':
+        if (isGraphNode(el)) {
+          if (typeof change.position !== 'undefined') el.position = change.position
+          if (el.expandParent && el.parentNode) {
+            const parent = elements.find((parent) => parent.id === el.parentNode)
 
-              if (parent && isGraphNode(parent)) {
-                handleParentExpand(el, parent)
-              }
+            if (parent && isGraphNode(parent)) {
+              handleParentExpand(el, parent)
             }
           }
-          break
-        case 'dimensions':
-          if (isGraphNode(el)) {
-            if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-            if (el.expandParent && el.parentNode) {
-              const parent = elements.find((parent) => parent.id === el.parentNode)
+        }
+        break
+      case 'dimensions':
+        if (isGraphNode(el)) {
+          if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
+          if (el.expandParent && el.parentNode) {
+            const parent = elements.find((parent) => parent.id === el.parentNode)
 
-              if (parent && isGraphNode(parent)) {
-                handleParentExpand(el, parent)
-              }
+            if (parent && isGraphNode(parent)) {
+              handleParentExpand(el, parent)
             }
           }
-          break
-        case 'remove':
-          if (elementIds.includes(change.id)) {
-            elements.splice(i, 1)
-            elementIds = elements.map((el) => el.id)
-          }
-          break
-      }
-    })
+        }
+        break
+      case 'remove':
+        if (elementIds.includes(change.id)) {
+          elements.splice(i, 1)
+          elementIds = elements.map((el) => el.id)
+        }
+        break
+    }
   })
 
   return elements
@@ -153,7 +149,7 @@ export const createSelectionChange = (id: string, selected: boolean): NodeSelect
 export const createAdditionChange = <
   T extends GraphNode | GraphEdge = GraphNode,
   C extends NodeAddChange | EdgeAddChange = T extends GraphNode ? NodeAddChange : EdgeAddChange,
-  >(
+>(
   item: T,
 ): C =>
   <C>{
@@ -161,21 +157,15 @@ export const createAdditionChange = <
     type: 'add',
   }
 
-const isParentSelected = (node: GraphNode, selectedIds: string[], getNode: Getters['getNode']): boolean => {
-  const parent = node.parentNode ? getNode(node.parentNode) : undefined
-  if (!node.parentNode || !parent) return false
-  if (selectedIds.includes(node.parentNode)) return true
-  return isParentSelected(parent, selectedIds, getNode)
-}
-
-export const getSelectionChanges = (items: FlowElements, selectedIds: string[], getNode: Getters['getNode']) => {
+export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
   return items.reduce((res, item) => {
-    const willBeSelected =
-      selectedIds.includes(item.id) || !!(isGraphNode(item) && item.parentNode && isParentSelected(item, selectedIds, getNode))
+    const willBeSelected = selectedIds.includes(item.id)
 
     if (!item.selected && willBeSelected) {
+      item.selected = true
       res.push(createSelectionChange(item.id, true))
     } else if (item.selected && !willBeSelected) {
+      item.selected = false
       res.push(createSelectionChange(item.id, false))
     }
 

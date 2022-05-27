@@ -1,5 +1,5 @@
 import type { Dimensions, ElementData, XYPosition } from './flow'
-import type { GraphNode, NodeHandleBounds } from './node'
+import type { GraphNode, Node, NodeHandleBounds } from './node'
 import type { GraphEdge } from './edge'
 
 export interface NodeDragItem {
