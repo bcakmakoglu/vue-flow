@@ -85,9 +85,6 @@ export interface FlowExportObject {
   zoom: number
 }
 
-/** @deprecated will be removed soon, only remains for backwards compatability */
-export type FlowInstance = VueFlowStore
-
 export interface FlowProps {
   id?: string
   modelValue?: Elements
