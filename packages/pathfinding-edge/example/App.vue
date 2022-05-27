@@ -1,16 +1,12 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowInstance } from '@braks/vue-flow'
+import type { Connection, Edge, Elements } from '@braks/vue-flow'
 import { Background, VueFlow, addEdge } from '@braks/vue-flow'
+import { ref } from 'vue'
 import initialElements from './elements'
 import { PathFindingEdge, PerfectArrow } from '~/index'
 
 const elements = ref<Elements>(initialElements)
-const rfInstance = ref<FlowInstance | null>(null)
 const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value))
-const onLoad = (flowInstance: FlowInstance) => {
-  flowInstance.fitView({ padding: 1 })
-  rfInstance.value = flowInstance
-}
 </script>
 
 <template>
@@ -18,9 +14,9 @@ const onLoad = (flowInstance: FlowInstance) => {
     <VueFlow
       v-model="elements"
       :default-edge-options="{ type: 'perfectArrow' }"
+      :fit-view-on-init="true"
       class="vue-flow-basic-example"
       @connect="onConnect"
-      @pane-ready="onLoad"
     >
       <template #edge-pathFinding="props">
         <PathFindingEdge v-bind="props" />

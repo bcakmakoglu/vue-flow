@@ -1,21 +1,17 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowInstance } from '@braks/vue-flow'
+import type { Connection, Edge, Elements } from '@braks/vue-flow'
 import { Background, Controls, MiniMap, VueFlow, addEdge } from '@braks/vue-flow'
+import { ref } from 'vue'
 import { ResizeRotateNode } from '../src'
 import initialElements from './elements'
 
 const elements = ref<Elements>(initialElements)
-const rfInstance = ref<FlowInstance | null>(null)
 const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value))
-const onLoad = (flowInstance: FlowInstance) => {
-  flowInstance.fitView({ padding: 1 })
-  rfInstance.value = flowInstance
-}
 </script>
 
 <template>
   <div style="height: 100%">
-    <VueFlow v-model="elements" class="vue-flow-basic-example" @connect="onConnect" @pane-ready="onLoad">
+    <VueFlow v-model="elements" class="vue-flow-basic-example" :fit-view-on-init="true" @connect="onConnect">
       <template #node-resize-rotate="props">
         <ResizeRotateNode v-bind="props" />
       </template>
