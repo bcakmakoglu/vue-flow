@@ -1,5 +1,4 @@
 import type { EffectScope } from 'vue'
-import type { MaybeRef } from '@vueuse/core'
 import type { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
 import { useActions, useGetters, useState } from '~/store'
@@ -80,16 +79,13 @@ export class Storage {
 
 type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
-type Options = { [key in keyof FlowProps]: MaybeRef<FlowProps[key]> }
 
-export default (options?: Options): VueFlowStore => {
-  const reactiveOptions = options ? reactive(options) : undefined
-
+export default (options?: FlowProps): VueFlowStore => {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
 
-  const id = reactiveOptions?.id
+  const id = options?.id
   const vueFlowId = scope?.vueFlowId || id
 
   let vueFlow: Injection
@@ -119,24 +115,14 @@ export default (options?: Options): VueFlowStore => {
   if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
     const name = id ?? storage.getId()
 
-    vueFlow = storage.create(name, reactiveOptions)
+    vueFlow = storage.create(name, options)
 
     if (scope) {
       scope.vueFlowId = name
-
-      onBeforeMount(() => {
-        if (reactiveOptions) {
-          scope.run(() => {
-            watch(reactiveOptions, (opts) => {
-              vueFlow?.setState(opts)
-            })
-          })
-        }
-      })
     }
   } else {
     // if composable was called with additional options after initialization, overwrite state with the options values
-    if (reactiveOptions) vueFlow.setState(reactiveOptions)
+    if (options) vueFlow.setState(options)
   }
 
   /**
