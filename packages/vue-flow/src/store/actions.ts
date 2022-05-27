@@ -5,6 +5,8 @@ import type {
   CoordinateExtent,
   EdgeChange,
   EdgeRemoveChange,
+  FlowExportObject,
+  Getters,
   GraphEdge,
   GraphNode,
   NodeChange,
@@ -32,6 +34,7 @@ import {
   parseEdge,
   updateEdgeAction,
 } from '~/utils'
+import { useZoomPanHelper } from '~/composables'
 
 export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -324,6 +327,20 @@ export default (state: State, getters: ComputedGetters): Actions => {
     if (!state.initialized) state.initialized = true
   }
 
+  const toObject = () => {
+    // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
+    return JSON.parse(
+      JSON.stringify({
+        nodes: state.nodes,
+        edges: state.edges,
+        position: [state.viewport.x, state.viewport.y],
+        zoom: state.viewport.zoom,
+      } as FlowExportObject),
+    )
+  }
+
+  const { fitView, ...rest } = useZoomPanHelper()
+
   return {
     updateNodePositions,
     updateNodeDimensions,
@@ -348,6 +365,9 @@ export default (state: State, getters: ComputedGetters): Actions => {
     removeSelectedEdges,
     setInteractive,
     setState,
+    fitView: (params = { padding: 0.1 }) => fitView(params),
+    toObject,
+    ...rest,
     $reset: () => {
       setState(useState())
     },

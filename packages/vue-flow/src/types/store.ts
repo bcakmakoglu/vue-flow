@@ -4,7 +4,7 @@ import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent }
 import type { Connection, ConnectionLineType, ConnectionMode } from './connection'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
-import type { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
+import type { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport, ViewportFunctions } from './zoom'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { HandleType, StartHandle } from './handle'
@@ -18,7 +18,6 @@ export interface UpdateNodeDimensionsParams {
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** Event hooks, you can manipulate the triggers at your own peril */
   readonly hooks: FlowHooks
-  readonly instance: FlowInstance | null
 
   /** all stored nodes */
   nodes: GraphNode[]
@@ -121,7 +120,7 @@ export type SetState = (
 export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
 export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
 
-export interface Actions {
+export interface Actions extends ViewportFunctions {
   /** parses elements (nodes + edges) and re-sets the state */
   setElements: SetElements
   /** parses nodes and re-sets the state */
@@ -164,6 +163,8 @@ export interface Actions {
   setInteractive: (isInteractive: boolean) => void
   /** set new state */
   setState: SetState
+  /** return an object of graph values (elements, viewpane transform) for storage and re-loading a graph */
+  toObject: () => FlowExportObject
 
   /** internal position updater, you probably don't want to use this */
   updateNodePositions: UpdateNodePosition
@@ -179,6 +180,8 @@ export interface Getters {
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
+  /** get all elements (filters hidden elements) */
+  getElements: FlowElements
   /** filters hidden nodes */
   getNodes: GraphNode[]
   /** filters hidden edges */

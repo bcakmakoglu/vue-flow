@@ -15,6 +15,7 @@ import type {
   NodeChange,
   NodeRemoveChange,
   NodeSelectionChange,
+  XYPosition,
 } from '~/types'
 
 function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
