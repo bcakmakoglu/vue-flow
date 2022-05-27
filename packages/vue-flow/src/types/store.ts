@@ -6,7 +6,7 @@ import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport } from './zoom'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
-import type { EdgeChange, NodeChange, NodeDragItem } from "./changes";
+import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { HandleType, StartHandle } from './handle'
 
 export interface UpdateNodeDimensionsParams {
