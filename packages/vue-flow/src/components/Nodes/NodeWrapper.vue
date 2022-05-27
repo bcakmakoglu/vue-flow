@@ -79,6 +79,8 @@ onMounted(() => {
       () => parentNode?.computedPosition.y,
       () => parentNode?.computedPosition.z,
       () => node.selected,
+      () => node.dimensions,
+      () => parentNode?.dimensions,
     ],
     ([newX, newY, parentX, parentY, parentZ]) => {
       const xyzPos = {
