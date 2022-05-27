@@ -17,22 +17,22 @@ const emit = defineEmits<{
   (event: 'interactionChange', active: boolean): void
 }>()
 
-const { instance, nodesDraggable, nodesConnectable, elementsSelectable, setInteractive } = $(useVueFlow())
+const { nodesDraggable, nodesConnectable, elementsSelectable, setInteractive, zoomIn, zoomOut, fitView } = $(useVueFlow())
 
 const isInteractive = computed(() => nodesDraggable && nodesConnectable && elementsSelectable)
 
 const onZoomInHandler = () => {
-  instance?.zoomIn()
+  zoomIn()
   emit('zoomIn')
 }
 
 const onZoomOutHandler = () => {
-  instance?.zoomOut()
+  zoomOut()
   emit('zoomOut')
 }
 
 const onFitViewHandler = () => {
-  instance?.fitView(fitViewParams)
+  fitView(fitViewParams)
   emit('fitView')
 }
 

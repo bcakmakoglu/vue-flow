@@ -74,6 +74,7 @@ export default (state: State): ComputedGetters => {
       target.dimensions.height
     )
   }
+
   const getEdges = computed<GraphEdge[]>(() => {
     if (!state.onlyRenderVisibleElements) return state.edges.filter((edge) => edgeHidden(edge))
 
@@ -98,8 +99,12 @@ export default (state: State): ComputedGetters => {
     })
   })
 
+  const getElements: ComputedGetters['getElements'] = computed(() => [...getNodes.value, ...getEdges.value])
+
   const getSelectedNodes: ComputedGetters['getSelectedNodes'] = computed(() => state.nodes.filter((n) => n.selected))
+
   const getSelectedEdges: ComputedGetters['getSelectedEdges'] = computed(() => state.edges.filter((e) => e.selected))
+
   const getSelectedElements: ComputedGetters['getSelectedElements'] = computed(() => [
     ...(getSelectedNodes.value ?? []),
     ...(getSelectedEdges.value ?? []),
@@ -108,6 +113,7 @@ export default (state: State): ComputedGetters => {
   return {
     getNode,
     getEdge,
+    getElements,
     getEdgeTypes,
     getNodeTypes,
     getEdges,

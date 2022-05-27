@@ -2,7 +2,7 @@
 import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import type { FlowTransform } from '../../types'
+import type { ViewpaneTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
 import { clamp, clampPosition } from '../../utils'
@@ -35,12 +35,12 @@ const {
 
 const viewportEl = templateRef<HTMLDivElement>('viewport', null)
 
-const viewChanged = (prevTransform: FlowTransform, eventTransform: ZoomTransform): boolean =>
+const viewChanged = (prevTransform: ViewpaneTransform, eventTransform: ZoomTransform): boolean =>
   (prevTransform.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
   (prevTransform.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
   (prevTransform.zoom !== eventTransform.k && !isNaN(eventTransform.k))
 
-const eventToFlowTransform = (eventTransform: ZoomTransform): FlowTransform => ({
+const eventToFlowTransform = (eventTransform: ZoomTransform): ViewpaneTransform => ({
   x: eventTransform.x,
   y: eventTransform.y,
   zoom: eventTransform.k,

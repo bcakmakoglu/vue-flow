@@ -1,11 +1,11 @@
 import type { EventHook, EventHookOn, EventHookTrigger } from '@vueuse/core'
 import type { D3ZoomEvent } from 'd3-zoom'
-import type { FlowInstance } from './flow'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
-import type { FlowTransform } from './zoom'
+import type { ViewpaneTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
+import type { VueFlowStore } from './store'
 
 export type MouseTouchEvent = MouseEvent | TouchEvent | PointerEvent
 
@@ -54,7 +54,7 @@ export interface FlowEvents {
   } & OnConnectStartParams
   connectStop: MouseEvent
   connectEnd: MouseEvent
-  paneReady: FlowInstance
+  paneReady: VueFlowStore
   move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }
   moveEnd: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: FlowTransform }

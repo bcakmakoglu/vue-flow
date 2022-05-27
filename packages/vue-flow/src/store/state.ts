@@ -35,7 +35,6 @@ const defaultState = (): State => ({
   edgeTypes: {},
 
   initialized: false,
-  instance: null,
 
   dimensions: {
     width: 0,
