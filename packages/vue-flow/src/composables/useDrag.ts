@@ -126,6 +126,7 @@ function useDrag(params: UseDragParams) {
               }
 
               event.on('end', (event) => {
+                dragging.value = false
                 if (onStop && dragItems) {
                   const [currentNode, nodes] = getEventHandlerParams({
                     id,
@@ -135,9 +136,6 @@ function useDrag(params: UseDragParams) {
                   onStop(event.sourceEvent, currentNode, nodes)
                 }
               })
-            })
-            .on('end', (_: UseDragEvent) => {
-              // if (node) lastPos = node.position
             })
             .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
               const filter =
