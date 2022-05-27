@@ -2,7 +2,7 @@ import { zoomIdentity } from 'd3-zoom'
 import useVueFlow from './useVueFlow'
 import useWindow from './useWindow'
 import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint } from '~/utils'
-import type { D3Selection, Dimensions, Getters, GraphNode, ViewportFuncs } from '~/types'
+import type { D3Selection, Dimensions, Getters, GraphNode, ViewportFunctions } from '~/types'
 
 const DEFAULT_PADDING = 0.1
 
@@ -28,7 +28,7 @@ const untilDimensions = async (dimensions: Dimensions, getNodes: Getters['getNod
   return true
 }
 
-export default (): ViewportFuncs => {
+export default (): ViewportFunctions => {
   const {
     onPaneReady,
     nodes,
@@ -48,7 +48,7 @@ export default (): ViewportFuncs => {
 
   onPaneReady(() => (hasDimensions = true))
 
-  const zoomTo: ViewportFuncs['zoomTo'] = async (zoomLevel, options) => {
+  const zoomTo: ViewportFunctions['zoomTo'] = async (zoomLevel, options) => {
     if (!hasDimensions) await untilDimensions(dimensions, getNodes)
 
     if (d3Selection && d3Zoom) {
@@ -64,11 +64,11 @@ export default (): ViewportFuncs => {
     }
   }
 
-  const zoomIn: ViewportFuncs['zoomIn'] = async (options) => {
+  const zoomIn: ViewportFunctions['zoomIn'] = async (options) => {
     await zoom(1.2, options?.duration)
   }
 
-  const zoomOut: ViewportFuncs['zoomOut'] = async (options) => {
+  const zoomOut: ViewportFunctions['zoomOut'] = async (options) => {
     await zoom(1 / 1.2, options?.duration)
   }
 

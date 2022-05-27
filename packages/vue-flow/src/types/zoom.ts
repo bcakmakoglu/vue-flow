@@ -20,7 +20,7 @@ export enum PanOnScrollMode {
   Horizontal = 'horizontal',
 }
 
-export interface ViewportFuncsOptions {
+export interface TransitionOptions {
   duration?: number
 }
 
@@ -34,32 +34,47 @@ export type FitViewParams = {
     y?: number
   }
   nodes?: string[]
-} & ViewportFuncsOptions
+} & TransitionOptions
 
-export interface FlowTransform {
+export interface ViewpaneTransform {
   x: number
   y: number
   zoom: number
 }
 
-export type SetCenterOptions = ViewportFuncsOptions & {
+export type SetCenterOptions = TransitionOptions & {
   zoom?: number
 }
 
-export type FitBoundsOptions = ViewportFuncsOptions & {
+export type FitBoundsOptions = TransitionOptions & {
   padding?: number
 }
 
+/** Fit the viewpane around visible nodes */
 export type FitView = (fitViewOptions?: FitViewParams) => void
-export type Project = (position: XYPosition) => XYPosition
-export type SetCenter = (x: number, y: number, options?: SetCenterOptions) => void
-export type FitBounds = (bounds: Rect, options?: FitBoundsOptions) => void
-export type ZoomInOut = (options?: ViewportFuncsOptions) => void
-export type ZoomTo = (zoomLevel: number, options?: ViewportFuncsOptions) => void
-export type GetTransform = () => FlowTransform
-export type SetTransform = (transform: FlowTransform, options?: ViewportFuncsOptions) => void
 
-export interface ViewportFuncs {
+/** project a position onto the viewpane, i.e. a mouse event clientX/clientY onto graph coordinates */
+export type Project = (position: XYPosition) => XYPosition
+
+/** set center of viewpane */
+export type SetCenter = (x: number, y: number, options?: SetCenterOptions) => void
+
+/** fit the viewpane around bounds */
+export type FitBounds = (bounds: Rect, options?: FitBoundsOptions) => void
+
+/** zoom in/out */
+export type ZoomInOut = (options?: TransitionOptions) => void
+
+/** zoom to a specific level */
+export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => void
+
+/** get current viewpane transform */
+export type GetTransform = () => ViewpaneTransform
+
+/** set current viewpane transform */
+export type SetTransform = (transform: ViewpaneTransform, options?: TransitionOptions) => void
+
+export interface ViewportFunctions {
   zoomIn: ZoomInOut
   zoomOut: ZoomInOut
   zoomTo: ZoomTo
