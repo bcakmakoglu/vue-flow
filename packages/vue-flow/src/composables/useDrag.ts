@@ -100,8 +100,6 @@ function useDrag(params: UseDragParams) {
             .on('drag', (event: UseDragEvent) => {
               const mousePos = getMousePosition(event)
 
-              console.log(node?.label)
-
               // skip events without movement
               if ((lastPos.x !== mousePos.x || lastPos.y !== mousePos.y) && dragItems) {
                 lastPos = mousePos
