@@ -82,7 +82,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     let changedNodes: NodeChange[]
     if (state.multiSelectionActive) changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
-    else changedNodes = getSelectionChanges(state.nodes, nodeIds, getters.getNode.value)
+    else changedNodes = getSelectionChanges(state.nodes, nodeIds)
 
     if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
   }
@@ -92,7 +92,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     let changedEdges: EdgeChange[]
     if (state.multiSelectionActive) changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
-    else changedEdges = getSelectionChanges(state.edges, edgeIds, getters.getNode.value)
+    else changedEdges = getSelectionChanges(state.edges, edgeIds)
 
     if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
