@@ -2,6 +2,7 @@ import { clampPosition, isGraphEdge, isGraphNode } from './graph'
 import type {
   CoordinateExtent,
   Edge,
+  EdgeAddChange,
   EdgeChange,
   EdgeSelectionChange,
   ElementChange,
@@ -11,11 +12,10 @@ import type {
   GraphEdge,
   GraphNode,
   Node,
+  NodeAddChange,
   NodeChange,
   NodePositionChange,
   NodeSelectionChange,
-  NodeAddChange,
-  EdgeAddChange,
   XYPosition,
 } from '~/types'
 
@@ -106,43 +106,43 @@ export const applyChanges = <
         return elements.push(item)
       }
 
-    const i = elementIds.indexOf((<any>change).id)
-    const el = elements[i]
-    switch (change.type) {
-      case 'select':
-        if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
-        break
-      case 'position':
-        if (isGraphNode(el)) {
-          if (typeof change.position !== 'undefined') el.position = change.position
-          if (el.expandParent && el.parentNode) {
-            const parent = elements.find((parent) => parent.id === el.parentNode)
+      const i = elementIds.indexOf((<any>change).id)
+      const el = elements[i]
+      switch (change.type) {
+        case 'select':
+          if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
+          break
+        case 'position':
+          if (isGraphNode(el)) {
+            if (typeof change.position !== 'undefined') el.position = change.position
+            if (el.expandParent && el.parentNode) {
+              const parent = elements.find((parent) => parent.id === el.parentNode)
 
-            if (parent && isGraphNode(parent)) {
-              handleParentExpand(el, parent)
+              if (parent && isGraphNode(parent)) {
+                handleParentExpand(el, parent)
+              }
             }
           }
-        }
-        break
-      case 'dimensions':
-        if (isGraphNode(el)) {
-          if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
-          if (el.expandParent && el.parentNode) {
-            const parent = elements.find((parent) => parent.id === el.parentNode)
+          break
+        case 'dimensions':
+          if (isGraphNode(el)) {
+            if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
+            if (el.expandParent && el.parentNode) {
+              const parent = elements.find((parent) => parent.id === el.parentNode)
 
-            if (parent && isGraphNode(parent)) {
-              handleParentExpand(el, parent)
+              if (parent && isGraphNode(parent)) {
+                handleParentExpand(el, parent)
+              }
             }
           }
-        }
-        break
-      case 'remove':
-        if (elementIds.includes(change.id)) {
-          elements.splice(i, 1)
-          elementIds = elements.map((el) => el.id)
-        }
-        break
-    }
+          break
+        case 'remove':
+          if (elementIds.includes(change.id)) {
+            elements.splice(i, 1)
+            elementIds = elements.map((el) => el.id)
+          }
+          break
+      }
     })
   })
 
