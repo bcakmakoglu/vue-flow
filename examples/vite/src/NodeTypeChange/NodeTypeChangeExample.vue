@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowInstance } from '@braks/vue-flow'
+import type { Connection, Edge, Elements, VueFlowStore } from '@braks/vue-flow'
 import { Position, VueFlow, addEdge, isEdge } from '@braks/vue-flow'
 
 const initialElements: Elements = [
@@ -25,7 +25,7 @@ const elements = ref<Elements>(initialElements)
 
 const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 
-const onLoad = (flowInstance: FlowInstance) => flowInstance.fitView()
+const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
 
 const changeType = () => {
   elements.value.forEach((el) => {
