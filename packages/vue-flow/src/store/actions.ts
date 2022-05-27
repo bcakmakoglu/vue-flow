@@ -129,8 +129,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const removeSelectedElements: Actions['removeSelectedElements'] = (elements) => {
     if (!elements) {
-      addSelectedNodes([])
-      addSelectedEdges([])
+      removeSelectedNodes([])
+      removeSelectedEdges([])
     } else {
       if (elements.nodes) removeSelectedNodes(elements.nodes.filter(isGraphNode))
       if (elements.edges) removeSelectedEdges(elements.edges.filter(isGraphEdge))
