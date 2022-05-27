@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowEvents, FlowInstance, FlowTransform, Node, SnapGrid } from '@braks/vue-flow'
+import type { Connection, Edge, Elements, FlowEvents, VueFlowStore, FlowTransform, Node, SnapGrid } from '@braks/vue-flow'
 import { Background, Controls, MarkerType, MiniMap, VueFlow, addEdge } from '@braks/vue-flow'
 
 const onNodeDragStart = (e: FlowEvents['nodeDragStart']) => console.log('drag start', e)
@@ -13,7 +13,7 @@ const onSelectionDrag = (e: FlowEvents['selectionDrag']) => console.log('selecti
 const onSelectionDragStart = (e: FlowEvents['selectionDragStart']) => console.log('selection drag start', e)
 const onSelectionDragStop = (e: FlowEvents['selectionDragStop']) => console.log('selection drag stop', e)
 const onSelectionContextMenu = (e: FlowEvents['selectionContextMenu']) => console.log('selection context menu', e)
-const onLoad = (flowInstance: FlowInstance) => {
+const onLoad = (flowInstance: VueFlowStore) => {
   console.log('flow loaded:', flowInstance)
   flowInstance.fitView()
 }

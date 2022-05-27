@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { Elements, FlowInstance } from '@braks/vue-flow'
+import type { Elements, VueFlowStore } from '@braks/vue-flow'
 import { ConnectionMode, Controls, VueFlow, useVueFlow } from '@braks/vue-flow'
 import Sidebar from './Sidebar.vue'
 
-const onLoad = (flowInstance: FlowInstance) => console.log('flow loaded:', flowInstance)
+const onLoad = (flowInstance: VueFlowStore) => console.log('flow loaded:', flowInstance)
 
 const initialElements: Elements = [
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },

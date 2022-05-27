@@ -10,7 +10,7 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges } = useVueFlow({
+const { onPaneReady, onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow({
   defaultZoom: 1.5,
   minZoom: 0.2,
   maxZoom: 4,
@@ -32,8 +32,8 @@ const updatePos = () =>
     }
   })
 
-const logToObject = () => console.log(instance.value?.toObject())
-const resetTransform = () => instance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
+const logToObject = () => console.log(toObject())
+const resetTransform = () => setTransform({ x: 0, y: 0, zoom: 1 })
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
 

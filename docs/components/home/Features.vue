@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { reactive, watch } from 'vue'
+import { watch } from 'vue'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import type { VueFlowStore } from '@braks/vue-flow'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const instances = reactive<VueFlowStore[]>([])
+const instances: VueFlowStore[] = []
 
 const onLoad = (instance: VueFlowStore) => {
   instances.push(instance)
