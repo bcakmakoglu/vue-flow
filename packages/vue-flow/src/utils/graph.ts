@@ -155,7 +155,7 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements, defau
   edge = parseEdge(edge, defaults)
   if (connectionExists(edge, elements)) return elements
   elements.push(edge)
-  return [...elements, edge]
+  return elements
 }
 
 /**
