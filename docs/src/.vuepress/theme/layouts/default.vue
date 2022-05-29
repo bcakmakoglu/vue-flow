@@ -21,4 +21,8 @@ import ParentLayout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
   border-top: 1px solid var(--c-border);
   transition: border-color var(--t-color);
 }
+
+.theme-default-content:not(.custom) h1:first-of-type {
+  margin-top: var(--navbar-height);
+}
 </style>
