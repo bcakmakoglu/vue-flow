@@ -28,7 +28,7 @@ the [examples](https://vueflow.dev/examples).
   
   + [🐳 Dev Container](#-dev-container)
 
-* [![discord logo](https://api.iconify.design/logos:discord-icon.svg) Discord](#discord-logohttpsapiiconifydesignlogosdiscord-iconsvg-discord)
+* [![discord logo](https://api.iconify.design/logos:discord-icon.svg) Discord](#-discord)
 
 * [💝 Special Thanks](#-special-thanks)
 
