@@ -1,6 +1,10 @@
-import { defineClientAppEnhance } from '@vuepress/client'
+import { defineClientConfig } from '@vuepress/client'
 import VueAnimXyz from '@animxyz/vue3'
 
-export default defineClientAppEnhance(({ app }) => {
-  app.use(VueAnimXyz)
+export default defineClientConfig({
+  enhance({ app, router, siteData }){
+    app.use(VueAnimXyz)
+  },
+  setup(){},
+  rootComponents: [],
 })
