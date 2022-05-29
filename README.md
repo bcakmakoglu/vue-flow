@@ -28,6 +28,8 @@ the [examples](https://vueflow.dev/examples).
   
   + [🐳 Dev Container](#-dev-container)
 
+* [![discord logo](https://api.iconify.design/logos:discord-icon.svg) Discord](#discord-logohttpsapiiconifydesignlogosdiscord-iconsvg-discord)
+
 * [💝 Special Thanks](#-special-thanks)
 
 * [⭐ Stargazers](#-stargazers)
@@ -142,6 +144,13 @@ Select the `Open Folder in Container` option to mount the project.
 
 The development container will spin up all packages example apps and forward
 the ports to your machine.
+
+## ![discord logo](https://api.iconify.design/logos:discord-icon.svg) Discord
+
+[Join the Vue Flow Discord server!](https://discord.gg/z4FMpfTugW)
+
+Here you can ask questions to the community, propose ideas for new features
+or share your work that you have built with Vue Flow.
 
 ## 💝 Special Thanks
 
