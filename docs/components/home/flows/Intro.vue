@@ -41,7 +41,7 @@ const initialEdges = [
     style: { strokeWidth: 2, stroke: '#0ea5e9' },
   },
 ]
-const { dimensions, instance, onNodeClick, onPaneReady, getNodes, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
+const { dimensions, instance, onNodeClick, getNodes, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -103,101 +103,102 @@ onNodeClick(async ({ node }) => {
 const init = ref(false)
 const el = templateRef<HTMLDivElement>('el', null)
 
-onPaneReady(({ fitView }) => {
-  const setNodes = () => {
-    if (breakpoints.isSmaller('md')) {
-      const mainNode = getNode.value('intro')!
-      getNodes.value.forEach((node) => {
-        switch (node.id) {
-          case 'intro':
-            node.position = { x: 0, y: 0 }
-            break
-          case 'examples':
-            node.position = {
-              x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
-              y: mainNode.dimensions.height * 1.5,
-            }
-            break
-          case 'documentation':
-            node.position = {
-              x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
-              y: mainNode.dimensions.height * 2 + 50,
-            }
-            break
-          case 'acknowledgement':
-            node.position = {
-              x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
-              y: mainNode.dimensions.height * 3,
-            }
-            break
-        }
-      })
+let stopObserver: () => void
 
-      setEdges(() => {
-        return [
-          {
-            id: 'eintro-examples',
-            type: 'smoothstep',
-            sourceHandle: 'a',
-            source: 'intro',
-            target: 'examples',
-            animated: true,
-            style: { strokeWidth: 2, stroke: '#ef467e' },
-          },
-          {
-            id: 'eexamples-documentation',
-            type: 'smoothstep',
-            source: 'examples',
-            target: 'documentation',
-            animated: true,
-            style: { strokeWidth: 2, stroke: '#f97316' },
-          },
-          {
-            id: 'edocumentation-acknowledgement',
-            type: 'smoothstep',
-            source: 'documentation',
-            target: 'acknowledgement',
-            animated: true,
-            style: { strokeWidth: 2, stroke: '#0ea5e9' },
-          },
-        ]
-      })
-    } else {
-      getNodes.value.forEach((node) => {
-        const mainNode = getNode.value('intro')!
-        switch (node.id) {
-          case 'intro':
-            node.position = { x: 0, y: 0 }
-            break
-          case 'examples':
-            node.position = { x: -node.dimensions.width / 2, y: mainNode.dimensions.height * 1.5 }
-            break
-          case 'documentation':
-            node.position = {
-              x: mainNode.dimensions.width - node.dimensions.width / 2,
-              y: mainNode.dimensions.height * 1.5,
-            }
-            break
-          case 'acknowledgement':
-            node.position = {
-              x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
-              y: mainNode.dimensions.height * 2,
-            }
-            break
-        }
-      })
-
-      setEdges(initialEdges)
-    }
-
-    nextTick(() => {
-      fitView()
-      if (!init.value) init.value = true
+const setNodes = () => {
+  if (breakpoints.isSmaller('md')) {
+    const mainNode = getNode.value('intro')!
+    getNodes.value.forEach((node) => {
+      switch (node.id) {
+        case 'intro':
+          node.position = { x: 0, y: 0 }
+          break
+        case 'examples':
+          node.position = {
+            x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
+            y: mainNode.dimensions.height * 1.5,
+          }
+          break
+        case 'documentation':
+          node.position = {
+            x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
+            y: mainNode.dimensions.height * 2 + 50,
+          }
+          break
+        case 'acknowledgement':
+          node.position = {
+            x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
+            y: mainNode.dimensions.height * 3,
+          }
+          break
+      }
     })
+
+    setEdges(() => {
+      return [
+        {
+          id: 'eintro-examples',
+          type: 'smoothstep',
+          sourceHandle: 'a',
+          source: 'intro',
+          target: 'examples',
+          animated: true,
+          style: { strokeWidth: 2, stroke: '#ef467e' },
+        },
+        {
+          id: 'eexamples-documentation',
+          type: 'smoothstep',
+          source: 'examples',
+          target: 'documentation',
+          animated: true,
+          style: { strokeWidth: 2, stroke: '#f97316' },
+        },
+        {
+          id: 'edocumentation-acknowledgement',
+          type: 'smoothstep',
+          source: 'documentation',
+          target: 'acknowledgement',
+          animated: true,
+          style: { strokeWidth: 2, stroke: '#0ea5e9' },
+        },
+      ]
+    })
+  } else {
+    getNodes.value.forEach((node) => {
+      const mainNode = getNode.value('intro')!
+      switch (node.id) {
+        case 'intro':
+          node.position = { x: 0, y: 0 }
+          break
+        case 'examples':
+          node.position = { x: -node.dimensions.width / 2, y: mainNode.dimensions.height * 1.5 }
+          break
+        case 'documentation':
+          node.position = {
+            x: mainNode.dimensions.width - node.dimensions.width / 2,
+            y: mainNode.dimensions.height * 1.5,
+          }
+          break
+        case 'acknowledgement':
+          node.position = {
+            x: mainNode.dimensions.width / 2 - node.dimensions.width / 2,
+            y: mainNode.dimensions.height * 2,
+          }
+          break
+      }
+    })
+
+    setEdges(initialEdges)
   }
 
-  useResizeObserver(el, useDebounceFn(setNodes, 5))
-})
+  nextTick(() => {
+    instance.value?.fitView()
+    if (!init.value) init.value = true
+  })
+}
+
+const { stop } = useResizeObserver(el, useDebounceFn(setNodes, 5))
+onBeforeUnmount(stop)
 
 const scrollTo = () => {
   const el = document.getElementById('acknowledgement')
