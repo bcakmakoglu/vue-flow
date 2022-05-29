@@ -20,7 +20,7 @@ const initialEdges = [
     source: 'intro',
     target: 'examples',
     animated: true,
-    style: { strokeWidth: 2, stroke: '#8b5cf6' },
+    style: { strokeWidth: 2, stroke: '#ef467e' },
   },
   {
     id: 'eintro-documentation',
@@ -142,7 +142,7 @@ onPaneReady(({ fitView }) => {
             source: 'intro',
             target: 'examples',
             animated: true,
-            style: { strokeWidth: 2, stroke: '#8b5cf6' },
+            style: { strokeWidth: 2, stroke: '#ef467e' },
           },
           {
             id: 'eexamples-documentation',
