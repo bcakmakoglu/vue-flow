@@ -2,6 +2,50 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.15] - 2022-06-01
+
+[eef7c49](eef7c49e23f5ed8b1bdf97590af4c829bc767bd8)...[a260f04](a260f04d792ad679e52d99ce6c0c78418efefda7)
+
+### Bug Fixes
+
+- Set `applyDefault` regardless of true/false ([42ea2de](42ea2de513cf74fe0bb11592fc7c2b9d66240bc0))
+- Unregister apply handlers when `applyDefault` is false ([30efd62](30efd620822294722b7c7432d86ef86dbcf6b49e))
+- Use computed pos to calculate relative node pos ([29439f0](29439f005b338ef12188d42f97a5eafd8c0630a0))
+- Apply rotation correctly ([4f506b6](4f506b6e562b83a2dabf9ec3ec7c1e3b89825d6d))
+
+### Documentation
+
+- Change stroke color of intro example node ([95104fd](95104fdca2ca7f036a8fab0258be553f3b3eb157))
+- Remove onPaneReady handler from `Intro.vue` ([3828378](3828378355fe09321ec99a8b7a4f3b02f25b133c))
+- Add margin top to h1 elements ([700156f](700156f16fab033943bea984addb65d0e07a3de3))
+
+### Features
+
+- Show moveable when dragging ([4866e26](4866e26cd621fce9c57e079ec08944841460b972))
+
+### Miscellaneous Tasks
+
+- Update vue-flow ([ab77231](ab772317977ac7a51a301bcff5f98c1cd48df6b3))
+
+## [0.4.14] - 2022-05-29
+
+[30db19b](30db19bb50680d38d878e8f13ee42408d09dd33b)...[eef7c49](eef7c49e23f5ed8b1bdf97590af4c829bc767bd8)
+
+### Bug Fixes
+
+- Filter by nodrag class name ([d8bae03](d8bae03b8f3febf0003cfd1349b9b62c33617528))
+- Remove unnecessary filter from `updateEdge` util ([ab09a9b](ab09a9b7867031d612f969d7737fde457f52f7e0))
+
+### Documentation
+
+- Use new vuepress plugin api ([713ef07](713ef078209f627bac40e42c8729d59e2488dd92))
+
+### Miscellaneous Tasks
+
+- Update README.md ([015e34b](015e34baf820c00d194305acf47c5625a3fa3d21))
+- Fix readme discord link ([7afbd87](7afbd870f4eb8f8851f5640f311957092de41496))
+- Update typescript to `4.7.2` and vue-tsc to `0.35.0` ([f32dd24](f32dd24400b0abed4f261e2f93a8805ba3bdfa6d))
+
 ## [0.4.13] - 2022-05-27
 
 [f6d2509](f6d250956e304beceb8ff4b0558dd8c3c7bab437)...[30db19b](30db19bb50680d38d878e8f13ee42408d09dd33b)
