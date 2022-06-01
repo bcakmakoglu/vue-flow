@@ -21,20 +21,20 @@
     "prepare": "ts-patch install -s",
     "dev": "vite",
     "build": "vite build",
-    "types": "yarn prepare && vue-tsc --declaration --emitDeclarationOnly && shx rm -rf tmp",
+    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && shx rm -rf tmp",
     "postbuild": "shx rm -rf tmp",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "pnpm build",
     "test": "exit 0;",
     "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
-    "lint": "yarn lint:js",
-    "release": "yarn np --no-release-draft"
+    "lint": "pnpm lint:js",
+    "release": "pnpm np --no-release-draft"
   },
   "dependencies": {
     "@vueuse/core": "^8.4.2",
     "vue3-moveable": "^0.4.8"
   },
   "devDependencies": {
-    "@braks/vue-flow": "^0.4.14",
+    "@braks/vue-flow": "workspace:*",
     "@vitejs/plugin-vue": "^2.3.3",
     "np": "^7.5.0",
     "ts-patch": "^2.0.1",
@@ -45,7 +45,7 @@
     "vue-tsc": "^0.35.0"
   },
   "peerDependencies": {
-    "@braks/vue-flow": "^0.4.0",
+    "@braks/vue-flow": "^0.4.15",
     "vue": "^3.2.25"
   },
   "publishConfig": {
@@ -54,7 +54,6 @@
   },
   "np": {
     "branch": "master",
-    "yarn": true,
     "message": "v%s"
   }
 }
