@@ -4,7 +4,6 @@
 
 - [Node.js v12+](https://nodejs.org/)
 - [Vue 3](https://vuejs.org/)
-- [Yarn v1 classic](https://classic.yarnpkg.com/en/) (Optional)
 
 ## Installation
 

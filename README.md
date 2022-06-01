@@ -126,12 +126,21 @@ there is no support for Vue 2, nor will there be any support in the future, sorr
 
 ## 🧪 Development
 
-```bash
-# start (dev)
-$ yarn dev
+### Prerequisites
 
-# build dist
-$ yarn build
+- [Node.js v12+](https://nodejs.org/)
+- [PnPm](https://pnpm.io/)
+
+
+```bash
+# skip if you already have pnpm installed
+$ npm i -g pnpm
+
+# start examples
+$ pnpm dev
+
+# build all packages
+$ pnpm build
 ```
 
 ### 🐳 Dev Container
