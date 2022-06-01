@@ -68,12 +68,11 @@ export default {
     <Handle type="source" :position="props.sourcePosition" />
   </div>
   <Moveable
+    v-if="visible"
     class-name="nodrag"
-    :style="visible ? '' : 'display: none !important'"
     :target="[`[data-moveable-id='${props.id}']`]"
     :resizable="true"
     :rotatable="true"
-    :throttle-rotate="0"
     rotation-position="top"
     :padding="{ left: 0, top: 0, right: 0, bottom: 0 }"
     :origin="false"
