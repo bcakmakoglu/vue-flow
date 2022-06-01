@@ -8,8 +8,6 @@ export interface NodeDragItem {
   position: XYPosition
   // distance from the mouse cursor to the node when start dragging
   distance: XYPosition
-  // delta to previous position
-  delta: XYPosition
   dimensions: Dimensions
   extent?: Node['extent']
   parentNode?: string
@@ -25,7 +23,9 @@ export interface NodeDimensionChange {
 export interface NodePositionChange {
   id: string
   type: 'position'
-  position?: XYPosition
+  position: XYPosition
+  computedPosition: XYPosition
+  dragging: boolean
 }
 
 export interface NodeSelectionChange {

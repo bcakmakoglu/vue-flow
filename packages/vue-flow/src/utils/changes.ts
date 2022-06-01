@@ -97,6 +97,11 @@ export const applyChanges = <
       case 'position':
         if (isGraphNode(el)) {
           if (typeof change.position !== 'undefined') el.position = change.position
+
+          if (typeof change.computedPosition !== 'undefined') {
+            el.computedPosition = { ...el.computedPosition, ...change.computedPosition }
+          }
+
           if (el.expandParent && el.parentNode) {
             const parent = elements.find((parent) => parent.id === el.parentNode)
 
