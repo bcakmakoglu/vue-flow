@@ -34,7 +34,7 @@
     "vue3-moveable": "^0.4.8"
   },
   "devDependencies": {
-    "@braks/vue-flow": "^0.4.10",
+    "@braks/vue-flow": "^0.4.14",
     "@vitejs/plugin-vue": "^2.3.3",
     "np": "^7.5.0",
     "ts-patch": "^2.0.1",
