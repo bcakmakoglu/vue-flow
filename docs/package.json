@@ -10,7 +10,7 @@
   "dependencies": {
     "@animxyz/core": "^0.6.6",
     "@animxyz/vue3": "^0.6.6",
-    "@braks/vue-flow": "^0.4.14",
+    "@braks/vue-flow": "workspace:*",
     "@stackblitz/sdk": "^1.6.0",
     "@vue/repl": "1.1.2",
     "blobity": "^0.1.7",

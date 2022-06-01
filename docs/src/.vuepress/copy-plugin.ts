@@ -9,12 +9,12 @@ export function copyVueFlowPlugin(): Plugin {
       console.log('building')
       const filePath = resolve(
         __dirname,
-        '../../../node_modules/@braks/vue-flow/dist/vue-flow.es.js'
+        '../../node_modules/@braks/vue-flow/dist/vue-flow.es.js'
       )
       if (!existsSync(filePath)) {
         throw new Error(
           `@braks/vue-flow/dist/vue-flow.es.js not built. ` +
-          `Run "yarn build" first.`
+          `Run "pnpm build" first.`
         )
       }
       this.emitFile({

@@ -4,8 +4,8 @@
     "dockerfile": "Dockerfile",
     "context": "../"
   },
-  "postCreateCommand": "yarn install && yarn build",
-  "postStartCommand": "yarn dev",
+  "postCreateCommand": "npm i -g pnpm && pnpm install && pnpm build",
+  "postStartCommand": "pnpm dev",
   "remoteUser": "node",
   "forwardPorts": [
     3000

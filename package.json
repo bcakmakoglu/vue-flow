@@ -9,8 +9,8 @@
     "packages/**"
   ],
   "scripts": {
-    "dev": "yarn --cwd examples dev",
-    "docs": "yarn --cwd docs dev",
+    "dev": "pnpm --dir examples dev",
+    "docs": "pnpm --dir docs dev",
     "postrelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
     "release": "turbo run release",
     "build": "turbo run build",
