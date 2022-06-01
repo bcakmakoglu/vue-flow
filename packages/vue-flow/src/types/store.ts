@@ -113,7 +113,7 @@ export type SetState = (
     | Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
     | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
 ) => void
-export type UpdateNodePosition = (dragItems: NodeDragItem[]) => void
+export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
 export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
 
 export interface Actions {

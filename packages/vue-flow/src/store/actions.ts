@@ -30,16 +30,31 @@ import {
 } from '~/utils'
 
 export default (state: State, getters: ComputedGetters): Actions => {
-  const updateNodePositions: Actions['updateNodePositions'] = (dragItems) => {
+  const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
     const changes: NodePositionChange[] = []
 
     dragItems.forEach((node) => {
-      const change: NodePositionChange = {
+      const change: Partial<NodePositionChange> = {
         id: node.id,
         type: 'position',
-        position: node.position,
+        dragging,
       }
-      changes.push(change)
+
+      if (changed) {
+        change.computedPosition = node.position
+        change.position = node.position
+
+        if (node.parentNode) {
+          const parentNode = getters.getNode.value(node.parentNode)
+
+          change.position = {
+            x: change.position.x - (parentNode?.computedPosition?.x ?? 0),
+            y: change.position.y - (parentNode?.computedPosition?.y ?? 0),
+          }
+        }
+      }
+
+      changes.push(change as NodePositionChange)
     })
 
     if (changes?.length) {
