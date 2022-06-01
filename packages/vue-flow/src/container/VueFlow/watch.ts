@@ -156,6 +156,9 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
             if (store.applyDefault.value) {
               store.onNodesChange(store.applyNodeChanges)
               store.onEdgesChange(store.applyEdgeChanges)
+            } else {
+              store.hooks.value.nodesChange.off(store.applyNodeChanges)
+              store.hooks.value.edgesChange.off(store.applyEdgeChanges)
             }
           },
           { immediate: true },
