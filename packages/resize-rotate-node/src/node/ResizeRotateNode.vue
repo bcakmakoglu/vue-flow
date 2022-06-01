@@ -13,10 +13,15 @@ const props = defineProps<{
   data: any
 }>()
 
-const { viewport, updateNodeDimensions, onPaneClick, onPaneScroll, onPaneContextMenu, getNode } = useVueFlow()
+const { viewport, updateNodeDimensions, onPaneClick, onPaneScroll, onPaneContextMenu, getNode, onNodeClick, onNodeDragStart } =
+  useVueFlow()
 
 const el = ref()
 const visible = ref(false)
+
+const frame = {
+  rotate: 0,
+}
 
 const onResize = (e: MoveableEvents['resize']) => {
   e.target.style.width = `${e.width}px`
@@ -25,8 +30,13 @@ const onResize = (e: MoveableEvents['resize']) => {
   e.target.style.top = `${e.drag.top}px`
 }
 
+const onRotateStart = (e: MoveableEvents['rotateStart']) => {
+  e.set(frame.rotate)
+}
+
 const onRotate = (e: MoveableEvents['rotate']) => {
-  e.target.style.transform = e.transform
+  frame.rotate = e.beforeRotate
+  e.target.style.transform = `rotate(${e.beforeRotate}deg)`
   updateNodeDimensions([{ id: props.id, nodeElement: props.nodeElement, forceUpdate: true }])
 }
 
@@ -34,11 +44,18 @@ const onClick = () => {
   visible.value = true
 }
 
+onNodeClick(({ node }) => {
+  if (node.id === props.id) onClick()
+})
+
+onNodeDragStart(({ node }) => {
+  if (node.id === props.id) onClick()
+})
+
 const hideMoveable = () => {
   visible.value = false
 }
 
-onClickOutside(el, hideMoveable)
 onPaneClick(hideMoveable)
 onPaneScroll(hideMoveable)
 onPaneContextMenu(hideMoveable)
