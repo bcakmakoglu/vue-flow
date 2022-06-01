@@ -2,12 +2,6 @@
   "name": "@braks/vue-flow-monorepo",
   "version": "0.0.0",
   "private": true,
-  "workspaces": [
-    "e2e",
-    "examples",
-    "docs",
-    "packages/**"
-  ],
   "scripts": {
     "dev": "pnpm --dir examples dev",
     "docs": "pnpm --dir docs dev",
