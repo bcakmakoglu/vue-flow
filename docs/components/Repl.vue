@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { Repl, ReplStore } from '@vue/repl'
-import pkg from '../package.json'
+import { useVueFlow } from '@braks/vue-flow'
 import '@vue/repl/style.css'
 import { exampleImports } from './examples'
 
 const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string; dependencies?: Record<string, string> }>()
-
-let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${pkg.dependencies['@braks/vue-flow']}/dist/theme-default.css';
+const { vueFlowVersion } = useVueFlow()
+let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${vueFlowVersion}/dist/style.css';
+@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${vueFlowVersion}/dist/theme-default.css';
 
 html,
 body,
