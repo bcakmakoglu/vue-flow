@@ -143,7 +143,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
         watch(
           () => props.applyDefault,
           () => {
-            if (props.applyDefault && isDef(props.applyDefault)) {
+            if (isDef(props.applyDefault)) {
               store.applyDefault.value = props.applyDefault
             }
           },
