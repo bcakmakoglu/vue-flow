@@ -97,3 +97,11 @@ ul li {
      background: var(--color);
    }
 }
+
+.theme-container.examples .theme-default-content pre, .theme-default-content pre[class*=language-] {
+  padding: unset;
+  margin: unset;
+  border-radius: unset;
+  line-height: unset;
+
+}
