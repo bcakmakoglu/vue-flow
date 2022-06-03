@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --dir examples dev",
+    "dev": "pnpm --dir examples/vite dev",
     "docs": "pnpm --dir docs dev",
     "postrelease": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
     "release": "turbo run release",

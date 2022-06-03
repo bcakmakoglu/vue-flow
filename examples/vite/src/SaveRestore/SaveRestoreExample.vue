@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements } from '../../packages/vue-flow'
-import { VueFlow } from '../../packages/vue-flow'
+import type { Elements } from '@braks/vue-flow'
+import { VueFlow } from '@braks/vue-flow'
 import Controls from './Controls.vue'
 
 const initialElements: Elements = [

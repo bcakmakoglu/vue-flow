@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "..",
+    "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
     "lib": ["DOM", "ESNext"],
@@ -17,10 +17,10 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["vite/client"],
     "paths": {
-      "~/*": ["../package/src/*"]
+      "~/*": ["../../packages/vue-flow/src/*"]
     }
   },
   "exclude": [
-    "../node_modules", "dist"],
+    "node_modules", "dist"],
   "references": [{ "path": "./tsconfig.node.json"}]
 }

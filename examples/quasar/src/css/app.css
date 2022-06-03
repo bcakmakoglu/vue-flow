@@ -1,0 +1,58 @@
+/* app global css */
+@import "@braks/vue-flow/dist/style.css";
+@import "@braks/vue-flow/dist/theme-default.css";
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+}
+
+#app {
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.vue-flow__minimap {
+  transform: scale(75%);
+  transform-origin: bottom right;
+}
+
+.basicflow .vue-flow__node.dark {
+  background: #1C1C1C;
+  color: #fffffb
+}
+
+.basicflow .controls {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px
+}
+
+.basicflow .controls button {
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 500;
+  box-shadow: 0 5px 10px #0000004d;
+  cursor: pointer
+}
+
+.basicflow .controls button:hover {
+  opacity: .8;
+  transform: scale(105%);
+  transition: .25s all ease
+}
+
+svg:not(:root) {
+  overflow: visible;
+}

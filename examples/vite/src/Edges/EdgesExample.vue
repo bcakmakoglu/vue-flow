@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '../../packages/vue-flow'
-import { Background, Controls, MarkerType, MiniMap, VueFlow, useVueFlow } from '../../packages/vue-flow'
+import type { Edge, Node } from '@braks/vue-flow'
+import { Background, Controls, MarkerType, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomLabel from './CustomLabel.vue'
