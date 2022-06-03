@@ -103,7 +103,7 @@ export const applyChanges = <
           }
 
           if (el.expandParent && el.parentNode) {
-            const parent = elements.find((parent) => parent.id === el.parentNode)
+            const parent = elements[elementIds.indexOf(el.parentNode)]
 
             if (parent && isGraphNode(parent)) {
               handleParentExpand(el, parent)
@@ -115,7 +115,7 @@ export const applyChanges = <
         if (isGraphNode(el)) {
           if (typeof change.dimensions !== 'undefined') el.dimensions = change.dimensions
           if (el.expandParent && el.parentNode) {
-            const parent = elements.find((parent) => parent.id === el.parentNode)
+            const parent = elements[elementIds.indexOf(el.parentNode)]
 
             if (parent && isGraphNode(parent)) {
               handleParentExpand(el, parent)
