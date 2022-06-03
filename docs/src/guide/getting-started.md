@@ -79,14 +79,14 @@ A basic setup would look like this:
 <CodeGroup>
   <CodeGroupItem title="Composition API" active>
 
-@[code vue:no-line-numbers](../../../examples/src/Basic/Basic.vue)
+@[code vue:no-line-numbers](../../../examples/vite/src/Basic/Basic.vue)
 
   </CodeGroupItem>
 
 
   <CodeGroupItem title="Options API">
 
-@[code vue:no-line-numbers](../../../examples/src/Basic/BasicOptionsAPI.vue)
+@[code vue:no-line-numbers](../../../examples/vite/src/Basic/BasicOptionsAPI.vue)
 
   </CodeGroupItem>
 </CodeGroup>
