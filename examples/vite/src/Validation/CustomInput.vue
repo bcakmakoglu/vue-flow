@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { ValidConnectionFunc } from '../../packages/vue-flow'
-import { Handle, Position } from '../../packages/vue-flow'
+import type { ValidConnectionFunc } from '@braks/vue-flow'
+import { Handle, Position } from '@braks/vue-flow'
 
 interface CustomInputProps {
   isValidTargetPos: ValidConnectionFunc

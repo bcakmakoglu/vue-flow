@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { FlowInstance } from '../../packages/vue-flow'
-import { Controls, MiniMap, VueFlow } from '../../packages/vue-flow'
+import type { FlowInstance } from '@braks/vue-flow'
+import { Controls, MiniMap, VueFlow } from '@braks/vue-flow'
 import { getElements } from './utils'
 
 const onLoad = (flowInstance: FlowInstance) => {

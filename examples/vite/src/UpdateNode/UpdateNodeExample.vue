@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements } from '../../packages/vue-flow'
-import { VueFlow } from '../../packages/vue-flow'
+import type { Elements } from '@braks/vue-flow'
+import { VueFlow } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   { id: '1', label: '-', position: { x: 100, y: 100 } },

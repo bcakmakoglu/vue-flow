@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements, Node } from '../../packages/vue-flow'
-import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow, useZoomPanHelper } from '../../packages/vue-flow'
+import type { Elements, Node } from '@braks/vue-flow'
+import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow, useZoomPanHelper } from '@braks/vue-flow'
 import CustomNode from './CustomNode.vue'
 
 const initialElements: Elements = [

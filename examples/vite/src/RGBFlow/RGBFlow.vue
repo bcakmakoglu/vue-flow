@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { templateRef } from '@vueuse/core'
-import type { Elements, FlowInstance } from '../../packages/vue-flow'
-import { VueFlow } from '../../packages/vue-flow'
+import type { Elements, FlowInstance } from '@braks/vue-flow'
+import { VueFlow } from '@braks/vue-flow'
 import RGBNode from './RGBNode.vue'
 import RGBOutputNode from './RGBOutputNode.vue'
 

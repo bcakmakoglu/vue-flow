@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowInstance } from '../../packages/vue-flow'
-import { Position, VueFlow, addEdge, isEdge } from '../../packages/vue-flow'
+import type { Connection, Edge, Elements, FlowInstance } from '@braks/vue-flow'
+import { Position, VueFlow, addEdge, isEdge } from '@braks/vue-flow'
 
 const initialElements: Elements = [
   {

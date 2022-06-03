@@ -1,12 +1,10 @@
 {
-  "name": "examples",
+  "name": "vite-examples",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "../node_modules/.bin/vite",
-    "build": "../node_modules/.bin/vite build",
-    "serve": "../node_modules/.bin/vite serve",
-    "lint": "eslint --ext \\\".js,.jsx,.ts,.tsx\\\" --fix --ignore-path .gitignore ."
+    "dev": "vite",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore ."
   },
   "dependencies": {
     "@braks/vue-flow": "workspace:*"

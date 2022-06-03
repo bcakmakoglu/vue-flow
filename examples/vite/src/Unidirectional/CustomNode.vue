@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import { Handle, Position } from '../../packages/vue-flow'
+import { Handle, Position } from '@braks/vue-flow'
 
 interface Props {
   id: string
