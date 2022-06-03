@@ -1,0 +1,17 @@
+{
+  "name": "nuxt3-examples",
+  "version": "0.0.1",
+  "description": "Vue Flow Nuxt3 Example",
+  "productName": "Nuxt3 App",
+  "author": "bcakmakoglu <78412429+bcakmakoglu@users.noreply.github.com>",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev"
+  },
+  "dependencies": {
+    "@braks/vue-flow": "workspace:*"
+  },
+  "devDependencies": {
+    "nuxt": "3.0.0-rc.3"
+  }
+}
