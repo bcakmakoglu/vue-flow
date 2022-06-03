@@ -174,7 +174,7 @@ export default {
       getClass,
     ]"
     :style="{
-      zIndex: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
+      zIndex: node.computedPosition.z ?? 0,
       transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
       pointerEvents: selectable || draggable ? 'all' : 'none',
       ...getStyle,
