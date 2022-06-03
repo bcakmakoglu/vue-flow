@@ -6,8 +6,8 @@ import { exampleImports } from './examples'
 
 const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string; dependencies?: Record<string, string> }>()
 const { vueFlowVersion } = useVueFlow()
-let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${vueFlowVersion}/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${vueFlowVersion}/dist/theme-default.css';
+let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${vueFlowVersion.value}/dist/style.css';
+@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${vueFlowVersion.value}/dist/theme-default.css';
 
 html,
 body,

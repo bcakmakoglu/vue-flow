@@ -263,7 +263,7 @@ const elements = ref([
 ```
 
 ::: tip
-You can find a more advanced example <router-link to="/examples/custom-node/">here</router-link>.
+You can find a more advanced example [here](/examples/custom-node.html).
 :::
 
 ### Node Template
@@ -337,7 +337,7 @@ You can find the TypeDocs [here](https://types.vueflow.dev/interfaces/NodeProps.
 ## Styling
 
 ::: tip
-To overwrite default theme styles check the [Theming section](/guide/theming/).
+To overwrite default theme styles check the [Theming section](/guide/theming.html).
 :::
 
 ### Custom Nodes

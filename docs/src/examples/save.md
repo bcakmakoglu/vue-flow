@@ -8,7 +8,7 @@ pageClass: examples
 There is no built-in persistent storage feature, however you can use your own storage implementation.
 
 ::: tip State Management Libraries
-  Check the [pinia](/examples/pinia) example to see how to use Vue Flow with a state management library.
+  Check the [pinia](/examples/pinia.html) example to see how to use Vue Flow with a state management library.
 :::
 
 This example demonstrates save & restore functionality using the [`LocalStorage`](https://developer.mozilla.org/de/docs/Web/API/Window/localStorage) of the browser.
