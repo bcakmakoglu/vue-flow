@@ -31,7 +31,8 @@
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
     "prepublishOnly": "shx cp ../../README.md .",
     "release": "pnpm np",
-    "postpublish": "shx rm README.md"
+    "postpublish": "shx rm README.md",
+    "test": "exit 0"
   },
   "peerDependencies": {
     "vue": "^3.2.25"
