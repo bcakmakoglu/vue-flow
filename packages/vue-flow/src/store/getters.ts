@@ -3,10 +3,8 @@ import type { ComputedGetters, GraphEdge, GraphNode, State } from '~/types'
 import { getNodesInside, isEdgeVisible } from '~/utils'
 
 export default (state: State): ComputedGetters => {
-  const nodeIds = computed(() => state.nodes.map((n) => n.id))
-  const edgeIds = computed(() => state.edges.map((e) => e.id))
-  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => state.nodes[nodeIds.value.indexOf(id)])
-  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => state.edges[edgeIds.value.indexOf(id)])
+  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => state.nodes.find((node) => node.id === id))
+  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => state.edges.find((edge) => edge.id === id))
 
   const getEdgeTypes = computed(() => {
     const edgeTypes: Record<string, any> = {
