@@ -25,8 +25,13 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
               pauseStore = watchPausable(
                 [store.edges, store.nodes, () => store.edges.value.length, () => store.nodes.value.length],
                 ([e, n]) => {
+                  if (pauseModel) pauseModel.pause()
                   const val = [...(n as GraphNode[]), ...(e as GraphEdge[])]
                   if (val.length) models.modelValue!.value = val
+
+                  nextTick(() => {
+                    if (pauseModel) pauseModel.resume()
+                  })
                 },
                 { immediate: true, flush: 'post' },
               )
@@ -89,6 +94,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
               if (pauseStore) pauseStore.pause()
               if (pauseModel) pauseModel.pause()
 
+              console.log('watcher', v)
               store.setEdges(v)
 
               pauseStore = watchPausable(
