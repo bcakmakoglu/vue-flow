@@ -52,9 +52,9 @@ export default (state: State): ComputedGetters => {
       : nodes ?? []
   })
 
-  const edgeHidden = (e: GraphEdge) => {
-    const source = getNode.value(e.source)
-    const target = getNode.value(e.target)
+  const edgeHidden = (e: GraphEdge, source?: GraphNode, target?: GraphNode) => {
+    source = source ?? getNode.value(e.source)
+    target = target ?? getNode.value(e.target)
 
     if (!source || !target) {
       console.warn(`[vue-flow]: Orphaned edge ${e.id} will be removed.`)
@@ -75,14 +75,14 @@ export default (state: State): ComputedGetters => {
     )
   }
   const getEdges = computed<GraphEdge[]>(() => {
-    if (!state.onlyRenderVisibleElements) return state.edges.filter(edgeHidden)
+    if (!state.onlyRenderVisibleElements) return state.edges.filter((edge) => edgeHidden(edge))
 
     return state.edges.filter((e) => {
       const source = getNode.value(e.source)!
       const target = getNode.value(e.target)!
 
       return (
-        edgeHidden(e) &&
+        edgeHidden(e, source, target) &&
         isEdgeVisible({
           sourcePos: source.computedPosition || { x: 0, y: 0 },
           targetPos: target.computedPosition || { x: 0, y: 0 },
