@@ -41,7 +41,7 @@ const initialEdges = [
     style: { strokeWidth: 2, stroke: '#0ea5e9' },
   },
 ]
-const { dimensions, instance, onNodeClick, getNodes, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
+const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -102,8 +102,6 @@ onNodeClick(async ({ node }) => {
 
 const init = ref(false)
 const el = templateRef<HTMLDivElement>('el', null)
-
-let stopObserver: () => void
 
 const setNodes = () => {
   if (breakpoints.isSmaller('md')) {
@@ -192,7 +190,7 @@ const setNodes = () => {
   }
 
   nextTick(() => {
-    instance.value?.fitView()
+    fitView()
     if (!init.value) init.value = true
   })
 }
