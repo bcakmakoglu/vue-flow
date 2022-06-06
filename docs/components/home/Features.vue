@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import type { VueFlowStore } from '@braks/vue-flow'
 
@@ -16,11 +15,9 @@ const fitViews = () => {
   instances.forEach((i) => i.fitView())
 }
 
-watch([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']], () =>
-  setTimeout(() => {
-    fitViews()
-  }, 5),
-)
+watchDebounced([breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']], () => fitViews(), {
+  debounce: 50,
+})
 </script>
 
 <template>
