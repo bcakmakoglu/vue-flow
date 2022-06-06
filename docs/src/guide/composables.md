@@ -6,7 +6,8 @@ If you're using the options API of Vue you will soon notice that your access to 
 
 This is where the composition API comes in.
 
-The composition API and the power of provide/inject allows us to act more flexible with the way we provide states inside a component tree.
+The composition API and the power of provide/inject allows us to act more flexible with the way we provide states inside
+a component tree.
 Thus accessing the internal state of Vue Flow becomes super easy when using composition.
 
 ```vue:no-line-numbers
@@ -38,7 +39,9 @@ The values are reactive, meaning changing the state values returned from `useVue
 
 ## [useZoomPanHelper](https://types.vueflow.dev/modules.html#useZoomPanHelper)
 
-Similar to the Vue Flow instance the zoom pan helper composable can be used to modify the viewport of the Vue Flow graph.
+The `useZoomPanHelper` utility can be used to access core store functions like getting Elements or
+using viewpane transforms.
+All functions can also be accessed from `useVueFlow`.
 It requires a valid Vue Flow store in its context.
 
 ```vue:no-line-numbers
@@ -55,11 +58,13 @@ const { fitView } = useZoomPanHelper()
 ## [useHandle](https://types.vueflow.dev/modules.html#useHandle)
 
 Instead of using the Handle component you can use the useHandle composable to create your own custom nodes. `useHandle`
-provides you with a mouseDown- and click-handler functions that you can apply to the element you want to use as a node-handle.
+provides you with a mouseDown- and click-handler functions that you can apply to the element you want to use as a
+node-handle.
 
 This is how the default handle component is built:
 
 ```vue
+
 <script lang="ts" setup>
 import { NodeId, useHandle, useVueFlow } from '@braks/vue-flow'
 import type { HandleProps, Position } from '@braks/vue-flow'
