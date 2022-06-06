@@ -100,7 +100,6 @@ onNodeClick(async ({ node }) => {
   }
 })
 
-const init = ref(false)
 const el = templateRef<HTMLDivElement>('el', null)
 
 const setNodes = () => {
@@ -191,7 +190,6 @@ const setNodes = () => {
 
   nextTick(() => {
     fitView()
-    if (!init.value) init.value = true
   })
 }
 
