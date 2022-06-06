@@ -69,6 +69,8 @@ watch(
 onBeforeUnmount(() => observer.stop())
 
 onMounted(() => {
+  updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+
   watch(
     [
       () => node.position.x,
