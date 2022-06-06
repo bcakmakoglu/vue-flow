@@ -94,7 +94,6 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
               if (pauseStore) pauseStore.pause()
               if (pauseModel) pauseModel.pause()
 
-              console.log('watcher', v)
               store.setEdges(v)
 
               pauseStore = watchPausable(

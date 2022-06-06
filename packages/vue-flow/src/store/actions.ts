@@ -20,6 +20,7 @@ import {
   createGraphNodes,
   createRemoveChange,
   createSelectionChange,
+  getConnectedEdges,
   getDimensions,
   getHandleBounds,
   getSelectionChanges,
@@ -184,8 +185,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
       const missingSource = !sourceNode || typeof sourceNode === 'undefined'
       const missingTarget = !targetNode || typeof targetNode === 'undefined'
-      if (missingSource) console.warn(`[vueflow]: Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-      if (missingTarget) console.warn(`[vueflow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
+      if (missingSource) console.warn(`[vue-flow]: Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
+      if (missingTarget) console.warn(`[vue-flow]: Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
       if (missingSource || missingTarget) return res
 
       const storedEdge = getters.getEdge.value(edge.id)
@@ -257,14 +258,25 @@ export default (state: State, getters: ComputedGetters): Actions => {
     if (changes.length) state.hooks.edgesChange.trigger(changes)
   }
 
-  const removeNodes: Actions['removeNodes'] = (nodes) => {
+  const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true) => {
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
-    const changes: NodeRemoveChange[] = []
+    const nodeChanges: NodeRemoveChange[] = []
+    const edgeChanges: EdgeRemoveChange[] = []
     curr.forEach((item) => {
-      changes.push(createRemoveChange(typeof item === 'string' ? item : item.id))
+      nodeChanges.push(createRemoveChange(typeof item === 'string' ? item : item.id))
+      if (removeConnectedEdges) {
+        const connections = getConnectedEdges([typeof item === 'string' ? ({ id: item } as any) : item], state.edges)
+        edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
+      }
     })
 
-    state.hooks.nodesChange.trigger(changes)
+    if (nodeChanges.length) {
+      state.hooks.nodesChange.trigger(nodeChanges)
+    }
+
+    if (edgeChanges.length) {
+      state.hooks.edgesChange.trigger(edgeChanges)
+    }
   }
 
   const removeEdges: Actions['removeEdges'] = (edges) => {
