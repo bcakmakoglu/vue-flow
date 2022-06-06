@@ -31,9 +31,9 @@ import {
   isGraphNode,
   isNode,
   parseEdge,
+  pointToRendererPoint,
   updateEdgeAction,
 } from '~/utils'
-import { useZoomPanHelper } from '~/composables'
 
 export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -338,7 +338,11 @@ export default (state: State, getters: ComputedGetters): Actions => {
     )
   }
 
-  const { fitView, ...rest } = useZoomPanHelper()
+  const paneNotReady = () => {
+    console.warn(
+      `[Vue Flow]: Used viewpane function before pane was ready. Use viewpane functions *after* onPaneReady is emitted.`,
+    )
+  }
 
   return {
     updateNodePositions,
@@ -364,9 +368,22 @@ export default (state: State, getters: ComputedGetters): Actions => {
     removeSelectedEdges,
     setInteractive,
     setState,
-    fitView: (params = { padding: 0.1 }) => fitView(params),
+    fitView: paneNotReady,
+    zoomIn: paneNotReady,
+    zoomOut: paneNotReady,
+    zoomTo: paneNotReady,
+    setTransform: paneNotReady,
+    getTransform: () => ({
+      x: state.viewport.x,
+      y: state.viewport.y,
+      zoom: state.viewport.zoom,
+    }),
+    setCenter: paneNotReady,
+    fitBounds: paneNotReady,
+    project(position) {
+      return pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid)
+    },
     toObject,
-    ...rest,
     $reset: () => {
       setState(useState())
     },
