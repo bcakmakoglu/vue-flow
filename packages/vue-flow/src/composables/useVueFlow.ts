@@ -38,7 +38,7 @@ export class Storage {
 
     const getters = useGetters(reactiveState)
 
-    const actions = useActions(reactiveState, getters, id)
+    const actions = useActions(reactiveState, getters)
 
     const hooksOn = <any>{}
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
