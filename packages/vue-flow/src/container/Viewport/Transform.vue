@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import { useVueFlow, useWindow, useZoomPanHelper } from '../../composables'
+import { useVueFlow, useWindow } from '../../composables'
 import type { Dimensions } from '../../types'
 
-const { id, nodes, edges, viewport, snapToGrid, snapGrid, dimensions, setState, fitViewOnInit, emits } = $(useVueFlow())
-// eslint-disable-next-line prefer-const
-let { fitView, zoomIn, zoomOut, zoomTo, setTransform, setCenter, fitBounds, ...rest } = useVueFlow()
+const { id, nodes, edges, viewport, snapToGrid, snapGrid, dimensions, setState, fitViewOnInit, emits, fitView, ...rest } =
+  useVueFlow()
 
 const untilDimensions = async (dim: Dimensions) => {
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -23,26 +22,26 @@ let ready = $ref(false)
 
 onMounted(async () => {
   // wait until proper dimensions have been established, otherwise fitView will have wrong bounds when called at paneReady
-  await untilDimensions(dimensions)
-
-  // create new instance and set to state
-  const zoomPanHelper = useZoomPanHelper()
-
-  fitView = (params = { padding: 0.1 }) => {
-    zoomPanHelper.fitView(params)
-  }
-  zoomIn = zoomPanHelper.zoomIn
-  zoomOut = zoomPanHelper.zoomOut
-  zoomTo = zoomPanHelper.zoomTo
-  setTransform = zoomPanHelper.setTransform
-  setCenter = zoomPanHelper.setCenter
-  fitBounds = zoomPanHelper.fitBounds
+  await untilDimensions(dimensions.value)
 
   // hide graph until dimensions are ready, so we don't have jumping graphs (ssr for example)
   ready = true
 
   fitViewOnInit && fitView()
-  emits.paneReady({ fitView, zoomIn, zoomOut, zoomTo, setTransform, setCenter, fitBounds, ...rest })
+  emits.paneReady({
+    id,
+    nodes,
+    edges,
+    viewport,
+    snapToGrid,
+    snapGrid,
+    dimensions,
+    setState,
+    fitViewOnInit,
+    fitView,
+    emits,
+    ...rest,
+  })
 })
 </script>
 
