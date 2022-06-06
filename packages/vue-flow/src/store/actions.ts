@@ -6,7 +6,6 @@ import type {
   EdgeChange,
   EdgeRemoveChange,
   FlowExportObject,
-  Getters,
   GraphEdge,
   GraphNode,
   NodeChange,
