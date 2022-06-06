@@ -4,7 +4,6 @@ import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { ConnectionLineType, ConnectionMode } from './connection'
 import type { KeyCode, PanOnScrollMode } from './zoom'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
-import type { VueFlowStore } from './store'
 
 export type ElementData = any
 
