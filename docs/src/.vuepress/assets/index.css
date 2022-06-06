@@ -98,7 +98,7 @@ ul li {
    }
 }
 
-.theme-container.examples .theme-default-content pre, .theme-default-content pre[class*=language-] {
+.theme-container.examples .theme-default-content .vue-repl pre, .theme-default-content .vue-repl pre[class*=language-] {
   padding: unset;
   margin: unset;
   border-radius: unset;
