@@ -340,15 +340,17 @@ export default (state: State, getters: ComputedGetters, id: string): Actions => 
   }
 
   let zoomPanHelper: ReturnType<typeof useZoomPanHelper>
-  const paneReady = async () => {
-    const zoompan = useZoomPanHelper(id)
 
+  state.hooks.paneReady.on(() => {
+    zoomPanHelper = useZoomPanHelper(id)
+  })
+
+  const paneReady = async () => {
     return new Promise<ReturnType<typeof useZoomPanHelper>>((resolve) => {
       if (!zoomPanHelper) {
-        state.hooks.paneReady.on(() => {
-          resolve(zoompan)
-          zoomPanHelper = zoompan
-        })
+        until(() => zoomPanHelper)
+          .toBeTruthy()
+          .then(() => resolve(zoomPanHelper))
       } else {
         resolve(zoomPanHelper)
       }
