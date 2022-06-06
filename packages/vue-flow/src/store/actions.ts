@@ -4,11 +4,13 @@ import type {
   ComputedGetters,
   CoordinateExtent,
   EdgeChange,
+  EdgeRemoveChange,
   GraphEdge,
   GraphNode,
   NodeChange,
   NodeDimensionChange,
   NodePositionChange,
+  NodeRemoveChange,
   State,
 } from '~/types'
 import {
@@ -16,6 +18,7 @@ import {
   applyChanges,
   createAdditionChange,
   createGraphNodes,
+  createRemoveChange,
   createSelectionChange,
   getDimensions,
   getHandleBounds,
@@ -254,6 +257,26 @@ export default (state: State, getters: ComputedGetters): Actions => {
     if (changes.length) state.hooks.edgesChange.trigger(changes)
   }
 
+  const removeNodes: Actions['removeNodes'] = (nodes) => {
+    const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
+    const changes: NodeRemoveChange[] = []
+    curr.forEach((item) => {
+      changes.push(createRemoveChange(typeof item === 'string' ? item : item.id))
+    })
+
+    state.hooks.nodesChange.trigger(changes)
+  }
+
+  const removeEdges: Actions['removeEdges'] = (edges) => {
+    const curr = edges instanceof Function ? edges(state.edges) : edges
+    const changes: EdgeRemoveChange[] = []
+    curr.forEach((item) => {
+      changes.push(createRemoveChange(typeof item === 'string' ? item : item.id))
+    })
+
+    state.hooks.edgesChange.trigger(changes)
+  }
+
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>
     updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
 
@@ -297,6 +320,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
     setEdges,
     addNodes,
     addEdges,
+    removeNodes,
+    removeEdges,
     updateEdge,
     applyEdgeChanges,
     applyNodeChanges,
