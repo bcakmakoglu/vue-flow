@@ -28,7 +28,7 @@ const untilDimensions = async (dimensions: Dimensions, getNodes: Getters['getNod
   return true
 }
 
-export default (): ViewportFunctions => {
+export default (vueFlowId?: string): ViewportFunctions => {
   const {
     onPaneReady,
     nodes,
@@ -42,7 +42,7 @@ export default (): ViewportFunctions => {
     snapToGrid,
     snapGrid,
     getNodes,
-  } = $(useVueFlow())
+  } = $(useVueFlow({ id: vueFlowId }))
 
   let hasDimensions = $ref(false)
 

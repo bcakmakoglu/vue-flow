@@ -34,8 +34,9 @@ import {
   pointToRendererPoint,
   updateEdgeAction,
 } from '~/utils'
+import { useZoomPanHelper } from '~/composables'
 
-export default (state: State, getters: ComputedGetters): Actions => {
+export default (state: State, getters: ComputedGetters, id: string): Actions => {
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
     const changes: NodePositionChange[] = []
 
@@ -338,10 +339,20 @@ export default (state: State, getters: ComputedGetters): Actions => {
     )
   }
 
-  const paneNotReady = () => {
-    console.warn(
-      `[Vue Flow]: Used viewpane function before pane was ready. Use viewpane functions *after* onPaneReady is emitted.`,
-    )
+  let zoomPanHelper: ReturnType<typeof useZoomPanHelper>
+  const paneReady = async () => {
+    const zoompan = useZoomPanHelper(id)
+
+    return new Promise<ReturnType<typeof useZoomPanHelper>>((resolve) => {
+      if (!zoomPanHelper) {
+        state.hooks.paneReady.on(() => {
+          resolve(zoompan)
+          zoomPanHelper = zoompan
+        })
+      } else {
+        resolve(zoomPanHelper)
+      }
+    })
   }
 
   return {
@@ -368,21 +379,40 @@ export default (state: State, getters: ComputedGetters): Actions => {
     removeSelectedEdges,
     setInteractive,
     setState,
-    fitView: paneNotReady,
-    zoomIn: paneNotReady,
-    zoomOut: paneNotReady,
-    zoomTo: paneNotReady,
-    setTransform: paneNotReady,
+    fitView: async (params = { padding: 0.1 }) => {
+      const { fitView } = await paneReady()
+      fitView(params)
+    },
+    zoomIn: async (options) => {
+      const { zoomIn } = await paneReady()
+      zoomIn(options)
+    },
+    zoomOut: async (options) => {
+      const { zoomOut } = await paneReady()
+      zoomOut(options)
+    },
+    zoomTo: async (zoomLevel, options) => {
+      const { zoomTo } = await paneReady()
+      zoomTo(zoomLevel, options)
+    },
+    setTransform: async (transform, options) => {
+      const { setTransform } = await paneReady()
+      setTransform(transform, options)
+    },
     getTransform: () => ({
       x: state.viewport.x,
       y: state.viewport.y,
       zoom: state.viewport.zoom,
     }),
-    setCenter: paneNotReady,
-    fitBounds: paneNotReady,
-    project(position) {
-      return pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid)
+    setCenter: async (x, y, options) => {
+      const { setCenter } = await paneReady()
+      setCenter(x, y, options)
     },
+    fitBounds: async (bounds, options) => {
+      const { fitBounds } = await paneReady()
+      fitBounds(bounds, options)
+    },
+    project: (position) => pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid),
     toObject,
     $reset: () => {
       setState(useState())
