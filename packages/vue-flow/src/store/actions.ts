@@ -36,7 +36,7 @@ import {
 } from '~/utils'
 import { useZoomPanHelper } from '~/composables'
 
-export default (state: State, getters: ComputedGetters, id: string): Actions => {
+export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
     const changes: NodePositionChange[] = []
 
@@ -341,12 +341,12 @@ export default (state: State, getters: ComputedGetters, id: string): Actions => 
 
   let zoomPanHelper: ReturnType<typeof useZoomPanHelper>
 
-  state.hooks.paneReady.on(() => {
+  state.hooks.paneReady.on(({ id }) => {
     zoomPanHelper = useZoomPanHelper(id)
   })
 
   const paneReady = async () => {
-    return new Promise<ReturnType<typeof useZoomPanHelper>>((resolve) => {
+    return new Promise<typeof zoomPanHelper>((resolve) => {
       if (!zoomPanHelper) {
         until(() => zoomPanHelper)
           .toBeTruthy()

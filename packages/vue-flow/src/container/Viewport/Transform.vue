@@ -27,7 +27,6 @@ onMounted(async () => {
   // hide graph until dimensions are ready, so we don't have jumping graphs (ssr for example)
   ready = true
 
-  fitViewOnInit?.value && fitView()
   emits.paneReady({
     id,
     nodes,
@@ -42,6 +41,8 @@ onMounted(async () => {
     emits,
     ...rest,
   })
+
+  fitViewOnInit?.value && fitView()
 })
 </script>
 
