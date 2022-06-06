@@ -106,7 +106,10 @@ export type SetElements = (elements: Elements | ((elements: FlowElements) => Ele
 export type SetNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
 export type SetEdges = (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
 export type AddNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
-export type RemoveNodes = (nodes: (Node[] | string[]) | ((nodes: GraphNode[]) => Node[] | string[])) => void
+export type RemoveNodes = (
+  nodes: (Node[] | string[]) | ((nodes: GraphNode[]) => Node[] | string[]),
+  removeConnectedEdges?: boolean,
+) => void
 export type RemoveEdges = (edges: (Edge[] | string[]) | ((edges: GraphEdge[]) => Edge[] | string[])) => void
 export type AddEdges = (edgesOrConnections: (Edge | Connection)[] | ((edges: GraphEdge[]) => (Edge | Connection)[])) => void
 export type UpdateEdge = (oldEdge: GraphEdge, newConnection: Connection) => GraphEdge | false
@@ -129,9 +132,9 @@ export interface Actions {
   addNodes: AddNodes
   /** parses edges and adds to state */
   addEdges: AddEdges
-  /** parses nodes and adds to state */
+  /** remove nodes (and possibly connected edges) from state */
   removeNodes: RemoveNodes
-  /** parses edges and adds to state */
+  /** remove edges from state */
   removeEdges: RemoveEdges
   /** updates an edge */
   updateEdge: UpdateEdge
