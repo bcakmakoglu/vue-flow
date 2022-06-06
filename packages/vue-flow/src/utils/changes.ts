@@ -3,6 +3,7 @@ import type {
   Edge,
   EdgeAddChange,
   EdgeChange,
+  EdgeRemoveChange,
   EdgeSelectionChange,
   ElementChange,
   FlowElement,
@@ -12,6 +13,7 @@ import type {
   Node,
   NodeAddChange,
   NodeChange,
+  NodeRemoveChange,
   NodeSelectionChange,
 } from '~/types'
 
@@ -154,6 +156,11 @@ export const createAdditionChange = <
     item,
     type: 'add',
   }
+
+export const createRemoveChange = (id: string): NodeRemoveChange | EdgeRemoveChange => ({
+  id,
+  type: 'remove',
+})
 
 export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
   return items.reduce((res, item) => {
