@@ -54,23 +54,21 @@ const dragging = useDrag({
   },
 })
 
-onMounted(() => {
-  const observer = useResizeObserver(nodeElement, () =>
-    updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }]),
-  )
-
-  watch(
-    [() => node.type, () => node.sourcePosition, () => node.targetPosition],
-    () => {
-      updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
-    },
-    { flush: 'post' },
-  )
-
-  onBeforeUnmount(() => observer.stop())
-
+const observer = useResizeObserver(nodeElement, () => {
   updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+})
 
+watch(
+  [() => node.width, () => node.height, () => node.type, () => node.sourcePosition, () => node.targetPosition],
+  () => {
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
+  },
+  { flush: 'post' },
+)
+
+onBeforeUnmount(() => observer.stop())
+
+onMounted(() => {
   watch(
     [
       () => node.position.x,
