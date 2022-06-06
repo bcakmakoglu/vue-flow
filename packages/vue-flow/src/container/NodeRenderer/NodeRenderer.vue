@@ -3,6 +3,7 @@ import { NodeWrapper } from '../../components'
 import type { GraphNode, NodeComponent, SnapGrid } from '../../types'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
+import { warn } from '../../utils'
 
 const slots = inject(Slots)
 
@@ -40,7 +41,7 @@ const getType = (type?: string, template?: GraphNode['template']) => {
 
   const slot = slots?.[`node-${name}`]
   if (!slot?.({})) {
-    console.warn(`[vueflow]: Node type "${type}" not found and no node-slot detected. Using fallback type "default".`)
+    warn(`Node type "${type}" not found and no node-slot detected. Using fallback type "default".`)
     return false
   }
 

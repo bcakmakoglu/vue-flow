@@ -3,12 +3,14 @@ import type { CSSProperties } from 'vue'
 import EdgeWrapper from '../../components/Edges/Wrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import { useHandle, useVueFlow } from '../../composables'
-import { connectionExists, groupEdgesByZLevel } from '../../utils'
+import { connectionExists, groupEdgesByZLevel, warn } from '../../utils'
 import type { EdgeComponent, GraphEdge } from '../../types'
 import { Slots } from '../../context'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 const slots = inject(Slots)
+
+warn('fooba')
 
 const {
   emits,
@@ -86,7 +88,7 @@ const getType = (type?: string, template?: GraphEdge['template']) => {
 
   const slot = slots?.[`edge-${name}`]
   if (!slot?.({})) {
-    console.warn(`[vueflow]: Edge type "${type}" not found and no edge-slot detected. Using fallback type "default".`)
+    warn(`Edge type "${type}" not found and no edge-slot detected. Using fallback type "default".`)
     return false
   }
 
