@@ -16,6 +16,7 @@
     "declaration": true,
     "declarationDir": "./dist",
     "types": ["vite/client", "vue/macros"],
+    "jsx": "preserve",
     "paths": {
       "~/*": ["src/*"]
     },
