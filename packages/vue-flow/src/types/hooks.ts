@@ -89,6 +89,9 @@ export type FlowHooksEmit = Readonly<{
   [key in keyof FlowEvents]: EventHookTrigger<FlowEvents[key]>
 }>
 
+/**
+ * Vue Flow component event emitter definitions
+ */
 export interface Emits {
   (event: 'nodesChange', changes: NodeChange[]): void
   (event: 'edgesChange', changes: EdgeChange[]): void
@@ -136,6 +139,7 @@ export interface Emits {
   (event: 'edgeUpdate', edgeMouseEvent: MouseEvent): void
   (event: 'edgeUpdateEnd', edgeMouseEvent: MouseEvent): void
 
+  /** v-model event definitions */
   (event: 'update:modelValue', value: FlowElements): void
   (event: 'update:nodes', value: GraphNode[]): void
   (event: 'update:edges', value: GraphEdge[]): void
