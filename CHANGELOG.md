@@ -6,7 +6,48 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
+- Bump version ([2efe25c](2efe25c989e0a259f6a4487b94c481976f10d7f3))
+
+## [0.4.18] - 2022-06-07
+
+[0649c0a](0649c0a23608c475d95fb22b06fd75483f25b7b6)...[c755208](c755208ebecff3865c530c8aed08197ed8d27c6a)
+
+### Bug Fixes
+
+- Triggers recursively when store changes ([a86eded](a86eded7931f4d66816c88025b9e32f0ce3b3c82))
+- Set viewpane functions on Transform mount ([8a570be](8a570bea8baba8de0d25d8f035190f1d6d6aa833))
+- Pass edge markers to wrapper ([c755208](c755208ebecff3865c530c8aed08197ed8d27c6a))
+
+### Documentation
+
+- Fix code block styles ([aae071f](aae071f7811a4e2eb69f0571413cfbfb1da0af56))
+- Update examples ([3a225a6](3a225a68712bd64147be34ae60ac3a713ee99ea9))
+- Update examples ([a0e610a](a0e610aeddb5cbf6d86882b729cb6f7fb77cd839))
+- Update docs ([eb8fa5d](eb8fa5d5d82f02f894a0e0da058cbc4cedb13091))
+- Use debounce for fitviews ([ac41c00](ac41c0093ee24bca3a01ef3467ebcf9b99fe2c3b))
+- Remove unused ref ([096a004](096a0047d3bdd2837c16e8f32084acb3d27771fb))
+
+### Features
+
+- Add `removeNodes` and `removeEdges` utilities to store ([7276a39](7276a3925193943641a0bcb5f4eedaa9d000a55c))
+- Allow connected edges to be removed with `removeNodes` ([f434ab0](f434ab0f791a90abe0a6d363397f5e0f74724188))
+- Add effect scope to `useDrag` utility ([382a3b6](382a3b67fce3f37f5eefe9ca23762032448b1444))
+- Defer viewport functions until pane is ready ([7dd79f6](7dd79f62563d609ba022b1e78ff6f30a24dfe0a1))
+
+### Miscellaneous Tasks
+
 - Bump version ([425e558](425e558e96e757d6d65505b1c6ca5fd096d71533))
+- Fix missing imports ([9929278](9929278ff0d6f942544bdfdfa41e211936250253))
+- Remove unnecessary imports ([c81362d](c81362da60af373b8009644908ba98a9814ca78a))
+- Set dimensions after mount ([e8923c8](e8923c8aaed836110085daa8e14d66dc198da3e6))
+- Wait for paneReady to set zoompan ([5b55d6b](5b55d6b0af273418889bba3adc9eadbbbd93a80b))
+- Trigger fitViewOnInit after paneReady ([90af73d](90af73dcd3b735286adfb0917032d36f88ce4955))
+
+### Refactor
+
+- Remove `instance` property and merge into `useVueFlow` ([58783fd](58783fd4a17f031092b383f99e6490d1264fbabb))
+- Remove `FlowInstance` type ([5277506](5277506936f25bbbf6371f24cb5f6be74c656fc4))
+- Set resize observer before mount ([87f97ef](87f97efd42c560350d7e92d960b03c9bee44c000))
 
 ## [0.4.17] - 2022-06-03
 
