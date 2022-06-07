@@ -1,4 +1,4 @@
-import type { EmitFunc, FlowHooks } from '~/types'
+import type { Emits, FlowHooks } from '~/types'
 
 // flow event hooks
 export const createHooks = (): FlowHooks => ({
@@ -44,18 +44,18 @@ export const createHooks = (): FlowHooks => ({
   edgeUpdateEnd: createEventHook(),
 })
 
-const bind = (emit: EmitFunc, hooks: FlowHooks) => {
+const bind = (emit: Emits, hooks: FlowHooks) => {
   for (const [key, value] of Object.entries(hooks)) {
     const listener = (data: any) => {
-      emit(key as keyof FlowHooks, data)
+      emit(key as any, data)
     }
 
     value.on(listener)
 
-    onScopeDispose(() => {
+    tryOnScopeDispose(() => {
       value.off(listener)
     })
   }
 }
 
-export default (emit: EmitFunc, hooks: FlowHooks) => bind(emit, hooks)
+export default (emit: Emits, hooks: FlowHooks) => bind(emit, hooks)

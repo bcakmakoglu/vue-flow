@@ -135,7 +135,7 @@ export default (options?: FlowProps): VueFlowStore => {
     provide(VueFlow, vueFlow)
 
     // dispose of state values and storage entry
-    onScopeDispose(() => {
+    tryOnScopeDispose(() => {
       if (storage.get(vueFlow!.id)) {
         storage.remove(vueFlow!.id)
       }
