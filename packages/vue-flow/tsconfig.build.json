@@ -16,8 +16,8 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
     "types": ["vite/client", "vue/macros"],
+    "jsx": "preserve",
     "paths": {
       "~/*": ["src/*"]
     },

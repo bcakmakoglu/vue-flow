@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "./tmp",
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
@@ -15,6 +14,7 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["vite/client"],
+    "jsx": "preserve",
     "paths": {
       "~/*": ["src/*"]
     },
@@ -23,5 +23,6 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
+  "include": ["dist", "src"],
   "exclude": ["node_modules"]
 }
