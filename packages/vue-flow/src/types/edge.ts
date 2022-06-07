@@ -166,3 +166,18 @@ export interface SmoothStepEdgeProps<Data = ElementData> extends EdgeProps<Data>
   markerEnd?: string
   borderRadius?: number
 }
+
+export interface BaseEdgeProps {
+  centerX: number
+  centerY: number
+  path: string
+  label?: any
+  style?: CSSProperties
+  labelStyle?: any
+  labelShowBg?: boolean
+  labelBgStyle?: any
+  labelBgPadding?: [number, number]
+  labelBgBorderRadius?: number
+  markerStart?: string
+  markerEnd?: string
+}
