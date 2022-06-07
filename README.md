@@ -11,8 +11,8 @@ __Vue Flow: A highly customizable Vue 3 Flowchart component.__
 With Vue Flow, you can build your own, customized node-based applications like static diagrams or even more complex and
 interactive editors!
 
-You can find a detailed explanation of how to get started in the [documentation](https://vueflow.dev/guide) or check
-the [examples](https://vueflow.dev/examples).
+You can find a detailed explanation of how to get started in the [documentation](https://vueflow.dev/guide/) or check
+the [examples](https://vueflow.dev/examples/).
 
 ## Table of contents
 
