@@ -12,7 +12,6 @@
       "outputs": ["dist/**"]
     },
     "typedoc": {
-      "dependsOn": ["types"],
       "outputs": ["typedocs/**"]
     },
     "theme": {

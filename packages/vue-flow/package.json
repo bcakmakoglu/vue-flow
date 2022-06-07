@@ -25,7 +25,7 @@
     "prepare": "ts-patch install -s",
     "build": "vite build",
     "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist",
-    "typedoc": "typedoc --tsconfig tsconfig.docs.json dist/index.d.ts --out typedocs",
+    "typedoc": "typedoc --tsconfig tsconfig.docs.json src/index.ts --out typedocs",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
