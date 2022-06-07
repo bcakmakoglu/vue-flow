@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Miscellaneous Tasks
+
+- Bump version ([425e558](425e558e96e757d6d65505b1c6ca5fd096d71533))
+
+## [0.4.17] - 2022-06-03
+
+[f624c1a](f624c1a2c89fed09bc09f30a92d972560a0bdb04)...[0649c0a](0649c0a23608c475d95fb22b06fd75483f25b7b6)
+
+### Bug Fixes
+
+- Performance issue with `getNode` ([0102ebc](0102ebcd33441282561bc17e02732012fcec2be4))
+
+### Documentation
+
+- Lint ([f685a9d](f685a9d8cf5b859fe718452edb490cc60851be1a))
+- Remove vuepress code stylings ([0649c0a](0649c0a23608c475d95fb22b06fd75483f25b7b6))
+
+### Miscellaneous Tasks
+
+- Bump version ([f272bd6](f272bd60d7622712ec070628822d45d34f75473b))
+
+## [0.4.16] - 2022-06-03
+
+[a260f04](a260f04d792ad679e52d99ce6c0c78418efefda7)...[f624c1a](f624c1a2c89fed09bc09f30a92d972560a0bdb04)
+
+### Bug Fixes
+
+- `getNode` not returning proper node element ([0b21708](0b21708b582bedd14bf3ffe3c394766811b2a4c2))
+
+### Documentation
+
+- Update vuepress version ([99499dd](99499dd18cb7888d4e9f428fbc34425a42d05f54))
+- Use vueflow version from composable instead of pkg ([d22773d](d22773dad9e272bda4bfdc81de1f343604c4f38f))
+- Fix version link ([c6bda81](c6bda81c5ead8e47784ba8d152fb09676c710a63))
+
+### Miscellaneous Tasks
+
+- Bump version ([2858214](2858214e62bfda34c917fe28331bc56a11fd7d4e))
+- Remove np ([4810483](4810483fe64a7085cec06ac04bf9e9a3eced4c49))
+- Remove np ([d675891](d6758918e69f8a4bc88c0dabbffd0a5ac87f72df))
+- Update lock file ([2d47cfa](2d47cfac74cc692973bfd0521ba5ba334a9d5e40))
+- Bump version ([fe77de1](fe77de1a0e7e1bcf980f9350b0aa5ea9f30a342d))
+- Update git links ([3672b86](3672b86df300cb2858da91f97bee28f8591e1810))
+- Replace `Math.pow` with `**` ([2bd15c1](2bd15c1710b69f86289f27f278bbd3097757668b))
+- Use computed pos z for zIndex ([586e8bf](586e8bfe419f0b2b1c504bcbc1fa40d5f16ba749))
+- Add `.quasar` to gitignore ([f626c28](f626c28b3bb3bc822532761277583b5814fe5607))
+- Add empty test script ([22f87a8](22f87a833405c1c0b3a1fb93f1e35c9e81e007c8))
+- Use `https` for registry link ([f624c1a](f624c1a2c89fed09bc09f30a92d972560a0bdb04))
+
+### Refactor
+
+- Replace yarn with pnpm as package manager ([c07069d](c07069dcd03f8b530139bb8e400da23499ea6a9e))
+
+### Testing
+
+- Update import path for utils ([0373dae](0373dae236141c4919cb6414a6cbaa2d2f63f864))
+
+### Examples
+
+- Move current examples into `examples/vite` ([8dd7c79](8dd7c797001fe519510f888d29a4fb1e51033648))
+- Add quasar example ([330d6d7](330d6d7eac478159ece58705a57f3a0d4be0bbb8))
+- Add nuxt3 example ([f21d317](f21d317fe8dcde10e80d67049f19f9fdec86047e))
+
 ## [0.4.15] - 2022-06-01
 
 [eef7c49](eef7c49e23f5ed8b1bdf97590af4c829bc767bd8)...[a260f04](a260f04d792ad679e52d99ce6c0c78418efefda7)
