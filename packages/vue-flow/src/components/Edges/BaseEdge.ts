@@ -1,20 +1,6 @@
-import type { CSSProperties, FunctionalComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 import EdgeText from './EdgeText.vue'
-
-export interface BaseEdgeProps {
-  centerX: number
-  centerY: number
-  path: string
-  label?: any
-  style?: CSSProperties
-  labelStyle?: any
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-  markerStart?: string
-  markerEnd?: string
-}
+import type { BaseEdgeProps } from '~/types'
 
 /**
  * The base edge is a simple wrapper for svg path
