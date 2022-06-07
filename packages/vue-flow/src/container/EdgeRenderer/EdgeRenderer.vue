@@ -184,6 +184,8 @@ export default {
         :label-bg-border-radius="edge.labelBgBorderRadius"
         :connection-mode="connectionMode"
         :edge-updater-radius="edgeUpdaterRadius"
+        :marker-end="edge.markerEnd"
+        :marker-start="edge.markerStart"
         :style="getStyle(edge)"
         :class="getClass(edge)"
         @click="(e: MouseEvent) => onEdgeClick(e, edge)"
