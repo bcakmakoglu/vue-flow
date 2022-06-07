@@ -1,7 +1,7 @@
 import type { CSSProperties, FunctionalComponent } from 'vue'
 import EdgeText from './EdgeText.vue'
 
-interface Props {
+export interface BaseEdgeProps {
   centerX: number
   centerY: number
   path: string
@@ -20,7 +20,7 @@ interface Props {
  * The base edge is a simple wrapper for svg path
  * You can use the base edge in your custom edges and just pass down the necessary props
  */
-const BaseEdge: FunctionalComponent<Props> = function ({
+const BaseEdge: FunctionalComponent<BaseEdgeProps> = function ({
   path,
   centerX,
   centerY,
