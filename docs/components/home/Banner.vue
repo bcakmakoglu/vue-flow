@@ -8,9 +8,9 @@ const npmData = await $fetch('https://api.npmjs.org/downloads/point/last-month/@
 </script>
 
 <template>
-  <div class="w-full bg-black text-white border-b-1 border-white">
+  <div class="w-full dark:(bg-black text-white border-white) border-black border-b-1">
     <div class="max-w-full md:max-w-11/12 m-auto py-4 md:py-12 <md:(dark:border-t-1 border-white)">
-      <div class="grid md:grid-cols-3 gap-3 text-center <md:divide-y md:divide-x divide-white">
+      <div class="grid md:grid-cols-3 gap-3 text-center <md:divide-y md:divide-x dark:divide-white divide-black">
         <div class="grid grid-rows-auto gap-2 py-4 md:py-0">
           <div class="text-gray-400 font-semibold text-lg">Stargazers</div>
           <div class="font-bold text-3xl flex gap-2 items-center justify-center"><Star /> {{ githubData.stargazers_count }}</div>
