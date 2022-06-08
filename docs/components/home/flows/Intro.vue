@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Handle, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { Background, Handle, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import confetti from 'canvas-confetti'
 import colors from 'windicss/colors'
@@ -20,7 +20,7 @@ const initialEdges = [
     source: 'intro',
     target: 'examples',
     animated: true,
-    style: { strokeWidth: 2, stroke: '#ef467e' },
+    style: { strokeWidth: 4, stroke: '#ef467e' },
   },
   {
     id: 'eintro-documentation',
@@ -29,7 +29,7 @@ const initialEdges = [
     source: 'intro',
     target: 'documentation',
     animated: true,
-    style: { strokeWidth: 2, stroke: '#f97316' },
+    style: { strokeWidth: 4, stroke: '#f97316' },
   },
   {
     id: 'eintro-acknowledgement',
@@ -38,7 +38,7 @@ const initialEdges = [
     source: 'intro',
     target: 'acknowledgement',
     animated: true,
-    style: { strokeWidth: 2, stroke: '#0ea5e9' },
+    style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
 const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
@@ -140,7 +140,7 @@ const setNodes = () => {
           source: 'intro',
           target: 'examples',
           animated: true,
-          style: { strokeWidth: 2, stroke: '#ef467e' },
+          style: { strokeWidth: 4, stroke: '#ef467e' },
         },
         {
           id: 'eexamples-documentation',
@@ -148,7 +148,7 @@ const setNodes = () => {
           source: 'examples',
           target: 'documentation',
           animated: true,
-          style: { strokeWidth: 2, stroke: '#f97316' },
+          style: { strokeWidth: 4, stroke: '#f97316' },
         },
         {
           id: 'edocumentation-acknowledgement',
@@ -156,7 +156,7 @@ const setNodes = () => {
           source: 'documentation',
           target: 'acknowledgement',
           animated: true,
-          style: { strokeWidth: 2, stroke: '#0ea5e9' },
+          style: { strokeWidth: 4, stroke: '#0ea5e9' },
         },
       ]
     })
@@ -206,6 +206,8 @@ const scrollTo = () => {
 
 <template>
   <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
+    <Background variant="lines" :size="0.7" :gap="100" />
+
     <template #node-box="props">
       <template v-if="props.id === 'intro'">
         <div class="box max-w-[500px]">
