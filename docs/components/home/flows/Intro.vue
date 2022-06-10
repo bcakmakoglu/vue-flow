@@ -8,8 +8,22 @@ import Heart from '~icons/mdi/heart'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const dark = useDark({
-  selector: 'html',
+const dark = ref(false)
+
+onMounted(() => {
+  const html = document.getElementsByTagName('html')![0]
+
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      dark.value = html.classList.contains('dark')
+    }
+  })
+
+  observer.observe(html, {
+    attributes: true,
+    attributeOldValue: true,
+    attributeFilter: ['class'],
+  })
 })
 
 const initialEdges = [
@@ -206,7 +220,7 @@ const scrollTo = () => {
 
 <template>
   <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
-    <Background variant="lines" :size="0.7" :gap="100" />
+    <Background variant="lines" :pattern-color="dark ? '#ffffff' : '#000000'" :size="0.7" :gap="100" />
 
     <template #node-box="props">
       <template v-if="props.id === 'intro'">
