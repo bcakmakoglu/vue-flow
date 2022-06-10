@@ -1,5 +1,5 @@
 import type { CSSProperties, Component, VNode } from 'vue'
-import type { BaseElement, ElementData, Position } from './flow'
+import type { ClassFunc, ElementData, Position, StyleFunc, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { DefaultEdgeTypes, EdgeComponent, EdgeTextProps } from './components'
 
@@ -42,9 +42,12 @@ export interface MarkerProps {
 
 export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
-export interface Edge<Data = ElementData> extends BaseElement<Data> {
+export interface Edge<Data = ElementData> {
+  /** Unique edge id */
+  id: string
+  /** An edge label */
   label?: string | VNode | Component<EdgeTextProps>
-  /** node type, can be a default type or a custom type */
+  /** Edge type, can be a default type or a custom type */
   type?: keyof DefaultEdgeTypes | string
   /** Source node id */
   source: string
@@ -78,9 +81,16 @@ export interface Edge<Data = ElementData> extends BaseElement<Data> {
   updatable?: boolean
   /** Disable/enable selecting edge */
   selectable?: boolean
-
-  /** overwrites current edge type */
+  /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
+  class?: string | ClassFunc<GraphEdge<Data>>
+  /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
+  style?: Styles | StyleFunc<GraphEdge<Data>>
+  /** Is edge hidden */
+  hidden?: boolean
+  /** Overwrites current edge type */
   template?: EdgeComponent
+  /** Additional data that is passed to your custom components */
+  data?: Data
 }
 
 export type DefaultEdgeOptions = Omit<

@@ -1,5 +1,5 @@
 import type { Component, VNode } from 'vue'
-import type { BaseElement, Dimensions, ElementData, Position, SnapGrid, XYPosition, XYZPosition } from './flow'
+import type { ClassFunc, Dimensions, ElementData, Position, SnapGrid, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
 import type { DefaultNodeTypes, NodeComponent } from './components'
 import type { HandleElement, ValidConnectionFunc } from './handle'
 
@@ -16,7 +16,11 @@ type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string 
 // eslint-disable-next-line no-use-before-define
 type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
 
-export interface Node<Data = ElementData> extends BaseElement<Data> {
+export interface Node<Data = ElementData> {
+  /** Unique node id */
+  id: string
+  /** A node label */
+  label?: string | VNode | Component<NodeProps>
   /** initial node position x, y */
   position: XYPosition
   /** node type, can be a default type or a custom type */
@@ -56,8 +60,16 @@ export interface Node<Data = ElementData> extends BaseElement<Data> {
    */
   height?: number | string | HeightFunc
 
+  /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
+  class?: string | ClassFunc<GraphNode<Data>>
+  /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
+  style?: Styles | StyleFunc<GraphNode<Data>>
+  /** Is node hidden */
+  hidden?: boolean
   /** overwrites current node type */
   template?: NodeComponent
+  /** Additional data that is passed to your custom components */
+  data?: Data
 }
 
 export interface GraphNode<Data = ElementData> extends Node<Data> {
