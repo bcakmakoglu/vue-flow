@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import { Background, ClassFunc, ConnectionLineType, Controls, GraphEdge, useVueFlow, VueFlow } from "@braks/vue-flow";
-import Cross from "~icons/mdi/window-close";
+import type { ClassFunc, GraphEdge, GraphNode, StyleFunc } from '@braks/vue-flow'
+import { Background, ConnectionLineType, Controls, VueFlow, useVueFlow } from '@braks/vue-flow'
+import Cross from '~icons/mdi/window-close'
 
-const getClass: ClassFunc = (el) => {
+const emit = defineEmits(['pane'])
+
+const getNodeClass: ClassFunc<GraphNode> = (el) => {
   const classes = ['font-semibold', '!border-2', 'transition-colors', 'duration-300', 'ease-in-out']
   if (el.selected)
     classes.push(
@@ -12,7 +15,18 @@ const getClass: ClassFunc = (el) => {
   return classes.join(' ')
 }
 
-const emit = defineEmits(['pane'])
+const getEdgeClass: ClassFunc<GraphEdge> = (el) => {
+  const classes = ['transition-colors duration-300', el.sourceNode.selected ? 'font-semibold' : '']
+  return classes.join(' ')
+}
+
+const getEdgeStyle: StyleFunc<GraphEdge> = (el) => {
+  const sourceNodeSelected = el.sourceNode.selected
+  return {
+    transition: 'stroke ease-in-out 300ms',
+    stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
+  }
+}
 
 const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
   connectionLineType: ConnectionLineType.SmoothStep,
@@ -26,21 +40,21 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
       type: 'input',
       label: 'Start',
       position: { x: 250, y: 5 },
-      class: getClass,
+      class: getNodeClass,
     },
     {
       id: '2',
       label: 'Waypoint',
       position: { x: 100, y: 100 },
-      class: getClass,
+      class: getNodeClass,
     },
-    { id: '3', label: 'Waypoint', position: { x: 400, y: 100 }, class: getClass },
+    { id: '3', label: 'Waypoint', position: { x: 400, y: 100 }, class: getNodeClass },
     {
       id: '4',
       type: 'output',
       label: 'End',
       position: { x: 250, y: 225 },
-      class: getClass,
+      class: getNodeClass,
     },
     {
       id: 'e1-2',
@@ -48,29 +62,17 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
       label: 'animated edge',
       target: '2',
       animated: true,
-      class: (el) => {
-        const classes = ['transition-colors duration-300', (<GraphEdge>el).sourceNode.selected ? 'font-semibold' : '']
-        return classes.join(' ')
-      },
-      style: (el) => {
-        const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
-        return {
-          transition: 'stroke ease-in-out 300ms',
-          stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
-        }
-      },
+      class: getEdgeClass,
+      style: getEdgeStyle,
     },
     {
       id: 'e1-3',
       source: '1',
       target: '3',
       label: 'default edge',
-      class: (el) => {
-        const classes = ['transition-colors duration-300', (<GraphEdge>el).sourceNode.selected ? 'font-semibold' : '']
-        return classes.join(' ')
-      },
-      style: (el) => {
-        const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
+      class: getEdgeClass,
+      style: (el: GraphEdge) => {
+        const sourceNodeSelected = el.sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
           stroke: el.selected || sourceNodeSelected ? 'red' : '',
@@ -83,37 +85,31 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
       target: '4',
       type: 'step',
       animated: true,
-      class: (el) => {
-        const classes = ['transition-colors duration-300', (<GraphEdge>el).sourceNode.selected ? 'font-semibold' : '']
-        return classes.join(' ')
-      },
-      style: (el) => {
-        const sourceNodeSelected = (<GraphEdge>el).sourceNode.selected
-        return {
-          transition: 'stroke ease-in-out 300ms',
-          stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
-        }
-      },
+      class: getEdgeClass,
+      style: getEdgeStyle,
     },
   ],
 })
 
 onPaneReady((i) => emit('pane', i))
 onConnect((param) => {
-  addEdges([{
-    ...param,
-    type: 'smoothstep',
-    animated: true,
-  }])
+  addEdges([
+    {
+      ...param,
+      type: 'smoothstep',
+      animated: true,
+    },
+  ])
 })
 </script>
+
 <template>
   <div class="md:max-w-1/3 flex flex-col justify-center">
     <div class="flex flex-col items-center md:items-start">
       <h1>Interactive Graphs</h1>
       <p>
-        Vue Flow comes with built-in features like zoom & pan and dedicated controls, single & multi-selections, draggable elements,
-        customizable nodes and edges and a bunch of event handlers.
+        Vue Flow comes with built-in features like zoom & pan and dedicated controls, single & multi-selections, draggable
+        elements, customizable nodes and edges and a bunch of event handlers.
       </p>
       <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
     </div>
@@ -123,7 +119,7 @@ onConnect((param) => {
   >
     <VueFlow class="basic">
       <Controls class="md:(!left-auto !right-[10px])" />
-      <Background pattern-color="#aaa" :gap="60">
+      <Background :gap="60">
         <template #pattern>
           <Cross :style="{ fontSize: `${8 * viewport.zoom || 1}px` }" class="text-[#10b981] opacity-50" />
         </template>
@@ -131,6 +127,7 @@ onConnect((param) => {
     </VueFlow>
   </div>
 </template>
+
 <style>
 .basic .vue-flow__node-input.selected .vue-flow__handle {
   @apply bg-green-500;
