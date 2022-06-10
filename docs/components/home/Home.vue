@@ -3,11 +3,32 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Blobity from 'blobity'
 import Intro from './flows/Intro.vue'
 
-const dark = useDark({
+const breakpoints = useBreakpoints(breakpointsTailwind)
+
+const usesDark = useDark({
+  storageKey: 'vuepress-color-scheme',
   selector: 'html',
 })
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
+const dark = ref(false)
+
+onMounted(() => {
+  const html = document.getElementsByTagName('html')![0]
+
+  usesDark.value = html.classList.contains('dark')
+
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      dark.value = html.classList.contains('dark')
+    }
+  })
+
+  observer.observe(html, {
+    attributes: true,
+    attributeOldValue: true,
+    attributeFilter: ['class'],
+  })
+})
 
 onMounted(() => {
   if (!breakpoints.isSmaller('md')) {
