@@ -186,7 +186,7 @@ export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: E
   }
   elements.splice(elements.indexOf(foundEdge), 1, edge)
 
-  return elements
+  return elements.filter((e) => e.id !== oldEdge.id)
 }
 
 export const pointToRendererPoint = (
