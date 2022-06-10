@@ -1,4 +1,4 @@
-import type { CSSProperties, Component, VNode } from 'vue'
+import type { CSSProperties } from 'vue'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { ConnectionLineType, ConnectionMode } from './connection'
@@ -7,9 +7,13 @@ import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent }
 
 export type ElementData = any
 
-/** an internal element  */
+/** A flow element (after parsing into state)  */
 export type FlowElement<Data = ElementData> = GraphNode<Data> | GraphEdge<Data>
 export type FlowElements<Data = ElementData> = FlowElement<Data>[]
+
+/** Initial elements (before parsing into state) */
+export type Element<Data = ElementData> = Node<Data> | Edge<Data>
+export type Elements<Data = ElementData> = Element<Data>[]
 
 export type CustomThemeVars = Record<string, string | number>
 export type CSSVars =
@@ -21,21 +25,8 @@ export type CSSVars =
   | '--vf-handle'
 export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] }
 export type Styles = CSSProperties & ThemeVars & CustomThemeVars
-export type ClassFunc<Data = ElementData> = (element: FlowElement<Data>) => string | void
-export type StyleFunc<Data = ElementData> = (element: FlowElement<Data>) => Styles | void
-
-/** base element props */
-export interface BaseElement<Data extends ElementData = ElementData> {
-  id: string
-  label?: string | VNode | Component
-  type?: string
-  data?: Data
-  class?: string | ClassFunc<Data>
-  style?: Styles | StyleFunc<Data>
-  hidden?: boolean
-}
-export type Element<Data = ElementData> = Node<Data> | Edge<Data>
-export type Elements<Data = ElementData> = Element<Data>[]
+export type ClassFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => string | void
+export type StyleFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => Styles | void
 
 /** Handle Positions */
 export enum Position {
