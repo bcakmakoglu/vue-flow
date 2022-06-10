@@ -6,7 +6,62 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
+- Bump version ([7fe511f](7fe511fefdc9aab49ac77da8b5182372f5d86234))
+
+## [0.4.20] - 2022-06-10
+
+[7597c0c](7597c0c542370f7a9236f294091761511f55b6a6)...[fd6c34c](fd6c34ce6c25817d4a1e5f6d6adac6eb756c3c18)
+
+### Documentation
+
+- Update `Basic.vue` class and style functions ([2e1b2db](2e1b2db26b4f285b1e0c64efd3fe7332763ef6c3))
+- Remove unnecessary div ([9a4c4d6](9a4c4d6c02efa132e32eaf36e6e583ef7f477f99))
+- Use mutation observer to check dark mode class ([8fd5505](8fd5505eecb0636d9164d776d0f2c78bf53a4162))
+
+### Miscellaneous Tasks
+
+- Bump version ([9d94dfd](9d94dfd7b7f2e72cdb037eac81dd3ede9df666ef))
+- Remove `NodeProps` generic from node label type ([7de3509](7de3509bd22078f2f21f9715d12852ad78e6ddf3))
+- Commit version bump on postpublish ([62c45d3](62c45d39824517bb0acf132f01c893173f3daad6))
+- Commit all files on postpublish ([fd6c34c](fd6c34ce6c25817d4a1e5f6d6adac6eb756c3c18))
+
+### Refactor
+
+- Remove `BaseElement` type ([37fd017](37fd017e37ab1e1fe9a77ea12cce453ae7042e34))
+
+## [0.4.19] - 2022-06-10
+
+[c755208](c755208ebecff3865c530c8aed08197ed8d27c6a)...[7597c0c](7597c0c542370f7a9236f294091761511f55b6a6)
+
+### Bug Fixes
+
+- Bind edge mouse events to correct names ([7fe5171](7fe5171f632c587366d6c4e3d1c64921575a1985))
+
+### Documentation
+
+- Update typedoc to use src/index.ts as entry ([c289e7e](c289e7e3ccd2f743ca8da29384c39982b78386ac))
+- Add typedoc.json file ([f94f72d](f94f72d31e0978e6d43e2aa8dd3fc38930e9881c))
+- Update deps ([650606e](650606ec7684ab7706bbf6c56655f7621e99713a))
+- Update intro lightmode styles ([3668caa](3668caa3a1938a1e44dde336bf4bb1119ada49b6))
+
+### Features
+
+- Explicitly define events in `VueFlow` component ([9ae97f4](9ae97f418669f07651c43f9886aeffdd97a61819))
+- Export `BaseEdgeProps` ([ac93894](ac9389480d7df912fbc7afda1a6d32c9c2a59f32))
+
+### Miscellaneous Tasks
+
 - Bump version ([2efe25c](2efe25c989e0a259f6a4487b94c481976f10d7f3))
+- Update dependencies ([3dd3c37](3dd3c37fc25e36dafce67be5e7b3cd690c2dca32))
+- Update lock file ([77b441b](77b441b1c6803c5543eb7a50315e193e168fb310))
+- Use type import for emit definition ([fdc6f40](fdc6f40c3c9f89a3548e3f75c89702ef54888916))
+- Update README.md links ([699e252](699e25293556267b5311883cf4201f98f2368924))
+- Move `BaseEdgeProps` to types ([e54f7b5](e54f7b56d01f4cfacef0c101cfcc269ab48f8706))
+
+### Revert
+
+- Set emits explicitly ([fb8356e](fb8356e15a3b9cf6309df1611337369e1e7463c1))
+- Filter old edge on update ([7597c0c](7597c0c542370f7a9236f294091761511f55b6a6))
 
 ## [0.4.18] - 2022-06-07
 
