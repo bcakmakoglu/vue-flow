@@ -20,7 +20,7 @@ export interface Node<Data = ElementData> {
   /** Unique node id */
   id: string
   /** A node label */
-  label?: string | VNode | Component<NodeProps>
+  label?: string | VNode | Component
   /** initial node position x, y */
   position: XYPosition
   /** node type, can be a default type or a custom type */
@@ -122,7 +122,6 @@ export interface NodeProps<Data = ElementData> {
   sourcePosition?: Position
   /** drag handle query selector */
   dragHandle?: string
-
   /** node DOM-element */
   nodeElement: HTMLDivElement
 }
