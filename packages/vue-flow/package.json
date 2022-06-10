@@ -31,7 +31,7 @@
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
     "prepublishOnly": "shx cp ../../README.md .",
     "release": "pnpm np",
-    "postpublish": "shx rm README.md && git commit -m \"chore: bump version\"",
+    "postpublish": "shx rm README.md && git commit -a -m \"chore: bump version\"",
     "test": "exit 0"
   },
   "peerDependencies": {
