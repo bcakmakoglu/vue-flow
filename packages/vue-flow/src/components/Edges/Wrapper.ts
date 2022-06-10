@@ -70,9 +70,13 @@ const Wrapper: FunctionalComponent<Props> = function (
 
   const onEdgeUpdaterMouseOut = () => (updating = false)
 
-  const onEdgeUpdaterSourceMouseDown = () => emit('source-mousedown')
+  const onEdgeUpdaterSourceMouseDown = (e: MouseEvent) => {
+    emit('source-mousedown', e)
+  }
 
-  const onEdgeUpdaterTargetMouseDown = () => emit('target-mousedown')
+  const onEdgeUpdaterTargetMouseDown = (e: MouseEvent) => {
+    emit('target-mousedown', e)
+  }
 
   let sourceNodeHandles
   if (connectionMode === ConnectionMode.Strict) {
@@ -153,9 +157,9 @@ const Wrapper: FunctionalComponent<Props> = function (
             h(
               'g',
               {
-                onMouseDown: onEdgeUpdaterSourceMouseDown,
-                onMouseEnter: onEdgeUpdaterMouseEnter,
-                onMouseOut: onEdgeUpdaterMouseOut,
+                onMousedown: onEdgeUpdaterSourceMouseDown,
+                onMouseenter: onEdgeUpdaterMouseEnter,
+                onMouseout: onEdgeUpdaterMouseOut,
               },
               h(EdgeAnchor, {
                 position: sourcePosition,
@@ -167,9 +171,9 @@ const Wrapper: FunctionalComponent<Props> = function (
             h(
               'g',
               {
-                onMouseDown: onEdgeUpdaterTargetMouseDown,
-                onMouseEnter: onEdgeUpdaterMouseEnter,
-                onMouseOut: onEdgeUpdaterMouseOut,
+                onMousedown: onEdgeUpdaterTargetMouseDown,
+                onMouseenter: onEdgeUpdaterMouseEnter,
+                onMouseout: onEdgeUpdaterMouseOut,
               },
               h(EdgeAnchor, {
                 position: targetPosition,
