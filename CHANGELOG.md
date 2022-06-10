@@ -2,11 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.4.21] - 2022-06-10
+
+[fd6c34c](fd6c34ce6c25817d4a1e5f6d6adac6eb756c3c18)...[59b6424](59b64242d5de5b710f6e6557d5256db9b1021be7)
 
 ### Miscellaneous Tasks
 
 - Bump version ([7fe511f](7fe511fefdc9aab49ac77da8b5182372f5d86234))
+- Bump version ([59b6424](59b64242d5de5b710f6e6557d5256db9b1021be7))
 
 ## [0.4.20] - 2022-06-10
 
