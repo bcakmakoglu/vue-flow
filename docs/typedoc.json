@@ -7,6 +7,7 @@
   "categorizeByGroup": true,
   "darkHighlightTheme": "vitesse-dark",
   "lightHighlightTheme": "vitesse-light",
+  "disableSources": true,
   "out": "src/typedocs",
   "tsconfig": "../packages/vue-flow/tsconfig.docs.json"
 }
