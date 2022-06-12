@@ -1,9 +1,36 @@
 import { resolve } from 'path'
-import { defaultTheme, Theme } from 'vuepress'
+import { defaultTheme, SidebarConfigArray, Theme } from 'vuepress'
 import { path } from '@vuepress/utils'
 import { useVueFlow } from '@braks/vue-flow'
+import { readdirSync } from 'fs'
 
 const { vueFlowVersion } = useVueFlow()
+
+const typedocSidebarEntries = (): SidebarConfigArray => {
+  const filePath = resolve(
+    __dirname,
+    '../../typedocs'
+  )
+
+  const classes = readdirSync(`${filePath}/classes/`).map(entry => `/typedocs/classes/${entry}`)
+  const enums = readdirSync(`${filePath}/enums/`).map(entry => `/typedocs/enums/${entry}`)
+  const interfaces = readdirSync(`${filePath}/interfaces/`).map(entry => `/typedocs/interfaces/${entry}`)
+  const modules = readdirSync(`${filePath}/modules/`).map(entry => `/typedocs/modules/${entry}`)
+
+  return [
+    {
+      text: 'TypeDocs',
+      link: '/typedocs/',
+      children: [
+        { text: 'Exports', children: ['/typedocs/modules.md'] },
+        { text: 'Modules', children: modules },
+        { text: 'Classes', children: classes },
+        { text: 'Enums', children: enums },
+        { text: 'Interfaces', children: interfaces },
+      ],
+    }
+  ]
+}
 
 export default {
   name: 'vuepress-theme-local',
@@ -61,6 +88,7 @@ export default {
           ],
         },
       ],
+      '/typedocs/': typedocSidebarEntries(),
     },
     navbar: [
       { text: `v${vueFlowVersion.value}`, link: '' },
@@ -70,7 +98,11 @@ export default {
         link: '/examples/',
         activeMatch: '^/examples/',
       },
-      { text: 'TypeDocs', link: 'https://types.vueflow.dev/' },
+      {
+        text: 'TypeDocs',
+        link: '/typedocs/',
+        activeMatch: '^/typedocs/',
+      },
     ],
   }),
   layouts: {

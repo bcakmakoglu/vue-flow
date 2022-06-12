@@ -42,6 +42,8 @@ importers:
       canvas-confetti: ^1.5.1
       dotenv: ^16.0.1
       ohmyfetch: ^0.4.18
+      typedoc: ^0.22.17
+      typedoc-plugin-markdown: ^3.12.1
       unplugin-auto-import: ^0.6.9
       unplugin-icons: ^0.14.3
       unplugin-vue-components: ^0.18.5
@@ -66,6 +68,8 @@ importers:
       '@windicss/plugin-scrollbar': 1.2.3
       dotenv: 16.0.1
       ohmyfetch: 0.4.18
+      typedoc: 0.22.17_typescript@4.7.3
+      typedoc-plugin-markdown: 3.12.1_typedoc@0.22.17
       unplugin-auto-import: 0.6.9_rollup@2.75.6+vite@2.9.10
       unplugin-icons: 0.14.3_rollup@2.75.6+vite@2.9.10
       unplugin-vue-components: 0.18.5_cimrprb54snhagk4tjmarxnbhm
@@ -212,6 +216,7 @@ importers:
       postcss-nested: ^5.0.6
       ts-patch: ^2.0.1
       typedoc: ^0.22.17
+      typedoc-plugin-markdown: ^3.12.1
       typescript-transform-paths: ^3.3.1
       unplugin-auto-import: ^0.8.7
       vite: ^2.9.10
@@ -235,6 +240,7 @@ importers:
       postcss-nested: 5.0.6_postcss@8.4.14
       ts-patch: 2.0.1_typescript@4.7.3
       typedoc: 0.22.17_typescript@4.7.3
+      typedoc-plugin-markdown: 3.12.1_typedoc@0.22.17
       typescript-transform-paths: 3.3.1_typescript@4.7.3
       unplugin-auto-import: 0.8.7_r74nlw6n2rf2mdvahp2r55qzgq
       vite: 2.9.10
@@ -7466,6 +7472,19 @@ packages:
       ufo: 0.8.4
     dev: true
 
+  /handlebars/4.7.7:
+    resolution: {integrity: sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==}
+    engines: {node: '>=0.4.7'}
+    hasBin: true
+    dependencies:
+      minimist: 1.2.6
+      neo-async: 2.6.2
+      source-map: 0.6.1
+      wordwrap: 1.0.0
+    optionalDependencies:
+      uglify-js: 3.16.0
+    dev: true
+
   /hard-rejection/2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
     engines: {node: '>=6'}
@@ -9072,6 +9091,10 @@ packages:
   /negotiator/0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
+    dev: true
+
+  /neo-async/2.6.2:
+    resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
   /new-github-release-url/1.0.0:
@@ -12011,6 +12034,15 @@ packages:
       is-typedarray: 1.0.0
     dev: true
 
+  /typedoc-plugin-markdown/3.12.1_typedoc@0.22.17:
+    resolution: {integrity: sha512-gMntJq7+JlGJZ5sVjrkzO/rG2dsmNBbWk5ZkcKvYu6QOeBwGcK5tzEyS0aqnFTJj9GCHCB+brAnTuKtAyotNwA==}
+    peerDependencies:
+      typedoc: '>=0.22.0'
+    dependencies:
+      handlebars: 4.7.7
+      typedoc: 0.22.17_typescript@4.7.3
+    dev: true
+
   /typedoc/0.22.17_typescript@4.7.3:
     resolution: {integrity: sha512-h6+uXHVVCPDaANzjwzdsj9aePBjZiBTpiMpBBeyh1zcN2odVsDCNajz8zyKnixF93HJeGpl34j/70yoEE5BfNg==}
     engines: {node: '>= 12.10.0'}
@@ -12053,6 +12085,7 @@ packages:
     resolution: {integrity: sha512-FEikl6bR30n0T3amyBh3LoiBdqHRy/f4H80+My34HOesOKyHfOsxAPAxOoqC0JUnC1amnO0IwkYC3sko51caSw==}
     engines: {node: '>=0.8.0'}
     hasBin: true
+    requiresBuild: true
     dev: true
 
   /unbox-primitive/1.0.2:
@@ -13078,6 +13111,10 @@ packages:
   /word-wrap/1.2.3:
     resolution: {integrity: sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /wordwrap/1.0.0:
+    resolution: {integrity: sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==}
     dev: true
 
   /workbox-background-sync/6.5.3:
