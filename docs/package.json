@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vuepress dev src",
+    "dev": "pnpm run typedoc && vuepress dev src",
     "build": "pnpm run typedoc && vuepress build src",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
     "typedoc": "typedoc --options ./typedoc.json"
