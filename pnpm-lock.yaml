@@ -216,7 +216,6 @@ importers:
       postcss-nested: ^5.0.6
       ts-patch: ^2.0.1
       typedoc: ^0.22.17
-      typedoc-plugin-markdown: ^3.12.1
       typescript-transform-paths: ^3.3.1
       unplugin-auto-import: ^0.8.7
       vite: ^2.9.10
@@ -240,7 +239,6 @@ importers:
       postcss-nested: 5.0.6_postcss@8.4.14
       ts-patch: 2.0.1_typescript@4.7.3
       typedoc: 0.22.17_typescript@4.7.3
-      typedoc-plugin-markdown: 3.12.1_typedoc@0.22.17
       typescript-transform-paths: 3.3.1_typescript@4.7.3
       unplugin-auto-import: 0.8.7_r74nlw6n2rf2mdvahp2r55qzgq
       vite: 2.9.10
