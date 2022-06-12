@@ -1,5 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
+  "readme": "none",
   "plugin": "typedoc-plugin-markdown",
   "entryPoints": ["../packages/vue-flow/src/index.ts"],
   "out": "src/typedocs",
