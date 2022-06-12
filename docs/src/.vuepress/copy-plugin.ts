@@ -16,6 +16,7 @@ export function copyVueFlowPlugin(): Plugin {
           `Run "pnpm -w build" first.`
         )
       }
+
       this.emitFile({
         type: 'asset',
         fileName: 'vue-flow.es.js',
