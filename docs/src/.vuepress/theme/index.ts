@@ -2,9 +2,13 @@ import { resolve } from 'path'
 import { defaultTheme, SidebarConfigArray, Theme } from 'vuepress'
 import { path } from '@vuepress/utils'
 import { useVueFlow } from '@braks/vue-flow'
-import { readdirSync } from 'fs'
+import { readdirSync, statSync } from 'fs'
 
 const { vueFlowVersion } = useVueFlow()
+
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 const typedocSidebarEntries = (): SidebarConfigArray => {
   const filePath = resolve(
@@ -12,21 +16,26 @@ const typedocSidebarEntries = (): SidebarConfigArray => {
     '../../typedocs'
   )
 
-  const classes = readdirSync(`${filePath}/classes/`).map(entry => `/typedocs/classes/${entry}`)
-  const enums = readdirSync(`${filePath}/enums/`).map(entry => `/typedocs/enums/${entry}`)
-  const interfaces = readdirSync(`${filePath}/interfaces/`).map(entry => `/typedocs/interfaces/${entry}`)
-  const modules = readdirSync(`${filePath}/modules/`).map(entry => `/typedocs/modules/${entry}`)
+  const docsModules = readdirSync(filePath).filter(name => statSync(`${filePath}/${name}`).isDirectory())
+
+  const sidebarItems = docsModules.map(module => {
+    let children = readdirSync(`${filePath}/${module}/`).map(entry => `/typedocs/${module}/${entry}`)
+
+    if (module === 'variables') {
+      children = children.filter(child => {
+        return child.includes('default')
+      })
+    }
+
+    return { text: capitalize(module), children }
+  })
 
   return [
     {
       text: 'TypeDocs',
       link: '/typedocs/',
       children: [
-        { text: 'Exports', children: ['/typedocs/modules.md'] },
-        { text: 'Modules', children: modules },
-        { text: 'Classes', children: classes },
-        { text: 'Enums', children: enums },
-        { text: 'Interfaces', children: interfaces },
+        ...sidebarItems,
       ],
     }
   ]
