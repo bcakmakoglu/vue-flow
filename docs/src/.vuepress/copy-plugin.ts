@@ -6,7 +6,6 @@ export function copyVueFlowPlugin(): Plugin {
   return {
     name: 'copy-vue-flow',
     generateBundle() {
-      console.log('building')
       const filePath = resolve(
         __dirname,
         '../../node_modules/@braks/vue-flow/dist/vue-flow.es.js'
@@ -14,7 +13,7 @@ export function copyVueFlowPlugin(): Plugin {
       if (!existsSync(filePath)) {
         throw new Error(
           `@braks/vue-flow/dist/vue-flow.es.js not built. ` +
-          `Run "pnpm build" first.`
+          `Run "pnpm -w build" first.`
         )
       }
       this.emitFile({
