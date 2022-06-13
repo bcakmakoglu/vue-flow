@@ -53,22 +53,24 @@ for (const example of Object.keys(imports)) {
   }
 }
 
-await store.setFiles(
-  {
-    ...files,
-    'main.css': css,
-  },
-  props.mainFile ?? 'App.vue',
-)
+onMounted(async () => {
+  await store.setVueVersion('3.2.25')
 
-// pre-set import map
-store.setImportMap({
-  imports: {
-    '@braks/vue-flow': `${location.origin}/vue-flow.es.js`,
-  },
+  await store.setFiles(
+    {
+      ...files,
+      'main.css': css,
+    },
+    props.mainFile ?? 'App.vue',
+  )
+
+  // pre-set import map
+  store.setImportMap({
+    imports: {
+      '@braks/vue-flow': `${location.origin}/vue-flow.es.js`,
+    },
+  })
 })
-
-store.setVueVersion('3.2.25')
 
 const sfcOptions = {
   script: {
