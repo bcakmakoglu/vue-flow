@@ -11,18 +11,15 @@ function capitalize(str: string) {
 }
 
 const typedocSidebarEntries = (): SidebarConfigArray => {
-  const filePath = resolve(
-    __dirname,
-    '../../typedocs'
-  )
+  const filePath = resolve(__dirname, '../../typedocs')
 
-  const docsModules = readdirSync(filePath).filter(name => statSync(`${filePath}/${name}`).isDirectory())
+  const docsModules = readdirSync(filePath).filter((name) => statSync(`${filePath}/${name}`).isDirectory())
 
-  const sidebarItems = docsModules.map(module => {
+  const sidebarItems = docsModules.map((module) => {
     let children = readdirSync(`${filePath}/${module}/`).map(entry => `/typedocs/${module}/${entry}`)
 
     if (module === 'variables') {
-      children = children.filter(child => {
+      children = children.filter((child) => {
         return child.includes('default')
       })
     }
@@ -30,15 +27,7 @@ const typedocSidebarEntries = (): SidebarConfigArray => {
     return { text: capitalize(module), children }
   })
 
-  return [
-    {
-      text: 'TypeDocs',
-      link: '/typedocs/',
-      children: [
-        ...sidebarItems,
-      ],
-    }
-  ]
+  return [...sidebarItems]
 }
 
 export default {
@@ -100,7 +89,7 @@ export default {
       '/typedocs/': typedocSidebarEntries(),
     },
     navbar: [
-      { text: `v${vueFlowVersion.value}`, link: '' },
+      { text: `v${vueFlowVersion.value}`, link: '/' },
       { text: 'Guide', link: '/guide/', activeMatch: '^/guide/' },
       {
         text: 'Examples',
