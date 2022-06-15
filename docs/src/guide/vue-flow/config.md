@@ -1,4 +1,4 @@
-# Config
+# Config (Props)
 
 Vue Flow allows you to configure zoom, graph and flow behavior.
 Configuration can be passed either as props to the `VueFlow` component or

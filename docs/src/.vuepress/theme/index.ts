@@ -56,8 +56,10 @@ export default {
             '/guide/',
             '/guide/getting-started',
             '/guide/theming',
-            '/guide/config',
-            '/guide/state',
+            {
+              text: 'Vue Flow',
+              children: ['/guide/vue-flow/config', '/guide/vue-flow/state', '/guide/vue-flow/slots'],
+            },
             '/guide/node',
             '/guide/edge',
             '/guide/composables',
