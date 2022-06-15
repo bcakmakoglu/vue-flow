@@ -16,13 +16,13 @@ To use the controls simply pass the `Controls` component as a child to the `VueF
 
 ## Props
 
-| Name            | Definition                | Type                                                                  | Optional | Default |
-|-----------------|---------------------------|-----------------------------------------------------------------------|----------|---------|
-| showZoom        | Show zoom btn             | boolean                                                               | true     | true    |
-| showFitView     | Show fit-view btn         | boolean                                                               | true     | true    |
-| showInteractive | Show lock interactive btn | boolean                                                               | true     | true    |
-| showZoom        | Show zoom button          | boolean                                                               | true     | true    |
-| fitViewParams   | Params to use on fit-view | [FitViewParams](https://types.vueflow.dev/modules.html#FitViewParams) | true     | -       |
+| Name            | Definition                | Type                                                 | Optional | Default |
+|-----------------|---------------------------|------------------------------------------------------|----------|---------|
+| showZoom        | Show zoom btn             | boolean                                              | true     | true    |
+| showFitView     | Show fit-view btn         | boolean                                              | true     | true    |
+| showInteractive | Show lock interactive btn | boolean                                              | true     | true    |
+| showZoom        | Show zoom button          | boolean                                              | true     | true    |
+| fitViewParams   | Params to use on fit-view | [FitViewParams](/typedocs/types/FitViewParams.html/) | true     | -       |
 
 ## Emits
 

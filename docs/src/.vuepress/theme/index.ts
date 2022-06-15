@@ -70,7 +70,7 @@ export default {
               ]
             },
             {
-              text: 'Additional Components',
+              text: 'Components',
               children: [
                 '/guide/components/background',
                 '/guide/components/minimap',
