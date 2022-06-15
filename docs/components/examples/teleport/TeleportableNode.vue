@@ -25,6 +25,12 @@ const changeAnimation = () => {
 }
 </script>
 
+<script>
+export default {
+  inheritAttrs: false,
+}
+</script>
+
 <template>
   <teleport :disabled="!teleport" :to="teleport">
     <transition :name="animation">
