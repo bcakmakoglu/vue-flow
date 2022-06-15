@@ -53,10 +53,25 @@ export default {
             '/guide/node',
             '/guide/edge',
             '/guide/composables',
-            { text: 'Utilities', children: ['/guide/utils/graph', '/guide/utils/instance', '/guide/utils/edge'] },
+            {
+              text: 'Utilities',
+              children: [
+                '/guide/utils/graph',
+                '/guide/utils/instance',
+                '/guide/utils/edge'
+              ]
+            },
             {
               text: 'Additional Components',
-              children: ['/guide/components/background', '/guide/components/minimap', '/guide/components/controls'],
+              children: [
+                '/guide/components/background',
+                '/guide/components/minimap',
+                {
+                  text: 'Controls',
+                  link: '/guide/components/controls',
+                  children: ['/guide/components/control-button']
+                },
+              ],
             },
           ],
         },
