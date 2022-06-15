@@ -27,7 +27,15 @@ const typedocSidebarEntries = (): SidebarConfigArray => {
     return { text: capitalize(module), children }
   })
 
-  return [...sidebarItems]
+  return [
+    {
+      text: 'Modules',
+      link: '/typedocs/',
+      children: [
+        ...sidebarItems,
+      ],
+    }
+  ]
 }
 
 export default {
@@ -58,7 +66,7 @@ export default {
               children: [
                 '/guide/utils/graph',
                 '/guide/utils/instance',
-                '/guide/utils/edge'
+                '/guide/utils/edge',
               ]
             },
             {
@@ -66,11 +74,8 @@ export default {
               children: [
                 '/guide/components/background',
                 '/guide/components/minimap',
-                {
-                  text: 'Controls',
-                  link: '/guide/components/controls',
-                  children: ['/guide/components/control-button']
-                },
+                '/guide/components/controls',
+                '/guide/components/control-button',
               ],
             },
           ],
