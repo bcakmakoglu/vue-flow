@@ -25,7 +25,7 @@ watch(getNodes, (nodes) => console.log('nodes changed', nodes))
 </script>
 ```
 
-## Accessing internal state
+## Accessing Internal State
 
 Using the composition API also allows us to pass the state around outside the current component context, thus we have a lot more flexibility when  it comes
 to reading, writing and updating the state.
@@ -89,7 +89,7 @@ If you have multiple store instances in the same context, make sure to give them
 Otherwise `useVueFlow` will try to inject the first instance it can find in the current context, which would usually be the last one that has been injected.
 ::: 
 
-## State updates
+## State Updates
 
 State updates like removing elements or updating positions are applied by default.
 If you want to strictly control state changes you can disable this behavior by setting the `applyDefault` option/prop to `false`.
@@ -104,7 +104,7 @@ State changes are emitted by the `onNodesChange` or `onEdgesChange` events, whic
 To take control of state changes you can implement your own state update handlers or use the state helper functions that
 come with the library to mix it up.
 
-## Access state in options API
+## Access State in Options API
 
 `useVueFlow` was designed to be used in the composition API, __but__ it is still possible to use it in the options API.
 Though it is necessary to pass a unique id for your Vue Flow state instance, otherwise a look-up will fail and Vue Flow will create a new state instance 
