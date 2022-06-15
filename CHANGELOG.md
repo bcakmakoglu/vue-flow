@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.22] - 2022-06-15
+
+[59b6424](59b64242d5de5b710f6e6557d5256db9b1021be7)...[893b35b](893b35b519573276a19b3b2e45f19ed79361c84b)
+
+### Documentation
+
+- Use mutation observer to check dark mode class ([669f9a0](669f9a075c168bd096490500073c5666276c71f3))
+- Integrate TypeDocs into vuepress output ([be5df65](be5df65cc2aec5e5bcdfdda1ad7a1947fe57a5d8))
+- Skip readme when generating typedocs ([fc98108](fc981081ae319bb4b86fc765a6d32054209c3758))
+- Generate own document for all reflections ([12c27e9](12c27e9d785addadbc349cdabf6598086969f0e6))
+- Generate typedocs sidebar dynamically from subdirectories ([d3e6f63](d3e6f638223e254e01f177d5137cfee83f8eb187))
+- Disable sources ([281b0fc](281b0fccc875cf0be662a8b43accc4d5db2352d9))
+- Set repl store on mounted ([2bd81fe](2bd81fe173d6a6b043371a1647c8d1ee00bd3ebc))
+- Fit view on features flows on wrapper resize ([1400011](14000111f9eed56a05b29afa8f6c78babe6fc4df))
+- Add slot documentation for Controls ([3162b79](3162b79f549cb4b59b4e44d1eec45aeada9872cc))
+- Add documentation for `ControlButton` ([33cd638](33cd638fd943379347c0c0b3360c7c32cdd0d2c9))
+- Replace old typedoc links ([e469708](e469708b57ad9296392b97b4b5596d10f079c4d1))
+- Add documentation for `MiniMapNode` ([3587478](3587478e5f8aceaf2a1059321823f49fc8b50e9b))
+- Replace old typedoc links ([53a85bf](53a85bf49b618ddcaaed3d452e192b4ef31b07b7))
+- Add documentation for Vue Flow slots ([0726a98](0726a981700043faf593c208e66fb5b0d16c2c84))
+
+### Features
+
+- Export `MiniMapNode` component ([06420ac](06420ac6cdd62ea8fbdd3d9b25cd4a9df353e272))
+
+### Miscellaneous Tasks
+
+- Update pnpm-lock.yaml ([e4202b0](e4202b01c9be21cf916490c22674156178d8e372))
+- Run typedocs before vuepress ([ecf454e](ecf454e7b25b12a6248b5135e7f4fdd995f445ab))
+- Add typedoc script to docs dev ([bd51614](bd51614fb7c0a8b6c5a8fed61098ce3ba73b32e1))
+- Bump version ([893b35b](893b35b519573276a19b3b2e45f19ed79361c84b))
+
+### Refactor
+
+- Hide/show slots in `Controls.vue` ([32086e0](32086e0760f692135b2f8d8eff950708de12a71a))
+
 ## [0.4.21] - 2022-06-10
 
 [fd6c34c](fd6c34ce6c25817d4a1e5f6d6adac6eb756c3c18)...[59b6424](59b64242d5de5b710f6e6557d5256db9b1021be7)
