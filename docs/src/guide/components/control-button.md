@@ -20,7 +20,7 @@ To use the component pass the `ControlButton` component as a child to the [`Cont
 
 ## Slots
 
-| Name    | Definition                                           |
-|---------|------------------------------------------------------|
+| Name    | Definition                                             |
+|---------|--------------------------------------------------------|
 | default | inner slot of btn (is wrapped by a `<button>` element) |
 
