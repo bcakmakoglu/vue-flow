@@ -67,23 +67,27 @@ export default {
         </ControlButton>
       </slot>
     </template>
-    <slot name="control-fitview">
-      <ControlButton v-if="showFitView" class="vue-flow__controls-fitview" @click="onFitViewHandler">
-        <slot name="icon-fitview">
-          <FitView />
-        </slot>
-      </ControlButton>
-    </slot>
-    <slot name="control-interactive">
-      <ControlButton v-if="showInteractive" class="vue-flow__controls-interactive" @click="onInteractiveChangeHandler">
-        <slot name="icon-unlock">
-          <Unlock v-if="isInteractive" />
-        </slot>
-        <slot name="icon-lock">
-          <Lock v-if="!isInteractive" />
-        </slot>
-      </ControlButton>
-    </slot>
+    <template v-if="showFitView">
+      <slot name="control-fit-view">
+        <ControlButton class="vue-flow__controls-fitview" @click="onFitViewHandler">
+          <slot name="icon-fit-view">
+            <FitView />
+          </slot>
+        </ControlButton>
+      </slot>
+    </template>
+    <template v-if="showInteractive">
+      <slot name="control-interactive">
+        <ControlButton v-if="showInteractive" class="vue-flow__controls-interactive" @click="onInteractiveChangeHandler">
+          <slot name="icon-unlock">
+            <Unlock v-if="isInteractive" />
+          </slot>
+          <slot name="icon-lock">
+            <Lock v-if="!isInteractive" />
+          </slot>
+        </ControlButton>
+      </slot>
+    </template>
     <slot></slot>
   </div>
 </template>
