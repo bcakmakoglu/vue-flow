@@ -7,7 +7,7 @@ They cannot exist on their own and need nodes to which they are connected.
 Each edge <span class="font-bold text-blue-500">requires a unique id, a source node and a target node id.</span>
 Anything else is optional.
 
-You can check the full options for an edge element in the TypeDocs [here](https://types.vueflow.dev/interfaces/Edge.html).
+You can check the full options for an edge element in the TypeDocs [here](/typedocs/interfaces/Edge.html/).
 
 ## Usage
 
@@ -352,4 +352,4 @@ your edges receive the following props:
 | markerEnd           | Edge marker                 | string            | true     |
 | curvature           | Edge path curvature         | number            | true     |
 
-You can find the TypeDocs [here](https://types.vueflow.dev/interfaces/EdgeProps.html).
+You can find the full description [here](/typedocs/interfaces/EdgeProps.html/).
