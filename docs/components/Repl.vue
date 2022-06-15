@@ -28,7 +28,8 @@ body,
 .vue-flow__minimap {
   transform: scale(75%);
   transform-origin: bottom right;
-}`
+}
+\n`
 
 const store = new ReplStore({
   showOutput: true,

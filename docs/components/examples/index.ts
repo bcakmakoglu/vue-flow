@@ -14,7 +14,7 @@ import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
 import { HorizontalApp, HorizontalElements } from './horizontal'
-import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode } from './teleport'
+import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
 
 export const exampleImports = {
   basic: {
@@ -94,6 +94,7 @@ export const exampleImports = {
     'App.vue': TeleportApp,
     'Sidebar.vue': TeleportSidebar,
     'TeleportableNode.vue': TeleportableNode,
+    'useTransition.js': TeleportableUseTransition,
     'style.css': TeleportCSS,
   },
 }

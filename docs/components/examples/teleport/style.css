@@ -5,10 +5,13 @@
 }
 
 .teleportflow aside {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   color: white;
   font-weight: 700;
   border-right: 1px solid #eee;
-  padding: 15px 10px;
+  padding: 10px 10px;
   font-size: 12px;
   background: rgba(16, 185, 129, 0.75);
   -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
@@ -59,16 +62,17 @@
   color: black
 }
 
-.teleportable .buttons {
+.buttons {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 5px;
   gap: 5px;
 }
 
-.teleportable .buttons .button {
+.button {
+  background-color: whitesmoke;
   cursor: pointer;
   padding: 5px 10px;
   border: 1px solid black;
@@ -78,7 +82,7 @@
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-.teleportable .buttons .button:hover {
+.button:hover {
   background: black;
   color: white;
 }
@@ -92,3 +96,30 @@
 .fade-leave-to {
   opacity: 0;
 }
+
+.shrink-leave-active {
+  animation: shrink 0.5s;
+}
+
+.shrink-enter-active {
+  animation: grow 0.5s;
+}
+
+@keyframes grow {
+  from {
+    transform: scale(0.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes shrink {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.1);
+  }
+}
+

@@ -1,5 +1,5 @@
 <script setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@braks/vue-flow'
 import { ref } from 'vue'
 import Sidebar from './Sidebar.vue'
 import TeleportableNode from './TeleportableNode.vue'
@@ -38,7 +38,7 @@ const elements = ref([
   <div class="teleportflow">
     <VueFlow v-model="elements" :fit-view-on-init="true">
       <template #node-teleportable="props">
-        <TeleportableNode :id="props.id" />
+        <TeleportableNode v-bind="props" />
       </template>
     </VueFlow>
     <Sidebar />
