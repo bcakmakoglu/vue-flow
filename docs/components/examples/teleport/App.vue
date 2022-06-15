@@ -16,14 +16,14 @@ const elements = ref([
     id: '2',
     label: 'Click to teleport',
     type: 'teleportable',
-    position: { x: 250, y: 100 },
+    position: { x: 350, y: 200 },
     data: {},
   },
   {
     id: '3',
     label: 'Click to teleport',
     type: 'teleportable',
-    position: { x: 0, y: 100 },
+    position: { x: 0, y: 200 },
     data: {},
   },
   {
