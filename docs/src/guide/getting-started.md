@@ -28,13 +28,13 @@ npm i --save @braks/vue-flow
 
 ## Usage
 
-A flow consists of [<span class="font-bold text-blue-500">nodes</span>](https://types.vueflow.dev/interfaces/Node.html)
-and (optionally) [<span class="font-bold text-purple-500">edges</span>](https://types.vueflow.dev/interfaces/Edge.html).
+A flow consists of [<span class="font-bold text-blue-500">nodes</span>](/typedocs/interfaces/Node.html/)
+and (optionally) [<span class="font-bold text-purple-500">edges</span>](/typedocs/interfaces/Edge.html).
 Together we call them
-[<span class="font-bold text-green-500">elements</span>](https://types.vueflow.dev/modules.html#Elements).
+[<span class="font-bold text-green-500">elements</span>](/typedocs/types/Elements.html/).
 
 <span class="font-bold text-blue-500">Each element needs a unique id.</span>
-A node also needs a [xy-position](https://types.vueflow.dev/interfaces/XYPosition.html). An edge needs at least a
+A node also needs a [xy-position](typedocs/interfaces/XYPosition.html). An edge needs at least a
 source (node id) and a target (node id).
 
 ```vue:no-line-numbers
@@ -97,4 +97,4 @@ Vue Flow is fully written in [TypeScript](https://www.typescriptlang.org/), so i
 avoid common mistakes.
 The types are included in the library.
 
-[You can find the TypeDocs here](https://types.vueflow.dev/).
+[You can find the TypeDocs here](/typedocs/).

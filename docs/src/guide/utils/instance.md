@@ -48,7 +48,7 @@ export default defineComponent({
   </CodeGroupItem>
 </CodeGroup>
 
-### [project](https://types.vueflow.dev/modules.html#Project)
+### [project](/typedocs/types/Project.html/)
 
 - Details:
 
@@ -62,7 +62,7 @@ export default defineComponent({
 vueFlowInstance.project({ x: 100, y: 100 })
 ```
 
-### [fitView](https://types.vueflow.dev/modules.html#FitView)
+### [fitView](/typedocs/types/FitView.html/)
 
 - Details:
 
@@ -76,7 +76,7 @@ vueFlowInstance.project({ x: 100, y: 100 })
 vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 ```
 
-### [fitBounds](https://types.vueflow.dev/modules.html#FitBounds)
+### [fitBounds](/typedocs/types/FitBounds.html/)
 
 - Details:
 
@@ -88,7 +88,7 @@ vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 ```
 
-### [setTransform](https://types.vueflow.dev/modules.html#SetTransform)
+### [setTransform](/typedocs/types/SetTransform.html/)
 
 - Details:
 
@@ -100,26 +100,26 @@ vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 ```
 
-### [getTransform](https://types.vueflow.dev/modules.html#GetTransform)
+### [getTransform](/typedocs/types/GetTransform.html/)
 
 - Details:
 
   Gets position and zoom of the pane.
 
-### [zoomIn](https://types.vueflow.dev/modules.html#ZoomInOut)
+### [zoomIn](/typedocs/types/ZoomInOut.html/)
 
 - Details:
 
   Zooms in.
 
 
-### [zoomOut](https://types.vueflow.dev/modules.html#ZoomInOut)
+### [zoomOut](/typedocs/types/ZoomInOut.html/)
 
 - Details:
 
   Zooms out.
 
-### [zoomTo](https://types.vueflow.dev/modules.html#ZoomTo)
+### [zoomTo](/typedocs/types/ZoomTo.html/)
 
 - Details:
 

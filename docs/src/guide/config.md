@@ -90,7 +90,7 @@ onMounted(() => {
 
 ### modelValue <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Elements`](https://types.vueflow.dev/modules.html#Elements)
+- Type: [`Elements`](/typedocs/types/Elements.html/)
 
 - Details:
 
@@ -122,7 +122,7 @@ const elements = ref([
 
 ### nodes <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Node[]`](https://types.vueflow.dev/interfaces/Node.html)
+- Type: [`Node[]`](/typedocs/interfaces/Node.html/)
 
 - Details:
 
@@ -152,7 +152,7 @@ const nodes = ref([
 
 ### edges <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Edge[]`](https://types.vueflow.dev/interfaces/Edge.html)
+- Type: [`Edge[]`](/typedocs/interfaces/Edge.html/)
 
 - Details:
 
@@ -187,9 +187,9 @@ const edges = ref([
 
 ### node-types <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Record<string, NodeComponent>`](https://types.vueflow.dev/modules.html#NodeComponent)
+- Type: [`Record<string, NodeComponent>`](/typedocs/types/NodeComponent.html/)
 
-- Default: [`DefaultNodeTypes`](https://types.vueflow.dev/modules.html#DefaultNodeTypes)
+- Default: [`DefaultNodeTypes`](/typedocs/types/DefaultNodeTypes.html/)
 
 - Details:
 
@@ -224,9 +224,9 @@ const edges = ref([
 
 ### edge-types <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Record<string, EdgeComponent>`](https://types.vueflow.dev/modules.html#EdgeComponent)
+- Type: [`Record<string, EdgeComponent>`](/typedocs/types/EdgeComponent.html)
 
-- Default: [`DefaultEdgeTypes`](https://types.vueflow.dev/modules.html#DefaultEdgeTypes)
+- Default: [`DefaultEdgeTypes`](/typedocs/types/DefaultEdgeTypes.html)
 
 - Details:
 
@@ -295,7 +295,7 @@ const edges = ref([
 
 ### connection-mode <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`ConnectionMode`](https://types.vueflow.dev/enums/ConnectionMode.html)
+- Type: [`ConnectionMode`](/typedocs/enums/ConnectionMode.html/)
 
 - Default: `ConnectionMode.Loose`
 
@@ -305,7 +305,7 @@ const edges = ref([
 
 ### connection-line-type <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`ConnectionLineType`](https://types.vueflow.dev/enums/ConnectionLineType.html)
+- Type: [`ConnectionLineType`](/typedocs/enums/ConnectionLineType.html/)
 
 - Default: `ConnectionLineType.Bezier`
 
@@ -397,7 +397,7 @@ const edges = ref([
 
 ### pan-on-scroll-mode <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`PanOnScrollMode`](https://types.vueflow.dev/enums/PanOnScrollMode.html)
+- Type: [`PanOnScrollMode`](/typedocs/enums/PanOnScrollMode.html/)
 
 - Default: `PanOnScrollMode.Free`
 
@@ -479,7 +479,7 @@ const edges = ref([
 
 ### translate-extent <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`CoordinateExtent`](https://types.vueflow.dev/modules.html#CoordinateExtent)
+- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent.html/)
 
 - Default: 
 
@@ -589,7 +589,7 @@ const elements = ref([
 
 ### nodes-extent <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`CoordinateExtent`](https://types.vueflow.dev/modules.html#CoordinateExtent)
+- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent.html/)
 
 - Default:
 
@@ -640,7 +640,7 @@ const elements = ref([
 
 ### snap-grid <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`SnapGrid`](https://types.vueflow.dev/modules.html#SnapGrid)
+- Type: [`SnapGrid`](/typedocs/types/SnapGrid.html)
 
 - Default: `[15, 15]`
 

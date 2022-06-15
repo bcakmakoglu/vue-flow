@@ -5,10 +5,10 @@ Nodes are the building blocks of your graph. They represent any sort of data you
 They can exist on their own but can be connected to each other with edges to create a map.
 
 Each node <span class="font-bold text-blue-500">requires a unique id and
-a [xy-position](https://types.vueflow.dev/interfaces/XYPosition.html).</span>
+a [xy-position](/typedocs/interfaces/XYPosition.html/).</span>
 Anything else is optional.
 
-You can check the full options for a node element in the TypeDocs [here](https://types.vueflow.dev/interfaces/Node.html).
+You can check the full options for a node element [here](/typedocs/interfaces/Node.html/).
 
 ## Usage
 
@@ -332,7 +332,7 @@ your nodes receive the following props:
 | dragHandle       | Node drag handle class                           | string            | true     |
 
 
-You can find the TypeDocs [here](https://types.vueflow.dev/interfaces/NodeProps.html).
+You can find the full description [here](/typedocs/interfaces/NodeProps.html/).
 
 ## Styling
 

@@ -25,37 +25,37 @@ create a bezier path.
 This can be helpful if you don't want to actually change the way the path is calculated but just want to implement some custom logic on top of the 
 regular edge behavior.
 
-### [getBezierPath](https://types.vueflow.dev/modules.html#getBezierPath)
+### [getBezierPath](/typedocs/functions/getBezierPath.html/)
 
 - Details:
 
   Returns a bezier path.
 
-### [getBezierCenter](https://types.vueflow.dev/modules.html#getBezierPath)
+### [getBezierCenter](/typedocs/functions/getBezierCenter.html/)
 
 - Details:
 
   Returns a bezier path's center x and y values.
 
-### [getSimpleBezierPath](https://types.vueflow.dev/modules.html#getBezierPath)
+### [getSimpleBezierPath](/typedocs/functions/getSimpleBezierPath.html/)
 
 - Details:
 
   Returns a simple bezier path (no curvature at handles).
 
-### [getSimpleBezierCenter](https://types.vueflow.dev/modules.html#getBezierPath)
+### [getSimpleBezierCenter](/typedocs/functions/getSimpleBezierCenter.html/)
 
 - Details:
 
   Returns a simple bezier path's center x and y values.
 
-### [getSmoothStepPath](https://types.vueflow.dev/modules.html#getSmoothStepPath)
+### [getSmoothStepPath](/typedocs/functions/getSmoothStepPath.html/)
 
 - Details:
 
   Returns a smoothstep path (use border-radius 0 for a step path).
 
-### [getEdgeCenter](https://types.vueflow.dev/modules.html#getEdgeCenter)
+### [getEdgeCenter](/typedocs/functions/getEdgeCenter.html/)
 
 - Details:
 
