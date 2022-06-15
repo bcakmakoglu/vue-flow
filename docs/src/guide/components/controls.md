@@ -32,3 +32,28 @@ To use the controls simply pass the `Controls` component as a child to the `VueF
 | zoom-out           | Zoom-out btn clicked        |
 | fit-view           | Fit-view btn clicked        |
 | interaction-change | Interaction locked/unlocked |
+
+## Slots
+
+### Control Buttons
+
+| Name                | Definition              |
+|---------------------|-------------------------|
+| top                 | slot above default btns |
+| control-zoom-in     | Zoom-in btn             |
+| control-zoom-out    | Zoom-out btn            |
+| control-fit-view    | Fit-view btn            |
+| control-interaction | Interaction btn         |
+| default             | slot below default btns |
+
+### Icons
+
+| Name          | Definition                |
+|---------------|---------------------------|
+| icon-zoom-in  | Zoom-in icon              |
+| icon-zoom-out | Zoom-out icon             |
+| icon-fit-view | Fit-view icon             |
+| icon-lock     | Interaction locked icon   |
+| icon-unlock   | Interaction unlocked icon |
+
+
