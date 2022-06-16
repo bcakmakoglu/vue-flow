@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useDrag, useVueFlow } from '../../composables'
-import type { NodeComponent, SnapGrid } from '../../types'
+import type { NodeComponent, SnapGrid, XYZPosition } from '../../types'
 import { NodeId } from '../../context'
 import { getConnectedEdges, getHandleBounds, getXYZPos, handleNodeClick } from '../../utils'
 
@@ -67,26 +67,26 @@ watch(
   { flush: 'post' },
 )
 
+const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
+  if (parentPos) {
+    node.computedPosition = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
+  } else {
+    node.computedPosition = nodePos
+  }
+}
+
 onUpdateNodeInternals((updateIds) => {
   if (updateIds.includes(id)) {
     updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
-    const xyzPos = {
-      x: node.position.x,
-      y: node.position.y,
-      z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
-    }
-
-    if (parentNode) {
-      if (parentNode.computedPosition.x && parentNode.computedPosition.y) {
-        node.computedPosition = getXYZPos(
-          { x: parentNode.computedPosition.x, y: parentNode.computedPosition.y, z: parentNode.computedPosition.z! },
-          xyzPos,
-        )
-      } else {
-        node.computedPosition = xyzPos
-      }
-    }
+    updatePosition(
+      {
+        x: node.position.x,
+        y: node.position.y,
+        z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
+      },
+      parentNode ? { ...parentNode.computedPosition } : undefined,
+    )
   }
 })
 
@@ -113,11 +113,7 @@ onMounted(() => {
         z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
       }
 
-      if (parentX && parentY) {
-        node.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
-      } else {
-        node.computedPosition = xyzPos
-      }
+      updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
 
       node.handleBounds = getHandleBounds(nodeElement.value, viewport.zoom)
     },
