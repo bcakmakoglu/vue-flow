@@ -114,7 +114,6 @@
 }
 
 .vue-flow__handle {
-  position: absolute;
   width: 6px;
   height: 6px;
   background: var(--vf-handle);
