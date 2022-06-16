@@ -119,6 +119,7 @@ export type SetState = (
 ) => void
 export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
 export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
+export type UpdateNodeInternals = (nodeIds: string[]) => void
 
 export interface Actions extends ViewportFunctions {
   /** parses elements (nodes + edges) and re-sets the state */
@@ -165,6 +166,8 @@ export interface Actions extends ViewportFunctions {
   setState: SetState
   /** return an object of graph values (elements, viewpane transform) for storage and re-loading a graph */
   toObject: () => FlowExportObject
+  /** force update node internal data, if handle bounds are incorrect, you might want to use this */
+  updateNodeInternals: UpdateNodeInternals
 
   /** internal position updater, you probably don't want to use this */
   updateNodePositions: UpdateNodePosition

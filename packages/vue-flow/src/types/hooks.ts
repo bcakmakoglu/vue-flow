@@ -75,6 +75,7 @@ export interface FlowEvents {
   edgeUpdateStart: EdgeMouseEvent
   edgeUpdate: EdgeUpdateEvent
   edgeUpdateEnd: EdgeMouseEvent
+  updateNodeInternals: string[]
 }
 
 export type FlowHooks = Readonly<{
