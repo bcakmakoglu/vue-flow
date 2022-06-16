@@ -135,7 +135,6 @@ function useDrag(params: UseDragParams) {
               .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
                 const target = event.target as HTMLDivElement
                 return (
-                  !event.ctrlKey &&
                   !event.button &&
                   (!noDragClassName ||
                     (!hasSelector(target, `.${noDragClassName}`, $$(el)) &&
