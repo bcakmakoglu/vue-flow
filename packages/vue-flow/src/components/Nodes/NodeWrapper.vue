@@ -219,7 +219,6 @@ export default {
       :selected="!!node.selected"
       :connectable="connectable"
       :position="node.position"
-      :computed-position="node.computedPosition"
       :dimensions="node.dimensions"
       :is-valid-target-pos="node.isValidTargetPos"
       :is-valid-source-pos="node.isValidSourcePos"
