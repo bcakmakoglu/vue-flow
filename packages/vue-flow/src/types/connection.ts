@@ -2,6 +2,7 @@ import type { CSSProperties } from 'vue'
 import type { Position } from './flow'
 import type { GraphNode } from './node'
 import type { HandleElement, HandleType } from './handle'
+import type { Edge } from './edge'
 
 /** Connection line types (same as default edge types */
 export enum ConnectionLineType {
@@ -22,6 +23,10 @@ export interface Connection {
   /** Target handle id */
   targetHandle: string | null
 }
+
+export type Connector = (
+  params: Connection,
+) => Promise<(Connection & Partial<Edge>) | false> | ((Connection & Partial<Edge>) | false)
 
 /** The source nodes params when connection is initiated */
 export interface OnConnectStartParams {

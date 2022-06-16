@@ -36,6 +36,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   fitViewOnInit: undefined,
   connectOnClick: undefined,
   connectionLineStyle: undefined,
+  autoConnect: undefined,
 })
 
 const emit = defineEmits<{

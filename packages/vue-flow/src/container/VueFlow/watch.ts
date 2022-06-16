@@ -1,6 +1,7 @@
 import type { Ref, ToRefs } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
-import type { FlowProps, GraphEdge, GraphNode, VueFlowStore } from '~/types'
+import { isFunction } from '@vueuse/core'
+import type { Connection, FlowProps, GraphEdge, GraphNode, VueFlowStore } from '~/types'
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>, props: FlowProps, store: VueFlowStore) => {
@@ -171,8 +172,45 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
       })
     }
 
+    const watchAutoConnect = () => {
+      scope.run(() => {
+        watch(
+          () => props.autoConnect,
+          () => {
+            if (isDef(props.autoConnect)) {
+              store.autoConnect.value = props.autoConnect
+            }
+          },
+          { immediate: isDef(props.autoConnect) },
+        )
+
+        watch(
+          store.autoConnect,
+          () => {
+            const autoConnector = async (params: Connection) => {
+              let connect: boolean | Connection = true
+              if (isFunction(props.autoConnect)) {
+                connect = await props.autoConnect(params)
+              }
+
+              if (connect) {
+                store.addEdges([params])
+              }
+            }
+
+            if (store.autoConnect) {
+              store.onConnect(autoConnector)
+            } else {
+              store.hooks.value.connect.off(autoConnector)
+            }
+          },
+          { immediate: true },
+        )
+      })
+    }
+
     const watchRest = () => {
-      const skip = ['id', 'modelValue', 'edges', 'nodes', 'maxZoom', 'minZoom', 'applyDefault']
+      const skip = ['id', 'modelValue', 'edges', 'nodes', 'maxZoom', 'minZoom', 'applyDefault', 'autoConnect']
       Object.keys(props).forEach((prop) => {
         if (!skip.includes(prop)) {
           const model = props[prop as keyof typeof props]
@@ -193,9 +231,16 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
       })
     }
 
-    ;[watchModelValue, watchNodesValue, watchEdgesValue, watchMinZoom, watchMaxZoom, watchApplyDefault, watchRest].forEach(
-      (watch) => watch(),
-    )
+    ;[
+      watchModelValue,
+      watchNodesValue,
+      watchEdgesValue,
+      watchMinZoom,
+      watchMaxZoom,
+      watchApplyDefault,
+      watchAutoConnect,
+      watchRest,
+    ].forEach((watch) => watch())
   })
 
   return () => scope.stop()

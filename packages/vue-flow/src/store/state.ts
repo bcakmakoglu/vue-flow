@@ -101,6 +101,7 @@ const defaultState = (): State => ({
   hooks: createHooks(),
 
   applyDefault: true,
+  autoConnect: false,
 
   fitViewOnInit: false,
   noDragClassName: 'nodrag',

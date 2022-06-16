@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'vue'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
-import type { ConnectionLineType, ConnectionMode } from './connection'
+import type { ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { KeyCode, PanOnScrollMode } from './zoom'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
@@ -122,6 +122,8 @@ export interface FlowProps {
   connectOnClick?: boolean
   /** apply default change handlers for position, dimensions, adding/removing nodes. set this to false if you want to apply the changes manually */
   applyDefault?: boolean
+  /** automatically create an edge when connection is triggered */
+  autoConnect?: boolean | Connector
   noDragClassName?: string
   noWheelClassName?: string
   noPanClassName?: string
