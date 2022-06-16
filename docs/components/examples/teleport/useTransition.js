@@ -8,12 +8,11 @@ import { nextTick, ref } from 'vue'
  * Otherwise edges do not connect properly
  */
 export const useTransition = (id) => {
-  const nodeElement = ref()
   const animation = ref('fade')
   const transition = ref(false)
   const teleport = ref(null)
 
-  const { updateNodeDimensions, getNode, edges } = useVueFlow()
+  const { updateNodeInternals, getNode, edges } = useVueFlow()
 
   /**
    * specify a selector to teleport to
@@ -48,7 +47,7 @@ export const useTransition = (id) => {
         setTimeout(() => {
           // if destination is null, defer hiding edges until node is teleported back
           if (!destination) {
-            updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+            updateNodeInternals([id])
 
             nextTick(() => {
               onFinish()
@@ -103,7 +102,6 @@ export const useTransition = (id) => {
     animation,
     transition,
     teleport,
-    nodeElement,
     onClick,
   }
 }
