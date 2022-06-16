@@ -42,6 +42,7 @@ export const createHooks = (): FlowHooks => ({
   edgeUpdateStart: createEventHook(),
   edgeUpdate: createEventHook(),
   edgeUpdateEnd: createEventHook(),
+  updateNodeInternals: createEventHook(),
 })
 
 const bind = (emit: Emits, hooks: FlowHooks) => {

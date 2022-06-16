@@ -339,6 +339,10 @@ export default (state: State, getters: ComputedGetters): Actions => {
     )
   }
 
+  const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
+    state.hooks.updateNodeInternals.trigger(ids)
+  }
+
   let zoomPanHelper: ReturnType<typeof useZoomPanHelper>
 
   state.hooks.paneReady.on(({ id }) => {
@@ -416,6 +420,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     },
     project: (position) => pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid),
     toObject,
+    updateNodeInternals,
     $reset: () => {
       setState(useState())
     },
