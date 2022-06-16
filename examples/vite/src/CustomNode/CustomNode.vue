@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Elements, Node, SnapGrid } from '@braks/vue-flow'
-import { ConnectionMode, Controls, MiniMap, Position, VueFlow, isEdge, useVueFlow } from '@braks/vue-flow/src/index'
+import { ConnectionMode, Controls, MiniMap, Position, VueFlow, isEdge, useVueFlow } from '@braks/vue-flow'
 import ColorSelectorNode from './ColorSelectorNode.vue'
 
 const elements = ref<Elements>([])
