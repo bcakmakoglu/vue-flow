@@ -34,7 +34,7 @@ Together we call them
 [<span class="font-bold text-green-500">elements</span>](/typedocs/types/Elements.html/).
 
 <span class="font-bold text-blue-500">Each element needs a unique id.</span>
-A node also needs a [xy-position](typedocs/interfaces/XYPosition.html). An edge needs at least a
+A node also needs a [xy-position](/typedocs/interfaces/XYPosition.html/). An edge needs at least a
 source (node id) and a target (node id).
 
 ```vue:no-line-numbers
