@@ -2,6 +2,50 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Miscellaneous Tasks
+
+- Remove repository ref from changelog workflow ([b4d123c](b4d123cab54d579019e58c528d31847076a9a46d))
+- Allow manual workflow dispatch ([2e1150c](2e1150c32fa39773b000477c90c7c9612c3a777b))
+- Add name to changelog workflow ([e154b60](e154b60a6a38b0c8e22b17be6e4510ce8b3ec1bc))
+- Use fetch-depth 0 ([14a1843](14a1843d9b3d4d58474bb1ee78fa7152c4064c57))
+
+## [0.4.23] - 2022-06-16
+
+[893b35b](893b35b519573276a19b3b2e45f19ed79361c84b)...[c866df6](c866df6d0615f0e92701fb8eb544744f8aeeeb8c)
+
+### Documentation
+
+- Improve teleport example with transitions ([2de1215](2de121509efe22e2be48f8e433161d3e96f9f423))
+- Add multiple transition animations to teleport example ([597f799](597f799fa442e228e21910ee40cbc5970671be71))
+- Set `inheritAttrs` to false on teleportable nodes ([77e481b](77e481bddb757f895214c4a61870f655b7cb04f0))
+- Use `updateNodeInternals` in teleport example ([47bc652](47bc652c468deaa994f2a3a407a86b434f59c509))
+- Fix docs links ([2526d76](2526d76a2ef62be0834d4f972fdf6c2c5989a406))
+- Add documentation on `autoConnect` option ([5a563e4](5a563e45b6024ef09bc815e25c5339cf83b6c709))
+
+### Features
+
+- Add `autoConnect` option ([e047be6](e047be6854da3c4ed97fb7e270e85fd3b8bc3628))
+
+### Miscellaneous Tasks
+
+- Add workflow to generate changelog on `v*`-tags push ([87ad709](87ad709e5eccfda91f95bf73ce8b563518cf1f30))
+- Move update position into own function ([c2303f4](c2303f4c2fb0af22dfd6a1a1ec2e9ed5b78950ab))
+- Rename postrelease script to changelog ([4a2345b](4a2345b533ea6ec6dd095ecbe83ec320e88dadfa))
+- Bump version ([c866df6](c866df6d0615f0e92701fb8eb544744f8aeeeb8c))
+
+### Refactor
+
+- Move `position: absolute` to required handle styles ([8e911de](8e911deaa77fd48fcae0e31fbfcda70167f27bc8))
+- Remove ctrl key from drag filter condition ([1aa9230](1aa9230fe4a3cf8f849de4ca6dfc7194d6882069))
+- Add `updateNodeInternals` action ([648350c](648350cdedadd4afa4ec58b339a7e67b2a3df539))
+- Remove computed position as prop from custom nodes ([4b824b5](4b824b527ff66f26d953df30ecc6e9ba28d02293))
+
+### Examples
+
+- Fix import path ([942a122](942a122fcb4d2dbabdafb70a925499bfeef96a9e))
+
 ## [0.4.22] - 2022-06-15
 
 [59b6424](59b64242d5de5b710f6e6557d5256db9b1021be7)...[893b35b](893b35b519573276a19b3b2e45f19ed79361c84b)
