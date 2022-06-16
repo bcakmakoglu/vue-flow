@@ -722,6 +722,58 @@ const elements = ref([
 
   Does not work for the `addEdge` utility!
 
+### auto-connect <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+
+- Type: `boolean` | [`Connector`](/typedocs/types/Connector.html/)
+
+- Default: `false`
+
+- Details:
+
+  When connection is emitted, automatically create a new edge from params.
+
+  Also accepts a [`Connector`](/typedocs/types/Connector.html/) which returns an edge-like object or false (if creating an edge is not allowed).
+
+  This option can be used as a shorthand for `onConnect((params) => addEdges([params]))`.
+
+#### Examples
+
+##### Boolean value
+
+```vue:no-line-numbers{2}
+<template>
+  <VueFlow v-model="elements" auto-connect />
+</template>
+```
+
+#### [Connector](/typedocs/types/Connector.html/)
+
+```vue:no-line-numbers{6-18,22}
+<script setup>
+import { ref } from 'vue'
+
+const elements = ref([/** elements omitted for simplicity */])
+
+const connector = (params) => {
+  if (params.source.id === params.target.id) {
+    return false
+  }
+  
+  return {
+    id: `edge-${params.source.id}-${params.target.id}`,
+    source: params.source.id,
+    target: params.target.id,
+    label: `Edge ${params.source.id}-${params.target.id}`,
+    animated: true,
+  }
+}
+</script>
+
+<template>
+  <VueFlow v-model="elements" :auto-connect="connector" />
+</template>
+```
+
 ## Global Element Options
 
 ### only-render-visible-elements <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
