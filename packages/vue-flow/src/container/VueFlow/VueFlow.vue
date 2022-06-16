@@ -84,6 +84,7 @@ const emit = defineEmits<{
   (event: 'edgeUpdateStart', edgeMouseEvent: MouseEvent): void
   (event: 'edgeUpdate', edgeMouseEvent: MouseEvent): void
   (event: 'edgeUpdateEnd', edgeMouseEvent: MouseEvent): void
+  (event: 'updateNodeInternals', id: string): void
 
   /** v-model event definitions */
   (event: 'update:modelValue', value: FlowElements): void

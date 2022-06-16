@@ -30,6 +30,7 @@ const {
   multiSelectionActive,
   removeSelectedElements,
   getSelectedNodes,
+  onUpdateNodeInternals,
 } = $(useVueFlow())
 
 const node = $computed(() => getNode(id)!)
@@ -65,6 +66,29 @@ watch(
   },
   { flush: 'post' },
 )
+
+onUpdateNodeInternals((updateIds) => {
+  if (updateIds.includes(id)) {
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+
+    const xyzPos = {
+      x: node.position.x,
+      y: node.position.y,
+      z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
+    }
+
+    if (parentNode) {
+      if (parentNode.computedPosition.x && parentNode.computedPosition.y) {
+        node.computedPosition = getXYZPos(
+          { x: parentNode.computedPosition.x, y: parentNode.computedPosition.y, z: parentNode.computedPosition.z! },
+          xyzPos,
+        )
+      } else {
+        node.computedPosition = xyzPos
+      }
+    }
+  }
+})
 
 onBeforeUnmount(() => observer.stop())
 
@@ -206,7 +230,6 @@ export default {
       :source-position="node.sourcePosition"
       :label="node.label"
       :drag-handle="node.dragHandle"
-      :node-element="nodeElement"
     />
   </div>
 </template>
