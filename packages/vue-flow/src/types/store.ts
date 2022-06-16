@@ -1,7 +1,7 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { Dimensions, ElementData, Elements, FlowElements, FlowExportObject, FlowOptions, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
-import type { Connection, ConnectionLineType, ConnectionMode } from './connection'
+import type { Connection, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport, ViewportFunctions } from './zoom'
@@ -88,6 +88,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
 
   initialized: boolean
   applyDefault: boolean
+  autoConnect: boolean | Connector
 
   fitViewOnInit?: boolean
 
