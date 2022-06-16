@@ -1,3 +1,5 @@
+name: changelog
+
 on:
   workflow_dispatch:
   push:
