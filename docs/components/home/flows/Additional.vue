@@ -106,7 +106,7 @@ onPaneReady((i) => emit('pane', i))
         <br />
         Plus it's built for composition, making the access of the internal state easy as can be!
       </p>
-      <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
+      <router-link class="docs-button max-w-max" to="/guide/"> Documentation </router-link>
     </div>
   </div>
 </template>

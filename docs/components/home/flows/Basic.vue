@@ -111,7 +111,7 @@ onConnect((param) => {
         Vue Flow comes with built-in features like zoom & pan and dedicated controls, single & multi-selections, draggable
         elements, customizable nodes and edges and a bunch of event handlers.
       </p>
-      <router-link class="button max-w-max" to="/guide/"> Documentation </router-link>
+      <router-link class="docs-button max-w-max" to="/guide/"> Documentation </router-link>
     </div>
   </div>
   <div
