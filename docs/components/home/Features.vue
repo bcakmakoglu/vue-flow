@@ -54,9 +54,3 @@ onBeforeUnmount(stop)
     </div>
   </div>
 </template>
-
-<style>
-.button {
-  @apply z-1 shadow-lg transition-colors duration-200 text-white font-semibold text-lg mt-4 px-5 py-3 rounded-lg bg-green-500;
-}
-</style>
