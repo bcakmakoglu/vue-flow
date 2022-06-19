@@ -58,7 +58,7 @@ export default defineUserConfig({
     [
       docsearchPlugin({
         appId: 'F7BJNSM4M5',
-        apiKey: process.env.ALGOLIA_API_KEY,
+        apiKey: process.env.ALGOLIA_API_KEY!,
         indexName: 'vueflow',
       })
     ],

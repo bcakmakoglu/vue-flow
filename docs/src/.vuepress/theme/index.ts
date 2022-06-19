@@ -76,6 +76,7 @@ export default {
               children: [
                 '/guide/components/background',
                 '/guide/components/minimap',
+                '/guide/components/minimap-node',
                 '/guide/components/controls',
                 '/guide/components/control-button',
               ],

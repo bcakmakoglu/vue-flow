@@ -1,6 +1,7 @@
 import { defineConfig } from 'windicss/helpers'
 import { resolve } from 'path'
 import typography from 'windicss/plugin/typography'
+// @ts-ignore
 import scrollbar from '@windicss/plugin-scrollbar'
 
 export default defineConfig({
