@@ -1,5 +1,8 @@
 # MiniMap Node
 
+The minimap node component can be used to extend the default minimap nodes.
+You can use it to add an icon to your node, or to add a custom tooltip etc.
+
 ## Usage
 
 To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide/components/minimap.html/) component.
@@ -17,18 +20,6 @@ To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide
 ```
 
 ## Props
-
-id: string
-parentNode?: string
-selected?: boolean
-dragging?: boolean
-position: XYPosition
-dimensions: Dimensions
-borderRadius?: number
-color?: string
-shapeRendering?: ShapeRendering
-strokeColor?: string
-strokeWidth?: number
 
 | Name           | Definition                      | Type                                                | Optional | Default |
 |----------------|---------------------------------|-----------------------------------------------------|----------|---------|
