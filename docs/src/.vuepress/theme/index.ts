@@ -58,7 +58,23 @@ export default {
             '/guide/theming',
             {
               text: 'Vue Flow',
-              children: ['/guide/vue-flow/config', '/guide/vue-flow/state', '/guide/vue-flow/slots'],
+              children: [
+                '/guide/vue-flow/config',
+                '/guide/vue-flow/state',
+                {
+                  text: 'Actions',
+                  link: '/typedocs/interfaces/Actions',
+                },
+                {
+                  text: 'Getters',
+                  link: '/typedocs/interfaces/Getters',
+                },
+                {
+                  text: 'Events',
+                  link: '/typedocs/interfaces/FlowEvents'
+                },
+                '/guide/vue-flow/slots'
+              ],
             },
             '/guide/node',
             '/guide/edge',
