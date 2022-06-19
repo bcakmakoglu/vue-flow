@@ -12,7 +12,7 @@ To use the minimap simply pass the `MiniMap` component as a child to the `VueFlo
 </template>
 ```
 
-## Props
+## [Props](/typedocs/interfaces/MiniMapProps.html/)
 
 | Name             | Definition               | Type                                                             | Optional | Default                 |
 |------------------|--------------------------|------------------------------------------------------------------|----------|-------------------------|

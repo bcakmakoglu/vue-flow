@@ -2,7 +2,7 @@
 
 Vue Flow allows you to configure zoom, graph and flow behavior.
 Configuration can be passed either as props to the `VueFlow` component or
-as options to the `useVueFlow` composable.
+as options to the [`useVueFlow`](/guide/composables.html#usevueflow/) composable.
 
 <CodeGroup>
   <CodeGroupItem title="Props" active>
@@ -36,7 +36,8 @@ useVueFlow({
 
 ## Updating Config
 
-You can update the configuration at any point, either by having them bound as props or using the state values returned by `useVueFlow`.
+You can update the configuration at any point, either by having them bound as props or using the state values returned
+by `useVueFlow`.
 
 <CodeGroup>
   <CodeGroupItem title="Props" active>
@@ -269,7 +270,8 @@ const edges = ref([
 
   Enable/disable default state update handlers.
 
-  If you want to have full control of state changes, you can disable the default behavior and apply your own change handlers to the state.
+  If you want to have full control of state changes, you can disable the default behavior and apply your own change
+  handlers to the state.
 
 - Example:
 
@@ -312,7 +314,7 @@ const edges = ref([
 - Details:
 
   The path to use when drawing a connection-line (`bezier`, `step`, `smoothstep`).
-  
+
   When using a custom connection line this prop does nothing.
 
 ### connection-line-style <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
@@ -343,7 +345,7 @@ const edges = ref([
 
 - Details:
 
-  Define a key which can be used to activate zoom. 
+  Define a key which can be used to activate zoom.
 
   Overwrites zoom-on-scroll or pan-on-scroll behavior as long as the key is pressed.
 
@@ -405,7 +407,7 @@ const edges = ref([
 
   Specify on which axis panning is allowed (x, y or both).
 
-### pan-on-drag <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" /> 
+### pan-on-drag <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
 - Old name: `paneMovable`
 
@@ -435,7 +437,8 @@ const edges = ref([
 
 - Details:
 
-  Set a class name which prevents elements from triggering wheel-scroll events (thus disabling zoom/pan-scroll behavior on the element).
+  Set a class name which prevents elements from triggering wheel-scroll events (thus disabling zoom/pan-scroll behavior
+  on the element).
 
   Useful if you want to allow for scrolling _inside_ a node
 
@@ -481,7 +484,7 @@ const edges = ref([
 
 - Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent.html/)
 
-- Default: 
+- Default:
 
 ```ts:no-line-numbers
 [
@@ -528,7 +531,6 @@ const edges = ref([
 
   Define a key which can be used to activate remove elements from the pane.
 
-
 ## Global Node Options
 
 ### nodes-draggable <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
@@ -539,7 +541,7 @@ const edges = ref([
 
 - Details:
 
-  Globally enable/disable dragging nodes. 
+  Globally enable/disable dragging nodes.
 
   Can be overwritten by setting `draggable` on a specific node element.
 
@@ -708,7 +710,7 @@ const elements = ref([
 
 - Details:
 
-  Allow edges to be created by clicking two handles in a row. 
+  Allow edges to be created by clicking two handles in a row.
 
   Useful if you want to enable creating edges on a touch device.
 
@@ -732,7 +734,8 @@ const elements = ref([
 
   When connection is emitted, automatically create a new edge from params.
 
-  Also accepts a [`Connector`](/typedocs/types/Connector.html/) which returns an edge-like object or false (if creating an edge is not allowed).
+  Also accepts a [`Connector`](/typedocs/types/Connector.html/) which returns an edge-like object or false (if creating
+  an edge is not allowed).
 
   This option can be used as a shorthand for `onConnect((params) => addEdges([params]))`.
 

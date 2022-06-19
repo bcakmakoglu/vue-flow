@@ -54,10 +54,10 @@ export default defineComponent({
 </template>
 ```
 
-For more
-advanced graphs that require more state access you will want to use the useVueFlow composable. UseVueFlow will provide
-you with an
-`addNodes` utility function, which you can use to add nodes directly to the state.
+For more advanced graphs that require more state access you will want to use the useVueFlow composable.
+[useVueFlow](/typedocs/functions/useVueFlow.html/) will provide
+you with an [`addEdges`](/typedocs/interfaces/Actions.html#addedges/) utility function, which you can use to add edges
+directly to the state.
 
 ```vue:no-line-numbers
 <script setup>
@@ -98,15 +98,14 @@ onMounted(() => {
 </template>
 ```
 
-You can also apply changes (like removing elements safely) using the `applyEdgeChanges` utility function, which expects an array of changes to be
-applied to the currently stored edges.
+You can also apply changes (like removing elements safely) using
+the [`applyEdgeChanges`](/typedocs/interfaces/Actions.html#applyedgechanges/) utility function, which expects an array
+of [changes](/typedocs/types/EdgeChange.html/) to be applied to the currently stored edges.
 
-## Default Edge-Types
+## [Default Edge-Types](typedocs/types/DefaultEdgeTypes.html/)
 
-Vue Flow comes with built-in nodes that you can use right out of the box.
-These node types include `default`, `input` and `output`.
-
-You can set a label on each of these types.
+Vue Flow comes with built-in edges that you can use right out of the box.
+These edge types include `default` (bezier), `step`, `smoothstep` and `straight`.
 
 ### Default Edge (Bezier)
 
@@ -231,10 +230,12 @@ const elements = ref([
 
 ### Edge-types object
 
-You can also define edge-types by passing an object as a prop to the VueFlow component (or as an option to the composable).
+You can also define edge-types by passing an object as a prop to the VueFlow component (or as an option to the
+composable).
 
 ::: warning
-When doing this, mark your components as raw (using the designated function from the vue library) to avoid them being turned into reactive objects.
+When doing this, mark your components as raw (using the designated function from the vue library) to avoid them being
+turned into reactive objects.
 Otherwise, vue will throw a warning in the console.
 :::
 
@@ -317,7 +318,7 @@ const elements = ref([
 </template>
 ```
 
-### Custom Edge Props
+### [Custom Edge Props](/typedocs/interfaces/EdgeProps.html/)
 
 Your custom edges are wrapped so that the basic functions like selecting work.
 But you might want to extend on that functionality or implement your own business logic inside of edges, therefore
@@ -351,5 +352,3 @@ your edges receive the following props:
 | markerStart         | Edge marker                 | string            | true     |
 | markerEnd           | Edge marker                 | string            | true     |
 | curvature           | Edge path curvature         | number            | true     |
-
-You can find the full description [here](/typedocs/interfaces/EdgeProps.html/).

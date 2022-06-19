@@ -2,10 +2,11 @@
 
 Under the hood Vue Flow uses [Provide/Inject](https://v3.vuejs.org/guide/component-provide-inject.html)
 to pass around it's state between components.
-You can access the internal state through the `useVueFlow` composable.
+You can access the internal state through the [`useVueFlow`](/guide/composables.html#usevueflow/) composable.
 
-`useVueFlow` can be used to either create a new state instance and inject it into the current component tree or inject
-an already existing store from the current context. 
+[`useVueFlow`](/guide/composables.html#usevueflow/) can be used to either create a new state instance and inject it into
+the current component tree or inject
+an already existing store from the current context.
 Internal state can be manipulated, for example by adding new elements to the state. The
 state is reactive and changes will be reflected on the graph.
 
@@ -27,7 +28,8 @@ watch(getNodes, (nodes) => console.log('nodes changed', nodes))
 
 ## Accessing Internal State
 
-Using the composition API also allows us to pass the state around outside the current component context, thus we have a lot more flexibility when  it comes
+Using the composition API also allows us to pass the state around outside the current component context, thus we have a
+lot more flexibility when it comes
 to reading, writing and updating the state.
 
 Consider this example, where we want to create a Sidebar that allows us to select all nodes.
@@ -44,10 +46,13 @@ Consider this example, where we want to create a Sidebar that allows us to selec
 </template>
 ```
 
-We could pass all necessary info as props to the Sidebar, which could become either tedious or result in prop drilling, which we want to avoid.
-In this example it wouldn't be a big issue but if our destination was 3 components deep, it would become hard to track the flow of information.
+We could pass all necessary info as props to the Sidebar, which could become either tedious or result in prop drilling,
+which we want to avoid.
+In this example it wouldn't be a big issue but if our destination was 3 components deep, it would become hard to track
+the flow of information.
 
-Instead, we can initialize a Vue Flow store instance __before__ the Sidebar is initialized, thus the instance becomes available as an injection in the component tree.
+Instead, we can initialize a Vue Flow store instance __before__ the Sidebar is initialized, thus the instance becomes
+available as an injection in the component tree.
 
 ```vue:no-line-numbers{5-6}
 <script>
@@ -85,14 +90,17 @@ const selectAll = () => {
 ```
 
 ::: tip
-If you have multiple store instances in the same context, make sure to give them a unique id in order to guarantee access to the correct instance.
-Otherwise `useVueFlow` will try to inject the first instance it can find in the current context, which would usually be the last one that has been injected.
-::: 
+If you have multiple store instances in the same context, make sure to give them a unique id in order to guarantee
+access to the correct instance.
+Otherwise `useVueFlow` will try to inject the first instance it can find in the current context, which would usually be
+the last one that has been injected.
+:::
 
 ## State Updates
 
 State updates like removing elements or updating positions are applied by default.
-If you want to strictly control state changes you can disable this behavior by setting the `applyDefault` option/prop to `false`.
+If you want to strictly control state changes you can disable this behavior by setting the `applyDefault` option/prop
+to `false`.
 
 ```vue:no-line-numbers
 <div style="height: 300px">
@@ -100,14 +108,16 @@ If you want to strictly control state changes you can disable this behavior by s
 </div>
 ```
 
-State changes are emitted by the `onNodesChange` or `onEdgesChange` events, which will provide an array of changes that have been triggered.
+State changes are emitted by the `onNodesChange` or `onEdgesChange` events, which will provide an array of changes that
+have been triggered.
 To take control of state changes you can implement your own state update handlers or use the state helper functions that
 come with the library to mix it up.
 
 ## Access State in Options API
 
 `useVueFlow` was designed to be used in the composition API, __but__ it is still possible to use it in the options API.
-Though it is necessary to pass a unique id for your Vue Flow state instance, otherwise a look-up will fail and Vue Flow will create a new state instance 
+Though it is necessary to pass a unique id for your Vue Flow state instance, otherwise a look-up will fail and Vue Flow
+will create a new state instance
 when mounted.
 
 ```vue:no-line-numbers{4,32}

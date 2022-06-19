@@ -50,10 +50,10 @@ export default defineComponent({
 </template>
 ```
 
-For more
-advanced graphs that require more state access you will want to use the useVueFlow composable. UseVueFlow will provide
-you with an
-`addNodes` utility function, which you can use to add nodes directly to the state.
+For more advanced graphs that require more state access you will want to use the useVueFlow composable.
+[useVueFlow](/typedocs/functions/useVueFlow.html/) will provide
+you with an [`addNodes`](/typedocs/interfaces/Actions.html#addnodes/) utility function, which you can use to add nodes
+directly to the state.
 
 ```vue:no-line-numbers
 <script setup>
@@ -88,8 +88,8 @@ onMounted(() => {
 </template>
 ```
 
-You can also apply changes (like removing elements safely) using the `applyNodeChanges` utility function, which expects an array of changes to be
-applied to the currently stored nodes.
+You can also apply changes using the [`applyNodeChanges`](/typedocs/interfaces/Actions.html#applynodechanges/) utility function,
+which expects an array of [changes](/typedocs/types/NodeChange.html/) to be applied to the currently stored nodes.
 
 ```vue:no-line-numbers
 <script setup>
@@ -123,12 +123,10 @@ onMounted(() => {
 </template>
 ```
 
-## Default Node-Types
+## [Default Node-Types](/typedocs/types/DefaultNodeTypes.html/)
 
 Vue Flow comes with built-in nodes that you can use right out of the box.
 These node types include `default`, `input` and `output`.
-
-You can set a label on each of these types.
 
 ### Default Node
 
@@ -224,10 +222,12 @@ const elements = ref([
 
 ### Node-types object
 
-You can also define node-types by passing an object as a prop to the VueFlow component (or as an option to the composable).
+You can also define node-types by passing an object as a prop to the VueFlow component (or as an option to the
+composable).
 
 ::: warning
-When doing this, mark your components as raw (using the designated function from the vue library) to avoid them being turned into reactive objects.
+When doing this, mark your components as raw (using the designated function from the vue library) to avoid them being
+turned into reactive objects.
 Otherwise, vue will throw a warning in the console.
 :::
 
@@ -263,7 +263,7 @@ const elements = ref([
 ```
 
 ::: tip
-You can find a more advanced example [here](/examples/custom-node.html).
+You can find a more advanced example [here](/examples/custom-node.html/).
 :::
 
 ### Node Template
@@ -304,7 +304,7 @@ const elements = ref([
 </template>
 ```
 
-### Custom Node Props
+### [(Custom) Node Props](/typedocs/interfaces/NodeProps.html/)
 
 Your custom nodes are wrapped so that the basic functions like dragging or selecting work.
 But you might want to extend on that functionality or implement your own business logic inside of nodes, therefore
@@ -331,9 +331,6 @@ your nodes receive the following props:
 | sourcePosition   | Source handle position                           | Position          | true     |
 | dragHandle       | Node drag handle class                           | string            | true     |
 
-
-You can find the full description [here](/typedocs/interfaces/NodeProps.html/).
-
 ## Styling
 
 ::: tip
@@ -354,6 +351,7 @@ When you create a new node type you also need to implement some styling. Your cu
 
 ### Allow scrolling inside a node
 
-You can use the `noWheelClassName` prop to define a class which will prevent zoom-on-scroll or pan-on-scroll behavior on that element.
+You can use the `noWheelClassName` prop to define a class which will prevent zoom-on-scroll or pan-on-scroll behavior on
+that element.
 By default the `noWheelClassName` is `.nowheel`.
 By adding this class you can also enable scrolling inside a node.

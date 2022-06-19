@@ -19,7 +19,7 @@ To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide
 </template>
 ```
 
-## Props
+## [Props](/typedocs/interfaces/MiniMapNodeProps.html/)
 
 | Name           | Definition                      | Type                                                | Optional | Default |
 |----------------|---------------------------------|-----------------------------------------------------|----------|---------|

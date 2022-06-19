@@ -14,7 +14,7 @@ To use the controls simply pass the `Controls` component as a child to the `VueF
 </template>
 ```
 
-## Props
+## [Props](/typedocs/interfaces/ControlProps.html/)
 
 | Name            | Definition                | Type                                                 | Optional | Default |
 |-----------------|---------------------------|------------------------------------------------------|----------|---------|

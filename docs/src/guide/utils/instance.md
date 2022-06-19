@@ -1,7 +1,8 @@
 # Viewport Functions
 
-Viewport Functions can be accessed via the `useVueFlow` utility or with the `VueFlowStore` instance provided by
-`onPaneReady`.
+Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables.html#usevueflow/)
+utility or with the [`VueFlowStore`](/typedocs/types/VueFlowStore.html/)
+instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents.html#paneready/).
 
 <CodeGroup>
   <CodeGroupItem title="Composition API" active>
@@ -45,6 +46,7 @@ export default defineComponent({
   <VueFlow @pane-ready="onPaneReady" />
 </template>
 ```
+
   </CodeGroupItem>
 </CodeGroup>
 
@@ -112,7 +114,6 @@ vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 
   Zooms in.
 
-
 ### [zoomOut](/typedocs/types/ZoomInOut.html/)
 
 - Details:
@@ -125,25 +126,25 @@ vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 
   Zooms to specific level.
 
-### getElements
+### [getElements](/typedocs/interfaces/Getters.html#getelements/)
 
 - Details:
 
   Returns currently stored elements (nodes + edges).
 
-### getNodes
+### [getNodes](/typedocs/interfaces/Getters.html#getnodes/)
 
 - Details:
 
   Returns currently stored nodes.
 
-### getEdges
+### [getEdges](/typedocs/interfaces/Getters.html#getedges/)
 
 - Details:
 
   Returns currently stored edges.
 
-### toObject
+### [toObject](/typedocs/interfaces/Actions.html#toobject/)
 
 - Details:
 

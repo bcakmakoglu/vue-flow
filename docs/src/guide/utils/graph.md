@@ -1,6 +1,6 @@
 # Graph
 
-### isEdge
+### [isEdge](/typedocs/functions/isEdge.html/)
 
 - Details:
 
@@ -34,7 +34,7 @@ const toggleClass = () => {
 </template>
 ```
 
-### isNode
+### [isNode](/typedocs/functions/isNode.html/)
 
 - Details:
 
@@ -68,10 +68,11 @@ const toggleClass = () => {
 </template>
 ```
 
-### addEdge
+### [addEdge](/typedocs/functions/isEdge.html/)
 
 ::: warning
-When using composition you should access `addEdges` from `useVueFlow`
+In the composition API you should use [`addEdges`](/typedocs/types/AddEdges.html/)
+of [`useVueFlow`](/guide/composables.html#usevueflow/)
 :::
 
 - Details:
@@ -100,10 +101,11 @@ const onConnect = (params) => {
 </template>
 ```
 
-### updateEdge
+### [updateEdge](/typedocs/functions/updateEdge.html)
 
 ::: warning
-When using composition you should access `updateEdge` from `useVueFlow`
+In the composition API you use access [`updateEdge`](/typedocs/types/UpdateEdge.html)
+of [`useVueFlow`](/guide/composables.html#usevueflow/)
 :::
 
 - Details:
@@ -132,31 +134,31 @@ const onEdgeUpdate = ({ edge, connection }) => {
 </template>
 ```
 
-### getOutgoers
+### [getOutgoers](/typedocs/functions/getOutgoers.html/)
 
 - Details:
 
   Returns all target elements of a node.
 
-### getIncomers
+### [getIncomers](/typedocs/functions/getIncomers.html/)
 
 - Details:
 
   Returns all source elements of a node.
 
-### getConnectedEdges
+### [getConnectedEdges](/typedocs/functions/getConnectedEdges.html/)
 
 - Details:
 
   Returns all connected edges of a node.
 
-### getTransformForBounds
+### [getTransformForBounds](/typedocs/functions/getTransformForBounds.html/)
 
 - Details:
 
   Returns a transformation for the viewport according to input bounds.
 
-### getRectOfNodes
+### [getRectOfNodes](/typedocs/functions/getRectOfNodes.html/)
 
 - Details:
 
@@ -164,13 +166,13 @@ const onEdgeUpdate = ({ edge, connection }) => {
 
   Useful when you need to know the boundaries of a set of nodes.
 
-### getNodesInside
+### [getNodesInside](/typedocs/functions/getNodesInside.html/)
 
 - Details:
 
   Returns node elements that are inside a specified rect.
 
-### getMarkerId
+### [getMarkerId](/typedocs/functions/getMarkerId.html/)
 
 - Details:
 

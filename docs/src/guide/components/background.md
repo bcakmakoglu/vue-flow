@@ -14,7 +14,7 @@ To use the background simply pass the `Background` component as a child to the `
 </template>
 ```
 
-## Props
+## [Props](/typedocs/interfaces/BackgroundProps.html/)
 
 | Name         | Definition        | Type                                                         | Optional | Default |
 |--------------|-------------------|--------------------------------------------------------------|----------|---------|

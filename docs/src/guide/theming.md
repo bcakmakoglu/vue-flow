@@ -72,7 +72,7 @@ const nodes = ref<Node[]>([
 ])
 ```
 
-### Using CSS variables
+### [Using CSS variables](typedocs/types/CSSVars.html/)
 
 Some theme stylings can be overwritten by using css variables.
 These variables can either be applied globally or you can define them on an element basis.
