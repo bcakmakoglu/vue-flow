@@ -1,5 +1,5 @@
 {
-  "name": "tests",
+  "name": "@vue-flow/tests",
   "version": "0.0.0",
   "private": true,
   "scripts": {

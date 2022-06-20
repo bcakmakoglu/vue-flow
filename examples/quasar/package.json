@@ -1,5 +1,5 @@
 {
-  "name": "quasar-examples",
+  "name": "@vue-flow/quasar-examples",
   "version": "0.0.1",
   "description": "Vue Flow Quasar Examples",
   "productName": "Quasar App",

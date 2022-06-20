@@ -1,5 +1,5 @@
 {
-  "name": "@braks/vue-flow-monorepo",
+  "name": "@vue-flow/monorepo",
   "version": "0.0.0",
   "private": true,
   "scripts": {

@@ -1,5 +1,5 @@
 {
-  "name": "@braks/vue-flow",
+  "name": "@vue-flow/renderer",
   "version": "0.4.23",
   "private": false,
   "license": "MIT",

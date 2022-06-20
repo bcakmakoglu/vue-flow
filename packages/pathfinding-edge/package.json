@@ -1,5 +1,5 @@
 {
-  "name": "@braks/vue-flow-pathfinding-edge",
+  "name": "@vue-flow/pathfinding-edge",
   "version": "0.2.2",
   "private": false,
   "repository": {
