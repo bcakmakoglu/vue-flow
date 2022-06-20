@@ -340,3 +340,31 @@ export const getMarkerId = (marker: EdgeMarkerType | undefined): string => {
     .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
     .join('&')
 }
+
+export const getParentTree = (node: GraphNode | string, elements: Elements): Record<string, GraphNode> => {
+  const tree: Record<string, any> = {}
+
+  const elementIds = elements.map((el) => el.id)
+
+  const getParent = (node: GraphNode): GraphNode | undefined => {
+    if (!node.parentNode) return undefined
+
+    const parent = elements.find((el) => el.id === node.parentNode) as GraphNode
+
+    if (!parent) return undefined
+
+    if (tree[node.id]) return undefined
+
+    tree[node.id] = parent
+
+    return parent
+  }
+
+  while (true) {
+    const parent = typeof node === 'string' ? getParent(elements[elementIds.indexOf(node)] as GraphNode) : getParent(node)
+    if (!parent) break
+    node = parent
+  }
+
+  return tree
+}

@@ -26,6 +26,7 @@ export {
   graphPosToZoomedPos,
   getNodesInside,
   getMarkerId,
+  getParentTree,
 } from './utils/graph'
 
 /**
