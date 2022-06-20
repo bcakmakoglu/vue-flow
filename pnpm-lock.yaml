@@ -28,11 +28,11 @@ importers:
     specifiers:
       '@animxyz/core': ^0.6.6
       '@animxyz/vue3': ^0.6.6
-      '@braks/vue-flow': workspace:*
       '@iconify/json': ^2.1.58
       '@stackblitz/sdk': ^1.6.0
       '@types/canvas-confetti': ^1.4.2
       '@types/node': ^17.0.41
+      '@vue-flow/renderer': workspace:*
       '@vue/repl': 1.1.2
       '@vuepress/bundler-vite': ^2.0.0-beta.46
       '@vuepress/plugin-docsearch': ^2.0.0-beta.46
@@ -53,8 +53,8 @@ importers:
     dependencies:
       '@animxyz/core': 0.6.6
       '@animxyz/vue3': 0.6.6_vue@3.2.37
-      '@braks/vue-flow': link:../packages/vue-flow
       '@stackblitz/sdk': 1.6.0
+      '@vue-flow/renderer': link:../packages/vue-flow
       '@vue/repl': 1.1.2_vue@3.2.37
       blobity: 0.1.7_react@18.1.0
       canvas-confetti: 1.5.1
@@ -79,13 +79,13 @@ importers:
 
   e2e:
     specifiers:
-      '@braks/vue-flow': workspace:*
       '@cypress/vite-dev-server': ^2.2.1
       '@cypress/vue': ^3.0.5
       '@vitejs/plugin-vue': ^2.2.0
+      '@vue-flow/renderer': workspace:*
       cypress: 8.5.0
     dependencies:
-      '@braks/vue-flow': link:../packages/vue-flow
+      '@vue-flow/renderer': link:../packages/vue-flow
     devDependencies:
       '@cypress/vite-dev-server': 2.2.3_vite@2.9.10
       '@cypress/vue': 3.1.2_cypress@8.5.0+vue@3.2.37
@@ -94,26 +94,26 @@ importers:
 
   examples/nuxt3:
     specifiers:
-      '@braks/vue-flow': workspace:*
+      '@vue-flow/renderer': workspace:*
       nuxt: 3.0.0-rc.3
     dependencies:
-      '@braks/vue-flow': link:../../packages/vue-flow
+      '@vue-flow/renderer': link:../../packages/vue-flow
     devDependencies:
       nuxt: 3.0.0-rc.3_rollup@2.75.6+vite@2.9.10
 
   examples/quasar:
     specifiers:
-      '@braks/vue-flow': workspace:*
       '@quasar/app-vite': ^1.0.0
       '@quasar/extras': ^1.0.0
       '@types/node': ^12.20.21
+      '@vue-flow/renderer': workspace:*
       autoprefixer: ^10.4.2
       quasar: ^2.6.0
       vue: ^3.2.15
       vue-router: ^4.0.0
     dependencies:
-      '@braks/vue-flow': link:../../packages/vue-flow
       '@quasar/extras': 1.14.0
+      '@vue-flow/renderer': link:../../packages/vue-flow
       quasar: 2.7.1
       vue: 3.2.37
       vue-router: 4.0.15_vue@3.2.37
@@ -124,9 +124,9 @@ importers:
 
   examples/vite:
     specifiers:
-      '@braks/vue-flow': workspace:*
       '@types/dagre': ^0.7.46
       '@vitejs/plugin-vue': ^2.2.0
+      '@vue-flow/renderer': workspace:*
       dagre: ^0.8.5
       unplugin-auto-import: ^0.6.8
       vite: 2.5.x
@@ -135,7 +135,7 @@ importers:
       vue: ^3.2.25
       vue-router: ^4.0.12
     dependencies:
-      '@braks/vue-flow': link:../../packages/vue-flow
+      '@vue-flow/renderer': link:../../packages/vue-flow
     devDependencies:
       '@types/dagre': 0.7.47
       '@vitejs/plugin-vue': 2.3.3_vite@2.5.10+vue@3.2.37
@@ -149,9 +149,9 @@ importers:
 
   packages/pathfinding-edge:
     specifiers:
-      '@braks/vue-flow': workspace:*
       '@types/pathfinding': ^0.0.5
       '@vitejs/plugin-vue': ^2.3.3
+      '@vue-flow/renderer': workspace:*
       pathfinding: ^0.4.18
       perfect-arrows: ^0.3.7
       ts-patch: ^2.0.1
@@ -164,9 +164,9 @@ importers:
       pathfinding: 0.4.18
       perfect-arrows: 0.3.7
     devDependencies:
-      '@braks/vue-flow': link:../vue-flow
       '@types/pathfinding': 0.0.5
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.10+vue@3.2.37
+      '@vue-flow/renderer': link:../vue-flow
       ts-patch: 2.0.1_typescript@4.7.3
       typescript-transform-paths: 3.3.1_typescript@4.7.3
       unplugin-auto-import: 0.7.2_vite@2.9.10
@@ -176,8 +176,8 @@ importers:
 
   packages/resize-rotate-node:
     specifiers:
-      '@braks/vue-flow': workspace:*
       '@vitejs/plugin-vue': ^2.3.3
+      '@vue-flow/renderer': workspace:*
       '@vueuse/core': ^8.4.2
       ts-patch: ^2.0.1
       typescript-transform-paths: ^3.3.1
@@ -190,8 +190,8 @@ importers:
       '@vueuse/core': 8.6.0_vue@3.2.37
       vue3-moveable: 0.4.9_@types+react@16.9.56
     devDependencies:
-      '@braks/vue-flow': link:../vue-flow
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.10+vue@3.2.37
+      '@vue-flow/renderer': link:../vue-flow
       ts-patch: 2.0.1_typescript@4.7.3
       typescript-transform-paths: 3.3.1_typescript@4.7.3
       unplugin-auto-import: 0.7.2_tci2uj2i5wdrrn53tzwatf6w64
