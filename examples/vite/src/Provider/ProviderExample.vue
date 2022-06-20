@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements, VueFlowStore } from '@braks/vue-flow'
-import { ConnectionMode, Controls, VueFlow, useVueFlow } from '@braks/vue-flow'
+import type { Elements, VueFlowStore } from '@vue-flow/renderer'
+import { ConnectionMode, Controls, VueFlow, useVueFlow } from '@vue-flow/renderer'
 import Sidebar from './Sidebar.vue'
 
 const onLoad = (flowInstance: VueFlowStore) => console.log('flow loaded:', flowInstance)

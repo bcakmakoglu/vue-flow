@@ -1,4 +1,4 @@
-import type { Elements, XYPosition } from '@braks/vue-flow'
+import type { Elements, XYPosition } from '@vue-flow/renderer'
 
 const position: XYPosition = { x: 0, y: 0 }
 

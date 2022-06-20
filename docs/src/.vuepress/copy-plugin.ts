@@ -8,11 +8,11 @@ export function copyVueFlowPlugin(): Plugin {
     generateBundle() {
       const filePath = resolve(
         __dirname,
-        '../../node_modules/@braks/vue-flow/dist/vue-flow.es.js'
+        '../../node_modules/@vue-flow/renderer/dist/vue-flow.es.js'
       )
       if (!existsSync(filePath)) {
         throw new Error(
-          `@braks/vue-flow/dist/vue-flow.es.js not built. ` +
+          `@vue-flow/renderer/dist/vue-flow.es.js not built. ` +
           `Run "pnpm -w build" first.`
         )
       }

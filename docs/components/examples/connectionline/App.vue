@@ -1,5 +1,5 @@
 <script setup>
-import { Background, BackgroundVariant, VueFlow } from '@braks/vue-flow'
+import { Background, BackgroundVariant, VueFlow } from '@vue-flow/renderer'
 import { ref } from 'vue'
 import CustomConnectionLine from './CustomConnectionLine.vue'
 

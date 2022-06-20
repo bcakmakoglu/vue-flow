@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Connection, OnConnectStartParams, VueFlowStore } from '@braks/vue-flow'
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import type { Connection, OnConnectStartParams, VueFlowStore } from '@vue-flow/renderer'
+import { VueFlow, useVueFlow } from '@vue-flow/renderer'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
 

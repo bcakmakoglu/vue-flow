@@ -1,4 +1,4 @@
-import type { XYPosition } from '@braks/vue-flow'
+import type { XYPosition } from '@vue-flow/renderer'
 
 const gridRatio = 10
 

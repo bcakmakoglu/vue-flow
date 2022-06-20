@@ -1,5 +1,5 @@
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/renderer'
 import { ref } from 'vue'
 import Sidebar from './Sidebar.vue'
 import TeleportableNode from './TeleportableNode.vue'

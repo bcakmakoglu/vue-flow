@@ -34,7 +34,7 @@
     "vue3-moveable": "^0.4.8"
   },
   "devDependencies": {
-    "@braks/vue-flow": "workspace:*",
+    "@vue-flow/renderer": "workspace:*",
     "@vitejs/plugin-vue": "^2.3.3",
     "ts-patch": "^2.0.1",
     "typescript-transform-paths": "^3.3.1",

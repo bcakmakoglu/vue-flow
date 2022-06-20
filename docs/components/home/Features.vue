@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import type { VueFlowStore } from '@braks/vue-flow'
+import type { VueFlowStore } from '@vue-flow/renderer'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements } from '@braks/vue-flow'
-import { Background, VueFlow, addEdge } from '@braks/vue-flow'
+import type { Connection, Edge, Elements } from '@vue-flow/renderer'
+import { Background, VueFlow, addEdge } from '@vue-flow/renderer'
 import { ref } from 'vue'
 import initialElements from './elements'
 import { PathFindingEdge, PerfectArrow } from '~/index'
@@ -31,8 +31,8 @@ const onConnect = (params: Edge | Connection) => (elements.value = addEdge(param
 </template>
 
 <style>
-@import '@braks/vue-flow/dist/style.css';
-@import '@braks/vue-flow/dist/theme-default.css';
+@import '@vue-flow/renderer/dist/style.css';
+@import '@vue-flow/renderer/dist/theme-default.css';
 
 html,
 body,

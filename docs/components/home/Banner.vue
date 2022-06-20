@@ -4,7 +4,7 @@ import Star from '~icons/carbon/star'
 import Download from '~icons/carbon/download'
 
 const githubData = await $fetch('https://api.github.com/repos/bcakmakoglu/vue-flow?page=$i&per_page=100')
-const npmData = await $fetch('https://api.npmjs.org/downloads/point/last-month/@braks/vue-flow')
+const npmData = await $fetch('https://api.npmjs.org/downloads/point/last-month/@vue-flow/renderer')
 </script>
 
 <template>

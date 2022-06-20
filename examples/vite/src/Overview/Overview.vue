@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowEvents, VueFlowStore, FlowTransform, Node, SnapGrid } from '@braks/vue-flow'
-import { Background, Controls, MarkerType, MiniMap, VueFlow, addEdge } from '@braks/vue-flow'
+import type { Connection, Edge, Elements, FlowEvents, VueFlowStore, FlowTransform, Node, SnapGrid } from '@vue-flow/renderer'
+import { Background, Controls, MarkerType, MiniMap, VueFlow, addEdge } from '@vue-flow/renderer'
 
 const onNodeDragStart = (e: FlowEvents['nodeDragStart']) => console.log('drag start', e)
 const onNodeDrag = (e: FlowEvents['nodeDrag']) => console.log('drag', e)

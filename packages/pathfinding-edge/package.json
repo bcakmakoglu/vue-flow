@@ -34,7 +34,7 @@
     "perfect-arrows": "^0.3.7"
   },
   "devDependencies": {
-    "@braks/vue-flow": "workspace:*",
+    "@vue-flow/renderer": "workspace:*",
     "@types/pathfinding": "^0.0.5",
     "@vitejs/plugin-vue": "^2.3.3",
     "ts-patch": "^2.0.1",
@@ -45,7 +45,7 @@
     "vue-tsc": "^0.35.0"
   },
   "peerDependencies": {
-    "@braks/vue-flow": "^0.4.15",
+    "@vue-flow/renderer": "^0.4.15",
     "vue": "^3.2.25"
   },
   "publishConfig": {

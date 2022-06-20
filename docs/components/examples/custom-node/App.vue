@@ -1,5 +1,5 @@
 <script setup>
-import { ConnectionMode, MiniMap, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { ConnectionMode, MiniMap, Position, VueFlow, useVueFlow } from '@vue-flow/renderer'
 import { computed, h, onMounted, ref } from 'vue'
 import ColorSelectorNode from './CustomNode.vue'
 import { presets } from './presets.js'
