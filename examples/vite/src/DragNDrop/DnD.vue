@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Node } from '@braks/vue-flow'
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import type { Node } from '@vue-flow/renderer'
+import { VueFlow, useVueFlow } from '@vue-flow/renderer'
 import Sidebar from './Sidebar.vue'
 
 let id = 0

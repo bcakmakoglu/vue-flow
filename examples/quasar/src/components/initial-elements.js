@@ -1,4 +1,4 @@
-import { MarkerType } from '@braks/vue-flow'
+import { MarkerType } from '@vue-flow/renderer'
 
 /**
  * You can pass elements together as a v-model value

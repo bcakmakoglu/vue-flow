@@ -1,5 +1,5 @@
 <script setup>
-import { Background, VueFlow, isNode } from '@braks/vue-flow'
+import { Background, VueFlow, isNode } from '@vue-flow/renderer'
 import { ref } from 'vue'
 
 const elements = ref([

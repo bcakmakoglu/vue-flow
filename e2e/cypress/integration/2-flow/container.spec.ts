@@ -1,8 +1,8 @@
 import { mount } from '@cypress/vue'
-import type { Elements } from '@braks/vue-flow'
-import { VueFlow, isEdge, isNode } from '@braks/vue-flow'
-import '@braks/vue-flow/dist/style.css'
-import '@braks/vue-flow/dist/theme-default.css'
+import type { Elements } from '@vue-flow/renderer'
+import { VueFlow, isEdge, isNode } from '@vue-flow/renderer'
+import '@vue-flow/renderer/dist/style.css'
+import '@vue-flow/renderer/dist/theme-default.css'
 
 describe('Render VueFlow', () => {
   const elements: Elements = [

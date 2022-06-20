@@ -1,5 +1,5 @@
 <script setup>
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/renderer'
 
 const flowKey = 'example-flow'
 

@@ -1,5 +1,5 @@
-import type { Elements } from '@braks/vue-flow'
-import { Position } from '@braks/vue-flow'
+import type { Elements } from '@vue-flow/renderer'
+import { Position } from '@vue-flow/renderer'
 
 const nodeWidth = 80
 const nodeGapWidth = nodeWidth * 2

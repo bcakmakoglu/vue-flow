@@ -1,5 +1,5 @@
 <script setup>
-import { VueFlow, isNode, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, isNode, useVueFlow } from '@vue-flow/renderer'
 import { nextTick, ref } from 'vue'
 import { getElements } from './utils.js'
 

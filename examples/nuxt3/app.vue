@@ -3,8 +3,8 @@
 </template>
 
 <style>
-@import '@braks/vue-flow/dist/style.css';
-@import '@braks/vue-flow/dist/theme-default.css';
+@import '@vue-flow/renderer/dist/style.css';
+@import '@vue-flow/renderer/dist/theme-default.css';
 
 html,
 body,

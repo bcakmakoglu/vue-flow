@@ -1,4 +1,4 @@
-import type { EdgeProps, Position } from '@braks/vue-flow'
+import type { EdgeProps, Position } from '@vue-flow/renderer'
 import type { CSSProperties } from 'vue'
 import type { ArrowOptions } from 'perfect-arrows'
 

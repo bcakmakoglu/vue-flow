@@ -1,8 +1,8 @@
 <script>
 import 'virtual:windi.css'
 import '@animxyz/core'
-import '@braks/vue-flow/dist/style.css'
-import '@braks/vue-flow/dist/theme-default.css'
+import '@vue-flow/renderer/dist/style.css'
+import '@vue-flow/renderer/dist/theme-default.css'
 import '../../assets/index.css'
 </script>
 <script setup>

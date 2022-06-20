@@ -1,5 +1,5 @@
 <script setup>
-import { VueFlow, addEdge } from '@braks/vue-flow'
+import { VueFlow, addEdge } from '@vue-flow/renderer'
 import { ref } from 'vue'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'

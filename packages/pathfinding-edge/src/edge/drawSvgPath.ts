@@ -1,4 +1,4 @@
-import type { XYPosition } from '@braks/vue-flow'
+import type { XYPosition } from '@vue-flow/renderer'
 
 /**
  * Draws an SVG path from a list of points, using straight lines.

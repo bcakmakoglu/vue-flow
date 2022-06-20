@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import dagre from 'dagre'
-import type { CoordinateExtent, Elements } from '@braks/vue-flow'
-import { ConnectionMode, Controls, Position, VueFlow, isNode } from '@braks/vue-flow'
+import type { CoordinateExtent, Elements } from '@vue-flow/renderer'
+import { ConnectionMode, Controls, Position, VueFlow, isNode } from '@vue-flow/renderer'
 import initialElements from './initial-elements'
 
 const dagreGraph = new dagre.graphlib.Graph()

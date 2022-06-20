@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { EdgeProps, Position } from '@braks/vue-flow'
-import { EdgeText, getBezierPath, getEdgeCenter, getMarkerId } from '@braks/vue-flow'
+import type { EdgeProps, Position } from '@vue-flow/renderer'
+import { EdgeText, getBezierPath, getEdgeCenter, getMarkerId } from '@vue-flow/renderer'
 
 interface CustomEdgeProps extends EdgeProps {
   source: string

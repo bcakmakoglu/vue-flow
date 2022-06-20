@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { defaultTheme, SidebarConfigArray, Theme } from 'vuepress'
 import { path } from '@vuepress/utils'
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/renderer'
 import { readdirSync, statSync } from 'fs'
 
 const { vueFlowVersion } = useVueFlow()

@@ -1,5 +1,5 @@
 import { Grid } from 'pathfinding'
-import type { Position } from '@braks/vue-flow'
+import type { Position } from '@vue-flow/renderer'
 import { getNextPointFromPosition, guaranteeWalkablePath } from './guaranteeWalkablePath'
 import { graphToGridPoint } from './pointConversion'
 import { round } from './utils'

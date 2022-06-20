@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { EdgeText, getEdgeCenter } from '@braks/vue-flow'
+import { EdgeText, getEdgeCenter } from '@vue-flow/renderer'
 import type { CSSProperties } from 'vue'
 import { getArrow } from 'perfect-arrows'
 import type { PerfectArrowProps } from '../types'

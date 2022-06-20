@@ -1,5 +1,5 @@
-import type { Edge, GraphNode, XYPosition } from '@braks/vue-flow'
-import { MarkerType, Position } from '@braks/vue-flow'
+import type { Edge, GraphNode, XYPosition } from '@vue-flow/renderer'
+import { MarkerType, Position } from '@vue-flow/renderer'
 
 // this helper function returns the intersection point
 // of the line between the center of the intersectionNode and the target node

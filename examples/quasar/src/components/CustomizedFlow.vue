@@ -1,5 +1,5 @@
 <script setup>
-import { Background, Controls, MiniMap, VueFlow, isNode, useVueFlow } from '@braks/vue-flow'
+import { Background, Controls, MiniMap, VueFlow, isNode, useVueFlow } from '@vue-flow/renderer'
 import { ref } from 'vue'
 import { initialElements } from './customized-elements.js'
 

@@ -1,5 +1,5 @@
 {
-  "name": "nuxt3-examples",
+  "name": "@vue-flow/nuxt3-examples",
   "version": "0.0.1",
   "description": "Vue Flow Nuxt3 Example",
   "productName": "Nuxt3 App",
@@ -9,7 +9,7 @@
     "dev": "nuxt dev"
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*"
+    "@vue-flow/renderer": "workspace:*"
   },
   "devDependencies": {
     "nuxt": "3.0.0-rc.3"

@@ -1,4 +1,4 @@
-import { getConnectedEdges, useVueFlow } from '@braks/vue-flow'
+import { getConnectedEdges, useVueFlow } from '@vue-flow/renderer'
 import { nextTick, ref } from 'vue'
 
 /**

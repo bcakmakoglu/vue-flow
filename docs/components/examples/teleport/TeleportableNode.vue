@@ -1,5 +1,5 @@
 <script setup>
-import { Handle, Position } from '@braks/vue-flow'
+import { Handle, Position } from '@vue-flow/renderer'
 import { useTransition } from './useTransition.js'
 
 const props = defineProps({

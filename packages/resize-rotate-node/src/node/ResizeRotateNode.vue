@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { MoveableEvents } from 'vue3-moveable'
 import Moveable from 'vue3-moveable'
-import type { Position } from '@braks/vue-flow'
-import { Handle, useVueFlow } from '@braks/vue-flow'
+import type { Position } from '@vue-flow/renderer'
+import { Handle, useVueFlow } from '@vue-flow/renderer'
 
 const props = defineProps<{
   id: string
