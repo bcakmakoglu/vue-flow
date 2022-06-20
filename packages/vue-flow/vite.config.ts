@@ -20,6 +20,7 @@ export default defineConfig({
     lib: {
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
+      fileName: 'vue-flow',
       name: 'vueFlow',
     },
     rollupOptions: {
@@ -53,6 +54,6 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['vue', '@vueuse/core', '@braks/revue-draggable', 'd3', 'd3-zoom', 'd3-selection'],
+    include: ['@vueuse/core', 'd3', 'd3-zoom', 'd3-selection', 'd3-drag'],
   },
 })
