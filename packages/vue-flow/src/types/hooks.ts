@@ -145,3 +145,29 @@ export interface Emits {
   (event: 'update:nodes', value: GraphNode[]): void
   (event: 'update:edges', value: GraphEdge[]): void
 }
+
+/**
+ * To type `Args` (the event callback arguments) pass an array as argument list as first generic type
+ * To type `Return` (the event callback return value) pass a value to the second generic type
+ */
+export type CustomEvent<Args extends any[] = any[], Return = any> = (...args: Args) => Return
+
+export interface DefaultNodeEvents {
+  doubleClick: NodeMouseEvent
+  click: NodeMouseEvent
+  mouseEnter: NodeMouseEvent
+  mouseMove: NodeMouseEvent
+  mouseLeave: NodeMouseEvent
+  contextMenu: NodeMouseEvent
+  dragStart: NodeDragEvent
+  drag: NodeDragEvent
+  dragStop: NodeDragEvent
+}
+
+export type NodeEventsOn = Readonly<{
+  [key in keyof DefaultNodeEvents]: EventHookOn<DefaultNodeEvents[key]>
+}>
+
+export type NodeEvents<CustomEvents extends Record<string, CustomEvent>> = {
+  [key in keyof DefaultNodeEvents]: (event: DefaultNodeEvents[key]) => void
+} & CustomEvents

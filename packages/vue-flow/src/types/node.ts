@@ -2,6 +2,7 @@ import type { Component, VNode } from 'vue'
 import type { ClassFunc, Dimensions, ElementData, Position, SnapGrid, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
 import type { DefaultNodeTypes, NodeComponent } from './components'
 import type { HandleElement, ValidConnectionFunc } from './handle'
+import type { CustomEvent, NodeEvents, NodeEventsOn } from "./hooks";
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
 export type CoordinateExtent = [[number, number], [number, number]]
@@ -16,7 +17,7 @@ type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string 
 // eslint-disable-next-line no-use-before-define
 type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
 
-export interface Node<Data = ElementData> {
+export interface Node<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = {}> {
   /** Unique node id */
   id: string
   /** A node label */
@@ -70,6 +71,8 @@ export interface Node<Data = ElementData> {
   template?: NodeComponent
   /** Additional data that is passed to your custom components */
   data?: Data
+  /** contextual and custom events that are passed to your custom components */
+  events?: NodeEvents<CustomEvents>
 }
 
 export interface GraphNode<Data = ElementData> extends Node<Data> {
@@ -83,13 +86,11 @@ export interface GraphNode<Data = ElementData> extends Node<Data> {
 }
 
 /** these props are passed to node components */
-export interface NodeProps<Data = ElementData> {
+export interface NodeProps<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = {}> {
   /** unique node id */
   id: string
   /** node type */
   type: keyof DefaultNodeTypes | string
-  /** additional data of node */
-  data?: Data
   /** is node selected */
   selected: boolean
   /** can node be connected */
@@ -124,4 +125,9 @@ export interface NodeProps<Data = ElementData> {
   dragHandle?: string
   /** node DOM-element */
   nodeElement: HTMLDivElement
+
+  /** additional data of node */
+  data?: Data
+  /** contextual and custom events of node */
+  events?: Partial<NodeEventsOn>
 }
