@@ -1,5 +1,9 @@
 # Viewport Functions
 
+::: warning
+The old `FlowInstance` has been removed and all it's functionalities merged into `useVueFlow`.
+:::
+
 Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables.html#usevueflow/)
 utility or with the [`VueFlowStore`](/typedocs/types/VueFlowStore.html/)
 instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents.html#paneready/).
