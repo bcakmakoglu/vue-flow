@@ -39,6 +39,11 @@ The values are reactive, meaning changing the state values returned from `useVue
 
 ## [useZoomPanHelper](/typedocs/functions/useZoomPanHelper.html/)
 
+::: warning [deprecated]
+All functions of `useZoomPanHelper` are also available in `useVueFlow`.
+`useZoomPanHelper` might be removed in a future version.
+:::
+
 The `useZoomPanHelper` utility can be used to access core store functions like getting Elements or
 using viewpane transforms.
 All functions can also be accessed from `useVueFlow`.
