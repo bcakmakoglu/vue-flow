@@ -28,6 +28,9 @@ const untilDimensions = async (dimensions: Dimensions, getNodes: Getters['getNod
   return true
 }
 
+/**
+ * @deprecated use {@link useVueFlow} instead (all viewport functions are also available in {@link useVueFlow})
+ */
 export default (vueFlowId?: string): ViewportFunctions => {
   const {
     onPaneReady,
