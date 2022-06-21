@@ -78,8 +78,14 @@ export function updatePosition(
             ]
           : currentExtent
     }
-  } else {
-    currentExtent = nodeExtent
+  } else if (dragItem.extent && dragItem.parentNode) {
+    const dragItemExtent = dragItem.extent as CoordinateExtent
+    const parentX = parent?.computedPosition?.x ?? 0
+    const parentY = parent?.computedPosition?.y ?? 0
+    currentExtent = [
+      [dragItemExtent[0][0] + parentX, dragItemExtent[0][1] + parentY],
+      [dragItemExtent[1][0] + parentX, dragItemExtent[1][1] + parentY],
+    ]
   }
 
   dragItem.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
