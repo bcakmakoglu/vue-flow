@@ -2,7 +2,7 @@ import type { Component, VNode } from 'vue'
 import type { ClassFunc, Dimensions, ElementData, Position, SnapGrid, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
 import type { DefaultNodeTypes, NodeComponent } from './components'
 import type { HandleElement, ValidConnectionFunc } from './handle'
-import type { CustomEvent, NodeEvents, NodeEventsOn } from "./hooks";
+import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
 export type CoordinateExtent = [[number, number], [number, number]]
@@ -17,7 +17,7 @@ type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string 
 // eslint-disable-next-line no-use-before-define
 type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
 
-export interface Node<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = {}> {
+export interface Node<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> {
   /** Unique node id */
   id: string
   /** A node label */
@@ -72,7 +72,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   /** Additional data that is passed to your custom components */
   data?: Data
   /** contextual and custom events that are passed to your custom components */
-  events?: NodeEvents<CustomEvents>
+  events?: Partial<NodeEventsHandler<CustomEvents>>
 }
 
 export interface GraphNode<Data = ElementData> extends Node<Data> {
@@ -86,7 +86,7 @@ export interface GraphNode<Data = ElementData> extends Node<Data> {
 }
 
 /** these props are passed to node components */
-export interface NodeProps<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = {}> {
+export interface NodeProps<Data = ElementData, CustomEvents = {}> {
   /** unique node id */
   id: string
   /** node type */
@@ -129,5 +129,5 @@ export interface NodeProps<Data = ElementData, CustomEvents extends Record<strin
   /** additional data of node */
   data?: Data
   /** contextual and custom events of node */
-  events?: Partial<NodeEventsOn>
+  events?: Partial<NodeEventsOn<CustomEvents>>
 }
