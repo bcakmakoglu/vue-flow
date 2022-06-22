@@ -152,22 +152,26 @@ export interface Emits {
  */
 export type CustomEvent<Args extends any[] = any[], Return = any> = (...args: Args) => Return
 
-export interface DefaultNodeEvents {
-  doubleClick: NodeMouseEvent
-  click: NodeMouseEvent
-  mouseEnter: NodeMouseEvent
-  mouseMove: NodeMouseEvent
-  mouseLeave: NodeMouseEvent
-  contextMenu: NodeMouseEvent
-  dragStart: NodeDragEvent
-  drag: NodeDragEvent
-  dragStop: NodeDragEvent
+type CustomEventHandlers<CustomEvents = {}> = {
+  [key in keyof CustomEvents]: CustomEvents[key]
 }
 
-export type NodeEventsOn = Readonly<{
-  [key in keyof DefaultNodeEvents]: EventHookOn<DefaultNodeEvents[key]>
-}>
+export type NodeEventsHandler<CustomEvents = {}> = {
+  doubleClick: (event: NodeMouseEvent) => any
+  click: (event: NodeMouseEvent) => any
+  mouseEnter: (event: NodeMouseEvent) => any
+  mouseMove: (event: NodeMouseEvent) => any
+  mouseLeave: (event: NodeMouseEvent) => any
+  contextMenu: (event: NodeMouseEvent) => any
+  dragStart: (event: NodeDragEvent) => any
+  drag: (event: NodeDragEvent) => any
+  dragStop: (event: NodeDragEvent) => any
+} & CustomEventHandlers<CustomEvents>
 
-export type NodeEvents<CustomEvents extends Record<string, CustomEvent>> = {
-  [key in keyof DefaultNodeEvents]: (event: DefaultNodeEvents[key]) => void
-} & CustomEvents
+export type NodeEventsOn<CustomEvents = {}> = {
+  [key in keyof NodeEventsHandler]: EventHookOn<NodeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
+} & CustomEventHandlers<CustomEvents>
+
+export type NodeEventsEmit<CustomEvents = {}> = {
+  [key in keyof NodeEventsHandler]: EventHookTrigger<NodeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
+} & CustomEventHandlers<CustomEvents>
