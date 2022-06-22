@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import type { MaybeRef } from '@vueuse/core'
 import useVueFlow from './useVueFlow'
 import { handleNodeClick, pointToRendererPoint } from '~/utils'
-import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
+import type { NodeDragEvent, NodeDragItem, SnapGrid, XYPosition } from '~/types'
 import { getDragItems, getEventHandlerParams, hasSelector, updatePosition } from '~/utils/drag'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
@@ -16,8 +16,6 @@ interface UseDragParams {
   onStop: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
   el: Ref<Element>
   disabled?: MaybeRef<boolean>
-  noDragClassName?: MaybeRef<string>
-  handleSelector?: string
   id?: string
 }
 
@@ -27,26 +25,29 @@ function useDrag(params: UseDragParams) {
     const {
       viewport,
       snapToGrid,
-      snapGrid,
+      snapGrid: globalSnapGrid,
+      noDragClassName,
       nodes,
       nodeExtent,
       getNode,
       multiSelectionActive,
+      nodesSelectionActive,
       selectNodesOnDrag,
       removeSelectedElements,
       addSelectedNodes,
-      setState,
       updateNodePositions,
     } = $(useVueFlow())
 
-    const { onStart, onDrag, onStop, el, disabled = false, noDragClassName, id, handleSelector } = $(params)
+    const { onStart, onDrag, onStop, el, disabled = false, id } = $(params)
 
     const dragging = ref(false)
     let dragItems = $ref<NodeDragItem[]>()
     let lastPos = $ref<Partial<XYPosition>>({ x: undefined, y: undefined })
     let dragHandler = $ref<any>()
 
-    const getMousePosition = (event: UseDragEvent) => {
+    const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid ? globalSnapGrid : undefined)
+
+    const getMousePosition = (event: UseDragEvent, snapGrid: SnapGrid) => {
       const x = event.sourceEvent.touches ? event.sourceEvent.touches[0].clientX : event.sourceEvent.clientX
       const y = event.sourceEvent.touches ? event.sourceEvent.touches[0].clientY : event.sourceEvent.clientY
 
@@ -56,13 +57,13 @@ function useDrag(params: UseDragParams) {
           y,
         },
         viewport,
-        snapToGrid,
-        snapGrid,
+        !!snapGrid ?? snapToGrid,
+        snapGrid ?? globalSnapGrid,
       )
     }
 
     watch(
-      [() => disabled, () => noDragClassName, () => id, () => el],
+      [() => disabled, () => el],
       () => {
         if (el) {
           const selection = select(el)
@@ -80,10 +81,10 @@ function useDrag(params: UseDragParams) {
                 }
 
                 if (node && !disabled && selectNodesOnDrag) {
-                  handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, setState)
+                  handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
                 }
 
-                const mousePos = getMousePosition(event)
+                const mousePos = getMousePosition(event, hasSnapGrid(node?.snapGrid) as SnapGrid)
                 dragItems = getDragItems(nodes, mousePos, getNode, id)
 
                 if (onStart && dragItems) {
@@ -96,7 +97,7 @@ function useDrag(params: UseDragParams) {
                 }
               })
               .on('drag', (event: UseDragEvent) => {
-                const mousePos = getMousePosition(event)
+                const mousePos = getMousePosition(event, hasSnapGrid(node?.snapGrid) as SnapGrid)
 
                 // skip events without movement
                 if ((lastPos.x !== mousePos.x || lastPos.y !== mousePos.y) && dragItems) {
@@ -138,7 +139,7 @@ function useDrag(params: UseDragParams) {
                   !event.button &&
                   (!noDragClassName ||
                     (!hasSelector(target, `.${noDragClassName}`, $$(el)) &&
-                      (!handleSelector || hasSelector(target, handleSelector, $$(el)))))
+                      (!node?.dragHandle || hasSelector(target, node.dragHandle, $$(el)))))
                 )
               })
 

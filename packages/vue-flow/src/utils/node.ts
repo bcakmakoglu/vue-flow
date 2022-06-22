@@ -1,5 +1,6 @@
 import { getDimensions } from './graph'
 import type { Actions, GraphNode, HandleElement, Position } from '~/types'
+import { Ref } from "vue";
 
 export const getHandleBoundsByHandleType = (
   selector: string,
@@ -43,9 +44,9 @@ export const handleNodeClick = (
   multiSelectionActive: boolean,
   addSelectedNodes: Actions['addSelectedNodes'],
   removeSelectedElements: Actions['removeSelectedElements'],
-  setState: Actions['setState'],
+  nodesSelectionActive: Ref<boolean>,
 ) => {
-  setState({ nodesSelectionActive: false })
+  nodesSelectionActive.value = false
 
   if (!node.selected) {
     addSelectedNodes([node])
