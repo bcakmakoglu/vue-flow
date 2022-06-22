@@ -313,12 +313,10 @@ your nodes receive the following props:
 | Name             | Definition                                       | Type              | Optional |
 |------------------|--------------------------------------------------|-------------------|----------|
 | id               | Node id                                          | string            | false    |
-| nodeElement      | Current DOM Element                              | HTMLDivElement    | false    |
 | type             | Node type                                        | string            | false    |
 | selected         | Is node selected                                 | boolean           | false    |
 | dragging         | Is node dragging                                 | boolean           | false    |
 | connectable      | Is node connectable                              | boolean           | false    |
-| computedPosition | Absolute position of a node                      | XYZPosition       | false    |
 | position         | Relative position of a node                      | XYPosition        | false    |
 | zIndex           | Node z-index                                     | number            | false    |
 | dimensions       | Node size                                        | Dimensions        | false    |
