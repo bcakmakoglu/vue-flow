@@ -132,6 +132,7 @@ const elements = ref<Elements>([
 | .vue-flow__edge-path          | Edge element svg path                                    |
 | .vue-flow__edge-text          | Edge label wrapper                                       |
 | .vue-flow__edge-textbg        | Edge label wrapper background                            |
+| .vue-flow__connectionline     | Connection line container element                        |
 | .vue-flow__connection         | Connection line element                                  |
 | .vue-flow__connection-path    | Connection line svg path                                 |
 | .vue-flow__nodes              | Nodes renderer wrapper                                   |
