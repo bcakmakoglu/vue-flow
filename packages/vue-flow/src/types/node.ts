@@ -12,10 +12,13 @@ export interface NodeHandleBounds {
   target?: HandleElement[]
 }
 
-// eslint-disable-next-line no-use-before-define
-type WidthFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
-// eslint-disable-next-line no-use-before-define
-type HeightFunc = <Data = ElementData>(node: GraphNode<Data>) => number | string | void
+export type WidthFunc<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = (
+  node: GraphNode<Data, CustomEvents>,
+) => number | string | void
+
+export type HeightFunc<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = (
+  node: GraphNode<Data, CustomEvents>,
+) => number | string | void
 
 export interface Node<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> {
   /** Unique node id */
@@ -52,30 +55,31 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
    * You can pass a number which will be used in pixel values (width: 300 -> width: 300px)
    * or pass a string with units (width: `10rem` -> width: 10rem)
    */
-  width?: number | string | WidthFunc
+  width?: number | string | WidthFunc<Data, CustomEvents>
 
   /**
    * Fixed height of node, applied as style
    * You can pass a number which will be used in pixel values (height: 300 -> height: 300px)
    * or pass a string with units (height: `10rem` -> height: 10rem)
    */
-  height?: number | string | HeightFunc
+  height?: number | string | HeightFunc<Data, CustomEvents>
 
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
-  class?: string | ClassFunc<GraphNode<Data>>
+  class?: string | ClassFunc<GraphNode<Data, CustomEvents>>
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
-  style?: Styles | StyleFunc<GraphNode<Data>>
+  style?: Styles | StyleFunc<GraphNode<Data, CustomEvents>>
   /** Is node hidden */
   hidden?: boolean
   /** overwrites current node type */
-  template?: NodeComponent
+  template?: NodeComponent<Data>
   /** Additional data that is passed to your custom components */
   data?: Data
   /** contextual and custom events that are passed to your custom components */
   events?: Partial<NodeEventsHandler<CustomEvents>>
 }
 
-export interface GraphNode<Data = ElementData> extends Node<Data> {
+export interface GraphNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>
+  extends Node<Data, CustomEvents> {
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
   handleBounds: NodeHandleBounds
