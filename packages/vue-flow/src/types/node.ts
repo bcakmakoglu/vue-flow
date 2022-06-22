@@ -125,8 +125,6 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}> {
   sourcePosition?: Position
   /** drag handle query selector */
   dragHandle?: string
-  /** node DOM-element */
-  nodeElement: HTMLDivElement
 
   /** additional data of node */
   data?: Data
