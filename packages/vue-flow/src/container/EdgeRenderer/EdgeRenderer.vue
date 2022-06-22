@@ -197,7 +197,9 @@ export default {
         @source-mousedown="(e: MouseEvent) => onEdgeUpdaterSourceMouseDown(e, edge)"
         @target-mousedown="(e: MouseEvent) => onEdgeUpdaterTargetMouseDown(e, edge)"
       />
-      <ConnectionLine v-if="connectionLineVisible && !!sourceNode" :source-node="sourceNode" />
     </g>
+  </svg>
+  <svg v-if="connectionLineVisible && !!sourceNode" class="vue-flow__edges vue-flow__connectionline vue-flow__container">
+    <ConnectionLine :source-node="sourceNode" />
   </svg>
 </template>

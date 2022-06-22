@@ -69,6 +69,10 @@
   user-select: none;
 }
 
+.vue-flow .vue-flow__connectionline {
+  z-index: 1001;
+}
+
 .vue-flow__connection {
   pointer-events: none;
 
