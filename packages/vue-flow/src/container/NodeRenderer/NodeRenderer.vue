@@ -21,7 +21,6 @@ const {
 const draggable = (d?: boolean) => (typeof d === 'undefined' ? nodesDraggable : d)
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
 const connectable = (c?: boolean) => (typeof c === 'undefined' ? nodesConnectable : c)
-const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid ? snapGrid : undefined)
 
 const getType = (type?: string, template?: GraphNode['template']) => {
   const name = type || 'default'
@@ -65,7 +64,6 @@ export default {
       :draggable="draggable(node.draggable)"
       :selectable="selectable(node.selectable)"
       :connectable="connectable(node.connectable)"
-      :snap-grid="hasSnapGrid(node.snapGrid)"
     />
   </div>
 </template>
