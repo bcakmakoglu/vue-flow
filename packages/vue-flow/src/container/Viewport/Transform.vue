@@ -58,8 +58,8 @@ export default {
     class="vue-flow__transformationpane vue-flow__container"
     :style="{ transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})`, opacity: ready ? undefined : 0 }"
   >
-    <NodeRenderer />
     <EdgeRenderer />
+    <NodeRenderer />
     <slot />
   </div>
 </template>
