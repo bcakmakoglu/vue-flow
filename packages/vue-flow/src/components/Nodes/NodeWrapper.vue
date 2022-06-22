@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useDrag, useVueFlow } from '../../composables'
+import { useDrag, useNodeHooks, useVueFlow } from '../../composables'
 import type { NodeComponent, SnapGrid, XYZPosition } from '../../types'
 import { NodeId } from '../../context'
 import { getConnectedEdges, getHandleBounds, getXYZPos, handleNodeClick } from '../../utils'
@@ -21,7 +21,6 @@ const {
   viewport,
   noDragClassName,
   noPanClassName,
-  emits,
   selectNodesOnDrag,
   setState,
   updateNodeDimensions,
@@ -38,6 +37,8 @@ const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) :
 
 const nodeElement = ref()
 
+const { emit, on } = useNodeHooks(node)
+
 const dragging = useDrag({
   id,
   el: nodeElement,
@@ -45,13 +46,13 @@ const dragging = useDrag({
   noDragClassName: $$(noDragClassName) as any,
   handleSelector: node.dragHandle,
   onStart(event, node, nodes) {
-    emits.nodeDragStart({ event, node, nodes })
+    emit.dragStart({ event, node, nodes })
   },
   onDrag(event, node, nodes) {
-    emits.nodeDrag({ event, node, nodes })
+    emit.drag({ event, node, nodes })
   },
   onStop(event, node, nodes) {
-    emits.nodeDragStop({ event, node, nodes })
+    emit.dragStop({ event, node, nodes })
   },
 })
 
@@ -123,38 +124,39 @@ onMounted(() => {
 
 const onMouseEnter = (event: MouseEvent) => {
   if (!dragging) {
-    emits.nodeMouseEnter({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+    emit.mouseEnter({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
 const onMouseMove = (event: MouseEvent) => {
   if (!dragging) {
-    emits.nodeMouseMove({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+    emit.mouseMove({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
 const onMouseLeave = (event: MouseEvent) => {
   if (!dragging) {
-    emits.nodeMouseLeave({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+    emit.mouseLeave({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
 const onContextMenu = (event: MouseEvent) => {
-  emits.nodeContextMenu({
+  emit.contextMenu({
     event,
     node,
     connectedEdges: getConnectedEdges([node], edges),
   })
 }
 
-const onDoubleClick = (event: MouseEvent) =>
-  emits.nodeDoubleClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+const onDoubleClick = (event: MouseEvent) => {
+  emit.doubleClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+}
 
 const onSelectNode = (event: MouseEvent) => {
   if (selectable && (!selectNodesOnDrag || !draggable)) {
     handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, setState)
   }
-  emits.nodeClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+  emit.click({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 }
 
 const getClass = computed(() => {
@@ -212,6 +214,7 @@ export default {
       :id="node.id"
       :type="node.type"
       :data="node.data"
+      :events="{ ...node.events, ...on }"
       :selected="!!node.selected"
       :connectable="connectable"
       :position="node.position"
