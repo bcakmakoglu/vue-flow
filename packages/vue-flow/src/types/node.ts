@@ -99,8 +99,6 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}> {
   selected: boolean
   /** can node be connected */
   connectable: boolean
-  /** absolute position in relation to parent elements + z-index */
-  computedPosition: XYZPosition
   /** node x, y (relative) position on graph */
   position: XYPosition
   /** dom element dimensions (width, height) */
