@@ -157,15 +157,15 @@ type CustomEventHandlers<CustomEvents = {}> = {
 }
 
 export type NodeEventsHandler<CustomEvents = {}> = {
-  doubleClick: (event: NodeMouseEvent) => any
-  click: (event: NodeMouseEvent) => any
-  mouseEnter: (event: NodeMouseEvent) => any
-  mouseMove: (event: NodeMouseEvent) => any
-  mouseLeave: (event: NodeMouseEvent) => any
-  contextMenu: (event: NodeMouseEvent) => any
-  dragStart: (event: NodeDragEvent) => any
-  drag: (event: NodeDragEvent) => any
-  dragStop: (event: NodeDragEvent) => any
+  doubleClick: (event: NodeMouseEvent) => void | { off: () => void }
+  click: (event: NodeMouseEvent) => void | { off: () => void }
+  mouseEnter: (event: NodeMouseEvent) => void | { off: () => void }
+  mouseMove: (event: NodeMouseEvent) => void | { off: () => void }
+  mouseLeave: (event: NodeMouseEvent) => void | { off: () => void }
+  contextMenu: (event: NodeMouseEvent) => void | { off: () => void }
+  dragStart: (event: NodeDragEvent) => void | { off: () => void }
+  drag: (event: NodeDragEvent) => void | { off: () => void }
+  dragStop: (event: NodeDragEvent) => void | { off: () => void }
 } & CustomEventHandlers<CustomEvents>
 
 export type NodeEventsOn<CustomEvents = {}> = {
