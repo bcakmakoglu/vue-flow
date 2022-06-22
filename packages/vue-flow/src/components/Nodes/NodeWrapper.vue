@@ -19,16 +19,14 @@ provide(NodeId, id)
 const {
   edges,
   viewport,
-  noDragClassName,
   noPanClassName,
   selectNodesOnDrag,
-  setState,
-  updateNodeDimensions,
-  getNode,
-  addSelectedNodes,
+  nodesSelectionActive,
   multiSelectionActive,
+  getNode,
   removeSelectedElements,
-  getSelectedNodes,
+  addSelectedNodes,
+  updateNodeDimensions,
   onUpdateNodeInternals,
 } = $(useVueFlow())
 
@@ -43,8 +41,6 @@ const dragging = useDrag({
   id,
   el: nodeElement,
   disabled: computed(() => !draggable),
-  noDragClassName: $$(noDragClassName) as any,
-  handleSelector: node.dragHandle,
   onStart(event, node, nodes) {
     emit.dragStart({ event, node, nodes })
   },
@@ -154,7 +150,7 @@ const onDoubleClick = (event: MouseEvent) => {
 
 const onSelectNode = (event: MouseEvent) => {
   if (selectable && (!selectNodesOnDrag || !draggable)) {
-    handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, setState)
+    handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
   }
   emit.click({ event, node, connectedEdges: getConnectedEdges([node], edges) })
 }
