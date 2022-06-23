@@ -63,15 +63,15 @@ export default {
                 '/guide/vue-flow/state',
                 {
                   text: 'Actions',
-                  link: '/typedocs/interfaces/Actions',
+                  link: '/typedocs/interfaces/Actions.html',
                 },
                 {
                   text: 'Getters',
-                  link: '/typedocs/interfaces/Getters',
+                  link: '/typedocs/interfaces/Getters.html',
                 },
                 {
                   text: 'Events',
-                  link: '/typedocs/interfaces/FlowEvents'
+                  link: '/typedocs/interfaces/FlowEvents.html'
                 },
                 '/guide/vue-flow/slots'
               ],

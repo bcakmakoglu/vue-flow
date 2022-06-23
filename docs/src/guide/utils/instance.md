@@ -4,9 +4,9 @@
 The old `FlowInstance` has been removed and all it's functionalities merged into `useVueFlow`.
 :::
 
-Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables.html#usevueflow/)
+Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables.html#usevueflow)
 utility or with the [`VueFlowStore`](/typedocs/types/VueFlowStore.html/)
-instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents.html#paneready/).
+instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents.html#paneready).
 
 <CodeGroup>
   <CodeGroupItem title="Composition API" active>
@@ -130,25 +130,25 @@ vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 
   Zooms to specific level.
 
-### [getElements](/typedocs/interfaces/Getters.html#getelements/)
+### [getElements](/typedocs/interfaces/Getters.html#getelements)
 
 - Details:
 
   Returns currently stored elements (nodes + edges).
 
-### [getNodes](/typedocs/interfaces/Getters.html#getnodes/)
+### [getNodes](/typedocs/interfaces/Getters.html#getnodes)
 
 - Details:
 
   Returns currently stored nodes.
 
-### [getEdges](/typedocs/interfaces/Getters.html#getedges/)
+### [getEdges](/typedocs/interfaces/Getters.html#getedges)
 
 - Details:
 
   Returns currently stored edges.
 
-### [toObject](/typedocs/interfaces/Actions.html#toobject/)
+### [toObject](/typedocs/interfaces/Actions.html#toobject)
 
 - Details:
 
