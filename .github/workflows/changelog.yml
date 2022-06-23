@@ -32,3 +32,4 @@ jobs:
           author_name: Git Cliff
           committer_name: Git Cliff
           message: 'chore: update CHANGELOG.md'
+          push: origin HEAD:master
