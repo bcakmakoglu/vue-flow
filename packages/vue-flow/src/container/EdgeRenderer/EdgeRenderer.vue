@@ -2,7 +2,7 @@
 import type { CSSProperties } from 'vue'
 import EdgeWrapper from '../../components/Edges/Wrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
-import { useHandle, useVueFlow } from '../../composables'
+import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { connectionExists, groupEdgesByZLevel } from '../../utils'
 import type { EdgeComponent, GraphEdge } from '../../types'
 import { Slots } from '../../context'
@@ -55,6 +55,8 @@ const connectionLineVisible = $(
   ),
 )
 
+const hooks = $ref<Record<string, ReturnType<typeof useEdgeHooks>>>({})
+
 let groups = $ref<ReturnType<typeof groupEdgesByZLevel>>([])
 
 const scope = effectScope()
@@ -64,6 +66,12 @@ onPaneReady(() => {
     watch(
       [$$(getSelectedNodes), $$(getEdges), $$(getNodes)],
       () => {
+        getEdges.reduce((acc, edge) => {
+          if (hooks[edge.id]) return acc
+          hooks[edge.id] = useEdgeHooks(edge, emits)
+          return acc
+        }, hooks)
+
         if (elevateEdgesOnSelect) {
           nextTick(() => (groups = groupEdgesByZLevel(getEdges, getNode)))
         } else {
@@ -117,18 +125,18 @@ const onEdgeClick = (event: MouseEvent, edge: GraphEdge) => {
 
     addSelectedEdges([edge])
   }
-  emits.edgeClick(data)
+  hooks[edge.id].emit.click(data)
 }
 
-const onEdgeContextMenu = (event: MouseEvent, edge: GraphEdge) => emits.edgeContextMenu({ event, edge })
+const onEdgeContextMenu = (event: MouseEvent, edge: GraphEdge) => hooks[edge.id].emit.contextMenu({ event, edge })
 
-const onDoubleClick = (event: MouseEvent, edge: GraphEdge) => emits.edgeDoubleClick({ event, edge })
+const onDoubleClick = (event: MouseEvent, edge: GraphEdge) => hooks[edge.id].emit.doubleClick({ event, edge })
 
-const onEdgeMouseEnter = (event: MouseEvent, edge: GraphEdge) => emits.edgeMouseEnter({ event, edge })
+const onEdgeMouseEnter = (event: MouseEvent, edge: GraphEdge) => hooks[edge.id].emit.mouseEnter({ event, edge })
 
-const onEdgeMouseMove = (event: MouseEvent, edge: GraphEdge) => emits.edgeMouseMove({ event, edge })
+const onEdgeMouseMove = (event: MouseEvent, edge: GraphEdge) => hooks[edge.id].emit.mouseMove({ event, edge })
 
-const onEdgeMouseLeave = (event: MouseEvent, edge: GraphEdge) => emits.edgeMouseLeave({ event, edge })
+const onEdgeMouseLeave = (event: MouseEvent, edge: GraphEdge) => hooks[edge.id].emit.mouseLeave({ event, edge })
 
 const onEdgeUpdaterSourceMouseDown = (event: MouseEvent, edge: GraphEdge) => handleEdgeUpdater(event, edge, true)
 
@@ -140,7 +148,7 @@ const handleEdgeUpdater = (event: MouseEvent, edge: GraphEdge, isSourceHandle: b
   const nodeId = isSourceHandle ? edge.target : edge.source
   const handleId = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
 
-  emits.edgeUpdateStart({ event, edge })
+  hooks[edge.id].emit.updateStart({ event, edge })
 
   onMouseDown(
     event,
@@ -150,9 +158,9 @@ const handleEdgeUpdater = (event: MouseEvent, edge: GraphEdge, isSourceHandle: b
     undefined,
     isSourceHandle ? 'target' : 'source',
     (connection) => {
-      if (!connectionExists(connection, getEdges)) emits.edgeUpdate({ edge, connection })
+      if (!connectionExists(connection, getEdges)) hooks[edge.id].emit.update({ edge, connection })
     },
-    () => emits.edgeUpdateEnd({ event, edge }),
+    () => hooks[edge.id].emit.updateEnd({ event, edge }),
   )
 }
 
@@ -188,6 +196,7 @@ export default {
         :target-node="getNode(edge.target)"
         :label="edge.label"
         :data="edge.data"
+        :events="{ ...edge.events, ...hooks[edge.id].on }"
         :animated="edge.animated"
         :selectable="selectable(edge.selectable)"
         :selected="edge.selected"
@@ -204,7 +213,7 @@ export default {
         :style="getStyle(edge)"
         :class="getClass(edge)"
         @click="onEdgeClick($event, edge)"
-        @dbl-click="onDoubleClick($event, edge)"
+        @dblclick="onDoubleClick($event, edge)"
         @contextmenu="onEdgeContextMenu($event, edge)"
         @mouseenter="onEdgeMouseEnter($event, edge)"
         @mousemove="onEdgeMouseMove($event, edge)"
