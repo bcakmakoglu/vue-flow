@@ -7,6 +7,7 @@ import scrollbar from '@windicss/plugin-scrollbar'
 export default defineConfig({
   extract: {
     include: [
+      resolve(__dirname, './theme/**/*.{ts,md,vue}'),
       resolve(__dirname, '../../components/**/*.{ts,md,vue}'),
       resolve(__dirname, '../**/*.{ts,md,vue}')
     ],
