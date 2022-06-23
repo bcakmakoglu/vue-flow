@@ -30,12 +30,6 @@ const updatePos = () => {
     fitView({ duration: 1000, padding: 0.5 })
   })
 }
-
-onNodeClick(({ connectedEdges }) => {
-  connectedEdges.forEach((edge) => {
-    edge.style = { stroke: '#10b981', strokeWidth: 3 }
-  })
-})
 </script>
 
 <template>

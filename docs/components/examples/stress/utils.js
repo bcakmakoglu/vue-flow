@@ -17,7 +17,15 @@ export function getElements(xElements = 10, yElements = 10) {
       initialNodes.push(node)
 
       if (recentNodeId && nodeId <= xElements * yElements) {
-        initialEdges.push({ id: `${x}-${y}`, source: recentNodeId.toString(), target: nodeId.toString() })
+        initialEdges.push({
+          id: `${x}-${y}`,
+          source: recentNodeId.toString(),
+          target: nodeId.toString(),
+          style: (edge) => {
+            if (!edge.sourceNode.selected && !edge.targetNode.selected) return
+            return { stroke: '#10b981', strokeWidth: 3 }
+          },
+        })
       }
 
       recentNodeId = nodeId
