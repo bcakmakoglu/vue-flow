@@ -58,10 +58,6 @@ export interface Edge<Data = ElementData, CustomEvents extends Record<string, Cu
   sourceHandle?: string | null
   /** Target handle id */
   targetHandle?: string | null
-  /** Source position */
-  sourcePosition?: Position
-  /** Target position */
-  targetPosition?: Position
   /** Label styles (CSSProperties) */
   labelStyle?: CSSProperties
   /** Show label bg */
