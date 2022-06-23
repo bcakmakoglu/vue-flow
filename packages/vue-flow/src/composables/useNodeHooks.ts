@@ -1,5 +1,4 @@
-import useVueFlow from './useVueFlow'
-import type { GraphNode, NodeEventsEmit, NodeEventsOn } from '~/types'
+import type { GraphNode, NodeEventsEmit, NodeEventsOn, VueFlowStore } from '~/types'
 
 const createNodeHooks = () => ({
   doubleClick: createEventHook(),
@@ -13,9 +12,7 @@ const createNodeHooks = () => ({
   dragStop: createEventHook(),
 })
 
-export default function useNodeEvents(node: GraphNode): { emit: NodeEventsEmit; on: NodeEventsOn } {
-  const { emits } = $(useVueFlow())
-
+export default function useNodeHooks(node: GraphNode, emits: VueFlowStore['emits']): { emit: NodeEventsEmit; on: NodeEventsOn } {
   const nodeHooks = createNodeHooks()
 
   nodeHooks.doubleClick.on((event) => {

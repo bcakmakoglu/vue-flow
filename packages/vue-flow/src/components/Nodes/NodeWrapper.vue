@@ -23,6 +23,7 @@ const {
   selectNodesOnDrag,
   nodesSelectionActive,
   multiSelectionActive,
+  emits,
   getNode,
   removeSelectedElements,
   addSelectedNodes,
@@ -35,7 +36,7 @@ const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) :
 
 const nodeElement = ref()
 
-const { emit, on } = useNodeHooks(node)
+const { emit, on } = useNodeHooks(node, emits)
 
 const scope = effectScope()
 
