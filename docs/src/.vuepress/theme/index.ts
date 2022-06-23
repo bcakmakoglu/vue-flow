@@ -41,7 +41,6 @@ const typedocSidebarEntries = (): SidebarConfigArray => {
 export default {
   name: 'vuepress-theme-local',
   extends: defaultTheme({
-    repo: 'bcakmakoglu/vue-flow',
     docsDir: 'docs/src/',
     docsBranch: 'master',
     lastUpdated: true,
