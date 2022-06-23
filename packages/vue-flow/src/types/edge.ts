@@ -2,6 +2,7 @@ import type { CSSProperties, Component, VNode } from 'vue'
 import type { ClassFunc, ElementData, Position, StyleFunc, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { DefaultEdgeTypes, EdgeComponent, EdgeTextProps } from './components'
+import type { CustomEvent, EdgeEventsHandler, EdgeEventsOn } from "./hooks";
 
 /** Edge markers */
 export enum MarkerType {
@@ -42,7 +43,7 @@ export interface MarkerProps {
 
 export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
-export interface Edge<Data = ElementData> {
+export interface Edge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> {
   /** Unique edge id */
   id: string
   /** An edge label */
@@ -82,15 +83,17 @@ export interface Edge<Data = ElementData> {
   /** Disable/enable selecting edge */
   selectable?: boolean
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
-  class?: string | ClassFunc<GraphEdge<Data>>
+  class?: string | ClassFunc<GraphEdge<Data, CustomEvents>>
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
-  style?: Styles | StyleFunc<GraphEdge<Data>>
+  style?: Styles | StyleFunc<GraphEdge<Data, CustomEvents>>
   /** Is edge hidden */
   hidden?: boolean
   /** Overwrites current edge type */
   template?: EdgeComponent
   /** Additional data that is passed to your custom components */
   data?: Data
+  /** contextual and custom events of edge */
+  events?: Partial<EdgeEventsHandler<CustomEvents>>
 }
 
 export type DefaultEdgeOptions = Omit<
@@ -106,7 +109,7 @@ export interface EdgePositions {
 }
 
 /** Internal edge type */
-export type GraphEdge<Data = ElementData> = Edge<Data> & {
+export type GraphEdge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = Edge<Data, CustomEvents> & {
   selected?: boolean
   z?: number
   sourceNode: GraphNode
@@ -114,13 +117,12 @@ export type GraphEdge<Data = ElementData> = Edge<Data> & {
 } & EdgePositions
 
 /** these props are passed to edge components */
-export interface EdgeProps<Data = ElementData> {
+export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
   id: string
   sourceNode: GraphNode
   targetNode: GraphNode
   label?: string | VNode | Component<EdgeTextProps> | Object
   type?: string
-  data?: Data
   style?: CSSProperties
   sourceX: number
   sourceY: number
@@ -143,16 +145,18 @@ export interface EdgeProps<Data = ElementData> {
   markerStart?: string
   markerEnd?: string
   curvature?: number
+  data?: Data
+  /** contextual and custom events of edge */
+  events?: Partial<EdgeEventsOn<CustomEvents>>
 }
 
 /** these props are passed to smooth step edges */
-export interface SmoothStepEdgeProps<Data = ElementData> extends EdgeProps<Data> {
+export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> extends EdgeProps<Data, CustomEvents> {
   id: string
   sourceNode: GraphNode
   targetNode: GraphNode
   label?: string | VNode | Component<EdgeTextProps> | Object
   type?: string
-  data?: Data
   style?: CSSProperties
   sourceX: number
   sourceY: number
@@ -175,6 +179,9 @@ export interface SmoothStepEdgeProps<Data = ElementData> extends EdgeProps<Data>
   markerStart?: string
   markerEnd?: string
   borderRadius?: number
+  data?: Data
+  /** contextual and custom events of edge */
+  events?: Partial<EdgeEventsOn<CustomEvents>>
 }
 
 export interface BaseEdgeProps {
