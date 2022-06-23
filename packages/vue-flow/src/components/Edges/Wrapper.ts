@@ -1,6 +1,6 @@
 import type { CSSProperties, Component, FunctionalComponent, VNode } from 'vue'
 import EdgeAnchor from './EdgeAnchor'
-import type { EdgeComponent, EdgeMarkerType, EdgeTextProps, GraphNode } from '~/types'
+import type { EdgeComponent, EdgeEventsOn, EdgeMarkerType, EdgeTextProps, GraphNode } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 import { getEdgePositions, getHandle, getMarkerId } from '~/utils'
 
@@ -18,6 +18,7 @@ interface Props {
   updatable?: boolean
   label?: string | VNode | Component<EdgeTextProps> | Object
   data?: any
+  events: EdgeEventsOn
   labelStyle?: CSSProperties
   labelShowBg?: boolean
   labelBgStyle?: any
@@ -38,6 +39,7 @@ const Wrapper: FunctionalComponent<Props> = function (
     type,
     id,
     data,
+    events,
     labelBgBorderRadius,
     labelBgPadding,
     labelBgStyle,
@@ -140,6 +142,7 @@ const Wrapper: FunctionalComponent<Props> = function (
         labelBgPadding,
         labelBgBorderRadius,
         data,
+        events,
         style,
         markerStart: `url(#${getMarkerId(markerStart)})`,
         markerEnd: `url(#${getMarkerId(markerEnd)})`,
@@ -193,6 +196,7 @@ Wrapper.props = [
   'type',
   'id',
   'data',
+  'events',
   'labelBgBorderRadius',
   'labelBgPadding',
   'labelBgStyle',

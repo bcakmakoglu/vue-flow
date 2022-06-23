@@ -175,3 +175,23 @@ export type NodeEventsOn<CustomEvents = {}> = {
 export type NodeEventsEmit<CustomEvents = {}> = {
   [key in keyof NodeEventsHandler]: EventHookTrigger<NodeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
 } & CustomEventHandlers<CustomEvents>
+
+export type EdgeEventsHandler<CustomEvents = {}> = {
+  doubleClick: (event: EdgeMouseEvent) => void | { off: () => void }
+  click: (event: EdgeMouseEvent) => void | { off: () => void }
+  mouseEnter: (event: EdgeMouseEvent) => void | { off: () => void }
+  mouseMove: (event: EdgeMouseEvent) => void | { off: () => void }
+  mouseLeave: (event: EdgeMouseEvent) => void | { off: () => void }
+  contextMenu: (event: EdgeMouseEvent) => void | { off: () => void }
+  updateStart: (event: EdgeMouseEvent) => void | { off: () => void }
+  update: (event: EdgeUpdateEvent) => void | { off: () => void }
+  updateEnd: (event: EdgeMouseEvent) => void | { off: () => void }
+} & CustomEventHandlers<CustomEvents>
+
+export type EdgeEventsOn<CustomEvents = {}> = {
+  [key in keyof EdgeEventsHandler]: EventHookOn<EdgeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
+} & CustomEventHandlers<CustomEvents>
+
+export type EdgeEventsEmit<CustomEvents = {}> = {
+  [key in keyof EdgeEventsHandler]: EventHookTrigger<EdgeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
+} & CustomEventHandlers<CustomEvents>

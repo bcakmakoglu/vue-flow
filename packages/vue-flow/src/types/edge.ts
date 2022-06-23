@@ -2,7 +2,7 @@ import type { CSSProperties, Component, VNode } from 'vue'
 import type { ClassFunc, ElementData, Position, StyleFunc, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { DefaultEdgeTypes, EdgeComponent, EdgeTextProps } from './components'
-import type { CustomEvent, EdgeEventsHandler, EdgeEventsOn } from "./hooks";
+import type { CustomEvent, EdgeEventsHandler, EdgeEventsOn } from './hooks'
 
 /** Edge markers */
 export enum MarkerType {
