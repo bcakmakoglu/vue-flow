@@ -6,10 +6,72 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
+- Push from changelog workflow to master branch ([7d9a7b6](7d9a7b6dbe02b81b798a923bbb84e5e5a8f2fa7b))
+
+## [0.4.24] - 2022-06-23
+
+[c866df6](c866df6d0615f0e92701fb8eb544744f8aeeeb8c)...[f4201fd](f4201fd94fa1f5ffcc72c696a20703d310bee4c7)
+
+### Bug Fixes
+
+- Apply node extent ([77c43aa](77c43aa2071ad6fad9031c09858cd1fd1057c0d9))
+- Use correct zindex on selection ([4e431a1](4e431a17b6be01f80fe4bf4ccbdd6ceab75eb181))
+- Remove `sourcePosition` & `targetPosition` from initial edge options ([acc27a7](acc27a78672d9269de511e1a2856820b4032821d))
+
+### Documentation
+
+- Move button style to index.css ([119bcab](119bcabaf8153cf295eccbb3b5b442e56075ae92))
+- Rename button class to docs-button ([04907fc](04907fcc16199af664f63da5d11c40cdf461cbfd))
+- Add minimap node docs to sidebar ([597cfad](597cfad39b5332e869d97cd3676fa5c07b0130c3))
+- Update `minimap-node.md` ([1dcfb2d](1dcfb2dfcead78623b0d36b5634eb316e9b57849))
+- Add typedoc links and fix edge docs ([9a72a5a](9a72a5a0c1cf597a228eaa13bee70bd93bcc86db))
+- Add sidebar links for actions, getters and events ([d0d9a34](d0d9a3459b6bf0de7222f8d806ab1a4654dd46e4))
+- Add deprecation notice for `useZoomPanHelper` ([17d3f8d](17d3f8df6f37f7f4be313402b391f9eeb1937345))
+- Add notice about `FlowInstance` removal ([92fc866](92fc8662657e3892d5118d3c3ba7bc6a704e5aa7))
+- Add docs for new connection line class ([5a031e3](5a031e3fe2d2dab94d30d78ad33d8e4fdbab666f))
+- Update documentation on custom node props ([439aa49](439aa49c2363b1a7de436f6a2d075d289750d83c))
+- Documentation for new node `events` property ([7d47904](7d47904a810dcdf8cf3faf582e4799b00594d048))
+- Fix links for docsearch ([345cf9b](345cf9bc3887153ab7deb02a44607fc032386a8c))
+- Update nested example ([6c06eee](6c06eeee7498c17e8d6591c736bac33b2fc858f2))
+- Documentation for new `elevateEdgesOnSelect` option ([6dfeebf](6dfeebf7af3b87bd9d2d05469a72751b7c44f030))
+- Documentation for new edge `events` property ([905a6fb](905a6fbaa0f5f53d4eac5aa2d6bc1354a37cd4e3))
+
+### Features
+
+- Move connection lines to separate container ([2a9cdd6](2a9cdd6855a6ae992258981c59b25e4c806ec1f1))
+- Add contextual node events ([b363e94](b363e9457ee6e2c3407793c7f17371f82b149806))
+- Add `useNodeHooks` composable ([394f9a0](394f9a01b38de3d5dfdf9dfdbf160783c3502a71))
+- Update node event types ([b5998ee](b5998ee301be42cc1dff0201ec497a5892f2aa33))
+- Add contextual edge events ([730f49e](730f49e8792df3b228ebe41a5cac09b39fa24dbf))
+
+### Miscellaneous Tasks
+
 - Remove repository ref from changelog workflow ([b4d123c](b4d123cab54d579019e58c528d31847076a9a46d))
 - Allow manual workflow dispatch ([2e1150c](2e1150c32fa39773b000477c90c7c9612c3a777b))
 - Add name to changelog workflow ([e154b60](e154b60a6a38b0c8e22b17be6e4510ce8b3ec1bc))
 - Use fetch-depth 0 ([14a1843](14a1843d9b3d4d58474bb1ee78fa7152c4064c57))
+- Update CHANGELOG.md ([9b373ce](9b373ce49c9124537239efe00fcf32393fa634e1))
+- Update `vite-config.ts` ([d75feb6](d75feb6c61e09859bbedd2857ebb644318c4623a))
+- Deprecate `useZoomPanHelper` ([f5b02c3](f5b02c3278f3cd8fe3230ab145ed23ae73c93d6c))
+- Add generic for custom events on node associated types ([38d8565](38d8565702f25d9d9012ec46f4c0219675ba9f33))
+- Remove `computedPosition` from `NodeProps` ([a84dc91](a84dc911d2687ac57468f618eefc59c8a5d1ed89))
+- Remove `nodeElement` from `NodeProps` type ([e395cc7](e395cc7aad5c08b8c9b60b36c3c8bd387354e339))
+- Use scope for node watchers ([eb28934](eb28934ceeb30270b5acd484fe7f3befb8b5a371))
+- Simplify `elevateEdgesOnSelect` logic ([d036769](d036769d5863602bb72a498ffe318c1d932a9e30))
+- Correct name of `useNodeHooks` ([fb51f8d](fb51f8d8bdaaa3bc6c89a80138eec53a662235a1))
+- Update package deps ([580de08](580de082fbd9eca97e831c4c6e1da4d7a64a24a9))
+- Bump version ([f4201fd](f4201fd94fa1f5ffcc72c696a20703d310bee4c7))
+
+### Performance
+
+- Too many loops in grouping watcher ([f25f6bf](f25f6bf9a14372ce8ddd04d2fce34fceb340d2d1))
+
+### Refactor
+
+- Apply node specific `snapGrid` on drag ([c5e4264](c5e4264dda7b92c65b1b23c5376c3bc30c14e46e))
+- Use `content-box` for resize observer ([78e15b2](78e15b23f348983fa36d5c5bbff024e55700744c))
+- Edges z-index 0 by default ([c0920bf](c0920bfb4d4520d475f3e5e01e3b9e211c888467))
+- Remove unnecessary generics ([be68a27](be68a27b33a6929f5f5a826365b8c8d617dd1c4d))
 
 ## [0.4.23] - 2022-06-16
 
