@@ -63,14 +63,15 @@ const scope = effectScope()
 
 onPaneReady(() => {
   scope.run(() => {
+    const edgeAmount = computed(() => getEdges.length)
+
     watch(
-      [$$(getSelectedNodes), $$(getEdges), $$(getNodes)],
+      [$$(getSelectedNodes), edgeAmount],
       () => {
-        getEdges.reduce((acc, edge) => {
-          if (hooks[edge.id]) return acc
+        getEdges.forEach((edge) => {
+          if (hooks[edge.id]) return
           hooks[edge.id] = useEdgeHooks(edge, emits)
-          return acc
-        }, hooks)
+        })
 
         if (elevateEdgesOnSelect) {
           nextTick(() => (groups = groupEdgesByZLevel(getEdges, getNode)))
