@@ -37,6 +37,8 @@ const nodeElement = ref()
 
 const { emit, on } = useNodeHooks(node)
 
+const scope = effectScope()
+
 const dragging = useDrag({
   id,
   el: nodeElement,
@@ -58,14 +60,6 @@ const observer = useResizeObserver(
     updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
   },
   { box: 'content-box' },
-)
-
-watch(
-  [() => node.width, () => node.height, () => node.type, () => node.sourcePosition, () => node.targetPosition],
-  () => {
-    updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
-  },
-  { flush: 'post' },
 )
 
 const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
@@ -91,35 +85,46 @@ onUpdateNodeInternals((updateIds) => {
   }
 })
 
-onBeforeUnmount(() => observer.stop())
-
 onMounted(() => {
-  updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+  scope.run(() => {
+    watch(
+      [() => node.width, () => node.height, () => node.type, () => node.sourcePosition, () => node.targetPosition],
+      () => {
+        updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
+      },
+      { immediate: true, flush: 'post' },
+    )
 
-  watch(
-    [
-      () => node.position.x,
-      () => node.position.y,
-      () => parentNode?.computedPosition.x,
-      () => parentNode?.computedPosition.y,
-      () => parentNode?.computedPosition.z,
-      () => node.selected,
-      () => node.dimensions,
-      () => parentNode?.dimensions,
-    ],
-    ([newX, newY, parentX, parentY, parentZ]) => {
-      const xyzPos = {
-        x: newX,
-        y: newY,
-        z: node.selected ? 1000 : 0,
-      }
+    watch(
+      [
+        () => node.position.x,
+        () => node.position.y,
+        () => parentNode?.computedPosition.x,
+        () => parentNode?.computedPosition.y,
+        () => parentNode?.computedPosition.z,
+        () => node.selected,
+        () => node.dimensions,
+        () => parentNode?.dimensions,
+      ],
+      ([newX, newY, parentX, parentY, parentZ]) => {
+        const xyzPos = {
+          x: newX,
+          y: newY,
+          z: node.selected ? 1000 : 0,
+        }
 
-      updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
+        updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
 
-      node.handleBounds = getHandleBounds(nodeElement.value, viewport.zoom)
-    },
-    { immediate: true, flush: 'post' },
-  )
+        node.handleBounds = getHandleBounds(nodeElement.value, viewport.zoom)
+      },
+      { immediate: true, flush: 'post' },
+    )
+  })
+})
+
+onBeforeUnmount(() => {
+  observer.stop()
+  scope.stop()
 })
 
 const onMouseEnter = (event: MouseEvent) => {
