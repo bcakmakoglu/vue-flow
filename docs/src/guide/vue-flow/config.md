@@ -777,6 +777,20 @@ const connector = (params) => {
 </template>
 ```
 
+### elevate-edges-on-select <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+
+- Type: `boolean`
+
+- Default: `false`
+
+- Details:
+
+  When enabled, edges will be grouped by z-index and elevated when the nodes they connect to are selected.
+
+  This is useful if you want to show the edges on top of the nodes.
+
+  By default, edges have a z-index of 0.
+
 ## Global Element Options
 
 ### only-render-visible-elements <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
