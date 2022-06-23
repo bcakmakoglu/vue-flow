@@ -111,7 +111,7 @@ onMounted(() => {
       const xyzPos = {
         x: newX,
         y: newY,
-        z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
+        z: node.selected ? 1000 : 0,
       }
 
       updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
