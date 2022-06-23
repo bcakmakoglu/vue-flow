@@ -361,12 +361,12 @@ const elements = ref([
 
 As you can see above, you can also pass in custom event handlers. These will not be called by Vue Flow but can be used
 to forward callback functions to your custom components.
-The `click` handler is part of the [`NodeEvents`](/typedocs/interfaces/NodeEvents.html) interface, meaning it will be
+The `click` handler is part of the [`NodeEventsHandler`](/typedocs/types/NodeEventsHandler.html) interface, meaning it will be
 triggered when the node is clicked.
 
 ```vue:no-line-numbers
-<script setup>
-import { NodeProps, NodeEventsOn } from '@braks/vue-flow'
+<script lang="ts" setup>
+import type { NodeProps, NodeEventsOn } from '@braks/vue-flow'
 
 // define your events
 interface CustomNodeEvents {
