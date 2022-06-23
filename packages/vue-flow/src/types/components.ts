@@ -1,5 +1,5 @@
 import type { CSSProperties, Component, DefineComponent, SVGAttributes, VNode } from 'vue'
-import type { BackgroundVariant, Dimensions, ElementData, XYPosition } from './flow'
+import type { BackgroundVariant, Dimensions, XYPosition } from './flow'
 import type { GraphNode, NodeProps } from './node'
 import type { EdgeProps } from './edge'
 import type { FitViewParams } from './zoom'
@@ -8,16 +8,10 @@ import type { FitViewParams } from './zoom'
 type GlobalComponentName = string
 
 /** Node Components can either be a component definition or a string name */
-export type NodeComponent<Data = ElementData> =
-  | Component<NodeProps<Data>>
-  | DefineComponent<NodeProps<Data>, any, any, any, any>
-  | GlobalComponentName
+export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | GlobalComponentName
 
 /** Edge Components can either be a component definition or a string name */
-export type EdgeComponent<Data = ElementData> =
-  | Component<EdgeProps<Data>>
-  | DefineComponent<EdgeProps<Data>, any, any, any, any, any>
-  | GlobalComponentName
+export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, any, any, any, any, any> | GlobalComponentName
 
 export type DefaultEdgeTypes = { [key in 'default' | 'straight' | 'smoothstep' | 'step' | 'simplebezier']: EdgeComponent }
 export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: NodeComponent }
@@ -55,20 +49,20 @@ export interface ControlProps {
 }
 
 /** expects a node and returns a color value */
-export type MiniMapNodeFunc<Data = ElementData> = (node: GraphNode<Data>) => string
+export type MiniMapNodeFunc = (node: GraphNode) => string
 // hack for vue-type imports
-type MiniMapNodeFunc2<Data = ElementData> = (node: GraphNode<Data>) => string
-type MiniMapNodeFunc3<Data = ElementData> = (node: GraphNode<Data>) => string
+type MiniMapNodeFunc2 = (node: GraphNode) => string
+type MiniMapNodeFunc3 = (node: GraphNode) => string
 
 export type ShapeRendering = CSSProperties['shapeRendering']
 
-export interface MiniMapProps<Data = ElementData> {
+export interface MiniMapProps {
   /** Node color, can be either a string or a string func that receives the current node */
-  nodeColor?: string | MiniMapNodeFunc<Data>
+  nodeColor?: string | MiniMapNodeFunc
   /** Node stroke color, can be either a string or a string func that receives the current node */
-  nodeStrokeColor?: string | MiniMapNodeFunc2<Data>
+  nodeStrokeColor?: string | MiniMapNodeFunc2
   /** Additional node class name, can be either a string or a string func that receives the current node */
-  nodeClassName?: string | MiniMapNodeFunc3<Data>
+  nodeClassName?: string | MiniMapNodeFunc3
   /** Node border radius */
   nodeBorderRadius?: number
   /** Node stroke width */
