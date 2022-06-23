@@ -52,9 +52,13 @@ const dragging = useDrag({
   },
 })
 
-const observer = useResizeObserver(nodeElement, () => {
-  updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
-})
+const observer = useResizeObserver(
+  nodeElement,
+  () => {
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+  },
+  { box: 'content-box' },
+)
 
 watch(
   [() => node.width, () => node.height, () => node.type, () => node.sourcePosition, () => node.targetPosition],
