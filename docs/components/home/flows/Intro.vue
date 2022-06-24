@@ -216,6 +216,29 @@ const scrollTo = () => {
     el.scrollIntoView({ behavior: 'smooth' })
   }
 }
+
+const animationClassNames = ['checker-gb', 'checker-op', 'checker-yg', 'checker-ss']
+
+const shuffle = (a: any[]) => {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+const createAnimationDurations = () => {
+  return animationClassNames.map((className) => {
+    const duration = Math.random() * 8 + 1
+
+    return {
+      className,
+      duration,
+    }
+  })
+}
+
+const animations = ref<{ className: string; duration: number }[]>(shuffle(createAnimationDurations()))
 </script>
 
 <template>
@@ -223,10 +246,38 @@ const scrollTo = () => {
     <Background>
       <template #pattern-container="{ id }">
         <pattern :id="id" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-          <rect class="checker-gb" x="0" y="0" width="50" height="50"></rect>
-          <rect class="checker-op" x="0" y="100" width="50" height="50"></rect>
-          <rect class="checker-yg" x="100" y="0" width="50" height="50"></rect>
-          <rect class="checker-ss" x="100" y="100" width="50" height="50"></rect>
+          <rect
+            :class="animations[0].className"
+            :style="{ '--animation-duration': `${animations[0].duration}s` }"
+            x="0"
+            y="0"
+            width="50"
+            height="50"
+          ></rect>
+          <rect
+            :class="animations[1].className"
+            :style="{ '--animation-duration': `${animations[1].duration}s` }"
+            x="0"
+            y="100"
+            width="50"
+            height="50"
+          ></rect>
+          <rect
+            :class="animations[2].className"
+            :style="{ '--animation-duration': `${animations[2].duration}s` }"
+            x="100"
+            y="0"
+            width="50"
+            height="50"
+          ></rect>
+          <rect
+            :class="animations[3].className"
+            :style="{ '--animation-duration': `${animations[3].duration}s` }"
+            x="100"
+            y="100"
+            width="50"
+            height="50"
+          ></rect>
         </pattern>
       </template>
     </Background>
@@ -271,19 +322,19 @@ const scrollTo = () => {
 
 <style>
 .checker-gb {
-  animation: fill-green-blue 6s alternate infinite;
+  animation: fill-green-blue var(--animation-duration) alternate infinite;
 }
 
 .checker-op {
-  animation: fill-orange-purple 4.5s alternate infinite;
+  animation: fill-orange-purple var(--animation-duration) alternate infinite;
 }
 
 .checker-yg {
-  animation: fill-yellow-green 5.5s alternate infinite;
+  animation: fill-yellow-green var(--animation-duration) alternate infinite;
 }
 
 .checker-ss {
-  animation: fill-sky-red 5s alternate infinite;
+  animation: fill-sky-red var(--animation-duration) alternate infinite;
 }
 
 @keyframes fill-green-blue {
