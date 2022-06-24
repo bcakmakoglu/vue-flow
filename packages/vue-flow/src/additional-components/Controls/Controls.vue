@@ -79,11 +79,11 @@ export default {
     <template v-if="showInteractive">
       <slot name="control-interactive">
         <ControlButton v-if="showInteractive" class="vue-flow__controls-interactive" @click="onInteractiveChangeHandler">
-          <slot name="icon-unlock">
-            <Unlock v-if="isInteractive" />
+          <slot v-if="isInteractive" name="icon-unlock">
+            <Unlock />
           </slot>
-          <slot name="icon-lock">
-            <Lock v-if="!isInteractive" />
+          <slot v-if="!isInteractive" name="icon-lock">
+            <Lock />
           </slot>
         </ControlButton>
       </slot>
