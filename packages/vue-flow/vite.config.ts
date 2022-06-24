@@ -54,6 +54,6 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ['@vueuse/core', 'd3', 'd3-zoom', 'd3-selection', 'd3-drag'],
+    include: ['@vueuse/core', 'd3-zoom', 'd3-selection', 'd3-drag'],
   },
 })
