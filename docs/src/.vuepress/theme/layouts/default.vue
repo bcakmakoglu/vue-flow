@@ -21,7 +21,7 @@ import DiscordIcon from '~icons/logos/discord-icon'
           aria-label="GitHub"
           class="relative group cursor-pointer flex justify-center items-center"
         >
-          <GithubIcon class="text-white text-lg lg:text-2xl transform group-hover:scale-125 transition transition-all ease duration-300" />
+          <GithubIcon class="text-black dark:text-white text-lg lg:text-2xl transform group-hover:scale-125 transition transition-all ease duration-300" />
           <span class="transition-opacity ease-in duration-200 opacity-0 group-hover:opacity-100 bg-black dark:bg-white text-white dark:text-black rounded-md p-2 absolute top-[25px] right-0 mt-2 mr-2 text-xs">
             Contribute on GitHub!
           </span>
