@@ -104,21 +104,31 @@ export default {
           text: 'Examples',
           children: [
             '/examples/',
-            '/examples/custom-node',
-            '/examples/edges',
-            '/examples/nesting',
-            '/examples/connectionline',
-            '/examples/updatable-edge',
-            '/examples/update-node',
-            '/examples/validation',
+            {
+              text: 'Nodes',
+              children: [
+                '/examples/nodes/',
+                '/examples/nodes/update-node',
+                '/examples/nodes/nesting',
+              ]
+            },
+            {
+              text: 'Edges',
+              children: [
+                '/examples/edges/',
+                '/examples/edges/updatable-edge',
+                '/examples/edges/connection-line',
+                '/examples/edges/validation',
+              ]
+            },
             '/examples/save',
             '/examples/dnd',
             '/examples/empty',
             '/examples/hidden',
-            '/examples/interaction',
-            '/examples/multi',
             '/examples/horizontal',
+            '/examples/interaction',
             '/examples/teleport',
+            '/examples/multi',
             '/examples/pinia',
             '/examples/stress',
           ],
