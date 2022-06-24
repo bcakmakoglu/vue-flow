@@ -60,27 +60,29 @@ export default {
       width: `${width > 100 ? 100 : width}%`,
     }"
   >
-    <pattern
-      :id="patternId"
-      :x="background.xOffset"
-      :y="background.yOffset"
-      :width="background.scaledGap"
-      :height="background.scaledGap"
-      patternUnits="userSpaceOnUse"
-    >
-      <slot name="pattern">
-        <template v-if="variant === BackgroundVariant.Lines">
-          <path :stroke="patternColor" :stroke-width="size" :d="d" />
-        </template>
-        <template v-else-if="variant === BackgroundVariant.Dots">
-          <circle :cx="background.size" :cy="background.size" :r="background.size" :fill="patternColor" />
-        </template>
-        <svg v-if="bgColor" height="100" width="100">
-          <rect width="100%" height="100%" :fill="bgColor" />
-        </svg>
-      </slot>
-    </pattern>
+    <slot :id="patternId" name="pattern-container">
+      <pattern
+        :id="patternId"
+        :x="background.xOffset"
+        :y="background.yOffset"
+        :width="background.scaledGap"
+        :height="background.scaledGap"
+        patternUnits="userSpaceOnUse"
+      >
+        <slot name="pattern">
+          <template v-if="variant === BackgroundVariant.Lines">
+            <path :stroke="patternColor" :stroke-width="size" :d="d" />
+          </template>
+          <template v-else-if="variant === BackgroundVariant.Dots">
+            <circle :cx="background.size" :cy="background.size" :r="background.size" :fill="patternColor" />
+          </template>
+          <svg v-if="bgColor" height="100" width="100">
+            <rect width="100%" height="100%" :fill="bgColor" />
+          </svg>
+        </slot>
+      </pattern>
+    </slot>
     <rect :x="x" :y="y" width="100%" height="100%" :fill="`url(#${patternId})`" />
-    <slot></slot>
+    <slot :id="patternId" />
   </svg>
 </template>
