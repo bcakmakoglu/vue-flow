@@ -9,6 +9,7 @@ import Heart from '~icons/mdi/heart'
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const dark = ref(false)
+const animatedBackground = ref(false)
 
 onMounted(() => {
   const html = document.getElementsByTagName('html')![0]
@@ -83,6 +84,8 @@ const confettiColors = Object.values(colors).flatMap((color) => {
 onNodeClick(async ({ node }) => {
   if (node.id === 'intro') {
     if (disabled.value) return
+
+    animatedBackground.value = !animatedBackground.value
 
     if (clickInterval.value) {
       clearInterval(clickInterval.value)
@@ -243,44 +246,55 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
 
 <template>
   <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
-    <Background>
-      <template #pattern-container="{ id }">
-        <pattern :id="id" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
-          <rect
-            :class="animations[0].className"
-            :style="{ '--animation-duration': `${animations[0].duration}s` }"
-            x="0"
-            y="0"
-            width="50"
-            height="50"
-          ></rect>
-          <rect
-            :class="animations[1].className"
-            :style="{ '--animation-duration': `${animations[1].duration}s` }"
-            x="0"
-            y="100"
-            width="50"
-            height="50"
-          ></rect>
-          <rect
-            :class="animations[2].className"
-            :style="{ '--animation-duration': `${animations[2].duration}s` }"
-            x="100"
-            y="0"
-            width="50"
-            height="50"
-          ></rect>
-          <rect
-            :class="animations[3].className"
-            :style="{ '--animation-duration': `${animations[3].duration}s` }"
-            x="100"
-            y="100"
-            width="50"
-            height="50"
-          ></rect>
-        </pattern>
-      </template>
-    </Background>
+    <XyzTransition xyz="fade down ease-out-back duration-10">
+      <Background v-if="animatedBackground">
+        <template #pattern-container="{ id }">
+          <pattern :id="id" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+            <rect
+              :class="animations[0].className"
+              :style="{ '--animation-duration': `${animations[0].duration}s` }"
+              x="0"
+              y="0"
+              width="50"
+              height="50"
+            ></rect>
+            <rect
+              :class="animations[1].className"
+              :style="{ '--animation-duration': `${animations[1].duration}s` }"
+              x="0"
+              y="100"
+              width="50"
+              height="50"
+            ></rect>
+            <rect
+              :class="animations[2].className"
+              :style="{ '--animation-duration': `${animations[2].duration}s` }"
+              x="100"
+              y="0"
+              width="50"
+              height="50"
+            ></rect>
+            <rect
+              :class="animations[3].className"
+              :style="{ '--animation-duration': `${animations[3].duration}s` }"
+              x="100"
+              y="100"
+              width="50"
+              height="50"
+            ></rect>
+          </pattern>
+        </template>
+      </Background>
+    </XyzTransition>
+    <XyzTransition xyz="fade down ease-out-back duration-20">
+      <Background
+        v-if="!animatedBackground"
+        variant="lines"
+        :pattern-color="dark ? '#ffffff' : '#000000'"
+        :size="0.7"
+        :gap="100"
+      />
+    </XyzTransition>
 
     <template #node-box="props">
       <template v-if="props.id === 'intro'">
@@ -339,9 +353,12 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
 
 @keyframes fill-green-blue {
   0% {
+    @apply fill-transparent;
+  }
+  35% {
     @apply fill-green-500/50;
   }
-  50% {
+  65% {
     @apply fill-transparent;
   }
   100% {
@@ -351,9 +368,12 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
 
 @keyframes fill-orange-purple {
   0% {
+    @apply fill-transparent;
+  }
+  35% {
     @apply fill-orange-500/50;
   }
-  50% {
+  65% {
     @apply fill-transparent;
   }
   100% {
@@ -363,9 +383,12 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
 
 @keyframes fill-yellow-green {
   0% {
+    @apply fill-transparent;
+  }
+  35% {
     @apply fill-yellow-500/50;
   }
-  50% {
+  65% {
     @apply fill-transparent;
   }
   100% {
@@ -375,9 +398,12 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
 
 @keyframes fill-sky-red {
   0% {
+    @apply fill-transparent;
+  }
+  35% {
     @apply fill-sky-500/50;
   }
-  50% {
+  65% {
     @apply fill-transparent;
   }
   100% {
