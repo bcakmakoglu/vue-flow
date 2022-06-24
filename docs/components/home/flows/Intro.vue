@@ -220,7 +220,16 @@ const scrollTo = () => {
 
 <template>
   <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
-    <Background variant="lines" :pattern-color="dark ? '#ffffff' : '#000000'" :size="0.7" :gap="100" />
+    <Background>
+      <template #pattern-container="{ id }">
+        <pattern :id="id" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+          <rect class="checker-gb" x="0" y="0" width="50" height="50"></rect>
+          <rect class="checker-op" x="0" y="100" width="50" height="50"></rect>
+          <rect class="checker-yg" x="100" y="0" width="50" height="50"></rect>
+          <rect class="checker-ss" x="100" y="100" width="50" height="50"></rect>
+        </pattern>
+      </template>
+    </Background>
 
     <template #node-box="props">
       <template v-if="props.id === 'intro'">
@@ -261,6 +270,70 @@ const scrollTo = () => {
 </template>
 
 <style>
+.checker-gb {
+  animation: fill-green-blue 6s alternate infinite;
+}
+
+.checker-op {
+  animation: fill-orange-purple 4.5s alternate infinite;
+}
+
+.checker-yg {
+  animation: fill-yellow-green 5.5s alternate infinite;
+}
+
+.checker-ss {
+  animation: fill-sky-red 5s alternate infinite;
+}
+
+@keyframes fill-green-blue {
+  0% {
+    @apply fill-green-500/50;
+  }
+  50% {
+    @apply fill-transparent;
+  }
+  100% {
+    @apply fill-blue-500/50;
+  }
+}
+
+@keyframes fill-orange-purple {
+  0% {
+    @apply fill-orange-500/50;
+  }
+  50% {
+    @apply fill-transparent;
+  }
+  100% {
+    @apply fill-purple-500/50;
+  }
+}
+
+@keyframes fill-yellow-green {
+  0% {
+    @apply fill-yellow-500/50;
+  }
+  50% {
+    @apply fill-transparent;
+  }
+  100% {
+    @apply fill-green-500/50;
+  }
+}
+
+@keyframes fill-sky-red {
+  0% {
+    @apply fill-sky-500/50;
+  }
+  50% {
+    @apply fill-transparent;
+  }
+  100% {
+    @apply fill-red-500/50;
+  }
+}
+
 .intro {
   @apply cursor-pointer
   bg-green-500
