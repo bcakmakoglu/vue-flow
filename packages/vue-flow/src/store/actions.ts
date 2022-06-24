@@ -419,6 +419,10 @@ export default (state: State, getters: ComputedGetters): Actions => {
       fitBounds(bounds, options)
     },
     project: (position) => pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid),
+    fullscreen: async (isFullscreen) => {
+      const { fullscreen } = await paneReady()
+      await fullscreen(isFullscreen)
+    },
     toObject,
     updateNodeInternals,
     $reset: () => {

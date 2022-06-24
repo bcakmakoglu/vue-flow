@@ -74,6 +74,8 @@ export type GetTransform = () => ViewpaneTransform
 /** set current viewpane transform */
 export type SetTransform = (transform: ViewpaneTransform, options?: TransitionOptions) => void
 
+export type GoFullscreen = (isFullscreen?: boolean) => Promise<void>
+
 export interface ViewportFunctions {
   zoomIn: ZoomInOut
   zoomOut: ZoomInOut
@@ -84,4 +86,5 @@ export interface ViewportFunctions {
   setCenter: SetCenter
   fitBounds: FitBounds
   project: Project
+  fullscreen: GoFullscreen
 }

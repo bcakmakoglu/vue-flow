@@ -51,6 +51,8 @@ export default (vueFlowId?: string): ViewportFunctions => {
 
   onPaneReady(() => (hasDimensions = true))
 
+  const { enter, exit, toggle } = useFullscreen()
+
   const zoomTo: ViewportFunctions['zoomTo'] = async (zoomLevel, options) => {
     if (!hasDimensions) await untilDimensions(dimensions, getNodes)
 
@@ -150,5 +152,14 @@ export default (vueFlowId?: string): ViewportFunctions => {
       transformViewport(x, y, zoom, options?.duration)
     },
     project: (position) => pointToRendererPoint(position, viewport, snapToGrid, snapGrid),
+    fullscreen: async (isFullscreen) => {
+      if (typeof isFullscreen === 'undefined') return await toggle()
+
+      if (isFullscreen) {
+        await enter()
+      } else {
+        await exit()
+      }
+    },
   }
 }
