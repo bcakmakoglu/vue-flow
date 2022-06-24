@@ -4,8 +4,8 @@ import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import type { ViewpaneTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
-import { useKeyPress, useVueFlow } from '../../composables'
-import { clamp, clampPosition } from '../../utils'
+import { useKeyPress, useVueFlow, useWindow } from '../../composables'
+import { clamp, clampPosition, getDimensions } from '../../utils'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import Transform from './Transform.vue'
 
@@ -57,7 +57,7 @@ let transform = $ref({
 
 const { width, height } = useElementBounding(viewportEl)
 
-watch(
+const stop = watch(
   [width, height],
   ([newWidth, newHeight]) => {
     dimensions.width = newWidth
@@ -66,7 +66,19 @@ watch(
   { immediate: true },
 )
 
+onBeforeUnmount(() => stop())
+
 onMounted(() => {
+  const window = useWindow()
+  if ('screen' in window) {
+    useEventListener(window, 'onresize', () => {
+      if (!viewportEl.value) return
+      const { width, height } = getDimensions(viewportEl.value)
+      dimensions.width = width
+      dimensions.height = height
+    })
+  }
+
   const d3Zoom = zoom<HTMLDivElement, any>().scaleExtent([minZoom, maxZoom]).translateExtent(translateExtent)
   const d3Selection = select(viewportEl.value).call(d3Zoom)
   const d3ZoomHandler = d3Selection.on('wheel.zoom')
