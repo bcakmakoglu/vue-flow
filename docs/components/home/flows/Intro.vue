@@ -229,7 +229,7 @@ const shuffle = (a: any[]) => {
 
 const createAnimationDurations = () => {
   return animationClassNames.map((className) => {
-    const duration = Math.random() * 8 + 1
+    const duration = 5 + Math.random() * 5
 
     return {
       className,
