@@ -2,11 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [0.4.25] - 2022-06-24
+
+[f4201fd](f4201fd94fa1f5ffcc72c696a20703d310bee4c7)...[16ec3cc](16ec3cc71796cc96d0d6b402aa6c0e43f8d9f5e0)
+
+### Bug Fixes
+
+- Use `v-if` on slots instead of lock icons ([a183c7d](a183c7dcedd4056dbcd92bdadf1d69fd5f713133))
+
+### Documentation
+
+- Add github, discord and react flow icons to header ([097b859](097b859e26a211d8c5606da16874d7427980d09b))
+- Use edge style function to style edges on node select ([c27c895](c27c895f8806b91737d1ecc746d1a290f3f69053))
 
 ### Miscellaneous Tasks
 
 - Push from changelog workflow to master branch ([7d9a7b6](7d9a7b6dbe02b81b798a923bbb84e5e5a8f2fa7b))
+- Update CHANGELOG.md ([6a71a5f](6a71a5fdbdadc00f53b88cffc1a53adcd2693293))
+- Let windicss scan theme dir ([a0541cb](a0541cb5df00294282f19f73494b8cc10bf87bae))
+- Update `auto-imports.d.ts` ([d37b67c](d37b67c9dc99b786e280a0ec6b0ed6c7e91afdf4))
+- Remove `d3` and move `types/d3` to deps-dev ([eeed10c](eeed10c8592c350dc69f953bad6f7f76b6df39cc))
+- Bump version ([16ec3cc](16ec3cc71796cc96d0d6b402aa6c0e43f8d9f5e0))
 
 ## [0.4.24] - 2022-06-23
 
