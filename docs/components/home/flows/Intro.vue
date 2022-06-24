@@ -30,7 +30,6 @@ onMounted(() => {
 const initialEdges = [
   {
     id: 'eintro-examples',
-    type: 'smoothstep',
     sourceHandle: 'a',
     source: 'intro',
     target: 'examples',
@@ -39,7 +38,6 @@ const initialEdges = [
   },
   {
     id: 'eintro-documentation',
-    type: 'smoothstep',
     sourceHandle: 'a',
     source: 'intro',
     target: 'documentation',
@@ -48,7 +46,6 @@ const initialEdges = [
   },
   {
     id: 'eintro-acknowledgement',
-    type: 'smoothstep',
     sourceHandle: 'a',
     source: 'intro',
     target: 'acknowledgement',
@@ -65,7 +62,6 @@ const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge
   ],
   edges: initialEdges,
   elementsSelectable: true,
-  nodesDraggable: false,
   panOnDrag: false,
   zoomOnScroll: false,
   zoomOnDoubleClick: false,
@@ -152,7 +148,6 @@ const setNodes = () => {
       return [
         {
           id: 'eintro-examples',
-          type: 'smoothstep',
           sourceHandle: 'a',
           source: 'intro',
           target: 'examples',
@@ -161,7 +156,6 @@ const setNodes = () => {
         },
         {
           id: 'eexamples-documentation',
-          type: 'smoothstep',
           source: 'examples',
           target: 'documentation',
           animated: true,
@@ -169,7 +163,6 @@ const setNodes = () => {
         },
         {
           id: 'edocumentation-acknowledgement',
-          type: 'smoothstep',
           source: 'documentation',
           target: 'acknowledgement',
           animated: true,
