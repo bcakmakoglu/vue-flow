@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.26] - 2022-06-24
+
+[16ec3cc](16ec3cc71796cc96d0d6b402aa6c0e43f8d9f5e0)...[9fdac11](9fdac11fd062453f567fd7755775fc614600ca15)
+
+### Documentation
+
+- Move examples into `nodes` and `edges` dir ([7534ad9](7534ad9304653acf03365963e21e826d31ddde0a))
+- Add animated background to intro ([f1a0568](f1a05684496925db4e8386e9855457c6d4d4be7e))
+
+### Features
+
+- Add `pattern-container` slot to Background ([89daa82](89daa827f38ef6a516c8c9cbe1fb18c633739121))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([0d5f9a5](0d5f9a5f0a9fed891694b8126ad87e48d4766a80))
+- Color github logo white ([8d975c6](8d975c6aadc924d748da2e4a9b21bc8a09cf529b))
+- Randomize animation durations ([2932a8c](2932a8cb385c34f1fb250f7378b3614ee5856cdc))
+- Have animations be at least 5 seconds long ([74f367c](74f367c6c79fd0c328563d3b5d47603ef675c5bf))
+- Color github logo black when light mode ([6e2ae48](6e2ae482b5d5efd1e0e03a770ea7b25be568248a))
+- Enable animated background on intro node click ([07e7484](07e74844200fdbaf36f3e44572ea750783f15944))
+- Allow intro nodes to be dragged and use bezier edges ([d265a62](d265a62c83618336da1a6636b3034b2f11d409c6))
+- Change blobity mode ([491f2dc](491f2dc07ac0b9fbd0d433e0db3545e08915754d))
+- Elevate edges on select in intro ([fd1cc00](fd1cc00c970cef8caf2c3ce54141dd44d20e2bee))
+- Bump version ([9fdac11](9fdac11fd062453f567fd7755775fc614600ca15))
+
+### Refactor
+
+- Trigger viewport size update on window resize ([3cb3ada](3cb3ada78304efc6ae6749cce7f181dfccea85c6))
+
 ## [0.4.25] - 2022-06-24
 
 [f4201fd](f4201fd94fa1f5ffcc72c696a20703d310bee4c7)...[16ec3cc](16ec3cc71796cc96d0d6b402aa6c0e43f8d9f5e0)
