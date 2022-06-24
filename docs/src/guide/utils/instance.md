@@ -163,3 +163,9 @@ toObject = (): {
   zoom: scale,
 }
 ```
+
+### [fullscreen](/typedocs/interfaces/Actions.html#fullscreen)
+
+- Details:
+
+  Toggles browser fullscreen mode.
