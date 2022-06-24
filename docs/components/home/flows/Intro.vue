@@ -66,6 +66,7 @@ const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge
   zoomOnScroll: false,
   zoomOnDoubleClick: false,
   zoomOnPinch: false,
+  elevateEdgesOnSelect: true,
 })
 
 const clickInterval = ref()
@@ -411,7 +412,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
   transform
   transition-transform
   duration-300
-  hover:(scale-105 ring ring-white);
+  hover:(ring ring-white);
 }
 
 .link {
