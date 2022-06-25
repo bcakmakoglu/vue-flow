@@ -23,7 +23,7 @@ import DiscordIcon from '~icons/logos/discord-icon'
             class="bg-white rounded-full relative group cursor-pointer flex justify-center items-center"
           >
             <GithubIcon class="text-black text-xl transform group-hover:scale-125 transition transition-all ease duration-300" />
-            <span class="w-48 transition-opacity ease-in duration-200 opacity-0 group-hover:opacity-100 bg-black dark:bg-white text-white dark:text-black rounded-md p-2 absolute bottom-[25px] right-0 mt-2 mr-2 text-xs">
+            <span class="transition-opacity ease-in duration-200 opacity-0 group-hover:opacity-100 bg-black dark:bg-white text-white dark:text-black rounded-md p-2 absolute top-[25px] right-0 mt-2 mr-2 text-xs">
           Contribute on GitHub!
         </span>
           </a>
@@ -34,7 +34,7 @@ import DiscordIcon from '~icons/logos/discord-icon'
             class="relative group cursor-pointer flex justify-center items-center"
           >
             <DiscordIcon class="text-xl transform group-hover:scale-125 transition transition-all ease duration-300" />
-            <span class="w-48 transition-opacity ease-in duration-200 opacity-0 group-hover:opacity-100 bg-black dark:bg-white text-white dark:text-black rounded-md p-2 absolute bottom-[25px] right-0 mt-2 mr-2 text-xs">
+            <span class="transition-opacity ease-in duration-200 opacity-0 group-hover:opacity-100 bg-black dark:bg-white text-white dark:text-black rounded-md p-2 absolute top-[25px] right-0 mt-2 mr-2 text-xs">
           Join the Discord server!
         </span>
           </a>
@@ -45,7 +45,7 @@ import DiscordIcon from '~icons/logos/discord-icon'
             class="relative group cursor-pointer flex justify-center items-center"
           >
             <ReactIcon class="text-xl transform group-hover:scale-125 transition transition-all ease duration-300" />
-            <span class="w-48 transition-opacity ease-in duration-200 opacity-0 group-hover:opacity-100 bg-black dark:bg-white text-white dark:text-black rounded-md p-2 absolute bottom-[25px] right-0 mt-2 mr-2 text-xs">
+            <span class="transition-opacity ease-in duration-200 opacity-0 group-hover:opacity-100 bg-black dark:bg-white text-white dark:text-black rounded-md p-2 absolute top-[25px] right-0 mt-2 mr-2 text-xs">
           Check out the original React Flow by Wbkd!
         </span>
           </a>
@@ -63,9 +63,5 @@ import DiscordIcon from '~icons/logos/discord-icon'
   @apply dark:(text-white bg-black) pt-[2rem] text-center;
   border-top: 1px solid var(--c-border);
   transition: border-color var(--t-color);
-}
-
-.theme-default-content:not(.custom) h1:first-of-type {
-  margin-top: var(--navbar-height);
 }
 </style>
