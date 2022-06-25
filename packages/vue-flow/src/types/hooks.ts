@@ -44,6 +44,7 @@ export interface FlowEvents {
   nodeDragStart: NodeDragEvent
   nodeDrag: NodeDragEvent
   nodeDragStop: NodeDragEvent
+  updateNodeInternals: string[]
   miniMapNodeClick: NodeMouseEvent
   miniMapNodeDoubleClick: NodeMouseEvent
   miniMapNodeMouseEnter: NodeMouseEvent
@@ -75,7 +76,6 @@ export interface FlowEvents {
   edgeUpdateStart: EdgeMouseEvent
   edgeUpdate: EdgeUpdateEvent
   edgeUpdateEnd: EdgeMouseEvent
-  updateNodeInternals: string[]
 }
 
 export type FlowHooks = Readonly<{
