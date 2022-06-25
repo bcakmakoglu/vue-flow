@@ -88,7 +88,8 @@ onMounted(() => {
 </template>
 ```
 
-You can also apply changes using the [`applyNodeChanges`](/typedocs/interfaces/Actions.html#applynodechanges/) utility function,
+You can also apply changes using the [`applyNodeChanges`](/typedocs/interfaces/Actions.html#applynodechanges/) utility
+function,
 which expects an array of [changes](/typedocs/types/NodeChange.html/) to be applied to the currently stored nodes.
 
 ```vue:no-line-numbers{11,17-22}
@@ -332,8 +333,10 @@ your nodes receive the following props:
 
 ### [(Custom) Node Events](/typedocs/interfaces/NodeEvents.html/)
 
-In addition to the event handlers that you can access through [`useVueFlow`](/guide/composables#useVueFlow/) or the Vue Flow component,
-you can also pass in event handlers in your initial node definition, or you can access the node events through the `events` prop passed
+In addition to the event handlers that you can access through [`useVueFlow`](/guide/composables#useVueFlow/) or the Vue
+Flow component,
+you can also pass in event handlers in your initial node definition, or you can access the node events through
+the `events` prop passed
 to your node components.
 
 ```vue:no-line-numbers{9-13}
@@ -361,7 +364,8 @@ const elements = ref([
 
 As you can see above, you can also pass in custom event handlers. These will not be called by Vue Flow but can be used
 to forward callback functions to your custom components.
-The `click` handler is part of the [`NodeEventsHandler`](/typedocs/types/NodeEventsHandler.html) interface, meaning it will be
+The `click` handler is part of the [`NodeEventsHandler`](/typedocs/types/NodeEventsHandler.html) interface, meaning it
+will be
 triggered when the node is clicked.
 
 ```vue:no-line-numbers
@@ -415,3 +419,42 @@ You can use the `noWheelClassName` prop to define a class which will prevent zoo
 that element.
 By default, the `noWheelClassName` is `.nowheel`.
 By adding this class you can also enable scrolling inside a node.
+
+### Dynamic handle positions / Adding handles dynamically
+
+When working with dynamic handle positions or adding handles dynamically, you need to use
+the [`updateNodeInternals`](/typedocs/types/UpdateNodeInternals.html/) method.
+
+You need to call this method otherwise your node will not respond to the new handles and edges will be 
+misaligned.
+
+You can either use the store action to update multiple nodes at once by passing their ids into the method, 
+or you can emit the `updateNodeInternals` event from your custom node component without passing any parameters.
+
+#### Examples
+
+- Using store action
+
+```vue:no-line-numbers
+<script setup>
+import { useVueFlow } from '@braks/vue-flow'
+
+const { updateNodeInternals } = useVueFlow()
+
+const onSomeEvent = () => {
+  updateNodeInternals(['1'])
+}
+</script>
+```
+
+- Emitting event from custom component
+
+```vue:no-line-numbers
+<script setup>
+const emits = defineEmits(['updateNodeInternals'])
+
+const onSomeEvent = () => {
+  emit('updateNodeInternals')
+}
+</script>
+```
