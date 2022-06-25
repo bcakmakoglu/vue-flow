@@ -240,7 +240,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
 
 <template>
   <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
-    <XyzTransition xyz="fade down ease-out-back duration-10">
+    <XyzTransition xyz="fade down ease-out-back duration-10" mode="out-in">
       <Background v-if="animatedBackground">
         <template #pattern-container="{ id }">
           <pattern :id="id" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
@@ -280,7 +280,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
         </template>
       </Background>
     </XyzTransition>
-    <XyzTransition xyz="fade down ease-out-back duration-20">
+    <XyzTransition xyz="fade down ease-out-back duration-20" mode="out-in">
       <Background
         v-if="!animatedBackground"
         variant="lines"
@@ -295,7 +295,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
         <div class="box max-w-[500px]">
           <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
             <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
-              <h1 class="text-2xl lg:text-4xl">Vue Flow</h1>
+              <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">Vue Flow</h1>
               <h2 class="text-lg lg:text-xl font-normal !border-0">
                 The customizable Vue 3 component bringing interactivity to flowcharts and graphs.
               </h2>
@@ -333,7 +333,15 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
   animation: fill-green-blue var(--animation-duration) alternate infinite;
 }
 
+.checker-gb path {
+  animation: fill-green-blue var(--animation-duration) alternate infinite;
+}
+
 .checker-op {
+  animation: fill-orange-purple var(--animation-duration) alternate infinite;
+}
+
+.checker-op path {
   animation: fill-orange-purple var(--animation-duration) alternate infinite;
 }
 
@@ -341,7 +349,15 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
   animation: fill-yellow-green var(--animation-duration) alternate infinite;
 }
 
+.checker-yg path {
+  animation: fill-yellow-green var(--animation-duration) alternate infinite;
+}
+
 .checker-ss {
+  animation: fill-sky-red var(--animation-duration) alternate infinite;
+}
+
+.checker-ss path {
   animation: fill-sky-red var(--animation-duration) alternate infinite;
 }
 
