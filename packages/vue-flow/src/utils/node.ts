@@ -1,6 +1,6 @@
+import type { Ref } from 'vue'
 import { getDimensions } from './graph'
 import type { Actions, GraphNode, HandleElement, Position } from '~/types'
-import { Ref } from "vue";
 
 export const getHandleBoundsByHandleType = (
   selector: string,
