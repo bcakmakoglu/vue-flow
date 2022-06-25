@@ -71,18 +71,22 @@ const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
   }
 }
 
+const updateInternals = () => {
+  updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+
+  updatePosition(
+    {
+      x: node.position.x,
+      y: node.position.y,
+      z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
+    },
+    parentNode ? { ...parentNode.computedPosition } : undefined,
+  )
+}
+
 onUpdateNodeInternals((updateIds) => {
   if (updateIds.includes(id)) {
-    updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
-
-    updatePosition(
-      {
-        x: node.position.x,
-        y: node.position.y,
-        z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
-      },
-      parentNode ? { ...parentNode.computedPosition } : undefined,
-    )
+    updateInternals()
   }
 })
 
@@ -234,6 +238,7 @@ export default {
       :source-position="node.sourcePosition"
       :label="node.label"
       :drag-handle="node.dragHandle"
+      @update-node-internals="updateInternals"
     />
   </div>
 </template>
