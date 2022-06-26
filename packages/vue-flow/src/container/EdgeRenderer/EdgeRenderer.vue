@@ -18,7 +18,6 @@ const {
   connectionNodeId,
   nodesConnectable,
   connectionHandleType,
-  defaultMarkerColor,
   edgesUpdatable,
   elementsSelectable,
   getSelectedNodes,
@@ -181,7 +180,7 @@ export default {
 
 <template>
   <svg v-for="group of groups" :key="group.level" class="vue-flow__edges vue-flow__container" :style="`z-index: ${group.level}`">
-    <MarkerDefinitions v-if="group.isMaxLevel" :default-color="defaultMarkerColor" />
+    <MarkerDefinitions v-if="group.isMaxLevel" />
     <g>
       <EdgeWrapper
         v-for="edge of group.edges"

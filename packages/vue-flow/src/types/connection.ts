@@ -2,7 +2,7 @@ import type { CSSProperties } from 'vue'
 import type { Position } from './flow'
 import type { GraphNode } from './node'
 import type { HandleElement, HandleType } from './handle'
-import type { Edge } from './edge'
+import type { Edge, EdgeMarkerType } from './edge'
 
 /** Connection line types (same as default edge types */
 export enum ConnectionLineType {
@@ -10,6 +10,14 @@ export enum ConnectionLineType {
   Straight = 'straight',
   Step = 'step',
   SmoothStep = 'smoothstep',
+}
+
+export interface ConnectionLineOptions {
+  type?: ConnectionLineType
+  style?: CSSProperties
+  class?: string
+  markerEnd?: EdgeMarkerType
+  markerStart?: EdgeMarkerType
 }
 
 /** Connection params that are passed when onConnect is called */
@@ -67,4 +75,8 @@ export interface ConnectionLineProps {
   sourceNode: GraphNode
   /** The source handle element of the connection line */
   sourceHandle: HandleElement
+  /** marker url */
+  markerStart: string
+  /** marker url */
+  markerEnd: string
 }

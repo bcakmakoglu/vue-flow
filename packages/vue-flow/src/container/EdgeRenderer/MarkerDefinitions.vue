@@ -1,31 +1,34 @@
 <script lang="ts" setup>
 import { useVueFlow } from '../../composables'
-import type { MarkerProps, MarkerType } from '../../types/edge'
+import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
 import { getMarkerId } from '../../utils'
 import Marker from './Marker.vue'
 
-const { defaultColor = '' } = defineProps<{
-  defaultColor: string
-}>()
-
-const { edges } = $(useVueFlow())
+const { edges, connectionLineOptions, defaultMarkerColor: defaultColor } = $(useVueFlow())
 
 const markers = computed(() => {
   const ids: string[] = []
+  const markers: MarkerProps[] = []
 
-  return edges.reduce<MarkerProps[]>((markers, edge) => {
-    ;[edge.markerStart, edge.markerEnd].forEach((marker) => {
-      if (marker) {
-        const markerId = getMarkerId(marker)
-        if (!ids.includes(markerId)) {
-          if (typeof marker === 'object') markers.push({ ...marker, id: markerId, color: marker.color || defaultColor })
-          else markers.push({ id: markerId, color: defaultColor, type: marker as MarkerType })
-          ids.push(markerId)
-        }
+  const createMarkers = (marker?: EdgeMarkerType) => {
+    if (marker) {
+      const markerId = getMarkerId(marker)
+      if (!ids.includes(markerId)) {
+        if (typeof marker === 'object') markers.push({ ...marker, id: markerId, color: marker.color || defaultColor })
+        else markers.push({ id: markerId, color: defaultColor, type: marker as MarkerType })
+        ids.push(markerId)
       }
-    })
+    }
+  }
+
+  ;[connectionLineOptions.markerEnd, connectionLineOptions.markerStart].forEach(createMarkers)
+
+  edges.reduce<MarkerProps[]>((markers, edge) => {
+    ;[edge.markerStart, edge.markerEnd].forEach(createMarkers)
     return markers.sort((a, b) => a.id.localeCompare(b.id))
-  }, [])
+  }, markers)
+
+  return markers
 })
 </script>
 
