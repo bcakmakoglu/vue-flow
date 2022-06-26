@@ -454,7 +454,7 @@ const onSomeEvent = () => {
 const emits = defineEmits(['updateNodeInternals'])
 
 const onSomeEvent = () => {
-  emit('updateNodeInternals')
+  emits('updateNodeInternals')
 }
 </script>
 ```
