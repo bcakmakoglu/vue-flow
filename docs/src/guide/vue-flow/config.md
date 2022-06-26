@@ -305,7 +305,17 @@ const edges = ref([
 
   If set to `loose` all handles are treated as source handles (thus allowing for connections on target handles as well.)
 
-### connection-line-type <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### connection-line-options
+
+- Type: [`ConnectionLineOptions`](/typedocs/interfaces/ConnectionLineOptions.html/)
+
+- Details:
+
+  Options for the connection line.
+  
+  The options include the connection line type, style and possible marker types (marker-end/marker-start).
+
+### connection-line-type <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" /> <Badge type="warning" class="text-white" style="line-height: inherit" text="deprecated" vertical="top" />
 
 - Type: [`ConnectionLineType`](/typedocs/enums/ConnectionLineType.html/)
 
@@ -317,7 +327,7 @@ const edges = ref([
 
   When using a custom connection line this prop does nothing.
 
-### connection-line-style <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### connection-line-style <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" /> <Badge type="warning" class="text-white" style="line-height: inherit" text="deprecated" vertical="top" />
 
 - Type: `CSSProperties` | `null`
 
