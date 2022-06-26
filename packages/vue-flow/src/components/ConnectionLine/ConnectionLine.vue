@@ -4,6 +4,7 @@ import type { GraphNode, HandleElement, HandleType } from '../../types'
 import { ConnectionLineType, Position } from '../../types'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
+import { getMarkerId } from '../../utils'
 
 const { sourceNode } = defineProps<{
   sourceNode: GraphNode
@@ -17,6 +18,7 @@ const {
   connectionLineType,
   connectionLineStyle,
   connectionNodeId,
+  connectionLineOptions,
   viewport,
 } = $(useVueFlow())
 
@@ -44,7 +46,7 @@ const targetY = $computed(() => (connectionPosition.y - viewport.y) / viewport.z
 
 const dAttr = computed(() => {
   let path = `M${sourceX},${sourceY} ${targetX},${targetY}`
-  switch (connectionLineType) {
+  switch (connectionLineType || connectionLineOptions.type) {
     case ConnectionLineType.Bezier:
       path = getBezierPath({
         sourceX,
@@ -99,13 +101,21 @@ export default {
         targetX,
         targetY,
         targetPosition,
-        connectionLineType,
-        connectionLineStyle,
         nodes: getNodes,
         sourceNode,
         sourceHandle,
+        markerEnd: `url(#${getMarkerId(connectionLineOptions.markerEnd)})`,
+        markerStart: `url(#${getMarkerId(connectionLineOptions.markerStart)})`,
       }"
     />
-    <path v-else :d="dAttr" class="vue-flow__connection-path" :style="connectionLineStyle || {}" />
+    <path
+      v-else
+      :d="dAttr"
+      class="vue-flow__connection-path"
+      :class="connectionLineOptions.class"
+      :style="connectionLineStyle || connectionLineOptions.style || {}"
+      :marker-end="`url(#${getMarkerId(connectionLineOptions.markerEnd)})`"
+      :marker-start="`url(#${getMarkerId(connectionLineOptions.markerStart)})`"
+    />
   </g>
 </template>

@@ -15,7 +15,7 @@ const {
 
 <script lang="ts">
 export default {
-  name: 'Marker',
+  name: 'MarkerType',
 }
 </script>
 

@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'vue'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
-import type { ConnectionLineType, ConnectionMode, Connector } from './connection'
+import type { ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { KeyCode, PanOnScrollMode } from './zoom'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 
@@ -85,8 +85,11 @@ export interface FlowProps {
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
   nodeTypes?: { [key in keyof DefaultNodeTypes]?: NodeComponent } & Record<string, NodeComponent>
   connectionMode?: ConnectionMode
+  /** @deprecated use {@link ConnectionLineOptions.type} */
   connectionLineType?: ConnectionLineType
+  /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle?: CSSProperties | null
+  connectionLineOptions?: ConnectionLineOptions
   deleteKeyCode?: KeyCode
   selectionKeyCode?: KeyCode
   multiSelectionKeyCode?: KeyCode
