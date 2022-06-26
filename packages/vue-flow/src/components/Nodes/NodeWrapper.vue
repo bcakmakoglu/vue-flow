@@ -72,7 +72,7 @@ const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
 }
 
 const updateInternals = () => {
-  updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+  if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
   updatePosition(
     {
