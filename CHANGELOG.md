@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.27] - 2022-06-26
+
+[9fdac11](9fdac11fd062453f567fd7755775fc614600ca15)...[32e7ee9](32e7ee99b28ab5099ea146772ef17e7f6520208a)
+
+### Documentation
+
+- Documentation for `updateNodeInternals` event listener ([f8be3cb](f8be3cb8438e145adb7a21406af85b56bdd09754))
+- Documentation for new `connectionLineOptions` prop ([b2834b9](b2834b95c882cd8bd2eca7a48a4308a5589f6ba3))
+
+### Features
+
+- Allow node internals to be updated by event ([2a8f4a1](2a8f4a16f59c68ccaa10f5c24b3ac3e9b0b32c73))
+- Add `connectionLineOptions` prop ([1578d40](1578d404eee5b25fb2d14a391ae0242c767f8eab))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([1f11365](1f11365e34c674dd930f84664d88bc352e548533))
+- Move icons into floating container ([3ea7355](3ea735558f8cd536ae6708b21ad4de4e4669e975))
+- Move icons into header but in container ([a24fc52](a24fc5241ee1703bd0d6b0a536eb8ecd440900ae))
+- Update deps ([2678112](26781124d652e9d822fe8e3d532e2bf6882dbc9c))
+- Correct tooltip position ([48dc16c](48dc16cf73f8bd6ebd6feeef61db9d4323e55ad0))
+- Set transition mode ([e022978](e02297875d5edcf7f2e699fabe273edf551adb6e))
+- Fix typo ([0c5473a](0c5473ae14bdfbf425d4336b762bfc548a02c4a8))
+- Check if node ref exists before updating dimensions ([ae5d5b4](ae5d5b4637446d1413f909d6d13b8df95c55dd2c))
+- Bump version ([32e7ee9](32e7ee99b28ab5099ea146772ef17e7f6520208a))
+
 ## [0.4.26] - 2022-06-24
 
 [16ec3cc](16ec3cc71796cc96d0d6b402aa6c0e43f8d9f5e0)...[9fdac11](9fdac11fd062453f567fd7755775fc614600ca15)
