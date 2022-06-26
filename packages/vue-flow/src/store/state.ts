@@ -76,6 +76,10 @@ const defaultState = (): State => ({
   defaultMarkerColor: '#b1b1b7',
   connectionLineStyle: {},
   connectionLineType: ConnectionLineType.Bezier,
+  connectionLineOptions: {
+    type: ConnectionLineType.Bezier,
+    style: {},
+  },
   connectionNodeId: null,
   connectionHandleId: null,
   connectionHandleType: null,
