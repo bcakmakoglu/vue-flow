@@ -1,5 +1,5 @@
-import { config } from 'dotenv'
 import { resolve } from 'path'
+import { config } from 'dotenv'
 import { defineUserConfig } from 'vuepress'
 import type { HeadConfig } from 'vuepress'
 import { docsearchPlugin } from '@vuepress/plugin-docsearch'
@@ -9,8 +9,10 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+import seoPlugin from 'vuepress-plugin-seo2'
+import sitemapPlugin from 'vuepress-plugin-sitemap2'
 import { copyVueFlowPlugin } from './copy-plugin'
-import head from './head'
+import head, { meta } from './head'
 import Theme from './theme'
 
 config({ path: resolve(__dirname, '.env') })
@@ -51,7 +53,7 @@ export default defineUserConfig({
           compiler: 'vue3',
         }),
       ],
-    }
+    },
   }),
 
   plugins: [
@@ -60,7 +62,14 @@ export default defineUserConfig({
         appId: 'F7BJNSM4M5',
         apiKey: process.env.ALGOLIA_API_KEY!,
         indexName: 'vueflow',
-      })
+      }),
+      seoPlugin({
+        hostname: meta.url,
+        author: 'Burak Cakmakoglu',
+      }),
+      sitemapPlugin({
+        hostname: meta.url,
+      }),
     ],
   ],
 
