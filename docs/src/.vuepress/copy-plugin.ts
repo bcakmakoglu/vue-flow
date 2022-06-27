@@ -1,20 +1,14 @@
-import { Plugin } from 'vite'
 import { existsSync, readFileSync } from 'fs'
 import { resolve } from 'path'
+import type { Plugin } from 'vite'
 
 export function copyVueFlowPlugin(): Plugin {
   return {
     name: 'copy-vue-flow',
     generateBundle() {
-      const filePath = resolve(
-        __dirname,
-        '../../node_modules/@braks/vue-flow/dist/vue-flow.es.js'
-      )
+      const filePath = resolve(__dirname, '../../node_modules/@braks/vue-flow/dist/vue-flow.es.js')
       if (!existsSync(filePath)) {
-        throw new Error(
-          `@braks/vue-flow/dist/vue-flow.es.js not built. ` +
-          `Run "pnpm -w build" first.`
-        )
+        throw new Error(`@braks/vue-flow/dist/vue-flow.es.js not built. ` + `Run "pnpm -w build" first.`)
       }
 
       this.emitFile({
@@ -22,6 +16,6 @@ export function copyVueFlowPlugin(): Plugin {
         fileName: 'vue-flow.es.js',
         source: readFileSync(filePath, 'utf-8'),
       })
-    }
+    },
   }
 }

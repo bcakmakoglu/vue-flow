@@ -34,6 +34,8 @@
     "unplugin-vue-components": "^0.19.9",
     "vite-plugin-windicss": "^1.8.4",
     "vuepress": "2.0.0-beta.48",
+    "vuepress-plugin-seo2": "2.0.0-beta.84",
+    "vuepress-plugin-sitemap2": "2.0.0-beta.84",
     "windicss": "^3.5.5"
   }
 }

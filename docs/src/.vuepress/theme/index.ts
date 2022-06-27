@@ -1,13 +1,14 @@
 import { resolve } from 'path'
-import { defaultTheme, SidebarConfigArray, Theme } from 'vuepress'
+import { readdirSync, statSync } from 'fs'
+import type { SidebarConfigArray, Theme } from 'vuepress'
+import { defaultTheme } from 'vuepress'
 import { path } from '@vuepress/utils'
 import { useVueFlow } from '@braks/vue-flow'
-import { readdirSync, statSync } from 'fs'
 
 const { vueFlowVersion } = useVueFlow()
 
 function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 const typedocSidebarEntries = (): SidebarConfigArray => {
@@ -16,7 +17,7 @@ const typedocSidebarEntries = (): SidebarConfigArray => {
   const docsModules = readdirSync(filePath).filter((name) => statSync(`${filePath}/${name}`).isDirectory())
 
   const sidebarItems = docsModules.map((module) => {
-    let children = readdirSync(`${filePath}/${module}/`).map(entry => `/typedocs/${module}/${entry}`)
+    let children = readdirSync(`${filePath}/${module}/`).map((entry) => `/typedocs/${module}/${entry}`)
 
     if (module === 'variables') {
       children = children.filter((child) => {
@@ -31,10 +32,8 @@ const typedocSidebarEntries = (): SidebarConfigArray => {
     {
       text: 'Modules',
       link: '/typedocs/',
-      children: [
-        ...sidebarItems,
-      ],
-    }
+      children: [...sidebarItems],
+    },
   ]
 }
 
@@ -45,7 +44,8 @@ export default {
     docsBranch: 'master',
     lastUpdated: true,
     contributors: true,
-    darkMode: true,
+    colorMode: 'auto',
+    colorModeSwitch: true,
     logo: '/favicons/android-chrome-512x512.png',
     sidebar: {
       '/guide/': [
@@ -70,9 +70,9 @@ export default {
                 },
                 {
                   text: 'Events',
-                  link: '/typedocs/interfaces/FlowEvents.html'
+                  link: '/typedocs/interfaces/FlowEvents.html',
                 },
-                '/guide/vue-flow/slots'
+                '/guide/vue-flow/slots',
               ],
             },
             '/guide/node',
@@ -80,11 +80,7 @@ export default {
             '/guide/composables',
             {
               text: 'Utilities',
-              children: [
-                '/guide/utils/graph',
-                '/guide/utils/instance',
-                '/guide/utils/edge',
-              ]
+              children: ['/guide/utils/graph', '/guide/utils/instance', '/guide/utils/edge'],
             },
             {
               text: 'Components',
@@ -106,11 +102,7 @@ export default {
             '/examples/',
             {
               text: 'Nodes',
-              children: [
-                '/examples/nodes/',
-                '/examples/nodes/update-node',
-                '/examples/nodes/nesting',
-              ]
+              children: ['/examples/nodes/', '/examples/nodes/update-node', '/examples/nodes/nesting'],
             },
             {
               text: 'Edges',
@@ -119,7 +111,7 @@ export default {
                 '/examples/edges/updatable-edge',
                 '/examples/edges/connection-line',
                 '/examples/edges/validation',
-              ]
+              ],
             },
             '/examples/save',
             '/examples/dnd',
