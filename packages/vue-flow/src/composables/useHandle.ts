@@ -36,27 +36,28 @@ export const checkElementBelowIsValid = (
   if (elementBelow && (elementBelowIsTarget || elementBelowIsSource)) {
     result.isHoveringHandle = true
 
+    const elementBelowNodeId = elementBelow.getAttribute('data-nodeid') ?? ''
+    const elementBelowHandleId = elementBelow.getAttribute('data-handleid') ?? ''
+
+    const sourceId = isTarget ? elementBelowNodeId : nodeId
+    const sourceHandleId = isTarget ? elementBelowHandleId : handleId
+    const targetId = isTarget ? nodeId : elementBelowNodeId
+    const targetHandleId = isTarget ? handleId : elementBelowHandleId
+
+    const connection: Connection = {
+      source: sourceId,
+      sourceHandle: sourceHandleId,
+      target: targetId,
+      targetHandle: targetHandleId,
+    }
+
+    result.connection = connection
+
     // in strict mode we don't allow target to target or source to source connections
     const isValid =
       connectionMode === ConnectionMode.Strict ? (isTarget && elementBelowIsSource) || (!isTarget && elementBelowIsTarget) : true
 
     if (isValid) {
-      const elementBelowNodeId = elementBelow.getAttribute('data-nodeid') ?? ''
-      const elementBelowHandleId = elementBelow.getAttribute('data-handleid') ?? ''
-
-      const sourceId = isTarget ? elementBelowNodeId : nodeId
-      const sourceHandleId = isTarget ? elementBelowHandleId : handleId
-      const targetId = isTarget ? nodeId : elementBelowNodeId
-      const targetHandleId = isTarget ? handleId : elementBelowHandleId
-
-      const connection: Connection = {
-        source: sourceId,
-        sourceHandle: sourceHandleId,
-        target: targetId,
-        targetHandle: targetHandleId,
-      }
-
-      result.connection = connection
       result.isValid =
         isValidConnection(connection, { edges, sourceNode: getNode(sourceId)!, targetNode: getNode(targetId)! }) ||
         !result.connection.target ||
@@ -152,9 +153,7 @@ export default () => {
 
       if (!isHoveringHandle) return resetRecentHandle(recentHoveredHandle)
 
-      const isOwnHandle = connection.source === connection.target
-
-      if (!isOwnHandle && elementBelow) {
+      if (connection.source !== connection.target && elementBelow) {
         recentHoveredHandle = elementBelow
         elementBelow.classList.add('vue-flow__handle-connecting')
         elementBelow.classList.toggle('vue-flow__handle-valid', isValid)
