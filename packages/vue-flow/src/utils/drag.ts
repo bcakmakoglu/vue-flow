@@ -25,7 +25,8 @@ export function getDragItems(
     .filter((n) => (n.selected || n.id === nodeId) && (!n.parentNode || !isParentSelected(n, getNode)))
     .map((n) => ({
       id: n.id,
-      position: n.computedPosition || { x: 0, y: 0, z: 0 },
+      position: n.position || { x: 0, y: 0 },
+      computedPosition: n.computedPosition || { x: 0, y: 0, z: 0 },
       distance: {
         x: mousePos.x - n.computedPosition?.x || 0,
         y: mousePos.y - n.computedPosition?.y || 0,
@@ -80,15 +81,31 @@ export function updatePosition(
     }
   } else if (dragItem.extent && dragItem.parentNode) {
     const dragItemExtent = dragItem.extent as CoordinateExtent
+
     const parentX = parent?.computedPosition?.x ?? 0
     const parentY = parent?.computedPosition?.y ?? 0
+
     currentExtent = [
       [dragItemExtent[0][0] + parentX, dragItemExtent[0][1] + parentY],
       [dragItemExtent[1][0] + parentX, dragItemExtent[1][1] + parentY],
     ]
   }
 
-  dragItem.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
+  let parentPosition = { x: 0, y: 0 }
+
+  if (parent) {
+    parentPosition = { x: parent.computedPosition?.x ?? 0, y: parent.computedPosition?.y ?? 0 }
+  }
+
+  dragItem.computedPosition = {
+    ...dragItem.computedPosition,
+    ...(currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition),
+  }
+
+  dragItem.position = {
+    x: dragItem.computedPosition.x - parentPosition.x,
+    y: dragItem.computedPosition.y - parentPosition.y,
+  }
 
   return dragItem
 }

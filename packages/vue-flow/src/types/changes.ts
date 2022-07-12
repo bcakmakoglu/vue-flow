@@ -1,4 +1,4 @@
-import type { Dimensions, ElementData, XYPosition } from './flow'
+import type { Dimensions, ElementData, XYPosition, XYZPosition } from './flow'
 import type { GraphNode, Node, NodeHandleBounds } from './node'
 import type { GraphEdge } from './edge'
 
@@ -6,6 +6,8 @@ export interface NodeDragItem {
   id: string
   // relative node position
   position: XYPosition
+  // absolute position
+  computedPosition: XYZPosition
   // distance from the mouse cursor to the node when start dragging
   distance: XYPosition
   dimensions: Dimensions
