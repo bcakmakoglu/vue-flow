@@ -2,41 +2,27 @@ import type { Ref } from 'vue'
 import { getDimensions } from './graph'
 import type { Actions, GraphNode, HandleElement, Position } from '~/types'
 
-export const getHandleBoundsByHandleType = (
-  selector: string,
-  nodeElement: HTMLDivElement,
-  parentBounds: ClientRect | DOMRect,
-  k: number,
-): HandleElement[] | null => {
+export const getHandleBounds = (selector: string, nodeElement: HTMLDivElement, zoom: number): HandleElement[] | undefined => {
   const handles = nodeElement.querySelectorAll(selector)
 
-  if (!handles || !handles.length) return null
+  if (!handles || !handles.length) {
+    return undefined
+  }
 
   const handlesArray = Array.from(handles) as HTMLDivElement[]
+  const nodeBounds = nodeElement.getBoundingClientRect()
 
   return handlesArray.map((handle): HandleElement => {
-    const bounds = handle.getBoundingClientRect()
-    const dimensions = getDimensions(handle)
-    const handleId = handle.getAttribute('data-handleid') ?? undefined
-    const handlePosition = handle.getAttribute('data-handlepos') as Position
+    const handleBounds = handle.getBoundingClientRect()
 
     return {
-      id: handleId,
-      position: handlePosition,
-      x: (bounds.left - parentBounds.left) / k,
-      y: (bounds.top - parentBounds.top) / k,
-      ...dimensions,
+      id: handle.getAttribute('data-handleid'),
+      position: handle.getAttribute('data-handlepos') as unknown as Position,
+      x: (handleBounds.left - nodeBounds.left) / zoom,
+      y: (handleBounds.top - nodeBounds.top) / zoom,
+      ...getDimensions(handle),
     }
   })
-}
-
-export const getHandleBounds = (nodeElement: HTMLDivElement, scale: number, id?: string) => {
-  const bounds = nodeElement.getBoundingClientRect()
-
-  return {
-    source: getHandleBoundsByHandleType(`.source${id ? `.vue-flow__handle-${id}` : ''}`, nodeElement, bounds, scale) ?? undefined,
-    target: getHandleBoundsByHandleType(`.target${id ? `.vue-flow__handle-${id}` : ''}`, nodeElement, bounds, scale) ?? undefined,
-  }
 }
 
 export const handleNodeClick = (

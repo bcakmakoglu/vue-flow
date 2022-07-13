@@ -120,7 +120,10 @@ onMounted(() => {
 
         updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
 
-        node.handleBounds = getHandleBounds(nodeElement.value, viewport.zoom)
+        node.handleBounds = {
+          source: getHandleBounds('.source', nodeElement.value, viewport.zoom),
+          target: getHandleBounds('.target', nodeElement.value, viewport.zoom),
+        }
       },
       { immediate: true, flush: 'post' },
     )
