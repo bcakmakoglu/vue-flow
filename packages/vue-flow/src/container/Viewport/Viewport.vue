@@ -156,7 +156,7 @@ onMounted(() => {
           d3Zoom.translateBy(d3Selection, -(deltaX / currentZoom) * panOnScrollSpeed, -(deltaY / currentZoom) * panOnScrollSpeed)
         }
       } else {
-        if ((!zoomOnScroll && preventScrolling) || !preventScrolling || isWrappedWithClass(event, noWheelClassName as any)) {
+        if ((!zoomOnScroll && preventScrolling) || !preventScrolling || isWrappedWithClass(event, noWheelClassName?.value)) {
           return null
         }
 
