@@ -113,7 +113,7 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
 
 const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
   if (!isNode(node)) return []
-  const origin = (dir === 'source' ? 'target' : 'source')
+  const origin = dir === 'source' ? 'target' : 'source'
   const ids = elements.filter((e) => isEdge(e) && e[origin] === node.id).map((e) => isEdge(e) && e[dir])
   return elements.filter((e) => ids.includes(e.id))
 }
