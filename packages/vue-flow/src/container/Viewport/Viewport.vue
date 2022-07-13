@@ -35,6 +35,8 @@ const {
 
 const viewportEl = templateRef<HTMLDivElement>('viewport', null)
 
+let isZoomingOrPanning = $ref(false)
+
 const viewChanged = (prevTransform: ViewpaneTransform, eventTransform: ZoomTransform): boolean =>
   (prevTransform.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
   (prevTransform.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
@@ -94,9 +96,9 @@ onMounted(() => {
   })
 
   const selectionKeyPressed = useKeyPress($$(selectionKeyCode), (keyPress) => {
-    if (keyPress) {
+    if (keyPress && !isZoomingOrPanning) {
       d3Zoom.on('zoom', null)
-    } else {
+    } else if (!keyPress) {
       d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
         setState({ viewport: { x: event.transform.x, y: event.transform.y, zoom: event.transform.k } })
         const flowTransform = eventToFlowTransform(event.transform)
@@ -108,12 +110,16 @@ onMounted(() => {
   const zoomKeyPressed = useKeyPress($$(zoomActivationKeyCode))
 
   d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+    isZoomingOrPanning = true
+
     const flowTransform = eventToFlowTransform(event.transform)
     transform = flowTransform
     emits.moveStart({ event, flowTransform })
   })
 
   d3Zoom.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+    isZoomingOrPanning = false
+
     if (viewChanged(transform, event.transform)) {
       const flowTransform = eventToFlowTransform(event.transform)
       transform = flowTransform
