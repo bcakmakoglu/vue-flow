@@ -4,7 +4,7 @@ import sdk from '@stackblitz/sdk'
 const el = ref()
 
 onMounted(() => {
-  sdk.embedProjectId(el.value, 'vitejs-vite-jvtrur', {
+  sdk.embedProjectId(el.value, 'vitejs-vite-wyfpsj', {
     height: 750,
     forceEmbedLayout: true,
     openFile: 'src/App.vue',
