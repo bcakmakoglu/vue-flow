@@ -175,13 +175,14 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
     const watchAutoConnect = () => {
       scope.run(() => {
         const autoConnector = async (params: Connection) => {
-          let connect: boolean | Connection = true
+          let connection: boolean | Connection = params
+
           if (isFunction(props.autoConnect)) {
-            connect = await props.autoConnect(params)
+            connection = await props.autoConnect(params)
           }
 
-          if (connect) {
-            store.addEdges([params])
+          if (connection !== false) {
+            store.addEdges([connection])
           }
         }
 
