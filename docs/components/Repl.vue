@@ -70,7 +70,7 @@ onMounted(async () => {
   // pre-set import map
   store.setImportMap({
     imports: {
-      '@braks/vue-flow': `${location.origin}/vue-flow.es.js`,
+      '@braks/vue-flow': `${location.origin}/vue-flow.mjs`,
     },
   })
 })
