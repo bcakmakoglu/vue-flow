@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.28] - 2022-07-16
+
+[32e7ee9](32e7ee99b28ab5099ea146772ef17e7f6520208a)...[b696eb0](b696eb04f9538a8a5bf25490fd0cc3e0ef9bf50d)
+
+### Bug Fixes
+
+- `getIncomers` always returning itself ([1abd18d](1abd18dc1204eb5932f2fbf75eb384a78b2ef387))
+- Auto-connector always triggered even when not set ([95afba3](95afba3e17ed83d1a9dd19da01759191993d9e72))
+- Correctly calculate handle pos by using viewport zoom ([b7428e9](b7428e95128ce8112049fc0b41bfe44c00244742))
+- Pass auto-connector result as new edge params ([4b83ae0](4b83ae032508a025142eec5e137b55b5bfe32deb))
+
+### Documentation
+
+- Add seo plugins ([b11feaf](b11feaf2ce4eee4d3560ea66260e893c07e9deb4))
+- Update pinia example to use latest version of vue flow ([1f035fb](1f035fbc5e4de9761a0155384b7fa6877145b4f1))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([1d9e7ec](1d9e7ec07dccf22867075d525f4752b4bd43733e))
+- Add `.eslintignore` file ([5a89d0e](5a89d0e947ef6ff6005b8c8096c482e22592174b))
+- Update `tsconfig.json` ([d6df271](d6df271c2d045c6397fb9a40a76ace3257038f49))
+- Update meta title & description ([9c171c0](9c171c0ff865d05b7f6570a7ce99e5208e52c23e))
+- Fix typing ([c0c72f1](c0c72f1f6d2726582fd4047258bce8902b6c6bed))
+- Bump version ([b696eb0](b696eb04f9538a8a5bf25490fd0cc3e0ef9bf50d))
+
+### Refactor
+
+- Don't interrupt while zoom/pan is active ([45163f3](45163f31c95d66e14d08525f7c24de1a0672f1f0))
+
 ## [0.4.27] - 2022-06-26
 
 [9fdac11](9fdac11fd062453f567fd7755775fc614600ca15)...[32e7ee9](32e7ee99b28ab5099ea146772ef17e7f6520208a)
