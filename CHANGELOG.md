@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.29] - 2022-07-18
+
+[b696eb0](b696eb04f9538a8a5bf25490fd0cc3e0ef9bf50d)...[7596c4d](7596c4d325cc126518464553482c04cb0b8e60f9)
+
+### Bug Fixes
+
+- Check parent dimensions before extending ([7d66094](7d66094b06a94b6894fc6cb98d136175a23cca34))
+- Remove child nodes when parent gets removed ([9bca73d](9bca73d76251d89918dc2a69d47c60aeae6e3233))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([480a487](480a48744da3a0c26f6e0763fb3e7612a10dd649))
+- Bump version ([7596c4d](7596c4d325cc126518464553482c04cb0b8e60f9))
+
 ## [0.4.28] - 2022-07-16
 
 [32e7ee9](32e7ee99b28ab5099ea146772ef17e7f6520208a)...[b696eb0](b696eb04f9538a8a5bf25490fd0cc3e0ef9bf50d)
