@@ -25,10 +25,10 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
       parent.style = { ...parent.style } || {}
 
+      parent.style.width = parent.style.width ?? parent.dimensions.width
+      parent.style.height = parent.style.height ?? parent.dimensions.height
+
       if (extendWidth > 0) {
-        if (!parent.style.width) {
-          parent.style.width = parent.dimensions.width
-        }
         if (typeof parent.style.width === 'string') {
           const currWidth = parseInt(parent.style.width, 10)
           parent.style.width = `${currWidth + extendWidth}px`
@@ -38,9 +38,6 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
       }
 
       if (extendHeight > 0) {
-        if (!parent.style.height) {
-          parent.style.height = parent.dimensions.height
-        }
         if (typeof parent.style.height === 'string') {
           const currWidth = parseInt(parent.style.height, 10)
           parent.style.height = `${currWidth + extendHeight}px`
