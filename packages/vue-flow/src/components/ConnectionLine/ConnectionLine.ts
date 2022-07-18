@@ -154,6 +154,8 @@ const ConnectionLine: FunctionalComponent<ConnectionLineProps> = ({
   ])
 }
 
+ConnectionLine.displayName = 'ConnectionLineWrapper'
+
 ConnectionLine.props = [
   'fromNode',
   'connectionHandleId',
