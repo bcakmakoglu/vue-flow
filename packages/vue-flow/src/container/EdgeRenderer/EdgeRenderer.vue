@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import EdgeWrapper from '../../components/Edges/Wrapper'
-import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
+import ConnectionLine from '../../components/ConnectionLine/ConnectionLine'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { connectionExists, groupEdgesByZLevel } from '../../utils'
 import type { EdgeComponent, GraphEdge } from '../../types'
@@ -15,9 +15,6 @@ const {
   connectionMode,
   edgeUpdaterRadius,
   onPaneReady,
-  connectionNodeId,
-  nodesConnectable,
-  connectionHandleType,
   edgesUpdatable,
   elementsSelectable,
   getSelectedNodes,
@@ -29,6 +26,15 @@ const {
   addSelectedEdges,
   noPanClassName,
   elevateEdgesOnSelect,
+  connectionNodeId,
+  connectionHandleId,
+  connectionLineType,
+  connectionLineStyle,
+  connectionLineOptions,
+  connectionPosition,
+  connectionHandleType,
+  nodesConnectable,
+  viewport,
 } = $(useVueFlow())
 
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
@@ -224,6 +230,18 @@ export default {
     </g>
   </svg>
   <svg v-if="connectionLineVisible && !!sourceNode" class="vue-flow__edges vue-flow__connectionline vue-flow__container">
-    <ConnectionLine :source-node="sourceNode" />
+    <ConnectionLine
+      :from-node="sourceNode"
+      :connection-handle-id="connectionHandleId"
+      :connection-handle-type="connectionHandleType"
+      :connection-position="connectionPosition"
+      :type="connectionLineOptions.type || connectionLineType"
+      :style="connectionLineOptions.style || connectionLineStyle"
+      :class-name="connectionLineOptions.class"
+      :marker-end="connectionLineOptions.markerEnd"
+      :marker-start="connectionLineOptions.markerStart"
+      :is-connectable="nodesConnectable"
+      :viewport="viewport"
+    />
   </svg>
 </template>

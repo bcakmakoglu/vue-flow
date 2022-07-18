@@ -7,6 +7,7 @@ import type { Edge, EdgeMarkerType } from './edge'
 /** Connection line types (same as default edge types */
 export enum ConnectionLineType {
   Bezier = 'default',
+  SimpleBezier = 'simple',
   Straight = 'straight',
   Step = 'step',
   SmoothStep = 'smoothstep',
@@ -53,30 +54,70 @@ export enum ConnectionMode {
 }
 
 export interface ConnectionLineProps {
+  /** The source node of the connection line */
+  fromNode: GraphNode
+  /** The source handle element of the connection line */
+  fromHandle: HandleElement
   /** Source X position of the connection line */
-  sourceX: number
+  fromX: number
   /** Source Y position of the connection line */
-  sourceY: number
-  /** Source position of the connection line */
-  sourcePosition: Position
+  fromY: number
   /** Target X position of the connection line */
-  targetX: number
+  toX: number
   /** Target Y position of the connection line */
-  targetY: number
+  toY: number
+  /** Source position of the connection line */
+  fromPosition: Position
   /** Target position of the connection line */
-  targetPosition: Position
+  toPosition: Position
   /** the shape of the connection line when active */
   connectionLineType: ConnectionLineType
   /** extra styles */
   connectionLineStyle: CSSProperties
-  /** All currently stored nodes */
-  nodes: GraphNode[]
-  /** The source node of the connection line */
-  sourceNode: GraphNode
-  /** The source handle element of the connection line */
-  sourceHandle: HandleElement
   /** marker url */
   markerStart: string
   /** marker url */
   markerEnd: string
+
+  /**
+   * @deprecated use {@link fromX} instead
+   * Source X position of the connection line
+   */
+  sourceX: number
+  /**
+   * @deprecated use {@link fromY} instead
+   * Source Y position of the connection line
+   */
+  sourceY: number
+  /**
+   * @deprecated use {@link fromPosition} instead
+   * Source position of the connection line
+   */
+  sourcePosition: Position
+  /**
+   * @deprecated use {@link toX} instead
+   * Target X position of the connection line
+   */
+  targetX: number
+  /**
+   * @deprecated use {@link toY} instead
+   * Target Y position of the connection line
+   */
+  targetY: number
+  /**
+   * @deprecated use {@link toPosition} instead
+   * Target position of the connection line
+   */
+  targetPosition: Position
+
+  /**
+   * @deprecated use {@link fromNode} instead
+   * The source node of the connection line
+   */
+  sourceNode: GraphNode
+  /**
+   * @deprecated use {@link fromHandle} instead
+   * The source handle element of the connection line
+   */
+  sourceHandle: HandleElement
 }
