@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EdgeChange, NodeChange } from '../../types'
+import type { EdgeChange, GraphNode, NodeChange } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
 import { getConnectedEdges } from '../../utils'
 import { NodesSelection, UserSelection } from '../../components'
@@ -18,6 +18,9 @@ const {
   setState,
   getSelectedEdges,
   getSelectedNodes,
+  getNodes,
+  removeNodes,
+  removeEdges,
 } = $(useVueFlow())
 
 const onClick = (event: MouseEvent) => {
@@ -33,19 +36,26 @@ const onContextMenu = (event: MouseEvent) => emits.paneContextMenu(event)
 const onWheel = (event: WheelEvent) => emits.paneScroll(event)
 
 useKeyPress($$(deleteKeyCode), (keyPressed) => {
-  const selectedNodes = getSelectedNodes
-  const selectedEdges = getSelectedEdges
-  if (keyPressed && (selectedNodes || selectedEdges)) {
-    const connectedEdges = (selectedNodes && getConnectedEdges(selectedNodes, edges)) ?? []
+  const nodesToRemove = getNodes.reduce<GraphNode[]>((res, node) => {
+    if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
+      res.push(node)
+    } else if (node.selected) {
+      res.push(node)
+    }
 
-    const nodeChanges: NodeChange[] = selectedNodes.map((n) => ({ id: n.id, type: 'remove' }))
-    const edgeChanges: EdgeChange[] = [...selectedEdges, ...connectedEdges].map((e) => ({
-      id: e.id,
-      type: 'remove',
-    }))
+    return res
+  }, [])
 
-    emits.nodesChange(nodeChanges)
-    emits.edgesChange(edgeChanges)
+  const selectedEdges = edges.filter((e) => e.selected)
+
+  if (keyPressed && (nodesToRemove || selectedEdges)) {
+    if (selectedEdges.length > 0) {
+      removeEdges(selectedEdges)
+    }
+
+    if (nodesToRemove.length > 0) {
+      removeNodes(nodesToRemove)
+    }
 
     setState({
       nodesSelectionActive: false,
