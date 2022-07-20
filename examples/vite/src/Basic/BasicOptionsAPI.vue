@@ -43,7 +43,7 @@ export default defineComponent({
     },
     onPaneReady(instance: FlowEvents['paneReady']) {
       instance.fitView()
-      this.instance = instance
+      this.instance = instance as any
     },
     onConnect(params: FlowEvents['connect']) {
       addEdge(params, this.elements)

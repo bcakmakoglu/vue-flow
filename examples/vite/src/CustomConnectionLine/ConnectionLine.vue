@@ -5,6 +5,7 @@ interface CustomConnectionLineProps {
   targetX: number
   targetY: number
 }
+
 const props = defineProps<CustomConnectionLineProps>()
 </script>
 

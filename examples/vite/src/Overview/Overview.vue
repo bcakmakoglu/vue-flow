@@ -1,5 +1,15 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowEvents, VueFlowStore, FlowTransform, Node, SnapGrid } from '@braks/vue-flow'
+import type {
+  Connection,
+  Edge,
+  Elements,
+  FlowEvents,
+  Node,
+  SnapGrid,
+  Styles,
+  ViewpaneTransform,
+  VueFlowStore,
+} from '@braks/vue-flow'
 import { Background, Controls, MarkerType, MiniMap, VueFlow, addEdge } from '@braks/vue-flow'
 
 const onNodeDragStart = (e: FlowEvents['nodeDragStart']) => console.log('drag start', e)
@@ -18,7 +28,7 @@ const onLoad = (flowInstance: VueFlowStore) => {
   flowInstance.fitView()
 }
 
-const onMoveEnd = (transform?: FlowTransform) => console.log('zoom/move end', transform)
+const onMoveEnd = (e: FlowEvents['moveEnd']) => console.log('zoom/move end', e.flowTransform)
 const onEdgeContextMenu = (e: FlowEvents['edgeContextMenu']) => console.log('edge context menu', e)
 const onEdgeMouseEnter = (e: FlowEvents['edgeMouseEnter']) => console.log('edge mouse enter', e)
 const onEdgeMouseMove = (e: FlowEvents['edgeMouseMove']) => console.log('edge mouse move', e)
@@ -83,7 +93,7 @@ const initialElements: Elements = [
 const snapGrid: SnapGrid = [16, 16]
 
 const nodeStrokeColor = (n: Node): string => {
-  if (n.style?.background) return n.style.background as string
+  if ((n.style as Styles)?.background) return (n.style as Styles).background as string
   if (n.type === 'input') return '#0041d0'
   if (n.type === 'output') return '#ff0072'
   if (n.type === 'default') return '#1a192b'
@@ -92,7 +102,7 @@ const nodeStrokeColor = (n: Node): string => {
 }
 
 const nodeColor = (n: Node): string => {
-  if (n.style?.background) return n.style.background as string
+  if ((n.style as Styles)?.background) return (n.style as Styles).background as string
 
   return '#fff'
 }
@@ -121,7 +131,6 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
     @selection-drag-stop="onSelectionDragStop"
     @selection-context-menu="onSelectionContextMenu"
     @move-end="onMoveEnd"
-    @edge-update="onEdgeMouseMove"
     @edge-context-menu="onEdgeContextMenu"
     @edge-mouse-enter="onEdgeMouseEnter"
     @edge-mouse-move="onEdgeMouseMove"

@@ -25,8 +25,8 @@ const initialElements: Elements = [
 
 const elements = ref(initialElements)
 const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
-const onEdgeUpdateStart = (edge: Edge) => console.log('start update', edge)
-const onEdgeUpdateEnd = (edge: Edge) => console.log('end update', edge)
+const onEdgeUpdateStart = ({ edge }: FlowEvents['edgeUpdateStart']) => console.log('start update', edge)
+const onEdgeUpdateEnd = ({ edge }: FlowEvents['edgeUpdateEnd']) => console.log('end update', edge)
 const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {
   elements.value = updateEdge(edge, connection, elements.value)
 }

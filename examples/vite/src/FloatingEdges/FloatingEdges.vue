@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Background, Controls, MarkerType, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { Background, BackgroundVariant, Controls, MarkerType, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
 import FloatingEdge from './FloatingEdge.vue'
 import FloatingConnectionLine from './FloatingConnectionLine.vue'
 import { createElements } from './floating-edge-utils'
@@ -14,7 +14,7 @@ onConnect((params) => addEdges([{ ...params, type: 'floating', markerEnd: Marker
 <template>
   <div class="floatingedges">
     <VueFlow>
-      <Background variant="lines" :gap="24" />
+      <Background :variant="BackgroundVariant.Lines" :gap="24" />
       <MiniMap />
       <Controls />
 

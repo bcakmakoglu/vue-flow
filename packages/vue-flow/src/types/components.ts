@@ -10,6 +10,10 @@ type GlobalComponentName = string
 /** Node Components can either be a component definition or a string name */
 export type NodeComponent = Component<NodeProps> | DefineComponent<NodeProps, any, any, any, any> | GlobalComponentName
 
+export type NodeTypesObject = { [key in keyof DefaultNodeTypes]?: NodeComponent } & Record<string, NodeComponent>
+
+export type EdgeTypesObject = { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & Record<string, EdgeComponent>
+
 /** Edge Components can either be a component definition or a string name */
 export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, any, any, any, any, any> | GlobalComponentName
 
