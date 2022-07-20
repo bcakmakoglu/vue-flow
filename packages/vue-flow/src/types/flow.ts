@@ -3,7 +3,7 @@ import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { KeyCode, PanOnScrollMode } from './zoom'
-import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
+import type { EdgeTypesObject, NodeTypesObject } from './components'
 
 export type ElementData = any
 
@@ -81,9 +81,9 @@ export interface FlowProps {
   nodes?: Node[]
   edges?: Edge[]
   /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
-  edgeTypes?: { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & Record<string, EdgeComponent>
+  edgeTypes?: EdgeTypesObject
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
-  nodeTypes?: { [key in keyof DefaultNodeTypes]?: NodeComponent } & Record<string, NodeComponent>
+  nodeTypes?: NodeTypesObject
   connectionMode?: ConnectionMode
   /** @deprecated use {@link ConnectionLineOptions.type} */
   connectionLineType?: ConnectionLineType

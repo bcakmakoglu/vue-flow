@@ -132,13 +132,13 @@ export interface Emits {
   (event: 'paneContextMenu', paneEvent: MouseEvent): void
   (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseMove', edgeMouseEvent: MouseEvent): void
-  (event: 'edgeMouseLeave', edgeMouseEvent: MouseEvent): void
-  (event: 'edgeDoubleClick', edgeMouseEvent: MouseEvent): void
-  (event: 'edgeClick', edgeMouseEvent: MouseEvent): void
-  (event: 'edgeUpdateStart', edgeMouseEvent: MouseEvent): void
-  (event: 'edgeUpdate', edgeMouseEvent: MouseEvent): void
-  (event: 'edgeUpdateEnd', edgeMouseEvent: MouseEvent): void
+  (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
+  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
 
   /** v-model event definitions */
   (event: 'update:modelValue', value: FlowElements): void

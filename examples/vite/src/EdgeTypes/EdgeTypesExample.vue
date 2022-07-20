@@ -5,7 +5,7 @@ import { getElements } from './utils'
 
 const onLoad = (flowInstance: VueFlowStore) => {
   flowInstance.fitView()
-  console.log(flowInstance.getElements())
+  console.log(flowInstance.getElements.value)
 }
 
 const elements = getElements()

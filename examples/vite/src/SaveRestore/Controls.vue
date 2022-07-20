@@ -13,10 +13,10 @@ const state = useStorage<FlowExportObject>(flowKey, {
 const getNodeId = () => `randomnode_${+new Date()}`
 
 const { setTransform } = useZoomPanHelper()
-const { nodes, edges, addNodes, setNodes, setEdges, instance, dimensions } = useVueFlow()
+const { nodes, edges, addNodes, setNodes, setEdges, toObject, dimensions } = useVueFlow()
 
 const onSave = () => {
-  state.value = instance.value?.toObject()
+  state.value = toObject()
 }
 
 const onRestore = () => {

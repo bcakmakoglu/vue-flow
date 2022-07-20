@@ -13,7 +13,7 @@ onPaneReady((i) => {
   i.fitView({
     padding: 0.2,
   })
-  console.log(i.getElements())
+  console.log(i.getElements.value)
 })
 </script>
 
