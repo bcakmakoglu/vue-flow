@@ -130,6 +130,9 @@ export interface Emits {
   (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
   (event: 'paneClick', paneEvent: MouseEvent): void
   (event: 'paneContextMenu', paneEvent: MouseEvent): void
+  (event: 'paneMouseEnter', paneEvent: MouseEvent): void
+  (event: 'paneMouseMove', paneEvent: MouseEvent): void
+  (event: 'paneMouseLeave', paneEvent: MouseEvent): void
   (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
