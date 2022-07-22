@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.30] - 2022-07-22
+
+[7596c4d](7596c4d325cc126518464553482c04cb0b8e60f9)...[600922a](600922afd921c3c357edfcc27149f451d3aa0e4a)
+
+### Bug Fixes
+
+- Use correct edge event types ([d96e944](d96e944a49eabb3997cbcd40e2c34ee087cfa7c9))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([3537e6b](3537e6b0223ffb819df95c1d238bbf3cd8c4e0e3))
+- Update pnpm-lock.yaml ([78f176c](78f176cf468f35fec65123302c6f7d41f036b1a1))
+- Upgrade dependencies ([c16cd46](c16cd464b3b223a394689b9425be9f5eb8923e62))
+- Bump version ([600922a](600922afd921c3c357edfcc27149f451d3aa0e4a))
+
 ## [0.4.29] - 2022-07-18
 
 [b696eb0](b696eb04f9538a8a5bf25490fd0cc3e0ef9bf50d)...[7596c4d](7596c4d325cc126518464553482c04cb0b8e60f9)
