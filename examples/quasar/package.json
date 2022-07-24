@@ -10,16 +10,16 @@
     "lint": "eslint --ext .js,.ts,.vue ./"
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*",
-    "@quasar/extras": "^1.0.0",
-    "quasar": "^2.6.0",
-    "vue": "^3.2.15",
-    "vue-router": "^4.0.0"
+    "@braks/vue-flow": "workspace:0.4.30",
+    "@quasar/extras": "^1.15.0",
+    "quasar": "^2.7.5",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.2"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.0.0",
-    "@types/node": "^12.20.21",
-    "autoprefixer": "^10.4.2"
+    "@quasar/app-vite": "^1.0.5",
+    "@types/node": "^12.20.55",
+    "autoprefixer": "^10.4.7"
   },
   "engines": {
     "node": "^18 || ^16 || ^14.19",

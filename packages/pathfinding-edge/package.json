@@ -39,10 +39,10 @@
     "@vitejs/plugin-vue": "^2.3.3",
     "ts-patch": "^2.0.1",
     "typescript-transform-paths": "^3.3.1",
-    "unplugin-auto-import": "^0.7.1",
-    "vite": "^2.9.9",
+    "unplugin-auto-import": "^0.7.2",
+    "vite": "^2.9.14",
     "vite-plugin-vue-type-imports": "^0.2.0",
-    "vue-tsc": "^0.35.0"
+    "vue-tsc": "^0.35.2"
   },
   "peerDependencies": {
     "@braks/vue-flow": "^0.4.29",

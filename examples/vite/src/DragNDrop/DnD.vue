@@ -23,11 +23,20 @@ const onDragOver = (event: DragEvent) => {
   }
 }
 
+const wrapper = ref()
+
 onConnect((params) => addEdges([params]))
 
 const onDrop = (event: DragEvent) => {
   const type = event.dataTransfer?.getData('application/vueflow')
-  const position = project({ x: event.clientX, y: event.clientY - 40 })
+
+  const flowbounds = wrapper.value.$el.getBoundingClientRect()
+
+  const position = project({
+    x: event.clientX - flowbounds.left,
+    y: event.clientY - flowbounds.top,
+  })
+
   const newNode = {
     id: getId(),
     type,
@@ -40,7 +49,7 @@ const onDrop = (event: DragEvent) => {
 
 <template>
   <div class="dndflow" @drop="onDrop">
-    <VueFlow @dragover="onDragOver" />
+    <VueFlow ref="wrapper" @dragover="onDragOver" />
     <Sidebar />
   </div>
 </template>
