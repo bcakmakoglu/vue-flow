@@ -110,6 +110,8 @@ const dispose = useWatch({ modelValue, nodes: modelNodes, edges: modelEdges }, p
   ...rest,
 })
 
+const el = ref<HTMLDivElement>()
+
 onUnmounted(() => {
   dispose()
   $reset()
@@ -118,6 +120,16 @@ onUnmounted(() => {
 useHooks(emit, hooks.value)
 
 provide(Slots, useSlots())
+
+defineExpose({
+  el,
+  id,
+  hooks,
+  getNodeTypes,
+  getEdgeTypes,
+  $reset,
+  ...rest,
+})
 </script>
 
 <script lang="ts">
@@ -127,7 +139,7 @@ export default {
 </script>
 
 <template>
-  <div class="vue-flow">
+  <div ref="el" class="vue-flow">
     <Viewport>
       <template #nodes>
         <template v-for="nodeName of Object.keys(getNodeTypes)">
