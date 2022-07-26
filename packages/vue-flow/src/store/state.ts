@@ -69,11 +69,6 @@ const defaultState = (): State => ({
   panOnDrag: true,
   edgeUpdaterRadius: 10,
   onlyRenderVisibleElements: false,
-  defaultViewport: {
-    x: 0,
-    y: 0,
-    zoom: 1,
-  },
   defaultZoom: 1,
   defaultPosition: [0, 0],
 
