@@ -35,6 +35,12 @@ const onContextMenu = (event: MouseEvent) => emits.paneContextMenu(event)
 
 const onWheel = (event: WheelEvent) => emits.paneScroll(event)
 
+const onMouseEnter = (event: MouseEvent) => emits.paneMouseEnter(event)
+
+const onMouseLeave = (event: MouseEvent) => emits.paneMouseLeave(event)
+
+const onMouseMove = (event: MouseEvent) => emits.paneMouseMove(event)
+
 useKeyPress($$(deleteKeyCode), (keyPressed) => {
   const nodesToRemove = getNodes.reduce<GraphNode[]>((res, node) => {
     if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
@@ -95,5 +101,8 @@ export default {
     @click="onClick"
     @contextmenu="onContextMenu"
     @wheel="onWheel"
+    @mouseenter="onMouseEnter"
+    @mousemove="onMouseMove"
+    @mouseleave="onMouseLeave"
   />
 </template>
