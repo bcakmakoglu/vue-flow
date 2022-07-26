@@ -221,7 +221,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
             watch(
               () => model,
               () => {
-                if (model && isDef(model)) {
+                if (isDef(model)) {
                   storedValue.value = model
                 }
               },
