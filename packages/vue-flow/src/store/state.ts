@@ -29,6 +29,8 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
 const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 
 const defaultState = (): State => ({
+  vueFlowRef: null,
+  viewportRef: null,
   nodes: [],
   edges: [],
   nodeTypes: {},
@@ -67,6 +69,11 @@ const defaultState = (): State => ({
   panOnDrag: true,
   edgeUpdaterRadius: 10,
   onlyRenderVisibleElements: false,
+  defaultViewport: {
+    x: 0,
+    y: 0,
+    zoom: 1,
+  },
   defaultZoom: 1,
   defaultPosition: [0, 0],
 

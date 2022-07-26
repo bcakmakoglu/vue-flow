@@ -75,6 +75,7 @@ onMounted(() => {
   if ('screen' in window) {
     useEventListener(window, 'onresize', () => {
       if (!viewportEl.value) return
+
       const { width, height } = getDimensions(viewportEl.value)
       dimensions.width = width
       dimensions.height = height
@@ -93,6 +94,7 @@ onMounted(() => {
     d3Selection,
     d3ZoomHandler,
     viewport: { x: updatedTransform.x, y: updatedTransform.y, zoom: updatedTransform.k },
+    viewportRef: viewportEl.value,
   })
 
   const selectionKeyPressed = useKeyPress($$(selectionKeyCode), (keyPress) => {
