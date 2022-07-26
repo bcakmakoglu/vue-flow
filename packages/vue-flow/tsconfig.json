@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "preserveSymlinks": true,
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
