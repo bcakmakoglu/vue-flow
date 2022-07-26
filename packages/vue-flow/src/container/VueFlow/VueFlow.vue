@@ -1,10 +1,24 @@
 <script lang="ts" setup>
+import type { D3ZoomEvent } from 'd3-zoom'
 import Viewport from '../Viewport/Viewport.vue'
 import { useHooks } from '../../store'
 import { useVueFlow } from '../../composables'
-import type { FlowProps } from '../../types/flow'
+import type { FlowElements, FlowProps } from '../../types/flow'
 import { Slots } from '../../context'
-import type { Emits, VueFlowStore } from '../../types'
+import type {
+  Connection,
+  EdgeChange,
+  EdgeMouseEvent,
+  EdgeUpdateEvent,
+  GraphEdge,
+  GraphNode,
+  NodeChange,
+  NodeDragEvent,
+  NodeMouseEvent,
+  OnConnectStartParams,
+  ViewpaneTransform,
+  VueFlowStore,
+} from '../../types'
 import useWatch from './watch'
 
 const props = withDefaults(defineProps<FlowProps>(), {
@@ -29,7 +43,63 @@ const props = withDefaults(defineProps<FlowProps>(), {
   elevateEdgesOnSelect: undefined,
 })
 
-const emit = defineEmits<Emits>()
+const emit = defineEmits<{
+  (event: 'nodesChange', changes: NodeChange[]): void
+  (event: 'edgesChange', changes: EdgeChange[]): void
+  (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'nodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'nodeMouseMove', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'nodeMouseLeave', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'nodeContextMenu', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'nodeDragStart', nodeDragEvent: NodeDragEvent): void
+  (event: 'nodeDrag', nodeDragEvent: NodeDragEvent): void
+  (event: 'nodeDragStop', nodeDragEvent: NodeDragEvent): void
+  (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'miniMapNodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'miniMapNodeMouseMove', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'miniMapNodeMouseLeave', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'connect', connectionEvent: Connection): void
+  (
+    event: 'connectStart',
+    connectionEvent: {
+      event: MouseEvent
+    } & OnConnectStartParams,
+  ): void
+  (event: 'connectStop', connectionEvent: MouseEvent): void
+  (event: 'connectEnd', connectionEvent: MouseEvent): void
+  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
+  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
+  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
+  (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
+  (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
+  (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
+  (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
+  (event: 'paneReady', paneEvent: VueFlowStore): void
+  (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
+  (event: 'paneClick', paneEvent: MouseEvent): void
+  (event: 'paneContextMenu', paneEvent: MouseEvent): void
+  (event: 'paneMouseEnter', paneEvent: MouseEvent): void
+  (event: 'paneMouseMove', paneEvent: MouseEvent): void
+  (event: 'paneMouseLeave', paneEvent: MouseEvent): void
+  (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
+  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
+
+  /** v-model event definitions */
+  (event: 'update:modelValue', value: FlowElements): void
+  (event: 'update:nodes', value: GraphNode[]): void
+  (event: 'update:edges', value: GraphEdge[]): void
+}>()
+
+emit('connect', {} as any)
 
 const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
