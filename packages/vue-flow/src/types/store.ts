@@ -16,6 +16,11 @@ export interface UpdateNodeDimensionsParams {
 }
 
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
+  /** Vue flow element ref */
+  vueFlowRef: HTMLDivElement | null
+  /** Vue flow viewport element */
+  viewportRef: HTMLDivElement | null
+
   /** Event hooks, you can manipulate the triggers at your own peril */
   readonly hooks: FlowHooks
 

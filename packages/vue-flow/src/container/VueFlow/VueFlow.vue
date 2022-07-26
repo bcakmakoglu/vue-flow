@@ -99,9 +99,10 @@ const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const { id, hooks, getNodeTypes, getEdgeTypes, $reset, ...rest } = useVueFlow({ id: props.id })
+const { vueFlowRef, id, hooks, getNodeTypes, getEdgeTypes, $reset, ...rest } = useVueFlow({ id: props.id })
 
 const dispose = useWatch({ modelValue, nodes: modelNodes, edges: modelEdges }, props, {
+  vueFlowRef,
   id,
   hooks,
   getNodeTypes,
@@ -117,12 +118,16 @@ onUnmounted(() => {
   $reset()
 })
 
+onMounted(() => {
+  vueFlowRef.value = el.value!
+})
+
 useHooks(emit, hooks.value)
 
 provide(Slots, useSlots())
 
 defineExpose({
-  el,
+  vueFlowRef,
   id,
   hooks,
   getNodeTypes,
