@@ -145,6 +145,10 @@ export interface Actions extends ViewportFunctions {
   removeNodes: RemoveNodes
   /** remove edges from state */
   removeEdges: RemoveEdges
+  /** find a node by id */
+  findNode: (id: string) => GraphNode | undefined
+  /** find an edge by id */
+  findEdge: (id: string) => GraphEdge | undefined
   /** updates an edge */
   updateEdge: UpdateEdge
   /** applies default edge change handler */
@@ -198,9 +202,9 @@ export interface Getters {
   getNodes: GraphNode[]
   /** filters hidden edges */
   getEdges: GraphEdge[]
-  /** returns a node by id */
+  /** @deprecated use {@link Actions.findNode} instead; returns a node by id */
   getNode: (id: string) => GraphNode | undefined
-  /** returns an edge by id */
+  /** @deprecated use {@link Actions.findEdge} instead; returns an edge by id */
   getEdge: (id: string) => GraphEdge | undefined
   /** returns all currently selected elements */
   getSelectedElements: FlowElements

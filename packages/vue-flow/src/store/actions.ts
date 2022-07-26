@@ -301,6 +301,21 @@ export default (state: State, getters: ComputedGetters): Actions => {
     state.hooks.edgesChange.trigger(changes)
   }
 
+  const nodeIds = $computed(() => state.nodes.map((n) => n.id))
+  const edgeIds = $computed(() => state.edges.map((e) => e.id))
+
+  const findNode: Actions['findNode'] = (id) => {
+    if (state.nodes && !nodeIds.length) return state.nodes.find((node) => node.id === id)
+
+    return state.nodes[nodeIds.indexOf(id)]
+  }
+
+  const findEdge: Actions['findEdge'] = (id) => {
+    if (state.edges && !edgeIds.length) return state.edges.find((edge) => edge.id === id)
+
+    return state.edges[edgeIds.indexOf(id)]
+  }
+
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>
     updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
 
@@ -380,6 +395,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
     addEdges,
     removeNodes,
     removeEdges,
+    findNode,
+    findEdge,
     updateEdge,
     applyEdgeChanges,
     applyNodeChanges,
