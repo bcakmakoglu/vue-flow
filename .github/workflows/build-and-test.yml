@@ -43,7 +43,7 @@ jobs:
           version: 7
           run_install: false
 
-      - name: Get yarn cache directory path 🛠
+      - name: Get pnpm cache directory path 🛠
         id: pnpm-cache-dir-path
         run: echo "::set-output name=dir::$(pnpm cache dir)"
 
@@ -57,7 +57,7 @@ jobs:
             ${{ runner.os }}-pnpm-
 
       - name: Install dependencies 👨🏻‍💻
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Run linter 🧹
         run: pnpm lint
