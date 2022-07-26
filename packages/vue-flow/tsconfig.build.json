@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "preserveSymlinks": true,
     "outDir": "./tmp",
     "baseUrl": ".",
     "module": "ESNext",
