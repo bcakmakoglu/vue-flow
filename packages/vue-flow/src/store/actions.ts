@@ -70,6 +70,11 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
 
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
+    if (!state.viewportRef) return
+
+    const style = window.getComputedStyle(state.viewportRef)
+    const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
+
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
       const node = getters.getNode.value(update.id)
 
@@ -82,8 +87,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
         )
 
         node.handleBounds = {
-          source: getHandleBounds('.source', update.nodeElement, state.viewport.zoom),
-          target: getHandleBounds('.target', update.nodeElement, state.viewport.zoom),
+          source: getHandleBounds('.source', update.nodeElement, zoom),
+          target: getHandleBounds('.target', update.nodeElement, zoom),
         }
 
         if (doUpdate) {
