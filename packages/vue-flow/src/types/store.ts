@@ -1,5 +1,5 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
-import type { Dimensions, ElementData, Elements, FlowElements, FlowExportObject, FlowOptions, SnapGrid, XYPosition } from './flow'
+import type { Dimensions, Elements, FlowElements, FlowExportObject, FlowOptions, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
@@ -199,9 +199,9 @@ export interface Getters {
   /** filters hidden edges */
   getEdges: GraphEdge[]
   /** returns a node by id */
-  getNode: <Data = ElementData>(id: string) => GraphNode<Data> | undefined
+  getNode: (id: string) => GraphNode | undefined
   /** returns an edge by id */
-  getEdge: <Data = ElementData>(id: string) => GraphEdge<Data> | undefined
+  getEdge: (id: string) => GraphEdge | undefined
   /** returns all currently selected elements */
   getSelectedElements: FlowElements
   /** returns all currently selected nodes */
