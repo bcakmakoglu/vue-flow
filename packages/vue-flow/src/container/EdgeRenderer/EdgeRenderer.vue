@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
+import type { CSSProperties, EffectScope } from 'vue'
 import EdgeWrapper from '../../components/Edges/Wrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
@@ -58,9 +58,11 @@ const hooks = $ref<Record<string, ReturnType<typeof useEdgeHooks>>>({})
 
 let groups = $ref<ReturnType<typeof groupEdgesByZLevel>>([])
 
-const scope = effectScope()
+let scope: EffectScope | null = effectScope()
 
 onPaneReady(() => {
+  if (!scope) scope = effectScope()
+
   scope.run(() => {
     const edgeAmount = computed(() => getEdges.length)
 
@@ -92,7 +94,10 @@ onPaneReady(() => {
   })
 })
 
-onBeforeUnmount(() => scope.stop())
+onBeforeUnmount(() => {
+  scope?.stop()
+  scope = null
+})
 
 const getType = (type?: string, template?: GraphEdge['template']) => {
   const name = type || 'default'
