@@ -1,6 +1,7 @@
 import type { Theme } from 'vitepress'
 import VueAnimXyz from '@animxyz/vue3'
 import DefaultTheme from 'vitepress/theme'
+import '../../assets/index.css'
 
 const CustomTheme = {
   ...DefaultTheme,

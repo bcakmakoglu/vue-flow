@@ -14,7 +14,7 @@ You can check the full options for a node element [here](/typedocs/interfaces/No
 
 Generally you create nodes by adding them to the model-value or the nodes prop of the Vue Flow component.
 
-```vue:no-line-numbers
+```vue
 <script>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -55,7 +55,7 @@ For more advanced graphs that require more state access you will want to use the
 you with an [`addNodes`](/typedocs/interfaces/Actions.html#addnodes/) utility function, which you can use to add nodes
 directly to the state.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 
@@ -92,7 +92,7 @@ You can also apply changes using the [`applyNodeChanges`](/typedocs/interfaces/A
 function,
 which expects an array of [changes](/typedocs/types/NodeChange.html/) to be applied to the currently stored nodes.
 
-```vue:no-line-numbers{11,17-22}
+```vue{11,17-22}
 <script setup>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 
@@ -138,7 +138,7 @@ It represents a branching point in your map.
 
 You can specify the position of handles in the node definition.
 
-```js:no-line-numbers{5-6}
+```js{5-6}
 const nodes = [
   {
     id: '1',
@@ -168,7 +168,7 @@ It represents an ending point of your map.
 In addition to the default node types from the previous chapter, you can define any amount of custom node-types.
 Node-types are inferred from your node's definition.
 
-```js:no-line-numbers{5,11}
+```js{5,11}
 const nodes = [
   {
     id: '1',
@@ -198,7 +198,7 @@ The easiest way to define custom nodes is, by passing them as template slots.
 Your custom node-types are dynamically resolved to slot-names, meaning a node with the type `custom`
 will expect a slot to have the name `node-custom`.
 
-```vue:no-line-numbers{9,16}
+```vue{9,16}
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 import CustomNode from './CustomNode.vue'
@@ -232,7 +232,7 @@ turned into reactive objects.
 Otherwise, vue will throw a warning in the console.
 :::
 
-```vue:no-line-numbers{6-9,26}
+```vue{6-9,26}
 <script setup>
 import { markRaw } from 'vue'
 import CustomNode from './CustomNode.vue'
@@ -272,7 +272,7 @@ You can find a more advanced example [here](/examples/custom-node.html/).
 You can also set a template per node, which will overwrite the node-type component but will retain
 the type otherwise.
 
-```vue:no-line-numbers{17}
+```vue{17}
 <script setup>
 import { markRaw } from 'vue'
 import CustomNode from './CustomNode.vue'
@@ -339,7 +339,7 @@ you can also pass in event handlers in your initial node definition, or you can 
 the `events` prop passed
 to your node components.
 
-```vue:no-line-numbers{9-13}
+```vue{9-13}
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -368,7 +368,7 @@ The `click` handler is part of the [`NodeEventsHandler`](/typedocs/types/NodeEve
 will be
 triggered when the node is clicked.
 
-```vue:no-line-numbers
+```vue
 <script lang="ts" setup>
 import type { NodeProps, NodeEventsOn } from '@braks/vue-flow'
 
@@ -405,7 +405,7 @@ To overwrite default theme styles check the [Theming section](/guide/theming.htm
 
 When you create a new node type you also need to implement some styling. Your custom node has no default styles.
 
-```css:no-line-numbers
+```css
 .vue-flow__node-custom {
   background: #9CA8B3;
   color: #fff;
@@ -435,7 +435,7 @@ or you can emit the `updateNodeInternals` event from your custom node component 
 
 - Using store action
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useVueFlow } from '@braks/vue-flow'
 
@@ -449,7 +449,7 @@ const onSomeEvent = () => {
 
 - Emitting event from custom component
 
-```vue:no-line-numbers
+```vue
 <script setup>
 const emits = defineEmits(['updateNodeInternals'])
 

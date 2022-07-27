@@ -13,7 +13,7 @@ You can check the full options for an edge element in the TypeDocs [here](/typed
 
 Generally you create edges by adding them to the model-value or the edges prop of the Vue Flow component.
 
-```vue:no-line-numbers
+```vue
 <script>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -59,7 +59,7 @@ For more advanced graphs that require more state access you will want to use the
 you with an [`addEdges`](/typedocs/interfaces/Actions.html#addedges/) utility function, which you can use to add edges
 directly to the state.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 
@@ -111,7 +111,7 @@ These edge types include `default` (bezier), `step`, `smoothstep` and `straight`
 
 A bezier edge has a curved path.
 
-```js:no-line-numbers
+```js
 const edges = [
   {
     id: 'e1-2',
@@ -125,7 +125,7 @@ const edges = [
 
 A step edge has a straight path with a step towards the target.
 
-```js:no-line-numbers{4}
+```js{4}
 const edges = [
   {
     id: 'e1-2',
@@ -140,7 +140,7 @@ const edges = [
 
 The same as the step edge though with a border radius on the step (rounded step).
 
-```js:no-line-numbers{4}
+```js{4}
 const edges = [
   {
     id: 'e1-2',
@@ -155,7 +155,7 @@ const edges = [
 
 A simple straight path.
 
-```js:no-line-numbers{4}
+```js{4}
 const edges = [
   {
     id: 'e1-2',
@@ -171,7 +171,7 @@ const edges = [
 In addition to the default edge types from the previous chapter, you can define any amount of custom edge-types.
 Edge-types are inferred from your edge's definition.
 
-```js:no-line-numbers{5,11}
+```js{5,11}
 const edges = [
   {
     id: 'e1-2',
@@ -195,7 +195,7 @@ The easiest way to define custom edges is, by passing them as template slots.
 Your custom edge-types are dynamically resolved to slot-names, meaning an edge with the type `custom`
 will expect a slot to have the name `edge-custom`.
 
-```vue:no-line-numbers{18,26}
+```vue{18,26}
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 import CustomEdge from './CustomEdge.vue'
@@ -239,7 +239,7 @@ turned into reactive objects.
 Otherwise, vue will throw a warning in the console.
 :::
 
-```vue:no-line-numbers{5-7,28}
+```vue{5-7,28}
 <script setup>
 import { markRaw } from 'vue'
 import CustomEdge from './CustomEdge.vue'
@@ -277,7 +277,7 @@ const elements = ref([
 You can also set a template per edge, which will overwrite the edge-type component but will retain
 the type otherwise.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { markRaw } from 'vue'
 import CustomEdge from './CustomEdge.vue'
@@ -358,7 +358,7 @@ In addition to the event handlers that you can access through [`useVueFlow`](/gu
 you can also pass in event handlers in your initial node definition, or you can access the node events through the `events` prop passed
 to your node components.
 
-```vue:no-line-numbers{19-26}
+```vue{19-26}
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -395,7 +395,7 @@ to forward callback functions to your custom components.
 The `click` handler is part of the [`EdgeEventsHandler`](/typedocs/types/EdgeEventsHandler.html) type, meaning it will be
 triggered when the edge is clicked.
 
-```vue:no-line-numbers
+```vue
 <script lang="ts" setup>
 import type { EdgeProps, EdgeEventsOn } from '@braks/vue-flow'
 
