@@ -93,6 +93,8 @@ export default (options?: FlowProps): VueFlowStore => {
 
   let vueFlow: Injection
 
+  let isParentScope = false
+
   /**
    * check if we can get a store instance through injections
    * this should be the regular way after initialization
@@ -122,6 +124,7 @@ export default (options?: FlowProps): VueFlowStore => {
 
     if (scope) {
       scope.vueFlowId = name
+      isParentScope = true
     }
   } else {
     // if composable was called with additional options after initialization, overwrite state with the options values
@@ -137,13 +140,16 @@ export default (options?: FlowProps): VueFlowStore => {
   if (scope) {
     provide(VueFlow, vueFlow)
 
-    // dispose of state values and storage entry
-    tryOnScopeDispose(() => {
-      if (storage.get(vueFlow!.id)) {
-        storage.remove(vueFlow!.id)
-      }
-      vueFlow = null
-    })
+    if (isParentScope) {
+      // dispose of state values and storage entry
+      tryOnScopeDispose(() => {
+        if (storage.get(vueFlow!.id)) {
+          vueFlow!.$destroy()
+        }
+
+        vueFlow = null
+      })
+    }
   }
 
   return vueFlow
