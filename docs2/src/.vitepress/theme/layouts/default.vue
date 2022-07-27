@@ -1,11 +1,3 @@
-<script>
-import 'virtual:windi.css'
-import '@animxyz/core'
-import '@braks/vue-flow/dist/style.css'
-import '@braks/vue-flow/dist/theme-default.css'
-import '../../assets/index.css'
-</script>
-
 <script setup>
 import DefaultTheme from 'vitepress/theme'
 import ReactIcon from '~icons/logos/react'
@@ -76,8 +68,6 @@ const { Layout: ParentLayout } = DefaultTheme
 
 <style>
 .page-footer {
-  @apply dark:(text-white bg-black) pt-[2rem] text-center;
-  border-top: 1px solid var(--c-border);
-  transition: border-color var(--t-color);
+  @apply py-4 text-center;
 }
 </style>
