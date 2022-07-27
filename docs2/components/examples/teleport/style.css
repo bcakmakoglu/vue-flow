@@ -1,0 +1,125 @@
+.teleportflow {
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+}
+
+.teleportflow aside {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: white;
+  font-weight: 700;
+  border-right: 1px solid #eee;
+  padding: 10px 10px;
+  font-size: 12px;
+  background: rgba(16, 185, 129, 0.75);
+  -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+}
+
+.teleportflow aside .port > * {
+  position: relative;
+  margin-bottom: 10px;
+  cursor: grab;
+  font-weight: 500;
+  -webkit-box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
+}
+
+.teleportflow aside .description {
+  margin-bottom: 10px;
+}
+
+.teleportflow .vue-flow-wrapper {
+  flex-grow: 1;
+  height: 100%;
+}
+
+@media screen and (min-width: 640px) {
+  .teleportflow {
+    flex-direction: row;
+  }
+
+  .teleportflow aside {
+    min-width: 25%;
+  }
+}
+
+@media screen and (max-width: 639px) {
+  .teleportflow aside .port {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+}
+
+.teleportable {
+  padding: 10px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  color: black
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5px;
+  gap: 5px;
+}
+
+.button {
+  background-color: whitesmoke;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  color: black;
+  font-weight: 700;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.button:hover {
+  background: black;
+  color: white;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.shrink-leave-active {
+  animation: shrink 0.5s;
+}
+
+.shrink-enter-active {
+  animation: grow 0.5s;
+}
+
+@keyframes grow {
+  from {
+    transform: scale(0.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes shrink {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.1);
+  }
+}
+

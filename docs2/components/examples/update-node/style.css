@@ -1,0 +1,30 @@
+.updatenode__controls {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 4;
+  font-size: 11px;
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.updatenode__controls label {
+  display: blocK;
+}
+
+.updatenode__controls input {
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.updatenode__bglabel {
+  margin-top: 8px;
+}
+
+.updatenode__checkboxwrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+}
