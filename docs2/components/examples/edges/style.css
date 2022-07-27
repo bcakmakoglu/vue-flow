@@ -1,0 +1,10 @@
+.edgebutton {
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.edgebutton:hover {
+  transform: scale(110%);
+  transition: all ease 500ms;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5), 0 0 0 4px #10b981;
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "readme": "none",
+  "plugin": "typedoc-plugin-markdown",
+  "entryPoints": ["../packages/vue-flow/src/index.ts"],
+  "allReflectionsHaveOwnDocument": true,
+  "categorizeByGroup": true,
+  "darkHighlightTheme": "vitesse-dark",
+  "lightHighlightTheme": "vitesse-light",
+  "disableSources": true,
+  "out": "src/typedocs",
+  "tsconfig": "../packages/vue-flow/tsconfig.docs.json"
+}

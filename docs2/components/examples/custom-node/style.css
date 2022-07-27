@@ -1,0 +1,73 @@
+.customnodeflow .vue-flow__node-custom {
+  border: 1px solid #777;
+  padding: 10px;
+  border-radius: 10px;
+  background: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  max-width: 250px;
+}
+
+.customnodeflow button {
+  padding: 5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 25px;
+  -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.customnodeflow button:hover {
+  opacity: 0.9;
+  transform: scale(105%);
+  transition: 250ms all ease;
+}
+
+.animated-bg-gradient {
+  background: linear-gradient(122deg, #6f3381, #81c7d4, #fedfe1, #fffffb);
+  background-size: 800% 800%;
+
+  -webkit-animation: gradient 4s ease infinite;
+  -moz-animation: gradient 4s ease infinite;
+  animation: gradient 4s ease infinite;
+}
+
+@-webkit-keyframes gradient {
+  0% {
+    background-position: 0% 22%
+  }
+  50% {
+    background-position: 100% 79%
+  }
+  100% {
+    background-position: 0% 22%
+  }
+}
+
+@-moz-keyframes gradient {
+  0% {
+    background-position: 0% 22%
+  }
+  50% {
+    background-position: 100% 79%
+  }
+  100% {
+    background-position: 0% 22%
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 22%
+  }
+  50% {
+    background-position: 100% 79%
+  }
+  100% {
+    background-position: 0% 22%
+  }
+}
