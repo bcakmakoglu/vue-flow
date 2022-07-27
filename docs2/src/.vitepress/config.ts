@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import { readdirSync, statSync } from 'fs'
-import type { HeadConfig } from 'vitepress'
-import { DefaultTheme, defineConfigWithTheme } from 'vitepress'
+import type { DefaultTheme, HeadConfig } from 'vitepress'
+import { defineConfigWithTheme } from 'vitepress'
 import WindiCSS from 'vite-plugin-windicss'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -10,7 +10,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { useVueFlow } from '@braks/vue-flow'
 import { copyVueFlowPlugin } from './copy-plugin'
 import head from './head'
-import SidebarGroup = DefaultTheme.SidebarGroup
 
 const { vueFlowVersion } = useVueFlow()
 
@@ -18,7 +17,7 @@ function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-const typedocSidebarEntries = (): SidebarGroup[] => {
+const typedocSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
   const filePath = resolve(__dirname, '../../typedocs')
 
   const docsModules = readdirSync(filePath).filter((name) => statSync(`${filePath}/${name}`).isDirectory())
@@ -101,6 +100,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       '/guide/': [
         {
           text: 'Guide',
+          collapsible: true,
           items: [
             { text: 'Introduction', link: '/guide/' },
             { text: 'Getting Started', link: '/guide/getting-started' },
@@ -112,6 +112,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Vue Flow',
+          collapsible: true,
           items: [
             { text: 'Config / Props', link: '/guide/vue-flow/config' },
             { text: 'State', link: '/guide/vue-flow/state' },
@@ -132,6 +133,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Utilities',
+          collapsible: true,
           items: [
             { text: 'Graph', link: '/guide/utils/graph' },
             { text: 'Viewport', link: '/guide/utils/instance' },
@@ -140,6 +142,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Components',
+          collapsible: true,
           items: [
             { text: 'Background', link: '/guide/components/background' },
             { text: 'MiniMap', link: '/guide/components/minimap' },

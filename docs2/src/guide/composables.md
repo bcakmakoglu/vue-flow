@@ -10,7 +10,7 @@ The composition API and the power of provide/inject allows us to act more flexib
 a component tree.
 Thus accessing the internal state of Vue Flow becomes super easy when using composition.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useVueFlow, VueFlow } from '@braks/vue-flow'
 
@@ -49,7 +49,7 @@ using viewpane transforms.
 All functions can also be accessed from `useVueFlow`.
 It requires a valid Vue Flow store in its context.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useZoomPanHelper } from '@braks/vue-flow'
 

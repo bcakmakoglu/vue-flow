@@ -8,7 +8,7 @@
 
 - Example:
 
-```vue:no-line-numbers{13}
+```vue{13}
 <script setup>
 import { VueFlow, isEdge } from '@braks/vue-flow'
 
@@ -42,7 +42,7 @@ const toggleClass = () => {
 
 - Example:
 
-```vue:no-line-numbers{13}
+```vue{13}
 <script setup>
 import { VueFlow, isNode } from '@braks/vue-flow'
 
@@ -81,7 +81,7 @@ of [`useVueFlow`](/guide/composables.html#usevueflow/)
 
 - Example:
 
-```vue:no-line-numbers{12}
+```vue{12}
 <script setup>
 import { VueFlow, addEdge } from '@braks/vue-flow'
 
@@ -114,7 +114,7 @@ of [`useVueFlow`](/guide/composables.html#usevueflow/)
 
 - Example:
 
-```vue:no-line-numbers{12}
+```vue{12}
 <script setup>
 import { VueFlow, updateEdge } from '@braks/vue-flow'
 
