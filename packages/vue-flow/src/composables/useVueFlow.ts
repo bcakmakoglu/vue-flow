@@ -65,6 +65,9 @@ export class Storage {
       ...toRefs(reactiveState),
       emits,
       id,
+      $destroy: () => {
+        this.remove(id)
+      },
     }
 
     this.set(id, flow)
