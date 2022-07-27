@@ -65,7 +65,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         config: resolve(__dirname, './windi.config.ts'),
       }),
       Components({
-        dirs: [resolve(__dirname, '../../components')],
+        dirs: [resolve(__dirname, './../../components')],
         deep: true,
         // allow auto load markdown components under `./src/components/`
         extensions: ['vue', 'md'],
