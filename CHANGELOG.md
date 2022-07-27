@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.31] - 2022-07-27
+
+[600922a](600922afd921c3c357edfcc27149f451d3aa0e4a)...[4766510](4766510a13a0cac775c472ec25b2098f276d4308)
+
+### Bug Fixes
+
+- Prevent falsy values from stopping prop watcher ([93a9a99](93a9a99a85cbeff57f1e9124d0dbc1fec318462d))
+- Remove generic from node getter ([b0fc5ad](b0fc5ada9284980a0bf3fe34ec2734d0e3cfa66a))
+- Only run scope dispose on parent caller ([d62c330](d62c3304e3f0a8111d899c0f2381a43bd4fa3c94))
+- Create new effect scope when pane ready is called ([54eef97](54eef97bde2e3685c18cb6eb42e242e7ca187ef3))
+
+### Features
+
+- Expose flow store and element ref ([97d89bf](97d89bf4c797f9c128c07128bfff89e298dce888))
+- Set vueflow & viewport elements in store ([376f91e](376f91e2645b7bf997860515ef726e8993fdaeca))
+- Add `findNode` & `findEdge` actions ([f2321f2](f2321f26264230d65259a12633de26480284ac28))
+- Add viewpane mouseevents ([8ea2130](8ea21303bd061384fc6ae308911922b2959360cf))
+- Bind pane mouse events ([953155d](953155dea381fdab57cc4146775ce988f124780b))
+- Add `$destroy` action ([73bf4db](73bf4db82997d7be08fa2c8408b519c8c1e54a59))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([47164f0](47164f01b8c10b9a4d5f68423ab6f5000c5ea7d5))
+- Upgrade dependencies ([ce77bc5](ce77bc5d64c72e2b0e521775f9ac05f239bb336a))
+- Unfreeze lockfile ([27fa623](27fa6235430977cd055d8bd67dd8316886b22aa0))
+- Symlink deps in tsconfig ([4e7f4b5](4e7f4b5cf8518cc237ca3d159a1ec718fd8de95c))
+- Update auto-imports.d.ts ([12108d0](12108d092cec59fdeddc29946ed153ea659e6c0e))
+- Remove unused prop in store ([cff5e05](cff5e05ac9114beea856cdb6de11934a8cd49191))
+- Update vueuse ([3d22b87](3d22b879a3195ba70be84c851db4dcd19dc4113c))
+- Update pnpm-lock.yaml ([49d51cc](49d51ccf10b5bf26d06c3c86dd08f4d0e3659249))
+- Initial `$destroy` fn ([20fead9](20fead93c4978b2f20321e832d6132cdfa936b8b))
+- Bump version ([4766510](4766510a13a0cac775c472ec25b2098f276d4308))
+
+### Refactor
+
+- Import `Emits` type ([9a8459c](9a8459c8ebb2df12fc57e0271f89dc69f2fc286d))
+
+### Revert
+
+- Explicitly bind emits ([31f0dba](31f0dbafa7a2feafce74416d09caa19e4b0cadc0))
+- Use state viewport zoom to calculate handlebounds ([98ff311](98ff31154c703b10fe7e5b0c7b7941aa8e9502b7))
+
 ## [0.4.30] - 2022-07-22
 
 [7596c4d](7596c4d325cc126518464553482c04cb0b8e60f9)...[600922a](600922afd921c3c357edfcc27149f451d3aa0e4a)
