@@ -445,5 +445,6 @@ export default (state: State, getters: ComputedGetters): Actions => {
     $reset: () => {
       setState(useState())
     },
+    $destroy: () => {},
   }
 }
