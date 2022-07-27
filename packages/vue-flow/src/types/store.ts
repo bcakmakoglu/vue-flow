@@ -189,6 +189,9 @@ export interface Actions extends ViewportFunctions {
 
   /** reset state to defaults */
   $reset: () => void
+
+  /** remove store instance from global storage and destroy it (will invalidate effect scopes) */
+  $destroy: () => void
 }
 
 export interface Getters {
