@@ -97,7 +97,7 @@ onMounted(() => {
       () => {
         updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
       },
-      { immediate: true, flush: 'post' },
+      { flush: 'post' },
     )
 
     watch(
