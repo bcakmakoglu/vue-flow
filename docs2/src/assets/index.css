@@ -2,22 +2,36 @@
   --primary: #BB86FC;
   --secondary: #03dac5;
   --vp-c-brand: #10b981;
+  --vp-c-accent: #BB86FC;
+  --vp-c-bg-alt: rgb(249, 249, 249, 75%);
+}
+
+.dark {
+  --vp-c-bg: rgba(0, 0, 0, 100%);
+  --vp-c-bg-alt: rgb(22, 27, 34, 75%);
+  --vp-c-bg-soft: rgb(22, 27, 34, 100%);
+}
+
+.VPNavBar.has-sidebar .content, .VPNav {
+  background-color: var(--vp-c-bg-alt) !important;
+  background-image: radial-gradient(transparent 1px, var(--vp-c-bg-alt) 1px) !important;
+  background-size: 4px 4px !important;
+}
+
+.dark .DocSearch {
+  @apply border shadow bg-zinc-800;
+}
+
+.dark .VPNavBarTitle.has-sidebar {
+  background-color: transparent !important;
+}
+
+.VPPage {
+  @apply px-12 py-6 md:(px-24);
 }
 
 html, body {
   @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
-}
-
-.page a {
-  @apply text-green-500 font-semibold;
-}
-
-.examples .page, .examples .page-meta, .footer, .sidebar {
-  @apply dark:(!bg-black text-white);
-}
-
-.examples .page {
-  --content-width: 100%;
 }
 
 h1 {

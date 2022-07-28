@@ -10,10 +10,12 @@ tagline: null
   <Banner />
 </Suspense>
 
-<client-only>
-  <Features />
+<Features />
 
-  <XyzTransition appear-visible xyz="fade down ease-out-back">
+<XyzTransition appear-visible xyz="fade down ease-out-back">
     <Acknowledgement />
-  </XyzTransition>
-</client-only>
+</XyzTransition>
+
+<XyzTransition appear-visible xyz="fade down ease-out-back">
+    <Team />
+</XyzTransition>
