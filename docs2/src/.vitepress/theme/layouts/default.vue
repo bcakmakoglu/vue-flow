@@ -5,11 +5,7 @@ const { Layout: ParentLayout } = DefaultTheme
 </script>
 
 <template>
-  <ParentLayout>
-    <template #layout-bottom>
-      <div class="page-footer">MIT Licensed | Copyright © 2021-present Burak Cakmakoglu</div>
-    </template>
-  </ParentLayout>
+  <ParentLayout></ParentLayout>
 </template>
 
 <style>
