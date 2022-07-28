@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.32] - 2022-07-28
+
+[4766510](4766510a13a0cac775c472ec25b2098f276d4308)...[9aa5172](9aa517285b26d6ad9e34caad1dcbc3a27569b19b)
+
+### Bug Fixes
+
+- Prevent initial dimensions being emitted twice ([1db74cf](1db74cf8b6567ec3021f241e1023d1748a04e9a7))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([5ca61d2](5ca61d2fb0643067d74a15dc291478bac528c8d3))
+- Quasar example vue flow version ([5c68803](5c688030f5a2d940c6d47a91602e016c16b573dd))
+- Update pnpm-lock.yaml ([6a56251](6a5625173c6238ff4a7fbf073a73a797101d5184))
+- Bump version ([9aa5172](9aa517285b26d6ad9e34caad1dcbc3a27569b19b))
+
 ## [0.4.31] - 2022-07-27
 
 [600922a](600922afd921c3c357edfcc27149f451d3aa0e4a)...[4766510](4766510a13a0cac775c472ec25b2098f276d4308)
