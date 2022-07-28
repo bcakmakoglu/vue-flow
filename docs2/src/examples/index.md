@@ -1,6 +1,6 @@
 ---
 pageClass: examples
-
+layout: page
 ---
 
 # Basic
