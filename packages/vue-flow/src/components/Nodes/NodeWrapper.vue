@@ -136,19 +136,19 @@ onBeforeUnmount(() => {
 })
 
 const onMouseEnter = (event: MouseEvent) => {
-  if (!dragging) {
+  if (!dragging?.value) {
     emit.mouseEnter({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
 const onMouseMove = (event: MouseEvent) => {
-  if (!dragging) {
+  if (!dragging?.value) {
     emit.mouseMove({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
 
 const onMouseLeave = (event: MouseEvent) => {
-  if (!dragging) {
+  if (!dragging?.value) {
     emit.mouseLeave({ event, node, connectedEdges: getConnectedEdges([node], edges) })
   }
 }
