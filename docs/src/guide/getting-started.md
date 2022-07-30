@@ -10,7 +10,7 @@
 <CodeGroup>
   <CodeGroupItem title="YARN" active>
 
-```bash:no-line-numbers
+```bash
 yarn add @braks/vue-flow
 ```
 
@@ -19,7 +19,7 @@ yarn add @braks/vue-flow
 
   <CodeGroupItem title="NPM">
 
-```bash:no-line-numbers
+```bash
 npm i --save @braks/vue-flow
 ```
 
@@ -37,7 +37,7 @@ Together we call them
 A node also needs a [xy-position](/typedocs/interfaces/XYPosition.html/). An edge needs at least a
 source (node id) and a target (node id).
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow  } from '@braks/vue-flow'
 
@@ -79,14 +79,14 @@ A basic setup would look like this:
 <CodeGroup>
   <CodeGroupItem title="Composition API" active>
 
-@[code vue:no-line-numbers](../../../examples/vite/src/Basic/Basic.vue)
+@[code vue](../../../examples/vite/src/Basic/Basic.vue)
 
   </CodeGroupItem>
 
 
   <CodeGroupItem title="Options API">
 
-@[code vue:no-line-numbers](../../../examples/vite/src/Basic/BasicOptionsAPI.vue)
+@[code vue](../../../examples/vite/src/Basic/BasicOptionsAPI.vue)
 
   </CodeGroupItem>
 </CodeGroup>
