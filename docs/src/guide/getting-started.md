@@ -28,13 +28,13 @@ npm i --save @braks/vue-flow
 
 ## Usage
 
-A flow consists of [<span class="font-bold text-blue-500">nodes</span>](/typedocs/interfaces/Node.html/)
-and (optionally) [<span class="font-bold text-purple-500">edges</span>](/typedocs/interfaces/Edge.html).
+A flow consists of [<span class="font-bold text-blue-500">nodes</span>](/typedocs/interfaces/Node)
+and (optionally) [<span class="font-bold text-purple-500">edges</span>](/typedocs/interfaces/Edge).
 Together we call them
-[<span class="font-bold text-green-500">elements</span>](/typedocs/types/Elements.html/).
+[<span class="font-bold text-green-500">elements</span>](/typedocs/types/Elements).
 
 <span class="font-bold text-blue-500">Each element needs a unique id.</span>
-A node also needs a [xy-position](/typedocs/interfaces/XYPosition.html/). An edge needs at least a
+A node also needs a [xy-position](/typedocs/interfaces/XYPosition). An edge needs at least a
 source (node id) and a target (node id).
 
 ```vue
@@ -69,7 +69,7 @@ const elements = ref([
 ## Quickstart
 
 The recommended method of using Vue Flow is the composition API as it allows for full control of the state, thanks to
-composables and the power of [provide/inject](https://vuejs.org/guide/components/provide-inject.html). You can even
+composables and the power of [provide/inject](https://vuejs.org/guide/components/provide-inject). You can even
 access the state outside the context and manipulate it to your liking. However, using the options API is possible,
 though more limited it will probably satisfy most of your needs if you are not looking for too advanced handling of
 states.
