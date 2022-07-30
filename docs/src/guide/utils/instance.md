@@ -11,7 +11,7 @@ instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents.html#panere
 <CodeGroup>
   <CodeGroupItem title="Composition API" active>
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 
@@ -27,7 +27,7 @@ onPaneReady((instance) => instance.fitView())
 
   <CodeGroupItem title="Options API">
 
-```vue:no-line-numbers
+```vue
 <script>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -64,7 +64,7 @@ export default defineComponent({
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 vueFlowInstance.project({ x: 100, y: 100 })
 ```
 
@@ -78,7 +78,7 @@ vueFlowInstance.project({ x: 100, y: 100 })
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 ```
 
@@ -90,7 +90,7 @@ vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 ```
 
@@ -102,7 +102,7 @@ vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 ```
 
@@ -156,7 +156,7 @@ vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 toObject = (): {
   elements: FlowElements,
   position: [x, y],

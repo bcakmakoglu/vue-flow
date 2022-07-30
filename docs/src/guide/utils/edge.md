@@ -2,7 +2,7 @@
 
 All default edge components are exported and can be used or extended if necessary.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 // CustomEdge.vue
 import { EdgeProps, BezierEdge } from '@braks/vue-flow'
