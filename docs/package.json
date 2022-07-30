@@ -7,8 +7,7 @@
     "build": "pnpm run typedoc && vitepress build src",
     "serve": "vitepress serve src",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
-    "typedoc": "typedoc --options ./typedoc.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "typedoc": "typedoc --options ./typedoc.json"
   },
   "dependencies": {
     "@algolia/client-search": "^4.14.2",
