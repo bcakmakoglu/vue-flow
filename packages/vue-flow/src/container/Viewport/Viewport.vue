@@ -129,43 +129,49 @@ onMounted(() => {
     }
   })
 
-  d3Selection
-    .on('wheel', (event: WheelEvent) => {
-      if (panOnScroll && !zoomKeyPressed.value) {
-        if (isWrappedWithClass(event, noWheelClassName as any)) return
-        event.preventDefault()
-        event.stopImmediatePropagation()
+  watchEffect(() => {
+    if (panOnScroll && !zoomKeyPressed.value) {
+      d3Selection
+        .on('wheel', (event: any) => {
+          if (isWrappedWithClass(event, noWheelClassName?.value)) {
+            return false
+          }
+          event.preventDefault()
+          event.stopImmediatePropagation()
 
-        const currentZoom = d3Selection?.property('__zoom').k || 1
+          const currentZoom = d3Selection.property('__zoom').k || 1
 
-        if (event.ctrlKey && zoomOnPinch) {
-          const point = pointer(event)
-          // taken from https://github.com/d3/d3-zoom/blob/master/src/zoom.js
-          const pinchDelta = -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * 10
-          const zoom = currentZoom * 2 ** pinchDelta
-          if (d3Selection) d3Zoom.scaleTo(d3Selection, zoom, point)
+          if (event.ctrlKey && zoomOnPinch) {
+            const point = pointer(event)
+            // taken from https://github.com/d3/d3-zoom/blob/master/src/zoom.js
+            const pinchDelta = -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * 10
+            const zoom = currentZoom * 2 ** pinchDelta
+            d3Zoom.scaleTo(d3Selection, zoom, point)
 
-          return
-        }
+            return
+          }
 
-        // increase scroll speed in firefox
-        // firefox: deltaMode === 1; chrome: deltaMode === 0
-        const deltaNormalize = event.deltaMode === 1 ? 20 : 1
-        const deltaX = panOnScrollMode === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize
-        const deltaY = panOnScrollMode === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
+          // increase scroll speed in firefox
+          // firefox: deltaMode === 1; chrome: deltaMode === 0
+          const deltaNormalize = event.deltaMode === 1 ? 20 : 1
+          const deltaX = panOnScrollMode === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize
+          const deltaY = panOnScrollMode === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
 
-        if (d3Selection && panOnScrollSpeed) {
           d3Zoom.translateBy(d3Selection, -(deltaX / currentZoom) * panOnScrollSpeed, -(deltaY / currentZoom) * panOnScrollSpeed)
-        }
-      } else {
-        if ((!zoomOnScroll && preventScrolling) || !preventScrolling || isWrappedWithClass(event, noWheelClassName?.value)) {
-          return null
-        }
+        })
+        .on('wheel.zoom', null)
+    } else if (typeof d3ZoomHandler !== 'undefined') {
+      d3Selection
+        .on('wheel', (event: any) => {
+          if (!preventScrolling || isWrappedWithClass(event, noWheelClassName?.value)) {
+            return null
+          }
 
-        event.preventDefault()
-      }
-    })
-    .on('wheel.zoom', panOnScroll || typeof d3ZoomHandler === 'undefined' ? null : (d3ZoomHandler as any))
+          event.preventDefault()
+        })
+        .on('wheel.zoom', d3ZoomHandler)
+    }
+  })
 
   d3Zoom.filter((event: MouseEvent) => {
     const zoomScroll = zoomKeyPressed.value || zoomOnScroll
