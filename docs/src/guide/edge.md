@@ -7,7 +7,7 @@ They cannot exist on their own and need nodes to which they are connected.
 Each edge <span class="font-bold text-blue-500">requires a unique id, a source node and a target node id.</span>
 Anything else is optional.
 
-You can check the full options for an edge element in the TypeDocs [here](/typedocs/interfaces/Edge.html/).
+You can check the full options for an edge element in the TypeDocs [here](/typedocs/interfaces/Edge).
 
 ## Usage
 
@@ -55,8 +55,8 @@ export default defineComponent({
 ```
 
 For more advanced graphs that require more state access you will want to use the useVueFlow composable.
-[useVueFlow](/typedocs/functions/useVueFlow.html/) will provide
-you with an [`addEdges`](/typedocs/interfaces/Actions.html#addedges/) utility function, which you can use to add edges
+[useVueFlow](/typedocs/functions/useVueFlow) will provide
+you with an [`addEdges`](/typedocs/interfaces/Actions#addedges/) utility function, which you can use to add edges
 directly to the state.
 
 ```vue
@@ -99,10 +99,10 @@ onMounted(() => {
 ```
 
 You can also apply changes (like removing elements safely) using
-the [`applyEdgeChanges`](/typedocs/interfaces/Actions.html#applyedgechanges/) utility function, which expects an array
-of [changes](/typedocs/types/EdgeChange.html/) to be applied to the currently stored edges.
+the [`applyEdgeChanges`](/typedocs/interfaces/Actions#applyedgechanges/) utility function, which expects an array
+of [changes](/typedocs/types/EdgeChange) to be applied to the currently stored edges.
 
-## [Default Edge-Types](/typedocs/types/DefaultEdgeTypes.html/)
+## [Default Edge-Types](/typedocs/types/DefaultEdgeTypes)
 
 Vue Flow comes with built-in edges that you can use right out of the box.
 These edge types include `default` (bezier), `step`, `smoothstep` and `straight`.
@@ -245,7 +245,7 @@ import { markRaw } from 'vue'
 import CustomEdge from './CustomEdge.vue'
 
 const edgeTypes = {
-  custom: markRaw(CustomNode),
+  custom: markRaw(CustomEdge),
 }
 
 const elements = ref([
@@ -318,45 +318,45 @@ const elements = ref([
 </template>
 ```
 
-### [Custom Edge Props](/typedocs/interfaces/EdgeProps.html/)
+### [Custom Edge Props](/typedocs/interfaces/EdgeProps)
 
 Your custom edges are wrapped so that the basic functions like selecting work.
 But you might want to extend on that functionality or implement your own business logic inside of edges, therefore
 your edges receive the following props:
 
-| Name                | Definition                    | Type                                               | Optional |
-|---------------------|-------------------------------|----------------------------------------------------|----------|
-| id                  | Edge id                       | string                                             | false    |
-| source              | The source node id            | string                                             | false    |
-| target              | The target node id            | string                                             | false    |
-| sourceNode          | The source node               | GraphNode                                          | false    |
-| targetNode          | The target node               | GraphNode                                          | false    |
-| sourceX             | X position of source handle   | number                                             | false    |
-| sourceY             | Y position of source handle   | number                                             | false    |
-| targetX             | X position of target handle   | number                                             | false    |
-| targetY             | Y position of target handle   | number                                             | false    |
-| type                | Edge type                     | string                                             | true     |
-| sourceHandleId      | Source handle id              | string                                             | true     |
-| targetHandleId      | Target handle id              | string                                             | true     |
-| data                | Custom data object            | Any object                                         | true     |
-| events              | Edge events and custom events | [EdgeEventsOn](/typedocs/types/EdgeEventsOn.html/) | true     |
-| label               | Edge label                    | string, Component                                  | true     |
-| labelStyle          | Additional label styles       | CSSProperties                                      | true     |
-| labelShowBg         | Enable/Disable label bg       | boolean                                            | true     |
-| labelBgPadding      | Edge label bg padding         | number                                             | true     |
-| labelBgBorderRadius | Edge label bg border radius   | number                                             | true     |
-| selected            | Is edge selected              | boolean                                            | true     |
-| animated            | Is edge animated              | boolean                                            | true     |
-| updatable           | Is edge updatable             | boolean                                            | true     |
-| markerStart         | Edge marker id                | string                                             | true     |
-| markerEnd           | Edge marker id                | string                                             | true     |
-| curvature           | Edge path curvature           | number                                             | true     |
+| Name                | Definition                    | Type                                         | Optional |
+|---------------------|-------------------------------|----------------------------------------------|----------|
+| id                  | Edge id                       | string                                       | false    |
+| source              | The source node id            | string                                       | false    |
+| target              | The target node id            | string                                       | false    |
+| sourceNode          | The source node               | GraphNode                                    | false    |
+| targetNode          | The target node               | GraphNode                                    | false    |
+| sourceX             | X position of source handle   | number                                       | false    |
+| sourceY             | Y position of source handle   | number                                       | false    |
+| targetX             | X position of target handle   | number                                       | false    |
+| targetY             | Y position of target handle   | number                                       | false    |
+| type                | Edge type                     | string                                       | true     |
+| sourceHandleId      | Source handle id              | string                                       | true     |
+| targetHandleId      | Target handle id              | string                                       | true     |
+| data                | Custom data object            | Any object                                   | true     |
+| events              | Edge events and custom events | [EdgeEventsOn](/typedocs/types/EdgeEventsOn) | true     |
+| label               | Edge label                    | string, Component                            | true     |
+| labelStyle          | Additional label styles       | CSSProperties                                | true     |
+| labelShowBg         | Enable/Disable label bg       | boolean                                      | true     |
+| labelBgPadding      | Edge label bg padding         | number                                       | true     |
+| labelBgBorderRadius | Edge label bg border radius   | number                                       | true     |
+| selected            | Is edge selected              | boolean                                      | true     |
+| animated            | Is edge animated              | boolean                                      | true     |
+| updatable           | Is edge updatable             | boolean                                      | true     |
+| markerStart         | Edge marker id                | string                                       | true     |
+| markerEnd           | Edge marker id                | string                                       | true     |
+| curvature           | Edge path curvature           | number                                       | true     |
 
-### [(Custom) Edge Events](/typedocs/interfaces/EdgeEvents.html/)
+### (Custom) Edge Events
 
 In addition to the event handlers that you can access through [`useVueFlow`](/guide/composables#useVueFlow/) or the Vue Flow component,
-you can also pass in event handlers in your initial node definition, or you can access the node events through the `events` prop passed
-to your node components.
+you can also pass in event handlers in your initial edge definition, or you can access the edge events through the `events` prop passed
+to your edge components.
 
 ```vue{19-26}
 <script setup>
@@ -392,7 +392,7 @@ const elements = ref([
 
 As you can see above, you can also pass in custom event handlers. These will not be called by Vue Flow but can be used
 to forward callback functions to your custom components.
-The `click` handler is part of the [`EdgeEventsHandler`](/typedocs/types/EdgeEventsHandler.html) type, meaning it will be
+The `click` handler is part of the [`EdgeEventsHandler`](/typedocs/types/EdgeEventsHandler) type, meaning it will be
 triggered when the edge is clicked.
 
 ```vue

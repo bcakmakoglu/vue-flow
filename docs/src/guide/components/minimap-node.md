@@ -5,7 +5,7 @@ You can use it to add an icon to your node, or to add a custom tooltip etc.
 
 ## Usage
 
-To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide/components/minimap.html/) component.
+To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide/components/minimap) component.
 
 ```vue
 <template>
@@ -19,7 +19,7 @@ To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide
 </template>
 ```
 
-## [Props](/typedocs/interfaces/MiniMapNodeProps.html/)
+## [Props](/typedocs/interfaces/MiniMapNodeProps)
 
 | Name           | Definition                      | Type                                                | Optional | Default |
 |----------------|---------------------------------|-----------------------------------------------------|----------|---------|
@@ -27,8 +27,8 @@ To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide
 | parentNode     | Parent node id                  | string                                              | true     | -       |
 | selected       | Is node selected                | boolean                                             | true     | false   |
 | dragging       | Is node dragging                | boolean                                             | true     | false   |
-| position       | XY position of node             | [XYPosition](/typedocs/interfaces/XYPosition.html/) | false    | -       |
-| dimensions     | Node dimensions                 | [Dimensions](/typedocs/interfaces/Dimensions.html/) | false    | -       |
+| position       | XY position of node             | [XYPosition](/typedocs/interfaces/XYPosition) | false    | -       |
+| dimensions     | Node dimensions                 | [Dimensions](/typedocs/interfaces/Dimensions) | false    | -       |
 | borderRadius   | MiniMap node css border-radius  | number                                              | true     | -       |
 | color          | MiniMap node css color          | string                                              | true     | -       |
 | shapeRendering | MiniMap node css shapeRendering | ShapeRendering                                      | true     | -       |

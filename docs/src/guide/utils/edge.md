@@ -25,37 +25,37 @@ create a bezier path.
 This can be helpful if you don't want to actually change the way the path is calculated but just want to implement some custom logic on top of the 
 regular edge behavior.
 
-### [getBezierPath](/typedocs/functions/getBezierPath.html/)
+### [getBezierPath](/typedocs/functions/getBezierPath)
 
 - Details:
 
   Returns a bezier path.
 
-### [getBezierCenter](/typedocs/functions/getBezierCenter.html/)
+### [getBezierCenter](/typedocs/functions/getBezierCenter)
 
 - Details:
 
   Returns a bezier path's center x and y values.
 
-### [getSimpleBezierPath](/typedocs/functions/getSimpleBezierPath.html/)
+### [getSimpleBezierPath](/typedocs/functions/getSimpleBezierPath)
 
 - Details:
 
   Returns a simple bezier path (no curvature at handles).
 
-### [getSimpleBezierCenter](/typedocs/functions/getSimpleBezierCenter.html/)
+### [getSimpleBezierCenter](/typedocs/functions/getSimpleBezierCenter)
 
 - Details:
 
   Returns a simple bezier path's center x and y values.
 
-### [getSmoothStepPath](/typedocs/functions/getSmoothStepPath.html/)
+### [getSmoothStepPath](/typedocs/functions/getSmoothStepPath)
 
 - Details:
 
   Returns a smoothstep path (use border-radius 0 for a step path).
 
-### [getEdgeCenter](/typedocs/functions/getEdgeCenter.html/)
+### [getEdgeCenter](/typedocs/functions/getEdgeCenter)
 
 - Details:
 

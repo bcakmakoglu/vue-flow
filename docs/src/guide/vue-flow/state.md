@@ -1,10 +1,10 @@
 # State
 
-Under the hood Vue Flow uses [Provide/Inject](https://v3.vuejs.org/guide/component-provide-inject.html)
+Under the hood Vue Flow uses [Provide/Inject](https://v3.vuejs.org/guide/component-provide-inject)
 to pass around it's state between components.
-You can access the internal state through the [`useVueFlow`](/guide/composables.html#usevueflow/) composable.
+You can access the internal state through the [`useVueFlow`](/guide/composables#usevueflow/) composable.
 
-[`useVueFlow`](/guide/composables.html#usevueflow/) can be used to either create a new state instance and inject it into
+[`useVueFlow`](/guide/composables#usevueflow/) can be used to either create a new state instance and inject it into
 the current component tree or inject
 an already existing store from the current context.
 Internal state can be manipulated, for example by adding new elements to the state. The
