@@ -1,5 +1,5 @@
 ---
-pageClass: examples
+layout: page
 
 ---
 # Interaction
