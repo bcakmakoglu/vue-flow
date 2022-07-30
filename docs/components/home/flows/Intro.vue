@@ -66,6 +66,7 @@ const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge
   zoomOnScroll: false,
   zoomOnDoubleClick: false,
   zoomOnPinch: false,
+  preventScrolling: false,
   elevateEdgesOnSelect: true,
 })
 
