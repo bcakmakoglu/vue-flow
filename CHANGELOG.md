@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.33] - 2022-07-30
+
+[9aa5172](9aa517285b26d6ad9e34caad1dcbc3a27569b19b)...[dc0ec7a](dc0ec7a27dcf7f1c6d60765e6af2f56074fb281c)
+
+### Bug Fixes
+
+- Fix methods (onMouseEnter, onMouseMove, onMouseLeave) not being able to emit event ([4e93b2b](4e93b2b2426bf3950929b2e0853c505c1a878d12))
+- Dimensions not properly set on mount ([899d3af](899d3af4ad149d628024076a62ff097e7c631acd))
+- Pan on scroll blocks any zoom handling ([228b9d1](228b9d17535125f422b006308b140800283422ee))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([91fbad4](91fbad44392340e7b2560dd90843c2c87f55f7c9))
+- Bump version ([dc0ec7a](dc0ec7a27dcf7f1c6d60765e6af2f56074fb281c))
+
 ## [0.4.32] - 2022-07-28
 
 [4766510](4766510a13a0cac775c472ec25b2098f276d4308)...[9aa5172](9aa517285b26d6ad9e34caad1dcbc3a27569b19b)
