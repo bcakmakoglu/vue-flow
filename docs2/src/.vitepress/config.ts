@@ -18,29 +18,24 @@ function capitalize(str: string) {
 }
 
 const typedocSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
-  const filePath = resolve(__dirname, '../../typedocs')
+  const filePath = resolve(__dirname, '../typedocs')
 
   const docsModules = readdirSync(filePath).filter((name) => statSync(`${filePath}/${name}`).isDirectory())
 
-  const sidebarItems = docsModules.map((module) => {
-    let children = readdirSync(`${filePath}/${module}/`).map((entry) => `/typedocs/${module}/${entry}`)
+  return docsModules.map((module) => {
+    let children = readdirSync(`${filePath}/${module}/`).map<DefaultTheme.SidebarItem>((entry) => ({
+      text: entry.replace('.md', ''),
+      link: `/typedocs/${module}/${entry.replace('.md', '')}`,
+    }))
 
     if (module === 'variables') {
       children = children.filter((child) => {
-        return child.includes('default')
+        return child.link.includes('default')
       })
     }
 
-    return { text: capitalize(module), children }
+    return { text: capitalize(module), collapsible: true, items: children } as DefaultTheme.SidebarGroup
   })
-
-  return [
-    {
-      text: 'Modules',
-      link: '/typedocs/',
-      items: [...sidebarItems],
-    },
-  ]
 }
 
 export default defineConfigWithTheme<DefaultTheme.Config>({
@@ -203,6 +198,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           ],
         },
       ],
+      '/typedocs/': typedocSidebarEntries(),
     },
   },
 })
