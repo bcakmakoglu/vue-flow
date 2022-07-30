@@ -31,9 +31,9 @@ const nodes = [
 ```
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="validation"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>

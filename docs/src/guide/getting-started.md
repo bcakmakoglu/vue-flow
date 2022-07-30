@@ -7,24 +7,13 @@
 
 ## Installation
 
-<CodeGroup>
-  <CodeGroupItem title="YARN" active>
-
-```bash
-yarn add @braks/vue-flow
-```
-
-  </CodeGroupItem>
-
-
-  <CodeGroupItem title="NPM">
-
 ```bash
 npm i --save @braks/vue-flow
-```
 
-  </CodeGroupItem>
-</CodeGroup>
+yarn i @braks/vue-flow
+
+pnpm i @braks/vue-flow
+```
 
 ## Usage
 
@@ -65,31 +54,6 @@ const elements = ref([
   <VueFlow v-model="elements" />
 </template>
 ```
-
-## Quickstart
-
-The recommended method of using Vue Flow is the composition API as it allows for full control of the state, thanks to
-composables and the power of [provide/inject](https://vuejs.org/guide/components/provide-inject). You can even
-access the state outside the context and manipulate it to your liking. However, using the options API is possible,
-though more limited it will probably satisfy most of your needs if you are not looking for too advanced handling of
-states.
-
-A basic setup would look like this:
-
-<CodeGroup>
-  <CodeGroupItem title="Composition API" active>
-
-@[code vue](../../../examples/vite/src/Basic/Basic.vue)
-
-  </CodeGroupItem>
-
-
-  <CodeGroupItem title="Options API">
-
-@[code vue](../../../examples/vite/src/Basic/BasicOptionsAPI.vue)
-
-  </CodeGroupItem>
-</CodeGroup>
 
 ## TypeScript
 

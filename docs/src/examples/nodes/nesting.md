@@ -12,9 +12,9 @@ You can also define the boundaries of a node, i.e. if the node can be dragged ou
 or even let Vue Flow extend the area of a node to fit all it's children.
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="nested"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>
