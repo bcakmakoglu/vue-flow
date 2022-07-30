@@ -7,7 +7,7 @@ as options to the [`useVueFlow`](/guide/composables.html#usevueflow/) composable
 <CodeGroup>
   <CodeGroupItem title="Props" active>
 
-```vue:no-line-numbers
+```vue
 <!-- Pass configuration as props -->
 <template>
   <VueFlow :default-zoom="0.5" :max-zoom="4" :min-zoom="0.1" />
@@ -19,7 +19,7 @@ as options to the [`useVueFlow`](/guide/composables.html#usevueflow/) composable
 
   <CodeGroupItem title="Composable">
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useVueFlow  } from '@braks/vue-flow'
 
@@ -42,7 +42,7 @@ by `useVueFlow`.
 <CodeGroup>
   <CodeGroupItem title="Props" active>
 
-```vue:no-line-numbers{2,5-6,10}
+```vue{2,5-6,10}
 <script setup>
 const defaultZoom = ref(1)
 
@@ -61,7 +61,7 @@ onMounted(() => {
 
   <CodeGroupItem title="Composable">
 
-```vue:no-line-numbers{2,7-8}
+```vue{2,7-8}
 <script setup>
 const { defaultZoom } = useVueFlow({
   defaultZoom: 0.5,
@@ -101,7 +101,7 @@ onMounted(() => {
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -133,7 +133,7 @@ const elements = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -163,7 +163,7 @@ const nodes = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -198,7 +198,7 @@ const edges = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 import CustomNode from './CustomNode.vue'
@@ -235,7 +235,7 @@ const edges = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 import CustomEdge from './CustomEdge.vue'
@@ -275,7 +275,7 @@ const edges = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -496,7 +496,7 @@ const edges = ref([
 
 - Default:
 
-```ts:no-line-numbers
+```ts
 [
   [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
   [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
@@ -557,7 +557,7 @@ const edges = ref([
 
 - Example:
 
-```vue:no-line-numbers{5-6,10}
+```vue{5-6,10}
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -585,7 +585,7 @@ const elements = ref([
 
 - Example:
 
-```vue:no-line-numbers{5-6,10}
+```vue{5-6,10}
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -605,7 +605,7 @@ const elements = ref([
 
 - Default:
 
-```ts:no-line-numbers
+```ts
 [
   [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
   [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
@@ -620,7 +620,7 @@ const elements = ref([
 
 - Example:
 
-```vue:no-line-numbers{5-6}
+```vue{5-6}
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -676,7 +676,7 @@ const elements = ref([
 
 - Example:
 
-```vue:no-line-numbers{7-8,12}
+```vue{7-8,12}
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -753,7 +753,7 @@ const elements = ref([
 
 ##### Boolean value
 
-```vue:no-line-numbers{2}
+```vue{2}
 <template>
   <VueFlow v-model="elements" auto-connect />
 </template>
@@ -761,7 +761,7 @@ const elements = ref([
 
 #### [Connector](/typedocs/types/Connector.html/)
 
-```vue:no-line-numbers{6-18,22}
+```vue{6-18,22}
 <script setup>
 import { ref } from 'vue'
 

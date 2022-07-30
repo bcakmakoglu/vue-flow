@@ -3,7 +3,7 @@
 VueFlow comes without any pre-injected stylings. Some necessary stylings have to be imported, though optional styles (i.e.
 the default theme) can be skipped.
 
-```css:no-line-numbers
+```css
 /* these are necessary styles for vue flow */
 @import '@braks/vue-flow/dist/style.css';
 
@@ -20,7 +20,7 @@ your own CSS rules, pass style/class properties to the components or use the ava
 
 You can customize the default theme by simply overwriting the class definitions with your own custom ones.
 
-```css:no-line-numbers
+```css
 .vue-flow {
   background: red;
 }
@@ -30,7 +30,7 @@ You can customize the default theme by simply overwriting the class definitions 
 
 You can also pass a style or class attribute directly to the Vue Flow component.
 
-```vue:no-line-numbers{4}
+```vue{4}
 <div style="height: 300px">
   <VueFlow
     v-model="elements"
@@ -41,7 +41,7 @@ You can also pass a style or class attribute directly to the Vue Flow component.
 
 Nodes/Edges can also be styled with a style or class attribute.
 
-```ts:no-line-numbers{8-12,20-27}
+```ts{7-11,19-26}
 const nodes = ref<Node[]>([
   { 
     id: '1', 
@@ -87,7 +87,7 @@ These variables can either be applied globally or you can define them on an elem
 }
 ```
 
-```ts:no-line-numbers{4-5}
+```ts{4-5}
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
   
@@ -112,8 +112,6 @@ const elements = ref<Elements>([
 | --vf-handle           | Node handle color                        |
 | --vf-connection-path  | Connectionline color                     |
 
-
-
 ## Classes
 
 | Name                          | Container                                                |
@@ -126,7 +124,7 @@ const elements = ref<Elements>([
 | .vue-flow__selection          | User selection                                           |
 | .vue-flow__edges              | Edges renderer wrapper                                   |
 | .vue-flow__edge               | Edge element wrapper                                     |
-| .vue-flow__edge-{$type}       | Edge type, either a custom or default type               |
+| .vue-flow__edge-{type}        | Edge type, either a custom or default type               |
 | .vue-flow__edge .selected     | Selected Edge                                            |
 | .vue-flow__edge .animated     | Animated edge                                            |
 | .vue-flow__edge-path          | Edge element svg path                                    |
@@ -138,7 +136,7 @@ const elements = ref<Elements>([
 | .vue-flow__nodes              | Nodes renderer wrapper                                   |
 | .vue-flow__node               | Node element wrapper                                     |
 | .vue-flow__node .selected     | Selected Node                                            |
-| .vue-flow__node-{$type}       | Node type, either a custom or default type               |
+| .vue-flow__node-{type}        | Node type, either a custom or default type               |
 | .vue-flow__nodesselection     | Nodes selection rect                                     |
 | .vue-flow__handle             | Node handle element wrapper                              |
 | .vue-flow__handle-bottom      | Handle position bottom                                   |

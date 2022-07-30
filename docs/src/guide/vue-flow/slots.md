@@ -15,7 +15,7 @@ You can use the default slot to add a sidebar or floating toolbar etc. to your g
 The connection line slot allows you to pass down a custom connection line component, which will be used, when a connection
 is triggered.
 
-```vue:no-line-numbers
+```vue
 <template>
   <VueFlow>
     <template #connection-line="connectionLineProps">
@@ -31,7 +31,7 @@ The full description of connection line props can be found [here](/typedocs/inte
 
 The zoom pane slot is placed inside the viewport transformation, so that it scales and moves with the current viewport zoom and position.
 
-```vue:no-line-numbers
+```vue
 <template>
   <VueFlow>
     <template #zoom-pane>

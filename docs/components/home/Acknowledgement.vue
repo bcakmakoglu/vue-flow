@@ -3,8 +3,8 @@ import Heart from '~icons/mdi/heart'
 </script>
 
 <template>
-  <div id="acknowledgement" class="w-full dark:(bg-black text-white) border-y-1 border-white">
-    <div class="max-w-11/12 md:max-w-6/12 m-auto py-4 md:(pb-12 pt-6) text-center">
+  <div id="acknowledgement" class="w-full">
+    <div class="max-w-[1024px] md:max-w-3/4 m-auto py-4 md:(pb-12 pt-6) text-center">
       <div>
         <h1 class="md:mb-8 flex justify-center items-center"><Heart class="text-red-500" /> Acknowledgement</h1>
         <strong>First off</strong>: A big thank you to the developers of

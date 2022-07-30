@@ -24,7 +24,7 @@ onBeforeUnmount(stop)
 </script>
 
 <template>
-  <div ref="el" class="w-full dark:(bg-black text-white)">
+  <div ref="el" class="w-full">
     <div
       class="flex flex-col divide-y divide-gray-500 md:divide-y-0 gap-12 md:gap-24 lg:gap-36 max-w-9/12 md:max-w-11/12 lg:max-w-9/12 m-auto py-12 md:py-24 text-center md:text-left"
     >
