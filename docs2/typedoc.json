@@ -9,5 +9,6 @@
   "lightHighlightTheme": "vitesse-light",
   "disableSources": true,
   "out": "src/typedocs",
-  "tsconfig": "../packages/vue-flow/tsconfig.docs.json"
+  "tsconfig": "../packages/vue-flow/tsconfig.docs.json",
+  "entryDocument": "index.md"
 }

@@ -3,6 +3,8 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
+export {}
+
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Acknowledgement: typeof import('./../components/home/Acknowledgement.vue')['default']
@@ -36,5 +38,3 @@ declare module '@vue/runtime-core' {
     TeleportableNode: typeof import('./../components/examples/teleport/TeleportableNode.vue')['default']
   }
 }
-
-export {}
