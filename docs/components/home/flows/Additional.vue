@@ -84,6 +84,7 @@ const { onPaneReady } = useVueFlow({
   modelValue: elements.value,
   zoomOnScroll: false,
   panOnDrag: false,
+  preventScrolling: false,
 })
 
 onPaneReady((i) => emit('pane', i))

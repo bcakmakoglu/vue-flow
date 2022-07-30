@@ -34,6 +34,7 @@ const { onPaneReady, getNode, panOnDrag } = useVueFlow({
     [-50, -150],
     [500, 300],
   ],
+  preventScrolling: false,
 })
 
 onPaneReady((i) => emit('pane', i))
