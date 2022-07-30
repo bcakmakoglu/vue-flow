@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import type { VueFlowStore } from '@braks/vue-flow'
+import Basic from './flows/Basic.vue'
+import RGB from './flows/RGB.vue'
+import Nested from './flows/Nested.vue'
+import Additional from './flows/Additional.vue'
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
-
-const el = ref()
+const el = ref<HTMLDivElement>()
 const instances: VueFlowStore[] = []
 
 const onLoad = (instance: VueFlowStore) => {

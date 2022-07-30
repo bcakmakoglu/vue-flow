@@ -1,7 +1,6 @@
 ---
 layout: home
-heroText: null
-tagline: null
+
 ---
 
 <Home />
