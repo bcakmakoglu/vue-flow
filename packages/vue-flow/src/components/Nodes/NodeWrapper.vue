@@ -58,7 +58,7 @@ const dragging = useDrag({
 const observer = useResizeObserver(
   nodeElement,
   () => {
-    updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
   },
   { box: 'content-box' },
 )
@@ -97,7 +97,7 @@ onMounted(() => {
       () => {
         updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
       },
-      { flush: 'post' },
+      { flush: 'post', immediate: true },
     )
 
     watch(
