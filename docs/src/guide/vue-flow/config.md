@@ -2,7 +2,7 @@
 
 Vue Flow allows you to configure zoom, graph and flow behavior.
 Configuration can be passed either as props to the `VueFlow` component or
-as options to the [`useVueFlow`](/guide/composables.html#usevueflow/) composable.
+as options to the [`useVueFlow`](/guide/composables#usevueflow) composable.
 
 <CodeGroup>
   <CodeGroupItem title="Props" active>
@@ -91,7 +91,7 @@ onMounted(() => {
 
 ### modelValue <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Elements`](/typedocs/types/Elements.html/)
+- Type: [`Elements`](/typedocs/types/Elements)
 
 - Details:
 
@@ -123,7 +123,7 @@ const elements = ref([
 
 ### nodes <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Node[]`](/typedocs/interfaces/Node.html/)
+- Type: [`Node[]`](/typedocs/interfaces/Node)
 
 - Details:
 
@@ -153,7 +153,7 @@ const nodes = ref([
 
 ### edges <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Edge[]`](/typedocs/interfaces/Edge.html/)
+- Type: [`Edge[]`](/typedocs/interfaces/Edge)
 
 - Details:
 
@@ -188,9 +188,9 @@ const edges = ref([
 
 ### node-types <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Record<string, NodeComponent>`](/typedocs/types/NodeComponent.html/)
+- Type: [`Record<string, NodeComponent>`](/typedocs/types/NodeComponent)
 
-- Default: [`DefaultNodeTypes`](/typedocs/types/DefaultNodeTypes.html/)
+- Default: [`DefaultNodeTypes`](/typedocs/types/DefaultNodeTypes)
 
 - Details:
 
@@ -225,9 +225,9 @@ const edges = ref([
 
 ### edge-types <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`Record<string, EdgeComponent>`](/typedocs/types/EdgeComponent.html)
+- Type: [`Record<string, EdgeComponent>`](/typedocs/types/EdgeComponent)
 
-- Default: [`DefaultEdgeTypes`](/typedocs/types/DefaultEdgeTypes.html)
+- Default: [`DefaultEdgeTypes`](/typedocs/types/DefaultEdgeTypes)
 
 - Details:
 
@@ -297,7 +297,7 @@ const edges = ref([
 
 ### connection-mode <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`ConnectionMode`](/typedocs/enums/ConnectionMode.html/)
+- Type: [`ConnectionMode`](/typedocs/enums/ConnectionMode)
 
 - Default: `ConnectionMode.Loose`
 
@@ -307,7 +307,7 @@ const edges = ref([
 
 ### connection-line-options
 
-- Type: [`ConnectionLineOptions`](/typedocs/interfaces/ConnectionLineOptions.html/)
+- Type: [`ConnectionLineOptions`](/typedocs/interfaces/ConnectionLineOptions)
 
 - Details:
 
@@ -317,7 +317,7 @@ const edges = ref([
 
 ### connection-line-type <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" /> <Badge type="warning" class="text-white" style="line-height: inherit" text="deprecated" vertical="top" />
 
-- Type: [`ConnectionLineType`](/typedocs/enums/ConnectionLineType.html/)
+- Type: [`ConnectionLineType`](/typedocs/enums/ConnectionLineType)
 
 - Default: `ConnectionLineType.Bezier`
 
@@ -409,7 +409,7 @@ const edges = ref([
 
 ### pan-on-scroll-mode <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`PanOnScrollMode`](/typedocs/enums/PanOnScrollMode.html/)
+- Type: [`PanOnScrollMode`](/typedocs/enums/PanOnScrollMode)
 
 - Default: `PanOnScrollMode.Free`
 
@@ -492,7 +492,7 @@ const edges = ref([
 
 ### translate-extent <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent.html/)
+- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent)
 
 - Default:
 
@@ -601,7 +601,7 @@ const elements = ref([
 
 ### nodes-extent <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent.html/)
+- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent)
 
 - Default:
 
@@ -652,7 +652,7 @@ const elements = ref([
 
 ### snap-grid <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`SnapGrid`](/typedocs/types/SnapGrid.html)
+- Type: [`SnapGrid`](/typedocs/types/SnapGrid)
 
 - Default: `[15, 15]`
 
@@ -726,7 +726,7 @@ const elements = ref([
 
 ### default-edge-options <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: [`DefaultEdgeOptions`]()
+- Type: [`DefaultEdgeOptions`](/typedocs/types/DefaultEdgeOptions)
 
 - Details:
 
@@ -736,7 +736,7 @@ const elements = ref([
 
 ### auto-connect <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
 
-- Type: `boolean` | [`Connector`](/typedocs/types/Connector.html/)
+- Type: `boolean` | [`Connector`](/typedocs/types/Connector)
 
 - Default: `false`
 
@@ -744,7 +744,7 @@ const elements = ref([
 
   When connection is emitted, automatically create a new edge from params.
 
-  Also accepts a [`Connector`](/typedocs/types/Connector.html/) which returns an edge-like object or false (if creating
+  Also accepts a [`Connector`](/typedocs/types/Connector) which returns an edge-like object or false (if creating
   an edge is not allowed).
 
   This option can be used as a shorthand for `onConnect((params) => addEdges([params]))`.
@@ -759,7 +759,7 @@ const elements = ref([
 </template>
 ```
 
-#### [Connector](/typedocs/types/Connector.html/)
+#### [Connector](/typedocs/types/Connector)
 
 ```vue{6-18,22}
 <script setup>
@@ -792,7 +792,7 @@ const connector = (params) => {
 - Type: `boolean`
 
 - Default: `false`
-
+ 
 - Details:
 
   When enabled, edges will be grouped by z-index and elevated when the nodes they connect to are selected.

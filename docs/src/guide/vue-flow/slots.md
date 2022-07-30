@@ -1,7 +1,7 @@
 # Slots
 
 Vue Flow provides several slots for customization.
-In addition to the node and edge slots (see the guide on [nodes](/guide/node.html) and [edges](/guide/edge.html)),
+In addition to the node and edge slots (see the guide on [nodes](/guide/node) and [edges](/guide/edge)),
 there are a number of other slots you can use to customize the visualization.
 
 ## Default
@@ -25,7 +25,7 @@ is triggered.
 </template>
 ```
 
-The full description of connection line props can be found [here](/typedocs/interfaces/ConnectionLineProps.html/).
+The full description of connection line props can be found [here](/typedocs/interfaces/ConnectionLineProps).
 
 ## Zoom Pane
 
