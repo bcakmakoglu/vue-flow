@@ -8,8 +8,7 @@ Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables#use
 utility or with the [`VueFlowStore`](/typedocs/types/VueFlowStore)
 instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
 
-<CodeGroup>
-  <CodeGroupItem title="Composition API" active>
+- Using Event Hooks (Composable)
 
 ```vue
 <script setup>
@@ -22,10 +21,7 @@ onPaneReady((instance) => instance.fitView())
 </script>
 ```
 
-  </CodeGroupItem>
-
-
-  <CodeGroupItem title="Options API">
+- Using Event Listener 
 
 ```vue
 <script>
@@ -50,9 +46,6 @@ export default defineComponent({
   <VueFlow @pane-ready="onPaneReady" />
 </template>
 ```
-
-  </CodeGroupItem>
-</CodeGroup>
 
 ### [project](/typedocs/types/Project)
 

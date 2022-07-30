@@ -16,9 +16,9 @@ This can save you some time on initial renders but consider that moving the pane
 which can cause performance spikes depending on the complexity of the components that have to be mounted.
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="hidden"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>
