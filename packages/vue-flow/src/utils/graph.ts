@@ -19,16 +19,6 @@ import type {
 } from '~/types'
 import { useWindow } from '~/composables'
 
-const isHTMLElement = (el: EventTarget): el is HTMLElement => ('nodeName' || 'hasAttribute') in el
-
-export const isInputDOMNode = (e: KeyboardEvent | MouseEvent): boolean => {
-  const target = e.target
-  if (target && isHTMLElement(target)) {
-    return ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.nodeName) || target.hasAttribute('contentEditable')
-  }
-  return false
-}
-
 export const getDimensions = (node: HTMLElement): Dimensions => ({
   width: node.offsetWidth,
   height: node.offsetHeight,

@@ -97,7 +97,7 @@ onMounted(() => {
     viewportRef: viewportEl.value,
   })
 
-  const selectionKeyPressed = useKeyPress($$(selectionKeyCode), (keyPress) => {
+  const selectionKeyPressed = useKeyPress(selectionKeyCode, (keyPress) => {
     if (keyPress && !isZoomingOrPanning) {
       d3Zoom.on('zoom', null)
     } else if (!keyPress) {
@@ -109,7 +109,7 @@ onMounted(() => {
     }
   })
 
-  const zoomKeyPressed = useKeyPress($$(zoomActivationKeyCode))
+  const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
   d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
     isZoomingOrPanning = true
