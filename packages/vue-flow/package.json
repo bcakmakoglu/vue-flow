@@ -44,7 +44,7 @@
     "vue": "^3.2.25"
   },
   "dependencies": {
-    "@vueuse/core": "^9.0.0",
+    "@vueuse/core": "^9.0.2",
     "d3-drag": "^3.0.0",
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0"
@@ -52,8 +52,8 @@
   "devDependencies": {
     "@rollup/plugin-replace": "^4.0.0",
     "@types/d3": "^7.4.0",
-    "@vitejs/plugin-vue": "3.0.0",
-    "autoprefixer": "^10.4.7",
+    "@vitejs/plugin-vue": "^3.0.1",
+    "autoprefixer": "^10.4.8",
     "np": "^7.6.2",
     "postcss": "^8.4.14",
     "postcss-cli": "^9.1.0",
@@ -61,11 +61,11 @@
     "ts-patch": "^2.0.1",
     "typedoc": "^0.22.18",
     "typescript-transform-paths": "^3.3.1",
-    "unplugin-auto-import": "^0.10.1",
-    "vite": "3.0.0",
+    "unplugin-auto-import": "^0.10.3",
+    "vite": "^3.0.4",
     "vite-plugin-vue-type-imports": "^0.2.0",
     "vite-svg-loader": "^3.4.0",
-    "vue-tsc": "^0.38.9"
+    "vue-tsc": "^0.39.4"
   },
   "publishConfig": {
     "access": "public",

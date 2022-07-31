@@ -36,13 +36,13 @@
   "devDependencies": {
     "@braks/vue-flow": "workspace:*",
     "@types/pathfinding": "^0.0.5",
-    "@vitejs/plugin-vue": "^3.0.0",
+    "@vitejs/plugin-vue": "^3.0.1",
     "ts-patch": "^2.0.1",
     "typescript-transform-paths": "^3.3.1",
-    "unplugin-auto-import": "^0.7.2",
-    "vite": "^3.0.0",
+    "unplugin-auto-import": "^0.10.3",
+    "vite": "^3.0.4",
     "vite-plugin-vue-type-imports": "^0.2.0",
-    "vue-tsc": "^0.35.2"
+    "vue-tsc": "^0.39.4"
   },
   "peerDependencies": {
     "@braks/vue-flow": "^0.4.29",
