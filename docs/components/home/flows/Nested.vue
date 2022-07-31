@@ -65,7 +65,7 @@ onPaneReady((i) => emit('pane', i))
         <br />
         No worries! Vue Flow supports creating nested nodes and nested graphs out-of-the-box.
       </p>
-      <router-link class="docs-button max-w-max" to="/guide/"> Documentation </router-link>
+      <a class="docs-button max-w-max" href="/guide/"> Documentation </a>
     </div>
   </div>
   <div

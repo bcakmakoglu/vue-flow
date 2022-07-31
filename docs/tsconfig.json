@@ -17,7 +17,5 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["vite/client", "@types/node", "unplugin-icons/types/vue"]
   },
-  "include": ["components", "src", "src/.vuepress"],
-  "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": ["node_modules", "dist"]
 }

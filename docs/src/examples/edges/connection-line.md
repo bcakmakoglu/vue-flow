@@ -1,5 +1,5 @@
 ---
-pageClass: examples
+layout: page
 
 ---
 
@@ -11,9 +11,9 @@ functionality you can use your own custom connection line.
 Simply pass a component in the designated template slot, and you're good to go.
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="connectionline"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>

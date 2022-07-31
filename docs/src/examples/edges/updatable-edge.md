@@ -1,5 +1,5 @@
 ---
-pageClass: examples
+layout: page
 
 ---
 
@@ -14,9 +14,9 @@ for specific edges by using the `updatable` attribute.
 
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="updateEdge"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>

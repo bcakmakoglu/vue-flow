@@ -1,5 +1,5 @@
 ---
-pageClass: examples
+layout: page
 
 ---
 
@@ -11,9 +11,9 @@ You can use horizontal layouts with the default node types as well.
 You can define where source or target handle positions are with the `sourcePosition` or `targetPosition` properties of nodes.
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="horizontal"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>

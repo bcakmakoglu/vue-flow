@@ -1,5 +1,5 @@
 ---
-pageClass: examples
+layout: page
 
 ---
 
@@ -8,7 +8,7 @@ pageClass: examples
 Connections can be validated before edges are created and nodes get connected. 
 
 ## Using a handle in a custom node
-```vue:no-line-numbers
+```vue
 <div>
   [ ... ]
 
@@ -31,9 +31,9 @@ const nodes = [
 ```
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="validation"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>

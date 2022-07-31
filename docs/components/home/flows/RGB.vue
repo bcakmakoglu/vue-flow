@@ -34,6 +34,7 @@ const { onPaneReady, getNode, panOnDrag } = useVueFlow({
     [-50, -150],
     [500, 300],
   ],
+  preventScrolling: false,
 })
 
 onPaneReady((i) => emit('pane', i))
@@ -108,7 +109,7 @@ const nodeColor: MiniMapNodeFunc = (node) => {
         You can expand on the existing features by using your own custom nodes and edges and implement any design and
         functionality you want.
       </p>
-      <router-link class="docs-button max-w-max" to="/guide/">Documentation</router-link>
+      <a class="docs-button max-w-max" href="/guide/">Documentation</a>
     </div>
   </div>
 </template>

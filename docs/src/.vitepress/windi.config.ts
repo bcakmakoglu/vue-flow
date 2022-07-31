@@ -1,7 +1,6 @@
-import { defineConfig } from 'windicss/helpers'
 import { resolve } from 'path'
+import { defineConfig } from 'windicss/helpers'
 import typography from 'windicss/plugin/typography'
-// @ts-ignore
 import scrollbar from '@windicss/plugin-scrollbar'
 
 export default defineConfig({
@@ -9,18 +8,17 @@ export default defineConfig({
     include: [
       resolve(__dirname, './theme/**/*.{ts,md,vue}'),
       resolve(__dirname, '../../components/**/*.{ts,md,vue}'),
-      resolve(__dirname, '../**/*.{ts,md,vue}')
+      resolve(__dirname, '../**/*.{ts,md,vue}'),
     ],
   },
 
-  attributify: true,
   darkMode: 'class',
 
   plugins: [
     typography({
       dark: true,
     }),
-    scrollbar
+    scrollbar,
   ],
 
   shortcuts: {

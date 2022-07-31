@@ -4,7 +4,7 @@ You can use the existing `ControlButton` component to create new control buttons
 
 ## Usage
 
-To use the component pass the `ControlButton` component as a child to the [`Controls`](/guide/components/control-button.html/) component.
+To use the component pass the `ControlButton` component as a child to the [`Controls`](/guide/components/control-button) component.
 
 ```vue
 <template>

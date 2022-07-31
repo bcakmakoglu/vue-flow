@@ -2,24 +2,20 @@
 
 Vue Flow allows you to configure zoom, graph and flow behavior.
 Configuration can be passed either as props to the `VueFlow` component or
-as options to the [`useVueFlow`](/guide/composables.html#usevueflow/) composable.
+as options to the [`useVueFlow`](/guide/composables#usevueflow) composable.
 
-<CodeGroup>
-  <CodeGroupItem title="Props" active>
+- Using Component Props
 
-```vue:no-line-numbers
+```vue
 <!-- Pass configuration as props -->
 <template>
   <VueFlow :default-zoom="0.5" :max-zoom="4" :min-zoom="0.1" />
 </template>
 ```
 
-  </CodeGroupItem>
+- Using Composable Options
 
-
-  <CodeGroupItem title="Composable">
-
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useVueFlow  } from '@braks/vue-flow'
 
@@ -31,18 +27,14 @@ useVueFlow({
 </script>
 ```
 
-  </CodeGroupItem>
-</CodeGroup>
-
 ## Updating Config
 
 You can update the configuration at any point, either by having them bound as props or using the state values returned
 by `useVueFlow`.
 
-<CodeGroup>
-  <CodeGroupItem title="Props" active>
+- Using Component Props
 
-```vue:no-line-numbers{2,5-6,10}
+```vue{2,5-6,10}
 <script setup>
 const defaultZoom = ref(1)
 
@@ -56,12 +48,9 @@ onMounted(() => {
 </template>
 ```
 
-  </CodeGroupItem>
+- Using State (Composable)
 
-
-  <CodeGroupItem title="Composable">
-
-```vue:no-line-numbers{2,7-8}
+```vue{2,7-8}
 <script setup>
 const { defaultZoom } = useVueFlow({
   defaultZoom: 0.5,
@@ -74,12 +63,9 @@ onMounted(() => {
 </script>
 ```
 
-  </CodeGroupItem>
-</CodeGroup>
-
 ## Basic Options
 
-### id <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### id (optional)
 
 - Type: `string`
 
@@ -89,9 +75,9 @@ onMounted(() => {
 
   It is used for the lookup and injection of the state instance.
 
-### modelValue <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### modelValue (optional)
 
-- Type: [`Elements`](/typedocs/types/Elements.html/)
+- Type: [`Elements`](/typedocs/types/Elements)
 
 - Details:
 
@@ -101,7 +87,7 @@ onMounted(() => {
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -121,9 +107,9 @@ const elements = ref([
 </template>
 ```
 
-### nodes <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### nodes (optional)
 
-- Type: [`Node[]`](/typedocs/interfaces/Node.html/)
+- Type: [`Node[]`](/typedocs/interfaces/Node)
 
 - Details:
 
@@ -133,7 +119,7 @@ const elements = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -151,9 +137,9 @@ const nodes = ref([
 </template>
 ```
 
-### edges <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### edges (optional)
 
-- Type: [`Edge[]`](/typedocs/interfaces/Edge.html/)
+- Type: [`Edge[]`](/typedocs/interfaces/Edge)
 
 - Details:
 
@@ -163,7 +149,7 @@ const nodes = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -186,11 +172,11 @@ const edges = ref([
 </template>
 ```
 
-### node-types <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### node-types (optional)
 
-- Type: [`Record<string, NodeComponent>`](/typedocs/types/NodeComponent.html/)
+- Type: [`Record<string, NodeComponent>`](/typedocs/types/NodeComponent)
 
-- Default: [`DefaultNodeTypes`](/typedocs/types/DefaultNodeTypes.html/)
+- Default: [`DefaultNodeTypes`](/typedocs/types/DefaultNodeTypes)
 
 - Details:
 
@@ -198,7 +184,7 @@ const edges = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 import CustomNode from './CustomNode.vue'
@@ -223,11 +209,11 @@ const edges = ref([
 </template>
 ```
 
-### edge-types <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### edge-types (optional)
 
-- Type: [`Record<string, EdgeComponent>`](/typedocs/types/EdgeComponent.html)
+- Type: [`Record<string, EdgeComponent>`](/typedocs/types/EdgeComponent)
 
-- Default: [`DefaultEdgeTypes`](/typedocs/types/DefaultEdgeTypes.html)
+- Default: [`DefaultEdgeTypes`](/typedocs/types/DefaultEdgeTypes)
 
 - Details:
 
@@ -235,7 +221,7 @@ const edges = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 import CustomEdge from './CustomEdge.vue'
@@ -260,7 +246,7 @@ const edges = ref([
 </template>
 ```
 
-### apply-default <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### apply-default (optional)
 
 - Type: `boolean`
 
@@ -275,7 +261,7 @@ const edges = ref([
 
 - Example:
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -295,9 +281,9 @@ const edges = ref([
 </template>
 ```
 
-### connection-mode <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### connection-mode (optional)
 
-- Type: [`ConnectionMode`](/typedocs/enums/ConnectionMode.html/)
+- Type: [`ConnectionMode`](/typedocs/enums/ConnectionMode)
 
 - Default: `ConnectionMode.Loose`
 
@@ -307,7 +293,7 @@ const edges = ref([
 
 ### connection-line-options
 
-- Type: [`ConnectionLineOptions`](/typedocs/interfaces/ConnectionLineOptions.html/)
+- Type: [`ConnectionLineOptions`](/typedocs/interfaces/ConnectionLineOptions)
 
 - Details:
 
@@ -315,9 +301,9 @@ const edges = ref([
   
   The options include the connection line type, style and possible marker types (marker-end/marker-start).
 
-### connection-line-type <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" /> <Badge type="warning" class="text-white" style="line-height: inherit" text="deprecated" vertical="top" />
+### connection-line-type (optional) (deprecated)
 
-- Type: [`ConnectionLineType`](/typedocs/enums/ConnectionLineType.html/)
+- Type: [`ConnectionLineType`](/typedocs/enums/ConnectionLineType)
 
 - Default: `ConnectionLineType.Bezier`
 
@@ -327,7 +313,7 @@ const edges = ref([
 
   When using a custom connection line this prop does nothing.
 
-### connection-line-style <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" /> <Badge type="warning" class="text-white" style="line-height: inherit" text="deprecated" vertical="top" />
+### connection-line-style (optional) (deprecated)
 
 - Type: `CSSProperties` | `null`
 
@@ -335,7 +321,7 @@ const edges = ref([
 
   Additional styles to add to the default connection-line.
 
-### fit-view-on-init <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### fit-view-on-init (optional)
 
 - Type: `boolean`
 
@@ -347,7 +333,7 @@ const edges = ref([
 
 ## Viewport Options
 
-### zoom-activation-key-code <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### zoom-activation-key-code (optional)
 
 - Type: `KeyCode`
 
@@ -359,7 +345,7 @@ const edges = ref([
 
   Overwrites zoom-on-scroll or pan-on-scroll behavior as long as the key is pressed.
 
-### zoom-on-scroll <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### zoom-on-scroll (optional)
 
 - Type: `boolean`
 
@@ -369,7 +355,7 @@ const edges = ref([
 
   Whether to allow zooming in and out when scrolling inside the Vue Flow container.
 
-### zoom-on-pinch <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### zoom-on-pinch (optional)
 
 - Type: `boolean`
 
@@ -379,7 +365,7 @@ const edges = ref([
 
   Whether to allow zooming in and out when pinching (touch or trackpad) inside the Vue Flow container.
 
-### zoom-on-double-click <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### zoom-on-double-click (optional)
 
 - Type: `boolean`
 
@@ -389,7 +375,7 @@ const edges = ref([
 
   Whether to allow zooming in and out when double-clicking (or tapping) inside the Vue Flow container.
 
-### pan-on-scroll <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### pan-on-scroll (optional)
 
 - Type: `boolean`
 
@@ -401,15 +387,15 @@ const edges = ref([
 
   Does not work together with `zoom-on-scroll` but will work together with `zoom-activation-key-code`.
 
-### pan-on-scroll-speed <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### pan-on-scroll-speed (optional)
 
 - Type: `number`
 
 - Default: `0.5`
 
-### pan-on-scroll-mode <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### pan-on-scroll-mode (optional)
 
-- Type: [`PanOnScrollMode`](/typedocs/enums/PanOnScrollMode.html/)
+- Type: [`PanOnScrollMode`](/typedocs/enums/PanOnScrollMode)
 
 - Default: `PanOnScrollMode.Free`
 
@@ -417,7 +403,7 @@ const edges = ref([
 
   Specify on which axis panning is allowed (x, y or both).
 
-### pan-on-drag <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### pan-on-drag (optional)
 
 - Old name: `paneMovable`
 
@@ -429,7 +415,7 @@ const edges = ref([
 
   Whether to allow moving the pane when dragging inside the Vue Flow container.
 
-### prevent-scrolling <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### prevent-scrolling (optional)
 
 - Type: `boolean`
 
@@ -439,7 +425,7 @@ const edges = ref([
 
   Enable this to prevent vue flow from scrolling inside its container, i.e. allow for the page to scroll.
 
-### no-wheel-class-name <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### no-wheel-class-name (optional)
 
 - Type: `string`
 
@@ -452,7 +438,7 @@ const edges = ref([
 
   Useful if you want to allow for scrolling _inside_ a node
 
-### no-pan-class-name <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### no-pan-class-name (optional)
 
 - Type: `string`
 
@@ -462,25 +448,25 @@ const edges = ref([
 
   Set a class name which prevents elements from triggering pan-scroll events.
 
-### min-zoom <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### min-zoom (optional)
 
 - Type: `number`
 
 - Default: `0.5`
 
-### max-zoom <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### max-zoom (optional)
 
 - Type: `number`
 
 - Default: `2`
 
-### default-zoom <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### default-zoom (optional)
 
 - Type: `number`
 
 - Default: `1`
 
-### default-position <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### default-position (optional)
 
 - Type: `[x: number, y: number]`
 
@@ -490,13 +476,13 @@ const edges = ref([
 
   Default viewport position on initial load.
 
-### translate-extent <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### translate-extent (optional)
 
-- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent.html/)
+- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent)
 
 - Default:
 
-```ts:no-line-numbers
+```ts
 [
   [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
   [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
@@ -509,7 +495,7 @@ const edges = ref([
 
 ## Selection Options
 
-### selection-key-code <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### selection-key-code (optional)
 
 - Type: `KeyCode`
 
@@ -519,7 +505,7 @@ const edges = ref([
 
   Define a key which can be used to activate the selection rect.
 
-### multi-selection-key-code <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### multi-selection-key-code (optional)
 
 - Type: `KeyCode`
 
@@ -531,7 +517,7 @@ const edges = ref([
 
   Multi-selection can be used to select multiple nodes with clicks.
 
-### delete-key-code <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### delete-key-code (optional)
 
 - Type: `KeyCode`
 
@@ -543,7 +529,7 @@ const edges = ref([
 
 ## Global Node Options
 
-### nodes-draggable <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### nodes-draggable (optional)
 
 - Type: `boolean`
 
@@ -557,7 +543,7 @@ const edges = ref([
 
 - Example:
 
-```vue:no-line-numbers{5-6,10}
+```vue{5-6,10}
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -571,7 +557,7 @@ const elements = ref([
 </template>
 ```
 
-### nodes-connectable <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### nodes-connectable (optional)
 
 - Type: `boolean`
 
@@ -585,7 +571,7 @@ const elements = ref([
 
 - Example:
 
-```vue:no-line-numbers{5-6,10}
+```vue{5-6,10}
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -599,13 +585,13 @@ const elements = ref([
 </template>
 ```
 
-### nodes-extent <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### nodes-extent (optional)
 
-- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent.html/)
+- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent)
 
 - Default:
 
-```ts:no-line-numbers
+```ts
 [
   [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
   [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
@@ -620,7 +606,7 @@ const elements = ref([
 
 - Example:
 
-```vue:no-line-numbers{5-6}
+```vue{5-6}
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -634,13 +620,13 @@ const elements = ref([
 </template>
 ```
 
-### select-nodes-on-drag <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### select-nodes-on-drag (optional)
 
 - Type: `boolean`
 
 - Default: `true`
 
-### snap-to-grid <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### snap-to-grid (optional)
 
 - Type: `boolean`
 
@@ -650,9 +636,9 @@ const elements = ref([
 
   If enabled, nodes will be placed and moved in a grid-like fashion.
 
-### snap-grid <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### snap-grid (optional)
 
-- Type: [`SnapGrid`](/typedocs/types/SnapGrid.html)
+- Type: [`SnapGrid`](/typedocs/types/SnapGrid)
 
 - Default: `[15, 15]`
 
@@ -662,7 +648,7 @@ const elements = ref([
 
 ## Global Edge Options
 
-### edges-updatable <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### edges-updatable (optional)
 
 - Type: `boolean`
 
@@ -676,7 +662,7 @@ const elements = ref([
 
 - Example:
 
-```vue:no-line-numbers{7-8,12}
+```vue{7-8,12}
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -692,7 +678,7 @@ const elements = ref([
 </template>
 ```
 
-### default-marker-color <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### default-marker-color (optional)
 
 - Type: `string`
 
@@ -702,7 +688,7 @@ const elements = ref([
 
   The default color value which is used when presenting edge-markers (arrowheads).
 
-### edge-updater-radius <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### edge-updater-radius (optional)
 
 - Type: `number`
 
@@ -712,7 +698,7 @@ const elements = ref([
 
   The radius at which an edge-updater can be triggered.
 
-### connect-on-click <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### connect-on-click (optional)
 
 - Type: `boolean`
 
@@ -724,9 +710,9 @@ const elements = ref([
 
   Useful if you want to enable creating edges on a touch device.
 
-### default-edge-options <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### default-edge-options (optional)
 
-- Type: [`DefaultEdgeOptions`]()
+- Type: [`DefaultEdgeOptions`](/typedocs/types/DefaultEdgeOptions)
 
 - Details:
 
@@ -734,9 +720,9 @@ const elements = ref([
 
   Does not work for the `addEdge` utility!
 
-### auto-connect <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### auto-connect (optional)
 
-- Type: `boolean` | [`Connector`](/typedocs/types/Connector.html/)
+- Type: `boolean` | [`Connector`](/typedocs/types/Connector)
 
 - Default: `false`
 
@@ -744,7 +730,7 @@ const elements = ref([
 
   When connection is emitted, automatically create a new edge from params.
 
-  Also accepts a [`Connector`](/typedocs/types/Connector.html/) which returns an edge-like object or false (if creating
+  Also accepts a [`Connector`](/typedocs/types/Connector) which returns an edge-like object or false (if creating
   an edge is not allowed).
 
   This option can be used as a shorthand for `onConnect((params) => addEdges([params]))`.
@@ -753,15 +739,15 @@ const elements = ref([
 
 ##### Boolean value
 
-```vue:no-line-numbers{2}
+```vue{2}
 <template>
   <VueFlow v-model="elements" auto-connect />
 </template>
 ```
 
-#### [Connector](/typedocs/types/Connector.html/)
+#### [Connector](/typedocs/types/Connector)
 
-```vue:no-line-numbers{6-18,22}
+```vue{6-18,22}
 <script setup>
 import { ref } from 'vue'
 
@@ -787,12 +773,12 @@ const connector = (params) => {
 </template>
 ```
 
-### elevate-edges-on-select <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### elevate-edges-on-select (optional)
 
 - Type: `boolean`
 
 - Default: `false`
-
+ 
 - Details:
 
   When enabled, edges will be grouped by z-index and elevated when the nodes they connect to are selected.
@@ -803,7 +789,7 @@ const connector = (params) => {
 
 ## Global Element Options
 
-### only-render-visible-elements <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### only-render-visible-elements (optional)
 
 - Type: `boolean`
 
@@ -813,7 +799,7 @@ const connector = (params) => {
 
   Skip rendering elements that are not visible currently (either hidden or outside the current pane dimensions).
 
-### elements-selectable <Badge class="text-white" style="line-height: inherit" text="optional" vertical="top" />
+### elements-selectable (optional)
 
 - Type: `boolean`
 

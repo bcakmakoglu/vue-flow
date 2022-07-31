@@ -14,7 +14,7 @@ To use the controls simply pass the `Controls` component as a child to the `VueF
 </template>
 ```
 
-## [Props](/typedocs/interfaces/ControlProps.html/)
+## [Props](/typedocs/interfaces/ControlProps)
 
 | Name            | Definition                | Type                                                 | Optional | Default |
 |-----------------|---------------------------|------------------------------------------------------|----------|---------|
@@ -22,7 +22,7 @@ To use the controls simply pass the `Controls` component as a child to the `VueF
 | showFitView     | Show fit-view btn         | boolean                                              | true     | true    |
 | showInteractive | Show lock interactive btn | boolean                                              | true     | true    |
 | showZoom        | Show zoom button          | boolean                                              | true     | true    |
-| fitViewParams   | Params to use on fit-view | [FitViewParams](/typedocs/types/FitViewParams.html/) | true     | -       |
+| fitViewParams   | Params to use on fit-view | [FitViewParams](/typedocs/types/FitViewParams) | true     | -       |
 
 ## Emits
 
