@@ -1,8 +1,9 @@
 import type { CSSProperties } from 'vue'
+import type { KeyFilter } from '@vueuse/core'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
-import type { KeyCode, PanOnScrollMode } from './zoom'
+import type { PanOnScrollMode } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 
 export type ElementData = any
@@ -90,10 +91,10 @@ export interface FlowProps {
   /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle?: CSSProperties | null
   connectionLineOptions?: ConnectionLineOptions
-  deleteKeyCode?: KeyCode
-  selectionKeyCode?: KeyCode
-  multiSelectionKeyCode?: KeyCode
-  zoomActivationKeyCode?: KeyCode
+  deleteKeyCode?: KeyFilter
+  selectionKeyCode?: KeyFilter
+  multiSelectionKeyCode?: KeyFilter
+  zoomActivationKeyCode?: KeyFilter
   snapToGrid?: boolean
   snapGrid?: SnapGrid
   onlyRenderVisibleElements?: boolean

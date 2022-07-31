@@ -1,10 +1,11 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
+import type { KeyFilter } from '@vueuse/core'
 import type { Dimensions, Elements, FlowElements, FlowExportObject, FlowOptions, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
-import type { D3Selection, D3Zoom, D3ZoomHandler, KeyCode, PanOnScrollMode, Viewport, ViewportFunctions } from './zoom'
+import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, Viewport, ViewportFunctions } from './zoom'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { HandleType, StartHandle } from './handle'
@@ -54,10 +55,10 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   userSelectionActive: boolean
   multiSelectionActive: boolean
 
-  deleteKeyCode: KeyCode
-  selectionKeyCode: KeyCode
-  multiSelectionKeyCode: KeyCode
-  zoomActivationKeyCode: KeyCode
+  deleteKeyCode: KeyFilter
+  selectionKeyCode: KeyFilter
+  multiSelectionKeyCode: KeyFilter
+  zoomActivationKeyCode: KeyFilter
 
   connectionNodeId: string | null
   connectionHandleId: string | null

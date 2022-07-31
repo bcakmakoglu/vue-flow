@@ -12,8 +12,6 @@ export interface Viewport {
   zoom: number
 }
 
-export type KeyCode = number | string
-
 export enum PanOnScrollMode {
   Free = 'free',
   Vertical = 'vertical',

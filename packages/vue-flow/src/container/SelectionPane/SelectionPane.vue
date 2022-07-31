@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import type { EdgeChange, GraphNode, NodeChange } from '../../types'
+import type { GraphNode } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
-import { getConnectedEdges } from '../../utils'
 import { NodesSelection, UserSelection } from '../../components'
 
 const {
@@ -41,7 +40,7 @@ const onMouseLeave = (event: MouseEvent) => emits.paneMouseLeave(event)
 
 const onMouseMove = (event: MouseEvent) => emits.paneMouseMove(event)
 
-useKeyPress($$(deleteKeyCode), (keyPressed) => {
+useKeyPress(deleteKeyCode, (keyPressed) => {
   const nodesToRemove = getNodes.reduce<GraphNode[]>((res, node) => {
     if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
       res.push(node)
@@ -71,13 +70,13 @@ useKeyPress($$(deleteKeyCode), (keyPressed) => {
   }
 })
 
-useKeyPress($$(multiSelectionKeyCode), (keyPressed) => {
+useKeyPress(multiSelectionKeyCode, (keyPressed) => {
   setState({
     multiSelectionActive: keyPressed,
   })
 })
 
-const selectionKeyPressed = useKeyPress($$(selectionKeyCode), (keyPressed) => {
+const selectionKeyPressed = useKeyPress(selectionKeyCode, (keyPressed) => {
   if (userSelectionActive && keyPressed) return
   setState({
     userSelectionActive: keyPressed && elementsSelectable,
