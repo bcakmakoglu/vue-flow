@@ -75,10 +75,12 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
       if (node) {
         const dimensions = getDimensions(update.nodeElement)
+
         const doUpdate = !!(
-          dimensions.width &&
-          dimensions.height &&
-          (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height || update.forceUpdate)
+          (dimensions.width &&
+            dimensions.height &&
+            (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height)) ||
+          update.forceUpdate
         )
 
         node.handleBounds = {
@@ -319,7 +321,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges)
 
   const setState: Actions['setState'] = (options) => {
-    const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent']
+    const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent', 'hooks']
     const opts = options instanceof Function ? options(state) : options
 
     if (typeof opts.modelValue !== 'undefined') setElements(opts.modelValue, opts.nodeExtent ?? state.nodeExtent)
