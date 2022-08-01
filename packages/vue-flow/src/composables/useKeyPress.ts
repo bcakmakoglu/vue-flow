@@ -2,6 +2,16 @@ import type { Ref } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import useWindow from './useWindow'
 
+function isInputDOMNode(event: KeyboardEvent): boolean {
+  const target = event.target as HTMLElement
+
+  return (
+    ['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.nodeName) ||
+    target?.hasAttribute('contenteditable') ||
+    !!target?.closest('.nokey')
+  )
+}
+
 export default (keyFilter: KeyFilter, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
 
@@ -14,6 +24,8 @@ export default (keyFilter: KeyFilter, onChange?: (keyPressed: boolean) => void):
   onKeyStroke(
     keyFilter,
     (e) => {
+      if (isInputDOMNode(e)) return
+
       e.preventDefault()
       isPressed = true
     },
@@ -23,6 +35,8 @@ export default (keyFilter: KeyFilter, onChange?: (keyPressed: boolean) => void):
   onKeyStroke(
     keyFilter,
     (e) => {
+      if (isInputDOMNode(e)) return
+
       e.preventDefault()
       isPressed = false
     },
