@@ -99,8 +99,6 @@ const emit = defineEmits<{
   (event: 'update:edges', value: GraphEdge[]): void
 }>()
 
-emit('connect', {} as any)
-
 const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
@@ -121,7 +119,6 @@ const el = ref<HTMLDivElement>()
 
 onUnmounted(() => {
   dispose()
-  $reset()
 })
 
 onMounted(() => {
