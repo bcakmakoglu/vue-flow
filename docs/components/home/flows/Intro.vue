@@ -307,14 +307,14 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
       </template>
       <template v-else-if="props.id === 'documentation'">
         <div class="flex">
-          <router-link class="intro-link group bg-[#f15a16]" to="/guide/"> Read The Documentation </router-link>
+          <a class="intro-link group bg-[#f15a16]" href="/guide/"> Read The Documentation </a>
         </div>
         <Handle type="target" :position="Position.Top" />
         <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
       </template>
       <template v-else-if="props.id === 'examples'">
         <div class="flex">
-          <router-link class="intro-link group bg-[#ef467e]" to="/examples/"> Check The Examples </router-link>
+          <a class="intro-link group bg-[#ef467e]" href="/examples/"> Check The Examples </a>
         </div>
         <Handle type="target" :position="Position.Top" />
         <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
