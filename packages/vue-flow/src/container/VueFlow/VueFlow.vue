@@ -127,7 +127,7 @@ onMounted(() => {
   vueFlowRef.value = el.value!
 })
 
-useHooks(emit, hooks.value)
+useHooks(emit, hooks)
 
 provide(Slots, useSlots())
 
