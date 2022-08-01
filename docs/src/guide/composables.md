@@ -1,6 +1,6 @@
 # Composables
 
-## [useVueFlow](/typedocs/functions/useVueFlow.html/)
+## [useVueFlow](/typedocs/functions/useVueFlow)
 
 If you're using the options API of Vue you will soon notice that your access to the state of Vue Flow is limited.
 
@@ -10,7 +10,7 @@ The composition API and the power of provide/inject allows us to act more flexib
 a component tree.
 Thus accessing the internal state of Vue Flow becomes super easy when using composition.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useVueFlow, VueFlow } from '@braks/vue-flow'
 
@@ -37,7 +37,7 @@ onMounted(() => {
 `useVueFlow` exposes basically the whole internal state.
 The values are reactive, meaning changing the state values returned from `useVueFlow` will trigger changes in the graph.
 
-## [useZoomPanHelper](/typedocs/functions/useZoomPanHelper.html/)
+## [useZoomPanHelper](/typedocs/functions/useZoomPanHelper)
 
 ::: warning [deprecated]
 All functions of `useZoomPanHelper` are also available in `useVueFlow`.
@@ -49,7 +49,7 @@ using viewpane transforms.
 All functions can also be accessed from `useVueFlow`.
 It requires a valid Vue Flow store in its context.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useZoomPanHelper } from '@braks/vue-flow'
 
@@ -60,7 +60,7 @@ const { fitView } = useZoomPanHelper()
 </template>
 ```
 
-## [useHandle](/typedocs/functions/useHandle.html/)
+## [useHandle](/typedocs/functions/useHandle)
 
 Instead of using the Handle component you can use the useHandle composable to create your own custom nodes. `useHandle`
 provides you with a mouseDown- and click-handler functions that you can apply to the element you want to use as a

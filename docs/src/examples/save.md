@@ -1,5 +1,5 @@
 ---
-pageClass: examples
+layout: page
 
 ---
 
@@ -17,9 +17,9 @@ You can extend on this basic idea however you like, i.e. fetch data that you tra
 some other business logic you would like to handle.
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="saveRestore"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>

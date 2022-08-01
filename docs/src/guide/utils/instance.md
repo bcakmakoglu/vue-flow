@@ -4,14 +4,13 @@
 The old `FlowInstance` has been removed and all it's functionalities merged into `useVueFlow`.
 :::
 
-Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables.html#usevueflow)
-utility or with the [`VueFlowStore`](/typedocs/types/VueFlowStore.html/)
-instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents.html#paneready).
+Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables#usevueflow)
+utility or with the [`VueFlowStore`](/typedocs/types/VueFlowStore)
+instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
 
-<CodeGroup>
-  <CodeGroupItem title="Composition API" active>
+- Using Event Hooks (Composable)
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 
@@ -22,12 +21,9 @@ onPaneReady((instance) => instance.fitView())
 </script>
 ```
 
-  </CodeGroupItem>
+- Using Event Listener 
 
-
-  <CodeGroupItem title="Options API">
-
-```vue:no-line-numbers
+```vue
 <script>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -51,10 +47,7 @@ export default defineComponent({
 </template>
 ```
 
-  </CodeGroupItem>
-</CodeGroup>
-
-### [project](/typedocs/types/Project.html/)
+### [project](/typedocs/types/Project)
 
 - Details:
 
@@ -64,11 +57,11 @@ export default defineComponent({
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 vueFlowInstance.project({ x: 100, y: 100 })
 ```
 
-### [fitView](/typedocs/types/FitView.html/)
+### [fitView](/typedocs/types/FitView)
 
 - Details:
 
@@ -78,11 +71,11 @@ vueFlowInstance.project({ x: 100, y: 100 })
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 ```
 
-### [fitBounds](/typedocs/types/FitBounds.html/)
+### [fitBounds](/typedocs/types/FitBounds)
 
 - Details:
 
@@ -90,11 +83,11 @@ vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 ```
 
-### [setTransform](/typedocs/types/SetTransform.html/)
+### [setTransform](/typedocs/types/SetTransform)
 
 - Details:
 
@@ -102,53 +95,53 @@ vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 ```
 
-### [getTransform](/typedocs/types/GetTransform.html/)
+### [getTransform](/typedocs/types/GetTransform)
 
 - Details:
 
   Gets position and zoom of the pane.
 
-### [zoomIn](/typedocs/types/ZoomInOut.html/)
+### [zoomIn](/typedocs/types/ZoomInOut)
 
 - Details:
 
   Zooms in.
 
-### [zoomOut](/typedocs/types/ZoomInOut.html/)
+### [zoomOut](/typedocs/types/ZoomInOut)
 
 - Details:
 
   Zooms out.
 
-### [zoomTo](/typedocs/types/ZoomTo.html/)
+### [zoomTo](/typedocs/types/ZoomTo)
 
 - Details:
 
   Zooms to specific level.
 
-### [getElements](/typedocs/interfaces/Getters.html#getelements)
+### [getElements](/typedocs/interfaces/Getters#getelements)
 
 - Details:
 
   Returns currently stored elements (nodes + edges).
 
-### [getNodes](/typedocs/interfaces/Getters.html#getnodes)
+### [getNodes](/typedocs/interfaces/Getters#getnodes)
 
 - Details:
 
   Returns currently stored nodes.
 
-### [getEdges](/typedocs/interfaces/Getters.html#getedges)
+### [getEdges](/typedocs/interfaces/Getters#getedges)
 
 - Details:
 
   Returns currently stored edges.
 
-### [toObject](/typedocs/interfaces/Actions.html#toobject)
+### [toObject](/typedocs/interfaces/Actions#toobject)
 
 - Details:
 
@@ -156,7 +149,7 @@ vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 
 - Example:
 
-```ts:no-line-numbers
+```ts
 toObject = (): {
   elements: FlowElements,
   position: [x, y],

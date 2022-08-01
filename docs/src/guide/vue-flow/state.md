@@ -1,16 +1,16 @@
 # State
 
-Under the hood Vue Flow uses [Provide/Inject](https://v3.vuejs.org/guide/component-provide-inject.html)
+Under the hood Vue Flow uses [Provide/Inject](https://v3.vuejs.org/guide/component-provide-inject)
 to pass around it's state between components.
-You can access the internal state through the [`useVueFlow`](/guide/composables.html#usevueflow/) composable.
+You can access the internal state through the [`useVueFlow`](/guide/composables#usevueflow/) composable.
 
-[`useVueFlow`](/guide/composables.html#usevueflow/) can be used to either create a new state instance and inject it into
+[`useVueFlow`](/guide/composables#usevueflow/) can be used to either create a new state instance and inject it into
 the current component tree or inject
 an already existing store from the current context.
 Internal state can be manipulated, for example by adding new elements to the state. The
 state is reactive and changes will be reflected on the graph.
 
-```vue:no-line-numbers{4-6}
+```vue{4-6}
 <script setup>
 import { useVueFlow } from '@braks/vue-flow'
 
@@ -34,7 +34,7 @@ to reading, writing and updating the state.
 
 Consider this example, where we want to create a Sidebar that allows us to select all nodes.
 
-```vue:no-line-numbers
+```vue
 <!-- Container.vue -->
 <template>
   <div>
@@ -54,7 +54,7 @@ the flow of information.
 Instead, we can initialize a Vue Flow store instance __before__ the Sidebar is initialized, thus the instance becomes
 available as an injection in the component tree.
 
-```vue:no-line-numbers{5-6}
+```vue{5-6}
 <script>
 // Container.vue
 import { useVueFlow  } from '@braks/vue-flow'
@@ -66,7 +66,7 @@ useVueFlow()
 
 Now we can easily access our current state instance from our Sidebar without passing them as props.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useVueFlow } from '@braks/vue-flow'
 
@@ -102,7 +102,7 @@ State updates like removing elements or updating positions are applied by defaul
 If you want to strictly control state changes you can disable this behavior by setting the `applyDefault` option/prop
 to `false`.
 
-```vue:no-line-numbers
+```vue
 <div style="height: 300px">
   <VueFlow v-model="elements" :apply-default="false" />
 </div>
@@ -120,7 +120,7 @@ Though it is necessary to pass a unique id for your Vue Flow state instance, oth
 will create a new state instance
 when mounted.
 
-```vue:no-line-numbers{4,32}
+```vue{4,32}
 <script>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 

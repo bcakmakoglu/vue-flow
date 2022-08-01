@@ -1,50 +1,37 @@
 :root {
   --primary: #BB86FC;
   --secondary: #03dac5;
+  --vp-c-brand: #10b981;
+  --vp-c-accent: #BB86FC;
+  --vp-c-bg-alt: rgb(249, 249, 249, 75%);
 }
 
 .dark {
-  --c-text-lighter: white !important;
-  --c-text: white !important;
-  --c-bg: black !important;
+  --vp-c-bg: rgba(0, 0, 0, 100%);
+  --vp-c-bg-alt: rgb(22, 27, 34, 75%);
+  --vp-c-bg-soft: rgb(22, 27, 34, 100%);
 }
 
-.dark .tip {
-  --c-bg-light: gray;
+.VPNavBar.has-sidebar .content, .VPNav {
+  background-color: var(--vp-c-bg-alt) !important;
+  background-image: radial-gradient(transparent 1px, var(--vp-c-bg-alt) 1px) !important;
+  background-size: 4px 4px !important;
 }
 
-.tip {
-  --c-bg-light: white;
+.dark .DocSearch {
+  @apply border shadow bg-zinc-800;
+}
+
+.dark .VPNavBarTitle.has-sidebar {
+  background-color: transparent !important;
+}
+
+.VPPage {
+  @apply px-12 py-6 md:(px-24);
 }
 
 html, body {
   @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
-}
-
-.home {
-  --content-width: 100%;
-  max-width: 100% !important;
-  @apply !px-0;
-}
-
-.page a {
-  @apply text-green-500 font-semibold;
-}
-
-.examples .page, .examples .page-meta, .footer, .sidebar {
-  @apply dark:(!bg-black text-white);
-}
-
-.examples .page {
-  --content-width: 100%;
-}
-
-.theme-default-content {
-  @apply overflow-scroll md:overflow-hidden;
-}
-
-.navbar {
-  @apply dark:bg-gray-900;
 }
 
 h1 {
@@ -102,10 +89,9 @@ ul li {
    }
 }
 
-.theme-container.examples .theme-default-content .vue-repl pre, .theme-default-content .vue-repl pre[class*=language-] {
+.vue-repl pre, .vue-repl pre[class*=language-] {
   padding: unset;
   margin: unset;
   border-radius: unset;
   line-height: unset;
-
 }

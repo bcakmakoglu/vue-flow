@@ -36,9 +36,11 @@ const store = new ReplStore({
   outputMode: 'preview',
 })
 
+const vh = useCssVar('--vh')
+
 watchEffect(
   () => {
-    document.documentElement.style.setProperty('--vh', `${window.innerHeight}px`)
+    vh.value = `${window.innerHeight}px`
   },
   { flush: 'post' },
 )
@@ -99,12 +101,14 @@ const sfcOptions = {
 }
 
 .vue-repl {
+  --vh: 100vh;
+
   @apply rounded-lg border-1 border-solid dark:border-gray-200/10 border-gray-200;
 
-  height: calc(var(--vh) - var(--navbar-height));
+  height: calc(var(--vh) - 72px);
 }
 
 .msg.err {
-  display: none;
+  @apply hidden;
 }
 </style>

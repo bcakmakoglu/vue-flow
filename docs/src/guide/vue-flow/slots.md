@@ -1,7 +1,7 @@
 # Slots
 
 Vue Flow provides several slots for customization.
-In addition to the node and edge slots (see the guide on [nodes](/guide/node.html) and [edges](/guide/edge.html)),
+In addition to the node and edge slots (see the guide on [nodes](/guide/node) and [edges](/guide/edge)),
 there are a number of other slots you can use to customize the visualization.
 
 ## Default
@@ -15,7 +15,7 @@ You can use the default slot to add a sidebar or floating toolbar etc. to your g
 The connection line slot allows you to pass down a custom connection line component, which will be used, when a connection
 is triggered.
 
-```vue:no-line-numbers
+```vue
 <template>
   <VueFlow>
     <template #connection-line="connectionLineProps">
@@ -25,13 +25,13 @@ is triggered.
 </template>
 ```
 
-The full description of connection line props can be found [here](/typedocs/interfaces/ConnectionLineProps.html/).
+The full description of connection line props can be found [here](/typedocs/interfaces/ConnectionLineProps).
 
 ## Zoom Pane
 
 The zoom pane slot is placed inside the viewport transformation, so that it scales and moves with the current viewport zoom and position.
 
-```vue:no-line-numbers
+```vue
 <template>
   <VueFlow>
     <template #zoom-pane>

@@ -5,16 +5,16 @@ Nodes are the building blocks of your graph. They represent any sort of data you
 They can exist on their own but can be connected to each other with edges to create a map.
 
 Each node <span class="font-bold text-blue-500">requires a unique id and
-a [xy-position](/typedocs/interfaces/XYPosition.html/).</span>
+a [xy-position](/typedocs/interfaces/XYPosition).</span>
 Anything else is optional.
 
-You can check the full options for a node element [here](/typedocs/interfaces/Node.html/).
+You can check the full options for a node element [here](/typedocs/interfaces/Node).
 
 ## Usage
 
 Generally you create nodes by adding them to the model-value or the nodes prop of the Vue Flow component.
 
-```vue:no-line-numbers
+```vue
 <script>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -51,11 +51,11 @@ export default defineComponent({
 ```
 
 For more advanced graphs that require more state access you will want to use the useVueFlow composable.
-[useVueFlow](/typedocs/functions/useVueFlow.html/) will provide
-you with an [`addNodes`](/typedocs/interfaces/Actions.html#addnodes/) utility function, which you can use to add nodes
+[useVueFlow](/typedocs/functions/useVueFlow) will provide
+you with an [`addNodes`](/typedocs/interfaces/Actions#addnodes) utility function, which you can use to add nodes
 directly to the state.
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 
@@ -88,11 +88,11 @@ onMounted(() => {
 </template>
 ```
 
-You can also apply changes using the [`applyNodeChanges`](/typedocs/interfaces/Actions.html#applynodechanges/) utility
+You can also apply changes using the [`applyNodeChanges`](/typedocs/interfaces/Actions#applynodechanges/) utility
 function,
-which expects an array of [changes](/typedocs/types/NodeChange.html/) to be applied to the currently stored nodes.
+which expects an array of [changes](/typedocs/types/NodeChange) to be applied to the currently stored nodes.
 
-```vue:no-line-numbers{11,17-22}
+```vue{11,17-22}
 <script setup>
 import { VueFlow, useVueFlow } from '@braks/vue-flow'
 
@@ -124,7 +124,7 @@ onMounted(() => {
 </template>
 ```
 
-## [Default Node-Types](/typedocs/types/DefaultNodeTypes.html/)
+## [Default Node-Types](/typedocs/types/DefaultNodeTypes)
 
 Vue Flow comes with built-in nodes that you can use right out of the box.
 These node types include `default`, `input` and `output`.
@@ -138,7 +138,7 @@ It represents a branching point in your map.
 
 You can specify the position of handles in the node definition.
 
-```js:no-line-numbers{5-6}
+```js{5-6}
 const nodes = [
   {
     id: '1',
@@ -168,7 +168,7 @@ It represents an ending point of your map.
 In addition to the default node types from the previous chapter, you can define any amount of custom node-types.
 Node-types are inferred from your node's definition.
 
-```js:no-line-numbers{5,11}
+```js{5,11}
 const nodes = [
   {
     id: '1',
@@ -198,7 +198,7 @@ The easiest way to define custom nodes is, by passing them as template slots.
 Your custom node-types are dynamically resolved to slot-names, meaning a node with the type `custom`
 will expect a slot to have the name `node-custom`.
 
-```vue:no-line-numbers{9,16}
+```vue{9,16}
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 import CustomNode from './CustomNode.vue'
@@ -232,7 +232,7 @@ turned into reactive objects.
 Otherwise, vue will throw a warning in the console.
 :::
 
-```vue:no-line-numbers{6-9,26}
+```vue{6-9,26}
 <script setup>
 import { markRaw } from 'vue'
 import CustomNode from './CustomNode.vue'
@@ -264,7 +264,7 @@ const elements = ref([
 ```
 
 ::: tip
-You can find a more advanced example [here](/examples/custom-node.html/).
+You can find a more advanced example [here](/examples/nodes/).
 :::
 
 ### Node Template
@@ -272,7 +272,7 @@ You can find a more advanced example [here](/examples/custom-node.html/).
 You can also set a template per node, which will overwrite the node-type component but will retain
 the type otherwise.
 
-```vue:no-line-numbers{17}
+```vue{17}
 <script setup>
 import { markRaw } from 'vue'
 import CustomNode from './CustomNode.vue'
@@ -305,33 +305,33 @@ const elements = ref([
 </template>
 ```
 
-### [(Custom) Node Props](/typedocs/interfaces/NodeProps.html/)
+### [(Custom) Node Props](/typedocs/interfaces/NodeProps)
 
 Your custom nodes are wrapped so that the basic functions like dragging or selecting work.
 But you might want to extend on that functionality or implement your own business logic inside of nodes, therefore
 your nodes receive the following props:
 
-| Name             | Definition                                       | Type                                                             | Optional |
-|------------------|--------------------------------------------------|------------------------------------------------------------------|----------|
-| id               | Node id                                          | string                                                           | false    |
-| type             | Node type                                        | string                                                           | false    |
-| selected         | Is node selected                                 | boolean                                                          | false    |
-| dragging         | Is node dragging                                 | boolean                                                          | false    |
-| connectable      | Is node connectable                              | boolean                                                          | false    |
-| position         | Relative position of a node                      | [XYPosition](/typedocs/interfaces/XYPosition.html/)              | false    |
-| zIndex           | Node z-index                                     | number                                                           | false    |
-| dimensions       | Node size                                        | [Dimensions](/typedocs/interfaces/Dimensions.html)               | false    |
-| data             | Custom data object                               | Any object                                                       | true     |
-| events           | Node events and custom events                    | [NodeEventsOn](/typedocs/types/NodeEventsOn.html/)               | true     |
-| label            | Node label                                       | string, Component                                                | true     |
-| isValidTargetPos | Called when target handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc.html/) | true     |
-| isValidSourcePos | Called when source handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc.html/) | true     |
-| parentNode       | Parent node id                                   | string                                                           | true     |
-| targetPosition   | Target handle position                           | [Position](/typedocs/enums/Position.html/)                       | true     |
-| sourcePosition   | Source handle position                           | [Position](/typedocs/enums/Position.html/)                       | true     |
-| dragHandle       | Node drag handle class                           | string                                                           | true     |
+| Name             | Definition                                       | Type                                                       | Optional |
+|------------------|--------------------------------------------------|------------------------------------------------------------|----------|
+| id               | Node id                                          | string                                                     | false    |
+| type             | Node type                                        | string                                                     | false    |
+| selected         | Is node selected                                 | boolean                                                    | false    |
+| dragging         | Is node dragging                                 | boolean                                                    | false    |
+| connectable      | Is node connectable                              | boolean                                                    | false    |
+| position         | Relative position of a node                      | [XYPosition](/typedocs/interfaces/XYPosition)              | false    |
+| zIndex           | Node z-index                                     | number                                                     | false    |
+| dimensions       | Node size                                        | [Dimensions](/typedocs/interfaces/Dimensions)         | false    |
+| data             | Custom data object                               | Any object                                                 | true     |
+| events           | Node events and custom events                    | [NodeEventsOn](/typedocs/types/NodeEventsOn)               | true     |
+| label            | Node label                                       | string, Component                                          | true     |
+| isValidTargetPos | Called when target handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | true     |
+| isValidSourcePos | Called when source handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | true     |
+| parentNode       | Parent node id                                   | string                                                     | true     |
+| targetPosition   | Target handle position                           | [Position](/typedocs/enums/Position)                       | true     |
+| sourcePosition   | Source handle position                           | [Position](/typedocs/enums/Position)                       | true     |
+| dragHandle       | Node drag handle class                           | string                                                     | true     |
 
-### [(Custom) Node Events](/typedocs/interfaces/NodeEvents.html/)
+### (Custom) Node Events
 
 In addition to the event handlers that you can access through [`useVueFlow`](/guide/composables#useVueFlow/) or the Vue
 Flow component,
@@ -339,7 +339,7 @@ you can also pass in event handlers in your initial node definition, or you can 
 the `events` prop passed
 to your node components.
 
-```vue:no-line-numbers{9-13}
+```vue{9-13}
 <script setup>
 import { VueFlow } from '@braks/vue-flow'
 
@@ -364,11 +364,11 @@ const elements = ref([
 
 As you can see above, you can also pass in custom event handlers. These will not be called by Vue Flow but can be used
 to forward callback functions to your custom components.
-The `click` handler is part of the [`NodeEventsHandler`](/typedocs/types/NodeEventsHandler.html) interface, meaning it
+The `click` handler is part of the [`NodeEventsHandler`](/typedocs/types/NodeEventsHandler) interface, meaning it
 will be
 triggered when the node is clicked.
 
-```vue:no-line-numbers
+```vue
 <script lang="ts" setup>
 import type { NodeProps, NodeEventsOn } from '@braks/vue-flow'
 
@@ -398,14 +398,14 @@ props.events.customEvent('custom event triggered')
 ## Styling
 
 ::: tip
-To overwrite default theme styles check the [Theming section](/guide/theming.html).
+To overwrite default theme styles check the [Theming section](/guide/theming).
 :::
 
 ### Custom Nodes
 
 When you create a new node type you also need to implement some styling. Your custom node has no default styles.
 
-```css:no-line-numbers
+```css
 .vue-flow__node-custom {
   background: #9CA8B3;
   color: #fff;
@@ -423,7 +423,7 @@ By adding this class you can also enable scrolling inside a node.
 ### Dynamic handle positions / Adding handles dynamically
 
 When working with dynamic handle positions or adding handles dynamically, you need to use
-the [`updateNodeInternals`](/typedocs/types/UpdateNodeInternals.html/) method.
+the [`updateNodeInternals`](/typedocs/types/UpdateNodeInternals) method.
 
 You need to call this method otherwise your node will not respond to the new handles and edges will be 
 misaligned.
@@ -435,7 +435,7 @@ or you can emit the `updateNodeInternals` event from your custom node component 
 
 - Using store action
 
-```vue:no-line-numbers
+```vue
 <script setup>
 import { useVueFlow } from '@braks/vue-flow'
 
@@ -449,7 +449,7 @@ const onSomeEvent = () => {
 
 - Emitting event from custom component
 
-```vue:no-line-numbers
+```vue
 <script setup>
 const emits = defineEmits(['updateNodeInternals'])
 

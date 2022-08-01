@@ -1,5 +1,5 @@
 ---
-pageClass: examples
+layout: page
 
 ---
 
@@ -11,9 +11,9 @@ You can display any content and functionality inside a custom node. More documen
 up a custom node can be found on the [custom nodes page](/guide/node.html#custom-nodes).
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="customNode"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>

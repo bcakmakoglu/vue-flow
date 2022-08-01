@@ -1,5 +1,5 @@
 ---
-pageClass: examples
+layout: page
 
 ---
 # Interaction
@@ -10,9 +10,9 @@ This includes enabling/disabling zoom-scroll, pan-scroll, dragging etc.
 In the sandbox below you can find an example showing you how to toggle interaction options.
 
 <div class="mt-6">
-  <client-only>
+  <ClientOnly>
     <Suspense>
       <Repl example="interaction"></Repl>
     </Suspense>
-  </client-only>
+  </ClientOnly>
 </div>

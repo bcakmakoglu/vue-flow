@@ -66,6 +66,7 @@ const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge
   zoomOnScroll: false,
   zoomOnDoubleClick: false,
   zoomOnPinch: false,
+  preventScrolling: false,
   elevateEdgesOnSelect: true,
 })
 
@@ -239,7 +240,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
 </script>
 
 <template>
-  <VueFlow ref="el" class="dark:bg-black bg-white transition-colors duration-200 ease-in-out">
+  <VueFlow ref="el">
     <XyzTransition xyz="fade down ease-out-back duration-10" mode="out-in">
       <Background v-if="animatedBackground">
         <template #pattern-container="{ id }">
@@ -306,21 +307,21 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
       </template>
       <template v-else-if="props.id === 'documentation'">
         <div class="flex">
-          <router-link class="link group bg-[#f15a16]" to="/guide/"> Read The Documentation </router-link>
+          <router-link class="intro-link group bg-[#f15a16]" to="/guide/"> Read The Documentation </router-link>
         </div>
         <Handle type="target" :position="Position.Top" />
         <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
       </template>
       <template v-else-if="props.id === 'examples'">
         <div class="flex">
-          <router-link class="link group bg-[#ef467e]" to="/examples/"> Check The Examples </router-link>
+          <router-link class="intro-link group bg-[#ef467e]" to="/examples/"> Check The Examples </router-link>
         </div>
         <Handle type="target" :position="Position.Top" />
         <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
       </template>
       <template v-else-if="props.id === 'acknowledgement'">
         <div class="flex" @click="scrollTo">
-          <button class="link group bg-sky-500"><Heart class="text-red-500" /> Acknowledgement</button>
+          <button class="intro-link group bg-sky-500"><Heart class="text-red-500" /> Acknowledgement</button>
         </div>
         <Handle type="target" :position="Position.Top" />
       </template>
@@ -431,7 +432,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
   hover:(ring ring-white);
 }
 
-.link {
+.intro-link {
   @apply flex
   gap-3
   items-center
