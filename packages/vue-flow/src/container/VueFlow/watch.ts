@@ -158,7 +158,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
 
         watch(
           store.applyDefault,
-          () => {
+          (_, __, onCleanup) => {
             if (store.applyDefault.value) {
               store.onNodesChange(store.applyNodeChanges)
               store.onEdgesChange(store.applyEdgeChanges)
@@ -166,6 +166,11 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
               store.hooks.value.nodesChange.off(store.applyNodeChanges)
               store.hooks.value.edgesChange.off(store.applyEdgeChanges)
             }
+
+            onCleanup(() => {
+              store.hooks.value.nodesChange.off(store.applyNodeChanges)
+              store.hooks.value.edgesChange.off(store.applyEdgeChanges)
+            })
           },
           { immediate: true },
         )
@@ -198,12 +203,16 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
 
         watch(
           store.autoConnect,
-          (autoConnectEnabled) => {
+          (autoConnectEnabled, _, onCleanup) => {
             if (autoConnectEnabled) {
               store.onConnect(autoConnector)
             } else {
               store.hooks.value.connect.off(autoConnector)
             }
+
+            onCleanup(() => {
+              store.hooks.value.connect.off(autoConnector)
+            })
           },
           { immediate: true },
         )
