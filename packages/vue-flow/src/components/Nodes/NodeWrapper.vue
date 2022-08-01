@@ -38,7 +38,7 @@ const nodeElement = ref()
 
 const { emit, on } = useNodeHooks(node, emits)
 
-const scope = effectScope()
+let scope: ReturnType<typeof effectScope> | undefined = effectScope()
 
 const dragging = useDrag({
   id,
@@ -91,11 +91,13 @@ onUpdateNodeInternals((updateIds) => {
 })
 
 onMounted(() => {
+  if (!scope) scope = effectScope()
+
   scope.run(() => {
     watch(
       [() => node.width, () => node.height, () => node.type, () => node.sourcePosition, () => node.targetPosition],
       () => {
-        updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
+        updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
       },
       { flush: 'post', immediate: true },
     )
@@ -132,7 +134,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   observer.stop()
-  scope.stop()
+  scope?.stop()
+  scope = undefined
 })
 
 const onMouseEnter = (event: MouseEvent) => {
