@@ -121,6 +121,7 @@ const el = ref<HTMLDivElement>()
 
 onUnmounted(() => {
   dispose()
+  $reset()
 })
 
 onMounted(() => {
