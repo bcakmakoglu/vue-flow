@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.34] - 2022-08-01
+
+[dc0ec7a](dc0ec7a27dcf7f1c6d60765e6af2f56074fb281c)...[f473dac](f473dacffe97e8724166c16dc234d94d4720d294)
+
+### Bug Fixes
+
+- Force update clause in updateDimensions ([0d10adc](0d10adcbdb70620ca2c3e7d07e1552b747276fae))
+- Cleanup default change handlers on watch scope dispose ([9031b46](9031b46b57a73514e03f8b3ad70ca5bc4cd2852e))
+
+### Documentation
+
+- Use vitepress ([e6bef4a](e6bef4a9f19b28f87277766b08fe3d7b5362412a))
+- Update md files ([f17bd16](f17bd16665323c8cd8b8b0b0e2085d2ea3857faf))
+- Update layout file ([586bf5d](586bf5d41d66804bfcd9384f69049721722410d5))
+- Add social links ([c947d88](c947d887c8b9280057274b81a9e1b7319970317b))
+- Update intro ([4f036e7](4f036e7672a014c4bbdec8abf68ceaeeac2c4c1b))
+- Update homepage and styles ([bc87e47](bc87e4718f537998cd8a4838f0e0c3408505742f))
+- Set repl view height ([c38787f](c38787f60bec448863d1fbac2fd650c59eb24c54))
+- Add typedocs to vitepress docs ([74c329c](74c329c143a70b910efd8a2b2d8cbf1b9c5a97c7))
+- Use page layout for example pages ([21702da](21702daf1eab30d7d67260ffa56c92a47cec3c6e))
+- Replace vuepress docs dir with vitepress docs dir ([f2b1691](f2b169145c720333dd823c430b703efc9e8855a2))
+- Fix dead links ([af78b52](af78b52233f50403a0c720abd39529b6bbd560b6))
+- Replace vuepress specific components ([f386ea4](f386ea454c23eead3c995f96d9087217d2ba2db4))
+- Remove test script ([c4f9492](c4f9492a4f77ca242fb33eef1c1287eb87c24ab3))
+- Set prevent scrolling to false ([3f336a1](3f336a12af340f5e5e5978e2cc12a0f9c0744825))
+- Update links and headlines ([d077d41](d077d41d71c961713d97a3f9fafeac38698780a6))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([a095052](a095052c8444866970efc7233791445ad8c0a0e2))
+- Update pnpm-lock.yaml ([10c34bb](10c34bb9fe09b2b65221944592f5cbfbcac2b6cd))
+- Remove unused code ([a5d5da5](a5d5da54cc715677aa4d523d68170d14f1439b07))
+- Bump version ([f473dac](f473dacffe97e8724166c16dc234d94d4720d294))
+
+### Refactor
+
+- Accept KeyFilter instead of KeyCode ([bd36253](bd36253cd0577210561e3751c4b68ed226a3714a))
+- Recreate scope on mount ([d468fb7](d468fb7f1d3618b8b0d104f31d8c0a6002c860ae))
+- Re-bind hooks on mount and use hooks ref ([8b02d7d](8b02d7d3b383a8f5ac82efde5b8d2c7f311a5e9a))
+- Reset store on unmount and skip re-creating hooks on re-mount ([90b3bd0](90b3bd0bc3907bbc0e19ff53dd12ababe5429c35))
+
 ## [0.4.33] - 2022-07-30
 
 [9aa5172](9aa517285b26d6ad9e34caad1dcbc3a27569b19b)...[dc0ec7a](dc0ec7a27dcf7f1c6d60765e6af2f56074fb281c)
