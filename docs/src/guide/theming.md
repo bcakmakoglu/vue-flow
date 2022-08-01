@@ -1,5 +1,6 @@
 # Theming
 
+## Library styles
 VueFlow comes without any pre-injected stylings. Some necessary stylings have to be imported, though optional styles (i.e.
 the default theme) can be skipped.
 

@@ -1,5 +1,7 @@
 # Slots
 
+##
+
 Vue Flow provides several slots for customization.
 In addition to the node and edge slots (see the guide on [nodes](/guide/node) and [edges](/guide/edge)),
 there are a number of other slots you can use to customize the visualization.

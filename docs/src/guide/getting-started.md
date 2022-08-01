@@ -55,6 +55,11 @@ const elements = ref([
 </template>
 ```
 
+::: warning Necessary styles
+Make sure you include the necessary styles.
+See the [Theming](/guide/theming) section for more info.
+:::
+
 ## TypeScript
 
 Vue Flow is fully written in [TypeScript](https://www.typescriptlang.org/), so it is highly recommended to use TypeScript to have the best possible DX and

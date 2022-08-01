@@ -47,7 +47,7 @@ export default defineComponent({
 </template>
 ```
 
-### [project](/typedocs/types/Project)
+## [project](/typedocs/types/Project)
 
 - Details:
 
@@ -61,7 +61,7 @@ export default defineComponent({
 vueFlowInstance.project({ x: 100, y: 100 })
 ```
 
-### [fitView](/typedocs/types/FitView)
+## [fitView](/typedocs/types/FitView)
 
 - Details:
 
@@ -75,7 +75,7 @@ vueFlowInstance.project({ x: 100, y: 100 })
 vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 ```
 
-### [fitBounds](/typedocs/types/FitBounds)
+## [fitBounds](/typedocs/types/FitBounds)
 
 - Details:
 
@@ -87,7 +87,7 @@ vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 ```
 
-### [setTransform](/typedocs/types/SetTransform)
+## [setTransform](/typedocs/types/SetTransform)
 
 - Details:
 
@@ -99,49 +99,49 @@ vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
 ```
 
-### [getTransform](/typedocs/types/GetTransform)
+## [getTransform](/typedocs/types/GetTransform)
 
 - Details:
 
   Gets position and zoom of the pane.
 
-### [zoomIn](/typedocs/types/ZoomInOut)
+## [zoomIn](/typedocs/types/ZoomInOut)
 
 - Details:
 
   Zooms in.
 
-### [zoomOut](/typedocs/types/ZoomInOut)
+## [zoomOut](/typedocs/types/ZoomInOut)
 
 - Details:
 
   Zooms out.
 
-### [zoomTo](/typedocs/types/ZoomTo)
+## [zoomTo](/typedocs/types/ZoomTo)
 
 - Details:
 
   Zooms to specific level.
 
-### [getElements](/typedocs/interfaces/Getters#getelements)
+## [getElements](/typedocs/interfaces/Getters#getelements)
 
 - Details:
 
   Returns currently stored elements (nodes + edges).
 
-### [getNodes](/typedocs/interfaces/Getters#getnodes)
+## [getNodes](/typedocs/interfaces/Getters#getnodes)
 
 - Details:
 
   Returns currently stored nodes.
 
-### [getEdges](/typedocs/interfaces/Getters#getedges)
+## [getEdges](/typedocs/interfaces/Getters#getedges)
 
 - Details:
 
   Returns currently stored edges.
 
-### [toObject](/typedocs/interfaces/Actions#toobject)
+## [toObject](/typedocs/interfaces/Actions#toobject)
 
 - Details:
 
