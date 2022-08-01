@@ -122,7 +122,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           text: 'Vue Flow',
           collapsible: true,
           items: [
-            { text: 'Config / Props', link: '/guide/vue-flow/config' },
+            { text: 'Configuration', link: '/guide/vue-flow/config' },
             { text: 'State', link: '/guide/vue-flow/state' },
             {
               text: 'Actions',

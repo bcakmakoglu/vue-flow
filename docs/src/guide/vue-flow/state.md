@@ -1,5 +1,7 @@
 # State
 
+##
+
 Under the hood Vue Flow uses [Provide/Inject](https://v3.vuejs.org/guide/component-provide-inject)
 to pass around it's state between components.
 You can access the internal state through the [`useVueFlow`](/guide/composables#usevueflow/) composable.
