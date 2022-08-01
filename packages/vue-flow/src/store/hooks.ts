@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import type { Emits, FlowHooks } from '~/types'
 
 // flow event hooks
@@ -48,18 +49,18 @@ export const createHooks = (): FlowHooks => ({
   updateNodeInternals: createEventHook(),
 })
 
-const bind = (emit: Emits, hooks: FlowHooks) => {
-  for (const [key, value] of Object.entries(hooks)) {
-    const listener = (data: any) => {
-      emit(key as any, data)
+export default (emit: Emits, hooks: Ref<FlowHooks>) => {
+  onBeforeMount(() => {
+    for (const [key, value] of Object.entries(hooks.value)) {
+      const listener = (data: any) => {
+        emit(key as Emits extends (event: infer Event) => void ? Event : never, data)
+      }
+
+      value.on(listener)
+
+      tryOnScopeDispose(() => {
+        value.off(listener)
+      })
     }
-
-    value.on(listener)
-
-    tryOnScopeDispose(() => {
-      value.off(listener)
-    })
-  }
+  })
 }
-
-export default (emit: Emits, hooks: FlowHooks) => bind(emit, hooks)
