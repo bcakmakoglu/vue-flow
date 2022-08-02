@@ -41,6 +41,8 @@ const onMouseLeave = (event: MouseEvent) => emits.paneMouseLeave(event)
 const onMouseMove = (event: MouseEvent) => emits.paneMouseMove(event)
 
 useKeyPress(deleteKeyCode, (keyPressed) => {
+  if (!keyPressed) return
+
   const nodesToRemove = getNodes.reduce<GraphNode[]>((res, node) => {
     if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
       res.push(node)
@@ -53,7 +55,7 @@ useKeyPress(deleteKeyCode, (keyPressed) => {
 
   const selectedEdges = edges.filter((e) => e.selected)
 
-  if (keyPressed && (nodesToRemove || selectedEdges)) {
+  if (nodesToRemove || selectedEdges) {
     if (selectedEdges.length > 0) {
       removeEdges(selectedEdges)
     }
@@ -78,6 +80,7 @@ useKeyPress(multiSelectionKeyCode, (keyPressed) => {
 
 const selectionKeyPressed = useKeyPress(selectionKeyCode, (keyPressed) => {
   if (userSelectionActive && keyPressed) return
+
   setState({
     userSelectionActive: keyPressed && elementsSelectable,
   })

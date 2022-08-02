@@ -87,7 +87,6 @@ onPaneReady(() => {
         }
       },
       {
-        flush: 'post',
         immediate: true,
       },
     )

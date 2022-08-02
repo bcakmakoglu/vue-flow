@@ -34,7 +34,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
                     if (pauseModel) pauseModel.resume()
                   })
                 },
-                { immediate: true, flush: 'post' },
+                { immediate: true },
               )
 
               nextTick(() => {
@@ -43,7 +43,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
               })
             }
           },
-          { immediate: !!(models.modelValue && models.modelValue.value), flush: 'post' },
+          { immediate: !!(models.modelValue && models.modelValue.value) },
         )
       })
     }
@@ -77,7 +77,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
               })
             }
           },
-          { immediate: !!(models.nodes && models.nodes.value), flush: 'post' },
+          { immediate: !!(models.nodes && models.nodes.value) },
         )
       })
     }
@@ -111,7 +111,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
               })
             }
           },
-          { immediate: !!(models.edges && models.edges.value), flush: 'post' },
+          { immediate: !!(models.edges && models.edges.value) },
         )
       })
     }
