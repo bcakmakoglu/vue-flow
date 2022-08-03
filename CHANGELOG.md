@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.35] - 2022-08-03
+
+[f473dac](f473dacffe97e8724166c16dc234d94d4720d294)...[16b6f42](16b6f429a11d538b579d9fe5616ee61f1774df55)
+
+### Documentation
+
+- Update intro links ([3638e59](3638e598e4afe7d9e74ebe4adf383847c29162f7))
+
+### Features
+
+- Block keypress on inputs and `.nokey` elements ([250965d](250965d18f86d8930bdece7d4d954b662bdc3ecb))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([a986a6b](a986a6b2c6b26980e4a41421920cdb915cd34bd1))
+- Bump version ([16b6f42](16b6f429a11d538b579d9fe5616ee61f1774df55))
+
+### Refactor
+
+- Move watch flush timing to pre ([8b6afd3](8b6afd3d0769cf928b345ec5fe8be8b45cd6dfa9))
+
 ## [0.4.34] - 2022-08-01
 
 [dc0ec7a](dc0ec7a27dcf7f1c6d60765e6af2f56074fb281c)...[f473dac](f473dacffe97e8724166c16dc234d94d4720d294)
