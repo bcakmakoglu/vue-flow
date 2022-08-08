@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.36] - 2022-08-08
+
+[16b6f42](16b6f429a11d538b579d9fe5616ee61f1774df55)...[f1a1321](f1a1321117169d79345201499917ede855b4d68e)
+
+### Bug Fixes
+
+- Use flush timing `post` in NodeWrapper.vue ([80fd818](80fd8183593923ece480c8ae9bc72ecd4b3eec43))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([4683b4a](4683b4af16e7a8e5a2b0088beff363950efc0a27))
+- Add `.pnpm-store` to `.gitignore` file ([a9dc02d](a9dc02df8d41056526a40dbb324cda1803e70669))
+- Bump version ([f1a1321](f1a1321117169d79345201499917ede855b4d68e))
+
 ## [0.4.35] - 2022-08-03
 
 [f473dac](f473dacffe97e8724166c16dc234d94d4720d294)...[16b6f42](16b6f429a11d538b579d9fe5616ee61f1774df55)
