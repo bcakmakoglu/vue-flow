@@ -100,3 +100,6 @@ build
 typedocs
 .turbo
 .quasar
+
+# pnpm
+.pnpm-store
