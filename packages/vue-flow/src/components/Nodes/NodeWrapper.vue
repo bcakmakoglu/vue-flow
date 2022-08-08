@@ -127,7 +127,7 @@ onMounted(() => {
           target: getHandleBounds('.target', nodeElement.value, viewport.zoom),
         }
       },
-      { immediate: true },
+      { immediate: true, flush: 'post' },
     )
   })
 })
