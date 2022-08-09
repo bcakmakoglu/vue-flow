@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import { useVModel } from '@vueuse/core'
 import { useDrag, useNodeHooks, useVueFlow } from '../../composables'
-import type { NodeComponent, SnapGrid, XYZPosition } from '../../types'
+import type { GraphNode, NodeComponent, SnapGrid, XYZPosition } from '../../types'
 import { NodeId } from '../../context'
 import { getConnectedEdges, getHandleBounds, getXYZPos, handleNodeClick } from '../../utils'
 
@@ -12,6 +13,7 @@ const { id, type, name, draggable, selectable, connectable, snapGrid, ...props }
   snapGrid?: SnapGrid
   type: NodeComponent | Function | Object | false
   name: string
+  node: GraphNode
 }>()
 
 provide(NodeId, id)
@@ -31,7 +33,8 @@ const {
   onUpdateNodeInternals,
 } = $(useVueFlow())
 
-const node = $computed(() => getNode(id)!)
+const node = $(useVModel(props, 'node'))
+
 const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) : undefined))
 
 const nodeElement = ref()
