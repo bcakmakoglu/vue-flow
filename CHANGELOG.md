@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.37] - 2022-08-09
+
+[f1a1321](f1a1321117169d79345201499917ede855b4d68e)...[3e398d4](3e398d451a6ab43b9347b7f7e4954e76dc8c5060)
+
+### Bug Fixes
+
+- Pass node as prop to wrapper ([6221663](62216634480906a3fd949f36b38be0c9a04e7167))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([3255f95](3255f95df943ce45d1c63e2ce796e8aa4949de7a))
+- Bump version ([3e398d4](3e398d451a6ab43b9347b7f7e4954e76dc8c5060))
+
 ## [0.4.36] - 2022-08-08
 
 [16b6f42](16b6f429a11d538b579d9fe5616ee61f1774df55)...[f1a1321](f1a1321117169d79345201499917ede855b4d68e)
