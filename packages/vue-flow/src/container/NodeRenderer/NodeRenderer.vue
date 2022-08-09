@@ -64,6 +64,7 @@ export default {
       :draggable="draggable(node.draggable)"
       :selectable="selectable(node.selectable)"
       :connectable="connectable(node.connectable)"
+      :node="node"
     />
   </div>
 </template>
