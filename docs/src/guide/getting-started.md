@@ -10,7 +10,7 @@
 ```bash
 npm i --save @braks/vue-flow
 
-yarn i @braks/vue-flow
+yarn add @braks/vue-flow
 
 pnpm i @braks/vue-flow
 ```
