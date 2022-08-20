@@ -20,9 +20,9 @@
     "canvas-confetti": "^1.5.1"
   },
   "devDependencies": {
-    "@iconify/json": "^2.1.85",
+    "@iconify/json": "^2.1.95",
     "@types/canvas-confetti": "^1.4.3",
-    "@types/node": "^18.6.2",
+    "@types/node": "^18.7.8",
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^16.0.1",
     "ohmyfetch": "^0.4.18",
