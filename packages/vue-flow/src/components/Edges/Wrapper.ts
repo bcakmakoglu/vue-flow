@@ -1,6 +1,6 @@
 import type { CSSProperties, Component, FunctionalComponent, VNode } from 'vue'
 import EdgeAnchor from './EdgeAnchor'
-import type { EdgeComponent, EdgeEventsOn, EdgeMarkerType, EdgeTextProps, GraphNode } from '~/types'
+import type { EdgeComponent, EdgeEventsOn, EdgeMarkerType, EdgeTextProps, GraphNode, Updatable } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 import { getEdgePositions, getHandle, getMarkerId } from '~/utils'
 
@@ -15,7 +15,7 @@ interface Props {
   targetHandleId?: string | null
   sourceHandleId?: string | null
   selectable?: boolean
-  updatable?: boolean
+  updatable?: Updatable
   label?: string | VNode | Component<EdgeTextProps> | Object
   data?: any
   events: EdgeEventsOn
@@ -155,38 +155,36 @@ const Wrapper: FunctionalComponent<Props> = function (
         sourceHandleId,
         targetHandleId,
       }),
-      updatable
-        ? [
-            h(
-              'g',
-              {
-                onMousedown: onEdgeUpdaterSourceMouseDown,
-                onMouseenter: onEdgeUpdaterMouseEnter,
-                onMouseout: onEdgeUpdaterMouseOut,
-              },
-              h(EdgeAnchor, {
-                position: sourcePosition,
-                centerX: sourceX,
-                centerY: sourceY,
-                radius: edgeUpdaterRadius,
-              }),
-            ),
-            h(
-              'g',
-              {
-                onMousedown: onEdgeUpdaterTargetMouseDown,
-                onMouseenter: onEdgeUpdaterMouseEnter,
-                onMouseout: onEdgeUpdaterMouseOut,
-              },
-              h(EdgeAnchor, {
-                position: targetPosition,
-                centerX: targetX,
-                centerY: targetY,
-                radius: edgeUpdaterRadius,
-              }),
-            ),
-          ]
-        : null,
+      [
+        updatable == 'source' || updatable == true ? [ h(
+            'g',
+            {
+              onMousedown: onEdgeUpdaterSourceMouseDown,
+              onMouseenter: onEdgeUpdaterMouseEnter,
+              onMouseout: onEdgeUpdaterMouseOut,
+            },
+            h(EdgeAnchor, {
+              position: sourcePosition,
+              centerX: sourceX,
+              centerY: sourceY,
+              radius: edgeUpdaterRadius,
+            }),
+          )] : null,
+          updatable == 'target' || updatable == true ? [ h(
+            'g',
+            {
+              onMousedown: onEdgeUpdaterTargetMouseDown,
+              onMouseenter: onEdgeUpdaterMouseEnter,
+              onMouseout: onEdgeUpdaterMouseOut,
+            },
+            h(EdgeAnchor, {
+              position: targetPosition,
+              centerX: targetX,
+              centerY: targetY,
+              radius: edgeUpdaterRadius,
+            }),
+          )] : null,
+        ],
     ],
   )
 }

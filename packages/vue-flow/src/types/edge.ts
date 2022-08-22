@@ -43,6 +43,8 @@ export interface MarkerProps {
 
 export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
+export type Updatable = boolean | 'target' | 'source'
+
 export interface Edge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> {
   /** Unique edge id */
   id: string
