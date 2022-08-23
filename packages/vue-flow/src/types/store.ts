@@ -3,7 +3,7 @@ import type { KeyFilter } from '@vueuse/core'
 import type { Dimensions, Elements, FlowElements, FlowExportObject, FlowOptions, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
-import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
+import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, Viewport, ViewportFunctions } from './zoom'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
@@ -79,7 +79,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   snapGrid: SnapGrid
   defaultMarkerColor: string
 
-  edgesUpdatable: boolean
+  edgesUpdatable: EdgeUpdatable
   nodesDraggable: boolean
   nodesConnectable: boolean
 
