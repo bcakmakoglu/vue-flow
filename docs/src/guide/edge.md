@@ -324,33 +324,33 @@ Your custom edges are wrapped so that the basic functions like selecting work.
 But you might want to extend on that functionality or implement your own business logic inside of edges, therefore
 your edges receive the following props:
 
-| Name                | Definition                    | Type                                         | Optional |
-|---------------------|-------------------------------|----------------------------------------------|----------|
-| id                  | Edge id                       | string                                       | false    |
-| source              | The source node id            | string                                       | false    |
-| target              | The target node id            | string                                       | false    |
-| sourceNode          | The source node               | GraphNode                                    | false    |
-| targetNode          | The target node               | GraphNode                                    | false    |
-| sourceX             | X position of source handle   | number                                       | false    |
-| sourceY             | Y position of source handle   | number                                       | false    |
-| targetX             | X position of target handle   | number                                       | false    |
-| targetY             | Y position of target handle   | number                                       | false    |
-| type                | Edge type                     | string                                       | true     |
-| sourceHandleId      | Source handle id              | string                                       | true     |
-| targetHandleId      | Target handle id              | string                                       | true     |
-| data                | Custom data object            | Any object                                   | true     |
-| events              | Edge events and custom events | [EdgeEventsOn](/typedocs/types/EdgeEventsOn) | true     |
-| label               | Edge label                    | string, Component                            | true     |
-| labelStyle          | Additional label styles       | CSSProperties                                | true     |
-| labelShowBg         | Enable/Disable label bg       | boolean                                      | true     |
-| labelBgPadding      | Edge label bg padding         | number                                       | true     |
-| labelBgBorderRadius | Edge label bg border radius   | number                                       | true     |
-| selected            | Is edge selected              | boolean                                      | true     |
-| animated            | Is edge animated              | boolean                                      | true     |
-| updatable           | Is edge updatable             | boolean                                      | true     |
-| markerStart         | Edge marker id                | string                                       | true     |
-| markerEnd           | Edge marker id                | string                                       | true     |
-| curvature           | Edge path curvature           | number                                       | true     |
+| Name                | Definition                    | Type                                          | Optional |
+|---------------------|-------------------------------|-----------------------------------------------|----------|
+| id                  | Edge id                       | string                                        | false    |
+| source              | The source node id            | string                                        | false    |
+| target              | The target node id            | string                                        | false    |
+| sourceNode          | The source node               | GraphNode                                     | false    |
+| targetNode          | The target node               | GraphNode                                     | false    |
+| sourceX             | X position of source handle   | number                                        | false    |
+| sourceY             | Y position of source handle   | number                                        | false    |
+| targetX             | X position of target handle   | number                                        | false    |
+| targetY             | Y position of target handle   | number                                        | false    |
+| type                | Edge type                     | string                                        | true     |
+| sourceHandleId      | Source handle id              | string                                        | true     |
+| targetHandleId      | Target handle id              | string                                        | true     |
+| data                | Custom data object            | Any object                                    | true     |
+| events              | Edge events and custom events | [EdgeEventsOn](/typedocs/types/EdgeEventsOn)  | true     |
+| label               | Edge label                    | string, Component                             | true     |
+| labelStyle          | Additional label styles       | CSSProperties                                 | true     |
+| labelShowBg         | Enable/Disable label bg       | boolean                                       | true     |
+| labelBgPadding      | Edge label bg padding         | number                                        | true     |
+| labelBgBorderRadius | Edge label bg border radius   | number                                        | true     |
+| selected            | Is edge selected              | boolean                                       | true     |
+| animated            | Is edge animated              | boolean                                       | true     |
+| updatable           | Is edge updatable             | [EdgeUpdatable](/typedocs/types/EdgeUpdatable)| true     |
+| markerEnd           | Edge marker id                | string                                        | true     |
+| markerStart         | Edge marker id                | string                                        | true     |
+| curvature           | Edge path curvature           | number                                        | true     |
 
 ### (Custom) Edge Events
 

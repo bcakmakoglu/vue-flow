@@ -43,7 +43,7 @@ export interface MarkerProps {
 
 export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
-export type Updatable = boolean | 'target' | 'source'
+export type EdgeUpdatable = boolean | 'target' | 'source'
 
 export interface Edge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> {
   /** Unique edge id */
@@ -77,7 +77,7 @@ export interface Edge<Data = ElementData, CustomEvents extends Record<string, Cu
   /** EdgeMarker */
   markerEnd?: EdgeMarkerType
   /** Disable/enable updating edge */
-  updatable?: boolean
+  updatable?: EdgeUpdatable
   /** Disable/enable selecting edge */
   selectable?: boolean
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */

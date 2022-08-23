@@ -1,6 +1,6 @@
 import type { CSSProperties, Component, FunctionalComponent, VNode } from 'vue'
 import EdgeAnchor from './EdgeAnchor'
-import type { EdgeComponent, EdgeEventsOn, EdgeMarkerType, EdgeTextProps, GraphNode, Updatable } from '~/types'
+import type { EdgeComponent, EdgeEventsOn, EdgeMarkerType, EdgeTextProps, GraphNode, EdgeUpdatable } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 import { getEdgePositions, getHandle, getMarkerId } from '~/utils'
 
@@ -15,7 +15,7 @@ interface Props {
   targetHandleId?: string | null
   sourceHandleId?: string | null
   selectable?: boolean
-  updatable?: Updatable
+  updatable?: EdgeUpdatable
   label?: string | VNode | Component<EdgeTextProps> | Object
   data?: any
   events: EdgeEventsOn
@@ -156,7 +156,7 @@ const Wrapper: FunctionalComponent<Props> = function (
         targetHandleId,
       }),
       [
-        updatable == 'source' || updatable == true ? [ h(
+        updatable === 'source' || updatable === true ? [ h(
             'g',
             {
               onMousedown: onEdgeUpdaterSourceMouseDown,
@@ -170,7 +170,7 @@ const Wrapper: FunctionalComponent<Props> = function (
               radius: edgeUpdaterRadius,
             }),
           )] : null,
-          updatable == 'target' || updatable == true ? [ h(
+          updatable === 'target' || updatable === true ? [ h(
             'g',
             {
               onMousedown: onEdgeUpdaterTargetMouseDown,

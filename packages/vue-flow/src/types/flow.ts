@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { DefaultEdgeOptions, Edge, GraphEdge } from './edge'
+import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { PanOnScrollMode } from './zoom'
@@ -98,7 +98,7 @@ export interface FlowProps {
   snapToGrid?: boolean
   snapGrid?: SnapGrid
   onlyRenderVisibleElements?: boolean
-  edgesUpdatable?: boolean
+  edgesUpdatable?: EdgeUpdatable
   nodesDraggable?: boolean
   nodesConnectable?: boolean
   elementsSelectable?: boolean

@@ -652,13 +652,17 @@ const elements = ref([
 
 ### edges-updatable (optional)
 
-- Type: `boolean`
+- Type: `EdgeUpdatable`
 
 - Default: `true`
 
 - Details:
 
   Globally enable/disable updating edges.
+
+  If set to 'source' only source markers are updatable
+  
+  If set to 'target' only target markers are updatable
 
   Can be overwritten by setting `updatable` on a specific edge element.
 

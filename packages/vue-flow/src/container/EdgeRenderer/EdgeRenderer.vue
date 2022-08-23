@@ -4,7 +4,7 @@ import EdgeWrapper from '../../components/Edges/Wrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { connectionExists, groupEdgesByZLevel } from '../../utils'
-import type { EdgeComponent, GraphEdge } from '../../types'
+import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
 import { Slots } from '../../context'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
@@ -32,7 +32,7 @@ const {
 } = $(useVueFlow())
 
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
-const updatable = (u?: boolean) => (typeof u === 'undefined' ? edgesUpdatable : u)
+const updatable = (u?: EdgeUpdatable) => (typeof u === 'undefined' ? edgesUpdatable : u)
 
 const sourceNode = $(
   controlledComputed($$(connectionNodeId), () => {
