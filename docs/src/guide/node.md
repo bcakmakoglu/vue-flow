@@ -383,6 +383,8 @@ interface CustomNodeProps extends NodeProps<any, CustomNodeEvents> {
   events: CustomNodeEvents
 }
 
+const props = defineProps<CustomNodeProps>()
+
 props.events.click(() => {
   console.log(`Node ${props.id} clicked`)
 })
@@ -390,6 +392,7 @@ props.events.click(() => {
 // custom events are just functions, they are not hooks which you can listen to like `click`
 props.events.customEvent('custom event triggered')
 </script>
+
 <template>
   <!-- Omitted for simplicty -->
 </template>
@@ -413,14 +416,14 @@ When you create a new node type you also need to implement some styling. Your cu
 }
 ```
 
-### Allow scrolling inside a node
+## Allow scrolling inside a node
 
 You can use the `noWheelClassName` prop to define a class which will prevent zoom-on-scroll or pan-on-scroll behavior on
 that element.
 By default, the `noWheelClassName` is `.nowheel`.
 By adding this class you can also enable scrolling inside a node.
 
-### Dynamic handle positions / Adding handles dynamically
+## Dynamic handle positions / Adding handles dynamically
 
 When working with dynamic handle positions or adding handles dynamically, you need to use
 the [`updateNodeInternals`](/typedocs/types/UpdateNodeInternals) method.
@@ -431,7 +434,7 @@ misaligned.
 You can either use the store action to update multiple nodes at once by passing their ids into the method, 
 or you can emit the `updateNodeInternals` event from your custom node component without passing any parameters.
 
-#### Examples
+### Examples
 
 - Using store action
 
