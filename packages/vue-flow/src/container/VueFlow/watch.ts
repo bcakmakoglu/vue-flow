@@ -1,9 +1,10 @@
-import type { Ref, ToRefs } from 'vue'
+import type { ToRefs } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { isFunction } from '@vueuse/core'
 import type { Connection, FlowProps, GraphEdge, GraphNode, VueFlowStore } from '~/types'
 
-const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
+const isDef = <T>(val: T): val is NonNullable<T> => typeof unref(val) !== 'undefined'
+
 export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>, props: FlowProps, store: VueFlowStore) => {
   const scope = effectScope()
 
@@ -237,15 +238,15 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
       const skip = ['id', 'modelValue', 'translateExtent', 'edges', 'nodes', 'maxZoom', 'minZoom', 'applyDefault', 'autoConnect']
       Object.keys(props).forEach((prop) => {
         if (!skip.includes(prop)) {
-          const model = props[prop as keyof typeof props]
-          const storedValue = (<any>store)[prop] as Ref
+          const model = toRef(props, prop as keyof typeof props)
+          const storedValue = store[prop as keyof typeof store] as typeof model
 
           scope.run(() => {
             watch(
-              () => model,
+              model,
               () => {
                 if (isDef(model)) {
-                  storedValue.value = model
+                  storedValue.value = model.value
                 }
               },
               { immediate: isDef(model) },
