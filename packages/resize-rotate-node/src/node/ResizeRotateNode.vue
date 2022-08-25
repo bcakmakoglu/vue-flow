@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MoveableEvents } from 'vue3-moveable'
+import type { MoveableEvents, MoveableProps } from 'vue3-moveable'
 import Moveable from 'vue3-moveable'
 import type { Position } from '@braks/vue-flow'
 import { Handle, useVueFlow } from '@braks/vue-flow'
@@ -9,14 +9,27 @@ const props = defineProps<{
   label: string
   targetPosition: Position
   sourcePosition: Position
-  nodeElement: HTMLDivElement
   data: any
+  moveableProps?: MoveableProps
 }>()
 
-const { viewport, updateNodeDimensions, onPaneClick, onPaneScroll, onPaneContextMenu, getNode, onNodeClick, onNodeDragStart } =
-  useVueFlow()
+const emits = defineEmits(['updateNodeInternals'])
+
+const {
+  viewport,
+  updateNodeDimensions,
+  onPaneClick,
+  onPaneScroll,
+  onPaneContextMenu,
+  getNode,
+  onNodeClick,
+  onNodeDragStart,
+  snapGrid,
+  snapToGrid,
+} = useVueFlow()
 
 const el = ref()
+
 const visible = ref(false)
 
 const frame = {
@@ -37,28 +50,22 @@ const onRotateStart = (e: MoveableEvents['rotateStart']) => {
 const onRotate = (e: MoveableEvents['rotate']) => {
   frame.rotate = e.beforeRotate
   e.target.style.transform = `rotate(${e.beforeRotate}deg)`
-  updateNodeDimensions([{ id: props.id, nodeElement: props.nodeElement, forceUpdate: true }])
+  emits('updateNodeInternals')
 }
 
-const onClick = () => {
-  visible.value = true
+const toggleVisibility = (val?: boolean) => {
+  visible.value = val ?? !visible.value
 }
 
 onNodeClick(({ node }) => {
-  if (node.id === props.id) onClick()
+  toggleVisibility(node.id === props.id)
 })
 
 onNodeDragStart(({ node }) => {
-  if (node.id === props.id) onClick()
+  toggleVisibility(node.id === props.id)
 })
 
-const hideMoveable = () => {
-  visible.value = false
-}
-
-onPaneClick(hideMoveable)
-onPaneScroll(hideMoveable)
-onPaneContextMenu(hideMoveable)
+onPaneClick(() => toggleVisibility(false))
 </script>
 
 <script lang="ts">
@@ -76,27 +83,41 @@ export default {
       ...data.style,
     }"
     style="position: relative"
-    @click="onClick"
   >
     <Handle type="target" :position="props.targetPosition" />
+
     <slot>
       {{ props.label }}
     </slot>
+
     <Handle type="source" :position="props.sourcePosition" />
   </div>
+
   <Moveable
     v-if="visible"
+    v-bind="props.moveableProps"
     class-name="nodrag"
     :target="[`[data-moveable-id='${props.id}']`]"
     :resizable="true"
     :rotatable="true"
+    :draggable="true"
+    :snappable="snapToGrid"
+    :snap-element="snapToGrid"
+    :snap-gap="snapToGrid"
+    :snap-directions="snapToGrid"
+    :snap-digit="snapGrid[0]"
+    :snap-treshold="snapGrid[0]"
+    :snap-grid-width="snapGrid[0]"
+    :snap-grid-height="snapGrid[0]"
     rotation-position="top"
     :padding="{ left: 0, top: 0, right: 0, bottom: 0 }"
     :origin="false"
     :edge="true"
+    :start-drag-rotate="0"
+    :throttle-drag-rotate="0"
     :throttle-resize="1"
     :render-directions="['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']"
-    :zoom="0.75"
+    :zoom="1"
     @resize="onResize"
     @rotate="onRotate"
   />
