@@ -154,16 +154,20 @@ export default {
           <slot :name="`node-${nodeName}`" />
         </template>
       </template>
+
       <template #edges>
         <template v-for="edgeName of Object.keys(getEdgeTypes)">
           <slot :name="`edge-${edgeName}`" />
         </template>
       </template>
+
       <template #connection-name>
         <slot name="connection-line" />
       </template>
+
       <slot name="zoom-pane" />
     </Viewport>
+
     <slot />
   </div>
 </template>
