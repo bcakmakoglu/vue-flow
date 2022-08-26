@@ -29,12 +29,11 @@ const onPaneReady = (store: VueFlowStore) => {
 </script>
 
 <template>
-  <div style="height: 100%; color: black">
-    {{ extent }}
+  <div style="height: 100%">
     <VueFlow
       v-model="elements"
       class="vue-flow-basic-example"
-      snap-to-grid
+      :snap-to-grid="true"
       :snap-grid="[10, 10]"
       :prevent-scrolling="false"
       :zoom-on-scroll="false"
@@ -64,7 +63,7 @@ const onPaneReady = (store: VueFlowStore) => {
 html,
 body,
 #root {
-  height: 1024px;
+  height: 100%;
   width: 100%;
   margin: 0;
   font-family: 'JetBrains Mono', monospace;

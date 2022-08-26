@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import type { MoveableEvents, MoveableProps } from 'vue3-moveable'
+import type { MoveableProps } from 'vue3-moveable'
 import Moveable from 'vue3-moveable'
 import type { Position } from '@braks/vue-flow'
 import { Handle, useVueFlow } from '@braks/vue-flow'
+import { useMoveable } from './utils'
 
 const props = defineProps<{
   id: string
@@ -15,43 +16,13 @@ const props = defineProps<{
 
 const emits = defineEmits(['updateNodeInternals'])
 
-const {
-  viewport,
-  updateNodeDimensions,
-  onPaneClick,
-  onPaneScroll,
-  onPaneContextMenu,
-  getNode,
-  onNodeClick,
-  onNodeDragStart,
-  snapGrid,
-  snapToGrid,
-} = useVueFlow()
+const { findNode, onPaneClick, onNodeClick, onNodeDragStart, snapGrid, snapToGrid } = useVueFlow()
 
 const el = ref()
 
 const visible = ref(false)
 
-const frame = {
-  rotate: 0,
-}
-
-const onResize = (e: MoveableEvents['resize']) => {
-  e.target.style.width = `${e.width}px`
-  e.target.style.height = `${e.height}px`
-  e.target.style.left = `${e.drag.left}px`
-  e.target.style.top = `${e.drag.top}px`
-}
-
-const onRotateStart = (e: MoveableEvents['rotateStart']) => {
-  e.set(frame.rotate)
-}
-
-const onRotate = (e: MoveableEvents['rotate']) => {
-  frame.rotate = e.beforeRotate
-  e.target.style.transform = `rotate(${e.beforeRotate}deg)`
-  emits('updateNodeInternals')
-}
+const { onRotateStart, onRotate, onResizeStart, onResize } = useMoveable(props.id, emits)
 
 const toggleVisibility = (val?: boolean) => {
   visible.value = val ?? !visible.value
@@ -66,6 +37,21 @@ onNodeDragStart(({ node }) => {
 })
 
 onPaneClick(() => toggleVisibility(false))
+
+onBeforeMount(() => {
+  const node = findNode(props.id)!
+
+  node.dragHandle = `[data-moveable-id='${props.id}']`
+
+  const previousStyle = node.style
+  node.style = () => {
+    return {
+      ...previousStyle,
+      pointerEvents: 'none',
+      cursor: 'default',
+    }
+  }
+})
 </script>
 
 <script lang="ts">
@@ -75,15 +61,7 @@ export default {
 </script>
 
 <template>
-  <div
-    ref="el"
-    :data-moveable-id="props.id"
-    :style="{
-      cursor: 'grab',
-      ...data.style,
-    }"
-    style="position: relative"
-  >
+  <div ref="el" style="cursor: grab; pointer-events: all" :data-moveable-id="props.id" :style="data.style">
     <Handle type="target" :position="props.targetPosition" />
 
     <slot>
@@ -94,13 +72,12 @@ export default {
   </div>
 
   <Moveable
-    v-if="visible"
     v-bind="props.moveableProps"
     class-name="nodrag"
-    :target="[`[data-moveable-id='${props.id}']`]"
+    style="pointer-events: all"
+    :target="visible ? el : undefined"
     :resizable="true"
     :rotatable="true"
-    :draggable="true"
     :snappable="snapToGrid"
     :snap-element="snapToGrid"
     :snap-gap="snapToGrid"
@@ -108,17 +85,17 @@ export default {
     :snap-digit="snapGrid[0]"
     :snap-treshold="snapGrid[0]"
     :snap-grid-width="snapGrid[0]"
-    :snap-grid-height="snapGrid[0]"
-    rotation-position="top"
+    :snap-grid-height="snapGrid[1]"
     :padding="{ left: 0, top: 0, right: 0, bottom: 0 }"
     :origin="false"
-    :edge="true"
     :start-drag-rotate="0"
     :throttle-drag-rotate="0"
     :throttle-resize="1"
     :render-directions="['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']"
     :zoom="1"
+    @resize-start="onResizeStart"
     @resize="onResize"
+    @rotate-start="onRotateStart"
     @rotate="onRotate"
   />
 </template>

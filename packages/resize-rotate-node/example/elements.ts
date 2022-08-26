@@ -11,10 +11,6 @@ export default [
       x: 0,
       y: 0,
     },
-    dragHandle: `[data-moveable-id='1']`,
-    style: {
-      cursor: 'default',
-    },
     data: {
       style: {
         background: 'rgb(255, 0, 114) none repeat scroll 0% 0%',
