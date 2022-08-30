@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.38] - 2022-08-30
+
+[3e398d4](3e398d451a6ab43b9347b7f7e4954e76dc8c5060)...[ff51560](ff5156042781468d564da8f1822aa33e040f8f29)
+
+### Bug Fixes
+
+- Watch translate extent separately ([a204f86](a204f861b7c22ead75ca66830769ffff29976164))
+- Cast watchable props to ref ([9440d4f](9440d4fe856379531e288c68074d5b52abf3c692))
+- Apply global node extent when changed ([e8a6dc3](e8a6dc37af76a10cfdf059a188cffd1a09c9622f))
+- Add missing `updateNodeInternals` event ([487c287](487c287090ed48597a9c375345a1a3bb8ba75803))
+- Apply initial node extent ([058fb5a](058fb5ae10400af72fdea9d2f501dcaf2b58b173))
+
+### Documentation
+
+- Update yarn install guide ([d7c7ae1](d7c7ae152c4a68c9b0564c8b39ffe527372ae77f))
+- Update node guide ([18a31d2](18a31d21a3ed2db8bcf2db6c4d6da0366d532de2))
+
+### Features
+
+- Add snappable ([dd62165](dd621654430e3adbde322252857033c021ecad9f))
+- Hide edge while updating ([bd4eb7c](bd4eb7cc546177ed61b53ab9a8a029bf1ff2d6f1))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([feb1dd6](feb1dd6a363249161970a3fc1e9b074acbf88d1a))
+- Upgrade deps ([b48234e](b48234ec91898aeff452b4b22a334efe23edd22c))
+- Cleanup unused vars and remove setState usage ([a110cdc](a110cdcd03b03e058862ab2ee70d7f911c01e1fa))
+- Re-apply node extent only if flow is ready ([955f683](955f683d8b4c1d5286e4af50f742efbedad170c6))
+- Pass vueflow id to scope on each call ([2beb48d](2beb48d4a54e7665af11a31a7d3893cbe3ee4e04))
+- Bump version ([ff51560](ff5156042781468d564da8f1822aa33e040f8f29))
+
+### Refactor
+
+- Set fixed styles on resize rotate node ([5f5dd49](5f5dd49ed6a8037c3e839b5e08309d075478f28d))
+- Allow ref to be passed to useKeyPress ([be2bcf5](be2bcf5a87a0eed43c900626c785e8afe324b412))
+
 ## [0.4.37] - 2022-08-09
 
 [f1a1321](f1a1321117169d79345201499917ede855b4d68e)...[3e398d4](3e398d451a6ab43b9347b7f7e4954e76dc8c5060)
