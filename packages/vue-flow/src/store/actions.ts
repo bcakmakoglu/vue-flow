@@ -41,6 +41,24 @@ export default (state: State, getters: ComputedGetters): Actions => {
     state.hooks.updateNodeInternals.trigger(ids)
   }
 
+  const zoomPanHelper = ref<ReturnType<typeof useZoomPanHelper>>()
+
+  state.hooks.paneReady.on(({ id }) => {
+    zoomPanHelper.value = useZoomPanHelper(id)
+  })
+
+  const paneReady = async () => {
+    return new Promise<ReturnType<typeof useZoomPanHelper>>((resolve) => {
+      if (!zoomPanHelper.value) {
+        until(zoomPanHelper)
+          .not.toBeUndefined()
+          .then(() => resolve(zoomPanHelper.value!))
+      } else {
+        resolve(zoomPanHelper.value)
+      }
+    })
+  }
+
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
     const changes: NodePositionChange[] = []
 
@@ -175,10 +193,13 @@ export default (state: State, getters: ComputedGetters): Actions => {
     state.translateExtent = translateExtent
   }
 
-  const setNodeExtent: Actions['setNodeExtent'] = (nodeExtent) => {
+  const setNodeExtent: Actions['setNodeExtent'] = async (nodeExtent) => {
     state.nodeExtent = nodeExtent
-    const nodeIds = getters.getNodes.value.map((n) => n.id)
-    updateNodeInternals(nodeIds)
+
+    if (zoomPanHelper.value) {
+      const nodeIds = getters.getNodes.value.map((n) => n.id)
+      updateNodeInternals(nodeIds)
+    }
   }
 
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
@@ -358,13 +379,15 @@ export default (state: State, getters: ComputedGetters): Actions => {
       const option = opts[o as keyof typeof opts]
       if (!skip.includes(o as keyof typeof opts) && isDef(option)) (<any>state)[o] = option
     })
-    if (!state.d3Zoom)
+
+    if (!state.d3Zoom) {
       until(() => state.d3Zoom)
         .not.toBeUndefined()
         .then(setSkippedOptions)
-    else {
+    } else {
       setSkippedOptions()
     }
+
     if (!state.initialized) state.initialized = true
   }
 
@@ -378,24 +401,6 @@ export default (state: State, getters: ComputedGetters): Actions => {
         zoom: state.viewport.zoom,
       } as FlowExportObject),
     )
-  }
-
-  let zoomPanHelper: ReturnType<typeof useZoomPanHelper>
-
-  state.hooks.paneReady.on(({ id }) => {
-    zoomPanHelper = useZoomPanHelper(id)
-  })
-
-  const paneReady = async () => {
-    return new Promise<typeof zoomPanHelper>((resolve) => {
-      if (!zoomPanHelper) {
-        until(() => zoomPanHelper)
-          .toBeTruthy()
-          .then(() => resolve(zoomPanHelper))
-      } else {
-        resolve(zoomPanHelper)
-      }
-    })
   }
 
   return {
