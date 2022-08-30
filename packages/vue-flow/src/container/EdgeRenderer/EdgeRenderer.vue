@@ -32,7 +32,10 @@ const {
 } = $(useVueFlow())
 
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
+
 const updatable = (u?: EdgeUpdatable) => (typeof u === 'undefined' ? edgesUpdatable : u)
+
+const updating = ref<string>()
 
 const sourceNode = $(
   controlledComputed($$(connectionNodeId), () => {
@@ -142,9 +145,15 @@ const onEdgeMouseMove = (event: MouseEvent, edge: GraphEdge) => hooks[edge.id].e
 
 const onEdgeMouseLeave = (event: MouseEvent, edge: GraphEdge) => hooks[edge.id].emit.mouseLeave({ event, edge })
 
-const onEdgeUpdaterSourceMouseDown = (event: MouseEvent, edge: GraphEdge) => handleEdgeUpdater(event, edge, true)
+const onEdgeUpdaterSourceMouseDown = (event: MouseEvent, edge: GraphEdge) => {
+  updating.value = edge.id
+  handleEdgeUpdater(event, edge, true)
+}
 
-const onEdgeUpdaterTargetMouseDown = (event: MouseEvent, edge: GraphEdge) => handleEdgeUpdater(event, edge, false)
+const onEdgeUpdaterTargetMouseDown = (event: MouseEvent, edge: GraphEdge) => {
+  updating.value = edge.id
+  handleEdgeUpdater(event, edge, false)
+}
 
 const { onMouseDown } = useHandle()
 
@@ -164,7 +173,10 @@ const handleEdgeUpdater = (event: MouseEvent, edge: GraphEdge, isSourceHandle: b
     (connection) => {
       if (!connectionExists(connection, getEdges)) hooks[edge.id].emit.update({ edge, connection })
     },
-    () => hooks[edge.id].emit.updateEnd({ event, edge }),
+    () => {
+      hooks[edge.id].emit.updateEnd({ event, edge })
+      updating.value = ''
+    },
   )
 }
 
@@ -205,6 +217,7 @@ export default {
         :selectable="selectable(edge.selectable)"
         :selected="edge.selected"
         :updatable="updatable(edge.updatable)"
+        :updating="edge.id === updating"
         :label-style="edge.labelStyle"
         :label-show-bg="edge.labelShowBg"
         :label-bg-style="edge.labelBgStyle"

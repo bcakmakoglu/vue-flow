@@ -1,6 +1,6 @@
-import type { CSSProperties, Component, FunctionalComponent, VNode } from 'vue'
+import type { CSSProperties, Component, VNode } from 'vue'
 import EdgeAnchor from './EdgeAnchor'
-import type { EdgeComponent, EdgeEventsOn, EdgeMarkerType, EdgeTextProps, GraphNode, EdgeUpdatable } from '~/types'
+import type { EdgeComponent, EdgeEventsOn, EdgeMarkerType, EdgeTextProps, EdgeUpdatable, GraphNode } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 import { getEdgePositions, getHandle, getMarkerId } from '~/utils'
 
@@ -31,193 +31,178 @@ interface Props {
   markerStart?: EdgeMarkerType
   connectionMode: ConnectionMode
   edgeUpdaterRadius: number
+  updating?: boolean
 }
 
-const Wrapper: FunctionalComponent<Props> = function (
-  {
-    name,
-    type,
-    id,
-    data,
-    events,
-    labelBgBorderRadius,
-    labelBgPadding,
-    labelBgStyle,
-    labelStyle,
-    labelShowBg,
-    style,
-    animated,
-    label,
-    updatable,
-    selectable,
-    target,
-    source,
-    sourceNode,
-    targetNode,
-    sourceHandleId,
-    targetHandleId,
-    selected,
-    markerEnd,
-    markerStart,
-    connectionMode,
-    edgeUpdaterRadius,
-  },
-  { emit },
-) {
-  if (!sourceNode || !targetNode) return null
+const Wrapper = defineComponent({
+  props: [
+    'name',
+    'type',
+    'id',
+    'data',
+    'events',
+    'labelBgBorderRadius',
+    'labelBgPadding',
+    'labelBgStyle',
+    'labelStyle',
+    'labelShowBg',
+    'style',
+    'animated',
+    'label',
+    'updatable',
+    'selectable',
+    'target',
+    'source',
+    'sourceNode',
+    'targetNode',
+    'sourceHandleId',
+    'targetHandleId',
+    'selected',
+    'markerEnd',
+    'markerStart',
+    'connectionMode',
+    'edgeUpdaterRadius',
+    'updating',
+  ],
+  emits: ['source-mousedown', 'target-mousedown'],
+  setup(props: Props, { emit }) {
+    let updating = $ref(false)
 
-  let updating = $ref(false)
+    const onEdgeUpdaterMouseEnter = () => (updating = true)
 
-  const onEdgeUpdaterMouseEnter = () => (updating = true)
+    const onEdgeUpdaterMouseOut = () => (updating = false)
 
-  const onEdgeUpdaterMouseOut = () => (updating = false)
+    const onEdgeUpdaterSourceMouseDown = (e: MouseEvent) => {
+      emit('source-mousedown', e)
+    }
 
-  const onEdgeUpdaterSourceMouseDown = (e: MouseEvent) => {
-    emit('source-mousedown', e)
-  }
+    const onEdgeUpdaterTargetMouseDown = (e: MouseEvent) => {
+      emit('target-mousedown', e)
+    }
 
-  const onEdgeUpdaterTargetMouseDown = (e: MouseEvent) => {
-    emit('target-mousedown', e)
-  }
+    return () => {
+      if (!props.sourceNode || !props.targetNode) return null
 
-  let sourceNodeHandles
-  if (connectionMode === ConnectionMode.Strict) {
-    sourceNodeHandles = sourceNode.handleBounds.source
-  } else {
-    sourceNodeHandles = sourceNode.handleBounds.source ?? sourceNode.handleBounds.target
-  }
+      let sourceNodeHandles
+      if (props.connectionMode === ConnectionMode.Strict) {
+        sourceNodeHandles = props.sourceNode.handleBounds.source
+      } else {
+        sourceNodeHandles = props.sourceNode.handleBounds.source ?? props.sourceNode.handleBounds.target
+      }
 
-  const sourceHandle = getHandle(sourceNodeHandles, sourceHandleId)
+      const sourceHandle = getHandle(sourceNodeHandles, props.sourceHandleId)
 
-  let targetNodeHandles
-  if (connectionMode === ConnectionMode.Strict) {
-    targetNodeHandles = targetNode.handleBounds.target
-  } else {
-    targetNodeHandles = targetNode.handleBounds.target ?? targetNode.handleBounds.source
-  }
+      let targetNodeHandles
+      if (props.connectionMode === ConnectionMode.Strict) {
+        targetNodeHandles = props.targetNode.handleBounds.target
+      } else {
+        targetNodeHandles = props.targetNode.handleBounds.target ?? props.targetNode.handleBounds.source
+      }
 
-  const targetHandle = getHandle(targetNodeHandles, targetHandleId)
+      const targetHandle = getHandle(targetNodeHandles, props.targetHandleId)
 
-  const sourcePosition = sourceHandle ? sourceHandle.position : Position.Bottom
+      const sourcePosition = sourceHandle ? sourceHandle.position : Position.Bottom
 
-  const targetPosition = targetHandle ? targetHandle.position : Position.Top
+      const targetPosition = targetHandle ? targetHandle.position : Position.Top
 
-  const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-    sourceNode,
-    sourceHandle,
-    sourcePosition,
-    targetNode,
-    targetHandle,
-    targetPosition,
-  )
-
-  return h(
-    'g',
-    {
-      class: [
-        'vue-flow__edge',
-        `vue-flow__edge-${name}`,
-        {
-          updating,
-          selected,
-          animated,
-          inactive: !selectable,
-        },
-      ],
-    },
-    [
-      h(type as any, {
-        id,
-        sourceNode,
-        targetNode,
-        source,
-        target,
-        updatable,
-        selected,
-        animated,
-        label,
-        labelStyle,
-        labelShowBg,
-        labelBgStyle,
-        labelBgPadding,
-        labelBgBorderRadius,
-        data,
-        events,
-        style,
-        markerStart: `url(#${getMarkerId(markerStart)})`,
-        markerEnd: `url(#${getMarkerId(markerEnd)})`,
+      const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
+        props.sourceNode,
+        sourceHandle,
         sourcePosition,
+        props.targetNode,
+        targetHandle,
         targetPosition,
-        sourceX,
-        sourceY,
-        targetX,
-        targetY,
-        sourceHandleId,
-        targetHandleId,
-      }),
-      [
-        updatable === 'source' || updatable === true ? [ h(
-            'g',
+      )
+
+      return h(
+        'g',
+        {
+          class: [
+            'vue-flow__edge',
+            `vue-flow__edge-${props.name}`,
             {
-              onMousedown: onEdgeUpdaterSourceMouseDown,
-              onMouseenter: onEdgeUpdaterMouseEnter,
-              onMouseout: onEdgeUpdaterMouseOut,
+              updating,
+              selected: props.selected,
+              animated: props.animated,
+              inactive: !props.selectable,
             },
-            h(EdgeAnchor, {
-              position: sourcePosition,
-              centerX: sourceX,
-              centerY: sourceY,
-              radius: edgeUpdaterRadius,
-            }),
-          )] : null,
-          updatable === 'target' || updatable === true ? [ h(
-            'g',
-            {
-              onMousedown: onEdgeUpdaterTargetMouseDown,
-              onMouseenter: onEdgeUpdaterMouseEnter,
-              onMouseout: onEdgeUpdaterMouseOut,
-            },
-            h(EdgeAnchor, {
-              position: targetPosition,
-              centerX: targetX,
-              centerY: targetY,
-              radius: edgeUpdaterRadius,
-            }),
-          )] : null,
+          ],
+        },
+        [
+          props.updating
+            ? null
+            : h(props.type as any, {
+                id: props.id,
+                sourceNode: props.sourceNode,
+                targetNode: props.targetNode,
+                source: props.source,
+                target: props.target,
+                updatable: props.updatable,
+                selected: props.selected,
+                animated: props.animated,
+                label: props.label,
+                labelStyle: props.labelStyle,
+                labelShowBg: props.labelShowBg,
+                labelBgStyle: props.labelBgStyle,
+                labelBgPadding: props.labelBgPadding,
+                labelBgBorderRadius: props.labelBgBorderRadius,
+                data: props.data,
+                events: props.events,
+                style: props.style,
+                markerStart: `url(#${getMarkerId(props.markerStart)})`,
+                markerEnd: `url(#${getMarkerId(props.markerEnd)})`,
+                sourcePosition,
+                targetPosition,
+                sourceX,
+                sourceY,
+                targetX,
+                targetY,
+                sourceHandleId: props.sourceHandleId,
+                targetHandleId: props.targetHandleId,
+              }),
+
+          [
+            props.updatable === 'source' || props.updatable === true
+              ? [
+                  h(
+                    'g',
+                    {
+                      onMousedown: onEdgeUpdaterSourceMouseDown,
+                      onMouseenter: onEdgeUpdaterMouseEnter,
+                      onMouseout: onEdgeUpdaterMouseOut,
+                    },
+                    h(EdgeAnchor, {
+                      position: sourcePosition,
+                      centerX: sourceX,
+                      centerY: sourceY,
+                      radius: props.edgeUpdaterRadius,
+                    }),
+                  ),
+                ]
+              : null,
+            props.updatable === 'target' || props.updatable === true
+              ? [
+                  h(
+                    'g',
+                    {
+                      onMousedown: onEdgeUpdaterTargetMouseDown,
+                      onMouseenter: onEdgeUpdaterMouseEnter,
+                      onMouseout: onEdgeUpdaterMouseOut,
+                    },
+                    h(EdgeAnchor, {
+                      position: targetPosition,
+                      centerX: targetX,
+                      centerY: targetY,
+                      radius: props.edgeUpdaterRadius,
+                    }),
+                  ),
+                ]
+              : null,
+          ],
         ],
-    ],
-  )
-}
-
-Wrapper.props = [
-  'name',
-  'type',
-  'id',
-  'data',
-  'events',
-  'labelBgBorderRadius',
-  'labelBgPadding',
-  'labelBgStyle',
-  'labelStyle',
-  'labelShowBg',
-  'style',
-  'animated',
-  'label',
-  'updatable',
-  'selectable',
-  'target',
-  'source',
-  'sourceNode',
-  'targetNode',
-  'sourceHandleId',
-  'targetHandleId',
-  'selected',
-  'markerEnd',
-  'markerStart',
-  'connectionMode',
-  'edgeUpdaterRadius',
-]
-
-Wrapper.emits = ['source-mousedown', 'target-mousedown']
+      )
+    }
+  },
+})
 
 export default Wrapper
