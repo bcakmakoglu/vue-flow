@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { useVModel } from '@vueuse/core'
 import { useDrag, useNodeHooks, useVueFlow } from '../../composables'
-import type { GraphNode, NodeComponent, SnapGrid, XYZPosition } from '../../types'
+import type { CoordinateExtent, GraphNode, NodeComponent, SnapGrid, XYZPosition } from '../../types'
 import { NodeId } from '../../context'
-import { getConnectedEdges, getHandleBounds, getXYZPos, handleNodeClick } from '../../utils'
+import { clampPosition, getConnectedEdges, getHandleBounds, getXYZPos, handleNodeClick } from '../../utils'
+import { applyExtent } from '../../utils/drag'
 
 const { id, type, name, draggable, selectable, connectable, snapGrid, ...props } = defineProps<{
   id: string
@@ -19,6 +20,7 @@ const { id, type, name, draggable, selectable, connectable, snapGrid, ...props }
 provide(NodeId, id)
 
 const {
+  nodeExtent,
   edges,
   viewport,
   noPanClassName,
@@ -77,10 +79,16 @@ const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
 const updateInternals = () => {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
+  const currentExtent = applyExtent(node, nodeExtent, parentNode)
+
+  const nextPos =
+    currentExtent && typeof currentExtent !== 'string'
+      ? clampPosition(node.position, currentExtent as CoordinateExtent)
+      : node.position
+
   updatePosition(
     {
-      x: node.position.x,
-      y: node.position.y,
+      ...nextPos,
       z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
     },
     parentNode ? { ...parentNode.computedPosition } : undefined,
@@ -94,6 +102,8 @@ onUpdateNodeInternals((updateIds) => {
 })
 
 onMounted(() => {
+  updateInternals()
+
   if (!scope) scope = effectScope()
 
   scope.run(() => {
@@ -102,7 +112,7 @@ onMounted(() => {
       () => {
         updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
       },
-      { flush: 'post', immediate: true },
+      { flush: 'post' },
     )
 
     watch(
@@ -117,9 +127,14 @@ onMounted(() => {
         () => parentNode?.dimensions,
       ],
       ([newX, newY, parentX, parentY, parentZ]) => {
+        const currentExtent = applyExtent(node, nodeExtent, parentNode)
+        const nextPos =
+          currentExtent && typeof currentExtent !== 'string'
+            ? clampPosition({ x: newX, y: newY }, currentExtent as CoordinateExtent)
+            : { x: newX, y: newY }
+
         const xyzPos = {
-          x: newX,
-          y: newY,
+          ...nextPos,
           z: node.selected ? 1000 : 0,
         }
 
@@ -130,7 +145,7 @@ onMounted(() => {
           target: getHandleBounds('.target', nodeElement.value, viewport.zoom),
         }
       },
-      { immediate: true, flush: 'post' },
+      { flush: 'post' },
     )
   })
 })

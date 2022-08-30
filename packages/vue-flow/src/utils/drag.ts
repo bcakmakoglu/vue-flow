@@ -62,33 +62,41 @@ export function updatePosition(
   parent?: GraphNode,
   nodeExtent?: CoordinateExtent,
 ): NodeDragItem {
-  let currentExtent = dragItem.extent || nodeExtent
   const nextPosition = { x: mousePos.x - dragItem.distance.x, y: mousePos.y - dragItem.distance.y }
 
-  if (dragItem.extent === 'parent' && parent) {
-    if (dragItem.parentNode && dragItem.dimensions.width && dragItem.dimensions.height) {
+  const currentExtent = applyExtent(dragItem, nodeExtent, parent)
+
+  dragItem.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
+
+  return dragItem
+}
+
+export function applyExtent<T extends NodeDragItem | GraphNode>(item: T, extent?: CoordinateExtent, parent?: GraphNode) {
+  let currentExtent = item.extent || extent
+
+  if (item.extent === 'parent' && parent) {
+    if (item.parentNode && item.dimensions.width && item.dimensions.height) {
       currentExtent =
         parent.computedPosition && parent.dimensions.width && parent.dimensions.height
           ? [
               [parent.computedPosition.x, parent.computedPosition.y],
               [
-                parent.computedPosition.x + parent.dimensions.width - dragItem.dimensions.width,
-                parent.computedPosition.y + parent.dimensions.height - dragItem.dimensions.height,
+                parent.computedPosition.x + parent.dimensions.width - item.dimensions.width,
+                parent.computedPosition.y + parent.dimensions.height - item.dimensions.height,
               ],
             ]
           : currentExtent
     }
-  } else if (dragItem.extent && dragItem.parentNode) {
-    const dragItemExtent = dragItem.extent as CoordinateExtent
+  } else if (item.extent && item.parentNode) {
+    const itemExtent = item.extent as CoordinateExtent
     const parentX = parent?.computedPosition?.x ?? 0
     const parentY = parent?.computedPosition?.y ?? 0
+
     currentExtent = [
-      [dragItemExtent[0][0] + parentX, dragItemExtent[0][1] + parentY],
-      [dragItemExtent[1][0] + parentX, dragItemExtent[1][1] + parentY],
+      [itemExtent[0][0] + parentX, itemExtent[0][1] + parentY],
+      [itemExtent[1][0] + parentX, itemExtent[1][1] + parentY],
     ]
   }
 
-  dragItem.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
-
-  return dragItem
+  return currentExtent
 }
