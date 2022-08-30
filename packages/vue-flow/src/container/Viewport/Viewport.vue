@@ -68,20 +68,20 @@ const stop = watch(
   { immediate: true },
 )
 
-onBeforeUnmount(() => stop())
+const window = useWindow()
+if ('screen' in window) {
+  useEventListener(window, 'resize', () => {
+    if (!viewportEl.value) return
+
+    const { width, height } = getDimensions(viewportEl.value)
+    dimensions.width = width
+    dimensions.height = height
+  })
+}
+
+onBeforeUnmount(stop)
 
 onMounted(() => {
-  const window = useWindow()
-  if ('screen' in window) {
-    useEventListener(window, 'onresize', () => {
-      if (!viewportEl.value) return
-
-      const { width, height } = getDimensions(viewportEl.value)
-      dimensions.width = width
-      dimensions.height = height
-    })
-  }
-
   const d3Zoom = zoom<HTMLDivElement, any>().scaleExtent([minZoom, maxZoom]).translateExtent(translateExtent)
   const d3Selection = select(viewportEl.value).call(d3Zoom)
   const d3ZoomHandler = d3Selection.on('wheel.zoom')
@@ -132,10 +132,11 @@ onMounted(() => {
   watchEffect(() => {
     if (panOnScroll && !zoomKeyPressed.value) {
       d3Selection
-        .on('wheel', (event: any) => {
+        .on('wheel', (event: WheelEvent) => {
           if (isWrappedWithClass(event, noWheelClassName?.value)) {
             return false
           }
+
           event.preventDefault()
           event.stopImmediatePropagation()
 
@@ -162,7 +163,7 @@ onMounted(() => {
         .on('wheel.zoom', null)
     } else if (typeof d3ZoomHandler !== 'undefined') {
       d3Selection
-        .on('wheel', (event: any) => {
+        .on('wheel', (event: WheelEvent) => {
           if (!preventScrolling || isWrappedWithClass(event, noWheelClassName?.value)) {
             return null
           }

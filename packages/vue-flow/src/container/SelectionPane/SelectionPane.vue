@@ -5,28 +5,25 @@ import { NodesSelection, UserSelection } from '../../components'
 
 const {
   id,
-  edges,
   deleteKeyCode,
   selectionKeyCode,
   multiSelectionKeyCode,
   emits,
   nodesSelectionActive,
   userSelectionActive,
+  multiSelectionActive,
   elementsSelectable,
-  removeSelectedElements,
-  setState,
-  getSelectedEdges,
-  getSelectedNodes,
   getNodes,
+  getSelectedEdges,
+  removeSelectedElements,
   removeNodes,
   removeEdges,
-} = $(useVueFlow())
+} = useVueFlow()
 
 const onClick = (event: MouseEvent) => {
   emits.paneClick(event)
-  setState({
-    nodesSelectionActive: false,
-  })
+  nodesSelectionActive.value = false
+
   removeSelectedElements()
 }
 
@@ -43,7 +40,7 @@ const onMouseMove = (event: MouseEvent) => emits.paneMouseMove(event)
 useKeyPress(deleteKeyCode, (keyPressed) => {
   if (!keyPressed) return
 
-  const nodesToRemove = getNodes.reduce<GraphNode[]>((res, node) => {
+  const nodesToRemove = getNodes.value.reduce<GraphNode[]>((res, node) => {
     if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
       res.push(node)
     } else if (node.selected) {
@@ -53,37 +50,29 @@ useKeyPress(deleteKeyCode, (keyPressed) => {
     return res
   }, [])
 
-  const selectedEdges = edges.filter((e) => e.selected)
-
-  if (nodesToRemove || selectedEdges) {
-    if (selectedEdges.length > 0) {
-      removeEdges(selectedEdges)
+  if (nodesToRemove || getSelectedEdges.value) {
+    if (getSelectedEdges.value.length > 0) {
+      removeEdges(getSelectedEdges.value)
     }
 
     if (nodesToRemove.length > 0) {
       removeNodes(nodesToRemove)
     }
 
-    setState({
-      nodesSelectionActive: false,
-    })
+    nodesSelectionActive.value = false
 
     removeSelectedElements()
   }
 })
 
 useKeyPress(multiSelectionKeyCode, (keyPressed) => {
-  setState({
-    multiSelectionActive: keyPressed,
-  })
+  multiSelectionActive.value = keyPressed
 })
 
 const selectionKeyPressed = useKeyPress(selectionKeyCode, (keyPressed) => {
-  if (userSelectionActive && keyPressed) return
+  if (userSelectionActive.value && keyPressed) return
 
-  setState({
-    userSelectionActive: keyPressed && elementsSelectable,
-  })
+  userSelectionActive.value = keyPressed && elementsSelectable.value
 })
 </script>
 
