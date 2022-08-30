@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { KeyFilter } from '@vueuse/core'
+import type { KeyFilter, MaybeRef } from '@vueuse/core'
 import useWindow from './useWindow'
 
 function isInputDOMNode(event: KeyboardEvent): boolean {
@@ -12,7 +12,7 @@ function isInputDOMNode(event: KeyboardEvent): boolean {
   )
 }
 
-export default (keyFilter: KeyFilter, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
+export default (keyFilter: MaybeRef<KeyFilter>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
 
   let isPressed = $ref(false)
@@ -22,7 +22,7 @@ export default (keyFilter: KeyFilter, onChange?: (keyPressed: boolean) => void):
   })
 
   onKeyStroke(
-    keyFilter,
+    unref(keyFilter),
     (e) => {
       if (isInputDOMNode(e)) return
 
@@ -33,7 +33,7 @@ export default (keyFilter: KeyFilter, onChange?: (keyPressed: boolean) => void):
   )
 
   onKeyStroke(
-    keyFilter,
+    unref(keyFilter),
     (e) => {
       if (isInputDOMNode(e)) return
 
