@@ -20,7 +20,7 @@ const initialElements: Elements = [
     position: { x: 400, y: 100 },
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
-  { id: 'e1-2', source: '1', target: '2', updatable: 'target' },
+  { id: 'e1-2', source: '1', target: '2', label: 'Updatable target', updatable: 'target' },
 ]
 
 const elements = ref(initialElements)
