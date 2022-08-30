@@ -37,6 +37,10 @@ import {
 import { useZoomPanHelper } from '~/composables'
 
 export default (state: State, getters: ComputedGetters): Actions => {
+  const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
+    state.hooks.updateNodeInternals.trigger(ids)
+  }
+
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
     const changes: NodePositionChange[] = []
 
@@ -166,9 +170,15 @@ export default (state: State, getters: ComputedGetters): Actions => {
     state.maxZoom = maxZoom
   }
 
-  const setTranslateExtent: Actions['setTranslateExtent'] = (translateExtent: any) => {
+  const setTranslateExtent: Actions['setTranslateExtent'] = (translateExtent) => {
     state.d3Zoom?.translateExtent(translateExtent)
     state.translateExtent = translateExtent
+  }
+
+  const setNodeExtent: Actions['setNodeExtent'] = (nodeExtent) => {
+    state.nodeExtent = nodeExtent
+    const nodeIds = getters.getNodes.value.map((n) => n.id)
+    updateNodeInternals(nodeIds)
   }
 
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
@@ -321,29 +331,39 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges)
 
   const setState: Actions['setState'] = (options) => {
-    const skip = ['modelValue', 'nodes', 'edges', 'maxZoom', 'minZoom', 'translateExtent', 'hooks']
     const opts = options instanceof Function ? options(state) : options
+    const skip: (keyof typeof opts)[] = [
+      'modelValue',
+      'nodes',
+      'edges',
+      'maxZoom',
+      'minZoom',
+      'translateExtent',
+      'nodeExtent',
+      'hooks',
+    ]
 
     if (typeof opts.modelValue !== 'undefined') setElements(opts.modelValue, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
     if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
 
+    const setSkippedOptions = () => {
+      if (typeof opts.maxZoom !== 'undefined') setMaxZoom(opts.maxZoom)
+      if (typeof opts.minZoom !== 'undefined') setMinZoom(opts.minZoom)
+      if (typeof opts.translateExtent !== 'undefined') setTranslateExtent(opts.translateExtent)
+      if (typeof opts.nodeExtent !== 'undefined') setNodeExtent(opts.nodeExtent)
+    }
+
     Object.keys(opts).forEach((o) => {
       const option = opts[o as keyof typeof opts]
-      if (!skip.includes(o) && isDef(option)) (<any>state)[o] = option
+      if (!skip.includes(o as keyof typeof opts) && isDef(option)) (<any>state)[o] = option
     })
     if (!state.d3Zoom)
       until(() => state.d3Zoom)
         .not.toBeUndefined()
-        .then(() => {
-          if (typeof opts.maxZoom !== 'undefined') setMaxZoom(opts.maxZoom)
-          if (typeof opts.minZoom !== 'undefined') setMinZoom(opts.minZoom)
-          if (typeof opts.translateExtent !== 'undefined') setTranslateExtent(opts.translateExtent)
-        })
+        .then(setSkippedOptions)
     else {
-      if (typeof opts.maxZoom !== 'undefined') setMaxZoom(opts.maxZoom)
-      if (typeof opts.minZoom !== 'undefined') setMinZoom(opts.minZoom)
-      if (typeof opts.translateExtent !== 'undefined') setTranslateExtent(opts.translateExtent)
+      setSkippedOptions()
     }
     if (!state.initialized) state.initialized = true
   }
@@ -358,10 +378,6 @@ export default (state: State, getters: ComputedGetters): Actions => {
         zoom: state.viewport.zoom,
       } as FlowExportObject),
     )
-  }
-
-  const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    state.hooks.updateNodeInternals.trigger(ids)
   }
 
   let zoomPanHelper: ReturnType<typeof useZoomPanHelper>
@@ -403,6 +419,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     setMinZoom,
     setMaxZoom,
     setTranslateExtent,
+    setNodeExtent,
     removeSelectedElements,
     removeSelectedNodes,
     removeSelectedEdges,
