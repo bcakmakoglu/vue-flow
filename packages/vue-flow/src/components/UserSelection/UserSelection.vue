@@ -5,11 +5,15 @@ import { getConnectedEdges, getNodesInside } from '../../utils'
 import SelectionRect from './SelectionRect.vue'
 import { getMousePosition } from './utils'
 
-const { userSelectionActive, setState, getNodes, getEdges, viewport, addSelectedEdges, addSelectedNodes } = $(useVueFlow())
+const { userSelectionActive, nodesSelectionActive, getNodes, getEdges, viewport, addSelectedEdges, addSelectedNodes } =
+  useVueFlow()
+
 const el = templateRef('user-selection', null)
 
 let prevNodes = $ref(0)
+
 let prevEdges = $ref(0)
+
 const initialRect = () => ({
   width: 0,
   height: 0,
@@ -27,9 +31,7 @@ const reset = () => {
   prevNodes = 0
   prevEdges = 0
 
-  setState({
-    userSelectionActive: false,
-  })
+  userSelectionActive.value = false
 }
 
 const onMouseDown = (event: MouseEvent) => {
@@ -46,10 +48,8 @@ const onMouseDown = (event: MouseEvent) => {
     draw: true,
   }
 
-  setState({
-    userSelectionActive: true,
-    nodesSelectionActive: false,
-  })
+  userSelectionActive.value = true
+  nodesSelectionActive.value = true
 }
 
 const onMouseMove = (event: MouseEvent) => {
@@ -69,8 +69,8 @@ const onMouseMove = (event: MouseEvent) => {
     height: Math.abs(mousePos.y - startY),
   }
 
-  const selectedNodes = getNodesInside(getNodes, rect, viewport)
-  const selectedEdges = getConnectedEdges(selectedNodes, getEdges)
+  const selectedNodes = getNodesInside(getNodes.value, rect, viewport.value)
+  const selectedEdges = getConnectedEdges(selectedNodes, getEdges.value)
 
   rect = nextUserSelectRect
 
@@ -84,31 +84,23 @@ const onMouseMove = (event: MouseEvent) => {
 const onMouseUp = () => {
   rect = initialRect()
 
-  setState({
-    nodesSelectionActive: prevNodes > 0,
-    userSelectionActive: false,
-  })
+  nodesSelectionActive.value = prevNodes > 0
+  userSelectionActive.value = false
 }
 
 const onMouseLeave = () => {
-  setState({
-    nodesSelectionActive: prevNodes > 0,
-  })
+  nodesSelectionActive.value = prevNodes > 0
 
   reset()
 }
 
-onMounted(() => {
-  useEventListener(el, 'mousedown', onMouseDown)
-  useEventListener(el, 'mousemove', onMouseMove)
-  useEventListener(el, 'click', onMouseUp)
-  useEventListener(el, 'mouseup', onMouseUp)
-  useEventListener(el, 'mouseleave', onMouseLeave)
-})
+useEventListener(el, 'mousedown', onMouseDown)
+useEventListener(el, 'mousemove', onMouseMove)
+useEventListener(el, 'click', onMouseUp)
+useEventListener(el, 'mouseup', onMouseUp)
+useEventListener(el, 'mouseleave', onMouseLeave)
 
-onBeforeUnmount(() => {
-  reset()
-})
+onBeforeUnmount(reset)
 </script>
 
 <script lang="ts">

@@ -4,8 +4,7 @@ import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import { useVueFlow, useWindow } from '../../composables'
 import type { Dimensions } from '../../types'
 
-const { id, nodes, edges, viewport, snapToGrid, snapGrid, dimensions, setState, fitViewOnInit, emits, fitView, ...rest } =
-  useVueFlow()
+const { id, viewport, dimensions, fitViewOnInit, emits, fitView, ...rest } = useVueFlow()
 
 const untilDimensions = async (dim: Dimensions) => {
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -29,13 +28,8 @@ onMounted(async () => {
 
   emits.paneReady({
     id,
-    nodes,
-    edges,
     viewport,
-    snapToGrid,
-    snapGrid,
     dimensions,
-    setState,
     fitViewOnInit,
     fitView,
     emits,
