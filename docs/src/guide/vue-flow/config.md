@@ -664,6 +664,8 @@ const elements = ref([
   
   If set to 'target' only target markers are updatable
 
+  If set to 'true' both source and target markers are updatable
+
   Can be overwritten by setting `updatable` on a specific edge element.
 
 - Example:
