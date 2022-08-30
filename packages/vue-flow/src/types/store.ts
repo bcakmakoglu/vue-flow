@@ -174,6 +174,8 @@ export interface Actions extends ViewportFunctions {
   setMaxZoom: (zoom: number) => void
   /** apply translate extent to d3 */
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
+  /** apply extent to nodes */
+  setNodeExtent: (nodeExtent: CoordinateExtent) => void
   /** enable/disable node interaction (dragging, selecting etc) */
   setInteractive: (isInteractive: boolean) => void
   /** set new state */

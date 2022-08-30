@@ -159,6 +159,20 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
       })
     }
 
+    const watchNodeExtent = () => {
+      scope.run(() => {
+        watch(
+          () => props.nodeExtent,
+          () => {
+            if (props.nodeExtent && isDef(props.nodeExtent)) {
+              store.setNodeExtent(props.nodeExtent)
+            }
+          },
+          { immediate: isDef(props.nodeExtent) },
+        )
+      })
+    }
+
     const watchApplyDefault = () => {
       scope.run(() => {
         watch(
@@ -235,9 +249,21 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
     }
 
     const watchRest = () => {
-      const skip = ['id', 'modelValue', 'translateExtent', 'edges', 'nodes', 'maxZoom', 'minZoom', 'applyDefault', 'autoConnect']
+      const skip: (keyof typeof props)[] = [
+        'id',
+        'modelValue',
+        'translateExtent',
+        'nodeExtent',
+        'edges',
+        'nodes',
+        'maxZoom',
+        'minZoom',
+        'applyDefault',
+        'autoConnect',
+      ]
+
       Object.keys(props).forEach((prop) => {
-        if (!skip.includes(prop)) {
+        if (!skip.includes(prop as keyof typeof props)) {
           const model = toRef(props, prop as keyof typeof props)
           const storedValue = store[prop as keyof typeof store] as typeof model
 
@@ -263,6 +289,7 @@ export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>
       watchMinZoom,
       watchMaxZoom,
       watchTranslateExtent,
+      watchNodeExtent,
       watchApplyDefault,
       watchAutoConnect,
       watchRest,
