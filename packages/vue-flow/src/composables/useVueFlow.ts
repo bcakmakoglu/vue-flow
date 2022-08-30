@@ -124,7 +124,6 @@ export default (options?: FlowProps): VueFlowStore => {
     vueFlow = storage.create(name, options)
 
     if (scope) {
-      scope.vueFlowId = name
       isParentScope = true
     }
   } else {
@@ -140,6 +139,8 @@ export default (options?: FlowProps): VueFlowStore => {
   // always provide a fresh instance into context on call
   if (scope) {
     provide(VueFlow, vueFlow)
+
+    scope.vueFlowId = vueFlow.id
 
     if (isParentScope) {
       // dispose of state values and storage entry
