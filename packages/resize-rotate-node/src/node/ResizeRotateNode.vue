@@ -1,20 +1,23 @@
 <script lang="ts" setup>
-import type { MoveableProps } from 'vue3-moveable'
 import Moveable from 'vue3-moveable'
-import type { Position } from '@braks/vue-flow'
+import type { Dimensions } from '@braks/vue-flow'
 import { Handle, useVueFlow } from '@braks/vue-flow'
 import { useMoveable } from './utils'
+import type { ResizeRotateNodeProps } from './types'
 
-const props = defineProps<{
-  id: string
-  label: string
-  targetPosition: Position
-  sourcePosition: Position
-  data: any
-  moveableProps?: MoveableProps
-}>()
+interface Emits {
+  (event: 'updateNodeInternals'): void
+  (event: 'resize', dimensions: Dimensions): void
+  (event: 'rotate', rotation: number): void
+}
 
-const emits = defineEmits(['updateNodeInternals'])
+const props = withDefaults(defineProps<ResizeRotateNodeProps>(), {
+  resizable: true,
+  rotatable: true,
+  moveableProps: () => ({}),
+})
+
+const emits = defineEmits<Emits>()
 
 const { findNode, onPaneClick, onNodeClick, onNodeDragStart, snapGrid, snapToGrid } = useVueFlow()
 
@@ -61,7 +64,19 @@ export default {
 </script>
 
 <template>
-  <div ref="el" style="cursor: grab; pointer-events: all" :data-moveable-id="props.id" :style="data.style">
+  <div
+    ref="el"
+    style="cursor: grab; pointer-events: all"
+    :data-moveable-id="props.id"
+    :style="{
+      ...data.style,
+      cursor: visible ? 'grab' : 'auto',
+      zIndex: visible ? 1000 : 0,
+      width: data.dimensions?.width ? `${data.dimensions.width}px` : undefined,
+      height: data.dimensions?.height ? `${data.dimensions.height}px` : undefined,
+      transform: `translate(${data.translate[0]}px, ${data.translate[1]}px)` + ` rotate(${data.rotate}deg)`,
+    }"
+  >
     <Handle type="target" :position="props.targetPosition" />
 
     <slot>
@@ -76,8 +91,8 @@ export default {
     class-name="nodrag"
     style="pointer-events: all"
     :target="visible ? el : undefined"
-    :resizable="true"
-    :rotatable="true"
+    :resizable="resizable"
+    :rotatable="rotatable"
     :snappable="snapToGrid"
     :snap-element="snapToGrid"
     :snap-gap="snapToGrid"
