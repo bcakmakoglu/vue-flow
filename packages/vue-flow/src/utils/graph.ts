@@ -24,7 +24,7 @@ export const getDimensions = (node: HTMLElement): Dimensions => ({
   height: node.offsetHeight,
 })
 
-export const clamp = (val: number, min = 0, max = 1): number => Math.min(Math.max(val, min), max)
+export const clamp = (val: number, min = 0, max = 1) => Math.min(Math.max(val, min), max)
 
 export const clampPosition = (position: XYPosition, extent: CoordinateExtent): XYPosition => ({
   x: clamp(position.x, extent[0][0], extent[1][0]),

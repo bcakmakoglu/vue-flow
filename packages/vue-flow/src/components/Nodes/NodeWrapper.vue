@@ -79,16 +79,10 @@ const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
 const updateInternals = () => {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
-  const currentExtent = applyExtent(node, nodeExtent, parentNode)
-
-  const nextPos =
-    currentExtent && typeof currentExtent !== 'string'
-      ? clampPosition(node.position, currentExtent as CoordinateExtent)
-      : node.position
-
   updatePosition(
     {
-      ...nextPos,
+      x: node.position.x,
+      y: node.position.y,
       z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
     },
     parentNode ? { ...parentNode.computedPosition } : undefined,
@@ -127,14 +121,9 @@ onMounted(() => {
         () => parentNode?.dimensions,
       ],
       ([newX, newY, parentX, parentY, parentZ]) => {
-        const currentExtent = applyExtent(node, nodeExtent, parentNode)
-        const nextPos =
-          currentExtent && typeof currentExtent !== 'string'
-            ? clampPosition({ x: newX, y: newY }, currentExtent as CoordinateExtent)
-            : { x: newX, y: newY }
-
         const xyzPos = {
-          ...nextPos,
+          x: newX,
+          y: newY,
           z: node.selected ? 1000 : 0,
         }
 
