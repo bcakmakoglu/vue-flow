@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.39] - 2022-09-12
+
+[ff51560](ff5156042781468d564da8f1822aa33e040f8f29)...[f7c18df](f7c18df48a2339e75c32510c34bdc8f900009e8f)
+
+### Bug Fixes
+
+- Skip applying node extent on mount ([018d711](018d711fc6364b060d52cf08bb074dc07e53f185))
+
+### Features
+
+- Save frame data of node ([c222bb9](c222bb9de55255e399fed0100137f1a0cf02f1ef))
+- Updated smoothstep edge routing ([c113d3b](c113d3bd153e88e1cbb29b3732d9402ce835d6cc))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([0bf2243](0bf2243d97f2607b8f952b88993d181d9ce75903))
+- Bump version ([3f4e071](3f4e071bbfd4263d512ed1e7d01117f58eebc191))
+- Update demo ([59bd009](59bd0090cda3298b99a2a3b5276a63f6ce1f9831))
+- Bump version ([f7c18df](f7c18df48a2339e75c32510c34bdc8f900009e8f))
+
 ## [0.4.38] - 2022-08-30
 
 [3e398d4](3e398d451a6ab43b9347b7f7e4954e76dc8c5060)...[ff51560](ff5156042781468d564da8f1822aa33e040f8f29)
