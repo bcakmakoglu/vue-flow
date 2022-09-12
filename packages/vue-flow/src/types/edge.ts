@@ -177,6 +177,7 @@ export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> exte
   markerStart?: string
   markerEnd?: string
   borderRadius?: number
+  offset?: number
   data?: Data
   /** contextual and custom events of edge */
   events?: Partial<EdgeEventsOn<CustomEvents>>

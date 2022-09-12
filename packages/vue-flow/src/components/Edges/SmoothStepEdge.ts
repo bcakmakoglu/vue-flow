@@ -20,6 +20,7 @@ const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
   markerEnd,
   markerStart,
   borderRadius,
+  offset,
   style,
 }) {
   const [centerX, centerY] = getCenter({
@@ -39,6 +40,7 @@ const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
     sourcePosition,
     targetPosition,
     borderRadius,
+    offset,
   })
 
   return h(BaseEdge, {
@@ -71,6 +73,7 @@ SmoothStepEdge.props = [
   'targetX',
   'targetY',
   'borderRadius',
+  'offset',
   'markerEnd',
   'markerStart',
   'style',
