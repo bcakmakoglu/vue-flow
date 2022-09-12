@@ -35,7 +35,7 @@ export const getHostForElement = (element: HTMLElement): Document => {
   const doc = element.getRootNode() as Document
   const window = useWindow()
 
-  if ('getElementFromPoint' in doc) return doc
+  if ('elementFromPoint' in doc) return doc
   else return window.document
 }
 
