@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.40] - 2022-09-14
+
+[f7c18df](f7c18df48a2339e75c32510c34bdc8f900009e8f)...[247f248](247f248de39a88f78baffa2785cd22e2f5600854)
+
+### Bug Fixes
+
+- Use `elementFromPoint` ([32a98cd](32a98cd606d27fe63cd75486c87cd274842c212e))
+- Align snap grid to 0,0 ([87102eb](87102eb8c24bc7e21fa7aeaaf0dfa47ba2363967))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([9ea87c8](9ea87c878c327b7d99c75f657ee196172e2862aa))
+- Update pnpm-lock.yaml ([1171e43](1171e434ff5367b7c4e5b59cfde341a13104969e))
+- Bump version ([247f248](247f248de39a88f78baffa2785cd22e2f5600854))
+
 ## [0.4.39] - 2022-09-12
 
 [ff51560](ff5156042781468d564da8f1822aa33e040f8f29)...[f7c18df](f7c18df48a2339e75c32510c34bdc8f900009e8f)
