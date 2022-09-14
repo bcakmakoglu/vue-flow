@@ -97,13 +97,22 @@ function useDrag(params: UseDragParams) {
                 }
               })
               .on('drag', (event: UseDragEvent) => {
-                const mousePos = getMousePosition(event, hasSnapGrid(node?.snapGrid) as SnapGrid)
+                const snapGrid = hasSnapGrid(node?.snapGrid) as SnapGrid
+
+                const mousePos = getMousePosition(event, snapGrid)
 
                 // skip events without movement
                 if ((lastPos.x !== mousePos.x || lastPos.y !== mousePos.y) && dragItems) {
                   lastPos = mousePos
                   dragItems = dragItems.map((n) =>
-                    updatePosition(n, mousePos, n.parentNode ? getNode(n.parentNode) : undefined, nodeExtent),
+                    updatePosition(
+                      n,
+                      mousePos,
+                      !!snapGrid ?? snapToGrid,
+                      snapGrid ?? globalSnapGrid,
+                      n.parentNode ? getNode(n.parentNode) : undefined,
+                      nodeExtent,
+                    ),
                   )
 
                   updateNodePositions(dragItems, true, true)
