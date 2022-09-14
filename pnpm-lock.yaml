@@ -160,6 +160,7 @@ importers:
     dependencies:
       pathfinding: 0.4.18
       perfect-arrows: 0.3.7
+      vue: 3.2.37
     devDependencies:
       '@braks/vue-flow': link:../vue-flow
       '@types/pathfinding': 0.0.5
@@ -169,7 +170,6 @@ importers:
       unplugin-auto-import: 0.7.2_vite@2.9.14
       vite: 2.9.14
       vite-plugin-vue-type-imports: 0.2.0_2yymnzrok6eda47acnj2yjm3ae
-      vue: 3.2.37
       vue-tsc: 0.35.2_typescript@4.7.4
 
   packages/resize-rotate-node:
@@ -187,6 +187,7 @@ importers:
       vue3-moveable: ^0.4.9
     dependencies:
       '@vueuse/core': 8.9.4_vue@3.2.37
+      vue: 3.2.37
       vue3-moveable: 0.4.9_@types+react@16.9.56
     devDependencies:
       '@braks/vue-flow': link:../vue-flow
@@ -196,7 +197,6 @@ importers:
       unplugin-auto-import: 0.11.2_dmt5nkmgq6u7w3gscjexvr3mxm
       vite: 2.9.14
       vite-plugin-vue-type-imports: 0.2.0_2yymnzrok6eda47acnj2yjm3ae
-      vue: 3.2.37
       vue-tsc: 0.40.1_typescript@4.7.4
 
   packages/vue-flow:
@@ -227,6 +227,7 @@ importers:
       d3-drag: 3.0.0
       d3-selection: 3.0.0
       d3-zoom: 3.0.0
+      vue: 3.2.37
     devDependencies:
       '@rollup/plugin-replace': 4.0.0_rollup@2.77.2
       '@types/d3': 7.4.0
@@ -243,7 +244,6 @@ importers:
       vite: 2.9.15
       vite-plugin-vue-type-imports: 0.2.0_2yymnzrok6eda47acnj2yjm3ae
       vite-svg-loader: 3.4.0
-      vue: 3.2.37
       vue-tsc: 0.38.9_typescript@4.7.4
 
 packages:
