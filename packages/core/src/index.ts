@@ -42,6 +42,8 @@ export {
  */
 export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes'
 
+export { animate as animateNode } from './utils/animate'
+
 export { defaultEdgeTypes, defaultNodeTypes } from './store'
 
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
