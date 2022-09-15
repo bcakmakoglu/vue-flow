@@ -33,6 +33,7 @@ onMounted(() => {
 onMounted(() => {
   if (!breakpoints.isSmaller('md')) {
     const blobity = new Blobity({
+      licenseKey: 'opensource',
       color: dark.value ? '#ffffff' : '#000000',
       invert: true,
       zIndex: 0,
