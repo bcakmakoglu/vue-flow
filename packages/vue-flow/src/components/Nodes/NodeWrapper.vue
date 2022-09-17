@@ -101,7 +101,7 @@ onMounted(() => {
 watch(
   [() => node.type, () => node.sourcePosition, () => node.targetPosition],
   () => {
-    updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
   },
   { flush: 'post' },
 )
