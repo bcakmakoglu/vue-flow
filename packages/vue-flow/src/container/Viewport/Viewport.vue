@@ -57,10 +57,10 @@ let transform = $ref({
   zoom: clampedZoom,
 })
 
-useResizeObserver(viewportEl, () => {
-  if (!viewportEl.value) return
+useResizeObserver(viewportEl, (ev) => {
+  if (!ev[0].target) return
 
-  const { width, height } = getDimensions(viewportEl.value)
+  const { width, height } = getDimensions(ev[0].target as HTMLDivElement)
   dimensions.width = width
   dimensions.height = height
 })
@@ -73,8 +73,6 @@ useEventListener(window, 'resize', () => {
   dimensions.width = width
   dimensions.height = height
 })
-
-onBeforeUnmount(stop)
 
 onMounted(() => {
   const d3Zoom = zoom<HTMLDivElement, any>().scaleExtent([minZoom, maxZoom]).translateExtent(translateExtent)
