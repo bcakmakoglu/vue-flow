@@ -16,11 +16,28 @@ const {
   getNode,
   getNodes,
   getNodeTypes,
+  updateNodeDimensions,
 } = $(useVueFlow())
 
 const draggable = (d?: boolean) => (typeof d === 'undefined' ? nodesDraggable : d)
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
 const connectable = (c?: boolean) => (typeof c === 'undefined' ? nodesConnectable : c)
+
+const resizeObserver = new ResizeObserver((entries) => {
+  const updates = entries.map((entry: ResizeObserverEntry) => ({
+    id: entry.target.getAttribute('data-id') as string,
+    nodeElement: entry.target as HTMLDivElement,
+    forceUpdate: true,
+  }))
+
+  updates.forEach((u) => console.log(u.nodeElement.getBoundingClientRect().left))
+
+  updateNodeDimensions(updates)
+})
+
+onBeforeUnmount(() => {
+  resizeObserver.disconnect()
+})
 
 const getType = (type?: string, template?: GraphNode['template']) => {
   const name = type || 'default'
@@ -59,6 +76,7 @@ export default {
       v-for="node of getNodes"
       :id="node.id"
       :key="node.id"
+      :resize-observer="resizeObserver"
       :type="getType(node.type, node.template)"
       :name="node.type || 'default'"
       :draggable="draggable(node.draggable)"

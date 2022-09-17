@@ -14,6 +14,7 @@ const { id, type, name, draggable, selectable, connectable, snapGrid, ...props }
   type: NodeComponent | Function | Object | false
   name: string
   node: GraphNode
+  resizeObserver: ResizeObserver
 }>()
 
 provide(NodeId, id)
@@ -59,10 +60,6 @@ const dragging = useDrag({
   },
 })
 
-const observer = useResizeObserver(nodeElement, (ev) => {
-  updateNodeDimensions([{ id, nodeElement: ev[0].target as HTMLDivElement, forceUpdate: true }])
-})
-
 const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
   if (parentPos) {
     node.computedPosition = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
@@ -100,6 +97,8 @@ updatePosition(
 )
 
 onMounted(() => {
+  props.resizeObserver.observe(nodeElement.value)
+
   if (!scope) scope = effectScope()
 
   scope.run(() => {
@@ -138,7 +137,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  observer.stop()
+  props.resizeObserver.unobserve(nodeElement.value)
   scope?.stop()
   scope = undefined
 })
