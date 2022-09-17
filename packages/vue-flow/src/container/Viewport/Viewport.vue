@@ -57,27 +57,22 @@ let transform = $ref({
   zoom: clampedZoom,
 })
 
-const { width, height } = useElementBounding(viewportEl)
+useResizeObserver(viewportEl, () => {
+  if (!viewportEl.value) return
 
-const stop = watch(
-  [width, height],
-  ([newWidth, newHeight]) => {
-    dimensions.width = newWidth
-    dimensions.height = newHeight
-  },
-  { immediate: true },
-)
+  const { width, height } = getDimensions(viewportEl.value)
+  dimensions.width = width
+  dimensions.height = height
+})
 
 const window = useWindow()
-if ('screen' in window) {
-  useEventListener(window, 'resize', () => {
-    if (!viewportEl.value) return
+useEventListener(window, 'resize', () => {
+  if (!viewportEl.value) return
 
-    const { width, height } = getDimensions(viewportEl.value)
-    dimensions.width = width
-    dimensions.height = height
-  })
-}
+  const { width, height } = getDimensions(viewportEl.value)
+  dimensions.width = width
+  dimensions.height = height
+})
 
 onBeforeUnmount(stop)
 
