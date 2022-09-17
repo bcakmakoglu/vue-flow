@@ -95,7 +95,14 @@ onUpdateNodeInternals((updateIds) => {
 })
 
 onMounted(() => {
-  updateInternals()
+  updatePosition(
+    {
+      x: node.position.x,
+      y: node.position.y,
+      z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
+    },
+    parentNode ? { ...parentNode.computedPosition } : undefined,
+  )
 
   if (!scope) scope = effectScope()
 
