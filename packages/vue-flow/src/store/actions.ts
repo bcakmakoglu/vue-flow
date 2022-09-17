@@ -92,22 +92,31 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
 
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
+    if (!state.vueFlowRef) return
+
+    const viewportNode = state.vueFlowRef.querySelector('.vue-flow__transformationpane')
+
+    if (!viewportNode) return
+
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
       const node = getters.getNode.value(update.id)
 
       if (node) {
         const dimensions = getDimensions(update.nodeElement)
 
-        const doUpdate = !!(
-          (dimensions.width &&
+        const style = window.getComputedStyle(viewportNode)
+        const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
+
+        const doUpdate =
+          !!(
+            dimensions.width &&
             dimensions.height &&
-            (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height)) ||
-          update.forceUpdate
-        )
+            (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height)
+          ) || update.forceUpdate
 
         node.handleBounds = {
-          source: getHandleBounds('.source', update.nodeElement, state.viewport.zoom),
-          target: getHandleBounds('.target', update.nodeElement, state.viewport.zoom),
+          source: getHandleBounds('.source', update.nodeElement, zoom),
+          target: getHandleBounds('.target', update.nodeElement, zoom),
         }
 
         if (doUpdate) {
