@@ -3,7 +3,7 @@ import { useVModel } from '@vueuse/core'
 import { useDrag, useNodeHooks, useVueFlow } from '../../composables'
 import type { GraphNode, NodeComponent, SnapGrid, XYZPosition } from '../../types'
 import { NodeId } from '../../context'
-import { getConnectedEdges, getHandleBounds, getXYZPos, handleNodeClick } from '../../utils'
+import { getConnectedEdges, getXYZPos, handleNodeClick } from '../../utils'
 
 const { id, type, name, draggable, selectable, connectable, snapGrid, ...props } = defineProps<{
   id: string
@@ -59,13 +59,9 @@ const dragging = useDrag({
   },
 })
 
-const observer = useResizeObserver(
-  nodeElement,
-  () => {
-    updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
-  },
-  { box: 'content-box' },
-)
+const observer = useResizeObserver(nodeElement, (ev) => {
+  updateNodeDimensions([{ id, nodeElement: ev[0].target as HTMLDivElement, forceUpdate: true }])
+})
 
 const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
   if (parentPos) {
@@ -94,23 +90,23 @@ onUpdateNodeInternals((updateIds) => {
   }
 })
 
-onMounted(() => {
-  updatePosition(
-    {
-      x: node.position.x,
-      y: node.position.y,
-      z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
-    },
-    parentNode ? { ...parentNode.computedPosition } : undefined,
-  )
+updatePosition(
+  {
+    x: node.position.x,
+    y: node.position.y,
+    z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
+  },
+  parentNode ? { ...parentNode.computedPosition } : undefined,
+)
 
+onMounted(() => {
   if (!scope) scope = effectScope()
 
   scope.run(() => {
     watch(
-      [() => node.width, () => node.height, () => node.type, () => node.sourcePosition, () => node.targetPosition],
+      [() => node.type, () => node.sourcePosition, () => node.targetPosition],
       () => {
-        updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+        updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
       },
       { flush: 'post' },
     )
@@ -134,11 +130,7 @@ onMounted(() => {
         }
 
         updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
-
-        node.handleBounds = {
-          source: getHandleBounds('.source', nodeElement.value, viewport.zoom),
-          target: getHandleBounds('.target', nodeElement.value, viewport.zoom),
-        }
+        updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
       },
       { flush: 'post' },
     )
