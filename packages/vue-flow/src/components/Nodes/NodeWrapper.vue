@@ -43,8 +43,6 @@ const nodeElement = ref()
 
 const { emit, on } = useNodeHooks(node, emits)
 
-let scope: ReturnType<typeof effectScope> | undefined = effectScope()
-
 const dragging = useDrag({
   id,
   el: nodeElement,
@@ -98,48 +96,42 @@ updatePosition(
 
 onMounted(() => {
   props.resizeObserver.observe(nodeElement.value)
-
-  if (!scope) scope = effectScope()
-
-  scope.run(() => {
-    watch(
-      [() => node.type, () => node.sourcePosition, () => node.targetPosition],
-      () => {
-        updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
-      },
-      { flush: 'post' },
-    )
-
-    watch(
-      [
-        () => node.position.x,
-        () => node.position.y,
-        () => parentNode?.computedPosition.x,
-        () => parentNode?.computedPosition.y,
-        () => parentNode?.computedPosition.z,
-        () => node.selected,
-        () => node.dimensions,
-        () => parentNode?.dimensions,
-      ],
-      ([newX, newY, parentX, parentY, parentZ]) => {
-        const xyzPos = {
-          x: newX,
-          y: newY,
-          z: node.selected ? 1000 : 0,
-        }
-
-        updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
-        updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
-      },
-      { flush: 'post' },
-    )
-  })
 })
+
+watch(
+  [() => node.type, () => node.sourcePosition, () => node.targetPosition],
+  () => {
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
+  },
+  { flush: 'post' },
+)
+
+watch(
+  [
+    () => node.position.x,
+    () => node.position.y,
+    () => parentNode?.computedPosition.x,
+    () => parentNode?.computedPosition.y,
+    () => parentNode?.computedPosition.z,
+    () => node.selected,
+    () => node.dimensions,
+    () => parentNode?.dimensions,
+  ],
+  ([newX, newY, parentX, parentY, parentZ]) => {
+    const xyzPos = {
+      x: newX,
+      y: newY,
+      z: node.selected ? 1000 : 0,
+    }
+
+    updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
+  },
+  { flush: 'post' },
+)
 
 onBeforeUnmount(() => {
   props.resizeObserver.unobserve(nodeElement.value)
-  scope?.stop()
-  scope = undefined
 })
 
 const onMouseEnter = (event: MouseEvent) => {
