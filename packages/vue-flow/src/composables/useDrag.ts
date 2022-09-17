@@ -21,6 +21,7 @@ interface UseDragParams {
 
 function useDrag(params: UseDragParams) {
   const scope = effectScope()
+
   const dragging = scope.run(() => {
     const {
       viewport,
@@ -62,102 +63,98 @@ function useDrag(params: UseDragParams) {
       )
     }
 
-    watch(
-      [() => disabled, () => el],
-      () => {
-        if (el) {
-          const selection = select(el)
-          const node = id ? getNode(id) : undefined
+    watch([() => disabled, () => el], () => {
+      if (el) {
+        const selection = select(el)
+        const node = id ? getNode(id) : undefined
 
-          if (disabled) {
-            selection.on('.drag', null)
-          } else {
-            dragHandler = drag()
-              .on('start', (event: UseDragEvent) => {
-                if (!selectNodesOnDrag && !multiSelectionActive && id) {
-                  if (!node?.selected) {
-                    removeSelectedElements()
-                  }
+        if (disabled) {
+          selection.on('.drag', null)
+        } else {
+          dragHandler = drag()
+            .on('start', (event: UseDragEvent) => {
+              if (!selectNodesOnDrag && !multiSelectionActive && id) {
+                if (!node?.selected) {
+                  removeSelectedElements()
                 }
+              }
 
-                if (node && !disabled && selectNodesOnDrag) {
-                  handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
-                }
+              if (node && !disabled && selectNodesOnDrag) {
+                handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
+              }
 
-                const mousePos = getMousePosition(event, hasSnapGrid(node?.snapGrid) as SnapGrid)
-                dragItems = getDragItems(nodes, mousePos, getNode, id)
+              const mousePos = getMousePosition(event, hasSnapGrid(node?.snapGrid) as SnapGrid)
+              dragItems = getDragItems(nodes, mousePos, getNode, id)
 
-                if (onStart && dragItems) {
+              if (onStart && dragItems) {
+                const [currentNode, nodes] = getEventHandlerParams({
+                  id,
+                  dragItems,
+                  getNode: $$(getNode),
+                })
+                onStart(event.sourceEvent, currentNode, nodes)
+              }
+            })
+            .on('drag', (event: UseDragEvent) => {
+              const snapGrid = hasSnapGrid(node?.snapGrid) as SnapGrid
+
+              const mousePos = getMousePosition(event, snapGrid)
+
+              // skip events without movement
+              if ((lastPos.x !== mousePos.x || lastPos.y !== mousePos.y) && dragItems) {
+                lastPos = mousePos
+                dragItems = dragItems.map((n) =>
+                  updatePosition(
+                    n,
+                    mousePos,
+                    !!snapGrid ?? snapToGrid,
+                    snapGrid ?? globalSnapGrid,
+                    n.parentNode ? getNode(n.parentNode) : undefined,
+                    nodeExtent,
+                  ),
+                )
+
+                updateNodePositions(dragItems, true, true)
+                dragging.value = true
+
+                if (onDrag) {
                   const [currentNode, nodes] = getEventHandlerParams({
                     id,
                     dragItems,
                     getNode: $$(getNode),
                   })
-                  onStart(event.sourceEvent, currentNode, nodes)
+                  onDrag(event.sourceEvent, currentNode, nodes)
+                }
+              }
+
+              event.on('end', (event) => {
+                dragging.value = false
+                if (onStop && dragItems) {
+                  updateNodePositions(dragItems, false, false)
+
+                  const [currentNode, nodes] = getEventHandlerParams({
+                    id,
+                    dragItems,
+                    getNode: $$(getNode),
+                  })
+                  onStop(event.sourceEvent, currentNode, nodes)
                 }
               })
-              .on('drag', (event: UseDragEvent) => {
-                const snapGrid = hasSnapGrid(node?.snapGrid) as SnapGrid
+            })
+            .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
+              const target = event.target as HTMLDivElement
+              return (
+                !event.button &&
+                (!noDragClassName ||
+                  (!hasSelector(target, `.${noDragClassName}`, $$(el)) &&
+                    (!node?.dragHandle || hasSelector(target, node.dragHandle, $$(el)))))
+              )
+            })
 
-                const mousePos = getMousePosition(event, snapGrid)
-
-                // skip events without movement
-                if ((lastPos.x !== mousePos.x || lastPos.y !== mousePos.y) && dragItems) {
-                  lastPos = mousePos
-                  dragItems = dragItems.map((n) =>
-                    updatePosition(
-                      n,
-                      mousePos,
-                      !!snapGrid ?? snapToGrid,
-                      snapGrid ?? globalSnapGrid,
-                      n.parentNode ? getNode(n.parentNode) : undefined,
-                      nodeExtent,
-                    ),
-                  )
-
-                  updateNodePositions(dragItems, true, true)
-                  dragging.value = true
-
-                  if (onDrag) {
-                    const [currentNode, nodes] = getEventHandlerParams({
-                      id,
-                      dragItems,
-                      getNode: $$(getNode),
-                    })
-                    onDrag(event.sourceEvent, currentNode, nodes)
-                  }
-                }
-
-                event.on('end', (event) => {
-                  dragging.value = false
-                  if (onStop && dragItems) {
-                    updateNodePositions(dragItems, false, false)
-
-                    const [currentNode, nodes] = getEventHandlerParams({
-                      id,
-                      dragItems,
-                      getNode: $$(getNode),
-                    })
-                    onStop(event.sourceEvent, currentNode, nodes)
-                  }
-                })
-              })
-              .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
-                const target = event.target as HTMLDivElement
-                return (
-                  !event.button &&
-                  (!noDragClassName ||
-                    (!hasSelector(target, `.${noDragClassName}`, $$(el)) &&
-                      (!node?.dragHandle || hasSelector(target, node.dragHandle, $$(el)))))
-                )
-              })
-
-            selection.call(dragHandler)
-          }
+          selection.call(dragHandler)
         }
-      },
-      { flush: 'post' },
-    )
+      }
+    })
 
     return dragging
   })
