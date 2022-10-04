@@ -125,7 +125,6 @@ watch(
     }
 
     updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
-    updateNodeDimensions([{ id, nodeElement: nodeElement.value }])
   },
   { flush: 'post' },
 )

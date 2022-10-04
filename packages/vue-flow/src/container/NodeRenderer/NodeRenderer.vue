@@ -30,8 +30,6 @@ const resizeObserver = new ResizeObserver((entries) => {
     forceUpdate: true,
   }))
 
-  updates.forEach((u) => console.log(u.nodeElement.getBoundingClientRect().left))
-
   updateNodeDimensions(updates)
 })
 
