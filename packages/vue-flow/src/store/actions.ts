@@ -353,8 +353,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     return state.edges[edgeIds.indexOf(id)]
   }
 
-  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) =>
-    updateEdgeAction(oldEdge, newConnection, state.edges, addEdges)
+  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) => updateEdgeAction(oldEdge, newConnection, state.edges)
 
   const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyChanges(changes, state.nodes)
 
