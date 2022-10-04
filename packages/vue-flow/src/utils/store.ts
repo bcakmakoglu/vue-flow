@@ -23,7 +23,7 @@ export const addEdgeToStore = (edgeParams: Edge | Connection, edges: Edge[]) => 
   return edge
 }
 
-export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[], add: Actions['addEdges']) => {
+export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]) => {
   if (!newConnection.source || !newConnection.target) {
     console.warn("[vueflow]: Can't create new edge. An edge needs a source and a target.")
     return false
@@ -36,7 +36,8 @@ export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edg
     return false
   }
 
-  edges.splice(edges.indexOf(edge), 1)
+  console.log('foo')
+
   const newEdge = {
     ...edge,
     id: getEdgeId(newConnection),
@@ -45,7 +46,8 @@ export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edg
     sourceHandle: newConnection.sourceHandle,
     targetHandle: newConnection.targetHandle,
   }
-  add([newEdge])
+
+  edges.splice(edges.indexOf(foundEdge), 1, newEdge)
 
   return newEdge
 }

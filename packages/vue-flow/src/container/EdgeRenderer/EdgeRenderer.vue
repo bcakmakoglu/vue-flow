@@ -67,10 +67,8 @@ onPaneReady(() => {
   if (!scope) scope = effectScope()
 
   scope.run(() => {
-    const edgeAmount = computed(() => getEdges.length)
-
     watch(
-      [$$(getSelectedNodes), edgeAmount],
+      [$$(getSelectedNodes), $$(getEdges)],
       () => {
         getEdges.forEach((edge) => {
           if (hooks[edge.id]) return
