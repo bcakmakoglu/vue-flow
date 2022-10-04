@@ -36,8 +36,6 @@ export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edg
     return false
   }
 
-  console.log('foo')
-
   const newEdge = {
     ...edge,
     id: getEdgeId(newConnection),
