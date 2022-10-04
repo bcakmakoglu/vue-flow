@@ -1,4 +1,4 @@
-import type { Actions, Connection, CoordinateExtent, Edge, Getters, GraphEdge, GraphNode, Node } from '~/types'
+import type { Connection, CoordinateExtent, Edge, Getters, GraphEdge, GraphNode, Node } from '~/types'
 import { connectionExists, getEdgeId, isEdge, isGraphEdge, parseEdge, parseNode } from '~/utils/graph'
 
 export const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
