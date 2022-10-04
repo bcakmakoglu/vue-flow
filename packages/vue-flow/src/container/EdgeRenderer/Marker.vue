@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { MarkerType } from '../../types/edge'
 import type { MarkerProps } from '../../types/edge'
 
 const {
@@ -7,7 +8,7 @@ const {
   width = 12.5,
   height = 12.5,
   markerUnits = 'strokeWidth',
-  orient = 'auto',
+  orient = 'auto-start-reverse',
   strokeWidth = 1,
   color = 'none',
 } = defineProps<MarkerProps>()
@@ -32,7 +33,7 @@ export default {
     :orient="orient"
   >
     <polyline
-      v-if="type === 'arrowclosed'"
+      v-if="type === MarkerType.ArrowClosed"
       :stroke="color"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -41,7 +42,7 @@ export default {
       points="-5,-4 0,0 -5,4 -5,-4"
     />
     <polyline
-      v-if="type === 'arrow'"
+      v-if="type === MarkerType.Arrow"
       :stroke="color"
       stroke-linecap="round"
       stroke-linejoin="round"
