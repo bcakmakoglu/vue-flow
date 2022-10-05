@@ -59,8 +59,9 @@ export default (state: State): ComputedGetters => {
     target = target ?? getNode.value(e.target)
 
     if (!source || !target) {
-      console.warn(`[vue-flow]: Orphaned edge ${e.id} will be removed.`)
       state.edges = state.edges.filter((edge) => edge.id !== e.id)
+
+      console.warn(`[vue-flow]: Orphaned edge ${e.id} removed.`)
       return
     }
 
