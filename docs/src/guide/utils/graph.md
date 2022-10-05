@@ -104,7 +104,7 @@ const onConnect = (params) => {
 ## [updateEdge](/typedocs/functions/updateEdge)
 
 ::: warning
-In the composition API you use access [`updateEdge`](/typedocs/types/UpdateEdge)
+In the composition API you should use [`updateEdge`](/typedocs/types/UpdateEdge)
 of [`useVueFlow`](/guide/composables#usevueflow/)
 :::
 
