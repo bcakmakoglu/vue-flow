@@ -10,7 +10,7 @@ import { getConnectedEdges } from '~/utils'
  *
  * Meaning if you do not provide an id, this composable has to be called in a child of your custom node component, or it will throw
  */
-export function useNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
+export default function useNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
   const nodeId = id ?? inject(NodeId, '')
   const nodeEl = inject(NodeRef, null)
 

@@ -44,6 +44,10 @@ export { default as useVueFlow, Storage as GlobalVueFlowStorage } from './compos
 
 export { default as useHandle } from './composables/useHandle'
 
+export { default as useNode } from './composables/useNode'
+
+export { default as useEdge } from './composables/useEdge'
+
 export * from './additional-components'
 
 export * from './types'
