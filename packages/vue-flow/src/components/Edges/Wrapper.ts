@@ -3,6 +3,7 @@ import EdgeAnchor from './EdgeAnchor'
 import type { EdgeComponent, EdgeEventsOn, EdgeMarkerType, EdgeTextProps, EdgeUpdatable, GraphNode } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 import { getEdgePositions, getHandle, getMarkerId } from '~/utils'
+import { EdgeId, EdgeRef } from '~/context'
 
 interface Props {
   id: string
@@ -68,6 +69,11 @@ const Wrapper = defineComponent({
   setup(props: Props, { emit }) {
     let updating = $ref(false)
 
+    const edgeEl = ref()
+
+    provide(EdgeId, props.id)
+    provide(EdgeRef, edgeEl)
+
     const onEdgeUpdaterMouseEnter = () => (updating = true)
 
     const onEdgeUpdaterMouseOut = () => (updating = false)
@@ -117,6 +123,7 @@ const Wrapper = defineComponent({
       return h(
         'g',
         {
+          ref: edgeEl,
           class: [
             'vue-flow__edge',
             `vue-flow__edge-${props.name}`,
