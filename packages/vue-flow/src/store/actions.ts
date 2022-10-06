@@ -114,12 +114,10 @@ export default (state: State, getters: ComputedGetters): Actions => {
             (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height)
           ) || update.forceUpdate
 
-        node.handleBounds = {
-          source: getHandleBounds('.source', update.nodeElement, zoom),
-          target: getHandleBounds('.target', update.nodeElement, zoom),
-        }
-
         if (doUpdate) {
+          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, zoom)
+          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, zoom)
+
           node.dimensions = dimensions
 
           res.push({
