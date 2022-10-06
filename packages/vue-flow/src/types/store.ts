@@ -1,12 +1,12 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { Dimensions, Elements, FlowElements, FlowExportObject, FlowOptions, SnapGrid, XYPosition } from './flow'
+import type { Dimensions, ElementData, Elements, FlowElements, FlowExportObject, FlowOptions, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, Viewport, ViewportFunctions } from './zoom'
-import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
+import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { HandleType, StartHandle } from './handle'
 
@@ -147,9 +147,13 @@ export interface Actions extends ViewportFunctions {
   /** remove edges from state */
   removeEdges: RemoveEdges
   /** find a node by id */
-  findNode: (id: string) => GraphNode | undefined
+  findNode: <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+    id: string,
+  ) => GraphNode<Data, CustomEvents> | undefined
   /** find an edge by id */
-  findEdge: (id: string) => GraphEdge | undefined
+  findEdge: <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+    id: string,
+  ) => GraphEdge<Data, CustomEvents> | undefined
   /** updates an edge */
   updateEdge: UpdateEdge
   /** applies default edge change handler */
