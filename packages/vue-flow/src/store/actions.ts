@@ -67,6 +67,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
         id: node.id,
         type: 'position',
         dragging,
+        from: node.from,
       }
 
       if (changed) {
