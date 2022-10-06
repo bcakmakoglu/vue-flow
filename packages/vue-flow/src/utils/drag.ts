@@ -23,17 +23,20 @@ export function getDragItems(
 ): NodeDragItem[] {
   return nodes
     .filter((n) => (n.selected || n.id === nodeId) && (!n.parentNode || !isParentSelected(n, getNode)))
-    .map((n) => ({
-      id: n.id,
-      position: n.computedPosition || { x: 0, y: 0, z: 0 },
-      distance: {
-        x: mousePos.x - n.computedPosition?.x || 0,
-        y: mousePos.y - n.computedPosition?.y || 0,
-      },
-      extent: n.extent,
-      parentNode: n.parentNode,
-      dimensions: n.dimensions,
-    }))
+    .map((n) =>
+      markRaw({
+        id: n.id,
+        position: n.computedPosition || { x: 0, y: 0, z: 0 },
+        distance: {
+          x: mousePos.x - n.computedPosition?.x || 0,
+          y: mousePos.y - n.computedPosition?.y || 0,
+        },
+        from: n.computedPosition,
+        extent: n.extent,
+        parentNode: n.parentNode,
+        dimensions: n.dimensions,
+      }),
+    )
 }
 
 export function getEventHandlerParams({
