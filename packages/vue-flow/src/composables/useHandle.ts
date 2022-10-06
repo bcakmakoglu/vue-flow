@@ -78,11 +78,14 @@ export default () => {
     connectOnClick,
     nodesConnectable,
     connectionStartHandle,
-    connectionPosition,
     connectionMode,
     emits,
+    startConnection,
+    updateConnection,
+    endConnection,
     setState,
     getNode,
+    vueFlowRef,
   } = $(useVueFlow())
 
   let recentHoveredHandle: Element
@@ -97,8 +100,6 @@ export default () => {
     onEdgeUpdate?: (connection: Connection) => void,
     onEdgeUpdateEnd?: () => void,
   ) => {
-    const flowNode = (event.target as Element).closest('.vue-flow')
-
     const doc = getHostForElement(event.target as HTMLElement)
     if (!doc) return
 
@@ -116,13 +117,13 @@ export default () => {
     const elementBelowIsTarget = elementBelow?.classList.contains('target')
     const elementBelowIsSource = elementBelow?.classList.contains('source')
 
-    if (!flowNode || (!elementBelowIsTarget && !elementBelowIsSource && !elementEdgeUpdaterType)) return
+    if (!vueFlowRef || (!elementBelowIsTarget && !elementBelowIsSource && !elementEdgeUpdaterType)) return
 
     const handleType = elementEdgeUpdaterType ?? (elementBelowIsTarget ? 'target' : 'source')
 
-    const containerBounds = flowNode.getBoundingClientRect()
+    const containerBounds = vueFlowRef.getBoundingClientRect()
 
-    setState({
+    startConnection({
       connectionPosition: {
         x: event.clientX - containerBounds.left,
         y: event.clientY - containerBounds.top,
@@ -135,8 +136,10 @@ export default () => {
     emits.connectStart({ event, nodeId, handleId, handleType })
 
     function onMouseMove(event: MouseEvent) {
-      connectionPosition.x = event.clientX - containerBounds.left
-      connectionPosition.y = event.clientY - containerBounds.top
+      updateConnection({
+        x: event.clientX - containerBounds.left,
+        y: event.clientY - containerBounds.top,
+      })
 
       const { connection, elementBelow, isValid, isHoveringHandle } = checkElementBelowIsValid(
         event,
@@ -189,12 +192,7 @@ export default () => {
 
       resetRecentHandle(recentHoveredHandle)
 
-      setState({
-        connectionNodeId: null,
-        connectionHandleId: null,
-        connectionHandleType: null,
-        connectionPosition: { x: NaN, y: NaN },
-      })
+      endConnection()
 
       doc.removeEventListener('mousemove', onMouseMove as EventListenerOrEventListenerObject)
       doc.removeEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)
