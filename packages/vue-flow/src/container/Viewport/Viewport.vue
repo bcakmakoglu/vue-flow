@@ -57,21 +57,23 @@ let transform = $ref({
   zoom: clampedZoom,
 })
 
-useResizeObserver(viewportEl, (ev) => {
-  if (!ev[0].target) return
+onMounted(() => {
+  useResizeObserver(viewportEl, () => {
+    if (!viewportEl.value) return
 
-  const { width, height } = getDimensions(ev[0].target as HTMLDivElement)
-  dimensions.width = width
-  dimensions.height = height
-})
+    const { width, height } = getDimensions(viewportEl.value)
+    dimensions.width = width
+    dimensions.height = height
+  })
 
-const window = useWindow()
-useEventListener(window, 'resize', () => {
-  if (!viewportEl.value) return
+  const window = useWindow()
+  useEventListener(window, 'resize', () => {
+    if (!viewportEl.value) return
 
-  const { width, height } = getDimensions(viewportEl.value)
-  dimensions.width = width
-  dimensions.height = height
+    const { width, height } = getDimensions(viewportEl.value)
+    dimensions.width = width
+    dimensions.height = height
+  })
 })
 
 onMounted(() => {
