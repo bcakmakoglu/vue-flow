@@ -23,19 +23,21 @@ const draggable = (d?: boolean) => (typeof d === 'undefined' ? nodesDraggable : 
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
 const connectable = (c?: boolean) => (typeof c === 'undefined' ? nodesConnectable : c)
 
-const resizeObserver = new ResizeObserver((entries) => {
-  const updates = entries.map((entry: ResizeObserverEntry) => ({
-    id: entry.target.getAttribute('data-id') as string,
-    nodeElement: entry.target as HTMLDivElement,
-    forceUpdate: true,
-  }))
+const resizeObserver = ref<ResizeObserver>()
 
-  updateNodeDimensions(updates)
+onMounted(() => {
+  resizeObserver.value = new ResizeObserver((entries) => {
+    const updates = entries.map((entry: ResizeObserverEntry) => ({
+      id: entry.target.getAttribute('data-id') as string,
+      nodeElement: entry.target as HTMLDivElement,
+      forceUpdate: true,
+    }))
+
+    updateNodeDimensions(updates)
+  })
 })
 
-onBeforeUnmount(() => {
-  resizeObserver.disconnect()
-})
+onBeforeUnmount(() => resizeObserver.value?.disconnect())
 
 const getType = (type?: string, template?: GraphNode['template']) => {
   const name = type || 'default'
@@ -70,17 +72,19 @@ export default {
 
 <template>
   <div class="vue-flow__nodes vue-flow__container">
-    <NodeWrapper
-      v-for="node of getNodes"
-      :id="node.id"
-      :key="node.id"
-      :resize-observer="resizeObserver"
-      :type="getType(node.type, node.template)"
-      :name="node.type || 'default'"
-      :draggable="draggable(node.draggable)"
-      :selectable="selectable(node.selectable)"
-      :connectable="connectable(node.connectable)"
-      :node="node"
-    />
+    <template v-if="resizeObserver">
+      <NodeWrapper
+        v-for="node of getNodes"
+        :id="node.id"
+        :key="node.id"
+        :resize-observer="resizeObserver"
+        :type="getType(node.type, node.template)"
+        :name="node.type || 'default'"
+        :draggable="draggable(node.draggable)"
+        :selectable="selectable(node.selectable)"
+        :connectable="connectable(node.connectable)"
+        :node="node"
+      />
+    </template>
   </div>
 </template>
