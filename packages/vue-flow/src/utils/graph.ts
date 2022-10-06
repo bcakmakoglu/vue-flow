@@ -56,10 +56,10 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
         width: 0,
         height: 0,
       }),
-      handleBounds: {
+      handleBounds: shallowReactive({
         source: [],
         target: [],
-      },
+      }),
       computedPosition: markRaw({
         z: 0,
         ...node.position,
