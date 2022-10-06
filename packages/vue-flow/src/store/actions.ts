@@ -358,6 +358,24 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges)
 
+  const startConnection: Actions['startConnection'] = (params) => {
+    state.connectionPosition = params.connectionPosition
+    state.connectionNodeId = params.connectionNodeId
+    state.connectionHandleId = params.connectionHandleId
+    state.connectionHandleType = params.connectionHandleType
+  }
+
+  const updateConnection: Actions['updateConnection'] = (position) => {
+    state.connectionPosition = position
+  }
+
+  const endConnection: Actions['endConnection'] = () => {
+    state.connectionPosition = { x: NaN, y: NaN }
+    state.connectionNodeId = null
+    state.connectionHandleId = null
+    state.connectionHandleType = null
+  }
+
   const setState: Actions['setState'] = (options) => {
     const opts = options instanceof Function ? options(state) : options
     const skip: (keyof typeof opts)[] = [
@@ -435,6 +453,9 @@ export default (state: State, getters: ComputedGetters): Actions => {
     removeSelectedElements,
     removeSelectedNodes,
     removeSelectedEdges,
+    startConnection,
+    updateConnection,
+    endConnection,
     setInteractive,
     setState,
     fitView: async (params = { padding: 0.1 }) => {

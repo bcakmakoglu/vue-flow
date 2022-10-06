@@ -16,6 +16,13 @@ export interface UpdateNodeDimensionsParams {
   forceUpdate?: boolean
 }
 
+export interface StartConnectionParams {
+  connectionPosition: XYPosition
+  connectionNodeId: string
+  connectionHandleId: string | null
+  connectionHandleType: HandleType
+}
+
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** Vue flow element ref */
   vueFlowRef: HTMLDivElement | null
@@ -60,6 +67,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   multiSelectionKeyCode: KeyFilter
   zoomActivationKeyCode: KeyFilter
 
+  // todo: remove these and just use connection start handle
   connectionNodeId: string | null
   connectionHandleId: string | null
   connectionHandleType: HandleType | null
@@ -130,6 +138,12 @@ export type SetState = (
 export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
 export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
 export type UpdateNodeInternals = (nodeIds: string[]) => void
+export type FindNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+  id: string,
+) => GraphNode<Data, CustomEvents> | undefined
+export type FindEdge = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+  id: string,
+) => GraphEdge<Data, CustomEvents> | undefined
 
 export interface Actions extends ViewportFunctions {
   /** parses elements (nodes + edges) and re-sets the state */
@@ -147,13 +161,9 @@ export interface Actions extends ViewportFunctions {
   /** remove edges from state */
   removeEdges: RemoveEdges
   /** find a node by id */
-  findNode: <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-    id: string,
-  ) => GraphNode<Data, CustomEvents> | undefined
+  findNode: FindNode
   /** find an edge by id */
-  findEdge: <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-    id: string,
-  ) => GraphEdge<Data, CustomEvents> | undefined
+  findEdge: FindEdge
   /** updates an edge */
   updateEdge: UpdateEdge
   /** applies default edge change handler */
@@ -188,6 +198,12 @@ export interface Actions extends ViewportFunctions {
   toObject: () => FlowExportObject
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
+  /** start a connection */
+  startConnection: (params: StartConnectionParams) => void
+  /** update connection position */
+  updateConnection: (position: XYPosition) => void
+  /** end (or cancel) a connection */
+  endConnection: () => void
 
   /** internal position updater, you probably don't want to use this */
   updateNodePositions: UpdateNodePosition
