@@ -2,7 +2,7 @@
 import { useVModel } from '@vueuse/core'
 import { useDrag, useNodeHooks, useVueFlow } from '../../composables'
 import type { GraphNode, NodeComponent, SnapGrid, XYZPosition } from '../../types'
-import { NodeId } from '../../context'
+import { NodeId, NodeRef } from '../../context'
 import { getConnectedEdges, getXYZPos, handleNodeClick } from '../../utils'
 
 const { id, type, name, draggable, selectable, connectable, snapGrid, ...props } = defineProps<{
@@ -40,6 +40,8 @@ const node = $(useVModel(props, 'node'))
 const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) : undefined))
 
 const nodeElement = ref()
+
+provide(NodeRef, nodeElement)
 
 const { emit, on } = useNodeHooks(node, emits)
 
