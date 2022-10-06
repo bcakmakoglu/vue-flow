@@ -45,12 +45,12 @@ const props = defineProps({
   },
 })
 
-const { applyEdgeChanges } = useVueFlow()
+const { removeEdges } = useVueFlow()
 
 const foreignObjectSize = 40
 
 const onClick = (evt, id) => {
-  applyEdgeChanges([{ type: 'remove', id }])
+  removeEdges([id])
   evt.stopPropagation()
 }
 
