@@ -24,6 +24,26 @@ import './commands'
 // require('./commands')
 
 import { mount } from 'cypress/vue'
+import { VueFlow } from '@braks/vue-flow'
+import type { FlowProps } from '@braks/vue-flow'
+
+const mountVueFlow = (props?: FlowProps, attrs?: Record<string, any>) => {
+  cy.mount(VueFlow, {
+    props: {
+      id: 'test',
+      fitViewOnInit: true,
+      ...props,
+    },
+    attrs: {
+      key: 'flowy',
+      style: {
+        height: '100vh',
+        width: '100vw',
+      },
+      ...attrs,
+    },
+  })
+}
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
@@ -33,11 +53,14 @@ declare global {
   namespace Cypress {
     interface Chainable {
       mount: typeof mount
+      vueFlow: typeof mountVueFlow
     }
   }
 }
 
 Cypress.Commands.add('mount', mount)
+
+Cypress.Commands.add('vueFlow', mountVueFlow)
 
 // Example use:
 // cy.mount(MyComponent)
