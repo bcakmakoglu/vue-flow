@@ -6,3 +6,6 @@ contact_links:
   - name: ❓ Ask a Question
     url: https://github.com/bcakmakoglu/vue-flow/discussions/new
     about: If you have any questions about how to do something with Vue Flow, ask it here.
+  - name: 🤝 Discord
+    url: https://discord.gg/z4FMpfTugW
+    about: Join the Discord server to chat with the community.
