@@ -5,15 +5,7 @@ import { ConnectionMode } from '../../types'
 import type { HandleProps } from '../../types/handle'
 import { getDimensions } from '../../utils'
 
-const {
-  type = 'source',
-  position = 'top' as Position,
-  connectable = true,
-  id,
-  isValidConnection = function () {
-    return true
-  },
-} = defineProps<HandleProps>()
+const { type = 'source', position = 'top' as Position, connectable = true, id, isValidConnection } = defineProps<HandleProps>()
 
 const { connectionStartHandle, connectionMode, vueFlowRef } = $(useVueFlow())
 
