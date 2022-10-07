@@ -21,7 +21,6 @@ export const createHooks = (): FlowHooks => ({
   miniMapNodeMouseLeave: createEventHook(),
   connect: createEventHook(),
   connectStart: createEventHook(),
-  connectStop: createEventHook(),
   connectEnd: createEventHook(),
   paneReady: createEventHook(),
   move: createEventHook(),

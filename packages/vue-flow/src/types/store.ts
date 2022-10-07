@@ -8,19 +8,12 @@ import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, Viewport, ViewportFunctions } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
-import type { HandleType, StartHandle } from './handle'
+import type { StartHandle } from './handle'
 
 export interface UpdateNodeDimensionsParams {
   id: string
   nodeElement: HTMLDivElement
   forceUpdate?: boolean
-}
-
-export interface StartConnectionParams {
-  connectionPosition: XYPosition
-  connectionNodeId: string
-  connectionHandleId: string | null
-  connectionHandleType: HandleType
 }
 
 export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
@@ -195,11 +188,11 @@ export interface Actions extends ViewportFunctions {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (startHandle: StartHandle, position: XYPosition) => void
+  startConnection: (startHandle: StartHandle, position?: XYPosition, event?: MouseEvent) => void
   /** update connection position */
   updateConnection: (position: XYPosition) => void
   /** end (or cancel) a connection */
-  endConnection: () => void
+  endConnection: (event?: MouseEvent) => void
 
   /** internal position updater, you probably don't want to use this */
   updateNodePositions: UpdateNodePosition
