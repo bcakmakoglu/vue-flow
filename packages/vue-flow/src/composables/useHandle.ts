@@ -1,3 +1,4 @@
+import { isFunction } from '@vueuse/core'
 import useVueFlow from './useVueFlow'
 import { getHostForElement } from '~/utils'
 import type { Connection, Getters, GraphEdge, HandleType, ValidConnectionFunc } from '~/types'
@@ -17,7 +18,7 @@ export const checkElementBelowIsValid = (
   isTarget: boolean,
   nodeId: string,
   handleId: string | null,
-  isValidConnection: ValidConnectionFunc,
+  isValidConnection: ValidConnectionFunc | undefined,
   doc: Document,
   edges: GraphEdge[],
   getNode: Getters['getNode'],
@@ -57,8 +58,11 @@ export const checkElementBelowIsValid = (
       }
 
       result.connection = connection
+
       result.isValid =
-        isValidConnection(connection, { edges, sourceNode: getNode(sourceId)!, targetNode: getNode(targetId)! }) ||
+        (isFunction(isValidConnection)
+          ? isValidConnection(connection, { edges, sourceNode: getNode(sourceId)!, targetNode: getNode(targetId)! })
+          : true) ||
         !result.connection.target ||
         !result.connection.source
     }
@@ -102,14 +106,14 @@ export default () => {
     const doc = getHostForElement(event.target as HTMLElement)
     if (!doc) return
 
-    let validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
+    let validConnectFunc = isValidConnection
 
     const node = getNode(nodeId)
 
     if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
 
     if (!isValidConnection) {
-      if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) ?? (() => true)
+      if (node) validConnectFunc = !isTarget ? node.isValidTargetPos : node.isValidSourcePos
     }
 
     const elementBelow = doc.elementFromPoint(event.clientX, event.clientY)
@@ -179,6 +183,7 @@ export default () => {
 
       const isOwnHandle = connection.source === connection.target
 
+      console.log(isValid)
       if (isValid && !isOwnHandle) {
         if (!onEdgeUpdate) emits.connect(connection)
         else onEdgeUpdate(connection)
