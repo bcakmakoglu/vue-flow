@@ -123,8 +123,9 @@ const Wrapper = defineComponent({
       return h(
         'g',
         {
-          ref: edgeEl,
-          class: [
+          'ref': edgeEl,
+          'data-id': props.id,
+          'class': [
             'vue-flow__edge',
             `vue-flow__edge-${props.name}`,
             {
