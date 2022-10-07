@@ -183,7 +183,6 @@ export default () => {
 
       const isOwnHandle = connection.source === connection.target
 
-      console.log(isValid)
       if (isValid && !isOwnHandle) {
         if (!onEdgeUpdate) emits.connect(connection)
         else onEdgeUpdate(connection)
