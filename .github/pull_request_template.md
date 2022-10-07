@@ -8,13 +8,13 @@
 # 🐛 Fixes
 <!--- Tell us what issues this pr fixes -->
 
-- Issue 1
-- Issue 2
-- ...
+- [ ] #Issue1
+- [ ] #Issue2
+- [ ] ...
 
 # 🪴 To-Dos
 <!--- Tell us if there are To-Dos left -->
 
 - [ ] To-Do 1
-- [ ] To-Do 1
+- [ ] To-Do 2
 - ...
