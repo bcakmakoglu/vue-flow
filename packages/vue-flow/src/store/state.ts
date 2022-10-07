@@ -82,12 +82,9 @@ const defaultState = (): State => ({
     type: ConnectionLineType.Bezier,
     style: {},
   },
-  connectionNodeId: null,
-  connectionHandleId: null,
-  connectionHandleType: null,
-  connectionPosition: { x: NaN, y: NaN },
   connectionMode: ConnectionMode.Loose,
   connectionStartHandle: null,
+  connectionPosition: { x: NaN, y: NaN },
   connectOnClick: true,
 
   snapGrid: [15, 15],

@@ -123,15 +123,17 @@ export default () => {
 
     const containerBounds = vueFlowRef.getBoundingClientRect()
 
-    startConnection({
-      connectionPosition: {
+    startConnection(
+      {
+        nodeId,
+        handleId,
+        type: handleType,
+      },
+      {
         x: event.clientX - containerBounds.left,
         y: event.clientY - containerBounds.top,
       },
-      connectionNodeId: nodeId,
-      connectionHandleId: handleId,
-      connectionHandleType: handleType,
-    })
+    )
 
     emits.connectStart({ event, nodeId, handleId, handleType })
 

@@ -67,11 +67,6 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   multiSelectionKeyCode: KeyFilter
   zoomActivationKeyCode: KeyFilter
 
-  // todo: remove these and just use connection start handle
-  connectionNodeId: string | null
-  connectionHandleId: string | null
-  connectionHandleType: HandleType | null
-  connectionPosition: XYPosition
   connectionMode: ConnectionMode
   connectionLineOptions: ConnectionLineOptions
   /** @deprecated use {@link ConnectionLineOptions.type} */
@@ -79,6 +74,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle: CSSProperties | null
   connectionStartHandle: StartHandle | null
+  connectionPosition: XYPosition
 
   connectOnClick: boolean
   edgeUpdaterRadius: number
@@ -199,7 +195,7 @@ export interface Actions extends ViewportFunctions {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (params: StartConnectionParams) => void
+  startConnection: (startHandle: StartHandle, position: XYPosition) => void
   /** update connection position */
   updateConnection: (position: XYPosition) => void
   /** end (or cancel) a connection */
