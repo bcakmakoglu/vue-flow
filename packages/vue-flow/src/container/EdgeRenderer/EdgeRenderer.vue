@@ -15,9 +15,8 @@ const {
   connectionMode,
   edgeUpdaterRadius,
   onPaneReady,
-  connectionNodeId,
+  connectionStartHandle,
   nodesConnectable,
-  connectionHandleType,
   edgesUpdatable,
   elementsSelectable,
   getSelectedNodes,
@@ -38,21 +37,24 @@ const updatable = (u?: EdgeUpdatable) => (typeof u === 'undefined' ? edgesUpdata
 const updating = ref<string>()
 
 const sourceNode = $(
-  controlledComputed($$(connectionNodeId), () => {
-    if (connectionNodeId) return getNode(connectionNodeId)
-    return false
-  }),
+  controlledComputed(
+    () => connectionStartHandle?.nodeId,
+    () => {
+      if (connectionStartHandle?.nodeId) return getNode(connectionStartHandle.nodeId)
+      return false
+    },
+  ),
 )
 
 const connectionLineVisible = $(
   controlledComputed(
-    $$(connectionNodeId),
+    () => connectionStartHandle?.nodeId,
     () =>
       !!(
         sourceNode &&
         (typeof sourceNode.connectable === 'undefined' ? nodesConnectable : sourceNode.connectable) &&
-        connectionNodeId &&
-        connectionHandleType
+        connectionStartHandle?.nodeId &&
+        connectionStartHandle?.type
       ),
   ),
 )

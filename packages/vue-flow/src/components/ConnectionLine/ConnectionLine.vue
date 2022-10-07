@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getBezierPath, getSmoothStepPath } from '../Edges/utils'
-import type { GraphNode, HandleElement, HandleType } from '../../types'
+import type { GraphNode, HandleElement } from '../../types'
 import { ConnectionLineType, Position } from '../../types'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
@@ -12,12 +12,10 @@ const { sourceNode } = defineProps<{
 
 const {
   getNodes,
-  connectionHandleId,
-  connectionHandleType,
+  connectionStartHandle,
   connectionPosition,
   connectionLineType,
   connectionLineStyle,
-  connectionNodeId,
   connectionLineOptions,
   viewport,
 } = $(useVueFlow())
@@ -26,10 +24,14 @@ const slots = inject(Slots)?.['connection-line']
 
 const hasSlot = slots?.({})
 
+const handleId = connectionStartHandle!.handleId
+const nodeId = connectionStartHandle!.nodeId
+const type = connectionStartHandle!.type
+
 const sourceHandle =
-  connectionHandleId && connectionHandleType
-    ? sourceNode.handleBounds[connectionHandleType as HandleType]?.find((d: HandleElement) => d.id === connectionHandleId)
-    : connectionHandleType && sourceNode.handleBounds[(connectionHandleType as HandleType) ?? 'source']?.[0]
+  handleId && type
+    ? sourceNode.handleBounds[type]?.find((d: HandleElement) => d.id === handleId)
+    : type && sourceNode.handleBounds[type ?? 'source']?.[0]
 
 const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2
 const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height
