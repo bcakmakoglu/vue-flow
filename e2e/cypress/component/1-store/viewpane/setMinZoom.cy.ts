@@ -22,10 +22,10 @@ describe('Store Action: `setMinZoom`', () => {
 
   it('sets min-zoom in viewpane', () => {
     cy.viewPort().trigger('wheel', {
-      deltaY: 100,
-      wheelDelta: 1000,
-      wheelDeltaX: 1000,
-      wheelDeltaY: 1000,
+      deltaY: 10000,
+      wheelDelta: 0,
+      wheelDeltaX: 0,
+      wheelDeltaY: 0,
       bubbles: true,
     })
 
