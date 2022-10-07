@@ -2,7 +2,7 @@ import { isRef } from 'vue'
 import type { State } from '@braks/vue-flow'
 import { useVueFlow } from '@braks/vue-flow'
 
-describe('test store state', () => {
+describe('Store Action: `setState`', () => {
   let store = useVueFlow()
 
   const initial = useVueFlow({ id: 'initial' })
