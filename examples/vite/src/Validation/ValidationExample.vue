@@ -19,7 +19,6 @@ const { nodes, edges, addEdges } = useVueFlow({
 })
 const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
 const onConnectStart = ({ nodeId, handleType }: OnConnectStartParams) => console.log('on connect start', { nodeId, handleType })
-const onConnectStop = (event: MouseEvent) => console.log('on connect stop', event)
 const onConnectEnd = (event: MouseEvent) => console.log('on connect end', event)
 
 const onConnect = (params: Connection) => {
@@ -35,7 +34,6 @@ const onConnect = (params: Connection) => {
     @connect="onConnect"
     @pane-ready="onLoad"
     @connect-start="onConnectStart"
-    @connect-stop="onConnectStop"
     @connect-end="onConnectEnd"
   >
     <template #node-custominput="props">

@@ -358,18 +358,27 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges)
 
-  const startConnection: Actions['startConnection'] = (startHandle, position) => {
+  const startConnection: Actions['startConnection'] = (startHandle, position, event) => {
     state.connectionStartHandle = startHandle
-    state.connectionPosition = position
+
+    if (position) state.connectionPosition = position
+
+    state.hooks.connectStart.trigger({
+      event,
+      nodeId: startHandle.nodeId,
+      handleId: startHandle.handleId,
+      handleType: startHandle.type,
+    })
   }
 
   const updateConnection: Actions['updateConnection'] = (position) => {
     state.connectionPosition = position
   }
 
-  const endConnection: Actions['endConnection'] = () => {
+  const endConnection: Actions['endConnection'] = (event) => {
     state.connectionPosition = { x: NaN, y: NaN }
     state.connectionStartHandle = null
+    state.hooks.connectEnd.trigger(event)
   }
 
   const setState: Actions['setState'] = (options) => {

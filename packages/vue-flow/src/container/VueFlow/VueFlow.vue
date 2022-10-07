@@ -64,11 +64,10 @@ const emit = defineEmits<{
   (
     event: 'connectStart',
     connectionEvent: {
-      event: MouseEvent
+      event?: MouseEvent
     } & OnConnectStartParams,
   ): void
-  (event: 'connectStop', connectionEvent: MouseEvent): void
-  (event: 'connectEnd', connectionEvent: MouseEvent): void
+  (event: 'connectEnd', connectionEvent?: MouseEvent): void
   (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
   (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
   (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
