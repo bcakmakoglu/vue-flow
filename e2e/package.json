@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "cypress run-ct",
-    "open": "cypress open-ct"
+    "test": "cypress run --component",
+    "open": "cypress open"
   },
   "dependencies": {
     "@braks/vue-flow": "workspace:*"
