@@ -45,6 +45,10 @@ const mountVueFlow = (props?: FlowProps, attrs?: Record<string, any>) => {
   })
 }
 
+const useViewPort = () => cy.get('.vue-flow__viewport')
+
+const useTransformationPane = () => cy.get('.vue-flow__transformationpane')
+
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
@@ -54,6 +58,8 @@ declare global {
     interface Chainable {
       mount: typeof mount
       vueFlow: typeof mountVueFlow
+      viewPort: typeof useViewPort
+      transformationPane: typeof useTransformationPane
     }
   }
 }
@@ -61,6 +67,10 @@ declare global {
 Cypress.Commands.add('mount', mount)
 
 Cypress.Commands.add('vueFlow', mountVueFlow)
+
+Cypress.Commands.add('viewPort', useViewPort)
+
+Cypress.Commands.add('transformationPane', useTransformationPane)
 
 // Example use:
 // cy.mount(MyComponent)
