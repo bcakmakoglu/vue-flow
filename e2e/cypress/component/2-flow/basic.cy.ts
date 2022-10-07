@@ -2,7 +2,7 @@ import { getElements } from '../../utils'
 
 const { nodes, edges } = getElements()
 
-describe('render Vue Flow', () => {
+describe('Render Basic Example', () => {
   beforeEach(() => {
     cy.vueFlow({
       modelValue: [...nodes, ...edges],
