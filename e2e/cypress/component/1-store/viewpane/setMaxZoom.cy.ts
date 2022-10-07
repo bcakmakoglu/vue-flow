@@ -22,7 +22,7 @@ describe('Store Action: `setMaxZoom`', () => {
 
   it('sets max-zoom in viewpane', () => {
     cy.viewPort().trigger('wheel', {
-      deltaY: -1000,
+      deltaY: -10000,
       wheelDelta: 0,
       wheelDeltaX: 0,
       wheelDeltaY: 0,
