@@ -3,7 +3,7 @@ import { getElements } from '../../../../utils'
 
 const { nodes } = getElements()
 
-describe('Store Action: `setMinZoom`', () => {
+describe('Store Action: `setMaxZoom`', () => {
   const store = useVueFlow({ id: 'test' })
 
   beforeEach(() => {
