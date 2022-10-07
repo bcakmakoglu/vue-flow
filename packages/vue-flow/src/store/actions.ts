@@ -358,11 +358,9 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges)
 
-  const startConnection: Actions['startConnection'] = (params) => {
-    state.connectionPosition = params.connectionPosition
-    state.connectionNodeId = params.connectionNodeId
-    state.connectionHandleId = params.connectionHandleId
-    state.connectionHandleType = params.connectionHandleType
+  const startConnection: Actions['startConnection'] = (startHandle, position) => {
+    state.connectionStartHandle = startHandle
+    state.connectionPosition = position
   }
 
   const updateConnection: Actions['updateConnection'] = (position) => {
@@ -371,9 +369,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
   const endConnection: Actions['endConnection'] = () => {
     state.connectionPosition = { x: NaN, y: NaN }
-    state.connectionNodeId = null
-    state.connectionHandleId = null
-    state.connectionHandleType = null
+    state.connectionStartHandle = null
   }
 
   const setState: Actions['setState'] = (options) => {
