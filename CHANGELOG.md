@@ -2,6 +2,83 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.41] - 2022-10-07
+
+[247f248](247f248de39a88f78baffa2785cd22e2f5600854)...[8fc28f9](8fc28f9b9c9d062dd053590a9bcd206c7845d080)
+
+### Bug Fixes
+
+- Use resize observer to set viewpane dimensions ([a8d0830](a8d0830dcd4c173e214e6fc5ab22981f74949b31))
+- Calculate proper dimensions for view el ([55e4403](55e44030b389969406aa5bdf8d6b35d9b794e5bc))
+- Edge-renderer to update on edge updates ([8c0982a](8c0982a7f3ad715236c074d53f8d5a1a3e3d0e81))
+- Use filter to remove orphaned edges ([1ad6073](1ad6073699c13685940e8f72b5bddd14e6ae5db3))
+- Interrupt edge hidden check if orphaned edge found ([d7282cc](d7282cc572e269aea6af27f1aa50bd7dac2ad1e3))
+- Move resize observer to mounted hooks ([de6220b](de6220b3b32c6e8fe9b08f1ea2cca6a58d5f527a))
+- Undo handle validation wrapping itself ([f508e6e](f508e6e571349ae5f3b291178e5a6eb92ea8f998))
+- Zoom action tests to check for containing str ([72dd98b](72dd98b4641be985a22eae48792caaef2501f7ab))
+- Check if element exists in isNode/Edge ([fc263a6](fc263a6814c83452bb3c0f1630d998eae373066e))
+
+### Documentation
+
+- Add blobity opensource license key ([d118888](d1188887c926bbca06b56e6bf7e22daf963bcaec))
+- Fix typo ([78f35d5](78f35d516a36a908f22db6eb387596f91fb09be7))
+- Use removeEdges in custom edge ([fe918c0](fe918c0bd81ad3c9ee076fe0c7a30cd7cba204ec))
+
+### Features
+
+- Add from position to position change event ([a29d7c8](a29d7c86f050bcdf976577699b37df76fcef2d71))
+- Add useNode composable ([70871df](70871df469221daaef393ddefc17b7907d39f43c))
+- Add nodeRef injection ([7d992b5](7d992b5ed755db2d42ba3100b88f110dac4e946d))
+- Add generics to findNode action ([9b943df](9b943df61a50bde05c3ef83547c3955ef1dcc999))
+- Add useEdge composable ([44a65b3](44a65b3bbb57cc33b7aec7a6c597b59fcbc00d7d))
+- Add connection actions to store ([b0c168f](b0c168fff71b1b1d6eaa89310b835c165352da9b))
+- Add vue flow mount command ([dc30ef4](dc30ef4805ab5b97b16565ec4763e7366c6d85a6))
+- Add default command timeout of 1000 ([e81bea1](e81bea1637f7394e47acb776070c61729c702a3d))
+- Add tests for add, find & remove actions ([9f59be7](9f59be7afaaba718633de4db3cb6275c514d8c8e))
+- Add selected elements action tests ([cc4a007](cc4a007254d4eeba394c522eceb38cdf32e74175))
+- Add remove selected elements action tests ([e3327eb](e3327ebea37291da0546f441147d693078d8f188))
+- Add set min/max zoom action tests ([3770083](37700836185cd87f99a1683c5b761ad0ad98e658))
+- Add update edge test ([fa5b5da](fa5b5da7404c9abe618baed56a78e9fdc6a075a7))
+- Add data-id prop to edges ([3461602](3461602c2ce60a6180b8e54dc3c12fdbc5ce745d))
+- Add connection line action tests ([9fde0bc](9fde0bc1af3826b278e0d0af4d9a2109cff7f719))
+- Add dragging nodes test ([63dae2c](63dae2cd05d028a4d53f1864f92b4107f183ad4d))
+- Add connecting nodes test ([e429fdf](e429fdf6c289357d3c19c7e267d3945e12f174cc))
+- Add update edge tests ([1526ecd](1526ecd1f1772d9a852e5cee95ed01c3a398c968))
+- Add data-type to edge anchors ([9cea132](9cea1326deaf2c033faa754a591a44d2f1a302dd))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([7789d6e](7789d6e006388917daacf34bfdb4d715eb95cb4a))
+- Remove unused imports ([723a03b](723a03bca1e12479a04f945edce5bb9863a5248c))
+- Force dimensions update on type change ([00059aa](00059aabab92565c52663194e0861c552da1f21a))
+- Use enum in Marker.vue ([a840a5c](a840a5cf58d7d5e656841ec8533e71f4ccd8600b))
+- Cleanup ([f0f24ce](f0f24cee5cd01ae0819d77ec64203d65075e3518))
+- Remove log ([bb7a0ba](bb7a0ba50a8d442ba22e7f3b52a1c8b390f3ea78))
+- Lint ([8199a1c](8199a1c921252ebee70d9cca7ef88a648e46ce6d))
+- Update message ([39d0a1c](39d0a1c886b4c20e7749655946f57acc425d7c39))
+- Update deps ([78c8bc7](78c8bc7a34d3ec159ab9cc151619c2bf16470da5))
+- Correct edge text ref name ([09476f0](09476f061b9938cf4393442a9601cf75fcfa633f))
+- Update cypress scripts ([8ee8996](8ee8996be9954f645b3e3db1b45d2ed33d7feb53))
+- Update test vite conf ([c5291e7](c5291e7ab13bf396b5e87552e8cfaf5f603033f1))
+- Cleanup ([f1abfc6](f1abfc6ac01893a4ebb3ab952e358c7874c2eb8c))
+- Increase wheel delta ([d7ce835](d7ce8350992d186a5ae1cc7f389afd4710968bb9))
+- Bump version ([8fc28f9](8fc28f9b9c9d062dd053590a9bcd206c7845d080))
+
+### Refactor
+
+- Use dom matrix to calculate handle bounds zoom ([ee56ddb](ee56ddb0cf1e938b78b272833284d0424c8c0aa0))
+- Only update position on mount ([70dd73f](70dd73fb3accd75519b20751f17fc29bac2460c3))
+- Cleanup handle calculation logic ([31b0bcb](31b0bcb83a8125cf9827cea713e170deae791d95))
+- Use single resize observer for nodes ([a780813](a780813fdbe9b813f580840d4eef460f299e321b))
+- Remove unnecessary scope ([bf7594f](bf7594fdbbf71dc92ede4af30b4381eadd24e89a))
+- Remove flush timing from drag ([091c3df](091c3dff31953c5b461416d6ab8b72b58c918deb))
+- Make handlebounds shallow reactive ([726471c](726471c114a88111146f98f9944b7eea89bccedf))
+- Calculate bounds on mount ([1d1447e](1d1447ed10d780896765fe5899b1f6e947993ff0))
+- Use connection start handle and remove other props from store ([a443d38](a443d38f123f8853f5505412b2ef8b1be1104a75))
+- Emit connection events start and end with actions ([7a657f1](7a657f141aca9ef756edb5c752a00953056f4ba8))
+- Upgrade to cypress 10 ([8928eb8](8928eb899b5846c6824158f6d1c5b34b3c51a9b9))
+- Move test files ([6e0c0c7](6e0c0c77688c9e19007e4b5c5b76569470341f93))
+
 ## [0.4.40] - 2022-09-14
 
 [f7c18df](f7c18df48a2339e75c32510c34bdc8f900009e8f)...[247f248](247f248de39a88f78baffa2785cd22e2f5600854)
