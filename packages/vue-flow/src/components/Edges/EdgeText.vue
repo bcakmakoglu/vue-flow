@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { EdgeTextProps } from '../../types/components'
-import type { Rect } from '../../types'
+import type { Rect as RectType } from '../../types'
 
 const {
   x,
@@ -13,12 +13,12 @@ const {
   labelBgBorderRadius = 2,
 } = defineProps<EdgeTextProps>()
 
-const edgeRef = templateRef<SVGTextElement>('el', null)
+const edgeRef = ref<SVGTextElement>()
 
-let box = $ref<Rect>({ x: 0, y: 0, width: 0, height: 0 })
+let box = $ref<RectType>({ x: 0, y: 0, width: 0, height: 0 })
 
 onMounted(() => {
-  box = edgeRef.value.getBBox()
+  box = edgeRef.value!.getBBox()
 })
 
 const transform = computed(() => `translate(${x - box.width / 2} ${y - box.height / 2})`)

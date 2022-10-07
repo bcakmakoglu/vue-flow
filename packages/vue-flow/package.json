@@ -38,7 +38,7 @@
     "vue": "^3.2.25"
   },
   "dependencies": {
-    "@vueuse/core": "^9.1.0",
+    "@vueuse/core": "^9.3.0",
     "d3-drag": "^3.0.0",
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0"
@@ -57,9 +57,9 @@
     "typescript-transform-paths": "^3.3.1",
     "unplugin-auto-import": "^0.11.2",
     "vite": "^2.9.15",
-    "vite-plugin-vue-type-imports": "^0.2.0",
+    "vite-plugin-vue-type-imports": "0.2.0",
     "vite-svg-loader": "^3.4.0",
-    "vue-tsc": "^0.38.9"
+    "vue-tsc": "^0.40.13"
   },
   "publishConfig": {
     "access": "public",
