@@ -88,7 +88,7 @@ onNodeDoubleClick(({ node }) => {
     let stopHandle
 
     const output = useTransition(initialPos, {
-      duration: 4000,
+      duration: Math.floor(totalLength / 2 / 100) * 1000,
       transition: TransitionPresets.easeOutCubic,
       onFinished: () => {
         stopHandle?.()
