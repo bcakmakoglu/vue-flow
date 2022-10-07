@@ -180,10 +180,11 @@ const Wrapper = defineComponent({
                       onMouseout: onEdgeUpdaterMouseOut,
                     },
                     h(EdgeAnchor, {
-                      position: sourcePosition,
-                      centerX: sourceX,
-                      centerY: sourceY,
-                      radius: props.edgeUpdaterRadius,
+                      'position': sourcePosition,
+                      'centerX': sourceX,
+                      'centerY': sourceY,
+                      'radius': props.edgeUpdaterRadius,
+                      'data-type': 'source',
                     }),
                   ),
                 ]
@@ -198,10 +199,11 @@ const Wrapper = defineComponent({
                       onMouseout: onEdgeUpdaterMouseOut,
                     },
                     h(EdgeAnchor, {
-                      position: targetPosition,
-                      centerX: targetX,
-                      centerY: targetY,
-                      radius: props.edgeUpdaterRadius,
+                      'position': targetPosition,
+                      'centerX': targetX,
+                      'centerY': targetY,
+                      'radius': props.edgeUpdaterRadius,
+                      'data-type': 'target',
                     }),
                   ),
                 ]
