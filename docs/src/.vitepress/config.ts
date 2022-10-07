@@ -62,9 +62,9 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       Components({
         dirs: [resolve(__dirname, './../../components')],
         deep: true,
-        // allow auto load markdown components under `./src/components/`
+        // allow to autoload markdown components under `./src/components/`
         extensions: ['vue', 'md'],
-        // allow auto import and register components used in markdown
+        // allow auto-import and register components used in markdown
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
         dts: resolve(__dirname, '../components.d.ts'),
         resolvers: [IconsResolver()],
@@ -173,6 +173,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Horizontal Flow', link: '/examples/horizontal' },
             { text: 'Interactions', link: '/examples/interaction' },
             { text: 'Teleport', link: '/examples/teleport' },
+            { text: 'Transition', link: '/examples/transition' },
             { text: 'Multiple Flows', link: '/examples/multi' },
             { text: 'Pinia', link: '/examples/pinia' },
             { text: 'Stress', link: '/examples/stress' },

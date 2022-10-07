@@ -7,7 +7,7 @@ import { nextTick, ref } from 'vue'
  * Animations that resize a node need to call the `updateNodeDimensions` function from store to update node handle positions
  * Otherwise edges do not connect properly
  */
-export const useTransition = (id) => {
+export const useTeleport = (id) => {
   const animation = ref('fade')
   const transition = ref(false)
   const teleport = ref(null)

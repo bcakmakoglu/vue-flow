@@ -15,6 +15,7 @@ import { InteractionApp, InteractionCSS, InteractionControls } from './interacti
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
 import { HorizontalApp, HorizontalElements } from './horizontal'
 import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
+import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
 
 export const exampleImports = {
   basic: {
@@ -96,5 +97,15 @@ export const exampleImports = {
     'TeleportableNode.vue': TeleportableNode,
     'useTransition.js': TeleportableUseTransition,
     'style.css': TeleportCSS,
+  },
+  transition: {
+    'App.vue': TransitionApp,
+    'TransitionEdge.vue': TransitionEdge,
+    'style.css': TransitionCSS,
+    'additionalImports': {
+      '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@9.3.0/index.mjs',
+      '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@9.3.0/index.mjs',
+      'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@0.13.11/lib/index.mjs',
+    },
   },
 }

@@ -1,6 +1,6 @@
 <script setup>
 import { Handle, Position } from '@braks/vue-flow'
-import { useTransition } from './useTransition.js'
+import { useTeleport } from './useTransition.js'
 
 const props = defineProps({
   id: {
@@ -9,7 +9,7 @@ const props = defineProps({
   },
 })
 
-const { animation, transition, teleport, onClick } = useTransition(props.id)
+const { animation, transition, teleport, onClick } = useTeleport(props.id)
 
 const changeAnimation = () => {
   animation.value = animation.value === 'fade' ? 'shrink' : 'fade'

@@ -47,8 +47,9 @@ watchEffect(
 
 const files: any = {}
 const imports = exampleImports[props.example]
+const additionalImports = 'additionalImports' in imports ? imports.additionalImports : {}
 
-for (const example of Object.keys(imports)) {
+for (const example of Object.keys(imports).filter((i) => i !== 'additionalImports')) {
   if (example.includes('css')) {
     css += `${imports[example as keyof typeof imports]}`
   } else {
@@ -71,6 +72,7 @@ onMounted(async () => {
   store.setImportMap({
     imports: {
       '@braks/vue-flow': `${location.origin}/vue-flow.es.js`,
+      ...additionalImports,
     },
   })
 })
