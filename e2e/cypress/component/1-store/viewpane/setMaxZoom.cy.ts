@@ -29,6 +29,9 @@ describe('Store Action: `setMaxZoom`', () => {
       bubbles: true,
     })
 
-    cy.transformationPane().should('have.css', 'transform', 'matrix(2, 0, 0, 2, -800, -236)')
+    cy.transformationPane().then(($el) => {
+      const transform = $el.css('transform')
+      expect(transform).to.contain('matrix(2,')
+    })
   })
 })
