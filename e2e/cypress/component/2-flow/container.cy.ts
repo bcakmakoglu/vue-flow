@@ -1,21 +1,11 @@
-import { VueFlow } from '@braks/vue-flow'
 import { getElements } from '../../utils'
 
 const { nodes, edges } = getElements()
 
 describe('render Vue Flow', () => {
   beforeEach(() => {
-    cy.mount(VueFlow, {
-      props: {
-        modelValue: [...nodes, ...edges],
-      },
-      attrs: {
-        key: 'flowy',
-        style: {
-          height: '100vh',
-          width: '100vw',
-        },
-      },
+    cy.vueFlow({
+      modelValue: [...nodes, ...edges],
     })
   })
 
