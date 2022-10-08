@@ -23,12 +23,12 @@ describe('Store Action: `removeSelectedNodes`', () => {
   })
 
   it('removes selected nodes from store', () => {
-    expect(store.getSelectedNodes.value).to.have.length(randomNumber2)
+    expect(store.getSelectedNodes.value).to.have.length(randomNumber - randomNumber2)
   })
 
   it('removes `selected` class from nodes', () => {
     cy.get('.vue-flow__node').then((nodes) => {
-      expect(nodes[randomNumber2 - 1]).to.have.class('selected')
+      expect(nodes[randomNumber2 - 1]).to.not.have.class('selected')
     })
   })
 })
