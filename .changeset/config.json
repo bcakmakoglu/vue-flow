@@ -3,7 +3,7 @@
   "changelog": ["@changesets/changelog-github", { "repo": "bcakmakoglu/vue-flow" }],
   "fixed": [],
   "updateInternalDependencies": "patch",
-  "ignore": [],
+  "ignore": ["docs", "tests", "nuxt3-examples", "quasar-examples", "vite-examples"],
   "commit": false,
   "linked": [],
   "access": "public",
