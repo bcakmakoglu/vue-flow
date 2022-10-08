@@ -24,9 +24,9 @@ const defaultHeight = 150
 
 const { edges, viewport, dimensions, emits, getNodes } = useVueFlow()
 
-const elementWidth = $computed(() => width ?? attrs.style?.width ?? defaultWidth)
+const elementWidth = computed(() => width ?? attrs.style?.width ?? defaultWidth)
 
-const elementHeight = $computed(() => height ?? attrs.style?.height ?? defaultHeight)
+const elementHeight = computed(() => height ?? attrs.style?.height ?? defaultHeight)
 
 const nodeColorFunc: MiniMapNodeFunc = nodeColor instanceof Function ? nodeColor : () => nodeColor as string
 
@@ -37,45 +37,43 @@ const nodeClassNameFunc = nodeClassName instanceof Function ? nodeClassName : ((
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
-const bb = $computed(() => getRectOfNodes(getNodes.value))
+const bb = computed(() => getRectOfNodes(getNodes.value))
 
-const viewBB = $computed(() => ({
+const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
   y: -viewport.value.y / viewport.value.zoom,
   width: dimensions.value.width / viewport.value.zoom,
   height: dimensions.value.height / viewport.value.zoom,
 }))
 
-const viewBox = $(
-  controlledComputed($$(viewBB), () => {
-    const boundingRect = getNodes && getNodes.value.length ? getBoundsofRects(bb, viewBB) : viewBB
-    const scaledWidth = boundingRect.width / elementWidth
-    const scaledHeight = boundingRect.height / elementHeight
-    const viewScale = Math.max(scaledWidth, scaledHeight)
-    const viewWidth = viewScale * elementWidth
-    const viewHeight = viewScale * elementHeight
-    const offset = 5 * viewScale
-    return {
-      offset,
-      x: boundingRect.x - (viewWidth - boundingRect.width) / 2 - offset,
-      y: boundingRect.y - (viewHeight - boundingRect.height) / 2 - offset,
-      width: viewWidth + offset * 2,
-      height: viewHeight + offset * 2,
-    }
-  }),
-)
+const viewBox = computed(() => {
+  const boundingRect = getNodes && getNodes.value.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value
+  const scaledWidth = boundingRect.width / elementWidth.value
+  const scaledHeight = boundingRect.height / elementHeight.value
+  const viewScale = Math.max(scaledWidth, scaledHeight)
+  const viewWidth = viewScale * elementWidth.value
+  const viewHeight = viewScale * elementHeight.value
+  const offset = 5 * viewScale
+  return {
+    offset,
+    x: boundingRect.x - (viewWidth - boundingRect.width) / 2 - offset,
+    y: boundingRect.y - (viewHeight - boundingRect.height) / 2 - offset,
+    width: viewWidth + offset * 2,
+    height: viewHeight + offset * 2,
+  }
+})
 
-const d = controlledComputed($$(viewBox), () => {
-  if (viewBox.x && viewBox.y) {
+const d = computed(() => {
+  if (viewBox.value.x && viewBox.value.y) {
     return `
-    M${viewBox.x - viewBox.offset},${viewBox.y - viewBox.offset}
-    h${viewBox.width + viewBox.offset * 2}
-    v${viewBox.height + viewBox.offset * 2}
-    h${-viewBox.width - viewBox.offset * 2}z
-    M${viewBB.x},${viewBB.y}
-    h${viewBB.width}
-    v${viewBB.height}
-    h${-viewBB.width}z`
+    M${viewBox.value.x - viewBox.value.offset},${viewBox.value.y - viewBox.value.offset}
+    h${viewBox.value.width + viewBox.value.offset * 2}
+    v${viewBox.value.height + viewBox.value.offset * 2}
+    h${-viewBox.value.width - viewBox.value.offset * 2}z
+    M${viewBB.value.x},${viewBB.value.y}
+    h${viewBB.value.width}
+    v${viewBB.value.height}
+    h${-viewBB.value.width}z`
   } else {
     return ''
   }
