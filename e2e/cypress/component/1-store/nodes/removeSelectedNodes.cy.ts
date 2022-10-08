@@ -1,4 +1,4 @@
-import { useVueFlow } from '@braks/vue-flow'
+import { isNode, useVueFlow } from '@braks/vue-flow'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
@@ -27,8 +27,25 @@ describe('Store Action: `removeSelectedNodes`', () => {
   })
 
   it('removes `selected` class from nodes', () => {
-    cy.get('.vue-flow__node').then((nodes) => {
-      expect(nodes[randomNumber2 - 1]).to.not.have.class('selected')
+    cy.get('.vue-flow__node').then((els) => {
+      els.each((index, node) => {
+        const nodeId = node.getAttribute('data-id')
+        const storedNode = store.findNode(nodeId!)
+
+        expect(storedNode && isNode(storedNode)).to.eq(true)
+
+        if (index >= randomNumber2 && index < randomNumber) {
+          expect(!!storedNode?.selected).to.eq(true)
+          cy.wait(1).then(() => {
+            expect(node).to.have.class('selected')
+          })
+        } else {
+          expect(!!storedNode?.selected).to.eq(false)
+          cy.wait(1).then(() => {
+            expect(node).to.not.have.class('selected')
+          })
+        }
+      })
     })
   })
 })
