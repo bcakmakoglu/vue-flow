@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { Connection, Edge, Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { ConnectionMode, Controls, VueFlow, addEdge, updateEdge } from '@vue-flow/core'
+import { ConnectionMode, VueFlow, addEdge, updateEdge } from '@vue-flow/core'
+import { Controls } from '@vue-flow/additional-components'
 
 const initialElements: Elements = [
   {

@@ -1,5 +1,6 @@
 <script setup>
-import { Background, BackgroundVariant, VueFlow } from '@vue-flow/core'
+import { Background, BackgroundVariant, Controls, MiniMap } from '@vue-flow/additional-components'
+import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 import CustomConnectionLine from './CustomConnectionLine.vue'
 

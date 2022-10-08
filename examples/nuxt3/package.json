@@ -9,6 +9,7 @@
     "dev": "nuxt dev"
   },
   "dependencies": {
+    "@vue-flow/additional-components": "workspace:*",
     "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {

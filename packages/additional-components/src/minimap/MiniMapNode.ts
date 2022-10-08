@@ -1,5 +1,5 @@
 import type { CSSProperties, FunctionalComponent } from 'vue'
-import type { MiniMapNodeProps } from '~/types'
+import type { MiniMapNodeProps } from './types'
 
 const MiniMapNode: FunctionalComponent<MiniMapNodeProps> = function (
   {

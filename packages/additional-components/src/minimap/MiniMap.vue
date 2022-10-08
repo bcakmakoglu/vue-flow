@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { GraphNode, MiniMapNodeFunc, ShapeRendering } from '../../types'
-import { useVueFlow, useWindow } from '../../composables'
-import { getBoundsofRects, getConnectedEdges, getRectOfNodes } from '../../utils'
-import type { MiniMapProps } from '../../types/components'
+import type { GraphNode } from '@vue-flow/core'
+import { getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
+import type { MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
 
 const {
@@ -20,12 +19,10 @@ const emit = defineEmits(['nodeClick', 'nodeDblclick', 'nodeMouseenter', 'nodeMo
 
 const attrs: Record<string, any> = useAttrs()
 
-const window = useWindow()
-
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { edges, viewport, dimensions, emits, getNodes } = $(useVueFlow())
+const { edges, viewport, dimensions, emits, getNodes } = useVueFlow()
 
 const elementWidth = $computed(() => width ?? attrs.style?.width ?? defaultWidth)
 
@@ -40,20 +37,18 @@ const nodeClassNameFunc = nodeClassName instanceof Function ? nodeClassName : ((
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
-const bb = $computed(() => {
-  return getRectOfNodes(getNodes)
-})
+const bb = $computed(() => getRectOfNodes(getNodes.value))
 
 const viewBB = $computed(() => ({
-  x: -viewport.x / viewport.zoom,
-  y: -viewport.y / viewport.zoom,
-  width: dimensions.width / viewport.zoom,
-  height: dimensions.height / viewport.zoom,
+  x: -viewport.value.x / viewport.value.zoom,
+  y: -viewport.value.y / viewport.value.zoom,
+  width: dimensions.value.width / viewport.value.zoom,
+  height: dimensions.value.height / viewport.value.zoom,
 }))
 
 const viewBox = $(
   controlledComputed($$(viewBB), () => {
-    const boundingRect = getNodes && getNodes.length ? getBoundsofRects(bb, viewBB) : viewBB
+    const boundingRect = getNodes && getNodes.value.length ? getBoundsofRects(bb, viewBB) : viewBB
     const scaledWidth = boundingRect.width / elementWidth
     const scaledHeight = boundingRect.height / elementHeight
     const viewScale = Math.max(scaledWidth, scaledHeight)
@@ -87,31 +82,31 @@ const d = controlledComputed($$(viewBox), () => {
 })
 
 const onNodeClick = (event: MouseEvent, node: GraphNode) => {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeClick(param)
   emit('nodeClick', param)
 }
 
 const onNodeDblClick = (event: MouseEvent, node: GraphNode) => {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeDoubleClick(param)
   emit('nodeDblclick', param)
 }
 
 const onNodeMouseEnter = (event: MouseEvent, node: GraphNode) => {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseEnter(param)
   emit('nodeMouseenter', param)
 }
 
 const onNodeMouseMove = (event: MouseEvent, node: GraphNode) => {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseMove(param)
   emit('nodeMousemove', param)
 }
 
 const onNodeMouseLeave = (event: MouseEvent, node: GraphNode) => {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges) }
+  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseLeave(param)
   emit('nodeMouseleave', param)
 }

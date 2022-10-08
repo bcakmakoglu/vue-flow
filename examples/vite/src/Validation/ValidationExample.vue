@@ -4,7 +4,7 @@ import { VueFlow, useVueFlow } from '@vue-flow/core'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
 
-const { nodes, edges, addEdges } = useVueFlow({
+const { addEdges } = useVueFlow({
   nodes: [
     { id: '0', type: 'custominput', position: { x: 0, y: 150 }, isValidTargetPos: (connection) => connection.target === 'B' },
     {

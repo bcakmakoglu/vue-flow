@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { BackgroundVariant } from '../../types'
-import { useVueFlow } from '../../composables'
-import type { BackgroundProps } from '../../types/components'
+import { useVueFlow } from '@vue-flow/core'
+import { BackgroundVariant } from './types'
+import type { BackgroundProps } from './types'
 
 const {
   variant = 'dots' as BackgroundVariant,
@@ -20,13 +20,13 @@ const defaultColors: Record<BackgroundVariant, string> = {
   [BackgroundVariant.Lines]: '#eee',
 }
 
-const { viewport } = $(useVueFlow())
+const { viewport } = useVueFlow()
 
 const background = $computed(() => {
-  const scaledGap = gap && gap * viewport.zoom
-  const xOffset = scaledGap && viewport.x % scaledGap
-  const yOffset = scaledGap && viewport.y % scaledGap
-  const bgSize = size * viewport.zoom
+  const scaledGap = gap && gap * viewport.value.zoom
+  const xOffset = scaledGap && viewport.value.x % scaledGap
+  const yOffset = scaledGap && viewport.value.y % scaledGap
+  const bgSize = size * viewport.value.zoom
 
   return {
     scaledGap,
