@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "typedocs": "pnpm --dir docs typedocs"
+    "typedocs": "turbo run build && pnpm --dir docs typedocs"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.27.0",
@@ -22,6 +22,6 @@
     "prettier": "^2.7.1",
     "shx": "^0.3.4",
     "turbo": "^1.5.5",
-    "typescript": "4.7.4"
+    "typescript": "4.8.4"
   }
 }
