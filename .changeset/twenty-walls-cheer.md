@@ -30,8 +30,6 @@
 
 # Breaking Changes
 
-## Package scope & name
-
 - `@vue-flow/core` package is now required to use vue-flow
 - `@vue-flow/additional-components` package contains `Background`, `MiniMap` and `Controls` components and related types
   - When switching to the new pkg scope, you need to change the import path. 
@@ -46,29 +44,3 @@ After
 import { VueFlow } from '@vue-flow/core'
 import { Background, MiniMap, Controls } from '@vue-flow/additional-components'
 ```
-
-## Edges
-
-- `getEdgeCenter` has been removed
-  - Edge center positions can now be accessed from `getBezierPath` or `getSmoothStepPath` functions
-
-Before:
-```js
-import { getBezierPath, getEdgeCenter } from '@braks/vue-flow'
-
-// used to return the path string only
-const edgePath = computed(() => getBezierPath(pathParams),)
-
-// was necessary to get the centerX, centerY of an edge
-const centered = computed(() => getEdgeCenter(centerParams))
-```
-
-After:
-```js
-import { getBezierPath } from '@vue-flow/core'
-
-// returns the path string and the center positions
-const [path, centerX, centerY] = computed(() => getBezierPath(pathParams),)
-```
-
-
