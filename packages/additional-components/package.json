@@ -1,0 +1,52 @@
+{
+  "name": "@vue-flow/additional-components",
+  "version": "0.0.1",
+  "private": false,
+  "license": "MIT",
+  "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcakmakoglu/vue-flow/packages/background"
+  },
+  "homepage": "https://github.com/bcakmakoglu/vue-flow#readme",
+  "bugs": {
+    "url": "https://github.com/bcakmakoglu/vue-flow/issues"
+  },
+  "main": "./dist/vue-flow-additional-components.cjs.js",
+  "module": "./dist/vue-flow-additional-components.es.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/vue-flow-additional-components.iife.js",
+  "jsdelivr": "./dist/vue-flow-additional-components.iife.js",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "vite build",
+    "types": "vue-tsc --declaration --emitDeclarationOnly && pnpm lint:dist",
+    "typedoc": "typedoc --options ./typedoc.json",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
+    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
+    "test": "exit 0"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.37",
+    "@vue-flow/core": "^0.4.41"
+  },
+  "dependencies": {
+    "@vueuse/core": "^9.3.0"
+  },
+  "devDependencies": {
+    "@vue-flow/core": "workspace:*",
+    "@vitejs/plugin-vue": "^2.3.4",
+    "unplugin-auto-import": "^0.11.2",
+    "vite": "^2.9.15",
+    "vite-svg-loader": "^3.6.0",
+    "vite-plugin-vue-type-imports": "0.2.0",
+    "vue-tsc": "^0.40.13"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

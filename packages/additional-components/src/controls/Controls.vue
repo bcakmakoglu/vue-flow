@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { useVueFlow } from '../../composables'
-import type { ControlProps } from '../../types/components'
+import { useVueFlow } from '@vue-flow/core'
+import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
-import PlusIcon from '~/assets/icons/plus.svg'
-import MinusIcon from '~/assets/icons/minus.svg'
-import FitView from '~/assets/icons/fitview.svg'
-import Lock from '~/assets/icons/lock.svg'
-import Unlock from '~/assets/icons/unlock.svg'
+import PlusIcon from './icons/plus.svg'
+import MinusIcon from './icons/minus.svg'
+import FitView from './icons/fitview.svg'
+import Lock from './icons/lock.svg'
+import Unlock from './icons/unlock.svg'
 
 const { showZoom = true, showFitView = true, showInteractive = true, fitViewParams } = defineProps<ControlProps>()
 

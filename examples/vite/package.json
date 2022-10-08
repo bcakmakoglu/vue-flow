@@ -7,6 +7,7 @@
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@vue-flow/additional-components": "workspace:*",
     "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {

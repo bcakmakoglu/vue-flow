@@ -7,6 +7,7 @@
     "open": "cypress open"
   },
   "dependencies": {
+    "@vue-flow/additional-components": "workspace:*",
     "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {

@@ -10,6 +10,7 @@
     "lint": "eslint --ext .js,.ts,.vue ./"
   },
   "dependencies": {
+    "@vue-flow/additional-components": "workspace:*",
     "@vue-flow/core": "workspace:*",
     "@quasar/extras": "^1.15.4",
     "quasar": "^2.9.2",

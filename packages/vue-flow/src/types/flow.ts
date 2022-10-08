@@ -58,11 +58,6 @@ export interface Rect extends Dimensions, XYPosition {}
 
 export type SnapGrid = [number, number]
 
-export enum BackgroundVariant {
-  Lines = 'lines',
-  Dots = 'dots',
-}
-
 export interface SelectionRect extends Rect {
   startX: number
   startY: number

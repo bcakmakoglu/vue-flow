@@ -1,5 +1,6 @@
 <script setup>
-import { Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Controls, MiniMap } from '@vue-flow/additional-components'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { ref, watchEffect } from 'vue'
 
 const isHidden = ref(false)

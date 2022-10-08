@@ -1,5 +1,6 @@
 <script setup>
-import { Background, Controls, MarkerType, MiniMap, VueFlow } from '@vue-flow/core'
+import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
+import { MarkerType, VueFlow } from '@vue-flow/core'
 import { h, ref } from 'vue'
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'

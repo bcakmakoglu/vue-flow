@@ -1,5 +1,6 @@
 <script setup>
-import { ConnectionMode, MiniMap, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import { MiniMap } from '@vue-flow/additional-components'
+import { ConnectionMode, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { computed, h, onMounted, ref } from 'vue'
 import ColorSelectorNode from './CustomNode.vue'
 import { presets } from './presets.js'
