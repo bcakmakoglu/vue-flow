@@ -6,10 +6,10 @@
 
 ```bash
 # install
-$ yarn add @braks/vue-flow-resize-rotate-node
+$ yarn add @vue-flow/core-resize-rotate-node
 
 # or
-$ npm i --save @braks/vue-flow-resize-rotate-node
+$ npm i --save @vue-flow/core-resize-rotate-node
 ```
 
 ## 🎮 Quickstart
@@ -17,8 +17,8 @@ $ npm i --save @braks/vue-flow-resize-rotate-node
 ```vue
 
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
-import { ResizeRotateNode } from '@braks/vue-flow-resize-rotate-node'
+import { VueFlow } from '@vue-flow/core'
+import { ResizeRotateNode } from '@vue-flow/core-resize-rotate-node'
 import initialElements from './initial-elements'
 
 const elements = ref(initialElements)

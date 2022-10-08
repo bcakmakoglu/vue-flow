@@ -31,7 +31,7 @@ importers:
       '@algolia/client-search': ^4.14.2
       '@animxyz/core': ^0.6.6
       '@animxyz/vue3': ^0.6.7
-      '@braks/vue-flow': workspace:*
+      '@vue-flow/core': workspace:*
       '@iconify/json': ^2.1.95
       '@stackblitz/sdk': ^1.8.0
       '@types/canvas-confetti': ^1.4.3
@@ -55,7 +55,7 @@ importers:
       '@algolia/client-search': 4.14.2
       '@animxyz/core': 0.6.6
       '@animxyz/vue3': 0.6.7_vue@3.2.37
-      '@braks/vue-flow': link:../packages/vue-flow
+      '@vue-flow/core': link:../packages/vue-flow
       '@stackblitz/sdk': 1.8.0
       '@vue/repl': 1.1.2_vue@3.2.37
       blobity: 0.2.1_react@18.2.0+vue@3.2.37
@@ -79,27 +79,27 @@ importers:
 
   e2e:
     specifiers:
-      '@braks/vue-flow': workspace:*
+      '@vue-flow/core': workspace:*
       '@vitejs/plugin-vue': ^2.3.4
       cypress: ^10.9.0
     dependencies:
-      '@braks/vue-flow': link:../packages/vue-flow
+      '@vue-flow/core': link:../packages/vue-flow
     devDependencies:
       '@vitejs/plugin-vue': 2.3.4_vite@2.9.15+vue@3.2.40
       cypress: 10.9.0
 
   examples/nuxt3:
     specifiers:
-      '@braks/vue-flow': workspace:*
+      '@vue-flow/core': workspace:*
       nuxt: 3.0.0-rc.11
     dependencies:
-      '@braks/vue-flow': link:../../packages/vue-flow
+      '@vue-flow/core': link:../../packages/vue-flow
     devDependencies:
       nuxt: 3.0.0-rc.11_rollup@2.79.1+vite@3.1.6
 
   examples/quasar:
     specifiers:
-      '@braks/vue-flow': workspace:*
+      '@vue-flow/core': workspace:*
       '@quasar/app-vite': ^1.0.5
       '@quasar/extras': ^1.15.4
       '@types/node': ^18.8.3
@@ -109,7 +109,7 @@ importers:
       vue: ^3.2.37
       vue-router: ^4.1.5
     dependencies:
-      '@braks/vue-flow': link:../../packages/vue-flow
+      '@vue-flow/core': link:../../packages/vue-flow
       '@quasar/extras': 1.15.4
       quasar: 2.9.2
       vue: 3.2.37
@@ -122,7 +122,7 @@ importers:
 
   examples/vite:
     specifiers:
-      '@braks/vue-flow': workspace:*
+      '@vue-flow/core': workspace:*
       '@types/dagre': ^0.7.47
       '@vitejs/plugin-vue': ^2.3.4
       dagre: ^0.8.5
@@ -133,7 +133,7 @@ importers:
       vue: ^3.2.37
       vue-router: ^4.1.5
     dependencies:
-      '@braks/vue-flow': link:../../packages/vue-flow
+      '@vue-flow/core': link:../../packages/vue-flow
     devDependencies:
       '@types/dagre': 0.7.47
       '@vitejs/plugin-vue': 2.3.4_vite@2.9.15+vue@3.2.37
@@ -147,7 +147,7 @@ importers:
 
   packages/pathfinding-edge:
     specifiers:
-      '@braks/vue-flow': workspace:*
+      '@vue-flow/core': workspace:*
       '@types/pathfinding': ^0.0.5
       '@vitejs/plugin-vue': ^2.3.4
       pathfinding: ^0.4.18
@@ -164,7 +164,7 @@ importers:
       perfect-arrows: 0.3.7
       vue: 3.2.37
     devDependencies:
-      '@braks/vue-flow': link:../vue-flow
+      '@vue-flow/core': link:../vue-flow
       '@types/pathfinding': 0.0.5
       '@vitejs/plugin-vue': 2.3.4_vite@2.9.15+vue@3.2.37
       ts-patch: 2.0.1_typescript@4.8.4
@@ -176,7 +176,7 @@ importers:
 
   packages/resize-rotate-node:
     specifiers:
-      '@braks/vue-flow': workspace:*
+      '@vue-flow/core': workspace:*
       '@vitejs/plugin-vue': ^2.3.4
       '@vueuse/core': ^8.9.4
       ts-patch: ^2.0.1
@@ -192,7 +192,7 @@ importers:
       vue: 3.2.37
       vue3-moveable: 0.4.9_@types+react@16.9.56
     devDependencies:
-      '@braks/vue-flow': link:../vue-flow
+      '@vue-flow/core': link:../vue-flow
       '@vitejs/plugin-vue': 2.3.4_vite@2.9.15+vue@3.2.37
       ts-patch: 2.0.1_typescript@4.8.4
       typescript-transform-paths: 3.3.1_typescript@4.8.4

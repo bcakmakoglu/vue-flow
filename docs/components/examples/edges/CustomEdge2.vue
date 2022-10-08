@@ -1,5 +1,5 @@
 <script setup>
-import { EdgeText, getBezierPath, getEdgeCenter } from '@braks/vue-flow'
+import { EdgeText, getBezierPath, getEdgeCenter } from '@vue-flow/core'
 import { computed } from 'vue'
 
 const props = defineProps({

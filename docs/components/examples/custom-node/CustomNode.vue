@@ -1,5 +1,5 @@
 <script setup>
-import { Handle, Position } from '@braks/vue-flow'
+import { Handle, Position } from '@vue-flow/core'
 import { computed } from 'vue'
 import { presets } from './presets.js'
 

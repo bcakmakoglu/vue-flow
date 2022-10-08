@@ -1,5 +1,5 @@
 <script setup>
-import { Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
 import { ref, watchEffect } from 'vue'
 
 const isHidden = ref(false)

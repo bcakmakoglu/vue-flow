@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Position, ValidConnectionFunc } from '@braks/vue-flow'
-import { Handle } from '@braks/vue-flow'
+import type { Position, ValidConnectionFunc } from '@vue-flow/core'
+import { Handle } from '@vue-flow/core'
 
 interface Props {
   id: string

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Position } from '@braks/vue-flow'
-import { BezierEdge, EdgeText, getEdgeCenter, useVueFlow } from '@braks/vue-flow'
+import type { Position } from '@vue-flow/core'
+import { BezierEdge, EdgeText, getEdgeCenter, useVueFlow } from '@vue-flow/core'
 import type { PathFindingEdgeProps } from '../types'
 import { createGrid, gridRatio } from './createGrid'
 import { drawSmoothLinePath } from './drawSvgPath'

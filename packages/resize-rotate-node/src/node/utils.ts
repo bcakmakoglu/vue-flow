@@ -1,6 +1,6 @@
 import type { Able, MoveableEvents, MoveableManagerInterface } from 'vue3-moveable'
-import type { GraphNode } from '@braks/vue-flow'
-import { useVueFlow } from '@braks/vue-flow'
+import type { GraphNode } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 import type { ResizeRotateNodeData, ResizeRotateNodeEmits } from './types'
 
 export function useMoveable(id: string, emits: ResizeRotateNodeEmits) {

@@ -1,5 +1,5 @@
 <script setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import Sidebar from './Sidebar.vue'
 
 let id = 0

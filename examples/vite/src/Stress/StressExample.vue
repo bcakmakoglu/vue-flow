@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { getElements } from './utils'
 
 const { nodes, edges } = getElements(10, 10)

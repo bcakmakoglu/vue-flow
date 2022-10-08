@@ -7,7 +7,7 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/core'
 import { copyVueFlowPlugin } from './copy-plugin'
 import head from './head'
 

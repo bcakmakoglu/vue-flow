@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { Repl, ReplStore } from '@vue/repl'
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/core'
 import '@vue/repl/style.css'
 import { exampleImports } from './examples'
 
 const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string; dependencies?: Record<string, string> }>()
 const { vueFlowVersion } = useVueFlow()
-let css = `@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${vueFlowVersion.value}/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@braks/vue-flow@${vueFlowVersion.value}/dist/theme-default.css';
+let css = `@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion.value}/dist/style.css';
+@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion.value}/dist/theme-default.css';
 
 html,
 body,
@@ -71,7 +71,7 @@ onMounted(async () => {
   // pre-set import map
   store.setImportMap({
     imports: {
-      '@braks/vue-flow': `${location.origin}/vue-flow.es.js`,
+      '@vue-flow/core': `${location.origin}/vue-flow.es.js`,
       ...additionalImports,
     },
   })

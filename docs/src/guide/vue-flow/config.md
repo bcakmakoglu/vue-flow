@@ -19,7 +19,7 @@ as options to the [`useVueFlow`](/guide/composables#usevueflow) composable.
 
 ```vue
 <script setup>
-import { useVueFlow  } from '@braks/vue-flow'
+import { useVueFlow  } from '@vue-flow/core'
 
 useVueFlow({
   defaultZoom: 0.5,
@@ -91,7 +91,7 @@ onMounted(() => {
 
 ```vue
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 const elements = ref([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -123,7 +123,7 @@ const elements = ref([
 
 ```vue
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 const nodes = ref([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -153,7 +153,7 @@ const nodes = ref([
 
 ```vue
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 const nodes = ref([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -188,7 +188,7 @@ const edges = ref([
 
 ```vue
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 
 const nodeTypes = {
@@ -225,7 +225,7 @@ const edges = ref([
 
 ```vue
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 import CustomEdge from './CustomEdge.vue'
 
 const edgeTypes = {
@@ -265,7 +265,7 @@ const edges = ref([
 
 ```vue
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 const nodes = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },

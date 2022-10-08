@@ -5,7 +5,7 @@ All default edge components are exported and can be used or extended if necessar
 ```vue
 <script setup>
 // CustomEdge.vue
-import { EdgeProps, BezierEdge } from '@braks/vue-flow'
+import { EdgeProps, BezierEdge } from '@vue-flow/core'
 
 const props = defineProps<EdgeProps>()
 

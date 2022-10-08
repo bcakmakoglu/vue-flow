@@ -1,4 +1,4 @@
-import type { Elements } from '@braks/vue-flow'
+import type { Elements } from '@vue-flow/core'
 
 export default [
   {

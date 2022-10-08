@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Background, Handle, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { Background, Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import confetti from 'canvas-confetti'
 import colors from 'windicss/colors'

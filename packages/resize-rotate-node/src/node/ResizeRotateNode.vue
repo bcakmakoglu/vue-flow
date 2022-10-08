@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import Moveable from 'vue3-moveable'
-import type { Dimensions } from '@braks/vue-flow'
-import { Handle, useVueFlow } from '@braks/vue-flow'
+import type { Dimensions } from '@vue-flow/core'
+import { Handle, useVueFlow } from '@vue-flow/core'
 import { useMoveable } from './utils'
 import type { ResizeRotateNodeProps } from './types'
 

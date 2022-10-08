@@ -1,6 +1,6 @@
 <script setup>
 import { TransitionPresets, useDebounceFn, useTransition, watchDebounced } from '@vueuse/core'
-import { getBezierPath, useVueFlow } from '@braks/vue-flow'
+import { getBezierPath, useVueFlow } from '@vue-flow/core'
 import { computed, ref } from 'vue'
 
 const props = defineProps({
