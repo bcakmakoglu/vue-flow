@@ -12,11 +12,11 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
-  "main": "./dist/vue-flow-additional-components.cjs.js",
-  "module": "./dist/vue-flow-additional-components.es.js",
+  "main": "./dist/additional-components.cjs.js",
+  "module": "./dist/additional-components.es.js",
   "types": "./dist/index.d.ts",
-  "unpkg": "./dist/vue-flow-additional-components.iife.js",
-  "jsdelivr": "./dist/vue-flow-additional-components.iife.js",
+  "unpkg": "./dist/additional-components.iife.js",
+  "jsdelivr": "./dist/additional-components.iife.js",
   "files": [
     "dist"
   ],

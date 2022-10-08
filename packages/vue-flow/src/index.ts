@@ -1,3 +1,8 @@
+/**
+ * Vue Flow
+ * @module vue-flow
+ */
+
 export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
 
 export { default as Handle } from './components/Handle/Handle.vue'
