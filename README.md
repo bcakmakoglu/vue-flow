@@ -128,7 +128,7 @@ there is no support for Vue 2, nor will there be any support in the future, sorr
 
 ### Prerequisites
 
-- [Node.js v12+](https://nodejs.org/)
+- [Node.js v14+](https://nodejs.org/)
 - [PnPm](https://pnpm.io/)
 
 
