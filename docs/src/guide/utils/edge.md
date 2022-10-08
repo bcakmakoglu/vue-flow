@@ -3,7 +3,7 @@
 All default edge components are exported and can be used or extended if necessary.
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // CustomEdge.vue
 import { EdgeProps, BezierEdge } from '@vue-flow/core'
 
@@ -29,9 +29,13 @@ regular edge behavior.
 
 - Details:
 
-  Returns a bezier path.
+  Returns a bezier path and center positions.
 
-### [getBezierCenter](/typedocs/functions/getBezierCenter)
+### getBezierCenter (removed)
+
+::: warning
+This function has been removed. The edge center positions are returned by `getBezierPath` now.
+:::
 
 - Details:
 
@@ -41,9 +45,13 @@ regular edge behavior.
 
 - Details:
 
-  Returns a simple bezier path (no curvature at handles).
+  Returns a simple bezier path (no curvature at handles) and center positions.
 
-### [getSimpleBezierCenter](/typedocs/functions/getSimpleBezierCenter)
+### getSimpleBezierCenter (removed)
+
+::: warning
+This function has been removed. The edge center positions are returned by `getSimpleBezierPath` now.
+:::
 
 - Details:
 
@@ -55,8 +63,8 @@ regular edge behavior.
 
   Returns a smoothstep path (use border-radius 0 for a step path).
 
-### [getEdgeCenter](/typedocs/functions/getEdgeCenter)
+### [getStraightPath](/typedocs/functions/getStraightPath)
 
 - Details:
 
-  Returns an edge path's center x and y values.
+  Returns a straight path.
