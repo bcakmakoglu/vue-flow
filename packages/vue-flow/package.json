@@ -58,7 +58,7 @@
     "unplugin-auto-import": "^0.11.2",
     "vite": "^2.9.15",
     "vite-plugin-vue-type-imports": "0.2.0",
-    "vite-svg-loader": "^3.4.0",
+    "vite-svg-loader": "^3.6.0",
     "vue-tsc": "^0.40.13"
   },
   "publishConfig": {
