@@ -8,8 +8,6 @@ import { getMousePosition } from './utils'
 const { userSelectionActive, nodesSelectionActive, getNodes, getEdges, viewport, addSelectedEdges, addSelectedNodes } =
   useVueFlow()
 
-const el = templateRef('user-selection', null)
-
 let prevNodes = $ref(0)
 
 let prevEdges = $ref(0)
@@ -94,12 +92,6 @@ const onMouseLeave = () => {
   reset()
 }
 
-useEventListener(el, 'mousedown', onMouseDown)
-useEventListener(el, 'mousemove', onMouseMove)
-useEventListener(el, 'click', onMouseUp)
-useEventListener(el, 'mouseup', onMouseUp)
-useEventListener(el, 'mouseleave', onMouseLeave)
-
 onBeforeUnmount(reset)
 </script>
 
@@ -110,7 +102,14 @@ export default {
 </script>
 
 <template>
-  <div ref="user-selection" class="vue-flow__selectionpane vue-flow__container">
+  <div
+    class="vue-flow__selectionpane vue-flow__container"
+    @mousedown="onMouseDown"
+    @mousemove="onMouseMove"
+    @click="onMouseUp"
+    @mouseup="onMouseUp"
+    @mouseleave="onMouseLeave"
+  >
     <SelectionRect v-if="rect.draw" :width="rect.width" :height="rect.height" :x="rect.x" :y="rect.y" />
   </div>
 </template>
