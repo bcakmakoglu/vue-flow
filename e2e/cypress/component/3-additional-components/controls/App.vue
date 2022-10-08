@@ -1,5 +1,5 @@
 <script setup>
-import { Controls, VueFlow } from '@braks/vue-flow'
+import { Controls, VueFlow } from '@vue-flow/core'
 </script>
 
 <template>

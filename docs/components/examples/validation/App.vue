@@ -1,5 +1,5 @@
 <script setup>
-import { VueFlow, addEdge } from '@braks/vue-flow'
+import { VueFlow, addEdge } from '@vue-flow/core'
 import { ref } from 'vue'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
@@ -28,8 +28,8 @@ const onConnect = (params) => {
 
 <template>
   <VueFlow
-    class="validationflow"
     v-model="elements"
+    class="validationflow"
     @connect="onConnect"
     @pane-ready="onLoad"
     @connect-start="onConnectStart"

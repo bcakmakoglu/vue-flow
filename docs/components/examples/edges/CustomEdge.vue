@@ -1,5 +1,5 @@
 <script setup>
-import { getBezierPath, getEdgeCenter, useVueFlow } from '@braks/vue-flow'
+import { getBezierPath, getEdgeCenter, useVueFlow } from '@vue-flow/core'
 import { computed } from 'vue'
 
 const props = defineProps({

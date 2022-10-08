@@ -9,7 +9,7 @@
     "dev": "nuxt dev"
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*"
+    "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {
     "nuxt": "3.0.0-rc.11"

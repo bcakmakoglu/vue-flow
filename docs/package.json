@@ -1,5 +1,5 @@
 {
-  "name": "docs2",
+  "name": "@vue-flow/docs",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,7 @@
     "@algolia/client-search": "^4.14.2",
     "@animxyz/core": "^0.6.6",
     "@animxyz/vue3": "^0.6.7",
-    "@braks/vue-flow": "workspace:*",
+    "@vue-flow/core": "workspace:*",
     "@stackblitz/sdk": "^1.8.0",
     "@vue/repl": "1.1.2",
     "blobity": "^0.2.1",

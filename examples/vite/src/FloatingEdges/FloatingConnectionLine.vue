@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { GraphNode, Position } from '@braks/vue-flow'
-import { getBezierPath } from '@braks/vue-flow'
+import type { GraphNode, Position } from '@vue-flow/core'
+import { getBezierPath } from '@vue-flow/core'
 import { getEdgeParams } from './floating-edge-utils'
 
 interface FloatingConnectionLineProps {

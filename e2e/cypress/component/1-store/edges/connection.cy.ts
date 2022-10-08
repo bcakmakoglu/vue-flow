@@ -1,5 +1,5 @@
-import type { StartHandle } from '@braks/vue-flow'
-import { useVueFlow } from '@braks/vue-flow'
+import type { StartHandle } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements(2, 2)

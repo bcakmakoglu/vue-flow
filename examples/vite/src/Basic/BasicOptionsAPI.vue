@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { Elements, FlowEvents, VueFlowStore } from '@braks/vue-flow'
-import { Background, Controls, MiniMap, VueFlow, addEdge, isNode } from '@braks/vue-flow'
+import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow, addEdge, isNode } from '@vue-flow/core'
 
 export default defineComponent({
   name: 'BasicOptionsAPI',

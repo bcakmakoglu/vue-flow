@@ -1,5 +1,5 @@
 <script setup>
-import { MiniMap, VueFlow } from '@braks/vue-flow'
+import { MiniMap, VueFlow } from '@vue-flow/core'
 
 defineProps({
   nodes: {

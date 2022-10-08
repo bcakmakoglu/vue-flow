@@ -12,7 +12,7 @@ instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
 
 ```vue
 <script setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 const { onPaneReady } = useVueFlow()
 
@@ -25,7 +25,7 @@ onPaneReady((instance) => instance.fitView())
 
 ```vue
 <script>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 export default defineComponent({
   components: { VueFlow },

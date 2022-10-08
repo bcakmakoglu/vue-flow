@@ -6,10 +6,10 @@ the default theme) can be skipped.
 
 ```css
 /* these are necessary styles for vue flow */
-@import '@braks/vue-flow/dist/style.css';
+@import '@vue-flow/core/dist/style.css';
 
 /* this contains the default theme, these are optional styles */
-@import '@braks/vue-flow/dist/theme-default.css';
+@import '@vue-flow/core/dist/theme-default.css';
 ```
 
 ## Customizing default theme

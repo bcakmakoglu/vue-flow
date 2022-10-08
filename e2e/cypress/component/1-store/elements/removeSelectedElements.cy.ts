@@ -1,5 +1,5 @@
-import type { GraphEdge, GraphNode } from '@braks/vue-flow'
-import { isNode, useVueFlow } from '@braks/vue-flow'
+import type { GraphEdge, GraphNode } from '@vue-flow/core'
+import { isNode, useVueFlow } from '@vue-flow/core'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()

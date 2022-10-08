@@ -1,4 +1,4 @@
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/core'
 
 describe('Check if edges are updatable', () => {
   const store = useVueFlow({ id: 'test' })

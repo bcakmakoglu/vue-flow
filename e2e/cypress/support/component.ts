@@ -14,8 +14,8 @@
 // ***********************************************************
 
 // Import necessary styles
-import '@braks/vue-flow/dist/style.css'
-import '@braks/vue-flow/dist/theme-default.css'
+import '@vue-flow/core/dist/style.css'
+import '@vue-flow/core/dist/theme-default.css'
 
 // Import commands.js using ES2015 syntax:
 import './commands'
@@ -24,8 +24,8 @@ import './commands'
 // require('./commands')
 
 import { mount } from 'cypress/vue'
-import { VueFlow } from '@braks/vue-flow'
-import type { FlowProps } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
+import type { FlowProps } from '@vue-flow/core'
 
 const mountVueFlow = (props?: FlowProps, attrs?: Record<string, any>) => {
   cy.mount(VueFlow, {

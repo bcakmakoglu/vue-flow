@@ -4,8 +4,8 @@ import DefaultTheme from 'vitepress/theme'
 import Layout from './layouts/default.vue'
 import 'virtual:windi.css'
 import '@animxyz/core'
-import '@braks/vue-flow/dist/style.css'
-import '@braks/vue-flow/dist/theme-default.css'
+import '@vue-flow/core/dist/style.css'
+import '@vue-flow/core/dist/theme-default.css'
 import './../../assets/index.css'
 
 const CustomTheme = {

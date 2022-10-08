@@ -1,5 +1,5 @@
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 import InteractionControls from './InteractionControls.vue'
 
@@ -14,7 +14,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow class="interactionflow" v-model="elements" :fit-view-on-init="true">
+  <VueFlow v-model="elements" class="interactionflow" :fit-view-on-init="true">
     <InteractionControls />
   </VueFlow>
 </template>

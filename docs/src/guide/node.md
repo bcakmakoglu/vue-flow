@@ -16,7 +16,7 @@ Generally you create nodes by adding them to the model-value or the nodes prop o
 
 ```vue
 <script>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 export default defineComponent({
   components: { VueFlow },
@@ -57,7 +57,7 @@ directly to the state.
 
 ```vue
 <script setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 const initialNodes = ref([
   {
@@ -94,7 +94,7 @@ which expects an array of [changes](/typedocs/types/NodeChange) to be applied to
 
 ```vue{11,17-22}
 <script setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 const initialNodes = ref([
   {
@@ -200,7 +200,7 @@ will expect a slot to have the name `node-custom`.
 
 ```vue{9,16}
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 
 const elements = ref([
@@ -341,7 +341,7 @@ to your node components.
 
 ```vue{9-13}
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 const elements = ref([
   {
@@ -370,7 +370,7 @@ triggered when the node is clicked.
 
 ```vue
 <script lang="ts" setup>
-import type { NodeProps, NodeEventsOn } from '@braks/vue-flow'
+import type { NodeProps, NodeEventsOn } from '@vue-flow/core'
 
 // define your events
 interface CustomNodeEvents {
@@ -440,7 +440,7 @@ or you can emit the `updateNodeInternals` event from your custom node component 
 
 ```vue
 <script setup>
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/core'
 
 const { updateNodeInternals } = useVueFlow()
 

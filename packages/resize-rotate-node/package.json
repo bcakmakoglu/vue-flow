@@ -1,5 +1,5 @@
 {
-  "name": "@braks/vue-flow-resize-rotate-node",
+  "name": "@vue-flow/resize-rotate-node",
   "version": "0.0.3",
   "private": false,
   "repository": {
@@ -34,7 +34,7 @@
     "vue3-moveable": "^0.4.9"
   },
   "devDependencies": {
-    "@braks/vue-flow": "workspace:*",
+    "@vue-flow/core": "workspace:*",
     "@vitejs/plugin-vue": "^2.3.4",
     "ts-patch": "^2.0.1",
     "typescript-transform-paths": "^3.3.1",
@@ -44,7 +44,7 @@
     "vue-tsc": "^0.40.13"
   },
   "peerDependencies": {
-    "@braks/vue-flow": "^0.4.37",
+    "@vue-flow/core": "^0.4.37",
     "vue": "^3.2.25"
   },
   "publishConfig": {

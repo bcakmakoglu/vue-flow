@@ -1,8 +1,8 @@
 /* import the required styles */
-@import 'node_modules/@braks/vue-flow/dist/style.css';
+@import 'node_modules/@vue-flow/core/dist/style.css';
 
 /* import the default theme (optional) */
-@import 'node_modules/@braks/vue-flow/dist/theme-default.css';
+@import 'node_modules/@vue-flow/core/dist/theme-default.css';
 
 body {
   color: #111;

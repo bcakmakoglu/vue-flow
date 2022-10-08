@@ -1,5 +1,5 @@
 {
-  "name": "@braks/vue-flow-pathfinding-edge",
+  "name": "@vue-flow/pathfinding-edge",
   "version": "0.2.2",
   "private": false,
   "repository": {
@@ -34,7 +34,7 @@
     "perfect-arrows": "^0.3.7"
   },
   "devDependencies": {
-    "@braks/vue-flow": "workspace:*",
+    "@vue-flow/core": "workspace:*",
     "@types/pathfinding": "^0.0.5",
     "@vitejs/plugin-vue": "^2.3.4",
     "ts-patch": "^2.0.1",
@@ -45,7 +45,7 @@
     "vue-tsc": "^0.40.13"
   },
   "peerDependencies": {
-    "@braks/vue-flow": "^0.4.29",
+    "@vue-flow/core": "^0.4.29",
     "vue": "^3.2.25"
   },
   "publishConfig": {

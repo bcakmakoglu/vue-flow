@@ -1,4 +1,4 @@
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/core'
 
 describe('Check if nodes are connectable', () => {
   const store = useVueFlow({ id: 'test' })

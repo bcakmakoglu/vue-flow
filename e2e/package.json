@@ -7,7 +7,7 @@
     "open": "cypress open"
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*"
+    "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {
     "cypress": "^10.9.0",

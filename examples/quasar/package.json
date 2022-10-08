@@ -10,7 +10,7 @@
     "lint": "eslint --ext .js,.ts,.vue ./"
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*",
+    "@vue-flow/core": "workspace:*",
     "@quasar/extras": "^1.15.4",
     "quasar": "^2.9.2",
     "vue": "^3.2.37",
