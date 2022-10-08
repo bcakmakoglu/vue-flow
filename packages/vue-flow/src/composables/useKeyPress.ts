@@ -1,16 +1,14 @@
 import type { Ref } from 'vue'
 import type { KeyFilter, MaybeRef } from '@vueuse/core'
-import { isBoolean } from '@vueuse/core'
+import { isBoolean, isFunction } from '@vueuse/core'
 import useWindow from './useWindow'
 
 function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = event.target as HTMLElement
+  const hasAttribute = isFunction(target.hasAttribute) ? target.hasAttribute('contenteditable') : false
+  const closest = isFunction(target.closest) ? target.closest('.nokey') : null
 
-  return (
-    ['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.nodeName) ||
-    target?.hasAttribute('contenteditable') ||
-    !!target?.closest('.nokey')
-  )
+  return ['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.nodeName) || hasAttribute || !!closest
 }
 
 export default (keyFilter: MaybeRef<KeyFilter>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
