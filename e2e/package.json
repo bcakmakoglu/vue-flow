@@ -10,6 +10,7 @@
     "@braks/vue-flow": "workspace:*"
   },
   "devDependencies": {
-    "cypress": "^10.9.0"
+    "cypress": "^10.9.0",
+    "@vitejs/plugin-vue": "^2.3.4"
   }
 }
