@@ -35,7 +35,7 @@ describe('Store Action: `removeSelectedElements`', () => {
       ),
     )
 
-    expect(store.getSelectedElements.value).to.have.length(randomNumber2)
+    expect(store.getSelectedElements.value).to.have.length(randomNumber - randomNumber2)
   })
 
   it('resets all selected elements in store when no argument is passed', () => {
