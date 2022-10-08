@@ -2,6 +2,77 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2022-10-08
+
+[8fc28f9](8fc28f9b9c9d062dd053590a9bcd206c7845d080)...[6c5523d](6c5523db5e3cf807dbdb106f29b8b4410dccc4bd)
+
+### Bug Fixes
+
+- Remove action not properly removing elements ([9168d7b](9168d7bd751e400aa395dcd32e19d6187d9f6e27))
+
+### Documentation
+
+- Add transition example ([447699c](447699cb0518fd39b17023bea8d3b9d520a9ab96))
+- Dynamic transition duration ([62a8750](62a8750da4e9c9d7db230f6f441afe30b6f28864))
+- Update typedocs config to support new module structure ([afb3fc7](afb3fc7b495a6e0f3f1ac8dbe4be33df3be074d7))
+- Move typedoc to root deps ([6aaef27](6aaef2743d44bd1bb56ce10634c1d24aa2d15569))
+- Move typedoc to docs deps ([13d576d](13d576da4b043bb613a1902015d9f25a06708532))
+- Update docs and mention removed edge center functions ([42219d3](42219d364006530184baac73d0ca50566263b0ac))
+- Bump minimum node version to 14 ([6ac3503](6ac35032b5e7d0b34b8dc6e58a96c51083db2b4b))
+
+### Features
+
+- Support boolean keycode value ([ff520c8](ff520c8a708f195643ae03a2177ac5599df5bf61))
+- Add changeset ([eb507c8](eb507c8e7649e703cdeb0ae3512a8476e582efd2))
+- Add publish workflow ([86bff35](86bff351ca5bbce4c65201352260ed3bbc5ccf8b))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([40d59d9](40d59d9d84d82b392f485e40662c58ccf8b8cad2))
+- Add issue templates config.yml ([fd07402](fd07402c78c017039f86482366eb78722c5fa52f))
+- Update bug report template & config.yml ([0c018a5](0c018a544056b079ec5d2042553fe0c9fcf7d8ba))
+- Update pr template ([660fb36](660fb366f7a1e384fe56e431659d62f27ec8a7da))
+- Update deps and resolve peer deps ([674fe4f](674fe4f9c9e1a47248bfae918db0f70a3af7a2a9))
+- Update workflow file ([6bfb2b8](6bfb2b8a826252fea507dcf1c3ca952f8481ff32))
+- Lint ([4593550](4593550f8556421e76ef6cb3afdecb59c0718906))
+- Remove typedoc script from additional-components pkg ([acc0526](acc0526fdb89ad133d413f2b3ddbd9f668515ab1))
+- Update deps and bump versions ([e5930b3](e5930b361ad927a2e5fdc9b063894586fc78765c))
+- Add typedocs script to root ([32c024c](32c024cccb1321bb48f79e79ed719abf7db02a2f))
+- Remove vueuse ([97d498c](97d498c117db51d3c31064b58ebb22cc68ca9102))
+- Add ignore list to changeset config ([667078e](667078e760903d5e15dd6962bd4153821f4f16bf))
+- Rename docs pkg ([7d799de](7d799ded1e302cb89cc38a0db8d9a0310e755736))
+- Add changeset ([47d837a](47d837aac096e59e7f55213990dff2cc7eba0c01))
+- Add changeset ([939bff5](939bff503039af3b790160640548ddde984cf2bc))
+- Add changelog-github ([151eae9](151eae98770cf118ac82474d628c7418a25c33bc))
+- Remove node cache step ([77953a8](77953a8f8ec630ba5149cf1c8a82adf8f701bc7a))
+- Update publish script ([756b36b](756b36b40b609c6edc662b491d49873e9ebe4594))
+- Bump versions ([6f5f5c8](6f5f5c8a36dbd2446f7e89edc7a5e5626a3a7508))
+- Bump version ([6c5523d](6c5523db5e3cf807dbdb106f29b8b4410dccc4bd))
+
+### Refactor
+
+- Remove `useEventListener` from user selection ([5bc5f10](5bc5f10eae57591ce40bae56ce3e0c76faf64778))
+- Prevent crash when checking if input dom node ([2a6763c](2a6763cfe1ef6f34ac4cf2acfd099e2bbfc5b24e))
+- Change pkg scope to `vue-flow` ([8567e37](8567e3733b98c9140b064c455337fefeca5dcbda))
+- Move additional components into separate pkg ([c1bcc02](c1bcc0279733d1611ffb9eab402d05418bcc6661))
+- Simplify edge paths and center calculations ([2d76bf3](2d76bf345d8410b33d139768a9ac1c922b606347))
+- Remove getEdgeCenter usage ([b1e56f0](b1e56f04032821d4c16627d170fd54aeced65b27))
+
+### Testing
+
+- Update remove action tests ([f9cd905](f9cd9051d852e39359d3b28241e8f4b80ce0a966))
+- Add default type to generated nodes ([438ad57](438ad57502cafb9f279e222abc64537ea096997a))
+- Correct selected elements calculation ([1601733](160173384cc9ae7bde0bb709f09c6b6713fa621e))
+- Check all nodes/edges for selected class ([ca29a08](ca29a08d52f2db4a139057582ad3c63c3aafcb9f))
+- Update drag test position ([664953b](664953b537e38f4466069620ea4d21cdb38771c8))
+- Cleanup unused imports ([7eb6c52](7eb6c5216f4c18e65bc155d657c1a3fc73048a42))
+- Defer checking for selected elements ([a6b6a83](a6b6a83eb65843ecacb4c746cb5e0a30411d43ef))
+- Rename flow dir to vue-flow ([b547a1f](b547a1fb0cbf5189710028c780c0b9a55b52dcb0))
+- Small delay when checking removed elements ([fd8061d](fd8061ddcca02918a26d9ca32ce29327015afa79))
+- Add selection key code tests ([145d934](145d934af879afe1825a367ab1afdb40f4e083a9))
+- Add delete key code tests ([ef11069](ef1106910267736862630f279ad054adae7d8031))
+- Add additional components tests ([26b2518](26b251886ee3edb92cebc779f4efddef2e70dbad))
+
 ## [0.4.41] - 2022-10-07
 
 [247f248](247f248de39a88f78baffa2785cd22e2f5600854)...[8fc28f9](8fc28f9b9c9d062dd053590a9bcd206c7845d080)
