@@ -30,7 +30,6 @@
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
     "prepublishOnly": "shx cp ../../README.md .",
-    "release": "pnpm np",
     "postpublish": "shx rm README.md && git commit -a -m \"chore: bump version\"",
     "test": "exit 0"
   },
@@ -48,7 +47,6 @@
     "@types/d3": "^7.4.0",
     "@vitejs/plugin-vue": "^2.3.4",
     "autoprefixer": "^10.4.8",
-    "np": "^7.6.2",
     "postcss": "^8.4.16",
     "postcss-cli": "^9.1.0",
     "postcss-nested": "^5.0.6",
