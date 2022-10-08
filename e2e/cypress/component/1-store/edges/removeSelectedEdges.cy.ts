@@ -23,12 +23,12 @@ describe('Store Action: `removeSelectedEdges`', () => {
   })
 
   it('removes selected edges from store', () => {
-    expect(store.getSelectedEdges.value).to.have.length(randomNumber2)
+    expect(store.getSelectedEdges.value).to.have.length(randomNumber - randomNumber2)
   })
 
   it('removes `selected` class from edges', () => {
     cy.get('.vue-flow__edge').then((edges) => {
-      expect(edges[randomNumber2 - 1]).to.have.class('selected')
+      expect(edges[randomNumber2 - 1]).to.not.have.class('selected')
     })
   })
 })
