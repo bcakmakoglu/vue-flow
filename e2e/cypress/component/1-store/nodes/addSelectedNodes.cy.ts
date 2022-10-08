@@ -1,4 +1,4 @@
-import { isEdge, isNode, useVueFlow } from '@braks/vue-flow'
+import { isNode, useVueFlow } from '@braks/vue-flow'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
