@@ -45,7 +45,7 @@
     "vue-tsc": "^0.40.13"
   },
   "peerDependencies": {
-    "@vue-flow/core": "^0.4.29",
+    "@vue-flow/core": "^0.4.41",
     "vue": "^3.2.25"
   },
   "publishConfig": {
