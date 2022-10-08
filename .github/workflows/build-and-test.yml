@@ -10,6 +10,8 @@ on:
     branches:
       - master
       - develop
+env:
+  PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
   build-and-test:
@@ -21,12 +23,6 @@ jobs:
         node: [14]
 
     steps:
-      - name: TurboRepo local server
-        uses: felixmosh/turborepo-gh-artifacts@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          server-token: ${{ secrets.TURBO_SERVER_TOKEN }}
-
       - name: Checkout 🛎
         uses: actions/checkout@master
 
@@ -36,22 +32,20 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
 
-      - uses: pnpm/action-setup@v2.0.1
+      - uses: pnpm/action-setup@v2.2.2
         name: Install pnpm
-        id: pnpm-install
         with:
           version: 7
           run_install: false
 
-      - name: Get pnpm cache directory path 🛠
-        id: pnpm-cache-dir-path
-        run: echo "::set-output name=dir::$(pnpm cache dir)"
+      - name: Setup pnpm config 🏗
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
       - name: Cache node_modules 📦
         uses: actions/cache@v3
         id: pnpm-cache # use this to check for `cache-hit` (`steps.pnpm-cache.outputs.cache-hit != 'true'`)
         with:
-          path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
+          path: $PNPM_CACHE_FOLDER
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm.lock') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-
