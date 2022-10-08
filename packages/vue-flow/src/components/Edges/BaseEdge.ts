@@ -8,9 +8,9 @@ import type { BaseEdgeProps } from '~/types'
  */
 const BaseEdge: FunctionalComponent<BaseEdgeProps> = function ({
   path,
-  centerX,
-  centerY,
   label,
+  labelX,
+  labelY,
   labelBgBorderRadius,
   labelBgPadding,
   labelBgStyle,
@@ -30,8 +30,8 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function ({
     }),
     label
       ? h(EdgeText, {
-          x: centerX,
-          y: centerY,
+          x: labelX,
+          y: labelY,
           label,
           labelStyle,
           labelShowBg,
@@ -45,8 +45,8 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function ({
 
 BaseEdge.props = [
   'path',
-  'centerX',
-  'centerY',
+  'labelX',
+  'labelY',
   'label',
   'labelBgBorderRadius',
   'labelBgPadding',

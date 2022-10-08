@@ -184,8 +184,8 @@ export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> exte
 }
 
 export interface BaseEdgeProps {
-  centerX: number
-  centerY: number
+  labelX: number
+  labelY: number
   path: string
   label?: any
   style?: CSSProperties

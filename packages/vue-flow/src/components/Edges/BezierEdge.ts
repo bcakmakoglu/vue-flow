@@ -1,5 +1,5 @@
 import type { FunctionalComponent } from 'vue'
-import { getBezierCenter, getBezierPath } from './utils'
+import { getBezierPath } from './utils'
 import BaseEdge from './BaseEdge'
 import { Position } from '~/types'
 import type { EdgeProps } from '~/types'
@@ -22,17 +22,7 @@ const BezierEdge: FunctionalComponent<EdgeProps> = function ({
   markerStart,
   style,
 }) {
-  const [centerX, centerY] = getBezierCenter({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
-    curvature,
-  })
-
-  const path = getBezierPath({
+  const [path, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
     targetX,
@@ -44,8 +34,8 @@ const BezierEdge: FunctionalComponent<EdgeProps> = function ({
 
   return h(BaseEdge, {
     path,
-    centerX,
-    centerY,
+    labelX,
+    labelY,
     label,
     labelStyle,
     labelShowBg,
