@@ -169,11 +169,23 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
 
   const removeSelectedNodes: Actions['removeSelectedNodes'] = (nodes) => {
-    nodeSelectionHandler(nodes, false)
+    if (!nodes.length) return nodeSelectionHandler(nodes, false)
+
+    const nodeIds = nodes.map((n) => n.id)
+
+    const changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, false))
+
+    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
   }
 
   const removeSelectedEdges: Actions['removeSelectedEdges'] = (edges) => {
-    edgeSelectionHandler(edges, false)
+    if (!edges.length) edgeSelectionHandler(edges, false)
+
+    const edgeIds = edges.map((e) => e.id)
+
+    const changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, false))
+
+    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
 
   const removeSelectedElements: Actions['removeSelectedElements'] = (elements) => {

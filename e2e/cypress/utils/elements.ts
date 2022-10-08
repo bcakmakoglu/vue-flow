@@ -8,18 +8,19 @@ export function getElements(xElements = 10, yElements = 10) {
 
   for (let y = 0; y < yElements; y++) {
     for (let x = 0; x < xElements; x++) {
-      const position = { x: x * 100, y: y * 50 }
-      const node = {
+      initialNodes.push({
         id: nodeId.toString(),
-        style: { width: 50, fontSize: 11 },
         label: `Node ${nodeId}`,
-        type: '',
-        position,
+        style: (node) => {
+          const style: Record<string, any> = { width: `50px`, fontSize: `11px`, zIndex: 1 }
+          if (node.selected) style.border = '1px solid red'
+          return style
+        },
+        position: { x: x * 100, y: y * 50 },
         data: {
           randomData: Math.floor(Math.random() * 1e3),
         },
-      }
-      initialNodes.push(node)
+      })
 
       if (recentNodeId && nodeId <= xElements * yElements) {
         initialEdges.push({
