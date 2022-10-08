@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "typedocs": "turbo run typedoc"
+    "typedocs": "typedoc --options ./typedoc.json"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.27.0",
@@ -22,6 +22,9 @@
     "prettier": "^2.7.1",
     "shx": "^0.3.4",
     "turbo": "^1.5.5",
+    "typedoc": "^0.22.18",
+    "typedoc-plugin-markdown": "^3.13.4",
+    "typedoc-plugin-merge-modules": "^4.0.1",
     "typescript": "^4.8.4"
   }
 }
