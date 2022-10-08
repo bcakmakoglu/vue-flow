@@ -45,6 +45,8 @@ describe('Store Action: `removeSelectedElements`', () => {
     store.addSelectedElements(Array.from({ length: randomNumber }, (_, i) => store.getElements.value[i]))
     store.removeSelectedElements()
 
-    expect(store.getSelectedElements.value).to.have.length(0)
+    cy.wait(1).then(() => {
+      expect(store.getSelectedElements.value).to.have.length(0)
+    })
   })
 })
