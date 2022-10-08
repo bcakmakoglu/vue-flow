@@ -59,10 +59,10 @@ the [examples](https://vueflow.dev/examples/).
 ## 🛠 Setup
 
 ```bash
-$ npm i @braks/vue-flow
+$ npm i @vue-flow/core
 
 # or
-$ yarn add @braks/vue-flow
+$ yarn add @vue-flow/core
 ```
 
 ## 🎮 Quickstart
@@ -80,7 +80,7 @@ A basic setup looks like this:
 ```vue
 <!-- Flowchart.vue -->
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 const elements = ref([
   {
@@ -111,10 +111,10 @@ const elements = ref([
 
 ```css
 /* import the required styles */
-@import "@braks/vue-flow/dist/style.css";
+@import "@vue-flow/core/dist/style.css";
 
 /* import the default theme (optional) */
-@import "@braks/vue-flow/dist/theme-default.css";
+@import "@vue-flow/core/dist/theme-default.css";
 ```
 
 ### 🪴 Vue 2
@@ -181,4 +181,4 @@ This project is built with
 Many thanks to the kind individuals who leave a star.
 Your support is much appreciated!
 
-[![Stargazers for @braks/vue-flow](https://reporoster.com/stars/bcakmakoglu/vue-flow)](https://github.com/bcakmakoglu/vue-flow/stargazers)
+[![Stargazers for @vue-flow/core](https://reporoster.com/stars/bcakmakoglu/vue-flow)](https://github.com/bcakmakoglu/vue-flow/stargazers)

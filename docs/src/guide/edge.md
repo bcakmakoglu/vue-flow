@@ -15,7 +15,7 @@ Generally you create edges by adding them to the model-value or the edges prop o
 
 ```vue
 <script>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 export default defineComponent({
   components: { VueFlow },
@@ -61,7 +61,7 @@ directly to the state.
 
 ```vue
 <script setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 const initialNodes = ref([
   {
@@ -197,7 +197,7 @@ will expect a slot to have the name `edge-custom`.
 
 ```vue{18,26}
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 import CustomEdge from './CustomEdge.vue'
 
 const elements = ref([
@@ -360,7 +360,7 @@ to your edge components.
 
 ```vue{19-26}
 <script setup>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 const elements = ref([
   {
@@ -397,7 +397,7 @@ triggered when the edge is clicked.
 
 ```vue
 <script lang="ts" setup>
-import type { EdgeProps, EdgeEventsOn } from '@braks/vue-flow'
+import type { EdgeProps, EdgeEventsOn } from '@vue-flow/core'
 
 // define your events
 interface CustomEdgeEvents {

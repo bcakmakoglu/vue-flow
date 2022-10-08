@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { ConnectionMode, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { ConnectionMode, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import TransitionEdge from './TransitionEdge.vue'
 
 const elements = ref([

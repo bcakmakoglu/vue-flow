@@ -6,18 +6,18 @@ __Custom edge that avoids crossing nodes__
 
 ```bash
 # install
-$ yarn add @braks/vue-flow-pathfinding-edge
+$ yarn add @vue-flow/core-pathfinding-edge
 
 # or
-$ npm i --save @braks/vue-flow-pathfinding-edge
+$ npm i --save @vue-flow/core-pathfinding-edge
 ```
 
 ## 🎮 Quickstart
 
 ```vue
 <script setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
-import { PathFindingEdge } from '@braks/vue-flow-pathfinding-edge'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { PathFindingEdge } from '@vue-flow/core-pathfinding-edge'
 import initialElements from './initial-elements'
 
 const elements = ref(initialElements)

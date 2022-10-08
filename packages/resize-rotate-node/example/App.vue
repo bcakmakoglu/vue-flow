@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements, FlowEvents } from '@braks/vue-flow'
-import { Background, Controls, MiniMap, VueFlow, addEdge } from '@braks/vue-flow'
+import type { Elements, FlowEvents } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow, addEdge } from '@vue-flow/core'
 import { ref } from 'vue'
 import { ResizeRotateNode } from '../src'
 import initialElements from './elements'
@@ -27,8 +27,8 @@ const onConnect = (params: FlowEvents['connect']) => (elements.value = addEdge(p
 </template>
 
 <style>
-@import '@braks/vue-flow/dist/style.css';
-@import '@braks/vue-flow/dist/theme-default.css';
+@import '@vue-flow/core/dist/style.css';
+@import '@vue-flow/core/dist/theme-default.css';
 
 html,
 body,

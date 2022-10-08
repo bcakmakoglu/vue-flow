@@ -12,7 +12,7 @@ Thus accessing the internal state of Vue Flow becomes super easy when using comp
 
 ```vue
 <script setup>
-import { useVueFlow, VueFlow } from '@braks/vue-flow'
+import { useVueFlow, VueFlow } from '@vue-flow/core'
 
 const { nodes, edges } = useVueFlow({
   nodes: [
@@ -51,7 +51,7 @@ It requires a valid Vue Flow store in its context.
 
 ```vue
 <script setup>
-import { useZoomPanHelper } from '@braks/vue-flow'
+import { useZoomPanHelper } from '@vue-flow/core'
 
 const { fitView } = useZoomPanHelper()
 </script>
@@ -71,8 +71,8 @@ This is how the default handle component is built:
 ```vue
 
 <script lang="ts" setup>
-import { NodeId, useHandle, useVueFlow } from '@braks/vue-flow'
-import type { HandleProps, Position } from '@braks/vue-flow'
+import { NodeId, useHandle, useVueFlow } from '@vue-flow/core'
+import type { HandleProps, Position } from '@vue-flow/core'
 
 const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',

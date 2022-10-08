@@ -8,11 +8,11 @@
 ## Installation
 
 ```bash
-npm i --save @braks/vue-flow
+npm i --save @vue-flow/core
 
-yarn add @braks/vue-flow
+yarn add @vue-flow/core
 
-pnpm i @braks/vue-flow
+pnpm i @vue-flow/core
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ source (node id) and a target (node id).
 
 ```vue
 <script setup>
-import { VueFlow  } from '@braks/vue-flow'
+import { VueFlow  } from '@vue-flow/core'
 
 const elements = ref([
   // Nodes

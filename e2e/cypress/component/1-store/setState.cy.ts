@@ -1,6 +1,6 @@
 import { isRef } from 'vue'
-import type { State } from '@braks/vue-flow'
-import { useVueFlow } from '@braks/vue-flow'
+import type { State } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 
 describe('Store Action: `setState`', () => {
   let store = useVueFlow()

@@ -1,4 +1,4 @@
-import type { Dimensions, ElementData, Position } from '@braks/vue-flow'
+import type { Dimensions, ElementData, Position } from '@vue-flow/core'
 import type { MoveableProps } from 'vue3-moveable'
 import type { CSSProperties } from 'vue'
 

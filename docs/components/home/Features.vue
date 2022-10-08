@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { VueFlowStore } from '@braks/vue-flow'
+import type { VueFlowStore } from '@vue-flow/core'
 import Basic from './flows/Basic.vue'
 import RGB from './flows/RGB.vue'
 import Nested from './flows/Nested.vue'
