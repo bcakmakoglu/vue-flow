@@ -9,14 +9,7 @@ export { default as Handle } from './components/Handle/Handle.vue'
 
 export { StraightEdge, StepEdge, BezierEdge, SimpleBezierEdge, SmoothStepEdge, BaseEdge, EdgeText } from './components/Edges'
 
-export {
-  getBezierPath,
-  getBezierCenter,
-  getSimpleBezierPath,
-  getSimpleBezierCenter,
-  getSmoothStepPath,
-  getCenter as getEdgeCenter,
-} from './components/Edges/utils'
+export { getBezierPath, getSimpleBezierPath, getSmoothStepPath, getStraightPath } from './components/Edges/utils'
 
 export {
   isNode,

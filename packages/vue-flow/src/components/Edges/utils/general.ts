@@ -1,41 +1,15 @@
-import { Position } from '~/types'
-
-export interface GetCenterParams {
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  sourcePosition?: Position
-  targetPosition?: Position
-}
-
-const LeftOrRight = [Position.Left, Position.Right]
-
-export const getCenter = ({
+// this is used for straight edges and simple smoothstep edges (LTR, RTL, BTT, TTB)
+export function getSimpleEdgeCenter({
   sourceX,
   sourceY,
   targetX,
   targetY,
-  sourcePosition = Position.Bottom,
-  targetPosition = Position.Top,
-}: GetCenterParams): [number, number, number, number] => {
-  const sourceIsLeftOrRight = LeftOrRight.includes(sourcePosition)
-  const targetIsLeftOrRight = LeftOrRight.includes(targetPosition)
-
-  // we expect flows to be horizontal or vertical (all handles left or right respectively top or bottom)
-  // a mixed edge is when one the source is on the left and the target is on the top for example.
-  const mixedEdge = (sourceIsLeftOrRight && !targetIsLeftOrRight) || (targetIsLeftOrRight && !sourceIsLeftOrRight)
-
-  if (mixedEdge) {
-    const xOffset = sourceIsLeftOrRight ? Math.abs(targetX - sourceX) : 0
-    const centerX = sourceX > targetX ? sourceX - xOffset : sourceX + xOffset
-
-    const yOffset = sourceIsLeftOrRight ? 0 : Math.abs(targetY - sourceY)
-    const centerY = sourceY < targetY ? sourceY + yOffset : sourceY - yOffset
-
-    return [centerX, centerY, xOffset, yOffset]
-  }
-
+}: {
+  sourceX: number
+  sourceY: number
+  targetX: number
+  targetY: number
+}): [number, number, number, number] {
   const xOffset = Math.abs(targetX - sourceX) / 2
   const centerX = targetX < sourceX ? targetX + xOffset : targetX - xOffset
 
@@ -43,4 +17,33 @@ export const getCenter = ({
   const centerY = targetY < sourceY ? targetY + yOffset : targetY - yOffset
 
   return [centerX, centerY, xOffset, yOffset]
+}
+
+export function getBezierEdgeCenter({
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  sourceControlX,
+  sourceControlY,
+  targetControlX,
+  targetControlY,
+}: {
+  sourceX: number
+  sourceY: number
+  targetX: number
+  targetY: number
+  sourceControlX: number
+  sourceControlY: number
+  targetControlX: number
+  targetControlY: number
+}): [number, number, number, number] {
+  // cubic bezier t=0.5 mid point, not the actual mid point, but easy to calculate
+  // https://stackoverflow.com/questions/67516101/how-to-find-distance-mid-point-of-bezier-curve
+  const centerX = sourceX * 0.125 + sourceControlX * 0.375 + targetControlX * 0.375 + targetX * 0.125
+  const centerY = sourceY * 0.125 + sourceControlY * 0.375 + targetControlY * 0.375 + targetY * 0.125
+  const offsetX = Math.abs(centerX - sourceX)
+  const offsetY = Math.abs(centerY - sourceY)
+
+  return [centerX, centerY, offsetX, offsetY]
 }

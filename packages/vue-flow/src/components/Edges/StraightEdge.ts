@@ -1,5 +1,6 @@
 import type { FunctionalComponent } from 'vue'
 import BaseEdge from './BaseEdge'
+import { getStraightPath } from './utils'
 import type { EdgeProps } from '~/types'
 
 const StraightEdge: FunctionalComponent<EdgeProps> = function ({
@@ -17,19 +18,12 @@ const StraightEdge: FunctionalComponent<EdgeProps> = function ({
   markerStart,
   style,
 }) {
-  const centerY = computed(() => {
-    const yOffset = Math.abs(targetY - sourceY) / 2
-    return targetY < sourceY ? targetY + yOffset : targetY - yOffset
-  })
-  const centerX = computed(() => {
-    const xOffset = Math.abs(targetX - sourceX) / 2
-    return targetX < sourceX ? targetX + xOffset : targetX - xOffset
-  })
+  const [path, labelX, labelY] = getStraightPath({ sourceX, sourceY, targetX, targetY })
 
   return h(BaseEdge, {
-    path: `M ${sourceX},${sourceY}L ${targetX},${targetY}`,
-    centerX: centerX.value,
-    centerY: centerY.value,
+    path,
+    labelX,
+    labelY,
     label,
     labelStyle,
     labelShowBg,

@@ -1,5 +1,5 @@
 import type { FunctionalComponent } from 'vue'
-import { getCenter, getSmoothStepPath } from './utils'
+import { getSmoothStepPath } from './utils'
 import BaseEdge from './BaseEdge'
 import type { SmoothStepEdgeProps } from '~/types'
 import { Position } from '~/types'
@@ -23,16 +23,7 @@ const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
   offset,
   style,
 }) {
-  const [centerX, centerY] = getCenter({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,
-  })
-
-  const path = getSmoothStepPath({
+  const [path, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
     targetX,
@@ -45,8 +36,8 @@ const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
 
   return h(BaseEdge, {
     path,
-    centerX,
-    centerY,
+    labelX,
+    labelY,
     label,
     labelStyle,
     labelShowBg,

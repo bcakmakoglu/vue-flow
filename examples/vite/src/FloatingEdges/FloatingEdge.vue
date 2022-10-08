@@ -40,7 +40,7 @@ const d = computed(
     <path
       :id="props.id"
       class="vue-flow__edge-path"
-      :d="d"
+      :d="d[0]"
       :marker-start="props.markerStart"
       :marker-end="props.markerEnd"
       :style="props.style"

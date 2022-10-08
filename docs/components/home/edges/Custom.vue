@@ -46,7 +46,7 @@ export default {
     :id="props.id"
     class="vue-flow__edge-path"
     :style="{ stroke: props.data?.color }"
-    :d="edgePath"
+    :d="edgePath[0]"
     :marker-end="props.markerEnd"
   />
   <text>

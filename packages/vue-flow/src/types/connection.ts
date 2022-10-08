@@ -7,6 +7,7 @@ import type { Edge, EdgeMarkerType } from './edge'
 /** Connection line types (same as default edge types */
 export enum ConnectionLineType {
   Bezier = 'default',
+  SimpleBezier = 'simple-bezier',
   Straight = 'straight',
   Step = 'step',
   SmoothStep = 'smoothstep',
