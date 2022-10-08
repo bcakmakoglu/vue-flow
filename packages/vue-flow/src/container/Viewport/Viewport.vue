@@ -92,7 +92,7 @@ onMounted(() => {
     viewportRef: viewportEl.value,
   })
 
-  const selectionKeyPressed = useKeyPress(selectionKeyCode, (keyPress) => {
+  const onKeyPress = (keyPress: boolean) => {
     if (keyPress && !isZoomingOrPanning) {
       d3Zoom.on('zoom', null)
     } else if (!keyPress) {
@@ -102,7 +102,11 @@ onMounted(() => {
         emits.move({ event, flowTransform })
       })
     }
-  })
+  }
+
+  const selectionKeyPressed = useKeyPress(selectionKeyCode, onKeyPress)
+  // initialize
+  onKeyPress(false)
 
   const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
@@ -177,7 +181,7 @@ onMounted(() => {
     if (!panOnDrag && !zoomScroll && !panOnScroll && !zoomOnDoubleClick && !zoomOnPinch) return false
 
     // during a selection we prevent all other interactions
-    if (selectionKeyPressed.value) return false
+    if (selectionKeyPressed.value && !selectionKeyCode !== true) return false
 
     // if zoom on double click is disabled, we prevent the double click event
     if (!zoomOnDoubleClick && event.type === 'dblclick') return false
