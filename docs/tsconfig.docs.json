@@ -13,16 +13,10 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vite/client"],
-    "jsx": "preserve",
     "paths": {
-      "~/*": ["src/*"]
-    },
-    "plugins": [
-      // Transform paths in output .d.ts files (Include this line if you output declarations files)
-      { "transform": "typescript-transform-paths", "afterDeclarations": true }
-    ]
+      "~/*": ["../packages/vue-flow/src/*"]
+    }
   },
-  "include": ["dist", "src"],
+  "include": ["../packages/vue-flow", "../packages/additional-components"],
   "exclude": ["node_modules"]
 }
