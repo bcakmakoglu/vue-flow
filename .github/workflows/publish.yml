@@ -44,15 +44,6 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: pnpm install --no-frozen-lockfile
 
-      - name: Run linter 🧹
-        run: pnpm lint
-
-      - name: Build Library 👷
-        run: pnpm build
-
-      - name: Run tests 🧪
-        run: pnpm test
-
       - name: Bump versions 🏷 and Publish 🚀
         uses: changesets/action@v1
         with:

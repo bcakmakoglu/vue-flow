@@ -24,12 +24,6 @@
     "dev": {
       "dependsOn": ["^build"],
       "cache": false
-    },
-
-    "release": {
-      "dependsOn": ["^build"],
-      "cache": false,
-      "outputs": []
     }
   }
 }
