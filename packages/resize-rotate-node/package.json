@@ -1,6 +1,6 @@
 {
   "name": "@vue-flow/resize-rotate-node",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "private": false,
   "repository": {
     "type": "git",
@@ -44,7 +44,7 @@
     "vue-tsc": "^0.40.13"
   },
   "peerDependencies": {
-    "@vue-flow/core": "^0.4.41",
+    "@vue-flow/core": "^1.0.0",
     "vue": "^3.2.25"
   },
   "publishConfig": {

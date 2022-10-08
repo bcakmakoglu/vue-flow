@@ -1,6 +1,6 @@
 {
   "name": "@vue-flow/additional-components",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": false,
   "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
@@ -30,7 +30,7 @@
   },
   "peerDependencies": {
     "vue": "^3.2.37",
-    "@vue-flow/core": "^0.4.41"
+    "@vue-flow/core": "^1.0.0"
   },
   "dependencies": {},
   "devDependencies": {
