@@ -10,7 +10,9 @@
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "typedocs": "turbo run build && pnpm --dir docs typedocs"
+    "typedocs": "turbo run build && pnpm --dir docs typedocs",
+    "ci:version": "changeset version",
+    "ci:publish": "changeset publish"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.27.0",
