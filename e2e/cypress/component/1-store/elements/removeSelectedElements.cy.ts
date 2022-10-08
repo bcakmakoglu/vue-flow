@@ -35,7 +35,9 @@ describe('Store Action: `removeSelectedElements`', () => {
       ),
     )
 
-    expect(store.getSelectedElements.value).to.have.length(randomNumber - randomNumber2)
+    cy.wait(1).then(() => {
+      expect(store.getSelectedElements.value).to.have.length(randomNumber - randomNumber2)
+    })
   })
 
   it('resets all selected elements in store when no argument is passed', () => {
