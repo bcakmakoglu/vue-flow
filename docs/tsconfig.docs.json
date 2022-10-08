@@ -14,9 +14,9 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "~/*": ["packages/vue-flow/src/*"]
+      "~/*": ["../packages/vue-flow/src/*"]
     }
   },
-  "include": ["packages/vue-flow", "packages/additional-components"],
+  "include": ["../packages/vue-flow", "../packages/additional-components"],
   "exclude": ["node_modules"]
 }
