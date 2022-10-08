@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- [Node.js v12+](https://nodejs.org/)
+- [Node.js v14+](https://nodejs.org/)
 - [Vue 3](https://vuejs.org/)
 
 ## Installation
