@@ -17,6 +17,6 @@
   "disableSources": true,
   "cleanOutputDir": true,
   "out": "src/typedocs",
-  "tsconfig": "./tsconfig.docs.json",
+  "tsconfig": "../tsconfig.docs.json",
   "entryDocument": "index.md"
 }
