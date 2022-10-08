@@ -23,11 +23,9 @@
     "build": "vite build",
     "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && shx rm -rf tmp",
     "postbuild": "shx rm -rf tmp",
-    "prepublishOnly": "pnpm build",
     "test": "exit 0;",
     "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
-    "lint": "pnpm lint:js",
-    "release": "pnpm publish"
+    "lint": "pnpm lint:js"
   },
   "dependencies": {
     "pathfinding": "^0.4.18",
