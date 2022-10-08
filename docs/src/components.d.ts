@@ -36,5 +36,6 @@ declare module '@vue/runtime-core' {
     Sidebar: typeof import('./../components/examples/dnd/Sidebar.vue')['default']
     Team: typeof import('./../components/home/Team.vue')['default']
     TeleportableNode: typeof import('./../components/examples/teleport/TeleportableNode.vue')['default']
+    TransitionEdge: typeof import('./../components/examples/transition/TransitionEdge.vue')['default']
   }
 }

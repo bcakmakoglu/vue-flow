@@ -12,6 +12,6 @@
     "@braks/vue-flow": "workspace:*"
   },
   "devDependencies": {
-    "nuxt": "3.0.0-rc.3"
+    "nuxt": "3.0.0-rc.11"
   }
 }

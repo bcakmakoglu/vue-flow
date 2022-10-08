@@ -10,6 +10,7 @@
     "typedoc": "typedoc --options ./typedoc.json"
   },
   "dependencies": {
+    "vue": "^3.2.37",
     "@algolia/client-search": "^4.14.2",
     "@animxyz/core": "^0.6.6",
     "@animxyz/vue3": "^0.6.7",
