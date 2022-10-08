@@ -6,10 +6,10 @@ __Custom edge that avoids crossing nodes__
 
 ```bash
 # install
-$ yarn add @vue-flow/core-pathfinding-edge
+$ yarn add @vue-flow/pathfinding-edge
 
 # or
-$ npm i --save @vue-flow/core-pathfinding-edge
+$ npm i --save @vue-flow/pathfinding-edge
 ```
 
 ## 🎮 Quickstart
@@ -17,7 +17,7 @@ $ npm i --save @vue-flow/core-pathfinding-edge
 ```vue
 <script setup>
 import { VueFlow, useVueFlow } from '@vue-flow/core'
-import { PathFindingEdge } from '@vue-flow/core-pathfinding-edge'
+import { PathFindingEdge } from '@vue-flow/pathfinding-edge'
 import initialElements from './initial-elements'
 
 const elements = ref(initialElements)
@@ -40,6 +40,15 @@ const { getNodes } = useVueFlow()
 // initial-elements.js
 export default [
   {
+    id: 'e12',
+    source: '1',
+    target: '2',
+    label: 'Smart Edge',
+    style: { stroke: 'red' },
+    // assign pathfinding edge type
+    type: 'pathfinding'
+  },
+  {
     id: '1',
     label: 'Node 1',
     position: {
@@ -54,15 +63,6 @@ export default [
       x: 230,
       y: 90,
     },
-  },
-  {
-    id: 'e12',
-    source: '1',
-    target: '2',
-    label: 'Smart Edge',
-    style: { stroke: 'red' },
-    // assign pathfinding edge type
-    type: 'pathfinding'
   },
 ]
 ```
