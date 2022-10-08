@@ -43,7 +43,7 @@ jobs:
         run: pnpm lint
 
       - name: Build Library 👷
-        run: pnpm build --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}"
+        run: pnpm build
 
       - name: Run tests 🧪
         run: pnpm test

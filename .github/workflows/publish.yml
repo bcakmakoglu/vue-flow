@@ -11,25 +11,49 @@ env:
 jobs:
   version:
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+
     steps:
-      - name: checkout code repository
-        uses: actions/checkout@v2
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v3
         with:
-          fetch-depth: 0
-      - name: setup node.js
-        uses: actions/setup-node@v2
+          node-version: ${{ matrix.node }}
+          check-latest: true
+
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
         with:
-          node-version: 14
-      - name: install pnpm
-        run: npm i pnpm@latest -g
-      - name: Setup npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
-      - name: setup pnpm config
+          version: 7
+          run_install: false
+
+      - name: Setup pnpm config 🏗
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
-      - name: install dependencies
-        run: pnpm install
-      - name: create and publish versions
+
+      - name: Setup npmrc 🏗
+        run: echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+
+      - name: Install dependencies 👨🏻‍💻
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Run linter 🧹
+        run: pnpm lint
+
+      - name: Build Library 👷
+        run: pnpm build
+
+      - name: Run tests 🧪
+        run: pnpm test
+
+      - name: Bump versions 🏷 and Publish 🚀
         uses: changesets/action@v1
         with:
           version: pnpm ci:version
