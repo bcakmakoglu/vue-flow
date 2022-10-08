@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { EdgeProps, Position } from '@vue-flow/core'
-import { getBezierPath, getEdgeCenter, useVueFlow } from '@vue-flow/core'
+import { getBezierPath, useVueFlow } from '@vue-flow/core'
 
 interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   id: string
@@ -34,14 +34,6 @@ const edgePath = computed(() =>
     targetPosition: props.targetPosition,
   }),
 )
-const center = computed(() =>
-  getEdgeCenter({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    targetX: props.targetX,
-    targetY: props.targetY,
-  }),
-)
 </script>
 
 <script lang="ts">
@@ -51,12 +43,12 @@ export default {
 </script>
 
 <template>
-  <path :id="props.id" :style="props.style" class="vue-flow__edge-path" :d="edgePath" :marker-end="props.markerEnd" />
+  <path :id="props.id" :style="props.style" class="vue-flow__edge-path" :d="edgePath[0]" :marker-end="props.markerEnd" />
   <foreignObject
     :width="foreignObjectSize"
     :height="foreignObjectSize"
-    :x="center[0] - foreignObjectSize / 2"
-    :y="center[1] - foreignObjectSize / 2"
+    :x="edgePath[1] - foreignObjectSize / 2"
+    :y="edgePath[2] - foreignObjectSize / 2"
     class="edgebutton-foreignobject"
     requiredExtensions="http://www.w3.org/1999/xhtml"
   >

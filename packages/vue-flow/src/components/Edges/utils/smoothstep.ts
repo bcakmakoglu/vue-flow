@@ -1,4 +1,4 @@
-import { getCenter } from './general'
+import { getSimpleEdgeCenter } from './general'
 import type { XYPosition } from '~/types'
 import { Position } from '~/types'
 
@@ -53,9 +53,9 @@ function getPoints({
   sourcePosition: Position
   target: XYPosition
   targetPosition: Position
-  center: XYPosition
+  center: Partial<XYPosition>
   offset: number
-}): XYPosition[] {
+}): [XYPosition[], number, number, number, number] {
   const sourceDir = handleDirections[sourcePosition]
   const targetDir = handleDirections[targetPosition]
   const sourceGapped: XYPosition = { x: source.x + sourceDir.x * offset, y: source.y + sourceDir.y * offset }
@@ -69,22 +69,32 @@ function getPoints({
   const currDir = dir[dirAccessor]
 
   let points: XYPosition[] = []
+  let centerX, centerY
+  const [defaultCenterX, defaultCenterY, defaultOffsetX, defaultOffsetY] = getSimpleEdgeCenter({
+    sourceX: source.x,
+    sourceY: source.y,
+    targetX: target.x,
+    targetY: target.y,
+  })
 
   // opposite handle positions, default case
   if (sourceDir[dirAccessor] * targetDir[dirAccessor] === -1) {
+    centerX = center.x || defaultCenterX
+    centerY = center.y || defaultCenterY
+
     //    --->
     //    |
     // >---
     const verticalSplit: XYPosition[] = [
-      { x: center.x, y: sourceGapped.y },
-      { x: center.x, y: targetGapped.y },
+      { x: centerX, y: sourceGapped.y },
+      { x: centerX, y: targetGapped.y },
     ]
     //    |
     //  ---
     //  |
     const horizontalSplit: XYPosition[] = [
-      { x: sourceGapped.x, y: center.y },
-      { x: targetGapped.x, y: center.y },
+      { x: sourceGapped.x, y: centerY },
+      { x: targetGapped.x, y: centerY },
     ]
 
     if (sourceDir[dirAccessor] === currDir) {
@@ -117,9 +127,14 @@ function getPoints({
         points = dirAccessor === 'x' ? sourceTarget : targetSource
       }
     }
+
+    centerX = points[0].x
+    centerY = points[0].y
   }
 
-  return [source, sourceGapped, ...points, targetGapped, target]
+  const pathPoints = [source, sourceGapped, ...points, targetGapped, target]
+
+  return [pathPoints, centerX, centerY, defaultOffsetX, defaultOffsetY]
 }
 
 function getBend(a: XYPosition, b: XYPosition, c: XYPosition, size: number): string {
@@ -154,21 +169,17 @@ export function getSmoothStepPath({
   centerX,
   centerY,
   offset = 20,
-}: GetSmoothStepPathParams) {
-  const [_centerX, _centerY] = getCenter({ sourceX, sourceY, targetX, targetY })
-  const cX = typeof centerX !== 'undefined' ? centerX : _centerX
-  const cY = typeof centerY !== 'undefined' ? centerY : _centerY
-
-  const points = getPoints({
+}: GetSmoothStepPathParams): [string, number, number, number, number] {
+  const [points, labelX, labelY, offsetX, offsetY] = getPoints({
     source: { x: sourceX, y: sourceY },
     sourcePosition,
     target: { x: targetX, y: targetY },
     targetPosition,
-    center: { x: cX, y: cY },
+    center: { x: centerX, y: centerY },
     offset,
   })
 
-  return points.reduce<string>((res, p, i) => {
+  const path = points.reduce<string>((res, p, i) => {
     let segment = ''
 
     if (i > 0 && i < points.length - 1) {
@@ -181,4 +192,6 @@ export function getSmoothStepPath({
 
     return res
   }, '')
+
+  return [path, labelX, labelY, offsetX, offsetY]
 }

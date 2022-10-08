@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getBezierPath, getSmoothStepPath } from '../Edges/utils'
+import { getBezierPath, getSimpleBezierPath, getSmoothStepPath } from '../Edges/utils'
 import type { GraphNode, HandleElement } from '../../types'
 import { ConnectionLineType, Position } from '../../types'
 import { useVueFlow } from '../../composables'
@@ -48,39 +48,34 @@ const targetY = $computed(() => (connectionPosition.y - viewport.y) / viewport.z
 
 const dAttr = computed(() => {
   let path = `M${sourceX},${sourceY} ${targetX},${targetY}`
+
+  const pathParams = {
+    sourceX,
+    sourceY,
+    sourcePosition: sourceHandle?.position,
+    targetX,
+    targetY,
+    targetPosition,
+  }
+
   switch (connectionLineType || connectionLineOptions.type) {
     case ConnectionLineType.Bezier:
-      path = getBezierPath({
-        sourceX,
-        sourceY,
-        sourcePosition: sourceHandle?.position,
-        targetX,
-        targetY,
-        targetPosition,
-      })
+      ;[path] = getBezierPath(pathParams)
       break
     case ConnectionLineType.Step:
-      path = getSmoothStepPath({
-        sourceX,
-        sourceY,
-        sourcePosition: sourceHandle?.position,
-        targetX,
-        targetY,
-        targetPosition,
+      ;[path] = getSmoothStepPath({
+        ...pathParams,
         borderRadius: 0,
       })
       break
     case ConnectionLineType.SmoothStep:
-      path = getSmoothStepPath({
-        sourceX,
-        sourceY,
-        sourcePosition: sourceHandle?.position,
-        targetX,
-        targetY,
-        targetPosition,
-      })
+      ;[path] = getSmoothStepPath(pathParams)
+      break
+    case ConnectionLineType.SimpleBezier:
+      ;[path] = getSimpleBezierPath(pathParams)
       break
   }
+
   return path
 })
 </script>
