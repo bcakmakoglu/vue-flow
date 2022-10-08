@@ -1,4 +1,4 @@
-import { useVueFlow } from '@braks/vue-flow'
+import { isEdge, isNode, useVueFlow } from '@braks/vue-flow'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
@@ -24,8 +24,25 @@ describe('Store Action: `addSelectedNodes`', () => {
   })
 
   it('adds `selected` class to nodes', () => {
-    cy.get('.vue-flow__node').then((nodes) => {
-      expect(nodes[randomNumber - 1]).to.have.class('selected')
+    cy.get('.vue-flow__node').then((els) => {
+      els.each((index, node) => {
+        const nodeId = node.getAttribute('data-id')
+        const storedNode = store.findNode(nodeId!)
+
+        expect(storedNode && isNode(storedNode)).to.eq(true)
+
+        if (index < randomNumber) {
+          expect(!!storedNode?.selected).to.eq(true)
+          cy.wait(1).then(() => {
+            expect(node).to.have.class('selected')
+          })
+        } else {
+          expect(!!storedNode?.selected).to.eq(false)
+          cy.wait(1).then(() => {
+            expect(node).to.not.have.class('selected')
+          })
+        }
+      })
     })
   })
 })
