@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { ClassFunc, GraphEdge, GraphNode, StyleFunc } from '@vue-flow/core'
-import { Background, ConnectionLineType, Controls, VueFlow, useVueFlow } from '@vue-flow/core'
+import { ConnectionLineType, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, Controls } from '@vue-flow/additional-components'
 import Cross from '~icons/mdi/window-close'
 
 const emit = defineEmits(['pane'])

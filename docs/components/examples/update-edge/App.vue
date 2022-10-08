@@ -1,5 +1,6 @@
 <script setup>
-import { ConnectionMode, Controls, VueFlow, addEdge, updateEdge } from '@vue-flow/core'
+import { Controls } from '@vue-flow/additional-components'
+import { ConnectionMode, VueFlow, addEdge, updateEdge } from '@vue-flow/core'
 import { ref } from 'vue'
 
 const elements = ref([

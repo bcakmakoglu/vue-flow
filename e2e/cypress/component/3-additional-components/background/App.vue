@@ -1,5 +1,6 @@
 <script setup>
-import { Background, VueFlow } from '@vue-flow/core'
+import { VueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/additional-components'
 </script>
 
 <template>

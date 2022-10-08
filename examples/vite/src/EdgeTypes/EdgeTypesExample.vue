@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { VueFlowStore } from '@vue-flow/core'
-import { Controls, MiniMap, VueFlow } from '@vue-flow/core'
+import { VueFlow } from '@vue-flow/core'
+import { Controls, MiniMap } from '@vue-flow/additional-components'
 import { getElements } from './utils'
 
 const onLoad = (flowInstance: VueFlowStore) => {

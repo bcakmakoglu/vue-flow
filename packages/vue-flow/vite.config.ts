@@ -2,7 +2,6 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueTypes from 'vite-plugin-vue-type-imports'
-import svgLoader from 'vite-svg-loader'
 import AutoImport from 'unplugin-auto-import/vite'
 import replace from '@rollup/plugin-replace'
 import pkg from './package.json'
@@ -43,7 +42,6 @@ export default defineConfig({
       reactivityTransform: true,
     }),
     vueTypes(),
-    svgLoader(),
     AutoImport({
       imports: ['vue', '@vueuse/core', 'vue/macros'],
       dts: 'src/auto-imports.d.ts',

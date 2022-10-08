@@ -1,5 +1,6 @@
 <script setup>
-import { Background, BackgroundVariant, Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, BackgroundVariant, Controls, MiniMap } from '@vue-flow/additional-components'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 const { nodes, addNodes, edges, addEdges, onConnect, onPaneReady, onNodeDragStop, dimensions } = useVueFlow()
 
