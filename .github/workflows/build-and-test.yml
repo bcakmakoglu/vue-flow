@@ -36,15 +36,6 @@ jobs:
       - name: Setup pnpm config 🏗
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
-      - name: Cache node_modules 📦
-        uses: actions/cache@v3
-        id: pnpm-cache # use this to check for `cache-hit` (`steps.pnpm-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: $PNPM_CACHE_FOLDER
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-
       - name: Install dependencies 👨🏻‍💻
         run: pnpm install --no-frozen-lockfile
 
