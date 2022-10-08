@@ -27,7 +27,7 @@ describe('Check if nodes are draggable', () => {
           view: win,
         })
 
-      cy.get(`[data-id="${nodes[0].id}"]`).should('have.css', 'transform', 'matrix(1, 0, 0, 1, 17, 74)')
+      cy.get(`[data-id="${nodes[0].id}"]`).should('not.have.css', 'transform', 'matrix(1, 0, 0, 1, 0, 0)')
     })
   })
 })
