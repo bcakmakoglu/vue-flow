@@ -2,17 +2,21 @@
   "$schema": "https://typedoc.org/schema.json",
   "readme": "none",
   "plugin": [
-    "typedoc-plugin-merge-modules"
+    "typedoc-plugin-merge-modules",
+    "typedoc-plugin-markdown"
   ],
   "entryPoints": [
     "../packages/vue-flow/src/index.ts",
     "../packages/additional-components/src/index.ts"
   ],
+  "allReflectionsHaveOwnDocument": true,
   "categorizeByGroup": true,
   "darkHighlightTheme": "vitesse-dark",
   "lightHighlightTheme": "vitesse-light",
+  "hideBreadcrumbs": true,
   "disableSources": true,
   "cleanOutputDir": true,
-  "out": "typedocs",
-  "tsconfig": "tsconfig.docs.json"
+  "out": "src/typedocs",
+  "tsconfig": "tsconfig.docs.json",
+  "entryDocument": "index.md"
 }
