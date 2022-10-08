@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { EdgeText, getEdgeCenter } from '@vue-flow/core'
+import { EdgeText, getSimpleBezierPath } from '@vue-flow/core'
 import type { CSSProperties } from 'vue'
 import { getArrow } from 'perfect-arrows'
 import type { PerfectArrowProps } from '../types'
@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<PerfectArrowProps>(), {
 })
 
 const centered = computed(() =>
-  getEdgeCenter({
+  getSimpleBezierPath({
     ...props,
   }),
 )
@@ -44,8 +44,8 @@ export default {
   />
   <EdgeText
     v-if="props.label"
-    :x="centered[0]"
-    :y="centered[1]"
+    :x="centered[1]"
+    :y="centered[2]"
     :label="props.label"
     :label-style="props.labelStyle"
     :label-show-bg="props.labelShowBg"
