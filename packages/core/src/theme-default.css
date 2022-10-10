@@ -36,6 +36,7 @@
 
 .vue-flow__edge-text {
   font-size: 10px;
+  fill: #000;
 }
 
 .vue-flow__edge-textbg {
