@@ -1,5 +1,6 @@
 import type { Dimensions, GraphNode, XYPosition } from '@vue-flow/core'
 import type { CSSProperties } from 'vue'
+import type { PanelPosition } from '../panel'
 
 /** expects a node and returns a color value */
 export type MiniMapNodeFunc = (node: GraphNode) => string
@@ -22,6 +23,8 @@ export interface MiniMapProps {
   nodeStrokeWidth?: number
   /** Background color of minimap */
   maskColor?: string
+  /** Position of the minimap {@link PanelPosition} */
+  position?: PanelPosition
 
   width?: number
   height?: number
