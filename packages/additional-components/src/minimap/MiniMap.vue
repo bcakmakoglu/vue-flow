@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { GraphNode } from '@vue-flow/core'
 import { getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
+import type { PanelPosition } from '../panel'
+import { Panel } from '../panel'
 import type { MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
 
@@ -13,6 +15,7 @@ const {
   nodeBorderRadius = 5,
   nodeStrokeWidth = 2,
   maskColor = 'rgb(240, 242, 243, 0.7)',
+  position = 'bottom-right' as PanelPosition,
 } = defineProps<MiniMapProps>()
 
 const emit = defineEmits(['nodeClick', 'nodeDblclick', 'nodeMouseenter', 'nodeMousemove', 'nodeMouseleave'])
@@ -22,7 +25,7 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { edges, viewport, dimensions, emits, getNodes } = useVueFlow()
+const { id, edges, viewport, dimensions, emits, getNodes } = useVueFlow()
 
 const elementWidth = computed(() => width ?? attrs.style?.width ?? defaultWidth)
 
@@ -117,36 +120,19 @@ export default {
 </script>
 
 <template>
-  <svg
-    :width="elementWidth"
-    :height="elementHeight"
-    :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(' ')"
-    class="vue-flow__minimap"
-  >
-    <MiniMapNode
-      v-for="node of getNodes"
-      :id="node.id"
-      :key="node.id"
-      :position="node.computedPosition"
-      :dimensions="node.dimensions"
-      :style="node.style"
-      :class="nodeClassNameFunc(node)"
-      :color="nodeColorFunc(node)"
-      :border-radius="nodeBorderRadius"
-      :stroke-color="nodeStrokeColorFunc(node)"
-      :stroke-width="nodeStrokeWidth"
-      :shape-rendering="shapeRendering"
-      @click="onNodeClick($event, node)"
-      @dblclick="onNodeDblClick($event, node)"
-      @mouseenter="onNodeMouseEnter($event, node)"
-      @mousemove="onNodeMouseMove($event, node)"
-      @mouseleave="onNodeMouseLeave($event, node)"
+  <Panel :position="position" class="vue-flow__minimap">
+    <svg
+      :width="elementWidth"
+      :height="elementHeight"
+      :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(' ')"
+      role="img"
+      :aria-labelledby="`vue-flow__minimap-${id}`"
     >
-      <slot
+      <title :id="`vue-flow__minimap-${id}`">Vue Flow mini map</title>
+      <MiniMapNode
+        v-for="node of getNodes"
         :id="node.id"
-        :name="`node-${node.type}`"
-        :parent-node="node.parentNode"
-        :selected="node.selected"
+        :key="node.id"
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :style="node.style"
@@ -156,8 +142,29 @@ export default {
         :stroke-color="nodeStrokeColorFunc(node)"
         :stroke-width="nodeStrokeWidth"
         :shape-rendering="shapeRendering"
-      />
-    </MiniMapNode>
-    <path class="vue-flow__minimap-mask" :d="d" :fill="maskColor" fill-rule="evenodd" />
-  </svg>
+        @click="onNodeClick($event, node)"
+        @dblclick="onNodeDblClick($event, node)"
+        @mouseenter="onNodeMouseEnter($event, node)"
+        @mousemove="onNodeMouseMove($event, node)"
+        @mouseleave="onNodeMouseLeave($event, node)"
+      >
+        <slot
+          :id="node.id"
+          :name="`node-${node.type}`"
+          :parent-node="node.parentNode"
+          :selected="node.selected"
+          :position="node.computedPosition"
+          :dimensions="node.dimensions"
+          :style="node.style"
+          :class="nodeClassNameFunc(node)"
+          :color="nodeColorFunc(node)"
+          :border-radius="nodeBorderRadius"
+          :stroke-color="nodeStrokeColorFunc(node)"
+          :stroke-width="nodeStrokeWidth"
+          :shape-rendering="shapeRendering"
+        />
+      </MiniMapNode>
+      <path class="vue-flow__minimap-mask" :d="d" :fill="maskColor" fill-rule="evenodd" />
+    </svg>
+  </Panel>
 </template>

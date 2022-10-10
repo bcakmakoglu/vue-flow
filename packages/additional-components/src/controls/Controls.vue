@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { useVueFlow } from '@vue-flow/core'
+import type { PanelPosition } from '../panel'
+import { Panel } from '../panel'
 import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from './icons/plus.svg'
@@ -8,7 +10,13 @@ import FitView from './icons/fitview.svg'
 import Lock from './icons/lock.svg'
 import Unlock from './icons/unlock.svg'
 
-const { showZoom = true, showFitView = true, showInteractive = true, fitViewParams } = defineProps<ControlProps>()
+const {
+  showZoom = true,
+  showFitView = true,
+  showInteractive = true,
+  fitViewParams,
+  position = 'bottom-left' as PanelPosition,
+} = defineProps<ControlProps>()
 
 const emit = defineEmits<{
   (event: 'zoomIn'): void
@@ -49,7 +57,7 @@ export default {
 </script>
 
 <template>
-  <div class="vue-flow__controls">
+  <Panel class="vue-flow__controls" :position="position">
     <slot name="top"></slot>
     <template v-if="showZoom">
       <slot name="control-zoom-in">
@@ -89,5 +97,5 @@ export default {
       </slot>
     </template>
     <slot></slot>
-  </div>
+  </Panel>
 </template>
