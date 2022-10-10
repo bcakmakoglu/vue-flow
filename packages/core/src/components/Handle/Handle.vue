@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { isString } from '@vueuse/core'
 import { useHandle, useNode, useVueFlow } from '../../composables'
 import type { Position } from '../../types'
 import { ConnectionMode } from '../../types'
@@ -9,11 +10,19 @@ const { type = 'source', position = 'top' as Position, connectable = true, id, i
 
 const { connectionStartHandle, connectionMode, vueFlowRef } = $(useVueFlow())
 
-const { id: nodeId, node, nodeEl } = useNode()
+const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
 const handle = ref<HTMLDivElement>()
 
 const handleId = $computed(() => id ?? (connectionMode === ConnectionMode.Strict ? null : `${nodeId}__handle-${position}`))
+
+const isConnectable = computed(() => {
+  if (isString(connectable) && connectable === 'single') {
+    return !connectedEdges.value.some((edge) => edge[type] === nodeId && edge[`${type}Handle`] === handleId)
+  }
+
+  return connectable
+})
 
 const { onMouseDown, onClick } = useHandle()
 
@@ -34,7 +43,7 @@ const getClasses = computed(() => {
     {
       source: type !== 'target',
       target: type === 'target',
-      connectable,
+      connectable: isConnectable,
       connecting:
         connectionStartHandle &&
         connectionStartHandle.nodeId === nodeId &&
