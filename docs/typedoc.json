@@ -5,8 +5,7 @@
     "typedoc-plugin-merge-modules"
   ],
   "entryPoints": [
-    "../packages/vue-flow/src/index.ts",
-    "../packages/additional-components/src/index.ts"
+    "../packages/vue-flow/src/index.ts"
   ],
   "categorizeByGroup": true,
   "darkHighlightTheme": "vitesse-dark",

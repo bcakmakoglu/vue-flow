@@ -6,8 +6,7 @@
     "typedoc-plugin-markdown"
   ],
   "entryPoints": [
-    "../packages/vue-flow/src/index.ts",
-    "../packages/additional-components/src/index.ts"
+    "../packages/vue-flow/src/index.ts"
   ],
   "allReflectionsHaveOwnDocument": true,
   "categorizeByGroup": true,
