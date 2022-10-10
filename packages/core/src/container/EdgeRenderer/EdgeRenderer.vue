@@ -89,9 +89,7 @@ onPaneReady(() => {
           ]
         }
       },
-      {
-        immediate: true,
-      },
+      { immediate: true },
     )
   })
 })
