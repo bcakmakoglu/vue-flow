@@ -1,4 +1,5 @@
 import type { FitViewParams } from '@vue-flow/core'
+import type { PanelPosition } from '../panel'
 
 export interface ControlProps {
   /** Show the zoom icon */
@@ -9,4 +10,6 @@ export interface ControlProps {
   showInteractive?: boolean
   /** Params to use on fitView */
   fitViewParams?: FitViewParams
+  /** Position of the controls {@link PanelPosition} */
+  position: PanelPosition
 }
