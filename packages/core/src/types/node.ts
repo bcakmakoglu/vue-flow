@@ -1,7 +1,7 @@
 import type { Component, VNode } from 'vue'
 import type { ClassFunc, Dimensions, ElementData, Position, SnapGrid, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
 import type { DefaultNodeTypes, NodeComponent } from './components'
-import type { HandleElement, ValidConnectionFunc } from './handle'
+import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './handle'
 import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
@@ -31,7 +31,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   sourcePosition?: Position
   draggable?: boolean
   selectable?: boolean
-  connectable?: boolean
+  connectable?: HandleConnectable
   dragHandle?: string
   /** move on grid */
   snapGrid?: SnapGrid
@@ -93,8 +93,8 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}> {
   type: keyof DefaultNodeTypes | string
   /** is node selected */
   selected: boolean
-  /** can node be connected */
-  connectable: boolean
+  /** can node handles be connected */
+  connectable: HandleConnectable
   /** node x, y (relative) position on graph */
   position: XYPosition
   /** dom element dimensions (width, height) */

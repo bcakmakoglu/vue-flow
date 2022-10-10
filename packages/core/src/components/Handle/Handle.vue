@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { isString } from '@vueuse/core'
+import { isFunction, isString } from '@vueuse/core'
 import { useHandle, useNode, useVueFlow } from '../../composables'
 import type { Position } from '../../types'
 import { ConnectionMode } from '../../types'
@@ -8,7 +8,7 @@ import { getDimensions } from '../../utils'
 
 const { type = 'source', position = 'top' as Position, connectable = true, id, isValidConnection } = defineProps<HandleProps>()
 
-const { connectionStartHandle, connectionMode, vueFlowRef } = $(useVueFlow())
+const { connectionStartHandle, connectionMode, vueFlowRef, nodesConnectable } = $(useVueFlow())
 
 const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
@@ -19,6 +19,8 @@ const handleId = $computed(() => id ?? (connectionMode === ConnectionMode.Strict
 const isConnectable = computed(() => {
   if (isString(connectable) && connectable === 'single') {
     return !connectedEdges.value.some((edge) => edge[type] === nodeId && edge[`${type}Handle`] === handleId)
+  } else if (isFunction(connectable)) {
+    return connectable(node, connectedEdges.value)
   }
 
   return connectable
@@ -33,25 +35,6 @@ const onMouseDownHandler = (event: MouseEvent) => {
 const onClickHandler = (event: MouseEvent) => {
   onClick(event, handleId ?? null, nodeId, type, isValidConnection)
 }
-
-const getClasses = computed(() => {
-  return [
-    'vue-flow__handle',
-    `vue-flow__handle-${position}`,
-    `vue-flow__handle-${handleId}`,
-    'nodrag',
-    {
-      source: type !== 'target',
-      target: type === 'target',
-      connectable: isConnectable,
-      connecting:
-        connectionStartHandle &&
-        connectionStartHandle.nodeId === nodeId &&
-        connectionStartHandle.handleId === handleId &&
-        connectionStartHandle.type === type,
-    },
-  ]
-})
 
 onMounted(() => {
   const existingBounds = node.handleBounds[type]?.find((b) => b.id === handleId)
@@ -92,7 +75,21 @@ export default {
     :data-handleid="handleId"
     :data-nodeid="nodeId"
     :data-handlepos="position"
-    :class="getClasses"
+    class="vue-flow__handle nodrag"
+    :class="[
+      `vue-flow__handle-${position}`,
+      `vue-flow__handle-${handleId}`,
+      {
+        source: type !== 'target',
+        target: type === 'target',
+        connectable: isConnectable,
+        connecting:
+          connectionStartHandle &&
+          connectionStartHandle.nodeId === nodeId &&
+          connectionStartHandle.handleId === handleId &&
+          connectionStartHandle.type === type,
+      },
+    ]"
     @mousedown="onMouseDownHandler"
     @click="onClickHandler"
   >

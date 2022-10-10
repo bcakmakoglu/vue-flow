@@ -22,6 +22,9 @@ export type ValidConnectionFunc = (
   elements: { edges: GraphEdge[]; sourceNode: GraphNode; targetNode: GraphNode },
 ) => boolean
 
+/** set to true to allow unlimited connections, single for only one connection or use a cb function to determine connect-ability */
+export type HandleConnectable = boolean | 'single' | ((node: GraphNode, connectedEdges: GraphEdge[]) => boolean)
+
 export interface HandleProps {
   /** Unique id of handle element */
   id?: string
@@ -32,5 +35,5 @@ export interface HandleProps {
   /** A valid connection func {@link ValidConnectionFunc} */
   isValidConnection?: ValidConnectionFunc
   /** Enable/disable connecting to handle */
-  connectable?: boolean | 'single'
+  connectable?: HandleConnectable
 }
