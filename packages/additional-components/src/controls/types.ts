@@ -11,5 +11,5 @@ export interface ControlProps {
   /** Params to use on fitView */
   fitViewParams?: FitViewParams
   /** Position of the controls {@link PanelPosition} */
-  position: PanelPosition
+  position?: PanelPosition
 }
