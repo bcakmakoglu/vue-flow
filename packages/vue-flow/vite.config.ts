@@ -1,10 +1,5 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueTypes from 'vite-plugin-vue-type-imports'
-import AutoImport from 'unplugin-auto-import/vite'
-import replace from '@rollup/plugin-replace'
-import pkg from './package.json'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,7 +7,7 @@ export default defineConfig({
     alias: {
       '~': resolve('src'),
     },
-    extensions: ['.ts', '.vue'],
+    extensions: ['.ts'],
   },
   build: {
     emptyOutDir: false,
@@ -36,22 +31,5 @@ export default defineConfig({
         },
       },
     },
-  },
-  plugins: [
-    vue({
-      reactivityTransform: true,
-    }),
-    vueTypes(),
-    AutoImport({
-      imports: ['vue', '@vueuse/core', 'vue/macros'],
-      dts: 'src/auto-imports.d.ts',
-    }),
-    replace({
-      __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
-      preventAssignment: true,
-    }),
-  ],
-  optimizeDeps: {
-    include: ['@vueuse/core', 'd3-zoom', 'd3-selection', 'd3-drag'],
   },
 })
