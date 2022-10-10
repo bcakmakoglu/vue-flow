@@ -1,5 +1,5 @@
 ---
-'@vue-flow/core': patch
+'@vue-flow/core': minor
 ---
 
 # What's changed?
