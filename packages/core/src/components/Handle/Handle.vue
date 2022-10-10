@@ -6,7 +6,9 @@ import { ConnectionMode } from '../../types'
 import type { HandleProps } from '../../types/handle'
 import { getDimensions } from '../../utils'
 
-const { type = 'source', position = 'top' as Position, connectable = true, id, isValidConnection } = defineProps<HandleProps>()
+const { position = 'top' as Position, connectable = true, id, isValidConnection, ...props } = defineProps<HandleProps>()
+
+const type = toRef(props, 'type', 'source')
 
 const { connectionStartHandle, connectionMode, vueFlowRef, nodesConnectable } = $(useVueFlow())
 
@@ -15,6 +17,13 @@ const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 const handle = ref<HTMLDivElement>()
 
 const handleId = $computed(() => id ?? (connectionMode === ConnectionMode.Strict ? null : `${nodeId}__handle-${position}`))
+
+const { onMouseDown, onClick } = useHandle({
+  nodeId,
+  handleId,
+  isValidConnection,
+  type,
+})
 
 const isConnectable = computed(() => {
   if (isString(connectable) && connectable === 'single') {
@@ -26,18 +35,8 @@ const isConnectable = computed(() => {
   return connectable
 })
 
-const { onMouseDown, onClick } = useHandle()
-
-const onMouseDownHandler = (event: MouseEvent) => {
-  onMouseDown(event, handleId, nodeId, type === 'target', isValidConnection, undefined)
-}
-
-const onClickHandler = (event: MouseEvent) => {
-  onClick(event, handleId ?? null, nodeId, type, isValidConnection)
-}
-
 onMounted(() => {
-  const existingBounds = node.handleBounds[type]?.find((b) => b.id === handleId)
+  const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
   if (!vueFlowRef || existingBounds) return
 
   const viewportNode = vueFlowRef.querySelector('.vue-flow__transformationpane')
@@ -59,7 +58,7 @@ onMounted(() => {
     ...getDimensions(handle.value),
   }
 
-  node.handleBounds[type] = [...(node.handleBounds[type] ?? []), nextBounds]
+  node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
 })
 </script>
 
@@ -90,8 +89,8 @@ export default {
           connectionStartHandle.type === type,
       },
     ]"
-    @mousedown="onMouseDownHandler"
-    @click="onClickHandler"
+    @mousedown="onMouseDown"
+    @click="onClick"
   >
     <slot :id="id" />
   </div>
