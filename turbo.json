@@ -24,6 +24,10 @@
     "dev": {
       "dependsOn": ["^build"],
       "cache": false
+    },
+    "docs": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     }
   }
 }
