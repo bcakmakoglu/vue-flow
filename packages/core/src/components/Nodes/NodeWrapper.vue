@@ -5,7 +5,7 @@ import type { GraphNode, HandleConnectable, NodeComponent, SnapGrid, XYZPosition
 import { NodeId, NodeRef } from '../../context'
 import { getConnectedEdges, getXYZPos, handleNodeClick } from '../../utils'
 
-const { id, type, name, draggable, selectable, connectable, snapGrid, ...props } = defineProps<{
+const { id, type, name, draggable, selectable, connectable, ...props } = defineProps<{
   id: string
   draggable: boolean
   selectable: boolean
@@ -20,9 +20,7 @@ const { id, type, name, draggable, selectable, connectable, snapGrid, ...props }
 provide(NodeId, id)
 
 const {
-  nodeExtent,
   edges,
-  viewport,
   noPanClassName,
   selectNodesOnDrag,
   nodesSelectionActive,
