@@ -7,7 +7,7 @@ const DefaultNode: FunctionalComponent<NodeProps> = function ({
   sourcePosition = Position.Bottom,
   targetPosition = Position.Top,
   label,
-  connectable = false,
+  connectable = true,
   isValidTargetPos,
   isValidSourcePos,
 }) {

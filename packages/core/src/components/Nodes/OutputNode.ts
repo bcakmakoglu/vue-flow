@@ -6,7 +6,7 @@ import { Position } from '~/types'
 const OutputNode: FunctionalComponent<NodeProps> = function ({
   targetPosition = Position.Top,
   label,
-  connectable = false,
+  connectable = true,
   isValidTargetPos,
 }) {
   return [
