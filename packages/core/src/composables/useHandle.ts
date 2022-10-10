@@ -1,6 +1,7 @@
+import type { MaybeRef } from '@vueuse/core'
 import { isFunction } from '@vueuse/core'
 import useVueFlow from './useVueFlow'
-import { getHostForElement } from '~/utils'
+import { connectionExists, getHostForElement } from '~/utils'
 import type { Connection, Getters, GraphEdge, HandleType, ValidConnectionFunc } from '~/types'
 import { ConnectionMode } from '~/types'
 
@@ -9,6 +10,16 @@ interface Result {
   isValid: boolean
   connection: Connection
   isHoveringHandle: boolean
+}
+
+interface UseHandleProps {
+  handleId: MaybeRef<string | null>
+  nodeId: MaybeRef<string>
+  type: MaybeRef<HandleType>
+  isValidConnection?: ValidConnectionFunc
+  elementEdgeUpdaterType?: MaybeRef<HandleType>
+  onEdgeUpdate?: (connection: Connection) => void
+  onEdgeUpdateEnd?: () => void
 }
 
 // checks if element below mouse is a handle and returns connection in form of an object { source: 123, target: 312 }
@@ -76,7 +87,21 @@ const resetRecentHandle = (hoveredHandle: Element): void => {
   hoveredHandle?.classList.remove('vue-flow__handle-connecting')
 }
 
-export default () => {
+/**
+ * This composable can be used to create custom Handle components
+ *
+ * It provides an `onClick` and `onMouseDown` handler that you can bind to your custom handle, so it will behave like the default handle.
+ *
+ */
+export default function useHandle({
+  handleId,
+  nodeId,
+  isValidConnection,
+  type,
+  elementEdgeUpdaterType,
+  onEdgeUpdateEnd,
+  onEdgeUpdate,
+}: UseHandleProps) {
   const {
     edges,
     connectOnClick,
@@ -91,24 +116,17 @@ export default () => {
     vueFlowRef,
   } = $(useVueFlow())
 
+  const isTarget = $computed(() => unref(type) === 'target')
+
   let recentHoveredHandle: Element
 
-  const onMouseDown = (
-    event: MouseEvent,
-    handleId: string | null,
-    nodeId: string,
-    isTarget: boolean,
-    isValidConnection?: ValidConnectionFunc,
-    elementEdgeUpdaterType?: HandleType,
-    onEdgeUpdate?: (connection: Connection) => void,
-    onEdgeUpdateEnd?: () => void,
-  ) => {
+  const onMouseDown = (event: MouseEvent) => {
     const doc = getHostForElement(event.target as HTMLElement)
     if (!doc) return
 
     let validConnectFunc = isValidConnection
 
-    const node = getNode(nodeId)
+    const node = getNode(unref(nodeId))
 
     if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
 
@@ -128,9 +146,9 @@ export default () => {
 
     startConnection(
       {
-        nodeId,
-        handleId,
-        type: handleType,
+        nodeId: unref(nodeId),
+        handleId: unref(handleId),
+        type: unref(handleType),
       },
       {
         x: event.clientX - containerBounds.left,
@@ -148,9 +166,9 @@ export default () => {
       const { connection, elementBelow, isValid, isHoveringHandle } = checkElementBelowIsValid(
         event,
         connectionMode,
-        isTarget,
-        nodeId,
-        handleId,
+        unref(isTarget),
+        unref(nodeId),
+        unref(handleId),
         validConnectFunc,
         doc,
         edges,
@@ -172,9 +190,9 @@ export default () => {
       const { connection, isValid } = checkElementBelowIsValid(
         event,
         connectionMode,
-        isTarget,
-        nodeId,
-        handleId,
+        unref(isTarget),
+        unref(nodeId),
+        unref(handleId),
         validConnectFunc,
         doc,
         edges,
@@ -202,25 +220,19 @@ export default () => {
     doc.addEventListener('mouseup', onMouseUp as EventListenerOrEventListenerObject)
   }
 
-  const onClick = (
-    event: MouseEvent,
-    handleId: string | null,
-    nodeId: string,
-    handleType: HandleType,
-    isValidConnection?: ValidConnectionFunc,
-  ) => {
+  const onClick = (event: MouseEvent) => {
     if (!connectOnClick) return
     if (!connectionStartHandle) {
-      startConnection({ nodeId, type: handleType, handleId }, undefined, event)
+      startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event)
     } else {
       let validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
 
-      const node = getNode(nodeId)
+      const node = getNode(unref(nodeId))
 
       if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
 
       if (!isValidConnection) {
-        if (node) validConnectFunc = (handleType !== 'target' ? node.isValidTargetPos : node.isValidSourcePos) ?? (() => true)
+        if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) ?? (() => true)
       }
 
       const doc = getHostForElement(event.target as HTMLElement)
