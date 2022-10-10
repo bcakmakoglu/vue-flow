@@ -8,7 +8,6 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { useVueFlow } from '@vue-flow/core'
-import { copyVueFlowPlugin } from './copy-plugin'
 import head from './head'
 
 const { vueFlowVersion } = useVueFlow()
@@ -50,7 +49,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       exclude: ['@animxyz/vue3'],
     },
     plugins: [
-      copyVueFlowPlugin(),
       AutoImport({
         imports: ['vue', '@vueuse/core'],
         dts: resolve(__dirname, '../auto-imports.d.ts'),
