@@ -5,8 +5,6 @@ on:
     branches:
       - master
       - develop
-env:
-  PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
   build-and-test:
@@ -33,8 +31,18 @@ jobs:
           version: 7
           run_install: false
 
-      - name: Setup pnpm config 🏗
-        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies 👨🏻‍💻
         run: pnpm install --no-frozen-lockfile
