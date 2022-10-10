@@ -4,7 +4,7 @@ import { getElements } from './utils'
 
 const { nodes, edges } = getElements(10, 10)
 
-const { getNode, onPaneReady } = useVueFlow({
+const { onPaneReady } = useVueFlow({
   nodes,
   edges,
 })
@@ -13,6 +13,8 @@ onPaneReady((i) => {
   i.fitView({
     padding: 0.2,
   })
+
+  console.log(i.getEdges.value)
   console.log(i.getElements.value)
 })
 </script>
