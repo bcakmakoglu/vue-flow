@@ -1,6 +1,6 @@
 /**
- * Vue Flow
- * @module vue-flow
+ * Vue Flow Core pkg
+ * @module @vue-flow/core
  */
 
 export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
@@ -39,12 +39,14 @@ export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './contex
 
 export { default as useZoomPanHelper } from './composables/useZoomPanHelper'
 
-export { default as useVueFlow, Storage as GlobalVueFlowStorage } from './composables/useVueFlow'
+export { default as useVueFlow } from './composables/useVueFlow'
 
 export { default as useHandle } from './composables/useHandle'
 
 export { default as useNode } from './composables/useNode'
 
 export { default as useEdge } from './composables/useEdge'
+
+export { Storage as GlobalVueFlowStorage } from './storage'
 
 export * from './types'
