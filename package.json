@@ -6,9 +6,10 @@
     "dev": "pnpm --dir examples/vite dev",
     "docs": "pnpm --dir docs dev",
     "changelog": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
-    "build": "turbo run build",
-    "test": "turbo run test",
-    "lint": "turbo run lint",
+    "build:docs": "turbo docs",
+    "build": "turbo build",
+    "test": "turbo test",
+    "lint": "turbo lint",
     "typedocs": "turbo run build && pnpm --dir docs typedocs",
     "ci:version": "changeset version",
     "ci:publish": "turbo lint && turbo build && turbo test && changeset publish"
