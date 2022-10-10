@@ -6,7 +6,7 @@ import { Position } from '~/types'
 const InputNode: FunctionalComponent<NodeProps> = function ({
   sourcePosition = Position.Bottom,
   label,
-  connectable = false,
+  connectable = true,
   isValidSourcePos,
 }) {
   return [
