@@ -1,5 +1,5 @@
 {
-  "name": "@vue-flow/core",
+  "name": "vueflow",
   "version": "1.0.0",
   "private": false,
   "license": "MIT",
@@ -22,10 +22,8 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "prepare": "ts-patch install -s",
     "build": "vite build",
-    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist",
-    "typedoc": "typedoc --options ./typedoc.json",
+    "types": "tsc && shx rm -rf tmp && pnpm lint:dist",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
@@ -37,26 +35,15 @@
     "vue": "^3.2.25"
   },
   "dependencies": {
-    "@vueuse/core": "^9.3.0",
-    "d3-drag": "^3.0.0",
-    "d3-selection": "^3.0.0",
-    "d3-zoom": "^3.0.0"
+    "@vue-flow/additional-components": "workspace:*",
+    "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^4.0.0",
-    "@types/d3": "^7.4.0",
-    "@vitejs/plugin-vue": "^2.3.4",
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",
     "postcss-cli": "^9.1.0",
     "postcss-nested": "^5.0.6",
-    "ts-patch": "^2.0.2",
-    "typedoc": "^0.23.10",
-    "typescript-transform-paths": "^3.3.1",
-    "unplugin-auto-import": "^0.11.2",
-    "vite": "^2.9.15",
-    "vite-plugin-vue-type-imports": "0.2.0",
-    "vue-tsc": "^0.40.13"
+    "vite": "^2.9.15"
   },
   "publishConfig": {
     "access": "public",
