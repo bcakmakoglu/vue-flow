@@ -3,7 +3,10 @@
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",
-    "lib": ["DOM", "ESNext"],
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
     "strict": true,
     "esModuleInterop": true,
     "incremental": false,
@@ -13,10 +16,11 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "~/*": ["../packages/vue-flow/src/*"]
-    }
   },
-  "include": ["../packages/vue-flow", "../packages/additional-components"],
-  "exclude": ["node_modules"]
+  "include": [
+    "../packages/vue-flow"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
