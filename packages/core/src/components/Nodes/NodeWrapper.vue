@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useVModel } from '@vueuse/core'
 import { useDrag, useNodeHooks, useVueFlow } from '../../composables'
-import type { GraphNode, NodeComponent, SnapGrid, XYZPosition } from '../../types'
+import type { GraphNode, HandleConnectable, NodeComponent, SnapGrid, XYZPosition } from '../../types'
 import { NodeId, NodeRef } from '../../context'
 import { getConnectedEdges, getXYZPos, handleNodeClick } from '../../utils'
 
@@ -9,7 +9,7 @@ const { id, type, name, draggable, selectable, connectable, snapGrid, ...props }
   id: string
   draggable: boolean
   selectable: boolean
-  connectable: boolean
+  connectable: HandleConnectable
   snapGrid?: SnapGrid
   type: NodeComponent | Function | Object | false
   name: string
@@ -38,6 +38,8 @@ const {
 const node = $(useVModel(props, 'node'))
 
 const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) : undefined))
+
+const connectedEdges = $computed(() => getConnectedEdges([node], edges))
 
 const nodeElement = ref()
 
@@ -137,19 +139,19 @@ onBeforeUnmount(() => {
 
 const onMouseEnter = (event: MouseEvent) => {
   if (!dragging?.value) {
-    emit.mouseEnter({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+    emit.mouseEnter({ event, node, connectedEdges })
   }
 }
 
 const onMouseMove = (event: MouseEvent) => {
   if (!dragging?.value) {
-    emit.mouseMove({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+    emit.mouseMove({ event, node, connectedEdges })
   }
 }
 
 const onMouseLeave = (event: MouseEvent) => {
   if (!dragging?.value) {
-    emit.mouseLeave({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+    emit.mouseLeave({ event, node, connectedEdges })
   }
 }
 
