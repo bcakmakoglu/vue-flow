@@ -1,0 +1,67 @@
+{
+  "name": "@vue-flow/core",
+  "version": "1.0.0",
+  "private": false,
+  "license": "MIT",
+  "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcakmakoglu/vue-flow"
+  },
+  "homepage": "https://github.com/bcakmakoglu/vue-flow#readme",
+  "bugs": {
+    "url": "https://github.com/bcakmakoglu/vue-flow/issues"
+  },
+  "main": "./dist/vue-flow-core.cjs.js",
+  "module": "./dist/vue-flow-core.es.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/vue-flow-core.iife.js",
+  "jsdelivr": "./dist/vue-flow-core.iife.js",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "prepare": "ts-patch install -s",
+    "build": "vite build",
+    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist",
+    "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
+    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
+    "prepublishOnly": "shx cp ../../README.md .",
+    "postpublish": "shx rm README.md && git commit -a -m \"chore: bump version\"",
+    "test": "exit 0"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.25"
+  },
+  "dependencies": {
+    "@vueuse/core": "^9.3.0",
+    "d3-drag": "^3.0.0",
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-replace": "^4.0.0",
+    "@types/d3": "^7.4.0",
+    "@vitejs/plugin-vue": "^2.3.4",
+    "autoprefixer": "^10.4.8",
+    "postcss": "^8.4.16",
+    "postcss-cli": "^9.1.0",
+    "postcss-nested": "^5.0.6",
+    "ts-patch": "^2.0.2",
+    "typescript-transform-paths": "^3.3.1",
+    "unplugin-auto-import": "^0.11.2",
+    "vite": "^2.9.15",
+    "vite-plugin-vue-type-imports": "0.2.0",
+    "vue-tsc": "^0.40.13"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "np": {
+    "branch": "master",
+    "message": "v%s"
+  }
+}
