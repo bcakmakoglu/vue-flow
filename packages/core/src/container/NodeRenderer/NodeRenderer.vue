@@ -1,27 +1,16 @@
 <script lang="ts" setup>
 import { NodeWrapper } from '../../components'
-import type { GraphNode, NodeComponent, SnapGrid } from '../../types'
+import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
 
 const slots = inject(Slots)
 
-const {
-  nodesDraggable,
-  elementsSelectable,
-  nodesConnectable,
-  noPanClassName,
-  snapToGrid,
-  snapGrid,
-  getNode,
-  getNodes,
-  getNodeTypes,
-  updateNodeDimensions,
-} = $(useVueFlow())
+const { nodesDraggable, elementsSelectable, nodesConnectable, getNodes, getNodeTypes, updateNodeDimensions } = $(useVueFlow())
 
 const draggable = (d?: boolean) => (typeof d === 'undefined' ? nodesDraggable : d)
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
-const connectable = (c?: boolean) => (typeof c === 'undefined' ? nodesConnectable : c)
+const connectable = (c?: HandleConnectable) => (typeof c === 'undefined' ? nodesConnectable : c)
 
 const resizeObserver = ref<ResizeObserver>()
 
