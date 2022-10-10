@@ -1,86 +1,10 @@
-import { toRefs, tryOnScopeDispose } from '@vueuse/core'
+import { tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { computed, getCurrentScope, inject, provide, reactive } from 'vue'
-import { useActions, useGetters, useState } from '~/store'
-import type { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
+import { Storage } from '~/storage'
+import { getCurrentScope, inject, provide, reactive } from 'vue'
+import type { FlowProps, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
 import { warn } from '~/utils'
-
-/**
- * Stores all currently created store instances
- */
-export class Storage {
-  public currentId = 0
-  public flows = new Map<string, VueFlowStore>()
-  static instance: Storage
-
-  public static getInstance(): Storage {
-    if (!Storage.instance) {
-      Storage.instance = new Storage()
-    }
-
-    return Storage.instance
-  }
-
-  public set(id: string, flow: VueFlowStore) {
-    return this.flows.set(id, flow)
-  }
-
-  public get(id: string) {
-    return this.flows.get(id)
-  }
-
-  public remove(id: string) {
-    return this.flows.delete(id)
-  }
-
-  public create(id: string, preloadedState?: FlowOptions): VueFlowStore {
-    const state: State = useState(preloadedState)
-
-    const reactiveState = reactive(state)
-
-    const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
-    const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
-
-    const getters = useGetters(reactiveState, nodeIds, edgeIds)
-
-    const actions = useActions(reactiveState, getters, nodeIds, edgeIds)
-
-    const hooksOn = <any>{}
-    Object.entries(reactiveState.hooks).forEach(([n, h]) => {
-      const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
-      hooksOn[name] = h.on
-    })
-
-    const emits = <any>{}
-    Object.entries(reactiveState.hooks).forEach(([n, h]) => {
-      emits[n] = h.trigger
-    })
-
-    actions.setState(reactiveState)
-
-    const flow: VueFlowStore = {
-      ...hooksOn,
-      ...getters,
-      ...actions,
-      ...toRefs(reactiveState),
-      emits,
-      id,
-      vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
-      $destroy: () => {
-        this.remove(id)
-      },
-    }
-
-    this.set(id, flow)
-
-    return flow
-  }
-
-  public getId() {
-    return `vue-flow-${this.currentId++}`
-  }
-}
 
 type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined

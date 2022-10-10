@@ -1,6 +1,6 @@
 /**
- * Vue Flow
- * @module vue-flow
+ * Vue Flow Core pkg
+ * @module @vue-flow/core
  */
 
 export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
