@@ -32,5 +32,5 @@ export interface HandleProps {
   /** A valid connection func {@link ValidConnectionFunc} */
   isValidConnection?: ValidConnectionFunc
   /** Enable/disable connecting to handle */
-  connectable?: boolean
+  connectable?: boolean | 'single'
 }
