@@ -77,7 +77,7 @@ describe('Store Action: `setElements`', () => {
 
     it('has correct random data', () => {
       store.getEdges.value.forEach((el) => {
-        const edge = nodes.find((edge) => edge.id === el.id)
+        const edge = edges.find((edge) => edge.id === el.id)
         expect(el.data.randomData).to.eq(edge?.data.randomData)
       })
     })
