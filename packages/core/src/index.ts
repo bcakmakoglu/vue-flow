@@ -58,6 +58,8 @@ export {
  */
 export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes'
 
+export { Storage as GlobalVueFlowStorage } from './utils/storage'
+
 export { defaultEdgeTypes, defaultNodeTypes } from './store/state'
 
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'

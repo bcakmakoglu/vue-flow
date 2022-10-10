@@ -1,10 +1,10 @@
 import { tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { Storage } from '~/storage'
+import type { FlowProps, VueFlowStore } from '~/types'
+import { warn, Storage } from '~/storage'
 import { getCurrentScope, inject, provide, reactive } from 'vue'
 import type { FlowProps, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
-import { warn } from '~/utils'
 
 type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
