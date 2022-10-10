@@ -65,17 +65,7 @@ export default (state: State): ComputedGetters => {
       return
     }
 
-    return (
-      !e.hidden &&
-      target &&
-      !target.hidden &&
-      source &&
-      !source.hidden &&
-      source.dimensions.width &&
-      source.dimensions.height &&
-      target.dimensions.width &&
-      target.dimensions.height
-    )
+    return !e.hidden && !target.hidden && !source.hidden
   }
 
   const getEdges = computed<GraphEdge[]>(() => {
