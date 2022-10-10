@@ -17,7 +17,8 @@ export default defineConfig({
     lib: {
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'vueFlowBackground',
+      fileName: 'vue-flow-additional-components',
+      name: 'vueFlowAdditionalComponents',
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
