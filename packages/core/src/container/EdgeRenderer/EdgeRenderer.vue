@@ -4,7 +4,7 @@ import EdgeWrapper from '../../components/Edges/Wrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { connectionExists, groupEdgesByZLevel } from '../../utils'
-import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
+import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType } from '../../types'
 import { Slots } from '../../context'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
@@ -153,29 +153,43 @@ const onEdgeUpdaterTargetMouseDown = (event: MouseEvent, edge: GraphEdge) => {
   handleEdgeUpdater(event, edge, false)
 }
 
-const { onMouseDown } = useHandle()
+const nodeId = ref('')
+const handleId = ref<string | null>(null)
+const type = ref<HandleType>('source')
+const elementEdgeUpdaterType = ref<HandleType>('source')
+const toUpdate = ref<GraphEdge>()
+const mouseEvent = ref<MouseEvent>()
+const onEdgeUpdate = (connection: Connection) => {
+  if (!connectionExists(connection, getEdges) && toUpdate.value)
+    hooks[toUpdate.value.id].emit.update({ edge: toUpdate.value, connection })
+}
+const onEdgeUpdateEnd = () => {
+  if (!toUpdate.value || !mouseEvent.value) return
+  hooks[toUpdate.value.id].emit.updateEnd({ event: mouseEvent.value, edge: toUpdate.value })
+  updating.value = ''
+}
+
+const { onMouseDown } = useHandle({
+  nodeId,
+  handleId,
+  type,
+  isValidConnection: undefined,
+  elementEdgeUpdaterType,
+  onEdgeUpdate,
+  onEdgeUpdateEnd,
+})
 
 const handleEdgeUpdater = (event: MouseEvent, edge: GraphEdge, isSourceHandle: boolean) => {
-  const nodeId = isSourceHandle ? edge.target : edge.source
-  const handleId = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
+  nodeId.value = isSourceHandle ? edge.target : edge.source
+  handleId.value = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
+  type.value = isSourceHandle ? 'target' : 'source'
+  elementEdgeUpdaterType.value = type.value
+  toUpdate.value = edge
+  mouseEvent.value = event
 
   hooks[edge.id].emit.updateStart({ event, edge })
 
-  onMouseDown(
-    event,
-    handleId,
-    nodeId,
-    isSourceHandle,
-    undefined,
-    isSourceHandle ? 'target' : 'source',
-    (connection) => {
-      if (!connectionExists(connection, getEdges)) hooks[edge.id].emit.update({ edge, connection })
-    },
-    () => {
-      hooks[edge.id].emit.updateEnd({ event, edge })
-      updating.value = ''
-    },
-  )
+  onMouseDown(event)
 }
 
 const getClass = (edge: GraphEdge) => {
