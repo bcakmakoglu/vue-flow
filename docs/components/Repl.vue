@@ -71,8 +71,8 @@ onMounted(async () => {
   // pre-set import map
   store.setImportMap({
     imports: {
-      '@vue-flow/additional-components': `${location.origin}/additional-components.es.js`,
-      '@vue-flow/core': `${location.origin}/vue-flow.es.js`,
+      '@vue-flow/additional-components': `${location.origin}/vue-flow-additional-components.es.js`,
+      '@vue-flow/core': `${location.origin}/vue-flow-core.es.js`,
       ...additionalImports,
     },
   })
