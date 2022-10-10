@@ -270,10 +270,9 @@ export type ComputedGetters = {
   [key in keyof Getters]: ComputedRef<Getters[key]>
 }
 
-export type VueFlowStore = {
+export interface StoreBase {
   readonly id: string
   readonly emits: FlowHooksEmit
-} & FlowHooksOn &
-  ToRefs<State> &
-  Readonly<ComputedGetters> &
-  Readonly<Actions>
+}
+
+export type VueFlowStore = StoreBase & FlowHooksOn & ToRefs<State> & Readonly<ComputedGetters> & Readonly<Actions>
