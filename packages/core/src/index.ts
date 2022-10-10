@@ -42,6 +42,8 @@ export {
  */
 export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes'
 
+export { Storage as GlobalVueFlowStorage } from './utils/storage'
+
 export { defaultEdgeTypes, defaultNodeTypes } from './store'
 
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
@@ -55,7 +57,5 @@ export { default as useHandle } from './composables/useHandle'
 export { default as useNode } from './composables/useNode'
 
 export { default as useEdge } from './composables/useEdge'
-
-export { Storage as GlobalVueFlowStorage } from './storage'
 
 export * from './types'
