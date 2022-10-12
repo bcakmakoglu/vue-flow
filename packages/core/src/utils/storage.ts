@@ -5,15 +5,21 @@ import { useActions, useGetters, useState } from '~/store'
  * Stores all currently created store instances
  */
 export class Storage {
-  public currentId = 0
-  public flows = new Map<string, VueFlowStore>()
   static instance: Storage
+
+  public currentId = 0
+
+  public flows = new Map<string, VueFlowStore>()
+
   private hooks = {
     beforeCreate: createEventHook<[string, FlowOptions | undefined]>(),
     created: createEventHook<VueFlowStore>(),
     beforeDestroy: createEventHook<VueFlowStore>(),
     destroyed: createEventHook<string>(),
   }
+
+  /** Used by each store instance that is created as default values for store */
+  public config: Partial<Omit<FlowOptions, 'id'>> = {}
 
   public static getInstance(): Storage {
     if (!Storage.instance) {
@@ -35,9 +41,12 @@ export class Storage {
     return this.flows.delete(id)
   }
 
-  public create(id: string, preloadedState?: FlowOptions): VueFlowStore {
-    this.hooks.beforeCreate.trigger([id, preloadedState])
-    const state: State = useState(preloadedState)
+  public create(id: string, initialOptions?: FlowOptions): VueFlowStore {
+    const initialState = { ...this.config, ...initialOptions }
+
+    this.hooks.beforeCreate.trigger([id, initialState])
+
+    const state: State = useState(initialState)
 
     const reactiveState = reactive(state)
 
@@ -58,10 +67,10 @@ export class Storage {
 
     actions.setState(reactiveState)
 
-    if (preloadedState) {
-      if (preloadedState.modelValue) actions.setElements(preloadedState.modelValue)
-      if (preloadedState.nodes) actions.setNodes(preloadedState.nodes)
-      if (preloadedState.edges) actions.setEdges(preloadedState.edges)
+    if (initialState) {
+      if (initialState.modelValue) actions.setElements(initialState.modelValue)
+      if (initialState.nodes) actions.setNodes(initialState.nodes)
+      if (initialState.edges) actions.setEdges(initialState.edges)
     }
 
     const flow: VueFlowStore = {
@@ -98,5 +107,9 @@ export class Storage {
         destroyed: this.hooks.destroyed.on,
       }),
     )
+  }
+
+  public setConfig(options: Partial<Omit<FlowOptions, 'id'>>) {
+    this.config = options
   }
 }
