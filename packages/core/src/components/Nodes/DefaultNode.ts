@@ -12,9 +12,9 @@ const DefaultNode: FunctionalComponent<NodeProps> = function ({
   isValidSourcePos,
 }) {
   return [
-    h(Handle, { type: 'target', position: targetPosition, isConnectable: connectable, isValidConnection: isValidTargetPos }),
+    h(Handle, { type: 'target', position: targetPosition, connectable, isValidConnection: isValidTargetPos }),
     typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
-    h(Handle, { type: 'source', position: sourcePosition, isConnectable: connectable, isValidConnection: isValidSourcePos }),
+    h(Handle, { type: 'source', position: sourcePosition, connectable, isValidConnection: isValidSourcePos }),
   ]
 }
 
