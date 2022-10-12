@@ -33,7 +33,7 @@ export {
  */
 export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes'
 
-export { Storage as GlobalVueFlowStorage } from './utils/storage'
+export { Storage as GlobalVueFlowStorage, createVueFlow } from './utils/storage'
 
 export { defaultEdgeTypes, defaultNodeTypes } from './store'
 
