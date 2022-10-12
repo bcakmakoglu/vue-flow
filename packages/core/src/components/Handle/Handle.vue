@@ -27,7 +27,10 @@ const { onMouseDown, onClick } = useHandle({
 
 const isConnectable = computed(() => {
   if (isString(connectable) && connectable === 'single') {
-    return !connectedEdges.value.some((edge) => edge[type.value] === nodeId && edge[`${type.value}Handle`] === handleId)
+    return !connectedEdges.value.some((edge) => {
+      const handle = edge[`${type.value}Handle`]
+      return edge[type.value] === nodeId && !!handle ? edge[`${type.value}Handle`] === handleId : true
+    })
   } else if (isFunction(connectable)) {
     return connectable(node, connectedEdges.value)
   }
