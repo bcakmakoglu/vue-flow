@@ -29,6 +29,7 @@
       ]
     }
   },
+  "exclude": ["node_modules"],
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
