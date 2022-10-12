@@ -10,7 +10,7 @@ const OutputNode: FunctionalComponent<NodeProps> = function ({
   isValidTargetPos,
 }) {
   return [
-    h(Handle, { type: 'target', position: targetPosition, isConnectable: connectable, isValidConnection: isValidTargetPos }),
+    h(Handle, { type: 'target', position: targetPosition, connectable, isValidConnection: isValidTargetPos }),
     typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
   ]
 }

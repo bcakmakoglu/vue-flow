@@ -11,7 +11,7 @@ const InputNode: FunctionalComponent<NodeProps> = function ({
 }) {
   return [
     typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
-    h(Handle, { type: 'source', position: sourcePosition, isConnectable: connectable, isValidConnection: isValidSourcePos }),
+    h(Handle, { type: 'source', position: sourcePosition, connectable, isValidConnection: isValidSourcePos }),
   ]
 }
 
