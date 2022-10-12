@@ -2,7 +2,13 @@ import type { FlowOptions, Plugin, State, VueFlowStore } from '~/types'
 import { useActions, useGetters, useState } from '~/store'
 
 /**
- * Stores all currently created store instances
+ * Global Storage
+ *
+ * Stores all store instances and provides access to them
+ *
+ * Holds global config that is passed to all store instances
+ *
+ * Provides hooks for plugins to access the store
  */
 export class Storage {
   static instance: Storage
@@ -98,7 +104,11 @@ export class Storage {
     return `vue-flow-${this.currentId++}`
   }
 
-  public install(plugins: Plugin[]) {
+  /**
+   * Helper to install plugin
+   * @param plugins
+   */
+  public use(plugins: Plugin[]) {
     plugins.forEach((plugin) =>
       plugin({
         onBeforeCreate: this.hooks.beforeCreate.on,
@@ -107,9 +117,25 @@ export class Storage {
         destroyed: this.hooks.destroyed.on,
       }),
     )
+
+    return this
   }
 
+  /**
+   * Helper to set global config
+   * @param options
+   */
   public setConfig(options: Partial<Omit<FlowOptions, 'id'>>) {
     this.config = options
+
+    return this
   }
+}
+
+export const createVueFlow = (options: Omit<Partial<FlowOptions>, 'id'>) => {
+  const storage = Storage.getInstance()
+
+  storage.setConfig(options)
+
+  return storage
 }
