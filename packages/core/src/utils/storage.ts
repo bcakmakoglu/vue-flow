@@ -132,7 +132,7 @@ export class Storage {
   }
 }
 
-export const createVueFlow = (options: Omit<Partial<FlowOptions>, 'id'>) => {
+export const createVueFlow = (options: Omit<Partial<FlowOptions>, 'id'> = {}) => {
   const storage = Storage.getInstance()
 
   storage.setConfig(options)
