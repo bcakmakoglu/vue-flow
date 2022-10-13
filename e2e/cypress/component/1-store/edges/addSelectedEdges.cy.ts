@@ -20,7 +20,7 @@ describe('Store Action: `addSelectedEdges`', () => {
   })
 
   it('adds selected edges to store', () => {
-    expect(store.getSelectedEdges.value).to.have.length(randomNumber)
+    cy.tryAssertion(() => expect(store.getSelectedEdges.value).to.have.length(randomNumber))
   })
 
   it('adds `selected` class to edges', () => {
@@ -33,14 +33,10 @@ describe('Store Action: `addSelectedEdges`', () => {
 
         if (index < randomNumber) {
           expect(!!storedEdge?.selected).to.eq(true)
-          cy.wait(1).then(() => {
-            expect(edge).to.have.class('selected')
-          })
+          cy.tryAssertion(() => expect(edge).to.have.class('selected'))
         } else {
           expect(!!storedEdge?.selected).to.eq(false)
-          cy.wait(1).then(() => {
-            expect(edge).to.not.have.class('selected')
-          })
+          cy.tryAssertion(() => expect(edge).to.not.have.class('selected'))
         }
       })
     })

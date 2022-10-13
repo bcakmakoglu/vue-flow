@@ -49,6 +49,24 @@ const useViewPort = () => cy.get('.vue-flow__viewport')
 
 const useTransformationPane = () => cy.get('.vue-flow__transformationpane')
 
+const retry = (assertion: Function, { interval = 20, timeout = 1000 } = {}) => {
+  return new Promise((resolve, reject) => {
+    const startTime = Date.now()
+
+    const tryAgain = () => {
+      setTimeout(() => {
+        try {
+          resolve(assertion())
+        } catch (err) {
+          Date.now() - startTime > timeout ? reject(err) : tryAgain()
+        }
+      }, interval)
+    }
+
+    tryAgain()
+  })
+}
+
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
@@ -60,6 +78,7 @@ declare global {
       vueFlow: typeof mountVueFlow
       viewPort: typeof useViewPort
       transformationPane: typeof useTransformationPane
+      tryAssertion: typeof retry
     }
   }
 }
@@ -71,6 +90,8 @@ Cypress.Commands.add('vueFlow', mountVueFlow)
 Cypress.Commands.add('viewPort', useViewPort)
 
 Cypress.Commands.add('transformationPane', useTransformationPane)
+
+Cypress.Commands.add('tryAssertion', retry)
 
 // Example use:
 // cy.mount(MyComponent)

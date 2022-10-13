@@ -19,7 +19,7 @@ describe('Store State: `deleteKeyCode`', () => {
 
       cy.get('body').trigger('keydown', { key: 'Backspace' })
 
-      cy.wait(1).then(() => {
+      cy.tryAssertion(() => {
         cy.get(`[data-id="${nodes[0].id}"]`).should('not.exist')
         expect(store.nodes.value.some((node) => node.id === nodes[0].id)).to.equal(false)
       })
@@ -33,7 +33,7 @@ describe('Store State: `deleteKeyCode`', () => {
 
       cy.get('body').trigger('keydown', { key: 'Delete' })
 
-      cy.wait(1).then(() => {
+      cy.tryAssertion(() => {
         cy.get(`[data-id="${nodes[0].id}"]`).should('not.exist')
         expect(store.nodes.value.some((node) => node.id === nodes[0].id)).to.equal(false)
       })
