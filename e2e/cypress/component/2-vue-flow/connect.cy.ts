@@ -22,17 +22,18 @@ describe('Check if nodes are connectable', () => {
     })
   })
 
-  it('creates connection', () => {
+  it('creates connection by dragging', () => {
     cy.window().then((win) => {
       const sourceHandle = cy.get(`[data-nodeid="1"].source`)
       const targetHandle = cy.get(`[data-nodeid="2"].target`)
+
       targetHandle.then((handle) => {
         const target = handle[0]
         const { x, y } = target.getBoundingClientRect()
 
         sourceHandle
           .trigger('mousedown', {
-            which: 1,
+            button: 0,
             force: true,
             view: win,
           })
@@ -48,10 +49,20 @@ describe('Check if nodes are connectable', () => {
             view: win,
           })
 
-        cy.wait(100).then(() => {
-          expect(store.edges.value).to.have.length(1)
-        })
+        cy.get('.vue-flow__edge').should('have.length', 1)
       })
     })
+  })
+
+  it('creates connection by clicking', () => {
+    store.connectOnClick.value = true
+
+    const sourceHandle = cy.get(`[data-nodeid="1"].source`)
+    const targetHandle = cy.get(`[data-nodeid="2"].target`)
+
+    sourceHandle.click()
+    targetHandle.click()
+
+    cy.get('.vue-flow__edge').should('have.length', 1)
   })
 })
