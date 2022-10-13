@@ -45,7 +45,7 @@ describe('Check if edges are updatable', () => {
 
         edgeAnchor
           .trigger('mousedown', {
-            which: 1,
+            button: 0,
             force: true,
             view: win,
           })
