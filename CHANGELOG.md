@@ -2,6 +2,87 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2022-10-13
+
+[6c5523d](6c5523db5e3cf807dbdb106f29b8b4410dccc4bd)...[b7697de](b7697de7366b578952b5ad8917b6dcbee50e844c)
+
+### Bug Fixes
+
+- Edges not returned by getter on pane ready event ([607c7c0](607c7c0e69c19b3f02df755b991f22030729961b))
+- Pass `connectable` to correct prop ([bc80807](bc808072853b8dc14b9544546165c758b3114af5))
+- Only check for matching handle id if an id exists ([a7845c6](a7845c6032bce197392112544d18e6df77bfddf4))
+- `connectOnClick` reset before connections can be made ([d420fea](d420feaf489368c4e690f58e527f1049246bbb78))
+
+### Features
+
+- Add `vueflow` pkg that exports all features ([9c78528](9c78528d7f43a341b5754d6b3fa08e208e7d5329))
+- Allow setting connectable to `single` for single connection handles ([624438a](624438a0eaf51cb4138bec60dc217182d1d3da52))
+- Add `Panel` component ([3541b24](3541b2458735ce9790dcf4a8df1c40df817a1252))
+- Add `position` prop to MiniMap & Controls ([875d954](875d95465e0093755746ce283632fc14d9827587))
+- Add dragging class to pane ([0044a14](0044a14ac1e96cc8598a2af9caf6803efdacb205))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([e292491](e2924918a2fd2bbbf5cd70206cfa6b70c80bb834))
+- Update README ([d7b956d](d7b956dd2ac9d36907fd38ff2209a824d4ca63b0))
+- Remove env.d.ts ([647d605](647d60583b2d587f6b563e7d0dd2ab3cf8c7933f))
+- Update README ([03a982c](03a982c10f8a64e3a80a42971b09d87661ae5e05))
+- Rename bundle output ([4587540](4587540ef3df842ce9dc8b17b3a04b09f019beeb))
+- Update typedocs config to use vueflow pkg as entry ([028d793](028d79306cce7edb7291850e005e18774831d4d0))
+- Update repl pkg link names ([688c931](688c931b3a4f69af6c11f16cf26c6a04a122cafb))
+- Install `vueflow` pkg ([d1e9ee5](d1e9ee596cef683a6df658aa77f7297cb4d7ca91))
+- Add changeset ([e175cf8](e175cf8157be1851651d6df0a9e87f732b53de59))
+- Add changeset ([08ad173](08ad17356f5fbd50255af27f7c482da756eda4aa))
+- Add changeset ([78f9ee1](78f9ee1cb77cc00590b8d4529da7cd124ddfc0f6))
+- Lint ([ef3111b](ef3111bde0a52b145067e1afcc8605deb9aeb333))
+- Disable pointer events on user selection ([50af804](50af804c47233464218f2fd69e5e67d3c89a6ea1))
+- Add changeset ([2e2c449](2e2c449bf60efed7152930962df2f9b5c0037386))
+- Optional position ([be3fab9](be3fab9c1b3fef0358571c413b555dad6429a2f1))
+- Remove unnecessary style ([24f7722](24f7722f7c5c83bf26f8ff29564d7044fc81992c))
+- Add changeset ([e1c28a2](e1c28a26c75a86b8c2790480bb8dadf37ad2ff12))
+- Lint ([5f595c0](5f595c0770b5c9ad2db6720077ef2283b4461408))
+- Lint ([31f590b](31f590b89389dfe3ae848868b6c1932445b2b5c2))
+- Update changeset to minor bump ([fa0fc69](fa0fc693040808aaa2115e53022f8877c127e5ad))
+- Add copy vue flow plugin again ([c086aa8](c086aa8e46bc8a0325b719798a94bda1e79a5a10))
+- Add default color to edge text ([1204a44](1204a4496ca05e48d7b7c52b5007e77114663e52))
+- Correct version ([b8b325e](b8b325e316798ef24d368564d7b21004be5e7d4d))
+- Bump versions ([d224d59](d224d59b4da1b9af3fc575caee747e006b01a167))
+- Update CHANGELOG ([f978db2](f978db25e4a3e10a010fc4947922184695c990db))
+- Add changeset ([18a812d](18a812db6445941ff626921a311f2f2aefd84968))
+- Add changeset ([1e5a77d](1e5a77d608c79c7701f97a81690fa5babc7c2514))
+- Disable pkg until name issue is resolved ([11ee43a](11ee43ac9b910e50b88dca4e52b24db2a908e53e))
+- Update styles ([5c3ed51](5c3ed512579b39a99ef5bc360c88470f93a58c79))
+- Cleanup var ([71eacd7](71eacd70353f2036400ac6da3c8d60691ea2f2f6))
+- Add changeset ([a415353](a415353ba5fe3bb29b33704baf5d83b869e508f1))
+- Update changeset descriptions ([24924b9](24924b93f36410ded30b52433132e82873fff35a))
+- Manually publish pkgs ([7ff551e](7ff551e9df0f72e43e8998cc6d8e85d2ef15f246))
+- Update changeset descriptions ([483001d](483001d3f06cfcf3f9ccb2df6f1b5777d09a7788))
+- Bump versions ([b7697de](b7697de7366b578952b5ad8917b6dcbee50e844c))
+
+### Refactor
+
+- Run turbo pipe before publish ([32aa9e8](32aa9e851b09fd6a6ab9cf9f501dd3e0a1441e7c))
+- Rename core pkg dir to `core` ([082050b](082050b1648dd3c6569cab0cd974cf9128647c98))
+- Set default for `connectable` to `true` ([0215d49](0215d49ad353e8a0e9e5ff52ff137eda6b753e40))
+- Use `HandleConnectable` type for nodes `connectable` prop ([283846c](283846c196fce638b851c0b3d427877093421e74))
+- Update base styles ([908b327](908b327224476204527a5078cdb400c04071344f))
+- Remove docs from build process and use separate script ([e9d6ec1](e9d6ec16732f37f171cdf09027669818583b8b6a))
+- Simplify `useHandle` ([2684272](2684272308355433c6a74c594fd830d9b497dbee))
+- Move edge event handlers into Wrapper component ([13fed0a](13fed0a3fb3b74d3e910158574f33229202d06c9))
+- Trigger dragging on drag start ([00a5ee0](00a5ee041619bc3c7475c2565a4316e099b798e3))
+
+### Testing
+
+- Search edges for random data ([f7dd7f1](f7dd7f1803ebaea4a74a6b1c1a97c0519e0760c6))
+- Add connectOnClick test ([655a27d](655a27d572082cc3686890ef2f794f536ccf335d))
+- Add viewpane tests ([0613350](06133505549c96857c3653aaaf230e8c2c604ee2))
+- Add `tryAssertion` command to replace `cy.wait` ([5aa94e2](5aa94e2e13492330dc1fdae57f489d4b7f40d38a))
+- Properly check element transforms ([e0016db](e0016db07a6d8a8a2d5d8293adce6cc5b0798070))
+
+### Examples
+
+- Update quasar example ([3fcc163](3fcc163509d2a9ea675586e951364027f5386be1))
+
 ## [1.0.0] - 2022-10-08
 
 [8fc28f9](8fc28f9b9c9d062dd053590a9bcd206c7845d080)...[6c5523d](6c5523db5e3cf807dbdb106f29b8b4410dccc4bd)
