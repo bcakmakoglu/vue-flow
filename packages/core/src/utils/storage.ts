@@ -111,7 +111,7 @@ export class Storage {
   public use(plugins: Plugin[]) {
     plugins.forEach((plugin) =>
       plugin({
-        onBeforeCreate: this.hooks.beforeCreate.on,
+        beforeCreate: this.hooks.beforeCreate.on,
         created: this.hooks.created.on,
         beforeDestroy: this.hooks.beforeDestroy.on,
         destroyed: this.hooks.destroyed.on,
