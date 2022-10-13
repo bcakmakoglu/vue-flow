@@ -1,7 +1,7 @@
 {
   "name": "vueflow",
   "version": "1.0.0",
-  "private": false,
+  "private": true,
   "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
   "repository": {
