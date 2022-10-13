@@ -84,6 +84,7 @@ const defaultState = (): State => ({
   },
   connectionMode: ConnectionMode.Loose,
   connectionStartHandle: null,
+  connectionClickStartHandle: null,
   connectionPosition: { x: NaN, y: NaN },
   connectOnClick: true,
 
