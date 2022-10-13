@@ -88,6 +88,7 @@ export default {
   <NodesSelection v-if="nodesSelectionActive" :key="`nodes-selection-${id}`" />
   <div
     :key="`pane-${id}`"
+    v-bind="$attrs"
     class="vue-flow__pane vue-flow__container"
     @click="onClick"
     @contextmenu="onContextMenu"
