@@ -29,9 +29,10 @@ describe('Store Action: `setMinZoom`', () => {
       bubbles: true,
     })
 
-    cy.transformationPane().then(($el) => {
-      const transform = $el.css('transform')
-      expect(transform).to.contain('matrix(0.5')
-    })
+    cy.transformationPane().should(
+      'have.css',
+      'transform',
+      `matrix(${store.viewport.value.zoom}, 0, 0, ${store.viewport.value.zoom}, ${store.viewport.value.x}, ${store.viewport.value.y})`,
+    )
   })
 })
