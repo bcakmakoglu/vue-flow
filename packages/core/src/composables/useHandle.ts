@@ -106,7 +106,7 @@ export default function useHandle({
     edges,
     connectOnClick,
     nodesConnectable,
-    connectionStartHandle,
+    connectionClickStartHandle,
     connectionMode,
     emits,
     startConnection,
@@ -121,6 +121,8 @@ export default function useHandle({
   let recentHoveredHandle: Element
 
   const onMouseDown = (event: MouseEvent) => {
+    if (event.button !== 0) return
+
     const doc = getHostForElement(event.target as HTMLElement)
     if (!doc) return
 
@@ -222,8 +224,9 @@ export default function useHandle({
 
   const onClick = (event: MouseEvent) => {
     if (!connectOnClick) return
-    if (!connectionStartHandle) {
-      startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event)
+
+    if (!connectionClickStartHandle) {
+      startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event, true)
     } else {
       let validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
 
@@ -240,9 +243,9 @@ export default function useHandle({
       const { connection, isValid } = checkElementBelowIsValid(
         event as MouseEvent,
         connectionMode,
-        connectionStartHandle.type === 'target',
-        connectionStartHandle.nodeId,
-        connectionStartHandle.handleId || null,
+        connectionClickStartHandle.type === 'target',
+        connectionClickStartHandle.nodeId,
+        connectionClickStartHandle.handleId || null,
         validConnectFunc,
         doc,
         edges,
@@ -253,7 +256,7 @@ export default function useHandle({
 
       if (isValid && !isOwnHandle) emits.connect(connection)
 
-      endConnection(event)
+      endConnection(event, true)
     }
   }
 
