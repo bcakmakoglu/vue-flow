@@ -6,7 +6,7 @@ const { emits, setState, viewport, getSelectedNodes, snapToGrid, snapGrid, noPan
 
 const el = ref()
 
-useDrag({
+const dragging = useDrag({
   el,
   onStart(event, node, nodes) {
     emits.selectionDragStart({ event, node, nodes })
@@ -43,6 +43,6 @@ export default {
     :class="noPanClassName"
     :style="{ transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})` }"
   >
-    <div ref="el" class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
+    <div ref="el" :class="{ dragging }" class="vue-flow__nodesselection-rect" :style="innerStyle" @contextmenu="onContextMenu" />
   </div>
 </template>
