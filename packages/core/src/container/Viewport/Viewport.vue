@@ -37,6 +37,8 @@ const viewportEl = templateRef<HTMLDivElement>('viewport', null)
 
 let isZoomingOrPanning = $ref(false)
 
+let isDragging = $ref(false)
+
 const viewChanged = (prevTransform: ViewpaneTransform, eventTransform: ZoomTransform): boolean =>
   (prevTransform.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
   (prevTransform.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
@@ -114,12 +116,19 @@ onMounted(() => {
     isZoomingOrPanning = true
 
     const flowTransform = eventToFlowTransform(event.transform)
+
+    if (event.sourceEvent?.type === 'mousedown') {
+      isDragging = true
+    }
+
     transform = flowTransform
+
     emits.moveStart({ event, flowTransform })
   })
 
   d3Zoom.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
     isZoomingOrPanning = false
+    isDragging = false
 
     if (viewChanged(transform, event.transform)) {
       const flowTransform = eventToFlowTransform(event.transform)
@@ -177,6 +186,8 @@ onMounted(() => {
     const zoomScroll = zoomKeyPressed.value || zoomOnScroll
     const pinchZoom = zoomOnPinch && event.ctrlKey
 
+    if (event.button === 1 && event.type === 'mousedown' && (event.target as HTMLElement)?.closest(`.vue-flow__node`)) return true
+
     // if all interactions are disabled, we prevent all zoom events
     if (!panOnDrag && !zoomScroll && !panOnScroll && !zoomOnDoubleClick && !zoomOnPinch) return false
 
@@ -201,7 +212,7 @@ onMounted(() => {
     if (!panOnDrag && (event.type === 'mousedown' || event.type === 'touchstart')) return false
 
     // default filter for d3-zoom
-    return (!event.ctrlKey || event.type === 'wheel') && !event.button
+    return (!event.ctrlKey || event.type === 'wheel') && (!event.button || event.button <= 1)
   })
 })
 </script>
@@ -217,6 +228,6 @@ export default {
     <Transform>
       <slot />
     </Transform>
-    <SelectionPane />
+    <SelectionPane :class="{ dragging: isDragging }" />
   </div>
 </template>
