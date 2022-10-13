@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2022-10-13
+
+[b7697de](b7697de7366b578952b5ad8917b6dcbee50e844c)...[a33adf0](a33adf0c042674dd48485d6447a883fc1d8b132a)
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([a33adf0](a33adf0c042674dd48485d6447a883fc1d8b132a))
+
 ## [1.1.0] - 2022-10-13
 
 [6c5523d](6c5523db5e3cf807dbdb106f29b8b4410dccc4bd)...[b7697de](b7697de7366b578952b5ad8917b6dcbee50e844c)
