@@ -50,6 +50,7 @@ jobs:
           version: pnpm ci:version
           commit: "chore: bump versions"
           title: "chore: bump versions"
-          publish: pnpm ci:publish
+          # manual publish currently
+          # publish: pnpm ci:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
