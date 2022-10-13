@@ -67,6 +67,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle: CSSProperties | null
   connectionStartHandle: StartHandle | null
+  connectionClickStartHandle: StartHandle | null
   connectionPosition: XYPosition
 
   connectOnClick: boolean
@@ -188,11 +189,11 @@ export interface Actions extends ViewportFunctions {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (startHandle: StartHandle, position?: XYPosition, event?: MouseEvent) => void
+  startConnection: (startHandle: StartHandle, position?: XYPosition, event?: MouseEvent, isClick?: boolean) => void
   /** update connection position */
   updateConnection: (position: XYPosition) => void
   /** end (or cancel) a connection */
-  endConnection: (event?: MouseEvent) => void
+  endConnection: (event?: MouseEvent, isClick?: boolean) => void
 
   /** internal position updater, you probably don't want to use this */
   updateNodePositions: UpdateNodePosition
