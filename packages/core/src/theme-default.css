@@ -5,23 +5,7 @@
   --vf-handle: #555;
 }
 
-.vue-flow__selection {
-  background: rgba(0, 89, 220, 0.08);
-  border: 1px dotted rgba(0, 89, 220, 0.8);
-}
-
 .vue-flow__edge {
-  &.selected {
-    .vue-flow__edge-path {
-      stroke: #555;
-    }
-  }
-
-  &.animated path {
-    stroke-dasharray: 5;
-    animation: dashdraw 0.5s linear infinite;
-  }
-
   &.updating {
     .vue-flow__edge-path {
       stroke: #777;
@@ -59,12 +43,11 @@
   border-radius: 3px;
   width: 150px;
   font-size: 12px;
-  color: var(--vf-node-text);
   text-align: center;
   border-width: 1px;
   border-style: solid;
-
-  background: var(--vf-node-bg);
+  color: var(--vf-node-text);
+  background-color: var(--vf-node-bg);
   border-color: var(--vf-node-color);
 
   &.selected,
@@ -109,9 +92,15 @@
   --vf-box-shadow: var(--vf-node-color);
 }
 
-.vue-flow__nodesselection-rect {
+.vue-flow__nodesselection-rect,
+.vue-flow__selection {
   background: rgba(0, 89, 220, 0.08);
   border: 1px dotted rgba(0, 89, 220, 0.8);
+
+  &:focus,
+  &:focus-visible {
+     outline: none;
+   }
 }
 
 .vue-flow__handle {
@@ -120,10 +109,6 @@
   background: var(--vf-handle);
   border: 1px solid #fff;
   border-radius: 100%;
-
-  &.connectable {
-    cursor: crosshair;
-  }
 }
 
 .vue-flow__minimap {
