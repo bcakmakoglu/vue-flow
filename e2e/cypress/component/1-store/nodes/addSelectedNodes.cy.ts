@@ -33,12 +33,12 @@ describe('Store Action: `addSelectedNodes`', () => {
 
         if (index < randomNumber) {
           expect(!!storedNode?.selected).to.eq(true)
-          cy.wait(1).then(() => {
+          cy.tryAssertion(() => {
             expect(node).to.have.class('selected')
           })
         } else {
           expect(!!storedNode?.selected).to.eq(false)
-          cy.wait(1).then(() => {
+          cy.tryAssertion(() => {
             expect(node).to.not.have.class('selected')
           })
         }

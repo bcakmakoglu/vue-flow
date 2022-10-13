@@ -39,7 +39,7 @@ describe('Check if edges are updatable', () => {
       const edgeAnchor = cy.get('.vue-flow__edgeupdater[data-type="target"]')
       const targetTargetHandle = cy.get(`[data-nodeid="3"].target`)
 
-      targetTargetHandle.then((handle) => {
+      targetTargetHandle.then(async (handle) => {
         const target = handle[0]
         const { x, y } = target.getBoundingClientRect()
 
@@ -61,7 +61,7 @@ describe('Check if edges are updatable', () => {
             view: win,
           })
 
-        cy.wait(100).then(() => {
+        await cy.tryAssertion(() => {
           const storedEdges = store.edges.value
           expect(storedEdges).to.have.length(1)
           expect(storedEdges[0].target).to.equal('3')

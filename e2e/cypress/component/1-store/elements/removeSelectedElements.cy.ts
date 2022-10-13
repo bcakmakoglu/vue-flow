@@ -35,7 +35,7 @@ describe('Store Action: `removeSelectedElements`', () => {
       ),
     )
 
-    cy.wait(1).then(() => {
+    cy.tryAssertion(() => {
       expect(store.getSelectedElements.value).to.have.length(randomNumber - randomNumber2)
     })
   })
@@ -45,7 +45,7 @@ describe('Store Action: `removeSelectedElements`', () => {
     store.addSelectedElements(Array.from({ length: randomNumber }, (_, i) => store.getElements.value[i]))
     store.removeSelectedElements()
 
-    cy.wait(1).then(() => {
+    cy.tryAssertion(() => {
       expect(store.getSelectedElements.value).to.have.length(0)
     })
   })
