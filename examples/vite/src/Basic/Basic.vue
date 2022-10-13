@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { Elements } from 'vueflow'
-import { Background, Controls, MiniMap, VueFlow, isNode, useVueFlow } from 'vueflow'
+import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
+import type { Elements } from '@vue-flow/core'
+import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
@@ -14,6 +15,7 @@ const { onPaneReady, onNodeDragStop, onConnect, addEdges, setTransform, toObject
   defaultZoom: 1.5,
   minZoom: 0.2,
   maxZoom: 4,
+  connectOnClick: true,
 })
 
 onPaneReady(({ fitView }) => {
