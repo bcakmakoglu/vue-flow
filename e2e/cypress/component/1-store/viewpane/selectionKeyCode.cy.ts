@@ -33,7 +33,7 @@ describe('Store State: `selectionKeyCode`', () => {
 
       cy.get('body').trigger('keyup', { key: 'Shift', release: true })
 
-      cy.wait(1).then(() => {
+      cy.tryAssertion(() => {
         expect(store.getSelectedElements.value).to.not.have.length(0)
       })
     })
@@ -60,7 +60,7 @@ describe('Store State: `selectionKeyCode`', () => {
 
       cy.get('body').trigger('keyup', { key: 'Control', release: true })
 
-      cy.wait(1).then(() => {
+      cy.tryAssertion(() => {
         expect(store.getSelectedElements.value).to.not.have.length(0)
       })
     })
@@ -84,7 +84,7 @@ describe('Store State: `selectionKeyCode`', () => {
         })
         .click()
 
-      cy.wait(1).then(() => {
+      cy.tryAssertion(() => {
         expect(store.getSelectedElements.value).to.not.have.length(0)
       })
     })
