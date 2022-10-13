@@ -132,6 +132,10 @@
      position: absolute;
      pointer-events: all;
      cursor: grab;
+
+    &.dragging {
+          cursor: grabbing;
+        }
    }
 }
 
