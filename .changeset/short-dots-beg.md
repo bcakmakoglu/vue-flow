@@ -2,4 +2,4 @@
 '@vue-flow/core': patch
 ---
 
-- Add `dragging` class name to pane on drag
+Add `dragging` class name to pane on drag
