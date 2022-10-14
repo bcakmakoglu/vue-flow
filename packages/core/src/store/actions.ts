@@ -5,6 +5,8 @@ import type {
   CoordinateExtent,
   EdgeChange,
   EdgeRemoveChange,
+  EdgeSelectionChange,
+  Elements,
   FlowExportObject,
   GraphEdge,
   GraphNode,
@@ -12,6 +14,7 @@ import type {
   NodeDimensionChange,
   NodePositionChange,
   NodeRemoveChange,
+  NodeSelectionChange,
   State,
 } from '~/types'
 import {
@@ -139,19 +142,47 @@ export default (state: State, getters: ComputedGetters): Actions => {
     const nodeIds = nodes.map((n) => n.id)
 
     let changedNodes: NodeChange[]
+    let changedEdges: EdgeChange[] = []
     if (state.multiSelectionActive) changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
-    else changedNodes = getSelectionChanges(state.nodes, nodeIds)
+    else {
+      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds)
+      changedNodes = selectionChanges.changedNodes
+      changedEdges = selectionChanges.changedEdges
+    }
 
     if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
+    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
 
   const edgeSelectionHandler = (edges: GraphEdge[], selected: boolean) => {
-    const edgeIds = edges.map((e) => e.id)
+    const edgeIds = edges.map((n) => n.id)
 
+    let changedNodes: NodeChange[] = []
     let changedEdges: EdgeChange[]
     if (state.multiSelectionActive) changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
-    else changedEdges = getSelectionChanges(state.edges, edgeIds)
+    else {
+      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds)
+      changedNodes = selectionChanges.changedNodes
+      changedEdges = selectionChanges.changedEdges
+    }
 
+    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
+    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+  }
+
+  const elementSelectionHandler = (elements: Elements, selected: boolean) => {
+    const nodes = elements.filter(isGraphNode)
+    const edges = elements.filter(isGraphEdge)
+
+    const nodeIds = nodes.map((n) => n.id)
+    const edgeIds = edges.map((e) => e.id)
+
+    let { changedNodes, changedEdges } = getSelectionChanges([...state.nodes, ...state.edges], [...nodeIds, ...edgeIds])
+
+    if (state.multiSelectionActive) changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
+    if (state.multiSelectionActive) changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
+
+    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
     if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
 
@@ -164,8 +195,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
 
   const addSelectedElements: Actions['addSelectedElements'] = (elements) => {
-    addSelectedNodes(elements.filter(isGraphNode))
-    addSelectedEdges(elements.filter(isGraphEdge))
+    elementSelectionHandler(elements, true)
   }
 
   const removeSelectedNodes: Actions['removeSelectedNodes'] = (nodes) => {
@@ -179,7 +209,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
 
   const removeSelectedEdges: Actions['removeSelectedEdges'] = (edges) => {
-    if (!edges.length) edgeSelectionHandler(edges, false)
+    if (!edges.length) return edgeSelectionHandler(edges, false)
 
     const edgeIds = edges.map((e) => e.id)
 
@@ -189,13 +219,21 @@ export default (state: State, getters: ComputedGetters): Actions => {
   }
 
   const removeSelectedElements: Actions['removeSelectedElements'] = (elements) => {
-    if (!elements) {
-      removeSelectedNodes([])
-      removeSelectedEdges([])
-    } else {
-      if (elements.nodes) removeSelectedNodes(elements.nodes.filter(isGraphNode))
-      if (elements.edges) removeSelectedEdges(elements.edges.filter(isGraphEdge))
-    }
+    if (!elements || !elements.length) return elementSelectionHandler([], false)
+
+    const { changedNodes, changedEdges } = elements.reduce(
+      (acc, curr) => {
+        const selectionChange = createSelectionChange(curr.id, false)
+        if (isGraphNode(curr)) acc.changedNodes.push(selectionChange)
+        else acc.changedEdges.push(selectionChange)
+
+        return acc
+      },
+      { changedNodes: [] as NodeSelectionChange[], changedEdges: [] as EdgeSelectionChange[] },
+    )
+
+    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
+    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
 
   const setMinZoom: Actions['setMinZoom'] = (minZoom: any) => {

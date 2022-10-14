@@ -5,8 +5,7 @@ import { getConnectedEdges, getNodesInside } from '../../utils'
 import SelectionRect from './SelectionRect.vue'
 import { getMousePosition } from './utils'
 
-const { userSelectionActive, nodesSelectionActive, getNodes, getEdges, viewport, addSelectedEdges, addSelectedNodes } =
-  useVueFlow()
+const { userSelectionActive, nodesSelectionActive, getNodes, getEdges, viewport, addSelectedElements } = useVueFlow()
 
 let prevNodes = $ref(0)
 
@@ -72,8 +71,7 @@ const onMouseMove = (event: MouseEvent) => {
 
   rect = nextUserSelectRect
 
-  addSelectedNodes(selectedNodes)
-  addSelectedEdges(selectedEdges)
+  addSelectedElements([...selectedNodes, ...selectedEdges])
 
   prevNodes = selectedNodes.length
   prevEdges = selectedEdges.length
