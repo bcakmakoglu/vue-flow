@@ -73,8 +73,6 @@ function useDrag(params: UseDragParams) {
         } else {
           dragHandler = drag()
             .on('start', (event: UseDragEvent) => {
-              dragging.value = true
-
               if (!selectNodesOnDrag && !multiSelectionActive && id) {
                 if (!node?.selected) {
                   removeSelectedElements()
@@ -117,6 +115,7 @@ function useDrag(params: UseDragParams) {
                 )
 
                 updateNodePositions(dragItems, true, true)
+                dragging.value = true
 
                 if (onDrag) {
                   const [currentNode, nodes] = getEventHandlerParams({
