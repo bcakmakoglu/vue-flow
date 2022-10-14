@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.1.3
+
+### Patch Changes
+
+- [#342](https://github.com/bcakmakoglu/vue-flow/pull/342) [`72c203e`](https://github.com/bcakmakoglu/vue-flow/commit/72c203e3d527376221673fccb62dc99ff8061a23) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix edge text not calculating dimensions properly
+
 ## 1.1.2
 
 ### Patch Changes
