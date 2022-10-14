@@ -118,8 +118,6 @@ const getClass = (edge: GraphEdge) => {
   const extraClass = edge.class instanceof Function ? edge.class(edge) : edge.class
   return [noPanClassName, extraClass]
 }
-
-const getStyle = (edge: GraphEdge) => (edge.style instanceof Function ? edge.style(edge) : edge.style) as CSSProperties
 </script>
 
 <script lang="ts">
@@ -143,7 +141,6 @@ export default {
         :target-node="getNode(edge.target)"
         :selectable="selectable(edge.selectable)"
         :updatable="updatable(edge.updatable)"
-        :style="getStyle(edge)"
         :class="getClass(edge)"
       />
     </g>
