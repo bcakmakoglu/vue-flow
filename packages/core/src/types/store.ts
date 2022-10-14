@@ -171,7 +171,7 @@ export interface Actions extends ViewportFunctions {
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes: GraphNode[]) => void
   /** unselect selected elements (if none are passed, all elements are unselected) */
-  removeSelectedElements: (elements?: { nodes?: GraphNode[]; edges?: GraphEdge[] }) => void
+  removeSelectedElements: (elements?: Elements) => void
   /** apply min zoom value to d3 */
   setMinZoom: (zoom: number) => void
   /** apply max zoom value to d3 */

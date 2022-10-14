@@ -37,6 +37,6 @@ export const handleNodeClick = (
   if (!node.selected) {
     addSelectedNodes([node])
   } else if (node.selected && multiSelectionActive) {
-    removeSelectedElements({ nodes: [node] })
+    removeSelectedElements([node])
   }
 }
