@@ -1,4 +1,4 @@
-import type { GraphEdge, GraphNode } from '@vue-flow/core'
+import type { Elements } from '@vue-flow/core'
 import { isNode, useVueFlow } from '@vue-flow/core'
 import { getElements } from '../../../utils'
 
@@ -16,26 +16,23 @@ describe('Store Action: `removeSelectedElements`', () => {
     })
   })
 
-  it('removes passed elements from selected elements in store', () => {
+  it('removes passed elements from selected elements in store', async () => {
     randomNumber = Math.floor(Math.random() * [...nodes, ...edges].length)
     randomNumber2 = Math.floor(Math.random() * randomNumber)
     store.addSelectedElements(Array.from({ length: randomNumber }, (_, i) => store.getElements.value[i]))
     store.removeSelectedElements(
-      Array.from({ length: randomNumber2 }, (_, i) => store.getElements.value[i]).reduce(
-        (acc, curr) => {
-          if (isNode(curr)) {
-            acc.nodes.push(curr)
-          } else {
-            acc.edges.push(curr)
-          }
+      Array.from({ length: randomNumber2 }, (_, i) => store.getElements.value[i]).reduce((acc, curr) => {
+        if (isNode(curr)) {
+          acc.push(curr)
+        } else {
+          acc.push(curr)
+        }
 
-          return acc
-        },
-        { nodes: [] as GraphNode[], edges: [] as GraphEdge[] },
-      ),
+        return acc
+      }, [] as Elements),
     )
 
-    cy.tryAssertion(() => {
+    await cy.tryAssertion(() => {
       expect(store.getSelectedElements.value).to.have.length(randomNumber - randomNumber2)
     })
   })
