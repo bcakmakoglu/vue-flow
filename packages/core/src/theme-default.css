@@ -13,11 +13,6 @@
   }
 }
 
-.vue-flow__edge-path {
-  stroke: #b1b1b7;
-  stroke-width: 1;
-}
-
 .vue-flow__edge-text {
   font-size: 10px;
 }
@@ -28,7 +23,6 @@
 
 .vue-flow__connection-path {
   stroke: var(--vf-connection-path);
-  stroke-width: 1;
 }
 
 .vue-flow__node {

@@ -86,7 +86,7 @@
      fill: white;
    }
 
-  .vue-flow__edge-text {
+  &-text {
     pointer-events: none;
     user-select: none;
   }
