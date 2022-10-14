@@ -19,6 +19,7 @@ export const initialElements = [
     source: '4',
     target: '5',
     style: { stroke: 'orange' },
+    labelStyle: { stroke: 'black' },
     labelBgStyle: { fill: 'orange' },
   },
   { id: 'e3-4', type: 'smoothstep', label: 'smoothstep-edge', source: '3', target: '4' },
