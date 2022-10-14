@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2022-10-14
+
+[a33adf0](a33adf0c042674dd48485d6447a883fc1d8b132a)...[e9a784a](e9a784a1aaf9916494b129466a38f5f2353620e6)
+
+### Bug Fixes
+
+- Add missing dragging class to node selection rect ([58d11db](58d11db1f9008f0fffcecfbf5a53f5f23fd9a5b0))
+- Elements not correctly unselected ([583efe6](583efe6c68d1e4c05dd3974a9658a24f8bde756a))
+- Edge text not aligning correctly into center ([53c70a0](53c70a093b6a44524cf3fb4151a435521efc3da4))
+- Pass edge styles to edge path ([34685a5](34685a50c6be5f1a185d4e43fdc76ee2f41b3c0f))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([09a21b2](09a21b2ae399c365c28b5629706ca01a5846a31f))
+- Add changeset ([8583e13](8583e13db98fe32f23d91b1952cee91778fd434e))
+- Add changeset ([1aaac25](1aaac25e76367602c9de9198ba1202b728267371))
+- Add changeset ([12d9f79](12d9f79d1ba5ee3b2e6b45db54ee466156182f61))
+- Add changeset ([949d19f](949d19ff5d120f30ffbef35beb960ce6037082bb))
+- Update repl ([4964e4d](4964e4ddbc417d406cb95c823f272b0ae9ddb5c7))
+- Remove text fill ([4fa4627](4fa462718f10150850983b290fb025a2342df490))
+- Update example ([b5fd332](b5fd332b033519eec53b65cc2ccf8d735899aa82))
+- Remove duplicated styles ([530e440](530e4403b410a8719fdcb70fa9715803a169a06e))
+- Update example ([285ff5a](285ff5ac306cf8640aff3d29828a164f1f8505e3))
+- Update example ([ce30581](ce3058165170a36a93ef33760dd10b7d6a715b26))
+- Add changeset ([d2ed19e](d2ed19eebad2a8d3ee40f55f3f1dc63037ef73bb))
+- Bump versions ([e9a784a](e9a784a1aaf9916494b129466a38f5f2353620e6))
+
+### Refactor
+
+- Use flowElements type as arg for removeSelectedElements ([ea9da0a](ea9da0adb77ab53578469963d668d09eda25d79f))
+
+### Revert
+
+- Add dragging class to node on drag instead of dragstart ([9f48095](9f48095b51fac1d15dd427fe368a0062491adf50))
+
 ## [1.1.1] - 2022-10-13
 
 [b7697de](b7697de7366b578952b5ad8917b6dcbee50e844c)...[a33adf0](a33adf0c042674dd48485d6447a883fc1d8b132a)
