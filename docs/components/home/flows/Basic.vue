@@ -16,11 +16,17 @@ const getNodeClass: ClassFunc<GraphNode> = (el) => {
   return classes.join(' ')
 }
 
-const getEdgeClass = (el: GraphEdge, color: string) => {
-  const sourceNodeSelected = el.sourceNode.selected
-  const classes = ['transition-colors duration-300', el.selected || sourceNodeSelected ? `bg-${color}` : '']
-
+const getEdgeClass: ClassFunc<GraphEdge> = (el) => {
+  const classes = ['transition-colors duration-300', el.selected || el.sourceNode.selected ? 'font-semibold' : '']
   return classes.join(' ')
+}
+
+const getEdgeStyle: StyleFunc<GraphEdge> = (el) => {
+  const sourceNodeSelected = el.sourceNode.selected
+  return {
+    transition: 'stroke ease-in-out 300ms',
+    stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
+  }
 }
 
 const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
@@ -57,18 +63,20 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
       label: 'animated edge',
       target: '2',
       animated: true,
-      class: (el) => getEdgeClass(el, 'green'),
+      class: getEdgeClass,
+      style: getEdgeStyle,
     },
     {
       id: 'e1-3',
       source: '1',
       target: '3',
       label: 'default edge',
-      class: (el) => getEdgeClass(el, 'red'),
+      class: getEdgeClass,
       style: (el: GraphEdge) => {
         const sourceNodeSelected = el.sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
+          stroke: el.selected || sourceNodeSelected ? 'red' : '',
         }
       },
     },
@@ -78,7 +86,8 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
       target: '4',
       type: 'step',
       animated: true,
-      class: (el) => getEdgeClass(el, 'green'),
+      class: getEdgeClass,
+      style: getEdgeStyle,
     },
   ],
 })
@@ -131,17 +140,5 @@ onConnect((param) => {
 
 .basic .vue-flow__node-output.selected .vue-flow__handle {
   @apply bg-green-500;
-}
-
-.vue-flow__edge.bg-green {
-  .vue-flow__edge-path {
-    stroke: var(--secondary);
-  }
-}
-
-.vue-flow__edge.bg-red {
-  .vue-flow__edge-path {
-    stroke: red;
-  }
 }
 </style>
