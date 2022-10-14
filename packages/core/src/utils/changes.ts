@@ -1,4 +1,4 @@
-import { isGraphEdge, isGraphNode } from './graph'
+import { isGraphNode } from './graph'
 import type {
   Edge,
   EdgeAddChange,
@@ -89,9 +89,10 @@ export const applyChanges = <
 
     const i = elementIds.indexOf((<any>change).id)
     const el = elements[i]
+
     switch (change.type) {
       case 'select':
-        if (isGraphNode(el) || isGraphEdge(el)) el.selected = change.selected
+        ;(el as FlowElement).selected = change.selected
         break
       case 'position':
         if (isGraphNode(el)) {
@@ -159,18 +160,20 @@ export const createRemoveChange = (id: string): NodeRemoveChange | EdgeRemoveCha
   type: 'remove',
 })
 
-export const getSelectionChanges = (items: FlowElements, selectedIds: string[]) => {
-  return items.reduce((res, item) => {
-    const willBeSelected = selectedIds.includes(item.id)
+export const getSelectionChanges = (elements: FlowElements, selectedIds: string[]) => {
+  return elements.reduce(
+    (res, item) => {
+      const willBeSelected = selectedIds.includes(item.id)
+      const key = isGraphNode(item) ? 'changedNodes' : 'changedEdges'
 
-    if (!item.selected && willBeSelected) {
-      item.selected = true
-      res.push(createSelectionChange(item.id, true))
-    } else if (item.selected && !willBeSelected) {
-      item.selected = false
-      res.push(createSelectionChange(item.id, false))
-    }
+      if (!item.selected && willBeSelected) {
+        res[key].push(createSelectionChange(item.id, true))
+      } else if (item.selected && !willBeSelected) {
+        res[key].push(createSelectionChange(item.id, false))
+      }
 
-    return res
-  }, [] as (NodeSelectionChange | EdgeSelectionChange)[])
+      return res
+    },
+    { changedNodes: [], changedEdges: [] } as { changedNodes: NodeSelectionChange[]; changedEdges: EdgeSelectionChange[] },
+  )
 }
