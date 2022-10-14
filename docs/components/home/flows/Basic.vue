@@ -119,7 +119,7 @@ onConnect((param) => {
     class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden"
   >
     <VueFlow class="basic">
-      <Controls class="md:(!left-auto !right-[10px])" />
+      <Controls position="bottom-right" />
       <Background :gap="60">
         <template #pattern>
           <Cross :style="{ fontSize: `${8 * viewport.zoom || 1}px` }" class="text-[#10b981] opacity-50" />

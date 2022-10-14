@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Repl, ReplStore } from '@vue/repl'
+import { ReplStore, Repl as VueRepl } from '@vue/repl'
 import { useVueFlow } from '@vue-flow/core'
 import '@vue/repl/style.css'
 import { exampleImports } from './examples'
@@ -58,7 +58,7 @@ for (const example of Object.keys(imports).filter((i) => i !== 'additionalImport
 }
 
 onMounted(async () => {
-  await store.setVueVersion('3.2.25')
+  await store.setVueVersion('3.2.37')
 
   await store.setFiles(
     {
@@ -86,7 +86,7 @@ const sfcOptions = {
 </script>
 
 <template>
-  <Repl
+  <VueRepl
     :clear-console="true"
     :auto-resize="true"
     :store="store"
