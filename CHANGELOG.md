@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.3] - 2022-10-14
+
+[e9a784a](e9a784a1aaf9916494b129466a38f5f2353620e6)...[9fbd653](9fbd653d92b0e99fb15e1ead86812f4701656474)
+
+### Bug Fixes
+
+- Edge text not properly calculating dimensions ([d4fb795](d4fb7957879d70c2ef7cc9cad02ba85d378c6be2))
+- Edge text not properly calculating dimensions ([72c203e](72c203e3d527376221673fccb62dc99ff8061a23))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([a226e6a](a226e6a8c7f788bd87d20a077c63c87bdeba8a90))
+- Bump versions ([9fbd653](9fbd653d92b0e99fb15e1ead86812f4701656474))
+
 ## [1.1.2] - 2022-10-14
 
 [a33adf0](a33adf0c042674dd48485d6447a883fc1d8b132a)...[e9a784a](e9a784a1aaf9916494b129466a38f5f2353620e6)
