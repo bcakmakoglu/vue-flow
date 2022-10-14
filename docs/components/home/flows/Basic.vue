@@ -16,17 +16,11 @@ const getNodeClass: ClassFunc<GraphNode> = (el) => {
   return classes.join(' ')
 }
 
-const getEdgeClass: ClassFunc<GraphEdge> = (el) => {
-  const classes = ['transition-colors duration-300', el.sourceNode.selected ? 'font-semibold' : '']
-  return classes.join(' ')
-}
-
-const getEdgeStyle: StyleFunc<GraphEdge> = (el) => {
+const getEdgeClass = (el: GraphEdge, color: string) => {
   const sourceNodeSelected = el.sourceNode.selected
-  return {
-    transition: 'stroke ease-in-out 300ms',
-    stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
-  }
+  const classes = ['transition-colors duration-300', el.selected || sourceNodeSelected ? `bg-${color}` : '']
+
+  return classes.join(' ')
 }
 
 const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
@@ -63,20 +57,18 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
       label: 'animated edge',
       target: '2',
       animated: true,
-      class: getEdgeClass,
-      style: getEdgeStyle,
+      class: (el) => getEdgeClass(el, 'green'),
     },
     {
       id: 'e1-3',
       source: '1',
       target: '3',
       label: 'default edge',
-      class: getEdgeClass,
+      class: (el) => getEdgeClass(el, 'red'),
       style: (el: GraphEdge) => {
         const sourceNodeSelected = el.sourceNode.selected
         return {
           transition: 'stroke ease-in-out 300ms',
-          stroke: el.selected || sourceNodeSelected ? 'red' : '',
         }
       },
     },
@@ -86,8 +78,7 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
       target: '4',
       type: 'step',
       animated: true,
-      class: getEdgeClass,
-      style: getEdgeStyle,
+      class: (el) => getEdgeClass(el, 'green'),
     },
   ],
 })
@@ -140,5 +131,17 @@ onConnect((param) => {
 
 .basic .vue-flow__node-output.selected .vue-flow__handle {
   @apply bg-green-500;
+}
+
+.vue-flow__edge.bg-green {
+  .vue-flow__edge-path {
+    stroke: var(--secondary);
+  }
+}
+
+.vue-flow__edge.bg-red {
+  .vue-flow__edge-path {
+    stroke: red;
+  }
 }
 </style>
