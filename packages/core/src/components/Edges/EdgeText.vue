@@ -13,13 +13,17 @@ const {
   labelBgBorderRadius = 2,
 } = defineProps<EdgeTextProps>()
 
-const el = ref<SVGTextElement>()
-
 let box = $ref<RectType>({ x: 0, y: 0, width: 0, height: 0 })
 
-onMounted(() => {
-  box = el.value!.getBBox()
-})
+const el = (el: any) => {
+  if (!el) return
+
+  const nextBox = el.getBBox()
+
+  if (nextBox.width !== box.width || nextBox.height !== box.height) {
+    box = nextBox
+  }
+}
 
 const transform = computed(() => `translate(${x - box.width / 2} ${y - box.height / 2})`)
 </script>
