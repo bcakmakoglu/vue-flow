@@ -34,7 +34,3 @@ Check out the [examples](/examples/) if you want to dive directly into the code.
   - 🕹 Controls: Control zoom behavior from a panel on the bottom left
 
 - 🦾 __Reliable__: Fully written in TypeScript
-
-::: warning Vue Flow is still version 0.x.x.
-Expect breaking changes between versions!
-:::
