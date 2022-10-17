@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { Connection, Edge, Elements } from '@vue-flow/core'
-import { Background, VueFlow, addEdge } from '@vue-flow/core'
+import { VueFlow, addEdge } from '@vue-flow/core'
+import { Background } from '@vue-flow/additional-components'
 import { ref } from 'vue'
 import initialElements from './elements'
 import { PathFindingEdge, PerfectArrow } from '~/index'

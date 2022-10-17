@@ -1,5 +1,6 @@
 <script setup>
-import { Background, VueFlow, isNode } from '@vue-flow/core'
+import { VueFlow, isNode } from '@vue-flow/core'
+import { Background } from '@vue-flow/additional-components'
 import { ref } from 'vue'
 
 const elements = ref([
