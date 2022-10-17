@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { Elements, FlowEvents } from '@vue-flow/core'
-import { Background, Controls, MiniMap, VueFlow, addEdge } from '@vue-flow/core'
+import { VueFlow, addEdge } from '@vue-flow/core'
+import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
 import { ref } from 'vue'
 import { ResizeRotateNode } from '../src'
 import initialElements from './elements'
