@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { Node } from '@vue-flow/core'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { useDragNDrop } from '@vue-flow/plugin-drag-n-drop'
 import Sidebar from './Sidebar.vue'
 
 let id = 0
 const getId = () => `dndnode_${id++}`
 
-const { onConnect, nodes, edges, addEdges, addNodes, project } = useVueFlow({
+const { onConnect, addEdges, addNodes, project } = useVueFlow({
   nodes: [
     {
       id: '1',
@@ -16,40 +16,27 @@ const { onConnect, nodes, edges, addEdges, addNodes, project } = useVueFlow({
     },
   ],
 })
-const onDragOver = (event: DragEvent) => {
-  event.preventDefault()
-  if (event.dataTransfer) {
-    event.dataTransfer.dropEffect = 'move'
-  }
-}
 
-const wrapper = ref()
+const { handleDragOver, handleDrop, onDrop } = useDragNDrop()
 
 onConnect((params) => addEdges([params]))
 
-const onDrop = (event: DragEvent) => {
-  const type = event.dataTransfer?.getData('application/vueflow')
-
-  const flowbounds = wrapper.value.$el.getBoundingClientRect()
-
-  const position = project({
-    x: event.clientX - flowbounds.left,
-    y: event.clientY - flowbounds.top,
-  })
-
-  const newNode = {
-    id: getId(),
-    type,
-    position,
-    label: `${type} node`,
-  } as Node
-  addNodes([newNode])
-}
+onDrop(({ type, position }) => {
+  addNodes([
+    {
+      id: getId(),
+      type,
+      position: project(position),
+      label: `${type} node`,
+    },
+  ])
+})
 </script>
 
 <template>
-  <div class="dndflow" @drop="onDrop">
-    <VueFlow ref="wrapper" @dragover="onDragOver" />
+  <div class="dndflow" @drop="handleDrop">
+    <VueFlow @dragover="handleDragOver" />
+
     <Sidebar />
   </div>
 </template>

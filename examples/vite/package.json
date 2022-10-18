@@ -11,6 +11,7 @@
     "@vue-flow/additional-components": "workspace:*",
     "@vue-flow/core": "workspace:*",
     "@vue-flow/plugin-dagre": "workspace:*",
+    "@vue-flow/plugin-drag-n-drop": "workspace:*",
     "@vue-flow/plugin-screenshot": "workspace:*"
   },
   "devDependencies": {
