@@ -6,8 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([4836678](48366780cec6482943829ab76c1d59fb958c2a90))
-- Add changeset ([3105bd0](3105bd051ab4ac72c95e524dcb5c551ee4f812f6))
+- Add examples group to changelog and filter publish commits ([f3dc89a](f3dc89a747da47ec9df15415d1afb3d6aabfb5f9))
 
 ### Refactor
 
@@ -30,15 +29,7 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([a04f689](a04f689d9425b4924aef91e89c2f3f764ee2aa85))
-- Add changesets ([61d2b88](61d2b88ebc9fcde7beb89a877f3bf975c00e22d5))
-- Add changeset ([8f95187](8f95187a6c474aa299fde3dd3c80145483b1b238))
-- Add changeset ([bff576b](bff576bc0494a34eedf6eafb03d84d074d372b79))
-- Add changeset ([92a69a6](92a69a617fc6ddbdc8c1eaeaa8ca040bbc67285e))
 - Generate base changelog on push into master ([8cfea47](8cfea472e3a00a3513b965fb8e12ab4561f89189))
-- Update CHANGELOG.md ([3b1475c](3b1475cd24e665aeac4bc5090b2a0268e77c55ca))
-- Bump versions ([0caf8f2](0caf8f2290e6ddf40a8d3131647bdaab0222ac2e))
-- Update CHANGELOG.md ([578929f](578929f2d96f296fe448569680c773f60fc03afb))
 
 ### Refactor
 
@@ -55,11 +46,6 @@ All notable changes to this project will be documented in this file.
 - Edge text not properly calculating dimensions ([d4fb795](d4fb7957879d70c2ef7cc9cad02ba85d378c6be2))
 - Edge text not properly calculating dimensions ([72c203e](72c203e3d527376221673fccb62dc99ff8061a23))
 
-### Miscellaneous Tasks
-
-- Update CHANGELOG.md ([a226e6a](a226e6a8c7f788bd87d20a077c63c87bdeba8a90))
-- Bump versions ([9fbd653](9fbd653d92b0e99fb15e1ead86812f4701656474))
-
 ## [1.1.2] - 2022-10-14
 
 [a33adf0](a33adf0c042674dd48485d6447a883fc1d8b132a)...[e9a784a](e9a784a1aaf9916494b129466a38f5f2353620e6)
@@ -73,35 +59,20 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([09a21b2](09a21b2ae399c365c28b5629706ca01a5846a31f))
-- Add changeset ([8583e13](8583e13db98fe32f23d91b1952cee91778fd434e))
-- Add changeset ([1aaac25](1aaac25e76367602c9de9198ba1202b728267371))
-- Add changeset ([12d9f79](12d9f79d1ba5ee3b2e6b45db54ee466156182f61))
-- Add changeset ([949d19f](949d19ff5d120f30ffbef35beb960ce6037082bb))
 - Update repl ([4964e4d](4964e4ddbc417d406cb95c823f272b0ae9ddb5c7))
 - Remove text fill ([4fa4627](4fa462718f10150850983b290fb025a2342df490))
 - Update example ([b5fd332](b5fd332b033519eec53b65cc2ccf8d735899aa82))
 - Remove duplicated styles ([530e440](530e4403b410a8719fdcb70fa9715803a169a06e))
 - Update example ([285ff5a](285ff5ac306cf8640aff3d29828a164f1f8505e3))
 - Update example ([ce30581](ce3058165170a36a93ef33760dd10b7d6a715b26))
-- Add changeset ([d2ed19e](d2ed19eebad2a8d3ee40f55f3f1dc63037ef73bb))
-- Bump versions ([e9a784a](e9a784a1aaf9916494b129466a38f5f2353620e6))
 
 ### Refactor
 
 - Use flowElements type as arg for removeSelectedElements ([ea9da0a](ea9da0adb77ab53578469963d668d09eda25d79f))
 
-### Revert
+### Reverts
 
 - Add dragging class to node on drag instead of dragstart ([9f48095](9f48095b51fac1d15dd427fe368a0062491adf50))
-
-## [1.1.1] - 2022-10-13
-
-[b7697de](b7697de7366b578952b5ad8917b6dcbee50e844c)...[a33adf0](a33adf0c042674dd48485d6447a883fc1d8b132a)
-
-### Miscellaneous Tasks
-
-- Update CHANGELOG.md ([a33adf0](a33adf0c042674dd48485d6447a883fc1d8b132a))
 
 ## [1.1.0] - 2022-10-13
 
@@ -114,6 +85,10 @@ All notable changes to this project will be documented in this file.
 - Only check for matching handle id if an id exists ([a7845c6](a7845c6032bce197392112544d18e6df77bfddf4))
 - `connectOnClick` reset before connections can be made ([d420fea](d420feaf489368c4e690f58e527f1049246bbb78))
 
+### Examples
+
+- Update quasar example ([3fcc163](3fcc163509d2a9ea675586e951364027f5386be1))
+
 ### Features
 
 - Add `vueflow` pkg that exports all features ([9c78528](9c78528d7f43a341b5754d6b3fa08e208e7d5329))
@@ -124,7 +99,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([e292491](e2924918a2fd2bbbf5cd70206cfa6b70c80bb834))
 - Update README ([d7b956d](d7b956dd2ac9d36907fd38ff2209a824d4ca63b0))
 - Remove env.d.ts ([647d605](647d60583b2d587f6b563e7d0dd2ab3cf8c7933f))
 - Update README ([03a982c](03a982c10f8a64e3a80a42971b09d87661ae5e05))
@@ -132,33 +106,23 @@ All notable changes to this project will be documented in this file.
 - Update typedocs config to use vueflow pkg as entry ([028d793](028d79306cce7edb7291850e005e18774831d4d0))
 - Update repl pkg link names ([688c931](688c931b3a4f69af6c11f16cf26c6a04a122cafb))
 - Install `vueflow` pkg ([d1e9ee5](d1e9ee596cef683a6df658aa77f7297cb4d7ca91))
-- Add changeset ([e175cf8](e175cf8157be1851651d6df0a9e87f732b53de59))
-- Add changeset ([08ad173](08ad17356f5fbd50255af27f7c482da756eda4aa))
-- Add changeset ([78f9ee1](78f9ee1cb77cc00590b8d4529da7cd124ddfc0f6))
 - Lint ([ef3111b](ef3111bde0a52b145067e1afcc8605deb9aeb333))
 - Disable pointer events on user selection ([50af804](50af804c47233464218f2fd69e5e67d3c89a6ea1))
-- Add changeset ([2e2c449](2e2c449bf60efed7152930962df2f9b5c0037386))
 - Optional position ([be3fab9](be3fab9c1b3fef0358571c413b555dad6429a2f1))
 - Remove unnecessary style ([24f7722](24f7722f7c5c83bf26f8ff29564d7044fc81992c))
-- Add changeset ([e1c28a2](e1c28a26c75a86b8c2790480bb8dadf37ad2ff12))
 - Lint ([5f595c0](5f595c0770b5c9ad2db6720077ef2283b4461408))
 - Lint ([31f590b](31f590b89389dfe3ae848868b6c1932445b2b5c2))
 - Update changeset to minor bump ([fa0fc69](fa0fc693040808aaa2115e53022f8877c127e5ad))
 - Add copy vue flow plugin again ([c086aa8](c086aa8e46bc8a0325b719798a94bda1e79a5a10))
 - Add default color to edge text ([1204a44](1204a4496ca05e48d7b7c52b5007e77114663e52))
 - Correct version ([b8b325e](b8b325e316798ef24d368564d7b21004be5e7d4d))
-- Bump versions ([d224d59](d224d59b4da1b9af3fc575caee747e006b01a167))
 - Update CHANGELOG ([f978db2](f978db25e4a3e10a010fc4947922184695c990db))
-- Add changeset ([18a812d](18a812db6445941ff626921a311f2f2aefd84968))
-- Add changeset ([1e5a77d](1e5a77d608c79c7701f97a81690fa5babc7c2514))
 - Disable pkg until name issue is resolved ([11ee43a](11ee43ac9b910e50b88dca4e52b24db2a908e53e))
 - Update styles ([5c3ed51](5c3ed512579b39a99ef5bc360c88470f93a58c79))
 - Cleanup var ([71eacd7](71eacd70353f2036400ac6da3c8d60691ea2f2f6))
-- Add changeset ([a415353](a415353ba5fe3bb29b33704baf5d83b869e508f1))
 - Update changeset descriptions ([24924b9](24924b93f36410ded30b52433132e82873fff35a))
 - Manually publish pkgs ([7ff551e](7ff551e9df0f72e43e8998cc6d8e85d2ef15f246))
 - Update changeset descriptions ([483001d](483001d3f06cfcf3f9ccb2df6f1b5777d09a7788))
-- Bump versions ([b7697de](b7697de7366b578952b5ad8917b6dcbee50e844c))
 
 ### Refactor
 
@@ -179,10 +143,6 @@ All notable changes to this project will be documented in this file.
 - Add viewpane tests ([0613350](06133505549c96857c3653aaaf230e8c2c604ee2))
 - Add `tryAssertion` command to replace `cy.wait` ([5aa94e2](5aa94e2e13492330dc1fdae57f489d4b7f40d38a))
 - Properly check element transforms ([e0016db](e0016db07a6d8a8a2d5d8293adce6cc5b0798070))
-
-### Examples
-
-- Update quasar example ([3fcc163](3fcc163509d2a9ea675586e951364027f5386be1))
 
 ## [1.0.0] - 2022-10-08
 
@@ -210,7 +170,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([40d59d9](40d59d9d84d82b392f485e40662c58ccf8b8cad2))
 - Add issue templates config.yml ([fd07402](fd07402c78c017039f86482366eb78722c5fa52f))
 - Update bug report template & config.yml ([0c018a5](0c018a544056b079ec5d2042553fe0c9fcf7d8ba))
 - Update pr template ([660fb36](660fb366f7a1e384fe56e431659d62f27ec8a7da))
@@ -218,17 +177,13 @@ All notable changes to this project will be documented in this file.
 - Update workflow file ([6bfb2b8](6bfb2b8a826252fea507dcf1c3ca952f8481ff32))
 - Lint ([4593550](4593550f8556421e76ef6cb3afdecb59c0718906))
 - Remove typedoc script from additional-components pkg ([acc0526](acc0526fdb89ad133d413f2b3ddbd9f668515ab1))
-- Update deps and bump versions ([e5930b3](e5930b361ad927a2e5fdc9b063894586fc78765c))
 - Add typedocs script to root ([32c024c](32c024cccb1321bb48f79e79ed719abf7db02a2f))
 - Remove vueuse ([97d498c](97d498c117db51d3c31064b58ebb22cc68ca9102))
 - Add ignore list to changeset config ([667078e](667078e760903d5e15dd6962bd4153821f4f16bf))
 - Rename docs pkg ([7d799de](7d799ded1e302cb89cc38a0db8d9a0310e755736))
-- Add changeset ([47d837a](47d837aac096e59e7f55213990dff2cc7eba0c01))
-- Add changeset ([939bff5](939bff503039af3b790160640548ddde984cf2bc))
 - Add changelog-github ([151eae9](151eae98770cf118ac82474d628c7418a25c33bc))
 - Remove node cache step ([77953a8](77953a8f8ec630ba5149cf1c8a82adf8f701bc7a))
 - Update publish script ([756b36b](756b36b40b609c6edc662b491d49873e9ebe4594))
-- Bump versions ([6f5f5c8](6f5f5c8a36dbd2446f7e89edc7a5e5626a3a7508))
 - Bump version ([6c5523d](6c5523db5e3cf807dbdb106f29b8b4410dccc4bd))
 
 ### Refactor
@@ -301,7 +256,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([7789d6e](7789d6e006388917daacf34bfdb4d715eb95cb4a))
 - Remove unused imports ([723a03b](723a03bca1e12479a04f945edce5bb9863a5248c))
 - Force dimensions update on type change ([00059aa](00059aabab92565c52663194e0861c552da1f21a))
 - Use enum in Marker.vue ([a840a5c](a840a5cf58d7d5e656841ec8533e71f4ccd8600b))
@@ -343,7 +297,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([9ea87c8](9ea87c878c327b7d99c75f657ee196172e2862aa))
 - Update pnpm-lock.yaml ([1171e43](1171e434ff5367b7c4e5b59cfde341a13104969e))
 - Bump version ([247f248](247f248de39a88f78baffa2785cd22e2f5600854))
 
@@ -362,7 +315,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([0bf2243](0bf2243d97f2607b8f952b88993d181d9ce75903))
 - Bump version ([3f4e071](3f4e071bbfd4263d512ed1e7d01117f58eebc191))
 - Update demo ([59bd009](59bd0090cda3298b99a2a3b5276a63f6ce1f9831))
 - Bump version ([f7c18df](f7c18df48a2339e75c32510c34bdc8f900009e8f))
@@ -391,7 +343,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([feb1dd6](feb1dd6a363249161970a3fc1e9b074acbf88d1a))
 - Upgrade deps ([b48234e](b48234ec91898aeff452b4b22a334efe23edd22c))
 - Cleanup unused vars and remove setState usage ([a110cdc](a110cdcd03b03e058862ab2ee70d7f911c01e1fa))
 - Re-apply node extent only if flow is ready ([955f683](955f683d8b4c1d5286e4af50f742efbedad170c6))
@@ -413,7 +364,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([3255f95](3255f95df943ce45d1c63e2ce796e8aa4949de7a))
 - Bump version ([3e398d4](3e398d451a6ab43b9347b7f7e4954e76dc8c5060))
 
 ## [0.4.36] - 2022-08-08
@@ -426,7 +376,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([4683b4a](4683b4af16e7a8e5a2b0088beff363950efc0a27))
 - Add `.pnpm-store` to `.gitignore` file ([a9dc02d](a9dc02df8d41056526a40dbb324cda1803e70669))
 - Bump version ([f1a1321](f1a1321117169d79345201499917ede855b4d68e))
 
@@ -444,7 +393,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([a986a6b](a986a6b2c6b26980e4a41421920cdb915cd34bd1))
 - Bump version ([16b6f42](16b6f429a11d538b579d9fe5616ee61f1774df55))
 
 ### Refactor
@@ -480,7 +428,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([a095052](a095052c8444866970efc7233791445ad8c0a0e2))
 - Update pnpm-lock.yaml ([10c34bb](10c34bb9fe09b2b65221944592f5cbfbcac2b6cd))
 - Remove unused code ([a5d5da5](a5d5da54cc715677aa4d523d68170d14f1439b07))
 - Bump version ([f473dac](f473dacffe97e8724166c16dc234d94d4720d294))
@@ -504,7 +451,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([91fbad4](91fbad44392340e7b2560dd90843c2c87f55f7c9))
 - Bump version ([dc0ec7a](dc0ec7a27dcf7f1c6d60765e6af2f56074fb281c))
 
 ## [0.4.32] - 2022-07-28
@@ -517,7 +463,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([5ca61d2](5ca61d2fb0643067d74a15dc291478bac528c8d3))
 - Quasar example vue flow version ([5c68803](5c688030f5a2d940c6d47a91602e016c16b573dd))
 - Update pnpm-lock.yaml ([6a56251](6a5625173c6238ff4a7fbf073a73a797101d5184))
 - Bump version ([9aa5172](9aa517285b26d6ad9e34caad1dcbc3a27569b19b))
@@ -544,7 +489,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([47164f0](47164f01b8c10b9a4d5f68423ab6f5000c5ea7d5))
 - Upgrade dependencies ([ce77bc5](ce77bc5d64c72e2b0e521775f9ac05f239bb336a))
 - Unfreeze lockfile ([27fa623](27fa6235430977cd055d8bd67dd8316886b22aa0))
 - Symlink deps in tsconfig ([4e7f4b5](4e7f4b5cf8518cc237ca3d159a1ec718fd8de95c))
@@ -559,7 +503,7 @@ All notable changes to this project will be documented in this file.
 
 - Import `Emits` type ([9a8459c](9a8459c8ebb2df12fc57e0271f89dc69f2fc286d))
 
-### Revert
+### Reverts
 
 - Explicitly bind emits ([31f0dba](31f0dbafa7a2feafce74416d09caa19e4b0cadc0))
 - Use state viewport zoom to calculate handlebounds ([98ff311](98ff31154c703b10fe7e5b0c7b7941aa8e9502b7))
@@ -574,7 +518,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([3537e6b](3537e6b0223ffb819df95c1d238bbf3cd8c4e0e3))
 - Update pnpm-lock.yaml ([78f176c](78f176cf468f35fec65123302c6f7d41f036b1a1))
 - Upgrade dependencies ([c16cd46](c16cd464b3b223a394689b9425be9f5eb8923e62))
 - Bump version ([600922a](600922afd921c3c357edfcc27149f451d3aa0e4a))
@@ -590,7 +533,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([480a487](480a48744da3a0c26f6e0763fb3e7612a10dd649))
 - Bump version ([7596c4d](7596c4d325cc126518464553482c04cb0b8e60f9))
 
 ## [0.4.28] - 2022-07-16
@@ -611,7 +553,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([1d9e7ec](1d9e7ec07dccf22867075d525f4752b4bd43733e))
 - Add `.eslintignore` file ([5a89d0e](5a89d0e947ef6ff6005b8c8096c482e22592174b))
 - Update `tsconfig.json` ([d6df271](d6df271c2d045c6397fb9a40a76ace3257038f49))
 - Update meta title & description ([9c171c0](9c171c0ff865d05b7f6570a7ce99e5208e52c23e))
@@ -638,7 +579,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([1f11365](1f11365e34c674dd930f84664d88bc352e548533))
 - Move icons into floating container ([3ea7355](3ea735558f8cd536ae6708b21ad4de4e4669e975))
 - Move icons into header but in container ([a24fc52](a24fc5241ee1703bd0d6b0a536eb8ecd440900ae))
 - Update deps ([2678112](26781124d652e9d822fe8e3d532e2bf6882dbc9c))
@@ -663,7 +603,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Update CHANGELOG.md ([0d5f9a5](0d5f9a5f0a9fed891694b8126ad87e48d4766a80))
 - Color github logo white ([8d975c6](8d975c6aadc924d748da2e4a9b21bc8a09cf529b))
 - Randomize animation durations ([2932a8c](2932a8cb385c34f1fb250f7378b3614ee5856cdc))
 - Have animations be at least 5 seconds long ([74f367c](74f367c6c79fd0c328563d3b5d47603ef675c5bf))
@@ -694,7 +633,6 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous Tasks
 
 - Push from changelog workflow to master branch ([7d9a7b6](7d9a7b6dbe02b81b798a923bbb84e5e5a8f2fa7b))
-- Update CHANGELOG.md ([6a71a5f](6a71a5fdbdadc00f53b88cffc1a53adcd2693293))
 - Let windicss scan theme dir ([a0541cb](a0541cb5df00294282f19f73494b8cc10bf87bae))
 - Update `auto-imports.d.ts` ([d37b67c](d37b67c9dc99b786e280a0ec6b0ed6c7e91afdf4))
 - Remove `d3` and move `types/d3` to deps-dev ([eeed10c](eeed10c8592c350dc69f953bad6f7f76b6df39cc))
@@ -742,7 +680,6 @@ All notable changes to this project will be documented in this file.
 - Allow manual workflow dispatch ([2e1150c](2e1150c32fa39773b000477c90c7c9612c3a777b))
 - Add name to changelog workflow ([e154b60](e154b60a6a38b0c8e22b17be6e4510ce8b3ec1bc))
 - Use fetch-depth 0 ([14a1843](14a1843d9b3d4d58474bb1ee78fa7152c4064c57))
-- Update CHANGELOG.md ([9b373ce](9b373ce49c9124537239efe00fcf32393fa634e1))
 - Update `vite-config.ts` ([d75feb6](d75feb6c61e09859bbedd2857ebb644318c4623a))
 - Deprecate `useZoomPanHelper` ([f5b02c3](f5b02c3278f3cd8fe3230ab145ed23ae73c93d6c))
 - Add generic for custom events on node associated types ([38d8565](38d8565702f25d9d9012ec46f4c0219675ba9f33))
@@ -778,12 +715,17 @@ All notable changes to this project will be documented in this file.
 - Fix docs links ([2526d76](2526d76a2ef62be0834d4f972fdf6c2c5989a406))
 - Add documentation on `autoConnect` option ([5a563e4](5a563e45b6024ef09bc815e25c5339cf83b6c709))
 
+### Examples
+
+- Fix import path ([942a122](942a122fcb4d2dbabdafb70a925499bfeef96a9e))
+
 ### Features
 
 - Add `autoConnect` option ([e047be6](e047be6854da3c4ed97fb7e270e85fd3b8bc3628))
 
 ### Miscellaneous Tasks
 
+- Update CHANGELOG.md ([e55a3fb](e55a3fbeb6f06101320714642553807be29434e5))
 - Add workflow to generate changelog on `v*`-tags push ([87ad709](87ad709e5eccfda91f95bf73ce8b563518cf1f30))
 - Move update position into own function ([c2303f4](c2303f4c2fb0af22dfd6a1a1ec2e9ed5b78950ab))
 - Rename postrelease script to changelog ([4a2345b](4a2345b533ea6ec6dd095ecbe83ec320e88dadfa))
@@ -795,10 +737,6 @@ All notable changes to this project will be documented in this file.
 - Remove ctrl key from drag filter condition ([1aa9230](1aa9230fe4a3cf8f849de4ca6dfc7194d6882069))
 - Add `updateNodeInternals` action ([648350c](648350cdedadd4afa4ec58b339a7e67b2a3df539))
 - Remove computed position as prop from custom nodes ([4b824b5](4b824b527ff66f26d953df30ecc6e9ba28d02293))
-
-### Examples
-
-- Fix import path ([942a122](942a122fcb4d2dbabdafb70a925499bfeef96a9e))
 
 ## [0.4.22] - 2022-06-15
 
@@ -827,6 +765,7 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
+- Update CHANGELOG.md ([62dda36](62dda36165baa0cabe400b5a2263cda3945ea2c4))
 - Update pnpm-lock.yaml ([e4202b0](e4202b01c9be21cf916490c22674156178d8e372))
 - Run typedocs before vuepress ([ecf454e](ecf454e7b25b12a6248b5135e7f4fdd995f445ab))
 - Add typedoc script to docs dev ([bd51614](bd51614fb7c0a8b6c5a8fed61098ce3ba73b32e1))
@@ -843,6 +782,7 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous Tasks
 
 - Bump version ([7fe511f](7fe511fefdc9aab49ac77da8b5182372f5d86234))
+- Update CHANGELOG.md ([fbcd00b](fbcd00b5885ef7cb1506c239e0b3ac3eea90161a))
 - Bump version ([59b6424](59b64242d5de5b710f6e6557d5256db9b1021be7))
 
 ## [0.4.20] - 2022-06-10
@@ -889,13 +829,14 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous Tasks
 
 - Bump version ([2efe25c](2efe25c989e0a259f6a4487b94c481976f10d7f3))
+- Update CHANGELOG.md ([b3a1726](b3a172644955bbe17a5a6f45d62855177da548b2))
 - Update dependencies ([3dd3c37](3dd3c37fc25e36dafce67be5e7b3cd690c2dca32))
 - Update lock file ([77b441b](77b441b1c6803c5543eb7a50315e193e168fb310))
 - Use type import for emit definition ([fdc6f40](fdc6f40c3c9f89a3548e3f75c89702ef54888916))
 - Update README.md links ([699e252](699e25293556267b5311883cf4201f98f2368924))
 - Move `BaseEdgeProps` to types ([e54f7b5](e54f7b56d01f4cfacef0c101cfcc269ab48f8706))
 
-### Revert
+### Reverts
 
 - Set emits explicitly ([fb8356e](fb8356e15a3b9cf6309df1611337369e1e7463c1))
 - Filter old edge on update ([7597c0c](7597c0c542370f7a9236f294091761511f55b6a6))
@@ -929,6 +870,7 @@ All notable changes to this project will be documented in this file.
 ### Miscellaneous Tasks
 
 - Bump version ([425e558](425e558e96e757d6d65505b1c6ca5fd096d71533))
+- Update CHANGELOG.md ([deef900](deef9000805a36c962e48f47675b1350cc3b8d17))
 - Fix missing imports ([9929278](9929278ff0d6f942544bdfdfa41e211936250253))
 - Remove unnecessary imports ([c81362d](c81362da60af373b8009644908ba98a9814ca78a))
 - Set dimensions after mount ([e8923c8](e8923c8aaed836110085daa8e14d66dc198da3e6))
@@ -972,8 +914,15 @@ All notable changes to this project will be documented in this file.
 - Use vueflow version from composable instead of pkg ([d22773d](d22773dad9e272bda4bfdc81de1f343604c4f38f))
 - Fix version link ([c6bda81](c6bda81c5ead8e47784ba8d152fb09676c710a63))
 
+### Examples
+
+- Move current examples into `examples/vite` ([8dd7c79](8dd7c797001fe519510f888d29a4fb1e51033648))
+- Add quasar example ([330d6d7](330d6d7eac478159ece58705a57f3a0d4be0bbb8))
+- Add nuxt3 example ([f21d317](f21d317fe8dcde10e80d67049f19f9fdec86047e))
+
 ### Miscellaneous Tasks
 
+- Update CHANGELOG.md ([710b22e](710b22eb0eab248da57445ff68e31fbd4294e54c))
 - Bump version ([2858214](2858214e62bfda34c917fe28331bc56a11fd7d4e))
 - Remove np ([4810483](4810483fe64a7085cec06ac04bf9e9a3eced4c49))
 - Remove np ([d675891](d6758918e69f8a4bc88c0dabbffd0a5ac87f72df))
@@ -993,12 +942,6 @@ All notable changes to this project will be documented in this file.
 ### Testing
 
 - Update import path for utils ([0373dae](0373dae236141c4919cb6414a6cbaa2d2f63f864))
-
-### Examples
-
-- Move current examples into `examples/vite` ([8dd7c79](8dd7c797001fe519510f888d29a4fb1e51033648))
-- Add quasar example ([330d6d7](330d6d7eac478159ece58705a57f3a0d4be0bbb8))
-- Add nuxt3 example ([f21d317](f21d317fe8dcde10e80d67049f19f9fdec86047e))
 
 ## [0.4.15] - 2022-06-01
 
@@ -1040,6 +983,7 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
+- Update CHANGELOG.md ([bcfc403](bcfc40382c1d840479330c24316f5b2952de53b2))
 - Update README.md ([015e34b](015e34baf820c00d194305acf47c5625a3fa3d21))
 - Fix readme discord link ([7afbd87](7afbd870f4eb8f8851f5640f311957092de41496))
 - Update typescript to `4.7.2` and vue-tsc to `0.35.0` ([f32dd24](f32dd24400b0abed4f261e2f93a8805ba3bdfa6d))
@@ -1075,6 +1019,10 @@ All notable changes to this project will be documented in this file.
 - Remove unused edges from nested example ([643f752](643f75273da0d600a0218128eb2226feddd7f792))
 - Pin repl version to 1.1.2 ([1b8d9cf](1b8d9cfa413c56ae2f1d7b82976e2a1964a40131))
 
+### Examples
+
+- Fix import path ([ee78e92](ee78e925e041877cc02faf0e2655c02270f236a8))
+
 ### Features
 
 - Add connected edges to node mouse events ([5b307b5](5b307b548a71f8b3fab25fc45f746f034700ec57))
@@ -1087,6 +1035,7 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
+- Update CHANGELOG.md ([d55aba3](d55aba3f1740218f2c637f3779882c2ec08b423b))
 - Filter on drag ([1e506dc](1e506dc15130bb9d3b47cba76b517537816aaee7))
 - Fix prop types in edge wrapper ([dd86e04](dd86e04a034e54b4d450ef157c137a2770e5e5e8))
 - Lint ([bae5d1e](bae5d1e26d0ed1d6ab6f85c5c35b7c77e49776a3))
@@ -1119,10 +1068,6 @@ All notable changes to this project will be documented in this file.
 - Remove reactive options ([e2f3da8](e2f3da8e1bf6a03f042a3bb115adcd55c27fd81b))
 - Watch dimensions for xyzpos ([e483da2](e483da24432ca92ab2fc3b261c4438e69fa12c89))
 - Remove v-html  from template tag ([d4ce7b8](d4ce7b835cbe410e08398c6d033b5ecd7bbe2881))
-
-### Examples
-
-- Fix import path ([ee78e92](ee78e925e041877cc02faf0e2655c02270f236a8))
 
 ### Update
 
@@ -1163,6 +1108,7 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
+- Update CHANGELOG.md ([df43ff3](df43ff3b8b0a83a182207eea4e198f5d1233659c))
 - Lint files ([a90bbb9](a90bbb9b5e4a51fdda5b084875a37a6e2f52618b))
 - Update tsconfig, remove license ([cbb94ba](cbb94ba7c8aad1348e065c44e39cab7019d62375))
 - Update pathfinding edge pkg ([36b3729](36b3729a2b4daa3dc1d49062340f570696ff4081))
@@ -1198,6 +1144,10 @@ All notable changes to this project will be documented in this file.
 
 - Update node example color ([1d2322e](1d2322eb46a802bb3a296915f070d3a7a696ab49))
 
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([8459476](8459476a9839263e182e484880ffbca3a1df161d))
+
 ## [0.4.9] - 2022-05-11
 
 [233d585](233d585a92ac68b6b55202926a0893aa8acac9e7)...[bcaf346](bcaf346926c6b82905fdf142ab5d6f54584e7d24)
@@ -1215,6 +1165,10 @@ All notable changes to this project will be documented in this file.
 - Wrong elements removed when index can't be found ([b68dc4c](b68dc4c0327a586018c763abfa57020b7c6bc841))
 - Fit view not respecting options nodes ([5fb0280](5fb0280e5bb7886ea01b22398e08cb3fe267b76a))
 - Add edges not respecting default edge options ([e2e3a65](e2e3a650c18d930695747e757d7d9aefb823d92a))
+
+### Examples
+
+- Add initial class to basic ([bb30db7](bb30db7c08708672e7981736c505a1f27ea3a688))
 
 ### Features
 
@@ -1241,6 +1195,7 @@ All notable changes to this project will be documented in this file.
 - Update auto imports ([19bc4fd](19bc4fda240b16c2dbc7179f93ec1d49df5c817c))
 - Update README.md ([aaccbb4](aaccbb4b3e4c2f60f96a373a285b531d2dccc860))
 - Move changelog update to postrelease ([18f0d2f](18f0d2f1ce42a7aec0752852780831c5613bae7d))
+- Update CHANGELOG.md ([b8abc78](b8abc783075d45be3beb1f6c4eac2b577c22e80d))
 - Update eslint, prettier & antfu/eslint-config ([447d24c](447d24c5a8d1a86b28a2bc1b32080446acc858b7))
 - Lint files ([22845c2](22845c210da8a48dc489fcee31bd482479639e5f))
 - Update eslint config ([ca552dc](ca552dc8aef2b37ea5fc7601ef4b6a347588b92a))
@@ -1272,10 +1227,6 @@ All notable changes to this project will be documented in this file.
 ### Testing
 
 - Update tests to work with removed store property ([2918b68](2918b689fed4b64c5d618071401d3ab705c0b7fc))
-
-### Examples
-
-- Add initial class to basic ([bb30db7](bb30db7c08708672e7981736c505a1f27ea3a688))
 
 ### Regression
 
@@ -1365,11 +1316,16 @@ All notable changes to this project will be documented in this file.
 - Add prefix to console messages ([06b0c14](06b0c143b5ab2926acb2c145b8eeb57b5921aad5))
 - Disable no-use-before-define rule ([676c984](676c984e07fb5e87ee9e8b673f363f5d3540c623))
 - Run yarn upgrade ([a0bd8b9](a0bd8b9afdd847ac7146ac2893fbbc7887308761))
+- Update CHANGELOG.md ([c0d9b09](c0d9b09f15eaa63b7cc90d9b81ea4fecb2b34581))
 - Update deps ([59870a3](59870a3a55830ff8932d0961a3f66ba134e8baab))
 - Update vue to 3.2.25 ([c617494](c617494bb8dc5f341a880451d64055dcdce59bc0))
 - Import sort ([c6b8aa8](c6b8aa88eaad4ddd1b23e6a5433cdb454601ce4a))
+- Update CHANGELOG.md ([718b3a1](718b3a1d797d54a7999db2f63bd7da3a83d76c29))
 - Move ts-patch and typescript-transform-paths to package dev-deps ([c52b870](c52b870a3d6e3e59bb53bbcb41f2c8ca007d005a))
+- Update CHANGELOG.md ([35a05fd](35a05fd6c66b7a43cd6e078af3f5ef938d3d5309))
 - Remove log ([553355d](553355dd861a58f647ab4f308862e7df617b3ebf))
+- Update CHANGELOG.md ([65d1ea2](65d1ea2300d9c155596a47e746f6f47ba44870b9))
+- Update CHANGELOG.md ([9bfd810](9bfd8105b8ff9a62575131bfcb89169399dba0cb))
 - Remove unused eslint-rules & lint files ([f011ea6](f011ea61b11189d6ead8be8065230fa2f531b316))
 - Remove export ([367c7fd](367c7fdf4017cc4197e1a8e3be91b605dd9b4057))
 - Update author field ([3142388](31423889d2c0bc340add322502d01110c24f3726))
@@ -1379,13 +1335,18 @@ All notable changes to this project will be documented in this file.
 - Remove lint pipeline dependency ([4ebfb2a](4ebfb2ada5557763964e94efdfcadb8aa6732b85))
 - Remove .vscode dir ([914db33](914db337cf0256979110b60336542933c131bef4))
 - Update release script ([8e83d6a](8e83d6a2afdc28ececc54fd93ca0e8e4360c5f70))
+- Update CHANGELOG.md ([0be67d2](0be67d248540719ec730599f5a1af89d794cc7f6))
 - Update LICENSE ([ae4cefe](ae4cefefbc155410c2d21561e0edb0159c19494c))
 - Remove comment ([e17fb80](e17fb8094b2ed14466585807ef3bbaedd788b75e))
 - Type fix in examples ([efe68d7](efe68d7b547d67c1c7fe4029e1a2ad1c818c2ed9))
-- Bump versions ([0dba691](0dba6913a8dbd21ee5dcc6be7ded1869ebb91de2))
+- Update CHANGELOG.md ([f2363e2](f2363e2e08d3db1a83ad4745892d777fcc0b1aa8))
+- Update CHANGELOG.md ([82fcb5c](82fcb5c234f7727237802f80a037ea76c0ca9868))
+- Update CHANGELOG.md ([24c5e11](24c5e11d861f4ea63d39cf7b270c6fcd1d0f9e96))
+- Update CHANGELOG.md ([1765da8](1765da8877895601d143dddf29ce348f8178c0b5))
 - Update issue templates ([71fbc2b](71fbc2b8a4d50f79a1653738b61b76f3d981a21e))
 - Update vue flow version in docs/tests/examples ([99d0627](99d062728acb93949361acc98ced630360ee0844))
 - Remove duplicate keys on nodes/edges ([0a21f3c](0a21f3c06893edc03ff35bbf21d29930187acabe))
+- Update CHANGELOG.md ([2e13344](2e13344d4e3e1281d402e4328d47819c7d77b1ae))
 
 ### Refactor
 
@@ -1437,8 +1398,10 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
+- Update CHANGELOG.md ([2ee33a1](2ee33a188eae7122ef100310a7a67f37a8c3acb0))
 - Update lock file ([cb14acd](cb14acd99a2660ac6422e13d93c207ea92d494a5))
 - Move custom size check up above watcher ([908657c](908657c7ce48e5031d037e2dd03ea4ab0f27e9bf))
+- Update CHANGELOG.md ([75a7b89](75a7b89510f21eb821c42b06e5c7b37cd00d9b95))
 
 ### Refactor
 
@@ -1605,7 +1568,9 @@ All notable changes to this project will be documented in this file.
 - Replace a-tags with router-links ([09e636c](09e636c278817bb480045d4097ee136e1fe051dd))
 - Remove unused var ([7aa1f43](7aa1f4368e3c1c5dfae3d042d85e132978d5ef68))
 - Update changelog.yml ([01deaeb](01deaeb3ede56823213061e58c29a8f904f15183))
+- Update CHANGELOG.md ([5804ace](5804ace138b2f43fa83e26affec4d86fee26d000))
 - Disable auto run of changelog.yml ([94dd8c8](94dd8c8dd57084a47935d05085ce24bb3d1bf26a))
+- Update CHANGELOG.md ([47ef8d8](47ef8d8138b07d14a18b247e2f88828bbb92a30b))
 
 ### Refactor
 
@@ -2440,7 +2405,7 @@ All notable changes to this project will be documented in this file.
 
 [e9b3265](e9b3265c351a8ce4cf970f84d722b3ed9f215d3a)...[0373436](03734364a01f475f16846dfd63642d8d7713d0d5)
 
-### Revert
+### Reverts
 
 - Inject necessary styles directly to bundle ([872ad1d](872ad1d05b457342651cc974c1228bff8d5306fd))
 
