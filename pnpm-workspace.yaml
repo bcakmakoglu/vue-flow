@@ -1,5 +1,6 @@
 packages:
   - packages/*
+  - packages/plugins/*
   - examples/*
   - packages/plugins/*
   - e2e
