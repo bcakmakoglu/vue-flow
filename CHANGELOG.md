@@ -23,6 +23,8 @@ All notable changes to this project will be documented in this file.
 - Add changeset ([bff576b](bff576bc0494a34eedf6eafb03d84d074d372b79))
 - Add changeset ([92a69a6](92a69a617fc6ddbdc8c1eaeaa8ca040bbc67285e))
 - Generate base changelog on push into master ([8cfea47](8cfea472e3a00a3513b965fb8e12ab4561f89189))
+- Update CHANGELOG.md ([3b1475c](3b1475cd24e665aeac4bc5090b2a0268e77c55ca))
+- Bump versions ([0caf8f2](0caf8f2290e6ddf40a8d3131647bdaab0222ac2e))
 
 ### Refactor
 
