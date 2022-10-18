@@ -122,6 +122,7 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         data: shallowReactive(edge.data || defaults?.data || {}),
         events: shallowReactive(edge.events || defaults?.events || {}),
         label: (edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label) || defaults?.label,
+        pointerRadius: edge.pointerRadius || defaults?.pointerRadius || 2,
       } as GraphEdge)
     : defaults
 

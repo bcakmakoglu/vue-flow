@@ -190,6 +190,7 @@ const Wrapper = defineComponent({
                 targetY,
                 sourceHandleId: edge.sourceHandle,
                 targetHandleId: edge.targetHandle,
+                pointerRadius: edge.pointerRadius,
               }),
 
           [

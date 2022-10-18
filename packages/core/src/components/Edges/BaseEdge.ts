@@ -14,11 +14,12 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function ({
   labelBgBorderRadius,
   labelBgPadding,
   labelBgStyle,
-  labelShowBg,
+  labelShowBg = true,
   labelStyle,
   markerStart,
   markerEnd,
   style,
+  pointerRadius = 2,
 }) {
   return [
     h('path', {
@@ -28,6 +29,15 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function ({
       'marker-end': markerEnd,
       'marker-start': markerStart,
     }),
+    pointerRadius
+      ? h('path', {
+          'style': 'opacity: 0',
+          'd': path,
+          'class': 'vue-flow__edge-pointer',
+          'stroke': 'transparent',
+          'stroke-width': pointerRadius,
+        })
+      : null,
     label
       ? h(EdgeText, {
           x: labelX,
@@ -56,6 +66,7 @@ BaseEdge.props = [
   'markerStart',
   'markerEnd',
   'style',
+  'pointerRadius',
 ]
 BaseEdge.inheritAttrs = false
 
