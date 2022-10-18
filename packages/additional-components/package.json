@@ -6,7 +6,7 @@
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcakmakoglu/vue-flow/packages/background"
+    "url": "git+https://github.com/bcakmakoglu/vue-flow/packages/additional-components"
   },
   "homepage": "https://github.com/bcakmakoglu/vue-flow#readme",
   "bugs": {
