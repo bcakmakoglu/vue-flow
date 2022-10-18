@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Bug Fixes
+
+- Allow undefined as custom theme var value ([dcf607f](dcf607f279b4d98868c3f13c6fcd8c2daf50abf3))
+- Add overflow visible to control btn svgs ([c5aebf6](c5aebf65bf15f190d0bb7960a2f314bcefd67a0f))
+- Set node dragging on start and end ([ad0f8ff](ad0f8ff3dc863ec0df4e35571715e6f626c3deec))
+
+### Documentation
+
+- Remove 0.x.x warning ([37d2cd0](37d2cd09e2209ad82dcbcd4d74b2cbd79329eb92))
+- Fix additional-components imports ([90eac57](90eac5743a77b30ef4e3780be9133558fbbbad4b))
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([a04f689](a04f689d9425b4924aef91e89c2f3f764ee2aa85))
+- Add changesets ([61d2b88](61d2b88ebc9fcde7beb89a877f3bf975c00e22d5))
+- Add changeset ([8f95187](8f95187a6c474aa299fde3dd3c80145483b1b238))
+- Add changeset ([bff576b](bff576bc0494a34eedf6eafb03d84d074d372b79))
+- Add changeset ([92a69a6](92a69a617fc6ddbdc8c1eaeaa8ca040bbc67285e))
+- Generate base changelog on push into master ([8cfea47](8cfea472e3a00a3513b965fb8e12ab4561f89189))
+
+### Refactor
+
+- Add generics to isNode/isEdge fn ([ce8b04b](ce8b04b7026f97546491b9ebee26aa1d4034c825))
+- Add generics to Elements/FlowElements types ([c0fc95d](c0fc95dc5e3eb3875fe800b080a6ff3de7f9be28))
+- Data and event properties to be definitely typed ([e6f97b8](e6f97b897cefc9ccb3dffefd55d60ff7ff1f8418))
+
 ## [1.1.3] - 2022-10-14
 
 [e9a784a](e9a784a1aaf9916494b129466a38f5f2353620e6)...[9fbd653](9fbd653d92b0e99fb15e1ead86812f4701656474)
