@@ -3,11 +3,11 @@
 'vueflow': minor
 ---
 
-Add plugin API to Vue Flow Storage
+Add plugin API to Vue Flow App
 
 ## Summary
 
-- Add plugin API to Vue Flow Storage
+- Add plugin API to Vue Flow App
 - Allows to add plugins that can add custom functionality to the store
 - Provides hooks for
   - `beforeCreate` - before a store is created
