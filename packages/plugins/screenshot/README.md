@@ -50,7 +50,11 @@ const onClick = async () => {
 </script>
 <template>
   <div style="height: 300px">
-    <VueFlow v-model="elements" />
+    <VueFlow v-model="elements">
+      <div style="position: absolute; top: 0; right: 0; padding: 10px; z-index: 5">
+        <button @click="onClick">Download Screenshot</button>  
+      </div>
+    </VueFlow>
   </div>
 </template>
 ```

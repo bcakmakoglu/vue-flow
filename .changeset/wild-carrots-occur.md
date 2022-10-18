@@ -1,5 +1,5 @@
 ---
-'@vue-flow/core': minor
+'@vue-flow/plugin-screenshot': major
 ---
 
-Add screenshot plugin to easily create an image of the graph
+Add screenshot plugin pkg to create a downloadable image of the graph
