@@ -2,11 +2,14 @@ import type { MaybeRef } from '@vueuse/core'
 import type { ComponentPublicInstance } from 'vue'
 import { computed, ref, unref, watch } from 'vue'
 import { createEventHook } from '@vueuse/core'
-import type { Plugin } from '@vue-flow/core'
+import type { Actions, Plugin } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
 import type { DragNDropState, DragNodeType, OnDragStartEventData, OnDropData } from './types'
 
-function createDragNDrop(container: MaybeRef<HTMLElement | ComponentPublicInstance | null>): DragNDropState {
+function createDragNDrop(
+  container: MaybeRef<HTMLElement | ComponentPublicInstance | null>,
+  project: Actions['project'],
+): DragNDropState {
   const onDragStart = createEventHook<OnDragStartEventData>()
   const onDragOver = createEventHook<DragEvent>()
   const onDrop = createEventHook<OnDropData>()
@@ -50,10 +53,10 @@ function createDragNDrop(container: MaybeRef<HTMLElement | ComponentPublicInstan
 
     const { left, top } = el.value.getBoundingClientRect()
 
-    const position = {
+    const position = project({
       x: event.clientX - left,
       y: event.clientY - top,
-    }
+    })
 
     onDrop.trigger({ event, type, position })
   }
@@ -72,7 +75,7 @@ function createDragNDrop(container: MaybeRef<HTMLElement | ComponentPublicInstan
 
 export const PluginDragNDrop: Plugin = (hooks) => {
   hooks.created((store) => {
-    store.dragNDrop = createDragNDrop(store.vueFlowRef)
+    store.dragNDrop = createDragNDrop(store.vueFlowRef, store.project)
   })
 }
 
