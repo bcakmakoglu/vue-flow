@@ -1,13 +1,13 @@
 import type { EffectScope } from 'vue'
 import type { FlowProps, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
-import { Storage } from '~/utils'
+import { createVueFlow } from '~/utils'
 
 type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 export default (options?: FlowProps): VueFlowStore => {
-  const storage = Storage.getInstance()
+  const storage = createVueFlow()
 
   const scope = getCurrentScope() as Scope
 
