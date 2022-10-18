@@ -39,7 +39,10 @@ export type Elements<
   EdgeEvents extends Record<string, CustomEvent> = any,
 > = Element<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
 
-export type CustomThemeVars = Record<string, string | number>
+export interface CustomThemeVars {
+  [key: string]: string | number | undefined
+}
+
 export type CSSVars =
   | '--vf-node-color'
   | '--vf-box-shadow'
@@ -47,6 +50,7 @@ export type CSSVars =
   | '--vf-node-text'
   | '--vf-connection-path'
   | '--vf-handle'
+
 export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] }
 export type Styles = CSSProperties & ThemeVars & CustomThemeVars
 export type ClassFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => string | void
