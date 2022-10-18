@@ -75,6 +75,8 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
       selectable: undefined,
       connectable: undefined,
       ...defaults,
+      data: node.data || {},
+      events: node.events || {},
     }
   }
 
@@ -100,7 +102,8 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         targetY: 0,
         updatable: edge.updatable,
         selectable: edge.selectable,
-        data: edge.data,
+        data: edge.data || {},
+        events: edge.events || {},
         ...defaults,
       } as GraphEdge)
     : defaults

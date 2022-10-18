@@ -112,6 +112,8 @@ export type GraphEdge<Data = ElementData, CustomEvents extends Record<string, Cu
   z?: number
   sourceNode: GraphNode
   targetNode: GraphNode
+  data: Data
+  events: Partial<EdgeEventsHandler<CustomEvents>>
 } & EdgePositions
 
 /** these props are passed to edge components */
@@ -143,9 +145,9 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
   markerStart?: string
   markerEnd?: string
   curvature?: number
-  data?: Data
+  data: Data
   /** contextual and custom events of edge */
-  events?: Partial<EdgeEventsOn<CustomEvents>>
+  events: EdgeEventsOn<CustomEvents>
 }
 
 /** these props are passed to smooth step edges */
@@ -178,9 +180,9 @@ export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> exte
   markerEnd?: string
   borderRadius?: number
   offset?: number
-  data?: Data
+  data: Data
   /** contextual and custom events of edge */
-  events?: Partial<EdgeEventsOn<CustomEvents>>
+  events: EdgeEventsOn<CustomEvents>
 }
 
 export interface BaseEdgeProps {
