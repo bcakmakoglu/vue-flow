@@ -107,15 +107,13 @@ export class VueFlowApp {
   /**
    * Helper to install plugin
    */
-  public use(plugins: Plugin[]) {
-    plugins.forEach((plugin) =>
-      plugin({
-        beforeCreate: this.hooks.beforeCreate.on,
-        created: this.hooks.created.on,
-        beforeDestroy: this.hooks.beforeDestroy.on,
-        destroyed: this.hooks.destroyed.on,
-      }),
-    )
+  public use(plugin: Plugin) {
+    plugin({
+      beforeCreate: this.hooks.beforeCreate.on,
+      created: this.hooks.created.on,
+      beforeDestroy: this.hooks.beforeDestroy.on,
+      destroyed: this.hooks.destroyed.on,
+    })
 
     return this
   }
