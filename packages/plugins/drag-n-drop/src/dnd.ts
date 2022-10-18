@@ -2,25 +2,21 @@ import type { MaybeRef } from '@vueuse/core'
 import type { ComponentPublicInstance } from 'vue'
 import { computed, ref, unref, watch } from 'vue'
 import { createEventHook } from '@vueuse/core'
-import type { Actions, Plugin } from '@vue-flow/core'
+import type { Plugin, VueFlowStore } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
 import type { DragNDropState, DragNodeType, OnDragStartEventData, OnDropData } from './types'
 
-function createDragNDrop(
-  container: MaybeRef<HTMLElement | ComponentPublicInstance | null>,
-  project: Actions['project'],
-): DragNDropState {
+function createDragNDrop(store: VueFlowStore): DragNDropState {
   const onDragStart = createEventHook<OnDragStartEventData>()
   const onDragOver = createEventHook<DragEvent>()
   const onDrop = createEventHook<OnDropData>()
 
   const nodeType = ref<DragNodeType>()
 
-  const initialContainer = computed(() => unref(container))
-  const _container = ref<HTMLElement | ComponentPublicInstance | null>(unref(container))
+  const _container = ref<HTMLElement | ComponentPublicInstance | null>(null)
 
   const el = computed(() => {
-    const containerEl = _container.value || initialContainer.value
+    const containerEl = _container.value || store.vueFlowRef.value
     if (!containerEl) return null
 
     if ('$el' in containerEl) return containerEl.$el as HTMLElement
@@ -53,7 +49,7 @@ function createDragNDrop(
 
     const { left, top } = el.value.getBoundingClientRect()
 
-    const position = project({
+    const position = store.project({
       x: event.clientX - left,
       y: event.clientY - top,
     })
@@ -75,7 +71,7 @@ function createDragNDrop(
 
 export const PluginDragNDrop: Plugin = (hooks) => {
   hooks.created((store) => {
-    store.dragNDrop = createDragNDrop(store.vueFlowRef, store.project)
+    store.dragNDrop = createDragNDrop(store)
   })
 }
 
