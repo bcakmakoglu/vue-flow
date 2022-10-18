@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Miscellaneous Tasks
+
+- Update CHANGELOG.md ([4836678](48366780cec6482943829ab76c1d59fb958c2a90))
+- Add changeset ([3105bd0](3105bd051ab4ac72c95e524dcb5c551ee4f812f6))
+
+### Refactor
+
+- Log warnings for non-prod node envs ([395fcd2](395fcd2aabc0bcca3101d1538312962007232a10))
+
 ## [1.1.4] - 2022-10-18
 
 [9fbd653](9fbd653d92b0e99fb15e1ead86812f4701656474)...[578929f](578929f2d96f296fe448569680c773f60fc03afb)
