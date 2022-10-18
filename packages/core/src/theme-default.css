@@ -127,6 +127,7 @@
     svg {
       max-width: 12px;
       max-height: 12px;
+      overflow: visible;
     }
 
     &:hover {
