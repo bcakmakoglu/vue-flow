@@ -53,6 +53,9 @@ export default {
     :style="{ transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})`, opacity: ready ? undefined : 0 }"
   >
     <EdgeRenderer />
+
+    <div class="vue-flow__edge-labels" />
+
     <NodeRenderer />
     <slot />
   </div>

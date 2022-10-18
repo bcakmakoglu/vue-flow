@@ -17,9 +17,9 @@
   z-index: 1;
   cursor: grab;
 
-  &.dragging {
-     cursor: grabbing;
-   }
+&.dragging {
+   cursor: grabbing;
+ }
 }
 
 .vue-flow__transformationpane {
@@ -34,6 +34,13 @@
 
 .vue-flow__selectionpane {
   z-index: 5;
+}
+
+.vue-flow__edge-labels {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .vue-flow__nodesselection-rect:focus,
@@ -57,48 +64,48 @@
   pointer-events: visibleStroke;
   cursor: pointer;
 
-  &.animated path {
-     stroke-dasharray: 5;
-     animation: dashdraw 0.5s linear infinite;
-   }
+&.animated path {
+   stroke-dasharray: 5;
+   animation: dashdraw 0.5s linear infinite;
+ }
 
-  &.inactive {
-     pointer-events: none;
-   }
+&.inactive {
+   pointer-events: none;
+ }
 
-  &.selected,
-  &:focus,
-  &:focus-visible {
-     outline: none;
-   }
+&.selected,
+&:focus,
+&:focus-visible {
+   outline: none;
+ }
 
-  &.selected .vue-flow__edge-path,
-  &:focus .vue-flow__edge-path,
-  &:focus-visible .vue-flow__edge-path {
-     stroke: #555;
-   }
+&.selected .vue-flow__edge-path,
+&:focus .vue-flow__edge-path,
+&:focus-visible .vue-flow__edge-path {
+   stroke: #555;
+ }
 
-  &-textwrapper {
-     pointer-events: all;
-   }
+&-textwrapper {
+   pointer-events: all;
+ }
 
-  &-textbg {
-     fill: white;
-   }
+&-textbg {
+   fill: white;
+ }
 
-  .vue-flow__edge-text {
-    pointer-events: none;
-    user-select: none;
-  }
+&-text {
+   pointer-events: none;
+   user-select: none;
+ }
 }
 
 .vue-flow__connection {
   pointer-events: none;
 
-  &.animated {
-     stroke-dasharray: 5;
-     animation: dashdraw 0.5s linear infinite;
-   }
+&.animated {
+   stroke-dasharray: 5;
+   animation: dashdraw 0.5s linear infinite;
+ }
 }
 
 .vue-flow__connectionline {
@@ -118,9 +125,9 @@
   box-sizing: border-box;
   cursor: grab;
 
-  &.dragging {
-     cursor: grabbing;
-   }
+&.dragging {
+   cursor: grabbing;
+ }
 }
 
 .vue-flow__nodesselection {
@@ -128,11 +135,15 @@
   transform-origin: left top;
   pointer-events: none;
 
-  &-rect {
-     position: absolute;
-     pointer-events: all;
-     cursor: grab;
-   }
+&-rect {
+   position: absolute;
+   pointer-events: all;
+   cursor: grab;
+
+&.dragging {
+   cursor: grabbing;
+ }
+}
 }
 
 .vue-flow__handle {
@@ -141,35 +152,35 @@
   min-width: 5px;
   min-height: 5px;
 
-  &.connectable {
-     pointer-events: all;
-     cursor: crosshair;
-   }
+&.connectable {
+   pointer-events: all;
+   cursor: crosshair;
+ }
 
-  &-bottom {
-     top: auto;
-     left: 50%;
-     bottom: -4px;
-     transform: translate(-50%, 0);
-   }
+&-bottom {
+   top: auto;
+   left: 50%;
+   bottom: -4px;
+   transform: translate(-50%, 0);
+ }
 
-  &-top {
-     left: 50%;
-     top: -4px;
-     transform: translate(-50%, 0);
-   }
+&-top {
+   left: 50%;
+   top: -4px;
+   transform: translate(-50%, 0);
+ }
 
-  &-left {
-     top: 50%;
-     left: -4px;
-     transform: translate(0, -50%);
-   }
+&-left {
+   top: 50%;
+   left: -4px;
+   transform: translate(0, -50%);
+ }
 
-  &-right {
-     right: -4px;
-     top: 50%;
-     transform: translate(0, -50%);
-   }
+&-right {
+   right: -4px;
+   top: 50%;
+   transform: translate(0, -50%);
+ }
 }
 
 .vue-flow__edgeupdater {
@@ -182,26 +193,26 @@
   z-index: 5;
   margin: 15px;
 
-  &.top {
-     top: 0;
-   }
+&.top {
+   top: 0;
+ }
 
-  &.bottom {
-     bottom: 0;
-   }
+&.bottom {
+   bottom: 0;
+ }
 
-  &.left {
-     left: 0;
-   }
+&.left {
+   left: 0;
+ }
 
-  &.right {
-     right: 0;
-   }
+&.right {
+   right: 0;
+ }
 
-  &.center {
-     left: 50%;
-     transform: translateX(-50%);
-   }
+&.center {
+   left: 50%;
+   transform: translateX(-50%);
+ }
 }
 
 @keyframes dashdraw {

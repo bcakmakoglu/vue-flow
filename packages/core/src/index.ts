@@ -7,7 +7,16 @@ export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
 
 export { default as Handle } from './components/Handle/Handle.vue'
 
-export { StraightEdge, StepEdge, BezierEdge, SimpleBezierEdge, SmoothStepEdge, BaseEdge, EdgeText } from './components/Edges'
+export {
+  StraightEdge,
+  StepEdge,
+  BezierEdge,
+  SimpleBezierEdge,
+  SmoothStepEdge,
+  BaseEdge,
+  EdgeText,
+  EdgeLabelRenderer,
+} from './components/Edges'
 
 export { getBezierPath, getSimpleBezierPath, getSmoothStepPath, getStraightPath } from './components/Edges/utils'
 

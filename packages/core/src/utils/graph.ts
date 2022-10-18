@@ -106,7 +106,7 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         selectable: edge.selectable,
         data: shallowReactive(edge.data || {}),
         events: shallowReactive(edge.events || {}),
-        label: edge.label && !isString(edge.label) ? markRaw(edge.label) : undefined,
+        label: edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label,
         ...defaults,
       } as GraphEdge)
     : defaults
