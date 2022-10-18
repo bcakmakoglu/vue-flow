@@ -1,13 +1,12 @@
 import type { EffectScope } from 'vue'
 import type { FlowProps, VueFlowStore } from '~/types'
-import { Storage } from '~/utils'
 
 type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 // todo: maybe replace the storage with a context based solution; This would break calling useVueFlow outside a setup function though, which should be fine
 export default (options?: FlowProps): VueFlowStore => {
-  const storage = Storage.getInstance()
+  const storage = createVueFlow()
 
   const scope = getCurrentScope() as Scope
 
