@@ -2,7 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [1.1.4] - 2022-10-18
+
+[9fbd653](9fbd653d92b0e99fb15e1ead86812f4701656474)...[578929f](578929f2d96f296fe448569680c773f60fc03afb)
 
 ### Bug Fixes
 
@@ -25,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Generate base changelog on push into master ([8cfea47](8cfea472e3a00a3513b965fb8e12ab4561f89189))
 - Update CHANGELOG.md ([3b1475c](3b1475cd24e665aeac4bc5090b2a0268e77c55ca))
 - Bump versions ([0caf8f2](0caf8f2290e6ddf40a8d3131647bdaab0222ac2e))
+- Update CHANGELOG.md ([578929f](578929f2d96f296fe448569680c773f60fc03afb))
 
 ### Refactor
 
