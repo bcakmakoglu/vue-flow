@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createVueFlow } from '@vue-flow/core'
 import { PluginDagreLayout } from '@vue-flow/plugin-dagre'
+import { PluginDragNDrop } from '@vue-flow/plugin-drag-n-drop'
 import { PluginScreenshot } from '@vue-flow/plugin-screenshot'
 import './index.css'
 import { createPinia } from 'pinia'
@@ -11,6 +12,7 @@ const app = createApp(App)
 const vueFlowApp = createVueFlow()
 
 vueFlowApp.use(PluginDagreLayout)
+vueFlowApp.use(PluginDragNDrop)
 vueFlowApp.use(PluginScreenshot)
 
 app.config.performance = true
