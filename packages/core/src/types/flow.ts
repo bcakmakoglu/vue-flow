@@ -5,16 +5,39 @@ import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { PanOnScrollMode } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
+import type { CustomEvent } from './hooks'
 
 export type ElementData = any
 
 /** A flow element (after parsing into state)  */
-export type FlowElement<Data = ElementData> = GraphNode<Data> | GraphEdge<Data>
-export type FlowElements<Data = ElementData> = FlowElement<Data>[]
+export type FlowElement<
+  NodeData = ElementData,
+  EdgeData = ElementData,
+  NodeEvents extends Record<string, CustomEvent> = any,
+  EdgeEvents extends Record<string, CustomEvent> = any,
+> = GraphNode<NodeData, NodeEvents> | GraphEdge<EdgeData, EdgeEvents>
+
+export type FlowElements<
+  NodeData = ElementData,
+  EdgeData = ElementData,
+  NodeEvents extends Record<string, CustomEvent> = any,
+  EdgeEvents extends Record<string, CustomEvent> = any,
+> = FlowElement<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
 
 /** Initial elements (before parsing into state) */
-export type Element<Data = ElementData> = Node<Data> | Edge<Data>
-export type Elements<Data = ElementData> = Element<Data>[]
+export type Element<
+  NodeData = ElementData,
+  EdgeData = ElementData,
+  NodeEvents extends Record<string, CustomEvent> = any,
+  EdgeEvents extends Record<string, CustomEvent> = any,
+> = Node<NodeData, NodeEvents> | Edge<EdgeData, EdgeEvents>
+
+export type Elements<
+  NodeData = ElementData,
+  EdgeData = ElementData,
+  NodeEvents extends Record<string, CustomEvent> = any,
+  EdgeEvents extends Record<string, CustomEvent> = any,
+> = Element<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
 
 export type CustomThemeVars = Record<string, string | number>
 export type CSSVars =
