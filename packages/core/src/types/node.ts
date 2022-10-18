@@ -83,6 +83,8 @@ export interface GraphNode<Data = ElementData, CustomEvents extends Record<strin
   dimensions: Dimensions
   isParent: boolean
   selected: boolean
+  data: Data
+  events: Partial<NodeEventsHandler<CustomEvents>>
 }
 
 /** these props are passed to node components */
@@ -123,7 +125,7 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}> {
   dragHandle?: string
 
   /** additional data of node */
-  data?: Data
+  data: Data
   /** contextual and custom events of node */
-  events?: Partial<NodeEventsOn<CustomEvents>>
+  events: NodeEventsOn<CustomEvents>
 }
