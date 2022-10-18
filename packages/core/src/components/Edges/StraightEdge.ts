@@ -16,6 +16,7 @@ const StraightEdge: FunctionalComponent<EdgeProps> = function ({
   markerEnd,
   markerStart,
   style,
+  pointerRadius,
 }) {
   const [path, labelX, labelY] = getStraightPath({ sourceX, sourceY, targetX, targetY })
 
@@ -32,6 +33,7 @@ const StraightEdge: FunctionalComponent<EdgeProps> = function ({
     style,
     markerEnd,
     markerStart,
+    pointerRadius,
   })
 }
 
@@ -49,6 +51,7 @@ StraightEdge.props = [
   'markerEnd',
   'markerStart',
   'style',
+  'pointerRadius',
 ]
 StraightEdge.inheritAttrs = false
 

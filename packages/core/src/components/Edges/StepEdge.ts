@@ -22,6 +22,7 @@ StepEdge.props = [
   'markerEnd',
   'markerStart',
   'style',
+  'pointerRadius',
 ]
 StepEdge.inheritAttrs = false
 
