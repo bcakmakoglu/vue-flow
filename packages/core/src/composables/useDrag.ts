@@ -93,6 +93,8 @@ function useDrag(params: UseDragParams) {
                   getNode: $$(getNode),
                 })
                 onStart(event.sourceEvent, currentNode, nodes)
+
+                dragging.value = true
               }
             })
             .on('drag', (event: UseDragEvent) => {
@@ -115,7 +117,6 @@ function useDrag(params: UseDragParams) {
                 )
 
                 updateNodePositions(dragItems, true, true)
-                dragging.value = true
 
                 if (onDrag) {
                   const [currentNode, nodes] = getEventHandlerParams({
@@ -141,6 +142,9 @@ function useDrag(params: UseDragParams) {
                   onStop(event.sourceEvent, currentNode, nodes)
                 }
               })
+            })
+            .on('end', () => {
+              dragging.value = false
             })
             .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
               const target = event.target as HTMLDivElement
