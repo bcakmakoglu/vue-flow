@@ -1,6 +1,7 @@
 packages:
-  - packages/*
-  - tooling/*
   - examples/*
+  - packages/*
+  - packages/plugins/*
+  - tooling/*
   - tests
   - docs
