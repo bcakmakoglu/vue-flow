@@ -2,7 +2,7 @@ import type { FlowOptions, Plugin, State, VueFlowStore } from '~/types'
 import { useActions, useGetters, useState } from '~/store'
 
 /**
- * Global Storage
+ * Global Vue Flow App
  *
  * Stores all store instances and provides access to them
  *
@@ -10,8 +10,8 @@ import { useActions, useGetters, useState } from '~/store'
  *
  * Provides hooks for plugins to access the store
  */
-export class Storage {
-  static instance: Storage
+export class VueFlowApp {
+  static instance: VueFlowApp
 
   public currentId = 0
 
@@ -27,12 +27,12 @@ export class Storage {
   /** Used by each store instance that is created as default values for store */
   public config: Partial<Omit<FlowOptions, 'id'>> = {}
 
-  public static getInstance(): Storage {
-    if (!Storage.instance) {
-      Storage.instance = new Storage()
+  public static getInstance(): VueFlowApp {
+    if (!VueFlowApp.instance) {
+      VueFlowApp.instance = new VueFlowApp()
     }
 
-    return Storage.instance
+    return VueFlowApp.instance
   }
 
   public set(id: string, flow: VueFlowStore) {
@@ -106,7 +106,6 @@ export class Storage {
 
   /**
    * Helper to install plugin
-   * @param plugins
    */
   public use(plugins: Plugin[]) {
     plugins.forEach((plugin) =>
@@ -132,10 +131,10 @@ export class Storage {
   }
 }
 
-export const createVueFlow = (options: Omit<Partial<FlowOptions>, 'id'> = {}) => {
-  const storage = Storage.getInstance()
+export const createVueFlow = (options?: Omit<Partial<FlowOptions>, 'id'>) => {
+  const app = VueFlowApp.getInstance()
 
-  storage.setConfig(options)
+  if (options) app.setConfig(options)
 
-  return storage
+  return app
 }

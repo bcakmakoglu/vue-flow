@@ -11,7 +11,7 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 // todo: maybe replace the storage with a context based solution; This would break calling useVueFlow outside a setup function though, which should be fine
 export function useVueFlow(options?: FlowProps): VueFlowStore {
-  const storage = Storage.getInstance()
+  const storage = createVueFlow()
 
   const scope = getCurrentScope() as Scope
 
