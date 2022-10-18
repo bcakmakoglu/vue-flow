@@ -6,6 +6,7 @@ import type {
   Dimensions,
   Edge,
   EdgeMarkerType,
+  ElementData,
   Elements,
   FlowElement,
   Getters,
@@ -40,13 +41,18 @@ export const getHostForElement = (element: HTMLElement): Document => {
 }
 
 type MaybeElement = Node | Edge | Connection | FlowElement
-export const isEdge = (element: MaybeElement): element is Edge =>
+
+export const isEdge = <Data = ElementData>(element: MaybeElement): element is Edge<Data> =>
   element && 'id' in element && 'source' in element && 'target' in element
-export const isGraphEdge = (element: MaybeElement): element is GraphEdge =>
+
+export const isGraphEdge = <Data = ElementData>(element: MaybeElement): element is GraphEdge<Data> =>
   isEdge(element) && 'sourceNode' in element && 'targetNode' in element
 
-export const isNode = (element: MaybeElement): element is Node => element && 'id' in element && !isEdge(element)
-export const isGraphNode = (element: MaybeElement): element is GraphNode => isNode(element) && 'computedPosition' in element
+export const isNode = <Data = ElementData>(element: MaybeElement): element is Node<Data> =>
+  element && 'id' in element && !isEdge(element)
+
+export const isGraphNode = <Data = ElementData>(element: MaybeElement): element is GraphNode<Data> =>
+  isNode(element) && 'computedPosition' in element
 
 export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: Partial<GraphNode>): GraphNode => {
   let defaultValues = defaults
