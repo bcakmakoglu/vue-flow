@@ -3,6 +3,8 @@ name: changelog
 on:
   workflow_dispatch:
   push:
+    branches:
+      - master
     tags:
       - 'v*'
 
