@@ -15,6 +15,7 @@ export default defineConfig({
     lib: {
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
+      fileName: 'vue-flow-resize-rotate-node',
       name: 'vueFlowResizeRotateNode',
     },
     rollupOptions: {
