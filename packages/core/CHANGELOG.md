@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- [#123](https://github.com/bcakmakoglu/vue-flow/pull/123) [`3105bd0`](https://github.com/bcakmakoglu/vue-flow/commit/3105bd051ab4ac72c95e524dcb5c551ee4f812f6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Disable console warnings for production node-envs (can be set using process.env.NODE_ENV to `production` or `prod`)
+- [#123](https://github.com/bcakmakoglu/vue-flow/pull/123) [`3105bd0`](https://github.com/bcakmakoglu/vue-flow/commit/3105bd051ab4ac72c95e524dcb5c551ee4f812f6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Disable console warnings for production node-envs
 
 ## 1.1.4
 
@@ -70,7 +70,7 @@
 
   Example:
 
-  ```html
+  ```vue
   <script lang="ts" setup>
     import { Handle, HandleConnectable } from '@vue-flow/core'
 
