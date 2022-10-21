@@ -9,7 +9,7 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { useVueFlow } from '@vue-flow/core'
 import head from './head'
-import { copyVueFlowPlugin } from './copy-plugin'
+import { copyChangelogPlugin, copyVueFlowPlugin, files } from './plugins'
 
 const { vueFlowVersion } = useVueFlow()
 
@@ -38,6 +38,27 @@ const typedocSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
   })
 }
 
+const changelogSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
+  return [
+    {
+      text: 'CHANGELOG',
+      collapsible: true,
+      items: files.map((file) => {
+        const name = file.pkgName.replace('.md', '')
+        const isCore = name === 'core'
+
+        return {
+          text: name
+            .split('-')
+            .map((s) => capitalize(s))
+            .join(' '),
+          link: `/changelog/${isCore ? '' : name}`,
+        }
+      }),
+    },
+  ]
+}
+
 export default defineConfigWithTheme<DefaultTheme.Config>({
   title: 'Vue Flow',
   description: 'Visualize your ideas with Vue Flow, a highly customizable Vue3 Flowchart library.',
@@ -51,6 +72,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     },
     plugins: [
       copyVueFlowPlugin(),
+      copyChangelogPlugin(),
       AutoImport({
         imports: ['vue', '@vueuse/core'],
         dts: resolve(__dirname, '../auto-imports.d.ts'),
@@ -91,7 +113,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       indexName: 'vueflow',
     },
     nav: [
-      { text: `v${vueFlowVersion.value}`, link: '/' },
+      { text: `v${vueFlowVersion.value}`, link: '/changelog/', activeMatch: '^/changelog' },
       { text: 'Guide', link: '/guide/', activeMatch: '^/guide/' },
       {
         text: 'Examples',
@@ -200,6 +222,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
       ],
       '/typedocs/': typedocSidebarEntries(),
+      '/changelog/': changelogSidebarEntries(),
     },
   },
 })
