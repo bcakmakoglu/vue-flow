@@ -1,5 +1,11 @@
 # @vue-flow/resize-rotate-node
 
+## 1.0.1
+
+### Patch Changes
+
+- [#365](https://github.com/bcakmakoglu/vue-flow/pull/365) [`009bbdb`](https://github.com/bcakmakoglu/vue-flow/commit/009bbdba6d7e896bcfcaf8f07e7fdc8a83cc52fc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix output file names for resize-rotate-node and pathfinding-edge pkgs
+
 ## 1.0.0
 
 ### Major Changes
