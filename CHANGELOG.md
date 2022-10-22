@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased]
+## [1.2.0] - 2022-10-21
+
+[578929f](578929f2d96f296fe448569680c773f60fc03afb)...[0bd8049](0bd8049a4bca7918397fbd1dc30280837f5af013)
+
+### Bug Fixes
+
+- Correct filenames for output of pkgs ([240074c](240074ce6d1b7fad62b04b41f3c97347cdfde46b))
 
 ### Miscellaneous Tasks
 
@@ -11,6 +17,10 @@ All notable changes to this project will be documented in this file.
 ### Refactor
 
 - Log warnings for non-prod node envs ([395fcd2](395fcd2aabc0bcca3101d1538312962007232a10))
+
+### Reverts
+
+- Update changelog only on tag push ([a8831a4](a8831a4c1a7ea8f536f0f2120d659d17bfd1faa9))
 
 ## [1.1.4] - 2022-10-18
 
