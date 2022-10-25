@@ -1,9 +1,13 @@
 <script lang="ts" setup>
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import Blobity from 'blobity'
+import { useBlobity } from '../utils'
 import Intro from './flows/Intro.vue'
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
+const { smaller } = useBreakpoints(breakpointsTailwind)
+
+const isMobile = smaller('md')
+
+const { blobity, reset } = useBlobity()
 
 const usesDark = useDark({
   storageKey: 'vuepress-color-scheme',
@@ -31,25 +35,8 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  if (!breakpoints.isSmaller('md')) {
-    const blobity = new Blobity({
-      licenseKey: 'opensource',
-      color: dark.value ? '#ffffff' : '#000000',
-      invert: true,
-      zIndex: 0,
-      magnetic: false,
-      dotColor: '#10b981',
-      radius: 8,
-      focusableElementsOffsetX: 5,
-      focusableElementsOffsetY: 4,
-      mode: 'normal',
-      focusableElements:
-        '[data-blobity], a:not([data-no-blobity]), button:not([data-no-blobity]), [data-blobity-tooltip], .back-to-top, .intro',
-    })
-
-    onBeforeUnmount(() => {
-      blobity.destroy()
-    })
+  if (isMobile.value) {
+    blobity.value.destroy()
   }
 })
 </script>
