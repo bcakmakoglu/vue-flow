@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.1] - 2022-10-25
+
+[0bd8049](0bd8049a4bca7918397fbd1dc30280837f5af013)...[fbfa2ef](fbfa2efbd238d6750c45f6bd4ad359473b75d1e5)
+
+### Bug Fixes
+
+- Disable user selection if `elementsSelectable` is false ([e5dfdb6](e5dfdb6a6dab868879c219d2521e97d555f57300))
+- Prevent node selection box from appearing before mouseup ([6e564da](6e564dacf7ad1bf7c2c6327857ce8d4bd9d47584))
+- Use shallowReactive for node/edge data & events ([096f67a](096f67a55bd547c159b999cb0d139a7eb9c7e4e6))
+
+### Documentation
+
+- Show changelogs on docs page ([787fc22](787fc225e96c288ea6f8b84b5a3893b23390028d))
+
+### Miscellaneous Tasks
+
+- Update copy plugin ([89a3f48](89a3f480ef60a7029e614bc8c76600d9c758592d))
+- Add plugin logs ([1322951](1322951c98cd1f73e45f0899bf3755b76643c5a7))
+- Use regular script for changelog page gen ([25010d2](25010d2b8719e8a7614bdd5c360a8ba6bfadb3b1))
+
 ## [1.2.0] - 2022-10-21
 
 [578929f](578929f2d96f296fe448569680c773f60fc03afb)...[0bd8049](0bd8049a4bca7918397fbd1dc30280837f5af013)
