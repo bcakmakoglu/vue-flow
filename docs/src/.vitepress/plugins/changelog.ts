@@ -37,7 +37,11 @@ export function copyChangelogPlugin(): Plugin {
         const filePath = resolve(__dirname, `${path}`)
 
         copyFile(filePath, resolve(__dirname, `../../changelog/${isCore ? 'index' : pkgName}.md`), () => {})
+
+        console.log(`Copied ${filePath} to ${resolve(__dirname, `../../changelog/${isCore ? 'index' : pkgName}.md`)}`)
       })
+
+      console.log('Copied changelog files')
     },
   }
 }

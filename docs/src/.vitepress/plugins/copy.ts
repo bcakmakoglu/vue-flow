@@ -23,7 +23,11 @@ export function copyVueFlowPlugin(): Plugin {
           fileName: pkgName,
           source: readFileSync(filePath, 'utf-8'),
         })
+
+        console.log(`Copied ${filePath} to ${resolve(__dirname, `../../src/public/${pkgName}`)}`)
       })
+
+      console.log('Copied vue-flow files')
     },
   }
 }
