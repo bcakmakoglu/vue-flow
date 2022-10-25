@@ -46,7 +46,6 @@ const onMouseDown = (event: MouseEvent) => {
   }
 
   userSelectionActive.value = true
-  nodesSelectionActive.value = true
 }
 
 const onMouseMove = (event: MouseEvent) => {
