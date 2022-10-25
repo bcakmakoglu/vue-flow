@@ -9,7 +9,7 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { useVueFlow } from '@vue-flow/core'
 import head from './head'
-import { copyChangelogPlugin, copyVueFlowPlugin, files } from './plugins'
+import { copyVueFlowPlugin, files } from './plugins'
 
 const { vueFlowVersion } = useVueFlow()
 
@@ -72,7 +72,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     },
     plugins: [
       copyVueFlowPlugin(),
-      copyChangelogPlugin(),
       AutoImport({
         imports: ['vue', '@vueuse/core'],
         dts: resolve(__dirname, '../auto-imports.d.ts'),
