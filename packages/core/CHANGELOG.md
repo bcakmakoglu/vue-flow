@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.2.1
+
+### Patch Changes
+
+- [#378](https://github.com/bcakmakoglu/vue-flow/pull/378) [`9089861c`](https://github.com/bcakmakoglu/vue-flow/commit/9089861ce78584cb524c3da178cd1c0252ccee30) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Disable user selection if `elementsSelectable` is false
+
+- [#378](https://github.com/bcakmakoglu/vue-flow/pull/378) [`9089861c`](https://github.com/bcakmakoglu/vue-flow/commit/9089861ce78584cb524c3da178cd1c0252ccee30) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent node selection box from appearing before mouseup
+
+- [#380](https://github.com/bcakmakoglu/vue-flow/pull/380) [`2c3ea836`](https://github.com/bcakmakoglu/vue-flow/commit/2c3ea836f1b62fb808f1f7a00bae5b2e917381bb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use shallowRef for node/edge data and event objects so they trigger a re-render on custom nodes/edges
+
 ## 1.2.0
 
 ### Minor Changes
@@ -72,12 +82,12 @@
 
   ```vue
   <script lang="ts" setup>
-    import { Handle, HandleConnectable } from '@vue-flow/core'
+  import { Handle, HandleConnectable } from '@vue-flow/core'
 
-    const handleConnectable: HandleConnectable = (node, connectedEdges) => {
-      console.log(node, connectedEdges)
-      return true
-    }
+  const handleConnectable: HandleConnectable = (node, connectedEdges) => {
+    console.log(node, connectedEdges)
+    return true
+  }
   </script>
   <template>
     <!-- single connection -->
