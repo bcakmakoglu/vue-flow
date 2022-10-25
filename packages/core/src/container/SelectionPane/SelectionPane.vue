@@ -84,8 +84,8 @@ export default {
 </script>
 
 <template>
-  <UserSelection v-if="selectionKeyPressed" :key="`user-selection-${id}`" />
-  <NodesSelection v-if="nodesSelectionActive" :key="`nodes-selection-${id}`" />
+  <UserSelection v-if="selectionKeyPressed && userSelectionActive" />
+  <NodesSelection v-if="nodesSelectionActive" />
   <div
     :key="`pane-${id}`"
     v-bind="$attrs"
