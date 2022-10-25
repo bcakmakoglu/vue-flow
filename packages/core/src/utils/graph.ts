@@ -1,3 +1,4 @@
+import { isString } from '@vueuse/core'
 import { warn } from './log'
 import type {
   Box,
@@ -76,8 +77,8 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
       selectable: undefined,
       connectable: undefined,
       ...defaults,
-      data: node.data || {},
-      events: node.events || {},
+      data: shallowReactive(node.data || {}),
+      events: shallowReactive(node.events || {}),
     }
   }
 
@@ -103,8 +104,9 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         targetY: 0,
         updatable: edge.updatable,
         selectable: edge.selectable,
-        data: edge.data || {},
-        events: edge.events || {},
+        data: shallowReactive(edge.data || {}),
+        events: shallowReactive(edge.events || {}),
+        label: edge.label && !isString(edge.label) ? markRaw(edge.label) : undefined,
         ...defaults,
       } as GraphEdge)
     : defaults
