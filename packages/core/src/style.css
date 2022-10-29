@@ -15,7 +15,10 @@
 
 .vue-flow__pane {
   z-index: 1;
-  cursor: grab;
+
+  &.draggable {
+     cursor: grab;
+   }
 
   &.dragging {
      cursor: grabbing;

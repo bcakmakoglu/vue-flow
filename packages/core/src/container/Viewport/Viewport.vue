@@ -228,6 +228,6 @@ export default {
     <Transform>
       <slot />
     </Transform>
-    <SelectionPane :class="{ dragging: isDragging }" />
+    <SelectionPane :class="{ dragging: isDragging, draggable: panOnDrag }" />
   </div>
 </template>
