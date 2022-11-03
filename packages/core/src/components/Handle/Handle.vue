@@ -6,7 +6,7 @@ import { ConnectionMode } from '../../types'
 import type { HandleProps } from '../../types/handle'
 import { getDimensions } from '../../utils'
 
-const { position = 'top' as Position, connectable = true, id, isValidConnection, ...props } = defineProps<HandleProps>()
+const { position = 'top' as Position, connectable, id, isValidConnection, ...props } = defineProps<HandleProps>()
 
 const type = toRef(props, 'type', 'source')
 
@@ -16,7 +16,7 @@ const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
 const handle = ref<HTMLDivElement>()
 
-const handleId = $computed(() => id ?? (connectionMode === ConnectionMode.Strict ? null : `${nodeId}__handle-${position}`))
+const handleId = $computed(() => id ?? `${nodeId}__handle-${position}`)
 
 const { onMouseDown, onClick } = useHandle({
   nodeId,
@@ -35,10 +35,11 @@ const isConnectable = computed(() => {
     return connectable(node, connectedEdges.value)
   }
 
-  return connectable
+  return connectable || true
 })
 
 onMounted(() => {
+  // set up handle bounds if they don't exist yet (i.e. the handle was added after the node has already been mounted)
   const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
   if (!vueFlowRef || existingBounds) return
 
