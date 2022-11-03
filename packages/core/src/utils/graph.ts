@@ -22,6 +22,19 @@ import type {
 } from '~/types'
 import { useWindow } from '~/composables'
 
+export const nodeToRect = (node: GraphNode): Rect => ({
+  ...(node.computedPosition || { x: 0, y: 0 }),
+  width: node.dimensions.width || 0,
+  height: node.dimensions.height || 0,
+})
+
+export const getOverlappingArea = (rectA: Rect, rectB: Rect) => {
+  const xOverlap = Math.max(0, Math.min(rectA.x + rectA.width, rectB.x + rectB.width) - Math.max(rectA.x, rectB.x))
+  const yOverlap = Math.max(0, Math.min(rectA.y + rectA.height, rectB.y + rectB.height) - Math.max(rectA.y, rectB.y))
+
+  return Math.ceil(xOverlap * yOverlap)
+}
+
 export const getDimensions = (node: HTMLElement): Dimensions => ({
   width: node.offsetWidth,
   height: node.offsetHeight,
@@ -55,6 +68,8 @@ export const isNode = <Data = ElementData>(element: MaybeElement): element is No
 
 export const isGraphNode = <Data = ElementData>(element: MaybeElement): element is GraphNode<Data> =>
   isNode(element) && 'computedPosition' in element
+
+export const isRect = (obj: any): obj is Rect => !!obj.width && !!obj.height && !!obj.x && !!obj.y
 
 export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: Partial<GraphNode>): GraphNode => {
   let defaultValues = defaults
@@ -263,21 +278,25 @@ export const getNodesInside = (
   rect: Rect,
   { x: tx, y: ty, zoom: tScale }: Viewport = { x: 0, y: 0, zoom: 1 },
   partially = false,
+  // set excludeNonSelectableNodes if you want to pay attention to the nodes "selectable" attribute
+  excludeNonSelectableNodes = false,
 ) => {
-  const rBox = rectToBox({
+  const paneRect = {
     x: (rect.x - tx) / tScale,
     y: (rect.y - ty) / tScale,
     width: rect.width / tScale,
     height: rect.height / tScale,
-  })
+  }
 
   return nodes.filter((node) => {
-    if (!node || node.selectable === false) return false
-    const { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 } } = node
-    const nBox = rectToBox({ ...computedPosition, ...dimensions })
-    const xOverlap = Math.max(0, Math.min(rBox.x2, nBox.x2) - Math.max(rBox.x, nBox.x))
-    const yOverlap = Math.max(0, Math.min(rBox.y2, nBox.y2) - Math.max(rBox.y, nBox.y))
-    const overlappingArea = Math.ceil(xOverlap * yOverlap)
+    const { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 }, selectable } = node
+
+    if (excludeNonSelectableNodes && !selectable) {
+      return false
+    }
+
+    const nodeRect = { ...computedPosition, width: dimensions.width || 0, height: dimensions.height || 0 }
+    const overlappingArea = getOverlappingArea(paneRect, nodeRect)
     const notInitialized =
       typeof dimensions.width === 'undefined' ||
       typeof dimensions.height === 'undefined' ||

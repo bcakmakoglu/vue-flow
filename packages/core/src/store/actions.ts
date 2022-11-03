@@ -10,11 +10,13 @@ import type {
   FlowExportObject,
   GraphEdge,
   GraphNode,
+  Node,
   NodeChange,
   NodeDimensionChange,
   NodePositionChange,
   NodeRemoveChange,
   NodeSelectionChange,
+  Rect,
   State,
 } from '~/types'
 import {
@@ -27,12 +29,15 @@ import {
   getConnectedEdges,
   getDimensions,
   getHandleBounds,
+  getOverlappingArea,
   getSelectionChanges,
   isDef,
   isEdge,
   isGraphEdge,
   isGraphNode,
   isNode,
+  isRect,
+  nodeToRect,
   parseEdge,
   pointToRendererPoint,
   updateEdgeAction,
@@ -442,6 +447,51 @@ export default (state: State, getters: ComputedGetters): Actions => {
     state.hooks.connectEnd.trigger(event)
   }
 
+  const getNodeRect = (
+    nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
+  ): [Rect | null, Node | null | undefined, boolean] => {
+    const isRectObj = isRect(nodeOrRect)
+    const node = isRectObj ? null : findNode(nodeOrRect.id)
+
+    if (!isRectObj && !node) {
+      return [null, null, isRectObj]
+    }
+
+    const nodeRect = isRectObj ? nodeOrRect : nodeToRect(node!)
+
+    return [nodeRect, node, isRectObj]
+  }
+
+  const getIntersectionNodes: Actions['getIntersectionNodes'] = (nodeOrRect, partially = true, nodes) => {
+    const [nodeRect, node, isRect] = getNodeRect(nodeOrRect)
+
+    if (!nodeRect) return []
+
+    return (
+      nodes ||
+      state.nodes.filter((n) => {
+        if (!isRect && (n.id === node!.id || !n.computedPosition)) return false
+
+        const currNodeRect = nodeToRect(n)
+        const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
+        const partiallyVisible = partially && overlappingArea > 0
+
+        return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
+      })
+    )
+  }
+
+  const isNodeIntersecting: Actions['isNodeIntersecting'] = (nodeOrRect, area, partially = true) => {
+    const [nodeRect] = getNodeRect(nodeOrRect)
+
+    if (!nodeRect) return false
+
+    const overlappingArea = getOverlappingArea(nodeRect, area)
+    const partiallyVisible = partially && overlappingArea > 0
+
+    return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
+  }
+
   const setState: Actions['setState'] = (options) => {
     const opts = options instanceof Function ? options(state) : options
     const skip: (keyof typeof opts)[] = [
@@ -524,6 +574,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
     endConnection,
     setInteractive,
     setState,
+    getIntersectionNodes,
+    isNodeIntersecting,
     fitView: async (params = { padding: 0.1 }) => {
       const { fitView } = await paneReady()
       fitView(params)
