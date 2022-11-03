@@ -1,6 +1,16 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { Dimensions, ElementData, Elements, FlowElements, FlowExportObject, FlowOptions, SnapGrid, XYPosition } from './flow'
+import type {
+  Dimensions,
+  ElementData,
+  Elements,
+  FlowElements,
+  FlowExportObject,
+  FlowOptions,
+  Rect,
+  SnapGrid,
+  XYPosition,
+} from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
@@ -134,6 +144,16 @@ export type FindNode = <Data = ElementData, CustomEvents extends Record<string, 
 export type FindEdge = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
   id: string,
 ) => GraphEdge<Data, CustomEvents> | undefined
+export type GetIntersectingNodes<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = (
+  node: (Partial<Node<Data, CustomEvents>> & { id: Node['id'] }) | Rect,
+  partially?: boolean,
+  nodes?: Node<Data, CustomEvents>[],
+) => Node<Data, CustomEvents>[]
+export type IsNodeIntersecting<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = (
+  node: (Partial<Node<Data, CustomEvents>> & { id: Node['id'] }) | Rect,
+  area: Rect,
+  partially?: boolean,
+) => boolean
 
 export interface Actions extends ViewportFunctions {
   /** parses elements (nodes + edges) and re-sets the state */
@@ -199,6 +219,11 @@ export interface Actions extends ViewportFunctions {
   updateNodePositions: UpdateNodePosition
   /** internal dimensions' updater, you probably don't want to use this */
   updateNodeDimensions: UpdateNodeDimensions
+
+  /** returns all node intersections */
+  getIntersectionNodes: GetIntersectingNodes
+  /** check if a node is intersecting with a defined area */
+  isNodeIntersecting: IsNodeIntersecting
 
   /** reset state to defaults */
   $reset: () => void
