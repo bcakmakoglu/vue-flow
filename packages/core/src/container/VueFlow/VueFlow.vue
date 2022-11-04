@@ -55,6 +55,7 @@ const emit = defineEmits<{
   (event: 'nodeDragStart', nodeDragEvent: NodeDragEvent): void
   (event: 'nodeDrag', nodeDragEvent: NodeDragEvent): void
   (event: 'nodeDragStop', nodeDragEvent: NodeDragEvent): void
+  (event: 'nodesInitialized'): void
   (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent): void
   (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
   (event: 'miniMapNodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void

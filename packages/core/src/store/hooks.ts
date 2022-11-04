@@ -14,6 +14,7 @@ export const createHooks = (): FlowHooks => ({
   nodeDragStart: createEventHook(),
   nodeDrag: createEventHook(),
   nodeDragStop: createEventHook(),
+  nodesInitialized: createEventHook(),
   miniMapNodeClick: createEventHook(),
   miniMapNodeDoubleClick: createEventHook(),
   miniMapNodeMouseEnter: createEventHook(),

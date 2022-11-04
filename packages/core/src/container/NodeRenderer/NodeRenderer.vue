@@ -7,7 +7,9 @@ import { warn } from '../../utils'
 
 const slots = inject(Slots)
 
-const { nodesDraggable, elementsSelectable, nodesConnectable, getNodes, getNodeTypes, updateNodeDimensions } = $(useVueFlow())
+const { nodesDraggable, elementsSelectable, nodesConnectable, getNodes, getNodeTypes, updateNodeDimensions, emits } = $(
+  useVueFlow(),
+)
 
 const draggable = (d?: boolean) => (typeof d === 'undefined' ? nodesDraggable : d)
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
@@ -52,6 +54,14 @@ const getType = (type?: string, template?: GraphNode['template']) => {
 
   return slot
 }
+
+const readyNodes = []
+const isReady = (id: string) => {
+  readyNodes.push(id)
+  if (readyNodes.length === getNodes.length) {
+    emits.nodesInitialized()
+  }
+}
 </script>
 
 <script lang="ts">
@@ -74,6 +84,7 @@ export default {
         :selectable="selectable(node.selectable)"
         :connectable="connectable(node.connectable)"
         :node="node"
+        @ready="isReady(node.id)"
       />
     </template>
   </div>
