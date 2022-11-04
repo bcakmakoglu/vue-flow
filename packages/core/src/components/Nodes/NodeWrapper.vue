@@ -31,6 +31,7 @@ const {
   addSelectedNodes,
   updateNodeDimensions,
   onUpdateNodeInternals,
+  getIntersectingNodes,
 } = $(useVueFlow())
 
 const node = $(useVModel(props, 'node'))
@@ -50,36 +51,30 @@ const dragging = useDrag({
   el: nodeElement,
   disabled: computed(() => !draggable),
   onStart(event, node, nodes) {
-    emit.dragStart({ event, node, nodes })
+    emit.dragStart({ event, node, nodes, intersections: getIntersectingNodes(node) })
   },
   onDrag(event, node, nodes) {
-    emit.drag({ event, node, nodes })
+    emit.drag({ event, node, nodes, intersections: getIntersectingNodes(node) })
   },
   onStop(event, node, nodes) {
-    emit.dragStop({ event, node, nodes })
+    emit.dragStop({ event, node, nodes, intersections: getIntersectingNodes(node) })
   },
 })
 
-const updatePosition = (nodePos: XYZPosition, parentPos?: XYZPosition) => {
-  if (parentPos) {
-    node.computedPosition = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
-  } else {
-    node.computedPosition = nodePos
-  }
-}
+const getClass = computed(() => (node.class instanceof Function ? node.class(node) : node.class))
 
-const updateInternals = () => {
-  if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+const getStyle = computed(() => {
+  const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
 
-  updatePosition(
-    {
-      x: node.position.x,
-      y: node.position.y,
-      z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
-    },
-    parentNode ? { ...parentNode.computedPosition } : undefined,
-  )
-}
+  const width = node.width instanceof Function ? node.width(node) : node.width
+  const height = node.height instanceof Function ? node.height(node) : node.height
+
+  if (width) styles.width = typeof width === 'string' ? width : `${width}px`
+
+  if (height) styles.height = typeof height === 'string' ? height : `${height}px`
+
+  return styles
+})
 
 onUpdateNodeInternals((updateIds) => {
   if (updateIds.includes(id)) {
@@ -98,6 +93,10 @@ updatePosition(
 
 onMounted(() => {
   props.resizeObserver.observe(nodeElement.value)
+})
+
+onBeforeUnmount(() => {
+  props.resizeObserver.unobserve(nodeElement.value)
 })
 
 watch(
@@ -131,60 +130,60 @@ watch(
   { flush: 'post' },
 )
 
-onBeforeUnmount(() => {
-  props.resizeObserver.unobserve(nodeElement.value)
-})
+function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
+  if (parentPos) {
+    node.computedPosition = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
+  } else {
+    node.computedPosition = nodePos
+  }
+}
 
-const onMouseEnter = (event: MouseEvent) => {
+function updateInternals() {
+  if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+
+  updatePosition(
+    {
+      x: node.position.x,
+      y: node.position.y,
+      z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
+    },
+    parentNode ? { ...parentNode.computedPosition } : undefined,
+  )
+}
+
+function onMouseEnter(event: MouseEvent) {
   if (!dragging?.value) {
     emit.mouseEnter({ event, node, connectedEdges })
   }
 }
 
-const onMouseMove = (event: MouseEvent) => {
+function onMouseMove(event: MouseEvent) {
   if (!dragging?.value) {
     emit.mouseMove({ event, node, connectedEdges })
   }
 }
 
-const onMouseLeave = (event: MouseEvent) => {
+function onMouseLeave(event: MouseEvent) {
   if (!dragging?.value) {
     emit.mouseLeave({ event, node, connectedEdges })
   }
 }
 
-const onContextMenu = (event: MouseEvent) => {
-  emit.contextMenu({
-    event,
-    node,
-    connectedEdges: getConnectedEdges([node], edges),
-  })
+function onContextMenu(event: MouseEvent) {
+  return emit.contextMenu({ event, node, connectedEdges })
 }
 
-const onDoubleClick = (event: MouseEvent) => {
-  emit.doubleClick({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+function onDoubleClick(event: MouseEvent) {
+  return emit.doubleClick({ event, node, connectedEdges })
 }
 
-const onSelectNode = (event: MouseEvent) => {
+function onSelectNode(event: MouseEvent) {
   if (selectable && (!selectNodesOnDrag || !draggable)) {
     handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
   }
-  emit.click({ event, node, connectedEdges: getConnectedEdges([node], edges) })
+
+  emit.click({ event, node, connectedEdges })
 }
-
-const getClass = computed(() => {
-  return node.class instanceof Function ? node.class(node) : node.class
-})
-
-const getStyle = computed(() => {
-  const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
-  const width = node.width instanceof Function ? node.width(node) : node.width
-  const height = node.height instanceof Function ? node.height(node) : node.height
-  if (width) styles.width = typeof width === 'string' ? width : `${width}px`
-  if (height) styles.height = typeof height === 'string' ? height : `${height}px`
-
-  return styles
-})
 </script>
 
 <script lang="ts">

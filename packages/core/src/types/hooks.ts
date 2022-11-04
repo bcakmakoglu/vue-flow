@@ -20,6 +20,7 @@ export interface NodeDragEvent {
   event: MouseEvent
   node: GraphNode
   nodes: GraphNode[]
+  intersections?: GraphNode[]
 }
 
 export interface EdgeMouseEvent {
