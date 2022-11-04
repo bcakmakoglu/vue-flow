@@ -1,3 +1,3 @@
 import './store'
-export * from './screenshot'
+export * from './layout'
 export * from './types'
