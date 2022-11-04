@@ -24,7 +24,7 @@
     "jsx": "preserve",
     "paths": {
       "~/*": [
-        "../../packages/vue-flow/src/*"
+        "../../packages/core/src/*"
       ]
     }
   },
