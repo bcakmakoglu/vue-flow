@@ -17,7 +17,7 @@ export default defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: ['vue', '@vue-flow/core'],
+      external: ['vue', '@vue-flow/core', 'dagre'],
       output: {
         dir: './dist',
         // Provide global variables to use in the UMD build
@@ -25,11 +25,9 @@ export default defineConfig({
         globals: {
           'vue': 'Vue',
           '@vue-flow/core': 'VueFlow',
+          'dagre': 'Dagre',
         },
       },
     },
-  },
-  optimizeDeps: {
-    include: ['vue', '@vueuse/core'],
   },
 })
