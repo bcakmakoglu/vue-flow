@@ -29,7 +29,10 @@ const isConnectable = computed(() => {
   if (isString(connectable) && connectable === 'single') {
     return !connectedEdges.value.some((edge) => {
       const handle = edge[`${type.value}Handle`]
-      return edge[type.value] === nodeId && !!handle ? handle === handleId : true
+
+      if (edge[type.value] !== nodeId) return false
+
+      return handle ? handle === handleId : true
     })
   } else if (isFunction(connectable)) {
     return connectable(node, connectedEdges.value)
