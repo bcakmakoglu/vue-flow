@@ -106,6 +106,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/nesting',
     component: () => import('./src/Nesting/Nesting.vue'),
   },
+  {
+    path: '/screenshot',
+    component: () => import('./src/Screenshot/ScreenshotExample.vue'),
+  },
 ]
 
 export const router = createRouter({
