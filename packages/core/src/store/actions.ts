@@ -462,7 +462,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     return [nodeRect, node, isRectObj]
   }
 
-  const getIntersectionNodes: Actions['getIntersectionNodes'] = (nodeOrRect, partially = true, nodes) => {
+  const getIntersectingNodes: Actions['getIntersectingNodes'] = (nodeOrRect, partially = true, nodes) => {
     const [nodeRect, node, isRect] = getNodeRect(nodeOrRect)
 
     if (!nodeRect) return []
@@ -574,7 +574,7 @@ export default (state: State, getters: ComputedGetters): Actions => {
     endConnection,
     setInteractive,
     setState,
-    getIntersectionNodes,
+    getIntersectingNodes,
     isNodeIntersecting,
     fitView: async (params = { padding: 0.1 }) => {
       const { fitView } = await paneReady()
