@@ -112,7 +112,7 @@ const Wrapper = defineComponent({
       if (connectionMode.value === ConnectionMode.Strict) {
         sourceNodeHandles = props.sourceNode.handleBounds.source
       } else {
-        sourceNodeHandles = props.sourceNode.handleBounds.source ?? props.sourceNode.handleBounds.target
+        sourceNodeHandles = [...(props.sourceNode.handleBounds.source || []), ...(props.sourceNode.handleBounds.target || [])]
       }
 
       const sourceHandle = getHandle(sourceNodeHandles, edge.sourceHandle)
@@ -121,7 +121,7 @@ const Wrapper = defineComponent({
       if (connectionMode.value === ConnectionMode.Strict) {
         targetNodeHandles = props.targetNode.handleBounds.target
       } else {
-        targetNodeHandles = props.targetNode.handleBounds.target ?? props.targetNode.handleBounds.source
+        targetNodeHandles = [...(props.targetNode.handleBounds.target || []), ...(props.targetNode.handleBounds.source || [])]
       }
 
       const targetHandle = getHandle(targetNodeHandles, edge.targetHandle)
