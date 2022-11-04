@@ -19,7 +19,7 @@ export default defineConfig({
     vueTypes(),
     svgLoader(),
     AutoImport({
-      imports: ['vue', '@vueuse/core', 'vue/macros'],
+      imports: ['vue', '@vueuse/core'],
       dts: resolve('src/auto-imports.d.ts'),
     }),
   ],

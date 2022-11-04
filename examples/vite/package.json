@@ -13,7 +13,8 @@
     "@vue-flow/core": "workspace:*",
     "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
-    "@vue-flow/node-toolbar": "workspace:*"
+    "@vue-flow/node-toolbar": "workspace:*",
+    "@vue-flow/plugin-screenshot": "workspace:*"
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
