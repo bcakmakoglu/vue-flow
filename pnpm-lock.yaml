@@ -138,6 +138,7 @@ importers:
       '@vitejs/plugin-vue': ^2.3.4
       '@vue-flow/additional-components': workspace:*
       '@vue-flow/core': workspace:*
+      '@vue-flow/plugin-screenshot': workspace:*
       dagre: ^0.8.5
       unplugin-auto-import: ^0.6.9
       vite: 2.9.15
@@ -149,6 +150,7 @@ importers:
     dependencies:
       '@vue-flow/additional-components': link:../../packages/additional-components
       '@vue-flow/core': link:../../packages/core
+      '@vue-flow/plugin-screenshot': link:../../packages/plugins/screenshot
       vueflow: link:../../packages/vue-flow
     devDependencies:
       '@types/dagre': 0.7.47
@@ -251,6 +253,21 @@ importers:
       vite: 2.9.15
       vite-plugin-vue-type-imports: 0.2.0_ak2iftdnrkoetwl5f6az77kdzy
       vue-tsc: 0.40.13_typescript@4.8.4
+
+  packages/plugins/screenshot:
+    specifiers:
+      '@vue-flow/core': workspace:*
+      '@vueuse/core': ^9.3.1
+      html-to-image: ^1.10.8
+      vite: ^2.9.15
+      vue: ^3.2.37
+    dependencies:
+      '@vueuse/core': 9.3.1_vue@3.2.40
+      html-to-image: 1.10.8
+      vue: 3.2.40
+    devDependencies:
+      '@vue-flow/core': link:../../core
+      vite: 2.9.15
 
   packages/resize-rotate-node:
     specifiers:
@@ -5960,6 +5977,10 @@ packages:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==}
     engines: {node: '>=8'}
     dev: true
+
+  /html-to-image/1.10.8:
+    resolution: {integrity: sha512-t+JyFJwKDCp4ZwBp4iC/wqw0meQDDc77Qs8OFl5P7RGlIP3LQMvwpD7VXxqQfC7/TfC+GKYlFP6WDYfXTmXHfw==}
+    dev: false
 
   /htmlparser2/8.0.1:
     resolution: {integrity: sha512-4lVbmc1diZC7GUJQtRQ5yBAeUCL1exyMwmForWkRLnwyzWBFxN633SALPMGYaWZvKe9j1pRZJpauvmxENSp/EA==}
