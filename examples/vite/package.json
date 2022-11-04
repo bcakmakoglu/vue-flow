@@ -10,17 +10,18 @@
     "vueflow": "workspace:*",
     "@vue-flow/additional-components": "workspace:*",
     "@vue-flow/core": "workspace:*",
+    "@vue-flow/plugin-dagre": "workspace:*",
     "@vue-flow/plugin-screenshot": "workspace:*"
   },
   "devDependencies": {
-    "@types/dagre": "^0.7.47",
+    "@types/dagre": "^0.7.48",
     "@vitejs/plugin-vue": "^2.3.4",
     "dagre": "^0.8.5",
-    "unplugin-auto-import": "^0.6.9",
+    "unplugin-auto-import": "^0.11.4",
     "vite": "2.9.15",
     "vite-plugin-vue-type-imports": "0.2.0",
     "vite-svg-loader": "^3.6.0",
-    "vue": "^3.2.37",
-    "vue-router": "^4.1.5"
+    "vue": "^3.2.41",
+    "vue-router": "^4.1.6"
   }
 }

@@ -1,57 +1,23 @@
 <script lang="ts" setup>
-import dagre from 'dagre'
-import type { CoordinateExtent, Elements } from '@vue-flow/core'
-import { ConnectionMode, Position, VueFlow, isNode } from '@vue-flow/core'
-import { Controls } from '@vue-flow/additional-components'
+import { Panel, PanelPosition } from '@vue-flow/additional-components'
+import { VueFlow } from '@vue-flow/core'
+import { useDagreLayout } from '@vue-flow/plugin-dagre'
 import initialElements from './initial-elements'
 
-const dagreGraph = new dagre.graphlib.Graph()
-dagreGraph.setDefaultEdgeLabel(() => ({}))
+const elements = ref(initialElements)
 
-const nodeExtent: CoordinateExtent = [
-  [0, -100],
-  [1000, 500],
-]
+const { layout } = useDagreLayout()
 
-const elements = ref<Elements>(initialElements)
-
-const onLayout = (direction: string) => {
-  const isHorizontal = direction === 'LR'
-  dagreGraph.setGraph({ rankdir: direction })
-
-  elements.value.forEach((el) => {
-    if (isNode(el)) {
-      dagreGraph.setNode(el.id, { width: 150, height: 50 })
-    } else {
-      dagreGraph.setEdge(el.source, el.target)
-    }
-  })
-
-  dagre.layout(dagreGraph)
-
-  elements.value.forEach((el) => {
-    if (isNode(el)) {
-      const nodeWithPosition = dagreGraph.node(el.id)
-      el.targetPosition = isHorizontal ? Position.Left : Position.Top
-      el.sourcePosition = isHorizontal ? Position.Right : Position.Bottom
-      el.position = { x: nodeWithPosition.x, y: nodeWithPosition.y }
-    }
-  })
-}
+const onPaneReady = () => setTimeout(() => layout('TB'))
 </script>
 
 <template>
-  <div class="layoutflow">
-    <VueFlow v-model="elements" :node-extent="nodeExtent" :connection-mode="ConnectionMode.Loose" @pane-ready="onLayout('TB')">
-      <Controls />
+  <div style="flex: 1; position: relative">
+    <VueFlow v-model="elements" @pane-ready="onPaneReady">
+      <Panel :position="PanelPosition.TopRight">
+        <button :style="{ marginRight: '10px' }" @click="layout('TB')">vertical layout</button>
+        <button @click="layout('LR')">horizontal layout</button>
+      </Panel>
     </VueFlow>
-    <div class="controls">
-      <button :style="{ marginRight: 10 }" @click="onLayout('TB')">vertical layout</button>
-      <button @click="onLayout('LR')">horizontal layout</button>
-    </div>
   </div>
 </template>
-
-<style>
-@import 'layouting.css';
-</style>
