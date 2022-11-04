@@ -2,16 +2,16 @@
 
 This package contains a simple Dagre Layout plugin that can be used with Vue Flow.
 Simply install the plugin onto your Vue Flow App and you can start using the composable to
-layout your graph.
+lay out your graph.
 
 ## 🛠 Setup
 
 ```bash
-# install
-$ yarn add @vue-flow/plugin-dagre
+# install plugin & dagre (plugin does not include dagre)
+$ yarn add @vue-flow/plugin-dagre dagre
 
 # or
-$ npm i --save @vue-flow/plugin-dagre
+$ npm i --save @vue-flow/plugin-dagre dagre
 ```
 
 ## 🎮 Quickstart
