@@ -221,7 +221,7 @@ export interface Actions extends ViewportFunctions {
   updateNodeDimensions: UpdateNodeDimensions
 
   /** returns all node intersections */
-  getIntersectionNodes: GetIntersectingNodes
+  getIntersectingNodes: GetIntersectingNodes
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
 
