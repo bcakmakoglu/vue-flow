@@ -31,10 +31,6 @@ const { onPaneReady, getNode, panOnDrag } = useVueFlow({
     { id: 'e3-4', type: 'rgb-line', data: { color: 'blue' }, source: '3', target: '4', animated: true },
   ],
   zoomOnScroll: false,
-  nodeExtent: [
-    [-50, -150],
-    [500, 300],
-  ],
   preventScrolling: false,
 })
 

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { EdgeProps, Position } from '@vue-flow/core'
-import { getBezierPath, useVueFlow } from '@vue-flow/core'
+import { EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core'
+import type { CSSProperties } from 'vue'
 
 interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   id: string
@@ -10,30 +11,16 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   targetY: number
   sourcePosition: Position
   targetPosition: Position
-  data?: T
+  data: T
   markerEnd: string
+  style: CSSProperties
 }
 
 const props = defineProps<CustomEdgeProps>()
-const { applyEdgeChanges, getEdges } = useVueFlow()
 
-const onClick = (evt: Event, id: string) => {
-  applyEdgeChanges([{ type: 'remove', id }])
-  evt.stopPropagation()
-}
+const { removeEdges } = useVueFlow()
 
-const foreignObjectSize = 40
-
-const edgePath = computed(() =>
-  getBezierPath({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    sourcePosition: props.sourcePosition,
-    targetX: props.targetX,
-    targetY: props.targetY,
-    targetPosition: props.targetPosition,
-  }),
-)
+const path = $computed(() => getBezierPath(props))
 </script>
 
 <script lang="ts">
@@ -43,19 +30,20 @@ export default {
 </script>
 
 <template>
-  <path :id="props.id" :style="props.style" class="vue-flow__edge-path" :d="edgePath[0]" :marker-end="props.markerEnd" />
-  <foreignObject
-    :width="foreignObjectSize"
-    :height="foreignObjectSize"
-    :x="edgePath[1] - foreignObjectSize / 2"
-    :y="edgePath[2] - foreignObjectSize / 2"
-    class="edgebutton-foreignobject"
-    requiredExtensions="http://www.w3.org/1999/xhtml"
-  >
-    <body>
-      <button class="edgebutton" @click="(event) => onClick(event, props.id)">×</button>
-    </body>
-  </foreignObject>
+  <path :id="id" :style="style" class="vue-flow__edge-path" :d="path[0]" :marker-end="markerEnd" />
+
+  <EdgeLabelRenderer>
+    <div
+      :style="{
+        pointerEvents: 'all',
+        position: 'absolute',
+        transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
+      }"
+      class="nodrag nopan"
+    >
+      <button class="edgebutton" @click="removeEdges([id])">×</button>
+    </div>
+  </EdgeLabelRenderer>
 </template>
 
 <style>
