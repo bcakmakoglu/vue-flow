@@ -467,18 +467,15 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     if (!nodeRect) return []
 
-    return (
-      nodes ||
-      state.nodes.filter((n) => {
-        if (!isRect && (n.id === node!.id || !n.computedPosition)) return false
+    return (nodes || state.nodes).filter((n) => {
+      if (!isRect && (n.id === node!.id || !n.computedPosition)) return false
 
-        const currNodeRect = nodeToRect(n)
-        const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
-        const partiallyVisible = partially && overlappingArea > 0
+      const currNodeRect = nodeToRect(n)
+      const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
+      const partiallyVisible = partially && overlappingArea > 0
 
-        return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
-      })
-    )
+      return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
+    })
   }
 
   const isNodeIntersecting: Actions['isNodeIntersecting'] = (nodeOrRect, area, partially = true) => {

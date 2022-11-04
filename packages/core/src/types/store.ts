@@ -120,40 +120,51 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
 }
 
 export type SetElements = (elements: Elements | ((elements: FlowElements) => Elements), extent?: CoordinateExtent) => void
+
 export type SetNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
+
 export type SetEdges = (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
+
 export type AddNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
+
 export type RemoveNodes = (
   nodes: (Node[] | string[]) | ((nodes: GraphNode[]) => Node[] | string[]),
   removeConnectedEdges?: boolean,
 ) => void
+
 export type RemoveEdges = (edges: (Edge[] | string[]) | ((edges: GraphEdge[]) => Edge[] | string[])) => void
+
 export type AddEdges = (edgesOrConnections: (Edge | Connection)[] | ((edges: GraphEdge[]) => (Edge | Connection)[])) => void
+
 export type UpdateEdge = (oldEdge: GraphEdge, newConnection: Connection) => GraphEdge | false
+
 export type SetState = (
   state:
     | Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
     | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
 ) => void
+
 export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
+
 export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
+
 export type UpdateNodeInternals = (nodeIds: string[]) => void
+
 export type FindNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
   id: string,
 ) => GraphNode<Data, CustomEvents> | undefined
+
 export type FindEdge = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
   id: string,
 ) => GraphEdge<Data, CustomEvents> | undefined
-export type GetIntersectingNodes<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = (
-  node: (Partial<Node<Data, CustomEvents>> & { id: Node['id'] }) | Rect,
+
+export type GetIntersectingNodes = (
+  node: (Partial<Node> & { id: Node['id'] }) | Rect,
   partially?: boolean,
-  nodes?: Node<Data, CustomEvents>[],
-) => Node<Data, CustomEvents>[]
-export type IsNodeIntersecting<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = (
-  node: (Partial<Node<Data, CustomEvents>> & { id: Node['id'] }) | Rect,
-  area: Rect,
-  partially?: boolean,
-) => boolean
+  nodes?: GraphNode[],
+) => GraphNode[]
+
+export type IsNodeIntersecting = (node: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean
 
 export interface Actions extends ViewportFunctions {
   /** parses elements (nodes + edges) and re-sets the state */
