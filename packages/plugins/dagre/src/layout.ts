@@ -1,10 +1,10 @@
 import type { Plugin, VueFlowStore } from '@vue-flow/core'
 import { Position, useVueFlow } from '@vue-flow/core'
-import dagre from 'dagre'
+import { layout as dagreLayout, graphlib } from 'dagre'
 import type { Direction } from './types'
 
 const createDagreState = (store: VueFlowStore) => {
-  const dagreGraph = new dagre.graphlib.Graph()
+  const dagreGraph = new graphlib.Graph()
   dagreGraph.setDefaultEdgeLabel(() => ({}))
 
   function layout(direction: Direction) {
@@ -19,7 +19,7 @@ const createDagreState = (store: VueFlowStore) => {
       dagreGraph.setEdge(edge.source, edge.target)
     })
 
-    dagre.layout(dagreGraph)
+    dagreLayout(dagreGraph)
 
     store.nodes.value.forEach((node) => {
       const nodeWithPosition = dagreGraph.node(node.id)

@@ -30,14 +30,14 @@
   },
   "peerDependencies": {
     "@vue-flow/core": "^1.0.0",
-    "vue": "^3.2.37"
-  },
-  "dependencies": {
+    "vue": "^3.2.37",
     "dagre": "^0.8.5"
   },
+  "dependencies": {},
   "devDependencies": {
     "@types/dagre": "^0.7.48",
     "@vue-flow/core": "workspace:*",
+    "dagre": "^0.8.5",
     "vite": "^2.9.15"
   },
   "publishConfig": {
