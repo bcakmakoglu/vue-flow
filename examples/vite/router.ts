@@ -115,6 +115,10 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./src/Nesting/Nesting.vue'),
   },
   {
+    path: '/screenshot',
+    component: () => import('./src/Screenshot/ScreenshotExample.vue'),
+  },
+  {
     path: '/rgb',
     component: () => import('./src/RGBFlow/RGBFlow.vue'),
   },
