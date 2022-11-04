@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2] - 2022-11-04
+
+[fbfa2ef](fbfa2efbd238d6750c45f6bd4ad359473b75d1e5)...[0dc1eb6](0dc1eb686df7a7077b2b10d0976a00ab04622489)
+
+### Bug Fixes
+
+- Always set a handle id ([84adeb7](84adeb7e392d45c1f1e3bf9cae5e46e93abb8e8b))
+- Skip connectable for handles unrelated to connected edges ([49b44e4](49b44e45a3b87bc04066e161a48b0a598951a187))
+- Use all handles when connection mode is `Loose` ([43aa810](43aa810884c47ebf6fd32550005c02050fafd8c8))
+
+### Miscellaneous Tasks
+
+- Add blobity composable ([6ab79d5](6ab79d54e40af36b2d3fe4065e6ed7934123ae5d))
+- Use blobity only on client side ([2aae2d2](2aae2d2e4e0d3a9074cec52fcbbaeb221e8e7dde))
+
+### Refactor
+
+- Show regular pointer if pane isn't draggable ([73dfca5](73dfca5f574169c53347c2d618499c326631bf66))
+
 ## [1.2.1] - 2022-10-25
 
 [0bd8049](0bd8049a4bca7918397fbd1dc30280837f5af013)...[fbfa2ef](fbfa2efbd238d6750c45f6bd4ad359473b75d1e5)
