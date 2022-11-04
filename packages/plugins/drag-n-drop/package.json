@@ -24,7 +24,7 @@
   "scripts": {
     "build": "vite build",
     "types": "tsc && shx rm -rf tmp",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../../.gitignore .",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
     "test": "exit 0"
   },
