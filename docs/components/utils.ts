@@ -1,5 +1,6 @@
 import Blobity from 'blobity'
 import type { InjectionKey, Ref } from 'vue'
+import { isClient } from '@vueuse/core'
 
 const BlobityInjection: InjectionKey<Ref<Blobity>> = Symbol('blobity')
 
@@ -18,7 +19,7 @@ const defaultOptions = {
 }
 
 export const useBlobity = createSharedComposable(() => {
-  const blobity = ref<Blobity>(new Blobity(defaultOptions as any))
+  const blobity = ref<Blobity>(isClient ? new Blobity(defaultOptions as any) : (null as any))
 
   provide(BlobityInjection, blobity)
 
