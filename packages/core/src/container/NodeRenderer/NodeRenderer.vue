@@ -18,12 +18,32 @@ const connectable = (c?: HandleConnectable) => (typeof c === 'undefined' ? nodes
 const resizeObserver = ref<ResizeObserver>()
 
 onMounted(() => {
+  const readyNodes = []
+  let initialized = false
+
+  const isReady = (id: string) => {
+    readyNodes.push(id)
+
+    if (readyNodes.length === getNodes.length) {
+      nextTick(() => {
+        initialized = true
+        emits.nodesInitialized()
+      })
+    }
+  }
+
   resizeObserver.value = new ResizeObserver((entries) => {
-    const updates = entries.map((entry: ResizeObserverEntry) => ({
-      id: entry.target.getAttribute('data-id') as string,
-      nodeElement: entry.target as HTMLDivElement,
-      forceUpdate: true,
-    }))
+    const updates = entries.map((entry: ResizeObserverEntry) => {
+      const id = entry.target.getAttribute('data-id') as string
+      // if nodes initialized hasn't been emitted yet, add the node to the readyNodes array
+      if (!initialized) isReady(id)
+
+      return {
+        id,
+        nodeElement: entry.target as HTMLDivElement,
+        forceUpdate: true,
+      }
+    })
 
     updateNodeDimensions(updates)
   })
@@ -54,14 +74,6 @@ const getType = (type?: string, template?: GraphNode['template']) => {
 
   return slot
 }
-
-const readyNodes = []
-const isReady = (id: string) => {
-  readyNodes.push(id)
-  if (readyNodes.length === getNodes.length) {
-    emits.nodesInitialized()
-  }
-}
 </script>
 
 <script lang="ts">
@@ -84,7 +96,6 @@ export default {
         :selectable="selectable(node.selectable)"
         :connectable="connectable(node.connectable)"
         :node="node"
-        @ready="isReady(node.id)"
       />
     </template>
   </div>

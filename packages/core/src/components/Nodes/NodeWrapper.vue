@@ -17,8 +17,6 @@ const { id, type, name, draggable, selectable, connectable, ...props } = defineP
   resizeObserver: ResizeObserver
 }>()
 
-const nodeEmits = defineEmits(['ready'])
-
 provide(NodeId, id)
 
 const {
@@ -95,7 +93,6 @@ updatePosition(
 
 onMounted(() => {
   props.resizeObserver.observe(nodeElement.value)
-  nodeEmits('ready')
 })
 
 onBeforeUnmount(() => {
