@@ -1,26 +1,32 @@
 import type { Plugin, VueFlowStore } from '@vue-flow/core'
-import { toJpeg as ElToJpg, toPng as ElToPng } from 'html-to-image'
 import { useVueFlow } from '@vue-flow/core'
+import { toJpeg as ElToJpg, toPng as ElToPng } from 'html-to-image'
 import { ref } from 'vue'
-import type { ImageType, UseScreenshotState } from './types'
+import type { Options as HTMLToImageOptions } from 'html-to-image/es/types'
+import type { UseScreenshot, UseScreenshotOptions } from './types'
+import { ImageType } from './types'
 
-const createScreenshotState = (store: VueFlowStore): UseScreenshotState => {
+const createScreenshotState = (store: VueFlowStore, useScreenshotOptions: UseScreenshotOptions = {}): UseScreenshot => {
   const dataUrl = ref<string>('')
-  const imgType = ref<string>('jpeg')
+  const imgType = ref<ImageType>(ImageType.PNG)
   const error = ref()
 
-  async function screenshot(type: ImageType = 'jpeg', fileName = 'vue-flow-screenshot') {
+  const screenshot: UseScreenshot['screenshot'] = async (
+    type = useScreenshotOptions.defaultImageType || ImageType.PNG,
+    fileName = useScreenshotOptions.defaultFileName || 'vue-flow-screenshot',
+    options = useScreenshotOptions.defaultOptions,
+  ) => {
     let data
 
     switch (type) {
-      case 'jpeg':
-        data = await toJpeg()
+      case ImageType.JPEG:
+        data = await toJpeg(options as HTMLToImageOptions)
         break
-      case 'png':
-        data = await toPng()
+      case ImageType.PNG:
+        data = await toPng(options as HTMLToImageOptions)
         break
       default:
-        data = await toJpeg()
+        data = await toJpeg(options as HTMLToImageOptions)
         break
     }
 
@@ -30,13 +36,13 @@ const createScreenshotState = (store: VueFlowStore): UseScreenshotState => {
     return data
   }
 
-  function toJpeg() {
+  function toJpeg(options: HTMLToImageOptions = { quality: 0.95 }) {
     error.value = null
 
-    return ElToJpg(<HTMLElement>store.vueFlowRef.value, { quality: 0.95 })
+    return ElToJpg(<HTMLElement>store.vueFlowRef.value, options)
       .then((data) => {
         dataUrl.value = data
-        imgType.value = 'jpeg'
+        imgType.value = ImageType.JPEG
         return data
       })
       .catch((error) => {
@@ -45,13 +51,13 @@ const createScreenshotState = (store: VueFlowStore): UseScreenshotState => {
       })
   }
 
-  function toPng() {
+  function toPng(options: HTMLToImageOptions = { quality: 0.95 }) {
     error.value = null
 
-    return ElToPng(<HTMLElement>store.vueFlowRef.value, { quality: 0.95 })
+    return ElToPng(<HTMLElement>store.vueFlowRef.value, options)
       .then((data) => {
         dataUrl.value = data
-        imgType.value = 'png'
+        imgType.value = ImageType.PNG
         return data
       })
       .catch((error) => {
@@ -75,11 +81,13 @@ const createScreenshotState = (store: VueFlowStore): UseScreenshotState => {
   }
 }
 
-export const PluginScreenshot: Plugin = (hooks) => {
-  hooks.created((store) => {
-    store.screenshot = createScreenshotState(store)
-  })
-}
+export const PluginScreenshot =
+  (options?: UseScreenshotOptions): Plugin =>
+  (hooks) => {
+    hooks.created((store) => {
+      store.screenshot = createScreenshotState(store, options)
+    })
+  }
 
 export function useScreenshot() {
   return useVueFlow().screenshot
