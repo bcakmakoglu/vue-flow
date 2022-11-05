@@ -1,7 +1,7 @@
-import type { UseScreenshotState } from './types'
+import type { UseScreenshot } from './types'
 
 declare module '@vue-flow/core' {
   interface StoreBase {
-    screenshot: UseScreenshotState
+    screenshot: UseScreenshot
   }
 }
