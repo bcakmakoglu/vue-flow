@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import type { D3ZoomEvent } from 'd3-zoom'
 import Viewport from '../Viewport/Viewport.vue'
-import { useHooks } from '../../store'
-import { useVueFlow } from '../../composables'
 import type { FlowElements, FlowProps } from '../../types/flow'
-import { Slots } from '../../context'
 import type {
   Connection,
   EdgeChange,
@@ -19,7 +16,6 @@ import type {
   ViewpaneTransform,
   VueFlowStore,
 } from '../../types'
-import useWatch from './watch'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: undefined,
@@ -42,7 +38,6 @@ const props = withDefaults(defineProps<FlowProps>(), {
   autoConnect: undefined,
   elevateEdgesOnSelect: undefined,
 })
-
 const emit = defineEmits<{
   (event: 'nodesChange', changes: NodeChange[]): void
   (event: 'edgesChange', changes: EdgeChange[]): void
@@ -99,7 +94,7 @@ const emit = defineEmits<{
   (event: 'update:nodes', value: GraphNode[]): void
   (event: 'update:edges', value: GraphEdge[]): void
 }>()
-
+console.log('flubarg')
 const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
