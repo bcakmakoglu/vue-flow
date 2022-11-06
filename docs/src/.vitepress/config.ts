@@ -131,6 +131,11 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         activeMatch: '^/examples/',
       },
       {
+        text: 'Plugins',
+        link: '/plugins/',
+        activeMatch: '^/plugins/',
+      },
+      {
         text: 'Migration',
         link: '/migration/',
         activeMatch: '^/migration/',
@@ -244,6 +249,13 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       ],
       '/typedocs/': typedocSidebarEntries(),
       '/changelog/': changelogSidebarEntries(),
+      '/plugins/': [
+        {
+          text: 'Plugins',
+          collapsible: true,
+          items: [],
+        },
+      ],
     },
   },
 })
