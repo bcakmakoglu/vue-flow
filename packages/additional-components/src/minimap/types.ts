@@ -25,8 +25,13 @@ export interface MiniMapProps {
   maskColor?: string
   /** Position of the minimap {@link PanelPosition} */
   position?: PanelPosition
+  /** Enable drag minimap to drag viewport */
+  pannable?: boolean
+  /** Enable zoom minimap to zoom viewport */
+  zoomable?: boolean
 
   width?: number
+
   height?: number
 }
 
