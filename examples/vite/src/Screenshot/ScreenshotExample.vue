@@ -14,16 +14,12 @@ const elements = ref<Elements>([
 ])
 
 const { screenshot } = useScreenshot()
-
-function onClick() {
-  screenshot(ImageType.SVG)
-}
 </script>
 
 <template>
   <VueFlow v-model="elements" fit-view-on-init style="background-color: white" class="vue-flow-basic-example">
     <Panel :position="PanelPosition.TopCenter">
-      <button @click="onClick">Click to save Screenshot</button>
+      <button @click="screenshot">Click to save Screenshot</button>
     </Panel>
   </VueFlow>
 </template>
