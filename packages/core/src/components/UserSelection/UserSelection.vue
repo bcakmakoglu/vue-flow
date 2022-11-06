@@ -81,12 +81,6 @@ const onMouseUp = () => {
   userSelectionActive.value = false
 }
 
-const onMouseLeave = () => {
-  nodesSelectionActive.value = prevNodes > 0
-
-  reset()
-}
-
 onBeforeUnmount(reset)
 </script>
 
@@ -103,7 +97,6 @@ export default {
     @mousemove="onMouseMove"
     @click="onMouseUp"
     @mouseup="onMouseUp"
-    @mouseleave="onMouseLeave"
   >
     <SelectionRect v-if="rect.draw" :width="rect.width" :height="rect.height" :x="rect.x" :y="rect.y" />
   </div>
