@@ -7,10 +7,10 @@ export function copyVueFlowPlugin(): Plugin {
     name: 'copy-vue-flow',
     generateBundle() {
       ;[
-        { path: '../../../node_modules/@vue-flow/core/dist/', pkgName: 'vue-flow-core.es.js' },
+        { path: '../../../node_modules/@vue-flow/core/dist/', pkgName: 'vue-flow-core.mjs' },
         {
           path: '../../../node_modules/@vue-flow/additional-components/dist/',
-          pkgName: 'vue-flow-additional-components.es.js',
+          pkgName: 'vue-flow-additional-components.mjs',
         },
       ].forEach(({ path, pkgName }) => {
         const filePath = resolve(__dirname, `${path}/${pkgName}`)
