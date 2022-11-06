@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { isFunction, isString } from '@vueuse/core'
-import { useHandle, useNode, useVueFlow } from '../../composables'
 import type { Position } from '../../types'
 import type { HandleProps } from '../../types/handle'
-import { getDimensions } from '../../utils'
 
 const { position = 'top' as Position, connectable, id, isValidConnection, ...props } = defineProps<HandleProps>()
 

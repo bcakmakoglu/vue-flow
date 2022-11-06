@@ -1,5 +1,4 @@
 import type { FunctionalComponent } from 'vue'
-import { getBezierPath } from './utils'
 import BaseEdge from './BaseEdge'
 import { Position } from '~/types'
 import type { EdgeProps } from '~/types'

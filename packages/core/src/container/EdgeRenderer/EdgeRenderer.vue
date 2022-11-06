@@ -1,11 +1,8 @@
 <script lang="ts" setup>
-import type { CSSProperties, EffectScope } from 'vue'
+import type { EffectScope } from 'vue'
 import EdgeWrapper from '../../components/Edges/Wrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
-import { useVueFlow } from '../../composables'
-import { groupEdgesByZLevel, warn } from '../../utils'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
-import { Slots } from '../../context'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 const slots = inject(Slots)

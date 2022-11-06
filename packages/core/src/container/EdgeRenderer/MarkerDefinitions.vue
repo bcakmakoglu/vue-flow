@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { useVueFlow } from '../../composables'
 import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
-import { getMarkerId } from '../../utils'
 import Marker from './Marker.vue'
 
 const { edges, connectionLineOptions, defaultMarkerColor: defaultColor } = $(useVueFlow())

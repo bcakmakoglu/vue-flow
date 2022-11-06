@@ -1,9 +1,6 @@
 <script lang="ts" setup>
-import { getBezierPath, getSimpleBezierPath, getSmoothStepPath } from '../Edges/utils'
 import type { GraphNode, HandleElement } from '../../types'
 import { ConnectionLineType, Position } from '../../types'
-import { useVueFlow } from '../../composables'
-import { Slots } from '../../context'
 import { getMarkerId } from '../../utils'
 
 const { sourceNode } = defineProps<{

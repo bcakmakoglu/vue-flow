@@ -38,6 +38,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   autoConnect: undefined,
   elevateEdgesOnSelect: undefined,
 })
+
 const emit = defineEmits<{
   (event: 'nodesChange', changes: NodeChange[]): void
   (event: 'edgesChange', changes: EdgeChange[]): void
@@ -94,7 +95,7 @@ const emit = defineEmits<{
   (event: 'update:nodes', value: GraphNode[]): void
   (event: 'update:edges', value: GraphEdge[]): void
 }>()
-console.log('flubarg')
+
 const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)

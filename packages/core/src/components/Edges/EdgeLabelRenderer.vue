@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { useVueFlow } from '../../composables'
-
 const { viewportRef } = useVueFlow()
 
-const teleportTarget = $computed(() => viewportRef.value?.getElementsByClassName('vue-flow__edge-labels')[0])
+const teleportTarget = computed(() => viewportRef.value?.getElementsByClassName('vue-flow__edge-labels')[0])
 </script>
 
 <script lang="ts">
