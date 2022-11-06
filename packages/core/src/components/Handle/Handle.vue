@@ -2,7 +2,6 @@
 import { isFunction, isString } from '@vueuse/core'
 import { useHandle, useNode, useVueFlow } from '../../composables'
 import type { Position } from '../../types'
-import { ConnectionMode } from '../../types'
 import type { HandleProps } from '../../types/handle'
 import { getDimensions } from '../../utils'
 

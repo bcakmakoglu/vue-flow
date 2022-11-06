@@ -4,6 +4,7 @@ const baseRules = {
   'chai-friendly/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
   'prettier/prettier': ['error', {}, { usePrettierrc: true }],
   'antfu/if-newline': 0,
+  'antfu/generic-spacing': 0,
 }
 
 module.exports = {
