@@ -1,5 +1,137 @@
 # @vue-flow/core
 
+## 1.3.0
+
+### Minor Changes
+
+- [#394](https://github.com/bcakmakoglu/vue-flow/pull/394) [`1403b65`](https://github.com/bcakmakoglu/vue-flow/commit/1403b65f612bd5c905b0ec240d4d16c16ff86df4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `nodesInitialized` event hook
+
+- [#387](https://github.com/bcakmakoglu/vue-flow/pull/387) [`9530290`](https://github.com/bcakmakoglu/vue-flow/commit/95302901335303c4460373848ee07a532f150678) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass node intersections to node drag events (on single node drag)
+
+- [#387](https://github.com/bcakmakoglu/vue-flow/pull/387) [`a19b458`](https://github.com/bcakmakoglu/vue-flow/commit/a19b4581a7e237f746e7cf8837c25f3c36249962) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add intersection utils to help with checking if a node intersects with either other nodes or a given area
+
+  ### Usage
+
+  - You can either use the action `getIntersectingNodes` to find all nodes that intersect with a given node
+
+  ```js
+  const { onNodeDrag, getIntersectingNodes, getNodes } = useVueFlow()
+
+  onNodeDrag(({ node }) => {
+    const intersections = getIntersectingNodes(node).map((n) => n.id)
+
+    getNodes.value.forEach((n) => {
+      // highlight nodes that are intersecting with the dragged node
+      n.class = intersections.includes(n.id) ? 'highlight' : ''
+    })
+  })
+  ```
+
+  - Node drag events will provide you with the intersecting nodes without having to call the action explicitly.
+
+  ```js
+  onNodeDrag(({ intersections }) => {
+    getNodes.value.forEach((n) => {
+      n.class = intersections?.some((i) => i.id === n.id) ? 'highlight' : ''
+    })
+  })
+  ```
+
+  - Or you can use the `isIntersecting` util to check if a node intersects with a given area
+
+  ```js
+  const { onNodeDrag, isNodeIntersecting } = useVueFlow()
+
+  onNodeDrag(({ node }) => {
+    // highlight the node if it is intersecting with the given area
+    node.class = isNodeIntersecting(node, { x: 0, y: 0, width: 100, height: 100 }) ? 'highlight' : ''
+  })
+  ```
+
+- [#396](https://github.com/bcakmakoglu/vue-flow/pull/396) [`03412ac`](https://github.com/bcakmakoglu/vue-flow/commit/03412acf0d4452c104cc342e5e11eb3a7671fe72) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add zoomable and pannable to MiniMap
+
+  ### Usage
+
+  - Set `zoomable` and `pannable` to `true` in `MiniMap` component to enable interactions with the MiniMap
+
+  ```vue
+  <template>
+    <VueFlow v-model="elements">
+      <MiniMap :zoomable="true" :pannable="true" />
+    </VueFlow>
+  </template>
+  ```
+
+### Patch Changes
+
+- [#361](https://github.com/bcakmakoglu/vue-flow/pull/361) [`43ff2a4`](https://github.com/bcakmakoglu/vue-flow/commit/43ff2a42e6d77251b3fe7987afa02c19cdb2f240) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `EdgeLabelRenderer` component export
+
+  ### Usage
+
+  - You can use the `EdgeLabelRenderer` component to render the label of an edge outside the SVG context of edges.
+  - The `EdgeLabelRenderer` component is a component that handles teleporting your edge label into a HTML context
+  - This is useful if you want to use HTML elements in your edge label, like buttons
+
+  ```vue
+  <script lang="ts" setup>
+  import type { EdgeProps, Position } from '@vue-flow/core'
+  import { EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core'
+  import type { CSSProperties } from 'vue'
+
+  interface CustomEdgeProps<T = any> extends EdgeProps<T> {
+    id: string
+    sourceX: number
+    sourceY: number
+    targetX: number
+    targetY: number
+    sourcePosition: Position
+    targetPosition: Position
+    data: T
+    markerEnd: string
+    style: CSSProperties
+  }
+
+  const props = defineProps<CustomEdgeProps>()
+
+  const { removeEdges } = useVueFlow()
+
+  const path = $computed(() => getBezierPath(props))
+  </script>
+
+  <script lang="ts">
+  export default {
+    inheritAttrs: false,
+  }
+  </script>
+
+  <template>
+    <path :id="id" :style="style" class="vue-flow__edge-path" :d="path[0]" :marker-end="markerEnd" />
+
+    <EdgeLabelRenderer>
+      <div
+        :style="{
+          pointerEvents: 'all',
+          position: 'absolute',
+          transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
+        }"
+        class="nodrag nopan"
+      >
+        <button class="edgebutton" @click="removeEdges([id])">×</button>
+      </div>
+    </EdgeLabelRenderer>
+  </template>
+
+  <style>
+  .edgebutton {
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .edgebutton:hover {
+    box-shadow: 0 0 0 2px pink, 0 0 0 4px #f05f75;
+  }
+  </style>
+  ```
+
 ## 1.2.2
 
 ### Patch Changes
