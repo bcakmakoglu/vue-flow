@@ -85,7 +85,7 @@ importers:
 
   e2e:
     specifiers:
-      '@vitejs/plugin-vue': ^2.3.4
+      '@vitejs/plugin-vue': ^3.2.0
       '@vue-flow/additional-components': workspace:*
       '@vue-flow/core': workspace:*
       cypress: ^10.9.0
@@ -93,7 +93,7 @@ importers:
       '@vue-flow/additional-components': link:../packages/additional-components
       '@vue-flow/core': link:../packages/core
     devDependencies:
-      '@vitejs/plugin-vue': 2.3.4_vite@2.9.15+vue@3.2.40
+      '@vitejs/plugin-vue': 3.2.0_vite@3.2.2+vue@3.2.40
       cypress: 10.9.0
 
   examples/nuxt3:
