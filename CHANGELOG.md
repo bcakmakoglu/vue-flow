@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2022-11-06
+
+[0dc1eb6](0dc1eb686df7a7077b2b10d0976a00ab04622489)...[98e5481](98e5481507497a9576889f4ee8fc0442674ae0af)
+
+### Documentation
+
+- Add intersection example ([8e3864d](8e3864dc0982a2e6173cdef6a5b5733e0d739605))
+- Use `EdgeLabelRenderer` in edges example ([8c0acd6](8c0acd624d776812d7e031901d81b15d4e442a80))
+
+### Examples
+
+- Use `EdgeLabelRenderer` in edges example ([a26e83b](a26e83b27d829fe3993ce08caa8fc5e7c1b5366c))
+
+### Features
+
+- Add intersection utils ([4782d70](4782d709c55f7ac674493d87f3de6773e2e1174a))
+- Pass node intersections when dragging a single node ([632fa93](632fa932723b39c2095cbd8d415d0a22575c2b31))
+- Add `nodesInitialized` event hook ([fe1ba03](fe1ba03eb0d5b5a1cd99ae8d6dbf12b5f65c4b98))
+- Add zoomable and pannable to mini map ([bd7fa3c](bd7fa3c14878f5ba23dda16d33dc771d040ea4fe))
+
+### Miscellaneous Tasks
+
+- Update changeset ([4c618e9](4c618e96598e443f9a29f1d7c5bbba224302eb92))
+- Correct action name ([8a51391](8a51391c3184fd8ef002077f56d3e9a2e0732863))
+- Emit `nodesInitialized` after next tick ([a2e260f](a2e260fbaf2e240aebb010fdbfdd0cc264fd0ad7))
+
+### Refactor
+
+- Add div based edge label renderer ([43ff2a4](43ff2a42e6d77251b3fe7987afa02c19cdb2f240))
+- Skip d3 events with no underlying source event ([2a5afe7](2a5afe706ee3d1203579814b22705c1bd2ffb06e))
+- Use regular component for mini map nodes ([9b60790](9b60790c31b64737f5fd8873b5718d22814f4ba4))
+
+### Test
+
+- Correct drag test position ([e9943d5](e9943d52ab94badf1ee8a6e296387dd890d1b0c2))
+
 ## [1.2.2] - 2022-11-04
 
 [fbfa2ef](fbfa2efbd238d6750c45f6bd4ad359473b75d1e5)...[0dc1eb6](0dc1eb686df7a7077b2b10d0976a00ab04622489)
