@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import { useDrag, useVueFlow } from '../../composables'
-import { getRectOfNodes } from '../../utils'
-
 const { emits, setState, viewport, getSelectedNodes, snapToGrid, snapGrid, noPanClassName } = $(useVueFlow())
 
 const el = ref()

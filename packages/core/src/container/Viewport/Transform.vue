@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import { useVueFlow, useWindow } from '../../composables'
 import type { Dimensions } from '../../types'
 
 const { id, viewport, dimensions, fitViewOnInit, emits, fitView, ...rest } = useVueFlow()

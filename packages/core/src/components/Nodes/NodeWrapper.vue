@@ -1,9 +1,5 @@
 <script lang="ts" setup>
-import { useVModel } from '@vueuse/core'
-import { useDrag, useNodeHooks, useVueFlow } from '../../composables'
 import type { GraphNode, HandleConnectable, NodeComponent, SnapGrid, XYZPosition } from '../../types'
-import { NodeId, NodeRef } from '../../context'
-import { getConnectedEdges, getXYZPos, handleNodeClick } from '../../utils'
 
 const { id, type, name, draggable, selectable, connectable, ...props } = defineProps<{
   id: string

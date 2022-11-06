@@ -1,9 +1,6 @@
 import EdgeAnchor from './EdgeAnchor'
 import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, GraphNode, HandleType } from '~/types'
 import { ConnectionMode, Position } from '~/types'
-import { connectionExists, getEdgePositions, getHandle, getMarkerId } from '~/utils'
-import { EdgeId, EdgeRef } from '~/context'
-import { useEdgeHooks, useHandle, useVueFlow } from '~/composables'
 
 interface Props {
   id: string

@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { useVueFlow } from '../../composables'
 import type { SelectionRect as Rect } from '../../types'
-import { getConnectedEdges, getNodesInside } from '../../utils'
 import SelectionRect from './SelectionRect.vue'
 import { getMousePosition } from './utils'
 
