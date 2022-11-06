@@ -4,7 +4,7 @@ import { isBoolean, isFunction } from '@vueuse/core'
 import useWindow from './useWindow'
 
 function isInputDOMNode(event: KeyboardEvent): boolean {
-  const target = event.target as HTMLElement
+  const target = event.composedPath()[0] as HTMLElement
   const hasAttribute = isFunction(target.hasAttribute) ? target.hasAttribute('contenteditable') : false
   const closest = isFunction(target.closest) ? target.closest('.nokey') : null
 
