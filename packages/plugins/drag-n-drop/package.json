@@ -12,8 +12,8 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
-  "main": "./dist/vue-flow-plugin-drag-n-drop.cjs.js",
-  "module": "./dist/vue-flow-plugin-drag-n-drop.es.js",
+  "main": "./dist/vue-flow-plugin-drag-n-drop.js",
+  "module": "./dist/vue-flow-plugin-drag-n-drop.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow-plugin-drag-n-drop.iife.js",
   "jsdelivr": "./dist/vue-flow-plugin-drag-n-drop.iife.js",
@@ -33,11 +33,11 @@
     "@vue-flow/core": "^1.0.0"
   },
   "dependencies": {
-    "@vueuse/core": "^9.3.1"
+    "@vueuse/core": "^9.4.0"
   },
   "devDependencies": {
     "@vue-flow/core": "workspace:*",
-    "vite": "^2.9.15"
+    "vite": "^3.2.2"
   },
   "publishConfig": {
     "access": "public",

@@ -12,8 +12,8 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
-  "main": "./dist/vue-flow-plugin-screenshot.cjs.js",
-  "module": "./dist/vue-flow-plugin-screenshot.es.js",
+  "main": "./dist/vue-flow-plugin-screenshot.js",
+  "module": "./dist/vue-flow-plugin-screenshot.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow-plugin-screenshot.iife.js",
   "jsdelivr": "./dist/vue-flow-plugin-screenshot.iife.js",
@@ -33,12 +33,11 @@
     "vue": "^3.2.37"
   },
   "dependencies": {
-    "@vueuse/core": "^9.3.1",
     "html-to-image": "^1.10.8"
   },
   "devDependencies": {
     "@vue-flow/core": "workspace:*",
-    "vite": "^2.9.15"
+    "vite": "^3.2.2"
   },
   "publishConfig": {
     "access": "public",
