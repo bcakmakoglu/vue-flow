@@ -12,7 +12,7 @@ const vueFlowApp = createVueFlow()
 
 vueFlowApp.use(PluginDagreLayout)
 vueFlowApp.use(PluginDragNDrop)
-vueFlowApp.use(PluginScreenshot)
+vueFlowApp.use(PluginScreenshot({ defaultFileName: 'vue-flow-screenshot' }))
 
 app.config.performance = true
 app.use(router)

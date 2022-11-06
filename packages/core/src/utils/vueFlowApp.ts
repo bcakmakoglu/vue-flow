@@ -1,4 +1,4 @@
-import type { FlowOptions, Plugin, State, VueFlowStore } from '~/types'
+import type { ConfigFactory, FlowOptions, Plugin, State, VueFlowStore } from '~/types'
 import { useActions, useGetters, useState } from '~/store'
 
 /**
@@ -25,7 +25,7 @@ export class VueFlowApp {
   }
 
   /** Used by each store instance that is created as default values for store */
-  public config: Partial<Omit<FlowOptions, 'id'>> = {}
+  public config: ConfigFactory = () => ({})
 
   public static getInstance(): VueFlowApp {
     if (!VueFlowApp.instance) {
@@ -119,17 +119,17 @@ export class VueFlowApp {
   }
 
   /**
-   * Helper to set global config
+   * Set global config factory function
    * @param options
    */
-  public setConfig(options: Partial<Omit<FlowOptions, 'id'>>) {
+  public setConfig(options: ConfigFactory) {
     this.config = options
 
     return this
   }
 }
 
-export const createVueFlow = (options?: Omit<Partial<FlowOptions>, 'id'>) => {
+export const createVueFlow = (options?: ConfigFactory) => {
   const app = VueFlowApp.getInstance()
 
   if (options) app.setConfig(options)
