@@ -315,4 +315,6 @@ export interface StoreBase {
   readonly vueFlowVersion: string
 }
 
+export type ConfigFactory = () => Partial<Omit<FlowOptions, 'id'>>
+
 export type VueFlowStore = StoreBase & FlowHooksOn & ToRefs<State> & Readonly<ComputedGetters> & Readonly<Actions>
