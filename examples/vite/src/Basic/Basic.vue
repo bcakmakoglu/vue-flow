@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
 import type { Elements } from '@vue-flow/core'
-import { VueFlow, isNode, useVueFlow } from '~/index'
+import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },

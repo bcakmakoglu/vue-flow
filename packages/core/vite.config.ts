@@ -47,7 +47,7 @@ export default defineConfig({
     vueTypes(),
     AutoImport({
       imports: ['vue', '@vueuse/core', 'vue/macros'],
-      dirs: ['./src/utils/**', './src/composables/**', './src/context/**', './src/store/**'],
+      dirs: ['./src/utils/**', './src/composables/**', './src/context/**', './src/store/**', './src/components/Edges/utils/**'],
       dts: 'src/auto-imports.d.ts',
     }),
     replace({

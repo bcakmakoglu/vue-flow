@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { NodeWrapper } from '../../components'
 import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
-import { useVueFlow } from '../../composables'
-import { Slots } from '../../context'
-import { warn } from '../../utils'
 
 const slots = inject(Slots)
 

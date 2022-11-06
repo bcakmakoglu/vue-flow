@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { GraphNode } from '../../types'
-import { useKeyPress, useVueFlow } from '../../composables'
 import { NodesSelection, UserSelection } from '../../components'
 
 const {
