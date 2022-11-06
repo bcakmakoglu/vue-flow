@@ -63,14 +63,14 @@ export default {
       <slot name="control-zoom-in">
         <ControlButton class="vue-flow__controls-zoomin" @click="onZoomInHandler">
           <slot name="icon-zoom-in">
-            <PlusIcon />
+            <component :is="PlusIcon" />
           </slot>
         </ControlButton>
       </slot>
       <slot name="control-zoom-out">
         <ControlButton class="vue-flow__controls-zoomout" @click="onZoomOutHandler">
           <slot name="icon-zoom-out">
-            <MinusIcon />
+            <component :is="MinusIcon" />
           </slot>
         </ControlButton>
       </slot>
@@ -79,7 +79,7 @@ export default {
       <slot name="control-fit-view">
         <ControlButton class="vue-flow__controls-fitview" @click="onFitViewHandler">
           <slot name="icon-fit-view">
-            <FitView />
+            <component :is="FitView" />
           </slot>
         </ControlButton>
       </slot>
@@ -88,10 +88,10 @@ export default {
       <slot name="control-interactive">
         <ControlButton v-if="showInteractive" class="vue-flow__controls-interactive" @click="onInteractiveChangeHandler">
           <slot v-if="isInteractive" name="icon-unlock">
-            <Unlock />
+            <component :is="Unlock" />
           </slot>
           <slot v-if="!isInteractive" name="icon-lock">
-            <Lock />
+            <component :is="Lock" />
           </slot>
         </ControlButton>
       </slot>
