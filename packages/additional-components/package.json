@@ -32,7 +32,12 @@
     "vue": "^3.2.37",
     "@vue-flow/core": "^1.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/d3-selection": "^3.0.3",
+    "@types/d3-zoom": "^3.0.1",
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0"
+  },
   "devDependencies": {
     "@vue-flow/core": "workspace:*",
     "@vitejs/plugin-vue": "^2.3.4",

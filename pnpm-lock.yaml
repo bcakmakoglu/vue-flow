@@ -163,8 +163,12 @@ importers:
 
   packages/additional-components:
     specifiers:
+      '@types/d3-selection': ^3.0.3
+      '@types/d3-zoom': ^3.0.1
       '@vitejs/plugin-vue': ^2.3.4
       '@vue-flow/core': workspace:*
+      d3-selection: ^3.0.0
+      d3-zoom: ^3.0.0
       unplugin-auto-import: ^0.11.2
       vite: ^2.9.15
       vite-plugin-vue-type-imports: 0.2.0
@@ -172,6 +176,10 @@ importers:
       vue: ^3.2.37
       vue-tsc: ^0.40.13
     dependencies:
+      '@types/d3-selection': 3.0.3
+      '@types/d3-zoom': 3.0.1
+      d3-selection: 3.0.0
+      d3-zoom: 3.0.0
       vue: 3.2.40
     devDependencies:
       '@vitejs/plugin-vue': 2.3.4_vite@2.9.15+vue@3.2.40
@@ -1851,7 +1859,6 @@ packages:
 
   /@types/d3-color/3.1.0:
     resolution: {integrity: sha512-HKuicPHJuvPgCD+np6Se9MQvS6OCbJmOjGvylzMJRlDwUXjKTTXs6Pwgk79O09Vj/ho3u1ofXnhFOaEWWPrlwA==}
-    dev: true
 
   /@types/d3-contour/3.0.1:
     resolution: {integrity: sha512-C3zfBrhHZvrpAAK3YXqLWVAGo87A4SvJ83Q/zVJ8rFWJdKejUnDYaWZPkA8K84kb2vDA/g90LTQAz7etXcgoQQ==}
@@ -1910,7 +1917,6 @@ packages:
     resolution: {integrity: sha512-jx5leotSeac3jr0RePOH1KdR9rISG91QIE4Q2PYTu4OymLTZfA3SrnURSLzKH48HmXVUru50b8nje4E79oQSQw==}
     dependencies:
       '@types/d3-color': 3.1.0
-    dev: true
 
   /@types/d3-path/3.0.0:
     resolution: {integrity: sha512-0g/A+mZXgFkQxN3HniRDbXMN79K3CdTpLsevj+PXiTcb2hVyvkZUBg37StmgCQkaD84cUJ4uaDAWq7UJOQy2Tg==}
@@ -1940,7 +1946,6 @@ packages:
 
   /@types/d3-selection/3.0.3:
     resolution: {integrity: sha512-Mw5cf6nlW1MlefpD9zrshZ+DAWL4IQ5LnWfRheW6xwsdaWOb6IRRu2H7XPAQcyXEx1D7XQWgdoKR83ui1/HlEA==}
-    dev: true
 
   /@types/d3-shape/3.1.0:
     resolution: {integrity: sha512-jYIYxFFA9vrJ8Hd4Se83YI6XF+gzDL1aC5DCsldai4XYYiVNdhtpGbA/GM6iyQ8ayhSp3a148LY34hy7A4TxZA==}
@@ -1971,7 +1976,6 @@ packages:
     dependencies:
       '@types/d3-interpolate': 3.0.1
       '@types/d3-selection': 3.0.3
-    dev: true
 
   /@types/d3/7.4.0:
     resolution: {integrity: sha512-jIfNVK0ZlxcuRDKtRS/SypEyOQ6UHaFQBKv032X45VvxSJ6Yi5G9behy9h6tNTHTDGh5Vq+KbmBjUWLgY4meCA==}
