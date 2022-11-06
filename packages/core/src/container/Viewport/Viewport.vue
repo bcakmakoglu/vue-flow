@@ -113,6 +113,8 @@ onMounted(() => {
   const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
   d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+    if (!event.sourceEvent) return null
+
     isZoomingOrPanning = true
 
     const flowTransform = eventToFlowTransform(event.transform)
@@ -127,6 +129,8 @@ onMounted(() => {
   })
 
   d3Zoom.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+    if (!event.sourceEvent) return null
+
     isZoomingOrPanning = false
     isDragging = false
 
