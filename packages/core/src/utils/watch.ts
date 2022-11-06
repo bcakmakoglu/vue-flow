@@ -5,7 +5,11 @@ import type { Connection, FlowProps, GraphEdge, GraphNode, VueFlowStore } from '
 
 const isDef = <T>(val: T): val is NonNullable<T> => typeof unref(val) !== 'undefined'
 
-export default (models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>, props: FlowProps, store: VueFlowStore) => {
+export const useWatch = (
+  models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
+  props: FlowProps,
+  store: VueFlowStore,
+) => {
   const scope = effectScope()
 
   scope.run(() => {
