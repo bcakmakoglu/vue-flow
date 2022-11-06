@@ -53,18 +53,7 @@ const props = defineProps({
   },
 })
 
-const edgePath = computed(() =>
-  getBezierPath({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    sourcePosition: props.sourcePosition,
-    targetX: props.targetX,
-    targetY: props.targetY,
-    targetPosition: props.targetPosition,
-  }),
-)
-
-const onClick = () => console.log(props.data)
+const path = computed(() => getBezierPath(props))
 </script>
 
 <script>
@@ -74,16 +63,16 @@ export default {
 </script>
 
 <template>
-  <path :id="props.id" class="vue-flow__edge-path" :d="edgePath[0]" :marker-end="props.markerEnd" />
+  <path :id="id" class="vue-flow__edge-path" :d="path[0]" :marker-end="markerEnd" />
+
   <EdgeText
-    :x="edgePath[1]"
-    :y="edgePath[2]"
-    :label="props.data?.text"
+    :x="path[1]"
+    :y="path[2]"
+    :label="data.text"
     :label-style="{ fill: 'white' }"
     :label-show-bg="true"
-    :label-bg-style="{ fill: '#10b981' }"
+    :label-bg-style="{ fill: 'red' }"
     :label-bg-padding="[2, 4]"
     :label-bg-border-radius="2"
-    @click="onClick"
   />
 </template>
