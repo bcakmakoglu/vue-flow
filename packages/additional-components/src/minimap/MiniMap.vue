@@ -34,6 +34,15 @@ const { id, edges, viewport, dimensions, emits, getNodes, d3Selection, d3Zoom } 
 
 const el = ref<SVGElement>()
 
+const slots = useSlots()
+
+const hasSlot = (type: string) => {
+  const slotType = slots[type]
+
+  console.log(slotType && slotType().length > 0)
+  return !!(slotType && slotType().length > 0)
+}
+
 const elementWidth = computed(() => width ?? attrs.style?.width ?? defaultWidth)
 
 const elementHeight = computed(() => height ?? attrs.style?.height ?? defaultHeight)
@@ -196,6 +205,7 @@ export default {
       @click="onSvgClick"
     >
       <title :id="`vue-flow__minimap-${id}`">Vue Flow mini map {{ id }}</title>
+
       <MiniMapNode
         v-for="node of getNodes"
         :id="node.id"
@@ -215,6 +225,7 @@ export default {
         @mousemove="onNodeMouseMove($event, node)"
         @mouseleave="onNodeMouseLeave($event, node)"
       >
+        <!-- todo: slot causes some lag spikes with FF when a lot of nodes are rendered -->
         <slot
           :id="node.id"
           :name="`node-${node.type}`"
