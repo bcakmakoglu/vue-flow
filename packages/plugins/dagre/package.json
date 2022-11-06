@@ -12,8 +12,8 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
-  "main": "./dist/vue-flow-plugin-dagre.cjs.js",
-  "module": "./dist/vue-flow-plugin-dagre.es.js",
+  "main": "./dist/vue-flow-plugin-dagre.js",
+  "module": "./dist/vue-flow-plugin-dagre.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow-plugin-dagre.iife.js",
   "jsdelivr": "./dist/vue-flow-plugin-dagre.iife.js",
@@ -38,7 +38,7 @@
     "@types/dagre": "^0.7.48",
     "@vue-flow/core": "workspace:*",
     "dagre": "^0.8.5",
-    "vite": "^2.9.15"
+    "vite": "^3.2.2"
   },
   "publishConfig": {
     "access": "public",
