@@ -16,6 +16,7 @@ import { MultiApp, MultiCSS, MultiFlow } from './multi'
 import { HorizontalApp, HorizontalElements } from './horizontal'
 import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
 import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
+import { IntersectionApp, IntersectionCSS, IntersectionElements } from './intersection'
 
 export const exampleImports = {
   basic: {
@@ -107,5 +108,10 @@ export const exampleImports = {
       '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@9.3.0/index.mjs',
       'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@0.13.11/lib/index.mjs',
     },
+  },
+  intersection: {
+    'App.vue': IntersectionApp,
+    'initial-elements.js': IntersectionElements,
+    'style.css': IntersectionCSS,
   },
 }

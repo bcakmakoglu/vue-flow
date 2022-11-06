@@ -193,6 +193,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Hide/Show', link: '/examples/hidden' },
             { text: 'Horizontal Flow', link: '/examples/horizontal' },
             { text: 'Interactions', link: '/examples/interaction' },
+            { text: 'Intersection', link: '/examples/intersection' },
             { text: 'Teleport', link: '/examples/teleport' },
             { text: 'Transition', link: '/examples/transition' },
             { text: 'Multiple Flows', link: '/examples/multi' },
