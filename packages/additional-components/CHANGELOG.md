@@ -1,5 +1,23 @@
 # @vue-flow/additional-components
 
+## 1.2.0
+
+### Minor Changes
+
+- [#396](https://github.com/bcakmakoglu/vue-flow/pull/396) [`03412ac`](https://github.com/bcakmakoglu/vue-flow/commit/03412acf0d4452c104cc342e5e11eb3a7671fe72) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add zoomable and pannable to MiniMap
+
+  ### Usage
+
+  - Set `zoomable` and `pannable` to `true` in `MiniMap` component to enable interactions with the MiniMap
+
+  ```vue
+  <template>
+    <VueFlow v-model="elements">
+      <MiniMap :zoomable="true" :pannable="true" />
+    </VueFlow>
+  </template>
+  ```
+
 ## 1.1.0
 
 ### Minor Changes
