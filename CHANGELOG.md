@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.1] - 2022-11-07
+
+[98e5481](98e5481507497a9576889f4ee8fc0442674ae0af)...[845d88d](845d88dede87548b9c85d108597c90c8b9d11e55)
+
+### Miscellaneous Tasks
+
+- Update dev dependencies ([d966ff2](d966ff27aa60a391a40d6befbf5a8b13a1db5b3f))
+- Upgrade to vite 3 ([489da64](489da64200bcb778287f64a22eca86949e84c164))
+- Use auto imports to for utils, composables etc. ([f9af2d3](f9af2d36fd03201685d100f3b50a5ba649924b53))
+- Remove unnecessary import paths ([650e752](650e7527aef8745b4e7e5b23b1154ba51cc2f19d))
+- Update pkg file names ([1e27b08](1e27b08c4b1db81698d2079377eb19624c36e8cf))
+- Upgrade to vite 3 ([74433c4](74433c46e98e1e957678091119778a1c6a71ac20))
+- Add README.md ([4fce82e](4fce82ef1e5d22187f4bda609f18e32ccdf5a27a))
+- Upgrade vitejs plugin-vue to latest ([047e1fe](047e1fec7d67ab8ede480c2b132c0354ea981e2f))
+- Update pkg file names ([0b83f24](0b83f2438bb77d6b74451cfc4e18cbecacaf83e8))
+- Update gif ([56ba8a8](56ba8a86567bc7f0ce2b3499b7ed1b601e037e8d))
+
+### Refactor
+
+- Use `event.composedPath` as event target for input dom node check ([1f722f5](1f722f549440ecb0fe363ad45c984b096ab21acf))
+- Stop reset of user selection on mouse leave ([fb8a830](fb8a8309e928eeaec90bb654674167e866330a22))
+
 ## [1.3.0] - 2022-11-06
 
 [0dc1eb6](0dc1eb686df7a7077b2b10d0976a00ab04622489)...[98e5481](98e5481507497a9576889f4ee8fc0442674ae0af)
