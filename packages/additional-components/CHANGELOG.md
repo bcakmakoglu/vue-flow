@@ -1,5 +1,11 @@
 # @vue-flow/additional-components
 
+## 1.2.1
+
+### Patch Changes
+
+- [#398](https://github.com/bcakmakoglu/vue-flow/pull/398) [`0635dfa`](https://github.com/bcakmakoglu/vue-flow/commit/0635dfa171de27063e7d08ba8591330f00982732) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Upgrade to vite 3
+
 ## 1.2.0
 
 ### Minor Changes
