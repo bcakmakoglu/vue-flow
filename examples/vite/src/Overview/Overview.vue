@@ -128,7 +128,7 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
     @edge-mouse-leave="onEdgeMouseLeave"
     @edge-double-click="onEdgeDoubleClick"
   >
-    <MiniMap :node-stroke-color="nodeStrokeColor" :node-color="nodeColor" :node-border-radius="2" />
+    <MiniMap pannable :node-stroke-color="nodeStrokeColor" :node-color="nodeColor" :node-border-radius="2" />
     <Controls />
     <Background color="#aaa" :gap="20" />
   </VueFlow>
