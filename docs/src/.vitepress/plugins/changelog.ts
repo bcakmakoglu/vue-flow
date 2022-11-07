@@ -9,14 +9,14 @@ interface ChangelogFile {
 const skip = ['node_modules', 'dist', 'turbo']
 
 const getAllFiles = function (dirPath: string, needle?: string, arrayOfFiles: ChangelogFile[] = [], pkgName?: string) {
-  readdirSync(dirPath).forEach((file) => {
-    if (skip.includes(file)) return
+  readdirSync(dirPath).forEach((fileOrDir) => {
+    if (skip.includes(fileOrDir)) return
 
-    if (statSync(`${dirPath}/${file}`).isDirectory()) {
-      getAllFiles(`${dirPath}/${file}`, needle, arrayOfFiles, file)
+    if (statSync(`${dirPath}/${fileOrDir}`).isDirectory()) {
+      getAllFiles(`${dirPath}/${fileOrDir}`, needle, arrayOfFiles, fileOrDir)
     } else {
-      if (file.includes('CHANGELOG')) {
-        arrayOfFiles.push({ path: `${dirPath}/${file}`, pkgName })
+      if (fileOrDir.includes('CHANGELOG')) {
+        arrayOfFiles.push({ path: `${dirPath}/${fileOrDir}`, pkgName })
       }
     }
   })
@@ -33,11 +33,12 @@ if (!existsSync(changelogDirPath)) {
 }
 
 files.forEach(({ path, pkgName }) => {
-  const isCore = pkgName === 'core'
-
   const filePath = resolve(__dirname, `${path}`)
 
-  copyFile(filePath, `${changelogDirPath}/${isCore ? 'index' : pkgName}.md`, () => {})
+  copyFile(filePath, `${changelogDirPath}/${pkgName}.md`, () => {})
 
-  console.log(`Copied ${filePath} to ${changelogDirPath}/${isCore ? 'index' : pkgName}.md`)
+  console.log(`Copied ${filePath} to ${changelogDirPath}/${pkgName}.md`)
 })
+
+copyFile(resolve(__dirname, `../../../../CHANGELOG.md`), `${changelogDirPath}/index.md`, () => {})
+console.log(`Copied main CHANGELOG to ${changelogDirPath}/index.md`)

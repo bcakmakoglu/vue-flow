@@ -45,14 +45,13 @@ const changelogSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
       collapsible: true,
       items: files.map((file) => {
         const name = file.pkgName.replace('.md', '')
-        const isCore = name === 'core'
 
         return {
           text: name
             .split('-')
             .map((s) => capitalize(s))
             .join(' '),
-          link: `/changelog/${isCore ? '' : name}`,
+          link: `/changelog/${name}`,
         }
       }),
     },
