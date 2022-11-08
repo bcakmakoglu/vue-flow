@@ -22,31 +22,71 @@ $ npm i --save @vue-flow/plugin-drag-n-drop
 // main.ts or your app entry point
 import { createVueFlow } from '@vue-flow/core'
 import { PluginDragNDrop } from '@vue-flow/plugin-drag-n-drop'
+import { createApp } from 'vue'
+
+import App from './App.vue'
+
+const app = createApp(App)
 
 const vueFlowApp = createVueFlow()
 
 vueFlowApp.use(PluginDragNDrop)
+
+app.mount('#root')
 ```
 
 - Attach the handlers
 
 ```vue
 <script setup>
-// Flowchart.vue
+// App.vue
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { useDragNDrop } from '@vue-flow/plugin-drag-n-drop'
-import { VueFlow } from '@vue-flow/core'
-import Sidebar from './Sidebar.vue'
 import initialElements from './initial-elements'
+
+import Sidebar from './Sidebar.vue'
+
+const { addNodes } = useVueFlow()
 
 // some nodes and edges
 const elements = ref(initialElements)
 
 // your drag and drop handler is bound to the current vue flow instance
 // it will never apply to other store instances at the same time
-const { handleDragOver, handleDrop } = useDragNDrop()
+const { handleDragOver, handleDrop, onDrop } = useDragNDrop()
+
+onDrop(({ type, position }) => {
+  const id = getId()
+  
+  // add a new node on drop
+  addNodes([
+    {
+      id,
+      type,
+      position,
+      label: `${type} node`,
+    },
+  ])
+
+  // align node position after drop, so it's centered to the mouse
+  nextTick(() => {
+    const node = findNode(id)
+
+    const stop = watch(
+      () => node.dimensions,
+      (dimensions) => {
+        if (dimensions.width > 0 && dimensions.height > 0) {
+          node.position = { x: node.position.x - node.dimensions.width / 2, y: node.position.y - node.dimensions.height / 2 }
+          stop()
+        }
+      },
+      { deep: true, flush: 'post' },
+    )
+  })
+})
 </script>
 <template>
-  <div style="height: 300px" @dragover="handleDragOver">
+  <div style="height: 100vh" @dragover="handleDragOver">
     <VueFlow v-model="elements" @drop="handleDrop" />
     
     <Sidebar />
@@ -65,8 +105,11 @@ const { handleDragStart } = useDragNDrop()
 <template>
   <aside>
     <div class="description">You can drag these nodes to the pane on the left.</div>
+    
     <div class="vue-flow__node-input" :draggable="true" @dragstart="handleDragStart($event, 'input')">Input Node</div>
+    
     <div class="vue-flow__node-default" :draggable="true" @dragstart="handleDragStart($event, 'default')">Default Node</div>
+    
     <div class="vue-flow__node-output" :draggable="true" @dragstart="handleDragStart($event, 'output')">Output Node</div>
   </aside>
 </template>
