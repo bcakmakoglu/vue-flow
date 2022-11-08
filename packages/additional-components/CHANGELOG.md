@@ -1,5 +1,13 @@
 # @vue-flow/additional-components
 
+## 1.2.2
+
+### Patch Changes
+
+- [#415](https://github.com/bcakmakoglu/vue-flow/pull/415) [`a27ccc4`](https://github.com/bcakmakoglu/vue-flow/commit/a27ccc46838243bfbe889a74f0ead9f2f381a06f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Render mini map nodes regardless of `onlyRenderVisibleElements`
+
+- [#415](https://github.com/bcakmakoglu/vue-flow/pull/415) [`f89d4ec`](https://github.com/bcakmakoglu/vue-flow/commit/f89d4ecbfbb3e708d217dfa6de39bcce1d4a5266) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Inject minimap slots to avoid performance drops when using template slots
+
 ## 1.2.1
 
 ### Patch Changes

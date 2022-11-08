@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.3.3
+
+### Patch Changes
+
+- [#412](https://github.com/bcakmakoglu/vue-flow/pull/412) [`630434d`](https://github.com/bcakmakoglu/vue-flow/commit/630434d5cfaae90eda96e0a49c488860fe994d32) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use node name as class name
+
 ## 1.3.2
 
 ### Patch Changes
