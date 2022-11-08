@@ -1,7 +1,5 @@
 import useVueFlow from './useVueFlow'
-import { NodeId, NodeRef } from '~/context'
 import type { CustomEvent, ElementData } from '~/types'
-import { getConnectedEdges } from '~/utils'
 
 /**
  * Access a node, it's parent (if one exists) and connected edges

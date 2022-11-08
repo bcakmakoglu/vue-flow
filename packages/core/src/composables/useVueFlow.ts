@@ -1,7 +1,5 @@
 import type { EffectScope } from 'vue'
 import type { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
-import { VueFlow } from '~/context'
-import { useActions, useGetters, useState } from '~/store'
 
 /**
  * Stores all currently created store instances

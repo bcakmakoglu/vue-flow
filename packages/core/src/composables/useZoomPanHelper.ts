@@ -1,7 +1,6 @@
 import { zoomIdentity } from 'd3-zoom'
 import useVueFlow from './useVueFlow'
 import useWindow from './useWindow'
-import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint } from '~/utils'
 import type { D3Selection, Dimensions, Getters, GraphNode, ViewportFunctions } from '~/types'
 
 const DEFAULT_PADDING = 0.1
