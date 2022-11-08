@@ -10,6 +10,9 @@
   backdrop-filter: blur(1px);
 }
 
+.VPPage {
+  @apply px-8 py-6 md:px-12 lg:px-24;
+}
 
 html, body {
   @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
