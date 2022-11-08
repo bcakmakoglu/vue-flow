@@ -107,6 +107,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
 export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge => {
   defaults = !isGraphEdge(edge)
     ? ({
+        ...defaults,
         sourceHandle: edge.sourceHandle ? edge.sourceHandle.toString() : undefined,
         targetHandle: edge.targetHandle ? edge.targetHandle.toString() : undefined,
         type: edge.type,
@@ -122,7 +123,6 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         data: shallowReactive(edge.data || {}),
         events: shallowReactive(edge.events || {}),
         label: edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label,
-        ...defaults,
       } as GraphEdge)
     : defaults
 
