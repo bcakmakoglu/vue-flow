@@ -143,7 +143,7 @@ const Wrapper = defineComponent({
           'data-id': props.id,
           'class': [
             'vue-flow__edge',
-            `vue-flow__edge-${props.name}`,
+            `vue-flow__edge-${props.type === false ? 'default' : props.name}`,
             {
               updating: mouseOver,
               selected: edge.selected,
@@ -161,7 +161,7 @@ const Wrapper = defineComponent({
         [
           updating
             ? null
-            : h(props.type as any, {
+            : h(props.type === false ? defaultEdgeTypes.default : props.type, {
                 id: props.id,
                 sourceNode: props.sourceNode,
                 targetNode: props.targetNode,

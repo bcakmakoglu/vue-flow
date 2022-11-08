@@ -194,7 +194,7 @@ export default {
     ref="nodeElement"
     class="vue-flow__node"
     :class="[
-      `vue-flow__node-${name}`,
+      `vue-flow__node-${type === false ? 'default' : type}`,
       noPanClassName,
       {
         dragging,
@@ -218,7 +218,7 @@ export default {
     @dblclick="onDoubleClick"
   >
     <component
-      :is="type"
+      :is="type === false ? defaultNodeTypes.default : type"
       :id="node.id"
       :type="node.type"
       :data="node.data"
