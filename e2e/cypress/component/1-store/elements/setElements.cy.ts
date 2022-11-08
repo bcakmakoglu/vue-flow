@@ -1,4 +1,4 @@
-import { isEdge, isNode, useVueFlow } from '@vue-flow/core'
+import { defaultEdgeTypes, defaultNodeTypes, isEdge, isNode, useVueFlow } from '@vue-flow/core'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
@@ -27,9 +27,18 @@ describe('Store Action: `setElements`', () => {
   })
 
   it('has correct element types', () => {
-    const nodeTypes = nodes.map((node) => node.type)
+    const nodeTypes = nodes.reduce((types, node) => {
+      if (node.type && !types.includes(node.type)) types.push(node.type)
+      return types
+    }, Object.keys(defaultNodeTypes))
+
     store.nodes.value.forEach((el) => expect(nodeTypes).to.include(el.type))
-    const edgeTypes = edges.map((edge) => edge.type)
+
+    const edgeTypes = edges.reduce((types, edge) => {
+      if (edge.type && !types.includes(edge.type)) types.push(edge.type)
+      return types
+    }, Object.keys(defaultEdgeTypes))
+
     store.edges.value.forEach((el) => expect(edgeTypes).to.include(el.type))
   })
 
