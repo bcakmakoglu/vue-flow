@@ -19,31 +19,6 @@ import type {
   Rect,
   State,
 } from '~/types'
-import {
-  addEdgeToStore,
-  applyChanges,
-  createAdditionChange,
-  createGraphNodes,
-  createRemoveChange,
-  createSelectionChange,
-  getConnectedEdges,
-  getDimensions,
-  getHandleBounds,
-  getOverlappingArea,
-  getSelectionChanges,
-  isDef,
-  isEdge,
-  isGraphEdge,
-  isGraphNode,
-  isNode,
-  isRect,
-  nodeToRect,
-  parseEdge,
-  pointToRendererPoint,
-  updateEdgeAction,
-  warn,
-} from '~/utils'
-import { useZoomPanHelper } from '~/composables'
 
 export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {

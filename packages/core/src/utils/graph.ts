@@ -20,7 +20,6 @@ import type {
   XYPosition,
   XYZPosition,
 } from '~/types'
-import { useWindow } from '~/composables'
 
 export const nodeToRect = (node: GraphNode): Rect => ({
   ...(node.computedPosition || { x: 0, y: 0 }),

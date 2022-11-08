@@ -4,9 +4,7 @@ import { select } from 'd3-selection'
 import type { Ref } from 'vue'
 import type { MaybeRef } from '@vueuse/core'
 import useVueFlow from './useVueFlow'
-import { handleNodeClick, pointToRendererPoint } from '~/utils'
 import type { NodeDragEvent, NodeDragItem, SnapGrid, XYPosition } from '~/types'
-import { getDragItems, getEventHandlerParams, hasSelector, updatePosition } from '~/utils/drag'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 

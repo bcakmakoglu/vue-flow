@@ -1,5 +1,4 @@
 import useVueFlow from './useVueFlow'
-import { EdgeId, EdgeRef } from '~/context'
 import type { CustomEvent, ElementData } from '~/types'
 
 /**

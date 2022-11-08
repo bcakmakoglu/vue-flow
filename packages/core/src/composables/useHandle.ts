@@ -1,7 +1,6 @@
 import type { MaybeRef } from '@vueuse/core'
 import { isFunction } from '@vueuse/core'
 import useVueFlow from './useVueFlow'
-import { getHostForElement } from '~/utils'
 import type { Connection, Getters, GraphEdge, HandleType, ValidConnectionFunc } from '~/types'
 import { ConnectionMode } from '~/types'
 
