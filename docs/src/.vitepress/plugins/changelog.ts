@@ -26,7 +26,7 @@ const getAllFiles = function (dirPath: string, needle?: string, arrayOfFiles: Ch
   return arrayOfFiles
 }
 
-export const files = getAllFiles(resolve(__dirname, '../../../../packages'), 'CHANGELOG')
+export const changelogFiles = getAllFiles(resolve(__dirname, '../../../../packages'), 'CHANGELOG')
 
 const changelogDirPath = resolve(__dirname, `../../changelog/`)
 
@@ -34,7 +34,7 @@ if (!existsSync(changelogDirPath)) {
   mkdirSync(changelogDirPath)
 }
 
-files.forEach(({ path, pkgName }) => {
+changelogFiles.forEach(({ path, pkgName }) => {
   const isCore = pkgName === 'core'
 
   const filePath = resolve(__dirname, `${path}`)
