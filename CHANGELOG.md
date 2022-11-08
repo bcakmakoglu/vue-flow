@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2022-11-08
+
+[845d88d](845d88dede87548b9c85d108597c90c8b9d11e55)...[2bfb74d](2bfb74d63bf7730dce02a1737526a02207e90639)
+
+### Bug Fixes
+
+- Prevent edge defaults from overwriting actual edge values ([5b397fa](5b397fa499b22d30d25b605bbb48d2214ffa8db3))
+- Fall back to default node or edge type ([6c738bf](6c738bfbfb91126774aacd73e753e11c19532733))
+
+### Features
+
+- Setup turbo cache in gh action ([49c53d0](49c53d0d164af8205a2f237c6b4b13a545bb9e0a))
+
+### Miscellaneous Tasks
+
+- Use getter for edge/node types ([3a5d06d](3a5d06d3b1243cfdfa1735f52611c879860ae82d))
+
+### Refactor
+
+- Place wrapper in separate stacking ctx ([9d3c3fa](9d3c3faa0963fb927e6be0dcda747659f2286946))
+
+### Test
+
+- Add `defaultEdgeOptions` test ([559daf0](559daf0a201e8b8460d949c3e7ead15dcdfd380b))
+- Use default element types in check ([7dfc5f9](7dfc5f97e080d220d7f19a328afe644db7dc9430))
+
 ## [1.3.1] - 2022-11-07
 
 [98e5481](98e5481507497a9576889f4ee8fc0442674ae0af)...[845d88d](845d88dede87548b9c85d108597c90c8b9d11e55)
