@@ -16,7 +16,8 @@ interface Props {
 const Wrapper = defineComponent({
   props: ['name', 'type', 'id', 'updatable', 'selectable', 'edge', 'sourceNode', 'targetNode'],
   setup(props: Props) {
-    const { addSelectedEdges, connectionMode, edgeUpdaterRadius, emits, nodesSelectionActive, getEdges } = useVueFlow()
+    const { addSelectedEdges, connectionMode, edgeUpdaterRadius, emits, nodesSelectionActive, getEdges, getEdgeTypes } =
+      useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
 
@@ -161,7 +162,7 @@ const Wrapper = defineComponent({
         [
           updating
             ? null
-            : h(props.type === false ? defaultEdgeTypes.default : props.type, {
+            : h(props.type === false ? getEdgeTypes.value.default : props.type, {
                 id: props.id,
                 sourceNode: props.sourceNode,
                 targetNode: props.targetNode,

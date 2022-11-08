@@ -28,6 +28,7 @@ const {
   updateNodeDimensions,
   onUpdateNodeInternals,
   getIntersectingNodes,
+  getNodeTypes,
 } = $(useVueFlow())
 
 const node = $(useVModel(props, 'node'))
@@ -218,7 +219,7 @@ export default {
     @dblclick="onDoubleClick"
   >
     <component
-      :is="type === false ? defaultNodeTypes.default : type"
+      :is="type === false ? getNodeTypes.default : type"
       :id="node.id"
       :type="node.type"
       :data="node.data"
