@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.3] - 2022-11-08
+
+[2bfb74d](2bfb74d63bf7730dce02a1737526a02207e90639)...[fc84b9c](fc84b9c6f838f2bf466574d5e4bdedcd8139ccfd)
+
+### Bug Fixes
+
+- Use node name as class name ([95ff059](95ff0596cf1edfc8634c478349f2b48163362e99))
+- Render mini map nodes regardless of `onlyRenderVisibleElements` ([7680c52](7680c52153caa479c018bbadf2bc127f77cb6a14))
+
+### Miscellaneous Tasks
+
+- Remove unnecessary imports ([6106e90](6106e90abc9124ebe18efb9eb3ec5def36b59273))
+
+### Performance
+
+- Inject slots to avoid performance drop ([0c0bfe4](0c0bfe48ad608ad8bda86d12d5c2dd925cfd8731))
+
 ## [1.3.2] - 2022-11-08
 
 [845d88d](845d88dede87548b9c85d108597c90c8b9d11e55)...[2bfb74d](2bfb74d63bf7730dce02a1737526a02207e90639)
