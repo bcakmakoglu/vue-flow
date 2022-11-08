@@ -16,8 +16,18 @@ interface Props {
 const Wrapper = defineComponent({
   props: ['name', 'type', 'id', 'updatable', 'selectable', 'edge', 'sourceNode', 'targetNode'],
   setup(props: Props) {
-    const { addSelectedEdges, connectionMode, edgeUpdaterRadius, emits, nodesSelectionActive, getEdges, getEdgeTypes } =
-      useVueFlow()
+    const {
+      onlyRenderVisibleElements,
+      addSelectedEdges,
+      connectionMode,
+      edgeUpdaterRadius,
+      emits,
+      nodesSelectionActive,
+      getEdges,
+      getEdgeTypes,
+      dimensions,
+      viewport,
+    } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
 
@@ -104,6 +114,22 @@ const Wrapper = defineComponent({
     }
 
     return () => {
+      if (onlyRenderVisibleElements.value) {
+        const isVisible = isEdgeVisible({
+          sourcePos: props.sourceNode.computedPosition || { x: 0, y: 0 },
+          targetPos: props.targetNode.computedPosition || { x: 0, y: 0 },
+          sourceWidth: props.sourceNode.dimensions.width,
+          sourceHeight: props.sourceNode.dimensions.height,
+          targetWidth: props.targetNode.dimensions.width,
+          targetHeight: props.targetNode.dimensions.height,
+          width: dimensions.value.width,
+          height: dimensions.value.height,
+          viewport: viewport.value,
+        })
+
+        if (!isVisible) return null
+      }
+
       if (!props.sourceNode || !props.targetNode) return null
 
       let sourceNodeHandles

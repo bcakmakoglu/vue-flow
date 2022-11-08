@@ -1,6 +1,5 @@
 import { defaultEdgeTypes, defaultNodeTypes } from './state'
 import type { ComputedGetters, GraphEdge, GraphNode, State } from '~/types'
-import { getNodesInside, isEdgeVisible, warn } from '~/utils'
 
 export default (state: State): ComputedGetters => {
   const nodeIds = computed(() => state.nodes.map((n) => n.id))
@@ -38,25 +37,27 @@ export default (state: State): ComputedGetters => {
 
   const getNodes = computed<GraphNode[]>(() => {
     const nodes = state.nodes.filter((n) => !n.hidden)
-    return state.onlyRenderVisibleElements
-      ? nodes &&
-          getNodesInside(
-            nodes,
-            {
-              x: 0,
-              y: 0,
-              width: state.dimensions.width,
-              height: state.dimensions.height,
-            },
-            state.viewport,
-            true,
-          )
-      : nodes ?? []
+
+    if (!state.onlyRenderVisibleElements) return nodes
+
+    return (
+      getNodesInside(
+        nodes,
+        {
+          x: 0,
+          y: 0,
+          width: state.dimensions.width,
+          height: state.dimensions.height,
+        },
+        state.viewport,
+        true,
+      ) || []
+    )
   })
 
-  const edgeHidden = (e: GraphEdge, source?: GraphNode, target?: GraphNode) => {
-    source = source ?? getNode.value(e.source)
-    target = target ?? getNode.value(e.target)
+  const edgeHidden = (e: GraphEdge) => {
+    const source = e.sourceNode ?? getNode.value(e.source)
+    const target = e.targetNode ?? getNode.value(e.target)
 
     if (!source || !target) {
       state.edges = state.edges.filter((edge) => edge.id !== e.id)
@@ -68,29 +69,7 @@ export default (state: State): ComputedGetters => {
     return !e.hidden && !target.hidden && !source.hidden
   }
 
-  const getEdges = computed<GraphEdge[]>(() => {
-    if (!state.onlyRenderVisibleElements) return state.edges.filter((edge) => edgeHidden(edge))
-
-    return state.edges.filter((e) => {
-      const source = getNode.value(e.source)!
-      const target = getNode.value(e.target)!
-
-      return (
-        edgeHidden(e, source, target) &&
-        isEdgeVisible({
-          sourcePos: source.computedPosition || { x: 0, y: 0 },
-          targetPos: target.computedPosition || { x: 0, y: 0 },
-          sourceWidth: source.dimensions.width,
-          sourceHeight: source.dimensions.height,
-          targetWidth: target.dimensions.width,
-          targetHeight: target.dimensions.height,
-          width: state.dimensions.width,
-          height: state.dimensions.height,
-          viewport: state.viewport,
-        })
-      )
-    })
-  })
+  const getEdges = computed<GraphEdge[]>(() => state.edges.filter(edgeHidden))
 
   const getElements: ComputedGetters['getElements'] = computed(() => [...getNodes.value, ...getEdges.value])
 
