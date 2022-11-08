@@ -8,6 +8,7 @@ import type { PanelPosition } from '../panel'
 import { Panel } from '../panel'
 import type { MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
+import { MiniMapSlots } from './types'
 
 const {
   width,
@@ -34,14 +35,7 @@ const { id, edges, viewport, dimensions, emits, nodes, d3Selection, d3Zoom } = u
 
 const el = ref<SVGElement>()
 
-const slots = useSlots()
-
-const hasSlot = (type: string) => {
-  const slotType = slots[type]
-
-  console.log(slotType && slotType().length > 0)
-  return !!(slotType && slotType().length > 0)
-}
+provide(MiniMapSlots, useSlots())
 
 const elementWidth = computed(() => width ?? attrs.style?.width ?? defaultWidth)
 
@@ -219,29 +213,13 @@ export default {
         :stroke-color="nodeStrokeColorFunc(node)"
         :stroke-width="nodeStrokeWidth"
         :shape-rendering="shapeRendering"
+        :type="node.type"
         @click="onNodeClick($event, node)"
         @dblclick="onNodeDblClick($event, node)"
         @mouseenter="onNodeMouseEnter($event, node)"
         @mousemove="onNodeMouseMove($event, node)"
         @mouseleave="onNodeMouseLeave($event, node)"
-      >
-        <!-- todo: slot causes some lag spikes with FF when a lot of nodes are rendered -->
-        <slot
-          :id="node.id"
-          :name="`node-${node.type}`"
-          :parent-node="node.parentNode"
-          :selected="node.selected"
-          :position="node.computedPosition"
-          :dimensions="node.dimensions"
-          :style="node.style"
-          :class="nodeClassNameFunc(node)"
-          :color="nodeColorFunc(node)"
-          :border-radius="nodeBorderRadius"
-          :stroke-color="nodeStrokeColorFunc(node)"
-          :stroke-width="nodeStrokeWidth"
-          :shape-rendering="shapeRendering"
-        />
-      </MiniMapNode>
+      />
 
       <path class="vue-flow__minimap-mask" :style="pannable ? 'cursor: grab' : ''" :d="d" :fill="maskColor" fill-rule="evenodd" />
     </svg>

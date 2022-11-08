@@ -1,5 +1,5 @@
 import type { Dimensions, GraphNode, XYPosition } from '@vue-flow/core'
-import type { CSSProperties } from 'vue'
+import type { CSSProperties, InjectionKey, Slots } from 'vue'
 import type { PanelPosition } from '../panel'
 
 /** expects a node and returns a color value */
@@ -38,6 +38,7 @@ export interface MiniMapProps {
 /** these props are passed to mini map node slots */
 export interface MiniMapNodeProps {
   id: string
+  type: string
   parentNode?: string
   selected?: boolean
   dragging?: boolean
@@ -49,3 +50,5 @@ export interface MiniMapNodeProps {
   strokeColor?: string
   strokeWidth?: number
 }
+
+export const MiniMapSlots: InjectionKey<Slots> = Symbol('MiniMapSlots')
