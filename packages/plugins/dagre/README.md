@@ -21,32 +21,36 @@ $ npm i --save @vue-flow/plugin-dagre dagre
 ```ts
 // main.ts or your app entry point
 import { createVueFlow } from '@vue-flow/core'
-import { PluginScreenshot } from '@vue-flow/plugin-dagre'
+import { PluginDagreLayout } from '@vue-flow/plugin-dagre'
+import { createApp } from 'vue'
+
+import App from './App.vue'
+
+const app = createApp(App)
 
 const vueFlowApp = createVueFlow()
 
-vueFlowApp.use(PluginScreenshot)
+vueFlowApp.use(PluginDagreLayout)
+
+app.mount('#root')
 ```
 
-- Attach the handlers
+- Use the layout action to lay out your graph
 
 ```vue
 <script setup>
-// Flowchart.vue
-import { useDagreLayout } from '@vue-flow/plugin-dagre'
+// App.vue
 import { VueFlow } from '@vue-flow/core'
+import { useDagreLayout } from '@vue-flow/plugin-dagre'
 import initialElements from './initial-elements'
 
-// some nodes and edges
 const elements = ref(initialElements)
 
-// your drag and drop handler is bound to the current vue flow instance
-// it will never apply to other store instances at the same time
 const { layout, dagreGraph } = useDagreLayout()
 </script>
 <template>
-  <div style="height: 300px">
-    <VueFlow v-model="elements" @pane-ready="layout" />
+  <div style="height: 100vh">
+    <VueFlow v-model="elements" @nodes-initialized="layout('TB')" />
   </div>
 </template>
 ```
