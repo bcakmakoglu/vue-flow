@@ -195,7 +195,7 @@ export default {
     ref="nodeElement"
     class="vue-flow__node"
     :class="[
-      `vue-flow__node-${type === false ? 'default' : type}`,
+      `vue-flow__node-${type === false ? 'default' : name}`,
       noPanClassName,
       {
         dragging,
