@@ -1,5 +1,4 @@
 import { resolve } from 'path'
-import { readdirSync, statSync } from 'fs'
 import type { DefaultTheme, HeadConfig } from 'vitepress'
 import { defineConfigWithTheme } from 'vitepress'
 import WindiCSS from 'vite-plugin-windicss'
@@ -9,55 +8,10 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { useVueFlow } from '@vue-flow/core'
 import head from './head'
-import { copyVueFlowPlugin, files } from './plugins'
+import { copyVueFlowPlugin } from './plugins'
+import { changelogSidebarEntries, pluginSidebarEntries, typedocSidebarEntries } from './utils'
 
 const { vueFlowVersion } = useVueFlow()
-
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-const typedocSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
-  const filePath = resolve(__dirname, '../typedocs')
-
-  const docsModules = readdirSync(filePath).filter((name) => statSync(`${filePath}/${name}`).isDirectory())
-
-  return docsModules.map((module) => {
-    let children = readdirSync(`${filePath}/${module}/`).map<DefaultTheme.SidebarItem>((entry) => ({
-      text: entry.replace('.md', ''),
-      link: `/typedocs/${module}/${entry.replace('.md', '')}`,
-    }))
-
-    if (module === 'variables') {
-      children = children.filter((child) => {
-        return child.link.includes('default')
-      })
-    }
-
-    return { text: capitalize(module), collapsible: true, items: children } as DefaultTheme.SidebarGroup
-  })
-}
-
-const changelogSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
-  return [
-    {
-      text: 'CHANGELOG',
-      collapsible: true,
-      items: files.map((file) => {
-        const name = file.pkgName.replace('.md', '')
-        const isCore = name === 'core'
-
-        return {
-          text: name
-            .split('-')
-            .map((s) => capitalize(s))
-            .join(' '),
-          link: `/changelog/${isCore ? '' : name}`,
-        }
-      }),
-    },
-  ]
-}
 
 export default defineConfigWithTheme<DefaultTheme.Config>({
   title: 'Vue Flow',
@@ -241,13 +195,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       ],
       '/typedocs/': typedocSidebarEntries(),
       '/changelog/': changelogSidebarEntries(),
-      '/plugins/': [
-        {
-          text: 'Plugins',
-          collapsible: true,
-          items: [],
-        },
-      ],
+      '/plugins/': pluginSidebarEntries(),
     },
   },
 })
