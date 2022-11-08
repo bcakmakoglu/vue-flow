@@ -42,7 +42,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative h-[90vh] md:h-[75vh]">
+  <div class="relative h-[calc(100vh-var(--vp-nav-height-mobile))] lg:h-[calc(100vh-var(--vp-nav-height))]">
     <Intro />
   </div>
 </template>

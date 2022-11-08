@@ -3,32 +3,13 @@
   --secondary: #03dac5;
   --vp-c-brand: #10b981;
   --vp-c-accent: #BB86FC;
-  --vp-c-bg-alt: rgb(249, 249, 249, 75%);
-}
-
-.dark {
-  --vp-c-bg: rgba(0, 0, 0, 100%);
-  --vp-c-bg-alt: rgb(22, 27, 34, 75%);
-  --vp-c-bg-soft: rgb(22, 27, 34, 100%);
 }
 
 .VPNavBar.has-sidebar .content, .VPNav {
-  background-color: var(--vp-c-bg-alt) !important;
-  background-image: radial-gradient(transparent 1px, var(--vp-c-bg-alt) 1px) !important;
-  background-size: 4px 4px !important;
+  background-color: rgba(var(--vp-c-bg), 0.75);
+  backdrop-filter: blur(1px);
 }
 
-.dark .DocSearch {
-  @apply border shadow bg-zinc-800;
-}
-
-.dark .VPNavBarTitle.has-sidebar {
-  background-color: transparent !important;
-}
-
-.VPPage {
-  @apply px-12 py-6 md:(px-24);
-}
 
 html, body {
   @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
@@ -53,22 +34,6 @@ ul li {
 
 .docs-button {
   @apply z-1 shadow-lg transition-colors duration-200 text-white font-semibold text-lg mt-4 px-5 py-3 rounded-lg bg-green-500;
-}
-
-.vue-flow__node.dark {
-  @apply bg-gray-800 text-white;
-}
-
-.vue-flow__node-selector {
-  font-size: 14px;
-  background: #f0f2f3;
-  border: 1px solid #555;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.vue-flow__node-selector .vue-flow__handle {
-  border-color: #f0f2f3;
 }
 
 .slider {
