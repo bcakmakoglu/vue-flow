@@ -54,22 +54,23 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
-  nodes: [
-    { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
-    { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
-    { id: 'documentation', type: 'box', position: { x: 300, y: 400 } },
-    { id: 'acknowledgement', type: 'box', position: { x: 150, y: 500 } },
-  ],
-  edges: initialEdges,
-  elementsSelectable: true,
-  panOnDrag: false,
-  zoomOnScroll: false,
-  zoomOnDoubleClick: false,
-  zoomOnPinch: false,
-  preventScrolling: false,
-  elevateEdgesOnSelect: true,
-})
+const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge, edges, setEdges, updateNodeInternals } =
+  useVueFlow({
+    nodes: [
+      { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
+      { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
+      { id: 'documentation', type: 'box', position: { x: 300, y: 400 } },
+      { id: 'acknowledgement', type: 'box', position: { x: 150, y: 500 } },
+    ],
+    edges: initialEdges,
+    elementsSelectable: true,
+    panOnDrag: false,
+    zoomOnScroll: false,
+    zoomOnDoubleClick: false,
+    zoomOnPinch: false,
+    preventScrolling: false,
+    elevateEdgesOnSelect: true,
+  })
 
 const clickInterval = ref()
 const clicks = ref(0)
@@ -121,6 +122,7 @@ const el = templateRef<HTMLDivElement>('el', null)
 const setNodes = () => {
   if (breakpoints.isSmaller('md')) {
     const mainNode = getNode.value('intro')!
+
     getNodes.value.forEach((node) => {
       switch (node.id) {
         case 'intro':
@@ -200,6 +202,8 @@ const setNodes = () => {
 
     setEdges(initialEdges)
   }
+
+  updateNodeInternals(getNodes.value.map((n) => n.id))
 
   nextTick(() => {
     fitView()
