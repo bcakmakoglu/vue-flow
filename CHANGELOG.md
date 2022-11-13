@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2022-11-13
+
+[fc84b9c](fc84b9c6f838f2bf466574d5e4bdedcd8139ccfd)...[99c15ca](99c15cac6d90a9eed0c96f7dc264a4f487d26f93)
+
+### Documentation
+
+- Cover screen with intro flow ([537d4a7](537d4a79e6d0d03ae6e968101364ab12e26cf5ed))
+- Update node internals on resize ([b389418](b389418a38de2f7a466de90a48e7ad695f158ae5))
+
+### Features
+
+- Add `pointerRadius` prop to edges ([a4fd0eb](a4fd0ebda406b5ea1e6e81b7bf67cc6a379518d5))
+
+### Miscellaneous Tasks
+
+- Rename `pointerRadius` prop to `interactionWidth` ([ec6f870](ec6f870bfd1ec187fcb234c1f670ed66b445715f))
+- Remove default val for `interactionWidth` when parsing edges ([d580a47](d580a475bbae97bc9136decd7b69e07c135f83b4))
+
+### Refactor
+
+- Use vue flow id for bg pattern id ([3a0d0a9](3a0d0a9f8f0a38472fd7763b0c28022f9ef61557))
+
 ## [1.3.3] - 2022-11-08
 
 [2bfb74d](2bfb74d63bf7730dce02a1737526a02207e90639)...[fc84b9c](fc84b9c6f838f2bf466574d5e4bdedcd8139ccfd)
