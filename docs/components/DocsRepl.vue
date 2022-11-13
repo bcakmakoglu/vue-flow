@@ -79,7 +79,7 @@ onMounted(async () => {
   })
 
   if (isClient) {
-    document.body.className += 'examples'
+    document.body.className = 'examples'
   }
 })
 
