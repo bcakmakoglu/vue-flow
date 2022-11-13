@@ -1,6 +1,6 @@
 <script setup>
 import { Handle, Position } from '@vue-flow/core'
-import { useTeleport } from './useTransition.js'
+import { useTeleport } from './useTeleport.js'
 
 const props = defineProps({
   id: {
@@ -27,12 +27,17 @@ export default {
     <transition :name="animation">
       <div v-if="!transition" class="teleportable">
         <Handle type="target" :position="Position.Top" />
+
         [Node {{ id }}]
+
         <div class="buttons">
           <div v-if="teleport !== '#port'" class="button" @click.prevent="onClick('#port')">Teleport To Sidebar</div>
+
           <div v-if="teleport !== null" class="button" @click.prevent="onClick(null)">Teleport To Main Graph</div>
+
           <div class="button" @click.prevent="changeAnimation">Animation: {{ animation }}</div>
         </div>
+
         <Handle type="source" :position="Position.Bottom" />
       </div>
     </transition>

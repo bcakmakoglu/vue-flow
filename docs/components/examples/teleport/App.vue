@@ -36,11 +36,12 @@ const elements = ref([
 
 <template>
   <div class="teleportflow">
-    <VueFlow v-model="elements" :fit-view-on-init="true">
-      <template #node-teleportable="props">
-        <TeleportableNode v-bind="props" />
+    <VueFlow v-model="elements" fit-view-on-init>
+      <template #node-teleportable="{ id }">
+        <TeleportableNode :id="id" />
       </template>
     </VueFlow>
+
     <Sidebar />
   </div>
 </template>

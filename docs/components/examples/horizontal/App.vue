@@ -19,10 +19,12 @@ onConnect((params) => addEdges([params]))
     :default-zoom="1.5"
     :min-zoom="0.2"
     :max-zoom="4"
-    :fit-view-on-init="true"
+    fit-view-on-init
   >
     <Background pattern-color="#aaa" gap="8" />
+
     <MiniMap />
+
     <Controls />
   </VueFlow>
 </template>

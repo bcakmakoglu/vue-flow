@@ -1,5 +1,5 @@
 <script setup>
-import { EdgeText, getBezierPath } from '@vue-flow/core'
+import { BaseEdge, getBezierPath } from '@vue-flow/core'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -63,12 +63,14 @@ export default {
 </script>
 
 <template>
-  <path :id="id" class="vue-flow__edge-path" :d="path[0]" :marker-end="markerEnd" />
-
-  <EdgeText
-    :x="path[1]"
-    :y="path[2]"
+  <BaseEdge
+    :id="id"
+    :style="style"
+    :path="path[0]"
+    :marker-end="markerEnd"
     :label="data.text"
+    :label-x="path[1]"
+    :label-y="path[2]"
     :label-style="{ fill: 'white' }"
     :label-show-bg="true"
     :label-bg-style="{ fill: 'red' }"

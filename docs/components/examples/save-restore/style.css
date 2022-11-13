@@ -1,12 +1,8 @@
-.save__controls {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  z-index: 4;
+.save-restore-controls {
   font-size: 12px;
 }
 
-.save__controls button {
+.save-restore-controls button {
   margin-left: 5px;
   padding: 5px;
   border-radius: 5px;
@@ -18,8 +14,7 @@
   cursor: pointer;
 }
 
-.save__controls button:hover {
-  opacity: 0.8;
+.save-restore-controls button:hover {
   transform: scale(105%);
   transition: 250ms all ease-in-out;
 }

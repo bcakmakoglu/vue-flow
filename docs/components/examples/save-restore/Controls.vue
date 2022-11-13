@@ -1,4 +1,5 @@
 <script setup>
+import { Panel, PanelPosition } from '@vue-flow/additional-components'
 import { useVueFlow } from '@vue-flow/core'
 
 const flowKey = 'example-flow'
@@ -22,19 +23,21 @@ const onRestore = () => {
 
 const onAdd = () => {
   const id = nodes.value.length + 1
+
   const newNode = {
     id: `random_node-${id}`,
     label: `Node ${id}`,
     position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
   }
+
   addNodes([newNode])
 }
 </script>
 
 <template>
-  <div class="save__controls">
+  <Panel :position="PanelPosition.TopRight" class="save-restore-controls">
     <button style="background-color: #33a6b8" @click="onSave">save</button>
     <button style="background-color: #113285" @click="onRestore">restore</button>
     <button style="background-color: #6f3381" @click="onAdd">add node</button>
-  </div>
+  </Panel>
 </template>

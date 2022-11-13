@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { ConnectionMode, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import TransitionEdge from './TransitionEdge.vue'
 
 const elements = ref([
@@ -21,28 +21,18 @@ const elements = ref([
 
   { id: 'e1-2', type: 'custom', source: '1', target: '2', animated: true, style: { stroke: '#fff' } },
 ])
-const bgColor = ref('#1A192B')
-const connectionLineStyle = { stroke: '#fff' }
-const snapGrid = [16, 16]
 
-const { onPaneReady } = useVueFlow({
-  connectionMode: ConnectionMode.Loose,
-  connectionLineStyle,
-  snapToGrid: true,
-  snapGrid,
-  defaultZoom: 1.5,
-})
+const { onPaneReady } = useVueFlow()
 
 onPaneReady((i) => {
   i.fitView({
     nodes: ['1'],
   })
-  console.log('flow loaded:', i)
 })
 </script>
 
 <template>
-  <VueFlow v-model="elements" :style="{ backgroundColor: bgColor }">
+  <VueFlow v-model="elements" :style="{ backgroundColor: '#1A192B' }">
     <template #edge-custom="props">
       <TransitionEdge v-bind="props" />
     </template>
