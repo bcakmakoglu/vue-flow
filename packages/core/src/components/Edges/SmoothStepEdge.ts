@@ -21,7 +21,7 @@ const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
   borderRadius,
   offset,
   style,
-  pointerRadius,
+  interactionWidth,
 }) {
   const [path, labelX, labelY] = getSmoothStepPath({
     sourceX,
@@ -47,7 +47,7 @@ const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
     style,
     markerEnd,
     markerStart,
-    pointerRadius,
+    interactionWidth,
   })
 }
 
@@ -69,7 +69,7 @@ SmoothStepEdge.props = [
   'markerEnd',
   'markerStart',
   'style',
-  'pointerRadius',
+  'interactionWidth',
 ]
 SmoothStepEdge.inheritAttrs = false
 
