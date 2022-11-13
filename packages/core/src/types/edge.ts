@@ -87,7 +87,7 @@ export interface Edge<Data = ElementData, CustomEvents extends Record<string, Cu
   /** Is edge hidden */
   hidden?: boolean
   /** Radius of mouse event triggers (to ease selecting edges), defaults to 2 */
-  pointerRadius?: number
+  interactionWidth?: number
   /** Overwrites current edge type */
   template?: EdgeComponent
   /** Additional data that is passed to your custom components */
@@ -147,7 +147,7 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
   markerStart?: string
   markerEnd?: string
   curvature?: number
-  pointerRadius?: number
+  interactionWidth?: number
   data: Data
   /** contextual and custom events of edge */
   events: EdgeEventsOn<CustomEvents>
@@ -183,7 +183,7 @@ export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> exte
   markerEnd?: string
   borderRadius?: number
   offset?: number
-  pointerRadius?: number
+  interactionWidth?: number
   data: Data
   /** contextual and custom events of edge */
   events: EdgeEventsOn<CustomEvents>
@@ -202,5 +202,5 @@ export interface BaseEdgeProps {
   labelBgBorderRadius?: number
   markerStart?: string
   markerEnd?: string
-  pointerRadius?: number
+  interactionWidth?: number
 }

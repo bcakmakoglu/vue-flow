@@ -20,7 +20,7 @@ const BezierEdge: FunctionalComponent<EdgeProps> = function ({
   markerEnd,
   markerStart,
   style,
-  pointerRadius,
+  interactionWidth,
 }) {
   const [path, labelX, labelY] = getBezierPath({
     sourceX,
@@ -45,7 +45,7 @@ const BezierEdge: FunctionalComponent<EdgeProps> = function ({
     style,
     markerEnd,
     markerStart,
-    pointerRadius,
+    interactionWidth,
   })
 }
 
@@ -66,7 +66,7 @@ BezierEdge.props = [
   'markerEnd',
   'markerStart',
   'style',
-  'pointerRadius',
+  'interactionWidth',
 ]
 BezierEdge.inheritAttrs = false
 
