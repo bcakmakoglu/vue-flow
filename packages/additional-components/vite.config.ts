@@ -8,7 +8,9 @@ import svgLoader from 'vite-svg-loader'
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    dedupe: ['vue'],
+    alias: {
+      '~': resolve('src'),
+    },
     extensions: ['.ts', '.vue'],
   },
   build: {

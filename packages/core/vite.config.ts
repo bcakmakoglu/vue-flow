@@ -14,10 +14,8 @@ export default defineConfig({
     },
     extensions: ['.ts', '.vue'],
   },
-  define: {
-    'process.env.NODE_ENV': 'process.env.NODE_ENV',
-  },
   build: {
+    minify: 'esbuild',
     emptyOutDir: false,
     lib: {
       formats: ['es', 'cjs', 'iife'],
@@ -56,7 +54,4 @@ export default defineConfig({
       preventAssignment: true,
     }),
   ],
-  optimizeDeps: {
-    include: ['@vueuse/core', 'd3-zoom', 'd3-selection', 'd3-drag'],
-  },
 })
