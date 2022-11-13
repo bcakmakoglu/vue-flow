@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { EffectScope } from 'vue'
-import EdgeWrapper from '../../components/Edges/Wrapper'
+import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
 import MarkerDefinitions from './MarkerDefinitions.vue'

@@ -21,21 +21,24 @@ const shiftY = (y: number, shift: number, position: Position): number => {
 }
 
 const EdgeAnchor: FunctionalComponent<Props> = function ({ radius = 10, centerX = 0, centerY = 0, position = Position.Top }) {
-  const cx = computed(() => {
+  const cx = () => {
     const val = shiftX(centerX, radius, position)
+
     if (isNaN(val)) return 0
     else return val
-  })
-  const cy = computed(() => {
+  }
+
+  const cy = () => {
     const val = shiftY(centerY, radius, position)
+
     if (isNaN(val)) return 0
     else return val
-  })
+  }
 
   return h('circle', {
     class: 'vue-flow__edgeupdater',
-    cx: cx.value,
-    cy: cy.value,
+    cx: cx(),
+    cy: cy(),
     r: radius,
     stroke: 'transparent',
     fill: 'transparent',

@@ -6,46 +6,19 @@ import type { EdgeProps } from '~/types'
 const BezierEdge: FunctionalComponent<EdgeProps> = function ({
   sourcePosition = Position.Bottom,
   targetPosition = Position.Top,
-  label,
-  labelStyle = {},
-  labelShowBg = true,
-  labelBgStyle = {},
-  labelBgPadding,
-  labelBgBorderRadius,
-  sourceY,
-  sourceX,
-  targetX,
-  targetY,
-  curvature,
-  markerEnd,
-  markerStart,
-  style,
-  interactionWidth,
+  ...props
 }) {
   const [path, labelX, labelY] = getBezierPath({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
     sourcePosition,
     targetPosition,
-    curvature,
+    ...props,
   })
 
   return h(BaseEdge, {
     path,
     labelX,
     labelY,
-    label,
-    labelStyle,
-    labelShowBg,
-    labelBgStyle,
-    labelBgPadding,
-    labelBgBorderRadius,
-    style,
-    markerEnd,
-    markerStart,
-    interactionWidth,
+    ...props,
   })
 }
 
@@ -67,7 +40,9 @@ BezierEdge.props = [
   'markerStart',
   'style',
   'interactionWidth',
+  'ref',
 ]
+
 BezierEdge.inheritAttrs = false
 
 export default BezierEdge

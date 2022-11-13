@@ -54,6 +54,7 @@ export default {
       :rx="labelBgBorderRadius"
       :ry="labelBgBorderRadius"
     />
+
     <text v-bind="$attrs" ref="el" class="vue-flow__edge-text" :y="box.height / 2" dy="0.3em" :style="labelStyle">
       <slot>
         <component :is="label" v-if="!isString(label)" />

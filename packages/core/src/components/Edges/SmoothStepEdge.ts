@@ -6,48 +6,19 @@ import { Position } from '~/types'
 const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
   sourcePosition = Position.Bottom,
   targetPosition = Position.Top,
-  label,
-  labelStyle = {},
-  labelShowBg = true,
-  labelBgStyle = {},
-  labelBgPadding,
-  labelBgBorderRadius,
-  sourceY,
-  sourceX,
-  targetX,
-  targetY,
-  markerEnd,
-  markerStart,
-  borderRadius,
-  offset,
-  style,
-  interactionWidth,
+  ...props
 }) {
   const [path, labelX, labelY] = getSmoothStepPath({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
     sourcePosition,
     targetPosition,
-    borderRadius,
-    offset,
+    ...props,
   })
 
   return h(BaseEdge, {
     path,
     labelX,
     labelY,
-    label,
-    labelStyle,
-    labelShowBg,
-    labelBgStyle,
-    labelBgPadding,
-    labelBgBorderRadius,
-    style,
-    markerEnd,
-    markerStart,
-    interactionWidth,
+    ...props,
   })
 }
 
@@ -71,6 +42,7 @@ SmoothStepEdge.props = [
   'style',
   'interactionWidth',
 ]
+
 SmoothStepEdge.inheritAttrs = false
 
 export default SmoothStepEdge
