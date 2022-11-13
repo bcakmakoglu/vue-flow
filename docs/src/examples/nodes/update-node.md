@@ -1,8 +1,3 @@
----
-layout: page
-
----
-
 # Update Node
 
 Updating internal node data is simple.
@@ -14,9 +9,5 @@ That means you can manipulate any property of your original nodes, and it will t
 You can of course also access the nodes directly from the state and change their properties from there.
 
 <div class="mt-6">
-  <ClientOnly>
-    <Suspense>
-      <Repl example="updateNode"></Repl>
-    </Suspense>
-  </ClientOnly>
+  <Repl example="updateNode"></Repl> 
 </div>

@@ -1,8 +1,3 @@
----
-layout: page
-
----
-
 # Drag & Drop
 
 Adding nodes to an already existing graph can be done multiple ways. To create an interactive editor, you would probably
@@ -16,9 +11,5 @@ This example shows another key feature of Vue Flow. You can initialize the Flow 
 is actually mounted. This can be achieved by using the [`useVueFlow`](/guide/composables.html#usevueflow) composable.
 
 <div class="mt-6">
-  <ClientOnly>
-    <Suspense>
-      <Repl example="dnd"></Repl>
-    </Suspense>
-  </ClientOnly>
+  <Repl example="dnd"></Repl>
 </div>

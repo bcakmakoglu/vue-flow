@@ -1,8 +1,3 @@
----
-layout: page
-
----
-
 # Pinia
 
 Using your existing storage implementation is not an issue. 

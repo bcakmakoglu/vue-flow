@@ -216,8 +216,8 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           items: [
             { text: 'Edges', link: '/examples/edges/' },
             { text: 'Updatable Edge', link: '/examples/edges/updatable-edge' },
-            { text: 'Custom Connectionline', link: '/examples/edges/connection-line' },
-            { text: 'Connection validation', link: '/examples/edges/validation' },
+            { text: 'Custom Connection Line', link: '/examples/edges/connection-line' },
+            { text: 'Connection Validation', link: '/examples/edges/validation' },
           ],
         },
       ],
