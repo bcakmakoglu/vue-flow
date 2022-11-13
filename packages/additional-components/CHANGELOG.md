@@ -1,5 +1,11 @@
 # @vue-flow/additional-components
 
+## 1.2.3
+
+### Patch Changes
+
+- [#422](https://github.com/bcakmakoglu/vue-flow/pull/422) [`c8c9daf`](https://github.com/bcakmakoglu/vue-flow/commit/c8c9daffb72cde2bead300cba504fb2ea5eb44cc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use vue flow id as bg pattern id
+
 ## 1.2.2
 
 ### Patch Changes
