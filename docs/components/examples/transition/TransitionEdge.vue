@@ -1,7 +1,7 @@
 <script setup>
 import { TransitionPresets, useDebounceFn, useTransition, watchDebounced } from '@vueuse/core'
-import { getBezierPath, useVueFlow } from '@vue-flow/core'
-import { computed, ref } from 'vue'
+import { BezierEdge, useVueFlow } from '@vue-flow/core'
+import { ref } from 'vue'
 
 const props = defineProps({
   id: {
@@ -64,21 +64,11 @@ const showDot = ref(false)
 
 const { onNodeDoubleClick, fitBounds, fitView } = useVueFlow()
 
-const edgePath = computed(() =>
-  getBezierPath({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    sourcePosition: props.sourcePosition,
-    targetX: props.targetX,
-    targetY: props.targetY,
-    targetPosition: props.targetPosition,
-  }),
-)
-
 const debouncedFitBounds = useDebounceFn(fitBounds, 1, { maxWait: 1 })
 
 onNodeDoubleClick(({ node }) => {
   const isSource = props.source === node.id
+
   const isTarget = props.target === node.id
 
   if (!showDot.value && (isSource || isTarget)) {
@@ -150,7 +140,8 @@ export default {
 </script>
 
 <template>
-  <path :id="id" ref="curve" :style="style" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
+  <BezierEdge v-bind="props" />
+
   <Transition name="fade">
     <circle
       v-if="showDot"

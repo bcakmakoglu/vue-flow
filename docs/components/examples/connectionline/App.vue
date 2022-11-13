@@ -1,5 +1,4 @@
 <script setup>
-import { Background, BackgroundVariant, Controls, MiniMap } from '@vue-flow/additional-components'
 import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 import CustomConnectionLine from './CustomConnectionLine.vue'
@@ -16,10 +15,8 @@ const elements = ref([
 
 <template>
   <VueFlow v-model="elements">
-    <template #connection-line="props">
-      <CustomConnectionLine v-bind="props" />
+    <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
+      <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
     </template>
-
-    <Background :variant="BackgroundVariant.Lines" />
   </VueFlow>
 </template>

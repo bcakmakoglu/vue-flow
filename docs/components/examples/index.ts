@@ -96,7 +96,7 @@ export const exampleImports = {
     'App.vue': TeleportApp,
     'Sidebar.vue': TeleportSidebar,
     'TeleportableNode.vue': TeleportableNode,
-    'useTransition.js': TeleportableUseTransition,
+    'useTeleport.js': TeleportableUseTransition,
     'style.css': TeleportCSS,
   },
   transition: {

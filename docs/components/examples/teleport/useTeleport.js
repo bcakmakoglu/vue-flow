@@ -12,7 +12,7 @@ export const useTeleport = (id) => {
   const transition = ref(false)
   const teleport = ref(null)
 
-  const { updateNodeInternals, getNode, edges } = useVueFlow()
+  const { updateNodeInternals, findNode, edges } = useVueFlow()
 
   /**
    * specify a selector to teleport to
@@ -65,7 +65,7 @@ export const useTeleport = (id) => {
    * i.e. if they emit events, they will still emit them up their regular tree
    */
   const onClick = (destination) => {
-    const node = getNode.value(id)
+    const node = findNode(id)
 
     transition.value = true
 
@@ -79,13 +79,13 @@ export const useTeleport = (id) => {
     // check if nodes connected to edge are teleported and hide edge if one of them is
     if (destination) {
       connectedEdges.forEach(
-        (edge) => (edge.hidden = !!getNode.value(edge.source).data.destination || !!getNode.value(edge.target).data.destination),
+        (edge) => (edge.hidden = !!findNode(edge.source).data.destination || !!findNode(edge.target).data.destination),
       )
     }
 
     const onFinish = () => {
       connectedEdges.forEach(
-        (edge) => (edge.hidden = !!getNode.value(edge.source).data.destination || !!getNode.value(edge.target).data.destination),
+        (edge) => (edge.hidden = !!findNode(edge.source).data.destination || !!findNode(edge.target).data.destination),
       )
     }
 

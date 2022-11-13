@@ -1,5 +1,5 @@
 <script setup>
-import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
+import { Background } from '@vue-flow/additional-components'
 import { MarkerType, VueFlow } from '@vue-flow/core'
 import { h, ref } from 'vue'
 import CustomEdge from './CustomEdge.vue'
@@ -65,11 +65,11 @@ const elements = ref([
     <template #edge-custom="props">
       <CustomEdge v-bind="props" />
     </template>
+
     <template #edge-custom2="props">
       <CustomEdge2 v-bind="props" />
     </template>
-    <MiniMap />
-    <Controls />
+
     <Background />
   </VueFlow>
 </template>
