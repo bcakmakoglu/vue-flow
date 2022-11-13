@@ -24,6 +24,7 @@ StepEdge.props = [
   'style',
   'interactionWidth',
 ]
+
 StepEdge.inheritAttrs = false
 
 export default StepEdge

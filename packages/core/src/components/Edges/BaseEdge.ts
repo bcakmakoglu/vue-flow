@@ -67,6 +67,7 @@ BaseEdge.props = [
   'style',
   'interactionWidth',
 ]
+
 BaseEdge.inheritAttrs = false
 
 export default BaseEdge

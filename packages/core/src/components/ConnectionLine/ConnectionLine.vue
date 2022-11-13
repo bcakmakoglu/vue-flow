@@ -104,6 +104,7 @@ export default {
         markerStart: `url(#${getMarkerId(connectionLineOptions.markerStart)})`,
       }"
     />
+
     <path
       v-else
       :d="dAttr"

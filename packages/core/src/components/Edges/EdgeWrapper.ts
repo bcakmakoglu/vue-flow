@@ -13,7 +13,7 @@ interface Props {
   targetNode: GraphNode
 }
 
-const Wrapper = defineComponent({
+const EdgeWrapper = defineComponent({
   props: ['name', 'type', 'id', 'updatable', 'selectable', 'edge', 'sourceNode', 'targetNode'],
   setup(props: Props) {
     const { addSelectedEdges, connectionMode, edgeUpdaterRadius, emits, nodesSelectionActive, getEdges, getEdgeTypes } =
@@ -239,4 +239,4 @@ const Wrapper = defineComponent({
   },
 })
 
-export default Wrapper
+export default EdgeWrapper
