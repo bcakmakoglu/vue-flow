@@ -20,7 +20,7 @@ const defaultColors: Record<BackgroundVariant, string> = {
   [BackgroundVariant.Lines]: '#eee',
 }
 
-const { viewport } = useVueFlow()
+const { id, viewport } = useVueFlow()
 
 const background = $computed(() => {
   const scaledGap = gap && gap * viewport.value.zoom
@@ -37,7 +37,7 @@ const background = $computed(() => {
 })
 
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
-const patternId = `pattern-${Math.floor(Math.random() * 100000)}`
+const patternId = `pattern-${id}`
 
 const patternColor = computed(() => initialPatternColor || defaultColors[variant || BackgroundVariant.Dots])
 
@@ -73,16 +73,20 @@ export default {
           <template v-if="variant === BackgroundVariant.Lines">
             <path :stroke="patternColor" :stroke-width="size" :d="d" />
           </template>
+
           <template v-else-if="variant === BackgroundVariant.Dots">
             <circle :cx="background.size" :cy="background.size" :r="background.size" :fill="patternColor" />
           </template>
+
           <svg v-if="bgColor" height="100" width="100">
             <rect width="100%" height="100%" :fill="bgColor" />
           </svg>
         </slot>
       </pattern>
     </slot>
+
     <rect :x="x" :y="y" width="100%" height="100%" :fill="`url(#${patternId})`" />
+
     <slot :id="patternId" />
   </svg>
 </template>
