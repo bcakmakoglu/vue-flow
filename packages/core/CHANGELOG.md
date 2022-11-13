@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.4.0
+
+### Minor Changes
+
+- [#360](https://github.com/bcakmakoglu/vue-flow/pull/360) [`a11edae`](https://github.com/bcakmakoglu/vue-flow/commit/a11edae9ecb95c8ca0ecef70ff9414415bafb23b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `interactionWidth` prop to edges. Sets radius of pointer interactivity for edges
+
 ## 1.3.3
 
 ### Patch Changes
