@@ -12,8 +12,8 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
-  "main": "./dist/vue-flow.cjs.js",
-  "module": "./dist/vue-flow.es.js",
+  "main": "./dist/vue-flow.js",
+  "module": "./dist/vue-flow.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow.iife.js",
   "jsdelivr": "./dist/vue-flow.iife.js",
@@ -43,7 +43,7 @@
     "postcss": "^8.4.16",
     "postcss-cli": "^9.1.0",
     "postcss-nested": "^5.0.6",
-    "vite": "^2.9.15"
+    "vite": "^3.2.3"
   },
   "publishConfig": {
     "access": "public",
