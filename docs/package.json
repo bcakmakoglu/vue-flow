@@ -20,6 +20,7 @@
     "@vue/repl": "1.1.2",
     "blobity": "^0.2.1",
     "canvas-confetti": "^1.5.1",
+    "vite": "^2.9.15",
     "vue": "^3.2.37"
   },
   "devDependencies": {
