@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { GraphNode, HandleElement } from '../../types'
+import type { GraphNode } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
 import { getMarkerId } from '../../utils'
 
@@ -28,10 +28,9 @@ const type = connectionStartHandle!.type
 
 const sourceHandle =
   (connectionMode === ConnectionMode.Strict
-    ? sourceNode.handleBounds[type]?.find((d: HandleElement) => d.id === handleId)
-    : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find(
-        (d: HandleElement) => d.id === handleId,
-      )) || sourceNode.handleBounds[type ?? 'source']?.[0]
+    ? sourceNode.handleBounds[type]?.find((d) => d.id === handleId)
+    : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find((d) => d.id === handleId)) ||
+  sourceNode.handleBounds[type ?? 'source']?.[0]
 
 const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2
 const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height

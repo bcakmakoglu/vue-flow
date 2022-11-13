@@ -20,7 +20,7 @@ interface GetControlWithCurvatureParams {
   c: number
 }
 
-function calculateControlOffset(distance: number, curvature: number): number {
+function calculateControlOffset(distance: number, curvature: number) {
   if (distance >= 0) {
     return 0.5 * distance
   } else {

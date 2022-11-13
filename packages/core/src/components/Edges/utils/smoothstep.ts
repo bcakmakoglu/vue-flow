@@ -137,7 +137,7 @@ function getPoints({
   return [pathPoints, centerX, centerY, defaultOffsetX, defaultOffsetY]
 }
 
-function getBend(a: XYPosition, b: XYPosition, c: XYPosition, size: number): string {
+function getBend(a: XYPosition, b: XYPosition, c: XYPosition, size: number) {
   const bendSize = Math.min(distance(a, b) / 2, distance(b, c) / 2, size)
   const { x, y } = b
 
@@ -179,7 +179,7 @@ export function getSmoothStepPath({
     offset,
   })
 
-  const path = points.reduce<string>((res, p, i) => {
+  const path = points.reduce((res, p, i) => {
     let segment = ''
 
     if (i > 0 && i < points.length - 1) {
