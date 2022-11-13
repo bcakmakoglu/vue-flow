@@ -179,7 +179,7 @@ const Wrapper = defineComponent({
                 labelBgBorderRadius: edge.labelBgBorderRadius,
                 data: edge.data,
                 events: { ...edge.events, ...hooks.on },
-                style: (edge.style instanceof Function ? edge.style(edge) : edge.style) || {},
+                style: edge.style instanceof Function ? edge.style(edge) : edge.style,
                 markerStart: `url(#${getMarkerId(edge.markerStart)})`,
                 markerEnd: `url(#${getMarkerId(edge.markerEnd)})`,
                 sourcePosition,
