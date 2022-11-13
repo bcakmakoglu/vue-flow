@@ -23,7 +23,7 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function ({
 }) {
   return [
     h('path', {
-      'style': { ...style },
+      'style': style,
       'd': path,
       'class': 'vue-flow__edge-path',
       'marker-end': markerEnd,
