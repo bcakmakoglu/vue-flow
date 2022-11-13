@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     CustomEdgeLabel: typeof import('./../components/examples/edges/CustomEdgeLabel.vue')['default']
     CustomInput: typeof import('./../components/examples/validation/CustomInput.vue')['default']
     CustomNode: typeof import('./../components/examples/custom-node/CustomNode.vue')['default']
+    DocsRepl: typeof import('./../components/DocsRepl.vue')['default']
     Features: typeof import('./../components/home/Features.vue')['default']
     Flow: typeof import('./../components/examples/multi/Flow.vue')['default']
     Home: typeof import('./../components/home/Home.vue')['default']

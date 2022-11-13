@@ -10,8 +10,16 @@
   backdrop-filter: blur(1px);
 }
 
-.VPPage {
-  @apply px-8 py-6 md:px-12 lg:px-24;
+.examples .VPDoc {
+  @apply !px-8 !py-6 md:!px-12 lg:!px-24;
+}
+
+.examples .content-container {
+  @apply max-w-full;
+}
+
+.examples .aside {
+  @apply !hidden;
 }
 
 html, body {

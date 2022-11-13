@@ -1,8 +1,3 @@
----
-layout: page
-
----
-
 # Updatable Edge
 
 Existing edges can be updated, meaning their source / target position can be changed interactively.

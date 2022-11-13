@@ -1,7 +1,3 @@
----
-layout: page
-
----
 
 # Teleport
 
