@@ -70,6 +70,9 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     optimizeDeps: {
       exclude: ['@animxyz/vue3'],
     },
+    define: {
+      __ANALYTICS_ID__: process.env.VERCEL_ANALYTICS_ID,
+    },
     plugins: [
       copyVueFlowPlugin(),
       AutoImport({
