@@ -218,6 +218,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Updatable Edge', link: '/examples/edges/updatable-edge' },
             { text: 'Custom Connection Line', link: '/examples/edges/connection-line' },
             { text: 'Connection Validation', link: '/examples/edges/validation' },
+            { text: 'Snap To Handle', link: '/examples/edges/snap-to-handle' },
           ],
         },
       ],

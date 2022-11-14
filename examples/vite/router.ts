@@ -7,16 +7,16 @@ export const routes: RouterOptions['routes'] = [
     redirect: '/overview',
   },
   {
-    path: '/rgb',
-    component: () => import('./src/RGBFlow/RGBFlow.vue'),
-  },
-  {
     path: '/basic',
     component: () => import('./src/Basic/Basic.vue'),
   },
   {
     path: '/basic-options-api',
     component: () => import('./src/Basic/BasicOptionsAPI.vue'),
+  },
+  {
+    path: '/snap-handle',
+    component: () => import('./src/SnapHandle/SnapHandleExample.vue'),
   },
   {
     path: '/custom-connectionline',
@@ -105,6 +105,10 @@ export const routes: RouterOptions['routes'] = [
   {
     path: '/nesting',
     component: () => import('./src/Nesting/Nesting.vue'),
+  },
+  {
+    path: '/rgb',
+    component: () => import('./src/RGBFlow/RGBFlow.vue'),
   },
 ]
 
