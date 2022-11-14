@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.1] - 2022-11-14
+
+[99c15ca](99c15cac6d90a9eed0c96f7dc264a4f487d26f93)...[64b3cb9](64b3cb972246f3152af03d4f71ab1ba4ab6d1f7c)
+
+### Bug Fixes
+
+- When connection mode is `Loose` use all handles as connection line source handle ([cd4383d](cd4383d00e95650396aa9d571d181e3128e961cf))
+- Improper check for selection key code in zoom-pan filter ([d677292](d677292131e37e12091c0a34ef8963eb6d06ea4f))
+
+### Documentation
+
+- Update examples ([cd03034](cd03034bdb13dc940ebeeeac9f239a56a0a8f1fd))
+- Snappable connection line example ([bb18a68](bb18a68977685885bd24d472458b8dd5bfb95b99))
+
+### Miscellaneous Tasks
+
+- Wrap Repl in client only ([3340377](33403776dc14cd0498dda398f2d9dea38d558d29))
+- Pin vite version ([101fa6b](101fa6b223f016a1aa9834be14c7f196e672ed6c))
+- Set examples class name once ([4da458b](4da458b0cf495f56c2c7f0c7be258f7fd16124ef))
+- Use path el for transition edge example ([d34cf4b](d34cf4bf8fd3465ba004cbb14b7ba18a89004531))
+- Remove unnecessary type annotations ([631552f](631552f9ded1ba38cefbf7f76b5bf5e9dffcb071))
+- Simplify edge components ([c93ffaf](c93ffafd311ec4f00de0c62af7cebdd49437e545))
+- Upgrade deps ([2df9ebb](2df9ebbc3a8ac9520c5e68c6641ab5a3cff0b23b))
+- Update vite config ([9744571](9744571f9e54153b27636080747a11939642aabc))
+- Pin vite version ([5f63e7c](5f63e7c71ecffc437428272e4c1a8ae65379c01d))
+- Add missing `connectionExists` util export ([45dbc95](45dbc95a3a4891045a2db24b5188d6fd3d7ab606))
+
+### Refactor
+
+- Remove default val for edge style obj ([354c721](354c721fd3e72cfc4e071db69816e6ba48fb68ab))
+
 ## [1.4.0] - 2022-11-13
 
 [fc84b9c](fc84b9c6f838f2bf466574d5e4bdedcd8139ccfd)...[99c15ca](99c15cac6d90a9eed0c96f7dc264a4f487d26f93)
