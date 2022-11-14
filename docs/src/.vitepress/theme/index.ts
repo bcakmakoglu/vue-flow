@@ -14,7 +14,7 @@ const CustomTheme = {
   Layout,
   enhanceApp: ({ app }) => {
     app.use(VueAnimXyz)
-    webVitals({ analyticsId: '__ANALYTICS_ID__', debug: true })
+    webVitals({ analyticsId: '__ANALYTICS_ID__', debug: false })
   },
 } as Theme
 
