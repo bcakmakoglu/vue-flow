@@ -17,6 +17,7 @@ import { HorizontalApp, HorizontalElements } from './horizontal'
 import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
 import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
 import { IntersectionApp, IntersectionCSS, IntersectionElements } from './intersection'
+import { SnapToHandleApp, SnappableConnectionLine } from './snap-to-handle'
 
 export const exampleImports = {
   basic: {
@@ -113,5 +114,9 @@ export const exampleImports = {
     'App.vue': IntersectionApp,
     'initial-elements.js': IntersectionElements,
     'style.css': IntersectionCSS,
+  },
+  snappable: {
+    'App.vue': SnapToHandleApp,
+    'SnappableConnectionLine.vue': SnappableConnectionLine,
   },
 }
