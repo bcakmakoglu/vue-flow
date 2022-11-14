@@ -34,6 +34,7 @@ export {
   getNodesInside,
   getMarkerId,
   getBoundsofRects,
+  connectionExists,
 } from './utils/graph'
 
 /**
