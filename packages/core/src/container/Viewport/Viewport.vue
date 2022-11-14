@@ -31,6 +31,7 @@ const {
   noPanClassName,
   setState,
   emits,
+  connectionStartHandle,
 } = $(useVueFlow())
 
 const viewportEl = templateRef<HTMLDivElement>('viewport', null)
@@ -38,6 +39,8 @@ const viewportEl = templateRef<HTMLDivElement>('viewport', null)
 let isZoomingOrPanning = $ref(false)
 
 let isDragging = $ref(false)
+
+const isConnecting = $computed(() => !!connectionStartHandle)
 
 const viewChanged = (prevTransform: ViewpaneTransform, eventTransform: ZoomTransform): boolean =>
   (prevTransform.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
@@ -232,6 +235,6 @@ export default {
     <Transform>
       <slot />
     </Transform>
-    <SelectionPane :class="{ dragging: isDragging, draggable: panOnDrag }" />
+    <SelectionPane :class="{ connecting: isConnecting, dragging: isDragging, draggable: panOnDrag }" />
   </div>
 </template>
