@@ -1,5 +1,11 @@
 # @vue-flow/additional-components
 
+## 1.2.4
+
+### Patch Changes
+
+- [#425](https://github.com/bcakmakoglu/vue-flow/pull/425) [`da0a294`](https://github.com/bcakmakoglu/vue-flow/commit/da0a294aa47b091cd846168594d3a01bde057315) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update deps
+
 ## 1.2.3
 
 ### Patch Changes
