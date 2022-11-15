@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { isNumber } from '@vueuse/core'
 import type { GraphNode, HandleConnectable, NodeComponent, SnapGrid, XYZPosition } from '../../types'
 
 const { id, type, name, draggable, selectable, connectable, ...props } = defineProps<{
@@ -119,10 +120,11 @@ watch(
     const xyzPos = {
       x: newX,
       y: newY,
-      z: node.selected ? 1000 : 0,
+      // if a zIndex style is present, add 1000 to it
+      z: (isNumber(getStyle.value.zIndex) ? getStyle.value.zIndex : 0) + (node.selected ? 1000 : 0),
     }
 
-    updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ! } : undefined)
+    updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ || 0 } : undefined)
   },
   { flush: 'post' },
 )
@@ -142,6 +144,7 @@ function updateInternals() {
     {
       x: node.position.x,
       y: node.position.y,
+      // should be using computedPosition.z but in case  it's not present, fall back to selected state
       z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
     },
     parentNode ? { ...parentNode.computedPosition } : undefined,
