@@ -21,8 +21,12 @@ export interface MiniMapProps {
   nodeBorderRadius?: number
   /** Node stroke width */
   nodeStrokeWidth?: number
-  /** Background color of minimap */
+  /** Background color of minimap mask */
   maskColor?: string
+  /** Border color of minimap mask */
+  maskStrokeColor?: string
+  /** Border width of minimap mask */
+  maskStrokeWidth?: number
   /** Position of the minimap {@link PanelPosition} */
   position?: PanelPosition
   /** Enable drag minimap to drag viewport */

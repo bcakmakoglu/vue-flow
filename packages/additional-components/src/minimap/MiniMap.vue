@@ -20,6 +20,8 @@ const {
   nodeStrokeWidth = 2,
   maskColor = 'rgb(240, 240, 240, 0.6)',
   position = 'bottom-right' as PanelPosition,
+  maskStrokeColor = 'none',
+  maskStrokeWidth = 1,
   pannable = false,
   zoomable = false,
 } = defineProps<MiniMapProps>()
@@ -221,7 +223,14 @@ export default {
         @mouseleave="onNodeMouseLeave($event, node)"
       />
 
-      <path class="vue-flow__minimap-mask" :style="pannable ? 'cursor: grab' : ''" :d="d" :fill="maskColor" fill-rule="evenodd" />
+      <path
+        class="vue-flow__minimap-mask"
+        :d="d"
+        :fill="maskColor"
+        :stroke="maskStrokeColor"
+        :stroke-width="maskStrokeWidth"
+        fill-rule="evenodd"
+      />
     </svg>
   </Panel>
 </template>
