@@ -37,6 +37,7 @@ importers:
       '@stackblitz/sdk': ^1.8.0
       '@types/canvas-confetti': ^1.4.3
       '@types/node': ^18.7.8
+      '@vercel/analytics': ^0.1.5
       '@vue-flow/additional-components': workspace:*
       '@vue-flow/core': workspace:*
       '@vue/repl': 1.1.2
@@ -62,6 +63,7 @@ importers:
       '@animxyz/core': 0.6.6
       '@animxyz/vue3': 0.6.7_vue@3.2.37
       '@stackblitz/sdk': 1.8.0
+      '@vercel/analytics': 0.1.5_react@18.2.0
       '@vue-flow/additional-components': link:../packages/additional-components
       '@vue-flow/core': link:../packages/core
       '@vue/repl': 1.1.2_vue@3.2.37
@@ -2372,6 +2374,14 @@ packages:
       '@typescript-eslint/types': 5.42.1
       eslint-visitor-keys: 3.3.0
     dev: true
+
+  /@vercel/analytics/0.1.5_react@18.2.0:
+    resolution: {integrity: sha512-/k9N8Ea3Yc5A52GlkjzUEbi2vE/izClrOf++ryBkxEfrZM/OZwtHkdNw/QExZ1h/B67RCZLK7bCOnKKrhG7gTg==}
+    peerDependencies:
+      react: ^16.8||^17||^18
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /@vercel/nft/0.22.1:
     resolution: {integrity: sha512-lYYZIoxRurqDOSoVIdBicGnpUIpfyaS5qVjdPq+EfI285WqtZK3NK/dyCkiyBul+X2U2OEhRyeMdXPCHGJbohw==}

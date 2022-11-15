@@ -1,6 +1,7 @@
 import type { Theme } from 'vitepress'
 import VueAnimXyz from '@animxyz/vue3'
 import DefaultTheme from 'vitepress/theme'
+import { inject } from '@vercel/analytics'
 import Layout from './layouts/default.vue'
 import 'virtual:windi.css'
 import '@animxyz/core'
@@ -13,6 +14,7 @@ const CustomTheme = {
   Layout,
   enhanceApp: ({ app }) => {
     app.use(VueAnimXyz)
+    inject()
   },
 } as Theme
 

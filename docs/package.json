@@ -15,6 +15,7 @@
     "@animxyz/core": "^0.6.6",
     "@animxyz/vue3": "^0.6.7",
     "@stackblitz/sdk": "^1.8.0",
+    "@vercel/analytics": "^0.1.5",
     "@vue-flow/additional-components": "workspace:*",
     "@vue-flow/core": "workspace:*",
     "@vue/repl": "1.1.2",
