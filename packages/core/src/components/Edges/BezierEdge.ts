@@ -40,7 +40,6 @@ BezierEdge.props = [
   'markerStart',
   'style',
   'interactionWidth',
-  'ref',
 ]
 
 BezierEdge.inheritAttrs = false
