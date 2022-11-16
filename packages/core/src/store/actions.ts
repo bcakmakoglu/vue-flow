@@ -79,9 +79,9 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
     if (!state.vueFlowRef) return
 
-    const viewportNode = state.vueFlowRef.querySelector('.vue-flow__transformationpane')
+    const viewportNodes = state.vueFlowRef.querySelectorAll('.vue-flow__transformationpane')
 
-    if (!viewportNode) return
+    if (!viewportNodes.length) return
 
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
       const node = getters.getNode.value(update.id)
@@ -89,8 +89,15 @@ export default (state: State, getters: ComputedGetters): Actions => {
       if (node) {
         const dimensions = getDimensions(update.nodeElement)
 
-        const style = window.getComputedStyle(viewportNode)
-        const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
+        // use each transformationpane to calculate the zoom factor (this is necessary when flows are nested, like a flow is used inside a node)
+        let zoom: number
+        viewportNodes.forEach((vp) => {
+          const style = window.getComputedStyle(vp)
+          const { m22 } = new window.DOMMatrixReadOnly(style.transform)
+
+          if (!zoom) zoom = m22
+          else zoom = zoom / m22
+        })
 
         const doUpdate =
           !!(
@@ -100,8 +107,8 @@ export default (state: State, getters: ComputedGetters): Actions => {
           ) || update.forceUpdate
 
         if (doUpdate) {
-          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, zoom)
-          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, zoom)
+          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, zoom!)
+          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, zoom!)
 
           node.dimensions = dimensions
 
