@@ -1,7 +1,6 @@
 import type { Ref } from 'vue'
 import type { KeyFilter, MaybeRef } from '@vueuse/core'
 import { isBoolean, isFunction } from '@vueuse/core'
-import useWindow from './useWindow'
 
 function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = event.composedPath()[0] as HTMLElement

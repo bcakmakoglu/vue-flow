@@ -1,5 +1,4 @@
 import type { Ref } from 'vue'
-import { getDimensions } from './graph'
 import type { Actions, GraphNode, HandleElement, Position } from '~/types'
 
 export const getHandleBounds = (selector: string, nodeElement: HTMLDivElement, zoom: number): HandleElement[] | undefined => {

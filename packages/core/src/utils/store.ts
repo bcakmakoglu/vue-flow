@@ -1,5 +1,3 @@
-import { clampPosition, connectionExists, getEdgeId, isEdge, isGraphEdge, parseEdge, parseNode } from './graph'
-import { warn } from './log'
 import type { Connection, CoordinateExtent, Edge, Getters, GraphEdge, GraphNode, Node } from '~/types'
 
 export const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'

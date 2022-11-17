@@ -3,7 +3,6 @@ import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { Ref } from 'vue'
 import type { MaybeRef } from '@vueuse/core'
-import useVueFlow from './useVueFlow'
 import type { NodeDragEvent, NodeDragItem, SnapGrid, XYPosition } from '~/types'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
