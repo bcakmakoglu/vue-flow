@@ -54,9 +54,9 @@ export interface FlowEvents {
   miniMapNodeMouseLeave: NodeMouseEvent
   connect: Connection
   connectStart: {
-    event?: MouseEvent
+    event?: MouseEvent | TouchEvent
   } & OnConnectStartParams
-  connectEnd: MouseEvent | undefined
+  connectEnd: MouseEvent | TouchEvent | undefined
   paneReady: VueFlowStore
   move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }
   moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }
