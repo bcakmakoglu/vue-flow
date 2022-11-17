@@ -83,14 +83,14 @@ export default (state: State, getters: ComputedGetters): Actions => {
 
     if (!viewportNode) return
 
+    const style = window.getComputedStyle(viewportNode)
+    const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
+
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
       const node = getters.getNode.value(update.id)
 
       if (node) {
         const dimensions = getDimensions(update.nodeElement)
-
-        const style = window.getComputedStyle(viewportNode)
-        const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
         const doUpdate =
           !!(
