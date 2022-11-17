@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.2] - 2022-11-17
+
+[64b3cb9](64b3cb972246f3152af03d4f71ab1ba4ab6d1f7c)...[ee9b1ed](ee9b1ed3a021a999eaeaf5e3a2dab333913d3760)
+
+### Bug Fixes
+
+- Elevate child nodes by zIndex +1 ([13c2dfa](13c2dfaeed04bab6848bb113e0cf83a6c6ee5fd0))
+- Apply initial extent on nodes ([6f8b16a](6f8b16a8672f4acb172a8d33e44783821c62c500))
+
+### Documentation
+
+- Add info on interactive minimap props ([fd095d1](fd095d1c1d468cf7bc23032007d45387350dc344))
+- Add vercel analytics ([a2f125f](a2f125f1e91606d65918a1fdbaeb7183e4b289f0))
+- Add vercel analytics ([bce493c](bce493cfe5cb954c55c2f16b7f025634b361546a))
+
+### Features
+
+- Add `maskStrokeColor` and `maskStrokeWidth` props to MiniMap ([e87bb53](e87bb535e3ee611d66159b99af1e287a8263a6dc))
+
+### Miscellaneous Tasks
+
+- Update snap to handle page title ([a56ea41](a56ea41182e4f20d5991ac6eddce97f5ec91923d))
+- Center dnd nodes after drop ([d5a9ae0](d5a9ae0101672a604d8f3bac1604faa2216fa788))
+- Disable debug mode of analytics ([118d064](118d064c187d573c04c672b4323ae6755367265d))
+- Move analytics to mounted hook ([f1b2250](f1b225078d80fdbd29a0353fca5a29d20107df43))
+- Cleanup unused prop ([7100c7e](7100c7e173b413e5aeee9b2ad0afbc604e4e6c31))
+- Cleanup dimension update ([0876a18](0876a189eb03c458998a860b661b7219c49fd7b8))
+- Cleanup drag handler ([4a1cc24](4a1cc24bd88dbc68e493bec2fa9178608ee8a369))
+- Cleanup change handler ([a379b4f](a379b4f1cf32754fdf837e45a97152f5f21ccc9e))
+- Cleanup import paths ([406b20b](406b20b8babe3c1cf10bce4c23d7ab7d1bd827bd))
+- Cleanup node wrapper ([3ca17d4](3ca17d40739d51476c751cd458e539e446644bbf))
+- Elevate nested flow on home page ([62918cf](62918cf400d20e6778315b17d942918148dd6f6a))
+
+### Refactor
+
+- Elevate selected nodes zIndex *by* 1000 instead *to* 1000 ([69ffa84](69ffa84473ee937552ed61913a16e34058c5bfc0))
+
 ## [1.4.1] - 2022-11-14
 
 [99c15ca](99c15cac6d90a9eed0c96f7dc264a4f487d26f93)...[64b3cb9](64b3cb972246f3152af03d4f71ab1ba4ab6d1f7c)
