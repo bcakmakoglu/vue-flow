@@ -114,6 +114,10 @@ const defaultState = (): State => ({
   defaultEdgeOptions: undefined,
   elevateEdgesOnSelect: false,
 
+  __experimentalFeatures: {
+    nestedFlow: false,
+  },
+
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 

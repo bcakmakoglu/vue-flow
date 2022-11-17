@@ -157,6 +157,10 @@ export interface FlowProps {
   defaultEdgeOptions?: DefaultEdgeOptions
   /** elevates edges when selected and applies z-Index to put them above their nodes */
   elevateEdgesOnSelect?: boolean
+
+  __experimentalFeatures?: {
+    nestedFlow?: boolean
+  }
 }
 
 export type FlowOptions = FlowProps
