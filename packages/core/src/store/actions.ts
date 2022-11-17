@@ -93,12 +93,36 @@ export default (state: State, getters: ComputedGetters): Actions => {
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
     if (!state.vueFlowRef) return
 
-    const viewportNode = state.vueFlowRef.querySelector('.vue-flow__transformationpane')
+    const viewportNode = state.vueFlowRef.querySelector('.vue-flow__transformationpane') as HTMLElement
 
     if (!viewportNode) return
 
-    const style = window.getComputedStyle(viewportNode)
-    const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
+    let zoom: number
+    if (state.__experimentalFeatures?.nestedFlow) {
+      let viewportNodes: HTMLElement[] = [viewportNode]
+      let parentNode = viewportNode
+      let isNested
+
+      while (!isNested && parentNode) {
+        parentNode = parentNode.parentElement!
+        isNested = parentNode?.classList.contains('vue-flow__transformationpane')
+
+        if (isNested) {
+          viewportNodes = [parentNode, ...viewportNodes]
+        }
+      }
+
+      viewportNodes.forEach((vp) => {
+        const style = window.getComputedStyle(vp)
+        const { m22 } = new window.DOMMatrixReadOnly(style.transform)
+        if (!zoom) zoom = m22
+        else zoom *= m22
+      })
+    } else {
+      const style = window.getComputedStyle(viewportNode)
+      const { m22 } = new window.DOMMatrixReadOnly(style.transform)
+      zoom = m22
+    }
 
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
       const node = getters.getNode.value(update.id)
