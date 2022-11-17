@@ -342,7 +342,7 @@ export const getXYZPos = (parentPos: XYZPosition, computedPosition: XYZPosition)
   return {
     x: computedPosition.x + parentPos.x,
     y: computedPosition.y + parentPos.y,
-    z: parentPos.z > computedPosition.z ? parentPos.z : computedPosition.z,
+    z: (parentPos.z > computedPosition.z ? parentPos.z : computedPosition.z) + 1,
   }
 }
 
