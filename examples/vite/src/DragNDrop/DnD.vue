@@ -17,7 +17,7 @@ const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
   ],
 })
 
-const { handleDragOver, handleDrop, onDrop } = useDragNDrop()
+const { onDrop } = useDragNDrop()
 
 onConnect((params) => addEdges([params]))
 
@@ -51,8 +51,8 @@ onDrop(({ type, position }) => {
 </script>
 
 <template>
-  <div class="dndflow" @drop="handleDrop">
-    <VueFlow @dragover="handleDragOver" />
+  <div class="dndflow">
+    <VueFlow />
 
     <Sidebar />
   </div>
