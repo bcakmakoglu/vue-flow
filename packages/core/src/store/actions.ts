@@ -43,6 +43,21 @@ export default (state: State, getters: ComputedGetters): Actions => {
     })
   }
 
+  const nodeIds = $computed(() => state.nodes.map((n) => n.id))
+  const edgeIds = $computed(() => state.edges.map((e) => e.id))
+
+  const findNode: Actions['findNode'] = (id) => {
+    if (state.nodes && !nodeIds.length) return state.nodes.find((node) => node.id === id)
+
+    return state.nodes[nodeIds.indexOf(id)]
+  }
+
+  const findEdge: Actions['findEdge'] = (id) => {
+    if (state.edges && !edgeIds.length) return state.edges.find((edge) => edge.id === id)
+
+    return state.edges[edgeIds.indexOf(id)]
+  }
+
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
     const changes: NodePositionChange[] = []
 
@@ -55,11 +70,10 @@ export default (state: State, getters: ComputedGetters): Actions => {
       }
 
       if (changed) {
-        change.computedPosition = node.position
         change.position = node.position
 
         if (node.parentNode) {
-          const parentNode = getters.getNode.value(node.parentNode)
+          const parentNode = findNode(node.parentNode)
 
           change.position = {
             x: change.position.x - (parentNode?.computedPosition?.x ?? 0),
@@ -366,21 +380,6 @@ export default (state: State, getters: ComputedGetters): Actions => {
     })
 
     state.hooks.edgesChange.trigger(changes)
-  }
-
-  const nodeIds = $computed(() => state.nodes.map((n) => n.id))
-  const edgeIds = $computed(() => state.edges.map((e) => e.id))
-
-  const findNode: Actions['findNode'] = (id) => {
-    if (state.nodes && !nodeIds.length) return state.nodes.find((node) => node.id === id)
-
-    return state.nodes[nodeIds.indexOf(id)]
-  }
-
-  const findEdge: Actions['findEdge'] = (id) => {
-    if (state.edges && !edgeIds.length) return state.edges.find((edge) => edge.id === id)
-
-    return state.edges[edgeIds.indexOf(id)]
   }
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) => updateEdgeAction(oldEdge, newConnection, state.edges)
