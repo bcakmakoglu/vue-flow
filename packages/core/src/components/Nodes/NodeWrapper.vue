@@ -30,6 +30,8 @@ const {
   onUpdateNodeInternals,
   getIntersectingNodes,
   getNodeTypes,
+  nodeExtent,
+  onNodesInitialized,
 } = $(useVueFlow())
 
 const node = $(useVModel(props, 'node'))
@@ -39,6 +41,8 @@ const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) :
 const connectedEdges = $computed(() => getConnectedEdges([node], edges))
 
 const nodeElement = ref()
+
+const initialized = ref(false)
 
 provide(NodeRef, nodeElement)
 
@@ -80,15 +84,6 @@ onUpdateNodeInternals((updateIds) => {
   }
 })
 
-updatePosition(
-  {
-    x: node.position.x,
-    y: node.position.y,
-    z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
-  },
-  parentNode ? { ...parentNode.computedPosition } : undefined,
-)
-
 onMounted(() => {
   props.resizeObserver.observe(nodeElement.value)
 })
@@ -113,8 +108,6 @@ watch(
     () => parentNode?.computedPosition.y,
     () => parentNode?.computedPosition.z,
     () => node.selected,
-    () => node.dimensions,
-    () => parentNode?.dimensions,
   ],
   ([newX, newY, parentX, parentY, parentZ]) => {
     const xyzPos = {
@@ -126,16 +119,37 @@ watch(
 
     updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ || 0 } : undefined)
   },
-  { flush: 'post' },
+  { flush: 'post', immediate: true },
 )
 
 function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
+  let nextPos = { ...nodePos }
   if (parentPos) {
-    node.computedPosition = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
-  } else {
-    node.computedPosition = nodePos
+    nextPos = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
   }
+
+  node.computedPosition = nextPos
 }
+
+onNodesInitialized(() => {
+  initialized.value = true
+})
+
+onMounted(() => {
+  until(initialized)
+    .toBe(true)
+    .then(() => {
+      const extent = applyExtent(node, nodeExtent, parentNode)
+
+      const clampedPos = clampPosition(node.computedPosition, extent)
+
+      node.computedPosition = { ...node.computedPosition, ...clampedPos }
+      node.position = {
+        x: node.computedPosition.x - (parentNode?.computedPosition.x || 0),
+        y: node.computedPosition.y - (parentNode?.computedPosition.y || 0),
+      }
+    })
+})
 
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])

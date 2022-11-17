@@ -77,8 +77,6 @@ export function updatePosition(
 
   dragItem.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
 
-  if (dragItem.extent === 'parent') console.log(dragItem.position)
-
   return dragItem
 }
 
@@ -87,15 +85,13 @@ export function applyExtent<T extends NodeDragItem | GraphNode>(item: T, extent?
   let nextExtent = currentExtent
 
   if (currentExtent === 'parent' && parent) {
-    if (item.dimensions.width && item.dimensions.height) {
-      nextExtent = [
-        [parent.computedPosition.x, parent.computedPosition.y],
-        [
-          parent.computedPosition.x + parent.dimensions.width - item.dimensions.width,
-          parent.computedPosition.y + parent.dimensions.height - item.dimensions.height,
-        ],
-      ]
-    }
+    nextExtent = [
+      [parent.computedPosition.x, parent.computedPosition.y],
+      [
+        parent.computedPosition.x + parent.dimensions.width - item.dimensions.width,
+        parent.computedPosition.y + parent.dimensions.height - item.dimensions.height,
+      ],
+    ]
   } else if (currentExtent !== 'parent' && currentExtent && parent) {
     const itemExtent = currentExtent
     const parentX = parent.computedPosition.x
