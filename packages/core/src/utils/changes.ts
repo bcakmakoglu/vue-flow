@@ -1,4 +1,3 @@
-import { isGraphNode } from './graph'
 import type {
   Edge,
   EdgeAddChange,

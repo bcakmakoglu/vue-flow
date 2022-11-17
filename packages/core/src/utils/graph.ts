@@ -1,5 +1,4 @@
 import { isString } from '@vueuse/core'
-import { warn } from './log'
 import type {
   Box,
   Connection,

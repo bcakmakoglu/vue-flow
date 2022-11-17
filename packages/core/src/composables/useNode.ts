@@ -1,4 +1,3 @@
-import useVueFlow from './useVueFlow'
 import type { CustomEvent, ElementData } from '~/types'
 
 /**

@@ -1,4 +1,3 @@
-import { rectToBox } from './graph'
 import type { EdgePositions, Getters, GraphEdge, GraphNode, HandleElement, Rect, Viewport, XYPosition } from '~/types'
 import { Position } from '~/types'
 
