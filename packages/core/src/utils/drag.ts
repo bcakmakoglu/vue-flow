@@ -1,5 +1,4 @@
 import type { Ref } from 'vue'
-import { clampPosition, isParentSelected } from './graph'
 import type { ComputedGetters, CoordinateExtent, Getters, GraphNode, NodeDragItem, SnapGrid, XYPosition } from '~/types'
 
 export function hasSelector(target: Element, selector: string, node: Ref<Element>): boolean {
@@ -78,35 +77,35 @@ export function updatePosition(
 
   dragItem.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
 
+  if (dragItem.extent === 'parent') console.log(dragItem.position)
+
   return dragItem
 }
 
 export function applyExtent<T extends NodeDragItem | GraphNode>(item: T, extent?: CoordinateExtent, parent?: GraphNode) {
-  let currentExtent = item.extent || extent
+  const currentExtent = item.extent ?? extent
+  let nextExtent = currentExtent
 
-  if (item.extent === 'parent' && parent) {
-    if (item.parentNode && item.dimensions.width && item.dimensions.height) {
-      currentExtent =
-        parent.computedPosition && parent.dimensions.width && parent.dimensions.height
-          ? [
-              [parent.computedPosition.x, parent.computedPosition.y],
-              [
-                parent.computedPosition.x + parent.dimensions.width - item.dimensions.width,
-                parent.computedPosition.y + parent.dimensions.height - item.dimensions.height,
-              ],
-            ]
-          : currentExtent
+  if (currentExtent === 'parent' && parent) {
+    if (item.dimensions.width && item.dimensions.height) {
+      nextExtent = [
+        [parent.computedPosition.x, parent.computedPosition.y],
+        [
+          parent.computedPosition.x + parent.dimensions.width - item.dimensions.width,
+          parent.computedPosition.y + parent.dimensions.height - item.dimensions.height,
+        ],
+      ]
     }
-  } else if (item.extent && item.parentNode) {
-    const itemExtent = item.extent as CoordinateExtent
-    const parentX = parent?.computedPosition?.x ?? 0
-    const parentY = parent?.computedPosition?.y ?? 0
+  } else if (currentExtent !== 'parent' && currentExtent && parent) {
+    const itemExtent = currentExtent
+    const parentX = parent.computedPosition.x
+    const parentY = parent.computedPosition.y
 
-    currentExtent = [
+    nextExtent = [
       [itemExtent[0][0] + parentX, itemExtent[0][1] + parentY],
       [itemExtent[1][0] + parentX, itemExtent[1][1] + parentY],
     ]
   }
 
-  return currentExtent
+  return nextExtent as CoordinateExtent
 }

@@ -1,4 +1,4 @@
-import { connectionExists, getEdgeId, isEdge, isGraphEdge, parseEdge, parseNode } from './graph'
+import { clampPosition, connectionExists, getEdgeId, isEdge, isGraphEdge, parseEdge, parseNode } from './graph'
 import { warn } from './log'
 import type { Connection, CoordinateExtent, Edge, Getters, GraphEdge, GraphNode, Node } from '~/types'
 
@@ -66,6 +66,7 @@ export const createGraphNodes = (
         parentNode: node.parentNode,
       }),
     )
+
     if (node.parentNode) {
       parentNodes[node.parentNode] = true
     }
