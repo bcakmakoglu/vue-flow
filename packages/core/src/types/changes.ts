@@ -25,7 +25,6 @@ export interface NodePositionChange {
   id: string
   type: 'position'
   position: XYPosition
-  computedPosition: XYPosition
   from: XYPosition
   dragging: boolean
 }
