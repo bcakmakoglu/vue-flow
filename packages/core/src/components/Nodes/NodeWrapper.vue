@@ -123,7 +123,7 @@ watch(
 )
 
 function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
-  let nextPos = { ...nodePos }
+  let nextPos = nodePos
   if (parentPos) {
     nextPos = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
   }
