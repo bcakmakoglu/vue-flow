@@ -1,5 +1,11 @@
 # @vue-flow/additional-components
 
+## 1.3.0
+
+### Minor Changes
+
+- [#438](https://github.com/bcakmakoglu/vue-flow/pull/438) [`32412ed`](https://github.com/bcakmakoglu/vue-flow/commit/32412ed8d6b48a04cd2628960f1a20aa89adc6dc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `maskStrokeColor` & `maskStrokeWidth` prop to MiniMap
+
 ## 1.2.4
 
 ### Patch Changes
