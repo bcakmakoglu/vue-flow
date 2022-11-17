@@ -15,6 +15,7 @@ const { onPaneReady, panOnDrag } = useVueFlow({
   connectionMode: ConnectionMode.Loose,
   zoomOnScroll: false,
   preventScrolling: false,
+  elevateEdgesOnSelect: true,
   translateExtent: [
     [-500, -100],
     [600, 500],
