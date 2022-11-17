@@ -220,11 +220,11 @@ export interface Actions extends ViewportFunctions {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (startHandle: StartHandle, position?: XYPosition, event?: MouseEvent, isClick?: boolean) => void
+  startConnection: (startHandle: StartHandle, position?: XYPosition, event?: MouseEvent | TouchEvent, isClick?: boolean) => void
   /** update connection position */
   updateConnection: (position: XYPosition) => void
   /** end (or cancel) a connection */
-  endConnection: (event?: MouseEvent, isClick?: boolean) => void
+  endConnection: (event?: MouseEvent | TouchEvent, isClick?: boolean) => void
 
   /** internal position updater, you probably don't want to use this */
   updateNodePositions: UpdateNodePosition

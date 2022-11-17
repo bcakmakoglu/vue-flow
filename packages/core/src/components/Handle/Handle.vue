@@ -15,7 +15,7 @@ const handle = ref<HTMLDivElement>()
 
 const handleId = $computed(() => id ?? `${nodeId}__handle-${position}`)
 
-const { onMouseDown, onClick } = useHandle({
+const { onMouseDown, onTouchStart, onClick } = useHandle({
   nodeId,
   handleId,
   isValidConnection,
@@ -94,6 +94,7 @@ export default {
       },
     ]"
     @mousedown="onMouseDown"
+    @touchstart="onTouchStart"
     @click="onClick"
   >
     <slot :id="id" />
