@@ -1,6 +1,4 @@
-import type { MaybeRef } from '@vueuse/core'
-import type { ComponentPublicInstance } from 'vue'
-import { computed, ref, unref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { createEventHook } from '@vueuse/core'
 import type { Plugin, VueFlowStore } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
@@ -12,16 +10,6 @@ function createDragNDrop(store: VueFlowStore): DragNDropState {
   const onDrop = createEventHook<OnDropData>()
 
   const nodeType = ref<DragNodeType>()
-
-  const _container = ref<HTMLElement | ComponentPublicInstance | null>(null)
-
-  const el = computed(() => {
-    const containerEl = _container.value || store.vueFlowRef.value
-    if (!containerEl) return null
-
-    if ('$el' in containerEl) return containerEl.$el as HTMLElement
-    return containerEl as HTMLElement
-  })
 
   function handleDragStart(event: DragEvent, type: DragNodeType) {
     if (event.dataTransfer) {
@@ -45,9 +33,9 @@ function createDragNDrop(store: VueFlowStore): DragNDropState {
   function handleDrop(event: DragEvent) {
     const type = nodeType.value as DragNodeType
 
-    if (!type || !el.value) return
+    if (!type || !store.vueFlowRef.value) return
 
-    const { left, top } = el.value.getBoundingClientRect()
+    const { left, top } = store.vueFlowRef.value.getBoundingClientRect()
 
     const position = store.project({
       x: event.clientX - left,
@@ -57,12 +45,33 @@ function createDragNDrop(store: VueFlowStore): DragNDropState {
     onDrop.trigger({ event, type, position })
   }
 
+  watch(store.viewportRef, (containerEl, _, onCleanup) => {
+    if (containerEl) {
+      containerEl.addEventListener('dragover', handleDragOver)
+    }
+
+    onCleanup(() => {
+      if (containerEl) {
+        containerEl.removeEventListener('dragover', handleDragOver)
+      }
+    })
+  })
+
+  watch(store.vueFlowRef, (containerEl, _, onCleanup) => {
+    if (containerEl) {
+      containerEl.addEventListener('drop', handleDrop)
+    }
+
+    onCleanup(() => {
+      if (containerEl) {
+        containerEl.removeEventListener('drop', handleDrop)
+      }
+    })
+  })
+
   return {
-    container: _container,
     nodeType,
     handleDragStart,
-    handleDragOver,
-    handleDrop,
     onDragStart: onDragStart.on,
     onDragOver: onDragOver.on,
     onDrop: onDrop.on,
@@ -75,20 +84,8 @@ export const PluginDragNDrop: Plugin = (hooks) => {
   })
 }
 
-export function useDragNDrop<CustomType extends string = string>(
-  container?: MaybeRef<HTMLElement | ComponentPublicInstance | null>,
-) {
+export function useDragNDrop<CustomType extends string = string>() {
   const { dragNDrop } = useVueFlow()
-
-  watch(
-    () => unref(container),
-    (value) => {
-      if (value) {
-        dragNDrop.container.value = value
-      }
-    },
-    { immediate: true },
-  )
 
   return dragNDrop as DragNDropState<CustomType>
 }
