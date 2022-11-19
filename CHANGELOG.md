@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2022-11-19
+
+[ee9b1ed](ee9b1ed3a021a999eaeaf5e3a2dab333913d3760)...[0c3ae1e](0c3ae1ec501228a375c31134b7390aeeb06babb6)
+
+### Bug Fixes
+
+- Update position on dimensions change ([1bc6a7d](1bc6a7dcce9ada33b8a6ef216eb920839a6ee83f))
+
+### Features
+
+- Add `__experimentalFeatures` flag to store ([3c66058](3c660583cba464c1887fcabb2aaa2bfcb4547713))
+- Add nested flow support for edge alignment (connections dont work) ([bae4324](bae43249e1a5cf40947b8c5cc34342d84287ea79))
+- Support touch for connection creation ([b3fdbd8](b3fdbd884a14c06212fd4f78538481609a8032ab))
+
+### Refactor
+
+- Add `connecting` class to `SelectionPane` while connecting ([463b5d7](463b5d70ef3296bf2ecd570be94ad2af027d221e))
+
 ## [1.4.2] - 2022-11-17
 
 [64b3cb9](64b3cb972246f3152af03d4f71ab1ba4ab6d1f7c)...[ee9b1ed](ee9b1ed3a021a999eaeaf5e3a2dab333913d3760)
