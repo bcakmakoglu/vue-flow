@@ -32,8 +32,7 @@ export const useWatch = (
                 [store.edges, store.nodes, () => store.edges.value.length, () => store.nodes.value.length],
                 ([e, n]) => {
                   if (pauseModel) pauseModel.pause()
-                  const val = [...(n as GraphNode[]), ...(e as GraphEdge[])]
-                  if (val.length) models.modelValue!.value = val
+                  models.modelValue!.value = [...(n as GraphNode[]), ...(e as GraphEdge[])]
 
                   nextTick(() => {
                     if (pauseModel) pauseModel.resume()
@@ -71,7 +70,7 @@ export const useWatch = (
               pauseStore = watchPausable(
                 () => store.nodes.value.length,
                 () => {
-                  if (store.nodes.value.length) models.nodes!.value = [...store.nodes.value]
+                  models.nodes!.value = [...store.nodes.value]
                 },
                 { immediate: true },
               )
@@ -105,7 +104,7 @@ export const useWatch = (
               pauseStore = watchPausable(
                 () => store.edges.value.length,
                 () => {
-                  if (store.edges.value.length) models.edges!.value = [...store.edges.value]
+                  models.edges!.value = [...store.edges.value]
                 },
                 { immediate: true },
               )
