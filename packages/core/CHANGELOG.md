@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.5.1
+
+### Patch Changes
+
+- [#459](https://github.com/bcakmakoglu/vue-flow/pull/459) [`649bdb9`](https://github.com/bcakmakoglu/vue-flow/commit/649bdb94d4e1b9dc102629eb83b9912ca1c5c7c5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add nullish check for node/edge events object to prevent err if undefined
+
+- [#454](https://github.com/bcakmakoglu/vue-flow/pull/454) [`fc15fa3`](https://github.com/bcakmakoglu/vue-flow/commit/fc15fa3276689744ef5f41f2b8560c8370cd37e6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update model-value regardless of element arr length
+
 ## 1.5.0
 
 ### Minor Changes
