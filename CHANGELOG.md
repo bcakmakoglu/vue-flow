@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1] - 2022-12-01
+
+[0c3ae1e](0c3ae1ec501228a375c31134b7390aeeb06babb6)...[298e44b](298e44b88e097a147d2549a794a3d0cebe559c35)
+
+### Bug Fixes
+
+- Update model-value regardless of arr length ([66f866e](66f866e717612553a2b3f7b64f902a761fdc4d4f))
+- Nullish check for event obj ([54fbfaa](54fbfaa7de5c102c0f18a52481b8209b285d1863))
+- Nullish check for event obj ([649bdb9](649bdb94d4e1b9dc102629eb83b9912ca1c5c7c5))
+
+### Miscellaneous Tasks
+
+- Bump version ([298e44b](298e44b88e097a147d2549a794a3d0cebe559c35))
+
 ## [1.5.0] - 2022-11-19
 
 [ee9b1ed](ee9b1ed3a021a999eaeaf5e3a2dab333913d3760)...[0c3ae1e](0c3ae1ec501228a375c31134b7390aeeb06babb6)
