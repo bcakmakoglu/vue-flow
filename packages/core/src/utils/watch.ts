@@ -47,7 +47,7 @@ export const useWatch = (
               })
             }
           },
-          { immediate: !!(models.modelValue && models.modelValue.value) },
+          { immediate: !!(models.modelValue && models.modelValue.value && models.modelValue.value.length) },
         )
       })
     }
@@ -72,7 +72,7 @@ export const useWatch = (
                 () => {
                   models.nodes!.value = [...store.nodes.value]
                 },
-                { immediate: true },
+                { immediate: true, flush: 'post' },
               )
 
               nextTick(() => {
@@ -81,7 +81,7 @@ export const useWatch = (
               })
             }
           },
-          { immediate: !!(models.nodes && models.nodes.value) },
+          { immediate: !!(models.nodes && models.nodes.value && models.nodes.value.length) },
         )
       })
     }
@@ -106,7 +106,7 @@ export const useWatch = (
                 () => {
                   models.edges!.value = [...store.edges.value]
                 },
-                { immediate: true },
+                { immediate: true, flush: 'post' },
               )
 
               nextTick(() => {
@@ -115,7 +115,7 @@ export const useWatch = (
               })
             }
           },
-          { immediate: !!(models.edges && models.edges.value) },
+          { immediate: !!(models.edges && models.edges.value && models.edges.value.length) },
         )
       })
     }
