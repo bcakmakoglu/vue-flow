@@ -65,10 +65,10 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   userSelectionActive: boolean
   multiSelectionActive: boolean
 
-  deleteKeyCode: KeyFilter
-  selectionKeyCode: KeyFilter
-  multiSelectionKeyCode: KeyFilter
-  zoomActivationKeyCode: KeyFilter
+  deleteKeyCode: KeyFilter | null
+  selectionKeyCode: KeyFilter | null
+  multiSelectionKeyCode: KeyFilter | null
+  zoomActivationKeyCode: KeyFilter | null
 
   connectionMode: ConnectionMode
   connectionLineOptions: ConnectionLineOptions
