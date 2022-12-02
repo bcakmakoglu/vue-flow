@@ -78,7 +78,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
         width: 0,
         height: 0,
       }),
-      handleBounds: shallowReactive({
+      handleBounds: reactive({
         source: [],
         target: [],
       }),
@@ -90,7 +90,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
       selectable: undefined,
       connectable: undefined,
       ...defaults,
-      data: shallowReactive(node.data || {}),
+      data: reactive(node.data || {}),
       events: shallowReactive(node.events || {}),
     }
   }
@@ -118,7 +118,7 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         targetY: 0 || defaults?.targetY,
         updatable: edge.updatable ?? defaults?.updatable,
         selectable: edge.selectable ?? defaults?.selectable,
-        data: shallowReactive(edge.data || defaults?.data || {}),
+        data: reactive(edge.data || defaults?.data || {}),
         events: shallowReactive(edge.events || defaults?.events || {}),
         label: (edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label) || defaults?.label,
         interactionWidth: edge.interactionWidth || defaults?.interactionWidth,
