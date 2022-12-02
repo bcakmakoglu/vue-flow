@@ -10,7 +10,7 @@ function isInputDOMNode(event: KeyboardEvent): boolean {
   return ['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.nodeName) || hasAttribute || !!closest
 }
 
-export default (keyFilter: MaybeRef<KeyFilter>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
+export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
 
   let isPressed = $ref(unref(keyFilter) === true)
@@ -27,27 +27,29 @@ export default (keyFilter: MaybeRef<KeyFilter>, onChange?: (keyPressed: boolean)
       return
     }
 
-    onKeyStroke(
-      unrefKeyFilter,
-      (e) => {
-        if (isInputDOMNode(e)) return
+    if (unrefKeyFilter) {
+      onKeyStroke(
+        unrefKeyFilter,
+        (e) => {
+          if (isInputDOMNode(e)) return
 
-        e.preventDefault()
-        isPressed = true
-      },
-      { eventName: 'keydown' },
-    )
+          e.preventDefault()
+          isPressed = true
+        },
+        { eventName: 'keydown' },
+      )
 
-    onKeyStroke(
-      unrefKeyFilter,
-      (e) => {
-        if (isInputDOMNode(e)) return
+      onKeyStroke(
+        unrefKeyFilter,
+        (e) => {
+          if (isInputDOMNode(e)) return
 
-        e.preventDefault()
-        isPressed = false
-      },
-      { eventName: 'keyup' },
-    )
+          e.preventDefault()
+          isPressed = false
+        },
+        { eventName: 'keyup' },
+      )
+    }
   })
 
   if (typeof window.addEventListener !== 'undefined') {

@@ -113,10 +113,10 @@ export interface FlowProps {
   /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle?: CSSProperties | null
   connectionLineOptions?: ConnectionLineOptions
-  deleteKeyCode?: KeyFilter
-  selectionKeyCode?: KeyFilter
-  multiSelectionKeyCode?: KeyFilter
-  zoomActivationKeyCode?: KeyFilter
+  deleteKeyCode?: KeyFilter | null
+  selectionKeyCode?: KeyFilter | null
+  multiSelectionKeyCode?: KeyFilter | null
+  zoomActivationKeyCode?: KeyFilter | null
   snapToGrid?: boolean
   snapGrid?: SnapGrid
   onlyRenderVisibleElements?: boolean
