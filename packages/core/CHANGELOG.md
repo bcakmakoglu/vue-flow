@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.5.2
+
+### Patch Changes
+
+- [#466](https://github.com/bcakmakoglu/vue-flow/pull/466) [`051dcc4`](https://github.com/bcakmakoglu/vue-flow/commit/051dcc477fe43033f12b17fb096c516a8cf2c485) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - use `reactive` instead of `shallowReactive` for nested node/edge properties
+
+- [#462](https://github.com/bcakmakoglu/vue-flow/pull/462) [`7dfceb2`](https://github.com/bcakmakoglu/vue-flow/commit/7dfceb213397d82375c779bf61d24ddf2df9b27d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix model watcher overwriting empty state when setting element `onMounted` hook
+
+- [#465](https://github.com/bcakmakoglu/vue-flow/pull/465) [`c56ee5a`](https://github.com/bcakmakoglu/vue-flow/commit/c56ee5a6e906166b451a7221d4a5a8714497f745) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow `null` as key-code
+
 ## 1.5.1
 
 ### Patch Changes
