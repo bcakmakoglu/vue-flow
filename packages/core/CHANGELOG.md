@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.5.3
+
+### Patch Changes
+
+- [#474](https://github.com/bcakmakoglu/vue-flow/pull/474) [`9568794`](https://github.com/bcakmakoglu/vue-flow/commit/9568794e36a7cc05169508a7d498510208f6a598) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix untyped connection line, node and edge slots props by patching type definition after build
+
 ## 1.5.2
 
 ### Patch Changes
