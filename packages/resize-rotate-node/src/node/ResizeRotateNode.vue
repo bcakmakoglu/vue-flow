@@ -25,7 +25,7 @@ const el = ref()
 
 const visible = ref(false)
 
-const { onRotateStart, onRotate, onResizeStart, onResize } = useMoveable(props.id, emits)
+const { onRotateStart, onRotate, onResizeStart, onResize, onResizeEnd } = useMoveable(props.id, emits)
 
 const toggleVisibility = (val?: boolean) => {
   visible.value = val ?? !visible.value
@@ -110,6 +110,7 @@ export default {
     :zoom="1"
     @resize-start="onResizeStart"
     @resize="onResize"
+    @resize-end="onResizeEnd"
     @rotate-start="onRotateStart"
     @rotate="onRotate"
   />
