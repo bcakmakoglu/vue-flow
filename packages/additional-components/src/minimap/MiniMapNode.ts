@@ -7,11 +7,15 @@ export default defineComponent({
   props: ['id', 'position', 'dimensions', 'strokeWidth', 'strokeColor', 'borderRadius', 'color', 'shapeRendering', 'type'],
   emits: ['click', 'dblclick', 'mouseenter', 'mousemove', 'mouseleave'],
   setup(props: MiniMapNodeProps, { attrs, emit }) {
-    const style = (attrs.style ?? {}) as CSSProperties
     const miniMapSlots: Slots = inject(MiniMapSlots)!
 
-    return () => [
-      h('rect', {
+    return () => {
+      const style = (attrs.style ?? {}) as CSSProperties
+      const slot = miniMapSlots[`node-${props.type}`]
+
+      if (slot) return slot!(props)
+
+      return h('rect', {
         id: props.id,
         class: ['vue-flow__minimap-node', attrs.class].join(' '),
         style,
@@ -30,8 +34,7 @@ export default defineComponent({
         onMouseenter: (e: MouseEvent) => emit('mouseenter', e),
         onMousemove: (e: MouseEvent) => emit('mousemove', e),
         onMouseleave: (e: MouseEvent) => emit('mouseleave', e),
-      }),
-      miniMapSlots[props.type] && miniMapSlots[props.type]!(props),
-    ]
+      })
+    }
   },
 })
