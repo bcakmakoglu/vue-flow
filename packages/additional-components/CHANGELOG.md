@@ -1,5 +1,11 @@
 # @vue-flow/additional-components
 
+## 1.3.1
+
+### Patch Changes
+
+- [#473](https://github.com/bcakmakoglu/vue-flow/pull/473) [`9b70fc1`](https://github.com/bcakmakoglu/vue-flow/commit/9b70fc15b569598bbbc56d0ff0b22c212ba56fde) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix minimap node slots not being rendered
+
 ## 1.3.0
 
 ### Minor Changes
