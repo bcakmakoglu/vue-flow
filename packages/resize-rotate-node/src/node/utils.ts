@@ -40,6 +40,15 @@ export function useMoveable(id: string, emits: ResizeRotateNodeEmits) {
     emits('resize', { width: e.width, height: e.height })
   }
 
+  const onResizeEnd = (e: MoveableEvents['resizeEnd']) => {
+    const oldPosition = node.computedPosition
+    e.target.style.transform = `rotate(${node.data!.rotate}deg)`
+    node.position = { x: oldPosition.x + node.data!.translate[0]!, y: oldPosition.y + node.data!.translate[1]! }
+    node.data!.translate = [0, 0]
+
+    emits('updateNodeInternals')
+  }
+
   const onRotateStart = (e: MoveableEvents['rotateStart']) => {
     e.set(node.data!.rotate)
   }
@@ -57,6 +66,7 @@ export function useMoveable(id: string, emits: ResizeRotateNodeEmits) {
   return {
     onResizeStart,
     onResize,
+    onResizeEnd,
     onRotateStart,
     onRotate,
   }
