@@ -191,7 +191,13 @@ onMounted(() => {
     const zoomScroll = zoomKeyPressed.value || zoomOnScroll
     const pinchZoom = zoomOnPinch && event.ctrlKey
 
-    if (event.button === 1 && event.type === 'mousedown' && (event.target as HTMLElement)?.closest(`.vue-flow__node`)) return true
+    if (
+      event.button === 1 &&
+      event.type === 'mousedown' &&
+      ((event.target as HTMLElement)?.closest(`.vue-flow__node`) || (event.target as HTMLElement)?.closest(`.vue-flow__edge`))
+    ) {
+      return true
+    }
 
     // if all interactions are disabled, we prevent all zoom events
     if (!panOnDrag && !zoomScroll && !panOnScroll && !zoomOnDoubleClick && !zoomOnPinch) return false
