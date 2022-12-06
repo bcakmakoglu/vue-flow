@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.5.4
+
+### Patch Changes
+
+- [#486](https://github.com/bcakmakoglu/vue-flow/pull/486) [`912da4d`](https://github.com/bcakmakoglu/vue-flow/commit/912da4d0a6f0ed48f9455678eb978b9a5e0c08f6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent valid connections on same node and same handle
+
+- [#485](https://github.com/bcakmakoglu/vue-flow/pull/485) [`7ba6215`](https://github.com/bcakmakoglu/vue-flow/commit/7ba621554276e10e2be1cb441928354b4ddfd073) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow middle mouse pan over edges
+
+- [#481](https://github.com/bcakmakoglu/vue-flow/pull/481) [`aed0845`](https://github.com/bcakmakoglu/vue-flow/commit/aed08458575e8832f07922b6cb104e0185306a74) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `HandleConnectableFunc` type
+
+- [#483](https://github.com/bcakmakoglu/vue-flow/pull/483) [`9326c58`](https://github.com/bcakmakoglu/vue-flow/commit/9326c580da5cebc3fd39d1ade195291033c03e54) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove barrel files and use auto-imports instead (internal change)
+
+- [#479](https://github.com/bcakmakoglu/vue-flow/pull/479) [`c673b04`](https://github.com/bcakmakoglu/vue-flow/commit/c673b044227a6702c695691be6f94f4331812dec) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Type `markerEnd` and `markerStart` in `EdgeProps`
+
 ## 1.5.3
 
 ### Patch Changes

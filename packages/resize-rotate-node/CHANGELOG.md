@@ -1,5 +1,11 @@
 # @vue-flow/resize-rotate-node
 
+## 1.0.2
+
+### Patch Changes
+
+- [#469](https://github.com/bcakmakoglu/vue-flow/pull/469) [`870eec0`](https://github.com/bcakmakoglu/vue-flow/commit/870eec046f00ad19bd0866278729ae9269624299) Thanks [@Congyuwang](https://github.com/Congyuwang)! - Sync Node position after Resizing
+
 ## 1.0.1
 
 ### Patch Changes
