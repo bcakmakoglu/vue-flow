@@ -151,7 +151,7 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
 }
 
 /** these props are passed to smooth step edges */
-export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> extends EdgeProps<Data, CustomEvents> {
+export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> extends Omit<EdgeProps<Data, CustomEvents>, 'type'> {
   borderRadius?: number
 }
 
