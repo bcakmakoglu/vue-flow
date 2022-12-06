@@ -36,7 +36,6 @@ SmoothStepEdge.props = [
   'targetX',
   'targetY',
   'borderRadius',
-  'offset',
   'markerEnd',
   'markerStart',
   'style',

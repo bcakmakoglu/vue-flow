@@ -96,10 +96,7 @@ export interface Edge<Data = ElementData, CustomEvents extends Record<string, Cu
   events?: Partial<EdgeEventsHandler<CustomEvents>>
 }
 
-export type DefaultEdgeOptions = Omit<
-  Edge,
-  'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle' | 'sourceNode' | 'targetNode'
->
+export type DefaultEdgeOptions = Omit<Edge, 'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle'>
 
 export interface EdgePositions {
   sourceX: number
@@ -155,37 +152,7 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
 
 /** these props are passed to smooth step edges */
 export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> extends EdgeProps<Data, CustomEvents> {
-  id: string
-  sourceNode: GraphNode
-  targetNode: GraphNode
-  label?: string | VNode | Component<EdgeTextProps> | Object
-  style?: CSSProperties
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  selected?: boolean
-  sourcePosition: Position
-  targetPosition: Position
-  sourceHandleId?: string
-  targetHandleId?: string
-  source: string
-  target: string
-  labelStyle?: any
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
-  animated?: boolean
-  updatable?: boolean
-  markerStart: string
-  markerEnd: string
   borderRadius?: number
-  offset?: number
-  interactionWidth?: number
-  data: Data
-  /** contextual and custom events of edge */
-  events: EdgeEventsOn<CustomEvents>
 }
 
 export interface BaseEdgeProps {
