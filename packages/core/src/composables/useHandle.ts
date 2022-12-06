@@ -74,7 +74,7 @@ export const checkElementBelowIsValid = (
       result.isValid =
         (isFunction(isValidConnection)
           ? isValidConnection(connection, { edges, sourceNode: getNode(sourceId)!, targetNode: getNode(targetId)! })
-          : true) ||
+          : elementBelowNodeId !== nodeId || elementBelowHandleId !== handleId) ||
         !result.connection.target ||
         !result.connection.source
     }
