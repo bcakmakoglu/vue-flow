@@ -1,8 +1,7 @@
 import { defaultEdgeTypes, defaultNodeTypes } from './state'
 import type { ComputedGetters, GraphEdge, GraphNode, State } from '~/types'
-import { getNodesInside, isEdgeVisible, warn } from '~/utils'
 
-export default (state: State): ComputedGetters => {
+export function useGetters(state: State): ComputedGetters {
   const nodeIds = computed(() => state.nodes.map((n) => n.id))
   const edgeIds = computed(() => state.edges.map((e) => e.id))
 

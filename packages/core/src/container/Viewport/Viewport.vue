@@ -4,8 +4,6 @@ import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import type { ViewpaneTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
-import { useKeyPress, useVueFlow, useWindow } from '../../composables'
-import { clamp, clampPosition, getDimensions } from '../../utils'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import Transform from './Transform.vue'
 
