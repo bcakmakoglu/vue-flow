@@ -43,7 +43,7 @@ export {
  */
 export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes'
 
-export { defaultEdgeTypes, defaultNodeTypes } from './store'
+export { defaultEdgeTypes, defaultNodeTypes } from './store/state'
 
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
 

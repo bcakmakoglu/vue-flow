@@ -1,4 +1,3 @@
-import useState from './state'
 import type {
   Actions,
   ComputedGetters,
@@ -20,7 +19,7 @@ import type {
   State,
 } from '~/types'
 
-export default (state: State, getters: ComputedGetters): Actions => {
+export function useActions(state: State, getters: ComputedGetters): Actions {
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     state.hooks.updateNodeInternals.trigger(ids)
   }

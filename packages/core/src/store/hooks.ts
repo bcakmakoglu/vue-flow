@@ -49,7 +49,7 @@ export const createHooks = (): FlowHooks => ({
   updateNodeInternals: createEventHook(),
 })
 
-export default (emit: Emits, hooks: Ref<FlowHooks>) => {
+export function useHooks(emit: Emits, hooks: Ref<FlowHooks>) {
   onBeforeMount(() => {
     for (const [key, value] of Object.entries(hooks.value)) {
       const listener = (data: any) => {

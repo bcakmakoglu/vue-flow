@@ -121,7 +121,7 @@ const defaultState = (): State => ({
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
-export default (opts?: FlowOptions): State => {
+export function useState(opts?: FlowOptions): State {
   const state = defaultState()
   if (opts) {
     Object.keys(opts).forEach((o) => {
