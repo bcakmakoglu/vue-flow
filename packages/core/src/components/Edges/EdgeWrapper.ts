@@ -168,6 +168,7 @@ const EdgeWrapper = defineComponent({
                 targetNode: props.targetNode,
                 source: edge.source,
                 target: edge.target,
+                type: edge.type,
                 updatable: props.updatable,
                 selected: edge.selected,
                 animated: edge.animated,

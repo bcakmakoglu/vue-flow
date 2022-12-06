@@ -123,8 +123,8 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
   id: string
   sourceNode: GraphNode
   targetNode: GraphNode
+  type?: keyof DefaultEdgeTypes | string
   label?: string | VNode | Component<EdgeTextProps> | Object
-  type?: string
   style?: CSSProperties
   sourceX: number
   sourceY: number
@@ -144,8 +144,8 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
   labelBgBorderRadius?: number
   animated?: boolean
   updatable?: boolean
-  markerStart?: string
-  markerEnd?: string
+  markerStart: string
+  markerEnd: string
   curvature?: number
   interactionWidth?: number
   data: Data
@@ -159,7 +159,6 @@ export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> exte
   sourceNode: GraphNode
   targetNode: GraphNode
   label?: string | VNode | Component<EdgeTextProps> | Object
-  type?: string
   style?: CSSProperties
   sourceX: number
   sourceY: number
@@ -179,8 +178,8 @@ export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> exte
   labelBgBorderRadius?: number
   animated?: boolean
   updatable?: boolean
-  markerStart?: string
-  markerEnd?: string
+  markerStart: string
+  markerEnd: string
   borderRadius?: number
   offset?: number
   interactionWidth?: number
