@@ -39,11 +39,11 @@
     "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.8",
-    "postcss": "^8.4.16",
-    "postcss-cli": "^9.1.0",
-    "postcss-nested": "^5.0.6",
-    "vite": "^3.2.3"
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.19",
+    "postcss-cli": "^10.1.0",
+    "postcss-nested": "^6.0.0",
+    "vite": "^3.2.5"
   },
   "publishConfig": {
     "access": "public",

@@ -12,14 +12,14 @@
     "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {
-    "@types/dagre": "^0.7.47",
+    "@types/dagre": "^0.7.48",
     "@vitejs/plugin-vue": "^3.2.0",
     "dagre": "^0.8.5",
-    "unplugin-auto-import": "^0.11.4",
-    "vite": "^3.2.3",
+    "unplugin-auto-import": "^0.12.0",
+    "vite": "^3.2.5",
     "vite-plugin-vue-type-imports": "0.2.0",
     "vite-svg-loader": "^3.6.0",
     "vue": "^3.2.37",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.1.6"
   }
 }
