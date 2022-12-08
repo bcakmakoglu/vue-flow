@@ -2,7 +2,7 @@
 import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import type { ViewpaneTransform } from '../../types'
+import type { CoordinateExtent, ViewpaneTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import Transform from './Transform.vue'
@@ -40,10 +40,10 @@ let isDragging = $ref(false)
 
 const isConnecting = $computed(() => !!connectionStartHandle)
 
-const viewChanged = (prevTransform: ViewpaneTransform, eventTransform: ZoomTransform): boolean =>
-  (prevTransform.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
-  (prevTransform.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
-  (prevTransform.zoom !== eventTransform.k && !isNaN(eventTransform.k))
+const viewChanged = (prevViewport: ViewpaneTransform, eventTransform: ZoomTransform): boolean =>
+  (prevViewport.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
+  (prevViewport.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
+  (prevViewport.zoom !== eventTransform.k && !isNaN(eventTransform.k))
 
 const eventToFlowTransform = (eventTransform: ZoomTransform): ViewpaneTransform => ({
   x: eventTransform.x,
@@ -53,11 +53,10 @@ const eventToFlowTransform = (eventTransform: ZoomTransform): ViewpaneTransform 
 
 const isWrappedWithClass = (event: Event, className: string | undefined) => (event.target as Element).closest(`.${className}`)
 
-const clampedZoom = clamp(defaultZoom, minZoom, maxZoom)
-
-let transform = $ref({
-  ...clampPosition({ x: defaultPosition[0], y: defaultPosition[1] }, translateExtent),
-  zoom: clampedZoom,
+let prevTransform = $ref<ViewpaneTransform>({
+  x: 0,
+  y: 0,
+  zoom: 0,
 })
 
 onMounted(() => {
@@ -80,12 +79,19 @@ onMounted(() => {
 })
 
 onMounted(() => {
+  const bbox = viewportEl.value.getBoundingClientRect()
   const d3Zoom = zoom<HTMLDivElement, any>().scaleExtent([minZoom, maxZoom]).translateExtent(translateExtent)
   const d3Selection = select(viewportEl.value).call(d3Zoom)
   const d3ZoomHandler = d3Selection.on('wheel.zoom')
 
-  const updatedTransform = zoomIdentity.translate(transform.x, transform.y).scale(transform.zoom)
-  d3Zoom.transform(d3Selection, updatedTransform)
+  const updatedTransform = zoomIdentity.translate(defaultPosition[0], defaultPosition[1]).scale(defaultZoom)
+  const extent: CoordinateExtent = [
+    [0, 0],
+    [bbox.width, bbox.height],
+  ]
+
+  const constrainedTransform = d3Zoom.constrain()(updatedTransform, extent, translateExtent)
+  d3Zoom.transform(d3Selection, constrainedTransform)
 
   setState({
     d3Zoom,
@@ -101,7 +107,9 @@ onMounted(() => {
     } else if (!keyPress) {
       d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
         setState({ viewport: { x: event.transform.x, y: event.transform.y, zoom: event.transform.k } })
+
         const flowTransform = eventToFlowTransform(event.transform)
+
         emits.move({ event, flowTransform })
       })
     }
@@ -124,7 +132,7 @@ onMounted(() => {
       isDragging = true
     }
 
-    transform = flowTransform
+    prevTransform = flowTransform
 
     emits.moveStart({ event, flowTransform })
   })
@@ -135,9 +143,11 @@ onMounted(() => {
     isZoomingOrPanning = false
     isDragging = false
 
-    if (viewChanged(transform, event.transform)) {
+    if (viewChanged(prevTransform, event.transform)) {
       const flowTransform = eventToFlowTransform(event.transform)
-      transform = flowTransform
+
+      prevTransform = flowTransform
+
       emits.moveEnd({ event, flowTransform })
     }
   })
