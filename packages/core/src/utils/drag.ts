@@ -1,4 +1,5 @@
 import type { Ref } from 'vue'
+import { isNumber } from '@vueuse/shared'
 import type { ComputedGetters, CoordinateExtent, Getters, GraphNode, NodeDragItem, XYPosition } from '~/types'
 
 export function hasSelector(target: Element, selector: string, node: Ref<Element>): boolean {
@@ -59,27 +60,38 @@ export function getEventHandlerParams({
 }
 
 export function applyExtent<T extends NodeDragItem | GraphNode>(item: T, extent?: CoordinateExtent, parent?: GraphNode) {
-  const currentExtent = item.extent ?? extent
-  let nextExtent = currentExtent
+  let currentExtent = item.extent || extent
 
-  if (currentExtent === 'parent' && parent) {
-    nextExtent = [
-      [parent.computedPosition.x, parent.computedPosition.y],
-      [
-        parent.computedPosition.x + parent.dimensions.width - item.dimensions.width,
-        parent.computedPosition.y + parent.dimensions.height - item.dimensions.height,
-      ],
-    ]
-  } else if (currentExtent !== 'parent' && currentExtent && parent) {
-    const itemExtent = currentExtent
+  if (item.extent === 'parent') {
+    if (item.parentNode && parent && item.dimensions.width && item.dimensions.height) {
+      currentExtent =
+        parent &&
+        isNumber(parent.computedPosition.x) &&
+        isNumber(parent.computedPosition.y) &&
+        isNumber(parent.dimensions.width) &&
+        isNumber(parent.dimensions.height)
+          ? [
+              [parent.computedPosition.x + item.dimensions.width, parent.computedPosition.y + item.dimensions.height],
+              [
+                parent.computedPosition.x + parent.dimensions.width - item.dimensions.width + item.dimensions.width,
+                parent.computedPosition.y + parent.dimensions.height - item.dimensions.height + item.dimensions.height,
+              ],
+            ]
+          : currentExtent
+    } else {
+      warn('Only child nodes can use a parent extent.')
+
+      currentExtent = extent
+    }
+  } else if (item.extent && parent) {
     const parentX = parent.computedPosition.x
     const parentY = parent.computedPosition.y
 
-    nextExtent = [
-      [itemExtent[0][0] + parentX, itemExtent[0][1] + parentY],
-      [itemExtent[1][0] + parentX, itemExtent[1][1] + parentY],
+    currentExtent = [
+      [item.extent[0][0] + parentX, item.extent[0][1] + parentY],
+      [item.extent[1][0] + parentX, item.extent[1][1] + parentY],
     ]
   }
 
-  return nextExtent as CoordinateExtent
+  return currentExtent as CoordinateExtent
 }
