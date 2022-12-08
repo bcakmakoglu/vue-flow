@@ -1,5 +1,4 @@
 import type { ConfigFactory, FlowOptions, Plugin, State, VueFlowStore } from '~/types'
-import { useActions, useGetters, useState } from '~/store'
 
 /**
  * Global Vue Flow App
