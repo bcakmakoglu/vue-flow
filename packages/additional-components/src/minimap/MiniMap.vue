@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { GraphNode } from '@vue-flow/core'
+import type { CoordinateExtent, GraphNode } from '@vue-flow/core'
 import { getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
@@ -33,7 +33,7 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, viewport, dimensions, emits, nodes, d3Selection, d3Zoom } = useVueFlow()
+const { id, edges, viewport, translateExtent, dimensions, emits, nodes, d3Selection, d3Zoom } = useVueFlow()
 
 const el = ref<SVGElement>()
 
@@ -128,9 +128,15 @@ watchEffect(
           y: viewport.value.y - event.sourceEvent.movementY * viewScale.value * Math.max(1, viewport.value.zoom),
         }
 
-        const nextTransform = zoomIdentity.translate(position.x, position.y).scale(viewport.value.zoom)
+        const extent: CoordinateExtent = [
+          [0, 0],
+          [dimensions.value.width, dimensions.value.height],
+        ]
 
-        d3Zoom.value.transform(d3Selection.value, nextTransform)
+        const nextTransform = zoomIdentity.translate(position.x, position.y).scale(viewport.value.zoom)
+        const constrainedTransform = d3Zoom.value.constrain()(nextTransform, extent, translateExtent.value)
+
+        d3Zoom.value.transform(d3Selection.value, constrainedTransform)
       }
 
       const zoomAndPanHandler = zoom()
