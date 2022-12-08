@@ -32,7 +32,7 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, viewport, translateExtent, dimensions, emits, nodes, d3Selection, d3Zoom } = useVueFlow()
+const { id, edges, viewport, translateExtent, dimensions, emits, getNodes: nodes, d3Selection, d3Zoom } = useVueFlow()
 
 const el = ref<SVGElement>()
 
@@ -56,7 +56,7 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   nodeClassName instanceof Function ? nodeClassName : ((() => nodeClassName) as MiniMapNodeFunc),
 )
 
-const bb = computed(() => getRectOfNodes(nodes.value))
+const bb = computed(() => getRectOfNodes(getNodes.value))
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
@@ -65,7 +65,9 @@ const viewBB = computed(() => ({
   height: dimensions.value.height / viewport.value.zoom,
 }))
 
-const boundingRect = computed(() => (nodes.value && nodes.value.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value))
+const boundingRect = computed(() =>
+  getNodes.value && getNodes.value.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value,
+)
 
 const viewScale = computed(() => {
   const scaledWidth = boundingRect.value.width / elementWidth.value
