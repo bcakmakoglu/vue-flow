@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.5.5
+
+### Patch Changes
+
+- [#494](https://github.com/bcakmakoglu/vue-flow/pull/494) [`50a24e4`](https://github.com/bcakmakoglu/vue-flow/commit/50a24e4017d47cbe619f34f98a020ed7a2c3bf10) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Apply translateExtent on pan
+
+- [#492](https://github.com/bcakmakoglu/vue-flow/pull/492) [`715a070`](https://github.com/bcakmakoglu/vue-flow/commit/715a0701874f8b5cd8ac643c400df89165716f1a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Properly calculate node extent on drag
+
+- [#491](https://github.com/bcakmakoglu/vue-flow/pull/491) [`47ad11d`](https://github.com/bcakmakoglu/vue-flow/commit/47ad11dcabb3a865854731d860dcad85a043d91f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set dragging flag only if a position change happened
+
 ## 1.5.4
 
 ### Patch Changes
