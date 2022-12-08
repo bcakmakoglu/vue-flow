@@ -1,5 +1,11 @@
 # @vue-flow/additional-components
 
+## 1.3.2
+
+### Patch Changes
+
+- [#494](https://github.com/bcakmakoglu/vue-flow/pull/494) [`50a24e4`](https://github.com/bcakmakoglu/vue-flow/commit/50a24e4017d47cbe619f34f98a020ed7a2c3bf10) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Apply translateExtent on pan
+
 ## 1.3.1
 
 ### Patch Changes
