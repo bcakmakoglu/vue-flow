@@ -3,7 +3,7 @@ import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { Ref } from 'vue'
 import type { MaybeRef } from '@vueuse/core'
-import type { NodeDragEvent, NodeDragItem, SnapGrid, XYPosition } from '~/types'
+import type { CoordinateExtent, NodeDragEvent, NodeDragItem, SnapGrid, XYPosition } from '~/types'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 
@@ -90,8 +90,6 @@ function useDrag(params: UseDragParams) {
                   getNode: $$(getNode),
                 })
                 onStart(event.sourceEvent, currentNode, nodes)
-
-                dragging.value = true
               }
             })
             .on('drag', (event: UseDragEvent) => {
@@ -99,19 +97,32 @@ function useDrag(params: UseDragParams) {
 
               const mousePos = getMousePosition(event, snapGrid)
 
+              let hasChange = false
+
               // skip events without movement
               if ((lastPos.x !== mousePos.x || lastPos.y !== mousePos.y) && dragItems) {
                 lastPos = mousePos
-                dragItems = dragItems.map((n) =>
-                  updatePosition(
-                    n,
-                    mousePos,
-                    !!snapGrid ?? snapToGrid,
-                    snapGrid ?? globalSnapGrid,
-                    n.parentNode ? getNode(n.parentNode) : undefined,
-                    nodeExtent,
-                  ),
-                )
+
+                dragItems = dragItems.map((n) => {
+                  const nextPosition = { x: mousePos.x - n.distance.x, y: mousePos.y - n.distance.y }
+
+                  if (snapToGrid && snapGrid) {
+                    const [snapX, snapY] = snapGrid
+                    nextPosition.x = snapX * Math.round(nextPosition.x / snapX)
+                    nextPosition.y = snapY * Math.round(nextPosition.y / snapY)
+                  }
+
+                  const currentExtent = applyExtent(n, nodeExtent, n.parentNode ? getNode(n.parentNode) : undefined)
+
+                  // we want to make sure that we only fire a change event when there is a changes
+                  hasChange = hasChange || n.position.x !== nextPosition.x || n.position.y !== nextPosition.y
+
+                  n.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
+
+                  return n
+                })
+
+                if (!hasChange) return
 
                 updateNodePositions(dragItems, true, true)
 

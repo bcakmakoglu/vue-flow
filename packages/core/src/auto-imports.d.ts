@@ -176,7 +176,6 @@ declare global {
   const until: typeof import('@vueuse/core')['until']
   const updateEdge: typeof import('./utils/graph')['updateEdge']
   const updateEdgeAction: typeof import('./utils/store')['updateEdgeAction']
-  const updatePosition: typeof import('./utils/drag')['updatePosition']
   const useActions: typeof import('./store/actions')['useActions']
   const useActiveElement: typeof import('@vueuse/core')['useActiveElement']
   const useAsyncQueue: typeof import('@vueuse/core')['useAsyncQueue']

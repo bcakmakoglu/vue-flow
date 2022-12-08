@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { ComputedGetters, CoordinateExtent, Getters, GraphNode, NodeDragItem, SnapGrid, XYPosition } from '~/types'
+import type { ComputedGetters, CoordinateExtent, Getters, GraphNode, NodeDragItem, XYPosition } from '~/types'
 
 export function hasSelector(target: Element, selector: string, node: Ref<Element>): boolean {
   let current = target
@@ -56,28 +56,6 @@ export function getEventHandlerParams({
   })
 
   return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
-}
-
-export function updatePosition(
-  dragItem: NodeDragItem,
-  mousePos: XYPosition,
-  snapToGrid?: boolean,
-  snapGrid?: SnapGrid,
-  parent?: GraphNode,
-  nodeExtent?: CoordinateExtent,
-): NodeDragItem {
-  const nextPosition = { x: mousePos.x - dragItem.distance.x, y: mousePos.y - dragItem.distance.y }
-  if (snapToGrid && snapGrid) {
-    const [snapX, snapY] = snapGrid
-    nextPosition.x = snapX * Math.round(nextPosition.x / snapX)
-    nextPosition.y = snapY * Math.round(nextPosition.y / snapY)
-  }
-
-  const currentExtent = applyExtent(dragItem, nodeExtent, parent)
-
-  dragItem.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
-
-  return dragItem
 }
 
 export function applyExtent<T extends NodeDragItem | GraphNode>(item: T, extent?: CoordinateExtent, parent?: GraphNode) {
