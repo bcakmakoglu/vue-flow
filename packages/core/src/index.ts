@@ -59,4 +59,6 @@ export { default as useNode } from './composables/useNode'
 
 export { default as useEdge } from './composables/useEdge'
 
+export { useGetPointerPosition } from './composables/useGetPointerPosition'
+
 export * from './types'

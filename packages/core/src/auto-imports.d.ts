@@ -238,6 +238,7 @@ declare global {
   const useFullscreen: typeof import('@vueuse/core')['useFullscreen']
   const useGamepad: typeof import('@vueuse/core')['useGamepad']
   const useGeolocation: typeof import('@vueuse/core')['useGeolocation']
+  const useGetPointerPosition: typeof import('./composables/useGetPointerPosition')['useGetPointerPosition']
   const useGetters: typeof import('./store/getters')['useGetters']
   const useHandle: typeof import('./composables/useHandle')['default']
   const useHooks: typeof import('./store/hooks')['useHooks']
