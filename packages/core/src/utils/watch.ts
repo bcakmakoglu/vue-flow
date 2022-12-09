@@ -50,6 +50,11 @@ export const useWatch = (
           },
           { immediate: !immediate },
         )
+
+        onScopeDispose(() => {
+          pauseModel?.stop()
+          pauseStore?.stop()
+        })
       })
     }
 
@@ -92,6 +97,11 @@ export const useWatch = (
           },
           { immediate: !immediate },
         )
+
+        onScopeDispose(() => {
+          pauseModel?.stop()
+          pauseStore?.stop()
+        })
       })
     }
 
@@ -134,6 +144,11 @@ export const useWatch = (
           },
           { immediate: !immediate },
         )
+
+        onScopeDispose(() => {
+          pauseModel?.stop()
+          pauseStore?.stop()
+        })
       })
     }
 
