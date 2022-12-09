@@ -19,6 +19,10 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./src/SnapHandle/SnapHandleExample.vue'),
   },
   {
+    path: '/node-toolbar',
+    component: () => import('./src/NodeToolbar/NodeToolbarExample.vue'),
+  },
+  {
     path: '/custom-connectionline',
     component: () => import('./src/CustomConnectionLine/CustomConnectionLine.vue'),
   },
