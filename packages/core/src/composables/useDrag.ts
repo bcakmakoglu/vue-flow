@@ -21,7 +21,6 @@ function useDrag(params: UseDragParams) {
 
   const dragging = scope.run(() => {
     const {
-      viewport,
       snapToGrid,
       snapGrid: globalSnapGrid,
       noDragClassName,
@@ -45,20 +44,7 @@ function useDrag(params: UseDragParams) {
 
     const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid ? globalSnapGrid : undefined)
 
-    const getMousePosition = (event: UseDragEvent, snapGrid: SnapGrid) => {
-      const x = event.sourceEvent.touches ? event.sourceEvent.touches[0].clientX : event.sourceEvent.clientX
-      const y = event.sourceEvent.touches ? event.sourceEvent.touches[0].clientY : event.sourceEvent.clientY
-
-      return pointToRendererPoint(
-        {
-          x,
-          y,
-        },
-        viewport,
-        !!snapGrid ?? snapToGrid,
-        snapGrid ?? globalSnapGrid,
-      )
-    }
+    const getPointerPosition = useGetPointerPosition()
 
     watch([() => disabled, () => el], () => {
       if (el) {
@@ -80,7 +66,7 @@ function useDrag(params: UseDragParams) {
                 handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
               }
 
-              const mousePos = getMousePosition(event, hasSnapGrid(node?.snapGrid) as SnapGrid)
+              const mousePos = getPointerPosition(event, hasSnapGrid(node?.snapGrid) as SnapGrid)
               dragItems = getDragItems(nodes, mousePos, getNode, id)
 
               if (onStart && dragItems) {
@@ -95,7 +81,7 @@ function useDrag(params: UseDragParams) {
             .on('drag', (event: UseDragEvent) => {
               const snapGrid = hasSnapGrid(node?.snapGrid) as SnapGrid
 
-              const mousePos = getMousePosition(event, snapGrid)
+              const mousePos = getPointerPosition(event, snapGrid)
 
               let hasChange = false
 
