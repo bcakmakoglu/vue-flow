@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Node } from '@vue-flow/core'
-import { VueFlow, useVueFlow } from '@vue-flow/core/src/index'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
