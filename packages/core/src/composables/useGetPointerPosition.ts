@@ -4,11 +4,13 @@ import type { SnapGrid } from '~/types'
 export function useGetPointerPosition() {
   const { viewport, snapGrid: globalSnapGrid, snapToGrid } = useVueFlow()
 
-  const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid ? globalSnapGrid : undefined)
+  const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid.value ? globalSnapGrid.value : undefined)
 
   // returns the pointer position projected to the RF coordinate system
   return ({ sourceEvent }: UseDragEvent, snapGrid?: SnapGrid) => {
-    const currentSnapGrid = unref(hasSnapGrid(snapGrid || globalSnapGrid.value))
+    const currentSnapGrid = unref(hasSnapGrid(snapGrid))
+
+    console.log(currentSnapGrid)
 
     const x = sourceEvent.touches ? sourceEvent.touches[0].clientX : sourceEvent.clientX
     const y = sourceEvent.touches ? sourceEvent.touches[0].clientY : sourceEvent.clientY

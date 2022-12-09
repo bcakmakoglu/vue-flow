@@ -113,7 +113,11 @@ export const applyChanges = <
               if (typeof currentChange.dimensions !== 'undefined') element.dimensions = currentChange.dimensions
 
               if (typeof currentChange.updateStyle !== 'undefined') {
-                element.style = { ...(element.style || {}), ...currentChange.dimensions }
+                element.style = {
+                  ...(element.style || {}),
+                  width: `${currentChange.dimensions?.width}px`,
+                  height: `${currentChange.dimensions?.height}px`,
+                }
               }
 
               if (typeof currentChange.resizing === 'boolean') element.resizing = currentChange.resizing
