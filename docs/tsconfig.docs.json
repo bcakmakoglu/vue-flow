@@ -16,9 +16,12 @@
     "noUnusedLocals": false,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "~/*": ["../packages/core/src/*"]
+    }
   },
   "include": [
-    "../packages/vue-flow"
+    "../packages/**/*"
   ],
   "exclude": [
     "node_modules"
