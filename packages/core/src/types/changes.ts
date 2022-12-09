@@ -17,7 +17,7 @@ export interface NodeDragItem {
 export interface NodeDimensionChange {
   id: string
   type: 'dimensions'
-  dimensions: Dimensions
+  dimensions?: Dimensions
   handleBounds?: NodeHandleBounds
   updateStyle?: boolean
   resizing?: boolean
