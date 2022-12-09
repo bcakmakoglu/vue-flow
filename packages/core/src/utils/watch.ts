@@ -1,9 +1,7 @@
 import type { ToRefs } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { isFunction } from '@vueuse/core'
-import type { Connection, FlowProps, GraphEdge, GraphNode, VueFlowStore } from '~/types'
-
-const isDef = <T>(val: T): val is NonNullable<T> => typeof unref(val) !== 'undefined'
+import type { Connection, FlowProps, VueFlowStore } from '~/types'
 
 export const useWatch = (
   models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
@@ -18,36 +16,39 @@ export const useWatch = (
         let pauseModel: WatchPausableReturn
         let pauseStore: WatchPausableReturn
 
+        const immediate = !!(models.modelValue && models.modelValue.value)
+
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
           [models.modelValue, () => models.modelValue?.value?.length],
-          ([v]) => {
-            if (v && Array.isArray(v)) {
-              if (pauseStore) pauseStore.pause()
-              if (pauseModel) pauseModel.pause()
+          ([elements]) => {
+            if (elements && Array.isArray(elements)) {
+              pauseStore?.pause()
 
-              store.setElements(v)
-
-              pauseStore = watchPausable(
-                [store.edges, store.nodes, () => store.edges.value.length, () => store.nodes.value.length],
-                ([e, n]) => {
-                  if (pauseModel) pauseModel.pause()
-                  models.modelValue!.value = [...(n as GraphNode[]), ...(e as GraphEdge[])]
-
-                  nextTick(() => {
-                    if (pauseModel) pauseModel.resume()
-                  })
-                },
-                { immediate: true },
-              )
+              store.setElements(elements)
 
               nextTick(() => {
-                if (pauseStore) pauseStore.resume()
-                if (pauseModel) pauseModel.resume()
+                pauseStore?.resume()
               })
             }
           },
-          { immediate: !!(models.modelValue && models.modelValue.value && models.modelValue.value.length) },
+          { immediate },
+        )
+
+        pauseStore = watchPausable(
+          [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
+          ([nodes, edges]) => {
+            if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
+              pauseModel?.pause()
+
+              models.modelValue.value = [...nodes, ...edges]
+
+              nextTick(() => {
+                pauseModel?.resume()
+              })
+            }
+          },
+          { immediate: !immediate },
         )
       })
     }
@@ -57,31 +58,39 @@ export const useWatch = (
         let pauseModel: WatchPausableReturn
         let pauseStore: WatchPausableReturn
 
+        const immediate = !!(models.nodes && models.nodes.value)
+
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
           [models.nodes, () => models.nodes?.value?.length],
-          async ([v]) => {
-            if (v && Array.isArray(v)) {
-              if (pauseStore) pauseStore.pause()
-              if (pauseModel) pauseModel.pause()
+          ([nodes]) => {
+            if (nodes && Array.isArray(nodes)) {
+              pauseStore?.pause()
 
-              store.setNodes(v)
-
-              pauseStore = watchPausable(
-                () => store.nodes.value.length,
-                () => {
-                  models.nodes!.value = [...store.nodes.value]
-                },
-                { immediate: true, flush: 'post' },
-              )
+              store.setNodes(nodes)
 
               nextTick(() => {
-                if (pauseStore) pauseStore.resume()
-                if (pauseModel) pauseModel.resume()
+                pauseStore?.resume()
               })
             }
           },
-          { immediate: !!(models.nodes && models.nodes.value && models.nodes.value.length) },
+          { immediate },
+        )
+
+        pauseStore = watchPausable(
+          [store.nodes, () => store.nodes.value.length],
+          ([nodes]) => {
+            if (models.nodes?.value && Array.isArray(models.nodes.value)) {
+              pauseModel?.pause()
+
+              models.nodes.value = [...nodes]
+
+              nextTick(() => {
+                pauseModel?.resume()
+              })
+            }
+          },
+          { immediate: !immediate },
         )
       })
     }
@@ -91,31 +100,39 @@ export const useWatch = (
         let pauseModel: WatchPausableReturn
         let pauseStore: WatchPausableReturn
 
+        const immediate = !!(models.edges && models.edges.value)
+
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
           [models.edges, () => models.edges?.value?.length],
-          async ([v]) => {
-            if (v && Array.isArray(v)) {
-              if (pauseStore) pauseStore.pause()
-              if (pauseModel) pauseModel.pause()
+          ([edges]) => {
+            if (edges && Array.isArray(edges)) {
+              pauseStore?.pause()
 
-              store.setEdges(v)
-
-              pauseStore = watchPausable(
-                () => store.edges.value.length,
-                () => {
-                  models.edges!.value = [...store.edges.value]
-                },
-                { immediate: true, flush: 'post' },
-              )
+              store.setEdges(edges)
 
               nextTick(() => {
-                if (pauseStore) pauseStore.resume()
-                if (pauseModel) pauseModel.resume()
+                pauseStore?.resume()
               })
             }
           },
-          { immediate: !!(models.edges && models.edges.value && models.edges.value.length) },
+          { immediate },
+        )
+
+        pauseStore = watchPausable(
+          [store.edges, () => store.edges.value.length],
+          ([edges]) => {
+            if (models.edges?.value && Array.isArray(models.edges.value)) {
+              pauseModel?.pause()
+
+              models.edges.value = [...edges]
+
+              nextTick(() => {
+                pauseModel?.resume()
+              })
+            }
+          },
+          { immediate: !immediate },
         )
       })
     }

@@ -1,4 +1,3 @@
-import { createHooks } from './hooks'
 import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '~/types'
 import { ConnectionLineType, ConnectionMode, PanOnScrollMode } from '~/types'
 import {
@@ -25,8 +24,6 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
   smoothstep: SmoothStepEdge,
   simplebezier: SimpleBezierEdge,
 }
-
-const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
 
 const defaultState = (): State => ({
   vueFlowRef: null,
