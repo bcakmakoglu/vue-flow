@@ -18,6 +18,7 @@ import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, Teleportab
 import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
 import { IntersectionApp, IntersectionCSS, IntersectionElements } from './intersection'
 import { SnapToHandleApp, SnappableConnectionLine } from './snap-to-handle'
+import { ToolbarApp, ToolbarNode } from './node-toolbar'
 
 export const exampleImports = {
   basic: {
@@ -118,5 +119,9 @@ export const exampleImports = {
   snappable: {
     'App.vue': SnapToHandleApp,
     'SnappableConnectionLine.vue': SnappableConnectionLine,
+  },
+  toolbar: {
+    'App.vue': ToolbarApp,
+    'ToolbarNode.vue': ToolbarNode,
   },
 }

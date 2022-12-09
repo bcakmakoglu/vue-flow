@@ -12,6 +12,10 @@ export function copyVueFlowPlugin(): Plugin {
           path: '../../../node_modules/@vue-flow/additional-components/dist/',
           pkgName: 'vue-flow-additional-components.mjs',
         },
+        {
+          path: '../../../node_modules/@vue-flow/node-toolbar/dist/',
+          pkgName: 'vue-flow-node-toolbar.mjs',
+        },
       ].forEach(({ path, pkgName }) => {
         const filePath = resolve(__dirname, `${path}/${pkgName}`)
         if (!existsSync(filePath)) {

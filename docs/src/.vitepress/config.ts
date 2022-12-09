@@ -211,6 +211,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Custom Node', link: '/examples/nodes/' },
             { text: 'Update Node', link: '/examples/nodes/update-node' },
             { text: 'Nested Nodes', link: '/examples/nodes/nesting' },
+            { text: 'Node Toolbar', link: '/examples/nodes/node-toolbar' },
           ],
         },
         {
