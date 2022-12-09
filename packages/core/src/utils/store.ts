@@ -1,6 +1,6 @@
 import type { Connection, CoordinateExtent, Edge, Getters, GraphEdge, GraphNode, Node } from '~/types'
 
-export const isDef = <T>(val: T): val is NonNullable<T> => typeof val !== 'undefined'
+export const isDef = <T>(val: T): val is NonNullable<T> => typeof unref(val) !== 'undefined'
 
 export const addEdgeToStore = (edgeParams: Edge | Connection, edges: Edge[]) => {
   if (!edgeParams.source || !edgeParams.target) {
