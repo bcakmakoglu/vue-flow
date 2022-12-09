@@ -78,10 +78,10 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
         width: 0,
         height: 0,
       }),
-      handleBounds: reactive({
+      handleBounds: {
         source: [],
         target: [],
-      }),
+      },
       computedPosition: markRaw({
         z: 0,
         ...node.position,
@@ -90,8 +90,8 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
       selectable: undefined,
       connectable: undefined,
       ...defaults,
-      data: reactive(node.data || {}),
-      events: shallowReactive(node.events || {}),
+      data: isDef(node.data) ? node.data : {},
+      events: markRaw(isDef(node.events) ? node.events : {}),
     }
   }
 
@@ -103,6 +103,9 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
 }
 
 export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge => {
+  const events = isDef(edge.events) ? edge.events : defaults?.events && isDef(defaults?.events) ? defaults?.events : {}
+  const data = isDef(edge.data) ? edge.data : defaults?.data && isDef(defaults?.data) ? defaults?.data : {}
+
   defaults = !isGraphEdge(edge)
     ? ({
         ...defaults,
@@ -118,8 +121,8 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         targetY: 0 || defaults?.targetY,
         updatable: edge.updatable ?? defaults?.updatable,
         selectable: edge.selectable ?? defaults?.selectable,
-        data: reactive(edge.data || defaults?.data || {}),
-        events: shallowReactive(edge.events || defaults?.events || {}),
+        data,
+        events: markRaw(events),
         label: (edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label) || defaults?.label,
         interactionWidth: edge.interactionWidth || defaults?.interactionWidth,
       } as GraphEdge)
