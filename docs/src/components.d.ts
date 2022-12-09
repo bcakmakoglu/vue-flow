@@ -31,6 +31,7 @@ declare module '@vue/runtime-core' {
     Output: typeof import('./../components/home/nodes/Output.vue')['default']
     PiniaExample: typeof import('./../components/examples/pinia/PiniaExample.vue')['default']
     Repl: typeof import('./../components/Repl.vue')['default']
+    ResizableNode: typeof import('./../components/examples/node-resizer/ResizableNode.vue')['default']
     RGB: typeof import('./../components/home/flows/RGB.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
