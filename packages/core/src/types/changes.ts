@@ -19,6 +19,8 @@ export interface NodeDimensionChange {
   type: 'dimensions'
   dimensions: Dimensions
   handleBounds?: NodeHandleBounds
+  updateStyle?: boolean
+  resizing?: boolean
 }
 
 export interface NodePositionChange {
