@@ -48,8 +48,8 @@ jobs:
         uses: changesets/action@v1
         with:
           version: pnpm ci:version
-          commit: "chore: bump versions"
-          title: "chore: bump versions"
+          commit: "chore: next release"
+          title: "chore: next release"
           # manual publish currently
           # publish: pnpm ci:publish
         env:
