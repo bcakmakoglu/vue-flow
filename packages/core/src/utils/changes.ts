@@ -79,65 +79,74 @@ export const applyChanges = <
   changes: C[],
   elements: T[],
 ): T[] => {
-  let elementIds = elements.map((el) => el.id)
+  const addRemoveChanges = changes.filter((c) => c.type === 'add' || c.type === 'remove') as (
+    | NodeAddChange
+    | EdgeAddChange
+    | NodeRemoveChange
+    | EdgeRemoveChange
+  )[]
+  addRemoveChanges.forEach((change) => {
+    switch (change.type) {
+      case 'add':
+        elements.push(<T>change.item)
+        break
+      case 'remove':
+        elements.splice(
+          elements.findIndex((el) => el.id === change.id),
+          1,
+        )
+        break
+    }
+  })
+
+  const elementIds = elements.map((el) => el.id)
 
   elements.forEach((element) => {
     const currentChanges = changes.filter((c) => (<any>c).id === element.id)
 
     for (const currentChange of currentChanges) {
-      if (currentChange.type === 'add') {
-        const item = <T>currentChange.item
-        return elements.push(item)
-      } else {
-        switch (currentChange.type) {
-          case 'select':
-            ;(element as FlowElement).selected = currentChange.selected
-            break
-          case 'position':
-            if (isGraphNode(element)) {
-              if (typeof currentChange.position !== 'undefined') element.position = currentChange.position
+      switch (currentChange.type) {
+        case 'select':
+          ;(element as FlowElement).selected = currentChange.selected
+          break
+        case 'position':
+          if (isGraphNode(element)) {
+            if (typeof currentChange.position !== 'undefined') element.position = currentChange.position
 
-              if (typeof currentChange.dragging !== 'undefined') element.dragging = currentChange.dragging
+            if (typeof currentChange.dragging !== 'undefined') element.dragging = currentChange.dragging
 
-              if (element.expandParent && element.parentNode) {
-                const parent = elements[elementIds.indexOf(element.parentNode)]
+            if (element.expandParent && element.parentNode) {
+              const parent = elements[elementIds.indexOf(element.parentNode)]
 
-                if (parent && isGraphNode(parent)) {
-                  handleParentExpand(element, parent)
-                }
+              if (parent && isGraphNode(parent)) {
+                handleParentExpand(element, parent)
               }
             }
-            break
-          case 'dimensions':
-            if (isGraphNode(element)) {
-              if (typeof currentChange.dimensions !== 'undefined') element.dimensions = currentChange.dimensions
+          }
+          break
+        case 'dimensions':
+          if (isGraphNode(element)) {
+            if (typeof currentChange.dimensions !== 'undefined') element.dimensions = currentChange.dimensions
 
-              if (typeof currentChange.updateStyle !== 'undefined') {
-                element.style = {
-                  ...(element.style || {}),
-                  width: `${currentChange.dimensions?.width}px`,
-                  height: `${currentChange.dimensions?.height}px`,
-                }
-              }
-
-              if (typeof currentChange.resizing === 'boolean') element.resizing = currentChange.resizing
-
-              if (element.expandParent && element.parentNode) {
-                const parent = elements[elementIds.indexOf(element.parentNode)]
-
-                if (parent && isGraphNode(parent)) {
-                  handleParentExpand(element, parent)
-                }
+            if (typeof currentChange.updateStyle !== 'undefined') {
+              element.style = {
+                ...(element.style || {}),
+                width: `${currentChange.dimensions?.width}px`,
+                height: `${currentChange.dimensions?.height}px`,
               }
             }
-            break
-          case 'remove':
-            if (elementIds.includes(currentChange.id)) {
-              elements.splice(elements.indexOf(element), 1)
-              elementIds = elements.map((el) => el.id)
+
+            if (typeof currentChange.resizing === 'boolean') element.resizing = currentChange.resizing
+
+            if (element.expandParent && element.parentNode) {
+              const parent = elements[elementIds.indexOf(element.parentNode)]
+
+              if (parent && isGraphNode(parent)) {
+                handleParentExpand(element, parent)
+              }
             }
-            break
-        }
+          }
+          break
       }
     }
   })
