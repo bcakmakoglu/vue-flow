@@ -9,7 +9,8 @@
   "dependencies": {
     "vueflow": "workspace:*",
     "@vue-flow/additional-components": "workspace:*",
-    "@vue-flow/core": "workspace:*"
+    "@vue-flow/core": "workspace:*",
+    "@vue-flow/node-toolbar": "workspace:*"
   },
   "devDependencies": {
     "@types/dagre": "^0.7.48",
