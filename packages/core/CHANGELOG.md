@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.5.6
+
+### Patch Changes
+
+- [#497](https://github.com/bcakmakoglu/vue-flow/pull/497) [`50e59604`](https://github.com/bcakmakoglu/vue-flow/commit/50e596046bdb06b59eb9b4281e9482afb92d98a3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Separate store and model watchers from each other and allow them to be triggered after init
+
+- [#496](https://github.com/bcakmakoglu/vue-flow/pull/496) [`1ca8c2a9`](https://github.com/bcakmakoglu/vue-flow/commit/1ca8c2a9be3c35e5873fcc2289e1108fe4354618) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make nodes and edges deeply reactive objects, so that data changes can trigger v-model changes as well
+
 ## 1.5.5
 
 ### Patch Changes
