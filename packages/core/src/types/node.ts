@@ -83,6 +83,7 @@ export interface GraphNode<Data = ElementData, CustomEvents extends Record<strin
   dimensions: Dimensions
   isParent: boolean
   selected: boolean
+  resizing: boolean
   dragging: boolean
   data: Data
   events: Partial<NodeEventsHandler<CustomEvents>>
@@ -116,6 +117,7 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}> {
   parentNode?: string
   /** is node currently dragging */
   dragging: boolean
+  resizing: boolean
   /** node z-index */
   zIndex: number
   /** handle position */
