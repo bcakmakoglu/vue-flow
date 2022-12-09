@@ -307,13 +307,11 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
       const storedEdge = getters.getEdge.value(edge.id)
 
-      res.push(
-        shallowReactive({
-          ...parseEdge(edge, Object.assign({}, storedEdge, state.defaultEdgeOptions)),
-          sourceNode,
-          targetNode,
-        }),
-      )
+      res.push({
+        ...parseEdge(edge, Object.assign({}, storedEdge, state.defaultEdgeOptions)),
+        sourceNode,
+        targetNode,
+      })
 
       return res
     }, [])
@@ -358,13 +356,11 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
         if (missingTarget || missingSource) return acc
 
         acc.push(
-          createAdditionChange<GraphEdge>(
-            shallowReactive({
-              ...edge,
-              sourceNode,
-              targetNode,
-            }),
-          ),
+          createAdditionChange<GraphEdge>({
+            ...edge,
+            sourceNode,
+            targetNode,
+          }),
         )
       }
 

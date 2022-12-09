@@ -58,12 +58,10 @@ export const createGraphNodes = (
   const parentNodes: Record<string, true> = {}
 
   const graphNodes = nodes.map((node) => {
-    const parsed = shallowReactive(
-      parseNode(node, extent, {
-        ...getNode(node.id),
-        parentNode: node.parentNode,
-      }),
-    )
+    const parsed = parseNode(node, extent, {
+      ...getNode(node.id),
+      parentNode: node.parentNode,
+    })
 
     if (node.parentNode) {
       parentNodes[node.parentNode] = true
