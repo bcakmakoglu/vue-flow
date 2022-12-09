@@ -38,6 +38,7 @@ declare module '@vue/runtime-core' {
     SnappableConnectionLine: typeof import('./../components/examples/snap-to-handle/SnappableConnectionLine.vue')['default']
     Team: typeof import('./../components/home/Team.vue')['default']
     TeleportableNode: typeof import('./../components/examples/teleport/TeleportableNode.vue')['default']
+    ToolbarNode: typeof import('./../components/examples/node-toolbar/ToolbarNode.vue')['default']
     TransitionEdge: typeof import('./../components/examples/transition/TransitionEdge.vue')['default']
   }
 }

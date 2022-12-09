@@ -1,5 +1,6 @@
 <script setup>
 import { Position, VueFlow } from '@vue-flow/core'
+import { ref } from 'vue'
 import ToolbarNode from './ToolbarNode.vue'
 
 const defaultNodeStyle = {

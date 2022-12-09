@@ -74,6 +74,7 @@ onMounted(async () => {
     imports: {
       '@vue-flow/additional-components': `${location.origin}/vue-flow-additional-components.mjs`,
       '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
+      '@vue-flow/node-toolbar': `${location.origin}/vue-flow-node-toolbar.mjs`,
       ...additionalImports,
     },
   })
