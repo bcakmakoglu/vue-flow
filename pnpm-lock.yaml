@@ -144,6 +144,7 @@ importers:
       '@vitejs/plugin-vue': ^3.2.0
       '@vue-flow/additional-components': workspace:*
       '@vue-flow/core': workspace:*
+      '@vue-flow/node-resizer': workspace:*
       dagre: ^0.8.5
       unplugin-auto-import: ^0.12.0
       vite: ^3.2.5
@@ -155,6 +156,7 @@ importers:
     dependencies:
       '@vue-flow/additional-components': link:../../packages/additional-components
       '@vue-flow/core': link:../../packages/core
+      '@vue-flow/node-resizer': link:../../packages/node-resizer
       vueflow: link:../../packages/vue-flow
     devDependencies:
       '@types/dagre': 0.7.48
@@ -241,16 +243,24 @@ importers:
 
   packages/node-resizer:
     specifiers:
+      '@types/d3-drag': ^3.0.1
+      '@types/d3-selection': ^3.0.3
       '@vitejs/plugin-vue': ^3.2.0
       '@vue-flow/core': workspace:*
+      d3-drag: ^3.0.0
+      d3-selection: ^3.0.0
       unplugin-auto-import: ^0.12.0
       vite: ^3.2.5
       vite-plugin-vue-type-imports: 0.2.0
       vue: ^3.2.37
       vue-tsc: ^1.0.11
     dependencies:
+      d3-drag: 3.0.0
+      d3-selection: 3.0.0
       vue: 3.2.40
     devDependencies:
+      '@types/d3-drag': 3.0.1
+      '@types/d3-selection': 3.0.3
       '@vitejs/plugin-vue': 3.2.0_vite@3.2.5+vue@3.2.40
       '@vue-flow/core': link:../core
       unplugin-auto-import: 0.12.0

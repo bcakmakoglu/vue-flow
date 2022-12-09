@@ -19,6 +19,10 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./src/SnapHandle/SnapHandleExample.vue'),
   },
   {
+    path: '/node-resizer',
+    component: () => import('./src/NodeResizer/NodeResizerExample.vue'),
+  },
+  {
     path: '/node-toolbar',
     component: () => import('./src/NodeToolbar/NodeToolbarExample.vue'),
   },
