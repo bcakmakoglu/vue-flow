@@ -1,4 +1,4 @@
-import type { ToRefs } from 'vue'
+import type { ToRefs, WatchStopHandle } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { isFunction } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '~/types'
@@ -14,46 +14,42 @@ export const useWatch = (
     const watchModelValue = () => {
       scope.run(() => {
         let pauseModel: WatchPausableReturn
-        let pauseStore: WatchPausableReturn
+        let stopStore: WatchStopHandle
 
-        const immediate = !!(models.modelValue && models.modelValue.value)
+        const immediate = !!(models.modelValue && models.modelValue.value && models.modelValue.value.length)
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
           [models.modelValue, () => models.modelValue?.value?.length],
-          ([elements]) => {
+          ([elements], _, onCleanup) => {
             if (elements && Array.isArray(elements)) {
-              pauseStore?.pause()
-
               store.setElements(elements)
 
-              nextTick(() => {
-                pauseStore?.resume()
-              })
+              stopStore = watch(
+                [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
+                ([nodes, edges]) => {
+                  if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
+                    pauseModel?.pause()
+
+                    models.modelValue.value = [...nodes, ...edges]
+
+                    nextTick(() => {
+                      pauseModel?.resume()
+                    })
+                  }
+                },
+                { immediate: true },
+              )
+
+              onCleanup(stopStore)
             }
           },
           { immediate },
         )
 
-        pauseStore = watchPausable(
-          [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
-          ([nodes, edges]) => {
-            if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
-              pauseModel?.pause()
-
-              models.modelValue.value = [...nodes, ...edges]
-
-              nextTick(() => {
-                pauseModel?.resume()
-              })
-            }
-          },
-          { immediate: !immediate },
-        )
-
         onScopeDispose(() => {
           pauseModel?.stop()
-          pauseStore?.stop()
+          stopStore?.()
         })
       })
     }
@@ -61,46 +57,42 @@ export const useWatch = (
     const watchNodesValue = () => {
       scope.run(() => {
         let pauseModel: WatchPausableReturn
-        let pauseStore: WatchPausableReturn
+        let stopStore: WatchStopHandle
 
-        const immediate = !!(models.nodes && models.nodes.value)
+        const immediate = !!(models.nodes && models.nodes.value && models.nodes.value.length)
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
           [models.nodes, () => models.nodes?.value?.length],
-          ([nodes]) => {
+          ([nodes], _, onCleanup) => {
             if (nodes && Array.isArray(nodes)) {
-              pauseStore?.pause()
-
               store.setNodes(nodes)
 
-              nextTick(() => {
-                pauseStore?.resume()
-              })
+              stopStore = watch(
+                [store.nodes, () => store.nodes.value.length],
+                ([nodes]) => {
+                  if (models.nodes?.value && Array.isArray(models.nodes.value)) {
+                    pauseModel?.pause()
+
+                    models.nodes.value = [...nodes]
+
+                    nextTick(() => {
+                      pauseModel?.resume()
+                    })
+                  }
+                },
+                { immediate: true },
+              )
+
+              onCleanup(stopStore)
             }
           },
           { immediate },
         )
 
-        pauseStore = watchPausable(
-          [store.nodes, () => store.nodes.value.length],
-          ([nodes]) => {
-            if (models.nodes?.value && Array.isArray(models.nodes.value)) {
-              pauseModel?.pause()
-
-              models.nodes.value = [...nodes]
-
-              nextTick(() => {
-                pauseModel?.resume()
-              })
-            }
-          },
-          { immediate: !immediate },
-        )
-
         onScopeDispose(() => {
           pauseModel?.stop()
-          pauseStore?.stop()
+          stopStore?.()
         })
       })
     }
@@ -108,46 +100,42 @@ export const useWatch = (
     const watchEdgesValue = () => {
       scope.run(() => {
         let pauseModel: WatchPausableReturn
-        let pauseStore: WatchPausableReturn
+        let stopStore: WatchStopHandle
 
-        const immediate = !!(models.edges && models.edges.value)
+        const immediate = !!(models.edges && models.edges.value && models.edges.value.length)
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
           [models.edges, () => models.edges?.value?.length],
-          ([edges]) => {
+          ([edges], _, onCleanup) => {
             if (edges && Array.isArray(edges)) {
-              pauseStore?.pause()
-
               store.setEdges(edges)
 
-              nextTick(() => {
-                pauseStore?.resume()
-              })
+              stopStore = watch(
+                [store.edges, () => store.edges.value.length],
+                ([edges]) => {
+                  if (models.edges?.value && Array.isArray(models.edges.value)) {
+                    pauseModel?.pause()
+
+                    models.edges.value = [...edges]
+
+                    nextTick(() => {
+                      pauseModel?.resume()
+                    })
+                  }
+                },
+                { immediate: !immediate },
+              )
+
+              onCleanup(stopStore)
             }
           },
           { immediate },
         )
 
-        pauseStore = watchPausable(
-          [store.edges, () => store.edges.value.length],
-          ([edges]) => {
-            if (models.edges?.value && Array.isArray(models.edges.value)) {
-              pauseModel?.pause()
-
-              models.edges.value = [...edges]
-
-              nextTick(() => {
-                pauseModel?.resume()
-              })
-            }
-          },
-          { immediate: !immediate },
-        )
-
         onScopeDispose(() => {
           pauseModel?.stop()
-          pauseStore?.stop()
+          stopStore?.()
         })
       })
     }
