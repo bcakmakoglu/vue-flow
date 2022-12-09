@@ -1,1 +1,0 @@
-# Vue Flow: Toolbar Component

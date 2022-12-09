@@ -144,6 +144,7 @@ importers:
       '@vitejs/plugin-vue': ^3.2.0
       '@vue-flow/additional-components': workspace:*
       '@vue-flow/core': workspace:*
+      '@vue-flow/node-toolbar': workspace:*
       dagre: ^0.8.5
       unplugin-auto-import: ^0.12.0
       vite: ^3.2.5
@@ -155,6 +156,7 @@ importers:
     dependencies:
       '@vue-flow/additional-components': link:../../packages/additional-components
       '@vue-flow/core': link:../../packages/core
+      '@vue-flow/node-toolbar': link:../../packages/node-toolbar
       vueflow: link:../../packages/vue-flow
     devDependencies:
       '@types/dagre': 0.7.48
@@ -235,6 +237,25 @@ importers:
       typescript-transform-paths: 3.4.4_typescript@4.8.4
       unplugin-auto-import: 0.12.0_@vueuse+core@9.6.0
       unplugin-vue-macros: 1.0.3_t6ivgmko7whiueecp5hnlxl7eq
+      vite: 3.2.5
+      vite-plugin-vue-type-imports: 0.2.0_ek75d3noihdfv6qzog663yntom
+      vue-tsc: 1.0.11_typescript@4.8.4
+
+  packages/node-toolbar:
+    specifiers:
+      '@vitejs/plugin-vue': ^3.2.0
+      '@vue-flow/core': workspace:*
+      unplugin-auto-import: ^0.12.0
+      vite: ^3.2.5
+      vite-plugin-vue-type-imports: 0.2.0
+      vue: ^3.2.37
+      vue-tsc: ^1.0.11
+    dependencies:
+      vue: 3.2.40
+    devDependencies:
+      '@vitejs/plugin-vue': 3.2.0_vite@3.2.5+vue@3.2.40
+      '@vue-flow/core': link:../core
+      unplugin-auto-import: 0.12.0
       vite: 3.2.5
       vite-plugin-vue-type-imports: 0.2.0_ek75d3noihdfv6qzog663yntom
       vue-tsc: 1.0.11_typescript@4.8.4
@@ -607,7 +628,7 @@ packages:
       '@babel/helper-compilation-targets': 7.19.3_@babel+core@7.19.3
       '@babel/helper-module-transforms': 7.19.0
       '@babel/helpers': 7.19.0
-      '@babel/parser': 7.19.3
+      '@babel/parser': 7.20.2
       '@babel/template': 7.18.10
       '@babel/traverse': 7.19.3
       '@babel/types': 7.20.2
@@ -800,14 +821,6 @@ packages:
     hasBin: true
     dependencies:
       '@babel/types': 7.20.2
-
-  /@babel/parser/7.19.3:
-    resolution: {integrity: sha512-pJ9xOlNWHiy9+FuFP09DEAFbAn4JskgRsVcc169w2xRBC3FRGuQEwjeIMMND9L2zc0iEhO/tGv4Zq+km+hxNpQ==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-      '@babel/types': 7.20.2
-    dev: true
 
   /@babel/parser/7.20.2:
     resolution: {integrity: sha512-afk318kh2uKbo7BEj2QtEi8HVCGrwHUffrYDy7dgVcSa2j9lY3LDjPzcyGdpX7xgm35aWqvciZJ4WKmdF/SxYg==}
@@ -2522,7 +2535,7 @@ packages:
     dependencies:
       '@volar/code-gen': 0.40.13
       '@volar/source-map': 0.40.13
-      '@vue/compiler-core': 3.2.40
+      '@vue/compiler-core': 3.2.45
       '@vue/compiler-dom': 3.2.45
       '@vue/compiler-sfc': 3.2.45
       '@vue/reactivity': 3.2.40
@@ -7522,8 +7535,8 @@ packages:
   /mlly/0.5.5:
     resolution: {integrity: sha512-2R4JT/SxRDPexomw4rmHYY/gWAGmL9Kkq1OR76Ua6w+P340a1aBDTWzKo2kAlxzrG82OdXs5VB9Lmcmyit0Obg==}
     dependencies:
-      pathe: 0.3.2
-      pkg-types: 0.3.3
+      pathe: 0.3.9
+      pkg-types: 0.3.5
     dev: true
 
   /mlly/1.0.0:
@@ -9761,7 +9774,7 @@ packages:
     hasBin: true
     dependencies:
       '@jridgewell/source-map': 0.3.2
-      acorn: 8.8.0
+      acorn: 8.8.1
       commander: 2.20.3
       source-map-support: 0.5.21
     dev: true
