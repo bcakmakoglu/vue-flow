@@ -1,5 +1,8 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import AutoImport from 'unplugin-auto-import/vite'
+import vueTypes from 'vite-plugin-vue-type-imports'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,8 +14,8 @@ export default defineConfig({
     lib: {
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
-      fileName: 'vue-flow-toolbar',
-      name: 'vueFlowToolbar',
+      fileName: 'vue-flow-node-toolbar',
+      name: 'vueFlowNodeToolbar',
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
@@ -29,4 +32,14 @@ export default defineConfig({
       },
     },
   },
+  plugins: [
+    vue({
+      reactivityTransform: true,
+    }),
+    vueTypes(),
+    AutoImport({
+      imports: ['vue', 'vue/macros'],
+      dts: 'src/auto-imports.d.ts',
+    }),
+  ],
 })
