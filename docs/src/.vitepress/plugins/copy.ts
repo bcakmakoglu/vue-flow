@@ -21,6 +21,10 @@ export function copyVueFlowPlugin(): Plugin {
           pkgName: 'vue-flow-minimap.mjs',
         },
         {
+          path: '../../../node_modules/@vue-flow/node-resizer/dist/',
+          pkgName: 'vue-flow-node-resizer.mjs',
+        },
+        {
           path: '../../../node_modules/@vue-flow/node-toolbar/dist/',
           pkgName: 'vue-flow-node-toolbar.mjs',
         },

@@ -78,6 +78,7 @@ onMounted(async () => {
       '@vue-flow/controls': `${location.origin}/vue-flow-controls.mjs`,
       '@vue-flow/minimap': `${location.origin}/vue-flow-minimap.mjs`,
       '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
+      '@vue-flow/node-resizer': `${location.origin}/vue-flow-node-resizer.mjs`,
       '@vue-flow/node-toolbar': `${location.origin}/vue-flow-node-toolbar.mjs`,
       ...additionalImports,
     },
