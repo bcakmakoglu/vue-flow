@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+// todo: add plugin to emit resize events via vue flow store; requires plugin API to be added to core
 import ResizeControl from './ResizeControl.vue'
 import type { ControlLinePosition, ControlPosition, NodeResizerProps, ResizeDragEvent, ResizeEventParams } from './types'
 import { ResizeControlVariant } from './types'
