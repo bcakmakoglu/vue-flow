@@ -28,7 +28,7 @@ export interface NodePositionChange {
   type: 'position'
   position: XYPosition
   from: XYPosition
-  dragging: boolean
+  dragging?: boolean
 }
 
 export interface NodeSelectionChange {
