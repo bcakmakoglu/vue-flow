@@ -40,6 +40,7 @@ importers:
       '@vercel/analytics': ^0.1.5
       '@vue-flow/additional-components': workspace:*
       '@vue-flow/core': workspace:*
+      '@vue-flow/node-toolbar': workspace:*
       '@vue/repl': 1.1.2
       '@windicss/plugin-scrollbar': ^1.2.3
       blobity: ^0.2.1
@@ -66,6 +67,7 @@ importers:
       '@vercel/analytics': 0.1.5_react@18.2.0
       '@vue-flow/additional-components': link:../packages/additional-components
       '@vue-flow/core': link:../packages/core
+      '@vue-flow/node-toolbar': link:../packages/node-toolbar
       '@vue/repl': 1.1.2_vue@3.2.37
       blobity: 0.2.1_react@18.2.0+vue@3.2.37
       canvas-confetti: 1.6.0
