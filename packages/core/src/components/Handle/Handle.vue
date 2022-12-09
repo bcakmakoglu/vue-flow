@@ -7,7 +7,7 @@ const { position = 'top' as Position, connectable = true, id, isValidConnection,
 
 const type = toRef(props, 'type', 'source')
 
-const { connectionStartHandle, connectionMode, vueFlowRef, nodesConnectable } = $(useVueFlow())
+const { connectionStartHandle, vueFlowRef } = $(useVueFlow())
 
 const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
