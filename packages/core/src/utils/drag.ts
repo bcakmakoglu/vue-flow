@@ -71,10 +71,10 @@ export function applyExtent<T extends NodeDragItem | GraphNode>(item: T, extent?
         isNumber(parent.dimensions.width) &&
         isNumber(parent.dimensions.height)
           ? [
-              [parent.computedPosition.x + item.dimensions.width, parent.computedPosition.y + item.dimensions.height],
+              [parent.computedPosition.x, parent.computedPosition.y],
               [
-                parent.computedPosition.x + parent.dimensions.width - item.dimensions.width + item.dimensions.width,
-                parent.computedPosition.y + parent.dimensions.height - item.dimensions.height + item.dimensions.height,
+                parent.computedPosition.x + parent.dimensions.width - item.dimensions.width,
+                parent.computedPosition.y + parent.dimensions.height - item.dimensions.height,
               ],
             ]
           : currentExtent
