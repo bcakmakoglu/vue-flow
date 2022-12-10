@@ -137,9 +137,15 @@ export default function useHandle({
       if (node) validConnectFunc = !isTarget ? node.isValidTargetPos : node.isValidSourcePos
     }
 
-    const elementBelow = doc.elementFromPoint(event.clientX, event.clientY)
-    const elementBelowIsTarget = elementBelow?.classList.contains('target')
-    const elementBelowIsSource = elementBelow?.classList.contains('source')
+    // todo: use elementsFromPoint and filter for handle element so we can use slots and still trigger connection-lines
+    const elementBelow = doc
+      .elementsFromPoint(event.clientX, event.clientY)
+      .find((el) => el.classList.contains('vue-flow__handle'))
+
+    if (!elementBelow) return
+
+    const elementBelowIsTarget = elementBelow.classList.contains('target')
+    const elementBelowIsSource = elementBelow.classList.contains('source')
 
     if (!vueFlowRef || (!elementBelowIsTarget && !elementBelowIsSource && !elementEdgeUpdaterType)) return
 
