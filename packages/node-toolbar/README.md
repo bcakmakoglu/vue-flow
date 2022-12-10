@@ -21,7 +21,6 @@ $ npm i --save @vue-flow/node-toolbar
 
 <script setup>
 import { VueFlow } from '@vue-flow/core'
-import { NodeToolbar } from '@vue-flow/node-toolbar'
 import initialElements from './initial-elements'
 
 // some nodes and edges
@@ -29,7 +28,7 @@ const elements = ref(initialElements)
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow v-model="elements" fit-view-on-init>
     <template #node-custom="nodeProps">
       <CustomNode :data="nodeProps.data" :label="nodeProps.label" />
     </template>
