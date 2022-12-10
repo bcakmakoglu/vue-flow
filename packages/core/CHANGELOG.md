@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.5.7
+
+### Patch Changes
+
+- [#501](https://github.com/bcakmakoglu/vue-flow/pull/501) [`ccff5b8b`](https://github.com/bcakmakoglu/vue-flow/commit/ccff5b8bd0f17bb862457c538dd0c7eb3acdfafd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix watcher not triggering with the `onMounted` hook
+
+- [#506](https://github.com/bcakmakoglu/vue-flow/pull/506) [`7abc3956`](https://github.com/bcakmakoglu/vue-flow/commit/7abc395654d04a7a0144d37e8787a416b0847fae) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Child nodes not properly using parent dimensions when extent is set to `parent`
+
 ## 1.5.6
 
 ### Patch Changes
