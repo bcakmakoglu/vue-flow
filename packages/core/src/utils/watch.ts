@@ -30,7 +30,6 @@ export const useWatch = (
               pauseStore = watchPausable(
                 [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
                 ([nodes, edges]) => {
-                  console.log('store watcher', nodes)
                   if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
                     pauseModel?.pause()
 
