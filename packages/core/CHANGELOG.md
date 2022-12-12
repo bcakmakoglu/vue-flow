@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.5.9
+
+### Patch Changes
+
+- [`ac8c2573`](https://github.com/bcakmakoglu/vue-flow/commit/ac8c2573f61273056e9a226788ee9360a5e577f8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing dragging flag to nodes
+
 ## 1.5.8
 
 ### Patch Changes
