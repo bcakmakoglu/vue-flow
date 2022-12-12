@@ -3,7 +3,7 @@ import { isFunction, isString } from '@vueuse/core'
 import type { Position } from '../../types'
 import type { HandleProps } from '../../types/handle'
 
-const { position = 'top' as Position, connectable, id, isValidConnection, ...props } = defineProps<HandleProps>()
+const { position = 'top' as Position, connectable = true, id, isValidConnection, ...props } = defineProps<HandleProps>()
 
 const type = toRef(props, 'type', 'source')
 
@@ -35,7 +35,7 @@ const isConnectable = computed(() => {
     return connectable(node, connectedEdges.value)
   }
 
-  return connectable || true
+  return isDef(connectable) ? connectable : nodesConnectable
 })
 
 onMounted(() => {
