@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.5.11
+
+### Patch Changes
+
+- [#517](https://github.com/bcakmakoglu/vue-flow/pull/517) [`440186d2`](https://github.com/bcakmakoglu/vue-flow/commit/440186d2a1a3fa32c0345941682877bc138e5a39) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing `dragging` prop to `GraphNode` type
+
+- [#515](https://github.com/bcakmakoglu/vue-flow/pull/515) [`639245b1`](https://github.com/bcakmakoglu/vue-flow/commit/639245b1e2466fb2fe86deaa6d4bfb73378314d8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove console log from watcher
+
 ## 1.5.10
 
 ### Patch Changes
