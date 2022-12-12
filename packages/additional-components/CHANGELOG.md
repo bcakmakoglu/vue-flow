@@ -1,5 +1,11 @@
 # @vue-flow/additional-components
 
+## 1.3.3
+
+### Patch Changes
+
+- [#517](https://github.com/bcakmakoglu/vue-flow/pull/517) [`854db502`](https://github.com/bcakmakoglu/vue-flow/commit/854db50282f916faffb0a47f6023a3b522f5f2bd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing `dragging` and `selected` props to minimap node slots
+
 ## 1.3.2
 
 ### Patch Changes
