@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.5.8
+
+### Patch Changes
+
+- [#509](https://github.com/bcakmakoglu/vue-flow/pull/509) [`5b748a66`](https://github.com/bcakmakoglu/vue-flow/commit/5b748a6631d8b576557bea5c5aa6ab66d0abd677) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix handle prop connectable always falling back to true, even when explicitly set to false
+
+- [#511](https://github.com/bcakmakoglu/vue-flow/pull/511) [`88b0e34c`](https://github.com/bcakmakoglu/vue-flow/commit/88b0e34cd8c4cce0e271c89cc16e5b714da2ca25) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent store watcher from being stopped on cleanup of model watcher
+
 ## 1.5.7
 
 ### Patch Changes
