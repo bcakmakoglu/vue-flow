@@ -83,6 +83,7 @@ export interface GraphNode<Data = ElementData, CustomEvents extends Record<strin
   dimensions: Dimensions
   isParent: boolean
   selected: boolean
+  dragging: boolean
   data: Data
   events: Partial<NodeEventsHandler<CustomEvents>>
 }
