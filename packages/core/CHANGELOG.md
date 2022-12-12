@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.5.10
+
+### Patch Changes
+
+- [`1a4a2a62`](https://github.com/bcakmakoglu/vue-flow/commit/1a4a2a6275ca94a085fd3e15cb5373f05c23a768) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing dragging flag (release failed)
+
 ## 1.5.9
 
 ### Patch Changes
