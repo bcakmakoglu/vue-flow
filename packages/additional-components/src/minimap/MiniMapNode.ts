@@ -4,7 +4,19 @@ import { MiniMapSlots } from './types'
 
 export default defineComponent({
   name: 'MiniMapNode',
-  props: ['id', 'position', 'dimensions', 'strokeWidth', 'strokeColor', 'borderRadius', 'color', 'shapeRendering', 'type'],
+  props: [
+    'id',
+    'position',
+    'dimensions',
+    'strokeWidth',
+    'strokeColor',
+    'borderRadius',
+    'color',
+    'shapeRendering',
+    'type',
+    'selected',
+    'dragging',
+  ],
   emits: ['click', 'dblclick', 'mouseenter', 'mousemove', 'mouseleave'],
   setup(props: MiniMapNodeProps, { attrs, emit }) {
     const miniMapSlots: Slots = inject(MiniMapSlots)!

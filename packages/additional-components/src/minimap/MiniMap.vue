@@ -215,6 +215,8 @@ export default {
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :style="node.style"
+        :selected="node.selected"
+        :dragging="node.dragging"
         :class="nodeClassNameFunc(node)"
         :color="nodeColorFunc(node)"
         :border-radius="nodeBorderRadius"
