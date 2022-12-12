@@ -132,9 +132,6 @@ function useDrag(params: UseDragParams) {
                     dragItems,
                     getNode: $$(getNode),
                   })
-
-                  dragging.value = true
-
                   onDrag(event.sourceEvent, currentNode, nodes)
                 }
               }
@@ -150,9 +147,6 @@ function useDrag(params: UseDragParams) {
                     dragItems,
                     getNode: $$(getNode),
                   })
-
-                  dragging.value = false
-
                   onStop(event.sourceEvent, currentNode, nodes)
                 }
               })
