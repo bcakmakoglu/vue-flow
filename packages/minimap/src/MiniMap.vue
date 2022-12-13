@@ -37,6 +37,8 @@ const defaultHeight = 150
 
 const { id, edges, viewport, translateExtent, dimensions, emits, getNodes: nodes, d3Selection, d3Zoom } = useVueFlow()
 
+const getNodes = nodes as unknown as ComputedRef<GraphNode[]>
+
 const el = ref<SVGElement>()
 
 const isDragging = ref(false)
@@ -234,7 +236,7 @@ export default {
       <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
 
       <MiniMapNode
-        v-for="node of nodes"
+        v-for="node of getNodes"
         :id="node.id"
         :key="node.id"
         :position="node.computedPosition"
