@@ -1,5 +1,27 @@
 # @vue-flow/core
 
+## 1.6.0
+
+### Minor Changes
+
+- [#498](https://github.com/bcakmakoglu/vue-flow/pull/498) [`1739797c`](https://github.com/bcakmakoglu/vue-flow/commit/1739797cfebca2d0f9a5d6864dc75c2e1f6ee722) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `useGetPointerPosition` composable
+
+- [#519](https://github.com/bcakmakoglu/vue-flow/pull/519) [`306cd3da`](https://github.com/bcakmakoglu/vue-flow/commit/306cd3dabfc57f730eb6f8939bf05369dadc31a5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move Panel component to core package
+
+### Patch Changes
+
+- [#498](https://github.com/bcakmakoglu/vue-flow/pull/498) [`1739797c`](https://github.com/bcakmakoglu/vue-flow/commit/1739797cfebca2d0f9a5d6864dc75c2e1f6ee722) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make `dragging` flag optional in position change type
+
+- [#498](https://github.com/bcakmakoglu/vue-flow/pull/498) [`1739797c`](https://github.com/bcakmakoglu/vue-flow/commit/1739797cfebca2d0f9a5d6864dc75c2e1f6ee722) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make dimensions optional in dimensions change type
+
+- [#521](https://github.com/bcakmakoglu/vue-flow/pull/521) [`f50644ff`](https://github.com/bcakmakoglu/vue-flow/commit/f50644ffd2237b50bd519c6eb5f0c86dbdaf010a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove Controls component styles from default theme
+
+- [#498](https://github.com/bcakmakoglu/vue-flow/pull/498) [`1739797c`](https://github.com/bcakmakoglu/vue-flow/commit/1739797cfebca2d0f9a5d6864dc75c2e1f6ee722) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `dragging`, `selected` and `resizing` flags to `GraphNode` type
+
+- [#498](https://github.com/bcakmakoglu/vue-flow/pull/498) [`1739797c`](https://github.com/bcakmakoglu/vue-flow/commit/1739797cfebca2d0f9a5d6864dc75c2e1f6ee722) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow multiple changes to be applied to element at once
+
+- [#519](https://github.com/bcakmakoglu/vue-flow/pull/519) [`e5829e8d`](https://github.com/bcakmakoglu/vue-flow/commit/e5829e8d7327ab2a36655b56389a882b839c95c5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove minimap styles from core package default-theme
+
 ## 1.5.11
 
 ### Patch Changes
