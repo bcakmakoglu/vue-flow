@@ -22,7 +22,7 @@ $ npm i --save @vue-flow/minimap
 import { VueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 
-// import minimap styles
+// import default minimap styles
 import '@vue-flow/minimap/dist/style.css'
 
 import initialElements from './initial-elements'
