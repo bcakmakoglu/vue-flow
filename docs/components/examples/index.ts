@@ -123,7 +123,7 @@ export const exampleImports = {
   },
   resizable: {
     'App.vue': NodeResizerApp,
-    'SnappableConnectionLine.vue': ResizableNode,
+    'ResizableNode.vue': ResizableNode,
   },
   toolbar: {
     'App.vue': ToolbarApp,
