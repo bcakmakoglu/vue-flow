@@ -1,4 +1,4 @@
-import { DragNDropState } from './types'
+import type { DragNDropState } from './types'
 
 declare module '@vue-flow/core' {
   interface StoreBase {
