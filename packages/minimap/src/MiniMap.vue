@@ -4,6 +4,7 @@ import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow 
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
+import type { ComputedRef } from 'vue'
 import type { MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
 import { MiniMapSlots } from './types'
@@ -35,6 +36,8 @@ const defaultWidth = 200
 const defaultHeight = 150
 
 const { id, edges, viewport, translateExtent, dimensions, emits, getNodes: nodes, d3Selection, d3Zoom } = useVueFlow()
+
+const getNodes = nodes as unknown as ComputedRef<GraphNode[]>
 
 const el = ref<SVGElement>()
 
@@ -233,7 +236,7 @@ export default {
       <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
 
       <MiniMapNode
-        v-for="node of nodes"
+        v-for="node of getNodes"
         :id="node.id"
         :key="node.id"
         :position="node.computedPosition"
