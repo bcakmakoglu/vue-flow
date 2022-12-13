@@ -2,6 +2,14 @@
   background-color: #fff;
 }
 
+.vue-flow__minimap.pannable {
+  cursor: grab;
+}
+
+.vue-flow__minimap.dragging {
+  cursor: grabbing;
+}
+
 .vue-flow__minimap-mask.pannable {
   cursor: grab;
 }
