@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 import ResizableNode from './ResizableNode.vue'
