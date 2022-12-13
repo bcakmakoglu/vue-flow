@@ -181,6 +181,8 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'MiniMapNode', link: '/guide/components/minimap-node' },
             { text: 'Controls', link: '/guide/components/controls' },
             { text: 'Control Button', link: '/guide/components/control-button' },
+            { text: 'Node Toolbar', link: '/guide/components/node-toolbar' },
+            { text: 'Node Resizer', link: '/guide/components/node-resizer' },
           ],
         },
       ],

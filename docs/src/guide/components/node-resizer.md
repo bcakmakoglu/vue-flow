@@ -68,3 +68,11 @@ When enabled, these props allow you to pan on drag and zoom on scroll using the 
 | isVisible       | Force visibility of resizer                               | boolean       | true     | true                 |
 | minWidth        | Min width of the resizer (can't resize below this value)  | number        | true     | -                    |
 | minHeight       | Min height of the resizer (can't resize below this value) | number        | true     | -                    |
+
+## [Emits](/typedocs/interfaces/NodeResizerEmits)
+
+| Name          |
+|---------------|
+| resizeStart   |
+| resize        |
+| resizeEnd     |
