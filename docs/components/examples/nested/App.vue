@@ -1,6 +1,8 @@
 <script setup>
-import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 import { onMounted } from 'vue'
 
 const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({

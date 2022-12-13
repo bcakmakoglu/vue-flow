@@ -6,7 +6,7 @@ import Sidebar from './Sidebar.vue'
 let id = 0
 const getId = () => `dndnode_${id++}`
 
-const { onConnect, nodes, edges, addEdges, addNodes, project } = useVueFlow({
+const { onConnect, addEdges, addNodes, project } = useVueFlow({
   nodes: [
     {
       id: '1',

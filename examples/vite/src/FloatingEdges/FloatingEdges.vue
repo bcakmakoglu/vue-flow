@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { MarkerType, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background, BackgroundVariant, Controls, MiniMap } from '@vue-flow/additional-components'
+import { Background, BackgroundVariant } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
+
 import FloatingEdge from './FloatingEdge.vue'
 import FloatingConnectionLine from './FloatingConnectionLine.vue'
 import { createElements } from './floating-edge-utils'

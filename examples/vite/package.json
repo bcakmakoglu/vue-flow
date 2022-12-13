@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "vueflow": "workspace:*",
-    "@vue-flow/additional-components": "workspace:*",
+    "@vue-flow/background": "workspace:*",
+    "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
+    "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-toolbar": "workspace:*"
   },
   "devDependencies": {

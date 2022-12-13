@@ -1,5 +1,5 @@
 <script setup>
-import { MiniMap } from '@vue-flow/additional-components'
+import { MiniMap } from '@vue-flow/minimap'
 import { Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { h, onMounted, ref } from 'vue'
 import ColorSelectorNode from './CustomNode.vue'

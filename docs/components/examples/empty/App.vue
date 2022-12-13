@@ -1,6 +1,7 @@
 <script setup>
-import { Background, BackgroundVariant, MiniMap, Panel, PanelPosition } from '@vue-flow/additional-components'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, BackgroundVariant } from '@vue-flow/background'
+import { MiniMap } from '@vue-flow/minimap'
 
 const { nodes, addNodes, edges, addEdges, onConnect, onPaneReady, onNodeDragStop, dimensions } = useVueFlow()
 

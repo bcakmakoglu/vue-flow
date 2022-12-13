@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { Connection, Edge, Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
 import { MarkerType, VueFlow, addEdge } from '@vue-flow/core'
-import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 
 const onNodeDragStart = (e: FlowEvents['nodeDragStart']) => console.log('drag start', e)
 const onNodeDrag = (e: FlowEvents['nodeDrag']) => console.log('drag', e)

@@ -1,6 +1,8 @@
 <script setup>
-import { Background, Controls, MiniMap, Panel, PanelPosition } from '@vue-flow/additional-components'
-import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Panel, PanelPosition, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 import { ref } from 'vue'
 import { initialElements } from './initial-elements.js'
 

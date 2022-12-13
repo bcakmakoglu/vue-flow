@@ -35,8 +35,10 @@
     "vue": "^3.2.25"
   },
   "dependencies": {
-    "@vue-flow/additional-components": "workspace:*",
-    "@vue-flow/core": "workspace:*"
+    "@vue-flow/background": "workspace:*",
+    "@vue-flow/controls": "workspace:*",
+    "@vue-flow/core": "workspace:*",
+    "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

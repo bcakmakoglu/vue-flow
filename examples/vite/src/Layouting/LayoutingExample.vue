@@ -2,7 +2,10 @@
 import dagre from 'dagre'
 import type { CoordinateExtent, Elements } from '@vue-flow/core'
 import { ConnectionMode, Position, VueFlow, isNode } from '@vue-flow/core'
-import { Controls } from '@vue-flow/additional-components'
+import { Controls } from '@vue-flow/controls'
+
+import '@vue-flow/controls/dist/style.css'
+
 import initialElements from './initial-elements'
 
 const dagreGraph = new dagre.graphlib.Graph()

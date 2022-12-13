@@ -1,6 +1,7 @@
 <script setup>
-import { Background, MiniMap, Panel, PanelPosition } from '@vue-flow/additional-components'
-import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Panel, PanelPosition, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { MiniMap } from '@vue-flow/minimap'
 import { nextTick, ref } from 'vue'
 import { getElements } from './utils.js'
 

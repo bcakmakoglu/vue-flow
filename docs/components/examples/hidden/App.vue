@@ -1,6 +1,6 @@
 <script setup>
-import { Background, Panel, PanelPosition } from '@vue-flow/additional-components'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
 import { ref, watch } from 'vue'
 
 const isHidden = ref(false)
