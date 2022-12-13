@@ -10,7 +10,10 @@
     "../packages/controls/src/index.ts",
     "../packages/minimap/src/index.ts",
     "../packages/node-toolbar/src/index.ts",
-    "../packages/node-resizer/src/index.ts"
+    "../packages/node-resizer/src/index.ts",
+    "../packages/plugins/dagre/src/index.ts",
+    "../packages/plugins/drag-n-drop/src/index.ts",
+    "../packages/plugins/screenshot/src/index.ts"
   ],
   "categorizeByGroup": true,
   "darkHighlightTheme": "vitesse-dark",
