@@ -1,5 +1,4 @@
 ---
-'@vue-flow/additional-components': minor
 '@vue-flow/core': minor
 ---
 
