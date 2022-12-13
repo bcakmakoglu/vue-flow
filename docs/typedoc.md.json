@@ -10,7 +10,8 @@
     "../packages/background/src/index.ts",
     "../packages/controls/src/index.ts",
     "../packages/minimap/src/index.ts",
-    "../packages/node-toolbar/src/index.ts"
+    "../packages/node-toolbar/src/index.ts",
+    "../packages/node-resizer/src/index.ts"
   ],
   "allReflectionsHaveOwnDocument": true,
   "categorizeByGroup": true,
