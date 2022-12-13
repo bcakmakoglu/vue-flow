@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { useVueFlow } from '@vue-flow/core'
-import type { PanelProps } from './types'
+import type { PanelProps } from '../../types'
 
 const props = defineProps<PanelProps>()
 

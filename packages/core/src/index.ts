@@ -7,6 +7,8 @@ export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
 
 export { default as Handle } from './components/Handle/Handle.vue'
 
+export { default as Panel } from './components/Panel/Panel.vue'
+
 export {
   StraightEdge,
   StepEdge,
