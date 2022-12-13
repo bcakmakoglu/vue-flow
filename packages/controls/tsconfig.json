@@ -19,7 +19,7 @@
     "declaration": true,
     "declarationDir": "./dist",
     "emitDeclarationOnly": true,
-    "types": [],
+    "types": ["vite/client", "vue/macros"]
   },
   "include": [
     "./src",
