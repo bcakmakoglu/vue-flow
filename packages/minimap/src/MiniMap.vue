@@ -33,9 +33,7 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, viewport, translateExtent, dimensions, emits, getNodes: nodes, d3Selection, d3Zoom } = useVueFlow()
-
-const getNodes = nodes as unknown as ComputedRef<GraphNode[]>
+const { id, edges, viewport, translateExtent, dimensions, emits, getNodes, d3Selection, d3Zoom } = useVueFlow()
 
 const el = ref<SVGElement>()
 
