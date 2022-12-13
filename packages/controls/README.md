@@ -21,7 +21,7 @@ $ npm i --save @vue-flow/controls
 import { VueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 
-// import the default styles
+// import default controls styles
 import '@vue-flow/controls/dist/style.css'
 
 import initialElements from './initial-elements'
