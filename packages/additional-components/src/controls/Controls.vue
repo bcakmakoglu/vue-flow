@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { useVueFlow } from '@vue-flow/core'
-import type { PanelPosition } from '../panel'
-import { Panel } from '../panel'
+import { Panel, useVueFlow } from '@vue-flow/core'
+import type { PanelPosition } from '@vue-flow/core'
 import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from './icons/plus.svg'
