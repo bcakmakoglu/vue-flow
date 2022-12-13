@@ -14,6 +14,7 @@ let css = `@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion
 @import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion.value}/dist/theme-default.css';
 @import 'https://cdn.jsdelivr.net/npm/@vue-flow/controls@latest/dist/style.css';
 @import 'https://cdn.jsdelivr.net/npm/@vue-flow/minimap@latest/dist/style.css';
+@import 'https://cdn.jsdelivr.net/npm/@vue-flow/node-resizer@latest/dist/style.css';
 
 html,
 body,

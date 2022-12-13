@@ -1,7 +1,6 @@
 <script setup>
 import { Handle, Position } from '@vue-flow/core'
 import { NodeResizer } from '@vue-flow/node-resizer'
-import '@vue-flow/node-resizer/dist/style.css'
 
 defineProps(['label'])
 </script>
