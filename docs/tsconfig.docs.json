@@ -21,9 +21,11 @@
     }
   },
   "include": [
-    "../packages/**/*"
+    "../packages/**/*",
+    "../packages/plugins/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "../packages/plugins/**/dist"
   ]
 }

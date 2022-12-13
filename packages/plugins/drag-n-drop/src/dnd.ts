@@ -80,12 +80,12 @@ function createDragNDrop(store: VueFlowStore): DragNDropState {
 
 export const PluginDragNDrop: Plugin = (hooks) => {
   hooks.created((store) => {
-    store.dragNDrop = createDragNDrop(store)
+    ;(store as VueFlowStore & { dragNDrop: DragNDropState }).dragNDrop = createDragNDrop(store)
   })
 }
 
 export function useDragNDrop<CustomType extends string = string>() {
-  const { dragNDrop } = useVueFlow()
+  const { dragNDrop } = useVueFlow() as VueFlowStore & { dragNDrop: DragNDropState }
 
   return dragNDrop as DragNDropState<CustomType>
 }
