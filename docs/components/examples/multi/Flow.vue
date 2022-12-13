@@ -1,6 +1,6 @@
 <script setup>
-import { Background, Panel, PanelPosition } from '@vue-flow/additional-components'
-import { VueFlow, isNode } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Panel, PanelPosition, VueFlow, isNode } from '@vue-flow/core'
 import { ref } from 'vue'
 
 const elements = ref([

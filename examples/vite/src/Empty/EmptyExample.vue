@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import type { Node } from '@vue-flow/core'
 import { VueFlow, useVueFlow } from '@vue-flow/core/src/index'
-import { Background, BackgroundVariant, Controls, MiniMap } from '@vue-flow/additional-components'
 
-const { nodes, addNodes, edges, addEdges, onConnect, onPaneReady, onNodeDragStop, dimensions } = useVueFlow()
+import { Background, BackgroundVariant } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
+
+const { nodes, addNodes, addEdges, onConnect, onPaneReady, onNodeDragStop, dimensions } = useVueFlow()
 
 onConnect((params) => addEdges([params]))
 onPaneReady((flowInstance) => console.log('flow loaded:', flowInstance))

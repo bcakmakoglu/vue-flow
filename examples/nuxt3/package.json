@@ -9,8 +9,10 @@
     "dev": "nuxt dev"
   },
   "dependencies": {
-    "@vue-flow/additional-components": "workspace:*",
-    "@vue-flow/core": "workspace:*"
+    "@vue-flow/background": "workspace:*",
+    "@vue-flow/controls": "workspace:*",
+    "@vue-flow/core": "workspace:*",
+    "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
     "nuxt": "3.0.0-rc.11"

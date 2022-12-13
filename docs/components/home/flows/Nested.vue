@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
 import { breakpointsTailwind } from '@vueuse/core'
-import { Background, Controls } from '@vue-flow/additional-components'
 
 const emit = defineEmits(['pane'])
 

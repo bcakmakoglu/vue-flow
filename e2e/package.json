@@ -7,8 +7,10 @@
     "open": "cypress open"
   },
   "dependencies": {
-    "@vue-flow/additional-components": "workspace:*",
-    "@vue-flow/core": "workspace:*"
+    "@vue-flow/background": "workspace:*",
+    "@vue-flow/controls": "workspace:*",
+    "@vue-flow/core": "workspace:*",
+    "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
     "cypress": "^10.9.0",

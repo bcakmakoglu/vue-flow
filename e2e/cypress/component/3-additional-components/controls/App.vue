@@ -1,6 +1,6 @@
 <script setup>
 import { VueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/additional-components'
+import { Controls } from '@vue-flow/controls'
 </script>
 
 <template>

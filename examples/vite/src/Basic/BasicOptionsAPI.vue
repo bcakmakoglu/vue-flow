@@ -1,7 +1,10 @@
 <script lang="ts">
 import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
 import { VueFlow, addEdge, isNode } from '@vue-flow/core'
-import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
+
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 
 export default defineComponent({
   name: 'BasicOptionsAPI',

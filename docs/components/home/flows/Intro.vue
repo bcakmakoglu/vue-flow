@@ -3,7 +3,7 @@ import { Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import confetti from 'canvas-confetti'
 import colors from 'windicss/colors'
-import { Background } from '@vue-flow/additional-components'
+import { Background } from '@vue-flow/background'
 import { cheer, fireworks } from './confetti'
 import Heart from '~icons/mdi/heart'
 

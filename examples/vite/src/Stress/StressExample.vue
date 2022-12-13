@@ -1,13 +1,13 @@
 <script setup>
-import { Background, MiniMap, Panel, PanelPosition } from '@vue-flow/additional-components'
-import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Panel, PanelPosition, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 import { nextTick, ref } from 'vue'
+import { Background } from '@vue-flow/background'
 import { getElements } from './utils'
 
 const { nodes, edges } = getElements(15, 15)
 const elements = ref([...nodes, ...edges])
 
-const { onPaneReady, dimensions, onNodeClick, getEdges, fitView } = useVueFlow()
+const { onPaneReady, dimensions, fitView } = useVueFlow()
 
 onPaneReady((i) => {
   i.fitView({

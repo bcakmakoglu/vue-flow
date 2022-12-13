@@ -9,8 +9,16 @@ export function copyVueFlowPlugin(): Plugin {
       ;[
         { path: '../../../node_modules/@vue-flow/core/dist/', pkgName: 'vue-flow-core.mjs' },
         {
-          path: '../../../node_modules/@vue-flow/additional-components/dist/',
-          pkgName: 'vue-flow-additional-components.mjs',
+          path: '../../../node_modules/@vue-flow/background/dist/',
+          pkgName: 'vue-flow-background.mjs',
+        },
+        {
+          path: '../../../node_modules/@vue-flow/controls/dist/',
+          pkgName: 'vue-flow-controls.mjs',
+        },
+        {
+          path: '../../../node_modules/@vue-flow/minimap/dist/',
+          pkgName: 'vue-flow-minimap.mjs',
         },
         {
           path: '../../../node_modules/@vue-flow/node-toolbar/dist/',

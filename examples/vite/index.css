@@ -4,6 +4,9 @@
 /* import the default theme (optional) */
 @import 'node_modules/@vue-flow/core/dist/theme-default.css';
 
+@import '@vue-flow/controls/dist/style.css';
+@import '@vue-flow/minimap/dist/style.css';
+
 body {
   color: #111;
   padding: 5px;

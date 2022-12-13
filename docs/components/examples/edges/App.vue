@@ -1,5 +1,5 @@
 <script setup>
-import { Background } from '@vue-flow/additional-components'
+import { Background } from '@vue-flow/background'
 import { MarkerType, VueFlow } from '@vue-flow/core'
 import { h, ref } from 'vue'
 import CustomEdge from './CustomEdge.vue'

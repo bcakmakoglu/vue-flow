@@ -1,5 +1,4 @@
 <script setup>
-import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
 import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 import { initialElements } from './customized-elements.js'
@@ -78,9 +77,6 @@ const toggleClass = () => {
         </q-card-section>
       </q-card>
     </template>
-    <Background pattern-color="#aaa" gap="8" />
-    <MiniMap />
-    <Controls />
 
     <div class="controls">
       <button style="background-color: #113285; color: white" @click="resetTransform">reset transform</button>

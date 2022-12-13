@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Elements } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/additional-components'
+import { Background } from '@vue-flow/background'
 
 const initialElements: Elements = [
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },

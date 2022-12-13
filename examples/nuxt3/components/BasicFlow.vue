@@ -1,5 +1,4 @@
 <script setup>
-import { Background, Controls, MiniMap } from '@vue-flow/additional-components'
 import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 import { initialElements } from './initial-elements.js'
@@ -67,10 +66,6 @@ const toggleClass = () => {
 
 <template>
   <VueFlow v-model="elements" class="basicflow" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
-    <Background pattern-color="#aaa" gap="8" />
-    <MiniMap />
-    <Controls />
-
     <div class="controls">
       <button style="background-color: #113285; color: white" @click="resetTransform">reset transform</button>
       <button style="background-color: #6f3381; color: white" @click="updatePos">update positions</button>

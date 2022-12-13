@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import type { Elements, VueFlowStore } from '@vue-flow/core'
 import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/additional-components'
+import { Controls } from '@vue-flow/controls'
+
+import '@vue-flow/controls/dist/style.css'
+
 import Sidebar from './Sidebar.vue'
 
 const onLoad = (flowInstance: VueFlowStore) => console.log('flow loaded:', flowInstance)
