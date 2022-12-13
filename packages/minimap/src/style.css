@@ -1,0 +1,7 @@
+.vue-flow__minimap {
+  background-color: #fff;
+}
+
+.vue-flow__minimap-mask.pannable {
+  cursor: grab;
+}

@@ -104,16 +104,6 @@
   border-radius: 100%;
 }
 
-.vue-flow__minimap {
-  background-color: #fff;
-}
-
-.vue-flow__minimap-mask {
-  &.pannable {
-    cursor: grab;
-   }
-}
-
 .vue-flow__controls {
   box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
 
