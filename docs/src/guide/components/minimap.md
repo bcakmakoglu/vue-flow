@@ -1,5 +1,14 @@
 # MiniMap
 
+## Installation
+
+```bash
+yarn add @vue-flow/minimap
+  
+# or
+npm install @vue-flow/minimap
+```
+
 ## Usage
 
 To use the minimap simply pass the `MiniMap` component as a child to the `VueFlow` component.

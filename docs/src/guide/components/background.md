@@ -2,6 +2,15 @@
 
 Vue Flow comes with two background pattern variants: dots and lines. 
 
+## Installation
+
+```bash
+yarn add @vue-flow/background
+
+# or
+npm install @vue-flow/background
+```
+
 ## Usage
 
 To use the background simply pass the `Background` component as a child to the `VueFlow` component.

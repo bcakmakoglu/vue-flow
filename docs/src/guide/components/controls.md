@@ -2,6 +2,15 @@
 
 The control panel contains a zoom-in, zoom-out, fit-view and a lock/unlock button.
 
+## Installation
+
+```bash
+yarn add @vue-flow/controls
+
+# or
+npm install @vue-flow/controls
+```
+
 ## Usage
 
 To use the controls simply pass the `Controls` component as a child to the `VueFlow` component.

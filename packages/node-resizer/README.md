@@ -1,7 +1,7 @@
 # Vue Flow: Node Resizer Component
 
 This is a resizer component for Vue Flow.
-It can be used to create resize your nodes.
+It can be used to resize your nodes.
 
 ## 🛠 Setup
 
@@ -16,7 +16,6 @@ $ npm i --save @vue-flow/node-resizer
 ## 🎮 Quickstart
 
 ```vue
-
 <script setup>
 import { VueFlow } from '@vue-flow/core'
 import initialElements from './initial-elements'

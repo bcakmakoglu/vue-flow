@@ -1,21 +1,20 @@
-# Vue Flow: Toolbar Component
+# Node Toolbar
 
 This is a toolbar component for Vue Flow.
 It can be used to create a floating Toolbar next to your nodes.
 You can either display the Toolbar by setting the visibility prop or automatically showing the Toolbar
 on selected nodes.
 
-## 🛠 Setup
+## Installation
 
 ```bash
-# install
-$ yarn add @vue-flow/node-toolbar
+yarn add @vue-flow/node-toolbar
 
 # or
-$ npm i --save @vue-flow/node-toolbar
+npm install @vue-flow/node-toolbar
 ```
 
-## 🎮 Quickstart
+## Usage
 
 ```vue
 <script setup>
@@ -68,3 +67,18 @@ defineProps<Props>()
   <Handle type="source" :position="Position.Right" />
 </template>
 ```
+
+## [Props](/typedocs/interfaces/NodeToolbarProps)
+
+| Name            | Definition                                        | Type                                 | Optional | Default                 |
+|-----------------|---------------------------------------------------|--------------------------------------|----------|-------------------------|
+| nodeId          | Node(s) the toolbar is supposed to be attached to | string array                         | true     | NodeId from context     |
+| isVisible       | Force visibility of toolbar                       | boolean                              | true     | Selected node           |
+| position        | Toolbar position (top, left, right, bottom)       | [Position](/typedocs/enums/Position) | true     | Top                     |
+| offset          | Offset of toolbar position                        | number                               | true     | 10                      |
+
+## Slots
+
+| Name    | Definition                           |
+|---------|--------------------------------------|
+| default | Default toolbar slot for any content | 
