@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.6.2
+
+### Patch Changes
+
+- [#529](https://github.com/bcakmakoglu/vue-flow/pull/529) [`92fe1022`](https://github.com/bcakmakoglu/vue-flow/commit/92fe10224e432cf4c3bad6d3fd86af36ff4ee1b9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix store watcher not being triggered when `addNodes` or `addEdges` is called
+
+- [#530](https://github.com/bcakmakoglu/vue-flow/pull/530) [`262bc42b`](https://github.com/bcakmakoglu/vue-flow/commit/262bc42b9c7f26b6748eed30a5a6c67d72e1a6b6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove forced update on resize observer trigger of updateNodeDimensions
+
 ## 1.6.1
 
 ### Patch Changes
