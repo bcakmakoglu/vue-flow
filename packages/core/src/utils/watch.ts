@@ -42,7 +42,7 @@ export const useWatch = (
               if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
                 pauseModel?.pause()
 
-                models.modelValue.value = [...nodes, ...edges]
+                if (nodes.length || edges.length) models.modelValue.value = [...nodes, ...edges]
 
                 nextTick(() => {
                   pauseModel?.resume()
@@ -74,7 +74,7 @@ export const useWatch = (
             if (nodes && Array.isArray(nodes)) {
               pauseStore?.pause()
 
-              store.setNodes(nodes)
+              if (models.nodes?.value?.length) store.setNodes(nodes)
 
               nextTick(() => {
                 pauseStore?.resume()
@@ -91,7 +91,7 @@ export const useWatch = (
               if (models.nodes?.value && Array.isArray(models.nodes.value)) {
                 pauseModel?.pause()
 
-                models.nodes.value = [...nodes]
+                if (nodes.length) models.nodes.value = [...nodes]
 
                 nextTick(() => {
                   pauseModel?.resume()
@@ -123,7 +123,7 @@ export const useWatch = (
             if (edges && Array.isArray(edges)) {
               pauseStore?.pause()
 
-              store.setEdges(edges)
+              if (models.edges?.value?.length) store.setEdges(edges)
 
               nextTick(() => {
                 pauseStore?.resume()
@@ -140,7 +140,7 @@ export const useWatch = (
               if (models.edges?.value && Array.isArray(models.edges.value)) {
                 pauseModel?.pause()
 
-                models.edges.value = [...edges]
+                if (edges.length) models.edges.value = [...edges]
 
                 nextTick(() => {
                   pauseModel?.resume()
