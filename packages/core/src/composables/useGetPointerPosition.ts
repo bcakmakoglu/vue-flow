@@ -10,8 +10,6 @@ export function useGetPointerPosition() {
   return ({ sourceEvent }: UseDragEvent, snapGrid?: SnapGrid) => {
     const currentSnapGrid = unref(hasSnapGrid(snapGrid))
 
-    console.log(currentSnapGrid)
-
     const x = sourceEvent.touches ? sourceEvent.touches[0].clientX : sourceEvent.clientX
     const y = sourceEvent.touches ? sourceEvent.touches[0].clientY : sourceEvent.clientY
 
