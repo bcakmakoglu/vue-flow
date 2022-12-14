@@ -16,7 +16,6 @@ $ npm i --save @vue-flow/controls
 ## 🎮 Quickstart
 
 ```vue
-
 <script setup>
 import { VueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'

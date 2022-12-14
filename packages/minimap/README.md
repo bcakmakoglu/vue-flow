@@ -17,7 +17,6 @@ $ npm i --save @vue-flow/minimap
 ## 🎮 Quickstart
 
 ```vue
-
 <script setup>
 import { VueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
