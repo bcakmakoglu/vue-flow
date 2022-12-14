@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { EdgeProps, Position } from '@vue-flow/core'
-import { EdgeText, getBezierPath, getMarkerId } from '@vue-flow/core'
+import { BezierEdge } from '@vue-flow/core'
 
 interface CustomData {
   text: string
 }
 
-interface CustomEdgeProps<T = CustomData> extends EdgeProps<T> {
+interface CustomEdgeProps extends EdgeProps<CustomData> {
   source: string
   target: string
   sourceHandleId?: string
@@ -18,13 +18,11 @@ interface CustomEdgeProps<T = CustomData> extends EdgeProps<T> {
   targetY: number
   sourcePosition: Position
   targetPosition: Position
-  markerEnd?: string
-  data: T
+  markerEnd: string
+  data: CustomData
 }
 
-const props = defineProps<CustomEdgeProps>()
-
-const path = $computed(() => getBezierPath(props))
+defineProps<CustomEdgeProps>()
 </script>
 
 <script lang="ts">
@@ -34,12 +32,15 @@ export default {
 </script>
 
 <template>
-  <path :id="id" class="vue-flow__edge-path" :d="path[0]" :marker-end="markerEnd" />
-
-  <EdgeText
-    :x="path[1]"
-    :y="path[2]"
+  <BezierEdge
     :label="data.text"
+    :source-x="sourceX"
+    :source-y="sourceY"
+    :target-x="targetX"
+    :target-y="targetY"
+    :source-position="sourcePosition"
+    :target-position="targetPosition"
+    :marker-end="markerEnd"
     :label-style="{ fill: 'white' }"
     :label-show-bg="true"
     :label-bg-style="{ fill: 'red' }"
