@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.6.1
+
+### Patch Changes
+
+- [#525](https://github.com/bcakmakoglu/vue-flow/pull/525) [`eae81603`](https://github.com/bcakmakoglu/vue-flow/commit/eae8160326bb7a67672503fccd0400333dbf2048) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `initialized` prop to `GraphNode`
+
+- [#525](https://github.com/bcakmakoglu/vue-flow/pull/525) [`eae81603`](https://github.com/bcakmakoglu/vue-flow/commit/eae8160326bb7a67672503fccd0400333dbf2048) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix Handle component adding duplicate handlebounds when node is not properly initialized
+
+- [#526](https://github.com/bcakmakoglu/vue-flow/pull/526) [`00a9795a`](https://github.com/bcakmakoglu/vue-flow/commit/00a9795a41ec15ce0cc342be53c912a9473ea65b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove console log
+
 ## 1.6.0
 
 ### Minor Changes
