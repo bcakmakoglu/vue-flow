@@ -85,6 +85,8 @@ export interface GraphNode<Data = ElementData, CustomEvents extends Record<strin
   selected: boolean
   resizing: boolean
   dragging: boolean
+
+  initialized: boolean
   data: Data
   events: Partial<NodeEventsHandler<CustomEvents>>
 }
