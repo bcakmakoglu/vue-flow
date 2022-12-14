@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import type { Actions, GraphNode, HandleElement, Position } from '~/types'
 
 export const getHandleBounds = (selector: string, nodeElement: HTMLDivElement, zoom: number): HandleElement[] | undefined => {
-  const handles = nodeElement.querySelectorAll(selector)
+  const handles = nodeElement.querySelectorAll(`.vue-flow__handle${selector}`)
 
   if (!handles || !handles.length) {
     return undefined
