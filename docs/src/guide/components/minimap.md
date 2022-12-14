@@ -13,9 +13,26 @@ npm install @vue-flow/minimap
 
 To use the minimap simply pass the `MiniMap` component as a child to the `VueFlow` component.
 
+::: warning
+Make sure you also import the styles as these are *not* part of the default theme anymore.
+:::
+
 ```vue
+<script setup>
+import { VueFlow } from '@vue-flow/core'
+import { MiniMap } from '@vue-flow/minimap'
+
+// import default minimap styles
+import '@vue-flow/minimap/dist/style.css'
+
+import initialElements from './initial-elements'
+
+// some nodes and edges
+const elements = ref(initialElements)
+</script>
+
 <template>
-  <VueFlow>
+  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
     <MiniMap />
   </VueFlow>
 </template>

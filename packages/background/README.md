@@ -16,7 +16,6 @@ $ npm i --save @vue-flow/background
 ## 🎮 Quickstart
 
 ```vue
-
 <script setup>
 import { VueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'

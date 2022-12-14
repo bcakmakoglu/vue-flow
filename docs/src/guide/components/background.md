@@ -16,9 +16,18 @@ npm install @vue-flow/background
 To use the background simply pass the `Background` component as a child to the `VueFlow` component.
 
 ```vue
+<script setup>
+import { VueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import initialElements from './initial-elements'
+
+// some nodes and edges
+const elements = ref(initialElements)
+</script>
+
 <template>
-  <VueFlow>
-    <Background :variant="BackgroundVariant.Dots" pattern-color="#f8f8f8" />
+  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+    <Background />
   </VueFlow>
 </template>
 ```

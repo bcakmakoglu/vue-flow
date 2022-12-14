@@ -15,13 +15,32 @@ npm install @vue-flow/controls
 
 To use the controls simply pass the `Controls` component as a child to the `VueFlow` component.
 
+::: warning
+Make sure you also import the styles as these are *not* part of the default theme anymore.
+:::
+
 ```vue
+<script setup>
+import { VueFlow } from '@vue-flow/core'
+import { Controls } from '@vue-flow/controls'
+
+// import default controls styles
+import '@vue-flow/controls/dist/style.css'
+
+import initialElements from './initial-elements'
+
+
+// some nodes and edges
+const elements = ref(initialElements)
+</script>
+
 <template>
-  <VueFlow>
+  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
     <Controls />
   </VueFlow>
 </template>
 ```
+
 
 ## [Props](/typedocs/interfaces/ControlProps)
 
