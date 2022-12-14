@@ -92,6 +92,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
       selected: false,
       dragging: false,
       resizing: false,
+      initialized: false,
       ...defaults,
       data: isDef(node.data) ? node.data : {},
       events: markRaw(isDef(node.events) ? node.events : {}),

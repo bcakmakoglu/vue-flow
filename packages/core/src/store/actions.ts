@@ -140,7 +140,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
           node.handleBounds.source = getHandleBounds('.source', update.nodeElement, zoom)
           node.handleBounds.target = getHandleBounds('.target', update.nodeElement, zoom)
 
-          node.dimensions = dimensions
+          if (!node.initialized) node.initialized = true
 
           res.push({
             id: node.id,
