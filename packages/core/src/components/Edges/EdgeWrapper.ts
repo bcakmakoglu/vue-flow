@@ -137,6 +137,9 @@ const EdgeWrapper = defineComponent({
         targetPosition,
       )
 
+      const edgeClass = edge.class instanceof Function ? edge.class(edge) : edge.class
+      const edgeStyle = edge.style instanceof Function ? edge.style(edge) : edge.style
+
       return h(
         'g',
         {
@@ -145,6 +148,7 @@ const EdgeWrapper = defineComponent({
           'class': [
             'vue-flow__edge',
             `vue-flow__edge-${props.type === false ? 'default' : props.name}`,
+            edgeClass,
             {
               updating: mouseOver,
               selected: edge.selected,
@@ -180,7 +184,7 @@ const EdgeWrapper = defineComponent({
                 labelBgBorderRadius: edge.labelBgBorderRadius,
                 data: edge.data,
                 events: { ...edge.events, ...hooks.on },
-                style: edge.style instanceof Function ? edge.style(edge) : edge.style,
+                style: edgeStyle,
                 markerStart: `url(#${getMarkerId(edge.markerStart)})`,
                 markerEnd: `url(#${getMarkerId(edge.markerEnd)})`,
                 sourcePosition,

@@ -2,7 +2,7 @@ import type { FunctionalComponent } from 'vue'
 import BaseEdge from './BaseEdge'
 import type { EdgeProps } from '~/types'
 
-const StraightEdge: FunctionalComponent<EdgeProps> = function (props) {
+const StraightEdge: FunctionalComponent<EdgeProps> = function (props, { attrs }) {
   const [path, labelX, labelY] = getStraightPath(props)
 
   return h(BaseEdge, {
@@ -10,6 +10,7 @@ const StraightEdge: FunctionalComponent<EdgeProps> = function (props) {
     labelX,
     labelY,
     ...props,
+    ...attrs,
   })
 }
 
@@ -26,7 +27,6 @@ StraightEdge.props = [
   'targetY',
   'markerEnd',
   'markerStart',
-  'style',
   'interactionWidth',
 ]
 

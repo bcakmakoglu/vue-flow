@@ -3,11 +3,10 @@ import BaseEdge from './BaseEdge'
 import { Position } from '~/types'
 import type { EdgeProps } from '~/types'
 
-const SimpleBezierEdge: FunctionalComponent<EdgeProps> = function ({
-  sourcePosition = Position.Bottom,
-  targetPosition = Position.Top,
-  ...props
-}) {
+const SimpleBezierEdge: FunctionalComponent<EdgeProps> = function (
+  { sourcePosition = Position.Bottom, targetPosition = Position.Top, ...props },
+  { attrs },
+) {
   const [path, labelX, labelY] = getSimpleBezierPath({
     sourcePosition,
     targetPosition,
@@ -19,6 +18,7 @@ const SimpleBezierEdge: FunctionalComponent<EdgeProps> = function ({
     labelX,
     labelY,
     ...props,
+    ...attrs,
   })
 }
 
@@ -37,7 +37,6 @@ SimpleBezierEdge.props = [
   'targetY',
   'markerEnd',
   'markerStart',
-  'style',
   'interactionWidth',
 ]
 

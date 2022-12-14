@@ -3,11 +3,10 @@ import BaseEdge from './BaseEdge'
 import type { SmoothStepEdgeProps } from '~/types'
 import { Position } from '~/types'
 
-const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
-  sourcePosition = Position.Bottom,
-  targetPosition = Position.Top,
-  ...props
-}) {
+const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function (
+  { sourcePosition = Position.Bottom, targetPosition = Position.Top, ...props },
+  { attrs },
+) {
   const [path, labelX, labelY] = getSmoothStepPath({
     sourcePosition,
     targetPosition,
@@ -19,6 +18,7 @@ const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function ({
     labelX,
     labelY,
     ...props,
+    ...attrs,
   })
 }
 
@@ -38,7 +38,6 @@ SmoothStepEdge.props = [
   'borderRadius',
   'markerEnd',
   'markerStart',
-  'style',
   'interactionWidth',
 ]
 

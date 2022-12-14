@@ -160,7 +160,6 @@ export interface BaseEdgeProps {
   labelY: number
   path: string
   label?: any
-  style?: CSSProperties
   labelStyle?: any
   labelShowBg?: boolean
   labelBgStyle?: any

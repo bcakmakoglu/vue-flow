@@ -2,8 +2,8 @@ import type { FunctionalComponent } from 'vue'
 import SmoothStepEdge from './SmoothStepEdge'
 import type { EdgeProps } from '~/types'
 
-const StepEdge: FunctionalComponent<EdgeProps> = function (props) {
-  return h(SmoothStepEdge, { ...props, borderRadius: 0 })
+const StepEdge: FunctionalComponent<EdgeProps> = function (props, { attrs }) {
+  return h(SmoothStepEdge, { ...props, ...attrs, borderRadius: 0 })
 }
 
 StepEdge.props = [
@@ -21,7 +21,6 @@ StepEdge.props = [
   'targetY',
   'markerEnd',
   'markerStart',
-  'style',
   'interactionWidth',
 ]
 
