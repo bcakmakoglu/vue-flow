@@ -16,7 +16,7 @@ export const useWatch = (
         let pauseModel: WatchPausableReturn
         let pauseStore: WatchPausableReturn
 
-        const immediate = !!(models.modelValue && models.modelValue.value && models.modelValue.value.length)
+        const immediate = !!(models.modelValue && models.modelValue.value)
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
@@ -25,23 +25,7 @@ export const useWatch = (
             if (elements && Array.isArray(elements)) {
               pauseStore?.pause()
 
-              store.setElements(elements)
-
-              pauseStore = watchPausable(
-                [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
-                ([nodes, edges]) => {
-                  if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
-                    pauseModel?.pause()
-
-                    models.modelValue.value = [...nodes, ...edges]
-
-                    nextTick(() => {
-                      pauseModel?.resume()
-                    })
-                  }
-                },
-                { immediate: true },
-              )
+              if (models.modelValue?.value?.length) store.setElements(elements)
 
               nextTick(() => {
                 pauseStore?.resume()
@@ -50,6 +34,24 @@ export const useWatch = (
           },
           { immediate },
         )
+
+        nextTick(() => {
+          pauseStore = watchPausable(
+            [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
+            ([nodes, edges]) => {
+              if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
+                pauseModel?.pause()
+
+                models.modelValue.value = [...nodes, ...edges]
+
+                nextTick(() => {
+                  pauseModel?.resume()
+                })
+              }
+            },
+            { immediate },
+          )
+        })
 
         onScopeDispose(() => {
           pauseModel?.stop()
@@ -63,7 +65,7 @@ export const useWatch = (
         let pauseModel: WatchPausableReturn
         let pauseStore: WatchPausableReturn
 
-        const immediate = !!(models.nodes && models.nodes.value && models.nodes.value.length)
+        const immediate = !!(models.nodes && models.nodes.value)
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
@@ -74,22 +76,6 @@ export const useWatch = (
 
               store.setNodes(nodes)
 
-              pauseStore = watchPausable(
-                [store.nodes, () => store.nodes.value.length],
-                ([nodes]) => {
-                  if (models.nodes?.value && Array.isArray(models.nodes.value)) {
-                    pauseModel?.pause()
-
-                    models.nodes.value = [...nodes]
-
-                    nextTick(() => {
-                      pauseModel?.resume()
-                    })
-                  }
-                },
-                { immediate: true },
-              )
-
               nextTick(() => {
                 pauseStore?.resume()
               })
@@ -97,6 +83,24 @@ export const useWatch = (
           },
           { immediate },
         )
+
+        nextTick(() => {
+          pauseStore = watchPausable(
+            [store.nodes, () => store.nodes.value.length],
+            ([nodes]) => {
+              if (models.nodes?.value && Array.isArray(models.nodes.value)) {
+                pauseModel?.pause()
+
+                models.nodes.value = [...nodes]
+
+                nextTick(() => {
+                  pauseModel?.resume()
+                })
+              }
+            },
+            { immediate },
+          )
+        })
 
         onScopeDispose(() => {
           pauseModel?.stop()
@@ -110,7 +114,7 @@ export const useWatch = (
         let pauseModel: WatchPausableReturn
         let pauseStore: WatchPausableReturn
 
-        const immediate = !!(models.edges && models.edges.value && models.edges.value.length)
+        const immediate = !!(models.edges && models.edges.value)
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
@@ -121,22 +125,6 @@ export const useWatch = (
 
               store.setEdges(edges)
 
-              pauseStore = watchPausable(
-                [store.edges, () => store.edges.value.length],
-                ([edges]) => {
-                  if (models.edges?.value && Array.isArray(models.edges.value)) {
-                    pauseModel?.pause()
-
-                    models.edges.value = [...edges]
-
-                    nextTick(() => {
-                      pauseModel?.resume()
-                    })
-                  }
-                },
-                { immediate: true },
-              )
-
               nextTick(() => {
                 pauseStore?.resume()
               })
@@ -144,6 +132,24 @@ export const useWatch = (
           },
           { immediate },
         )
+
+        nextTick(() => {
+          pauseStore = watchPausable(
+            [store.edges, () => store.edges.value.length],
+            ([edges]) => {
+              if (models.edges?.value && Array.isArray(models.edges.value)) {
+                pauseModel?.pause()
+
+                models.edges.value = [...edges]
+
+                nextTick(() => {
+                  pauseModel?.resume()
+                })
+              }
+            },
+            { immediate },
+          )
+        })
 
         onScopeDispose(() => {
           pauseModel?.stop()
