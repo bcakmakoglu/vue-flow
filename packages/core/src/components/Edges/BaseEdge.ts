@@ -6,26 +6,28 @@ import type { BaseEdgeProps } from '~/types'
  * The base edge is a simple wrapper for svg path
  * You can use the base edge in your custom edges and just pass down the necessary props
  */
-const BaseEdge: FunctionalComponent<BaseEdgeProps> = function ({
-  path,
-  label,
-  labelX,
-  labelY,
-  labelBgBorderRadius,
-  labelBgPadding,
-  labelBgStyle,
-  labelShowBg = true,
-  labelStyle,
-  markerStart,
-  markerEnd,
-  style,
-  interactionWidth = 20,
-}) {
+const BaseEdge: FunctionalComponent<BaseEdgeProps> = function (
+  {
+    path,
+    label,
+    labelX,
+    labelY,
+    labelBgBorderRadius,
+    labelBgPadding,
+    labelBgStyle,
+    labelShowBg = true,
+    labelStyle,
+    markerStart,
+    markerEnd,
+    interactionWidth = 20,
+  },
+  { attrs },
+) {
   return [
     h('path', {
-      'style': style,
+      'style': attrs.style,
+      'class': ['vue-flow__edge-path', attrs.class].join(' '),
       'd': path,
-      'class': 'vue-flow__edge-path',
       'marker-end': markerEnd,
       'marker-start': markerStart,
     }),
@@ -64,7 +66,6 @@ BaseEdge.props = [
   'labelStyle',
   'markerStart',
   'markerEnd',
-  'style',
   'interactionWidth',
 ]
 
