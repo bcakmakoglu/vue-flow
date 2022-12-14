@@ -39,30 +39,35 @@ const isConnectable = computed(() => {
 })
 
 onMounted(() => {
-  // set up handle bounds if they don't exist yet (i.e. the handle was added after the node has already been mounted)
-  const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
-  if (!vueFlowRef || existingBounds) return
+  // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
+  until(() => node.initialized)
+    .toBe(true)
+    .then(() => {
+      const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
 
-  const viewportNode = vueFlowRef.querySelector('.vue-flow__transformationpane')
+      if (!vueFlowRef || existingBounds) return
 
-  if (!nodeEl || !handle.value || !viewportNode) return
+      const viewportNode = vueFlowRef.querySelector('.vue-flow__transformationpane')
 
-  const nodeBounds = nodeEl.value.getBoundingClientRect()
+      if (!nodeEl || !handle.value || !viewportNode || !handleId) return
 
-  const handleBounds = handle.value.getBoundingClientRect()
+      const nodeBounds = nodeEl.value.getBoundingClientRect()
 
-  const style = window.getComputedStyle(viewportNode)
-  const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
+      const handleBounds = handle.value.getBoundingClientRect()
 
-  const nextBounds = {
-    id: handleId,
-    position,
-    x: (handleBounds.left - nodeBounds.left) / zoom,
-    y: (handleBounds.top - nodeBounds.top) / zoom,
-    ...getDimensions(handle.value),
-  }
+      const style = window.getComputedStyle(viewportNode)
+      const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
-  node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
+      const nextBounds = {
+        id: handleId,
+        position,
+        x: (handleBounds.left - nodeBounds.left) / zoom,
+        y: (handleBounds.top - nodeBounds.top) / zoom,
+        ...getDimensions(handle.value),
+      }
+
+      node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
+    })
 })
 </script>
 
