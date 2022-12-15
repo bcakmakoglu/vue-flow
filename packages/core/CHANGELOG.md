@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.6.4
+
+### Patch Changes
+
+- [#536](https://github.com/bcakmakoglu/vue-flow/pull/536) [`fc231bec`](https://github.com/bcakmakoglu/vue-flow/commit/fc231bec1e703277ff17403daab7380ed690a744) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix watcher not triggered when passing an empty array
+
+- [#537](https://github.com/bcakmakoglu/vue-flow/pull/537) [`4ec39fb0`](https://github.com/bcakmakoglu/vue-flow/commit/4ec39fb09ae5ad31a53067ccd2e56d69c04e8293) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix node resizer resizing not updating handle bounds
+
 ## 1.6.3
 
 ### Patch Changes
