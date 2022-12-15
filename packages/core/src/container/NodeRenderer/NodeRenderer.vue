@@ -38,7 +38,6 @@ onMounted(() => {
       return {
         id,
         nodeElement: entry.target as HTMLDivElement,
-        forceUpdate: true,
       }
     })
 
