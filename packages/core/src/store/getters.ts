@@ -102,6 +102,8 @@ export function useGetters(state: State): ComputedGetters {
     ...(getSelectedEdges.value ?? []),
   ])
 
+  const getNodesInitialized: ComputedGetters['getNodesInitialized'] = computed(() => getNodes.value.filter((n) => n.initialized))
+
   return {
     getNode,
     getEdge,
@@ -113,5 +115,6 @@ export function useGetters(state: State): ComputedGetters {
     getSelectedElements,
     getSelectedNodes,
     getSelectedEdges,
+    getNodesInitialized,
   }
 }

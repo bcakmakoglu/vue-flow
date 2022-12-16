@@ -264,6 +264,9 @@ export interface Getters {
   getSelectedNodes: GraphNode[]
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge[]
+
+  /** returns all nodes that are initialized, i.e. they have actual dimensions */
+  getNodesInitialized: GraphNode[]
 }
 
 export type ComputedGetters = {
