@@ -28,9 +28,9 @@ export interface Connection {
   /** Target node id */
   target: string
   /** Source handle id */
-  sourceHandle: string | null
+  sourceHandle?: string | null
   /** Target handle id */
-  targetHandle: string | null
+  targetHandle?: string | null
 }
 
 export type Connector = (
