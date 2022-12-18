@@ -58,7 +58,8 @@ export interface EdgeLabelOptions {
   labelBgBorderRadius?: number
 }
 
-interface DefaultEdge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> extends EdgeLabelOptions {
+export interface DefaultEdge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>
+  extends EdgeLabelOptions {
   /** Unique edge id */
   id: string
   /** An edge label */
@@ -108,7 +109,7 @@ export interface SmoothStepPathOptions {
   borderRadius?: number
 }
 
-type SmoothStepEdgeType<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = DefaultEdge<
+export type SmoothStepEdgeType<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = DefaultEdge<
   Data,
   CustomEvents
 > & {
@@ -120,7 +121,7 @@ export interface BezierPathOptions {
   curvature?: number
 }
 
-type BezierEdgeType<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = DefaultEdge<
+export type BezierEdgeType<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = DefaultEdge<
   Data,
   CustomEvents
 > & {
