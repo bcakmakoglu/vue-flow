@@ -89,6 +89,7 @@ export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: P
       draggable: undefined,
       selectable: undefined,
       connectable: undefined,
+      focusable: undefined,
       selected: false,
       dragging: false,
       resizing: false,
@@ -125,6 +126,7 @@ export const parseEdge = (edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge 
         targetY: 0 || defaults?.targetY,
         updatable: edge.updatable ?? defaults?.updatable,
         selectable: edge.selectable ?? defaults?.selectable,
+        focusable: edge.focusable ?? defaults?.focusable,
         data,
         events: markRaw(events),
         label: (edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label) || defaults?.label,
@@ -369,6 +371,6 @@ export const getMarkerId = (marker: EdgeMarkerType | undefined, vueFlowId?: stri
 
   return `${idPrefix}${Object.keys(marker)
     .sort()
-    .map((key: string) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
+    .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
     .join('&')}`
 }

@@ -4,13 +4,21 @@ import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
 
 const slots = inject(Slots)
 
-const { nodesDraggable, elementsSelectable, nodesConnectable, getNodes, getNodeTypes, updateNodeDimensions, emits } = $(
-  useVueFlow(),
-)
+const {
+  nodesDraggable,
+  nodesFocusable,
+  elementsSelectable,
+  nodesConnectable,
+  getNodes,
+  getNodeTypes,
+  updateNodeDimensions,
+  emits,
+} = $(useVueFlow())
 
 const draggable = (d?: boolean) => (typeof d === 'undefined' ? nodesDraggable : d)
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
 const connectable = (c?: HandleConnectable) => (typeof c === 'undefined' ? nodesConnectable : c)
+const focusable = (f?: boolean) => (typeof f === 'undefined' ? nodesFocusable : f)
 
 const resizeObserver = ref<ResizeObserver>()
 
@@ -91,6 +99,7 @@ export default {
         :draggable="draggable(node.draggable)"
         :selectable="selectable(node.selectable)"
         :connectable="connectable(node.connectable)"
+        :focusable="focusable(node.focusable)"
         :node="node"
       />
     </template>

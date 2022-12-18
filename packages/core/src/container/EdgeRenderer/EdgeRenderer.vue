@@ -30,9 +30,7 @@ const {
 } = $(useVueFlow())
 
 const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
-
 const updatable = (u?: EdgeUpdatable) => (typeof u === 'undefined' ? edgesUpdatable : u)
-
 const focusable = (f?: boolean) => (typeof f === 'undefined' ? edgesFocusable : f)
 
 const sourceNode = $(

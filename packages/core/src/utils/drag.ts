@@ -26,7 +26,8 @@ export function getDragItems(
     .map((n) =>
       markRaw({
         id: n.id,
-        position: n.computedPosition || { x: 0, y: 0, z: 0 },
+        position: n.position || { x: 0, y: 0 },
+        computedPosition: n.computedPosition || { x: 0, y: 0, z: 1 },
         distance: {
           x: mousePos.x - n.computedPosition?.x || 0,
           y: mousePos.y - n.computedPosition?.y || 0,
@@ -59,7 +60,7 @@ export function getEventHandlerParams({
   return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
 }
 
-export function applyExtent<T extends NodeDragItem | GraphNode>(item: T, extent?: CoordinateExtent, parent?: GraphNode) {
+export function getExtent<T extends NodeDragItem | GraphNode>(item: T, extent?: CoordinateExtent, parent?: GraphNode) {
   let currentExtent = item.extent || extent
 
   if (item.extent === 'parent') {
@@ -94,4 +95,29 @@ export function applyExtent<T extends NodeDragItem | GraphNode>(item: T, extent?
   }
 
   return currentExtent as CoordinateExtent
+}
+export const calcNextPosition = (
+  node: GraphNode | NodeDragItem,
+  nextPosition: XYPosition,
+  nodeExtent?: CoordinateExtent,
+  parentNode?: GraphNode,
+) => {
+  const extent = getExtent(node, nodeExtent, parentNode)
+
+  const clampedPos = clampPosition(nextPosition, extent)
+
+  const parentPosition = { x: 0, y: 0 }
+
+  if (parentNode) {
+    parentPosition.x = parentNode.computedPosition.x
+    parentPosition.y = parentNode.computedPosition.y
+  }
+
+  return {
+    position: {
+      x: clampedPos.x - parentPosition.x,
+      y: clampedPos.y - parentPosition.y,
+    },
+    computedPosition: clampedPos,
+  }
 }

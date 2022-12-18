@@ -87,6 +87,8 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
 
   edgesUpdatable: EdgeUpdatable
   edgesFocusable: boolean
+
+  nodesFocusable: boolean
   nodesDraggable: boolean
   nodesConnectable: boolean
 
@@ -118,6 +120,8 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   elevateNodesOnSelect: boolean
 
   disableKeyboardA11y: boolean
+
+  ariaLiveMessage: string
 
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
