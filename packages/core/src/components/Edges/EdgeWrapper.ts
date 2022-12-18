@@ -7,6 +7,7 @@ interface Props {
   type: EdgeComponent | Function | Object | false
   name: string
   selectable?: boolean
+  focusable?: boolean
   updatable?: EdgeUpdatable
   edge: GraphEdge
   sourceNode: GraphNode
@@ -14,10 +15,20 @@ interface Props {
 }
 
 const EdgeWrapper = defineComponent({
-  props: ['name', 'type', 'id', 'updatable', 'selectable', 'edge', 'sourceNode', 'targetNode'],
+  props: ['name', 'type', 'id', 'updatable', 'selectable', 'focusable', 'edge', 'sourceNode', 'targetNode'],
   setup(props: Props) {
-    const { addSelectedEdges, connectionMode, edgeUpdaterRadius, emits, nodesSelectionActive, getEdges, getEdgeTypes } =
-      useVueFlow()
+    const {
+      id: vueFlowId,
+      addSelectedEdges,
+      connectionMode,
+      edgeUpdaterRadius,
+      emits,
+      nodesSelectionActive,
+      getEdges,
+      getEdgeTypes,
+      removeSelectedEdges,
+      findEdge,
+    } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
 
@@ -32,7 +43,7 @@ const EdgeWrapper = defineComponent({
     const elementEdgeUpdaterType = ref<HandleType>('source')
     const mouseEvent = ref<MouseEvent>()
 
-    const edgeEl = ref()
+    const edgeEl = ref<SVGElement>()
 
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)
@@ -103,6 +114,19 @@ const EdgeWrapper = defineComponent({
       handleEdgeUpdater(event, false)
     }
 
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (elementSelectionKeys.includes(event.key) && props.selectable) {
+        const unselect = event.key === 'Escape'
+
+        if (unselect) {
+          edgeEl.value?.blur()
+          removeSelectedEdges([findEdge(props.id)!])
+        } else {
+          addSelectedEdges([findEdge(props.id)!])
+        }
+      }
+    }
+
     return () => {
       if (!props.sourceNode || !props.targetNode) return null
 
@@ -162,6 +186,11 @@ const EdgeWrapper = defineComponent({
           'onMouseenter': onEdgeMouseEnter,
           'onMousemove': onEdgeMouseMove,
           'onMouseleave': onEdgeMouseLeave,
+          'onKeyDown': props.focusable ? onKeyDown : undefined,
+          'tabIndex': props.focusable ? 0 : undefined,
+          'aria-label': edge.ariaLabel === null ? undefined : edge.ariaLabel || `Edge from ${edge.source} to ${edge.target}`,
+          'aria-describedby': props.focusable ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
+          'role': props.focusable ? 'button' : undefined,
         },
         [
           updating
@@ -185,8 +214,8 @@ const EdgeWrapper = defineComponent({
                 data: edge.data,
                 events: { ...edge.events, ...hooks.on },
                 style: edgeStyle,
-                markerStart: `url(#${getMarkerId(edge.markerStart)})`,
-                markerEnd: `url(#${getMarkerId(edge.markerEnd)})`,
+                markerStart: `url(#${getMarkerId(edge.markerStart, vueFlowId)})`,
+                markerEnd: `url(#${getMarkerId(edge.markerEnd, vueFlowId)})`,
                 sourcePosition,
                 targetPosition,
                 sourceX,
