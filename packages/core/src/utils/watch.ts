@@ -17,6 +17,7 @@ export const useWatch = (
         let pauseStore: WatchPausableReturn
 
         const immediate = !!(models.modelValue && models.modelValue.value)
+        let immediateStore = !!(store.nodes.value.length || store.edges.value.length)
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
@@ -27,7 +28,9 @@ export const useWatch = (
 
               store.setElements(elements)
 
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && elements.length) immediateStore = true
+              else pauseStore?.resume()
             }
           },
           { immediate },
@@ -46,6 +49,7 @@ export const useWatch = (
               })
             }
           },
+          { immediate: immediateStore },
         )
 
         onScopeDispose(() => {
@@ -61,6 +65,7 @@ export const useWatch = (
         let pauseStore: WatchPausableReturn
 
         const immediate = !!(models.nodes && models.nodes.value)
+        let immediateStore = !!store.nodes.value.length
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
@@ -71,23 +76,29 @@ export const useWatch = (
 
               store.setNodes(nodes)
 
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && nodes.length) immediateStore = true
+              else pauseStore?.resume()
             }
           },
           { immediate },
         )
 
-        pauseStore = watchPausable([store.nodes, () => store.nodes.value.length], ([nodes]) => {
-          if (models.nodes?.value && Array.isArray(models.nodes.value)) {
-            pauseModel?.pause()
+        pauseStore = watchPausable(
+          [store.nodes, () => store.nodes.value.length],
+          ([nodes]) => {
+            if (models.nodes?.value && Array.isArray(models.nodes.value)) {
+              pauseModel?.pause()
 
-            models.nodes.value = [...nodes]
+              models.nodes.value = [...nodes]
 
-            nextTick(() => {
-              pauseModel?.resume()
-            })
-          }
-        })
+              nextTick(() => {
+                pauseModel?.resume()
+              })
+            }
+          },
+          { immediate: immediateStore },
+        )
 
         onScopeDispose(() => {
           pauseModel?.stop()
@@ -102,6 +113,7 @@ export const useWatch = (
         let pauseStore: WatchPausableReturn
 
         const immediate = !!(models.edges && models.edges.value)
+        let immediateStore = !!store.edges.value.length
 
         // eslint-disable-next-line prefer-const
         pauseModel = watchPausable(
@@ -112,23 +124,29 @@ export const useWatch = (
 
               store.setEdges(edges)
 
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && edges.length) immediateStore = true
+              else pauseStore?.resume()
             }
           },
           { immediate },
         )
 
-        pauseStore = watchPausable([store.edges, () => store.edges.value.length], ([edges]) => {
-          if (models.edges?.value && Array.isArray(models.edges.value)) {
-            pauseModel?.pause()
+        pauseStore = watchPausable(
+          [store.edges, () => store.edges.value.length],
+          ([edges]) => {
+            if (models.edges?.value && Array.isArray(models.edges.value)) {
+              pauseModel?.pause()
 
-            models.edges.value = [...edges]
+              models.edges.value = [...edges]
 
-            nextTick(() => {
-              pauseModel?.resume()
-            })
-          }
-        })
+              nextTick(() => {
+                pauseModel?.resume()
+              })
+            }
+          },
+          { immediate: immediateStore },
+        )
 
         onScopeDispose(() => {
           pauseModel?.stop()
@@ -146,7 +164,6 @@ export const useWatch = (
               store.setMaxZoom(props.maxZoom)
             }
           },
-          { immediate: isDef(props.maxZoom) },
         )
       })
     }
@@ -160,7 +177,6 @@ export const useWatch = (
               store.setMinZoom(props.minZoom)
             }
           },
-          { immediate: isDef(props.minZoom) },
         )
       })
     }
@@ -174,7 +190,6 @@ export const useWatch = (
               store.setTranslateExtent(props.translateExtent)
             }
           },
-          { immediate: isDef(props.translateExtent) },
         )
       })
     }
@@ -188,7 +203,6 @@ export const useWatch = (
               store.setNodeExtent(props.nodeExtent)
             }
           },
-          { immediate: isDef(props.nodeExtent) },
         )
       })
     }
@@ -202,7 +216,6 @@ export const useWatch = (
               store.applyDefault.value = props.applyDefault
             }
           },
-          { immediate: isDef(props.applyDefault) },
         )
 
         watch(
@@ -247,7 +260,6 @@ export const useWatch = (
               store.autoConnect.value = props.autoConnect
             }
           },
-          { immediate: isDef(props.autoConnect) },
         )
 
         watch(
@@ -290,12 +302,12 @@ export const useWatch = (
           scope.run(() => {
             watch(
               model,
-              () => {
-                if (isDef(model)) {
-                  storedValue.value = model.value
+              (nextValue) => {
+                if (isDef(nextValue)) {
+                  storedValue.value = nextValue
                 }
               },
-              { immediate: isDef(model) },
+              { flush: 'pre' },
             )
           })
         }
