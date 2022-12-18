@@ -22,7 +22,7 @@
     "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
     "@vue-flow/node-toolbar": "workspace:*",
-    "@vue/repl": "1.1.2",
+    "@vue/repl": "^1.3.2",
     "blobity": "^0.2.1",
     "canvas-confetti": "^1.6.0",
     "vite": "^2.9.15",
