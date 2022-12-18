@@ -27,31 +27,26 @@ export const useWatch = (
 
               store.setElements(elements)
 
-              nextTick(() => {
-                pauseStore?.resume()
-              })
+              pauseStore?.resume()
             }
           },
           { immediate },
         )
 
-        nextTick(() => {
-          pauseStore = watchPausable(
-            [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
-            ([nodes, edges]) => {
-              if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
-                pauseModel?.pause()
+        pauseStore = watchPausable(
+          [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
+          ([nodes, edges]) => {
+            if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
+              pauseModel?.pause()
 
-                models.modelValue.value = [...nodes, ...edges]
+              models.modelValue.value = [...nodes, ...edges]
 
-                nextTick(() => {
-                  pauseModel?.resume()
-                })
-              }
-            },
-            { immediate },
-          )
-        })
+              nextTick(() => {
+                pauseModel?.resume()
+              })
+            }
+          },
+        )
 
         onScopeDispose(() => {
           pauseModel?.stop()
@@ -76,30 +71,22 @@ export const useWatch = (
 
               store.setNodes(nodes)
 
-              nextTick(() => {
-                pauseStore?.resume()
-              })
+              pauseStore?.resume()
             }
           },
           { immediate },
         )
 
-        nextTick(() => {
-          pauseStore = watchPausable(
-            [store.nodes, () => store.nodes.value.length],
-            ([nodes]) => {
-              if (models.nodes?.value && Array.isArray(models.nodes.value)) {
-                pauseModel?.pause()
+        pauseStore = watchPausable([store.nodes, () => store.nodes.value.length], ([nodes]) => {
+          if (models.nodes?.value && Array.isArray(models.nodes.value)) {
+            pauseModel?.pause()
 
-                models.nodes.value = [...nodes]
+            models.nodes.value = [...nodes]
 
-                nextTick(() => {
-                  pauseModel?.resume()
-                })
-              }
-            },
-            { immediate },
-          )
+            nextTick(() => {
+              pauseModel?.resume()
+            })
+          }
         })
 
         onScopeDispose(() => {
@@ -125,30 +112,22 @@ export const useWatch = (
 
               store.setEdges(edges)
 
-              nextTick(() => {
-                pauseStore?.resume()
-              })
+              pauseStore?.resume()
             }
           },
           { immediate },
         )
 
-        nextTick(() => {
-          pauseStore = watchPausable(
-            [store.edges, () => store.edges.value.length],
-            ([edges]) => {
-              if (models.edges?.value && Array.isArray(models.edges.value)) {
-                pauseModel?.pause()
+        pauseStore = watchPausable([store.edges, () => store.edges.value.length], ([edges]) => {
+          if (models.edges?.value && Array.isArray(models.edges.value)) {
+            pauseModel?.pause()
 
-                models.edges.value = [...edges]
+            models.edges.value = [...edges]
 
-                nextTick(() => {
-                  pauseModel?.resume()
-                })
-              }
-            },
-            { immediate },
-          )
+            nextTick(() => {
+              pauseModel?.resume()
+            })
+          }
         })
 
         onScopeDispose(() => {
