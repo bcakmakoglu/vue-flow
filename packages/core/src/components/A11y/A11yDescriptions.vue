@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { ARIA_EDGE_DESC_KEY, ARIA_NODE_DESC_KEY } from '../../utils/a11y'
+
 const { id, disableKeyboardA11y } = useVueFlow()
 </script>
 
