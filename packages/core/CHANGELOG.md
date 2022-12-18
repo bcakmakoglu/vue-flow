@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.7.1
+
+### Patch Changes
+
+- [#545](https://github.com/bcakmakoglu/vue-flow/pull/545) [`54c93b9`](https://github.com/bcakmakoglu/vue-flow/commit/54c93b92792b0bf543380dec2a7198b843d99fab) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove immediate watch of VueFlow props and set prop values via state initalizer
+
+- [#545](https://github.com/bcakmakoglu/vue-flow/pull/545) [`54c93b9`](https://github.com/bcakmakoglu/vue-flow/commit/54c93b92792b0bf543380dec2a7198b843d99fab) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Only trigger store watcher immediate when elements were set, otherwise wait for changes in store to overwrite model-value
+
 ## 1.7.0
 
 ### Minor Changes
