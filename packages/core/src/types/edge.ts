@@ -83,6 +83,8 @@ interface DefaultEdge<Data = ElementData, CustomEvents extends Record<string, Cu
   updatable?: EdgeUpdatable
   /** Disable/enable selecting edge */
   selectable?: boolean
+  /** Disable/enable focusing edges (a11y) */
+  focusable?: boolean
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
   class?: string | ClassFunc<GraphEdge<Data, CustomEvents>>
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
@@ -97,6 +99,8 @@ interface DefaultEdge<Data = ElementData, CustomEvents extends Record<string, Cu
   data?: Data
   /** contextual and custom events of edge */
   events?: Partial<EdgeEventsHandler<CustomEvents>>
+  /** Aria label for edge (a11y) */
+  ariaLabel?: string | null
 }
 
 export interface SmoothStepPathOptions {
