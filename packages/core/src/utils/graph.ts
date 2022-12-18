@@ -360,12 +360,15 @@ export const isParentSelected = (node: GraphNode, getNode: Getters['getNode']): 
   return isParentSelected(parent, getNode)
 }
 
-export const getMarkerId = (marker: EdgeMarkerType | undefined): string => {
+export const getMarkerId = (marker: EdgeMarkerType | undefined, vueFlowId?: string): string => {
   if (typeof marker === 'undefined') return ''
+
   if (typeof marker === 'string') return marker
 
-  return Object.keys(marker)
+  const idPrefix = vueFlowId ? `${vueFlowId}__` : ''
+
+  return `${idPrefix}${Object.keys(marker)
     .sort()
-    .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
-    .join('&')
+    .map((key: string) => `${key}=${(marker as any)[key]}`)
+    .join('&')}`
 }
