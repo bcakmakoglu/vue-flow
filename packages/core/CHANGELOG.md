@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.7.0
+
+### Minor Changes
+
+- [#539](https://github.com/bcakmakoglu/vue-flow/pull/539) [`85d5a64d`](https://github.com/bcakmakoglu/vue-flow/commit/85d5a64d519207fe3044bd68947b2edb014f288a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `getNodesInitialized` getter to store
+
+### Patch Changes
+
+- [#539](https://github.com/bcakmakoglu/vue-flow/pull/539) [`85d5a64d`](https://github.com/bcakmakoglu/vue-flow/commit/85d5a64d519207fe3044bd68947b2edb014f288a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make `sourceHandle` and `targetHandle` optional properties for `Connection` type
+
+- [#542](https://github.com/bcakmakoglu/vue-flow/pull/542) [`530f286c`](https://github.com/bcakmakoglu/vue-flow/commit/530f286cb42c09cd2bc5156527fb3e9fa56878cb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move watcher timing to `pre` and sync immediately
+
 ## 1.6.4
 
 ### Patch Changes
