@@ -19,11 +19,9 @@ const { onPaneReady, onNodeDragStop, onConnect, addEdges, setTransform, toObject
   minZoom: 0.2,
   maxZoom: 4,
   connectOnClick: true,
+  fitViewOnInit: false,
 })
 
-onPaneReady(({ fitView }) => {
-  fitView()
-})
 onNodeDragStop((e) => console.log('drag stop', e))
 onConnect((params) => addEdges([params]))
 
@@ -43,7 +41,7 @@ const toggleclass = () => elements.value.forEach((el) => (el.class = el.class ==
 </script>
 
 <template>
-  <VueFlow v-model="elements" connection-mode="strict" class="vue-flow-basic-example">
+  <VueFlow v-model="elements" fit-view-on-init connection-mode="strict" class="vue-flow-basic-example">
     <Background />
     <MiniMap />
     <Controls />
