@@ -45,7 +45,20 @@ export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
 export type EdgeUpdatable = boolean | 'target' | 'source'
 
-export interface Edge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> {
+export interface EdgeLabelOptions {
+  /** Label styles (CSSProperties) */
+  labelStyle?: CSSProperties
+  /** Show label bg */
+  labelShowBg?: boolean
+  /** Label Bg styles (CSSProperties) */
+  labelBgStyle?: CSSProperties
+  /** Label Bg padding */
+  labelBgPadding?: [number, number]
+  /** Label Bg border radius */
+  labelBgBorderRadius?: number
+}
+
+interface DefaultEdge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> extends EdgeLabelOptions {
   /** Unique edge id */
   id: string
   /** An edge label */
@@ -60,16 +73,6 @@ export interface Edge<Data = ElementData, CustomEvents extends Record<string, Cu
   sourceHandle?: string | null
   /** Target handle id */
   targetHandle?: string | null
-  /** Label styles (CSSProperties) */
-  labelStyle?: CSSProperties
-  /** Show label bg */
-  labelShowBg?: boolean
-  /** Label Bg styles (CSSProperties) */
-  labelBgStyle?: CSSProperties
-  /** Label Bg padding */
-  labelBgPadding?: [number, number]
-  /** Label Bg border radius */
-  labelBgBorderRadius?: number
   /** Animated edge */
   animated?: boolean
   /** EdgeMarker */
@@ -95,6 +98,36 @@ export interface Edge<Data = ElementData, CustomEvents extends Record<string, Cu
   /** contextual and custom events of edge */
   events?: Partial<EdgeEventsHandler<CustomEvents>>
 }
+
+export interface SmoothStepPathOptions {
+  offset?: number
+  borderRadius?: number
+}
+
+type SmoothStepEdgeType<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = DefaultEdge<
+  Data,
+  CustomEvents
+> & {
+  type: 'smoothstep'
+  pathOptions?: SmoothStepPathOptions
+}
+
+export interface BezierPathOptions {
+  curvature?: number
+}
+
+type BezierEdgeType<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = DefaultEdge<
+  Data,
+  CustomEvents
+> & {
+  type: 'default'
+  pathOptions?: BezierPathOptions
+}
+
+export type Edge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> =
+  | DefaultEdge<Data, CustomEvents>
+  | SmoothStepEdgeType<Data, CustomEvents>
+  | BezierEdgeType<Data, CustomEvents>
 
 export type DefaultEdgeOptions = Omit<Edge, 'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle'>
 
