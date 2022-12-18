@@ -112,6 +112,8 @@ const defaultState = (): State => ({
   elevateEdgesOnSelect: false,
   elevateNodesOnSelect: true,
 
+  disableKeyboardA11y: false,
+
   __experimentalFeatures: {
     nestedFlow: false,
   },

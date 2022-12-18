@@ -159,6 +159,8 @@ export interface FlowProps {
   /** elevates nodes when selected and applies z-Index + 1000 */
   elevateNodesOnSelect?: boolean
 
+  disableKeyboardA11y?: boolean
+
   __experimentalFeatures?: {
     nestedFlow?: boolean
   }

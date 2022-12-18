@@ -117,6 +117,8 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   elevateEdgesOnSelect: boolean
   elevateNodesOnSelect: boolean
 
+  disableKeyboardA11y: boolean
+
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
 }
@@ -266,7 +268,6 @@ export interface Getters {
   getSelectedNodes: GraphNode[]
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge[]
-
   /** returns all nodes that are initialized, i.e. they have actual dimensions */
   getNodesInitialized: GraphNode[]
 }

@@ -38,6 +38,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   autoConnect: undefined,
   elevateEdgesOnSelect: undefined,
   elevateNodesOnSelect: undefined,
+  disableKeyboardA11y: undefined,
 })
 
 const emit = defineEmits<{
