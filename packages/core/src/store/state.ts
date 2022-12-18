@@ -89,6 +89,7 @@ const defaultState = (): State => ({
 
   edgesUpdatable: false,
   edgesFocusable: true,
+  nodesFocusable: true,
   nodesConnectable: true,
   nodesDraggable: true,
   elementsSelectable: true,
@@ -113,6 +114,7 @@ const defaultState = (): State => ({
   elevateNodesOnSelect: true,
 
   disableKeyboardA11y: false,
+  ariaLiveMessage: '',
 
   __experimentalFeatures: {
     nestedFlow: false,

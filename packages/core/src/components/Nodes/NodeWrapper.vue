@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { isNumber } from '@vueuse/core'
 import type { GraphNode, HandleConnectable, NodeComponent, SnapGrid, XYZPosition } from '../../types'
+import { ARIA_NODE_DESC_KEY } from '../../utils/a11y'
 
 const { id, type, name, draggable, selectable, connectable, ...props } = defineProps<{
   id: string
   draggable: boolean
   selectable: boolean
   connectable: HandleConnectable
+  focusable: boolean
   snapGrid?: SnapGrid
   type: NodeComponent | Function | Object | false
   name: string
@@ -17,6 +19,7 @@ const { id, type, name, draggable, selectable, connectable, ...props } = defineP
 provide(NodeId, id)
 
 const {
+  id: vueFlowId,
   edges,
   noPanClassName,
   selectNodesOnDrag,
@@ -33,7 +36,11 @@ const {
   nodeExtent,
   onNodesInitialized,
   elevateNodesOnSelect,
+  disableKeyboardA11y,
+  ariaLiveMessage,
 } = $(useVueFlow())
+
+const updateNodePositions = useUpdateNodePositions()
 
 const node = $(useVModel(props, 'node'))
 
@@ -138,33 +145,22 @@ onNodesInitialized(() => {
   initialized.value = true
 })
 
-/** Initial clamp of node position */
 until(initialized)
   .toBe(true)
   .then(() => {
-    const extent = applyExtent(node, nodeExtent, parentNode)
+    const { computedPosition, position } = calcNextPosition(node, node.position, nodeExtent, parentNode)
 
-    const clampedPos = clampPosition(node.computedPosition, extent)
-
-    node.computedPosition = { ...node.computedPosition, ...clampedPos }
-    node.position = {
-      x: node.computedPosition.x - (parentNode?.computedPosition.x || 0),
-      y: node.computedPosition.y - (parentNode?.computedPosition.y || 0),
-    }
+    node.computedPosition = { ...node.computedPosition, ...computedPosition }
+    node.position = position
   })
 
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
-  updatePosition(
-    {
-      x: node.position.x,
-      y: node.position.y,
-      // should be using computedPosition.z but in case  it's not present, fall back to selected state
-      z: node.computedPosition.z ? node.computedPosition.z : node.selected ? 1000 : 0,
-    },
-    parentNode ? { ...parentNode.computedPosition } : undefined,
-  )
+  const { computedPosition, position } = calcNextPosition(node, node.position, nodeExtent, parentNode)
+
+  node.computedPosition = { ...node.computedPosition, ...computedPosition }
+  node.position = position
 }
 
 function onMouseEnter(event: MouseEvent) {
@@ -200,6 +196,36 @@ function onSelectNode(event: MouseEvent) {
 
   emit.click({ event, node, connectedEdges })
 }
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (isInputDOMNode(event)) return
+
+  event.preventDefault()
+
+  if (elementSelectionKeys.includes(event.key) && selectable) {
+    const unselect = event.key === 'Escape'
+
+    if (unselect) {
+      nodeElement.value?.blur()
+    }
+
+    handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive), unselect)
+  } else if (!disableKeyboardA11y && draggable && node.selected && arrowKeyDiffs[event.key]) {
+    $$(ariaLiveMessage).value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
+      .position.x}, y: ${~~node.position.y}`
+
+    // by default a node moves 5px on each key press, or 20px if shift is pressed
+    // if snap grid is enabled, we use that for the velocity.
+    const xVelo = props.snapGrid ? props.snapGrid[0] : 5
+    const yVelo = props.snapGrid ? props.snapGrid[1] : 5
+    const factor = event.shiftKey ? 4 : 1
+
+    updateNodePositions({
+      x: arrowKeyDiffs[event.key].x * xVelo * factor,
+      y: arrowKeyDiffs[event.key].y * yVelo * factor,
+    })
+  }
+}
 </script>
 
 <script lang="ts">
@@ -229,6 +255,10 @@ export default {
       pointerEvents: selectable || draggable ? 'all' : 'none',
       ...getStyle,
     }"
+    :tabIndex="focusable ? 0 : undefined"
+    :role="focusable ? 'button' : undefined"
+    :aria-describedby="disableKeyboardA11y ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`"
+    :aria-label="node.ariaLabel"
     :data-id="node.id"
     @mouseenter="onMouseEnter"
     @mousemove="onMouseMove"
@@ -236,6 +266,7 @@ export default {
     @contextmenu="onContextMenu"
     @click="onSelectNode"
     @dblclick="onDoubleClick"
+    @keydown="onKeyDown"
   >
     <component
       :is="type === false ? getNodeTypes.default : type"

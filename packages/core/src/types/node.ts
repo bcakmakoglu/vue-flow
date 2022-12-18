@@ -32,6 +32,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   draggable?: boolean
   selectable?: boolean
   connectable?: HandleConnectable
+  focusable?: boolean
   dragHandle?: string
   /** move on grid */
   snapGrid?: SnapGrid
@@ -72,6 +73,8 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   data?: Data
   /** contextual and custom events that are passed to your custom components */
   events?: Partial<NodeEventsHandler<CustomEvents>>
+
+  ariaLabel?: string
 }
 
 export interface GraphNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>

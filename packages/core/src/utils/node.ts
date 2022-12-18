@@ -30,12 +30,13 @@ export const handleNodeClick = (
   addSelectedNodes: Actions['addSelectedNodes'],
   removeSelectedElements: Actions['removeSelectedElements'],
   nodesSelectionActive: Ref<boolean>,
+  unselect = false,
 ) => {
   nodesSelectionActive.value = false
 
   if (!node.selected) {
     addSelectedNodes([node])
-  } else if (node.selected && multiSelectionActive) {
+  } else if (unselect || (node.selected && multiSelectionActive)) {
     removeSelectedElements([node])
   }
 }

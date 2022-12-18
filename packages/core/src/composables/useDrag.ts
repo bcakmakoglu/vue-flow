@@ -3,7 +3,7 @@ import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { Ref } from 'vue'
 import type { MaybeRef } from '@vueuse/core'
-import type { CoordinateExtent, NodeDragEvent, NodeDragItem, SnapGrid, XYPosition } from '~/types'
+import type { NodeDragEvent, NodeDragItem, SnapGrid, XYPosition } from '~/types'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 
@@ -98,12 +98,18 @@ function useDrag(params: UseDragParams) {
                     nextPosition.y = snapY * Math.round(nextPosition.y / snapY)
                   }
 
-                  const currentExtent = applyExtent(n, nodeExtent, n.parentNode ? getNode(n.parentNode) : undefined)
+                  const { computedPosition, position } = calcNextPosition(
+                    n,
+                    nextPosition,
+                    nodeExtent,
+                    n.parentNode ? getNode(n.parentNode) : undefined,
+                  )
 
                   // we want to make sure that we only fire a change event when there is a changes
                   hasChange = hasChange || n.position.x !== nextPosition.x || n.position.y !== nextPosition.y
 
-                  n.position = currentExtent ? clampPosition(nextPosition, currentExtent as CoordinateExtent) : nextPosition
+                  n.computedPosition = { ...n.computedPosition, ...computedPosition }
+                  n.position = position
 
                   return n
                 })

@@ -160,6 +160,8 @@ export interface FlowProps {
   elevateNodesOnSelect?: boolean
 
   disableKeyboardA11y?: boolean
+  edgesFocusable?: boolean
+  nodesFocusable?: boolean
 
   __experimentalFeatures?: {
     nestedFlow?: boolean
