@@ -369,6 +369,6 @@ export const getMarkerId = (marker: EdgeMarkerType | undefined, vueFlowId?: stri
 
   return `${idPrefix}${Object.keys(marker)
     .sort()
-    .map((key: string) => `${key}=${(marker as any)[key]}`)
+    .map((key: string) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
     .join('&')}`
 }
