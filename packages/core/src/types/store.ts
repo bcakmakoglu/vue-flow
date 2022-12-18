@@ -86,6 +86,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   defaultMarkerColor: string
 
   edgesUpdatable: EdgeUpdatable
+  edgesFocusable: boolean
   nodesDraggable: boolean
   nodesConnectable: boolean
 

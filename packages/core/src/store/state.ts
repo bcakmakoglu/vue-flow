@@ -88,6 +88,7 @@ const defaultState = (): State => ({
   snapToGrid: false,
 
   edgesUpdatable: false,
+  edgesFocusable: true,
   nodesConnectable: true,
   nodesDraggable: true,
   elementsSelectable: true,
