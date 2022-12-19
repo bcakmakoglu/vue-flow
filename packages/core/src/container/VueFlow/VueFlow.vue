@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import type { D3ZoomEvent } from 'd3-zoom'
 import Viewport from '../Viewport/Viewport.vue'
-import type { FlowElements, FlowProps } from '../../types/flow'
+import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type {
   Connection,
   EdgeChange,
   EdgeMouseEvent,
   EdgeUpdateEvent,
+  FlowElements,
+  FlowProps,
   GraphEdge,
   GraphNode,
   NodeChange,
@@ -170,5 +172,7 @@ export default {
     </Viewport>
 
     <slot />
+
+    <A11yDescriptions />
   </div>
 </template>
