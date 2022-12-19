@@ -104,7 +104,7 @@ watch(
   () => {
     updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
   },
-  { flush: 'post' },
+  { flush: 'pre' },
 )
 
 watch(
