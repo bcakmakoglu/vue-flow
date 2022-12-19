@@ -110,6 +110,7 @@ const defaultState = (): State => ({
   noPanClassName: 'nopan',
   defaultEdgeOptions: undefined,
   elevateEdgesOnSelect: false,
+  elevateNodesOnSelect: true,
 
   __experimentalFeatures: {
     nestedFlow: false,

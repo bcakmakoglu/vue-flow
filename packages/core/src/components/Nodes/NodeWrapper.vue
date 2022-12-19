@@ -32,6 +32,7 @@ const {
   getNodeTypes,
   nodeExtent,
   onNodesInitialized,
+  elevateNodesOnSelect,
 } = $(useVueFlow())
 
 const node = $(useVModel(props, 'node'))
@@ -116,7 +117,7 @@ watch(
       x: newX,
       y: newY,
       // if a zIndex style is present, add 1000 to it
-      z: (isNumber(getStyle.value.zIndex) ? getStyle.value.zIndex : 0) + (node.selected ? 1000 : 0),
+      z: (isNumber(getStyle.value.zIndex) ? getStyle.value.zIndex : 0) + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
     }
 
     updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ || 0 } : undefined)
@@ -137,21 +138,20 @@ onNodesInitialized(() => {
   initialized.value = true
 })
 
-onMounted(() => {
-  until(initialized)
-    .toBe(true)
-    .then(() => {
-      const extent = applyExtent(node, nodeExtent, parentNode)
+/** Initial clamp of node position */
+until(initialized)
+  .toBe(true)
+  .then(() => {
+    const extent = applyExtent(node, nodeExtent, parentNode)
 
-      const clampedPos = clampPosition(node.computedPosition, extent)
+    const clampedPos = clampPosition(node.computedPosition, extent)
 
-      node.computedPosition = { ...node.computedPosition, ...clampedPos }
-      node.position = {
-        x: node.computedPosition.x - (parentNode?.computedPosition.x || 0),
-        y: node.computedPosition.y - (parentNode?.computedPosition.y || 0),
-      }
-    })
-})
+    node.computedPosition = { ...node.computedPosition, ...clampedPos }
+    node.position = {
+      x: node.computedPosition.x - (parentNode?.computedPosition.x || 0),
+      y: node.computedPosition.y - (parentNode?.computedPosition.y || 0),
+    }
+  })
 
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
