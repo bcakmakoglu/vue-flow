@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EffectScope } from 'vue'
+import type { EffectScope, WatchStopHandle } from 'vue'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
@@ -17,6 +17,7 @@ const {
   edgesUpdatable,
   elementsSelectable,
   getSelectedNodes,
+  getSelectedEdges,
   nodesSelectionActive,
   getNode,
   getNodes,
@@ -63,7 +64,7 @@ onPaneReady(() => {
 
   scope.run(() => {
     watch(
-      [$$(getSelectedNodes), $$(getEdges)],
+      [$$(getSelectedNodes), $$(getEdges), () => (elevateEdgesOnSelect ? getSelectedEdges : [])],
       () => {
         if (elevateEdgesOnSelect) {
           nextTick(() => (groups = groupEdgesByZLevel(getEdges, getNode)))
