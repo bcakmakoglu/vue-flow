@@ -83,7 +83,10 @@ onMounted(() => {
   const d3Selection = select(viewportEl.value).call(d3Zoom)
   const d3ZoomHandler = d3Selection.on('wheel.zoom')
 
-  const updatedTransform = zoomIdentity.translate(defaultPosition[0], defaultPosition[1]).scale(defaultZoom)
+  const updatedTransform = zoomIdentity
+    .translate(defaultViewport.x, defaultViewport.y)
+    .scale(clamp(defaultViewport.zoom, minZoom, maxZoom))
+
   const extent: CoordinateExtent = [
     [0, 0],
     [bbox.width, bbox.height],
