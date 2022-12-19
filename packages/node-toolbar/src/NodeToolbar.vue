@@ -16,7 +16,6 @@ const contextNodeId = inject(NodeIdInjection, null)
 const { viewportRef, viewport, getSelectedNodes, findNode } = useVueFlow()
 
 function getTransform(nodeRect: Rect, transform: ViewportTransform, position: Position, offset: number): string {
-  // position === Position.Top
   let xPos = (nodeRect.x + nodeRect.width / 2) * transform.zoom + transform.x
   let yPos = nodeRect.y * transform.zoom + transform.y - offset
   let xShift = -50
