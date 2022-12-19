@@ -218,7 +218,7 @@ export interface Actions extends ViewportFunctions {
   setInteractive: (isInteractive: boolean) => void
   /** set new state */
   setState: SetState
-  /** return an object of graph values (elements, viewpane transform) for storage and re-loading a graph */
+  /** return an object of graph values (elements, viewport transform) for storage and re-loading a graph */
   toObject: () => FlowExportObject
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
