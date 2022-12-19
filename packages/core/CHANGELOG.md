@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.7.2
+
+### Patch Changes
+
+- [#547](https://github.com/bcakmakoglu/vue-flow/pull/547) [`ccf10ff`](https://github.com/bcakmakoglu/vue-flow/commit/ccf10ff77958948e53ecb9806c9b77f095bbc40d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make label coords (x,y) optional in BaseEdge
+
+- [#551](https://github.com/bcakmakoglu/vue-flow/pull/551) [`2f187a0`](https://github.com/bcakmakoglu/vue-flow/commit/2f187a0f7d2b24b1c7cb9b5e4fad150136bdd97c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix input field focus inside nodes preventing selection rect to be created
+
+- [#550](https://github.com/bcakmakoglu/vue-flow/pull/550) [`b734d08`](https://github.com/bcakmakoglu/vue-flow/commit/b734d085b2c84c93a49334acf90c5528da7ab709) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `elevateNodesOnSelect` option to enable/disable increasing z-index of selected nodes
+
+- [#548](https://github.com/bcakmakoglu/vue-flow/pull/548) [`011f0ed`](https://github.com/bcakmakoglu/vue-flow/commit/011f0ed23387af1cbbbf71003d4efdeaf8bcf798) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Re-group edges by z-index on edge selection changes
+
 ## 1.7.1
 
 ### Patch Changes
