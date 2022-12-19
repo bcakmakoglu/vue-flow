@@ -115,6 +115,9 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
 
   defaultEdgeOptions?: DefaultEdgeOptions
 
+  elevateEdgesOnSelect: boolean
+  elevateNodesOnSelect: boolean
+
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
 }

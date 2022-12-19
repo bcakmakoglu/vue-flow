@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   connectionLineStyle: undefined,
   autoConnect: undefined,
   elevateEdgesOnSelect: undefined,
+  elevateNodesOnSelect: undefined,
 })
 
 const emit = defineEmits<{
