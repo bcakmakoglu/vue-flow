@@ -141,7 +141,7 @@ const nodes = ref([
 
 ### edges (optional)
 
-- Type: [`Edge[]`](/typedocs/interfaces/Edge)
+- Type: [`Edge[]`](/typedocs/types/Edge)
 
 - Details:
 

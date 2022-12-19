@@ -18,7 +18,7 @@ pnpm i @vue-flow/core
 ## Usage
 
 A flow consists of [<span class="font-bold text-blue-500">nodes</span>](/typedocs/interfaces/Node)
-and (optionally) [<span class="font-bold text-purple-500">edges</span>](/typedocs/interfaces/Edge).
+and (optionally) [<span class="font-bold text-purple-500">edges</span>](/typedocs/types/Edge).
 Together we call them
 [<span class="font-bold text-green-500">elements</span>](/typedocs/types/Elements).
 
