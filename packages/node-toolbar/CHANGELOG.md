@@ -1,5 +1,11 @@
 # @vue-flow/node-toolbar
 
+## 1.0.1
+
+### Patch Changes
+
+- [#553](https://github.com/bcakmakoglu/vue-flow/pull/553) [`d4e0b7e`](https://github.com/bcakmakoglu/vue-flow/commit/d4e0b7eb1ed1cadab1ec778f2e71cf57ba8cd23e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use renamed `ViewportTransform` type
+
 ## 1.0.0
 
 ### Major Changes

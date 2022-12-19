@@ -1,5 +1,41 @@
 # @vue-flow/core
 
+## 1.8.0
+
+### Minor Changes
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`cf46cc8`](https://github.com/bcakmakoglu/vue-flow/commit/cf46cc88b3a51173b8ccc3710243cb11ba5fbc6a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add keyboard controls to node wrapper (a11y)
+
+- [#554](https://github.com/bcakmakoglu/vue-flow/pull/554) [`9e7f65a`](https://github.com/bcakmakoglu/vue-flow/commit/9e7f65aaa05f5a5f03dbd49657bba25b8e57813d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Merge `defaultZoom` & `defaultPosition` into `defaultViewport` object
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `disableKeyboardA11y` option to VueFlow props and store options
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `focusable` option to edge types
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `ariaLabel` option to edge type
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `edgesFocusable` option to store
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`cf46cc8`](https://github.com/bcakmakoglu/vue-flow/commit/cf46cc88b3a51173b8ccc3710243cb11ba5fbc6a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `nodesFocusable` option to VueFlow props and store options
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `pathOptions` to Bezier and Smoothstep edge types
+
+### Patch Changes
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`cf46cc8`](https://github.com/bcakmakoglu/vue-flow/commit/cf46cc88b3a51173b8ccc3710243cb11ba5fbc6a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `ariaLabel` option to node type
+
+- [#554](https://github.com/bcakmakoglu/vue-flow/pull/554) [`545ab07`](https://github.com/bcakmakoglu/vue-flow/commit/545ab079ba7decf77aa67e8db0d5b2eca8a62b40) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Clamp invalid zoom values
+
+- [#556](https://github.com/bcakmakoglu/vue-flow/pull/556) [`699d786`](https://github.com/bcakmakoglu/vue-flow/commit/699d7861ced2d304e74bf5fc7dfb9269ad4ca115) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent `expandParent` option from changing parent nodes position while expanding
+
+- [#553](https://github.com/bcakmakoglu/vue-flow/pull/553) [`cd4e056`](https://github.com/bcakmakoglu/vue-flow/commit/cd4e0564c119b42251356b9272acd154f6d3c6f3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Rename `viewpane` to `viewport` -> `ViewpaneTransform` now `ViewportTransform`
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`cf46cc8`](https://github.com/bcakmakoglu/vue-flow/commit/cf46cc88b3a51173b8ccc3710243cb11ba5fbc6a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `focusable` option to node type
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `vueFlowId` to `getMarkerId` to uniquely identify markers across multiple vue flow instances
+
+- [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update `EdgeRef` injection type to `SVGElement`
+
 ## 1.7.2
 
 ### Patch Changes
