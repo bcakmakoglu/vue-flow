@@ -9,6 +9,7 @@ declare global {
   const $shallowRef: typeof import('vue/macros')['$shallowRef']
   const $toRef: typeof import('vue/macros')['$toRef']
   const ARIA_EDGE_DESC_KEY: typeof import('./utils/a11y')['ARIA_EDGE_DESC_KEY']
+  const ARIA_LIVE_MESSAGE: typeof import('./utils/a11y')['ARIA_LIVE_MESSAGE']
   const ARIA_NODE_DESC_KEY: typeof import('./utils/a11y')['ARIA_NODE_DESC_KEY']
   const EdgeId: typeof import('./context/index')['EdgeId']
   const EdgeRef: typeof import('./context/index')['EdgeRef']
