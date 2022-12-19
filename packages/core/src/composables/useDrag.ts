@@ -98,7 +98,7 @@ function useDrag(params: UseDragParams) {
                     nextPosition.y = snapY * Math.round(nextPosition.y / snapY)
                   }
 
-                  const { computedPosition, position } = calcNextPosition(
+                  const { position } = calcNextPosition(
                     n,
                     nextPosition,
                     nodeExtent,
@@ -108,7 +108,6 @@ function useDrag(params: UseDragParams) {
                   // we want to make sure that we only fire a change event when there is a changes
                   hasChange = hasChange || n.position.x !== nextPosition.x || n.position.y !== nextPosition.y
 
-                  n.computedPosition = { ...n.computedPosition, ...computedPosition }
                   n.position = position
 
                   return n

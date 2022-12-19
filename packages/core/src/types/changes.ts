@@ -6,8 +6,6 @@ export interface NodeDragItem {
   id: string
   // relative node position (to parent)
   position: XYPosition
-  // absolute node position
-  computedPosition: XYZPosition
   // distance from the mouse cursor to the node when start dragging
   distance: XYPosition
   dimensions: Dimensions

@@ -27,7 +27,6 @@ export function getDragItems(
       markRaw({
         id: n.id,
         position: n.position || { x: 0, y: 0 },
-        computedPosition: n.computedPosition || { x: 0, y: 0, z: 1 },
         distance: {
           x: mousePos.x - n.computedPosition?.x || 0,
           y: mousePos.y - n.computedPosition?.y || 0,
@@ -106,18 +105,7 @@ export const calcNextPosition = (
 
   const clampedPos = clampPosition(nextPosition, extent)
 
-  const parentPosition = { x: 0, y: 0 }
-
-  if (parentNode) {
-    parentPosition.x = parentNode.computedPosition.x
-    parentPosition.y = parentNode.computedPosition.y
-  }
-
   return {
-    position: {
-      x: clampedPos.x - parentPosition.x,
-      y: clampedPos.y - parentPosition.y,
-    },
-    computedPosition: clampedPos,
+    position: clampedPos,
   }
 }
