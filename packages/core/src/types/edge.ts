@@ -156,8 +156,8 @@ export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> exte
 }
 
 export interface BaseEdgeProps {
-  labelX: number
-  labelY: number
+  labelX?: number
+  labelY?: number
   path: string
   label?: any
   labelStyle?: any

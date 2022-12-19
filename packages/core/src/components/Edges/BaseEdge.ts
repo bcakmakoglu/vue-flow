@@ -1,3 +1,4 @@
+import { isNumber } from '@vueuse/core'
 import type { FunctionalComponent } from 'vue'
 import EdgeText from './EdgeText.vue'
 import type { BaseEdgeProps } from '~/types'
@@ -39,7 +40,7 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function (
           'stroke-width': interactionWidth,
         })
       : null,
-    label
+    label && isNumber(labelX) && isNumber(labelY)
       ? h(EdgeText, {
           x: labelX,
           y: labelY,
