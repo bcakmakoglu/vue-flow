@@ -2,7 +2,7 @@
 import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import type { CoordinateExtent, ViewpaneTransform } from '../../types'
+import type { CoordinateExtent, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import SelectionPane from '../SelectionPane/SelectionPane.vue'
 import Transform from './Transform.vue'
@@ -40,12 +40,12 @@ let isDragging = $ref(false)
 
 const isConnecting = $computed(() => !!connectionStartHandle)
 
-const viewChanged = (prevViewport: ViewpaneTransform, eventTransform: ZoomTransform): boolean =>
+const viewChanged = (prevViewport: ViewportTransform, eventTransform: ZoomTransform): boolean =>
   (prevViewport.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
   (prevViewport.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
   (prevViewport.zoom !== eventTransform.k && !isNaN(eventTransform.k))
 
-const eventToFlowTransform = (eventTransform: ZoomTransform): ViewpaneTransform => ({
+const eventToFlowTransform = (eventTransform: ZoomTransform): ViewportTransform => ({
   x: eventTransform.x,
   y: eventTransform.y,
   zoom: eventTransform.k,
@@ -53,7 +53,7 @@ const eventToFlowTransform = (eventTransform: ZoomTransform): ViewpaneTransform 
 
 const isWrappedWithClass = (event: Event, className: string | undefined) => (event.target as Element).closest(`.${className}`)
 
-let prevTransform = $ref<ViewpaneTransform>({
+let prevTransform = $ref<ViewportTransform>({
   x: 0,
   y: 0,
   zoom: 0,

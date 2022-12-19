@@ -34,7 +34,7 @@ export type FitViewParams = {
   nodes?: string[]
 } & TransitionOptions
 
-export interface ViewpaneTransform {
+export interface ViewportTransform {
   x: number
   y: number
   zoom: number
@@ -48,16 +48,16 @@ export type FitBoundsOptions = TransitionOptions & {
   padding?: number
 }
 
-/** Fit the viewpane around visible nodes */
+/** Fit the viewport around visible nodes */
 export type FitView = (fitViewOptions?: FitViewParams) => void
 
-/** project a position onto the viewpane, i.e. a mouse event clientX/clientY onto graph coordinates */
+/** project a position onto the viewport, i.e. a mouse event clientX/clientY onto graph coordinates */
 export type Project = (position: XYPosition) => XYPosition
 
-/** set center of viewpane */
+/** set center of viewport */
 export type SetCenter = (x: number, y: number, options?: SetCenterOptions) => void
 
-/** fit the viewpane around bounds */
+/** fit the viewport around bounds */
 export type FitBounds = (bounds: Rect, options?: FitBoundsOptions) => void
 
 /** zoom in/out */
@@ -66,11 +66,11 @@ export type ZoomInOut = (options?: TransitionOptions) => void
 /** zoom to a specific level */
 export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => void
 
-/** get current viewpane transform */
-export type GetTransform = () => ViewpaneTransform
+/** get current viewport transform */
+export type GetTransform = () => ViewportTransform
 
-/** set current viewpane transform */
-export type SetTransform = (transform: ViewpaneTransform, options?: TransitionOptions) => void
+/** set current viewport transform */
+export type SetTransform = (transform: ViewportTransform, options?: TransitionOptions) => void
 
 export interface ViewportFunctions {
   zoomIn: ZoomInOut

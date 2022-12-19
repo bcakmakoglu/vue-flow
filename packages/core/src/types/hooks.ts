@@ -3,7 +3,7 @@ import type { D3ZoomEvent } from 'd3-zoom'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
-import type { ViewpaneTransform } from './zoom'
+import type { ViewportTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
 import type { FlowElements } from './flow'
@@ -58,9 +58,9 @@ export interface FlowEvents {
   } & OnConnectStartParams
   connectEnd: MouseEvent | TouchEvent | undefined
   paneReady: VueFlowStore
-  move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }
-  moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }
-  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }
+  move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }
+  moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }
+  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }
   selectionDragStart: NodeDragEvent
   selectionDrag: NodeDragEvent
   selectionDragStop: NodeDragEvent
@@ -123,9 +123,9 @@ export interface Emits {
     } & OnConnectStartParams,
   ): void
   (event: 'connectEnd', connectionEvent: MouseEvent): void
-  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
-  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
-  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
+  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
+  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
+  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
   (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
   (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void

@@ -13,7 +13,7 @@ import type {
   NodeDragEvent,
   NodeMouseEvent,
   OnConnectStartParams,
-  ViewpaneTransform,
+  ViewportTransform,
   VueFlowStore,
 } from '../../types'
 
@@ -66,9 +66,9 @@ const emit = defineEmits<{
     } & OnConnectStartParams,
   ): void
   (event: 'connectEnd', connectionEvent?: MouseEvent): void
-  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
-  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
-  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewpaneTransform }): void
+  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
+  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
+  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
   (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
   (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
