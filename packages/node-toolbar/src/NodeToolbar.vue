@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
-import type { GraphNode, Rect, ViewpaneTransform } from '@vue-flow/core'
+import type { GraphNode, Rect, ViewportTransform } from '@vue-flow/core'
 import { NodeIdInjection, Position, getRectOfNodes, useVueFlow } from '@vue-flow/core'
 
 import type { CSSProperties } from 'vue'
@@ -15,7 +15,7 @@ const contextNodeId = inject(NodeIdInjection, null)
 
 const { viewportRef, viewport, getSelectedNodes, findNode } = useVueFlow()
 
-function getTransform(nodeRect: Rect, transform: ViewpaneTransform, position: Position, offset: number): string {
+function getTransform(nodeRect: Rect, transform: ViewportTransform, position: Position, offset: number): string {
   // position === Position.Top
   let xPos = (nodeRect.x + nodeRect.width / 2) * transform.zoom + transform.x
   let yPos = nodeRect.y * transform.zoom + transform.y - offset
