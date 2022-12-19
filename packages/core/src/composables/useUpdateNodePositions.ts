@@ -14,7 +14,6 @@ function useUpdateNodePositions() {
           {
             id: n.id,
             position: updatedPos.position,
-            computedPosition: { ...n.computedPosition, ...updatedPos.computedPosition },
             from: n.position,
             distance: { x: positionDiff.x, y: positionDiff.y },
             dimensions: n.dimensions,
