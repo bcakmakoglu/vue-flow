@@ -36,8 +36,8 @@
   z-index: 4;
 }
 
-.vue-flow__selectionpane {
-  z-index: 5;
+.vue-flow__selection {
+  z-index: 6;
 }
 
 .vue-flow__edge-labels {
