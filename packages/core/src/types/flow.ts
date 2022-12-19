@@ -3,7 +3,7 @@ import type { KeyFilter } from '@vueuse/core'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
-import type { PanOnScrollMode } from './zoom'
+import type { PanOnScrollMode, Viewport } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { CustomEvent } from './hooks'
 
@@ -129,8 +129,7 @@ export interface FlowProps {
   panOnDrag?: boolean
   minZoom?: number
   maxZoom?: number
-  defaultZoom?: number
-  defaultPosition?: [number, number]
+  defaultViewport?: Viewport
   translateExtent?: CoordinateExtent
   nodeExtent?: CoordinateExtent
   defaultMarkerColor?: string
