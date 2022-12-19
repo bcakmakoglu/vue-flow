@@ -22,6 +22,7 @@ const focusable = (f?: boolean) => (typeof f === 'undefined' ? nodesFocusable : 
 
 const resizeObserver = ref<ResizeObserver>()
 
+// todo: remove nodesInitialized hook as it's not needed anymore, use `getNodesInitialized` instead
 onMounted(() => {
   const readyNodes = []
   let initialized = false
