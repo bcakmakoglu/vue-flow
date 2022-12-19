@@ -1,3 +1,4 @@
+import { isFunction, isString } from '@vueuse/core'
 import type {
   Edge,
   EdgeAddChange,
@@ -22,14 +23,15 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
 
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
-      parent.style = { ...parent.style } || {}
+      if (!parent.style) parent.style = {}
+      else if (isFunction(parent.style)) parent.style = { ...parent.style(parent) }
 
       parent.style.width = parent.style.width ?? parent.dimensions.width
       parent.style.height = parent.style.height ?? parent.dimensions.height
 
       if (extendWidth > 0) {
-        if (typeof parent.style.width === 'string') {
-          const currWidth = parseInt(parent.style.width, 10)
+        if (isString(parent.style.width)) {
+          const currWidth = Number(parent.style.width.replace('px', ''))
           parent.style.width = `${currWidth + extendWidth}px`
         } else {
           parent.style.width += extendWidth
@@ -37,8 +39,8 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
       }
 
       if (extendHeight > 0) {
-        if (typeof parent.style.height === 'string') {
-          const currWidth = parseInt(parent.style.height, 10)
+        if (isString(parent.style.height)) {
+          const currWidth = Number(parent.style.height.replace('px', ''))
           parent.style.height = `${currWidth + extendHeight}px`
         } else {
           parent.style.height += extendHeight
@@ -48,26 +50,33 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
       if (updateItem.position.x < 0) {
         const xDiff = Math.abs(updateItem.position.x)
         parent.position.x = parent.position.x - xDiff
-        if (typeof parent.style.width === 'string') {
-          const currWidth = parseInt(parent.style.width, 10)
+
+        if (isString(parent.style.width)) {
+          const currWidth = Number(parent.style.width.replace('px', ''))
           parent.style.width = `${currWidth + xDiff}px`
         } else {
-          ;(parent.style as any).width += xDiff
+          parent.style.width += xDiff
         }
+
         updateItem.position.x = 0
       }
 
       if (updateItem.position.y < 0) {
         const yDiff = Math.abs(updateItem.position.y)
         parent.position.y = parent.position.y - yDiff
-        if (typeof parent.style.height === 'string') {
-          const currWidth = parseInt(parent.style.height, 10)
+
+        if (isString(parent.style.height)) {
+          const currWidth = Number(parent.style.height.replace('px', ''))
           parent.style.height = `${currWidth + yDiff}px`
         } else {
-          ;(parent.style as any).height += yDiff
+          parent.style.height += yDiff
         }
+
         updateItem.position.y = 0
       }
+
+      parent.dimensions.width = Number(parent.style.width.toString().replace('px', ''))
+      parent.dimensions.height = Number(parent.style.height.toString().replace('px', ''))
     }
   }
 }
