@@ -50,6 +50,14 @@ const eventToFlowTransform = (eventTransform: ZoomTransform): ViewpaneTransform 
   zoom: eventTransform.k,
 })
 
+const setDimensions = () => {
+  if (!viewportEl.value) return
+
+  const { width, height } = getDimensions(viewportEl.value)
+  dimensions.width = width
+  dimensions.height = height
+}
+
 const isWrappedWithClass = (event: Event, className: string | undefined) => (event.target as Element).closest(`.${className}`)
 
 let prevTransform = $ref<ViewpaneTransform>({
@@ -59,22 +67,10 @@ let prevTransform = $ref<ViewpaneTransform>({
 })
 
 onMounted(() => {
-  useResizeObserver(viewportEl, () => {
-    if (!viewportEl.value) return
-
-    const { width, height } = getDimensions(viewportEl.value)
-    dimensions.width = width
-    dimensions.height = height
-  })
+  useResizeObserver(viewportEl, setDimensions)
 
   const window = useWindow()
-  useEventListener(window, 'resize', () => {
-    if (!viewportEl.value) return
-
-    const { width, height } = getDimensions(viewportEl.value)
-    dimensions.width = width
-    dimensions.height = height
-  })
+  useEventListener(window, 'resize', setDimensions)
 })
 
 onMounted(() => {
