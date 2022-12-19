@@ -1,13 +1,17 @@
 import type { Plugin, VueFlowStore } from '@vue-flow/core'
 import { Position, useVueFlow } from '@vue-flow/core'
 import { layout as dagreLayout, graphlib } from 'dagre'
+import type { Ref, WatchStopHandle } from 'vue'
+import { onScopeDispose, ref, unref, watch } from 'vue'
 import type { Direction } from './types'
 
 const createDagreState = (store: VueFlowStore) => {
   const dagreGraph = new graphlib.Graph()
   dagreGraph.setDefaultEdgeLabel(() => ({}))
 
-  function layout(direction: Direction) {
+  const layoutDirection = ref<Direction>()
+
+  function layout(direction?: Direction) {
     const isHorizontal = direction === 'LR' || direction === 'RL'
     dagreGraph.setGraph({ rankdir: direction })
 
@@ -34,6 +38,7 @@ const createDagreState = (store: VueFlowStore) => {
   return {
     dagreGraph,
     layout,
+    direction: layoutDirection,
   }
 }
 
@@ -43,6 +48,29 @@ export const PluginDagreLayout: Plugin = (hooks) => {
   })
 }
 
-export function useDagreLayout() {
-  return useVueFlow().dagre
+export function useDagreLayout(autoLayout?: Ref<boolean> | boolean) {
+  const { dagre, getNodesInitialized, getEdges } = useVueFlow()
+
+  const stop = watch(
+    () => unref(autoLayout),
+    (shouldAutoLayout, _, onCleanup) => {
+      let stop: WatchStopHandle | undefined
+      if (shouldAutoLayout) {
+        stop = watch(
+          [getNodesInitialized, getEdges, () => getNodesInitialized.value.length, () => getEdges.value.length],
+          () => {
+            dagre.layout(dagre.direction.value)
+          },
+          { immediate: true },
+        )
+      }
+
+      onCleanup(() => stop?.())
+    },
+    { immediate: true },
+  )
+
+  onScopeDispose(stop)
+
+  return dagre
 }
