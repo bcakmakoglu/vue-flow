@@ -7,7 +7,7 @@ They cannot exist on their own and need nodes to which they are connected.
 Each edge <span class="font-bold text-blue-500">requires a unique id, a source node and a target node id.</span>
 Anything else is optional.
 
-You can check the full options for an edge element in the TypeDocs [here](/typedocs/interfaces/Edge).
+You can check the full options for an edge element in the TypeDocs [here](/typedocs/types/Edge).
 
 ## Usage
 
