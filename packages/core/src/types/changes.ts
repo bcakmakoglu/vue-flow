@@ -1,4 +1,4 @@
-import type { Dimensions, ElementData, XYPosition, XYZPosition } from './flow'
+import type { Dimensions, ElementData, XYPosition } from './flow'
 import type { GraphNode, Node, NodeHandleBounds } from './node'
 import type { GraphEdge } from './edge'
 
