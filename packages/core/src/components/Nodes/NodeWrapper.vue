@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { isNumber } from '@vueuse/core'
+import type { ReactiveVariable } from 'vue/macros'
 import type { GraphNode, HandleConnectable, NodeComponent, SnapGrid, XYZPosition } from '../../types'
 import { ARIA_NODE_DESC_KEY } from '../../utils/a11y'
 
@@ -42,15 +43,13 @@ const {
 
 const updateNodePositions = useUpdateNodePositions()
 
-const node = $(useVModel(props, 'node'))
+const node: ReactiveVariable<GraphNode> = $(useVModel(props, 'node'))
 
 const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) : undefined))
 
 const connectedEdges = $computed(() => getConnectedEdges([node], edges))
 
 const nodeElement = ref()
-
-const initialized = ref(false)
 
 provide(NodeRef, nodeElement)
 
@@ -129,7 +128,7 @@ watch(
 
     updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ || 0 } : undefined)
   },
-  { flush: 'post', immediate: true },
+  { flush: 'pre', immediate: true },
 )
 
 function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
@@ -142,19 +141,13 @@ function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
   node.computedPosition = nextPos
 }
 
-onNodesInitialized(() => {
-  initialized.value = true
-})
+until(() => node.initialized)
+  .toBe(true)
+  .then(() => {
+    const { position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
 
-onMounted(() => {
-  until(initialized)
-    .toBe(true)
-    .then(() => {
-      const { position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
-
-      node.computedPosition = { ...node.computedPosition, ...position }
-    })
-})
+    node.computedPosition = { ...node.computedPosition, ...position }
+  })
 
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
