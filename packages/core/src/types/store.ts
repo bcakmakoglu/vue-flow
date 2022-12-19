@@ -48,7 +48,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   minZoom: number
   /** use setMaxZoom action to change maxZoom */
   maxZoom: number
-  defaultZoom: number
+  defaultViewport: Viewport
   /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent
@@ -59,8 +59,6 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   readonly viewport: Viewport
   /** if true will skip rendering any elements currently not inside viewport until they become visible */
   onlyRenderVisibleElements: boolean
-  defaultPosition: [number, number]
-
   nodesSelectionActive: boolean
   userSelectionActive: boolean
   multiSelectionActive: boolean
