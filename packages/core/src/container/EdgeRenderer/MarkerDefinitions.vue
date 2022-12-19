@@ -2,7 +2,7 @@
 import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
 import Marker from './Marker.vue'
 
-const { edges, connectionLineOptions, defaultMarkerColor: defaultColor } = $(useVueFlow())
+const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = $(useVueFlow())
 
 const markers = computed(() => {
   const ids: string[] = []
@@ -10,7 +10,7 @@ const markers = computed(() => {
 
   const createMarkers = (marker?: EdgeMarkerType) => {
     if (marker) {
-      const markerId = getMarkerId(marker)
+      const markerId = getMarkerId(marker, vueFlowId)
       if (!ids.includes(markerId)) {
         if (typeof marker === 'object') markers.push({ ...marker, id: markerId, color: marker.color || defaultColor })
         else markers.push({ id: markerId, color: defaultColor, type: marker as MarkerType })
