@@ -134,6 +134,7 @@ watch(
 
 function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
   let nextPos = nodePos
+
   if (parentPos) {
     nextPos = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
   }
@@ -145,21 +146,21 @@ onNodesInitialized(() => {
   initialized.value = true
 })
 
-until(initialized)
-  .toBe(true)
-  .then(() => {
-    const { computedPosition, position } = calcNextPosition(node, node.position, nodeExtent, parentNode)
+onMounted(() => {
+  until(initialized)
+    .toBe(true)
+    .then(() => {
+      const { position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
 
-    node.computedPosition = { ...node.computedPosition, ...computedPosition }
-    node.position = position
-  })
+      node.computedPosition = { ...node.computedPosition, ...position }
+    })
+})
 
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
-  const { computedPosition, position } = calcNextPosition(node, node.position, nodeExtent, parentNode)
+  const { position } = calcNextPosition(node, node.position, nodeExtent, parentNode)
 
-  node.computedPosition = { ...node.computedPosition, ...computedPosition }
   node.position = position
 }
 
