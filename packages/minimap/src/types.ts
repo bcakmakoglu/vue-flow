@@ -36,6 +36,8 @@ export interface MiniMapProps {
   width?: number
 
   height?: number
+
+  ariaLabel?: string | null
 }
 
 /** these props are passed to mini map node slots */

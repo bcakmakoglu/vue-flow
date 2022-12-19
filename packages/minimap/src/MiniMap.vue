@@ -22,6 +22,7 @@ const {
   maskStrokeWidth = 1,
   pannable = false,
   zoomable = false,
+  ariaLabel = 'Vue Flow mini map',
 } = defineProps<MiniMapProps>()
 
 const emit = defineEmits(['click', 'nodeClick', 'nodeDblclick', 'nodeMouseenter', 'nodeMousemove', 'nodeMouseleave'])
@@ -204,7 +205,7 @@ export default {
       :aria-labelledby="`vue-flow__minimap-${id}`"
       @click="onSvgClick"
     >
-      <title :id="`vue-flow__minimap-${id}`">Vue Flow mini map {{ id }}</title>
+      <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
 
       <MiniMapNode
         v-for="node of nodes"
