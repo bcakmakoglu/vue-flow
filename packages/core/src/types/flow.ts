@@ -3,7 +3,7 @@ import type { KeyFilter } from '@vueuse/core'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
-import type { PanOnScrollMode, Viewport } from './zoom'
+import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { CustomEvent } from './hooks'
 
@@ -88,7 +88,11 @@ export type SnapGrid = [number, number]
 export interface SelectionRect extends Rect {
   startX: number
   startY: number
-  draw: boolean
+}
+
+export enum SelectionMode {
+  Partial = 'partial',
+  Full = 'full',
 }
 
 export interface FlowExportObject {
@@ -117,6 +121,7 @@ export interface FlowProps {
   selectionKeyCode?: KeyFilter | null
   multiSelectionKeyCode?: KeyFilter | null
   zoomActivationKeyCode?: KeyFilter | null
+  panActivationKeyCode?: KeyFilter | null
   snapToGrid?: boolean
   snapGrid?: SnapGrid
   onlyRenderVisibleElements?: boolean
@@ -126,10 +131,10 @@ export interface FlowProps {
   elementsSelectable?: boolean
   selectNodesOnDrag?: boolean
   /** move pane on drag, replaced prop `paneMovable` */
-  panOnDrag?: boolean
+  panOnDrag?: boolean | number[]
   minZoom?: number
   maxZoom?: number
-  defaultViewport?: Viewport
+  defaultViewport?: ViewportTransform
   translateExtent?: CoordinateExtent
   nodeExtent?: CoordinateExtent
   defaultMarkerColor?: string
@@ -141,6 +146,8 @@ export interface FlowProps {
   zoomOnDoubleClick?: boolean
   /** enable this to prevent vue flow from scrolling inside the container, i.e. allow for the page to scroll */
   preventScrolling?: boolean
+  selectionOnDrag?: boolean
+  selectionMode?: SelectionMode
   edgeUpdaterRadius?: number
   fitViewOnInit?: boolean
   /** allow connection with click handlers, i.e. support touch devices */

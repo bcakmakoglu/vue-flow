@@ -15,7 +15,7 @@ import type {
   GraphNode,
   Node,
   Rect,
-  Viewport,
+  ViewportTransform,
   XYPosition,
   XYZPosition,
 } from '~/types'
@@ -222,7 +222,7 @@ export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: E
 
 export const pointToRendererPoint = (
   { x, y }: XYPosition,
-  { x: tx, y: ty, zoom: tScale }: Viewport,
+  { x: tx, y: ty, zoom: tScale }: ViewportTransform,
   snapToGrid: boolean,
   [snapX, snapY]: [number, number],
 ) => {
@@ -280,7 +280,7 @@ export const getRectOfNodes = (nodes: GraphNode[]) => {
   return boxToRect(box)
 }
 
-export const graphPosToZoomedPos = ({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: Viewport): XYPosition => ({
+export const graphPosToZoomedPos = ({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition => ({
   x: x * tScale + tx,
   y: y * tScale + ty,
 })
@@ -288,7 +288,7 @@ export const graphPosToZoomedPos = ({ x, y }: XYPosition, { x: tx, y: ty, zoom: 
 export const getNodesInside = (
   nodes: GraphNode[],
   rect: Rect,
-  { x: tx, y: ty, zoom: tScale }: Viewport = { x: 0, y: 0, zoom: 1 },
+  { x: tx, y: ty, zoom: tScale }: ViewportTransform = { x: 0, y: 0, zoom: 1 },
   partially = false,
   // set excludeNonSelectableNodes if you want to pay attention to the nodes "selectable" attribute
   excludeNonSelectableNodes = false,
@@ -337,7 +337,7 @@ export const getTransformForBounds = (
     x?: number
     y?: number
   } = { x: 0, y: 0 },
-): Viewport => {
+): ViewportTransform => {
   const xZoom = width / (bounds.width * (1 + padding))
   const yZoom = height / (bounds.height * (1 + padding))
   const zoom = Math.min(xZoom, yZoom)

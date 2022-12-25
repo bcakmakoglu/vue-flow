@@ -5,13 +5,6 @@ export type D3Zoom = ZoomBehavior<HTMLDivElement, unknown>
 export type D3Selection = Selection<HTMLDivElement, unknown, any, any>
 export type D3ZoomHandler = (this: HTMLDivElement, event: any, d: unknown) => void
 
-/** Transform x, y, z */
-export interface Viewport {
-  x: number
-  y: number
-  zoom: number
-}
-
 export enum PanOnScrollMode {
   Free = 'free',
   Vertical = 'vertical',
