@@ -2,6 +2,413 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0] - 2022-12-25
+
+[10d312d](10d312d1fca9aacbca5957ddd9e125772e13f796)...[d1a581c](d1a581c632c68a53e0c8397b027a391e93f4bfbb)
+
+### Features
+
+- Add a11y support to nodes selection box ([089859d](089859d837637a3dd92de098af4f572ce2f2c140))
+- Implement figma controls ([fd79ab1](fd79ab141debba5def5e30e1a04df62c958cf5d9))
+
+### Miscellaneous Tasks
+
+- Deprecate options api utils ([c1a6945](c1a6945303e49c754333a81c9c20ed2805e6c24e))
+- Cleanup examples ([48c4f0a](48c4f0a0eb27bc50ddc8b1d3a6506ca5f228013a))
+- Add eslint rule to show error on unused vars ([be06994](be0699496e692f3e8635da5e89846d6e18924e7b))
+- Cleanup node wrapper ([e23ca5f](e23ca5f9ce18c4dc1a49cc7ef175529536a182a7))
+- Cleanup `useUpdateNodePositions` ([f319f62](f319f6249dae876d3f5cdc32be2bdc0ff97dfa1f))
+- Cleanup ([0d29597](0d2959701c95c7846e79625a66ea62707d8c412c))
+- Cleanup examples ([4dbb51d](4dbb51d3877a95ea97dfcd3d19dbd95ec6fe8a1a))
+- Remove log ([012a19d](012a19ddc904f0be1a4e7dd9341c0762cb60cd9a))
+- Next release ([d1a581c](d1a581c632c68a53e0c8397b027a391e93f4bfbb))
+
+### Refactor
+
+- Move velocity logic into `useUpdateNodePositions` ([4260e31](4260e3158fa9f57efc44e297b51d19d220b4ffbb))
+- Remove `snapGrid` option from nodes - use global one instead ([2b513b5](2b513b5ae7e33354f8f3d1044a91ce3534822732))
+- Remove `selectionOnDrag` prop and use `selectionKeyCode` to trigger selection ([c3e1741](c3e1741a4b8ac4c12cf3678cd41c9aa9ff6c61bd))
+
+### Testing
+
+- Update selector ([31e3a8c](31e3a8cb71120187108d7523503ed507d8031455))
+
+## [1.8.0] - 2022-12-21
+
+[3d62b07](3d62b079ec6171a90187beb2eb26fbecffe50e78)...[10d312d](10d312d1fca9aacbca5957ddd9e125772e13f796)
+
+### Bug Fixes
+
+- Prevent `expandParent` from moving parent node while expanding ([b4daeb6](b4daeb6d8d72351dad1c9264e13873e70da68b21))
+- Update `EdgeRef` injection type to `SVGElement` ([912cba3](912cba3844dc55f372008a1c2e55e65fb4e6170d))
+- Drag position update ([dd1b150](dd1b15029d7bd03b2a5900514aa9bccd4d0da1cd))
+
+### Documentation
+
+- Update dead links ([6df5746](6df5746064f28816ded6daba59b0f6063ba42619))
+
+### Features
+
+- Add `pathOptions` to edge types ([58ede73](58ede7355e24c7ef30e08d7a6d09cfd712e8f60d))
+- Add `focusable` and `ariaLabel` options to edge type ([bbc2712](bbc2712d061a8a7ab3cb3d8143967ba6b7ece46f))
+- Add `edgesFocusable` option to store ([361c4b8](361c4b814ec7cacae5f0b2651f42f6b424733577))
+- Add `A11yDescriptions` component ([f64e298](f64e29850879b5a2ee2e4e332ab5ef9726fe7297))
+- Add `disableKeyboardA11y` option to store options ([5386fc3](5386fc30fb4624fbdf82887600a67c51bdd14f58))
+- Add a11y to edge wrapper ([ffbbc35](ffbbc35fe97858950d60aaf9237b26fceb34feb3))
+- Implement a11y in nodes ([9f50dd0](9f50dd08650af846078b962cb84819ead2ac27f4))
+- Add ariaLabel to minimap options ([9508dea](9508dea8637cb189202ad844e2068e80f5e69930))
+- Add A11yDescriptions to VueFlow container ([7195582](7195582a6cccb4c6f9e75cbcc2bcb37f0cea262a))
+
+### Miscellaneous Tasks
+
+- Use renamed `ViewportTransform` type ([6246089](624608938bf381e5973ae9cb44c771e3fbeb8304))
+- Cleanup ([9bc88a0](9bc88a0504add83fd806f58f709a870ef17fd5f0))
+- Cleanup ([2068280](20682800e867d47ff2fb09191fbaf523e7b2cfc9))
+- Add explicit aria desc key imports ([08dc3ad](08dc3ad5a815df70f73186e8cc80a50a6888687d))
+- Remove any typecast ([0167a6d](0167a6d766a3e46cc7a9fe39cc73c4b0cddc0c7d))
+- Export edge types ([0267b2f](0267b2f19eadcee3ff9f6fde7c63ef6e9ae8b696))
+- Cleanup ([7719f18](7719f182415ee754ddbe9e4416a2bb3f0ca202ea))
+- Remove unused import ([18aba90](18aba904c8fc7c5095346c1db9338d6ddbaccca6))
+- Remove mounted hook for initial clamp ([12c9e4e](12c9e4e07b2aeed6f617fc03967ae5390442ecff))
+- Cleanup unused var ([1708aa7](1708aa780272304ee9c538cb2b5738d3e2b4af24))
+- Add todo ([828aa5f](828aa5f0bbee2879a0de0a9e4aa7e1181f9603d8))
+- Next release ([10d312d](10d312d1fca9aacbca5957ddd9e125772e13f796))
+
+### Refactor
+
+- Rename `viewpane` to `viewport` ([9361a63](9361a637066353e03904f83d5b05f69eec1c3fed))
+- Merge `defaultZoom` & `defaultPosition` to `defaultViewport` ([8b2a21b](8b2a21bc079a198c67237af21c60117fc9b44a19))
+- Clamp invalid zoom values ([9cbb7df](9cbb7df17c773b5a118d47e05794d6da79ebc62b))
+- Add `vueFlowId` to `getMarkerId` ([b0e09f7](b0e09f7661500ac4d576bc0270f85b042ca8fcdb))
+- Use `pre` flush for dimensions update on handle change ([06dc2ee](06dc2ee9415767a9e9df0a4d7052ad6394f08e83))
+
+### Reverts
+
+- Type imports ([770ab6c](770ab6ca1ef3b0c58708d2e257f7d360891a8fa5))
+
+## [1.7.2] - 2022-12-19
+
+[952525e](952525e18c849034d80ad756a2f0d957f8b21bee)...[3d62b07](3d62b079ec6171a90187beb2eb26fbecffe50e78)
+
+### Bug Fixes
+
+- Input focus preventing selection rect ([9ac4a0f](9ac4a0fbd2a4d0976226507bf4651da67493b626))
+
+### Features
+
+- Add `elevateNodesOnSelect` option ([af53408](af534083fadfdd6f8c21c65f39130aa8f11b2a7c))
+
+### Miscellaneous Tasks
+
+- Next release ([3d62b07](3d62b079ec6171a90187beb2eb26fbecffe50e78))
+
+### Refactor
+
+- Make label coords optional ([31cdd9f](31cdd9f8990d5c3f590d08ac97c6b02f76f9db8c))
+- Group edges on edge selection changes ([d06ce86](d06ce8659d816f97ed6f3dad79c1a258b19f05e6))
+
+## [1.7.1] - 2022-12-18
+
+[88701d2](88701d2cf0744cc7ae085d898700528fad8b0061)...[952525e](952525e18c849034d80ad756a2f0d957f8b21bee)
+
+### Miscellaneous Tasks
+
+- Bump version ([952525e](952525e18c849034d80ad756a2f0d957f8b21bee))
+
+## [1.7.0] - 2022-12-18
+
+[dfecf1c](dfecf1c58be41a5573ab3481bd562395af09e873)...[88701d2](88701d2cf0744cc7ae085d898700528fad8b0061)
+
+### Bug Fixes
+
+- Overwrite state even if it's an empty arr ([dd2a02a](dd2a02ab857957e502b0ff08fa16188da8d1b1ee))
+- Node dimensions update condition to only force when dimensions defined ([94c0883](94c0883db8f6fe47a4a77d3e543aeb60751e38db))
+- Move watcher timing to pre and sync immediately ([15f73fb](15f73fb4d5340b49b65402486ba27210ca701173))
+- Only trigger store watcher immediately when els were set ([f0a4941](f0a49414b79b626cc2b9984e43956b8f4775f3cb))
+- Pass flow props to store initializer ([e99a289](e99a289c3ca902471a42c77f16f5f9e49ba57295))
+
+### Features
+
+- Add `getNodesInitialized` getter to store ([5334e73](5334e738295e8d2cb8e091e7e3b84c1fda8d883f))
+
+### Miscellaneous Tasks
+
+- Next release ([f34fddc](f34fddc3e5abcf8aa5f9baca5f28cc88d7bd29d9))
+- Next release ([e603d42](e603d42e89c00534530a5b16b91a686bc3b9d756))
+- Next release ([88701d2](88701d2cf0744cc7ae085d898700528fad8b0061))
+
+### Refactor
+
+- Make handles optional in `addEdges` ([fad7911](fad79112c81b64e0207fe07a96cfeeaf8e16d0d9))
+
+### Reverts
+
+- Force update on resize observer changes ([657f33b](657f33b8459dbea1a661d1f648cf6e1c7c3f4f68))
+
+## [1.6.3] - 2022-12-14
+
+[9a0e975](9a0e975f0efc66d9b1a1614b8755c005025095a0)...[dfecf1c](dfecf1c58be41a5573ab3481bd562395af09e873)
+
+### Bug Fixes
+
+- Add missing edge class to edge wrapper ([f0f7e7e](f0f7e7e49a98e4e267c028f552420ce81f73adc7))
+
+### Miscellaneous Tasks
+
+- Update custom edge example ([f983549](f983549d1cdaf0ca7b19d40aed1b82dd8721922f))
+- Next release ([dfecf1c](dfecf1c58be41a5573ab3481bd562395af09e873))
+
+### Refactor
+
+- Use `vue-flow__handle` in handle bounds selector ([91aa97b](91aa97b144e12988a16959b3b6ad455cef90a0b3))
+
+## [1.6.2] - 2022-12-14
+
+[eef24a3](eef24a368ae91aba305558f02c36a81b896929de)...[9a0e975](9a0e975f0efc66d9b1a1614b8755c005025095a0)
+
+### Bug Fixes
+
+- Element watcher not emitting changes with `addNodes` / `addEdges` ([dab20a6](dab20a6e5c41ccc6e5c215dc97d44a63594352e1))
+
+### Miscellaneous Tasks
+
+- Next release ([9a0e975](9a0e975f0efc66d9b1a1614b8755c005025095a0))
+
+### Refactor
+
+- Check if elements arr has length before overwriting ([db3244c](db3244cbecbf9cd6c7017c8e0bacfe937d3e0c52))
+- Remove forced update on resize observer trigger ([4a8d77d](4a8d77d79f5093646de24e1567432661c93deb50))
+
+## [1.6.1] - 2022-12-14
+
+[4425faf](4425faf923d2452c972a680d06c39a9435413bef)...[eef24a3](eef24a368ae91aba305558f02c36a81b896929de)
+
+### Bug Fixes
+
+- Add `initialized` prop to `GraphNode` ([8734a16](8734a16ae61510c367f06e2824ad22952dab9779))
+- Await node init to add handle bounds in `Handle` ([b411c1e](b411c1e411cf7715efd03ecb6fc1b6d66f1a94de))
+
+### Documentation
+
+- Correct component name ([6d96898](6d96898bce74fda34dc24bfafd9c981b8de4b5e6))
+- Remove `ts` from node-resizer example ([92ac6e2](92ac6e28474dc2785de0fe637d982425f892763c))
+- Update component documentation ([22da724](22da724ab7a0ecfc95821377a241957a04be3582))
+- Correct resizer example ([af84c13](af84c1397812976689017a69fc2f3358d613a728))
+- Add node toolbar and resizer to config ([9d5cda9](9d5cda970c6eafcf1e40c472419c84330a7c10b0))
+- Update component documentation with new examples ([15ca63a](15ca63a59c6eb5691339dca01b52272020845a9f))
+- Add migration page ([eef24a3](eef24a368ae91aba305558f02c36a81b896929de))
+
+### Miscellaneous Tasks
+
+- Update vue-flow peer dep to 1.6.0 ([2d51a29](2d51a2972a4b70b11630e5d9767d91a3064a786f))
+- Remove log ([e69e19a](e69e19a8dfe00288bca666729e660e634e6c9784))
+- Next release ([f2eb883](f2eb883b267905cb4ba155dd1825bfd8500f3604))
+
+## [1.6.0] - 2022-12-13
+
+[d02f738](d02f73831863aa2c15a3814ba3faeb41432a88dc)...[4425faf](4425faf923d2452c972a680d06c39a9435413bef)
+
+### Documentation
+
+- Add node resizer example ([f31f007](f31f0073f7a4c9e679a49b3d520b8f137d0ce772))
+- Add node-resizer to typedocs config ([8e5a9d0](8e5a9d04ecd75f787f7e0f514a2193fa89c287e9))
+
+### Features
+
+- Add node-resizer pkg ([6815515](681551507af615efa701154f37c2f51c426ed014))
+- Add `useGetPointerPosition` composable ([5033bab](5033babdc27ecc71096f68878cef1269e39d8206))
+- Add `dragging`, `selected` and `resizing` flag to `GraphNode` ([20c353a](20c353a070a74309465122178bebd5cf2cd13ab6))
+- Implement node resizer components ([d883ed7](d883ed782a13f9feb22f78ee5f8423f3b8e6d8ad))
+- Add node resizer example ([3f1d725](3f1d7257bf6a53a071b01882f91bd7e0ca8224e6))
+
+### Miscellaneous Tasks
+
+- Remove resize rotate node pkg ([3f4e696](3f4e6961c0724587a8f24f2c24cdf612e94ad406))
+- Cleanup ([af801c7](af801c74cec0734d62f2fae2bd590579ca3261f6))
+- Cleanup ([2eaf9e4](2eaf9e43406b0456e292d72eb426bc3db778e352))
+- Cleanup ([e1c904f](e1c904f97f35554c26b9a4e525fa12bf2b424bbc))
+- Update changeset files ([745f1c2](745f1c2682ede4cd9d3d6b7823fdd28042c7ab23))
+- Update pnpm-lock.yaml ([9f4c48b](9f4c48b84900777b887c49a1a2dca78a1b8b380e))
+- Cleanup ([029a0d9](029a0d9a216388ba6fac33fa2158068b49aceeef))
+- Cleanup ([89b5da9](89b5da9ae33aacef1afa9634f9de5e417e174567))
+- Add todo msg for adding a plugin ([49d6f45](49d6f452b3c737d9208bb4557921493a99a41ff4))
+- Filter addition and removal changes ([217ee6b](217ee6b0dfeaf325b4f3b4197c9dd0183b60a406))
+- Update pnpm-lock.yaml ([97791c9](97791c9c31bed9a3c0750b1f695580ea7fda8ec9))
+- Cleanup unused vars in `Handle.vue` ([3fc1b39](3fc1b39ce27e41faa49f6f84bfa1b7f7a524b26f))
+- Add README ([c5c60b8](c5c60b88949a2f442e624a22ee0f5b2d57c1081f))
+- Cleanup ([35d6f30](35d6f309b7c14ba25e3e869ad5740a6e909ce1de))
+- Remove unused changeset file ([57d583d](57d583ddb72f0ca593385d52deb2d00639cd2e76))
+- Correct pkg versions ([4b7a96c](4b7a96cef9ca796aad250b0f24ca2f455403817d))
+- Add missing styles ([7140beb](7140beb7992f6f37359b09e291e045681db098d5))
+- Next release ([4425faf](4425faf923d2452c972a680d06c39a9435413bef))
+
+### Refactor
+
+- Move panel component to core pkg ([4fb2653](4fb26533cd6424b495e568567f5886cf0c5bf7b6))
+- Remove additional components package ([e44b683](e44b683b744984c2528fbeb6e1661aac4bf36ef2))
+- Move minimap to separate package ([2812790](281279044c4f18b18f9f4c651c79652320a93bce))
+- Move background into separate package ([c7b5102](c7b51025d0899f59436fd3bd6d1b188066738357))
+- Move controls into separate package ([a55f39b](a55f39ba250cee7adce3e1ca99b98ed60f278541))
+- Replace `additional-components` package occurrences ([000dd5c](000dd5c9ba635232ad6cacd3943394436868b25b))
+- Apply multiple changes at once to element ([9e05f02](9e05f02bc7b23872956e94fc55c75f8629395d71))
+- Apply multiple changes at once to element ([99f5e18](99f5e18408e6d016d10a760b914251914274ee03))
+- Apply multiple changes at once to element ([5c726ec](5c726ece408ce70fab523f104c8f6dfb83b010ed))
+
+## [1.5.11] - 2022-12-12
+
+[e1179d8](e1179d86cf9ba271fae99af53f4b6dbabaea277b)...[d02f738](d02f73831863aa2c15a3814ba3faeb41432a88dc)
+
+### Bug Fixes
+
+- Add missing `dragging` and `selected` flags to minimap node slots ([dbeba2e](dbeba2e7c8f067540f8c92a2302197755c6d21b3))
+- Add missing `dragging` prop to `GraphNode` type ([97426d5](97426d56d5e83736e112dda66e06764d86c2f026))
+
+### Miscellaneous Tasks
+
+- Remove console log ([be662ee](be662eef92a2475a49643e4b8de735c580097593))
+- Next release ([d02f738](d02f73831863aa2c15a3814ba3faeb41432a88dc))
+
+## [1.5.10] - 2022-12-12
+
+[1a4a2a6](1a4a2a6275ca94a085fd3e15cb5373f05c23a768)...[e1179d8](e1179d86cf9ba271fae99af53f4b6dbabaea277b)
+
+### Miscellaneous Tasks
+
+- Next release ([e1179d8](e1179d86cf9ba271fae99af53f4b6dbabaea277b))
+
+## [1.5.9] - 2022-12-12
+
+[6a5f363](6a5f3634beffe39aa926407b0a0630ae794ae9a0)...[1a4a2a6](1a4a2a6275ca94a085fd3e15cb5373f05c23a768)
+
+### Bug Fixes
+
+- Add missing dragging flag to nodes ([ddf6e5f](ddf6e5f5db423f5698a7cb488208f6780028eae8))
+
+### Miscellaneous Tasks
+
+- Next release ([bddd505](bddd50551249cf37397871cc8f28be4eb24884bd))
+
+## [1.5.8] - 2022-12-12
+
+[dc2ff64](dc2ff6401d70761d7e216ae86498b44c19e64d82)...[6a5f363](6a5f3634beffe39aa926407b0a0630ae794ae9a0)
+
+### Bug Fixes
+
+- Use connectable prop or global connectable in Handle ([47432a8](47432a8238e0726fe1eb0cc7c6c714fe70759427))
+- Prevent watcher being stopped oncleanup ([fdf9516](fdf9516a7f366a4793ad2ad0d038c243ec0df6c7))
+
+### Miscellaneous Tasks
+
+- Next release ([6a5f363](6a5f3634beffe39aa926407b0a0630ae794ae9a0))
+
+## [1.5.7] - 2022-12-10
+
+[ddddc7f](ddddc7f7d449aa0d3c95ec65b745dacdc7f27427)...[dc2ff64](dc2ff6401d70761d7e216ae86498b44c19e64d82)
+
+### Bug Fixes
+
+- Watcher not working with `onMounted` hook ([ac8ef13](ac8ef136325bc42d2528d097a6dfeb0ad7aa559c))
+- Node extent not properly applied for child nodes ([9142a2e](9142a2e13ddf3b6a170946316f0e01186f35c3a4))
+
+### Documentation
+
+- Add pkg entrypoints for typedocs ([2e4d69f](2e4d69f4b6cc734a41fa9c93ef074650f6a6911a))
+
+### Refactor
+
+- Use `next release` as release commit message ([dc2ff64](dc2ff6401d70761d7e216ae86498b44c19e64d82))
+
+## [1.5.6] - 2022-12-09
+
+[a4cf9c0](a4cf9c0b3b81599f15cd01693f6657f0c7aabd40)...[ddddc7f](ddddc7f7d449aa0d3c95ec65b745dacdc7f27427)
+
+### Documentation
+
+- Add toolbar example ([52c23e9](52c23e97707afcb57687e5cc46eab319c744d740))
+- Add node-toolbar to deps ([8169a1d](8169a1d237bb4f00848933e3e051163a41efb539))
+- Cleanup ([e0c4f4d](e0c4f4d64cce8186a683b55c317f587fd6519b71))
+
+### Features
+
+- Add toolbar pkg ([2829f8a](2829f8a92d92644718c85060fa8951fe1c9489dc))
+- Add node-toolbar component ([f6acbd8](f6acbd8dc61400a8ae03f8cee7ba9384f251297b))
+- Add node-toolbar example ([196215d](196215d9e2d5819c8a7a4b28d96ac8c18815ca6a))
+
+### Miscellaneous Tasks
+
+- Add auto-imports.d.ts ([614ff72](614ff727b97052f61a970fcd8268793e98d831ac))
+- Update README.md ([c37bb8a](c37bb8a3cfc2e583b5e5919180c16cf1251097d6))
+- Update pnpm-lock.yaml ([7db0575](7db0575fef5cbfa1625c5cf2718c74e2ba509039))
+
+### Refactor
+
+- Deep reactive nodes and edges ([a8f679c](a8f679c36b8c308d6a5003b416234953654b5c06))
+- Separate model and store watchers ([473fd83](473fd83c594c7c18e5ba48f6a0f4946d88306dae))
+- Dispose v-model watchers on scope dispose ([4103ef6](4103ef60bbb0b80e0092cd1577ec88d2a2e87294))
+
+## [1.5.5] - 2022-12-08
+
+[61d28e8](61d28e81f1524a1a8958e246972b21d1959ff567)...[a4cf9c0](a4cf9c0b3b81599f15cd01693f6657f0c7aabd40)
+
+### Bug Fixes
+
+- Apply translate extent on pan ([602fbad](602fbada4b16720a6278d775e0ed7ab016756a0c))
+- Properly calculate node extent ([7daadfc](7daadfc383b866dac1a90ff56c4be523a2188d08))
+
+### Refactor
+
+- Only trigger dragging flag when a change has occured ([dce5d86](dce5d86867a99857157fa50c27c9c73612814a85))
+
+## [1.5.4] - 2022-12-06
+
+[db2c1fd](db2c1fd650325cc29be432999bd1e9d43136dd49)...[61d28e8](61d28e81f1524a1a8958e246972b21d1959ff567)
+
+### Bug Fixes
+
+- Type marker prop in `EdgeProps` ([c673b04](c673b044227a6702c695691be6f94f4331812dec))
+- Allow middle mouse pan over edges ([0d44179](0d44179373b271c31e81c8c8bf6743a21eaca773))
+- Prevent valid connections on same node and handle ([a1e1304](a1e1304b63f667282b304c6f5964dc9cbd9d7799))
+
+### Miscellaneous Tasks
+
+- Update deps ([4be3188](4be318807e9313107ae02576a458030d592047f3))
+- Add extended vue macros ([21523ce](21523ceb4ed1dd10878f4fb118d448b56f62589a))
+- Update pnpm-lock.yaml ([016206d](016206d00f1571301a964af3aa4a4d4af99fb7cd))
+- Bump version ([61d28e8](61d28e81f1524a1a8958e246972b21d1959ff567))
+
+### Refactor
+
+- Add `HandleConnectableFunc` type ([9cab025](9cab0257d66305ae863442a334885ca324a5986f))
+- Remove barrel files and use auto-imports instead ([f4a4736](f4a47368996ebaa289f3f15c2ec2329e3fe907be))
+- Enable vue macros betterDefine and remove duplicate interface defs ([27c6c42](27c6c4230389a0b826fa4b3057db89eb82ad1205))
+- Omit `type` prop for smooth step edge props ([af699d3](af699d384cf9a3f77ad3ffd9f62e7d9f2dff8982))
+
+## [1.5.3] - 2022-12-05
+
+[f3a6ab8](f3a6ab8417299adaee4d81244a010806166841f3)...[db2c1fd](db2c1fd650325cc29be432999bd1e9d43136dd49)
+
+### Bug Fixes
+
+- Patch `VueFlow` slots after build and apply correct types ([84f82b6](84f82b6ad510232e7e91f382ce05e1d5d3f0f795))
+
+## [1.5.2] - 2022-12-05
+
+[298e44b](298e44b88e097a147d2549a794a3d0cebe559c35)...[f3a6ab8](f3a6ab8417299adaee4d81244a010806166841f3)
+
+### Bug Fixes
+
+- Check for arr length before triggering immediate model watcher ([7dec8b7](7dec8b779cc5335bbddde06cd2bf2c0b3a317750))
+- Allow `null` as key-code ([91d7c9d](91d7c9d52a4349a9215cca1c2e6c204d35db0871))
+- Render minimap node slot ([3999773](39997732c36c7f58b31df688b14900892fa23003))
+
+### Miscellaneous Tasks
+
+- Update examples header ([f3a6ab8](f3a6ab8417299adaee4d81244a010806166841f3))
+
+### Refactor
+
+- Change `shallowReactive` properties in elements to `reactive` ([99c6786](99c67860cbd03dc0aad99f37a03722970ed4506d))
+
 ## [1.5.1] - 2022-12-01
 
 [0c3ae1e](0c3ae1ec501228a375c31134b7390aeeb06babb6)...[298e44b](298e44b88e097a147d2549a794a3d0cebe559c35)
@@ -2870,16 +3277,9 @@ All notable changes to this project will be documented in this file.
 
 ### Bug Fixes
 
-- Node selection rect not properly rendering on key press and mousemove ([61ab006](61ab006e94c5e1fcec8a591ec05e0de727128c44))
-- Node selection rect not dragging correctly ([dfd9e96](dfd9e963565b4a276d078562d59fb7497472cc9c))
 - Typos in README.md ([51b120b](51b120bd764025009982fd0f99a405135674ea22))
 - Remove DraggableEvent type from utils file (doesn't exist anymore) ([e77797a](e77797acc74cf38334465617a94a4cba033d9c11))
-- No use of fragments for nodes as it results in warning from vue and we got enough of those as is ([7c7c31b](7c7c31b46f2e67f77210c0dd33718081e1c3d301))
-- Inject store instance components ([b4fcab4](b4fcab40047aa205d7d5ee70feeabebc899cc4bd))
 - Types ([1a7f3da](1a7f3da0b6b55d6c3fa1057bb07ff8bb26e47f89))
-- Scale being incorrect when passed to draggable causing weirdly fast drags ([86ead92](86ead92839b1c41ce47817735c6baed3f1a9c7b2))
-- Custom nodes not getting styled properly ([83216f8](83216f8ece0ad0d16114e001a1601d1156fed041))
-- Typecast edges and nodes ([3b5857f](3b5857febbc6a2b4fdea0033a2d8fef64d575410))
 - Copy preloadedstate object for pinia to avoid using an existing state when re-creating store ([6347cf9](6347cf97cb7f2502e7c4e489d344823c7628151d))
 - Return render function ([e2162c9](e2162c95a89db01510b8f9334d1c6b1bcd9cacc6))
 - Edges not updating text ([16e93af](16e93af184fcc3c295eb6b5abeca7e14efa415a5))
@@ -2887,7 +3287,6 @@ All notable changes to this project will be documented in this file.
 - Custom node positions ([e7513b8](e7513b898c04ae80343475236942b6493f030e71))
 - Custom edges not displayed correctly ([9e397e6](9e397e68174432bc1409ad9ab216912d73d24da8))
 - Marker arrowheads not displayed ([adb5ec5](adb5ec544dcafd10438324437f3e934019fca40d))
-- Add intrinsicattributes to shims ([545eb0e](545eb0ede7d2b7bfdeef0500c0e5cf72d7e86bfb))
 - Rollup bundling css in d.ts file ([9e76d07](9e76d0763642995c5e77cfd25664904770a272b1))
 - Version ([af87f08](af87f08c6f80ddde589ee840cf20cb59643c80db))
 - Shims-tsx.d.ts having duplicate string identifier? whatever that error meant... ([3cd0693](3cd0693b93c9caae0c556822d65d8665120b4a82))
@@ -2903,7 +3302,6 @@ All notable changes to this project will be documented in this file.
 - Clamp transform values ([b3d276b](b3d276bfb85e5c8dee641ef02e32fcda8083d6f0))
 - Edge anchor ([7ecbcba](7ecbcba7eb250c713682516c9450b4a356aac142))
 - Edges and edge anchors not re-calculating correctly ([61dc9de](61dc9dea3318d71e06e90879e01cd23c65615040))
-- Nodes as fragments ([64a4b8c](64a4b8c41805185fcef683fa5f33b0968651b002))
 - Label type in edges ([ff7ee5c](ff7ee5c7fe08b9e94cf9f3104ff21c0132bed370))
 - Store actions blocking main thread ([5f500bc](5f500bca184f02b5ca973346fda28352f441a5bf))
 - Nodeposdiff not updating correctly on node selection ([c062601](c06260187430c5de3648c5a888f94552003eb36e))
@@ -2911,7 +3309,6 @@ All notable changes to this project will be documented in this file.
 - Valid connection func in handle ([e11fddf](e11fddf70ad8e6a9b6536b7a9d680b93ea6b1a3c))
 - Node type change not triggering recalculation of node dimensions ([cd02dd0](cd02dd0444421346bf844b477876e326f488cf52))
 - Node not updating handlebounds when handle pos changes ([26b3901](26b3901bd5fcde8c168a7bef1e189736f93765d4))
-- Edge updates not triggering properly ([3ee3843](3ee3843af613ef235c216cc1d40097399010f1c7))
 - Missing bgcolor in background ([ee07aff](ee07affa89b879ac93cb5535369dd78218d94f9c))
 - Missing node id in node components/slots ([cb96b1a](cb96b1ab009c748149672a5e68551e4a41f0a848))
 - Typings ([6ec8258](6ec8258f33c37f6816f2e8f44827496bdc1f21b1))
@@ -2922,7 +3319,6 @@ All notable changes to this project will be documented in this file.
 
 ### Features
 
-- Add custom edge example ([2188c5d](2188c5d3d300599602fb197d56d1fe2069af2e1d))
 - Add edge with button example ([74a2a3d](74a2a3d8c3548423fec900acc97108fe05e895dd))
 - Add edge types example (stress tests) ([384c052](384c05240f969ad6af407161cb401305f26cef0f))
 - Add empty canvas example ([489e12a](489e12a8a74a7b3c91f4d7f4663e9fbe14fc28c7))
@@ -2942,9 +3338,6 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous Tasks
 
-- Remove some logs ([8cfbc89](8cfbc89d23588c381b93c343cc51f86f8a016685))
-- Update revue-draggable to latest version ([7eb7cb1](7eb7cb1dc37c4ba59e50f56f38f774a3ad6fc422))
-- Add vueuse/core to deps ([ef9647c](ef9647ceb4fa460bf7373aa8d47d666474438f31))
 - Remove rollup-plugin-vue ([e5d8338](e5d8338b3299b38c1bf5650eb2c7230d9585cd94))
 - Update vueuse to 6.0.0 ([908e741](908e7413991c444936cf17501b9d930c80280bdc))
 - Update eslint rules ([77eac0c](77eac0c12a11eb791d037931a9b5428c14db6ff3))
@@ -2955,8 +3348,6 @@ All notable changes to this project will be documented in this file.
 
 ### Refactor
 
-- Remove passing props to reactive obj instead use props directly again (sort of breaks reactivity in some cases...) ([528f8f4](528f8f4420c93d467a6b01ed55c45c7b834ed69c))
-- Refactor some jsx files to vue files ([ffd41fb](ffd41fb679aed72c2465506ae2b3a8ad38fdb610))
 - Resize handler and zoom pan helper to watch until refs are resolved ([a6f7678](a6f7678c0f2930c82b7d9eb57ff1359c8226f674))
 - Back to jsx 🥇 ([1d542ab](1d542aba65763afad22e1e7ed28254ba8eb74e79))
 - Split types into separate files ([3557284](3557284a404df9fa66c5fb61f25621e5191a52f6))
@@ -2964,11 +3355,9 @@ All notable changes to this project will be documented in this file.
 
 ### Update
 
-- Remove wrapEdge and wrapNode files ([25c92ec](25c92ecd8437cf0272ab6fb970bdc5825d4bb5d5))
 - Edge label bg true by default ([6b9c608](6b9c6083815a3fc113922d03246d4728735a9490))
 - Redirect to basic example as default ([6912993](6912993ebd67323bb7f7e786be62657d61b29659))
 - Button edge example to remove edge on click ([156b312](156b3123366b86ff4b14bf8850850c344a211dbb))
-- Rollup config ([2653c70](2653c70334e239ad40bb0364cc00e8f2c9da998d))
 - Remove effect watcher from zoom pane ([8d8a4a3](8d8a4a3d1e16dbb5a6f391d6c8e3bb23e4f74baf))
 - Add effect scope to useZoomPanHelper.ts ([b8ce50a](b8ce50ae3e770dcf400df7d44759a8837c839eec))
 - Add key to node ([22a1dc6](22a1dc6716202c552a337f6ba7ceec9a4e53673a))
@@ -2978,7 +3367,6 @@ All notable changes to this project will be documented in this file.
 - Fix node perfomance ([f6f7564](f6f75648948929955f1b6011931b863e83f0e5cf))
 - Refactor remaining files to script setup style ([560bdc2](560bdc203be8876b00f18fbb4d56a512c2b8fc89))
 - Refactor additional-components ([1ff3a8d](1ff3a8dc9c1926d59858b16ebc5eee603d355d7e))
-- Add unplugin-components ([a5ae6a4](a5ae6a4e4850b10871813f2c661c9c75b51ae939))
 - Fix examples ([29c6df1](29c6df17551658333667825db0efba026869308e))
 - Add slots to Background.vue, Controls.vue and MiniMap.vue ([1853c21](1853c21353946386ccf08e658c5d115c84182049))
 - Add injection keys ([a895853](a895853b6449c8c0076710942d2645170ca4a2b6))
@@ -3021,11 +3409,9 @@ All notable changes to this project will be documented in this file.
 ### Bug Fixes
 
 - Create store instance for every revue flow instance ([ec45cd7](ec45cd74e972bd106f4794f5629b9fe2d549049e))
-- User selection ([2f93c91](2f93c917e0b2f929a7bc8dfe0e0c959256abfb22))
 
 ### Features
 
-- Add revue-draggable ([f5580b6](f5580b6d96cc98a0ba461b1ce17342f163afc3e1))
 - Add drag n drop example ([9b78c0f](9b78c0f5d229e3e8f7875cfb145a53a41459abe0))
 
 ### Refactor
@@ -3034,19 +3420,9 @@ All notable changes to this project will be documented in this file.
 
 ### Update
 
-- README.md ([2afc7af](2afc7af8716ab9aa3647cfe508aacc4cb2361416))
 - Renaming stuff from react flow to revue flow ([d491c01](d491c0196c7b2ac98ed845f95302414261016bec))
 - README.md ([3f126f0](3f126f085ec85d356ca06da9fff89cf36560ebe7))
 - Base page to basic (no overview currently) ([8f727a4](8f727a4d93025d131b55cff35824dfdd63dd3150))
-- Use store injection in UserSelection component ([c7fda83](c7fda830a6383d2cefa9c7fb8d496617fd665154))
-
-## [0.0.36] - 2021-07-10
-
-[4d52af0](4d52af09fa37f7eb691846f94b63255c2e03afe2)...[041fe11](041fe114ef3218132775b4360978df94e31170c4)
-
-### Features
-
-- Create examples directory and add some examples ([e4f57c7](e4f57c79e851adf4b06e2c5abbb0c9ffdd38afa9))
 
 ## [0.0.35] - 2021-07-10
 
@@ -3056,7 +3432,6 @@ All notable changes to this project will be documented in this file.
 - Entry ([07721e9](07721e9b75e1daf1d75ece276ea6b94773768941))
 - Add vue-demi to external deps in vite.config.ts ([f1ee5b6](f1ee5b61a205c9f046c3582c205c3075f217c44d))
 - Add vue-demi to external deps in vite.config.ts ([b9b2615](b9b261578616b61ea838163fff849e7015a1bcf4))
-- Some prop type issues ([303444f](303444f74d0bca293040a65dc5132d46cb89c9a5))
 - Proptype ([6a6c5c9](6a6c5c9ee1310c15fd086ad1ce59a145682c119c))
 - Some bundle stuff ([f685c7a](f685c7a20a081e18c1ba0b7b89852cfc26ec0e76))
 
@@ -3064,18 +3439,14 @@ All notable changes to this project will be documented in this file.
 
 - Transform react-flow to vue-jsx ([52e1188](52e1188d043f1453b67725a46735916214351590))
 - Make edges work ([b2c250e](b2c250ef38e8188b132d043c4897a405622bb759))
-- Add postcss config and deps ([8f34d9d](8f34d9d4862999135d23788324b556c0c0af2308))
 - Show connection lines when holding down on handle ([ea98c2a](ea98c2afa1740456cafe10ff6f373bc9f27ab295))
 - Update graph on new elements pushed ([1253403](125340341db5084c887453c9d12dcfaa2bed08a1))
 - Implement MiniMap, Background and Controls components ([4319e2a](4319e2ac4987734ab99d3e337e69149b624cf285))
 - Add np ([5c15967](5c159671ea00dfca58f581923d88e16c9f388db2))
 - Add siroc config ([3094cc2](3094cc211d3c6b055e8e6fd21f1eba0283e6acb2))
-- Plugin config ([753f707](753f7070c7917d46094a80715a22924cefa06b38))
 
 ### Bugfix
 
-- Controls not having correct zoom helper functions ([3a8dde7](3a8dde7cbde5224cfb5fd869c0453b547f3d8d8d))
-- Background not scaling ([cf20f78](cf20f784d43ca35466b0f3ad9c439a7914b312aa))
 - Types file ([bf95b23](bf95b23a7fdc471b987a343566c8bca05084bcc0))
 - Utils file ([c977946](c9779467a306f038031043564cf6bcd61e179e87))
 - Utils file ([e400b48](e400b48e9c6dda7fd1c75fb397919c66b3c09299))
@@ -3085,14 +3456,11 @@ All notable changes to this project will be documented in this file.
 
 - Gitignore ([e543bd5](e543bd500588212e26c5efdbfd0e5636eb40a8d6))
 - Revue-flow index.tsx ([b6d9265](b6d92653174ff92ef22cdb054bc12996a8f879d9))
-- Remove siroc and use rollup directly ([179b5c5](179b5c5d4df8627ed5ce41909ca7001c4bae066e))
-- Add lint script to package.json ([65332cf](65332cfde36a1d9c3044317d1e4bd680b0613869))
 - Rollup.config.js ([b43623c](b43623ce672a5a429c09fca0faa5e563f95cde7e))
 - README.md ([0603a12](0603a12ee0603b73d1b46badd60644aad0351e25))
 - Deps ([0c449c9](0c449c9274bbf5de3d6b76f45a30b8ae8107fa1b))
 - Remove vue-demi ([59b6af3](59b6af384cc76a1b6c59ad51d977d90ab4ac4847))
 - Main ([d934782](d934782cb8c85cb305657e615b7e52f8bf4d3115))
-- Use vue-demi again to add compatability to vue2 ([92caccf](92caccfd6e4caa69c740005b974663fbe8f9abbf))
 - More changes to bundle config... ([a364c78](a364c78c7cb7afcc7eccbfe6e027f6c78cc6984b))
 - More changes to bundle config... ([082d460](082d460e12715543545c3f71a23a923e4dc9760f))
 - More changes to bundle config... ([6f39ae6](6f39ae6de862f3d97b0d26c378197e1c00b7f424))
@@ -3105,8 +3473,6 @@ All notable changes to this project will be documented in this file.
 - More bundle stuff ([adc22c6](adc22c6212733c4470e2c71d14ca0367662031be))
 - More bundle stuff ([f2f263d](f2f263d8336e1cbeb0a2cb5bb1e1d239289346b5))
 - More bundle stuff ([e9db1cd](e9db1cd641064256e16b6ca3cc1d2f2651f8edff))
-- No vue-2 compatability (doesn't work with current build) ([150438d](150438d08fd12129c6df398eb022fe5660011489))
-- No vue-2 compatability (doesn't work with current build) ([d50d745](d50d74598b3bf5ac80200e9e0bc382d4852f77e0))
 - README.md ([fde7ca6](fde7ca665318cac9a1051b2974d4433e4566cea7))
 - README.md ([4661b68](4661b685adad568bfd0241c80e1f8a2629f75c45))
 - Renaming stuff from react to "revue" ([881655d](881655d4831ca36ae49852d4e75dd28cd7013419))
