@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.9.1
+
+### Patch Changes
+
+- [#561](https://github.com/bcakmakoglu/vue-flow/pull/561) [`2979feb`](https://github.com/bcakmakoglu/vue-flow/commit/2979feb581c219ddb9fe1f87ff2c5fb4348e9bea) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix slots type regression
+
 ## 1.9.0
 
 ### Minor Changes
