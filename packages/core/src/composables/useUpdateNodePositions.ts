@@ -1,12 +1,21 @@
-import type { NodeDragItem, XYPosition } from '~/types'
+import type { NodeDragItem, SnapGrid, XYPosition } from '~/types'
 
 function useUpdateNodePositions() {
   const { getSelectedNodes, nodeExtent, updateNodePositions, findNode } = useVueFlow()
 
-  return (positionDiff: XYPosition) => {
+  return (positionDiff: XYPosition, snapToGrid: boolean, snapGrid: SnapGrid | undefined, isShiftPressed = false) => {
+    // by default a node moves 5px on each key press, or 20px if shift is pressed
+    // if snap grid is enabled, we use that for the velocity.
+    const xVelo = snapToGrid && snapGrid ? snapGrid[0] : 5
+    const yVelo = snapToGrid && snapGrid ? snapGrid[1] : 5
+    const factor = isShiftPressed ? 4 : 1
+
+    const positionDiffX = positionDiff.x * xVelo * factor
+    const positionDiffY = positionDiff.y * yVelo * factor
+
     const nodeUpdates = getSelectedNodes.value.flatMap((n) => {
       if (n.computedPosition) {
-        const nextPosition = { x: n.computedPosition.x + positionDiff.x, y: n.computedPosition.y + positionDiff.y }
+        const nextPosition = { x: n.computedPosition.x + positionDiffX, y: n.computedPosition.y + positionDiffY }
 
         const updatedPos = calcNextPosition(n, nextPosition, nodeExtent.value, n.parentNode ? findNode(n.parentNode) : undefined)
 
@@ -24,7 +33,7 @@ function useUpdateNodePositions() {
       return []
     })
 
-    updateNodePositions(nodeUpdates, true, true)
+    updateNodePositions(nodeUpdates, true, false)
   }
 }
 

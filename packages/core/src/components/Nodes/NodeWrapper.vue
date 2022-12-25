@@ -208,16 +208,15 @@ const onKeyDown = (event: KeyboardEvent) => {
     $$(ariaLiveMessage).value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
       .position.x}, y: ${~~node.position.y}`
 
-    // by default a node moves 5px on each key press, or 20px if shift is pressed
-    // if snap grid is enabled, we use that for the velocity.
-    const xVelo = props.snapGrid ? props.snapGrid[0] : 5
-    const yVelo = props.snapGrid ? props.snapGrid[1] : 5
-    const factor = event.shiftKey ? 4 : 1
-
-    updateNodePositions({
-      x: arrowKeyDiffs[event.key].x * xVelo * factor,
-      y: arrowKeyDiffs[event.key].y * yVelo * factor,
-    })
+    updateNodePositions(
+      {
+        x: arrowKeyDiffs[event.key].x,
+        y: arrowKeyDiffs[event.key].y,
+      },
+      !!props.snapGrid,
+      props.snapGrid,
+      event.shiftKey,
+    )
   }
 }
 </script>
