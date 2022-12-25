@@ -12,20 +12,7 @@ async function content(path) {
 
 const filePath = resolve(__dirname, '../dist/container/VueFlow/VueFlow.vue.d.ts')
 
-const typeImportsString = `import type {
-  Connection,
-  EdgeChange,
-  EdgeMouseEvent,
-  EdgeUpdateEvent,
-  GraphEdge,
-  GraphNode,
-  NodeChange,
-  NodeDragEvent,
-  NodeMouseEvent,
-  OnConnectStartParams,
-  ViewpaneTransform,
-  VueFlowStore,
-} from '../../types'`
+const typeImportsString = /import type {\n(.*\n)+} from '\.\.\/\.\.\/types'/
 
 const patchedTypeImports = `import type {
   Connection,
@@ -41,7 +28,7 @@ const patchedTypeImports = `import type {
   NodeMouseEvent,
   NodeProps,
   OnConnectStartParams,
-  ViewpaneTransform,
+  ViewportTransform,
   VueFlowStore,
 } from '../../types'`
 
