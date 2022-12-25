@@ -44,8 +44,6 @@ const resetUserSelection = () => {
 function onClick(event: MouseEvent) {
   if (event.target !== container.value || hasActiveSelection.value) return
 
-  console.log('click')
-
   emits.paneClick(event)
 
   removeSelectedElements()
