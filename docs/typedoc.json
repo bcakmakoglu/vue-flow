@@ -4,6 +4,11 @@
   "plugin": [
     "typedoc-plugin-merge-modules"
   ],
+  "externalSymbolLinkMappings": {
+    "@vueuse/core": {
+      "KeyFilter": "https://vueuse.org/core/onKeyStroke/#type-declarations"
+    }
+  },
   "entryPoints": [
     "../packages/core/src/index.ts",
     "../packages/background/src/index.ts",
