@@ -1,5 +1,92 @@
 # @vue-flow/core
 
+## 1.9.0
+
+### Minor Changes
+
+- [#557](https://github.com/bcakmakoglu/vue-flow/pull/557) [`c7897a1`](https://github.com/bcakmakoglu/vue-flow/commit/c7897a1da80a0e22c6e286706de8193db293f433) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow customizing the controls of the viewport and the selection box.
+
+  ## Props
+
+  - `selectionKeyCode`: You can now set this to `MaybeRef<boolean>` to enable a selection box without extra button press (need to set `:pan-on-drag="false"` or `:pan-on-drag="[2]"`[RightClick]).
+  - `panOnDrag`: Can now be a boolean or a number[], this allows you to configure every mouse button as a drag button. [1, 2] would mean that you can drag via middle and right mouse button.
+  - `panActivationKeyCode`: Key code (or KeyFilter) for activating dragging (useful when using selectionOnDrag).
+  - `selectionMode`: You can choose if the selection box needs to contain a node fully (`SelectionMode.Full`) or partially (`SelectionMode.Partial`) to select.
+
+  ## Events
+
+  - `onSelectionStart`: Emitted when the selection box is started.
+  - `onSelectionEnd`: Emitted when the selection box is ended.
+  - `onViewportChangeStart`: Emitted when viewport change has started.
+  - `onViewportChange`: Emitted when viewport is changed.
+  - `onViewportChangeEnd`: Emitted when viewport change has ended.
+
+### Patch Changes
+
+- [#558](https://github.com/bcakmakoglu/vue-flow/pull/558) [`bac9893`](https://github.com/bcakmakoglu/vue-flow/commit/bac98930da15fe049ab8f1ac65f09dd67e0000fb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - ⚠️ Deprecate options API utils `addEdge` and `updateEdge`. This utils will be removed soon!
+
+  ## Resolve deprecation warnings
+
+  Instead of using these utils, use `addEdges` and `updateEdge` found on the VueFlow store instance.
+  You receive a store instance by using either a template-ref or listening to the `onPaneReady` event.
+
+  ### Example
+
+  ```vue
+  <script>
+  import { VueFlow } from '@vue-flow/core'
+
+  export default defineComponent({
+    name: 'OptionsAPIExample',
+    components: { VueFlow },
+    data() {
+      return {
+        vueFlow: null,
+        instance: null,
+        elements: [
+          { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
+          { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
+          { id: '3', label: 'Node 3', position: { x: 400, y: 100 }, class: 'light' },
+          { id: '4', label: 'Node 4', position: { x: 400, y: 200 }, class: 'light' },
+          { id: 'e1-2', source: '1', target: '2', animated: true },
+          { id: 'e1-3', source: '1', target: '3' },
+        ],
+      }
+    },
+    methods: {
+      // You can listen to `onPaneReady` to get the instance
+      onPaneReady(instance) {
+        instance.fitView()
+        this.instance = instance
+      },
+      onConnect(params) {
+        // either use the instance you have saved in `onPaneReady`
+        this.instance?.addEdges([params])
+
+        // or use the template-ref
+        this.$refs.vueFlow?.addEdges([params])
+      },
+    },
+  })
+  </script>
+
+  <template>
+    <VueFlow
+      v-model="elements"
+      ref="vueFlow"
+      class="vue-flow-basic-example"
+      :default-zoom="1.5"
+      :min-zoom="0.2"
+      :max-zoom="4"
+      :zoom-on-scroll="false"
+      @connect="onConnect"
+      @pane-ready="onPaneReady"
+    />
+  </template>
+  ```
+
+- [#557](https://github.com/bcakmakoglu/vue-flow/pull/557) [`c7897a1`](https://github.com/bcakmakoglu/vue-flow/commit/c7897a1da80a0e22c6e286706de8193db293f433) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add a11y support to selection box
+
 ## 1.8.0
 
 ### Minor Changes
