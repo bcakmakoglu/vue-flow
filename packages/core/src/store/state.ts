@@ -98,7 +98,6 @@ const defaultState = (): State => ({
   nodesDraggable: true,
   elementsSelectable: true,
   selectNodesOnDrag: true,
-  selectionOnDrag: false,
   multiSelectionActive: false,
   selectionKeyCode: 'Shift',
   multiSelectionKeyCode: 'Meta',

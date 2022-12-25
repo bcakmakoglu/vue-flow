@@ -19,8 +19,6 @@ const { onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFl
   maxZoom: 4,
   connectOnClick: true,
   fitViewOnInit: false,
-  selectionOnDrag: true,
-  panOnDrag: [2],
 })
 
 onNodeDragStop((e) => console.log('drag stop', e))

@@ -99,7 +99,6 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   selectNodesOnDrag: boolean
 
   userSelectionRect: SelectionRect | null
-  selectionOnDrag: boolean
   selectionMode: SelectionMode
   panOnDrag: boolean | number[]
   zoomOnScroll: boolean
