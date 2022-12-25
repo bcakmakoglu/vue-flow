@@ -146,7 +146,6 @@ export interface FlowProps {
   zoomOnDoubleClick?: boolean
   /** enable this to prevent vue flow from scrolling inside the container, i.e. allow for the page to scroll */
   preventScrolling?: boolean
-  selectionOnDrag?: boolean
   selectionMode?: SelectionMode
   edgeUpdaterRadius?: number
   fitViewOnInit?: boolean

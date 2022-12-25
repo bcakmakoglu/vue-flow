@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
+import type { GraphNode } from '../../types'
 import { SelectionMode } from '../../types'
 import { getMousePosition } from './utils'
 
@@ -20,7 +21,13 @@ const {
   elementsSelectable,
   nodesSelectionActive,
   addSelectedElements,
+  getSelectedEdges,
+  removeNodes,
+  removeEdges,
   selectionMode,
+  deleteKeyCode,
+  multiSelectionKeyCode,
+  multiSelectionActive,
 } = useVueFlow()
 
 const container = ref<HTMLDivElement | null>(null)
@@ -33,7 +40,39 @@ const containerBounds = ref<DOMRect>()
 
 const hasActiveSelection = computed(() => elementsSelectable.value && (isSelecting || userSelectionActive.value))
 
-const resetUserSelection = () => {
+useKeyPress(deleteKeyCode, (keyPressed) => {
+  if (!keyPressed) return
+
+  const nodesToRemove = getNodes.value.reduce<GraphNode[]>((res, node) => {
+    if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
+      res.push(node)
+    } else if (node.selected) {
+      res.push(node)
+    }
+
+    return res
+  }, [])
+
+  if (nodesToRemove || getSelectedEdges.value) {
+    if (getSelectedEdges.value.length > 0) {
+      removeEdges(getSelectedEdges.value)
+    }
+
+    if (nodesToRemove.length > 0) {
+      removeNodes(nodesToRemove)
+    }
+
+    nodesSelectionActive.value = false
+
+    removeSelectedElements()
+  }
+})
+
+useKeyPress(multiSelectionKeyCode, (keyPressed) => {
+  multiSelectionActive.value = keyPressed
+})
+
+function resetUserSelection() {
   userSelectionActive.value = false
   userSelectionRect.value = null
 

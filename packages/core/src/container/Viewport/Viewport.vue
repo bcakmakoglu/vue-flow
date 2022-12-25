@@ -32,7 +32,6 @@ const {
   connectionStartHandle,
   userSelectionActive,
   paneDragging,
-  selectionOnDrag,
 } = $(useVueFlow())
 
 const viewportEl = ref<HTMLDivElement>()
@@ -52,7 +51,9 @@ const isConnecting = $computed(() => !!connectionStartHandle)
 
 const shouldPanOnDrag = computed(() => !selectionKeyPressed && panOnDrag && panKeyPressed.value)
 
-const isSelecting = computed(() => selectionKeyPressed || (selectionOnDrag && shouldPanOnDrag.value !== true))
+const isSelecting = computed(
+  () => (selectionKeyCode !== true && selectionKeyPressed) || (selectionKeyCode === true && shouldPanOnDrag.value !== true),
+)
 
 const viewChanged = (prevViewport: ViewportTransform, eventTransform: ZoomTransform): boolean =>
   (prevViewport.x !== eventTransform.x && !isNaN(eventTransform.x)) ||

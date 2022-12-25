@@ -42,7 +42,6 @@ const props = withDefaults(defineProps<FlowProps>(), {
   disableKeyboardA11y: undefined,
   edgesFocusable: undefined,
   nodesFocusable: undefined,
-  selectionOnDrag: undefined,
 })
 
 const emit = defineEmits<{
