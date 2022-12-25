@@ -155,7 +155,6 @@ function onMouseUp(event: MouseEvent) {
 }
 
 function onMouseLeave(event: MouseEvent) {
-  console.log('mouseleave')
   if (!hasActiveSelection.value) return emits.paneMouseLeave(event)
 
   if (userSelectionActive.value) {
