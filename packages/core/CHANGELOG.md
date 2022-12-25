@@ -6,14 +6,14 @@
 
 - [#557](https://github.com/bcakmakoglu/vue-flow/pull/557) [`c7897a1`](https://github.com/bcakmakoglu/vue-flow/commit/c7897a1da80a0e22c6e286706de8193db293f433) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow customizing the controls of the viewport and the selection box.
 
-  ## Props
+  #### Props
 
   - `selectionKeyCode`: You can now set this to `MaybeRef<boolean>` to enable a selection box without extra button press (need to set `:pan-on-drag="false"` or `:pan-on-drag="[2]"`[RightClick]).
   - `panOnDrag`: Can now be a boolean or a number[], this allows you to configure every mouse button as a drag button. [1, 2] would mean that you can drag via middle and right mouse button.
   - `panActivationKeyCode`: Key code (or KeyFilter) for activating dragging (useful when using selectionOnDrag).
   - `selectionMode`: You can choose if the selection box needs to contain a node fully (`SelectionMode.Full`) or partially (`SelectionMode.Partial`) to select.
 
-  ## Events
+  #### Events
 
   - `onSelectionStart`: Emitted when the selection box is started.
   - `onSelectionEnd`: Emitted when the selection box is ended.
@@ -25,7 +25,7 @@
 
 - [#558](https://github.com/bcakmakoglu/vue-flow/pull/558) [`bac9893`](https://github.com/bcakmakoglu/vue-flow/commit/bac98930da15fe049ab8f1ac65f09dd67e0000fb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - ⚠️ Deprecate options API utils `addEdge` and `updateEdge`. This utils will be removed soon!
 
-  ## Resolve deprecation warnings
+  #### Resolve deprecation warnings
 
   Instead of using these utils, use `addEdges` and `updateEdge` found on the VueFlow store instance.
   You receive a store instance by using either a template-ref or listening to the `onPaneReady` event.
