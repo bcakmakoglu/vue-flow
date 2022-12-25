@@ -54,11 +54,13 @@ export const createHooks = (): FlowHooks => ({
   updateNodeInternals: createEventHook(),
 })
 
+type EventKey = keyof FlowHooks & 'update:edges' & 'updateNodes' & 'update:modelValue'
+
 export function useHooks(emit: Emits, hooks: Ref<FlowHooks>) {
   onBeforeMount(() => {
     for (const [key, value] of Object.entries(hooks.value)) {
       const listener = (data: any) => {
-        emit(key as Emits extends (event: infer Event) => void ? Event : never, data)
+        emit(key as EventKey, data)
       }
 
       value.on(listener)
