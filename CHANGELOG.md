@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.1] - 2022-12-25
+
+[d1a581c](d1a581c632c68a53e0c8397b027a391e93f4bfbb)...[2e741a2](2e741a25eeef15f542d6346e6382e6e4e54db431)
+
+### Bug Fixes
+
+- Use regexp to fetch imports in slots patch ([a8f92ba](a8f92bab4db7b06b776746a170febd66692432c0))
+
+### Miscellaneous Tasks
+
+- Fix changelog headline orders ([c22f880](c22f88086d68b5ac5a8c2016abe98c20ff2294d8))
+- Next release ([2e741a2](2e741a25eeef15f542d6346e6382e6e4e54db431))
+
 ## [1.9.0] - 2022-12-25
 
 [10d312d](10d312d1fca9aacbca5957ddd9e125772e13f796)...[d1a581c](d1a581c632c68a53e0c8397b027a391e93f4bfbb)
