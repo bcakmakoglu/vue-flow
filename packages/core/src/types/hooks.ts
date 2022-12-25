@@ -65,6 +65,11 @@ export interface FlowEvents {
   selectionDrag: NodeDragEvent
   selectionDragStop: NodeDragEvent
   selectionContextMenu: { event: MouseEvent; nodes: GraphNode[] }
+  selectionStart: MouseEvent
+  selectionEnd: MouseEvent
+  viewportChangeStart: ViewportTransform
+  viewportChange: ViewportTransform
+  viewportChangeEnd: ViewportTransform
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent
@@ -82,21 +87,6 @@ export interface FlowEvents {
   edgeUpdateEnd: EdgeMouseEvent
 }
 
-export type FlowHooks = Readonly<{
-  [key in keyof FlowEvents]: EventHook<FlowEvents[key]>
-}>
-
-export type FlowHooksOn = Readonly<{
-  [key in keyof FlowEvents as `on${Capitalize<key>}`]: EventHookOn<FlowEvents[key]>
-}>
-
-export type FlowHooksEmit = Readonly<{
-  [key in keyof FlowEvents]: EventHookTrigger<FlowEvents[key]>
-}>
-
-/**
- * Vue Flow component event emitter definitions
- */
 export interface Emits {
   (event: 'nodesChange', changes: NodeChange[]): void
   (event: 'edgesChange', changes: EdgeChange[]): void
@@ -119,10 +109,10 @@ export interface Emits {
   (
     event: 'connectStart',
     connectionEvent: {
-      event: MouseEvent
+      event?: MouseEvent
     } & OnConnectStartParams,
   ): void
-  (event: 'connectEnd', connectionEvent: MouseEvent): void
+  (event: 'connectEnd', connectionEvent?: MouseEvent): void
   (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
@@ -130,6 +120,11 @@ export interface Emits {
   (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
   (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
   (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
+  (event: 'selectionStart', selectionEvent: MouseEvent): void
+  (event: 'selectionEnd', selectionEvent: MouseEvent): void
+  (event: 'viewportChangeStart', viewport: ViewportTransform): void
+  (event: 'viewportChange', viewport: ViewportTransform): void
+  (event: 'viewportChangeEnd', viewport: ViewportTransform): void
   (event: 'paneReady', paneEvent: VueFlowStore): void
   (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
   (event: 'paneClick', paneEvent: MouseEvent): void
@@ -146,12 +141,25 @@ export interface Emits {
   (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
   (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'updateNodeInternals'): void
 
   /** v-model event definitions */
   (event: 'update:modelValue', value: FlowElements): void
   (event: 'update:nodes', value: GraphNode[]): void
   (event: 'update:edges', value: GraphEdge[]): void
 }
+
+export type FlowHooks = Readonly<{
+  [key in keyof FlowEvents]: EventHook<FlowEvents[key]>
+}>
+
+export type FlowHooksOn = Readonly<{
+  [key in keyof FlowEvents as `on${Capitalize<key>}`]: EventHookOn<FlowEvents[key]>
+}>
+
+export type FlowHooksEmit = Readonly<{
+  [key in keyof FlowEvents]: EventHookTrigger<FlowEvents[key]>
+}>
 
 /**
  * To type `Args` (the event callback arguments) pass an array as argument list as first generic type

@@ -1,5 +1,5 @@
 import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '~/types'
-import { ConnectionLineType, ConnectionMode, PanOnScrollMode } from '~/types'
+import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '~/types'
 import {
   BezierEdge,
   DefaultNode,
@@ -56,6 +56,8 @@ const defaultState = (): State => ({
     [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
   ],
 
+  selectionMode: SelectionMode.Full,
+  paneDragging: false,
   preventScrolling: true,
   zoomOnScroll: true,
   zoomOnPinch: true,
@@ -70,6 +72,8 @@ const defaultState = (): State => ({
 
   nodesSelectionActive: false,
   userSelectionActive: false,
+
+  userSelectionRect: null,
 
   defaultMarkerColor: '#b1b1b7',
   connectionLineStyle: {},
@@ -94,11 +98,13 @@ const defaultState = (): State => ({
   nodesDraggable: true,
   elementsSelectable: true,
   selectNodesOnDrag: true,
+  selectionOnDrag: false,
   multiSelectionActive: false,
   selectionKeyCode: 'Shift',
   multiSelectionKeyCode: 'Meta',
   zoomActivationKeyCode: 'Meta',
   deleteKeyCode: 'Backspace',
+  panActivationKeyCode: 'Space',
 
   hooks: createHooks(),
 

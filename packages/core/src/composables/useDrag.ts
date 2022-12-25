@@ -3,7 +3,7 @@ import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { Ref } from 'vue'
 import type { MaybeRef } from '@vueuse/core'
-import type { NodeDragEvent, NodeDragItem, SnapGrid, XYPosition } from '~/types'
+import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 
@@ -22,7 +22,7 @@ function useDrag(params: UseDragParams) {
   const dragging = scope.run(() => {
     const {
       snapToGrid,
-      snapGrid: globalSnapGrid,
+      snapGrid,
       noDragClassName,
       nodes,
       nodeExtent,
@@ -41,8 +41,6 @@ function useDrag(params: UseDragParams) {
     let dragItems = $ref<NodeDragItem[]>()
     let lastPos = $ref<Partial<XYPosition>>({ x: undefined, y: undefined })
     let dragHandler = $ref<any>()
-
-    const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid ? globalSnapGrid : undefined)
 
     const getPointerPosition = useGetPointerPosition()
 
@@ -66,7 +64,7 @@ function useDrag(params: UseDragParams) {
                 handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
               }
 
-              const mousePos = getPointerPosition(event, hasSnapGrid(node?.snapGrid) as SnapGrid)
+              const mousePos = getPointerPosition(event, snapToGrid ? snapGrid : undefined)
               dragItems = getDragItems(nodes, mousePos, getNode, id)
 
               if (onStart && dragItems) {
@@ -79,9 +77,7 @@ function useDrag(params: UseDragParams) {
               }
             })
             .on('drag', (event: UseDragEvent) => {
-              const snapGrid = hasSnapGrid(node?.snapGrid) as SnapGrid
-
-              const mousePos = getPointerPosition(event, snapGrid)
+              const mousePos = getPointerPosition(event, snapToGrid ? snapGrid : undefined)
 
               let hasChange = false
 

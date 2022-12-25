@@ -56,6 +56,7 @@ export default {
     <div class="vue-flow__edge-labels" />
 
     <NodeRenderer />
+
     <slot />
   </div>
 </template>

@@ -8,6 +8,8 @@ import type {
   FlowExportObject,
   FlowOptions,
   Rect,
+  SelectionMode,
+  SelectionRect,
   SnapGrid,
   XYPosition,
 } from './flow'
@@ -15,7 +17,7 @@ import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent }
 import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
-import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, Viewport, ViewportFunctions } from './zoom'
+import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { StartHandle } from './handle'
@@ -48,7 +50,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   minZoom: number
   /** use setMaxZoom action to change maxZoom */
   maxZoom: number
-  defaultViewport: Viewport
+  defaultViewport: ViewportTransform
   /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent
@@ -56,7 +58,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** viewport dimensions - do not change! */
   readonly dimensions: Dimensions
   /** viewport transform x, y, z - do not change!  */
-  readonly viewport: Viewport
+  readonly viewport: ViewportTransform
   /** if true will skip rendering any elements currently not inside viewport until they become visible */
   onlyRenderVisibleElements: boolean
   nodesSelectionActive: boolean
@@ -67,6 +69,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   selectionKeyCode: KeyFilter | null
   multiSelectionKeyCode: KeyFilter | null
   zoomActivationKeyCode: KeyFilter | null
+  panActivationKeyCode: KeyFilter | null
 
   connectionMode: ConnectionMode
   connectionLineOptions: ConnectionLineOptions
@@ -95,7 +98,10 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   elementsSelectable: boolean
   selectNodesOnDrag: boolean
 
-  panOnDrag: boolean
+  userSelectionRect: SelectionRect | null
+  selectionOnDrag: boolean
+  selectionMode: SelectionMode
+  panOnDrag: boolean | number[]
   zoomOnScroll: boolean
   zoomOnPinch: boolean
   panOnScroll: boolean
@@ -103,16 +109,17 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   panOnScrollMode: PanOnScrollMode
   zoomOnDoubleClick: boolean
   preventScrolling: boolean
+  paneDragging: boolean
 
   initialized: boolean
   applyDefault: boolean
   autoConnect: boolean | Connector
 
-  fitViewOnInit?: boolean
+  fitViewOnInit: boolean
 
-  noDragClassName?: 'nodrag' | string
-  noWheelClassName?: 'nowheel' | string
-  noPanClassName?: 'nopan' | string
+  noDragClassName: 'nodrag' | string
+  noWheelClassName: 'nowheel' | string
+  noPanClassName: 'nopan' | string
 
   defaultEdgeOptions?: DefaultEdgeOptions
 

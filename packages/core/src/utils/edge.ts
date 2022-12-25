@@ -1,4 +1,4 @@
-import type { EdgePositions, Getters, GraphEdge, GraphNode, HandleElement, Rect, Viewport, XYPosition } from '~/types'
+import type { EdgePositions, Getters, GraphEdge, GraphNode, HandleElement, Rect, ViewportTransform, XYPosition } from '~/types'
 import { Position } from '~/types'
 
 export const getHandlePosition = (position: Position, rect: Rect, handle?: HandleElement): XYPosition => {
@@ -83,7 +83,7 @@ interface IsEdgeVisibleParams {
   targetHeight: number
   width: number
   height: number
-  viewport: Viewport
+  viewport: ViewportTransform
 }
 
 export function isEdgeVisible({

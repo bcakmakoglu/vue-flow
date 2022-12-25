@@ -42,6 +42,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   disableKeyboardA11y: undefined,
   edgesFocusable: undefined,
   nodesFocusable: undefined,
+  selectionOnDrag: undefined,
 })
 
 const emit = defineEmits<{
@@ -77,6 +78,11 @@ const emit = defineEmits<{
   (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
   (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
   (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
+  (event: 'selectionStart', selectionEvent: MouseEvent): void
+  (event: 'selectionEnd', selectionEvent: MouseEvent): void
+  (event: 'viewportChangeStart', viewport: ViewportTransform): void
+  (event: 'viewportChange', viewport: ViewportTransform): void
+  (event: 'viewportChangeEnd', viewport: ViewportTransform): void
   (event: 'paneReady', paneEvent: VueFlowStore): void
   (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
   (event: 'paneClick', paneEvent: MouseEvent): void
@@ -167,10 +173,12 @@ export default {
         <slot name="connection-line" />
       </template>
 
-      <slot name="zoom-pane" />
-    </Viewport>
+      <template #zoom-pane>
+        <slot name="zoom-pane" />
+      </template>
 
-    <slot />
+      <slot />
+    </Viewport>
 
     <A11yDescriptions />
   </div>

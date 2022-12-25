@@ -1,5 +1,5 @@
 import type { Component, VNode } from 'vue'
-import type { ClassFunc, Dimensions, ElementData, Position, SnapGrid, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
+import type { ClassFunc, Dimensions, ElementData, Position, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
 import type { DefaultNodeTypes, NodeComponent } from './components'
 import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './handle'
 import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
