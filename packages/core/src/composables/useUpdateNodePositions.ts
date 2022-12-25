@@ -1,13 +1,13 @@
 import type { NodeDragItem, SnapGrid, XYPosition } from '~/types'
 
 function useUpdateNodePositions() {
-  const { getSelectedNodes, nodeExtent, updateNodePositions, findNode } = useVueFlow()
+  const { getSelectedNodes, nodeExtent, updateNodePositions, findNode, snapGrid, snapToGrid } = useVueFlow()
 
-  return (positionDiff: XYPosition, snapToGrid: boolean, snapGrid: SnapGrid | undefined, isShiftPressed = false) => {
+  return (positionDiff: XYPosition, isShiftPressed = false) => {
     // by default a node moves 5px on each key press, or 20px if shift is pressed
     // if snap grid is enabled, we use that for the velocity.
-    const xVelo = snapToGrid && snapGrid ? snapGrid[0] : 5
-    const yVelo = snapToGrid && snapGrid ? snapGrid[1] : 5
+    const xVelo = snapToGrid.value ? snapGrid.value[0] : 5
+    const yVelo = snapToGrid.value ? snapGrid.value[1] : 5
     const factor = isShiftPressed ? 4 : 1
 
     const positionDiffX = positionDiff.x * xVelo * factor
