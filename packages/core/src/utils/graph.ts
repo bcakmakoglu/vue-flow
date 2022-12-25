@@ -161,6 +161,8 @@ export const connectionExists = (edge: Edge | Connection, elements: Elements) =>
   )
 
 /**
+ * @deprecated Use store instance and call `addEdges` with template-ref or the one received by `onPaneReady` instead
+ *
  * Intended for options API
  * In composition API you can access utilities from `useVueFlow`
  */
@@ -186,6 +188,8 @@ export const addEdge = (edgeParams: Edge | Connection, elements: Elements, defau
 }
 
 /**
+ * @deprecated Use store instance and call `updateEdge` with template-ref or the one received by `onPaneReady` instead
+ *
  * Intended for options API
  * In composition API you can access utilities from `useVueFlow`
  */
