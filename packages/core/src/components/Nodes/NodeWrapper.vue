@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { isNumber } from '@vueuse/core'
 import type { ReactiveVariable } from 'vue/macros'
-import type { GraphNode, HandleConnectable, NodeComponent, SnapGrid, XYZPosition } from '../../types'
+import type { GraphNode, HandleConnectable, NodeComponent, XYZPosition } from '../../types'
 import { ARIA_NODE_DESC_KEY } from '../../utils/a11y'
 
 const { id, type, name, draggable, selectable, connectable, ...props } = defineProps<{
@@ -34,7 +34,6 @@ const {
   getIntersectingNodes,
   getNodeTypes,
   nodeExtent,
-  onNodesInitialized,
   elevateNodesOnSelect,
   disableKeyboardA11y,
   ariaLiveMessage,
