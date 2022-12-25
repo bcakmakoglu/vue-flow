@@ -10,7 +10,6 @@ const { id, type, name, draggable, selectable, connectable, ...props } = defineP
   selectable: boolean
   connectable: HandleConnectable
   focusable: boolean
-  snapGrid?: SnapGrid
   type: NodeComponent | Function | Object | false
   name: string
   node: GraphNode
@@ -213,8 +212,6 @@ const onKeyDown = (event: KeyboardEvent) => {
         x: arrowKeyDiffs[event.key].x,
         y: arrowKeyDiffs[event.key].y,
       },
-      !!props.snapGrid,
-      props.snapGrid,
       event.shiftKey,
     )
   }

@@ -34,8 +34,6 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   connectable?: HandleConnectable
   focusable?: boolean
   dragHandle?: string
-  /** move on grid */
-  snapGrid?: SnapGrid
   /** called when used as target for new connection */
   isValidTargetPos?: ValidConnectionFunc
   /** called when used as source for new connection */
