@@ -67,21 +67,16 @@ onMounted(() => {
   ]
 })
 
-const { onPaneReady } = useVueFlow({
+useVueFlow({
   connectionMode: ConnectionMode.Loose,
   connectionLineStyle,
   snapToGrid: true,
   snapGrid,
-  defaultZoom: 1.5,
-})
-onPaneReady((i) => {
-  i.fitView()
-  console.log('flow loaded:', i)
 })
 </script>
 
 <template>
-  <VueFlow v-model="elements" :style="{ backgroundColor: bgColor }">
+  <VueFlow v-model="elements" fit-view-on-init :style="{ backgroundColor: bgColor }">
     <template #node-selectorNode="props">
       <ColorSelectorNode v-bind="props" />
     </template>

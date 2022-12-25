@@ -43,6 +43,7 @@ const onDrop = (event: DragEvent) => {
     position,
     label: `${type} node`,
   } as Node
+
   addNodes([newNode])
 }
 </script>

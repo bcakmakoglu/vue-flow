@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 import type { Elements } from '@vue-flow/core'
+import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -14,12 +14,13 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onPaneReady, onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow({
-  defaultZoom: 1.5,
+const { onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow({
   minZoom: 0.2,
   maxZoom: 4,
   connectOnClick: true,
   fitViewOnInit: false,
+  selectionOnDrag: true,
+  panOnDrag: [2],
 })
 
 onNodeDragStop((e) => console.log('drag stop', e))

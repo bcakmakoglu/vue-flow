@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { VueFlow, addEdge, isNode } from '@vue-flow/core'
+import { VueFlow, isNode } from '@vue-flow/core'
 
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -50,7 +50,7 @@ export default defineComponent({
       this.instance = instance as any
     },
     onConnect(params: FlowEvents['connect']) {
-      addEdge(params, this.elements)
+      this.instance?.addEdges([params])
     },
   },
 })
