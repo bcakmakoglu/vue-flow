@@ -18,8 +18,8 @@ const dragging = useDrag({
   },
 })
 
-watch($$(disableKeyboardA11y), (a11yDisabled) => {
-  if (!a11yDisabled) {
+onMounted(() => {
+  if (!disableKeyboardA11y) {
     el.value?.focus({ preventScroll: true })
   }
 })
@@ -33,9 +33,13 @@ const innerStyle = computed(() => ({
   left: `${selectedNodesBBox.x}px`,
 }))
 
-const onContextMenu = (event: MouseEvent) => emits.selectionContextMenu({ event, nodes: getSelectedNodes })
+function onContextMenu(event: MouseEvent) {
+  emits.selectionContextMenu({ event, nodes: getSelectedNodes })
+}
 
-const onKeyDown = (event: KeyboardEvent) => {
+function onKeyDown(event: KeyboardEvent) {
+  if (disableKeyboardA11y) return
+
   if (arrowKeyDiffs[event.key]) {
     updatePositions(
       {
@@ -68,7 +72,7 @@ export default {
       :style="innerStyle"
       :tabIndex="disableKeyboardA11y ? undefined : -1"
       @contextmenu="onContextMenu"
-      @keydown="disableKeyboardA11y ? undefined : onKeyDown"
+      @keydown="onKeyDown"
     />
   </div>
 </template>
