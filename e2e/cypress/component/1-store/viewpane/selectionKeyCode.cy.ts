@@ -17,7 +17,7 @@ describe('Store State: `selectionKeyCode`', () => {
     cy.window().then((win) => {
       cy.get('body').trigger('keydown', { key: 'Shift', release: false })
 
-      cy.get('.vue-flow__selectionpane')
+      cy.get('.vue-flow__pane')
         .should('exist')
         .trigger('mousedown', {
           which: 1,
@@ -44,7 +44,7 @@ describe('Store State: `selectionKeyCode`', () => {
       store.selectionKeyCode.value = 'Control'
       cy.get('body').trigger('keydown', { key: 'Control', release: false })
 
-      cy.get('.vue-flow__selectionpane')
+      cy.get('.vue-flow__pane')
         .should('exist')
         .trigger('mousedown', {
           which: 1,
@@ -70,7 +70,7 @@ describe('Store State: `selectionKeyCode`', () => {
     cy.window().then((win) => {
       store.selectionKeyCode.value = true
 
-      cy.get('.vue-flow__selectionpane')
+      cy.get('.vue-flow__pane')
         .should('exist')
         .trigger('mousedown', {
           which: 1,
