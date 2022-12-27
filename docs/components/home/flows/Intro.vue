@@ -257,7 +257,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
               y="0"
               width="50"
               height="50"
-            ></rect>
+            />
             <rect
               :class="animations[1].className"
               :style="{ '--animation-duration': `${animations[1].duration}s` }"
@@ -265,7 +265,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
               y="100"
               width="50"
               height="50"
-            ></rect>
+            />
             <rect
               :class="animations[2].className"
               :style="{ '--animation-duration': `${animations[2].duration}s` }"
@@ -273,7 +273,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
               y="0"
               width="50"
               height="50"
-            ></rect>
+            />
             <rect
               :class="animations[3].className"
               :style="{ '--animation-duration': `${animations[3].duration}s` }"
@@ -281,7 +281,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
               y="100"
               width="50"
               height="50"
-            ></rect>
+            />
           </pattern>
         </template>
       </Background>
