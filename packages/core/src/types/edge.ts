@@ -154,17 +154,13 @@ export type GraphEdge<Data = ElementData, CustomEvents extends Record<string, Cu
 } & EdgePositions
 
 /** these props are passed to edge components */
-export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
+export interface EdgeProps<Data = ElementData, CustomEvents = {}> extends EdgeLabelOptions, EdgePositions {
   id: string
   sourceNode: GraphNode
   targetNode: GraphNode
   type?: keyof DefaultEdgeTypes | string
   label?: string | VNode | Component<EdgeTextProps> | Object
   style?: CSSProperties
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
   selected?: boolean
   sourcePosition: Position
   targetPosition: Position
@@ -172,11 +168,6 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
   targetHandleId?: string
   source: string
   target: string
-  labelStyle?: CSSProperties
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
   animated?: boolean
   updatable?: boolean
   markerStart: string
@@ -188,21 +179,11 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> {
   events: EdgeEventsOn<CustomEvents>
 }
 
-/** these props are passed to smooth step edges */
-export interface SmoothStepEdgeProps<Data = ElementData, CustomEvents = {}> extends Omit<EdgeProps<Data, CustomEvents>, 'type'> {
-  borderRadius?: number
-}
-
-export interface BaseEdgeProps {
+export interface BaseEdgeProps extends EdgeLabelOptions {
   labelX?: number
   labelY?: number
   path: string
   label?: any
-  labelStyle?: any
-  labelShowBg?: boolean
-  labelBgStyle?: any
-  labelBgPadding?: [number, number]
-  labelBgBorderRadius?: number
   markerStart?: string
   markerEnd?: string
   interactionWidth?: number
