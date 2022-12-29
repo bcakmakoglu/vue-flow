@@ -188,3 +188,23 @@ export interface BaseEdgeProps extends EdgeLabelOptions {
   markerEnd?: string
   interactionWidth?: number
 }
+
+export type BezierEdgeProps = EdgePositions &
+  BezierPathOptions &
+  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
+  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+
+export type SimpleBezierEdgeProps = EdgePositions &
+  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
+  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+
+export type StraightEdgeProps = EdgePositions & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
+
+export type StepEdgeProps = EdgePositions &
+  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
+  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+
+export type SmoothStepEdgeProps = EdgePositions &
+  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
+  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'> &
+  SmoothStepPathOptions

@@ -1,12 +1,7 @@
 import type { FunctionalComponent } from 'vue'
 import BaseEdge from './BaseEdge'
+import type { BezierEdgeProps } from '~/types'
 import { Position } from '~/types'
-import type { BaseEdgeProps, BezierPathOptions, EdgePositions, EdgeProps } from '~/types'
-
-export type BezierEdgeProps = EdgePositions &
-  BezierPathOptions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
 
 const BezierEdge: FunctionalComponent<BezierEdgeProps> = function (
   { sourcePosition = Position.Bottom, targetPosition = Position.Top, ...props },
