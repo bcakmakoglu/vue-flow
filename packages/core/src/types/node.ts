@@ -34,8 +34,10 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   connectable?: HandleConnectable
   focusable?: boolean
   dragHandle?: string
+  // todo: deprecate this and remove them in next minor release
   /** called when used as target for new connection */
   isValidTargetPos?: ValidConnectionFunc
+  // todo: deprecate this and remove them in next minor release
   /** called when used as source for new connection */
   isValidSourcePos?: ValidConnectionFunc
   /** define node extent, i.e. area in which node can be moved */
