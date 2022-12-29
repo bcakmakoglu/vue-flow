@@ -72,7 +72,7 @@ const getType = (type?: string, template?: GraphNode['template']) => {
   if (typeof nodeType !== 'string') return nodeType
 
   const slot = slots?.[`node-${name}`]
-  if (!slot?.({})) {
+  if (!slot) {
     warn(`Node type "${type}" not found and no node-slot detected. Using fallback type "default".`)
     return false
   }
