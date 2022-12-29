@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EffectScope, WatchStopHandle } from 'vue'
+import type { EffectScope } from 'vue'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
@@ -8,9 +8,6 @@ import MarkerDefinitions from './MarkerDefinitions.vue'
 const slots = inject(Slots)
 
 const {
-  emits,
-  connectionMode,
-  edgeUpdaterRadius,
   onPaneReady,
   connectionStartHandle,
   nodesConnectable,
@@ -19,12 +16,9 @@ const {
   elementsSelectable,
   getSelectedNodes,
   getSelectedEdges,
-  nodesSelectionActive,
   getNode,
-  getNodes,
   getEdges,
   getEdgeTypes,
-  addSelectedEdges,
   noPanClassName,
   elevateEdgesOnSelect,
 } = $(useVueFlow())
@@ -141,6 +135,7 @@ export default {
           :target-node="getNode(edge.target)"
           :selectable="selectable(edge.selectable)"
           :updatable="updatable(edge.updatable)"
+          :focusable="focusable(edge.focusable)"
           :class="getClass(edge)"
         />
       </g>
