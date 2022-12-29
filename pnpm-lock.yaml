@@ -44,7 +44,7 @@ importers:
       '@vue-flow/minimap': workspace:*
       '@vue-flow/node-resizer': workspace:*
       '@vue-flow/node-toolbar': workspace:*
-      '@vue/repl': 1.1.2
+      '@vue/repl': 1.3.2
       '@windicss/plugin-scrollbar': ^1.2.3
       blobity: ^0.2.1
       canvas-confetti: ^1.6.0
@@ -74,7 +74,7 @@ importers:
       '@vue-flow/minimap': link:../packages/minimap
       '@vue-flow/node-resizer': link:../packages/node-resizer
       '@vue-flow/node-toolbar': link:../packages/node-toolbar
-      '@vue/repl': 1.1.2_vue@3.2.37
+      '@vue/repl': 1.3.2_vue@3.2.37
       blobity: 0.2.1_react@18.2.0+vue@3.2.37
       canvas-confetti: 1.6.0
       vite: 2.9.15
@@ -2925,8 +2925,8 @@ packages:
       '@vue/shared': 3.2.45
     dev: true
 
-  /@vue/repl/1.1.2_vue@3.2.37:
-    resolution: {integrity: sha512-IYcoKZgwdn6spiVwGuWeXAbqAv3Nhjc/0dKEJ3BT5U6kV7KLLCwnuizjOvV8P+yFmtsfNkWbmWv9/56Pv5rH/w==}
+  /@vue/repl/1.3.2_vue@3.2.37:
+    resolution: {integrity: sha512-5joGOuTFmjaugG3E1h/oP1EXSMcVXRUwLIoo8xvYQnqDrCT6g1SfsH1pfei5PpC5DUxMX1584CekZu6REgGYkQ==}
     peerDependencies:
       vue: ^3.2.13
     dependencies:
