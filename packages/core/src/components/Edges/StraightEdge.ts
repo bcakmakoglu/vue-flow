@@ -1,8 +1,6 @@
 import type { FunctionalComponent } from 'vue'
 import BaseEdge from './BaseEdge'
-import type { BaseEdgeProps, EdgePositions } from '~/types'
-
-export type StraightEdgeProps = EdgePositions & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
+import type { StraightEdgeProps } from '~/types'
 
 const StraightEdge: FunctionalComponent<StraightEdgeProps> = function (props, { attrs }) {
   const [path, labelX, labelY] = getStraightPath(props)

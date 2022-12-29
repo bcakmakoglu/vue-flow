@@ -11,15 +11,10 @@ export { default as Panel } from './components/Panel/Panel.vue'
 
 export {
   StraightEdge,
-  StraightEdgeProps,
   StepEdge,
-  StepEdgeProps,
   BezierEdge,
-  BezierEdgeProps,
   SimpleBezierEdge,
-  SimpleBezierEdgeProps,
   SmoothStepEdge,
-  SmoothStepEdgeProps,
   BaseEdge,
   EdgeText,
   EdgeLabelRenderer,
