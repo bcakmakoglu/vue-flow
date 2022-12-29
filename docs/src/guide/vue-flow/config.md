@@ -215,7 +215,7 @@ const edges = ref([
 
 - Type: [`Record<string, EdgeComponent>`](/typedocs/types/EdgeComponent)
 
-- Default: [`DefaultEdgeTypes`](/typedocs/types/DefaultEdgeTypes)
+- Default: [`DefaultEdgeTypes`](/typedocs/interfaces/DefaultEdgeTypes)
 
 - Details:
 

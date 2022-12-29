@@ -102,7 +102,7 @@ You can also apply changes (like removing elements safely) using
 the [`applyEdgeChanges`](/typedocs/interfaces/Actions#applyedgechanges/) utility function, which expects an array
 of [changes](/typedocs/types/EdgeChange) to be applied to the currently stored edges.
 
-## [Default Edge-Types](/typedocs/types/DefaultEdgeTypes)
+## [Default Edge-Types](/typedocs/interfaces/DefaultEdgeTypes)
 
 Vue Flow comes with built-in edges that you can use right out of the box.
 These edge types include `default` (bezier), `step`, `smoothstep` and `straight`.
