@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.9.2
+
+### Patch Changes
+
+- [#566](https://github.com/bcakmakoglu/vue-flow/pull/566) [`b324a06`](https://github.com/bcakmakoglu/vue-flow/commit/b324a06066c6a9af9ed0e1ff789d31c8a22982f4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix edge component prop types
+
 ## 1.9.1
 
 ### Patch Changes
