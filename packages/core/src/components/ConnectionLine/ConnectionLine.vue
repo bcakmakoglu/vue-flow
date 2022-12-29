@@ -3,9 +3,7 @@ import type { GraphNode } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
 import { getMarkerId } from '../../utils/graph'
 
-const { sourceNode } = defineProps<{
-  sourceNode: GraphNode
-}>()
+const { sourceNode } = defineProps<{ sourceNode: GraphNode }>()
 
 const {
   getNodes,
@@ -23,7 +21,6 @@ const slots = inject(Slots)?.['connection-line']
 const hasSlot = slots?.({})
 
 const handleId = connectionStartHandle!.handleId
-const nodeId = connectionStartHandle!.nodeId
 const type = connectionStartHandle!.type
 
 const sourceHandle =
