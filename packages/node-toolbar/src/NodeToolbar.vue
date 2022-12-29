@@ -82,7 +82,7 @@ export default {
 </script>
 
 <template>
-  <Teleport :to="viewportRef">
+  <Teleport :to="viewportRef" :disabled="!viewportRef">
     <div v-if="isActive && nodes.length" v-bind="$attrs" :style="wrapperStyle" class="vue-flow__node-toolbar">
       <slot />
     </div>
