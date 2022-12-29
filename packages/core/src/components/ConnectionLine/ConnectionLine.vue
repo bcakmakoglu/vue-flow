@@ -6,7 +6,6 @@ import { getMarkerId } from '../../utils/graph'
 const { sourceNode } = defineProps<{ sourceNode: GraphNode }>()
 
 const {
-  getNodes,
   connectionMode,
   connectionStartHandle,
   connectionPosition,
@@ -94,7 +93,6 @@ export default {
         targetX,
         targetY,
         targetPosition,
-        nodes: getNodes,
         sourceNode,
         sourceHandle,
         markerEnd: `url(#${getMarkerId(connectionLineOptions.markerEnd)})`,

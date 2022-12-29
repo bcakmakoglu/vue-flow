@@ -70,8 +70,6 @@ export interface ConnectionLineProps {
   connectionLineType: ConnectionLineType
   /** extra styles */
   connectionLineStyle: CSSProperties
-  /** All currently stored nodes */
-  nodes: GraphNode[]
   /** The source node of the connection line */
   sourceNode: GraphNode
   /** The source handle element of the connection line */
