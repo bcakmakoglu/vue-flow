@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.3] - 2022-12-29
+
+[5356e7b](5356e7be93228f8d1a87e73b203995b119222469)...[47b8211](47b821109790cf091b30e2d41f7a174c3eeae1c8)
+
+### Bug Fixes
+
+- Use correct vue flow aria names ([fbebe56](fbebe562403f07ee43cc3f921315de81835de83a))
+- Await target before teleporting to viewport ([6b4a21c](6b4a21ca8105f4acbbfe522d64592e7bf6c9fe08))
+- Add container styles to background ([f2df224](f2df2246078962a2afc1a2f4324fbe24e188bce6))
+
+### Miscellaneous Tasks
+
+- Next release ([47b8211](47b821109790cf091b30e2d41f7a174c3eeae1c8))
+
 ## [1.9.2] - 2022-12-29
 
 [2e741a2](2e741a25eeef15f542d6346e6382e6e4e54db431)...[5356e7b](5356e7be93228f8d1a87e73b203995b119222469)
