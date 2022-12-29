@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
 import { isClient } from '@vueuse/core'
+import { Suspense } from 'vue'
 import DocsRepl from './DocsRepl.vue'
 
 export default defineComponent({
@@ -8,7 +9,7 @@ export default defineComponent({
     return () => {
       if (!isClient) return null
 
-      return h(DocsRepl, props)
+      return h(Suspense, h(DocsRepl, props))
     }
   },
 })

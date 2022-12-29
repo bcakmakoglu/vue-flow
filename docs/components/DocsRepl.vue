@@ -49,7 +49,7 @@ watchEffect(() => {
   vh.value = `${window.innerHeight}px`
 })
 
-const files: any = {}
+const files: Record<string, typeof imports[keyof typeof imports]> = {}
 const imports = exampleImports[props.example]
 const additionalImports = 'additionalImports' in imports ? imports.additionalImports : {}
 
@@ -61,33 +61,27 @@ for (const example of Object.keys(imports).filter((i) => i !== 'additionalImport
   }
 }
 
-onMounted(async () => {
-  await store.setVueVersion('3.2.37')
+await store.setVueVersion('3.2.37')
 
-  await store.setFiles(
-    {
-      ...files,
-      'main.css': css,
-    },
-    props.mainFile ?? 'App.vue',
-  )
+await store.setFiles(
+  {
+    ...files,
+    'main.css': css,
+  },
+  props.mainFile ?? 'App.vue',
+)
 
-  // pre-set import map
-  await store.setImportMap({
-    imports: {
-      '@vue-flow/background': `${location.origin}/vue-flow-background.mjs`,
-      '@vue-flow/controls': `${location.origin}/vue-flow-controls.mjs`,
-      '@vue-flow/minimap': `${location.origin}/vue-flow-minimap.mjs`,
-      '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
-      '@vue-flow/node-resizer': `${location.origin}/vue-flow-node-resizer.mjs`,
-      '@vue-flow/node-toolbar': `${location.origin}/vue-flow-node-toolbar.mjs`,
-      ...additionalImports,
-    },
-  })
-
-  if (isClient) {
-    document.body.className = 'examples'
-  }
+// pre-set import map
+store.setImportMap({
+  imports: {
+    '@vue-flow/background': `${location.origin}/vue-flow-background.mjs`,
+    '@vue-flow/controls': `${location.origin}/vue-flow-controls.mjs`,
+    '@vue-flow/minimap': `${location.origin}/vue-flow-minimap.mjs`,
+    '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
+    '@vue-flow/node-resizer': `${location.origin}/vue-flow-node-resizer.mjs`,
+    '@vue-flow/node-toolbar': `${location.origin}/vue-flow-node-toolbar.mjs`,
+    ...additionalImports,
+  },
 })
 
 const sfcOptions = {
@@ -95,6 +89,12 @@ const sfcOptions = {
     reactivityTransform: true,
   },
 } as SFCOptions
+
+onMounted(() => {
+  if (isClient) {
+    document.body.className = 'examples'
+  }
+})
 </script>
 
 <template>
