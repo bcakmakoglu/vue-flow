@@ -41,7 +41,7 @@
 
 ### Patch Changes
 
-- [#558](https://github.com/bcakmakoglu/vue-flow/pull/558) [`bac9893`](https://github.com/bcakmakoglu/vue-flow/commit/bac98930da15fe049ab8f1ac65f09dd67e0000fb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - ⚠️ Deprecate options API utils `addEdge` and `updateEdge`. This utils will be removed soon!
+- [#558](https://github.com/bcakmakoglu/vue-flow/pull/558) [`bac9893`](https://github.com/bcakmakoglu/vue-flow/commit/bac98930da15fe049ab8f1ac65f09dd67e0000fb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - ⚠️ Deprecate options API utils `addEdge` and `updateEdge`. These utils will be removed soon!
 
   #### Resolve deprecation warnings
 
@@ -140,6 +140,23 @@
 - [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `vueFlowId` to `getMarkerId` to uniquely identify markers across multiple vue flow instances
 
 - [#544](https://github.com/bcakmakoglu/vue-flow/pull/544) [`2341b9b`](https://github.com/bcakmakoglu/vue-flow/commit/2341b9bf157aae32415f897b6e8d21c7b24aa139) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update `EdgeRef` injection type to `SVGElement`
+
+### A11y
+
+This release brings A11y support to Vue Flow. All nodes and edges can now receive a `focusable` and `ariaLabel` prop, which can be used to enhance A11y experience. You can also enable focusable globally by using `nodesFocusable` or `edgesFocusable`.
+Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
+
+  #### Props
+
+  - `disableKeyboardA11y`: Use this prop to disable Keyboard controls on the graph.
+  - `defaultViewport`: The old `defaultZoom` and `defaultPosition` props have been merged into a single object called `defaultViewport`.
+  - `nodesFocusable`: Globally enable that nodes can be focused.
+  - `edgesFocusable`: Globally enable that edges can be focused.
+
+  #### Elements
+
+  - `focusable`: Enable focusing for a single node/edge by setting this option.
+  - `ariaLabel`: Specify an aria label for a node/edge
 
 ## 1.7.2
 
