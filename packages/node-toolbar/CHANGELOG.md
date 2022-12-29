@@ -1,5 +1,11 @@
 # @vue-flow/node-toolbar
 
+## 1.0.2
+
+### Patch Changes
+
+- [#569](https://github.com/bcakmakoglu/vue-flow/pull/569) [`c0ee1cd`](https://github.com/bcakmakoglu/vue-flow/commit/c0ee1cdfdc70ea61766b02de8f8acb4f0cad8bac) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wait for viewport ref to be available before teleporting to it
+
 ## 1.0.1
 
 ### Patch Changes

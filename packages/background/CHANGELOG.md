@@ -1,5 +1,11 @@
 # @vue-flow/background
 
+## 1.0.1
+
+### Patch Changes
+
+- [#569](https://github.com/bcakmakoglu/vue-flow/pull/569) [`5373c4d`](https://github.com/bcakmakoglu/vue-flow/commit/5373c4d2e15fc8c50755eb96701e27e173690476) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add container styles to background element to avoid pushing other elements behind background
+
 ## 1.0.0
 
 ### Major Changes
