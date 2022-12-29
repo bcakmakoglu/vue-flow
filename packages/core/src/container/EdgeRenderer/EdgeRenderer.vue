@@ -105,7 +105,7 @@ const getType = (type?: string, template?: GraphEdge['template']) => {
   if (edgeType && typeof edgeType !== 'string') return edgeType
 
   const slot = slots?.[`edge-${name}`]
-  if (!slot?.({})) {
+  if (!slot) {
     warn(`Edge type "${type}" not found and no edge-slot detected. Using fallback type "default".`)
     return false
   }
