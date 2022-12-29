@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.2] - 2022-12-29
+
+[2e741a2](2e741a25eeef15f542d6346e6382e6e4e54db431)...[5356e7b](5356e7be93228f8d1a87e73b203995b119222469)
+
+### Bug Fixes
+
+- Correct edge component prop types ([608f797](608f797527a3378836b2a3235eab8486668a33e1))
+
+### Documentation
+
+- Remove transitions ([da9ec23](da9ec23188a6a2739f5ed274286d975f6e390e20))
+- Update dead links ([9c8c64f](9c8c64fd1d49dcce3b624e7fdc8f02d9f8756747))
+
+### Miscellaneous Tasks
+
+- Next release ([5356e7b](5356e7be93228f8d1a87e73b203995b119222469))
+
+### Refactor
+
+- Use node 18 ([9c4858f](9c4858f4fcd575afd88b28f6d41df6206423dca9))
+- Use frozen lockfile ([df58e4f](df58e4fc72b0db8561fba898f6ddaf6bac070f6e))
+- Correct default edge types object interface ([b4c5dc5](b4c5dc5d2f306f22e4baf6569fb4f74798509f03))
+- Move edge prop types ([37f4985](37f4985c2f4affa6e77583359a564957ec74703d))
+
 ## [1.9.1] - 2022-12-25
 
 [d1a581c](d1a581c632c68a53e0c8397b027a391e93f4bfbb)...[2e741a2](2e741a25eeef15f542d6346e6382e6e4e54db431)
