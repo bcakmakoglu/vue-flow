@@ -4,7 +4,7 @@ const { userSelectionRect } = useVueFlow()
 
 <template>
   <div
-    class="vue-flow__selection react-flow__container"
+    class="vue-flow__selection vue-flow__container"
     :style="{
       width: `${userSelectionRect?.width}px`,
       height: `${userSelectionRect?.height}px`,
