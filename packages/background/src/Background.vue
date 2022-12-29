@@ -54,7 +54,7 @@ export default {
 
 <template>
   <svg
-    class="vue-flow__background"
+    class="vue-flow__background vue-flow__container"
     :style="{
       height: `${height > 100 ? 100 : height}%`,
       width: `${width > 100 ? 100 : width}%`,
