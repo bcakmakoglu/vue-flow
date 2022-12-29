@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.9.3
+
+### Patch Changes
+
+- [`5402c0e`](https://github.com/bcakmakoglu/vue-flow/commit/5402c0ec211ee4d372911e17af9c5aef49656a85) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use correct aria live class names for vue-flow
+
 ## 1.9.2
 
 ### Patch Changes
