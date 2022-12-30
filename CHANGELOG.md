@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.4] - 2022-12-30
+
+[47b8211](47b821109790cf091b30e2d41f7a174c3eeae1c8)...[16d9bb1](16d9bb138b605c3b0ef958dba31d82e67961e6db)
+
+### Bug Fixes
+
+- Slot props undefined on first render ([c1b1821](c1b1821ee6da7e5f74efcaf9540fda4aa766278f))
+- Pass focusable to edge wrapper ([249250e](249250e7afda6248843b311c370d8176a53903dc))
+
+### Features
+
+- Add concurrency ([3701ddc](3701ddcbc925e27b7f94337fbf30672c53c7e33a))
+- Add pnpm cache to build-and-test action ([1e0037c](1e0037c5a1d46907ab12c0df9ebefab0bf897dd3))
+- Add pnpm cache to publish action ([715b9fe](715b9fed6d4622948393ce981ea650e5ae26ac17))
+
+### Miscellaneous Tasks
+
+- Update repl ([8531ee3](8531ee3ad52246587783dfc9e9c76ea7fecc89b2))
+- Cleanup unused vars ([4003101](4003101c70f2ba3e615b9a6f3a455ca75b3a27a3))
+- Next release ([16d9bb1](16d9bb138b605c3b0ef958dba31d82e67961e6db))
+
+### Refactor
+
+- Remove `nodes` property from ConnectionLineProps ([839fa6b](839fa6ba22d801b5f7b6f9a0122dbc1253ae49e9))
+
 ## [1.9.3] - 2022-12-29
 
 [5356e7b](5356e7be93228f8d1a87e73b203995b119222469)...[47b8211](47b821109790cf091b30e2d41f7a174c3eeae1c8)
