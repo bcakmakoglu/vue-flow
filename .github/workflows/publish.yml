@@ -41,8 +41,22 @@ jobs:
       - name: Setup npmrc 🏗
         run: echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
 
+      - name: Get pnpm store directory 🏬
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache 🧃
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies 👨🏻‍💻
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: Bump versions 🏷 and Publish 🚀
         uses: changesets/action@v1
