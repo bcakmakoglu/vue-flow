@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.9.4
+
+### Patch Changes
+
+- [#574](https://github.com/bcakmakoglu/vue-flow/pull/574) [`1160d3d`](https://github.com/bcakmakoglu/vue-flow/commit/1160d3d2fbbae1988c7d72c56a1adcab4b1a53dd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix props being undefined on first render of custom node and edge components
+
+- [#574](https://github.com/bcakmakoglu/vue-flow/pull/574) [`1160d3d`](https://github.com/bcakmakoglu/vue-flow/commit/1160d3d2fbbae1988c7d72c56a1adcab4b1a53dd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `nodes` property from `ConnectionLineProps` - use `getNodes` inside the component instead ⚠️
+
 ## 1.9.3
 
 ### Patch Changes
@@ -146,17 +154,17 @@
 This release brings A11y support to Vue Flow. All nodes and edges can now receive a `focusable` and `ariaLabel` prop, which can be used to enhance A11y experience. You can also enable focusable globally by using `nodesFocusable` or `edgesFocusable`.
 Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
 
-  #### Props
+#### Props
 
-  - `disableKeyboardA11y`: Use this prop to disable Keyboard controls on the graph.
-  - `defaultViewport`: The old `defaultZoom` and `defaultPosition` props have been merged into a single object called `defaultViewport`.
-  - `nodesFocusable`: Globally enable that nodes can be focused.
-  - `edgesFocusable`: Globally enable that edges can be focused.
+- `disableKeyboardA11y`: Use this prop to disable Keyboard controls on the graph.
+- `defaultViewport`: The old `defaultZoom` and `defaultPosition` props have been merged into a single object called `defaultViewport`.
+- `nodesFocusable`: Globally enable that nodes can be focused.
+- `edgesFocusable`: Globally enable that edges can be focused.
 
-  #### Elements
+#### Elements
 
-  - `focusable`: Enable focusing for a single node/edge by setting this option.
-  - `ariaLabel`: Specify an aria label for a node/edge
+- `focusable`: Enable focusing for a single node/edge by setting this option.
+- `ariaLabel`: Specify an aria label for a node/edge
 
 ## 1.7.2
 
