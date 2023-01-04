@@ -131,6 +131,20 @@ watch(
   { flush: 'pre', immediate: true },
 )
 
+watch([() => node.extent, () => nodeExtent], () => {
+  const { position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
+
+  node.computedPosition = { ...node.computedPosition, ...position }
+})
+
+until(() => node.initialized)
+  .toBe(true)
+  .then(() => {
+    const { position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
+
+    node.computedPosition = { ...node.computedPosition, ...position }
+  })
+
 function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
   let nextPos = nodePos
 
@@ -140,14 +154,6 @@ function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
 
   node.computedPosition = nextPos
 }
-
-until(() => node.initialized)
-  .toBe(true)
-  .then(() => {
-    const { position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
-
-    node.computedPosition = { ...node.computedPosition, ...position }
-  })
 
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
