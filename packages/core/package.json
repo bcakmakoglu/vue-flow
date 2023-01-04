@@ -20,7 +20,9 @@
   "files": [
     "dist"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "prepare": "ts-patch install -s",
     "build": "vite build",
