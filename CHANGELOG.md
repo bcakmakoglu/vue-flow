@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.0] - 2023-01-04
+
+[16d9bb1](16d9bb138b605c3b0ef958dba31d82e67961e6db)...[c3848a1](c3848a17005d25170d25b8dc92694dbd6ee8476d)
+
+### Features
+
+- Allow setting padding for extent `parent` ([de71b5a](de71b5af6516409065922a9f2043820883d41c40))
+
+### Miscellaneous Tasks
+
+- Add side effects to pkg json ([615ca43](615ca43e07f761a54af097ff0b6db0d61990e65a))
+- Update changeset ([350dbc2](350dbc2a212de04cdb3a79260340a8f1414b00f8))
+- Next release ([c3848a1](c3848a17005d25170d25b8dc92694dbd6ee8476d))
+
+### Refactor
+
+- Allow omitting width/height styles for parent nodes ([732e773](732e773075bbc481d8ab0811082b60b4ece19ce3))
+
 ## [1.9.4] - 2022-12-30
 
 [47b8211](47b821109790cf091b30e2d41f7a174c3eeae1c8)...[16d9bb1](16d9bb138b605c3b0ef958dba31d82e67961e6db)
