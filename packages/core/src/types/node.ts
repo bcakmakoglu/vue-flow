@@ -4,6 +4,12 @@ import type { DefaultNodeTypes, NodeComponent } from './components'
 import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './handle'
 import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 
+export interface ExtendedParentExtent {
+  range: 'parent'
+  /** Values are top, right, bottom, left, you can use these the same as CSS padding */
+  padding: [number] | [number, number] | [number, number, number] | [number, number, number, number]
+}
+
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
 export type CoordinateExtent = [[number, number], [number, number]]
 
@@ -41,7 +47,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   /** called when used as source for new connection */
   isValidSourcePos?: ValidConnectionFunc
   /** define node extent, i.e. area in which node can be moved */
-  extent?: 'parent' | CoordinateExtent
+  extent?: CoordinateExtent | ExtendedParentExtent | 'parent'
   /** expands parent area to fit child node */
   expandParent?: boolean
   /** define node as a child node by setting a parent node id */

@@ -1,6 +1,14 @@
 import type { Ref } from 'vue'
 import { isNumber } from '@vueuse/shared'
-import type { ComputedGetters, CoordinateExtent, Getters, GraphNode, NodeDragItem, XYPosition } from '~/types'
+import type {
+  ComputedGetters,
+  CoordinateExtent,
+  ExtendedParentExtent,
+  Getters,
+  GraphNode,
+  NodeDragItem,
+  XYPosition,
+} from '~/types'
 
 export function hasSelector(target: Element, selector: string, node: Ref<Element>): boolean {
   let current = target
@@ -59,31 +67,61 @@ export function getEventHandlerParams({
   return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
 }
 
+function getExtentPadding(padding: number[]) {
+  switch (padding.length) {
+    case 1:
+      return [padding[0], padding[0], padding[0], padding[0]]
+    case 2:
+      return [padding[0], padding[1], padding[0], padding[1]]
+    case 3:
+      return [padding[0], padding[1], padding[2], padding[1]]
+    default:
+      return padding || [0, 0, 0, 0]
+  }
+}
+
+function getParentExtent(
+  currentExtent: ExtendedParentExtent | 'parent',
+  node: GraphNode | NodeDragItem,
+  parent: GraphNode,
+): CoordinateExtent | false {
+  const [top, right, bottom, left] = typeof currentExtent !== 'string' ? getExtentPadding(currentExtent.padding) : [0, 0, 0, 0]
+
+  if (
+    parent &&
+    isNumber(parent.computedPosition.x) &&
+    isNumber(parent.computedPosition.y) &&
+    isNumber(parent.dimensions.width) &&
+    isNumber(parent.dimensions.height)
+  ) {
+    return [
+      [parent.computedPosition.x + left, parent.computedPosition.y + top],
+      [
+        parent.computedPosition.x + (parent.dimensions.width - node.dimensions.width) - right,
+        parent.computedPosition.y + (parent.dimensions.height - node.dimensions.height) - bottom,
+      ],
+    ]
+  }
+
+  return false
+}
+
 export function getExtent<T extends NodeDragItem | GraphNode>(item: T, extent?: CoordinateExtent, parent?: GraphNode) {
   let currentExtent = item.extent || extent
 
-  if (item.extent === 'parent') {
+  if (item.extent === 'parent' || (!Array.isArray(item.extent) && item.extent?.range === 'parent')) {
     if (item.parentNode && parent && item.dimensions.width && item.dimensions.height) {
-      currentExtent =
-        parent &&
-        isNumber(parent.computedPosition.x) &&
-        isNumber(parent.computedPosition.y) &&
-        isNumber(parent.dimensions.width) &&
-        isNumber(parent.dimensions.height)
-          ? [
-              [parent.computedPosition.x, parent.computedPosition.y],
-              [
-                parent.computedPosition.x + parent.dimensions.width - item.dimensions.width,
-                parent.computedPosition.y + parent.dimensions.height - item.dimensions.height,
-              ],
-            ]
-          : currentExtent
+      const parentExtent = getParentExtent(item.extent, item, parent)
+
+      if (parentExtent) {
+        currentExtent = parentExtent
+      }
     } else {
       warn('Only child nodes can use a parent extent.')
 
       currentExtent = extent
     }
-  } else if (item.extent && parent) {
+  } else if (Array.isArray(item.extent) && item.extent && parent) {
     const parentX = parent.computedPosition.x
     const parentY = parent.computedPosition.y
 
