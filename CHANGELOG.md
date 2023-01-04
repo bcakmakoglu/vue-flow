@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.1] - 2023-01-04
+
+[c3848a1](c3848a17005d25170d25b8dc92694dbd6ee8476d)...[58fb546](58fb5461b82a8ec3f4311d9cd24464c4ef26f093)
+
+### Bug Fixes
+
+- Reapply node extent on change ([94344a6](94344a6d4258696fefd516c43030e8c8685255e6))
+
+### Miscellaneous Tasks
+
+- Next release ([58fb546](58fb5461b82a8ec3f4311d9cd24464c4ef26f093))
+
 ## [1.10.0] - 2023-01-04
 
 [16d9bb1](16d9bb138b605c3b0ef958dba31d82e67961e6db)...[c3848a1](c3848a17005d25170d25b8dc92694dbd6ee8476d)
