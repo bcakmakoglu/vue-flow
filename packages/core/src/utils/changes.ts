@@ -15,6 +15,8 @@ import type {
   NodeChange,
   NodeRemoveChange,
   NodeSelectionChange,
+  StyleFunc,
+  Styles,
 } from '~/types'
 
 function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
@@ -23,27 +25,29 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
     const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
 
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
-      if (!parent.style) parent.style = {}
-      else if (isFunction(parent.style)) parent.style = { ...parent.style(parent) }
+      let parentStyles: Styles = {}
 
-      parent.style.width = parent.style.width ?? parent.dimensions.width
-      parent.style.height = parent.style.height ?? parent.dimensions.height
+      if (isFunction(parent.style)) parentStyles = { ...parent.style(parent) }
+      else if (parent.style) parentStyles = { ...parent.style }
+
+      parentStyles.width = parentStyles.width ?? `${parent.dimensions.width}px`
+      parentStyles.height = parentStyles.height ?? `${parent.dimensions.height}px`
 
       if (extendWidth > 0) {
-        if (isString(parent.style.width)) {
-          const currWidth = Number(parent.style.width.replace('px', ''))
-          parent.style.width = `${currWidth + extendWidth}px`
+        if (isString(parentStyles.width)) {
+          const currWidth = Number(parentStyles.width.replace('px', ''))
+          parentStyles.width = `${currWidth + extendWidth}px`
         } else {
-          parent.style.width += extendWidth
+          parentStyles.width += extendWidth
         }
       }
 
       if (extendHeight > 0) {
-        if (isString(parent.style.height)) {
-          const currWidth = Number(parent.style.height.replace('px', ''))
-          parent.style.height = `${currWidth + extendHeight}px`
+        if (isString(parentStyles.height)) {
+          const currWidth = Number(parentStyles.height.replace('px', ''))
+          parentStyles.height = `${currWidth + extendHeight}px`
         } else {
-          parent.style.height += extendHeight
+          parentStyles.height += extendHeight
         }
       }
 
@@ -51,11 +55,11 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         const xDiff = Math.abs(updateItem.position.x)
         parent.position.x = parent.position.x - xDiff
 
-        if (isString(parent.style.width)) {
-          const currWidth = Number(parent.style.width.replace('px', ''))
-          parent.style.width = `${currWidth + xDiff}px`
+        if (isString(parentStyles.width)) {
+          const currWidth = Number(parentStyles.width.replace('px', ''))
+          parentStyles.width = `${currWidth + xDiff}px`
         } else {
-          parent.style.width += xDiff
+          parentStyles.width += xDiff
         }
 
         updateItem.position.x = 0
@@ -65,18 +69,34 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         const yDiff = Math.abs(updateItem.position.y)
         parent.position.y = parent.position.y - yDiff
 
-        if (isString(parent.style.height)) {
-          const currWidth = Number(parent.style.height.replace('px', ''))
-          parent.style.height = `${currWidth + yDiff}px`
+        if (isString(parentStyles.height)) {
+          const currWidth = Number(parentStyles.height.replace('px', ''))
+          parentStyles.height = `${currWidth + yDiff}px`
         } else {
-          parent.style.height += yDiff
+          parentStyles.height += yDiff
         }
 
         updateItem.position.y = 0
       }
 
-      parent.dimensions.width = Number(parent.style.width.toString().replace('px', ''))
-      parent.dimensions.height = Number(parent.style.height.toString().replace('px', ''))
+      parent.dimensions.width = Number(parentStyles.width.toString().replace('px', ''))
+      parent.dimensions.height = Number(parentStyles.height.toString().replace('px', ''))
+
+      if (isFunction(parent.style)) {
+        parent.style = (p) => {
+          const styleFunc = parent.style as StyleFunc
+
+          return {
+            ...styleFunc(p),
+            ...parentStyles,
+          }
+        }
+      } else {
+        parent.style = {
+          ...parent.style,
+          ...parentStyles,
+        }
+      }
     }
   }
 }

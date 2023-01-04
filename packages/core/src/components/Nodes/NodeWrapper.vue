@@ -113,8 +113,10 @@ watch(
     () => parentNode?.computedPosition.y,
     () => parentNode?.computedPosition.z,
     () => node.selected,
-    () => node.dimensions,
-    () => parentNode?.dimensions,
+    () => node.dimensions.height,
+    () => node.dimensions.width,
+    () => parentNode?.dimensions.height,
+    () => parentNode?.dimensions.width,
   ],
   ([newX, newY, parentX, parentY, parentZ]) => {
     const xyzPos = {
