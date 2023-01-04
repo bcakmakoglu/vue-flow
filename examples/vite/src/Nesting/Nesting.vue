@@ -4,7 +4,7 @@ import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
-const { onConnect, addEdges, addNodes } = useVueFlow({
+const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
   fitViewOnInit: true,
   connectionMode: ConnectionMode.Loose,
   nodes: [
@@ -14,7 +14,7 @@ const { onConnect, addEdges, addNodes } = useVueFlow({
       label: 'Node 2',
       position: { x: 100, y: 100 },
       class: 'light',
-      style: { backgroundColor: 'rgba(255, 0, 0, 0.8)', width: '200px', height: '200px' },
+      style: { backgroundColor: 'rgba(255, 0, 0, 0.8)' },
     },
     {
       id: '2a',
@@ -88,6 +88,15 @@ onMounted(() => {
       parentNode: '2',
     },
   ])
+
+  setTimeout(() => {
+    const node = findNode('999')!
+    node.expandParent = false
+    node.extent = {
+      range: 'parent',
+      padding: [10],
+    }
+  })
 })
 </script>
 
