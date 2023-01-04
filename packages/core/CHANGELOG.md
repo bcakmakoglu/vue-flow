@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.10.1
+
+### Patch Changes
+
+- [#581](https://github.com/bcakmakoglu/vue-flow/pull/581) [`ea5c35e`](https://github.com/bcakmakoglu/vue-flow/commit/ea5c35e5faea722acd31d835a1e716aa798f3b53) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Re-calculate position when node extent changes
+
 ## 1.10.0
 
 ### Minor Changes
