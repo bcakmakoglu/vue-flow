@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.10.2
+
+### Patch Changes
+
+- [#584](https://github.com/bcakmakoglu/vue-flow/pull/584) [`17cd5bc`](https://github.com/bcakmakoglu/vue-flow/commit/17cd5bc9eb189693b346d0722b330ccbca25bedb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set initial node position correctly after applying node extent
+
+- [#583](https://github.com/bcakmakoglu/vue-flow/pull/583) [`0c25796`](https://github.com/bcakmakoglu/vue-flow/commit/0c25796967dec49ad9ba5ecce99c7e0bdc0c29aa) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix type exports using path alias instead of relative paths, which causes types to not be inferred on user-side
+
 ## 1.10.1
 
 ### Patch Changes
