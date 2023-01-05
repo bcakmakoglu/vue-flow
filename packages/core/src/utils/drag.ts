@@ -144,6 +144,10 @@ export const calcNextPosition = (
   const clampedPos = clampPosition(nextPosition, extent)
 
   return {
-    position: clampedPos,
+    position: {
+      x: clampedPos.x - (parentNode?.computedPosition.x || 0),
+      y: clampedPos.y - (parentNode?.computedPosition.y || 0),
+    },
+    computedPosition: clampedPos,
   }
 }

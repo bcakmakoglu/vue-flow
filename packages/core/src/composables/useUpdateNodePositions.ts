@@ -16,11 +16,16 @@ function useUpdateNodePositions() {
     const nodeUpdates = getSelectedNodes.value.map((n) => {
       const nextPosition = { x: n.computedPosition.x + positionDiffX, y: n.computedPosition.y + positionDiffY }
 
-      const updatedPos = calcNextPosition(n, nextPosition, nodeExtent.value, n.parentNode ? findNode(n.parentNode) : undefined)
+      const { computedPosition } = calcNextPosition(
+        n,
+        nextPosition,
+        nodeExtent.value,
+        n.parentNode ? findNode(n.parentNode) : undefined,
+      )
 
       return {
         id: n.id,
-        position: updatedPos.position,
+        position: computedPosition,
         from: n.position,
         distance: { x: positionDiff.x, y: positionDiff.y },
         dimensions: n.dimensions,
