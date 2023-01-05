@@ -26,7 +26,7 @@
   "scripts": {
     "prepare": "ts-patch install -s",
     "build": "vite build",
-    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist && pnpm run patch",
+    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p ./tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist && pnpm run patch",
     "patch": "node patch/slots.js",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
