@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { isNumber } from '@vueuse/core'
 import type { ReactiveVariable } from 'vue/macros'
-import type { GraphNode, HandleConnectable, NodeComponent, XYZPosition } from '../../types'
+import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
 import { ARIA_NODE_DESC_KEY } from '../../utils/a11y'
 
 const { id, type, name, draggable, selectable, connectable, ...props } = defineProps<{
@@ -48,8 +48,6 @@ const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) :
 const connectedEdges = $computed(() => getConnectedEdges([node], edges))
 
 const nodeElement = ref()
-
-const init = ref(false)
 
 provide(NodeRef, nodeElement)
 
@@ -107,6 +105,7 @@ watch(
   { flush: 'pre' },
 )
 
+/** this watcher only updates XYZPosition (when dragging a parent etc) */
 watch(
   [
     () => node.position.x,
@@ -119,7 +118,6 @@ watch(
     () => node.dimensions.width,
     () => parentNode?.dimensions.height,
     () => parentNode?.dimensions.width,
-    init,
   ],
   ([newX, newY, parentX, parentY, parentZ]) => {
     const xyzPos = {
@@ -129,46 +127,33 @@ watch(
       z: (isNumber(getStyle.value.zIndex) ? getStyle.value.zIndex : 0) + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
     }
 
-    console.log('foo')
-
-    updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ || 0 } : undefined)
+    if (parentX && parentY) {
+      node.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
+    } else {
+      node.computedPosition = xyzPos
+    }
   },
-  { flush: 'post', immediate: true },
+  { flush: 'pre', immediate: true },
 )
 
-watch([() => node.extent, () => nodeExtent], () => {
+watch([() => node.extent, () => nodeExtent], updatePosition)
+
+until(() => node.initialized)
+  .toBe(true)
+  .then(updatePosition)
+
+/** this re-calculates the current position, necessary for clamping by a node's extent */
+function updatePosition() {
   const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
 
   node.computedPosition = { ...node.computedPosition, ...computedPosition }
   node.position = position
-})
-
-until(() => node.initialized)
-  .toBe(true)
-  .then(() => {
-    const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
-
-    node.computedPosition = { ...node.computedPosition, ...computedPosition }
-    node.position = position
-  })
-
-function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
-  let nextPos = nodePos
-
-  if (parentPos) {
-    nextPos = getXYZPos({ x: parentPos.x, y: parentPos.y, z: parentPos.z! }, nodePos)
-  }
-
-  node.computedPosition = nextPos
 }
 
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
-  const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
-
-  node.computedPosition = { ...node.computedPosition, ...computedPosition }
-  node.position = position
+  updatePosition()
 }
 
 function onMouseEnter(event: MouseEvent) {
