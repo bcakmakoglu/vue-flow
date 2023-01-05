@@ -115,16 +115,11 @@ export const applyChanges = <
     | EdgeRemoveChange
   )[]
   addRemoveChanges.forEach((change) => {
-    switch (change.type) {
-      case 'add':
-        elements.push(<T>change.item)
-        break
-      case 'remove':
-        elements.splice(
-          elements.findIndex((el) => el.id === change.id),
-          1,
-        )
-        break
+    if (change.type === 'add') {
+      elements.push(<T>change.item)
+    } else if (change.type === 'remove') {
+      const index = elements.findIndex((el) => el.id === change.id)
+      if (index !== -1) elements.splice(index, 1)
     }
   })
 
