@@ -49,6 +49,8 @@ const connectedEdges = $computed(() => getConnectedEdges([node], edges))
 
 const nodeElement = ref()
 
+const init = ref(false)
+
 provide(NodeRef, nodeElement)
 
 const { emit, on } = useNodeHooks(node, emits)
@@ -117,6 +119,7 @@ watch(
     () => node.dimensions.width,
     () => parentNode?.dimensions.height,
     () => parentNode?.dimensions.width,
+    init,
   ],
   ([newX, newY, parentX, parentY, parentZ]) => {
     const xyzPos = {
@@ -126,23 +129,27 @@ watch(
       z: (isNumber(getStyle.value.zIndex) ? getStyle.value.zIndex : 0) + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
     }
 
+    console.log('foo')
+
     updatePosition(xyzPos, parentX && parentY ? { x: parentX, y: parentY, z: parentZ || 0 } : undefined)
   },
-  { flush: 'pre', immediate: true },
+  { flush: 'post', immediate: true },
 )
 
 watch([() => node.extent, () => nodeExtent], () => {
-  const { position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
+  const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
 
-  node.computedPosition = { ...node.computedPosition, ...position }
+  node.computedPosition = { ...node.computedPosition, ...computedPosition }
+  node.position = position
 })
 
 until(() => node.initialized)
   .toBe(true)
   .then(() => {
-    const { position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
+    const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
 
-    node.computedPosition = { ...node.computedPosition, ...position }
+    node.computedPosition = { ...node.computedPosition, ...computedPosition }
+    node.position = position
   })
 
 function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
@@ -158,8 +165,9 @@ function updatePosition(nodePos: XYZPosition, parentPos?: XYZPosition) {
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
 
-  const { position } = calcNextPosition(node, node.position, nodeExtent, parentNode)
+  const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
 
+  node.computedPosition = { ...node.computedPosition, ...computedPosition }
   node.position = position
 }
 
