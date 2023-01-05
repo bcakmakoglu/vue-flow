@@ -15,10 +15,8 @@ const animatedBackground = ref(false)
 onMounted(() => {
   const html = document.getElementsByTagName('html')![0]
 
-  const observer = new MutationObserver((mutations) => {
-    for (const m of mutations) {
-      dark.value = html.classList.contains('dark')
-    }
+  const observer = new MutationObserver(() => {
+    dark.value = html.classList.contains('dark')
   })
 
   observer.observe(html, {
@@ -54,23 +52,22 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge, edges, setEdges, updateNodeInternals } =
-  useVueFlow({
-    nodes: [
-      { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
-      { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
-      { id: 'documentation', type: 'box', position: { x: 300, y: 400 } },
-      { id: 'acknowledgement', type: 'box', position: { x: 150, y: 500 } },
-    ],
-    edges: initialEdges,
-    elementsSelectable: true,
-    panOnDrag: false,
-    zoomOnScroll: false,
-    zoomOnDoubleClick: false,
-    zoomOnPinch: false,
-    preventScrolling: false,
-    elevateEdgesOnSelect: true,
-  })
+const { onNodeClick, getNodes, fitView, findNode, setEdges, updateNodeInternals } = useVueFlow({
+  nodes: [
+    { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
+    { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
+    { id: 'documentation', type: 'box', position: { x: 300, y: 400 } },
+    { id: 'acknowledgement', type: 'box', position: { x: 150, y: 500 } },
+  ],
+  edges: initialEdges,
+  elementsSelectable: true,
+  panOnDrag: false,
+  zoomOnScroll: false,
+  zoomOnDoubleClick: false,
+  zoomOnPinch: false,
+  preventScrolling: false,
+  elevateEdgesOnSelect: true,
+})
 
 const clickInterval = ref()
 const clicks = ref(0)
@@ -121,7 +118,7 @@ const el = templateRef<HTMLDivElement>('el', null)
 
 const setNodes = () => {
   if (breakpoints.isSmaller('md')) {
-    const mainNode = getNode.value('intro')!
+    const mainNode = findNode('intro')!
 
     getNodes.value.forEach((node) => {
       switch (node.id) {
@@ -177,7 +174,7 @@ const setNodes = () => {
     })
   } else {
     getNodes.value.forEach((node) => {
-      const mainNode = getNode.value('intro')!
+      const mainNode = findNode('intro')!
       switch (node.id) {
         case 'intro':
           node.position = { x: 0, y: 0 }
@@ -203,9 +200,9 @@ const setNodes = () => {
     setEdges(initialEdges)
   }
 
-  updateNodeInternals(getNodes.value.map((n) => n.id))
-
   nextTick(() => {
+    updateNodeInternals(getNodes.value.map((n) => n.id))
+
     fitView()
   })
 }
