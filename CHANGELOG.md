@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.2] - 2023-01-05
+
+[58fb546](58fb5461b82a8ec3f4311d9cd24464c4ef26f093)...[fafb2e4](fafb2e47130e98c8dd164be047138c11bccbb2e8)
+
+### Bug Fixes
+
+- Use relative path for tsconfig ([140c643](140c64348d9c730debeb6c531b6a8acef8ebf88d))
+- Calculate position and computedPos correctly in `calcNextPosition` ([6aec815](6aec81532c007eab5f50ceeb188883b23db5a25a))
+
+### Miscellaneous Tasks
+
+- Cleanup node wrapper ([fe4309b](fe4309b587b2e3af4410f1f68e80254eb3890201))
+- Next release ([fafb2e4](fafb2e47130e98c8dd164be047138c11bccbb2e8))
+
 ## [1.10.1] - 2023-01-04
 
 [c3848a1](c3848a17005d25170d25b8dc92694dbd6ee8476d)...[58fb546](58fb5461b82a8ec3f4311d9cd24464c4ef26f093)
