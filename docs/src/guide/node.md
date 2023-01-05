@@ -425,6 +425,14 @@ By adding this class you can also enable scrolling inside a node.
 
 ## Dynamic handle positions / Adding handles dynamically
 
+
+::: info
+When using Vue Flow 1.x you don't need to call `updateNodeInternals` when adding handles dynamically.
+Handles will try to be added to the node automatically when they are mounted.
+If this does not work for you, for whatever reason, you can still follow the guide below and force Vue Flow to update
+the node internals.
+:::
+
 When working with dynamic handle positions or adding handles dynamically, you need to use
 the [`updateNodeInternals`](/typedocs/types/UpdateNodeInternals) method.
 
