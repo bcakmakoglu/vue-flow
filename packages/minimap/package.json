@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
-  "main": "./dist/vue-flow-plugin-minimap.js",
+  "main": "./dist/vue-flow-minimap.js",
   "module": "./dist/vue-flow-minimap.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow-minimap.iife.js",
