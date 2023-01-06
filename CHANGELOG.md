@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.10.3] - 2023-01-06
+
+[fafb2e4](fafb2e47130e98c8dd164be047138c11bccbb2e8)...[314f68f](314f68f363ac4d388e8fd16b966d831d99db1472)
+
+### Bug Fixes
+
+- Correct package main field ([2ed95e6](2ed95e6a4ce45dcba97cd6af96879bc8531a7063))
+- Correct package main field ([1d7c42f](1d7c42f2da1f96dc95d750888de5e91c787e1b95))
+- Correct package main field ([dd8c45b](dd8c45bdf9ed29b62a7f53e1a11c303363f1309b))
+- Correct package main field ([32f8e95](32f8e95aac605a09823b5181797602915c28e299))
+- Correct package main field ([8653df4](8653df46891205ac2fd52314bd99404548828845))
+
+### Documentation
+
+- Update intro component ([09aa4ee](09aa4ee7b6dc297fb5bff3f53dfdea83712c21aa))
+- Update info on dynamic handles ([20dc364](20dc36436077799866121c5995f9a5b228d84381))
+
+### Miscellaneous Tasks
+
+- Next release ([34bede0](34bede0154b91d4a4308a03c90d8ae15ed38e22f))
+- Next release ([314f68f](314f68f363ac4d388e8fd16b966d831d99db1472))
+
+### Refactor
+
+- Check if element still exists before attempting removal ([8422dbd](8422dbdc56768debc5618d4d7bcf0e9981f0c805))
+
 ## [1.10.2] - 2023-01-05
 
 [58fb546](58fb5461b82a8ec3f4311d9cd24464c4ef26f093)...[fafb2e4](fafb2e47130e98c8dd164be047138c11bccbb2e8)
