@@ -1,5 +1,11 @@
 # @vue-flow/minimap
 
+## 1.0.1
+
+### Patch Changes
+
+- [#588](https://github.com/bcakmakoglu/vue-flow/pull/588) [`4083ae0`](https://github.com/bcakmakoglu/vue-flow/commit/4083ae05d24dc68df7c77bfe2273a17237834cbf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct pkg main field
+
 ## 1.0.0
 
 ### Major Changes

@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.10.3
+
+### Patch Changes
+
+- [#586](https://github.com/bcakmakoglu/vue-flow/pull/586) [`c0f31a2`](https://github.com/bcakmakoglu/vue-flow/commit/c0f31a2b48e5bbab97778b2d88d18cd4418ea949) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if element is still in state before attempting removal when applying removal changes
+
 ## 1.10.2
 
 ### Patch Changes
