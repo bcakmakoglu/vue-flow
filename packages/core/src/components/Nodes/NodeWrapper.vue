@@ -136,11 +136,11 @@ watch(
   { flush: 'pre', immediate: true },
 )
 
-watch([() => node.extent, () => nodeExtent], updatePosition)
+watch([() => node.extent, () => nodeExtent], updatePosition, { flush: 'pre' })
 
 // todo: do we need to wait for initialized? Or can we clamp the position immediately?
 until(() => node.initialized)
-  .toBe(true)
+  .toBe(true, { flush: 'pre' })
   .then(updatePosition)
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */
