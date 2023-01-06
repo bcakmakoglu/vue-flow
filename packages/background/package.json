@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
-  "main": "./dist/vue-flow-plugin-background.js",
+  "main": "./dist/vue-flow-background.js",
   "module": "./dist/vue-flow-background.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow-background.iife.js",
