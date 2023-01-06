@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
-  "main": "./dist/vue-flow-plugin-controls.js",
+  "main": "./dist/vue-flow-controls.js",
   "module": "./dist/vue-flow-controls.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow-controls.iife.js",
