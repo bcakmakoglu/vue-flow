@@ -138,6 +138,7 @@ watch(
 
 watch([() => node.extent, () => nodeExtent], updatePosition)
 
+// todo: do we need to wait for initialized? Or can we clamp the position immediately?
 until(() => node.initialized)
   .toBe(true)
   .then(updatePosition)
