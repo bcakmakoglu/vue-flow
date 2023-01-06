@@ -136,10 +136,10 @@ watch(
   { flush: 'pre', immediate: true },
 )
 
-watch([() => node.extent, () => nodeExtent], updatePosition)
+watch([() => node.extent, () => nodeExtent], updatePosition, { flush: 'pre' })
 
 until(() => node.initialized)
-  .toBe(true)
+  .toBe(true, { flush: 'pre' })
   .then(updatePosition)
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */
