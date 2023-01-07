@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.11.0
+
+### Minor Changes
+
+- [#595](https://github.com/bcakmakoglu/vue-flow/pull/595) [`0c784a2`](https://github.com/bcakmakoglu/vue-flow/commit/0c784a27a9c2bac15d7578ac1171f3203ddd2f65) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `deletable` option to nodes and edges. If set to false it will prevent nodes and edges to be removed when `removeNodes` or `removeEdges` is triggered
+
+### Patch Changes
+
+- [#593](https://github.com/bcakmakoglu/vue-flow/pull/593) [`da65c54`](https://github.com/bcakmakoglu/vue-flow/commit/da65c54b0dd722a3f8afa68aa56007871d892963) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent elements that have selectable disabled from being selected
+
+- [#590](https://github.com/bcakmakoglu/vue-flow/pull/590) [`89d2415`](https://github.com/bcakmakoglu/vue-flow/commit/89d2415c6d038d753d00b774d3d67fd6995adbc7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Skip updating positions when `updateNodeInternals` is triggered - it will only update node dimensions (which can trigger a position update)
+
+- [#590](https://github.com/bcakmakoglu/vue-flow/pull/590) [`72f9f1a`](https://github.com/bcakmakoglu/vue-flow/commit/72f9f1a06912976d8f9bc8614663a37b536004e5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use flush timing `pre` for NodeWrapper watchers
+
 ## 1.10.3
 
 ### Patch Changes
