@@ -62,5 +62,6 @@ const patchSlots = async () => {
 }
 
 patchSlots()
+  // eslint-disable-next-line no-console
   .then(() => console.log('slots patched'))
-  .catch(console.log)
+  .catch(console.error)
