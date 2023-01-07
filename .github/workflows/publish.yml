@@ -8,6 +8,10 @@ env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   version:
     timeout-minutes: 15
@@ -17,7 +21,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14]
+        node: [18]
 
     steps:
       - name: Checkout 🛎
