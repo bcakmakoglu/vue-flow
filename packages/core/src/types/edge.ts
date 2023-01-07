@@ -84,8 +84,10 @@ export interface DefaultEdge<Data = ElementData, CustomEvents extends Record<str
   updatable?: EdgeUpdatable
   /** Disable/enable selecting edge */
   selectable?: boolean
-  /** Disable/enable focusing edges (a11y) */
+  /** Disable/enable focusing edge (a11y) */
   focusable?: boolean
+  /** Disable/enable deleting edge */
+  deletable?: boolean
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
   class?: string | ClassFunc<GraphEdge<Data, CustomEvents>>
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */

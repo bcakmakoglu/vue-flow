@@ -35,10 +35,15 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   targetPosition?: Position
   /** handle position */
   sourcePosition?: Position
+  /** Disable/enable dragging node */
   draggable?: boolean
+  /** Disable/enable selecting node */
   selectable?: boolean
   connectable?: HandleConnectable
+  /** Disable/enable focusing node (a11y) */
   focusable?: boolean
+  /** Disable/enable deleting node */
+  deletable?: boolean
   dragHandle?: string
   // todo: deprecate this and remove them in next minor release
   /** called when used as target for new connection */
