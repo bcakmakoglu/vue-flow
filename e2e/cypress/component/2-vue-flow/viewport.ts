@@ -3,7 +3,7 @@ import { getElements } from '../../utils'
 
 const { nodes } = getElements()
 
-describe('Viewpane drag / zoom', () => {
+describe('Viewport drag / zoom', () => {
   const store = useVueFlow({ id: 'test' })
   beforeEach(() => {
     cy.vueFlow({
@@ -13,7 +13,6 @@ describe('Viewpane drag / zoom', () => {
 
   it('drags pane', () => {
     cy.window().then(async (win) => {
-      const initialViewport = store.viewport.value
       cy.get('.vue-flow__pane')
         .should('be.visible')
         .trigger('mousedown', 'center', { force: true, view: win })
@@ -26,8 +25,8 @@ describe('Viewpane drag / zoom', () => {
         .trigger('mouseup', { force: true, view: win })
 
       await cy.tryAssertion(() => {
-        cy.get('.vue-flow__transformationpane')
-          .should('be.visible')
+        cy.transformationPane()
+          .should('exist')
           .should(
             'have.css',
             'transform',
