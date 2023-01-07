@@ -136,7 +136,16 @@ watch(
   { flush: 'pre', immediate: true },
 )
 
-watch([() => node.extent, () => nodeExtent], updatePosition, { flush: 'pre' })
+watch(
+  [() => node.extent, () => nodeExtent],
+  ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
+    // update position if extent has actually changed
+    if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
+      updatePosition()
+    }
+  },
+  { flush: 'pre' },
+)
 
 // todo: do we need to wait for initialized? Or can we clamp the position immediately?
 until(() => node.initialized)
