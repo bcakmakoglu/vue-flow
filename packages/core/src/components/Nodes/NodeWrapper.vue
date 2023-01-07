@@ -168,8 +168,6 @@ function updatePosition() {
 
 function updateInternals() {
   if (nodeElement.value) updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
-
-  updatePosition()
 }
 
 function onMouseEnter(event: MouseEvent) {
