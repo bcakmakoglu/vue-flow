@@ -373,10 +373,20 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
     const nodeChanges: NodeRemoveChange[] = []
     const edgeChanges: EdgeRemoveChange[] = []
+
     curr.forEach((item) => {
-      nodeChanges.push(createRemoveChange(typeof item === 'string' ? item : item.id))
+      const currNode = typeof item === 'string' ? findNode(item)! : item
+
+      if (isDef(currNode.deletable) && !currNode.deletable) return
+
+      nodeChanges.push(createRemoveChange(currNode.id))
+
       if (removeConnectedEdges) {
-        const connections = getConnectedEdges([typeof item === 'string' ? ({ id: item } as any) : item], state.edges)
+        const connections = getConnectedEdges([currNode], state.edges).filter((edge) => {
+          if (isDef(edge.deletable)) return edge.deletable
+          return true
+        })
+
         edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
       }
     })
@@ -393,7 +403,12 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const removeEdges: Actions['removeEdges'] = (edges) => {
     const curr = edges instanceof Function ? edges(state.edges) : edges
     const changes: EdgeRemoveChange[] = []
+
     curr.forEach((item) => {
+      const currEdge = typeof item === 'string' ? findEdge(item)! : item
+
+      if (isDef(currEdge.deletable) && !currEdge.deletable) return
+
       changes.push(createRemoveChange(typeof item === 'string' ? item : item.id))
     })
 

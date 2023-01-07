@@ -321,8 +321,9 @@ export const getNodesInside = (
   })
 }
 
-export const getConnectedEdges = (nodes: GraphNode[], edges: GraphEdge[]) => {
+export const getConnectedEdges = (nodes: (Node | GraphNode)[], edges: GraphEdge[]) => {
   const nodeIds = nodes.map((node) => node.id)
+
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
