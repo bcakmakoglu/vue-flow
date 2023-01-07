@@ -206,7 +206,12 @@ export const createRemoveChange = (id: string): NodeRemoveChange | EdgeRemoveCha
 export const getSelectionChanges = (elements: FlowElements, selectedIds: string[]) => {
   return elements.reduce(
     (res, item) => {
-      const willBeSelected = selectedIds.includes(item.id)
+      let willBeSelected = selectedIds.includes(item.id)
+
+      if (isDef(item.selectable) && !item.selectable) {
+        willBeSelected = false
+      }
+
       const key = isGraphNode(item) ? 'changedNodes' : 'changedEdges'
 
       if (!item.selected && willBeSelected) {
