@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.11.1
+
+### Patch Changes
+
+- [#597](https://github.com/bcakmakoglu/vue-flow/pull/597) [`749175b9`](https://github.com/bcakmakoglu/vue-flow/commit/749175b970791991763c84d7f219d41b679fc635) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `focus` and `focus-visible` styles to avoid browser specific styles on default nodes
+
 ## 1.11.0
 
 ### Minor Changes
