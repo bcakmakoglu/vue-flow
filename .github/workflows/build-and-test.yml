@@ -32,8 +32,8 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
 
-      - uses: pnpm/action-setup@v2.2.2
-        name: Install pnpm
+      - name: Install pnpm 🎒
+        uses: pnpm/action-setup@v2.2.2
         with:
           version: 7
           run_install: false
@@ -58,14 +58,14 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: pnpm install
 
-      - name: Turbo Cache
+      - name: Setup Turbo cache 🏎️
         id: turbo-cache
         uses: actions/cache@v2
         with:
           path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          key: turbo-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-turbo-
+            turbo-${{ runner.os }}-
 
       - name: Run linter 🧹
         run: pnpm run lint --cache-dir=.turbo
