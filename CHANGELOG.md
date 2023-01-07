@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.0] - 2023-01-07
+
+[314f68f](314f68f363ac4d388e8fd16b966d831d99db1472)...[b835e17](b835e173beabf2d1b1ba91339d47d1d736be19c5)
+
+### Bug Fixes
+
+- Prevent unselectable elements from being selected ([7810769](78107698352b94ae4fa24ae77f23b50f7cf18328))
+
+### Features
+
+- Add `deletable` option to nodes and edges ([13f80c0](13f80c02dc889265847b21aca34b55c72ce0897e))
+
+### Miscellaneous Tasks
+
+- Bump version ([bd3720a](bd3720a70d9cfee39c15aa8e6c358ff1eca6b9a2))
+- Disable console log in core pkg eslint config ([9923586](9923586581d345bc88632a3cd492ef287281bae1))
+- Update console statements ([6596673](6596673726b1647e2010f2a21aa3fe89861efb0b))
+- Next release ([b835e17](b835e173beabf2d1b1ba91339d47d1d736be19c5))
+
+### Refactor
+
+- Use `pre` flush in `NodeWrapper` ([7a416ea](7a416eae6161521167a3f7dfe70df02db1685a05))
+- Skip updating position if extent has not changed ([6768734](67687348f0e899805044365baad62992c1adbdac))
+- Only apply new positions if there are changes ([afe0249](afe024900cadc1dd40be45dae314ff38e1ff6475))
+- Do not update positions when `updateNodeInternals` is triggered ([75c11e5](75c11e5f3ee09fe732b2d3ea7c616e18b75d5480))
+
 ## [1.10.3] - 2023-01-06
 
 [fafb2e4](fafb2e47130e98c8dd164be047138c11bccbb2e8)...[314f68f](314f68f363ac4d388e8fd16b966d831d99db1472)
