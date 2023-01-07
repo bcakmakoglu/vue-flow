@@ -125,6 +125,21 @@
   transform-origin: 0 0;
 }
 
+.vue-flow__node-default,
+.vue-flow__node-input,
+.vue-flow__node-output {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bbb;
+
+  &.selected,
+  &:focus,
+  &:focus-visible {
+     outline: none;
+     border: 1px solid #555;
+   }
+}
+
 .vue-flow__node {
   position: absolute;
   user-select: none;

@@ -29,6 +29,13 @@
   cursor: grab;
 }
 
+.vue-flow__node.selectable {
+  &:focus,
+  &:focus-visible {
+     outline: none;
+   }
+}
+
 .vue-flow__node-default,
 .vue-flow__node-input,
 .vue-flow__node-output {
@@ -46,6 +53,13 @@
   &.selected,
   &.selected:hover {
      box-shadow: 0 0 0 0.5px var(--vf-box-shadow);
+   }
+
+  &.selected,
+  &:focus,
+  &:focus-visible {
+     outline: none;
+     border: 1px solid var(--vf-node-color);
    }
 
   .vue-flow__handle {
