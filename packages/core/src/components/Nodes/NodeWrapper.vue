@@ -156,8 +156,14 @@ until(() => node.initialized)
 function updatePosition() {
   const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
 
-  node.computedPosition = { ...node.computedPosition, ...computedPosition }
-  node.position = position
+  // only overwrite positions if there are changes when clamping
+  if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
+    node.computedPosition = { ...node.computedPosition, ...computedPosition }
+  }
+
+  if (node.position.x !== position.x || node.position.y !== position.y) {
+    node.position = position
+  }
 }
 
 function updateInternals() {
