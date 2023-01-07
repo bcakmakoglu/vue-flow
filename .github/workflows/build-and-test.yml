@@ -63,9 +63,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
           restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
+            ${{ runner.os }}-turbo-
 
       - name: Run linter 🧹
         run: pnpm run lint --cache-dir=.turbo
