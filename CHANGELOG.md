@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.1] - 2023-01-07
+
+[b835e17](b835e173beabf2d1b1ba91339d47d1d736be19c5)...[d971e91](d971e915409e2b19dd2c72958024a1c163f93b3d)
+
+### Bug Fixes
+
+- Add `focus` and `focus-visible` styles to nodes to avoid browser styles ([5258d26](5258d263b066067844a4e8ed39e25d54049249b0))
+
+### Miscellaneous Tasks
+
+- Upgrade cypress to latest ([1a0d7e4](1a0d7e4b7288d823b0e6b0b22179ba73bb766926))
+- Update pnpm-lock.yaml ([5b0dd28](5b0dd280c072632a9e7050380e328bb8e414aeb1))
+- Correct viewport test ([da6183a](da6183a570cb0371da1dfa955e99cb5908f32532))
+- Fix type issue ([7c52db1](7c52db16d387afbc5fdbaf5dd36b04e0e6e9dfbb))
+- Cleanup ([c89c331](c89c331436823640c902717e80e34910ffc02f58))
+- Next release ([d971e91](d971e915409e2b19dd2c72958024a1c163f93b3d))
+
+### Refactor
+
+- Update cache key for turborepo ([0dab5de](0dab5de61cc0270ab96043f02d12432a585b9cdf))
+- Use concurrency for publish action ([993504c](993504cbf94dbf3290b5e17e9864538a403d3095))
+
 ## [1.11.0] - 2023-01-07
 
 [314f68f](314f68f363ac4d388e8fd16b966d831d99db1472)...[b835e17](b835e173beabf2d1b1ba91339d47d1d736be19c5)
