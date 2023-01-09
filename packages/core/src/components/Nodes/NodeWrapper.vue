@@ -120,11 +120,13 @@ watch(
     () => parentNode?.dimensions.width,
   ],
   ([newX, newY, parentX, parentY, parentZ]) => {
+    let zIndex = isNumber(node.zIndex) ? node.zIndex : 0
+    zIndex = isNumber(getStyle.value.zIndex) ? getStyle.value.zIndex : zIndex
+
     const xyzPos = {
       x: newX,
       y: newY,
-      // if a zIndex style is present, add 1000 to it
-      z: (isNumber(getStyle.value.zIndex) ? getStyle.value.zIndex : 0) + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
+      z: zIndex + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
     }
 
     if (parentX && parentY) {
