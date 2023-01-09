@@ -118,6 +118,7 @@ watch(
     () => node.dimensions.width,
     () => parentNode?.dimensions.height,
     () => parentNode?.dimensions.width,
+    () => node.zIndex,
   ],
   ([newX, newY, parentX, parentY, parentZ]) => {
     let zIndex = isNumber(node.zIndex) ? node.zIndex : 0
