@@ -57,14 +57,12 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   expandParent?: boolean
   /** define node as a child node by setting a parent node id */
   parentNode?: string
-
   /**
    * Fixed width of node, applied as style
    * You can pass a number which will be used in pixel values (width: 300 -> width: 300px)
    * or pass a string with units (width: `10rem` -> width: 10rem)
    */
   width?: number | string | WidthFunc
-
   /**
    * Fixed height of node, applied as style
    * You can pass a number which will be used in pixel values (height: 300 -> height: 300px)
@@ -84,7 +82,6 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   data?: Data
   /** contextual and custom events that are passed to your custom components */
   events?: Partial<NodeEventsHandler<CustomEvents>>
-
   zIndex?: number
   ariaLabel?: string
 }
@@ -100,7 +97,6 @@ export interface GraphNode<Data = ElementData, CustomEvents extends Record<strin
   selected: boolean
   resizing: boolean
   dragging: boolean
-
   initialized: boolean
   data: Data
   events: Partial<NodeEventsHandler<CustomEvents>>
