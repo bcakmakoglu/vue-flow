@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { EffectScope } from 'vue'
+import type { WatchStopHandle } from 'vue'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
@@ -52,35 +52,25 @@ const connectionLineVisible = $(
 
 let groups = $ref<ReturnType<typeof groupEdgesByZLevel>>([])
 
-let scope: EffectScope | null = effectScope()
+let stop: WatchStopHandle
 
 onPaneReady(() => {
-  if (!scope) scope = effectScope()
-
-  scope.run(() => {
-    watch(
-      [$$(getSelectedNodes), $$(getEdges), () => (elevateEdgesOnSelect ? getSelectedEdges : [])],
-      () => {
-        if (elevateEdgesOnSelect) {
-          nextTick(() => (groups = groupEdgesByZLevel(getEdges, getNode)))
-        } else {
-          groups = [
-            {
-              isMaxLevel: true,
-              edges: getEdges,
-              level: 0,
-            },
-          ]
-        }
-      },
-      { immediate: true },
-    )
-  })
+  watch(
+    [
+      $$(getSelectedNodes),
+      $$(getEdges),
+      () => getEdges.map((e) => e.zIndex),
+      () => (elevateEdgesOnSelect ? getSelectedEdges : []),
+    ],
+    () => {
+      groups = groupEdgesByZLevel(getEdges, getNode, elevateEdgesOnSelect)
+    },
+    { immediate: true },
+  )
 })
 
 onBeforeUnmount(() => {
-  scope?.stop()
-  scope = null
+  stop?.()
 })
 
 const getType = (type?: string, template?: GraphEdge['template']) => {
