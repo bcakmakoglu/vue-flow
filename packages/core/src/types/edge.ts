@@ -103,6 +103,7 @@ export interface DefaultEdge<Data = ElementData, CustomEvents extends Record<str
   /** contextual and custom events of edge */
   events?: Partial<EdgeEventsHandler<CustomEvents>>
   /** Aria label for edge (a11y) */
+  zIndex?: number
   ariaLabel?: string | null
 }
 
@@ -148,7 +149,6 @@ export interface EdgePositions {
 /** Internal edge type */
 export type GraphEdge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = Edge<Data, CustomEvents> & {
   selected?: boolean
-  z?: number
   sourceNode: GraphNode
   targetNode: GraphNode
   data: Data

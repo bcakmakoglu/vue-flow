@@ -85,6 +85,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   /** contextual and custom events that are passed to your custom components */
   events?: Partial<NodeEventsHandler<CustomEvents>>
 
+  zIndex?: number
   ariaLabel?: string
 }
 
