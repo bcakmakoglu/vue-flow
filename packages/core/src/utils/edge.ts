@@ -1,3 +1,4 @@
+import { isNumber } from '@vueuse/core'
 import type { EdgePositions, Getters, GraphEdge, GraphNode, HandleElement, Rect, ViewportTransform, XYPosition } from '~/types'
 import { Position } from '~/types'
 
@@ -126,16 +127,22 @@ export function isEdgeVisible({
   return overlappingArea > 0
 }
 
-export const groupEdgesByZLevel = (edges: GraphEdge[], getNode: Getters['getNode']) => {
+export const groupEdgesByZLevel = (edges: GraphEdge[], getNode: Getters['getNode'], elevateEdgesOnSelect = false) => {
   let maxLevel = -1
 
   const levelLookup = edges.reduce<Record<string, GraphEdge[]>>((tree, edge) => {
+    const hasZIndex = isNumber(edge.zIndex)
+    let z = hasZIndex ? edge.zIndex! : 0
+
     const source = getNode(edge.source)
     const target = getNode(edge.target)
 
     if (!source || !target) return tree
 
-    const z = edge.z ? edge.z : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
+    if (elevateEdgesOnSelect) {
+      z = hasZIndex ? edge.zIndex! : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
+    }
+
     if (tree[z]) {
       tree[z].push(edge)
     } else {
