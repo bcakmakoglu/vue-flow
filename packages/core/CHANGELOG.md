@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.12.0
+
+### Minor Changes
+
+- [#600](https://github.com/bcakmakoglu/vue-flow/pull/600) [`072fd911`](https://github.com/bcakmakoglu/vue-flow/commit/072fd91181c0897ae78d0bd2d500959afa1f5fdb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `zIndex` option to nodes and edges. Allows defining stacking order of elements.
+
 ## 1.11.1
 
 ### Patch Changes
