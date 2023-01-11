@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.0] - 2023-01-11
+
+[d971e91](d971e915409e2b19dd2c72958024a1c163f93b3d)...[459f08c](459f08cddb8006a7a857e7a9727033b7e5f7cbff)
+
+### Features
+
+- Add `zIndex` option to elements ([93b463d](93b463df0c5bdb440f104954fc34cde458134804))
+- Always group edges by z-index ([148276d](148276dda6090a3a65f4319dc7be182ec5a3b9dc))
+- Use zIndex or style for node elevation ([8c84d5c](8c84d5cea43bccca993250f08ba0bc38e71da688))
+
+### Miscellaneous Tasks
+
+- Cleanup ([0f21d82](0f21d82bf0f28a53a7c4e631ab3c02c73947fd0b))
+- Update pos on zindex change ([06451b4](06451b4d0d7ba5f2b9cca557f26af4ee5e74f608))
+- Cleanup edge parser ([95f016b](95f016b4134633196dde205f97dedb77c8a546a2))
+- Next release ([459f08c](459f08cddb8006a7a857e7a9727033b7e5f7cbff))
+
 ## [1.11.1] - 2023-01-07
 
 [b835e17](b835e173beabf2d1b1ba91339d47d1d736be19c5)...[d971e91](d971e915409e2b19dd2c72958024a1c163f93b3d)
