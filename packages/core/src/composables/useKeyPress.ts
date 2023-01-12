@@ -7,6 +7,7 @@ export function isInputDOMNode(event: KeyboardEvent): boolean {
 
   // we want to be able to do a multi selection event if we are in an input field
   if (event.ctrlKey || event.metaKey || event.shiftKey) return false
+
   const hasAttribute = isFunction(target.hasAttribute) ? target.hasAttribute('contenteditable') : false
 
   const closest = isFunction(target.closest) ? target.closest('.nokey') : null
@@ -27,6 +28,12 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
   watchEffect(() => {
     const unrefKeyFilter = unref(keyFilter)
 
+    if (typeof window.addEventListener !== 'undefined') {
+      useEventListener(window, 'blur', () => {
+        isPressed = false
+      })
+    }
+
     if (isBoolean(unrefKeyFilter)) {
       isPressed = unrefKeyFilter
       return
@@ -39,6 +46,7 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
           if (isInputDOMNode(e)) return
 
           e.preventDefault()
+
           isPressed = true
         },
         { eventName: 'keydown' },
@@ -50,18 +58,13 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
           if (isInputDOMNode(e)) return
 
           e.preventDefault()
+
           isPressed = false
         },
         { eventName: 'keyup' },
       )
     }
   })
-
-  if (typeof window.addEventListener !== 'undefined') {
-    useEventListener(window, 'blur', () => {
-      isPressed = false
-    })
-  }
 
   return $$(isPressed)
 }
