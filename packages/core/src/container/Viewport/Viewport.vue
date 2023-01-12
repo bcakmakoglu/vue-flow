@@ -293,7 +293,7 @@ export default {
         <slot name="zoom-pane" />
       </Transform>
     </Pane>
-
-    <slot />
   </div>
+
+  <slot />
 </template>
