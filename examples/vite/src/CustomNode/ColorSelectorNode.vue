@@ -29,7 +29,7 @@ export default {
   <div>
     Custom Color Picker Node: <strong>{{ data.color }}</strong>
   </div>
-  <input class="nodrag" type="color" :value="data.color" @input="props.data.onChange" />
+  <input class="nodrag" />
   <Handle id="a" type="source" :position="Position.Right" :style="sourceHandleStyleA" />
   <Handle id="b" type="source" :position="Position.Right" :style="sourceHandleStyleB" />
 </template>
