@@ -210,8 +210,6 @@ function onSelectNode(event: MouseEvent) {
 const onKeyDown = (event: KeyboardEvent) => {
   if (isInputDOMNode(event)) return
 
-  event.preventDefault()
-
   if (elementSelectionKeys.includes(event.key) && selectable) {
     const unselect = event.key === 'Escape'
 
