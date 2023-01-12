@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.1] - 2023-01-12
+
+[459f08c](459f08cddb8006a7a857e7a9727033b7e5f7cbff)...[154472a](154472ade27843729e359be4fc746ff85df885be)
+
+### Bug Fixes
+
+- Bubble up keydown event in node wrapper ([ab2a87f](ab2a87f9c34611d07a4dd63fd6ab7ec9890fd80f))
+- Place default slot outside of viewport el ([726ee22](726ee224b9af57aff0b707c1310941b5553e65cb))
+
+### Miscellaneous Tasks
+
+- Cleanup key press composable ([1e88fda](1e88fdaa1df9261f5926b50b3004a16397d95877))
+- Next release ([154472a](154472ade27843729e359be4fc746ff85df885be))
+
 ## [1.12.0] - 2023-01-11
 
 [d971e91](d971e915409e2b19dd2c72958024a1c163f93b3d)...[459f08c](459f08cddb8006a7a857e7a9727033b7e5f7cbff)
