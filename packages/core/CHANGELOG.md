@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.12.1
+
+### Patch Changes
+
+- [#607](https://github.com/bcakmakoglu/vue-flow/pull/607) [`45851080`](https://github.com/bcakmakoglu/vue-flow/commit/45851080ea54f5f7d16cc2d594e3a1efd35a3b58) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Place default slot content outside of viewport element
+
+- [#605](https://github.com/bcakmakoglu/vue-flow/pull/605) [`e670f465`](https://github.com/bcakmakoglu/vue-flow/commit/e670f465c5afc66d2b56206190f3dc0afecdb5ea) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Let keydown event bubble up from node wrapper instead of preventing default
+
 ## 1.12.0
 
 ### Minor Changes
