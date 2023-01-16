@@ -20,7 +20,14 @@ export {
   EdgeLabelRenderer,
 } from './components/Edges'
 
-export { getBezierPath, getSimpleBezierPath, getSmoothStepPath, getStraightPath } from './components/Edges/utils'
+export {
+  getBezierPath,
+  getSimpleBezierPath,
+  getSmoothStepPath,
+  getStraightPath,
+  getSimpleEdgeCenter,
+  getBezierEdgeCenter,
+} from './components/Edges/utils'
 
 export {
   isNode,
