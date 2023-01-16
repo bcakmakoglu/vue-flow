@@ -127,10 +127,10 @@ watch(
     const xyzPos = {
       x: newX,
       y: newY,
-      z: zIndex + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
+      z: (zIndex || 0) + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
     }
 
-    if (parentX && parentY) {
+    if (isNumber(parentX) && isNumber(parentY)) {
       node.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
     } else {
       node.computedPosition = xyzPos
@@ -152,7 +152,7 @@ watch(
 
 // todo: do we need to wait for initialized? Or can we clamp the position immediately?
 until(() => node.initialized)
-  .toBe(true, { flush: 'pre' })
+  .toBe(true)
   .then(updatePosition)
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */

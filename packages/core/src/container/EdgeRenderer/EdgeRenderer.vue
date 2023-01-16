@@ -53,9 +53,8 @@ const connectionLineVisible = $(
 let groups = $ref<ReturnType<typeof groupEdgesByZLevel>>([])
 
 let stop: WatchStopHandle
-
 onPaneReady(() => {
-  watch(
+  stop = watch(
     [
       $$(getSelectedNodes),
       $$(getEdges),
