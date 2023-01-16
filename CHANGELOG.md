@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.2] - 2023-01-16
+
+[154472a](154472ade27843729e359be4fc746ff85df885be)...[e5855a5](e5855a536cb1113a2c6cd42e9902cca7174cf589)
+
+### Bug Fixes
+
+- Check if position is a number and not if it's truthy ([9e1ba45](9e1ba45839f9d3484dd9134326c92177ba486f19))
+- Always handle keyup ([b7605d6](b7605d6149b399b02f4ec1652abf518a53908c88))
+
+### Miscellaneous Tasks
+
+- Next release ([e5855a5](e5855a536cb1113a2c6cd42e9902cca7174cf589))
+
 ## [1.12.1] - 2023-01-12
 
 [459f08c](459f08cddb8006a7a857e7a9727033b7e5f7cbff)...[154472a](154472ade27843729e359be4fc746ff85df885be)
