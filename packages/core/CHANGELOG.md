@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.12.2
+
+### Patch Changes
+
+- [#610](https://github.com/bcakmakoglu/vue-flow/pull/610) [`01040099`](https://github.com/bcakmakoglu/vue-flow/commit/010400992fdd01df694a06785fbacd339515f24e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Always handle keyup events, instead of cancelling when focusing an input dom node
+
+- [#611](https://github.com/bcakmakoglu/vue-flow/pull/611) [`8dbdcae2`](https://github.com/bcakmakoglu/vue-flow/commit/8dbdcae27d46679bca34cef105742517f364e485) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if position is a number when updating, instead of checking if the value is truthy. Fixes 0 values not being used when updating.
+
 ## 1.12.1
 
 ### Patch Changes
