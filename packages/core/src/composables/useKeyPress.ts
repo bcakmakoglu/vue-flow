@@ -54,11 +54,7 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
 
       onKeyStroke(
         unrefKeyFilter,
-        (e) => {
-          if (isInputDOMNode(e)) return
-
-          e.preventDefault()
-
+        () => {
           isPressed = false
         },
         { eventName: 'keyup' },
