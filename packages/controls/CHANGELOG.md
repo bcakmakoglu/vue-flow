@@ -1,5 +1,11 @@
 # @vue-flow/controls
 
+## 1.0.2
+
+### Patch Changes
+
+- [#616](https://github.com/bcakmakoglu/vue-flow/pull/616) [`b16e3564`](https://github.com/bcakmakoglu/vue-flow/commit/b16e3564708c5429ad594156341fa3e95f84d3b2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Upgrade to vite 4 & update deps
+
 ## 1.0.1
 
 ### Patch Changes

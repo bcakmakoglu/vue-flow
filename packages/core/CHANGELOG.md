@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.12.3
+
+### Patch Changes
+
+- [#616](https://github.com/bcakmakoglu/vue-flow/pull/616) [`b16e3564`](https://github.com/bcakmakoglu/vue-flow/commit/b16e3564708c5429ad594156341fa3e95f84d3b2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Upgrade to vite 4 & update deps
+
+- [#615](https://github.com/bcakmakoglu/vue-flow/pull/615) [`d8fe5432`](https://github.com/bcakmakoglu/vue-flow/commit/d8fe5432adec9c185c87b0c1e4bf432d83a8362f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Support key combinations for keycodes.
+  Combinations can be passed using an array of keycodes and concatenated with a plus sign.
+  For example: `['A+B']` will trigger when A and B are pressed at the same time.
+
+- [#614](https://github.com/bcakmakoglu/vue-flow/pull/614) [`580de340`](https://github.com/bcakmakoglu/vue-flow/commit/580de3405621fcf2811701186abbbc23bddf0a33) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Keep user selection on right click
+
 ## 1.12.2
 
 ### Patch Changes
