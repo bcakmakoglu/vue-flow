@@ -178,6 +178,8 @@ function onMouseMove(event: MouseEvent) {
 function onMouseUp(event: MouseEvent) {
   if (!hasActiveSelection.value) return
 
+  if (event.button !== 0) return
+
   // We only want to trigger click functions when in selection mode if
   // the user did not move the mouse.
   if (!userSelectionActive.value && userSelectionRect.value && event.target === container.value) {
