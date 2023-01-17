@@ -101,7 +101,7 @@ const onConnect = (params) => {
 </template>
 ```
 
-## [updateEdge](/typedocs/functions/updateEdge)
+## [updateEdge](/typedocs/functions/updateEdge-1)
 
 ::: warning
 In the composition API you should use [`updateEdge`](/typedocs/types/UpdateEdge)
