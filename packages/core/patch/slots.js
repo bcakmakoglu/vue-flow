@@ -32,26 +32,22 @@ const patchedTypeImports = `import type {
   VueFlowStore,
 } from '../../types'`
 
-const unpatchedSlots = `(new () => {
-    $slots: Record<string, {}> &
-      Record<string, {}> & {
-        'connection-line': (_: {}) => any
-        'zoom-pane': (_: {}) => any
-        'default': (_: {}) => any
-      }
-  })`
+const unpatchedSlots = `Record<string, (_: {}) => any> &
+    Record<string, (_: {}) => any> & {
+      'connection-line': (_: {}) => any
+      'zoom-pane': (_: {}) => any
+      'default': (_: {}) => any
+    }`
 
-const patchedSlots = `(new () => {
-    $slots: Record<string, any> & {
-      'connection-line': (connectionLineProps: ConnectionLineProps) => any
-      'zoom-pane': () => any
-      'default': () => any
-    } & {
-      [key: \`node-\${string}\`]: (nodeProps: NodeProps) => any
-    } & {
-      [key: \`edge-\${string}\`]: (edgeProps: EdgeProps) => any
-    }
-  })`
+const patchedSlots = `Record<string, (_: any) => any> & {
+    'connection-line': (connectionLineProps: ConnectionLineProps) => any
+    'zoom-pane': () => any
+    'default': () => any
+  } & {
+    [key: \`node-\${string}\`]: (nodeProps: NodeProps) => any
+  } & {
+    [key: \`edge-\${string}\`]: (edgeProps: EdgeProps) => any
+  }`
 
 const patchSlots = async () => {
   const fileContents = await content(filePath)

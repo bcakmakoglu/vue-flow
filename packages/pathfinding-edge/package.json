@@ -33,17 +33,17 @@
   },
   "devDependencies": {
     "@vue-flow/core": "workspace:*",
-    "@types/pathfinding": "^0.0.5",
-    "@vitejs/plugin-vue": "^2.3.4",
-    "ts-patch": "^2.0.1",
-    "typescript-transform-paths": "^3.3.1",
-    "unplugin-auto-import": "^0.11.2",
-    "vite": "^2.9.15",
-    "vite-plugin-vue-type-imports": "0.2.0",
-    "vue-tsc": "^0.40.13"
+    "@types/pathfinding": "^0.0.6",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "ts-patch": "^2.1.0",
+    "typescript-transform-paths": "^3.4.6",
+    "unplugin-auto-import": "^0.12.1",
+    "vite": "^4.0.4",
+    "vite-plugin-vue-type-imports": "^0.2.4",
+    "vue-tsc": "^1.0.24"
   },
   "peerDependencies": {
-    "@vue-flow/core": "^1.0.0",
+    "@vue-flow/core": "^1.12.2",
     "vue": "^3.2.25"
   },
   "publishConfig": {
