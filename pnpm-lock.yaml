@@ -281,7 +281,7 @@ importers:
       '@types/d3-selection': ^3.0.3
       '@types/d3-zoom': ^3.0.1
       '@vitejs/plugin-vue': ^4.0.0
-      '@vue-flow/core': ^1.12.2
+      '@vue-flow/core': workspace:*
       d3-selection: ^3.0.0
       d3-zoom: ^3.0.0
       unplugin-auto-import: ^0.12.1
@@ -290,7 +290,6 @@ importers:
       vue: ^3.2.37
       vue-tsc: ^1.0.24
     dependencies:
-      '@vue-flow/core': link:../core
       d3-selection: 3.0.0
       d3-zoom: 3.0.0
       vue: 3.2.45
@@ -298,6 +297,7 @@ importers:
       '@types/d3-selection': 3.0.3
       '@types/d3-zoom': 3.0.1
       '@vitejs/plugin-vue': 4.0.0_vite@4.0.4+vue@3.2.45
+      '@vue-flow/core': link:../core
       unplugin-auto-import: 0.12.1
       vite: 4.0.4
       vite-plugin-vue-type-imports: 0.2.4_vite@4.0.4+vue@3.2.45
@@ -308,7 +308,7 @@ importers:
       '@types/d3-drag': ^3.0.1
       '@types/d3-selection': ^3.0.3
       '@vitejs/plugin-vue': ^4.0.0
-      '@vue-flow/core': ^1.12.2
+      '@vue-flow/core': workspace:*
       d3-drag: ^3.0.0
       d3-selection: ^3.0.0
       unplugin-auto-import: ^0.12.1
@@ -317,7 +317,6 @@ importers:
       vue: ^3.2.37
       vue-tsc: ^1.0.24
     dependencies:
-      '@vue-flow/core': link:../core
       d3-drag: 3.0.0
       d3-selection: 3.0.0
       vue: 3.2.45
@@ -325,6 +324,7 @@ importers:
       '@types/d3-drag': 3.0.1
       '@types/d3-selection': 3.0.3
       '@vitejs/plugin-vue': 4.0.0_vite@4.0.4+vue@3.2.45
+      '@vue-flow/core': link:../core
       unplugin-auto-import: 0.12.1
       vite: 4.0.4
       vite-plugin-vue-type-imports: 0.2.4_vite@4.0.4+vue@3.2.45
