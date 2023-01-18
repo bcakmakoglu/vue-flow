@@ -82,8 +82,4 @@ jobs:
         run: pnpm run build --cache-dir=.turbo
 
       - name: Run tests 🧪
-        uses: cypress-io/github-action@v5
-        with:
-          install: false
-          working-directory: e2e
-          component: true
+        run: pnpm cypress install && pnpm run test --cache-dir=.turbo
