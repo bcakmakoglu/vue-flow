@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.5] - 2023-01-18
+
+[df7603f](df7603f52f377bf5bba1f16bfd8bcd0347f016e3)...[28eeaad](28eeaade82ef2bcf3295eb1c443ef1fc026d7a8e)
+
+### Bug Fixes
+
+- Re-group edges when nodes change ([fba7b55](fba7b55f1fd51a4e77e8f613db147057fa6d16f6))
+- Wait until node is initialized to clamp when extent is `parent` ([19582de](19582de0215ea7463311d1d2fe62f59521146777))
+- Increase timeout to 1 ([000cfd9](000cfd9e9cbf8edc3b3e26c7ce6ccf225268456a))
+
+### Examples
+
+- Revert nesting example ([8afb98e](8afb98e354cdee2b832903e7074a0c4ec5bc129a))
+
+### Miscellaneous Tasks
+
+- Cleanup ([84ffd50](84ffd504290c7c50a8eaec6ee55f30f94e905504))
+- Rename `updatePosition` to `clampPosition` ([3e11a31](3e11a3126fb86d66896a09803da56e56bdf279f8))
+- Cleanup ([f411f5b](f411f5b560613a1fc0b9d6543e484a59daff6373))
+- Replace `getNode` with `findNode` ([203b481](203b4815f89240287c4140523d843546be35e9f0))
+- Update changesets ([7314bda](7314bda84cbf3257015370cf99c289830824a42f))
+- Next release ([28eeaad](28eeaade82ef2bcf3295eb1c443ef1fc026d7a8e))
+
+### Refactor
+
+- Set node initialized after applying dimensions change ([9276beb](9276beb50df23ab4781e3f6d3992e937dfb0a204))
+- Emit nodes initialized if `getNodesInitialized` has same length as nodes state ([d741bd1](d741bd172618e367885f5b3d93c515755e42b3d6))
+- Pass initialized nodes to nodes initialized hook ([c1228c4](c1228c406da349ee13201e824dc50ec7d351098f))
+- Wait for next tick to expand parent if parent is not initialized yet ([f0fde0a](f0fde0ac96602d2d04749d801fafb8de55db8c1b))
+- Always install cypress before testing ([fba062d](fba062df793f1274b7f4aa6da6bc69954b1c76fb))
+- Remove caching cypress binary ([05e0b37](05e0b3750629a2771fee8739ca3d1a2768d648b8))
+
+### Reverts
+
+- Await node initialization before clamping initial pos ([de31136](de311361bff07279ec658c7f2d56887a94ed0bc3))
+
 ## [1.12.4] - 2023-01-18
 
 [ca96cba](ca96cba5ce31f0092879b06921958c5d1d28b15e)...[df7603f](df7603f52f377bf5bba1f16bfd8bcd0347f016e3)
