@@ -72,7 +72,10 @@ export const createGraphNodes = (
 
   graphNodes.forEach((node) => {
     const nextNodes = [...graphNodes, ...currGraphNodes]
-    if (node.parentNode && !nextNodes.find((n) => n.id === node.parentNode)) {
+
+    const parentNode = nextNodes.find((n) => n.id === node.parentNode)
+
+    if (node.parentNode && !parentNode) {
       warn(`Parent node ${node.parentNode} not found`)
     }
 
@@ -80,8 +83,8 @@ export const createGraphNodes = (
       if (parentNodes[node.id]) {
         node.isParent = true
       }
-      const parent = node.parentNode ? findNode(node.parentNode) : undefined
-      if (parent) parent.isParent = true
+
+      if (parentNode) parentNode.isParent = true
     }
   })
 
