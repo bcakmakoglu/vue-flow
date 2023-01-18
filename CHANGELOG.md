@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.4] - 2023-01-18
+
+[ca96cba](ca96cba5ce31f0092879b06921958c5d1d28b15e)...[df7603f](df7603f52f377bf5bba1f16bfd8bcd0347f016e3)
+
+### Bug Fixes
+
+- Dont trigger ctx menu when dragging with right mouse btn ([7fd2782](7fd2782d00f862fc55459315f074500b0659b087))
+- Add timeout when updating positions after extent changes ([3901752](390175226ec4aa41e8bebad849db4142cbc097dd))
+
+### Miscellaneous Tasks
+
+- Update pnpm-lock.yaml ([fdc9d6d](fdc9d6df788cf4b23df76197a80008ccc50f21fc))
+- Fix vitepress version ([c1222e8](c1222e8638a906aa3b2cc93a6d6f2b4e02042457))
+- Update pnpm-lock.yaml ([2764ddf](2764ddf521c97176593633f743df949c26497c8b))
+- Next release ([df7603f](df7603f52f377bf5bba1f16bfd8bcd0347f016e3))
+
+### Refactor
+
+- Use cypress action ([975922c](975922c1d6d7fe57ba55c719acea10de11423dbe))
+- Cache cypress binary ([0ad8a74](0ad8a740f70118597bbc52140c913b9032e4ea9d))
+
 ## [1.12.3] - 2023-01-18
 
 [e5855a5](e5855a536cb1113a2c6cd42e9902cca7174cf589)...[ca96cba](ca96cba5ce31f0092879b06921958c5d1d28b15e)
