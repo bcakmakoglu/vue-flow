@@ -1,7 +1,6 @@
 import type {
   Actions,
   ComputedGetters,
-  CoordinateExtent,
   EdgeChange,
   EdgeRemoveChange,
   EdgeSelectionChange,
@@ -281,11 +280,13 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     state.elementsSelectable = isInteractive
   }
 
-  const setNodes: Actions['setNodes'] = (nodes, extent?: CoordinateExtent) => {
+  const setNodes: Actions['setNodes'] = (nodes) => {
     if (!state.initialized && !nodes.length) return
     if (!state.nodes) state.nodes = []
+
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
-    state.nodes = createGraphNodes(curr, findNode, state.nodes, extent ?? state.nodeExtent)
+
+    state.nodes = createGraphNodes(curr, findNode, state.nodes)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
@@ -314,18 +315,18 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     }, [])
   }
 
-  const setElements: Actions['setElements'] = (elements, extent) => {
-    if ((!state.initialized && !elements.length) || !elements) return
+  const setElements: Actions['setElements'] = (elements) => {
+    if (!state.initialized && !elements.length) return
     const curr = elements instanceof Function ? elements([...state.nodes, ...state.edges]) : elements
 
-    setNodes(curr.filter(isNode), extent)
+    setNodes(curr.filter(isNode))
     setEdges(curr.filter(isEdge))
   }
 
-  const addNodes: Actions['addNodes'] = (nodes, extent) => {
+  const addNodes: Actions['addNodes'] = (nodes) => {
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    const graphNodes = createGraphNodes(curr, findNode, state.nodes, extent ?? state.nodeExtent)
+    const graphNodes = createGraphNodes(curr, findNode, state.nodes)
     const changes = graphNodes.map(createAdditionChange)
 
     if (changes.length) state.hooks.nodesChange.trigger(changes)
@@ -507,9 +508,23 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       'hooks',
     ]
 
-    if (typeof opts.modelValue !== 'undefined') setElements(opts.modelValue, opts.nodeExtent ?? state.nodeExtent)
-    if (typeof opts.nodes !== 'undefined') setNodes(opts.nodes, opts.nodeExtent ?? state.nodeExtent)
-    if (typeof opts.edges !== 'undefined') setEdges(opts.edges)
+    const elements = opts.modelValue || opts.nodes || opts.edges ? ([] as Elements) : undefined
+
+    if (elements) {
+      if (opts.modelValue) {
+        elements.push(...opts.modelValue)
+      }
+
+      if (opts.nodes) {
+        elements.push(...opts.nodes)
+      }
+
+      if (opts.edges) {
+        elements.push(...opts.edges)
+      }
+
+      setElements(elements)
+    }
 
     const setSkippedOptions = () => {
       if (typeof opts.maxZoom !== 'undefined') setMaxZoom(opts.maxZoom)

@@ -133,13 +133,13 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   readonly vueFlowVersion: string
 }
 
-export type SetElements = (elements: Elements | ((elements: FlowElements) => Elements), extent?: CoordinateExtent) => void
+export type SetElements = (elements: Elements | ((elements: FlowElements) => Elements)) => void
 
-export type SetNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
+export type SetNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[])) => void
 
 export type SetEdges = (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
 
-export type AddNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[]), extent?: CoordinateExtent) => void
+export type AddNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[])) => void
 
 export type RemoveNodes = (
   nodes: (Node[] | string[]) | ((nodes: GraphNode[]) => Node[] | string[]),
