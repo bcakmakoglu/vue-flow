@@ -114,9 +114,13 @@ export const applyChanges = <
     | NodeRemoveChange
     | EdgeRemoveChange
   )[]
+
   addRemoveChanges.forEach((change) => {
     if (change.type === 'add') {
-      elements.push(<T>change.item)
+      const index = elements.findIndex((el) => el.id === change.item.id)
+
+      if (index === -1) elements.push(<T>change.item)
+      else warn(`${isNode(change.item) ? `Node` : `Edge`} with id ${change.item.id} already exists`)
     } else if (change.type === 'remove') {
       const index = elements.findIndex((el) => el.id === change.id)
       if (index !== -1) elements.splice(index, 1)
