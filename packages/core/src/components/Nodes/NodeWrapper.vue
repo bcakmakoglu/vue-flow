@@ -26,7 +26,7 @@ const {
   multiSelectionActive,
   emits,
   findNode,
-  removeSelectedElements,
+  removeSelectedNodes,
   addSelectedNodes,
   updateNodeDimensions,
   onUpdateNodeInternals,
@@ -203,7 +203,7 @@ function onDoubleClick(event: MouseEvent) {
 
 function onSelectNode(event: MouseEvent) {
   if (selectable && (!selectNodesOnDrag || !draggable)) {
-    handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
+    handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedNodes, $$(nodesSelectionActive))
   }
 
   emit.click({ event, node, connectedEdges })
@@ -219,7 +219,7 @@ function onKeyDown(event: KeyboardEvent) {
       nodeElement.value?.blur()
     }
 
-    handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive), unselect)
+    handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedNodes, $$(nodesSelectionActive), unselect)
   } else if (!disableKeyboardA11y && draggable && node.selected && arrowKeyDiffs[event.key]) {
     $$(ariaLiveMessage).value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
       .position.x}, y: ${~~node.position.y}`

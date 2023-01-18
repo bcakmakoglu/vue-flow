@@ -28,7 +28,7 @@ export const handleNodeClick = (
   node: GraphNode,
   multiSelectionActive: boolean,
   addSelectedNodes: Actions['addSelectedNodes'],
-  removeSelectedElements: Actions['removeSelectedElements'],
+  removeSelectedNodes: Actions['removeSelectedNodes'],
   nodesSelectionActive: Ref<boolean>,
   unselect = false,
 ) => {
@@ -37,6 +37,6 @@ export const handleNodeClick = (
   if (!node.selected) {
     addSelectedNodes([node])
   } else if (unselect || (node.selected && multiSelectionActive)) {
-    removeSelectedElements([node])
+    removeSelectedNodes([node])
   }
 }
