@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.3] - 2023-01-18
+
+[e5855a5](e5855a536cb1113a2c6cd42e9902cca7174cf589)...[ca96cba](ca96cba5ce31f0092879b06921958c5d1d28b15e)
+
+### Documentation
+
+- Fix dead link ([55206ff](55206fffdb57ac03a4339d2c74697a27931adb20))
+
+### Miscellaneous Tasks
+
+- Update workspace root deps ([b223279](b22327951b6587fe00eefef9b116128357166dc2))
+- Update deps ([64823b1](64823b10a12cace5ac1c0ce0f9bb22a2f8023a24))
+- Update deps ([ea836cd](ea836cd3aa70d6e930f5f660690354dfed5b5b6c))
+- Update deps ([816403f](816403f7ed8d8a3364bb6dde18294ba4b45f6df1))
+- Update deps ([59594ca](59594caae46df39befca0ef82317b69064d025fb))
+- Update deps ([8ee3709](8ee37093c5ee1f9824aaa755bc48b4701b8dd753))
+- Update pnpm-lock.yaml ([172006c](172006cf90b4df8be690bc98c06624992345cd01))
+- Next release ([ca96cba](ca96cba5ce31f0092879b06921958c5d1d28b15e))
+
+### Refactor
+
+- Support key combinations for key codes ([d51499d](d51499de96153c19a88fe906d5129889d00aaca0))
+- Keep user selection on right click ([ce992db](ce992db802bc615713155be109e3e1739e9996ea))
+
+### Reverts
+
+- Add vue-flow to deps-dev ([220f0ff](220f0ffa7753d54305053263d87d4a44d6ec6de1))
+
 ## [1.12.2] - 2023-01-16
 
 [154472a](154472ade27843729e359be4fc746ff85df885be)...[e5855a5](e5855a536cb1113a2c6cd42e9902cca7174cf589)
