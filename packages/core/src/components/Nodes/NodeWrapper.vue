@@ -139,21 +139,16 @@ watch(
   { flush: 'pre', immediate: true },
 )
 
-watch(
-  [() => node.extent, () => nodeExtent],
-  ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
-    // update position if extent has actually changed
-    if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
-      updatePosition()
-    }
-  },
-  { flush: 'pre' },
-)
+watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
+  // update position if extent has actually changed
+  if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
+    // todo: can we solve this without a timeout? Otherwise the extent is not properly calculated
+    setTimeout(updatePosition)
+  }
+})
 
-// todo: do we need to wait for initialized? Or can we clamp the position immediately?
-until(() => node.initialized)
-  .toBe(true)
-  .then(updatePosition)
+// clamp initial position to nodes' extent
+updatePosition()
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */
 function updatePosition() {
