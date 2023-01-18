@@ -124,7 +124,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     }
 
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
-      const node = getters.getNode.value(update.id)
+      const node = findNode(update.id)
 
       if (node) {
         const dimensions = getDimensions(update.nodeElement)
@@ -285,7 +285,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     if (!state.initialized && !nodes.length) return
     if (!state.nodes) state.nodes = []
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
-    state.nodes = createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
+    state.nodes = createGraphNodes(curr, findNode, state.nodes, extent ?? state.nodeExtent)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
@@ -293,8 +293,8 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     const curr = edges instanceof Function ? edges(state.edges) : edges
 
     state.edges = curr.reduce<GraphEdge[]>((res, edge) => {
-      const sourceNode = getters.getNode.value(edge.source)!
-      const targetNode = getters.getNode.value(edge.target)!
+      const sourceNode = findNode(edge.source)!
+      const targetNode = findNode(edge.target)!
 
       const missingSource = !sourceNode || typeof sourceNode === 'undefined'
       const missingTarget = !targetNode || typeof targetNode === 'undefined'
@@ -325,7 +325,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const addNodes: Actions['addNodes'] = (nodes, extent) => {
     const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    const graphNodes = createGraphNodes(curr, getters.getNode.value, state.nodes, extent ?? state.nodeExtent)
+    const graphNodes = createGraphNodes(curr, findNode, state.nodes, extent ?? state.nodeExtent)
     const changes = graphNodes.map(createAdditionChange)
 
     if (changes.length) state.hooks.nodesChange.trigger(changes)
@@ -343,8 +343,8 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
         state.edges,
       )
       if (edge) {
-        const sourceNode = getters.getNode.value(edge.source)!
-        const targetNode = getters.getNode.value(edge.target)!
+        const sourceNode = findNode(edge.source)!
+        const targetNode = findNode(edge.target)!
 
         const missingSource = !sourceNode || typeof sourceNode === 'undefined'
         const missingTarget = !targetNode || typeof targetNode === 'undefined'

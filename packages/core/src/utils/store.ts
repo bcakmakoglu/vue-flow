@@ -1,4 +1,4 @@
-import type { Connection, CoordinateExtent, Edge, Getters, GraphEdge, GraphNode, Node } from '~/types'
+import type { Actions, Connection, CoordinateExtent, Edge, GraphEdge, GraphNode, Node } from '~/types'
 
 export const isDef = <T>(val: T): val is NonNullable<T> => typeof unref(val) !== 'undefined'
 
@@ -51,7 +51,7 @@ export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edg
 
 export const createGraphNodes = (
   nodes: Node[],
-  getNode: Getters['getNode'],
+  findNode: Actions['findNode'],
   currGraphNodes: GraphNode[],
   extent: CoordinateExtent,
 ) => {
@@ -59,7 +59,7 @@ export const createGraphNodes = (
 
   const graphNodes = nodes.map((node) => {
     const parsed = parseNode(node, extent, {
-      ...getNode(node.id),
+      ...findNode(node.id),
       parentNode: node.parentNode,
     })
 
@@ -80,7 +80,7 @@ export const createGraphNodes = (
       if (parentNodes[node.id]) {
         node.isParent = true
       }
-      const parent = node.parentNode ? getNode(node.parentNode) : undefined
+      const parent = node.parentNode ? findNode(node.parentNode) : undefined
       if (parent) parent.isParent = true
     }
   })

@@ -25,7 +25,7 @@ const {
   nodesSelectionActive,
   multiSelectionActive,
   emits,
-  getNode,
+  findNode,
   removeSelectedElements,
   addSelectedNodes,
   updateNodeDimensions,
@@ -42,7 +42,7 @@ const updateNodePositions = useUpdateNodePositions()
 
 const node = $(useVModel(props, 'node'))
 
-const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) : undefined))
+const parentNode = $computed(() => (node.parentNode ? findNode(node.parentNode) : undefined))
 
 const connectedEdges = $computed(() => getConnectedEdges([node], edges))
 

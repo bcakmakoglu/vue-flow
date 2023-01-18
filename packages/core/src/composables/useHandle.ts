@@ -1,6 +1,6 @@
 import type { MaybeRef } from '@vueuse/core'
 import { isFunction } from '@vueuse/core'
-import type { Connection, Getters, GraphEdge, HandleType, ValidConnectionFunc, XYPosition } from '~/types'
+import type { Actions, Connection, GraphEdge, HandleType, ValidConnectionFunc, XYPosition } from '~/types'
 import { ConnectionMode } from '~/types'
 
 interface Result {
@@ -30,7 +30,7 @@ export const checkElementBelowIsValid = (
   isValidConnection: ValidConnectionFunc | undefined,
   doc: Document,
   edges: GraphEdge[],
-  getNode: Getters['getNode'],
+  findNode: Actions['findNode'],
 ) => {
   const clientX = (event as TouchEvent).touches ? (event as TouchEvent).touches[0].clientX : (event as MouseEvent).clientX
   const clientY = (event as TouchEvent).touches ? (event as TouchEvent).touches[0].clientY : (event as MouseEvent).clientY
@@ -73,7 +73,7 @@ export const checkElementBelowIsValid = (
 
       result.isValid =
         (isFunction(isValidConnection)
-          ? isValidConnection(connection, { edges, sourceNode: getNode(sourceId)!, targetNode: getNode(targetId)! })
+          ? isValidConnection(connection, { edges, sourceNode: findNode(sourceId)!, targetNode: findNode(targetId)! })
           : elementBelowNodeId !== nodeId || elementBelowHandleId !== handleId) ||
         !result.connection.target ||
         !result.connection.source
@@ -113,7 +113,7 @@ export default function useHandle({
     startConnection,
     updateConnection,
     endConnection,
-    getNode,
+    findNode,
     vueFlowRef,
   } = $(useVueFlow())
 
@@ -129,7 +129,7 @@ export default function useHandle({
 
     let validConnectFunc = isValidConnection
 
-    const node = getNode(unref(nodeId))
+    const node = findNode(unref(nodeId))
 
     if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
 
@@ -175,7 +175,7 @@ export default function useHandle({
         validConnectFunc,
         doc,
         edges,
-        getNode,
+        findNode,
       )
 
       if (!isHoveringHandle) return resetRecentHandle(recentHoveredHandle)
@@ -199,7 +199,7 @@ export default function useHandle({
         validConnectFunc,
         doc,
         edges,
-        getNode,
+        findNode,
       )
 
       const isOwnHandle = connection.source === connection.target
@@ -234,7 +234,7 @@ export default function useHandle({
 
     let validConnectFunc = isValidConnection
 
-    const node = getNode(unref(nodeId))
+    const node = findNode(unref(nodeId))
 
     if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
 
@@ -285,7 +285,7 @@ export default function useHandle({
         validConnectFunc,
         doc,
         edges,
-        getNode,
+        findNode,
       )
 
       if (!isHoveringHandle) return resetRecentHandle(recentHoveredHandle)
@@ -309,7 +309,7 @@ export default function useHandle({
         validConnectFunc,
         doc,
         edges,
-        getNode,
+        findNode,
       )
 
       const isOwnHandle = connection.source === connection.target
@@ -343,7 +343,7 @@ export default function useHandle({
     } else {
       let validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
 
-      const node = getNode(unref(nodeId))
+      const node = findNode(unref(nodeId))
 
       if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
 
@@ -362,7 +362,7 @@ export default function useHandle({
         validConnectFunc,
         doc,
         edges,
-        getNode,
+        findNode,
       )
 
       const isOwnHandle = connection.source === connection.target

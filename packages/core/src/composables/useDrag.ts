@@ -26,7 +26,7 @@ function useDrag(params: UseDragParams) {
       noDragClassName,
       nodes,
       nodeExtent,
-      getNode,
+      findNode,
       multiSelectionActive,
       nodesSelectionActive,
       selectNodesOnDrag,
@@ -47,7 +47,7 @@ function useDrag(params: UseDragParams) {
     watch([() => disabled, () => el], () => {
       if (el) {
         const selection = select(el)
-        const node = id ? getNode(id) : undefined
+        const node = id ? findNode(id) : undefined
 
         if (disabled) {
           selection.on('.drag', null)
@@ -65,13 +65,13 @@ function useDrag(params: UseDragParams) {
               }
 
               const mousePos = getPointerPosition(event, snapToGrid ? snapGrid : undefined)
-              dragItems = getDragItems(nodes, mousePos, getNode, id)
+              dragItems = getDragItems(nodes, mousePos, findNode, id)
 
               if (onStart && dragItems) {
                 const [currentNode, nodes] = getEventHandlerParams({
                   id,
                   dragItems,
-                  getNode: $$(getNode),
+                  findNode,
                 })
                 onStart(event.sourceEvent, currentNode, nodes)
               }
@@ -98,7 +98,7 @@ function useDrag(params: UseDragParams) {
                     n,
                     nextPosition,
                     nodeExtent,
-                    n.parentNode ? getNode(n.parentNode) : undefined,
+                    n.parentNode ? findNode(n.parentNode) : undefined,
                   )
 
                   // we want to make sure that we only fire a change event when there is a changes
@@ -117,7 +117,7 @@ function useDrag(params: UseDragParams) {
                   const [currentNode, nodes] = getEventHandlerParams({
                     id,
                     dragItems,
-                    getNode: $$(getNode),
+                    findNode,
                   })
 
                   dragging.value = true
@@ -135,7 +135,7 @@ function useDrag(params: UseDragParams) {
                   const [currentNode, nodes] = getEventHandlerParams({
                     id,
                     dragItems,
-                    getNode: $$(getNode),
+                    findNode,
                   })
 
                   dragging.value = false
