@@ -43,7 +43,7 @@
     "unplugin-icons": "^0.14.13",
     "unplugin-vue-components": "^0.22.9",
     "vite-plugin-windicss": "^1.8.8",
-    "vitepress": "^1.0.0-alpha.4",
+    "vitepress": "1.0.0-alpha.4",
     "windicss": "^3.5.6"
   }
 }
