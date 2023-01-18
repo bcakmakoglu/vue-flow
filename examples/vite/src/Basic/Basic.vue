@@ -19,6 +19,7 @@ const { onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFl
   maxZoom: 4,
   connectOnClick: true,
   fitViewOnInit: false,
+  selectionKeyCode: ['S+B'],
 })
 
 onNodeDragStop((e) => console.log('drag stop', e))
