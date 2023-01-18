@@ -141,8 +141,8 @@ watch(
 watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
   // update position if extent has actually changed
   if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
-    // todo: can we solve this without a timeout? Otherwise the extent is not properly calculated
-    setTimeout(updatePosition)
+    // todo: can we solve this without a timeout? Without the timeout the initial extent is not properly calculated
+    setTimeout(updatePosition, 1)
   }
 })
 
