@@ -69,7 +69,7 @@ export const isGraphNode = <Data = ElementData>(element: MaybeElement): element 
 
 export const isRect = (obj: any): obj is Rect => !!obj.width && !!obj.height && !!obj.x && !!obj.y
 
-export const parseNode = (node: Node, nodeExtent: CoordinateExtent, defaults?: Partial<GraphNode>): GraphNode => {
+export const parseNode = (node: Node, defaults?: Partial<GraphNode>): GraphNode => {
   let defaultValues = defaults
   if (!isGraphNode(node)) {
     defaultValues = {
