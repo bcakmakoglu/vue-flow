@@ -1,5 +1,5 @@
 import EdgeAnchor from './EdgeAnchor'
-import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, GraphNode, HandleType } from '~/types'
+import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 
 interface Props {
@@ -10,12 +10,10 @@ interface Props {
   focusable?: boolean
   updatable?: EdgeUpdatable
   edge: GraphEdge
-  sourceNode: GraphNode
-  targetNode: GraphNode
 }
 
 const EdgeWrapper = defineComponent({
-  props: ['name', 'type', 'id', 'updatable', 'selectable', 'focusable', 'edge', 'sourceNode', 'targetNode'],
+  props: ['name', 'type', 'id', 'updatable', 'selectable', 'focusable', 'edge'],
   setup(props: Props) {
     const {
       id: vueFlowId,
@@ -28,6 +26,7 @@ const EdgeWrapper = defineComponent({
       getEdgeTypes,
       removeSelectedEdges,
       findEdge,
+      findNode,
     } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
@@ -35,18 +34,27 @@ const EdgeWrapper = defineComponent({
     const edge = $(useVModel(props, 'edge'))
 
     let mouseOver = $ref(false)
+
     let updating = $ref(false)
 
     const nodeId = ref('')
+
     const handleId = ref<string | null>(null)
+
     const type = ref<HandleType>('source')
+
     const elementEdgeUpdaterType = ref<HandleType>('source')
+
     const mouseEvent = ref<MouseEvent>()
 
     const edgeEl = ref<SVGElement>()
 
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)
+
+    const sourceNode = $computed(() => findNode(edge.source))
+
+    const targetNode = $computed(() => findNode(edge.target))
 
     const onEdgeUpdaterMouseEnter = () => (mouseOver = true)
 
@@ -128,22 +136,22 @@ const EdgeWrapper = defineComponent({
     }
 
     return () => {
-      if (!props.sourceNode || !props.targetNode) return null
+      if (!sourceNode || !targetNode) return null
 
       let sourceNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
-        sourceNodeHandles = props.sourceNode.handleBounds.source
+        sourceNodeHandles = sourceNode.handleBounds.source
       } else {
-        sourceNodeHandles = [...(props.sourceNode.handleBounds.source || []), ...(props.sourceNode.handleBounds.target || [])]
+        sourceNodeHandles = [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]
       }
 
       const sourceHandle = getHandle(sourceNodeHandles, edge.sourceHandle)
 
       let targetNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
-        targetNodeHandles = props.targetNode.handleBounds.target
+        targetNodeHandles = targetNode.handleBounds.target
       } else {
-        targetNodeHandles = [...(props.targetNode.handleBounds.target || []), ...(props.targetNode.handleBounds.source || [])]
+        targetNodeHandles = [...(targetNode.handleBounds.target || []), ...(targetNode.handleBounds.source || [])]
       }
 
       const targetHandle = getHandle(targetNodeHandles, edge.targetHandle)
@@ -153,10 +161,10 @@ const EdgeWrapper = defineComponent({
       const targetPosition = targetHandle ? targetHandle.position : Position.Top
 
       const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-        props.sourceNode,
+        sourceNode,
         sourceHandle,
         sourcePosition,
-        props.targetNode,
+        targetNode,
         targetHandle,
         targetPosition,
       )
@@ -197,8 +205,8 @@ const EdgeWrapper = defineComponent({
             ? null
             : h(props.type === false ? getEdgeTypes.value.default : props.type, {
                 id: props.id,
-                sourceNode: props.sourceNode,
-                targetNode: props.targetNode,
+                sourceNode,
+                targetNode,
                 source: edge.source,
                 target: edge.target,
                 type: edge.type,

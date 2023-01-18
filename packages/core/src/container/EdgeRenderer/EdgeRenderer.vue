@@ -57,9 +57,9 @@ let stop: WatchStopHandle
 onPaneReady(() => {
   stop = watch(
     [
-      $$(getSelectedNodes),
-      $$(getEdges),
+      () => getEdges.length,
       () => getEdges.map((e) => e.zIndex),
+      () => (elevateEdgesOnSelect ? getSelectedNodes.length : 0),
       () => (elevateEdgesOnSelect ? getNodesInitialized.map((n) => n.computedPosition.z) : []),
     ],
     () => {

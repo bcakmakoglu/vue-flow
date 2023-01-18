@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { isNumber } from '@vueuse/core'
-import type { ReactiveVariable } from 'vue/macros'
 import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
 import { ARIA_NODE_DESC_KEY } from '../../utils/a11y'
 
@@ -41,7 +40,7 @@ const {
 
 const updateNodePositions = useUpdateNodePositions()
 
-const node: ReactiveVariable<GraphNode> = $(useVModel(props, 'node'))
+const node = $(useVModel(props, 'node'))
 
 const parentNode = $computed(() => (node.parentNode ? getNode(node.parentNode) : undefined))
 
