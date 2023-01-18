@@ -15,9 +15,9 @@ const {
   edgesFocusable,
   elementsSelectable,
   getSelectedNodes,
-  getSelectedEdges,
-  getNode,
+  findNode,
   getEdges,
+  getNodesInitialized,
   getEdgeTypes,
   noPanClassName,
   elevateEdgesOnSelect,
@@ -31,7 +31,8 @@ const sourceNode = $(
   controlledComputed(
     () => connectionStartHandle?.nodeId,
     () => {
-      if (connectionStartHandle?.nodeId) return getNode(connectionStartHandle.nodeId)
+      if (connectionStartHandle?.nodeId) return findNode(connectionStartHandle.nodeId)
+
       return false
     },
   ),
@@ -59,10 +60,10 @@ onPaneReady(() => {
       $$(getSelectedNodes),
       $$(getEdges),
       () => getEdges.map((e) => e.zIndex),
-      () => (elevateEdgesOnSelect ? getSelectedEdges : []),
+      () => (elevateEdgesOnSelect ? getNodesInitialized.map((n) => n.computedPosition.z) : []),
     ],
     () => {
-      groups = groupEdgesByZLevel(getEdges, getNode, elevateEdgesOnSelect)
+      groups = groupEdgesByZLevel(getEdges, findNode, elevateEdgesOnSelect)
     },
     { immediate: true },
   )
@@ -120,8 +121,6 @@ export default {
           :edge="edge"
           :type="getType(edge.type, edge.template)"
           :name="edge.type || 'default'"
-          :source-node="getNode(edge.source)"
-          :target-node="getNode(edge.target)"
           :selectable="selectable(edge.selectable)"
           :updatable="updatable(edge.updatable)"
           :focusable="focusable(edge.focusable)"
