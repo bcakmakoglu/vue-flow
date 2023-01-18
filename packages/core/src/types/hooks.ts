@@ -45,7 +45,7 @@ export interface FlowEvents {
   nodeDragStart: NodeDragEvent
   nodeDrag: NodeDragEvent
   nodeDragStop: NodeDragEvent
-  nodesInitialized: void
+  nodesInitialized: GraphNode[]
   updateNodeInternals: string[]
   miniMapNodeClick: NodeMouseEvent
   miniMapNodeDoubleClick: NodeMouseEvent
