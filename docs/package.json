@@ -32,7 +32,7 @@
   "devDependencies": {
     "@iconify/json": "^2.1.95",
     "@types/canvas-confetti": "^1.4.3",
-    "@types/node": "^18.7.8",
+    "@types/node": "^18.11.18",
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^16.0.3",
     "ohmyfetch": "^0.4.21",
@@ -42,7 +42,7 @@
     "unplugin-auto-import": "^0.11.4",
     "unplugin-icons": "^0.14.13",
     "unplugin-vue-components": "^0.22.9",
-    "vite-plugin-windicss": "^1.8.8",
+    "vite-plugin-windicss": "^1.8.10",
     "vitepress": "1.0.0-alpha.4",
     "windicss": "^3.5.6"
   }

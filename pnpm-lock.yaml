@@ -36,7 +36,7 @@ importers:
       '@iconify/json': ^2.1.95
       '@stackblitz/sdk': ^1.8.0
       '@types/canvas-confetti': ^1.4.3
-      '@types/node': ^18.7.8
+      '@types/node': ^18.11.18
       '@vercel/analytics': ^0.1.8
       '@vue-flow/background': workspace:*
       '@vue-flow/controls': workspace:*
@@ -57,7 +57,7 @@ importers:
       unplugin-icons: ^0.14.13
       unplugin-vue-components: ^0.22.9
       vite: ^2.9.15
-      vite-plugin-windicss: ^1.8.8
+      vite-plugin-windicss: ^1.8.10
       vitepress: 1.0.0-alpha.4
       vue: ^3.2.37
       web-vitals: ^3.1.1
@@ -2386,7 +2386,7 @@ packages:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 14.18.36
+      '@types/node': 18.11.18
     dev: true
     optional: true
 
