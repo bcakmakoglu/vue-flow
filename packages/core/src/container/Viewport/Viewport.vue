@@ -42,6 +42,8 @@ let isZoomingOrPanning = $ref(false)
 
 let zoomedWithRightMouseButton = $ref(false)
 
+let mouseButton = $ref(0)
+
 const isRightClickPan = (pan: FlowOptions['panOnDrag'], usedButton: number) =>
   usedButton === 2 && Array.isArray(pan) && pan.includes(2)
 
@@ -127,7 +129,7 @@ onMounted(() => {
 
         const flowTransform = eventToFlowTransform(event.transform)
 
-        zoomedWithRightMouseButton = isRightClickPan(panOnDrag, event.sourceEvent?.button)
+        zoomedWithRightMouseButton = isRightClickPan(panOnDrag, mouseButton ?? 0)
 
         emits.viewportChange(flowTransform)
         emits.move({ event, flowTransform })
@@ -144,6 +146,9 @@ onMounted(() => {
 
   d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
     if (!event.sourceEvent) return null
+
+    // we need to remember it here, because it's always 0 in the "zoom" event
+    mouseButton = event.sourceEvent.button
 
     isZoomingOrPanning = true
 
@@ -166,7 +171,7 @@ onMounted(() => {
 
     setState({ paneDragging: false })
 
-    if (isRightClickPan(panOnDrag, event.sourceEvent?.button) && !zoomedWithRightMouseButton) {
+    if (isRightClickPan(panOnDrag, mouseButton ?? 0) && !zoomedWithRightMouseButton) {
       emits.paneContextMenu(event.sourceEvent)
     }
 
