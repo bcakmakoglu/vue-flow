@@ -1,14 +1,6 @@
 import type { Ref } from 'vue'
 import { isNumber } from '@vueuse/shared'
-import type {
-  ComputedGetters,
-  CoordinateExtent,
-  ExtendedParentExtent,
-  Getters,
-  GraphNode,
-  NodeDragItem,
-  XYPosition,
-} from '~/types'
+import type { Actions, CoordinateExtent, ExtendedParentExtent, GraphNode, NodeDragItem, XYPosition } from '~/types'
 
 export function hasSelector(target: Element, selector: string, node: Ref<Element>): boolean {
   let current = target
@@ -26,11 +18,11 @@ export function hasSelector(target: Element, selector: string, node: Ref<Element
 export function getDragItems(
   nodes: GraphNode[],
   mousePos: XYPosition,
-  getNode: Getters['getNode'],
+  findNode: Actions['findNode'],
   nodeId?: string,
 ): NodeDragItem[] {
   return nodes
-    .filter((n) => (n.selected || n.id === nodeId) && (!n.parentNode || !isParentSelected(n, getNode)))
+    .filter((n) => (n.selected || n.id === nodeId) && (!n.parentNode || !isParentSelected(n, findNode)))
     .map((n) =>
       markRaw({
         id: n.id,
@@ -50,19 +42,13 @@ export function getDragItems(
 export function getEventHandlerParams({
   id,
   dragItems,
-  getNode,
+  findNode,
 }: {
   id?: string
   dragItems: NodeDragItem[]
-  getNode: ComputedGetters['getNode']
+  findNode: Actions['findNode']
 }): [GraphNode, GraphNode[]] {
-  const extendedDragItems: GraphNode[] = dragItems.map((n) => {
-    const node = getNode.value(n.id)!
-
-    return {
-      ...node,
-    }
-  })
+  const extendedDragItems: GraphNode[] = dragItems.map((n) => findNode(n.id)!)
 
   return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
 }

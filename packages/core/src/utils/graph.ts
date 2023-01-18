@@ -1,5 +1,6 @@
 import { isString } from '@vueuse/core'
 import type {
+  Actions,
   Box,
   Connection,
   CoordinateExtent,
@@ -10,7 +11,6 @@ import type {
   ElementData,
   Elements,
   FlowElement,
-  Getters,
   GraphEdge,
   GraphNode,
   Node,
@@ -354,12 +354,12 @@ export const getXYZPos = (parentPos: XYZPosition, computedPosition: XYZPosition)
   }
 }
 
-export const isParentSelected = (node: GraphNode, getNode: Getters['getNode']): boolean => {
+export const isParentSelected = (node: GraphNode, findNode: Actions['findNode']): boolean => {
   if (!node.parentNode) return false
-  const parent = getNode(node.parentNode)
+  const parent = findNode(node.parentNode)
   if (!parent) return false
   if (parent.selected) return true
-  return isParentSelected(parent, getNode)
+  return isParentSelected(parent, findNode)
 }
 
 export const getMarkerId = (marker: EdgeMarkerType | undefined, vueFlowId?: string): string => {
