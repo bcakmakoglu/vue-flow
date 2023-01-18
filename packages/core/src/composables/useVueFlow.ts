@@ -51,12 +51,6 @@ export class Storage {
 
     actions.setState(reactiveState)
 
-    if (preloadedState) {
-      if (preloadedState.modelValue) actions.setElements(preloadedState.modelValue)
-      if (preloadedState.nodes) actions.setNodes(preloadedState.nodes)
-      if (preloadedState.edges) actions.setEdges(preloadedState.edges)
-    }
-
     const flow: VueFlowStore = {
       ...hooksOn,
       ...getters,
