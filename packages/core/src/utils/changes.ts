@@ -123,7 +123,9 @@ export const applyChanges = <
       else warn(`${isNode(change.item) ? `Node` : `Edge`} with id ${change.item.id} already exists`)
     } else if (change.type === 'remove') {
       const index = elements.findIndex((el) => el.id === change.id)
+
       if (index !== -1) elements.splice(index, 1)
+      else warn(`Element with id ${change.id} does not exist`)
     }
   })
 
