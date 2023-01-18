@@ -147,9 +147,13 @@ watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNo
 })
 
 // clamp initial position to nodes' extent
-until(() => node.initialized)
-  .toBe(true)
-  .then(updatePosition)
+if (node.extent === 'parent' || typeof node.extent === 'object') {
+  until(() => node.initialized)
+    .toBe(true)
+    .then(updatePosition)
+} else {
+  updatePosition()
+}
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */
 function updatePosition() {
@@ -203,7 +207,7 @@ function onSelectNode(event: MouseEvent) {
   emit.click({ event, node, connectedEdges })
 }
 
-const onKeyDown = (event: KeyboardEvent) => {
+function onKeyDown(event: KeyboardEvent) {
   if (isInputDOMNode(event)) return
 
   if (elementSelectionKeys.includes(event.key) && selectable) {
