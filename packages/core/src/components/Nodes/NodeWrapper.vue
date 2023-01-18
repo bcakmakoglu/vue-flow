@@ -141,18 +141,13 @@ watch(
 watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
   // update position if extent has actually changed
   if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
-    if (isParentExtent()) {
-      // todo: can we solve this without a timeout? Without the timeout the initial extent is not properly calculated
-      setTimeout(clampPosition, 1)
-    } else {
-      clampPosition()
-    }
+    clampPosition()
   }
 })
 
 // clamp initial position to nodes' extent
 // if extent is parent, we need dimensions to properly clamp the position
-if (isParentExtent()) {
+if (node.extent === 'parent' || (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')) {
   until(() => node.initialized)
     .toBe(true)
     .then(clampPosition)
@@ -160,10 +155,6 @@ if (isParentExtent()) {
 // if extent is not parent, we can clamp it immediately
 else {
   clampPosition()
-}
-
-function isParentExtent() {
-  return node.extent === 'parent' || (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')
 }
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */

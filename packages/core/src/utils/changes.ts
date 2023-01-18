@@ -160,13 +160,19 @@ export const applyChanges = <
               }
             }
 
-            if (typeof currentChange.resizing === 'boolean') element.resizing = currentChange.resizing
+            if (typeof currentChange.resizing !== 'undefined') element.resizing = currentChange.resizing
 
             if (element.expandParent && element.parentNode) {
               const parent = elements[elementIds.indexOf(element.parentNode)]
 
               if (parent && isGraphNode(parent)) {
-                handleParentExpand(element, parent)
+                if (!parent.initialized) {
+                  nextTick(() => {
+                    handleParentExpand(element, parent)
+                  })
+                } else {
+                  handleParentExpand(element, parent)
+                }
               }
             }
 
