@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.12.4
+
+### Patch Changes
+
+- [#619](https://github.com/bcakmakoglu/vue-flow/pull/619) [`3d482b77`](https://github.com/bcakmakoglu/vue-flow/commit/3d482b77032b2bdc6442751730ae694c9e798c29) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use timeout when clamping positions after nodes' extent has changed
+
+- [#618](https://github.com/bcakmakoglu/vue-flow/pull/618) [`f1975ea7`](https://github.com/bcakmakoglu/vue-flow/commit/f1975ea71e6ebc37c7bc43472016eb45702e54aa) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Do not trigger ctx menu event on viewport when dragging with right mouse button
+
 ## 1.12.3
 
 ### Patch Changes
