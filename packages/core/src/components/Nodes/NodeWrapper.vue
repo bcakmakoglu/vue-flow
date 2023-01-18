@@ -142,7 +142,7 @@ watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNo
   // update position if extent has actually changed
   if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
     // todo: can we solve this without a timeout? Without the timeout the initial extent is not properly calculated
-    setTimeout(updatePosition, 1)
+    setTimeout(clampPosition, 1)
   }
 })
 
@@ -150,13 +150,13 @@ watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNo
 if (node.extent === 'parent' || typeof node.extent === 'object') {
   until(() => node.initialized)
     .toBe(true)
-    .then(updatePosition)
+    .then(clampPosition)
 } else {
-  updatePosition()
+  clampPosition()
 }
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */
-function updatePosition() {
+function clampPosition() {
   const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
 
   // only overwrite positions if there are changes when clamping
