@@ -147,7 +147,9 @@ watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNo
 })
 
 // clamp initial position to nodes' extent
-updatePosition()
+until(() => node.initialized)
+  .toBe(true)
+  .then(updatePosition)
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */
 function updatePosition() {
