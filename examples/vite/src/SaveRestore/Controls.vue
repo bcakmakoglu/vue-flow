@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { FlowExportObject, Node } from '@vue-flow/core'
-import { useVueFlow, useZoomPanHelper } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 
 const flowKey = 'example-flow'
 const state = useStorage<FlowExportObject>(flowKey, {
@@ -12,8 +12,7 @@ const state = useStorage<FlowExportObject>(flowKey, {
 
 const getNodeId = () => `randomnode_${+new Date()}`
 
-const { setTransform } = useZoomPanHelper()
-const { nodes, edges, addNodes, setNodes, setEdges, toObject, dimensions } = useVueFlow()
+const { addNodes, setNodes, setEdges, toObject, dimensions, setTransform } = useVueFlow()
 
 const onSave = () => {
   state.value = toObject()
@@ -24,8 +23,11 @@ const onRestore = () => {
 
   if (flow) {
     const [x = 0, y = 0] = flow.position
+
     setNodes(state.value.nodes)
+
     setEdges(state.value.edges)
+
     setTransform({ x, y, zoom: flow.zoom || 0 })
   }
 }
