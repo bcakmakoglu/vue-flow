@@ -24,11 +24,11 @@ const focusable = (f?: boolean) => (typeof f === 'undefined' ? nodesFocusable : 
 
 let resizeObserver = $ref<ResizeObserver>()
 
-until(() => getNodesInitialized.length === nodes.length)
+until(() => nodes.length > 0 && getNodesInitialized.length === nodes.length)
   .toBe(true)
   .then(() => {
     nextTick(() => {
-      emits.nodesInitialized()
+      emits.nodesInitialized(getNodesInitialized)
     })
   })
 
