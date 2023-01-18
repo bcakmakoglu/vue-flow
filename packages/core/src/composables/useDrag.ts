@@ -42,12 +42,13 @@ function useDrag(params: UseDragParams) {
     let lastPos = $ref<Partial<XYPosition>>({ x: undefined, y: undefined })
     let dragHandler = $ref<any>()
 
+    const node = $computed(() => (id ? findNode(id) : undefined))
+
     const getPointerPosition = useGetPointerPosition()
 
     watch([() => disabled, () => el], () => {
       if (el) {
         const selection = select(el)
-        const node = id ? findNode(id) : undefined
 
         if (disabled) {
           selection.on('.drag', null)
