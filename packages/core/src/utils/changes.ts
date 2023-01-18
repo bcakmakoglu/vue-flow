@@ -1,6 +1,5 @@
 import { isFunction, isString } from '@vueuse/core'
 import type {
-  Edge,
   EdgeAddChange,
   EdgeChange,
   EdgeRemoveChange,
@@ -10,7 +9,6 @@ import type {
   FlowElements,
   GraphEdge,
   GraphNode,
-  Node,
   NodeAddChange,
   NodeChange,
   NodeRemoveChange,
@@ -102,7 +100,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
 }
 
 export const applyChanges = <
-  T extends Node | Edge | FlowElement = Node,
+  T extends FlowElement = FlowElement,
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(
   changes: C[],
@@ -137,7 +135,7 @@ export const applyChanges = <
     for (const currentChange of currentChanges) {
       switch (currentChange.type) {
         case 'select':
-          ;(element as FlowElement).selected = currentChange.selected
+          element.selected = currentChange.selected
           break
         case 'position':
           if (isGraphNode(element)) {
