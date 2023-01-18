@@ -169,6 +169,8 @@ export const applyChanges = <
                 handleParentExpand(element, parent)
               }
             }
+
+            if (!element.initialized) element.initialized = true
           }
           break
       }
