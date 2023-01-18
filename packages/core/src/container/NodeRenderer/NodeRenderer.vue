@@ -9,7 +9,9 @@ const {
   nodesFocusable,
   elementsSelectable,
   nodesConnectable,
+  nodes,
   getNodes,
+  getNodesInitialized,
   getNodeTypes,
   updateNodeDimensions,
   emits,
@@ -20,29 +22,20 @@ const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectab
 const connectable = (c?: HandleConnectable) => (typeof c === 'undefined' ? nodesConnectable : c)
 const focusable = (f?: boolean) => (typeof f === 'undefined' ? nodesFocusable : f)
 
-const resizeObserver = ref<ResizeObserver>()
+let resizeObserver = $ref<ResizeObserver>()
 
-// todo: remove nodesInitialized hook as it's not needed anymore, use `getNodesInitialized` instead
+until(() => getNodesInitialized.length === nodes.length)
+  .toBe(true)
+  .then(() => {
+    nextTick(() => {
+      emits.nodesInitialized()
+    })
+  })
+
 onMounted(() => {
-  const readyNodes = []
-  let initialized = false
-
-  const isReady = (id: string) => {
-    readyNodes.push(id)
-
-    if (readyNodes.length === getNodes.length) {
-      nextTick(() => {
-        initialized = true
-        emits.nodesInitialized()
-      })
-    }
-  }
-
-  resizeObserver.value = new ResizeObserver((entries) => {
+  resizeObserver = new ResizeObserver((entries) => {
     const updates = entries.map((entry: ResizeObserverEntry) => {
       const id = entry.target.getAttribute('data-id') as string
-      // if nodes initialized hasn't been emitted yet, add the node to the readyNodes array
-      if (!initialized) isReady(id)
 
       return {
         id,
@@ -54,7 +47,7 @@ onMounted(() => {
   })
 })
 
-onBeforeUnmount(() => resizeObserver.value?.disconnect())
+onBeforeUnmount(() => resizeObserver?.disconnect())
 
 const getType = (type?: string, template?: GraphNode['template']) => {
   const name = type || 'default'
