@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.12.5
+
+### Patch Changes
+
+- [#622](https://github.com/bcakmakoglu/vue-flow/pull/622) [`512eb176`](https://github.com/bcakmakoglu/vue-flow/commit/512eb17640b72b9aa6b06844805cf2c13c1f475c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - If node extent is set to parent, wait until node is initialized to clamp position
+
+- [#622](https://github.com/bcakmakoglu/vue-flow/pull/622) [`512eb176`](https://github.com/bcakmakoglu/vue-flow/commit/512eb17640b72b9aa6b06844805cf2c13c1f475c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Regroup edges when nodes change and elevate edges on select is active
+
+- [#622](https://github.com/bcakmakoglu/vue-flow/pull/622) [`d79e2a42`](https://github.com/bcakmakoglu/vue-flow/commit/d79e2a420eb3eff2f0634751c71bf07afb6406cf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wait for parent node to be initialized before applying an initial expansion of the parent node
+
+- [#622](https://github.com/bcakmakoglu/vue-flow/pull/622) [`73de601f`](https://github.com/bcakmakoglu/vue-flow/commit/73de601f794e6339a9b6dbd4d39a3f11a624a47d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass initialized nodes in the `onNodesInitialized` hook
+
 ## 1.12.4
 
 ### Patch Changes
