@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.6] - 2023-01-19
+
+[28eeaad](28eeaade82ef2bcf3295eb1c443ef1fc026d7a8e)...[c07e62b](c07e62be68e89e9ecdeb1185a39959c353f31e43)
+
+### Bug Fixes
+
+- Use computed var to get node in drag handler ([c13d28d](c13d28d5e2e3b52621b0860b109614bcb71effe6))
+
+### Examples
+
+- Cleanup save-restore controls ([cd06585](cd0658534a858e82789e42f18d00626b530bddd0))
+
+### Miscellaneous Tasks
+
+- Cleanup types in changes util ([00681e5](00681e5321357454d0b29b44a7778b81fe7fe866))
+- Next release ([c07e62b](c07e62be68e89e9ecdeb1185a39959c353f31e43))
+
+### Refactor
+
+- Add warning if trying to duplicate an element ([07dad4b](07dad4b491b53bbd85ce8e9edd246f0ffd663b6e))
+- Add warning if trying to remove non-existing element ([ec346c3](ec346c3e3b045c3b4a318f83c9c47e8d5a829344))
+- Look for parent node in next nodes ([1f9578b](1f9578b657831ef66ef71b98472e8cc146591e9e))
+- Do not set preloaded state elements when calling useVueFlow ([c250594](c25059444a01b30ab7c2a69775572b660c2987ad))
+- Use `removeSelectedNodes` in click handler ([f0d4763](f0d4763a999f735adbf4250c46b628f0e9ad7f53))
+- Remove `extent` option for `setNodes` & `addNodes` ([994ae82](994ae82fdbbbdd5155a7cc679807bc5be65b5c45))
+- Avoid re-setting elements twice on mount ([a54a885](a54a88539ad5a28a33d370c0ea1245c99348b231))
+
 ## [1.12.5] - 2023-01-18
 
 [df7603f](df7603f52f377bf5bba1f16bfd8bcd0347f016e3)...[28eeaad](28eeaade82ef2bcf3295eb1c443ef1fc026d7a8e)
