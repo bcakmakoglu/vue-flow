@@ -2,6 +2,8 @@
 import { Handle, Position } from '@vue-flow/core'
 import { NodeToolbar } from '@vue-flow/node-toolbar'
 
+defineProps<Props>()
+
 interface NodeData {
   toolbarVisible: boolean
   toolbarPosition: Position
@@ -11,8 +13,6 @@ interface Props {
   data: NodeData
   label: string
 }
-
-defineProps<Props>()
 </script>
 
 <template>
