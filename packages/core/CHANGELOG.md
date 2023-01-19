@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.12.6
+
+### Patch Changes
+
+- [#624](https://github.com/bcakmakoglu/vue-flow/pull/624) [`0bddb524`](https://github.com/bcakmakoglu/vue-flow/commit/0bddb5249e5054af946a43399fb69988c16dda98) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add warning when trying to duplicate an element or remove an element that does not exist
+
+- [#626](https://github.com/bcakmakoglu/vue-flow/pull/626) [`449a3f2a`](https://github.com/bcakmakoglu/vue-flow/commit/449a3f2a51e6919a6eabd894c48ca9073eefc242) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `extent` option from `setNodes` & `addNodes` action. Extent should be passed to a node or set with the global option.
+
+- [#626](https://github.com/bcakmakoglu/vue-flow/pull/626) [`449a3f2a`](https://github.com/bcakmakoglu/vue-flow/commit/449a3f2a51e6919a6eabd894c48ca9073eefc242) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use computed var to get current node in `useDrag`. Fixes issue where overwriting a node breaks drag handler.
+
 ## 1.12.5
 
 ### Patch Changes
