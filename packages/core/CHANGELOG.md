@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.12.7
+
+### Patch Changes
+
+- [#627](https://github.com/bcakmakoglu/vue-flow/pull/627) [`19360c52`](https://github.com/bcakmakoglu/vue-flow/commit/19360c52296273c561fa0656e3ccbe7b47ea4d72) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Hide node selection box when no selected nodes exist
+
 ## 1.12.6
 
 ### Patch Changes
