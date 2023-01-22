@@ -22,6 +22,7 @@ const {
   nodesSelectionActive,
   addSelectedElements,
   getSelectedEdges,
+  getSelectedNodes,
   removeNodes,
   removeEdges,
   selectionMode,
@@ -234,6 +235,6 @@ export default {
   >
     <slot />
     <UserSelection v-if="userSelectionActive && userSelectionRect" />
-    <NodesSelection v-if="nodesSelectionActive" />
+    <NodesSelection v-if="nodesSelectionActive && getSelectedNodes.length" />
   </div>
 </template>
