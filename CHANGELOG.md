@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.7] - 2023-01-23
+
+[c07e62b](c07e62be68e89e9ecdeb1185a39959c353f31e43)...[b80bade](b80bade7df3d364c65ee2f4c76116e5b4b59ef76)
+
+### Bug Fixes
+
+- Hide node selection if no selected nodes exist ([852d4b7](852d4b766738ffd795680c89d24e5b96f00ff781))
+
+### Miscellaneous Tasks
+
+- Next release ([b80bade](b80bade7df3d364c65ee2f4c76116e5b4b59ef76))
+
 ## [1.12.6] - 2023-01-19
 
 [28eeaad](28eeaade82ef2bcf3295eb1c443ef1fc026d7a8e)...[c07e62b](c07e62be68e89e9ecdeb1185a39959c353f31e43)
