@@ -14,7 +14,7 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow({
+const { removeNodes, getSelectedNodes, onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow({
   minZoom: 0.2,
   maxZoom: 4,
   connectOnClick: true,
@@ -34,13 +34,14 @@ const updatePos = () =>
     }
   })
 
-const logToObject = () => console.log(toObject())
+const logToObject = () => removeNodes(getSelectedNodes.value)
 const resetTransform = () => setTransform({ x: 0, y: 0, zoom: 1 })
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
 
 <template>
   <VueFlow v-model="elements" fit-view-on-init connection-mode="strict" class="vue-flow-basic-example">
+    {{ getSelectedNodes }}
     <Background />
     <MiniMap />
     <Controls />
