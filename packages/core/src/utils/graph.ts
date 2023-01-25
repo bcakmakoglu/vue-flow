@@ -215,6 +215,12 @@ export const updateEdge = (oldEdge: Edge, newConnection: Connection, elements: E
   return elements.filter((e) => e.id !== oldEdge.id)
 }
 
+export const rendererPointToPoint = ({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition => {
+  return {
+    x: x * tScale + tx,
+    y: y * tScale + ty,
+  }
+}
 export const pointToRendererPoint = (
   { x, y }: XYPosition,
   { x: tx, y: ty, zoom: tScale }: ViewportTransform,
