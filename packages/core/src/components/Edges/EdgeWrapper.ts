@@ -43,7 +43,7 @@ const EdgeWrapper = defineComponent({
 
     const type = ref<HandleType>('source')
 
-    const elementEdgeUpdaterType = ref<HandleType>('source')
+    const edgeUpdaterType = ref<HandleType>('source')
 
     const mouseEvent = ref<MouseEvent>()
 
@@ -70,12 +70,12 @@ const EdgeWrapper = defineComponent({
       updating = false
     }
 
-    const { onMouseDown } = useHandle({
+    const { handlePointerDown } = useHandle({
       nodeId,
       handleId,
       type,
       isValidConnection: undefined,
-      elementEdgeUpdaterType,
+      edgeUpdaterType,
       onEdgeUpdate,
       onEdgeUpdateEnd,
     })
@@ -84,12 +84,12 @@ const EdgeWrapper = defineComponent({
       nodeId.value = isSourceHandle ? edge.target : edge.source
       handleId.value = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
       type.value = isSourceHandle ? 'target' : 'source'
-      elementEdgeUpdaterType.value = type.value
+      edgeUpdaterType.value = type.value
       mouseEvent.value = event
 
       hooks.emit.updateStart({ event, edge })
 
-      onMouseDown(event)
+      handlePointerDown(event)
     }
 
     const onEdgeClick = (event: MouseEvent) => {

@@ -80,6 +80,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   connectionStartHandle: StartHandle | null
   connectionClickStartHandle: StartHandle | null
   connectionPosition: XYPosition
+  connectionRadius: number
 
   connectOnClick: boolean
   edgeUpdaterRadius: number
