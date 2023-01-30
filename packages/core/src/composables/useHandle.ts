@@ -113,6 +113,7 @@ export default function useHandle({
         }
 
         const { connection, handleDomNode, isValid } = isValidHandle(
+          event,
           prevClosestHandle,
           connectionMode.value,
           nodeId,
@@ -133,6 +134,7 @@ export default function useHandle({
       function onPointerUp(event: MouseEvent | TouchEvent) {
         if (prevClosestHandle) {
           const { connection, isValid } = isValidHandle(
+            event,
             prevClosestHandle,
             connectionMode.value,
             nodeId,
@@ -186,6 +188,7 @@ export default function useHandle({
       const doc = getHostForElement(event.target as HTMLElement)
 
       const { connection, isValid } = isValidHandle(
+        event,
         {
           nodeId,
           id: handleId,
