@@ -25,6 +25,8 @@ export { getBezierPath, getSimpleBezierPath, getSmoothStepPath, getStraightPath 
 export {
   isNode,
   isEdge,
+  isGraphNode,
+  isGraphEdge,
   addEdge,
   updateEdge,
   getOutgoers,

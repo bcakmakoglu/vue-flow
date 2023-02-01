@@ -8,6 +8,7 @@ import type {
   Dimensions,
   Edge,
   EdgeMarkerType,
+  Element,
   ElementData,
   Elements,
   FlowElement,
@@ -53,7 +54,7 @@ export const getHostForElement = (element: HTMLElement): Document => {
   else return window.document
 }
 
-type MaybeElement = Node | Edge | Connection | FlowElement
+type MaybeElement = Node | Edge | Connection | FlowElement | Element
 
 export const isEdge = <Data = ElementData>(element: MaybeElement): element is Edge<Data> =>
   element && 'id' in element && 'source' in element && 'target' in element
