@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.0] - 2023-02-01
+
+[b80bade](b80bade7df3d364c65ee2f4c76116e5b4b59ef76)...[4f0ddcd](4f0ddcdd26cb9bcfabf9a6bca0172f75911fae3c)
+
+### Bug Fixes
+
+- Animated connection line style ([2f81f2a](2f81f2a9c6472666f6dd7a093231af5492fc8a2b))
+
+### Documentation
+
+- Update connection-radius example ([539b85d](539b85dc5973133c5cf9c0b8fc39f73780d8e567))
+
+### Features
+
+- Export `getSimpleEdgeCenter` & `getBezierEdgeCenter` ([492de08](492de08eefc563dfed002bf8949ad44122758667))
+- Implement connection radius ([e74a20d](e74a20d923c3b4a5bf70b8bf7da264918b4612a6))
+- Do not snap to invalid handles ([e0fbefe](e0fbefef8f1af2a6329fbbdb254db6e7ad09b028))
+- Export `isGraphNode` & `isGraphEdge` typeguards ([6ea6034](6ea60349fd2c00e95506b41ed168c6e33ca5cfec))
+- Add auto pan props ([84f2235](84f2235f2378b58353583a743a560e290914192a))
+- Add auto pan utils ([d0fefdf](d0fefdf04ed1334b1ca268584b9ed03f2cf08606))
+- Add `panBy` action to store ([7dba01d](7dba01d880855e5064c4b7695388ba282e0537be))
+- Add auto pan on node drag ([0dcfd6f](0dcfd6f9a4e36b6601c7b025808556283b221df4))
+- Add pan on connection drag ([35d28ab](35d28abd65908e884a8cf1258c54f9c34683a293))
+- Allow setting node/edge type with generic ([7fa9203](7fa9203ccbe290dc98fc00077fc731e251b38f7f))
+
+### Miscellaneous Tasks
+
+- Update license ([22dce89](22dce89f33f8abfbcf9b14c1771868dd1dffcaeb))
+- Update deps-dev ([c920dc5](c920dc59b5763692b4568fab7d91dc4c7b5842c8))
+- Add missing edge wrapper name ([93bfa54](93bfa54308b0a06911b3d5cfab3d9a64cb9a7b30))
+- Add missing type to FlowProps interface ([02952b8](02952b8b6c66132cc855d4de806f0ee7c067aa05))
+- Cleanup ([94a094a](94a094aa9e4f94b85ce1e7d8ffffc386987ec859))
+- Next release ([36e977f](36e977fa31687e54a19a8efdad6147ec68ff48d1))
+- Bump version ([4f0ddcd](4f0ddcdd26cb9bcfabf9a6bca0172f75911fae3c))
+
+### Refactor
+
+- First check element below ([94e1282](94e1282b10facc0eb32f0d5692c1ce71bc462541))
+- Move `MaybeElement` type ([51270ca](51270caa73baa814136819d1a5de2122efa79a34))
+- Throw warning if dimensions of viewport are 0 ([522efd4](522efd4c94cb4b5f362af0777085d7d9c41b2e82))
+
 ## [1.12.7] - 2023-01-23
 
 [c07e62b](c07e62be68e89e9ecdeb1185a39959c353f31e43)...[b80bade](b80bade7df3d364c65ee2f4c76116e5b4b59ef76)
