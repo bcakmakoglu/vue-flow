@@ -86,8 +86,11 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   ariaLabel?: string
 }
 
-export interface GraphNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>
-  extends Node<Data, CustomEvents> {
+export interface GraphNode<
+  Data = ElementData,
+  CustomEvents extends Record<string, CustomEvent> = any,
+  Type extends string = string,
+> extends Node<Data, CustomEvents> {
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
   handleBounds: NodeHandleBounds
@@ -100,14 +103,15 @@ export interface GraphNode<Data = ElementData, CustomEvents extends Record<strin
   initialized: boolean
   data: Data
   events: Partial<NodeEventsHandler<CustomEvents>>
+  type: Type
 }
 
 /** these props are passed to node components */
-export interface NodeProps<Data = ElementData, CustomEvents = {}> {
+export interface NodeProps<Data = ElementData, CustomEvents = {}, Type extends string = keyof DefaultNodeTypes> {
   /** unique node id */
   id: string
   /** node type */
-  type: keyof DefaultNodeTypes | string
+  type?: Type
   /** is node selected */
   selected: boolean
   /** can node handles be connected */
