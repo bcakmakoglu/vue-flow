@@ -1,5 +1,37 @@
 # @vue-flow/core
 
+## 1.13.0
+
+### Minor Changes
+
+- [#639](https://github.com/bcakmakoglu/vue-flow/pull/639) [`ad2b09f1`](https://github.com/bcakmakoglu/vue-flow/commit/ad2b09f18ea1183a7d2a8725d8a637fec3c93871) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow setting `GraphNode` or `GraphEdge` type with a generic type
+
+- [#629](https://github.com/bcakmakoglu/vue-flow/pull/629) [`c7cfcec7`](https://github.com/bcakmakoglu/vue-flow/commit/c7cfcec70a91a9c1a3ed6233be35adba103e9226) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `connectionRadius` option to global options and handle props.
+  You can use this option to set the radius at which a connection line will snap to the closest available handle.
+
+- [#613](https://github.com/bcakmakoglu/vue-flow/pull/613) [`7abd0bfd`](https://github.com/bcakmakoglu/vue-flow/commit/7abd0bfdf38a65b27f5fed7dc5a44f65dea732d6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Export edge center utils `getSimpleEdgeCenter` & `getBezierEdgeCenter` from core
+
+- [#634](https://github.com/bcakmakoglu/vue-flow/pull/634) [`b59dd6a7`](https://github.com/bcakmakoglu/vue-flow/commit/b59dd6a7256a1f0eb51beb7ea581383089b5e0d4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add autopan options. Pans viewport on node drag and/or when drawing a connection line.
+
+  ### Usage
+
+  ```ts
+  useVueFlow({
+    autoPanOnNodeDrag: true,
+    autoPanOnConnect: true,
+  })
+  ```
+
+  ```vue
+  <VueFlow v-model="elements" :autoPanOnNodeDrag="true" :autoPanOnConnect="true" />
+  ```
+
+- [#636](https://github.com/bcakmakoglu/vue-flow/pull/636) [`e1628ec6`](https://github.com/bcakmakoglu/vue-flow/commit/e1628ec6601e50a7bc212a2ece83877dee0e9e70) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Export `isGraphNode` and `isGraphEdge` typeguards
+
+### Patch Changes
+
+- [#634](https://github.com/bcakmakoglu/vue-flow/pull/634) [`b59dd6a7`](https://github.com/bcakmakoglu/vue-flow/commit/b59dd6a7256a1f0eb51beb7ea581383089b5e0d4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Throw warning if viewport dimensions are 0
+
 ## 1.12.7
 
 ### Patch Changes
