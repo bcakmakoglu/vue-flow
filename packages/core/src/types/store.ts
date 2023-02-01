@@ -2,7 +2,6 @@ import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type {
   Dimensions,
-  ElementData,
   Elements,
   FlowElements,
   FlowExportObject,
@@ -25,7 +24,7 @@ import type {
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
-import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
+import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ConnectingHandle, ValidConnectionFunc } from './handle'
 
@@ -182,13 +181,9 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
-export type FindNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string | undefined,
-) => GraphNode<Data, CustomEvents> | undefined
+export type FindNode = <T extends GraphNode = GraphNode>(id: string | undefined) => T | undefined
 
-export type FindEdge = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string | undefined,
-) => GraphEdge<Data, CustomEvents> | undefined
+export type FindEdge = <T extends GraphEdge = GraphEdge>(id: string | undefined) => T | undefined
 
 export type GetIntersectingNodes = (
   node: (Partial<Node> & { id: Node['id'] }) | Rect,
