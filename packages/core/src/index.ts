@@ -32,6 +32,8 @@ export {
 export {
   isNode,
   isEdge,
+  isGraphNode,
+  isGraphEdge,
   addEdge,
   updateEdge,
   getOutgoers,
