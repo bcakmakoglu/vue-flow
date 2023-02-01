@@ -42,6 +42,7 @@ export interface NodeResizerProps {
   minWidth?: number
   minHeight?: number
   shouldResize?: ShouldResize
+  aspectRatio?: number
 }
 
 export interface NodeResizerEmits {
@@ -67,6 +68,7 @@ export interface ResizeControlProps {
   position?: ControlPosition
   variant?: ResizeControlVariant
   shouldResize?: ShouldResize
+  aspectRatio? : number
 }
 
 export interface ResizeControlLineProps {
@@ -76,4 +78,5 @@ export interface ResizeControlLineProps {
   minHeight?: number
   variant?: ResizeControlVariant
   position?: ControlLinePosition
+  aspectRatio?: number
 }

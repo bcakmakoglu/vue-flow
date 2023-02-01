@@ -93,8 +93,22 @@ watchEffect((onCleanup) => {
         const distX = Math.floor(enableX ? xSnapped - startX : 0)
         const distY = Math.floor(enableY ? ySnapped - startY : 0)
 
-        const width = Math.max(startWidth + (invertX ? -distX : distX), props.minWidth)
-        const height = Math.max(startHeight + (invertY ? -distY : distY), props.minHeight)
+        let width = Math.max(startWidth + (invertX ? -distX : distX), props.minWidth)
+        let height = Math.max(startHeight + (invertY ? -distY : distY), props.minHeight)
+
+        if (props.aspectRatio) {
+          const currentAspectRatio = width / height
+          if (currentAspectRatio !== props.aspectRatio) {
+            const newWidth = height * props.aspectRatio
+            const newHeight = width / props.aspectRatio
+
+            if (newWidth > width) {
+              width = newWidth
+            } else {
+              height = newHeight
+            }
+          }
+        }
 
         const isWidthChange = width !== prevWidth
         const isHeightChange = height !== prevHeight
