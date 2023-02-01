@@ -35,7 +35,9 @@ export default function useHandle({
     connectionClickStartHandle,
     nodesConnectable,
     defaultEdgeOptions,
+    autoPanOnConnect,
     findNode,
+    panBy,
     getNodes,
     startConnection,
     updateConnection,
@@ -61,6 +63,8 @@ export default function useHandle({
 
       let prevClosestHandle: ConnectionHandle | null
 
+      let autoPanId = 0
+
       const { x, y } = getEventPosition(event)
       const clickedHandle = doc?.elementFromPoint(x, y)
       const handleType = getHandleType(unref(edgeUpdaterType), clickedHandle)
@@ -72,6 +76,7 @@ export default function useHandle({
 
       let prevActiveHandle: Element
       let connectionPosition = getEventPosition(event, containerBounds)
+      let autoPanStarted = false
 
       const handleLookup = getHandleLookup({
         nodes: getNodes.value,
@@ -79,6 +84,17 @@ export default function useHandle({
         handleId,
         handleType,
       })
+
+      // when the user is moving the mouse close to the edge of the canvas while connecting we move the canvas
+      const autoPan = () => {
+        if (!autoPanOnConnect) {
+          return
+        }
+        const [xMovement, yMovement] = calcAutoPan(connectionPosition, containerBounds)
+
+        panBy({ x: xMovement, y: yMovement })
+        autoPanId = requestAnimationFrame(autoPan)
+      }
 
       startConnection(
         {
@@ -103,6 +119,11 @@ export default function useHandle({
           connectionRadius.value,
           handleLookup,
         )
+
+        if (!autoPanStarted) {
+          autoPan()
+          autoPanStarted = true
+        }
 
         const { connection, handleDomNode, isValid } = isValidHandle(
           event,
@@ -140,6 +161,9 @@ export default function useHandle({
       }
 
       function onPointerUp(event: MouseEvent | TouchEvent) {
+        cancelAnimationFrame(autoPanId)
+        autoPanStarted = false
+
         if (prevClosestHandle) {
           const { connection, isValid } = isValidHandle(
             event,
