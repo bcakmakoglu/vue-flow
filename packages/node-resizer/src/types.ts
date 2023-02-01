@@ -18,7 +18,6 @@ export interface NodeResizerProps {
   isVisible?: boolean
   minWidth?: number
   minHeight?: number
-
   aspectRatio?: number
 }
 
