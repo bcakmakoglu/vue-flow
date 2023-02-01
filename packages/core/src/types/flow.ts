@@ -171,6 +171,9 @@ export interface FlowProps {
   edgesFocusable?: boolean
   nodesFocusable?: boolean
 
+  autoPanOnConnect?: boolean
+  autoPanOnNodeDrag?: boolean
+
   __experimentalFeatures?: {
     nestedFlow?: boolean
   }

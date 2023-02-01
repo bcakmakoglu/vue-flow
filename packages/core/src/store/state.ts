@@ -119,6 +119,9 @@ const defaultState = (): State => ({
   elevateEdgesOnSelect: false,
   elevateNodesOnSelect: true,
 
+  autoPanOnNodeDrag: true,
+  autoPanOnConnect: true,
+
   disableKeyboardA11y: false,
   ariaLiveMessage: '',
 

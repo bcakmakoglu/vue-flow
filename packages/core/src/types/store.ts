@@ -126,6 +126,9 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   elevateEdgesOnSelect: boolean
   elevateNodesOnSelect: boolean
 
+  autoPanOnConnect: boolean
+  autoPanOnNodeDrag: boolean
+
   disableKeyboardA11y: boolean
 
   ariaLiveMessage: string
