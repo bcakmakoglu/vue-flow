@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.13.1
+
+### Patch Changes
+
+- [#641](https://github.com/bcakmakoglu/vue-flow/pull/641) [`f5eaa4cc`](https://github.com/bcakmakoglu/vue-flow/commit/f5eaa4cc534008731f2ffa90fe8f4cdbeabc238b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass missing valid connection function params
+
 ## 1.13.0
 
 ### Minor Changes
