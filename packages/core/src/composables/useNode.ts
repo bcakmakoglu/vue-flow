@@ -25,7 +25,7 @@ export function useNode<T extends GraphNode = GraphNode>(
 
   const nodeEl = computed(() => unref(nodeRef) ?? document.querySelector(`[data-id="${nodeId.value}"]`))!
 
-  const node = computed(() => findNode<T>(nodeId.value))
+  const node = computed(() => findNode<T>(nodeId.value)!)
 
   const parentNode = computed(() => findNode(node.value?.parentNode))
 
