@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.1] - 2023-02-01
+
+[4f0ddcd](4f0ddcdd26cb9bcfabf9a6bca0172f75911fae3c)...[b2cc3f5](b2cc3f5cf9c118b6a9e2208a008194084131eb56)
+
+### Bug Fixes
+
+- Pass valid connection func params ([a5ebd48](a5ebd480134cb38aa67c4e77e32e44a28bd25c0c))
+
+### Miscellaneous Tasks
+
+- Next release ([b2cc3f5](b2cc3f5cf9c118b6a9e2208a008194084131eb56))
+
 ## [1.13.0] - 2023-02-01
 
 [b80bade](b80bade7df3d364c65ee2f4c76116e5b4b59ef76)...[4f0ddcd](4f0ddcdd26cb9bcfabf9a6bca0172f75911fae3c)
