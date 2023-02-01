@@ -11,6 +11,8 @@ interface UseHandleProps {
   onEdgeUpdateEnd?: (event: MouseEvent | TouchEvent) => void
 }
 
+const alwaysValid = () => true
+
 export default function useHandle({
   handleId: _handleId,
   nodeId: _nodeId,
@@ -49,7 +51,13 @@ export default function useHandle({
       // when vue-flow is used inside a shadow root we can't use document
       const doc = getHostForElement(event.target as HTMLElement)
 
-      const validConnectFunc = isValidConnection || (() => true)
+      const node = findNode(unref(nodeId))
+
+      let validConnectFunc = isValidConnection || alwaysValid
+
+      if (!isValidConnection) {
+        if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
+      }
 
       let prevClosestHandle: ConnectionHandle | null
 
@@ -96,8 +104,19 @@ export default function useHandle({
           handleLookup,
         )
 
+        const { connection, handleDomNode, isValid } = isValidHandle(
+          event,
+          prevClosestHandle,
+          connectionMode.value,
+          nodeId,
+          handleId,
+          isTarget ? 'target' : 'source',
+          validConnectFunc,
+          doc,
+        )
+
         updateConnection(
-          prevClosestHandle
+          prevClosestHandle && isValid
             ? rendererPointToPoint(
                 {
                   x: prevClosestHandle.x,
@@ -111,17 +130,6 @@ export default function useHandle({
         if (!prevClosestHandle) {
           return resetRecentHandle(prevActiveHandle)
         }
-
-        const { connection, handleDomNode, isValid } = isValidHandle(
-          event,
-          prevClosestHandle,
-          connectionMode.value,
-          nodeId,
-          handleId,
-          isTarget ? 'target' : 'source',
-          validConnectFunc,
-          doc,
-        )
 
         if (connection.source !== connection.target && handleDomNode) {
           resetRecentHandle(prevActiveHandle)
@@ -179,9 +187,13 @@ export default function useHandle({
     if (!connectionClickStartHandle.value) {
       startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event, true)
     } else {
-      const validConnectFunc: ValidConnectionFunc = isValidConnection ?? (() => true)
+      let validConnectFunc = isValidConnection ?? alwaysValid
 
       const node = findNode(unref(nodeId))
+
+      if (!isValidConnection) {
+        if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
+      }
 
       if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
 
