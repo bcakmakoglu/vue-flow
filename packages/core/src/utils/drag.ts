@@ -27,8 +27,8 @@ export function getDragItems(
         id: n.id,
         position: n.position || { x: 0, y: 0 },
         distance: {
-          x: mousePos.x - n.computedPosition.x || 0,
-          y: mousePos.y - n.computedPosition.y || 0,
+          x: mousePos.x - n.computedPosition?.x || 0,
+          y: mousePos.y - n.computedPosition?.y || 0,
         },
         from: n.computedPosition,
         extent: n.extent,
