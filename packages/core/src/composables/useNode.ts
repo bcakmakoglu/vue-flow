@@ -25,20 +25,30 @@ export function useNode<T extends GraphNode = GraphNode>(
 
   const nodeEl = computed(() => unref(nodeRef) ?? document.querySelector(`[data-id="${nodeId.value}"]`))!
 
-  const node = computed(() => findNode<T>(nodeId.value)!)
+  const node = computed(() => findNode<T>(nodeId.value))
 
-  // todo: use watcher or computed to throw
-  if (!nodeId.value || nodeId.value === '') {
-    throw new VueFlowError(`useNode - No node id provided and no injection could be found!`, 'useNode')
-  } else if (!node.value) {
-    emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId))
-  }
+  const parentNode = computed(() => findNode(node.value?.parentNode))
+
+  const connectedEdges = computed(() => (node.value ? getConnectedEdges([node.value], edges.value) : []))
+
+  // todo: throw in computed
+  watch(
+    [() => node.value?.id, nodeId],
+    ([nextNode, nextId]) => {
+      if (!nextId || nextId === '') {
+        throw new VueFlowError('useNode', `No node id provided and no injection could be found!`)
+      } else if (!nextNode) {
+        throw new VueFlowError('useNode', `Node with id ${nodeId.value} not found!`)
+      }
+    },
+    { immediate: true },
+  )
 
   return {
     id: nodeId,
     nodeEl,
     node,
-    parentNode: computed(() => findNode(node.parentNode)),
-    connectedEdges: computed(() => getConnectedEdges([node], edges.value)),
+    parentNode,
+    connectedEdges,
   }
 }

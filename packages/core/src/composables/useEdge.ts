@@ -25,14 +25,20 @@ export function useEdge<T extends GraphEdge = GraphEdge>(
 
   const edgeEl = computed(() => unref(edgeRef) ?? document.querySelector(`[data-id="${edgeId.value}"]`))
 
-  const edge = computed(() => findEdge<T>(edgeId.value)!)
+  const edge = computed(() => findEdge<T>(edgeId.value))
 
-  // todo: use watcher to throw or throw in computed
-  if (!edgeId.value || edgeId.value === '') {
-    throw new VueFlowError(`No edge id provided and no injection could be found!`, 'useEdge')
-  } else if (!edge.value) {
-    emits.error(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edgeId))
-  }
+  // todo: throw in computed instead
+  watch(
+    [() => edge.value?.id, edgeId],
+    ([nextEdge, nextId]) => {
+      if (!nextId || nextId === '') {
+        throw new VueFlowError('useEdge', `No node id provided and no injection could be found!`)
+      } else if (!nextEdge) {
+        throw new VueFlowError('useEdge', `Node with id ${edgeId.value} not found!`)
+      }
+    },
+    { immediate: true },
+  )
 
   return {
     id: edgeId,
