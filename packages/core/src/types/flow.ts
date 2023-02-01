@@ -117,6 +117,7 @@ export interface FlowProps {
   /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle?: CSSProperties | null
   connectionLineOptions?: ConnectionLineOptions
+  connectionRadius?: number
   deleteKeyCode?: KeyFilter | null
   selectionKeyCode?: KeyFilter | null
   multiSelectionKeyCode?: KeyFilter | null
