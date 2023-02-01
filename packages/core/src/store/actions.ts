@@ -1,6 +1,8 @@
+import { zoomIdentity } from 'd3-zoom'
 import type {
   Actions,
   ComputedGetters,
+  CoordinateExtent,
   EdgeChange,
   EdgeRemoveChange,
   EdgeSelectionChange,
@@ -495,6 +497,23 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
   }
 
+  const panBy: Actions['panBy'] = (delta) => {
+    const { viewport, dimensions, d3Zoom, d3Selection, translateExtent } = state
+
+    if (!d3Zoom || !d3Selection || (!delta.x && !delta.y)) return
+
+    const nextTransform = zoomIdentity.translate(viewport.x + delta.x, viewport.y + delta.y).scale(viewport.zoom)
+
+    const extent: CoordinateExtent = [
+      [0, 0],
+      [dimensions.width, dimensions.height],
+    ]
+
+    const constrainedTransform = d3Zoom.constrain()(nextTransform, extent, translateExtent)
+
+    d3Zoom.transform(d3Selection, constrainedTransform)
+  }
+
   const setState: Actions['setState'] = (options) => {
     const opts = options instanceof Function ? options(state) : options
     const skip: (keyof typeof opts)[] = [
@@ -593,6 +612,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     setState,
     getIntersectingNodes,
     isNodeIntersecting,
+    panBy,
     fitView: async (params = { padding: 0.1 }) => {
       const { fitView } = await paneReady()
       fitView(params)
