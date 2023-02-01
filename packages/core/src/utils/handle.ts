@@ -14,19 +14,6 @@ export function resetRecentHandle(handleDomNode: Element): void {
   handleDomNode?.classList.remove('vue-flow__handle-connecting')
 }
 
-export const isMouseEvent = (event: MouseEvent | TouchEvent): event is MouseEvent => 'clientX' in event
-
-export const getEventPosition = (event: MouseEvent | TouchEvent, bounds?: DOMRect) => {
-  const isMouseTriggered = isMouseEvent(event)
-  const evtX = isMouseTriggered ? event.clientX : event.touches?.[0].clientX
-  const evtY = isMouseTriggered ? event.clientY : event.touches?.[0].clientY
-
-  return {
-    x: evtX - (bounds?.left ?? 0),
-    y: evtY - (bounds?.top ?? 0),
-  }
-}
-
 // this functions collects all handles and adds an absolute position
 // so that we can later find the closest handle to the mouse position
 export function getHandles(
@@ -77,7 +64,7 @@ interface Result {
 // checks if  and returns connection in fom of an object { source: 123, target: 312 }
 export function isValidHandle(
   event: MouseEvent | TouchEvent,
-  handle: Pick<ConnectionHandle, 'nodeId' | 'id' | 'type'>,
+  handle: Pick<ConnectionHandle, 'nodeId' | 'id' | 'type'> | null,
   connectionMode: ConnectionMode,
   fromNodeId: string,
   fromHandleId: string | null,
@@ -100,7 +87,7 @@ export function isValidHandle(
     connection: { source: '', target: '', sourceHandle: null, targetHandle: null },
   }
 
-  if (handleDomNode) {
+  if (handleDomNode && handle) {
     const handleNodeId = handleDomNode.getAttribute('data-nodeid')
     const handleId = handleDomNode.getAttribute('data-handleid')
 
