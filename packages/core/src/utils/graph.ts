@@ -8,12 +8,11 @@ import type {
   Dimensions,
   Edge,
   EdgeMarkerType,
-  Element,
   ElementData,
   Elements,
-  FlowElement,
   GraphEdge,
   GraphNode,
+  MaybeElement,
   Node,
   Rect,
   ViewportTransform,
@@ -53,8 +52,6 @@ export const getHostForElement = (element: HTMLElement): Document => {
   if ('elementFromPoint' in doc) return doc
   else return window.document
 }
-
-type MaybeElement = Node | Edge | Connection | FlowElement | Element
 
 export const isEdge = <Data = ElementData>(element: MaybeElement): element is Edge<Data> =>
   element && 'id' in element && 'source' in element && 'target' in element

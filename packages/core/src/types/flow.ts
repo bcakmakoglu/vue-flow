@@ -2,7 +2,7 @@ import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
-import type { ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
+import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { CustomEvent } from './hooks'
@@ -39,6 +39,7 @@ export type Elements<
   EdgeEvents extends Record<string, CustomEvent> = any,
 > = Element<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
 
+export type MaybeElement = Node | Edge | Connection | FlowElement | Element
 export interface CustomThemeVars {
   [key: string]: string | number | undefined
 }
