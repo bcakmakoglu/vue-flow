@@ -72,8 +72,11 @@ const setDimensions = () => {
   if (!viewportEl.value) return
 
   const { width, height } = getDimensions(viewportEl.value)
-  dimensions.width = width
-  dimensions.height = height
+
+  if (width === 0 || height === 0) warn('The Vue Flow parent container needs a width and a height to render the graph.')
+
+  dimensions.width = width || 500
+  dimensions.height = height || 500
 }
 
 const isWrappedWithClass = (event: Event, className: string | undefined) => (event.target as Element).closest(`.${className}`)
