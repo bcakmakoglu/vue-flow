@@ -46,7 +46,7 @@ const parentNode = $computed(() => (node.parentNode ? findNode(node.parentNode) 
 
 const connectedEdges = $computed(() => getConnectedEdges([node], edges))
 
-const nodeElement = ref()
+const nodeElement = ref<HTMLDivElement>()
 
 provide(NodeRef, nodeElement)
 
@@ -89,17 +89,17 @@ onUpdateNodeInternals((updateIds) => {
 })
 
 onMounted(() => {
-  props.resizeObserver.observe(nodeElement.value)
+  props.resizeObserver.observe(nodeElement.value as HTMLDivElement)
 })
 
 onBeforeUnmount(() => {
-  props.resizeObserver.unobserve(nodeElement.value)
+  props.resizeObserver.unobserve(nodeElement.value as HTMLDivElement)
 })
 
 watch(
   [() => node.type, () => node.sourcePosition, () => node.targetPosition],
   () => {
-    updateNodeDimensions([{ id, nodeElement: nodeElement.value, forceUpdate: true }])
+    updateNodeDimensions([{ id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }])
   },
   { flush: 'pre' },
 )
