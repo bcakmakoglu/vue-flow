@@ -28,6 +28,7 @@ declare global {
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const boxToRect: typeof import('./utils/graph')['boxToRect']
+  const calcAutoPan: typeof import('./utils/autopan')['calcAutoPan']
   const calcNextPosition: typeof import('./utils/drag')['calcNextPosition']
   const checkElementBelowIsValid: typeof import('./composables/useHandleDepr')['checkElementBelowIsValid']
   const clamp: typeof import('./utils/graph')['clamp']

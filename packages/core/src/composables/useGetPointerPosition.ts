@@ -1,15 +1,10 @@
 import type { UseDragEvent } from './useDrag'
-import type { SnapGrid } from '~/types'
 
 export function useGetPointerPosition() {
-  const { viewport, snapGrid: globalSnapGrid, snapToGrid } = useVueFlow()
-
-  const hasSnapGrid = (sg?: SnapGrid) => (sg ?? snapToGrid.value ? globalSnapGrid.value : undefined)
+  const { viewport, snapGrid, snapToGrid } = useVueFlow()
 
   // returns the pointer position projected to the RF coordinate system
-  return ({ sourceEvent }: UseDragEvent, snapGrid?: SnapGrid) => {
-    const currentSnapGrid = unref(hasSnapGrid(snapGrid))
-
+  return ({ sourceEvent }: UseDragEvent) => {
     const x = sourceEvent.touches ? sourceEvent.touches[0].clientX : sourceEvent.clientX
     const y = sourceEvent.touches ? sourceEvent.touches[0].clientY : sourceEvent.clientY
 
@@ -20,8 +15,8 @@ export function useGetPointerPosition() {
 
     // we need the snapped position in order to be able to skip unnecessary drag events
     return {
-      xSnapped: currentSnapGrid ? currentSnapGrid[0] * Math.round(pointerPos.x / currentSnapGrid[0]) : pointerPos.x,
-      ySnapped: currentSnapGrid ? currentSnapGrid[1] * Math.round(pointerPos.y / currentSnapGrid[1]) : pointerPos.y,
+      xSnapped: snapToGrid.value ? snapGrid.value[0] * Math.round(pointerPos.x / snapGrid.value[0]) : pointerPos.x,
+      ySnapped: snapToGrid.value ? snapGrid.value[1] * Math.round(pointerPos.y / snapGrid.value[1]) : pointerPos.y,
       ...pointerPos,
     }
   }

@@ -1,13 +1,12 @@
-import type { Ref } from 'vue'
 import { isNumber } from '@vueuse/shared'
 import type { Actions, CoordinateExtent, ExtendedParentExtent, GraphNode, NodeDragItem, XYPosition } from '~/types'
 
-export function hasSelector(target: Element, selector: string, node: Ref<Element>): boolean {
+export function hasSelector(target: Element, selector: string, node: Element): boolean {
   let current = target
 
   do {
     if (current && current.matches(selector)) return true
-    else if (current === node.value) return false
+    else if (current === node) return false
 
     current = current.parentElement as Element
   } while (current)
@@ -28,8 +27,8 @@ export function getDragItems(
         id: n.id,
         position: n.position || { x: 0, y: 0 },
         distance: {
-          x: mousePos.x - n.computedPosition?.x || 0,
-          y: mousePos.y - n.computedPosition?.y || 0,
+          x: mousePos.x - n.computedPosition.x || 0,
+          y: mousePos.y - n.computedPosition.y || 0,
         },
         from: n.computedPosition,
         extent: n.extent,
