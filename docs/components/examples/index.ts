@@ -17,7 +17,7 @@ import { HorizontalApp, HorizontalElements } from './horizontal'
 import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
 import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
 import { IntersectionApp, IntersectionCSS, IntersectionElements } from './intersection'
-import { SnapToHandleApp, SnappableConnectionLine } from './snap-to-handle'
+import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
 
