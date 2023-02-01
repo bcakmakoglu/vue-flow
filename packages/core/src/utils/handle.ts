@@ -1,5 +1,14 @@
 import { ConnectionMode } from '~/types'
-import type { Connection, GraphNode, HandleType, NodeHandleBounds, ValidConnectionFunc, XYPosition } from '~/types'
+import type {
+  Actions,
+  Connection,
+  GraphEdge,
+  GraphNode,
+  HandleType,
+  NodeHandleBounds,
+  ValidConnectionFunc,
+  XYPosition,
+} from '~/types'
 
 export interface ConnectionHandle {
   id: string | null
@@ -71,9 +80,9 @@ export function isValidHandle(
   fromType: string,
   isValidConnection: ValidConnectionFunc,
   doc: Document | ShadowRoot,
+  edges: GraphEdge[],
+  findNode: Actions['findNode'],
 ) {
-  const { edges, findNode } = useVueFlow()
-
   const isTarget = fromType === 'target'
 
   const handleDomNode = doc.querySelector(`.vue-flow__handle[data-id="${handle?.nodeId}-${handle?.id}-${handle?.type}"]`)
@@ -108,7 +117,7 @@ export function isValidHandle(
 
     if (isValid) {
       result.isValid = isValidConnection(connection, {
-        edges: edges.value,
+        edges,
         sourceNode: findNode(connection.source)!,
         targetNode: findNode(connection.target)!,
       })

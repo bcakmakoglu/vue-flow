@@ -44,6 +44,7 @@ export default function useHandle({
     endConnection,
     emits,
     viewport,
+    edges,
   } = useVueFlow()
 
   function handlePointerDown(event: MouseEvent | TouchEvent) {
@@ -134,6 +135,8 @@ export default function useHandle({
           isTarget ? 'target' : 'source',
           validConnectFunc,
           doc,
+          edges.value,
+          findNode,
         )
 
         updateConnection(
@@ -174,6 +177,8 @@ export default function useHandle({
             isTarget ? 'target' : 'source',
             validConnectFunc,
             doc,
+            edges.value,
+            findNode,
           )
 
           if (isValid) {
@@ -236,6 +241,8 @@ export default function useHandle({
         connectionClickStartHandle.value.type,
         validConnectFunc,
         doc,
+        edges.value,
+        findNode,
       )
 
       const isOwnHandle = connection.source === connection.target
