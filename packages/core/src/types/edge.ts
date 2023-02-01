@@ -147,20 +147,29 @@ export interface EdgePositions {
 }
 
 /** Internal edge type */
-export type GraphEdge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = Edge<Data, CustomEvents> & {
+export type GraphEdge<
+  Data = ElementData,
+  CustomEvents extends Record<string, CustomEvent> = any,
+  Type extends string = string,
+> = Edge<Data, CustomEvents> & {
   selected?: boolean
   sourceNode: GraphNode
   targetNode: GraphNode
   data: Data
   events: Partial<EdgeEventsHandler<CustomEvents>>
+  type: Type
 } & EdgePositions
 
 /** these props are passed to edge components */
-export interface EdgeProps<Data = ElementData, CustomEvents = {}> extends EdgeLabelOptions, EdgePositions {
+export interface EdgeProps<Data = ElementData, CustomEvents = {}, Type extends string = string>
+  extends EdgeLabelOptions,
+    EdgePositions {
   id: string
   sourceNode: GraphNode
   targetNode: GraphNode
-  type?: keyof DefaultEdgeTypes | string
+  source: string
+  target: string
+  type?: Type
   label?: string | VNode | Component<EdgeTextProps> | Object
   style?: CSSProperties
   selected?: boolean
@@ -168,8 +177,6 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}> extends EdgeLa
   targetPosition: Position
   sourceHandleId?: string
   targetHandleId?: string
-  source: string
-  target: string
   animated?: boolean
   updatable?: boolean
   markerStart: string
