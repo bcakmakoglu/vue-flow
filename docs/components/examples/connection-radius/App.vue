@@ -23,7 +23,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements" auto-connect fit-view-on-init>
+  <VueFlow v-model="elements" :connection-radius="30" auto-connect fit-view-on-init>
     <template #connection-line="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }">
       <ConnectionLine
         :source-x="sourceX"

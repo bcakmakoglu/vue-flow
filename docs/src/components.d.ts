@@ -36,7 +36,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./../components/examples/dnd/Sidebar.vue')['default']
-    SnappableConnectionLine: typeof import('./../components/examples/snap-to-handle/SnappableConnectionLine.vue')['default']
+    SnappableConnectionLine: typeof import('../components/examples/connection-radius/SnappableConnectionLine.vue')['default']
     Team: typeof import('./../components/home/Team.vue')['default']
     TeleportableNode: typeof import('./../components/examples/teleport/TeleportableNode.vue')['default']
     ToolbarNode: typeof import('./../components/examples/node-toolbar/ToolbarNode.vue')['default']

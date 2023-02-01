@@ -45,7 +45,7 @@ const SNAP_HIGHLIGHT_COLOR = '#10b981'
 
 const MIN_DISTANCE = 75
 
-const SNAP_DISTANCE = 50
+const SNAP_DISTANCE = 30
 
 watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
   const closestNode = getNodes.value.reduce(
