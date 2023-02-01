@@ -254,6 +254,8 @@ export interface Actions extends ViewportFunctions {
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
 
+  panBy: (delta: XYPosition) => void
+
   /** reset state to defaults */
   $reset: () => void
 
