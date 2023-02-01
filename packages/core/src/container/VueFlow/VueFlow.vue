@@ -42,6 +42,8 @@ const props = withDefaults(defineProps<FlowProps>(), {
   disableKeyboardA11y: undefined,
   edgesFocusable: undefined,
   nodesFocusable: undefined,
+  autoPanOnConnect: undefined,
+  autoPanOnNodeDrag: undefined,
 })
 
 const emit = defineEmits<{
