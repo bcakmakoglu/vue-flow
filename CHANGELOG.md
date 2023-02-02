@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.13.2] - 2023-02-02
+
+[b2cc3f5](b2cc3f5cf9c118b6a9e2208a008194084131eb56)...[8328d78](8328d78ff29309a1213f1e14bd4778726233bc8a)
+
+### Bug Fixes
+
+- Ref access when passing default edge options ([cae9562](cae9562481366c5f47f0c683dc160f46d92693b7))
+
+### Miscellaneous Tasks
+
+- Next release ([8328d78](8328d78ff29309a1213f1e14bd4778726233bc8a))
+
 ## [1.13.1] - 2023-02-01
 
 [4f0ddcd](4f0ddcdd26cb9bcfabf9a6bca0172f75911fae3c)...[b2cc3f5](b2cc3f5cf9c118b6a9e2208a008194084131eb56)
