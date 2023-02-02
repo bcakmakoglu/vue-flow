@@ -253,7 +253,7 @@ export interface Actions extends ViewportFunctions {
   getIntersectingNodes: GetIntersectingNodes
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
-
+  /** pan the viewport */
   panBy: (delta: XYPosition) => void
 
   /** reset state to defaults */
