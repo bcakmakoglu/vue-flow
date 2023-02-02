@@ -182,7 +182,7 @@ export default function useHandle({
           )
 
           if (isValid) {
-            if (!onEdgeUpdate) emits.connect({ ...defaultEdgeOptions, ...connection })
+            if (!onEdgeUpdate) emits.connect({ ...(defaultEdgeOptions?.value || {}), ...connection })
             else onEdgeUpdate(connection)
           }
         }

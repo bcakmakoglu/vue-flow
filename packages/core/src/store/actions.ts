@@ -568,7 +568,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     if (!state.initialized) state.initialized = true
   }
 
-  const toObject = () => {
+  const toObject: Actions['toObject'] = () => {
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
       JSON.stringify({
