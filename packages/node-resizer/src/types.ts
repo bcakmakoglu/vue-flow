@@ -18,7 +18,7 @@ export interface NodeResizerProps {
   isVisible?: boolean
   minWidth?: number
   minHeight?: number
-  aspectRatio?: number
+  keepAspectRatio?: boolean | number
 }
 
 export interface NodeResizerEmits {
@@ -43,7 +43,7 @@ export interface ResizeControlProps {
   minHeight?: number
   position?: ControlPosition
   variant?: ResizeControlVariant
-  aspectRatio? : number
+  keepAspectRatio?: boolean | number
 }
 
 export interface ResizeControlLineProps {
@@ -53,7 +53,7 @@ export interface ResizeControlLineProps {
   minHeight?: number
   variant?: ResizeControlVariant
   position?: ControlLinePosition
-  aspectRatio?: number
+  keepAspectRatio?: boolean | number
 }
 
 export type ResizeDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
