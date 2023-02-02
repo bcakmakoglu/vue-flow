@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.13.2
+
+### Patch Changes
+
+- [#643](https://github.com/bcakmakoglu/vue-flow/pull/643) [`210b702b`](https://github.com/bcakmakoglu/vue-flow/commit/210b702b5062a8c54883a866bd950d7e0ca6f314) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Properly access default edge options ref when passing options to the `connect` event
+
 ## 1.13.1
 
 ### Patch Changes
