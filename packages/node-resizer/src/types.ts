@@ -1,11 +1,34 @@
 import type { D3DragEvent, SubjectPosition } from 'd3-drag'
 import type { CSSProperties } from 'vue'
 
-export interface ResizeEventParams {
+export type ResizeDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
+
+export type ResizeParamsWithDirection = ResizeParams & {
+  direction: number[]
+}
+
+export interface ResizeParams {
   x: number
   y: number
   width: number
   height: number
+}
+
+export type ShouldResize = (event: ResizeDragEvent, params: ResizeParamsWithDirection) => boolean
+
+export interface OnResizeStart {
+  event: ResizeDragEvent
+  params: ResizeParams
+}
+
+export interface OnResize {
+  event: ResizeDragEvent
+  params: ResizeParamsWithDirection
+}
+
+export interface OnResizeEnd {
+  event: ResizeDragEvent
+  params: ResizeParams
 }
 
 export interface NodeResizerProps {
@@ -18,12 +41,13 @@ export interface NodeResizerProps {
   isVisible?: boolean
   minWidth?: number
   minHeight?: number
+  shouldResize?: ShouldResize
 }
 
 export interface NodeResizerEmits {
-  (event: 'resizeStart', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
-  (event: 'resize', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
-  (event: 'resizeEnd', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
+  (event: 'resizeStart', resizeEvent: OnResizeStart): void
+  (event: 'resize', resizeEvent: OnResize): void
+  (event: 'resizeEnd', resizeEvent: OnResizeStart): void
 }
 
 export type ControlLinePosition = 'top' | 'bottom' | 'left' | 'right'
@@ -42,6 +66,7 @@ export interface ResizeControlProps {
   minHeight?: number
   position?: ControlPosition
   variant?: ResizeControlVariant
+  shouldResize?: ShouldResize
 }
 
 export interface ResizeControlLineProps {
@@ -52,5 +77,3 @@ export interface ResizeControlLineProps {
   variant?: ResizeControlVariant
   position?: ControlLinePosition
 }
-
-export type ResizeDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>

@@ -1,20 +1,21 @@
 <script lang="ts" setup>
 // todo: add plugin to emit resize events via vue flow store; requires plugin API to be added to core
 import ResizeControl from './ResizeControl.vue'
-import type { ControlLinePosition, ControlPosition, NodeResizerProps, ResizeDragEvent, ResizeEventParams } from './types'
+import type { ControlLinePosition, ControlPosition, NodeResizerProps, OnResize, OnResizeStart } from './types'
 import { ResizeControlVariant } from './types'
 
-const props = withDefaults(defineProps<NodeResizerProps>(), {
+withDefaults(defineProps<NodeResizerProps>(), {
   isVisible: true,
 })
 
 const emits = defineEmits<{
-  (event: 'resizeStart', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
-  (event: 'resize', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
-  (event: 'resizeEnd', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
+  (event: 'resizeStart', resizeEvent: OnResizeStart): void
+  (event: 'resize', resizeEvent: OnResize): void
+  (event: 'resizeEnd', resizeEvent: OnResizeStart): void
 }>()
 
 const handleControls: ControlPosition[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+
 const lineControls: ControlLinePosition[] = ['top', 'right', 'bottom', 'left']
 </script>
 
@@ -37,10 +38,12 @@ export default {
     :color="color"
     :min-width="minWidth"
     :min-height="minHeight"
+    :should-resize="shouldResize"
     @resize-start="emits('resizeStart', $event)"
     @resize="emits('resize', $event)"
     @resize-end="emits('resizeEnd', $event)"
   />
+
   <ResizeControl
     v-for="c of handleControls"
     :key="c"
@@ -51,6 +54,7 @@ export default {
     :color="color"
     :min-width="minWidth"
     :min-height="minHeight"
+    :should-resize="shouldResize"
     @resize-start="emits('resizeStart', $event)"
     @resize="emits('resize', $event)"
     @resize-end="emits('resizeEnd', $event)"

@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import ResizeControl from './ResizeControl.vue'
-import type { ResizeControlLineProps, ResizeDragEvent, ResizeEventParams } from './types'
+import type { OnResize, OnResizeStart, ResizeControlLineProps } from './types'
 import { ResizeControlVariant } from './types'
 
 const props = defineProps<ResizeControlLineProps>()
 
 const emits = defineEmits<{
-  (event: 'resizeStart', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
-  (event: 'resize', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
-  (event: 'resizeEnd', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
+  (event: 'resizeStart', resizeEvent: OnResizeStart): void
+  (event: 'resize', resizeEvent: OnResize): void
+  (event: 'resizeEnd', resizeEvent: OnResizeStart): void
 }>()
 </script>
 
