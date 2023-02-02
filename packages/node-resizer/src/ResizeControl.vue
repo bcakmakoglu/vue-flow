@@ -38,6 +38,16 @@ const { findNode, emits: triggerEmits } = useVueFlow()
 const startValues = ref<typeof initStartValues>(initStartValues)
 const prevValues = ref<typeof initPrevValues>(initPrevValues)
 
+const aspectRatio = computed(() => {
+  if (props.keepAspectRatio === true && startValues.value.width && startValues.value.height) {
+    return startValues.value.width / startValues.value.height
+  }
+  if (typeof props.keepAspectRatio == 'number') {
+    return props.keepAspectRatio
+  }
+  return undefined
+})
+
 const getPointerPosition = useGetPointerPosition()
 const defaultPosition = computed(() => (props.variant === ResizeControlVariant.Line ? 'right' : 'bottom-right'))
 const controlPosition = computed(() => props.position ?? defaultPosition.value)
@@ -96,16 +106,16 @@ watchEffect((onCleanup) => {
         let width = Math.max(startWidth + (invertX ? -distX : distX), props.minWidth)
         let height = Math.max(startHeight + (invertY ? -distY : distY), props.minHeight)
 
-        if (props.aspectRatio) {
+        if (aspectRatio.value) {
           const currentAspectRatio = width / height
-          if (currentAspectRatio !== props.aspectRatio) {
-            const newWidth = height * props.aspectRatio
-            const newHeight = width / props.aspectRatio
+          if (currentAspectRatio !== aspectRatio.value) {
+            const newWidth = height * aspectRatio.value
+            const newHeight = width / aspectRatio.value
 
-            if (newWidth > width) {
-              width = newWidth
-            } else {
+            if (distX > distY) {
               height = newHeight
+            } else {
+              width = newWidth
             }
           }
         }
