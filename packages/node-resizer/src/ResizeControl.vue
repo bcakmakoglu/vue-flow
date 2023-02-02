@@ -3,8 +3,9 @@ import type { NodeChange, NodeDimensionChange, NodePositionChange } from '@vue-f
 import { NodeIdInjection, useGetPointerPosition, useVueFlow } from '@vue-flow/core'
 import { select } from 'd3-selection'
 import { drag } from 'd3-drag'
-import type { ResizeControlProps, ResizeDragEvent, ResizeEventParams } from './types'
+import type { OnResize, OnResizeStart, ResizeControlProps, ResizeDragEvent } from './types'
 import { ResizeControlVariant } from './types'
+import { getDirection } from './utils'
 
 const props = withDefaults(defineProps<ResizeControlProps>(), {
   variant: 'handle' as ResizeControlVariant,
@@ -13,9 +14,9 @@ const props = withDefaults(defineProps<ResizeControlProps>(), {
 })
 
 const emits = defineEmits<{
-  (event: 'resizeStart', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
-  (event: 'resize', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
-  (event: 'resizeEnd', data: { event: ResizeDragEvent; params: ResizeEventParams }): void
+  (event: 'resizeStart', resizeEvent: OnResizeStart): void
+  (event: 'resize', resizeEvent: OnResize): void
+  (event: 'resizeEnd', resizeEvent: OnResizeStart): void
 }>()
 
 const initPrevValues = { width: 0, height: 0, x: 0, y: 0 }
@@ -142,7 +143,24 @@ watchEffect((onCleanup) => {
           prevValues.value.height = height
         }
 
-        emits('resize', { event, params: prevValues.value })
+        if (changes.length === 0) return
+
+        const direction = getDirection({
+          width: prevValues.value.width,
+          prevWidth,
+          height: prevValues.value.height,
+          prevHeight,
+          invertX,
+          invertY,
+        })
+
+        const nextValues = { ...prevValues.value, direction }
+
+        const callResize = props.shouldResize?.(event, nextValues)
+
+        if (callResize === false) return
+
+        emits('resize', { event, params: nextValues })
 
         triggerEmits.nodesChange(changes)
       }
