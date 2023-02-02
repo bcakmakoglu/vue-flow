@@ -33,11 +33,15 @@ export function useEdge<T extends GraphEdge = GraphEdge>(
     ([nextEdge, nextId]) => {
       if (!nextId || nextId === '') {
         throw new VueFlowError('useEdge', `No node id provided and no injection could be found!`)
-      } else if (!nextEdge) {
-        throw new VueFlowError('useEdge', `Node with id ${edgeId.value} not found!`)
       }
+
+      nextTick(() => {
+        if (!nextEdge) {
+          throw new VueFlowError('useEdge', `Node with id ${edgeId.value} not found!`)
+        }
+      })
     },
-    { immediate: true },
+    { immediate: true, flush: 'post' },
   )
 
   return {
