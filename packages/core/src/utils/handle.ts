@@ -19,8 +19,7 @@ export interface ConnectionHandle {
 }
 
 export function resetRecentHandle(handleDomNode: Element): void {
-  handleDomNode?.classList.remove('vue-flow__handle-valid')
-  handleDomNode?.classList.remove('vue-flow__handle-connecting')
+  handleDomNode?.classList.remove('valid', 'connecting', 'vue-flow__handle-valid', 'vue-flow__handle-connecting')
 }
 
 // this functions collects all handles and adds an absolute position
