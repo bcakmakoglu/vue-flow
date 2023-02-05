@@ -1,5 +1,23 @@
 # @vue-flow/core
 
+## 1.14.0
+
+### Minor Changes
+
+- [#654](https://github.com/bcakmakoglu/vue-flow/pull/654) [`99909f16`](https://github.com/bcakmakoglu/vue-flow/commit/99909f1660c337469abf7d6558be9de1b134074d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `VueFlowError` class which is used when throwing
+
+- [#649](https://github.com/bcakmakoglu/vue-flow/pull/649) [`47bc8280`](https://github.com/bcakmakoglu/vue-flow/commit/47bc8280075935e3047ebd26714b5516e0bb522f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `connectionStatus` to connection lines, which can be used to check if the connection line is used on a valid handle.
+
+### Patch Changes
+
+- [#650](https://github.com/bcakmakoglu/vue-flow/pull/650) [`aaf46dc2`](https://github.com/bcakmakoglu/vue-flow/commit/aaf46dc22ca8daa507e8e7eb7c3646bde158d8bc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `valid` and `connecting` class names instead of `vue-flow__handle-valid` and `vue-flow__handle-connecting` (old class names kept for backwards compatibility but will be removed in the future)
+
+- [#653](https://github.com/bcakmakoglu/vue-flow/pull/653) [`64e9dc3c`](https://github.com/bcakmakoglu/vue-flow/commit/64e9dc3c1eb00da2775f8d6e2d05d5fdbd6b4cdc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Draw connection lines to opposite position
+
+- [#651](https://github.com/bcakmakoglu/vue-flow/pull/651) [`c0d172be`](https://github.com/bcakmakoglu/vue-flow/commit/c0d172bee56b95f3e5f2fc72f16836d0e3e16a91) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - When a node is not draggable, avoid dragging it when using a selection box
+
+- [#650](https://github.com/bcakmakoglu/vue-flow/pull/650) [`aaf46dc2`](https://github.com/bcakmakoglu/vue-flow/commit/aaf46dc22ca8daa507e8e7eb7c3646bde158d8bc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix ios connection error
+
 ## 1.13.2
 
 ### Patch Changes

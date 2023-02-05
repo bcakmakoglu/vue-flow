@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.1.0
+
+### Minor Changes
+
+- [#646](https://github.com/bcakmakoglu/vue-flow/pull/646) [`a6a6c0b1`](https://github.com/bcakmakoglu/vue-flow/commit/a6a6c0b1afef357e163ddc9b2d44bece76dc1c41) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `shouldResize` option. Allows users to cancel resizing.
+
 ## 1.0.2
 
 ### Patch Changes
