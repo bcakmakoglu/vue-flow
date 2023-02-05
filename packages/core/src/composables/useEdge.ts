@@ -16,7 +16,7 @@ export default function useEdge<Data = ElementData, CustomEvents extends Record<
   const edge = findEdge<Data, CustomEvents>(edgeId)
 
   if (!edge) {
-    throw new Error(`[vue-flow]: useEdge - Edge with id ${edgeId} not found!`)
+    throw new VueFlowError(`Edge with id ${edgeId} not found!`, 'useEdge')
   }
 
   return {

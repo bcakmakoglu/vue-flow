@@ -19,6 +19,7 @@ declare global {
   const Slots: typeof import('./context/index')['Slots']
   const Storage: typeof import('./composables/useVueFlow')['Storage']
   const VueFlow: typeof import('./context/index')['VueFlow']
+  const VueFlowError: typeof import('./utils/log')['VueFlowError']
   const addEdge: typeof import('./utils/graph')['addEdge']
   const addEdgeToStore: typeof import('./utils/store')['addEdgeToStore']
   const applyChanges: typeof import('./utils/changes')['applyChanges']

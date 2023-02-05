@@ -16,7 +16,7 @@ export default function useNode<Data = ElementData, CustomEvents extends Record<
   const node = findNode<Data, CustomEvents>(nodeId)
 
   if (!node) {
-    throw new Error(`[vue-flow]: useNode - Node with id ${nodeId} not found!`)
+    throw new VueFlowError(`Node with id ${nodeId} not found!`, 'useNode')
   }
 
   return {
