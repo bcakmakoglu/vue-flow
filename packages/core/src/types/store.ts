@@ -14,7 +14,14 @@ import type {
   XYPosition,
 } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
-import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
+import type {
+  Connection,
+  ConnectionLineOptions,
+  ConnectionLineType,
+  ConnectionMode,
+  ConnectionStatus,
+  Connector,
+} from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
@@ -81,6 +88,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   connectionClickStartHandle: StartHandle | null
   connectionPosition: XYPosition
   connectionRadius: number
+  connectionStatus: ConnectionStatus | null
 
   connectOnClick: boolean
   edgeUpdaterRadius: number

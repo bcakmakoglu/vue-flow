@@ -68,6 +68,7 @@ declare global {
   const getBoundsofRects: typeof import('./utils/graph')['getBoundsofRects']
   const getClosestHandle: typeof import('./utils/handle')['getClosestHandle']
   const getConnectedEdges: typeof import('./utils/graph')['getConnectedEdges']
+  const getConnectionStatus: typeof import('./utils/handle')['getConnectionStatus']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getDimensions: typeof import('./utils/graph')['getDimensions']

@@ -2,6 +2,7 @@ import { ConnectionMode } from '~/types'
 import type {
   Actions,
   Connection,
+  ConnectionStatus,
   GraphEdge,
   GraphNode,
   HandleType,
@@ -159,4 +160,16 @@ export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDom
   }
 
   return null
+}
+
+export function getConnectionStatus(isInsideConnectionRadius: boolean, isHandleValid: boolean) {
+  let connectionStatus: ConnectionStatus | null = null
+
+  if (isHandleValid) {
+    connectionStatus = 'valid'
+  } else if (isInsideConnectionRadius && !isHandleValid) {
+    connectionStatus = 'invalid'
+  }
+
+  return connectionStatus
 }

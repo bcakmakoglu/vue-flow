@@ -88,6 +88,7 @@ const defaultState = (): State => ({
   connectionPosition: { x: NaN, y: NaN },
   connectionRadius: 20,
   connectOnClick: true,
+  connectionStatus: null,
 
   snapGrid: [15, 15],
   snapToGrid: false,
