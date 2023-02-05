@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { GraphNode } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
-import { getMarkerId } from '../../utils/graph'
 
 const { sourceNode } = defineProps<{ sourceNode: GraphNode }>()
 
@@ -12,6 +11,7 @@ const {
   connectionLineType,
   connectionLineStyle,
   connectionLineOptions,
+  connectionStatus,
   viewport,
 } = $(useVueFlow())
 
@@ -86,25 +86,24 @@ export default {
     <component
       :is="slots"
       v-if="hasSlot"
-      v-bind="{
-        sourceX,
-        sourceY,
-        sourcePosition: sourceHandle?.position,
-        targetX,
-        targetY,
-        targetPosition,
-        sourceNode,
-        sourceHandle,
-        markerEnd: `url(#${getMarkerId(connectionLineOptions.markerEnd)})`,
-        markerStart: `url(#${getMarkerId(connectionLineOptions.markerStart)})`,
-      }"
+      :source-x="sourceX"
+      :source-y="sourceY"
+      :source-position="sourceHandle?.position"
+      :targetX="targetX"
+      :targetY="targetY"
+      :target-position="targetPosition"
+      :source-node="sourceNode"
+      :source-handle="sourceHandle"
+      :marker-end="`url(#${getMarkerId(connectionLineOptions.markerEnd)})`"
+      :marker-start="`url(#${getMarkerId(connectionLineOptions.markerStart)})`"
+      :connection-status="connectionStatus"
     />
 
     <path
       v-else
       :d="dAttr"
       class="vue-flow__connection-path"
-      :class="connectionLineOptions.class"
+      :class="[connectionLineOptions.class, connectionStatus]"
       :style="connectionLineStyle || connectionLineOptions.style || {}"
       :marker-end="`url(#${getMarkerId(connectionLineOptions.markerEnd)})`"
       :marker-start="`url(#${getMarkerId(connectionLineOptions.markerStart)})`"
