@@ -70,4 +70,6 @@ export { default as useEdge } from './composables/useEdge'
 
 export { useGetPointerPosition } from './composables/useGetPointerPosition'
 
+export { VueFlowError } from './utils/log'
+
 export * from './types'
