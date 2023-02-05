@@ -137,11 +137,15 @@ export default (options?: FlowProps): VueFlowStore => {
     if (isParentScope) {
       // dispose of state values and storage entry
       tryOnScopeDispose(() => {
-        if (storage.get(vueFlow!.id)) {
-          vueFlow!.$destroy()
-        }
+        if (vueFlow) {
+          const storedInstance = storage.get(vueFlow.id)
 
-        vueFlow = null
+          if (storedInstance) {
+            storedInstance.$destroy()
+          } else {
+            warn(`No store instance found for id ${vueFlow.id} in storage.`)
+          }
+        }
       })
     }
   }
