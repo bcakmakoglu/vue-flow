@@ -72,12 +72,6 @@ export class VueFlowApp {
 
     actions.setState(reactiveState)
 
-    if (initialState) {
-      if (initialState.modelValue) actions.setElements(initialState.modelValue)
-      if (initialState.nodes) actions.setNodes(initialState.nodes)
-      if (initialState.edges) actions.setEdges(initialState.edges)
-    }
-
     const flow: VueFlowStore = {
       ...hooksOn,
       ...getters,
