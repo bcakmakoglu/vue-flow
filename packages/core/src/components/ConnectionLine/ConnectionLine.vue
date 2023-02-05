@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { GraphNode } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
+import { getMarkerId } from '../../utils/graph'
 
 const { sourceNode } = defineProps<{ sourceNode: GraphNode }>()
 
