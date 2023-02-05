@@ -16,28 +16,34 @@ const {
   viewport,
 } = $(useVueFlow())
 
-const slots = inject(Slots)?.['connection-line']
+const oppositePosition = {
+  [Position.Left]: Position.Right,
+  [Position.Right]: Position.Left,
+  [Position.Top]: Position.Bottom,
+  [Position.Bottom]: Position.Top,
+}
 
-const hasSlot = slots?.({})
+const connectionLineComponent = inject(Slots)?.['connection-line']
 
-const handleId = connectionStartHandle!.handleId
-const type = connectionStartHandle!.type
+const handleId = $computed(() => connectionStartHandle!.handleId)
+const type = computed(() => connectionStartHandle!.type)
 
-const sourceHandle =
-  (connectionMode === ConnectionMode.Strict
-    ? sourceNode.handleBounds[type]?.find((d) => d.id === handleId)
-    : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find((d) => d.id === handleId)) ||
-  sourceNode.handleBounds[type ?? 'source']?.[0]
+const sourceHandle = $computed(
+  () =>
+    (connectionMode === ConnectionMode.Strict
+      ? sourceNode.handleBounds[type.value]?.find((d) => d.id === handleId)
+      : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find((d) => d.id === handleId)) ||
+    sourceNode.handleBounds[type.value ?? 'source']?.[0],
+)
 
-const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2
-const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height
+const sourceHandleX = $computed(() => (sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2))
+const sourceHandleY = $computed(() => (sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height))
 
-const sourceX = sourceNode.computedPosition.x + sourceHandleX
-const sourceY = sourceNode.computedPosition.y + sourceHandleY
+const sourceX = $computed(() => sourceNode.computedPosition.x + sourceHandleX)
+const sourceY = $computed(() => sourceNode.computedPosition.y + sourceHandleY)
 
-const isRightOrLeft = sourceHandle?.position === Position.Left || sourceHandle?.position === Position.Right
-
-const targetPosition = isRightOrLeft ? Position.Left : Position.Top
+const fromPosition = computed(() => sourceHandle?.position)
+const targetPosition = computed(() => (fromPosition.value ? oppositePosition[fromPosition.value] : undefined))
 
 const targetX = $computed(() => (connectionPosition.x - viewport.x) / viewport.zoom)
 const targetY = $computed(() => (connectionPosition.y - viewport.y) / viewport.zoom)
@@ -48,10 +54,10 @@ const dAttr = computed(() => {
   const pathParams = {
     sourceX,
     sourceY,
-    sourcePosition: sourceHandle?.position,
+    sourcePosition: fromPosition.value,
     targetX,
     targetY,
-    targetPosition,
+    targetPosition: targetPosition.value,
   }
 
   switch (connectionLineType || connectionLineOptions.type) {
@@ -85,8 +91,8 @@ export default {
 <template>
   <g class="vue-flow__connection">
     <component
-      :is="slots"
-      v-if="hasSlot"
+      :is="connectionLineComponent"
+      v-if="connectionLineComponent"
       :source-x="sourceX"
       :source-y="sourceY"
       :source-position="sourceHandle?.position"
