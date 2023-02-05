@@ -47,6 +47,9 @@ export default function useHandle({
     edges,
   } = useVueFlow()
 
+  let connection: Connection | null = null
+  let isValid = false
+
   function handlePointerDown(event: MouseEvent | TouchEvent) {
     const isMouseTriggered = isMouseEvent(event)
 
@@ -126,7 +129,7 @@ export default function useHandle({
           autoPanStarted = true
         }
 
-        const { connection, handleDomNode, isValid } = isValidHandle(
+        const { handleDomNode, ...result } = isValidHandle(
           event,
           prevClosestHandle,
           connectionMode.value,
@@ -140,7 +143,7 @@ export default function useHandle({
         )
 
         updateConnection(
-          prevClosestHandle && isValid
+          prevClosestHandle && result.isValid
             ? rendererPointToPoint(
                 {
                   x: prevClosestHandle.x,
@@ -151,40 +154,26 @@ export default function useHandle({
             : connectionPosition,
         )
 
-        if (!prevClosestHandle) {
-          return resetRecentHandle(prevActiveHandle)
-        }
+        if (!prevClosestHandle) return resetRecentHandle(prevActiveHandle)
 
-        if (connection.source !== connection.target && handleDomNode) {
+        connection = result.connection
+        isValid = result.isValid
+
+        if (result.connection.source !== result.connection.target && handleDomNode) {
           resetRecentHandle(prevActiveHandle)
+
           prevActiveHandle = handleDomNode
-          handleDomNode.classList.add('vue-flow__handle-connecting')
+
+          handleDomNode.classList.add('connecting', 'vue-flow__handle-connecting')
+          handleDomNode.classList.toggle('valid', isValid)
           handleDomNode.classList.toggle('vue-flow__handle-valid', isValid)
         }
       }
 
       function onPointerUp(event: MouseEvent | TouchEvent) {
-        cancelAnimationFrame(autoPanId)
-        autoPanStarted = false
-
-        if (prevClosestHandle) {
-          const { connection, isValid } = isValidHandle(
-            event,
-            prevClosestHandle,
-            connectionMode.value,
-            nodeId,
-            handleId,
-            isTarget ? 'target' : 'source',
-            validConnectFunc,
-            doc,
-            edges.value,
-            findNode,
-          )
-
-          if (isValid) {
-            if (!onEdgeUpdate) emits.connect({ ...(defaultEdgeOptions?.value || {}), ...connection })
-            else onEdgeUpdate(connection)
-          }
+        if (connection && isValid) {
+          if (!onEdgeUpdate) emits.connect({ ...(defaultEdgeOptions?.value || {}), ...connection })
+          else onEdgeUpdate(connection)
         }
 
         emits.connectEnd(event)
@@ -193,7 +182,12 @@ export default function useHandle({
 
         resetRecentHandle(prevActiveHandle)
 
+        cancelAnimationFrame(autoPanId)
         endConnection(event)
+
+        autoPanStarted = false
+        isValid = false
+        connection = null
 
         doc.removeEventListener('mousemove', onPointerMove as EventListener)
         doc.removeEventListener('mouseup', onPointerUp as EventListener)
