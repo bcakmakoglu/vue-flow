@@ -16,12 +16,18 @@ export function hasSelector(target: Element, selector: string, node: Element): b
 
 export function getDragItems(
   nodes: GraphNode[],
+  nodesDraggable: boolean,
   mousePos: XYPosition,
   findNode: Actions['findNode'],
   nodeId?: string,
 ): NodeDragItem[] {
   return nodes
-    .filter((n) => (n.selected || n.id === nodeId) && (!n.parentNode || !isParentSelected(n, findNode)))
+    .filter(
+      (n) =>
+        (n.selected || n.id === nodeId) &&
+        (!n.parentNode || !isParentSelected(n, findNode)) &&
+        (n.draggable || (nodesDraggable && typeof n.draggable === 'undefined')),
+    )
     .map((n) =>
       markRaw({
         id: n.id,
