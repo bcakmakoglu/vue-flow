@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.0] - 2023-02-05
+
+[8328d78](8328d78ff29309a1213f1e14bd4778726233bc8a)...[6f02480](6f02480b173115c6702bebcfce56758ed588bc08)
+
+### Bug Fixes
+
+- Ios connection error ([f2f3e70](f2f3e70ebe559ead80feaad7012d7985951c8c9e))
+- Avoid undraggable selected nodes being dragged ([c7e8bd7](c7e8bd7630d14c875a8f0ad84ba17a7f6b5ddeb3))
+
+### Features
+
+- Add `shouldResize` option ([222b58a](222b58afd45aac9c33ade7bd29bb4fbd41721c10))
+- Add connection status to connection lines ([c36cf59](c36cf59a80e0f8c7fc8fc73a275e58c68aac06c0))
+- Add vue flow error class ([dc60e11](dc60e112a10c10c01a32ae820842ee03c6c32996))
+
+### Miscellaneous Tasks
+
+- Add comment for panBy action ([3c2255b](3c2255ba52057c8e6bbc6794a9a29952dc5da98e))
+- Fix github issues links ([1697e96](1697e965087c821e65d30ef53ffc944d9d5e1530))
+- Cleanup ([7f26253](7f26253be1bc461ecd477a9355bea8bd72a6311a))
+- Cleanup useVueFlow ([1448543](14485439934f087a483a0fb152dcde220e3159f9))
+- Next release ([6f02480](6f02480b173115c6702bebcfce56758ed588bc08))
+
+### Refactor
+
+- Remove unnecessary warning ([c72e75d](c72e75db38e4c12628b1daa11377324f4ea0e1ae))
+- Use opposite position for connection lines ([6c00909](6c00909f469ede75cd50cd2cbb52d15bcd3ec72b))
+
 ## [1.13.2] - 2023-02-02
 
 [b2cc3f5](b2cc3f5cf9c118b6a9e2208a008194084131eb56)...[8328d78](8328d78ff29309a1213f1e14bd4778726233bc8a)
