@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: ✨ Feature Request
-    url: https://github.com/bcakmakoglu/vue-flow/discussions/new
+    url: https://github.com/bcakmakoglu/vue-flow/discussions/new?category=ideas
     about: Have an idea for a new feature? Share it here!
   - name: ❓ Ask a Question
-    url: https://github.com/bcakmakoglu/vue-flow/discussions/new
+    url: https://github.com/bcakmakoglu/vue-flow/discussions/new?category=q-a
     about: If you have any questions about how to do something with Vue Flow, ask it here.
   - name: 🤝 Discord
-    url: https://discord.gg/z4FMpfTugW
+    url: https://discord.com/invite/F4v6qE4Fuq
     about: Join the Discord server to chat with the community.
