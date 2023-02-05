@@ -31,6 +31,7 @@ function useDrag(params: UseDragParams) {
       nodeExtent,
       viewport,
       autoPanOnNodeDrag,
+      nodesDraggable,
       panBy,
       findNode,
       multiSelectionActive,
@@ -146,7 +147,7 @@ function useDrag(params: UseDragParams) {
 
               const pointerPos = getPointerPosition(event)
               lastPos = pointerPos
-              dragItems = getDragItems(nodes, pointerPos, findNode, id)
+              dragItems = getDragItems(nodes, nodesDraggable, pointerPos, findNode, id)
 
               if (dragItems.length) {
                 const [currentNode, nodes] = getEventHandlerParams({
