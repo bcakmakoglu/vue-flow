@@ -95,7 +95,7 @@ export default {
       v-if="connectionLineComponent"
       :source-x="sourceX"
       :source-y="sourceY"
-      :source-position="sourceHandle?.position"
+      :source-position="fromPosition"
       :targetX="targetX"
       :targetY="targetY"
       :target-position="targetPosition"
