@@ -84,7 +84,7 @@ const isClickConnecting = computed(
 )
 
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
-until(() => node.initialized)
+until(() => node?.initialized)
   .toBe(true, { flush: 'post' })
   .then(() => {
     const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId.value)
