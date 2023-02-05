@@ -176,9 +176,11 @@ export default function useHandle({
       }
 
       function onPointerUp(event: MouseEvent | TouchEvent) {
-        if (connection && isValid) {
-          if (!onEdgeUpdate) emits.connect({ ...(defaultEdgeOptions?.value || {}), ...connection })
-          else onEdgeUpdate(connection)
+        if (prevClosestHandle) {
+          if (connection && isValid) {
+            if (!onEdgeUpdate) emits.connect({ ...(defaultEdgeOptions?.value || {}), ...connection })
+            else onEdgeUpdate(connection)
+          }
         }
 
         emits.connectEnd(event)
