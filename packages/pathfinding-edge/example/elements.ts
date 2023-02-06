@@ -123,7 +123,7 @@ export default [
     id: 'e2a2b',
     source: '2a',
     target: '2b',
-    type: 'pathFinding',
+    type: 'perfectArrow',
     markerEnd,
   },
 ] as Elements
