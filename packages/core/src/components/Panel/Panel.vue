@@ -4,6 +4,7 @@ import type { PanelProps } from '../../types'
 const props = defineProps<PanelProps>()
 
 const { userSelectionActive } = useVueFlow()
+
 const positionClasses = computed(() => `${props.position}`.split('-'))
 </script>
 

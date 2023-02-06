@@ -2,7 +2,7 @@ import type { Actions, Connection, Edge, GraphEdge, GraphNode, Node } from '~/ty
 
 export const isDef = <T>(val: T): val is NonNullable<T> => typeof unref(val) !== 'undefined'
 
-export const addEdgeToStore = (edgeParams: Edge | Connection, edges: Edge[]) => {
+export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[]) {
   if (!edgeParams.source || !edgeParams.target) {
     warn("Can't create edge. An edge needs a source and a target.")
     return false
@@ -22,7 +22,7 @@ export const addEdgeToStore = (edgeParams: Edge | Connection, edges: Edge[]) => 
   return edge
 }
 
-export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]) => {
+export function updateEdgeAction(edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]) {
   if (!newConnection.source || !newConnection.target) {
     warn("Can't create new edge. An edge needs a source and a target.")
     return false
@@ -49,7 +49,7 @@ export const updateEdgeAction = (edge: GraphEdge, newConnection: Connection, edg
   return newEdge
 }
 
-export const createGraphNodes = (nodes: Node[], findNode: Actions['findNode'], currGraphNodes: GraphNode[]) => {
+export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], currGraphNodes: GraphNode[]) {
   const parentNodes: Record<string, true> = {}
 
   const graphNodes = nodes.map((node) => {

@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { Actions, GraphNode, HandleElement, Position } from '~/types'
 
-export const getHandleBounds = (selector: string, nodeElement: HTMLDivElement, zoom: number): HandleElement[] | undefined => {
+export function getHandleBounds(selector: string, nodeElement: HTMLDivElement, zoom: number): HandleElement[] | undefined {
   const handles = nodeElement.querySelectorAll(`.vue-flow__handle${selector}`)
 
   if (!handles || !handles.length) {
@@ -24,14 +24,14 @@ export const getHandleBounds = (selector: string, nodeElement: HTMLDivElement, z
   })
 }
 
-export const handleNodeClick = (
+export function handleNodeClick(
   node: GraphNode,
   multiSelectionActive: boolean,
   addSelectedNodes: Actions['addSelectedNodes'],
   removeSelectedNodes: Actions['removeSelectedNodes'],
   nodesSelectionActive: Ref<boolean>,
   unselect = false,
-) => {
+) {
   nodesSelectionActive.value = false
 
   if (!node.selected) {

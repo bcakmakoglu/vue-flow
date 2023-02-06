@@ -19,13 +19,8 @@ const {
   getEdges,
   getNodesInitialized,
   getEdgeTypes,
-  noPanClassName,
   elevateEdgesOnSelect,
 } = $(useVueFlow())
-
-const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
-const updatable = (u?: EdgeUpdatable) => (typeof u === 'undefined' ? edgesUpdatable : u)
-const focusable = (f?: boolean) => (typeof f === 'undefined' ? edgesFocusable : f)
 
 const sourceNode = $(
   controlledComputed(
@@ -73,7 +68,11 @@ onBeforeUnmount(() => {
   stop?.()
 })
 
-const getType = (type?: string, template?: GraphEdge['template']) => {
+const selectable = (edgeSelectable?: boolean) => (typeof edgeSelectable === 'undefined' ? elementsSelectable : edgeSelectable)
+const updatable = (edgeUpdatable?: EdgeUpdatable) => (typeof edgeUpdatable === 'undefined' ? edgesUpdatable : edgeUpdatable)
+const focusable = (edgeFocusable?: boolean) => (typeof edgeFocusable === 'undefined' ? edgesFocusable : edgeFocusable)
+
+function getType(type?: string, template?: GraphEdge['template']) {
   const name = type || 'default'
   let edgeType = template ?? getEdgeTypes[name]
   const instance = getCurrentInstance()
@@ -95,11 +94,6 @@ const getType = (type?: string, template?: GraphEdge['template']) => {
   }
 
   return slot
-}
-
-const getClass = (edge: GraphEdge) => {
-  const extraClass = edge.class instanceof Function ? edge.class(edge) : edge.class
-  return [noPanClassName, extraClass]
 }
 </script>
 
@@ -124,7 +118,6 @@ export default {
           :selectable="selectable(edge.selectable)"
           :updatable="updatable(edge.updatable)"
           :focusable="focusable(edge.focusable)"
-          :class="getClass(edge)"
         />
       </g>
     </svg>

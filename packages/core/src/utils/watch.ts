@@ -3,11 +3,11 @@ import type { WatchPausableReturn } from '@vueuse/core'
 import { isFunction } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '~/types'
 
-export const useWatch = (
+export function useWatch(
   models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
   props: FlowProps,
   store: VueFlowStore,
-) => {
+) {
   const scope = effectScope()
 
   scope.run(() => {
