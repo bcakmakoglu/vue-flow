@@ -107,13 +107,10 @@ export default (vueFlowId?: string): ViewportFunctions => {
 
       if (!getNodes.length) return
 
-      let nodeBounds: GraphNode[] = []
-      if (options.nodes) {
-        nodeBounds = nodes.filter((n) => options.nodes?.includes(n.id))
-      }
+      let nodeBounds: GraphNode[] = options.includeHiddenNodes ? nodes.filter((n) => n.width && n.height) : getNodes
 
-      if (!nodeBounds || !nodeBounds.length) {
-        nodeBounds = options.includeHiddenNodes ? nodeBounds : getNodes
+      if (options.nodes) {
+        nodeBounds = nodeBounds.filter((n) => options.nodes?.includes(n.id))
       }
 
       const bounds = getRectOfNodes(nodeBounds)
