@@ -22,5 +22,5 @@ onNodeDrag(({ intersections }) => {
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4" />
+  <VueFlow v-model="elements" fit-view-on-init :default-viewport="{ zoom: 1.5 }" :min-zoom="0.2" :max-zoom="4" />
 </template>

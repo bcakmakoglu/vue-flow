@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements } from '@vue-flow/core'
-import { VueFlow, addEdge } from '@vue-flow/core'
-import { Background } from '@vue-flow/additional-components'
+import type { Elements } from '@vue-flow/core'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 import initialElements from './elements'
 import { PathFindingEdge, PerfectArrow } from '~/index'
 
 const elements = ref<Elements>(initialElements)
-const onConnect = (params: Edge | Connection) => (elements.value = addEdge(params, elements.value))
+
+const { addEdges, onConnect } = useVueFlow()
+
+onConnect((params) => addEdges([params]))
 </script>
 
 <template>
@@ -17,7 +19,6 @@ const onConnect = (params: Edge | Connection) => (elements.value = addEdge(param
       :default-edge-options="{ type: 'perfectArrow' }"
       :fit-view-on-init="true"
       class="vue-flow-basic-example"
-      @connect="onConnect"
     >
       <template #edge-pathFinding="props">
         <PathFindingEdge v-bind="props" />
@@ -25,8 +26,6 @@ const onConnect = (params: Edge | Connection) => (elements.value = addEdge(param
       <template #edge-perfectArrow="props">
         <PerfectArrow v-bind="props" />
       </template>
-
-      <Background color="#aaa" :gap="8" />
     </VueFlow>
   </div>
 </template>

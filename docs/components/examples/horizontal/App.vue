@@ -18,7 +18,7 @@ onConnect((params) => addEdges([params]))
     v-model="elements"
     class="basicflow"
     :default-edge-options="{ type: 'smoothstep' }"
-    :default-zoom="1.5"
+    :default-viewport="{ zoom: 1.5 }"
     :min-zoom="0.2"
     :max-zoom="4"
     fit-view-on-init

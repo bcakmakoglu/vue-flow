@@ -105,7 +105,7 @@ onMounted(() => {
     :class="[gradient ? 'animated-bg-gradient' : '']"
     :style="{ backgroundColor: bgColor }"
     :connection-line-style="connectionLineStyle"
-    :default-zoom="1.5"
+    :default-viewport="{ zoom: 1.5 }"
     fit-view-on-init
   >
     <template #node-custom="{ data }">
