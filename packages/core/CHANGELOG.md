@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.14.1
+
+### Patch Changes
+
+- [#655](https://github.com/bcakmakoglu/vue-flow/pull/655) [`3d958dfe`](https://github.com/bcakmakoglu/vue-flow/commit/3d958dfe4f36702dd89ee456369c6090e22163e3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if prev closest handle exists in pointer up handler
+
+- [#656](https://github.com/bcakmakoglu/vue-flow/pull/656) [`b3796a66`](https://github.com/bcakmakoglu/vue-flow/commit/b3796a66ea66386484e7b56726c9f40f69a4556f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Store connectionStatus when using connection actions
+
 ## 1.14.0
 
 ### Minor Changes
