@@ -248,7 +248,7 @@ export interface Actions extends ViewportFunctions {
   /** start a connection */
   startConnection: (startHandle: StartHandle, position?: XYPosition, event?: MouseEvent | TouchEvent, isClick?: boolean) => void
   /** update connection position */
-  updateConnection: (position: XYPosition) => void
+  updateConnection: (position: XYPosition, status?: ConnectionStatus | null) => void
   /** end (or cancel) a connection */
   endConnection: (event?: MouseEvent | TouchEvent, isClick?: boolean) => void
 
