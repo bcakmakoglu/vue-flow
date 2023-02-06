@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.1] - 2023-02-06
+
+[6f02480](6f02480b173115c6702bebcfce56758ed588bc08)...[aa59713](aa59713bba61ee41353cbbcb83ed470a5b4ccdf1)
+
+### Bug Fixes
+
+- Check if prevClosestHandle exists in pointer up ([c800a86](c800a86893ac4877030e91ca5da3660f019d5fcc))
+
+### Miscellaneous Tasks
+
+- Next release ([aa59713](aa59713bba61ee41353cbbcb83ed470a5b4ccdf1))
+
+### Refactor
+
+- Cleanup `useHandle` and set status on actions ([619f4bf](619f4bf3e7f60be8a015dfb2c575602f52f4938a))
+
 ## [1.14.0] - 2023-02-05
 
 [8328d78](8328d78ff29309a1213f1e14bd4778726233bc8a)...[6f02480](6f02480b173115c6702bebcfce56758ed588bc08)
