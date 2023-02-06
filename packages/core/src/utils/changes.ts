@@ -99,13 +99,10 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   }
 }
 
-export const applyChanges = <
+export function applyChanges<
   T extends FlowElement = FlowElement,
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
->(
-  changes: C[],
-  elements: T[],
-): T[] => {
+>(changes: C[], elements: T[]): T[] {
   const addRemoveChanges = changes.filter((c) => c.type === 'add' || c.type === 'remove') as (
     | NodeAddChange
     | EdgeAddChange
@@ -213,7 +210,7 @@ export const createRemoveChange = (id: string): NodeRemoveChange | EdgeRemoveCha
   type: 'remove',
 })
 
-export const getSelectionChanges = (elements: FlowElements, selectedIds: string[]) => {
+export function getSelectionChanges(elements: FlowElements, selectedIds: string[]) {
   return elements.reduce(
     (res, item) => {
       let willBeSelected = selectedIds.includes(item.id)

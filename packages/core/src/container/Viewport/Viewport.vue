@@ -44,9 +44,6 @@ let zoomedWithRightMouseButton = $ref(false)
 
 let mouseButton = $ref(0)
 
-const isRightClickPan = (pan: FlowOptions['panOnDrag'], usedButton: number) =>
-  usedButton === 2 && Array.isArray(pan) && pan.includes(2)
-
 const panKeyPressed = useKeyPress(panActivationKeyCode)
 
 const isConnecting = $computed(() => !!connectionStartHandle)
@@ -56,30 +53,6 @@ const shouldPanOnDrag = computed(() => !selectionKeyPressed && panOnDrag && panK
 const isSelecting = computed(
   () => (selectionKeyCode !== true && selectionKeyPressed) || (selectionKeyCode === true && shouldPanOnDrag.value !== true),
 )
-
-const viewChanged = (prevViewport: ViewportTransform, eventTransform: ZoomTransform): boolean =>
-  (prevViewport.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
-  (prevViewport.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
-  (prevViewport.zoom !== eventTransform.k && !isNaN(eventTransform.k))
-
-const eventToFlowTransform = (eventTransform: ZoomTransform): ViewportTransform => ({
-  x: eventTransform.x,
-  y: eventTransform.y,
-  zoom: eventTransform.k,
-})
-
-const setDimensions = () => {
-  if (!viewportEl.value) return
-
-  const { width, height } = getDimensions(viewportEl.value)
-
-  if (width === 0 || height === 0) warn('The Vue Flow parent container needs a width and a height to render the graph.')
-
-  dimensions.width = width || 500
-  dimensions.height = height || 500
-}
-
-const isWrappedWithClass = (event: Event, className: string | undefined) => (event.target as Element).closest(`.${className}`)
 
 let prevTransform = $ref<ViewportTransform>({
   x: 0,
@@ -286,6 +259,41 @@ onMounted(() => {
     return (!event.ctrlKey || event.type === 'wheel') && buttonAllowed
   })
 })
+
+function isRightClickPan(pan: FlowOptions['panOnDrag'], usedButton: number) {
+  return usedButton === 2 && Array.isArray(pan) && pan.includes(2)
+}
+
+function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransform) {
+  return (
+    (prevViewport.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
+    (prevViewport.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
+    (prevViewport.zoom !== eventTransform.k && !isNaN(eventTransform.k))
+  )
+}
+
+function eventToFlowTransform(eventTransform: ZoomTransform): ViewportTransform {
+  return {
+    x: eventTransform.x,
+    y: eventTransform.y,
+    zoom: eventTransform.k,
+  }
+}
+
+function setDimensions() {
+  if (!viewportEl.value) return
+
+  const { width, height } = getDimensions(viewportEl.value)
+
+  if (width === 0 || height === 0) warn('The Vue Flow parent container needs a width and a height to render the graph.')
+
+  dimensions.width = width || 500
+  dimensions.height = height || 500
+}
+
+function isWrappedWithClass(event: Event, className: string | undefined) {
+  return (event.target as Element).closest(`.${className}`)
+}
 </script>
 
 <script lang="ts">

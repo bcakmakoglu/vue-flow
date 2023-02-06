@@ -124,12 +124,12 @@ export function getExtent<T extends NodeDragItem | GraphNode>(item: T, extent?: 
 
   return currentExtent as CoordinateExtent
 }
-export const calcNextPosition = (
+export function calcNextPosition(
   node: GraphNode | NodeDragItem,
   nextPosition: XYPosition,
   nodeExtent?: CoordinateExtent,
   parentNode?: GraphNode,
-) => {
+) {
   const extent = getExtent(node, nodeExtent, parentNode)
 
   const clampedPos = clampPosition(nextPosition, extent)

@@ -18,7 +18,13 @@ let box = $ref<RectType>({ x: 0, y: 0, width: 0, height: 0 })
 
 const el = $ref<SVGTextElement | null>(null)
 
-const getBox = () => {
+const transform = computed(() => `translate(${x - box.width / 2} ${y - box.height / 2})`)
+
+onMounted(getBox)
+
+watch([() => x, () => y, $$(el), () => label], getBox)
+
+function getBox() {
   if (!el) return
 
   const nextBox = el.getBBox()
@@ -27,12 +33,6 @@ const getBox = () => {
     box = nextBox
   }
 }
-
-onMounted(getBox)
-
-watch([() => x, () => y, $$(el), () => label], getBox)
-
-const transform = computed(() => `translate(${x - box.width / 2} ${y - box.height / 2})`)
 </script>
 
 <script lang="ts">

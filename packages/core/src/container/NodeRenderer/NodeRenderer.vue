@@ -17,11 +17,6 @@ const {
   emits,
 } = $(useVueFlow())
 
-const draggable = (d?: boolean) => (typeof d === 'undefined' ? nodesDraggable : d)
-const selectable = (s?: boolean) => (typeof s === 'undefined' ? elementsSelectable : s)
-const connectable = (c?: HandleConnectable) => (typeof c === 'undefined' ? nodesConnectable : c)
-const focusable = (f?: boolean) => (typeof f === 'undefined' ? nodesFocusable : f)
-
 let resizeObserver = $ref<ResizeObserver>()
 
 until(() => nodes.length > 0 && getNodesInitialized.length === nodes.length)
@@ -49,7 +44,13 @@ onMounted(() => {
 
 onBeforeUnmount(() => resizeObserver?.disconnect())
 
-const getType = (type?: string, template?: GraphNode['template']) => {
+const draggable = (nodeDraggable?: boolean) => (typeof nodeDraggable === 'undefined' ? nodesDraggable : nodeDraggable)
+const selectable = (nodeSelectable?: boolean) => (typeof nodeSelectable === 'undefined' ? elementsSelectable : nodeSelectable)
+const connectable = (nodeConnectable?: HandleConnectable) =>
+  typeof nodeConnectable === 'undefined' ? nodesConnectable : nodeConnectable
+const focusable = (nodeFocusable?: boolean) => (typeof nodeFocusable === 'undefined' ? nodesFocusable : nodeFocusable)
+
+function getType(type?: string, template?: GraphNode['template']) {
   const name = type || 'default'
   let nodeType = template ?? getNodeTypes[name]
   const instance = getCurrentInstance()
