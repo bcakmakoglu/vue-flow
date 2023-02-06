@@ -33,7 +33,6 @@ export default function useHandle({
     connectionRadius,
     connectOnClick,
     connectionClickStartHandle,
-    connectionStatus,
     nodesConnectable,
     defaultEdgeOptions,
     autoPanOnConnect,
@@ -114,8 +113,6 @@ export default function useHandle({
         event,
       )
 
-      connectionStatus.value = null
-
       emits.connectStart({ event, nodeId, handleId, handleType })
 
       function onPointerMove(event: MouseEvent | TouchEvent) {
@@ -155,9 +152,8 @@ export default function useHandle({
                 viewport.value,
               )
             : connectionPosition,
+          getConnectionStatus(!!prevClosestHandle, result.isValid),
         )
-
-        connectionStatus.value = getConnectionStatus(!!prevClosestHandle, isValid)
 
         if (!prevClosestHandle) return resetRecentHandle(prevActiveHandle)
 

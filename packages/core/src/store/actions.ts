@@ -429,6 +429,8 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       state.connectionStartHandle = startHandle
     }
 
+    state.connectionStatus = null
+
     if (position) state.connectionPosition = position
 
     state.hooks.connectStart.trigger({
@@ -439,12 +441,14 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     })
   }
 
-  const updateConnection: Actions['updateConnection'] = (position) => {
+  const updateConnection: Actions['updateConnection'] = (position, status = null) => {
     state.connectionPosition = position
+    state.connectionStatus = status
   }
 
   const endConnection: Actions['endConnection'] = (event, isClick) => {
     state.connectionPosition = { x: NaN, y: NaN }
+    state.connectionStatus = null
 
     if (isClick) {
       state.connectionClickStartHandle = null
