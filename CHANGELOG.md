@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.2] - 2023-02-07
+
+[aa59713](aa59713bba61ee41353cbbcb83ed470a5b4ccdf1)...[2c574ac](2c574acfdf98293e79b1c915ddc4f274781209a9)
+
+### Bug Fixes
+
+- Exclude hidden nodes in fitView when includeHiddenNodes is false ([26f16b7](26f16b75f8868138f121af2d42933f9eaea519ad))
+- Avoid triggering edge update when mouse btn is not left ([f849999](f849999d20f696c2af075fb1e7de08e9ca2e0669))
+
+### Miscellaneous Tasks
+
+- Replace `default-zoom` with `defaut-viewport` ([0192c65](0192c6515f34a6775f2b9d9380be85b0d8aeb619))
+- Use default values when defaultViewport values are missing ([77de369](77de369a3ff5663bb95cda5b8d767c892563944a))
+- Update auto-import file ([26b92db](26b92dbe8b63e651cbc3405e1cb86d48784088c9))
+- Cleanup and replace `const` with `function` ([bb2c4f4](bb2c4f449ab083c38a57846d85165c5f8c609a49))
+- Cleanup useZoomPanHelper ([35daa95](35daa95c229d768ac7030f799e50b5842baeef2e))
+- Next release ([2c574ac](2c574acfdf98293e79b1c915ddc4f274781209a9))
+
+### Refactor
+
+- Apply min width and height with aspect ratio ([49aef1e](49aef1ec88aa64662aa3772601e196e04b08db82))
+
 ## [1.14.1] - 2023-02-06
 
 [6f02480](6f02480b173115c6702bebcfce56758ed588bc08)...[aa59713](aa59713bba61ee41353cbbcb83ed470a5b4ccdf1)
