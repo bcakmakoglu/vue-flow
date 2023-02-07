@@ -232,10 +232,16 @@ const EdgeWrapper = defineComponent({
     }
 
     function handleEdgeUpdater(event: MouseEvent, isSourceHandle: boolean) {
+      if (event.button !== 0) return
+
+      updating = true
+
       nodeId.value = isSourceHandle ? edge.target : edge.source
       handleId.value = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
       type.value = isSourceHandle ? 'target' : 'source'
+
       edgeUpdaterType.value = type.value
+
       mouseEvent.value = event
 
       hooks.emit.updateStart({ event, edge })
@@ -274,12 +280,10 @@ const EdgeWrapper = defineComponent({
     }
 
     function onEdgeUpdaterSourceMouseDown(event: MouseEvent) {
-      updating = true
       handleEdgeUpdater(event, true)
     }
 
     function onEdgeUpdaterTargetMouseDown(event: MouseEvent) {
-      updating = true
       handleEdgeUpdater(event, false)
     }
 
