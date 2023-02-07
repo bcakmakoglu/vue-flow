@@ -1,5 +1,14 @@
 # @vue-flow/node-resizer
 
+## 1.2.0
+
+### Minor Changes
+
+- [#633](https://github.com/bcakmakoglu/vue-flow/pull/633) [`5abe4ca2`](https://github.com/bcakmakoglu/vue-flow/commit/5abe4ca2e5ab7a16f8a650edcaa959e0a710de11) Thanks [@AlexeyMeshkov](https://github.com/AlexeyMeshkov)! - Add `keepAspectRatio` option to node-resizer.
+
+  - Aspect ratio can either be a number or a boolean
+  - When using a boolean value, the aspect ratio will match the initial node sizes' aspect ratio
+
 ## 1.1.0
 
 ### Minor Changes
