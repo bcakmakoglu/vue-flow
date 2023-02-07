@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.14.2
+
+### Patch Changes
+
+- [#663](https://github.com/bcakmakoglu/vue-flow/pull/663) [`05a3e26e`](https://github.com/bcakmakoglu/vue-flow/commit/05a3e26e58ba19864ceb3858412f67d6af3099b7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Avoid triggering edge update when mouse button is not left
+
+- [#658](https://github.com/bcakmakoglu/vue-flow/pull/658) [`b8ad4458`](https://github.com/bcakmakoglu/vue-flow/commit/b8ad4458c3efddabf8bdc8bb229bed16f5aaf63c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - When `includeHiddenNodes` is false, exclude hidden nodes when using fitView
+
+- [#660](https://github.com/bcakmakoglu/vue-flow/pull/660) [`0dbabfc5`](https://github.com/bcakmakoglu/vue-flow/commit/0dbabfc58b63c2776f56e916f40abcb7d3dc2ecb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use default values when defaultViewport vals are missing
+
 ## 1.14.1
 
 ### Patch Changes
