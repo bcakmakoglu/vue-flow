@@ -42,7 +42,7 @@ const aspectRatio = computed(() => {
   if (props.keepAspectRatio === true && startValues.value.width && startValues.value.height) {
     return startValues.value.width / startValues.value.height
   }
-  
+
   if (typeof props.keepAspectRatio == 'number') {
     return props.keepAspectRatio
   }
@@ -115,9 +115,9 @@ watchEffect((onCleanup) => {
             const newHeight = width / aspectRatio.value
 
             if (distX > distY) {
-              height = newHeight
+              height = Math.max(newHeight, props.minHeight)
             } else {
-              width = newWidth
+              width = Math.max(newWidth, props.minWidth)
             }
           }
         }
