@@ -7,7 +7,7 @@ defineProps(['label'])
 </script>
 
 <template>
-  <NodeResizer min-width="100" min-height="30" />
+  <NodeResizer :keep-aspect-ratio="2" min-width="100" min-height="30" />
 
   <Handle type="target" :position="Position.Left" />
   <div style="padding: 10px">{{ label }}</div>

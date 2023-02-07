@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Elements } from '@vue-flow/core'
-import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { MarkerType, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -11,10 +11,10 @@ const elements = ref<Elements>([
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 }, class: 'light' },
   { id: '4', label: 'Node 4', position: { x: 400, y: 200 }, class: 'light' },
-  { id: 'e1-2', source: '1', target: '2', animated: true },
+  { id: 'e1-2', source: '1', target: '2', animated: true, markerEnd: { type: MarkerType.Arrow, color: 'black' } },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow({
+const { onNodeDragStop, onConnect, addEdges, setTransform, toObject, findEdge } = useVueFlow({
   minZoom: 0.2,
   maxZoom: 4,
   connectOnClick: true,
@@ -34,7 +34,12 @@ const updatePos = () =>
     }
   })
 
-const logToObject = () => console.log(toObject())
+const logToObject = () => {
+  findEdge('e1-2')!.markerEnd = {
+    type: MarkerType.Arrow,
+    color: 'red',
+  }
+}
 const resetTransform = () => setTransform({ x: 0, y: 0, zoom: 1 })
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>

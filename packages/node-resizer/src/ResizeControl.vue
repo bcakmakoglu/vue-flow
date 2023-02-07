@@ -19,6 +19,8 @@ const emits = defineEmits<{
   (event: 'resizeEnd', resizeEvent: OnResizeStart): void
 }>()
 
+const foo = computed(() => [{ title: 'foo', description: 'bar' }].flatMap((template) => [template.title, template.description]))
+
 const initPrevValues = { width: 0, height: 0, x: 0, y: 0 }
 
 const initStartValues = {
