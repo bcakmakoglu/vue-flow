@@ -68,7 +68,7 @@ function getPoints({
   const dirAccessor = dir.x !== 0 ? 'x' : 'y'
   const currDir = dir[dirAccessor]
 
-  let points: XYPosition[] = []
+  let points: XYPosition[]
   let centerX, centerY
   const [defaultCenterX, defaultCenterY, defaultOffsetX, defaultOffsetY] = getSimpleEdgeCenter({
     sourceX: source.x,
@@ -180,7 +180,7 @@ export function getSmoothStepPath({
   })
 
   const path = points.reduce((res, p, i) => {
-    let segment = ''
+    let segment
 
     if (i > 0 && i < points.length - 1) {
       segment = getBend(points[i - 1], p, points[i + 1], borderRadius)
