@@ -1,0 +1,32 @@
+name: Qodana Scan
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  qodana-scan:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [18]
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+        fetch-depth: 0
+
+      - name: Qodana Scan 🔍
+        uses: JetBrains/qodana-action@main
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
