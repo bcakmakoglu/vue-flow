@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { ConnectionMode, VueFlow, addEdge, updateEdge } from '@vue-flow/core'
+import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
+import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 
 import '@vue-flow/controls/dist/style.css'
@@ -26,14 +26,17 @@ const initialElements: Elements = [
   { id: 'e1-2', source: '1', target: '2', label: 'Updatable target', updatable: 'target' },
 ]
 
+const { updateEdge } = useVueFlow()
+
 const elements = ref(initialElements)
+
 const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
+
 const onEdgeUpdateStart = ({ edge }: FlowEvents['edgeUpdateStart']) => console.log('start update', edge)
+
 const onEdgeUpdateEnd = ({ edge }: FlowEvents['edgeUpdateEnd']) => console.log('end update', edge)
-const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => {
-  elements.value = updateEdge(edge, connection, elements.value)
-}
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+
+const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => updateEdge(edge, connection)
 </script>
 
 <template>
@@ -43,7 +46,6 @@ const onConnect = (params: Connection | Edge) => (elements.value = addEdge(param
     :connection-mode="ConnectionMode.Loose"
     @pane-ready="onLoad"
     @edge-update="onEdgeUpdate"
-    @connect="onConnect"
     @edge-update-start="onEdgeUpdateStart"
     @edge-update-end="onEdgeUpdateEnd"
   >
