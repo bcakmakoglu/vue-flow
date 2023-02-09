@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
-import { MarkerType, VueFlow, addEdge } from '@vue-flow/core'
+import type { Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
+import { MarkerType, VueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
@@ -101,16 +101,14 @@ const nodeColor = (n: Node): string => {
 }
 
 const elements = ref<Elements>(initialElements)
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
 </script>
 
 <template>
   <VueFlow
     v-model="elements"
     :connection-line-style="{ stroke: '#ddd' }"
-    :snap-to-grid="true"
+    snap-to-grid
     :snap-grid="snapGrid"
-    @connect="onConnect"
     @pane-ready="onLoad"
     @pane-click="onPaneClick"
     @pane-scroll="onPaneScroll"

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements, Node } from '@vue-flow/core'
-import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow, useZoomPanHelper } from '@vue-flow/core'
+import type { Elements } from '@vue-flow/core'
+import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 
 const initialElements: Elements = [
@@ -159,18 +159,7 @@ const initialElements: Elements = [
   },
 ]
 
-let id = 4
-const getId = () => `${id++}`
-
 const elements = ref(initialElements)
-const { project } = useZoomPanHelper()
-
-const onPaneClick = (evt: MouseEvent) =>
-  (elements.value = elements.value.concat({
-    id: getId(),
-    position: project({ x: evt.clientX, y: evt.clientY - 40 }),
-    type: 'custom',
-  } as Node))
 </script>
 
 <template>
@@ -178,7 +167,6 @@ const onPaneClick = (evt: MouseEvent) =>
     v-model="elements"
     :connection-line-type="ConnectionLineType.SmoothStep"
     :connection-mode="ConnectionMode.Loose"
-    @pane-click="onPaneClick"
     @pane-ready="({ fitView }) => fitView()"
   >
     <template #node-custom="props">

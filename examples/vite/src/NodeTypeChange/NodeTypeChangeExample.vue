@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Elements, VueFlowStore } from '@vue-flow/core'
-import { Position, VueFlow, addEdge, isEdge } from '@vue-flow/core'
+import type { Elements } from '@vue-flow/core'
+import { Position, VueFlow, isEdge, useVueFlow } from '@vue-flow/core'
 
 const initialElements: Elements = [
   {
@@ -21,11 +21,13 @@ const initialElements: Elements = [
   { id: 'e1-2', source: '1', type: 'smoothstep', target: '2', animated: true },
 ]
 
+const { onConnect, addEdges, onPaneReady } = useVueFlow()
+
 const elements = ref<Elements>(initialElements)
 
-const onConnect = (params: Connection | Edge) => (elements.value = addEdge(params, elements.value))
+onConnect((params) => addEdges([params]))
 
-const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
+onPaneReady((instance) => instance.fitView())
 
 const changeType = () => {
   elements.value.forEach((el) => {
@@ -36,7 +38,7 @@ const changeType = () => {
 </script>
 
 <template>
-  <VueFlow v-model="elements" @connect="onConnect" @pane-ready="onLoad">
+  <VueFlow v-model="elements">
     <button :style="{ position: 'absolute', right: 10, top: 30, zIndex: 4 }" @click="changeType">change type</button>
   </VueFlow>
 </template>

@@ -69,7 +69,9 @@ onMounted(() => {
 
 useVueFlow({
   connectionMode: ConnectionMode.Loose,
-  connectionLineStyle,
+  connectionLineOptions: {
+    style: connectionLineStyle,
+  },
   snapToGrid: true,
   snapGrid,
 })
