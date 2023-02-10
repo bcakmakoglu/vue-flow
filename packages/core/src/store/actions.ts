@@ -27,23 +27,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     state.hooks.updateNodeInternals.trigger(ids)
   }
 
-  const zoomPanHelper = ref<ReturnType<typeof useZoomPanHelper>>()
-
-  state.hooks.paneReady.on(({ id }) => {
-    zoomPanHelper.value = useZoomPanHelper(id)
-  })
-
-  const paneReady = async () => {
-    return new Promise<ReturnType<typeof useZoomPanHelper>>((resolve) => {
-      if (!zoomPanHelper.value) {
-        until(zoomPanHelper)
-          .not.toBeUndefined()
-          .then(() => resolve(zoomPanHelper.value!))
-      } else {
-        resolve(zoomPanHelper.value)
-      }
-    })
-  }
+  const viewportHelper = useViewport(state, getters)
 
   const nodeIds = $computed(() => state.nodes.map((n) => n.id))
   const edgeIds = $computed(() => state.edges.map((e) => e.id))
@@ -280,10 +264,8 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const setNodeExtent: Actions['setNodeExtent'] = async (nodeExtent) => {
     state.nodeExtent = nodeExtent
 
-    if (zoomPanHelper.value) {
-      const nodeIds = getters.getNodes.value.map((n) => n.id)
-      updateNodeInternals(nodeIds)
-    }
+    const nodeIds = getters.getNodes.value.map((n) => n.id)
+    updateNodeInternals(nodeIds)
   }
 
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
@@ -628,38 +610,31 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     getIntersectingNodes,
     isNodeIntersecting,
     panBy,
-    fitView: async (params = { padding: 0.1 }) => {
-      const { fitView } = await paneReady()
-      fitView(params)
+    fitView: (params = { padding: 0.1 }) => {
+      viewportHelper.fitView(params)
     },
-    zoomIn: async (options) => {
-      const { zoomIn } = await paneReady()
-      zoomIn(options)
+    zoomIn: (options) => {
+      viewportHelper.zoomIn(options)
     },
-    zoomOut: async (options) => {
-      const { zoomOut } = await paneReady()
-      zoomOut(options)
+    zoomOut: (options) => {
+      viewportHelper.zoomOut(options)
     },
-    zoomTo: async (zoomLevel, options) => {
-      const { zoomTo } = await paneReady()
-      zoomTo(zoomLevel, options)
+    zoomTo: (zoomLevel, options) => {
+      viewportHelper.zoomTo(zoomLevel, options)
     },
-    setTransform: async (transform, options) => {
-      const { setTransform } = await paneReady()
-      setTransform(transform, options)
+    setTransform: (transform, options) => {
+      viewportHelper.setTransform(transform, options)
     },
     getTransform: () => ({
       x: state.viewport.x,
       y: state.viewport.y,
       zoom: state.viewport.zoom,
     }),
-    setCenter: async (x, y, options) => {
-      const { setCenter } = await paneReady()
-      setCenter(x, y, options)
+    setCenter: (x, y, options) => {
+      viewportHelper.setCenter(x, y, options)
     },
-    fitBounds: async (bounds, options) => {
-      const { fitBounds } = await paneReady()
-      fitBounds(bounds, options)
+    fitBounds: (bounds, options) => {
+      viewportHelper.fitBounds(bounds, options)
     },
     project: (position) => pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid),
     toObject,
