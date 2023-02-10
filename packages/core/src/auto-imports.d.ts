@@ -347,6 +347,7 @@ declare global {
   const useVModel: typeof import('@vueuse/core')['useVModel']
   const useVModels: typeof import('@vueuse/core')['useVModels']
   const useVibrate: typeof import('@vueuse/core')['useVibrate']
+  const useViewport: typeof import('./composables/useViewport')['default']
   const useVirtualList: typeof import('@vueuse/core')['useVirtualList']
   const useVueFlow: typeof import('./composables/useVueFlow')['default']
   const useWakeLock: typeof import('@vueuse/core')['useWakeLock']
