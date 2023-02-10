@@ -138,10 +138,8 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     }, [])
 
     if (state.fitViewOnInit && !fitViewOnInitDone) {
-      paneReady().then((helper) => {
-        helper.fitView()
-        fitViewOnInitDone = true
-      })
+      viewportHelper.fitView()
+      fitViewOnInitDone = true
     }
 
     if (changes.length) state.hooks.nodesChange.trigger(changes)
