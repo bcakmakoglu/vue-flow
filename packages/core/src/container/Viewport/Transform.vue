@@ -3,7 +3,7 @@ import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import type { Dimensions } from '../../types'
 
-const { id, viewport, dimensions, fitViewOnInit, emits, fitView, ...rest } = useVueFlow()
+const { id, viewport, dimensions, fitViewOnInit, emits, fitView, onNodesInitialized, ...rest } = useVueFlow()
 
 const untilDimensions = async (dim: Dimensions) => {
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -16,14 +16,18 @@ const untilDimensions = async (dim: Dimensions) => {
   return true
 }
 
-let ready = $ref(false)
+let isReady = $ref(false)
+
+onNodesInitialized(() => {
+  setTimeout(() => {
+    // hide graph until nodes are ready, so we don't have jumping graphs (ssr for example)
+    isReady = true
+  }, 0)
+})
 
 onMounted(async () => {
   // wait until proper dimensions have been established, otherwise fitView will have wrong bounds when called at paneReady
   await untilDimensions(dimensions.value)
-
-  // hide graph until dimensions are ready, so we don't have jumping graphs (ssr for example)
-  ready = true
 
   emits.paneReady({
     id,
@@ -32,6 +36,7 @@ onMounted(async () => {
     fitViewOnInit,
     fitView,
     emits,
+    onNodesInitialized,
     ...rest,
   })
 
@@ -50,7 +55,7 @@ export default {
   <div
     :key="`transform-${id}`"
     class="vue-flow__transformationpane vue-flow__container"
-    :style="{ transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})`, opacity: ready ? undefined : 0 }"
+    :style="{ transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})`, opacity: isReady ? undefined : 0 }"
   >
     <EdgeRenderer />
 
