@@ -2,16 +2,9 @@
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 
-const { id, viewport, emits, onNodesInitialized, ...rest } = useVueFlow()
+const { id, viewport, emits, ...rest } = useVueFlow()
 
 let isReady = $ref(false)
-
-onNodesInitialized(() => {
-  setTimeout(() => {
-    // hide graph until nodes are ready, so we don't have jumping nodes
-    isReady = true
-  }, 0)
-})
 
 onMounted(async () => {
   setTimeout(() => {
@@ -19,9 +12,11 @@ onMounted(async () => {
       id,
       viewport,
       emits,
-      onNodesInitialized,
       ...rest,
     })
+
+    // hide graph until nodes are ready, so we don't have jumping nodes
+    isReady = true
   }, 1)
 })
 </script>

@@ -23,14 +23,12 @@ import type {
 export function useActions(state: State, getters: ComputedGetters): Actions {
   let fitViewOnInitDone = false
 
-  const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    state.hooks.updateNodeInternals.trigger(ids)
-  }
-
-  const viewportHelper = useViewport(state, getters)
+  const viewportHelper = $(useViewport(state, getters))
 
   const nodeIds = $computed(() => state.nodes.map((n) => n.id))
   const edgeIds = $computed(() => state.edges.map((e) => e.id))
+
+  const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => state.hooks.updateNodeInternals.trigger(ids ?? nodeIds)
 
   const findNode: Actions['findNode'] = (id) => {
     if (state.nodes && !nodeIds.length) return state.nodes.find((node) => node.id === id)
@@ -83,6 +81,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
     if (!viewportNode) return
 
+    // todo: remove this feature again, it's not working properly
     let zoom: number
     if (state.__experimentalFeatures?.nestedFlow) {
       let viewportNodes: HTMLElement[] = [viewportNode]
@@ -625,18 +624,14 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     setTransform: (transform, options) => {
       viewportHelper.setTransform(transform, options)
     },
-    getTransform: () => ({
-      x: state.viewport.x,
-      y: state.viewport.y,
-      zoom: state.viewport.zoom,
-    }),
+    getTransform: () => viewportHelper.getTransform(),
     setCenter: (x, y, options) => {
       viewportHelper.setCenter(x, y, options)
     },
     fitBounds: (bounds, options) => {
       viewportHelper.fitBounds(bounds, options)
     },
-    project: (position) => pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid),
+    project: (position) => viewportHelper.project(position),
     toObject,
     updateNodeInternals,
     $reset: () => {

@@ -174,7 +174,7 @@ export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, d
 
 export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
 
-export type UpdateNodeInternals = (nodeIds: string[]) => void
+export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
 export type FindNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
   id: string,
