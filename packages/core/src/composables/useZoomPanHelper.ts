@@ -134,7 +134,7 @@ async function untilDimensions(dimensions: Dimensions, nodes: GraphNode[]) {
   if ('screen' in window) {
     // if initial nodes are present, wait until the node dimensions have been established
     if (nodes.length > 0) {
-      await until(nodes).toMatch((nodes) => !!nodes.filter((node) => node.initialized).length)
+      await until(nodes).toMatch((nodes) => nodes.filter((node) => node.initialized).length === nodes.length, { flush: 'pre' })
     }
   }
 
