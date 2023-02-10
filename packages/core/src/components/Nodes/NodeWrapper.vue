@@ -88,13 +88,16 @@ onUpdateNodeInternals((updateIds) => {
   }
 })
 
-onMounted(() => {
-  props.resizeObserver.observe(nodeElement.value as HTMLDivElement)
-})
+watchEffect(
+  (onCleanup) => {
+    if (!node.hidden) {
+      props.resizeObserver.observe(nodeElement.value as HTMLDivElement)
 
-onBeforeUnmount(() => {
-  props.resizeObserver.unobserve(nodeElement.value as HTMLDivElement)
-})
+      onCleanup(() => props.resizeObserver.unobserve(nodeElement.value as HTMLDivElement))
+    }
+  },
+  { flush: 'post' },
+)
 
 watch(
   [() => node.type, () => node.sourcePosition, () => node.targetPosition],
