@@ -20,7 +20,7 @@ describe('Store Action: `setMaxZoom`', () => {
     expect(store.maxZoom.value).to.eq(2)
   })
 
-  it('sets max-zoom in viewpane', async () => {
+  it('sets max-zoom in viewpane', () => {
     cy.viewPort().trigger('wheel', {
       deltaY: -10000,
       wheelDelta: 0,
@@ -29,7 +29,7 @@ describe('Store Action: `setMaxZoom`', () => {
       bubbles: true,
     })
 
-    await cy.tryAssertion(() => {
+    cy.tryAssertion(() => {
       cy.transformationPane().should(
         'have.css',
         'transform',
