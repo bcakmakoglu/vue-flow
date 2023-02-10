@@ -69,7 +69,7 @@ const EdgeWrapper = defineComponent({
     })
 
     return () => {
-      if (!sourceNode || !targetNode) return null
+      if (!sourceNode || !targetNode || !edge) return null
 
       let sourceNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
@@ -109,6 +109,7 @@ const EdgeWrapper = defineComponent({
         'g',
         {
           'ref': edgeEl,
+          'key': props.id,
           'data-id': props.id,
           'class': [
             'vue-flow__edge',
