@@ -32,6 +32,7 @@ const {
   connectionStartHandle,
   userSelectionActive,
   paneDragging,
+  viewport,
 } = $(useVueFlow())
 
 const viewportEl = ref<HTMLDivElement>()
@@ -67,6 +68,14 @@ onMounted(() => {
   useEventListener(window, 'resize', setDimensions)
 })
 
+watch(
+  () => viewport,
+  () => {
+    console.log(viewport)
+  },
+  { deep: true },
+)
+
 onMounted(() => {
   const viewportElement = viewportEl.value!
   const bbox = viewportElement.getBoundingClientRect()
@@ -90,16 +99,20 @@ onMounted(() => {
     d3Zoom,
     d3Selection,
     d3ZoomHandler,
-    viewport: { x: updatedTransform.x, y: updatedTransform.y, zoom: updatedTransform.k },
+    viewport: { x: constrainedTransform.x, y: constrainedTransform.y, zoom: constrainedTransform.k },
     viewportRef: viewportElement,
   })
 
-  const onKeyPress = (keyPress: boolean) => {
+  useKeyPress(selectionKeyCode, (keyPress) => {
     selectionKeyPressed = keyPress
+  })
 
-    if (keyPress && userSelectionActive && !isZoomingOrPanning) {
+  const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
+
+  watchEffect(() => {
+    if (selectionKeyPressed && userSelectionActive && !isZoomingOrPanning) {
       d3Zoom.on('zoom', null)
-    } else if (!keyPress && !userSelectionActive) {
+    } else if (!selectionKeyPressed && !userSelectionActive) {
       d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
         setState({ viewport: { x: event.transform.x, y: event.transform.y, zoom: event.transform.k } })
 
@@ -111,14 +124,7 @@ onMounted(() => {
         emits.move({ event, flowTransform })
       })
     }
-  }
-
-  useKeyPress(selectionKeyCode, onKeyPress)
-
-  // initialize
-  onKeyPress(false)
-
-  const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
+  })
 
   d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
     if (!event.sourceEvent) return null

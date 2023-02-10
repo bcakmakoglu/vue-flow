@@ -3,7 +3,7 @@ import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import type { Dimensions } from '../../types'
 
-const { id, viewport, dimensions, fitViewOnInit, emits, fitView, onNodesInitialized, ...rest } = useVueFlow()
+const { id, viewport, dimensions, emits, onNodesInitialized, ...rest } = useVueFlow()
 
 const untilDimensions = async (dim: Dimensions) => {
   // if ssr we can't wait for dimensions, they'll never really exist
@@ -33,14 +33,10 @@ onMounted(async () => {
     id,
     viewport,
     dimensions,
-    fitViewOnInit,
-    fitView,
     emits,
     onNodesInitialized,
     ...rest,
   })
-
-  fitViewOnInit?.value && fitView()
 })
 </script>
 
