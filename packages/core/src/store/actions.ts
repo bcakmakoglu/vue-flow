@@ -252,12 +252,12 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
   }
 
-  const setMinZoom: Actions['setMinZoom'] = (minZoom: any) => {
+  const setMinZoom: Actions['setMinZoom'] = (minZoom) => {
     state.d3Zoom?.scaleExtent([minZoom, state.maxZoom])
     state.minZoom = minZoom
   }
 
-  const setMaxZoom: Actions['setMaxZoom'] = (maxZoom: any) => {
+  const setMaxZoom: Actions['setMaxZoom'] = (maxZoom) => {
     state.d3Zoom?.scaleExtent([state.minZoom, maxZoom])
     state.maxZoom = maxZoom
   }
