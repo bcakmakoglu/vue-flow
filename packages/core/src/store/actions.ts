@@ -141,6 +141,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
         if (doUpdate) {
           node.handleBounds.source = getHandleBounds('.source', update.nodeElement, zoom)
           node.handleBounds.target = getHandleBounds('.target', update.nodeElement, zoom)
+          node.dimensions = dimensions
 
           res.push({
             id: node.id,
