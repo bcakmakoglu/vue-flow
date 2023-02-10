@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { WatchStopHandle } from 'vue'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
@@ -8,7 +7,6 @@ import MarkerDefinitions from './MarkerDefinitions.vue'
 const slots = inject(Slots)
 
 const {
-  onPaneReady,
   connectionStartHandle,
   nodesConnectable,
   edgesUpdatable,
@@ -46,23 +44,14 @@ const connectionLineVisible = $(
   ),
 )
 
-let groups = $ref<ReturnType<typeof groupEdgesByZLevel>>([])
-
-let stop: WatchStopHandle
-onPaneReady(() => {
-  stop = watch(
-    [
-      () => getEdges.length,
-      () => getEdges.map((e) => e.zIndex),
-      () => (elevateEdgesOnSelect ? getSelectedNodes.length : 0),
-      () => (elevateEdgesOnSelect ? getNodesInitialized.map((n) => n.computedPosition.z) : []),
-    ],
-    () => {
-      groups = groupEdgesByZLevel(getEdges, findNode, elevateEdgesOnSelect)
-    },
-    { immediate: true },
-  )
-})
+const groups = controlledComputed(
+  [
+    () => getEdges.map((e) => e.zIndex),
+    () => (elevateEdgesOnSelect ? [getSelectedNodes.length] : [0]),
+    () => (elevateEdgesOnSelect ? getNodesInitialized.map((n) => n.computedPosition.z) : []),
+  ],
+  () => groupEdgesByZLevel(getEdges, findNode, elevateEdgesOnSelect),
+)
 
 onBeforeUnmount(() => {
   stop?.()
