@@ -1,42 +1,28 @@
 <script lang="ts" setup>
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import type { Dimensions } from '../../types'
 
-const { id, viewport, dimensions, emits, onNodesInitialized, ...rest } = useVueFlow()
-
-const untilDimensions = async (dim: Dimensions) => {
-  // if ssr we can't wait for dimensions, they'll never really exist
-  const window = useWindow()
-  if ('screen' in window) {
-    // wait until viewport dimensions has been established
-    await until(dim).toMatch(({ height, width }) => !isNaN(width) && width > 0 && !isNaN(height) && height > 0)
-  }
-
-  return true
-}
+const { id, viewport, emits, onNodesInitialized, ...rest } = useVueFlow()
 
 let isReady = $ref(false)
 
 onNodesInitialized(() => {
   setTimeout(() => {
-    // hide graph until nodes are ready, so we don't have jumping graphs (ssr for example)
+    // hide graph until nodes are ready, so we don't have jumping nodes
     isReady = true
   }, 0)
 })
 
 onMounted(async () => {
-  // wait until proper dimensions have been established, otherwise fitView will have wrong bounds when called at paneReady
-  await untilDimensions(dimensions.value)
-
-  emits.paneReady({
-    id,
-    viewport,
-    dimensions,
-    emits,
-    onNodesInitialized,
-    ...rest,
-  })
+  setTimeout(() => {
+    emits.paneReady({
+      id,
+      viewport,
+      emits,
+      onNodesInitialized,
+      ...rest,
+    })
+  }, 1)
 })
 </script>
 
