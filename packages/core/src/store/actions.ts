@@ -21,6 +21,8 @@ import type {
 } from '~/types'
 
 export function useActions(state: State, getters: ComputedGetters): Actions {
+  let fitViewOnInitDone = false
+
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     state.hooks.updateNodeInternals.trigger(ids)
   }
@@ -150,6 +152,13 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
       return res
     }, [])
+
+    if (state.fitViewOnInit && !fitViewOnInitDone) {
+      paneReady().then((helper) => {
+        helper.fitView()
+        fitViewOnInitDone = true
+      })
+    }
 
     if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
