@@ -29,7 +29,7 @@ until(() => nodes.length > 0 && getNodesInitialized.length === nodes.length)
 
 onMounted(() => {
   resizeObserver = new ResizeObserver((entries) => {
-    const updates = entries.map((entry: ResizeObserverEntry) => {
+    const updates = entries.map((entry) => {
       const id = entry.target.getAttribute('data-id') as string
 
       return {
