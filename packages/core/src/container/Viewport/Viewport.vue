@@ -32,7 +32,6 @@ const {
   connectionStartHandle,
   userSelectionActive,
   paneDragging,
-  viewport,
 } = $(useVueFlow())
 
 const viewportEl = ref<HTMLDivElement>()
@@ -67,14 +66,6 @@ onMounted(() => {
   const window = useWindow()
   useEventListener(window, 'resize', setDimensions)
 })
-
-watch(
-  () => viewport,
-  () => {
-    console.log(viewport)
-  },
-  { deep: true },
-)
 
 onMounted(() => {
   const viewportElement = viewportEl.value!
