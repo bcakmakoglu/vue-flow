@@ -114,7 +114,7 @@ export interface FlowProps {
   nodeTypes?: NodeTypesObject
   connectionMode?: ConnectionMode
   /** @deprecated use {@link ConnectionLineOptions.type} */
-  connectionLineType?: ConnectionLineType
+  connectionLineType?: ConnectionLineType | null
   /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle?: CSSProperties | null
   connectionLineOptions?: ConnectionLineOptions

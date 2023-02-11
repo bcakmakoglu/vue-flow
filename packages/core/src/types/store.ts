@@ -81,7 +81,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   connectionMode: ConnectionMode
   connectionLineOptions: ConnectionLineOptions
   /** @deprecated use {@link ConnectionLineOptions.type} */
-  connectionLineType: ConnectionLineType
+  connectionLineType: ConnectionLineType | null
   /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle: CSSProperties | null
   connectionStartHandle: StartHandle | null
