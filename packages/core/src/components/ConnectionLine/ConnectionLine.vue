@@ -25,22 +25,20 @@ const oppositePosition = {
 
 const connectionLineComponent = inject(Slots)?.['connection-line']
 
-const handleId = $computed(() => connectionStartHandle!.handleId)
-const type = computed(() => connectionStartHandle!.type)
+const handleId = connectionStartHandle!.handleId
+const type = connectionStartHandle!.type
 
-const sourceHandle = $computed(
-  () =>
-    (connectionMode === ConnectionMode.Strict
-      ? sourceNode.handleBounds[type.value]?.find((d) => d.id === handleId)
-      : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find((d) => d.id === handleId)) ||
-    sourceNode.handleBounds[type.value ?? 'source']?.[0],
-)
+const sourceHandle =
+  (connectionMode === ConnectionMode.Strict
+    ? sourceNode.handleBounds[type]?.find((d) => d.id === handleId)
+    : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find((d) => d.id === handleId)) ||
+  sourceNode.handleBounds[type ?? 'source']?.[0]
 
-const sourceHandleX = $computed(() => (sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2))
-const sourceHandleY = $computed(() => (sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height))
+const sourceHandleX = sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2
+const sourceHandleY = sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height
 
-const sourceX = $computed(() => sourceNode.computedPosition.x + sourceHandleX)
-const sourceY = $computed(() => sourceNode.computedPosition.y + sourceHandleY)
+const sourceX = sourceNode.computedPosition.x + sourceHandleX
+const sourceY = sourceNode.computedPosition.y + sourceHandleY
 
 const fromPosition = computed(() => sourceHandle?.position)
 const targetPosition = computed(() => (fromPosition.value ? oppositePosition[fromPosition.value] : undefined))
@@ -49,7 +47,7 @@ const targetX = $computed(() => (connectionPosition.x - viewport.x) / viewport.z
 const targetY = $computed(() => (connectionPosition.y - viewport.y) / viewport.zoom)
 
 const dAttr = computed(() => {
-  let path = `M${sourceX},${sourceY} ${targetX},${targetY}`
+  let path
 
   const pathParams = {
     sourceX,
