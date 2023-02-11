@@ -60,7 +60,9 @@ const dAttr = computed(() => {
     targetPosition: targetPosition.value,
   }
 
-  switch (connectionLineType || connectionLineOptions.type) {
+  const type = connectionLineType ?? connectionLineOptions.type
+
+  switch (type) {
     case ConnectionLineType.Bezier:
       ;[path] = getBezierPath(pathParams)
       break
@@ -75,6 +77,12 @@ const dAttr = computed(() => {
       break
     case ConnectionLineType.SimpleBezier:
       ;[path] = getSimpleBezierPath(pathParams)
+      break
+    case ConnectionLineType.Straight:
+      ;[path] = getStraightPath(pathParams)
+      break
+    default:
+      ;[path] = getBezierPath(pathParams)
       break
   }
 
