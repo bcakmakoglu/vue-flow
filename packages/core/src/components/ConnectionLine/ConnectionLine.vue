@@ -101,17 +101,19 @@ export default {
     <component
       :is="connectionLineComponent"
       v-if="connectionLineComponent"
-      :source-x="sourceX"
-      :source-y="sourceY"
-      :source-position="fromPosition"
-      :targetX="targetX"
-      :targetY="targetY"
-      :target-position="targetPosition"
-      :source-node="sourceNode"
-      :source-handle="sourceHandle"
-      :marker-end="`url(#${getMarkerId(connectionLineOptions.markerEnd)})`"
-      :marker-start="`url(#${getMarkerId(connectionLineOptions.markerStart)})`"
-      :connection-status="connectionStatus"
+      v-bind="{
+        sourceX,
+        sourceY,
+        sourcePosition: sourceHandle?.position,
+        targetX,
+        targetY,
+        targetPosition,
+        sourceNode,
+        sourceHandle,
+        markerEnd: `url(#${getMarkerId(connectionLineOptions.markerEnd)})`,
+        markerStart: `url(#${getMarkerId(connectionLineOptions.markerStart)})`,
+        connectionStatus,
+      }"
     />
 
     <path
