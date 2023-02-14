@@ -24,7 +24,8 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
-        fetch-depth: 0
+        with:
+          fetch-depth: 0
 
       - name: Qodana Scan 🔍
         uses: JetBrains/qodana-action@main
