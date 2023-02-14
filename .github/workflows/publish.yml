@@ -66,8 +66,8 @@ jobs:
         uses: changesets/action@v1
         with:
           version: pnpm ci:version
-          commit: "chore: next release"
-          title: "chore: next release"
+          commit: "chore: bump versions"
+          title: "chore: bump versions"
           # manual publish currently
           # publish: pnpm ci:publish
         env:
