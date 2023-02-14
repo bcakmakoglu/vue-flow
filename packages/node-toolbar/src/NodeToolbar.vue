@@ -77,6 +77,7 @@ const wrapperStyle = computed<CSSProperties>(() => ({
 <script lang="ts">
 export default {
   name: 'NodeToolbar',
+  compatConfig: { MODE: 3 },
   inheritAttrs: false,
 }
 </script>

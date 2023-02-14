@@ -49,6 +49,7 @@ const d = computed(
 <script lang="ts">
 export default {
   name: 'Background',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

@@ -4,6 +4,7 @@ import { MiniMapSlots } from './types'
 
 export default defineComponent({
   name: 'MiniMapNode',
+  compatConfig: { MODE: 3 },
   props: ['id', 'position', 'dimensions', 'strokeWidth', 'strokeColor', 'borderRadius', 'color', 'shapeRendering', 'type'],
   emits: ['click', 'dblclick', 'mouseenter', 'mousemove', 'mouseleave'],
   setup(props: MiniMapNodeProps, { attrs, emit }) {

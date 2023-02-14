@@ -33,6 +33,7 @@ const markers = computed(() => {
 <script lang="ts">
 export default {
   name: 'MarkerDefinitions',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

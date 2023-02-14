@@ -153,6 +153,7 @@ defineExpose<VueFlowStore>({
 <script lang="ts">
 export default {
   name: 'VueFlow',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

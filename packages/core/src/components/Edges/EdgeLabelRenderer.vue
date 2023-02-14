@@ -7,6 +7,7 @@ const teleportTarget = computed(() => viewportRef.value?.getElementsByClassName(
 <script lang="ts">
 export default {
   name: 'EdgeLabelRenderer',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

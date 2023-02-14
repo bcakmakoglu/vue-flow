@@ -30,6 +30,7 @@ const attrs = useAttrs() as { style: CSSProperties }
 <script lang="ts">
 export default {
   name: 'PerfectArrow',
+  compatConfig: { MODE: 3 },
   inheritAttrs: false,
 }
 </script>

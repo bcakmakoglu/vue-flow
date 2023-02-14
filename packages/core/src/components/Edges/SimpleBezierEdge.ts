@@ -41,5 +41,6 @@ SimpleBezierEdge.props = [
 ]
 
 SimpleBezierEdge.inheritAttrs = false
+SimpleBezierEdge.compatConfig = { MODE: 3 }
 
 export default SimpleBezierEdge

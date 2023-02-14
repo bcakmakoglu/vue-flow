@@ -93,6 +93,7 @@ const dAttr = computed(() => {
 <script lang="ts">
 export default {
   name: 'ConnectionLine',
+  compatConfig: { MODE: 3 },
 }
 </script>
 
