@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     branches:
-      - master
+      - next-release
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
@@ -42,8 +42,8 @@ jobs:
       - name: Setup pnpm config 🏗
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
-      - name: Setup npmrc 🏗
-        run: echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+      #- name: Setup npmrc 🏗
+      #  run: echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
 
       - name: Get pnpm store directory 🏬
         id: pnpm-cache
