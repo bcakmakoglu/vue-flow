@@ -8,7 +8,7 @@ import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
 import type { FlowElements } from './flow'
 
-export type MouseTouchEvent = MouseEvent | TouchEvent | PointerEvent
+export type MouseTouchEvent = MouseEvent | TouchEvent
 
 export interface NodeMouseEvent {
   event: MouseTouchEvent
@@ -17,18 +17,19 @@ export interface NodeMouseEvent {
 }
 
 export interface NodeDragEvent {
-  event: MouseEvent
+  event: MouseTouchEvent
   node: GraphNode
   nodes: GraphNode[]
   intersections?: GraphNode[]
 }
 
 export interface EdgeMouseEvent {
-  event: MouseEvent
+  event: MouseTouchEvent
   edge: GraphEdge
 }
 
 export interface EdgeUpdateEvent {
+  event: MouseTouchEvent
   edge: GraphEdge
   connection: Connection
 }
