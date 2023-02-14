@@ -1,5 +1,5 @@
 import EdgeAnchor from './EdgeAnchor'
-import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType } from '~/types'
+import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType, MouseTouchEvent } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 
 interface Props {
@@ -24,7 +24,6 @@ const EdgeWrapper = defineComponent({
       emits,
       nodesSelectionActive,
       noPanClassName,
-      getEdges,
       getEdgeTypes,
       removeSelectedEdges,
       findEdge,
@@ -46,8 +45,6 @@ const EdgeWrapper = defineComponent({
     const type = ref<HandleType>('source')
 
     const edgeUpdaterType = ref<HandleType>('source')
-
-    const mouseEvent = ref<MouseEvent>()
 
     const edgeEl = ref<SVGElement>()
 
@@ -222,13 +219,12 @@ const EdgeWrapper = defineComponent({
       mouseOver = false
     }
 
-    function onEdgeUpdate(connection: Connection) {
-      if (!connectionExists(connection, getEdges.value)) hooks.emit.update({ edge, connection })
+    function onEdgeUpdate(event: MouseTouchEvent, connection: Connection) {
+      hooks.emit.update({ event, edge, connection })
     }
 
-    function onEdgeUpdateEnd() {
-      if (!mouseEvent.value) return
-      hooks.emit.updateEnd({ event: mouseEvent.value, edge })
+    function onEdgeUpdateEnd(event: MouseTouchEvent) {
+      hooks.emit.updateEnd({ event, edge })
       updating = false
     }
 
@@ -242,8 +238,6 @@ const EdgeWrapper = defineComponent({
       type.value = isSourceHandle ? 'target' : 'source'
 
       edgeUpdaterType.value = type.value
-
-      mouseEvent.value = event
 
       hooks.emit.updateStart({ event, edge })
 
