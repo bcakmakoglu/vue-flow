@@ -34,7 +34,6 @@ export default function useHandle({
     connectOnClick,
     connectionClickStartHandle,
     nodesConnectable,
-    defaultEdgeOptions,
     autoPanOnConnect,
     findNode,
     panBy,
@@ -49,6 +48,7 @@ export default function useHandle({
 
   let connection: Connection | null = null
   let isValid = false
+  let handleDomNode: Element | null = null
 
   function handlePointerDown(event: MouseTouchEvent) {
     const isMouseTriggered = isMouseEvent(event)
@@ -129,7 +129,7 @@ export default function useHandle({
           autoPanStarted = true
         }
 
-        const { handleDomNode, ...result } = isValidHandle(
+        const result = isValidHandle(
           event,
           prevClosestHandle,
           connectionMode.value,
@@ -142,8 +142,12 @@ export default function useHandle({
           findNode,
         )
 
+        connection = result.connection
+        isValid = result.isValid
+        handleDomNode = result.handleDomNode
+
         updateConnection(
-          prevClosestHandle && result.isValid
+          prevClosestHandle && isValid
             ? rendererPointToPoint(
                 {
                   x: prevClosestHandle.x,
@@ -152,15 +156,12 @@ export default function useHandle({
                 viewport.value,
               )
             : connectionPosition,
-          getConnectionStatus(!!prevClosestHandle, result.isValid),
+          getConnectionStatus(!!prevClosestHandle, isValid),
         )
 
-        if (!prevClosestHandle) return resetRecentHandle(prevActiveHandle)
+        if (!prevClosestHandle && !isValid && !handleDomNode) return resetRecentHandle(prevActiveHandle)
 
-        connection = result.connection
-        isValid = result.isValid
-
-        if (result.connection.source !== result.connection.target && handleDomNode) {
+        if (connection.source !== connection.target && handleDomNode) {
           resetRecentHandle(prevActiveHandle)
 
           prevActiveHandle = handleDomNode
@@ -172,9 +173,9 @@ export default function useHandle({
       }
 
       function onPointerUp(event: MouseTouchEvent) {
-        if (prevClosestHandle) {
+        if (prevClosestHandle || handleDomNode) {
           if (connection && isValid) {
-            if (!onEdgeUpdate) emits.connect({ ...(defaultEdgeOptions?.value || {}), ...connection })
+            if (!onEdgeUpdate) emits.connect(connection)
             else onEdgeUpdate(event, connection)
           }
         }
@@ -191,19 +192,20 @@ export default function useHandle({
         autoPanStarted = false
         isValid = false
         connection = null
+        handleDomNode = null
 
-        doc.removeEventListener('mousemove', onPointerMove as EventListener)
-        doc.removeEventListener('mouseup', onPointerUp as EventListener)
+        doc.removeEventListener('mousemove', onPointerMove)
+        doc.removeEventListener('mouseup', onPointerUp)
 
-        doc.removeEventListener('touchmove', onPointerMove as EventListener)
-        doc.removeEventListener('touchend', onPointerUp as EventListener)
+        doc.removeEventListener('touchmove', onPointerMove)
+        doc.removeEventListener('touchend', onPointerUp)
       }
 
-      doc.addEventListener('mousemove', onPointerMove as EventListener)
-      doc.addEventListener('mouseup', onPointerUp as EventListener)
+      doc.addEventListener('mousemove', onPointerMove)
+      doc.addEventListener('mouseup', onPointerUp)
 
-      doc.addEventListener('touchmove', onPointerMove as EventListener)
-      doc.addEventListener('touchend', onPointerUp as EventListener)
+      doc.addEventListener('touchmove', onPointerMove)
+      doc.addEventListener('touchend', onPointerUp)
     }
   }
 
