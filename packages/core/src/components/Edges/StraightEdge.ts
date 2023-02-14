@@ -31,5 +31,6 @@ StraightEdge.props = [
 ]
 
 StraightEdge.inheritAttrs = false
+StraightEdge.compatConfig = { MODE: 3 }
 
 export default StraightEdge

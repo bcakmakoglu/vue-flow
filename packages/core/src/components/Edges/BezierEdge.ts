@@ -42,5 +42,6 @@ BezierEdge.props = [
 ]
 
 BezierEdge.inheritAttrs = false
+BezierEdge.compatConfig = { MODE: 3 }
 
 export default BezierEdge

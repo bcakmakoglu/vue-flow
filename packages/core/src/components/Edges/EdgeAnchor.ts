@@ -46,5 +46,6 @@ const EdgeAnchor: FunctionalComponent<Props> = function ({ radius = 10, centerX 
 }
 
 EdgeAnchor.props = ['radius', 'centerX', 'centerY', 'position']
+EdgeAnchor.compatConfig = { MODE: 3 }
 
 export default EdgeAnchor

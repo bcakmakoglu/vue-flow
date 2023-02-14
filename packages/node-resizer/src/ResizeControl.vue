@@ -215,6 +215,13 @@ const colorStyleProp = computed(() => (props.variant === ResizeControlVariant.Li
 const controlStyle = computed(() => (props.color ? { [colorStyleProp.value]: props.color } : {}))
 </script>
 
+<script lang="ts">
+export default {
+  name: 'ResizeControl',
+  compatConfig: { MODE: 3 },
+}
+</script>
+
 <template>
   <div
     ref="resizeControlRef"

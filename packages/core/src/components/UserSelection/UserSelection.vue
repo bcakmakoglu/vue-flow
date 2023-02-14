@@ -2,6 +2,13 @@
 const { userSelectionRect } = useVueFlow()
 </script>
 
+<script lang="ts">
+export default {
+  name: 'UserSelection',
+  compatConfig: { MODE: 3 },
+}
+</script>
+
 <template>
   <div
     class="vue-flow__selection vue-flow__container"

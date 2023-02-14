@@ -242,6 +242,7 @@ function onKeyDown(event: KeyboardEvent) {
 export default {
   name: 'Node',
   inheritAttrs: false,
+  compatConfig: { MODE: 3 },
 }
 </script>
 

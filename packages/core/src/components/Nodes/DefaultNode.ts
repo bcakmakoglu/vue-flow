@@ -20,5 +20,6 @@ const DefaultNode: FunctionalComponent<NodeProps> = function ({
 
 DefaultNode.props = ['sourcePosition', 'targetPosition', 'label', 'isValidTargetPos', 'isValidSourcePos', 'connectable']
 DefaultNode.inheritAttrs = false
+DefaultNode.compatConfig = { MODE: 3 }
 
 export default DefaultNode

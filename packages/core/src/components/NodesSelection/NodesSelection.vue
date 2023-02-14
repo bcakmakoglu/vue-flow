@@ -55,6 +55,7 @@ function onKeyDown(event: KeyboardEvent) {
 <script lang="ts">
 export default {
   name: 'NodesSelection',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

@@ -42,6 +42,7 @@ onMounted(async () => {
 <script lang="ts">
 export default {
   name: 'Transform',
+  compatConfig: { MODE: 3 },
 }
 </script>
 
