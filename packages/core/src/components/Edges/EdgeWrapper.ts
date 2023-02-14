@@ -14,6 +14,7 @@ interface Props {
 
 const EdgeWrapper = defineComponent({
   name: 'Edge',
+  compatConfig: { MODE: 3 },
   props: ['name', 'type', 'id', 'updatable', 'selectable', 'focusable', 'edge'],
   setup(props: Props) {
     const {

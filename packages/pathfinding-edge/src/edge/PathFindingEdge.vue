@@ -80,6 +80,7 @@ const attrs: any = useAttrs()
 <script lang="ts">
 export default {
   name: 'PathFindingEdge',
+  compatConfig: { MODE: 3 },
   inheritAttrs: false,
 }
 </script>

@@ -191,6 +191,7 @@ const onNodeMouseLeave = (event: MouseEvent, node: GraphNode) => {
 <script lang="ts">
 export default {
   name: 'MiniMap',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

@@ -43,5 +43,6 @@ SmoothStepEdge.props = [
 ]
 
 SmoothStepEdge.inheritAttrs = false
+SmoothStepEdge.compatConfig = { MODE: 3 }
 
 export default SmoothStepEdge

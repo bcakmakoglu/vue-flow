@@ -299,6 +299,7 @@ function isWrappedWithClass(event: Event, className: string | undefined) {
 <script lang="ts">
 export default {
   name: 'Viewport',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

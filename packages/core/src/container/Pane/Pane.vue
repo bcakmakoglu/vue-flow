@@ -215,6 +215,7 @@ function onMouseEnter(event: MouseEvent) {
 <script lang="ts">
 export default {
   name: 'Pane',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

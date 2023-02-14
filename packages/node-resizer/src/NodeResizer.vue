@@ -22,6 +22,7 @@ const lineControls: ControlLinePosition[] = ['top', 'right', 'bottom', 'left']
 <script lang="ts">
 export default {
   name: 'NodeResizer',
+  compatConfig: { MODE: 3 },
   inheritAttrs: false,
 }
 </script>

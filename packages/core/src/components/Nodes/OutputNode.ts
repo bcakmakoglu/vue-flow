@@ -17,5 +17,6 @@ const OutputNode: FunctionalComponent<NodeProps> = function ({
 
 OutputNode.props = ['targetPosition', 'label', 'isValidTargetPos', 'connectable']
 OutputNode.inheritAttrs = false
+OutputNode.compatConfig = { MODE: 3 }
 
 export default OutputNode

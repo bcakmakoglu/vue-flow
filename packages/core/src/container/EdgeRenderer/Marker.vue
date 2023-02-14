@@ -17,6 +17,7 @@ const {
 <script lang="ts">
 export default {
   name: 'MarkerType',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

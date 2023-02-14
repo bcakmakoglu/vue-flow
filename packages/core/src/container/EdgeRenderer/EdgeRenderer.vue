@@ -89,6 +89,7 @@ function getType(type?: string, template?: GraphEdge['template']) {
 <script lang="ts">
 export default {
   name: 'Edges',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

@@ -12,6 +12,13 @@ const emits = defineEmits<{
 }>()
 </script>
 
+<script lang="ts">
+export default {
+  name: 'ResizeControlLine',
+  compatConfig: { MODE: 3 },
+}
+</script>
+
 <template>
   <ResizeControl
     v-bind="props"

@@ -78,6 +78,7 @@ function getType(type?: string, template?: GraphNode['template']) {
 <script lang="ts">
 export default {
   name: 'Nodes',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

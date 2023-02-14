@@ -52,6 +52,7 @@ const onInteractiveChangeHandler = () => {
 <script lang="ts">
 export default {
   name: 'Controls',
+  compatConfig: { MODE: 3 },
 }
 </script>
 

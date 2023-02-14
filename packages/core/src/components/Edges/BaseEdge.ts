@@ -71,5 +71,6 @@ BaseEdge.props = [
 ]
 
 BaseEdge.inheritAttrs = false
+BaseEdge.compatConfig = { MODE: 3 }
 
 export default BaseEdge

@@ -25,5 +25,6 @@ StepEdge.props = [
 ]
 
 StepEdge.inheritAttrs = false
+StepEdge.compatConfig = { MODE: 3 }
 
 export default StepEdge
