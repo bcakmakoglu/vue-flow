@@ -1,5 +1,5 @@
 import type { MaybeRef } from '@vueuse/core'
-import type { Connection, ConnectionHandle, HandleType, ValidConnectionFunc } from '~/types'
+import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
 
 interface UseHandleProps {
   handleId: MaybeRef<string | null>
@@ -7,8 +7,8 @@ interface UseHandleProps {
   type: MaybeRef<HandleType>
   isValidConnection?: ValidConnectionFunc
   edgeUpdaterType?: MaybeRef<HandleType>
-  onEdgeUpdate?: (connection: Connection) => void
-  onEdgeUpdateEnd?: (event: MouseEvent | TouchEvent) => void
+  onEdgeUpdate?: (event: MouseTouchEvent, connection: Connection) => void
+  onEdgeUpdateEnd?: (event: MouseTouchEvent) => void
 }
 
 const alwaysValid = () => true
@@ -50,7 +50,7 @@ export default function useHandle({
   let connection: Connection | null = null
   let isValid = false
 
-  function handlePointerDown(event: MouseEvent | TouchEvent) {
+  function handlePointerDown(event: MouseTouchEvent) {
     const isMouseTriggered = isMouseEvent(event)
 
     if ((isMouseTriggered && event.button === 0) || !isMouseTriggered) {
@@ -115,7 +115,7 @@ export default function useHandle({
 
       emits.connectStart({ event, nodeId, handleId, handleType })
 
-      function onPointerMove(event: MouseEvent | TouchEvent) {
+      function onPointerMove(event: MouseTouchEvent) {
         connectionPosition = getEventPosition(event, containerBounds)
 
         prevClosestHandle = getClosestHandle(
@@ -171,11 +171,11 @@ export default function useHandle({
         }
       }
 
-      function onPointerUp(event: MouseEvent | TouchEvent) {
+      function onPointerUp(event: MouseTouchEvent) {
         if (prevClosestHandle) {
           if (connection && isValid) {
             if (!onEdgeUpdate) emits.connect({ ...(defaultEdgeOptions?.value || {}), ...connection })
-            else onEdgeUpdate(connection)
+            else onEdgeUpdate(event, connection)
           }
         }
 
