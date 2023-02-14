@@ -1,5 +1,25 @@
 # @vue-flow/core
 
+## 1.14.3
+
+### Patch Changes
+
+- [#671](https://github.com/bcakmakoglu/vue-flow/pull/671) [`c47bc5ce`](https://github.com/bcakmakoglu/vue-flow/commit/c47bc5ceb2ea9c739be5eef3291c1312fdbce824) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fit view on init is now triggered as soon as node dimensions are updated for the first time
+
+- [`03edd46c`](https://github.com/bcakmakoglu/vue-flow/commit/03edd46cef18b246cca061e554b469a1cfbefa16) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow depr. connectionLineType to be null
+
+- [`03edd46c`](https://github.com/bcakmakoglu/vue-flow/commit/03edd46cef18b246cca061e554b469a1cfbefa16) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing straight type to connection line options
+
+- [#680](https://github.com/bcakmakoglu/vue-flow/pull/680) [`70ae3410`](https://github.com/bcakmakoglu/vue-flow/commit/70ae341062072acab234ce9ee88b33d2866ef7b3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix connections for handles that are bigger than the specified connection radius
+
+- [#680](https://github.com/bcakmakoglu/vue-flow/pull/680) [`70ae3410`](https://github.com/bcakmakoglu/vue-flow/commit/70ae341062072acab234ce9ee88b33d2866ef7b3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Always emit edge update event
+
+- [`03edd46c`](https://github.com/bcakmakoglu/vue-flow/commit/03edd46cef18b246cca061e554b469a1cfbefa16) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix connection line not rendering properly when destructuring slot props
+
+- [#681](https://github.com/bcakmakoglu/vue-flow/pull/681) [`d73995aa`](https://github.com/bcakmakoglu/vue-flow/commit/d73995aae1b14ea5cad4ee3764cff558344bcb34) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set `user-select: none` for edge labels
+
+- [#668](https://github.com/bcakmakoglu/vue-flow/pull/668) [`d39c63e5`](https://github.com/bcakmakoglu/vue-flow/commit/d39c63e5f3ec54fb1de10d84a7271546d1b7e3e8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Avoid re-rendering edges that have been deleted
+
 ## 1.14.2
 
 ### Patch Changes
