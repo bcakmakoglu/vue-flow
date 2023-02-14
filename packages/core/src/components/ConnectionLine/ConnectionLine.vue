@@ -49,7 +49,7 @@ const targetX = $computed(() => (connectionPosition.x - viewport.x) / viewport.z
 const targetY = $computed(() => (connectionPosition.y - viewport.y) / viewport.zoom)
 
 const dAttr = computed(() => {
-  let path = `M${sourceX},${sourceY} ${targetX},${targetY}`
+  let path
 
   const pathParams = {
     sourceX,
