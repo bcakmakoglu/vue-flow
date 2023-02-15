@@ -125,6 +125,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
           node.handleBounds.source = getHandleBounds('.source', update.nodeElement, zoom)
           node.handleBounds.target = getHandleBounds('.target', update.nodeElement, zoom)
           node.dimensions = dimensions
+          node.initialized = true
 
           res.push({
             id: node.id,
@@ -261,7 +262,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const setNodeExtent: Actions['setNodeExtent'] = async (nodeExtent) => {
     state.nodeExtent = nodeExtent
 
-    const nodeIds = getters.getNodes.value.map((n) => n.id)
+    const nodeIds = getters.getNodes.value.filter((n) => n.initialized).map((n) => n.id)
     updateNodeInternals(nodeIds)
   }
 
