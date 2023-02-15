@@ -22,7 +22,7 @@ export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[]) {
   return edge
 }
 
-export function updateEdgeAction(edge: GraphEdge, newConnection: Connection, edges: GraphEdge[]) {
+export function updateEdgeAction(edge: GraphEdge, newConnection: Connection, edges: GraphEdge[], shouldReplaceId: boolean) {
   if (!newConnection.source || !newConnection.target) {
     warn("Can't create new edge. An edge needs a source and a target.")
     return false
@@ -35,9 +35,11 @@ export function updateEdgeAction(edge: GraphEdge, newConnection: Connection, edg
     return false
   }
 
+  const { id, ...rest } = edge
+
   const newEdge = {
-    ...edge,
-    id: getEdgeId(newConnection),
+    ...rest,
+    id: shouldReplaceId ? getEdgeId(newConnection) : id,
     source: newConnection.source,
     target: newConnection.target,
     sourceHandle: newConnection.sourceHandle,
