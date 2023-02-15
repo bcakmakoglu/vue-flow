@@ -2,6 +2,50 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.3] - 2023-02-15
+
+[2c574ac](2c574acfdf98293e79b1c915ddc4f274781209a9)...[7eba916](7eba916604d164721302181a9fb5b23ca6f6ce40)
+
+### Bug Fixes
+
+- Prevent rendering edges that have been removed ([c528726](c528726f122f65cbd05faa26a8f596de94a259a0))
+- Allow null for deprecated connection line type ([1ae5659](1ae5659b6b71695bca64ea173b6d4e9a7caab2c4))
+- Add missing straight path switch case ([b7cfec7](b7cfec78424e2044121f757a568b3dc1b8e04261))
+- Connections for handles bigger than connection radius ([8a5225a](8a5225ab80172549554fba76d8a7cbdf30fe8b21))
+- Correct checkout config ([0bc9ce1](0bc9ce109c96a6cf111e6351d8b0cf5e5aceb343))
+- Add compatConfig to all components ([b19b9a8](b19b9a871b51ebdbb5e5c2997ee77b79ef3ce679))
+
+### Examples
+
+- Cleanup examples and remove deprecated usages ([72325d4](72325d48872af5f427c71b3971b378c8be0fb3f2))
+
+### Features
+
+- Add qodana scan ([3435add](3435adddbef33c6c8a468d0adb8732ba26767a7b))
+- Add qodana.yaml ([fd18e19](fd18e19375b4fa518677ebd6dfe3b736d175bcce))
+- Add qodana scan only for master push ([0734323](073432389cd795a3d7e0b189a672817664266aca))
+
+### Miscellaneous Tasks
+
+- Cleanup build and test workflow ([5b375cd](5b375cdb62cf1c62a0f07c09bdac8a185369fe26))
+- Remove unnecessary initializers ([db0ec88](db0ec8836f6af35bf503c30a511620730d8ad0c8))
+- Cleanup props ([eb6f7a9](eb6f7a91f21987c1f2ca1ebd4a0c04f2139b2b96))
+- Remove any typecast ([9a14d8b](9a14d8b34909db042fd3455fb379e5834ca33d48))
+- Cleanup connection line ([cc83ba9](cc83ba95bd79ec8cc90f9312787c0f89270bebb4))
+
+### Refactor
+
+- Use computed to group edges ([c62c18a](c62c18a20d72db1591b69ba8e2cd3fdd7872af9b))
+- Use watcheffect to observe node dimensions ([a5ee9d9](a5ee9d978c7d6a7827804a39b23bf2a1a2b0b1a1))
+- Fit view initially when node dimensions are updated ([3f21dc7](3f21dc764dcc9fe1d28762f749c3dc411a80efa7))
+- Immediately set node dimensions in store action ([9d34251](9d342511f503483b253fdb9614695eb9d9858720))
+- Use v-bind to pass connection line props ([ea0696c](ea0696c566e063266d15b7630a725feef38a90da))
+- Use `MouseTouchEvent` for `EdgeMouseEvent` type ([09c56a6](09c56a60b316a2c0e43d6cbe084b31d1c0c51976))
+- Pass original event to edge update event params ([83636d4](83636d4e53282f8972050c2170407cc5efd1a20e))
+- Set `user-select: none` for edge labels ([b6f7cde](b6f7cde655e2d161380343718cde6f0e1485b610))
+- Run publish action for next-release branch ([757fa1b](757fa1be72cd38039a6f66929a03225d8287c913))
+- Change commit title ([2de90c7](2de90c77432233004909e7b3061b5972c06c7403))
+
 ## [1.14.2] - 2023-02-07
 
 [aa59713](aa59713bba61ee41353cbbcb83ed470a5b4ccdf1)...[2c574ac](2c574acfdf98293e79b1c915ddc4f274781209a9)
