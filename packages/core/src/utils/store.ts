@@ -10,25 +10,34 @@ export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[]) {
 
   let edge
   if (isEdge(edgeParams)) {
-    edge = { ...edgeParams }
+    edge = edgeParams
   } else {
     edge = {
       ...edgeParams,
       id: getEdgeId(edgeParams),
     } as Edge
   }
+
   edge = parseEdge(edge)
+
   if (connectionExists(edge, edges)) return false
+
   return edge
 }
 
-export function updateEdgeAction(edge: GraphEdge, newConnection: Connection, edges: GraphEdge[], shouldReplaceId: boolean) {
+export function updateEdgeAction(
+  edge: GraphEdge,
+  newConnection: Connection,
+  edges: GraphEdge[],
+  findEdge: Actions['findEdge'],
+  shouldReplaceId: boolean,
+) {
   if (!newConnection.source || !newConnection.target) {
     warn("Can't create new edge. An edge needs a source and a target.")
     return false
   }
 
-  const foundEdge = edges.find((e) => isGraphEdge(e) && e.id === edge.id)
+  const foundEdge = findEdge(edge.id)
 
   if (!foundEdge) {
     warn(`The old edge with id=${edge.id} does not exist.`)
