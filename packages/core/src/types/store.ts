@@ -162,7 +162,7 @@ export type RemoveEdges = (edges: (Edge[] | string[]) | ((edges: GraphEdge[]) =>
 
 export type AddEdges = (edgesOrConnections: (Edge | Connection)[] | ((edges: GraphEdge[]) => (Edge | Connection)[])) => void
 
-export type UpdateEdge = (oldEdge: GraphEdge, newConnection: Connection) => GraphEdge | false
+export type UpdateEdge = (oldEdge: GraphEdge, newConnection: Connection, shouldReplaceId: boolean) => GraphEdge | false
 
 export type SetState = (
   state:

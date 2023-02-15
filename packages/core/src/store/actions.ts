@@ -426,7 +426,8 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     state.hooks.edgesChange.trigger(changes)
   }
 
-  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection) => updateEdgeAction(oldEdge, newConnection, state.edges)
+  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) =>
+    updateEdgeAction(oldEdge, newConnection, state.edges, shouldReplaceId)
 
   const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyChanges(changes, state.nodes)
 
