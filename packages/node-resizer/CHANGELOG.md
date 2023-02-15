@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.2.1
+
+### Patch Changes
+
+- [#682](https://github.com/bcakmakoglu/vue-flow/pull/682) [`b08cb4d4`](https://github.com/bcakmakoglu/vue-flow/commit/b08cb4d45904c229d9ecda5e3cb477cbb7a6acaf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add compat mode to components to avoid breaking when used with @vue/compat
+
 ## 1.2.0
 
 ### Minor Changes
