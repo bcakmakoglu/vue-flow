@@ -146,7 +146,7 @@ export interface FlowProps {
   panOnScrollSpeed?: number
   panOnScrollMode?: PanOnScrollMode
   zoomOnDoubleClick?: boolean
-  /** enable this to prevent vue flow from scrolling inside the container, i.e. allow for the page to scroll */
+  /** If set to false, scrolling inside the viewport will be disabled and instead the page scroll will be used */
   preventScrolling?: boolean
   selectionMode?: SelectionMode
   edgeUpdaterRadius?: number
