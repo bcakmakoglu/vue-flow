@@ -1,5 +1,6 @@
 <script setup>
-import { Background, VueFlow, isNode } from '@braks/vue-flow'
+import { Background } from '@vue-flow/background'
+import { Panel, PanelPosition, VueFlow, isNode } from '@vue-flow/core'
 import { ref } from 'vue'
 
 const elements = ref([
@@ -25,12 +26,12 @@ const updatePos = () =>
 </script>
 
 <template>
-  <VueFlow v-model="elements" :fit-view-on-init="true">
+  <VueFlow v-model="elements" fit-view-on-init>
     <Background />
 
-    <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
+    <Panel :position="PanelPosition.TopRight">
       <button style="margin-right: 5px" @click="updatePos">update positions</button>
-      <button style="margin-right: 5px" @click="toggleClass">toggle class</button>
-    </div>
+      <button @click="toggleClass">toggle class</button>
+    </Panel>
   </VueFlow>
 </template>

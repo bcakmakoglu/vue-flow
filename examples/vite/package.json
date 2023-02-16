@@ -7,17 +7,22 @@
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore ."
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*"
+    "vueflow": "workspace:*",
+    "@vue-flow/background": "workspace:*",
+    "@vue-flow/controls": "workspace:*",
+    "@vue-flow/core": "workspace:*",
+    "@vue-flow/minimap": "workspace:*",
+    "@vue-flow/node-resizer": "workspace:*",
+    "@vue-flow/node-toolbar": "workspace:*"
   },
   "devDependencies": {
-    "@types/dagre": "^0.7.47",
-    "@vitejs/plugin-vue": "^2.3.3",
+    "@types/dagre": "^0.7.48",
+    "@vitejs/plugin-vue": "^4.0.0",
     "dagre": "^0.8.5",
-    "unplugin-auto-import": "^0.6.9",
-    "vite": "2.5.10",
-    "vite-plugin-vue-type-imports": "^0.1.3",
-    "vite-svg-loader": "^3.4.0",
-    "vue": "^3.2.37",
-    "vue-router": "^4.1.2"
+    "unplugin-auto-import": "^0.12.1",
+    "vite": "^4.0.4",
+    "vite-svg-loader": "^3.6.0",
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6"
   }
 }

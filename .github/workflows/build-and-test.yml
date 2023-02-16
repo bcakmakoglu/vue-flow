@@ -1,15 +1,17 @@
 name: build-and-test
 
 on:
-  push:
-    branches:
-      - master
-      - develop
-
   pull_request:
     branches:
       - master
       - develop
+
+env:
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   build-and-test:
@@ -18,15 +20,9 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14]
+        node: [18]
 
     steps:
-      - name: TurboRepo local server
-        uses: felixmosh/turborepo-gh-artifacts@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          server-token: ${{ secrets.TURBO_SERVER_TOKEN }}
-
       - name: Checkout 🛎
         uses: actions/checkout@master
 
@@ -36,34 +32,46 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
 
-      - uses: pnpm/action-setup@v2.0.1
-        name: Install pnpm
-        id: pnpm-install
+      - name: Install pnpm 🎒
+        uses: pnpm/action-setup@v2.2.2
         with:
           version: 7
           run_install: false
 
-      - name: Get pnpm cache directory path 🛠
-        id: pnpm-cache-dir-path
-        run: echo "::set-output name=dir::$(pnpm cache dir)"
+      - name: Setup pnpm config 🏗
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
-      - name: Cache node_modules 📦
+      - name: Get pnpm store directory 🏬
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache 🧃
         uses: actions/cache@v3
-        id: pnpm-cache # use this to check for `cache-hit` (`steps.pnpm-cache.outputs.cache-hit != 'true'`)
         with:
-          path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm.lock') }}
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies 👨🏻‍💻
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
+
+      - name: Setup Turbo cache 🏎️
+        id: turbo-cache
+        uses: actions/cache@v2
+        with:
+          path: .turbo
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
 
       - name: Run linter 🧹
-        run: pnpm lint
+        run: pnpm run lint --cache-dir=.turbo
 
       - name: Build Library 👷
-        run: pnpm build --api="http://127.0.0.1:9080" --token="${{ secrets.TURBO_SERVER_TOKEN }}"
+        run: pnpm run build --cache-dir=.turbo
 
       - name: Run tests 🧪
-        run: pnpm test
+        run: pnpm cypress install && pnpm run test --cache-dir=.turbo

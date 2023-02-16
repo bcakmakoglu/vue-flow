@@ -21,3 +21,10 @@ export const presets = {
   sakura: '#FEDFE1',
   toki: '#EEA9A9',
 }
+
+export const colors = Object.keys(presets).map((color) => {
+  return {
+    name: color,
+    value: presets[color],
+  }
+})

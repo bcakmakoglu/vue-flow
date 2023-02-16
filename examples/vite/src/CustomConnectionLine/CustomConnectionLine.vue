@@ -1,9 +1,8 @@
-<script lang="ts" setup>
-import type { Elements } from '@braks/vue-flow'
-import { Background, BackgroundVariant, VueFlow } from '@braks/vue-flow'
+<script setup>
+import { VueFlow } from '@vue-flow/core'
 import ConnectionLine from './ConnectionLine.vue'
 
-const elements = ref<Elements>([
+const elements = ref([
   {
     id: '1',
     type: 'input',
@@ -15,9 +14,8 @@ const elements = ref<Elements>([
 
 <template>
   <VueFlow v-model="elements">
-    <template #connection-line="props">
-      <ConnectionLine v-bind="props" />
+    <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
+      <ConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
     </template>
-    <Background :variant="BackgroundVariant.Lines" />
   </VueFlow>
 </template>

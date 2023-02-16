@@ -3,16 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "cypress run-ct",
-    "open": "cypress open-ct"
+    "test": "cypress run --component",
+    "open": "cypress open"
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*"
+    "@vue-flow/background": "workspace:*",
+    "@vue-flow/controls": "workspace:*",
+    "@vue-flow/core": "workspace:*",
+    "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
-    "@cypress/vite-dev-server": "^2.2.3",
-    "@cypress/vue": "^3.1.2",
-    "@vitejs/plugin-vue": "^2.3.3",
-    "cypress": "8.5.0"
+    "cypress": "^12.3.0",
+    "@vitejs/plugin-vue": "^4.0.0"
   }
 }

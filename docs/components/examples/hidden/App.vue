@@ -1,6 +1,7 @@
 <script setup>
-import { Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
-import { ref, watchEffect } from 'vue'
+import { Background } from '@vue-flow/background'
+import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
+import { ref, watch } from 'vue'
 
 const isHidden = ref(false)
 
@@ -18,24 +19,23 @@ const { nodes, edges } = useVueFlow({
   ],
 })
 
-watchEffect(() => {
+watch(isHidden, () => {
   nodes.value.forEach((n) => (n.hidden = isHidden.value))
   edges.value.forEach((e) => (e.hidden = isHidden.value))
 })
 </script>
 
 <template>
-  <VueFlow>
-    <MiniMap />
-    <Controls />
+  <VueFlow fit-view-on-init>
+    <Background />
 
-    <div :style="{ position: 'absolute', left: '10px', top: '10px', zIndex: 4 }">
+    <Panel :position="PanelPosition.TopRight">
       <div>
         <label for="ishidden">
           hidden
           <input id="ishidden" v-model="isHidden" type="checkbox" />
         </label>
       </div>
-    </div>
+    </Panel>
   </VueFlow>
 </template>

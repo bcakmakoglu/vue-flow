@@ -1,8 +1,3 @@
----
-layout: page
-
----
-
 # Save & Restore
 
 There is no built-in persistent storage feature, however you can use your own storage implementation.
@@ -17,9 +12,5 @@ You can extend on this basic idea however you like, i.e. fetch data that you tra
 some other business logic you would like to handle.
 
 <div class="mt-6">
-  <ClientOnly>
-    <Suspense>
-      <Repl example="saveRestore"></Repl>
-    </Suspense>
-  </ClientOnly>
+  <Repl example="saveRestore"></Repl>
 </div>

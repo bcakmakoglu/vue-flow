@@ -1,0 +1,26 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "readme": "none",
+  "plugin": [
+    "typedoc-plugin-merge-modules",
+    "typedoc-plugin-markdown"
+  ],
+  "entryPoints": [
+    "../packages/core/src/index.ts",
+    "../packages/background/src/index.ts",
+    "../packages/controls/src/index.ts",
+    "../packages/minimap/src/index.ts",
+    "../packages/node-toolbar/src/index.ts",
+    "../packages/node-resizer/src/index.ts"
+  ],
+  "allReflectionsHaveOwnDocument": true,
+  "categorizeByGroup": true,
+  "darkHighlightTheme": "vitesse-dark",
+  "lightHighlightTheme": "vitesse-light",
+  "hideBreadcrumbs": true,
+  "disableSources": true,
+  "cleanOutputDir": true,
+  "out": "src/typedocs",
+  "tsconfig": "tsconfig.docs.json",
+  "entryDocument": "index.md"
+}

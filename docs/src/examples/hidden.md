@@ -1,8 +1,3 @@
----
-layout: page
-
----
-
 # Hidden
 
 You can toggle the visibility of nodes by simply setting their `hidden` attribute to either `true` or `false`.
@@ -16,9 +11,5 @@ This can save you some time on initial renders but consider that moving the pane
 which can cause performance spikes depending on the complexity of the components that have to be mounted.
 
 <div class="mt-6">
-  <ClientOnly>
-    <Suspense>
-      <Repl example="hidden"></Repl>
-    </Suspense>
-  </ClientOnly>
+  <Repl example="hidden"></Repl>
 </div>

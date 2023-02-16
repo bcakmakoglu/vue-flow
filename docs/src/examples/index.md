@@ -1,8 +1,3 @@
----
-layout: page
-
----
-
 # Basic
 
 This is a basic example to help you familiarize with the basic features of Vue Flow. 
@@ -11,9 +6,5 @@ On the bottom left you see the viewport-controls and on the bottom right the min
 You can also see the built-in node (default, input, output) and edge (bezier, straight, step, smoothstep) types.
 
 <div class="mt-6">
-  <ClientOnly>
-    <Suspense>
-      <Repl example="basic"></Repl>
-    </Suspense>
-  </ClientOnly>
+  <Repl example="basic"></Repl>
 </div>

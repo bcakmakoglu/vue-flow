@@ -1,26 +1,30 @@
 {
-  "name": "@braks/vue-flow-monorepo",
+  "name": "@vue-flow/monorepo",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "pnpm --dir examples/vite dev",
     "docs": "pnpm --dir docs dev",
     "changelog": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
-    "release": "turbo run release",
-    "build": "turbo run build",
-    "test": "turbo run test",
-    "lint": "turbo run lint",
-    "typedocs": "turbo run typedoc"
+    "build:docs": "turbo docs",
+    "build": "turbo build",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "typedocs": "turbo run build && pnpm --dir docs typedocs",
+    "ci:version": "changeset version",
+    "ci:publish": "turbo lint && turbo build && turbo test && changeset publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.25.2",
-    "eslint": "^8.22.0",
-    "eslint-config-prettier": "^8.5.0",
+    "@antfu/eslint-config": "^0.35.1",
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.0",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-chai-friendly": "^0.7.2",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.3",
     "shx": "^0.3.4",
-    "turbo": "^1.4.3",
-    "typescript": "^4.7.4"
+    "turbo": "^1.7.2",
+    "typescript": "^4.9.5"
   }
 }

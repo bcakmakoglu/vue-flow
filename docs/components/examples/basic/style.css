@@ -1,13 +1,28 @@
-.basicflow .vue-flow__node.dark {
-  background: #1C1C1C;
+.basicflow.dark {
+  background: #57534e;
   color: #FFFFFB;
 }
 
+.basicflow.dark .vue-flow__node {
+  background: #292524;
+  color: #FFFFFB;
+}
+
+.basicflow.dark .vue-flow__controls .vue-flow__controls-button {
+  background: #292524;
+  fill: #FFFFFB;
+  border-color: #FFFFFB;
+}
+
+.basicflow.dark .vue-flow__edge-textbg {
+  fill: #292524;
+}
+
+.basicflow.dark .vue-flow__edge-text {
+  fill: #FFFFFB;
+}
+
 .basicflow .controls {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  z-index: 4;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -15,16 +30,18 @@
 }
 
 .basicflow .controls button {
-  padding: 5px;
+  padding: 4px;
   border-radius: 5px;
-  font-weight: 500;
+  font-weight: 600;
   -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .basicflow .controls button:hover {
-  opacity: 0.8;
-  transform: scale(105%);
+  transform: scale(102%);
   transition: 250ms all ease;
 }

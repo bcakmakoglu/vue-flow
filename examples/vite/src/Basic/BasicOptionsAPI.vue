@@ -1,6 +1,10 @@
 <script lang="ts">
-import type { Elements, FlowEvents, VueFlowStore } from '@braks/vue-flow'
-import { Background, Controls, MiniMap, VueFlow, addEdge, isNode } from '@braks/vue-flow'
+import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
+import { VueFlow, isNode } from '@vue-flow/core'
+
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 
 export default defineComponent({
   name: 'BasicOptionsAPI',
@@ -46,7 +50,7 @@ export default defineComponent({
       this.instance = instance as any
     },
     onConnect(params: FlowEvents['connect']) {
-      addEdge(params, this.elements)
+      this.instance?.addEdges([params])
     },
   },
 })

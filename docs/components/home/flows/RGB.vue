@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-import type { MiniMapNodeFunc } from '@braks/vue-flow'
-import { Background, BackgroundVariant, Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind } from '@vueuse/core'
+import { Background, BackgroundVariant } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
+import type { MiniMapNodeFunc } from '@vue-flow/minimap'
+
 import CustomEdge from '../edges/Custom.vue'
 import RGBNode from '../nodes/Input.vue'
 import RGBOutputNode from '../nodes/Output.vue'
@@ -30,10 +34,6 @@ const { onPaneReady, getNode, panOnDrag } = useVueFlow({
     { id: 'e3-4', type: 'rgb-line', data: { color: 'blue' }, source: '3', target: '4', animated: true },
   ],
   zoomOnScroll: false,
-  nodeExtent: [
-    [-50, -150],
-    [500, 300],
-  ],
   preventScrolling: false,
 })
 

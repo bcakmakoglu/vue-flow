@@ -22,12 +22,13 @@ const props = defineProps({
 <template>
   <g>
     <path
-      class="animated"
+      class="vue-flow__connection animated"
       fill="none"
       stroke="#6F3381"
       :stroke-width="2.5"
       :d="`M${sourceX},${sourceY} C ${sourceX} ${targetY} ${sourceX} ${targetY} ${targetX},${targetY}`"
     />
-    <circle :cx="targetX" :cy="targetY" fill="#fff" :r="5" stroke="#6F3381" :stroke-width="1.5" />
+
+    <circle :cx="targetX" :cy="targetY" fill="#fff" :r="4" stroke="#6F3381" :stroke-width="1.5" />
   </g>
 </template>

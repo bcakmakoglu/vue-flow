@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 
 const {
   nodesDraggable,

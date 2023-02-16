@@ -1,0 +1,74 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - next-release
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  version:
+    timeout-minutes: 15
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [18]
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+
+      - uses: pnpm/action-setup@v2.2.2
+        name: Install pnpm
+        with:
+          version: 7
+          run_install: false
+
+      - name: Setup pnpm config 🏗
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      #- name: Setup npmrc 🏗
+      #  run: echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+
+      - name: Get pnpm store directory 🏬
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache 🧃
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies 👨🏻‍💻
+        run: pnpm install
+
+      - name: Bump versions 🏷 and Publish 🚀
+        uses: changesets/action@v1
+        with:
+          version: pnpm ci:version
+          commit: "chore: bump versions"
+          title: "chore: bump versions"
+          # manual publish currently
+          # publish: pnpm ci:publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

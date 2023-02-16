@@ -1,0 +1,119 @@
+:root {
+  --vf-node-bg: #fff;
+  --vf-node-text: #222;
+  --vf-connection-path:  #b1b1b7;
+  --vf-handle: #555;
+}
+
+.vue-flow__edge {
+  &.updating {
+    .vue-flow__edge-path {
+      stroke: #777;
+    }
+  }
+}
+
+.vue-flow__edge-text {
+  font-size: 10px;
+}
+
+.vue-flow__edge-textbg {
+  fill: #fff;
+}
+
+.vue-flow__connection-path {
+  stroke: var(--vf-connection-path);
+}
+
+.vue-flow__node {
+  cursor: grab;
+}
+
+.vue-flow__node.selectable {
+  &:focus,
+  &:focus-visible {
+     outline: none;
+   }
+}
+
+.vue-flow__node-default,
+.vue-flow__node-input,
+.vue-flow__node-output {
+  padding: 10px;
+  border-radius: 3px;
+  width: 150px;
+  font-size: 12px;
+  text-align: center;
+  border-width: 1px;
+  border-style: solid;
+  color: var(--vf-node-text);
+  background-color: var(--vf-node-bg);
+  border-color: var(--vf-node-color);
+
+  &.selected,
+  &.selected:hover {
+     box-shadow: 0 0 0 0.5px var(--vf-box-shadow);
+   }
+
+  &.selected,
+  &:focus,
+  &:focus-visible {
+     outline: none;
+     border: 1px solid var(--vf-node-color);
+   }
+
+  .vue-flow__handle {
+    background: var(--vf-handle);
+  }
+}
+
+.vue-flow__node-default.selectable,
+.vue-flow__node-input.selectable,
+.vue-flow__node-output.selectable {
+  &:hover {
+    box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.vue-flow__node-input {
+  --vf-node-color: #0041d0;
+  --vf-handle: var(--vf-node-color);
+  --vf-box-shadow: var(--vf-node-color);
+
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color);
+}
+
+.vue-flow__node-default {
+  --vf-node-color: #1a192b;
+  --vf-handle: var(--vf-node-color);
+  --vf-box-shadow: var(--vf-node-color);
+
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color);
+}
+
+.vue-flow__node-output {
+  --vf-node-color: #ff0072;
+  --vf-handle: var(--vf-node-color);
+  --vf-box-shadow: var(--vf-node-color);
+}
+
+.vue-flow__nodesselection-rect,
+.vue-flow__selection {
+  background: rgba(0, 89, 220, 0.08);
+  border: 1px dotted rgba(0, 89, 220, 0.8);
+
+  &:focus,
+  &:focus-visible {
+     outline: none;
+   }
+}
+
+.vue-flow__handle {
+  width: 6px;
+  height: 6px;
+  background: var(--vf-handle);
+  border: 1px solid #fff;
+  border-radius: 100%;
+}

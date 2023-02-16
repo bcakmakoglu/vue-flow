@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { Background, Handle, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import confetti from 'canvas-confetti'
 import colors from 'windicss/colors'
+import { Background } from '@vue-flow/background'
 import { cheer, fireworks } from './confetti'
 import Heart from '~icons/mdi/heart'
 
@@ -14,10 +15,8 @@ const animatedBackground = ref(false)
 onMounted(() => {
   const html = document.getElementsByTagName('html')![0]
 
-  const observer = new MutationObserver((mutations) => {
-    for (const m of mutations) {
-      dark.value = html.classList.contains('dark')
-    }
+  const observer = new MutationObserver(() => {
+    dark.value = html.classList.contains('dark')
   })
 
   observer.observe(html, {
@@ -53,7 +52,7 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { dimensions, onNodeClick, getNodes, fitView, getNode, getEdge, updateEdge, edges, setEdges } = useVueFlow({
+const { onNodeClick, getNodes, fitView, findNode, setEdges, updateNodeInternals } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -119,7 +118,8 @@ const el = templateRef<HTMLDivElement>('el', null)
 
 const setNodes = () => {
   if (breakpoints.isSmaller('md')) {
-    const mainNode = getNode.value('intro')!
+    const mainNode = findNode('intro')!
+
     getNodes.value.forEach((node) => {
       switch (node.id) {
         case 'intro':
@@ -174,7 +174,7 @@ const setNodes = () => {
     })
   } else {
     getNodes.value.forEach((node) => {
-      const mainNode = getNode.value('intro')!
+      const mainNode = findNode('intro')!
       switch (node.id) {
         case 'intro':
           node.position = { x: 0, y: 0 }
@@ -201,6 +201,8 @@ const setNodes = () => {
   }
 
   nextTick(() => {
+    updateNodeInternals(getNodes.value.map((n) => n.id))
+
     fitView()
   })
 }
@@ -252,7 +254,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
               y="0"
               width="50"
               height="50"
-            ></rect>
+            />
             <rect
               :class="animations[1].className"
               :style="{ '--animation-duration': `${animations[1].duration}s` }"
@@ -260,7 +262,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
               y="100"
               width="50"
               height="50"
-            ></rect>
+            />
             <rect
               :class="animations[2].className"
               :style="{ '--animation-duration': `${animations[2].duration}s` }"
@@ -268,7 +270,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
               y="0"
               width="50"
               height="50"
-            ></rect>
+            />
             <rect
               :class="animations[3].className"
               :style="{ '--animation-duration': `${animations[3].duration}s` }"
@@ -276,7 +278,7 @@ const animations = ref<{ className: string; duration: number }[]>(shuffle(create
               y="100"
               width="50"
               height="50"
-            ></rect>
+            />
           </pattern>
         </template>
       </Background>

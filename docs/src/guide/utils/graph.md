@@ -10,7 +10,7 @@
 
 ```vue{13}
 <script setup>
-import { VueFlow, isEdge } from '@braks/vue-flow'
+import { VueFlow, isEdge } from '@vue-flow/core'
 
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 }, },
@@ -44,7 +44,7 @@ const toggleClass = () => {
 
 ```vue{13}
 <script setup>
-import { VueFlow, isNode } from '@braks/vue-flow'
+import { VueFlow, isNode } from '@vue-flow/core'
 
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
@@ -83,7 +83,7 @@ of [`useVueFlow`](/guide/composables#usevueflow/)
 
 ```vue{12}
 <script setup>
-import { VueFlow, addEdge } from '@braks/vue-flow'
+import { VueFlow, addEdge } from '@vue-flow/core'
 
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
@@ -101,10 +101,10 @@ const onConnect = (params) => {
 </template>
 ```
 
-## [updateEdge](/typedocs/functions/updateEdge)
+## [updateEdge](/typedocs/functions/updateEdge-1)
 
 ::: warning
-In the composition API you use access [`updateEdge`](/typedocs/types/UpdateEdge)
+In the composition API you should use [`updateEdge`](/typedocs/types/UpdateEdge)
 of [`useVueFlow`](/guide/composables#usevueflow/)
 :::
 
@@ -116,7 +116,7 @@ of [`useVueFlow`](/guide/composables#usevueflow/)
 
 ```vue{12}
 <script setup>
-import { VueFlow, updateEdge } from '@braks/vue-flow'
+import { VueFlow, updateEdge } from '@vue-flow/core'
 
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },

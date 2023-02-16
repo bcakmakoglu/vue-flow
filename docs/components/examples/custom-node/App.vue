@@ -1,17 +1,18 @@
 <script setup>
-import { ConnectionMode, MiniMap, Position, VueFlow, useVueFlow } from '@braks/vue-flow'
-import { computed, h, onMounted, ref } from 'vue'
+import { MiniMap } from '@vue-flow/minimap'
+import { Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import { h, onMounted, ref } from 'vue'
 import ColorSelectorNode from './CustomNode.vue'
 import { presets } from './presets.js'
 
-const { getNode } = useVueFlow()
-
-const outputColorNode = computed(() => getNode.value('3'))
+const { findNode } = useVueFlow()
 
 const elements = ref([])
 
 const gradient = ref(false)
+
 const bgColor = ref(presets.ayame)
+
 const bgName = ref('AYAME')
 
 const connectionLineStyle = { stroke: '#fff' }
@@ -38,7 +39,7 @@ const onChange = (color) => {
   bgColor.value = color.value
   bgName.value = color.name
 
-  outputColorNode.value.hidden = false
+  findNode('3').hidden = false
 }
 
 const onGradient = () => {
@@ -46,7 +47,7 @@ const onGradient = () => {
   bgColor.value = null
   bgName.value = 'gradient'
 
-  outputColorNode.value.hidden = true
+  findNode('3').hidden = true
 }
 
 onMounted(() => {
@@ -103,13 +104,12 @@ onMounted(() => {
     class="customnodeflow"
     :class="[gradient ? 'animated-bg-gradient' : '']"
     :style="{ backgroundColor: bgColor }"
-    :connection-mode="ConnectionMode.Loose"
     :connection-line-style="connectionLineStyle"
-    :default-zoom="1.5"
-    :fit-view-on-init="true"
+    :default-viewport="{ zoom: 1.5 }"
+    fit-view-on-init
   >
-    <template #node-custom="props">
-      <ColorSelectorNode :data="props.data" @change="onChange" @gradient="onGradient" />
+    <template #node-custom="{ data }">
+      <ColorSelectorNode :data="data" @change="onChange" @gradient="onGradient" />
     </template>
 
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />

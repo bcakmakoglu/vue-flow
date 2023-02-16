@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Position } from '@braks/vue-flow'
-import { BezierEdge, EdgeText, getEdgeCenter, useVueFlow } from '@braks/vue-flow'
+import type { Position } from '@vue-flow/core'
+import { BezierEdge, EdgeText, getSimpleBezierPath, useVueFlow } from '@vue-flow/core'
 import type { PathFindingEdgeProps } from '../types'
 import { createGrid, gridRatio } from './createGrid'
 import { drawSmoothLinePath } from './drawSvgPath'
@@ -24,7 +24,7 @@ const roundCoordinatesTo = gridRatio
 const { getNodes } = useVueFlow()
 
 const centered = computed(() =>
-  getEdgeCenter({
+  getSimpleBezierPath({
     ...props,
   }),
 )
@@ -33,6 +33,7 @@ const source = computed(() => ({
   y: props.sourceY,
   position: props.sourcePosition,
 }))
+
 const target = computed(() => ({
   x: props.targetX,
   y: props.targetY,
@@ -79,6 +80,7 @@ const attrs: any = useAttrs()
 <script lang="ts">
 export default {
   name: 'PathFindingEdge',
+  compatConfig: { MODE: 3 },
   inheritAttrs: false,
 }
 </script>
@@ -95,8 +97,8 @@ export default {
     />
     <EdgeText
       v-if="props.label"
-      :x="centered[0]"
-      :y="centered[1]"
+      :x="centered[1]"
+      :y="centered[2]"
       :label="props.label"
       :label-style="props.labelStyle"
       :label-show-bg="props.labelShowBg"

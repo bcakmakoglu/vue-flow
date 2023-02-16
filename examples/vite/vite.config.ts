@@ -9,7 +9,7 @@ export default defineConfig({
   resolve: {
     dedupe: ['vue'],
     alias: {
-      '~': resolve('../../packages/vue-flow/src'),
+      '~': resolve('../../packages/core/src'),
     },
   },
   plugins: [
@@ -24,6 +24,6 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    exclude: ['@braks/vue-flow'],
+    exclude: ['@vue-flow/core'],
   },
 })

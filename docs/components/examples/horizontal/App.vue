@@ -1,5 +1,8 @@
 <script setup>
-import { Background, Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 import { ref } from 'vue'
 import { initialElements } from './initial-elements.js'
 
@@ -15,13 +18,15 @@ onConnect((params) => addEdges([params]))
     v-model="elements"
     class="basicflow"
     :default-edge-options="{ type: 'smoothstep' }"
-    :default-zoom="1.5"
+    :default-viewport="{ zoom: 1.5 }"
     :min-zoom="0.2"
     :max-zoom="4"
-    :fit-view-on-init="true"
+    fit-view-on-init
   >
     <Background pattern-color="#aaa" gap="8" />
+
     <MiniMap />
+
     <Controls />
   </VueFlow>
 </template>

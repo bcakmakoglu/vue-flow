@@ -1,6 +1,9 @@
 <script lang="ts" setup>
-import type { ClassFunc, GraphEdge, GraphNode, StyleFunc } from '@braks/vue-flow'
-import { Background, ConnectionLineType, Controls, VueFlow, useVueFlow } from '@braks/vue-flow'
+import type { ClassFunc, GraphEdge, GraphNode, StyleFunc } from '@vue-flow/core'
+import { ConnectionLineType, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+
 import Cross from '~icons/mdi/window-close'
 
 const emit = defineEmits(['pane'])
@@ -16,7 +19,7 @@ const getNodeClass: ClassFunc<GraphNode> = (el) => {
 }
 
 const getEdgeClass: ClassFunc<GraphEdge> = (el) => {
-  const classes = ['transition-colors duration-300', el.sourceNode.selected ? 'font-semibold' : '']
+  const classes = ['transition-colors duration-300', el.selected || el.sourceNode.selected ? 'font-semibold' : '']
   return classes.join(' ')
 }
 
@@ -118,7 +121,7 @@ onConnect((param) => {
     class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden"
   >
     <VueFlow class="basic">
-      <Controls class="md:(!left-auto !right-[10px])" />
+      <Controls position="bottom-right" />
       <Background :gap="60">
         <template #pattern>
           <Cross :style="{ fontSize: `${8 * viewport.zoom || 1}px` }" class="text-[#10b981] opacity-50" />

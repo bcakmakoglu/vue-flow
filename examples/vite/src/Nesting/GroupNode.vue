@@ -1,16 +1,18 @@
 <script lang="ts" setup>
-import { Handle, Position, getNodesInside, useVueFlow } from '@braks/vue-flow'
-import type { NodeProps } from '@braks/vue-flow'
+import { Handle, Position, getNodesInside, useVueFlow } from '@vue-flow/core'
+import type { NodeProps } from '@vue-flow/core'
 
 const props = defineProps<NodeProps>()
+
 const { onNodeDragStop, getNodes, viewport } = useVueFlow()
+
 onNodeDragStop(({ node }) => {
   const nodes = getNodesInside(
     getNodes.value,
     {
       ...props.dimensions,
-      x: props.computedPosition.x,
-      y: props.computedPosition.y,
+      x: props.position.x,
+      y: props.position.y,
     },
     viewport.value,
   )

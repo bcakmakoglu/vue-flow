@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-import type { Elements, Node, SnapGrid } from '@braks/vue-flow'
-import { ConnectionMode, Controls, MiniMap, Position, VueFlow, isEdge, useVueFlow } from '@braks/vue-flow'
+import type { Elements, Node, SnapGrid } from '@vue-flow/core'
+import { ConnectionMode, Position, VueFlow, isEdge, useVueFlow } from '@vue-flow/core'
+
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
+
 import ColorSelectorNode from './ColorSelectorNode.vue'
 
 const elements = ref<Elements>([])
@@ -63,21 +67,18 @@ onMounted(() => {
   ]
 })
 
-const { onPaneReady } = useVueFlow({
+useVueFlow({
   connectionMode: ConnectionMode.Loose,
-  connectionLineStyle,
+  connectionLineOptions: {
+    style: connectionLineStyle,
+  },
   snapToGrid: true,
   snapGrid,
-  defaultZoom: 1.5,
-})
-onPaneReady((i) => {
-  i.fitView()
-  console.log('flow loaded:', i)
 })
 </script>
 
 <template>
-  <VueFlow v-model="elements" :style="{ backgroundColor: bgColor }">
+  <VueFlow v-model="elements" fit-view-on-init :style="{ backgroundColor: bgColor }">
     <template #node-selectorNode="props">
       <ColorSelectorNode v-bind="props" />
     </template>

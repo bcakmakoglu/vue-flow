@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { Connection, OnConnectStartParams, VueFlowStore } from '@braks/vue-flow'
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import type { Connection, OnConnectStartParams, VueFlowStore } from '@vue-flow/core'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
 
-const { nodes, edges, addEdges } = useVueFlow({
+const { addEdges } = useVueFlow({
   nodes: [
     { id: '0', type: 'custominput', position: { x: 0, y: 150 }, isValidTargetPos: (connection) => connection.target === 'B' },
     {
@@ -19,7 +19,6 @@ const { nodes, edges, addEdges } = useVueFlow({
 })
 const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
 const onConnectStart = ({ nodeId, handleType }: OnConnectStartParams) => console.log('on connect start', { nodeId, handleType })
-const onConnectStop = (event: MouseEvent) => console.log('on connect stop', event)
 const onConnectEnd = (event: MouseEvent) => console.log('on connect end', event)
 
 const onConnect = (params: Connection) => {
@@ -35,7 +34,6 @@ const onConnect = (params: Connection) => {
     @connect="onConnect"
     @pane-ready="onLoad"
     @connect-start="onConnectStart"
-    @connect-stop="onConnectStop"
     @connect-end="onConnectEnd"
   >
     <template #node-custominput="props">

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { Background, ConnectionMode, Controls, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
 import { breakpointsTailwind } from '@vueuse/core'
 
 const emit = defineEmits(['pane'])
@@ -14,6 +16,7 @@ const { onPaneReady, panOnDrag } = useVueFlow({
   connectionMode: ConnectionMode.Loose,
   zoomOnScroll: false,
   preventScrolling: false,
+  elevateEdgesOnSelect: true,
   translateExtent: [
     [-500, -100],
     [600, 500],

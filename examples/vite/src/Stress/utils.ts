@@ -1,4 +1,4 @@
-import type { Edge, Node } from '@braks/vue-flow'
+import type { Edge, Node } from '@vue-flow/core'
 
 export function getElements(xElements = 10, yElements = 10) {
   const initialNodes: Node[] = []

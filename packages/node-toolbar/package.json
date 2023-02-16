@@ -1,0 +1,48 @@
+{
+  "name": "@vue-flow/node-toolbar",
+  "version": "1.0.5",
+  "private": false,
+  "license": "MIT",
+  "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcakmakoglu/vue-flow/packages/plugins/node-toolbar"
+  },
+  "homepage": "https://github.com/bcakmakoglu/vue-flow#readme",
+  "bugs": {
+    "url": "https://github.com/bcakmakoglu/vue-flow/issues"
+  },
+  "main": "./dist/vue-flow-node-toolbar.js",
+  "module": "./dist/vue-flow-node-toolbar.mjs",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/vue-flow-node-toolbar.iife.js",
+  "jsdelivr": "./dist/vue-flow-node-toolbar.iife.js",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "vite build",
+    "types": "vue-tsc --declaration --emitDeclarationOnly && pnpm lint:dist",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
+    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
+    "test": "exit 0"
+  },
+  "peerDependencies": {
+    "@vue-flow/core": "^1.12.2",
+    "vue": "^3.2.37"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@vue-flow/core": "workspace:*",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "unplugin-auto-import": "^0.12.1",
+    "vite": "^4.0.4",
+    "vite-plugin-vue-type-imports": "^0.2.4",
+    "vue-tsc": "^1.0.24"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

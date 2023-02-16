@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { EdgeProps, MarkerType, Position } from '@braks/vue-flow'
-import { getBezierPath } from '@braks/vue-flow'
+import type { EdgeProps, MarkerType, Position } from '@vue-flow/core'
+import { getBezierPath } from '@vue-flow/core'
 
 interface CustomEdgeProps extends EdgeProps {
   source: string
@@ -46,7 +46,7 @@ export default {
     :id="props.id"
     class="vue-flow__edge-path"
     :style="{ stroke: props.data?.color }"
-    :d="edgePath"
+    :d="edgePath[0]"
     :marker-end="props.markerEnd"
   />
   <text>

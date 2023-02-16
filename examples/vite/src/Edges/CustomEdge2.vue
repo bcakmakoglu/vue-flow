@@ -1,8 +1,12 @@
 <script lang="ts" setup>
-import type { EdgeProps, Position } from '@braks/vue-flow'
-import { EdgeText, getBezierPath, getEdgeCenter, getMarkerId } from '@braks/vue-flow'
+import type { EdgeProps, Position } from '@vue-flow/core'
+import { BezierEdge } from '@vue-flow/core'
 
-interface CustomEdgeProps extends EdgeProps {
+interface CustomData {
+  text: string
+}
+
+interface CustomEdgeProps extends EdgeProps<CustomData> {
   source: string
   target: string
   sourceHandleId?: string
@@ -14,34 +18,11 @@ interface CustomEdgeProps extends EdgeProps {
   targetY: number
   sourcePosition: Position
   targetPosition: Position
-  markerEndId?: string
-  data?: {
-    text: string
-  }
+  markerEnd: string
+  data: CustomData
 }
 
-const props = defineProps<CustomEdgeProps>()
-
-const edgePath = computed(() =>
-  getBezierPath({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    sourcePosition: props.sourcePosition,
-    targetX: props.targetX,
-    targetY: props.targetY,
-    targetPosition: props.targetPosition,
-  }),
-)
-const markerEnd = computed(() => getMarkerId(props.markerEnd))
-const center = computed(() =>
-  getEdgeCenter({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    targetX: props.targetX,
-    targetY: props.targetY,
-  }),
-)
-const onClick = () => console.log(props.data)
+defineProps<CustomEdgeProps>()
 </script>
 
 <script lang="ts">
@@ -51,16 +32,19 @@ export default {
 </script>
 
 <template>
-  <path :id="props.id" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
-  <EdgeText
-    :x="center[0]"
-    :y="center[1]"
-    :label="props.data?.text"
+  <BezierEdge
+    :label="data.text"
+    :source-x="sourceX"
+    :source-y="sourceY"
+    :target-x="targetX"
+    :target-y="targetY"
+    :source-position="sourcePosition"
+    :target-position="targetPosition"
+    :marker-end="markerEnd"
     :label-style="{ fill: 'white' }"
     :label-show-bg="true"
     :label-bg-style="{ fill: 'red' }"
     :label-bg-padding="[2, 4]"
     :label-bg-border-radius="2"
-    @click="onClick"
   />
 </template>

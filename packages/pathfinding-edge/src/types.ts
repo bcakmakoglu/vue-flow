@@ -1,4 +1,4 @@
-import type { EdgeProps, Position } from '@braks/vue-flow'
+import type { EdgeProps, Position } from '@vue-flow/core'
 import type { CSSProperties } from 'vue'
 import type { ArrowOptions } from 'perfect-arrows'
 
@@ -21,8 +21,8 @@ export interface PathFindingEdgeProps extends EdgeProps<never> {
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
   style?: CSSProperties
-  markerEnd?: string
-  markerStart?: string
+  markerEnd: string
+  markerStart: string
   sourceHandleId?: string
   targetHandleId?: string
 }
@@ -46,8 +46,8 @@ export interface PerfectArrowProps {
   labelBgPadding?: [number, number]
   labelBgBorderRadius?: number
   style?: CSSProperties
-  markerEnd?: string
-  markerStart?: string
+  markerEnd: string
+  markerStart: string
   sourceHandleId?: string
   targetHandleId?: string
   options?: ArrowOptions

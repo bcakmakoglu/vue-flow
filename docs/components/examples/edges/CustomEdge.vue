@@ -1,5 +1,5 @@
 <script setup>
-import { getBezierPath, getEdgeCenter, useVueFlow } from '@braks/vue-flow'
+import { BaseEdge, EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -45,34 +45,9 @@ const props = defineProps({
   },
 })
 
-const { applyEdgeChanges } = useVueFlow()
+const { removeEdges } = useVueFlow()
 
-const foreignObjectSize = 40
-
-const onClick = (evt, id) => {
-  applyEdgeChanges([{ type: 'remove', id }])
-  evt.stopPropagation()
-}
-
-const edgePath = computed(() =>
-  getBezierPath({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    sourcePosition: props.sourcePosition,
-    targetX: props.targetX,
-    targetY: props.targetY,
-    targetPosition: props.targetPosition,
-  }),
-)
-
-const center = computed(() =>
-  getEdgeCenter({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    targetX: props.targetX,
-    targetY: props.targetY,
-  }),
-)
+const path = computed(() => getBezierPath(props))
 </script>
 
 <script>
@@ -82,19 +57,20 @@ export default {
 </script>
 
 <template>
-  <path :id="id" :style="style" class="vue-flow__edge-path" :d="edgePath" :marker-end="markerEnd" />
-  <foreignObject
-    :width="foreignObjectSize"
-    :height="foreignObjectSize"
-    :x="center[0] - foreignObjectSize / 2"
-    :y="center[1] - foreignObjectSize / 2"
-    class="edgebutton-foreignobject"
-    requiredExtensions="http://www.w3.org/1999/xhtml"
-  >
-    <body style="display: flex; align-items: center; justify-content: center">
-      <div>
-        <button ref="btn" class="edgebutton" @click="(event) => onClick(event, id)">×</button>
-      </div>
-    </body>
-  </foreignObject>
+  <!-- You can use the `BaseEdge` component to create your own custom edge more easily -->
+  <BaseEdge :id="id" :style="style" :path="path[0]" :marker-end="markerEnd" />
+
+  <!-- Use the `EdgeLabelRenderer` to escape the SVG world of edges and render your own custom label in a `<div>` ctx -->
+  <EdgeLabelRenderer>
+    <div
+      :style="{
+        pointerEvents: 'all',
+        position: 'absolute',
+        transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
+      }"
+      class="nodrag nopan"
+    >
+      <button class="edgebutton" @click="removeEdges([id])">×</button>
+    </div>
+  </EdgeLabelRenderer>
 </template>

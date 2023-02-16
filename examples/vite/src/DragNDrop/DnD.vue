@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { Node } from '@braks/vue-flow'
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import type { Node } from '@vue-flow/core'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import Sidebar from './Sidebar.vue'
 
 let id = 0
 const getId = () => `dndnode_${id++}`
 
-const { onConnect, nodes, edges, addEdges, addNodes, project } = useVueFlow({
+const { onConnect, addEdges, addNodes, project } = useVueFlow({
   nodes: [
     {
       id: '1',
@@ -43,6 +43,7 @@ const onDrop = (event: DragEvent) => {
     position,
     label: `${type} node`,
   } as Node
+
   addNodes([newNode])
 }
 </script>

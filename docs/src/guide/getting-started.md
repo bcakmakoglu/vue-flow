@@ -2,23 +2,23 @@
 
 ## Prerequisites
 
-- [Node.js v12+](https://nodejs.org/)
+- [Node.js v14+](https://nodejs.org/)
 - [Vue 3](https://vuejs.org/)
 
 ## Installation
 
 ```bash
-npm i --save @braks/vue-flow
+npm i --save @vue-flow/core
 
-yarn add @braks/vue-flow
+yarn add @vue-flow/core
 
-pnpm i @braks/vue-flow
+pnpm i @vue-flow/core
 ```
 
 ## Usage
 
 A flow consists of [<span class="font-bold text-blue-500">nodes</span>](/typedocs/interfaces/Node)
-and (optionally) [<span class="font-bold text-purple-500">edges</span>](/typedocs/interfaces/Edge).
+and (optionally) [<span class="font-bold text-purple-500">edges</span>](/typedocs/types/Edge).
 Together we call them
 [<span class="font-bold text-green-500">elements</span>](/typedocs/types/Elements).
 
@@ -28,7 +28,7 @@ source (node id) and a target (node id).
 
 ```vue
 <script setup>
-import { VueFlow  } from '@braks/vue-flow'
+import { VueFlow  } from '@vue-flow/core'
 
 const elements = ref([
   // Nodes

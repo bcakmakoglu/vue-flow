@@ -9,9 +9,12 @@
     "dev": "nuxt dev"
   },
   "dependencies": {
-    "@braks/vue-flow": "workspace:*"
+    "@vue-flow/background": "workspace:*",
+    "@vue-flow/controls": "workspace:*",
+    "@vue-flow/core": "workspace:*",
+    "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
-    "nuxt": "3.0.0-rc.3"
+    "nuxt": "3.0.0"
   }
 }

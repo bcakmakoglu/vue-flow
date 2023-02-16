@@ -1,10 +1,12 @@
 <script setup>
-import { Background, ConnectionMode, Controls, MiniMap, VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 import { onMounted } from 'vue'
 
 const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
   fitViewOnInit: true,
-  connectionMode: ConnectionMode.Loose,
   // set this to true so edges get elevated when selected, defaults to false
   elevateEdgesOnSelect: true,
   nodes: [
@@ -87,7 +89,9 @@ onMounted(() => {
 <template>
   <VueFlow>
     <MiniMap />
+
     <Controls />
+
     <Background />
   </VueFlow>
 </template>

@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-import type { Elements } from '@braks/vue-flow'
-import { Background, Controls, MiniMap, VueFlow, isNode, useVueFlow } from '@braks/vue-flow'
+import type { Elements } from '@vue-flow/core'
+import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
@@ -10,16 +14,15 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onPaneReady, onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow({
-  defaultZoom: 1.5,
+const { onNodeDragStop, onEdgeClick, onConnect, addEdges, setTransform, toObject } = useVueFlow({
   minZoom: 0.2,
   maxZoom: 4,
+  connectOnClick: true,
+  fitViewOnInit: false,
 })
 
-onPaneReady(({ fitView }) => {
-  fitView()
-})
-onNodeDragStop((e) => console.log('drag stop', e))
+onNodeDragStop((e) => console.log('drag stop', e.event))
+onEdgeClick(console.log)
 onConnect((params) => addEdges([params]))
 
 const updatePos = () =>
@@ -38,7 +41,7 @@ const toggleclass = () => elements.value.forEach((el) => (el.class = el.class ==
 </script>
 
 <template>
-  <VueFlow v-model="elements" class="vue-flow-basic-example">
+  <VueFlow v-model="elements" fit-view-on-init connection-mode="strict" class="vue-flow-basic-example">
     <Background />
     <MiniMap />
     <Controls />

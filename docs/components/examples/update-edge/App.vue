@@ -1,5 +1,6 @@
 <script setup>
-import { ConnectionMode, Controls, VueFlow, addEdge, updateEdge } from '@braks/vue-flow'
+import { Background } from '@vue-flow/background'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 
 const elements = ref([
@@ -23,25 +24,26 @@ const elements = ref([
   { id: 'e1-2', source: '1', target: '2', label: 'Updateable edge', updatable: true },
 ])
 
-const onLoad = (flowInstance) => flowInstance.fitView()
+const { updateEdge, addEdges } = useVueFlow()
+
 const onEdgeUpdateStart = (edge) => console.log('start update', edge)
+
 const onEdgeUpdateEnd = (edge) => console.log('end update', edge)
-const onEdgeUpdate = ({ edge, connection }) => {
-  elements.value = updateEdge(edge, connection, elements.value)
-}
-const onConnect = (params) => (elements.value = addEdge(params, elements.value))
+
+const onEdgeUpdate = ({ edge, connection }) => updateEdge(edge, connection)
+
+const onConnect = (params) => addEdges([params])
 </script>
 
 <template>
   <VueFlow
     v-model="elements"
-    :connection-mode="ConnectionMode.Loose"
-    @pane-ready="onLoad"
+    fit-view-on-init
     @edge-update="onEdgeUpdate"
     @connect="onConnect"
     @edge-update-start="onEdgeUpdateStart"
     @edge-update-end="onEdgeUpdateEnd"
   >
-    <Controls />
+    <Background />
   </VueFlow>
 </template>

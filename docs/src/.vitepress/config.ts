@@ -7,9 +7,9 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { useVueFlow } from '@braks/vue-flow'
-import { copyVueFlowPlugin } from './copy-plugin'
+import { useVueFlow } from '@vue-flow/core'
 import head from './head'
+import { copyVueFlowPlugin, files } from './plugins'
 
 const { vueFlowVersion } = useVueFlow()
 
@@ -38,6 +38,27 @@ const typedocSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
   })
 }
 
+const changelogSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
+  return [
+    {
+      text: 'CHANGELOG',
+      collapsible: true,
+      items: files.map((file) => {
+        const name = file.pkgName.replace('.md', '')
+        const isCore = name === 'core'
+
+        return {
+          text: name
+            .split('-')
+            .map((s) => capitalize(s))
+            .join(' '),
+          link: `/changelog/${isCore ? '' : name}`,
+        }
+      }),
+    },
+  ]
+}
+
 export default defineConfigWithTheme<DefaultTheme.Config>({
   title: 'Vue Flow',
   description: 'Visualize your ideas with Vue Flow, a highly customizable Vue3 Flowchart library.',
@@ -48,6 +69,9 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
   vite: {
     optimizeDeps: {
       exclude: ['@animxyz/vue3'],
+    },
+    define: {
+      __ANALYTICS_ID__: process.env.VERCEL_ANALYTICS_ID,
     },
     plugins: [
       copyVueFlowPlugin(),
@@ -62,9 +86,9 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       Components({
         dirs: [resolve(__dirname, './../../components')],
         deep: true,
-        // allow auto load markdown components under `./src/components/`
+        // allow to autoload markdown components under `./src/components/`
         extensions: ['vue', 'md'],
-        // allow auto import and register components used in markdown
+        // allow auto-import and register components used in markdown
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
         dts: resolve(__dirname, '../components.d.ts'),
         resolvers: [IconsResolver()],
@@ -91,12 +115,17 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       indexName: 'vueflow',
     },
     nav: [
-      { text: `v${vueFlowVersion.value}`, link: '/' },
+      { text: `v${vueFlowVersion.value}`, link: '/changelog/', activeMatch: '^/changelog' },
       { text: 'Guide', link: '/guide/', activeMatch: '^/guide/' },
       {
         text: 'Examples',
         link: '/examples/',
         activeMatch: '^/examples/',
+      },
+      {
+        text: 'Migration',
+        link: '/migration/',
+        activeMatch: '^/migration/',
       },
       {
         text: 'TypeDocs',
@@ -157,6 +186,8 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'MiniMapNode', link: '/guide/components/minimap-node' },
             { text: 'Controls', link: '/guide/components/controls' },
             { text: 'Control Button', link: '/guide/components/control-button' },
+            { text: 'Node Toolbar', link: '/guide/components/node-toolbar' },
+            { text: 'Node Resizer', link: '/guide/components/node-resizer' },
           ],
         },
       ],
@@ -172,7 +203,9 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Hide/Show', link: '/examples/hidden' },
             { text: 'Horizontal Flow', link: '/examples/horizontal' },
             { text: 'Interactions', link: '/examples/interaction' },
+            { text: 'Intersection', link: '/examples/intersection' },
             { text: 'Teleport', link: '/examples/teleport' },
+            { text: 'Transition', link: '/examples/transition' },
             { text: 'Multiple Flows', link: '/examples/multi' },
             { text: 'Pinia', link: '/examples/pinia' },
             { text: 'Stress', link: '/examples/stress' },
@@ -185,6 +218,8 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Custom Node', link: '/examples/nodes/' },
             { text: 'Update Node', link: '/examples/nodes/update-node' },
             { text: 'Nested Nodes', link: '/examples/nodes/nesting' },
+            { text: 'Node Resizer', link: '/examples/nodes/node-resizer' },
+            { text: 'Node Toolbar', link: '/examples/nodes/node-toolbar' },
           ],
         },
         {
@@ -193,12 +228,14 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           items: [
             { text: 'Edges', link: '/examples/edges/' },
             { text: 'Updatable Edge', link: '/examples/edges/updatable-edge' },
-            { text: 'Custom Connectionline', link: '/examples/edges/connection-line' },
-            { text: 'Connection validation', link: '/examples/edges/validation' },
+            { text: 'Custom Connection Line', link: '/examples/edges/connection-line' },
+            { text: 'Connection Validation', link: '/examples/edges/validation' },
+            { text: 'Connection Radius', link: '/examples/edges/connection-radius' },
           ],
         },
       ],
       '/typedocs/': typedocSidebarEntries(),
+      '/changelog/': changelogSidebarEntries(),
     },
   },
 })

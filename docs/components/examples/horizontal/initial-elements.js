@@ -1,4 +1,4 @@
-import { MarkerType, Position } from '@braks/vue-flow'
+import { MarkerType, Position } from '@vue-flow/core'
 
 export const initialElements = [
   {

@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     CustomEdgeLabel: typeof import('./../components/examples/edges/CustomEdgeLabel.vue')['default']
     CustomInput: typeof import('./../components/examples/validation/CustomInput.vue')['default']
     CustomNode: typeof import('./../components/examples/custom-node/CustomNode.vue')['default']
+    DocsRepl: typeof import('./../components/DocsRepl.vue')['default']
     Features: typeof import('./../components/home/Features.vue')['default']
     Flow: typeof import('./../components/examples/multi/Flow.vue')['default']
     Home: typeof import('./../components/home/Home.vue')['default']
@@ -30,11 +31,15 @@ declare module '@vue/runtime-core' {
     Output: typeof import('./../components/home/nodes/Output.vue')['default']
     PiniaExample: typeof import('./../components/examples/pinia/PiniaExample.vue')['default']
     Repl: typeof import('./../components/Repl.vue')['default']
+    ResizableNode: typeof import('./../components/examples/node-resizer/ResizableNode.vue')['default']
     RGB: typeof import('./../components/home/flows/RGB.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./../components/examples/dnd/Sidebar.vue')['default']
+    SnappableConnectionLine: typeof import('./../components/examples/connection-radius/SnappableConnectionLine.vue')['default']
     Team: typeof import('./../components/home/Team.vue')['default']
     TeleportableNode: typeof import('./../components/examples/teleport/TeleportableNode.vue')['default']
+    ToolbarNode: typeof import('./../components/examples/node-toolbar/ToolbarNode.vue')['default']
+    TransitionEdge: typeof import('./../components/examples/transition/TransitionEdge.vue')['default']
   }
 }

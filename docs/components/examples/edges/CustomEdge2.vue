@@ -1,5 +1,5 @@
 <script setup>
-import { EdgeText, getBezierPath, getEdgeCenter } from '@braks/vue-flow'
+import { BaseEdge, getBezierPath } from '@vue-flow/core'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -53,26 +53,7 @@ const props = defineProps({
   },
 })
 
-const edgePath = computed(() =>
-  getBezierPath({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    sourcePosition: props.sourcePosition,
-    targetX: props.targetX,
-    targetY: props.targetY,
-    targetPosition: props.targetPosition,
-  }),
-)
-
-const center = computed(() =>
-  getEdgeCenter({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    targetX: props.targetX,
-    targetY: props.targetY,
-  }),
-)
-const onClick = () => console.log(props.data)
+const path = computed(() => getBezierPath(props))
 </script>
 
 <script>
@@ -82,16 +63,18 @@ export default {
 </script>
 
 <template>
-  <path :id="props.id" class="vue-flow__edge-path" :d="edgePath" :marker-end="props.markerEnd" />
-  <EdgeText
-    :x="center[0]"
-    :y="center[1]"
-    :label="props.data?.text"
+  <BaseEdge
+    :id="id"
+    :style="style"
+    :path="path[0]"
+    :marker-end="markerEnd"
+    :label="data.text"
+    :label-x="path[1]"
+    :label-y="path[2]"
     :label-style="{ fill: 'white' }"
     :label-show-bg="true"
-    :label-bg-style="{ fill: '#10b981' }"
+    :label-bg-style="{ fill: 'red' }"
     :label-bg-padding="[2, 4]"
     :label-bg-border-radius="2"
-    @click="onClick"
   />
 </template>

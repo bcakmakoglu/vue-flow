@@ -1,9 +1,5 @@
 # Viewport Functions
 
-::: warning
-The old `FlowInstance` has been removed and all it's functionalities merged into `useVueFlow`.
-:::
-
 Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables#usevueflow)
 utility or with the [`VueFlowStore`](/typedocs/types/VueFlowStore)
 instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
@@ -12,7 +8,7 @@ instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
 
 ```vue
 <script setup>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 const { onPaneReady } = useVueFlow()
 
@@ -25,7 +21,7 @@ onPaneReady((instance) => instance.fitView())
 
 ```vue
 <script>
-import { VueFlow } from '@braks/vue-flow'
+import { VueFlow } from '@vue-flow/core'
 
 export default defineComponent({
   components: { VueFlow },

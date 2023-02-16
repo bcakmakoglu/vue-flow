@@ -1,0 +1,71 @@
+{
+  "name": "@vue-flow/core",
+  "version": "1.14.3",
+  "private": false,
+  "license": "MIT",
+  "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcakmakoglu/vue-flow"
+  },
+  "homepage": "https://github.com/bcakmakoglu/vue-flow#readme",
+  "bugs": {
+    "url": "https://github.com/bcakmakoglu/vue-flow/issues"
+  },
+  "main": "./dist/vue-flow-core.js",
+  "module": "./dist/vue-flow-core.mjs",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/vue-flow-core.iife.js",
+  "jsdelivr": "./dist/vue-flow-core.iife.js",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "prepare": "ts-patch install -s",
+    "build": "vite build",
+    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p ./tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist && pnpm run patch",
+    "patch": "node patch/slots.js",
+    "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
+    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
+    "prepublishOnly": "shx cp ../../README.md .",
+    "postpublish": "shx rm README.md && git commit -a -m \"chore: bump version\"",
+    "test": "exit 0"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.25"
+  },
+  "dependencies": {
+    "@vueuse/core": "^9.11.0",
+    "d3-drag": "^3.0.0",
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-replace": "^5.0.2",
+    "@types/d3": "^7.4.0",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "postcss-nested": "^6.0.0",
+    "ts-patch": "^2.1.0",
+    "typescript-transform-paths": "^3.4.6",
+    "unplugin-auto-import": "^0.12.1",
+    "unplugin-vue-macros": "^1.4.1",
+    "vite": "^4.0.4",
+    "vite-plugin-vue-type-imports": "0.2.0",
+    "vue-tsc": "^1.0.24"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "np": {
+    "branch": "master",
+    "message": "v%s"
+  }
+}

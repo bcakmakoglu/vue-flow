@@ -15,6 +15,11 @@ import { InteractionApp, InteractionCSS, InteractionControls } from './interacti
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
 import { HorizontalApp, HorizontalElements } from './horizontal'
 import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
+import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
+import { IntersectionApp, IntersectionCSS, IntersectionElements } from './intersection'
+import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
+import { NodeResizerApp, ResizableNode } from './node-resizer'
+import { ToolbarApp, ToolbarNode } from './node-toolbar'
 
 export const exampleImports = {
   basic: {
@@ -94,7 +99,34 @@ export const exampleImports = {
     'App.vue': TeleportApp,
     'Sidebar.vue': TeleportSidebar,
     'TeleportableNode.vue': TeleportableNode,
-    'useTransition.js': TeleportableUseTransition,
+    'useTeleport.js': TeleportableUseTransition,
     'style.css': TeleportCSS,
+  },
+  transition: {
+    'App.vue': TransitionApp,
+    'TransitionEdge.vue': TransitionEdge,
+    'style.css': TransitionCSS,
+    'additionalImports': {
+      '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@9.3.0/index.mjs',
+      '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@9.3.0/index.mjs',
+      'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@0.13.11/lib/index.mjs',
+    },
+  },
+  intersection: {
+    'App.vue': IntersectionApp,
+    'initial-elements.js': IntersectionElements,
+    'style.css': IntersectionCSS,
+  },
+  snappable: {
+    'App.vue': SnapToHandleApp,
+    'SnappableConnectionLine.vue': SnappableConnectionLine,
+  },
+  resizable: {
+    'App.vue': NodeResizerApp,
+    'ResizableNode.vue': ResizableNode,
+  },
+  toolbar: {
+    'App.vue': ToolbarApp,
+    'ToolbarNode.vue': ToolbarNode,
   },
 }

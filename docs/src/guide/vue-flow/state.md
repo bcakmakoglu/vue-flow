@@ -14,7 +14,7 @@ state is reactive and changes will be reflected on the graph.
 
 ```vue{4-6}
 <script setup>
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/core'
 
 const { getNodes, onPaneReady } = useVueFlow({
   ... // you can pass any VueFlowProp to the composable as a static option
@@ -59,7 +59,7 @@ available as an injection in the component tree.
 ```vue{5-6}
 <script>
 // Container.vue
-import { useVueFlow  } from '@braks/vue-flow'
+import { useVueFlow  } from '@vue-flow/core'
 
 // initialize a store instance in this context, so it is available when calling inject(VueFlow)
 useVueFlow()
@@ -70,7 +70,7 @@ Now we can easily access our current state instance from our Sidebar without pas
 
 ```vue
 <script setup>
-import { useVueFlow } from '@braks/vue-flow'
+import { useVueFlow } from '@vue-flow/core'
 
 const { nodesSelectionActive, addSelectedNodes, getNodes } = useVueFlow()
 
@@ -124,7 +124,7 @@ when mounted.
 
 ```vue{4,32}
 <script>
-import { VueFlow, useVueFlow } from '@braks/vue-flow'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 const { addEdges, onConnect } = useVueFlow({ id: 'options-api' })
 export default defineComponent({

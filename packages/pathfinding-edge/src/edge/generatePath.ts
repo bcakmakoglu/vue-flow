@@ -1,6 +1,6 @@
 import { AStarFinder, DiagonalMovement, Util } from 'pathfinding'
 import type { Grid, Heuristic } from 'pathfinding'
-import type { XYPosition } from '@braks/vue-flow'
+import type { XYPosition } from '@vue-flow/core'
 
 // https://www.npmjs.com/package/pathfinding#advanced-usage
 declare module 'pathfinding' {
