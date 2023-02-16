@@ -173,10 +173,6 @@ export interface FlowProps {
 
   autoPanOnConnect?: boolean
   autoPanOnNodeDrag?: boolean
-
-  __experimentalFeatures?: {
-    nestedFlow?: boolean
-  }
 }
 
 export type FlowOptions = FlowProps

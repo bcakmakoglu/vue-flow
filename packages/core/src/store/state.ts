@@ -126,10 +126,6 @@ const defaultState = (): State => ({
   disableKeyboardA11y: false,
   ariaLiveMessage: '',
 
-  __experimentalFeatures: {
-    nestedFlow: false,
-  },
-
   vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : '-',
 })
 
