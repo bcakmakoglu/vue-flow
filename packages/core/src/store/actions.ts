@@ -130,36 +130,11 @@ export function useActions(
       return
     }
 
-    // todo: remove this feature again, it's not working properly
-    let zoom: number
-    if (state.__experimentalFeatures?.nestedFlow) {
-      let viewportNodes: HTMLElement[] = [viewportNode]
-      let parentNode = viewportNode
-      let isNested
+    const style = window.getComputedStyle(viewportNode)
 
-      while (!isNested && parentNode) {
-        parentNode = parentNode.parentElement!
-        isNested = parentNode?.classList.contains('vue-flow__transformationpane')
+    const { m22 } = new window.DOMMatrixReadOnly(style.transform)
 
-        if (isNested) {
-          viewportNodes = [parentNode, ...viewportNodes]
-        }
-      }
-
-      viewportNodes.forEach((vp) => {
-        const style = window.getComputedStyle(vp)
-        const { m22 } = new window.DOMMatrixReadOnly(style.transform)
-        if (!zoom) {
-          zoom = m22
-        } else {
-          zoom *= m22
-        }
-      })
-    } else {
-      const style = window.getComputedStyle(viewportNode)
-      const { m22 } = new window.DOMMatrixReadOnly(style.transform)
-      zoom = m22
-    }
+    const zoom = m22
 
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
       const node = findNode(update.id)

@@ -130,12 +130,7 @@ function defaultState(): State {
 
     disableKeyboardA11y: false,
     ariaLiveMessage: '',
-
-    __experimentalFeatures: {
-      nestedFlow: false,
-    },
-  }
-}
+}}
 
 export function useState(opts?: FlowOptions): State {
   const state = defaultState()
