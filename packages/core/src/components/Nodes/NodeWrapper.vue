@@ -90,6 +90,18 @@ onUpdateNodeInternals((updateIds) => {
   }
 })
 
+// clamp initial position to nodes' extent
+// if extent is parent, we need dimensions to properly clamp the position
+if (node.extent === 'parent' || (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')) {
+  until(() => node.initialized)
+    .toBe(true)
+    .then(clampPosition)
+}
+// if extent is not parent, we can clamp it immediately
+else {
+  clampPosition()
+}
+
 watchEffect(
   (onCleanup) => {
     if (!node.hidden) {
@@ -149,18 +161,6 @@ watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNo
     clampPosition()
   }
 })
-
-// clamp initial position to nodes' extent
-// if extent is parent, we need dimensions to properly clamp the position
-if (node.extent === 'parent' || (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')) {
-  until(() => node.initialized)
-    .toBe(true)
-    .then(clampPosition)
-}
-// if extent is not parent, we can clamp it immediately
-else {
-  clampPosition()
-}
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */
 function clampPosition() {
