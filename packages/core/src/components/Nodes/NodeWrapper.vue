@@ -36,6 +36,8 @@ const {
   elevateNodesOnSelect,
   disableKeyboardA11y,
   ariaLiveMessage,
+  snapToGrid,
+  snapGrid,
 } = $(useVueFlow())
 
 const updateNodePositions = useUpdateNodePositions()
@@ -162,7 +164,14 @@ else {
 
 /** this re-calculates the current position, necessary for clamping by a node's extent */
 function clampPosition() {
-  const { computedPosition, position } = calcNextPosition(node, node.computedPosition, nodeExtent, parentNode)
+  const nextPos = node.computedPosition
+
+  if (snapToGrid) {
+    nextPos.x = snapGrid[0] * Math.round(nextPos.x / snapGrid[0])
+    nextPos.y = snapGrid[1] * Math.round(nextPos.y / snapGrid[1])
+  }
+
+  const { computedPosition, position } = calcNextPosition(node, nextPos, nodeExtent, parentNode)
 
   // only overwrite positions if there are changes when clamping
   if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
