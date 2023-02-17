@@ -1,4 +1,4 @@
-import type { FunctionalComponent } from 'vue'
+import type { Component, FunctionalComponent } from 'vue'
 import Handle from '../Handle/Handle.vue'
 import type { NodeProps } from '~/types'
 import { Position } from '~/types'
@@ -11,7 +11,7 @@ const InputNode: FunctionalComponent<NodeProps> = function ({
 }) {
   return [
     typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
-    h(Handle, { type: 'source', position: sourcePosition, connectable, isValidConnection: isValidSourcePos }),
+    h(Handle as Component, { type: 'source', position: sourcePosition, connectable, isValidConnection: isValidSourcePos }),
   ]
 }
 
