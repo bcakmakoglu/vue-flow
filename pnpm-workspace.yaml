@@ -1,5 +1,6 @@
 packages:
   - packages/*
+  - tooling/*
   - examples/*
-  - e2e
+  - tests
   - docs
