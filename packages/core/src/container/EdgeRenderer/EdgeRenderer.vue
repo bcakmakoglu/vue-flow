@@ -20,28 +20,24 @@ const {
   elevateEdgesOnSelect,
 } = $(useVueFlow())
 
-const sourceNode = $(
-  controlledComputed(
-    () => connectionStartHandle?.nodeId,
-    () => {
-      if (connectionStartHandle?.nodeId) return findNode(connectionStartHandle.nodeId)
+const sourceNode = controlledComputed(
+  () => connectionStartHandle?.nodeId,
+  () => {
+    if (connectionStartHandle?.nodeId) return findNode(connectionStartHandle.nodeId)
 
-      return false
-    },
-  ),
+    return false
+  },
 )
 
-const connectionLineVisible = $(
-  controlledComputed(
-    () => connectionStartHandle?.nodeId,
-    () =>
-      !!(
-        sourceNode &&
-        (typeof sourceNode.connectable === 'undefined' ? nodesConnectable : sourceNode.connectable) &&
-        connectionStartHandle?.nodeId &&
-        connectionStartHandle?.type
-      ),
-  ),
+const connectionLineVisible = controlledComputed(
+  () => connectionStartHandle?.nodeId,
+  () =>
+    !!(
+      sourceNode.value &&
+      (typeof sourceNode.value.connectable === 'undefined' ? nodesConnectable : sourceNode.value.connectable) &&
+      connectionStartHandle?.nodeId &&
+      connectionStartHandle?.type
+    ),
 )
 
 const groups = controlledComputed(
@@ -94,24 +90,22 @@ export default {
 </script>
 
 <template>
-  <template v-for="group of groups" :key="group.level">
-    <svg class="vue-flow__edges vue-flow__container" :style="`z-index: ${group.level}`">
-      <MarkerDefinitions v-if="group.isMaxLevel" />
-      <g>
-        <EdgeWrapper
-          v-for="edge of group.edges"
-          :id="edge.id"
-          :key="edge.id"
-          :edge="edge"
-          :type="getType(edge.type, edge.template)"
-          :name="edge.type || 'default'"
-          :selectable="selectable(edge.selectable)"
-          :updatable="updatable(edge.updatable)"
-          :focusable="focusable(edge.focusable)"
-        />
-      </g>
-    </svg>
-  </template>
+  <svg v-for="group of groups" :key="group.level" class="vue-flow__edges vue-flow__container" :style="`z-index: ${group.level}`">
+    <MarkerDefinitions v-if="group.isMaxLevel" />
+    <g>
+      <EdgeWrapper
+        v-for="edge of group.edges"
+        :id="edge.id"
+        :key="edge.id"
+        :edge="edge"
+        :type="getType(edge.type, edge.template)"
+        :name="edge.type || 'default'"
+        :selectable="selectable(edge.selectable)"
+        :updatable="updatable(edge.updatable)"
+        :focusable="focusable(edge.focusable)"
+      />
+    </g>
+  </svg>
 
   <svg v-if="connectionLineVisible && !!sourceNode" class="vue-flow__edges vue-flow__connectionline vue-flow__container">
     <ConnectionLine :source-node="sourceNode" />
