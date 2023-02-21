@@ -25,7 +25,7 @@
     "build": "vite build",
     "types": "tsc && shx rm -rf tmp && pnpm lint:dist",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix .",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
     "prepublishOnly": "shx cp ../../README.md .",
     "postpublish": "shx rm README.md && git commit -a -m \"chore: bump version\"",
@@ -38,6 +38,7 @@
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
+    "@vue-flow/eslint-config": "workspace:*",
     "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {

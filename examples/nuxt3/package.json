@@ -12,6 +12,7 @@
     "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
+    "@vue-flow/eslint-config": "workspace:*",
     "nuxt": "^3.2.2"
   }
 }
