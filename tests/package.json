@@ -1,5 +1,5 @@
 {
-  "name": "tests",
+  "name": "@vue-flow/tests",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -10,10 +10,12 @@
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
+    "@vue-flow/eslint-config": "workspace:*",
     "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
     "cypress": "^12.3.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
     "@vitejs/plugin-vue": "^4.0.0"
   }
 }
