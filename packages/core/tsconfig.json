@@ -1,32 +1,27 @@
 {
+  "extends": "@vue-flow/tsconfig/base",
   "compilerOptions": {
-    "preserveSymlinks": true,
     "baseUrl": ".",
-    "module": "ESNext",
-    "target": "es2017",
-    "lib": ["DOM", "ESNext"],
-    "strict": true,
-    "esModuleInterop": true,
-    "incremental": false,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true,
     "declarationDir": "./dist",
-    "types": ["vite", "vue/macros", "unplugin-vue-macros/macros-global"],
-    "jsx": "preserve",
+    "types": [
+      "vite/client",
+      "vue/macros",
+      "unplugin-vue-macros/macros-global"
+    ],
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": [
+        "src/*"
+      ]
     },
     "plugins": [
       // Transform paths in output .d.ts files (Include this line if you output declarations files)
-      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
     ]
   },
-  "include": ["./src"],
-  "exclude": ["node_modules", "dist"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "./src"
+  ]
 }
