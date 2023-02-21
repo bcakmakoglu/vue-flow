@@ -24,8 +24,7 @@
     "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && shx rm -rf tmp",
     "postbuild": "shx rm -rf tmp",
     "test": "exit 0;",
-    "lint:js": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix .",
-    "lint": "pnpm lint:js"
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix ."
   },
   "dependencies": {
     "pathfinding": "^0.4.18",
@@ -34,6 +33,7 @@
   "devDependencies": {
     "@vue-flow/core": "workspace:*",
     "@vue-flow/eslint-config": "workspace:*",
+    "@vue-flow/tsconfig": "workspace:*",
     "@types/pathfinding": "^0.0.6",
     "@vitejs/plugin-vue": "^4.0.0",
     "ts-patch": "^2.1.0",
