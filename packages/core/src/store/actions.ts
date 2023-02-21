@@ -567,8 +567,28 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
       JSON.stringify({
-        nodes: state.nodes,
-        edges: state.edges,
+        nodes: state.nodes.map((n) => {
+          // omit internal properties when exporting
+          const {
+            computedPosition: _,
+            handleBounds: __,
+            selected: ___,
+            dimensions: ____,
+            isParent: _____,
+            resizing: ______,
+            dragging: _______,
+            initialized: ________,
+            ...rest
+          } = n
+
+          return rest
+        }),
+        edges: state.edges.map((e) => {
+          // omit internal properties when exporting
+          const { selected: _, sourceNode: __, targetNode: ___, ...rest } = e
+
+          return rest
+        }),
         position: [state.viewport.x, state.viewport.y],
         zoom: state.viewport.zoom,
       } as FlowExportObject),
