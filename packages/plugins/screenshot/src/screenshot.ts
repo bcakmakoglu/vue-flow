@@ -84,9 +84,7 @@ const createScreenshotState = (store: VueFlowStore, useScreenshotOptions: UseScr
 export const PluginScreenshot =
   (options?: UseScreenshotOptions): Plugin =>
   (hooks) => {
-    hooks.created((store) => {
-      ;(store as VueFlowStore & { screenshot: UseScreenshot }).screenshot = createScreenshotState(store, options)
-    })
+    hooks.created(([store, extend]) => extend(createScreenshotState(store, options)))
   }
 
 export function useScreenshot() {

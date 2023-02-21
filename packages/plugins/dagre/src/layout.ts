@@ -43,9 +43,7 @@ const createDagreState = (store: VueFlowStore) => {
 }
 
 export const PluginDagreLayout: Plugin = (hooks) => {
-  hooks.created((store) => {
-    store.dagre = createDagreState(store)
-  })
+  hooks.created(([store, extend]) => extend(createDagreState(store)))
 }
 
 export function useDagreLayout(autoLayout?: Ref<boolean> | boolean) {
