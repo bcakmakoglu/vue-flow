@@ -6,7 +6,7 @@
   "snapshot": {
     "useCalculatedVersion": true
   },
-  "ignore": ["docs", "tests", "nuxt3-examples", "quasar-examples", "vite-examples", "vueflow"],
+  "ignore": ["@vue-flow/docs", "@vue-flow/examples-*", "@vue-flow/tests", "vueflow"],
   "commit": false,
   "linked": [],
   "access": "public",
