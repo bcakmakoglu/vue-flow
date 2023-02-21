@@ -1,7 +1,7 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@latest/schema.json",
   "changelog": ["@changesets/changelog-github", { "repo": "bcakmakoglu/vue-flow" }],
-  "fixed": [],
+  "fixed": [["@vue-flow/*"]],
   "updateInternalDependencies": "patch",
   "snapshot": {
     "useCalculatedVersion": true
@@ -10,9 +10,5 @@
   "commit": false,
   "linked": [],
   "access": "public",
-  "baseBranch": "master",
-  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
-    "onlyUpdatePeerDependentsWhenOutOfRange": true,
-    "useCalculatedVersionForSnapshots": true
-  }
+  "baseBranch": "master"
 }
