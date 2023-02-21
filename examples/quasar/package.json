@@ -1,9 +1,6 @@
 {
-  "name": "quasar-examples",
-  "version": "0.0.1",
-  "description": "Vue Flow Quasar Examples",
-  "productName": "Quasar App",
-  "author": "bcakmakoglu <78412429+bcakmakoglu@users.noreply.github.com>",
+  "name": "@vue-flow/examples-quasar",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "quasar dev",
@@ -24,10 +21,5 @@
     "@vitejs/plugin-vue": "^2.3.4",
     "@types/node": "^18.8.3",
     "autoprefixer": "^10.4.12"
-  },
-  "engines": {
-    "node": "^18 || ^16 || ^14.19",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
   }
 }
