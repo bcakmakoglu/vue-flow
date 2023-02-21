@@ -1,7 +1,6 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vueTypes from 'vite-plugin-vue-type-imports'
 import VueMacros from 'unplugin-vue-macros/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import replace from '@rollup/plugin-replace'
@@ -41,14 +40,20 @@ export default defineConfig({
   },
   plugins: [
     VueMacros({
-      betterDefine: true,
+      hoistStatic: false,
+      setupBlock: false,
+      shortEmits: false,
+      defineModel: false,
+      definePropsRefs: false,
+      setupComponent: false,
+      setupSFC: false,
+      exportProps: false,
       plugins: {
         vue: vue({
           reactivityTransform: true,
         }),
       },
     }),
-    vueTypes(),
     AutoImport({
       imports: ['vue', '@vueuse/core', 'vue/macros'],
       dirs: ['./src/utils/**', './src/composables/**', './src/context/**', './src/store/**', './src/components/Edges/utils/**'],
