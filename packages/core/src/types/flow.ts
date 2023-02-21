@@ -97,8 +97,8 @@ export enum SelectionMode {
 }
 
 export interface FlowExportObject {
-  nodes: GraphNode[]
-  edges: GraphEdge[]
+  nodes: Node[]
+  edges: Edge[]
   position: [number, number]
   zoom: number
 }
