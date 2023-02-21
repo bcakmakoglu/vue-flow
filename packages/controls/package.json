@@ -24,7 +24,7 @@
   "scripts": {
     "build": "vite build",
     "types": "vue-tsc --declaration --emitDeclarationOnly && pnpm lint:dist",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path ../../.gitignore .",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix .",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
     "test": "exit 0"
   },
@@ -35,6 +35,7 @@
   "dependencies": {},
   "devDependencies": {
     "@vue-flow/core": "workspace:*",
+    "@vue-flow/eslint-config": "workspace:*",
     "@vitejs/plugin-vue": "^4.0.0",
     "unplugin-auto-import": "^0.14.4",
     "vite": "^4.1.3",

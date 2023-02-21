@@ -6,7 +6,7 @@
     "dev": "pnpm run typedoc:md && vitepress dev src",
     "docs": "pnpm run typedoc:md && vitepress build src",
     "serve": "vitepress serve src",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix --ignore-path .gitignore .",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix .",
     "typedoc:md": "typedoc --options ./typedoc.md.json",
     "typedocs": "typedoc --options ./typedoc.json"
   },
@@ -33,6 +33,7 @@
     "@iconify/json": "^2.1.95",
     "@types/canvas-confetti": "^1.4.3",
     "@types/node": "^18.11.18",
+    "@vue-flow/eslint-config": "workspace:*",
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^16.0.3",
     "ohmyfetch": "^0.4.21",
