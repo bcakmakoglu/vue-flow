@@ -79,9 +79,7 @@ function createDragNDrop(store: VueFlowStore): DragNDropState {
 }
 
 export const PluginDragNDrop: Plugin = (hooks) => {
-  hooks.created((store) => {
-    ;(store as VueFlowStore & { dragNDrop: DragNDropState }).dragNDrop = createDragNDrop(store)
-  })
+  hooks.created(([store, extend]) => extend(createDragNDrop(store)))
 }
 
 export function useDragNDrop<CustomType extends string = string>() {

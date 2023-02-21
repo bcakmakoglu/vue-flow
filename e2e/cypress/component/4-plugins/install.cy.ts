@@ -5,10 +5,19 @@ import { getElements } from '../../utils'
 
 const { nodes, edges } = getElements()
 
+const testId = Math.random().toString(36).substr(2, 9)
+const testNumber = Math.random()
+
+function add(num: number) {
+  return num + 1
+}
+
 const testPlugin: Plugin = (hooks) => {
-  hooks.created((store) => {
-    store.testProp = 'test'
-    store.testAction = () => true
+  hooks.created(([_, extend]) => {
+    extend({
+      testId,
+      testAction: add,
+    })
   })
 }
 
@@ -24,10 +33,10 @@ describe('Install test plugin', () => {
   })
 
   it('has test prop', () => {
-    expect(store.testProp).to.equal('test')
+    expect(store.testId).to.equal(testId)
   })
 
   it('has test action', () => {
-    expect(store.testAction()).to.equal(true)
+    expect(store.testAction(testNumber)).to.equal(add(testNumber))
   })
 })
