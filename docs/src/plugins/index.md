@@ -49,9 +49,14 @@ To create a plugin, you need to create a function that takes the `PluginHooks` a
 import { PluginHooks } from '@vue-flow/core'
 
 export const MyPlugin: Plugin = (hooks) => {
-  hooks.created((store) => {
+  hooks.created(([store, extend]) => {
     console.log('Vue Flow App instance created')
-    store.myTestPlugin = () => console.log('Hello from my plugin!')
+    
+    // use the extend fn to extend the store instance
+    extend({
+      myTestPlugin: () => console.log('Hello from my plugin!')
+    })
+    
   })
 }
 ```
@@ -70,11 +75,17 @@ hooks.beforeCreate(([id, options]) => {
 
 ### created
 
-The `created` hook is called after the store is created. It takes the `store` as an argument.
+The `created` hook is called after the store is created. It takes the `store` as the first and an `extend` function as the second argument.
+You can use the `extend` function to extend the store instance with your custom properties.
 
 ```ts
-hooks.created((store) => {
+hooks.created(([store, extend]) => {
   console.log('store created')
+  
+  // Extend the store
+  extend({ myProp: () => {} })
+  
+  // myProp is now accessable from store.myProp
 })
 ```
 

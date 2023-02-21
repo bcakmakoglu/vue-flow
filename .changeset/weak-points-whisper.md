@@ -40,7 +40,7 @@ const plugin: Plugin = (hooks) => {
  })
     
  // after a store has been created
- hooks.created((storeInstance) => {})
+ hooks.created(([storeInstance, extendFn]) => {})
     
  // before a store is destroyed
  hooks.beforeDestroy((storeInstance) => {})

@@ -1,4 +1,4 @@
-import type { ConfigFactory, FlowOptions, Plugin, State, VueFlowStore } from '~/types'
+import type { ConfigFactory, FlowOptions, Plugin, PluginHooks, State, VueFlowStore } from '~/types'
 
 /**
  * Global Vue Flow App
@@ -16,11 +16,11 @@ export class VueFlowApp {
 
   public flows = new Map<string, VueFlowStore>()
 
-  private hooks = {
-    beforeCreate: createEventHook<[string, FlowOptions | undefined]>(),
-    created: createEventHook<VueFlowStore>(),
-    beforeDestroy: createEventHook<VueFlowStore>(),
-    destroyed: createEventHook<string>(),
+  private hooks: PluginHooks = {
+    beforeCreate: createEventHook(),
+    created: createEventHook(),
+    beforeDestroy: createEventHook(),
+    destroyed: createEventHook(),
   }
 
   /** Used by each store instance that is created as default values for store */
@@ -49,6 +49,7 @@ export class VueFlowApp {
   public create(id: string, initialOptions?: FlowOptions): VueFlowStore {
     const initialState = { ...this.config, ...initialOptions }
 
+    // todo: can we await this so we can possibly extend the initialState?
     this.hooks.beforeCreate.trigger([id, initialState])
 
     const state: State = useState(initialState)
@@ -80,6 +81,7 @@ export class VueFlowApp {
       emits,
       id,
       $destroy: () => {
+        // todo: can we await this so we can possibly cancel the destroy?
         this.hooks.beforeDestroy.trigger(flow)
         this.remove(id)
         this.hooks.destroyed.trigger(id)
@@ -88,7 +90,13 @@ export class VueFlowApp {
 
     this.set(id, flow)
 
-    this.hooks.created.trigger(flow)
+    this.hooks.created.trigger([
+      flow,
+      // this helper function lets you extend the store with additional properties
+      (plugin) => {
+        this.set(id, { ...flow, ...plugin })
+      },
+    ])
 
     return flow
   }
