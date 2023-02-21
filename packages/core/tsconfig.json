@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "declarationDir": "./dist",
+    "resolveJsonModule": true,
     "types": [
       "vite/client",
       "vue/macros",
