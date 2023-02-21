@@ -30,7 +30,7 @@
     "patch": "node patch/slots.js",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix .",
-    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix ./dist",
+    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
     "prepublishOnly": "shx cp ../../README.md .",
     "postpublish": "shx rm README.md && git commit -a -m \"chore: bump version\"",
     "test": "exit 0"
@@ -48,6 +48,7 @@
     "@rollup/plugin-replace": "^5.0.2",
     "@types/d3": "^7.4.0",
     "@vue-flow/eslint-config": "workspace:*",
+    "@vue-flow/tsconfig": "workspace:*",
     "@vitejs/plugin-vue": "^4.0.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
