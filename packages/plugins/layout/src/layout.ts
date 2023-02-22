@@ -1,12 +1,12 @@
-import type { Elements, GraphEdge, GraphNode, Plugin } from '@vue-flow/core'
+import type { Elements, GraphEdge, GraphNode } from '@vue-flow/core'
 import { Position, isGraphEdge, isGraphNode } from '@vue-flow/core'
 import type { GraphLabel } from 'dagre'
 import dagre from 'dagre'
 import type { LayoutOptions, UpdateParams } from './types'
 
-export function useLayout(elements: Elements, options: LayoutOptions, dagreOptions: GraphLabel): void
-export function useLayout(nodes: GraphNode[], edges: GraphEdge[], options: LayoutOptions, dagreOptions: GraphLabel): void
-export function useLayout(...args: any[]) {
+export function layout(elements: Elements, options?: LayoutOptions, dagreOptions?: GraphLabel): void
+export function layout(nodes: GraphNode[], edges: GraphEdge[], options?: LayoutOptions, dagreOptions?: GraphLabel): void
+export function layout(...args: any[]) {
   let options: LayoutOptions
   let dagreOptions: GraphLabel
   let nodes: GraphNode[]
@@ -14,7 +14,7 @@ export function useLayout(...args: any[]) {
   let elements: Elements
 
   // if we got 4 args, we assume that we got nodes and edges separately
-  if (args.length === 4) {
+  if (Array.isArray(args[1])) {
     ;[nodes, edges, options, dagreOptions] = args
   } else {
     ;[elements, options, dagreOptions] = args
@@ -65,12 +65,4 @@ export function useLayout(...args: any[]) {
 
     onUpdated?.()
   }
-}
-
-export const PluginDagreLayout: Plugin = (hooks) => {
-  hooks.created(([_, extend]) =>
-    extend({
-      layout: useLayout,
-    }),
-  )
 }

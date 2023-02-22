@@ -29,15 +29,14 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "vue": "^3.2.37",
     "@vue-flow/core": "^1.0.0"
   },
   "dependencies": {
-    "@vueuse/core": "^9.4.0"
+    "@vueuse/core": "^9.13.0"
   },
   "devDependencies": {
     "@vue-flow/core": "workspace:*",
-    "vite": "^3.2.2"
+    "vite": "^4.1.4"
   },
   "publishConfig": {
     "access": "public",

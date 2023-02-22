@@ -6,19 +6,26 @@ export enum ImageType {
   PNG = 'png',
 }
 
-export interface UseScreenshotOptions {
+export interface UseScreenshotPluginOptions {
   defaultFileName?: string
   defaultImageType?: ImageType
   defaultOptions?: HTMLToImageOptions
 }
 
-export type Screenshot = (type?: ImageType, fileName?: string, options?: HTMLToImageOptions) => Promise<string>
+export interface UseScreenshotOptions extends HTMLToImageOptions {
+  type?: ImageType
+  fileName?: string
+  shouldDownload?: boolean
+  fetchRequestInit?: RequestInit
+}
+
+export type CaptureScreenshot = (el?: HTMLElement | null, options?: UseScreenshotOptions) => Promise<string>
 
 export type Download = (fileName: string) => void
 
 export interface UseScreenshot {
   // returns the data url of the screenshot
-  screenshot: Screenshot
+  capture: CaptureScreenshot
   download: Download
   dataUrl: Ref<string>
   error: Ref
