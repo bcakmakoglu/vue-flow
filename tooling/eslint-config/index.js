@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@antfu', 'plugin:prettier/recommended'],
+  extends: ['@antfu', 'plugin:prettier/recommended', 'turbo'],
   plugins: ['prettier'],
   rules: {
     'vue/no-setup-props-destructure': 0,
