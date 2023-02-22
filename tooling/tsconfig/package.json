@@ -1,5 +1,5 @@
 {
-  "name": "@vue-flow/tsconfig",
+  "name": "@tooling/tsconfig",
   "version": "0.0.0",
   "private": true,
   "license": "MIT"

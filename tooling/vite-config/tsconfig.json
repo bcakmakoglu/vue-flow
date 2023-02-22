@@ -1,5 +1,5 @@
 {
-  "extends": "@vue-flow/tsconfig/base",
+  "extends": "@tooling/tsconfig/base",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": ".",

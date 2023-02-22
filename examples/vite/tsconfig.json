@@ -1,37 +1,19 @@
 {
+  "extends": "@tooling/tsconfig/base",
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "ESNext",
-    "target": "es2017",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
     "noEmit": true,
     "declaration": false,
-    "strict": true,
-    "esModuleInterop": true,
-    "incremental": false,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
     "types": [
       "vite/client"
     ],
-    "jsx": "preserve",
     "paths": {
       "~/*": [
         "../../packages/core/src/*"
       ]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

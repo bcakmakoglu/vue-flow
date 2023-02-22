@@ -46,10 +46,10 @@
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
+    "@tooling/vite-config": "workspace:*",
     "@types/d3": "^7.4.0",
-    "@vue-flow/eslint-config": "workspace:*",
-    "@vue-flow/tsconfig": "workspace:*",
-    "@vue-flow/vite-config": "workspace:*",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "postcss-cli": "^10.1.0",

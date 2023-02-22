@@ -1,13 +1,13 @@
 {
-  "name": "@vue-flow/vite-config",
+  "name": "@tooling/vite-config",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "devDependencies": {
-    "@vue-flow/eslint-config": "workspace:*",
-    "@vue-flow/tsconfig": "workspace:*",
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
     "@vitejs/plugin-vue": "^4.0.0",
     "defu": "^6.1.2",
     "unplugin-auto-import": "^0.14.4",

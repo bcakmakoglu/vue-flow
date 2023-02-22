@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['@vue-flow/eslint-config'],
+  extends: ['@tooling/eslint-config'],
 }

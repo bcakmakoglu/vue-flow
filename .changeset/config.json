@@ -16,9 +16,6 @@
     "@vue-flow/examples-vite",
     "@vue-flow/examples-nuxt3",
     "@vue-flow/examples-quasar",
-    "@vue-flow/eslint-config",
-    "@vue-flow/tsconfig",
-    "@vue-flow/vite-config",
     "@vue-flow/tests",
     "vueflow"
   ],
