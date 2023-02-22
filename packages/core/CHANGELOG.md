@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.15.1
+
+### Patch Changes
+
+- [#704](https://github.com/bcakmakoglu/vue-flow/pull/704) [`b3462f2`](https://github.com/bcakmakoglu/vue-flow/commit/b3462f22cb4bdeabb39f266ccc8879fa1b3ceae9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove export of `SelectionPane` as the component doesn't exist anymore
+
+- [#703](https://github.com/bcakmakoglu/vue-flow/pull/703) [`0838d2c`](https://github.com/bcakmakoglu/vue-flow/commit/0838d2c46bdcf24b9f88a9ed2ce10f939b31fbfe) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Downgrade auto imports. Fixes broken type imports.
+
 ## 1.15.0
 
 ### Minor Changes
