@@ -2,6 +2,61 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.0] - 2023-02-22
+
+[7eba916](7eba916604d164721302181a9fb5b23ca6f6ce40)...[8c22ce0](8c22ce0bbbf32b3f683b2a5a34fae0a80088eb1f)
+
+### Bug Fixes
+
+- Hide graph until nodes are ready ([226caeb](226caebd4acf852434a07ce2b9a29ab2cc47d956))
+
+### Features
+
+- Add option to avoid replacing edge id when updating ([4bf4b63](4bf4b6386ee0bb733e125e6d0ad6b10d4b8079d8))
+- Add eslint-config to tooling pkgs ([45cbdbf](45cbdbfd270d5c9160708c4eca7d3fb9fc23c6ec))
+- Add tsconfig to tooling pkgs ([2a6077e](2a6077ed9f3d31be39375d71f063ffa963852acd))
+- Add vite config to tooling pkgs ([8dd4536](8dd453634cf28738f9d31dd844db02a43eaf1bdc))
+- Use vite-config tooling pkg ([2aa1857](2aa185756b5027ad94c891afcfc263eb208e7430))
+
+### Miscellaneous Tasks
+
+- Update prevent scrolling comment ([68b07ca](68b07ca705e03049a386b4058d733f579f9b727b))
+- Update deps-dev and cleanup ([cbc29e5](cbc29e505daa5c9b45d996643bdd2de4d4b60704))
+- Update functional component types ([aafd862](aafd8622f4ec245a9c421c86f084c6ae1f067761))
+- Cleanup update edge action ([3cb6d98](3cb6d98f3f1bb021820ef74c169b2aaa4a213e73))
+- Update workspace deps-dev ([358faae](358faae21c7902675c2866bfd474c739750becf6))
+- Update changeset config ([df6f932](df6f932aac57130ffdb8bd5555fe65448e33919c))
+- Update changeset config ([7d6fb44](7d6fb443f08b9b4c4a2f50abaa0ee3c64adfab69))
+- Update changeset config ([cb6e3b1](cb6e3b1d86d01f4576bca793962a11b435d5890f))
+- Cleanup initial render ([0d9bcf4](0d9bcf4b069d5564e976239d39623a666b25ce30))
+- Cleanup unused watcher ([74f2596](74f2596f801dec6e273350f58a4c483f4fb17377))
+- Cleanup ([b5103db](b5103dbb7e12d7a928a93ff3ed7daf89c93798d8))
+- Cleanup async functions ([58a1ce8](58a1ce8e88f7ed36524621b4438b15eb16d62ba2))
+- Cleanup tsconfig ([98db749](98db749e512663d5f409309884c3ce5221bf745e))
+- Cleanup tsconfig ([0a0efb4](0a0efb4c8fddb204719c03a02c413bc47fe5645f))
+- Cleanup gitignore ([f856d3d](f856d3d04c0183defa0aa4fe8a4f5fe4c32657db))
+- Extend from turbo config ([8c22ce0](8c22ce0bbbf32b3f683b2a5a34fae0a80088eb1f))
+
+### Refactor
+
+- Fix packages together in changeset config ([578e6b4](578e6b4cfef280577063b5590c6dd202c8427eef))
+- Package names ([c60398d](c60398d0f0eb30306415fb0950b839fa25de8390))
+- Rename `e2e` to `tests` ([a3ec3b4](a3ec3b40a7d1da8a3a295db345de348a38fe1cef))
+- Package name ([5c0fb91](5c0fb912fc47a7f851608e460f53a0d4482116bd))
+- Run build and test on next-release PR ([7b590bd](7b590bd526ca2ed290bcba292977ff145c425e42))
+- Rename tooling package scope ([3df4edd](3df4edd7979ec9ffeb0820b03699461e257ef89c))
+- Remove waiting for dimensions in zoom pan helper ([d2c6b59](d2c6b592f550ec96e01fc97bd8554ad54dcf76a1))
+- Add `useViewport` for store viewport actions ([7cab68e](7cab68ed84c34778934fb28c3abd537200dfe3ef))
+- Use noop viewport helper when viewport is not ready ([dfce24a](dfce24a5faf3da3baa32334d1de48741bb06ab1a))
+- Immediately set initialized flag ([4b2a978](4b2a978e3ab20663f359a4d0d1ecd82d462aa987))
+- Use snap grid to clamp initial node pos ([fa6cb4c](fa6cb4c6d91b4b968e9ebb1610fdf722f7f9bebf))
+- Omit internal properties when using `toObject` ([10f5074](10f50740b653654873e5d6dec21927bb0a75a43d))
+- Add `release/*` to branch triggers ([eea05f9](eea05f9738cee9462b2ef728003ad8b4ff77d879))
+
+### Testing
+
+- Update min/max zoom tests ([12845eb](12845eb7e2ef3f1c62c02973d1e1a9c8e3b11acd))
+
 ## [1.14.3] - 2023-02-15
 
 [2c574ac](2c574acfdf98293e79b1c915ddc4f274781209a9)...[7eba916](7eba916604d164721302181a9fb5b23ca6f6ce40)
