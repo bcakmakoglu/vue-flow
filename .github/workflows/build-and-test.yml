@@ -6,6 +6,7 @@ on:
       - master
       - develop
       - next-release
+      - release/*
 
 env:
   PNPM_CACHE_FOLDER: .pnpm-store
