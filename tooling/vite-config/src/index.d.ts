@@ -1,3 +1,3 @@
-import type { UserConfig } from 'vite';
+import type { UserConfig } from 'vite'
 
-export declare function withConfig(viteConfig: UserConfig): UserConfig;
+export declare function withConfig(viteConfig: UserConfig): UserConfig
