@@ -33,6 +33,7 @@
     "@types/canvas-confetti": "^1.6.0",
     "@types/node": "^18.14.0",
     "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^16.0.3",
     "ohmyfetch": "^0.4.21",
