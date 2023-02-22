@@ -23,6 +23,7 @@ onConnect((params) => addEdges([params]))
 
 onDrop(({ type, position }) => {
   const id = getId()
+
   addNodes([
     {
       id,
@@ -30,7 +31,6 @@ onDrop(({ type, position }) => {
       position,
       label: `${type} node`,
     },
-
   ])
 
   nextTick(() => {

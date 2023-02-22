@@ -94,11 +94,11 @@ export class VueFlowApp {
       flow,
       // this helper function lets you extend the store with additional properties
       (plugin) => {
-        this.set(id, { ...flow, ...plugin })
+        this.set(id, { ...this.get(id)!, ...plugin })
       },
     ])
 
-    return flow
+    return this.get(id)!
   }
 
   public getId() {

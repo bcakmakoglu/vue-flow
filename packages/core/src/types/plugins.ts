@@ -4,7 +4,7 @@ import type { VueFlowStore } from './store'
 
 export interface PluginHooks {
   beforeCreate: EventHook<[string, FlowOptions | undefined]>
-  created: EventHook<[VueFlowStore, (plugin: Record<string, any>) => void]>
+  created: EventHook<[VueFlowStore, (plugin: Partial<VueFlowStore>) => void]>
   beforeDestroy: EventHook<VueFlowStore>
   destroyed: EventHook<string>
 }

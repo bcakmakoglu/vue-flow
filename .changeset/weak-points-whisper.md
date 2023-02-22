@@ -11,8 +11,8 @@ Add plugin API to Vue Flow App
 - A simple API to extend the vue flow store (⚠️ *NOT* a Vue Plugin)
 - Provide hooks to hook into store lifecycle (`beforeCreate`, `created`, `beforeDestroy`, `destroyed`)
 - Add some simple plugins to start off
-  - DnD Plugin
-  - Dagre Layout
+  - DnD
+  - Layout
   - Screenshot
 
 ## Plugin
@@ -20,7 +20,7 @@ Add plugin API to Vue Flow App
 ```ts
 interface PluginHooks {
   beforeCreate: EventHookOn<[string, FlowOptions | undefined]>
-  created: EventHookOn<VueFlowStore>
+  created: EventHookOn<[VueFlowStore, (plugin: Partial<VueFlowStore>) => void]>
   beforeDestroy: EventHookOn<VueFlowStore>
   destroyed: EventHookOn<string>
 }
