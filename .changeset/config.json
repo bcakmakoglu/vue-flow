@@ -1,12 +1,28 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@latest/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "bcakmakoglu/vue-flow" }],
-  "fixed": [["@vue-flow/*"]],
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "bcakmakoglu/vue-flow"
+    }
+  ],
+  "fixed": [
+    [
+      "@vue-flow/*"
+    ]
+  ],
   "updateInternalDependencies": "patch",
   "snapshot": {
     "useCalculatedVersion": true
   },
-  "ignore": ["@vue-flow/docs", "@vue-flow/examples-*", "@vue-flow/tests", "vueflow"],
+  "ignore": [
+    "@vue-flow/docs",
+    "@vue-flow/examples-vite",
+    "@vue-flow/examples-nuxt3",
+    "@vue-flow/examples-quasar",
+    "@vue-flow/tests",
+    "vueflow"
+  ],
   "commit": false,
   "linked": [],
   "access": "public",
