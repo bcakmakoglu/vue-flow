@@ -11,18 +11,18 @@ export default (vueFlowId?: string): ViewportFunctions => {
     $(useVueFlow({ id: vueFlowId }))
 
   return {
-    zoomIn: async (options) => {
-      await zoom(1.2, options?.duration)
+    zoomIn: (options) => {
+      zoom(1.2, options?.duration)
     },
-    zoomOut: async (options) => {
-      await zoom(1 / 1.2, options?.duration)
+    zoomOut: (options) => {
+      zoom(1 / 1.2, options?.duration)
     },
-    zoomTo: async (zoomLevel, options) => {
+    zoomTo: (zoomLevel, options) => {
       if (d3Selection && d3Zoom) {
         d3Zoom.scaleTo(transition(d3Selection, options?.duration), zoomLevel)
       }
     },
-    setTransform: async (transform, options) => {
+    setTransform: (transform, options) => {
       transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
     },
     getTransform: () => ({
@@ -30,7 +30,7 @@ export default (vueFlowId?: string): ViewportFunctions => {
       y: viewport.y,
       zoom: viewport.zoom,
     }),
-    fitView: async (
+    fitView: (
       options = {
         padding: DEFAULT_PADDING,
         includeHiddenNodes: false,
@@ -64,14 +64,14 @@ export default (vueFlowId?: string): ViewportFunctions => {
 
       transformViewport(x, y, zoom, options?.duration)
     },
-    setCenter: async (x, y, options) => {
+    setCenter: (x, y, options) => {
       const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : maxZoom
       const centerX = dimensions.width / 2 - x * nextZoom
       const centerY = dimensions.height / 2 - y * nextZoom
 
       transformViewport(centerX, centerY, nextZoom, options?.duration)
     },
-    fitBounds: async (bounds, options = { padding: DEFAULT_PADDING }) => {
+    fitBounds: (bounds, options = { padding: DEFAULT_PADDING }) => {
       const { x, y, zoom } = getTransformForBounds(bounds, dimensions.width, dimensions.height, minZoom, maxZoom, options.padding)
 
       transformViewport(x, y, zoom, options?.duration)
@@ -79,7 +79,7 @@ export default (vueFlowId?: string): ViewportFunctions => {
     project: (position) => pointToRendererPoint(position, viewport, snapToGrid, snapGrid),
   }
 
-  async function zoom(scale: number, duration?: number) {
+  function zoom(scale: number, duration?: number) {
     if (d3Selection && d3Zoom) {
       d3Zoom.scaleBy(transition(d3Selection, duration), scale)
     }
