@@ -384,6 +384,7 @@ importers:
   tests:
     specifiers:
       '@tooling/eslint-config': workspace:*
+      '@tooling/tsconfig': workspace:*
       '@vitejs/plugin-vue': ^4.0.0
       '@vue-flow/background': workspace:*
       '@vue-flow/controls': workspace:*
@@ -391,16 +392,19 @@ importers:
       '@vue-flow/minimap': workspace:*
       cypress: ^12.3.0
       eslint-plugin-chai-friendly: ^0.7.2
+      vite: ^4.1.4
     dependencies:
-      '@tooling/eslint-config': link:../tooling/eslint-config
       '@vue-flow/background': link:../packages/background
       '@vue-flow/controls': link:../packages/controls
       '@vue-flow/core': link:../packages/core
       '@vue-flow/minimap': link:../packages/minimap
     devDependencies:
+      '@tooling/eslint-config': link:../tooling/eslint-config
+      '@tooling/tsconfig': link:../tooling/tsconfig
       '@vitejs/plugin-vue': 4.0.0_vite@4.1.4+vue@3.2.47
       cypress: 12.6.0
       eslint-plugin-chai-friendly: 0.7.2_eslint@8.34.0
+      vite: 4.1.4
 
   tooling/eslint-config:
     specifiers:

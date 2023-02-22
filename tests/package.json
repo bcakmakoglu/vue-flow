@@ -10,12 +10,14 @@
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
-    "@tooling/eslint-config": "workspace:*",
     "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
+    "@vitejs/plugin-vue": "^4.0.0",
     "cypress": "^12.3.0",
-    "eslint-plugin-chai-friendly": "^0.7.2",
-    "@vitejs/plugin-vue": "^4.0.0"
+    "vite": "^4.1.4",
+    "eslint-plugin-chai-friendly": "^0.7.2"
   }
 }
