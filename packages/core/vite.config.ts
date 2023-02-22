@@ -6,7 +6,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import replace from '@rollup/plugin-replace'
 import pkg from './package.json'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
