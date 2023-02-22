@@ -1,5 +1,21 @@
 # @vue-flow/core
 
+## 1.15.0
+
+### Minor Changes
+
+- [#684](https://github.com/bcakmakoglu/vue-flow/pull/684) [`a788cc0`](https://github.com/bcakmakoglu/vue-flow/commit/a788cc09421a9b39aff1ff44052be6feae00b7e9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add option to enable/disable replacing edge id when `updateEdge` action is used
+
+- [#699](https://github.com/bcakmakoglu/vue-flow/pull/699) [`c1a7995`](https://github.com/bcakmakoglu/vue-flow/commit/c1a799592ee7fc116ee74fc6a083496ee5350629) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Omit internal properties when using `toObject`
+
+### Patch Changes
+
+- [#667](https://github.com/bcakmakoglu/vue-flow/pull/667) [`231271a`](https://github.com/bcakmakoglu/vue-flow/commit/231271a7dadaaee056e79e16f30d2f0755e51d53) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent layout shift on initial render by hiding viewport until initial nodes have width/height
+
+- [#667](https://github.com/bcakmakoglu/vue-flow/pull/667) [`89198bd`](https://github.com/bcakmakoglu/vue-flow/commit/89198bdc29ed9dde6961190ac99eb30aebfbf474) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove Promises from viewport helper functions, will not await viewport anymore but instead return no-op functions if called too early
+
+- [#695](https://github.com/bcakmakoglu/vue-flow/pull/695) [`616e795`](https://github.com/bcakmakoglu/vue-flow/commit/616e7951e51c112f29107621588a29b60a7d6e85) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use snapGrid values to clamp initial node positions
+
 ## 1.14.3
 
 ### Patch Changes
@@ -89,11 +105,15 @@
   useVueFlow({
     autoPanOnNodeDrag: true,
     autoPanOnConnect: true,
-  })
+  });
   ```
 
   ```vue
-  <VueFlow v-model="elements" :autoPanOnNodeDrag="true" :autoPanOnConnect="true" />
+  <VueFlow
+    v-model="elements"
+    :autoPanOnNodeDrag="true"
+    :autoPanOnConnect="true"
+  />
   ```
 
 - [#636](https://github.com/bcakmakoglu/vue-flow/pull/636) [`e1628ec6`](https://github.com/bcakmakoglu/vue-flow/commit/e1628ec6601e50a7bc212a2ece83877dee0e9e70) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Export `isGraphNode` and `isGraphEdge` typeguards
@@ -227,24 +247,28 @@
   ```js
   const nodes = ref([
     {
-      id: '4',
-      label: 'Node 4',
+      id: "4",
+      label: "Node 4",
       position: { x: 320, y: 200 },
-      style: { backgroundColor: 'rgba(255, 0, 0, 0.7)', width: '300px', height: '300px' },
+      style: {
+        backgroundColor: "rgba(255, 0, 0, 0.7)",
+        width: "300px",
+        height: "300px",
+      },
     },
     {
-      id: '4a',
-      label: 'Node 4a',
+      id: "4a",
+      label: "Node 4a",
       position: { x: 15, y: 65 },
-      class: 'light',
+      class: "light",
       extent: {
-        range: 'parent',
+        range: "parent",
         // apply 10 px padding to all four sides
         padding: [10],
       },
-      parentNode: '4',
+      parentNode: "4",
     },
-  ])
+  ]);
   ```
 
 ### Patch Changes
@@ -311,40 +335,61 @@
 
   ```vue
   <script>
-  import { VueFlow } from '@vue-flow/core'
+  import { VueFlow } from "@vue-flow/core";
 
   export default defineComponent({
-    name: 'OptionsAPIExample',
+    name: "OptionsAPIExample",
     components: { VueFlow },
     data() {
       return {
         vueFlow: null,
         instance: null,
         elements: [
-          { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
-          { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
-          { id: '3', label: 'Node 3', position: { x: 400, y: 100 }, class: 'light' },
-          { id: '4', label: 'Node 4', position: { x: 400, y: 200 }, class: 'light' },
-          { id: 'e1-2', source: '1', target: '2', animated: true },
-          { id: 'e1-3', source: '1', target: '3' },
+          {
+            id: "1",
+            type: "input",
+            label: "Node 1",
+            position: { x: 250, y: 5 },
+            class: "light",
+          },
+          {
+            id: "2",
+            label: "Node 2",
+            position: { x: 100, y: 100 },
+            class: "light",
+          },
+          {
+            id: "3",
+            label: "Node 3",
+            position: { x: 400, y: 100 },
+            class: "light",
+          },
+          {
+            id: "4",
+            label: "Node 4",
+            position: { x: 400, y: 200 },
+            class: "light",
+          },
+          { id: "e1-2", source: "1", target: "2", animated: true },
+          { id: "e1-3", source: "1", target: "3" },
         ],
-      }
+      };
     },
     methods: {
       // You can listen to `onPaneReady` to get the instance
       onPaneReady(instance) {
-        instance.fitView()
-        this.instance = instance
+        instance.fitView();
+        this.instance = instance;
       },
       onConnect(params) {
         // either use the instance you have saved in `onPaneReady`
-        this.instance?.addEdges([params])
+        this.instance?.addEdges([params]);
 
         // or use the template-ref
-        this.$refs.vueFlow?.addEdges([params])
+        this.$refs.vueFlow?.addEdges([params]);
       },
     },
-  })
+  });
   </script>
 
   <template>
@@ -684,16 +729,16 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
   - You can either use the action `getIntersectingNodes` to find all nodes that intersect with a given node
 
   ```js
-  const { onNodeDrag, getIntersectingNodes, getNodes } = useVueFlow()
+  const { onNodeDrag, getIntersectingNodes, getNodes } = useVueFlow();
 
   onNodeDrag(({ node }) => {
-    const intersections = getIntersectingNodes(node).map((n) => n.id)
+    const intersections = getIntersectingNodes(node).map((n) => n.id);
 
     getNodes.value.forEach((n) => {
       // highlight nodes that are intersecting with the dragged node
-      n.class = intersections.includes(n.id) ? 'highlight' : ''
-    })
-  })
+      n.class = intersections.includes(n.id) ? "highlight" : "";
+    });
+  });
   ```
 
   - Node drag events will provide you with the intersecting nodes without having to call the action explicitly.
@@ -701,20 +746,27 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
   ```js
   onNodeDrag(({ intersections }) => {
     getNodes.value.forEach((n) => {
-      n.class = intersections?.some((i) => i.id === n.id) ? 'highlight' : ''
-    })
-  })
+      n.class = intersections?.some((i) => i.id === n.id) ? "highlight" : "";
+    });
+  });
   ```
 
   - Or you can use the `isIntersecting` util to check if a node intersects with a given area
 
   ```js
-  const { onNodeDrag, isNodeIntersecting } = useVueFlow()
+  const { onNodeDrag, isNodeIntersecting } = useVueFlow();
 
   onNodeDrag(({ node }) => {
     // highlight the node if it is intersecting with the given area
-    node.class = isNodeIntersecting(node, { x: 0, y: 0, width: 100, height: 100 }) ? 'highlight' : ''
-  })
+    node.class = isNodeIntersecting(node, {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+    })
+      ? "highlight"
+      : "";
+  });
   ```
 
 - [#396](https://github.com/bcakmakoglu/vue-flow/pull/396) [`03412ac`](https://github.com/bcakmakoglu/vue-flow/commit/03412acf0d4452c104cc342e5e11eb3a7671fe72) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add zoomable and pannable to MiniMap
@@ -743,38 +795,44 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
 
   ```vue
   <script lang="ts" setup>
-  import type { EdgeProps, Position } from '@vue-flow/core'
-  import { EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core'
-  import type { CSSProperties } from 'vue'
+  import type { EdgeProps, Position } from "@vue-flow/core";
+  import { EdgeLabelRenderer, getBezierPath, useVueFlow } from "@vue-flow/core";
+  import type { CSSProperties } from "vue";
 
   interface CustomEdgeProps<T = any> extends EdgeProps<T> {
-    id: string
-    sourceX: number
-    sourceY: number
-    targetX: number
-    targetY: number
-    sourcePosition: Position
-    targetPosition: Position
-    data: T
-    markerEnd: string
-    style: CSSProperties
+    id: string;
+    sourceX: number;
+    sourceY: number;
+    targetX: number;
+    targetY: number;
+    sourcePosition: Position;
+    targetPosition: Position;
+    data: T;
+    markerEnd: string;
+    style: CSSProperties;
   }
 
-  const props = defineProps<CustomEdgeProps>()
+  const props = defineProps<CustomEdgeProps>();
 
-  const { removeEdges } = useVueFlow()
+  const { removeEdges } = useVueFlow();
 
-  const path = $computed(() => getBezierPath(props))
+  const path = $computed(() => getBezierPath(props));
   </script>
 
   <script lang="ts">
   export default {
     inheritAttrs: false,
-  }
+  };
   </script>
 
   <template>
-    <path :id="id" :style="style" class="vue-flow__edge-path" :d="path[0]" :marker-end="markerEnd" />
+    <path
+      :id="id"
+      :style="style"
+      class="vue-flow__edge-path"
+      :d="path[0]"
+      :marker-end="markerEnd"
+    />
 
     <EdgeLabelRenderer>
       <div
@@ -893,12 +951,12 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
 
   ```vue
   <script lang="ts" setup>
-  import { Handle, HandleConnectable } from '@vue-flow/core'
+  import { Handle, HandleConnectable } from "@vue-flow/core";
 
   const handleConnectable: HandleConnectable = (node, connectedEdges) => {
-    console.log(node, connectedEdges)
-    return true
-  }
+    console.log(node, connectedEdges);
+    return true;
+  };
   </script>
   <template>
     <!-- single connection -->
@@ -916,28 +974,28 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
   ```js
   const nodes = ref([
     {
-      id: '1',
+      id: "1",
       position: { x: 0, y: 0 },
-      connectable: 'single', // each handle is only connectable once (default node for example)
+      connectable: "single", // each handle is only connectable once (default node for example)
     },
     {
-      id: '2',
+      id: "2",
       position: { x: 200, y: 0 },
       connectable: (node, connectedEdges) => {
-        return true // will allow any number of connections
+        return true; // will allow any number of connections
       },
     },
     {
-      id: '3',
+      id: "3",
       position: { x: 400, y: 0 },
       connectable: true, // will allow any number of connections
     },
     {
-      id: '4',
+      id: "4",
       position: { x: 200, y: 0 },
       connectable: false, // will disable handles
     },
-  ])
+  ]);
   ```
 
 ### Patch Changes
@@ -949,7 +1007,7 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
   ```vue
   <script setup>
   // `vueflow` pkg exports all features, i.e. core + additional components
-  import { VueFlow, Background, MiniMap, Controls } from 'vueflow'
+  import { VueFlow, Background, MiniMap, Controls } from "vueflow";
   </script>
 
   <template>
@@ -976,21 +1034,28 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
 
   ```vue
   <script lang="ts" setup>
-  import { useHandle, NodeId } from '@vue-flow/core'
+  import { useHandle, NodeId } from "@vue-flow/core";
 
-  const nodeId = inject(NodeId)
+  const nodeId = inject(NodeId);
 
-  const handleId = 'my-handle'
+  const handleId = "my-handle";
 
-  const type = 'source'
+  const type = "source";
 
-  const isValidConnection = () => true
+  const isValidConnection = () => true;
 
-  const { onMouseDown } = useHandle()
+  const { onMouseDown } = useHandle();
 
   const onMouseDownHandler = (event: MouseEvent) => {
-    onMouseDown(event, handleId, nodeId, type === 'target', isValidConnection, undefined)
-  }
+    onMouseDown(
+      event,
+      handleId,
+      nodeId,
+      type === "target",
+      isValidConnection,
+      undefined
+    );
+  };
   </script>
 
   <template>
@@ -1002,22 +1067,22 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
 
   ```vue
   <script lang="ts" setup>
-  import { useHandle, useNode } from '@vue-flow/core'
+  import { useHandle, useNode } from "@vue-flow/core";
 
-  const { nodeId } = useNode()
+  const { nodeId } = useNode();
 
-  const handleId = 'my-handle'
+  const handleId = "my-handle";
 
-  const type = 'source'
+  const type = "source";
 
-  const isValidConnection = () => true
+  const isValidConnection = () => true;
 
   const { onMouseDown } = useHandle({
     nodeId,
     handleId,
     isValidConnection,
     type,
-  })
+  });
   </script>
 
   <template>
@@ -1046,22 +1111,22 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
   Before:
 
   ```js
-  import { getBezierPath, getEdgeCenter } from '@braks/vue-flow'
+  import { getBezierPath, getEdgeCenter } from "@braks/vue-flow";
 
   // used to return the path string only
-  const edgePath = computed(() => getBezierPath(pathParams))
+  const edgePath = computed(() => getBezierPath(pathParams));
 
   // was necessary to get the centerX, centerY of an edge
-  const centered = computed(() => getEdgeCenter(centerParams))
+  const centered = computed(() => getEdgeCenter(centerParams));
   ```
 
   After:
 
   ```js
-  import { getBezierPath } from '@vue-flow/core'
+  import { getBezierPath } from "@vue-flow/core";
 
   // returns the path string and the center positions
-  const [path, centerX, centerY] = computed(() => getBezierPath(pathParams))
+  const [path, centerX, centerY] = computed(() => getBezierPath(pathParams));
   ```
 
 - [#305](https://github.com/bcakmakoglu/vue-flow/pull/305) [`47d837aa`](https://github.com/bcakmakoglu/vue-flow/commit/47d837aac096e59e7f55213990dff2cc7eba0c01) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - # What's changed?
@@ -1096,12 +1161,16 @@ Additionally, nodes can be moved using keyboard controls (Arrow-Keys).
   Before:
 
   ```js
-  import { VueFlow, Background, MiniMap, Controls } from '@braks/vue-flow'
+  import { VueFlow, Background, MiniMap, Controls } from "@braks/vue-flow";
   ```
 
   After
 
   ```js
-  import { VueFlow } from '@vue-flow/core'
-  import { Background, MiniMap, Controls } from '@vue-flow/additional-components'
+  import { VueFlow } from "@vue-flow/core";
+  import {
+    Background,
+    MiniMap,
+    Controls,
+  } from "@vue-flow/additional-components";
   ```
