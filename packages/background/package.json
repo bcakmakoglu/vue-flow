@@ -31,7 +31,6 @@
   "peerDependencies": {
     "@vue-flow/core": "^1.12.2"
   },
-  "dependencies": {},
   "devDependencies": {
     "@vue-flow/core": "workspace:*",
     "@vue-flow/eslint-config": "workspace:*",
