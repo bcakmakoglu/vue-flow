@@ -29,5 +29,6 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     }
-  }
+  },
+  "globalEnv": ["VERCEL_ANALYTICS_ID", "ALGOLIA_API_KEY", "SERVER", "VUE_ROUTER_MODE", "VUE_ROUTER_BASE"]
 }
