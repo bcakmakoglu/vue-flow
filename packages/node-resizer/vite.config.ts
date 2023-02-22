@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { withConfig } from '@vue-flow/vite-config'
+import { withConfig } from '@tooling/vite-config'
 import vueTypes from 'vite-plugin-vue-type-imports'
 
 export default withConfig({

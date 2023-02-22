@@ -17,8 +17,8 @@
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
+    "@tooling/eslint-config": "workspace:*",
     "@quasar/app-vite": "^1.0.5",
-    "@vue-flow/eslint-config": "workspace:*",
     "@vitejs/plugin-vue": "^2.3.4",
     "@types/node": "^18.8.3",
     "autoprefixer": "^10.4.12"

@@ -36,12 +36,12 @@
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
-    "@vue-flow/eslint-config": "workspace:*",
-    "@vue-flow/tsconfig": "workspace:*",
-    "@vue-flow/vite-config": "workspace:*",
     "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
+    "@tooling/vite-config": "workspace:*",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "postcss-cli": "^10.1.0",

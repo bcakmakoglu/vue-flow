@@ -37,12 +37,12 @@
     "d3-selection": "^3.0.0"
   },
   "devDependencies": {
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
+    "@tooling/vite-config": "workspace:*",
     "@types/d3-drag": "^3.0.1",
     "@types/d3-selection": "^3.0.3",
     "@vue-flow/core": "workspace:*",
-    "@vue-flow/eslint-config": "workspace:*",
-    "@vue-flow/tsconfig": "workspace:*",
-    "@vue-flow/vite-config": "workspace:*",
     "vite-plugin-vue-type-imports": "^0.2.4",
     "vite": "^4.1.4",
     "vue-tsc": "^1.1.5"

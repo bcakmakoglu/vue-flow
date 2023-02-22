@@ -10,7 +10,7 @@
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
-    "@vue-flow/eslint-config": "workspace:*",
+    "@tooling/eslint-config": "workspace:*",
     "@vue-flow/minimap": "workspace:*"
   },
   "devDependencies": {

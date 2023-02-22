@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { withConfig } from '@vue-flow/vite-config'
+import { withConfig } from '@tooling/vite-config'
 import svgLoader from 'vite-svg-loader'
 
 export default withConfig({

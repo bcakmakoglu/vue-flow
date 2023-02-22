@@ -34,11 +34,11 @@
     "perfect-arrows": "^0.3.7"
   },
   "devDependencies": {
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
+    "@tooling/vite-config": "workspace:*",
     "@types/pathfinding": "^0.0.6",
     "@vue-flow/core": "workspace:*",
-    "@vue-flow/eslint-config": "workspace:*",
-    "@vue-flow/tsconfig": "workspace:*",
-    "@vue-flow/vite-config": "workspace:*",
     "@vitejs/plugin-vue": "^4.0.0",
     "ts-patch": "^2.1.0",
     "typescript-transform-paths": "^3.4.6",
