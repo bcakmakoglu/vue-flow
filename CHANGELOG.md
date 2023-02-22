@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.1] - 2023-02-22
+
+[8c22ce0](8c22ce0bbbf32b3f683b2a5a34fae0a80088eb1f)...[23b084e](23b084e8d23cedc9e60224444ff865a1cf29340b)
+
+### Bug Fixes
+
+- Downgrade auto imports package ([4e66db6](4e66db654e9596c0e358a62e5eae24e1f571000b))
+- Remove export ([3c0d86d](3c0d86d7b4bc1b2f365876f50d46203f52715be8))
+
 ## [1.15.0] - 2023-02-22
 
 [7eba916](7eba916604d164721302181a9fb5b23ca6f6ce40)...[8c22ce0](8c22ce0bbbf32b3f683b2a5a34fae0a80088eb1f)
