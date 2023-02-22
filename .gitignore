@@ -90,15 +90,13 @@ sw.*
 # Vim swap files
 *.swp
 
-# Db-Data
-hasura/db_data/
-
-# Codegen types
-types/types.ts
-
-build
+# TypeDocs build
 typedocs
+
+# TurboRepo
 .turbo
+
+# Quasar
 .quasar
 
 # pnpm
