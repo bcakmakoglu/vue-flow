@@ -11,8 +11,8 @@ export default defineConfig({
     lib: {
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
-      fileName: 'vue-flow-plugin-dagre',
-      name: 'vueFlowPluginDagre',
+      fileName: 'vue-flow-plugin-layout',
+      name: 'vueFlowPluginLayout',
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
