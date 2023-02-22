@@ -2,9 +2,9 @@ import { ref, watch } from 'vue'
 import { createEventHook } from '@vueuse/core'
 import type { Plugin, VueFlowStore } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
-import type { DragNDropState, DragNodeType, OnDragStartEventData, OnDropData } from './types'
+import type { DragNodeType, OnDragStartEventData, OnDropData, UseDragAndDrop } from './types'
 
-function createDragNDrop(store: VueFlowStore): DragNDropState {
+function createDragNDrop(store: VueFlowStore): UseDragAndDrop {
   const onDragStart = createEventHook<OnDragStartEventData>()
   const onDragOver = createEventHook<DragEvent>()
   const onDrop = createEventHook<OnDropData>()
@@ -79,11 +79,13 @@ function createDragNDrop(store: VueFlowStore): DragNDropState {
 }
 
 export const PluginDragNDrop: Plugin = (hooks) => {
-  hooks.created(([store, extend]) => extend(createDragNDrop(store)))
+  hooks.created(([store, extend]) =>
+    extend({
+      dragNDrop: createDragNDrop(store),
+    }),
+  )
 }
 
 export function useDragNDrop<CustomType extends string = string>() {
-  const { dragNDrop } = useVueFlow() as VueFlowStore & { dragNDrop: DragNDropState }
-
-  return dragNDrop as DragNDropState<CustomType>
+  return useVueFlow().dragNDrop as UseDragAndDrop<CustomType>
 }

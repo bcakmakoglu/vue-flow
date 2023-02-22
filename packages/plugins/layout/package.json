@@ -30,7 +30,6 @@
   },
   "peerDependencies": {
     "@vue-flow/core": "^1.0.0",
-    "vue": "^3.2.37",
     "dagre": "^0.8.5"
   },
   "dependencies": {},
@@ -38,7 +37,7 @@
     "@types/dagre": "^0.7.48",
     "@vue-flow/core": "workspace:*",
     "dagre": "^0.8.5",
-    "vite": "^3.2.2"
+    "vite": "^4.1.4"
   },
   "publishConfig": {
     "access": "public",

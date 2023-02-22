@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { Panel, PanelPosition } from '@vue-flow/additional-components'
+import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
 import type { Elements } from '@vue-flow/core'
-import { VueFlow } from '@vue-flow/core'
-import { ImageType, useScreenshot } from '@vue-flow/plugin-screenshot'
 
 const elements = ref<Elements>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
@@ -13,13 +11,15 @@ const elements = ref<Elements>([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 
-const { screenshot } = useScreenshot()
+const {
+  screenshot: { capture },
+} = useVueFlow()
 </script>
 
 <template>
   <VueFlow v-model="elements" fit-view-on-init style="background-color: white" class="vue-flow-basic-example">
     <Panel :position="PanelPosition.TopCenter">
-      <button @click="screenshot">Click to save Screenshot</button>
+      <button @click="capture(null, { shouldDownload: true })">Click to save Screenshot</button>
     </Panel>
   </VueFlow>
 </template>
