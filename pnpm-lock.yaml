@@ -185,6 +185,7 @@ importers:
       '@tooling/vite-config': workspace:*
       '@vue-flow/core': workspace:*
       vite: ^4.1.4
+      vue: ^3.2.25
       vue-tsc: ^1.1.5
     devDependencies:
       '@tooling/eslint-config': link:../../tooling/eslint-config
@@ -192,6 +193,7 @@ importers:
       '@tooling/vite-config': link:../../tooling/vite-config
       '@vue-flow/core': link:../core
       vite: 4.1.4
+      vue: 3.2.47
       vue-tsc: 1.1.7_typescript@4.9.5
 
   packages/controls:
@@ -202,6 +204,7 @@ importers:
       '@vue-flow/core': workspace:*
       vite: ^4.1.4
       vite-svg-loader: ^4.0.0
+      vue: ^3.2.25
       vue-tsc: ^1.1.5
     devDependencies:
       '@tooling/eslint-config': link:../../tooling/eslint-config
@@ -210,6 +213,7 @@ importers:
       '@vue-flow/core': link:../core
       vite: 4.1.4
       vite-svg-loader: 4.0.0
+      vue: 3.2.47
       vue-tsc: 1.1.7_typescript@4.9.5
 
   packages/core:
@@ -239,7 +243,6 @@ importers:
       d3-drag: 3.0.0
       d3-selection: 3.0.0
       d3-zoom: 3.0.0
-      vue: 3.2.47
     devDependencies:
       '@rollup/plugin-replace': 5.0.2
       '@tooling/eslint-config': link:../../tooling/eslint-config
@@ -255,6 +258,7 @@ importers:
       unplugin-auto-import: 0.12.2_@vueuse+core@9.13.0
       unplugin-vue-macros: 1.8.2_qnq6tcennvnlbajhsceuubx7mq
       vite: 4.1.4
+      vue: 3.2.47
       vue-tsc: 1.1.7_typescript@4.9.5
 
   packages/minimap:
@@ -268,6 +272,7 @@ importers:
       d3-selection: ^3.0.0
       d3-zoom: ^3.0.0
       vite: ^4.1.4
+      vue: ^3.2.25
       vue-tsc: ^1.1.5
     dependencies:
       d3-selection: 3.0.0
@@ -280,6 +285,7 @@ importers:
       '@types/d3-zoom': 3.0.2
       '@vue-flow/core': link:../core
       vite: 4.1.4
+      vue: 3.2.47
       vue-tsc: 1.1.7_typescript@4.9.5
 
   packages/node-resizer:
@@ -294,12 +300,11 @@ importers:
       d3-selection: ^3.0.0
       vite: ^4.1.4
       vite-plugin-vue-type-imports: ^0.2.4
-      vue: ^3.2.37
+      vue: ^3.2.25
       vue-tsc: ^1.1.5
     dependencies:
       d3-drag: 3.0.0
       d3-selection: 3.0.0
-      vue: 3.2.47
     devDependencies:
       '@tooling/eslint-config': link:../../tooling/eslint-config
       '@tooling/tsconfig': link:../../tooling/tsconfig
@@ -309,6 +314,7 @@ importers:
       '@vue-flow/core': link:../core
       vite: 4.1.4
       vite-plugin-vue-type-imports: 0.2.4_vite@4.1.4+vue@3.2.47
+      vue: 3.2.47
       vue-tsc: 1.1.7_typescript@4.9.5
 
   packages/node-toolbar:
@@ -318,6 +324,7 @@ importers:
       '@tooling/vite-config': workspace:*
       '@vue-flow/core': workspace:*
       vite: ^4.1.4
+      vue: ^3.2.25
       vue-tsc: ^1.1.5
     devDependencies:
       '@tooling/eslint-config': link:../../tooling/eslint-config
@@ -325,6 +332,7 @@ importers:
       '@tooling/vite-config': link:../../tooling/vite-config
       '@vue-flow/core': link:../core
       vite: 4.1.4
+      vue: 3.2.47
       vue-tsc: 1.1.7_typescript@4.9.5
 
   packages/pathfinding-edge:
@@ -340,6 +348,7 @@ importers:
       ts-patch: ^2.1.0
       typescript-transform-paths: ^3.4.6
       vite: ^4.1.4
+      vue: ^3.2.25
       vue-tsc: ^1.1.5
     dependencies:
       pathfinding: 0.4.18
@@ -354,6 +363,7 @@ importers:
       ts-patch: 2.1.0_typescript@4.9.5
       typescript-transform-paths: 3.4.6_typescript@4.9.5
       vite: 4.1.4
+      vue: 3.2.47
       vue-tsc: 1.1.7_typescript@4.9.5
 
   packages/vue-flow:
@@ -376,7 +386,6 @@ importers:
       '@vue-flow/controls': link:../controls
       '@vue-flow/core': link:../core
       '@vue-flow/minimap': link:../minimap
-      vue: 3.2.47
     devDependencies:
       '@tooling/eslint-config': link:../../tooling/eslint-config
       '@tooling/tsconfig': link:../../tooling/tsconfig
@@ -386,6 +395,7 @@ importers:
       postcss-cli: 10.1.0_postcss@8.4.21
       postcss-nested: 6.0.1_postcss@8.4.21
       vite: 4.1.4
+      vue: 3.2.47
 
   tests:
     specifiers:
@@ -399,6 +409,7 @@ importers:
       cypress: ^12.3.0
       eslint-plugin-chai-friendly: ^0.7.2
       vite: ^4.1.4
+      vue: ^3.2.25
     dependencies:
       '@vue-flow/background': link:../packages/background
       '@vue-flow/controls': link:../packages/controls
@@ -411,6 +422,7 @@ importers:
       cypress: 12.6.0
       eslint-plugin-chai-friendly: 0.7.2_eslint@8.34.0
       vite: 4.1.4
+      vue: 3.2.47
 
   tooling/eslint-config:
     specifiers:
