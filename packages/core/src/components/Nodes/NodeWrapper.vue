@@ -84,6 +84,8 @@ const getStyle = computed(() => {
   return styles
 })
 
+const zIndex = computed(() => Number(node.zIndex ?? getStyle.value.zIndex ?? 0))
+
 onUpdateNodeInternals((updateIds) => {
   if (updateIds.includes(id)) {
     updateInternals()
@@ -122,16 +124,13 @@ watch(
     () => node.dimensions.width,
     () => parentNode?.dimensions.height,
     () => parentNode?.dimensions.width,
-    () => node.zIndex,
+    zIndex,
   ],
   ([newX, newY, parentX, parentY, parentZ]) => {
-    let zIndex = isNumber(node.zIndex) ? node.zIndex : 0
-    zIndex = isNumber(getStyle.value.zIndex) ? getStyle.value.zIndex : zIndex
-
     const xyzPos = {
       x: newX,
       y: newY,
-      z: (zIndex || 0) + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
+      z: zIndex.value + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
     }
 
     if (isNumber(parentX) && isNumber(parentY)) {
@@ -270,7 +269,7 @@ export default {
       getClass,
     ]"
     :style="{
-      zIndex: node.computedPosition.z ?? 0,
+      zIndex: node.computedPosition.z ?? zIndex,
       transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
       pointerEvents: selectable || draggable ? 'all' : 'none',
       ...getStyle,
