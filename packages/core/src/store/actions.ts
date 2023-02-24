@@ -28,7 +28,11 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const nodeIds = $computed(() => state.nodes.map((n) => n.id))
   const edgeIds = $computed(() => state.edges.map((e) => e.id))
 
-  const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => state.hooks.updateNodeInternals.trigger(ids ?? nodeIds)
+  const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
+    const updateIds = ids ?? nodeIds ?? []
+
+    state.hooks.updateNodeInternals.trigger(updateIds)
+  }
 
   const findNode: Actions['findNode'] = (id) => {
     if (state.nodes && !nodeIds.length) return state.nodes.find((node) => node.id === id)
