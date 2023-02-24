@@ -1,10 +1,14 @@
 <script lang="ts" setup>
 import { isNumber } from '@vueuse/core'
-import type { GraphNode, NodeComponent } from '../../types'
+import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
 import { ARIA_NODE_DESC_KEY } from '../../utils/a11y'
 
-const { id, type, name, ...props } = defineProps<{
+const { id, type, name, draggable, selectable, connectable, ...props } = defineProps<{
   id: string
+  draggable: boolean
+  selectable: boolean
+  connectable: HandleConnectable
+  focusable: boolean
   type: NodeComponent | Function | Object | false
   name: string
   node: GraphNode
@@ -34,10 +38,6 @@ const {
   ariaLiveMessage,
   snapToGrid,
   snapGrid,
-  nodesDraggable,
-  elementsSelectable,
-  nodesConnectable,
-  nodesFocusable,
 } = $(useVueFlow())
 
 const updateNodePositions = useUpdateNodePositions()
@@ -47,16 +47,6 @@ const node = $(useVModel(props, 'node'))
 const parentNode = $computed(() => (node.parentNode ? findNode(node.parentNode) : undefined))
 
 const connectedEdges = $computed(() => getConnectedEdges([node], edges))
-
-const intersections = $computed(() => getIntersectingNodes(node))
-
-const draggable = $computed(() => (typeof node.draggable === 'undefined' ? nodesDraggable : node.draggable))
-
-const selectable = $computed(() => (typeof node.selectable === 'undefined' ? elementsSelectable : node.selectable))
-
-const connectable = $computed(() => (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable))
-
-const focusable = $computed(() => (typeof node.focusable === 'undefined' ? nodesFocusable : node.focusable))
 
 const nodeElement = ref<HTMLDivElement>()
 
@@ -68,15 +58,15 @@ const dragging = useDrag({
   id,
   el: nodeElement,
   disabled: computed(() => !draggable),
-  selectable: $$(selectable),
+  selectable: computed(() => selectable),
   onStart(event, node, nodes) {
-    emit.dragStart({ event, node, nodes, intersections })
+    emit.dragStart({ event, node, nodes, intersections: getIntersectingNodes(node) })
   },
   onDrag(event, node, nodes) {
-    emit.drag({ event, node, nodes, intersections })
+    emit.drag({ event, node, nodes, intersections: getIntersectingNodes(node) })
   },
   onStop(event, node, nodes) {
-    emit.dragStop({ event, node, nodes, intersections })
+    emit.dragStop({ event, node, nodes, intersections: getIntersectingNodes(node) })
   },
 })
 
