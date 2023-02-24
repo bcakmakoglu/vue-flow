@@ -1,8 +1,7 @@
 import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
-import type { Ref } from 'vue'
-import type { MaybeRef } from '@vueuse/core'
+import type { ComputedRef, Ref } from 'vue'
 import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
@@ -12,7 +11,8 @@ interface UseDragParams {
   onDrag: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
   onStop: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
   el: Ref<Element | undefined>
-  disabled?: MaybeRef<boolean>
+  disabled?: ComputedRef<boolean>
+  selectable: ComputedRef<boolean>
   id?: string
 }
 
@@ -42,7 +42,7 @@ function useDrag(params: UseDragParams) {
       updateNodePositions,
     } = $(useVueFlow())
 
-    const { onStart, onDrag, onStop, el, disabled = false, id } = $(params)
+    const { onStart, onDrag, onStop, el, disabled, id, selectable } = $(params)
 
     const dragging = ref(false)
 
@@ -141,7 +141,7 @@ function useDrag(params: UseDragParams) {
                 }
               }
 
-              if (node && selectNodesOnDrag) {
+              if (node && selectable && selectNodesOnDrag) {
                 handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
               }
 
