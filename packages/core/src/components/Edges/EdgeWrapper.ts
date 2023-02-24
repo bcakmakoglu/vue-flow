@@ -1,18 +1,21 @@
 import EdgeAnchor from './EdgeAnchor'
-import type { Connection, EdgeComponent, GraphEdge, HandleType, MouseTouchEvent } from '~/types'
+import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType, MouseTouchEvent } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 
 interface Props {
   id: string
   type: EdgeComponent | Function | Object | false
   name: string
+  selectable?: boolean
+  focusable?: boolean
+  updatable?: EdgeUpdatable
   edge: GraphEdge
 }
 
 const EdgeWrapper = defineComponent({
   name: 'Edge',
   compatConfig: { MODE: 3 },
-  props: ['name', 'type', 'id', 'edge'],
+  props: ['name', 'type', 'id', 'updatable', 'selectable', 'focusable', 'edge'],
   setup(props: Props) {
     const {
       id: vueFlowId,
@@ -26,9 +29,6 @@ const EdgeWrapper = defineComponent({
       removeSelectedEdges,
       findEdge,
       findNode,
-      edgesUpdatable,
-      edgesFocusable,
-      elementsSelectable,
     } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
@@ -51,12 +51,6 @@ const EdgeWrapper = defineComponent({
 
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)
-
-    const selectable = $computed(() => (typeof edge.selectable === 'undefined' ? elementsSelectable : edge.selectable))
-
-    const updatable = $computed(() => (typeof edge.updatable === 'undefined' ? edgesUpdatable : edge.updatable))
-
-    const focusable = $computed(() => (typeof edge.focusable === 'undefined' ? edgesFocusable : edge.focusable))
 
     const sourceNode = $computed(() => findNode(edge.source))
 
@@ -124,7 +118,7 @@ const EdgeWrapper = defineComponent({
               updating: mouseOver,
               selected: edge.selected,
               animated: edge.animated,
-              inactive: !selectable,
+              inactive: !props.selectable,
             },
           ],
           'onClick': onEdgeClick,
@@ -133,11 +127,11 @@ const EdgeWrapper = defineComponent({
           'onMouseenter': onEdgeMouseEnter,
           'onMousemove': onEdgeMouseMove,
           'onMouseleave': onEdgeMouseLeave,
-          'onKeyDown': focusable ? onKeyDown : undefined,
-          'tabIndex': focusable ? 0 : undefined,
+          'onKeyDown': props.focusable ? onKeyDown : undefined,
+          'tabIndex': props.focusable ? 0 : undefined,
           'aria-label': edge.ariaLabel === null ? undefined : edge.ariaLabel || `Edge from ${edge.source} to ${edge.target}`,
-          'aria-describedby': focusable ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
-          'role': focusable ? 'button' : undefined,
+          'aria-describedby': props.focusable ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
+          'role': props.focusable ? 'button' : undefined,
         },
         [
           updating
@@ -149,7 +143,7 @@ const EdgeWrapper = defineComponent({
                 source: edge.source,
                 target: edge.target,
                 type: edge.type,
-                updatable,
+                updatable: props.updatable,
                 selected: edge.selected,
                 animated: edge.animated,
                 label: edge.label,
@@ -175,7 +169,7 @@ const EdgeWrapper = defineComponent({
               }),
 
           [
-            updatable === 'source' || updatable === true
+            props.updatable === 'source' || props.updatable === true
               ? [
                   h(
                     'g',
@@ -194,7 +188,7 @@ const EdgeWrapper = defineComponent({
                   ),
                 ]
               : null,
-            updatable === 'target' || updatable === true
+            props.updatable === 'target' || props.updatable === true
               ? [
                   h(
                     'g',
@@ -253,7 +247,7 @@ const EdgeWrapper = defineComponent({
 
     function onEdgeClick(event: MouseEvent) {
       const data = { event, edge }
-      if (selectable) {
+      if (props.selectable) {
         nodesSelectionActive.value = false
 
         addSelectedEdges([edge])
@@ -290,7 +284,7 @@ const EdgeWrapper = defineComponent({
     }
 
     function onKeyDown(event: KeyboardEvent) {
-      if (elementSelectionKeys.includes(event.key) && selectable) {
+      if (elementSelectionKeys.includes(event.key) && props.selectable) {
         const unselect = event.key === 'Escape'
 
         if (unselect) {
