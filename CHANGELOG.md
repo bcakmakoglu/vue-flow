@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.2] - 2023-02-24
+
+[23b084e](23b084e8d23cedc9e60224444ff865a1cf29340b)...[585f1e8](585f1e8d6a4c8da239d25d2dff9ad7ff8b40a3fc)
+
+### Bug Fixes
+
+- Cast zIndex to number in node wrapper ([79e7f3c](79e7f3ccdb42bec05a7ac6a45984c535955204b4))
+- Check if node el exists before observing ([0ffc2f1](0ffc2f1dff1e027e33eb2dcc24e2b547acfe24ac))
+- Prevent undefined being passed to update node internals ([c4b4826](c4b4826a1ac0dc60b36e38b252b7266fea89ee4f))
+- Wait until viewport helper is initialized ([f2af818](f2af8188e558b56f4f5fb2966a1f1c898af2db7f))
+- Add vite iife build file ([a5644c0](a5644c0ead4f2770d6e0042f24b8b684e3bd8834))
+- Use correct umd name for vue flow core ([06b1753](06b1753f48e2e63d9ca9d1dc2eba73b46ca1251d))
+- Correct umd export names ([93b2fd0](93b2fd04eb4a6255a519e1b6cbe53f4f7acc90a4))
+
+### Miscellaneous Tasks
+
+- Update turbo ([1762eb4](1762eb43267b3e9fecf69000bd8bbe0926fb464f))
+- Build lib when scanning ([a039ceb](a039cebdb9eb821d50f893d1b904abdb939d0757))
+- Rename qodana.yml to scan.yml ([4872740](487274089c517eb234f3a2443c3ee461c4f02da6))
+- Correct pkg deps ([3211686](3211686c400d1907fbcc79736751af6c8d8758f2))
+- Update changeset ([c1ca174](c1ca17476aa9f21305f9406604d874c84639b760))
+
+### Refactor
+
+- Use lifecycle hooks to observe node dimensions ([325efba](325efba85645ca58183a259287a06b3a16dc0727))
+
+### Testing
+
+- Add custom node test ([17c28a7](17c28a7b6dbf73768a5d002160ddb7cdae78e08e))
+- Add custom edge test ([e10663a](e10663ad5dca4df962f9c7aed902030d6e2c4244))
+
 ## [1.15.1] - 2023-02-22
 
 [8c22ce0](8c22ce0bbbf32b3f683b2a5a34fae0a80088eb1f)...[23b084e](23b084e8d23cedc9e60224444ff865a1cf29340b)
