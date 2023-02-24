@@ -267,8 +267,8 @@ export default {
     class="vue-flow__node"
     :class="[
       `vue-flow__node-${type === false ? 'default' : name}`,
-      noPanClassName,
       {
+        [noPanClassName]: draggable,
         dragging,
         selected: node.selected,
         selectable,
@@ -279,6 +279,7 @@ export default {
       zIndex: node.computedPosition.z ?? zIndex,
       transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
       pointerEvents: selectable || draggable ? 'all' : 'none',
+      visibility: node.initialized ? 'visible' : 'hidden',
       ...getStyle,
     }"
     :tabIndex="focusable ? 0 : undefined"
