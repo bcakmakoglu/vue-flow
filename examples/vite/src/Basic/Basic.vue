@@ -14,12 +14,13 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onNodeDragStop, onEdgeClick, onConnect, addEdges, setTransform, toObject } = useVueFlow({
-  minZoom: 0.2,
-  maxZoom: 4,
-  connectOnClick: true,
-  fitViewOnInit: false,
-})
+const { onNodeDragStop, onEdgeClick, onConnect, addEdges, setTransform, toObject, fitView, onPaneReady, setNodes, setEdges } =
+  useVueFlow({
+    minZoom: 0.2,
+    maxZoom: 4,
+    connectOnClick: true,
+    fitViewOnInit: false,
+  })
 
 onNodeDragStop((e) => console.log('drag stop', e.event))
 onEdgeClick(console.log)
@@ -35,13 +36,29 @@ const updatePos = () =>
     }
   })
 
+onPaneReady((instance) => {
+  setNodes([
+    { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
+    { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
+    { id: '3', label: 'Node 3', position: { x: 400, y: 100 }, class: 'light' },
+    { id: '4', label: 'Node 4', position: { x: 400, y: 200 }, class: 'light' },
+  ])
+
+  setEdges([
+    { id: 'e1-2', source: '1', target: '2', animated: true },
+    { id: 'e1-3', source: '1', target: '3' },
+  ])
+
+  instance.fitView()
+})
+
 const logToObject = () => console.log(toObject())
 const resetTransform = () => setTransform({ x: 0, y: 0, zoom: 1 })
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init connection-mode="strict" class="vue-flow-basic-example">
+  <VueFlow v-model="elements" connection-mode="strict" class="vue-flow-basic-example">
     <Background />
     <MiniMap />
     <Controls />
