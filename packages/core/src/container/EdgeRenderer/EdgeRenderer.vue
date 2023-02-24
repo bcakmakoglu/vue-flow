@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
-import type { EdgeComponent, GraphEdge } from '../../types'
+import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 const slots = inject(Slots)
@@ -9,6 +9,9 @@ const slots = inject(Slots)
 const {
   connectionStartHandle,
   nodesConnectable,
+  edgesUpdatable,
+  edgesFocusable,
+  elementsSelectable,
   getSelectedNodes,
   findNode,
   getEdges,
@@ -49,6 +52,10 @@ const groups = controlledComputed(
 onBeforeUnmount(() => {
   stop?.()
 })
+
+const selectable = (edgeSelectable?: boolean) => (typeof edgeSelectable === 'undefined' ? elementsSelectable : edgeSelectable)
+const updatable = (edgeUpdatable?: EdgeUpdatable) => (typeof edgeUpdatable === 'undefined' ? edgesUpdatable : edgeUpdatable)
+const focusable = (edgeFocusable?: boolean) => (typeof edgeFocusable === 'undefined' ? edgesFocusable : edgeFocusable)
 
 function getType(type?: string, template?: GraphEdge['template']) {
   const name = type || 'default'
@@ -93,6 +100,9 @@ export default {
         :edge="edge"
         :type="getType(edge.type, edge.template)"
         :name="edge.type || 'default'"
+        :selectable="selectable(edge.selectable)"
+        :updatable="updatable(edge.updatable)"
+        :focusable="focusable(edge.focusable)"
       />
     </g>
   </svg>
