@@ -21,7 +21,7 @@ function withConfig(viteConfig) {
           // for externalized deps
           globals: {
             'vue': 'Vue',
-            '@vue-flow/core': 'VueFlow',
+            '@vue-flow/core': 'VueFlowCore',
           },
         },
       },
