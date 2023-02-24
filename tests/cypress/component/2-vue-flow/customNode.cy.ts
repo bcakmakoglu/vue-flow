@@ -7,7 +7,7 @@ const CustomNode: NodeComponent = defineComponent(() => {
     h('div', { class: 'vue-flow__node-default' }, [
       h(Handle as any, { id: 'handle-1', position: 'left', type: 'target', style: { top: '5px' } }),
       h(Handle as any, { id: 'handle-2', position: 'left', type: 'target', style: { bottom: '-10px' } }),
-      'Custom Node',
+      h('div', { class: 'test-custom-node' }, 'Custom Node'),
       h(Handle as any, { id: 'handle-3', position: 'right' }),
     ])
 })
@@ -32,11 +32,14 @@ describe('Check if custom nodes are rendered', () => {
       nodeTypes: {
         custom: markRaw(CustomNode),
       },
-      autoConnect: true,
     })
   })
 
   it('renders custom node', () => {
     cy.get('.vue-flow__node-custom').should('have.length', 1)
+
+    cy.get('.test-custom-node').should('have.length', 1).should('contain', 'Custom Node')
+
+    cy.get('.vue-flow__node-custom').should('have.css', 'transform', 'matrix(1, 0, 0, 1, 300, 300)')
   })
 })
