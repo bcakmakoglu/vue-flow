@@ -7,18 +7,16 @@ const { id, viewport, emits, d3Zoom, d3Selection, dimensions, ...rest } = useVue
 until(() => d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0)
   .toBeTruthy()
   .then(() => {
-    setTimeout(() => {
-      // emit pane ready event
-      emits.paneReady({
-        id,
-        viewport,
-        emits,
-        d3Zoom,
-        d3Selection,
-        dimensions,
-        ...rest,
-      })
-    }, 1)
+    // emit pane ready event
+    emits.paneReady({
+      id,
+      viewport,
+      emits,
+      d3Zoom,
+      d3Selection,
+      dimensions,
+      ...rest,
+    })
   })
 </script>
 
