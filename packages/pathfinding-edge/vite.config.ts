@@ -7,7 +7,7 @@ export default withConfig({
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
       fileName: 'vue-flow-pathfinding-edge',
-      name: 'vueFlowPathfindingEdge',
+      name: 'VueFlowPathfindingEdge',
     },
   },
 })

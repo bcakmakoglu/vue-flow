@@ -8,7 +8,7 @@ export default withConfig({
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
       fileName: 'vue-flow-node-resizer',
-      name: 'vueFlowNodeResizer',
+      name: 'VueFlowNodeResizer',
     },
   },
   plugins: [vueTypes() as any],
