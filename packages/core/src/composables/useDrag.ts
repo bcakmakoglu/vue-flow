@@ -12,7 +12,7 @@ interface UseDragParams {
   onStop: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
   el: Ref<Element | undefined>
   disabled?: ComputedRef<boolean>
-  selectable: ComputedRef<boolean>
+  selectable?: ComputedRef<boolean>
   id?: string
 }
 
