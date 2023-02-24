@@ -1,5 +1,11 @@
 # @vue-flow/pathfinding-edge
 
+## 1.0.4
+
+### Patch Changes
+
+- [#716](https://github.com/bcakmakoglu/vue-flow/pull/716) [`1685827d`](https://github.com/bcakmakoglu/vue-flow/commit/1685827d0ea1dc9864f95a1b3a54fbc43a296e5d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix umd pkg names and use the correct vue flow core umd pkg name in plugins
+
 ## 1.0.3
 
 ### Patch Changes
@@ -35,22 +41,22 @@
   Before:
 
   ```js
-  import { getBezierPath, getEdgeCenter } from '@braks/vue-flow'
+  import { getBezierPath, getEdgeCenter } from "@braks/vue-flow";
 
   // used to return the path string only
-  const edgePath = computed(() => getBezierPath(pathParams))
+  const edgePath = computed(() => getBezierPath(pathParams));
 
   // was necessary to get the centerX, centerY of an edge
-  const centered = computed(() => getEdgeCenter(centerParams))
+  const centered = computed(() => getEdgeCenter(centerParams));
   ```
 
   After:
 
   ```js
-  import { getBezierPath } from '@vue-flow/core'
+  import { getBezierPath } from "@vue-flow/core";
 
   // returns the path string and the center positions
-  const [path, centerX, centerY] = computed(() => getBezierPath(pathParams))
+  const [path, centerX, centerY] = computed(() => getBezierPath(pathParams));
   ```
 
 - [#305](https://github.com/bcakmakoglu/vue-flow/pull/305) [`47d837aa`](https://github.com/bcakmakoglu/vue-flow/commit/47d837aac096e59e7f55213990dff2cc7eba0c01) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - # What's changed?
@@ -85,14 +91,18 @@
   Before:
 
   ```js
-  import { VueFlow, Background, MiniMap, Controls } from '@braks/vue-flow'
+  import { VueFlow, Background, MiniMap, Controls } from "@braks/vue-flow";
   ```
 
   After
 
   ```js
-  import { VueFlow } from '@vue-flow/core'
-  import { Background, MiniMap, Controls } from '@vue-flow/additional-components'
+  import { VueFlow } from "@vue-flow/core";
+  import {
+    Background,
+    MiniMap,
+    Controls,
+  } from "@vue-flow/additional-components";
   ```
 
 ### Patch Changes
