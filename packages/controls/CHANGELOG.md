@@ -1,5 +1,11 @@
 # @vue-flow/controls
 
+## 1.0.4
+
+### Patch Changes
+
+- [#716](https://github.com/bcakmakoglu/vue-flow/pull/716) [`1685827d`](https://github.com/bcakmakoglu/vue-flow/commit/1685827d0ea1dc9864f95a1b3a54fbc43a296e5d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix umd pkg names and use the correct vue flow core umd pkg name in plugins
+
 ## 1.0.3
 
 ### Patch Changes
