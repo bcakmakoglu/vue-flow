@@ -17,7 +17,7 @@ export default defineConfig({
     minify: 'esbuild',
     emptyOutDir: false,
     lib: {
-      formats: ['es', 'cjs'],
+      formats: ['iife'],
       entry: resolve(__dirname, 'src/index.ts'),
       fileName: 'vue-flow-core',
       name: 'VueFlowCore',
@@ -27,7 +27,7 @@ export default defineConfig({
       // into your library
       external: ['vue'],
       output: {
-        format: 'esm',
+        format: 'iife',
         dir: './dist',
         // Provide global variables to use in the UMD build
         // for externalized deps
@@ -59,7 +59,7 @@ export default defineConfig({
       dts: 'src/auto-imports.d.ts',
     }),
     replace({
-      __ENV__: 'process.env.NODE_ENV',
+      __ENV__: 'production',
       __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
       preventAssignment: true,
     }),
