@@ -27,6 +27,10 @@ export default (state: State, getters: ComputedGetters) => {
 
   const { getNodes } = $(getters)
 
+  const nodesInitialized = computed(() => nodes.filter((node) => node.initialized).length === nodes.length)
+
+  const isReady = computed(() => !!d3Zoom && !!d3Selection && !!dimensions.width && !!dimensions.height && nodesInitialized.value)
+
   function zoom(scale: number, duration?: number) {
     if (d3Selection && d3Zoom) {
       d3Zoom.scaleBy(transition(d3Selection, duration), scale)
@@ -45,7 +49,7 @@ export default (state: State, getters: ComputedGetters) => {
   }
 
   return computed<ExtendedViewport>(() => {
-    if (d3Zoom && d3Selection && dimensions.width && dimensions.height) {
+    if (isReady.value) {
       return {
         initialized: true,
         zoomIn: (options) => {
