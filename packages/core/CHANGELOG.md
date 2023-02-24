@@ -1,5 +1,21 @@
 # @vue-flow/core
 
+## 1.15.2
+
+### Patch Changes
+
+- [#716](https://github.com/bcakmakoglu/vue-flow/pull/716) [`1685827d`](https://github.com/bcakmakoglu/vue-flow/commit/1685827d0ea1dc9864f95a1b3a54fbc43a296e5d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix umd pkg names and use the correct vue flow core umd pkg name in plugins
+
+- [#713](https://github.com/bcakmakoglu/vue-flow/pull/713) [`95b51a0e`](https://github.com/bcakmakoglu/vue-flow/commit/95b51a0e352e29305a12387ea03fa35ce7f16825) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent undefined being passed to updateNodeInternals
+
+- [#712](https://github.com/bcakmakoglu/vue-flow/pull/712) [`76256439`](https://github.com/bcakmakoglu/vue-flow/commit/76256439bb59f2afb20a423b283d7232afece97f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix resize-observer throwing when node el doesn't exist but effect is run
+
+- [#707](https://github.com/bcakmakoglu/vue-flow/pull/707) [`e8c383ff`](https://github.com/bcakmakoglu/vue-flow/commit/e8c383ffeffb306ca18d2acfaf145efba3e11fa1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix nodes not using zIndex option
+
+- [#716](https://github.com/bcakmakoglu/vue-flow/pull/716) [`1685827d`](https://github.com/bcakmakoglu/vue-flow/commit/1685827d0ea1dc9864f95a1b3a54fbc43a296e5d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent writing `process.env` into umd build
+
+- [#714](https://github.com/bcakmakoglu/vue-flow/pull/714) [`1fa4ee1b`](https://github.com/bcakmakoglu/vue-flow/commit/1fa4ee1b8faf25ce83c6c8f37fa35531c54eba0c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wait until viewport helper is initialized before triggering viewport functions and pane ready event
+
 ## 1.15.1
 
 ### Patch Changes
