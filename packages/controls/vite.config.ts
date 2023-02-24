@@ -8,7 +8,7 @@ export default withConfig({
       formats: ['es', 'cjs', 'iife'],
       entry: resolve(__dirname, 'src/index.ts'),
       fileName: 'vue-flow-controls',
-      name: 'vueFlowControls',
+      name: 'VueFlowControls',
     },
   },
   plugins: [svgLoader() as any],
