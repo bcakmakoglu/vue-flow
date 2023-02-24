@@ -1,11 +1,15 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedGetters, D3Selection, GraphNode, State, ViewportFunctions } from '~/types'
 
+interface ExtendedViewport extends ViewportFunctions {
+  initialized: boolean
+}
+
 const DEFAULT_PADDING = 0.1
 
 const noop = () => {}
 
-const initialViewportHelper: ViewportFunctions = {
+const initialViewportHelper: ExtendedViewport = {
   zoomIn: noop,
   zoomOut: noop,
   zoomTo: noop,
@@ -15,6 +19,7 @@ const initialViewportHelper: ViewportFunctions = {
   project: (position) => position,
   setTransform: noop,
   getTransform: () => ({ x: 0, y: 0, zoom: 1 }),
+  initialized: false,
 }
 
 export default (state: State, getters: ComputedGetters) => {
@@ -39,9 +44,10 @@ export default (state: State, getters: ComputedGetters) => {
     }
   }
 
-  return computed<ViewportFunctions>(() => {
-    if (d3Zoom && d3Selection) {
+  return computed<ExtendedViewport>(() => {
+    if (d3Zoom && d3Selection && dimensions.width && dimensions.height) {
       return {
+        initialized: true,
         zoomIn: (options) => {
           zoom(1.2, options?.duration)
         },
