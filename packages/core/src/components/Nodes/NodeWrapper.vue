@@ -92,7 +92,7 @@ onUpdateNodeInternals((updateIds) => {
 
 watchEffect(
   (onCleanup) => {
-    if (!node.hidden) {
+    if (!node.hidden && nodeElement.value) {
       props.resizeObserver.observe(nodeElement.value as HTMLDivElement)
 
       onCleanup(() => props.resizeObserver.unobserve(nodeElement.value as HTMLDivElement))
