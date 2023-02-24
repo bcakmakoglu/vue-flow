@@ -6,6 +6,6 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["vite.config.ts"],
+  "include": ["vite.config.ts", "vite.config.iife.ts"],
   "files": ["package.json"]
 }
