@@ -1,14 +1,11 @@
 import EdgeAnchor from './EdgeAnchor'
-import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType, MouseTouchEvent } from '~/types'
+import type { Connection, EdgeComponent, GraphEdge, HandleType, MouseTouchEvent } from '~/types'
 import { ConnectionMode, Position } from '~/types'
 
 interface Props {
   id: string
   type: EdgeComponent | Function | Object | false
   name: string
-  selectable?: boolean
-  focusable?: boolean
-  updatable?: EdgeUpdatable
   edge: GraphEdge
 }
 
