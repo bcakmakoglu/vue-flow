@@ -68,6 +68,7 @@ const dragging = useDrag({
   id,
   el: nodeElement,
   disabled: computed(() => !draggable),
+  selectable: $$(selectable),
   onStart(event, node, nodes) {
     emit.dragStart({ event, node, nodes, intersections })
   },
