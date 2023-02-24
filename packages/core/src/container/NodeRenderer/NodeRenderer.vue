@@ -1,21 +1,10 @@
 <script lang="ts" setup>
 import { NodeWrapper } from '../../components'
-import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
+import type { GraphNode, NodeComponent } from '../../types'
 
 const slots = inject(Slots)
 
-const {
-  nodesDraggable,
-  nodesFocusable,
-  elementsSelectable,
-  nodesConnectable,
-  nodes,
-  getNodes,
-  getNodesInitialized,
-  getNodeTypes,
-  updateNodeDimensions,
-  emits,
-} = $(useVueFlow())
+const { nodes, getNodes, getNodesInitialized, getNodeTypes, updateNodeDimensions, emits } = $(useVueFlow())
 
 let resizeObserver = $ref<ResizeObserver>()
 
@@ -43,12 +32,6 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => resizeObserver?.disconnect())
-
-const draggable = (nodeDraggable?: boolean) => (typeof nodeDraggable === 'undefined' ? nodesDraggable : nodeDraggable)
-const selectable = (nodeSelectable?: boolean) => (typeof nodeSelectable === 'undefined' ? elementsSelectable : nodeSelectable)
-const connectable = (nodeConnectable?: HandleConnectable) =>
-  typeof nodeConnectable === 'undefined' ? nodesConnectable : nodeConnectable
-const focusable = (nodeFocusable?: boolean) => (typeof nodeFocusable === 'undefined' ? nodesFocusable : nodeFocusable)
 
 function getType(type?: string, template?: GraphNode['template']) {
   const name = type || 'default'
@@ -92,10 +75,6 @@ export default {
         :resize-observer="resizeObserver"
         :type="getType(node.type, node.template)"
         :name="node.type || 'default'"
-        :draggable="draggable(node.draggable)"
-        :selectable="selectable(node.selectable)"
-        :connectable="connectable(node.connectable)"
-        :focusable="focusable(node.focusable)"
         :node="node"
       />
     </template>
