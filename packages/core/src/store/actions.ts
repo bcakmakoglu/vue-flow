@@ -25,6 +25,10 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
   const viewportHelper = $(useViewport(state, getters))
 
+  until(() => viewportHelper.initialized)
+    .toBe(true)
+    .then(() => {})
+
   const nodeIds = $computed(() => state.nodes.map((n) => n.id))
   const edgeIds = $computed(() => state.edges.map((e) => e.id))
 
@@ -632,26 +636,33 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     getIntersectingNodes,
     isNodeIntersecting,
     panBy,
-    fitView: (params = { padding: 0.1 }) => {
+    fitView: async (params = { padding: 0.1 }) => {
+      await until(() => viewportHelper.initialized).toBe(true)
       viewportHelper.fitView(params)
     },
-    zoomIn: (options) => {
+    zoomIn: async (options) => {
+      await until(() => viewportHelper.initialized).toBe(true)
       viewportHelper.zoomIn(options)
     },
-    zoomOut: (options) => {
+    zoomOut: async (options) => {
+      await until(() => viewportHelper.initialized).toBe(true)
       viewportHelper.zoomOut(options)
     },
-    zoomTo: (zoomLevel, options) => {
+    zoomTo: async (zoomLevel, options) => {
+      await until(() => viewportHelper.initialized).toBe(true)
       viewportHelper.zoomTo(zoomLevel, options)
     },
-    setTransform: (transform, options) => {
+    setTransform: async (transform, options) => {
+      await until(() => viewportHelper.initialized).toBe(true)
       viewportHelper.setTransform(transform, options)
     },
     getTransform: () => viewportHelper.getTransform(),
-    setCenter: (x, y, options) => {
+    setCenter: async (x, y, options) => {
+      await until(() => viewportHelper.initialized).toBe(true)
       viewportHelper.setCenter(x, y, options)
     },
-    fitBounds: (bounds, options) => {
+    fitBounds: async (bounds, options) => {
+      await until(() => viewportHelper.initialized).toBe(true)
       viewportHelper.fitBounds(bounds, options)
     },
     project: (position) => viewportHelper.project(position),

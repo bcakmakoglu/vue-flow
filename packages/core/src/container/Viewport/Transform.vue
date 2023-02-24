@@ -2,23 +2,29 @@
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 
-const { id, viewport, emits, ...rest } = useVueFlow()
+const { id, viewport, emits, d3Zoom, d3Selection, dimensions, ...rest } = useVueFlow()
 
 let isReady = $ref(false)
 
-onMounted(async () => {
-  setTimeout(() => {
-    emits.paneReady({
-      id,
-      viewport,
-      emits,
-      ...rest,
-    })
+until(() => d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0)
+  .toBeTruthy()
+  .then(() => {
+    setTimeout(() => {
+      // emit pane ready event
+      emits.paneReady({
+        id,
+        viewport,
+        emits,
+        d3Zoom,
+        d3Selection,
+        dimensions,
+        ...rest,
+      })
 
-    // hide graph until nodes are ready, so we don't have jumping nodes
-    isReady = true
-  }, 1)
-})
+      // hide graph until nodes are ready, so we don't have jumping nodes
+      isReady = true
+    }, 1)
+  })
 </script>
 
 <script lang="ts">
