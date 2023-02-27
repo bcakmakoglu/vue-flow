@@ -18,6 +18,7 @@ const {
   getNodesInitialized,
   getEdgeTypes,
   elevateEdgesOnSelect,
+  dimensions,
 } = $(useVueFlow())
 
 const sourceNode = controlledComputed(
@@ -90,24 +91,31 @@ export default {
 </script>
 
 <template>
-  <svg v-for="group of groups" :key="group.level" class="vue-flow__edges vue-flow__container" :style="`z-index: ${group.level}`">
-    <MarkerDefinitions v-if="group.isMaxLevel" />
-    <g>
-      <EdgeWrapper
-        v-for="edge of group.edges"
-        :id="edge.id"
-        :key="edge.id"
-        :edge="edge"
-        :type="getType(edge.type, edge.template)"
-        :name="edge.type || 'default'"
-        :selectable="selectable(edge.selectable)"
-        :updatable="updatable(edge.updatable)"
-        :focusable="focusable(edge.focusable)"
-      />
-    </g>
-  </svg>
+  <template v-if="dimensions.width && dimensions.height">
+    <svg
+      v-for="group of groups"
+      :key="group.level"
+      class="vue-flow__edges vue-flow__container"
+      :style="`z-index: ${group.level}`"
+    >
+      <MarkerDefinitions v-if="group.isMaxLevel" />
+      <g>
+        <EdgeWrapper
+          v-for="edge of group.edges"
+          :id="edge.id"
+          :key="edge.id"
+          :edge="edge"
+          :type="getType(edge.type, edge.template)"
+          :name="edge.type || 'default'"
+          :selectable="selectable(edge.selectable)"
+          :updatable="updatable(edge.updatable)"
+          :focusable="focusable(edge.focusable)"
+        />
+      </g>
+    </svg>
 
-  <svg v-if="connectionLineVisible && !!sourceNode" class="vue-flow__edges vue-flow__connectionline vue-flow__container">
-    <ConnectionLine :source-node="sourceNode" />
-  </svg>
+    <svg v-if="connectionLineVisible && !!sourceNode" class="vue-flow__edges vue-flow__connectionline vue-flow__container">
+      <ConnectionLine :source-node="sourceNode" />
+    </svg>
+  </template>
 </template>
