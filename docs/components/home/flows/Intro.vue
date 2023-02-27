@@ -10,6 +10,7 @@ import Heart from '~icons/mdi/heart'
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const dark = ref(false)
+
 const animatedBackground = ref(false)
 
 onMounted(() => {
@@ -52,7 +53,7 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { onNodeClick, getNodes, fitView, findNode, setEdges, updateNodeInternals } = useVueFlow({
+const { onNodeClick, getNodes, findNode, setEdges, updateNodeInternals, fitView } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -201,12 +202,11 @@ const setNodes = () => {
   }
 
   nextTick(() => {
-    updateNodeInternals(getNodes.value.map((n) => n.id))
+    updateNodeInternals()
 
     fitView()
   })
 }
-
 const { stop } = useResizeObserver(el, useDebounceFn(setNodes, 5))
 onBeforeUnmount(stop)
 
