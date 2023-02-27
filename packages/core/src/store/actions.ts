@@ -431,13 +431,6 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     state.connectionStatus = null
 
     if (position) state.connectionPosition = position
-
-    state.hooks.connectStart.trigger({
-      event,
-      nodeId: startHandle.nodeId,
-      handleId: startHandle.handleId,
-      handleType: startHandle.type,
-    })
   }
 
   const updateConnection: Actions['updateConnection'] = (position, status = null) => {
@@ -454,8 +447,6 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     } else {
       state.connectionStartHandle = null
     }
-
-    state.hooks.connectEnd.trigger(event)
   }
 
   const getNodeRect = (
