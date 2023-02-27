@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.15.3
+
+### Patch Changes
+
+- [#720](https://github.com/bcakmakoglu/vue-flow/pull/720) [`bac0d735`](https://github.com/bcakmakoglu/vue-flow/commit/bac0d735b1df65945f12b866eb94eab4f7c70b01) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove duplicate connectStart and connectEnd emits
+
+- [#719](https://github.com/bcakmakoglu/vue-flow/pull/719) [`18b934eb`](https://github.com/bcakmakoglu/vue-flow/commit/18b934eb9e4163c9188e6d81d618f67716c8ef5e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - prevent selecting nodes when node selectable is false
+
+- [#719](https://github.com/bcakmakoglu/vue-flow/pull/719) [`a4b0b6b7`](https://github.com/bcakmakoglu/vue-flow/commit/a4b0b6b799636deca171eb4d438901fe4af330a9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make shouldReplaceId arg in updateEdge optional
+
+- [#719](https://github.com/bcakmakoglu/vue-flow/pull/719) [`7a2f1c3b`](https://github.com/bcakmakoglu/vue-flow/commit/7a2f1c3b21dc9acb3d311176be63f0990894ce52) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add noPanClassName when node is draggable
+
+- [#719](https://github.com/bcakmakoglu/vue-flow/pull/719) [`16bd9152`](https://github.com/bcakmakoglu/vue-flow/commit/16bd915214335af8ed3c82409836756e7dde6e35) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wait until all nodes are initialized before triggering viewport actions
+
 ## 1.15.2
 
 ### Patch Changes
