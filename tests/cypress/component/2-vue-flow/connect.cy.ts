@@ -74,19 +74,21 @@ describe('Check if nodes can be connected', () => {
     })
 
     it('creates connection by dragging', () => {
-      cy.get('.vue-flow__edge').should('have.length', 1)
+      cy.get('.vue-flow__edge')
+        .should('have.length', 1)
+        .then(() => {
+          expect(store.edges.value).to.have.length(1)
 
-      expect(store.edges.value).to.have.length(1)
+          const edge = store.edges.value[0]
+          expect(edge.source).to.eq('1')
+          expect(edge.target).to.eq('2')
 
-      const edge = store.edges.value[0]
-      expect(edge.source).to.eq('1')
-      expect(edge.target).to.eq('2')
+          const sourceHandleId = `1__handle-bottom`
+          const targetHandleId = `2__handle-top`
 
-      const sourceHandleId = `1__handle-bottom`
-      const targetHandleId = `2__handle-top`
-
-      expect(edge.sourceHandle).to.eq(sourceHandleId)
-      expect(edge.targetHandle).to.eq(targetHandleId)
+          expect(edge.sourceHandle).to.eq(sourceHandleId)
+          expect(edge.targetHandle).to.eq(targetHandleId)
+        })
     })
 
     describe('Emits events?', () => {
