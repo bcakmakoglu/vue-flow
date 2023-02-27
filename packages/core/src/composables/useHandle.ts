@@ -113,8 +113,6 @@ export default function useHandle({
         event,
       )
 
-      emits.connectStart({ event, nodeId, handleId, handleType })
-
       function onPointerMove(event: MouseTouchEvent) {
         connectionPosition = getEventPosition(event, containerBounds)
 
@@ -179,8 +177,6 @@ export default function useHandle({
             else onEdgeUpdate(event, connection)
           }
         }
-
-        emits.connectEnd(event)
 
         if (edgeUpdaterType) onEdgeUpdateEnd?.(event)
 
