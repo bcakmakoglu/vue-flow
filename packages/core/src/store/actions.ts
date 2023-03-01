@@ -286,24 +286,25 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   }
 
   const setNodes: Actions['setNodes'] = (nodes) => {
-    if (!state.initialized && !nodes.length) return
-    if (!state.nodes) state.nodes = []
+    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
+    if (!state.initialized && !nextNodes.length) return
 
-    state.nodes = createGraphNodes(curr, findNode, state.nodes)
+    state.nodes = createGraphNodes(nextNodes, findNode, state.nodes)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
-    if (!state.initialized && !edges.length) return
-    const curr = edges instanceof Function ? edges(state.edges) : edges
+    const nextEdges = edges instanceof Function ? edges(state.edges) : edges
 
-    state.edges = curr.reduce<GraphEdge[]>((res, edge) => {
+    if (!state.initialized && !nextEdges.length) return
+
+    state.edges = nextEdges.reduce<GraphEdge[]>((res, edge) => {
       const sourceNode = findNode(edge.source)!
       const targetNode = findNode(edge.target)!
 
       const missingSource = !sourceNode || typeof sourceNode === 'undefined'
       const missingTarget = !targetNode || typeof targetNode === 'undefined'
+
       if (missingSource) warn(`Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
       if (missingTarget) warn(`Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
       if (missingSource || missingTarget) return res
@@ -321,26 +322,28 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   }
 
   const setElements: Actions['setElements'] = (elements) => {
-    if (!state.initialized && !elements.length) return
-    const curr = elements instanceof Function ? elements([...state.nodes, ...state.edges]) : elements
+    const nextElements = elements instanceof Function ? elements([...state.nodes, ...state.edges]) : elements
 
-    setNodes(curr.filter(isNode))
-    setEdges(curr.filter(isEdge))
+    if (!state.initialized && !nextElements.length) return
+
+    setNodes(nextElements.filter(isNode))
+    setEdges(nextElements.filter(isEdge))
   }
 
   const addNodes: Actions['addNodes'] = (nodes) => {
-    const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
+    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    const graphNodes = createGraphNodes(curr, findNode, state.nodes)
+    const graphNodes = createGraphNodes(nextNodes, findNode, state.nodes)
+
     const changes = graphNodes.map(createAdditionChange)
 
     if (changes.length) state.hooks.nodesChange.trigger(changes)
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
-    const curr = params instanceof Function ? params(state.edges) : params
+    const nextEdges = params instanceof Function ? params(state.edges) : params
 
-    const changes = curr.reduce((acc, param) => {
+    const changes = nextEdges.reduce((acc, param) => {
       const edge = addEdgeToStore(
         {
           ...param,
@@ -348,12 +351,14 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
         },
         state.edges,
       )
+
       if (edge) {
         const sourceNode = findNode(edge.source)!
         const targetNode = findNode(edge.target)!
 
         const missingSource = !sourceNode || typeof sourceNode === 'undefined'
         const missingTarget = !targetNode || typeof targetNode === 'undefined'
+
         if (missingSource) warn(`Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
         if (missingTarget) warn(`Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
         if (missingTarget || missingSource) return acc
