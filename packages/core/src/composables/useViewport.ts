@@ -23,11 +23,16 @@ const initialViewportHelper: ExtendedViewport = {
 }
 
 export default (state: State, getters: ComputedGetters) => {
-  const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid } = $(state)
+  const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid, hooks } =
+    $(state)
 
   const { getNodes } = $(getters)
 
-  const nodesInitialized = computed(() => nodes.filter((node) => node.initialized).length === nodes.length)
+  const nodesInitialized = ref(false)
+
+  hooks.nodesInitialized.on(() => {
+    nodesInitialized.value = true
+  })
 
   const isReady = computed(() => !!d3Zoom && !!d3Selection && !!dimensions.width && !!dimensions.height && nodesInitialized.value)
 
