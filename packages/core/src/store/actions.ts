@@ -400,12 +400,12 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       }
     })
 
-    if (nodeChanges.length) {
-      state.hooks.nodesChange.trigger(nodeChanges)
-    }
-
     if (edgeChanges.length) {
       state.hooks.edgesChange.trigger(edgeChanges)
+    }
+
+    if (nodeChanges.length) {
+      state.hooks.nodesChange.trigger(nodeChanges)
     }
   }
 
