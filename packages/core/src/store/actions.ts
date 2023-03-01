@@ -147,7 +147,12 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     }, [])
 
     if (state.fitViewOnInit && !fitViewOnInitDone) {
-      viewportHelper.fitView()
+      until(() => viewportHelper.initialized)
+        .toBe(true)
+        .then(() => {
+          viewportHelper.fitView()
+        })
+
       fitViewOnInitDone = true
     }
 
