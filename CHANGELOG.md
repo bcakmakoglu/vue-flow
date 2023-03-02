@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.3] - 2023-03-02
+
+[585f1e8](585f1e8d6a4c8da239d25d2dff9ad7ff8b40a3fc)...[77d7ba4](77d7ba4dadc1b2c4f2752937463f853953c14811)
+
+### Bug Fixes
+
+- Prevent selecting nodes on drag when selectable disabled ([7c026f0](7c026f084ae5a35eb8972e1d8b77dd40c0359141))
+- Wait until nodes are initialized ([c5fee5c](c5fee5c4f519e167755c1df16ff17b96a0b0e207))
+- Make shouldReplaceId arg in updateEdge optional ([f16e4db](f16e4dbadbdeb3242d91ac6e9fe31ab3cc8a5644))
+- Remove duplicate connect start/end emits ([22c4362](22c43628405567e844484b1c488986b1133837d0))
+- Wait until fitting view on init ([b509b11](b509b11bfc5e6aefc3f92f16763142e4766f6e61))
+- Remove edges before nodes ([77d7ba4](77d7ba4dadc1b2c4f2752937463f853953c14811))
+
+### Miscellaneous Tasks
+
+- Cleanup props ([320ea10](320ea10c88e7d2e78189a135ffec886d257e37ad))
+- Cleanup types ([ee8ccfe](ee8ccfe2ccebfe8555f93c9d0fa3f59b069388e7))
+- Revert edge renderer & wrapper ([addd0bb](addd0bbb67c72cf4bbdb91e48047d782f84037d0))
+- Revert node renderer & wrapper ([566ba8e](566ba8e1f66d7c0451c4b7e944a5dcf9c02c01d6))
+- Wait to find edge ([c91aac7](c91aac782d9180d9c2e07ea8053841d2f8857f06))
+- Cleanup viewport helper ([ab78dc7](ab78dc7de1c9030dcb98e965aa7010158f657464))
+
+### Refactor
+
+- Cleanup edge and node renderer ([4d535ed](4d535ed34c68b1b50fd886e7b9102b7a19078fc2))
+- Cleanup node styles ([e3e3510](e3e35109f151b3bc2acf43259005947cf5828e01))
+- Hide edges when we have no dimensions ([50ee96d](50ee96d0c16bd01a06c6d4ccb370a58ca9eaa911))
+- Update intro ([5df92c3](5df92c346303677673c1eaad4e78f33fc44047ec))
+- Trigger el functions before checking arr length ([fc86787](fc867878fa095f7188acab427391883893918552))
+
+### Testing
+
+- Update connect tests to check if events were emitted ([13db453](13db453b661b21840689afb7eb1e467f0a43fa1d))
+
 ## [1.15.2] - 2023-02-24
 
 [23b084e](23b084e8d23cedc9e60224444ff865a1cf29340b)...[585f1e8](585f1e8d6a4c8da239d25d2dff9ad7ff8b40a3fc)
