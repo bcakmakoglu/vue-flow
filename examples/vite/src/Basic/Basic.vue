@@ -14,13 +14,26 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onNodeDragStop, onEdgeClick, onConnect, addEdges, setTransform, toObject, fitView, onPaneReady, setNodes, setEdges } =
-  useVueFlow({
-    minZoom: 0.2,
-    maxZoom: 4,
-    connectOnClick: true,
-    fitViewOnInit: false,
-  })
+const {
+  onNodeDragStop,
+  onEdgeClick,
+  onConnect,
+  addEdges,
+  setTransform,
+  onEdgesChange,
+  onPaneReady,
+  setNodes,
+  setEdges,
+  onConnectStart,
+  findEdge,
+  removeNodes,
+} = useVueFlow({
+  minZoom: 0.2,
+  maxZoom: 4,
+  connectOnClick: true,
+  fitViewOnInit: false,
+  elementsSelectable: false,
+})
 
 onNodeDragStop((e) => console.log('drag stop', e.event))
 onEdgeClick(console.log)
@@ -36,7 +49,20 @@ const updatePos = () =>
     }
   })
 
+onEdgesChange((changes) => {
+  changes.forEach((change) => {
+    if (change.type === 'remove') {
+      const edge = findEdge(change.id)
+      if (edge) {
+        console.log(edge)
+      }
+    }
+  })
+})
+
 onPaneReady((instance) => {
+  instance.fitView()
+
   setNodes([
     { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
     { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
@@ -48,11 +74,9 @@ onPaneReady((instance) => {
     { id: 'e1-2', source: '1', target: '2', animated: true },
     { id: 'e1-3', source: '1', target: '3' },
   ])
-
-  instance.fitView()
 })
 
-const logToObject = () => console.log(toObject())
+const logToObject = () => removeNodes(['1'])
 const resetTransform = () => setTransform({ x: 0, y: 0, zoom: 1 })
 const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 </script>
