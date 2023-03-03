@@ -7,7 +7,7 @@ const { smaller } = useBreakpoints(breakpointsTailwind)
 
 const isMobile = smaller('md')
 
-const { blobity, reset } = useBlobity()
+const { blobity } = useBlobity()
 
 const usesDark = useDark({
   storageKey: 'vuepress-color-scheme',
@@ -22,7 +22,7 @@ onMounted(() => {
   usesDark.value = html.classList.contains('dark')
 
   const observer = new MutationObserver((mutations) => {
-    for (const m of mutations) {
+    for (const _ of mutations) {
       dark.value = html.classList.contains('dark')
     }
   })
@@ -42,7 +42,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative h-[calc(100vh-var(--vp-nav-height-mobile))] lg:h-[calc(100vh-var(--vp-nav-height))]">
+  <div class="relative h-[calc(100vh-var(--vp-nav-height-mobile))] lg:h-[calc(100vh-var(--vp-nav-height)-176px)]">
     <Intro />
   </div>
 </template>
@@ -50,6 +50,10 @@ onMounted(() => {
 <style>
 button:focus {
   outline: none;
+}
+
+.VPHome {
+  @apply !pb-24;
 }
 
 h1 {

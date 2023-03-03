@@ -5,9 +5,7 @@ layout: home
 
 <Home />
 
-<Suspense>
-  <Banner />
-</Suspense>
+<Banner />
 
 <Features />
 
