@@ -1,8 +1,11 @@
+import { meta } from './meta'
+
 export default defineAppConfig({
   docus: {
-    title: 'Vue Flow',
-    description: 'Visualize your ideas with Vue Flow, a highly customizable Vue3 Flowchart library.',
-    image: 'https://user-images.githubusercontent.com/904724/185365452-87b7ca7b-6030-4813-a2db-5e65c785bf88.png',
+    title: meta.title,
+    description: meta.description,
+    image: meta.img,
+    url: meta.url,
     socials: {
       twitter: 'bcakmakoglu',
       github: 'bcakmakoglu/vue-flow',
@@ -18,8 +21,9 @@ export default defineAppConfig({
       exclude: [],
     },
     header: {
-      logo: true,
-      showLinkIcon: true,
+      title: 'Vue Flow',
+      logo: false,
+      showLinkIcon: false,
       exclude: [],
     },
     footer: {

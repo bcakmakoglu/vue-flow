@@ -1,0 +1,24 @@
+@import '@vue-flow/core/dist/style.css';
+@import '@vue-flow/core/dist/theme-default.css';
+
+:root {
+  --primary: #BB86FC;
+  --secondary: #03dac5;
+  --vp-c-brand: #10b981;
+  --vp-c-accent: #BB86FC;
+}
+
+html, body {
+  @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
+}
+
+.docs-button {
+  @apply z-1 shadow-lg transition-colors duration-200 text-white font-semibold text-lg mt-4 px-5 py-3 rounded-lg bg-green-500;
+}
+
+.vue-repl pre, .vue-repl pre[class*=language-] {
+  padding: unset;
+  margin: unset;
+  border-radius: unset;
+  line-height: unset;
+}
