@@ -1,3 +1,4 @@
+import type { Plugin as VuePlugin } from 'vue'
 import type { ConfigFactory, FlowOptions, Plugin, PluginHooks, State, VueFlowStore } from '~/types'
 
 /**
@@ -136,4 +137,8 @@ export const createVueFlow = (options?: ConfigFactory) => {
   if (options) app.setConfig(options)
 
   return app
+}
+
+export const VueFlowPlugin: VuePlugin = (app) => {
+  app.config.globalProperties.$vueFlow = createVueFlow()
 }

@@ -5,7 +5,11 @@ type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 export default (options?: FlowProps): VueFlowStore => {
-  const storage = createVueFlow()
+  const storage = getCurrentInstance()?.appContext.config.globalProperties.$vueFlow
+
+  if (!storage) {
+    throw new VueFlowError('No Vue Flow App found. Did you forget to install the Vue Flow Plugin?', 'useVueFlow')
+  }
 
   const scope = getCurrentScope() as Scope
 

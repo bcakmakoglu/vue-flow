@@ -3,6 +3,8 @@
  * @module @vue-flow/core
  */
 
+import './vue-shims'
+
 export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
 
 export { default as Handle } from './components/Handle/Handle.vue'
