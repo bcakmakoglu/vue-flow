@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.4] - 2023-03-03
+
+[77d7ba4](77d7ba4dadc1b2c4f2752937463f853953c14811)...[2fde41e](2fde41e3d313bb2932420ca4a5c694b7cf940775)
+
+### Bug Fixes
+
+- Compare internal node dimensions when updating ([da7dc3d](da7dc3de4a564be05de2657e7b60a53d6871cdc3))
+
+### Miscellaneous Tasks
+
+- Update home page ([6d19bb1](6d19bb165bf4cb0e599500bb58b7876f33b92e2c))
+- Add transition to banner numbers ([b8b9606](b8b9606496fb48f0d9aa359cdc74ed98b776c9a3))
+- Remove transitions ([3d6cb4b](3d6cb4b912309854391fc042dfcc5441af203987))
+
 ## [1.15.3] - 2023-03-02
 
 [585f1e8](585f1e8d6a4c8da239d25d2dff9ad7ff8b40a3fc)...[77d7ba4](77d7ba4dadc1b2c4f2752937463f853953c14811)
