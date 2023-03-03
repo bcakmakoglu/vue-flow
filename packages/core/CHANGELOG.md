@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.15.4
+
+### Patch Changes
+
+- [#728](https://github.com/bcakmakoglu/vue-flow/pull/728) [`6b149ca6`](https://github.com/bcakmakoglu/vue-flow/commit/6b149ca69a634c2cc51138e01098dbdc0bdf6620) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Compare internal node dimensions against calculated ones when trying to update node dimensions
+
 ## 1.15.3
 
 ### Patch Changes
