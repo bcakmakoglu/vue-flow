@@ -126,7 +126,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
         const doUpdate = !!(
           dimensions.width &&
           dimensions.height &&
-          (node.width !== dimensions.width || node.height !== dimensions.height || update.forceUpdate)
+          (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height || update.forceUpdate)
         )
 
         if (doUpdate) {
