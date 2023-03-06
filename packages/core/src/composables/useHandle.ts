@@ -168,6 +168,7 @@ export default function useHandle({
 
           handleDomNode.classList.add('connecting', 'vue-flow__handle-connecting')
           handleDomNode.classList.toggle('valid', isValid)
+          // todo: remove this in next major version
           handleDomNode.classList.toggle('vue-flow__handle-valid', isValid)
         }
       }
