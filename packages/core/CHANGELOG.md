@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.15.5
+
+### Patch Changes
+
+- [#734](https://github.com/bcakmakoglu/vue-flow/pull/734) [`123ad512`](https://github.com/bcakmakoglu/vue-flow/commit/123ad5126a480e11735ff58d8f039385243a127f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if handle is connectable before trying to validate
+
+- [#737](https://github.com/bcakmakoglu/vue-flow/pull/737) [`f2b3cd87`](https://github.com/bcakmakoglu/vue-flow/commit/f2b3cd874a4c3e3494e093afd2a5ca34c756864a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Blur node element after unselecting
+
 ## 1.15.4
 
 ### Patch Changes
