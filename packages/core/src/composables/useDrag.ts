@@ -142,7 +142,15 @@ function useDrag(params: UseDragParams) {
               }
 
               if (node && selectable && selectNodesOnDrag) {
-                handleNodeClick(node, multiSelectionActive, addSelectedNodes, removeSelectedElements, $$(nodesSelectionActive))
+                handleNodeClick(
+                  node,
+                  multiSelectionActive,
+                  addSelectedNodes,
+                  removeSelectedElements,
+                  $$(nodesSelectionActive),
+                  false,
+                  el as HTMLDivElement,
+                )
               }
 
               const pointerPos = getPointerPosition(event)

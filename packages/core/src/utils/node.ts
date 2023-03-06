@@ -31,6 +31,7 @@ export function handleNodeClick(
   removeSelectedNodes: Actions['removeSelectedNodes'],
   nodesSelectionActive: Ref<boolean>,
   unselect = false,
+  nodeEl: HTMLDivElement,
 ) {
   nodesSelectionActive.value = false
 
@@ -38,5 +39,7 @@ export function handleNodeClick(
     addSelectedNodes([node])
   } else if (unselect || (node.selected && multiSelectionActive)) {
     removeSelectedNodes([node])
+
+    nextTick(nodeEl.blur)
   }
 }
