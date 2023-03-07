@@ -14,6 +14,7 @@ const {
   connectionLineOptions,
   connectionStatus,
   viewport,
+  findNode,
 } = $(useVueFlow())
 
 const oppositePosition = {
@@ -26,7 +27,12 @@ const oppositePosition = {
 const connectionLineComponent = inject(Slots)?.['connection-line']
 
 const handleId = $computed(() => connectionStartHandle!.handleId)
+
 const type = computed(() => connectionStartHandle!.type)
+
+const targetNode = $computed(
+  () => (connectionStartHandle?.result && findNode(connectionStartHandle.result.connection.target)) || null,
+)
 
 const sourceHandle = $computed(
   () =>
@@ -34,6 +40,18 @@ const sourceHandle = $computed(
       ? sourceNode.handleBounds[type.value]?.find((d) => d.id === handleId)
       : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find((d) => d.id === handleId)) ||
     sourceNode.handleBounds[type.value ?? 'source']?.[0],
+)
+
+const targetHandle = $computed(
+  () =>
+    (targetNode &&
+      ((connectionMode === ConnectionMode.Strict
+        ? targetNode.handleBounds[type.value === 'source' ? 'target' : 'source']?.find((d) => d.id === handleId)
+        : [...(targetNode.handleBounds.source || []), ...(targetNode.handleBounds.target || [])]?.find(
+            (d) => d.id === handleId,
+          )) ||
+        targetNode.handleBounds[type.value ?? 'source']?.[0])) ||
+    null,
 )
 
 const sourceHandleX = $computed(() => (sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2))
@@ -111,6 +129,8 @@ export default {
         targetPosition,
         sourceNode,
         sourceHandle,
+        targetNode,
+        targetHandle,
         markerEnd: `url(#${getMarkerId(connectionLineOptions.markerEnd)})`,
         markerStart: `url(#${getMarkerId(connectionLineOptions.markerStart)})`,
         connectionStatus,
