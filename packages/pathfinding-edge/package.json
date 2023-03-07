@@ -44,7 +44,7 @@
     "typescript-transform-paths": "^3.4.6",
     "vite": "^4.1.4",
     "vue": "^3.2.25",
-    "vue-tsc": "^1.1.5"
+    "vue-tsc": "^1.2.0"
   },
   "publishConfig": {
     "access": "public",
