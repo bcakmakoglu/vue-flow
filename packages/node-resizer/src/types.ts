@@ -41,6 +41,8 @@ export interface NodeResizerProps {
   isVisible?: boolean
   minWidth?: number
   minHeight?: number
+  maxWidth?: number
+  maxHeight?: number
   shouldResize?: ShouldResize
   keepAspectRatio?: boolean | number
 }
@@ -65,17 +67,21 @@ export interface ResizeControlProps {
   color?: string
   minWidth?: number
   minHeight?: number
+  maxWidth?: number
+  maxHeight?: number
   position?: ControlPosition
   variant?: ResizeControlVariant
   shouldResize?: ShouldResize
   keepAspectRatio?: boolean | number
 }
 
-export interface ResizeControlLineProps {
+export interface ResizeControlLineProps extends ResizeControlProps {
   nodeId?: string
   color?: string
   minWidth?: number
   minHeight?: number
+  maxWidth?: number
+  maxHeight?: number
   variant?: ResizeControlVariant
   position?: ControlLinePosition
   keepAspectRatio?: boolean | number
