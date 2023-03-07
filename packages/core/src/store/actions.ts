@@ -298,7 +298,17 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
     if (!state.initialized && !nextEdges.length) return
 
-    state.edges = nextEdges.reduce<GraphEdge[]>((res, edge) => {
+    const validEdges = state.isValidConnection
+      ? nextEdges.filter((edge) =>
+          state.isValidConnection!(edge, {
+            edges: state.edges,
+            sourceNode: findNode(edge.source)!,
+            targetNode: findNode(edge.target)!,
+          }),
+        )
+      : nextEdges
+
+    state.edges = validEdges.reduce<GraphEdge[]>((res, edge) => {
       const sourceNode = findNode(edge.source)!
       const targetNode = findNode(edge.target)!
 
@@ -343,7 +353,17 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const addEdges: Actions['addEdges'] = (params) => {
     const nextEdges = params instanceof Function ? params(state.edges) : params
 
-    const changes = nextEdges.reduce((acc, param) => {
+    const validEdges = state.isValidConnection
+      ? nextEdges.filter((edge) =>
+          state.isValidConnection!(edge, {
+            edges: state.edges,
+            sourceNode: findNode(edge.source)!,
+            targetNode: findNode(edge.target)!,
+          }),
+        )
+      : nextEdges
+
+    const changes = validEdges.reduce((acc, param) => {
       const edge = addEdgeToStore(
         {
           ...param,

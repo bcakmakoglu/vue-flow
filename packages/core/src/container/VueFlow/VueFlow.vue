@@ -45,6 +45,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   nodesFocusable: undefined,
   autoPanOnConnect: undefined,
   autoPanOnNodeDrag: undefined,
+  isValidConnection: undefined,
 })
 
 const emit = defineEmits<{
