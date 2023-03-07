@@ -27,7 +27,7 @@ import { mount } from 'cypress/vue'
 import { VueFlow } from '@vue-flow/core'
 import type { FlowProps } from '@vue-flow/core'
 
-const mountVueFlow = (props?: FlowProps, attrs?: Record<string, any>) => {
+const mountVueFlow = (props?: FlowProps, attrs?: Record<string, any>, slots?: Record<string, any>) => {
   cy.mount(VueFlow as any, {
     props: {
       id: 'test',
@@ -42,6 +42,7 @@ const mountVueFlow = (props?: FlowProps, attrs?: Record<string, any>) => {
       },
       ...attrs,
     } as Record<string, any>,
+    slots,
   })
 }
 
@@ -67,6 +68,36 @@ const retry = (assertion: Function, { interval = 20, timeout = 1000 } = {}) => {
   })
 }
 
+const dragConnection = (from: string, to: string) => {
+  cy.window().then((win) => {
+    const sourceHandle = cy.get(`[data-nodeid="${from}"].source`)
+    const targetHandle = cy.get(`[data-nodeid="${to}"].target`)
+
+    targetHandle.then((handle) => {
+      const target = handle[0]
+      const { x, y } = target.getBoundingClientRect()
+
+      sourceHandle
+        .trigger('mousedown', {
+          button: 0,
+          force: true,
+          view: win,
+        })
+        .trigger('mousemove', {
+          clientX: x + 5,
+          clientY: y + 5,
+          force: true,
+        })
+        .trigger('mouseup', {
+          clientX: x + 5,
+          clientY: y + 5,
+          force: true,
+          view: win,
+        })
+    })
+  })
+}
+
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
@@ -79,6 +110,7 @@ declare global {
       viewPort: typeof useViewPort
       transformationPane: typeof useTransformationPane
       tryAssertion: typeof retry
+      dragConnection: typeof dragConnection
     }
   }
 }
@@ -92,6 +124,8 @@ Cypress.Commands.add('viewPort', useViewPort)
 Cypress.Commands.add('transformationPane', useTransformationPane)
 
 Cypress.Commands.add('tryAssertion', retry)
+
+Cypress.Commands.add('dragConnection', dragConnection)
 
 // Example use:
 // cy.mount(MyComponent)
