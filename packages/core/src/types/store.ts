@@ -27,7 +27,7 @@ import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
-import type { StartHandle } from './handle'
+import type { StartHandle, ValidHandleResult } from './handle'
 
 export interface UpdateNodeDimensionsParams {
   id: string
@@ -248,7 +248,7 @@ export interface Actions extends ViewportFunctions {
   /** start a connection */
   startConnection: (startHandle: StartHandle, position?: XYPosition, event?: MouseEvent | TouchEvent, isClick?: boolean) => void
   /** update connection position */
-  updateConnection: (position: XYPosition, status?: ConnectionStatus | null) => void
+  updateConnection: (position: XYPosition, result?: ValidHandleResult, status?: ConnectionStatus | null) => void
   /** end (or cancel) a connection */
   endConnection: (event?: MouseEvent | TouchEvent, isClick?: boolean) => void
 

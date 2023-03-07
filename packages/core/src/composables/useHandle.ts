@@ -156,6 +156,7 @@ export default function useHandle({
                 viewport.value,
               )
             : connectionPosition,
+          result,
           getConnectionStatus(!!prevClosestHandle, isValid),
         )
 
