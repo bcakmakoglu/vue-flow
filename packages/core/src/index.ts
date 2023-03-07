@@ -46,6 +46,7 @@ export {
   getMarkerId,
   getBoundsofRects,
   connectionExists,
+  clamp,
 } from './utils/graph'
 
 /**
