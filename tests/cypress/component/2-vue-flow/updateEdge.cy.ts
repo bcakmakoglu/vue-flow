@@ -37,9 +37,9 @@ describe('Check if edges are updatable', () => {
   it('updates edge', () => {
     cy.window().then((win) => {
       const edgeAnchor = cy.get('.vue-flow__edgeupdater[data-type="target"]')
-      const targetTargetHandle = cy.get(`[data-nodeid="3"].target`)
+      const targetHandle = cy.get(`[data-nodeid="3"].target`)
 
-      targetTargetHandle.then(async (handle) => {
+      targetHandle.then(async (handle) => {
         const target = handle[0]
         const { x, y } = target.getBoundingClientRect()
 

@@ -84,11 +84,7 @@ describe('Check if nodes can be connected', () => {
     store.connectOnClick.value = true
 
     beforeEach(() => {
-      const sourceHandle = cy.get(`[data-nodeid="1"].source`)
-      const targetHandle = cy.get(`[data-nodeid="2"].target`)
-
-      sourceHandle.click()
-      targetHandle.click()
+      cy.connect('1', '2')
 
       cy.get('.vue-flow__edge').should('have.length', 1)
     })
