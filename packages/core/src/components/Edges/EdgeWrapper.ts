@@ -29,6 +29,7 @@ const EdgeWrapper = defineComponent({
       removeSelectedEdges,
       findEdge,
       findNode,
+      isValidConnection,
     } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
@@ -60,7 +61,7 @@ const EdgeWrapper = defineComponent({
       nodeId,
       handleId,
       type,
-      isValidConnection: undefined,
+      isValidConnection: isValidConnection.value,
       edgeUpdaterType,
       onEdgeUpdate,
       onEdgeUpdateEnd,

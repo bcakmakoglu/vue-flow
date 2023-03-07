@@ -27,7 +27,7 @@ import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
-import type { StartHandle, ValidHandleResult } from './handle'
+import type { StartHandle, ValidConnectionFunc, ValidHandleResult } from './handle'
 
 export interface UpdateNodeDimensionsParams {
   id: string
@@ -89,6 +89,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   connectionPosition: XYPosition
   connectionRadius: number
   connectionStatus: ConnectionStatus | null
+  isValidConnection: ValidConnectionFunc | null
 
   connectOnClick: boolean
   edgeUpdaterRadius: number
