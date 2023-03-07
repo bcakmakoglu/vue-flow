@@ -6,6 +6,7 @@ import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionM
 import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { CustomEvent } from './hooks'
+import type { ValidConnectionFunc } from '~/types/handle'
 
 export type ElementData = any
 
@@ -119,6 +120,7 @@ export interface FlowProps {
   connectionLineStyle?: CSSProperties | null
   connectionLineOptions?: ConnectionLineOptions
   connectionRadius?: number
+  isValidConnection?: ValidConnectionFunc | null
   deleteKeyCode?: KeyFilter | null
   selectionKeyCode?: KeyFilter | null
   multiSelectionKeyCode?: KeyFilter | null

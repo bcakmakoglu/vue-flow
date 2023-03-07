@@ -5,7 +5,7 @@ interface UseHandleProps {
   handleId: MaybeRef<string | null>
   nodeId: MaybeRef<string>
   type: MaybeRef<HandleType>
-  isValidConnection?: ValidConnectionFunc
+  isValidConnection?: ValidConnectionFunc | null
   edgeUpdaterType?: MaybeRef<HandleType>
   onEdgeUpdate?: (event: MouseTouchEvent, connection: Connection) => void
   onEdgeUpdateEnd?: (event: MouseTouchEvent) => void
@@ -44,6 +44,7 @@ export default function useHandle({
     emits,
     viewport,
     edges,
+    isValidConnection: isValidConnectionProp,
   } = useVueFlow()
 
   let connection: Connection | null = null
@@ -59,10 +60,10 @@ export default function useHandle({
 
       const node = findNode(unref(nodeId))
 
-      let validConnectFunc = isValidConnection || alwaysValid
+      let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
 
       if (!isValidConnection) {
-        if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
+        if (node) isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
       }
 
       let prevClosestHandle: ConnectionHandle | null
@@ -136,7 +137,7 @@ export default function useHandle({
           nodeId,
           handleId,
           isTarget ? 'target' : 'source',
-          validConnectFunc,
+          isValidConnectionHandler,
           doc,
           edges.value,
           findNode,
@@ -218,12 +219,12 @@ export default function useHandle({
     if (!connectionClickStartHandle.value) {
       startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event, true)
     } else {
-      let validConnectFunc = isValidConnection ?? alwaysValid
+      let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
 
       const node = findNode(unref(nodeId))
 
       if (!isValidConnection) {
-        if (node) validConnectFunc = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
+        if (node) isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
       }
 
       if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
@@ -241,7 +242,7 @@ export default function useHandle({
         connectionClickStartHandle.value.nodeId,
         connectionClickStartHandle.value.handleId || null,
         connectionClickStartHandle.value.type,
-        validConnectFunc,
+        isValidConnectionHandler,
         doc,
         edges.value,
         findNode,
