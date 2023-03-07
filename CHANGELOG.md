@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.5] - 2023-03-07
+
+[2fde41e](2fde41e3d313bb2932420ca4a5c694b7cf940775)...[619ce7f](619ce7f4427d2b4257c8df5ccd2217b6ed18e7d7)
+
+### Bug Fixes
+
+- Check if handle is connectable ([f83c87d](f83c87db08f436264cb43f6da5fc44a341d8b6ba))
+- Blur node after unselect ([8cf8c51](8cf8c51e0ea372e93b81c3c665a2a0feaa476f02))
+
+### Miscellaneous Tasks
+
+- Add todo ([66e210a](66e210adf4bc76cf93bd7952acd4df0add13b7d6))
+- Cleanup deps ([36a12a6](36a12a6fe8136842f01cefee59fc77fd14c02b78))
+- Bump version ([619ce7f](619ce7f4427d2b4257c8df5ccd2217b6ed18e7d7))
+
 ## [1.15.4] - 2023-03-03
 
 [77d7ba4](77d7ba4dadc1b2c4f2752937463f853953c14811)...[2fde41e](2fde41e3d313bb2932420ca4a5c694b7cf940775)
