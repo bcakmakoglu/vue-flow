@@ -162,7 +162,7 @@ export default function useHandle({
 
         if (!prevClosestHandle && !isValid && !handleDomNode) return resetRecentHandle(prevActiveHandle)
 
-        if (connection.source !== connection.target && handleDomNode) {
+        if (connection && connection.source !== connection.target && handleDomNode) {
           resetRecentHandle(prevActiveHandle)
 
           prevActiveHandle = handleDomNode

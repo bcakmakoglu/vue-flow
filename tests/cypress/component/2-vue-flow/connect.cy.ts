@@ -44,33 +44,7 @@ describe('Check if nodes can be connected', () => {
       connectCount = 0
       endCount = 0
 
-      cy.window().then((win) => {
-        const sourceHandle = cy.get(`[data-nodeid="1"].source`)
-        const targetHandle = cy.get(`[data-nodeid="2"].target`)
-
-        targetHandle.then((handle) => {
-          const target = handle[0]
-          const { x, y } = target.getBoundingClientRect()
-
-          sourceHandle
-            .trigger('mousedown', {
-              button: 0,
-              force: true,
-              view: win,
-            })
-            .trigger('mousemove', {
-              clientX: x + 5,
-              clientY: y + 5,
-              force: true,
-            })
-            .trigger('mouseup', {
-              clientX: x + 5,
-              clientY: y + 5,
-              force: true,
-              view: win,
-            })
-        })
-      })
+      cy.dragConnection('1', '2')
     })
 
     it('creates connection by dragging', () => {
