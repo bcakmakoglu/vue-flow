@@ -443,9 +443,14 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     if (position) state.connectionPosition = position
   }
 
-  const updateConnection: Actions['updateConnection'] = (position, status = null) => {
-    state.connectionPosition = position
-    state.connectionStatus = status
+  const updateConnection: Actions['updateConnection'] = (position, result, status = null) => {
+    if (state.connectionStartHandle) {
+      state.connectionPosition = position
+      state.connectionStartHandle.result = result
+      state.connectionStatus = status
+    } else {
+      warn('Cannot update connection as it has not been started')
+    }
   }
 
   const endConnection: Actions['endConnection'] = (event, isClick) => {

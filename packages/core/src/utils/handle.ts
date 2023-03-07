@@ -8,6 +8,7 @@ import type {
   HandleType,
   NodeHandleBounds,
   ValidConnectionFunc,
+  ValidHandleResult,
   XYPosition,
 } from '~/types'
 
@@ -64,12 +65,6 @@ export function getClosestHandle(
   return closestHandle
 }
 
-interface Result {
-  handleDomNode: Element | null
-  isValid: boolean
-  connection: Connection
-}
-
 // checks if  and returns connection in fom of an object { source: 123, target: 312 }
 export function isValidHandle(
   event: MouseEvent | TouchEvent,
@@ -90,7 +85,7 @@ export function isValidHandle(
   const handleBelow = doc.elementFromPoint(x, y)
   const handleToCheck = handleBelow?.classList.contains('vue-flow__handle') ? handleBelow : handleDomNode
 
-  const result: Result = {
+  const result: ValidHandleResult = {
     handleDomNode: handleToCheck,
     isValid: false,
     connection: { source: '', target: '', sourceHandle: null, targetHandle: null },
