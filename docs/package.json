@@ -31,7 +31,6 @@
   "devDependencies": {
     "@iconify/json": "^2.1.95",
     "@types/canvas-confetti": "^1.6.0",
-    "@types/node": "^18.14.0",
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@windicss/plugin-scrollbar": "^1.2.3",

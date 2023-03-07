@@ -40,13 +40,13 @@
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@tooling/vite-config": "workspace:*",
-    "@types/d3-drag": "^3.0.1",
-    "@types/d3-selection": "^3.0.3",
+    "@types/d3-drag": "^3.0.2",
+    "@types/d3-selection": "^3.0.4",
     "@vue-flow/core": "workspace:*",
     "vite-plugin-vue-type-imports": "^0.2.4",
     "vite": "^4.1.4",
     "vue": "^3.2.25",
-    "vue-tsc": "^1.1.5"
+    "vue-tsc": "^1.2.0"
   },
   "publishConfig": {
     "access": "public",
