@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { defineConfig } from 'windicss/helpers'
 import typography from 'windicss/plugin/typography'
 import scrollbar from '@windicss/plugin-scrollbar'

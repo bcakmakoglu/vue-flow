@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import { readdirSync, statSync } from 'fs'
+import { resolve } from 'node:path'
+import { readdirSync, statSync } from 'node:fs'
 import type { DefaultTheme, HeadConfig } from 'vitepress'
 import { defineConfigWithTheme } from 'vitepress'
 import WindiCSS from 'vite-plugin-windicss'
