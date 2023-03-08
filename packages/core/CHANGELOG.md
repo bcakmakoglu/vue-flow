@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.16.1
+
+### Patch Changes
+
+- [#746](https://github.com/bcakmakoglu/vue-flow/pull/746) [`73a2b168`](https://github.com/bcakmakoglu/vue-flow/commit/73a2b16893b263d2fd64852b4e4acb0637a603ec) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Downgrade unplugin-auto-import to fix vue types issue
+
 ## 1.16.0
 
 ### Minor Changes
