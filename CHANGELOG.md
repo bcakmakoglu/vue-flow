@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.0] - 2023-03-08
+
+[619ce7f](619ce7f4427d2b4257c8df5ccd2217b6ed18e7d7)...[df87394](df87394ea4ec6733530193065550bd1646ba9f9e)
+
+### Bug Fixes
+
+- Force update node dimensions ([284e527](284e527a36283099baf21924370646d667f93a54))
+- Add connection target handle id to result type ([046ee41](046ee41e79b8fc1cb6d593a978a9b41d761c48b4))
+
+### Features
+
+- Export clamp util ([5297fdc](5297fdccbfbcd9e099f8aeff3eaa097c1cc474f1))
+- Add maxHeight and maxWidth props ([afc29db](afc29db489c9d765b1c48baaf5fc43cf0abb997e))
+- Store handle validation in store state ([9fb5515](9fb551569d827237cb1a5766ffb2af862e1349c2))
+- Pass targetNode and targetHandle as props ([dc23bc8](dc23bc8920d6a9d5bf33f83cc20259283c046dbe))
+- Add `isValidConnection` prop ([05bc748](05bc748100db824a23803a8607a78e1387c0d565))
+
+### Miscellaneous Tasks
+
+- Cleanup store state ([c74382f](c74382fe1d61dd7d90d866449767233c124ec630))
+- Update deps ([870c8fd](870c8fd40776fb9a4a713754258e3b89ce3a4a41))
+- Bump version ([df87394](df87394ea4ec6733530193065550bd1646ba9f9e))
+
+### Testing
+
+- Add custom connection line component test ([7519b31](7519b31b8fd5621e6ad8dd5ea3c4ac0affa826e9))
+- Add isValidConnection prop test ([929e2b5](929e2b5d049eff11f99e5f7a77c354c624d4756d))
+- Test if custom props are passed to custom connection line ([3f72713](3f72713e3ed5a1695cce9307ae13151bb78ae8bd))
+
 ## [1.15.5] - 2023-03-07
 
 [2fde41e](2fde41e3d313bb2932420ca4a5c694b7cf940775)...[619ce7f](619ce7f4427d2b4257c8df5ccd2217b6ed18e7d7)
