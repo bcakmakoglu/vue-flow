@@ -227,7 +227,7 @@ importers:
       postcss-nested: ^6.0.1
       ts-patch: ^2.1.0
       typescript-transform-paths: ^3.4.6
-      unplugin-auto-import: ^0.15.1
+      unplugin-auto-import: ^0.12.2
       unplugin-vue-macros: 1.8.2
       vite: ^4.1.4
       vue: ^3.2.25
@@ -249,7 +249,7 @@ importers:
       postcss-nested: 6.0.1_postcss@8.4.21
       ts-patch: 2.1.0_typescript@4.9.5
       typescript-transform-paths: 3.4.6_typescript@4.9.5
-      unplugin-auto-import: 0.15.1_@vueuse+core@9.13.0
+      unplugin-auto-import: 0.12.2_@vueuse+core@9.13.0
       unplugin-vue-macros: 1.8.2_qnq6tcennvnlbajhsceuubx7mq
       vite: 4.1.4
       vue: 3.2.47
@@ -450,7 +450,7 @@ importers:
       '@tooling/tsconfig': workspace:*
       '@vitejs/plugin-vue': ^4.0.0
       defu: ^6.1.2
-      unplugin-auto-import: ^0.15.1
+      unplugin-auto-import: ^0.12.2
       unplugin-vue-macros: 1.8.2
       vite: ^4.1.4
     devDependencies:
@@ -458,7 +458,7 @@ importers:
       '@tooling/tsconfig': link:../tsconfig
       '@vitejs/plugin-vue': 4.0.0_vite@4.1.4+vue@3.2.47
       defu: 6.1.2
-      unplugin-auto-import: 0.15.1
+      unplugin-auto-import: 0.12.2
       unplugin-vue-macros: 1.8.2_vite@4.1.4+vue@3.2.47
       vite: 4.1.4
 
@@ -7577,13 +7577,6 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /magic-string/0.30.0:
-    resolution: {integrity: sha512-LA+31JYDJLs82r2ScLrlz1GjSgu66ZV518eyWT+S8VhyQn/JL0u9MeBOvQMGYiPk1DBiSN9DDMOcXvigJZaViQ==}
-    engines: {node: '>=12'}
-    dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.14
-    dev: true
-
   /make-dir/3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
     engines: {node: '>=8'}
@@ -7768,13 +7761,6 @@ packages:
 
   /minimatch/7.0.1:
     resolution: {integrity: sha512-C4CrOG1kAnaIxQPTAoiAmZCR2up1yjDdseGpr8UCUw5UqBUao5E1q2bOv0cAX0+y8MUxcyrvkTsoj5DvGRnvdQ==}
-    engines: {node: '>=10'}
-    dependencies:
-      brace-expansion: 2.0.1
-    dev: true
-
-  /minimatch/7.4.2:
-    resolution: {integrity: sha512-xy4q7wou3vUoC9k1xGTXc+awNdGaGVHtFUaey8tiX4H1QRc04DZ/rmDFwNm2EBsuYEhAZ6SgMmYf3InGY6OauA==}
     engines: {node: '>=10'}
     dependencies:
       brace-expansion: 2.0.1
@@ -10310,24 +10296,6 @@ packages:
       - rollup
     dev: true
 
-  /unimport/3.0.2:
-    resolution: {integrity: sha512-OQ0hShpcerS1PSsISsyn/NV2dGe5xfdUn4p5nwOodq0iqq5xxYQrTidHqlFGjxIliPDtDJp80OeySzyPTjYHmA==}
-    dependencies:
-      '@rollup/pluginutils': 5.0.2
-      escape-string-regexp: 5.0.0
-      fast-glob: 3.2.12
-      local-pkg: 0.4.3
-      magic-string: 0.30.0
-      mlly: 1.1.1
-      pathe: 1.1.0
-      pkg-types: 1.0.2
-      scule: 1.0.0
-      strip-literal: 1.0.1
-      unplugin: 1.1.0
-    transitivePeerDependencies:
-      - rollup
-    dev: true
-
   /unist-util-stringify-position/2.0.3:
     resolution: {integrity: sha512-3faScn5I+hy9VleOq/qNbAd6pAx7iH5jYBMS9I1HgQVijz/4mv5Bvw5iw1sC/90CODiKo81G/ps8AJrISn687g==}
     dependencies:
@@ -10347,6 +10315,45 @@ packages:
   /unpipe/1.0.0:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
+    dev: true
+
+  /unplugin-auto-import/0.12.2:
+    resolution: {integrity: sha512-hC4w0GZjPjmLtrxV0u10XO350V9eCtQyEyifXr7B9UGD7SvbbIvKuOcHt58Zd4FAqZJXKWoXkpr9mdhBp85Usw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@vueuse/core': '*'
+    peerDependenciesMeta:
+      '@vueuse/core':
+        optional: true
+    dependencies:
+      '@antfu/utils': 0.7.2
+      '@rollup/pluginutils': 5.0.2
+      local-pkg: 0.4.3
+      magic-string: 0.27.0
+      unimport: 2.2.4
+      unplugin: 1.1.0
+    transitivePeerDependencies:
+      - rollup
+    dev: true
+
+  /unplugin-auto-import/0.12.2_@vueuse+core@9.13.0:
+    resolution: {integrity: sha512-hC4w0GZjPjmLtrxV0u10XO350V9eCtQyEyifXr7B9UGD7SvbbIvKuOcHt58Zd4FAqZJXKWoXkpr9mdhBp85Usw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@vueuse/core': '*'
+    peerDependenciesMeta:
+      '@vueuse/core':
+        optional: true
+    dependencies:
+      '@antfu/utils': 0.7.2
+      '@rollup/pluginutils': 5.0.2
+      '@vueuse/core': 9.13.0_vue@3.2.47
+      local-pkg: 0.4.3
+      magic-string: 0.27.0
+      unimport: 2.2.4
+      unplugin: 1.1.0
+    transitivePeerDependencies:
+      - rollup
     dev: true
 
   /unplugin-auto-import/0.14.4:
@@ -10369,53 +10376,6 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
-    dev: true
-
-  /unplugin-auto-import/0.15.1:
-    resolution: {integrity: sha512-xLS+BfVNy00Y3IkqBmEd0IThvjx8kSGIgSuf/1kETttiENK8sHrDA+poKkQxRCPTKYH4yWM6txGQANPTzwpUWQ==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@nuxt/kit': ^3.2.2
-      '@vueuse/core': '*'
-    peerDependenciesMeta:
-      '@nuxt/kit':
-        optional: true
-      '@vueuse/core':
-        optional: true
-    dependencies:
-      '@antfu/utils': 0.7.2
-      '@rollup/pluginutils': 5.0.2
-      local-pkg: 0.4.3
-      magic-string: 0.30.0
-      minimatch: 7.4.2
-      unimport: 3.0.2
-      unplugin: 1.1.0
-    transitivePeerDependencies:
-      - rollup
-    dev: true
-
-  /unplugin-auto-import/0.15.1_@vueuse+core@9.13.0:
-    resolution: {integrity: sha512-xLS+BfVNy00Y3IkqBmEd0IThvjx8kSGIgSuf/1kETttiENK8sHrDA+poKkQxRCPTKYH4yWM6txGQANPTzwpUWQ==}
-    engines: {node: '>=14'}
-    peerDependencies:
-      '@nuxt/kit': ^3.2.2
-      '@vueuse/core': '*'
-    peerDependenciesMeta:
-      '@nuxt/kit':
-        optional: true
-      '@vueuse/core':
-        optional: true
-    dependencies:
-      '@antfu/utils': 0.7.2
-      '@rollup/pluginutils': 5.0.2
-      '@vueuse/core': 9.13.0_vue@3.2.47
-      local-pkg: 0.4.3
-      magic-string: 0.30.0
-      minimatch: 7.4.2
-      unimport: 3.0.2
-      unplugin: 1.1.0
-    transitivePeerDependencies:
-      - rollup
     dev: true
 
   /unplugin-combine/0.6.0_vite@4.1.4:
