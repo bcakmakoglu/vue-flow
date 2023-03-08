@@ -1,10 +1,16 @@
 import { h } from 'vue'
 import type { FunctionalComponent } from 'vue'
-import type { ConnectionLineProps } from '@vue-flow/core'
+import type { ConnectionLineProps, GraphNode, HandleElement } from '@vue-flow/core'
 import { BaseEdge, getBezierPath } from '@vue-flow/core'
+
+let propTargetNode: GraphNode | null | undefined = null
+let propTargetHandle: HandleElement | null | undefined = null
 
 const CustomConnectionLine: FunctionalComponent<ConnectionLineProps> = (props: ConnectionLineProps) => {
   const path = getBezierPath(props)
+
+  propTargetNode = props.targetNode
+  propTargetHandle = props.targetHandle
 
   return h(BaseEdge, { path: path[0], class: 'test-custom-connection-line' })
 }
@@ -13,7 +19,6 @@ describe('Check if custom connection lines are rendered', () => {
   beforeEach(() => {
     cy.vueFlow(
       {
-        fitViewOnInit: false,
         modelValue: [
           {
             id: '1',
@@ -54,14 +59,19 @@ describe('Check if custom connection lines are rendered', () => {
             force: true,
           })
 
-        cy.get('.test-custom-connection-line').should('have.length', 1)
+        cy.get('.test-custom-connection-line')
+          .should('have.length', 1)
+          .then(() => {
+            expect(propTargetNode).to.not.be.null
+            expect(propTargetHandle).to.not.be.null
 
-        sourceHandle.trigger('mouseup', {
-          clientX: x + 5,
-          clientY: y + 5,
-          force: true,
-          view: win,
-        })
+            sourceHandle.trigger('mouseup', {
+              clientX: x + 5,
+              clientY: y + 5,
+              force: true,
+              view: win,
+            })
+          })
       })
     })
   })
