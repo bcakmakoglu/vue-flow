@@ -63,7 +63,10 @@ describe('Check if custom connection lines are rendered', () => {
           .should('have.length', 1)
           .then(() => {
             expect(propTargetNode).to.not.be.null
+            expect(propTargetNode?.id).to.equal('2')
+
             expect(propTargetHandle).to.not.be.null
+            expect(propTargetHandle?.id).to.equal('2__handle-top')
 
             sourceHandle.trigger('mouseup', {
               clientX: x + 5,
