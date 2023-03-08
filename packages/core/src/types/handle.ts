@@ -19,6 +19,7 @@ export interface ConnectionHandle {
 }
 
 export interface ValidHandleResult {
+  handleId: string | null
   handleDomNode: Element | null
   isValid: boolean
   connection: Connection

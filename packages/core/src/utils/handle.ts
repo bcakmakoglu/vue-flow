@@ -86,6 +86,7 @@ export function isValidHandle(
   const handleToCheck = handleBelow?.classList.contains('vue-flow__handle') ? handleBelow : handleDomNode
 
   const result: ValidHandleResult = {
+    handleId: null,
     handleDomNode: handleToCheck,
     isValid: false,
     connection: { source: '', target: '', sourceHandle: null, targetHandle: null },
@@ -103,6 +104,7 @@ export function isValidHandle(
     }
 
     result.connection = connection
+    result.handleId = handleId
 
     // in strict mode we don't allow target to target or source to source connections
     const isValid =

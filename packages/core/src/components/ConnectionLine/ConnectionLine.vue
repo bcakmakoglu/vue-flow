@@ -42,17 +42,21 @@ const sourceHandle = $computed(
     sourceNode.handleBounds[type.value ?? 'source']?.[0],
 )
 
-const targetHandle = $computed(
-  () =>
+const targetHandle = $computed(() => {
+  return (
     (targetNode &&
+      connectionStartHandle?.result?.handleId &&
       ((connectionMode === ConnectionMode.Strict
-        ? targetNode.handleBounds[type.value === 'source' ? 'target' : 'source']?.find((d) => d.id === handleId)
+        ? targetNode.handleBounds[type.value === 'source' ? 'target' : 'source']?.find(
+            (d) => d.id === connectionStartHandle?.result?.handleId,
+          )
         : [...(targetNode.handleBounds.source || []), ...(targetNode.handleBounds.target || [])]?.find(
-            (d) => d.id === handleId,
+            (d) => d.id === connectionStartHandle?.result?.handleId,
           )) ||
-        targetNode.handleBounds[type.value ?? 'source']?.[0])) ||
-    null,
-)
+        targetNode.handleBounds[type.value ?? 'target']?.[0])) ||
+    null
+  )
+})
 
 const sourceHandleX = $computed(() => (sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2))
 const sourceHandleY = $computed(() => (sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height))
