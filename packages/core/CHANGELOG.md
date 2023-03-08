@@ -1,5 +1,21 @@
 # @vue-flow/core
 
+## 1.16.0
+
+### Minor Changes
+
+- [#745](https://github.com/bcakmakoglu/vue-flow/pull/745) [`01e91b68`](https://github.com/bcakmakoglu/vue-flow/commit/01e91b68f88467f5b1c190a12e69bd7f952849d2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add handle validation result into store state
+
+- [#744](https://github.com/bcakmakoglu/vue-flow/pull/744) [`1bc50add`](https://github.com/bcakmakoglu/vue-flow/commit/1bc50add8ba8ea2298319341f6d3bd73e9ca39ab) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass targetNode and targetHandle as props to custom connection lines
+
+- [#740](https://github.com/bcakmakoglu/vue-flow/pull/740) [`a3ded51f`](https://github.com/bcakmakoglu/vue-flow/commit/a3ded51fa452e537c245768655368f089534091e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Export `clamp` utility
+
+- [#745](https://github.com/bcakmakoglu/vue-flow/pull/745) [`01e91b68`](https://github.com/bcakmakoglu/vue-flow/commit/01e91b68f88467f5b1c190a12e69bd7f952849d2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `isValidConnection` prop to allow for validating edge updates or use a global validator for all handles
+
+### Patch Changes
+
+- [#740](https://github.com/bcakmakoglu/vue-flow/pull/740) [`a3ded51f`](https://github.com/bcakmakoglu/vue-flow/commit/a3ded51fa452e537c245768655368f089534091e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Force update node dimensions when ResizeObserver callback is triggered
+
 ## 1.15.5
 
 ### Patch Changes
