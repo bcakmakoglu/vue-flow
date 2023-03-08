@@ -401,7 +401,8 @@ importers:
       '@vue-flow/core': workspace:*
       '@vue-flow/minimap': workspace:*
       cypress: ^12.7.0
-      eslint-plugin-chai-friendly: ^0.7.2
+      eslint-plugin-cypress: ^2.12.1
+      typescript: ^4.9.5
       vite: ^4.1.4
       vue: ^3.2.25
     dependencies:
@@ -414,7 +415,8 @@ importers:
       '@tooling/tsconfig': link:../tooling/tsconfig
       '@vitejs/plugin-vue': 4.0.0_vite@4.1.4+vue@3.2.47
       cypress: 12.7.0
-      eslint-plugin-chai-friendly: 0.7.2_eslint@8.35.0
+      eslint-plugin-cypress: 2.12.1_eslint@8.35.0
+      typescript: 4.9.5
       vite: 4.1.4
       vue: 3.2.47
 
@@ -5489,13 +5491,13 @@ packages:
       - typescript
     dev: true
 
-  /eslint-plugin-chai-friendly/0.7.2_eslint@8.35.0:
-    resolution: {integrity: sha512-LOIfGx5sZZ5FwM1shr2GlYAWV9Omdi+1/3byuVagvQNoGUuU0iHhp7AfjA1uR+4dJ4Isfb4+FwBJgQajIw9iAg==}
-    engines: {node: '>=0.10.0'}
+  /eslint-plugin-cypress/2.12.1_eslint@8.35.0:
+    resolution: {integrity: sha512-c2W/uPADl5kospNDihgiLc7n87t5XhUbFDoTl6CfVkmG+kDAb5Ux10V9PoLPu9N+r7znpc+iQlcmAqT1A/89HA==}
     peerDependencies:
-      eslint: '>=3.0.0'
+      eslint: '>= 3.2.1'
     dependencies:
       eslint: 8.35.0
+      globals: 11.12.0
     dev: true
 
   /eslint-plugin-es/4.1.0_eslint@8.35.0:
