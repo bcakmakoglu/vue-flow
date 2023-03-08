@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.3.0
+
+### Minor Changes
+
+- [#739](https://github.com/bcakmakoglu/vue-flow/pull/739) [`9e48211d`](https://github.com/bcakmakoglu/vue-flow/commit/9e48211de7a3ca34ecac2dbd2e0d580cd839e9c0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add maxHeight and maxWidth props to node resizer
+
 ## 1.2.2
 
 ### Patch Changes
