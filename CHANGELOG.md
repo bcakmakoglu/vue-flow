@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.1] - 2023-03-08
+
+[df87394](df87394ea4ec6733530193065550bd1646ba9f9e)...[15016ee](15016ee21a9a0e2247444dc880c4a0542702f54f)
+
+### Bug Fixes
+
+- Downgrade unplugin auto import ([2b0e6fd](2b0e6fd07273d67601accfcaf084bcb4c6fc2a0f))
+
+### Miscellaneous Tasks
+
+- Bump version ([15016ee](15016ee21a9a0e2247444dc880c4a0542702f54f))
+
 ## [1.16.0] - 2023-03-08
 
 [619ce7f](619ce7f4427d2b4257c8df5ccd2217b6ed18e7d7)...[df87394](df87394ea4ec6733530193065550bd1646ba9f9e)
