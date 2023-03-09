@@ -57,6 +57,9 @@ const EdgeWrapper = defineComponent({
 
     const targetNode = $computed(() => findNode(edge.target))
 
+    const edgeClass = $computed(() => (edge.class instanceof Function ? edge.class(edge) : edge.class))
+    const edgeStyle = $computed(() => (edge.style instanceof Function ? edge.style(edge) : edge.style))
+
     const { handlePointerDown } = useHandle({
       nodeId,
       handleId,
@@ -100,9 +103,6 @@ const EdgeWrapper = defineComponent({
         targetHandle,
         targetPosition,
       )
-
-      const edgeClass = edge.class instanceof Function ? edge.class(edge) : edge.class
-      const edgeStyle = edge.style instanceof Function ? edge.style(edge) : edge.style
 
       return h(
         'g',
