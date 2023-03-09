@@ -14,7 +14,9 @@ export default defineComponent({
       const style = (attrs.style ?? {}) as CSSProperties
       const slot = miniMapSlots[`node-${props.type}`]
 
-      if (slot) return slot!(props)
+      if (slot) {
+        return slot(props)
+      }
 
       return h('rect', {
         id: props.id,

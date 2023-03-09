@@ -62,7 +62,7 @@ export default function useHandle({
 
       let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
 
-      if (!isValidConnection) {
+      if (!isValidConnectionHandler) {
         if (node) isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
       }
 
@@ -223,7 +223,7 @@ export default function useHandle({
 
       const node = findNode(unref(nodeId))
 
-      if (!isValidConnection) {
+      if (!isValidConnectionHandler) {
         if (node) isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
       }
 
