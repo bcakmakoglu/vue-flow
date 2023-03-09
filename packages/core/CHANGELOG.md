@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.16.2
+
+### Patch Changes
+
+- [#751](https://github.com/bcakmakoglu/vue-flow/pull/751) [`060202db`](https://github.com/bcakmakoglu/vue-flow/commit/060202db427cfbed47bff82ee1aeb0d2aa054ecb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use computed properties for edge class and style props
+
+- [#750](https://github.com/bcakmakoglu/vue-flow/pull/750) [`e799cf6e`](https://github.com/bcakmakoglu/vue-flow/commit/e799cf6e3e660375ce8a1a7340873ab770b3e40e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct check if valid connection func was passed
+
 ## 1.16.1
 
 ### Patch Changes
