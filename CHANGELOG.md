@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.2] - 2023-03-10
+
+[15016ee](15016ee21a9a0e2247444dc880c4a0542702f54f)...[b5d579e](b5d579ed3069166dff4a2eeebb063f435563b6b5)
+
+### Bug Fixes
+
+- Check if valid connection func exists ([79a6fa3](79a6fa318cb4cc62c8bba6375469567c09059365))
+- Use computed for edge class and style ([5bd1eed](5bd1eed98e76e4955380d62f8186723a3adadcde))
+
 ## [1.16.1] - 2023-03-08
 
 [df87394](df87394ea4ec6733530193065550bd1646ba9f9e)...[15016ee](15016ee21a9a0e2247444dc880c4a0542702f54f)
