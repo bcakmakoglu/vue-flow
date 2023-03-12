@@ -499,6 +499,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     return [nodeRect, node, isRectObj]
   }
 
+  // todo: rename to `findIntersectingNodes`
   const getIntersectingNodes: Actions['getIntersectingNodes'] = (nodeOrRect, partially = true, nodes) => {
     const [nodeRect, node, isRect] = getNodeRect(nodeOrRect)
 
