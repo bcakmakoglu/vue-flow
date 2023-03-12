@@ -66,11 +66,13 @@ export enum Position {
   Bottom = 'bottom',
 }
 
+// todo: Rename to `Point`
 export interface XYPosition {
   x: number
   y: number
 }
 
+// todo: Rename to `AbsolutePoint`
 export type XYZPosition = XYPosition & { z: number }
 
 export interface Dimensions {
