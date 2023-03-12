@@ -104,6 +104,11 @@ const EdgeWrapper = defineComponent({
         targetPosition,
       )
 
+      edge.sourceX = sourceX
+      edge.sourceY = sourceY
+      edge.targetX = targetX
+      edge.targetY = targetY
+
       return h(
         'g',
         {
