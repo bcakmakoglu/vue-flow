@@ -1,21 +1,21 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { Connection, Edge, NodeProps } from '@vue-flow/core'
+import type { NodeProps } from '@vue-flow/core'
 import { Handle, Position } from '@vue-flow/core'
 
-interface ColorSelectorNodeProps extends NodeProps {
-  data: {
-    color: string
-    onChange: (event: any) => void
-  }
+interface Data {
+  color: string
+  onChange: (event: InputEvent) => void
+}
+
+interface ColorSelectorNodeProps extends NodeProps<Data, {}, 'selectorNode'> {
+  data: Data
 }
 const props = defineProps<ColorSelectorNodeProps>()
 
 const targetHandleStyle: CSSProperties = { background: '#555' }
 const sourceHandleStyleA: CSSProperties = { ...targetHandleStyle, top: '10px' }
 const sourceHandleStyleB: CSSProperties = { ...targetHandleStyle, bottom: '10px', top: 'auto' }
-
-const onConnect = (params: Connection | Edge) => console.log('handle onConnect', params)
 </script>
 
 <script lang="ts">
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <Handle type="target" :position="Position.Left" :style="targetHandleStyle" :on-connect="onConnect" />
+  <Handle type="target" :position="Position.Left" :style="targetHandleStyle" />
   <div>
     Custom Color Picker Node: <strong>{{ data.color }}</strong>
   </div>
