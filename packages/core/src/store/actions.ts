@@ -38,16 +38,22 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
 
-  const findNode: Actions['findNode'] = (id) => {
-    if (state.nodes && !nodeIds.length) return state.nodes.find((node) => node.id === id)
+  const findNode: Actions['findNode'] = <T extends GraphNode = GraphNode>(id: string) => {
+    let node
 
-    return state.nodes[nodeIds.indexOf(id)]
+    if (state.nodes && !nodeIds.length) node = state.nodes.find((node) => node.id === id)
+    else node = state.nodes[nodeIds.indexOf(id)]
+
+    return node as T | undefined
   }
 
-  const findEdge: Actions['findEdge'] = (id) => {
-    if (state.edges && !edgeIds.length) return state.edges.find((edge) => edge.id === id)
+  const findEdge: Actions['findEdge'] = <T extends GraphEdge = GraphEdge>(id: string) => {
+    let edge
 
-    return state.edges[edgeIds.indexOf(id)]
+    if (state.edges && !edgeIds.length) edge = state.edges.find((edge) => edge.id === id)
+    else edge = state.edges[edgeIds.indexOf(id)]
+
+    return edge as T | undefined
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
