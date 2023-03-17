@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.3] - 2023-03-17
+
+[b5d579e](b5d579ed3069166dff4a2eeebb063f435563b6b5)...[e58d24d](e58d24d9f03028342d500bf46a60c40358b93094)
+
+### Bug Fixes
+
+- Set source and target position on edge obj ([c9d643d](c9d643d7007fc09a1d73b35175ac5e18cc9be58e))
+- Use render fn for node wrapper ([d8434e6](d8434e6e8fea57c4202eaafe03cfc836788cecff))
+
+### Miscellaneous Tasks
+
+- Update custom node example ([e678f6f](e678f6fdd8659200f4b200b62f8bba24abe49c58))
+- Cleanup ([ccb302f](ccb302f1329ff32274c74b04faffd86c9753bfdb))
+
 ## [1.16.2] - 2023-03-10
 
 [15016ee](15016ee21a9a0e2247444dc880c4a0542702f54f)...[b5d579e](b5d579ed3069166dff4a2eeebb063f435563b6b5)
