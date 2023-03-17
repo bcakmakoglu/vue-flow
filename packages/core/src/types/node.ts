@@ -131,7 +131,7 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}, Type extends s
   /** called when used as source for new connection */
   isValidSourcePos?: ValidConnectionFunc
   /** parent node id */
-  parentNode?: string
+  parent?: string
   /** is node currently dragging */
   dragging: boolean
   resizing: boolean
