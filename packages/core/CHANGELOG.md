@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.16.3
+
+### Patch Changes
+
+- [#756](https://github.com/bcakmakoglu/vue-flow/pull/756) [`47b03e75`](https://github.com/bcakmakoglu/vue-flow/commit/47b03e757152b7801c28d8eb3373a084bd2a16d8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing source and target position values on `GraphEdge` type objects if available
+
+- [#759](https://github.com/bcakmakoglu/vue-flow/pull/759) [`35b0a0ac`](https://github.com/bcakmakoglu/vue-flow/commit/35b0a0acef11a1b63690c7490be28fe2ff62643b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use render fn for node wrapper. Fixes props being hyphanated instead of camelcase when passed to custom components.
+
 ## 1.16.2
 
 ### Patch Changes
