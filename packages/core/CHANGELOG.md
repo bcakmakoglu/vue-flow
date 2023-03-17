@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.16.4
+
+### Patch Changes
+
+- [#765](https://github.com/bcakmakoglu/vue-flow/pull/765) [`12c84a80`](https://github.com/bcakmakoglu/vue-flow/commit/12c84a80365b48db758ccdd675a12744b18dbe1b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Unwrap refs in node wrapper
+
+- [#765](https://github.com/bcakmakoglu/vue-flow/pull/765) [`12c84a80`](https://github.com/bcakmakoglu/vue-flow/commit/12c84a80365b48db758ccdd675a12744b18dbe1b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Rename `parentNode` prop for custom nodes to `parent` to avoid TypeError which occurs as `div` already has `parentNode` defined which cannot be overwritten
+
 ## 1.16.3
 
 ### Patch Changes
