@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.4] - 2023-03-17
+
+[e58d24d](e58d24d9f03028342d500bf46a60c40358b93094)...[12af745](12af745ac72d7d2a0099f70fc946d47c5c949bcd)
+
+### Bug Fixes
+
+- Unwrap refs and pass props ([0476dff](0476dffa988126d6e5960894c81ab6818c81a81b))
+- Rename `parentNode` prop to `parent` ([fe46e6f](fe46e6f103201b636bde2a3d7702f33d9b8664f2))
+
 ## [1.16.3] - 2023-03-17
 
 [b5d579e](b5d579ed3069166dff4a2eeebb063f435563b6b5)...[e58d24d](e58d24d9f03028342d500bf46a60c40358b93094)
