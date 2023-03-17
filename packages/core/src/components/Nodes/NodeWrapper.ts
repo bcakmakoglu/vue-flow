@@ -73,9 +73,9 @@ const NodeWrapper = defineComponent({
       },
     })
 
-    const getClass = computed(() => (node.class instanceof Function ? node.class(node) : node.class))
+    const getClass = $computed(() => (node.class instanceof Function ? node.class(node) : node.class))
 
-    const getStyle = computed(() => {
+    const getStyle = $computed(() => {
       const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
 
       const width = node.width instanceof Function ? node.width(node) : node.width
@@ -88,7 +88,7 @@ const NodeWrapper = defineComponent({
       return styles
     })
 
-    const zIndex = computed(() => Number(node.zIndex ?? getStyle.value.zIndex ?? 0))
+    const zIndex = computed(() => Number(node.zIndex ?? getStyle.zIndex ?? 0))
 
     onUpdateNodeInternals((updateIds) => {
       if (updateIds.includes(props.id)) {
@@ -176,14 +176,14 @@ const NodeWrapper = defineComponent({
             `vue-flow__node-${props.type === false ? 'default' : props.name}`,
             {
               [noPanClassName]: props.draggable,
-              dragging,
+              dragging: dragging?.value,
               selected: node.selected,
               selectable: props.selectable,
             },
             getClass,
           ],
           'style': {
-            zIndex: node.computedPosition.z ?? zIndex,
+            zIndex: node.computedPosition.z ?? zIndex.value,
             transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
             pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
             visibility: node.initialized ? 'visible' : 'hidden',
@@ -209,13 +209,13 @@ const NodeWrapper = defineComponent({
             events: { ...node.events, ...on },
             selected: !!node.selected,
             resizing: !!node.resizing,
-            dragging,
+            dragging: dragging?.value,
             connectable: props.connectable,
             position: node.position,
             dimensions: node.dimensions,
             isValidTargetPos: node.isValidTargetPos,
             isValidSourcePos: node.isValidSourcePos,
-            parentNode: node.parentNode,
+            parentFoo: node.parentNode,
             zIndex: node.computedPosition.z,
             targetPosition: node.targetPosition,
             sourcePosition: node.sourcePosition,
