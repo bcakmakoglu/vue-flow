@@ -215,7 +215,7 @@ const NodeWrapper = defineComponent({
             dimensions: node.dimensions,
             isValidTargetPos: node.isValidTargetPos,
             isValidSourcePos: node.isValidSourcePos,
-            parentFoo: node.parentNode,
+            parent: node.parentNode,
             zIndex: node.computedPosition.z,
             targetPosition: node.targetPosition,
             sourcePosition: node.sourcePosition,
