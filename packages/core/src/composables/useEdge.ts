@@ -6,43 +6,41 @@ import { ErrorCode, VueFlowError } from '~/utils'
 import { EdgeId, EdgeRef } from '~/context'
 
 /**
- * Access an edge
+ * Get an edge with the given id
  *
- * If no edge id is provided, the edge id is injected from context
+ * If no edge id is provided, the edge id is injected from context,
+ * meaning if you do not provide an id, this composable has to be called in a child of your custom edge component, or it will throw!
  *
- * Meaning if you do not provide an id, this composable has to be called in a child of your custom edge component, or it will throw
+ * @param id The id of the edge to get
  */
-export function useEdge<T extends GraphEdge = GraphEdge>(
-  id?: MaybeRef<string>,
-) {
+export function useEdge<T extends GraphEdge = GraphEdge>(id?: MaybeRef<string>) {
   const { findEdge, emits } = useVueFlow()
 
   const edgeRef = inject(EdgeRef, null)
 
   const edgeIdInjection = inject(EdgeId, '')
 
-  const edgeId = computed(() => unref(id) ?? edgeIdInjection)
+  const edgeId = computed(() => {
+    const nextId = unref(id) ?? edgeIdInjection
+
+    if (!nextId || nextId === '') {
+      throw new VueFlowError(`No edge id provided and no injection could be found!`, 'useEdge')
+    }
+
+    return nextId
+  })
 
   const edgeEl = computed(() => unref(edgeRef) ?? document.querySelector(`[data-id="${edgeId.value}"]`))
 
-  const edge = computed(() => findEdge<T>(edgeId.value)!)
+  const edge = computed(() => {
+    const nextEdge = findEdge<T>(edgeId.value)
 
-  // todo: throw in computed instead
-  watch(
-    [() => edge.value?.id, edgeId],
-    ([nextEdge, nextId]) => {
-      if (!nextId || nextId === '') {
-        throw new VueFlowError(`No node id provided and no injection could be found!`, 'useEdge')
-      }
+    if (!nextEdge) {
+      throw new VueFlowError(`Edge with id ${edgeId.value} not found!`, 'useEdge')
+    }
 
-      nextTick(() => {
-        if (!nextEdge) {
-          throw new VueFlowError(`Node with id ${edgeId.value} not found!`, 'useEdge')
-        }
-      })
-    },
-    { immediate: true, flush: 'post' },
-  )
+    return nextEdge
+  })
 
   return {
     id: edgeId,
