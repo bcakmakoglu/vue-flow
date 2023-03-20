@@ -162,8 +162,9 @@ onMounted(() => {
 
   watchEffect(() => {
     if (panOnScroll && !zoomKeyPressed.value && !userSelectionActive) {
-      d3Selection
-        .on('wheel', (event: WheelEvent) => {
+      d3Selection.on(
+        'wheel.zoom',
+        (event: WheelEvent) => {
           if (isWrappedWithClass(event, noWheelClassName)) {
             return false
           }
@@ -190,18 +191,22 @@ onMounted(() => {
           const deltaY = panOnScrollMode === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
 
           d3Zoom.translateBy(d3Selection, -(deltaX / currentZoom) * panOnScrollSpeed, -(deltaY / currentZoom) * panOnScrollSpeed)
-        })
-        .on('wheel.zoom', null)
+        },
+        { passive: false },
+      )
     } else if (typeof d3ZoomHandler !== 'undefined') {
-      d3Selection
-        .on('wheel', (event: WheelEvent) => {
+      d3Selection.on(
+        'wheel.zoom',
+        function (event: WheelEvent, d) {
           if (!preventScrolling || isWrappedWithClass(event, noWheelClassName)) {
             return null
           }
 
           event.preventDefault()
-        })
-        .on('wheel.zoom', d3ZoomHandler)
+          d3ZoomHandler.call(this, event, d)
+        },
+        { passive: false },
+      )
     }
   })
 
