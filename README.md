@@ -156,7 +156,7 @@ the ports to your machine.
 
 ## ![discord logo](https://api.iconify.design/logos:discord-icon.svg) Discord
 
-[Join the Vue Flow Discord server!](https://discord.gg/z4FMpfTugW)
+[Join the Vue Flow Discord server!](https://discord.gg/rwt6CBk4b5)
 
 Here you can ask questions to the community, propose ideas for new features
 or share your work that you have built with Vue Flow.

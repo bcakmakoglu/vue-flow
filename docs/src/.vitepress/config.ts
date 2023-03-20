@@ -107,7 +107,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/bcakmakoglu/vue-flow' },
-      { icon: 'discord', link: 'https://discord.gg/F4v6qE4Fuq' },
+      { icon: 'discord', link: 'https://discord.gg/rwt6CBk4b5' },
     ],
     algolia: {
       appId: 'F7BJNSM4M5',
