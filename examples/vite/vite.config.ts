@@ -8,9 +8,6 @@ import svgLoader from 'vite-svg-loader'
 export default defineConfig({
   resolve: {
     dedupe: ['vue'],
-    alias: {
-      '~': resolve('../../packages/core/src'),
-    },
   },
   plugins: [
     vue({
@@ -23,6 +20,11 @@ export default defineConfig({
       dts: resolve('src/auto-imports.d.ts'),
     }),
   ],
+  server: {
+    watch: {
+      ignored: ['!**/node_modules/@vue-flow/core/**'],
+    },
+  },
   optimizeDeps: {
     exclude: ['@vue-flow/core'],
   },
