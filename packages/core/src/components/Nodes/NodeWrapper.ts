@@ -235,7 +235,7 @@ const NodeWrapper = defineComponent({
         nextPos.y = snapGrid[1] * Math.round(nextPos.y / snapGrid[1])
       }
 
-      const { computedPosition, position } = calcNextPosition(node, nextPos, nodeExtent, parentNode)
+      const { computedPosition, position } = calcNextPosition(node, nextPos, emits.error, nodeExtent, parentNode)
 
       // only overwrite positions if there are changes when clamping
       if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {

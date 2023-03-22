@@ -19,6 +19,7 @@ const {
   getEdgeTypes,
   elevateEdgesOnSelect,
   dimensions,
+  emits,
 } = $(useVueFlow())
 
 const sourceNode = controlledComputed(
@@ -75,7 +76,7 @@ function getType(type?: string, template?: GraphEdge['template']) {
 
   const slot = slots?.[`edge-${name}`]
   if (!slot) {
-    warn(`Edge type "${type}" not found and no edge-slot detected. Using fallback type "default".`)
+    emits.error(new VueFlowError(ErrorCode.EDGE_TYPE_MISSING, edgeType))
     return false
   }
 

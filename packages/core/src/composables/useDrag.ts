@@ -40,6 +40,7 @@ function useDrag(params: UseDragParams) {
       removeSelectedElements,
       addSelectedNodes,
       updateNodePositions,
+      emits,
     } = $(useVueFlow())
 
     const { onStart, onDrag, onStop, el, disabled, id, selectable } = $(params)
@@ -83,6 +84,7 @@ function useDrag(params: UseDragParams) {
             const { computedPosition } = calcNextPosition(
               n,
               nextPosition,
+              emits.error,
               nodeExtent,
               n.parentNode ? findNode(n.parentNode) : undefined,
             )
