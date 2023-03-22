@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.5] - 2023-03-22
+
+[12af745](12af745ac72d7d2a0099f70fc946d47c5c949bcd)...[0ab0de1](0ab0de1a4d35247905e756fb4504e8419db05f79)
+
+### Bug Fixes
+
+- Non-passive wheel event listener violation ([e7c39b0](e7c39b065d895875d5079e0bbe6d5877ac6d1b1d))
+- Wrong pkg entries ([988d4a2](988d4a2260a07e290ed9cc5c65d3f34ecaf16719))
+- Use object assign to parse node ([04598cd](04598cdcf626c536bb0d1ea3796e198e5fc76eed))
+
+### Miscellaneous Tasks
+
+- Update discord link ([80a7049](80a704984375f4619f57a48d2d4f6c64944445d7))
+- Watch files and remove alias ([95b346d](95b346d2240ebc0772343653360cf52c6656e323))
+- Add ([2f87aa8](2f87aa8578c0bdc1db2669aa06a77389a130e208))
+- Cleanup ([0fb4713](0fb4713c0bfc7a5e400604d9baa25e44bb823be5))
+- Add ([94df425](94df4258a57bb9e178abba352635618cac6739c6))
+
 ## [1.16.4] - 2023-03-17
 
 [e58d24d](e58d24d9f03028342d500bf46a60c40358b93094)...[12af745](12af745ac72d7d2a0099f70fc946d47c5c949bcd)
