@@ -49,8 +49,6 @@ export class Storage {
       emits[n] = h.trigger
     })
 
-    actions.setState(reactiveState)
-
     const flow: VueFlowStore = {
       ...hooksOn,
       ...getters,
