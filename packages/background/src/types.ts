@@ -4,12 +4,14 @@ export enum BackgroundVariant {
 }
 
 export interface BackgroundProps {
+  id?: string
   /** The background pattern variant, {@link BackgroundVariant} */
   variant?: BackgroundVariant
   /** Background pattern gap */
-  gap?: number
+  gap?: number | number[]
   /** Background pattern size */
   size?: number
+  lineWidth?: number
   /** Background pattern color */
   patternColor?: string
   /** Background color */
@@ -22,4 +24,6 @@ export interface BackgroundProps {
   x?: number
   /** Background y-coordinate (offset y) */
   y?: number
+  /** Background offset */
+  offset?: number
 }
