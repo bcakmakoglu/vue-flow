@@ -67,11 +67,12 @@ export const isGraphNode = <Data = ElementData>(element: MaybeElement): element 
 
 export const isRect = (obj: any): obj is Rect => !!obj.width && !!obj.height && !!obj.x && !!obj.y
 
-export function parseNode(node: Node, defaults?: Partial<GraphNode>): GraphNode {
-  let defaultValues = defaults
+export function parseNode(node: Node, defaults: Partial<GraphNode> = {}): GraphNode {
+  let initialState = defaults
+
   if (!isGraphNode(node)) {
-    defaultValues = {
-      type: node.type ?? 'default',
+    initialState = {
+      type: node.type ?? defaults.type ?? 'default',
       dimensions: markRaw({
         width: 0,
         height: 0,
@@ -99,31 +100,31 @@ export function parseNode(node: Node, defaults?: Partial<GraphNode>): GraphNode 
   }
 
   return {
-    ...defaultValues,
+    ...initialState,
     ...(node as GraphNode),
     id: node.id.toString(),
   }
 }
 
-export function parseEdge(edge: Edge, defaults?: Partial<GraphEdge>): GraphEdge {
-  const events = isDef(edge.events) ? edge.events : defaults?.events && isDef(defaults?.events) ? defaults?.events : {}
-  const data = isDef(edge.data) ? edge.data : defaults?.data && isDef(defaults?.data) ? defaults?.data : {}
+export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphEdge {
+  const events = isDef(edge.events) ? edge.events : defaults.events && isDef(defaults.events) ? defaults.events : {}
+  const data = isDef(edge.data) ? edge.data : defaults.data && isDef(defaults.data) ? defaults.data : {}
 
   defaults = !isGraphEdge(edge)
     ? ({
         ...defaults,
-        sourceHandle: (edge.sourceHandle ? edge.sourceHandle.toString() : undefined) || defaults?.sourceHandle,
-        targetHandle: (edge.targetHandle ? edge.targetHandle.toString() : undefined) || defaults?.targetHandle,
-        type: edge.type ?? defaults?.type ?? 'default',
-        source: edge.source.toString() || defaults?.source,
-        target: edge.target.toString() || defaults?.target,
-        updatable: edge.updatable ?? defaults?.updatable,
-        selectable: edge.selectable ?? defaults?.selectable,
-        focusable: edge.focusable ?? defaults?.focusable,
+        sourceHandle: (edge.sourceHandle ? edge.sourceHandle.toString() : undefined) || defaults.sourceHandle,
+        targetHandle: (edge.targetHandle ? edge.targetHandle.toString() : undefined) || defaults.targetHandle,
+        type: edge.type ?? defaults.type ?? 'default',
+        source: edge.source.toString() || defaults.source,
+        target: edge.target.toString() || defaults.target,
+        updatable: edge.updatable ?? defaults.updatable,
+        selectable: edge.selectable ?? defaults.selectable,
+        focusable: edge.focusable ?? defaults.focusable,
         data,
         events: markRaw(events),
-        label: (edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label) || defaults?.label,
-        interactionWidth: edge.interactionWidth || defaults?.interactionWidth,
+        label: (edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label) || defaults.label,
+        interactionWidth: edge.interactionWidth || defaults.interactionWidth,
       } as GraphEdge)
     : defaults
 
@@ -166,6 +167,7 @@ export function addEdge(edgeParams: Edge | Connection, elements: Elements, defau
   }
 
   let edge
+
   if (isEdge(edgeParams)) {
     edge = { ...edgeParams }
   } else {
@@ -174,9 +176,13 @@ export function addEdge(edgeParams: Edge | Connection, elements: Elements, defau
       id: getEdgeId(edgeParams),
     } as Edge
   }
+
   edge = parseEdge(edge, defaults)
+
   if (connectionExists(edge, elements)) return elements
+
   elements.push(edge)
+
   return elements
 }
 

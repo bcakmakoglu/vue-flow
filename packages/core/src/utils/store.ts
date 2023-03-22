@@ -76,9 +76,9 @@ export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], c
     return parsed
   })
 
-  graphNodes.forEach((node) => {
-    const nextNodes = [...graphNodes, ...currGraphNodes]
+  const nextNodes = [...graphNodes, ...currGraphNodes]
 
+  graphNodes.forEach((node) => {
     const parentNode = nextNodes.find((n) => n.id === node.parentNode)
 
     if (node.parentNode && !parentNode) {
