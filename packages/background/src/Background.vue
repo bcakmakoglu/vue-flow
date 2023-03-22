@@ -2,7 +2,7 @@
 import { useVueFlow } from '@vue-flow/core'
 import { BackgroundVariant } from './types'
 import type { BackgroundProps } from './types'
-import { LinePattern } from './patterns'
+import { DotPattern, LinePattern } from './patterns'
 
 const {
   id,
@@ -29,7 +29,7 @@ const { id: vueFlowId, viewport } = useVueFlow()
 const gapXY = computed(() => (Array.isArray(gap) ? gap : [gap, gap]))
 
 const background = $computed(() => {
-  const scaledGap = [gapXY.value[0] * viewport.value.zoom || 1, gapXY.value[1] * viewport.value.zoom || 1]
+  const scaledGap: [number, number] = [gapXY.value[0] * viewport.value.zoom || 1, gapXY.value[1] * viewport.value.zoom || 1]
 
   const scaledSize = size * viewport.value.zoom
 
@@ -79,7 +79,7 @@ export default {
       >
         <slot name="pattern">
           <template v-if="variant === BackgroundVariant.Lines">
-            <LinePattern :size="lineWidth" :color="patternColor" :dimensions="background.size" />
+            <LinePattern :size="lineWidth" :color="patternColor" :dimensions="background.scaledGap" />
           </template>
 
           <template v-else-if="variant === BackgroundVariant.Dots">
