@@ -99,11 +99,7 @@ export function parseNode(node: Node, defaults: Partial<GraphNode> = {}): GraphN
     }
   }
 
-  return {
-    ...initialState,
-    ...(node as GraphNode),
-    id: node.id.toString(),
-  }
+  return Object.assign({ id: node.id.toString() }, node, initialState) as GraphNode
 }
 
 export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphEdge {
