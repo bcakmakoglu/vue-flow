@@ -35,6 +35,9 @@
     "@vueuse/core": "^9.13.0"
   },
   "devDependencies": {
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
+    "@tooling/vite-config": "workspace:*",
     "@vue-flow/core": "workspace:*",
     "vite": "^4.1.4"
   },

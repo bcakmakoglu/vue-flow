@@ -35,6 +35,9 @@
     "html-to-image": "^1.11.11"
   },
   "devDependencies": {
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
+    "@tooling/vite-config": "workspace:*",
     "@vue-flow/core": "workspace:*",
     "vite": "^4.1.4"
   },
