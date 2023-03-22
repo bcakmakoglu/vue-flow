@@ -1,6 +1,7 @@
 import { computed, inject } from 'vue'
+import type { MaybeRefOrGetter } from '@vueuse/core'
+import { toValue } from '@vueuse/core'
 import { useVueFlow } from './useVueFlow'
-import type { MaybeRef } from '@vueuse/core'
 import type { GraphNode } from '~/types'
 import { NodeId, NodeRef } from '~/context'
 import { ErrorCode, VueFlowError, getConnectedEdges } from '~/utils'
@@ -11,16 +12,16 @@ import { ErrorCode, VueFlowError, getConnectedEdges } from '~/utils'
  * If no node id is provided, the node id is injected from context,
  * meaning if you do not provide an id, this composable has to be called in a child of your custom node component, or it will throw!
  */
-export function useNode<T extends GraphNode = GraphNode>(id?: MaybeRef<string>) {
+export function useNode<T extends GraphNode = GraphNode>(id?: MaybeRefOrGetter<string>) {
   const { findNode, edges, emits } = useVueFlow()
 
   const nodeIdInjection = inject(NodeId, '')
 
   const nodeId = computed(() => {
-    const nextId = unref(id) ?? nodeIdInjection
+    const nextId = toValue(id) ?? nodeIdInjection
 
-    if (!nextId || nextId === '') {
-      throw new VueFlowError(`No node id provided and no injection could be found!`, 'useNode')
+    if (!nextId) {
+      emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nextId))
     }
 
     return nextId
@@ -28,17 +29,9 @@ export function useNode<T extends GraphNode = GraphNode>(id?: MaybeRef<string>) 
 
   const nodeRef = inject(NodeRef, null)
 
-  const nodeEl = computed(() => unref(nodeRef) ?? document.querySelector(`[data-id="${nodeId.value}"]`))
+  const nodeEl = computed(() => toValue(nodeRef) ?? document.querySelector(`[data-id="${nodeId.value}"]`))
 
-  const node = computed(() => {
-    const nextNode = findNode<T>(nodeId.value)
-
-    if (!nextNode) {
-      throw new VueFlowError(`Node with id ${nodeId.value} not found!`, 'useNode')
-    }
-
-    return nextNode
-  })
+  const node = computed(() => findNode<T>(nodeId.value)!)
 
   const parentNode = computed(() => findNode(node.value.parentNode))
 

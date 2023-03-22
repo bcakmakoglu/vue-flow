@@ -33,7 +33,7 @@ const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
 const handle = ref<HTMLDivElement>()
 
-const handleId = computed(() => id ?? `${nodeId}__handle-${position}`)
+const handleId = computed(() => id ?? `${nodeId.value}__handle-${position}`)
 
 const isConnectableStart = computed(() => (typeof connectableStart !== 'undefined' ? connectableStart : true))
 
@@ -51,7 +51,7 @@ const isConnectable = computed(() => {
     return !connectedEdges.value.some((edge) => {
       const id = edge[`${type.value}Handle`]
 
-      if (edge[type.value] !== nodeId) {
+      if (edge[type.value] !== nodeId.value) {
         return false
       }
 
@@ -60,7 +60,7 @@ const isConnectable = computed(() => {
   }
 
   if (isFunction(connectable)) {
-    return connectable(node, connectedEdges.value)
+    return connectable(node.value, connectedEdges.value)
   }
 
   return isDef(connectable) ? connectable : nodesConnectable.value
@@ -68,26 +68,26 @@ const isConnectable = computed(() => {
 
 const isConnecting = computed(
   () =>
-    (connectionStartHandle.value?.nodeId === nodeId &&
+    (connectionStartHandle.value?.nodeId === nodeId.value &&
       connectionStartHandle.value?.handleId === handleId.value &&
       connectionStartHandle.value?.type === type.value) ||
-    (connectionEndHandle.value?.nodeId === nodeId &&
+    (connectionEndHandle.value?.nodeId === nodeId.value &&
       connectionEndHandle.value?.handleId === handleId.value &&
       connectionEndHandle.value?.type === type.value),
 )
 
 const isClickConnecting = computed(
   () =>
-    connectionClickStartHandle.value?.nodeId === nodeId &&
+    connectionClickStartHandle.value?.nodeId === nodeId.value &&
     connectionClickStartHandle.value?.handleId === handleId.value &&
     connectionClickStartHandle.value?.type === type.value,
 )
 
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
-until(() => node?.initialized)
+until(() => node.value.initialized)
   .toBe(true, { flush: 'post' })
   .then(() => {
-    const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId.value)
+    const existingBounds = node.value.handleBounds[type.value]?.find((b) => b.id === handleId.value)
 
     if (!vueFlowRef.value || existingBounds) {
       return
@@ -95,7 +95,7 @@ until(() => node?.initialized)
 
     const viewportNode = vueFlowRef.value.querySelector('.vue-flow__transformationpane')
 
-    if (!nodeEl || !handle.value || !viewportNode || !handleId.value) {
+    if (!nodeEl.value || !handle.value || !viewportNode || !handleId.value) {
       return
     }
 
@@ -114,7 +114,7 @@ until(() => node?.initialized)
       ...getDimensions(handle.value),
     }
 
-    node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
+    node.value.handleBounds[type.value] = [...(node.value.handleBounds[type.value] ?? []), nextBounds]
   })
 
 function onPointerDown(event: MouseEvent | TouchEvent) {

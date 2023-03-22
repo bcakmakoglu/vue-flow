@@ -1,5 +1,6 @@
-import type { MaybeRef } from '@vueuse/core'
+import type { MaybeRefOrGetter } from '@vueuse/core'
 import { computed, inject } from 'vue'
+import { toValue } from '@vueuse/core'
 import { useVueFlow } from './useVueFlow'
 import type { GraphEdge } from '~/types'
 import { ErrorCode, VueFlowError } from '~/utils'
@@ -13,7 +14,7 @@ import { EdgeId, EdgeRef } from '~/context'
  *
  * @param id The id of the edge to get
  */
-export function useEdge<T extends GraphEdge = GraphEdge>(id?: MaybeRef<string>) {
+export function useEdge<T extends GraphEdge = GraphEdge>(id?: MaybeRefOrGetter<string>) {
   const { findEdge, emits } = useVueFlow()
 
   const edgeRef = inject(EdgeRef, null)
@@ -21,26 +22,18 @@ export function useEdge<T extends GraphEdge = GraphEdge>(id?: MaybeRef<string>) 
   const edgeIdInjection = inject(EdgeId, '')
 
   const edgeId = computed(() => {
-    const nextId = unref(id) ?? edgeIdInjection
+    const nextId = toValue(id) ?? edgeIdInjection
 
-    if (!nextId || nextId === '') {
-      throw new VueFlowError(`No edge id provided and no injection could be found!`, 'useEdge')
+    if (!nextId) {
+      emits.error(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, nextId))
     }
 
     return nextId
   })
 
-  const edgeEl = computed(() => unref(edgeRef) ?? document.querySelector(`[data-id="${edgeId.value}"]`))
+  const edgeEl = computed(() => toValue(edgeRef) ?? document.querySelector(`[data-id="${edgeId.value}"]`))
 
-  const edge = computed(() => {
-    const nextEdge = findEdge<T>(edgeId.value)
-
-    if (!nextEdge) {
-      throw new VueFlowError(`Edge with id ${edgeId.value} not found!`, 'useEdge')
-    }
-
-    return nextEdge
-  })
+  const edge = computed(() => findEdge<T>(edgeId.value)!)
 
   return {
     id: edgeId,
