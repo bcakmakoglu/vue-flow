@@ -102,6 +102,9 @@ const NodeWrapper = defineComponent({
 
     onBeforeUnmount(() => {
       props.resizeObserver.unobserve(nodeElement.value as HTMLDivElement)
+
+      // reset initialized flag
+      node.initialized = false
     })
 
     watch(
