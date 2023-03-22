@@ -1,5 +1,11 @@
 # @vue-flow/pathfinding-edge
 
+## 1.0.5
+
+### Patch Changes
+
+- [#770](https://github.com/bcakmakoglu/vue-flow/pull/770) [`baaabbe8`](https://github.com/bcakmakoglu/vue-flow/commit/baaabbe8e5cd88c9976033bca33119b1bc7a4d57) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix wrong package entries in `package.json` for pathfinding edge
+
 ## 1.0.4
 
 ### Patch Changes
