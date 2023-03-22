@@ -68,7 +68,7 @@ function getType(type?: string, template?: GraphNode['template']) {
 
   const slot = slots?.[`node-${name}`]
   if (!slot) {
-    warn(`Node type "${type}" not found and no node-slot detected. Using fallback type "default".`)
+    emits.error(new VueFlowError(ErrorCode.NODE_TYPE_MISSING, nodeType))
     return false
   }
 
