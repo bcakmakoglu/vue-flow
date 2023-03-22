@@ -287,7 +287,9 @@ function setDimensions() {
 
   const { width, height } = getDimensions(viewportEl.value)
 
-  if (width === 0 || height === 0) warn('The Vue Flow parent container needs a width and a height to render the graph.')
+  if (width === 0 || height === 0) {
+    emits.error(new VueFlowError(ErrorCode.MISSING_VIEWPORT_DIMENSIONS))
+  }
 
   dimensions.width = width || 500
   dimensions.height = height || 500

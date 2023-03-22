@@ -290,7 +290,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
     if (!state.initialized && !nextNodes.length) return
 
-    state.nodes = createGraphNodes(nextNodes, findNode, state.nodes)
+    state.nodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
@@ -315,9 +315,21 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       const missingSource = !sourceNode || typeof sourceNode === 'undefined'
       const missingTarget = !targetNode || typeof targetNode === 'undefined'
 
-      if (missingSource) warn(`Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-      if (missingTarget) warn(`Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
-      if (missingSource || missingTarget) return res
+      if (missingSource && missingTarget) {
+        state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
+      } else {
+        if (missingSource) {
+          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
+        }
+
+        if (missingTarget) {
+          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
+        }
+      }
+
+      if (missingSource || missingTarget) {
+        return res
+      }
 
       const storedEdge = getters.getEdge.value(edge.id)
 
@@ -343,7 +355,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const addNodes: Actions['addNodes'] = (nodes) => {
     const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    const graphNodes = createGraphNodes(nextNodes, findNode, state.nodes)
+    const graphNodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
 
     const changes = graphNodes.map(createAdditionChange)
 
@@ -370,6 +382,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
           ...state.defaultEdgeOptions,
         },
         state.edges,
+        state.hooks.error.trigger,
       )
 
       if (edge) {
@@ -379,9 +392,21 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
         const missingSource = !sourceNode || typeof sourceNode === 'undefined'
         const missingTarget = !targetNode || typeof targetNode === 'undefined'
 
-        if (missingSource) warn(`Couldn't create edge for source id: ${edge.source}; edge id: ${edge.id}`)
-        if (missingTarget) warn(`Couldn't create edge for target id: ${edge.target}; edge id: ${edge.id}`)
-        if (missingTarget || missingSource) return acc
+        if (missingSource && missingTarget) {
+          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
+        } else {
+          if (missingSource) {
+            state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
+          }
+
+          if (missingTarget) {
+            state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
+          }
+        }
+
+        if (missingSource || missingTarget) {
+          return acc
+        }
 
         acc.push(
           createAdditionChange<GraphEdge>({
@@ -445,7 +470,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   }
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) =>
-    updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId)
+    updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId, state.hooks.error.trigger)
 
   const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyChanges(changes, state.nodes)
 
@@ -468,8 +493,6 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       state.connectionPosition = position
       state.connectionStartHandle.result = result
       state.connectionStatus = status
-    } else {
-      warn('Cannot update connection as it has not been started')
     }
   }
 

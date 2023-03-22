@@ -1,4 +1,5 @@
 import type { CustomEvent, ElementData } from '~/types'
+import { VueFlowError } from '~/utils/errors'
 
 /**
  * Access an edge
@@ -11,12 +12,12 @@ export default function useEdge<Data = ElementData, CustomEvents extends Record<
   const edgeId = id ?? inject(EdgeId, '')
   const edgeEl = inject(EdgeRef, null)
 
-  const { findEdge } = useVueFlow()
+  const { findEdge, emits } = useVueFlow()
 
   const edge = findEdge<Data, CustomEvents>(edgeId)
 
   if (!edge) {
-    throw new VueFlowError(`Edge with id ${edgeId} not found!`, 'useEdge')
+    emits.error(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edgeId))
   }
 
   return {

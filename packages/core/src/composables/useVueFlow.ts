@@ -123,11 +123,6 @@ export default (options?: FlowProps): VueFlowStore => {
     if (options) vueFlow.setState(options)
   }
 
-  /**
-   * Vue flow wasn't able to find any store instance - we can't proceed
-   */
-  if (!vueFlow) throw new VueFlowError('Store instance not found.', 'useVueFlow')
-
   // always provide a fresh instance into context on call
   if (scope) {
     provide(VueFlow, vueFlow)

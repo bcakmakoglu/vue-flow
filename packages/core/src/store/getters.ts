@@ -60,7 +60,7 @@ export function useGetters(state: State): ComputedGetters {
     if (!source || !target) {
       state.edges = state.edges.filter((edge) => edge.id !== e.id)
 
-      warn(`Orphaned edge ${e.id} removed.`)
+      state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_ORPHANED, e.id))
       return
     }
 
