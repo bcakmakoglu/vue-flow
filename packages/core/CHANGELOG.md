@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.16.5
+
+### Patch Changes
+
+- [#780](https://github.com/bcakmakoglu/vue-flow/pull/780) [`cdaf1e99`](https://github.com/bcakmakoglu/vue-flow/commit/cdaf1e993ad3328f2659a4781214914ee78683bf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use `Object.assign` when parsing node to avoid mutating the original object.
+
+- [#770](https://github.com/bcakmakoglu/vue-flow/pull/770) [`f88faac7`](https://github.com/bcakmakoglu/vue-flow/commit/f88faac7d2849c596121519b5b417270f9cdfc3d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix non-passive wheel event listener violation
+
 ## 1.16.4
 
 ### Patch Changes
