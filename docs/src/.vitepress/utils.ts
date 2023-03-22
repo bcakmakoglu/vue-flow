@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import { readdirSync, statSync } from 'fs'
+import { resolve } from 'node:path'
+import { readdirSync, statSync } from 'node:fs'
 import type { DefaultTheme } from 'vitepress'
 import { changelogFiles, pluginFiles } from './plugins'
 
