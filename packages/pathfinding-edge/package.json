@@ -9,9 +9,9 @@
   "homepage": "https://github.com/bcakmakoglu/vue-flow/tree/master/packages/pathfinding-edge#readme",
   "license": "MIT",
   "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
-  "main": "./dist/vue-flow-pathfinding-edge.cjs.js",
+  "main": "./dist/vue-flow-pathfinding-edge.js",
   "types": "./dist/index.d.ts",
-  "module": "./dist/vue-flow-pathfinding-edge.es.js",
+  "module": "./dist/vue-flow-pathfinding-edge.mjs",
   "unpkg": "./dist/vue-flow-pathfinding-edge.iife.js",
   "jsdelivr": "./dist/vue-flow-pathfinding-edge.iife.js",
   "files": [
