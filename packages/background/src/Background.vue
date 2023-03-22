@@ -2,17 +2,21 @@
 import { useVueFlow } from '@vue-flow/core'
 import { BackgroundVariant } from './types'
 import type { BackgroundProps } from './types'
+import { LinePattern } from './patterns'
 
 const {
+  id,
   variant = 'dots' as BackgroundVariant,
   gap = 10,
-  size = 0.4,
+  size = 1,
+  lineWidth = 1,
   height = 100,
   width = 100,
   x = 0,
   y = 0,
   bgColor,
   patternColor: initialPatternColor,
+  offset = 2,
 } = defineProps<BackgroundProps>()
 
 const defaultColors: Record<BackgroundVariant, string> = {
@@ -20,30 +24,31 @@ const defaultColors: Record<BackgroundVariant, string> = {
   [BackgroundVariant.Lines]: '#eee',
 }
 
-const { id, viewport } = useVueFlow()
+const { id: vueFlowId, viewport } = useVueFlow()
+
+const gapXY = computed(() => (Array.isArray(gap) ? gap : [gap, gap]))
 
 const background = $computed(() => {
-  const scaledGap = gap && gap * viewport.value.zoom
-  const xOffset = scaledGap && viewport.value.x % scaledGap
-  const yOffset = scaledGap && viewport.value.y % scaledGap
-  const bgSize = size * viewport.value.zoom
+  const scaledGap = [gapXY.value[0] * viewport.value.zoom || 1, gapXY.value[1] * viewport.value.zoom || 1]
+
+  const scaledSize = size * viewport.value.zoom
+
+  const patternOffset =
+    variant === BackgroundVariant.Dots
+      ? [scaledSize / offset, scaledSize / offset]
+      : [scaledGap[0] / offset, scaledGap[1] / offset]
 
   return {
     scaledGap,
-    xOffset,
-    yOffset,
-    size: bgSize,
+    offset: patternOffset,
+    size: scaledSize,
   }
 })
 
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
-const patternId = `pattern-${id}`
+const patternId = computed(() => `pattern-${vueFlowId}${id ? `-${id}` : ''}`)
 
 const patternColor = computed(() => initialPatternColor || defaultColors[variant || BackgroundVariant.Dots])
-
-const d = computed(
-  () => `M${background.scaledGap / 2} 0 V${background.scaledGap} M0 ${background.scaledGap / 2} H${background.scaledGap}`,
-)
 </script>
 
 <script lang="ts">
@@ -61,22 +66,24 @@ export default {
       width: `${width > 100 ? 100 : width}%`,
     }"
   >
+    <!-- todo: rename to `pattern -->
     <slot :id="patternId" name="pattern-container">
       <pattern
         :id="patternId"
-        :x="background.xOffset"
-        :y="background.yOffset"
-        :width="background.scaledGap"
-        :height="background.scaledGap"
+        :x="viewport.x % background.scaledGap[0]"
+        :y="viewport.y % background.scaledGap[1]"
+        :width="background.scaledGap[0]"
+        :height="background.scaledGap[1]"
+        :patternTransform="`translate(-${background.offset[0]},-${background.offset[1]})`"
         patternUnits="userSpaceOnUse"
       >
         <slot name="pattern">
           <template v-if="variant === BackgroundVariant.Lines">
-            <path :stroke="patternColor" :stroke-width="size" :d="d" />
+            <LinePattern :size="lineWidth" :color="patternColor" :dimensions="background.size" />
           </template>
 
           <template v-else-if="variant === BackgroundVariant.Dots">
-            <circle :cx="background.size" :cy="background.size" :r="background.size" :fill="patternColor" />
+            <DotPattern :color="patternColor" :radius="background.size / offset" />
           </template>
 
           <svg v-if="bgColor" height="100" width="100">
