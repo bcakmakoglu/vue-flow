@@ -322,7 +322,7 @@ export function getNodesInside(
   })
 }
 
-export function getConnectedEdges(nodes: (Node | GraphNode)[], edges: GraphEdge[]) {
+export function getConnectedEdges(nodes: (Node | GraphNode | { id: string })[], edges: GraphEdge[]) {
   const nodeIds = nodes.map((node) => node.id)
 
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
