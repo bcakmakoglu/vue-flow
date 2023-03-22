@@ -13,7 +13,7 @@ export default function useNode<Data = ElementData, CustomEvents extends Record<
 
   const { findNode, getEdges, emits } = useVueFlow()
 
-  const node = findNode<Data, CustomEvents>(nodeId)
+  const node = findNode<Data, CustomEvents>(nodeId)!
 
   if (!node) {
     emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId))
@@ -23,7 +23,7 @@ export default function useNode<Data = ElementData, CustomEvents extends Record<
     id: nodeId,
     nodeEl,
     node,
-    parentNode: computed(() => (node!.parentNode ? findNode(node!.parentNode) : undefined)),
-    connectedEdges: computed(() => getConnectedEdges([node!], getEdges.value)),
+    parentNode: computed(() => (node.parentNode ? findNode(node.parentNode) : undefined)),
+    connectedEdges: computed(() => getConnectedEdges([node], getEdges.value)),
   }
 }
