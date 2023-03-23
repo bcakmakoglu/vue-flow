@@ -9,7 +9,6 @@ const {
   nodesFocusable,
   elementsSelectable,
   nodesConnectable,
-  nodes,
   getNodes,
   getNodesInitialized,
   getNodeTypes,
@@ -19,7 +18,7 @@ const {
 
 let resizeObserver = $ref<ResizeObserver>()
 
-until(() => nodes.length > 0 && getNodesInitialized.length === nodes.length)
+until(() => getNodes.length > 0 && getNodesInitialized.length === getNodes.length)
   .toBe(true)
   .then(() => {
     nextTick(() => {
