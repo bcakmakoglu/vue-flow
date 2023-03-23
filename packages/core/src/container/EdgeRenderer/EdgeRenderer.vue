@@ -50,10 +50,6 @@ const groups = controlledComputed(
   () => groupEdgesByZLevel(getEdges, findNode, elevateEdgesOnSelect),
 )
 
-onBeforeUnmount(() => {
-  stop?.()
-})
-
 const selectable = (edgeSelectable?: boolean) => (typeof edgeSelectable === 'undefined' ? elementsSelectable : edgeSelectable)
 const updatable = (edgeUpdatable?: EdgeUpdatable) => (typeof edgeUpdatable === 'undefined' ? edgesUpdatable : edgeUpdatable)
 const focusable = (edgeFocusable?: boolean) => (typeof edgeFocusable === 'undefined' ? edgesFocusable : edgeFocusable)
