@@ -6,7 +6,12 @@
     "types": [
       "vite/client",
       "vue/macros"
-    ]
+    ],
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    }
   },
   "include": [
     "./src"
