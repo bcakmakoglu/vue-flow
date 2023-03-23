@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.17.0
+
+### Minor Changes
+
+- [#785](https://github.com/bcakmakoglu/vue-flow/pull/785) [`7667aa60`](https://github.com/bcakmakoglu/vue-flow/commit/7667aa60b819cc7c545d5374e49cdc27d5004d5b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing objects with only `id` to `getConnectedEdges` nodes arg
+
+- [#781](https://github.com/bcakmakoglu/vue-flow/pull/781) [`ad8c7897`](https://github.com/bcakmakoglu/vue-flow/commit/ad8c78977cd0e436e6f9602ecf5ea0805bf8ac13) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `onError` hook which allows handling vue flow errors by users. Will default to console.warn if no handler is passed
+
+### Patch Changes
+
+- [#783](https://github.com/bcakmakoglu/vue-flow/pull/783) [`b864c436`](https://github.com/bcakmakoglu/vue-flow/commit/b864c43677779782e98f5cb809a047f2dc5b0aff) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `stop` from `EdgeRenderer` as watcher has been removed and stop refers to `window.stop` which causes requests to be cancelled when VueFlow is unmounted
+
 ## 1.16.5
 
 ### Patch Changes

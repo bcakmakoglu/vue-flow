@@ -1,5 +1,15 @@
 # @vue-flow/background
 
+## 1.1.0
+
+### Minor Changes
+
+- [#782](https://github.com/bcakmakoglu/vue-flow/pull/782) [`59430fe3`](https://github.com/bcakmakoglu/vue-flow/commit/59430fe343f5e229864bef8cc857c4c7cc025491) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `lineWidth` prop to background component. Allows changing line bg stroke width
+
+- [#782](https://github.com/bcakmakoglu/vue-flow/pull/782) [`59430fe3`](https://github.com/bcakmakoglu/vue-flow/commit/59430fe343f5e229864bef8cc857c4c7cc025491) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow setting gap as number or number array (x,y)
+
+- [#782](https://github.com/bcakmakoglu/vue-flow/pull/782) [`59430fe3`](https://github.com/bcakmakoglu/vue-flow/commit/59430fe343f5e229864bef8cc857c4c7cc025491) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `offset` prop to background component. Allows for offsetting individual backgrounds to create a "multi" bg.
+
 ## 1.0.5
 
 ### Patch Changes
