@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.0] - 2023-03-23
+
+[0ab0de1](0ab0de1a4d35247905e756fb4504e8419db05f79)...[e7b0c4b](e7b0c4b73ed3b2085bc36b3248463a7401fdafe7)
+
+### Bug Fixes
+
+- Remove erroneous window.stop in EdgeRendered ([c93e405](c93e4054c37fb16cb3381a24114438451ec5ed89))
+
+### Features
+
+- Add `onError` hook ([8c3f54e](8c3f54ec28873c512f07146f7ef7d4a601acf0f3))
+- Add `offset` prop ([1f49358](1f493585696f34405c178deda91767c7e55610ea))
+- Allow passing object with only id to `getConnectedEdges` ([79a0967](79a096743dd441abcc62ab12df8619224f5ed339))
+
+### Miscellaneous Tasks
+
+- Add ([5209fca](5209fcaf9dea1ee7937e7b30fd3fbc37927b7ae8))
+- Cleanup ([b101bf8](b101bf81dab99b3ad6a8ae4c394951595df8a979))
+- Cleanup ([e70ebc2](e70ebc209326033c9aead9ac6cc94b8364b26a56))
+- Add ([170f79c](170f79ce60e159ea61a0a1b93e87fb30d937d45b))
+- Cleanup ([ceb90c9](ceb90c914e6e780e5a2a358b8d92cd99b1607507))
+- Add ([17da28e](17da28e614a4beefbb4dbaf9343e0754d3049219))
+- Accept invalid handle id config ([f08af3f](f08af3fc0e06ceed6b32bad230694f87f728fb9e))
+- Add ([ad8c181](ad8c1819a7a0a573e0b50f05e9d81bf6069f2303))
+
 ## [1.16.5] - 2023-03-22
 
 [12af745](12af745ac72d7d2a0099f70fc946d47c5c949bcd)...[0ab0de1](0ab0de1a4d35247905e756fb4504e8419db05f79)
