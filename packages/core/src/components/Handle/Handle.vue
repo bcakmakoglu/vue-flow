@@ -3,7 +3,21 @@ import { isFunction, isString } from '@vueuse/core'
 import type { Position } from '../../types'
 import type { HandleProps } from '../../types/handle'
 
-const { position = 'top' as Position, connectable = true, id, isValidConnection, ...props } = defineProps<HandleProps>()
+const {
+  position = 'top' as Position,
+  connectable = true,
+  connectableStart = true,
+  connectableEnd = true,
+  id,
+  isValidConnection,
+  ...props
+} = defineProps<HandleProps>()
+
+const emits = defineEmits<{
+  (event: 'mousedown', e: MouseEvent): void
+  (event: 'touchstart', e: TouchEvent): void
+  (event: 'click', e: MouseEvent): void
+}>()
 
 const type = toRef(props, 'type', 'source')
 
@@ -38,6 +52,14 @@ const isConnectable = computed(() => {
   return isDef(connectable) ? connectable : nodesConnectable
 })
 
+const isConnecting = computed(
+  () =>
+    connectionStartHandle &&
+    connectionStartHandle.nodeId === nodeId &&
+    connectionStartHandle.handleId === handleId &&
+    connectionStartHandle.type === type.value,
+)
+
 onMounted(() => {
   // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
   until(() => node.initialized)
@@ -69,6 +91,30 @@ onMounted(() => {
       node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
     })
 })
+
+function onPointerDown(event: MouseEvent | TouchEvent) {
+  const isMouseTriggered = isMouseEvent(event)
+
+  if (isConnectable.value && connectableStart && ((isMouseTriggered && event.button === 0) || !isMouseTriggered)) {
+    handlePointerDown(event)
+  }
+
+  if (isMouseTriggered) {
+    emits('mousedown', event)
+  } else {
+    emits('touchstart', event)
+  }
+}
+
+function onClick(event: MouseEvent) {
+  if (!connectionStartHandle && !connectableStart) {
+    return
+  }
+
+  if (isConnectable.value) {
+    handleClick(event)
+  }
+}
 </script>
 
 <script lang="ts">
@@ -93,16 +139,15 @@ export default {
         source: type !== 'target',
         target: type === 'target',
         connectable: isConnectable,
-        connecting:
-          connectionStartHandle &&
-          connectionStartHandle.nodeId === nodeId &&
-          connectionStartHandle.handleId === handleId &&
-          connectionStartHandle.type === type,
+        connecting: isConnecting,
+        connectablestart: connectableStart,
+        connectableend: connectableEnd,
+        connectionindicator: (isConnectable && connectableStart && !isConnecting) || (connectableEnd && isConnecting),
       },
     ]"
-    @mousedown="handlePointerDown"
-    @touchstart="handlePointerDown"
-    @click="handleClick"
+    @mousedown="onPointerDown"
+    @touchstart="onPointerDown"
+    @click="onClick"
   >
     <slot :id="id" />
   </div>
