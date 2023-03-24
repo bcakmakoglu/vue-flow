@@ -6,37 +6,50 @@ export function useGetters(state: State): ComputedGetters {
   const edgeIds = computed(() => state.edges.map((e) => e.id))
 
   const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => {
-    if (state.nodes && !nodeIds.value.length) return state.nodes.find((node) => node.id === id)
+    if (state.nodes && !nodeIds.value.length) {
+      return state.nodes.find((node) => node.id === id)
+    }
+
     return state.nodes[nodeIds.value.indexOf(id)]
   })
 
   const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => {
-    if (state.edges && !edgeIds.value.length) return state.edges.find((edge) => edge.id === id)
+    if (state.edges && !edgeIds.value.length) {
+      return state.edges.find((edge) => edge.id === id)
+    }
+
     return state.edges[edgeIds.value.indexOf(id)]
   })
 
-  const getEdgeTypes = computed(() => {
+  const getEdgeTypes: ComputedGetters['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
       ...state.edgeTypes,
     }
+
     const keys = Object.keys(edgeTypes)
+
     state.edges?.forEach((e) => e.type && !keys.includes(e.type) && (edgeTypes[e.type] = e.type))
+
     return edgeTypes
   })
 
-  const getNodeTypes = computed(() => {
+  const getNodeTypes: ComputedGetters['getNodeTypes'] = computed(() => {
     const nodeTypes: Record<string, any> = {
       ...defaultNodeTypes,
       ...state.nodeTypes,
     }
+
     const keys = Object.keys(nodeTypes)
+
     state.nodes?.forEach((n) => n.type && !keys.includes(n.type) && (nodeTypes[n.type] = n.type))
+
     return nodeTypes
   })
 
-  const getNodes = computed<GraphNode[]>(() => {
+  const getNodes: ComputedGetters['getNodes'] = computed(() => {
     const nodes = state.nodes.filter((n) => !n.hidden)
+
     return state.onlyRenderVisibleElements
       ? nodes &&
           getNodesInside(
@@ -67,7 +80,7 @@ export function useGetters(state: State): ComputedGetters {
     return !e.hidden && !target.hidden && !source.hidden
   }
 
-  const getEdges = computed<GraphEdge[]>(() => {
+  const getEdges: ComputedGetters['getEdges'] = computed(() => {
     if (!state.onlyRenderVisibleElements) return state.edges.filter((edge) => edgeHidden(edge))
 
     return state.edges.filter((e) => {
