@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.17.1
+
+### Patch Changes
+
+- [#799](https://github.com/bcakmakoglu/vue-flow/pull/799) [`b1e92195`](https://github.com/bcakmakoglu/vue-flow/commit/b1e92195e5679ecb74cd0edea43bfa5359727a5c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing emit definition for `error`
+
+- [#796](https://github.com/bcakmakoglu/vue-flow/pull/796) [`54ea8a0d`](https://github.com/bcakmakoglu/vue-flow/commit/54ea8a0d0c6c95931cb2aeb0079751db6447df65) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix return type of `getIncomers` & `getOutgoers`
+
+- [#793](https://github.com/bcakmakoglu/vue-flow/pull/793) [`c67e9391`](https://github.com/bcakmakoglu/vue-flow/commit/c67e939112fbc4003ab4164f8b7ea52aa44a718f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if node handle bounds exist in `getNodesInitialized`
+
+- [#793](https://github.com/bcakmakoglu/vue-flow/pull/793) [`ef1c48ce`](https://github.com/bcakmakoglu/vue-flow/commit/ef1c48ce0a99f71efba197a2de613179a6891211) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use visible nodes to check if `onNodesInitialized` should be triggered
+
 ## 1.17.0
 
 ### Minor Changes
