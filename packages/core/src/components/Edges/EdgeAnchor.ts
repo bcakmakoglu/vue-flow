@@ -6,6 +6,7 @@ interface Props extends HTMLAttributes {
   centerX: number
   centerY: number
   radius?: number
+  type: string
 }
 
 function shiftX(x: number, shift: number, position: Position): number {
@@ -20,32 +21,24 @@ function shiftY(y: number, shift: number, position: Position): number {
   return y
 }
 
-const EdgeAnchor: FunctionalComponent<Props> = function ({ radius = 10, centerX = 0, centerY = 0, position = Position.Top }) {
-  const cx = () => {
-    const val = shiftX(centerX, radius, position)
-
-    if (isNaN(val)) return 0
-    else return val
-  }
-
-  const cy = () => {
-    const val = shiftY(centerY, radius, position)
-
-    if (isNaN(val)) return 0
-    else return val
-  }
-
+const EdgeAnchor: FunctionalComponent<Props> = function ({
+  radius = 10,
+  centerX = 0,
+  centerY = 0,
+  position = Position.Top,
+  type,
+}) {
   return h('circle', {
-    class: 'vue-flow__edgeupdater',
-    cx: cx(),
-    cy: cy(),
+    class: `vue-flow__edgeupdater vue-flow__edgeupdater-${type}`,
+    cx: shiftX(centerX, radius, position),
+    cy: shiftY(centerY, radius, position),
     r: radius,
     stroke: 'transparent',
     fill: 'transparent',
   })
 }
 
-EdgeAnchor.props = ['radius', 'centerX', 'centerY', 'position']
+EdgeAnchor.props = ['radius', 'centerX', 'centerY', 'position', 'type']
 EdgeAnchor.compatConfig = { MODE: 3 }
 
 export default EdgeAnchor
