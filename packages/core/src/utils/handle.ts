@@ -98,25 +98,30 @@ export function isValidHandle(
     connection: { source: '', target: '', sourceHandle: null, targetHandle: null },
   }
 
-  if (handleToCheck && handleDomNode && handle) {
-    const handleNodeId = handleDomNode.getAttribute('data-nodeid')
-    const handleId = handleDomNode.getAttribute('data-handleid')
+  if (handleToCheck) {
+    const handleType = getHandleType(undefined, handleToCheck)
+    const handleNodeId = handleToCheck.getAttribute('data-nodeid')!
+    const handleId = handleToCheck.getAttribute('data-handleid')
+    const connectable = handleToCheck.classList.contains('connectable')
+    const connectableEnd = handleToCheck.classList.contains('connectableend')
 
     const connection: Connection = {
-      source: isTarget ? handle.nodeId : fromNodeId,
+      source: isTarget ? handleNodeId : fromNodeId,
       sourceHandle: isTarget ? handleId : fromHandleId,
-      target: isTarget ? fromNodeId : handle.nodeId,
+      target: isTarget ? fromNodeId : handleNodeId,
       targetHandle: isTarget ? fromHandleId : handleId,
     }
 
     result.connection = connection
     result.handleId = handleId
 
+    const isConnectable = connectable && connectableEnd
+
     // in strict mode we don't allow target to target or source to source connections
     const isValid =
-      handleToCheck.classList.contains('connectable') &&
+      isConnectable &&
       (connectionMode === ConnectionMode.Strict
-        ? (isTarget && handle.type === 'source') || (!isTarget && handle.type === 'target')
+        ? (isTarget && handleType === 'source') || (!isTarget && handleType === 'target')
         : handleNodeId !== fromNodeId || handleId !== fromHandleId)
 
     if (isValid) {
