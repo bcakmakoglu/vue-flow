@@ -66,7 +66,6 @@ export default {
       width: `${width > 100 ? 100 : width}%`,
     }"
   >
-    <!-- todo: rename to `pattern -->
     <slot :id="patternId" name="pattern-container">
       <pattern
         :id="patternId"
