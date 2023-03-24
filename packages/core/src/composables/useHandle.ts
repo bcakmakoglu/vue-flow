@@ -64,8 +64,8 @@ export default function useHandle({
 
       let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
 
-      if (!isValidConnectionHandler) {
-        if (node) isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
+      if (!isValidConnectionHandler && node) {
+        isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
       }
 
       let prevClosestHandle: ConnectionHandle | null
@@ -163,7 +163,9 @@ export default function useHandle({
           getConnectionStatus(!!prevClosestHandle, isValid),
         )
 
-        if (!prevClosestHandle && !isValid && !handleDomNode) return resetRecentHandle(prevActiveHandle)
+        if (!prevClosestHandle && !isValid && !handleDomNode) {
+          return resetRecentHandle(prevActiveHandle)
+        }
 
         if (connection && connection.source !== connection.target && handleDomNode) {
           resetRecentHandle(prevActiveHandle)
@@ -181,14 +183,19 @@ export default function useHandle({
       function onPointerUp(event: MouseTouchEvent) {
         if (prevClosestHandle || handleDomNode) {
           if (connection && isValid) {
-            if (!onEdgeUpdate) emits.connect(connection)
-            else onEdgeUpdate(event, connection)
+            if (!onEdgeUpdate) {
+              emits.connect(connection)
+            } else {
+              onEdgeUpdate(event, connection)
+            }
           }
         }
 
         emits.connectEnd(event)
 
-        if (edgeUpdaterType) onEdgeUpdateEnd?.(event)
+        if (edgeUpdaterType) {
+          onEdgeUpdateEnd?.(event)
+        }
 
         resetRecentHandle(prevActiveHandle)
 
@@ -216,20 +223,26 @@ export default function useHandle({
   }
 
   const handleClick = (event: MouseEvent) => {
-    if (!connectOnClick.value) return
+    if (!connectOnClick.value) {
+      return
+    }
 
     if (!connectionClickStartHandle.value) {
+      emits.clickConnectStart({ event, nodeId, handleId })
+
       startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event, true)
     } else {
       let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
 
       const node = findNode(unref(nodeId))
 
-      if (!isValidConnectionHandler) {
-        if (node) isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
+      if (!isValidConnectionHandler && node) {
+        isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
       }
 
-      if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) return
+      if (node && (typeof node.connectable === 'undefined' ? nodesConnectable : node.connectable) === false) {
+        return
+      }
 
       const doc = getHostForElement(event.target as HTMLElement)
 
@@ -252,7 +265,11 @@ export default function useHandle({
 
       const isOwnHandle = connection.source === connection.target
 
-      if (isValid && !isOwnHandle) emits.connect(connection)
+      if (isValid && !isOwnHandle) {
+        emits.connect(connection)
+      }
+
+      emits.clickConnectEnd(event)
 
       endConnection(event, true)
     }
