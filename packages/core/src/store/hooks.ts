@@ -24,6 +24,8 @@ export function createHooks(): FlowHooks {
     connect: createExtendedEventHook(),
     connectStart: createExtendedEventHook(),
     connectEnd: createExtendedEventHook(),
+    clickConnectStart: createExtendedEventHook(),
+    clickConnectEnd: createExtendedEventHook(),
     paneReady: createExtendedEventHook(),
     move: createExtendedEventHook(),
     moveStart: createExtendedEventHook(),
@@ -54,7 +56,6 @@ export function createHooks(): FlowHooks {
     edgeUpdateEnd: createExtendedEventHook(),
     updateNodeInternals: createExtendedEventHook(),
     error: createExtendedEventHook((err) => warn(err.message)),
-  }
 }
 
 export function useHooks(emit: (...args: any[]) => void, hooks: Ref<FlowHooks>) {
