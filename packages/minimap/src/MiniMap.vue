@@ -23,6 +23,8 @@ const {
   pannable = false,
   zoomable = false,
   ariaLabel = 'Vue Flow mini map',
+  inversePan = false,
+  zoomStep = 10,
 } = defineProps<MiniMapProps>()
 
 const emit = defineEmits(['click', 'nodeClick', 'nodeDblclick', 'nodeMouseenter', 'nodeMousemove', 'nodeMouseleave'])
@@ -111,7 +113,9 @@ watchEffect(
         }
 
         const pinchDelta =
-          -event.sourceEvent.deltaY * (event.sourceEvent.deltaMode === 1 ? 0.05 : event.sourceEvent.deltaMode ? 1 : 0.002) * 10
+          -event.sourceEvent.deltaY *
+          (event.sourceEvent.deltaMode === 1 ? 0.05 : event.sourceEvent.deltaMode ? 1 : 0.002) *
+          zoomStep
         const zoom = viewport.value.zoom * 2 ** pinchDelta
 
         d3Zoom.value.scaleTo(d3Selection.value, zoom)
@@ -122,9 +126,11 @@ watchEffect(
           return
         }
 
+        const moveScale = viewScale.value * Math.max(1, viewport.value.zoom) * (inversePan ? -1 : 1)
+
         const position = {
-          x: viewport.value.x - event.sourceEvent.movementX * viewScale.value * Math.max(1, viewport.value.zoom),
-          y: viewport.value.y - event.sourceEvent.movementY * viewScale.value * Math.max(1, viewport.value.zoom),
+          x: viewport.value.x - event.sourceEvent.movementX * moveScale,
+          y: viewport.value.y - event.sourceEvent.movementY * moveScale,
         }
 
         const extent: CoordinateExtent = [
