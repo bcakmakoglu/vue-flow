@@ -10,6 +10,7 @@ import type {
   EdgeMarkerType,
   ElementData,
   Elements,
+  FlowElements,
   GraphEdge,
   GraphNode,
   MaybeElement,
@@ -127,15 +128,21 @@ export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphE
   return Object.assign({ id: edge.id.toString() }, edge, defaults) as GraphEdge
 }
 
-const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source' | 'target') => {
+const getConnectedElements = <T extends Elements = FlowElements>(
+  node: Node,
+  elements: T,
+  dir: 'source' | 'target',
+): T extends FlowElements ? GraphNode[] : Node[] => {
   if (!isNode(node)) return []
   const origin = dir === 'source' ? 'target' : 'source'
   const ids = elements.filter((e) => isEdge(e) && e[origin] === node.id).map((e) => isEdge(e) && e[dir])
-  return elements.filter((e) => ids.includes(e.id)) as GraphEdge[]
+  return elements.filter((e) => ids.includes(e.id)) as T extends FlowElements ? GraphNode[] : Node[]
 }
-export const getOutgoers = (node: GraphNode, elements: Elements) => getConnectedElements(node, elements, 'target')
+export const getOutgoers = <T extends Elements = FlowElements>(node: Node, elements: T) =>
+  getConnectedElements(node, elements, 'target')
 
-export const getIncomers = (node: GraphNode, elements: Elements) => getConnectedElements(node, elements, 'source')
+export const getIncomers = <T extends Elements = FlowElements>(node: Node, elements: T) =>
+  getConnectedElements(node, elements, 'source')
 
 export const getEdgeId = ({ source, sourceHandle, target, targetHandle }: Connection) =>
   `vueflow__edge-${source}${sourceHandle ?? ''}-${target}${targetHandle ?? ''}`
