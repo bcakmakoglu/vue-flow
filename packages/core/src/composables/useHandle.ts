@@ -184,9 +184,10 @@ export default function useHandle({
       function onPointerUp(event: MouseTouchEvent) {
         if ((prevClosestHandle || handleDomNode) && connection && isValid) {
           if (!onEdgeUpdate) {
-            emits.connect(connection)
-          } else {
-            onEdgeUpdate(event, connection)
+              emits.connect(connection)
+            } else {
+              onEdgeUpdate(event, connection)
+            }
           }
         }
 
@@ -227,6 +228,8 @@ export default function useHandle({
     }
 
     if (!connectionClickStartHandle.value) {
+      emits.clickConnectStart({ event, nodeId, handleId })
+
       startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event, true)
     } else {
       let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
@@ -265,6 +268,8 @@ export default function useHandle({
       if (isValid && !isOwnHandle) {
         emits.connect(connection)
       }
+
+      emits.clickConnectEnd(event)
 
       endConnection(event, true)
     }

@@ -75,6 +75,13 @@ const emit = defineEmits<{
     } & OnConnectStartParams,
   ): void
   (event: 'connectEnd', connectionEvent?: MouseEvent): void
+  (
+    event: 'clickConnectStart',
+    connectionEvent: {
+      event?: MouseEvent
+    } & OnConnectStartParams,
+  ): void
+  (event: 'clickConnectEnd', connectionEvent?: MouseEvent): void
   (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
