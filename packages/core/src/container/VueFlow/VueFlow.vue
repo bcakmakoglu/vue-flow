@@ -17,6 +17,7 @@ import type {
   ViewportTransform,
   VueFlowStore,
 } from '../../types'
+import type { VueFlowError } from '../../utils/errors'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: undefined,
@@ -103,6 +104,7 @@ const emit = defineEmits<{
   (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
   (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'updateNodeInternals'): void
+  (event: 'error', error: VueFlowError): void
 
   /** v-model event definitions */
   (event: 'update:modelValue', value: FlowElements): void
