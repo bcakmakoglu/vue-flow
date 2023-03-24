@@ -23,6 +23,8 @@ export const createHooks = (): FlowHooks => ({
   connect: createExtendedEventHook(),
   connectStart: createExtendedEventHook(),
   connectEnd: createExtendedEventHook(),
+  clickConnectStart: createExtendedEventHook(),
+  clickConnectEnd: createExtendedEventHook(),
   paneReady: createExtendedEventHook(),
   move: createExtendedEventHook(),
   moveStart: createExtendedEventHook(),
