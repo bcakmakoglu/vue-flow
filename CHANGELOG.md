@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.1] - 2023-03-24
+
+[e7b0c4b](e7b0c4b73ed3b2085bc36b3248463a7401fdafe7)...[0bc4b73](0bc4b73625ffc5da5b8576d27b1d27ea131a39ee)
+
+### Bug Fixes
+
+- Correct return type of getIncomers & getOutgoers ([0501151](0501151e94e9a02d86e3220c273872b3976c54ef))
+- Only use visible nodes to check if nodes are initialized ([c330686](c330686833968d9482067f061579da28f1263a9f))
+- Add missing error event definition ([976f7c2](976f7c257bda2da81330616756a69451cd4c8a7d))
+
+### Miscellaneous Tasks
+
+- Add ([54ea8a0](54ea8a0d0c6c95931cb2aeb0079751db6447df65))
+- Cleanup types ([9791448](97914486db8742332f90ff5aec0f0a5197b8f286))
+- Add ([cd5fc0a](cd5fc0a7e7494a4d16831917036f794fc38b6980))
+- Add ([693601c](693601cc04a239632bb77f5c3d86d32752d97934))
+- Add ([d59cc78](d59cc784960038a765160bdbce3f6f072ee44a8c))
+- Cleanup getters ([0cdff91](0cdff913221bf9d9c9cda8eeef71837f8e6273c4))
+
+### Refactor
+
+- Check if node handle bounds exist in `getNodesInitialized` ([2944744](2944744df18ffb73b6ed175caeb2dc3ed2a434ee))
+
 ## [1.17.0] - 2023-03-23
 
 [0ab0de1](0ab0de1a4d35247905e756fb4504e8419db05f79)...[e7b0c4b](e7b0c4b73ed3b2085bc36b3248463a7401fdafe7)
