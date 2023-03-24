@@ -56,6 +56,7 @@ export function createHooks(): FlowHooks {
     edgeUpdateEnd: createExtendedEventHook(),
     updateNodeInternals: createExtendedEventHook(),
     error: createExtendedEventHook((err) => warn(err.message)),
+  }
 }
 
 export function useHooks(emit: (...args: any[]) => void, hooks: Ref<FlowHooks>) {
