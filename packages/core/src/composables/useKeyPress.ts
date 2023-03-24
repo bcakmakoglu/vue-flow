@@ -32,6 +32,12 @@ function createKeyPredicate(keyFilter: KeyFilter, pressedKeys: Set<string>): Key
     })
 }
 
+/**
+ * Reactive key press state
+ *
+ * @param keyFilter - Can be a boolean, a string or an array of strings. If it's a boolean, it will always return that value. If it's a string, it will return true if the key is pressed. If it's an array of strings, it will return true if any of the keys are pressed, or a combination is pressed (e.g. ['ctrl+a', 'ctrl+b'])
+ * @param onChange - Callback function that will be called when the key state changes
+ */
 export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
 
@@ -42,7 +48,9 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
   const pressedKeys = $ref<Set<string>>(new Set())
 
   watch($$(isPressed), () => {
-    if (onChange && typeof onChange === 'function') onChange(isPressed)
+    if (onChange && typeof onChange === 'function') {
+      onChange(isPressed)
+    }
   })
 
   watchEffect(() => {

@@ -131,7 +131,7 @@ const getConnectedElements = (node: GraphNode, elements: Elements, dir: 'source'
   if (!isNode(node)) return []
   const origin = dir === 'source' ? 'target' : 'source'
   const ids = elements.filter((e) => isEdge(e) && e[origin] === node.id).map((e) => isEdge(e) && e[dir])
-  return elements.filter((e) => ids.includes(e.id))
+  return elements.filter((e) => ids.includes(e.id)) as GraphEdge[]
 }
 export const getOutgoers = (node: GraphNode, elements: Elements) => getConnectedElements(node, elements, 'target')
 
