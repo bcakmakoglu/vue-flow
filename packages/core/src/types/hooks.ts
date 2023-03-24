@@ -58,6 +58,10 @@ export interface FlowEvents {
     event?: MouseEvent | TouchEvent
   } & OnConnectStartParams
   connectEnd: MouseEvent | TouchEvent | undefined
+  clickConnectStart: {
+    event?: MouseEvent | TouchEvent
+  } & OnConnectStartParams
+  clickConnectEnd: MouseEvent | TouchEvent | undefined
   paneReady: VueFlowStore
   move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }
   moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }
