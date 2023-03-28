@@ -101,7 +101,7 @@ export default {
       },
     ]"
     @mousedown="handlePointerDown"
-    @touchstart="handlePointerDown"
+    @touchstart.passive="handlePointerDown"
     @click="handleClick"
   >
     <slot :id="id" />
