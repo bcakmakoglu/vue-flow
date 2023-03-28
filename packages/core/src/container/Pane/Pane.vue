@@ -227,7 +227,7 @@ export default {
     :class="[{ selection: isSelecting }]"
     @click="onClick"
     @contextmenu="onContextMenu"
-    @wheel="onWheel"
+    @wheel.passive="onWheel"
     @mouseenter="onMouseEnter"
     @mousedown="onMouseDown"
     @mousemove="onMouseMove"
