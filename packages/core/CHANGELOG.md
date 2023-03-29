@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.17.2
+
+### Patch Changes
+
+- [#810](https://github.com/bcakmakoglu/vue-flow/pull/810) [`3c06fdfb`](https://github.com/bcakmakoglu/vue-flow/commit/3c06fdfbf92b491e1be87077250949b82f1fd534) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make wheel and touchstart event listeners passive to avoid warnings
+
 ## 1.17.1
 
 ### Patch Changes
