@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.2] - 2023-03-29
+
+[0bc4b73](0bc4b73625ffc5da5b8576d27b1d27ea131a39ee)...[4a2598f](4a2598ff670d24c5651380bb984bfd6bba7fdd0f)
+
+### Bug Fixes
+
+- Make @wheel and @touchstart event passive ([330a3b7](330a3b7a4ff2afb672ddd8ac0f56cd42d6049a50))
+
+### Miscellaneous Tasks
+
+- Add ([51269a4](51269a4e5720b75e2a674124b2eb72a62d0b9ca0))
+
 ## [1.17.1] - 2023-03-24
 
 [e7b0c4b](e7b0c4b73ed3b2085bc36b3248463a7401fdafe7)...[0bc4b73](0bc4b73625ffc5da5b8576d27b1d27ea131a39ee)
