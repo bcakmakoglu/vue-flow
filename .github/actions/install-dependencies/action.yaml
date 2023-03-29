@@ -1,0 +1,37 @@
+name: Install Dependencies
+
+description: This workflow will install dependencies and should be used as an action for other workflows
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Install pnpm 📦
+      uses: pnpm/action-setup@v2.2.4
+      with:
+        version: 8
+        run_install: false
+
+    - name: Setup pnpm config 📖
+      run: pnpm config set store-dir .pnpm-store
+      shell: bash
+
+    - name: Get pnpm store directory 🏬
+      id: pnpm-cache
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+    - name: Setup pnpm cache 🧃
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Install dependencies 👨🏻‍💻
+      run: pnpm install --frozen-lockfile --ignore-scripts
+      shell: bash
+
+
