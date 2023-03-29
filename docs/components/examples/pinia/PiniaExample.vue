@@ -1,13 +1,13 @@
-<script setup>
+<script lang="ts" setup>
 import sdk from '@stackblitz/sdk'
 
-const el = ref()
+const el = ref<HTMLDivElement>()
 
 onMounted(() => {
-  sdk.embedProjectId(el.value, 'vitejs-vite-wyfpsj', {
-    height: 750,
+  sdk.embedProjectId(el.value!, 'vitejs-vite-ujrwcm', {
     forceEmbedLayout: true,
     openFile: 'src/App.vue',
+    height: 750,
   })
 })
 </script>
@@ -15,9 +15,3 @@ onMounted(() => {
 <template>
   <div ref="el" class="outline-none"></div>
 </template>
-
-<style>
-.application {
-  @apply h-[75vh];
-}
-</style>
