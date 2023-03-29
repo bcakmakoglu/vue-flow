@@ -1,4 +1,7 @@
+import { createEventHook, toRefs } from '@vueuse/core'
+import { computed, reactive } from 'vue'
 import type { ConfigFactory, FlowOptions, Plugin, PluginHooks, State, VueFlowStore } from '~/types'
+import { useActions, useGetters, useState } from '~/store'
 
 /**
  * Global Vue Flow App
@@ -56,9 +59,12 @@ export class VueFlowApp {
 
     const reactiveState = reactive(state)
 
-    const getters = useGetters(reactiveState)
+    const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
+    const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
 
-    const actions = useActions(reactiveState, getters)
+    const getters = useGetters(reactiveState, nodeIds, edgeIds)
+
+    const actions = useActions(reactiveState, getters, nodeIds, edgeIds)
 
     const hooksOn = <any>{}
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
@@ -86,6 +92,7 @@ export class VueFlowApp {
         this.remove(id)
         this.hooks.destroyed.trigger(id)
       },
+      vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
     }
 
     this.set(id, flow)
@@ -130,10 +137,12 @@ export class VueFlowApp {
   }
 }
 
-export const createVueFlow = (options?: ConfigFactory) => {
+export function createVueFlow(options?: ConfigFactory) {
   const app = VueFlowApp.getInstance()
 
-  if (options) app.setConfig(options)
+  if (options) {
+    app.setConfig(options)
+  }
 
   return app
 }

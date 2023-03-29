@@ -155,14 +155,18 @@ watchEffect(
         .on('zoom', pannable ? panHandler : () => {})
         .on('zoom.wheel', zoomable ? zoomHandler : () => {})
         .on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-          if (!event.sourceEvent) return null
+          if (!event.sourceEvent) {
+            return null
+          }
 
           if (pannable && event.sourceEvent?.type === 'mousedown') {
             isDragging.value = true
           }
         })
         .on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-          if (!event.sourceEvent) return null
+          if (!event.sourceEvent) {
+            return null
+          }
 
           isDragging.value = false
         })
