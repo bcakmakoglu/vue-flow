@@ -199,6 +199,15 @@ importers:
       '@vue-flow/node-toolbar':
         specifier: workspace:*
         version: link:../../packages/node-toolbar
+      '@vue-flow/plugin-drag-n-drop':
+        specifier: workspace:*
+        version: link:../../packages/plugins/drag-n-drop
+      '@vue-flow/plugin-layout':
+        specifier: workspace:*
+        version: link:../../packages/plugins/layout
+      '@vue-flow/plugin-screenshot':
+        specifier: workspace:*
+        version: link:../../packages/plugins/screenshot
       pinia:
         specifier: ^2.0.35
         version: 2.0.35(vue@3.2.47)
@@ -489,6 +498,71 @@ importers:
       vue-tsc:
         specifier: ^1.2.0
         version: 1.2.0(typescript@4.9.5)
+
+  packages/plugins/drag-n-drop:
+    dependencies:
+      '@vueuse/core':
+        specifier: ^9.13.0
+        version: 9.13.0(vue@3.2.47)
+    devDependencies:
+      '@tooling/eslint-config':
+        specifier: workspace:*
+        version: link:../../../tooling/eslint-config
+      '@tooling/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tooling/tsconfig
+      '@tooling/vite-config':
+        specifier: workspace:*
+        version: link:../../../tooling/vite-config
+      '@vue-flow/core':
+        specifier: workspace:*
+        version: link:../../core
+      vite:
+        specifier: ^4.1.4
+        version: 4.1.4
+
+  packages/plugins/layout:
+    devDependencies:
+      '@tooling/eslint-config':
+        specifier: workspace:*
+        version: link:../../../tooling/eslint-config
+      '@tooling/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tooling/tsconfig
+      '@types/dagre':
+        specifier: ^0.7.48
+        version: 0.7.48
+      '@vue-flow/core':
+        specifier: workspace:*
+        version: link:../../core
+      dagre:
+        specifier: ^0.8.5
+        version: 0.8.5
+      vite:
+        specifier: ^4.1.4
+        version: 4.1.4
+
+  packages/plugins/screenshot:
+    dependencies:
+      html-to-image:
+        specifier: ^1.11.11
+        version: 1.11.11
+    devDependencies:
+      '@tooling/eslint-config':
+        specifier: workspace:*
+        version: link:../../../tooling/eslint-config
+      '@tooling/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tooling/tsconfig
+      '@tooling/vite-config':
+        specifier: workspace:*
+        version: link:../../../tooling/vite-config
+      '@vue-flow/core':
+        specifier: workspace:*
+        version: link:../../core
+      vite:
+        specifier: ^4.1.4
+        version: 4.1.4
 
   packages/vue-flow:
     dependencies:
@@ -6966,6 +7040,10 @@ packages:
     resolution: {integrity: sha512-vy7ClnArOZwCnqZgvv+ddgHgJiAFXe3Ge9ML5/mBctVJoUoYPCdxVucOywjDARn6CVoh3dRSFdPHy2sX80L0Wg==}
     engines: {node: '>=8'}
     dev: true
+
+  /html-to-image@1.11.11:
+    resolution: {integrity: sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==}
+    dev: false
 
   /htmlparser2@8.0.1:
     resolution: {integrity: sha512-4lVbmc1diZC7GUJQtRQ5yBAeUCL1exyMwmForWkRLnwyzWBFxN633SALPMGYaWZvKe9j1pRZJpauvmxENSp/EA==}
