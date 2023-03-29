@@ -2,6 +2,10 @@
   "name": "@vue-flow/monorepo",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
   "scripts": {
     "dev": "pnpm --dir examples/vite dev",
     "docs": "pnpm --dir docs dev",
