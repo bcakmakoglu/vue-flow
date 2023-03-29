@@ -7,7 +7,6 @@ on:
       - release/*
 env:
   CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
