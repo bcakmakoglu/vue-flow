@@ -24,10 +24,10 @@ export default function useHandle({
   onEdgeUpdate,
   onEdgeUpdateEnd,
 }: UseHandleProps) {
-  const isTarget = $computed(() => unref(type) === 'target')
-  const nodeId = $computed(() => unref(_nodeId))
-  const handleId = $computed(() => unref(_handleId))
-  const edgeUpdaterType = $computed(() => unref(_edgeUpdaterType))
+  const isTarget = computed(() => unref(type) === 'target')
+  const nodeId = computed(() => unref(_nodeId))
+  const handleId = computed(() => unref(_handleId))
+  const edgeUpdaterType = computed(() => unref(_edgeUpdaterType))
 
   const {
     vueFlowRef,
@@ -87,8 +87,8 @@ export default function useHandle({
 
       const handleLookup = getHandleLookup({
         nodes: getNodes.value,
-        nodeId,
-        handleId,
+        nodeId: nodeId.value,
+        handleId: handleId.value,
         handleType,
       })
 
@@ -105,9 +105,9 @@ export default function useHandle({
 
       startConnection(
         {
-          nodeId: unref(nodeId),
-          handleId: unref(handleId),
-          type: unref(handleType),
+          nodeId: nodeId.value,
+          handleId: handleId.value,
+          type: handleType,
         },
         {
           x: x - containerBounds.left,
@@ -116,7 +116,7 @@ export default function useHandle({
         event,
       )
 
-      emits.connectStart({ event, nodeId, handleId, handleType })
+      emits.connectStart({ event, nodeId: nodeId.value, handleId: handleId.value, handleType })
 
       function onPointerMove(event: MouseTouchEvent) {
         connectionPosition = getEventPosition(event, containerBounds)
@@ -136,8 +136,8 @@ export default function useHandle({
           event,
           prevClosestHandle,
           connectionMode.value,
-          nodeId,
-          handleId,
+          nodeId.value,
+          handleId.value,
           isTarget ? 'target' : 'source',
           isValidConnectionHandler,
           doc,
@@ -228,7 +228,7 @@ export default function useHandle({
     }
 
     if (!connectionClickStartHandle.value) {
-      emits.clickConnectStart({ event, nodeId, handleId })
+      emits.clickConnectStart({ event, nodeId: nodeId.value, handleId: handleId.value })
 
       startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event, true)
     } else {
@@ -249,8 +249,8 @@ export default function useHandle({
       const { connection, isValid } = isValidHandle(
         event,
         {
-          nodeId,
-          id: handleId,
+          nodeId: nodeId.value,
+          id: handleId.value,
           type: unref(type),
         },
         connectionMode.value,

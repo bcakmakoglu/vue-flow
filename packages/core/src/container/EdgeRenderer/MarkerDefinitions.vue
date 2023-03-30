@@ -2,7 +2,7 @@
 import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
 import Marker from './Marker.vue'
 
-const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = $(useVueFlow())
+const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = useVueFlow()
 
 const markers = computed(() => {
   const ids: string[] = []
@@ -12,16 +12,16 @@ const markers = computed(() => {
     if (marker) {
       const markerId = getMarkerId(marker, vueFlowId)
       if (!ids.includes(markerId)) {
-        if (typeof marker === 'object') markers.push({ ...marker, id: markerId, color: marker.color || defaultColor })
-        else markers.push({ id: markerId, color: defaultColor, type: marker as MarkerType })
+        if (typeof marker === 'object') markers.push({ ...marker, id: markerId, color: marker.color || defaultColor.value })
+        else markers.push({ id: markerId, color: defaultColor.value, type: marker as MarkerType })
         ids.push(markerId)
       }
     }
   }
 
-  ;[connectionLineOptions.markerEnd, connectionLineOptions.markerStart].forEach(createMarkers)
+  ;[connectionLineOptions.value.markerEnd, connectionLineOptions.value.markerStart].forEach(createMarkers)
 
-  edges.reduce<MarkerProps[]>((markers, edge) => {
+  edges.value.reduce<MarkerProps[]>((markers, edge) => {
     ;[edge.markerStart, edge.markerEnd].forEach(createMarkers)
     return markers.sort((a, b) => a.id.localeCompare(b.id))
   }, markers)

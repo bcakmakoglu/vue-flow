@@ -41,15 +41,15 @@ function createKeyPredicate(keyFilter: KeyFilter, pressedKeys: Set<string>): Key
 export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
 
-  let isPressed = $ref(unref(keyFilter) === true)
+  const isPressed = ref(unref(keyFilter) === true)
 
-  let modifierPressed = $ref(false)
+  const modifierPressed = ref(false)
 
-  const pressedKeys = $ref<Set<string>>(new Set())
+  const pressedKeys = ref<Set<string>>(new Set())
 
-  watch($$(isPressed), () => {
+  watch(isPressed, () => {
     if (onChange && typeof onChange === 'function') {
-      onChange(isPressed)
+      onChange(isPressed.value)
     }
   })
 
@@ -58,30 +58,30 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
 
     if (typeof window.addEventListener !== 'undefined') {
       useEventListener(window, 'blur', () => {
-        isPressed = false
+        isPressed.value = false
       })
     }
 
     if (isBoolean(unrefKeyFilter)) {
-      isPressed = unrefKeyFilter
+      isPressed.value = unrefKeyFilter
       return
     }
 
     if (Array.isArray(unrefKeyFilter)) {
-      unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys)
+      unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys.value)
     }
 
     if (unrefKeyFilter) {
       onKeyStroke(
         unrefKeyFilter,
         (e) => {
-          modifierPressed = wasModifierPressed(e)
+          modifierPressed.value = wasModifierPressed(e)
 
-          if (!modifierPressed && isInputDOMNode(e)) return
+          if (!modifierPressed.value && isInputDOMNode(e)) return
 
           e.preventDefault()
 
-          isPressed = true
+          isPressed.value = true
         },
         { eventName: 'keydown' },
       )
@@ -89,14 +89,14 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
       onKeyStroke(
         unrefKeyFilter,
         (e) => {
-          if (isPressed) {
-            if (!modifierPressed && isInputDOMNode(e)) return
+          if (isPressed.value) {
+            if (!modifierPressed.value && isInputDOMNode(e)) return
 
-            modifierPressed = false
+            modifierPressed.value = false
 
-            pressedKeys.clear()
+            pressedKeys.value.clear()
 
-            isPressed = false
+            isPressed.value = false
           }
         },
         { eventName: 'keyup' },
@@ -104,5 +104,5 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
     }
   })
 
-  return $$(isPressed)
+  return isPressed
 }

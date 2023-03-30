@@ -23,31 +23,31 @@ import type {
 export function useActions(state: State, getters: ComputedGetters): Actions {
   let fitViewOnInitDone = false
 
-  const viewportHelper = $(useViewport(state, getters))
+  const viewportHelper = useViewport(state, getters)
 
-  until(() => viewportHelper.initialized)
+  until(() => viewportHelper.value.initialized)
     .toBe(true)
     .then(() => {})
 
-  const nodeIds = $computed(() => state.nodes.map((n) => n.id))
-  const edgeIds = $computed(() => state.edges.map((e) => e.id))
+  const nodeIds = computed(() => state.nodes.map((n) => n.id))
+  const edgeIds = computed(() => state.edges.map((e) => e.id))
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? nodeIds ?? []
+    const updateIds = ids ?? nodeIds.value ?? []
 
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
 
   const findNode: Actions['findNode'] = (id) => {
-    if (state.nodes && !nodeIds.length) return state.nodes.find((node) => node.id === id)
+    if (state.nodes && !nodeIds.value.length) return state.nodes.find((node) => node.id === id)
 
-    return state.nodes[nodeIds.indexOf(id)]
+    return state.nodes[nodeIds.value.indexOf(id)]
   }
 
   const findEdge: Actions['findEdge'] = (id) => {
-    if (state.edges && !edgeIds.length) return state.edges.find((edge) => edge.id === id)
+    if (state.edges && !edgeIds.value.length) return state.edges.find((edge) => edge.id === id)
 
-    return state.edges[edgeIds.indexOf(id)]
+    return state.edges[edgeIds.value.indexOf(id)]
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -147,10 +147,10 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     }, [])
 
     if (state.fitViewOnInit && !fitViewOnInitDone) {
-      until(() => viewportHelper.initialized)
+      until(() => viewportHelper.value.initialized)
         .toBe(true)
         .then(() => {
-          viewportHelper.fitView()
+          viewportHelper.value.fitView()
         })
 
       fitViewOnInitDone = true
@@ -160,13 +160,13 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   }
 
   const nodeSelectionHandler = (nodes: GraphNode[], selected: boolean) => {
-    const nodeIds = nodes.map((n) => n.id)
-
     let changedNodes: NodeChange[]
     let changedEdges: EdgeChange[] = []
-    if (state.multiSelectionActive) changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
-    else {
-      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds)
+
+    if (state.multiSelectionActive) {
+      changedNodes = nodeIds.value.map((nodeId) => createSelectionChange(nodeId, selected))
+    } else {
+      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds.value)
       changedNodes = selectionChanges.changedNodes
       changedEdges = selectionChanges.changedEdges
     }
@@ -176,13 +176,13 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   }
 
   const edgeSelectionHandler = (edges: GraphEdge[], selected: boolean) => {
-    const edgeIds = edges.map((n) => n.id)
-
     let changedNodes: NodeChange[] = []
     let changedEdges: EdgeChange[]
-    if (state.multiSelectionActive) changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
-    else {
-      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds)
+
+    if (state.multiSelectionActive) {
+      changedEdges = edgeIds.value.map((edgeId) => createSelectionChange(edgeId, selected))
+    } else {
+      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds.value)
       changedNodes = selectionChanges.changedNodes
       changedEdges = selectionChanges.changedEdges
     }
@@ -687,35 +687,35 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     isNodeIntersecting,
     panBy,
     fitView: async (params = { padding: 0.1 }) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.fitView(params)
+      await until(() => viewportHelper.value.initialized).toBe(true)
+      viewportHelper.value.fitView(params)
     },
     zoomIn: async (options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomIn(options)
+      await until(() => viewportHelper.value.initialized).toBe(true)
+      viewportHelper.value.zoomIn(options)
     },
     zoomOut: async (options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomOut(options)
+      await until(() => viewportHelper.value.initialized).toBe(true)
+      viewportHelper.value.zoomOut(options)
     },
     zoomTo: async (zoomLevel, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomTo(zoomLevel, options)
+      await until(() => viewportHelper.value.initialized).toBe(true)
+      viewportHelper.value.zoomTo(zoomLevel, options)
     },
     setTransform: async (transform, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.setTransform(transform, options)
+      await until(() => viewportHelper.value.initialized).toBe(true)
+      viewportHelper.value.setTransform(transform, options)
     },
-    getTransform: () => viewportHelper.getTransform(),
+    getTransform: () => viewportHelper.value.getTransform(),
     setCenter: async (x, y, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.setCenter(x, y, options)
+      await until(() => viewportHelper.value.initialized).toBe(true)
+      viewportHelper.value.setCenter(x, y, options)
     },
     fitBounds: async (bounds, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.fitBounds(bounds, options)
+      await until(() => viewportHelper.value.initialized).toBe(true)
+      viewportHelper.value.fitBounds(bounds, options)
     },
-    project: (position) => viewportHelper.project(position),
+    project: (position) => viewportHelper.value.project(position),
     toObject,
     updateNodeInternals,
     $reset: () => {

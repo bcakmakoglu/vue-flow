@@ -14,23 +14,23 @@ const {
   labelBgBorderRadius = 2,
 } = defineProps<EdgeTextProps>()
 
-let box = $ref<RectType>({ x: 0, y: 0, width: 0, height: 0 })
+const box = ref<RectType>({ x: 0, y: 0, width: 0, height: 0 })
 
-const el = $ref<SVGTextElement | null>(null)
+const el = ref<SVGTextElement | null>(null)
 
-const transform = computed(() => `translate(${x - box.width / 2} ${y - box.height / 2})`)
+const transform = computed(() => `translate(${x - box.value.width / 2} ${y - box.value.height / 2})`)
 
 onMounted(getBox)
 
-watch([() => x, () => y, $$(el), () => label], getBox)
+watch([() => x, () => y, el, () => label], getBox)
 
 function getBox() {
-  if (!el) return
+  if (!el.value) return
 
-  const nextBox = el.getBBox()
+  const nextBox = el.value.getBBox()
 
-  if (nextBox.width !== box.width || nextBox.height !== box.height) {
-    box = nextBox
+  if (nextBox.width !== box.value.width || nextBox.height !== box.value.height) {
+    box.value = nextBox
   }
 }
 </script>

@@ -24,9 +24,9 @@ const initialViewportHelper: ExtendedViewport = {
 
 export default (state: State, getters: ComputedGetters) => {
   const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid, hooks } =
-    $(state)
+    state
 
-  const { getNodes } = $(getters)
+  const { getNodes } = getters
 
   const nodesInitialized = ref(false)
 
@@ -85,7 +85,7 @@ export default (state: State, getters: ComputedGetters) => {
         ) => {
           if (!nodes.length) return
 
-          const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes : getNodes).filter((node) => {
+          const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes : getNodes.value).filter((node) => {
             const initialized = node.initialized && node.dimensions.width && node.dimensions.height
             let shouldInclude = true
 

@@ -21,17 +21,17 @@ const emits = defineEmits<{
 
 const type = toRef(props, 'type', 'source')
 
-const { connectionStartHandle, vueFlowRef, nodesConnectable } = $(useVueFlow())
+const { connectionStartHandle, vueFlowRef, nodesConnectable } = useVueFlow()
 
 const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
 const handle = ref<HTMLDivElement>()
 
-const handleId = $computed(() => id ?? `${nodeId}__handle-${position}`)
+const handleId = computed(() => id ?? `${nodeId}__handle-${position}`)
 
 const { handlePointerDown, handleClick } = useHandle({
   nodeId,
-  handleId,
+  handleId: handleId.value,
   isValidConnection,
   type,
 })
@@ -43,21 +43,21 @@ const isConnectable = computed(() => {
 
       if (edge[type.value] !== nodeId) return false
 
-      return handle ? handle === handleId : true
+      return handle ? handle === handleId.value : true
     })
   } else if (isFunction(connectable)) {
     return connectable(node, connectedEdges.value)
   }
 
-  return isDef(connectable) ? connectable : nodesConnectable
+  return isDef(connectable) ? connectable : nodesConnectable.value
 })
 
 const isConnecting = computed(
   () =>
-    connectionStartHandle &&
-    connectionStartHandle.nodeId === nodeId &&
-    connectionStartHandle.handleId === handleId &&
-    connectionStartHandle.type === type.value,
+    connectionStartHandle.value &&
+    connectionStartHandle.value.nodeId === nodeId &&
+    connectionStartHandle.value.handleId === handleId.value &&
+    connectionStartHandle.value.type === type.value,
 )
 
 onMounted(() => {
@@ -67,9 +67,9 @@ onMounted(() => {
     .then(() => {
       const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
 
-      if (!vueFlowRef || existingBounds) return
+      if (!vueFlowRef.value || existingBounds) return
 
-      const viewportNode = vueFlowRef.querySelector('.vue-flow__transformationpane')
+      const viewportNode = vueFlowRef.value.querySelector('.vue-flow__transformationpane')
 
       if (!nodeEl || !handle.value || !viewportNode || !handleId) return
 
@@ -81,7 +81,7 @@ onMounted(() => {
       const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
       const nextBounds = {
-        id: handleId,
+        id: handleId.value,
         position,
         x: (handleBounds.left - nodeBounds.left) / zoom,
         y: (handleBounds.top - nodeBounds.top) / zoom,

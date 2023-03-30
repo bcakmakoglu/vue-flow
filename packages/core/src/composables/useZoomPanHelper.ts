@@ -8,7 +8,7 @@ const DEFAULT_PADDING = 0.1
  */
 export default (vueFlowId?: string): ViewportFunctions => {
   const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid, getNodes } =
-    $(useVueFlow({ id: vueFlowId }))
+    useVueFlow({ id: vueFlowId })
 
   return {
     zoomIn: (options) => {
@@ -18,17 +18,17 @@ export default (vueFlowId?: string): ViewportFunctions => {
       zoom(1 / 1.2, options?.duration)
     },
     zoomTo: (zoomLevel, options) => {
-      if (d3Selection && d3Zoom) {
-        d3Zoom.scaleTo(transition(d3Selection, options?.duration), zoomLevel)
+      if (d3Selection.value && d3Zoom.value) {
+        d3Zoom.value.scaleTo(transition(d3Selection.value, options?.duration), zoomLevel)
       }
     },
     setTransform: (transform, options) => {
       transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
     },
     getTransform: () => ({
-      x: viewport.x,
-      y: viewport.y,
-      zoom: viewport.zoom,
+      x: viewport.value.x,
+      y: viewport.value.y,
+      zoom: viewport.value.zoom,
     }),
     fitView: (
       options = {
@@ -37,9 +37,9 @@ export default (vueFlowId?: string): ViewportFunctions => {
         duration: 0,
       },
     ) => {
-      if (!nodes.length) return
+      if (!nodes.value.length) return
 
-      const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes : getNodes).filter((node) => {
+      const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes.value : getNodes.value).filter((node) => {
         const initialized = node.initialized && node.dimensions.width && node.dimensions.height
         let shouldInclude = true
 
@@ -54,10 +54,10 @@ export default (vueFlowId?: string): ViewportFunctions => {
 
       const { x, y, zoom } = getTransformForBounds(
         bounds,
-        dimensions.width,
-        dimensions.height,
-        options.minZoom ?? minZoom,
-        options.maxZoom ?? maxZoom,
+        dimensions.value.width,
+        dimensions.value.height,
+        options.minZoom ?? minZoom.value,
+        options.maxZoom ?? maxZoom.value,
         options.padding ?? DEFAULT_PADDING,
         options.offset,
       )
@@ -65,34 +65,41 @@ export default (vueFlowId?: string): ViewportFunctions => {
       transformViewport(x, y, zoom, options?.duration)
     },
     setCenter: (x, y, options) => {
-      const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : maxZoom
-      const centerX = dimensions.width / 2 - x * nextZoom
-      const centerY = dimensions.height / 2 - y * nextZoom
+      const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : maxZoom.value
+      const centerX = dimensions.value.width / 2 - x * nextZoom
+      const centerY = dimensions.value.height / 2 - y * nextZoom
 
       transformViewport(centerX, centerY, nextZoom, options?.duration)
     },
     fitBounds: (bounds, options = { padding: DEFAULT_PADDING }) => {
-      const { x, y, zoom } = getTransformForBounds(bounds, dimensions.width, dimensions.height, minZoom, maxZoom, options.padding)
+      const { x, y, zoom } = getTransformForBounds(
+        bounds,
+        dimensions.value.width,
+        dimensions.value.height,
+        minZoom.value,
+        maxZoom.value,
+        options.padding,
+      )
 
       transformViewport(x, y, zoom, options?.duration)
     },
-    project: (position) => pointToRendererPoint(position, viewport, snapToGrid, snapGrid),
+    project: (position) => pointToRendererPoint(position, viewport.value, snapToGrid.value, snapGrid.value),
   }
 
   function zoom(scale: number, duration?: number) {
-    if (d3Selection && d3Zoom) {
-      d3Zoom.scaleBy(transition(d3Selection, duration), scale)
+    if (d3Selection.value && d3Zoom.value) {
+      d3Zoom.value.scaleBy(transition(d3Selection.value, duration), scale)
     }
   }
 
   function transformViewport(x: number, y: number, zoom: number, duration?: number) {
     // enforce translate extent
-    const { x: clampedX, y: clampedY } = clampPosition({ x: -x, y: -y }, translateExtent)
+    const { x: clampedX, y: clampedY } = clampPosition({ x: -x, y: -y }, translateExtent.value)
 
     const nextTransform = zoomIdentity.translate(-clampedX, -clampedY).scale(zoom)
 
-    if (d3Selection && d3Zoom) {
-      d3Zoom.transform(transition(d3Selection, duration), nextTransform)
+    if (d3Selection.value && d3Zoom.value) {
+      d3Zoom.value.transform(transition(d3Selection.value, duration), nextTransform)
     }
   }
 }
