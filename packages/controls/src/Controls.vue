@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { Panel, useVueFlow } from '@vue-flow/core'
-import type { PanelPosition } from '@vue-flow/core'
+import { Panel, PanelPosition, useVueFlow } from '@vue-flow/core'
 import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from './icons/plus.svg'
@@ -14,7 +13,7 @@ const {
   showFitView = true,
   showInteractive = true,
   fitViewParams,
-  position = 'bottom-left' as PanelPosition,
+  position = PanelPosition.BottomLeft,
 } = defineProps<ControlProps>()
 
 const emit = defineEmits<{
@@ -24,27 +23,31 @@ const emit = defineEmits<{
   (event: 'interactionChange', active: boolean): void
 }>()
 
-const { nodesDraggable, nodesConnectable, elementsSelectable, setInteractive, zoomIn, zoomOut, fitView } = $(useVueFlow())
+const { nodesDraggable, nodesConnectable, elementsSelectable, setInteractive, zoomIn, zoomOut, fitView } = useVueFlow()
 
-const isInteractive = computed(() => nodesDraggable && nodesConnectable && elementsSelectable)
+const isInteractive = computed(() => nodesDraggable.value && nodesConnectable.value && elementsSelectable.value)
 
 function onZoomInHandler() {
   zoomIn()
+
   emit('zoomIn')
 }
 
 function onZoomOutHandler() {
   zoomOut()
+
   emit('zoomOut')
 }
 
 function onFitViewHandler() {
   fitView(fitViewParams)
+
   emit('fitView')
 }
 
 function onInteractiveChangeHandler() {
   setInteractive(!isInteractive.value)
+
   emit('interactionChange', !isInteractive.value)
 }
 </script>
