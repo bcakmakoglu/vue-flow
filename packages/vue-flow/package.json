@@ -30,7 +30,7 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "vue": "^3.2.25"
+    "vue": "^3.2.37"
   },
   "dependencies": {
     "@vue-flow/background": "workspace:*",
@@ -42,12 +42,12 @@
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@tooling/vite-config": "workspace:*",
-    "autoprefixer": "^10.4.13",
+    "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
     "postcss-cli": "^10.1.0",
     "postcss-nested": "^6.0.1",
-    "vite": "^4.1.4",
-    "vue": "^3.2.25"
+    "vite": "^4.2.1",
+    "vue": "^3.2.37"
   },
   "publishConfig": {
     "access": "public",

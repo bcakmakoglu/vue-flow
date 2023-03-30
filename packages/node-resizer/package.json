@@ -41,11 +41,11 @@
     "@tooling/tsconfig": "workspace:*",
     "@tooling/vite-config": "workspace:*",
     "@types/d3-drag": "^3.0.2",
-    "@types/d3-selection": "^3.0.4",
+    "@types/d3-selection": "^3.0.5",
     "@vue-flow/core": "workspace:*",
     "vite-plugin-vue-type-imports": "^0.2.4",
-    "vite": "^4.1.4",
-    "vue": "^3.2.25",
+    "vite": "^4.2.1",
+    "vue": "^3.2.37",
     "vue-tsc": "^1.2.0"
   },
   "publishConfig": {

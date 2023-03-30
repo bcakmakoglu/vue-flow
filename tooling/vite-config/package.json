@@ -8,10 +8,10 @@
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^4.1.0",
     "defu": "^6.1.2",
     "unplugin-auto-import": "^0.12.2",
-    "unplugin-vue-macros": "1.8.2",
-    "vite": "^4.1.4"
+    "unplugin-vue-macros": "1.11.2",
+    "vite": "^4.2.1"
   }
 }

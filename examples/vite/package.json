@@ -19,10 +19,10 @@
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@types/dagre": "^0.7.48",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^4.1.0",
     "dagre": "^0.8.5",
-    "unplugin-auto-import": "^0.14.4",
-    "vite": "^4.1.4",
+    "unplugin-auto-import": "^0.15.2",
+    "vite": "^4.2.1",
     "vite-svg-loader": "^3.6.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
