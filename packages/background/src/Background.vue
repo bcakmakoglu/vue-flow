@@ -28,7 +28,7 @@ const { id: vueFlowId, viewport } = useVueFlow()
 
 const gapXY = computed(() => (Array.isArray(gap) ? gap : [gap, gap]))
 
-const background = $computed(() => {
+const background = computed(() => {
   const scaledGap: [number, number] = [gapXY.value[0] * viewport.value.zoom || 1, gapXY.value[1] * viewport.value.zoom || 1]
 
   const scaledSize = size * viewport.value.zoom
