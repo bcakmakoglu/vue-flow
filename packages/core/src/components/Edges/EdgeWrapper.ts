@@ -34,11 +34,11 @@ const EdgeWrapper = defineComponent({
 
     const hooks = useEdgeHooks(props.edge, emits)
 
-    const edge = $(useVModel(props, 'edge'))
+    const edge = useVModel(props, 'edge')
 
-    let mouseOver = $ref(false)
+    const mouseOver = ref(false)
 
-    let updating = $ref(false)
+    const updating = ref(false)
 
     const nodeId = ref('')
 
@@ -53,12 +53,12 @@ const EdgeWrapper = defineComponent({
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)
 
-    const sourceNode = $computed(() => findNode(edge.source))
+    const sourceNode = computed(() => findNode(edge.value.source))
 
-    const targetNode = $computed(() => findNode(edge.target))
+    const targetNode = computed(() => findNode(edge.value.target))
 
-    const edgeClass = $computed(() => (edge.class instanceof Function ? edge.class(edge) : edge.class))
-    const edgeStyle = $computed(() => (edge.style instanceof Function ? edge.style(edge) : edge.style))
+    const edgeClass = computed(() => (edge.value.class instanceof Function ? edge.value.class(edge.value) : edge.value.class))
+    const edgeStyle = computed(() => (edge.value.style instanceof Function ? edge.value.style(edge.value) : edge.value.style))
 
     const { handlePointerDown } = useHandle({
       nodeId,
@@ -71,43 +71,43 @@ const EdgeWrapper = defineComponent({
     })
 
     return () => {
-      if (!sourceNode || !targetNode || !edge) return null
+      if (!sourceNode.value || !targetNode.value || !edge.value) return null
 
       let sourceNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
-        sourceNodeHandles = sourceNode.handleBounds.source
+        sourceNodeHandles = sourceNode.value.handleBounds.source
       } else {
-        sourceNodeHandles = [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]
+        sourceNodeHandles = [...(sourceNode.value.handleBounds.source || []), ...(sourceNode.value.handleBounds.target || [])]
       }
 
-      const sourceHandle = getHandle(sourceNodeHandles, edge.sourceHandle)
+      const sourceHandle = getHandle(sourceNodeHandles, edge.value.sourceHandle)
 
       let targetNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
-        targetNodeHandles = targetNode.handleBounds.target
+        targetNodeHandles = targetNode.value.handleBounds.target
       } else {
-        targetNodeHandles = [...(targetNode.handleBounds.target || []), ...(targetNode.handleBounds.source || [])]
+        targetNodeHandles = [...(targetNode.value.handleBounds.target || []), ...(targetNode.value.handleBounds.source || [])]
       }
 
-      const targetHandle = getHandle(targetNodeHandles, edge.targetHandle)
+      const targetHandle = getHandle(targetNodeHandles, edge.value.targetHandle)
 
       const sourcePosition = sourceHandle ? sourceHandle.position : Position.Bottom
 
       const targetPosition = targetHandle ? targetHandle.position : Position.Top
 
       const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-        sourceNode,
+        sourceNode.value,
         sourceHandle,
         sourcePosition,
-        targetNode,
+        targetNode.value,
         targetHandle,
         targetPosition,
       )
 
-      edge.sourceX = sourceX
-      edge.sourceY = sourceY
-      edge.targetX = targetX
-      edge.targetY = targetY
+      edge.value.sourceX = sourceX
+      edge.value.sourceY = sourceY
+      edge.value.targetX = targetX
+      edge.value.targetY = targetY
 
       return h(
         'g',
@@ -119,11 +119,11 @@ const EdgeWrapper = defineComponent({
             'vue-flow__edge',
             `vue-flow__edge-${props.type === false ? 'default' : props.name}`,
             noPanClassName.value,
-            edgeClass,
+            edgeClass.value,
             {
-              updating: mouseOver,
-              selected: edge.selected,
-              animated: edge.animated,
+              updating: mouseOver.value,
+              selected: edge.value.selected,
+              animated: edge.value.animated,
               inactive: !props.selectable,
             },
           ],
@@ -135,7 +135,10 @@ const EdgeWrapper = defineComponent({
           'onMouseleave': onEdgeMouseLeave,
           'onKeyDown': props.focusable ? onKeyDown : undefined,
           'tabIndex': props.focusable ? 0 : undefined,
-          'aria-label': edge.ariaLabel === null ? undefined : edge.ariaLabel || `Edge from ${edge.source} to ${edge.target}`,
+          'aria-label':
+            edge.value.ariaLabel === null
+              ? undefined
+              : edge.value.ariaLabel || `Edge from ${edge.value.source} to ${edge.value.target}`,
           'aria-describedby': props.focusable ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
           'role': props.focusable ? 'button' : undefined,
         },
@@ -146,32 +149,32 @@ const EdgeWrapper = defineComponent({
                 id: props.id,
                 sourceNode,
                 targetNode,
-                source: edge.source,
-                target: edge.target,
-                type: edge.type,
+                source: edge.value.source,
+                target: edge.value.target,
+                type: edge.value.type,
                 updatable: props.updatable,
-                selected: edge.selected,
-                animated: edge.animated,
-                label: edge.label,
-                labelStyle: edge.labelStyle,
-                labelShowBg: edge.labelShowBg,
-                labelBgStyle: edge.labelBgStyle,
-                labelBgPadding: edge.labelBgPadding,
-                labelBgBorderRadius: edge.labelBgBorderRadius,
-                data: edge.data,
-                events: { ...edge.events, ...hooks.on },
-                style: edgeStyle,
-                markerStart: `url(#${getMarkerId(edge.markerStart, vueFlowId)})`,
-                markerEnd: `url(#${getMarkerId(edge.markerEnd, vueFlowId)})`,
+                selected: edge.value.selected,
+                animated: edge.value.animated,
+                label: edge.value.label,
+                labelStyle: edge.value.labelStyle,
+                labelShowBg: edge.value.labelShowBg,
+                labelBgStyle: edge.value.labelBgStyle,
+                labelBgPadding: edge.value.labelBgPadding,
+                labelBgBorderRadius: edge.value.labelBgBorderRadius,
+                data: edge.value.data,
+                events: { ...edge.value.events, ...hooks.on },
+                style: edgeStyle.value,
+                markerStart: `url(#${getMarkerId(edge.value.markerStart, vueFlowId)})`,
+                markerEnd: `url(#${getMarkerId(edge.value.markerEnd, vueFlowId)})`,
                 sourcePosition,
                 targetPosition,
                 sourceX,
                 sourceY,
                 targetX,
                 targetY,
-                sourceHandleId: edge.sourceHandle,
-                targetHandleId: edge.targetHandle,
-                interactionWidth: edge.interactionWidth,
+                sourceHandleId: edge.value.sourceHandle,
+                targetHandleId: edge.value.targetHandle,
+                interactionWidth: edge.value.interactionWidth,
               }),
 
           [
@@ -221,66 +224,65 @@ const EdgeWrapper = defineComponent({
     }
 
     function onEdgeUpdaterMouseEnter() {
-      mouseOver = true
+      mouseOver.value = true
     }
 
     function onEdgeUpdaterMouseOut() {
-      mouseOver = false
+      mouseOver.value = false
     }
 
     function onEdgeUpdate(event: MouseTouchEvent, connection: Connection) {
-      hooks.emit.update({ event, edge, connection })
+      hooks.emit.update({ event, edge: edge.value, connection })
     }
 
     function onEdgeUpdateEnd(event: MouseTouchEvent) {
-      hooks.emit.updateEnd({ event, edge })
-      updating = false
+      hooks.emit.updateEnd({ event, edge: edge.value })
+      updating.value = false
     }
 
     function handleEdgeUpdater(event: MouseEvent, isSourceHandle: boolean) {
       if (event.button !== 0) return
 
-      updating = true
+      updating.value = true
 
-      nodeId.value = isSourceHandle ? edge.target : edge.source
-      handleId.value = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
+      nodeId.value = isSourceHandle ? edge.value.target : edge.value.source
+      handleId.value = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? ''
       type.value = isSourceHandle ? 'target' : 'source'
 
       edgeUpdaterType.value = type.value
 
-      hooks.emit.updateStart({ event, edge })
+      hooks.emit.updateStart({ event, edge: edge.value })
 
       handlePointerDown(event)
     }
 
     function onEdgeClick(event: MouseEvent) {
-      const data = { event, edge }
       if (props.selectable) {
         nodesSelectionActive.value = false
 
-        addSelectedEdges([edge])
+        addSelectedEdges([edge.value])
       }
-      hooks.emit.click(data)
+      hooks.emit.click({ event, edge: edge.value })
     }
 
     function onEdgeContextMenu(event: MouseEvent) {
-      hooks.emit.contextMenu({ event, edge })
+      hooks.emit.contextMenu({ event, edge: edge.value })
     }
 
     function onDoubleClick(event: MouseEvent) {
-      hooks.emit.doubleClick({ event, edge })
+      hooks.emit.doubleClick({ event, edge: edge.value })
     }
 
     function onEdgeMouseEnter(event: MouseEvent) {
-      hooks.emit.mouseEnter({ event, edge })
+      hooks.emit.mouseEnter({ event, edge: edge.value })
     }
 
     function onEdgeMouseMove(event: MouseEvent) {
-      hooks.emit.mouseMove({ event, edge })
+      hooks.emit.mouseMove({ event, edge: edge.value })
     }
 
     function onEdgeMouseLeave(event: MouseEvent) {
-      hooks.emit.mouseLeave({ event, edge })
+      hooks.emit.mouseLeave({ event, edge: edge.value })
     }
 
     function onEdgeUpdaterSourceMouseDown(event: MouseEvent) {

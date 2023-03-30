@@ -31,7 +31,7 @@ const handleId = computed(() => id ?? `${nodeId}__handle-${position}`)
 
 const { handlePointerDown, handleClick } = useHandle({
   nodeId,
-  handleId,
+  handleId: handleId.value,
   isValidConnection,
   type,
 })
