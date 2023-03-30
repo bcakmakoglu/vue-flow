@@ -65,7 +65,7 @@ onMounted(() => {
   until(() => node.initialized)
     .toBe(true)
     .then(() => {
-      const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
+      const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId.value)
 
       if (!vueFlowRef.value || existingBounds) return
 
