@@ -37,8 +37,8 @@ const dark = ref(false)
  * To update node properties you can simply use your elements v-model and mutate the elements directly
  * Changes should always be reflected on the graph reactively, without the need to overwrite the elements
  */
-const updatePos = () =>
-  elements.value.forEach((el) => {
+function updatePos() {
+  return elements.value.forEach((el) => {
     console.log(el, elements.value)
     if (isNode(el)) {
       el.position = {
@@ -47,18 +47,23 @@ const updatePos = () =>
       }
     }
   })
+}
 
 /**
  * toObject transforms your current graph data to an easily persist-able object
  */
-const logToObject = () => console.log(instance.value?.toObject())
+function logToObject() {
+  return console.log(instance.value?.toObject())
+}
 
 /**
  * Resets the current viewpane transformation (zoom & pan)
  */
-const resetTransform = () => instance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
+function resetTransform() {
+  return instance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
+}
 
-const toggleClass = () => {
+function toggleClass() {
   dark.value = !dark.value
   elements.value.forEach((el) => (el.class = dark.value ? 'dark' : 'light'))
 }

@@ -3,11 +3,11 @@ import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { MiniMap } from '@vue-flow/minimap'
 
-const { nodes, addNodes, edges, addEdges, onConnect, onPaneReady, onNodeDragStop, dimensions } = useVueFlow()
+const { nodes, addNodes, addEdges, onConnect, dimensions } = useVueFlow()
 
 onConnect((params) => addEdges([params]))
 
-const addRandomNode = () => {
+function addRandomNode() {
   const nodeId = (nodes.value.length + 1).toString()
 
   const newNode = {

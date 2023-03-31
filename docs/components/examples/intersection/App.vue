@@ -7,6 +7,7 @@ import { initialElements } from './initial-elements.js'
  * You can either use `getIntersectingNodes` to check if a given node intersects with others
  * or `isNodeIntersecting` to check if a node is intersecting with a given area
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { onNodeDrag, getIntersectingNodes, isNodeIntersecting, getNodes } = useVueFlow()
 
 const elements = ref(initialElements)

@@ -1,6 +1,6 @@
 import confetti from 'canvas-confetti'
 
-export const fireworks = (colors?: string[]) => {
+export function fireworks(colors?: string[]) {
   return new Promise((resolve) => {
     const duration = 15 * 1000
     const animationEnd = Date.now() + duration
@@ -38,7 +38,7 @@ export const fireworks = (colors?: string[]) => {
   })
 }
 
-export const cheer = (colors: string[]) => {
+export function cheer(colors: string[]) {
   return new Promise((resolve) => {
     const end = Date.now() + 2 * 1000
 

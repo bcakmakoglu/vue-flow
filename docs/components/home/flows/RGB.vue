@@ -59,7 +59,9 @@ watch(
   { immediate: true },
 )
 
-const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (color.value[c] = Number(val))
+function onChange({ color: c, val }: { color: keyof Colors; val: number }) {
+  return (color.value[c] = Number(val))
+}
 
 const nodeColor: MiniMapNodeFunc = (node) => {
   switch (node.id) {

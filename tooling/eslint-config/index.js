@@ -4,6 +4,7 @@ module.exports = {
   rules: {
     'vue/no-setup-props-destructure': 0,
     'no-console': 0,
+    'unused-imports/no-unused-vars': 0,
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'prettier/prettier': [
       'error',

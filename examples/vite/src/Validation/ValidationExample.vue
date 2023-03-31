@@ -17,11 +17,17 @@ const { addEdges } = useVueFlow({
     { id: 'C', type: 'customnode', position: { x: 250, y: 300 }, isValidSourcePos: (connection) => connection.target === 'B' },
   ],
 })
-const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
-const onConnectStart = ({ nodeId, handleType }: OnConnectStartParams) => console.log('on connect start', { nodeId, handleType })
-const onConnectEnd = (event: MouseEvent) => console.log('on connect end', event)
+function onLoad(flowInstance: VueFlowStore) {
+  return flowInstance.fitView()
+}
+function onConnectStart({ nodeId, handleType }: OnConnectStartParams) {
+  return console.log('on connect start', { nodeId, handleType })
+}
+function onConnectEnd(event: MouseEvent) {
+  return console.log('on connect end', event)
+}
 
-const onConnect = (params: Connection) => {
+function onConnect(params: Connection) {
   console.log('on connect', params)
   addEdges([params])
 }

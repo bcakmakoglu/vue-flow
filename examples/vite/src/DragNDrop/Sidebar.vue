@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const onDragStart = (event: DragEvent, nodeType: string) => {
+function onDragStart(event: DragEvent, nodeType: string) {
   if (event.dataTransfer) {
     event.dataTransfer.setData('application/vueflow', nodeType)
     event.dataTransfer.effectAllowed = 'move'

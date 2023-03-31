@@ -5,11 +5,11 @@ const flowKey = 'example-flow'
 
 const { nodes, addNodes, setNodes, setEdges, dimensions, setTransform, toObject } = useVueFlow()
 
-const onSave = () => {
+function onSave() {
   localStorage.setItem(flowKey, JSON.stringify(toObject()))
 }
 
-const onRestore = () => {
+function onRestore() {
   const flow = JSON.parse(localStorage.getItem(flowKey))
 
   if (flow) {
@@ -20,7 +20,7 @@ const onRestore = () => {
   }
 }
 
-const onAdd = () => {
+function onAdd() {
   const id = nodes.value.length + 1
 
   const newNode = {

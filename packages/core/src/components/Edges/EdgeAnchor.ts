@@ -8,13 +8,13 @@ interface Props extends HTMLAttributes {
   radius?: number
 }
 
-const shiftX = (x: number, shift: number, position: Position): number => {
+function shiftX(x: number, shift: number, position: Position): number {
   if (position === Position.Left) return x - shift
   if (position === Position.Right) return x + shift
   return x
 }
 
-const shiftY = (y: number, shift: number, position: Position): number => {
+function shiftY(y: number, shift: number, position: Position): number {
   if (position === Position.Top) return y - shift
   if (position === Position.Bottom) return y + shift
   return y

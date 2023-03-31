@@ -4,13 +4,13 @@ import type { XYPosition } from '@vue-flow/core'
  * Draws an SVG path from a list of points, using straight lines.
  */
 
-const getMidPoint = (Ax: number, Ay: number, Bx: number, By: number) => {
+function getMidPoint(Ax: number, Ay: number, Bx: number, By: number) {
   const Zx = (Ax - Bx) / 2 + Bx
   const Zy = (Ay - By) / 2 + By
   return [Zx, Zy]
 }
 
-export const drawStraightLinePath = (source: XYPosition, target: XYPosition, path: number[][]) => {
+export function drawStraightLinePath(source: XYPosition, target: XYPosition, path: number[][]) {
   let svgPathString = `M ${source.x}, ${source.y} `
 
   path.forEach((point) => {
@@ -23,7 +23,7 @@ export const drawStraightLinePath = (source: XYPosition, target: XYPosition, pat
   return svgPathString
 }
 
-const quadraticBezierCurve = (points: number[][]) => {
+function quadraticBezierCurve(points: number[][]) {
   const X = 0
   const Y = 1
   let point = points[0]
@@ -49,7 +49,7 @@ const quadraticBezierCurve = (points: number[][]) => {
 /**
  * Draws a SVG path from a list of points, using rounded lines.
  */
-export const drawSmoothLinePath = (source: XYPosition, target: XYPosition, path: number[][]) => {
+export function drawSmoothLinePath(source: XYPosition, target: XYPosition, path: number[][]) {
   const points = [[source.x, source.y], ...path, [target.x, target.y]]
   return quadraticBezierCurve(points)
 }

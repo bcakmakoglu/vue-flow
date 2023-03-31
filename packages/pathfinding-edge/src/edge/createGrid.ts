@@ -13,7 +13,7 @@ export interface PointInfo {
   position: Position
 }
 
-export const createGrid = (graph: GraphBoundingBox, nodes: NodeBoundingBox[], source: PointInfo, target: PointInfo) => {
+export function createGrid(graph: GraphBoundingBox, nodes: NodeBoundingBox[], source: PointInfo, target: PointInfo) {
   const { xMin, yMin, width, height } = graph
 
   // Create a grid representation of the graph box, where each cell is

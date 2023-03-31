@@ -1,4 +1,6 @@
-export const isMouseEvent = (event: MouseEvent | TouchEvent): event is MouseEvent => 'clientX' in event
+export function isMouseEvent(event: MouseEvent | TouchEvent): event is MouseEvent {
+  return 'clientX' in event
+}
 
 export function getEventPosition(event: MouseEvent | TouchEvent, bounds?: DOMRect) {
   const isMouseTriggered = isMouseEvent(event)

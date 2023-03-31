@@ -18,23 +18,27 @@ const bgName = ref('AYAME')
 const connectionLineStyle = { stroke: '#fff' }
 
 // minimap stroke color functions
-const nodeStroke = (n) => {
+function nodeStroke(n) {
   if (n.type === 'input') return '#0041d0'
   if (n.type === 'custom') return presets.sumi
   if (n.type === 'output') return '#ff0072'
   return '#eee'
 }
 
-const nodeColor = (n) => {
+function nodeColor(n) {
   if (n.type === 'custom') return bgColor.value
   return '#fff'
 }
 
 // output labels
-const outputColorLabel = () => h('div', {}, bgColor.value)
-const outputNameLabel = () => h('div', {}, bgName.value)
+function outputColorLabel() {
+  return h('div', {}, bgColor.value)
+}
+function outputNameLabel() {
+  return h('div', {}, bgName.value)
+}
 
-const onChange = (color) => {
+function onChange(color) {
   gradient.value = false
   bgColor.value = color.value
   bgName.value = color.name
@@ -42,7 +46,7 @@ const onChange = (color) => {
   findNode('3').hidden = false
 }
 
-const onGradient = () => {
+function onGradient() {
   gradient.value = true
   bgColor.value = null
   bgName.value = 'gradient'

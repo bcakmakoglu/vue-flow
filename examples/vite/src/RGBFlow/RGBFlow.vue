@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { templateRef } from '@vueuse/core'
 import type { Elements, VueFlowStore } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import RGBNode from './RGBNode.vue'
@@ -10,6 +9,7 @@ interface Colors {
   green: number
   blue: number
 }
+
 const elements = ref<Elements>([
   { id: '1', type: 'rgb', data: { color: 'r' }, position: { x: -25, y: 50 } },
   { id: '2', type: 'rgb', data: { color: 'g' }, position: { x: 50, y: -100 } },
@@ -20,21 +20,23 @@ const elements = ref<Elements>([
   { id: 'e3-4', data: { color: 'blue' }, source: '3', target: '4', animated: true },
 ])
 
-const el = templateRef<HTMLDivElement>('page', null)
-
-const onLoad = (flowInstance: VueFlowStore) => {
+function onLoad(flowInstance: VueFlowStore) {
   flowInstance.fitView({ padding: 1 })
 }
+
 const color = ref<Colors>({
   red: 100,
   green: 150,
   blue: 100,
 })
-const onChange = ({ color: c, val }: { color: keyof Colors; val: number }) => (color.value[c] = Number(val))
+
+function onChange({ color: c, val }: { color: keyof Colors; val: number }) {
+  return (color.value[c] = Number(val))
+}
 </script>
 
 <template>
-  <div ref="page" class="demo-flow">
+  <div class="demo-flow">
     <VueFlow v-model="elements" @pane-ready="onLoad">
       <template #node-rgb="props">
         <RGBNode v-bind="props" :amount="color" @change="onChange" />

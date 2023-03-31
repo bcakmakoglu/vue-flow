@@ -12,7 +12,7 @@ declare module 'pathfinding' {
   }
 }
 
-export const generatePath = (grid: Grid, start: XYPosition, end: XYPosition): number[][] => {
+export function generatePath(grid: Grid, start: XYPosition, end: XYPosition): number[][] {
   const finder = new AStarFinder({
     diagonalMovement: DiagonalMovement.Always,
     allowDiagonal: true,

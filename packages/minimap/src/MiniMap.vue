@@ -152,36 +152,36 @@ watchEffect(
   { flush: 'post' },
 )
 
-const onSvgClick = (event: MouseEvent) => {
+function onSvgClick(event: MouseEvent) {
   const [x, y] = pointer(event)
   emit('click', { event, position: { x, y } })
 }
 
-const onNodeClick = (event: MouseEvent, node: GraphNode) => {
+function onNodeClick(event: MouseEvent, node: GraphNode) {
   const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeClick(param)
   emit('nodeClick', param)
 }
 
-const onNodeDblClick = (event: MouseEvent, node: GraphNode) => {
+function onNodeDblClick(event: MouseEvent, node: GraphNode) {
   const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeDoubleClick(param)
   emit('nodeDblclick', param)
 }
 
-const onNodeMouseEnter = (event: MouseEvent, node: GraphNode) => {
+function onNodeMouseEnter(event: MouseEvent, node: GraphNode) {
   const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseEnter(param)
   emit('nodeMouseenter', param)
 }
 
-const onNodeMouseMove = (event: MouseEvent, node: GraphNode) => {
+function onNodeMouseMove(event: MouseEvent, node: GraphNode) {
   const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseMove(param)
   emit('nodeMousemove', param)
 }
 
-const onNodeMouseLeave = (event: MouseEvent, node: GraphNode) => {
+function onNodeMouseLeave(event: MouseEvent, node: GraphNode) {
   const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseLeave(param)
   emit('nodeMouseleave', param)
