@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.5] - 2023-03-31
+
+[977ccaa](977ccaa73e38027e400397499aeaf377c99cb9ac)...[c437e41](c437e41092699d87b770589abd211c30ec0ca0f7)
+
+### Bug Fixes
+
+- Handles with connectable false still considered valid ([c4f287c](c4f287c574de1d2011be7a0b29a541bfbda2b43d))
+- Unwrap `nodesConnectable` in onClick of handle ([f62e6df](f62e6dfc5318e760e50de424e3478e828f30b3de))
+- Connection line pos not matching edge pos ([44d1a4e](44d1a4e3dfaee4a5d8d01ee4c1688455d1b3dd48))
+
+### Miscellaneous Tasks
+
+- Remove reactivity transform from handle ([d0ac0b6](d0ac0b66eacfc9eb18e3ae70063d3d030ff0a4b1))
+- Add dev script ([d615564](d6155645e45a9dd632fc8cfc3fde845b75cddc1b))
+- Cleanup ([60fefab](60fefab45b16ba26dd5b57db68c0ffc3d70394ed))
+- Add ([7fa58c9](7fa58c953939191f5dda31f414f82eebd461c3a1))
+- Add ([7772965](77729657fcbd55462a05548dc9a3403f2b1cf6d3))
+- Add ([912e14b](912e14b7caaf487331f3e9092f9e446e5a12d795))
+
 ## [1.17.4] - 2023-03-31
 
 [36da593](36da593818950269f25fc367a12ea72df1bbfa19)...[977ccaa](977ccaa73e38027e400397499aeaf377c99cb9ac)
