@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.17.3
+
+### Patch Changes
+
+- [#815](https://github.com/bcakmakoglu/vue-flow/pull/815) [`15cc769`](https://github.com/bcakmakoglu/vue-flow/commit/15cc7692c84a7cbd1af4c7850cc742662c292cf0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix object assign order when parsing node and edge obj
+
 ## 1.17.2
 
 ### Patch Changes
