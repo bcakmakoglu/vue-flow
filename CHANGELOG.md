@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.4] - 2023-03-31
+
+[36da593](36da593818950269f25fc367a12ea72df1bbfa19)...[977ccaa](977ccaa73e38027e400397499aeaf377c99cb9ac)
+
+### Miscellaneous Tasks
+
+- Update lint scripts ([65db65d](65db65da2f4a53cb4d614788ce8fecac720153c0))
+- Upgrade deps-dev ([9d597ff](9d597ff454584b90950f95b27991d63e03846cd3))
+- Lint files ([f61e5be](f61e5beb0274a61edc2979e866861326467ba74b))
+- Remove expiremental flag ([294c3ba](294c3ba6320217b80496443d3b044bb00b09318e))
+- Use cypress action ([09b886d](09b886da36f2917a416693e9c949b919c39d73a7))
+- Update cypress ([d154105](d15410523f54e4bed7636727c2e4f9b4d5d8277d))
+- Add ([fdf317d](fdf317d35b331abbc76f75dcc05b1b615774ea78))
+
 ## [1.17.3] - 2023-03-31
 
 [4a2598f](4a2598ff670d24c5651380bb984bfd6bba7fdd0f)...[36da593](36da593818950269f25fc367a12ea72df1bbfa19)
