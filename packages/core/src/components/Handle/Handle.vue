@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { isFunction, isString } from '@vueuse/core'
-import type { Position } from '../../types'
+import { Position } from '../../types'
 import type { HandleProps } from '../../types/handle'
 
-const { position = 'top' as Position, connectable, id, isValidConnection, ...props } = defineProps<HandleProps>()
+const { position = Position.Top, connectable, id, isValidConnection, ...props } = defineProps<HandleProps>()
 
 const type = toRef(props, 'type', 'source')
 
