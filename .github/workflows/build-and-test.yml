@@ -50,4 +50,9 @@ jobs:
         run: pnpm run build --cache-dir=.turbo
 
       - name: Run tests 🧪
-        run: pnpm cypress install && pnpm run test --cache-dir=.turbo
+        uses: cypress-io/github-action@v5
+        with:
+          install-command: pnpm cypress install
+          command: pnpm run test --cache-dir=.turbo
+          browser: chrome
+          component: true
