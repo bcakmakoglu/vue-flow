@@ -52,8 +52,8 @@ button:focus {
   outline: none;
 }
 
-.VPHome {
-  @apply !pb-24;
+.page-layout .container:first-of-type {
+  @apply max-w-full m-0 p-0;
 }
 
 h1 {
