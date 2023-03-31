@@ -58,27 +58,38 @@ const targetHandle = $computed(() => {
   )
 })
 
-const sourceHandleX = $computed(() => (sourceHandle ? sourceHandle.x + sourceHandle.width / 2 : sourceNode.dimensions.width / 2))
-const sourceHandleY = $computed(() => (sourceHandle ? sourceHandle.y + sourceHandle.height / 2 : sourceNode.dimensions.height))
-
-const sourceX = $computed(() => sourceNode.computedPosition.x + sourceHandleX)
-const sourceY = $computed(() => sourceNode.computedPosition.y + sourceHandleY)
-
 const fromPosition = computed(() => sourceHandle?.position)
+
+const fromXY = computed(() => {
+  if (sourceHandle) {
+    return getHandlePosition(
+      fromPosition.value || Position.Top,
+      { ...sourceNode.dimensions, ...sourceNode.computedPosition },
+      sourceHandle,
+    )
+  }
+
+  return {
+    x: sourceNode.dimensions.width / 2,
+    y: sourceNode.dimensions.height / 2,
+  }
+})
+
 const targetPosition = computed(() => (fromPosition.value ? oppositePosition[fromPosition.value] : undefined))
 
-const targetX = $computed(() => (connectionPosition.x - viewport.x) / viewport.zoom)
-const targetY = $computed(() => (connectionPosition.y - viewport.y) / viewport.zoom)
+// todo: rename corresponding props
+const toX = $computed(() => (connectionPosition.x - viewport.x) / viewport.zoom)
+const toY = $computed(() => (connectionPosition.y - viewport.y) / viewport.zoom)
 
 const dAttr = computed(() => {
   let path
 
   const pathParams = {
-    sourceX,
-    sourceY,
+    sourceX: fromXY.value.x,
+    sourceY: fromXY.value.y,
     sourcePosition: fromPosition.value,
-    targetX,
-    targetY,
+    targetX: toX,
+    targetY: toY,
     targetPosition: targetPosition.value,
   }
 
@@ -125,11 +136,11 @@ export default {
       :is="connectionLineComponent"
       v-if="connectionLineComponent"
       v-bind="{
-        sourceX,
-        sourceY,
+        sourceX: fromXY.x,
+        sourceY: fromXY.y,
         sourcePosition: sourceHandle?.position,
-        targetX,
-        targetY,
+        targetX: toX,
+        targetY: toY,
         targetPosition,
         sourceNode,
         sourceHandle,
