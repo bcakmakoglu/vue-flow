@@ -25,7 +25,7 @@
     "build": "vite build",
     "types": "tsc && shx rm -rf tmp && pnpm lint:dist",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix .",
+    "lint": "eslint --ext .js,.ts,.vue ./",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
     "test": "exit 0"
   },
