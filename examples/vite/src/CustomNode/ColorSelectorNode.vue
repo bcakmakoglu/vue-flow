@@ -11,6 +11,7 @@ interface Data {
 interface ColorSelectorNodeProps extends NodeProps<Data, {}, 'selectorNode'> {
   data: Data
 }
+
 const props = defineProps<ColorSelectorNodeProps>()
 
 const targetHandleStyle: CSSProperties = { background: '#555' }
