@@ -30,13 +30,21 @@ const { updateEdge } = useVueFlow()
 
 const elements = ref(initialElements)
 
-const onLoad = (flowInstance: VueFlowStore) => flowInstance.fitView()
+function onLoad(flowInstance: VueFlowStore) {
+  return flowInstance.fitView()
+}
 
-const onEdgeUpdateStart = ({ edge }: FlowEvents['edgeUpdateStart']) => console.log('start update', edge)
+function onEdgeUpdateStart({ edge }: FlowEvents['edgeUpdateStart']) {
+  return console.log('start update', edge)
+}
 
-const onEdgeUpdateEnd = ({ edge }: FlowEvents['edgeUpdateEnd']) => console.log('end update', edge)
+function onEdgeUpdateEnd({ edge }: FlowEvents['edgeUpdateEnd']) {
+  return console.log('end update', edge)
+}
 
-const onEdgeUpdate = ({ edge, connection }: FlowEvents['edgeUpdate']) => updateEdge(edge, connection)
+function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
+  return updateEdge(edge, connection)
+}
 </script>
 
 <template>

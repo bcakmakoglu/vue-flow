@@ -4,7 +4,9 @@ import { VueFlow, useVueFlow } from '@vue-flow/core'
 import Sidebar from './Sidebar.vue'
 
 let id = 0
-const getId = () => `dndnode_${id++}`
+function getId() {
+  return `dndnode_${id++}`
+}
 
 const { onConnect, addEdges, addNodes, project } = useVueFlow({
   nodes: [
@@ -16,7 +18,7 @@ const { onConnect, addEdges, addNodes, project } = useVueFlow({
     },
   ],
 })
-const onDragOver = (event: DragEvent) => {
+function onDragOver(event: DragEvent) {
   event.preventDefault()
   if (event.dataTransfer) {
     event.dataTransfer.dropEffect = 'move'
@@ -27,7 +29,7 @@ const wrapper = ref()
 
 onConnect((params) => addEdges([params]))
 
-const onDrop = (event: DragEvent) => {
+function onDrop(event: DragEvent) {
   const type = event.dataTransfer?.getData('application/vueflow')
 
   const flowbounds = wrapper.value.$el.getBoundingClientRect()

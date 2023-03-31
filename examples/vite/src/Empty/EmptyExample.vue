@@ -12,7 +12,7 @@ onConnect((params) => addEdges([params]))
 onPaneReady((flowInstance) => console.log('flow loaded:', flowInstance))
 onNodeDragStop((node) => console.log('drag stop', node))
 
-const addRandomNode = () => {
+function addRandomNode() {
   const nodeId = (nodes.value.length + 1).toString()
   const newNode: Node = {
     id: nodeId,

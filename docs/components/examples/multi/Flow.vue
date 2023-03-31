@@ -12,10 +12,12 @@ const elements = ref([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 
-const toggleClass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+function toggleClass() {
+  return elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+}
 
-const updatePos = () =>
-  elements.value.forEach((el) => {
+function updatePos() {
+  return elements.value.forEach((el) => {
     if (isNode(el)) {
       el.position = {
         x: Math.random() * 400,
@@ -23,6 +25,7 @@ const updatePos = () =>
       }
     }
   })
+}
 </script>
 
 <template>

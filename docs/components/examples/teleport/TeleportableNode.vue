@@ -11,7 +11,7 @@ const props = defineProps({
 
 const { animation, transition, teleport, onClick } = useTeleport(props.id)
 
-const changeAnimation = () => {
+function changeAnimation() {
   animation.value = animation.value === 'fade' ? 'shrink' : 'fade'
 }
 </script>

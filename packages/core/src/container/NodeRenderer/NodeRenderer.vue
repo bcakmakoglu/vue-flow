@@ -44,11 +44,18 @@ onMounted(() => {
 
 onBeforeUnmount(() => resizeObserver?.disconnect())
 
-const draggable = (nodeDraggable?: boolean) => (typeof nodeDraggable === 'undefined' ? nodesDraggable : nodeDraggable)
-const selectable = (nodeSelectable?: boolean) => (typeof nodeSelectable === 'undefined' ? elementsSelectable : nodeSelectable)
-const connectable = (nodeConnectable?: HandleConnectable) =>
-  typeof nodeConnectable === 'undefined' ? nodesConnectable : nodeConnectable
-const focusable = (nodeFocusable?: boolean) => (typeof nodeFocusable === 'undefined' ? nodesFocusable : nodeFocusable)
+function draggable(nodeDraggable?: boolean) {
+  return typeof nodeDraggable === 'undefined' ? nodesDraggable : nodeDraggable
+}
+function selectable(nodeSelectable?: boolean) {
+  return typeof nodeSelectable === 'undefined' ? elementsSelectable : nodeSelectable
+}
+function connectable(nodeConnectable?: HandleConnectable) {
+  return typeof nodeConnectable === 'undefined' ? nodesConnectable : nodeConnectable
+}
+function focusable(nodeFocusable?: boolean) {
+  return typeof nodeFocusable === 'undefined' ? nodesFocusable : nodeFocusable
+}
 
 function getType(type?: string, template?: GraphNode['template']) {
   const name = type || 'default'

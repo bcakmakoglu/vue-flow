@@ -28,22 +28,22 @@ const { nodesDraggable, nodesConnectable, elementsSelectable, setInteractive, zo
 
 const isInteractive = computed(() => nodesDraggable && nodesConnectable && elementsSelectable)
 
-const onZoomInHandler = () => {
+function onZoomInHandler() {
   zoomIn()
   emit('zoomIn')
 }
 
-const onZoomOutHandler = () => {
+function onZoomOutHandler() {
   zoomOut()
   emit('zoomOut')
 }
 
-const onFitViewHandler = () => {
+function onFitViewHandler() {
   fitView(fitViewParams)
   emit('fitView')
 }
 
-const onInteractiveChangeHandler = () => {
+function onInteractiveChangeHandler() {
   setInteractive(!isInteractive.value)
   emit('interactionChange', !isInteractive.value)
 }

@@ -226,7 +226,7 @@ function setElements() {
 const { stop } = useResizeObserver(el, useDebounceFn(setElements, 5))
 onBeforeUnmount(stop)
 
-const scrollTo = () => {
+function scrollTo() {
   const el = document.getElementById('acknowledgement')
   if (el) {
     el.scrollIntoView({ behavior: 'smooth' })
@@ -235,7 +235,7 @@ const scrollTo = () => {
 
 const animationClassNames = ['checker-gb', 'checker-op', 'checker-yg', 'checker-ss']
 
-const shuffle = (a: any[]) => {
+function shuffle(a: any[]) {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[a[i], a[j]] = [a[j], a[i]]
@@ -243,7 +243,7 @@ const shuffle = (a: any[]) => {
   return a
 }
 
-const createAnimationDurations = () => {
+function createAnimationDurations() {
   return animationClassNames.map((className) => {
     const duration = 5 + Math.random() * 5
 

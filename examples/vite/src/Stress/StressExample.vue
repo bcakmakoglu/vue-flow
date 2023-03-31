@@ -17,9 +17,11 @@ onPaneReady((i) => {
   console.log(i.getElements.value)
 })
 
-const toggleClass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+function toggleClass() {
+  return elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+}
 
-const updatePos = () => {
+function updatePos() {
   elements.value.forEach((el) => {
     if (isNode(el)) {
       el.position = {

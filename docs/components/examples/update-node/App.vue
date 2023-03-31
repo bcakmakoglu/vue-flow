@@ -17,7 +17,7 @@ const opts = reactive({
   hidden: false,
 })
 
-const updateNode = () => {
+function updateNode() {
   const node = getNode.value('1')
   node.label = opts.label.trim() !== '' ? opts.label : defaultLabel
   node.style = { backgroundColor: opts.bg }

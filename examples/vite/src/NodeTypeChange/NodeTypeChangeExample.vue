@@ -29,7 +29,7 @@ onConnect((params) => addEdges([params]))
 
 onPaneReady((instance) => instance.fitView())
 
-const changeType = () => {
+function changeType() {
   elements.value.forEach((el) => {
     if (isEdge(el) || el.type === 'input') return
     el.type = el.type === 'default' ? 'output' : 'default'

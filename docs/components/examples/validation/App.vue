@@ -16,11 +16,15 @@ const elements = ref([
   { id: 'C', type: 'custom', position: { x: 250, y: 300 }, isValidSourcePos: (connection) => connection.target === 'B' },
 ])
 
-const onConnectStart = ({ nodeId, handleType }) => console.log('on connect start', { nodeId, handleType })
+function onConnectStart({ nodeId, handleType }) {
+  return console.log('on connect start', { nodeId, handleType })
+}
 
-const onConnectEnd = (event) => console.log('on connect end', event)
+function onConnectEnd(event) {
+  return console.log('on connect end', event)
+}
 
-const onConnect = (params) => {
+function onConnect(params) {
   console.log('on connect', params)
   addEdge(params, elements.value)
 }

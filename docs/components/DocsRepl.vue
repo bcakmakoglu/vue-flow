@@ -49,7 +49,7 @@ watchEffect(() => {
   vh.value = `${window.innerHeight}px`
 })
 
-const files: Record<string, typeof imports[keyof typeof imports]> = {}
+const files: Record<string, (typeof imports)[keyof typeof imports]> = {}
 const imports = exampleImports[props.example]
 const additionalImports = 'additionalImports' in imports ? imports.additionalImports : {}
 

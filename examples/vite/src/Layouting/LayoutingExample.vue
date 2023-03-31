@@ -18,7 +18,7 @@ const nodeExtent: CoordinateExtent = [
 
 const elements = ref<Elements>(initialElements)
 
-const onLayout = (direction: string) => {
+function onLayout(direction: string) {
   const isHorizontal = direction === 'LR'
   dagreGraph.setGraph({ rankdir: direction })
 

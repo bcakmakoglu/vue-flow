@@ -1,6 +1,8 @@
 import type { Actions, Connection, Edge, GraphEdge, GraphNode, Node, State } from '~/types'
 
-export const isDef = <T>(val: T): val is NonNullable<T> => typeof unref(val) !== 'undefined'
+export function isDef<T>(val: T): val is NonNullable<T> {
+  return typeof unref(val) !== 'undefined'
+}
 
 export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[], onError: State['hooks']['error']['trigger']) {
   if (!edgeParams.source || !edgeParams.target) {

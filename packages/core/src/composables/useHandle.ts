@@ -11,7 +11,9 @@ interface UseHandleProps {
   onEdgeUpdateEnd?: (event: MouseTouchEvent) => void
 }
 
-const alwaysValid = () => true
+function alwaysValid() {
+  return true
+}
 
 export default function useHandle({
   handleId: _handleId,

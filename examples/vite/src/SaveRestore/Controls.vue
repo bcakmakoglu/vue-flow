@@ -10,15 +10,17 @@ const state = useStorage<FlowExportObject>(flowKey, {
   zoom: 1,
 })
 
-const getNodeId = () => `randomnode_${+new Date()}`
+function getNodeId() {
+  return `randomnode_${+new Date()}`
+}
 
 const { addNodes, setNodes, setEdges, toObject, dimensions, setTransform } = useVueFlow()
 
-const onSave = () => {
+function onSave() {
   state.value = toObject()
 }
 
-const onRestore = () => {
+function onRestore() {
   const flow: FlowExportObject | null = state.value
 
   if (flow) {
@@ -32,7 +34,7 @@ const onRestore = () => {
   }
 }
 
-const onAdd = () => {
+function onAdd() {
   const newNode = {
     id: `random_node-${getNodeId()}`,
     label: 'Added node',

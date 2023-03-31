@@ -8,12 +8,12 @@ import Additional from './flows/Additional.vue'
 const el = ref<HTMLDivElement>()
 const instances: VueFlowStore[] = []
 
-const onLoad = (instance: VueFlowStore) => {
+function onLoad(instance: VueFlowStore) {
   instances.push(instance)
   instance.fitView()
 }
 
-const fitViews = () => {
+function fitViews() {
   instances.forEach((i) => i.fitView())
 }
 

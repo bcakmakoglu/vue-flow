@@ -6,7 +6,7 @@ const router = useRouter()
 
 const route = useRoute()
 
-const onChange = (event: Event) => {
+function onChange(event: Event) {
   router.push((event.target as HTMLSelectElement).value)
 }
 

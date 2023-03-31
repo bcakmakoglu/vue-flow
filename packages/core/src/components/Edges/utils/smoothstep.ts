@@ -22,7 +22,7 @@ const handleDirections = {
   [Position.Bottom]: { x: 0, y: 1 },
 }
 
-const getDirection = ({
+function getDirection({
   source,
   sourcePosition = Position.Bottom,
   target,
@@ -30,14 +30,16 @@ const getDirection = ({
   source: XYPosition
   sourcePosition: Position
   target: XYPosition
-}): XYPosition => {
+}): XYPosition {
   if (sourcePosition === Position.Left || sourcePosition === Position.Right) {
     return source.x < target.x ? { x: 1, y: 0 } : { x: -1, y: 0 }
   }
   return source.y < target.y ? { x: 0, y: 1 } : { x: 0, y: -1 }
 }
 
-const distance = (a: XYPosition, b: XYPosition) => Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2)
+function distance(a: XYPosition, b: XYPosition) {
+  return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2)
+}
 
 // With this function we try to mimic an orthogonal edge routing behaviour
 // It's not as good as a real orthogonal edge routing, but it's faster and good enough as a default for step and smooth step edges

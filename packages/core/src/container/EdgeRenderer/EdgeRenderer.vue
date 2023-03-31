@@ -51,9 +51,15 @@ const groups = controlledComputed(
   () => groupEdgesByZLevel(getEdges, findNode, elevateEdgesOnSelect),
 )
 
-const selectable = (edgeSelectable?: boolean) => (typeof edgeSelectable === 'undefined' ? elementsSelectable : edgeSelectable)
-const updatable = (edgeUpdatable?: EdgeUpdatable) => (typeof edgeUpdatable === 'undefined' ? edgesUpdatable : edgeUpdatable)
-const focusable = (edgeFocusable?: boolean) => (typeof edgeFocusable === 'undefined' ? edgesFocusable : edgeFocusable)
+function selectable(edgeSelectable?: boolean) {
+  return typeof edgeSelectable === 'undefined' ? elementsSelectable : edgeSelectable
+}
+function updatable(edgeUpdatable?: EdgeUpdatable) {
+  return typeof edgeUpdatable === 'undefined' ? edgesUpdatable : edgeUpdatable
+}
+function focusable(edgeFocusable?: boolean) {
+  return typeof edgeFocusable === 'undefined' ? edgesFocusable : edgeFocusable
+}
 
 function getType(type?: string, template?: GraphEdge['template']) {
   const name = type || 'default'

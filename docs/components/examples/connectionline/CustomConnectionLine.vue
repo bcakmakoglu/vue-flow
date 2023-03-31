@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps({
+defineProps({
   sourceX: {
     type: Number,
     required: true,
