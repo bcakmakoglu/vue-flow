@@ -567,10 +567,10 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0(vite@4.1.4)(vue@3.2.47)
       cypress:
-        specifier: ^12.7.0
+        specifier: ^12.9.0
         version: 12.9.0
       eslint-plugin-cypress:
-        specifier: ^2.12.1
+        specifier: ^2.13.2
         version: 2.13.2(eslint@8.35.0)
       typescript:
         specifier: ^4.9.5
