@@ -6,7 +6,6 @@
     "resolveJsonModule": true,
     "types": [
       "vite/client",
-      "vue/macros",
       "unplugin-vue-macros/macros-global"
     ],
     "paths": {
