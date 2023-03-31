@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.17.5
+
+### Patch Changes
+
+- [#825](https://github.com/bcakmakoglu/vue-flow/pull/825) [`50f1dff`](https://github.com/bcakmakoglu/vue-flow/commit/50f1dff9e0b76862f5c02efc5b3f2b10513d3194) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent handles with connectable `false` from being considered valid handles
+
+- [#826](https://github.com/bcakmakoglu/vue-flow/pull/826) [`95dd1ae`](https://github.com/bcakmakoglu/vue-flow/commit/95dd1aef34776f3cc92f90306d1087c42805ac67) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Unwrap `nodesConnectable` ref in onClick handler of handles
+
+- [#828](https://github.com/bcakmakoglu/vue-flow/pull/828) [`184c273`](https://github.com/bcakmakoglu/vue-flow/commit/184c27392e07d9f5d9e290a8b1df996f89389103) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix edges and connection line paths not matching up
+
 ## 1.17.4
 
 ### Patch Changes

@@ -24,7 +24,7 @@
     "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && shx rm -rf tmp",
     "postbuild": "shx rm -rf tmp",
     "test": "exit 0;",
-     "lint": "eslint --ext .js,.ts,.vue ./"
+    "lint": "eslint --ext .js,.ts,.vue ./"
   },
   "peerDependencies": {
     "@vue-flow/core": "^1.12.2"
