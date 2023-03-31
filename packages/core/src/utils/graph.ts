@@ -100,7 +100,7 @@ export function parseNode(node: Node, defaults: Partial<GraphNode> = {}): GraphN
     }
   }
 
-  return Object.assign({ id: node.id.toString() }, node, initialState) as GraphNode
+  return Object.assign({}, initialState, node, { id: node.id.toString() }) as GraphNode
 }
 
 export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphEdge {
@@ -125,7 +125,7 @@ export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphE
       } as GraphEdge)
     : defaults
 
-  return Object.assign({ id: edge.id.toString() }, edge, defaults) as GraphEdge
+  return Object.assign({}, defaults, edge, { id: edge.id.toString() }) as GraphEdge
 }
 
 const getConnectedElements = <T extends Elements = FlowElements>(
