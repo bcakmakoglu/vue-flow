@@ -25,6 +25,7 @@
   ],
   "scripts": {
     "prepare": "ts-patch install -s",
+    "dev": "vite build --watch",
     "build": "vite build && vite build -c vite.config.iife.ts",
     "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p ./tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist && pnpm run patch",
     "patch": "node patch/slots.js",
