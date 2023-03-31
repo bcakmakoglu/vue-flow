@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.3] - 2023-03-31
+
+[4a2598f](4a2598ff670d24c5651380bb984bfd6bba7fdd0f)...[36da593](36da593818950269f25fc367a12ea72df1bbfa19)
+
+### Bug Fixes
+
+- Object assign order when parsing node/edge ([ce0002b](ce0002baea0ed0caef571afd1cd617403bb12092))
+
+### Features
+
+- Add install deps action ([d269f57](d269f57d01d8669b134f23f7c2f6344f5b4f3974))
+
+### Miscellaneous Tasks
+
+- Add engines to package.json ([cc4d0da](cc4d0da5cbcbb987edbd1642c4cbe754854c1172))
+- Use install deps action ([7dfd41b](7dfd41baa67ad592986771a914169ecc819321c6))
+- Update pnpm-lock.yaml ([c87d97e](c87d97e94e3e51bd20f5c6a1afc6b7ff22790f2f))
+- Cleanup unused env vars ([1880cdf](1880cdff8f2728adc2995da23a426f3e1e736a9e))
+- Update pinia example ([0aee70f](0aee70f6c45f76614737c2ee2555e76e459c6ed2))
+- Add ([640adf5](640adf59938f75ad99b928c895bceb47a8a43d0d))
+
 ## [1.17.2] - 2023-03-29
 
 [0bc4b73](0bc4b73625ffc5da5b8576d27b1d27ea131a39ee)...[4a2598f](4a2598ff670d24c5651380bb984bfd6bba7fdd0f)
