@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.17.4
+
+### Patch Changes
+
+- [`ffc2d17`](https://github.com/bcakmakoglu/vue-flow/commit/ffc2d17ab3201d69524f8e95797b57813256bdd7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix incorrect type export paths
+
 ## 1.17.3
 
 ### Patch Changes
