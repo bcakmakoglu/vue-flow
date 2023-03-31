@@ -24,7 +24,7 @@
   "scripts": {
     "build": "vite build",
     "types": "vue-tsc --declaration --emitDeclarationOnly && pnpm lint:dist",
-    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --fix .",
+    "lint": "eslint --ext .js,.ts,.vue ./",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
     "test": "exit 0"
   },
