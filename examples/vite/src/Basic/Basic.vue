@@ -23,8 +23,8 @@ onNodeDragStop((e) => console.log('drag stop', e.event))
 onEdgeClick(console.log)
 onConnect((params) => addEdges([params]))
 
-const updatePos = () =>
-  elements.value.forEach((el) => {
+function updatePos() {
+  return elements.value.forEach((el) => {
     if (isNode(el)) {
       el.position = {
         x: Math.random() * 400,
@@ -32,10 +32,17 @@ const updatePos = () =>
       }
     }
   })
+}
 
-const logToObject = () => console.log(toObject())
-const resetTransform = () => setTransform({ x: 0, y: 0, zoom: 1 })
-const toggleclass = () => elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+function logToObject() {
+  return console.log(toObject())
+}
+function resetTransform() {
+  return setTransform({ x: 0, y: 0, zoom: 1 })
+}
+function toggleclass() {
+  return elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+}
 </script>
 
 <template>

@@ -17,7 +17,7 @@ function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-const typedocSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
+function typedocSidebarEntries(): DefaultTheme.SidebarGroup[] {
   const filePath = resolve(__dirname, '../typedocs')
 
   const docsModules = readdirSync(filePath).filter((name) => statSync(`${filePath}/${name}`).isDirectory())
@@ -38,7 +38,7 @@ const typedocSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
   })
 }
 
-const changelogSidebarEntries = (): DefaultTheme.SidebarGroup[] => {
+function changelogSidebarEntries(): DefaultTheme.SidebarGroup[] {
   return [
     {
       text: 'CHANGELOG',

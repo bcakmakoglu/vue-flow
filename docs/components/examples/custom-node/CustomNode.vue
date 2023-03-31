@@ -12,11 +12,11 @@ const props = defineProps({
 
 const emit = defineEmits(['change', 'gradient'])
 
-const onSelect = (color) => {
+function onSelect(color) {
   emit('change', color)
 }
 
-const onGradient = () => {
+function onGradient() {
   emit('gradient')
 }
 

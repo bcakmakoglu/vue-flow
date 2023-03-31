@@ -7,7 +7,7 @@ import { mount } from 'cypress/vue'
 import { VueFlow } from '@vue-flow/core'
 import type { FlowProps } from '@vue-flow/core'
 
-const mountVueFlow = (props?: FlowProps, attrs?: Record<string, any>, slots?: Record<string, any>) => {
+function mountVueFlow(props?: FlowProps, attrs?: Record<string, any>, slots?: Record<string, any>) {
   cy.mount(VueFlow as any, {
     props: {
       id: 'test',
@@ -26,11 +26,15 @@ const mountVueFlow = (props?: FlowProps, attrs?: Record<string, any>, slots?: Re
   })
 }
 
-const useViewPort = () => cy.get('.vue-flow__viewport')
+function useViewPort() {
+  return cy.get('.vue-flow__viewport')
+}
 
-const useTransformationPane = () => cy.get('.vue-flow__transformationpane')
+function useTransformationPane() {
+  return cy.get('.vue-flow__transformationpane')
+}
 
-const retry = (assertion: Function, { interval = 20, timeout = 1000 } = {}) => {
+function retry(assertion: Function, { interval = 20, timeout = 1000 } = {}) {
   return new Promise((resolve, reject) => {
     const startTime = Date.now()
 
@@ -48,7 +52,7 @@ const retry = (assertion: Function, { interval = 20, timeout = 1000 } = {}) => {
   })
 }
 
-const dragConnection = (from: string, to: string) => {
+function dragConnection(from: string, to: string) {
   cy.window().then((win) => {
     const sourceHandle = cy.get(`[data-nodeid="${from}"].source`)
     const targetHandle = cy.get(`[data-nodeid="${to}"].target`)
@@ -78,7 +82,7 @@ const dragConnection = (from: string, to: string) => {
   })
 }
 
-const connect = (from: string, to: string) => {
+function connect(from: string, to: string) {
   const sourceHandle = cy.get(`[data-nodeid="${from}"].source`)
   const targetHandle = cy.get(`[data-nodeid="${to}"].target`)
 

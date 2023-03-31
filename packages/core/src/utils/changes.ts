@@ -185,30 +185,37 @@ export function applyChanges<
   return elements
 }
 
-export const applyEdgeChanges = (changes: EdgeChange[], edges: GraphEdge[]) => applyChanges(changes, edges)
-export const applyNodeChanges = (changes: NodeChange[], nodes: GraphNode[]) => applyChanges(changes, nodes)
+export function applyEdgeChanges(changes: EdgeChange[], edges: GraphEdge[]) {
+  return applyChanges(changes, edges)
+}
+export function applyNodeChanges(changes: NodeChange[], nodes: GraphNode[]) {
+  return applyChanges(changes, nodes)
+}
 
-export const createSelectionChange = (id: string, selected: boolean): NodeSelectionChange | EdgeSelectionChange => ({
-  id,
-  type: 'select',
-  selected,
-})
+export function createSelectionChange(id: string, selected: boolean): NodeSelectionChange | EdgeSelectionChange {
+  return {
+    id,
+    type: 'select',
+    selected,
+  }
+}
 
-export const createAdditionChange = <
+export function createAdditionChange<
   T extends GraphNode | GraphEdge = GraphNode,
   C extends NodeAddChange | EdgeAddChange = T extends GraphNode ? NodeAddChange : EdgeAddChange,
->(
-  item: T,
-): C =>
-  <C>{
+>(item: T): C {
+  return <C>{
     item,
     type: 'add',
   }
+}
 
-export const createRemoveChange = (id: string): NodeRemoveChange | EdgeRemoveChange => ({
-  id,
-  type: 'remove',
-})
+export function createRemoveChange(id: string): NodeRemoveChange | EdgeRemoveChange {
+  return {
+    id,
+    type: 'remove',
+  }
+}
 
 export function getSelectionChanges(elements: FlowElements, selectedIds: string[]) {
   return elements.reduce(

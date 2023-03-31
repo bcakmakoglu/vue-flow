@@ -50,7 +50,9 @@ const offsets = [
 ]
 
 let id = 0
-const getNodeId = () => (id++).toString()
+function getNodeId() {
+  return (id++).toString()
+}
 
 export function getElements(): Elements {
   const initialElements = []

@@ -4,9 +4,11 @@ import { nextTick, watch } from 'vue'
 import Sidebar from './Sidebar.vue'
 
 let id = 0
-const getId = () => `dndnode_${id++}`
+function getId() {
+  return `dndnode_${id++}`
+}
 
-const { findNode, onConnect, nodes, edges, addEdges, addNodes, viewport, project, vueFlowRef } = useVueFlow({
+const { findNode, onConnect, addEdges, addNodes, project, vueFlowRef } = useVueFlow({
   nodes: [
     {
       id: '1',
@@ -17,7 +19,7 @@ const { findNode, onConnect, nodes, edges, addEdges, addNodes, viewport, project
   ],
 })
 
-const onDragOver = (event) => {
+function onDragOver(event) {
   event.preventDefault()
 
   if (event.dataTransfer) {
@@ -27,7 +29,7 @@ const onDragOver = (event) => {
 
 onConnect((params) => addEdges([params]))
 
-const onDrop = (event) => {
+function onDrop(event) {
   const type = event.dataTransfer?.getData('application/vueflow')
 
   const { left, top } = vueFlowRef.value.getBoundingClientRect()

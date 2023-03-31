@@ -5,28 +5,62 @@ import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
-const onNodeDragStart = (e: FlowEvents['nodeDragStart']) => console.log('drag start', e)
-const onNodeDrag = (e: FlowEvents['nodeDrag']) => console.log('drag', e)
-const onNodeDragStop = (e: FlowEvents['nodeDragStop']) => console.log('drag stop', e)
-const onNodeDoubleClick = (e: FlowEvents['nodeDoubleClick']) => console.log('node double click', e)
-const onPaneClick = (e: FlowEvents['paneClick']) => console.log('pane click', e)
-const onPaneScroll = (e: FlowEvents['paneScroll']) => console.log('pane scroll', e)
-const onPaneContextMenu = (e: FlowEvents['paneContextMenu']) => console.log('pane context menu', e)
-const onSelectionDrag = (e: FlowEvents['selectionDrag']) => console.log('selection drag', e)
-const onSelectionDragStart = (e: FlowEvents['selectionDragStart']) => console.log('selection drag start', e)
-const onSelectionDragStop = (e: FlowEvents['selectionDragStop']) => console.log('selection drag stop', e)
-const onSelectionContextMenu = (e: FlowEvents['selectionContextMenu']) => console.log('selection context menu', e)
-const onLoad = (flowInstance: VueFlowStore) => {
+function onNodeDragStart(e: FlowEvents['nodeDragStart']) {
+  return console.log('drag start', e)
+}
+function onNodeDrag(e: FlowEvents['nodeDrag']) {
+  return console.log('drag', e)
+}
+function onNodeDragStop(e: FlowEvents['nodeDragStop']) {
+  return console.log('drag stop', e)
+}
+function onNodeDoubleClick(e: FlowEvents['nodeDoubleClick']) {
+  return console.log('node double click', e)
+}
+function onPaneClick(e: FlowEvents['paneClick']) {
+  return console.log('pane click', e)
+}
+function onPaneScroll(e: FlowEvents['paneScroll']) {
+  return console.log('pane scroll', e)
+}
+function onPaneContextMenu(e: FlowEvents['paneContextMenu']) {
+  return console.log('pane context menu', e)
+}
+function onSelectionDrag(e: FlowEvents['selectionDrag']) {
+  return console.log('selection drag', e)
+}
+function onSelectionDragStart(e: FlowEvents['selectionDragStart']) {
+  return console.log('selection drag start', e)
+}
+function onSelectionDragStop(e: FlowEvents['selectionDragStop']) {
+  return console.log('selection drag stop', e)
+}
+function onSelectionContextMenu(e: FlowEvents['selectionContextMenu']) {
+  return console.log('selection context menu', e)
+}
+function onLoad(flowInstance: VueFlowStore) {
   console.log('flow loaded:', flowInstance)
   flowInstance.fitView()
 }
 
-const onMoveEnd = (e: FlowEvents['moveEnd']) => console.log('zoom/move end', e.flowTransform)
-const onEdgeContextMenu = (e: FlowEvents['edgeContextMenu']) => console.log('edge context menu', e)
-const onEdgeMouseEnter = (e: FlowEvents['edgeMouseEnter']) => console.log('edge mouse enter', e)
-const onEdgeMouseMove = (e: FlowEvents['edgeMouseMove']) => console.log('edge mouse move', e)
-const onEdgeMouseLeave = (e: FlowEvents['edgeMouseLeave']) => console.log('edge mouse leave', e)
-const onEdgeDoubleClick = (e: FlowEvents['edgeDoubleClick']) => console.log('edge double click', e)
+function onMoveEnd(e: FlowEvents['moveEnd']) {
+  return console.log('zoom/move end', e.flowTransform)
+}
+function onEdgeContextMenu(e: FlowEvents['edgeContextMenu']) {
+  return console.log('edge context menu', e)
+}
+function onEdgeMouseEnter(e: FlowEvents['edgeMouseEnter']) {
+  return console.log('edge mouse enter', e)
+}
+function onEdgeMouseMove(e: FlowEvents['edgeMouseMove']) {
+  return console.log('edge mouse move', e)
+}
+function onEdgeMouseLeave(e: FlowEvents['edgeMouseLeave']) {
+  return console.log('edge mouse leave', e)
+}
+function onEdgeDoubleClick(e: FlowEvents['edgeDoubleClick']) {
+  return console.log('edge double click', e)
+}
 
 const initialElements: Elements = [
   {
@@ -85,7 +119,7 @@ const initialElements: Elements = [
 
 const snapGrid: SnapGrid = [16, 16]
 
-const nodeStrokeColor = (n: Node): string => {
+function nodeStrokeColor(n: Node): string {
   if ((n.style as Styles)?.background) return (n.style as Styles).background as string
   if (n.type === 'input') return '#0041d0'
   if (n.type === 'output') return '#ff0072'
@@ -94,7 +128,7 @@ const nodeStrokeColor = (n: Node): string => {
   return '#eee'
 }
 
-const nodeColor = (n: Node): string => {
+function nodeColor(n: Node): string {
   if ((n.style as Styles)?.background) return (n.style as Styles).background as string
 
   return '#fff'

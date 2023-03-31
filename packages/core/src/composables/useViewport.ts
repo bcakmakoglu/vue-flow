@@ -7,7 +7,7 @@ interface ExtendedViewport extends ViewportFunctions {
 
 const DEFAULT_PADDING = 0.1
 
-const noop = () => {}
+function noop() {}
 
 const initialViewportHelper: ExtendedViewport = {
   zoomIn: noop,

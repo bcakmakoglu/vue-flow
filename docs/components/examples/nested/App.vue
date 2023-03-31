@@ -5,7 +5,7 @@ import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 import { onMounted } from 'vue'
 
-const { onConnect, nodes, edges, addEdges, addNodes } = useVueFlow({
+const { onConnect, addEdges, addNodes } = useVueFlow({
   fitViewOnInit: true,
   // set this to true so edges get elevated when selected, defaults to false
   elevateEdgesOnSelect: true,

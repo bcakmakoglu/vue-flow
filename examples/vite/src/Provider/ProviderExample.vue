@@ -7,7 +7,9 @@ import '@vue-flow/controls/dist/style.css'
 
 import Sidebar from './Sidebar.vue'
 
-const onLoad = (flowInstance: VueFlowStore) => console.log('flow loaded:', flowInstance)
+function onLoad(flowInstance: VueFlowStore) {
+  return console.log('flow loaded:', flowInstance)
+}
 
 const initialElements: Elements = [
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },

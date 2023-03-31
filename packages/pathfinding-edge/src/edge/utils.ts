@@ -1,5 +1,11 @@
-export const round = (x: number, multiple = 10) => Math.round(x / multiple) * multiple
+export function round(x: number, multiple = 10) {
+  return Math.round(x / multiple) * multiple
+}
 
-export const roundDown = (x: number, multiple = 10) => Math.floor(x / multiple) * multiple
+export function roundDown(x: number, multiple = 10) {
+  return Math.floor(x / multiple) * multiple
+}
 
-export const roundUp = (x: number, multiple = 10) => Math.ceil(x / multiple) * multiple
+export function roundUp(x: number, multiple = 10) {
+  return Math.ceil(x / multiple) * multiple
+}

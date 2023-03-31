@@ -22,7 +22,7 @@ const gridRatio = 10
  * We avoid setting nodes in the border of the grid (x=0 or y=0), so there's
  * always a "walkable" area around the grid.
  */
-export const graphToGridPoint = (graphPoint: XYPosition, smallestX: number, smallestY: number): XYPosition => {
+export function graphToGridPoint(graphPoint: XYPosition, smallestX: number, smallestY: number): XYPosition {
   let x = graphPoint.x / gridRatio
   let y = graphPoint.y / gridRatio
 
@@ -60,7 +60,7 @@ export const graphToGridPoint = (graphPoint: XYPosition, smallestX: number, smal
  * Converts a grid point back to a graph point, using the reverse logic of
  * graphToGridPoint.
  */
-export const gridToGraphPoint = (gridPoint: XYPosition, smallestX: number, smallestY: number): XYPosition => {
+export function gridToGraphPoint(gridPoint: XYPosition, smallestX: number, smallestY: number): XYPosition {
   let x = gridPoint.x * gridRatio
   let y = gridPoint.y * gridRatio
 

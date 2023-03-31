@@ -26,13 +26,21 @@ const elements = ref([
 
 const { updateEdge, addEdges } = useVueFlow()
 
-const onEdgeUpdateStart = (edge) => console.log('start update', edge)
+function onEdgeUpdateStart(edge) {
+  return console.log('start update', edge)
+}
 
-const onEdgeUpdateEnd = (edge) => console.log('end update', edge)
+function onEdgeUpdateEnd(edge) {
+  return console.log('end update', edge)
+}
 
-const onEdgeUpdate = ({ edge, connection }) => updateEdge(edge, connection)
+function onEdgeUpdate({ edge, connection }) {
+  return updateEdge(edge, connection)
+}
 
-const onConnect = (params) => addEdges([params])
+function onConnect(params) {
+  return addEdges([params])
+}
 </script>
 
 <template>
