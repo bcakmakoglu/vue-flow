@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Elements, Node, SnapGrid } from '@vue-flow/core'
-import { ConnectionMode, Position, VueFlow, isEdge, useVueFlow } from '@vue-flow/core'
+import { Position, VueFlow, isEdge, useVueFlow } from '@vue-flow/core'
 
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
@@ -24,7 +24,6 @@ const elements = ref<Elements>([
     type: 'selectorNode',
     data: { onChange, color: bgColor },
     style: { border: '1px solid #777', padding: '10px' },
-    parentNode: '1',
     position: { x: 250, y: 50 },
   },
   {
@@ -48,7 +47,6 @@ const elements = ref<Elements>([
 ])
 
 useVueFlow({
-  connectionMode: ConnectionMode.Loose,
   connectionLineOptions: {
     style: connectionLineStyle,
   },
@@ -57,19 +55,32 @@ useVueFlow({
 })
 
 function nodeStroke(n: Node) {
-  if (n.type === 'input') return '#0041d0'
-  if (n.type === 'selectorNode') return bgColor.value
-  if (n.type === 'output') return '#ff0072'
-  return '#eee'
+  switch (n.type) {
+    case 'selectorNode':
+      return bgColor.value
+    case 'input':
+      return '#0041d0'
+    case 'output':
+      return '#ff0072'
+    default:
+      return '#eee'
+  }
 }
+
 function nodeColor(n: Node) {
-  if (n.type === 'selectorNode') return bgColor.value
+  if (n.type === 'selectorNode') {
+    return bgColor.value
+  }
+
   return '#fff'
 }
 
 function onChange(event: InputEvent) {
   elements.value.forEach((e) => {
-    if (isEdge(e) || e.id !== '2') return e
+    if (isEdge(e) || e.id !== '2') {
+      return e
+    }
+
     bgColor.value = (event.target as HTMLInputElement).value
   })
 }
