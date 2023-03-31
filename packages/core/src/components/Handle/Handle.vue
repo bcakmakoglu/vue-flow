@@ -58,10 +58,10 @@ const isConnectable = computed(() => {
 
 const isConnecting = computed(
   () =>
-    connectionStartHandle &&
-    connectionStartHandle.nodeId === nodeId &&
-    connectionStartHandle.handleId === handleId &&
-    connectionStartHandle.type === type.value,
+    connectionStartHandle.value &&
+    connectionStartHandle.value.nodeId === nodeId &&
+    connectionStartHandle.value.handleId === handleId.value &&
+    connectionStartHandle.value.type === type.value,
 )
 
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
