@@ -1,70 +1,56 @@
 <script lang="ts" setup>
-import type { ClassFunc, GraphEdge, GraphNode, StyleFunc } from '@vue-flow/core'
-import { ConnectionLineType, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { ClassFunc, GraphEdge, StyleFunc } from '@vue-flow/core'
+import { PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 
-import Cross from '~icons/mdi/window-close'
-
 const emit = defineEmits(['pane'])
 
-const getNodeClass: ClassFunc<GraphNode> = (el) => {
-  const classes = ['font-semibold', '!border-2', 'transition-colors', 'duration-300', 'ease-in-out']
-  if (el.selected)
-    classes.push(
-      ...['!border-green-500/80', '!shadow-md', '!shadow-green-500/50', '!bg-green-100/80 dark:(!bg-white)', '!text-gray-700'],
-    )
-
-  return classes.join(' ')
-}
-
 const getEdgeClass: ClassFunc<GraphEdge> = (el) => {
-  const classes = ['transition-colors duration-300', el.selected || el.sourceNode.selected ? 'font-semibold' : '']
+  const classes = [el.selected || el.sourceNode.selected ? 'font-semibold' : '']
+
   return classes.join(' ')
 }
 
 const getEdgeStyle: StyleFunc<GraphEdge> = (el) => {
-  const sourceNodeSelected = el.sourceNode.selected
   return {
     transition: 'stroke ease-in-out 300ms',
-    stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
+    stroke: el.selected || el.sourceNode.selected ? 'var(--secondary)' : '',
   }
 }
 
-const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
-  connectionLineType: ConnectionLineType.SmoothStep,
-  connectionLineStyle: {
-    strokeDasharray: 5,
-    animation: 'dashdraw 0.5s linear infinite',
-  },
+const { onPaneReady, viewport } = useVueFlow({
+  nodesConnectable: false,
   modelValue: [
     {
       id: '1',
       type: 'input',
       label: 'Start',
       position: { x: 250, y: 5 },
-      class: getNodeClass,
     },
     {
       id: '2',
-      label: 'Waypoint',
+      label: 'Node',
       position: { x: 100, y: 100 },
-      class: getNodeClass,
     },
-    { id: '3', label: 'Waypoint', position: { x: 400, y: 100 }, class: getNodeClass },
+    { id: '3', label: 'Node', position: { x: 400, y: 100 } },
     {
       id: '4',
       type: 'output',
       label: 'End',
       position: { x: 250, y: 225 },
-      class: getNodeClass,
     },
     {
       id: 'e1-2',
       source: '1',
       label: 'animated edge',
       target: '2',
+      type: 'step',
       animated: true,
+      labelStyle: {
+        fill: 'var(--secondary)',
+      },
+      labelBgPadding: [8, 4],
       class: getEdgeClass,
       style: getEdgeStyle,
     },
@@ -72,15 +58,9 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
       id: 'e1-3',
       source: '1',
       target: '3',
-      label: 'default edge',
+      type: 'step',
       class: getEdgeClass,
-      style: (el: GraphEdge) => {
-        const sourceNodeSelected = el.sourceNode.selected
-        return {
-          transition: 'stroke ease-in-out 300ms',
-          stroke: el.selected || sourceNodeSelected ? 'red' : '',
-        }
-      },
+      style: getEdgeStyle,
     },
     {
       id: 'e2-4',
@@ -95,36 +75,42 @@ const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
 })
 
 onPaneReady((i) => emit('pane', i))
-onConnect((param) => {
-  addEdges([
-    {
-      ...param,
-      type: 'smoothstep',
-      animated: true,
-    },
-  ])
-})
 </script>
 
 <template>
-  <div class="md:max-w-1/3 flex flex-col justify-center">
+  <div class="md:max-w-1/3 w-full flex flex-col justify-center">
     <div class="flex flex-col items-center md:items-start">
-      <h1>Interactive Graphs</h1>
-      <p>
-        Vue Flow comes with built-in features like zoom & pan and dedicated controls, single & multi-selections, draggable
-        elements, customizable nodes and edges and a bunch of event handlers.
+      <h1>Feature Rich</h1>
+
+      <p class="mb-4">
+        Vue Flow comes with a ton of built-in features like
+        <List type="success" class="my-4 feature-list">
+          <strong>zoom & pan</strong>
+          <strong>single & multi-select</strong>
+          <strong>draggable elements</strong>
+          <strong>full customization of nodes and edges</strong>
+        </List>
+        and <strong>many more</strong>.
       </p>
-      <a class="docs-button max-w-max" href="/guide/"> Documentation </a>
+
+      <a class="transition-colors duration-200 text-secondary-400 dark:text-secondary-600 text-xl font-bold pr-1" href="/guide/">
+        <Icon name="material-symbols:arrow-right-alt-rounded" class="mr-1" />
+        <span class="underline">Get Started</span>
+      </a>
     </div>
   </div>
+
   <div
-    class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden"
+    class="w-full h-[300px] md:min-h-[400px] shadow-xl dark:shadow-white/10 rounded-xl uppercase border-1 border-secondary overflow-hidden"
   >
     <VueFlow class="basic">
-      <Controls position="bottom-right" />
-      <Background :gap="60">
+      <Controls :show-interactive="false" :show-fit-view="false" :position="PanelPosition.BottomRight">
+        <HomeGetCode />
+      </Controls>
+
+      <Background :gap="50">
         <template #pattern>
-          <Cross :style="{ fontSize: `${8 * viewport.zoom || 1}px` }" class="text-[#10b981] opacity-50" />
+          <Icon name="mdi:window-close" :style="{ fontSize: `${8 * viewport.zoom || 1}px` }" class="text-[#10b981] opacity-50" />
         </template>
       </Background>
     </VueFlow>
@@ -132,15 +118,26 @@ onConnect((param) => {
 </template>
 
 <style>
-.basic .vue-flow__node-input.selected .vue-flow__handle {
-  @apply bg-green-500;
+.basic .vue-flow__node.selected .vue-flow__handle,
+.basic .vue-flow__node.selected .vue-flow__handle,
+.basic .vue-flow__node.selected .vue-flow__handle {
+  @apply bg-secondary-500;
 }
 
-.basic .vue-flow__node-default.selected .vue-flow__handle {
-  @apply bg-green-500;
+.basic .vue-flow__node {
+  @apply transition-colors duration-300 ease-in-out bg-white/25 dark:bg-secondary-100/25 dark:(text-white) !border-2;
+  backdrop-filter: blur(0.6px);
 }
 
-.basic .vue-flow__node-output.selected .vue-flow__handle {
-  @apply bg-green-500;
+.basic .vue-flow__node-default {
+  @apply dark:border-white;
+}
+
+.basic .vue-flow__node.selected {
+  @apply font-semibold border-secondary-500/80 shadow-lg shadow-secondary-500/25 bg-secondary-100/10 dark:bg-secondary-100/30;
+}
+
+.basic .vue-flow__edge {
+  @apply transition-colors duration-300 ease-in-out;
 }
 </style>

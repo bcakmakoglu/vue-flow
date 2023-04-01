@@ -96,7 +96,9 @@ onPaneReady((i) => emit('pane', i))
 <template>
   <div class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase overflow-hidden border-2">
     <VueFlow>
-      <Controls :show-interactive="false" />
+      <Controls :show-interactive="false" :show-fit-view="false" :show-zoom="false">
+        <HomeGetCode />
+      </Controls>
       <MiniMap mask-color="rgba(16, 185, 129, 0.5)" class="transform scale-60 origin-bottom-right opacity-75" />
       <Background variant="lines" pattern-color="#aaa" :gap="46" />
     </VueFlow>

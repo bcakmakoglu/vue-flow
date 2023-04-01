@@ -1,5 +1,4 @@
 import { createResolver } from '@nuxt/kit'
-import Icons from 'unplugin-icons/vite'
 import { meta } from './meta'
 
 const { resolve } = createResolver(import.meta.url)
@@ -18,14 +17,6 @@ export default defineNuxtConfig({
   ],
 
   modules: ['nuxt-windicss', '@vueuse/nuxt'],
-
-  vite: {
-    plugins: [
-      Icons({
-        compiler: 'vue3',
-      }),
-    ],
-  },
 
   css: ['@/assets/css/main.css'],
 

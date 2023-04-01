@@ -1,5 +1,7 @@
 @import '@vue-flow/core/dist/style.css';
 @import '@vue-flow/core/dist/theme-default.css';
+@import '@vue-flow/controls/dist/style.css';
+@import '@vue-flow/minimap/dist/style.css';
 
 :root {
   --primary: #BB86FC;
@@ -9,11 +11,15 @@
 }
 
 html, body {
-  @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
+  @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-secondary-500 scrollbar-track-black;
+}
+
+header {
+  @apply !fixed;
 }
 
 .docs-button {
-  @apply z-1 shadow-lg transition-colors duration-200 text-white font-semibold text-lg mt-4 px-5 py-3 rounded-lg bg-green-500;
+  @apply z-1 shadow-lg transition-colors duration-200 text-white font-semibold text-lg mt-4 px-5 py-3 rounded-lg bg-secondary-400 dark:(bg-secondary-600 shadow-white/10);
 }
 
 .vue-repl pre, .vue-repl pre[class*=language-] {

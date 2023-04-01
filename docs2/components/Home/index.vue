@@ -39,7 +39,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative h-[calc(100vh-var(--docus-header-height))] lg:h-[calc(100vh-var(--docus-header-height)-176px)]">
+  <div
+    class="mt-[var(--docus-header-height)] h-[calc(100vh-var(--docus-header-height))] lg:h-[calc(100vh-var(--docus-header-height)-176px)]"
+  >
     <HomeIntro />
   </div>
 </template>

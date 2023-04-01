@@ -1,6 +1,7 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { defineConfig } from 'windicss/helpers'
 import typography from 'windicss/plugin/typography'
+// @ts-expect-error - no types
 import scrollbar from '@windicss/plugin-scrollbar'
 
 export default defineConfig({
@@ -22,7 +23,7 @@ export default defineConfig({
   ],
 
   shortcuts: {
-    'primary-gradient': 'bg-gradient-to-b from-accent-500 via-accent-700 to-accent-900',
+    'primary-gradient': 'bg-gradient-to-b from-secondary-300 via-secondary-300 to-secondary-600',
   },
 
   theme: {

@@ -1,11 +1,7 @@
-<script lang="ts" setup>
-import Heart from '~icons/mdi/heart'
-</script>
-
 <template>
   <div id="acknowledgement" class="w-full pb-20">
     <div class="max-w-[1024px] md:max-w-3/4 m-auto py-4 md:(pb-12 pt-6) text-center">
-      <h1 class="md:mb-8 flex justify-center items-center"><Heart class="text-red-500" /> Acknowledgement</h1>
+      <h1 class="md:mb-8 flex justify-center items-center"><Icon name="mdi:heart" class="text-red-500" /> Acknowledgement</h1>
 
       <div class="lg:(mx-auto max-w-3/4)">
         <strong>First off</strong>: A big thank you to the developers of

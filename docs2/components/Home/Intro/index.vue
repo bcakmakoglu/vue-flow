@@ -133,29 +133,14 @@ function setElements() {
     <Background id="a" :variant="BackgroundVariant.Dots" :pattern-color="dark ? '#ffffff' : '#000000'" :size="3" :gap="50" />
     <Background id="b" :variant="BackgroundVariant.Lines" :pattern-color="dark ? '#ffffff' : '#000000'" :gap="100" />
 
-    <Panel :position="PanelPosition.TopRight">
-      <h1
-        style="background-color: transparent; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000"
-        class="text-green-500 text-6xl lg:text-7xl font-bold"
-      >
-        Vue Flow
-      </h1>
+    <Panel :position="PanelPosition.TopRight" class="lg:(pt-4 px-6)">
+      <h1 class="primary-gradient text-transparent bg-clip-text inline-block text-6xl lg:text-7xl font-bold">Vue Flow</h1>
       <h2 class="text-3xl lg:text-5xl font-bold dark:text-white px-4">Connect the Dots.</h2>
     </Panel>
   </VueFlow>
 </template>
 
 <style>
-.intro {
-  @apply cursor-pointer
-  bg-green-500
-  text-white
-  transform
-  transition-transform
-  duration-300
-  hover:(ring ring-white);
-}
-
 .intro-link {
   @apply flex
   gap-3
@@ -166,6 +151,7 @@ function setElements() {
   transition-transform
   duration-300
   hover:(scale-102)
+  dark:(shadow-white/15)
   transition-colors
   ease-in-out
   rounded-lg
