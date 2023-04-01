@@ -171,7 +171,7 @@ export function getSmoothStepPath({
   centerX,
   centerY,
   offset = 20,
-}: GetSmoothStepPathParams): [string, number, number, number, number] {
+}: GetSmoothStepPathParams): [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number] {
   const [points, labelX, labelY, offsetX, offsetY] = getPoints({
     source: { x: sourceX, y: sourceY },
     sourcePosition,

@@ -59,7 +59,7 @@ export function getBezierPath({
   targetY,
   targetPosition = Position.Top,
   curvature = 0.25,
-}: GetBezierPathParams): [string, number, number, number, number] {
+}: GetBezierPathParams): [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number] {
   const [sourceControlX, sourceControlY] = getControlWithCurvature({
     pos: sourcePosition,
     x1: sourceX,
