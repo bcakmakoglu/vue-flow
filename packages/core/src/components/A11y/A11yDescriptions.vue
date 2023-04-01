@@ -19,6 +19,7 @@ const ariaLiveStyle: CSSProperties = {
 
 <script lang="ts">
 export default {
+  name: 'A11yDescriptions',
   compatConfig: { MODE: 3 },
 }
 </script>
