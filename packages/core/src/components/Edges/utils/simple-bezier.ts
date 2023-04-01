@@ -42,7 +42,7 @@ export function getSimpleBezierPath({
   targetX,
   targetY,
   targetPosition = Position.Top,
-}: GetSimpleBezierPathParams): [string, number, number, number, number] {
+}: GetSimpleBezierPathParams): [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number] {
   const [sourceControlX, sourceControlY] = getControl({
     pos: sourcePosition,
     x1: sourceX,
