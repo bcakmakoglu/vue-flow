@@ -20,7 +20,7 @@ const emit = defineEmits(['change'])
 const currentColor = computed(() => {
   let color
 
-  switch (props.data?.color) {
+  switch (props.data.color) {
     case 'r':
       color = 'red'
       break
@@ -56,6 +56,6 @@ function onChange(e: any) {
       @input="onChange"
     />
 
-    <Handle type="source" :position="Position.Right" :style="{ backgroundColor: color }" />
+    <Handle type="source" :position="Position.Right" :style="{ backgroundColor: currentColor }" />
   </div>
 </template>

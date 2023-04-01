@@ -5,11 +5,15 @@
     <section class="pb-12 lg:pb-24">
       <Home class="overflow-hidden" />
 
-      <Banner />
+      <HomeBanner />
     </section>
 
-    <section class="pb-6">
+    <section class="pb-12 lg:pb-24">
       <HomeFeatures />
+    </section>
+
+    <section>
+      <HomeAcknowledgement />
     </section>
   </div>
 </template>

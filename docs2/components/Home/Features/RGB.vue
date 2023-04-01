@@ -115,3 +115,23 @@ const nodeColor: MiniMapNodeFunc = (node) => {
     </div>
   </div>
 </template>
+
+<style>
+.slider {
+  --color: red;
+  @apply bg-gray-200 w-full h-[10px] outline-none rounded-full;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &::-moz-range-thumb {
+    @apply w-[15px] h-[15px] cursor-pointer border-1 border-solid border-white rounded-full;
+    -webkit-appearance: none;
+    background: var(--color);
+  }
+  &::-webkit-slider-thumb {
+    @apply w-[15px] h-[15px] cursor-pointer border-1 border-solid border-white rounded-full;
+    -webkit-appearance: none;
+    background: var(--color);
+  }
+}
+</style>
