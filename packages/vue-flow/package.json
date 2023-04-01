@@ -21,14 +21,6 @@
     "dist"
   ],
   "sideEffects": false,
-  "scripts": {
-    "build": "vite build",
-    "types": "tsc && shx rm -rf tmp && pnpm lint:dist",
-    "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
-    "lint": "eslint --ext .js,.ts,.vue ./",
-    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
-    "test": "exit 0"
-  },
   "peerDependencies": {
     "vue": "^3.2.25"
   },
