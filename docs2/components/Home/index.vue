@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import Intro from './Intro.vue'
-import { useBlobity } from '~/composables/useBlobity'
+import { Intro } from './Intro'
 
 const { smaller } = useBreakpoints(breakpointsTailwind)
 
