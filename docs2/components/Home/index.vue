@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { Intro } from './Intro'
 
 const { smaller } = useBreakpoints(breakpointsTailwind)
 
@@ -41,19 +40,11 @@ onMounted(() => {
 
 <template>
   <div class="relative h-[calc(100vh-var(--docus-header-height))] lg:h-[calc(100vh-var(--docus-header-height)-176px)]">
-    <Intro />
+    <HomeIntro />
   </div>
 </template>
 
 <style>
-button:focus {
-  outline: none;
-}
-
-.page-layout .container:first-of-type {
-  @apply max-w-full m-0 p-0;
-}
-
 h1 {
   @apply text-xl lg:text-4xl mb-4 font-bold;
 }

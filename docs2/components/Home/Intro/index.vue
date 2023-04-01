@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { CreditNode, DocsNode, ExamplesNode, IntroNode } from './Nodes'
@@ -132,6 +132,16 @@ function setElements() {
   <VueFlow ref="el">
     <Background id="a" :variant="BackgroundVariant.Dots" :pattern-color="dark ? '#ffffff' : '#000000'" :size="3" :gap="50" />
     <Background id="b" :variant="BackgroundVariant.Lines" :pattern-color="dark ? '#ffffff' : '#000000'" :gap="100" />
+
+    <Panel :position="PanelPosition.TopRight">
+      <h1
+        style="background-color: transparent; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000"
+        class="text-green-500 text-6xl lg:text-7xl font-bold"
+      >
+        Vue Flow
+      </h1>
+      <h2 class="text-3xl lg:text-5xl font-bold dark:text-white px-4">Connect the Dots.</h2>
+    </Panel>
   </VueFlow>
 </template>
 

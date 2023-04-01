@@ -9,9 +9,9 @@ export default {
 </script>
 
 <template>
-  <div class="box max-w-[500px]">
+  <div class="max-w-[500px]">
     <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
-      <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
+      <div class="flex flex-col gap-4 p-4 items-center text-center w-3/4 mx-auto">
         <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">Vue Flow</h1>
 
         <h2 class="text-lg lg:text-xl font-normal !border-0">

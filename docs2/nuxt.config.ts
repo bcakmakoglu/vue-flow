@@ -4,6 +4,7 @@ import { meta } from './meta'
 
 const { resolve } = createResolver(import.meta.url)
 
+// eslint-disable-next-line turbo/no-undeclared-env-vars
 process.env.NUXT_INLINE_STYLES = 'true'
 
 export default defineNuxtConfig({
