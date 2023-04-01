@@ -2,6 +2,12 @@
 import { Handle, Position } from '@vue-flow/core'
 </script>
 
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
+
 <template>
   <div class="box max-w-[500px]">
     <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">

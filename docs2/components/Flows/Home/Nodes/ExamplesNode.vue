@@ -2,6 +2,12 @@
 import { Handle, Position } from '@vue-flow/core'
 </script>
 
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
+
 <template>
   <div class="flex">
     <a class="intro-link group bg-[#ef467e]" href="/examples/"> Check The Examples </a>

@@ -12,6 +12,12 @@ function scrollTo() {
 }
 </script>
 
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
+
 <template>
   <div class="flex" @click="scrollTo">
     <button class="intro-link group bg-sky-500"><Heart class="text-red-500" />Acknowledgement</button>
