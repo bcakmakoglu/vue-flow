@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { Background } from '@vue-flow/background'
+import { Background, BackgroundVariant } from '@vue-flow/background'
 import { CreditNode, DocsNode, ExamplesNode, IntroNode } from './Nodes'
+import { initialEdges, initialNodes, mobileEdges } from './utils'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
@@ -22,47 +23,14 @@ onMounted(() => {
   })
 })
 
-const nodeTypes = {
-  intro: markRaw(IntroNode),
-  examples: markRaw(ExamplesNode),
-  documentation: markRaw(DocsNode),
-  acknowledgement: markRaw(CreditNode),
-}
-
-const initialEdges = [
-  {
-    id: 'eintro-examples',
-    sourceHandle: 'a',
-    source: 'intro',
-    target: 'examples',
-    animated: true,
-    style: { strokeWidth: 4, stroke: '#ef467e' },
-  },
-  {
-    id: 'eintro-documentation',
-    sourceHandle: 'a',
-    source: 'intro',
-    target: 'documentation',
-    animated: true,
-    style: { strokeWidth: 4, stroke: '#f97316' },
-  },
-  {
-    id: 'eintro-acknowledgement',
-    sourceHandle: 'a',
-    source: 'intro',
-    target: 'acknowledgement',
-    animated: true,
-    style: { strokeWidth: 4, stroke: '#0ea5e9' },
-  },
-]
 const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onNodesInitialized } = useVueFlow({
-  nodeTypes,
-  nodes: [
-    { id: 'intro', type: 'intro', position: { x: 0, y: 0 } },
-    { id: 'examples', type: 'examples', position: { x: -50, y: 400 } },
-    { id: 'documentation', type: 'documentation', position: { x: 300, y: 400 } },
-    { id: 'acknowledgement', type: 'acknowledgement', position: { x: 150, y: 500 } },
-  ],
+  nodeTypes: {
+    intro: markRaw(IntroNode),
+    examples: markRaw(ExamplesNode),
+    documentation: markRaw(DocsNode),
+    acknowledgement: markRaw(CreditNode),
+  },
+  nodes: initialNodes,
   edges: initialEdges,
   elementsSelectable: true,
   panOnDrag: false,
@@ -73,9 +41,13 @@ const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onNodesIn
   elevateEdgesOnSelect: true,
 })
 
+const el = templateRef<HTMLDivElement>('el', null)
+
+const { stop } = useResizeObserver(el, useDebounceFn(setElements, 5))
+
 onNodesInitialized(setElements)
 
-const el = templateRef<HTMLDivElement>('el', null)
+onBeforeUnmount(stop)
 
 function setElements() {
   const offsetX = dimensions.value.width / 2
@@ -119,32 +91,7 @@ function setElements() {
       }
     })
 
-    setEdges(() => {
-      return [
-        {
-          id: 'eintro-examples',
-          sourceHandle: 'a',
-          source: 'intro',
-          target: 'examples',
-          animated: true,
-          style: { strokeWidth: 4, stroke: '#ef467e' },
-        },
-        {
-          id: 'eexamples-documentation',
-          source: 'examples',
-          target: 'documentation',
-          animated: true,
-          style: { strokeWidth: 4, stroke: '#f97316' },
-        },
-        {
-          id: 'edocumentation-acknowledgement',
-          source: 'documentation',
-          target: 'acknowledgement',
-          animated: true,
-          style: { strokeWidth: 4, stroke: '#0ea5e9' },
-        },
-      ]
-    })
+    setEdges(mobileEdges)
   } else {
     getNodes.value.forEach((node) => {
       const mainNode = findNode('intro')!
@@ -177,17 +124,14 @@ function setElements() {
     setEdges(initialEdges)
   }
 
-  nextTick(() => {
-    updateNodeInternals()
-  })
+  nextTick(updateNodeInternals)
 }
-const { stop } = useResizeObserver(el, useDebounceFn(setElements, 5))
-onBeforeUnmount(stop)
 </script>
 
 <template>
   <VueFlow ref="el">
-    <Background variant="lines" :pattern-color="dark ? '#ffffff' : '#000000'" :size="0.7" :gap="100" />
+    <Background id="a" :variant="BackgroundVariant.Dots" :pattern-color="dark ? '#ffffff' : '#000000'" :size="3" :gap="50" />
+    <Background id="b" :variant="BackgroundVariant.Lines" :pattern-color="dark ? '#ffffff' : '#000000'" :gap="100" />
   </VueFlow>
 </template>
 

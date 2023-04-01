@@ -1,42 +1,63 @@
-import Blobity from 'blobity'
-import type { InjectionKey, Ref } from 'vue'
-import { isClient } from '@vueuse/core'
+import type { Edge, Node } from '@vue-flow/core'
 
-const BlobityInjection: InjectionKey<Ref<Blobity>> = Symbol('blobity')
+export const initialEdges: Edge[] = [
+  {
+    id: 'eintro-examples',
+    sourceHandle: 'a',
+    source: 'intro',
+    target: 'examples',
+    animated: true,
+    type: 'smoothstep',
+    style: { strokeWidth: 4, stroke: '#ef467e' },
+  },
+  {
+    id: 'eintro-documentation',
+    sourceHandle: 'a',
+    source: 'intro',
+    target: 'documentation',
+    animated: true,
+    type: 'smoothstep',
+    style: { strokeWidth: 4, stroke: '#f97316' },
+  },
+  {
+    id: 'eintro-acknowledgement',
+    sourceHandle: 'a',
+    source: 'intro',
+    target: 'acknowledgement',
+    animated: true,
+    type: 'smoothstep',
+    style: { strokeWidth: 4, stroke: '#0ea5e9' },
+  },
+]
 
-const defaultOptions = {
-  licenseKey: 'opensource',
-  invert: true,
-  zIndex: 0,
-  magnetic: false,
-  dotColor: '#10b981',
-  radius: 8,
-  focusableElementsOffsetX: 5,
-  focusableElementsOffsetY: 4,
-  mode: 'normal',
-  focusableElements:
-    '[data-blobity], a:not([data-no-blobity]), button:not([data-no-blobity]), [data-blobity-tooltip], .back-to-top, .intro',
-}
+export const mobileEdges: Edge[] = [
+  {
+    id: 'eintro-examples',
+    sourceHandle: 'a',
+    source: 'intro',
+    target: 'examples',
+    animated: true,
+    style: { strokeWidth: 4, stroke: '#ef467e' },
+  },
+  {
+    id: 'eexamples-documentation',
+    source: 'examples',
+    target: 'documentation',
+    animated: true,
+    style: { strokeWidth: 4, stroke: '#f97316' },
+  },
+  {
+    id: 'edocumentation-acknowledgement',
+    source: 'documentation',
+    target: 'acknowledgement',
+    animated: true,
+    style: { strokeWidth: 4, stroke: '#0ea5e9' },
+  },
+]
 
-export const useBlobity = createSharedComposable(() => {
-  const blobity = ref<Blobity>(isClient ? new Blobity(defaultOptions as any) : (null as any))
-
-  provide(BlobityInjection, blobity)
-
-  const { y } = useWindowScroll()
-
-  onBeforeUnmount(() => {
-    blobity.value.destroy()
-  })
-
-  function reset() {
-    blobity.value.reset()
-    blobity.value.updateOptions(defaultOptions as any)
-  }
-
-  watch(y, () => {
-    blobity.value.bounce()
-  })
-
-  return { blobity, reset }
-})
+export const initialNodes: Node[] = [
+  { id: 'intro', type: 'intro', position: { x: 0, y: 0 } },
+  { id: 'examples', type: 'examples', position: { x: -50, y: 400 } },
+  { id: 'documentation', type: 'documentation', position: { x: 300, y: 400 } },
+  { id: 'acknowledgement', type: 'acknowledgement', position: { x: 150, y: 500 } },
+]
