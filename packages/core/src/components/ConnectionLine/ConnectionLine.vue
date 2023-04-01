@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 // todo: refactor this into a pure ts component to resolve the type force casting
 import type { Component } from 'vue'
-import type { GraphNode } from '../../types'
+import type { GraphNode, StartHandle } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
 import { getMarkerId } from '../../utils/graph'
 
-const { sourceNode } = defineProps<{ sourceNode: GraphNode }>()
+const { sourceNode, connectionStartHandle } = defineProps<{ sourceNode: GraphNode; connectionStartHandle: StartHandle }>()
 
 const {
   connectionMode,
-  connectionStartHandle,
   connectionPosition,
   connectionLineType,
   connectionLineStyle,
@@ -28,12 +27,12 @@ const oppositePosition = {
 
 const connectionLineComponent = inject(Slots)?.['connection-line'] as Component | undefined
 
-const handleId = computed(() => connectionStartHandle.value!.handleId)
+const handleId = computed(() => connectionStartHandle.handleId)
 
-const type = computed(() => connectionStartHandle.value!.type)
+const type = computed(() => connectionStartHandle.type)
 
 const targetNode = computed(
-  () => (connectionStartHandle.value?.result && findNode(connectionStartHandle.value.result.connection.target)) || null,
+  () => (connectionStartHandle.result && findNode(connectionStartHandle.result.connection.target)) || null,
 )
 
 const sourceHandle = computed(
@@ -48,20 +47,20 @@ const sourceHandle = computed(
 const targetHandle = computed(() => {
   return (
     (targetNode.value &&
-      connectionStartHandle.value?.result?.handleId &&
+      connectionStartHandle.result?.handleId &&
       ((connectionMode.value === ConnectionMode.Strict
         ? targetNode.value.handleBounds[type.value === 'source' ? 'target' : 'source']?.find(
-            (d) => d.id === connectionStartHandle.value?.result?.handleId,
+            (d) => d.id === connectionStartHandle.result?.handleId,
           )
         : [...(targetNode.value.handleBounds.source || []), ...(targetNode.value.handleBounds.target || [])]?.find(
-            (d) => d.id === connectionStartHandle.value?.result?.handleId,
+            (d) => d.id === connectionStartHandle.result?.handleId,
           )) ||
         targetNode.value.handleBounds[type.value ?? 'target']?.[0])) ||
     null
   )
 })
 
-const fromPosition = computed(() => sourceHandle?.position)
+const fromPosition = computed(() => sourceHandle.value?.position)
 
 const fromXY = computed(() => {
   if (sourceHandle.value) {
@@ -81,8 +80,12 @@ const fromXY = computed(() => {
 const targetPosition = computed(() => (fromPosition.value ? oppositePosition[fromPosition.value] : undefined))
 
 // todo: rename corresponding props
-const toX = computed(() => (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom)
-const toY = computed(() => (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom)
+const toXY = computed(() => {
+  return {
+    x: (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom,
+    y: (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom,
+  }
+})
 
 const dAttr = computed(() => {
   let path
@@ -91,8 +94,8 @@ const dAttr = computed(() => {
     sourceX: fromXY.value.x,
     sourceY: fromXY.value.y,
     sourcePosition: fromPosition.value,
-    targetX: toX.value,
-    targetY: toY.value,
+    targetX: toXY.value.x,
+    targetY: toXY.value.y,
     targetPosition: targetPosition.value,
   }
 
@@ -142,8 +145,8 @@ export default {
         sourceX: fromXY.x,
         sourceY: fromXY.y,
         sourcePosition: sourceHandle?.position,
-        targetX: toX,
-        targetY: toY,
+        targetX: toXY.x,
+        targetY: toXY.y,
         targetPosition,
         sourceNode,
         sourceHandle,

@@ -117,8 +117,11 @@ export default {
       </g>
     </svg>
 
-    <svg v-if="connectionLineVisible && !!sourceNode" class="vue-flow__edges vue-flow__connectionline vue-flow__container">
-      <ConnectionLine :source-node="sourceNode" />
+    <svg
+      v-if="connectionLineVisible && sourceNode && connectionStartHandle"
+      class="vue-flow__edges vue-flow__connectionline vue-flow__container"
+    >
+      <ConnectionLine :source-node="sourceNode" :connection-start-handle="connectionStartHandle" />
     </svg>
   </template>
 </template>
