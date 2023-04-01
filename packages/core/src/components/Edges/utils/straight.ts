@@ -12,7 +12,7 @@ export function getStraightPath({
   sourceY,
   targetX,
   targetY,
-}: GetStraightPathParams): [string, number, number, number, number] {
+}: GetStraightPathParams): [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number] {
   const [centerX, centerY, offsetX, offsetY] = getSimpleEdgeCenter({
     sourceX,
     sourceY,
