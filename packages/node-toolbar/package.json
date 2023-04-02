@@ -22,6 +22,7 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "dev": "vite build --watch",
     "build": "vite build",
     "types": "vue-tsc --declaration --emitDeclarationOnly && pnpm lint:dist",
     "lint": "eslint --ext .js,.ts,.vue ./",

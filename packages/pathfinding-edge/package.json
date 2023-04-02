@@ -19,7 +19,8 @@
   ],
   "scripts": {
     "prepare": "ts-patch install -s",
-    "dev": "vite",
+    "dev": "vite build --watch",
+    "example": "vite",
     "build": "vite build",
     "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && shx rm -rf tmp",
     "postbuild": "shx rm -rf tmp",

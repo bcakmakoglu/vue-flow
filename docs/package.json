@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm run typedoc:md && vitepress dev src",
-    "docs": "pnpm run typedoc:md && vitepress build src",
+    "build": "pnpm run typedoc:md && vitepress build src",
     "serve": "vitepress serve src",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "typedoc:md": "typedoc --options ./typedoc.md.json",
