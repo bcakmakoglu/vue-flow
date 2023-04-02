@@ -8,6 +8,7 @@ const { sourceNode } = defineProps<{ sourceNode: GraphNode }>()
 const {
   connectionMode,
   connectionStartHandle,
+  connectionEndHandle,
   connectionPosition,
   connectionLineType,
   connectionLineStyle,
@@ -30,9 +31,7 @@ const handleId = $computed(() => connectionStartHandle!.handleId)
 
 const type = computed(() => connectionStartHandle!.type)
 
-const targetNode = $computed(
-  () => (connectionStartHandle?.result && findNode(connectionStartHandle.result.connection.target)) || null,
-)
+const targetNode = $computed(() => (connectionEndHandle?.handleId && findNode(connectionEndHandle.handleId)) || null)
 
 const sourceHandle = $computed(
   () =>
@@ -45,13 +44,13 @@ const sourceHandle = $computed(
 const targetHandle = $computed(() => {
   return (
     (targetNode &&
-      connectionStartHandle?.result?.handleId &&
+      connectionEndHandle?.handleId &&
       ((connectionMode === ConnectionMode.Strict
         ? targetNode.handleBounds[type.value === 'source' ? 'target' : 'source']?.find(
-            (d) => d.id === connectionStartHandle?.result?.handleId,
+            (d) => d.id === connectionEndHandle?.handleId,
           )
         : [...(targetNode.handleBounds.source || []), ...(targetNode.handleBounds.target || [])]?.find(
-            (d) => d.id === connectionStartHandle?.result?.handleId,
+            (d) => d.id === connectionEndHandle?.handleId,
           )) ||
         targetNode.handleBounds[type.value ?? 'target']?.[0])) ||
     null

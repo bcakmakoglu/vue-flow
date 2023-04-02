@@ -78,7 +78,7 @@ export function isValidHandle(
   connectionMode: ConnectionMode,
   fromNodeId: string,
   fromHandleId: string | null,
-  fromType: string,
+  fromType: HandleType,
   isValidConnection: ValidConnectionFunc,
   doc: Document | ShadowRoot,
   edges: GraphEdge[],
@@ -92,10 +92,10 @@ export function isValidHandle(
   const handleToCheck = handleBelow?.classList.contains('vue-flow__handle') ? handleBelow : handleDomNode
 
   const result: ValidHandleResult = {
-    handleId: null,
     handleDomNode: handleToCheck,
     isValid: false,
     connection: { source: '', target: '', sourceHandle: null, targetHandle: null },
+    endHandle: null,
   }
 
   if (handleToCheck) {
@@ -113,7 +113,6 @@ export function isValidHandle(
     }
 
     result.connection = connection
-    result.handleId = handleId
 
     const isConnectable = connectable && connectableEnd
 
@@ -125,6 +124,12 @@ export function isValidHandle(
         : handleNodeId !== fromNodeId || handleId !== fromHandleId)
 
     if (isValid) {
+      result.endHandle = {
+        nodeId: handleNodeId,
+        handleId,
+        type: handleType as HandleType,
+      }
+
       result.isValid = isValidConnection(connection, {
         edges,
         sourceNode: findNode(connection.source)!,
