@@ -1,5 +1,11 @@
 # @vue-flow/minimap
 
+## 1.1.0
+
+### Minor Changes
+
+- [#801](https://github.com/bcakmakoglu/vue-flow/pull/801) [`38270cf5`](https://github.com/bcakmakoglu/vue-flow/commit/38270cf5c33d16ba5d832a2d80499642c1d1a6b0) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `inversePan` and `zoomStep` props
+
 ## 1.0.4
 
 ### Patch Changes
