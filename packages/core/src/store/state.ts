@@ -128,7 +128,8 @@ function defaultState(): State {
 
     disableKeyboardA11y: false,
     ariaLiveMessage: '',
-}}
+  }
+}
 
 export function useState(opts?: FlowOptions): State {
   const state = defaultState()
