@@ -58,5 +58,6 @@ async function patchSlots() {
 }
 
 patchSlots()
+  // eslint-disable-next-line no-console
   .then(() => console.log('slots patched'))
   .catch(console.error)
