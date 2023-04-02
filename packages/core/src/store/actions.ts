@@ -719,6 +719,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     toObject,
     updateNodeInternals,
     $reset: () => {
+      state.edges = []
+      state.nodes = []
+
       setState(useState())
     },
     $destroy: () => {},
