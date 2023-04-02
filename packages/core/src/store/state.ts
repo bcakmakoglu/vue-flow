@@ -85,6 +85,7 @@ function defaultState(): State {
     },
     connectionMode: ConnectionMode.Loose,
     connectionStartHandle: null,
+    connectionEndHandle: null,
     connectionClickStartHandle: null,
     connectionPosition: { x: NaN, y: NaN },
     connectionRadius: 20,

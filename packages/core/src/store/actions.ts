@@ -483,15 +483,16 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       state.connectionStartHandle = startHandle
     }
 
+    state.connectionEndHandle = null
     state.connectionStatus = null
 
     if (position) state.connectionPosition = position
   }
 
-  const updateConnection: Actions['updateConnection'] = (position, result, status = null) => {
+  const updateConnection: Actions['updateConnection'] = (position, result = null, status = null) => {
     if (state.connectionStartHandle) {
       state.connectionPosition = position
-      state.connectionStartHandle.result = result
+      state.connectionEndHandle = result
       state.connectionStatus = status
     }
   }

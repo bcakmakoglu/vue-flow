@@ -19,17 +19,16 @@ export interface ConnectionHandle {
 }
 
 export interface ValidHandleResult {
-  handleId: string | null
+  endHandle: ConnectingHandle | null
   handleDomNode: Element | null
   isValid: boolean
   connection: Connection
 }
 
-export interface StartHandle {
+export interface ConnectingHandle {
   nodeId: string
   type: HandleType
   handleId: string | null
-  result?: ValidHandleResult
 }
 
 /** A valid connection function can determine if an attempted connection is valid or not, i.e. abort creating a new edge */

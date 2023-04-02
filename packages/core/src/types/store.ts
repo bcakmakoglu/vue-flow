@@ -27,7 +27,7 @@ import type { CoordinateExtent, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
-import type { StartHandle, ValidConnectionFunc, ValidHandleResult } from './handle'
+import type { ConnectingHandle, ValidConnectionFunc } from './handle'
 
 export interface UpdateNodeDimensionsParams {
   id: string
@@ -84,8 +84,9 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   connectionLineType: ConnectionLineType | null
   /** @deprecated use {@link ConnectionLineOptions.style} */
   connectionLineStyle: CSSProperties | null
-  connectionStartHandle: StartHandle | null
-  connectionClickStartHandle: StartHandle | null
+  connectionStartHandle: ConnectingHandle | null
+  connectionEndHandle: ConnectingHandle | null
+  connectionClickStartHandle: ConnectingHandle | null
   connectionPosition: XYPosition
   connectionRadius: number
   connectionStatus: ConnectionStatus | null
@@ -247,9 +248,14 @@ export interface Actions extends ViewportFunctions {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (startHandle: StartHandle, position?: XYPosition, event?: MouseEvent | TouchEvent, isClick?: boolean) => void
+  startConnection: (
+    startHandle: ConnectingHandle,
+    position?: XYPosition,
+    event?: MouseEvent | TouchEvent,
+    isClick?: boolean,
+  ) => void
   /** update connection position */
-  updateConnection: (position: XYPosition, result?: ValidHandleResult, status?: ConnectionStatus | null) => void
+  updateConnection: (position: XYPosition, result?: ConnectingHandle | null, status?: ConnectionStatus | null) => void
   /** end (or cancel) a connection */
   endConnection: (event?: MouseEvent | TouchEvent, isClick?: boolean) => void
 
