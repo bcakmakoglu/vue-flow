@@ -3,7 +3,7 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'vue/no-setup-props-destructure': 0,
-    'no-console': 0,
+    'no-console': ['error', { allow: ['warn', 'error'] }],
     'unused-imports/no-unused-vars': 0,
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'prettier/prettier': [
