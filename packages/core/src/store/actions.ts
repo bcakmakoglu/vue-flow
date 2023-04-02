@@ -3,6 +3,7 @@ import type {
   Actions,
   ComputedGetters,
   CoordinateExtent,
+  Edge,
   EdgeChange,
   EdgeRemoveChange,
   EdgeSelectionChange,
@@ -291,6 +292,8 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     if (!state.initialized && !nextNodes.length) return
 
     state.nodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
+
+    return state.nodes
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
@@ -341,6 +344,8 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
       return res
     }, [])
+
+    return state.edges
   }
 
   const setElements: Actions['setElements'] = (elements) => {
@@ -348,11 +353,20 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
     if (!state.initialized && !nextElements.length) return
 
-    state.edges = []
-    state.nodes = []
+    const [nodes, edges] = nextElements.reduce(
+      (acc, curr) => {
+        if (isNode(curr)) acc[0].push(curr)
+        else acc[1].push(curr)
 
-    setNodes(nextElements.filter(isNode))
-    setEdges(nextElements.filter(isEdge))
+        return acc
+      },
+      [[], []] as [Node[], Edge[]],
+    )
+
+    setNodes(nodes)
+    setEdges(edges)
+
+    return { nodes: state.nodes, edges: state.edges }
   }
 
   const addNodes: Actions['addNodes'] = (nodes) => {
