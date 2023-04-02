@@ -348,6 +348,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
     if (!state.initialized && !nextElements.length) return
 
+    state.edges = []
+    state.nodes = []
+
     setNodes(nextElements.filter(isNode))
     setEdges(nextElements.filter(isEdge))
   }
