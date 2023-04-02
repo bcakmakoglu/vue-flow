@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.18.0
+
+### Minor Changes
+
+- [#801](https://github.com/bcakmakoglu/vue-flow/pull/801) [`74c64ff3`](https://github.com/bcakmakoglu/vue-flow/commit/74c64ff34dd3e22111274d8211cd625c9b70e497) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `clickConnectStart` and `clickConnectEnd` events
+
+- [#801](https://github.com/bcakmakoglu/vue-flow/pull/801) [`fb888b5f`](https://github.com/bcakmakoglu/vue-flow/commit/fb888b5f8bcd9e25a027601ce6295163951ef09e) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add type to edge updater anchor class
+
+- [#801](https://github.com/bcakmakoglu/vue-flow/pull/801) [`3cc8827c`](https://github.com/bcakmakoglu/vue-flow/commit/3cc8827c808271c4abdff14dd8464f0a4f767a58) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `connectableStart` and `connectableEnd` handle props. Can be used to enable/disable starting or ending a connection on a specific handle.
+
+- [#840](https://github.com/bcakmakoglu/vue-flow/pull/840) [`34b5b7d2`](https://github.com/bcakmakoglu/vue-flow/commit/34b5b7d2fc37cc5a713e8ff94eab0d0aa7303ec5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add connection start and end handles to store state
+
+- [#801](https://github.com/bcakmakoglu/vue-flow/pull/801) [`ae41dfac`](https://github.com/bcakmakoglu/vue-flow/commit/ae41dfac10ad790002c5d62b6e730797b18d48ff) Thanks [@github-actions](https://github.com/apps/github-actions)! - Do not remove orphaned edges from state. They will not be rendered but stay in the state, so a user can potentially fix the edge.
+
 ## 1.17.6
 
 ### Patch Changes
