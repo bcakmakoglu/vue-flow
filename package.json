@@ -7,14 +7,14 @@
     "pnpm": ">=8"
   },
   "scripts": {
-    "dev": "pnpm --dir examples/vite dev",
-    "docs": "pnpm --dir docs dev",
+    "dev": "turbo dev --filter='./packages/*' --filter=@vue-flow/examples-vite",
+    "dev:docs": "turbo dev --filter=@vue-flow/docs",
     "changelog": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
-    "build:docs": "turbo docs",
-    "build": "turbo build",
+    "build:docs": "turbo build --filter docs",
+    "build": "turbo build --filter='./packages/*' --filter=!vueflow",
     "test": "turbo test",
-    "lint": "turbo lint",
-    "typedocs": "turbo run build && pnpm --dir docs typedocs",
+    "lint": "turbo lint --filter='./packages/*' --filter=!vueflow",
+    "typedocs": "pnpm build && pnpm --dir docs typedocs",
     "ci:version": "changeset version",
     "ci:publish": "turbo lint && turbo build && turbo test && changeset publish"
   },
