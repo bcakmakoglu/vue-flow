@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.6] - 2023-04-02
+
+[c437e41](c437e41092699d87b770589abd211c30ec0ca0f7)...[1ba8183](1ba8183b00652c02067fa4ca9fdf5b21e4716e0a)
+
+### Bug Fixes
+
+- Reset nodes and edges before state ([6c806e8](6c806e80597e9e4f0f634b43fafc651ef328a109))
+- Hide transformation pane to avoid flickering of graph ([22accae](22accaed0d851ebb34b97a1d045d93b4ac98a86e))
+
+### Miscellaneous Tasks
+
+- Add ([fd3ed23](fd3ed2390991cb7685c6d2247d2063fec5e7cf49))
+- Add ([603aa69](603aa69ec291a8fe18ee91a0b03bc8df60d1bc25))
+
 ## [1.17.5] - 2023-03-31
 
 [977ccaa](977ccaa73e38027e400397499aeaf377c99cb9ac)...[c437e41](c437e41092699d87b770589abd211c30ec0ca0f7)
