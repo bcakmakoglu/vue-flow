@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.17.6
+
+### Patch Changes
+
+- [#833](https://github.com/bcakmakoglu/vue-flow/pull/833) [`02125c1`](https://github.com/bcakmakoglu/vue-flow/commit/02125c17441c7fe8e07a3b7490d591443eb17c19) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent flickering of graph by hiding transformation pane until next frame
+
+- [#835](https://github.com/bcakmakoglu/vue-flow/pull/835) [`58d75b0`](https://github.com/bcakmakoglu/vue-flow/commit/58d75b09f8fa303706ad03ed7cb60a6f4df5565c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reset node and edge state before the rest of the state when calling `$reset` to avoid throwing error
+
 ## 1.17.5
 
 ### Patch Changes
