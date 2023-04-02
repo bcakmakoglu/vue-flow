@@ -31,7 +31,7 @@ const handleId = $computed(() => connectionStartHandle!.handleId)
 
 const type = computed(() => connectionStartHandle!.type)
 
-const targetNode = $computed(() => (connectionEndHandle?.handleId && findNode(connectionEndHandle.handleId)) || null)
+const targetNode = $computed(() => (connectionEndHandle?.handleId && findNode(connectionEndHandle.nodeId)) || null)
 
 const sourceHandle = $computed(
   () =>
