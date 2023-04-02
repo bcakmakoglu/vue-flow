@@ -21,7 +21,8 @@ const emits = defineEmits<{
 
 const type = toRef(props, 'type', 'source')
 
-const { connectionStartHandle, vueFlowRef, nodesConnectable, noDragClassName } = useVueFlow()
+const { connectionStartHandle, connectionClickStartHandle, connectionEndHandle, vueFlowRef, nodesConnectable, noDragClassName } =
+  useVueFlow()
 
 const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
@@ -58,10 +59,19 @@ const isConnectable = computed(() => {
 
 const isConnecting = computed(
   () =>
-    connectionStartHandle.value &&
-    connectionStartHandle.value.nodeId === nodeId &&
-    connectionStartHandle.value.handleId === handleId.value &&
-    connectionStartHandle.value.type === type.value,
+    (connectionStartHandle.value?.nodeId === nodeId &&
+      connectionStartHandle.value?.handleId === handleId.value &&
+      connectionStartHandle.value?.type === type.value) ||
+    (connectionEndHandle.value?.nodeId === nodeId &&
+      connectionEndHandle.value?.handleId === handleId.value &&
+      connectionEndHandle.value?.type === type.value),
+)
+
+const isClickConnecting = computed(
+  () =>
+    connectionClickStartHandle.value?.nodeId === nodeId &&
+    connectionClickStartHandle.value?.handleId === handleId.value &&
+    connectionClickStartHandle.value?.type === type.value,
 )
 
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
@@ -109,7 +119,7 @@ function onPointerDown(event: MouseEvent | TouchEvent) {
 }
 
 function onClick(event: MouseEvent) {
-  if (!connectionStartHandle && !connectableStart) {
+  if (!nodeId || (!connectionStartHandle && !connectableStart)) {
     return
   }
 
@@ -141,10 +151,10 @@ export default {
       type,
       {
         connectable: isConnectable,
-        connecting: isConnecting,
+        connecting: isClickConnecting,
         connectablestart: connectableStart,
         connectableend: connectableEnd,
-        connectionindicator: (isConnectable && connectableStart && !isConnecting) || (connectableEnd && isConnecting),
+        connectionindicator: isConnectable && ((connectableStart && !isConnecting) || (connectableEnd && isConnecting)),
       },
     ]"
     @mousedown="onPointerDown"

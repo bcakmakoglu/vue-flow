@@ -60,7 +60,7 @@ export default function useHandle({
     const doc = getHostForElement(event.target as HTMLElement)
 
     if ((isMouseTriggered && event.button === 0) || !isMouseTriggered) {
-      const node = findNode(unref(nodeId))
+      const node = findNode(nodeId.value)
 
       let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
 
@@ -74,7 +74,7 @@ export default function useHandle({
 
       const { x, y } = getEventPosition(event)
       const clickedHandle = doc?.elementFromPoint(x, y)
-      const handleType = getHandleType(unref(edgeUpdaterType), clickedHandle)
+      const handleType = getHandleType(edgeUpdaterType.value, clickedHandle)
       const containerBounds = vueFlowRef.value?.getBoundingClientRect()
 
       if (!containerBounds || !handleType) {
@@ -160,7 +160,7 @@ export default function useHandle({
                 viewport.value,
               )
             : connectionPosition,
-          result,
+          result.endHandle,
           getConnectionStatus(!!prevClosestHandle, isValid),
         )
 
@@ -229,11 +229,11 @@ export default function useHandle({
     if (!connectionClickStartHandle.value) {
       emits.clickConnectStart({ event, nodeId: nodeId.value, handleId: handleId.value })
 
-      startConnection({ nodeId: unref(nodeId), type: unref(type), handleId: unref(handleId) }, undefined, event, true)
+      startConnection({ nodeId: nodeId.value, type: unref(type), handleId: handleId.value }, undefined, event, true)
     } else {
       let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
 
-      const node = findNode(unref(nodeId))
+      const node = findNode(nodeId.value)
 
       if (!isValidConnectionHandler && node) {
         isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
