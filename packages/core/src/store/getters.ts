@@ -71,8 +71,6 @@ export function useGetters(state: State): ComputedGetters {
     target = target ?? getNode.value(e.target)
 
     if (!source || !target) {
-      state.edges = state.edges.filter((edge) => edge.id !== e.id)
-
       state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_ORPHANED, e.id))
       return
     }
