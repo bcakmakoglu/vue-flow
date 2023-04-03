@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.18.0] - 2023-04-03
+
+[1ba8183](1ba8183b00652c02067fa4ca9fdf5b21e4716e0a)...[e1b7bfc](e1b7bfcfb60d44056ed37747e23c8cd49a6d5418)
+
+### Bug Fixes
+
+- Correct `isDef` typeguard ([eab9991](eab999176245d6fead4ce7621de0e5a596f2fdb1))
+
+### Features
+
+- Add `clickConnectStart` & `clickConnectEnd` events ([5a50cfd](5a50cfd90b1342fdf341aba17a68fdbaf868c09b))
+- Add `inversePan` and `zoomStep` props ([1790566](17905660d6028f2fa188bbdd153dee9463cec136))
+- Add `connectableStart` & `connectableEnd` props ([1d3908d](1d3908db6211767549e89b744d4e990e844d0183))
+- Add type to edge updater anchor class ([4bb5321](4bb532132eae02e8fe8da5d712dbc1dc8933e388))
+
+### Miscellaneous Tasks
+
+- Add dev scripts ([707aaef](707aaef5350a308c979f63a85d575491df80caf9))
+- Add ([4a0d9fe](4a0d9fe4937582d58fcd5ab5ed2a53eee268bc7a))
+- Add ([c46020f](c46020fbc26e7af4178fe0684b1e763f5606b1b0))
+- Add ([a9852bc](a9852bca128f6b5cc916842cf4b1ac110a9483d6))
+- Add ([df46137](df46137d23c0a068e8f80ff1931b4407f7a858f4))
+- Cleanup ([26a68e8](26a68e83ed8af30616b682ab3c7fb826742c381b))
+- Cleanup handle ([b1c88b3](b1c88b37929fd763ac46b3153e992891cc7d08b7))
+- Add missing name to `A11yDescriptions` ([ef94e1a](ef94e1ac19f6d5160bfb6e6577c7c29130f10dc4))
+- Add labels to tuple ([1212fac](1212fac27b8c122ea727b7b5f79e94ede246cf52))
+- Remove scripts ([d888b0c](d888b0c1ab34fc2927d4bf1bc252070a381ed418))
+- Add ([da85ad0](da85ad0aca2dd31d92ead920d6429f8ad3dd641b))
+- Add ([54cba6b](54cba6b865e74ea46cf557c5e4c4bee74846f0d3))
+- Cleanup ([a105d4c](a105d4c0bfabdd8997f822849143721a91148ea3))
+- Disable console log ([491fdb0](491fdb04e160e0082a667b1a515ea62d513f0c6e))
+- Add easy connect example ([adccf1b](adccf1b38ede40fcb15a88915cc1ddac1b8fb8bb))
+- Allow console ([e1b7bfc](e1b7bfcfb60d44056ed37747e23c8cd49a6d5418))
+
+### Refactor
+
+- Remove reactivity transform vars ([e9ff4cc](e9ff4cca9d39a79765b66c14ae1a39957c12a91c))
+- Remove reactivity transform vars ([0f02296](0f02296fcc06cdcaf603dda460434e2a375fb48f))
+- Do not remove orphaned edges from state ([63808e5](63808e5dd2fae41d18a0ebcadceb296f69751448))
+- Add connection start and end handles to store state ([4efc787](4efc7870677a2211b8cfed2ad61360cfd9b8140a))
+
 ## [1.17.6] - 2023-04-02
 
 [c437e41](c437e41092699d87b770589abd211c30ec0ca0f7)...[1ba8183](1ba8183b00652c02067fa4ca9fdf5b21e4716e0a)
