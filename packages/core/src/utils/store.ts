@@ -5,7 +5,7 @@ type NonUndefined<T> = T extends undefined ? never : T
 export function isDef<T>(val: T): val is NonUndefined<T> {
   const unrefVal = unref(val)
 
-  return typeof unrefVal !== 'undefined' && unrefVal !== null
+  return typeof unrefVal !== 'undefined'
 }
 
 export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[], onError: State['hooks']['error']['trigger']) {
