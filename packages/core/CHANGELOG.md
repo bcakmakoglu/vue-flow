@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.18.1
+
+### Patch Changes
+
+- [#847](https://github.com/bcakmakoglu/vue-flow/pull/847) [`eee41ece`](https://github.com/bcakmakoglu/vue-flow/commit/eee41ece3ab58bd4572f73701917fed11f64ee19) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use connectionClickStartHandle for click connect
+
+- [#847](https://github.com/bcakmakoglu/vue-flow/pull/847) [`25145030`](https://github.com/bcakmakoglu/vue-flow/commit/251450300f1637a69c0f04ec3f5d27a6ca59fd4a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove duplicate event bindings from handle
+
+- [#843](https://github.com/bcakmakoglu/vue-flow/pull/843) [`6320e5e7`](https://github.com/bcakmakoglu/vue-flow/commit/6320e5e71ae03950b599db3a8f0136728e00f671) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add noPanClassName to handles
+
+- [#844](https://github.com/bcakmakoglu/vue-flow/pull/844) [`6978468d`](https://github.com/bcakmakoglu/vue-flow/commit/6978468d2d68918e16e9d8607216242cb6b31ead) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow null values to be set for key codes
+
+- [#843](https://github.com/bcakmakoglu/vue-flow/pull/843) [`6320e5e7`](https://github.com/bcakmakoglu/vue-flow/commit/6320e5e71ae03950b599db3a8f0136728e00f671) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use fallback for connectableStart and connectableEnd
+
 ## 1.18.0
 
 ### Minor Changes
