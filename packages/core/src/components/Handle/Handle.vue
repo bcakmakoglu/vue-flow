@@ -13,12 +13,6 @@ const {
   ...props
 } = defineProps<HandleProps>()
 
-const emits = defineEmits<{
-  (event: 'mousedown', e: MouseEvent): void
-  (event: 'touchstart', e: TouchEvent): void
-  (event: 'click', e: MouseEvent): void
-}>()
-
 const type = toRef(props, 'type', 'source')
 
 const {
@@ -120,12 +114,6 @@ function onPointerDown(event: MouseEvent | TouchEvent) {
 
   if (isConnectable.value && isConnectableStart.value && ((isMouseTriggered && event.button === 0) || !isMouseTriggered)) {
     handlePointerDown(event)
-  }
-
-  if (isMouseTriggered) {
-    emits('mousedown', event)
-  } else {
-    emits('touchstart', event)
   }
 }
 
