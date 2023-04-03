@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.18.1] - 2023-04-03
+
+[e1b7bfc](e1b7bfcfb60d44056ed37747e23c8cd49a6d5418)...[0c05490](0c05490cf3784a97a8590ec710d0619126eeed09)
+
+### Bug Fixes
+
+- Allow null values to be set ([20dfdda](20dfddaad9551f8de3ccfdfc3793e9951324a4fe))
+- Use fallback for connectable start and end ([3222e97](3222e979ffc03c8f407c4d5d5d50d5b4dad04ec6))
+- Remove duplicate event binding ([8229ee8](8229ee8748319d5f64c1d8eb368c8d8fa7283d91))
+- Use connection click start handle ([c459653](c4596530155afd1b9c28234c557c5e4ca7dd225c))
+
+### Miscellaneous Tasks
+
+- Add ([d261c09](d261c095a82af0a8a6d0975b0d83a56ac0f026f7))
+- Add ([f750d0c](f750d0cc71e68ccf8e31979bd98c27ec898041ce))
+- Add ([d0a8b9b](d0a8b9b080aa85a8a4ef8829241cd73a75b91636))
+- Add ([30b7aeb](30b7aebc6c2e642f01781e09cde2eb8941a11bcc))
+- Allow console ([0c05490](0c05490cf3784a97a8590ec710d0619126eeed09))
+
 ## [1.18.0] - 2023-04-03
 
 [1ba8183](1ba8183b00652c02067fa4ca9fdf5b21e4716e0a)...[e1b7bfc](e1b7bfcfb60d44056ed37747e23c8cd49a6d5418)
