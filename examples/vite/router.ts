@@ -118,6 +118,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/rgb',
     component: () => import('./src/RGBFlow/RGBFlow.vue'),
   },
+  {
+    path: '/easy-connect',
+    component: () => import('./src/EasyConnect/EasyConnect.vue'),
+  },
 ]
 
 export const router = createRouter({
