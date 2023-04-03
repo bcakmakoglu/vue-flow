@@ -118,7 +118,7 @@ function onPointerDown(event: MouseEvent | TouchEvent) {
 }
 
 function onClick(event: MouseEvent) {
-  if (!nodeId || (!connectionStartHandle.value && !isConnectableStart.value)) {
+  if (!nodeId || (!connectionClickStartHandle.value && !isConnectableStart.value)) {
     return
   }
 
