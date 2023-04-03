@@ -130,7 +130,7 @@ export class VueFlowApp {
   }
 }
 
-export const createVueFlow = (options?: ConfigFactory) => {
+export function createVueFlow(options?: ConfigFactory) {
   const app = VueFlowApp.getInstance()
 
   if (options) app.setConfig(options)
