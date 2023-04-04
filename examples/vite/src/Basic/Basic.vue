@@ -14,13 +14,12 @@ const elements = ref<Elements>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
 ])
-const { onNodeDragStop, onEdgeClick, onConnect, addEdges, setTransform, toObject } = useVueFlow({
+
+const { onConnect, addEdges, setTransform, toObject } = useVueFlow({
   minZoom: 0.2,
   maxZoom: 4,
 })
 
-onNodeDragStop((e) => console.log('drag stop', e.event))
-onEdgeClick(console.log)
 onConnect((params) => addEdges([params]))
 
 function updatePos() {
@@ -46,7 +45,7 @@ function toggleclass() {
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init connection-mode="strict" class="vue-flow-basic-example">
+  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
     <Background />
     <MiniMap />
     <Controls />
