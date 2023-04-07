@@ -26,7 +26,9 @@ export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[], onE
 
   edge = parseEdge(edge)
 
-  if (connectionExists(edge, edges)) return false
+  if (connectionExists(edge, edges)) {
+    return false
+  }
 
   return edge
 }
@@ -102,7 +104,9 @@ export function createGraphNodes(
         node.isParent = true
       }
 
-      if (parentNode) parentNode.isParent = true
+      if (parentNode) {
+        parentNode.isParent = true
+      }
     }
   })
 

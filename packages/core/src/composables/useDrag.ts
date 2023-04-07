@@ -98,7 +98,9 @@ function useDrag(params: UseDragParams) {
             return n
           })
 
-          if (!hasChange) return
+          if (!hasChange) {
+            return
+          }
 
           updateNodePositions(dragItems, true, true)
 
@@ -116,7 +118,9 @@ function useDrag(params: UseDragParams) {
         }
 
         const autoPan = (): void => {
-          if (!containerBounds) return
+          if (!containerBounds) {
+            return
+          }
 
           const [xMovement, yMovement] = calcAutoPan(mousePosition, containerBounds)
 

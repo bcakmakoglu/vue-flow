@@ -77,7 +77,9 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
         (e) => {
           modifierPressed = wasModifierPressed(e)
 
-          if (!modifierPressed && isInputDOMNode(e)) return
+          if (!modifierPressed && isInputDOMNode(e)) {
+            return
+          }
 
           e.preventDefault()
 
@@ -90,7 +92,9 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
         unrefKeyFilter,
         (e) => {
           if (isPressed) {
-            if (!modifierPressed && isInputDOMNode(e)) return
+            if (!modifierPressed && isInputDOMNode(e)) {
+              return
+            }
 
             modifierPressed = false
 

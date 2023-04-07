@@ -25,8 +25,11 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
       let parentStyles: Styles = {}
 
-      if (isFunction(parent.style)) parentStyles = { ...parent.style(parent) }
-      else if (parent.style) parentStyles = { ...parent.style }
+      if (isFunction(parent.style)) {
+        parentStyles = { ...parent.style(parent) }
+      } else if (parent.style) {
+        parentStyles = { ...parent.style }
+      }
 
       parentStyles.width = parentStyles.width ?? `${parent.dimensions.width}px`
       parentStyles.height = parentStyles.height ?? `${parent.dimensions.height}px`
@@ -114,11 +117,15 @@ export function applyChanges<
     if (change.type === 'add') {
       const index = elements.findIndex((el) => el.id === change.item.id)
 
-      if (index === -1) elements.push(<T>change.item)
+      if (index === -1) {
+        elements.push(<T>change.item)
+      }
     } else if (change.type === 'remove') {
       const index = elements.findIndex((el) => el.id === change.id)
 
-      if (index !== -1) elements.splice(index, 1)
+      if (index !== -1) {
+        elements.splice(index, 1)
+      }
     }
   })
 
@@ -134,9 +141,13 @@ export function applyChanges<
           break
         case 'position':
           if (isGraphNode(element)) {
-            if (typeof currentChange.position !== 'undefined') element.position = currentChange.position
+            if (typeof currentChange.position !== 'undefined') {
+              element.position = currentChange.position
+            }
 
-            if (typeof currentChange.dragging !== 'undefined') element.dragging = currentChange.dragging
+            if (typeof currentChange.dragging !== 'undefined') {
+              element.dragging = currentChange.dragging
+            }
 
             if (element.expandParent && element.parentNode) {
               const parent = elements[elementIds.indexOf(element.parentNode)]
@@ -149,7 +160,9 @@ export function applyChanges<
           break
         case 'dimensions':
           if (isGraphNode(element)) {
-            if (typeof currentChange.dimensions !== 'undefined') element.dimensions = currentChange.dimensions
+            if (typeof currentChange.dimensions !== 'undefined') {
+              element.dimensions = currentChange.dimensions
+            }
 
             if (typeof currentChange.updateStyle !== 'undefined') {
               element.style = {
@@ -159,7 +172,9 @@ export function applyChanges<
               }
             }
 
-            if (typeof currentChange.resizing !== 'undefined') element.resizing = currentChange.resizing
+            if (typeof currentChange.resizing !== 'undefined') {
+              element.resizing = currentChange.resizing
+            }
 
             if (element.expandParent && element.parentNode) {
               const parent = elements[elementIds.indexOf(element.parentNode)]
@@ -175,7 +190,9 @@ export function applyChanges<
               }
             }
 
-            if (!element.initialized) element.initialized = true
+            if (!element.initialized) {
+              element.initialized = true
+            }
           }
           break
       }

@@ -37,7 +37,9 @@ export default (vueFlowId?: string): ViewportFunctions => {
         duration: 0,
       },
     ) => {
-      if (!nodes.length) return
+      if (!nodes.length) {
+        return
+      }
 
       const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes : getNodes).filter((node) => {
         const initialized = node.initialized && node.dimensions.width && node.dimensions.height

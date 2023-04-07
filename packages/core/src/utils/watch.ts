@@ -26,8 +26,11 @@ export function useWatch(
             store.setElements(elements)
 
             // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && elements.length) immediateStore = true
-            else pauseStore?.resume()
+            if (!pauseStore && !immediateStore && elements.length) {
+              immediateStore = true
+            } else {
+              pauseStore?.resume()
+            }
           }
         })
 
@@ -69,8 +72,11 @@ export function useWatch(
             store.setNodes(nodes)
 
             // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && nodes.length) immediateStore = true
-            else pauseStore?.resume()
+            if (!pauseStore && !immediateStore && nodes.length) {
+              immediateStore = true
+            } else {
+              pauseStore?.resume()
+            }
           }
         })
 
@@ -112,8 +118,11 @@ export function useWatch(
             store.setEdges(edges)
 
             // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && edges.length) immediateStore = true
-            else pauseStore?.resume()
+            if (!pauseStore && !immediateStore && edges.length) {
+              immediateStore = true
+            } else {
+              pauseStore?.resume()
+            }
           }
         })
 

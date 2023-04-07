@@ -5,8 +5,11 @@ export function hasSelector(target: Element, selector: string, node: Element): b
   let current = target
 
   do {
-    if (current && current.matches(selector)) return true
-    else if (current === node) return false
+    if (current && current.matches(selector)) {
+      return true
+    } else if (current === node) {
+      return false
+    }
 
     current = current.parentElement as Element
   } while (current)

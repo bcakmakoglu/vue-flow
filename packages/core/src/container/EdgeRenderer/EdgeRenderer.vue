@@ -25,7 +25,9 @@ const {
 const sourceNode = controlledComputed(
   () => connectionStartHandle?.nodeId,
   () => {
-    if (connectionStartHandle?.nodeId) return findNode(connectionStartHandle.nodeId)
+    if (connectionStartHandle?.nodeId) {
+      return findNode(connectionStartHandle.nodeId)
+    }
 
     return false
   },
@@ -74,7 +76,9 @@ function getType(type?: string, template?: GraphEdge['template']) {
       }
     }
   }
-  if (edgeType && typeof edgeType !== 'string') return edgeType
+  if (edgeType && typeof edgeType !== 'string') {
+    return edgeType
+  }
 
   const slot = slots?.[`edge-${name}`]
   if (!slot) {

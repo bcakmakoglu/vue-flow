@@ -70,7 +70,9 @@ function getType(type?: string, template?: GraphNode['template']) {
       }
     }
   }
-  if (typeof nodeType !== 'string') return nodeType
+  if (typeof nodeType !== 'string') {
+    return nodeType
+  }
 
   const slot = slots?.[`node-${name}`]
   if (!slot) {

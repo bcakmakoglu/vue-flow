@@ -141,7 +141,9 @@ export function groupEdgesByZLevel(edges: GraphEdge[], findNode: Actions['findNo
     const source = findNode(edge.source)
     const target = findNode(edge.target)
 
-    if (!source || !target) return tree
+    if (!source || !target) {
+      return tree
+    }
 
     if (elevateEdgesOnSelect) {
       z = hasZIndex ? edge.zIndex! : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
