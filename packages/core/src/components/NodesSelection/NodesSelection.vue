@@ -38,7 +38,9 @@ function onContextMenu(event: MouseEvent) {
 }
 
 function onKeyDown(event: KeyboardEvent) {
-  if (disableKeyboardA11y) return
+  if (disableKeyboardA11y) {
+    return
+  }
 
   if (arrowKeyDiffs[event.key]) {
     updatePositions(

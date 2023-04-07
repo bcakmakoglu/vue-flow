@@ -89,7 +89,9 @@ const viewBox = computed(() => {
 })
 
 const d = computed(() => {
-  if (!viewBox.value.x || !viewBox.value.y) return ''
+  if (!viewBox.value.x || !viewBox.value.y) {
+    return ''
+  }
 
   return `
     M${viewBox.value.x - viewBox.value.offset},${viewBox.value.y - viewBox.value.offset}

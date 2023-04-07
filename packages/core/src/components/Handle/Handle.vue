@@ -85,11 +85,15 @@ until(() => node.initialized)
   .then(() => {
     const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId.value)
 
-    if (!vueFlowRef.value || existingBounds) return
+    if (!vueFlowRef.value || existingBounds) {
+      return
+    }
 
     const viewportNode = vueFlowRef.value.querySelector('.vue-flow__transformationpane')
 
-    if (!nodeEl || !handle.value || !viewportNode || !handleId.value) return
+    if (!nodeEl || !handle.value || !viewportNode || !handleId.value) {
+      return
+    }
 
     const nodeBounds = nodeEl.value.getBoundingClientRect()
 
