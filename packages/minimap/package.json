@@ -12,13 +12,38 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
+  "keywords": [
+    "vue",
+    "flow",
+    "diagram",
+    "editor",
+    "graph",
+    "node",
+    "link",
+    "port",
+    "slot",
+    "vue3",
+    "composition-api",
+    "vue-flow",
+    "vueflow",
+    "typescript"
+  ],
   "main": "./dist/vue-flow-minimap.js",
   "module": "./dist/vue-flow-minimap.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow-minimap.iife.js",
   "jsdelivr": "./dist/vue-flow-minimap.iife.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vue-flow-minimap.mjs",
+      "require": "./dist/vue-flow-minimap.js"
+    },
+    "./dist/*.css": "./dist/*.css"
+  },
   "files": [
-    "dist"
+    "dist",
+    "*.d.ts"
   ],
   "sideEffects": false,
   "scripts": {
