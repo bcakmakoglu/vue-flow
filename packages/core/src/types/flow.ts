@@ -183,4 +183,5 @@ export interface FlowProps {
   }
 }
 
+// Todo: Remove in next major version
 export type FlowOptions = FlowProps

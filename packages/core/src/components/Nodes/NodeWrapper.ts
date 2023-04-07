@@ -60,16 +60,16 @@ const NodeWrapper = defineComponent({
     const dragging = useDrag({
       id: props.id,
       el: nodeElement,
-      disabled: computed(() => !props.draggable),
-      selectable: computed(() => props.selectable),
-      onStart(event, node, nodes) {
-        emit.dragStart({ event, node, nodes, intersections: getIntersectingNodes(node) })
+      disabled: () => !props.draggable,
+      selectable: () => props.selectable,
+      onStart(args) {
+        emit.dragStart({ ...args, intersections: getIntersectingNodes(node) })
       },
-      onDrag(event, node, nodes) {
-        emit.drag({ event, node, nodes, intersections: getIntersectingNodes(node) })
+      onDrag(args) {
+        emit.drag({ ...args, intersections: getIntersectingNodes(node) })
       },
-      onStop(event, node, nodes) {
-        emit.dragStop({ event, node, nodes, intersections: getIntersectingNodes(node) })
+      onStop(args) {
+        emit.dragStop({ ...args, intersections: getIntersectingNodes(node) })
       },
     })
 
