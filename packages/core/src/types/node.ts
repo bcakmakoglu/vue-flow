@@ -18,8 +18,10 @@ export interface NodeHandleBounds {
   target?: HandleElement[]
 }
 
+/** @deprecated will be removed in next major release */
 export type WidthFunc = (node: GraphNode) => number | string | void
 
+/** @deprecated will be removed in next major release */
 export type HeightFunc = (node: GraphNode) => number | string | void
 
 export interface Node<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> {
@@ -45,10 +47,10 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   /** Disable/enable deleting node */
   deletable?: boolean
   dragHandle?: string
-  // todo: deprecate this and remove them in next minor release
+  /** @deprecated will be removed in next major release */
   /** called when used as target for new connection */
   isValidTargetPos?: ValidConnectionFunc
-  // todo: deprecate this and remove them in next minor release
+  /** @deprecated will be removed in next major release */
   /** called when used as source for new connection */
   isValidSourcePos?: ValidConnectionFunc
   /** define node extent, i.e. area in which node can be moved */
@@ -80,7 +82,10 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   template?: NodeComponent
   /** Additional data that is passed to your custom components */
   data?: Data
-  /** contextual and custom events that are passed to your custom components */
+  /**
+   * @deprecated will be removed in next major release
+   * contextual and custom events that are passed to your custom components
+   * */
   events?: Partial<NodeEventsHandler<CustomEvents>>
   zIndex?: number
   ariaLabel?: string
@@ -102,6 +107,7 @@ export interface GraphNode<
   dragging: boolean
   initialized: boolean
   data: Data
+  /** @deprecated will be removed in next major release */
   events: Partial<NodeEventsHandler<CustomEvents>>
   type: Type
 }
