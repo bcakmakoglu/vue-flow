@@ -23,7 +23,7 @@ export default function useNode<Data = ElementData, CustomEvents extends Record<
     id: nodeId,
     nodeEl,
     node,
-    parentNode: computed(() => (node.parentNode ? findNode(node.parentNode) : undefined)),
+    parentNode: computed(() => findNode(node.parentNode)),
     connectedEdges: computed(() => getConnectedEdges([node], edges.value)),
   }
 }

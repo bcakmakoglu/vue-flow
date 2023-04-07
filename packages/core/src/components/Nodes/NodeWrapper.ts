@@ -47,7 +47,7 @@ const NodeWrapper = defineComponent({
 
     const node = $(useVModel(props, 'node'))
 
-    const parentNode = $computed(() => (node.parentNode ? findNode(node.parentNode) : undefined))
+    const parentNode = computed(() => findNode(node.parentNode))
 
     const connectedEdges = $computed(() => getConnectedEdges([node], edges))
 
@@ -73,9 +73,9 @@ const NodeWrapper = defineComponent({
       },
     })
 
-    const getClass = $computed(() => (node.class instanceof Function ? node.class(node) : node.class))
+    const getClass = computed(() => (node.class instanceof Function ? node.class(node) : node.class))
 
-    const getStyle = $computed(() => {
+    const getStyle = computed(() => {
       const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
 
       const width = node.width instanceof Function ? node.width(node) : node.width
@@ -92,7 +92,7 @@ const NodeWrapper = defineComponent({
       return styles
     })
 
-    const zIndex = computed(() => Number(node.zIndex ?? getStyle.zIndex ?? 0))
+    const zIndex = computed(() => Number(node.zIndex ?? getStyle.value.zIndex ?? 0))
 
     onUpdateNodeInternals((updateIds) => {
       if (updateIds.includes(props.id)) {
@@ -121,14 +121,14 @@ const NodeWrapper = defineComponent({
       [
         () => node.position.x,
         () => node.position.y,
-        () => parentNode?.computedPosition.x,
-        () => parentNode?.computedPosition.y,
-        () => parentNode?.computedPosition.z,
+        () => parentNode.value?.computedPosition.x,
+        () => parentNode.value?.computedPosition.y,
+        () => parentNode.value?.computedPosition.z,
         () => node.selected,
         () => node.dimensions.height,
         () => node.dimensions.width,
-        () => parentNode?.dimensions.height,
-        () => parentNode?.dimensions.width,
+        () => parentNode.value?.dimensions.height,
+        () => parentNode.value?.dimensions.width,
         zIndex,
       ],
       ([newX, newY, parentX, parentY, parentZ]) => {
@@ -184,14 +184,14 @@ const NodeWrapper = defineComponent({
               selected: node.selected,
               selectable: props.selectable,
             },
-            getClass,
+            getClass.value,
           ],
           'style': {
             zIndex: node.computedPosition.z ?? zIndex.value,
             transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
             pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
             visibility: node.initialized ? 'visible' : 'hidden',
-            ...getStyle,
+            ...getStyle.value,
           },
           'tabIndex': props.focusable ? 0 : undefined,
           'role': props.focusable ? 'button' : undefined,
@@ -239,7 +239,7 @@ const NodeWrapper = defineComponent({
         nextPos.y = snapGrid[1] * Math.round(nextPos.y / snapGrid[1])
       }
 
-      const { computedPosition, position } = calcNextPosition(node, nextPos, emits.error, nodeExtent, parentNode)
+      const { computedPosition, position } = calcNextPosition(node, nextPos, emits.error, nodeExtent, parentNode.value)
 
       // only overwrite positions if there are changes when clamping
       if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
