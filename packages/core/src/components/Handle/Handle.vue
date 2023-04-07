@@ -5,7 +5,7 @@ import type { HandleProps } from '../../types/handle'
 
 const {
   position = Position.Top,
-  connectable,
+  connectable = undefined,
   connectableStart = true,
   connectableEnd = true,
   id,
