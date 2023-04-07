@@ -12,15 +12,42 @@
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
+  "keywords": [
+    "vue",
+    "flow",
+    "diagram",
+    "editor",
+    "graph",
+    "node",
+    "link",
+    "port",
+    "slot",
+    "vue3",
+    "composition-api",
+    "vue-flow",
+    "vueflow",
+    "typescript"
+  ],
   "main": "./dist/vue-flow.js",
   "module": "./dist/vue-flow.mjs",
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow.iife.js",
   "jsdelivr": "./dist/vue-flow.iife.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vue-flow.mjs",
+      "require": "./dist/vue-flow.js"
+    },
+    "./dist/*.css": "./dist/*.css"
+  },
   "files": [
-    "dist"
+    "dist",
+    "*.d.ts"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "peerDependencies": {
     "vue": "^3.2.25"
   },

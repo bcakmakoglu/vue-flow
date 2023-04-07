@@ -17,8 +17,16 @@
   "types": "./dist/index.d.ts",
   "unpkg": "./dist/vue-flow-node-toolbar.iife.js",
   "jsdelivr": "./dist/vue-flow-node-toolbar.iife.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vue-flow-node-toolbar.mjs",
+      "require": "./dist/vue-flow-node-toolbar.js"
+    }
+  },
   "files": [
-    "dist"
+    "dist",
+    "*.d.ts"
   ],
   "sideEffects": false,
   "scripts": {
