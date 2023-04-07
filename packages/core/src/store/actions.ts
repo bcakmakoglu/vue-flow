@@ -180,13 +180,15 @@ export function useActions(
   }
 
   const nodeSelectionHandler = (nodes: GraphNode[], selected: boolean) => {
+    const nodeIds = nodes.map((n) => n.id)
+
     let changedNodes: NodeChange[]
     let changedEdges: EdgeChange[] = []
 
     if (state.multiSelectionActive) {
-      changedNodes = nodeIds.value.map((nodeId) => createSelectionChange(nodeId, selected))
+      changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
     } else {
-      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds.value)
+      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds)
       changedNodes = selectionChanges.changedNodes
       changedEdges = selectionChanges.changedEdges
     }
@@ -201,13 +203,15 @@ export function useActions(
   }
 
   const edgeSelectionHandler = (edges: GraphEdge[], selected: boolean) => {
+    const edgeIds = edges.map((e) => e.id)
+
     let changedNodes: NodeChange[] = []
     let changedEdges: EdgeChange[]
 
     if (state.multiSelectionActive) {
-      changedEdges = edgeIds.value.map((edgeId) => createSelectionChange(edgeId, selected))
+      changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
     } else {
-      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds.value)
+      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds)
       changedNodes = selectionChanges.changedNodes
       changedEdges = selectionChanges.changedEdges
     }
@@ -222,14 +226,14 @@ export function useActions(
   }
 
   const elementSelectionHandler = (elements: Elements, selected: boolean) => {
-    let { changedNodes, changedEdges } = getSelectionChanges(
-      [...state.nodes, ...state.edges],
-      [...nodeIds.value, ...edgeIds.value],
-    )
+    const nodeIds = elements.filter(isNode).map((n) => n.id)
+    const edgeIds = elements.filter(isEdge).map((e) => e.id)
+
+    let { changedNodes, changedEdges } = getSelectionChanges([...state.nodes, ...state.edges], [...nodeIds, ...edgeIds])
 
     if (state.multiSelectionActive) {
-      changedNodes = nodeIds.value.map((nodeId) => createSelectionChange(nodeId, selected))
-      changedEdges = edgeIds.value.map((edgeId) => createSelectionChange(edgeId, selected))
+      changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
+      changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
     }
 
     if (changedNodes.length) {
@@ -258,7 +262,9 @@ export function useActions(
       return nodeSelectionHandler(nodes, false)
     }
 
-    const changedNodes = nodeIds.value.map((nodeId) => createSelectionChange(nodeId, false))
+    const nodeIds = nodes.map((n) => n.id)
+
+    const changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, false))
 
     if (changedNodes.length) {
       state.hooks.nodesChange.trigger(changedNodes)
@@ -270,7 +276,9 @@ export function useActions(
       return edgeSelectionHandler(edges, false)
     }
 
-    const changedEdges = edgeIds.value.map((edgeId) => createSelectionChange(edgeId, false))
+    const edgeIds = edges.map((e) => e.id)
+
+    const changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, false))
 
     if (changedEdges.length) {
       state.hooks.edgesChange.trigger(changedEdges)
@@ -285,7 +293,7 @@ export function useActions(
     const { changedNodes, changedEdges } = elements.reduce(
       (acc, curr) => {
         const selectionChange = createSelectionChange(curr.id, false)
-        if (isGraphNode(curr)) {
+        if (isNode(curr)) {
           acc.changedNodes.push(selectionChange)
         } else {
           acc.changedEdges.push(selectionChange)
