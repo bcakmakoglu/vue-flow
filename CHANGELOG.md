@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.18.2] - 2023-04-07
+
+[0c05490](0c05490cf3784a97a8590ec710d0619126eeed09)...[fc8cd4b](fc8cd4b9ea5a3ff48a968f87e97b668cf76d0617)
+
+### Bug Fixes
+
+- Set handle connectable undefined as default ([d659d48](d659d482794354fcc806ff6b29c7bdb51c5d8089))
+
+### Miscellaneous Tasks
+
+- Cleanup ([0f18263](0f18263899c0588367dfbb6c724f19360f270c5a))
+- Add codeowners file ([79140e9](79140e99c2aa719b539ebcd41cd99211ea87e788))
+- Add ([86ecbae](86ecbae6f1c6e498e213e62739e67a82eb20e8b9))
+
 ## [1.18.1] - 2023-04-03
 
 [e1b7bfc](e1b7bfcfb60d44056ed37747e23c8cd49a6d5418)...[0c05490](0c05490cf3784a97a8590ec710d0619126eeed09)
