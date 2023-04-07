@@ -3,18 +3,18 @@ const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, 
 
 const updatePositions = useUpdateNodePositions()
 
-const el = ref()
+const el = ref<HTMLDivElement>()
 
 const dragging = useDrag({
   el,
-  onStart(event, node, nodes) {
-    emits.selectionDragStart({ event, node, nodes })
+  onStart(args) {
+    emits.selectionDragStart(args)
   },
-  onDrag(event, node, nodes) {
-    emits.selectionDrag({ event, node, nodes })
+  onDrag(args) {
+    emits.selectionDrag(args)
   },
-  onStop(event, node, nodes) {
-    emits.selectionDragStop({ event, node, nodes })
+  onStop(args) {
+    emits.selectionDragStop(args)
   },
 })
 
@@ -24,13 +24,13 @@ onMounted(() => {
   }
 })
 
-const selectedNodesBBox = $computed(() => getRectOfNodes(getSelectedNodes))
+const selectedNodesBBox = computed(() => getRectOfNodes(getSelectedNodes))
 
 const innerStyle = computed(() => ({
-  width: `${selectedNodesBBox.width}px`,
-  height: `${selectedNodesBBox.height}px`,
-  top: `${selectedNodesBBox.y}px`,
-  left: `${selectedNodesBBox.x}px`,
+  width: `${selectedNodesBBox.value.width}px`,
+  height: `${selectedNodesBBox.value.height}px`,
+  top: `${selectedNodesBBox.value.y}px`,
+  left: `${selectedNodesBBox.value.x}px`,
 }))
 
 function onContextMenu(event: MouseEvent) {

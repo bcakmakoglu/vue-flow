@@ -92,7 +92,7 @@ const NodeWrapper = defineComponent({
       return styles
     })
 
-    const zIndex = computed(() => Number(node.zIndex ?? getStyle.value.zIndex ?? 0))
+    const zIndex = () => Number(node.zIndex ?? getStyle.value.zIndex ?? 0)
 
     onUpdateNodeInternals((updateIds) => {
       if (updateIds.includes(props.id)) {
@@ -124,18 +124,18 @@ const NodeWrapper = defineComponent({
         () => parentNode.value?.computedPosition.x,
         () => parentNode.value?.computedPosition.y,
         () => parentNode.value?.computedPosition.z,
+        () => zIndex(),
         () => node.selected,
         () => node.dimensions.height,
         () => node.dimensions.width,
         () => parentNode.value?.dimensions.height,
         () => parentNode.value?.dimensions.width,
-        zIndex,
       ],
-      ([newX, newY, parentX, parentY, parentZ]) => {
+      ([newX, newY, parentX, parentY, parentZ, nodeZIndex]) => {
         const xyzPos = {
           x: newX,
           y: newY,
-          z: zIndex.value + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
+          z: nodeZIndex + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
         }
 
         if (isNumber(parentX) && isNumber(parentY)) {
@@ -187,7 +187,7 @@ const NodeWrapper = defineComponent({
             getClass.value,
           ],
           'style': {
-            zIndex: node.computedPosition.z ?? zIndex.value,
+            zIndex: node.computedPosition.z ?? zIndex(),
             transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
             pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
             visibility: node.initialized ? 'visible' : 'hidden',

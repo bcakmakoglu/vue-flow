@@ -89,10 +89,18 @@ export function getBoundingBoxes(storeNodes: GraphNode[], nodePadding = 0, graph
       bottomRight.y = roundUp(bottomRight.y, roundTo)
     }
 
-    if (topLeft.y < yMin) yMin = topLeft.y
-    if (topLeft.x < xMin) xMin = topLeft.x
-    if (bottomRight.y > yMax) yMax = bottomRight.y
-    if (bottomRight.x > xMax) xMax = bottomRight.x
+    if (topLeft.y < yMin) {
+      yMin = topLeft.y
+    }
+    if (topLeft.x < xMin) {
+      xMin = topLeft.x
+    }
+    if (bottomRight.y > yMax) {
+      yMax = bottomRight.y
+    }
+    if (bottomRight.x > xMax) {
+      xMax = bottomRight.x
+    }
 
     return {
       id: node.id,
