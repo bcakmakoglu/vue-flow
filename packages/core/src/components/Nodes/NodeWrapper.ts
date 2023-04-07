@@ -81,9 +81,13 @@ const NodeWrapper = defineComponent({
       const width = node.width instanceof Function ? node.width(node) : node.width
       const height = node.height instanceof Function ? node.height(node) : node.height
 
-      if (width) styles.width = typeof width === 'string' ? width : `${width}px`
+      if (width) {
+        styles.width = typeof width === 'string' ? width : `${width}px`
+      }
 
-      if (height) styles.height = typeof height === 'string' ? height : `${height}px`
+      if (height) {
+        styles.height = typeof height === 'string' ? height : `${height}px`
+      }
 
       return styles
     })
@@ -248,7 +252,9 @@ const NodeWrapper = defineComponent({
     }
 
     function updateInternals() {
-      if (nodeElement.value) updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value, forceUpdate: true }])
+      if (nodeElement.value) {
+        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value, forceUpdate: true }])
+      }
     }
 
     function onMouseEnter(event: MouseEvent) {
@@ -294,7 +300,9 @@ const NodeWrapper = defineComponent({
     }
 
     function onKeyDown(event: KeyboardEvent) {
-      if (isInputDOMNode(event)) return
+      if (isInputDOMNode(event)) {
+        return
+      }
 
       if (elementSelectionKeys.includes(event.key) && props.selectable) {
         const unselect = event.key === 'Escape'

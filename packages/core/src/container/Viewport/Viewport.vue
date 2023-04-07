@@ -118,7 +118,9 @@ onMounted(() => {
   })
 
   d3Zoom.on('start', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-    if (!event.sourceEvent) return null
+    if (!event.sourceEvent) {
+      return null
+    }
 
     // we need to remember it here, because it's always 0 in the "zoom" event
     mouseButton = event.sourceEvent.button
@@ -138,7 +140,9 @@ onMounted(() => {
   })
 
   d3Zoom.on('end', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-    if (!event.sourceEvent) return null
+    if (!event.sourceEvent) {
+      return null
+    }
 
     isZoomingOrPanning = false
 
@@ -223,27 +227,43 @@ onMounted(() => {
     }
 
     // if all interactions are disabled, we prevent all zoom events
-    if (!panOnDrag && !zoomScroll && !panOnScroll && !zoomOnDoubleClick && !zoomOnPinch) return false
+    if (!panOnDrag && !zoomScroll && !panOnScroll && !zoomOnDoubleClick && !zoomOnPinch) {
+      return false
+    }
 
     // during a selection we prevent all other interactions
-    if (userSelectionActive) return false
+    if (userSelectionActive) {
+      return false
+    }
 
     // if zoom on double click is disabled, we prevent the double click event
-    if (!zoomOnDoubleClick && event.type === 'dblclick') return false
+    if (!zoomOnDoubleClick && event.type === 'dblclick') {
+      return false
+    }
 
     // if the target element is inside an element with the nowheel class, we prevent zooming
-    if (isWrappedWithClass(event, noWheelClassName) && event.type === 'wheel') return false
+    if (isWrappedWithClass(event, noWheelClassName) && event.type === 'wheel') {
+      return false
+    }
 
     // if the target element is inside an element with the nopan class, we prevent panning
-    if (isWrappedWithClass(event, noPanClassName) && event.type !== 'wheel') return false
+    if (isWrappedWithClass(event, noPanClassName) && event.type !== 'wheel') {
+      return false
+    }
 
-    if (!zoomOnPinch && event.ctrlKey && event.type === 'wheel') return false
+    if (!zoomOnPinch && event.ctrlKey && event.type === 'wheel') {
+      return false
+    }
 
     // when there is no scroll handling enabled, we prevent all wheel events
-    if (!zoomScroll && !panOnScroll && !pinchZoom && event.type === 'wheel') return false
+    if (!zoomScroll && !panOnScroll && !pinchZoom && event.type === 'wheel') {
+      return false
+    }
 
     // if the pane is not movable, we prevent dragging it with mousestart or touchstart
-    if (!panOnDrag && (event.type === 'mousedown' || event.type === 'touchstart')) return false
+    if (!panOnDrag && (event.type === 'mousedown' || event.type === 'touchstart')) {
+      return false
+    }
 
     // if the pane is only movable using allowed clicks
     if (
@@ -283,7 +303,9 @@ function eventToFlowTransform(eventTransform: ZoomTransform): ViewportTransform 
 }
 
 function setDimensions() {
-  if (!viewportEl.value) return
+  if (!viewportEl.value) {
+    return
+  }
 
   const { width, height } = getDimensions(viewportEl.value)
 

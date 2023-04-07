@@ -58,8 +58,11 @@ export function getHostForElement(element: HTMLElement): Document {
   const doc = element.getRootNode() as Document
   const window = useWindow()
 
-  if ('elementFromPoint' in doc) return doc
-  else return window.document
+  if ('elementFromPoint' in doc) {
+    return doc
+  } else {
+    return window.document
+  }
 }
 
 export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
@@ -147,7 +150,9 @@ function getConnectedElements<T extends Elements = FlowElements>(
   elements: T,
   dir: 'source' | 'target',
 ): T extends FlowElements ? GraphNode[] : Node[] {
-  if (!isNode(node)) return []
+  if (!isNode(node)) {
+    return []
+  }
   const origin = dir === 'source' ? 'target' : 'source'
   const ids = elements.filter((e) => isEdge(e) && e[origin] === node.id).map((e) => isEdge(e) && e[dir])
   return elements.filter((e) => ids.includes(e.id)) as T extends FlowElements ? GraphNode[] : Node[]
@@ -200,7 +205,9 @@ export function addEdge(edgeParams: Edge | Connection, elements: Elements, defau
 
   edge = parseEdge(edge, defaults)
 
-  if (connectionExists(edge, elements)) return elements
+  if (connectionExists(edge, elements)) {
+    return elements
+  }
 
   elements.push(edge)
 
@@ -363,6 +370,21 @@ export function getConnectedEdges(nodes: (Node | GraphNode | { id: string })[], 
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
+export function getConnectedNodes(nodes: (Node | GraphNode | { id: string })[], edges: GraphEdge[]) {
+  const nodeIds = nodes.map((node) => node.id)
+  const connectedNodeIds = edges.reduce((acc, edge) => {
+    if (nodeIds.includes(edge.source)) {
+      acc.add(edge.target)
+    }
+    if (nodeIds.includes(edge.target)) {
+      acc.add(edge.source)
+    }
+    return acc
+  }, new Set<string>())
+
+  return nodes.filter((node) => connectedNodeIds.has(node.id))
+}
+
 export function getTransformForBounds(
   bounds: Rect,
   width: number,
@@ -396,20 +418,30 @@ export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition)
 }
 
 export function isParentSelected(node: GraphNode, findNode: Actions['findNode']): boolean {
-  if (!node.parentNode) return false
+  if (!node.parentNode) {
+    return false
+  }
 
   const parent = findNode(node.parentNode)
-  if (!parent) return false
+  if (!parent) {
+    return false
+  }
 
-  if (parent.selected) return true
+  if (parent.selected) {
+    return true
+  }
 
   return isParentSelected(parent, findNode)
 }
 
 export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: string) {
-  if (typeof marker === 'undefined') return ''
+  if (typeof marker === 'undefined') {
+    return ''
+  }
 
-  if (typeof marker === 'string') return marker
+  if (typeof marker === 'string') {
+    return marker
+  }
 
   const idPrefix = vueFlowId ? `${vueFlowId}__` : ''
 

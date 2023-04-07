@@ -71,7 +71,9 @@ const EdgeWrapper = defineComponent({
     })
 
     return () => {
-      if (!sourceNode || !targetNode || !edge) return null
+      if (!sourceNode || !targetNode || !edge) {
+        return null
+      }
 
       let sourceNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
@@ -238,7 +240,9 @@ const EdgeWrapper = defineComponent({
     }
 
     function handleEdgeUpdater(event: MouseEvent, isSourceHandle: boolean) {
-      if (event.button !== 0) return
+      if (event.button !== 0) {
+        return
+      }
 
       updating = true
 

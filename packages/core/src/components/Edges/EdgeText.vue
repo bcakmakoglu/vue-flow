@@ -25,7 +25,9 @@ onMounted(getBox)
 watch([() => x, () => y, $$(el), () => label], getBox)
 
 function getBox() {
-  if (!el) return
+  if (!el) {
+    return
+  }
 
   const nextBox = el.getBBox()
 

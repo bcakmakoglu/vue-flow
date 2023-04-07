@@ -10,14 +10,22 @@ interface Props extends HTMLAttributes {
 }
 
 function shiftX(x: number, shift: number, position: Position): number {
-  if (position === Position.Left) return x - shift
-  if (position === Position.Right) return x + shift
+  if (position === Position.Left) {
+    return x - shift
+  }
+  if (position === Position.Right) {
+    return x + shift
+  }
   return x
 }
 
 function shiftY(y: number, shift: number, position: Position): number {
-  if (position === Position.Top) return y - shift
-  if (position === Position.Bottom) return y + shift
+  if (position === Position.Top) {
+    return y - shift
+  }
+  if (position === Position.Bottom) {
+    return y + shift
+  }
   return y
 }
 

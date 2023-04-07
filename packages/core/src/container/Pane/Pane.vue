@@ -42,7 +42,9 @@ const containerBounds = ref<DOMRect>()
 const hasActiveSelection = computed(() => elementsSelectable.value && (isSelecting || userSelectionActive.value))
 
 useKeyPress(deleteKeyCode, (keyPressed) => {
-  if (!keyPressed) return
+  if (!keyPressed) {
+    return
+  }
 
   const nodesToRemove = getNodes.value.reduce<GraphNode[]>((res, node) => {
     if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
@@ -82,7 +84,9 @@ function resetUserSelection() {
 }
 
 function onClick(event: MouseEvent) {
-  if (event.target !== container.value || hasActiveSelection.value) return
+  if (event.target !== container.value || hasActiveSelection.value) {
+    return
+  }
 
   emits.paneClick(event)
 
@@ -92,7 +96,9 @@ function onClick(event: MouseEvent) {
 }
 
 function onContextMenu(event: MouseEvent) {
-  if (event.target !== container.value) return
+  if (event.target !== container.value) {
+    return
+  }
 
   if (Array.isArray(panOnDrag.value) && panOnDrag.value?.includes(2)) {
     event.preventDefault()
@@ -103,7 +109,9 @@ function onContextMenu(event: MouseEvent) {
 }
 
 function onWheel(event: WheelEvent) {
-  if (event.target !== container.value) return
+  if (event.target !== container.value) {
+    return
+  }
 
   emits.paneScroll(event)
 }
@@ -141,11 +149,19 @@ function onMouseDown(event: MouseEvent) {
 }
 
 function onMouseMove(event: MouseEvent) {
-  if (!isSelecting || !containerBounds.value || !userSelectionRect.value) return
-  if (!hasActiveSelection.value) return emits.paneMouseMove(event)
+  if (!isSelecting || !containerBounds.value || !userSelectionRect.value) {
+    return
+  }
+  if (!hasActiveSelection.value) {
+    return emits.paneMouseMove(event)
+  }
 
-  if (!userSelectionActive.value) userSelectionActive.value = true
-  if (nodesSelectionActive.value) nodesSelectionActive.value = false
+  if (!userSelectionActive.value) {
+    userSelectionActive.value = true
+  }
+  if (nodesSelectionActive.value) {
+    nodesSelectionActive.value = false
+  }
 
   const mousePos = getMousePosition(event, containerBounds.value)
   const startX = userSelectionRect.value.startX ?? 0
@@ -177,9 +193,13 @@ function onMouseMove(event: MouseEvent) {
 }
 
 function onMouseUp(event: MouseEvent) {
-  if (!hasActiveSelection.value) return
+  if (!hasActiveSelection.value) {
+    return
+  }
 
-  if (event.button !== 0) return
+  if (event.button !== 0) {
+    return
+  }
 
   // We only want to trigger click functions when in selection mode if
   // the user did not move the mouse.
@@ -195,7 +215,9 @@ function onMouseUp(event: MouseEvent) {
 }
 
 function onMouseLeave(event: MouseEvent) {
-  if (!hasActiveSelection.value) return emits.paneMouseLeave(event)
+  if (!hasActiveSelection.value) {
+    return emits.paneMouseLeave(event)
+  }
 
   if (userSelectionActive.value) {
     nodesSelectionActive.value = prevSelectedNodesCount.value > 0
@@ -206,7 +228,9 @@ function onMouseLeave(event: MouseEvent) {
 }
 
 function onMouseEnter(event: MouseEvent) {
-  if (hasActiveSelection.value) return
+  if (hasActiveSelection.value) {
+    return
+  }
 
   emits.paneMouseEnter(event)
 }
