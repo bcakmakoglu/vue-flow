@@ -2,6 +2,7 @@ module.exports = {
   extends: ['@antfu', 'plugin:prettier/recommended', 'turbo'],
   plugins: ['prettier'],
   rules: {
+    curly: ['error', 'all'],
     'vue/no-setup-props-destructure': 0,
     'no-console': ['error', { allow: ['warn', 'error'] }],
     'unused-imports/no-unused-vars': 0,
