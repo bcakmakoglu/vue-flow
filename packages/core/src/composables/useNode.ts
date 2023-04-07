@@ -11,7 +11,7 @@ export default function useNode<Data = ElementData, CustomEvents extends Record<
   const nodeId = id ?? inject(NodeId, '')
   const nodeEl = inject(NodeRef, null)
 
-  const { findNode, getEdges, emits } = useVueFlow()
+  const { findNode, edges, emits } = useVueFlow()
 
   const node = findNode<Data, CustomEvents>(nodeId)!
 
@@ -24,6 +24,6 @@ export default function useNode<Data = ElementData, CustomEvents extends Record<
     nodeEl,
     node,
     parentNode: computed(() => (node.parentNode ? findNode(node.parentNode) : undefined)),
-    connectedEdges: computed(() => getConnectedEdges([node], getEdges.value)),
+    connectedEdges: computed(() => getConnectedEdges([node], edges.value)),
   }
 }
