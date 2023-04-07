@@ -248,7 +248,7 @@ export default {
     ref="container"
     :key="`pane-${id}`"
     class="vue-flow__pane vue-flow__container"
-    :class="[{ selection: isSelecting }]"
+    :class="{ selection: isSelecting }"
     @click="onClick"
     @contextmenu="onContextMenu"
     @wheel.passive="onWheel"

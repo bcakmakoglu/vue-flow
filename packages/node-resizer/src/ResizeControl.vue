@@ -185,7 +185,9 @@ watchEffect((onCleanup) => {
           prevValues.value.height = height
         }
 
-        if (changes.length === 0) return
+        if (changes.length === 0) {
+          return
+        }
 
         const direction = getDirection({
           width: prevValues.value.width,
@@ -200,7 +202,9 @@ watchEffect((onCleanup) => {
 
         const callResize = props.shouldResize?.(event, nextValues)
 
-        if (callResize === false) return
+        if (callResize === false) {
+          return
+        }
 
         emits('resize', { event, params: nextValues })
 

@@ -44,8 +44,6 @@ const EdgeWrapper = defineComponent({
 
     const handleId = ref<string | null>(null)
 
-    const type = ref<HandleType>('source')
-
     const edgeUpdaterType = ref<HandleType>('source')
 
     const edgeEl = ref<SVGElement>()
@@ -53,17 +51,13 @@ const EdgeWrapper = defineComponent({
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)
 
-    const sourceNode = $computed(() => findNode(edge.source))
-
-    const targetNode = $computed(() => findNode(edge.target))
-
     const edgeClass = $computed(() => (edge.class instanceof Function ? edge.class(edge) : edge.class))
     const edgeStyle = $computed(() => (edge.style instanceof Function ? edge.style(edge) : edge.style))
 
     const { handlePointerDown } = useHandle({
       nodeId,
       handleId,
-      type,
+      type: edgeUpdaterType,
       isValidConnection: isValidConnection.value,
       edgeUpdaterType,
       onEdgeUpdate,
@@ -71,6 +65,9 @@ const EdgeWrapper = defineComponent({
     })
 
     return () => {
+      const sourceNode = findNode(edge.source)
+      const targetNode = findNode(edge.target)
+
       if (!sourceNode || !targetNode || !edge) {
         return null
       }
@@ -248,9 +245,8 @@ const EdgeWrapper = defineComponent({
 
       nodeId.value = isSourceHandle ? edge.target : edge.source
       handleId.value = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
-      type.value = isSourceHandle ? 'target' : 'source'
 
-      edgeUpdaterType.value = type.value
+      edgeUpdaterType.value = isSourceHandle ? 'target' : 'source'
 
       hooks.emit.updateStart({ event, edge })
 
@@ -301,6 +297,7 @@ const EdgeWrapper = defineComponent({
 
         if (unselect) {
           edgeEl.value?.blur()
+
           removeSelectedEdges([findEdge(props.id)!])
         } else {
           addSelectedEdges([findEdge(props.id)!])
