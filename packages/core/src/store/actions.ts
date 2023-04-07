@@ -29,11 +29,7 @@ export function useActions(
 ): Actions {
   let fitViewOnInitDone = false
 
-  const viewportHelper = $(useViewport(state, getters))
-
-  until(() => viewportHelper.initialized)
-    .toBe(true)
-    .then(() => {})
+  const viewportHelper = useViewport(state, getters)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? nodeIds.value ?? []
@@ -377,7 +373,7 @@ export function useActions(
         return res
       }
 
-      const storedEdge = getters.getEdge.value(edge.id)
+      const storedEdge = findEdge(edge.id)
 
       res.push({
         ...parseEdge(edge, Object.assign({}, storedEdge, state.defaultEdgeOptions)),
