@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.18.2
+
+### Patch Changes
+
+- [#852](https://github.com/bcakmakoglu/vue-flow/pull/852) [`8f537196`](https://github.com/bcakmakoglu/vue-flow/commit/8f537196c1b9c0681870c212ccb29592ff9ffb01) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set handle connectable prop to `undefined` as it's default value
+
 ## 1.18.1
 
 ### Patch Changes
