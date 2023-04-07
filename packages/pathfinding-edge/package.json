@@ -2,21 +2,48 @@
   "name": "@vue-flow/pathfinding-edge",
   "version": "1.0.5",
   "private": false,
+  "license": "MIT",
+  "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bcakmakoglu/vue-flow/tree/master/packages/pathfinding-edge"
+    "url": "git+https://github.com/bcakmakoglu/vue-flow"
   },
-  "homepage": "https://github.com/bcakmakoglu/vue-flow/tree/master/packages/pathfinding-edge#readme",
-  "license": "MIT",
-  "author": "Burak Cakmakoglu<brainbraks@googlemail.com>",
+  "homepage": "https://github.com/bcakmakoglu/vue-flow#readme",
+  "bugs": {
+    "url": "https://github.com/bcakmakoglu/vue-flow/issues"
+  },
+  "keywords": [
+    "vue",
+    "flow",
+    "diagram",
+    "editor",
+    "graph",
+    "node",
+    "link",
+    "port",
+    "slot",
+    "vue3",
+    "composition-api",
+    "vue-flow",
+    "vueflow",
+    "typescript"
+  ],
   "main": "./dist/vue-flow-pathfinding-edge.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/vue-flow-pathfinding-edge.mjs",
   "unpkg": "./dist/vue-flow-pathfinding-edge.iife.js",
   "jsdelivr": "./dist/vue-flow-pathfinding-edge.iife.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vue-flow-pathfinding-edge.mjs",
+      "require": "./dist/vue-flow-pathfinding-edge.js"
+    }
+  },
   "files": [
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
     "prepare": "ts-patch install -s",
     "dev": "vite build --watch",
