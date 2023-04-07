@@ -38,6 +38,10 @@ export function useActions(
   }
 
   const findNode: Actions['findNode'] = (id) => {
+    if (!id) {
+      return
+    }
+
     if (state.nodes && !nodeIds.value.length) {
       return state.nodes.find((node) => node.id === id)
     }
@@ -46,6 +50,10 @@ export function useActions(
   }
 
   const findEdge: Actions['findEdge'] = (id) => {
+    if (!id) {
+      return
+    }
+
     if (state.edges && !edgeIds.value.length) {
       return state.edges.find((edge) => edge.id === id)
     }
