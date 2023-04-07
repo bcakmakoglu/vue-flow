@@ -1,25 +1,26 @@
 import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
-import type { ComputedRef, Ref } from 'vue'
+import type { Ref } from 'vue'
 import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
+import type { MaybeRefOrGetter } from '~/types/utils'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 
 interface UseDragParams {
-  onStart: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
-  onDrag: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
-  onStop: (event: NodeDragEvent['event'], currentNode: NodeDragEvent['node'], nodes: NodeDragEvent['nodes']) => void
+  onStart: (args: Omit<NodeDragEvent, 'intersections'>) => void
+  onDrag: (event: Omit<NodeDragEvent, 'intersections'>) => void
+  onStop: (event: Omit<NodeDragEvent, 'intersections'>) => void
   el: Ref<Element | undefined>
-  disabled?: ComputedRef<boolean>
-  selectable?: ComputedRef<boolean>
+  disabled?: MaybeRefOrGetter<boolean>
+  selectable?: MaybeRefOrGetter<boolean>
   id?: string
 }
 
 function useDrag(params: UseDragParams) {
   const scope = effectScope()
 
-  tryOnScopeDispose(() => scope.stop())
+  tryOnScopeDispose(scope.stop)
 
   return scope.run(() => {
     const {
@@ -43,7 +44,7 @@ function useDrag(params: UseDragParams) {
       emits,
     } = $(useVueFlow())
 
-    const { onStart, onDrag, onStop, el, disabled, id, selectable } = $(params)
+    const { onStart, onDrag, onStop, el, disabled, id, selectable } = params
 
     const dragging = ref(false)
 
@@ -64,9 +65,9 @@ function useDrag(params: UseDragParams) {
 
     const getPointerPosition = useGetPointerPosition()
 
-    watch([() => disabled, () => el], () => {
-      if (el) {
-        const selection = select(el)
+    watch([() => resolveUnref(disabled), el], ([isDisabled, nodeEl]) => {
+      if (nodeEl) {
+        const selection = select(nodeEl)
 
         const updateNodes = ({ x, y }: XYPosition) => {
           lastPos = { x, y }
@@ -110,7 +111,7 @@ function useDrag(params: UseDragParams) {
               findNode,
             })
 
-            onDrag(dragEvent, currentNode, nodes)
+            onDrag({ event: dragEvent, node: currentNode, nodes })
           }
         }
 
@@ -131,7 +132,7 @@ function useDrag(params: UseDragParams) {
           autoPanId = requestAnimationFrame(autoPan)
         }
 
-        if (disabled) {
+        if (isDisabled) {
           selection.on('.drag', null)
         } else {
           dragHandler = drag()
@@ -143,7 +144,7 @@ function useDrag(params: UseDragParams) {
                 }
               }
 
-              if (node && selectable && selectNodesOnDrag) {
+              if (node && resolveUnref(selectable) && selectNodesOnDrag) {
                 handleNodeClick(
                   node,
                   multiSelectionActive,
@@ -151,7 +152,7 @@ function useDrag(params: UseDragParams) {
                   removeSelectedElements,
                   $$(nodesSelectionActive),
                   false,
-                  el as HTMLDivElement,
+                  nodeEl as HTMLDivElement,
                 )
               }
 
@@ -166,7 +167,7 @@ function useDrag(params: UseDragParams) {
                   findNode,
                 })
 
-                onStart(event.sourceEvent, currentNode, nodes)
+                onStart({ event: event.sourceEvent, node: currentNode, nodes })
               }
 
               containerBounds = vueFlowRef?.getBoundingClientRect() || null
@@ -202,7 +203,7 @@ function useDrag(params: UseDragParams) {
                   findNode,
                 })
 
-                onStop(event.sourceEvent as MouseEvent, currentNode, nodes)
+                onStop({ event: event.sourceEvent, node: currentNode, nodes })
               }
             })
             .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
@@ -210,8 +211,8 @@ function useDrag(params: UseDragParams) {
               return (
                 !event.button &&
                 (!noDragClassName ||
-                  (!hasSelector(target, `.${noDragClassName}`, el) &&
-                    (!node?.dragHandle || hasSelector(target, node.dragHandle, el))))
+                  (!hasSelector(target, `.${noDragClassName}`, nodeEl) &&
+                    (!node?.dragHandle || hasSelector(target, node.dragHandle, nodeEl))))
               )
             })
 
