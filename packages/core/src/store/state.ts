@@ -142,7 +142,9 @@ export function useState(opts?: FlowOptions): State {
   if (opts) {
     Object.keys(opts).forEach((o) => {
       const option = opts[o as keyof typeof opts]
-      if (isDef(option)) (state as any)[o] = option
+      if (isDef(option)) {
+        ;(state as any)[o] = option
+      }
     })
   }
 

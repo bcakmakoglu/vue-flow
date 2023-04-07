@@ -34,9 +34,12 @@ export class Storage {
 
     const reactiveState = reactive(state)
 
-    const getters = useGetters(reactiveState)
+    const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
+    const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
 
-    const actions = useActions(reactiveState, getters)
+    const getters = useGetters(reactiveState, nodeIds, edgeIds)
+
+    const actions = useActions(reactiveState, getters, nodeIds, edgeIds)
 
     const hooksOn = <any>{}
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
@@ -94,7 +97,9 @@ export default (options?: FlowProps): VueFlowStore => {
    */
   if (scope) {
     const injection = inject(VueFlow, null)
-    if (typeof injection !== 'undefined' && injection !== null) vueFlow = injection
+    if (typeof injection !== 'undefined' && injection !== null) {
+      vueFlow = injection
+    }
   }
 
   /**
@@ -102,7 +107,9 @@ export default (options?: FlowProps): VueFlowStore => {
    * this requires options id or an id on the current scope
    */
   if (!vueFlow) {
-    if (vueFlowId) vueFlow = storage.get(vueFlowId)
+    if (vueFlowId) {
+      vueFlow = storage.get(vueFlowId)
+    }
   }
 
   /**
@@ -120,7 +127,9 @@ export default (options?: FlowProps): VueFlowStore => {
     }
   } else {
     // if composable was called with additional options after initialization, overwrite state with the options values
-    if (options) vueFlow.setState(options)
+    if (options) {
+      vueFlow.setState(options)
+    }
   }
 
   // always provide a fresh instance into context on call
