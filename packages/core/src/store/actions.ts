@@ -29,7 +29,7 @@ export function useActions(
 ): Actions {
   let fitViewOnInitDone = false
 
-  const viewportHelper = useViewport(state, getters)
+  const viewportHelper = $(useViewport(state, getters))
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? nodeIds.value ?? []
