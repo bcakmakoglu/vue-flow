@@ -1,4 +1,5 @@
 import { zoomIdentity } from 'd3-zoom'
+import type { ComputedRef } from 'vue'
 import type {
   Actions,
   ComputedGetters,
@@ -20,7 +21,12 @@ import type {
   State,
 } from '~/types'
 
-export function useActions(state: State, getters: ComputedGetters): Actions {
+export function useActions(
+  state: State,
+  getters: ComputedGetters,
+  nodeIds: ComputedRef<string[]>,
+  edgeIds: ComputedRef<string[]>,
+): Actions {
   let fitViewOnInitDone = false
 
   const viewportHelper = $(useViewport(state, getters))
@@ -29,25 +35,26 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     .toBe(true)
     .then(() => {})
 
-  const nodeIds = $computed(() => state.nodes.map((n) => n.id))
-  const edgeIds = $computed(() => state.edges.map((e) => e.id))
-
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? nodeIds ?? []
+    const updateIds = ids ?? nodeIds.value ?? []
 
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
 
   const findNode: Actions['findNode'] = (id) => {
-    if (state.nodes && !nodeIds.length) return state.nodes.find((node) => node.id === id)
+    if (state.nodes && !nodeIds.value.length) {
+      return state.nodes.find((node) => node.id === id)
+    }
 
-    return state.nodes[nodeIds.indexOf(id)]
+    return state.nodes[nodeIds.value.indexOf(id)]
   }
 
   const findEdge: Actions['findEdge'] = (id) => {
-    if (state.edges && !edgeIds.length) return state.edges.find((edge) => edge.id === id)
+    if (state.edges && !edgeIds.value.length) {
+      return state.edges.find((edge) => edge.id === id)
+    }
 
-    return state.edges[edgeIds.indexOf(id)]
+    return state.edges[edgeIds.value.indexOf(id)]
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -83,11 +90,15 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   }
 
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
-    if (!state.vueFlowRef) return
+    if (!state.vueFlowRef) {
+      return
+    }
 
     const viewportNode = state.vueFlowRef.querySelector('.vue-flow__transformationpane') as HTMLElement
 
-    if (!viewportNode) return
+    if (!viewportNode) {
+      return
+    }
 
     // todo: remove this feature again, it's not working properly
     let zoom: number
@@ -108,8 +119,11 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       viewportNodes.forEach((vp) => {
         const style = window.getComputedStyle(vp)
         const { m22 } = new window.DOMMatrixReadOnly(style.transform)
-        if (!zoom) zoom = m22
-        else zoom *= m22
+        if (!zoom) {
+          zoom = m22
+        } else {
+          zoom *= m22
+        }
       })
     } else {
       const style = window.getComputedStyle(viewportNode)
@@ -156,55 +170,71 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       fitViewOnInitDone = true
     }
 
-    if (changes.length) state.hooks.nodesChange.trigger(changes)
+    if (changes.length) {
+      state.hooks.nodesChange.trigger(changes)
+    }
   }
 
   const nodeSelectionHandler = (nodes: GraphNode[], selected: boolean) => {
-    const nodeIds = nodes.map((n) => n.id)
-
     let changedNodes: NodeChange[]
     let changedEdges: EdgeChange[] = []
-    if (state.multiSelectionActive) changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
-    else {
-      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds)
+
+    if (state.multiSelectionActive) {
+      changedNodes = nodeIds.value.map((nodeId) => createSelectionChange(nodeId, selected))
+    } else {
+      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds.value)
       changedNodes = selectionChanges.changedNodes
       changedEdges = selectionChanges.changedEdges
     }
 
-    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
-    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+    if (changedNodes.length) {
+      state.hooks.nodesChange.trigger(changedNodes)
+    }
+
+    if (changedEdges.length) {
+      state.hooks.edgesChange.trigger(changedEdges)
+    }
   }
 
   const edgeSelectionHandler = (edges: GraphEdge[], selected: boolean) => {
-    const edgeIds = edges.map((n) => n.id)
-
     let changedNodes: NodeChange[] = []
     let changedEdges: EdgeChange[]
-    if (state.multiSelectionActive) changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
-    else {
-      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds)
+
+    if (state.multiSelectionActive) {
+      changedEdges = edgeIds.value.map((edgeId) => createSelectionChange(edgeId, selected))
+    } else {
+      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds.value)
       changedNodes = selectionChanges.changedNodes
       changedEdges = selectionChanges.changedEdges
     }
 
-    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
-    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+    if (changedNodes.length) {
+      state.hooks.nodesChange.trigger(changedNodes)
+    }
+
+    if (changedEdges.length) {
+      state.hooks.edgesChange.trigger(changedEdges)
+    }
   }
 
   const elementSelectionHandler = (elements: Elements, selected: boolean) => {
-    const nodes = elements.filter(isGraphNode)
-    const edges = elements.filter(isGraphEdge)
+    let { changedNodes, changedEdges } = getSelectionChanges(
+      [...state.nodes, ...state.edges],
+      [...nodeIds.value, ...edgeIds.value],
+    )
 
-    const nodeIds = nodes.map((n) => n.id)
-    const edgeIds = edges.map((e) => e.id)
+    if (state.multiSelectionActive) {
+      changedNodes = nodeIds.value.map((nodeId) => createSelectionChange(nodeId, selected))
+      changedEdges = edgeIds.value.map((edgeId) => createSelectionChange(edgeId, selected))
+    }
 
-    let { changedNodes, changedEdges } = getSelectionChanges([...state.nodes, ...state.edges], [...nodeIds, ...edgeIds])
+    if (changedNodes.length) {
+      state.hooks.nodesChange.trigger(changedNodes)
+    }
 
-    if (state.multiSelectionActive) changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
-    if (state.multiSelectionActive) changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
-
-    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
-    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+    if (changedEdges.length) {
+      state.hooks.edgesChange.trigger(changedEdges)
+    }
   }
 
   const addSelectedNodes: Actions['addSelectedNodes'] = (nodes) => {
@@ -220,41 +250,54 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   }
 
   const removeSelectedNodes: Actions['removeSelectedNodes'] = (nodes) => {
-    if (!nodes.length) return nodeSelectionHandler(nodes, false)
+    if (!nodes.length) {
+      return nodeSelectionHandler(nodes, false)
+    }
 
-    const nodeIds = nodes.map((n) => n.id)
+    const changedNodes = nodeIds.value.map((nodeId) => createSelectionChange(nodeId, false))
 
-    const changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, false))
-
-    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
+    if (changedNodes.length) {
+      state.hooks.nodesChange.trigger(changedNodes)
+    }
   }
 
   const removeSelectedEdges: Actions['removeSelectedEdges'] = (edges) => {
-    if (!edges.length) return edgeSelectionHandler(edges, false)
+    if (!edges.length) {
+      return edgeSelectionHandler(edges, false)
+    }
 
-    const edgeIds = edges.map((e) => e.id)
+    const changedEdges = edgeIds.value.map((edgeId) => createSelectionChange(edgeId, false))
 
-    const changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, false))
-
-    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+    if (changedEdges.length) {
+      state.hooks.edgesChange.trigger(changedEdges)
+    }
   }
 
   const removeSelectedElements: Actions['removeSelectedElements'] = (elements) => {
-    if (!elements || !elements.length) return elementSelectionHandler([], false)
+    if (!elements || !elements.length) {
+      return elementSelectionHandler([], false)
+    }
 
     const { changedNodes, changedEdges } = elements.reduce(
       (acc, curr) => {
         const selectionChange = createSelectionChange(curr.id, false)
-        if (isGraphNode(curr)) acc.changedNodes.push(selectionChange)
-        else acc.changedEdges.push(selectionChange)
+        if (isGraphNode(curr)) {
+          acc.changedNodes.push(selectionChange)
+        } else {
+          acc.changedEdges.push(selectionChange)
+        }
 
         return acc
       },
       { changedNodes: [] as NodeSelectionChange[], changedEdges: [] as EdgeSelectionChange[] },
     )
 
-    if (changedNodes.length) state.hooks.nodesChange.trigger(changedNodes)
-    if (changedEdges.length) state.hooks.edgesChange.trigger(changedEdges)
+    if (changedNodes.length) {
+      state.hooks.nodesChange.trigger(changedNodes)
+    }
+    if (changedEdges.length) {
+      state.hooks.edgesChange.trigger(changedEdges)
+    }
   }
 
   const setMinZoom: Actions['setMinZoom'] = (minZoom) => {
@@ -275,8 +318,7 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const setNodeExtent: Actions['setNodeExtent'] = async (nodeExtent) => {
     state.nodeExtent = nodeExtent
 
-    const nodeIds = getters.getNodes.value.filter((n) => n.initialized).map((n) => n.id)
-    updateNodeInternals(nodeIds)
+    updateNodeInternals(nodeIds.value)
   }
 
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
@@ -288,7 +330,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const setNodes: Actions['setNodes'] = (nodes) => {
     const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
 
-    if (!state.initialized && !nextNodes.length) return
+    if (!state.initialized && !nextNodes.length) {
+      return
+    }
 
     state.nodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
   }
@@ -296,7 +340,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const setEdges: Actions['setEdges'] = (edges) => {
     const nextEdges = edges instanceof Function ? edges(state.edges) : edges
 
-    if (!state.initialized && !nextEdges.length) return
+    if (!state.initialized && !nextEdges.length) {
+      return
+    }
 
     const validEdges = state.isValidConnection
       ? nextEdges.filter((edge) =>
@@ -346,7 +392,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const setElements: Actions['setElements'] = (elements) => {
     const nextElements = elements instanceof Function ? elements([...state.nodes, ...state.edges]) : elements
 
-    if (!state.initialized && !nextElements.length) return
+    if (!state.initialized && !nextElements.length) {
+      return
+    }
 
     setNodes(nextElements.filter(isNode))
     setEdges(nextElements.filter(isEdge))
@@ -359,7 +407,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
 
     const changes = graphNodes.map(createAdditionChange)
 
-    if (changes.length) state.hooks.nodesChange.trigger(changes)
+    if (changes.length) {
+      state.hooks.nodesChange.trigger(changes)
+    }
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
@@ -420,7 +470,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       return acc
     }, [] as EdgeChange[])
 
-    if (changes.length) state.hooks.edgesChange.trigger(changes)
+    if (changes.length) {
+      state.hooks.edgesChange.trigger(changes)
+    }
   }
 
   const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true) => {
@@ -431,13 +483,17 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     curr.forEach((item) => {
       const currNode = typeof item === 'string' ? findNode(item)! : item
 
-      if (isDef(currNode.deletable) && !currNode.deletable) return
+      if (isDef(currNode.deletable) && !currNode.deletable) {
+        return
+      }
 
       nodeChanges.push(createRemoveChange(currNode.id))
 
       if (removeConnectedEdges) {
         const connections = getConnectedEdges([currNode], state.edges).filter((edge) => {
-          if (isDef(edge.deletable)) return edge.deletable
+          if (isDef(edge.deletable)) {
+            return edge.deletable
+          }
           return true
         })
 
@@ -461,7 +517,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     curr.forEach((item) => {
       const currEdge = typeof item === 'string' ? findEdge(item)! : item
 
-      if (isDef(currEdge.deletable) && !currEdge.deletable) return
+      if (isDef(currEdge.deletable) && !currEdge.deletable) {
+        return
+      }
 
       changes.push(createRemoveChange(typeof item === 'string' ? item : item.id))
     })
@@ -486,7 +544,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     state.connectionEndHandle = null
     state.connectionStatus = null
 
-    if (position) state.connectionPosition = position
+    if (position) {
+      state.connectionPosition = position
+    }
   }
 
   const updateConnection: Actions['updateConnection'] = (position, result = null, status = null) => {
@@ -527,10 +587,14 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const getIntersectingNodes: Actions['getIntersectingNodes'] = (nodeOrRect, partially = true, nodes) => {
     const [nodeRect, node, isRect] = getNodeRect(nodeOrRect)
 
-    if (!nodeRect) return []
+    if (!nodeRect) {
+      return []
+    }
 
     return (nodes || state.nodes).filter((n) => {
-      if (!isRect && (n.id === node!.id || !n.computedPosition)) return false
+      if (!isRect && (n.id === node!.id || !n.computedPosition)) {
+        return false
+      }
 
       const currNodeRect = nodeToRect(n)
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
@@ -543,7 +607,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const isNodeIntersecting: Actions['isNodeIntersecting'] = (nodeOrRect, area, partially = true) => {
     const [nodeRect] = getNodeRect(nodeOrRect)
 
-    if (!nodeRect) return false
+    if (!nodeRect) {
+      return false
+    }
 
     const overlappingArea = getOverlappingArea(nodeRect, area)
     const partiallyVisible = partially && overlappingArea > 0
@@ -554,7 +620,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
   const panBy: Actions['panBy'] = (delta) => {
     const { viewport, dimensions, d3Zoom, d3Selection, translateExtent } = state
 
-    if (!d3Zoom || !d3Selection || (!delta.x && !delta.y)) return
+    if (!d3Zoom || !d3Selection || (!delta.x && !delta.y)) {
+      return
+    }
 
     const nextTransform = zoomIdentity.translate(viewport.x + delta.x, viewport.y + delta.y).scale(viewport.zoom)
 
@@ -600,15 +668,25 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
     }
 
     const setSkippedOptions = () => {
-      if (typeof opts.maxZoom !== 'undefined') setMaxZoom(opts.maxZoom)
-      if (typeof opts.minZoom !== 'undefined') setMinZoom(opts.minZoom)
-      if (typeof opts.translateExtent !== 'undefined') setTranslateExtent(opts.translateExtent)
-      if (typeof opts.nodeExtent !== 'undefined') setNodeExtent(opts.nodeExtent)
+      if (typeof opts.maxZoom !== 'undefined') {
+        setMaxZoom(opts.maxZoom)
+      }
+      if (typeof opts.minZoom !== 'undefined') {
+        setMinZoom(opts.minZoom)
+      }
+      if (typeof opts.translateExtent !== 'undefined') {
+        setTranslateExtent(opts.translateExtent)
+      }
+      if (typeof opts.nodeExtent !== 'undefined') {
+        setNodeExtent(opts.nodeExtent)
+      }
     }
 
     Object.keys(opts).forEach((o) => {
       const option = opts[o as keyof typeof opts]
-      if (!skip.includes(o as keyof typeof opts) && isDef(option)) (<any>state)[o] = option
+      if (!skip.includes(o as keyof typeof opts) && isDef(option)) {
+        ;(<any>state)[o] = option
+      }
     })
 
     if (!state.d3Zoom) {
@@ -619,7 +697,9 @@ export function useActions(state: State, getters: ComputedGetters): Actions {
       setSkippedOptions()
     }
 
-    if (!state.initialized) state.initialized = true
+    if (!state.initialized) {
+      state.initialized = true
+    }
   }
 
   const toObject: Actions['toObject'] = () => {
