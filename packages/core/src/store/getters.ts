@@ -1,10 +1,10 @@
-import { defaultEdgeTypes, defaultNodeTypes } from './state'
+import type { ComputedRef } from 'vue'
 import type { ComputedGetters, GraphEdge, GraphNode, State } from '~/types'
 
-export function useGetters(state: State): ComputedGetters {
-  const nodeIds = computed(() => state.nodes.map((n) => n.id))
-  const edgeIds = computed(() => state.edges.map((e) => e.id))
-
+export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds: ComputedRef<string[]>): ComputedGetters {
+  /**
+   * @deprecated will be removed in next major version; use findNode instead
+   */
   const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => {
     if (state.nodes && !nodeIds.value.length) {
       return state.nodes.find((node) => node.id === id)
@@ -13,6 +13,9 @@ export function useGetters(state: State): ComputedGetters {
     return state.nodes[nodeIds.value.indexOf(id)]
   })
 
+  /**
+   * @deprecated will be removed in next major version; use findEdge instead
+   */
   const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => {
     if (state.edges && !edgeIds.value.length) {
       return state.edges.find((edge) => edge.id === id)
@@ -79,7 +82,9 @@ export function useGetters(state: State): ComputedGetters {
   }
 
   const getEdges: ComputedGetters['getEdges'] = computed(() => {
-    if (!state.onlyRenderVisibleElements) return state.edges.filter((edge) => edgeHidden(edge))
+    if (!state.onlyRenderVisibleElements) {
+      return state.edges.filter((edge) => edgeHidden(edge))
+    }
 
     return state.edges.filter((e) => {
       const source = getNode.value(e.source)!
