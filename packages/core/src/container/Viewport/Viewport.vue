@@ -46,8 +46,6 @@ let mouseButton = $ref(0)
 
 const panKeyPressed = useKeyPress(panActivationKeyCode)
 
-const isConnecting = $computed(() => !!connectionStartHandle)
-
 const shouldPanOnDrag = computed(() => !selectionKeyPressed && panOnDrag && panKeyPressed.value)
 
 const isSelecting = computed(
@@ -331,7 +329,10 @@ export default {
 
 <template>
   <div ref="viewportEl" :key="`viewport-${id}`" class="vue-flow__viewport vue-flow__container">
-    <Pane :is-selecting="isSelecting" :class="{ connecting: isConnecting, dragging: paneDragging, draggable: !!panOnDrag }">
+    <Pane
+      :is-selecting="isSelecting"
+      :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: !!panOnDrag }"
+    >
       <Transform>
         <slot name="zoom-pane" />
       </Transform>
