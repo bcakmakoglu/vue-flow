@@ -179,11 +179,11 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
 export type FindNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string,
+  id: string | undefined,
 ) => GraphNode<Data, CustomEvents> | undefined
 
 export type FindEdge = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string,
+  id: string | undefined,
 ) => GraphEdge<Data, CustomEvents> | undefined
 
 export type GetIntersectingNodes = (
