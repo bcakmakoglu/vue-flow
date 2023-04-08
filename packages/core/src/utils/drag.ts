@@ -120,9 +120,9 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
 
       currentExtent = extent
     }
-  } else if (Array.isArray(item.extent) && item.extent && parent) {
-    const parentX = parent.computedPosition.x
-    const parentY = parent.computedPosition.y
+  } else if (Array.isArray(item.extent) && item.extent) {
+    const parentX = parent?.computedPosition.x || 0
+    const parentY = parent?.computedPosition.y || 0
 
     currentExtent = [
       [item.extent[0][0] + parentX, item.extent[0][1] + parentY],
