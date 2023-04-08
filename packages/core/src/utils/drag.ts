@@ -1,5 +1,5 @@
 import { isNumber } from '@vueuse/shared'
-import type { Actions, CoordinateExtent, ExtendedParentExtent, GraphNode, NodeDragItem, State, XYPosition } from '~/types'
+import type { Actions, CoordinateExtent, CoordinateExtentRange, GraphNode, NodeDragItem, State, XYPosition } from '~/types'
 
 export function hasSelector(target: Element, selector: string, node: Element): boolean {
   let current = target
@@ -75,7 +75,7 @@ function getExtentPadding(padding: number[]) {
 }
 
 function getParentExtent(
-  currentExtent: ExtendedParentExtent | 'parent',
+  currentExtent: CoordinateExtentRange | 'parent',
   node: GraphNode | NodeDragItem,
   parent: GraphNode,
 ): CoordinateExtent | false {
@@ -108,9 +108,9 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
 ) {
   let currentExtent = item.extent || extent
 
-  if (item.extent === 'parent' || (!Array.isArray(item.extent) && item.extent?.range === 'parent')) {
+  if (currentExtent === 'parent' || (!Array.isArray(currentExtent) && currentExtent?.range === 'parent')) {
     if (item.parentNode && parent && item.dimensions.width && item.dimensions.height) {
-      const parentExtent = getParentExtent(item.extent, item, parent)
+      const parentExtent = getParentExtent(currentExtent, item, parent)
 
       if (parentExtent) {
         currentExtent = parentExtent
@@ -120,23 +120,23 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
 
       currentExtent = extent
     }
-  } else if (Array.isArray(item.extent) && item.extent) {
+  } else if (Array.isArray(currentExtent) && currentExtent) {
     const parentX = parent?.computedPosition.x || 0
     const parentY = parent?.computedPosition.y || 0
 
     currentExtent = [
-      [item.extent[0][0] + parentX, item.extent[0][1] + parentY],
-      [item.extent[1][0] + parentX, item.extent[1][1] + parentY],
+      [currentExtent[0][0] + parentX, currentExtent[0][1] + parentY],
+      [currentExtent[1][0] + parentX, currentExtent[1][1] + parentY],
     ]
-  } else if (item.extent?.range && Array.isArray(item.extent.range)) {
-    const [top, right, bottom, left] = getExtentPadding(item.extent.padding)
+  } else if (currentExtent?.range && Array.isArray(currentExtent.range)) {
+    const [top, right, bottom, left] = getExtentPadding(currentExtent.padding)
 
     const parentX = parent?.computedPosition.x || 0
     const parentY = parent?.computedPosition.y || 0
 
     currentExtent = [
-      [item.extent.range[0][0] + parentX + left, item.extent.range[0][1] + parentY + top],
-      [item.extent.range[1][0] + parentX - right, item.extent.range[1][1] + parentY - bottom],
+      [currentExtent.range[0][0] + parentX + left, currentExtent.range[0][1] + parentY + top],
+      [currentExtent.range[1][0] + parentX - right, currentExtent.range[1][1] + parentY - bottom],
     ]
   }
 

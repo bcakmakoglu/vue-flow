@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
-import type { CoordinateExtent, GraphNode, Node } from './node'
+import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionMode, Connector } from './connection'
 import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
@@ -142,7 +142,7 @@ export interface FlowProps {
   maxZoom?: number
   defaultViewport?: ViewportTransform
   translateExtent?: CoordinateExtent
-  nodeExtent?: CoordinateExtent
+  nodeExtent?: CoordinateExtent | CoordinateExtentRange
   defaultMarkerColor?: string
   zoomOnScroll?: boolean
   zoomOnPinch?: boolean
