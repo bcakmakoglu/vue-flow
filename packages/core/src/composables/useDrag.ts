@@ -38,7 +38,6 @@ function useDrag(params: UseDragParams) {
       addSelectedNodes,
       updateNodePositions,
       emits,
-      translateExtent,
     } = $(useVueFlow())
 
   const { onStart, onDrag, onStop, el, disabled, id, selectable } = params
@@ -57,6 +56,7 @@ function useDrag(params: UseDragParams) {
 
   let autoPanId = $ref(0)
   let autoPanStarted = $ref(false)
+    let previousTransform = $ref<XYPosition>({ x: 0, y: 0 })
 
   const getPointerPosition = useGetPointerPosition()
 
@@ -123,11 +123,18 @@ function useDrag(params: UseDragParams) {
               y: (lastPos.y ?? 0) - yMovement / viewport.zoom,
             }
 
-      updateNodes(nextPos)
+      panBy({ x: xMovement, y: yMovement }, (transform) => {
+              if (
+                Math.round(transform.x) !== Math.round(previousTransform.x) ||
+                Math.round(transform.y) !== Math.round(previousTransform.y)
+              ) {
+                previousTransform = transform
 
-            panBy({ x: xMovement, y: yMovement })
+                updateNodes(nextPos)
 
-            lastPos = nextPos
+                lastPos = nextPos
+              }
+            })
           }
 
     autoPanId = requestAnimationFrame(autoPan)
