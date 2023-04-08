@@ -128,6 +128,16 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
       [item.extent[0][0] + parentX, item.extent[0][1] + parentY],
       [item.extent[1][0] + parentX, item.extent[1][1] + parentY],
     ]
+  } else if (item.extent?.range && Array.isArray(item.extent.range)) {
+    const [top, right, bottom, left] = getExtentPadding(item.extent.padding)
+
+    const parentX = parent?.computedPosition.x || 0
+    const parentY = parent?.computedPosition.y || 0
+
+    currentExtent = [
+      [item.extent.range[0][0] + parentX + left, item.extent.range[0][1] + parentY + top],
+      [item.extent.range[1][0] + parentX - right, item.extent.range[1][1] + parentY - bottom],
+    ]
   }
 
   return currentExtent as CoordinateExtent

@@ -4,9 +4,12 @@ import type { DefaultNodeTypes, NodeComponent } from './components'
 import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './handle'
 import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 
+/** Defined as [[x-from, y-from], [x-to, y-to]] **/
+export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]
+
 export interface ExtendedParentExtent {
   // todo: can we allow more ranges?
-  range: 'parent'
+  range: 'parent' | CoordinateExtent
   /** Values are top, right, bottom, left, you can use these the same as CSS padding */
   padding:
     | [padding: number]
@@ -14,9 +17,6 @@ export interface ExtendedParentExtent {
     | [paddingTop: number, paddingX: number, paddingBottom: number]
     | [paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number]
 }
-
-/** Defined as [[x-from, y-from], [x-to, y-to]] **/
-export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]
 
 export interface NodeHandleBounds {
   source?: HandleElement[]
