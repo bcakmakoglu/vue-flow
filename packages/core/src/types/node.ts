@@ -11,6 +11,7 @@ export interface CoordinateExtentRange {
   range: 'parent' | CoordinateExtent
   /** Values are top, right, bottom, left, you can use these the same as CSS padding */
   padding:
+    | number
     | [padding: number]
     | [paddingY: number, paddingX: number]
     | [paddingTop: number, paddingX: number, paddingBottom: number]

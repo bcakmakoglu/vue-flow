@@ -61,17 +61,21 @@ export function getEventHandlerParams({
   return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
 }
 
-function getExtentPadding(padding: number[]) {
-  switch (padding.length) {
-    case 1:
-      return [padding[0], padding[0], padding[0], padding[0]]
-    case 2:
-      return [padding[0], padding[1], padding[0], padding[1]]
-    case 3:
-      return [padding[0], padding[1], padding[2], padding[1]]
-    default:
-      return padding || [0, 0, 0, 0]
+function getExtentPadding(padding: CoordinateExtentRange['padding']): [number, number, number, number] {
+  if (Array.isArray(padding)) {
+    switch (padding.length) {
+      case 1:
+        return [padding[0], padding[0], padding[0], padding[0]]
+      case 2:
+        return [padding[0], padding[1], padding[0], padding[1]]
+      case 3:
+        return [padding[0], padding[1], padding[2], padding[1]]
+      default:
+        return padding || [0, 0, 0, 0]
+    }
   }
+
+  return [padding, padding, padding, padding]
 }
 
 function getParentExtent(
