@@ -6,7 +6,7 @@ import type { Connection, ConnectionLineOptions, ConnectionLineType, ConnectionM
 import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { CustomEvent } from './hooks'
-import type { ValidConnectionFunc } from '~/types/handle'
+import type { ValidConnectionFunc } from './handle'
 
 export type ElementData = any
 
@@ -87,7 +87,7 @@ export interface Box extends XYPosition {
 
 export interface Rect extends Dimensions, XYPosition {}
 
-export type SnapGrid = [number, number]
+export type SnapGrid = [x: number, y: number]
 
 export interface SelectionRect extends Rect {
   startX: number
@@ -102,7 +102,7 @@ export enum SelectionMode {
 export interface FlowExportObject {
   nodes: Node[]
   edges: Edge[]
-  position: [number, number]
+  position: [x: number, y: number]
   zoom: number
 }
 
