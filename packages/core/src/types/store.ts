@@ -23,7 +23,7 @@ import type {
   Connector,
 } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
-import type { CoordinateExtent, GraphNode, Node } from './node'
+import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
@@ -60,7 +60,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   defaultViewport: ViewportTransform
   /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent
-  nodeExtent: CoordinateExtent
+  nodeExtent: CoordinateExtent | CoordinateExtentRange
 
   /** viewport dimensions - do not change! */
   readonly dimensions: Dimensions
