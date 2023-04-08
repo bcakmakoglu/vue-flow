@@ -18,26 +18,28 @@ interface UseDragParams {
 }
 
 function useDrag(params: UseDragParams) {
-  const {
-    vueFlowRef,
-    snapToGrid,
-    snapGrid,
-    noDragClassName,
-    nodes,
-    nodeExtent,
-    viewport,
-    autoPanOnNodeDrag,
-    nodesDraggable,
-    panBy,
-    findNode,
-    multiSelectionActive,
-    nodesSelectionActive,
-    selectNodesOnDrag,
-    removeSelectedElements,
-    addSelectedNodes,
-    updateNodePositions,
-    emits,
-  } = $(useVueFlow())
+
+    const {
+      vueFlowRef,
+      snapToGrid,
+      snapGrid,
+      noDragClassName,
+      nodes,
+      nodeExtent,
+      viewport,
+      autoPanOnNodeDrag,
+      nodesDraggable,
+      panBy,
+      findNode,
+      multiSelectionActive,
+      nodesSelectionActive,
+      selectNodesOnDrag,
+      removeSelectedElements,
+      addSelectedNodes,
+      updateNodePositions,
+      emits,
+      translateExtent,
+    } = $(useVueFlow())
 
   const { onStart, onDrag, onStop, el, disabled, id, selectable } = params
 
@@ -58,7 +60,7 @@ function useDrag(params: UseDragParams) {
 
   const getPointerPosition = useGetPointerPosition()
 
-  const updateNodes = ({ x, y }: XYPosition) => {
+  const updateNodes = ({ x, y }: XYPosition, onBeforeUpdate: (position: XYPosition) => XYPosition = (xyPos) => xyPos) => {
     lastPos = { x, y }
 
     let hasChange = false
@@ -71,7 +73,7 @@ function useDrag(params: UseDragParams) {
         nextPosition.y = snapGrid[1] * Math.round(nextPosition.y / snapGrid[1])
       }
 
-      const { computedPosition } = calcNextPosition(
+      let { computedPosition } = calcNextPosition(
         n,
         nextPosition,
         emits.error,
@@ -79,7 +81,9 @@ function useDrag(params: UseDragParams) {
         n.parentNode ? findNode(n.parentNode) : undefined,
       )
 
-      // we want to make sure that we only fire a change event when there is a changes
+      computedPosition = onBeforeUpdate(computedPosition)
+
+            // we want to make sure that we only fire a change event when there is a change
       hasChange = hasChange || n.position.x !== computedPosition.x || n.position.y !== computedPosition.y
 
       n.position = computedPosition
@@ -108,19 +112,23 @@ function useDrag(params: UseDragParams) {
 
   const autoPan = (): void => {
     if (!containerBounds) {
-      return
-    }
+            return
+          }
 
     const [xMovement, yMovement] = calcAutoPan(mousePosition, containerBounds)
 
     if (xMovement !== 0 || yMovement !== 0) {
-      lastPos.x = (lastPos.x ?? 0) - xMovement / viewport.zoom
-      lastPos.y = (lastPos.y ?? 0) - yMovement / viewport.zoom
+      const nextPos = {
+              x: (lastPos.x ?? 0) - xMovement / viewport.zoom,
+              y: (lastPos.y ?? 0) - yMovement / viewport.zoom,
+            }
 
-      updateNodes(lastPos as XYPosition)
+      updateNodes(nextPos)
 
-      panBy({ x: xMovement, y: yMovement })
-    }
+            panBy({ x: xMovement, y: yMovement })
+
+            lastPos = nextPos
+          }
 
     autoPanId = requestAnimationFrame(autoPan)
   }
