@@ -5,13 +5,18 @@ import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './ha
 import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 
 export interface ExtendedParentExtent {
+  // todo: can we allow more ranges?
   range: 'parent'
   /** Values are top, right, bottom, left, you can use these the same as CSS padding */
-  padding: [number] | [number, number] | [number, number, number] | [number, number, number, number]
+  padding:
+    | [padding: number]
+    | [paddingY: number, paddingX: number]
+    | [paddingTop: number, paddingX: number, paddingBottom: number]
+    | [paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number]
 }
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
-export type CoordinateExtent = [[number, number], [number, number]]
+export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]
 
 export interface NodeHandleBounds {
   source?: HandleElement[]
@@ -82,10 +87,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   template?: NodeComponent
   /** Additional data that is passed to your custom components */
   data?: Data
-  /**
-   * @deprecated will be removed in next major release
-   * contextual and custom events that are passed to your custom components
-   * */
+  /** contextual and custom events that are passed to your custom components */
   events?: Partial<NodeEventsHandler<CustomEvents>>
   zIndex?: number
   ariaLabel?: string
@@ -107,7 +109,6 @@ export interface GraphNode<
   dragging: boolean
   initialized: boolean
   data: Data
-  /** @deprecated will be removed in next major release */
   events: Partial<NodeEventsHandler<CustomEvents>>
   type: Type
 }
