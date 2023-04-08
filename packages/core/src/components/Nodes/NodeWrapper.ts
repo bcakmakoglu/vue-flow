@@ -213,7 +213,7 @@ const NodeWrapper = defineComponent({
             events: { ...node.events, ...on },
             selected: !!node.selected,
             resizing: !!node.resizing,
-            dragging: dragging?.value,
+            dragging: dragging.value,
             connectable: props.connectable,
             position: node.position,
             dimensions: node.dimensions,

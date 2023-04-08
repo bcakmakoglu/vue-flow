@@ -152,7 +152,7 @@ export type GraphEdge<
   CustomEvents extends Record<string, CustomEvent> = any,
   Type extends string = string,
 > = Edge<Data, CustomEvents> & {
-  selected?: boolean
+  selected: boolean
   sourceNode: GraphNode
   targetNode: GraphNode
   data: Data
@@ -169,7 +169,7 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}, Type extends s
   targetNode: GraphNode
   source: string
   target: string
-  type?: Type
+  type: Type
   label?: string | VNode | Component<EdgeTextProps> | Object
   style?: CSSProperties
   selected?: boolean
