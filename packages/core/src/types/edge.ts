@@ -172,7 +172,7 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}, Type extends s
   type: Type
   label?: string | VNode | Component<EdgeTextProps> | Object
   style?: CSSProperties
-  selected: boolean
+  selected?: boolean
   sourcePosition: Position
   targetPosition: Position
   sourceHandleId?: string
