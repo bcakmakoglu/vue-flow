@@ -7,8 +7,7 @@ import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
 export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]
 
-export interface ExtendedParentExtent {
-  // todo: can we allow more ranges?
+export interface CoordinateExtentRange {
   range: 'parent' | CoordinateExtent
   /** Values are top, right, bottom, left, you can use these the same as CSS padding */
   padding:
@@ -59,7 +58,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   /** called when used as source for new connection */
   isValidSourcePos?: ValidConnectionFunc
   /** define node extent, i.e. area in which node can be moved */
-  extent?: CoordinateExtent | ExtendedParentExtent | 'parent'
+  extent?: CoordinateExtent | CoordinateExtentRange | 'parent'
   /** expands parent area to fit child node */
   expandParent?: boolean
   /** define node as a child node by setting a parent node id */
