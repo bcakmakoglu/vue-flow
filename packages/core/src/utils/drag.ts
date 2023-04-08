@@ -103,7 +103,7 @@ function getParentExtent(
 export function getExtent<T extends NodeDragItem | GraphNode>(
   item: T,
   onError: State['hooks']['error']['trigger'],
-  extent?: CoordinateExtent,
+  extent?: State['nodeExtent'],
   parent?: GraphNode,
 ) {
   let currentExtent = item.extent || extent
@@ -146,7 +146,7 @@ export function calcNextPosition(
   node: GraphNode | NodeDragItem,
   nextPosition: XYPosition,
   onError: State['hooks']['error']['trigger'],
-  nodeExtent?: CoordinateExtent,
+  nodeExtent?: State['nodeExtent'],
   parentNode?: GraphNode,
 ) {
   const extent = getExtent(node, onError, nodeExtent, parentNode)
