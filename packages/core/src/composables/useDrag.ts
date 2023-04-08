@@ -18,27 +18,26 @@ interface UseDragParams {
 }
 
 function useDrag(params: UseDragParams) {
-
-    const {
-      vueFlowRef,
-      snapToGrid,
-      snapGrid,
-      noDragClassName,
-      nodes,
-      nodeExtent,
-      viewport,
-      autoPanOnNodeDrag,
-      nodesDraggable,
-      panBy,
-      findNode,
-      multiSelectionActive,
-      nodesSelectionActive,
-      selectNodesOnDrag,
-      removeSelectedElements,
-      addSelectedNodes,
-      updateNodePositions,
-      emits,
-    } = $(useVueFlow())
+  const {
+    vueFlowRef,
+    snapToGrid,
+    snapGrid,
+    noDragClassName,
+    nodes,
+    nodeExtent,
+    viewport,
+    autoPanOnNodeDrag,
+    nodesDraggable,
+    panBy,
+    findNode,
+    multiSelectionActive,
+    nodesSelectionActive,
+    selectNodesOnDrag,
+    removeSelectedElements,
+    addSelectedNodes,
+    updateNodePositions,
+    emits,
+  } = $(useVueFlow())
 
   const { onStart, onDrag, onStop, el, disabled, id, selectable } = params
 
@@ -56,11 +55,11 @@ function useDrag(params: UseDragParams) {
 
   let autoPanId = $ref(0)
   let autoPanStarted = $ref(false)
-    let previousTransform = $ref<XYPosition>({ x: 0, y: 0 })
+  let previousTransform = $ref<XYPosition>({ x: 0, y: 0 })
 
   const getPointerPosition = useGetPointerPosition()
 
-  const updateNodes = ({ x, y }: XYPosition, onBeforeUpdate: (position: XYPosition) => XYPosition = (xyPos) => xyPos) => {
+  const updateNodes = ({ x, y }: XYPosition) => {
     lastPos = { x, y }
 
     let hasChange = false
@@ -73,7 +72,7 @@ function useDrag(params: UseDragParams) {
         nextPosition.y = snapGrid[1] * Math.round(nextPosition.y / snapGrid[1])
       }
 
-      let { computedPosition } = calcNextPosition(
+      const { computedPosition } = calcNextPosition(
         n,
         nextPosition,
         emits.error,
@@ -81,9 +80,7 @@ function useDrag(params: UseDragParams) {
         n.parentNode ? findNode(n.parentNode) : undefined,
       )
 
-      computedPosition = onBeforeUpdate(computedPosition)
-
-            // we want to make sure that we only fire a change event when there is a change
+      // we want to make sure that we only fire a change event when there is a change
       hasChange = hasChange || n.position.x !== computedPosition.x || n.position.y !== computedPosition.y
 
       n.position = computedPosition
@@ -112,30 +109,28 @@ function useDrag(params: UseDragParams) {
 
   const autoPan = (): void => {
     if (!containerBounds) {
-            return
-          }
+      return
+    }
 
     const [xMovement, yMovement] = calcAutoPan(mousePosition, containerBounds)
 
     if (xMovement !== 0 || yMovement !== 0) {
       const nextPos = {
-              x: (lastPos.x ?? 0) - xMovement / viewport.zoom,
-              y: (lastPos.y ?? 0) - yMovement / viewport.zoom,
-            }
+        x: (lastPos.x ?? 0) - xMovement / viewport.zoom,
+        y: (lastPos.y ?? 0) - yMovement / viewport.zoom,
+      }
 
       panBy({ x: xMovement, y: yMovement }, (transform) => {
-              if (
-                Math.round(transform.x) !== Math.round(previousTransform.x) ||
-                Math.round(transform.y) !== Math.round(previousTransform.y)
-              ) {
-                previousTransform = transform
-
-                updateNodes(nextPos)
-
-                lastPos = nextPos
-              }
-            })
-          }
+        if (
+          Math.round(transform.x) !== Math.round(previousTransform.x) ||
+          Math.round(transform.y) !== Math.round(previousTransform.y)
+        ) {
+          updateNodes(nextPos)
+          previousTransform = transform
+          lastPos = nextPos
+        }
+      })
+    }
 
     autoPanId = requestAnimationFrame(autoPan)
   }
