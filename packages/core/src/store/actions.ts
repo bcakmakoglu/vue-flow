@@ -629,7 +629,7 @@ export function useActions(
     return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
   }
 
-  const panBy: Actions['panBy'] = (delta) => {
+  const panBy: Actions['panBy'] = (delta, onBeforeTransform) => {
     const { viewport, dimensions, d3Zoom, d3Selection, translateExtent } = state
 
     if (!d3Zoom || !d3Selection || (!delta.x && !delta.y)) {
@@ -644,6 +644,8 @@ export function useActions(
     ]
 
     const constrainedTransform = d3Zoom.constrain()(nextTransform, extent, translateExtent)
+
+    onBeforeTransform?.(constrainedTransform)
 
     d3Zoom.transform(d3Selection, constrainedTransform)
   }

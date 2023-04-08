@@ -1,5 +1,6 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
+import type { ZoomTransform } from 'd3-zoom'
 import type {
   Dimensions,
   ElementData,
@@ -269,7 +270,7 @@ export interface Actions extends ViewportFunctions {
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
   /** pan the viewport */
-  panBy: (delta: XYPosition) => void
+  panBy: (delta: XYPosition, onBeforeTransform?: (transform: ZoomTransform) => void) => void
 
   /** reset state to defaults */
   $reset: () => void
