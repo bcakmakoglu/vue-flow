@@ -6,8 +6,8 @@ import { DotPattern, LinePattern } from './patterns'
 
 const {
   id,
-  variant = 'dots' as BackgroundVariant,
-  gap = 10,
+  variant = BackgroundVariant.Dots,
+  gap = 20,
   size = 1,
   lineWidth = 1,
   height = 100,
@@ -26,10 +26,10 @@ const defaultColors: Record<BackgroundVariant, string> = {
 
 const { id: vueFlowId, viewport } = useVueFlow()
 
-const gapXY = computed(() => (Array.isArray(gap) ? gap : [gap, gap]))
-
 const background = computed(() => {
-  const scaledGap: [number, number] = [gapXY.value[0] * viewport.value.zoom || 1, gapXY.value[1] * viewport.value.zoom || 1]
+  const [gapX, gapY] = Array.isArray(gap) ? gap : [gap, gap]
+
+  const scaledGap: [number, number] = [gapX * viewport.value.zoom || 1, gapY * viewport.value.zoom || 1]
 
   const scaledSize = size * viewport.value.zoom
 
