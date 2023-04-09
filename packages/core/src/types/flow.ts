@@ -55,7 +55,10 @@ export type CSSVars =
 
 export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] }
 export type Styles = CSSProperties & ThemeVars & CustomThemeVars
+/** @deprecated will be removed in the next major version */
 export type ClassFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => string | void
+
+/** @deprecated will be removed in the next major version */
 export type StyleFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => Styles | void
 
 /** Handle Positions */
