@@ -1,6 +1,6 @@
 import type { Component, VNode } from 'vue'
 import type { ClassFunc, Dimensions, ElementData, Position, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
-import type { DefaultNodeTypes, NodeComponent } from './components'
+import type { NodeComponent } from './components'
 import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './handle'
 import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 
@@ -29,7 +29,7 @@ export type WidthFunc = (node: GraphNode) => number | string | void
 /** @deprecated will be removed in next major release */
 export type HeightFunc = (node: GraphNode) => number | string | void
 
-export interface Node<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> {
+export interface Node<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any, Type extends string = string> {
   /** Unique node id */
   id: string
   /** A node label */
@@ -37,7 +37,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   /** initial node position x, y */
   position: XYPosition
   /** node type, can be a default type or a custom type */
-  type?: keyof DefaultNodeTypes | string
+  type?: Type
   /** handle position */
   targetPosition?: Position
   /** handle position */
@@ -46,11 +46,13 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   draggable?: boolean
   /** Disable/enable selecting node */
   selectable?: boolean
+  /** Disable/enable connecting node */
   connectable?: HandleConnectable
   /** Disable/enable focusing node (a11y) */
   focusable?: boolean
   /** Disable/enable deleting node */
   deletable?: boolean
+  /** element selector as drag handle for node (can only be dragged from the dragHandle el) */
   dragHandle?: string
   /** @deprecated will be removed in next major release */
   /** called when used as target for new connection */
@@ -97,7 +99,7 @@ export interface GraphNode<
   Data = ElementData,
   CustomEvents extends Record<string, CustomEvent> = any,
   Type extends string = string,
-> extends Node<Data, CustomEvents> {
+> extends Node<Data, CustomEvents, Type> {
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
   handleBounds: NodeHandleBounds
@@ -114,11 +116,11 @@ export interface GraphNode<
 }
 
 /** these props are passed to node components */
-export interface NodeProps<Data = ElementData, CustomEvents = {}, Type extends string = keyof DefaultNodeTypes> {
+export interface NodeProps<Data = ElementData, CustomEvents = {}, Type extends string = string> {
   /** unique node id */
   id: string
   /** node type */
-  type?: Type
+  type: Type
   /** is node selected */
   selected: boolean
   /** can node handles be connected */
@@ -133,14 +135,24 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}, Type extends s
    * Object is just a type-hack for Vue, ignore that
    */
   label?: string | VNode | Component | Object
-  /** called when used as target for new connection */
+  /**
+   * @deprecated will be removed in next major release and replaced by just `isValidConnection` prop
+   * called when used as target for new connection
+   */
   isValidTargetPos?: ValidConnectionFunc
-  /** called when used as source for new connection */
+  /**
+   * @deprecated will be removed in next major release and replaced by just `isValidConnection` prop
+   * called when used as source for new connection
+   */
   isValidSourcePos?: ValidConnectionFunc
-  /** parent node id */
+  /**
+   * todo: rename to `parentNodeId`
+   * parent node id
+   */
   parent?: string
   /** is node currently dragging */
   dragging: boolean
+  /** is node currently resizing */
   resizing: boolean
   /** node z-index */
   zIndex: number
@@ -156,3 +168,12 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}, Type extends s
   /** contextual and custom events of node */
   events: NodeEventsOn<CustomEvents>
 }
+
+/**
+ * Transform a Node type to a GraphNode type
+ */
+export type ToGraphNode<T extends Node> = GraphNode<
+  T extends Node<infer Data> ? Data : never,
+  T extends Node<any, infer Events> ? Events : never,
+  T extends Node<any, any, infer Type> ? Type : never
+>
