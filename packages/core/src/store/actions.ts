@@ -327,7 +327,7 @@ export function useActions(
     state.translateExtent = translateExtent
   }
 
-  const setNodeExtent: Actions['setNodeExtent'] = async (nodeExtent) => {
+  const setNodeExtent: Actions['setNodeExtent'] = (nodeExtent) => {
     state.nodeExtent = nodeExtent
 
     updateNodeInternals(nodeIds.value)
