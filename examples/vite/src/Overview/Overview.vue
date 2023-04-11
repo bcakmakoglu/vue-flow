@@ -120,16 +120,26 @@ const initialElements: Elements = [
 const snapGrid: SnapGrid = [16, 16]
 
 function nodeStrokeColor(n: Node): string {
-  if ((n.style as Styles)?.background) return (n.style as Styles).background as string
-  if (n.type === 'input') return '#0041d0'
-  if (n.type === 'output') return '#ff0072'
-  if (n.type === 'default') return '#1a192b'
+  if ((n.style as Styles)?.background) {
+    return (n.style as Styles).background as string
+  }
+  if (n.type === 'input') {
+    return '#0041d0'
+  }
+  if (n.type === 'output') {
+    return '#ff0072'
+  }
+  if (n.type === 'default') {
+    return '#1a192b'
+  }
 
   return '#eee'
 }
 
 function nodeColor(n: Node): string {
-  if ((n.style as Styles)?.background) return (n.style as Styles).background as string
+  if ((n.style as Styles)?.background) {
+    return (n.style as Styles).background as string
+  }
 
   return '#fff'
 }

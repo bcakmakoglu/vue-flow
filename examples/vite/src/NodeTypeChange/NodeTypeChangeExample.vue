@@ -31,7 +31,9 @@ onPaneReady((instance) => instance.fitView())
 
 function changeType() {
   elements.value.forEach((el) => {
-    if (isEdge(el) || el.type === 'input') return
+    if (isEdge(el) || el.type === 'input') {
+      return
+    }
     el.type = el.type === 'default' ? 'output' : 'default'
   })
 }

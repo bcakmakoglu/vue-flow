@@ -59,7 +59,9 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
     },
   )
 
-  if (!closestNode.node) return
+  if (!closestNode.node) {
+    return
+  }
 
   canSnap.value = closestNode.distance < SNAP_DISTANCE
 
