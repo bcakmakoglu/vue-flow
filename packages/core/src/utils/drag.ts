@@ -70,8 +70,10 @@ function getExtentPadding(padding: CoordinateExtentRange['padding']): [number, n
         return [padding[0], padding[1], padding[0], padding[1]]
       case 3:
         return [padding[0], padding[1], padding[2], padding[1]]
+      case 4:
+        return padding
       default:
-        return padding || [0, 0, 0, 0]
+        return [0, 0, 0, 0]
     }
   }
 
