@@ -41,7 +41,10 @@ export {
   getConnectedEdges,
   getTransformForBounds,
   getRectOfNodes,
-  graphPosToZoomedPos,
+  pointToRendererPoint,
+  rendererPointToPoint,
+  /** @deprecated will be removed in the next major version, use `rendererPointToPoint` instead */
+  rendererPointToPoint as graphPosToZoomedPos,
   getNodesInside,
   getMarkerId,
   getBoundsofRects,
