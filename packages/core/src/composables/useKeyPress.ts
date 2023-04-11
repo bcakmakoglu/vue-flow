@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { KeyFilter, KeyPredicate, MaybeRef } from '@vueuse/core'
+import type { KeyFilter, KeyPredicate, MaybeComputedRef } from '@vueuse/core'
 import { isBoolean, isFunction } from '@vueuse/core'
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
@@ -18,9 +18,9 @@ function wasModifierPressed(event: KeyboardEvent) {
   return event.ctrlKey || event.metaKey || event.shiftKey
 }
 
-function createKeyPredicate(keyFilter: KeyFilter, pressedKeys: Set<string>): KeyPredicate {
+function createKeyPredicate(keyFilter: string[], pressedKeys: Set<string>): KeyPredicate {
   return (event: KeyboardEvent) =>
-    (keyFilter as string[]).some((key) => {
+    keyFilter.some((key) => {
       const keyCombination = key.split('+').map((k) => k.trim().toLowerCase())
 
       if (keyCombination.length === 1) {
@@ -38,52 +38,50 @@ function createKeyPredicate(keyFilter: KeyFilter, pressedKeys: Set<string>): Key
  * @param keyFilter - Can be a boolean, a string or an array of strings. If it's a boolean, it will always return that value. If it's a string, it will return true if the key is pressed. If it's an array of strings, it will return true if any of the keys are pressed, or a combination is pressed (e.g. ['ctrl+a', 'ctrl+b'])
  * @param onChange - Callback function that will be called when the key state changes
  */
-export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
+export default (keyFilter: MaybeComputedRef<KeyFilter | null>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
 
-  let isPressed = $ref(unref(keyFilter) === true)
+  const isPressed = ref(resolveUnref(keyFilter) === true)
 
-  let modifierPressed = $ref(false)
+  const modifierPressed = ref(false)
 
-  const pressedKeys = $ref<Set<string>>(new Set())
+  const pressedKeys = ref<Set<string>>(new Set())
 
-  watch($$(isPressed), () => {
-    if (onChange && typeof onChange === 'function') {
-      onChange(isPressed)
-    }
+  watch(isPressed, () => {
+    onChange?.(isPressed.value)
   })
 
   watchEffect(() => {
-    let unrefKeyFilter = unref(keyFilter)
+    let unrefKeyFilter = resolveUnref(keyFilter)
 
-    if (typeof window.addEventListener !== 'undefined') {
+    if (window && typeof window.addEventListener !== 'undefined') {
       useEventListener(window, 'blur', () => {
-        isPressed = false
+        isPressed.value = false
       })
     }
 
     if (isBoolean(unrefKeyFilter)) {
-      isPressed = unrefKeyFilter
+      isPressed.value = unrefKeyFilter
       return
     }
 
     if (Array.isArray(unrefKeyFilter)) {
-      unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys)
+      unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys.value)
     }
 
     if (unrefKeyFilter) {
       onKeyStroke(
         unrefKeyFilter,
         (e) => {
-          modifierPressed = wasModifierPressed(e)
+          modifierPressed.value = wasModifierPressed(e)
 
-          if (!modifierPressed && isInputDOMNode(e)) {
+          if (!modifierPressed.value && isInputDOMNode(e)) {
             return
           }
 
           e.preventDefault()
 
-          isPressed = true
+          isPressed.value = true
         },
         { eventName: 'keydown' },
       )
@@ -91,16 +89,16 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
       onKeyStroke(
         unrefKeyFilter,
         (e) => {
-          if (isPressed) {
-            if (!modifierPressed && isInputDOMNode(e)) {
+          if (isPressed.value) {
+            if (!modifierPressed.value && isInputDOMNode(e)) {
               return
             }
 
-            modifierPressed = false
+            modifierPressed.value = false
 
-            pressedKeys.clear()
+            pressedKeys.value.clear()
 
-            isPressed = false
+            isPressed.value = false
           }
         },
         { eventName: 'keyup' },
@@ -108,5 +106,5 @@ export default (keyFilter: MaybeRef<KeyFilter | null>, onChange?: (keyPressed: b
     }
   })
 
-  return $$(isPressed)
+  return isPressed
 }
