@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.19.0] - 2023-04-11
+
+[fc8cd4b](fc8cd4b9ea5a3ff48a968f87e97b668cf76d0617)...[544fd05](544fd05d3e088700e62a6a8de8787f62bf8d13f9)
+
+### Bug Fixes
+
+- Allow extent when no parent exists ([44049bf](44049bf7145a093ff68d5a2450cca713a4e19331))
+- Prevent auto-pan from dragging into infinity ([1b85842](1b85842d4847626729bbff6d7b106f42e7698147))
+- Add missing `Type` generic to edge types ([aaeb6dc](aaeb6dc4b805147cb689b747c5f5b092a87b7e15))
+- Add missing `Type` generic to node types ([ab482bc](ab482bcf5d446dc5a59051b94449cac83fbbb710))
+- Allow passing regular edges to getConnectedEdges ([2b836dd](2b836dd3925ee98a5a33ce130c35d964d6a74252))
+
+### Features
+
+- Add `getConnectedNodes` util ([ec44dca](ec44dca56a3deff42ee9a105eec04a1598310119))
+- Allow coordinate extent as range ([4a24509](4a24509f5fd13ccfab34ca30240efe6dca5715a5))
+- Allow setting global node extent as range ([717d8e0](717d8e0d43e9dbcadcb2201b7cc73df92f670840))
+- Allow setting padding as number ([f3ee95c](f3ee95c81b225023cfb456ffe1c199c25b14be9b))
+- Allow passing node ids as string to `getConnectedEdges` ([b3addf6](b3addf63d2ef029d22c29d8f0d5960ba325341b1))
+
+### Miscellaneous Tasks
+
+- Add `MaybeRefOrGetter` type ([2a5af98](2a5af981823faf39441d0e454997471d6ab6f6d7))
+- Add eslint rule curly ([ab18bbc](ab18bbc7d8a4f9ab503a5c2bb663a49dc7a68111))
+- Lint files ([5560949](5560949ed1256ccd9be1c58e8f85d88597426d32))
+- Remove unused watcher ([e4c4bd8](e4c4bd8a941b56ed08842dff9a98ab11e84e784d))
+- Cleanup ([1e2a51e](1e2a51ebb5c3d4236fc8e5292c1f5314bc51ec2f))
+- Add ([884ca63](884ca633906d998a7119f09616fd5aa15416bc4e))
+- Lint files ([56e911c](56e911c1e79910af348eed912a4f486cb57a327e))
+- Add ([fefa2a3](fefa2a30ea855e099f338e8b2f71704bd10587ee))
+- Deprecate style & class functions ([920fb3c](920fb3c9a49eb0f837366daa4402a5f661e09ed5))
+- Cleanup types ([d9be769](d9be769f74806c612e59b0d4deb5be3302ad38a8))
+- Cleanup types ([c99a335](c99a33542bbedf9e0d7760cc53bdfa9c0e29b6ea))
+- Add ([608921f](608921fc71b8aff39fb0646a11979cd28045a0a9))
+- Cleanup types ([4524948](452494851577d069fee907b30f4a8368f44a3e26))
+- Add ([f8ab2bd](f8ab2bd2cfc1551f925a656ba01d5de683bc4a7b))
+- Add ([27d62b2](27d62b29b756a617fe65527421a82902fb21d1b5))
+- Cleanup ([7a55cb9](7a55cb992db364d6d0059d453c21dbc459d8a6b3))
+- Add ([c0572f2](c0572f2ee2537f388d20e5bb1c7f69e2914312dd))
+- Remove unnecessary async ([fd5aef1](fd5aef1dade7005653e5ec16e7e92e56d2c0e658))
+- Deprecate class and style funcs ([378e508](378e50874d38b02d59319e32b515026a8449842b))
+- Cleanup condition ([aae4a28](aae4a2870229a9f3a64d7ff521a38775f2f22c0d))
+- Add ([c2b1cea](c2b1cea10b54ecaecd8b1c0743ff07d3f046f091))
+- Add ([c1fc2b1](c1fc2b1e791641b6ae45cc3630e7dbbe5a9931ba))
+- Cleanup ([5ff6c01](5ff6c01b174739594a580c092892a926156105cf))
+- Add ([50f8456](50f8456c529d104be037fc3b845314a3f17db277))
+- Add exports field to package.json ([31eb8ef](31eb8efeffbb0a5d231e282f4d072cb9384227bd))
+- Add ([6922df9](6922df981628bfb2e802dadfc3446c0dd5c2edb4))
+- Cleanup exports ([88c59a8](88c59a8f0266fefbbc74cc07b0829240e8ef11c6))
+- Remove `MaybeRefOrGetter` util type and use `MaybeComputedRef` ([ac23388](ac23388394e722ee9234ba1edf0ad07808b4dd9a))
+- Remove reactivity transform from `useKeyPress` ([72cd853](72cd85350242ce61d50c0d4623cffd608131f580))
+- Add `4` to cases for padding search ([e6e0b25](e6e0b25d949fb3f9e8490636470e2c8ed80e1f9e))
+- Lint ([4454867](4454867c365c589d04ba7a351e689d512f91f616))
+- Lint ([544fd05](544fd05d3e088700e62a6a8de8787f62bf8d13f9))
+
+### Refactor
+
+- Replace computed arg with getter fn ([f19e210](f19e21044287f29f66d6f795fd84671b3063b748))
+- Pass node and edge id computed to getters and actions ([ebed966](ebed9663b4d93ab423152a4661423c5f00154e2a))
+- Search all edges for connected edges in `useNode` ([f5c8a04](f5c8a0424fc1c84d7460ad66a1efd7b3e0b29a74))
+- Allow passing undefined as arg to `findNode` & `findEdge` ([1171e01](1171e01c9c9d63a0b375a5ce7b2f7ffd535e088d))
+- Remove unnecessary computed var ([554ebeb](554ebebd13ba1af8c07f98fe354875f5022d7be4))
+- Add `onBeforeTransform` arg to `panBy` action ([bfff135](bfff13572ea13ee0e5f1e87cb2e03565f87a0ec5))
+- Set default gap to 20 ([1fd438b](1fd438b0b05574f738bc0635fdeca5316cc845ca))
+
 ## [1.18.2] - 2023-04-07
 
 [0c05490](0c05490cf3784a97a8590ec710d0619126eeed09)...[fc8cd4b](fc8cd4b9ea5a3ff48a968f87e97b668cf76d0617)
