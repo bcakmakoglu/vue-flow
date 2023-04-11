@@ -65,18 +65,22 @@ export function getHostForElement(element: HTMLElement): Document {
   }
 }
 
+// todo: refactor generic to use MaybeElement
 export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
   return element && 'id' in element && 'source' in element && 'target' in element
 }
 
+// todo: refactor generic to use MaybeElement
 export function isGraphEdge<Data = ElementData>(element: MaybeElement): element is GraphEdge<Data> {
   return isEdge(element) && 'sourceNode' in element && 'targetNode' in element
 }
 
+// todo: refactor generic to use MaybeElement
 export function isNode<Data = ElementData>(element: MaybeElement): element is Node<Data> {
   return element && 'id' in element && !isEdge(element)
 }
 
+// todo: refactor generic to use MaybeElement
 export function isGraphNode<Data = ElementData>(element: MaybeElement): element is GraphNode<Data> {
   return isNode(element) && 'computedPosition' in element
 }
@@ -257,7 +261,7 @@ export function pointToRendererPoint(
   { x, y }: XYPosition,
   { x: tx, y: ty, zoom: tScale }: ViewportTransform,
   snapToGrid: boolean,
-  [snapX, snapY]: [number, number],
+  [snapX, snapY]: [snapX: number, snapY: number],
 ): XYPosition {
   const position: XYPosition = {
     x: (x - tx) / tScale,
@@ -301,6 +305,7 @@ export function boxToRect({ x, y, x2, y2 }: Box): Rect {
   }
 }
 
+// todo: fix typo
 export function getBoundsofRects(rect1: Rect, rect2: Rect) {
   return boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)))
 }
@@ -319,13 +324,6 @@ export function getRectOfNodes(nodes: GraphNode[]) {
   )
 
   return boxToRect(box)
-}
-
-export function graphPosToZoomedPos({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition {
-  return {
-    x: x * tScale + tx,
-    y: y * tScale + ty,
-  }
 }
 
 export function getNodesInside(
