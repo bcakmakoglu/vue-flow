@@ -364,25 +364,28 @@ export function getNodesInside(
   })
 }
 
-export function getConnectedEdges<N extends Node | { id: string }, E extends Edge>(nodes: N[], edges: E[]) {
-  const nodeIds = nodes.map((node) => node.id)
+export function getConnectedEdges<N extends Node | { id: string } | string, E extends Edge>(nodes: N[], edges: E[]) {
+  const nodeIds = nodes.map((node) => (isString(node) ? node : node.id))
 
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-export function getConnectedNodes<N extends Node | { id: string }, E extends Edge>(nodes: N[], edges: E[]) {
-  const nodeIds = nodes.map((node) => node.id)
+export function getConnectedNodes<N extends Node | { id: string } | string, E extends Edge>(nodes: N[], edges: E[]) {
+  const nodeIds = nodes.map((node) => (isString(node) ? node : node.id))
+
   const connectedNodeIds = edges.reduce((acc, edge) => {
     if (nodeIds.includes(edge.source)) {
       acc.add(edge.target)
     }
+
     if (nodeIds.includes(edge.target)) {
       acc.add(edge.source)
     }
+
     return acc
   }, new Set<string>())
 
-  return nodes.filter((node) => connectedNodeIds.has(node.id))
+  return nodes.filter((node) => connectedNodeIds.has(isString(node) ? node : node.id))
 }
 
 export function getTransformForBounds(
