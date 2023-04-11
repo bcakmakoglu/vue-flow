@@ -7,7 +7,9 @@ export default defineComponent({
   props: ['example'],
   setup(props) {
     return () => {
-      if (!isClient) return null
+      if (!isClient) {
+        return null
+      }
 
       return h(Suspense, h(DocsRepl, props))
     }

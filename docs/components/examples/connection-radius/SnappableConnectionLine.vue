@@ -69,7 +69,9 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
     },
   )
 
-  if (!closestNode.node) return
+  if (!closestNode.node) {
+    return
+  }
 
   canSnap.value = closestNode.distance < SNAP_DISTANCE
 
@@ -92,8 +94,9 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
       },
       edges.value,
     )
-  )
+  ) {
     return
+  }
 
   if (closestHandle) {
     const el = document.querySelector(`[data-handleid='${closestHandle.id}']`)

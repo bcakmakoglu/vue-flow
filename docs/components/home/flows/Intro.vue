@@ -75,13 +75,18 @@ const clicks = ref(0)
 const disabled = ref(false)
 
 const confettiColors = Object.values(colors).flatMap((color) => {
-  if (typeof color === 'string') return color
-  else return Object.values(color).flatMap((c) => c)
+  if (typeof color === 'string') {
+    return color
+  } else {
+    return Object.values(color).flatMap((c) => c)
+  }
 })
 
 onNodeClick(async ({ node }) => {
   if (node.id === 'intro') {
-    if (disabled.value) return
+    if (disabled.value) {
+      return
+    }
 
     animatedBackground.value = !animatedBackground.value
 

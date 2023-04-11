@@ -19,14 +19,22 @@ const connectionLineStyle = { stroke: '#fff' }
 
 // minimap stroke color functions
 function nodeStroke(n) {
-  if (n.type === 'input') return '#0041d0'
-  if (n.type === 'custom') return presets.sumi
-  if (n.type === 'output') return '#ff0072'
+  if (n.type === 'input') {
+    return '#0041d0'
+  }
+  if (n.type === 'custom') {
+    return presets.sumi
+  }
+  if (n.type === 'output') {
+    return '#ff0072'
+  }
   return '#eee'
 }
 
 function nodeColor(n) {
-  if (n.type === 'custom') return bgColor.value
+  if (n.type === 'custom') {
+    return bgColor.value
+  }
   return '#fff'
 }
 

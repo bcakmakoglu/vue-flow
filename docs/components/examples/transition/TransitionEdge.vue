@@ -118,7 +118,9 @@ onNodeDoubleClick(({ node }) => {
       stopHandle = watchDebounced(
         output,
         (next) => {
-          if (!showDot.value) return
+          if (!showDot.value) {
+            return
+          }
 
           const nextLength = curve.value.getTotalLength()
 

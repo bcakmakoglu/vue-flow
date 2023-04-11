@@ -10,7 +10,9 @@ const skip = ['node_modules', 'dist', 'turbo']
 
 const getAllFiles = function (dirPath: string, needle?: string, arrayOfFiles: ChangelogFile[] = [], pkgName?: string) {
   readdirSync(dirPath).forEach((file) => {
-    if (skip.includes(file)) return
+    if (skip.includes(file)) {
+      return
+    }
 
     if (statSync(`${dirPath}/${file}`).isDirectory()) {
       getAllFiles(`${dirPath}/${file}`, needle, arrayOfFiles, file)

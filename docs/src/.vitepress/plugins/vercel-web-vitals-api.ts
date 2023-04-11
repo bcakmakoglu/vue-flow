@@ -31,13 +31,14 @@ function sendToAnalytics(metric, options) {
   })
   if (navigator.sendBeacon) {
     navigator.sendBeacon(vitalsUrl, blob)
-  } else
+  } else {
     fetch(vitalsUrl, {
       body: blob,
       method: 'POST',
       credentials: 'omit',
       keepalive: true,
     })
+  }
 }
 
 export function webVitals(options) {

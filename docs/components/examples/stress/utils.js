@@ -22,7 +22,9 @@ export function getElements(xElements = 10, yElements = 10) {
           source: recentNodeId.toString(),
           target: nodeId.toString(),
           style: (edge) => {
-            if (!edge.sourceNode.selected && !edge.targetNode.selected) return
+            if (!edge.sourceNode.selected && !edge.targetNode.selected) {
+              return
+            }
             return { stroke: '#10b981', strokeWidth: 3 }
           },
         })

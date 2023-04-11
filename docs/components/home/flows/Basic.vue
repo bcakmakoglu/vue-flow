@@ -10,10 +10,11 @@ const emit = defineEmits(['pane'])
 
 const getNodeClass: ClassFunc<GraphNode> = (el) => {
   const classes = ['font-semibold', '!border-2', 'transition-colors', 'duration-300', 'ease-in-out']
-  if (el.selected)
+  if (el.selected) {
     classes.push(
       ...['!border-green-500/80', '!shadow-md', '!shadow-green-500/50', '!bg-green-100/80 dark:(!bg-white)', '!text-gray-700'],
     )
+  }
 
   return classes.join(' ')
 }
