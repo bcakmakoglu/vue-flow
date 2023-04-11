@@ -39,7 +39,7 @@
       "import": "./dist/vue-flow-controls.mjs",
       "require": "./dist/vue-flow-controls.js"
     },
-    "./dist/*.css": "./dist/*.css"
+    "./dist/style.css": "./dist/style.css"
   },
   "files": [
     "dist",
