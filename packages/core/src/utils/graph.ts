@@ -364,13 +364,13 @@ export function getNodesInside(
   })
 }
 
-export function getConnectedEdges(nodes: (Node | GraphNode | { id: string })[], edges: GraphEdge[]) {
+export function getConnectedEdges<N extends Node | { id: string }, E extends Edge>(nodes: N[], edges: E[]) {
   const nodeIds = nodes.map((node) => node.id)
 
   return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
 }
 
-export function getConnectedNodes(nodes: (Node | GraphNode | { id: string })[], edges: GraphEdge[]) {
+export function getConnectedNodes<N extends Node | { id: string }, E extends Edge>(nodes: N[], edges: E[]) {
   const nodeIds = nodes.map((node) => node.id)
   const connectedNodeIds = edges.reduce((acc, edge) => {
     if (nodeIds.includes(edge.source)) {
