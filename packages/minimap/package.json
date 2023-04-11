@@ -39,7 +39,7 @@
       "import": "./dist/vue-flow-minimap.mjs",
       "require": "./dist/vue-flow-minimap.js"
     },
-    "./dist/*.css": "./dist/*.css"
+    "./dist/style.css": "./dist/style.css"
   },
   "files": [
     "dist",

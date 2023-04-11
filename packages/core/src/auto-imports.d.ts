@@ -102,7 +102,6 @@ declare global {
   const getStraightPath: typeof import('./components/Edges/utils/straight')['getStraightPath']
   const getTransformForBounds: typeof import('./utils/graph')['getTransformForBounds']
   const getXYZPos: typeof import('./utils/graph')['getXYZPos']
-  const graphPosToZoomedPos: typeof import('./utils/graph')['graphPosToZoomedPos']
   const groupEdgesByZLevel: typeof import('./utils/edge')['groupEdgesByZLevel']
   const h: typeof import('vue')['h']
   const handleNodeClick: typeof import('./utils/node')['handleNodeClick']
