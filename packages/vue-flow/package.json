@@ -39,7 +39,8 @@
       "import": "./dist/vue-flow.mjs",
       "require": "./dist/vue-flow.js"
     },
-    "./dist/*.css": "./dist/*.css"
+    "./dist/style.css": "./dist/style.css",
+    "./dist/theme-default.css": "./dist/theme-default.css"
   },
   "files": [
     "dist",
