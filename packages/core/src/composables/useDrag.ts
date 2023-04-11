@@ -2,8 +2,8 @@ import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { Ref } from 'vue'
+import type { MaybeComputedRef } from '@vueuse/core'
 import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
-import type { MaybeRefOrGetter } from '~/types/utils'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 
@@ -12,8 +12,8 @@ interface UseDragParams {
   onDrag: (event: Omit<NodeDragEvent, 'intersections'>) => void
   onStop: (event: Omit<NodeDragEvent, 'intersections'>) => void
   el: Ref<Element | undefined>
-  disabled?: MaybeRefOrGetter<boolean>
-  selectable?: MaybeRefOrGetter<boolean>
+  disabled?: MaybeComputedRef<boolean>
+  selectable?: MaybeComputedRef<boolean>
   id?: string
 }
 
