@@ -1,5 +1,35 @@
 # @vue-flow/core
 
+## 1.19.0
+
+### Minor Changes
+
+- [#859](https://github.com/bcakmakoglu/vue-flow/pull/859) [`7faf36ac`](https://github.com/bcakmakoglu/vue-flow/commit/7faf36ac4a294f7d240b754f8c12cb63aca6c88d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow CoordinateExtent as range for extended node extent
+
+- [#864](https://github.com/bcakmakoglu/vue-flow/pull/864) [`ae41b298`](https://github.com/bcakmakoglu/vue-flow/commit/ae41b298ce312eb02aaaad3a07484bd5bc8a35cd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing node ids as string array to `getConnectedEdges`
+
+- [#856](https://github.com/bcakmakoglu/vue-flow/pull/856) [`f9b17f2a`](https://github.com/bcakmakoglu/vue-flow/commit/f9b17f2ae597cf7db61673d25809fc4d2c090159) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `getConnectedNodes` utility function
+
+- [#856](https://github.com/bcakmakoglu/vue-flow/pull/856) [`a937af66`](https://github.com/bcakmakoglu/vue-flow/commit/a937af66985b2f2eefec8cb06cc99786172ca0ab) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing undefined as id to `findNode` & `findEdge`
+
+- [#859](https://github.com/bcakmakoglu/vue-flow/pull/859) [`4abd2919`](https://github.com/bcakmakoglu/vue-flow/commit/4abd2919b8772bcadbaed323f5851f9920ab66d5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing plain number as padding for extent range
+
+- [#862](https://github.com/bcakmakoglu/vue-flow/pull/862) [`dbcbe782`](https://github.com/bcakmakoglu/vue-flow/commit/dbcbe782165afc4484d3dae1891965315acd26ff) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `ToGraphNode` and `ToGraphEdge` utility types
+
+### Patch Changes
+
+- [#863](https://github.com/bcakmakoglu/vue-flow/pull/863) [`c3991c75`](https://github.com/bcakmakoglu/vue-flow/commit/c3991c759eec40cf42c8b93d46b2b60dca9e5918) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing regular edge type to `getConnectedEdges`
+
+- [#862](https://github.com/bcakmakoglu/vue-flow/pull/862) [`dbcbe782`](https://github.com/bcakmakoglu/vue-flow/commit/dbcbe782165afc4484d3dae1891965315acd26ff) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing `Type` generic to node types
+
+- [#860](https://github.com/bcakmakoglu/vue-flow/pull/860) [`cc158716`](https://github.com/bcakmakoglu/vue-flow/commit/cc158716b38634861f6a8a9cb30b5e2ed3c9a3d6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Limit auto-pan when dragging a node by translate extent, so nodes cannot be dragged infinitely into the background.
+
+- [#862](https://github.com/bcakmakoglu/vue-flow/pull/862) [`dbcbe782`](https://github.com/bcakmakoglu/vue-flow/commit/dbcbe782165afc4484d3dae1891965315acd26ff) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Deprecate class and style funcs for node/edge types
+
+- [#862](https://github.com/bcakmakoglu/vue-flow/pull/862) [`dbcbe782`](https://github.com/bcakmakoglu/vue-flow/commit/dbcbe782165afc4484d3dae1891965315acd26ff) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing `Type` generic to edge types
+
+- [#865](https://github.com/bcakmakoglu/vue-flow/pull/865) [`9ce7bdc4`](https://github.com/bcakmakoglu/vue-flow/commit/9ce7bdc4908dda4dea299e5f469b252ac20a12ab) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `exports` field to package.json
+
 ## 1.18.2
 
 ### Patch Changes

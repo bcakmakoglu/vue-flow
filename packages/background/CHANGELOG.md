@@ -1,5 +1,15 @@
 # @vue-flow/background
 
+## 1.2.0
+
+### Minor Changes
+
+- [#861](https://github.com/bcakmakoglu/vue-flow/pull/861) [`6c243d8f`](https://github.com/bcakmakoglu/vue-flow/commit/6c243d8fc533cbe2030c6085f5673388769324e6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Change default bg gap to 20 from 10
+
+### Patch Changes
+
+- [#865](https://github.com/bcakmakoglu/vue-flow/pull/865) [`9ce7bdc4`](https://github.com/bcakmakoglu/vue-flow/commit/9ce7bdc4908dda4dea299e5f469b252ac20a12ab) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `exports` field to package.json
+
 ## 1.1.0
 
 ### Minor Changes
