@@ -37,7 +37,7 @@ export function useActions(
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
 
-  const findNode: Actions['findNode'] = <T extends GraphNode = GraphNode>(id) => {
+  const findNode: Actions['findNode'] = <T extends GraphNode = GraphNode>(id: string | undefined) => {
     if (!id) {
       return
     }
@@ -52,7 +52,7 @@ export function useActions(
     return node as T | undefined
   }
 
-  const findEdge: Actions['findEdge'] = <T extends GraphEdge = GraphEdge>(id) => {
+  const findEdge: Actions['findEdge'] = <T extends GraphEdge = GraphEdge>(id: string | undefined) => {
     if (!id) {
       return
     }
