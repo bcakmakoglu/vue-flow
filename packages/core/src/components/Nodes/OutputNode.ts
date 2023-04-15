@@ -1,4 +1,5 @@
 import type { Component, FunctionalComponent } from 'vue'
+import { isString } from '@vueuse/core'
 import Handle from '../Handle/Handle.vue'
 import type { NodeProps } from '~/types'
 import { Position } from '~/types'
@@ -11,7 +12,7 @@ const OutputNode: FunctionalComponent<NodeProps> = function ({
 }) {
   return [
     h(Handle as Component, { type: 'target', position: targetPosition, connectable, isValidConnection: isValidTargetPos }),
-    typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
+    label && !isString(label) ? h(label) : h('div', { innerHTML: label }),
   ]
 }
 
