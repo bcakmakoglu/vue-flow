@@ -483,12 +483,6 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../core
-      ts-patch:
-        specifier: ^2.1.0
-        version: 2.1.0(typescript@4.9.5)
-      typescript-transform-paths:
-        specifier: ^3.4.6
-        version: 3.4.6(typescript@4.9.5)
       vite:
         specifier: ^4.1.4
         version: 4.1.4
