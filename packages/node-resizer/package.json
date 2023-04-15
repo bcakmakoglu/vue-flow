@@ -49,9 +49,11 @@
     "*.css"
   ],
   "scripts": {
-    "dev": "vite build --watch",
+    "dev": "pnpm types:watch & pnpm build:watch",
     "build": "vite build",
+    "build:watch": "vite build --watch",
     "types": "vue-tsc --declaration --emitDeclarationOnly && pnpm lint:dist",
+    "types:watch": "vue-tsc --declaration --emitDeclarationOnly --watch",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
     "test": "exit 0"

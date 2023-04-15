@@ -45,14 +45,15 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "prepare": "ts-patch install -s",
-    "dev": "vite build --watch",
-    "example": "vite",
+    "dev": "pnpm types:watch & pnpm build:watch",
     "build": "vite build",
-    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && shx rm -rf tmp",
-    "postbuild": "shx rm -rf tmp",
-    "test": "exit 0;",
-    "lint": "eslint --ext .js,.ts,.vue ./"
+    "build:watch": "vite build --watch",
+    "types": "vue-tsc --declaration --emitDeclarationOnly && pnpm lint:dist",
+    "types:watch": "vue-tsc --declaration --emitDeclarationOnly --watch",
+    "examples": "vite",
+    "test": "exit 0",
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist"
   },
   "peerDependencies": {
     "@vue-flow/core": "^1.12.2"
@@ -68,8 +69,6 @@
     "@types/pathfinding": "^0.0.6",
     "@vue-flow/core": "workspace:*",
     "@vitejs/plugin-vue": "^4.0.0",
-    "ts-patch": "^2.1.0",
-    "typescript-transform-paths": "^3.4.6",
     "vite": "^4.1.4",
     "vue": "^3.2.25",
     "vue-tsc": "^1.2.0"

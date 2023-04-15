@@ -7,7 +7,7 @@
     "pnpm": ">=8"
   },
   "scripts": {
-    "dev": "turbo dev --filter='./packages/*' --filter=@vue-flow/examples-vite",
+    "dev": "pnpm build && turbo dev --filter='./packages/*' --filter=@vue-flow/examples-vite",
     "dev:docs": "turbo dev --filter=@vue-flow/docs",
     "changelog": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
     "build:docs": "turbo build --filter docs",
