@@ -132,7 +132,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   noWheelClassName: 'nowheel' | string
   noPanClassName: 'nopan' | string
 
-  defaultEdgeOptions?: DefaultEdgeOptions
+  defaultEdgeOptions: DefaultEdgeOptions | undefined
 
   elevateEdgesOnSelect: boolean
   elevateNodesOnSelect: boolean
