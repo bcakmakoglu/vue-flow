@@ -661,7 +661,13 @@ export function useActions(
       'translateExtent',
       'nodeExtent',
       'hooks',
+      'defaultEdgeOptions',
     ]
+
+    // we need to set the default opts before setting any elements so the options are applied to the elements on first render
+    if (isDef(opts.defaultEdgeOptions)) {
+      state.defaultEdgeOptions = opts.defaultEdgeOptions
+    }
 
     const elements = opts.modelValue || opts.nodes || opts.edges ? ([] as Elements) : undefined
 
@@ -682,16 +688,16 @@ export function useActions(
     }
 
     const setSkippedOptions = () => {
-      if (typeof opts.maxZoom !== 'undefined') {
+      if (isDef(opts.maxZoom)) {
         setMaxZoom(opts.maxZoom)
       }
-      if (typeof opts.minZoom !== 'undefined') {
+      if (isDef(opts.minZoom)) {
         setMinZoom(opts.minZoom)
       }
-      if (typeof opts.translateExtent !== 'undefined') {
+      if (isDef(opts.translateExtent)) {
         setTranslateExtent(opts.translateExtent)
       }
-      if (typeof opts.nodeExtent !== 'undefined') {
+      if (isDef(opts.nodeExtent)) {
         setNodeExtent(opts.nodeExtent)
       }
     }
