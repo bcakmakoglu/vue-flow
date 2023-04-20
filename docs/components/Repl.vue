@@ -1,13 +1,14 @@
 <script lang="ts">
-import { isClient } from '@vueuse/core'
+import { inBrowser } from 'vitepress'
 import { Suspense } from 'vue'
-import DocsRepl from './DocsRepl.vue'
+
+const DocsRepl = defineAsyncComponent(() => import('./DocsRepl.vue'))
 
 export default defineComponent({
   props: ['example'],
   setup(props) {
     return () => {
-      if (!isClient) {
+      if (!inBrowser) {
         return null
       }
 
