@@ -17,7 +17,7 @@ function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-function typedocSidebarEntries(): DefaultTheme.SidebarGroup[] {
+function typedocSidebarEntries() {
   const filePath = resolve(__dirname, '../typedocs')
 
   const docsModules = readdirSync(filePath).filter((name) => statSync(`${filePath}/${name}`).isDirectory())
@@ -34,15 +34,15 @@ function typedocSidebarEntries(): DefaultTheme.SidebarGroup[] {
       })
     }
 
-    return { text: capitalize(module), collapsible: true, items: children } as DefaultTheme.SidebarGroup
+    return { text: capitalize(module), collapsed: true, items: children } as DefaultTheme.SidebarItem
   })
 }
 
-function changelogSidebarEntries(): DefaultTheme.SidebarGroup[] {
+function changelogSidebarEntries(): DefaultTheme.SidebarItem[] {
   return [
     {
       text: 'CHANGELOG',
-      collapsible: true,
+      collapsed: true,
       items: files.map((file) => {
         const name = file.pkgName.replace('.md', '')
         const isCore = name === 'core'
@@ -67,6 +67,9 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
   outDir: resolve(__dirname, '../../dist'),
 
   vite: {
+    ssr: {
+      noExternal: ['@vue/repl'],
+    },
     optimizeDeps: {
       exclude: ['@animxyz/vue3'],
     },
@@ -137,7 +140,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       '/guide/': [
         {
           text: 'Guide',
-          collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Introduction', link: '/guide/' },
             { text: 'Getting Started', link: '/guide/getting-started' },
@@ -149,7 +152,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Vue Flow',
-          collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Configuration', link: '/guide/vue-flow/config' },
             { text: 'State', link: '/guide/vue-flow/state' },
@@ -170,7 +173,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Utilities',
-          collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Graph', link: '/guide/utils/graph' },
             { text: 'Viewport', link: '/guide/utils/instance' },
@@ -179,7 +182,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Components',
-          collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Background', link: '/guide/components/background' },
             { text: 'MiniMap', link: '/guide/components/minimap' },
@@ -194,7 +197,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       '/examples/': [
         {
           text: 'General Examples',
-          collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Basic', link: '/examples/' },
             { text: 'Save & Restore', link: '/examples/save' },
@@ -213,7 +216,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Nodes',
-          collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Custom Node', link: '/examples/nodes/' },
             { text: 'Update Node', link: '/examples/nodes/update-node' },
@@ -224,7 +227,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Edges',
-          collapsible: true,
+          collapsed: true,
           items: [
             { text: 'Edges', link: '/examples/edges/' },
             { text: 'Updatable Edge', link: '/examples/edges/updatable-edge' },
