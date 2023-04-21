@@ -76,27 +76,27 @@
 }
 
 .vue-flow__node-input {
-  --vf-node-color: #0041d0;
-  --vf-handle: var(--vf-node-color);
-  --vf-box-shadow: var(--vf-node-color);
+  --vf-handle: var(--vf-node-color, #0041d0);
+  --vf-box-shadow: var(--vf-node-color, #0041d0);
 
   background: var(--vf-node-bg);
-  border-color: var(--vf-node-color);
+  border-color: var(--vf-node-color, #0041d0);
 }
 
 .vue-flow__node-default {
-  --vf-node-color: #1a192b;
-  --vf-handle: var(--vf-node-color);
-  --vf-box-shadow: var(--vf-node-color);
+  --vf-handle: var(--vf-node-color, #1a192b);
+  --vf-box-shadow: var(--vf-node-color, #1a192b);
 
   background: var(--vf-node-bg);
-  border-color: var(--vf-node-color);
+  border-color: var(--vf-node-color, #1a192b);
 }
 
 .vue-flow__node-output {
-  --vf-node-color: #ff0072;
-  --vf-handle: var(--vf-node-color);
-  --vf-box-shadow: var(--vf-node-color);
+  --vf-handle: var(--vf-node-color, #ff0072);
+  --vf-box-shadow: var(--vf-node-color, #ff0072);
+
+  background: var(--vf-node-bg);
+  border-color: var(--vf-node-color, #ff0072);
 }
 
 .vue-flow__nodesselection-rect,
