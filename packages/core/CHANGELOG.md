@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.19.1
+
+### Patch Changes
+
+- [#883](https://github.com/bcakmakoglu/vue-flow/pull/883) [`ae7bd5a`](https://github.com/bcakmakoglu/vue-flow/commit/ae7bd5ac416f1d27864aa9334b91244221283593) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove defining css var in node type and use the default color of nodes as fallback for css var value
+
+- [#876](https://github.com/bcakmakoglu/vue-flow/pull/876) [`e3de507`](https://github.com/bcakmakoglu/vue-flow/commit/e3de507ca1fc9570027d076e1876720f41e7f8e7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set default edge options prior to setting elements so the options are applied on initial render of edges as well.
+
 ## 1.19.0
 
 ### Minor Changes
