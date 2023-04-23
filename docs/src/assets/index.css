@@ -11,11 +11,11 @@
 }
 
 .examples .VPDoc {
-  @apply !px-8 !py-6 md:!px-12 lg:!px-24;
+  @apply !px-8 !py-6;
 }
 
 .examples .content-container {
-  @apply max-w-full;
+  @apply !w-full !max-w-7xl;
 }
 
 .examples .aside {
@@ -24,19 +24,6 @@
 
 html, body {
   @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
-}
-
-h1 {
-  @apply text-xl lg:text-4xl mb-4 font-bold;
-}
-
-h2 {
-  @apply text-lg lg:text-2xl mb-4 font-semibold;
-}
-
-p {
-  line-height: inherit;
-  margin: revert;
 }
 
 ul li {
