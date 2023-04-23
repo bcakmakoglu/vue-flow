@@ -47,29 +47,30 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
-button:focus {
-  outline: none;
-}
-
+<style lang="scss">
 .VPHome {
   @apply !pb-24;
 }
 
-h1 {
-  @apply text-xl lg:text-4xl mb-4 font-bold;
-}
+.is-home {
+  h1,
+  h2 {
+    @apply mb-4;
+  }
 
-h2 {
-  @apply text-lg lg:text-2xl mb-4 font-semibold;
-}
+  p {
+    @apply text-md lg:text-lg;
+    line-height: inherit;
+    margin: revert;
+  }
 
-p {
-  @apply text-md lg:text-lg;
-}
+  p ~ h1,
+  p ~ h2 {
+    @apply mt-6;
+  }
 
-p ~ h1,
-p ~ h2 {
-  @apply mt-6;
+  button:focus {
+    outline: none;
+  }
 }
 </style>

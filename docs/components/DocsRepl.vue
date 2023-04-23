@@ -3,7 +3,6 @@ import type { SFCOptions } from '@vue/repl'
 import { ReplStore, Repl as VueRepl } from '@vue/repl'
 import { useVueFlow } from '@vue-flow/core'
 import '@vue/repl/style.css'
-import { isClient } from '@vueuse/core'
 import { exampleImports } from './examples'
 
 const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string; dependencies?: Record<string, string> }>()
@@ -89,12 +88,6 @@ const sfcOptions = {
     reactivityTransform: true,
   },
 } as SFCOptions
-
-onMounted(() => {
-  if (isClient) {
-    document.body.className = 'examples'
-  }
-})
 </script>
 
 <template>
@@ -121,9 +114,5 @@ onMounted(() => {
   @apply rounded-lg border-1 border-solid dark:border-gray-200/10 border-gray-200;
 
   height: calc(var(--vh) - 72px);
-}
-
-.msg.err {
-  @apply hidden;
 }
 </style>
