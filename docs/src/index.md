@@ -10,5 +10,3 @@ layout: home
 <Features />
 
 <Acknowledgement />
-
-<Team />
