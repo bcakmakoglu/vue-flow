@@ -67,6 +67,11 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
   outDir: resolve(__dirname, '../../dist'),
 
   vite: {
+    resolve: {
+      alias: {
+        'vue/server-renderer': resolve(__dirname, '../../../node_modules/@vue/server-renderer'),
+      },
+    },
     ssr: {
       noExternal: ['@vue/repl'],
     },
