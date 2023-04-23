@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.19.1] - 2023-04-23
+
+[544fd05](544fd05d3e088700e62a6a8de8787f62bf8d13f9)...[c74996d](c74996d75b0b9518fa44902e8749aee46e7244f7)
+
+### Bug Fixes
+
+- Correct defaultEdgeOptions type in state ([8db8dc8](8db8dc8fc5117b1e1c4747b20fe8d57393425049))
+- Set default edge opts before setting elements ([e41a66d](e41a66dc2d3a713288ffc0e67674e7ae7002aff4))
+- Use default color as fallback for css vars ([cdef517](cdef517651f1f4bd2cb9d00ff0bbc6e4361f03b8))
+
+### Miscellaneous Tasks
+
+- Add watch scripts for types and update dev scripts ([0944146](094414684291a29613e467f0fc333d46984fc6b0))
+- Update pnpm-lock.yaml ([56ee5ba](56ee5ba6e9af950496a916199c3003921b8a5eb0))
+- Correct import path of `defineNuxtConfig` ([20f9910](20f9910793bb53dfa26d25bb0ef93bb54f099f0c))
+- Lint ([99866c7](99866c76174b3b5f5a545ad37937a346c31c2423))
+- Update deps ([5e4225d](5e4225d0b68528a852c8f236144137d55061b603))
+- Update deps ([a639777](a639777cb7921e9af5738faa42f3c9762d9bfe72))
+- Fix node version to 18 ([7735c6f](7735c6f07cb1227c74c9535bb8e23a8a13f1f9bc))
+- Update config ([e294145](e294145520215d34c6b2deb845c9e02b06ada799))
+- Update styles ([70604b9](70604b965695d413f6184a9d11ba287d37dc354d))
+- Remove team section ([ea78e82](ea78e827a3159551ec164ce30f361e82ba2a731c))
+- Add ([d822005](d8220050abfcbf6c1a8c6a0a1fdbbda97173b610))
+- Add ([85de8b0](85de8b03e72ac33bca13a6969aceaf25c5420c6c))
+- Disable no-console rule ([ade0784](ade07841b9dd43e32ef8db4674fc529dbd30f87e))
+- Lint ([a238c6d](a238c6d3f5ee186b6781a1e90574dfbc489c2dc7))
+- Update publish script ([c74996d](c74996d75b0b9518fa44902e8749aee46e7244f7))
+
 ## [1.19.0] - 2023-04-11
 
 [fc8cd4b](fc8cd4b9ea5a3ff48a968f87e97b668cf76d0617)...[544fd05](544fd05d3e088700e62a6a8de8787f62bf8d13f9)
