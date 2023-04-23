@@ -16,11 +16,17 @@ describe('Store Action: `setState`', () => {
       const storedState = store[<keyof State>state]?.value
       const initialVal = initial[<keyof State>state]?.value
 
-      if (state === 'initialized') return expect(storedState).to.be.true
+      if (state === 'initialized') {
+        return expect(storedState).to.be.true
+      }
 
-      if (state === 'getEdgeTypes' || state === 'getNodeTypes' || state === 'nodeTypes' || state === 'edgeTypes') return
+      if (state === 'getEdgeTypes' || state === 'getNodeTypes' || state === 'nodeTypes' || state === 'edgeTypes') {
+        return
+      }
 
-      if (Array.isArray(initialVal)) return expect((storedState as any[]).length).to.eq(initialVal.length)
+      if (Array.isArray(initialVal)) {
+        return expect((storedState as any[]).length).to.eq(initialVal.length)
+      }
 
       if (!(initialVal instanceof Function) && !isRef(initialVal)) {
         return expect(JSON.stringify(storedState)).to.eq(JSON.stringify(initialVal))

@@ -28,14 +28,18 @@ describe('Store Action: `setElements`', () => {
 
   it('has correct element types', () => {
     const nodeTypes = nodes.reduce((types, node) => {
-      if (node.type && !types.includes(node.type)) types.push(node.type)
+      if (node.type && !types.includes(node.type)) {
+        types.push(node.type)
+      }
       return types
     }, Object.keys(defaultNodeTypes))
 
     store.nodes.value.forEach((el) => expect(nodeTypes).to.include(el.type))
 
     const edgeTypes = edges.reduce((types, edge) => {
-      if (edge.type && !types.includes(edge.type)) types.push(edge.type)
+      if (edge.type && !types.includes(edge.type)) {
+        types.push(edge.type)
+      }
       return types
     }, Object.keys(defaultEdgeTypes))
 

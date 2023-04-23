@@ -13,7 +13,9 @@ export function getElements(xElements = 10, yElements = 10) {
         label: `Node ${nodeId}`,
         style: (node) => {
           const style: Record<string, any> = { width: `50px`, fontSize: `11px`, zIndex: 1 }
-          if (node.selected) style.border = '1px solid red'
+          if (node.selected) {
+            style.border = '1px solid red'
+          }
           return style
         },
         type: 'default',
@@ -32,7 +34,9 @@ export function getElements(xElements = 10, yElements = 10) {
             randomData: Math.floor(Math.random() * 1e3),
           },
           style: (edge) => {
-            if (edge.selected) return { stroke: '#10b981', strokeWidth: 3 }
+            if (edge.selected) {
+              return { stroke: '#10b981', strokeWidth: 3 }
+            }
           },
           animated: Math.random() > 0.5,
         })
