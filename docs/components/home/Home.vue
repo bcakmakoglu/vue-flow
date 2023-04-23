@@ -48,12 +48,11 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-.VPHome {
-  @apply !pb-24;
-}
-
 .is-home {
-  h1,
+  h1 {
+    @apply text-xl lg:text-4xl mb-4 font-bold;
+  }
+
   h2 {
     @apply mb-4;
   }
