@@ -34,7 +34,7 @@ function typedocSidebarEntries() {
       })
     }
 
-    return { text: capitalize(module), collapsed: true, items: children } as DefaultTheme.SidebarItem
+    return { text: capitalize(module), collapsed: false, items: children } as DefaultTheme.SidebarItem
   })
 }
 
@@ -145,7 +145,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       '/guide/': [
         {
           text: 'Guide',
-          collapsed: true,
+          collapsed: false,
           items: [
             { text: 'Introduction', link: '/guide/' },
             { text: 'Getting Started', link: '/guide/getting-started' },
@@ -157,7 +157,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Vue Flow',
-          collapsed: true,
+          collapsed: false,
           items: [
             { text: 'Configuration', link: '/guide/vue-flow/config' },
             { text: 'State', link: '/guide/vue-flow/state' },
@@ -178,7 +178,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Utilities',
-          collapsed: true,
+          collapsed: false,
           items: [
             { text: 'Graph', link: '/guide/utils/graph' },
             { text: 'Viewport', link: '/guide/utils/instance' },
@@ -187,7 +187,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Components',
-          collapsed: true,
+          collapsed: false,
           items: [
             { text: 'Background', link: '/guide/components/background' },
             { text: 'MiniMap', link: '/guide/components/minimap' },
@@ -202,7 +202,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       '/examples/': [
         {
           text: 'General Examples',
-          collapsed: true,
+          collapsed: false,
           items: [
             { text: 'Basic', link: '/examples/' },
             { text: 'Save & Restore', link: '/examples/save' },
@@ -221,7 +221,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Nodes',
-          collapsed: true,
+          collapsed: false,
           items: [
             { text: 'Custom Node', link: '/examples/nodes/' },
             { text: 'Update Node', link: '/examples/nodes/update-node' },
@@ -232,7 +232,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         },
         {
           text: 'Edges',
-          collapsed: true,
+          collapsed: false,
           items: [
             { text: 'Edges', link: '/examples/edges/' },
             { text: 'Updatable Edge', link: '/examples/edges/updatable-edge' },
