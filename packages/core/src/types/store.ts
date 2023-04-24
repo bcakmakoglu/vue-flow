@@ -143,9 +143,6 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   disableKeyboardA11y: boolean
 
   ariaLiveMessage: string
-
-  /** current vue flow version you're using */
-  readonly vueFlowVersion: string
 }
 
 export type SetElements = (elements: Elements | ((elements: FlowElements) => Elements)) => void
@@ -311,6 +308,8 @@ export type ComputedGetters = {
 export type VueFlowStore = {
   readonly id: string
   readonly emits: FlowHooksEmit
+  /** current vue flow version you're using */
+  readonly vueFlowVersion: string
 } & FlowHooksOn &
   ToRefs<State> &
   Readonly<ComputedGetters> &
