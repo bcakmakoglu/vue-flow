@@ -123,7 +123,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       indexName: 'vueflow',
     },
     nav: [
-      { text: `v${vueFlowVersion.value}`, link: '/changelog/', activeMatch: '^/changelog' },
+      { text: `v${vueFlowVersion}`, link: '/changelog/', activeMatch: '^/changelog' },
       { text: 'Guide', link: '/guide/', activeMatch: '^/guide/' },
       {
         text: 'Examples',
