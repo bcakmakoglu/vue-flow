@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { VueFlow } from '@vue-flow/core'
 import ResizableNode from './ResizableNode.vue'
+import ResizableNodeSelected from './ResizableNodeSelected.vue'
 
 const elements = ref([
   {
@@ -38,6 +39,10 @@ const elements = ref([
   <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
     <template #node-resizable="resizableNodeProps">
       <ResizableNode :label="resizableNodeProps.label" />
+    </template>
+
+    <template #node-resizableSelected="resizableNodeProps">
+      <ResizableNodeSelected :label="resizableNodeProps.label" :selected="resizableNodeProps.selected" />
     </template>
   </VueFlow>
 </template>
