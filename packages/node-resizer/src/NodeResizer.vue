@@ -28,42 +28,44 @@ export default {
 </script>
 
 <template>
-  <ResizeControl
-    v-for="c of lineControls"
-    :key="c"
-    :class="lineClassName"
-    :style="lineStyle"
-    :node-id="nodeId"
-    :position="c"
-    :variant="ResizeControlVariant.Line"
-    :keep-aspect-ratio="keepAspectRatio"
-    :color="color"
-    :min-width="minWidth"
-    :min-height="minHeight"
-    :max-width="maxWidth"
-    :max-height="maxHeight"
-    :should-resize="shouldResize"
-    @resize-start="emits('resizeStart', $event)"
-    @resize="emits('resize', $event)"
-    @resize-end="emits('resizeEnd', $event)"
-  />
+  <template v-if="isVisible">
+    <ResizeControl
+      v-for="c of lineControls"
+      :key="c"
+      :class="lineClassName"
+      :style="lineStyle"
+      :node-id="nodeId"
+      :position="c"
+      :variant="ResizeControlVariant.Line"
+      :keep-aspect-ratio="keepAspectRatio"
+      :color="color"
+      :min-width="minWidth"
+      :min-height="minHeight"
+      :max-width="maxWidth"
+      :max-height="maxHeight"
+      :should-resize="shouldResize"
+      @resize-start="emits('resizeStart', $event)"
+      @resize="emits('resize', $event)"
+      @resize-end="emits('resizeEnd', $event)"
+    />
 
-  <ResizeControl
-    v-for="c of handleControls"
-    :key="c"
-    :class="lineClassName"
-    :style="lineStyle"
-    :node-id="nodeId"
-    :position="c"
-    :color="color"
-    :min-width="minWidth"
-    :min-height="minHeight"
-    :max-width="maxWidth"
-    :max-height="maxHeight"
-    :should-resize="shouldResize"
-    :keep-aspect-ratio="keepAspectRatio"
-    @resize-start="emits('resizeStart', $event)"
-    @resize="emits('resize', $event)"
-    @resize-end="emits('resizeEnd', $event)"
-  />
+    <ResizeControl
+      v-for="c of handleControls"
+      :key="c"
+      :class="lineClassName"
+      :style="lineStyle"
+      :node-id="nodeId"
+      :position="c"
+      :color="color"
+      :min-width="minWidth"
+      :min-height="minHeight"
+      :max-width="maxWidth"
+      :max-height="maxHeight"
+      :should-resize="shouldResize"
+      :keep-aspect-ratio="keepAspectRatio"
+      @resize-start="emits('resizeStart', $event)"
+      @resize="emits('resize', $event)"
+      @resize-end="emits('resizeEnd', $event)"
+    />
+  </template>
 </template>
