@@ -7,13 +7,14 @@
     "lint": "eslint --ext .js,.ts,.vue ./"
   },
   "dependencies": {
-    "vueflow": "workspace:*",
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
     "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
-    "@vue-flow/node-toolbar": "workspace:*"
+    "@vue-flow/node-toolbar": "workspace:*",
+    "pinia": "^2.0.35",
+    "vueflow": "workspace:*"
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",

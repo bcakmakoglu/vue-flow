@@ -122,6 +122,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/easy-connect',
     component: () => import('./src/EasyConnect/EasyConnect.vue'),
   },
+  {
+    path: '/pinia',
+    component: () => import('./src/Pinia/PiniaExample.vue'),
+  },
 ]
 
 export const router = createRouter({
