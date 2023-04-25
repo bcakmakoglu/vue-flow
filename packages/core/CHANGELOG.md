@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.19.2
+
+### Patch Changes
+
+- [#889](https://github.com/bcakmakoglu/vue-flow/pull/889) [`56d7873`](https://github.com/bcakmakoglu/vue-flow/commit/56d787360210c1d57692a360695f222d5fe98b0a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set vue flow version as regular string instead of a ref
+
 ## 1.19.1
 
 ### Patch Changes

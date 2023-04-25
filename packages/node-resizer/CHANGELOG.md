@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.3.2
+
+### Patch Changes
+
+- [#890](https://github.com/bcakmakoglu/vue-flow/pull/890) [`9065311`](https://github.com/bcakmakoglu/vue-flow/commit/9065311970952b910a2a154e8a0871fa095a71f6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Render nothing when `isVisible` prop is set to false
+
 ## 1.3.1
 
 ### Patch Changes
