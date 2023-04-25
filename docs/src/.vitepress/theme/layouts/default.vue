@@ -21,7 +21,7 @@ watch(
       document.body.className = ''
     }
   },
-  { deep: true },
+  { immediate: true, deep: true },
 )
 </script>
 
