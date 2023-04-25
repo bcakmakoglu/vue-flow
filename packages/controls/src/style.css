@@ -4,6 +4,7 @@
 
 .vue-flow__controls-button {
   background: #fefefe;
+  border: none;
   border-bottom: 1px solid #eee;
   box-sizing: content-box;
   display: flex;
