@@ -205,6 +205,9 @@ importers:
       '@vue-flow/node-toolbar':
         specifier: workspace:*
         version: link:../../packages/node-toolbar
+      pinia:
+        specifier: ^2.0.35
+        version: 2.0.35(vue@3.2.47)
       vueflow:
         specifier: workspace:*
         version: link:../../packages/vue-flow
@@ -8903,6 +8906,23 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /pinia@2.0.35(vue@3.2.47):
+    resolution: {integrity: sha512-P1IKKQWhxGXiiZ3atOaNI75bYlFUbRxtJdhPLX059Z7+b9Z04rnTZdSY8Aph1LA+/4QEMAYHsTQ638Wfe+6K5g==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.5.0
+      vue: 3.2.47
+      vue-demi: 0.14.0(vue@3.2.47)
+    dev: false
+
   /pkg-dir@4.2.0:
     resolution: {integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==}
     engines: {node: '>=8'}
@@ -11415,7 +11435,6 @@ packages:
         optional: true
     dependencies:
       vue: 3.2.47
-    dev: true
 
   /vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
