@@ -55,13 +55,6 @@
      box-shadow: 0 0 0 0.5px var(--vf-box-shadow);
    }
 
-  &.selected,
-  &:focus,
-  &:focus-visible {
-     outline: none;
-     border: 1px solid var(--vf-node-color);
-   }
-
   .vue-flow__handle {
     background: var(--vf-handle);
   }
@@ -76,11 +69,19 @@
 }
 
 .vue-flow__node-input {
+  --vf-node-color: var(--vf-node-color, #0041d0);
   --vf-handle: var(--vf-node-color, #0041d0);
   --vf-box-shadow: var(--vf-node-color, #0041d0);
 
   background: var(--vf-node-bg);
   border-color: var(--vf-node-color, #0041d0);
+
+  &.selected,
+  &:focus,
+  &:focus-visible {
+     outline: none;
+     border: 1px solid var(--vf-node-color, #0041d0);
+   }
 }
 
 .vue-flow__node-default {
@@ -89,6 +90,13 @@
 
   background: var(--vf-node-bg);
   border-color: var(--vf-node-color, #1a192b);
+
+  &.selected,
+  &:focus,
+  &:focus-visible {
+     outline: none;
+     border: 1px solid var(--vf-node-color, #1a192b);
+   }
 }
 
 .vue-flow__node-output {
@@ -97,6 +105,13 @@
 
   background: var(--vf-node-bg);
   border-color: var(--vf-node-color, #ff0072);
+
+  &.selected,
+  &:focus,
+  &:focus-visible {
+     outline: none;
+     border: 1px solid var(--vf-node-color, #ff0072);
+   }
 }
 
 .vue-flow__nodesselection-rect,
