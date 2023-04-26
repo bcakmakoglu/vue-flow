@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.19.2] - 2023-04-26
+
+[c74996d](c74996d75b0b9518fa44902e8749aee46e7244f7)...[f8b8f27](f8b8f27735ff3d71e9c5008ad50d94ee4c3116ae)
+
+### Bug Fixes
+
+- Immediately watch route ([86eb6c0](86eb6c06309cffd92ca5d98d6147f4fbac70fa64))
+- Hide resizer when `isVisible` is false ([a3f27fd](a3f27fd901b02ab54fe6dae84ee516789cad5489))
+- Remove border, make the control look modern ([ef97685](ef97685c1ee1b73eccb1afd547475c3434053ae2))
+- Selected,focus & focus-visible styles not applying correct default colors ([9bd48be](9bd48be27cfdc1ab9b992f4a19eb0e0a4d62aa02))
+- Selected,focus ([d6aa757](d6aa757b7441ac93885131b94095ca7687fee846))
+
+### Features
+
+- Add pinia example to vite-examples ([18aeefb](18aeefb0694ec2dfc2a9bf11100a9023f0a57f8d))
+
+### Miscellaneous Tasks
+
+- Set collapsed to false ([f1c38b2](f1c38b28f78b379cbbe81709e0c25cab13170d35))
+- Render repl in ssr ([aa62e19](aa62e19ed9723d76798ba371cfb3397279c404d1))
+- Add ([980916d](980916d1938468fcade2927e409c0a7abbdb7f60))
+- Add ([bc325af](bc325af2abdfe41c1995fddf8ac21f1b29f79e41))
+- Correct version access ([40ef9bc](40ef9bc4024b7756dbe709e228adada3c9908606))
+- Add ([53884a9](53884a941e0afbd26c23ac1162191f9c187258e2))
+
+### Refactor
+
+- Set vue flow version as regular string instead of ref ([260a3d9](260a3d9a867f41688fa7a14535fc888bd1cdebe6))
+
 ## [1.19.1] - 2023-04-23
 
 [544fd05](544fd05d3e088700e62a6a8de8787f62bf8d13f9)...[c74996d](c74996d75b0b9518fa44902e8749aee46e7244f7)
