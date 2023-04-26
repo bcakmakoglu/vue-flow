@@ -1,5 +1,11 @@
 # @vue-flow/controls
 
+## 1.0.6
+
+### Patch Changes
+
+- [#894](https://github.com/bcakmakoglu/vue-flow/pull/894) [`c0a03c4`](https://github.com/bcakmakoglu/vue-flow/commit/c0a03c4339f05e3ae56299aaecd499838ba77838) Thanks [@github-actions](https://github.com/apps/github-actions)! - Remove border from controls
+
 ## 1.0.5
 
 ### Patch Changes
