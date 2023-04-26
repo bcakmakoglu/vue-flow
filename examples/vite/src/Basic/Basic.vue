@@ -37,7 +37,7 @@ function logToObject() {
   return console.log(toObject())
 }
 function resetTransform() {
-  return setTransform({ x: 0, y: 0, zoom: 1 })
+  return (elements.value[0].height = 500)
 }
 function toggleclass() {
   return elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
