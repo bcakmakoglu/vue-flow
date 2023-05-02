@@ -3,7 +3,7 @@ import type { UseDragEvent } from './useDrag'
 export function useGetPointerPosition() {
   const { viewport, snapGrid, snapToGrid } = useVueFlow()
 
-  // returns the pointer position projected to the RF coordinate system
+  // returns the pointer position projected to the VF coordinate system
   return ({ sourceEvent }: UseDragEvent) => {
     const x = sourceEvent.touches ? sourceEvent.touches[0].clientX : sourceEvent.clientX
     const y = sourceEvent.touches ? sourceEvent.touches[0].clientY : sourceEvent.clientY
