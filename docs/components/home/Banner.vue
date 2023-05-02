@@ -3,9 +3,9 @@ import { $fetch } from 'ohmyfetch'
 import Star from '~icons/carbon/star'
 import Download from '~icons/carbon/download'
 
-const starGazersCount = ref(0)
+const starGazersCount = ref(1000)
 
-const downloadCount = ref(0)
+const downloadCount = ref(10000)
 
 const starGazersCountTransitioned = useTransition(starGazersCount, {
   duration: 1000,
@@ -21,13 +21,14 @@ const downloadCountTransitioned = useTransition(downloadCount, {
   },
 })
 
-$fetch('https://api.github.com/repos/bcakmakoglu/vue-flow?page=$i&per_page=100').then((data) => {
-  starGazersCount.value = data.stargazers_count
-})
-
-$fetch('https://api.npmjs.org/downloads/point/last-month/@vue-flow/core').then((data) => {
-  downloadCount.value = data.downloads
-})
+Promise.all([
+  $fetch('https://api.github.com/repos/bcakmakoglu/vue-flow?page=$i&per_page=100').then((data) => {
+    starGazersCount.value = data.stargazers_count
+  }),
+  $fetch('https://api.npmjs.org/downloads/point/last-month/@vue-flow/core').then((data) => {
+    downloadCount.value = data.downloads
+  }),
+])
 </script>
 
 <template>
