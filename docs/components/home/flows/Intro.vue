@@ -184,6 +184,7 @@ onBeforeUnmount(stop)
 
 function scrollTo() {
   const el = document.getElementById('acknowledgement')
+
   if (el) {
     el.scrollIntoView({ behavior: 'smooth' })
   }
@@ -192,7 +193,8 @@ function scrollTo() {
 
 <template>
   <VueFlow ref="el">
-    <Background variant="lines" :pattern-color="isDark ? '#fff' : '#000'" :size="0.7" :gap="100" />
+    <Background id="dots" pattern-color="#aaa" :size="0.75" :gap="25" />
+    <Background id="lines" variant="lines" :pattern-color="isDark ? '#fff' : '#000'" :size="1" :gap="100" />
 
     <template #node-box="props">
       <template v-if="props.id === 'intro'">
@@ -200,33 +202,70 @@ function scrollTo() {
           <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
             <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
               <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">Vue Flow</h1>
+
               <h2 class="text-lg lg:text-xl font-normal !border-0">
                 The customizable Vue 3 component bringing interactivity to flowcharts and graphs.
               </h2>
             </div>
-            <Handle id="a" type="source" :position="Position.Bottom" />
+
+            <Handle
+              :connectable="false"
+              style="height: 12px; width: 6rem; bottom: -6px; background: #aaa; border-radius: 2px"
+              type="source"
+              :position="Position.Bottom"
+            />
           </div>
         </div>
       </template>
+
       <template v-else-if="props.id === 'documentation'">
         <div class="flex">
           <a class="intro-link group bg-[#f15a16]" href="/guide/"> Read The Documentation </a>
         </div>
-        <Handle type="target" :position="Position.Top" />
-        <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
+
+        <Handle
+          style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
+          type="target"
+          :position="Position.Top"
+        />
+
+        <Handle
+          style="height: 12px; width: 2rem; bottom: -6px; background: #aaa; border-radius: 2px"
+          class="block md:hidden"
+          type="source"
+          :position="Position.Bottom"
+        />
       </template>
+
       <template v-else-if="props.id === 'examples'">
         <div class="flex">
           <a class="intro-link group bg-[#ef467e]" href="/examples/"> Check The Examples </a>
         </div>
-        <Handle type="target" :position="Position.Top" />
-        <Handle class="block md:hidden" type="source" :position="Position.Bottom" />
+
+        <Handle
+          style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
+          type="target"
+          :position="Position.Top"
+        />
+
+        <Handle
+          style="height: 12px; width: 2rem; bottom: -6px; background: #aaa; border-radius: 2px"
+          class="block md:hidden"
+          type="source"
+          :position="Position.Bottom"
+        />
       </template>
+
       <template v-else-if="props.id === 'acknowledgement'">
         <div class="flex" @click="scrollTo">
           <button class="intro-link group bg-sky-500"><Heart class="text-red-500" /> Acknowledgement</button>
         </div>
-        <Handle type="target" :position="Position.Top" />
+
+        <Handle
+          style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
+          type="target"
+          :position="Position.Top"
+        />
       </template>
     </template>
   </VueFlow>
