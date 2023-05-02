@@ -9,23 +9,18 @@ import type { MiniMapNodeFunc } from '@vue-flow/minimap'
 import CustomEdge from '../edges/Custom.vue'
 import RGBNode from '../nodes/Input.vue'
 import RGBOutputNode from '../nodes/Output.vue'
+import type { Colors } from './utils'
 
 const emit = defineEmits(['pane'])
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-interface Colors {
-  red: number
-  green: number
-  blue: number
-}
-
-const { onPaneReady, getNode, panOnDrag } = useVueFlow({
+const { onPaneReady, findNode, panOnDrag } = useVueFlow({
   id: 'rgb-flow',
   nodes: [
-    { id: '1', type: 'rgb', data: { color: 'g' }, position: { x: -25, y: 0 } },
-    { id: '2', type: 'rgb', data: { color: 'r' }, position: { x: 50, y: -110 } },
-    { id: '3', type: 'rgb', data: { color: 'b' }, position: { x: 0, y: 110 } },
+    { id: '1', type: 'rgb', data: { color: 'green' }, position: { x: -25, y: 0 } },
+    { id: '2', type: 'rgb', data: { color: 'red' }, position: { x: 50, y: -110 } },
+    { id: '3', type: 'rgb', data: { color: 'blue' }, position: { x: 0, y: 110 } },
     { id: '4', type: 'rgb-output', label: 'RGB', position: { x: 400, y: -25 } },
   ],
   edges: [
@@ -41,7 +36,7 @@ onPaneReady((i) => emit('pane', i))
 
 const el = templateRef<HTMLDivElement>('el', null)
 
-const color = ref<Colors>({
+const color = ref<Record<Colors, number>>({
   red: 222,
   green: 45,
   blue: 140,
@@ -52,14 +47,19 @@ watch(
   () => {
     const mobile = breakpoints.isSmaller('md')
     if (mobile) {
-      getNode.value('4')!.position = { x: 300, y: -25 }
+      const node = findNode('4')
+
+      if (node) {
+        node.position = { x: 300, y: -25 }
+      }
     }
+
     panOnDrag.value = !mobile
   },
   { immediate: true },
 )
 
-function onChange({ color: c, val }: { color: keyof Colors; val: number }) {
+function onChange({ color: c, val }: { color: Colors; val: number }) {
   return (color.value[c] = Number(val))
 }
 

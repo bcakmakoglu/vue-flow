@@ -58,9 +58,6 @@ importers:
       blobity:
         specifier: ^0.2.3
         version: 0.2.3(react@18.2.0)(vue@3.2.47)
-      canvas-confetti:
-        specifier: ^1.6.0
-        version: 1.6.0
       vue:
         specifier: 3.2.47
         version: 3.2.47
@@ -77,9 +74,6 @@ importers:
       '@tooling/tsconfig':
         specifier: workspace:*
         version: link:../tooling/tsconfig
-      '@types/canvas-confetti':
-        specifier: ^1.6.0
-        version: 1.6.0
       '@vitejs/plugin-vue':
         specifier: ^4.1.0
         version: 4.1.0(vite@4.3.0)(vue@3.2.47)
@@ -2646,10 +2640,6 @@ packages:
       '@types/node': 18.15.12
     dev: true
 
-  /@types/canvas-confetti@1.6.0:
-    resolution: {integrity: sha512-Yq6rIccwcco0TLD5SMUrIM7Fk7Fe/C0jmNRxJJCLtAF6gebDkPuUjK5EHedxecm69Pi/aA+It39Ux4OHmFhjRw==}
-    dev: true
-
   /@types/chrome@0.0.208:
     resolution: {integrity: sha512-VDU/JnXkF5qaI7WBz14Azpa2VseZTgML0ia/g/B1sr9OfdOnHiH/zZ7P7qCDqxSlkqJh76/bPc8jLFcx8rHJmw==}
     dependencies:
@@ -4319,10 +4309,6 @@ packages:
   /caniuse-lite@1.0.30001480:
     resolution: {integrity: sha512-q7cpoPPvZYgtyC4VaBSN0Bt+PJ4c4EYRf0DrduInOz2SkFpHD5p3LnvEpqBp7UnJn+8x1Ogl1s38saUxe+ihQQ==}
     dev: true
-
-  /canvas-confetti@1.6.0:
-    resolution: {integrity: sha512-ej+w/m8Jzpv9Z7W7uJZer14Ke8P2ogsjg4ZMGIuq4iqUOqY2Jq8BNW42iGmNfRwREaaEfFIczLuZZiEVSYNHAA==}
-    dev: false
 
   /caseless@0.12.0:
     resolution: {integrity: sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==}

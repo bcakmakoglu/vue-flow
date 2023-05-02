@@ -9,31 +9,6 @@ const isMobile = smaller('md')
 
 const { blobity } = useBlobity()
 
-const usesDark = useDark({
-  storageKey: 'vuepress-color-scheme',
-  selector: 'html',
-})
-
-const dark = ref(false)
-
-onMounted(() => {
-  const html = document.getElementsByTagName('html')![0]
-
-  usesDark.value = html.classList.contains('dark')
-
-  const observer = new MutationObserver((mutations) => {
-    for (const _ of mutations) {
-      dark.value = html.classList.contains('dark')
-    }
-  })
-
-  observer.observe(html, {
-    attributes: true,
-    attributeOldValue: true,
-    attributeFilter: ['class'],
-  })
-})
-
 onMounted(() => {
   if (isMobile.value) {
     blobity.value.destroy()
