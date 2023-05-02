@@ -1,9 +1,15 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { EdgeProps, MarkerType, Position } from '@vue-flow/core'
+import type { EdgeProps, Position } from '@vue-flow/core'
 import { getBezierPath } from '@vue-flow/core'
+import type { Colors } from '../flows/utils'
 
-interface CustomEdgeProps extends EdgeProps {
+interface EdgeData {
+  text?: string
+  color?: Colors
+}
+
+interface CustomEdgeProps extends EdgeProps<EdgeData> {
   source: string
   target: string
   sourceHandleId?: string
@@ -15,24 +21,16 @@ interface CustomEdgeProps extends EdgeProps {
   targetY: number
   sourcePosition: Position
   targetPosition: Position
-  markerEnd?: MarkerType
-  data?: {
+  markerEnd: string
+  data: {
     text?: string
-    color?: 'red' | 'green' | 'blue'
+    color?: Colors
   }
 }
 
 const props = defineProps<CustomEdgeProps>()
-const edgePath = computed(() =>
-  getBezierPath({
-    sourceX: props.sourceX,
-    sourceY: props.sourceY,
-    sourcePosition: props.sourcePosition,
-    targetX: props.targetX,
-    targetY: props.targetY,
-    targetPosition: props.targetPosition,
-  }),
-)
+
+const edgePath = computed(() => getBezierPath(props))
 </script>
 
 <script lang="ts">
@@ -43,15 +41,15 @@ export default {
 
 <template>
   <path
-    :id="props.id"
+    :id="id"
     class="vue-flow__edge-path"
-    :style="{ stroke: props.data?.color }"
+    :style="{ stroke: data?.color, strokeWidth: '3' }"
     :d="edgePath[0]"
-    :marker-end="props.markerEnd"
+    :marker-end="markerEnd"
   />
   <text>
-    <textPath :href="`#${props.id}`" :style="{ fontSize: '1.25rem', fill: 'white' }" startOffset="50%" text-anchor="middle">
-      {{ props.data?.text }}
+    <textPath :href="`#${id}`" :style="{ fontSize: '1.25rem', fill: 'white' }" startOffset="50%" text-anchor="middle">
+      {{ data?.text }}
     </textPath>
   </text>
 </template>

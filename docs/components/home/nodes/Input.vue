@@ -1,50 +1,29 @@
 <script lang="ts" setup>
 import type { NodeProps } from '@vue-flow/core'
 import { Handle, Position } from '@vue-flow/core'
+import type { Colors } from '../flows/utils'
 
-interface RGBNodeProps extends NodeProps {
+interface RGBNodeProps extends Pick<NodeProps<{ color: Colors }>, 'data'> {
   data: {
-    color: 'r' | 'g' | 'b'
+    color: Colors
   }
-  amount: {
-    red: number
-    green: number
-    blue: number
-  }
+  amount: Record<Colors, number>
 }
 
 const props = defineProps<RGBNodeProps>()
 
-const emit = defineEmits(['change'])
+const emit = defineEmits<{ (event: 'change', data: { color: Colors; val: number }): void }>()
 
-const currentColor = computed(() => {
-  let color
+const currentColor = toRef(props.data, 'color', 'red')
 
-  switch (props.data?.color) {
-    case 'r':
-      color = 'red'
-      break
-    case 'g':
-      color = 'green'
-      break
-    case 'b':
-      color = 'blue'
-      break
-    default:
-      color = 'red'
-  }
-
-  return color
-})
-
-function onChange(e: any) {
-  return emit('change', { color: currentColor.value, val: e.target.value })
+function onChange(e: InputEvent) {
+  return emit('change', { color: currentColor.value, val: parseInt((e.target as HTMLInputElement).value) })
 }
 </script>
 
 <template>
   <div class="px-4 py-2 bg-white rounded-md border-2 border-solid border-black text-left transform scale-75 lg:scale-100">
-    <div class="text-md" :style="{ color: currentColor }">{{ `${currentColor} Amount`.toUpperCase() }}</div>
+    <div class="text-md font-semibold text-center" :style="{ color: currentColor }">{{ `${currentColor}`.toUpperCase() }}</div>
 
     <input
       :model-value="amount[currentColor]"
@@ -56,6 +35,10 @@ function onChange(e: any) {
       @input="onChange"
     />
 
-    <Handle type="source" :position="Position.Right" :style="{ backgroundColor: color }" />
+    <Handle
+      type="source"
+      :position="Position.Right"
+      :style="{ backgroundColor: currentColor, right: '-6px', width: '12px', height: '12px' }"
+    />
   </div>
 </template>
