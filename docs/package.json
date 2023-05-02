@@ -24,7 +24,6 @@
     "@vue-flow/node-toolbar": "workspace:*",
     "@vue/repl": "1.4.0",
     "blobity": "^0.2.3",
-    "canvas-confetti": "^1.6.0",
     "vue": "3.2.47",
     "web-vitals": "^3.3.1"
   },
@@ -32,7 +31,6 @@
     "@iconify/json": "^2.2.52",
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
-    "@types/canvas-confetti": "^1.6.0",
     "@vitejs/plugin-vue": "^4.1.0",
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^16.0.3",

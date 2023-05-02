@@ -3,9 +3,9 @@ import { $fetch } from 'ohmyfetch'
 import Star from '~icons/carbon/star'
 import Download from '~icons/carbon/download'
 
-const starGazersCount = ref(1000)
+const starGazersCount = ref(0)
 
-const downloadCount = ref(10000)
+const downloadCount = ref(0)
 
 const starGazersCountTransitioned = useTransition(starGazersCount, {
   duration: 1000,
@@ -20,6 +20,9 @@ const downloadCountTransitioned = useTransition(downloadCount, {
     return n === 0 ? 0 : n === 1 ? 1 : 2 ** (-10 * n) * Math.sin((n * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1
   },
 })
+
+starGazersCount.value = 3000
+downloadCount.value = 50000
 
 Promise.all([
   $fetch('https://api.github.com/repos/bcakmakoglu/vue-flow?page=$i&per_page=100').then((data) => {
