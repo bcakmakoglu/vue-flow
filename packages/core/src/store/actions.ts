@@ -629,11 +629,11 @@ export function useActions(
     return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
   }
 
-  const panBy: Actions['panBy'] = (delta, onBeforeTransform) => {
+  const panBy: Actions['panBy'] = (delta) => {
     const { viewport, dimensions, d3Zoom, d3Selection, translateExtent } = state
 
     if (!d3Zoom || !d3Selection || (!delta.x && !delta.y)) {
-      return
+      return false
     }
 
     const nextTransform = zoomIdentity.translate(viewport.x + delta.x, viewport.y + delta.y).scale(viewport.zoom)
@@ -645,9 +645,13 @@ export function useActions(
 
     const constrainedTransform = d3Zoom.constrain()(nextTransform, extent, translateExtent)
 
-    onBeforeTransform?.(constrainedTransform)
-
     d3Zoom.transform(d3Selection, constrainedTransform)
+
+    return (
+      state.viewport.x !== constrainedTransform.x ||
+      state.viewport.y !== constrainedTransform.y ||
+      state.viewport.zoom !== constrainedTransform.k
+    )
   }
 
   const setState: Actions['setState'] = (options) => {

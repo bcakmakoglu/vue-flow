@@ -55,7 +55,6 @@ function useDrag(params: UseDragParams) {
 
   let autoPanId = $ref(0)
   let autoPanStarted = $ref(false)
-  let previousTransform = $ref<XYPosition>({ x: 0, y: 0 })
 
   const getPointerPosition = useGetPointerPosition()
 
@@ -120,16 +119,9 @@ function useDrag(params: UseDragParams) {
         y: (lastPos.y ?? 0) - yMovement / viewport.zoom,
       }
 
-      panBy({ x: xMovement, y: yMovement }, (transform) => {
-        if (
-          Math.round(transform.x) !== Math.round(previousTransform.x) ||
-          Math.round(transform.y) !== Math.round(previousTransform.y)
-        ) {
-          updateNodes(nextPos)
-          previousTransform = transform
-          lastPos = nextPos
-        }
-      })
+      if (panBy({ x: xMovement, y: yMovement })) {
+        updateNodes(nextPos)
+      }
     }
 
     autoPanId = requestAnimationFrame(autoPan)
