@@ -149,16 +149,18 @@ function onMouseDown(event: MouseEvent) {
 }
 
 function onMouseMove(event: MouseEvent) {
-  if (!isSelecting || !containerBounds.value || !userSelectionRect.value) {
-    return
-  }
   if (!hasActiveSelection.value) {
     return emits.paneMouseMove(event)
+  }
+
+  if (!isSelecting || !containerBounds.value || !userSelectionRect.value) {
+    return
   }
 
   if (!userSelectionActive.value) {
     userSelectionActive.value = true
   }
+
   if (nodesSelectionActive.value) {
     nodesSelectionActive.value = false
   }
