@@ -1,6 +1,5 @@
 import type { Ref } from 'vue'
-import type { KeyFilter, KeyPredicate, MaybeComputedRef } from '@vueuse/core'
-import { isBoolean, isFunction } from '@vueuse/core'
+import type { KeyFilter, KeyPredicate, MaybeRefOrGetter } from '@vueuse/core'
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
@@ -38,7 +37,7 @@ function createKeyPredicate(keyFilter: string[], pressedKeys: Set<string>): KeyP
  * @param keyFilter - Can be a boolean, a string or an array of strings. If it's a boolean, it will always return that value. If it's a string, it will return true if the key is pressed. If it's an array of strings, it will return true if any of the keys are pressed, or a combination is pressed (e.g. ['ctrl+a', 'ctrl+b'])
  * @param onChange - Callback function that will be called when the key state changes
  */
-export default (keyFilter: MaybeComputedRef<KeyFilter | null>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
+export default (keyFilter: MaybeRefOrGetter<KeyFilter | null>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
   const window = useWindow()
 
   const isPressed = ref(resolveUnref(keyFilter) === true)
