@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.19.3
+
+### Patch Changes
+
+- [#916](https://github.com/bcakmakoglu/vue-flow/pull/916) [`2dec266`](https://github.com/bcakmakoglu/vue-flow/commit/2dec2664d4b2353f95250c5dddd398d7e3be8591) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if node exists during drag
+
+- [#910](https://github.com/bcakmakoglu/vue-flow/pull/910) [`cbb587f`](https://github.com/bcakmakoglu/vue-flow/commit/cbb587fb58f3752c49086ff2f6aea5aff336e72e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Emit pane mouse move event if no active selection exists
+
+- [#909](https://github.com/bcakmakoglu/vue-flow/pull/909) [`e823aea`](https://github.com/bcakmakoglu/vue-flow/commit/e823aea747213dd616a6b3ef29098cc6f577d668) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Return bool from panBy and use the val to check if auto-pan should be triggered
+
+- [#917](https://github.com/bcakmakoglu/vue-flow/pull/917) [`6c32065`](https://github.com/bcakmakoglu/vue-flow/commit/6c3206585ba5221077e7416bc9d2d108f4e5fe52) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent orphaned edge warning for edges with `deletable: false` when calculating max z-index of edges
+
+- [#915](https://github.com/bcakmakoglu/vue-flow/pull/915) [`2cd746a`](https://github.com/bcakmakoglu/vue-flow/commit/2cd746a86d766d5b9668f1c82b16806a5ce9722b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass selectionKeyCode ref to useKeyPress
+
 ## 1.19.2
 
 ### Patch Changes
