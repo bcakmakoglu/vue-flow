@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { Position } from '@vue-flow/core'
-import { BezierEdge, EdgeText, getSimpleBezierPath, useVueFlow } from '@vue-flow/core'
+import { BezierEdge, EdgeText, Position, getSimpleBezierPath, useVueFlow } from '@vue-flow/core'
 import { computed, useAttrs } from 'vue'
 import type { PathFindingEdgeProps } from '../types'
 import { createGrid, gridRatio } from './createGrid'
@@ -11,8 +10,8 @@ import { gridToGraphPoint } from './pointConversion'
 
 const props = withDefaults(defineProps<PathFindingEdgeProps>(), {
   selected: false,
-  sourcePosition: 'bottom' as Position,
-  targetPosition: 'top' as Position,
+  sourcePosition: Position.Bottom,
+  targetPosition: Position.Top,
   labelStyle: () => ({}),
   labelShowBg: true,
   labelBgStyle: () => ({}),
@@ -100,7 +99,7 @@ export default {
       v-if="label"
       :x="centered[1]"
       :y="centered[2]"
-      :label="label"
+      :label="label as any"
       :label-style="labelStyle"
       :label-show-bg="labelShowBg"
       :label-bg-style="labelBgStyle"
