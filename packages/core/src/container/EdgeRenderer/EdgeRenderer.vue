@@ -14,6 +14,7 @@ const {
   elementsSelectable,
   getSelectedNodes,
   findNode,
+  edges,
   getEdges,
   getNodesInitialized,
   getEdgeTypes,
@@ -46,7 +47,7 @@ const connectionLineVisible = controlledComputed(
 
 const groups = controlledComputed(
   [
-    () => getEdges.map((e) => e.zIndex),
+    () => edges.map((e) => e.zIndex),
     () => (elevateEdgesOnSelect ? [getSelectedNodes.length] : [0]),
     () => (elevateEdgesOnSelect ? getNodesInitialized.map((n) => n.computedPosition.z) : []),
   ],
