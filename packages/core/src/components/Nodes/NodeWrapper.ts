@@ -1,5 +1,5 @@
 import { computed, defineComponent, h, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
-import { toRef, until, useVModel } from '@vueuse/core'
+import { until, useVModel } from '@vueuse/core'
 import type { GraphNode, HandleConnectable, NodeComponent } from '~/types'
 import { NodeId, NodeRef } from '~/context'
 import { isInputDOMNode, useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '~/composables'
@@ -60,7 +60,7 @@ const NodeWrapper = defineComponent({
 
     const node = useVModel(props, 'node')
 
-    const parentNode = toRef(() => findNode(node.value.parentNode))
+    const parentNode = computed(() => findNode(node.value.parentNode))
 
     const connectedEdges = computed(() => getConnectedEdges([node.value], edges.value))
 
