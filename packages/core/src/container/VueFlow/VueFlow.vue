@@ -52,6 +52,11 @@ const props = withDefaults(defineProps<FlowProps>(), {
   autoPanOnConnect: undefined,
   autoPanOnNodeDrag: undefined,
   isValidConnection: undefined,
+  deleteKeyCode: undefined,
+  selectionKeyCode: undefined,
+  multiSelectionKeyCode: undefined,
+  panActivationKeyCode: undefined,
+  zoomActivationKeyCode: undefined,
 })
 
 const emit = defineEmits<{
