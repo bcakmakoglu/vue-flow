@@ -1,4 +1,3 @@
-import { isNumber } from '@vueuse/core'
 import type { GraphNode, HandleConnectable, NodeComponent } from '~/types'
 
 interface Props {

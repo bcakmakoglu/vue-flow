@@ -1,6 +1,5 @@
 import type { ToRefs } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
-import { isFunction } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '~/types'
 
 export function useWatch(

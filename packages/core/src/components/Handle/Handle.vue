@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { isFunction, isString } from '@vueuse/core'
 import { Position } from '../../types'
 import type { HandleProps } from '../../types/handle'
 

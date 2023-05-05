@@ -1,4 +1,3 @@
-import { isNumber } from '@vueuse/core'
 import type { Actions, EdgePositions, GraphEdge, GraphNode, HandleElement, Rect, ViewportTransform, XYPosition } from '~/types'
 import { Position } from '~/types'
 

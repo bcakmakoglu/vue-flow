@@ -1,12 +1,12 @@
-import type { MaybeComputedRef } from '@vueuse/core'
+import type { MaybeRefOrGetter } from '@vueuse/core'
 import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
 
 interface UseHandleProps {
-  handleId: MaybeComputedRef<string | null>
-  nodeId: MaybeComputedRef<string>
-  type: MaybeComputedRef<HandleType>
-  isValidConnection?: MaybeComputedRef<ValidConnectionFunc | null>
-  edgeUpdaterType?: MaybeComputedRef<HandleType>
+  handleId: MaybeRefOrGetter<string | null>
+  nodeId: MaybeRefOrGetter<string>
+  type: MaybeRefOrGetter<HandleType>
+  isValidConnection?: MaybeRefOrGetter<ValidConnectionFunc | null>
+  edgeUpdaterType?: MaybeRefOrGetter<HandleType>
   onEdgeUpdate?: (event: MouseTouchEvent, connection: Connection) => void
   onEdgeUpdateEnd?: (event: MouseTouchEvent) => void
 }

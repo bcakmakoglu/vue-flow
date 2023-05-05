@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { isString } from '@vueuse/core'
 import type { EdgeTextProps } from '../../types/components'
 import type { Rect as RectType } from '../../types'
+import { isString } from '../../utils/general'
 
 const {
   x,
@@ -60,7 +60,7 @@ export default {
 
     <text v-bind="$attrs" ref="el" class="vue-flow__edge-text" :y="box.height / 2" dy="0.3em" :style="labelStyle">
       <slot>
-        <component :is="label" v-if="!isString(label)" />
+        <component :is="label as any" v-if="!isString(label)" />
         <template v-else>
           {{ label }}
         </template>
