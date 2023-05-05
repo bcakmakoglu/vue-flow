@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.19.3] - 2023-05-05
+
+[f8b8f27](f8b8f27735ff3d71e9c5008ad50d94ee4c3116ae)...[d673020](d673020586ec839fc7cd32313d2602c488637645)
+
+### Bug Fixes
+
+- Emit pane mouse move if no active selection exists ([98e6f17](98e6f1700222003d6b4b6c083580fbdb415dac85))
+- Pass selectionKeyCode ref to useKeyPress ([85dcbf4](85dcbf4b46eb961b51969b2ebceead3da2413b8b))
+- Check if node exists during drag ([bec2e74](bec2e74dcbc3ef87e9fb3d8d097942c8467c968b))
+- Orphaned edge warn for undeletable edges when calculating max z-index ([74a51f4](74a51f4339b12f64e426b2c311be0e36a2ad81f6))
+
+### Miscellaneous Tasks
+
+- Use promise.all to fetch counters ([f42aede](f42aede4400389f020a979be5ed3486bbf6ac82f))
+- Remove animation and confetti ([af12660](af126607bc0d4823fc8715f9af0acf51bee0f801))
+- Cleanup ([87c5554](87c55541dd4b6db4600436ca5ac34aac80dc0a2f))
+- Update handle styles ([926108f](926108f2b7cceba2184368cdce274d5f536bb749))
+- Add ([f1c08b8](f1c08b82b6a5847d12ea34cc036a231b581de5df))
+- Add ([edb01a7](edb01a735e596ad6646c203d5066a0b0e76e8dfe))
+- Add ([558b723](558b7232e5284df7d25ec6865e1585ba1fb14f60))
+- Update basic example ([c2b6a62](c2b6a62cff18f51422b34aeb97fd2b513ada884a))
+- Add ([34c2258](34c2258a4fbff0a8663f60e52e4a8b84ee031a34))
+- Add ([6d808a0](6d808a088f99ac7a69bff802ca8dabaaddd72cdd))
+
+### Refactor
+
+- Return boolean from panBy ([df54220](df542208d263d4f8b76068425fab3141f7ef875b))
+
 ## [1.19.2] - 2023-04-26
 
 [c74996d](c74996d75b0b9518fa44902e8749aee46e7244f7)...[f8b8f27](f8b8f27735ff3d71e9c5008ad50d94ee4c3116ae)
