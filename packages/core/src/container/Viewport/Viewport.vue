@@ -92,7 +92,7 @@ onMounted(() => {
     viewportRef: viewportElement,
   })
 
-  useKeyPress(selectionKeyCode, (keyPress) => {
+  useKeyPress($$(selectionKeyCode), (keyPress) => {
     selectionKeyPressed = keyPress
   })
 
