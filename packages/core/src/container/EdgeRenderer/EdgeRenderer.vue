@@ -1,7 +1,12 @@
 <script lang="ts" setup>
+import { getCurrentInstance, inject, resolveComponent } from 'vue'
+import { controlledComputed } from '@vueuse/core'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
+import { Slots } from '../../context'
+import { useVueFlow } from '../../composables'
+import { ErrorCode, VueFlowError, groupEdgesByZLevel } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 const slots = inject(Slots)

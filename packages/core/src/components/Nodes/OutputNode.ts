@@ -1,4 +1,5 @@
 import type { Component, FunctionalComponent } from 'vue'
+import { h } from 'vue'
 import Handle from '../Handle/Handle.vue'
 import type { NodeProps } from '~/types'
 import { Position } from '~/types'

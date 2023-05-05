@@ -1,5 +1,7 @@
 import type { FunctionalComponent } from 'vue'
+import { h } from 'vue'
 import BaseEdge from './BaseEdge'
+import { getSimpleBezierPath } from './utils'
 import type { SimpleBezierEdgeProps } from '~/types'
 import { Position } from '~/types'
 

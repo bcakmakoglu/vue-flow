@@ -1,6 +1,10 @@
 <script lang="ts" setup>
-import { Position } from '../../types'
+import { toRef, until } from '@vueuse/core'
+import { computed, ref } from 'vue'
 import type { HandleProps } from '../../types/handle'
+import { Position } from '../../types'
+import { useHandle, useNode, useVueFlow } from '../../composables'
+import { getDimensions, isDef, isFunction, isMouseEvent, isString } from '../../utils'
 
 const {
   position = Position.Top,

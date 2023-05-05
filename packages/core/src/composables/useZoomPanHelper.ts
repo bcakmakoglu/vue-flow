@@ -1,12 +1,14 @@
 import { zoomIdentity } from 'd3-zoom'
+import { useVueFlow } from './useVueFlow'
 import type { D3Selection, GraphNode, ViewportFunctions } from '~/types'
+import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint } from '~/utils'
 
 const DEFAULT_PADDING = 0.1
 
 /**
  * @deprecated use {@link useVueFlow} instead (all viewport functions are also available in {@link useVueFlow})
  */
-export default (vueFlowId?: string): ViewportFunctions => {
+export function useZoomPanHelper(vueFlowId?: string): ViewportFunctions {
   const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid, getNodes } =
     $(useVueFlow({ id: vueFlowId }))
 

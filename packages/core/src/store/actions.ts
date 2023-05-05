@@ -1,5 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
+import { until } from '@vueuse/core'
+import { useState } from './state'
 import type {
   Actions,
   ComputedGetters,
@@ -20,6 +22,29 @@ import type {
   Rect,
   State,
 } from '~/types'
+import { useViewport } from '~/composables'
+import {
+  ErrorCode,
+  VueFlowError,
+  addEdgeToStore,
+  applyChanges,
+  createAdditionChange,
+  createGraphNodes,
+  createRemoveChange,
+  createSelectionChange,
+  getConnectedEdges,
+  getDimensions,
+  getHandleBounds,
+  getOverlappingArea,
+  getSelectionChanges,
+  isDef,
+  isEdge,
+  isNode,
+  isRect,
+  nodeToRect,
+  parseEdge,
+  updateEdgeAction,
+} from '~/utils'
 
 export function useActions(
   state: State,

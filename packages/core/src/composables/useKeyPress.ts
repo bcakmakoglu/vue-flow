@@ -1,5 +1,8 @@
-import type { Ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { KeyFilter, KeyPredicate, MaybeRefOrGetter } from '@vueuse/core'
+import { onKeyStroke, toValue, useEventListener } from '@vueuse/core'
+import { useWindow } from './useWindow'
+import { isBoolean, isFunction } from '~/utils'
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
@@ -37,10 +40,10 @@ function createKeyPredicate(keyFilter: string[], pressedKeys: Set<string>): KeyP
  * @param keyFilter - Can be a boolean, a string or an array of strings. If it's a boolean, it will always return that value. If it's a string, it will return true if the key is pressed. If it's an array of strings, it will return true if any of the keys are pressed, or a combination is pressed (e.g. ['ctrl+a', 'ctrl+b'])
  * @param onChange - Callback function that will be called when the key state changes
  */
-export default (keyFilter: MaybeRefOrGetter<KeyFilter | null>, onChange?: (keyPressed: boolean) => void): Ref<boolean> => {
+export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onChange?: (keyPressed: boolean) => void) {
   const window = useWindow()
 
-  const isPressed = ref(resolveUnref(keyFilter) === true)
+  const isPressed = ref(toValue(keyFilter) === true)
 
   let modifierPressed = false
 
@@ -51,7 +54,7 @@ export default (keyFilter: MaybeRefOrGetter<KeyFilter | null>, onChange?: (keyPr
   })
 
   watch(
-    () => resolveUnref(keyFilter),
+    () => toValue(keyFilter),
     (unrefKeyFilter) => {
       if (window && typeof window.addEventListener !== 'undefined') {
         useEventListener(window, 'blur', () => {

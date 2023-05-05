@@ -1,3 +1,5 @@
+import { markRaw } from 'vue'
+import { ErrorCode, VueFlowError, clampPosition, isNumber, isParentSelected } from '.'
 import type { Actions, CoordinateExtent, CoordinateExtentRange, GraphNode, NodeDragItem, State, XYPosition } from '~/types'
 
 export function hasSelector(target: Element, selector: string, node: Element): boolean {

@@ -1,4 +1,5 @@
 import type { FunctionalComponent, HTMLAttributes } from 'vue'
+import { h } from 'vue'
 import { Position } from '~/types'
 
 interface Props extends HTMLAttributes {

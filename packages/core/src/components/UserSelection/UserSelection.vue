@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useVueFlow } from '../../composables'
+
 const { userSelectionRect } = useVueFlow()
 </script>
 

@@ -1,6 +1,8 @@
 import type { Component, FunctionalComponent } from 'vue'
+import { h } from 'vue'
 import EdgeText from './EdgeText.vue'
 import type { BaseEdgeProps } from '~/types'
+import { isNumber } from '~/utils'
 
 /**
  * The base edge is a simple wrapper for svg path

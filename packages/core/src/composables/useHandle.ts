@@ -1,5 +1,22 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
+import { computed } from 'vue'
+import { toValue } from '@vueuse/core'
+import { useVueFlow } from './useVueFlow'
 import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
+import {
+  calcAutoPan,
+  getClosestHandle,
+  getConnectionStatus,
+  getEventPosition,
+  getHandleLookup,
+  getHandleType,
+  getHostForElement,
+  isMouseEvent,
+  isValidHandle,
+  pointToRendererPoint,
+  rendererPointToPoint,
+  resetRecentHandle,
+} from '~/utils'
 
 interface UseHandleProps {
   handleId: MaybeRefOrGetter<string | null>
@@ -15,7 +32,7 @@ function alwaysValid() {
   return true
 }
 
-export default function useHandle({
+export function useHandle({
   handleId,
   nodeId,
   type,
@@ -49,7 +66,7 @@ export default function useHandle({
   let handleDomNode: Element | null = null
 
   function handlePointerDown(event: MouseTouchEvent) {
-    const isTarget = resolveUnref(type) === 'target'
+    const isTarget = toValue(type) === 'target'
 
     const isMouseTriggered = isMouseEvent(event)
 
@@ -57,9 +74,9 @@ export default function useHandle({
     const doc = getHostForElement(event.target as HTMLElement)
 
     if ((isMouseTriggered && event.button === 0) || !isMouseTriggered) {
-      const node = findNode(resolveUnref(nodeId))
+      const node = findNode(toValue(nodeId))
 
-      let isValidConnectionHandler = resolveUnref(isValidConnection) || isValidConnectionProp.value || alwaysValid
+      let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
       if (!isValidConnectionHandler && node) {
         isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
@@ -71,7 +88,7 @@ export default function useHandle({
 
       const { x, y } = getEventPosition(event)
       const clickedHandle = doc?.elementFromPoint(x, y)
-      const handleType = getHandleType(resolveUnref(edgeUpdaterType), clickedHandle)
+      const handleType = getHandleType(toValue(edgeUpdaterType), clickedHandle)
       const containerBounds = vueFlowRef.value?.getBoundingClientRect()
 
       if (!containerBounds || !handleType) {
@@ -84,8 +101,8 @@ export default function useHandle({
 
       const handleLookup = getHandleLookup({
         nodes: getNodes.value,
-        nodeId: resolveUnref(nodeId),
-        handleId: resolveUnref(handleId),
+        nodeId: toValue(nodeId),
+        handleId: toValue(handleId),
         handleType,
       })
 
@@ -103,8 +120,8 @@ export default function useHandle({
 
       startConnection(
         {
-          nodeId: resolveUnref(nodeId),
-          handleId: resolveUnref(handleId),
+          nodeId: toValue(nodeId),
+          handleId: toValue(handleId),
           type: handleType,
         },
         {
@@ -114,7 +131,7 @@ export default function useHandle({
         event,
       )
 
-      emits.connectStart({ event, nodeId: resolveUnref(nodeId), handleId: resolveUnref(handleId), handleType })
+      emits.connectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId), handleType })
 
       function onPointerMove(event: MouseTouchEvent) {
         connectionPosition = getEventPosition(event, containerBounds)
@@ -134,8 +151,8 @@ export default function useHandle({
           event,
           closestHandle,
           connectionMode.value,
-          resolveUnref(nodeId),
-          resolveUnref(handleId),
+          toValue(nodeId),
+          toValue(handleId),
           isTarget ? 'target' : 'source',
           isValidConnectionHandler,
           doc,
@@ -223,21 +240,16 @@ export default function useHandle({
       return
     }
 
-    const isTarget = resolveUnref(type) === 'target'
+    const isTarget = toValue(type) === 'target'
 
     if (!connectionClickStartHandle.value) {
-      emits.clickConnectStart({ event, nodeId: resolveUnref(nodeId), handleId: resolveUnref(handleId) })
+      emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId) })
 
-      startConnection(
-        { nodeId: resolveUnref(nodeId), type: resolveUnref(type), handleId: resolveUnref(handleId) },
-        undefined,
-        event,
-        true,
-      )
+      startConnection({ nodeId: toValue(nodeId), type: toValue(type), handleId: toValue(handleId) }, undefined, event, true)
     } else {
-      let isValidConnectionHandler = resolveUnref(isValidConnection) || isValidConnectionProp.value || alwaysValid
+      let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
-      const node = findNode(resolveUnref(nodeId))
+      const node = findNode(toValue(nodeId))
 
       if (!isValidConnectionHandler && node) {
         isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
@@ -252,9 +264,9 @@ export default function useHandle({
       const { connection, isValid } = isValidHandle(
         event,
         {
-          nodeId: resolveUnref(nodeId),
-          id: resolveUnref(handleId),
-          type: resolveUnref(type),
+          nodeId: toValue(nodeId),
+          id: toValue(handleId),
+          type: toValue(type),
         },
         connectionMode.value,
         connectionClickStartHandle.value.nodeId,
