@@ -56,7 +56,15 @@ export function getEventHandlerParams({
   dragItems: NodeDragItem[]
   findNode: Actions['findNode']
 }): [GraphNode, GraphNode[]] {
-  const extendedDragItems: GraphNode[] = dragItems.map((n) => findNode(n.id)!)
+  const extendedDragItems = dragItems.reduce((acc, dragItem) => {
+    const node = findNode(dragItem.id)
+
+    if (node) {
+      acc.push(node)
+    }
+
+    return acc
+  }, [] as GraphNode[])
 
   return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
 }
