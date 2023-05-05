@@ -2,8 +2,12 @@
 import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
+import { computed, onMounted, ref, watchEffect } from 'vue'
+import { useEventListener, useResizeObserver } from '@vueuse/core'
 import type { CoordinateExtent, D3ZoomHandler, FlowOptions, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
+import { useKeyPress, useVueFlow, useWindow } from '../../composables'
+import { ErrorCode, VueFlowError, clamp, getDimensions } from '../../utils'
 import Pane from '../Pane/Pane.vue'
 import Transform from './Transform.vue'
 

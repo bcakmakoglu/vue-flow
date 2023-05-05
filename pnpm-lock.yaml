@@ -337,8 +337,8 @@ importers:
         specifier: ^3.4.6
         version: 3.4.6(typescript@4.9.5)
       unplugin-auto-import:
-        specifier: 0.12.2
-        version: 0.12.2(@vueuse/core@10.1.2)
+        specifier: ^0.15.3
+        version: 0.15.3(@vueuse/core@10.1.2)
       unplugin-vue-macros:
         specifier: ^2.1.3
         version: 2.1.3(@vueuse/core@10.1.2)(vite@4.3.5)(vue@3.2.47)
@@ -619,7 +619,7 @@ importers:
         version: 6.1.2
       unplugin-auto-import:
         specifier: ^0.12.2
-        version: 0.12.2(@vueuse/core@10.1.2)
+        version: 0.12.2
       unplugin-vue-macros:
         specifier: 1.8.2
         version: 1.8.2(vite@4.1.4)(vue@3.2.47)
@@ -11266,7 +11266,7 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
-  /unplugin-auto-import@0.12.2(@vueuse/core@10.1.2):
+  /unplugin-auto-import@0.12.2:
     resolution: {integrity: sha512-hC4w0GZjPjmLtrxV0u10XO350V9eCtQyEyifXr7B9UGD7SvbbIvKuOcHt58Zd4FAqZJXKWoXkpr9mdhBp85Usw==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -11277,7 +11277,6 @@ packages:
     dependencies:
       '@antfu/utils': 0.7.2
       '@rollup/pluginutils': 5.0.2(rollup@3.21.5)
-      '@vueuse/core': 10.1.2(vue@3.2.47)
       local-pkg: 0.4.3
       magic-string: 0.27.0
       unimport: 2.2.4
@@ -11308,6 +11307,30 @@ packages:
       - supports-color
     dev: true
 
+  /unplugin-auto-import@0.15.3(@vueuse/core@10.1.2):
+    resolution: {integrity: sha512-RLT8SqbPn4bT7yBshZId0uPSofKWnwr66RyDaxWaFb/+f7OTDOWAsVNz+hOQLBWSjvbekr2xZY9ccS8TDHJbCQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@nuxt/kit': ^3.2.2
+      '@vueuse/core': '*'
+    peerDependenciesMeta:
+      '@nuxt/kit':
+        optional: true
+      '@vueuse/core':
+        optional: true
+    dependencies:
+      '@antfu/utils': 0.7.2
+      '@rollup/pluginutils': 5.0.2(rollup@3.21.5)
+      '@vueuse/core': 10.1.2(vue@3.2.47)
+      local-pkg: 0.4.3
+      magic-string: 0.30.0
+      minimatch: 9.0.0
+      unimport: 3.0.6(rollup@3.20.6)
+      unplugin: 1.3.1
+    transitivePeerDependencies:
+      - rollup
+    dev: true
+
   /unplugin-combine@0.6.0(vite@4.1.4):
     resolution: {integrity: sha512-cZkTg2Z3CcScyRi6QtpVxBZoCMsPaEHyKNh7HyqMkfWV7sKNwHllYezVOFINOGNzqSS1+xWLY3iDCiTVoH3oaA==}
     engines: {node: '>=14.19.0'}
@@ -11327,7 +11350,7 @@ packages:
         optional: true
     dependencies:
       '@antfu/utils': 0.7.2
-      unplugin: 1.1.0
+      unplugin: 1.3.1
       vite: 4.1.4
     dev: true
 
@@ -11350,7 +11373,7 @@ packages:
         optional: true
     dependencies:
       '@antfu/utils': 0.7.2
-      unplugin: 1.1.0
+      unplugin: 1.3.1
       vite: 4.3.5(@types/node@18.15.12)
     dev: true
 

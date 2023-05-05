@@ -1,4 +1,5 @@
 import type { FunctionalComponent } from 'vue'
+import { h } from 'vue'
 import SmoothStepEdge from './SmoothStepEdge'
 import type { StepEdgeProps } from '~/types'
 

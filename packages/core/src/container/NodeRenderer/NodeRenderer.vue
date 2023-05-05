@@ -1,6 +1,11 @@
 <script lang="ts" setup>
+import { getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, resolveComponent } from 'vue'
+import { until } from '@vueuse/core'
 import { NodeWrapper } from '../../components'
 import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
+import { Slots } from '../../context'
+import { useVueFlow } from '../../composables'
+import { ErrorCode, VueFlowError } from '../../utils'
 
 const slots = inject(Slots)
 

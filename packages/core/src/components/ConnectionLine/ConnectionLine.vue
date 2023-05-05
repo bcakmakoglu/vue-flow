@@ -1,7 +1,12 @@
 <script lang="ts" setup>
+import { computed, inject } from 'vue'
+import { toRef } from '@vueuse/core'
 import type { GraphNode } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
-import { getMarkerId } from '../../utils/graph'
+import { getHandlePosition, getMarkerId } from '../../utils'
+import { useVueFlow } from '../../composables'
+import { Slots } from '../../context'
+import { getBezierPath, getSimpleBezierPath, getSmoothStepPath, getStraightPath } from '../Edges/utils'
 
 const { sourceNode } = defineProps<{ sourceNode: GraphNode }>()
 
@@ -27,7 +32,7 @@ const oppositePosition = {
 
 const connectionLineComponent = inject(Slots)?.['connection-line']
 
-const handleId = connectionStartHandle.value!.handleId
+const startHandleId = connectionStartHandle.value!.handleId
 
 const type = connectionStartHandle.value!.type
 
@@ -36,9 +41,10 @@ const targetNode = computed(() => (connectionEndHandle.value?.handleId && findNo
 const sourceHandle = computed(
   () =>
     (connectionMode.value === ConnectionMode.Strict
-      ? sourceNode.handleBounds[type]?.find((d) => d.id === handleId)
-      : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find((d) => d.id === handleId)) ||
-    sourceNode.handleBounds[type ?? 'source']?.[0],
+      ? sourceNode.handleBounds[type]?.find((d) => d.id === startHandleId)
+      : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find(
+          (d) => d.id === startHandleId,
+        )) || sourceNode.handleBounds[type ?? 'source']?.[0],
 )
 
 const targetHandle = computed(() => {
@@ -72,7 +78,7 @@ const fromXY = computed(() => {
   }
 })
 
-const targetPosition = computed(() => (sourceHandle.value?.position ? oppositePosition[sourceHandle.value?.position] : undefined))
+const targetPosition = toRef(() => (sourceHandle.value?.position ? oppositePosition[sourceHandle.value?.position] : undefined))
 
 // todo: rename corresponding props
 const toX = computed(() => (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom)
@@ -130,7 +136,7 @@ export default {
 <template>
   <g class="vue-flow__connection">
     <component
-      :is="connectionLineComponent"
+      :is="connectionLineComponent as any"
       v-if="connectionLineComponent"
       v-bind="{
         sourceX: fromXY.x,

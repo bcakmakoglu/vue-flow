@@ -1,8 +1,11 @@
 import type { ToRefs } from 'vue'
+import { effectScope, nextTick, onScopeDispose, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
+import { toRef, watchPausable } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '~/types'
+import { isDef, isFunction } from '~/utils'
 
-export function useWatch(
+export function useWatchProps(
   models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
   props: FlowProps,
   store: VueFlowStore,

@@ -1,5 +1,7 @@
 import type { FunctionalComponent } from 'vue'
+import { h } from 'vue'
 import BaseEdge from './BaseEdge'
+import { getSmoothStepPath } from './utils'
 import type { SmoothStepEdgeProps } from '~/types'
 import { Position } from '~/types'
 

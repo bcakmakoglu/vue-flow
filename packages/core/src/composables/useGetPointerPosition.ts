@@ -1,5 +1,9 @@
 import type { UseDragEvent } from './useDrag'
+import { useVueFlow } from './useVueFlow'
 
+/**
+ * This composable is for *internal* use only.
+ */
 export function useGetPointerPosition() {
   const { viewport, snapGrid, snapToGrid } = useVueFlow()
 

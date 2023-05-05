@@ -1,3 +1,5 @@
+import { nextTick } from 'vue'
+import { isDef, isFunction, isGraphNode, isString } from '.'
 import type {
   EdgeAddChange,
   EdgeChange,

@@ -1,3 +1,4 @@
+import { getEventPosition, getHandlePosition } from '.'
 import { ConnectionMode } from '~/types'
 import type {
   Actions,

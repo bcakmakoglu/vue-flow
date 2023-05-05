@@ -1,5 +1,7 @@
 import type { Ref } from 'vue'
+import { ref } from 'vue'
 import type { EventHook } from '@vueuse/core'
+import { tryOnScopeDispose } from '@vueuse/core'
 
 /**
  * Source code taken from https://github.com/vueuse/vueuse/blob/main/packages/shared/createEventHook/index.ts

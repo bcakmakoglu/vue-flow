@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import type { PanelProps } from '../../types/panel'
+import { useVueFlow } from '../../composables'
 
 const props = defineProps<PanelProps>()
 

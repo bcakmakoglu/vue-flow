@@ -1,6 +1,8 @@
+import { useVueFlow } from './useVueFlow'
 import type { NodeDragItem, XYPosition } from '~/types'
+import { calcNextPosition } from '~/utils'
 
-function useUpdateNodePositions() {
+export function useUpdateNodePositions() {
   const { getSelectedNodes, nodeExtent, updateNodePositions, findNode, snapGrid, snapToGrid, nodesDraggable, emits } =
     useVueFlow()
 
@@ -39,5 +41,3 @@ function useUpdateNodePositions() {
     updateNodePositions(nodeUpdates, true, false)
   }
 }
-
-export default useUpdateNodePositions
