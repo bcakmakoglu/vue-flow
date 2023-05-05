@@ -51,60 +51,64 @@ export default (keyFilter: MaybeComputedRef<KeyFilter | null>, onChange?: (keyPr
     onChange?.(isPressed.value)
   })
 
-  watchEffect(() => {
-    let unrefKeyFilter = resolveUnref(keyFilter)
+  watch(
+    () => resolveUnref(keyFilter),
+    (unrefKeyFilter) => {
+      if (window && typeof window.addEventListener !== 'undefined') {
+        useEventListener(window, 'blur', () => {
+          isPressed.value = false
+        })
+      }
 
-    if (window && typeof window.addEventListener !== 'undefined') {
-      useEventListener(window, 'blur', () => {
-        isPressed.value = false
-      })
-    }
+      if (isBoolean(unrefKeyFilter)) {
+        isPressed.value = unrefKeyFilter
+        return
+      }
 
-    if (isBoolean(unrefKeyFilter)) {
-      isPressed.value = unrefKeyFilter
-      return
-    }
+      if (Array.isArray(unrefKeyFilter)) {
+        unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys.value)
+      }
 
-    if (Array.isArray(unrefKeyFilter)) {
-      unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys.value)
-    }
+      if (unrefKeyFilter) {
+        onKeyStroke(
+          unrefKeyFilter,
+          (e) => {
+            modifierPressed.value = wasModifierPressed(e)
 
-    if (unrefKeyFilter) {
-      onKeyStroke(
-        unrefKeyFilter,
-        (e) => {
-          modifierPressed.value = wasModifierPressed(e)
-
-          if (!modifierPressed.value && isInputDOMNode(e)) {
-            return
-          }
-
-          e.preventDefault()
-
-          isPressed.value = true
-        },
-        { eventName: 'keydown' },
-      )
-
-      onKeyStroke(
-        unrefKeyFilter,
-        (e) => {
-          if (isPressed.value) {
             if (!modifierPressed.value && isInputDOMNode(e)) {
               return
             }
 
-            modifierPressed.value = false
+            e.preventDefault()
 
-            pressedKeys.value.clear()
+            isPressed.value = true
+          },
+          { eventName: 'keydown' },
+        )
 
-            isPressed.value = false
-          }
-        },
-        { eventName: 'keyup' },
-      )
-    }
-  })
+        onKeyStroke(
+          unrefKeyFilter,
+          (e) => {
+            if (isPressed.value) {
+              if (!modifierPressed.value && isInputDOMNode(e)) {
+                return
+              }
+
+              modifierPressed.value = false
+
+              pressedKeys.value.clear()
+
+              isPressed.value = false
+            }
+          },
+          { eventName: 'keyup' },
+        )
+      }
+    },
+    {
+      immediate: true,
+    },
+  )
 
   return isPressed
 }
