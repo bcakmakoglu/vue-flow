@@ -1,4 +1,5 @@
 import type { EdgeEventsEmit, EdgeEventsOn, GraphEdge, VueFlowStore } from '~/types'
+import { createExtendedEventHook } from '~/utils'
 
 function createEdgeHooks() {
   return {
@@ -14,7 +15,7 @@ function createEdgeHooks() {
   }
 }
 
-export default function useEdgeHooks(edge: GraphEdge, emits: VueFlowStore['emits']): { emit: EdgeEventsEmit; on: EdgeEventsOn } {
+export function useEdgeHooks(edge: GraphEdge, emits: VueFlowStore['emits']): { emit: EdgeEventsEmit; on: EdgeEventsOn } {
   const edgeHooks = createEdgeHooks()
 
   edgeHooks.doubleClick.on((event) => {

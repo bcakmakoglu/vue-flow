@@ -1,4 +1,5 @@
 import type { GraphNode, NodeEventsEmit, NodeEventsOn, VueFlowStore } from '~/types'
+import { createExtendedEventHook } from '~/utils'
 
 function createNodeHooks() {
   return {
@@ -14,7 +15,7 @@ function createNodeHooks() {
   }
 }
 
-export default function useNodeHooks(node: GraphNode, emits: VueFlowStore['emits']): { emit: NodeEventsEmit; on: NodeEventsOn } {
+export function useNodeHooks(node: GraphNode, emits: VueFlowStore['emits']): { emit: NodeEventsEmit; on: NodeEventsOn } {
   const nodeHooks = createNodeHooks()
 
   nodeHooks.doubleClick.on((event) => {

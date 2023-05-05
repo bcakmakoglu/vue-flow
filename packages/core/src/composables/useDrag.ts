@@ -2,7 +2,19 @@ import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { Ref } from 'vue'
+import { ref, watch } from 'vue'
 import type { MaybeRefOrGetter } from '@vueuse/core'
+import { toValue } from '@vueuse/core'
+import { useGetPointerPosition, useVueFlow } from '.'
+import {
+  calcAutoPan,
+  calcNextPosition,
+  getDragItems,
+  getEventHandlerParams,
+  getEventPosition,
+  handleNodeClick,
+  hasSelector,
+} from '~/utils'
 import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
@@ -14,11 +26,11 @@ interface UseDragParams {
   el: Ref<Element | undefined>
   disabled?: MaybeRefOrGetter<boolean>
   selectable?: MaybeRefOrGetter<boolean>
+  dragHandle?: MaybeRefOrGetter<string | undefined>
   id?: string
-  dragHandle?: MaybeComputedRef<string | undefined>
 }
 
-function useDrag(params: UseDragParams) {
+export function useDrag(params: UseDragParams) {
   const {
     vueFlowRef,
     snapToGrid,
@@ -128,7 +140,7 @@ function useDrag(params: UseDragParams) {
     autoPanId = requestAnimationFrame(autoPan)
   }
 
-  watch([() => resolveUnref(disabled), el], ([isDisabled, nodeEl]) => {
+  watch([() => toValue(disabled), el], ([isDisabled, nodeEl]) => {
     if (nodeEl) {
       const selection = select(nodeEl)
 
@@ -145,7 +157,7 @@ function useDrag(params: UseDragParams) {
               }
             }
 
-            if (node && resolveUnref(selectable) && selectNodesOnDrag.value) {
+            if (node && toValue(selectable) && selectNodesOnDrag.value) {
               handleNodeClick(
                 node,
                 multiSelectionActive.value,
@@ -209,7 +221,7 @@ function useDrag(params: UseDragParams) {
           })
           .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
             const target = event.target as HTMLDivElement
-            const unrefDragHandle = resolveUnref(dragHandle)
+            const unrefDragHandle = toValue(dragHandle)
 
             return (
               !event.button &&
@@ -226,5 +238,3 @@ function useDrag(params: UseDragParams) {
 
   return dragging
 }
-
-export default useDrag

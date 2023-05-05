@@ -1,8 +1,11 @@
 <script lang="ts" setup>
+import { computed, ref } from 'vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import type { GraphNode } from '../../types'
 import { SelectionMode } from '../../types'
+import { useKeyPress, useVueFlow } from '../../composables'
+import { getConnectedEdges, getNodesInside } from '../../utils'
 import { getMousePosition } from './utils'
 
 const { isSelecting } = defineProps<{ isSelecting: boolean }>()

@@ -1,4 +1,18 @@
+import { computed, defineComponent, h, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
+import { toRef, until, useVModel } from '@vueuse/core'
 import type { GraphNode, HandleConnectable, NodeComponent } from '~/types'
+import { NodeId, NodeRef } from '~/context'
+import { isInputDOMNode, useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '~/composables'
+import {
+  ARIA_NODE_DESC_KEY,
+  arrowKeyDiffs,
+  calcNextPosition,
+  elementSelectionKeys,
+  getConnectedEdges,
+  getXYZPos,
+  handleNodeClick,
+  isNumber,
+} from '~/utils'
 
 interface Props {
   id: string
@@ -46,7 +60,7 @@ const NodeWrapper = defineComponent({
 
     const node = useVModel(props, 'node')
 
-    const parentNode = computed(() => findNode(node.value.parentNode))
+    const parentNode = toRef(() => findNode(node.value.parentNode))
 
     const connectedEdges = computed(() => getConnectedEdges([node.value], edges.value))
 

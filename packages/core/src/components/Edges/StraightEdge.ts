@@ -1,5 +1,7 @@
 import type { FunctionalComponent } from 'vue'
+import { h } from 'vue'
 import BaseEdge from './BaseEdge'
+import { getStraightPath } from './utils'
 import type { StraightEdgeProps } from '~/types'
 
 const StraightEdge: FunctionalComponent<StraightEdgeProps> = function (props, { attrs }) {

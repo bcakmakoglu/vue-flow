@@ -1,5 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
+import { computed, ref } from 'vue'
 import type { ComputedGetters, D3Selection, GraphNode, State, ViewportFunctions } from '~/types'
+import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint } from '~/utils'
 
 interface ExtendedViewport extends ViewportFunctions {
   initialized: boolean
@@ -22,7 +24,7 @@ const initialViewportHelper: ExtendedViewport = {
   initialized: false,
 }
 
-export default (state: State, getters: ComputedGetters) => {
+export function useViewport(state: State, getters: ComputedGetters) {
   const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid, hooks } =
     $(state)
 

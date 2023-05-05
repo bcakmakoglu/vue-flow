@@ -2,7 +2,6 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import VueMacros from 'unplugin-vue-macros/vite'
-import AutoImport from 'unplugin-auto-import/vite'
 import replace from '@rollup/plugin-replace'
 import pkg from './package.json'
 
@@ -42,7 +41,6 @@ export default defineConfig({
       hoistStatic: false,
       setupBlock: false,
       shortEmits: false,
-      defineModel: false,
       definePropsRefs: false,
       setupComponent: false,
       setupSFC: false,
@@ -52,12 +50,7 @@ export default defineConfig({
           reactivityTransform: true,
         }),
       },
-    }),
-    AutoImport({
-      imports: ['vue', '@vueuse/core', 'vue/macros'],
-      dirs: ['./src/utils/**', './src/composables/**', './src/context/**', './src/store/**', './src/components/Edges/utils/**'],
-      dts: 'src/auto-imports.d.ts',
-    }),
+    }) as any,
     replace({
       __ENV__: 'process.env.NODE_ENV',
       __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),

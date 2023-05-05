@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import type { D3ZoomEvent } from 'd3-zoom'
+import { useVModel } from '@vueuse/core'
+import { onMounted, onUnmounted, provide, ref, useSlots } from 'vue'
 import Viewport from '../Viewport/Viewport.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { FlowElements, FlowProps } from '../../types/flow'
@@ -18,6 +20,9 @@ import type {
   VueFlowStore,
 } from '../../types'
 import type { VueFlowError } from '../../utils/errors'
+import { useVueFlow, useWatchProps } from '../../composables'
+import { useHooks } from '../../store'
+import { Slots } from '../../context'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: undefined,
@@ -125,7 +130,7 @@ const modelEdges = useVModel(props, 'edges', emit)
 
 const { vueFlowRef, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow(props)
 
-const dispose = useWatch({ modelValue, nodes: modelNodes, edges: modelEdges }, props, {
+const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, {
   vueFlowRef,
   hooks,
   getNodeTypes,

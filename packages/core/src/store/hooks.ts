@@ -1,5 +1,8 @@
+import { tryOnScopeDispose } from '@vueuse/core'
 import type { Ref } from 'vue'
+import { onBeforeMount } from 'vue'
 import type { FlowHooks } from '~/types'
+import { createExtendedEventHook, warn } from '~/utils'
 
 // flow event hooks
 export function createHooks(): FlowHooks {

@@ -1,5 +1,10 @@
+import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
+import { computed, getCurrentScope, inject, provide, reactive } from 'vue'
+import { useActions, useGetters, useState } from '~/store'
 import type { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
+import { VueFlow } from '~/context'
+import { warn } from '~/utils'
 
 /**
  * Stores all currently created store instances
@@ -81,7 +86,7 @@ type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 // todo: maybe replace the storage with a context based solution; This would break calling useVueFlow outside a setup function though, which should be fine
-export default (options?: FlowProps): VueFlowStore => {
+export function useVueFlow(options?: FlowProps): VueFlowStore {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
