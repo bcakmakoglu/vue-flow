@@ -1,4 +1,3 @@
-import { isFunction, isString } from '@vueuse/core'
 import type {
   EdgeAddChange,
   EdgeChange,

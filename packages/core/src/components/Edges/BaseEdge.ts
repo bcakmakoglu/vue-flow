@@ -1,4 +1,3 @@
-import { isNumber } from '@vueuse/core'
 import type { Component, FunctionalComponent } from 'vue'
 import EdgeText from './EdgeText.vue'
 import type { BaseEdgeProps } from '~/types'
