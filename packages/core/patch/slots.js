@@ -32,14 +32,14 @@ const patchedTypeImports = `import type {
   VueFlowStore,
 } from '../../types'`
 
-const unpatchedSlots = `Record<string, (_: {}) => any> &
-    Record<string, (_: {}) => any> & {
-      'connection-line': (_: {}) => any
-      'zoom-pane': (_: {}) => any
-      'default': (_: {}) => any
+const unpatchedSlots = `Partial<Record<string, (_: {}) => any>> &
+    Partial<Record<string, (_: {}) => any>> & {
+      'connection-line'?(_: {}): any
+      'zoom-pane'?(_: {}): any
+      default?(_: {}): any
     }`
 
-const patchedSlots = `Record<string, (_: any) => any> & {
+const patchedSlots = `Partial<Record<string, (_: any) => any>> & {
     'connection-line': (connectionLineProps: ConnectionLineProps) => any
     'zoom-pane': () => any
     'default': () => any
