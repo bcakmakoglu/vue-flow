@@ -6,6 +6,8 @@ import Heart from '~icons/mdi/heart'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
+const currentBreakpoint = ref<string | null>(null)
+
 const isDark = ref(false)
 
 onMounted(() => {
@@ -54,7 +56,7 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onNodesInitialized } = useVueFlow({
+const { getNodes, findNode, setEdges, updateNodeInternals, dimensions } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -71,16 +73,16 @@ const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onNodesIn
   elevateEdgesOnSelect: true,
 })
 
-onNodesInitialized(setElements)
-
 const el = templateRef<HTMLDivElement>('el', null)
 
 function setElements() {
   const offsetX = dimensions.value.width / 2
   const offsetY = dimensions.value.height / 4
 
-  if (breakpoints.isSmaller('md')) {
+  if (breakpoints.isSmaller('md') && currentBreakpoint.value !== 'sm') {
     const mainNode = findNode('intro')!
+
+    currentBreakpoint.value = 'sm'
 
     getNodes.value.forEach((node) => {
       switch (node.id) {
@@ -143,7 +145,9 @@ function setElements() {
         },
       ]
     })
-  } else {
+  } else if (currentBreakpoint.value !== 'md') {
+    currentBreakpoint.value = 'md'
+
     getNodes.value.forEach((node) => {
       const mainNode = findNode('intro')!
       switch (node.id) {
@@ -179,8 +183,11 @@ function setElements() {
     updateNodeInternals()
   })
 }
-const { stop } = useResizeObserver(el, useDebounceFn(setElements, 5))
-onBeforeUnmount(stop)
+
+onMounted(() => {
+  const { stop } = useResizeObserver(el, useDebounceFn(setElements, 25))
+  onBeforeUnmount(stop)
+})
 
 function scrollTo() {
   const el = document.getElementById('acknowledgement')
