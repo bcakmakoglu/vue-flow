@@ -75,7 +75,7 @@ const { getNodes, findNode, setEdges, updateNodeInternals, dimensions } = useVue
 
 const el = templateRef<HTMLDivElement>('el', null)
 
-function setElements() {
+const setElements = useDebounceFn(() => {
   const offsetX = dimensions.value.width / 2
   const offsetY = dimensions.value.height / 4
 
@@ -87,14 +87,8 @@ function setElements() {
     getNodes.value.forEach((node) => {
       switch (node.id) {
         case 'intro':
-          if (node.dimensions.width >= dimensions.value.width) {
-            node.width = dimensions.value.width - 50
-          } else {
-            node.width = node.dimensions.width
-          }
-
           node.position = {
-            x: offsetX - ((node.width as number) ?? node.dimensions.width) / 2,
+            x: offsetX - node.dimensions.width / 2,
             y: offsetY - node.dimensions.height / 2,
           }
           break
@@ -145,14 +139,13 @@ function setElements() {
         },
       ]
     })
-  } else if (!breakpoints.isSmaller('md') && currentBreakpoint.value !== 'md') {
+  } else if (!breakpoints.isSmaller('md')) {
     currentBreakpoint.value = 'md'
 
     getNodes.value.forEach((node) => {
       const mainNode = findNode('intro')!
       switch (node.id) {
         case 'intro':
-          node.width = undefined
           node.position = { x: offsetX - node.dimensions.width / 2, y: offsetY - node.dimensions.height / 2 }
           break
         case 'examples':
@@ -182,11 +175,10 @@ function setElements() {
   nextTick(() => {
     updateNodeInternals()
   })
-}
+}, 1)
 
 onMounted(() => {
-  const { stop } = useResizeObserver(el, useDebounceFn(setElements, 25))
-  onBeforeUnmount(stop)
+  watch(dimensions, setElements, { deep: true, immediate: true })
 })
 
 function scrollTo() {
@@ -205,7 +197,7 @@ function scrollTo() {
 
     <template #node-box="props">
       <template v-if="props.id === 'intro'">
-        <div class="box max-w-[500px]">
+        <div class="box max-w-100 md:max-w-125">
           <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
             <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
               <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">Vue Flow</h1>
