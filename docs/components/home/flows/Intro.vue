@@ -145,7 +145,7 @@ function setElements() {
         },
       ]
     })
-  } else if (currentBreakpoint.value !== 'md') {
+  } else if (!breakpoints.isSmaller('md') && currentBreakpoint.value !== 'md') {
     currentBreakpoint.value = 'md'
 
     getNodes.value.forEach((node) => {
