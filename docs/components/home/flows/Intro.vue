@@ -175,7 +175,7 @@ const setElements = useDebounceFn(() => {
   nextTick(() => {
     updateNodeInternals()
   })
-}, 1)
+}, 50)
 
 onMounted(() => {
   watch(dimensions, setElements, { deep: true, immediate: true })
@@ -197,7 +197,7 @@ function scrollTo() {
 
     <template #node-box="props">
       <template v-if="props.id === 'intro'">
-        <div class="box max-w-100 md:max-w-125">
+        <div class="box max-w-75 md:max-w-125">
           <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
             <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
               <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">Vue Flow</h1>
