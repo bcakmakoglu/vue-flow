@@ -413,7 +413,8 @@ export function useActions(
   }
 
   const addNodes: Actions['addNodes'] = (nodes) => {
-    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
+    let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
+    nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
     const graphNodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
 
@@ -425,7 +426,8 @@ export function useActions(
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
-    const nextEdges = params instanceof Function ? params(state.edges) : params
+    let nextEdges = params instanceof Function ? params(state.edges) : params
+    nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
 
     const validEdges = state.isValidConnection
       ? nextEdges.filter((edge) =>
