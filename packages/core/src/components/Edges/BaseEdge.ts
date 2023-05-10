@@ -9,6 +9,7 @@ import type { BaseEdgeProps } from '~/types'
  */
 const BaseEdge: FunctionalComponent<BaseEdgeProps> = function (
   {
+    id,
     path,
     label,
     labelX,
@@ -26,6 +27,7 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function (
 ) {
   return [
     h('path', {
+      'id': id,
       'style': attrs.style,
       'class': ['vue-flow__edge-path', attrs.class].join(' '),
       'd': path,
@@ -56,6 +58,7 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function (
 }
 
 BaseEdge.props = [
+  'id',
   'path',
   'labelX',
   'labelY',

@@ -192,6 +192,7 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}, Type extends s
 }
 
 export interface BaseEdgeProps extends EdgeLabelOptions {
+  id?: string
   labelX?: number
   labelY?: number
   path: string
