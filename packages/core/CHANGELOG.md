@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.19.4
+
+### Patch Changes
+
+- [#924](https://github.com/bcakmakoglu/vue-flow/pull/924) [`f292bfd6`](https://github.com/bcakmakoglu/vue-flow/commit/f292bfd6f246bd12492dcb8567d9b7cbc8c6c061) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if transform has changed in panBy before applying the new transform
+
+- [#923](https://github.com/bcakmakoglu/vue-flow/pull/923) [`caafee4e`](https://github.com/bcakmakoglu/vue-flow/commit/caafee4e31eb7aaa03b25328ce7ab62bacc7a5d2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Properly reset the store state when using `$reset` and retain reactivity of store state
+
 ## 1.19.3
 
 ### Patch Changes
