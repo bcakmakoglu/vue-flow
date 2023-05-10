@@ -490,12 +490,18 @@ export function useActions(
   }
 
   const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true) => {
-    const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
+    let nodesToRemove = nodes instanceof Function ? nodes(state.nodes) : nodes
+    nodesToRemove = Array.isArray(nodesToRemove) ? nodesToRemove : [nodesToRemove]
+
     const nodeChanges: NodeRemoveChange[] = []
     const edgeChanges: EdgeRemoveChange[] = []
 
-    curr.forEach((item) => {
-      const currNode = typeof item === 'string' ? findNode(item)! : item
+    nodesToRemove.forEach((item) => {
+      const currNode = typeof item === 'string' ? findNode(item) : item
+
+      if (!currNode) {
+        return
+      }
 
       if (isDef(currNode.deletable) && !currNode.deletable) {
         return
@@ -525,11 +531,17 @@ export function useActions(
   }
 
   const removeEdges: Actions['removeEdges'] = (edges) => {
-    const curr = edges instanceof Function ? edges(state.edges) : edges
+    let edgesToRemove = edges instanceof Function ? edges(state.edges) : edges
+    edgesToRemove = Array.isArray(edgesToRemove) ? edgesToRemove : [edgesToRemove]
+
     const changes: EdgeRemoveChange[] = []
 
-    curr.forEach((item) => {
-      const currEdge = typeof item === 'string' ? findEdge(item)! : item
+    edgesToRemove.forEach((item) => {
+      const currEdge = typeof item === 'string' ? findEdge(item) : item
+
+      if (!currEdge) {
+        return
+      }
 
       if (isDef(currEdge.deletable) && !currEdge.deletable) {
         return
