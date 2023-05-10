@@ -645,13 +645,14 @@ export function useActions(
 
     const constrainedTransform = d3Zoom.constrain()(nextTransform, extent, translateExtent)
 
-    d3Zoom.transform(d3Selection, constrainedTransform)
-
-    return (
+    const transformChanged =
       state.viewport.x !== constrainedTransform.x ||
       state.viewport.y !== constrainedTransform.y ||
       state.viewport.zoom !== constrainedTransform.k
-    )
+
+    d3Zoom.transform(d3Selection, constrainedTransform)
+
+    return transformChanged
   }
 
   const setState: Actions['setState'] = (options) => {
@@ -823,12 +824,7 @@ export function useActions(
     project: (position) => viewportHelper.project(position),
     toObject,
     updateNodeInternals,
-    $reset: () => {
-      state.edges = []
-      state.nodes = []
-
-      setState(useState())
-    },
+    $reset: () => {},
     $destroy: () => {},
   }
 }
