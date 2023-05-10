@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.19.4] - 2023-05-10
+
+[d673020](d673020586ec839fc7cd32313d2602c488637645)...[ca54537](ca54537d546f071cd810b3e7bba5d2951554b36d)
+
+### Bug Fixes
+
+- Check if transform changed before applying ([0c34023](0c340231b8d56a8178a2c0f0c0b9439e29fc6cb7))
+- Properly reset state and retain reactivity ([6f3c22e](6f3c22ee664112af98e8ade5a2d1f7e2a81aace1))
+
+### Miscellaneous Tasks
+
+- Only re-set elements if breakpoint actually changes ([60327ee](60327ee6a14cf633b8f5109b22083d1a02bcb2c0))
+- Check if breakpoint matches ([dff1d72](dff1d72788b2914b0b1a68e1bdf0ffd9c5e0de2b))
+- Dynamic box width ([789ec7e](789ec7ee0e5251d89fd6592ef1fcffc9b17fdaaf))
+- Mobile intro flow height ([1ecfcf1](1ecfcf100581e79a40112c6a350a213dfc042303))
+- Intro min height ([e909f78](e909f78c7199ee1d561c24585aa8df5b221eaabc))
+- Add ([732e0f4](732e0f4951ab1fc84d5418b17d995fcc6d4828e7))
+- Add ([0889f38](0889f3801b722ca69f5a131cd9601e56906be059))
+
+### Refactor
+
+- Remove reactivity transform from viewport component ([e5591ee](e5591ee1df9b7d8a76958ab984007a184e46c2eb))
+
 ## [1.19.3] - 2023-05-05
 
 [f8b8f27](f8b8f27735ff3d71e9c5008ad50d94ee4c3116ae)...[d673020](d673020586ec839fc7cd32313d2602c488637645)
