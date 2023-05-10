@@ -17,7 +17,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative min-h-250 h-[calc(100vh-var(--vp-nav-height))] lg:h-[calc(100vh-var(--vp-nav-height)-176px)]">
+  <div class="relative min-h-250 h-[calc(100vh-var(--vp-nav-height))] lg:min-h-100 lg:h-[calc(100vh-var(--vp-nav-height)-176px)]">
     <Intro />
   </div>
 </template>
