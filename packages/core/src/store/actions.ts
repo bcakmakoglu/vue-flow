@@ -367,8 +367,8 @@ export function useActions(
       : nextEdges
 
     state.edges = validEdges.reduce<GraphEdge[]>((res, edge) => {
-      const sourceNode = findNode(edge.source)!
-      const targetNode = findNode(edge.target)!
+      const sourceNode = findNode(edge.source)
+      const targetNode = findNode(edge.target)
 
       const missingSource = !sourceNode || typeof sourceNode === 'undefined'
       const missingTarget = !targetNode || typeof targetNode === 'undefined'
