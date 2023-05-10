@@ -153,11 +153,13 @@ export type SetEdges = (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => voi
 export type AddNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[])) => void
 
 export type RemoveNodes = (
-  nodes: (Node[] | string[]) | ((nodes: GraphNode[]) => Node[] | string[]),
+  nodes: (string | Node) | (Node | string)[] | ((nodes: GraphNode[]) => (string | Node) | (Node | string)[]),
   removeConnectedEdges?: boolean,
 ) => void
 
-export type RemoveEdges = (edges: (Edge[] | string[]) | ((edges: GraphEdge[]) => Edge[] | string[])) => void
+export type RemoveEdges = (
+  edges: (string | Edge) | (Edge | string)[] | ((edges: GraphEdge[]) => (string | Edge) | (Edge | string)[]),
+) => void
 
 export type AddEdges = (edgesOrConnections: (Edge | Connection)[] | ((edges: GraphEdge[]) => (Edge | Connection)[])) => void
 
