@@ -657,6 +657,8 @@ export function useActions(
 
   const setState: Actions['setState'] = (options) => {
     const opts = options instanceof Function ? options(state) : options
+
+    // these options will be set using the appropriate methods
     const skip: (keyof typeof opts)[] = [
       'modelValue',
       'nodes',
@@ -667,6 +669,17 @@ export function useActions(
       'nodeExtent',
       'hooks',
       'defaultEdgeOptions',
+    ]
+
+    // these options cannot be set after initialization
+    const exclude: (keyof typeof opts)[] = [
+      'd3Zoom',
+      'd3Selection',
+      'd3ZoomHandler',
+      'viewportRef',
+      'vueFlowRef',
+      'dimensions',
+      'hooks',
     ]
 
     // we need to set the default opts before setting any elements so the options are applied to the elements on first render
@@ -708,9 +721,11 @@ export function useActions(
     }
 
     Object.keys(opts).forEach((o) => {
-      const option = opts[o as keyof typeof opts]
-      if (!skip.includes(o as keyof typeof opts) && isDef(option)) {
-        ;(<any>state)[o] = option
+      const key = o as keyof State
+      const option = opts[key]
+
+      if (![...skip, ...exclude].includes(key) && isDef(option)) {
+        ;(<any>state)[key] = option
       }
     })
 
@@ -824,7 +839,31 @@ export function useActions(
     project: (position) => viewportHelper.project(position),
     toObject,
     updateNodeInternals,
-    $reset: () => {},
+    $reset: () => {
+      const resetState = useState()
+
+      state.edges = []
+      state.nodes = []
+
+      // reset the zoom state
+      if (state.d3Zoom && state.d3Selection) {
+        const updatedTransform = zoomIdentity
+          .translate(resetState.defaultViewport.x ?? 0, resetState.defaultViewport.y ?? 0)
+          .scale(clamp(resetState.defaultViewport.zoom ?? 1, resetState.minZoom, resetState.maxZoom))
+
+        const bbox = state.viewportRef!.getBoundingClientRect()
+
+        const extent: CoordinateExtent = [
+          [0, 0],
+          [bbox.width, bbox.height],
+        ]
+
+        const constrainedTransform = state.d3Zoom.constrain()(updatedTransform, extent, resetState.translateExtent)
+        state.d3Zoom.transform(state.d3Selection, constrainedTransform)
+      }
+
+      setState(resetState)
+    },
     $destroy: () => {},
   }
 }
