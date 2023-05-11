@@ -20,7 +20,7 @@ const { onConnect, addEdges, setTransform, toObject } = useVueFlow({
   maxZoom: 4,
 })
 
-onConnect((params) => addEdges([params]))
+onConnect(addEdges)
 
 function updatePos() {
   return elements.value.forEach((el) => {

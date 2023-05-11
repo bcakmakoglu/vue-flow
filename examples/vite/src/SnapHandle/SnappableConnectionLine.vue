@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ConnectionLineProps, GraphNode, HandleElement, Position, StartHandle } from '@vue-flow/core'
+import type { ConnectingHandle, ConnectionLineProps, GraphNode, HandleElement, Position } from '@vue-flow/core'
 import { getBezierPath, useVueFlow } from '@vue-flow/core'
 
 interface CustomConnectionLineProps extends ConnectionLineProps {
@@ -14,7 +14,7 @@ interface CustomConnectionLineProps extends ConnectionLineProps {
 interface ClosestElements {
   node: GraphNode | null
   handle: HandleElement | null
-  startHandle: StartHandle | null
+  startHandle: ConnectingHandle | null
 }
 
 const props = defineProps<CustomConnectionLineProps>()

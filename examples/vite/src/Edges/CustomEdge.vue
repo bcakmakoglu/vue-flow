@@ -41,7 +41,7 @@ export default {
       }"
       class="nodrag nopan"
     >
-      <button class="edgebutton" @click="removeEdges([id])">×</button>
+      <button class="edgebutton" @click="removeEdges(id)">×</button>
     </div>
   </EdgeLabelRenderer>
 </template>

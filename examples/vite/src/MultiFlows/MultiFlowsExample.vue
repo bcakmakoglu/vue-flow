@@ -5,6 +5,7 @@ import Flow from './Flow.vue'
 <template>
   <div class="vue-flow__example-multiflows">
     <Flow />
+
     <Flow />
   </div>
 </template>

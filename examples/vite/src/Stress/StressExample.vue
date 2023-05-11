@@ -5,6 +5,7 @@ import { Background } from '@vue-flow/background'
 import { getElements } from './utils'
 
 const { nodes, edges } = getElements(15, 15)
+
 const elements = ref([...nodes, ...edges])
 
 const { onPaneReady, dimensions, fitView } = useVueFlow()

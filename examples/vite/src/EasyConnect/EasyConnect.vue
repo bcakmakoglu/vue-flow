@@ -43,11 +43,7 @@ const elements = ref<Elements>([
   },
 ])
 
-onConnect((params) => {
-  console.log('connecting')
-
-  addEdges([params])
-})
+onConnect(addEdges)
 </script>
 
 <template>
