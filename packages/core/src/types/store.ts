@@ -249,6 +249,8 @@ export interface Actions extends ViewportFunctions {
   setState: SetState
   /** return an object of graph values (elements, viewport transform) for storage and re-loading a graph */
   toObject: () => FlowExportObject
+  /** load graph from export obj */
+  fromObject: (obj: FlowExportObject) => void
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */

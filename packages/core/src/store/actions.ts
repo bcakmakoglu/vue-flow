@@ -756,6 +756,45 @@ export function useActions(
     }
   }
 
+  const fitView: Actions['fitView'] = async (params = { padding: 0.1 }) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.fitView(params)
+  }
+
+  const zoomIn: Actions['zoomIn'] = async (options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.zoomIn(options)
+  }
+
+  const zoomOut: Actions['zoomOut'] = async (options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.zoomOut(options)
+  }
+
+  const zoomTo: Actions['zoomTo'] = async (zoomLevel, options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.zoomTo(zoomLevel, options)
+  }
+
+  const setTransform: Actions['setTransform'] = async (transform, options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.setTransform(transform, options)
+  }
+
+  const getTransform: Actions['getTransform'] = () => viewportHelper.getTransform()
+
+  const setCenter: Actions['setCenter'] = async (x, y, options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.setCenter(x, y, options)
+  }
+
+  const fitBounds: Actions['fitBounds'] = async (bounds, options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.fitBounds(bounds, options)
+  }
+
+  const project: Actions['project'] = (position) => viewportHelper.project(position)
+
   const toObject: Actions['toObject'] = () => {
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
@@ -786,6 +825,22 @@ export function useActions(
         zoom: state.viewport.zoom,
       } as FlowExportObject),
     )
+  }
+
+  const fromObject: Actions['fromObject'] = (obj) => {
+    const { nodes, edges, position, zoom } = obj
+
+    if (nodes) {
+      setNodes(nodes)
+    }
+
+    if (edges) {
+      setEdges(edges)
+    }
+
+    if (position) {
+      setTransform({ x: position[0], y: position[1], zoom: zoom || 1 })
+    }
   }
 
   return {
@@ -821,37 +876,17 @@ export function useActions(
     getIntersectingNodes,
     isNodeIntersecting,
     panBy,
-    fitView: async (params = { padding: 0.1 }) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.fitView(params)
-    },
-    zoomIn: async (options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomIn(options)
-    },
-    zoomOut: async (options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomOut(options)
-    },
-    zoomTo: async (zoomLevel, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomTo(zoomLevel, options)
-    },
-    setTransform: async (transform, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.setTransform(transform, options)
-    },
-    getTransform: () => viewportHelper.getTransform(),
-    setCenter: async (x, y, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.setCenter(x, y, options)
-    },
-    fitBounds: async (bounds, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.fitBounds(bounds, options)
-    },
-    project: (position) => viewportHelper.project(position),
+    fitView,
+    zoomIn,
+    zoomOut,
+    zoomTo,
+    setTransform,
+    getTransform,
+    setCenter,
+    fitBounds,
+    project,
     toObject,
+    fromObject,
     updateNodeInternals,
     $reset: () => {
       const resetState = useState()
