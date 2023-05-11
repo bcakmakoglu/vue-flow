@@ -68,7 +68,7 @@ const EdgeWrapper = defineComponent({
       const sourceNode = findNode(edge.source)
       const targetNode = findNode(edge.target)
 
-      if (!sourceNode || !targetNode || !edge) {
+      if (!sourceNode || !targetNode || !edge || sourceNode.hidden || targetNode.hidden) {
         return null
       }
 
