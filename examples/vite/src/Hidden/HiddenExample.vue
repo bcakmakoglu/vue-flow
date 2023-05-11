@@ -19,15 +19,17 @@ const { nodes, edges } = useVueFlow({
     { id: 'e3-4', source: '3', target: '4' },
   ],
 })
-watchEffect(() => {
-  nodes.value.forEach((n) => (n.hidden = isHidden.value))
-  edges.value.forEach((e) => (e.hidden = isHidden.value))
+
+watch(isHidden, (shouldHide) => {
+  nodes.value.forEach((n) => (n.hidden = shouldHide))
+  edges.value.forEach((e) => (e.hidden = shouldHide))
 })
 </script>
 
 <template>
   <VueFlow>
     <MiniMap />
+
     <Controls />
 
     <div :style="{ position: 'absolute', left: '10px', top: '10px', zIndex: 4 }">

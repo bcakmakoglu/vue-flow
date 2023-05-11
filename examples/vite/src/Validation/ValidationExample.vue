@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, OnConnectStartParams, VueFlowStore } from '@vue-flow/core'
+import type { Connection, OnConnectStartParams } from '@vue-flow/core'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
@@ -17,19 +17,18 @@ const { addEdges } = useVueFlow({
     { id: 'C', type: 'customnode', position: { x: 250, y: 300 }, isValidSourcePos: (connection) => connection.target === 'B' },
   ],
 })
-function onLoad(flowInstance: VueFlowStore) {
-  return flowInstance.fitView()
-}
+
 function onConnectStart({ nodeId, handleType }: OnConnectStartParams) {
   return console.log('on connect start', { nodeId, handleType })
 }
+
 function onConnectEnd(event: MouseEvent) {
   return console.log('on connect end', event)
 }
 
 function onConnect(params: Connection) {
   console.log('on connect', params)
-  addEdges([params])
+  addEdges(params)
 }
 </script>
 
@@ -38,7 +37,6 @@ function onConnect(params: Connection) {
     :select-nodes-on-drag="false"
     class="validationflow"
     @connect="onConnect"
-    @pane-ready="onLoad"
     @connect-start="onConnectStart"
     @connect-end="onConnectEnd"
   >

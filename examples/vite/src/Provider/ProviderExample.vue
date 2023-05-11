@@ -1,15 +1,9 @@
 <script lang="ts" setup>
-import type { Elements, VueFlowStore } from '@vue-flow/core'
-import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { Elements } from '@vue-flow/core'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 
-import '@vue-flow/controls/dist/style.css'
-
 import Sidebar from './Sidebar.vue'
-
-function onLoad(flowInstance: VueFlowStore) {
-  return console.log('flow loaded:', flowInstance)
-}
 
 const initialElements: Elements = [
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
@@ -21,14 +15,16 @@ const initialElements: Elements = [
 ]
 
 useVueFlow()
+
 const elements = ref<Elements>(initialElements)
 </script>
 
 <template>
   <div class="providerflow">
     <Sidebar />
+
     <div class="vue-flow-wrapper">
-      <VueFlow v-model="elements" :connection-mode="ConnectionMode.Loose" @pane-ready="onLoad">
+      <VueFlow v-model="elements">
         <Controls />
       </VueFlow>
     </div>

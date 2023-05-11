@@ -31,7 +31,9 @@ onNodeDragStop(({ node }) => {
 <template>
   <div class="vue-flow__group-node">
     <Handle type="target" :position="Position.Top" />
+
     <strong>Group {{ label }}</strong>
+
     <Handle type="source" :position="Position.Bottom" />
   </div>
 </template>
