@@ -27,7 +27,7 @@ function onDragOver(event) {
   }
 }
 
-onConnect((params) => addEdges([params]))
+onConnect((params) => addEdges(params))
 
 function onDrop(event) {
   const type = event.dataTransfer?.getData('application/vueflow')

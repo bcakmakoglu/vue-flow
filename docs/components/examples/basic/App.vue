@@ -32,7 +32,7 @@ onNodeDragStop((e) => console.log('drag stop', e))
  * onConnect is called when a new connection is created.
  * You can add additional properties to your new edge (like a type or label) or block the creation altogether
  */
-onConnect((params) => addEdges([params]))
+onConnect((params) => addEdges(params))
 
 const dark = ref(false)
 
@@ -73,7 +73,9 @@ function toggleClass() {
 <template>
   <VueFlow v-model="elements" :class="{ dark }" class="basicflow" :default-viewport="{ zoom: 1.5 }" :min-zoom="0.2" :max-zoom="4">
     <Background :pattern-color="dark ? '#FFFFFB' : '#aaa'" gap="8" />
+
     <MiniMap />
+
     <Controls />
 
     <Panel :position="PanelPosition.TopRight" class="controls">
