@@ -1,5 +1,25 @@
 # @vue-flow/core
 
+## 1.20.0
+
+### Minor Changes
+
+- [#931](https://github.com/bcakmakoglu/vue-flow/pull/931) [`ecb9b540`](https://github.com/bcakmakoglu/vue-flow/commit/ecb9b540c64d6470ddc61db6a76e544d8b715645) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `parent` class name to parent nodes
+
+- [#931](https://github.com/bcakmakoglu/vue-flow/pull/931) [`2e0484b7`](https://github.com/bcakmakoglu/vue-flow/commit/2e0484b77873a416c9d3ce78c7fe3b169d905910) Thanks [@github-actions](https://github.com/apps/github-actions)! - Allow passing a single element to `removeNodes` and `removeEdges` actions
+
+- [#931](https://github.com/bcakmakoglu/vue-flow/pull/931) [`11210b4c`](https://github.com/bcakmakoglu/vue-flow/commit/11210b4cd0936ad627c0e693d32a00b317fbac43) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add id prop to BaseEdge component and pass id to the edge path
+
+- [#939](https://github.com/bcakmakoglu/vue-flow/pull/939) [`fc68db2d`](https://github.com/bcakmakoglu/vue-flow/commit/fc68db2d81a771f1477c226b5e49fa61a2b28767) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `fromObject` function to load a graph from a flow export obj
+
+- [#931](https://github.com/bcakmakoglu/vue-flow/pull/931) [`0a090681`](https://github.com/bcakmakoglu/vue-flow/commit/0a090681f716b02daad0d3c0752c35281e1ddcfe) Thanks [@github-actions](https://github.com/apps/github-actions)! - Allow passing a single element to `addNodes` or `addEdges` actions
+
+- [#931](https://github.com/bcakmakoglu/vue-flow/pull/931) [`aef0ec51`](https://github.com/bcakmakoglu/vue-flow/commit/aef0ec517a6f6061d84c7e9f371102481b52ed63) Thanks [@github-actions](https://github.com/apps/github-actions)! - When handles are on top of each other, try to pick the one closest to center and/or one that is of type target
+
+### Patch Changes
+
+- [#941](https://github.com/bcakmakoglu/vue-flow/pull/941) [`a840e73b`](https://github.com/bcakmakoglu/vue-flow/commit/a840e73b0d19a866b6997dea5ed1dc0b37ec8790) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Do not render edges that are connected to a hidden node
+
 ## 1.19.4
 
 ### Patch Changes
