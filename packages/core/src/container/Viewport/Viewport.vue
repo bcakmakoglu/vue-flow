@@ -212,6 +212,7 @@ onMounted(() => {
           }
 
           event.preventDefault()
+          // eslint-disable-next-line @typescript-eslint/no-invalid-this
           d3ZoomHandler.call(this, event, d)
         },
         { passive: false },
