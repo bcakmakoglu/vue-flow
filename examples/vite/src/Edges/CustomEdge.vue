@@ -13,7 +13,7 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   targetPosition: Position
   data: T
   markerEnd: string
-  style: CSSProperties
+  style?: CSSProperties
 }
 
 const props = defineProps<CustomEdgeProps>()
