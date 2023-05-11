@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import type { EdgeProps, Position } from '@vue-flow/core'
 import { getBezierPath } from '@vue-flow/core'
-import type { Colors } from '../flows/utils'
+import type { Colors } from './utils'
 
 interface EdgeData {
   text?: string
@@ -41,20 +41,16 @@ export default {
 
 <template>
   <path
-    :id="`${id}-${data.color}`"
+    :id="id"
     class="vue-flow__edge-path"
-    :style="{ stroke: data.color, strokeWidth: '3' }"
+    :style="{ stroke: data?.color, strokeWidth: '3' }"
     :d="edgePath[0]"
     :marker-end="markerEnd"
   />
+
   <text>
-    <textPath
-      :href="`#${id}-${data.color}`"
-      :style="{ fontSize: '1.25rem', fill: 'white' }"
-      startOffset="50%"
-      text-anchor="middle"
-    >
-      {{ data.text }}
+    <textPath :href="`#${id}`" :style="{ fontSize: '1.25rem', fill: 'black' }" startOffset="50%" text-anchor="middle">
+      {{ data?.text }}
     </textPath>
   </text>
 </template>
