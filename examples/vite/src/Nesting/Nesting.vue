@@ -73,21 +73,19 @@ const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
   ],
 })
 
-onConnect((params) => addEdges([params]))
+onConnect(addEdges)
 
 onMounted(() => {
   // add nodes to parent
-  addNodes([
-    {
-      id: '999',
-      type: 'input',
-      label: 'Added after mount',
-      position: { x: 20, y: 100 },
-      class: 'light',
-      expandParent: true,
-      parentNode: '2',
-    },
-  ])
+  addNodes({
+    id: '999',
+    type: 'input',
+    label: 'Added after mount',
+    position: { x: 20, y: 100 },
+    class: 'light',
+    expandParent: true,
+    parentNode: '2',
+  })
 
   setTimeout(() => {
     const node = findNode('999')!

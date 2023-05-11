@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { GraphNode } from '@vue-flow/core'
 import { getStraightPath } from '@vue-flow/core'
-import { computed } from '@vue/reactivity'
+import { computed } from 'vue'
+
 const props = defineProps<{ sourceNode: GraphNode; sourceX: number; sourceY: number; targetX: number; targetY: number }>()
 
 const edgePath = computed(() =>

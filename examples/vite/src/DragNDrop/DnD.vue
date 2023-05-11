@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { Node } from '@vue-flow/core'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import Sidebar from './Sidebar.vue'
 
@@ -27,7 +26,7 @@ function onDragOver(event: DragEvent) {
 
 const wrapper = ref()
 
-onConnect((params) => addEdges([params]))
+onConnect(addEdges)
 
 function onDrop(event: DragEvent) {
   const type = event.dataTransfer?.getData('application/vueflow')
@@ -39,14 +38,12 @@ function onDrop(event: DragEvent) {
     y: event.clientY - flowbounds.top,
   })
 
-  const newNode = {
+  addNodes({
     id: getId(),
     type,
     position,
     label: `${type} node`,
-  } as Node
-
-  addNodes([newNode])
+  })
 }
 </script>
 

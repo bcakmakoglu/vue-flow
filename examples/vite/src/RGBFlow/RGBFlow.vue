@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Elements, VueFlowStore } from '@vue-flow/core'
+import type { Elements } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import RGBNode from './RGBNode.vue'
 import RGBOutputNode from './RGBOutputNode.vue'
@@ -20,10 +20,6 @@ const elements = ref<Elements>([
   { id: 'e3-4', data: { color: 'blue' }, source: '3', target: '4', animated: true },
 ])
 
-function onLoad(flowInstance: VueFlowStore) {
-  flowInstance.fitView({ padding: 1 })
-}
-
 const color = ref<Colors>({
   red: 100,
   green: 150,
@@ -37,10 +33,11 @@ function onChange({ color: c, val }: { color: keyof Colors; val: number }) {
 
 <template>
   <div class="demo-flow">
-    <VueFlow v-model="elements" @pane-ready="onLoad">
+    <VueFlow v-model="elements">
       <template #node-rgb="props">
         <RGBNode v-bind="props" :amount="color" @change="onChange" />
       </template>
+
       <template #node-rgb-output="props">
         <RGBOutputNode v-bind="props" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
       </template>

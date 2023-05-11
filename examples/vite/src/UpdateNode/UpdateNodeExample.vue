@@ -9,6 +9,7 @@ const initialElements: Elements = [
 ]
 
 const elements = ref<Elements>(initialElements)
+
 const opts = reactive({
   bg: '#eeeeee',
   name: 'Node 1',

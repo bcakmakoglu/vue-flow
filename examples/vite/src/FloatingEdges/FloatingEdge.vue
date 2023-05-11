@@ -11,13 +11,13 @@ interface FloatingEdgeProps extends EdgeProps {
   markerEndId?: string
   sourceNode: GraphNode
   targetNode: GraphNode
-  nodes: GraphNode[]
   style?: CSSProperties
   markerEnd: MarkerType
   markerStart: MarkerType
 }
 
 const props = defineProps<FloatingEdgeProps>()
+
 const edgeParams = computed(() => getEdgeParams(props.sourceNode, props.targetNode))
 
 const d = computed(
@@ -37,13 +37,6 @@ const d = computed(
 
 <template>
   <g class="vue-flow__connection">
-    <path
-      :id="props.id"
-      class="vue-flow__edge-path"
-      :d="d[0]"
-      :marker-start="props.markerStart"
-      :marker-end="props.markerEnd"
-      :style="props.style"
-    />
+    <path :id="id" class="vue-flow__edge-path" :d="d[0]" :marker-start="markerStart" :marker-end="markerEnd" :style="style" />
   </g>
 </template>

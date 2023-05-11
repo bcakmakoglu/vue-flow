@@ -50,7 +50,7 @@ export default defineComponent({
       this.instance = instance as any
     },
     onConnect(params: FlowEvents['connect']) {
-      this.instance?.addEdges([params])
+      this.instance?.addEdges(params)
     },
   },
 })
