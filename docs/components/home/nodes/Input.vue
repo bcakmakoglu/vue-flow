@@ -26,7 +26,7 @@ function onChange(e: InputEvent) {
     <div class="text-md font-semibold text-center" :style="{ color: currentColor }">{{ `${currentColor}`.toUpperCase() }}</div>
 
     <input
-      :model-value="amount[currentColor]"
+      :value="amount[currentColor]"
       class="slider nodrag"
       :style="{ '--color': currentColor }"
       type="range"

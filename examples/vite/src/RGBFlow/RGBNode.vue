@@ -1,49 +1,41 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
 import type { NodeProps } from '@vue-flow/core'
 import { Handle, Position } from '@vue-flow/core'
+import type { Colors } from './utils'
 
-interface RGBNodeProps extends NodeProps {
+interface RGBNodeProps extends Pick<NodeProps<{ color: Colors }>, 'data'> {
   data: {
-    color: 'r' | 'g' | 'b'
+    color: Colors
   }
-  amount: {
-    red: number
-    green: number
-    blue: number
-  }
+  amount: Record<Colors, number>
 }
 
 const props = defineProps<RGBNodeProps>()
-const emit = defineEmits(['change'])
-let color = 'red'
-switch (props.data.color) {
-  case 'r':
-    color = 'red'
-    break
-  case 'g':
-    color = 'green'
-    break
-  case 'b':
-    color = 'blue'
-    break
+
+const emit = defineEmits<{ (event: 'change', data: { color: Colors; val: number }): void }>()
+
+const currentColor = toRef(props.data, 'color', 'red')
+
+function onChange(e: InputEvent) {
+  return emit('change', { color: currentColor.value, val: parseInt((e.target as HTMLInputElement).value) })
 }
-
-const colorVal = computed({
-  get: () => props.amount[color as 'red' | 'green' | 'blue'],
-  set: (val) => {
-    emit('change', { color, val })
-  },
-})
-
-const style = { '--color': color } as CSSProperties
 </script>
 
 <template>
   <div class="wrapper">
-    <div class="text-md" :style="{ color }">{{ `${color} Amount`.toUpperCase() }}</div>
-    <input v-model="colorVal" class="slider nodrag" :style="style" type="range" min="0" max="255" />
-    <Handle type="source" :position="Position.Right" :style="{ backgroundColor: color }" />
+    <div class="text-md" :style="{ color: currentColor }">{{ `${currentColor}`.toUpperCase() }}</div>
+
+    <input
+      :value="amount[currentColor]"
+      class="slider nodrag"
+      :style="{ '--color': currentColor }"
+      type="range"
+      min="0"
+      max="255"
+      @input="onChange"
+    />
+
+    <Handle type="source" :position="Position.Right" :style="{ backgroundColor: currentColor }" />
   </div>
 </template>
 
