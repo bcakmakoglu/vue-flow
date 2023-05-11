@@ -5,7 +5,7 @@ import { MiniMap } from '@vue-flow/minimap'
 
 const { nodes, addNodes, addEdges, onConnect, dimensions } = useVueFlow()
 
-onConnect((params) => addEdges([params]))
+onConnect((params) => addEdges(params))
 
 function addRandomNode() {
   const nodeId = (nodes.value.length + 1).toString()
