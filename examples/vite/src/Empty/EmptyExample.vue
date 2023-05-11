@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { Node } from '@vue-flow/core'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 
 import { Background, BackgroundVariant } from '@vue-flow/background'
@@ -8,18 +7,20 @@ import { MiniMap } from '@vue-flow/minimap'
 
 const { nodes, addNodes, addEdges, onConnect, onPaneReady, onNodeDragStop, dimensions } = useVueFlow()
 
-onConnect((params) => addEdges([params]))
+onConnect(addEdges)
+
 onPaneReady((flowInstance) => console.log('flow loaded:', flowInstance))
+
 onNodeDragStop((node) => console.log('drag stop', node))
 
 function addRandomNode() {
   const nodeId = (nodes.value.length + 1).toString()
-  const newNode: Node = {
+
+  addNodes({
     id: nodeId,
     label: `Node: ${nodeId}`,
     position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
-  }
-  addNodes([newNode])
+  })
 }
 </script>
 

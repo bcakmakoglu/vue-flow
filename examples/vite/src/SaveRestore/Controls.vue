@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import type { FlowExportObject, Node } from '@vue-flow/core'
+import type { FlowExportObject } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
 
 const flowKey = 'example-flow'
-const state = useStorage<FlowExportObject>(flowKey, {
+
+const state = useStorage<FlowExportObject | null>(flowKey, {
   nodes: [],
   edges: [],
   position: [NaN, NaN],
@@ -21,26 +22,25 @@ function onSave() {
 }
 
 function onRestore() {
-  const flow: FlowExportObject | null = state.value
+  const flow = state.value
 
   if (flow) {
     const [x = 0, y = 0] = flow.position
 
-    setNodes(state.value.nodes)
+    setNodes(flow.nodes)
 
-    setEdges(state.value.edges)
+    setEdges(flow.edges)
 
     setTransform({ x, y, zoom: flow.zoom || 0 })
   }
 }
 
 function onAdd() {
-  const newNode = {
+  addNodes({
     id: `random_node-${getNodeId()}`,
     label: 'Added node',
     position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
-  } as Node
-  addNodes([newNode])
+  })
 }
 </script>
 

@@ -6,7 +6,7 @@ const store = useStore()
 
 const { onConnect, addEdges } = useVueFlow()
 
-onConnect((params) => addEdges([params]))
+onConnect(addEdges)
 </script>
 
 <template>
