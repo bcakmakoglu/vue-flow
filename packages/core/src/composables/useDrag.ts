@@ -15,6 +15,7 @@ interface UseDragParams {
   disabled?: MaybeComputedRef<boolean>
   selectable?: MaybeComputedRef<boolean>
   id?: string
+  dragHandle?: MaybeComputedRef<string | undefined>
 }
 
 function useDrag(params: UseDragParams) {
@@ -39,7 +40,7 @@ function useDrag(params: UseDragParams) {
     emits,
   } = $(useVueFlow())
 
-  const { onStart, onDrag, onStop, el, disabled, id, selectable } = params
+  const { onStart, onDrag, onStop, el, disabled, id, selectable, dragHandle } = params
 
   const dragging = ref(false)
 
@@ -209,11 +210,13 @@ function useDrag(params: UseDragParams) {
           })
           .filter((event: D3DragEvent<HTMLDivElement, null, SubjectPosition>['sourceEvent']) => {
             const target = event.target as HTMLDivElement
+            const unrefDragHandle = resolveUnref(dragHandle)
+
             return (
               !event.button &&
               (!noDragClassName ||
                 (!hasSelector(target, `.${noDragClassName}`, nodeEl) &&
-                  (!node?.dragHandle || hasSelector(target, node.dragHandle, nodeEl))))
+                  (!unrefDragHandle || hasSelector(target, unrefDragHandle, nodeEl))))
             )
           })
 
