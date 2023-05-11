@@ -843,6 +843,32 @@ export function useActions(
     }
   }
 
+  const $reset: Actions['$reset'] = () => {
+    const resetState = useState()
+
+    state.edges = []
+    state.nodes = []
+
+    // reset the zoom state
+    if (state.d3Zoom && state.d3Selection) {
+      const updatedTransform = zoomIdentity
+        .translate(resetState.defaultViewport.x ?? 0, resetState.defaultViewport.y ?? 0)
+        .scale(clamp(resetState.defaultViewport.zoom ?? 1, resetState.minZoom, resetState.maxZoom))
+
+      const bbox = state.viewportRef!.getBoundingClientRect()
+
+      const extent: CoordinateExtent = [
+        [0, 0],
+        [bbox.width, bbox.height],
+      ]
+
+      const constrainedTransform = state.d3Zoom.constrain()(updatedTransform, extent, resetState.translateExtent)
+      state.d3Zoom.transform(state.d3Selection, constrainedTransform)
+    }
+
+    setState(resetState)
+  }
+
   return {
     updateNodePositions,
     updateNodeDimensions,
@@ -888,31 +914,7 @@ export function useActions(
     toObject,
     fromObject,
     updateNodeInternals,
-    $reset: () => {
-      const resetState = useState()
-
-      state.edges = []
-      state.nodes = []
-
-      // reset the zoom state
-      if (state.d3Zoom && state.d3Selection) {
-        const updatedTransform = zoomIdentity
-          .translate(resetState.defaultViewport.x ?? 0, resetState.defaultViewport.y ?? 0)
-          .scale(clamp(resetState.defaultViewport.zoom ?? 1, resetState.minZoom, resetState.maxZoom))
-
-        const bbox = state.viewportRef!.getBoundingClientRect()
-
-        const extent: CoordinateExtent = [
-          [0, 0],
-          [bbox.width, bbox.height],
-        ]
-
-        const constrainedTransform = state.d3Zoom.constrain()(updatedTransform, extent, resetState.translateExtent)
-        state.d3Zoom.transform(state.d3Selection, constrainedTransform)
-      }
-
-      setState(resetState)
-    },
+    $reset,
     $destroy: () => {},
   }
 }
