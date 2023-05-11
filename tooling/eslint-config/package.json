@@ -5,11 +5,11 @@
   "license": "MIT",
   "main": "index.js",
   "devDependencies": {
-    "@antfu/eslint-config": "^0.38.2",
-    "eslint": "^8.37.0",
+    "@antfu/eslint-config": "^0.38.6",
+    "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-config-turbo": "1.8.8",
-    "prettier": "^2.8.7"
+    "eslint-config-turbo": "^1.9.3",
+    "prettier": "^2.8.8"
   }
 }
