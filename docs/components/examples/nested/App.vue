@@ -68,7 +68,7 @@ const { onConnect, addEdges, addNodes } = useVueFlow({
   ],
 })
 
-onConnect((params) => addEdges([params]))
+onConnect((params) => addEdges(params))
 
 onMounted(() => {
   // add nodes to parent
