@@ -38,24 +38,24 @@ function useDrag(params: UseDragParams) {
     addSelectedNodes,
     updateNodePositions,
     emits,
-  } = $(useVueFlow())
+  } = useVueFlow()
 
   const { onStart, onDrag, onStop, el, disabled, id, selectable, dragHandle } = params
 
   const dragging = ref(false)
 
-  let dragItems = $ref<NodeDragItem[]>([])
+  let dragItems: NodeDragItem[] = []
 
-  let dragHandler = $ref<DragBehavior<Element, unknown, unknown>>()
+  let dragHandler: DragBehavior<Element, unknown, unknown>
 
-  let containerBounds = $ref<DOMRect | null>(null)
+  let containerBounds: DOMRect | null = null
 
-  let lastPos = $ref<Partial<XYPosition>>({ x: undefined, y: undefined })
-  let mousePosition = $ref<XYPosition>({ x: 0, y: 0 })
-  let dragEvent = $ref<MouseEvent | null>(null)
+  let lastPos: Partial<XYPosition> = { x: undefined, y: undefined }
+  let mousePosition: XYPosition = { x: 0, y: 0 }
+  let dragEvent: MouseEvent | null = null
 
-  let autoPanId = $ref(0)
-  let autoPanStarted = $ref(false)
+  let autoPanId = 0
+  let autoPanStarted = false
 
   const getPointerPosition = useGetPointerPosition()
 
@@ -67,16 +67,16 @@ function useDrag(params: UseDragParams) {
     dragItems = dragItems.map((n) => {
       const nextPosition = { x: x - n.distance.x, y: y - n.distance.y }
 
-      if (snapToGrid) {
-        nextPosition.x = snapGrid[0] * Math.round(nextPosition.x / snapGrid[0])
-        nextPosition.y = snapGrid[1] * Math.round(nextPosition.y / snapGrid[1])
+      if (snapToGrid.value) {
+        nextPosition.x = snapGrid.value[0] * Math.round(nextPosition.x / snapGrid.value[0])
+        nextPosition.y = snapGrid.value[1] * Math.round(nextPosition.y / snapGrid.value[1])
       }
 
       const { computedPosition } = calcNextPosition(
         n,
         nextPosition,
         emits.error,
-        nodeExtent,
+        nodeExtent.value,
         n.parentNode ? findNode(n.parentNode) : undefined,
       )
 
@@ -116,8 +116,8 @@ function useDrag(params: UseDragParams) {
 
     if (xMovement !== 0 || yMovement !== 0) {
       const nextPos = {
-        x: (lastPos.x ?? 0) - xMovement / viewport.zoom,
-        y: (lastPos.y ?? 0) - yMovement / viewport.zoom,
+        x: (lastPos.x ?? 0) - xMovement / viewport.value.zoom,
+        y: (lastPos.y ?? 0) - yMovement / viewport.value.zoom,
       }
 
       if (panBy({ x: xMovement, y: yMovement })) {
@@ -135,24 +135,23 @@ function useDrag(params: UseDragParams) {
       if (isDisabled) {
         selection.on('.drag', null)
       } else {
-        const node = findNode(id)
-
         dragHandler = drag()
           .on('start', (event: UseDragEvent) => {
-            if (!selectNodesOnDrag && !multiSelectionActive && node) {
+            const node = findNode(id)
+            if (!selectNodesOnDrag.value && !multiSelectionActive.value && node) {
               if (!node.selected) {
                 // we need to reset selected nodes when selectNodesOnDrag=false
                 removeSelectedElements()
               }
             }
 
-            if (node && resolveUnref(selectable) && selectNodesOnDrag) {
+            if (node && resolveUnref(selectable) && selectNodesOnDrag.value) {
               handleNodeClick(
                 node,
-                multiSelectionActive,
+                multiSelectionActive.value,
                 addSelectedNodes,
                 removeSelectedElements,
-                $$(nodesSelectionActive),
+                nodesSelectionActive,
                 false,
                 nodeEl as HTMLDivElement,
               )
@@ -160,7 +159,7 @@ function useDrag(params: UseDragParams) {
 
             const pointerPos = getPointerPosition(event)
             lastPos = pointerPos
-            dragItems = getDragItems(nodes, nodesDraggable, pointerPos, findNode, id)
+            dragItems = getDragItems(nodes.value, nodesDraggable.value, pointerPos, findNode, id)
 
             if (dragItems.length) {
               const [currentNode, nodes] = getEventHandlerParams({
@@ -172,13 +171,13 @@ function useDrag(params: UseDragParams) {
               onStart({ event: event.sourceEvent, node: currentNode, nodes })
             }
 
-            containerBounds = vueFlowRef?.getBoundingClientRect() || null
+            containerBounds = vueFlowRef.value?.getBoundingClientRect() || null
             mousePosition = getEventPosition(event.sourceEvent, containerBounds!)
           })
           .on('drag', (event: UseDragEvent) => {
             const pointerPos = getPointerPosition(event)
 
-            if (!autoPanStarted && autoPanOnNodeDrag) {
+            if (!autoPanStarted && autoPanOnNodeDrag.value) {
               autoPanStarted = true
               autoPan()
             }
@@ -214,8 +213,8 @@ function useDrag(params: UseDragParams) {
 
             return (
               !event.button &&
-              (!noDragClassName ||
-                (!hasSelector(target, `.${noDragClassName}`, nodeEl) &&
+              (!noDragClassName.value ||
+                (!hasSelector(target, `.${noDragClassName.value}`, nodeEl) &&
                   (!unrefDragHandle || hasSelector(target, unrefDragHandle, nodeEl))))
             )
           })
