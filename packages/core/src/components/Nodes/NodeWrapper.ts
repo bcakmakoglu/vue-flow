@@ -62,6 +62,7 @@ const NodeWrapper = defineComponent({
       el: nodeElement,
       disabled: () => !props.draggable,
       selectable: () => props.selectable,
+      dragHandle: () => node.value.dragHandle,
       onStart(args) {
         emit.dragStart({ ...args, intersections: getIntersectingNodes(node.value) })
       },
