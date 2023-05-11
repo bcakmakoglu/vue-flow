@@ -8,25 +8,28 @@ import FloatingEdge from './FloatingEdge.vue'
 import FloatingConnectionLine from './FloatingConnectionLine.vue'
 import { createElements } from './floating-edge-utils'
 
-const { addEdges, onConnect, onPaneReady, getNodes } = useVueFlow({
+const { addEdges, onConnect } = useVueFlow({
   modelValue: createElements(),
 })
-onPaneReady(({ fitView }) => fitView())
-onConnect((params) => addEdges([{ ...params, type: 'floating', markerEnd: MarkerType.Arrow }]))
+
+onConnect((params) => addEdges({ ...params, type: 'floating', markerEnd: MarkerType.Arrow }))
 </script>
 
 <template>
   <div class="floatingedges">
-    <VueFlow>
+    <VueFlow fit-view-on-init>
       <Background :variant="BackgroundVariant.Lines" :gap="24" />
+
       <MiniMap />
+
       <Controls />
 
       <template #connection-line="props">
         <FloatingConnectionLine v-bind="props" />
       </template>
+
       <template #edge-floating="props">
-        <FloatingEdge v-bind="props" :nodes="getNodes" />
+        <FloatingEdge v-bind="props" />
       </template>
     </VueFlow>
   </div>

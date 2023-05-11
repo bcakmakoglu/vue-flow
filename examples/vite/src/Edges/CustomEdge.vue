@@ -13,7 +13,7 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   targetPosition: Position
   data: T
   markerEnd: string
-  style: CSSProperties
+  style?: CSSProperties
 }
 
 const props = defineProps<CustomEdgeProps>()
@@ -41,7 +41,7 @@ export default {
       }"
       class="nodrag nopan"
     >
-      <button class="edgebutton" @click="removeEdges([id])">×</button>
+      <button class="edgebutton" @click="removeEdges(id)">×</button>
     </div>
   </EdgeLabelRenderer>
 </template>

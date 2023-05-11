@@ -367,8 +367,8 @@ export function useActions(
       : nextEdges
 
     state.edges = validEdges.reduce<GraphEdge[]>((res, edge) => {
-      const sourceNode = findNode(edge.source)!
-      const targetNode = findNode(edge.target)!
+      const sourceNode = findNode(edge.source)
+      const targetNode = findNode(edge.target)
 
       const missingSource = !sourceNode || typeof sourceNode === 'undefined'
       const missingTarget = !targetNode || typeof targetNode === 'undefined'
@@ -413,7 +413,8 @@ export function useActions(
   }
 
   const addNodes: Actions['addNodes'] = (nodes) => {
-    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
+    let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
+    nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
     const graphNodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
 
@@ -425,7 +426,8 @@ export function useActions(
   }
 
   const addEdges: Actions['addEdges'] = (params) => {
-    const nextEdges = params instanceof Function ? params(state.edges) : params
+    let nextEdges = params instanceof Function ? params(state.edges) : params
+    nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
 
     const validEdges = state.isValidConnection
       ? nextEdges.filter((edge) =>
@@ -488,12 +490,18 @@ export function useActions(
   }
 
   const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true) => {
-    const curr = nodes instanceof Function ? nodes(state.nodes) : nodes
+    let nodesToRemove = nodes instanceof Function ? nodes(state.nodes) : nodes
+    nodesToRemove = Array.isArray(nodesToRemove) ? nodesToRemove : [nodesToRemove]
+
     const nodeChanges: NodeRemoveChange[] = []
     const edgeChanges: EdgeRemoveChange[] = []
 
-    curr.forEach((item) => {
-      const currNode = typeof item === 'string' ? findNode(item)! : item
+    nodesToRemove.forEach((item) => {
+      const currNode = typeof item === 'string' ? findNode(item) : item
+
+      if (!currNode) {
+        return
+      }
 
       if (isDef(currNode.deletable) && !currNode.deletable) {
         return
@@ -523,11 +531,17 @@ export function useActions(
   }
 
   const removeEdges: Actions['removeEdges'] = (edges) => {
-    const curr = edges instanceof Function ? edges(state.edges) : edges
+    let edgesToRemove = edges instanceof Function ? edges(state.edges) : edges
+    edgesToRemove = Array.isArray(edgesToRemove) ? edgesToRemove : [edgesToRemove]
+
     const changes: EdgeRemoveChange[] = []
 
-    curr.forEach((item) => {
-      const currEdge = typeof item === 'string' ? findEdge(item)! : item
+    edgesToRemove.forEach((item) => {
+      const currEdge = typeof item === 'string' ? findEdge(item) : item
+
+      if (!currEdge) {
+        return
+      }
 
       if (isDef(currEdge.deletable) && !currEdge.deletable) {
         return
@@ -742,6 +756,45 @@ export function useActions(
     }
   }
 
+  const fitView: Actions['fitView'] = async (params = { padding: 0.1 }) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.fitView(params)
+  }
+
+  const zoomIn: Actions['zoomIn'] = async (options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.zoomIn(options)
+  }
+
+  const zoomOut: Actions['zoomOut'] = async (options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.zoomOut(options)
+  }
+
+  const zoomTo: Actions['zoomTo'] = async (zoomLevel, options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.zoomTo(zoomLevel, options)
+  }
+
+  const setTransform: Actions['setTransform'] = async (transform, options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.setTransform(transform, options)
+  }
+
+  const getTransform: Actions['getTransform'] = () => viewportHelper.getTransform()
+
+  const setCenter: Actions['setCenter'] = async (x, y, options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.setCenter(x, y, options)
+  }
+
+  const fitBounds: Actions['fitBounds'] = async (bounds, options) => {
+    await until(() => viewportHelper.initialized).toBe(true)
+    viewportHelper.fitBounds(bounds, options)
+  }
+
+  const project: Actions['project'] = (position) => viewportHelper.project(position)
+
   const toObject: Actions['toObject'] = () => {
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
@@ -772,6 +825,48 @@ export function useActions(
         zoom: state.viewport.zoom,
       } as FlowExportObject),
     )
+  }
+
+  const fromObject: Actions['fromObject'] = (obj) => {
+    const { nodes, edges, position, zoom } = obj
+
+    if (nodes) {
+      setNodes(nodes)
+    }
+
+    if (edges) {
+      setEdges(edges)
+    }
+
+    if (position) {
+      setTransform({ x: position[0], y: position[1], zoom: zoom || 1 })
+    }
+  }
+
+  const $reset: Actions['$reset'] = () => {
+    const resetState = useState()
+
+    state.edges = []
+    state.nodes = []
+
+    // reset the zoom state
+    if (state.d3Zoom && state.d3Selection) {
+      const updatedTransform = zoomIdentity
+        .translate(resetState.defaultViewport.x ?? 0, resetState.defaultViewport.y ?? 0)
+        .scale(clamp(resetState.defaultViewport.zoom ?? 1, resetState.minZoom, resetState.maxZoom))
+
+      const bbox = state.viewportRef!.getBoundingClientRect()
+
+      const extent: CoordinateExtent = [
+        [0, 0],
+        [bbox.width, bbox.height],
+      ]
+
+      const constrainedTransform = state.d3Zoom.constrain()(updatedTransform, extent, resetState.translateExtent)
+      state.d3Zoom.transform(state.d3Selection, constrainedTransform)
+    }
+
+    setState(resetState)
   }
 
   return {
@@ -807,63 +902,19 @@ export function useActions(
     getIntersectingNodes,
     isNodeIntersecting,
     panBy,
-    fitView: async (params = { padding: 0.1 }) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.fitView(params)
-    },
-    zoomIn: async (options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomIn(options)
-    },
-    zoomOut: async (options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomOut(options)
-    },
-    zoomTo: async (zoomLevel, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.zoomTo(zoomLevel, options)
-    },
-    setTransform: async (transform, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.setTransform(transform, options)
-    },
-    getTransform: () => viewportHelper.getTransform(),
-    setCenter: async (x, y, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.setCenter(x, y, options)
-    },
-    fitBounds: async (bounds, options) => {
-      await until(() => viewportHelper.initialized).toBe(true)
-      viewportHelper.fitBounds(bounds, options)
-    },
-    project: (position) => viewportHelper.project(position),
+    fitView,
+    zoomIn,
+    zoomOut,
+    zoomTo,
+    setTransform,
+    getTransform,
+    setCenter,
+    fitBounds,
+    project,
     toObject,
+    fromObject,
     updateNodeInternals,
-    $reset: () => {
-      const resetState = useState()
-
-      state.edges = []
-      state.nodes = []
-
-      // reset the zoom state
-      if (state.d3Zoom && state.d3Selection) {
-        const updatedTransform = zoomIdentity
-          .translate(resetState.defaultViewport.x ?? 0, resetState.defaultViewport.y ?? 0)
-          .scale(clamp(resetState.defaultViewport.zoom ?? 1, resetState.minZoom, resetState.maxZoom))
-
-        const bbox = state.viewportRef!.getBoundingClientRect()
-
-        const extent: CoordinateExtent = [
-          [0, 0],
-          [bbox.width, bbox.height],
-        ]
-
-        const constrainedTransform = state.d3Zoom.constrain()(updatedTransform, extent, resetState.translateExtent)
-        state.d3Zoom.transform(state.d3Selection, constrainedTransform)
-      }
-
-      setState(resetState)
-    },
+    $reset,
     $destroy: () => {},
   }
 }

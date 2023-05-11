@@ -16,7 +16,7 @@ const elements = ref<Elements>(initialElements)
 </script>
 
 <template>
-  <VueFlow v-model="elements" :fit-view-on-init="true">
+  <VueFlow v-model="elements" fit-view-on-init>
     <Background />
   </VueFlow>
 </template>

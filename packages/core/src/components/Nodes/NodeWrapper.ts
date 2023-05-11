@@ -41,21 +41,21 @@ const NodeWrapper = defineComponent({
       ariaLiveMessage,
       snapToGrid,
       snapGrid,
-    } = $(useVueFlow())
+    } = useVueFlow()
 
     const updateNodePositions = useUpdateNodePositions()
 
-    const node = $(useVModel(props, 'node'))
+    const node = useVModel(props, 'node')
 
-    const parentNode = computed(() => findNode(node.parentNode))
+    const parentNode = computed(() => findNode(node.value.parentNode))
 
-    const connectedEdges = $computed(() => getConnectedEdges([node], edges))
+    const connectedEdges = computed(() => getConnectedEdges([node.value], edges.value))
 
     const nodeElement = ref<HTMLDivElement>()
 
     provide(NodeRef, nodeElement)
 
-    const { emit, on } = useNodeHooks(node, emits)
+    const { emit, on } = useNodeHooks(node.value, emits)
 
     const dragging = useDrag({
       id: props.id,
@@ -63,23 +63,23 @@ const NodeWrapper = defineComponent({
       disabled: () => !props.draggable,
       selectable: () => props.selectable,
       onStart(args) {
-        emit.dragStart({ ...args, intersections: getIntersectingNodes(node) })
+        emit.dragStart({ ...args, intersections: getIntersectingNodes(node.value) })
       },
       onDrag(args) {
-        emit.drag({ ...args, intersections: getIntersectingNodes(node) })
+        emit.drag({ ...args, intersections: getIntersectingNodes(node.value) })
       },
       onStop(args) {
-        emit.dragStop({ ...args, intersections: getIntersectingNodes(node) })
+        emit.dragStop({ ...args, intersections: getIntersectingNodes(node.value) })
       },
     })
 
-    const getClass = computed(() => (node.class instanceof Function ? node.class(node) : node.class))
+    const getClass = computed(() => (node.value.class instanceof Function ? node.value.class(node.value) : node.value.class))
 
     const getStyle = computed(() => {
-      const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
+      const styles = (node.value.style instanceof Function ? node.value.style(node.value) : node.value.style) || {}
 
-      const width = node.width instanceof Function ? node.width(node) : node.width
-      const height = node.height instanceof Function ? node.height(node) : node.height
+      const width = node.value.width instanceof Function ? node.value.width(node.value) : node.value.width
+      const height = node.value.height instanceof Function ? node.value.height(node.value) : node.value.height
 
       if (width) {
         styles.width = typeof width === 'string' ? width : `${width}px`
@@ -92,7 +92,7 @@ const NodeWrapper = defineComponent({
       return styles
     })
 
-    const zIndex = () => Number(node.zIndex ?? getStyle.value.zIndex ?? 0)
+    const zIndex = () => Number(node.value.zIndex ?? getStyle.value.zIndex ?? 0)
 
     onUpdateNodeInternals((updateIds) => {
       if (updateIds.includes(props.id)) {
@@ -109,7 +109,7 @@ const NodeWrapper = defineComponent({
     })
 
     watch(
-      [() => node.type, () => node.sourcePosition, () => node.targetPosition],
+      [() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition],
       () => {
         updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }])
       },
@@ -119,15 +119,15 @@ const NodeWrapper = defineComponent({
     /** this watcher only updates XYZPosition (when dragging a parent etc) */
     watch(
       [
-        () => node.position.x,
-        () => node.position.y,
+        () => node.value.position.x,
+        () => node.value.position.y,
         () => parentNode.value?.computedPosition.x,
         () => parentNode.value?.computedPosition.y,
         () => parentNode.value?.computedPosition.z,
         () => zIndex(),
-        () => node.selected,
-        () => node.dimensions.height,
-        () => node.dimensions.width,
+        () => node.value.selected,
+        () => node.value.dimensions.height,
+        () => node.value.dimensions.width,
         () => parentNode.value?.dimensions.height,
         () => parentNode.value?.dimensions.width,
       ],
@@ -135,19 +135,19 @@ const NodeWrapper = defineComponent({
         const xyzPos = {
           x: newX,
           y: newY,
-          z: nodeZIndex + (elevateNodesOnSelect ? (node.selected ? 1000 : 0) : 0),
+          z: nodeZIndex + (elevateNodesOnSelect.value ? (node.value.selected ? 1000 : 0) : 0),
         }
 
         if (isNumber(parentX) && isNumber(parentY)) {
-          node.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
+          node.value.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
         } else {
-          node.computedPosition = xyzPos
+          node.value.computedPosition = xyzPos
         }
       },
       { flush: 'pre', immediate: true },
     )
 
-    watch([() => node.extent, () => nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
+    watch([() => node.value.extent, nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
       // update position if extent has actually changed
       if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
         clampPosition()
@@ -157,10 +157,10 @@ const NodeWrapper = defineComponent({
     // clamp initial position to nodes' extent
     // if extent is parent, we need dimensions to properly clamp the position
     if (
-      node.extent === 'parent' ||
-      (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')
+      node.value.extent === 'parent' ||
+      (typeof node.value.extent === 'object' && 'range' in node.value.extent && node.value.extent.range === 'parent')
     ) {
-      until(() => node.initialized)
+      until(() => node.value.initialized)
         .toBe(true)
         .then(clampPosition)
     }
@@ -174,29 +174,30 @@ const NodeWrapper = defineComponent({
         'div',
         {
           'ref': nodeElement,
-          'data-id': node.id,
+          'data-id': node.value.id,
           'class': [
             'vue-flow__node',
             `vue-flow__node-${props.type === false ? 'default' : props.name}`,
             {
-              [noPanClassName]: props.draggable,
+              [noPanClassName.value]: props.draggable,
               dragging: dragging?.value,
-              selected: node.selected,
+              selected: node.value.selected,
               selectable: props.selectable,
+              parent: node.value.isParent,
             },
             getClass.value,
           ],
           'style': {
-            zIndex: node.computedPosition.z ?? zIndex(),
-            transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
+            zIndex: node.value.computedPosition.z ?? zIndex(),
+            transform: `translate(${node.value.computedPosition.x}px,${node.value.computedPosition.y}px)`,
             pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-            visibility: node.initialized ? 'visible' : 'hidden',
+            visibility: node.value.initialized ? 'visible' : 'hidden',
             ...getStyle.value,
           },
           'tabIndex': props.focusable ? 0 : undefined,
           'role': props.focusable ? 'button' : undefined,
-          'aria-describedby': disableKeyboardA11y ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`,
-          'aria-label': node.ariaLabel,
+          'aria-describedby': disableKeyboardA11y.value ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`,
+          'aria-label': node.value.ariaLabel,
           'onMouseenter': onMouseEnter,
           'onMousemove': onMouseMove,
           'onMouseleave': onMouseLeave,
@@ -206,25 +207,25 @@ const NodeWrapper = defineComponent({
           'onKeydown': onKeyDown,
         },
         [
-          h(props.type === false ? getNodeTypes.default : props.type, {
-            id: node.id,
-            type: node.type,
-            data: node.data,
-            events: { ...node.events, ...on },
-            selected: !!node.selected,
-            resizing: !!node.resizing,
+          h(props.type === false ? getNodeTypes.value.default : props.type, {
+            id: node.value.id,
+            type: node.value.type,
+            data: node.value.data,
+            events: { ...node.value.events, ...on },
+            selected: !!node.value.selected,
+            resizing: !!node.value.resizing,
             dragging: dragging.value,
             connectable: props.connectable,
-            position: node.position,
-            dimensions: node.dimensions,
-            isValidTargetPos: node.isValidTargetPos,
-            isValidSourcePos: node.isValidSourcePos,
-            parent: node.parentNode,
-            zIndex: node.computedPosition.z,
-            targetPosition: node.targetPosition,
-            sourcePosition: node.sourcePosition,
-            label: node.label,
-            dragHandle: node.dragHandle,
+            position: node.value.position,
+            dimensions: node.value.dimensions,
+            isValidTargetPos: node.value.isValidTargetPos,
+            isValidSourcePos: node.value.isValidSourcePos,
+            parent: node.value.parentNode,
+            zIndex: node.value.computedPosition.z,
+            targetPosition: node.value.targetPosition,
+            sourcePosition: node.value.sourcePosition,
+            label: node.value.label,
+            dragHandle: node.value.dragHandle,
             onUpdateNodeInternals: updateInternals,
           }),
         ],
@@ -232,22 +233,28 @@ const NodeWrapper = defineComponent({
 
     /** this re-calculates the current position, necessary for clamping by a node's extent */
     function clampPosition() {
-      const nextPos = node.computedPosition
+      const nextPos = node.value.computedPosition
 
-      if (snapToGrid) {
-        nextPos.x = snapGrid[0] * Math.round(nextPos.x / snapGrid[0])
-        nextPos.y = snapGrid[1] * Math.round(nextPos.y / snapGrid[1])
+      if (snapToGrid.value) {
+        nextPos.x = snapGrid.value[0] * Math.round(nextPos.x / snapGrid.value[0])
+        nextPos.y = snapGrid.value[1] * Math.round(nextPos.y / snapGrid.value[1])
       }
 
-      const { computedPosition, position } = calcNextPosition(node, nextPos, emits.error, nodeExtent, parentNode.value)
+      const { computedPosition, position } = calcNextPosition(
+        node.value,
+        nextPos,
+        emits.error,
+        nodeExtent.value,
+        parentNode.value,
+      )
 
       // only overwrite positions if there are changes when clamping
-      if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
-        node.computedPosition = { ...node.computedPosition, ...computedPosition }
+      if (node.value.computedPosition.x !== computedPosition.x || node.value.computedPosition.y !== computedPosition.y) {
+        node.value.computedPosition = { ...node.value.computedPosition, ...computedPosition }
       }
 
-      if (node.position.x !== position.x || node.position.y !== position.y) {
-        node.position = position
+      if (node.value.position.x !== position.x || node.value.position.y !== position.y) {
+        node.value.position = position
       }
     }
 
@@ -259,44 +266,44 @@ const NodeWrapper = defineComponent({
 
     function onMouseEnter(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseEnter({ event, node, connectedEdges })
+        emit.mouseEnter({ event, node: node.value, connectedEdges: connectedEdges.value })
       }
     }
 
     function onMouseMove(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseMove({ event, node, connectedEdges })
+        emit.mouseMove({ event, node: node.value, connectedEdges: connectedEdges.value })
       }
     }
 
     function onMouseLeave(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseLeave({ event, node, connectedEdges })
+        emit.mouseLeave({ event, node: node.value, connectedEdges: connectedEdges.value })
       }
     }
 
     function onContextMenu(event: MouseEvent) {
-      return emit.contextMenu({ event, node, connectedEdges })
+      return emit.contextMenu({ event, node: node.value, connectedEdges: connectedEdges.value })
     }
 
     function onDoubleClick(event: MouseEvent) {
-      return emit.doubleClick({ event, node, connectedEdges })
+      return emit.doubleClick({ event, node: node.value, connectedEdges: connectedEdges.value })
     }
 
     function onSelectNode(event: MouseEvent) {
-      if (props.selectable && (!selectNodesOnDrag || !props.draggable)) {
+      if (props.selectable && (!selectNodesOnDrag.value || !props.draggable)) {
         handleNodeClick(
-          node,
-          multiSelectionActive,
+          node.value,
+          multiSelectionActive.value,
           addSelectedNodes,
           removeSelectedNodes,
-          $$(nodesSelectionActive),
+          nodesSelectionActive,
           false,
           nodeElement.value!,
         )
       }
 
-      emit.click({ event, node, connectedEdges })
+      emit.click({ event, node: node.value, connectedEdges: connectedEdges.value })
     }
 
     function onKeyDown(event: KeyboardEvent) {
@@ -312,18 +319,17 @@ const NodeWrapper = defineComponent({
         }
 
         handleNodeClick(
-          node,
-          multiSelectionActive,
+          node.value,
+          multiSelectionActive.value,
           addSelectedNodes,
           removeSelectedNodes,
-          $$(nodesSelectionActive),
+          nodesSelectionActive,
           unselect,
           nodeElement.value!,
         )
-      } else if (!disableKeyboardA11y && props.draggable && node.selected && arrowKeyDiffs[event.key]) {
-        $$(ariaLiveMessage).value = `Moved selected node ${event.key
-          .replace('Arrow', '')
-          .toLowerCase()}. New position, x: ${~~node.position.x}, y: ${~~node.position.y}`
+      } else if (!disableKeyboardA11y.value && props.draggable && node.value.selected && arrowKeyDiffs[event.key]) {
+        ariaLiveMessage.value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
+          .value.position.x}, y: ${~~node.value.position.y}`
 
         updateNodePositions(
           {

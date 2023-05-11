@@ -37,10 +37,10 @@ const sourceHandleStyleB = computed(() => ({
     style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; max-width: 90%; margin: auto; gap: 3px"
   >
     <template v-for="color of colors" :key="color.name">
-      <button :title="color.name" :style="{ backgroundColor: color.value }" type="button" @click="onSelect(color)"></button>
+      <button :title="color.name" :style="{ backgroundColor: color.value }" type="button" @click="onSelect(color)" />
     </template>
 
-    <button class="animated-bg-gradient" title="gradient" type="button" @click="onGradient"></button>
+    <button class="animated-bg-gradient" title="gradient" type="button" @click="onGradient" />
   </div>
 
   <Handle id="a" type="source" :position="Position.Right" :style="sourceHandleStyleA" />
