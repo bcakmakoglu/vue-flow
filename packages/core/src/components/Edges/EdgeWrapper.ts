@@ -36,9 +36,9 @@ const EdgeWrapper = defineComponent({
 
     const edge = $(useVModel(props, 'edge'))
 
-    let mouseOver = $ref(false)
+    const mouseOver = ref(false)
 
-    let updating = $ref(false)
+    const updating = ref(false)
 
     const nodeId = ref('')
 
@@ -120,7 +120,7 @@ const EdgeWrapper = defineComponent({
             noPanClassName.value,
             edgeClass,
             {
-              updating: mouseOver,
+              updating: mouseOver.value,
               selected: edge.selected,
               animated: edge.animated,
               inactive: !props.selectable,
@@ -139,7 +139,7 @@ const EdgeWrapper = defineComponent({
           'role': props.focusable ? 'button' : undefined,
         },
         [
-          updating
+          updating.value
             ? null
             : h(props.type === false ? getEdgeTypes.value.default : props.type, {
                 id: props.id,
@@ -220,11 +220,11 @@ const EdgeWrapper = defineComponent({
     }
 
     function onEdgeUpdaterMouseEnter() {
-      mouseOver = true
+      mouseOver.value = true
     }
 
     function onEdgeUpdaterMouseOut() {
-      mouseOver = false
+      mouseOver.value = false
     }
 
     function onEdgeUpdate(event: MouseTouchEvent, connection: Connection) {
@@ -233,7 +233,7 @@ const EdgeWrapper = defineComponent({
 
     function onEdgeUpdateEnd(event: MouseTouchEvent) {
       hooks.emit.updateEnd({ event, edge })
-      updating = false
+      updating.value = false
     }
 
     function handleEdgeUpdater(event: MouseEvent, isSourceHandle: boolean) {
@@ -241,7 +241,7 @@ const EdgeWrapper = defineComponent({
         return
       }
 
-      updating = true
+      updating.value = true
 
       nodeId.value = isSourceHandle ? edge.target : edge.source
       handleId.value = (isSourceHandle ? edge.targetHandle : edge.sourceHandle) ?? ''
