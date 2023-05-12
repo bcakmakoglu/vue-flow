@@ -43,9 +43,9 @@ export default (keyFilter: MaybeComputedRef<KeyFilter | null>, onChange?: (keyPr
 
   const isPressed = ref(resolveUnref(keyFilter) === true)
 
-  const modifierPressed = ref(false)
+  let modifierPressed = false
 
-  const pressedKeys = ref<Set<string>>(new Set())
+  const pressedKeys = new Set<string>()
 
   watch(isPressed, () => {
     onChange?.(isPressed.value)
@@ -66,16 +66,16 @@ export default (keyFilter: MaybeComputedRef<KeyFilter | null>, onChange?: (keyPr
       }
 
       if (Array.isArray(unrefKeyFilter)) {
-        unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys.value)
+        unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys)
       }
 
       if (unrefKeyFilter) {
         onKeyStroke(
           unrefKeyFilter,
           (e) => {
-            modifierPressed.value = wasModifierPressed(e)
+            modifierPressed = wasModifierPressed(e)
 
-            if (!modifierPressed.value && isInputDOMNode(e)) {
+            if (!modifierPressed && isInputDOMNode(e)) {
               return
             }
 
@@ -90,13 +90,13 @@ export default (keyFilter: MaybeComputedRef<KeyFilter | null>, onChange?: (keyPr
           unrefKeyFilter,
           (e) => {
             if (isPressed.value) {
-              if (!modifierPressed.value && isInputDOMNode(e)) {
+              if (!modifierPressed && isInputDOMNode(e)) {
                 return
               }
 
-              modifierPressed.value = false
+              modifierPressed = false
 
-              pressedKeys.value.clear()
+              pressedKeys.clear()
 
               isPressed.value = false
             }
