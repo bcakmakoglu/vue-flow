@@ -57,7 +57,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   minZoom: number
   /** use setMaxZoom action to change maxZoom */
   maxZoom: number
-  defaultViewport: ViewportTransform
+  defaultViewport: Partial<ViewportTransform>
   /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent | CoordinateExtentRange
