@@ -25,7 +25,7 @@ const emit = defineEmits<{
 
 const { nodesDraggable, nodesConnectable, elementsSelectable, setInteractive, zoomIn, zoomOut, fitView } = useVueFlow()
 
-const isInteractive = computed(() => nodesDraggable.value && nodesConnectable.value && elementsSelectable.value)
+const isInteractive = computed(() => nodesDraggable.value || nodesConnectable.value || elementsSelectable.value)
 
 function onZoomInHandler() {
   zoomIn()
