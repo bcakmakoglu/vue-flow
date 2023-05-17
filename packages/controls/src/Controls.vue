@@ -23,9 +23,24 @@ const emit = defineEmits<{
   (event: 'interactionChange', active: boolean): void
 }>()
 
-const { nodesDraggable, nodesConnectable, elementsSelectable, setInteractive, zoomIn, zoomOut, fitView } = useVueFlow()
+const {
+  nodesDraggable,
+  nodesConnectable,
+  elementsSelectable,
+  setInteractive,
+  zoomIn,
+  zoomOut,
+  fitView,
+  viewport,
+  minZoom,
+  maxZoom,
+} = useVueFlow()
 
 const isInteractive = computed(() => nodesDraggable.value || nodesConnectable.value || elementsSelectable.value)
+
+const minZoomReached = computed(() => viewport.value.zoom <= minZoom.value)
+
+const maxZoomReached = computed(() => viewport.value.zoom >= maxZoom.value)
 
 function onZoomInHandler() {
   zoomIn()
@@ -62,22 +77,25 @@ export default {
 <template>
   <Panel class="vue-flow__controls" :position="position">
     <slot name="top"></slot>
+
     <template v-if="showZoom">
       <slot name="control-zoom-in">
-        <ControlButton class="vue-flow__controls-zoomin" @click="onZoomInHandler">
+        <ControlButton class="vue-flow__controls-zoomin" :disabled="maxZoomReached" @click="onZoomInHandler">
           <slot name="icon-zoom-in">
             <component :is="PlusIcon" />
           </slot>
         </ControlButton>
       </slot>
+
       <slot name="control-zoom-out">
-        <ControlButton class="vue-flow__controls-zoomout" @click="onZoomOutHandler">
+        <ControlButton class="vue-flow__controls-zoomout" :disabled="minZoomReached" @click="onZoomOutHandler">
           <slot name="icon-zoom-out">
             <component :is="MinusIcon" />
           </slot>
         </ControlButton>
       </slot>
     </template>
+
     <template v-if="showFitView">
       <slot name="control-fit-view">
         <ControlButton class="vue-flow__controls-fitview" @click="onFitViewHandler">
@@ -87,6 +105,7 @@ export default {
         </ControlButton>
       </slot>
     </template>
+
     <template v-if="showInteractive">
       <slot name="control-interactive">
         <ControlButton v-if="showInteractive" class="vue-flow__controls-interactive" @click="onInteractiveChangeHandler">
@@ -99,6 +118,7 @@ export default {
         </ControlButton>
       </slot>
     </template>
+
     <slot></slot>
   </Panel>
 </template>
