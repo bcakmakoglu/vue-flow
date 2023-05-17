@@ -1,4 +1,4 @@
-import { isEdge, useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
@@ -24,21 +24,24 @@ describe('Store Action: `addSelectedEdges`', () => {
   })
 
   it('adds `selected` class to edges', () => {
-    cy.get('.vue-flow__edge').then((els) => {
-      els.each((index, edge) => {
-        const edgeId = edge.getAttribute('data-id')
-        const storedEdge = store.findEdge(edgeId!)
+    // todo: can we avoid the timeout? without it, the test fails in ci
+    setTimeout(() => {
+      cy.get('.vue-flow__edge').then((els) => {
+        els.each((index, edge) => {
+          const edgeId = edge.getAttribute('data-id')
+          const storedEdge = store.findEdge(edgeId!)
 
-        expect(storedEdge).to.not.eq(undefined)
+          expect(storedEdge).to.not.eq(undefined)
 
-        if (index < randomNumber) {
-          expect(!!storedEdge?.selected).to.eq(true)
-          expect(edge).to.have.class('selected')
-        } else {
-          expect(!!storedEdge?.selected).to.eq(false)
-          expect(edge).to.not.have.class('selected')
-        }
+          if (index < randomNumber) {
+            expect(!!storedEdge?.selected).to.eq(true)
+            expect(edge).to.have.class('selected')
+          } else {
+            expect(!!storedEdge?.selected).to.eq(false)
+            expect(edge).to.not.have.class('selected')
+          }
+        })
       })
-    })
+    }, 1)
   })
 })

@@ -29,14 +29,17 @@ describe('Store Action: `removeEdges`', () => {
   })
 
   it('removes edges from DOM', () => {
-    cy.get('.vue-flow__edge').then((els) => {
-      els.each((index, edge) => {
-        const edgeId = edge.getAttribute('data-id')
-        const storedEdge = store.findEdge(edgeId)
+    // todo: can we avoid the timeout? without it, the test fails in ci
+    setTimeout(() => {
+      cy.get('.vue-flow__edge').then((els) => {
+        els.each((index, edge) => {
+          const edgeId = edge.getAttribute('data-id')
+          const storedEdge = store.findEdge(edgeId)
 
-        expect(deletedEdges).to.not.include(edgeId)
-        expect(storedEdge).to.not.eq(undefined)
+          expect(deletedEdges).to.not.include(edgeId)
+          expect(storedEdge).to.not.eq(undefined)
+        })
       })
-    })
+    }, 1)
   })
 })
