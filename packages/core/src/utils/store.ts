@@ -81,7 +81,7 @@ export function createGraphNodes(
 
   const graphNodes = nodes.reduce((nextNodes, node) => {
     // make sure we don't try to add invalid nodes
-    if (!node || typeof node !== 'object' || !isNode(node)) {
+    if (!isNode(node)) {
       onError(new VueFlowError(ErrorCode.NODE_INVALID))
       return nextNodes
     }
