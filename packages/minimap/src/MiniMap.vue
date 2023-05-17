@@ -4,6 +4,7 @@ import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow 
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
+import { computed, provide, ref, useAttrs, useSlots, watchEffect } from 'vue'
 import type { MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
 import { MiniMapSlots } from './types'

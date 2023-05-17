@@ -1,4 +1,5 @@
 import type { CSSProperties, Slots } from 'vue'
+import { defineComponent, h, inject } from 'vue'
 import type { MiniMapNodeProps } from './types'
 import { MiniMapSlots } from './types'
 
