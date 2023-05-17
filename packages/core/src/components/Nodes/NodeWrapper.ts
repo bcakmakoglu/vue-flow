@@ -315,10 +315,6 @@ const NodeWrapper = defineComponent({
       if (elementSelectionKeys.includes(event.key) && props.selectable) {
         const unselect = event.key === 'Escape'
 
-        if (unselect) {
-          nodeElement.value?.blur()
-        }
-
         handleNodeClick(
           node.value,
           multiSelectionActive.value,
