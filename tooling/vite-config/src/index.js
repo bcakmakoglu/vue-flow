@@ -1,6 +1,5 @@
 const { defu } = require('defu')
 const vue = require('@vitejs/plugin-vue')
-const AutoImport = require('unplugin-auto-import/vite')
 const VueMacros = require('unplugin-vue-macros/vite')
 
 function withConfig(viteConfig) {
@@ -41,10 +40,6 @@ function withConfig(viteConfig) {
             reactivityTransform: true,
           }),
         },
-      }),
-      AutoImport({
-        imports: ['vue', 'vue/macros'],
-        dts: 'src/auto-imports.d.ts',
       }),
     ],
   })

@@ -11,5 +11,5 @@ export default withConfig({
       name: 'VueFlowControls',
     },
   },
-  plugins: [svgLoader()],
+  plugins: [svgLoader() as any],
 })
