@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toValue } from '@vueuse/core'
 import { useVueFlow } from './useVueFlow'
-import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
+import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc, ValidHandleResult } from '~/types'
 import {
   calcAutoPan,
   getClosestHandle,
@@ -135,29 +135,47 @@ export function useHandle({
       function onPointerMove(event: MouseTouchEvent) {
         connectionPosition = getEventPosition(event, containerBounds)
 
-        closestHandle = getClosestHandle(
-          pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
-          connectionRadius.value,
-          handleLookup,
-        )
+        let result: ValidHandleResult | null = {
+          handleDomNode: null,
+          isValid: false,
+          connection: { source: '', target: '', sourceHandle: null, targetHandle: null },
+          endHandle: null,
+        }
+
+        closestHandle =
+          getClosestHandle(
+            pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
+            connectionRadius.value,
+            handleLookup,
+          )?.find((handle) => {
+            const validHandleResult = isValidHandle(
+              event,
+              handle,
+              connectionMode.value,
+              toValue(nodeId),
+              toValue(handleId),
+              isTarget ? 'target' : 'source',
+              isValidConnectionHandler,
+              doc,
+              edges.value,
+              findNode,
+            )
+
+            if (validHandleResult.isValid) {
+              result = validHandleResult
+            }
+
+            return validHandleResult.isValid
+          }) || null
 
         if (!autoPanStarted) {
           autoPan()
           autoPanStarted = true
         }
 
-        const result = isValidHandle(
-          event,
-          closestHandle,
-          connectionMode.value,
-          toValue(nodeId),
-          toValue(handleId),
-          isTarget ? 'target' : 'source',
-          isValidConnectionHandler,
-          doc,
-          edges.value,
-          findNode,
-        )
+        if (!result) {
+          return
+        }
 
         connection = result.connection
         isValid = result.isValid

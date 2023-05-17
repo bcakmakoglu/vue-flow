@@ -53,11 +53,7 @@ export function getHandles(
   }, [])
 }
 
-export function getClosestHandle(
-  pos: XYPosition,
-  connectionRadius: number,
-  handles: ConnectionHandle[],
-): ConnectionHandle | null {
+export function getClosestHandle(pos: XYPosition, connectionRadius: number, handles: ConnectionHandle[]) {
   let closestHandles: ConnectionHandle[] = []
   let minDistance = Infinity
 
@@ -79,10 +75,7 @@ export function getClosestHandle(
     return null
   }
 
-  return closestHandles.length === 1
-    ? closestHandles[0]
-    : // if multiple handles are layout on top of each other we take the one with type = target because it's more likely that the user wants to connect to this one
-      closestHandles.find((handle) => handle.type === 'target') || closestHandles[0]
+  return closestHandles
 }
 
 // checks if  and returns connection in fom of an object { source: 123, target: 312 }
