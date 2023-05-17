@@ -74,9 +74,8 @@
     "@types/d3-selection": "^3.0.4",
     "@vue-flow/core": "workspace:*",
     "vite-plugin-vue-type-imports": "^0.2.4",
-    "vite": "^4.1.4",
     "vue": "^3.2.25",
-    "vue-tsc": "^1.2.0"
+    "vue-tsc": "^1.6.5"
   },
   "publishConfig": {
     "access": "public",
