@@ -227,7 +227,7 @@ onMounted(() => {
     if (
       event.button === 1 &&
       event.type === 'mousedown' &&
-      ((event.target as HTMLElement)?.closest(`.vue-flow__node`) || (event.target as HTMLElement)?.closest(`.vue-flow__edge`))
+      ((event.target as HTMLElement)?.closest('.vue-flow__node') || (event.target as HTMLElement)?.closest('.vue-flow__edge'))
     ) {
       return true
     }
