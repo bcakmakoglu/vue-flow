@@ -24,8 +24,6 @@ export default function useHandle({
   onEdgeUpdate,
   onEdgeUpdateEnd,
 }: UseHandleProps) {
-  const isTarget = computed(() => resolveUnref(type) === 'target')
-
   const {
     vueFlowRef,
     connectionMode,
@@ -51,6 +49,8 @@ export default function useHandle({
   let handleDomNode: Element | null = null
 
   function handlePointerDown(event: MouseTouchEvent) {
+    const isTarget = resolveUnref(type) === 'target'
+
     const isMouseTriggered = isMouseEvent(event)
 
     // when vue-flow is used inside a shadow root we can't use document
@@ -136,7 +136,7 @@ export default function useHandle({
           connectionMode.value,
           resolveUnref(nodeId),
           resolveUnref(handleId),
-          isTarget.value ? 'target' : 'source',
+          isTarget ? 'target' : 'source',
           isValidConnectionHandler,
           doc,
           edges.value,
@@ -222,6 +222,8 @@ export default function useHandle({
     if (!connectOnClick.value) {
       return
     }
+
+    const isTarget = resolveUnref(type) === 'target'
 
     if (!connectionClickStartHandle.value) {
       emits.clickConnectStart({ event, nodeId: resolveUnref(nodeId), handleId: resolveUnref(handleId) })
