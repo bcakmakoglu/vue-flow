@@ -5,4 +5,7 @@ export interface NodeToolbarProps {
   isVisible?: boolean
   position?: Position
   offset?: number
+  align?: 'center' | 'start' | 'end'
 }
+
+export type Align = 'center' | 'start' | 'end'
