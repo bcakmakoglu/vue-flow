@@ -9,11 +9,12 @@ const {
   connectableStart = true,
   connectableEnd = true,
   id,
-  isValidConnection,
   ...props
 } = defineProps<HandleProps>()
 
 const type = toRef(props, 'type', 'source')
+
+const isValidConnection = toRef(props, 'isValidConnection', undefined)
 
 const {
   connectionStartHandle,
