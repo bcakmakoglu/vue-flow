@@ -2,7 +2,6 @@
 import { Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { Background } from '@vue-flow/background'
-import { onBeforeUnmount } from 'vue'
 import Heart from '~icons/mdi/heart'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -57,7 +56,7 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, nodes } = useVueFlow({
+const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onNodesInitialized } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -181,9 +180,11 @@ const setElements = useDebounceFn(
   () => (currentBreakpoint.value === null ? 5 : 50),
 )
 
-const { stop } = useResizeObserver(el, setElements)
+onNodesInitialized(() => {
+  setElements()
+})
 
-onBeforeUnmount(stop)
+useResizeObserver(el, setElements)
 
 function scrollTo() {
   const el = document.getElementById('acknowledgement')

@@ -2,14 +2,16 @@
 import { watch } from 'vue'
 import { useRoute } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import { webVitals } from '../../plugins/vercel-web-vitals-api'
 
 const { Layout: ParentLayout } = DefaultTheme
 
 const route = useRoute()
 
-onMounted(() => {
-  webVitals({ analyticsId: '__ANALYTICS_ID__', debug: false })
+onMounted(async () => {
+  if (!import.meta.env.DEV) {
+    const { webVitals } = await import('../../plugins/vercel-web-vitals-api')
+    webVitals({ analyticsId: '__ANALYTICS_ID__', debug: false })
+  }
 })
 
 watch(
