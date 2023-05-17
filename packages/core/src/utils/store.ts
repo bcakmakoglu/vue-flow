@@ -1,11 +1,11 @@
-import { unref } from 'vue'
-import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, parseEdge, parseNode } from '.'
+import { toValue } from '@vueuse/core'
+import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
 import type { Actions, Connection, Edge, GraphEdge, GraphNode, Node, State } from '~/types'
 
 type NonUndefined<T> = T extends undefined ? never : T
 
 export function isDef<T>(val: T): val is NonUndefined<T> {
-  const unrefVal = unref(val)
+  const unrefVal = toValue(val)
 
   return typeof unrefVal !== 'undefined'
 }
