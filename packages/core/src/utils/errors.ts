@@ -1,5 +1,6 @@
 export enum ErrorCode {
   MISSING_VIEWPORT_DIMENSIONS = 'MISSING_VIEWPORT_DIMENSIONS',
+  NODE_INVALID = 'NODE_INVALID',
   NODE_NOT_FOUND = 'NODE_NOT_FOUND',
   NODE_MISSING_PARENT = 'NODE_MISSING_PARENT',
   NODE_TYPE_MISSING = 'NODE_TYPE_MISSING',
@@ -16,6 +17,7 @@ export enum ErrorCode {
 
 const messages = {
   [ErrorCode.MISSING_VIEWPORT_DIMENSIONS]: () => 'The Vue Flow parent container needs a width and a height to render the graph',
+  [ErrorCode.NODE_INVALID]: (id?: string) => `Node is invalid\nNode: ${id}`,
   [ErrorCode.NODE_NOT_FOUND]: (id: string) => `Node not found\nNode: ${id}`,
   [ErrorCode.NODE_MISSING_PARENT]: (id: string, parentId: string) => `Node is missing a parent\nNode: ${id}\nParent: ${parentId}`,
   [ErrorCode.NODE_TYPE_MISSING]: (type: string) => `Node type is missing\nType: ${type}`,
