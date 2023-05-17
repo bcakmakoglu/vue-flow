@@ -3,6 +3,7 @@ import type { NodeChange, NodeDimensionChange, NodePositionChange } from '@vue-f
 import { NodeIdInjection, clamp, useGetPointerPosition, useVueFlow } from '@vue-flow/core'
 import { select } from 'd3-selection'
 import { drag } from 'd3-drag'
+import { computed, inject, ref, watchEffect } from 'vue'
 import type { OnResize, OnResizeStart, ResizeControlProps, ResizeDragEvent } from './types'
 import { ResizeControlVariant } from './types'
 import { getDirection } from './utils'
