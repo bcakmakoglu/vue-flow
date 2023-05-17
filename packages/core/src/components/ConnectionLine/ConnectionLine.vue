@@ -16,7 +16,7 @@ const {
   connectionStatus,
   viewport,
   findNode,
-} = $(useVueFlow())
+} = useVueFlow()
 
 const oppositePosition = {
   [Position.Left]: Position.Right,
@@ -27,44 +27,42 @@ const oppositePosition = {
 
 const connectionLineComponent = inject(Slots)?.['connection-line']
 
-const handleId = $computed(() => connectionStartHandle!.handleId)
+const handleId = connectionStartHandle.value!.handleId
 
-const type = computed(() => connectionStartHandle!.type)
+const type = connectionStartHandle.value!.type
 
-const targetNode = $computed(() => (connectionEndHandle?.handleId && findNode(connectionEndHandle.nodeId)) || null)
+const targetNode = computed(() => (connectionEndHandle.value?.handleId && findNode(connectionEndHandle.value.nodeId)) || null)
 
-const sourceHandle = $computed(
+const sourceHandle = computed(
   () =>
-    (connectionMode === ConnectionMode.Strict
-      ? sourceNode.handleBounds[type.value]?.find((d) => d.id === handleId)
+    (connectionMode.value === ConnectionMode.Strict
+      ? sourceNode.handleBounds[type]?.find((d) => d.id === handleId)
       : [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]?.find((d) => d.id === handleId)) ||
-    sourceNode.handleBounds[type.value ?? 'source']?.[0],
+    sourceNode.handleBounds[type ?? 'source']?.[0],
 )
 
-const targetHandle = $computed(() => {
+const targetHandle = computed(() => {
   return (
-    (targetNode &&
-      connectionEndHandle?.handleId &&
-      ((connectionMode === ConnectionMode.Strict
-        ? targetNode.handleBounds[type.value === 'source' ? 'target' : 'source']?.find(
-            (d) => d.id === connectionEndHandle?.handleId,
+    (targetNode.value &&
+      connectionEndHandle.value?.handleId &&
+      ((connectionMode.value === ConnectionMode.Strict
+        ? targetNode.value.handleBounds[type === 'source' ? 'target' : 'source']?.find(
+            (d) => d.id === connectionEndHandle.value?.handleId,
           )
-        : [...(targetNode.handleBounds.source || []), ...(targetNode.handleBounds.target || [])]?.find(
-            (d) => d.id === connectionEndHandle?.handleId,
+        : [...(targetNode.value.handleBounds.source || []), ...(targetNode.value.handleBounds.target || [])]?.find(
+            (d) => d.id === connectionEndHandle.value?.handleId,
           )) ||
-        targetNode.handleBounds[type.value ?? 'target']?.[0])) ||
+        targetNode.value.handleBounds[type ?? 'target']?.[0])) ||
     null
   )
 })
 
-const fromPosition = computed(() => sourceHandle?.position)
-
 const fromXY = computed(() => {
-  if (sourceHandle) {
+  if (sourceHandle.value) {
     return getHandlePosition(
-      fromPosition.value || Position.Top,
+      sourceHandle.value?.position || Position.Top,
       { ...sourceNode.dimensions, ...sourceNode.computedPosition },
-      sourceHandle,
+      sourceHandle.value,
     )
   }
 
@@ -74,11 +72,11 @@ const fromXY = computed(() => {
   }
 })
 
-const targetPosition = computed(() => (fromPosition.value ? oppositePosition[fromPosition.value] : undefined))
+const targetPosition = computed(() => (sourceHandle.value?.position ? oppositePosition[sourceHandle.value?.position] : undefined))
 
 // todo: rename corresponding props
-const toX = $computed(() => (connectionPosition.x - viewport.x) / viewport.zoom)
-const toY = $computed(() => (connectionPosition.y - viewport.y) / viewport.zoom)
+const toX = computed(() => (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom)
+const toY = computed(() => (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom)
 
 const dAttr = computed(() => {
   let path
@@ -86,13 +84,13 @@ const dAttr = computed(() => {
   const pathParams = {
     sourceX: fromXY.value.x,
     sourceY: fromXY.value.y,
-    sourcePosition: fromPosition.value,
-    targetX: toX,
-    targetY: toY,
+    sourcePosition: sourceHandle.value?.position,
+    targetX: toX.value,
+    targetY: toY.value,
     targetPosition: targetPosition.value,
   }
 
-  const type = connectionLineType ?? connectionLineOptions.type
+  const type = connectionLineType.value ?? connectionLineOptions.value.type
 
   switch (type) {
     case ConnectionLineType.Bezier:
