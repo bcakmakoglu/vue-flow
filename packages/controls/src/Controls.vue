@@ -78,7 +78,6 @@ export default {
 <template>
   <Panel class="vue-flow__controls" :position="position">
     <slot name="top" />
-
     <template v-if="showZoom">
       <slot name="control-zoom-in">
         <ControlButton class="vue-flow__controls-zoomin" :disabled="maxZoomReached" @click="onZoomInHandler">
