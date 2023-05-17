@@ -79,7 +79,13 @@ export function createGraphNodes(
 ) {
   const parentNodes: Record<string, true> = {}
 
-  const graphNodes = nodes.map((node) => {
+  const graphNodes = nodes.reduce((nextNodes, node) => {
+    // make sure we don't try to add invalid nodes
+    if (!node || typeof node !== 'object' || !isNode(node)) {
+      onError(new VueFlowError(ErrorCode.NODE_INVALID))
+      return nextNodes
+    }
+
     const parsed = parseNode(node, {
       ...findNode(node.id),
       parentNode: node.parentNode,
@@ -89,12 +95,12 @@ export function createGraphNodes(
       parentNodes[node.parentNode] = true
     }
 
-    return parsed
-  })
+    return nextNodes.concat(parsed)
+  }, [] as GraphNode[])
 
   const nextNodes = [...graphNodes, ...currGraphNodes]
 
-  graphNodes.forEach((node) => {
+  for (const node of graphNodes) {
     const parentNode = nextNodes.find((n) => n.id === node.parentNode)
 
     if (node.parentNode && !parentNode) {
@@ -110,7 +116,7 @@ export function createGraphNodes(
         parentNode.isParent = true
       }
     }
-  })
+  }
 
   return graphNodes
 }
