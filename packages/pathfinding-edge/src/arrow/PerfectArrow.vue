@@ -2,6 +2,7 @@
 import { EdgeText, getSimpleBezierPath } from '@vue-flow/core'
 import type { CSSProperties } from 'vue'
 import { getArrow } from 'perfect-arrows'
+import { computed, useAttrs } from 'vue'
 import type { PerfectArrowProps } from '../types'
 
 const props = withDefaults(defineProps<PerfectArrowProps>(), {
@@ -37,21 +38,21 @@ export default {
 
 <template>
   <path
-    :style="{ ...props.style, ...attrs.style }"
+    :style="{ ...style, ...attrs.style }"
     class="vue-flow__edge-path vue-flow__perfect-arrow"
     :d="`M${arrow[0]},${arrow[1]} Q${arrow[2]},${arrow[3]} ${arrow[4]},${arrow[5]}`"
-    :marker-end="props.markerEnd"
-    :marker-start="props.markerStart"
+    :marker-end="markerEnd"
+    :marker-start="markerStart"
   />
   <EdgeText
-    v-if="props.label"
+    v-if="label"
     :x="centered[1]"
     :y="centered[2]"
-    :label="props.label"
-    :label-style="props.labelStyle"
-    :label-show-bg="props.labelShowBg"
-    :label-bg-style="props.labelBgStyle"
-    :label-bg-padding="props.labelBgPadding"
-    :label-bg-border-radius="props.labelBgBorderRadius"
+    :label="label"
+    :label-style="labelStyle"
+    :label-show-bg="labelShowBg"
+    :label-bg-style="labelBgStyle"
+    :label-bg-padding="labelBgPadding"
+    :label-bg-border-radius="labelBgBorderRadius"
   />
 </template>
