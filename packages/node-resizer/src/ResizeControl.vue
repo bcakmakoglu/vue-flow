@@ -40,9 +40,9 @@ const contextNodeId = inject(NodeIdInjection, null)
 
 const resizeControlRef = ref<HTMLDivElement>()
 
-const startValues = ref<typeof initStartValues>(initStartValues)
+let startValues: typeof initStartValues = initStartValues
 
-const prevValues = ref<typeof initPrevValues>(initPrevValues)
+let prevValues: typeof initPrevValues = initPrevValues
 
 const id = computed(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
 
@@ -67,21 +67,21 @@ watchEffect((onCleanup) => {
       const node = findNode(id.value!)
       const { xSnapped, ySnapped } = getPointerPosition(event)
 
-      prevValues.value = {
+      prevValues = {
         width: node?.dimensions.width ?? 0,
         height: node?.dimensions.height ?? 0,
         x: node?.position.x ?? 0,
         y: node?.position.y ?? 0,
       }
 
-      startValues.value = {
-        ...prevValues.value,
+      startValues = {
+        ...prevValues,
         pointerX: xSnapped,
         pointerY: ySnapped,
-        aspectRatio: prevValues.value.width / prevValues.value.height,
+        aspectRatio: prevValues.width / prevValues.height,
       }
 
-      emits('resizeStart', { event, params: prevValues.value })
+      emits('resizeStart', { event, params: prevValues })
     })
     .on('drag', (event: ResizeDragEvent) => {
       const { xSnapped, ySnapped } = getPointerPosition(event)
@@ -97,9 +97,9 @@ watchEffect((onCleanup) => {
           x: startNodeX,
           y: startNodeY,
           aspectRatio: startAspectRatio,
-        } = startValues.value
+        } = startValues
 
-        const { x: prevX, y: prevY, width: prevWidth, height: prevHeight } = prevValues.value
+        const { x: prevX, y: prevY, width: prevWidth, height: prevHeight } = prevValues
 
         const distX = Math.floor(enableX ? xSnapped - startX : 0)
         const distY = Math.floor(enableY ? ySnapped - startY : 0)
@@ -163,8 +163,8 @@ watchEffect((onCleanup) => {
 
             changes.push(positionChange)
 
-            prevValues.value.x = positionChange.position!.x
-            prevValues.value.y = positionChange.position!.y
+            prevValues.x = positionChange.position!.x
+            prevValues.y = positionChange.position!.y
           }
         }
 
@@ -182,8 +182,8 @@ watchEffect((onCleanup) => {
 
           changes.push(dimensionChange)
 
-          prevValues.value.width = width
-          prevValues.value.height = height
+          prevValues.width = width
+          prevValues.height = height
         }
 
         if (changes.length === 0) {
@@ -191,15 +191,15 @@ watchEffect((onCleanup) => {
         }
 
         const direction = getDirection({
-          width: prevValues.value.width,
+          width: prevValues.width,
           prevWidth,
-          height: prevValues.value.height,
+          height: prevValues.height,
           prevHeight,
           invertX,
           invertY,
         })
 
-        const nextValues = { ...prevValues.value, direction }
+        const nextValues = { ...prevValues, direction }
 
         const callResize = props.shouldResize?.(event, nextValues)
 
@@ -219,7 +219,7 @@ watchEffect((onCleanup) => {
         resizing: false,
       }
 
-      emits('resizeEnd', { event, params: prevValues.value })
+      emits('resizeEnd', { event, params: prevValues })
 
       triggerEmits.nodesChange([dimensionChange])
     })
