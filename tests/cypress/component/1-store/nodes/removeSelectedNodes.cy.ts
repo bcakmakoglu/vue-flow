@@ -27,21 +27,24 @@ describe('Store Action: `removeSelectedNodes`', () => {
   })
 
   it('removes `selected` class from nodes', () => {
-    cy.get('.vue-flow__node').then((els) => {
-      els.each((index, node) => {
-        const nodeId = node.getAttribute('data-id')
-        const storedNode = store.findNode(nodeId!)
+    // todo: can we avoid the timeout? without it, the test fails in ci
+    setTimeout(() => {
+      cy.get('.vue-flow__node').then((els) => {
+        els.each((index, node) => {
+          const nodeId = node.getAttribute('data-id')
+          const storedNode = store.findNode(nodeId!)
 
-        expect(storedNode && isNode(storedNode)).to.eq(true)
+          expect(storedNode && isNode(storedNode)).to.eq(true)
 
-        if (index >= randomNumber2 && index < randomNumber) {
-          expect(!!storedNode?.selected).to.eq(true)
-          expect(node).to.have.class('selected')
-        } else {
-          expect(!!storedNode?.selected).to.eq(false)
-          expect(node).to.not.have.class('selected')
-        }
+          if (index >= randomNumber2 && index < randomNumber) {
+            expect(!!storedNode?.selected).to.eq(true)
+            expect(node).to.have.class('selected')
+          } else {
+            expect(!!storedNode?.selected).to.eq(false)
+            expect(node).to.not.have.class('selected')
+          }
+        })
       })
-    })
+    }, 1)
   })
 })

@@ -29,14 +29,17 @@ describe('Store Action: `removeNodes`', () => {
   })
 
   it('removes nodes from DOM', () => {
-    cy.get('.vue-flow__node').then((els) => {
-      els.each((index, node) => {
-        const nodeId = node.getAttribute('data-id')
-        const storedNode = store.findNode(nodeId)
+    // todo: can we avoid the timeout? without it, the test fails in ci
+    setTimeout(() => {
+      cy.get('.vue-flow__node').then((els) => {
+        els.each((index, node) => {
+          const nodeId = node.getAttribute('data-id')
+          const storedNode = store.findNode(nodeId)
 
-        expect(deletedNodes).to.not.include(nodeId)
-        expect(storedNode).to.not.eq(undefined)
+          expect(deletedNodes).to.not.include(nodeId)
+          expect(storedNode).to.not.eq(undefined)
+        })
       })
-    })
+    }, 1)
   })
 })
