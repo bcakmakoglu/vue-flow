@@ -28,6 +28,7 @@ import {
   VueFlowError,
   addEdgeToStore,
   applyChanges,
+  clamp,
   createAdditionChange,
   createGraphNodes,
   createRemoveChange,

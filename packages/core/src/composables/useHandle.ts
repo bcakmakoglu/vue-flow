@@ -1,5 +1,4 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
-import { computed } from 'vue'
 import { toValue } from '@vueuse/core'
 import { useVueFlow } from './useVueFlow'
 import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
