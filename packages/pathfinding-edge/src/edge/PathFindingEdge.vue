@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { Position } from '@vue-flow/core'
 import { BezierEdge, EdgeText, getSimpleBezierPath, useVueFlow } from '@vue-flow/core'
+import { computed, useAttrs } from 'vue'
 import type { PathFindingEdgeProps } from '../types'
 import { createGrid, gridRatio } from './createGrid'
 import { drawSmoothLinePath } from './drawSvgPath'
@@ -74,7 +75,7 @@ const path = computed(() => {
 
   return svgPath
 })
-const attrs: any = useAttrs()
+const attrs: Record<string, any> = useAttrs()
 </script>
 
 <script lang="ts">
@@ -89,22 +90,22 @@ export default {
   <BezierEdge v-if="gridPath && gridPath.length <= 2" v-bind="{ ...props, ...attrs }" />
   <template v-else>
     <path
-      :style="{ ...props.style, ...attrs.style }"
+      :style="{ ...style, ...attrs.style }"
       class="vue-flow__edge-path"
       :d="path"
-      :marker-end="props.markerEnd"
-      :marker-start="props.markerStart"
+      :marker-end="markerEnd"
+      :marker-start="markerStart"
     />
     <EdgeText
-      v-if="props.label"
+      v-if="label"
       :x="centered[1]"
       :y="centered[2]"
-      :label="props.label"
-      :label-style="props.labelStyle"
-      :label-show-bg="props.labelShowBg"
-      :label-bg-style="props.labelBgStyle"
-      :label-bg-padding="props.labelBgPadding"
-      :label-bg-border-radius="props.labelBgBorderRadius"
+      :label="label"
+      :label-style="labelStyle"
+      :label-show-bg="labelShowBg"
+      :label-bg-style="labelBgStyle"
+      :label-bg-padding="labelBgPadding"
+      :label-bg-border-radius="labelBgBorderRadius"
     />
   </template>
 </template>
