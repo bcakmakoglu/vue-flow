@@ -26,13 +26,13 @@ const {
   elevateEdgesOnSelect,
   dimensions,
   emits,
-} = $(useVueFlow())
+} = useVueFlow()
 
 const sourceNode = controlledComputed(
-  () => connectionStartHandle?.nodeId,
+  () => connectionStartHandle.value?.nodeId,
   () => {
-    if (connectionStartHandle?.nodeId) {
-      return findNode(connectionStartHandle.nodeId)
+    if (connectionStartHandle.value?.nodeId) {
+      return findNode(connectionStartHandle.value.nodeId)
     }
 
     return false
@@ -40,38 +40,38 @@ const sourceNode = controlledComputed(
 )
 
 const connectionLineVisible = controlledComputed(
-  () => connectionStartHandle?.nodeId,
+  () => connectionStartHandle.value?.nodeId,
   () =>
     !!(
       sourceNode.value &&
-      (typeof sourceNode.value.connectable === 'undefined' ? nodesConnectable : sourceNode.value.connectable) &&
-      connectionStartHandle?.nodeId &&
-      connectionStartHandle?.type
+      (typeof sourceNode.value.connectable === 'undefined' ? nodesConnectable.value : sourceNode.value.connectable) &&
+      connectionStartHandle.value?.nodeId &&
+      connectionStartHandle.value?.type
     ),
 )
 
 const groups = controlledComputed(
   [
-    () => edges.map((e) => e.zIndex),
-    () => (elevateEdgesOnSelect ? [getSelectedNodes.length] : [0]),
-    () => (elevateEdgesOnSelect ? getNodesInitialized.map((n) => n.computedPosition.z) : []),
+    () => edges.value.map((e) => e.zIndex),
+    () => (elevateEdgesOnSelect.value ? [getSelectedNodes.value.length] : [0]),
+    () => (elevateEdgesOnSelect.value ? getNodesInitialized.value.map((n) => n.computedPosition.z) : []),
   ],
-  () => groupEdgesByZLevel(getEdges, findNode, elevateEdgesOnSelect),
+  () => groupEdgesByZLevel(getEdges.value, findNode, elevateEdgesOnSelect.value),
 )
 
 function selectable(edgeSelectable?: boolean) {
-  return typeof edgeSelectable === 'undefined' ? elementsSelectable : edgeSelectable
+  return typeof edgeSelectable === 'undefined' ? elementsSelectable.value : edgeSelectable
 }
 function updatable(edgeUpdatable?: EdgeUpdatable) {
-  return typeof edgeUpdatable === 'undefined' ? edgesUpdatable : edgeUpdatable
+  return typeof edgeUpdatable === 'undefined' ? edgesUpdatable.value : edgeUpdatable
 }
 function focusable(edgeFocusable?: boolean) {
-  return typeof edgeFocusable === 'undefined' ? edgesFocusable : edgeFocusable
+  return typeof edgeFocusable === 'undefined' ? edgesFocusable.value : edgeFocusable
 }
 
 function getType(type?: string, template?: GraphEdge['template']) {
   const name = type || 'default'
-  let edgeType = template ?? getEdgeTypes[name]
+  let edgeType = template ?? getEdgeTypes.value[name]
   const instance = getCurrentInstance()
 
   if (typeof edgeType === 'string') {
