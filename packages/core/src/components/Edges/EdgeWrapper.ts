@@ -1,4 +1,4 @@
-import { defineComponent, h, provide, ref } from 'vue'
+import { computed, defineComponent, h, provide, ref } from 'vue'
 import { useVModel } from '@vueuse/core'
 import EdgeAnchor from './EdgeAnchor'
 import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType, MouseTouchEvent } from '~/types'
@@ -56,8 +56,8 @@ const EdgeWrapper = defineComponent({
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)
 
-    const edgeClass = $computed(() => (edge.class instanceof Function ? edge.class(edge) : edge.class))
-    const edgeStyle = $computed(() => (edge.style instanceof Function ? edge.style(edge) : edge.style))
+    const edgeClass = computed(() => (edge.class instanceof Function ? edge.class(edge) : edge.class))
+    const edgeStyle = computed(() => (edge.style instanceof Function ? edge.style(edge) : edge.style))
 
     const { handlePointerDown } = useHandle({
       nodeId,
@@ -123,7 +123,7 @@ const EdgeWrapper = defineComponent({
             'vue-flow__edge',
             `vue-flow__edge-${props.type === false ? 'default' : props.name}`,
             noPanClassName.value,
-            edgeClass,
+            edgeClass.value,
             {
               updating: mouseOver.value,
               selected: edge.selected,
@@ -164,7 +164,7 @@ const EdgeWrapper = defineComponent({
                 labelBgBorderRadius: edge.labelBgBorderRadius,
                 data: edge.data,
                 events: { ...edge.events, ...hooks.on },
-                style: edgeStyle,
+                style: edgeStyle.value,
                 markerStart: `url(#${getMarkerId(edge.markerStart, vueFlowId)})`,
                 markerEnd: `url(#${getMarkerId(edge.markerEnd, vueFlowId)})`,
                 sourcePosition,
