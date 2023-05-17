@@ -36,14 +36,10 @@ describe('Store Action: `removeSelectedEdges`', () => {
 
         if (index >= randomNumber2 && index < randomNumber) {
           expect(!!storedEdge?.selected).to.eq(true)
-          cy.tryAssertion(() => {
-            expect(edge).to.have.class('selected')
-          })
+          expect(edge).to.have.class('selected')
         } else {
           expect(!!storedEdge?.selected).to.eq(false)
-          cy.tryAssertion(() => {
-            expect(edge).to.not.have.class('selected')
-          })
+          expect(edge).to.not.have.class('selected')
         }
       })
     })
