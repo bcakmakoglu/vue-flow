@@ -24,7 +24,25 @@ describe('Store Action: `addEdges`', () => {
     expect(store.edges.value).to.have.length(edges.length)
   })
 
-  it('adds edges to viewpane', () => {
+  it('adds edges to view', () => {
     cy.get('.vue-flow__edge').should('have.length', edges.length)
+  })
+
+  it('adds edges to DOM', () => {
+    cy.get('.vue-flow__edge').then((els) => {
+      els.each((index, edge) => {
+        const edgeId = edge.getAttribute('data-id')
+        const storedEdge = store.findEdge(edgeId)
+
+        expect(storedEdge).to.not.eq(undefined)
+        expect(storedEdge?.id).to.eq(edgeId)
+      })
+    })
+  })
+
+  it('does not add invalid edges', () => {
+    // @ts-expect-error invalid edges
+    store.addEdges([null, undefined, '', 0, false, true, {}, []])
+    expect(store.edges.value).to.have.length(edges.length)
   })
 })
