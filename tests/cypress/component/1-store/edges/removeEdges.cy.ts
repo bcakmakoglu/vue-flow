@@ -5,7 +5,7 @@ const { nodes, edges } = getElements()
 
 describe('Store Action: `removeEdges`', () => {
   const store = useVueFlow({ id: 'test' })
-  let randomNumber: number
+  let deletedEdges: string[]
 
   beforeEach(() => {
     cy.vueFlow({
@@ -15,15 +15,28 @@ describe('Store Action: `removeEdges`', () => {
   })
 
   beforeEach(() => {
-    randomNumber = Math.floor(Math.random() * edges.length)
-    store.removeEdges(Array.from({ length: randomNumber }, (_, i) => edges[i].id))
+    const randomNumber = Math.floor(Math.random() * edges.length)
+    deletedEdges = Array.from({ length: randomNumber }, (_, i) => edges[i].id)
+    store.removeEdges(deletedEdges)
   })
 
   it('removes edges from store', () => {
-    expect(store.edges.value).to.have.length(edges.length - randomNumber)
+    expect(store.edges.value).to.have.length(edges.length - deletedEdges.length)
   })
 
-  it('removes edges from viewpane', () => {
-    cy.get('.vue-flow__edge').should('have.length', edges.length - randomNumber)
+  it('removes edges from view', () => {
+    cy.get('.vue-flow__edge').should('have.length', edges.length - deletedEdges.length)
+  })
+
+  it('removes edges from DOM', () => {
+    cy.get('.vue-flow__edge').then((els) => {
+      els.each((index, edge) => {
+        const edgeId = edge.getAttribute('data-id')
+        const storedEdge = store.findEdge(edgeId)
+
+        expect(deletedEdges).to.not.include(edgeId)
+        expect(storedEdge).to.not.eq(undefined)
+      })
+    })
   })
 })

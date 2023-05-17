@@ -36,7 +36,7 @@ describe('Default Edge Options', () => {
     cy.get('.vue-flow__edge').should('have.class', defaultEdgeOptions.class)
   })
 
-  it('does not override edge values with defaults', () => {
+  it('sets default edge options but does not overwrite options with existing values', () => {
     store.edges.value.forEach((edge) => {
       if (edge.id === 'customEdge') {
         return expect(edge.type).to.equal('custom')
