@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toValue } from '@vueuse/core'
 import { useVueFlow } from './useVueFlow'
-import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc, ValidHandleResult } from '~/types'
+import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
 import {
   calcAutoPan,
   getClosestHandle,
@@ -135,20 +135,12 @@ export function useHandle({
       function onPointerMove(event: MouseTouchEvent) {
         connectionPosition = getEventPosition(event, containerBounds)
 
-        let result: ValidHandleResult | null = {
-          handleDomNode: null,
-          isValid: false,
-          connection: { source: '', target: '', sourceHandle: null, targetHandle: null },
-          endHandle: null,
-        }
-
-        closestHandle =
-          getClosestHandle(
-            pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
-            connectionRadius.value,
-            handleLookup,
-          )?.find((handle) => {
-            const validHandleResult = isValidHandle(
+        const { handle, validHandleResult } = getClosestHandle(
+          pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
+          connectionRadius.value,
+          handleLookup,
+          (handle) =>
+            isValidHandle(
               event,
               handle,
               connectionMode.value,
@@ -159,27 +151,19 @@ export function useHandle({
               doc,
               edges.value,
               findNode,
-            )
+            ),
+        )
 
-            if (validHandleResult.isValid) {
-              result = validHandleResult
-            }
-
-            return validHandleResult.isValid
-          }) || null
+        closestHandle = handle
 
         if (!autoPanStarted) {
           autoPan()
           autoPanStarted = true
         }
 
-        if (!result) {
-          return
-        }
-
-        connection = result.connection
-        isValid = result.isValid
-        handleDomNode = result.handleDomNode
+        connection = validHandleResult.connection
+        isValid = validHandleResult.isValid
+        handleDomNode = validHandleResult.handleDomNode
 
         updateConnection(
           closestHandle && isValid
@@ -191,7 +175,7 @@ export function useHandle({
                 viewport.value,
               )
             : connectionPosition,
-          result.endHandle,
+          validHandleResult.endHandle,
           getConnectionStatus(!!closestHandle, isValid),
         )
 
