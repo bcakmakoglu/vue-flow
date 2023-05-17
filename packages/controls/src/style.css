@@ -26,3 +26,12 @@
 .vue-flow__controls-button:hover {
   background: #f4f4f4;
 }
+
+
+.vue-flow__controls-button:disabled {
+  pointer-events: none;
+}
+
+.vue-flow__controls-button:disabled svg {
+  fill-opacity: 0.4;
+}
