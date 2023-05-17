@@ -5,7 +5,7 @@ interface UseHandleProps {
   handleId: MaybeComputedRef<string | null>
   nodeId: MaybeComputedRef<string>
   type: MaybeComputedRef<HandleType>
-  isValidConnection?: ValidConnectionFunc | null
+  isValidConnection?: MaybeComputedRef<ValidConnectionFunc | null>
   edgeUpdaterType?: MaybeComputedRef<HandleType>
   onEdgeUpdate?: (event: MouseTouchEvent, connection: Connection) => void
   onEdgeUpdateEnd?: (event: MouseTouchEvent) => void
@@ -59,7 +59,7 @@ export default function useHandle({
     if ((isMouseTriggered && event.button === 0) || !isMouseTriggered) {
       const node = findNode(resolveUnref(nodeId))
 
-      let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
+      let isValidConnectionHandler = resolveUnref(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
       if (!isValidConnectionHandler && node) {
         isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
@@ -235,7 +235,7 @@ export default function useHandle({
         true,
       )
     } else {
-      let isValidConnectionHandler = isValidConnection || isValidConnectionProp.value || alwaysValid
+      let isValidConnectionHandler = resolveUnref(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
       const node = findNode(resolveUnref(nodeId))
 

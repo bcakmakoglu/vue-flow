@@ -58,7 +58,7 @@ const EdgeWrapper = defineComponent({
       nodeId,
       handleId,
       type: edgeUpdaterType,
-      isValidConnection: isValidConnection.value,
+      isValidConnection,
       edgeUpdaterType,
       onEdgeUpdate,
       onEdgeUpdateEnd,
