@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { Panel, PanelPosition, useVueFlow } from '@vue-flow/core'
+import { computed } from 'vue'
 import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from './icons/plus.svg'
@@ -76,7 +77,7 @@ export default {
 
 <template>
   <Panel class="vue-flow__controls" :position="position">
-    <slot name="top"></slot>
+    <slot name="top" />
 
     <template v-if="showZoom">
       <slot name="control-zoom-in">
@@ -119,6 +120,6 @@ export default {
       </slot>
     </template>
 
-    <slot></slot>
+    <slot />
   </Panel>
 </template>

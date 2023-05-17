@@ -7,6 +7,6 @@ export default {
 
 <template>
   <button class="vue-flow__controls-button">
-    <slot></slot>
+    <slot />
   </button>
 </template>
