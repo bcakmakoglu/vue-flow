@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useVueFlow } from '@vue-flow/core'
+import { computed } from 'vue'
 import { BackgroundVariant } from './types'
 import type { BackgroundProps } from './types'
 import { DotPattern, LinePattern } from './patterns'
