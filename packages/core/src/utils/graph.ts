@@ -69,7 +69,7 @@ export function getHostForElement(element: HTMLElement): Document {
 
 // todo: refactor generic to use MaybeElement
 export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
-  return typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
+  return element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
 }
 
 // todo: refactor generic to use MaybeElement
@@ -79,7 +79,7 @@ export function isGraphEdge<Data = ElementData>(element: MaybeElement): element 
 
 // todo: refactor generic to use MaybeElement
 export function isNode<Data = ElementData>(element: MaybeElement): element is Node<Data> {
-  return typeof element === 'object' && 'id' in element && !isEdge(element)
+  return element && typeof element === 'object' && 'id' in element && 'position' in element && !isEdge(element)
 }
 
 // todo: refactor generic to use MaybeElement
