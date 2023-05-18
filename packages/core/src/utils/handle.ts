@@ -126,7 +126,10 @@ export function isValidHandle(
   // because it could be that the center of another handle is closer to the mouse pointer than the handle below the cursor
   const handleToCheck = handleBelow?.classList.contains('vue-flow__handle') ? handleBelow : handleDomNode
 
-  const result = defaultValidHandleResult()
+  const result = {
+    ...defaultValidHandleResult(),
+    handleDomNode: handleToCheck,
+  }
 
   if (handleToCheck) {
     const handleType = getHandleType(undefined, handleToCheck)
