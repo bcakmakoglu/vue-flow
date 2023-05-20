@@ -5,6 +5,8 @@
     "noEmit": true,
     "declaration": false,
     "resolveJsonModule": true,
+    "emitDeclarationOnly": false,
+    "allowJs": true,
     "types": [
       "vite/client"
     ],

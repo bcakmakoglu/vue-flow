@@ -1,8 +1,9 @@
-<script setup>
+<script lang="ts" setup>
+import type { Elements } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import ConnectionLine from './ConnectionLine.vue'
 
-const elements = ref([
+const elements = ref<Elements>([
   {
     id: '1',
     type: 'input',
