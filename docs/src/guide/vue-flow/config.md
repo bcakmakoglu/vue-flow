@@ -300,7 +300,7 @@ const edges = ref([
 - Details:
 
   Options for the connection line.
-  
+
   The options include the connection line type, style and possible marker types (marker-end/marker-start).
 
 ### connection-line-type (optional) (deprecated)
@@ -549,7 +549,7 @@ const edges = ref([
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
-  
+
   // This will overwrite the globally set option of nodes-draggable
   { id: '2', draggable: true, label: 'Node 2', position: { x: 100, y: 100 } },
 ])
@@ -577,7 +577,7 @@ const elements = ref([
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
-  
+
   // This will overwrite the globally set option of nodes-connectable
   { id: '2', connectable: true, label: 'Node 2', position: { x: 100, y: 100 } },
 ])
@@ -612,7 +612,7 @@ const elements = ref([
 <script setup>
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
-  
+
   // This will overwrite the globally set option of node-extent
   { id: '2', extent: [[-100, -100], [100, 100]], label: 'Node 2', position: { x: 100, y: 100 } },
 ])
@@ -661,7 +661,7 @@ const elements = ref([
   Globally enable/disable updating edges.
 
   If set to 'source' only source markers are updatable
-  
+
   If set to 'target' only target markers are updatable
 
   If set to 'true' both source and target markers are updatable
@@ -675,7 +675,7 @@ const elements = ref([
 const elements = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
-  
+
   { id: 'e1-3', source: '1', target: '3' },
   // Overwrites global edges-updatable config
   { id: 'e1-2', updatable: true, source: '1', target: '2', animated: true },
@@ -762,15 +762,15 @@ import { ref } from 'vue'
 const elements = ref([/** elements omitted for simplicity */])
 
 const connector = (params) => {
-  if (params.source.id === params.target.id) {
+  if (params.source === params.target) {
     return false
   }
-  
+
   return {
-    id: `edge-${params.source.id}-${params.target.id}`,
-    source: params.source.id,
-    target: params.target.id,
-    label: `Edge ${params.source.id}-${params.target.id}`,
+    id: `edge-${params.source}-${params.target}`,
+    source: params.source,
+    target: params.target,
+    label: `Edge ${params.source}-${params.target}`,
     animated: true,
   }
 }
@@ -786,7 +786,7 @@ const connector = (params) => {
 - Type: `boolean`
 
 - Default: `false`
- 
+
 - Details:
 
   When enabled, edges will be grouped by z-index and elevated when the nodes they connect to are selected.
