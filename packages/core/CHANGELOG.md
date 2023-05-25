@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.20.1
+
+### Patch Changes
+
+- [#943](https://github.com/bcakmakoglu/vue-flow/pull/943) [`22b53569`](https://github.com/bcakmakoglu/vue-flow/commit/22b53569619628006470747a8bb206b034719864) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fetch current node in drag handler, fixes drag handler using outdated node obj when it has been overwritten
+
+- [#961](https://github.com/bcakmakoglu/vue-flow/pull/961) [`2f75b31c`](https://github.com/bcakmakoglu/vue-flow/commit/2f75b31c388368aede2e249b38dd3f1409942c8d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Avoid inserting invalid nodes into state and throw error msg if invalid node is passed
+
+- [#956](https://github.com/bcakmakoglu/vue-flow/pull/956) [`90e4cf99`](https://github.com/bcakmakoglu/vue-flow/commit/90e4cf99f1fc082808f11389917d0f86e0f66d1c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing a MaybeComputedRef type as `isValidConnection` arg for `useHandle` composable
+
+- [#954](https://github.com/bcakmakoglu/vue-flow/pull/954) [`402da363`](https://github.com/bcakmakoglu/vue-flow/commit/402da3630b83fca664ff2dba6625538b4de5bb9e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use all handles in connection radius and select closest one that is valid
+
+- [#951](https://github.com/bcakmakoglu/vue-flow/pull/951) [`b81069e5`](https://github.com/bcakmakoglu/vue-flow/commit/b81069e5473e56c82cdf96c0607cdedae7fc4d78) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set default viewport type as partial
+
 ## 1.20.0
 
 ### Minor Changes
