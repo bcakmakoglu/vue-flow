@@ -89,7 +89,7 @@ function onChange(event: InputEvent) {
 <template>
   <VueFlow v-model="elements" fit-view-on-init :style="{ backgroundColor: bgColor }">
     <template #node-selectorNode="props">
-      <ColorSelectorNode :data="props.data" :parent-node="props.parentNode" :position="props.position" />
+      <ColorSelectorNode :data="props.data" />
     </template>
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
     <Controls />

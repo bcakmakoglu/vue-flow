@@ -8,7 +8,7 @@ interface Data {
   onChange: (event: InputEvent) => void
 }
 
-interface ColorSelectorNodeProps extends NodeProps<Data, {}, 'selectorNode'> {
+interface ColorSelectorNodeProps extends Pick<NodeProps<Data, {}, 'selectorNode'>, 'data'> {
   data: Data
 }
 
