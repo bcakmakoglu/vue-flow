@@ -1,5 +1,15 @@
 # @vue-flow/controls
 
+## 1.1.0
+
+### Minor Changes
+
+- [#957](https://github.com/bcakmakoglu/vue-flow/pull/957) [`ee1ab495`](https://github.com/bcakmakoglu/vue-flow/commit/ee1ab495f9c33dcee71d6912c02bff1a41b44e6a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Disable zoom-in / zoom-out btns when max or min zoom is reached
+
+### Patch Changes
+
+- [#952](https://github.com/bcakmakoglu/vue-flow/pull/952) [`095ab6af`](https://github.com/bcakmakoglu/vue-flow/commit/095ab6aff4c4c24f03d1d73987a19894a8d580b1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - use OR operator to determine `isInteractive` state in controls component
+
 ## 1.0.6
 
 ### Patch Changes
