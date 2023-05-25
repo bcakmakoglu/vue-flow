@@ -1,5 +1,11 @@
 # @vue-flow/node-toolbar
 
+## 1.1.0
+
+### Minor Changes
+
+- [#953](https://github.com/bcakmakoglu/vue-flow/pull/953) [`bda15cfa`](https://github.com/bcakmakoglu/vue-flow/commit/bda15cfa790ae479e95827b940c0043448f7f89c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `align` prop to node toolbar
+
 ## 1.0.7
 
 ### Patch Changes
