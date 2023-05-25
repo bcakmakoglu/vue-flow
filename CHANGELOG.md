@@ -2,6 +2,124 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.20.1] - 2023-05-25
+
+[0e7f3c2](0e7f3c223ceff311240739ff65f0e8d75e2b433b)...[a16b7ca](a16b7ca3d01681b8ccb172ccde0316bf267d7352)
+
+### Bug Fixes
+
+- Use OR operator to determine `isInteractive` state ([5d16068](5d160689b9f410b278515e520ba314f77a3a25a8))
+- Set default viewport type as partial ([1b39615](1b396159ed6c2b62c4a83f45cfb0ace204f7d92c))
+- Use all handles in radius and find closest valid one ([1690891](169089180410fcdc490657c719a11dab4becaedd))
+- Filter closest handles by validity ([e42897e](e42897e3eddc68850a551152f72c47c19f232394))
+
+### Features
+
+- Add `align` prop ([f5152a9](f5152a9fd35e61cb38ad96b322841c74a4eff2dd))
+
+### Miscellaneous Tasks
+
+- Dynamically import webvitals ([2bac3d5](2bac3d5afcef61503ecb16f0dbe69b4c5e53a304))
+- Remove reactivity transform from `useDrag` ([e52f747](e52f74703adc4665626dd0102c473ba4f5e0c7ee))
+- Add ([527afd9](527afd99b94022ccc8e780d27ccfebbc26192cff))
+- Cleanup unnecessary refs ([13d3be9](13d3be9c332de90bc3dc7460e7ee099a062f663e))
+- Add ([c3b0680](c3b0680e895c8724de0479ad505c81d0565624dd))
+- Add ([5820fcd](5820fcd8d973474fb81520c0210d8247d46d1dd7))
+- Add ([f2974b2](f2974b2272c1a052aed412c3bbf5bd0c05335441))
+- Cleanup ([b3412bc](b3412bc8ece6c02428f5fca607c434d6ab474b41))
+- Add ([1349461](1349461286dd1a91b3584bda2a8bf9110fa9ae30))
+- Cleanup handle cmp ([8fa6ad5](8fa6ad50760090c4800f3a95a4402781b9a86095))
+- Add ([2b31cb5](2b31cb56c328c4d12b8d5913ee6902c85eab9c3d))
+- Remove auto-imports ([85dea35](85dea35b26d298c19957837f69fad571a054dba8))
+- Update turbo deps ([1d2cf7e](1d2cf7eaf42833765ecee3a236bdfccbc31079b2))
+- Lint ([128b968](128b968168770059601e8281da37925045d5f64b))
+- Update deps ([5a86c7c](5a86c7cf1d2ccc9dd130ae3c17fb3b84ce339515))
+- Update slots patch ([77df926](77df92685fd3d03e010518f947a831cc29058140))
+- Update vite & vue-tsc ([26943b2](26943b2d85a741979b13adc1db49f82c40ece710))
+- Cleanup ([ff9f647](ff9f6471ed73641712d84e28fa2e7dc074c3a1d7))
+- Cleanup ([1180ab2](1180ab247fcdead49eb8d546619a0ef808b5c6c0))
+- Update pnpm-lock.yaml ([27666d9](27666d9b0fa9af65f1caeedb5f14bfe36c227418))
+- Lint ([8466e85](8466e8533020e8cdf0505e7d2b010499bccc2b84))
+- Add ([910a354](910a3543f6db5f8a0eba6c3991c2c3ba01f88a26))
+- Cleanup ([1a083fc](1a083fc8614916b012b148bcdcfd733a04f21002))
+- Remove reactivity transform ([f720f27](f720f273609e76c035d1904da8bce3371a7612aa))
+- Cleanup ([c52396b](c52396b43b337c6e41bc4f17b0d43f1a4bb671fb))
+- Cleanup ([b2cdb6a](b2cdb6a143c1bb9e8c55f6a3852ddb846c704f64))
+- Update deps-dev ([0e5a678](0e5a678a7bf74f826f3051e8c83faad7d44f77fa))
+- Lint ([94b43a6](94b43a68d69697044e6b1fceadd82c5d4bfff171))
+- Update color selector node example ([4336ff7](4336ff7578b6c54a2173c640aba71a81eb07163d))
+- Add ([b9c2ca9](b9c2ca9141fe2f16c604c641deb74a5541bd2482))
+- Cleanup ([1e786a9](1e786a9b088e048382dae5275df92b00bd8b747c))
+
+### Refactor
+
+- Pass drag handle to `useDrag` ([20a9521](20a9521cacd2c9af9bc91adebc51391b57405d42))
+- Remove unnecessary computed var ([627cbf6](627cbf65a88d86d60d4bdde71fa8dd7dbc2b66ea))
+- Remove reactivity transform from connection line component ([9b0b969](9b0b969caf8b720cc2297cc1a2e993d86c745d74))
+- Allow ref for isValidConnection in useHandle ([4d505c9](4d505c974c68c22e4ff2e2ae9a51c83a3ebd2a4d))
+- Disable zoom in/out btns when max/min zoom is reached ([49fbdad](49fbdadb720801e9cd174f151358629060745b6f))
+- Remove auto-imports ([09a97da](09a97da11682371f290a4160a32239dce653de64))
+- Remove auto-imports ([9698691](969869110a07cfb09934dfdf8c12ad8b0469b77a))
+- Remove auto-imports ([bc0137b](bc0137bae868ad3774e38ad48e8b0916022b64ae))
+- Remove auto-imports ([6fd58b6](6fd58b621281f396d181f7226f669477f7a44ce5))
+- Remove auto-imports ([9a91278](9a912785a94cc6cddbad6a6134c0ab9872273a38))
+- Remove auto-imports ([0a11840](0a11840922b773c9f921a34d5e445c216a00aa6a))
+- Add explicit imports and remove auto-imports ([e3e6a03](e3e6a03359937f8a6534aa4aaf862aafab0f84ae))
+- Add explicit imports and remove auto-imports ([ed4eaac](ed4eaac34e465595dc0a8b237809ccf1f064ab75))
+- Add explicit imports and remove auto-imports ([5da86cb](5da86cbd2d7735bb48b6e5980a74c54dda160d0e))
+- Allow passing null as id for find actions ([4421ad0](4421ad0ee753c332b88f011ba32baf627dbf5639))
+- Avoid inserting invalid nodes ([06ad0c0](06ad0c0d20f316ef8738c1a69ec255ff6c07b3b8))
+- Check if element is object ([4ad10c5](4ad10c50302a0b66694e8b9f85d37e4853c4fbd8))
+
+### Testing
+
+- Update edges tests ([3a1b0ab](3a1b0ab78b04e7d38598164c07bea5feb1ebbff5))
+- Update nodes tests ([669a2a3](669a2a3f8cbcb67dfd9ccc5bcec349d3740c3154))
+- Update delete key code tests ([f9462d1](f9462d16a95f80ac03cecab50be80aeceb13a5ec))
+- Use timeout to avoid cli run fails ([9bf9c64](9bf9c644bef1d3ba4125c592491bc163ca3de974))
+
+## [1.20.0] - 2023-05-11
+
+[ca54537](ca54537d546f071cd810b3e7bba5d2951554b36d)...[0e7f3c2](0e7f3c223ceff311240739ff65f0e8d75e2b433b)
+
+### Bug Fixes
+
+- Do not render edges connected to a hidden node ([4bc576e](4bc576ec7f58980bf8160c1060c4252271c221d0))
+
+### Features
+
+- Add `parent` class name to parent nodes ([26be1d2](26be1d282659963da8105d1e6480e67e7d631c1c))
+- Add `fromObject` action to load graph ([abb302c](abb302cb030cb4cba728685dd9e12c7ad35fb667))
+
+### Miscellaneous Tasks
+
+- Add ([616dfcc](616dfcc817f6f692eedb74cd100e7d727e3414ab))
+- Remove non-nullable assertion ([833afdb](833afdbd97b160a258db0c4d1f28d2f81530e92d))
+- Add ([f174ce7](f174ce7afc14fa545997f92290fa4583a63937ab))
+- Add ([74939d0](74939d03251236768a2b2f7534c7d36271329f27))
+- Add ([f5e0cef](f5e0cef1166dab44dd2abc72fbcfe44237d13b55))
+- Add ([54659d4](54659d4a84f444a1d92f8594cc8381eb0a1d0e3f))
+- Add ([1307712](1307712e32aa13ffd9c6e4c067f4ad024d7ac022))
+- Cleanup ([da9cbc6](da9cbc6e77e43b65d382a49939be8c51f15cf52c))
+- Update deps ([3318a08](3318a0837d7f58959faaa62e9dd787108ad03a53))
+- Update deps ([56e7dd0](56e7dd0bd0f298c0daae7b93cda43a94575134e0))
+- Update deps ([5610efa](5610efa4701896fc37d945d9285f825dee31fb96))
+- Update examples with new API for add/remove ([e464d7b](e464d7b8a5d18213cee9b5d9dd192064ceec1c46))
+- Update examples with new API for add/remove ([945af78](945af78c8b8ada41c358547e955a85e211021743))
+- Cleanup ([ca302d7](ca302d751006f45339d944f30a4ae072454cc24a))
+- Lint ([6b88c97](6b88c97a22d5d61a90b906fdb47b567a2fdd5ba1))
+- Add ([51f91d4](51f91d48d648c9623385f3576c7a9467b5b83552))
+- Avoid jumping intro ([09e63e0](09e63e0ad676c753addbe45e1f5ac828bbb64beb))
+- Update RGB examples ([d470ce1](d470ce1f92eb2a1b242542fa86b28b40573bb77b))
+
+### Refactor
+
+- Allow passing single element to add actions ([ca9eda9](ca9eda98ddc4608c49143897c79d70df112eddbe))
+- Remove reactivity transform in node wrapper ([a7db003](a7db003b68e6e3cc6e706c43849ff3f6a85bfd09))
+- Allow passing single item to remove actions ([073e987](073e987fa8cc3082509d311977740428998da845))
+- Pass id to base edge ([fb09d08](fb09d08e9b4d1637cc8fd84ddb6ba0f1fb87462d))
+- Pick target handle if handles are on top of each other ([fb1181f](fb1181f2093f075ed0a47ebd59a5b1786b56dcbd))
+
 ## [1.19.4] - 2023-05-10
 
 [d673020](d673020586ec839fc7cd32313d2602c488637645)...[ca54537](ca54537d546f071cd810b3e7bba5d2951554b36d)
