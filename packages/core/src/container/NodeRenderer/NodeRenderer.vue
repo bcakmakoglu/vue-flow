@@ -43,7 +43,7 @@ onMounted(() => {
       }
     })
 
-    updateNodeDimensions(updates)
+    setTimeout(() => updateNodeDimensions(updates));
   })
 })
 
