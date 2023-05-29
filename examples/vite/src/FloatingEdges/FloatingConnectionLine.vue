@@ -13,17 +13,17 @@ interface FloatingConnectionLineProps {
 
 const props = defineProps<FloatingConnectionLineProps>()
 
-const targetNode = computed(
-  () =>
-    ({
-      id: 'connection-target',
-      position: { x: props.targetX, y: props.targetY },
-      dimensions: { width: 1, height: 1 },
-    } as GraphNode),
-)
+const targetNode = computed(() => {
+  return {
+    id: 'connection-target',
+    computedPosition: { x: props.targetX, y: props.targetY },
+    dimensions: { width: 1, height: 1 },
+  } as GraphNode
+})
 
 const edgeParams = computed(() => getEdgeParams(props.sourceNode, targetNode.value))
-const d = computed(() =>
+
+const edgePath = computed(() =>
   getBezierPath({
     sourceX: edgeParams.value.sx,
     sourceY: edgeParams.value.sy,
@@ -34,7 +34,7 @@ const d = computed(() =>
 
 <template>
   <g>
-    <path fill="none" stroke="#222" :stroke-width="1.5" class="animated" :d="d[0]" />
+    <path fill="none" stroke="#222" :stroke-width="1.5" class="animated" :d="edgePath[0]" />
     <circle :cx="targetX" :cy="targetY" fill="#fff" :r="3" stroke="#222" :stroke-width="1.5" />
   </g>
 </template>
