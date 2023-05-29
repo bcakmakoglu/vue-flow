@@ -7,9 +7,9 @@ function getNodeIntersection(intersectionNode: GraphNode, targetNode: GraphNode)
   // https://math.stackexchange.com/questions/1724792/an-algorithm-for-finding-the-intersection-point-between-a-center-of-vision-and-a
   const {
     dimensions: { width: intersectionNodeWidth, height: intersectionNodeHeight },
-    position: intersectionNodePosition,
+    computedPosition: intersectionNodePosition,
   } = intersectionNode
-  const targetPosition = targetNode.position
+  const targetPosition = targetNode.computedPosition
 
   const w = intersectionNodeWidth / 2
   const h = intersectionNodeHeight / 2
@@ -32,7 +32,7 @@ function getNodeIntersection(intersectionNode: GraphNode, targetNode: GraphNode)
 
 // returns the position (top,right,bottom or right) passed node compared to the intersection point
 function getEdgePosition(node: GraphNode, intersectionPoint: XYPosition) {
-  const n = { ...node.position, ...node.dimensions }
+  const n = { ...node.computedPosition, ...node.dimensions }
   const nx = Math.round(n.x)
   const ny = Math.round(n.y)
   const px = Math.round(intersectionPoint.x)
