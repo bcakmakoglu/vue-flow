@@ -1,3 +1,37 @@
+<script setup>
+import { VueFlow } from '@vue-flow/core';
+import { Background } from '@vue-flow/background';
+import Check from '~icons/mdi/check';
+import Close from '~icons/mdi/close';
+import { ref } from 'vue';
+
+const defaultNode = ref([
+  {
+    id: '1',
+    label: 'Default Node',
+    position: { x: 50, y: 75 },
+  }
+]);
+
+const inputNode = ref([
+  {
+    id: '1',
+    type: 'input',
+    label: 'Input Node',
+    position: { x: 50, y: 75 },
+  }
+]);
+
+const outputNode = ref([
+  {
+    id: '1',
+    type: 'output',
+    label: 'Output Node',
+    position: { x: 50, y: 75 },
+  }
+]);
+</script>
+
 # Nodes
 
 Nodes are the building blocks of your graph. They represent any sort of data you want to present in your graph.
@@ -5,10 +39,9 @@ Nodes are the building blocks of your graph. They represent any sort of data you
 They can exist on their own but can be connected to each other with edges to create a map.
 
 Each node <span class="font-bold text-blue-500">requires a unique id and
-a [xy-position](/typedocs/interfaces/XYPosition).</span>
-Anything else is optional.
+an [xy-position](/typedocs/interfaces/XYPosition).</span>
 
-You can check the full options for a node element [here](/typedocs/interfaces/Node).
+You can view the full options-list for a node [here](/typedocs/interfaces/Node).
 
 ## Usage
 
@@ -43,6 +76,7 @@ export default defineComponent({
   }
 })
 </script>
+
 <template>
   <div style="height: 300px">
     <VueFlow v-model="elements" />
@@ -51,9 +85,10 @@ export default defineComponent({
 ```
 
 For more advanced graphs that require more state access you will want to use the useVueFlow composable.
-[useVueFlow](/typedocs/functions/useVueFlow) will provide
-you with an [`addNodes`](/typedocs/interfaces/Actions#addnodes) utility function, which you can use to add nodes
-directly to the state.
+[useVueFlow](/typedocs/functions/useVueFlow) will provide the [`addNodes`](/typedocs/interfaces/Actions#addnodes) action, 
+which you can use to add nodes directly to the state.
+
+This action can be even be used outside the component that is rendering the graph, like a Sidebar or a Toolbar.
 
 ```vue
 <script setup>
@@ -81,42 +116,7 @@ onMounted(() => {
   ])
 })
 </script>
-<template>
-  <div style="height: 300px">
-    <VueFlow />
-  </div>
-</template>
-```
 
-You can also apply changes using the [`applyNodeChanges`](/typedocs/interfaces/Actions#applynodechanges/) utility
-function,
-which expects an array of [changes](/typedocs/types/NodeChange) to be applied to the currently stored nodes.
-
-```vue{11,17-22}
-<script setup>
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-
-const initialNodes = ref([
-  {
-    id: '1',
-    position: { x: 50, y: 50 },
-    label: 'Node 1',
-  }
-])
-const { applyNodeChanges } = useVueFlow({
-  nodes: initialNodes,
-})
-
-onMounted(() => {
-  // Remove an element after mount
-  applyNodeChanges([
-    {
-      id: '1',
-      type: 'remove',
-    }
-  ])
-})
-</script>
 <template>
   <div style="height: 300px">
     <VueFlow />
@@ -131,7 +131,11 @@ These node types include `default`, `input` and `output`.
 
 ### Default Node
 
-![vue flow default node](https://images.prismic.io/bcakmakoglu/235b4a10-5bdc-41c0-ba3f-4fb402fba65f_Default-node.png?auto=compress,format)
+<div class="mt-4 bg-[var(--vp-code-block-bg)] rounded h-50">
+  <VueFlow v-model="defaultNode">
+    <Background />
+  </VueFlow>
+</div>
 
 A default node comes with two handles.
 It represents a branching point in your map.
@@ -151,14 +155,23 @@ const nodes = [
 
 ### Input Node
 
-![vue flow input node](https://images.prismic.io/bcakmakoglu/fd871fe3-6c5f-4ef1-8e71-fb66d947866b_Input-node.png?auto=compress,format)
+<div class="mt-4 bg-[var(--vp-code-block-bg)] rounded h-50">
+  <VueFlow v-model="inputNode">
+    <Background />
+  </VueFlow>
+</div>
+
 
 An input node has a single handle, located at the bottom by default.
 It represents a starting point of your map.
 
 ### Output Node
 
-![vue flow output node](https://images.prismic.io/bcakmakoglu/abe32a60-d0a4-40ee-a710-092570d4d128_Output-node.png?auto=compress,format)
+<div class="mt-4 bg-[var(--vp-code-block-bg)] rounded h-50">
+  <VueFlow v-model="outputNode">
+    <Background />
+  </VueFlow>
+</div>
 
 An output node has a single handle, located at the top by default.
 It represents an ending point of your map.
@@ -311,25 +324,25 @@ Your custom nodes are wrapped so that the basic functions like dragging or selec
 But you might want to extend on that functionality or implement your own business logic inside of nodes, therefore
 your nodes receive the following props:
 
-| Name             | Definition                                       | Type                                                       | Optional |
-|------------------|--------------------------------------------------|------------------------------------------------------------|----------|
-| id               | Node id                                          | string                                                     | false    |
-| type             | Node type                                        | string                                                     | false    |
-| selected         | Is node selected                                 | boolean                                                    | false    |
-| dragging         | Is node dragging                                 | boolean                                                    | false    |
-| connectable      | Is node connectable                              | boolean                                                    | false    |
-| position         | Relative position of a node                      | [XYPosition](/typedocs/interfaces/XYPosition)              | false    |
-| zIndex           | Node z-index                                     | number                                                     | false    |
-| dimensions       | Node size                                        | [Dimensions](/typedocs/interfaces/Dimensions)         | false    |
-| data             | Custom data object                               | Any object                                                 | true     |
-| events           | Node events and custom events                    | [NodeEventsOn](/typedocs/types/NodeEventsOn)               | true     |
-| label            | Node label                                       | string, Component                                          | true     |
-| isValidTargetPos | Called when target handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | true     |
-| isValidSourcePos | Called when source handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | true     |
-| parentNode       | Parent node id                                   | string                                                     | true     |
-| targetPosition   | Target handle position                           | [Position](/typedocs/enums/Position)                       | true     |
-| sourcePosition   | Source handle position                           | [Position](/typedocs/enums/Position)                       | true     |
-| dragHandle       | Node drag handle class                           | string                                                     | true     |
+| Name             | Definition                                       | Type                                                       | Optional                                   |
+|------------------|--------------------------------------------------|------------------------------------------------------------|--------------------------------------------|
+| id               | Node id                                          | string                                                     | <Close class="text-red-500" />             |
+| type             | Node type                                        | string                                                     | <Close class="text-red-500" />             |
+| selected         | Is node selected                                 | boolean                                                    | <Close class="text-red-500" />             |
+| dragging         | Is node dragging                                 | boolean                                                    | <Close class="text-red-500" />             |
+| connectable      | Is node connectable                              | boolean                                                    | <Close class="text-red-500" />             |
+| position         | Relative position of a node                      | [XYPosition](/typedocs/interfaces/XYPosition)              | <Close class="text-red-500" />             |
+| zIndex           | Node z-index                                     | number                                                     | <Close class="text-red-500" />             |
+| dimensions       | Node size                                        | [Dimensions](/typedocs/interfaces/Dimensions)              | <Close class="text-red-500" />             |
+| data             | Custom data object                               | Any object                                                 | <Check class="text-[var(--vp-c-brand)]" /> |
+| events           | Node events and custom events                    | [NodeEventsOn](/typedocs/types/NodeEventsOn)               | <Check class="text-[var(--vp-c-brand)]" /> |
+| label            | Node label                                       | string, Component                                          | <Check class="text-[var(--vp-c-brand)]" /> |
+| isValidTargetPos | Called when target handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
+| isValidSourcePos | Called when source handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
+| parentNode       | Parent node id                                   | string                                                     | <Check class="text-[var(--vp-c-brand)]" /> |
+| targetPosition   | Target handle position                           | [Position](/typedocs/enums/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| sourcePosition   | Source handle position                           | [Position](/typedocs/enums/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| dragHandle       | Node drag handle class                           | string                                                     | <Check class="text-[var(--vp-c-brand)]" /> |
 
 ### (Custom) Node Events
 
@@ -339,7 +352,7 @@ you can also pass in event handlers in your initial node definition, or you can 
 the `events` prop passed
 to your node components.
 
-```vue{9-13}
+```vue{10-17}
 <script setup>
 import { VueFlow } from '@vue-flow/core'
 
@@ -416,12 +429,18 @@ When you create a new node type you also need to implement some styling. Your cu
 }
 ```
 
-## Allow scrolling inside a node
+## Scrolling inside a node
 
-You can use the `noWheelClassName` prop to define a class which will prevent zoom-on-scroll or pan-on-scroll behavior on
-that element.
-By default, the `noWheelClassName` is `.nowheel`.
-By adding this class you can also enable scrolling inside a node.
+You can use the `noWheelClassName` prop to define a class name which will prevent zoom-on-scroll or pan-on-scroll behavior on
+that node.
+By default, the `noWheelClassName` is `nowheel`.
+By adding this class you can enable scrolling inside a node without triggering zoom-pan behavior.
+
+## Dragging inside a node
+
+You can use the `noDragClassName` prop to define a class name which will not trigger dragging behavior on
+that node.
+By default, the `noDragClassName` is `nodrag`.
 
 ## Dynamic handle positions / Adding handles dynamically
 
