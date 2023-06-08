@@ -6,7 +6,7 @@ import ConnectionLine from '../../components/ConnectionLine'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
 import { Slots } from '../../context'
 import { useVueFlow } from '../../composables'
-import { ErrorCode, VueFlowError, groupEdgesByZLevel } from '../../utils'
+import { ErrorCode, VueFlowError, getEdgeZIndex } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
 const slots = inject(Slots)
@@ -15,25 +15,13 @@ const {
   edgesUpdatable,
   edgesFocusable,
   elementsSelectable,
-  getSelectedNodes,
   findNode,
-  edges,
   getEdges,
-  getNodesInitialized,
   getEdgeTypes,
   elevateEdgesOnSelect,
   dimensions,
   emits,
 } = useVueFlow()
-
-const groups = controlledComputed(
-  [
-    () => edges.value.map((e) => e.zIndex),
-    () => (elevateEdgesOnSelect.value ? [getSelectedNodes.value.length] : [0]),
-    () => (elevateEdgesOnSelect.value ? getNodesInitialized.value.map((n) => n.computedPosition.z) : []),
-  ],
-  () => groupEdgesByZLevel(getEdges.value, findNode, elevateEdgesOnSelect.value),
-)
 
 function selectable(edgeSelectable?: boolean) {
   return typeof edgeSelectable === 'undefined' ? elementsSelectable.value : edgeSelectable
@@ -81,26 +69,25 @@ export default {
 
 <template>
   <template v-if="dimensions.width && dimensions.height">
+    <svg class="vue-flow__edges vue-flow__container">
+      <MarkerDefinitions />
+    </svg>
+
     <svg
-      v-for="group of groups"
-      :key="group.level"
+      v-for="edge of getEdges"
+      :key="edge.id"
       class="vue-flow__edges vue-flow__container"
-      :style="`z-index: ${group.level}`"
+      :style="{ zIndex: getEdgeZIndex(edge, findNode, elevateEdgesOnSelect) }"
     >
-      <MarkerDefinitions v-if="group.isMaxLevel" />
-      <g>
-        <EdgeWrapper
-          v-for="edge of group.edges"
-          :id="edge.id"
-          :key="edge.id"
-          :edge="edge"
-          :type="getType(edge.type, edge.template)"
-          :name="edge.type || 'default'"
-          :selectable="selectable(edge.selectable)"
-          :updatable="updatable(edge.updatable)"
-          :focusable="focusable(edge.focusable)"
-        />
-      </g>
+      <EdgeWrapper
+        :id="edge.id"
+        :edge="edge"
+        :type="getType(edge.type, edge.template)"
+        :name="edge.type || 'default'"
+        :selectable="selectable(edge.selectable)"
+        :updatable="updatable(edge.updatable)"
+        :focusable="focusable(edge.focusable)"
+      />
     </svg>
 
     <ConnectionLine />

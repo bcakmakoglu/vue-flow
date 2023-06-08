@@ -170,3 +170,21 @@ export function groupEdgesByZLevel(edges: GraphEdge[], findNode: Actions['findNo
     }
   })
 }
+
+export function getEdgeZIndex(edge: GraphEdge, findNode: Actions['findNode'], elevateEdgesOnSelect = false) {
+  const hasZIndex = isNumber(edge.zIndex)
+  let z = hasZIndex ? edge.zIndex! : 0
+
+  const source = findNode(edge.source)
+  const target = findNode(edge.target)
+
+  if (!source || !target) {
+    return 0
+  }
+
+  if (elevateEdgesOnSelect) {
+    z = hasZIndex ? edge.zIndex! : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
+  }
+
+  return z
+}
