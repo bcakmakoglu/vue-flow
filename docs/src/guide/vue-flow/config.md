@@ -762,15 +762,15 @@ import { ref } from 'vue'
 const elements = ref([/** elements omitted for simplicity */])
 
 const connector = (params) => {
-  if (params.source.id === params.target.id) {
+  if (params.source === params.target) {
     return false
   }
   
   return {
-    id: `edge-${params.source.id}-${params.target.id}`,
-    source: params.source.id,
-    target: params.target.id,
-    label: `Edge ${params.source.id}-${params.target.id}`,
+    id: `edge-${params.source.id}-${params.target}`,
+    source: params.source,
+    target: params.target,
+    label: `Edge ${params.source}-${params.target}`,
     animated: true,
   }
 }
