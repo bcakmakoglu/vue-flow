@@ -1,3 +1,74 @@
+<script setup>
+import { VueFlow } from '@vue-flow/core';
+import { Background } from '@vue-flow/background';
+import Check from '~icons/mdi/check';
+import Close from '~icons/mdi/close';
+import { ref } from 'vue';
+
+const nodes = [
+  {
+    id: '1',
+    type: 'input',
+    label: 'Node 1',
+    position: { x: 50, y: 25 },
+  },
+  {
+    id: '2',
+    label: 'Node 2',
+    position: { x: 100, y: 125 },
+  },
+];
+
+const bezierEdge = ref([
+  ...nodes,
+  {
+    id: 'e1-2',
+    source: '1',
+    target: '2',
+  }
+]);
+
+const stepEdge = ref([
+  ...nodes,
+  {
+    id: 'e1-2',
+    type: 'step',
+    source: '1',
+    target: '2',
+  },
+]);
+
+const smoothStepEdge = ref([
+  ...nodes,
+  {
+    id: 'e1-2',
+    type: 'smoothstep',
+    source: '1',
+    target: '2',
+  },
+]);
+
+const straightEdge = ref([
+  {
+    id: '1',
+    type: 'input',
+    label: 'Node 1',
+    position: { x: 50, y: 25 },
+  },
+  {
+    id: '2',
+    label: 'Node 2',
+    position: { x: 50, y: 125 },
+  },
+  {
+    id: 'e1-2',
+    type: 'straight',
+    source: '1',
+    target: '2',
+  },
+]);
+</script>
+
 # Edges
 
 Edges are what connects your nodes into a map.
@@ -5,9 +76,8 @@ Edges are what connects your nodes into a map.
 They cannot exist on their own and need nodes to which they are connected.
 
 Each edge <span class="font-bold text-blue-500">requires a unique id, a source node and a target node id.</span>
-Anything else is optional.
 
-You can check the full options for an edge element in the TypeDocs [here](/typedocs/types/Edge).
+You can view the full options-list for an edge [here](/typedocs/types/Edge).
 
 ## Usage
 
@@ -55,9 +125,8 @@ export default defineComponent({
 ```
 
 For more advanced graphs that require more state access you will want to use the useVueFlow composable.
-[useVueFlow](/typedocs/functions/useVueFlow) will provide
-you with an [`addEdges`](/typedocs/interfaces/Actions#addedges/) utility function, which you can use to add edges
-directly to the state.
+[useVueFlow](/typedocs/functions/useVueFlow) will provide the [`addEdges`](/typedocs/interfaces/Actions#addedges/) action,
+which you can use to add edges directly to the state.
 
 ```vue
 <script setup>
@@ -98,10 +167,6 @@ onMounted(() => {
 </template>
 ```
 
-You can also apply changes (like removing elements safely) using
-the [`applyEdgeChanges`](/typedocs/interfaces/Actions#applyedgechanges/) utility function, which expects an array
-of [changes](/typedocs/types/EdgeChange) to be applied to the currently stored edges.
-
 ## [Default Edge-Types](/typedocs/interfaces/DefaultEdgeTypes)
 
 Vue Flow comes with built-in edges that you can use right out of the box.
@@ -109,73 +174,54 @@ These edge types include `default` (bezier), `step`, `smoothstep` and `straight`
 
 ### Default Edge (Bezier)
 
-A bezier edge has a curved path.
+The default edge is a bezier curve that connects two nodes.
 
-```js
-const edges = [
-  {
-    id: 'e1-2',
-    source: '1',
-    target: '2',
-  }
-]
-```
+<div class="mt-4 bg-[var(--vp-code-block-bg)] rounded h-50">
+  <VueFlow v-model="bezierEdge">
+    <Background />
+  </VueFlow>
+</div>
 
 ### Step Edge
 
 A step edge has a straight path with a step towards the target.
 
-```js{4}
-const edges = [
-  {
-    id: 'e1-2',
-    type: 'step',
-    source: '1',
-    target: '2',
-  }
-]
-```
+<div class="mt-4 bg-[var(--vp-code-block-bg)] rounded h-50">
+  <VueFlow v-model="stepEdge">
+    <Background />
+  </VueFlow>
+</div>
 
 ### Smoothstep Edge
 
 The same as the step edge though with a border radius on the step (rounded step).
 
-```js{4}
-const edges = [
-  {
-    id: 'e1-2',
-    type: 'smoothstep',
-    source: '1',
-    target: '2',
-  }
-]
-```
+<div class="mt-4 bg-[var(--vp-code-block-bg)] rounded h-50">
+  <VueFlow v-model="smoothStepEdge">
+    <Background />
+  </VueFlow>
+</div>
 
 ### Straight Edge
 
 A simple straight path.
 
-```js{4}
-const edges = [
-  {
-    id: 'e1-2',
-    type: 'straight',
-    source: '1',
-    target: '2',
-  }
-]
-```
+<div class="mt-4 bg-[var(--vp-code-block-bg)] rounded h-50">
+  <VueFlow v-model="straightEdge">
+    <Background />
+  </VueFlow>
+</div>
 
 ## Custom Edges
 
 In addition to the default edge types from the previous chapter, you can define any amount of custom edge-types.
 Edge-types are inferred from your edge's definition.
 
-```js{5,11}
+```js{4}
 const edges = [
   {
     id: 'e1-2',
-    type: 'special',
+    type: 'custom',
     source: '1',
     target: '2',
   },
@@ -194,6 +240,8 @@ If none of these methods succeed in resolving the component the default (bezier)
 The easiest way to define custom edges is, by passing them as template slots.
 Your custom edge-types are dynamically resolved to slot-names, meaning an edge with the type `custom`
 will expect a slot to have the name `edge-custom`.
+
+You can choose any name you want for your edge-type, and it will be resolved to the corresponding slot (i.e. `my-edge-type` -> `#edge-my-edge-type`)
 
 ```vue{18,26}
 <script setup>
@@ -277,7 +325,7 @@ const elements = ref([
 You can also set a template per edge, which will overwrite the edge-type component but will retain
 the type otherwise.
 
-```vue
+```vue{30}
 <script setup>
 import { markRaw } from 'vue'
 import CustomEdge from './CustomEdge.vue'
@@ -293,7 +341,7 @@ const elements = ref([
     label: 'Node 2',
     position: { x: 0, y: 150 },
   },
-    {
+  {
     id: '3',
     label: 'Node 3',
     position: { x: 0, y: 300 },
@@ -324,33 +372,33 @@ Your custom edges are wrapped so that the basic functions like selecting work.
 But you might want to extend on that functionality or implement your own business logic inside of edges, therefore
 your edges receive the following props:
 
-| Name                | Definition                    | Type                                          | Optional |
-|---------------------|-------------------------------|-----------------------------------------------|----------|
-| id                  | Edge id                       | string                                        | false    |
-| source              | The source node id            | string                                        | false    |
-| target              | The target node id            | string                                        | false    |
-| sourceNode          | The source node               | GraphNode                                     | false    |
-| targetNode          | The target node               | GraphNode                                     | false    |
-| sourceX             | X position of source handle   | number                                        | false    |
-| sourceY             | Y position of source handle   | number                                        | false    |
-| targetX             | X position of target handle   | number                                        | false    |
-| targetY             | Y position of target handle   | number                                        | false    |
-| type                | Edge type                     | string                                        | true     |
-| sourceHandleId      | Source handle id              | string                                        | true     |
-| targetHandleId      | Target handle id              | string                                        | true     |
-| data                | Custom data object            | Any object                                    | true     |
-| events              | Edge events and custom events | [EdgeEventsOn](/typedocs/types/EdgeEventsOn)  | true     |
-| label               | Edge label                    | string, Component                             | true     |
-| labelStyle          | Additional label styles       | CSSProperties                                 | true     |
-| labelShowBg         | Enable/Disable label bg       | boolean                                       | true     |
-| labelBgPadding      | Edge label bg padding         | number                                        | true     |
-| labelBgBorderRadius | Edge label bg border radius   | number                                        | true     |
-| selected            | Is edge selected              | boolean                                       | true     |
-| animated            | Is edge animated              | boolean                                       | true     |
-| updatable           | Is edge updatable             | [EdgeUpdatable](/typedocs/types/EdgeUpdatable)| true     |
-| markerEnd           | Edge marker id                | string                                        | true     |
-| markerStart         | Edge marker id                | string                                        | true     |
-| curvature           | Edge path curvature           | number                                        | true     |
+| Name                | Definition                    | Type                                           | Optional                                   |
+|---------------------|-------------------------------|------------------------------------------------|--------------------------------------------|
+| id                  | Edge id                       | string                                         | <Close class="text-red-500" />             |
+| source              | The source node id            | string                                         | <Close class="text-red-500" />             |
+| target              | The target node id            | string                                         | <Close class="text-red-500" />             |
+| sourceNode          | The source node               | GraphNode                                      | <Close class="text-red-500" />             |
+| targetNode          | The target node               | GraphNode                                      | <Close class="text-red-500" />             |
+| sourceX             | X position of source handle   | number                                         | <Close class="text-red-500" />             |
+| sourceY             | Y position of source handle   | number                                         | <Close class="text-red-500" />             |
+| targetX             | X position of target handle   | number                                         | <Close class="text-red-500" />             |
+| targetY             | Y position of target handle   | number                                         | <Close class="text-red-500" />             |
+| type                | Edge type                     | string                                         | <Check class="text-[var(--vp-c-brand)]" /> |
+| sourceHandleId      | Source handle id              | string                                         | <Check class="text-[var(--vp-c-brand)]" /> |
+| targetHandleId      | Target handle id              | string                                         | <Check class="text-[var(--vp-c-brand)]" /> |
+| data                | Custom data object            | Any object                                     | <Check class="text-[var(--vp-c-brand)]" /> |
+| events              | Edge events and custom events | [EdgeEventsOn](/typedocs/types/EdgeEventsOn)   | <Check class="text-[var(--vp-c-brand)]" /> |
+| label               | Edge label                    | string, Component                              | <Check class="text-[var(--vp-c-brand)]" /> |
+| labelStyle          | Additional label styles       | CSSProperties                                  | <Check class="text-[var(--vp-c-brand)]" /> |
+| labelShowBg         | Enable/Disable label bg       | boolean                                        | <Check class="text-[var(--vp-c-brand)]" /> |
+| labelBgPadding      | Edge label bg padding         | number                                         | <Check class="text-[var(--vp-c-brand)]" /> |
+| labelBgBorderRadius | Edge label bg border radius   | number                                         | <Check class="text-[var(--vp-c-brand)]" /> |
+| selected            | Is edge selected              | boolean                                        | <Check class="text-[var(--vp-c-brand)]" /> |
+| animated            | Is edge animated              | boolean                                        | <Check class="text-[var(--vp-c-brand)]" /> |
+| updatable           | Is edge updatable             | [EdgeUpdatable](/typedocs/types/EdgeUpdatable) | <Check class="text-[var(--vp-c-brand)]" /> |
+| markerEnd           | Edge marker id                | string                                         | <Check class="text-[var(--vp-c-brand)]" /> |
+| markerStart         | Edge marker id                | string                                         | <Check class="text-[var(--vp-c-brand)]" /> |
+| curvature           | Edge path curvature           | number                                         | <Check class="text-[var(--vp-c-brand)]" /> |
 
 ### (Custom) Edge Events
 
