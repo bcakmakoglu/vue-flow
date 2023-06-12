@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
@@ -57,7 +57,7 @@ onMoveEnd((flowTransform) => console.log('move end', flowTransform))
 
     <Controls />
 
-    <Panel :position="PanelPosition.TopLeft">
+    <Panel position="top-left">
       <div>
         <label for="draggable">
           nodesDraggable

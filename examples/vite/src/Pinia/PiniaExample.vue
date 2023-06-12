@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import useStore from './store'
 
 const store = useStore()
@@ -11,7 +11,7 @@ onConnect(addEdges)
 
 <template>
   <VueFlow v-model="store.elements" fit-view-on-init>
-    <Panel :position="PanelPosition.TopCenter">
+    <Panel position="top-center">
       <button @click="store.updatePosition">update positions</button>
       <button @click="store.toggleClass">toggle class</button>
       <button @click="store.log">log store state</button>

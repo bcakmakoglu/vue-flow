@@ -1,6 +1,6 @@
 <script setup>
 import { Background } from '@vue-flow/background'
-import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import { ref, watch } from 'vue'
 
 const isHidden = ref(false)
@@ -29,7 +29,7 @@ watch(isHidden, () => {
   <VueFlow fit-view-on-init>
     <Background />
 
-    <Panel :position="PanelPosition.TopRight">
+    <Panel position="top-right">
       <div>
         <label for="ishidden">
           hidden

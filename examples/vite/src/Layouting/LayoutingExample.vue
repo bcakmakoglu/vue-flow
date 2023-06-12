@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import dagre from 'dagre'
 import type { CoordinateExtent, Elements } from '@vue-flow/core'
-import { ConnectionMode, Panel, PanelPosition, Position, VueFlow, isNode } from '@vue-flow/core'
+import { ConnectionMode, Panel, Position, VueFlow, isNode } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 
 import '@vue-flow/controls/dist/style.css'
@@ -49,7 +49,7 @@ function onLayout(direction: string) {
     <VueFlow v-model="elements" :node-extent="nodeExtent" :connection-mode="ConnectionMode.Loose" @pane-ready="onLayout('TB')">
       <Controls />
 
-      <Panel style="display: flex; gap: 10px" :position="PanelPosition.TopRight">
+      <Panel style="display: flex; gap: 10px" position="top-right">
         <button :style="{ marginRight: 10 }" @click="onLayout('TB')">vertical layout</button>
         <button @click="onLayout('LR')">horizontal layout</button>
       </Panel>

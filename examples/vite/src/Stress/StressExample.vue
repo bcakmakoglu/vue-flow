@@ -1,5 +1,5 @@
 <script setup>
-import { Panel, PanelPosition, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 import { nextTick, ref } from 'vue'
 import { Background } from '@vue-flow/background'
 import { getElements } from './utils'
@@ -42,7 +42,7 @@ function updatePos() {
   <VueFlow v-model="elements" :min-zoom="0.1">
     <Background />
 
-    <Panel :position="PanelPosition.TopRight">
+    <Panel position="top-right">
       <button style="margin-right: 5px" @click="updatePos">update positions</button>
       <button @click="toggleClass">toggle class</button>
     </Panel>
