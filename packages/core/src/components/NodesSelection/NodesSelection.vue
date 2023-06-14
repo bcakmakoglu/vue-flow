@@ -7,7 +7,7 @@ const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, 
 
 const updatePositions = useUpdateNodePositions()
 
-const el = ref<HTMLDivElement>()
+const el = ref<HTMLDivElement | null>(null)
 
 const dragging = useDrag({
   el,

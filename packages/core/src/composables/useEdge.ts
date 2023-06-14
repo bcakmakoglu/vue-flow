@@ -1,4 +1,4 @@
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import { useVueFlow } from './useVueFlow'
 import type { CustomEvent, ElementData } from '~/types'
 import { ErrorCode, VueFlowError } from '~/utils'
@@ -13,7 +13,7 @@ import { EdgeId, EdgeRef } from '~/context'
  */
 export function useEdge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
   const edgeId = id ?? inject(EdgeId, '')
-  const edgeEl = inject(EdgeRef, null)
+  const edgeEl = inject(EdgeRef, ref(null))
 
   const { findEdge, emits } = useVueFlow()
 
