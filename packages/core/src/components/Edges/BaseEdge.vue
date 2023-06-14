@@ -4,7 +4,7 @@ import type { BaseEdgeProps } from '../../types'
 import { isNumber } from '../../utils'
 import EdgeText from './EdgeText.vue'
 
-const { interactionWidth = 20, labelShowBg = true } = defineProps<BaseEdgeProps>()
+const { interactionWidth = 20, labelShowBg = true, ...props } = defineProps<BaseEdgeProps>()
 
 const pathEl = ref<SVGPathElement | null>(null)
 
@@ -34,7 +34,7 @@ export default {
     :id="id"
     ref="pathEl"
     :d="path"
-    :style="attrs.style"
+    :style="props.style"
     class="vue-flow__edge-path"
     :class="attrs.class"
     :marker-end="markerEnd"

@@ -200,6 +200,7 @@ export interface BaseEdgeProps extends EdgeLabelOptions {
   markerStart?: string
   markerEnd?: string
   interactionWidth?: number
+  style?: CSSProperties
 }
 
 export type BezierEdgeProps = EdgePositions &
