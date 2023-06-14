@@ -1,6 +1,6 @@
 import type { FunctionalComponent } from 'vue'
 import { h } from 'vue'
-import BaseEdge from './BaseEdge'
+import BaseEdge from './BaseEdge.vue'
 import { getBezierPath } from './utils'
 import type { BezierEdgeProps } from '~/types'
 import { Position } from '~/types'
@@ -15,7 +15,7 @@ const BezierEdge: FunctionalComponent<BezierEdgeProps> = function (
     ...props,
   })
 
-  return h(BaseEdge, {
+  return h(BaseEdge as any, {
     path,
     labelX,
     labelY,

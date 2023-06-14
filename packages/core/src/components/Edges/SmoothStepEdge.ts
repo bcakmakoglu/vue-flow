@@ -1,6 +1,6 @@
 import type { FunctionalComponent } from 'vue'
 import { h } from 'vue'
-import BaseEdge from './BaseEdge'
+import BaseEdge from './BaseEdge.vue'
 import { getSmoothStepPath } from './utils'
 import type { SmoothStepEdgeProps } from '~/types'
 import { Position } from '~/types'
@@ -15,7 +15,7 @@ const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function (
     ...props,
   })
 
-  return h(BaseEdge, {
+  return h(BaseEdge as any, {
     path,
     labelX,
     labelY,
