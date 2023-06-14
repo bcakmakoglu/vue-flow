@@ -78,6 +78,11 @@
      animation: dashdraw 0.5s linear infinite;
    }
 
+  &.animated path.vue-flow__edge-interaction {
+     stroke-dasharray: none;
+     animation: none;
+   }
+
   &.inactive {
      pointer-events: none;
    }
