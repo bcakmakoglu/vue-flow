@@ -131,46 +131,6 @@ export function isEdgeVisible({
   return overlappingArea > 0
 }
 
-export function groupEdgesByZLevel(edges: GraphEdge[], findNode: Actions['findNode'], elevateEdgesOnSelect = false) {
-  let maxLevel = -1
-
-  const levelLookup = edges.reduce<Record<string, GraphEdge[]>>((tree, edge) => {
-    const hasZIndex = isNumber(edge.zIndex)
-    let z = hasZIndex ? edge.zIndex! : 0
-
-    const source = findNode(edge.source)
-    const target = findNode(edge.target)
-
-    if (!source || !target) {
-      return tree
-    }
-
-    if (elevateEdgesOnSelect) {
-      z = hasZIndex ? edge.zIndex! : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
-    }
-
-    if (tree[z]) {
-      tree[z].push(edge)
-    } else {
-      tree[z] = [edge]
-    }
-
-    maxLevel = z > maxLevel ? z : maxLevel
-
-    return tree
-  }, {})
-
-  return Object.entries(Object.keys(levelLookup).length ? levelLookup : { 0: [] }).map(([key, edges]) => {
-    const level = +key
-
-    return {
-      edges,
-      level,
-      isMaxLevel: level === maxLevel,
-    }
-  })
-}
-
 export function getEdgeZIndex(edge: GraphEdge, findNode: Actions['findNode'], elevateEdgesOnSelect = false) {
   const hasZIndex = isNumber(edge.zIndex)
   let z = hasZIndex ? edge.zIndex! : 0
