@@ -41,6 +41,7 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function (
           'fill': 'none',
           'stroke-opacity': 0,
           'stroke-width': interactionWidth,
+          'class': 'vue-flow__edge-interaction',
         })
       : null,
     label && isNumber(labelX) && isNumber(labelY)
