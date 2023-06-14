@@ -28,6 +28,7 @@ const BaseEdge: FunctionalComponent<BaseEdgeProps> = function (
 ) {
   return [
     h('path', {
+      'ref': attrs.ref as any,
       'id': id,
       'style': attrs.style,
       'class': ['vue-flow__edge-path', attrs.class].join(' '),
