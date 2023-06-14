@@ -1,8 +1,7 @@
 import type { CSSProperties, Component, DefineComponent, SVGAttributes, VNode } from 'vue'
 import type { NodeProps } from './node'
 import type { EdgeProps } from './edge'
-import type BezierEdge from '~/components/Edges/BezierEdge'
-import type { SimpleBezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
+import type { BezierEdge, SimpleBezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
 
 /** Global component names are components registered to the vue instance and are "autoloaded" by their string name */
 type GlobalComponentName = string

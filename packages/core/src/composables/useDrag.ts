@@ -23,7 +23,7 @@ interface UseDragParams {
   onStart: (args: Omit<NodeDragEvent, 'intersections'>) => void
   onDrag: (event: Omit<NodeDragEvent, 'intersections'>) => void
   onStop: (event: Omit<NodeDragEvent, 'intersections'>) => void
-  el: Ref<Element | undefined>
+  el: Ref<Element | null>
   disabled?: MaybeRefOrGetter<boolean>
   selectable?: MaybeRefOrGetter<boolean>
   dragHandle?: MaybeRefOrGetter<string | undefined>

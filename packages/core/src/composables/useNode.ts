@@ -1,4 +1,4 @@
-import { computed, inject } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { useVueFlow } from './useVueFlow'
 import type { CustomEvent, ElementData } from '~/types'
 import { NodeId, NodeRef } from '~/context'
@@ -13,7 +13,7 @@ import { ErrorCode, VueFlowError, getConnectedEdges } from '~/utils'
  */
 export function useNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
   const nodeId = id ?? inject(NodeId, '')
-  const nodeEl = inject(NodeRef, null)
+  const nodeEl = inject(NodeRef, ref(null))
 
   const { findNode, edges, emits } = useVueFlow()
 
