@@ -64,7 +64,7 @@ const NodeWrapper = defineComponent({
 
     const connectedEdges = computed(() => getConnectedEdges([node.value], edges.value))
 
-    const nodeElement = ref<HTMLDivElement>()
+    const nodeElement = ref<HTMLDivElement | null>(null)
 
     provide(NodeRef, nodeElement)
 

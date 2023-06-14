@@ -51,7 +51,7 @@ const EdgeWrapper = defineComponent({
 
     const edgeUpdaterType = ref<HandleType>('source')
 
-    const edgeEl = ref<SVGElement>()
+    const edgeEl = ref<SVGElement | null>(null)
 
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)

@@ -95,7 +95,7 @@ until(() => node.initialized)
 
     const viewportNode = vueFlowRef.value.querySelector('.vue-flow__transformationpane')
 
-    if (!nodeEl || !handle.value || !viewportNode || !handleId.value) {
+    if (!nodeEl.value || !handle.value || !viewportNode || !handleId.value) {
       return
     }
 
