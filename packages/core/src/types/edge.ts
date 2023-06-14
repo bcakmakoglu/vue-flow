@@ -1,4 +1,4 @@
-import type { CSSProperties, Component, VNode } from 'vue'
+import type { CSSProperties, Component, VNode, VNodeRef } from 'vue'
 import type { ClassFunc, ElementData, Position, StyleFunc, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { EdgeComponent, EdgeTextProps } from './components'
@@ -201,6 +201,7 @@ export interface BaseEdgeProps extends EdgeLabelOptions {
   markerEnd?: string
   interactionWidth?: number
   style?: CSSProperties
+  ref?: VNodeRef
 }
 
 export type BezierEdgeProps = EdgePositions &
