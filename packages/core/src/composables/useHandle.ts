@@ -46,7 +46,6 @@ export function useHandle({
     connectionRadius,
     connectOnClick,
     connectionClickStartHandle,
-    connectionEndHandle,
     nodesConnectable,
     autoPanOnConnect,
     findNode,
