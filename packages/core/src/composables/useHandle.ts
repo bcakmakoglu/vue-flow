@@ -46,6 +46,7 @@ export function useHandle({
     connectionRadius,
     connectOnClick,
     connectionClickStartHandle,
+    connectionEndHandle,
     nodesConnectable,
     autoPanOnConnect,
     findNode,
@@ -197,7 +198,7 @@ export function useHandle({
       }
 
       function onPointerUp(event: MouseTouchEvent) {
-        if ((closestHandle || handleDomNode) && connection && isValid) {
+        if ((closestHandle || handleDomNode || connectionEndHandle.value) && connection && isValid) {
           if (!onEdgeUpdate) {
             emits.connect(connection)
           } else {
