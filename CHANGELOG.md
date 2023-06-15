@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.20.2] - 2023-06-15
+
+[a16b7ca](a16b7ca3d01681b8ccb172ccde0316bf267d7352)...[eca9ad9](eca9ad9cb93f83a8842207cc302e39f49f1b1a29)
+
+### Bug Fixes
+
+- Set interaction edge styles so animation does not break pointer ([d2c1c51](d2c1c5185fe4116e9f5b0346748f97e020cd4263))
+- Correct connection line calculation ([33b6fe1](33b6fe121ad1507af17900af07fb4df41f82ce8a))
+- Reset end handle on connection end ([b017139](b017139d22c55fa4610cac6c0aa1e978a0da2d8b))
+- Use validator with null handle when no closest can be found ([6e2c3e5](6e2c3e5281a90d859adb3c31f027008d2be124a4))
+- Handle pos calculation ([9d3c358](9d3c3584ff477fa61ecc0a020e0a46cb78bac5dd))
+- Trigger connect if end handle exist in state ([b386c85](b386c8580f42a3f5f603b38f84486806e05c83a7))
+- Consider handle dimensions when checking for closest handle ([f3931a2](f3931a2c054093f0e184b0851a799f22d8aabb0d))
+
+### Miscellaneous Tasks
+
+- Update floating edges example ([005f696](005f696fbeb9c0addbe379641c21c6163f186ee2))
+- Update deps ([4532157](4532157763f1f0682e125ef7c246d9474f928f86))
+- Correct bgColor description and type ([48ea70b](48ea70bc3ef863a112c1cca46900e62024c924b1))
+- Correct description of auto connect prop ([12f4284](12f4284a0a360cd5e78abb9226c59d94830c84d3))
+- Update node and edge doc page ([6eb5e5a](6eb5e5a9862c22b307dd050499979dcfebfaaaef))
+- Add ([c4c9283](c4c9283f3af999cdae5e774c2eed5ba4f46596f0))
+- Add ([a961e7b](a961e7be00b9ba5c63026f6555f548f87bc85269))
+- Cleanup export path ([e7e4f1f](e7e4f1fd0adeeab9e62cf6f9f40496f47f015557))
+- Add ([7cd4ed8](7cd4ed8334c963f7e039bf81e952f9d3bd1fc452))
+- Add ([2c2fdf9](2c2fdf9577c96cba532bd0679407d25bb492e2fc))
+- Add ([5f7d439](5f7d439ee223a0cefac89ad4cc04cfbf8ac797d5))
+- Add ([4f4dfc3](4f4dfc32ea464d528cb58e4db6278d72cc48b1b9))
+- Remove `groupEdgesByZIndex` util ([4d68397](4d68397119e33b00e6e4fecc0c3972b1b1f404b9))
+- Cleanup ([82befe7](82befe722a0f695173a743abedcacc385d105ae0))
+- Add ([f604c91](f604c91a7d1177b3d39fadc80768057ca7e9d92b))
+- Cleanup ([b350486](b350486db374980e0f9b0e47e5f2a3145d1cfe88))
+
+### Refactor
+
+- Use separate svg container for edges ([8e5d748](8e5d748013cfba28363514e6562778f2305e577f))
+
 ## [1.20.1] - 2023-05-25
 
 [0e7f3c2](0e7f3c223ceff311240739ff65f0e8d75e2b433b)...[a16b7ca](a16b7ca3d01681b8ccb172ccde0316bf267d7352)
