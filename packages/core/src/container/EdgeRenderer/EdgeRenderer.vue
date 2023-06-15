@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { getCurrentInstance, inject, resolveComponent } from 'vue'
-import { controlledComputed } from '@vueuse/core'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
