@@ -66,7 +66,7 @@ export function getClosestHandle(
   pos: XYPosition,
   connectionRadius: number,
   handles: ConnectionHandle[],
-  validator: (handle: ConnectionHandle) => ValidHandleResult,
+  validator: (handle: ConnectionHandle | null) => ValidHandleResult,
 ) {
   let closestHandles: { handle: ConnectionHandle; validHandleResult: ValidHandleResult }[] = []
   let minDistance = Infinity
@@ -94,7 +94,7 @@ export function getClosestHandle(
   })
 
   if (!closestHandles.length) {
-    return { handle: null, validHandleResult: defaultValidHandleResult() }
+    return { handle: null, validHandleResult: validator(null) }
   }
 
   return closestHandles.length === 1
@@ -126,10 +126,7 @@ export function isValidHandle(
   // because it could be that the center of another handle is closer to the mouse pointer than the handle below the cursor
   const handleToCheck = handleBelow?.classList.contains('vue-flow__handle') ? handleBelow : handleDomNode
 
-  const result = {
-    ...defaultValidHandleResult(),
-    handleDomNode: handleToCheck,
-  }
+  const result = defaultValidHandleResult()
 
   if (handleToCheck) {
     const handleType = getHandleType(undefined, handleToCheck)
