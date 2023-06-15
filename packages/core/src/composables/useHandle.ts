@@ -155,7 +155,7 @@ export function useHandle({
             ),
         )
 
-        closestHandle = handle
+        closestHandle = handle || handleLookup.find((handle) => handle.id === validHandleResult.endHandle?.handleId) || null
 
         if (!autoPanStarted) {
           autoPan()
@@ -198,7 +198,7 @@ export function useHandle({
       }
 
       function onPointerUp(event: MouseTouchEvent) {
-        if ((closestHandle || handleDomNode || connectionEndHandle.value) && connection && isValid) {
+        if ((closestHandle || handleDomNode) && connection && isValid) {
           if (!onEdgeUpdate) {
             emits.connect(connection)
           } else {

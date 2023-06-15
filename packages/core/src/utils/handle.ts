@@ -4,6 +4,7 @@ import type {
   Actions,
   Connection,
   ConnectionStatus,
+  Dimensions,
   GraphEdge,
   GraphNode,
   HandleType,
@@ -13,12 +14,10 @@ import type {
   XYPosition,
 } from '~/types'
 
-export interface ConnectionHandle {
+export interface ConnectionHandle extends XYPosition, Dimensions {
   id: string | null
   type: HandleType
   nodeId: string
-  x: number
-  y: number
 }
 
 function defaultValidHandleResult(): ValidHandleResult {
@@ -50,6 +49,8 @@ export function getHandles(
         nodeId: node.id,
         x: (node.computedPosition?.x ?? 0) + h.x + h.width / 2,
         y: (node.computedPosition?.y ?? 0) + h.y + h.height / 2,
+        width: h.width,
+        height: h.height,
       })
     }
     return res
@@ -66,7 +67,8 @@ export function getClosestHandle(
   let minDistance = Infinity
 
   handles.forEach((handle) => {
-    const distance = Math.sqrt((handle.x - pos.x) ** 2 + (handle.y - pos.y) ** 2)
+    // calculate distance from mouse position to center of handle while considering handle width and height as well as x and y position
+    const distance = Math.sqrt((handle.x - pos.x - handle.width / 2) ** 2 + (handle.y - pos.y - handle.height / 2) ** 2)
 
     if (distance <= connectionRadius) {
       const validHandleResult = validator(handle)
@@ -147,13 +149,13 @@ export function isValidHandle(
         ? (isTarget && handleType === 'source') || (!isTarget && handleType === 'target')
         : handleNodeId !== fromNodeId || handleId !== fromHandleId)
 
-    if (isValid) {
-      result.endHandle = {
-        nodeId: handleNodeId,
-        handleId,
-        type: handleType as HandleType,
-      }
+    result.endHandle = {
+      nodeId: handleNodeId,
+      handleId,
+      type: handleType as HandleType,
+    }
 
+    if (isValid) {
       result.isValid = isValidConnection(connection, {
         edges,
         sourceNode: findNode(connection.source)!,
