@@ -611,6 +611,7 @@ export function useActions(
 
   const endConnection: Actions['endConnection'] = (event, isClick) => {
     state.connectionPosition = { x: NaN, y: NaN }
+    state.connectionEndHandle = null
     state.connectionStatus = null
 
     if (isClick) {
