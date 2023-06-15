@@ -1,5 +1,25 @@
 # @vue-flow/core
 
+## 1.20.2
+
+### Patch Changes
+
+- [#993](https://github.com/bcakmakoglu/vue-flow/pull/993) [`98875dd5`](https://github.com/bcakmakoglu/vue-flow/commit/98875dd54fdff2b2793d29ee77d363aedceb34f9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct handle position calculation during lookup
+
+- [#994](https://github.com/bcakmakoglu/vue-flow/pull/994) [`89972a90`](https://github.com/bcakmakoglu/vue-flow/commit/89972a90465ad0a3ffc7c6f82b39d385cc205d02) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Consider handle dimensions when calculating distance
+
+- [#993](https://github.com/bcakmakoglu/vue-flow/pull/993) [`3585c473`](https://github.com/bcakmakoglu/vue-flow/commit/3585c4735b2fb558b7617d924264149100d92859) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Trigger connect if connection end handle is stored in state
+
+- [#981](https://github.com/bcakmakoglu/vue-flow/pull/981) [`e68c1700`](https://github.com/bcakmakoglu/vue-flow/commit/e68c17003b2c993797eac1230da635adc84078c2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set interaction edge (invisible overlay path) to no animation to avoid breaking pointer on hover
+
+- [#993](https://github.com/bcakmakoglu/vue-flow/pull/993) [`9ca41aa0`](https://github.com/bcakmakoglu/vue-flow/commit/9ca41aa01d1d943460dfea059b1ea05982ee2b6f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use isValidHandle with null as closest handle when none can be found
+
+- [#992](https://github.com/bcakmakoglu/vue-flow/pull/992) [`4539f698`](https://github.com/bcakmakoglu/vue-flow/commit/4539f698e00457debcc9a1647c632a4ff7aa4236) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix connection line path calculation
+
+- [#993](https://github.com/bcakmakoglu/vue-flow/pull/993) [`9ca41aa0`](https://github.com/bcakmakoglu/vue-flow/commit/9ca41aa01d1d943460dfea059b1ea05982ee2b6f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reset connection end handle state on connection end
+
+- [#976](https://github.com/bcakmakoglu/vue-flow/pull/976) [`0686bb5e`](https://github.com/bcakmakoglu/vue-flow/commit/0686bb5e4c1570a87e8212697cf04f8fc4f39b33) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wrap each edge element in a separate svg container to allow changing z-index of edges without causing a re-render on all of them.
+
 ## 1.20.1
 
 ### Patch Changes
