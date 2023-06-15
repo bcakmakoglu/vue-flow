@@ -2,7 +2,7 @@
 import { getCurrentInstance, inject, resolveComponent } from 'vue'
 import { controlledComputed } from '@vueuse/core'
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
-import ConnectionLine from '../../components/ConnectionLine/ConnectionLine.vue'
+import ConnectionLine from '../../components/ConnectionLine'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
 import { Slots } from '../../context'
 import { useVueFlow } from '../../composables'
@@ -12,8 +12,6 @@ import MarkerDefinitions from './MarkerDefinitions.vue'
 const slots = inject(Slots)
 
 const {
-  connectionStartHandle,
-  nodesConnectable,
   edgesUpdatable,
   edgesFocusable,
   elementsSelectable,
@@ -27,28 +25,6 @@ const {
   dimensions,
   emits,
 } = useVueFlow()
-
-const sourceNode = controlledComputed(
-  () => connectionStartHandle.value?.nodeId,
-  () => {
-    if (connectionStartHandle.value?.nodeId) {
-      return findNode(connectionStartHandle.value.nodeId)
-    }
-
-    return false
-  },
-)
-
-const connectionLineVisible = controlledComputed(
-  () => connectionStartHandle.value?.nodeId,
-  () =>
-    !!(
-      sourceNode.value &&
-      (typeof sourceNode.value.connectable === 'undefined' ? nodesConnectable.value : sourceNode.value.connectable) &&
-      connectionStartHandle.value?.nodeId &&
-      connectionStartHandle.value?.type
-    ),
-)
 
 const groups = controlledComputed(
   [
@@ -127,8 +103,6 @@ export default {
       </g>
     </svg>
 
-    <svg v-if="connectionLineVisible && !!sourceNode" class="vue-flow__edges vue-flow__connectionline vue-flow__container">
-      <ConnectionLine :source-node="sourceNode" />
-    </svg>
+    <ConnectionLine />
   </template>
 </template>
