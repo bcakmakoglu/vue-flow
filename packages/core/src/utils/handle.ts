@@ -1,4 +1,4 @@
-import { getEventPosition, getHandlePosition } from '.'
+import { getEventPosition } from '.'
 import { ConnectionMode } from '~/types'
 import type {
   Actions,
@@ -48,14 +48,8 @@ export function getHandles(
         id: h.id || null,
         type,
         nodeId: node.id,
-        ...getHandlePosition(
-          h.position,
-          {
-            ...node.dimensions,
-            ...node.computedPosition,
-          },
-          h,
-        ),
+        x: (node.computedPosition?.x ?? 0) + h.x + h.width / 2,
+        y: (node.computedPosition?.y ?? 0) + h.y + h.height / 2,
       })
     }
     return res
