@@ -9,6 +9,8 @@ export interface GetBezierPathParams {
   targetY: number
   targetPosition?: Position
   curvature?: number
+  controlOffsetX?: number
+  controlOffsetY?: number
 }
 
 interface GetControlWithCurvatureParams {
@@ -59,8 +61,10 @@ export function getBezierPath({
   targetY,
   targetPosition = Position.Top,
   curvature = 0.25,
+  controlOffsetX = 0,
+  controlOffsetY = 0,
 }: GetBezierPathParams): [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number] {
-  const [sourceControlX, sourceControlY] = getControlWithCurvature({
+  let [sourceControlX, sourceControlY] = getControlWithCurvature({
     pos: sourcePosition,
     x1: sourceX,
     y1: sourceY,
@@ -68,7 +72,7 @@ export function getBezierPath({
     y2: targetY,
     c: curvature,
   })
-  const [targetControlX, targetControlY] = getControlWithCurvature({
+  let [targetControlX, targetControlY] = getControlWithCurvature({
     pos: targetPosition,
     x1: targetX,
     y1: targetY,
@@ -76,6 +80,11 @@ export function getBezierPath({
     y2: sourceY,
     c: curvature,
   })
+
+  sourceControlX += controlOffsetX
+  sourceControlY += controlOffsetY
+  targetControlX += controlOffsetX
+  targetControlY += controlOffsetY
 
   const [centerX, centerY, offsetX, offsetY] = getBezierEdgeCenter({
     sourceX,
