@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { SFCOptions } from '@vue/repl'
 import { ReplStore, Repl as VueRepl } from '@vue/repl'
+import CodeMirror from '@vue/repl/codemirror-editor'
 import { useVueFlow } from '@vue-flow/core'
 import '@vue/repl/style.css'
 import { exampleImports } from './examples'
@@ -92,6 +93,7 @@ const sfcOptions = {
 
 <template>
   <VueRepl
+    :editor="CodeMirror"
     :clear-console="true"
     :auto-resize="true"
     :store="store"
