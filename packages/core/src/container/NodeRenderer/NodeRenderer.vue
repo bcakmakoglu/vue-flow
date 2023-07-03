@@ -75,17 +75,19 @@ function getType(type?: string, template?: GraphNode['template']) {
       }
     }
   }
-  if (typeof nodeType !== 'string') {
+
+  const slot = slots?.[`node-${name}`]
+  if (slot) {
+    return slot
+  }
+
+  if (nodeType && typeof nodeType !== 'string') {
     return nodeType
   }
 
-  const slot = slots?.[`node-${name}`]
-  if (!slot) {
-    emits.error(new VueFlowError(ErrorCode.NODE_TYPE_MISSING, nodeType))
-    return false
-  }
+  emits.error(new VueFlowError(ErrorCode.NODE_TYPE_MISSING, nodeType))
 
-  return slot
+  return false
 }
 </script>
 

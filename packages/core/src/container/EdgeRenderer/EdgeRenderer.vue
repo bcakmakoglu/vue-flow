@@ -45,17 +45,19 @@ function getType(type?: string, template?: GraphEdge['template']) {
       }
     }
   }
+
+  const slot = slots?.[`edge-${name}`]
+  if (slot) {
+    return slot
+  }
+
   if (edgeType && typeof edgeType !== 'string') {
     return edgeType
   }
 
-  const slot = slots?.[`edge-${name}`]
-  if (!slot) {
-    emits.error(new VueFlowError(ErrorCode.EDGE_TYPE_MISSING, edgeType))
-    return false
-  }
+  emits.error(new VueFlowError(ErrorCode.EDGE_TYPE_MISSING, edgeType))
 
-  return slot
+  return false
 }
 </script>
 
