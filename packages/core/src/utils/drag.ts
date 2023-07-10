@@ -115,8 +115,8 @@ function getParentExtent(
     return [
       [parent.computedPosition.x + left, parent.computedPosition.y + top],
       [
-        parent.computedPosition.x + (parent.dimensions.width - node.dimensions.width) - right,
-        parent.computedPosition.y + (parent.dimensions.height - node.dimensions.height) - bottom,
+        parent.computedPosition.x + parent.dimensions.width - right,
+        parent.computedPosition.y + parent.dimensions.height - bottom,
       ],
     ]
   }
