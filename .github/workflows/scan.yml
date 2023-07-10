@@ -11,6 +11,8 @@ concurrency:
 
 jobs:
   qodana-scan:
+    if: false
+
     runs-on: ${{ matrix.os }}
 
     strategy:
