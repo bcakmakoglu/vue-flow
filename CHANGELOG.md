@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.21.0] - 2023-07-10
+
+[eca9ad9](eca9ad9cb93f83a8842207cc302e39f49f1b1a29)...[f123ffb](f123ffb0150d5b570569810fbdd3f9bdf1eddae4)
+
+### Bug Fixes
+
+- Add style to base edge props ([38bb4e1](38bb4e1e12484f5444b2087ebcbf63c51680ba8c))
+- Add ref to base edge props ([40732f2](40732f2559bc4c63998a1a53ccd43c770696c48d))
+- Use correct class name and style for handle controls (#1010) ([61f8a68](61f8a68b8453ca6b441b0ace66620aff075216c4))
+- Prioritize handle below during handle lookup ([245dd82](245dd825749166271f374de692838e263fde7944))
+- Clamp node extent by node dimensions to avoid overflow (#1014) ([82e79a6](82e79a6113e7f0b8cf7fab6210e9fd80365cb0a2))
+
+### Miscellaneous Tasks
+
+- Replace the deprecated enum PanelPosition (#979) ([5669c8b](5669c8b1015fa993ce8672f1c1b92709d0cb386c))
+- Disable qodana ([11f584a](11f584a08a14e41bbeb237d493bd5def0ddfe1d3))
+- Update export ([b2dc046](b2dc046fe91b1d9685388ee4d53adf38fd97147f))
+- Cleanup export paths ([903583a](903583a3999592e39d320a464af5bfa8555c02bd))
+- Add ([908ea39](908ea3965e5ae8d62260537899ee807b38970012))
+- Add ([e21ae68](e21ae682beadc9716eb51ad10ac1bf1747382cdc))
+- Cleanup (#1003) ([55de815](55de815a39cf3a3fe398ecbe8df681658688f63e))
+- Add missing generic ([0b60cc3](0b60cc3c3e9f0318c52c3af4a6d000b7d8729657))
+- Add ([6967067](69670672769251f651cac69a9e5f69f5e14f3d1d))
+
+### Refactor
+
+- Change nodeEl and edgeEl type to allow ref(null) ([435cb9b](435cb9b6876d43e15e5677327bfc12b86f9fb3dc))
+- Use sfc for base edge and bind template refs ([80ad6f1](80ad6f1677803f334b517c61ec8668e23fb8cdc5))
+- Use normal components for edges ([7d93915](7d93915f369d4665aced83b0e81102f08a88c5b7))
+- Resolve slots before returning default component (#1013) ([5838454](58384540868b2f935ac3225d97c87306567cd66b))
+
 ## [1.20.2] - 2023-06-15
 
 [a16b7ca](a16b7ca3d01681b8ccb172ccde0316bf267d7352)...[eca9ad9](eca9ad9cb93f83a8842207cc302e39f49f1b1a29)
