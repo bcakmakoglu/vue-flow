@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.21.1
+
+### Patch Changes
+
+- [#1018](https://github.com/bcakmakoglu/vue-flow/pull/1018) [`c14941a1`](https://github.com/bcakmakoglu/vue-flow/commit/c14941a1c577a0b1a17e4d334e416659edd0fe36) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct nested nodes position calculation
+
 ## 1.21.0
 
 ### Minor Changes
