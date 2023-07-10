@@ -66,6 +66,12 @@ function focusable(nodeFocusable?: boolean) {
 
 function getType(type?: string, template?: GraphNode['template']) {
   const name = type || 'default'
+
+  const slot = slots?.[`node-${name}`]
+  if (slot) {
+    return slot
+  }
+
   let nodeType = template ?? getNodeTypes.value[name]
 
   if (typeof nodeType === 'string') {
@@ -75,11 +81,6 @@ function getType(type?: string, template?: GraphNode['template']) {
         nodeType = resolveComponent(name, false) as NodeComponent
       }
     }
-  }
-
-  const slot = slots?.[`node-${name}`]
-  if (slot) {
-    return slot
   }
 
   if (nodeType && typeof nodeType !== 'string') {
