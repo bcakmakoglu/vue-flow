@@ -1,6 +1,6 @@
 import { defineComponent, h } from 'vue'
+import { getSmoothStepPath } from '@xyflow/system'
 import BaseEdge from './BaseEdge.vue'
-import { getSmoothStepPath } from './utils'
 import type { SmoothStepEdgeProps } from '~/types'
 import { Position } from '~/types'
 

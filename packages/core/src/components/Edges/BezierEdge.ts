@@ -1,6 +1,6 @@
 import { defineComponent, h } from 'vue'
+import { getBezierPath } from '@xyflow/system'
 import BaseEdge from './BaseEdge.vue'
-import { getBezierPath } from './utils'
 import type { BezierEdgeProps } from '~/types'
 import { Position } from '~/types'
 
