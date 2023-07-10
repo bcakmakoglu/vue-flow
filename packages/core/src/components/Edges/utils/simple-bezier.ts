@@ -1,5 +1,5 @@
+import type { EdgePathParams } from '@xyflow/system'
 import { Position } from '../../../types'
-import type { EdgePathParams } from './general'
 import { getBezierEdgeCenter } from './general'
 
 export interface GetSimpleBezierPathParams {
