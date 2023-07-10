@@ -136,6 +136,8 @@ export function useHandle({
         connectionPosition = getEventPosition(event, containerBounds)
 
         const { handle, validHandleResult } = getClosestHandle(
+          event,
+          doc,
           pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
           connectionRadius.value,
           handleLookup,
@@ -154,7 +156,7 @@ export function useHandle({
             ),
         )
 
-        closestHandle = handle || handleLookup.find((handle) => handle.id === validHandleResult.endHandle?.handleId) || null
+        closestHandle = handle
 
         if (!autoPanStarted) {
           autoPan()

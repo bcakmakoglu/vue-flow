@@ -12,7 +12,7 @@ export interface HandleElement extends XYPosition, Dimensions {
 
 export interface ConnectionHandle {
   id: string | null
-  type: HandleType
+  type: HandleType | null
   nodeId: string
   x: number
   y: number
