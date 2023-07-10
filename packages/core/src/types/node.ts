@@ -85,7 +85,10 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   style?: Styles | StyleFunc<GraphNode<Data, CustomEvents>>
   /** Is node hidden */
   hidden?: boolean
-  /** overwrites current node type */
+  /**
+   * @deprecated will be removed in the next major release
+   * overwrites current node type
+   */
   template?: NodeComponent
   /** Additional data that is passed to your custom components */
   data?: Data
