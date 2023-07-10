@@ -264,7 +264,7 @@ export default {
     @mouseleave="onMouseLeave"
   >
     <slot />
-    <UserSelection v-if="userSelectionActive && userSelectionRect" />
+    <UserSelection v-if="userSelectionActive && userSelectionRect" :user-selection-rect="userSelectionRect" />
     <NodesSelection v-if="nodesSelectionActive && getSelectedNodes.length" />
   </div>
 </template>

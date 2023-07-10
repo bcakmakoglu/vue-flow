@@ -28,7 +28,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
   const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid, hooks } =
     $(state)
 
-  const { getNodes } = $(getters)
+  const { getNodes } = getters
 
   const nodesInitialized = ref(false)
 
@@ -36,7 +36,14 @@ export function useViewport(state: State, getters: ComputedGetters) {
     nodesInitialized.value = true
   })
 
-  const isReady = computed(() => !!d3Zoom && !!d3Selection && !!dimensions.width && !!dimensions.height && nodesInitialized.value)
+  const isReady = computed(
+    () =>
+      !!d3Zoom &&
+      !!d3Selection &&
+      !!dimensions.width &&
+      !!dimensions.height &&
+      (getNodes.value.length ? nodesInitialized.value : true),
+  )
 
   function zoom(scale: number, duration?: number) {
     if (d3Selection && d3Zoom) {
@@ -89,7 +96,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
             return
           }
 
-          const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes : getNodes).filter((node) => {
+          const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes : getNodes.value).filter((node) => {
             const initialized = node.initialized && node.dimensions.width && node.dimensions.height
             let shouldInclude = true
 
