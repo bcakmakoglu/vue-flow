@@ -52,8 +52,8 @@ export default {
     <ResizeControl
       v-for="c of handleControls"
       :key="c"
-      :class="lineClassName"
-      :style="lineStyle"
+      :class="handleClassName"
+      :style="handleStyle"
       :node-id="nodeId"
       :position="c"
       :color="color"
