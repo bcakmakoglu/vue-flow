@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.3.3
+
+### Patch Changes
+
+- [#1015](https://github.com/bcakmakoglu/vue-flow/pull/1015) [`f4d8d540`](https://github.com/bcakmakoglu/vue-flow/commit/f4d8d540ba57666b0bb05f8cad7eca794b6dc884) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use correct prop names for class and style
+
 ## 1.3.2
 
 ### Patch Changes
