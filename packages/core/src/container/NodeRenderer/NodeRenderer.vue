@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, resolveComponent } from 'vue'
+import { getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, ref, resolveComponent } from 'vue'
 import { until } from '@vueuse/core'
 import { NodeWrapper } from '../../components'
 import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
@@ -19,20 +19,22 @@ const {
   getNodeTypes,
   updateNodeDimensions,
   emits,
-} = $(useVueFlow())
+} = useVueFlow()
 
-let resizeObserver = $ref<ResizeObserver>()
+const resizeObserver = ref<ResizeObserver>()
 
-until(() => getNodes.length > 0 && getNodesInitialized.length === getNodes.length)
+const instance = getCurrentInstance()
+
+until(() => getNodes.value.length > 0 && getNodesInitialized.value.length === getNodes.value.length)
   .toBe(true)
   .then(() => {
     nextTick(() => {
-      emits.nodesInitialized(getNodesInitialized)
+      emits.nodesInitialized(getNodesInitialized.value)
     })
   })
 
 onMounted(() => {
-  resizeObserver = new ResizeObserver((entries) => {
+  resizeObserver.value = new ResizeObserver((entries) => {
     const updates = entries.map((entry) => {
       const id = entry.target.getAttribute('data-id') as string
 
@@ -47,25 +49,24 @@ onMounted(() => {
   })
 })
 
-onBeforeUnmount(() => resizeObserver?.disconnect())
+onBeforeUnmount(() => resizeObserver.value?.disconnect())
 
 function draggable(nodeDraggable?: boolean) {
-  return typeof nodeDraggable === 'undefined' ? nodesDraggable : nodeDraggable
+  return typeof nodeDraggable === 'undefined' ? nodesDraggable.value : nodeDraggable
 }
 function selectable(nodeSelectable?: boolean) {
-  return typeof nodeSelectable === 'undefined' ? elementsSelectable : nodeSelectable
+  return typeof nodeSelectable === 'undefined' ? elementsSelectable.value : nodeSelectable
 }
 function connectable(nodeConnectable?: HandleConnectable) {
-  return typeof nodeConnectable === 'undefined' ? nodesConnectable : nodeConnectable
+  return typeof nodeConnectable === 'undefined' ? nodesConnectable.value : nodeConnectable
 }
 function focusable(nodeFocusable?: boolean) {
-  return typeof nodeFocusable === 'undefined' ? nodesFocusable : nodeFocusable
+  return typeof nodeFocusable === 'undefined' ? nodesFocusable.value : nodeFocusable
 }
 
 function getType(type?: string, template?: GraphNode['template']) {
   const name = type || 'default'
-  let nodeType = template ?? getNodeTypes[name]
-  const instance = getCurrentInstance()
+  let nodeType = template ?? getNodeTypes.value[name]
 
   if (typeof nodeType === 'string') {
     if (instance) {
