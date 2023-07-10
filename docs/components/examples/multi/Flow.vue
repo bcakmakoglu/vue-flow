@@ -1,6 +1,6 @@
 <script setup>
 import { Background } from '@vue-flow/background'
-import { Panel, PanelPosition, VueFlow, isNode } from '@vue-flow/core'
+import { Panel, VueFlow, isNode } from '@vue-flow/core'
 import { ref } from 'vue'
 
 const elements = ref([
@@ -32,7 +32,7 @@ function updatePos() {
   <VueFlow v-model="elements" fit-view-on-init>
     <Background />
 
-    <Panel :position="PanelPosition.TopRight">
+    <Panel position="top-right">
       <button style="margin-right: 5px" @click="updatePos">update positions</button>
       <button @click="toggleClass">toggle class</button>
     </Panel>
