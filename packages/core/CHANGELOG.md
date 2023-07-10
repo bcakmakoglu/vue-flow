@@ -1,5 +1,23 @@
 # @vue-flow/core
 
+## 1.21.0
+
+### Minor Changes
+
+- [#988](https://github.com/bcakmakoglu/vue-flow/pull/988) [`cfd33294`](https://github.com/bcakmakoglu/vue-flow/commit/cfd332942e3a31e309cb11cca54a384b64b8004b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Expose template refs from base edge component
+
+- [#1013](https://github.com/bcakmakoglu/vue-flow/pull/1013) [`159bc763`](https://github.com/bcakmakoglu/vue-flow/commit/159bc763478399c03ee78a87be90bab20ef0ae5f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Resolve slot templates before falling back to default node/edge components
+
+### Patch Changes
+
+- [#1013](https://github.com/bcakmakoglu/vue-flow/pull/1013) [`159bc763`](https://github.com/bcakmakoglu/vue-flow/commit/159bc763478399c03ee78a87be90bab20ef0ae5f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Deprecate template prop for nodes
+
+- [#1014](https://github.com/bcakmakoglu/vue-flow/pull/1014) [`02d2dd58`](https://github.com/bcakmakoglu/vue-flow/commit/02d2dd58d3b31511a80c724f6297e43acc2d3d07) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Clamp node extent by node dimensions to avoid node overflowing the extent by its size
+
+- [#988](https://github.com/bcakmakoglu/vue-flow/pull/988) [`d6d4d5c7`](https://github.com/bcakmakoglu/vue-flow/commit/d6d4d5c7bf99744d000336fd1cf0ae89b5731153) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Priotize handle below during handle lookup
+
+- [#988](https://github.com/bcakmakoglu/vue-flow/pull/988) [`f5cfab61`](https://github.com/bcakmakoglu/vue-flow/commit/f5cfab617fd8cde1a4a10f6112f00238c3e3e4f9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add style and ref to base edge props to avoid volar ts error
+
 ## 1.20.2
 
 ### Patch Changes
