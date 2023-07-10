@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { toRef, until } from '@vueuse/core'
 import { computed, onUnmounted, ref } from 'vue'
+import { getDimensions, isMouseEvent } from '@xyflow/system'
 import type { HandleProps } from '../../types/handle'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
-import { getDimensions, isDef, isMouseEvent } from '../../utils'
+import { isDef, isFunction, isNumber, isString } from '../../utils'
 
 const {
   position = Position.Top,

@@ -1,3 +1,4 @@
+import { infiniteExtent } from '@xyflow/system'
 import { createHooks } from './hooks'
 import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '~/types'
 import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '~/types'
@@ -52,14 +53,8 @@ function defaultState(): State {
     minZoom: 0.5,
     maxZoom: 2,
 
-    translateExtent: [
-      [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-      [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
-    ],
-    nodeExtent: [
-      [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
-      [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
-    ],
+    translateExtent: infiniteExtent,
+    nodeExtent: infiniteExtent,
 
     selectionMode: SelectionMode.Full,
     paneDragging: false,

@@ -1,21 +1,17 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toValue } from '@vueuse/core'
-import { useVueFlow } from './useVueFlow'
-import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
 import {
+  type Transform,
   calcAutoPan,
-  getClosestHandle,
-  getConnectionStatus,
   getEventPosition,
-  getHandleLookup,
-  getHandleType,
   getHostForElement,
   isMouseEvent,
-  isValidHandle,
   pointToRendererPoint,
   rendererPointToPoint,
-  resetRecentHandle,
-} from '~/utils'
+} from '@xyflow/system'
+import { useVueFlow } from './useVueFlow'
+import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
+import { getClosestHandle, getConnectionStatus, getHandleLookup, getHandleType, isValidHandle, resetRecentHandle } from '~/utils'
 
 interface UseHandleProps {
   handleId: MaybeRefOrGetter<string | null>
@@ -139,7 +135,7 @@ export function useHandle({
         const { handle, validHandleResult } = getClosestHandle(
           event,
           doc,
-          pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
+          pointToRendererPoint(connectionPosition, Object.values(viewport.value).map((v) => v) as Transform, false, [1, 1]),
           connectionRadius.value,
           handleLookup,
           (handle) =>
@@ -176,7 +172,7 @@ export function useHandle({
                   x: closestHandle.x,
                   y: closestHandle.y,
                 },
-                viewport.value,
+                Object.values(viewport.value).map((v) => v) as Transform,
               )
             : connectionPosition,
           validHandleResult.endHandle,
@@ -225,18 +221,18 @@ export function useHandle({
         connection = null
         handleDomNode = null
 
-        doc.removeEventListener('mousemove', onPointerMove)
-        doc.removeEventListener('mouseup', onPointerUp)
+        doc.removeEventListener('mousemove', onPointerMove as EventListener)
+        doc.removeEventListener('mouseup', onPointerUp as EventListener)
 
-        doc.removeEventListener('touchmove', onPointerMove)
-        doc.removeEventListener('touchend', onPointerUp)
+        doc.removeEventListener('touchmove', onPointerMove as EventListener)
+        doc.removeEventListener('touchend', onPointerUp as EventListener)
       }
 
-      doc.addEventListener('mousemove', onPointerMove)
-      doc.addEventListener('mouseup', onPointerUp)
+      doc.addEventListener('mousemove', onPointerMove as EventListener)
+      doc.addEventListener('mouseup', onPointerUp as EventListener)
 
-      doc.addEventListener('touchmove', onPointerMove)
-      doc.addEventListener('touchend', onPointerUp)
+      doc.addEventListener('touchmove', onPointerMove as EventListener)
+      doc.addEventListener('touchend', onPointerUp as EventListener)
     }
   }
 

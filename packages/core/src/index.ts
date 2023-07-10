@@ -21,7 +21,7 @@ export {
 } from './components/Edges'
 
 // re-export these utils from system
-export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter } from '@xyflow/system'
+export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter, clamp } from '@xyflow/system'
 
 export { getSimpleBezierPath, getSimpleEdgeCenter } from './components/Edges/utils'
 
@@ -45,7 +45,6 @@ export {
   getMarkerId,
   getBoundsofRects,
   connectionExists,
-  clamp,
 } from './utils/graph'
 
 /**

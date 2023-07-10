@@ -19,8 +19,8 @@ export interface CoordinateExtentRange {
 }
 
 export interface NodeHandleBounds {
-  source?: HandleElement[]
-  target?: HandleElement[]
+  source: HandleElement[] | null
+  target: HandleElement[] | null
 }
 
 /** @deprecated will be removed in next major release */
