@@ -287,6 +287,9 @@ importers:
       '@vueuse/core':
         specifier: ^10.5.0
         version: 10.5.0(vue@3.3.4)
+      '@xyflow/system':
+        specifier: ^0.0.36
+        version: 0.0.36
       d3-drag:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2227,14 +2230,26 @@ packages:
   '@types/d3-drag@3.0.4':
     resolution: {integrity: sha512-/t53K1erTuUbP7WIX9SE0hlmytpTYRbIthlhbGkBHzCV5vPO++7yrk8OlisWPyIJO5TGowTmqCtGH2tokY5T/g==}
 
+  '@types/d3-drag@3.0.7':
+    resolution: {integrity: sha512-HE3jVKlzU9AaMazNufooRJ5ZpWmLIoc90A37WU2JMmeq28w1FQqCZswHZ3xR+SuxYftzHq6WU6KJHvqxKzTxxQ==}
+
   '@types/d3-interpolate@3.0.2':
     resolution: {integrity: sha512-zAbCj9lTqW9J9PlF4FwnvEjXZUy75NQqPm7DMHZXuxCFTpuTrdK2NMYGQekf4hlasL78fCYOLu4EE3/tXElwow==}
+
+  '@types/d3-selection@3.0.10':
+    resolution: {integrity: sha512-cuHoUgS/V3hLdjJOLTT691+G2QoqAjCVLmr4kJXR4ha56w1Zdu8UUQ5TxLRqudgNjwXeQxKMq4j+lyf9sWuslg==}
 
   '@types/d3-selection@3.0.7':
     resolution: {integrity: sha512-qoj2O7KjfqCobmtFOth8FMvjwMVPUAAmn6xiUbLl1ld7vQCPgffvyV5BBcEFfqWdilAUm+3zciU/3P3vZrUMlg==}
 
+  '@types/d3-transition@3.0.8':
+    resolution: {integrity: sha512-ew63aJfQ/ms7QQ4X7pk5NxQ9fZH/z+i24ZfJ6tJSfqxJMrYLiK01EAs2/Rtw/JreGUsS3pLPNV644qXFGnoZNQ==}
+
   '@types/d3-zoom@3.0.5':
     resolution: {integrity: sha512-mIefdTLtxuWUWTbBupCUXPAXVPmi8/Uwrq41gQpRh0rD25GMU1ku+oTELqNY2NuuiI0F3wXC5e1liBQi7YS7XQ==}
+
+  '@types/d3-zoom@3.0.8':
+    resolution: {integrity: sha512-iqMC4/YlFCSlO8+2Ii1GGGliCAY4XdeG748w5vQUbevlbDu0zSjH/+jojorQVBK/se0j6DUFNPBGSqD3YWYnDw==}
 
   '@types/estree@1.0.2':
     resolution: {integrity: sha512-VeiPZ9MMwXjO32/Xu7+OwflfmeoRwkE/qzndw42gGtgJwZopBnzy2gD//NN1+go1mADzkDcqf/KnFRSjTJ8xJA==}
@@ -2775,6 +2790,9 @@ packages:
 
   '@windicss/plugin-utils@1.9.3':
     resolution: {integrity: sha512-3VG5HEGeuIfG/9iTwLyzWWm/aGKNTbtSVkpkAabdRuDP/2lEmf6Hpo4uo5drwE+2O9gXfc6nSYgAwBjotx5CfQ==}
+
+  '@xyflow/system@0.0.36':
+    resolution: {integrity: sha512-u7zWPnZhgX7Yf7L9hq5NLmP3srMe8Do+SEVeNG5r67cFISo2hul/4lrqFE2BzV+n1gyaSrNDR0XqA8aeH1Hqfg==}
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -9571,16 +9589,31 @@ snapshots:
     dependencies:
       '@types/d3-selection': 3.0.7
 
+  '@types/d3-drag@3.0.7':
+    dependencies:
+      '@types/d3-selection': 3.0.10
+
   '@types/d3-interpolate@3.0.2':
     dependencies:
       '@types/d3-color': 3.1.1
 
+  '@types/d3-selection@3.0.10': {}
+
   '@types/d3-selection@3.0.7': {}
+
+  '@types/d3-transition@3.0.8':
+    dependencies:
+      '@types/d3-selection': 3.0.10
 
   '@types/d3-zoom@3.0.5':
     dependencies:
       '@types/d3-interpolate': 3.0.2
       '@types/d3-selection': 3.0.7
+
+  '@types/d3-zoom@3.0.8':
+    dependencies:
+      '@types/d3-interpolate': 3.0.2
+      '@types/d3-selection': 3.0.10
 
   '@types/estree@1.0.2': {}
 
@@ -10374,6 +10407,16 @@ snapshots:
       windicss: 3.5.6
     transitivePeerDependencies:
       - supports-color
+
+  '@xyflow/system@0.0.36':
+    dependencies:
+      '@types/d3-drag': 3.0.7
+      '@types/d3-selection': 3.0.10
+      '@types/d3-transition': 3.0.8
+      '@types/d3-zoom': 3.0.8
+      d3-drag: 3.0.0
+      d3-selection: 3.0.0
+      d3-zoom: 3.0.0
 
   abbrev@1.1.1: {}
 
