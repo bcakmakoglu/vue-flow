@@ -22,6 +22,8 @@ const {
   emits,
 } = useVueFlow()
 
+const instance = getCurrentInstance()
+
 function selectable(edgeSelectable?: boolean) {
   return typeof edgeSelectable === 'undefined' ? elementsSelectable.value : edgeSelectable
 }
@@ -34,8 +36,13 @@ function focusable(edgeFocusable?: boolean) {
 
 function getType(type?: string, template?: GraphEdge['template']) {
   const name = type || 'default'
+
+  const slot = slots?.[`edge-${name}`]
+  if (slot) {
+    return slot
+  }
+
   let edgeType = template ?? getEdgeTypes.value[name]
-  const instance = getCurrentInstance()
 
   if (typeof edgeType === 'string') {
     if (instance) {
@@ -45,17 +52,14 @@ function getType(type?: string, template?: GraphEdge['template']) {
       }
     }
   }
+
   if (edgeType && typeof edgeType !== 'string') {
     return edgeType
   }
 
-  const slot = slots?.[`edge-${name}`]
-  if (!slot) {
-    emits.error(new VueFlowError(ErrorCode.EDGE_TYPE_MISSING, edgeType))
-    return false
-  }
+  emits.error(new VueFlowError(ErrorCode.EDGE_TYPE_MISSING, edgeType))
 
-  return slot
+  return false
 }
 </script>
 
