@@ -16,7 +16,7 @@ import type {
 
 export interface ConnectionHandle extends XYPosition, Dimensions {
   id: string | null
-  type: HandleType
+  type: HandleType | null
   nodeId: string
 }
 
@@ -58,22 +58,54 @@ export function getHandles(
 }
 
 export function getClosestHandle(
+  event: MouseEvent | TouchEvent,
+  doc: Document | ShadowRoot,
   pos: XYPosition,
   connectionRadius: number,
   handles: ConnectionHandle[],
-  validator: (handle: ConnectionHandle | null) => ValidHandleResult,
+  validator: (handle: Pick<ConnectionHandle, 'nodeId' | 'id' | 'type'>) => ValidHandleResult,
 ) {
+  // we always want to prioritize the handle below the mouse cursor over the closest distance handle,
+  // because it could be that the center of another handle is closer to the mouse pointer than the handle below the cursor
+  const { x, y } = getEventPosition(event)
+  const domNodes = doc.elementsFromPoint(x, y)
+
+  const handleBelow = domNodes.find((el) => el.classList.contains('vue-flow__handle'))
+
+  if (handleBelow) {
+    const handleNodeId = handleBelow.getAttribute('data-nodeid')
+
+    if (handleNodeId) {
+      const handleType = getHandleType(undefined, handleBelow)
+      const handleId = handleBelow.getAttribute('data-handleid')
+      const validHandleResult = validator({ nodeId: handleNodeId, id: handleId, type: handleType })
+
+      if (validHandleResult) {
+        return {
+          handle: {
+            id: handleId,
+            type: handleType,
+            nodeId: handleNodeId,
+            x: pos.x,
+            y: pos.y,
+          },
+          validHandleResult,
+        }
+      }
+    }
+  }
+
+  // if we couldn't find a handle below the mouse cursor we look for the closest distance based on the connectionRadius
   let closestHandles: { handle: ConnectionHandle; validHandleResult: ValidHandleResult }[] = []
   let minDistance = Infinity
 
   handles.forEach((handle) => {
-    // calculate distance from mouse position to center of handle while considering handle width and height as well as x and y position
-    const distance = Math.sqrt((handle.x - pos.x - handle.width / 2) ** 2 + (handle.y - pos.y - handle.height / 2) ** 2)
+    const distance = Math.sqrt((handle.x - pos.x) ** 2 + (handle.y - pos.y) ** 2)
 
     if (distance <= connectionRadius) {
       const validHandleResult = validator(handle)
 
-      if (distance <= minDistance && validHandleResult.isValid) {
+      if (distance <= minDistance) {
         if (distance < minDistance) {
           closestHandles = [{ handle, validHandleResult }]
         } else if (distance === minDistance) {
@@ -90,13 +122,22 @@ export function getClosestHandle(
   })
 
   if (!closestHandles.length) {
-    return { handle: null, validHandleResult: validator(null) }
+    return { handle: null, validHandleResult: defaultValidHandleResult() }
   }
 
-  return closestHandles.length === 1
-    ? closestHandles[0]
-    : // if multiple handles are layout on top of each other we take the one with type = target because it's more likely that the user wants to connect to this one
-      closestHandles.find(({ handle }) => handle.type === 'target') || closestHandles[0]
+  if (closestHandles.length === 1) {
+    return closestHandles[0]
+  }
+
+  const hasValidHandle = closestHandles.some(({ validHandleResult }) => validHandleResult.isValid)
+  const hasTargetHandle = closestHandles.some(({ handle }) => handle.type === 'target')
+
+  // if multiple handles are layouted on top of each other we prefer the one with type = target and the one that is valid
+  return (
+    closestHandles.find(({ handle, validHandleResult }) =>
+      hasTargetHandle ? handle.type === 'target' : hasValidHandle ? validHandleResult.isValid : true,
+    ) || closestHandles[0]
+  )
 }
 
 // checks if  and returns connection in fom of an object { source: 123, target: 312 }
