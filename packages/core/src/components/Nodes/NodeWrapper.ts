@@ -158,7 +158,7 @@ const NodeWrapper = defineComponent({
           node.value.computedPosition = xyzPos
         }
       },
-      { flush: 'pre', immediate: true },
+      { flush: 'post', immediate: true },
     )
 
     watch([() => node.value.extent, nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
