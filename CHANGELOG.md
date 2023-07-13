@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.21.1] - 2023-07-10
+
+[f123ffb](f123ffb0150d5b570569810fbdd3f9bdf1eddae4)...[2424cc2](2424cc236e4088c5af85d062d7c5eab80ea774fb)
+
+### Bug Fixes
+
+- Nested nodes extent calculation off ([f52380d](f52380d3d22eacd408211a832fa4dcc70401df32))
+
+### Miscellaneous Tasks
+
+- Add ([f156107](f156107bb0f16a89f121c589aee008c7dec01d56))
+- Add ([dce1508](dce15085d135752649c653e279ce0a9d5b33a71b))
+
 ## [1.21.0] - 2023-07-10
 
 [eca9ad9](eca9ad9cb93f83a8842207cc302e39f49f1b1a29)...[f123ffb](f123ffb0150d5b570569810fbdd3f9bdf1eddae4)
