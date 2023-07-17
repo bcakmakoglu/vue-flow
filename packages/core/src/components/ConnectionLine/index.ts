@@ -1,4 +1,6 @@
+import type { Component } from 'vue'
 import { defineComponent, h, inject } from 'vue'
+import type { ConnectionLineProps } from '~/types'
 import { ConnectionLineType, ConnectionMode, Position } from '~/types'
 import { getMarkerId } from '~/utils'
 import { useVueFlow } from '~/composables'
@@ -29,7 +31,7 @@ const ConnectionLine = defineComponent({
       findNode,
     } = useVueFlow()
 
-    const connectionLineComponent = inject(Slots)?.['connection-line']
+    const connectionLineComponent = inject(Slots)?.['connection-line'] as Component<ConnectionLineProps> | undefined
 
     return () => {
       if (!connectionStartHandle.value) {

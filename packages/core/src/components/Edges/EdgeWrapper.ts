@@ -177,7 +177,6 @@ const EdgeWrapper = defineComponent({
                 targetHandleId: edge.targetHandle,
                 interactionWidth: edge.interactionWidth,
               }),
-
           [
             props.updatable === 'source' || props.updatable === true
               ? [
