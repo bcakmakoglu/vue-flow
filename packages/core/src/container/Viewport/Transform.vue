@@ -5,27 +5,16 @@ import { useVueFlow } from '../../composables'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 
-const { id, viewport, emits, d3Zoom, d3Selection, dimensions, ...rest } = useVueFlow()
+const { id, viewport, d3Zoom, d3Selection, dimensions } = useVueFlow()
 
 const viewportReady = ref(!isClient)
 
 until(() => d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0)
-  .toBeTruthy()
+  .toBe(true)
   .then(() => {
-    // emit pane ready event
-    emits.paneReady({
-      id,
-      viewport,
-      emits,
-      d3Zoom,
-      d3Selection,
-      dimensions,
-      ...rest,
-    })
-
     setTimeout(() => {
       viewportReady.value = true
-    }, 0)
+    }, 1)
   })
 </script>
 

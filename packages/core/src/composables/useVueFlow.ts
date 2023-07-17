@@ -39,13 +39,6 @@ export class Storage {
 
     const reactiveState = reactive(state)
 
-    const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
-    const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
-
-    const getters = useGetters(reactiveState, nodeIds, edgeIds)
-
-    const actions = useActions(reactiveState, getters, nodeIds, edgeIds)
-
     const hooksOn = <any>{}
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
       const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
@@ -56,6 +49,13 @@ export class Storage {
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
       emits[n] = h.trigger
     })
+
+    const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
+    const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
+
+    const getters = useGetters(reactiveState, nodeIds, edgeIds)
+
+    const actions = useActions(id, emits, hooksOn, reactiveState, getters, nodeIds, edgeIds)
 
     actions.setState(reactiveState)
 
