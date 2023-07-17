@@ -81,5 +81,5 @@ export interface ConnectionLineProps {
   /** marker url */
   markerEnd: string
   /** status of the connection (valid, invalid) */
-  connectionStatus: ConnectionStatus
+  connectionStatus: ConnectionStatus | null
 }
