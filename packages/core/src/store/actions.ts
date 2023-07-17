@@ -48,14 +48,15 @@ import {
 } from '~/utils'
 
 export function useActions(
+  id: string,
+  emits: any,
+  hooksOn: any,
   state: State,
   getters: ComputedGetters,
   nodeIds: ComputedRef<string[]>,
   edgeIds: ComputedRef<string[]>,
 ): Actions {
-  let fitViewOnInitDone = false
-
-  const viewportHelper = $(useViewport(state, getters))
+  const viewportHelper = useViewport(state, getters)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? nodeIds.value ?? []
@@ -189,16 +190,6 @@ export function useActions(
 
       return res
     }, [])
-
-    if (state.fitViewOnInit && !fitViewOnInitDone) {
-      until(() => viewportHelper.initialized)
-        .toBe(true)
-        .then(() => {
-          viewportHelper.fitView()
-        })
-
-      fitViewOnInitDone = true
-    }
 
     if (changes.length) {
       state.hooks.nodesChange.trigger(changes)
@@ -783,45 +774,6 @@ export function useActions(
     }
   }
 
-  const fitView: Actions['fitView'] = async (params = { padding: 0.1 }) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.fitView(params)
-  }
-
-  const zoomIn: Actions['zoomIn'] = async (options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.zoomIn(options)
-  }
-
-  const zoomOut: Actions['zoomOut'] = async (options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.zoomOut(options)
-  }
-
-  const zoomTo: Actions['zoomTo'] = async (zoomLevel, options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.zoomTo(zoomLevel, options)
-  }
-
-  const setTransform: Actions['setTransform'] = async (transform, options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.setTransform(transform, options)
-  }
-
-  const getTransform: Actions['getTransform'] = () => viewportHelper.getTransform()
-
-  const setCenter: Actions['setCenter'] = async (x, y, options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.setCenter(x, y, options)
-  }
-
-  const fitBounds: Actions['fitBounds'] = async (bounds, options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.fitBounds(bounds, options)
-  }
-
-  const project: Actions['project'] = (position) => viewportHelper.project(position)
-
   const toObject: Actions['toObject'] = () => {
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
@@ -866,7 +818,7 @@ export function useActions(
     }
 
     if (position) {
-      setTransform({ x: position[0], y: position[1], zoom: zoom || 1 })
+      viewportHelper.value.setTransform({ x: position[0], y: position[1], zoom: zoom || 1 })
     }
   }
 
@@ -896,7 +848,7 @@ export function useActions(
     setState(resetState)
   }
 
-  return {
+  const actions: Actions = {
     updateNodePositions,
     updateNodeDimensions,
     setElements,
@@ -929,19 +881,39 @@ export function useActions(
     getIntersectingNodes,
     isNodeIntersecting,
     panBy,
-    fitView,
-    zoomIn,
-    zoomOut,
-    zoomTo,
-    setTransform,
-    getTransform,
-    setCenter,
-    fitBounds,
-    project,
+    fitView: (params) => viewportHelper.value.fitView(params),
+    zoomIn: (transitionOpts) => viewportHelper.value.zoomIn(transitionOpts),
+    zoomOut: (transitionOpts) => viewportHelper.value.zoomOut(transitionOpts),
+    zoomTo: (zoomLevel, transitionOpts) => viewportHelper.value.zoomTo(zoomLevel, transitionOpts),
+    setTransform: (params, transitionOpts) => viewportHelper.value.setTransform(params, transitionOpts),
+    getTransform: () => viewportHelper.value.getTransform(),
+    setCenter: (x, y, opts) => viewportHelper.value.setCenter(x, y, opts),
+    fitBounds: (params, opts) => viewportHelper.value.fitBounds(params, opts),
+    project: (params) => viewportHelper.value.project(params),
     toObject,
     fromObject,
     updateNodeInternals,
     $reset,
     $destroy: () => {},
   }
+
+  until(() => viewportHelper.value.initialized)
+    .toBe(true, { flush: 'pre' })
+    .then(() => {
+      if (state.fitViewOnInit) {
+        viewportHelper.value.fitView()
+      }
+
+      state.hooks.paneReady.trigger({
+        id,
+        emits,
+        vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
+        ...hooksOn,
+        ...state,
+        ...getters,
+        ...actions,
+      })
+    })
+
+  return actions
 }

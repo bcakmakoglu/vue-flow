@@ -36,14 +36,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
     nodesInitialized.value = true
   })
 
-  const isReady = computed(
-    () =>
-      !!d3Zoom &&
-      !!d3Selection &&
-      !!dimensions.width &&
-      !!dimensions.height &&
-      (getNodes.value.length ? nodesInitialized.value : true),
-  )
+  const isReady = computed(() => !!d3Zoom && !!d3Selection && !!dimensions.width && !!dimensions.height && nodesInitialized.value)
 
   function zoom(scale: number, duration?: number) {
     if (d3Selection && d3Zoom) {
