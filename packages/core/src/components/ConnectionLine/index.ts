@@ -1,8 +1,8 @@
-import type { Component } from 'vue'
+import type { DefineComponent } from 'vue'
 import { defineComponent, h, inject } from 'vue'
 import type { ConnectionLineProps } from '~/types'
 import { ConnectionLineType, ConnectionMode, Position } from '~/types'
-import { getMarkerId } from '~/utils'
+import { getHandlePosition, getMarkerId } from '~/utils'
 import { useVueFlow } from '~/composables'
 import { Slots } from '~/context'
 import { getBezierPath, getSimpleBezierPath, getSmoothStepPath } from '~/components/Edges/utils'
@@ -31,7 +31,7 @@ const ConnectionLine = defineComponent({
       findNode,
     } = useVueFlow()
 
-    const connectionLineComponent = inject(Slots)?.['connection-line'] as Component<ConnectionLineProps> | undefined
+    const connectionLineComponent = inject(Slots)?.['connection-line'] as DefineComponent<ConnectionLineProps> | undefined
 
     return () => {
       if (!connectionStartHandle.value) {
@@ -64,12 +64,14 @@ const ConnectionLine = defineComponent({
         return null
       }
 
-      const fromHandle = handleId ? handleBounds.find((d) => d.id === handleId) : handleBounds[0]
-      const fromHandleX = fromHandle ? fromHandle.x + fromHandle.width / 2 : (fromNode.dimensions.width ?? 0) / 2
-      const fromHandleY = fromHandle ? fromHandle.y + fromHandle.height / 2 : fromNode.dimensions.height ?? 0
-      const fromX = (fromNode.computedPosition?.x ?? 0) + fromHandleX
-      const fromY = (fromNode.computedPosition?.y ?? 0) + fromHandleY
-      const fromPosition = fromHandle?.position
+      const fromHandle = (handleId ? handleBounds.find((d) => d.id === handleId) : handleBounds[0]) ?? null
+      const fromPosition = fromHandle?.position || Position.Top
+      const { x: fromX, y: fromY } = getHandlePosition(
+        fromPosition,
+        { ...fromNode.dimensions, ...fromNode.computedPosition },
+        fromHandle,
+      )
+
       const toHandle =
         (targetNode &&
           connectionEndHandle.value?.handleId &&
