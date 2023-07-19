@@ -71,7 +71,7 @@ export interface ConnectionLineProps {
   /** The source node of the connection line */
   sourceNode: GraphNode
   /** The source handle element (not the DOM element) of the connection line */
-  sourceHandle: HandleElement
+  sourceHandle: HandleElement | null
   /** The target node of the connection line */
   targetNode: GraphNode | null
   /** The target handle element (not the DOM element) of the connection line */
