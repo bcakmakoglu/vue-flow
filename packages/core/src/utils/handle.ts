@@ -132,7 +132,7 @@ export function getClosestHandle(
   const hasValidHandle = closestHandles.some(({ validHandleResult }) => validHandleResult.isValid)
   const hasTargetHandle = closestHandles.some(({ handle }) => handle.type === 'target')
 
-  // if multiple handles are layouted on top of each other we prefer the one with type = target and the one that is valid
+  // if multiple handles are layout on top of each other we prefer the one with type = target and the one that is valid
   return (
     closestHandles.find(({ handle, validHandleResult }) =>
       hasTargetHandle ? handle.type === 'target' : hasValidHandle ? validHandleResult.isValid : true,
@@ -157,15 +157,17 @@ export function isValidHandle(
 
   const handleDomNode = doc.querySelector(`.vue-flow__handle[data-id="${handle?.nodeId}-${handle?.id}-${handle?.type}"]`)
   const { x, y } = getEventPosition(event)
-  const handleBelow = doc.elementFromPoint(x, y)
+  const elementBelow = doc.elementFromPoint(x, y)
 
   // we always want to prioritize the handle below the mouse cursor over the closest distance handle,
   // because it could be that the center of another handle is closer to the mouse pointer than the handle below the cursor
-  const handleToCheck = handleBelow?.classList.contains('vue-flow__handle') ? handleBelow : handleDomNode
+  const handleToCheck = elementBelow?.classList.contains('vue-flow__handle') ? elementBelow : handleDomNode
 
   const result = defaultValidHandleResult()
 
   if (handleToCheck) {
+    result.handleDomNode = handleToCheck
+
     const handleType = getHandleType(undefined, handleToCheck)
     const handleNodeId = handleToCheck.getAttribute('data-nodeid')!
     const handleId = handleToCheck.getAttribute('data-handleid')
