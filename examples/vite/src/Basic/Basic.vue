@@ -15,7 +15,7 @@ const elements = ref<Elements>([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 
-const { onConnect, addEdges, setTransform, toObject } = useVueFlow({
+const { onConnect, addEdges, setTransform, toObject, onPaneReady } = useVueFlow({
   minZoom: 0.2,
   maxZoom: 4,
 })
@@ -33,6 +33,12 @@ function updatePos() {
   })
 }
 
+onPaneReady(async ({ fitView }) => {
+  const isDone = await fitView({ duration: 1000 })
+
+  console.log(isDone)
+})
+
 function logToObject() {
   return console.log(toObject())
 }
@@ -45,7 +51,7 @@ function toggleclass() {
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow v-model="elements" class="vue-flow-basic-example">
     <Background />
     <MiniMap />
     <Controls />
