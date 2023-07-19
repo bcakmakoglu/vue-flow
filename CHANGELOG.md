@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.21.2] - 2023-07-19
+
+[2424cc2](2424cc236e4088c5af85d062d7c5eab80ea774fb)...[07e9e8a](07e9e8a9b6600a753f91a429a67268516951b09f)
+
+### Bug Fixes
+
+- Use post flush when calculating new node pos ([1415652](1415652a1b3cda2a2c6d3b7e5c16b97390864116))
+- Connection status prop as nullable ([4f36cef](4f36cef1e8778a08384dab525b92af1b39c0d98c))
+- Use noop viewport operations instead of waiting for promise ([4d5bbab](4d5bbab50690fd8b2ab0072e4e69bd1ed5a4bce1))
+- Pass handle dom node to valid handle result ([08f749a](08f749ae30926e3d22562734715700c06c499427))
+
+### Miscellaneous Tasks
+
+- Add ([1b92785](1b9278521640127d3bf2316b8c4a9f2dc6e52618))
+- Add ([7152064](715206404b8eecfa8a98bc620cc72463e3a367fb))
+- Add ([4cd433f](4cd433fbec76a4f452a7c3d6a2a608e4070aac82))
+- Add ([bcde916](bcde9161af1cf56d58f276b64a3e8c39f7ce46c1))
+
 ## [1.21.1] - 2023-07-10
 
 [f123ffb](f123ffb0150d5b570569810fbdd3f9bdf1eddae4)...[2424cc2](2424cc236e4088c5af85d062d7c5eab80ea774fb)
