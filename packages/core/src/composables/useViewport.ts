@@ -1,5 +1,5 @@
 import { zoomIdentity } from 'd3-zoom'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import type { ComputedGetters, D3Selection, GraphNode, State, ViewportFunctions } from '~/types'
 import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint } from '~/utils'
 
@@ -9,7 +9,9 @@ interface ExtendedViewport extends ViewportFunctions {
 
 const DEFAULT_PADDING = 0.1
 
-function noop() {}
+function noop() {
+  return Promise.resolve(false)
+}
 
 const initialViewportHelper: ExtendedViewport = {
   zoomIn: noop,
@@ -25,59 +27,89 @@ const initialViewportHelper: ExtendedViewport = {
 }
 
 export function useViewport(state: State, getters: ComputedGetters) {
-  const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid, hooks } =
-    $(state)
+  const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid } = $(state)
 
-  const { getNodes } = getters
+  const { getNodes, getNodesInitialized } = getters
 
-  const nodesInitialized = ref(false)
-
-  hooks.nodesInitialized.on(() => {
-    nodesInitialized.value = true
-  })
-
-  const isReady = computed(() => !!d3Zoom && !!d3Selection && !!dimensions.width && !!dimensions.height && nodesInitialized.value)
+  const isReady = computed(
+    () =>
+      !!d3Zoom &&
+      !!d3Selection &&
+      !!dimensions.width &&
+      !!dimensions.height &&
+      getNodesInitialized.value.length === getNodes.value.length,
+  )
 
   function zoom(scale: number, duration?: number) {
-    if (d3Selection && d3Zoom) {
-      d3Zoom.scaleBy(transition(d3Selection, duration), scale)
-    }
+    return new Promise<boolean>((resolve) => {
+      if (d3Selection && d3Zoom) {
+        d3Zoom.scaleBy(
+          transition(d3Selection, duration, () => {
+            resolve(true)
+          }),
+          scale,
+        )
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   function transformViewport(x: number, y: number, zoom: number, duration?: number) {
-    // enforce translate extent
-    const { x: clampedX, y: clampedY } = clampPosition({ x: -x, y: -y }, translateExtent)
+    return new Promise<boolean>((resolve) => {
+      // enforce translate extent
+      const { x: clampedX, y: clampedY } = clampPosition({ x: -x, y: -y }, translateExtent)
 
-    const nextTransform = zoomIdentity.translate(-clampedX, -clampedY).scale(zoom)
+      const nextTransform = zoomIdentity.translate(-clampedX, -clampedY).scale(zoom)
 
-    if (d3Selection && d3Zoom) {
-      d3Zoom.transform(transition(d3Selection, duration), nextTransform)
-    }
+      if (d3Selection && d3Zoom) {
+        d3Zoom.transform(
+          transition(d3Selection, duration, () => {
+            resolve(true)
+          }),
+          nextTransform,
+        )
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   return computed<ExtendedViewport>(() => {
     if (isReady.value) {
       return {
         initialized: true,
+        // todo: allow passing scale as option
         zoomIn: (options) => {
-          zoom(1.2, options?.duration)
+          return zoom(1.2, options?.duration)
         },
         zoomOut: (options) => {
-          zoom(1 / 1.2, options?.duration)
+          return zoom(1 / 1.2, options?.duration)
         },
         zoomTo: (zoomLevel, options) => {
-          if (d3Selection && d3Zoom) {
-            d3Zoom.scaleTo(transition(d3Selection, options?.duration), zoomLevel)
-          }
+          return new Promise<boolean>((resolve) => {
+            if (d3Selection && d3Zoom) {
+              d3Zoom.scaleTo(
+                transition(d3Selection, options?.duration, () => {
+                  resolve(true)
+                }),
+                zoomLevel,
+              )
+            } else {
+              resolve(false)
+            }
+          })
         },
         setTransform: (transform, options) => {
-          transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
+          return transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
         },
-        getTransform: () => ({
-          x: viewport.x,
-          y: viewport.y,
-          zoom: viewport.zoom,
-        }),
+        getTransform: () => {
+          return {
+            x: viewport.x,
+            y: viewport.y,
+            zoom: viewport.zoom,
+          }
+        },
         fitView: (
           options = {
             padding: DEFAULT_PADDING,
@@ -97,7 +129,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
           })
 
           if (!nodesToFit.length) {
-            return
+            return Promise.resolve(false)
           }
 
           const bounds = getRectOfNodes(nodesToFit)
@@ -112,14 +144,14 @@ export function useViewport(state: State, getters: ComputedGetters) {
             options.offset,
           )
 
-          transformViewport(x, y, zoom, options?.duration)
+          return transformViewport(x, y, zoom, options?.duration)
         },
         setCenter: (x, y, options) => {
           const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : maxZoom
           const centerX = dimensions.width / 2 - x * nextZoom
           const centerY = dimensions.height / 2 - y * nextZoom
 
-          transformViewport(centerX, centerY, nextZoom, options?.duration)
+          return transformViewport(centerX, centerY, nextZoom, options?.duration)
         },
         fitBounds: (bounds, options = { padding: DEFAULT_PADDING }) => {
           const { x, y, zoom } = getTransformForBounds(
@@ -131,7 +163,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
             options.padding,
           )
 
-          transformViewport(x, y, zoom, options?.duration)
+          return transformViewport(x, y, zoom, options?.duration)
         },
         project: (position) => pointToRendererPoint(position, viewport, snapToGrid, snapGrid),
       }
@@ -141,6 +173,6 @@ export function useViewport(state: State, getters: ComputedGetters) {
   })
 }
 
-function transition(selection: D3Selection, ms = 0) {
-  return selection.transition().duration(ms)
+function transition(selection: D3Selection, ms = 0, onEnd: () => void) {
+  return selection.transition().duration(ms).on('end', onEnd)
 }
