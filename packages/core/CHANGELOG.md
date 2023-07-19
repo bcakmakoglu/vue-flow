@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.21.2
+
+### Patch Changes
+
+- [#1024](https://github.com/bcakmakoglu/vue-flow/pull/1024) [`df1c5322`](https://github.com/bcakmakoglu/vue-flow/commit/df1c53225689ed590f1d84bd9d5b64fe4aca2654) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use flush timing when calculating node positions
+
+- [#1028](https://github.com/bcakmakoglu/vue-flow/pull/1028) [`3e11c6f0`](https://github.com/bcakmakoglu/vue-flow/commit/3e11c6f059543ba3f5bfc60643a749fafa66e57e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use noop functions instead of waiting for promise to be resolved when triggering viewport actions like fitView, setCenter etc.
+
+- [#1031](https://github.com/bcakmakoglu/vue-flow/pull/1031) [`7fcf9c1f`](https://github.com/bcakmakoglu/vue-flow/commit/7fcf9c1ffc4e46e592aeee44af87710c73f567a4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass missing handle dom node to valid handle result obj
+
+- [#1025](https://github.com/bcakmakoglu/vue-flow/pull/1025) [`ec6765c2`](https://github.com/bcakmakoglu/vue-flow/commit/ec6765c2a432a3f09425f4e9b9c044a1cf7bc011) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix connection line status prop type. Can be string or null.
+
 ## 1.21.1
 
 ### Patch Changes
