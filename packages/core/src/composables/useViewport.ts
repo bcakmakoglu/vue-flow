@@ -85,10 +85,6 @@ export function useViewport(state: State, getters: ComputedGetters) {
             duration: 0,
           },
         ) => {
-          if (!nodes.length) {
-            return
-          }
-
           const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes : getNodes.value).filter((node) => {
             const initialized = node.initialized && node.dimensions.width && node.dimensions.height
             let shouldInclude = true
@@ -99,6 +95,10 @@ export function useViewport(state: State, getters: ComputedGetters) {
 
             return initialized && shouldInclude
           })
+
+          if (!nodesToFit.length) {
+            return
+          }
 
           const bounds = getRectOfNodes(nodesToFit)
 
