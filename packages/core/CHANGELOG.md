@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.21.3
+
+### Patch Changes
+
+- [#1033](https://github.com/bcakmakoglu/vue-flow/pull/1033) [`8585dd53`](https://github.com/bcakmakoglu/vue-flow/commit/8585dd535f370fdaf0ef60d7035031242f34645f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use correct handle position as source x,y position of connection lines
+
+- [#1041](https://github.com/bcakmakoglu/vue-flow/pull/1041) [`373a345c`](https://github.com/bcakmakoglu/vue-flow/commit/373a345cd3000fa28ac80e00b9e60c139cfa1f8d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Abort fit view when there are no nodes to fit around
+
+- [#1033](https://github.com/bcakmakoglu/vue-flow/pull/1033) [`8585dd53`](https://github.com/bcakmakoglu/vue-flow/commit/8585dd535f370fdaf0ef60d7035031242f34645f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct source handle type to be possibly null when passing as prop to custom connection line components
+
 ## 1.21.2
 
 ### Patch Changes
