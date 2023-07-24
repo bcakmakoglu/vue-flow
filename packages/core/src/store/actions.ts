@@ -844,7 +844,15 @@ export function useActions(
     }
 
     if (position) {
-      viewportHelper.value.setTransform({ x: position[0], y: position[1], zoom: zoom || 1 })
+      until(() => viewportHelper.value.initialized)
+        .toBe(true)
+        .then(() => {
+          viewportHelper.value.setViewport({
+            x: position[0],
+            y: position[1],
+            zoom: zoom || state.viewport.zoom,
+          })
+        })
     }
   }
 
