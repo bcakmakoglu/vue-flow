@@ -152,23 +152,23 @@ export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphE
 }
 
 function getConnectedElements<T extends Elements = FlowElements>(
-  node: Node,
+  nodeOrId: Node | { id: string } | string,
   elements: T,
   dir: 'source' | 'target',
 ): T extends FlowElements ? GraphNode[] : Node[] {
-  if (!isNode(node)) {
-    return []
-  }
+  const id = isString(nodeOrId) ? nodeOrId : nodeOrId.id
+
   const origin = dir === 'source' ? 'target' : 'source'
-  const ids = elements.filter((e) => isEdge(e) && e[origin] === node.id).map((e) => isEdge(e) && e[dir])
+  const ids = elements.filter((e) => isEdge(e) && e[origin] === id).map((e) => isEdge(e) && e[dir])
+
   return elements.filter((e) => ids.includes(e.id)) as T extends FlowElements ? GraphNode[] : Node[]
 }
-export function getOutgoers<T extends Elements = FlowElements>(node: Node, elements: T) {
-  return getConnectedElements(node, elements, 'target')
+export function getOutgoers<T extends Elements = FlowElements>(nodeOrId: Node | { id: string } | string, elements: T) {
+  return getConnectedElements(nodeOrId, elements, 'target')
 }
 
-export function getIncomers<T extends Elements = FlowElements>(node: Node, elements: T) {
-  return getConnectedElements(node, elements, 'source')
+export function getIncomers<T extends Elements = FlowElements>(nodeOrId: Node | { id: string } | string, elements: T) {
+  return getConnectedElements(nodeOrId, elements, 'source')
 }
 
 export function getEdgeId({ source, sourceHandle, target, targetHandle }: Connection) {
