@@ -1,5 +1,5 @@
 import { zoomIdentity } from 'd3-zoom'
-import { computed } from 'vue'
+import { ref } from 'vue'
 import type { ComputedGetters, D3Selection, GraphNode, State, ViewportFunctions } from '~/types'
 import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint } from '~/utils'
 
@@ -29,16 +29,13 @@ const initialViewportHelper: ExtendedViewport = {
 export function useViewport(state: State, getters: ComputedGetters) {
   const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid } = $(state)
 
-  const { getNodes, getNodesInitialized } = getters
+  const isReady = ref(false)
 
-  const isReady = computed(
-    () =>
-      !!d3Zoom &&
-      !!d3Selection &&
-      !!dimensions.width &&
-      !!dimensions.height &&
-      getNodesInitialized.value.length === getNodes.value.length,
-  )
+  until(() => !!d3Zoom && !!d3Selection && !!dimensions.width && !!dimensions.height)
+    .toBe(true)
+    .then(() => {
+      isReady.value = true
+    })
 
   function zoom(scale: number, duration?: number) {
     return new Promise<boolean>((resolve) => {
