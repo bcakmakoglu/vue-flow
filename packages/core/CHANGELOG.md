@@ -1,5 +1,27 @@
 # @vue-flow/core
 
+## 1.22.0
+
+### Minor Changes
+
+- [#1034](https://github.com/bcakmakoglu/vue-flow/pull/1034) [`080d8f41`](https://github.com/bcakmakoglu/vue-flow/commit/080d8f414f915d7a00017a0a2b4fcc67bac7e7ef) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Deprecate `getTransform` and `setTransform` and add `getViewport` and `setViewport` instead
+
+- [#1034](https://github.com/bcakmakoglu/vue-flow/pull/1034) [`763ea593`](https://github.com/bcakmakoglu/vue-flow/commit/763ea5930bc01d01b53314f68e5d51b674b44ac5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `hasListener` to event hook objects to check if any listeners are bound
+
+- [#1034](https://github.com/bcakmakoglu/vue-flow/pull/1034) [`4c191dfe`](https://github.com/bcakmakoglu/vue-flow/commit/4c191dfe8ce109738efdc66b2d6d503011936d00) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Return promises from viewport actions that are resolved when the transition of the action has ended
+
+- [#1034](https://github.com/bcakmakoglu/vue-flow/pull/1034) [`5d08d68a`](https://github.com/bcakmakoglu/vue-flow/commit/5d08d68a3cc8417785b835534a19376545d7b113) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add flag to `removeNodes` which allows recursively removing all child nodes of a parent
+
+- [#1034](https://github.com/bcakmakoglu/vue-flow/pull/1034) [`5d08d68a`](https://github.com/bcakmakoglu/vue-flow/commit/5d08d68a3cc8417785b835534a19376545d7b113) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing string or `{ id }` type object to `getIncomers` and `getOutgoers`
+
+### Patch Changes
+
+- [#1034](https://github.com/bcakmakoglu/vue-flow/pull/1034) [`080d8f41`](https://github.com/bcakmakoglu/vue-flow/commit/080d8f414f915d7a00017a0a2b4fcc67bac7e7ef) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Do not wait for the nodes initialized hook to trigger for viewport helper to become ready
+
+- [#1034](https://github.com/bcakmakoglu/vue-flow/pull/1034) [`5e1802ca`](https://github.com/bcakmakoglu/vue-flow/commit/5e1802caa42161903d8a4f8a7265f6fa5a65d342) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Destroy state when the creating scope is disposed.
+
+- [#1034](https://github.com/bcakmakoglu/vue-flow/pull/1034) [`afd1d235`](https://github.com/bcakmakoglu/vue-flow/commit/afd1d235099b5034ad317f32c6f5658fb9b5115a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Watch `applyDefault` state in `useVueFlow` scope instead of component scope otherwise adding nodes/edges to the state is impossible until the `VueFlow` component has mounted unless the changes handlers are explicitly bound by the user.
+
 ## 1.21.3
 
 ### Patch Changes
