@@ -1,6 +1,6 @@
 import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { computed, getCurrentScope, inject, provide, reactive, watch } from 'vue'
+import { computed, effectScope, getCurrentScope, inject, provide, reactive, watch } from 'vue'
 import { useActions, useGetters, useState } from '~/store'
 import type { EdgeChange, FlowOptions, FlowProps, NodeChange, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
@@ -96,8 +96,6 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
 
   let vueFlow: Injection
 
-  let isParentScope = false
-
   /**
    * check if we can get a store instance through injections
    * this should be the regular way after initialization
@@ -131,47 +129,31 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
 
     vueFlow = state
 
-    if (scope) {
-      isParentScope = true
+    const detachedScope = effectScope()
 
-      scope.run(() => {
-        watch(
-          state.applyDefault,
-          (shouldApplyDefault) => {
-            const nodesChangeHandler = (changes: NodeChange[]) => {
-              state.applyNodeChanges(changes)
-            }
+    detachedScope.run(() => {
+      watch(
+        state.applyDefault,
+        (shouldApplyDefault) => {
+          const nodesChangeHandler = (changes: NodeChange[]) => {
+            state.applyNodeChanges(changes)
+          }
 
-            const edgesChangeHandler = (changes: EdgeChange[]) => {
-              state.applyEdgeChanges(changes)
-            }
+          const edgesChangeHandler = (changes: EdgeChange[]) => {
+            state.applyEdgeChanges(changes)
+          }
 
-            if (shouldApplyDefault) {
-              state.onNodesChange(nodesChangeHandler)
-              state.onEdgesChange(edgesChangeHandler)
-            } else {
-              state.hooks.value.nodesChange.off(nodesChangeHandler)
-              state.hooks.value.edgesChange.off(edgesChangeHandler)
-            }
-          },
-          { immediate: true },
-        )
-      })
-    }
-  } else {
-    // if composable was called with additional options after initialization, overwrite state with the options values
-    if (options) {
-      vueFlow.setState(options)
-    }
-  }
+          if (shouldApplyDefault) {
+            state.onNodesChange(nodesChangeHandler)
+            state.onEdgesChange(edgesChangeHandler)
+          } else {
+            state.hooks.value.nodesChange.off(nodesChangeHandler)
+            state.hooks.value.edgesChange.off(edgesChangeHandler)
+          }
+        },
+        { immediate: true },
+      )
 
-  // always provide a fresh instance into context on call
-  if (scope) {
-    provide(VueFlow, vueFlow)
-
-    scope.vueFlowId = vueFlow.id
-
-    if (isParentScope) {
       // dispose of state values and storage entry
       tryOnScopeDispose(() => {
         if (vueFlow) {
@@ -184,7 +166,19 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
           }
         }
       })
+    })
+  } else {
+    // if composable was called with additional options after initialization, overwrite state with the options values
+    if (options) {
+      vueFlow.setState(options)
     }
+  }
+
+  // always provide a fresh instance into context on call
+  if (scope) {
+    provide(VueFlow, vueFlow)
+
+    scope.vueFlowId = vueFlow.id
   }
 
   return vueFlow
