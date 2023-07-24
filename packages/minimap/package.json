@@ -57,9 +57,7 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "@vue-flow/core": "^1.12.2"
-  },
-  "dependencies": {
+    "@vue-flow/core": "^1.12.2",
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0"
   },
