@@ -1,4 +1,4 @@
-import type { EventHook, EventHookOn, EventHookTrigger } from '@vueuse/core'
+import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
 import type { D3ZoomEvent } from 'd3-zoom'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
@@ -7,6 +7,7 @@ import type { ViewportTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
 import type { VueFlowError } from '~/utils/errors'
+import type { EventHookExtended } from '~/utils'
 
 export type MouseTouchEvent = MouseEvent | TouchEvent
 
@@ -94,7 +95,7 @@ export interface FlowEvents {
 }
 
 export type FlowHooks = Readonly<{
-  [key in keyof FlowEvents]: EventHook<FlowEvents[key]>
+  [key in keyof FlowEvents]: EventHookExtended<FlowEvents[key]>
 }>
 
 export type FlowHooksOn = Readonly<{
