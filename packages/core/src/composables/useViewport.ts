@@ -32,6 +32,8 @@ const initialViewportHelper: ExtendedViewport = {
 export function useViewport(state: State, getters: ComputedGetters) {
   const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid } = $(state)
 
+  const { getNodes } = getters
+
   const isReady = ref(false)
 
   until(() => !!d3Zoom && !!d3Selection && !!dimensions.width && !!dimensions.height)
@@ -101,7 +103,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
           })
         },
         setViewport: (transform, options) => {
-          transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
+          return transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
         },
         setTransform: (transform, options) => {
           return transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
