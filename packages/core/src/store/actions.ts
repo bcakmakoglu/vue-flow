@@ -506,12 +506,41 @@ export function useActions(
     }
   }
 
-  const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true) => {
+  const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true, removeChildren = false) => {
     let nodesToRemove = nodes instanceof Function ? nodes(state.nodes) : nodes
     nodesToRemove = Array.isArray(nodesToRemove) ? nodesToRemove : [nodesToRemove]
 
     const nodeChanges: NodeRemoveChange[] = []
     const edgeChanges: EdgeRemoveChange[] = []
+
+    function createEdgeRemovalChanges(nodes: Node[]) {
+      const connections = getConnectedEdges(nodes, state.edges).filter((edge) => {
+        if (isDef(edge.deletable)) {
+          return edge.deletable
+        }
+        return true
+      })
+
+      edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
+    }
+
+    // recursively get all children and if the child is a parent, get those children as well until all nodes have been removed that are children of the current node
+    function createChildrenRemovalChanges(id: string) {
+      const children = state.nodes.filter((n) => n.parentNode === id)
+
+      if (children.length) {
+        const childIds = children.map((n) => n.id)
+        nodeChanges.push(...childIds.map((id) => createRemoveChange(id)))
+
+        if (removeConnectedEdges) {
+          createEdgeRemovalChanges(children)
+        }
+
+        children.forEach((child) => {
+          createChildrenRemovalChanges(child.id)
+        })
+      }
+    }
 
     nodesToRemove.forEach((item) => {
       const currNode = typeof item === 'string' ? findNode(item) : item
@@ -527,14 +556,11 @@ export function useActions(
       nodeChanges.push(createRemoveChange(currNode.id))
 
       if (removeConnectedEdges) {
-        const connections = getConnectedEdges([currNode], state.edges).filter((edge) => {
-          if (isDef(edge.deletable)) {
-            return edge.deletable
-          }
-          return true
-        })
+        createEdgeRemovalChanges([currNode])
+      }
 
-        edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
+      if (removeChildren) {
+        createChildrenRemovalChanges(currNode.id)
       }
     })
 
