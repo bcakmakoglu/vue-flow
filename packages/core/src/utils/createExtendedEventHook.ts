@@ -1,5 +1,3 @@
-import type { Ref } from 'vue'
-import { ref } from 'vue'
 import type { EventHook } from '@vueuse/core'
 import { tryOnScopeDispose } from '@vueuse/core'
 
@@ -9,26 +7,28 @@ import { tryOnScopeDispose } from '@vueuse/core'
  * Modified to be able to check if there are any event listeners
  */
 export interface EventHookExtended<T> extends EventHook<T> {
-  fns: Ref<Set<(param: T) => void>>
+  hasListeners: () => boolean
 }
 
 export function createExtendedEventHook<T = any>(defaultHandler: (param: T) => void = () => {}): EventHookExtended<T> {
-  const fns = ref(new Set<(param: T) => void>())
+  const fns = new Set<(param: T) => void>()
+
+  const hasListeners = () => fns.size > 0
 
   if (defaultHandler) {
-    fns.value.add(defaultHandler)
+    fns.add(defaultHandler)
   }
 
   const off = (fn: (param: T) => void) => {
-    fns.value.delete(fn)
+    fns.delete(fn)
   }
 
   const on = (fn: (param: T) => void) => {
-    if (fns.value.has(defaultHandler)) {
-      fns.value.delete(defaultHandler)
+    if (fns.has(defaultHandler)) {
+      fns.delete(defaultHandler)
     }
 
-    fns.value.add(fn)
+    fns.add(fn)
     const offFn = () => off(fn)
 
     tryOnScopeDispose(offFn)
@@ -39,13 +39,13 @@ export function createExtendedEventHook<T = any>(defaultHandler: (param: T) => v
   }
 
   const trigger = (param: T) => {
-    return Promise.all(Array.from(fns.value).map((fn) => fn(param)))
+    return Promise.all(Array.from(fns).map((fn) => fn(param)))
   }
 
   return {
     on,
     off,
     trigger,
-    fns,
+    hasListeners,
   }
 }
