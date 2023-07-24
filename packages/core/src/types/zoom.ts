@@ -60,17 +60,19 @@ export type ZoomInOut = (options?: TransitionOptions) => Promise<boolean>
 export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => Promise<boolean>
 
 /** get current viewport transform */
-export type GetTransform = () => ViewportTransform
+export type GetViewport = () => ViewportTransform
 
 /** set current viewport transform */
-export type SetTransform = (transform: ViewportTransform, options?: TransitionOptions) => Promise<boolean>
+export type SetViewport = (transform: ViewportTransform, options?: TransitionOptions) => Promise<boolean>
 
 export interface ViewportFunctions {
   zoomIn: ZoomInOut
   zoomOut: ZoomInOut
   zoomTo: ZoomTo
+  setViewport: SetViewport
   /** @deprecated use setViewport instead */
   setTransform: SetViewport
+  getViewport: GetViewport
   /** @deprecated use getViewport instead */
   getTransform: GetViewport
   fitView: FitView
