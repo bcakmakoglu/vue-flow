@@ -83,7 +83,7 @@ vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 ```
 
-## [setTransform](/typedocs/types/SetTransform)
+## [setViewport](/typedocs/types/SetViewport)
 
 - Details:
 
@@ -92,10 +92,10 @@ vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 - Example:
 
 ```ts
-vueFlowInstance.setTransform({ x: 100, y: 100, zoom: 1.5 })
+vueFlowInstance.setViewport({ x: 100, y: 100, zoom: 1.5 })
 ```
 
-## [getTransform](/typedocs/types/GetTransform)
+## [getViewport](/typedocs/types/GetViewport)
 
 - Details:
 
