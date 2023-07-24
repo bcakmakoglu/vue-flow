@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.21.3] - 2023-07-24
+
+[07e9e8a](07e9e8a9b6600a753f91a429a67268516951b09f)...[be8a83d](be8a83dab0e75c175f88b20ceae7731ad3810ebd)
+
+### Bug Fixes
+
+- Get correct handle pos for connection line ([17755dd](17755ddb9a6a4aa67554e26869175e5347dcd0e7))
+- Abort fit view when there's no nodes to fit around ([6bd442f](6bd442f844548425264e49c90c19d60bc289efd3))
+
+### Features
+
+- Add fitView tests ([db4c2da](db4c2da9a5991821127907919a2c5a4673809cf4))
+
+### Miscellaneous Tasks
+
+- Add ([1ac6591](1ac6591d2384088f9866f1a851fbd922250cfb5f))
+- Add ([8780ab5](8780ab5fc1101a7b406da30746f0f8943f04b493))
+- Move setState test to separate dir ([faee0e3](faee0e3ddc76a59de49f98f79f02e26793285f9d))
+
 ## [1.21.2] - 2023-07-19
 
 [2424cc2](2424cc236e4088c5af85d062d7c5eab80ea774fb)...[07e9e8a](07e9e8a9b6600a753f91a429a67268516951b09f)
