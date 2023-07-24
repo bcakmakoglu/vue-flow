@@ -1,5 +1,6 @@
+import { until } from '@vueuse/core'
 import { zoomIdentity } from 'd3-zoom'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { ComputedGetters, D3Selection, GraphNode, State, ViewportFunctions } from '~/types'
 import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint } from '~/utils'
 
@@ -21,7 +22,9 @@ const initialViewportHelper: ExtendedViewport = {
   setCenter: noop,
   fitBounds: noop,
   project: (position) => position,
+  setViewport: noop,
   setTransform: noop,
+  getViewport: () => ({ x: 0, y: 0, zoom: 1 }),
   getTransform: () => ({ x: 0, y: 0, zoom: 1 }),
   initialized: false,
 }
@@ -97,9 +100,17 @@ export function useViewport(state: State, getters: ComputedGetters) {
             }
           })
         },
+        setViewport: (transform, options) => {
+          transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
+        },
         setTransform: (transform, options) => {
           return transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
         },
+        getViewport: () => ({
+          x: viewport.x,
+          y: viewport.y,
+          zoom: viewport.zoom,
+        }),
         getTransform: () => {
           return {
             x: viewport.x,
