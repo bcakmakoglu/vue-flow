@@ -1,8 +1,8 @@
 import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { computed, getCurrentScope, inject, provide, reactive } from 'vue'
+import { computed, getCurrentScope, inject, provide, reactive, watch } from 'vue'
 import { useActions, useGetters, useState } from '~/store'
-import type { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
+import type { EdgeChange, FlowOptions, FlowProps, NodeChange, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
 import { warn } from '~/utils'
 
@@ -127,10 +127,36 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
   if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
     const name = id ?? storage.getId()
 
-    vueFlow = storage.create(name, options)
+    const state = storage.create(name, options)
+
+    vueFlow = state
 
     if (scope) {
       isParentScope = true
+
+      scope.run(() => {
+        watch(
+          state.applyDefault,
+          (shouldApplyDefault) => {
+            const nodesChangeHandler = (changes: NodeChange[]) => {
+              state.applyNodeChanges(changes)
+            }
+
+            const edgesChangeHandler = (changes: EdgeChange[]) => {
+              state.applyEdgeChanges(changes)
+            }
+
+            if (shouldApplyDefault) {
+              state.onNodesChange(nodesChangeHandler)
+              state.onEdgesChange(edgesChangeHandler)
+            } else {
+              state.hooks.value.nodesChange.off(nodesChangeHandler)
+              state.hooks.value.edgesChange.off(edgesChangeHandler)
+            }
+          },
+          { immediate: true },
+        )
+      })
     }
   } else {
     // if composable was called with additional options after initialization, overwrite state with the options values
