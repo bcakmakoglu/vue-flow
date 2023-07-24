@@ -213,25 +213,6 @@ export function useWatchProps(
             }
           },
         )
-
-        watch(
-          store.applyDefault,
-          (_, __, onCleanup) => {
-            if (store.applyDefault.value) {
-              store.onNodesChange(store.applyNodeChanges)
-              store.onEdgesChange(store.applyEdgeChanges)
-            } else {
-              store.hooks.value.nodesChange.off(store.applyNodeChanges)
-              store.hooks.value.edgesChange.off(store.applyEdgeChanges)
-            }
-
-            onCleanup(() => {
-              store.hooks.value.nodesChange.off(store.applyNodeChanges)
-              store.hooks.value.edgesChange.off(store.applyEdgeChanges)
-            })
-          },
-          { immediate: true },
-        )
       })
     }
 
@@ -310,18 +291,20 @@ export function useWatchProps(
       })
     }
 
-    ;[
-      watchModelValue,
-      watchNodesValue,
-      watchEdgesValue,
-      watchMinZoom,
-      watchMaxZoom,
-      watchTranslateExtent,
-      watchNodeExtent,
-      watchApplyDefault,
-      watchAutoConnect,
-      watchRest,
-    ].forEach((watch) => watch())
+    const runAll = () => {
+      watchModelValue()
+      watchNodesValue()
+      watchEdgesValue()
+      watchMinZoom()
+      watchMaxZoom()
+      watchTranslateExtent()
+      watchNodeExtent()
+      watchApplyDefault()
+      watchAutoConnect()
+      watchRest()
+    }
+
+    runAll()
   })
 
   return () => scope.stop()
