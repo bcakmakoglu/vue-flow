@@ -105,8 +105,11 @@ export enum SelectionMode {
 export interface FlowExportObject {
   nodes: Node[]
   edges: Edge[]
+  /** @deprecated use `viewport` instead */
   position: [x: number, y: number]
+  /** @deprecated use `viewport` instead */
   zoom: number
+  viewport: ViewportTransform
 }
 
 export interface FlowProps {

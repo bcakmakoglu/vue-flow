@@ -828,12 +828,13 @@ export function useActions(
         }),
         position: [state.viewport.x, state.viewport.y],
         zoom: state.viewport.zoom,
+        viewport: state.viewport,
       } as FlowExportObject),
     )
   }
 
   const fromObject: Actions['fromObject'] = (obj) => {
-    const { nodes, edges, position, zoom } = obj
+    const { nodes, edges, position, zoom, viewport } = obj
 
     if (nodes) {
       setNodes(nodes)
@@ -843,14 +844,14 @@ export function useActions(
       setEdges(edges)
     }
 
-    if (position) {
+    if (viewport || position) {
       until(() => viewportHelper.value.initialized)
         .toBe(true)
         .then(() => {
           viewportHelper.value.setViewport({
-            x: position[0],
-            y: position[1],
-            zoom: zoom || state.viewport.zoom,
+            x: viewport.x || position[0],
+            y: viewport.y || position[1],
+            zoom: viewport.zoom || zoom || state.viewport.zoom,
           })
         })
     }
