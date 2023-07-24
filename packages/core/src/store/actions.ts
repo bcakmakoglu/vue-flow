@@ -38,6 +38,7 @@ import {
   getHandleBounds,
   getOverlappingArea,
   getSelectionChanges,
+  isBoolean,
   isDef,
   isEdge,
   isNode,
@@ -513,36 +514,57 @@ export function useActions(
     const nodeChanges: NodeRemoveChange[] = []
     const edgeChanges: EdgeRemoveChange[] = []
 
-    function createEdgeRemovalChanges(nodes: Node[]) {
-      const connections = getConnectedEdges(nodes, state.edges).filter((edge) => {
-        if (isDef(edge.deletable)) {
-          return edge.deletable
-        }
-        return true
-      })
-
-      edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
-    }
-
-    // recursively get all children and if the child is a parent, get those children as well until all nodes have been removed that are children of the current node
-    function createChildrenRemovalChanges(id: string) {
-      const children = state.nodes.filter((n) => n.parentNode === id)
-
-      if (children.length) {
-        const childIds = children.map((n) => n.id)
-        nodeChanges.push(...childIds.map((id) => createRemoveChange(id)))
-
-        if (removeConnectedEdges) {
-          createEdgeRemovalChanges(children)
-        }
-
-        children.forEach((child) => {
-          createChildrenRemovalChanges(child.id)
-        })
+    const shouldRemove = (node: GraphNode) => {
+      if (typeof removeChildren === 'object' && removeChildren.shouldRemove) {
+        return removeChildren.shouldRemove(node)
       }
+
+      return true
     }
 
     nodesToRemove.forEach((item) => {
+      let nodesLevel = 0
+
+      const createEdgeRemovalChanges = (nodes: Node[]) => {
+        const connections = getConnectedEdges(nodes, state.edges).filter((edge) => {
+          if (isDef(edge.deletable)) {
+            return edge.deletable
+          }
+          return true
+        })
+
+        edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
+      }
+
+      // recursively get all children and if the child is a parent, get those children as well until all nodes have been removed that are children of the current node
+      const createChildrenRemovalChanges = (id: string) => {
+        const children = state.nodes.filter((n) => n.parentNode === id)
+
+        if (children.length) {
+          const childIds = children.filter(shouldRemove).map((n) => n.id)
+          nodeChanges.push(...childIds.map((id) => createRemoveChange(id)))
+
+          if (removeConnectedEdges) {
+            createEdgeRemovalChanges(children)
+          }
+
+          nodesLevel++
+
+          if (
+            (typeof removeChildren === 'object' &&
+              (removeChildren.shouldRemove ||
+                (typeof removeChildren.levels !== 'undefined' && nodesLevel < removeChildren.levels))) ||
+            (isBoolean(removeChildren) && removeChildren)
+          ) {
+            children.forEach((child) => {
+              if (shouldRemove(child)) {
+                createChildrenRemovalChanges(child.id)
+              }
+            })
+          }
+        }
+      }
+
       const currNode = typeof item === 'string' ? findNode(item) : item
 
       if (!currNode) {

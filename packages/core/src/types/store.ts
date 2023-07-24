@@ -155,7 +155,7 @@ export type AddNodes = (nodes: Node | Node[] | ((nodes: GraphNode[]) => Node | N
 export type RemoveNodes = (
   nodes: (string | Node) | (Node | string)[] | ((nodes: GraphNode[]) => (string | Node) | (Node | string)[]),
   removeConnectedEdges?: boolean,
-  removeChildren?: boolean,
+  removeChildren?: boolean | { levels?: number; shouldRemove?: (node: GraphNode) => boolean },
 ) => void
 
 export type RemoveEdges = (
