@@ -4,7 +4,7 @@ import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
-const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
+const { onConnect, addEdges, addNodes, findNode, removeNodes } = useVueFlow({
   fitViewOnInit: true,
   connectionMode: ConnectionMode.Loose,
   nodes: [
@@ -95,6 +95,15 @@ onMounted(() => {
       padding: [10],
     }
   })
+
+  setTimeout(() => {
+    removeNodes('4', true, {
+      shouldRemove: (node) => {
+        console.log(node)
+        return node.id === '4a'
+      },
+    })
+  }, 3000)
 })
 </script>
 
