@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.22.0] - 2023-07-24
+
+[be8a83d](be8a83dab0e75c175f88b20ceae7731ad3810ebd)...[b3c70da](b3c70da5e2f707358c22242d87c20828c011050d)
+
+### Bug Fixes
+
+- Dont wait for nodesInitialized to trigger for viewport helper ([a2e4d99](a2e4d99f5b519ac3d3c89426c44912bf526c3484))
+- Watch applyDefault state in useVueFlow scope ([620852b](620852b860237a25bf887e531f0024082f18b74e))
+- Use detached scope to dispose state and stop watcher ([45f18d5](45f18d54591b30ca9a2950d3e7625e8ada7f2936))
+
+### Features
+
+- Resolve promise from viewport actions on transition end ([7df2bfa](7df2bfa146a0d9aa8f6f855041f378fb2fca4a06))
+- Add `setViewport` and `getViewport` to viewport helper ([9f63252](9f63252c620da84d48184ef2ae153f5073a766a7))
+- Add `hasListener` to event hooks ([987538a](987538aebd77c8f2cb9c835ec388404712826ac2))
+- Add flag to `removeNodes` to remove children of a node ([c4acb0d](c4acb0d0f67b7a094d55d824de930e73e07d5ea3))
+- Allow passing node or id to getoutgoers/getincomers ([2a597f8](2a597f86058be0b000a6e43050bbafd97d865e68))
+
+### Miscellaneous Tasks
+
+- Add ([bf6dcfc](bf6dcfca4aed389f4bebf1713c7b6ca108987d4e))
+- Cleanup `useZoomPanHelper` ([42aa13e](42aa13e2a57e2afdbca79f060189631bb25fc415))
+- Add ([5395c57](5395c57d5d593b895425066827897274b7f83997))
+- Cleanup ([4412516](4412516476d7985167e3427905a79eecadf34687))
+- Cleanup dead links ([52ba092](52ba0928f4b74784d9dd36b7bd836efa6be7ba39))
+- Add ([4ed3acc](4ed3acc021fd5b1089e8a1f9dadb23b23e01a9a1))
+- Add ([581f2b1](581f2b1fec065f489873df8254902df5ec76cb1c))
+- Add ([bc2de72](bc2de7254a474359558204c3b42dac904cda778f))
+- Add ([02891b3](02891b3aa92641906089406af34a0080fa3f7881))
+
+### Refactor
+
+- Deprecate `setTransform` & `getTransform` ([ed6c298](ed6c2983857030e3450252a48fcfd901249976c1))
+
 ## [1.21.3] - 2023-07-24
 
 [07e9e8a](07e9e8a9b6600a753f91a429a67268516951b09f)...[be8a83d](be8a83dab0e75c175f88b20ceae7731ad3810ebd)
