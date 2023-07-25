@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.22.1
+
+### Patch Changes
+
+- [#1048](https://github.com/bcakmakoglu/vue-flow/pull/1048) [`b230e2ab`](https://github.com/bcakmakoglu/vue-flow/commit/b230e2ab1ac354f38b8919017609d85d8215e27f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Deprecate `position` and `zoom` props on `FlowExportObj` and replace with `viewport`
+
+- [#1054](https://github.com/bcakmakoglu/vue-flow/pull/1054) [`543423c2`](https://github.com/bcakmakoglu/vue-flow/commit/543423c213e717a76ed7796453a37bb858d63b03) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - ESC key press causing browser error when blur on nodeEl is called
+
+- [#1048](https://github.com/bcakmakoglu/vue-flow/pull/1048) [`b230e2ab`](https://github.com/bcakmakoglu/vue-flow/commit/b230e2ab1ac354f38b8919017609d85d8215e27f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wait for viewport helper when calling `fromObject` action
+
 ## 1.22.0
 
 ### Minor Changes
