@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.22.1] - 2023-07-25
+
+[b3c70da](b3c70da5e2f707358c22242d87c20828c011050d)...[2174c5a](2174c5ad5ab531a4024700e2354c84d7c54c0714)
+
+### Bug Fixes
+
+- Wait for viewport helper in `fromObject` action ([fd155e4](fd155e41af8e3c3d563f52966d07ca8b67f47ec0))
+- Unwrap blur fn ([ac86b77](ac86b77b8924529a153f651d1d3f3dc3d8101c07))
+
+### Miscellaneous Tasks
+
+- Add ([814d5ed](814d5edb26cbd350d231b3780e09e69e1c1434df))
+- Add ([95612ba](95612bae49a2e0dbd2fcfa5e94c1973ab1a80de8))
+
+### Refactor
+
+- Add `viewport` to export obj and deprecate `position` and `zoom` ([eb29f96](eb29f96f967ddb72b663ee26397f8e9b6f803486))
+
 ## [1.22.0] - 2023-07-24
 
 [be8a83d](be8a83dab0e75c175f88b20ceae7731ad3810ebd)...[b3c70da](b3c70da5e2f707358c22242d87c20828c011050d)
