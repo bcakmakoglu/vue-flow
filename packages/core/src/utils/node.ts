@@ -42,6 +42,8 @@ export function handleNodeClick(
   } else if (unselect || (node.selected && multiSelectionActive)) {
     removeSelectedNodes([node])
 
-    nextTick(nodeEl.blur)
+    nextTick(() => {
+      nodeEl.blur()
+    })
   }
 }
