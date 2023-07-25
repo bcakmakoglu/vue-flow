@@ -844,14 +844,18 @@ export function useActions(
       setEdges(edges)
     }
 
-    if (viewport || position) {
+    if ((viewport?.x && viewport?.y) || position) {
+      const x = viewport?.x || position[0]
+      const y = viewport?.y || position[1]
+      const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
+
       until(() => viewportHelper.value.initialized)
         .toBe(true)
         .then(() => {
           viewportHelper.value.setViewport({
-            x: viewport.x || position[0],
-            y: viewport.y || position[1],
-            zoom: viewport.zoom || zoom || state.viewport.zoom,
+            x,
+            y,
+            zoom: nextZoom,
           })
         })
     }
