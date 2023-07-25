@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.22.2
+
+### Patch Changes
+
+- [#1055](https://github.com/bcakmakoglu/vue-flow/pull/1055) [`50059483`](https://github.com/bcakmakoglu/vue-flow/commit/500594831faabf47758e20178ab80f88110036ef) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if viewport transform is defined before setting in `fromObj` action
+
 ## 1.22.1
 
 ### Patch Changes
