@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.22.2] - 2023-07-27
+
+[2174c5a](2174c5ad5ab531a4024700e2354c84d7c54c0714)...[921c8ce](921c8ceb0327af012da2e48b4d25cb9c3417517c)
+
+### Bug Fixes
+
+- Check if viewport is defined before setting ([9d1f5fa](9d1f5fa62927e6c3e7a3b6ecf604480e3a4ed070))
+
+### Miscellaneous Tasks
+
+- Add ([a69b816](a69b816891c23b83d35da08e15f82c31ed6934ad))
+
 ## [1.22.1] - 2023-07-25
 
 [b3c70da](b3c70da5e2f707358c22242d87c20828c011050d)...[2174c5a](2174c5ad5ab531a4024700e2354c84d7c54c0714)
