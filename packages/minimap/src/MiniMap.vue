@@ -224,6 +224,8 @@ export default {
         :key="node.id"
         :position="node.computedPosition"
         :dimensions="node.dimensions"
+        :selected="node.selected"
+        :dragging="node.dragging"
         :style="node.style"
         :class="nodeClassNameFunc(node)"
         :color="nodeColorFunc(node)"
