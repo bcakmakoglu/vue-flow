@@ -6,7 +6,19 @@ import { MiniMapSlots } from './types'
 export default defineComponent({
   name: 'MiniMapNode',
   compatConfig: { MODE: 3 },
-  props: ['id', 'position', 'dimensions', 'strokeWidth', 'strokeColor', 'borderRadius', 'color', 'shapeRendering', 'type'],
+  props: [
+    'id',
+    'type',
+    'selected',
+    'dragging',
+    'position',
+    'dimensions',
+    'borderRadius',
+    'color',
+    'shapeRendering',
+    'strokeColor',
+    'strokeWidth',
+  ],
   emits: ['click', 'dblclick', 'mouseenter', 'mousemove', 'mouseleave'],
   setup(props: MiniMapNodeProps, { attrs, emit }) {
     const miniMapSlots: Slots = inject(MiniMapSlots)!
@@ -21,7 +33,7 @@ export default defineComponent({
 
       return h('rect', {
         id: props.id,
-        class: ['vue-flow__minimap-node', attrs.class].join(' '),
+        class: ['vue-flow__minimap-node', attrs.class, { selected: props.selected, dragging: props.dragging }].join(' '),
         style,
         x: props.position.x,
         y: props.position.y,
