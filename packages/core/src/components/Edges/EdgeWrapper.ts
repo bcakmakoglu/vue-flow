@@ -141,7 +141,7 @@ const EdgeWrapper = defineComponent({
           'tabIndex': props.focusable ? 0 : undefined,
           'aria-label': edge.ariaLabel === null ? undefined : edge.ariaLabel || `Edge from ${edge.source} to ${edge.target}`,
           'aria-describedby': props.focusable ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
-          'role': props.focusable ? 'button' : undefined,
+          'role': props.focusable ? 'button' : 'img',
         },
         [
           updating.value
