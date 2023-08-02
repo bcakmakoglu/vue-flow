@@ -50,7 +50,6 @@ export interface MiniMapProps {
 export interface MiniMapNodeProps {
   id: string
   type: string
-  parentNode?: string
   selected?: boolean
   dragging?: boolean
   position: XYPosition
