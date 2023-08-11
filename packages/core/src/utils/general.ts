@@ -28,3 +28,5 @@ export function isBoolean(val: any): val is boolean {
 export function isNumber(val: any): val is number {
   return typeof val === 'number'
 }
+
+export const isMacOs = () => typeof navigator !== 'undefined' && navigator?.userAgent?.indexOf('Mac') >= 0
