@@ -150,7 +150,13 @@ function getPoints({
     centerY = points[0].y
   }
 
-  const pathPoints = [source, sourceGapped, ...points, targetGapped, target]
+  const pathPoints = [
+    source,
+    { x: sourceGapped.x - sourceGapOffset.x, y: sourceGapped.y - sourceGapOffset.y },
+    ...points,
+    { x: targetGapped.x - targetGapOffset.x, y: targetGapped.y - targetGapOffset.y },
+    target,
+  ]
 
   return [pathPoints, centerX, centerY, defaultOffsetX, defaultOffsetY]
 }
