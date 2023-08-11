@@ -7,7 +7,7 @@ import { useEventListener, useResizeObserver } from '@vueuse/core'
 import type { CoordinateExtent, D3ZoomHandler, FlowOptions, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import { useKeyPress, useVueFlow, useWindow } from '../../composables'
-import { ErrorCode, VueFlowError, clamp, getDimensions } from '../../utils'
+import { ErrorCode, VueFlowError, clamp, getDimensions, isMacOs } from '../../utils'
 import Pane from '../Pane/Pane.vue'
 import Transform from './Transform.vue'
 
@@ -92,6 +92,7 @@ onMounted(() => {
 
   const constrainedTransform = d3Zoom.constrain()(updatedTransform, extent, translateExtent.value)
   d3Zoom.transform(d3Selection, constrainedTransform)
+  d3Zoom.wheelDelta(wheelDelta)
 
   storeD3Zoom.value = d3Zoom
   storeD3Selection.value = d3Selection
@@ -183,12 +184,13 @@ onMounted(() => {
 
           const currentZoom = d3Selection.property('__zoom').k || 1
 
-          if (event.ctrlKey && zoomOnPinch.value) {
+          if (event.ctrlKey && zoomOnPinch.value && isMacOs()) {
             const point = pointer(event)
-            // taken from https://github.com/d3/d3-zoom/blob/master/src/zoom.js
-            const pinchDelta = -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * 10
+            const pinchDelta = wheelDelta(event)
             const zoom = currentZoom * 2 ** pinchDelta
-            d3Zoom.scaleTo(d3Selection, zoom, point)
+
+            // @ts-expect-error d3-zoom types are not up to date
+            d3Zoom.scaleTo(d3Selection, zoom, point, event)
 
             return
           }
@@ -295,6 +297,12 @@ onMounted(() => {
 
 function isRightClickPan(pan: FlowOptions['panOnDrag'], usedButton: number) {
   return usedButton === 2 && Array.isArray(pan) && pan.includes(2)
+}
+
+function wheelDelta(event: any) {
+  const factor = event.ctrlKey && isMacOs() ? 10 : 1
+
+  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
 }
 
 function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransform) {
