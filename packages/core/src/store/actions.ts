@@ -307,25 +307,27 @@ export function useActions(
       return elementSelectionHandler([], false)
     }
 
-    const { changedNodes, changedEdges } = elements.reduce(
-      (acc, curr) => {
+    const changes = elements.reduce(
+      (changes, curr) => {
         const selectionChange = createSelectionChange(curr.id, false)
+
         if (isNode(curr)) {
-          acc.changedNodes.push(selectionChange)
+          changes.nodes.push(selectionChange)
         } else {
-          acc.changedEdges.push(selectionChange)
+          changes.edges.push(selectionChange)
         }
 
-        return acc
+        return changes
       },
-      { changedNodes: [] as NodeSelectionChange[], changedEdges: [] as EdgeSelectionChange[] },
+      { nodes: [] as NodeSelectionChange[], edges: [] as EdgeSelectionChange[] },
     )
 
-    if (changedNodes.length) {
-      state.hooks.nodesChange.trigger(changedNodes)
+    if (changes.nodes.length) {
+      state.hooks.nodesChange.trigger(changes.nodes)
     }
-    if (changedEdges.length) {
-      state.hooks.edgesChange.trigger(changedEdges)
+
+    if (changes.edges.length) {
+      state.hooks.edgesChange.trigger(changes.edges)
     }
   }
 
@@ -456,7 +458,7 @@ export function useActions(
         )
       : nextEdges
 
-    const changes = validEdges.reduce((acc, param) => {
+    const changes = validEdges.reduce((edgeChanges, param) => {
       const edge = addEdgeToStore(
         {
           ...param,
@@ -475,21 +477,23 @@ export function useActions(
 
         if (missingSource && missingTarget) {
           state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
-        } else {
-          if (missingSource) {
-            state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
-          }
 
-          if (missingTarget) {
-            state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
-          }
+          return edgeChanges
         }
 
-        if (missingSource || missingTarget) {
-          return acc
+        if (missingSource) {
+          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
+
+          return edgeChanges
         }
 
-        acc.push(
+        if (missingTarget) {
+          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
+
+          return edgeChanges
+        }
+
+        edgeChanges.push(
           createAdditionChange<GraphEdge>({
             ...edge,
             sourceNode,
@@ -498,7 +502,7 @@ export function useActions(
         )
       }
 
-      return acc
+      return edgeChanges
     }, [] as EdgeChange[])
 
     if (changes.length) {
@@ -514,12 +518,7 @@ export function useActions(
     const edgeChanges: EdgeRemoveChange[] = []
 
     function createEdgeRemovalChanges(nodes: Node[]) {
-      const connections = getConnectedEdges(nodes, state.edges).filter((edge) => {
-        if (isDef(edge.deletable)) {
-          return edge.deletable
-        }
-        return true
-      })
+      const connections = getConnectedEdges(nodes, state.edges).filter((edge) => (isDef(edge.deletable) ? edge.deletable : true))
 
       edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
     }
