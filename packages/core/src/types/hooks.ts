@@ -64,9 +64,9 @@ export interface FlowEvents {
   } & OnConnectStartParams
   clickConnectEnd: MouseEvent | TouchEvent | undefined
   paneReady: VueFlowStore
-  move: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }
-  moveStart: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }
-  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }
+  move: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
+  moveStart: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
+  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
   selectionDragStart: NodeDragEvent
   selectionDrag: NodeDragEvent
   selectionDragStop: NodeDragEvent
