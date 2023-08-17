@@ -30,9 +30,3 @@ watch(
 <template>
   <ParentLayout></ParentLayout>
 </template>
-
-<style>
-.page-footer {
-  @apply py-4 text-center;
-}
-</style>

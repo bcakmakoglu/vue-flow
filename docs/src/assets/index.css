@@ -5,6 +5,10 @@
   --vp-c-accent: #BB86FC;
 }
 
+.VPHome {
+  padding-bottom: 0 !important;
+}
+
 .VPNavBar.has-sidebar .content, .VPNav {
   background-color: rgba(var(--vp-c-bg), 0.75);
   backdrop-filter: blur(1px);
