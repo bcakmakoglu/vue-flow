@@ -40,8 +40,6 @@ function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<str
 
 function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
   return (event: KeyboardEvent) => {
-    console.log(event.type)
-
     // if the keyFilter is an array of multiple keys, we need to check each possible key combination
     if (Array.isArray(keyFilter)) {
       return keyFilter.some((key) => isKeyMatch(event.key, key, pressedKeys, event.type === 'keyup'))
