@@ -20,26 +20,35 @@ function wasModifierPressed(event: KeyboardEvent) {
   return event.ctrlKey || event.metaKey || event.shiftKey
 }
 
-function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<string>) {
+function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<string>, isKeyUp: boolean) {
   const keyCombination = keyToMatch.split('+').map((k) => k.trim().toLowerCase())
 
   if (keyCombination.length === 1) {
     return pressedKey === keyToMatch
   } else {
-    pressedKeys.add(pressedKey.toLowerCase())
-    return keyCombination.every((key) => pressedKeys.has(key))
+    if (isKeyUp) {
+      pressedKeys.delete(pressedKey.toLowerCase())
+    } else {
+      pressedKeys.add(pressedKey.toLowerCase())
+    }
+
+    return keyCombination.every(
+      (key, index) => pressedKeys.has(key) && Array.from(pressedKeys.values())[index] === keyCombination[index],
+    )
   }
 }
 
 function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
   return (event: KeyboardEvent) => {
+    console.log(event.type)
+
     // if the keyFilter is an array of multiple keys, we need to check each possible key combination
     if (Array.isArray(keyFilter)) {
-      return keyFilter.some((key) => isKeyMatch(event.key, key, pressedKeys))
+      return keyFilter.some((key) => isKeyMatch(event.key, key, pressedKeys, event.type === 'keyup'))
     }
 
     // if the keyFilter is a string, we need to check if the key matches the string
-    return isKeyMatch(event.key, keyFilter, pressedKeys)
+    return isKeyMatch(event.key, keyFilter, pressedKeys, event.type === 'keyup')
   }
 }
 
