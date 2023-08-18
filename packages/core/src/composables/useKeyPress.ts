@@ -71,25 +71,37 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
 
   watch(
     () => toValue(keyFilter),
-    (unrefKeyFilter) => {
+    (nextKeyFilter, previousKeyFilter) => {
       if (window && typeof window.addEventListener !== 'undefined') {
         useEventListener(window, 'blur', () => {
           isPressed.value = false
         })
       }
 
-      if (isBoolean(unrefKeyFilter)) {
-        isPressed.value = unrefKeyFilter
+      // if the previous keyFilter was a boolean but is now something else, we need to reset the isPressed value
+      if (isBoolean(previousKeyFilter) && !isBoolean(nextKeyFilter)) {
+        reset()
+      }
+
+      // if the keyFilter is null, we just set the isPressed value to false
+      if (nextKeyFilter === null) {
+        reset()
         return
       }
 
-      if (Array.isArray(unrefKeyFilter) || (isString(unrefKeyFilter) && unrefKeyFilter.includes('+'))) {
-        unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys)
+      // if the keyFilter is a boolean, we just set the isPressed value to that boolean
+      if (isBoolean(nextKeyFilter)) {
+        isPressed.value = nextKeyFilter
+        return
       }
 
-      if (unrefKeyFilter) {
+      if (Array.isArray(nextKeyFilter) || (isString(nextKeyFilter) && nextKeyFilter.includes('+'))) {
+        nextKeyFilter = createKeyPredicate(nextKeyFilter, pressedKeys)
+      }
+
+      if (nextKeyFilter) {
         onKeyStroke(
-          unrefKeyFilter,
+          nextKeyFilter,
           (e) => {
             modifierPressed = wasModifierPressed(e)
 
@@ -105,18 +117,14 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
         )
 
         onKeyStroke(
-          unrefKeyFilter,
+          nextKeyFilter,
           (e) => {
             if (isPressed.value) {
               if (!modifierPressed && isInputDOMNode(e)) {
                 return
               }
 
-              modifierPressed = false
-
-              pressedKeys.clear()
-
-              isPressed.value = false
+              reset()
             }
           },
           { eventName: 'keyup' },
@@ -129,4 +137,12 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
   )
 
   return isPressed
+
+  function reset() {
+    modifierPressed = false
+
+    pressedKeys.clear()
+
+    isPressed.value = false
+  }
 }
