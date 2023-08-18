@@ -63,7 +63,7 @@ export enum ResizeControlVariant {
 }
 
 export interface ResizeControlProps {
-  nodeId?: string
+  nodeId?: string | null
   color?: string
   minWidth?: number
   minHeight?: number
