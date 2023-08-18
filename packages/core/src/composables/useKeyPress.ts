@@ -2,7 +2,7 @@ import { ref, watch } from 'vue'
 import type { KeyFilter, KeyPredicate, MaybeRefOrGetter } from '@vueuse/core'
 import { onKeyStroke, toValue, useEventListener } from '@vueuse/core'
 import { useWindow } from './useWindow'
-import { isBoolean, isFunction } from '~/utils'
+import { isBoolean, isFunction, isString } from '~/utils'
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
@@ -20,18 +20,27 @@ function wasModifierPressed(event: KeyboardEvent) {
   return event.ctrlKey || event.metaKey || event.shiftKey
 }
 
-function createKeyPredicate(keyFilter: string[], pressedKeys: Set<string>): KeyPredicate {
-  return (event: KeyboardEvent) =>
-    keyFilter.some((key) => {
-      const keyCombination = key.split('+').map((k) => k.trim().toLowerCase())
+function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<string>) {
+  const keyCombination = keyToMatch.split('+').map((k) => k.trim().toLowerCase())
 
-      if (keyCombination.length === 1) {
-        return event.key === key
-      } else {
-        pressedKeys.add(event.key.toLowerCase())
-        return keyCombination.every((key) => pressedKeys.has(key))
-      }
-    })
+  if (keyCombination.length === 1) {
+    return pressedKey === keyToMatch
+  } else {
+    pressedKeys.add(pressedKey.toLowerCase())
+    return keyCombination.every((key) => pressedKeys.has(key))
+  }
+}
+
+function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
+  return (event: KeyboardEvent) => {
+    // if the keyFilter is an array of multiple keys, we need to check each possible key combination
+    if (Array.isArray(keyFilter)) {
+      return keyFilter.some((key) => isKeyMatch(event.key, key, pressedKeys))
+    }
+
+    // if the keyFilter is a string, we need to check if the key matches the string
+    return isKeyMatch(event.key, keyFilter, pressedKeys)
+  }
 }
 
 /**
@@ -67,7 +76,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
         return
       }
 
-      if (Array.isArray(unrefKeyFilter)) {
+      if (Array.isArray(unrefKeyFilter) || (isString(unrefKeyFilter) && unrefKeyFilter.includes('+'))) {
         unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys)
       }
 
