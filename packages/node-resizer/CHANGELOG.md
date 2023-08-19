@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.3.4
+
+### Patch Changes
+
+- [#1087](https://github.com/bcakmakoglu/vue-flow/pull/1087) [`48bcb29c`](https://github.com/bcakmakoglu/vue-flow/commit/48bcb29c88ed24409fbca17be028c1b5b2c4ee90) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Enforce minHeight, minWidth and maxHeight, maxWidth by updating node styles whenever these props change (if an update is necessary)
+
 ## 1.3.3
 
 ### Patch Changes
