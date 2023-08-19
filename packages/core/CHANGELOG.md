@@ -1,5 +1,27 @@
 # @vue-flow/core
 
+## 1.22.3
+
+### Patch Changes
+
+- [#1064](https://github.com/bcakmakoglu/vue-flow/pull/1064) [`07387ebe`](https://github.com/bcakmakoglu/vue-flow/commit/07387ebef39c086d2d3cc51a51ea3f7eecec5016) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - fix smooth step edge horizontally or vertically aligned nodes
+
+- [#1082](https://github.com/bcakmakoglu/vue-flow/pull/1082) [`e3cc6ddf`](https://github.com/bcakmakoglu/vue-flow/commit/e3cc6ddf84d824be3e47952dbaa07cc610f7fa03) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix scroll speed when using Control btn on windows
+
+- [#1081](https://github.com/bcakmakoglu/vue-flow/pull/1081) [`0d36d4cd`](https://github.com/bcakmakoglu/vue-flow/commit/0d36d4cdd991395c33c2e2248a9d4ba3f9d42538) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use os specific key defaults (Windows -> Control, Mac -> Meta)
+
+- [#1065](https://github.com/bcakmakoglu/vue-flow/pull/1065) [`05821407`](https://github.com/bcakmakoglu/vue-flow/commit/0582140773675df8fd117712d3837e89edb0f546) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add role `img` to edges if not focusable
+
+- [#1083](https://github.com/bcakmakoglu/vue-flow/pull/1083) [`13d2e2cb`](https://github.com/bcakmakoglu/vue-flow/commit/13d2e2cb75d165a67d0412df5964ea6b01dfbb42) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Improve smoothstep edge label positioning
+
+- [#1082](https://github.com/bcakmakoglu/vue-flow/pull/1082) [`e3cc6ddf`](https://github.com/bcakmakoglu/vue-flow/commit/e3cc6ddf84d824be3e47952dbaa07cc610f7fa03) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix horizontal scroll on windows
+
+- [#1085](https://github.com/bcakmakoglu/vue-flow/pull/1085) [`03715134`](https://github.com/bcakmakoglu/vue-flow/commit/0371513440ce0cc4a524fc844947fb0d69c2842b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Clear pressed key on keyup event, so that key combinations only work while simulteanously pressing keys
+
+- [#1084](https://github.com/bcakmakoglu/vue-flow/pull/1084) [`806f2632`](https://github.com/bcakmakoglu/vue-flow/commit/806f263217906258982d96039d98b019642b63ad) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing key combinations as a simple string instead of wrapping in an array
+
+- [#1086](https://github.com/bcakmakoglu/vue-flow/pull/1086) [`641b4d75`](https://github.com/bcakmakoglu/vue-flow/commit/641b4d7521409ad9754f776f46c983e4c9972493) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reset isPressed value when switching from a boolean keyFilter to another type of keyFilter
+
 ## 1.22.2
 
 ### Patch Changes

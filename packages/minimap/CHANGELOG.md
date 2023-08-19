@@ -1,5 +1,15 @@
 # @vue-flow/minimap
 
+## 1.2.0
+
+### Minor Changes
+
+- [#1066](https://github.com/bcakmakoglu/vue-flow/pull/1066) [`f1421f43`](https://github.com/bcakmakoglu/vue-flow/commit/f1421f437dfea55bdeeaf9b5471f2ac466ce64be) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `offsetScale` prop
+
+### Patch Changes
+
+- [#1066](https://github.com/bcakmakoglu/vue-flow/pull/1066) [`eac7308b`](https://github.com/bcakmakoglu/vue-flow/commit/eac7308bebeb5663ff2b17f82e5e3339618bb292) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass missing minimap node props
+
 ## 1.1.1
 
 ### Patch Changes
