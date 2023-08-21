@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.22.3] - 2023-08-21
+
+[921c8ce](921c8ceb0327af012da2e48b4d25cb9c3417517c)...[a838941](a838941d393fb85a26294e06130b768919404616)
+
+### Bug Fixes
+
+- Smooth step edge horizontally or vertically aligned nodes ([16bf14c](16bf14c7d40f7b181cc8f0e514f58d54884069d3))
+- Add role img to edges if not focusable ([bb1473a](bb1473a6883ef8809afc5793b735120c0ad17e32))
+- Pass missing minimap node props ([5f83367](5f8336747ae002e4a0f112f7d7aa2b04c0a8767c))
+- Vertically or horizontally aligned nodes ([8943ec7](8943ec762b967e2b3a65e4123a6d8fd4f5cfc929))
+- Use os specific key defaults ([67704e5](67704e5a8f800d83cb59864e8a849dc55df61350))
+- Horizontal scroll on windows ([86957a0](86957a0c7107cd14891112ed0e9dbaccc8a3839f))
+- Better smoothstep edge label position ([2f66300](2f66300f056e08cb1a92ef35991906c44a6d096c))
+- Allow passing key combination as string ([0867637](0867637b5053663e3ee7e069ef71945673a72282))
+- Clear key on keyup so combinations work during simultaneous keypress ([f095917](f095917e97efa739cb58d987ca2c23aa00689476))
+- Reset `isPressed` value when switching from boolean to other keyfilter ([505ecc4](505ecc4c217a98ae93b50be15accb962cdbd5129))
+- Enforce min/max width/height on nodes ([06851e6](06851e6894dfc5c0c47a13d0ae142b415deb1bfc))
+
+### Features
+
+- Add offsetScale prop ([fd31d40](fd31d4007ed9d198f96f114f76ebaf6b4cfa748a))
+
+### Miscellaneous Tasks
+
+- Add ([cee9ff7](cee9ff71f0c6f97d1087bfbd5b234a7d58b86e4a))
+- Add ([76cce30](76cce30178e7e89a8812757066ab4970a895ba29))
+- Add ([c9a1c5b](c9a1c5b2fba8bdba4d9889a618cd42321364f8e1))
+- Add ([74cc767](74cc767036e2047c3e27bd4e15b8dfdf0453a3a5))
+- Cleanup ([77ccc7e](77ccc7ec86290a8875747e30db2ffa522626ca71))
+- Add ([0364a83](0364a83ab96c45393f2e9d99293b9c7006720a56))
+- Add ([71aa00b](71aa00bc7af7b577d2f71791cfee90e2e6bbefd0))
+- Add ([f0b5f67](f0b5f67284548d74bd7715bee921c7959a302376))
+- Add ([a57946a](a57946a32586200e7ac3fe31b0faa37e5104b64f))
+- Add ([2f2f537](2f2f537af7a5f7d63eadb562b7373ea164c93d01))
+- Cleanup ([65c3a05](65c3a05d844af1e60f6eab2d67188fab1789f783))
+- Add ([7cf967a](7cf967a9c3d1066e37039d54be57b8bc63a66289))
+- Add ([c47149b](c47149b5361da0a7e6f35f45b859e5c1c87840a1))
+
 ## [1.22.2] - 2023-07-27
 
 [2174c5a](2174c5ad5ab531a4024700e2354c84d7c54c0714)...[921c8ce](921c8ceb0327af012da2e48b4d25cb9c3417517c)
