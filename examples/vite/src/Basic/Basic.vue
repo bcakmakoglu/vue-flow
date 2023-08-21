@@ -15,7 +15,7 @@ const elements = ref<Elements>([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 
-const { onConnect, addEdges, setTransform, toObject } = useVueFlow({
+const { selectionKeyCode, onConnect, addEdges, setTransform, toObject } = useVueFlow({
   minZoom: 0.2,
   maxZoom: 4,
 })
@@ -34,7 +34,7 @@ function updatePos() {
 }
 
 function logToObject() {
-  return console.log(toObject())
+  selectionKeyCode.value = selectionKeyCode.value === true ? 'Shift' : true
 }
 function resetTransform() {
   return setTransform({ x: 0, y: 0, zoom: 1 })

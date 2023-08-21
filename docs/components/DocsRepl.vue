@@ -44,7 +44,7 @@ const store = new ReplStore({
 
 const vh = useCssVar('--vh')
 
-watchEffect(() => {
+onMounted(() => {
   vh.value = `${window.innerHeight}px`
 })
 
