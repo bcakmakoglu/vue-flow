@@ -289,7 +289,7 @@ the type otherwise.
 <script setup>
 import { markRaw } from 'vue'
 import CustomNode from './CustomNode.vue'
-import CustomNode from './OverwriteCustomNode.vue'
+import OverwriteCustomNode from './OverwriteCustomNode.vue'
 import SpecialNode from './SpecialNode.vue'
 
 const nodeTypes = {
