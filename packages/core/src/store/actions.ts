@@ -30,8 +30,9 @@ import {
   applyChanges,
   clamp,
   createAdditionChange,
+  createEdgeRemoveChange,
   createGraphNodes,
-  createRemoveChange,
+  createNodeRemoveChange,
   createSelectionChange,
   getConnectedEdges,
   getDimensions,
@@ -520,7 +521,9 @@ export function useActions(
     function createEdgeRemovalChanges(nodes: Node[]) {
       const connections = getConnectedEdges(nodes, state.edges).filter((edge) => (isDef(edge.deletable) ? edge.deletable : true))
 
-      edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
+      edgeChanges.push(
+        ...connections.map((connection) => createEdgeRemoveChange(connection.id, connection.source, connection.target)),
+      )
     }
 
     // recursively get all children and if the child is a parent, get those children as well until all nodes have been removed that are children of the current node
@@ -529,7 +532,7 @@ export function useActions(
 
       if (children.length) {
         const childIds = children.map((n) => n.id)
-        nodeChanges.push(...childIds.map((id) => createRemoveChange(id)))
+        nodeChanges.push(...childIds.map((id) => createNodeRemoveChange(id)))
 
         if (removeConnectedEdges) {
           createEdgeRemovalChanges(children)
@@ -552,7 +555,7 @@ export function useActions(
         return
       }
 
-      nodeChanges.push(createRemoveChange(currNode.id))
+      nodeChanges.push(createNodeRemoveChange(currNode.id))
 
       if (removeConnectedEdges) {
         createEdgeRemovalChanges([currNode])
@@ -589,7 +592,7 @@ export function useActions(
         return
       }
 
-      changes.push(createRemoveChange(typeof item === 'string' ? item : item.id))
+      changes.push(createEdgeRemoveChange(typeof item === 'string' ? item : item.id, currEdge.source, currEdge.target))
     })
 
     state.hooks.edgesChange.trigger(changes)
