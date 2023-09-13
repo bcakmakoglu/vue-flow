@@ -228,9 +228,18 @@ export function createAdditionChange<
   }
 }
 
-export function createRemoveChange(id: string): NodeRemoveChange | EdgeRemoveChange {
+export function createNodeRemoveChange(id: string): NodeRemoveChange {
   return {
     id,
+    type: 'remove',
+  }
+}
+
+export function createEdgeRemoveChange(id: string, source: string, target: string): EdgeRemoveChange {
+  return {
+    id,
+    source,
+    target,
     type: 'remove',
   }
 }

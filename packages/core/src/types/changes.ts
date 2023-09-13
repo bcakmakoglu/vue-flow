@@ -51,7 +51,10 @@ export type NodeChange = NodeDimensionChange | NodePositionChange | NodeSelectio
 
 export type EdgeSelectionChange = NodeSelectionChange
 
-export type EdgeRemoveChange = NodeRemoveChange
+export interface EdgeRemoveChange extends NodeRemoveChange {
+  source: string
+  target: string
+}
 
 export interface EdgeAddChange<Data = ElementData> {
   item: GraphEdge<Data>
