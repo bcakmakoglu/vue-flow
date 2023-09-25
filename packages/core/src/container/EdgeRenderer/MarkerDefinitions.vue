@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
 import { useVueFlow } from '../../composables'
 import { getMarkerId } from '../../utils'
-import Marker from './Marker.vue'
+import MarkerSymbols from './MarkerSymbols.vue'
 
 const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = $(useVueFlow())
 
@@ -45,7 +45,7 @@ export default {
 
 <template>
   <defs>
-    <Marker
+    <MarkerSymbols
       v-for="marker of markers"
       :id="marker.id"
       :key="marker.id"

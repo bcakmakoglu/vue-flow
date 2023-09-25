@@ -35,19 +35,24 @@ export default {
   >
     <polyline
       v-if="type === MarkerType.ArrowClosed"
-      :stroke="color"
+      :style="{
+        stroke: color,
+        fill: color,
+        strokeWidth,
+      }"
       stroke-linecap="round"
       stroke-linejoin="round"
-      :stroke-width="strokeWidth"
-      :fill="color"
       points="-5,-4 0,0 -5,4 -5,-4"
     />
+
     <polyline
       v-if="type === MarkerType.Arrow"
-      :stroke="color"
+      :style="{
+        stroke: color,
+        strokeWidth,
+      }"
       stroke-linecap="round"
       stroke-linejoin="round"
-      :stroke-width="strokeWidth"
       fill="none"
       points="-5,-4 0,0 -5,4"
     />
