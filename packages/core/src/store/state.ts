@@ -105,6 +105,7 @@ function defaultState(): State {
     nodesFocusable: true,
     nodesConnectable: true,
     nodesDraggable: true,
+    nodeDragThreshold: 0,
     elementsSelectable: true,
     selectNodesOnDrag: true,
     multiSelectionActive: false,
