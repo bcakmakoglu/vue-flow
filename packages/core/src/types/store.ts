@@ -105,6 +105,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   nodesFocusable: boolean
   nodesDraggable: boolean
   nodesConnectable: boolean
+  nodeDragThreshold: number
 
   elementsSelectable: boolean
   selectNodesOnDrag: boolean

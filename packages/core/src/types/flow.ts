@@ -140,6 +140,7 @@ export interface FlowProps {
   edgesUpdatable?: EdgeUpdatable
   nodesDraggable?: boolean
   nodesConnectable?: boolean
+  nodeDragThreshold?: number
   elementsSelectable?: boolean
   selectNodesOnDrag?: boolean
   /** move pane on drag, replaced prop `paneMovable` */
