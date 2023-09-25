@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite",
     "lint": "eslint --ext .js,.ts,.vue ./ && vue-tsc --noEmit"
   },
   "dependencies": {
