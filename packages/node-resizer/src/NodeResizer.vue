@@ -27,41 +27,43 @@ const contextNodeId = inject(NodeIdInjection, null)
 
 const id = computed(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
 
-watch(
-  [() => props.minWidth, () => props.minHeight, () => props.maxWidth, () => props.maxHeight],
-  ([minWidth, minHeight, maxWidth, maxHeight]) => {
-    const node = findNode(id.value)
+const node = computed(() => findNode(id.value))
 
-    if (node) {
+watch(
+  [() => props.minWidth, () => props.minHeight, () => props.maxWidth, () => props.maxHeight, () => node.value?.initialized],
+  ([minWidth, minHeight, maxWidth, maxHeight, isInitialized]) => {
+    const n = node.value
+
+    if (n && isInitialized) {
       const dimensionChange: NodeDimensionChange = {
-        id: node.id,
+        id: n.id,
         type: 'dimensions',
         updateStyle: true,
         dimensions: {
-          width: node.dimensions.width,
-          height: node.dimensions.height,
+          width: n.dimensions.width,
+          height: n.dimensions.height,
         },
       }
 
-      if (minWidth && node.dimensions.width < minWidth) {
+      if (minWidth && n.dimensions.width < minWidth) {
         dimensionChange.dimensions!.width = minWidth
       }
 
-      if (minHeight && node.dimensions.height < minHeight) {
+      if (minHeight && n.dimensions.height < minHeight) {
         dimensionChange.dimensions!.height = minHeight
       }
 
-      if (maxWidth && node.dimensions.width > maxWidth) {
+      if (maxWidth && n.dimensions.width > maxWidth) {
         dimensionChange.dimensions!.width = maxWidth
       }
 
-      if (maxHeight && node.dimensions.height > maxHeight) {
+      if (maxHeight && n.dimensions.height > maxHeight) {
         dimensionChange.dimensions!.height = maxHeight
       }
 
       if (
-        dimensionChange.dimensions!.width !== node.dimensions.width ||
-        dimensionChange.dimensions!.height !== node.dimensions.height
+        dimensionChange.dimensions!.width !== n.dimensions.width ||
+        dimensionChange.dimensions!.height !== n.dimensions.height
       ) {
         triggerEmits.nodesChange([dimensionChange])
       }
