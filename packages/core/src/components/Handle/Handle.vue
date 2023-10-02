@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import type { HandleProps } from '../../types/handle'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
-import { getDimensions, isDef, isFunction, isMouseEvent, isString } from '../../utils'
+import { getDimensions, isDef, isFunction, isMouseEvent, isNumber, isString } from '../../utils'
 
 const {
   position = Position.Top,
@@ -57,6 +57,20 @@ const isConnectable = computed(() => {
 
       return id ? id === handleId.value : true
     })
+  }
+
+  if (isNumber(connectable)) {
+    return (
+      connectedEdges.value.filter((edge) => {
+        const id = edge[`${type.value}Handle`]
+
+        if (edge[type.value] !== nodeId) {
+          return false
+        }
+
+        return id ? id === handleId.value : true
+      }).length < connectable
+    )
   }
 
   if (isFunction(connectable)) {
