@@ -31,7 +31,9 @@ function defaultState(): State {
   return {
     vueFlowRef: null,
     viewportRef: null,
+    // todo: change this to a Set
     nodes: [],
+    // todo: change this to a Set
     edges: [],
     nodeTypes: {},
     edgeTypes: {},
