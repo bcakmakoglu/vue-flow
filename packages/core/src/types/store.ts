@@ -308,6 +308,8 @@ export interface Getters {
   getSelectedEdges: GraphEdge[]
   /** returns all nodes that are initialized, i.e. they have actual dimensions */
   getNodesInitialized: GraphNode[]
+  /** returns a boolean flag whether all current nodes are initialized */
+  areNodesInitialized: boolean
 }
 
 export type ComputedGetters = {

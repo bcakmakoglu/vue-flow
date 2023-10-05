@@ -16,6 +16,7 @@ const {
   nodesConnectable,
   getNodes,
   getNodesInitialized,
+  areNodesInitialized,
   getNodeTypes,
   updateNodeDimensions,
   emits,
@@ -25,7 +26,7 @@ const resizeObserver = ref<ResizeObserver>()
 
 const instance = getCurrentInstance()
 
-until(() => getNodes.value.length > 0 && getNodesInitialized.value.length === getNodes.value.length)
+until(() => areNodesInitialized.value)
   .toBe(true)
   .then(() => {
     nextTick(() => {
