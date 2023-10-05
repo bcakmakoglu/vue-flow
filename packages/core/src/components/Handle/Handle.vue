@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { toRef, until } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import type { HandleProps } from '../../types/handle'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
@@ -116,6 +116,14 @@ until(() => node.initialized)
 
     node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
   })
+
+onBeforeUnmount(() => {
+  // clean up node internals
+  const handleBounds = node.handleBounds[type.value]
+  if (handleBounds) {
+    node.handleBounds[type.value] = handleBounds.filter((b) => b.id !== handleId.value)
+  }
+})
 
 function onPointerDown(event: MouseEvent | TouchEvent) {
   const isMouseTriggered = isMouseEvent(event)
