@@ -1,11 +1,13 @@
 import { until } from '@vueuse/core'
 import { zoomIdentity } from 'd3-zoom'
 import { computed, ref } from 'vue'
-import type { ComputedGetters, D3Selection, GraphNode, State, ViewportFunctions } from '~/types'
-import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint } from '~/utils'
+import type { ComputedGetters, D3Selection, GraphNode, Project, State, ViewportFunctions } from '~/types'
+import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint } from '~/utils'
 
 interface ExtendedViewport extends ViewportFunctions {
   initialized: boolean
+  screenToFlowCoordinate: Project
+  flowToScreenCoordinate: Project
 }
 
 const DEFAULT_PADDING = 0.1
@@ -22,6 +24,8 @@ const initialViewportHelper: ExtendedViewport = {
   setCenter: noop,
   fitBounds: noop,
   project: (position) => position,
+  screenToFlowCoordinate: (position) => position,
+  flowToScreenCoordinate: (position) => position,
   setViewport: noop,
   setTransform: noop,
   getViewport: () => ({ x: 0, y: 0, zoom: 1 }),
@@ -30,7 +34,19 @@ const initialViewportHelper: ExtendedViewport = {
 }
 
 export function useViewport(state: State, getters: ComputedGetters) {
-  const { nodes, d3Zoom, d3Selection, dimensions, translateExtent, minZoom, maxZoom, viewport, snapToGrid, snapGrid } = $(state)
+  const {
+    vueFlowRef: domNode,
+    nodes,
+    d3Zoom,
+    d3Selection,
+    dimensions,
+    translateExtent,
+    minZoom,
+    maxZoom,
+    viewport,
+    snapToGrid,
+    snapGrid,
+  } = $(state)
 
   const { getNodes } = getters
 
@@ -176,6 +192,34 @@ export function useViewport(state: State, getters: ComputedGetters) {
           return transformViewport(x, y, zoom, options?.duration)
         },
         project: (position) => pointToRendererPoint(position, viewport, snapToGrid, snapGrid),
+        screenToFlowCoordinate: (position) => {
+          if (domNode) {
+            const { x: domX, y: domY } = domNode.getBoundingClientRect()
+
+            const correctedPosition = {
+              x: position.x - domX,
+              y: position.y - domY,
+            }
+
+            return pointToRendererPoint(correctedPosition, viewport, snapToGrid, snapGrid)
+          }
+
+          return { x: 0, y: 0 }
+        },
+        flowToScreenCoordinate: (position) => {
+          if (domNode) {
+            const { x: domX, y: domY } = domNode.getBoundingClientRect()
+
+            const correctedPosition = {
+              x: position.x + domX,
+              y: position.y + domY,
+            }
+
+            return rendererPointToPoint(correctedPosition, viewport)
+          }
+
+          return { x: 0, y: 0 }
+        },
       }
     }
 
