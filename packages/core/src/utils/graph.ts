@@ -9,6 +9,7 @@ import type {
   Dimensions,
   Edge,
   EdgeMarkerType,
+  Element,
   ElementData,
   Elements,
   FlowElements,
@@ -151,24 +152,63 @@ export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphE
   return Object.assign({}, defaults, edge, { id: edge.id.toString() }) as GraphEdge
 }
 
-function getConnectedElements<T extends Elements = FlowElements>(
+function getConnectedElements<T extends Node = Node>(
   nodeOrId: Node | { id: string } | string,
-  elements: T,
+  nodes: T[],
+  edges: Edge[],
   dir: 'source' | 'target',
-): T extends FlowElements ? GraphNode[] : Node[] {
+): T[] {
   const id = isString(nodeOrId) ? nodeOrId : nodeOrId.id
 
+  const connectedIds = new Set()
+
   const origin = dir === 'source' ? 'target' : 'source'
-  const ids = elements.filter((e) => isEdge(e) && e[origin] === id).map((e) => isEdge(e) && e[dir])
 
-  return elements.filter((e) => ids.includes(e.id)) as T extends FlowElements ? GraphNode[] : Node[]
-}
-export function getOutgoers<T extends Elements = FlowElements>(nodeOrId: Node | { id: string } | string, elements: T) {
-  return getConnectedElements(nodeOrId, elements, 'target')
+  edges.forEach((edge) => {
+    if (edge[origin] === id) {
+      connectedIds.add(edge[dir])
+    }
+  })
+
+  return nodes.filter((n) => connectedIds.has(n.id))
 }
 
-export function getIncomers<T extends Elements = FlowElements>(nodeOrId: Node | { id: string } | string, elements: T) {
-  return getConnectedElements(nodeOrId, elements, 'source')
+export function getOutgoers<N extends Node>(nodeOrId: Node | { id: string } | string, nodes: N[], edges: Edge[]): N[]
+export function getOutgoers<T extends Elements>(
+  nodeOrId: Node | { id: string } | string,
+  elements: T,
+): T extends FlowElements ? GraphNode[] : Node[]
+export function getOutgoers(...args: any[]) {
+  if (args.length === 3) {
+    const [nodeOrId, nodes, edges] = args
+    return getConnectedElements(nodeOrId, nodes, edges, 'target')
+  }
+
+  const [nodeOrId, elements] = args
+  const node: Node = isString(nodeOrId) ? { id: nodeOrId } : nodeOrId
+
+  const outgoers = elements.filter((el: Element) => isEdge(el) && el.source === node.id)
+
+  return outgoers.map((edge: Edge) => elements.find((el: Element) => isNode(el) && el.id === edge.target))
+}
+
+export function getIncomers<N extends Node>(nodeOrId: Node | { id: string } | string, nodes: N[], edges: Edge[]): N[]
+export function getIncomers<T extends Elements>(
+  nodeOrId: Node | { id: string } | string,
+  elements: T,
+): T extends FlowElements ? GraphNode[] : Node[]
+export function getIncomers(...args: any[]) {
+  if (args.length === 3) {
+    const [nodeOrId, nodes, edges] = args
+    return getConnectedElements(nodeOrId, nodes, edges, 'source')
+  }
+
+  const [nodeOrId, elements] = args
+  const node: Node = isString(nodeOrId) ? { id: nodeOrId } : nodeOrId
+
+  const incomers = elements.filter((el: Element) => isEdge(el) && el.target === node.id)
+
+  return incomers.map((edge: Edge) => elements.find((el: Element) => isNode(el) && el.id === edge.source))
 }
 
 export function getEdgeId({ source, sourceHandle, target, targetHandle }: Connection) {
@@ -364,26 +404,34 @@ export function getNodesInside(
   })
 }
 
-export function getConnectedEdges<N extends Node | { id: string } | string, E extends Edge>(nodes: N[], edges: E[]) {
-  const nodeIds = nodes.map((node) => (isString(node) ? node : node.id))
+export function getConnectedEdges<E extends Edge>(nodesOrId: Node[] | string, edges: E[]) {
+  const nodeIds = new Set()
 
-  return edges.filter((edge) => nodeIds.includes(edge.source) || nodeIds.includes(edge.target))
+  if (isString(nodesOrId)) {
+    nodeIds.add(nodesOrId)
+  } else if (nodesOrId.length >= 1) {
+    nodesOrId.forEach((n) => nodeIds.add(n.id))
+  }
+
+  return edges.filter((edge) => nodeIds.has(edge.source) || nodeIds.has(edge.target))
 }
 
-export function getConnectedNodes<N extends Node | { id: string } | string, E extends Edge>(nodes: N[], edges: E[]) {
-  const nodeIds = nodes.map((node) => (isString(node) ? node : node.id))
+export function getConnectedNodes<N extends Node | { id: string } | string>(nodes: N[], edges: Edge[]) {
+  const nodeIds = new Set()
+
+  nodes.forEach((node) => nodeIds.add(isString(node) ? node : node.id))
 
   const connectedNodeIds = edges.reduce((acc, edge) => {
-    if (nodeIds.includes(edge.source)) {
+    if (nodeIds.has(edge.source)) {
       acc.add(edge.target)
     }
 
-    if (nodeIds.includes(edge.target)) {
+    if (nodeIds.has(edge.target)) {
       acc.add(edge.source)
     }
 
     return acc
-  }, new Set<string>())
+  }, new Set())
 
   return nodes.filter((node) => connectedNodeIds.has(isString(node) ? node : node.id))
 }

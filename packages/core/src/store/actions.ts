@@ -34,9 +34,11 @@ import {
   createGraphNodes,
   createNodeRemoveChange,
   createSelectionChange,
-  getConnectedEdges,
+  getConnectedEdges as getConnectedEdgesBase,
   getDimensions,
   getHandleBounds,
+  getIncomers as getIncomersBase,
+  getOutgoers as getOutgoersBase,
   getOverlappingArea,
   getSelectionChanges,
   isDef,
@@ -54,7 +56,9 @@ export function useActions(
   hooksOn: any,
   state: State,
   getters: ComputedGetters,
+  // todo: change to a Set
   nodeIds: ComputedRef<string[]>,
+  // todo: change to a Set
   edgeIds: ComputedRef<string[]>,
 ): Actions {
   const viewportHelper = useViewport(state, getters)
@@ -63,6 +67,18 @@ export function useActions(
     const updateIds = ids ?? nodeIds.value ?? []
 
     state.hooks.updateNodeInternals.trigger(updateIds)
+  }
+
+  const getIncomers: Actions['getIncomers'] = (nodeOrId) => {
+    return getIncomersBase(nodeOrId, state.nodes, state.edges)
+  }
+
+  const getOutgoers: Actions['getOutgoers'] = (nodeOrId) => {
+    return getOutgoersBase(nodeOrId, state.nodes, state.edges)
+  }
+
+  const getConnectedEdges: Actions['getConnectedEdges'] = (nodesOrId) => {
+    return getConnectedEdgesBase(nodesOrId, state.edges)
   }
 
   const findNode: Actions['findNode'] = (id) => {
@@ -519,7 +535,7 @@ export function useActions(
     const edgeChanges: EdgeRemoveChange[] = []
 
     function createEdgeRemovalChanges(nodes: Node[]) {
-      const connections = getConnectedEdges(nodes, state.edges).filter((edge) => (isDef(edge.deletable) ? edge.deletable : true))
+      const connections = getConnectedEdges(nodes).filter((edge) => (isDef(edge.deletable) ? edge.deletable : true))
 
       edgeChanges.push(
         ...connections.map((connection) => createEdgeRemoveChange(connection.id, connection.source, connection.target)),
@@ -920,6 +936,9 @@ export function useActions(
     setInteractive,
     setState,
     getIntersectingNodes,
+    getIncomers,
+    getOutgoers,
+    getConnectedEdges,
     isNodeIntersecting,
     panBy,
     fitView: (params) => viewportHelper.value.fitView(params),

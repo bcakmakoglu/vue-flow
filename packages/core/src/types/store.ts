@@ -275,6 +275,12 @@ export interface Actions extends ViewportFunctions {
   getIntersectingNodes: GetIntersectingNodes
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
+  /** get a node's incomers */
+  getIncomers: (nodeOrId: Node | string) => GraphNode[]
+  /** get a node's outgoers */
+  getOutgoers: (nodeOrId: Node | string) => GraphNode[]
+  /** get a node's connected edges */
+  getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => boolean
 
