@@ -11,7 +11,15 @@ const emit = defineEmits(['pane'])
 const getNodeClass: ClassFunc<GraphNode> = (el) => {
   const classes = ['font-semibold', '!border-2', 'transition-colors', 'duration-300', 'ease-in-out']
   if (el.selected) {
-    classes.push(...['!border-primary/80', '!shadow-md', '!shadow-primary/50', '!bg-primary-100/50', '!text-gray-700'])
+    classes.push(
+      ...[
+        '!border-primary/80',
+        '!shadow-lg',
+        'shadow-secondary dark:(!shadow-primary/50)',
+        '!bg-primary-100/50 dark:(!bg-primary-300/80)',
+        '!text-gray-700 dark:(!text-white)',
+      ],
+    )
   }
 
   return classes.join(' ')
@@ -26,7 +34,8 @@ const getEdgeStyle: StyleFunc<GraphEdge> = (el) => {
   const sourceNodeSelected = el.sourceNode.selected
   return {
     transition: 'stroke ease-in-out 300ms',
-    stroke: el.selected || sourceNodeSelected ? 'var(--secondary)' : '',
+    stroke: el.selected || sourceNodeSelected ? 'var(--primary)' : '',
+    strokeWidth: 2,
   }
 }
 
