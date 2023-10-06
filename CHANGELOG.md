@@ -2,6 +2,59 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.23.0] - 2023-10-06
+
+[a838941](a838941d393fb85a26294e06130b768919404616)...[9b6c6e3](9b6c6e380e95673a91feaa8deb08c281aa139c27)
+
+### Bug Fixes
+
+- Unselect edge if selected and multi-selection is active ([ad7d013](ad7d01305e1aacca35526752878b33d77e8ee524))
+- Wait for node to be initialised before enforcing min/max size ([75b1a69](75b1a6944daa061e03ae4bd872eb89034618ff81))
+- Respect pan on scroll class name ([e369803](e36980337b68920a128f8381ceb33ac19ebfeb8d))
+- Disable panning when `panOnDrag` is `false` ([8716a6e](8716a6e6b8cdd34694b05676ec7d1e14cb38680b))
+- Queue node dimensions update to nextTick ([93f0802](93f080225726687da399bbb2359b3172ba13da45))
+
+### Documentation
+
+- Add showcase section to home page ([7ecf37b](7ecf37b20ce020e517c76ad0c2876a2e86735908))
+- Update deps ([166b3ef](166b3ef8e94ae7f4c97565e2940609a8f291b591))
+- Add kestra to showcase ([2ad5814](2ad581466614992c1b2be705bec74385a318fd29))
+- Update vitepress ([db16495](db16495e0ffa80bcf18b561c77201afa36a28543))
+
+### Features
+
+- Add source and target node ids to edge remove changes ([7a01377](7a013771f3d5efec4d23eace5a08fd2fc5ab38b8))
+- Allow passing a number as connectable prop ([3e446fa](3e446fab68af6a4e18eaded6b2735c28f8644df0))
+- Cleanup handle bounds from node when handle is unmounted ([ce1647a](ce1647ad1efbbc9d9eacda7c6802bc7cb6471866))
+- Add `getIncomers`, `getOutgoers` & `getConnectedEdges` as store actions ([edc7669](edc7669b18707fb6cd33c2ebcb62fe2e74debf69))
+- Add `areNodesInitialized` getter ([29f3d2d](29f3d2d5e1b74f1f059b9d2cabc029a323964c6b))
+- Add `flowToScreenCoordinate` & `screenToFlowCoordinate` to viewport actions ([db894a5](db894a5adb03705cd7acced9913ea39234aa6626))
+- Add `nodeDragThreshold` option ([e71a2aa](e71a2aa4efcfcab634dafeb710a9c9056cb2a9ff))
+
+### Miscellaneous Tasks
+
+- Update dev container config ([41015cc](41015cc07feb22f0aaef410c335eac83ae4211df))
+- Update node.md (#1097) ([aa2bbd6](aa2bbd62c22464a7c83a6d2948c55f057459e884))
+- Add ([2f2036e](2f2036eafcc961c8b929bc7a7b0e25569a52cc2e))
+- Cleanup markers ([88882d0](88882d08758ea234aa6ddf676bb1564108650ae3))
+- Add ([dcb02cb](dcb02cbfcb920779cd388a276ed5dc8fca9fe8c9))
+- Add ([590fa2a](590fa2a754a7cbc9ab77fd87cf967389008ee0a3))
+- Add ([5e78795](5e78795764a01b0efad4e1dfe667eb669fc4b0b1))
+- Cleanup ([870bc4f](870bc4f74a4214a7096dfc8d1b3f141d5a7fbed9))
+- Add ([5e88898](5e888987eb5b1b9792fff6b7fa67f433a3df6f70))
+- Add ([1bf4791](1bf479140f1120fd70c3bd353120a98ca5d80141))
+- Add ([8ae351f](8ae351ff6b7574e3a0640edc9d423ee2da83cd28))
+- Add ([ed31890](ed31890e4a694a5e0a530253f60078419861a89a))
+- Add ([c3b10da](c3b10dac0e918a14ff9595ee23014a9336a1f6d5))
+- Add ([c7ad8e0](c7ad8e00b20f89a84530fadf595a69b055a8916d))
+- Add ([92649ef](92649efcdd8e73fee8ab4994ef4ab6d967bd9eb0))
+- Add ([20cd9d8](20cd9d8e298e7f8c5aedada302a56373c3f961f0))
+- Add ([01a53e0](01a53e05266c0912916fe50df7bf079756bf77ab))
+
+### Refactor
+
+- Allow using `expandParent` with `parent` extent ([c916284](c916284917e697d1a35c9d0c9cfe608d7c549092))
+
 ## [1.22.3] - 2023-08-21
 
 [921c8ce](921c8ceb0327af012da2e48b4d25cb9c3417517c)...[a838941](a838941d393fb85a26294e06130b768919404616)
