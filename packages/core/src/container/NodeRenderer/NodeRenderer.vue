@@ -46,7 +46,7 @@ onMounted(() => {
       }
     })
 
-    updateNodeDimensions(updates)
+    nextTick(() => updateNodeDimensions(updates))
   })
 })
 
