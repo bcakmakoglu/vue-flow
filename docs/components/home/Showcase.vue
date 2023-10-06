@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="w-full text-white bg-gradient-to-br from-secondary-500 to-secondary-100">
+  <div class="w-full text-white bg-gradient-to-br from-secondary-500 to-secondary-100 dark:(!bg-none)">
     <div class="max-w-5/6 2xl:max-w-7xl mx-auto py-4 md:py-12 lg:py-12">
       <div class="flex flex-col items-center justify-center gap-2">
         <h1>Putting Ideas into Action: The Showcase</h1>
