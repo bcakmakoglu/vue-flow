@@ -12,6 +12,7 @@ export interface NodeDragItem {
   from: XYPosition
   extent?: Node['extent']
   parentNode?: string
+  expandParent?: boolean
 }
 
 export interface NodeDimensionChange {
