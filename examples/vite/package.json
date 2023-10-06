@@ -13,20 +13,20 @@
     "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
     "@vue-flow/node-toolbar": "workspace:*",
-    "pinia": "^2.0.35",
+    "pinia": "^2.1.6",
     "vueflow": "workspace:*"
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
-    "@types/dagre": "^0.7.48",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@types/dagre": "^0.7.50",
+    "@vitejs/plugin-vue": "^4.4.0",
     "dagre": "^0.8.5",
-    "unplugin-auto-import": "^0.14.4",
-    "vite": "^4.3.5",
-    "vite-svg-loader": "^3.6.0",
-    "vue": "^3.2.45",
-    "vue-router": "^4.1.6",
-    "vue-tsc": "^1.6.5"
+    "unplugin-auto-import": "^0.16.6",
+    "vite": "^4.4.11",
+    "vite-svg-loader": "^4.0.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5",
+    "vue-tsc": "^1.8.15"
   }
 }

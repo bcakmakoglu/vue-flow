@@ -9,7 +9,7 @@
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-config-turbo": "^1.9.6",
+    "eslint-config-turbo": "^1.10.15",
     "prettier": "^2.8.8"
   }
 }
