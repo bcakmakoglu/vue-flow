@@ -7,7 +7,7 @@ import { useEventListener, useResizeObserver } from '@vueuse/core'
 import type { CoordinateExtent, D3ZoomHandler, FlowOptions, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import { useKeyPress, useVueFlow, useWindow } from '../../composables'
-import { ErrorCode, VueFlowError, clamp, getDimensions } from '../../utils'
+import { ErrorCode, VueFlowError, clamp, getDimensions, isMacOs } from '../../utils'
 import Pane from '../Pane/Pane.vue'
 import Transform from './Transform.vue'
 
@@ -47,6 +47,10 @@ const viewportEl = ref<HTMLDivElement>()
 const selectionKeyPressed = ref(false)
 
 const isZoomingOrPanning = ref(false)
+
+const isPanScrolling = ref(false)
+
+const panScrollTimeout = ref<ReturnType<typeof setTimeout>>()
 
 let zoomedWithRightMouseButton = false
 
@@ -92,6 +96,7 @@ onMounted(() => {
 
   const constrainedTransform = d3Zoom.constrain()(updatedTransform, extent, translateExtent.value)
   d3Zoom.transform(d3Selection, constrainedTransform)
+  d3Zoom.wheelDelta(wheelDelta)
 
   storeD3Zoom.value = d3Zoom
   storeD3Selection.value = d3Selection
@@ -182,13 +187,15 @@ onMounted(() => {
           event.stopImmediatePropagation()
 
           const currentZoom = d3Selection.property('__zoom').k || 1
+          const _isMacOs = isMacOs()
 
-          if (event.ctrlKey && zoomOnPinch.value) {
+          // macOS sets ctrlKey=true for pinch gesture on a trackpad
+          if (event.ctrlKey && zoomOnPinch && _isMacOs) {
             const point = pointer(event)
-            // taken from https://github.com/d3/d3-zoom/blob/master/src/zoom.js
-            const pinchDelta = -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * 10
+            const pinchDelta = wheelDelta(event)
             const zoom = currentZoom * 2 ** pinchDelta
-            d3Zoom.scaleTo(d3Selection, zoom, point)
+            // @ts-expect-error d3-zoom types are not up to date
+            d3Zoom.scaleTo(d3Selection, zoom, point, event)
 
             return
           }
@@ -196,14 +203,47 @@ onMounted(() => {
           // increase scroll speed in firefox
           // firefox: deltaMode === 1; chrome: deltaMode === 0
           const deltaNormalize = event.deltaMode === 1 ? 20 : 1
-          const deltaX = panOnScrollMode.value === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize
-          const deltaY = panOnScrollMode.value === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
+
+          let deltaX = panOnScrollMode.value === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize
+          let deltaY = panOnScrollMode.value === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
+
+          // this enables vertical scrolling with shift + scroll on windows
+          if (!_isMacOs && event.shiftKey && panOnScrollMode.value !== PanOnScrollMode.Vertical && !deltaX && deltaY) {
+            deltaX = deltaY
+            deltaY = 0
+          }
 
           d3Zoom.translateBy(
             d3Selection,
             -(deltaX / currentZoom) * panOnScrollSpeed.value,
             -(deltaY / currentZoom) * panOnScrollSpeed.value,
           )
+
+          const nextViewport = eventToFlowTransform(d3Selection.property('__zoom'))
+
+          clearTimeout(panScrollTimeout.value)
+
+          // for pan on scroll we need to handle the event calls on our own
+          // we can't use the start, zoom and end events from d3-zoom
+          // because start and move gets called on every scroll event and not once at the beginning
+          if (!isPanScrolling.value) {
+            isPanScrolling.value = true
+
+            emits.moveStart({ event, flowTransform: nextViewport })
+            emits.viewportChangeStart(nextViewport)
+          }
+
+          if (isPanScrolling.value) {
+            emits.move({ event, flowTransform: nextViewport })
+            emits.viewportChange(nextViewport)
+
+            panScrollTimeout.value = setTimeout(() => {
+              emits.moveEnd({ event, flowTransform: nextViewport })
+              emits.viewportChangeEnd(nextViewport)
+
+              isPanScrolling.value = false
+            }, 150)
+          }
         },
         { passive: false },
       )
@@ -295,6 +335,12 @@ onMounted(() => {
 
 function isRightClickPan(pan: FlowOptions['panOnDrag'], usedButton: number) {
   return usedButton === 2 && Array.isArray(pan) && pan.includes(2)
+}
+
+function wheelDelta(event: any) {
+  const factor = event.ctrlKey && isMacOs() ? 10 : 1
+
+  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
 }
 
 function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransform) {

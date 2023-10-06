@@ -42,35 +42,39 @@ export type FitBoundsOptions = TransitionOptions & {
 }
 
 /** Fit the viewport around visible nodes */
-export type FitView = (fitViewOptions?: FitViewParams) => void
+export type FitView = (fitViewOptions?: FitViewParams) => Promise<boolean>
 
 /** project a position onto the viewport, i.e. a mouse event clientX/clientY onto graph coordinates */
 export type Project = (position: XYPosition) => XYPosition
 
 /** set center of viewport */
-export type SetCenter = (x: number, y: number, options?: SetCenterOptions) => void
+export type SetCenter = (x: number, y: number, options?: SetCenterOptions) => Promise<boolean>
 
 /** fit the viewport around bounds */
-export type FitBounds = (bounds: Rect, options?: FitBoundsOptions) => void
+export type FitBounds = (bounds: Rect, options?: FitBoundsOptions) => Promise<boolean>
 
 /** zoom in/out */
-export type ZoomInOut = (options?: TransitionOptions) => void
+export type ZoomInOut = (options?: TransitionOptions) => Promise<boolean>
 
 /** zoom to a specific level */
-export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => void
+export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => Promise<boolean>
 
 /** get current viewport transform */
-export type GetTransform = () => ViewportTransform
+export type GetViewport = () => ViewportTransform
 
 /** set current viewport transform */
-export type SetTransform = (transform: ViewportTransform, options?: TransitionOptions) => void
+export type SetViewport = (transform: ViewportTransform, options?: TransitionOptions) => Promise<boolean>
 
 export interface ViewportFunctions {
   zoomIn: ZoomInOut
   zoomOut: ZoomInOut
   zoomTo: ZoomTo
-  setTransform: SetTransform
-  getTransform: GetTransform
+  setViewport: SetViewport
+  /** @deprecated use setViewport instead */
+  setTransform: SetViewport
+  getViewport: GetViewport
+  /** @deprecated use getViewport instead */
+  getTransform: GetViewport
   fitView: FitView
   setCenter: SetCenter
   fitBounds: FitBounds

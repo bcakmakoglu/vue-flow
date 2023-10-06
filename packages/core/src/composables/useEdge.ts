@@ -1,4 +1,4 @@
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import { useVueFlow } from './useVueFlow'
 import type { GraphEdge } from '~/types'
 import { ErrorCode, VueFlowError } from '~/utils'
@@ -13,7 +13,7 @@ import { EdgeId, EdgeRef } from '~/context'
  */
 export function useEdge<T extends GraphEdge = GraphEdge>(id?: string) {
   const edgeId = id ?? inject(EdgeId, '')
-  const edgeEl = inject(EdgeRef, null)
+  const edgeEl = inject(EdgeRef, ref(null))
 
   const { findEdge, emits } = useVueFlow()
 

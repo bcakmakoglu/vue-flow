@@ -154,6 +154,7 @@ export type AddNodes = (nodes: Node | Node[] | ((nodes: GraphNode[]) => Node | N
 export type RemoveNodes = (
   nodes: (string | Node) | (Node | string)[] | ((nodes: GraphNode[]) => (string | Node) | (Node | string)[]),
   removeConnectedEdges?: boolean,
+  removeChildren?: boolean,
 ) => void
 
 export type RemoveEdges = (
@@ -204,7 +205,7 @@ export interface Actions extends ViewportFunctions {
   addNodes: AddNodes
   /** parses edges and adds to state */
   addEdges: AddEdges
-  /** remove nodes (and possibly connected edges) from state */
+  /** remove nodes (and possibly connected edges and children) from state */
   removeNodes: RemoveNodes
   /** remove edges from state */
   removeEdges: RemoveEdges

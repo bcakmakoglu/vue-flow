@@ -26,6 +26,7 @@ const {
   ariaLabel = 'Vue Flow mini map',
   inversePan = false,
   zoomStep = 10,
+  offsetScale = 5,
 } = defineProps<MiniMapProps>()
 
 const emit = defineEmits(['click', 'nodeClick', 'nodeDblclick', 'nodeMouseenter', 'nodeMousemove', 'nodeMouseleave'])
@@ -78,7 +79,7 @@ const viewScale = computed(() => {
 const viewBox = computed(() => {
   const viewWidth = viewScale.value * elementWidth.value
   const viewHeight = viewScale.value * elementHeight.value
-  const offset = 5 * viewScale.value
+  const offset = offsetScale * viewScale.value
 
   return {
     offset,
@@ -223,6 +224,8 @@ export default {
         :key="node.id"
         :position="node.computedPosition"
         :dimensions="node.dimensions"
+        :selected="node.selected"
+        :dragging="node.dragging"
         :style="node.style"
         :class="nodeClassNameFunc(node)"
         :color="nodeColorFunc(node)"

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { NodeChange, NodeDimensionChange, NodePositionChange } from '@vue-flow/core'
-import { NodeIdInjection, clamp, useGetPointerPosition, useVueFlow } from '@vue-flow/core'
+import { clamp, useGetPointerPosition, useVueFlow } from '@vue-flow/core'
 import { select } from 'd3-selection'
 import { drag } from 'd3-drag'
-import { computed, inject, ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import type { OnResize, OnResizeStart, ResizeControlProps, ResizeDragEvent } from './types'
 import { ResizeControlVariant } from './types'
 import { getDirection } from './utils'
@@ -36,22 +36,18 @@ const { findNode, emits: triggerEmits } = useVueFlow()
 
 const getPointerPosition = useGetPointerPosition()
 
-const contextNodeId = inject(NodeIdInjection, null)
-
 const resizeControlRef = ref<HTMLDivElement>()
 
 let startValues: typeof initStartValues = initStartValues
 
 let prevValues: typeof initPrevValues = initPrevValues
 
-const id = computed(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
-
 const defaultPosition = computed(() => (props.variant === ResizeControlVariant.Line ? 'right' : 'bottom-right'))
 
 const controlPosition = computed(() => props.position ?? defaultPosition.value)
 
 watchEffect((onCleanup) => {
-  if (!resizeControlRef.value || !id.value) {
+  if (!resizeControlRef.value || !props.nodeId) {
     return
   }
 
@@ -64,7 +60,7 @@ watchEffect((onCleanup) => {
 
   const dragHandler = drag<HTMLDivElement, unknown>()
     .on('start', (event: ResizeDragEvent) => {
-      const node = findNode(id.value!)
+      const node = findNode(props.nodeId)
       const { xSnapped, ySnapped } = getPointerPosition(event)
 
       prevValues = {
@@ -85,7 +81,7 @@ watchEffect((onCleanup) => {
     })
     .on('drag', (event: ResizeDragEvent) => {
       const { xSnapped, ySnapped } = getPointerPosition(event)
-      const node = findNode(id.value!)
+      const node = findNode(props.nodeId)
 
       if (node) {
         const changes: NodeChange[] = []
@@ -168,9 +164,9 @@ watchEffect((onCleanup) => {
           }
         }
 
-        if (isWidthChange || isHeightChange) {
+        if (props.nodeId && (isWidthChange || isHeightChange)) {
           const dimensionChange: NodeDimensionChange = {
-            id: id.value!,
+            id: props.nodeId,
             type: 'dimensions',
             updateStyle: true,
             resizing: true,
@@ -213,15 +209,17 @@ watchEffect((onCleanup) => {
       }
     })
     .on('end', (event: ResizeDragEvent) => {
-      const dimensionChange: NodeDimensionChange = {
-        id: id.value!,
-        type: 'dimensions',
-        resizing: false,
+      if (props.nodeId) {
+        const dimensionChange: NodeDimensionChange = {
+          id: props.nodeId,
+          type: 'dimensions',
+          resizing: false,
+        }
+
+        emits('resizeEnd', { event, params: prevValues })
+
+        triggerEmits.nodesChange([dimensionChange])
       }
-
-      emits('resizeEnd', { event, params: prevValues })
-
-      triggerEmits.nodesChange([dimensionChange])
     })
 
   selection.call(dragHandler)

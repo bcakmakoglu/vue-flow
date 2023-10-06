@@ -2,6 +2,189 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.22.3] - 2023-08-21
+
+[921c8ce](921c8ceb0327af012da2e48b4d25cb9c3417517c)...[a838941](a838941d393fb85a26294e06130b768919404616)
+
+### Bug Fixes
+
+- Smooth step edge horizontally or vertically aligned nodes ([16bf14c](16bf14c7d40f7b181cc8f0e514f58d54884069d3))
+- Add role img to edges if not focusable ([bb1473a](bb1473a6883ef8809afc5793b735120c0ad17e32))
+- Pass missing minimap node props ([5f83367](5f8336747ae002e4a0f112f7d7aa2b04c0a8767c))
+- Vertically or horizontally aligned nodes ([8943ec7](8943ec762b967e2b3a65e4123a6d8fd4f5cfc929))
+- Use os specific key defaults ([67704e5](67704e5a8f800d83cb59864e8a849dc55df61350))
+- Horizontal scroll on windows ([86957a0](86957a0c7107cd14891112ed0e9dbaccc8a3839f))
+- Better smoothstep edge label position ([2f66300](2f66300f056e08cb1a92ef35991906c44a6d096c))
+- Allow passing key combination as string ([0867637](0867637b5053663e3ee7e069ef71945673a72282))
+- Clear key on keyup so combinations work during simultaneous keypress ([f095917](f095917e97efa739cb58d987ca2c23aa00689476))
+- Reset `isPressed` value when switching from boolean to other keyfilter ([505ecc4](505ecc4c217a98ae93b50be15accb962cdbd5129))
+- Enforce min/max width/height on nodes ([06851e6](06851e6894dfc5c0c47a13d0ae142b415deb1bfc))
+
+### Features
+
+- Add offsetScale prop ([fd31d40](fd31d4007ed9d198f96f114f76ebaf6b4cfa748a))
+
+### Miscellaneous Tasks
+
+- Add ([cee9ff7](cee9ff71f0c6f97d1087bfbd5b234a7d58b86e4a))
+- Add ([76cce30](76cce30178e7e89a8812757066ab4970a895ba29))
+- Add ([c9a1c5b](c9a1c5b2fba8bdba4d9889a618cd42321364f8e1))
+- Add ([74cc767](74cc767036e2047c3e27bd4e15b8dfdf0453a3a5))
+- Cleanup ([77ccc7e](77ccc7ec86290a8875747e30db2ffa522626ca71))
+- Add ([0364a83](0364a83ab96c45393f2e9d99293b9c7006720a56))
+- Add ([71aa00b](71aa00bc7af7b577d2f71791cfee90e2e6bbefd0))
+- Add ([f0b5f67](f0b5f67284548d74bd7715bee921c7959a302376))
+- Add ([a57946a](a57946a32586200e7ac3fe31b0faa37e5104b64f))
+- Add ([2f2f537](2f2f537af7a5f7d63eadb562b7373ea164c93d01))
+- Cleanup ([65c3a05](65c3a05d844af1e60f6eab2d67188fab1789f783))
+- Add ([7cf967a](7cf967a9c3d1066e37039d54be57b8bc63a66289))
+- Add ([c47149b](c47149b5361da0a7e6f35f45b859e5c1c87840a1))
+
+## [1.22.2] - 2023-07-27
+
+[2174c5a](2174c5ad5ab531a4024700e2354c84d7c54c0714)...[921c8ce](921c8ceb0327af012da2e48b4d25cb9c3417517c)
+
+### Bug Fixes
+
+- Check if viewport is defined before setting ([9d1f5fa](9d1f5fa62927e6c3e7a3b6ecf604480e3a4ed070))
+
+### Miscellaneous Tasks
+
+- Add ([a69b816](a69b816891c23b83d35da08e15f82c31ed6934ad))
+
+## [1.22.1] - 2023-07-25
+
+[b3c70da](b3c70da5e2f707358c22242d87c20828c011050d)...[2174c5a](2174c5ad5ab531a4024700e2354c84d7c54c0714)
+
+### Bug Fixes
+
+- Wait for viewport helper in `fromObject` action ([fd155e4](fd155e41af8e3c3d563f52966d07ca8b67f47ec0))
+- Unwrap blur fn ([ac86b77](ac86b77b8924529a153f651d1d3f3dc3d8101c07))
+
+### Miscellaneous Tasks
+
+- Add ([814d5ed](814d5edb26cbd350d231b3780e09e69e1c1434df))
+- Add ([95612ba](95612bae49a2e0dbd2fcfa5e94c1973ab1a80de8))
+
+### Refactor
+
+- Add `viewport` to export obj and deprecate `position` and `zoom` ([eb29f96](eb29f96f967ddb72b663ee26397f8e9b6f803486))
+
+## [1.22.0] - 2023-07-24
+
+[be8a83d](be8a83dab0e75c175f88b20ceae7731ad3810ebd)...[b3c70da](b3c70da5e2f707358c22242d87c20828c011050d)
+
+### Bug Fixes
+
+- Dont wait for nodesInitialized to trigger for viewport helper ([a2e4d99](a2e4d99f5b519ac3d3c89426c44912bf526c3484))
+- Watch applyDefault state in useVueFlow scope ([620852b](620852b860237a25bf887e531f0024082f18b74e))
+- Use detached scope to dispose state and stop watcher ([45f18d5](45f18d54591b30ca9a2950d3e7625e8ada7f2936))
+
+### Features
+
+- Resolve promise from viewport actions on transition end ([7df2bfa](7df2bfa146a0d9aa8f6f855041f378fb2fca4a06))
+- Add `setViewport` and `getViewport` to viewport helper ([9f63252](9f63252c620da84d48184ef2ae153f5073a766a7))
+- Add `hasListener` to event hooks ([987538a](987538aebd77c8f2cb9c835ec388404712826ac2))
+- Add flag to `removeNodes` to remove children of a node ([c4acb0d](c4acb0d0f67b7a094d55d824de930e73e07d5ea3))
+- Allow passing node or id to getoutgoers/getincomers ([2a597f8](2a597f86058be0b000a6e43050bbafd97d865e68))
+
+### Miscellaneous Tasks
+
+- Add ([bf6dcfc](bf6dcfca4aed389f4bebf1713c7b6ca108987d4e))
+- Cleanup `useZoomPanHelper` ([42aa13e](42aa13e2a57e2afdbca79f060189631bb25fc415))
+- Add ([5395c57](5395c57d5d593b895425066827897274b7f83997))
+- Cleanup ([4412516](4412516476d7985167e3427905a79eecadf34687))
+- Cleanup dead links ([52ba092](52ba0928f4b74784d9dd36b7bd836efa6be7ba39))
+- Add ([4ed3acc](4ed3acc021fd5b1089e8a1f9dadb23b23e01a9a1))
+- Add ([581f2b1](581f2b1fec065f489873df8254902df5ec76cb1c))
+- Add ([bc2de72](bc2de7254a474359558204c3b42dac904cda778f))
+- Add ([02891b3](02891b3aa92641906089406af34a0080fa3f7881))
+
+### Refactor
+
+- Deprecate `setTransform` & `getTransform` ([ed6c298](ed6c2983857030e3450252a48fcfd901249976c1))
+
+## [1.21.3] - 2023-07-24
+
+[07e9e8a](07e9e8a9b6600a753f91a429a67268516951b09f)...[be8a83d](be8a83dab0e75c175f88b20ceae7731ad3810ebd)
+
+### Bug Fixes
+
+- Get correct handle pos for connection line ([17755dd](17755ddb9a6a4aa67554e26869175e5347dcd0e7))
+- Abort fit view when there's no nodes to fit around ([6bd442f](6bd442f844548425264e49c90c19d60bc289efd3))
+
+### Features
+
+- Add fitView tests ([db4c2da](db4c2da9a5991821127907919a2c5a4673809cf4))
+
+### Miscellaneous Tasks
+
+- Add ([1ac6591](1ac6591d2384088f9866f1a851fbd922250cfb5f))
+- Add ([8780ab5](8780ab5fc1101a7b406da30746f0f8943f04b493))
+- Move setState test to separate dir ([faee0e3](faee0e3ddc76a59de49f98f79f02e26793285f9d))
+
+## [1.21.2] - 2023-07-19
+
+[2424cc2](2424cc236e4088c5af85d062d7c5eab80ea774fb)...[07e9e8a](07e9e8a9b6600a753f91a429a67268516951b09f)
+
+### Bug Fixes
+
+- Use post flush when calculating new node pos ([1415652](1415652a1b3cda2a2c6d3b7e5c16b97390864116))
+- Connection status prop as nullable ([4f36cef](4f36cef1e8778a08384dab525b92af1b39c0d98c))
+- Use noop viewport operations instead of waiting for promise ([4d5bbab](4d5bbab50690fd8b2ab0072e4e69bd1ed5a4bce1))
+- Pass handle dom node to valid handle result ([08f749a](08f749ae30926e3d22562734715700c06c499427))
+
+### Miscellaneous Tasks
+
+- Add ([1b92785](1b9278521640127d3bf2316b8c4a9f2dc6e52618))
+- Add ([7152064](715206404b8eecfa8a98bc620cc72463e3a367fb))
+- Add ([4cd433f](4cd433fbec76a4f452a7c3d6a2a608e4070aac82))
+- Add ([bcde916](bcde9161af1cf56d58f276b64a3e8c39f7ce46c1))
+
+## [1.21.1] - 2023-07-10
+
+[f123ffb](f123ffb0150d5b570569810fbdd3f9bdf1eddae4)...[2424cc2](2424cc236e4088c5af85d062d7c5eab80ea774fb)
+
+### Bug Fixes
+
+- Nested nodes extent calculation off ([f52380d](f52380d3d22eacd408211a832fa4dcc70401df32))
+
+### Miscellaneous Tasks
+
+- Add ([f156107](f156107bb0f16a89f121c589aee008c7dec01d56))
+- Add ([dce1508](dce15085d135752649c653e279ce0a9d5b33a71b))
+
+## [1.21.0] - 2023-07-10
+
+[eca9ad9](eca9ad9cb93f83a8842207cc302e39f49f1b1a29)...[f123ffb](f123ffb0150d5b570569810fbdd3f9bdf1eddae4)
+
+### Bug Fixes
+
+- Add style to base edge props ([38bb4e1](38bb4e1e12484f5444b2087ebcbf63c51680ba8c))
+- Add ref to base edge props ([40732f2](40732f2559bc4c63998a1a53ccd43c770696c48d))
+- Use correct class name and style for handle controls (#1010) ([61f8a68](61f8a68b8453ca6b441b0ace66620aff075216c4))
+- Prioritize handle below during handle lookup ([245dd82](245dd825749166271f374de692838e263fde7944))
+- Clamp node extent by node dimensions to avoid overflow (#1014) ([82e79a6](82e79a6113e7f0b8cf7fab6210e9fd80365cb0a2))
+
+### Miscellaneous Tasks
+
+- Replace the deprecated enum PanelPosition (#979) ([5669c8b](5669c8b1015fa993ce8672f1c1b92709d0cb386c))
+- Disable qodana ([11f584a](11f584a08a14e41bbeb237d493bd5def0ddfe1d3))
+- Update export ([b2dc046](b2dc046fe91b1d9685388ee4d53adf38fd97147f))
+- Cleanup export paths ([903583a](903583a3999592e39d320a464af5bfa8555c02bd))
+- Add ([908ea39](908ea3965e5ae8d62260537899ee807b38970012))
+- Add ([e21ae68](e21ae682beadc9716eb51ad10ac1bf1747382cdc))
+- Cleanup (#1003) ([55de815](55de815a39cf3a3fe398ecbe8df681658688f63e))
+- Add missing generic ([0b60cc3](0b60cc3c3e9f0318c52c3af4a6d000b7d8729657))
+- Add ([6967067](69670672769251f651cac69a9e5f69f5e14f3d1d))
+
+### Refactor
+
+- Change nodeEl and edgeEl type to allow ref(null) ([435cb9b](435cb9b6876d43e15e5677327bfc12b86f9fb3dc))
+- Use sfc for base edge and bind template refs ([80ad6f1](80ad6f1677803f334b517c61ec8668e23fb8cdc5))
+- Use normal components for edges ([7d93915](7d93915f369d4665aced83b0e81102f08a88c5b7))
+- Resolve slots before returning default component (#1013) ([5838454](58384540868b2f935ac3225d97c87306567cd66b))
+
 ## [1.20.2] - 2023-06-15
 
 [a16b7ca](a16b7ca3d01681b8ccb172ccde0316bf267d7352)...[eca9ad9](eca9ad9cb93f83a8842207cc302e39f49f1b1a29)

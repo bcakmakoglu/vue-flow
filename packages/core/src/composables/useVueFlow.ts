@@ -1,8 +1,8 @@
 import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { computed, getCurrentScope, inject, provide, reactive } from 'vue'
+import { computed, effectScope, getCurrentScope, inject, provide, reactive, watch } from 'vue'
 import { useActions, useGetters, useState } from '~/store'
-import type { FlowOptions, FlowProps, State, VueFlowStore } from '~/types'
+import type { EdgeChange, FlowOptions, FlowProps, NodeChange, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
 import { warn } from '~/utils'
 
@@ -39,13 +39,6 @@ export class Storage {
 
     const reactiveState = reactive(state)
 
-    const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
-    const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
-
-    const getters = useGetters(reactiveState, nodeIds, edgeIds)
-
-    const actions = useActions(reactiveState, getters, nodeIds, edgeIds)
-
     const hooksOn = <any>{}
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
       const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
@@ -56,6 +49,13 @@ export class Storage {
     Object.entries(reactiveState.hooks).forEach(([n, h]) => {
       emits[n] = h.trigger
     })
+
+    const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
+    const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
+
+    const getters = useGetters(reactiveState, nodeIds, edgeIds)
+
+    const actions = useActions(id, emits, hooksOn, reactiveState, getters, nodeIds, edgeIds)
 
     actions.setState(reactiveState)
 
@@ -96,8 +96,6 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
 
   let vueFlow: Injection
 
-  let isParentScope = false
-
   /**
    * check if we can get a store instance through injections
    * this should be the regular way after initialization
@@ -127,25 +125,35 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
   if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
     const name = id ?? storage.getId()
 
-    vueFlow = storage.create(name, options)
+    const state = storage.create(name, options)
 
-    if (scope) {
-      isParentScope = true
-    }
-  } else {
-    // if composable was called with additional options after initialization, overwrite state with the options values
-    if (options) {
-      vueFlow.setState(options)
-    }
-  }
+    vueFlow = state
 
-  // always provide a fresh instance into context on call
-  if (scope) {
-    provide(VueFlow, vueFlow)
+    const detachedScope = effectScope()
 
-    scope.vueFlowId = vueFlow.id
+    detachedScope.run(() => {
+      watch(
+        state.applyDefault,
+        (shouldApplyDefault) => {
+          const nodesChangeHandler = (changes: NodeChange[]) => {
+            state.applyNodeChanges(changes)
+          }
 
-    if (isParentScope) {
+          const edgesChangeHandler = (changes: EdgeChange[]) => {
+            state.applyEdgeChanges(changes)
+          }
+
+          if (shouldApplyDefault) {
+            state.onNodesChange(nodesChangeHandler)
+            state.onEdgesChange(edgesChangeHandler)
+          } else {
+            state.hooks.value.nodesChange.off(nodesChangeHandler)
+            state.hooks.value.edgesChange.off(edgesChangeHandler)
+          }
+        },
+        { immediate: true },
+      )
+
       // dispose of state values and storage entry
       tryOnScopeDispose(() => {
         if (vueFlow) {
@@ -158,7 +166,19 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
           }
         }
       })
+    })
+  } else {
+    // if composable was called with additional options after initialization, overwrite state with the options values
+    if (options) {
+      vueFlow.setState(options)
     }
+  }
+
+  // always provide a fresh instance into context on call
+  if (scope) {
+    provide(VueFlow, vueFlow)
+
+    scope.vueFlowId = vueFlow.id
   }
 
   return vueFlow

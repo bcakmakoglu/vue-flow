@@ -1,5 +1,5 @@
 <script setup>
-import { Panel, PanelPosition, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background, BackgroundVariant } from '@vue-flow/background'
 import { MiniMap } from '@vue-flow/minimap'
 
@@ -26,7 +26,7 @@ function addRandomNode() {
 
     <Background :variant="BackgroundVariant.Lines" />
 
-    <Panel :position="PanelPosition.TopRight">
+    <Panel position="top-right">
       <button type="button" @click="addRandomNode">add node</button>
     </Panel>
   </VueFlow>

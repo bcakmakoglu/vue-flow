@@ -11,7 +11,7 @@ import {
   StepEdge,
   StraightEdge,
 } from '~/components'
-import { isDef } from '~/utils'
+import { isDef, isMacOs } from '~/utils'
 
 export const defaultNodeTypes: DefaultNodeTypes = {
   input: InputNode,
@@ -107,8 +107,8 @@ function defaultState(): State {
     selectNodesOnDrag: true,
     multiSelectionActive: false,
     selectionKeyCode: 'Shift',
-    multiSelectionKeyCode: 'Meta',
-    zoomActivationKeyCode: 'Meta',
+    multiSelectionKeyCode: isMacOs() ? 'Meta' : 'Control',
+    zoomActivationKeyCode: isMacOs() ? 'Meta' : 'Control',
     deleteKeyCode: 'Backspace',
     panActivationKeyCode: 'Space',
 

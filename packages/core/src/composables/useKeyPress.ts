@@ -2,7 +2,7 @@ import { ref, watch } from 'vue'
 import type { KeyFilter, KeyPredicate, MaybeRefOrGetter } from '@vueuse/core'
 import { onKeyStroke, toValue, useEventListener } from '@vueuse/core'
 import { useWindow } from './useWindow'
-import { isBoolean, isFunction } from '~/utils'
+import { isBoolean, isFunction, isString } from '~/utils'
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
@@ -20,18 +20,34 @@ function wasModifierPressed(event: KeyboardEvent) {
   return event.ctrlKey || event.metaKey || event.shiftKey
 }
 
-function createKeyPredicate(keyFilter: string[], pressedKeys: Set<string>): KeyPredicate {
-  return (event: KeyboardEvent) =>
-    keyFilter.some((key) => {
-      const keyCombination = key.split('+').map((k) => k.trim().toLowerCase())
+function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<string>, isKeyUp: boolean) {
+  const keyCombination = keyToMatch.split('+').map((k) => k.trim().toLowerCase())
 
-      if (keyCombination.length === 1) {
-        return event.key === key
-      } else {
-        pressedKeys.add(event.key.toLowerCase())
-        return keyCombination.every((key) => pressedKeys.has(key))
-      }
-    })
+  if (keyCombination.length === 1) {
+    return pressedKey === keyToMatch
+  } else {
+    if (isKeyUp) {
+      pressedKeys.delete(pressedKey.toLowerCase())
+    } else {
+      pressedKeys.add(pressedKey.toLowerCase())
+    }
+
+    return keyCombination.every(
+      (key, index) => pressedKeys.has(key) && Array.from(pressedKeys.values())[index] === keyCombination[index],
+    )
+  }
+}
+
+function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
+  return (event: KeyboardEvent) => {
+    // if the keyFilter is an array of multiple keys, we need to check each possible key combination
+    if (Array.isArray(keyFilter)) {
+      return keyFilter.some((key) => isKeyMatch(event.key, key, pressedKeys, event.type === 'keyup'))
+    }
+
+    // if the keyFilter is a string, we need to check if the key matches the string
+    return isKeyMatch(event.key, keyFilter, pressedKeys, event.type === 'keyup')
+  }
 }
 
 /**
@@ -55,25 +71,37 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
 
   watch(
     () => toValue(keyFilter),
-    (unrefKeyFilter) => {
+    (nextKeyFilter, previousKeyFilter) => {
       if (window && typeof window.addEventListener !== 'undefined') {
         useEventListener(window, 'blur', () => {
           isPressed.value = false
         })
       }
 
-      if (isBoolean(unrefKeyFilter)) {
-        isPressed.value = unrefKeyFilter
+      // if the previous keyFilter was a boolean but is now something else, we need to reset the isPressed value
+      if (isBoolean(previousKeyFilter) && !isBoolean(nextKeyFilter)) {
+        reset()
+      }
+
+      // if the keyFilter is null, we just set the isPressed value to false
+      if (nextKeyFilter === null) {
+        reset()
         return
       }
 
-      if (Array.isArray(unrefKeyFilter)) {
-        unrefKeyFilter = createKeyPredicate(unrefKeyFilter, pressedKeys)
+      // if the keyFilter is a boolean, we just set the isPressed value to that boolean
+      if (isBoolean(nextKeyFilter)) {
+        isPressed.value = nextKeyFilter
+        return
       }
 
-      if (unrefKeyFilter) {
+      if (Array.isArray(nextKeyFilter) || (isString(nextKeyFilter) && nextKeyFilter.includes('+'))) {
+        nextKeyFilter = createKeyPredicate(nextKeyFilter, pressedKeys)
+      }
+
+      if (nextKeyFilter) {
         onKeyStroke(
-          unrefKeyFilter,
+          nextKeyFilter,
           (e) => {
             modifierPressed = wasModifierPressed(e)
 
@@ -89,18 +117,14 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
         )
 
         onKeyStroke(
-          unrefKeyFilter,
+          nextKeyFilter,
           (e) => {
             if (isPressed.value) {
               if (!modifierPressed && isInputDOMNode(e)) {
                 return
               }
 
-              modifierPressed = false
-
-              pressedKeys.clear()
-
-              isPressed.value = false
+              reset()
             }
           },
           { eventName: 'keyup' },
@@ -113,4 +137,12 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
   )
 
   return isPressed
+
+  function reset() {
+    modifierPressed = false
+
+    pressedKeys.clear()
+
+    isPressed.value = false
+  }
 }

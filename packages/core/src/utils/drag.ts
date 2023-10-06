@@ -1,6 +1,15 @@
 import { markRaw } from 'vue'
 import { ErrorCode, VueFlowError, clampPosition, isNumber, isParentSelected } from '.'
-import type { Actions, CoordinateExtent, CoordinateExtentRange, GraphNode, NodeDragItem, State, XYPosition } from '~/types'
+import type {
+  Actions,
+  CoordinateExtent,
+  CoordinateExtentRange,
+  Dimensions,
+  GraphNode,
+  NodeDragItem,
+  State,
+  XYPosition,
+} from '~/types'
 
 export function hasSelector(target: Element, selector: string, node: Element): boolean {
   let current = target
@@ -106,8 +115,8 @@ function getParentExtent(
     return [
       [parent.computedPosition.x + left, parent.computedPosition.y + top],
       [
-        parent.computedPosition.x + (parent.dimensions.width - node.dimensions.width) - right,
-        parent.computedPosition.y + (parent.dimensions.height - node.dimensions.height) - bottom,
+        parent.computedPosition.x + parent.dimensions.width - right,
+        parent.computedPosition.y + parent.dimensions.height - bottom,
       ],
     ]
   }
@@ -157,6 +166,11 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
 
   return currentExtent as CoordinateExtent
 }
+
+function clampNodeExtent({ width, height }: Dimensions, extent: CoordinateExtent): CoordinateExtent {
+  return [extent[0], [extent[1][0] - (width || 0), extent[1][1] - (height || 0)]]
+}
+
 export function calcNextPosition(
   node: GraphNode | NodeDragItem,
   nextPosition: XYPosition,
@@ -164,7 +178,7 @@ export function calcNextPosition(
   nodeExtent?: State['nodeExtent'],
   parentNode?: GraphNode,
 ) {
-  const extent = getExtent(node, onError, nodeExtent, parentNode)
+  const extent = clampNodeExtent(node.dimensions, getExtent(node, onError, nodeExtent, parentNode))
 
   const clampedPos = clampPosition(nextPosition, extent)
 

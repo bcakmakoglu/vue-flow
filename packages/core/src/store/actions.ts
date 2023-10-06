@@ -48,14 +48,15 @@ import {
 } from '~/utils'
 
 export function useActions(
+  id: string,
+  emits: any,
+  hooksOn: any,
   state: State,
   getters: ComputedGetters,
   nodeIds: ComputedRef<string[]>,
   edgeIds: ComputedRef<string[]>,
 ): Actions {
-  let fitViewOnInitDone = false
-
-  const viewportHelper = $(useViewport(state, getters))
+  const viewportHelper = useViewport(state, getters)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? nodeIds.value ?? []
@@ -170,16 +171,6 @@ export function useActions(
 
       return res
     }, [])
-
-    if (state.fitViewOnInit && !fitViewOnInitDone) {
-      until(() => viewportHelper.initialized)
-        .toBe(true)
-        .then(() => {
-          viewportHelper.fitView()
-        })
-
-      fitViewOnInitDone = true
-    }
 
     if (changes.length) {
       state.hooks.nodesChange.trigger(changes)
@@ -297,25 +288,27 @@ export function useActions(
       return elementSelectionHandler([], false)
     }
 
-    const { changedNodes, changedEdges } = elements.reduce(
-      (acc, curr) => {
+    const changes = elements.reduce(
+      (changes, curr) => {
         const selectionChange = createSelectionChange(curr.id, false)
+
         if (isNode(curr)) {
-          acc.changedNodes.push(selectionChange)
+          changes.nodes.push(selectionChange)
         } else {
-          acc.changedEdges.push(selectionChange)
+          changes.edges.push(selectionChange)
         }
 
-        return acc
+        return changes
       },
-      { changedNodes: [] as NodeSelectionChange[], changedEdges: [] as EdgeSelectionChange[] },
+      { nodes: [] as NodeSelectionChange[], edges: [] as EdgeSelectionChange[] },
     )
 
-    if (changedNodes.length) {
-      state.hooks.nodesChange.trigger(changedNodes)
+    if (changes.nodes.length) {
+      state.hooks.nodesChange.trigger(changes.nodes)
     }
-    if (changedEdges.length) {
-      state.hooks.edgesChange.trigger(changedEdges)
+
+    if (changes.edges.length) {
+      state.hooks.edgesChange.trigger(changes.edges)
     }
   }
 
@@ -446,7 +439,7 @@ export function useActions(
         )
       : nextEdges
 
-    const changes = validEdges.reduce((acc, param) => {
+    const changes = validEdges.reduce((edgeChanges, param) => {
       const edge = addEdgeToStore(
         {
           ...param,
@@ -465,21 +458,23 @@ export function useActions(
 
         if (missingSource && missingTarget) {
           state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
-        } else {
-          if (missingSource) {
-            state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
-          }
 
-          if (missingTarget) {
-            state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
-          }
+          return edgeChanges
         }
 
-        if (missingSource || missingTarget) {
-          return acc
+        if (missingSource) {
+          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
+
+          return edgeChanges
         }
 
-        acc.push(
+        if (missingTarget) {
+          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
+
+          return edgeChanges
+        }
+
+        edgeChanges.push(
           createAdditionChange<GraphEdge>({
             ...edge,
             sourceNode,
@@ -488,7 +483,7 @@ export function useActions(
         )
       }
 
-      return acc
+      return edgeChanges
     }, [] as EdgeChange[])
 
     if (changes.length) {
@@ -496,12 +491,36 @@ export function useActions(
     }
   }
 
-  const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true) => {
+  const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true, removeChildren = false) => {
     let nodesToRemove = nodes instanceof Function ? nodes(state.nodes) : nodes
     nodesToRemove = Array.isArray(nodesToRemove) ? nodesToRemove : [nodesToRemove]
 
     const nodeChanges: NodeRemoveChange[] = []
     const edgeChanges: EdgeRemoveChange[] = []
+
+    function createEdgeRemovalChanges(nodes: Node[]) {
+      const connections = getConnectedEdges(nodes, state.edges).filter((edge) => (isDef(edge.deletable) ? edge.deletable : true))
+
+      edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
+    }
+
+    // recursively get all children and if the child is a parent, get those children as well until all nodes have been removed that are children of the current node
+    function createChildrenRemovalChanges(id: string) {
+      const children = state.nodes.filter((n) => n.parentNode === id)
+
+      if (children.length) {
+        const childIds = children.map((n) => n.id)
+        nodeChanges.push(...childIds.map((id) => createRemoveChange(id)))
+
+        if (removeConnectedEdges) {
+          createEdgeRemovalChanges(children)
+        }
+
+        children.forEach((child) => {
+          createChildrenRemovalChanges(child.id)
+        })
+      }
+    }
 
     nodesToRemove.forEach((item) => {
       const currNode = typeof item === 'string' ? findNode(item) : item
@@ -517,14 +536,11 @@ export function useActions(
       nodeChanges.push(createRemoveChange(currNode.id))
 
       if (removeConnectedEdges) {
-        const connections = getConnectedEdges([currNode], state.edges).filter((edge) => {
-          if (isDef(edge.deletable)) {
-            return edge.deletable
-          }
-          return true
-        })
+        createEdgeRemovalChanges([currNode])
+      }
 
-        edgeChanges.push(...connections.map((connection) => createRemoveChange(connection.id)))
+      if (removeChildren) {
+        createChildrenRemovalChanges(currNode.id)
       }
     })
 
@@ -764,45 +780,6 @@ export function useActions(
     }
   }
 
-  const fitView: Actions['fitView'] = async (params = { padding: 0.1 }) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.fitView(params)
-  }
-
-  const zoomIn: Actions['zoomIn'] = async (options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.zoomIn(options)
-  }
-
-  const zoomOut: Actions['zoomOut'] = async (options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.zoomOut(options)
-  }
-
-  const zoomTo: Actions['zoomTo'] = async (zoomLevel, options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.zoomTo(zoomLevel, options)
-  }
-
-  const setTransform: Actions['setTransform'] = async (transform, options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.setTransform(transform, options)
-  }
-
-  const getTransform: Actions['getTransform'] = () => viewportHelper.getTransform()
-
-  const setCenter: Actions['setCenter'] = async (x, y, options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.setCenter(x, y, options)
-  }
-
-  const fitBounds: Actions['fitBounds'] = async (bounds, options) => {
-    await until(() => viewportHelper.initialized).toBe(true)
-    viewportHelper.fitBounds(bounds, options)
-  }
-
-  const project: Actions['project'] = (position) => viewportHelper.project(position)
-
   const toObject: Actions['toObject'] = () => {
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
@@ -831,12 +808,13 @@ export function useActions(
         }),
         position: [state.viewport.x, state.viewport.y],
         zoom: state.viewport.zoom,
+        viewport: state.viewport,
       } as FlowExportObject),
     )
   }
 
   const fromObject: Actions['fromObject'] = (obj) => {
-    const { nodes, edges, position, zoom } = obj
+    const { nodes, edges, position, zoom, viewport } = obj
 
     if (nodes) {
       setNodes(nodes)
@@ -846,8 +824,20 @@ export function useActions(
       setEdges(edges)
     }
 
-    if (position) {
-      setTransform({ x: position[0], y: position[1], zoom: zoom || 1 })
+    if ((viewport?.x && viewport?.y) || position) {
+      const x = viewport?.x || position[0]
+      const y = viewport?.y || position[1]
+      const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
+
+      until(() => viewportHelper.value.initialized)
+        .toBe(true)
+        .then(() => {
+          viewportHelper.value.setViewport({
+            x,
+            y,
+            zoom: nextZoom,
+          })
+        })
     }
   }
 
@@ -877,7 +867,7 @@ export function useActions(
     setState(resetState)
   }
 
-  return {
+  const actions: Actions = {
     updateNodePositions,
     updateNodeDimensions,
     setElements,
@@ -910,19 +900,41 @@ export function useActions(
     getIntersectingNodes,
     isNodeIntersecting,
     panBy,
-    fitView,
-    zoomIn,
-    zoomOut,
-    zoomTo,
-    setTransform,
-    getTransform,
-    setCenter,
-    fitBounds,
-    project,
+    fitView: (params) => viewportHelper.value.fitView(params),
+    zoomIn: (transitionOpts) => viewportHelper.value.zoomIn(transitionOpts),
+    zoomOut: (transitionOpts) => viewportHelper.value.zoomOut(transitionOpts),
+    zoomTo: (zoomLevel, transitionOpts) => viewportHelper.value.zoomTo(zoomLevel, transitionOpts),
+    setViewport: (params, transitionOpts) => viewportHelper.value.setViewport(params, transitionOpts),
+    setTransform: (params, transitionOpts) => viewportHelper.value.setTransform(params, transitionOpts),
+    getViewport: () => viewportHelper.value.getViewport(),
+    getTransform: () => viewportHelper.value.getTransform(),
+    setCenter: (x, y, opts) => viewportHelper.value.setCenter(x, y, opts),
+    fitBounds: (params, opts) => viewportHelper.value.fitBounds(params, opts),
+    project: (params) => viewportHelper.value.project(params),
     toObject,
     fromObject,
     updateNodeInternals,
     $reset,
     $destroy: () => {},
   }
+
+  until(() => viewportHelper.value.initialized)
+    .toBe(true, { flush: 'pre' })
+    .then(() => {
+      if (state.fitViewOnInit) {
+        viewportHelper.value.fitView()
+      }
+
+      state.hooks.paneReady.trigger({
+        id,
+        emits,
+        vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
+        ...hooksOn,
+        ...state,
+        ...getters,
+        ...actions,
+      })
+    })
+
+  return actions
 }

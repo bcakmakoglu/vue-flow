@@ -1,50 +1,48 @@
-import type { FunctionalComponent } from 'vue'
-import { h } from 'vue'
-import BaseEdge from './BaseEdge'
+import { defineComponent, h } from 'vue'
+import BaseEdge from './BaseEdge.vue'
 import { getSmoothStepPath } from './utils'
 import type { SmoothStepEdgeProps } from '~/types'
 import { Position } from '~/types'
 
-const SmoothStepEdge: FunctionalComponent<SmoothStepEdgeProps> = function (
-  { sourcePosition = Position.Bottom, targetPosition = Position.Top, ...props },
-  { attrs },
-) {
-  const [path, labelX, labelY] = getSmoothStepPath({
-    sourcePosition,
-    targetPosition,
-    ...props,
-  })
+const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
+  name: 'SmoothStepEdge',
+  props: [
+    'sourcePosition',
+    'targetPosition',
+    'label',
+    'labelStyle',
+    'labelShowBg',
+    'labelBgStyle',
+    'labelBgPadding',
+    'labelBgBorderRadius',
+    'sourceY',
+    'sourceX',
+    'targetX',
+    'targetY',
+    'borderRadius',
+    'markerEnd',
+    'markerStart',
+    'interactionWidth',
+    'offset',
+  ] as any,
+  compatConfig: { MODE: 3 },
+  setup(props, { attrs }) {
+    return () => {
+      const [path, labelX, labelY] = getSmoothStepPath({
+        ...props,
+        sourcePosition: props.sourcePosition ?? Position.Bottom,
+        targetPosition: props.targetPosition ?? Position.Top,
+      })
 
-  return h(BaseEdge, {
-    path,
-    labelX,
-    labelY,
-    ...props,
-    ...attrs,
-  })
-}
-
-SmoothStepEdge.props = [
-  'sourcePosition',
-  'targetPosition',
-  'label',
-  'labelStyle',
-  'labelShowBg',
-  'labelBgStyle',
-  'labelBgPadding',
-  'labelBgBorderRadius',
-  'sourceY',
-  'sourceX',
-  'targetX',
-  'targetY',
-  'borderRadius',
-  'markerEnd',
-  'markerStart',
-  'interactionWidth',
-  'offset',
-]
-
-SmoothStepEdge.inheritAttrs = false
-SmoothStepEdge.compatConfig = { MODE: 3 }
+      return h(BaseEdge as any, {
+        path,
+        labelX,
+        labelY,
+        ...attrs,
+        ...props,
+      })
+    }
+  },
+})
 
 export default SmoothStepEdge

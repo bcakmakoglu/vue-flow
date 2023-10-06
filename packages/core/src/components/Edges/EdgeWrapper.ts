@@ -51,7 +51,7 @@ const EdgeWrapper = defineComponent({
 
     const edgeUpdaterType = ref<HandleType>('source')
 
-    const edgeEl = ref<SVGElement>()
+    const edgeEl = ref<SVGElement | null>(null)
 
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)
@@ -141,7 +141,7 @@ const EdgeWrapper = defineComponent({
           'tabIndex': props.focusable ? 0 : undefined,
           'aria-label': edge.ariaLabel === null ? undefined : edge.ariaLabel || `Edge from ${edge.source} to ${edge.target}`,
           'aria-describedby': props.focusable ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
-          'role': props.focusable ? 'button' : undefined,
+          'role': props.focusable ? 'button' : 'img',
         },
         [
           updating.value
@@ -177,7 +177,6 @@ const EdgeWrapper = defineComponent({
                 targetHandleId: edge.targetHandle,
                 interactionWidth: edge.interactionWidth,
               }),
-
           [
             props.updatable === 'source' || props.updatable === true
               ? [

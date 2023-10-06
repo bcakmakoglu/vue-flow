@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Elements } from '@vue-flow/core'
-import { Panel, PanelPosition, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -49,7 +49,7 @@ function toggleclass() {
     <Background />
     <MiniMap />
     <Controls />
-    <Panel :position="PanelPosition.TopRight" style="display: flex; gap: 5px">
+    <Panel position="top-right" style="display: flex; gap: 5px">
       <button @click="resetTransform">reset transform</button>
       <button @click="updatePos">change pos</button>
       <button @click="toggleclass">toggle class</button>
