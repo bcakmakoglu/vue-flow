@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { D3ZoomEvent } from 'd3-zoom'
 import { useVModel } from '@vueuse/core'
 import { onMounted, onUnmounted, provide, ref, useSlots } from 'vue'
+import type { D3ZoomEvent } from 'd3-zoom'
 import Viewport from '../Viewport/Viewport.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { FlowElements, FlowProps } from '../../types/flow'
@@ -188,7 +188,7 @@ export default {
         </template>
       </template>
 
-      <template #connection-name>
+      <template #connection-line>
         <slot name="connection-line" />
       </template>
 
