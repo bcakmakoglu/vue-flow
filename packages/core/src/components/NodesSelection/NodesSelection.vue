@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
+import type { NodeBase } from '@xyflow/system'
+import { getRectOfNodes } from '@xyflow/system'
 import { useDrag, useUpdateNodePositions, useVueFlow } from '../../composables'
-import { arrowKeyDiffs, getRectOfNodes } from '~/utils'
+import { arrowKeyDiffs } from '../../utils'
 
-const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, userSelectionActive } = $(useVueFlow())
+const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, userSelectionActive } = useVueFlow()
 
 const updatePositions = useUpdateNodePositions()
 
@@ -23,12 +25,12 @@ const dragging = useDrag({
 })
 
 onMounted(() => {
-  if (!disableKeyboardA11y) {
+  if (!disableKeyboardA11y.value) {
     el.value?.focus({ preventScroll: true })
   }
 })
 
-const selectedNodesBBox = computed(() => getRectOfNodes(getSelectedNodes))
+const selectedNodesBBox = computed(() => getRectOfNodes(getSelectedNodes.value as NodeBase[]))
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
@@ -38,7 +40,7 @@ const innerStyle = computed(() => ({
 }))
 
 function onContextMenu(event: MouseEvent) {
-  emits.selectionContextMenu({ event, nodes: getSelectedNodes })
+  emits.selectionContextMenu({ event, nodes: getSelectedNodes.value })
 }
 
 function onKeyDown(event: KeyboardEvent) {

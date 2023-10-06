@@ -1,5 +1,5 @@
 import { markRaw } from 'vue'
-import { clamp, getOverlappingArea } from '@xyflow/system'
+import { getOverlappingArea } from '@xyflow/system'
 import { isDef, warn } from '.'
 import type {
   Actions,
@@ -18,7 +18,6 @@ import type {
   Node,
   Rect,
   ViewportTransform,
-  XYPosition,
   XYZPosition,
 } from '~/types'
 
@@ -247,33 +246,6 @@ export function updateEdge(oldEdge: Edge, newConnection: Connection, elements: E
   return elements.filter((e) => e.id !== oldEdge.id)
 }
 
-export function rendererPointToPoint({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition {
-  return {
-    x: x * tScale + tx,
-    y: y * tScale + ty,
-  }
-}
-export function pointToRendererPoint(
-  { x, y }: XYPosition,
-  { x: tx, y: ty, zoom: tScale }: ViewportTransform,
-  snapToGrid: boolean,
-  [snapX, snapY]: [snapX: number, snapY: number],
-): XYPosition {
-  const position: XYPosition = {
-    x: (x - tx) / tScale,
-    y: (y - ty) / tScale,
-  }
-
-  if (snapToGrid) {
-    return {
-      x: snapX * Math.round(position.x / snapX),
-      y: snapY * Math.round(position.y / snapY),
-    }
-  }
-
-  return position
-}
-
 function getBoundsOfBoxes(box1: Box, box2: Box): Box {
   return {
     x: Math.min(box1.x, box2.x),
@@ -304,22 +276,6 @@ export function boxToRect({ x, y, x2, y2 }: Box): Rect {
 // todo: fix typo
 export function getBoundsofRects(rect1: Rect, rect2: Rect) {
   return boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)))
-}
-
-export function getRectOfNodes(nodes: GraphNode[]) {
-  const box = nodes.reduce(
-    (currBox, { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 } } = {} as any) =>
-      getBoundsOfBoxes(
-        currBox,
-        rectToBox({
-          ...computedPosition,
-          ...dimensions,
-        } as Rect),
-      ),
-    { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity },
-  )
-
-  return boxToRect(box)
 }
 
 export function getNodesInside(
@@ -388,30 +344,6 @@ export function getConnectedNodes<N extends Node | { id: string } | string>(node
   }, new Set())
 
   return nodes.filter((node) => connectedNodeIds.has(typeof node === 'string' ? node : node.id))
-}
-
-export function getTransformForBounds(
-  bounds: Rect,
-  width: number,
-  height: number,
-  minZoom: number,
-  maxZoom: number,
-  padding = 0.1,
-  offset: {
-    x?: number
-    y?: number
-  } = { x: 0, y: 0 },
-): ViewportTransform {
-  const xZoom = width / (bounds.width * (1 + padding))
-  const yZoom = height / (bounds.height * (1 + padding))
-  const zoom = Math.min(xZoom, yZoom)
-  const clampedZoom = clamp(zoom, minZoom, maxZoom)
-  const boundsCenterX = bounds.x + bounds.width / 2
-  const boundsCenterY = bounds.y + bounds.height / 2
-  const x = width / 2 - boundsCenterX * clampedZoom + (offset.x ?? 0)
-  const y = height / 2 - boundsCenterY * clampedZoom + (offset.y ?? 0)
-
-  return { x, y, zoom: clampedZoom }
 }
 
 export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition {

@@ -1,8 +1,10 @@
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
+import type { NodeBase } from '@xyflow/system'
+import { getNodesInside, isEdgeVisible } from '@xyflow/system'
 import { defaultEdgeTypes, defaultNodeTypes } from './state'
 import type { ComputedGetters, GraphEdge, GraphNode, State } from '~/types'
-import { ErrorCode, VueFlowError, getNodesInside, isEdgeVisible } from '~/utils'
+import { ErrorCode, VueFlowError } from '~/utils'
 
 export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds: ComputedRef<string[]>): ComputedGetters {
   /**
@@ -56,20 +58,22 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
   const getNodes: ComputedGetters['getNodes'] = computed(() => {
     const nodes = state.nodes.filter((n) => !n.hidden)
 
-    return state.onlyRenderVisibleElements
-      ? nodes &&
+    return (
+      state.onlyRenderVisibleElements
+        ? nodes &&
           getNodesInside(
-            nodes,
+            nodes as NodeBase[],
             {
               x: 0,
               y: 0,
               width: state.dimensions.width,
               height: state.dimensions.height,
             },
-            state.viewport,
+            [state.viewport.x, state.viewport.y, state.viewport.zoom],
             true,
           )
-      : nodes ?? []
+        : nodes ?? []
+    ) as GraphNode[]
   })
 
   const edgeHidden = (e: GraphEdge, source?: GraphNode, target?: GraphNode) => {
@@ -96,15 +100,11 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
       return (
         edgeHidden(e, source, target) &&
         isEdgeVisible({
-          sourcePos: source.computedPosition || { x: 0, y: 0 },
-          targetPos: target.computedPosition || { x: 0, y: 0 },
-          sourceWidth: source.dimensions.width,
-          sourceHeight: source.dimensions.height,
-          targetWidth: target.dimensions.width,
-          targetHeight: target.dimensions.height,
+          sourceNode: source as NodeBase,
+          targetNode: target as NodeBase,
           width: state.dimensions.width,
           height: state.dimensions.height,
-          viewport: state.viewport,
+          transform: [state.viewport.x, state.viewport.y, state.viewport.zoom],
         })
       )
     })

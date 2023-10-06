@@ -1,7 +1,8 @@
 import { until } from '@vueuse/core'
 import { zoomIdentity } from 'd3-zoom'
 import { computed, ref } from 'vue'
-import { clampPosition } from '@xyflow/system'
+import type { NodeBase } from '@xyflow/system'
+import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system'
 import type { ComputedGetters, D3Selection, GraphNode, Project, State, ViewportFunctions } from '~/types'
 
 interface ExtendedViewport extends ViewportFunctions {
@@ -160,16 +161,15 @@ export function useViewport(state: State, getters: ComputedGetters) {
             return Promise.resolve(false)
           }
 
-          const bounds = getRectOfNodes(nodesToFit)
+          const bounds = getRectOfNodes(nodesToFit as NodeBase[])
 
-          const { x, y, zoom } = getTransformForBounds(
+          const [x, y, zoom] = getTransformForBounds(
             bounds,
             dimensions.width,
             dimensions.height,
             options.minZoom ?? minZoom,
             options.maxZoom ?? maxZoom,
             options.padding ?? DEFAULT_PADDING,
-            options.offset,
           )
 
           return transformViewport(x, y, zoom, options?.duration)
@@ -182,18 +182,18 @@ export function useViewport(state: State, getters: ComputedGetters) {
           return transformViewport(centerX, centerY, nextZoom, options?.duration)
         },
         fitBounds: (bounds, options = { padding: DEFAULT_PADDING }) => {
-          const { x, y, zoom } = getTransformForBounds(
+          const [x, y, zoom] = getTransformForBounds(
             bounds,
             dimensions.width,
             dimensions.height,
             minZoom,
             maxZoom,
-            options.padding,
+            options.padding ?? DEFAULT_PADDING,
           )
 
           return transformViewport(x, y, zoom, options?.duration)
         },
-        project: (position) => pointToRendererPoint(position, viewport, snapToGrid, snapGrid),
+        project: (position) => pointToRendererPoint(position, [viewport.x, viewport.y, viewport.zoom], snapToGrid, snapGrid),
         screenToFlowCoordinate: (position) => {
           if (domNode) {
             const { x: domX, y: domY } = domNode.getBoundingClientRect()
@@ -203,7 +203,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
               y: position.y - domY,
             }
 
-            return pointToRendererPoint(correctedPosition, viewport, snapToGrid, snapGrid)
+            return pointToRendererPoint(correctedPosition, [viewport.x, viewport.y, viewport.zoom], snapToGrid, snapGrid)
           }
 
           return { x: 0, y: 0 }
@@ -217,7 +217,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
               y: position.y + domY,
             }
 
-            return rendererPointToPoint(correctedPosition, viewport)
+            return rendererPointToPoint(correctedPosition, [viewport.x, viewport.y, viewport.zoom])
           }
 
           return { x: 0, y: 0 }

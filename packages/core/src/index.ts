@@ -20,8 +20,20 @@ export {
   EdgeLabelRenderer,
 } from './components/Edges'
 
-// re-export these utils from system
-export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter, clamp } from '@xyflow/system'
+// Re-export utils from system pkg
+export {
+  getBezierPath,
+  getSmoothStepPath,
+  getStraightPath,
+  getBezierEdgeCenter,
+  clamp,
+  getTransformForBounds,
+  getRectOfNodes,
+  pointToRendererPoint,
+  rendererPointToPoint,
+  getNodesInside,
+  getBoundsOfRects,
+} from '@xyflow/system'
 
 export { getSimpleBezierPath, getSimpleEdgeCenter } from './components/Edges/utils'
 
@@ -35,13 +47,6 @@ export {
   getOutgoers,
   getIncomers,
   getConnectedEdges,
-  getTransformForBounds,
-  getRectOfNodes,
-  pointToRendererPoint,
-  rendererPointToPoint,
-  /** @deprecated will be removed in the next major version, use `rendererPointToPoint` instead */
-  rendererPointToPoint as graphPosToZoomedPos,
-  getNodesInside,
   getMarkerId,
   getBoundsofRects,
   connectionExists,
