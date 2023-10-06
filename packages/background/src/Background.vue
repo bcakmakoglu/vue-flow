@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useVueFlow } from '@vue-flow/core'
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 import { BackgroundVariant } from './types'
 import type { BackgroundProps } from './types'
-import { DotPattern, LinePattern } from './patterns'
+import { DefaultBgColors, DotPattern, LinePattern } from './patterns'
 
 const {
   id,
@@ -19,11 +19,6 @@ const {
   patternColor: initialPatternColor,
   offset = 2,
 } = defineProps<BackgroundProps>()
-
-const defaultColors: Record<BackgroundVariant, string> = {
-  [BackgroundVariant.Dots]: '#81818a',
-  [BackgroundVariant.Lines]: '#eee',
-}
 
 const { id: vueFlowId, viewport } = useVueFlow()
 
@@ -47,9 +42,9 @@ const background = computed(() => {
 })
 
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
-const patternId = computed(() => `pattern-${vueFlowId}${id ? `-${id}` : ''}`)
+const patternId = toRef(() => `pattern-${vueFlowId}${id ? `-${id}` : ''}`)
 
-const patternColor = computed(() => initialPatternColor || defaultColors[variant || BackgroundVariant.Dots])
+const patternColor = toRef(() => initialPatternColor || DefaultBgColors[variant || BackgroundVariant.Dots])
 </script>
 
 <script lang="ts">
