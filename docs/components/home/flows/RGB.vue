@@ -95,15 +95,18 @@ const nodeColor: MiniMapNodeFunc = (node) => {
         <RGBOutputNode v-bind="rgbOutputProps" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
       </template>
       <Controls class="hidden md:block" />
+
       <Background
         :variant="BackgroundVariant.Lines"
         :pattern-color="`rgb(${color.red}, ${color.green}, ${color.blue})`"
         :gap="48"
         :size="1"
       />
+
       <MiniMap class="hidden sm:block transform scale-25 md:scale-50 lg:scale-75 origin-bottom-right" :node-color="nodeColor" />
     </VueFlow>
   </div>
+
   <div class="md:max-w-1/3 flex flex-col gap-12 justify-center <md:pt-12">
     <div class="flex flex-col gap-2 items-center md:items-start">
       <h1>Customizable</h1>
