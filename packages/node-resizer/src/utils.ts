@@ -1,3 +1,5 @@
+import { ResizeControlVariant } from './types'
+
 interface GetDirectionParams {
   width: number
   prevWidth: number
@@ -24,4 +26,14 @@ export function getDirection({ width, prevWidth, height, prevHeight, invertX, in
   }
 
   return direction
+}
+
+export const DefaultPositions = {
+  [ResizeControlVariant.Line]: 'right',
+  [ResizeControlVariant.Handle]: 'bottom-right',
+}
+
+export const StylingProperty = {
+  [ResizeControlVariant.Line]: 'borderColor',
+  [ResizeControlVariant.Handle]: 'backgroundColor',
 }

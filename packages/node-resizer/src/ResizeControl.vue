@@ -3,10 +3,9 @@ import type { NodeChange, NodeDimensionChange, NodePositionChange } from '@vue-f
 import { clamp, useGetPointerPosition, useVueFlow } from '@vue-flow/core'
 import { select } from 'd3-selection'
 import { drag } from 'd3-drag'
-import { computed, ref, watchEffect } from 'vue'
-import type { OnResize, OnResizeStart, ResizeControlProps, ResizeDragEvent } from './types'
-import { ResizeControlVariant } from './types'
-import { getDirection } from './utils'
+import { ref, toRef, watchEffect } from 'vue'
+import type { NodeResizerEmits, ResizeControlProps, ResizeControlVariant, ResizeDragEvent } from './types'
+import { DefaultPositions, StylingProperty, getDirection } from './utils'
 
 const props = withDefaults(defineProps<ResizeControlProps>(), {
   variant: 'handle' as ResizeControlVariant,
@@ -17,11 +16,7 @@ const props = withDefaults(defineProps<ResizeControlProps>(), {
   keepAspectRatio: false,
 })
 
-const emits = defineEmits<{
-  (event: 'resizeStart', resizeEvent: OnResizeStart): void
-  (event: 'resize', resizeEvent: OnResize): void
-  (event: 'resizeEnd', resizeEvent: OnResizeStart): void
-}>()
+const emits = defineEmits<NodeResizerEmits>()
 
 const initPrevValues = { width: 0, height: 0, x: 0, y: 0 }
 
@@ -42,9 +37,11 @@ let startValues: typeof initStartValues = initStartValues
 
 let prevValues: typeof initPrevValues = initPrevValues
 
-const defaultPosition = computed(() => (props.variant === ResizeControlVariant.Line ? 'right' : 'bottom-right'))
+const controlPosition = toRef(() => props.position ?? DefaultPositions[props.variant])
 
-const controlPosition = computed(() => props.position ?? defaultPosition.value)
+const positionClassNames = toRef(() => controlPosition.value.split('-'))
+
+const controlStyle = toRef(() => (props.color ? { [StylingProperty[props.variant]]: props.color } : {}))
 
 watchEffect((onCleanup) => {
   if (!resizeControlRef.value || !props.nodeId) {
@@ -228,10 +225,6 @@ watchEffect((onCleanup) => {
     selection.on('.drag', null)
   })
 })
-
-const positionClassNames = computed(() => controlPosition.value.split('-'))
-const colorStyleProp = computed(() => (props.variant === ResizeControlVariant.Line ? 'borderColor' : 'backgroundColor'))
-const controlStyle = computed(() => (props.color ? { [colorStyleProp.value]: props.color } : {}))
 </script>
 
 <script lang="ts">
