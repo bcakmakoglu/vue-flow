@@ -11,9 +11,7 @@ const emit = defineEmits(['pane'])
 const getNodeClass: ClassFunc<GraphNode> = (el) => {
   const classes = ['font-semibold', '!border-2', 'transition-colors', 'duration-300', 'ease-in-out']
   if (el.selected) {
-    classes.push(
-      ...['!border-green-500/80', '!shadow-md', '!shadow-green-500/50', '!bg-green-100/80 dark:(!bg-white)', '!text-gray-700'],
-    )
+    classes.push(...['!border-primary/80', '!shadow-md', '!shadow-primary/50', '!bg-primary-100/50', '!text-gray-700'])
   }
 
   return classes.join(' ')
@@ -111,13 +109,16 @@ onConnect((param) => {
   <div class="md:max-w-1/3 flex flex-col justify-center">
     <div class="flex flex-col items-center md:items-start">
       <h1>Interactive Graphs</h1>
+
       <p>
         Vue Flow comes with built-in features like zoom & pan and dedicated controls, single & multi-selections, draggable
         elements, customizable nodes and edges and a bunch of event handlers.
       </p>
-      <a class="docs-button max-w-max" href="/guide/"> Documentation </a>
+
+      <a class="docs-button" href="/guide/"> Documentation </a>
     </div>
   </div>
+
   <div
     class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden"
   >
@@ -134,14 +135,14 @@ onConnect((param) => {
 
 <style>
 .basic .vue-flow__node-input.selected .vue-flow__handle {
-  @apply bg-green-500;
+  @apply bg-primary;
 }
 
 .basic .vue-flow__node-default.selected .vue-flow__handle {
-  @apply bg-green-500;
+  @apply bg-primary;
 }
 
 .basic .vue-flow__node-output.selected .vue-flow__handle {
-  @apply bg-green-500;
+  @apply bg-primary;
 }
 </style>

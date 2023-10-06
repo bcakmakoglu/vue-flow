@@ -243,7 +243,7 @@ function scrollTo() {
 
       <template v-else-if="props.id === 'examples'">
         <div class="flex">
-          <a class="intro-link group bg-[#ef467e]" href="/examples/"> Check The Examples </a>
+          <a class="intro-link group bg-pink-500" href="/examples/"> Check The Examples </a>
         </div>
 
         <Handle
@@ -278,7 +278,7 @@ function scrollTo() {
 <style>
 .intro {
   @apply cursor-pointer
-  bg-green-500
+  bg-primary
   text-white
   transform
   transition-transform

@@ -9,7 +9,7 @@ const emit = defineEmits(['pane'])
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
 const nodeClasses = ['!normal-case font-semibold !text-white', '!border-1', 'shadow-md'].join(' ')
-const childClasses = `${nodeClasses} !bg-green-500/70 !border-white`
+const childClasses = `${nodeClasses} !bg-primary-500/70 !border-white`
 
 const { onPaneReady, panOnDrag } = useVueFlow({
   fitViewOnInit: true,
@@ -27,7 +27,7 @@ const { onPaneReady, panOnDrag } = useVueFlow({
       id: '2',
       label: 'Parent Node',
       position: { x: -125, y: 100 },
-      class: `${nodeClasses} !bg-green-500/30 !border-green-500`,
+      class: `${nodeClasses} !bg-primary-500/30 !border-primary-500`,
       style: { width: '400px', height: '160px' },
     },
     {
@@ -72,7 +72,7 @@ onPaneReady((i) => emit('pane', i))
     </div>
   </div>
   <div
-    class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-green-500 overflow-hidden"
+    class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-primary-500 overflow-hidden"
   >
     <VueFlow class="nested">
       <Controls class="md:(!left-auto !right-[10px])" />
