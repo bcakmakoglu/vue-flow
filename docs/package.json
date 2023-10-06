@@ -24,6 +24,7 @@
     "@vue-flow/node-toolbar": "workspace:*",
     "@vue/repl": "1.4.1",
     "blobity": "^0.2.3",
+    "vue": "^3.3.4",
     "web-vitals": "^3.5.0"
   },
   "devDependencies": {
@@ -40,7 +41,7 @@
     "unplugin-icons": "^0.17.0",
     "unplugin-vue-components": "^0.25.2",
     "vite-plugin-windicss": "^1.9.1",
-    "vitepress": "1.0.0-beta.1",
+    "vitepress": "1.0.0-rc.20",
     "windicss": "^3.5.6"
   }
 }
