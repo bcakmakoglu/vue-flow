@@ -269,6 +269,7 @@ onMounted(() => {
     const pinchZoom = zoomOnPinch.value && event.ctrlKey
 
     if (
+      (panOnDrag.value === true || (Array.isArray(panOnDrag.value) && panOnDrag.value.includes(1))) &&
       event.button === 1 &&
       event.type === 'mousedown' &&
       ((event.target as HTMLElement)?.closest('.vue-flow__node') || (event.target as HTMLElement)?.closest('.vue-flow__edge'))
