@@ -1,12 +1,15 @@
+// todo: replace with a simple string type
 export enum BackgroundVariant {
   Lines = 'lines',
   Dots = 'dots',
 }
 
+export type BackgroundVariantType = Lowercase<keyof typeof BackgroundVariant>
+
 export interface BackgroundProps {
   id?: string
-  /** The background pattern variant, {@link BackgroundVariant} */
-  variant?: BackgroundVariant
+  /** The background pattern variant */
+  variant?: BackgroundVariant | BackgroundVariantType
   /** Background pattern gap */
   gap?: number | number[]
   /** Background pattern size */
@@ -16,9 +19,9 @@ export interface BackgroundProps {
   patternColor?: string
   /** Background color */
   bgColor?: string
-  /** Background height */
+  /** @deprecated Background height */
   height?: number
-  /** Background width */
+  /** @deprecated Background width */
   width?: number
   /** Background x-coordinate (offset x) */
   x?: number

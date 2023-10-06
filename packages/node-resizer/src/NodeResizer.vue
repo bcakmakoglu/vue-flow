@@ -4,18 +4,14 @@ import { computed, inject, watch } from 'vue'
 import type { NodeDimensionChange } from '@vue-flow/core'
 import { NodeIdInjection, useVueFlow } from '@vue-flow/core'
 import ResizeControl from './ResizeControl.vue'
-import type { ControlLinePosition, ControlPosition, NodeResizerProps, OnResize, OnResizeStart } from './types'
+import type { ControlLinePosition, ControlPosition, NodeResizerEmits, NodeResizerProps } from './types'
 import { ResizeControlVariant } from './types'
 
 const props = withDefaults(defineProps<NodeResizerProps>(), {
   isVisible: true,
 })
 
-const emits = defineEmits<{
-  (event: 'resizeStart', resizeEvent: OnResizeStart): void
-  (event: 'resize', resizeEvent: OnResize): void
-  (event: 'resizeEnd', resizeEvent: OnResizeStart): void
-}>()
+const emits = defineEmits<NodeResizerEmits>()
 
 const { findNode, emits: triggerEmits } = useVueFlow()
 

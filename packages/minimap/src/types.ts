@@ -1,4 +1,4 @@
-import type { Dimensions, GraphNode, PanelPosition, XYPosition } from '@vue-flow/core'
+import type { Dimensions, GraphNode, NodeMouseEvent, PanelPosition, XYPosition } from '@vue-flow/core'
 import type { CSSProperties, InjectionKey, Slots } from 'vue'
 
 /** expects a node and returns a color value */
@@ -59,6 +59,21 @@ export interface MiniMapNodeProps {
   shapeRendering?: ShapeRendering
   strokeColor?: string
   strokeWidth?: number
+}
+
+export interface MiniMapEmits {
+  (
+    event: 'click',
+    params: {
+      event: MouseEvent
+      position: { x: number; y: number }
+    },
+  ): void
+  (event: 'nodeClick', params: NodeMouseEvent): void
+  (event: 'nodeDblclick', params: NodeMouseEvent): void
+  (event: 'nodeMouseenter', params: NodeMouseEvent): void
+  (event: 'nodeMousemove', params: NodeMouseEvent): void
+  (event: 'nodeMouseleave', params: NodeMouseEvent): void
 }
 
 export const MiniMapSlots: InjectionKey<Slots> = Symbol('MiniMapSlots')

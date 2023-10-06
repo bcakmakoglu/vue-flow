@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
+import { computed, inject, toRef } from 'vue'
 import type { GraphNode, Rect, ViewportTransform } from '@vue-flow/core'
 import { NodeIdInjection, Position, getRectOfNodes, useVueFlow } from '@vue-flow/core'
 
@@ -15,6 +15,36 @@ const props = withDefaults(defineProps<NodeToolbarProps>(), {
 const contextNodeId = inject(NodeIdInjection, null)
 
 const { viewportRef, viewport, getSelectedNodes, findNode } = useVueFlow()
+
+const nodes = computed(() => {
+  const nodeIds = Array.isArray(props.nodeId) ? props.nodeId : [props.nodeId || contextNodeId || '']
+
+  return nodeIds.reduce<GraphNode[]>((acc, id) => {
+    const node = findNode(id)
+
+    if (node) {
+      acc.push(node)
+    }
+
+    return acc
+  }, [] as GraphNode[])
+})
+
+const isActive = toRef(() =>
+  typeof props.isVisible === 'boolean'
+    ? props.isVisible
+    : nodes.value.length === 1 && nodes.value[0].selected && getSelectedNodes.value.length === 1,
+)
+
+const nodeRect = computed(() => getRectOfNodes(nodes.value))
+
+const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.computedPosition.z || 1) + 1)))
+
+const wrapperStyle = computed<CSSProperties>(() => ({
+  position: 'absolute',
+  transform: getTransform(nodeRect.value, viewport.value, props.position, props.offset, props.align),
+  zIndex: zIndex.value,
+}))
 
 function getTransform(nodeRect: Rect, transform: ViewportTransform, position: Position, offset: number, align: Align): string {
   let alignmentOffset = 0.5
@@ -57,36 +87,6 @@ function getTransform(nodeRect: Rect, transform: ViewportTransform, position: Po
 
   return `translate(${pos[0]}px, ${pos[1]}px) translate(${shift[0]}%, ${shift[1]}%)`
 }
-
-const nodes = computed(() => {
-  const nodeIds = Array.isArray(props.nodeId) ? props.nodeId : [props.nodeId || contextNodeId || '']
-
-  return nodeIds.reduce<GraphNode[]>((acc, id) => {
-    const node = findNode(id)
-
-    if (node) {
-      acc.push(node)
-    }
-
-    return acc
-  }, [] as GraphNode[])
-})
-
-const isActive = computed(() =>
-  typeof props.isVisible === 'boolean'
-    ? props.isVisible
-    : nodes.value.length === 1 && nodes.value[0].selected && getSelectedNodes.value.length === 1,
-)
-
-const nodeRect = computed(() => getRectOfNodes(nodes.value))
-
-const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.computedPosition.z || 1) + 1)))
-
-const wrapperStyle = computed<CSSProperties>(() => ({
-  position: 'absolute',
-  transform: getTransform(nodeRect.value, viewport.value, props.position, props.offset, props.align),
-  zIndex: zIndex.value,
-}))
 </script>
 
 <script lang="ts">
