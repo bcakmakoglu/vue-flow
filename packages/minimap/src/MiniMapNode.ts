@@ -3,6 +3,7 @@ import { defineComponent, h, inject } from 'vue'
 import type { MiniMapNodeProps } from './types'
 import { MiniMapSlots } from './types'
 
+// todo: typings
 export default defineComponent({
   name: 'MiniMapNode',
   compatConfig: { MODE: 3 },

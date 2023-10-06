@@ -5,7 +5,7 @@ import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { computed, provide, ref, useAttrs, useSlots, watchEffect } from 'vue'
-import type { MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
+import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
 import { MiniMapSlots } from './types'
 
@@ -29,7 +29,7 @@ const {
   offsetScale = 5,
 } = defineProps<MiniMapProps>()
 
-const emit = defineEmits(['click', 'nodeClick', 'nodeDblclick', 'nodeMouseenter', 'nodeMousemove', 'nodeMouseleave'])
+const emit = defineEmits<MiniMapEmits>()
 
 const attrs: Record<string, any> = useAttrs()
 
@@ -202,6 +202,7 @@ function onNodeMouseLeave(event: MouseEvent, node: GraphNode) {
 export default {
   name: 'MiniMap',
   compatConfig: { MODE: 3 },
+  inheritAttrs: false,
 }
 </script>
 
@@ -209,6 +210,7 @@ export default {
   <Panel :position="position" class="vue-flow__minimap" :class="{ pannable, zoomable }">
     <svg
       ref="el"
+      v-bind="attrs"
       :width="elementWidth"
       :height="elementHeight"
       :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(' ')"
