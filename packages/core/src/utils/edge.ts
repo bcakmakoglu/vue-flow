@@ -32,8 +32,8 @@ export function getHandlePosition(position: Position, rect: Rect, handle: Handle
   }
 }
 
-export function getHandle(bounds: HandleElement[] = [], handleId?: string | null): HandleElement | null {
-  if (!bounds.length) {
+export function getHandle(bounds: HandleElement[] | null, handleId?: string | null): HandleElement | null {
+  if (!bounds?.length) {
     return null
   }
 

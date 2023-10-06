@@ -1,4 +1,4 @@
-import { infiniteExtent } from '@xyflow/system'
+import { infiniteExtent, isMacOs } from '@xyflow/system'
 import { createHooks } from './hooks'
 import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '~/types'
 import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '~/types'
@@ -12,7 +12,7 @@ import {
   StepEdge,
   StraightEdge,
 } from '~/components'
-import { isDef, isMacOs } from '~/utils'
+import { isDef } from '~/utils'
 
 export const defaultNodeTypes: DefaultNodeTypes = {
   input: InputNode,

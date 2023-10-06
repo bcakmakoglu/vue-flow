@@ -1,5 +1,6 @@
 import { markRaw } from 'vue'
-import { ErrorCode, VueFlowError, clampPosition, isParentSelected } from '.'
+import { clampPosition } from '@xyflow/system'
+import { ErrorCode, VueFlowError, isNumber, isParentSelected } from '.'
 import type {
   Actions,
   CoordinateExtent,

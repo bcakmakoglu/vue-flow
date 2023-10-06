@@ -1,5 +1,6 @@
 import { computed, defineComponent, h, provide, ref } from 'vue'
 import { useVModel } from '@vueuse/core'
+import { getMarkerId } from '@xyflow/system'
 import EdgeAnchor from './EdgeAnchor'
 import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType, MouseTouchEvent } from '~/types'
 import { ConnectionMode, Position } from '~/types'
@@ -12,7 +13,6 @@ import {
   elementSelectionKeys,
   getEdgePositions,
   getHandle,
-  getMarkerId,
 } from '~/utils'
 
 interface Props {
