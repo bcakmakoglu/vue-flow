@@ -53,6 +53,7 @@ export function getDragItems(
         extent: n.extent,
         parentNode: n.parentNode,
         dimensions: n.dimensions,
+        expandParent: n.expandParent,
       }),
     )
 }
@@ -132,7 +133,10 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
 ) {
   let currentExtent = item.extent || extent
 
-  if (currentExtent === 'parent' || (!Array.isArray(currentExtent) && currentExtent?.range === 'parent')) {
+  if (
+    (currentExtent === 'parent' || (!Array.isArray(currentExtent) && currentExtent?.range === 'parent')) &&
+    !item.expandParent
+  ) {
     if (item.parentNode && parent && item.dimensions.width && item.dimensions.height) {
       const parentExtent = getParentExtent(currentExtent, item, parent)
 
@@ -152,7 +156,7 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
       [currentExtent[0][0] + parentX, currentExtent[0][1] + parentY],
       [currentExtent[1][0] + parentX, currentExtent[1][1] + parentY],
     ]
-  } else if (currentExtent?.range && Array.isArray(currentExtent.range)) {
+  } else if (currentExtent !== 'parent' && currentExtent?.range && Array.isArray(currentExtent.range)) {
     const [top, right, bottom, left] = getExtentPadding(currentExtent.padding)
 
     const parentX = parent?.computedPosition.x || 0
@@ -164,7 +168,14 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
     ]
   }
 
-  return currentExtent as CoordinateExtent
+  return (
+    currentExtent === 'parent'
+      ? [
+          [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
+          [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
+        ]
+      : currentExtent
+  ) as CoordinateExtent
 }
 
 function clampNodeExtent({ width, height }: Dimensions, extent: CoordinateExtent): CoordinateExtent {
