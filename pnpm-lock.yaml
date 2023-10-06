@@ -292,8 +292,8 @@ importers:
         specifier: ^10.1.2
         version: 10.1.2(vue@3.2.47)
       '@xyflow/system':
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.7
+        version: 0.0.7
       d3-drag:
         specifier: ^3.0.0
         version: 3.0.0
@@ -4148,8 +4148,8 @@ packages:
       - supports-color
     dev: true
 
-  /@xyflow/system@0.0.1:
-    resolution: {integrity: sha512-9QXpG4UHuLej8zEdamDwkSgy+JfXQVxJDcME0FmRLi9wbqM8zuk0yuoZjqs7w9nQCh+MS9PrlijMl6OiwHuHzA==}
+  /@xyflow/system@0.0.7:
+    resolution: {integrity: sha512-qUQM99/vTsZcTg9mdVs2daItfQWOsiu2FvurlAXa7V5mHbrkJiwpVdM8b45Kxg12hgOHKYaFHEBk+14Gcmw6kQ==}
     dependencies:
       '@types/d3': 7.4.0
       '@types/d3-drag': 3.0.2
