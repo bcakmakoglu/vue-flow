@@ -31,7 +31,9 @@ function defaultState(): State {
   return {
     vueFlowRef: null,
     viewportRef: null,
+    // todo: change this to a Set
     nodes: [],
+    // todo: change this to a Set
     edges: [],
     nodeTypes: {},
     edgeTypes: {},
@@ -103,6 +105,7 @@ function defaultState(): State {
     nodesFocusable: true,
     nodesConnectable: true,
     nodesDraggable: true,
+    nodeDragThreshold: 0,
     elementsSelectable: true,
     selectNodesOnDrag: true,
     multiSelectionActive: false,

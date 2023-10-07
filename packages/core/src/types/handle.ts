@@ -46,7 +46,7 @@ export type HandleConnectableFunc = (node: GraphNode, connectedEdges: GraphEdge[
  *
  * if set to single and the handle already has more than one connection, it will act the same as setting it to false
  */
-export type HandleConnectable = boolean | 'single' | HandleConnectableFunc
+export type HandleConnectable = boolean | number | 'single' | HandleConnectableFunc
 
 export interface HandleProps {
   /** Unique id of handle element */

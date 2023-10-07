@@ -1,6 +1,6 @@
 {
   "name": "@vue-flow/node-resizer",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "private": false,
   "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
@@ -70,8 +70,8 @@
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@tooling/vite-config": "workspace:*",
-    "@types/d3-drag": "^3.0.2",
-    "@types/d3-selection": "^3.0.4",
+    "@types/d3-drag": "^3.0.4",
+    "@types/d3-selection": "^3.0.7",
     "@vue-flow/core": "workspace:*",
     "vite-plugin-vue-type-imports": "^0.2.4",
     "vue": "^3.2.25",

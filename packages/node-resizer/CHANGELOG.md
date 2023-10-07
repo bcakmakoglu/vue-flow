@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.3.5
+
+### Patch Changes
+
+- [#1113](https://github.com/bcakmakoglu/vue-flow/pull/1113) [`1f3c85a6`](https://github.com/bcakmakoglu/vue-flow/commit/1f3c85a67670535ad4958ed3f33529db75bec8f1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wait for node dimensions to be initialised before enforcing min/max height/width on nodes
+
 ## 1.3.4
 
 ### Patch Changes

@@ -35,6 +35,7 @@ const EdgeWrapper = defineComponent({
       findEdge,
       findNode,
       isValidConnection,
+      multiSelectionActive,
     } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
@@ -259,11 +260,19 @@ const EdgeWrapper = defineComponent({
 
     function onEdgeClick(event: MouseEvent) {
       const data = { event, edge }
+
       if (props.selectable) {
         nodesSelectionActive.value = false
 
-        addSelectedEdges([edge])
+        if (edge.selected && multiSelectionActive.value) {
+          removeSelectedEdges([edge])
+
+          edgeEl.value?.blur()
+        } else {
+          addSelectedEdges([edge])
+        }
       }
+
       hooks.emit.click(data)
     }
 

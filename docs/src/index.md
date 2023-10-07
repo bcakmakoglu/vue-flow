@@ -9,4 +9,6 @@ layout: home
 
 <Features />
 
+<Showcase />
+
 <Acknowledgement />

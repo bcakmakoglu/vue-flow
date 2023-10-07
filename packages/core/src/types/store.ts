@@ -104,6 +104,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   nodesFocusable: boolean
   nodesDraggable: boolean
   nodesConnectable: boolean
+  nodeDragThreshold: number
 
   elementsSelectable: boolean
   selectNodesOnDrag: boolean
@@ -270,6 +271,12 @@ export interface Actions extends ViewportFunctions {
   getIntersectingNodes: GetIntersectingNodes
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
+  /** get a node's incomers */
+  getIncomers: (nodeOrId: Node | string) => GraphNode[]
+  /** get a node's outgoers */
+  getOutgoers: (nodeOrId: Node | string) => GraphNode[]
+  /** get a node's connected edges */
+  getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => boolean
 
@@ -303,6 +310,8 @@ export interface Getters {
   getSelectedEdges: GraphEdge[]
   /** returns all nodes that are initialized, i.e. they have actual dimensions */
   getNodesInitialized: GraphNode[]
+  /** returns a boolean flag whether all current nodes are initialized */
+  areNodesInitialized: boolean
 }
 
 export type ComputedGetters = {

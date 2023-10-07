@@ -1,6 +1,6 @@
 {
   "name": "@vue-flow/core",
-  "version": "1.22.3",
+  "version": "1.23.0",
   "private": false,
   "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
@@ -75,7 +75,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.2",
-    "@types/d3": "^7.4.0",
+    "@types/d3-drag": "^3.0.4",
+    "@types/d3-selection": "^3.0.7",
+    "@types/d3-zoom": "^3.0.5",
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@vitejs/plugin-vue": "^4.2.3",

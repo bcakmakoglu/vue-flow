@@ -269,6 +269,7 @@ onMounted(() => {
     const pinchZoom = zoomOnPinch.value && event.ctrlKey
 
     if (
+      (panOnDrag.value === true || (Array.isArray(panOnDrag.value) && panOnDrag.value.includes(1))) &&
       event.button === 1 &&
       event.type === 'mousedown' &&
       ((event.target as HTMLElement)?.closest('.vue-flow__node') || (event.target as HTMLElement)?.closest('.vue-flow__edge'))
@@ -297,7 +298,10 @@ onMounted(() => {
     }
 
     // if the target element is inside an element with the nopan class, we prevent panning
-    if (isWrappedWithClass(event, noPanClassName.value) && event.type !== 'wheel') {
+    if (
+      isWrappedWithClass(event, noPanClassName.value) &&
+      ((!panOnScroll.value && event.type !== 'wheel') || (panOnScroll.value && event.type === 'wheel'))
+    ) {
       return false
     }
 

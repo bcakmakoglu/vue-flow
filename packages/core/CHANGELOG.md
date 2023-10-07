@@ -1,5 +1,35 @@
 # @vue-flow/core
 
+## 1.23.0
+
+### Minor Changes
+
+- [#1121](https://github.com/bcakmakoglu/vue-flow/pull/1121) [`5b9340bd`](https://github.com/bcakmakoglu/vue-flow/commit/5b9340bd1dd46a76767b57ddf14a00dc9168bee2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow using `expandParent` together with `parent` extent
+
+- [#1117](https://github.com/bcakmakoglu/vue-flow/pull/1117) [`7c6daff7`](https://github.com/bcakmakoglu/vue-flow/commit/7c6daff776b3f43824126c71cfe8851212923d68) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `getIncomers`, `getOutgoers` and `getConnectedEdges` as store actions
+
+- [#1115](https://github.com/bcakmakoglu/vue-flow/pull/1115) [`2bc9317c`](https://github.com/bcakmakoglu/vue-flow/commit/2bc9317cc2f69977f76d7fb562e82954f8946972) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Cleanup node handlebounds when a handle is unmounted
+
+- [#1112](https://github.com/bcakmakoglu/vue-flow/pull/1112) [`e526139f`](https://github.com/bcakmakoglu/vue-flow/commit/e526139f0b21b63eee920db6d135f17bb3661072) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `nodeDragThreshold` option
+
+- [#1118](https://github.com/bcakmakoglu/vue-flow/pull/1118) [`5802acc9`](https://github.com/bcakmakoglu/vue-flow/commit/5802acc90b8b273dd50b07c586a80f171d351e85) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `areNodesInitialized` gettet to store
+
+- [#1106](https://github.com/bcakmakoglu/vue-flow/pull/1106) [`5c1df240`](https://github.com/bcakmakoglu/vue-flow/commit/5c1df240bac46fd7034eb816bd42bf35834628c7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add source and target node ids to edge removal changes
+
+- [#1119](https://github.com/bcakmakoglu/vue-flow/pull/1119) [`78cf8bb0`](https://github.com/bcakmakoglu/vue-flow/commit/78cf8bb029e66d9f70d30fda3fea5f47e4c05152) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - add `flowToScreenCoordinate` & `screenToFlowCoordinate` to viewport actions
+
+- [#1116](https://github.com/bcakmakoglu/vue-flow/pull/1116) [`8a29faa8`](https://github.com/bcakmakoglu/vue-flow/commit/8a29faa8292fc1ff5fdf7673b5759695c2be5f86) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing a number as connectable prop to allow a specific number of connections per handle
+
+### Patch Changes
+
+- [#1120](https://github.com/bcakmakoglu/vue-flow/pull/1120) [`4015e358`](https://github.com/bcakmakoglu/vue-flow/commit/4015e358316bba03423bf05f52075c6e15e5ffc1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Respect pan on scroll class name
+
+- [#1122](https://github.com/bcakmakoglu/vue-flow/pull/1122) [`59171593`](https://github.com/bcakmakoglu/vue-flow/commit/59171593286c2fe50de016fa70a570a987a26478) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - disable panning when `panOnDrag` is `false`
+
+- [#1110](https://github.com/bcakmakoglu/vue-flow/pull/1110) [`03247e00`](https://github.com/bcakmakoglu/vue-flow/commit/03247e0088cf46738ba4e88a7b97ec8a12dbc61e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - unselect edge if selected and multi-selection is active
+
+- [#1123](https://github.com/bcakmakoglu/vue-flow/pull/1123) [`2f7a0fe1`](https://github.com/bcakmakoglu/vue-flow/commit/2f7a0fe1233f0aa44ddb3ef2f8469189cdc493bc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Queue node dimensions update to next tick
+
 ## 1.22.3
 
 ### Patch Changes

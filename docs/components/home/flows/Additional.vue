@@ -101,16 +101,19 @@ onPaneReady((i) => emit('pane', i))
       <Background variant="lines" pattern-color="#aaa" :gap="46" />
     </VueFlow>
   </div>
+
   <div class="md:max-w-1/3 flex flex-col gap-12 justify-center <md:pt-12">
     <div class="flex flex-col gap-2 items-center md:items-start">
       <h1>Additional Features</h1>
+
       <p>
         On top of all the features Vue Flow comes with several components like a Background, Minimap or Controls.
 
         <br />
         Plus it's built for composition, making the access of the internal state easy as can be!
       </p>
-      <a class="docs-button max-w-max" href="/guide/"> Documentation </a>
+
+      <a class="docs-button" href="/guide/"> Documentation </a>
     </div>
   </div>
 </template>

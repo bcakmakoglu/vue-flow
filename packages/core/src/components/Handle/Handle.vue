@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { toRef, until } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import type { HandleProps } from '../../types/handle'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
-import { getDimensions, isDef, isFunction, isMouseEvent, isString } from '../../utils'
+import { getDimensions, isDef, isFunction, isMouseEvent, isNumber, isString } from '../../utils'
 
 const {
   position = Position.Top,
@@ -57,6 +57,20 @@ const isConnectable = computed(() => {
 
       return id ? id === handleId.value : true
     })
+  }
+
+  if (isNumber(connectable)) {
+    return (
+      connectedEdges.value.filter((edge) => {
+        const id = edge[`${type.value}Handle`]
+
+        if (edge[type.value] !== nodeId) {
+          return false
+        }
+
+        return id ? id === handleId.value : true
+      }).length < connectable
+    )
   }
 
   if (isFunction(connectable)) {
@@ -116,6 +130,14 @@ until(() => node.initialized)
 
     node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
   })
+
+onUnmounted(() => {
+  // clean up node internals
+  const handleBounds = node.handleBounds[type.value]
+  if (handleBounds) {
+    node.handleBounds[type.value] = handleBounds.filter((b) => b.id !== handleId.value)
+  }
+})
 
 function onPointerDown(event: MouseEvent | TouchEvent) {
   const isMouseTriggered = isMouseEvent(event)

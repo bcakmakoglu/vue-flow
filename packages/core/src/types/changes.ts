@@ -12,6 +12,7 @@ export interface NodeDragItem {
   from: XYPosition
   extent?: Node['extent']
   parentNode?: string
+  expandParent?: boolean
 }
 
 export interface NodeDimensionChange {
@@ -51,7 +52,10 @@ export type NodeChange = NodeDimensionChange | NodePositionChange | NodeSelectio
 
 export type EdgeSelectionChange = NodeSelectionChange
 
-export type EdgeRemoveChange = NodeRemoveChange
+export interface EdgeRemoveChange extends NodeRemoveChange {
+  source: string
+  target: string
+}
 
 export interface EdgeAddChange<Data = ElementData> {
   item: GraphEdge<Data>
