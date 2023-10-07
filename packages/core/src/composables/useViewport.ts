@@ -2,7 +2,7 @@ import { until } from '@vueuse/core'
 import { zoomIdentity } from 'd3-zoom'
 import { computed, ref } from 'vue'
 import type { ComputedGetters, D3Selection, GraphNode, Project, State, ViewportFunctions } from '~/types'
-import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint } from '~/utils'
+import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint, warn } from '~/utils'
 
 interface ExtendedViewport extends ViewportFunctions {
   initialized: boolean
@@ -13,6 +13,8 @@ interface ExtendedViewport extends ViewportFunctions {
 const DEFAULT_PADDING = 0.1
 
 function noop() {
+  warn('Viewport not initialized yet.')
+
   return Promise.resolve(false)
 }
 
