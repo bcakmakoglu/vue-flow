@@ -38,7 +38,6 @@ declare module 'vue' {
     Showcase: typeof import('./../components/home/Showcase.vue')['default']
     Sidebar: typeof import('./../components/examples/dnd/Sidebar.vue')['default']
     SnappableConnectionLine: typeof import('./../components/examples/connection-radius/SnappableConnectionLine.vue')['default']
-    Team: typeof import('./../components/home/Team.vue')['default']
     TeleportableNode: typeof import('./../components/examples/teleport/TeleportableNode.vue')['default']
     ToolbarNode: typeof import('./../components/examples/node-toolbar/ToolbarNode.vue')['default']
     TransitionEdge: typeof import('./../components/examples/transition/TransitionEdge.vue')['default']
