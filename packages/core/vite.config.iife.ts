@@ -12,7 +12,7 @@ export default defineConfig({
     extensions: ['.ts', '.vue'],
   },
   build: {
-    minify: 'esbuild',
+    minify: false,
     emptyOutDir: false,
     lib: {
       formats: ['iife'],
