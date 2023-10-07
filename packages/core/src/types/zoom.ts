@@ -1,8 +1,9 @@
-import type { Selection, ZoomBehavior } from 'd3'
+import type { Selection } from 'd3-selection'
+import type { ZoomBehavior } from 'd3-zoom'
 import type { Rect, XYPosition } from './flow'
 
 export type D3Zoom = ZoomBehavior<HTMLDivElement, unknown>
-export type D3Selection = Selection<HTMLDivElement, unknown, any, any>
+export type D3Selection = Selection<HTMLDivElement, any, any, any>
 export type D3ZoomHandler = (this: HTMLDivElement, event: any, d: unknown) => void
 
 export enum PanOnScrollMode {

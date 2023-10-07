@@ -9,7 +9,7 @@ const { id, viewport, d3Zoom, d3Selection, dimensions } = useVueFlow()
 
 const viewportReady = ref(!isClient)
 
-until(() => d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0)
+until(() => !!(d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0))
   .toBe(true)
   .then(() => {
     setTimeout(() => {

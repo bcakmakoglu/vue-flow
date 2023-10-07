@@ -228,5 +228,5 @@ export function useViewport(state: State, getters: ComputedGetters) {
 }
 
 function transition(selection: D3Selection, ms = 0, onEnd: () => void) {
-  return selection.transition().duration(ms).on('end', onEnd)
+  return (selection as any).transition().duration(ms).on('end', onEnd)
 }
