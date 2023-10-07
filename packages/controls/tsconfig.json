@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "declarationDir": "./dist",
     "types": [
-      "vite/client"
+      "vite/client",
+      "vue/macros"
     ]
   },
   "include": [
