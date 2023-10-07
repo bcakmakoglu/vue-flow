@@ -4,9 +4,8 @@ import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { onMounted, ref, watchEffect } from 'vue'
 import { toRef, useEventListener, useResizeObserver } from '@vueuse/core'
-import type { Viewport } from '@xyflow/system'
 import { PanOnScrollMode, clamp, getDimensions, isMacOs } from '@xyflow/system'
-import type { CoordinateExtent, D3ZoomHandler, FlowOptions } from '../../types'
+import type { CoordinateExtent, D3ZoomHandler, FlowOptions, ViewportTransform } from '../../types'
 import { useKeyPress, useVueFlow, useWindow } from '../../composables'
 import { ErrorCode, VueFlowError, warn } from '../../utils'
 import Pane from '../Pane/Pane.vue'
@@ -55,7 +54,7 @@ let zoomedWithRightMouseButton = false
 
 let mouseButton = 0
 
-let prevTransform: Viewport = {
+let prevTransform: ViewportTransform = {
   x: 0,
   y: 0,
   zoom: 0,
@@ -191,7 +190,7 @@ onMounted(() => {
     // if the target element is inside an element with the nopan class, we prevent panning
     if (
       isWrappedWithClass(event, noPanClassName.value) &&
-      (event.type !== 'wheel' || (panOnScroll.value && event.type === 'wheel' && !zoomKeyPressed.value))
+      (event.type !== 'wheel' || (panOnScroll.value && event.type === 'wheel'))
     ) {
       return false
     }
@@ -345,7 +344,7 @@ function wheelDelta(event: any) {
   return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
 }
 
-function viewChanged(prevViewport: Viewport, eventTransform: ZoomTransform) {
+function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransform) {
   return (
     (prevViewport.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
     (prevViewport.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
@@ -353,7 +352,7 @@ function viewChanged(prevViewport: Viewport, eventTransform: ZoomTransform) {
   )
 }
 
-function eventToFlowTransform(eventTransform: ZoomTransform): Viewport {
+function eventToFlowTransform(eventTransform: ZoomTransform): ViewportTransform {
   return {
     x: eventTransform.x,
     y: eventTransform.y,

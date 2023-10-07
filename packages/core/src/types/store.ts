@@ -12,7 +12,6 @@ import type {
   SelectionMode,
   SelectionRect,
   SnapGrid,
-  Viewport,
   XYPosition,
 } from '@xyflow/system'
 import type { ElementData, Elements, FlowElements, FlowExportObject, FlowOptions } from './flow'
@@ -20,8 +19,8 @@ import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent }
 import type { ConnectionLineOptions, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
-import type { D3Selection, D3Zoom, D3ZoomHandler, ViewportFunctions } from './zoom'
-import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
+import type { D3Selection, D3Zoom, D3ZoomHandler, ViewportFunctions, ViewportTransform } from './zoom'
+import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ValidConnectionFunc } from './handle'
 
@@ -53,7 +52,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   minZoom: number
   /** use setMaxZoom action to change maxZoom */
   maxZoom: number
-  defaultViewport: Partial<Viewport>
+  defaultViewport: Partial<ViewportTransform>
   /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent | CoordinateExtentRange
@@ -61,7 +60,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** viewport dimensions - do not change! */
   readonly dimensions: Dimensions
   /** viewport transform x, y, z - do not change!  */
-  readonly viewport: Viewport
+  readonly viewport: ViewportTransform
   /** if true will skip rendering any elements currently not inside viewport until they become visible */
   onlyRenderVisibleElements: boolean
   nodesSelectionActive: boolean
@@ -180,9 +179,13 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
-export type FindNode = <T extends GraphNode = GraphNode>(id: string | undefined | null) => T | undefined
+export type FindNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+  id: string | undefined | null,
+) => GraphNode<Data, CustomEvents> | undefined
 
-export type FindEdge = <T extends GraphEdge = GraphEdge>(id: string | undefined | null) => T | undefined
+export type FindEdge = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+  id: string | undefined | null,
+) => GraphEdge<Data, CustomEvents> | undefined
 
 export type GetIntersectingNodes = (
   node: (Partial<Node> & { id: Node['id'] }) | Rect,

@@ -1,8 +1,9 @@
 import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
 import type { D3ZoomEvent } from 'd3-zoom'
-import type { Connection, OnConnectStartParams, Viewport } from '@xyflow/system'
+import type { Connection, OnConnectStartParams } from '@xyflow/system'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
+import type { ViewportTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
 import type { VueFlowError } from '~/utils/errors'
@@ -63,18 +64,18 @@ export interface FlowEvents {
   } & OnConnectStartParams
   clickConnectEnd: MouseEvent | TouchEvent | undefined
   paneReady: VueFlowStore
-  move: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: Viewport }
-  moveStart: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: Viewport }
-  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: Viewport }
+  move: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
+  moveStart: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
+  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
   selectionDragStart: NodeDragEvent
   selectionDrag: NodeDragEvent
   selectionDragStop: NodeDragEvent
   selectionContextMenu: { event: MouseEvent; nodes: GraphNode[] }
   selectionStart: MouseEvent
   selectionEnd: MouseEvent
-  viewportChangeStart: Viewport
-  viewportChange: Viewport
-  viewportChangeEnd: Viewport
+  viewportChangeStart: ViewportTransform
+  viewportChange: ViewportTransform
+  viewportChangeEnd: ViewportTransform
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent

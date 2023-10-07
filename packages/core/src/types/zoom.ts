@@ -1,25 +1,39 @@
 import type { Selection } from 'd3-selection'
 import type { ZoomBehavior } from 'd3-zoom'
-import type {
-  FitBoundsOptions,
-  FitViewOptionsBase,
-  Rect,
-  SetCenterOptions,
-  Viewport,
-  ViewportHelperFunctionOptions,
-  XYPosition,
-} from '@xyflow/system'
+import type { Rect, XYPosition } from '@xyflow/system'
 
 export type D3Zoom = ZoomBehavior<HTMLDivElement, unknown>
 export type D3Selection = Selection<HTMLDivElement, any, any, any>
 export type D3ZoomHandler = (this: HTMLDivElement, event: any, d: unknown) => void
 
-export interface FitViewParams extends Omit<FitViewOptionsBase<any>, 'nodes' | 'nodeOrigin'> {
-  nodes?: string[]
+export interface TransitionOptions {
+  duration?: number
+}
+
+export type FitViewParams = {
+  padding?: number
+  includeHiddenNodes?: boolean
+  minZoom?: number
+  maxZoom?: number
   offset?: {
     x?: number
     y?: number
   }
+  nodes?: string[]
+} & TransitionOptions
+
+export interface ViewportTransform {
+  x: number
+  y: number
+  zoom: number
+}
+
+export type SetCenterOptions = TransitionOptions & {
+  zoom?: number
+}
+
+export type FitBoundsOptions = TransitionOptions & {
+  padding?: number
 }
 
 /** Fit the viewport around visible nodes */
@@ -35,16 +49,16 @@ export type SetCenter = (x: number, y: number, options?: SetCenterOptions) => Pr
 export type FitBounds = (bounds: Rect, options?: FitBoundsOptions) => Promise<boolean>
 
 /** zoom in/out */
-export type ZoomInOut = (options?: ViewportHelperFunctionOptions) => Promise<boolean>
+export type ZoomInOut = (options?: TransitionOptions) => Promise<boolean>
 
 /** zoom to a specific level */
-export type ZoomTo = (zoomLevel: number, options?: ViewportHelperFunctionOptions) => Promise<boolean>
+export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => Promise<boolean>
 
 /** get current viewport transform */
-export type GetViewport = () => Viewport
+export type GetViewport = () => ViewportTransform
 
 /** set current viewport transform */
-export type SetViewport = (transform: Viewport, options?: ViewportHelperFunctionOptions) => Promise<boolean>
+export type SetViewport = (transform: ViewportTransform, options?: TransitionOptions) => Promise<boolean>
 
 export interface ViewportFunctions {
   zoomIn: ZoomInOut

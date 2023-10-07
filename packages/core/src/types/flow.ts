@@ -1,19 +1,23 @@
 import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type {
-  Connection,
-  ConnectionLineType,
-  ConnectionMode,
-  OnConnectStartParams,
-  PanOnScrollMode,
-  SelectionMode,
-  SnapGrid,
-  Viewport,
-} from '@xyflow/system'
+import type { Connection, ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode, SnapGrid } from '@xyflow/system'
+import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
+import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
+import type { ConnectionLineOptions, Connector } from './connection'
+import type { ViewportTransform } from './zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
-import type { ConnectionLineOptions, ConnectionLineProps, Connector } from './connection'
+import type {
+  Connection,
+  ConnectionLineOptions,
+  ConnectionLineProps,
+  ConnectionLineType,
+  ConnectionMode,
+  Connector,
+  OnConnectStartParams,
+} from './connection'
+import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { CustomEvent, EdgeMouseEvent, EdgeUpdateEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
 import type { ValidConnectionFunc } from './handle'
@@ -81,7 +85,7 @@ export interface FlowExportObject {
   position: [x: number, y: number]
   /** @deprecated use `viewport` instead */
   zoom: number
-  viewport: Viewport
+  viewport: ViewportTransform
 }
 
 export interface FlowProps {
@@ -119,7 +123,7 @@ export interface FlowProps {
   panOnDrag?: boolean | number[]
   minZoom?: number
   maxZoom?: number
-  defaultViewport?: Partial<Viewport>
+  defaultViewport?: Partial<ViewportTransform>
   translateExtent?: CoordinateExtent
   nodeExtent?: CoordinateExtent | CoordinateExtentRange
   defaultMarkerColor?: string
@@ -156,6 +160,10 @@ export interface FlowProps {
 
   autoPanOnConnect?: boolean
   autoPanOnNodeDrag?: boolean
+
+  __experimentalFeatures?: {
+    nestedFlow?: boolean
+  }
 }
 
 // Todo: Remove in next major version
@@ -194,18 +202,18 @@ export interface FlowEmits {
     } & OnConnectStartParams,
   ): void
   (event: 'clickConnectEnd', connectionEvent?: MouseEvent): void
-  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: Viewport }): void
-  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: Viewport }): void
-  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: Viewport }): void
+  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
+  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
+  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
   (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
   (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
   (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
   (event: 'selectionStart', selectionEvent: MouseEvent): void
   (event: 'selectionEnd', selectionEvent: MouseEvent): void
-  (event: 'viewportChangeStart', viewport: Viewport): void
-  (event: 'viewportChange', viewport: Viewport): void
-  (event: 'viewportChangeEnd', viewport: Viewport): void
+  (event: 'viewportChangeStart', viewport: ViewportTransform): void
+  (event: 'viewportChange', viewport: ViewportTransform): void
+  (event: 'viewportChangeEnd', viewport: ViewportTransform): void
   (event: 'paneReady', paneEvent: VueFlowStore): void
   (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
   (event: 'paneClick', paneEvent: MouseEvent): void
