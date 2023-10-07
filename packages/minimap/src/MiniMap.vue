@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CoordinateExtent, GraphNode, PanelPosition } from '@vue-flow/core'
-import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
+import { Panel, getBoundsOfRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
@@ -58,7 +58,8 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   nodeClassName instanceof Function ? nodeClassName : ((() => nodeClassName) as MiniMapNodeFunc),
 )
 
-const bb = computed(() => getRectOfNodes(nodes.value))
+// todo: fix typecasting
+const bb = computed(() => getRectOfNodes(nodes.value as any[]))
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
@@ -67,7 +68,7 @@ const viewBB = computed(() => ({
   height: dimensions.value.height / viewport.value.zoom,
 }))
 
-const boundingRect = computed(() => (nodes.value && nodes.value.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value))
+const boundingRect = computed(() => (nodes.value && nodes.value.length ? getBoundsOfRects(bb.value, viewBB.value) : viewBB.value))
 
 const viewScale = computed(() => {
   const scaledWidth = boundingRect.value.width / elementWidth.value

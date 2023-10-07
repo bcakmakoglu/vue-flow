@@ -36,7 +36,8 @@ const isActive = toRef(() =>
     : nodes.value.length === 1 && nodes.value[0].selected && getSelectedNodes.value.length === 1,
 )
 
-const nodeRect = computed(() => getRectOfNodes(nodes.value))
+// todo: fix typecasting
+const nodeRect = computed(() => getRectOfNodes(nodes.value as any[]))
 
 const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.computedPosition.z || 1) + 1)))
 

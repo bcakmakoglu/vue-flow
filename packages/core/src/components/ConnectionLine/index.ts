@@ -112,20 +112,26 @@ const ConnectionLine = defineComponent({
         targetPosition: toPosition,
       }
 
-      if (type === ConnectionLineType.Bezier) {
-        // we assume the destination position is opposite to the source position
-        ;[dAttr] = getBezierPath(pathParams)
-      } else if (type === ConnectionLineType.Step) {
-        ;[dAttr] = getSmoothStepPath({
-          ...pathParams,
-          borderRadius: 0,
-        })
-      } else if (type === ConnectionLineType.SmoothStep) {
-        ;[dAttr] = getSmoothStepPath(pathParams)
-      } else if (type === ConnectionLineType.SimpleBezier) {
-        ;[dAttr] = getSimpleBezierPath(pathParams)
-      } else {
-        ;[dAttr] = getStraightPath(pathParams)
+      switch (type) {
+        case ConnectionLineType.Bezier:
+          // we assume the destination position is opposite to the source position
+          ;[dAttr] = getBezierPath(pathParams)
+          break
+        case ConnectionLineType.Step:
+          ;[dAttr] = getSmoothStepPath({
+            ...pathParams,
+            borderRadius: 0,
+          })
+          break
+        case ConnectionLineType.SmoothStep:
+          ;[dAttr] = getSmoothStepPath(pathParams)
+          break
+        case ConnectionLineType.SimpleBezier:
+          ;[dAttr] = getSimpleBezierPath(pathParams)
+          break
+        default:
+          ;[dAttr] = getStraightPath(pathParams)
+          break
       }
 
       return h(
