@@ -1,18 +1,6 @@
-import { getEventPosition } from '.'
-import { ConnectionMode } from '~/types'
-import type {
-  Actions,
-  Connection,
-  ConnectionStatus,
-  Dimensions,
-  GraphEdge,
-  GraphNode,
-  HandleType,
-  NodeHandleBounds,
-  ValidConnectionFunc,
-  ValidHandleResult,
-  XYPosition,
-} from '~/types'
+import type { Connection, ConnectionStatus, Dimensions, HandleType, NodeHandleBounds, XYPosition } from '@xyflow/system'
+import { ConnectionMode, getEventPosition } from '@xyflow/system'
+import type { Actions, GraphEdge, GraphNode, ValidConnectionFunc, ValidHandleResult } from '~/types'
 
 export interface ConnectionHandle extends XYPosition, Dimensions {
   id: string | null

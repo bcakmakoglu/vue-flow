@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SelectionRect } from '~/types'
+import type { SelectionRect } from '@xyflow/system'
 
 defineProps<{ userSelectionRect: SelectionRect }>()
 </script>

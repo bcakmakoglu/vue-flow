@@ -33,6 +33,27 @@ export {
   rendererPointToPoint,
   getNodesInside,
   getBoundsOfRects,
+  getMarkerId,
+  Position,
+  Dimensions,
+  XYPosition,
+  XYZPosition,
+  Rect,
+  Box,
+  SelectionMode,
+  SelectionRect,
+  Connection,
+  ConnectingHandle,
+  ConnectionHandle,
+  ConnectionMode,
+  ConnectionLineType,
+  ConnectionStatus,
+  PanOnScrollMode,
+  SnapGrid,
+  MarkerType,
+  EdgePosition,
+  HandleElement,
+  NodeHandleBounds,
 } from '@xyflow/system'
 
 export { getSimpleBezierPath, getSimpleEdgeCenter } from './components/Edges/utils'
@@ -47,8 +68,6 @@ export {
   getOutgoers,
   getIncomers,
   getConnectedEdges,
-  getMarkerId,
-  getBoundsofRects,
   connectionExists,
 } from './utils/graph'
 

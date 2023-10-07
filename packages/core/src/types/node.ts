@@ -1,7 +1,8 @@
 import type { Component, VNode } from 'vue'
-import type { ClassFunc, Dimensions, ElementData, Position, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
+import type { Dimensions, NodeHandleBounds, Position, XYPosition, XYZPosition } from '@xyflow/system'
+import type { ClassFunc, ElementData, StyleFunc, Styles } from './flow'
 import type { NodeComponent } from './components'
-import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './handle'
+import type { HandleConnectable, ValidConnectionFunc } from './handle'
 import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] **/
@@ -16,11 +17,6 @@ export interface CoordinateExtentRange {
     | [paddingY: number, paddingX: number]
     | [paddingTop: number, paddingX: number, paddingBottom: number]
     | [paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number]
-}
-
-export interface NodeHandleBounds {
-  source: HandleElement[] | null
-  target: HandleElement[] | null
 }
 
 /** @deprecated will be removed in next major release */

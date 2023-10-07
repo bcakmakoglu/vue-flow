@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 import type { NodeBase } from '@xyflow/system'
 import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system'
 import type { ComputedGetters, D3Selection, GraphNode, Project, State, ViewportFunctions } from '~/types'
+import { warn } from '~/utils'
 
 interface ExtendedViewport extends ViewportFunctions {
   initialized: boolean

@@ -1,34 +1,12 @@
-import type { Dimensions, Position, XYPosition } from './flow'
-import type { Connection } from './connection'
+import type { ConnectingHandle, Connection, HandleType, Position } from '@xyflow/system'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
-
-export type HandleType = 'source' | 'target'
-
-export interface HandleElement extends XYPosition, Dimensions {
-  id?: string | null
-  position: Position
-}
-
-export interface ConnectionHandle {
-  id: string | null
-  type: HandleType | null
-  nodeId: string
-  x: number
-  y: number
-}
 
 export interface ValidHandleResult {
   endHandle: ConnectingHandle | null
   handleDomNode: Element | null
   isValid: boolean
   connection: Connection
-}
-
-export interface ConnectingHandle {
-  nodeId: string
-  type: HandleType
-  handleId: string | null
 }
 
 /** A valid connection function can determine if an attempted connection is valid or not, i.e. abort creating a new edge */

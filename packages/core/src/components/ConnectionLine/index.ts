@@ -1,9 +1,16 @@
 import type { DefineComponent } from 'vue'
 import { defineComponent, h, inject } from 'vue'
-import { getBezierPath, getSmoothStepPath } from '@xyflow/system'
+import {
+  ConnectionLineType,
+  ConnectionMode,
+  Position,
+  getBezierPath,
+  getMarkerId,
+  getSmoothStepPath,
+  getStraightPath,
+} from '@xyflow/system'
 import type { ConnectionLineProps } from '~/types'
-import { ConnectionLineType, ConnectionMode, Position } from '~/types'
-import { getHandlePosition, getMarkerId } from '~/utils'
+import { getHandlePosition } from '~/utils'
 import { useVueFlow } from '~/composables'
 import { Slots } from '~/context'
 import { getSimpleBezierPath } from '~/components/Edges/utils'
@@ -118,7 +125,7 @@ const ConnectionLine = defineComponent({
       } else if (type === ConnectionLineType.SimpleBezier) {
         ;[dAttr] = getSimpleBezierPath(pathParams)
       } else {
-        dAttr = `M${fromX},${fromY} ${toX},${toY}`
+        ;[dAttr] = getStraightPath(pathParams)
       }
 
       return h(

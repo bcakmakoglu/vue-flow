@@ -1,6 +1,7 @@
 import { unref } from 'vue'
+import type { Connection } from '@xyflow/system'
 import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
-import type { Actions, Connection, Edge, GraphEdge, GraphNode, Node, State } from '~/types'
+import type { Actions, Edge, GraphEdge, GraphNode, Node, State } from '~/types'
 
 type NonUndefined<T> = T extends undefined ? never : T
 

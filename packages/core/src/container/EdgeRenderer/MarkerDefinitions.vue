@@ -1,34 +1,52 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
+import type { MarkerType } from '@xyflow/system'
+import { getMarkerId } from '@xyflow/system'
+import type { EdgeMarkerType, MarkerProps } from '../../types'
 import { useVueFlow } from '../../composables'
-import { getMarkerId } from '../../utils'
 import MarkerSymbols from './MarkerSymbols.vue'
 
-const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = $(useVueFlow())
+const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = useVueFlow()
+
+function generateMarkerProps(marker: EdgeMarkerType | undefined, existingIds: string[]): MarkerProps | false {
+  if (marker) {
+    const markerId = getMarkerId(marker, vueFlowId)
+
+    if (!existingIds.includes(markerId)) {
+      if (typeof marker === 'object') {
+        return { ...marker, id: markerId, color: marker.color || defaultColor.value }
+      } else {
+        return { id: markerId, color: defaultColor.value, type: marker as MarkerType }
+      }
+    }
+  }
+
+  return false
+}
 
 const markers = computed(() => {
   const ids: string[] = []
   const markers: MarkerProps[] = []
 
-  const createMarkers = (marker?: EdgeMarkerType) => {
-    if (marker) {
-      const markerId = getMarkerId(marker, vueFlowId)
-      if (!ids.includes(markerId)) {
-        if (typeof marker === 'object') {
-          markers.push({ ...marker, id: markerId, color: marker.color || defaultColor })
-        } else {
-          markers.push({ id: markerId, color: defaultColor, type: marker as MarkerType })
-        }
-        ids.push(markerId)
-      }
+  ;[connectionLineOptions.value.markerEnd, connectionLineOptions.value.markerStart].forEach((markerDefinition) => {
+    const markerProps = generateMarkerProps(markerDefinition, ids)
+
+    if (markerProps) {
+      markers.push(markerProps)
+      ids.push(markerProps.id)
     }
-  }
+  })
 
-  ;[connectionLineOptions.markerEnd, connectionLineOptions.markerStart].forEach(createMarkers)
+  edges.value.reduce<MarkerProps[]>((markers, edge) => {
+    ;[edge.markerStart, edge.markerEnd].forEach((markerDefinition) => {
+      const markerProps = generateMarkerProps(markerDefinition, ids)
 
-  edges.reduce<MarkerProps[]>((markers, edge) => {
-    ;[edge.markerStart, edge.markerEnd].forEach(createMarkers)
+      if (markerProps) {
+        markers.push(markerProps)
+        ids.push(markerProps.id)
+      }
+    })
+
     return markers.sort((a, b) => a.id.localeCompare(b.id))
   }, markers)
 

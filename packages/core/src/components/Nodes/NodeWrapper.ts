@@ -1,8 +1,9 @@
 import { computed, defineComponent, h, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { until, useVModel } from '@vueuse/core'
+import { isInputDOMNode } from '@xyflow/system'
 import type { GraphNode, HandleConnectable, NodeComponent } from '~/types'
 import { NodeId, NodeRef } from '~/context'
-import { isInputDOMNode, useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '~/composables'
+import { useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '~/composables'
 import {
   ARIA_NODE_DESC_KEY,
   arrowKeyDiffs,

@@ -1,8 +1,8 @@
 import { defineComponent, h } from 'vue'
+import { Position } from '@xyflow/system'
 import BaseEdge from './BaseEdge.vue'
 import { getSimpleBezierPath } from './utils'
 import type { SimpleBezierEdgeProps } from '~/types'
-import { Position } from '~/types'
 
 const SimpleBezierEdge = defineComponent<SimpleBezierEdgeProps>({
   name: 'SimpleBezierEdge',

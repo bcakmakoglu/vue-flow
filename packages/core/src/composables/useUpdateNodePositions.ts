@@ -1,5 +1,6 @@
+import type { XYPosition } from '@xyflow/system'
 import { useVueFlow } from './useVueFlow'
-import type { NodeDragItem, XYPosition } from '~/types'
+import type { NodeDragItem } from '~/types'
 import { calcNextPosition } from '~/utils'
 
 export function useUpdateNodePositions() {

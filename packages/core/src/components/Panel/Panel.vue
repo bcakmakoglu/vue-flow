@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { toRef } from '@vueuse/core'
 import type { PanelProps } from '../../types/panel'
 import { useVueFlow } from '../../composables'
 
@@ -7,7 +7,7 @@ const props = defineProps<PanelProps>()
 
 const { userSelectionActive } = useVueFlow()
 
-const positionClasses = computed(() => `${props.position}`.split('-'))
+const positionClasses = toRef(() => `${props.position}`.split('-'))
 </script>
 
 <script lang="ts">

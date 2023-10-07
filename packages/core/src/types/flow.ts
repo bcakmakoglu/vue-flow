@@ -1,5 +1,10 @@
 import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
+import type { Connection, ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode, SnapGrid } from '@xyflow/system'
+import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
+import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
+import type { ConnectionLineOptions, Connector } from './connection'
+import type { ViewportTransform } from './zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
@@ -72,47 +77,6 @@ export type ClassFunc<ElementType extends FlowElement = FlowElement> = (element:
 
 /** @deprecated will be removed in the next major version */
 export type StyleFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => Styles | void
-
-/** Handle Positions */
-export enum Position {
-  Left = 'left',
-  Top = 'top',
-  Right = 'right',
-  Bottom = 'bottom',
-}
-
-// todo: Rename to `Point`
-export interface XYPosition {
-  x: number
-  y: number
-}
-
-// todo: Rename to `AbsolutePoint`
-export type XYZPosition = XYPosition & { z: number }
-
-export interface Dimensions {
-  width: number
-  height: number
-}
-
-export interface Box extends XYPosition {
-  x2: number
-  y2: number
-}
-
-export interface Rect extends Dimensions, XYPosition {}
-
-export type SnapGrid = [x: number, y: number]
-
-export interface SelectionRect extends Rect {
-  startX: number
-  startY: number
-}
-
-export enum SelectionMode {
-  Partial = 'partial',
-  Full = 'full',
-}
 
 export interface FlowExportObject {
   nodes: Node[]

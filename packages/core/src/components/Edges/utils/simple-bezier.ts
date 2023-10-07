@@ -1,5 +1,4 @@
-import { getBezierEdgeCenter } from '@xyflow/system'
-import { Position } from '~/types'
+import { Position, getBezierEdgeCenter } from '@xyflow/system'
 
 export interface GetSimpleBezierPathParams {
   sourceX: number

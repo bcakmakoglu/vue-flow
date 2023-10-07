@@ -1,32 +1,28 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type {
+  ConnectingHandle,
+  Connection,
+  ConnectionLineType,
+  ConnectionMode,
+  ConnectionStatus,
   Dimensions,
-  Elements,
-  FlowElements,
-  FlowExportObject,
-  FlowOptions,
+  PanOnScrollMode,
   Rect,
   SelectionMode,
   SelectionRect,
   SnapGrid,
   XYPosition,
-} from './flow'
+} from '@xyflow/system'
+import type { ElementData, Elements, FlowElements, FlowExportObject, FlowOptions } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
-import type {
-  Connection,
-  ConnectionLineOptions,
-  ConnectionLineType,
-  ConnectionMode,
-  ConnectionStatus,
-  Connector,
-} from './connection'
+import type { ConnectionLineOptions, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
-import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
+import type { D3Selection, D3Zoom, D3ZoomHandler, ViewportFunctions, ViewportTransform } from './zoom'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
-import type { ConnectingHandle, ValidConnectionFunc } from './handle'
+import type { ValidConnectionFunc } from './handle'
 
 export interface UpdateNodeDimensionsParams {
   id: string

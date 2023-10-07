@@ -1,13 +1,10 @@
 import { markRaw } from 'vue'
-import { getOverlappingArea } from '@xyflow/system'
+import type { Connection, XYZPosition } from '@xyflow/system'
 import { isDef, warn } from '.'
 import type {
   Actions,
-  Box,
-  Connection,
   DefaultEdgeOptions,
   Edge,
-  EdgeMarkerType,
   Element,
   ElementData,
   Elements,
@@ -16,9 +13,6 @@ import type {
   GraphNode,
   MaybeElement,
   Node,
-  Rect,
-  ViewportTransform,
-  XYZPosition,
 } from '~/types'
 
 // todo: refactor generic to use MaybeElement
@@ -39,10 +33,6 @@ export function isNode<Data = ElementData>(element: MaybeElement): element is No
 // todo: refactor generic to use MaybeElement
 export function isGraphNode<Data = ElementData>(element: MaybeElement): element is GraphNode<Data> {
   return isNode(element) && 'computedPosition' in element
-}
-
-export function isRect(obj: any): obj is Rect {
-  return !!obj.width && !!obj.height && !!obj.x && !!obj.y
 }
 
 export function parseNode(node: Node, defaults: Partial<GraphNode> = {}): GraphNode {
@@ -246,74 +236,6 @@ export function updateEdge(oldEdge: Edge, newConnection: Connection, elements: E
   return elements.filter((e) => e.id !== oldEdge.id)
 }
 
-function getBoundsOfBoxes(box1: Box, box2: Box): Box {
-  return {
-    x: Math.min(box1.x, box2.x),
-    y: Math.min(box1.y, box2.y),
-    x2: Math.max(box1.x2, box2.x2),
-    y2: Math.max(box1.y2, box2.y2),
-  }
-}
-
-export function rectToBox({ x, y, width, height }: Rect): Box {
-  return {
-    x,
-    y,
-    x2: x + width,
-    y2: y + height,
-  }
-}
-
-export function boxToRect({ x, y, x2, y2 }: Box): Rect {
-  return {
-    x,
-    y,
-    width: x2 - x,
-    height: y2 - y,
-  }
-}
-
-// todo: fix typo
-export function getBoundsofRects(rect1: Rect, rect2: Rect) {
-  return boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)))
-}
-
-export function getNodesInside(
-  nodes: GraphNode[],
-  rect: Rect,
-  { x: tx, y: ty, zoom: tScale }: ViewportTransform = { x: 0, y: 0, zoom: 1 },
-  partially = false,
-  // set excludeNonSelectableNodes if you want to pay attention to the nodes "selectable" attribute
-  excludeNonSelectableNodes = false,
-) {
-  const paneRect = {
-    x: (rect.x - tx) / tScale,
-    y: (rect.y - ty) / tScale,
-    width: rect.width / tScale,
-    height: rect.height / tScale,
-  }
-
-  return nodes.filter((node) => {
-    const { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 }, selectable } = node
-
-    if (excludeNonSelectableNodes && !selectable) {
-      return false
-    }
-
-    const nodeRect = { ...computedPosition, width: dimensions.width || 0, height: dimensions.height || 0 }
-    const overlappingArea = getOverlappingArea(paneRect, nodeRect)
-    const notInitialized =
-      typeof dimensions.width === 'undefined' ||
-      typeof dimensions.height === 'undefined' ||
-      dimensions.width === 0 ||
-      dimensions.height === 0
-
-    const partiallyVisible = partially && overlappingArea > 0
-    const area = dimensions.width * dimensions.height
-    return notInitialized || partiallyVisible || overlappingArea >= area
-  })
-}
-
 export function getConnectedEdges<E extends Edge>(nodesOrId: Node[] | string, edges: E[]) {
   const nodeIds = new Set()
 
@@ -369,21 +291,4 @@ export function isParentSelected(node: GraphNode, findNode: Actions['findNode'])
   }
 
   return isParentSelected(parent, findNode)
-}
-
-export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: string) {
-  if (typeof marker === 'undefined') {
-    return ''
-  }
-
-  if (typeof marker === 'string') {
-    return marker
-  }
-
-  const idPrefix = vueFlowId ? `${vueFlowId}__` : ''
-
-  return `${idPrefix}${Object.keys(marker)
-    .sort()
-    .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
-    .join('&')}`
 }

@@ -2,13 +2,11 @@
 import { ref } from 'vue'
 import { toRef } from '@vueuse/core'
 import type { NodeBase } from '@xyflow/system'
-import { getNodesInside } from '@xyflow/system'
+import { SelectionMode, getNodesInside } from '@xyflow/system'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import type { GraphNode } from '../../types'
-import { SelectionMode } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
-import { getConnectedEdges } from '../../utils'
 import { getMousePosition } from './utils'
 
 const { isSelecting } = defineProps<{ isSelecting: boolean }>()
@@ -17,7 +15,6 @@ const {
   id,
   vueFlowRef,
   getNodes,
-  getEdges,
   viewport,
   emits,
   userSelectionActive,
@@ -35,6 +32,7 @@ const {
   deleteKeyCode,
   multiSelectionKeyCode,
   multiSelectionActive,
+  getConnectedEdges,
 } = useVueFlow()
 
 const container = ref<HTMLDivElement | null>(null)
@@ -190,7 +188,7 @@ function onMouseMove(event: MouseEvent) {
     selectionMode.value === SelectionMode.Partial,
   )
 
-  const selectedEdges = getConnectedEdges(selectedNodes as GraphNode[], getEdges.value)
+  const selectedEdges = getConnectedEdges(selectedNodes as GraphNode[])
 
   prevSelectedNodesCount.value = selectedNodes.length
   prevSelectedEdgesCount.value = selectedEdges.length

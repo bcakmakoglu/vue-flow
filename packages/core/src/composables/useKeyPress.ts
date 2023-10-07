@@ -1,24 +1,8 @@
 import { ref, watch } from 'vue'
 import type { KeyFilter, KeyPredicate, MaybeRefOrGetter } from '@vueuse/core'
 import { onKeyStroke, toValue, useEventListener } from '@vueuse/core'
+import { isInputDOMNode } from '@xyflow/system'
 import { useWindow } from './useWindow'
-
-export function isInputDOMNode(event: KeyboardEvent): boolean {
-  const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
-
-  const hasAttribute = typeof target.hasAttribute === 'function' ? target.hasAttribute('contenteditable') : false
-
-  const closest = typeof target.closest === 'function' ? target.closest('.nokey') : null
-
-  // when an input field is focused we don't want to trigger deletion or movement of nodes
-  return (
-    target instanceof HTMLInputElement ||
-    target instanceof HTMLTextAreaElement ||
-    target instanceof HTMLSelectElement ||
-    hasAttribute ||
-    !!closest
-  )
-}
 
 // we want to be able to do a multi selection event if we are in an input field
 function wasModifierPressed(event: KeyboardEvent) {

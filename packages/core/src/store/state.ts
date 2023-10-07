@@ -1,7 +1,6 @@
-import { infiniteExtent, isMacOs } from '@xyflow/system'
+import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode, infiniteExtent, isMacOs } from '@xyflow/system'
 import { createHooks } from './hooks'
 import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '~/types'
-import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '~/types'
 import {
   BezierEdge,
   DefaultNode,

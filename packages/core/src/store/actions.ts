@@ -1,6 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
+import type { Rect } from '@xyflow/system'
 import { clamp, getDimensions, getHandleBounds, getOverlappingArea, isRectObject as isRect, nodeToRect } from '@xyflow/system'
 import { useState } from './state'
 import type {
@@ -20,7 +21,6 @@ import type {
   NodePositionChange,
   NodeRemoveChange,
   NodeSelectionChange,
-  Rect,
   State,
 } from '~/types'
 import { useViewport } from '~/composables'
@@ -371,7 +371,7 @@ export function useActions(
 
     const validEdges = state.isValidConnection
       ? nextEdges.filter((edge) =>
-          state.isValidConnection!(edge, {
+          state.isValidConnection!(edge as any, {
             edges: state.edges,
             nodes: state.nodes,
             sourceNode: findNode(edge.source)!,
@@ -445,7 +445,8 @@ export function useActions(
 
     const validEdges = state.isValidConnection
       ? nextEdges.filter((edge) =>
-          state.isValidConnection!(edge, {
+          // todo: fix typing
+          state.isValidConnection!(edge as any, {
             edges: state.edges,
             nodes: state.nodes,
             sourceNode: findNode(edge.source)!,

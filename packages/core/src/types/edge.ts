@@ -1,44 +1,19 @@
 import type { CSSProperties, Component, VNode, VNodeRef } from 'vue'
-import type { ClassFunc, ElementData, Position, StyleFunc, Styles } from './flow'
+import type { EdgeMarker as EdgeMarkerBase, EdgePosition, MarkerType } from '@xyflow/system'
+import type { ClassFunc, ElementData, StyleFunc, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { EdgeComponent, EdgeTextProps } from './components'
 import type { CustomEvent, EdgeEventsHandler, EdgeEventsOn } from './hooks'
 
-/** Edge markers */
-export enum MarkerType {
-  Arrow = 'arrow',
-  ArrowClosed = 'arrowclosed',
-}
-
 /** Edge marker definition */
-export interface EdgeMarker {
+export interface EdgeMarker extends EdgeMarkerBase {
   /** Unique marker id */
   id?: string
-  /** Marker type */
-  type: MarkerType
-  /** Marker color */
-  color?: string
-  /** Marker width */
-  width?: number
-  /** Marker height */
-  height?: number
-  /** Marker units */
-  markerUnits?: string
-  /** Marker orientation */
-  orient?: string
-  /** Marker stroke width */
-  strokeWidth?: number
 }
 
-export interface MarkerProps {
+export interface MarkerProps extends EdgeMarker {
   id: string
-  type: MarkerType | string
-  color?: string
-  width?: number
-  height?: number
-  markerUnits?: string
-  orient?: string
-  strokeWidth?: number
+  type: MarkerType
 }
 
 export type EdgeMarkerType = string | MarkerType | EdgeMarker
@@ -142,13 +117,6 @@ export type Edge<Data = ElementData, CustomEvents extends Record<string, CustomE
 
 export type DefaultEdgeOptions = Omit<Edge, 'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle'>
 
-export interface EdgePositions {
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-}
-
 /** Internal edge type */
 export type GraphEdge<
   Data = ElementData,
@@ -161,12 +129,12 @@ export type GraphEdge<
   data: Data
   events: Partial<EdgeEventsHandler<CustomEvents>>
   type: Type
-} & EdgePositions
+} & EdgePosition
 
 /** these props are passed to edge components */
 export interface EdgeProps<Data = ElementData, CustomEvents = {}, Type extends string = string>
   extends EdgeLabelOptions,
-    EdgePositions {
+    EdgePosition {
   id: string
   sourceNode: GraphNode
   targetNode: GraphNode
@@ -176,8 +144,6 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}, Type extends s
   label?: string | VNode | Component<EdgeTextProps> | Object
   style?: CSSProperties
   selected?: boolean
-  sourcePosition: Position
-  targetPosition: Position
   sourceHandleId?: string
   targetHandleId?: string
   animated?: boolean
@@ -204,25 +170,15 @@ export interface BaseEdgeProps extends EdgeLabelOptions {
   ref?: VNodeRef
 }
 
-export type BezierEdgeProps = EdgePositions &
-  BezierPathOptions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+export type BezierEdgeProps = EdgePosition & BezierPathOptions & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
 
-export type SimpleBezierEdgeProps = EdgePositions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+export type SimpleBezierEdgeProps = EdgePosition & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
 
-export type StraightEdgeProps = EdgePositions & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
+export type StraightEdgeProps = EdgePosition & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
 
-export type StepEdgeProps = EdgePositions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+export type StepEdgeProps = EdgePosition & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
 
-export type SmoothStepEdgeProps = EdgePositions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'> &
-  SmoothStepPathOptions
+export type SmoothStepEdgeProps = EdgePosition & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> & SmoothStepPathOptions
 
 export type ToGraphEdge<T extends Edge> = GraphEdge<
   T extends Edge<infer Data> ? Data : never,

@@ -1,6 +1,6 @@
-import { rectToBox } from '.'
-import type { Actions, EdgePositions, GraphEdge, GraphNode, HandleElement, Rect, ViewportTransform, XYPosition } from '~/types'
-import { Position } from '~/types'
+import type { EdgePosition, HandleElement, Rect, XYPosition } from '@xyflow/system'
+import { Position, rectToBox } from '@xyflow/system'
+import type { Actions, GraphEdge, GraphNode, ViewportTransform } from '~/types'
 
 export function getHandlePosition(position: Position, rect: Rect, handle: HandleElement | null): XYPosition {
   const x = (handle?.x ?? 0) + rect.x
@@ -53,7 +53,7 @@ export function getEdgePositions(
   targetNode: GraphNode,
   targetHandle: HandleElement | null,
   targetPosition: Position,
-): EdgePositions {
+): EdgePosition {
   const sourceHandlePos = getHandlePosition(
     sourcePosition,
     {
@@ -76,6 +76,8 @@ export function getEdgePositions(
     sourceY: sourceHandlePos.y,
     targetX: targetHandlePos.x,
     targetY: targetHandlePos.y,
+    sourcePosition,
+    targetPosition,
   }
 }
 

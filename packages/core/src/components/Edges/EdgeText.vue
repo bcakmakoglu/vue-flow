@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
+import type { Rect as RectType } from '@xyflow/system'
 import type { EdgeTextProps } from '../../types/components'
-import type { Rect as RectType } from '../../types'
 
 const {
   x,

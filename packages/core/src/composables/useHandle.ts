@@ -1,7 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toValue } from '@vueuse/core'
 import {
-  type Transform,
   calcAutoPan,
   getEventPosition,
   getHostForElement,
@@ -9,8 +8,9 @@ import {
   pointToRendererPoint,
   rendererPointToPoint,
 } from '@xyflow/system'
+import type { Connection, ConnectionHandle, HandleType, Transform } from '@xyflow/system'
 import { useVueFlow } from './useVueFlow'
-import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
+import type { MouseTouchEvent, ValidConnectionFunc } from '~/types'
 import { getClosestHandle, getConnectionStatus, getHandleLookup, getHandleType, isValidHandle, resetRecentHandle } from '~/utils'
 
 interface UseHandleProps {
@@ -154,7 +154,7 @@ export function useHandle({
             ),
         )
 
-        closestHandle = handle
+        closestHandle = handle as ConnectionHandle | null
 
         if (!autoPanStarted) {
           autoPan()
@@ -244,7 +244,7 @@ export function useHandle({
     const isTarget = toValue(type) === 'target'
 
     if (!connectionClickStartHandle.value) {
-      emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId) })
+      emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId), handleType: toValue(type) })
 
       startConnection({ nodeId: toValue(nodeId), type: toValue(type), handleId: toValue(handleId) }, undefined, event, true)
     } else {

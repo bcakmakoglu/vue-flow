@@ -2,7 +2,8 @@ import type { Ref, ToRefs } from 'vue'
 import { effectScope, nextTick, onScopeDispose, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { toRef, watchPausable } from '@vueuse/core'
-import type { Connection, FlowProps, VueFlowStore } from '~/types'
+import type { Connection } from '@xyflow/system'
+import type { FlowProps, VueFlowStore } from '~/types'
 import { isDef } from '~/utils'
 
 export function useWatchProps(

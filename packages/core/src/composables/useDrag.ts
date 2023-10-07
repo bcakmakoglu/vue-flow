@@ -5,17 +5,11 @@ import type { Ref } from 'vue'
 import { ref, watch } from 'vue'
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toValue } from '@vueuse/core'
+import type { XYPosition } from '@xyflow/system'
+import { calcAutoPan, getEventPosition } from '@xyflow/system'
 import { useGetPointerPosition, useVueFlow } from '.'
-import {
-  calcAutoPan,
-  calcNextPosition,
-  getDragItems,
-  getEventHandlerParams,
-  getEventPosition,
-  handleNodeClick,
-  hasSelector,
-} from '~/utils'
-import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
+import { calcNextPosition, getDragItems, getEventHandlerParams, handleNodeClick, hasSelector } from '~/utils'
+import type { NodeDragEvent, NodeDragItem } from '~/types'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 
