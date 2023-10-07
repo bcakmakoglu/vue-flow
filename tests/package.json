@@ -16,11 +16,11 @@
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
-    "@vitejs/plugin-vue": "^4.2.3",
-    "cypress": "^12.12.0",
-    "eslint-plugin-cypress": "^2.13.3",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "cypress": "^12.17.4",
+    "eslint-plugin-cypress": "^2.15.1",
     "typescript": "^4.9.5",
-    "vite": "^4.3.7",
-    "vue": "^3.2.25"
+    "vite": "^4.4.11",
+    "vue": "^3.3.4"
   }
 }
