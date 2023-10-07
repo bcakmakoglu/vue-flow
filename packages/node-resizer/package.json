@@ -73,7 +73,7 @@
     "@types/d3-drag": "^3.0.4",
     "@types/d3-selection": "^3.0.7",
     "@vue-flow/core": "workspace:*",
-    "vue-tsc": "^1.8.15"
+    "vue-tsc": "^1.8.16"
   },
   "publishConfig": {
     "access": "public",

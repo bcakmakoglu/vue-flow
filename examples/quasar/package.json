@@ -7,20 +7,20 @@
     "lint": "eslint --ext .js,.ts,.vue ./"
   },
   "dependencies": {
+    "@quasar/extras": "^1.16.7",
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
     "@vue-flow/minimap": "workspace:*",
-    "@quasar/extras": "^1.16.2",
-    "quasar": "^2.11.10",
-    "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "quasar": "^2.12.7",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@quasar/app-vite": "^1.6.2",
     "@tooling/eslint-config": "workspace:*",
-    "@quasar/app-vite": "^1.2.1",
-    "@vitejs/plugin-vue": "^4.1.0",
-    "@types/node": "^18.15.12",
-    "autoprefixer": "^10.4.14"
+    "@types/node": "^18.18.4",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "autoprefixer": "^10.4.16"
   }
 }
