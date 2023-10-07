@@ -143,6 +143,10 @@
   padding-bottom: 0 !important;
 }
 
+.VPFooter {
+  @apply dark:(border-secondary)
+}
+
 .VPNavBar.has-sidebar .content, .VPNav {
   background-color: rgba(var(--vp-c-bg), 0.75);
   backdrop-filter: blur(1px);
