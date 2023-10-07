@@ -8,6 +8,7 @@ function withConfig(viteConfig) {
       extensions: ['.ts', '.vue'],
     },
     build: {
+      minify: false,
       emptyOutDir: false,
       rollupOptions: {
         // make sure to externalize deps that shouldn't be bundled
