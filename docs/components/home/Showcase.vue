@@ -42,7 +42,7 @@
             </div>
 
             <div class="px-1">
-              <a href="https://octai.com" target="_blank">
+              <a href="https://kestra.io" target="_blank">
                 <h2 class="text-3xl mt-6 font-semibold inline-block">Kestra</h2>
               </a>
 
