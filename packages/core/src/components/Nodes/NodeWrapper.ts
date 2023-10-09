@@ -54,6 +54,7 @@ const NodeWrapper = defineComponent({
       ariaLiveMessage,
       snapToGrid,
       snapGrid,
+      nodeDragThreshold,
     } = useVueFlow()
 
     const updateNodePositions = useUpdateNodePositions()
@@ -305,7 +306,7 @@ const NodeWrapper = defineComponent({
     }
 
     function onSelectNode(event: MouseEvent) {
-      if (props.selectable && (!selectNodesOnDrag.value || !props.draggable)) {
+      if (props.selectable && (!selectNodesOnDrag.value || !props.draggable || nodeDragThreshold.value > 0)) {
         handleNodeClick(
           node.value,
           multiSelectionActive.value,
