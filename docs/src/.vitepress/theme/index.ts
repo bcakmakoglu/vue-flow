@@ -16,6 +16,7 @@ export default {
   Layout,
   enhanceApp({ app }) {
     app.use(VueAnimXyz)
+
     inject()
   },
-}
+} as typeof Theme
