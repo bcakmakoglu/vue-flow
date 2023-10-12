@@ -1,4 +1,4 @@
-# Vue Flow: MiniMap
+# Vue Flow: MiniMap Component
 
 This is a minimap component for Vue Flow.
 It can be used to add a minimap to the canvas, which will show a smaller version of the canvas with your nodes.

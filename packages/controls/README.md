@@ -1,4 +1,4 @@
-# Vue Flow: Toolbar Component
+# Vue Flow: Controls Component
 
 This is a control component for Vue Flow.
 It can be used to control the canvas interactions, like zooming in, zooming out, fitting the view and locking interactions.
