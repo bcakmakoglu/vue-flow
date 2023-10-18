@@ -26,6 +26,9 @@ importers:
       '@algolia/client-search':
         specifier: ^4.20.0
         version: 4.20.0
+      '@alwaysmeticulous/recorder-loader':
+        specifier: ^2.77.0
+        version: 2.79.0
       '@animxyz/core':
         specifier: ^0.6.6
         version: 0.6.6
@@ -735,6 +738,10 @@ packages:
       '@algolia/cache-common': 4.20.0
       '@algolia/logger-common': 4.20.0
       '@algolia/requester-common': 4.20.0
+
+  /@alwaysmeticulous/recorder-loader@2.79.0:
+    resolution: {integrity: sha512-fq/Ax8c1twEVkAcXjlHuctgdFxOq7sQL4KzsUp366D5jtUCnquzI2KVu9OvwYEjntt7Ljbv3CH4NSV2ZPdFg9A==}
+    dev: false
 
   /@ampproject/remapping@2.2.1:
     resolution: {integrity: sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==}
@@ -2285,6 +2292,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.5
+      napi-wasm: 1.1.0
     dev: true
     bundledDependencies:
       - napi-wasm
@@ -7678,6 +7686,10 @@ packages:
     resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
     engines: {node: ^14 || ^16 || >=18}
     hasBin: true
+    dev: true
+
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
     dev: true
 
   /natural-compare-lite@1.4.0:
