@@ -3,7 +3,7 @@ import { effectScope, nextTick, onScopeDispose, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { toRef, watchPausable } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '~/types'
-import { isDef, isFunction } from '~/utils'
+import { isDef } from '~/utils'
 
 export function useWatchProps(
   models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
@@ -221,7 +221,7 @@ export function useWatchProps(
         const autoConnector = async (params: Connection) => {
           let connection: boolean | Connection = params
 
-          if (isFunction(props.autoConnect)) {
+          if (typeof props.autoConnect === 'function') {
             connection = await props.autoConnect(params)
           }
 

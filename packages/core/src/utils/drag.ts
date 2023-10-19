@@ -1,5 +1,5 @@
 import { markRaw } from 'vue'
-import { ErrorCode, VueFlowError, clampPosition, isNumber, isParentSelected } from '.'
+import { ErrorCode, VueFlowError, clampPosition, isParentSelected } from '.'
 import type {
   Actions,
   CoordinateExtent,
@@ -108,10 +108,10 @@ function getParentExtent(
 
   if (
     parent &&
-    isNumber(parent.computedPosition.x) &&
-    isNumber(parent.computedPosition.y) &&
-    isNumber(parent.dimensions.width) &&
-    isNumber(parent.dimensions.height)
+    typeof parent.computedPosition.x !== 'undefined' &&
+    typeof parent.computedPosition.y !== 'undefined' &&
+    typeof parent.dimensions.width !== 'undefined' &&
+    typeof parent.dimensions.height !== 'undefined'
   ) {
     return [
       [parent.computedPosition.x + left, parent.computedPosition.y + top],
