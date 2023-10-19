@@ -171,6 +171,6 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
       return createKeyPredicate(keyFilter, pressedKeys)
     }
 
-    return () => false
+    return keyFilter
   }
 }
