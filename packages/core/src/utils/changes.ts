@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { isDef, isFunction, isGraphNode, isString } from '.'
+import { isDef, isGraphNode } from '.'
 import type {
   EdgeAddChange,
   EdgeChange,
@@ -26,7 +26,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
       let parentStyles: Styles = {}
 
-      if (isFunction(parent.style)) {
+      if (typeof parent.style === 'function') {
         parentStyles = { ...parent.style(parent) }
       } else if (parent.style) {
         parentStyles = { ...parent.style }
@@ -36,7 +36,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
       parentStyles.height = parentStyles.height ?? `${parent.dimensions.height}px`
 
       if (extendWidth > 0) {
-        if (isString(parentStyles.width)) {
+        if (typeof parentStyles.width === 'string') {
           const currWidth = Number(parentStyles.width.replace('px', ''))
           parentStyles.width = `${currWidth + extendWidth}px`
         } else {
@@ -45,7 +45,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
       }
 
       if (extendHeight > 0) {
-        if (isString(parentStyles.height)) {
+        if (typeof parentStyles.height === 'string') {
           const currWidth = Number(parentStyles.height.replace('px', ''))
           parentStyles.height = `${currWidth + extendHeight}px`
         } else {
@@ -57,7 +57,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         const xDiff = Math.abs(updateItem.position.x)
         parent.position.x = parent.position.x - xDiff
 
-        if (isString(parentStyles.width)) {
+        if (typeof parentStyles.width === 'string') {
           const currWidth = Number(parentStyles.width.replace('px', ''))
           parentStyles.width = `${currWidth + xDiff}px`
         } else {
@@ -71,7 +71,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         const yDiff = Math.abs(updateItem.position.y)
         parent.position.y = parent.position.y - yDiff
 
-        if (isString(parentStyles.height)) {
+        if (typeof parentStyles.height === 'string') {
           const currWidth = Number(parentStyles.height.replace('px', ''))
           parentStyles.height = `${currWidth + yDiff}px`
         } else {
@@ -84,7 +84,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
       parent.dimensions.width = Number(parentStyles.width.toString().replace('px', ''))
       parent.dimensions.height = Number(parentStyles.height.toString().replace('px', ''))
 
-      if (isFunction(parent.style)) {
+      if (typeof parent.style === 'function') {
         parent.style = (p) => {
           const styleFunc = parent.style as StyleFunc
 
