@@ -4,7 +4,7 @@ import { computed, onUnmounted, ref } from 'vue'
 import type { HandleProps } from '../../types/handle'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
-import { getDimensions, isDef, isFunction, isMouseEvent, isNumber, isString } from '../../utils'
+import { getDimensions, isDef, isMouseEvent } from '../../utils'
 
 const {
   position = Position.Top,
@@ -47,7 +47,7 @@ const { handlePointerDown, handleClick } = useHandle({
 })
 
 const isConnectable = computed(() => {
-  if (isString(connectable) && connectable === 'single') {
+  if (typeof connectable === 'string' && connectable === 'single') {
     return !connectedEdges.value.some((edge) => {
       const id = edge[`${type.value}Handle`]
 
@@ -59,7 +59,7 @@ const isConnectable = computed(() => {
     })
   }
 
-  if (isNumber(connectable)) {
+  if (typeof connectable === 'number') {
     return (
       connectedEdges.value.filter((edge) => {
         const id = edge[`${type.value}Handle`]
@@ -73,14 +73,14 @@ const isConnectable = computed(() => {
     )
   }
 
-  if (isFunction(connectable)) {
+  if (typeof connectable === 'function') {
     return connectable(node, connectedEdges.value)
   }
 
   return isDef(connectable) ? connectable : nodesConnectable.value
 })
 
-const isConnecting = computed(
+const isConnecting = toRef(
   () =>
     (connectionStartHandle.value?.nodeId === nodeId &&
       connectionStartHandle.value?.handleId === handleId.value &&
@@ -90,7 +90,7 @@ const isConnecting = computed(
       connectionEndHandle.value?.type === type.value),
 )
 
-const isClickConnecting = computed(
+const isClickConnecting = toRef(
   () =>
     connectionClickStartHandle.value?.nodeId === nodeId &&
     connectionClickStartHandle.value?.handleId === handleId.value &&
