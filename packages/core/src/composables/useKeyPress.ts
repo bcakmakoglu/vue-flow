@@ -72,11 +72,9 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
   watch(
     () => toValue(keyFilter),
     (nextKeyFilter, previousKeyFilter) => {
-      if (window && typeof window.addEventListener !== 'undefined') {
-        useEventListener(window, 'blur', () => {
-          isPressed.value = false
-        })
-      }
+      useEventListener(window, 'blur', () => {
+        isPressed.value = false
+      })
 
       // if the previous keyFilter was a boolean but is now something else, we need to reset the isPressed value
       if (isBoolean(previousKeyFilter) && !isBoolean(nextKeyFilter)) {
