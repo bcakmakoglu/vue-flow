@@ -33,11 +33,28 @@ const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
 const handle = ref<HTMLDivElement>()
 
-const handleId = computed(() => id ?? `${nodeId}__handle-${position}`)
+const handleId = toRef(() => id ?? `${nodeId}__handle-${position}`)
 
-const isConnectableStart = computed(() => (typeof connectableStart !== 'undefined' ? connectableStart : true))
+const isConnectableStart = toRef(() => (typeof connectableStart !== 'undefined' ? connectableStart : true))
 
-const isConnectableEnd = computed(() => (typeof connectableEnd !== 'undefined' ? connectableEnd : true))
+const isConnectableEnd = toRef(() => (typeof connectableEnd !== 'undefined' ? connectableEnd : true))
+
+const isConnecting = toRef(
+  () =>
+    (connectionStartHandle.value?.nodeId === nodeId &&
+      connectionStartHandle.value?.handleId === handleId.value &&
+      connectionStartHandle.value?.type === type.value) ||
+    (connectionEndHandle.value?.nodeId === nodeId &&
+      connectionEndHandle.value?.handleId === handleId.value &&
+      connectionEndHandle.value?.type === type.value),
+)
+
+const isClickConnecting = toRef(
+  () =>
+    connectionClickStartHandle.value?.nodeId === nodeId &&
+    connectionClickStartHandle.value?.handleId === handleId.value &&
+    connectionClickStartHandle.value?.type === type.value,
+)
 
 const { handlePointerDown, handleClick } = useHandle({
   nodeId,
@@ -79,23 +96,6 @@ const isConnectable = computed(() => {
 
   return isDef(connectable) ? connectable : nodesConnectable.value
 })
-
-const isConnecting = toRef(
-  () =>
-    (connectionStartHandle.value?.nodeId === nodeId &&
-      connectionStartHandle.value?.handleId === handleId.value &&
-      connectionStartHandle.value?.type === type.value) ||
-    (connectionEndHandle.value?.nodeId === nodeId &&
-      connectionEndHandle.value?.handleId === handleId.value &&
-      connectionEndHandle.value?.type === type.value),
-)
-
-const isClickConnecting = toRef(
-  () =>
-    connectionClickStartHandle.value?.nodeId === nodeId &&
-    connectionClickStartHandle.value?.handleId === handleId.value &&
-    connectionClickStartHandle.value?.type === type.value,
-)
 
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
 until(() => node.initialized)
