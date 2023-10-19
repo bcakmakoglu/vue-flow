@@ -59,13 +59,14 @@ export function clampPosition(position: XYPosition, extent: CoordinateExtent): X
 
 export function getHostForElement(element: HTMLElement): Document {
   const doc = element.getRootNode() as Document
-  const window = useWindow()
 
   if ('elementFromPoint' in doc) {
     return doc
-  } else {
-    return window.document
   }
+
+  const window = useWindow()
+
+  return window.document
 }
 
 // todo: refactor generic to use MaybeElement

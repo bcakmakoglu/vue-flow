@@ -2,14 +2,16 @@
 import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { computed, onMounted, ref, watchEffect } from 'vue'
-import { useEventListener, useResizeObserver } from '@vueuse/core'
+import { onMounted, ref, watchEffect } from 'vue'
+import { toRef, useEventListener, useResizeObserver } from '@vueuse/core'
 import type { CoordinateExtent, D3ZoomHandler, FlowOptions, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import { useKeyPress, useVueFlow, useWindow } from '../../composables'
 import { ErrorCode, VueFlowError, clamp, getDimensions, isMacOs } from '../../utils'
 import Pane from '../Pane/Pane.vue'
 import Transform from './Transform.vue'
+
+const window = useWindow()
 
 const {
   id,
@@ -50,7 +52,7 @@ const isZoomingOrPanning = ref(false)
 
 const isPanScrolling = ref(false)
 
-const panScrollTimeout = ref<ReturnType<typeof setTimeout>>()
+let panScrollTimeout: ReturnType<typeof setTimeout> | null = null
 
 let zoomedWithRightMouseButton = false
 
@@ -64,19 +66,16 @@ let prevTransform: ViewportTransform = {
 
 const panKeyPressed = useKeyPress(panActivationKeyCode)
 
-const shouldPanOnDrag = computed(() => !selectionKeyPressed.value && panOnDrag.value && panKeyPressed.value)
+const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && panOnDrag.value && panKeyPressed.value)
 
-const isSelecting = computed(
+const isSelecting = toRef(
   () =>
     (selectionKeyCode.value !== true && selectionKeyPressed.value) || (selectionKeyCode.value === true && !shouldPanOnDrag.value),
 )
 
-onMounted(() => {
-  useResizeObserver(viewportEl, setDimensions)
+useResizeObserver(viewportEl, setDimensions)
 
-  const window = useWindow()
-  useEventListener(window, 'resize', setDimensions)
-})
+useEventListener(window, 'resize', setDimensions)
 
 onMounted(() => {
   const viewportElement = viewportEl.value!
@@ -221,7 +220,9 @@ onMounted(() => {
 
           const nextViewport = eventToFlowTransform(d3Selection.property('__zoom'))
 
-          clearTimeout(panScrollTimeout.value)
+          if (panScrollTimeout) {
+            clearTimeout(panScrollTimeout)
+          }
 
           // for pan on scroll we need to handle the event calls on our own
           // we can't use the start, zoom and end events from d3-zoom
@@ -231,13 +232,11 @@ onMounted(() => {
 
             emits.moveStart({ event, flowTransform: nextViewport })
             emits.viewportChangeStart(nextViewport)
-          }
-
-          if (isPanScrolling.value) {
+          } else {
             emits.move({ event, flowTransform: nextViewport })
             emits.viewportChange(nextViewport)
 
-            panScrollTimeout.value = setTimeout(() => {
+            panScrollTimeout = setTimeout(() => {
               emits.moveEnd({ event, flowTransform: nextViewport })
               emits.viewportChangeEnd(nextViewport)
 
