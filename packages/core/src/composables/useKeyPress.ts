@@ -24,30 +24,40 @@ function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<str
   const keyCombination = keyToMatch.split('+').map((k) => k.trim().toLowerCase())
 
   if (keyCombination.length === 1) {
-    return pressedKey === keyToMatch
-  } else {
-    if (isKeyUp) {
-      pressedKeys.delete(pressedKey.toLowerCase())
-    } else {
-      pressedKeys.add(pressedKey.toLowerCase())
-    }
-
-    return keyCombination.every(
-      (key, index) => pressedKeys.has(key) && Array.from(pressedKeys.values())[index] === keyCombination[index],
-    )
+    return pressedKey.toLowerCase() === keyToMatch.toLowerCase()
   }
+
+  if (isKeyUp) {
+    pressedKeys.delete(pressedKey.toLowerCase())
+  } else {
+    pressedKeys.add(pressedKey.toLowerCase())
+  }
+
+  return keyCombination.every(
+    (key, index) => pressedKeys.has(key) && Array.from(pressedKeys.values())[index] === keyCombination[index],
+  )
 }
 
 function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
   return (event: KeyboardEvent) => {
+    const keyOrCode = useKeyOrCode(event.code, keyFilter)
+
     // if the keyFilter is an array of multiple keys, we need to check each possible key combination
     if (Array.isArray(keyFilter)) {
-      return keyFilter.some((key) => isKeyMatch(event.key, key, pressedKeys, event.type === 'keyup'))
+      return keyFilter.some((key) => isKeyMatch(event[keyOrCode], key, pressedKeys, event.type === 'keyup'))
     }
 
     // if the keyFilter is a string, we need to check if the key matches the string
-    return isKeyMatch(event.key, keyFilter, pressedKeys, event.type === 'keyup')
+    return isKeyMatch(event[keyOrCode], keyFilter, pressedKeys, event.type === 'keyup')
   }
+}
+
+function useKeyOrCode(code: string, keysToWatch: string | string[]) {
+  if (typeof keysToWatch === 'string') {
+    return code === keysToWatch ? 'code' : 'key'
+  }
+
+  return keysToWatch.includes(code) ? 'code' : 'key'
 }
 
 /**
@@ -65,8 +75,8 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
 
   const pressedKeys = new Set<string>()
 
-  watch(isPressed, () => {
-    onChange?.(isPressed.value)
+  watch(isPressed, (isKeyPressed) => {
+    onChange?.(isKeyPressed)
   })
 
   watch(
@@ -95,7 +105,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
         return
       }
 
-      if (Array.isArray(nextKeyFilter) || (isString(nextKeyFilter) && nextKeyFilter.includes('+'))) {
+      if (Array.isArray(nextKeyFilter) || isString(nextKeyFilter)) {
         nextKeyFilter = createKeyPredicate(nextKeyFilter, pressedKeys)
       }
 
