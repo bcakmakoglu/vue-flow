@@ -2,17 +2,22 @@ import { ref, watch } from 'vue'
 import type { KeyFilter, KeyPredicate, MaybeRefOrGetter } from '@vueuse/core'
 import { onKeyStroke, toValue, useEventListener } from '@vueuse/core'
 import { useWindow } from './useWindow'
-import { isBoolean, isFunction, isString } from '~/utils'
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
 
-  const hasAttribute = isFunction(target.hasAttribute) ? target.hasAttribute('contenteditable') : false
+  const hasAttribute = typeof target.hasAttribute === 'function' ? target.hasAttribute('contenteditable') : false
 
-  const closest = isFunction(target.closest) ? target.closest('.nokey') : null
+  const closest = typeof target.closest === 'function' ? target.closest('.nokey') : null
 
   // when an input field is focused we don't want to trigger deletion or movement of nodes
-  return ['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.nodeName) || hasAttribute || !!closest
+  return (
+    target instanceof HTMLInputElement ||
+    target instanceof HTMLTextAreaElement ||
+    target instanceof HTMLSelectElement ||
+    hasAttribute ||
+    !!closest
+  )
 }
 
 // we want to be able to do a multi selection event if we are in an input field
@@ -75,73 +80,63 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
 
   const pressedKeys = new Set<string>()
 
-  watch(isPressed, (isKeyPressed) => {
-    onChange?.(isKeyPressed)
+  let currentFilter = createKeyFilterFn(toValue(keyFilter))
+
+  watch(isPressed, (isKeyPressed, wasPressed) => {
+    if (isKeyPressed !== wasPressed) {
+      onChange?.(isKeyPressed)
+    }
   })
 
   watch(
     () => toValue(keyFilter),
     (nextKeyFilter, previousKeyFilter) => {
-      useEventListener(window, 'blur', () => {
-        isPressed.value = false
-      })
-
       // if the previous keyFilter was a boolean but is now something else, we need to reset the isPressed value
-      if (isBoolean(previousKeyFilter) && !isBoolean(nextKeyFilter)) {
+      if (typeof previousKeyFilter === 'boolean' && typeof nextKeyFilter !== 'boolean') {
         reset()
       }
 
-      // if the keyFilter is null, we just set the isPressed value to false
-      if (nextKeyFilter === null) {
-        reset()
-        return
-      }
-
-      // if the keyFilter is a boolean, we just set the isPressed value to that boolean
-      if (isBoolean(nextKeyFilter)) {
-        isPressed.value = nextKeyFilter
-        return
-      }
-
-      if (Array.isArray(nextKeyFilter) || isString(nextKeyFilter)) {
-        nextKeyFilter = createKeyPredicate(nextKeyFilter, pressedKeys)
-      }
-
-      if (nextKeyFilter) {
-        onKeyStroke(
-          nextKeyFilter,
-          (e) => {
-            modifierPressed = wasModifierPressed(e)
-
-            if (!modifierPressed && isInputDOMNode(e)) {
-              return
-            }
-
-            e.preventDefault()
-
-            isPressed.value = true
-          },
-          { eventName: 'keydown' },
-        )
-
-        onKeyStroke(
-          nextKeyFilter,
-          (e) => {
-            if (isPressed.value) {
-              if (!modifierPressed && isInputDOMNode(e)) {
-                return
-              }
-
-              reset()
-            }
-          },
-          { eventName: 'keyup' },
-        )
-      }
+      currentFilter = createKeyFilterFn(nextKeyFilter)
     },
     {
       immediate: true,
     },
+  )
+
+  useEventListener(window, 'blur', () => {
+    if (toValue(keyFilter) !== true) {
+      isPressed.value = false
+    }
+  })
+
+  onKeyStroke(
+    (...args) => currentFilter(...args),
+    (e) => {
+      modifierPressed = wasModifierPressed(e)
+
+      if (!modifierPressed && isInputDOMNode(e)) {
+        return
+      }
+
+      e.preventDefault()
+
+      isPressed.value = true
+    },
+    { eventName: 'keydown' },
+  )
+
+  onKeyStroke(
+    (...args) => currentFilter(...args),
+    (e) => {
+      if (isPressed.value) {
+        if (!modifierPressed && isInputDOMNode(e)) {
+          return
+        }
+
+        reset()
+      }
+    },
+    { eventName: 'keyup' },
   )
 
   return isPressed
@@ -152,5 +147,30 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
     pressedKeys.clear()
 
     isPressed.value = false
+  }
+
+  function createKeyFilterFn(keyFilter: KeyFilter | null) {
+    // if the keyFilter is null, we just set the isPressed value to false
+    if (keyFilter === null) {
+      reset()
+      return () => false
+    }
+
+    // if the keyFilter is a boolean, we just set the isPressed value to that boolean
+    if (typeof keyFilter === 'boolean') {
+      if (keyFilter) {
+        isPressed.value = keyFilter
+        return () => true
+      } else {
+        reset()
+        return () => false
+      }
+    }
+
+    if (Array.isArray(keyFilter) || typeof keyFilter === 'string') {
+      return createKeyPredicate(keyFilter, pressedKeys)
+    }
+
+    return () => false
   }
 }
