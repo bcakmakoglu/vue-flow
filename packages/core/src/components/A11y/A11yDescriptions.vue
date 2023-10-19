@@ -1,21 +1,8 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
 import { ARIA_EDGE_DESC_KEY, ARIA_LIVE_MESSAGE, ARIA_NODE_DESC_KEY } from '../../utils/a11y'
 import { useVueFlow } from '../../composables'
 
 const { id, disableKeyboardA11y, ariaLiveMessage } = useVueFlow()
-
-const ariaLiveStyle: CSSProperties = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  margin: -1,
-  border: 0,
-  padding: 0,
-  overflow: 'hidden',
-  clip: 'rect(0px, 0px, 0px, 0px)',
-  clipPath: 'inset(100%)',
-}
 </script>
 
 <script lang="ts">
@@ -41,7 +28,17 @@ export default {
     :id="`${ARIA_LIVE_MESSAGE}-${id}`"
     aria-live="assertive"
     aria-atomic="true"
-    :style="ariaLiveStyle"
+    style="
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0px, 0px, 0px, 0px);
+      clip-path: inset(100%);
+    "
   >
     {{ ariaLiveMessage }}
   </div>
