@@ -134,7 +134,7 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
     detachedScope.run(() => {
       watch(
         state.applyDefault,
-        (shouldApplyDefault) => {
+        (shouldApplyDefault, __, onCleanup) => {
           const nodesChangeHandler = (changes: NodeChange[]) => {
             state.applyNodeChanges(changes)
           }
@@ -150,6 +150,11 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
             state.hooks.value.nodesChange.off(nodesChangeHandler)
             state.hooks.value.edgesChange.off(edgesChangeHandler)
           }
+
+          onCleanup(() => {
+            state.hooks.value.nodesChange.off(nodesChangeHandler)
+            state.hooks.value.edgesChange.off(edgesChangeHandler)
+          })
         },
         { immediate: true },
       )
