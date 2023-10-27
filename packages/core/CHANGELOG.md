@@ -1,5 +1,31 @@
 # @vue-flow/core
 
+## 1.24.0
+
+### Minor Changes
+
+- [#1149](https://github.com/bcakmakoglu/vue-flow/pull/1149) [`d11e59f1`](https://github.com/bcakmakoglu/vue-flow/commit/d11e59f1869ab34e3b52b6593806f29fa8d510d2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow adding edges with missing source or target node to state but don't render them unless source and target exist
+
+- [#1146](https://github.com/bcakmakoglu/vue-flow/pull/1146) [`6f93bbbb`](https://github.com/bcakmakoglu/vue-flow/commit/6f93bbbba077cf65062ad7cc878d362c9827ccd1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use viewport and vueflow refs directly from store instead of assigning valuesafter mount
+
+- [#1128](https://github.com/bcakmakoglu/vue-flow/pull/1128) [`0ff65bf2`](https://github.com/bcakmakoglu/vue-flow/commit/0ff65bf2abc51612969bd4a0d0ebed44c59171f8) Thanks [@github-actions](https://github.com/apps/github-actions)! - Use nodes from state as the default third arg for `getIntersectingNodes`
+
+### Patch Changes
+
+- [#1128](https://github.com/bcakmakoglu/vue-flow/pull/1128) [`7d153860`](https://github.com/bcakmakoglu/vue-flow/commit/7d1538606c7f4d77d1828a9ad31c0164eb0d6418) Thanks [@github-actions](https://github.com/apps/github-actions)! - Use correct filter for pan on scroll class name
+
+- [#1147](https://github.com/bcakmakoglu/vue-flow/pull/1147) [`6bc391c6`](https://github.com/bcakmakoglu/vue-flow/commit/6bc391c693bcb9c6b123523cbc3e67fe0ac33fcc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Release apply default handlers when scope is disposed
+
+- [#1146](https://github.com/bcakmakoglu/vue-flow/pull/1146) [`6f93bbbb`](https://github.com/bcakmakoglu/vue-flow/commit/6f93bbbba077cf65062ad7cc878d362c9827ccd1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow panning while pan key is pressed
+
+- [#1139](https://github.com/bcakmakoglu/vue-flow/pull/1139) [`eee9bd87`](https://github.com/bcakmakoglu/vue-flow/commit/eee9bd87ad520c6c44526e393c698d05dd1924b0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Create a key predicate for string key filters and check if we need to use `event.key` or `event.code` to match the key
+
+- [#1128](https://github.com/bcakmakoglu/vue-flow/pull/1128) [`f5138157`](https://github.com/bcakmakoglu/vue-flow/commit/f5138157937e51e2952f7b5708124d5cf76903f9) Thanks [@github-actions](https://github.com/apps/github-actions)! - select nodes on click when nodeDragThreshold > 0
+
+- [#1149](https://github.com/bcakmakoglu/vue-flow/pull/1149) [`a7fe412a`](https://github.com/bcakmakoglu/vue-flow/commit/a7fe412a9111493f6363f40ee1838578a8739771) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Push component emit handlers into the emit fns set instead of using the `on` helper which overwrites any existing default handlers
+
+- [#1128](https://github.com/bcakmakoglu/vue-flow/pull/1128) [`84e98305`](https://github.com/bcakmakoglu/vue-flow/commit/84e98305b1448b1325784497e058c66d23ed7ade) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update to use vue 3.3
+
 ## 1.23.0
 
 ### Minor Changes
