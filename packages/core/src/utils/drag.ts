@@ -127,7 +127,7 @@ function getParentExtent(
 
 export function getExtent<T extends NodeDragItem | GraphNode>(
   item: T,
-  onError: State['hooks']['error']['trigger'],
+  triggerError: State['hooks']['error']['trigger'],
   extent?: State['nodeExtent'],
   parent?: GraphNode,
 ) {
@@ -144,7 +144,7 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
         currentExtent = parentExtent
       }
     } else {
-      onError(new VueFlowError(ErrorCode.NODE_EXTENT_INVALID, item.id))
+      triggerError(new VueFlowError(ErrorCode.NODE_EXTENT_INVALID, item.id))
 
       currentExtent = extent
     }
@@ -185,11 +185,11 @@ function clampNodeExtent({ width, height }: Dimensions, extent: CoordinateExtent
 export function calcNextPosition(
   node: GraphNode | NodeDragItem,
   nextPosition: XYPosition,
-  onError: State['hooks']['error']['trigger'],
+  triggerError: State['hooks']['error']['trigger'],
   nodeExtent?: State['nodeExtent'],
   parentNode?: GraphNode,
 ) {
-  const extent = clampNodeExtent(node.dimensions, getExtent(node, onError, nodeExtent, parentNode))
+  const extent = clampNodeExtent(node.dimensions, getExtent(node, triggerError, nodeExtent, parentNode))
 
   const clampedPos = clampPosition(nextPosition, extent)
 
