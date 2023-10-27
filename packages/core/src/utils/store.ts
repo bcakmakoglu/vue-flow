@@ -10,9 +10,9 @@ export function isDef<T>(val: T): val is NonUndefined<T> {
   return typeof unrefVal !== 'undefined'
 }
 
-export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[], onError: State['hooks']['error']['trigger']) {
+export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[], triggerError: State['hooks']['error']['trigger']) {
   if (!edgeParams.source || !edgeParams.target) {
-    onError(new VueFlowError(ErrorCode.EDGE_INVALID, (edgeParams as Edge).id))
+    triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, (edgeParams as Edge).id))
     return false
   }
 
@@ -41,17 +41,17 @@ export function updateEdgeAction(
   edges: GraphEdge[],
   findEdge: Actions['findEdge'],
   shouldReplaceId: boolean,
-  onError: State['hooks']['error']['trigger'],
+  triggerError: State['hooks']['error']['trigger'],
 ) {
   if (!newConnection.source || !newConnection.target) {
-    onError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id))
+    triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id))
     return false
   }
 
   const foundEdge = findEdge(edge.id)
 
   if (!foundEdge) {
-    onError(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edge.id))
+    triggerError(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edge.id))
     return false
   }
 
@@ -75,14 +75,14 @@ export function createGraphNodes(
   nodes: Node[],
   currGraphNodes: GraphNode[],
   findNode: Actions['findNode'],
-  onError: State['hooks']['error']['trigger'],
+  triggerError: State['hooks']['error']['trigger'],
 ) {
   const parentNodes: Record<string, true> = {}
 
   const graphNodes = nodes.reduce((nextNodes, node) => {
     // make sure we don't try to add invalid nodes
     if (!isNode(node)) {
-      onError(new VueFlowError(ErrorCode.NODE_INVALID))
+      triggerError(new VueFlowError(ErrorCode.NODE_INVALID))
       return nextNodes
     }
 
@@ -104,7 +104,7 @@ export function createGraphNodes(
     const parentNode = nextNodes.find((n) => n.id === node.parentNode)
 
     if (node.parentNode && !parentNode) {
-      onError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentNode))
+      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentNode))
     }
 
     if (node.parentNode || parentNodes[node.id]) {
