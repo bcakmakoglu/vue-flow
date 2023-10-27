@@ -8,6 +8,7 @@ import { tryOnScopeDispose } from '@vueuse/core'
  */
 export interface EventHookExtended<T> extends EventHook<T> {
   hasListeners: () => boolean
+  fns: Set<(param: T) => void>
 }
 
 export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => void): EventHookExtended<T> {
@@ -50,5 +51,6 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
     off,
     trigger,
     hasListeners,
+    fns,
   }
 }
