@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useVModel } from '@vueuse/core'
-import { onMounted, onUnmounted, provide, ref, useSlots } from 'vue'
+import { onUnmounted, provide, useSlots } from 'vue'
 import type { D3ZoomEvent } from 'd3-zoom'
 import Viewport from '../Viewport/Viewport.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
@@ -145,16 +145,10 @@ const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges
 
 useHooks(emit, hooks)
 
-const el = ref<HTMLDivElement>()
-
 provide(Slots, useSlots())
 
 onUnmounted(() => {
   dispose()
-})
-
-onMounted(() => {
-  vueFlowRef.value = el.value!
 })
 
 defineExpose<VueFlowStore>({
@@ -174,8 +168,9 @@ export default {
 </script>
 
 <template>
-  <div ref="el" class="vue-flow">
+  <div ref="vueFlowRef" class="vue-flow">
     <Viewport>
+      <!-- Pseudo-slots for nodes and edges so we can collect the templates using `useSlots` -->
       <template #nodes>
         <template v-for="nodeName of Object.keys(getNodeTypes)">
           <slot :name="`node-${nodeName}`" />
@@ -192,10 +187,12 @@ export default {
         <slot name="connection-line" />
       </template>
 
+      <!-- This slot will be passed down to the transformation-pane and rendered inside there, meaning it's affected by zooming/panning -->
       <template #zoom-pane>
         <slot name="zoom-pane" />
       </template>
 
+      <!-- This slot will render outside the transformation-pane, meaning it's *not* affected by zooming and panning -->
       <slot />
     </Viewport>
 
