@@ -10,12 +10,15 @@ export interface EventHookExtended<T> extends EventHook<T> {
   hasListeners: () => boolean
 }
 
-export function createExtendedEventHook<T = any>(defaultHandler: (param: T) => void = () => {}): EventHookExtended<T> {
+export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => void): EventHookExtended<T> {
   const fns = new Set<(param: T) => void>()
+
+  let hasDefaultHandler = false
 
   const hasListeners = () => fns.size > 0
 
   if (defaultHandler) {
+    hasDefaultHandler = true
     fns.add(defaultHandler)
   }
 
@@ -24,7 +27,7 @@ export function createExtendedEventHook<T = any>(defaultHandler: (param: T) => v
   }
 
   const on = (fn: (param: T) => void) => {
-    if (fns.has(defaultHandler)) {
+    if (defaultHandler && hasDefaultHandler) {
       fns.delete(defaultHandler)
     }
 
