@@ -489,27 +489,6 @@ export function useActions(
         const sourceNode = findNode(edge.source)!
         const targetNode = findNode(edge.target)!
 
-        const missingSource = !sourceNode || typeof sourceNode === 'undefined'
-        const missingTarget = !targetNode || typeof targetNode === 'undefined'
-
-        if (missingSource && missingTarget) {
-          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
-
-          return edgeChanges
-        }
-
-        if (missingSource) {
-          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
-
-          return edgeChanges
-        }
-
-        if (missingTarget) {
-          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
-
-          return edgeChanges
-        }
-
         edgeChanges.push(
           createAdditionChange<GraphEdge>({
             ...edge,
