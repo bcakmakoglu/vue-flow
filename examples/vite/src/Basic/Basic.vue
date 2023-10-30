@@ -45,7 +45,7 @@ function toggleclass() {
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow v-model="elements" :pan-on-drag="false" fit-view-on-init class="vue-flow-basic-example">
     <Background />
     <MiniMap />
     <Controls />
