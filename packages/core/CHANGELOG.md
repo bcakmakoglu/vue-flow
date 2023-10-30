@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.24.1
+
+### Patch Changes
+
+- [#1151](https://github.com/bcakmakoglu/vue-flow/pull/1151) [`c2a74f57`](https://github.com/bcakmakoglu/vue-flow/commit/c2a74f578b0b7dcb7bbbc02ea2c0e378beba4740) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow pan on drag when pan activation key is pressed and panOnDrag is set to false
+
 ## 1.24.0
 
 ### Minor Changes
