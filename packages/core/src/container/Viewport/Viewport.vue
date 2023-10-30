@@ -66,12 +66,9 @@ const selectionKeyPressed = useKeyPress(selectionKeyCode)
 
 const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
-const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && panOnDrag.value && panKeyPressed.value)
+const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && (panKeyPressed.value || panOnDrag.value))
 
-const isSelecting = toRef(
-  () =>
-    (selectionKeyCode.value !== true && selectionKeyPressed.value) || (selectionKeyCode.value === true && !shouldPanOnDrag.value),
-)
+const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true))
 
 useResizeObserver(viewportRef, setDimensions)
 
@@ -141,7 +138,7 @@ onMounted(() => {
 
     paneDragging.value = false
 
-    if (isRightClickPan(panOnDrag.value, mouseButton ?? 0) && !zoomedWithRightMouseButton) {
+    if (isRightClickPan(shouldPanOnDrag.value, mouseButton ?? 0) && !zoomedWithRightMouseButton) {
       emits.paneContextMenu(event.sourceEvent)
     }
 
@@ -162,7 +159,7 @@ onMounted(() => {
     const pinchZoom = zoomOnPinch.value && event.ctrlKey
 
     if (
-      (panOnDrag.value === true || (Array.isArray(panOnDrag.value) && panOnDrag.value.includes(1))) &&
+      (shouldPanOnDrag.value === true || (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(1))) &&
       event.button === 1 &&
       event.type === 'mousedown' &&
       ((event.target as HTMLElement)?.closest('.vue-flow__node') || (event.target as HTMLElement)?.closest('.vue-flow__edge'))
@@ -171,7 +168,7 @@ onMounted(() => {
     }
 
     // if all interactions are disabled, we prevent all zoom events
-    if (!panOnDrag.value && !zoomScroll && !panOnScroll.value && !zoomOnDoubleClick.value && !zoomOnPinch.value) {
+    if (!shouldPanOnDrag.value && !zoomScroll && !panOnScroll.value && !zoomOnDoubleClick.value && !zoomOnPinch.value) {
       return false
     }
 
@@ -208,14 +205,14 @@ onMounted(() => {
     }
 
     // if the pane is not movable, we prevent dragging it with mousestart or touchstart
-    if (!panOnDrag.value && (event.type === 'mousedown' || event.type === 'touchstart')) {
+    if (!shouldPanOnDrag.value && (event.type === 'mousedown' || event.type === 'touchstart')) {
       return false
     }
 
     // if the pane is only movable using allowed clicks
     if (
-      Array.isArray(panOnDrag.value) &&
-      !panOnDrag.value.includes(event.button) &&
+      Array.isArray(shouldPanOnDrag.value) &&
+      !shouldPanOnDrag.value.includes(event.button) &&
       (event.type === 'mousedown' || event.type === 'touchstart')
     ) {
       return false
@@ -223,7 +220,7 @@ onMounted(() => {
 
     // We only allow right clicks if pan on drag is set to right-click
     const buttonAllowed =
-      (Array.isArray(panOnDrag.value) && panOnDrag.value.includes(event.button)) || !event.button || event.button <= 1
+      (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(event.button)) || !event.button || event.button <= 1
 
     // default filter for d3-zoom
     return (!event.ctrlKey || event.type === 'wheel') && buttonAllowed
@@ -238,7 +235,7 @@ onMounted(() => {
 
         const flowTransform = eventToFlowTransform(event.transform)
 
-        zoomedWithRightMouseButton = isRightClickPan(panOnDrag.value, mouseButton ?? 0)
+        zoomedWithRightMouseButton = isRightClickPan(shouldPanOnDrag.value, mouseButton ?? 0)
 
         emits.viewportChange(flowTransform)
         emits.move({ event, flowTransform })
@@ -394,7 +391,7 @@ export default {
   <div ref="viewportRef" :key="`viewport-${id}`" class="vue-flow__viewport vue-flow__container">
     <Pane
       :is-selecting="isSelecting"
-      :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: !!panOnDrag }"
+      :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: shouldPanOnDrag }"
     >
       <Transform>
         <slot name="zoom-pane" />
