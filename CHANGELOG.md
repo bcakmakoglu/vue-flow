@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.24.0] - 2023-10-30
+
+[9b6c6e3](9b6c6e380e95673a91feaa8deb08c281aa139c27)...[c51ff79](c51ff790ce838b89b1f6050625a014a29aacfe40)
+
+### Bug Fixes
+
+- Select nodes on drag when threshold is > 0 ([ee45b4e](ee45b4e560cf7c50f63655de752cc0731dcf9570))
+- Use correct filter for panOnScroll class ([15c3fd5](15c3fd5dd75ab44c5245b7f4274d2076eb962231))
+- Create predicate for string key filters ([11138a6](11138a6d9a43f949b519176ce42b3a41557dd575))
+- Allow panning when panKey is pressed ([049b1da](049b1da0c61b8c0303363c18b5c6a063c2c18841))
+- Ensure events introduced by the watcher are released when no longer needed ([8651019](8651019eb615186b595d47fe9dd553c229f845fe))
+- Push emit handlers into listeners set ([2ecd8de](2ecd8def816320f3ae3b54216f865e4e2245229e))
+
+### Documentation
+
+- Update theme ([28fd495](28fd4955f4a69e310e7f8f901efe85cf75a4336e))
+- Update home page styles ([750c01d](750c01df9d8edd76925d1249bafb8beeb0629c9c))
+- Update showcase dark bg ([b85f37c](b85f37cc3be358d5c9953f234e055c654e9704ae))
+- Update typedoc deps ([247a037](247a037a396c92dc2d650ed00ef89cd7a565dd02))
+- Update home page styles ([d0c6133](d0c61330b8f7712210f176c698a4b881c606f9d8))
+- Fix kestra link ([0a741cc](0a741cc11616934f8c444777ea105e3426b1d610))
+- Add meticulous ([eca82ed](eca82edae1e9d87e101191ec95f1d7e2752b856b))
+
+### Features
+
+- Use nodes from state for `getIntersectingNodes` ([03242dd](03242dde9b162cb4e8d58fb031d67cf0fd2fd508))
+
+### Miscellaneous Tasks
+
+- Update d3 type deps ([b0ffe42](b0ffe420070b0f876fc4514fbd968b8183064096))
+- Update to vue 3.3 ([8fa3e34](8fa3e345b65d05eb2151ea34befe13066d730415))
+- Update deps ([e51c7e9](e51c7e9c17dafc5262059f82814154f59a462e87))
+- Use define slots ([c32c0df](c32c0df4fa8d7706cd4f424c62c029ff52a6f36a))
+- Cleanup components ([119f6d1](119f6d15db88064faaf1194e4708ba20d8aa2180))
+- Update pnpm-lock.yaml ([8473135](8473135eb84646129684db6ecf6e5121be7d0b8b))
+- Add ([961b4cd](961b4cdc3fda327330ab3f14ed92a781e875ac37))
+- Update deps ([17a50dc](17a50dc7dc20dfdccdde428beee5b5f7650da56b))
+- Cleanup ([1b3b03f](1b3b03f3890979ce70c5f3d1d3c4c839a0fe3f14))
+- Add ([675336a](675336ad877a97ddcb77bf165bdc4f68c70cafa6))
+- Update README title ([22a8d7c](22a8d7c913052bfb2af944debcba6a77da14d541))
+- Add ([85d60f3](85d60f340143516632edaa7548ad1672398fafc0))
+- Add ([f449ec0](f449ec08ed3241991cd4a58991feeb660fce14de))
+- Update pnpm-lock.yaml ([4ae371a](4ae371afbbb388332df343a07ffd05045ec8fd88))
+- Add ([7fd2829](7fd28298ac2ba47e6df729e79426d0f544acbc84))
+- Add ([add6406](add6406688669eb21e846ba717207fd7e7dbeee8))
+- Cleanup ([53be29d](53be29de8a2833dab0b6328b3d35c1cb3df718d5))
+- Add comments ([009e6fa](009e6faf0d21997e21e71e55b5690d81cd51eb63))
+- Add ([b195ff8](b195ff86fb1aa9beb0ad9955965613fbb50f25e8))
+- Add ([c834ae2](c834ae235a6f862df65ad9da8002ec44de30b891))
+- Add ([2b19e41](2b19e41be6d3dd1db602d058e858e5667b7d78ed))
+
+### Performance
+
+- Cleanup possible re-bindings of listeners in useKeyPress ([785f147](785f147236c644887d4e104734d711605ad1301f))
+- Cleanup computed vars ([88cfd40](88cfd402edfdb7de4333a680c22e9487138a119e))
+
+### Refactor
+
+- Add warning when viewport noop is triggered ([a32c81a](a32c81aaf3f3efd4d47c6308be21dd237c469047))
+- Disable minification ([ec7653e](ec7653e8f351440bb2b87cd329ca8167df55a112))
+- Add stub for `addEventListener` in `useWindow` ([2a407f5](2a407f59e3494c443db1738018dbfd764e635cd8))
+- Remove primtive typeguards ([3b175a5](3b175a553e6897d5fdb76de0721ebf6e6c6f2ea2))
+- Allow adding edges with missing source or target nodes ([7e7e0fb](7e7e0fb8cba5c197123e97d963e67b729b16bf46))
+- Remove default event listener void fn ([7494817](74948178424902e2762e5221d5f57e3273259d9c))
+- Rename onError arg to triggerError ([0bf1260](0bf12601dff7246221fc2a164f3b4d1aafb11b4e))
+
 ## [1.23.0] - 2023-10-06
 
 [a838941](a838941d393fb85a26294e06130b768919404616)...[9b6c6e3](9b6c6e380e95673a91feaa8deb08c281aa139c27)
