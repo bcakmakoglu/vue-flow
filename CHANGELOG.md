@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.24.1] - 2023-10-30
+
+[c51ff79](c51ff790ce838b89b1f6050625a014a29aacfe40)...[41d325b](41d325b61368c0dc1de524210ed21903d2cb1692)
+
+### Bug Fixes
+
+- Allow pan on drag when pan key is activated ([ffceea9](ffceea93a8bf0bd6f234b302134bee8b838213fa))
+
+### Miscellaneous Tasks
+
+- Add ([04d3c78](04d3c78bd69561848e7088932672e25b03b7504f))
+
 ## [1.24.0] - 2023-10-30
 
 [9b6c6e3](9b6c6e380e95673a91feaa8deb08c281aa139c27)...[c51ff79](c51ff790ce838b89b1f6050625a014a29aacfe40)
