@@ -784,13 +784,7 @@ export function useActions(
       }
     })
 
-    if (!state.d3Zoom) {
-      until(() => state.d3Zoom)
-        .not.toBeNull()
-        .then(setSkippedOptions)
-    } else {
-      setSkippedOptions()
-    }
+    setSkippedOptions()
 
     if (!state.initialized) {
       state.initialized = true
