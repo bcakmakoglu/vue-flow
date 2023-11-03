@@ -160,6 +160,9 @@ export function useWatchProps(
               store.setMaxZoom(props.maxZoom)
             }
           },
+          {
+            immediate: true,
+          },
         )
       })
     }
@@ -173,6 +176,7 @@ export function useWatchProps(
               store.setMinZoom(props.minZoom)
             }
           },
+          { immediate: true },
         )
       })
     }
@@ -185,6 +189,9 @@ export function useWatchProps(
             if (props.translateExtent && isDef(props.translateExtent)) {
               store.setTranslateExtent(props.translateExtent)
             }
+          },
+          {
+            immediate: true,
           },
         )
       })
@@ -199,6 +206,9 @@ export function useWatchProps(
               store.setNodeExtent(props.nodeExtent)
             }
           },
+          {
+            immediate: true,
+          },
         )
       })
     }
@@ -211,6 +221,9 @@ export function useWatchProps(
             if (isDef(props.applyDefault)) {
               store.applyDefault.value = props.applyDefault
             }
+          },
+          {
+            immediate: true,
           },
         )
       })
@@ -237,6 +250,7 @@ export function useWatchProps(
               store.autoConnect.value = props.autoConnect
             }
           },
+          { immediate: true },
         )
 
         watch(
