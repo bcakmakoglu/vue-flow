@@ -394,10 +394,8 @@ export default {
       :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: shouldPanOnDrag }"
     >
       <Transform>
-        <slot name="zoom-pane" />
+        <slot />
       </Transform>
     </Pane>
   </div>
-
-  <slot />
 </template>
