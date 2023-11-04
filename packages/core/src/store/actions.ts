@@ -43,6 +43,7 @@ import {
   getSelectionChanges,
   isDef,
   isEdge,
+  isGraphNode,
   isNode,
   isRect,
   nodeToRect,
@@ -639,7 +640,7 @@ export function useActions(
     nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
   ): [Rect | null, Node | null | undefined, boolean] => {
     const isRectObj = isRect(nodeOrRect)
-    const node = isRectObj ? null : findNode(nodeOrRect.id)
+    const node = isRectObj ? null : isGraphNode(nodeOrRect as GraphNode) ? (nodeOrRect as GraphNode) : findNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {
       return [null, null, isRectObj]
