@@ -53,6 +53,7 @@ const modelEdges = useVModel(props, 'edges', emit)
 
 const { vueFlowRef, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow(props)
 
+// watch props and update store state
 const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, {
   vueFlowRef,
   hooks,
@@ -63,9 +64,13 @@ const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges
 
 useHooks(emit, hooks)
 
+// slots will be passed via provide
+// this is to avoid having to pass them down through all the components
+// as that would require a lot of boilerplate and causes significant performance drops
 provide(Slots, slots)
 
 onUnmounted(() => {
+  // clean up watcher scope
   dispose()
 })
 
@@ -88,11 +93,11 @@ export default {
 <template>
   <div ref="vueFlowRef" class="vue-flow">
     <Viewport>
-      <!-- This slot will be passed down to the transformation-pane and rendered inside there, meaning it's affected by zooming/panning -->
+      <!-- This slot is affected by zooming & panning -->
       <slot name="zoom-pane" />
     </Viewport>
 
-    <!-- This slot will render outside the transformation-pane, meaning it's *not* affected by zooming and panning -->
+    <!-- This slot is _not_ affected by zooming & panning -->
     <slot />
 
     <A11yDescriptions />
