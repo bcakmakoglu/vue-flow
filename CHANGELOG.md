@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.24.2] - 2023-11-04
+
+[41d325b](41d325b61368c0dc1de524210ed21903d2cb1692)...[ea7f843](ea7f8435ef5b4d030fc4b112ac2617e2de1c3936)
+
+### Bug Fixes
+
+- Add immediate flag to prop watchers ([ac8dab3](ac8dab30c78efc7bca236e5344fcedc1bbd87493))
+- Do not wait for d3zoom to be available to set skipped opts ([07b3783](07b37830b196c31a7066de8041563c67077ff49b))
+- Use existing node for intersection check ([5bda311](5bda311f8d79c30344036a5e22e691e2f0cc5d08))
+- Properly cleanup handlers when drag is disabled ([c30ddc6](c30ddc61ed2b41bcb3c4a6c1c392968564a83d3c))
+
+### Miscellaneous Tasks
+
+- Add ([78d5e02](78d5e0281b3edb6f04bace0ffd9ae6b993618bf5))
+- Add ([1dfe683](1dfe68306b723eed2263e674674782d337783c86))
+- Add ([5a21959](5a2195948279f00642dfd785b6a353aed7e4f265))
+
 ## [1.24.1] - 2023-10-30
 
 [c51ff79](c51ff790ce838b89b1f6050625a014a29aacfe40)...[41d325b](41d325b61368c0dc1de524210ed21903d2cb1692)
