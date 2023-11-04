@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.24.2
+
+### Patch Changes
+
+- [#1164](https://github.com/bcakmakoglu/vue-flow/pull/1164) [`e3edb6dd`](https://github.com/bcakmakoglu/vue-flow/commit/e3edb6dd8bfeebc5c4becc0bd564072fe3f04be1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Properly cleanup drag handlers when drag is disabled
+
+- [#1163](https://github.com/bcakmakoglu/vue-flow/pull/1163) [`56469e95`](https://github.com/bcakmakoglu/vue-flow/commit/56469e95df5031362d88476c061f730ac9fffd28) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use existing node, if one was passed, for intersection checks
+
+- [#1159](https://github.com/bcakmakoglu/vue-flow/pull/1159) [`8013c9cf`](https://github.com/bcakmakoglu/vue-flow/commit/8013c9cf20a9be89746e274be799043c153390bf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add immediate flag to prop watchers. Fixes default viewport values not being available when viewport is mounted
+
+- [#1159](https://github.com/bcakmakoglu/vue-flow/pull/1159) [`8013c9cf`](https://github.com/bcakmakoglu/vue-flow/commit/8013c9cf20a9be89746e274be799043c153390bf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Do not wait for d3zoom to be available when setting min/max zoom
+
 ## 1.24.1
 
 ### Patch Changes
