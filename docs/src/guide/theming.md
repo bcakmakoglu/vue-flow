@@ -86,15 +86,11 @@ Below are a couple of examples on how you can do this:
 
 Directly styling the Vue Flow component:
 
-```vue{5-6,8-9}
+```html{4-5}
 <div style="height: 300px">
   <VueFlow
     v-model="elements"
-    
-    <!-- You can pass a class name to the component -->
     class="my-diagram-class"
-
-    <!-- You can pass an object containing CSSProperties or CSS variables -->
     :style="{ background: 'red' }"
   />
 </div>
@@ -159,19 +155,29 @@ These alterations can be implemented either on a global scale or to individual e
 }
 ```
 
-```js{2-3} [<LogosJavascript />]
+```js{6-7} [<LogosJavascript />]
 const elements = ref([
-  /* Overriding the `--vf-node-color` variable to change node border, box-shadow and handle color */
-  { id: '1', label: 'Node 1', position: { x: 100, y: 100 }, style: { '--vf-node-color': 'blue' } },
+  { 
+    id: '1', 
+    label: 'Node 1', 
+    position: { x: 100, y: 100 }, 
+    /* Overriding the `--vf-node-color` variable to change node border, box-shadow and handle color */
+    style: { '--vf-node-color': 'blue' } 
+  },
 ])
 ```
 
-```ts{4-5} [<LogosTypescript />]
+```ts{8-9} [<LogosTypescript />]
 import type { Elements } from '@vue-flow/core';
 
 const elements = ref<Elements>([
-  /* Overriding the `--vf-node-color` variable to change node border, box-shadow and handle color */
-  { id: '1', label: 'Node 1', position: { x: 100, y: 100 }, style: { '--vf-node-color': 'blue' } },
+  { 
+    id: '1', 
+    label: 'Node 1', 
+    position: { x: 100, y: 100 }, 
+    /* Overriding the `--vf-node-color` variable to change node border, box-shadow and handle color */
+    style: { '--vf-node-color': 'blue' } 
+  },
 ])
 ```
 
@@ -192,40 +198,51 @@ Here's a concise list of CSS variables you can consider, along with their effect
 
 ## CSS Class Names
 
-Here you'll find a handy reference guide of class names and their respective containers:
+Here you'll find a handy reference guide of class names and their respective elements:
 
-| Name                          | Container                                         |
-|-------------------------------|---------------------------------------------------|
-| .vue-flow                     | The outer container                               |
-| .vue-flow__container          | Wrapper for container elements                    |
-| .vue-flow__viewport           | The inner container                               |
-| .vue-flow__transformationpane | Pane for movements like zooming and panning       |
-| .vue-flow__selectionpane      | Pane for handling user selection                  |
-| .vue-flow__selection          | Defines current user selection box                |
-| .vue-flow__edges              | Wrapper rendering edges                           |
-| .vue-flow__edge               | Wrapper around each edge element                  |
-| .vue-flow__edge-{type}        | Edge type (either custom or default)              |
-| .vue-flow__edge .selected     | Defines the currently selected edge(s)            |
-| .vue-flow__edge .animated     | Defines an animated edge                          |
-| .vue-flow__edge-path          | SVG path for edge elements                        |
-| .vue-flow__edge-text          | Wrapper around edge label                         |
-| .vue-flow__edge-textbg        | Background wrapper around edge label              |
-| .vue-flow__connectionline     | Container for the connection line elements        |
-| .vue-flow__connection         | Individual connection line element                |
-| .vue-flow__connection-path    | SVG path for connection line                      |
-| .vue-flow__nodes              | Rendering wrapper around nodes                    |
-| .vue-flow__node               | Wrapper around each node element                  |
-| .vue-flow__node .selected     | Defines the currently selected node(s)            |
-| .vue-flow__node-{type}        | Node type (either custom or default)              |
-| .vue-flow__nodesselection     | Defines selection rectangle for nodes             |
-| .vue-flow__handle             | Wrapper around node handle elements               |
-| .vue-flow__handle-bottom      | Defines a handle at bottom                        |
-| .vue-flow__handle-top         | Defines a handle at top                           |
-| .vue-flow__handle-left        | Defines a handle at left                          |
-| .vue-flow__handle-right       | Defines a handle at right                         |
-| .vue-flow__handle-connecting  | Connection line is over the handle                |
-| .vue-flow__handle-valid       | Connection line over handle with valid connection |
-| .vue-flow__background         | Background component                              |
-| .vue-flow__minimap            | MiniMap component                                 |
-| .vue-flow__controls           | Controls component                                |
- 
+#### Containers
+| Name                  | Container                                 |
+| --------------------- | ----------------------------------------- |
+| .vue-flow             | The outer container                       |
+| .vue-flow__container  | Wrapper for container elements            |
+| .vue-flow__viewport   | The inner container                       |
+| .vue-flow__background | Background component                      |
+| .vue-flow__minimap    | MiniMap component                         |
+| .vue-flow__controls   | Controls component                        |
+
+#### Edges
+| Name                      | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| .vue-flow__edges          | Wrapper rendering edges                           |
+| .vue-flow__edge           | Wrapper around each edge element                  |
+| .vue-flow__selectionpane  | Pane for handling user selection                  |
+| .vue-flow__selection      | Defines current user selection box                |
+| .vue-flow__edge-{type}    | Edge type (either custom or default)              |
+| .vue-flow__edge .selected | Defines the currently selected edge(s)            |
+| .vue-flow__edge .animated | Defines an animated edge                          |
+| .vue-flow__edge-path      | SVG path for edge elements                        |
+| .vue-flow__edge-text      | Wrapper around edge label                         |
+| .vue-flow__edge-textbg    | Background wrapper around edge label              |
+| .vue-flow__connectionline | Container for the connection line elements        |
+| .vue-flow__connection     | Individual connection line element                |
+| .vue-flow__connection-path| SVG path for connection line                      |
+
+#### Nodes
+| Name                  | Description                               |
+| --------------------- | ----------------------------------------- |
+| .vue-flow__nodes      | Rendering wrapper around nodes            |
+| .vue-flow__node       | Wrapper around each node element          |
+| .vue-flow__node .selected | Defines the currently selected node(s)  |
+| .vue-flow__node-{type}   | Node type (either custom or default)     |
+| .vue-flow__nodesselection | Defines selection rectangle for nodes   |
+
+#### Node Handles
+| Name                      | Description                               |
+| ------------------------- | ----------------------------------------- |
+| .vue-flow__handle         | Wrapper around node handle elements       |
+| .vue-flow__handle-bottom  | Defines a handle at bottom                |
+| .vue-flow__handle-top     | Defines a handle at top                   |
+| .vue-flow__handle-left    | Defines a handle at left                  |
+| .vue-flow__handle-right   | Defines a handle at right                 |
+| .vue-flow__handle-connecting | Connection line is over the handle      |
+| .vue-flow__handle-valid      | Connection line over handle with valid connection |
