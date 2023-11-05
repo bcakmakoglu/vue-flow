@@ -14,13 +14,21 @@ Before you strap in, make sure you're equipped with:
 
 Use your preferred package manager to install Vue Flow:
 
-```bash
-npm i --save @vue-flow/core
+::: code-group
 
-yarn add @vue-flow/core
-
-pnpm i @vue-flow/core
+```sh [npm]
+$ npm add @vue-flow/core
 ```
+
+```sh [pnpm]
+$ pnpm add @vue-flow/core
+```
+
+```sh [yarn]
+$ yarn add @vue-flow/core
+```
+
+:::
 
 ## Usage
 
@@ -34,7 +42,7 @@ and [<span class="font-bold">edges</span>](/typedocs/types/Edge), all of which a
 Nodes additionally need an [XY-position](/typedocs/interfaces/XYPosition), while edges require a source and a
 target, both represented by node ids.
 
-::: warning Pay Attention!
+::: warning NOTE!
 To ensure Vue Flow's is correctly displayed, make sure you include the necessary styles.
 
 Refer to the [Theming](/guide/theming) section for additional information.
