@@ -1,7 +1,7 @@
 import type { ToRefs } from 'vue'
-import { effectScope, nextTick, onScopeDispose, watch } from 'vue'
+import { effectScope, nextTick, onScopeDispose, toRef, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
-import { toRef, watchPausable } from '@vueuse/core'
+import { watchPausable } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '~/types'
 import { isDef } from '~/utils'
 
