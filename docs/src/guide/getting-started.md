@@ -1,3 +1,8 @@
+<script setup>
+import LogosJavascript from '~icons/logos/javascript';
+import LogosTypescript from '~icons/logos/typescript-icon';
+</script>
+
 # Kickstart Your Journey with Vue Flow!
 
 This guide covers the basics of setting up and using Vue Flow. You'll learn how to install Vue Flow, configure it, and
@@ -50,33 +55,80 @@ Refer to the [Theming](/guide/theming) section for additional information.
 
 Here's a simple Vue Flow example to get you started:
 
-```vue
+::: code-group
+
+```vue [<LogosJavascript />]
 <script setup>
 import { VueFlow } from '@vue-flow/core'
 
+import SpecialNode from './components/SpecialNode.vue'
+import SpecialEdge from './components/SpecialEdge.vue'
+
 const elements = ref([
-  // Nodes
-  // An input node, specified by using `type: 'input'`
+  // nodes
+
+  // an input node, specified by using `type: 'input'`
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
 
-  // Default nodes, you can omit `type: 'default'`
+  // default node, you can omit `type: 'default'` as it's the fallback type
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
-  { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
 
   // An output node, specified by using `type: 'output'`
-  { id: '4', type: 'output', label: 'Node 4', position: { x: 400, y: 200 } },
+  { id: '3', type: 'output', label: 'Node 3', position: { x: 400, y: 200 } },
 
-  // Edges
-  // Most basic edge, only consists of an id, source-id and target-id
+  // A custom node, specified by using a custom type name
+  // we choose `type: 'special'` for this example
+  {
+    id: '4',
+    type: 'special',
+    label: 'Node 4',
+    position: { x: 400, y: 200 },
+
+    // pass custom data to the node
+    data: {
+      // you can pass any data you want to the node
+      hello: 'world',
+    },
+  },
+
+  // edges
+
+  // simple default bezier edge
+  // consists of an id, source-id and target-id
   { id: 'e1-3', source: '1', target: '3' },
 
-  // An animated edge
+  // an animated edge, specified by using `animated: true`
   { id: 'e1-2', source: '1', target: '2', animated: true },
+
+  // a custom edge, specified by using a custom type name
+  // we choose `type: 'special'` for this example
+  {
+    id: 'e1-4',
+    type: 'special',
+    source: '1',
+    target: '4',
+
+    // pass custom data to the edge
+    data: {
+      // You can pass any data you want to the edge       
+      hello: 'world',
+    }
+  },
 ])
 </script>
 
 <template>
-  <VueFlow v-model="elements"/>
+  <VueFlow v-model="elements">
+    <!-- bind your custom node type to a component by using slots, slot names are always `node-<type>` -->
+    <template #node-special="specialNodeProps">
+      <SpecialNode v-bind="specialNodeProps" />
+    </template>
+
+    <!-- bind your custom edge type to a component by using slots, slot names are always `edge-<type>` -->
+    <template #edge-special="specialEdgeProps">
+      <SpecialEdge v-bind="specialEdgeProps" />
+    </template>
+  </VueFlow>
 </template>
 
 <style>
@@ -87,6 +139,92 @@ const elements = ref([
 @import '@vue-flow/core/dist/theme-default.css';
 </style>
 ```
+
+```vue [<LogosTypescript />]
+<script setup lang="ts">
+import type { Elements } from '@vue-flow/core'  
+import { VueFlow } from '@vue-flow/core'
+
+import SpecialNode from './components/SpecialNode.vue'
+import SpecialEdge from './components/SpecialEdge.vue'
+
+const elements = ref<Elements>([
+  // nodes
+    
+  // an input node, specified by using `type: 'input'`
+  { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
+
+  // default node, you can omit `type: 'default'` as it's the fallback type
+  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
+
+  // An output node, specified by using `type: 'output'`
+  { id: '3', type: 'output', label: 'Node 3', position: { x: 400, y: 200 } },
+    
+  // A custom node, specified by using a custom type name
+  // we choose `type: 'special'` for this example
+  { 
+    id: '4', 
+    type: 'special', 
+    label: 'Node 4', 
+    position: { x: 400, y: 200 },
+
+    // pass custom data to the node
+    data: {
+      // you can pass any data you want to the node
+      hello: 'world',
+    },
+  },  
+
+  // edges
+    
+  // simple default bezier edge
+  // consists of an id, source-id and target-id
+  { id: 'e1-3', source: '1', target: '3' },
+
+  // an animated edge, specified by using `animated: true`
+  { id: 'e1-2', source: '1', target: '2', animated: true },
+    
+  // a custom edge, specified by using a custom type name
+  // we choose `type: 'special'` for this example
+  { 
+    id: 'e1-4', 
+    type: 'special', 
+    source: '1', 
+    target: '4',
+    
+    // pass custom data to the edge
+    data: {
+      // You can pass any data you want to the edge       
+      hello: 'world',
+    }
+  },
+])
+</script>
+
+<template>
+  <VueFlow v-model="elements">
+    <!-- bind your custom node type to a component by using slots, slot names are always `node-<type>` -->
+    <template #node-special="specialNodeProps">
+      <SpecialNode v-bind="specialNodeProps" />
+    </template>
+
+    <!-- bind your custom edge type to a component by using slots, slot names are always `edge-<type>` -->
+    <template #edge-special="specialEdgeProps">
+      <SpecialEdge v-bind="specialEdgeProps" />
+    </template>
+  </VueFlow>
+</template>
+
+<style>
+/* import the necessary styles for Vue Flow to work */
+@import '@vue-flow/core/dist/style.css';
+
+/* import the default theme, this is optional but generally recommended */
+@import '@vue-flow/core/dist/theme-default.css';
+</style>
+```
+
+:::
 
 ## TypeScript
 
