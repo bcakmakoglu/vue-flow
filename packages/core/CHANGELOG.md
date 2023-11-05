@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.25.0
+
+### Minor Changes
+
+- [#1170](https://github.com/bcakmakoglu/vue-flow/pull/1170) [`cce71c9c`](https://github.com/bcakmakoglu/vue-flow/commit/cce71c9ce6f33656932dc9f05169a5f5907d5158) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add currently stored nodes to isValidConnection args
+
+- [#1166](https://github.com/bcakmakoglu/vue-flow/pull/1166) [`993c058b`](https://github.com/bcakmakoglu/vue-flow/commit/993c058b8ce4e525597ef535a17dcccb219b9a2e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add slots and emits type definitions
+
 ## 1.24.2
 
 ### Patch Changes
