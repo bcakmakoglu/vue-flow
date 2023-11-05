@@ -678,3 +678,84 @@ const elements = ref([
 ::: tip
 To override the styles of the default theme, visit the [Theming section](/guide/theming).
 :::
+
+## Updating Edge Data
+
+Since edges are reactive object, you can update their data at any point by simply mutating it.
+This allows you to change the label, or even add new properties to the data object at any point in time.
+
+There are multiple ways of achieving this, here are some examples:
+
+::: code-group
+
+```vue [useEdge]
+<!-- CustomEdge.vue -->
+<script setup>
+import { useEdge } from '@vue-flow/core'
+
+// `useEdge` returns us the edge object straight from the state
+// since the node obj is reactive, we can mutate it to update our edges' data
+const { edge } = useEdge()
+
+function onSomeEvent() {
+  edge.data = {
+    ...edge.data,  
+    hello: 'world',
+  }
+}
+</script>
+```
+
+```ts [useVueFlow]
+import  { useVueFlow } from '@vue-flow/core'
+
+const instance = useVueFlow()
+
+// find the node in the state by its id
+const edge = instance.findEdge(edgeId)
+
+edge.data = {
+  ...edge.data,
+  hello: 'world',
+}
+```
+
+```vue [v-model]
+<script setup>
+import { ref } from 'vue'
+
+const elements = ref([
+  {
+    id: '1',
+    label: 'Node 1',
+    position: { x: 50, y: 50 },
+    data: {
+      hello: 'world',
+    }
+  },
+  {
+      id: '2',
+      label: 'Node 2',
+      position: { x: 50, y: 250 },
+  },
+  {
+      id: 'e1-2',
+      source: '1',
+      target: '2',
+  },
+])
+
+function onSomeEvent() {
+  elements.value[2].data = {
+    ...elements.value[0].data,
+    hello: 'world',
+  }
+}
+</script>
+
+<template>
+  <VueFlow v-model="elements" />
+</template>
+```
+
+::: 
