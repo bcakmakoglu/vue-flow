@@ -77,7 +77,7 @@ Here's how you can use CSS classes to add a pop of color or alter the font style
   padding: 8px;
 }
 </style>
-s
+
 ### Using CSS Properties
 
 You can also directly pass a style or class attribute to Vue Flow components and nodes/edges.
