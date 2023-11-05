@@ -12,7 +12,7 @@ const ScrollableNode = () => h('div', { class: 'custom-node-container' }, [
 ]);
 
 const InputFieldNode = () => h('div', { class: 'custom-node-container' }, [
-  h('input', { class: 'nodrag', placeholder: 'Type something...' })
+  h('input', { class: 'nodrag placeholder-white', placeholder: 'Type something...' })
 ]);
 
 const defaultNode = ref([
