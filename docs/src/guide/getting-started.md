@@ -37,12 +37,10 @@ $ yarn add @vue-flow/core
 
 ## Usage
 
-In Vue Flow, an application structure consists
-of [<span class="font-bold">nodes</span>](/typedocs/interfaces/Node)
-and [<span class="font-bold">edges</span>](/typedocs/types/Edge), all of which are categorised as
-[<span class="font-bold">elements</span>](/typedocs/types/Elements).
+In Vue Flow, an application structure consists of [**nodes**](/typedocs/interfaces/Node)
+and [**edges**](/typedocs/types/Edge), all of which are categorised as [**elements**](/typedocs/types/Elements).
 
-<span class="font-bold">Each element requires a unique id.</span>
+**Each element requires a unique id.**
 
 Nodes additionally need an [XY-position](/typedocs/interfaces/XYPosition), while edges require a source and a
 target, both represented by node ids.
