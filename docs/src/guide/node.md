@@ -474,8 +474,13 @@ Node-types are determined from your nodes' definitions.
 
 ::: code-group
 
-```js [nodes <LogosJavascript />]
+```vue{11-12,18-19} [App.vue <LogosJavascript />]
+<script setup>
 import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
+
+import CustomNode from './CustomNode.vue'
+import SpecialNode from './SpecialNode.vue'
 
 export const nodes = ref([
   {
@@ -493,12 +498,26 @@ export const nodes = ref([
     position: { x: 150, y: 50 },
   }
 ])
+</script>
+
+<template>
+  <VueFlow :nodes="nodes">
+    <template #node-custom="customNodeProps">
+      <CustomNode v-bind="customNodeProps" />
+    </template>
+    
+    <template #node-special="specialNodeProps">
+      <SpecialNode v-bind="specialNodeProps" />
+    </template>
+  </VueFlow>
+</template>
 ```
 
 ```vue [CustomNode.vue <LogosJavascript />]
 <script setup>
 import { Position } from '@vue-flow/core'
 
+// props were passed from the slot using `v-bind="customNodeProps"`
 const props = defineProps(['label'])
 </script>
 
@@ -511,9 +530,14 @@ const props = defineProps(['label'])
 </template>
 ```
 
-```ts [nodes <LogosTypescript />]
+```vue{30-31,37-38,45-47} [App.vue <LogosTypescript />]
+<script setup lang="ts">
 import { ref } from 'vue'
 import type { Node } from '@vue-flow/core'
+import { VueFlow } from '@vue-flow/core'
+
+import CustomNode from './CustomNode.vue'
+import SpecialNode from './SpecialNode.vue'
 
 // You can pass 3 optional generic arguments to the Node interface, allowing you to define:
 // 1. The data object type
@@ -541,22 +565,35 @@ export const nodes = ref<CustomNode[]>([
     position: { x: 50, y: 50 },
   },
   {
-    id: '1',
-    label: 'Node 1',
+    id: '2',
+    label: 'Node 2',
     // this will create the node-type `special`
     type: 'special',
     position: { x: 150, y: 50 },
   },
     
-  // this will throw a type error, as the type is not defined in the CustomEdgeTypes
-  // regardless it would be rendered as a default edge type
   {
-    id: '1', 
-    label: 'Node 1',
+    id: '3', 
+    label: 'Node 3',
+    // this will throw a type error, as the type is not defined in the CustomEdgeTypes
+    // regardless it would be rendered as a default edge type
     type: 'invalid',
     position: { x: 150, y: 50 },
   }
 ])
+</script>
+
+<template>
+  <VueFlow :nodes="nodes">
+    <template #node-custom="customNodeProps">
+      <CustomNode v-bind="customNodeProps" />
+    </template>
+    
+    <template #node-special="specialNodeProps">
+      <SpecialNode v-bind="specialNodeProps" />
+    </template>
+  </VueFlow>
+</template>
 ```
 
 ```vue [CustomNode.vue <LogosTypescript />]
@@ -566,6 +603,7 @@ import { Position } from '@vue-flow/core'
 
 import { CustomData, CustomEvents } from './nodes'
 
+// props were passed from the slot using `v-bind="customNodeProps"`
 const props = defineProps<NodeProps<CustomData, CustomEvents>>()
   
 console.log(props.data.hello) // 'world'
@@ -691,8 +729,7 @@ But you may wish to expand on these features or implement your business logic in
 ## [Node Events](/typedocs/types/NodeEventsHandler)
 
 Vue Flow provides two main ways of listening to node events, 
-either by using `useVueFlow` to bind listeners to the event handlers 
-or by using binding listeners to the `<VueFlow>` component.
+either by using `useVueFlow` to bind listeners to the event handlers or by binding them to the `<VueFlow>` component.
 
 ::: code-group
 

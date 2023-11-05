@@ -433,8 +433,13 @@ Edge-types are determined from your edges' definitions.
 
 ::: code-group
 
-```js [edges <LogosJavascript />]
+```vue [App.vue <LogosJavascript />]
+<script setup>
 import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
+
+import CustomEdge from './CustomEdge.vue'
+import SpecialEdge from './SpecialEdge.vue'
 
 export const edges = ref([
   {
@@ -445,22 +450,57 @@ export const edges = ref([
     type: 'custom',
   },
   {
-    id: 'e1-2',
+    id: 'e1-3',
     source: '1',
-    target: '2',
+    target: '3',
     // this will create the edge-type `special`
     type: 'special',
   }
 ])
+  
+const nodes = ref([
+  {
+    id: '1',
+    label: 'Node 1',
+    position: { x: 50, y: 50 },
+  },
+  {
+    id: '2',
+    label: 'Node 2',
+    position: { x: 50, y: 250 },
+  },
+  {
+    id: '3',
+    label: 'Node 3',
+    position: { x: 250, y: 50 },
+  },
+  {
+    id: '4',
+    label: 'Node 4',
+    position: { x: 250, y: 250 },
+  },
+])
+</script>
+
+<template>
+  <VueFlow :nodes="nodes" :edges="edges">
+    <template #edge-custom="customEdgeProps">
+      <CustomEdge v-bind="customEdgeProps" />
+    </template>
+    
+    <template #edge-special="specialEdgeProps">
+      <SpecialEdge v-bind="specialEdgeProps" />
+    </template>
+  </VueFlow>
+</template>
 ```
 
 ```vue [CustomEdge.vue <LogosJavascript />]
 <script setup>
 import { BezierEdge } from '@vue-flow/core';
 
+// props were passed from the slot using `v-bind="customEdgeProps"`
 const props = defineProps(['sourceX', 'sourceY', 'targetX', 'targetY', 'sourcePosition', 'targetPosition']);
-
-console.log(props.data.hello) // 'world'
 </script>
 
 <script lang="ts">
@@ -481,9 +521,14 @@ export default {
 </template>
 ```
 
-```ts [edges <LogosTypescript />]
+```vue{25-26,32-33,40-42} [App.vue <LogosTypescript />]
+<script setup lang="ts">
 import { ref } from 'vue'
 import type { Edge } from '@vue-flow/core'
+import { VueFlow } from '@vue-flow/core'
+
+import CustomEdge from './CustomEdge.vue'
+import SpecialEdge from './SpecialEdge.vue'
 
 // You can pass 3 optional generic arguments to the Edge type, allowing you to define:
 // 1. The data object type
@@ -496,33 +541,69 @@ interface CustomData {
 
 type CustomEdgeTypes = 'custom' | 'special'
 
-type CustomEdge = Edge<CustomEdgeData, any, CustomEdgeTypes>
+type CustomEdge = Edge<CustomData, any, CustomEdgeTypes>
 
 export const edges = ref<CustomEdge[]>([
     {
-        id: 'e1-2',
-        source: '1',
-        target: '2',
-        // this will create the edge-type `custom`
-        type: 'custom',
+      id: 'e1-2',
+      source: '1',
+      target: '2',
+      // this will create the edge-type `custom`
+      type: 'custom',
     },
     {
-        id: 'e1-2',
-        source: '1',
-        target: '2',
-        // this will create the edge-type `special`
-        type: 'special',
+      id: 'e1-3',
+      source: '1',
+      target: '3',
+      // this will create the edge-type `special`
+      type: 'special',
     },
     
-    // this will throw a type error, as the type is not defined in the CustomEdgeTypes
-    // regardless it would be rendered as a default edge type
     {
-        id: 'e1-2',
-        source: '1',
-        target: '2',
-        type: 'not-defined', // should be 'custom' | 'special'
+      id: 'e1-4',
+      source: '1',
+      target: '4',
+      // this will throw a type error, as the type is not defined in the CustomEdgeTypes
+      // regardless it would be rendered as a default edge type
+      type: 'not-defined',
     }
 ])
+  
+const nodes = ref([
+  {
+    id: '1',
+    label: 'Node 1',
+    position: { x: 50, y: 50 },
+  },
+  {
+    id: '2',
+    label: 'Node 2',
+    position: { x: 50, y: 250 },
+  },
+  {
+    id: '3',
+    label: 'Node 3',
+    position: { x: 250, y: 50 },
+  },
+  {
+    id: '4',
+    label: 'Node 4',
+    position: { x: 250, y: 250 },
+  },
+])  
+</script>
+
+<template>
+  <VueFlow :nodes="nodes" :edges="edges">
+    <template #edge-custom="customEdgeProps">
+      <CustomEdge v-bind="customEdgeProps" />
+    </template>
+    
+    <template #edge-special="specialEdgeProps">
+      <SpecialEdge v-bind="specialEdgeProps" />
+    </template>
+  </VueFlow>
+</template>
 ```
 
 ```vue [CustomEdge.vue <LogosTypescript />]
@@ -532,6 +613,7 @@ import { BezierEdge } from '@vue-flow/core';
 
 import { CustomData } from './edges'
 
+// props were passed from the slot using `v-bind="customEdgeProps"`
 const props = defineProps<EdgeProps<CustomData>>();
 
 console.log(props.data.hello) // 'world'
@@ -676,8 +758,7 @@ But you may wish to expand on these features or implement your business logic in
 ## Edge Events
 
 Vue Flow provides two main ways of listening to edge events,
-either by using `useVueFlow` to bind listeners to the event handlers
-or by using binding listeners to the `<VueFlow>` component.
+either by using `useVueFlow` to bind listeners to the event handlers or by binding them to the `<VueFlow>` component.
 
 ::: code-group
 
