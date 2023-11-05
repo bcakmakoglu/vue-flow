@@ -151,6 +151,7 @@ export function isValidHandle(
   isValidConnection: ValidConnectionFunc,
   doc: Document | ShadowRoot,
   edges: GraphEdge[],
+  nodes: GraphNode[],
   findNode: Actions['findNode'],
 ) {
   const isTarget = fromType === 'target'
@@ -201,6 +202,7 @@ export function isValidHandle(
     if (isValid) {
       result.isValid = isValidConnection(connection, {
         edges,
+        nodes,
         sourceNode: findNode(connection.source)!,
         targetNode: findNode(connection.target)!,
       })
