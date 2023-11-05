@@ -15,9 +15,9 @@ const {
   ...props
 } = defineProps<HandleProps>()
 
-const type = toRef(props, 'type', 'source')
+const type = toRef(() => props.type ?? 'source')
 
-const isValidConnection = toRef(props, 'isValidConnection', undefined)
+const isValidConnection = toRef(() => props.isValidConnection ?? null)
 
 const {
   connectionStartHandle,
