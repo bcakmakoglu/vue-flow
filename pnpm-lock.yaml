@@ -29,12 +29,6 @@ importers:
       '@alwaysmeticulous/recorder-loader':
         specifier: ^2.77.0
         version: 2.79.0
-      '@animxyz/core':
-        specifier: ^0.6.6
-        version: 0.6.6
-      '@animxyz/vue3':
-        specifier: ^0.6.7
-        version: 0.6.7(vue@3.3.4)
       '@stackblitz/sdk':
         specifier: ^1.9.0
         version: 1.9.0
@@ -750,20 +744,6 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
     dev: true
-
-  /@animxyz/core@0.6.6:
-    resolution: {integrity: sha512-NtAA/G0Gq3hzAiL6yuE/4U8IgHMPUl3MxbWUbhO443T9UCsf9rBY94P5aK79Zd+/529FeoNdDphIOcOZLsI2sA==}
-    dev: false
-
-  /@animxyz/vue3@0.6.7(vue@3.3.4):
-    resolution: {integrity: sha512-tLx4HfFcoxR5wgIMFDrmjS2mZifFRNMiwn7skPT3as9ViuCW3QdCsBIDYY2tR37GSvSUC1NhNwkkCZ1pt0C+Hg==}
-    peerDependencies:
-      vue: '>= 3'
-    dependencies:
-      '@animxyz/core': 0.6.6
-      clsx: 1.2.1
-      vue: 3.3.4
-    dev: false
 
   /@antfu/eslint-config-basic@0.38.6(@typescript-eslint/eslint-plugin@5.62.0)(@typescript-eslint/parser@5.62.0)(eslint@8.51.0)(typescript@4.9.5):
     resolution: {integrity: sha512-g5hxtS98MsQ6plCQ1rPx/K9+7ZZmUgdsWx84PJCwbaSuSklP1jZjuhMcjOPn/LW5t9QAPeb74T9+QsK3+IyNKQ==}
@@ -4143,11 +4123,6 @@ packages:
     resolution: {integrity: sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==}
     engines: {node: '>=0.8'}
     dev: true
-
-  /clsx@1.2.1:
-    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
-    engines: {node: '>=6'}
-    dev: false
 
   /cluster-key-slot@1.1.2:
     resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
