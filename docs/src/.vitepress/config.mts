@@ -106,6 +106,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       }),
       Icons({
         compiler: 'vue3',
+        defaultClass: 'inline-block align-middle'
       }),
     ],
   },

@@ -32,32 +32,35 @@ and [<span class="font-bold text-purple-500">edges</span>](/typedocs/types/Edge)
 Nodes additionally need a specific position, while edges require a source and a
 target, both represented by node ids.
 
-Below is a basic example:
+::: warning Attention!
+To ensure Vue Flow's is correctly displayed, make sure you include the necessary styles.
+
+Refer to the [Theming](/guide/theming) section for additional information.
+:::
 
 ```vue
-
 <script setup>
-  import {VueFlow} from '@vue-flow/core'
+import { VueFlow } from '@vue-flow/core'
 
-  const elements = ref([
-    // Nodes
-    // An input node, specified by using `type: 'input'`
-    {id: '1', type: 'input', label: 'Node 1', position: {x: 250, y: 5}},
+const elements = ref([
+  // Nodes
+  // An input node, specified by using `type: 'input'`
+  {id: '1', type: 'input', label: 'Node 1', position: {x: 250, y: 5}},
 
-    // Default nodes, you can omit `type: 'default'`
-    {id: '2', label: 'Node 2', position: {x: 100, y: 100},},
-    {id: '3', label: 'Node 3', position: {x: 400, y: 100}},
+  // Default nodes, you can omit `type: 'default'`
+  {id: '2', label: 'Node 2', position: {x: 100, y: 100},},
+  {id: '3', label: 'Node 3', position: {x: 400, y: 100}},
 
-    // An output node, specified by using `type: 'output'`
-    {id: '4', type: 'output', label: 'Node 4', position: {x: 400, y: 200}},
+  // An output node, specified by using `type: 'output'`
+  {id: '4', type: 'output', label: 'Node 4', position: {x: 400, y: 200}},
 
-    // Edges
-    // Most basic edge, only consists of an id, source-id and target-id
-    {id: 'e1-3', source: '1', target: '3'},
+  // Edges
+  // Most basic edge, only consists of an id, source-id and target-id
+  {id: 'e1-3', source: '1', target: '3'},
 
-    // An animated edge
-    {id: 'e1-2', source: '1', target: '2', animated: true},
-  ])
+  // An animated edge
+  {id: 'e1-2', source: '1', target: '2', animated: true},
+])
 </script>
 
 <template>
@@ -72,9 +75,6 @@ Below is a basic example:
   @import '@vue-flow/core/dist/theme-default.css';
 </style>
 ```
-
-::: warning To ensure Vue Flow's functionality and design are optimally displayed, make sure you include the necessary
-styles. Refer to the [Theming](/guide/theming) section for additional information. :::
 
 ## TypeScript
 
