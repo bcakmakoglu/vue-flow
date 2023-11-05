@@ -649,6 +649,77 @@ User-created nodes don't have any default styles associated and thus need custom
 }
 ```
 
+## Updating Node Data
+
+Since nodes are reactive object, you can update their data at any point by simply mutating it.
+This allows you to disable or enable handles, change the label, or even add new properties to the data object at any point in time.
+
+There are multiple ways of achieving this, here are some examples:
+
+::: code-group
+
+```vue [useNode]
+<!-- CustomNode.vue -->
+<script setup>
+import { useNode } from '@vue-flow/core'
+
+// `useNode` returns us the node object straight from the state
+// since the node obj is reactive, we can mutate it to update our nodes' data
+const { node } = useNode()
+
+function onSomeEvent() {
+  node.data = {
+    ...node.data,  
+    hello: 'world',
+  }
+}
+</script>
+```
+
+```ts [useVueFlow]
+import  { useVueFlow } from '@vue-flow/core'
+
+const instance = useVueFlow()
+
+// find the node in the state by its id
+const node = instance.findNode(nodeId)
+
+node.data = {
+  ...node.data,
+  hello: 'world',
+}
+```
+
+```vue [v-model]
+<script setup>
+import { ref } from 'vue'
+
+const elements = ref([
+  {
+    id: '1',
+    label: 'Node 1',
+    position: { x: 50, y: 50 },
+    data: {
+      hello: 'world',
+    }
+  },
+])
+
+function onSomeEvent() {
+  elements.value[0].data = {
+    ...elements.value[0].data,
+    hello: 'world',
+  }
+}
+</script>
+
+<template>
+  <VueFlow v-model="elements" />
+</template>
+```
+
+::: 
+
 ## Implementing Scrolling within Nodes
 
 Sometimes, a node might contain a large amount of content, making it difficult for users to view everything without the aid of a scroll function. 
