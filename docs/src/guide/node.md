@@ -218,6 +218,172 @@ function onAddNodes() {
 
 :::
 
+## Removing Nodes from the Graph
+
+Similar to adding nodes, nodes can be removed from the graph by removing them from the `mode-value` (using `v-model`) or from the `nodes` prop of the Vue Flow component.
+
+```vue
+
+<script setup>
+import { ref } from 'vue'
+
+const elements = ref([
+  {
+    id: '1',
+    position: { x: 50, y: 50 },
+    label: 'Node 1',
+  },
+  {
+    id: '2',
+    position: { x: 150, y: 50 },
+    label: 'Node 2',
+  }
+])
+
+function onRemoveNode() {
+  elements.value.pop()
+}
+</script>
+
+<template>
+  <VueFlow v-model="elements" />
+  
+  <button type="button" @click="onRemoveNode">Remove a node</button>
+</template>
+```
+
+When working with complex graphs with extensive state access, you should use the useVueFlow composable.
+The [`removeNodes`](/typedocs/interfaces/Actions#removeNodes) action is available through [useVueFlow](/typedocs/functions/useVueFlow),
+allowing you to remove nodes straight from the state.
+
+What's more, this action isn't limited to the component rendering the graph; it can be utilized elsewhere, like in a
+Sidebar, Toolbar or the Edge itself.
+
+```vue
+
+<script setup>
+import { ref } from 'vue'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
+
+const initialNodes = ref([
+  {
+    id: '1',
+    position: { x: 50, y: 50 },
+    label: 'Node 1',
+  },
+  {
+    id: '2',
+    position: { x: 150, y: 50 },
+    label: 'Node 2',
+  }
+])
+
+const { removeNodes } = useVueFlow()
+
+// remove a single node from the graph
+function onRemoveNode() {
+  removeNodes('1')
+}
+
+// remove multiple nodes from the graph
+function onRemoveNodes() {
+  removeNodes(['1', '2'])
+}
+</script>
+
+<template>
+  <VueFlow :nodes="initialNodes" />
+  
+  <button type="button" @click="onRemoveNode">Remove a node</button>
+  <button type="button" @click="onRemoveNodes">Remove multiple nodes</button>
+</template>
+```
+
+## Updating Node Data
+
+Since nodes are reactive object, you can update their data at any point by simply mutating it.
+This allows you to disable or enable handles, change the label, or even add new properties to the data object at any point in time.
+
+There are multiple ways of achieving this, here are some examples:
+
+::: code-group
+
+```vue [useNode]
+<!-- CustomNode.vue -->
+<script setup>
+import { useNode } from '@vue-flow/core'
+
+// `useNode` returns us the node object straight from the state
+// since the node obj is reactive, we can mutate it to update our nodes' data
+const { node } = useNode()
+
+function onSomeEvent() {
+  node.data = {
+    ...node.data,  
+    hello: 'world',
+  }
+  
+  // you can also mutate properties like `selectable` or `draggable`
+  node.selectable = false
+  node.draggable = false
+}
+</script>
+```
+
+```ts [useVueFlow]
+import  { useVueFlow } from '@vue-flow/core'
+
+const instance = useVueFlow()
+
+// find the node in the state by its id
+const node = instance.findNode(nodeId)
+
+node.data = {
+  ...node.data,
+  hello: 'world',
+}
+
+// you can also mutate properties like `selectable` or `draggable`
+node.selectable = false
+node.draggable = false
+```
+
+```vue [v-model]
+<script setup>
+import { ref } from 'vue'
+
+const elements = ref([
+  {
+    id: '1',
+    label: 'Node 1',
+    position: { x: 50, y: 50 },
+    data: {
+      hello: 'world',
+    }
+  },
+])
+
+function onSomeEvent(nodeId) {
+  const node = elements.value.find((node) => node.id === nodeId)
+
+  node.data = {
+    ...elements.value[0].data,
+    hello: 'world',
+  }
+    
+  // you can also mutate properties like `selectable` or `draggable`
+  node.selectable = false
+  node.draggable = false
+}
+</script>
+
+<template>
+  <VueFlow v-model="elements" />
+</template>
+```
+
+:::
+
 ## [Predefined Node-Types](/typedocs/types/DefaultNodeTypes)
 
 Vue Flow provides several built-in node types that you can leverage immediately. 
@@ -501,25 +667,26 @@ const elements = ref([
 Your custom nodes are enclosed so that fundamental functions like dragging or selecting operate. 
 But you may wish to expand on these features or implement your business logic inside nodes, thus your nodes receive the following properties:
 
-| Name             | Definition                                       | Type                                                       | Optional                                   |
-|------------------|--------------------------------------------------|------------------------------------------------------------|--------------------------------------------|
-| id               | Node id                                          | string                                                     | <Close class="text-red-500" />             |
-| type             | Node type                                        | string                                                     | <Close class="text-red-500" />             |
-| selected         | Is node selected                                 | boolean                                                    | <Close class="text-red-500" />             |
-| dragging         | Is node dragging                                 | boolean                                                    | <Close class="text-red-500" />             |
-| connectable      | Is node connectable                              | boolean                                                    | <Close class="text-red-500" />             |
-| position         | Relative position of a node                      | [XYPosition](/typedocs/interfaces/XYPosition)              | <Close class="text-red-500" />             |
-| zIndex           | Node z-index                                     | number                                                     | <Close class="text-red-500" />             |
-| dimensions       | Node size                                        | [Dimensions](/typedocs/interfaces/Dimensions)              | <Close class="text-red-500" />             |
-| data             | Custom data object                               | Any object                                                 | <Check class="text-[var(--vp-c-brand)]" /> |
-| events           | Node events and custom events                    | [NodeEventsOn](/typedocs/types/NodeEventsOn)               | <Check class="text-[var(--vp-c-brand)]" /> |
-| label            | Node label                                       | string, Component                                          | <Check class="text-[var(--vp-c-brand)]" /> |
-| isValidTargetPos | Called when target handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
-| isValidSourcePos | Called when source handle is used for connection | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
-| parentNode       | Parent node id                                   | string                                                     | <Check class="text-[var(--vp-c-brand)]" /> |
-| targetPosition   | Target handle position                           | [Position](/typedocs/enums/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
-| sourcePosition   | Source handle position                           | [Position](/typedocs/enums/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
-| dragHandle       | Node drag handle class                           | string                                                     | <Check class="text-[var(--vp-c-brand)]" /> |
+| Prop Name                                                   | Description                                                         | Type                                                       | Optional                                   |
+|-------------------------------------------------------------|---------------------------------------------------------------------|------------------------------------------------------------|--------------------------------------------|
+| id                                                          | Unique node id                                                      | string                                                     | <Close class="text-red-500" />             |
+| type                                                        | Node Type                                                           | string                                                     | <Close class="text-red-500" />             |
+| selected                                                    | Is node selected                                                    | boolean                                                    | <Close class="text-red-500" />             |
+| connectable                                                 | Can node handles be connected                                       | [HandleConnectable](/typedocs/types/HandleConnectable)     | <Close class="text-red-500" />             |
+| position                                                    | Node's x, y (relative) position on the graph                        | [XYPosition](/typedocs/interfaces/XYPosition)              | <Close class="text-red-500" />             |
+| dimensions                                                  | Dom element dimensions (width, height)                              | [Dimensions](/typedocs/interfaces/Dimensions)              | <Close class="text-red-500" />             |
+| label                                                       | Node label, either a string or a VNode. `h('div', props, children)` | string \| VNode \| Component \| Object                     | <Check class="text-[var(--vp-c-brand)]" /> |
+| isValidTargetPos <Badge type="warning" text="deprecated" /> | Called when used as target for new connection                       | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
+| isValidSourcePos <Badge type="warning" text="deprecated" /> | Called when used as the source for a new connection                 | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
+| parent                                                      | Parent node id                                                      | string                                                     | <Check class="text-[var(--vp-c-brand)]" /> |
+| dragging                                                    | Is node currently dragging                                          | boolean                                                    | <Close class="text-red-500" />             |
+| resizing                                                    | Is node currently resizing                                          | boolean                                                    | <Close class="text-red-500" />             |
+| zIndex                                                      | Node z-index                                                        | number                                                     | <Close class="text-red-500" />             |
+| targetPosition                                              | Handle position                                                     | [Position](/typedocs/enums/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| sourcePosition                                              | Handle position                                                     | [Position](/typedocs/enums/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| dragHandle                                                  | Drag handle query selector                                          | string                                                     | <Check class="text-[var(--vp-c-brand)]" /> |
+| data                                                        | Additional data of node                                             | any object                                                 | <Close class="text-red-500" />             |
+| events                                                      | Contextual and custom events of node                                | [NodeEventsOn](/typedocs/types/NodeEventsOn)               | <Close class="text-red-500" />             |
 
 ## [Node Events](/typedocs/types/NodeEventsHandler)
 
@@ -648,77 +815,6 @@ User-created nodes don't have any default styles associated and thus need custom
     padding: 10px;
 }
 ```
-
-## Updating Node Data
-
-Since nodes are reactive object, you can update their data at any point by simply mutating it.
-This allows you to disable or enable handles, change the label, or even add new properties to the data object at any point in time.
-
-There are multiple ways of achieving this, here are some examples:
-
-::: code-group
-
-```vue [useNode]
-<!-- CustomNode.vue -->
-<script setup>
-import { useNode } from '@vue-flow/core'
-
-// `useNode` returns us the node object straight from the state
-// since the node obj is reactive, we can mutate it to update our nodes' data
-const { node } = useNode()
-
-function onSomeEvent() {
-  node.data = {
-    ...node.data,  
-    hello: 'world',
-  }
-}
-</script>
-```
-
-```ts [useVueFlow]
-import  { useVueFlow } from '@vue-flow/core'
-
-const instance = useVueFlow()
-
-// find the node in the state by its id
-const node = instance.findNode(nodeId)
-
-node.data = {
-  ...node.data,
-  hello: 'world',
-}
-```
-
-```vue [v-model]
-<script setup>
-import { ref } from 'vue'
-
-const elements = ref([
-  {
-    id: '1',
-    label: 'Node 1',
-    position: { x: 50, y: 50 },
-    data: {
-      hello: 'world',
-    }
-  },
-])
-
-function onSomeEvent() {
-  elements.value[0].data = {
-    ...elements.value[0].data,
-    hello: 'world',
-  }
-}
-</script>
-
-<template>
-  <VueFlow v-model="elements" />
-</template>
-```
-
-::: 
 
 ## Implementing Scrolling within Nodes
 
