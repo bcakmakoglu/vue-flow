@@ -1,4 +1,4 @@
-import type { ToRefs } from 'vue'
+import type { Ref, ToRefs } from 'vue'
 import { effectScope, nextTick, onScopeDispose, toRef, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { watchPausable } from '@vueuse/core'
@@ -287,15 +287,15 @@ export function useWatchProps(
 
       Object.keys(props).forEach((prop) => {
         if (!skip.includes(prop as keyof typeof props)) {
-          const model = toRef(props, prop as keyof typeof props)
-          const storedValue = store[prop as keyof typeof store] as typeof model
+          const model = toRef(() => prop)
+          const storeRef = store[prop as keyof typeof store] as typeof model as Ref<any>
 
           scope.run(() => {
             watch(
               model,
               (nextValue) => {
                 if (isDef(nextValue)) {
-                  storedValue.value = nextValue
+                  storeRef.value = nextValue
                 }
               },
               { flush: 'pre' },
