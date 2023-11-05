@@ -20,8 +20,6 @@ import LockCheck from '~icons/mdi/lock-check';
 
 # Welcome to Vue Flow!
 
-## What is Vue Flow?
-
 Vue Flow is a bridge to the world of interactive flowcharts and graphs, empowering you to bring dynamism and
 interactivity to flowcharts and graphic representations.
 Whether it's crafting personal diagrams, generating dynamic editors, or anything else your imagination conjures up, Vue
