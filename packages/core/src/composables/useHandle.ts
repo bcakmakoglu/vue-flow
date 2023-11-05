@@ -57,6 +57,7 @@ export function useHandle({
     emits,
     viewport,
     edges,
+    nodes,
     isValidConnection: isValidConnectionProp,
   } = useVueFlow()
 
@@ -152,6 +153,7 @@ export function useHandle({
               isValidConnectionHandler,
               doc,
               edges.value,
+              nodes.value,
               findNode,
             ),
         )
@@ -278,6 +280,7 @@ export function useHandle({
         isValidConnectionHandler,
         doc,
         edges.value,
+        nodes.value,
         findNode,
       )
 
