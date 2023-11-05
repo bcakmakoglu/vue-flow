@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { toRef } from '@vueuse/core'
+import { toRef } from 'vue'
 import { useVueFlow } from '../../composables'
 
 const { viewportRef } = useVueFlow()
