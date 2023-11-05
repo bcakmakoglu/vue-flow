@@ -22,6 +22,10 @@ export default defineConfig({
   ],
 
   theme: {
+    fontFamily: {
+      sans: 'Geist, sans-serif',
+      mono: 'Geist Mono, monospace',
+    },
     extend: {
       colors: {
         primary: {
