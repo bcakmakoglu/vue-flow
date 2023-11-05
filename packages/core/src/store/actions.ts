@@ -397,6 +397,7 @@ export function useActions(
       ? nextEdges.filter((edge) =>
           state.isValidConnection!(edge, {
             edges: state.edges,
+            nodes: state.nodes,
             sourceNode: findNode(edge.source)!,
             targetNode: findNode(edge.target)!,
           }),
@@ -470,6 +471,7 @@ export function useActions(
       ? nextEdges.filter((edge) =>
           state.isValidConnection!(edge, {
             edges: state.edges,
+            nodes: state.nodes,
             sourceNode: findNode(edge.source)!,
             targetNode: findNode(edge.target)!,
           }),
