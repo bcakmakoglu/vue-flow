@@ -1,8 +1,8 @@
 <script setup>
 import LogosJavascript from '~icons/logos/javascript';
-import LogosTypescript from '~icons/logos/typescript-icon';
 import { ref, h } from 'vue';
 import { Handle, Position, VueFlow } from '@vue-flow/core';
+import { Background } from '@vue-flow/background';
 
 const CustomNode = (props) => h('div', [
   h(Handle, { connectable: false, type: 'target', position: Position.Top }),
@@ -60,10 +60,11 @@ Here's how you can use CSS classes to add a pop of color or alter the font style
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="elements" :pan-activation-key-code="null" :pan-on-scroll="false" :zoom-on-scroll="false" :pan-on-drag="false" fit-view-on-init>
+  <VueFlow v-model="elements" fit-view-on-init>
     <template #node-custom="props">
       <CustomNode v-bind="props" />
     </template>
+    <Background />
   </VueFlow>
 </div>
 
@@ -86,14 +87,12 @@ Below are a couple of examples on how you can do this:
 
 Directly styling the Vue Flow component:
 
-```html{4-5}
-<div style="height: 300px">
-  <VueFlow
-    v-model="elements"
-    class="my-diagram-class"
-    :style="{ background: 'red' }"
-  />
-</div>
+```vue{3-4}
+<VueFlow
+  v-model="elements"
+  class="my-diagram-class"  
+  :style="{ background: 'red' }"
+/>
 ```
 
 Styling nodes/edges with a style or class attribute:
@@ -103,25 +102,6 @@ Styling nodes/edges with a style or class attribute:
 ```js{8-12} [<LogosJavascript />]
 /* Customizing node by assigning class and style properties */
 const nodes = ref([
-  { 
-    id: '1', 
-    label: 'Node 1', 
-    position: { x: 250, y: 5 },
-    
-    // Add a class name to the node
-    class: 'my-custom-node-class',
-    
-    // You can pass an object containing CSSProperties or CSS variables
-    style: { backgroundColor: 'green', width: '200px', height: '100px' },
-  },
-])
-```
-
-```ts{10-14} [<LogosTypescript />]
-import type { Node } from '@vue-flow/core';
-
-/* Customizing node by assigning class and style properties */
-const nodes = ref<Node[]>([
   { 
     id: '1', 
     label: 'Node 1', 
@@ -157,20 +137,6 @@ These alterations can be implemented either on a global scale or to individual e
 
 ```js{6-7} [<LogosJavascript />]
 const elements = ref([
-  { 
-    id: '1', 
-    label: 'Node 1', 
-    position: { x: 100, y: 100 }, 
-    /* Overriding the `--vf-node-color` variable to change node border, box-shadow and handle color */
-    style: { '--vf-node-color': 'blue' } 
-  },
-])
-```
-
-```ts{8-9} [<LogosTypescript />]
-import type { Elements } from '@vue-flow/core';
-
-const elements = ref<Elements>([
   { 
     id: '1', 
     label: 'Node 1', 
