@@ -4,7 +4,7 @@ import { computed, onUnmounted, ref } from 'vue'
 import { Position, getDimensions, isMouseEvent } from '@xyflow/system'
 import type { HandleProps } from '../../types/handle'
 import { useHandle, useNode, useVueFlow } from '../../composables'
-import { isDef, isFunction, isNumber, isString } from '../../utils'
+import { isDef } from '../../utils'
 
 const {
   position = Position.Top,

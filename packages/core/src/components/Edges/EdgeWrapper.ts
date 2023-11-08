@@ -6,14 +6,7 @@ import EdgeAnchor from './EdgeAnchor'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge, MouseTouchEvent } from '~/types'
 import { useEdgeHooks, useHandle, useVueFlow } from '~/composables'
 import { EdgeId, EdgeRef } from '~/context'
-import {
-  ARIA_EDGE_DESC_KEY,
-  ErrorCode,
-  VueFlowError,
-  elementSelectionKeys,
-  getEdgePositions,
-  getHandle,
-} from '~/utils'
+import { ARIA_EDGE_DESC_KEY, ErrorCode, VueFlowError, elementSelectionKeys, getEdgePositions, getHandle } from '~/utils'
 
 interface Props {
   id: string

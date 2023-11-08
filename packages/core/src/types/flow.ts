@@ -1,23 +1,19 @@
 import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { Connection, ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode, SnapGrid } from '@xyflow/system'
-import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
-import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
-import type { ConnectionLineOptions, Connector } from './connection'
-import type { ViewportTransform } from './zoom'
+import type {
+  Connection,
+  ConnectionLineType,
+  ConnectionMode,
+  OnConnectStartParams,
+  PanOnScrollMode,
+  SelectionMode,
+  SnapGrid,
+} from '@xyflow/system'
 import type { D3ZoomEvent } from 'd3-zoom'
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
-import type {
-  Connection,
-  ConnectionLineOptions,
-  ConnectionLineProps,
-  ConnectionLineType,
-  ConnectionMode,
-  Connector,
-  OnConnectStartParams,
-} from './connection'
-import type { PanOnScrollMode, ViewportTransform } from './zoom'
+import type { ConnectionLineOptions, ConnectionLineProps, Connector } from './connection'
+import type { ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { CustomEvent, EdgeMouseEvent, EdgeUpdateEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
 import type { ValidConnectionFunc } from './handle'
