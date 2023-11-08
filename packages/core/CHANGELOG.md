@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.25.1
+
+### Patch Changes
+
+- [#1177](https://github.com/bcakmakoglu/vue-flow/pull/1177) [`c9787c2b`](https://github.com/bcakmakoglu/vue-flow/commit/c9787c2bce11ebe7c1dd8f564efc0a2a3186bc46) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wait for d3zoom to exist before setting options
+
+- [#1174](https://github.com/bcakmakoglu/vue-flow/pull/1174) [`4cefa322`](https://github.com/bcakmakoglu/vue-flow/commit/4cefa322fe2ec665b253ff6ac51004dc8afe322c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Import `toValue` from vueuse/core to avoid amiguous export with vue
+
 ## 1.25.0
 
 ### Minor Changes
