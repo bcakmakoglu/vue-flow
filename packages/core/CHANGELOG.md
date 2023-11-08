@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.25.2
+
+### Patch Changes
+
+- [#1178](https://github.com/bcakmakoglu/vue-flow/pull/1178) [`29c01f42`](https://github.com/bcakmakoglu/vue-flow/commit/29c01f428c308f9edeaefdc9b0b1796853b813fd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Revert importing types from vue instead of vueuse/core as it causes handle position to be messed up
+
 ## 1.25.1
 
 ### Patch Changes
