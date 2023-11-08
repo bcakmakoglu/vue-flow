@@ -12,6 +12,7 @@ import type {
   SelectionMode,
   SelectionRect,
   SnapGrid,
+  Viewport,
   XYPosition,
 } from '@xyflow/system'
 import type { ElementData, Elements, FlowElements, FlowExportObject, FlowOptions } from './flow'
@@ -19,7 +20,7 @@ import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent }
 import type { ConnectionLineOptions, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
-import type { D3Selection, D3Zoom, D3ZoomHandler, ViewportFunctions, ViewportTransform } from './zoom'
+import type { D3Selection, D3Zoom, D3ZoomHandler, ViewportFunctions } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ValidConnectionFunc } from './handle'
@@ -52,7 +53,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   minZoom: number
   /** use setMaxZoom action to change maxZoom */
   maxZoom: number
-  defaultViewport: Partial<ViewportTransform>
+  defaultViewport: Partial<Viewport>
   /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent | CoordinateExtentRange
@@ -60,7 +61,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** viewport dimensions - do not change! */
   readonly dimensions: Dimensions
   /** viewport transform x, y, z - do not change!  */
-  readonly viewport: ViewportTransform
+  readonly viewport: Viewport
   /** if true will skip rendering any elements currently not inside viewport until they become visible */
   onlyRenderVisibleElements: boolean
   nodesSelectionActive: boolean

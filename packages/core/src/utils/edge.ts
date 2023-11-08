@@ -1,6 +1,6 @@
-import type { EdgePosition, HandleElement, Rect, XYPosition } from '@xyflow/system'
+import type { EdgePosition, HandleElement, Rect, Viewport, XYPosition } from '@xyflow/system'
 import { Position, rectToBox } from '@xyflow/system'
-import type { Actions, GraphEdge, GraphNode, ViewportTransform } from '~/types'
+import type { Actions, GraphEdge, GraphNode } from '~/types'
 
 export function getHandlePosition(position: Position, rect: Rect, handle: HandleElement | null): XYPosition {
   const x = (handle?.x ?? 0) + rect.x
@@ -90,7 +90,7 @@ interface IsEdgeVisibleParams {
   targetHeight: number
   width: number
   height: number
-  viewport: ViewportTransform
+  viewport: Viewport
 }
 
 export function isEdgeVisible({
