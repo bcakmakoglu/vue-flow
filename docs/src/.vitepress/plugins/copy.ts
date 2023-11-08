@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
 
@@ -34,10 +34,11 @@ function copyFiles(emit: any) {
     emit({
       type: 'asset',
       fileName: pkgName,
+      filePath,
       source: readFileSync(filePath, 'utf-8'),
     })
 
-    console.log(`Copied ${filePath} to ${resolve(__dirname, `../../src/public/${pkgName}`)}`)
+    console.log(`Copied ${filePath} to ${resolve(__dirname, `../../public/${pkgName}`)}`)
   })
 
   console.log('Copied vue-flow files')
@@ -46,10 +47,16 @@ export function copyVueFlowPlugin(): Plugin {
   return {
     name: 'copy-vue-flow',
     buildStart() {
-      copyFiles((file: any) => this.emitFile(file))
+      // use fs to copy files
+      copyFiles((file: any) => {
+        writeFileSync(resolve(__dirname, `../../public/${file.fileName}`), file.source)
+      })
     },
     watchChange() {
-      copyFiles((file: any) => this.emitFile(file))
+      // use fs to copy files
+      copyFiles((file: any) => {
+        writeFileSync(resolve(__dirname, `../../public/${file.fileName}`), file.source)
+      })
     },
     generateBundle() {
       copyFiles((file: any) => this.emitFile(file))
