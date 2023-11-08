@@ -76,6 +76,7 @@ export {
   getStraightPath,
   getTransformForBounds,
   getRectOfNodes,
+  getBoundsOfRects,
 } from '@xyflow/system'
 
 export { getSimpleBezierPath, getSimpleEdgeCenter } from './components/Edges/utils'
