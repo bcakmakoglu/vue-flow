@@ -2,7 +2,8 @@ import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import { ref, toValue, watch } from 'vue'
+import { ref, watch } from 'vue'
+import { toValue } from '@vueuse/core'
 import { useGetPointerPosition, useVueFlow } from '.'
 import {
   calcAutoPan,
