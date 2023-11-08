@@ -4,10 +4,10 @@ import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow 
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { computed, provide, ref, useAttrs, useSlots, watchEffect } from 'vue'
-import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
+import { computed, provide, ref, toRef, useAttrs, watchEffect } from 'vue'
+import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
-import { MiniMapSlots } from './types'
+import { Slots } from './types'
 
 const {
   width,
@@ -31,6 +31,8 @@ const {
 
 const emit = defineEmits<MiniMapEmits>()
 
+const slots = defineSlots<MiniMapSlots>()
+
 const attrs: Record<string, any> = useAttrs()
 
 const defaultWidth = 200
@@ -40,22 +42,23 @@ const { id, edges, viewport, translateExtent, dimensions, emits, nodes, d3Select
 
 const el = ref<SVGElement>()
 
-provide(MiniMapSlots, useSlots())
+provide(Slots, slots)
 
-const elementWidth = computed(() => width ?? attrs.style?.width ?? defaultWidth)
+const elementWidth = toRef(() => width ?? attrs.style?.width ?? defaultWidth)
 
-const elementHeight = computed(() => height ?? attrs.style?.height ?? defaultHeight)
+const elementHeight = toRef(() => height ?? attrs.style?.height ?? defaultHeight)
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
-const nodeColorFunc = computed<MiniMapNodeFunc>(() => (nodeColor instanceof Function ? nodeColor : () => nodeColor as string))
+const nodeColorFunc = toRef((): MiniMapNodeFunc => (typeof nodeColor === 'string' ? () => nodeColor : nodeColor))
 
-const nodeStrokeColorFunc = computed<MiniMapNodeFunc>(() =>
-  nodeStrokeColor instanceof Function ? nodeStrokeColor : () => nodeStrokeColor as string,
+const nodeStrokeColorFunc = toRef(
+  (): MiniMapNodeFunc => (typeof nodeStrokeColor === 'string' ? () => nodeStrokeColor : nodeStrokeColor),
 )
 
-const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
-  nodeClassName instanceof Function ? nodeClassName : ((() => nodeClassName) as MiniMapNodeFunc),
+const nodeClassNameFunc = toRef(
+  (): MiniMapNodeFunc =>
+    typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
 const bb = computed(() => getRectOfNodes(nodes.value))
