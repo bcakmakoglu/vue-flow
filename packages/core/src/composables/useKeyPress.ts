@@ -1,6 +1,5 @@
-import type { MaybeRefOrGetter } from 'vue'
 import { ref, watch } from 'vue'
-import type { KeyFilter, KeyPredicate } from '@vueuse/core'
+import type { KeyFilter, KeyPredicate, MaybeRefOrGetter } from '@vueuse/core'
 import { onKeyStroke, toValue, useEventListener } from '@vueuse/core'
 import { useWindow } from './useWindow'
 
