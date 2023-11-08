@@ -1,7 +1,7 @@
-import type { CSSProperties, Slots } from 'vue'
+import type { CSSProperties } from 'vue'
 import { defineComponent, h, inject } from 'vue'
 import type { MiniMapNodeProps } from './types'
-import { MiniMapSlots } from './types'
+import { Slots } from './types'
 
 // todo: typings
 export default defineComponent({
@@ -22,7 +22,7 @@ export default defineComponent({
   ],
   emits: ['click', 'dblclick', 'mouseenter', 'mousemove', 'mouseleave'],
   setup(props: MiniMapNodeProps, { attrs, emit }) {
-    const miniMapSlots: Slots = inject(MiniMapSlots)!
+    const miniMapSlots = inject(Slots)!
 
     return () => {
       const style = (attrs.style ?? {}) as CSSProperties
