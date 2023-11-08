@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.25.1] - 2023-11-08
+
+[7489118](74891189e7591776d43817d8bf9dee9a5a711a73)...[ab59b71](ab59b71136e97ca17230ed1cd49ab243dc1f4355)
+
+### Miscellaneous Tasks
+
+- Copy vue flow files on dev build ([529d90a](529d90a3be6a30e5b9dd6a96311e4caea9795900))
+- Add ([5e30865](5e308652a3a644d52f05c9aea0882cf2262f844c))
+- Add ([8a2304a](8a2304a52e90651e535a701dd8332864e00442c3))
+- Cleanup copy plugin ([c59deac](c59deacf3f3289cc5d03da8735f038a2399d0667))
+
+### Reverts
+
+- Import `toValue` from vueuse/core to avoid ambiguous export ([17e5966](17e5966e4f43311d7bbf62f3677303c8dace0c83))
+- Wait for d3zoom before setting opts ([e4e3188](e4e3188b76c514cb88672060eb84f5786890b62d))
+
 ## [1.25.0] - 2023-11-08
 
 [ea7f843](ea7f8435ef5b4d030fc4b112ac2617e2de1c3936)...[7489118](74891189e7591776d43817d8bf9dee9a5a711a73)
