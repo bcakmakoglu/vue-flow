@@ -1,23 +1,20 @@
 <script lang="ts" setup>
 import { computed, inject, toRef } from 'vue'
-import type { GraphNode, Rect, ViewportTransform } from '@vue-flow/core'
+import type { GraphNode } from '@vue-flow/core'
 import { NodeIdInjection, Position, getRectOfNodes, useVueFlow } from '@vue-flow/core'
 
 import type { CSSProperties } from 'vue'
-import type { Align, NodeToolbarProps } from './types'
+import type { NodeToolbarProps } from './types'
+import { getTransform } from './utils'
 
-const props = withDefaults(defineProps<NodeToolbarProps>(), {
-  position: Position.Top,
-  offset: 10,
-  align: 'center',
-})
+const { nodeId, position = Position.Top, offset = 10, align = 'center', isVisible = undefined } = defineProps<NodeToolbarProps>()
 
 const contextNodeId = inject(NodeIdInjection, null)
 
 const { viewportRef, viewport, getSelectedNodes, findNode } = useVueFlow()
 
 const nodes = computed(() => {
-  const nodeIds = Array.isArray(props.nodeId) ? props.nodeId : [props.nodeId || contextNodeId || '']
+  const nodeIds = Array.isArray(nodeId) ? nodeId : [nodeId || contextNodeId || '']
 
   return nodeIds.reduce<GraphNode[]>((acc, id) => {
     const node = findNode(id)
@@ -31,8 +28,8 @@ const nodes = computed(() => {
 })
 
 const isActive = toRef(() =>
-  typeof props.isVisible === 'boolean'
-    ? props.isVisible
+  typeof isVisible === 'boolean'
+    ? isVisible
     : nodes.value.length === 1 && nodes.value[0].selected && getSelectedNodes.value.length === 1,
 )
 
@@ -43,51 +40,9 @@ const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.comput
 
 const wrapperStyle = computed<CSSProperties>(() => ({
   position: 'absolute',
-  transform: getTransform(nodeRect.value, viewport.value, props.position, props.offset, props.align),
+  transform: getTransform(nodeRect.value, viewport.value, position, offset, align),
   zIndex: zIndex.value,
 }))
-
-function getTransform(nodeRect: Rect, transform: ViewportTransform, position: Position, offset: number, align: Align): string {
-  let alignmentOffset = 0.5
-
-  if (align === 'start') {
-    alignmentOffset = 0
-  } else if (align === 'end') {
-    alignmentOffset = 1
-  }
-
-  // position === Position.Top
-  // we set the x any y position of the toolbar based on the nodes position
-  let pos = [
-    (nodeRect.x + nodeRect.width * alignmentOffset) * transform.zoom + transform.x,
-    nodeRect.y * transform.zoom + transform.y - offset,
-  ]
-  // and then shift it based on the alignment. The shift values are in %.
-  let shift = [-100 * alignmentOffset, -100]
-
-  switch (position) {
-    case Position.Right:
-      pos = [
-        (nodeRect.x + nodeRect.width) * transform.zoom + transform.x + offset,
-        (nodeRect.y + nodeRect.height * alignmentOffset) * transform.zoom + transform.y,
-      ]
-      shift = [0, -100 * alignmentOffset]
-      break
-    case Position.Bottom:
-      pos[1] = (nodeRect.y + nodeRect.height) * transform.zoom + transform.y + offset
-      shift[1] = 0
-      break
-    case Position.Left:
-      pos = [
-        nodeRect.x * transform.zoom + transform.x - offset,
-        (nodeRect.y + nodeRect.height * alignmentOffset) * transform.zoom + transform.y,
-      ]
-      shift = [-100, -100 * alignmentOffset]
-      break
-  }
-
-  return `translate(${pos[0]}px, ${pos[1]}px) translate(${shift[0]}%, ${shift[1]}%)`
-}
 </script>
 
 <script lang="ts">
