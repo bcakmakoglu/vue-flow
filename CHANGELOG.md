@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.25.0] - 2023-11-08
+
+[ea7f843](ea7f8435ef5b4d030fc4b112ac2617e2de1c3936)...[7489118](74891189e7591776d43817d8bf9dee9a5a711a73)
+
+### Documentation
+
+- Update getting-started page ([ec66f90](ec66f90cb08efc74ac3d849ce47e62b0c129692a))
+- Remove animxyz ([d670de4](d670de4671a00e1aec9d8eae67d5aab4499a946a))
+- Update intro page ([39cf824](39cf82431f34b3ff339e26a346a04e7ca8f11069))
+- Cleanup ([fcf3078](fcf3078d5b8116060bdd03a21955b7cbf110f11d))
+- Update theming page ([372c374](372c37469ebfc88cdd9ab0e0fd8a1407c6f24486))
+- Cleanup ([811595c](811595cd1791c1f68619c55c640301187abc3cf5))
+- Add copy icon overrides ([17d9a49](17d9a49610246f4a3d57e713ae06737c1f1a7229))
+- Update node page ([1628851](162885199fe392831022f2e65a9819c55599c932))
+- Update edge page ([30646f4](30646f4c2b8306e552aeb0895701746d2879f00b))
+- Add section on updating node data ([a1691ce](a1691ce91031da98d70009b81f8d44018d59f0f1))
+- Add section on updating edge data ([5169eda](5169edad6d664f26ccd66b096e0475ebdf2c20b2))
+- Add section on removing nodes & edges ([4786e7a](4786e7ab5eb2c677775380f35bd1fe8ac565713d))
+- Extend custom node and edges section ([b493893](b4938930adf4d2767270099ca5d75990a50a9854))
+
+### Features
+
+- Add slots and emits type definition ([196cafd](196cafdf81088644ada5f07ef65ee5e3203985ab))
+- Add nodes to `isValidConnection` args ([c1603b2](c1603b2d5848c4e6ae0256ee2c253810a8f27526))
+
+### Miscellaneous Tasks
+
+- Cleanup ([d0161fd](d0161fd417ea7ac7461650749369ed8920503e6a))
+- Cleanup placeholder style ([c35c2db](c35c2dbcc069d5605d804ba73bbe8006bb3cd13b))
+- Cleanup theming examples ([2b99b77](2b99b77aea809887d644e9d3a02102c83947d08c))
+- Cleanup slots ([70ae074](70ae0749b77b5d3f8b7e5e2ea4d8a6b45fa47df0))
+- Add ([e010497](e0104975caa97358e969a3508833600e428ee771))
+- Add comments ([28b66a3](28b66a3d663cdaad2f1e7f1ba69c59102f33f088))
+- Cleanup imports from vueuse/core that exist in vue ([7cc798a](7cc798adae4f755d013d2417859d60643deb6ece))
+- Cleanup ([75cb0c9](75cb0c9b1ec8f02ba334762fd7c84fee7ea9e92f))
+- Add ([db9a0dc](db9a0dc7d6a829ce3eefd69634cae3b06c4a2f62))
+- Cleanup ([45ce985](45ce98558e2047c36346eb86cd5802021eff86e3))
+
+### Refactor
+
+- Remove slots patch ([e54b36a](e54b36ae28fcd749d7ab8f7c5b83c1dbcf9643d4))
+
 ## [1.24.2] - 2023-11-04
 
 [41d325b](41d325b61368c0dc1de524210ed21903d2cb1692)...[ea7f843](ea7f8435ef5b4d030fc4b112ac2617e2de1c3936)
