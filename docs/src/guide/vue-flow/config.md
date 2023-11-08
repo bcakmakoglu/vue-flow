@@ -11,23 +11,10 @@ as options to the [`useVueFlow`](/guide/composables#usevueflow) composable.
 ```vue
 <!-- Pass configuration as props -->
 <template>
-  <VueFlow :default-zoom="0.5" :max-zoom="4" :min-zoom="0.1" />
+  <VueFlow :default-viewport="{ zoom: 0.5 }" :max-zoom="4" :min-zoom="0.1" />
 </template>
 ```
 
-- Using Composable Options
-
-```vue
-<script setup>
-import { useVueFlow  } from '@vue-flow/core'
-
-useVueFlow({
-  defaultZoom: 0.5,
-  maxZoom: 4,
-  minZoom: 0.1,
-})
-</script>
-```
 
 ## Updating Config
 
@@ -38,30 +25,27 @@ by `useVueFlow`.
 
 ```vue{2,5-6,10}
 <script setup>
-const defaultZoom = ref(1)
+const nodesDraggable = ref(false)
 
-onMounted(() => {
-  // change the default zoom value of the state
-  defaultZoom.value = 1
-})
+const toggleNodesDraggable = () => {
+  // toggle the state
+  nodesDraggable.value = !nodesDraggable.value
+}
 </script>
 <template>
-  <VueFlow :default-zoom="defaultZoom" />
+  <VueFlow :nodes-draggable="nodesDraggable">...</VueFlow>
 </template>
 ```
 
 - Using State (Composable)
 
-```vue{2,7-8}
+```vue{2,5}
 <script setup>
-const { defaultZoom } = useVueFlow({
-  defaultZoom: 0.5,
-})
+const { nodesDraggable } = useVueFlow()
 
-onMounted(() => {
-  // change the default zoom value of the state
-  defaultZoom.value = 1
-})
+const toggleNodesDraggable = () => {
+  nodesDraggable.value = !nodesDraggable.value
+}
 </script>
 ```
 
