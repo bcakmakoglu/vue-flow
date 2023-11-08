@@ -73,6 +73,14 @@ export interface MiniMapEmits {
   (event: 'nodeMouseleave', params: NodeMouseEvent): void
 }
 
+export interface MiniMapNodeEmits {
+  (event: 'click', params: NodeMouseEvent): void
+  (event: 'dblclick', params: NodeMouseEvent): void
+  (event: 'mouseenter', params: NodeMouseEvent): void
+  (event: 'mousemove', params: NodeMouseEvent): void
+  (event: 'mouseleave', params: NodeMouseEvent): void
+}
+
 export interface MiniMapSlots extends Record<`node-${string}`, (nodeProps: MiniMapNodeProps) => any> {}
 
 export const Slots: InjectionKey<MiniMapSlots> = Symbol('MiniMapSlots')
