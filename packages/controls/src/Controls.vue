@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Panel, PanelPosition, useVueFlow } from '@vue-flow/core'
+import { Panel, useVueFlow } from '@vue-flow/core'
 import { toRef } from 'vue'
 import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
@@ -14,7 +14,7 @@ const {
   showFitView = true,
   showInteractive = true,
   fitViewParams,
-  position = PanelPosition.BottomLeft,
+  position = 'bottom-left',
 } = defineProps<ControlProps>()
 
 const emit = defineEmits<{
