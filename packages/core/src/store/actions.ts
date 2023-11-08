@@ -787,7 +787,9 @@ export function useActions(
       }
     })
 
-    setSkippedOptions()
+    until(() => state.d3Zoom)
+      .not.toBeNull()
+      .then(setSkippedOptions)
 
     if (!state.initialized) {
       state.initialized = true
