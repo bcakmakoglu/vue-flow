@@ -1,31 +1,17 @@
 import type { CSSProperties } from 'vue'
 import { defineComponent, h, inject } from 'vue'
-import type { MiniMapNodeProps } from './types'
+import type { MiniMapNodeEmits, MiniMapNodeProps } from './types'
 import { Slots } from './types'
 
-// todo: typings
-export default defineComponent({
+export default defineComponent<MiniMapNodeProps, MiniMapNodeEmits>({
   name: 'MiniMapNode',
   compatConfig: { MODE: 3 },
-  props: [
-    'id',
-    'type',
-    'selected',
-    'dragging',
-    'position',
-    'dimensions',
-    'borderRadius',
-    'color',
-    'shapeRendering',
-    'strokeColor',
-    'strokeWidth',
-  ],
-  emits: ['click', 'dblclick', 'mouseenter', 'mousemove', 'mouseleave'],
-  setup(props: MiniMapNodeProps, { attrs, emit }) {
+  setup(props, { attrs, emit }) {
     const miniMapSlots = inject(Slots)!
 
     return () => {
       const style = (attrs.style ?? {}) as CSSProperties
+
       const slot = miniMapSlots[`node-${props.type}`]
 
       if (slot) {
