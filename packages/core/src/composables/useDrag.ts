@@ -1,8 +1,9 @@
 import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
-import type { MaybeRefOrGetter, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { ref, watch } from 'vue'
+import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toValue } from '@vueuse/core'
 import { useGetPointerPosition, useVueFlow } from '.'
 import {

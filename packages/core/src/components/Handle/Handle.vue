@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { until } from '@vueuse/core'
-import { computed, onUnmounted, ref, toRef } from 'vue'
+import { toRef, until } from '@vueuse/core'
+import { computed, onUnmounted, ref } from 'vue'
 import type { HandleProps } from '../../types/handle'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'

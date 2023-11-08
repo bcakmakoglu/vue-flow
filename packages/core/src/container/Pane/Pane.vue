@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ref, toRef } from 'vue'
+import { ref } from 'vue'
+import { toRef } from '@vueuse/core'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import type { GraphNode } from '../../types'
