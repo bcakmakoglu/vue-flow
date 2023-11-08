@@ -1,5 +1,7 @@
 # Vue Flow Pathfinding Edge 🧲
 
+⚠️ DEPRECATED - WILL BE REMOVED WITH NEXT MAJOR RELEASE ⚠️
+
 __Custom edge that avoids crossing nodes__
 
 ## 🛠 Setup
