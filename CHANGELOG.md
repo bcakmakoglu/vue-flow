@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.25.2] - 2023-11-08
+
+[ab59b71](ab59b71136e97ca17230ed1cd49ab243dc1f4355)...[4d1578a](4d1578ae60373fdfb73d5053b140ea8dbd25555a)
+
+### Miscellaneous Tasks
+
+- Add ([21460ee](21460ee4725759fbd01cd0f70cefabc2402b2b63))
+
+### Reverts
+
+- Cleanup imports from vueuse/core that exist in vue ([6162389](6162389cc20be48175bf362345a490b08766e0ef))
+
 ## [1.25.1] - 2023-11-08
 
 [7489118](74891189e7591776d43817d8bf9dee9a5a711a73)...[ab59b71](ab59b71136e97ca17230ed1cd49ab243dc1f4355)
