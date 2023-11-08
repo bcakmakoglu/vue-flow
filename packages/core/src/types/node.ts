@@ -42,7 +42,9 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   draggable?: boolean
   /** Disable/enable selecting node */
   selectable?: boolean
-  /** Disable/enable connecting node */
+  /** Disable/enable connecting node
+   * todo: use only boolean prop
+   * */
   connectable?: HandleConnectable
   /** Disable/enable focusing node (a11y) */
   focusable?: boolean
