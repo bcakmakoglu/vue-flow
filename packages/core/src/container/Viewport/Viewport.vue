@@ -4,8 +4,9 @@ import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { onMounted, ref, watchEffect } from 'vue'
 import { toRef, useEventListener, useResizeObserver } from '@vueuse/core'
+import type { Viewport } from '@xyflow/system'
 import { PanOnScrollMode, clamp, getDimensions, isMacOs } from '@xyflow/system'
-import type { CoordinateExtent, D3ZoomHandler, FlowOptions, ViewportTransform } from '../../types'
+import type { CoordinateExtent, D3ZoomHandler, FlowOptions } from '../../types'
 import { useKeyPress, useVueFlow, useWindow } from '../../composables'
 import { ErrorCode, VueFlowError, warn } from '../../utils'
 import Pane from '../Pane/Pane.vue'
@@ -54,7 +55,7 @@ let zoomedWithRightMouseButton = false
 
 let mouseButton = 0
 
-let prevTransform: ViewportTransform = {
+let prevTransform: Viewport = {
   x: 0,
   y: 0,
   zoom: 0,
@@ -344,7 +345,7 @@ function wheelDelta(event: any) {
   return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
 }
 
-function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransform) {
+function viewChanged(prevViewport: Viewport, eventTransform: ZoomTransform) {
   return (
     (prevViewport.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
     (prevViewport.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
@@ -352,7 +353,7 @@ function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransf
   )
 }
 
-function eventToFlowTransform(eventTransform: ZoomTransform): ViewportTransform {
+function eventToFlowTransform(eventTransform: ZoomTransform): Viewport {
   return {
     x: eventTransform.x,
     y: eventTransform.y,

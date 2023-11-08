@@ -1,5 +1,11 @@
 import type { CSSProperties, Component, VNode, VNodeRef } from 'vue'
-import type { EdgeMarker as EdgeMarkerBase, EdgePosition, MarkerType } from '@xyflow/system'
+import type {
+  BezierPathOptions,
+  EdgeMarker as EdgeMarkerBase,
+  EdgePosition,
+  MarkerType,
+  SmoothStepPathOptions,
+} from '@xyflow/system'
 import type { ClassFunc, ElementData, StyleFunc, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { EdgeComponent, EdgeTextProps } from './components'
@@ -85,21 +91,12 @@ export interface DefaultEdge<
   ariaLabel?: string | null
 }
 
-export interface SmoothStepPathOptions {
-  offset?: number
-  borderRadius?: number
-}
-
 export type SmoothStepEdgeType<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = DefaultEdge<
   Data,
   CustomEvents
 > & {
   type: 'smoothstep'
   pathOptions?: SmoothStepPathOptions
-}
-
-export interface BezierPathOptions {
-  curvature?: number
 }
 
 export type BezierEdgeType<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any> = DefaultEdge<
