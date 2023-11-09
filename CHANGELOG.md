@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.25.3] - 2023-11-09
+
+[4d1578a](4d1578ae60373fdfb73d5053b140ea8dbd25555a)...[d963558](d96355846492279a4b7ab9fb046ae7164f0f2142)
+
+### Bug Fixes
+
+- Use node rect for intersection check ([0c07bd4](0c07bd4e2ad7164b774607fe2d62ac2929f27c95))
+- Respect zoom key when hovering nopan elements ([cc89e99](cc89e995fb6e31e99b41f347e77ebd2ad859c9a5))
+
+### Documentation
+
+- Remove `defaultZoom` opt from config guide ([91c5212](91c521296d11aacaae0e95579110c0058aa8d9c0))
+
+### Miscellaneous Tasks
+
+- Cleanup copy plugin ([26be5cf](26be5cf8d3b98d7b47aaf599ab02b03faf23cfde))
+- Add ([0a4e27b](0a4e27baa07519fc6ce6b8394ef5fff05f7575db))
+- Add ([448ea7d](448ea7d4d3ba18753490b8034515eda658b8cb23))
+
 ## [1.25.2] - 2023-11-08
 
 [ab59b71](ab59b71136e97ca17230ed1cd49ab243dc1f4355)...[4d1578a](4d1578ae60373fdfb73d5053b140ea8dbd25555a)
