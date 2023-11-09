@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.25.3
+
+### Patch Changes
+
+- [#1184](https://github.com/bcakmakoglu/vue-flow/pull/1184) [`6639551b`](https://github.com/bcakmakoglu/vue-flow/commit/6639551b35596001f61f199e94beefa7a331174b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Respect zoom activation key code when hovering an element with `nopan` on it
+
+- [#1183](https://github.com/bcakmakoglu/vue-flow/pull/1183) [`d43852b0`](https://github.com/bcakmakoglu/vue-flow/commit/d43852b05cef23b45f8abe1df758100e6b6b8e77) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use nodeRect to check for intersections
+
 ## 1.25.2
 
 ### Patch Changes
