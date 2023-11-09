@@ -74,11 +74,11 @@ export interface MiniMapEmits {
 }
 
 export interface MiniMapNodeEmits {
-  (event: 'click', params: NodeMouseEvent): void
-  (event: 'dblclick', params: NodeMouseEvent): void
-  (event: 'mouseenter', params: NodeMouseEvent): void
-  (event: 'mousemove', params: NodeMouseEvent): void
-  (event: 'mouseleave', params: NodeMouseEvent): void
+  (event: 'click', params: MouseEvent): void
+  (event: 'dblclick', params: MouseEvent): void
+  (event: 'mouseenter', params: MouseEvent): void
+  (event: 'mousemove', params: MouseEvent): void
+  (event: 'mouseleave', params: MouseEvent): void
 }
 
 export interface MiniMapSlots extends Record<`node-${string}`, (nodeProps: MiniMapNodeProps) => any> {}
