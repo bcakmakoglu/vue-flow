@@ -293,15 +293,6 @@ importers:
       '@xyflow/system':
         specifier: ^0.0.9
         version: 0.0.9
-      d3-drag:
-        specifier: ^3.0.0
-        version: 3.0.0
-      d3-selection:
-        specifier: ^3.0.0
-        version: 3.0.0
-      d3-zoom:
-        specifier: ^3.0.0
-        version: 3.0.0
       vue:
         specifier: ^3.3.0
         version: 3.3.4
@@ -315,15 +306,6 @@ importers:
       '@tooling/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/tsconfig
-      '@types/d3-drag':
-        specifier: ^3.0.4
-        version: 3.0.4
-      '@types/d3-selection':
-        specifier: ^3.0.7
-        version: 3.0.7
-      '@types/d3-zoom':
-        specifier: ^3.0.5
-        version: 3.0.5
       '@vitejs/plugin-vue':
         specifier: ^4.4.0
         version: 4.4.0(vite@4.4.11)(vue@3.3.4)
