@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useVModel } from '@vueuse/core'
 import { onUnmounted, provide } from 'vue'
-import Viewport from '../Viewport/Viewport.vue'
+import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
 import { useVueFlow, useWatchProps } from '../../composables'
@@ -92,10 +92,10 @@ export default {
 
 <template>
   <div ref="vueFlowRef" class="vue-flow">
-    <Viewport>
+    <ZoomPane>
       <!-- This slot is affected by zooming & panning -->
       <slot name="zoom-pane" />
-    </Viewport>
+    </ZoomPane>
 
     <!-- This slot is _not_ affected by zooming & panning -->
     <slot />
