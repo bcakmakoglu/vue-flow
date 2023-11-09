@@ -7,6 +7,8 @@ import type {
   ConnectionMode,
   ConnectionStatus,
   Dimensions,
+  FitViewOptionsBase,
+  NodeBase,
   PanOnScrollMode,
   PanZoomInstance,
   Rect,
@@ -231,6 +233,12 @@ export interface Actions {
   removeSelectedNodes: (nodes: GraphNode[]) => void
   /** unselect selected elements (if none are passed, all elements are unselected) */
   removeSelectedElements: (elements?: Elements) => void
+  /** apply min zoom value to d3 */
+  setMinZoom: (zoom: number) => void
+  /** apply max zoom value to d3 */
+  setMaxZoom: (zoom: number) => void
+  /** apply translate extent to d3 */
+  setTranslateExtent: (translateExtent: CoordinateExtent) => void
   /** apply extent to nodes */
   setNodeExtent: (nodeExtent: CoordinateExtent | CoordinateExtentRange) => void
   /** enable/disable node interaction (dragging, selecting etc) */
@@ -270,6 +278,10 @@ export interface Actions {
   getOutgoers: (nodeOrId: Node | string) => GraphNode[]
   /** get a node's connected edges */
   getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
+  /** pan the viewport; return indicates if a transform has happened or not */
+  panBy: (delta: XYPosition) => boolean
+
+  fitView: <T extends NodeBase>(nodes: T[], fitViewOptions?: FitViewOptionsBase<T>) => boolean
 
   /** reset state to defaults */
   $reset: () => void
@@ -312,8 +324,8 @@ export type ComputedGetters = {
 export type VueFlowStore = {
   readonly id: string
   readonly emits: FlowHooksEmit
-  // todo: remove this
   /** current vue flow version you're using */
+  // todo: remove this
   readonly vueFlowVersion: string
 } & FlowHooksOn &
   ToRefs<State> &

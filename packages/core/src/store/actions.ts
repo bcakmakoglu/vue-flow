@@ -1,7 +1,15 @@
 import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
 import type { Rect } from '@xyflow/system'
-import { getDimensions, getHandleBounds, getOverlappingArea, isRectObject as isRect, nodeToRect } from '@xyflow/system'
+import {
+  fitView as fitViewSystem,
+  getDimensions,
+  getHandleBounds,
+  getOverlappingArea,
+  isRectObject as isRect,
+  nodeToRect,
+  panBy as panBySystem,
+} from '@xyflow/system'
 import { useState } from './state'
 import type {
   Actions,
@@ -128,6 +136,27 @@ export function useActions(
     }
   }
 
+  const fitView: Actions['fitView'] = (nodes, options) => {
+    if (!state.panZoom) {
+      return false
+    }
+
+    return fitViewSystem(
+      {
+        nodes,
+        width: state.dimensions.width,
+        height: state.dimensions.height,
+        panZoom: state.panZoom,
+        minZoom: state.minZoom,
+        maxZoom: state.maxZoom,
+        // todo: add node origin
+        nodeOrigin: [0, 0],
+      },
+      options,
+    )
+  }
+
+  let nextFitViewDone = false
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
     if (!state.vueFlowRef) {
       return
@@ -156,6 +185,10 @@ export function useActions(
         )
 
         if (doUpdate) {
+          if (!nextFitViewDone && state.fitViewOnInit) {
+            nextFitViewDone = fitView(state.nodes as any[])
+          }
+
           node.handleBounds.source = getHandleBounds('.source', update.nodeElement, zoom)
           node.handleBounds.target = getHandleBounds('.target', update.nodeElement, zoom)
           node.dimensions = dimensions
@@ -688,6 +721,21 @@ export function useActions(
     })
   }
 
+  const setMinZoom: Actions['setMinZoom'] = (minZoom) => {
+    state.panZoom?.setScaleExtent([minZoom, state.maxZoom])
+    state.minZoom = minZoom
+  }
+
+  const setMaxZoom: Actions['setMaxZoom'] = (maxZoom) => {
+    state.panZoom?.setScaleExtent([state.minZoom, maxZoom])
+    state.maxZoom = maxZoom
+  }
+
+  const setTranslateExtent: Actions['setTranslateExtent'] = (translateExtent) => {
+    state.panZoom?.setTranslateExtent(translateExtent)
+    state.translateExtent = translateExtent
+  }
+
   const toObject: Actions['toObject'] = () => {
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
@@ -795,6 +843,20 @@ export function useActions(
     toObject,
     fromObject,
     updateNodeInternals,
+    setMaxZoom,
+    setMinZoom,
+    setTranslateExtent,
+    panBy: (delta) => {
+      return panBySystem({
+        delta,
+        panZoom: state.panZoom,
+        transform: [state.viewport.x, state.viewport.y, state.viewport.zoom],
+        translateExtent: state.translateExtent,
+        width: state.dimensions.width,
+        height: state.dimensions.height,
+      })
+    },
+    fitView,
     $reset,
     $destroy: () => {},
   }

@@ -103,15 +103,7 @@ export { defaultEdgeTypes, defaultNodeTypes } from './store/state'
 
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
 
-export {
-  useZoomPanHelper,
-  useVueFlow,
-  Storage as GlobalVueFlowStorage,
-  useHandle,
-  useNode,
-  useEdge,
-  useGetPointerPosition,
-} from './composables'
+export { useVueFlow, Storage as GlobalVueFlowStorage, useHandle, useNode, useEdge, useGetPointerPosition } from './composables'
 
 export { VueFlowError, ErrorCode } from './utils/errors'
 

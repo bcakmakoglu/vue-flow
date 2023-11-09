@@ -5,11 +5,11 @@ import { useVueFlow } from '../../composables'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 
-const { id, viewport, d3Zoom, d3Selection, dimensions } = useVueFlow()
+const { id, viewport, dimensions } = useVueFlow()
 
 const viewportReady = ref(!isClient)
 
-until(() => !!(d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0))
+until(() => dimensions.value.width > 0 && dimensions.value.height > 0)
   .toBe(true)
   .then(() => {
     setTimeout(() => {
