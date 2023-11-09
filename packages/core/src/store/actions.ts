@@ -1,13 +1,11 @@
-import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
 import type { Rect } from '@xyflow/system'
-import { clamp, getDimensions, getHandleBounds, getOverlappingArea, isRectObject as isRect, nodeToRect } from '@xyflow/system'
+import { getDimensions, getHandleBounds, getOverlappingArea, isRectObject as isRect, nodeToRect } from '@xyflow/system'
 import { useState } from './state'
 import type {
   Actions,
   ComputedGetters,
-  CoordinateExtent,
   EdgeChange,
   EdgeRemoveChange,
   EdgeSelectionChange,
@@ -23,7 +21,6 @@ import type {
   NodeSelectionChange,
   State,
 } from '~/types'
-import { useViewport } from '~/composables'
 import {
   ErrorCode,
   VueFlowError,
@@ -57,8 +54,6 @@ export function useActions(
   // todo: change to a Set
   edgeIds: ComputedRef<string[]>,
 ): Actions {
-  const viewportHelper = useViewport(state, getters)
-
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? nodeIds.value ?? []
 
@@ -77,34 +72,28 @@ export function useActions(
     return getConnectedEdgesBase(nodesOrId, state.edges)
   }
 
-  const findNode: Actions['findNode'] = <T extends GraphNode = GraphNode>(id: string | undefined | null) => {
+  const findNode: Actions['findNode'] = (id) => {
     if (!id) {
       return
     }
 
-    let node
     if (state.nodes && !nodeIds.value.length) {
-      node = state.nodes.find((node) => node.id === id)
-    } else {
-      node = state.nodes[nodeIds.value.indexOf(id)]
+      return state.nodes.find((node) => node.id === id)
     }
 
-    return node as T | undefined
+    return state.nodes[nodeIds.value.indexOf(id)]
   }
 
-  const findEdge: Actions['findEdge'] = <T extends GraphEdge = GraphEdge>(id: string | undefined | null) => {
+  const findEdge: Actions['findEdge'] = (id) => {
     if (!id) {
       return
     }
 
-    let edge
     if (state.edges && !edgeIds.value.length) {
-      edge = state.edges.find((edge) => edge.id === id)
-    } else {
-      edge = state.edges[edgeIds.value.indexOf(id)]
+      return state.edges.find((edge) => edge.id === id)
     }
 
-    return edge as T | undefined
+    return state.edges[edgeIds.value.indexOf(id)]
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -151,9 +140,7 @@ export function useActions(
     }
 
     const style = window.getComputedStyle(viewportNode)
-
     const { m22 } = new window.DOMMatrixReadOnly(style.transform)
-
     const zoom = m22
 
     const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
@@ -323,21 +310,6 @@ export function useActions(
     if (changes.edges.length) {
       state.hooks.edgesChange.trigger(changes.edges)
     }
-  }
-
-  const setMinZoom: Actions['setMinZoom'] = (minZoom) => {
-    state.d3Zoom?.scaleExtent([minZoom, state.maxZoom])
-    state.minZoom = minZoom
-  }
-
-  const setMaxZoom: Actions['setMaxZoom'] = (maxZoom) => {
-    state.d3Zoom?.scaleExtent([state.minZoom, maxZoom])
-    state.maxZoom = maxZoom
-  }
-
-  const setTranslateExtent: Actions['setTranslateExtent'] = (translateExtent) => {
-    state.d3Zoom?.translateExtent(translateExtent)
-    state.translateExtent = translateExtent
   }
 
   const setNodeExtent: Actions['setNodeExtent'] = (nodeExtent) => {
@@ -647,7 +619,7 @@ export function useActions(
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
       const partiallyVisible = partially && overlappingArea > 0
 
-      return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
+      return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
     })
   }
 
@@ -661,33 +633,7 @@ export function useActions(
     const overlappingArea = getOverlappingArea(nodeRect, area)
     const partiallyVisible = partially && overlappingArea > 0
 
-    return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
-  }
-
-  const panBy: Actions['panBy'] = (delta) => {
-    const { viewport, dimensions, d3Zoom, d3Selection, translateExtent } = state
-
-    if (!d3Zoom || !d3Selection || (!delta.x && !delta.y)) {
-      return false
-    }
-
-    const nextTransform = zoomIdentity.translate(viewport.x + delta.x, viewport.y + delta.y).scale(viewport.zoom)
-
-    const extent: CoordinateExtent = [
-      [0, 0],
-      [dimensions.width, dimensions.height],
-    ]
-
-    const constrainedTransform = d3Zoom.constrain()(nextTransform, extent, translateExtent)
-
-    const transformChanged =
-      state.viewport.x !== constrainedTransform.x ||
-      state.viewport.y !== constrainedTransform.y ||
-      state.viewport.zoom !== constrainedTransform.k
-
-    d3Zoom.transform(d3Selection, constrainedTransform)
-
-    return transformChanged
+    return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
   }
 
   const setState: Actions['setState'] = (options) => {
@@ -707,15 +653,7 @@ export function useActions(
     ]
 
     // these options cannot be set after initialization
-    const exclude: (keyof typeof opts)[] = [
-      'd3Zoom',
-      'd3Selection',
-      'd3ZoomHandler',
-      'viewportRef',
-      'vueFlowRef',
-      'dimensions',
-      'hooks',
-    ]
+    const exclude: (keyof typeof opts)[] = ['viewportRef', 'vueFlowRef', 'dimensions', 'hooks']
 
     // we need to set the default opts before setting any elements so the options are applied to the elements on first render
     if (isDef(opts.defaultEdgeOptions)) {
@@ -740,21 +678,6 @@ export function useActions(
       setElements(elements)
     }
 
-    const setSkippedOptions = () => {
-      if (isDef(opts.maxZoom)) {
-        setMaxZoom(opts.maxZoom)
-      }
-      if (isDef(opts.minZoom)) {
-        setMinZoom(opts.minZoom)
-      }
-      if (isDef(opts.translateExtent)) {
-        setTranslateExtent(opts.translateExtent)
-      }
-      if (isDef(opts.nodeExtent)) {
-        setNodeExtent(opts.nodeExtent)
-      }
-    }
-
     Object.keys(opts).forEach((o) => {
       const key = o as keyof State
       const option = opts[key]
@@ -763,14 +686,6 @@ export function useActions(
         ;(<any>state)[key] = option
       }
     })
-
-    until(() => state.d3Zoom)
-      .not.toBeNull()
-      .then(setSkippedOptions)
-
-    if (!state.initialized) {
-      state.initialized = true
-    }
   }
 
   const toObject: Actions['toObject'] = () => {
@@ -822,10 +737,10 @@ export function useActions(
       const y = viewport?.y || position[1]
       const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
 
-      until(() => viewportHelper.value.initialized)
-        .toBe(true)
-        .then(() => {
-          viewportHelper.value.setViewport({
+      until(() => state.panZoom)
+        .toBeTruthy()
+        .then((panZoom) => {
+          panZoom.setViewport({
             x,
             y,
             zoom: nextZoom,
@@ -840,22 +755,7 @@ export function useActions(
     state.edges = []
     state.nodes = []
 
-    // reset the zoom state
-    if (state.d3Zoom && state.d3Selection) {
-      const updatedTransform = zoomIdentity
-        .translate(resetState.defaultViewport.x ?? 0, resetState.defaultViewport.y ?? 0)
-        .scale(clamp(resetState.defaultViewport.zoom ?? 1, resetState.minZoom, resetState.maxZoom))
-
-      const bbox = state.viewportRef!.getBoundingClientRect()
-
-      const extent: CoordinateExtent = [
-        [0, 0],
-        [bbox.width, bbox.height],
-      ]
-
-      const constrainedTransform = state.d3Zoom.constrain()(updatedTransform, extent, resetState.translateExtent)
-      state.d3Zoom.transform(state.d3Selection, constrainedTransform)
-    }
+    state.panZoom?.destroy()
 
     setState(resetState)
   }
@@ -878,9 +778,6 @@ export function useActions(
     addSelectedElements,
     addSelectedNodes,
     addSelectedEdges,
-    setMinZoom,
-    setMaxZoom,
-    setTranslateExtent,
     setNodeExtent,
     removeSelectedElements,
     removeSelectedNodes,
@@ -895,18 +792,6 @@ export function useActions(
     getOutgoers,
     getConnectedEdges,
     isNodeIntersecting,
-    panBy,
-    fitView: (params) => viewportHelper.value.fitView(params),
-    zoomIn: (transitionOpts) => viewportHelper.value.zoomIn(transitionOpts),
-    zoomOut: (transitionOpts) => viewportHelper.value.zoomOut(transitionOpts),
-    zoomTo: (zoomLevel, transitionOpts) => viewportHelper.value.zoomTo(zoomLevel, transitionOpts),
-    setViewport: (params, transitionOpts) => viewportHelper.value.setViewport(params, transitionOpts),
-    setTransform: (params, transitionOpts) => viewportHelper.value.setTransform(params, transitionOpts),
-    getViewport: () => viewportHelper.value.getViewport(),
-    getTransform: () => viewportHelper.value.getTransform(),
-    setCenter: (x, y, opts) => viewportHelper.value.setCenter(x, y, opts),
-    fitBounds: (params, opts) => viewportHelper.value.fitBounds(params, opts),
-    project: (params) => viewportHelper.value.project(params),
     toObject,
     fromObject,
     updateNodeInternals,
@@ -914,11 +799,11 @@ export function useActions(
     $destroy: () => {},
   }
 
-  until(() => viewportHelper.value.initialized)
-    .toBe(true, { flush: 'pre' })
+  until(() => state.panZoom)
+    .toBeTruthy()
     .then(() => {
       if (state.fitViewOnInit) {
-        viewportHelper.value.fitView()
+        // state.panZoom. fit view
       }
 
       state.hooks.paneReady.trigger({

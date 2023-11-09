@@ -21,7 +21,6 @@ import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent }
 import type { ConnectionLineOptions, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
-import type { ViewportFunctions } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ValidConnectionFunc } from './handle'
@@ -195,7 +194,7 @@ export type GetIntersectingNodes = (
 
 export type IsNodeIntersecting = (node: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean
 
-export interface Actions extends ViewportFunctions {
+export interface Actions {
   /** parses elements (nodes + edges) and re-sets the state */
   setElements: SetElements
   /** parses nodes and re-sets the state */
@@ -232,12 +231,6 @@ export interface Actions extends ViewportFunctions {
   removeSelectedNodes: (nodes: GraphNode[]) => void
   /** unselect selected elements (if none are passed, all elements are unselected) */
   removeSelectedElements: (elements?: Elements) => void
-  /** apply min zoom value to d3 */
-  setMinZoom: (zoom: number) => void
-  /** apply max zoom value to d3 */
-  setMaxZoom: (zoom: number) => void
-  /** apply translate extent to d3 */
-  setTranslateExtent: (translateExtent: CoordinateExtent) => void
   /** apply extent to nodes */
   setNodeExtent: (nodeExtent: CoordinateExtent | CoordinateExtentRange) => void
   /** enable/disable node interaction (dragging, selecting etc) */
@@ -277,8 +270,6 @@ export interface Actions extends ViewportFunctions {
   getOutgoers: (nodeOrId: Node | string) => GraphNode[]
   /** get a node's connected edges */
   getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
-  /** pan the viewport; return indicates if a transform has happened or not */
-  panBy: (delta: XYPosition) => boolean
 
   /** reset state to defaults */
   $reset: () => void
@@ -321,6 +312,7 @@ export type ComputedGetters = {
 export type VueFlowStore = {
   readonly id: string
   readonly emits: FlowHooksEmit
+  // todo: remove this
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
 } & FlowHooksOn &
