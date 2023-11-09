@@ -55,9 +55,17 @@
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
     "test": "exit 0"
   },
+  "dependencies": {
+    "vue-demi": "latest"
+  },
   "peerDependencies": {
-    "@vue-flow/core": "^1.23.0",
-    "vue": "^3.3.0"
+    "@vue/composition-api": "^1.7.2",
+    "vue": "^2.7.15 || >=3.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",

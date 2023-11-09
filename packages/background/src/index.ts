@@ -1,2 +1,2 @@
-export { default as Background } from './Background.vue'
+export { default as Background } from './Background'
 export * from './types'
