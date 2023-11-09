@@ -190,7 +190,7 @@ onMounted(() => {
     // if the target element is inside an element with the nopan class, we prevent panning
     if (
       isWrappedWithClass(event, noPanClassName.value) &&
-      (event.type !== 'wheel' || (panOnScroll.value && event.type === 'wheel'))
+      (event.type !== 'wheel' || (panOnScroll.value && event.type === 'wheel' && !zoomKeyPressed.value))
     ) {
       return false
     }
