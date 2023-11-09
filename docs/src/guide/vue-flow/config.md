@@ -571,7 +571,7 @@ const elements = ref([
 </template>
 ```
 
-### nodes-extent (optional)
+### node-extent (optional)
 
 - Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent)
 
