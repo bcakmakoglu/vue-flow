@@ -670,7 +670,7 @@ export function useActions(
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
       const partiallyVisible = partially && overlappingArea > 0
 
-      return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
+      return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
     })
   }
 
@@ -684,7 +684,7 @@ export function useActions(
     const overlappingArea = getOverlappingArea(nodeRect, area)
     const partiallyVisible = partially && overlappingArea > 0
 
-    return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
+    return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
   }
 
   const panBy: Actions['panBy'] = (delta) => {
