@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref, useAttrs } from 'vue'
 import type { BaseEdgeProps } from '../../types'
-import { isNumber } from '../../utils'
 import EdgeText from './EdgeText.vue'
 
 const { interactionWidth = 20, labelShowBg = true, ...props } = defineProps<BaseEdgeProps>()
@@ -52,7 +51,7 @@ export default {
   />
 
   <EdgeText
-    v-if="label && isNumber(labelX) && isNumber(labelY)"
+    v-if="label && labelX && labelY"
     ref="labelEl"
     :x="labelX"
     :y="labelY"

@@ -1,4 +1,4 @@
-import { isNumber, rectToBox } from '.'
+import { rectToBox } from '.'
 import type { Actions, EdgePositions, GraphEdge, GraphNode, HandleElement, Rect, ViewportTransform, XYPosition } from '~/types'
 import { Position } from '~/types'
 
@@ -132,7 +132,7 @@ export function isEdgeVisible({
 }
 
 export function getEdgeZIndex(edge: GraphEdge, findNode: Actions['findNode'], elevateEdgesOnSelect = false) {
-  const hasZIndex = isNumber(edge.zIndex)
+  const hasZIndex = typeof edge.zIndex === 'number'
   let z = hasZIndex ? edge.zIndex! : 0
 
   const source = findNode(edge.source)

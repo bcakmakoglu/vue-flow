@@ -1,25 +1,9 @@
 <script lang="ts" setup>
-import type { D3ZoomEvent } from 'd3-zoom'
 import { useVModel } from '@vueuse/core'
-import { onMounted, onUnmounted, provide, ref, useSlots } from 'vue'
+import { onUnmounted, provide } from 'vue'
 import Viewport from '../Viewport/Viewport.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
-import type { FlowElements, FlowProps } from '../../types/flow'
-import type {
-  Connection,
-  EdgeChange,
-  EdgeMouseEvent,
-  EdgeUpdateEvent,
-  GraphEdge,
-  GraphNode,
-  NodeChange,
-  NodeDragEvent,
-  NodeMouseEvent,
-  OnConnectStartParams,
-  ViewportTransform,
-  VueFlowStore,
-} from '../../types'
-import type { VueFlowError } from '../../utils/errors'
+import type { FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
 import { useVueFlow, useWatchProps } from '../../composables'
 import { useHooks } from '../../store'
 import { Slots } from '../../context'
@@ -59,75 +43,9 @@ const props = withDefaults(defineProps<FlowProps>(), {
   zoomActivationKeyCode: undefined,
 })
 
-const emit = defineEmits<{
-  (event: 'nodesChange', changes: NodeChange[]): void
-  (event: 'edgesChange', changes: EdgeChange[]): void
-  (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseMove', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseLeave', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeContextMenu', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeDragStart', nodeDragEvent: NodeDragEvent): void
-  (event: 'nodeDrag', nodeDragEvent: NodeDragEvent): void
-  (event: 'nodeDragStop', nodeDragEvent: NodeDragEvent): void
-  (event: 'nodesInitialized'): void
-  (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseMove', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseLeave', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'connect', connectionEvent: Connection): void
-  (
-    event: 'connectStart',
-    connectionEvent: {
-      event?: MouseEvent
-    } & OnConnectStartParams,
-  ): void
-  (event: 'connectEnd', connectionEvent?: MouseEvent): void
-  (
-    event: 'clickConnectStart',
-    connectionEvent: {
-      event?: MouseEvent
-    } & OnConnectStartParams,
-  ): void
-  (event: 'clickConnectEnd', connectionEvent?: MouseEvent): void
-  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
-  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
-  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
-  (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
-  (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
-  (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
-  (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
-  (event: 'selectionStart', selectionEvent: MouseEvent): void
-  (event: 'selectionEnd', selectionEvent: MouseEvent): void
-  (event: 'viewportChangeStart', viewport: ViewportTransform): void
-  (event: 'viewportChange', viewport: ViewportTransform): void
-  (event: 'viewportChangeEnd', viewport: ViewportTransform): void
-  (event: 'paneReady', paneEvent: VueFlowStore): void
-  (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
-  (event: 'paneClick', paneEvent: MouseEvent): void
-  (event: 'paneContextMenu', paneEvent: MouseEvent): void
-  (event: 'paneMouseEnter', paneEvent: MouseEvent): void
-  (event: 'paneMouseMove', paneEvent: MouseEvent): void
-  (event: 'paneMouseLeave', paneEvent: MouseEvent): void
-  (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
-  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'updateNodeInternals'): void
-  (event: 'error', error: VueFlowError): void
+const emit = defineEmits<FlowEmits>()
 
-  /** v-model event definitions */
-  (event: 'update:modelValue', value: FlowElements): void
-  (event: 'update:nodes', value: GraphNode[]): void
-  (event: 'update:edges', value: GraphEdge[]): void
-}>()
+const slots = defineSlots<FlowSlots>()
 
 const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
@@ -135,6 +53,7 @@ const modelEdges = useVModel(props, 'edges', emit)
 
 const { vueFlowRef, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow(props)
 
+// watch props and update store state
 const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, {
   vueFlowRef,
   hooks,
@@ -145,16 +64,14 @@ const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges
 
 useHooks(emit, hooks)
 
-const el = ref<HTMLDivElement>()
-
-provide(Slots, useSlots())
+// slots will be passed via provide
+// this is to avoid having to pass them down through all the components
+// as that would require a lot of boilerplate and causes significant performance drops
+provide(Slots, slots)
 
 onUnmounted(() => {
+  // clean up watcher scope
   dispose()
-})
-
-onMounted(() => {
-  vueFlowRef.value = el.value!
 })
 
 defineExpose<VueFlowStore>({
@@ -174,30 +91,14 @@ export default {
 </script>
 
 <template>
-  <div ref="el" class="vue-flow">
+  <div ref="vueFlowRef" class="vue-flow">
     <Viewport>
-      <template #nodes>
-        <template v-for="nodeName of Object.keys(getNodeTypes)">
-          <slot :name="`node-${nodeName}`" />
-        </template>
-      </template>
-
-      <template #edges>
-        <template v-for="edgeName of Object.keys(getEdgeTypes)">
-          <slot :name="`edge-${edgeName}`" />
-        </template>
-      </template>
-
-      <template #connection-name>
-        <slot name="connection-line" />
-      </template>
-
-      <template #zoom-pane>
-        <slot name="zoom-pane" />
-      </template>
-
-      <slot />
+      <!-- This slot is affected by zooming & panning -->
+      <slot name="zoom-pane" />
     </Viewport>
+
+    <!-- This slot is _not_ affected by zooming & panning -->
+    <slot />
 
     <A11yDescriptions />
   </div>

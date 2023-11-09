@@ -1,5 +1,5 @@
 import { markRaw } from 'vue'
-import { isDef, isString, warn } from '.'
+import { isDef, warn } from '.'
 import type {
   Actions,
   Box,
@@ -59,13 +59,14 @@ export function clampPosition(position: XYPosition, extent: CoordinateExtent): X
 
 export function getHostForElement(element: HTMLElement): Document {
   const doc = element.getRootNode() as Document
-  const window = useWindow()
 
   if ('elementFromPoint' in doc) {
     return doc
-  } else {
-    return window.document
   }
+
+  const window = useWindow()
+
+  return window.document
 }
 
 // todo: refactor generic to use MaybeElement
@@ -144,7 +145,7 @@ export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphE
         focusable: edge.focusable ?? defaults.focusable,
         data,
         events: markRaw(events),
-        label: (edge.label && !isString(edge.label) ? markRaw(edge.label) : edge.label) || defaults.label,
+        label: (edge.label && typeof edge.label !== 'string' ? markRaw(edge.label) : edge.label) || defaults.label,
         interactionWidth: edge.interactionWidth || defaults.interactionWidth,
       } as GraphEdge)
     : defaults
@@ -158,7 +159,7 @@ function getConnectedElements<T extends Node = Node>(
   edges: Edge[],
   dir: 'source' | 'target',
 ): T[] {
-  const id = isString(nodeOrId) ? nodeOrId : nodeOrId.id
+  const id = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
 
   const connectedIds = new Set()
 
@@ -185,9 +186,9 @@ export function getOutgoers(...args: any[]) {
   }
 
   const [nodeOrId, elements] = args
-  const node: Node = isString(nodeOrId) ? { id: nodeOrId } : nodeOrId
+  const nodeId = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
 
-  const outgoers = elements.filter((el: Element) => isEdge(el) && el.source === node.id)
+  const outgoers = elements.filter((el: Element) => isEdge(el) && el.source === nodeId)
 
   return outgoers.map((edge: Edge) => elements.find((el: Element) => isNode(el) && el.id === edge.target))
 }
@@ -204,9 +205,9 @@ export function getIncomers(...args: any[]) {
   }
 
   const [nodeOrId, elements] = args
-  const node: Node = isString(nodeOrId) ? { id: nodeOrId } : nodeOrId
+  const nodeId = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
 
-  const incomers = elements.filter((el: Element) => isEdge(el) && el.target === node.id)
+  const incomers = elements.filter((el: Element) => isEdge(el) && el.target === nodeId)
 
   return incomers.map((edge: Edge) => elements.find((el: Element) => isNode(el) && el.id === edge.source))
 }
@@ -407,7 +408,7 @@ export function getNodesInside(
 export function getConnectedEdges<E extends Edge>(nodesOrId: Node[] | string, edges: E[]) {
   const nodeIds = new Set()
 
-  if (isString(nodesOrId)) {
+  if (typeof nodesOrId === 'string') {
     nodeIds.add(nodesOrId)
   } else if (nodesOrId.length >= 1) {
     nodesOrId.forEach((n) => nodeIds.add(n.id))
@@ -419,7 +420,7 @@ export function getConnectedEdges<E extends Edge>(nodesOrId: Node[] | string, ed
 export function getConnectedNodes<N extends Node | { id: string } | string>(nodes: N[], edges: Edge[]) {
   const nodeIds = new Set()
 
-  nodes.forEach((node) => nodeIds.add(isString(node) ? node : node.id))
+  nodes.forEach((node) => nodeIds.add(typeof node === 'string' ? node : node.id))
 
   const connectedNodeIds = edges.reduce((acc, edge) => {
     if (nodeIds.has(edge.source)) {
@@ -433,7 +434,7 @@ export function getConnectedNodes<N extends Node | { id: string } | string>(node
     return acc
   }, new Set())
 
-  return nodes.filter((node) => connectedNodeIds.has(isString(node) ? node : node.id))
+  return nodes.filter((node) => connectedNodeIds.has(typeof node === 'string' ? node : node.id))
 }
 
 export function getTransformForBounds(

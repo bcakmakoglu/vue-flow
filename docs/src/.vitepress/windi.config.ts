@@ -21,10 +21,6 @@ export default defineConfig({
     scrollbar,
   ],
 
-  shortcuts: {
-    'primary-gradient': 'bg-gradient-to-b from-accent-500 via-accent-700 to-accent-900',
-  },
-
   theme: {
     extend: {
       colors: {

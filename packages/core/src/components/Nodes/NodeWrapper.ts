@@ -11,7 +11,6 @@ import {
   getConnectedEdges,
   getXYZPos,
   handleNodeClick,
-  isNumber,
 } from '~/utils'
 
 interface Props {
@@ -54,6 +53,7 @@ const NodeWrapper = defineComponent({
       ariaLiveMessage,
       snapToGrid,
       snapGrid,
+      nodeDragThreshold,
     } = useVueFlow()
 
     const updateNodePositions = useUpdateNodePositions()
@@ -152,7 +152,7 @@ const NodeWrapper = defineComponent({
           z: nodeZIndex + (elevateNodesOnSelect.value ? (node.value.selected ? 1000 : 0) : 0),
         }
 
-        if (isNumber(parentX) && isNumber(parentY)) {
+        if (typeof parentX !== 'undefined' && typeof parentY !== 'undefined') {
           node.value.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
         } else {
           node.value.computedPosition = xyzPos
@@ -305,7 +305,7 @@ const NodeWrapper = defineComponent({
     }
 
     function onSelectNode(event: MouseEvent) {
-      if (props.selectable && (!selectNodesOnDrag.value || !props.draggable)) {
+      if (props.selectable && (!selectNodesOnDrag.value || !props.draggable || nodeDragThreshold.value > 0)) {
         handleNodeClick(
           node.value,
           multiSelectionActive.value,

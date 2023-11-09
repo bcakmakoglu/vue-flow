@@ -1,4 +1,4 @@
-import type { CSSProperties, Component, DefineComponent, SVGAttributes, VNode } from 'vue'
+import type { CSSProperties, Component, DefineComponent, VNode } from 'vue'
 import type { NodeProps } from './node'
 import type { EdgeProps } from './edge'
 import type { BezierEdge, SimpleBezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '~/components'
@@ -27,7 +27,7 @@ export interface DefaultEdgeTypes {
 export type DefaultNodeTypes = { [key in 'input' | 'output' | 'default']: NodeComponent }
 
 /** these props are passed to edge texts */
-export interface EdgeTextProps extends SVGAttributes {
+export interface EdgeTextProps {
   x: number
   y: number
   label?: string | VNode | Object

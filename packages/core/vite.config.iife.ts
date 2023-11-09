@@ -1,7 +1,6 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import VueMacros from 'unplugin-vue-macros/vite'
 import replace from '@rollup/plugin-replace'
 import pkg from './package.json'
 
@@ -13,7 +12,7 @@ export default defineConfig({
     extensions: ['.ts', '.vue'],
   },
   build: {
-    minify: 'esbuild',
+    minify: false,
     emptyOutDir: false,
     lib: {
       formats: ['iife'],
@@ -37,24 +36,13 @@ export default defineConfig({
     },
   },
   plugins: [
-    VueMacros({
-      hoistStatic: false,
-      setupBlock: false,
-      shortEmits: false,
-      definePropsRefs: false,
-      setupComponent: false,
-      setupSFC: false,
-      exportProps: false,
-      plugins: {
-        vue: vue({
-          reactivityTransform: true,
-        }),
-      },
-    }) as any,
+    vue({
+      reactivityTransform: true,
+    }),
     replace({
       __ENV__: 'production',
       __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
       preventAssignment: true,
-    }),
+    }) as any,
   ],
 })

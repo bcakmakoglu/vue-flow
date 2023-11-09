@@ -43,6 +43,7 @@ import {
   getSelectionChanges,
   isDef,
   isEdge,
+  isGraphNode,
   isNode,
   isRect,
   nodeToRect,
@@ -377,6 +378,7 @@ export function useActions(
       ? nextEdges.filter((edge) =>
           state.isValidConnection!(edge, {
             edges: state.edges,
+            nodes: state.nodes,
             sourceNode: findNode(edge.source)!,
             targetNode: findNode(edge.target)!,
           }),
@@ -450,6 +452,7 @@ export function useActions(
       ? nextEdges.filter((edge) =>
           state.isValidConnection!(edge, {
             edges: state.edges,
+            nodes: state.nodes,
             sourceNode: findNode(edge.source)!,
             targetNode: findNode(edge.target)!,
           }),
@@ -469,27 +472,6 @@ export function useActions(
       if (edge) {
         const sourceNode = findNode(edge.source)!
         const targetNode = findNode(edge.target)!
-
-        const missingSource = !sourceNode || typeof sourceNode === 'undefined'
-        const missingTarget = !targetNode || typeof targetNode === 'undefined'
-
-        if (missingSource && missingTarget) {
-          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
-
-          return edgeChanges
-        }
-
-        if (missingSource) {
-          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
-
-          return edgeChanges
-        }
-
-        if (missingTarget) {
-          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
-
-          return edgeChanges
-        }
 
         edgeChanges.push(
           createAdditionChange<GraphEdge>({
@@ -641,7 +623,7 @@ export function useActions(
     nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
   ): [Rect | null, Node | null | undefined, boolean] => {
     const isRectObj = isRect(nodeOrRect)
-    const node = isRectObj ? null : findNode(nodeOrRect.id)
+    const node = isRectObj ? null : isGraphNode(nodeOrRect as GraphNode) ? (nodeOrRect as GraphNode) : findNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {
       return [null, null, isRectObj]
@@ -653,7 +635,7 @@ export function useActions(
   }
 
   // todo: rename to `findIntersectingNodes`
-  const getIntersectingNodes: Actions['getIntersectingNodes'] = (nodeOrRect, partially = true, nodes) => {
+  const getIntersectingNodes: Actions['getIntersectingNodes'] = (nodeOrRect, partially = true, nodes = state.nodes) => {
     const [nodeRect, node, isRect] = getNodeRect(nodeOrRect)
 
     if (!nodeRect) {
@@ -669,7 +651,7 @@ export function useActions(
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
       const partiallyVisible = partially && overlappingArea > 0
 
-      return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
+      return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
     })
   }
 
@@ -683,7 +665,7 @@ export function useActions(
     const overlappingArea = getOverlappingArea(nodeRect, area)
     const partiallyVisible = partially && overlappingArea > 0
 
-    return partiallyVisible || overlappingArea >= Number(nodeOrRect.width) * Number(nodeOrRect.height)
+    return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
   }
 
   const panBy: Actions['panBy'] = (delta) => {
@@ -786,13 +768,9 @@ export function useActions(
       }
     })
 
-    if (!state.d3Zoom) {
-      until(() => state.d3Zoom)
-        .not.toBeNull()
-        .then(setSkippedOptions)
-    } else {
-      setSkippedOptions()
-    }
+    until(() => state.d3Zoom)
+      .not.toBeNull()
+      .then(setSkippedOptions)
 
     if (!state.initialized) {
       state.initialized = true

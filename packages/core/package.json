@@ -1,6 +1,6 @@
 {
   "name": "@vue-flow/core",
-  "version": "1.23.0",
+  "version": "1.25.3",
   "private": false,
   "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
@@ -54,9 +54,8 @@
     "dev": "pnpm types:watch & pnpm build:watch",
     "build": "vite build && vite build -c vite.config.iife.ts",
     "build:watch": "vite build --watch & vite build -c vite.config.iife.ts --watch",
-    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p ./tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist && pnpm run patch",
+    "types": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly && tsc -p ./tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist",
     "types:watch": "pnpm prepare && vue-tsc --declaration --emitDeclarationOnly --watch & tsc -p ./tsconfig.build.json --watch",
-    "patch": "node patch/slots.js",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
@@ -65,32 +64,30 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "vue": "^3.2.25"
+    "vue": "^3.3.0"
   },
   "dependencies": {
-    "@vueuse/core": "^10.1.2",
+    "@vueuse/core": "^10.5.0",
     "d3-drag": "^3.0.0",
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^5.0.2",
+    "@rollup/plugin-replace": "^5.0.3",
+    "@tooling/eslint-config": "workspace:*",
+    "@tooling/tsconfig": "workspace:*",
     "@types/d3-drag": "^3.0.4",
     "@types/d3-selection": "^3.0.7",
     "@types/d3-zoom": "^3.0.5",
-    "@tooling/eslint-config": "workspace:*",
-    "@tooling/tsconfig": "workspace:*",
-    "@vitejs/plugin-vue": "^4.2.3",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.23",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
     "postcss-nested": "^6.0.1",
-    "ts-patch": "^2.1.0",
+    "ts-patch": "^3.0.2",
     "typescript-transform-paths": "^3.4.6",
-    "unplugin-vue-macros": "^2.1.7",
-    "vite": "^4.3.7",
-    "vue": "^3.2.25",
-    "vue-tsc": "^1.6.5"
+    "vite": "^4.4.11",
+    "vue-tsc": "^1.8.16"
   },
   "publishConfig": {
     "access": "public",

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Panel, PanelPosition, useVueFlow } from '@vue-flow/core'
-import { computed } from 'vue'
+import { toRef } from 'vue'
 import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from './icons/plus.svg'
@@ -37,11 +37,11 @@ const {
   maxZoom,
 } = useVueFlow()
 
-const isInteractive = computed(() => nodesDraggable.value || nodesConnectable.value || elementsSelectable.value)
+const isInteractive = toRef(() => nodesDraggable.value || nodesConnectable.value || elementsSelectable.value)
 
-const minZoomReached = computed(() => viewport.value.zoom <= minZoom.value)
+const minZoomReached = toRef(() => viewport.value.zoom <= minZoom.value)
 
-const maxZoomReached = computed(() => viewport.value.zoom >= maxZoom.value)
+const maxZoomReached = toRef(() => viewport.value.zoom >= maxZoom.value)
 
 function onZoomInHandler() {
   zoomIn()
@@ -78,6 +78,7 @@ export default {
 <template>
   <Panel class="vue-flow__controls" :position="position">
     <slot name="top" />
+
     <template v-if="showZoom">
       <slot name="control-zoom-in">
         <ControlButton class="vue-flow__controls-zoomin" :disabled="maxZoomReached" @click="onZoomInHandler">

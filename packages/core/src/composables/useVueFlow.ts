@@ -50,6 +50,7 @@ export class Storage {
       emits[n] = h.trigger
     })
 
+    // for lookup purposes
     const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
     const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
 
@@ -129,12 +130,15 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
 
     vueFlow = state
 
-    const detachedScope = effectScope()
-
-    detachedScope.run(() => {
+    effectScope().run(() => {
+      /**
+       * We have to watch the applyDefault option here,
+       * because we need to register the default hooks before the `VueFlow` component is actually mounted and props passed
+       * Otherwise calling `addNodes` while the component is not mounted will not trigger any changes unless change handlers are explicitly bound
+       */
       watch(
         state.applyDefault,
-        (shouldApplyDefault) => {
+        (shouldApplyDefault, __, onCleanup) => {
           const nodesChangeHandler = (changes: NodeChange[]) => {
             state.applyNodeChanges(changes)
           }
@@ -150,11 +154,17 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
             state.hooks.value.nodesChange.off(nodesChangeHandler)
             state.hooks.value.edgesChange.off(edgesChangeHandler)
           }
+
+          // Release handlers on cleanup
+          onCleanup(() => {
+            state.hooks.value.nodesChange.off(nodesChangeHandler)
+            state.hooks.value.edgesChange.off(edgesChangeHandler)
+          })
         },
         { immediate: true },
       )
 
-      // dispose of state values and storage entry
+      // Destroy store instance on scope dispose
       tryOnScopeDispose(() => {
         if (vueFlow) {
           const storedInstance = storage.get(vueFlow.id)
@@ -168,13 +178,13 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
       })
     })
   } else {
-    // if composable was called with additional options after initialization, overwrite state with the options values
+    // If options were passed, overwrite state with the options' values
     if (options) {
       vueFlow.setState(options)
     }
   }
 
-  // always provide a fresh instance into context on call
+  // Provide a fresh instance into context if we are in a scope
   if (scope) {
     provide(VueFlow, vueFlow)
 

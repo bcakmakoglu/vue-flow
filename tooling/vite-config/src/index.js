@@ -1,6 +1,5 @@
 const { defu } = require('defu')
 const vue = require('@vitejs/plugin-vue')
-const VueMacros = require('unplugin-vue-macros/vite')
 
 function withConfig(viteConfig) {
   return defu(viteConfig, {
@@ -9,6 +8,7 @@ function withConfig(viteConfig) {
       extensions: ['.ts', '.vue'],
     },
     build: {
+      minify: false,
       emptyOutDir: false,
       rollupOptions: {
         // make sure to externalize deps that shouldn't be bundled
@@ -26,20 +26,8 @@ function withConfig(viteConfig) {
       },
     },
     plugins: [
-      VueMacros({
-        hoistStatic: false,
-        setupBlock: false,
-        shortEmits: false,
-        defineModel: false,
-        definePropsRefs: false,
-        setupComponent: false,
-        setupSFC: false,
-        exportProps: false,
-        plugins: {
-          vue: vue({
-            reactivityTransform: true,
-          }),
-        },
+      vue({
+        reactivityTransform: true,
       }),
     ],
   })

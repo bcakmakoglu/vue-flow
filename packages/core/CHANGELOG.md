@@ -1,5 +1,79 @@
 # @vue-flow/core
 
+## 1.25.3
+
+### Patch Changes
+
+- [#1184](https://github.com/bcakmakoglu/vue-flow/pull/1184) [`6639551b`](https://github.com/bcakmakoglu/vue-flow/commit/6639551b35596001f61f199e94beefa7a331174b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Respect zoom activation key code when hovering an element with `nopan` on it
+
+- [#1183](https://github.com/bcakmakoglu/vue-flow/pull/1183) [`d43852b0`](https://github.com/bcakmakoglu/vue-flow/commit/d43852b05cef23b45f8abe1df758100e6b6b8e77) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use nodeRect to check for intersections
+
+## 1.25.2
+
+### Patch Changes
+
+- [#1178](https://github.com/bcakmakoglu/vue-flow/pull/1178) [`29c01f42`](https://github.com/bcakmakoglu/vue-flow/commit/29c01f428c308f9edeaefdc9b0b1796853b813fd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Revert importing types from vue instead of vueuse/core as it causes handle position to be messed up
+
+## 1.25.1
+
+### Patch Changes
+
+- [#1177](https://github.com/bcakmakoglu/vue-flow/pull/1177) [`c9787c2b`](https://github.com/bcakmakoglu/vue-flow/commit/c9787c2bce11ebe7c1dd8f564efc0a2a3186bc46) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wait for d3zoom to exist before setting options
+
+- [#1174](https://github.com/bcakmakoglu/vue-flow/pull/1174) [`4cefa322`](https://github.com/bcakmakoglu/vue-flow/commit/4cefa322fe2ec665b253ff6ac51004dc8afe322c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Import `toValue` from vueuse/core to avoid amiguous export with vue
+
+## 1.25.0
+
+### Minor Changes
+
+- [#1170](https://github.com/bcakmakoglu/vue-flow/pull/1170) [`cce71c9c`](https://github.com/bcakmakoglu/vue-flow/commit/cce71c9ce6f33656932dc9f05169a5f5907d5158) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add currently stored nodes to isValidConnection args
+
+- [#1166](https://github.com/bcakmakoglu/vue-flow/pull/1166) [`993c058b`](https://github.com/bcakmakoglu/vue-flow/commit/993c058b8ce4e525597ef535a17dcccb219b9a2e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add slots and emits type definitions
+
+## 1.24.2
+
+### Patch Changes
+
+- [#1164](https://github.com/bcakmakoglu/vue-flow/pull/1164) [`e3edb6dd`](https://github.com/bcakmakoglu/vue-flow/commit/e3edb6dd8bfeebc5c4becc0bd564072fe3f04be1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Properly cleanup drag handlers when drag is disabled
+
+- [#1163](https://github.com/bcakmakoglu/vue-flow/pull/1163) [`56469e95`](https://github.com/bcakmakoglu/vue-flow/commit/56469e95df5031362d88476c061f730ac9fffd28) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use existing node, if one was passed, for intersection checks
+
+- [#1159](https://github.com/bcakmakoglu/vue-flow/pull/1159) [`8013c9cf`](https://github.com/bcakmakoglu/vue-flow/commit/8013c9cf20a9be89746e274be799043c153390bf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add immediate flag to prop watchers. Fixes default viewport values not being available when viewport is mounted
+
+- [#1159](https://github.com/bcakmakoglu/vue-flow/pull/1159) [`8013c9cf`](https://github.com/bcakmakoglu/vue-flow/commit/8013c9cf20a9be89746e274be799043c153390bf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Do not wait for d3zoom to be available when setting min/max zoom
+
+## 1.24.1
+
+### Patch Changes
+
+- [#1151](https://github.com/bcakmakoglu/vue-flow/pull/1151) [`c2a74f57`](https://github.com/bcakmakoglu/vue-flow/commit/c2a74f578b0b7dcb7bbbc02ea2c0e378beba4740) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow pan on drag when pan activation key is pressed and panOnDrag is set to false
+
+## 1.24.0
+
+### Minor Changes
+
+- [#1149](https://github.com/bcakmakoglu/vue-flow/pull/1149) [`d11e59f1`](https://github.com/bcakmakoglu/vue-flow/commit/d11e59f1869ab34e3b52b6593806f29fa8d510d2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow adding edges with missing source or target node to state but don't render them unless source and target exist
+
+- [#1146](https://github.com/bcakmakoglu/vue-flow/pull/1146) [`6f93bbbb`](https://github.com/bcakmakoglu/vue-flow/commit/6f93bbbba077cf65062ad7cc878d362c9827ccd1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use viewport and vueflow refs directly from store instead of assigning valuesafter mount
+
+- [#1128](https://github.com/bcakmakoglu/vue-flow/pull/1128) [`0ff65bf2`](https://github.com/bcakmakoglu/vue-flow/commit/0ff65bf2abc51612969bd4a0d0ebed44c59171f8) Thanks [@github-actions](https://github.com/apps/github-actions)! - Use nodes from state as the default third arg for `getIntersectingNodes`
+
+### Patch Changes
+
+- [#1128](https://github.com/bcakmakoglu/vue-flow/pull/1128) [`7d153860`](https://github.com/bcakmakoglu/vue-flow/commit/7d1538606c7f4d77d1828a9ad31c0164eb0d6418) Thanks [@github-actions](https://github.com/apps/github-actions)! - Use correct filter for pan on scroll class name
+
+- [#1147](https://github.com/bcakmakoglu/vue-flow/pull/1147) [`6bc391c6`](https://github.com/bcakmakoglu/vue-flow/commit/6bc391c693bcb9c6b123523cbc3e67fe0ac33fcc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Release apply default handlers when scope is disposed
+
+- [#1146](https://github.com/bcakmakoglu/vue-flow/pull/1146) [`6f93bbbb`](https://github.com/bcakmakoglu/vue-flow/commit/6f93bbbba077cf65062ad7cc878d362c9827ccd1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow panning while pan key is pressed
+
+- [#1139](https://github.com/bcakmakoglu/vue-flow/pull/1139) [`eee9bd87`](https://github.com/bcakmakoglu/vue-flow/commit/eee9bd87ad520c6c44526e393c698d05dd1924b0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Create a key predicate for string key filters and check if we need to use `event.key` or `event.code` to match the key
+
+- [#1128](https://github.com/bcakmakoglu/vue-flow/pull/1128) [`f5138157`](https://github.com/bcakmakoglu/vue-flow/commit/f5138157937e51e2952f7b5708124d5cf76903f9) Thanks [@github-actions](https://github.com/apps/github-actions)! - select nodes on click when nodeDragThreshold > 0
+
+- [#1149](https://github.com/bcakmakoglu/vue-flow/pull/1149) [`a7fe412a`](https://github.com/bcakmakoglu/vue-flow/commit/a7fe412a9111493f6363f40ee1838578a8739771) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Push component emit handlers into the emit fns set instead of using the `on` helper which overwrites any existing default handlers
+
+- [#1128](https://github.com/bcakmakoglu/vue-flow/pull/1128) [`84e98305`](https://github.com/bcakmakoglu/vue-flow/commit/84e98305b1448b1325784497e058c66d23ed7ade) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update to use vue 3.3
+
 ## 1.23.0
 
 ### Minor Changes

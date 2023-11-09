@@ -59,8 +59,8 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "@vue-flow/core": "^1.12.2",
-    "vue": "^3.2.37"
+    "@vue-flow/core": "^1.23.0",
+    "vue": "^3.3.0"
   },
   "dependencies": {
     "d3-drag": "^3.0.0",
@@ -73,9 +73,7 @@
     "@types/d3-drag": "^3.0.4",
     "@types/d3-selection": "^3.0.7",
     "@vue-flow/core": "workspace:*",
-    "vite-plugin-vue-type-imports": "^0.2.4",
-    "vue": "^3.2.25",
-    "vue-tsc": "^1.6.5"
+    "vue-tsc": "^1.8.16"
   },
   "publishConfig": {
     "access": "public",

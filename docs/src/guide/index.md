@@ -2,35 +2,69 @@
 title: Introduction
 ---
 
-# Introduction
+<script setup>
+import PowerPlug from '~icons/mdi/power-plug';
+import Flash from '~icons/mdi/flash';
+import Lifebuoy from '~icons/mdi/lifebuoy';
+import Puzzle from '~icons/mdi/puzzle';
+import Speedometer from '~icons/mdi/speedometer';
+import Cogs from '~icons/mdi/cogs';
+import CubeOutline from '~icons/mdi/cube-outline';
+import Image from '~icons/mdi/image';
+import MapMarkerPath from '~icons/mdi/map-marker-path';
+import Gamepad from '~icons/mdi/gamepad';
+import Wrench from '~icons/mdi/wrench';
+import ArrowExpand from '~icons/mdi/arrow-expand';
+import LockCheck from '~icons/mdi/lock-check';
+</script>
 
-## What is Vue Flow?
+# Welcome to Vue Flow!
 
-Vue Flow is a Vue 3 library that brings interactivity to flowcharts and graphs.
+Vue Flow is a bridge to the world of interactive flowcharts and graphs, empowering you to bring dynamism and
+interactivity to flowcharts and graphic representations.
+Whether it's crafting personal diagrams, generating dynamic editors, or anything else your imagination conjures up, Vue
+Flow is your creative companion.
 
-It is a tool to build your own diagrams, editors and whatever your imagination allows for.
+Vue Flow makes it effortless to customize and extend basic functionalities by allowing the integration of your own
+bespoke nodes and edges.
+Additional components such as Background, Minimap, and Controls further enrich the interface,
+transforming your creations into engaging platforms.
 
-Easily implement your own custom nodes and edges and expand on the basic functionality and on top of that Vue Flow comes
-with a couple of additional components like a Background, a Minimap and Controls.
+Explore the [examples](/examples/) if you're eager to jump right in and get your hands on some code!
 
-Check out the [examples](/examples/) if you want to dive directly into the code.
+## <span class="flex gap-2 items-center"><Flash class="text-yellow-500" /> Key Features</span>
 
-## Key Features
+### <span class="flex gap-2 items-center"><Lifebuoy class="text-red-500" /> Seamless Setup</span>
 
-- 👶 __Easy setup__: Get started hassle-free - Built-in zoom- & pan features, element dragging, selection and much more
+Vue Flow gets you into the action quickly. With built-in features like element dragging, zooming and panning, and
+selection, Vue Flow is ready to go right out of the box.
 
-- 🎨 __Customizable__: Use your own custom nodes, edges, connection lines and expand on the Vue Flows functionality
+### <span class="flex gap-2 items-center"><Puzzle class="text-green-500" /> Customizable</span>
 
-- 🚀 __Fast__: Tracks changes reactively and only re-renders the appropriate elements
+Vue Flow is yours to shape. From custom nodes and edges to connection lines, you can extend the functionality of Vue
+Flow to fit your creative needs.
 
-- 🧲 __Utils & Composition__: Comes with graph helper and state composable functions for advanced uses
+### <span class="flex gap-2 items-center"><Speedometer class="text-" /> Efficient and Responsive</span>
 
-- 📦 __Additional Components__:
+Changes are tracked reactively by Vue Flow, ensuring that only the necessary elements are re-rendered.
 
-  - 🖼 Background: With two built-in patterns and some configuration options like height, width or color.
+### <span class="flex gap-2 items-center"><Cogs class="text-gray-400" /> Utilities and Composability</span>
 
-  - 🧭 Minimap: Shows current nodes in a small map shape in the bottom right corner
+Vue Flow is designed for complex uses, with built-in graph helper and state composable functions.
 
-  - 🕹 Controls: Control zoom behavior from a panel on the bottom left
+### <span class="flex gap-2 items-center"><CubeOutline class="text-accent" /> Additional Components</span>
 
-- 🦾 __Reliable__: Fully written in TypeScript
+Vue Flow comes with supplementary components to enhance the user interface.
+
+- <Image class="text-blue-500" /> [Background](/guide/components/background): Vue Flow offers two built-in patterns, with further configurations like
+  height, width, or color for personalizations.
+- <MapMarkerPath class="text-pink-500" /> [MiniMap](/guide/components/minimap): This feature provides a birds-eye view of your nodes in a small map,
+  located at the bottom-right corner.
+- <Gamepad class="text-purple-500" /> [Controls](/guide/components/controls): Vue Flow lets you handle zoom functions from a control panel on the bottom
+  left.
+- <Wrench class="text-fuchsia-500" /> [NodeToolbar](/guide/components/node-toolbar): Get access to essential tools directly from the Node itself for easy manipulation and control of the Node
+- <ArrowExpand class="text-yellow-500" /> [NodeResizer](/guide/components/node-resizer): Seamlessly adjust the size of your Node to fit your needs and preferences.
+
+### <span class="flex gap-2 items-center"><LockCheck class="text-blue-500" /> Reliable</span>
+
+Vue Flow is written fully in TypeScript, ensuring a reliable and secure experience for developers.

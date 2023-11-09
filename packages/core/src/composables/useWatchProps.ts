@@ -1,9 +1,9 @@
-import type { ToRefs } from 'vue'
+import type { Ref, ToRefs } from 'vue'
 import { effectScope, nextTick, onScopeDispose, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { toRef, watchPausable } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '~/types'
-import { isDef, isFunction } from '~/utils'
+import { isDef } from '~/utils'
 
 export function useWatchProps(
   models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
@@ -160,6 +160,9 @@ export function useWatchProps(
               store.setMaxZoom(props.maxZoom)
             }
           },
+          {
+            immediate: true,
+          },
         )
       })
     }
@@ -173,6 +176,7 @@ export function useWatchProps(
               store.setMinZoom(props.minZoom)
             }
           },
+          { immediate: true },
         )
       })
     }
@@ -185,6 +189,9 @@ export function useWatchProps(
             if (props.translateExtent && isDef(props.translateExtent)) {
               store.setTranslateExtent(props.translateExtent)
             }
+          },
+          {
+            immediate: true,
           },
         )
       })
@@ -199,6 +206,9 @@ export function useWatchProps(
               store.setNodeExtent(props.nodeExtent)
             }
           },
+          {
+            immediate: true,
+          },
         )
       })
     }
@@ -212,6 +222,9 @@ export function useWatchProps(
               store.applyDefault.value = props.applyDefault
             }
           },
+          {
+            immediate: true,
+          },
         )
       })
     }
@@ -221,7 +234,7 @@ export function useWatchProps(
         const autoConnector = async (params: Connection) => {
           let connection: boolean | Connection = params
 
-          if (isFunction(props.autoConnect)) {
+          if (typeof props.autoConnect === 'function') {
             connection = await props.autoConnect(params)
           }
 
@@ -237,6 +250,7 @@ export function useWatchProps(
               store.autoConnect.value = props.autoConnect
             }
           },
+          { immediate: true },
         )
 
         watch(
@@ -273,15 +287,15 @@ export function useWatchProps(
 
       Object.keys(props).forEach((prop) => {
         if (!skip.includes(prop as keyof typeof props)) {
-          const model = toRef(props, prop as keyof typeof props)
-          const storedValue = store[prop as keyof typeof store] as typeof model
+          const model = toRef(() => prop)
+          const storeRef = store[prop as keyof typeof store] as typeof model as Ref<any>
 
           scope.run(() => {
             watch(
               model,
               (nextValue) => {
                 if (isDef(nextValue)) {
-                  storedValue.value = nextValue
+                  storeRef.value = nextValue
                 }
               },
               { flush: 'pre' },

@@ -5,7 +5,15 @@ import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType, M
 import { ConnectionMode, Position } from '~/types'
 import { useEdgeHooks, useHandle, useVueFlow } from '~/composables'
 import { EdgeId, EdgeRef } from '~/context'
-import { ARIA_EDGE_DESC_KEY, elementSelectionKeys, getEdgePositions, getHandle, getMarkerId } from '~/utils'
+import {
+  ARIA_EDGE_DESC_KEY,
+  ErrorCode,
+  VueFlowError,
+  elementSelectionKeys,
+  getEdgePositions,
+  getHandle,
+  getMarkerId,
+} from '~/utils'
 
 interface Props {
   id: string
@@ -36,6 +44,7 @@ const EdgeWrapper = defineComponent({
       findNode,
       isValidConnection,
       multiSelectionActive,
+      hooks: flowHooks,
     } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
@@ -74,7 +83,25 @@ const EdgeWrapper = defineComponent({
       const sourceNode = findNode(edge.source)
       const targetNode = findNode(edge.target)
 
-      if (!sourceNode || !targetNode || !edge || sourceNode.hidden || targetNode.hidden) {
+      if (!sourceNode && !targetNode) {
+        flowHooks.value.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
+
+        return null
+      }
+
+      if (!sourceNode) {
+        flowHooks.value.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
+
+        return null
+      }
+
+      if (!targetNode) {
+        flowHooks.value.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
+
+        return null
+      }
+
+      if (!edge || sourceNode.hidden || targetNode.hidden) {
         return null
       }
 

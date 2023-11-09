@@ -1,69 +1,233 @@
-# Getting Started
+<script setup>
+import LogosJavascript from '~icons/logos/javascript';
+import LogosTypescript from '~icons/logos/typescript-icon';
+</script>
+
+# Kickstart Your Journey with Vue Flow!
+
+This guide covers the basics of setting up and using Vue Flow. You'll learn how to install Vue Flow, configure it, and
+utilize it within your own projects.
 
 ## Prerequisites
 
-- [Node.js v14+](https://nodejs.org/)
-- [Vue 3](https://vuejs.org/)
+Before you strap in, make sure you're equipped with:
+
+- [Node.js v16 or above](https://nodejs.org/)
+- [Vue 3.0 or above](https://vuejs.org/)
 
 ## Installation
 
-```bash
-npm i --save @vue-flow/core
+Use your preferred package manager to install Vue Flow:
 
-yarn add @vue-flow/core
+::: code-group
 
-pnpm i @vue-flow/core
+```sh [npm]
+$ npm add @vue-flow/core
 ```
+
+```sh [pnpm]
+$ pnpm add @vue-flow/core
+```
+
+```sh [yarn]
+$ yarn add @vue-flow/core
+```
+
+:::
 
 ## Usage
 
-A flow consists of [<span class="font-bold text-blue-500">nodes</span>](/typedocs/interfaces/Node)
-and (optionally) [<span class="font-bold text-purple-500">edges</span>](/typedocs/types/Edge).
-Together we call them
-[<span class="font-bold text-green-500">elements</span>](/typedocs/types/Elements).
+In Vue Flow, an application structure consists of [**nodes**](/typedocs/interfaces/Node)
+and [**edges**](/typedocs/types/Edge), all of which are categorised as [**elements**](/typedocs/types/Elements).
 
-<span class="font-bold text-blue-500">Each element needs a unique id.</span>
-A node also needs a [xy-position](/typedocs/interfaces/XYPosition). An edge needs at least a
-source (node id) and a target (node id).
+**Each element requires a unique id.**
 
-```vue
+Nodes additionally need an [XY-position](/typedocs/interfaces/XYPosition), while edges require a source and a
+target, both represented by node ids.
+
+::: warning NOTE!
+To ensure Vue Flow's is correctly displayed, make sure you include the necessary styles.
+
+Refer to the [Theming](/guide/theming) section for additional information.
+:::
+
+Here's a simple Vue Flow example to get you started:
+
+::: code-group
+
+```vue [<LogosJavascript />]
 <script setup>
-import { VueFlow  } from '@vue-flow/core'
+import { VueFlow } from '@vue-flow/core'
+
+import SpecialNode from './components/SpecialNode.vue'
+import SpecialEdge from './components/SpecialEdge.vue'
 
 const elements = ref([
-  // Nodes
-  // An input node, specified by using `type: 'input'`
+  // nodes
+
+  // an input node, specified by using `type: 'input'`
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
 
-  // Default nodes, you can omit `type: 'default'`
+  // default node, you can omit `type: 'default'` as it's the fallback type
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
-  { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
 
   // An output node, specified by using `type: 'output'`
-  { id: '4', type: 'output', label: 'Node 4', position: { x: 400, y: 200 } },
+  { id: '3', type: 'output', label: 'Node 3', position: { x: 400, y: 200 } },
 
-  // Edges
-  // Most basic edge, only consists of an id, source-id and target-id
+  // A custom node, specified by using a custom type name
+  // we choose `type: 'special'` for this example
+  {
+    id: '4',
+    type: 'special',
+    label: 'Node 4',
+    position: { x: 400, y: 200 },
+
+    // pass custom data to the node
+    data: {
+      // you can pass any data you want to the node
+      hello: 'world',
+    },
+  },
+
+  // edges
+
+  // simple default bezier edge
+  // consists of an id, source-id and target-id
   { id: 'e1-3', source: '1', target: '3' },
 
-  // An animated edge
+  // an animated edge, specified by using `animated: true`
   { id: 'e1-2', source: '1', target: '2', animated: true },
+
+  // a custom edge, specified by using a custom type name
+  // we choose `type: 'special'` for this example
+  {
+    id: 'e1-4',
+    type: 'special',
+    source: '1',
+    target: '4',
+
+    // pass custom data to the edge
+    data: {
+      // You can pass any data you want to the edge       
+      hello: 'world',
+    }
+  },
 ])
 </script>
+
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow v-model="elements">
+    <!-- bind your custom node type to a component by using slots, slot names are always `node-<type>` -->
+    <template #node-special="specialNodeProps">
+      <SpecialNode v-bind="specialNodeProps" />
+    </template>
+
+    <!-- bind your custom edge type to a component by using slots, slot names are always `edge-<type>` -->
+    <template #edge-special="specialEdgeProps">
+      <SpecialEdge v-bind="specialEdgeProps" />
+    </template>
+  </VueFlow>
 </template>
+
+<style>
+/* import the necessary styles for Vue Flow to work */
+@import '@vue-flow/core/dist/style.css';
+
+/* import the default theme, this is optional but generally recommended */
+@import '@vue-flow/core/dist/theme-default.css';
+</style>
 ```
 
-::: warning Necessary styles
-Make sure you include the necessary styles.
-See the [Theming](/guide/theming) section for more info.
+```vue [<LogosTypescript />]
+<script setup lang="ts">
+import type { Elements } from '@vue-flow/core'  
+import { VueFlow } from '@vue-flow/core'
+
+import SpecialNode from './components/SpecialNode.vue'
+import SpecialEdge from './components/SpecialEdge.vue'
+
+const elements = ref<Elements>([
+  // nodes
+    
+  // an input node, specified by using `type: 'input'`
+  { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
+
+  // default node, you can omit `type: 'default'` as it's the fallback type
+  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
+
+  // An output node, specified by using `type: 'output'`
+  { id: '3', type: 'output', label: 'Node 3', position: { x: 400, y: 200 } },
+    
+  // A custom node, specified by using a custom type name
+  // we choose `type: 'special'` for this example
+  { 
+    id: '4', 
+    type: 'special', 
+    label: 'Node 4', 
+    position: { x: 400, y: 200 },
+
+    // pass custom data to the node
+    data: {
+      // you can pass any data you want to the node
+      hello: 'world',
+    },
+  },  
+
+  // edges
+    
+  // simple default bezier edge
+  // consists of an id, source-id and target-id
+  { id: 'e1-3', source: '1', target: '3' },
+
+  // an animated edge, specified by using `animated: true`
+  { id: 'e1-2', source: '1', target: '2', animated: true },
+    
+  // a custom edge, specified by using a custom type name
+  // we choose `type: 'special'` for this example
+  { 
+    id: 'e1-4', 
+    type: 'special', 
+    source: '1', 
+    target: '4',
+    
+    // pass custom data to the edge
+    data: {
+      // You can pass any data you want to the edge       
+      hello: 'world',
+    }
+  },
+])
+</script>
+
+<template>
+  <VueFlow v-model="elements">
+    <!-- bind your custom node type to a component by using slots, slot names are always `node-<type>` -->
+    <template #node-special="specialNodeProps">
+      <SpecialNode v-bind="specialNodeProps" />
+    </template>
+
+    <!-- bind your custom edge type to a component by using slots, slot names are always `edge-<type>` -->
+    <template #edge-special="specialEdgeProps">
+      <SpecialEdge v-bind="specialEdgeProps" />
+    </template>
+  </VueFlow>
+</template>
+
+<style>
+/* import the necessary styles for Vue Flow to work */
+@import '@vue-flow/core/dist/style.css';
+
+/* import the default theme, this is optional but generally recommended */
+@import '@vue-flow/core/dist/theme-default.css';
+</style>
+```
+
 :::
 
 ## TypeScript
 
-Vue Flow is fully written in [TypeScript](https://www.typescriptlang.org/), so it is highly recommended to use TypeScript to have the best possible DX and
-avoid common mistakes.
-The types are included in the library.
+As Vue Flow is entirely written in TypeScript, we highly recommend utilizing TypeScript for improved developer
+experience and prevention of common errors.
+The necessary type definitions are included with the library.
 
-[You can find the TypeDocs here](/typedocs/).
+For more information, review our [TypeDocs documentation](/typedocs/).
