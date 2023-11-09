@@ -8,6 +8,7 @@ import type {
   ConnectionStatus,
   Dimensions,
   PanOnScrollMode,
+  PanZoomInstance,
   Rect,
   SelectionMode,
   SelectionRect,
@@ -20,7 +21,7 @@ import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent }
 import type { ConnectionLineOptions, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
-import type { D3Selection, D3Zoom, D3ZoomHandler, ViewportFunctions } from './zoom'
+import type { ViewportFunctions } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ValidConnectionFunc } from './handle'
@@ -45,9 +46,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** all stored edges */
   edges: GraphEdge[]
 
-  readonly d3Zoom: D3Zoom | null
-  readonly d3Selection: D3Selection | null
-  readonly d3ZoomHandler: D3ZoomHandler | null
+  panZoom: PanZoomInstance | null
 
   /** use setMinZoom action to change minZoom */
   minZoom: number

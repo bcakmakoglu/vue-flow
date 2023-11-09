@@ -1,5 +1,4 @@
 import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
-import type { D3ZoomEvent } from 'd3-zoom'
 import type { Connection, OnConnectStartParams, Viewport } from '@xyflow/system'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
@@ -63,9 +62,9 @@ export interface FlowEvents {
   } & OnConnectStartParams
   clickConnectEnd: MouseEvent | TouchEvent | undefined
   paneReady: VueFlowStore
-  move: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: Viewport }
-  moveStart: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: Viewport }
-  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: Viewport }
+  move: { event: MouseEvent | TouchEvent | null; viewport: Viewport }
+  moveStart: { event: MouseEvent | TouchEvent | null; viewport: Viewport }
+  moveEnd: { event: MouseEvent | TouchEvent | null; viewport: Viewport }
   selectionDragStart: NodeDragEvent
   selectionDrag: NodeDragEvent
   selectionDragStop: NodeDragEvent

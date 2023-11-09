@@ -46,9 +46,8 @@ function defaultState(): State {
     },
     viewport: { x: 0, y: 0, zoom: 1 },
 
-    d3Zoom: null,
-    d3Selection: null,
-    d3ZoomHandler: null,
+    panZoom: null,
+
     minZoom: 0.5,
     maxZoom: 2,
 
