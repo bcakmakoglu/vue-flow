@@ -50,15 +50,14 @@ const elementHeight = toRef(() => height ?? attrs.style?.height ?? defaultHeight
 
 const shapeRendering: ShapeRendering = typeof window === 'undefined' || !!window.chrome ? 'crispEdges' : 'geometricPrecision'
 
-const nodeColorFunc = toRef((): MiniMapNodeFunc => (typeof nodeColor === 'string' ? () => nodeColor : nodeColor))
+const nodeColorFunc = computed<MiniMapNodeFunc>(() => (typeof nodeColor === 'string' ? () => nodeColor : nodeColor))
 
-const nodeStrokeColorFunc = toRef(
-  (): MiniMapNodeFunc => (typeof nodeStrokeColor === 'string' ? () => nodeStrokeColor : nodeStrokeColor),
+const nodeStrokeColorFunc = computed<MiniMapNodeFunc>(() =>
+  typeof nodeStrokeColor === 'string' ? () => nodeStrokeColor : nodeStrokeColor,
 )
 
-const nodeClassNameFunc = toRef(
-  (): MiniMapNodeFunc =>
-    typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
+const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
+  typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
 const bb = computed(() => getRectOfNodes(nodes.value))
