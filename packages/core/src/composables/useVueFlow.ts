@@ -2,7 +2,7 @@ import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
 import { computed, effectScope, getCurrentScope, inject, provide, reactive, watch } from 'vue'
 import { useActions, useGetters, useState } from '~/store'
-import type { EdgeChange, FlowOptions, FlowProps, NodeChange, State, VueFlowStore } from '~/types'
+import type { EdgeChange, NodeChange, State, VueFlowStore } from '~/types'
 import { VueFlow } from '~/context'
 import { warn } from '~/utils'
 
@@ -34,8 +34,8 @@ export class Storage {
     return this.flows.delete(id)
   }
 
-  public create(id: string, preloadedState?: FlowOptions): VueFlowStore {
-    const state: State = useState(preloadedState)
+  public create(id: string): VueFlowStore {
+    const state: State = useState()
 
     const reactiveState = reactive(state)
 
@@ -87,12 +87,11 @@ type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 // todo: maybe replace the storage with a context based solution; This would break calling useVueFlow outside a setup function though, which should be fine
-export function useVueFlow(options?: FlowProps): VueFlowStore {
+export function useVueFlow(id: string): VueFlowStore {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
 
-  const id = options?.id
   const vueFlowId = scope?.vueFlowId || id
 
   let vueFlow: Injection
@@ -126,7 +125,7 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
   if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
     const name = id ?? storage.getId()
 
-    const state = storage.create(name, options)
+    const state = storage.create(name)
 
     vueFlow = state
 
@@ -177,11 +176,6 @@ export function useVueFlow(options?: FlowProps): VueFlowStore {
         }
       })
     })
-  } else {
-    // If options were passed, overwrite state with the options' values
-    if (options) {
-      vueFlow.setState(options)
-    }
   }
 
   // Provide a fresh instance into context if we are in a scope
