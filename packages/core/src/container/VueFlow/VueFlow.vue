@@ -51,7 +51,7 @@ const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const { vueFlowRef, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow(props)
+const { vueFlowRef, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow()
 
 // watch props and update store state
 const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, {

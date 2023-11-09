@@ -6,7 +6,7 @@ const isValidConnection: ValidConnectionFunc = (connection) => {
 }
 
 describe('isValidConnection Prop', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
   store.onEdgeUpdate((params) => store.updateEdge(params.edge, params.connection))
 
   beforeEach(() => {

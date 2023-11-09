@@ -4,7 +4,7 @@ import { getElements } from '../../../utils'
 const { nodes, edges } = getElements()
 
 describe('Store Action: `removeEdges`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
   let deletedEdges: string[]
 
   beforeEach(() => {

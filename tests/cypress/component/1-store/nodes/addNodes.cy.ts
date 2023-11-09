@@ -6,7 +6,7 @@ const { nodes } = getElements()
 const initialNodes = [{ id: '1e3', position: { x: 0, y: 0 }, label: 'Node 1e3' }]
 
 describe('Store Action: `addNodes`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
 
   beforeEach(() => {
     cy.vueFlow({

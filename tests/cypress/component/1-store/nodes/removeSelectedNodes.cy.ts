@@ -4,7 +4,7 @@ import { getElements } from '../../../utils'
 const { nodes, edges } = getElements()
 
 describe('Store Action: `removeSelectedNodes`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
   let randomNumber: number
   let randomNumber2: number
 

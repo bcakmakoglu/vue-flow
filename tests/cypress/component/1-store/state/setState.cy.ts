@@ -5,7 +5,7 @@ import { useVueFlow } from '@vue-flow/core'
 describe('Store Action: `setState`', () => {
   let store = useVueFlow()
 
-  const initial = useVueFlow({ id: 'initial' })
+  const initial = useVueFlow('initial')
 
   beforeEach(() => (store = useVueFlow()))
 
@@ -36,13 +36,6 @@ describe('Store Action: `setState`', () => {
 
   it('sets state', () => {
     store.setState({
-      zoomOnScroll: false,
-    })
-    expect(store.zoomOnScroll.value).to.eq(false)
-  })
-
-  it('takes initial options', () => {
-    store = useVueFlow({
       zoomOnScroll: false,
     })
     expect(store.zoomOnScroll.value).to.eq(false)

@@ -4,7 +4,7 @@ import { getElements } from '../../../utils'
 const { nodes } = getElements()
 
 describe('Store Action: `setMinZoom`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
 
   beforeEach(() => {
     cy.vueFlow({

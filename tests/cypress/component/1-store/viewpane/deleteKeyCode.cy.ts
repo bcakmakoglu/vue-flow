@@ -4,7 +4,7 @@ import { getElements } from '../../../utils'
 const { nodes, edges } = getElements(2, 2)
 
 describe('Store State: `deleteKeyCode`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
   const defaultKeyCode = store.deleteKeyCode.value
   const nodeToDelete = nodes[Math.floor(Math.random() * nodes.length)]
   const edgeToDelete = edges[Math.floor(Math.random() * edges.length)]

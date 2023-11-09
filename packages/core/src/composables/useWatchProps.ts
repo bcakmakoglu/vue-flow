@@ -298,7 +298,7 @@ export function useWatchProps(
                   storeRef.value = nextValue
                 }
               },
-              { flush: 'pre' },
+              { immediate: true, flush: 'pre' },
             )
           })
         }

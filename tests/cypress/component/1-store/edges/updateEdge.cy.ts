@@ -4,7 +4,7 @@ import { getElements } from '../../../utils'
 const { nodes, edges } = getElements(2, 2)
 
 describe('Store Action: `updateEdge`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
   let randomIndex: number
 
   beforeEach(() => {

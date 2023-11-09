@@ -5,7 +5,7 @@ import { getElements } from '../../../utils'
 const { nodes, edges } = getElements(2, 2)
 
 describe('Store Action: `startConnection`, `updateConnection`, `endConnection`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
   const startHandle: ConnectingHandle = { nodeId: nodes[0].id, type: 'source', handleId: null }
 
   beforeEach(() => {

@@ -4,7 +4,7 @@ import { getElements } from '../../../utils'
 const { nodes, edges } = getElements(2, 2)
 
 describe('Viewport Helper: `fitView`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
 
   it('fits view', () => {
     cy.vueFlow({

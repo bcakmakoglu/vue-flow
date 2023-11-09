@@ -1,7 +1,7 @@
 import { useVueFlow } from '@vue-flow/core'
 
 describe('Check if edges are updatable', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
   store.onEdgeUpdate((params) => store.updateEdge(params.edge, params.connection))
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { useVueFlow } from '@vue-flow/core'
 
 describe('Check if nodes can be connected', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
 
   beforeEach(() => {
     cy.vueFlow({

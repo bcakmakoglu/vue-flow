@@ -4,7 +4,7 @@ import { getElements } from '../../utils'
 const { nodes } = getElements(1, 1)
 
 describe('Check if nodes are draggable', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
 
   beforeEach(() => {
     cy.vueFlow({

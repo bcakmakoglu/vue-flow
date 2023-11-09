@@ -10,7 +10,7 @@ const defaultEdgeOptions: DefaultEdgeOptions = {
 }
 
 describe('Default Edge Options', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
 
   beforeEach(() => {
     cy.vueFlow({

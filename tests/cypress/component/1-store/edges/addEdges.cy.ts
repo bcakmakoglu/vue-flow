@@ -7,7 +7,7 @@ const edgesFirstHalf = edges.slice(0, Math.floor(edges.length / 2))
 const edgesSecondHalf = edges.slice(Math.floor(edges.length / 2))
 
 describe('Store Action: `addEdges`', () => {
-  const store = useVueFlow({ id: 'test' })
+  const store = useVueFlow('test')
 
   beforeEach(() => {
     cy.vueFlow({

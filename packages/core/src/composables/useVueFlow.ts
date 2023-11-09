@@ -87,7 +87,7 @@ type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 // todo: maybe replace the storage with a context based solution; This would break calling useVueFlow outside a setup function though, which should be fine
-export function useVueFlow(id: string): VueFlowStore {
+export function useVueFlow(id?: string): VueFlowStore {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
