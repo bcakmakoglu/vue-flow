@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.26.0
+
+### Minor Changes
+
+- [#1193](https://github.com/bcakmakoglu/vue-flow/pull/1193) [`bc793ab9`](https://github.com/bcakmakoglu/vue-flow/commit/bc793ab9d50d9df40e2655d0eeccdcbde3feb5b1) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Keep connection lines snapped while hovering over handles
+
+### Patch Changes
+
+- [#1196](https://github.com/bcakmakoglu/vue-flow/pull/1196) [`1aa69c59`](https://github.com/bcakmakoglu/vue-flow/commit/1aa69c59f18a200c2881c2f77a339a7473c22d02) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use correct prop value when prop watcher is executed instead of using prop key as value
+
 ## 1.25.3
 
 ### Patch Changes
