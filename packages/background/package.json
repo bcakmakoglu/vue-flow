@@ -59,6 +59,7 @@
     "vue-demi": "latest"
   },
   "peerDependencies": {
+    "@vue-flow/core": "^1.23.0",
     "@vue/composition-api": "^1.7.2",
     "vue": "^2.7.15 || >=3.3.0"
   },
@@ -71,7 +72,6 @@
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@tooling/vite-config": "workspace:*",
-    "@vue-flow/core": "workspace:*",
     "vue-tsc": "^1.8.16"
   },
   "publishConfig": {

@@ -1,6 +1,6 @@
-import { type PropType, computed, defineComponent, h, ref } from 'vue-demi'
+import { type PropType, computed, defineComponent, h } from 'vue-demi'
 
-// import { useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 
 import { type BackgroundProps, BackgroundVariant, type BackgroundVariantType } from '../types'
 import { DefaultBgColors, DotPattern, LinePattern } from '../Pattern'
@@ -73,13 +73,7 @@ const Background = defineComponent({
     },
   },
   setup(props: BackgroundProps, { slots }) {
-    const vueFlowId = 'vueflowid-background'
-
-    const viewport = ref({
-      x: 50,
-      y: 50,
-      zoom: 1,
-    })
+    const { id: vueFlowId, viewport } = useVueFlow()
 
     const background = computed(() => {
       const offset = props.offset || 2

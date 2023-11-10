@@ -301,6 +301,9 @@ importers:
 
   packages/background:
     dependencies:
+      '@vue-flow/core':
+        specifier: ^1.23.0
+        version: link:../core
       '@vue/composition-api':
         specifier: ^1.7.2
         version: 1.7.2(vue@3.3.4)
