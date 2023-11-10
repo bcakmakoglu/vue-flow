@@ -51,18 +51,12 @@ const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const { vueFlowRef, hooks, getNodeTypes, getEdgeTypes, ...rest } = useVueFlow()
+const instance = useVueFlow()
 
 // watch props and update store state
-const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, {
-  vueFlowRef,
-  hooks,
-  getNodeTypes,
-  getEdgeTypes,
-  ...rest,
-})
+const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, instance)
 
-useHooks(emit, hooks)
+useHooks(emit, instance.hooks)
 
 // slots will be passed via provide
 // this is to avoid having to pass them down through all the components
@@ -74,13 +68,7 @@ onUnmounted(() => {
   dispose()
 })
 
-defineExpose<VueFlowStore>({
-  vueFlowRef,
-  hooks,
-  getNodeTypes,
-  getEdgeTypes,
-  ...rest,
-})
+defineExpose<VueFlowStore>(instance)
 </script>
 
 <script lang="ts">
@@ -91,7 +79,7 @@ export default {
 </script>
 
 <template>
-  <div ref="vueFlowRef" class="vue-flow">
+  <div :ref="instance.vueFlowRef" class="vue-flow">
     <Viewport>
       <!-- This slot is affected by zooming & panning -->
       <slot name="zoom-pane" />
