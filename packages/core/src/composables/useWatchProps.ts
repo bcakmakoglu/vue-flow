@@ -1,5 +1,5 @@
-import type { Ref, ToRefs } from 'vue'
-import { effectScope, nextTick, onScopeDispose, watch } from 'vue'
+import type { ToRefs } from 'vue'
+import { effectScope, isRef, nextTick, onScopeDispose, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { toRef, watchPausable } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '~/types'
@@ -21,20 +21,24 @@ export function useWatchProps(
         let immediateStore = !!(store.nodes.value.length || store.edges.value.length)
 
         // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.modelValue, () => models.modelValue?.value?.length], ([elements]) => {
-          if (elements && Array.isArray(elements)) {
-            pauseStore?.pause()
+        pauseModel = watchPausable(
+          [models.modelValue, () => models.modelValue?.value?.length],
+          ([elements]) => {
+            if (elements && Array.isArray(elements)) {
+              pauseStore?.pause()
 
-            store.setElements(elements)
+              store.setElements(elements)
 
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && elements.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && elements.length) {
+                immediateStore = true
+              } else {
+                pauseStore?.resume()
+              }
             }
-          }
-        })
+          },
+          { immediate: true },
+        )
 
         pauseStore = watchPausable(
           [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
@@ -285,22 +289,26 @@ export function useWatchProps(
         'autoConnect',
       ]
 
-      Object.keys(props).forEach((prop) => {
-        if (!skip.includes(prop as keyof typeof props)) {
-          const model = toRef(() => prop)
-          const storeRef = store[prop as keyof typeof store] as typeof model as Ref<any>
+      Object.keys(props).forEach((key) => {
+        const propKey = key as keyof typeof props
+        if (!skip.includes(propKey)) {
+          const propValue = toRef(() => props[propKey])
 
-          scope.run(() => {
-            watch(
-              model,
-              (nextValue) => {
-                if (isDef(nextValue)) {
-                  storeRef.value = nextValue
-                }
-              },
-              { immediate: true, flush: 'pre' },
-            )
-          })
+          const storeRef = store[propKey as keyof typeof store]
+
+          if (isRef(storeRef)) {
+            scope.run(() => {
+              watch(
+                propValue,
+                (nextValue) => {
+                  if (isDef(nextValue)) {
+                    ;(storeRef.value as any) = nextValue
+                  }
+                },
+                { immediate: true, flush: 'pre' },
+              )
+            })
+          }
         }
       })
     }
