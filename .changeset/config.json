@@ -16,8 +16,7 @@
     "@vue-flow/examples-vite",
     "@vue-flow/examples-nuxt3",
     "@vue-flow/examples-quasar",
-    "@vue-flow/tests",
-    "vueflow"
+    "@vue-flow/tests"
   ],
   "commit": false,
   "linked": [],
