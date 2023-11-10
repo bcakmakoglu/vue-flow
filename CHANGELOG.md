@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.26.0] - 2023-11-10
+
+[d963558](d96355846492279a4b7ab9fb046ae7164f0f2142)...[ff41107](ff411077278482dcf1e65dd89d1286b0f739d1c4)
+
+### Bug Fixes
+
+- Use correct prop value when watcher triggers ([277979f](277979f72cb357fffd5d5d0dcee0cda240887910))
+
+### Documentation
+
+- Fix typo in node-extent vue-flow property ([6c3cff8](6c3cff8905c77e1e8e504a08971b982bd129bcdc))
+
+### Miscellaneous Tasks
+
+- Remove base `vue-flow` pkg ([2e578ad](2e578ada7d9b842f0df3799823d7e2982d85b1da))
+- Add ([9aba9a8](9aba9a8efdab75639632e69af297c01c6bbc893f))
+- Add ([9e7ce26](9e7ce26a2b81cde2dd5eaab18322155f4dfbd660))
+- Cleanup config ([ff41107](ff411077278482dcf1e65dd89d1286b0f739d1c4))
+
+### Refactor
+
+- Keep connection line snapped to handle while hovering ([ba0cf54](ba0cf54fef7730643c4a91284f2b16ab391e0e3d))
+
 ## [1.25.3] - 2023-11-09
 
 [4d1578a](4d1578ae60373fdfb73d5053b140ea8dbd25555a)...[d963558](d96355846492279a4b7ab9fb046ae7164f0f2142)
