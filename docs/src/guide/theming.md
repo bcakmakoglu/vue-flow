@@ -1,3 +1,7 @@
+---
+title: Theming
+---
+
 <script setup>
 import LogosJavascript from '~icons/logos/javascript';
 import { ref, h } from 'vue';

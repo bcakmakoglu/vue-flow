@@ -1,3 +1,7 @@
+---
+title: Getting Started
+---
+
 <script setup>
 import LogosJavascript from '~icons/logos/javascript';
 import LogosTypescript from '~icons/logos/typescript-icon';
@@ -17,7 +21,7 @@ Before you strap in, make sure you're equipped with:
 
 # CodeSandbox
 
-If you're looking for a quick way to get started, check out our [CodeSandbox template](https://codesandbox.io/p/sandbox/vue-flow-basic-gfgro4).
+If you're looking for a quick way to get started, check out the [CodeSandbox template](https://codesandbox.io/p/sandbox/vue-flow-basic-gfgro4).
 
 ## Installation
 

@@ -30,7 +30,7 @@ bespoke nodes and edges.
 Additional components such as Background, Minimap, and Controls further enrich the interface,
 transforming your creations into engaging platforms.
 
-Explore the [examples](/examples/) if you're eager to jump right in and get your hands on some code!
+Explore the [examples](/examples/) or checkout the [CodeSandbox template](https://codesandbox.io/p/sandbox/vue-flow-basic-gfgro4) if you're eager to jump right in and get your hands on some code!
 
 ## <span class="flex gap-2 items-center"><Flash class="text-yellow-500" /> Key Features</span>
 
