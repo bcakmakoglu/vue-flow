@@ -1,3 +1,7 @@
+---
+title: Nodes
+---
+
 <script setup>
 import LogosJavascript from '~icons/logos/javascript';
 import LogosTypescript from '~icons/logos/typescript-icon';

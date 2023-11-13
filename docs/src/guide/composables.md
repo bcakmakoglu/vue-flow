@@ -1,3 +1,7 @@
+---
+title: Composables
+---
+
 # Composables
 
 ## [useVueFlow](/typedocs/functions/useVueFlow)
