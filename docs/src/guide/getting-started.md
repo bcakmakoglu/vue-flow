@@ -19,7 +19,7 @@ Before you strap in, make sure you're equipped with:
 - [Node.js v16 or above](https://nodejs.org/)
 - [Vue 3.0 or above](https://vuejs.org/)
 
-# CodeSandbox
+## CodeSandbox
 
 If you're looking for a quick way to get started, check out the [CodeSandbox template](https://codesandbox.io/p/sandbox/vue-flow-basic-gfgro4).
 
