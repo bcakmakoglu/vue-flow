@@ -11,9 +11,9 @@
     "dev:docs": "turbo dev --filter=@vue-flow/docs",
     "changelog": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
     "build:docs": "turbo build --filter docs",
-    "build": "turbo build --filter='./packages/*' --filter=!vueflow",
+    "build": "turbo build --filter='./packages/*'",
     "test": "turbo test",
-    "lint": "turbo lint --filter='./packages/*' --filter=!vueflow",
+    "lint": "turbo lint --filter='./packages/*'",
     "typedocs": "pnpm build && pnpm --dir docs typedocs",
     "ci:version": "changeset version",
     "ci:publish": "pnpm lint && pnpm build && pnpm test && changeset publish"

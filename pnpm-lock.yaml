@@ -200,9 +200,6 @@ importers:
       pinia:
         specifier: ^2.1.6
         version: 2.1.6(typescript@4.9.5)(vue@3.3.4)
-      vueflow:
-        specifier: workspace:*
-        version: link:../../packages/vue-flow
     devDependencies:
       '@tooling/eslint-config':
         specifier: workspace:*
@@ -469,46 +466,6 @@ importers:
       vue-tsc:
         specifier: ^1.8.16
         version: 1.8.16(typescript@4.9.5)
-
-  packages/vue-flow:
-    dependencies:
-      '@vue-flow/background':
-        specifier: workspace:*
-        version: link:../background
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../controls
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../minimap
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      autoprefixer:
-        specifier: ^10.4.16
-        version: 10.4.16(postcss@8.4.31)
-      postcss:
-        specifier: ^8.4.31
-        version: 8.4.31
-      postcss-cli:
-        specifier: ^10.1.0
-        version: 10.1.0(postcss@8.4.31)
-      postcss-nested:
-        specifier: ^6.0.1
-        version: 6.0.1(postcss@8.4.31)
 
   tests:
     dependencies:

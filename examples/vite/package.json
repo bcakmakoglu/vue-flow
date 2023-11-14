@@ -13,8 +13,7 @@
     "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
     "@vue-flow/node-toolbar": "workspace:*",
-    "pinia": "^2.1.6",
-    "vueflow": "workspace:*"
+    "pinia": "^2.1.6"
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
