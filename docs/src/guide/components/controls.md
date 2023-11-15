@@ -44,13 +44,13 @@ const elements = ref(initialElements)
 
 ## [Props](/typedocs/interfaces/ControlProps)
 
-| Name            | Definition                | Type                                           | Optional | Default |
-|-----------------|---------------------------|------------------------------------------------|----------|---------|
-| showZoom        | Show zoom btn             | boolean                                        | true     | true    |
-| showFitView     | Show fit-view btn         | boolean                                        | true     | true    |
-| showInteractive | Show lock interactive btn | boolean                                        | true     | true    |
-| showZoom        | Show zoom button          | boolean                                        | true     | true    |
-| fitViewParams   | Params to use on fit-view | [FitViewParams](/typedocs/types/FitViewParams) | true     | -       |
+| Name            | Definition                             | Type                                           | Optional | Default |
+|-----------------|----------------------------------------|------------------------------------------------|----------|---------|
+| showZoom        | Show zoom btn                          | boolean                                        | true     | true    |
+| showFitView     | Show fit-view btn                      | boolean                                        | true     | true    |
+| showInteractive | Show lock interactive btn              | boolean                                        | true     | true    |
+| showZoom        | Show zoom button                       | boolean                                        | true     | true    |
+| fitViewParams   | Params to use on fit-view button click | [FitViewParams](/typedocs/types/FitViewParams) | true     | -       |
 
 ## Emits
 
@@ -65,14 +65,14 @@ const elements = ref(initialElements)
 
 ### Control Buttons
 
-| Name                | Definition              |
-|---------------------|-------------------------|
-| top                 | slot above default btns |
-| control-zoom-in     | Zoom-in btn             |
-| control-zoom-out    | Zoom-out btn            |
-| control-fit-view    | Fit-view btn            |
-| control-interaction | Interaction btn         |
-| default             | slot below default btns |
+| Name                | Definition                 |
+|---------------------|----------------------------|
+| top                 | Slot above default buttons |
+| control-zoom-in     | Zoom-in btn                |
+| control-zoom-out    | Zoom-out btn               |
+| control-fit-view    | Fit-view btn               |
+| control-interactive | Interaction btn            |
+| default             | Slot below default buttons |
 
 ### Icons
 
