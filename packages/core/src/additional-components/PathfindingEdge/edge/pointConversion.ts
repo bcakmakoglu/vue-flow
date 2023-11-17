@@ -1,4 +1,4 @@
-import type { XYPosition } from '@vue-flow/core'
+import { type XYPosition } from '~/types'
 
 const gridRatio = 10
 

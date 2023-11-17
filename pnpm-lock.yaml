@@ -296,6 +296,12 @@ importers:
       d3-zoom:
         specifier: ^3.0.0
         version: 3.0.0
+      pathfinding:
+        specifier: ^0.4.18
+        version: 0.4.18
+      perfect-arrows:
+        specifier: ^0.3.7
+        version: 0.3.7
       vue:
         specifier: ^3.3.0
         version: 3.3.4
@@ -318,6 +324,9 @@ importers:
       '@types/d3-zoom':
         specifier: ^3.0.5
         version: 3.0.5
+      '@types/pathfinding':
+        specifier: ^0.0.6
+        version: 0.0.6
       '@vitejs/plugin-vue':
         specifier: ^4.4.0
         version: 4.4.0(vite@4.4.11)(vue@3.3.4)
@@ -342,6 +351,9 @@ importers:
       vite:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@18.18.4)
+      vite-svg-loader:
+        specifier: ^4.0.0
+        version: 4.0.0
       vue-tsc:
         specifier: ^1.8.16
         version: 1.8.16(typescript@4.9.5)

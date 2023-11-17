@@ -1,4 +1,4 @@
-import type { Position } from '@vue-flow/core'
+import { type Position } from '~/types'
 
 export interface NodeToolbarProps {
   nodeId?: string | string[]

@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { computed, inject, toRef } from 'vue'
-import type { GraphNode, Rect, ViewportTransform } from '@vue-flow/core'
-import { NodeIdInjection, Position, getRectOfNodes, useVueFlow } from '@vue-flow/core'
+import { type CSSProperties, computed, inject, toRef } from 'vue'
+import { type Align, type NodeToolbarProps } from './types'
 
-import type { CSSProperties } from 'vue'
-import type { Align, NodeToolbarProps } from './types'
+import { useVueFlow } from '~/composables'
+import { NodeId as NodeIdInjection } from '~/context'
+import { type GraphNode, Position, type Rect, type ViewportTransform } from '~/types'
+import { getRectOfNodes } from '~/utils'
 
 const props = withDefaults(defineProps<NodeToolbarProps>(), {
   position: Position.Top,

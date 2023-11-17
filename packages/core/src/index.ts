@@ -9,6 +9,8 @@ export { default as Handle } from './components/Handle/Handle.vue'
 
 export { default as Panel } from './components/Panel/Panel.vue'
 
+export * from './additional-components'
+
 export {
   StraightEdge,
   StepEdge,

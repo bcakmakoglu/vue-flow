@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { useVueFlow } from '@vue-flow/core'
 import { computed, toRef } from 'vue'
-import { BackgroundVariant } from './types'
-import type { BackgroundProps } from './types'
+
 import { DefaultBgColors, DotPattern, LinePattern } from './patterns'
+import { type BackgroundProps, BackgroundVariant } from './types'
+
+import { useVueFlow } from '~/composables'
 
 const {
   id,

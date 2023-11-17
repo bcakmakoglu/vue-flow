@@ -1,9 +1,10 @@
 import { Grid } from 'pathfinding'
-import type { Position } from '@vue-flow/core'
 import { getNextPointFromPosition, guaranteeWalkablePath } from './guaranteeWalkablePath'
 import { graphToGridPoint } from './pointConversion'
 import { round } from './utils'
-import type { GraphBoundingBox, NodeBoundingBox } from './getBoundingBoxes'
+import { type GraphBoundingBox, type NodeBoundingBox } from './getBoundingBoxes'
+
+import { type Position } from '~/types'
 
 export const gridRatio = 10
 

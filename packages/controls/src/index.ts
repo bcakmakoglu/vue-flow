@@ -1,6 +1,10 @@
 import './style.css'
 
-export { default as Controls } from './Controls.vue'
-export { default as ControlButton } from './ControlButton.vue'
-
-export * from './types'
+export {
+  /** * @deprecated Use import { Controls } from @vue-flow/core instead */
+  Controls,
+  /** * @deprecated Use import { ControlButton } from @vue-flow/core instead */
+  ControlButton,
+  /** * @deprecated Use import { type ControlProps } from @vue-flow/core instead */
+  type ControlProps,
+} from '@vue-flow/core'

@@ -1,13 +1,16 @@
 <script lang="ts" setup>
-import type { CoordinateExtent, GraphNode, PanelPosition } from '@vue-flow/core'
-import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
-import { zoom, zoomIdentity } from 'd3-zoom'
-import type { D3ZoomEvent } from 'd3-zoom'
-import { pointer, select } from 'd3-selection'
 import { computed, provide, ref, useAttrs, useSlots, watchEffect } from 'vue'
-import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, ShapeRendering } from './types'
+
+import { type D3ZoomEvent, zoom, zoomIdentity } from 'd3-zoom'
+import { pointer, select } from 'd3-selection'
+
+import { type MiniMapEmits, type MiniMapNodeFunc, type MiniMapProps, MiniMapSlots, type ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
-import { MiniMapSlots } from './types'
+
+import { Panel } from '~/components'
+import { useVueFlow } from '~/composables'
+import { type CoordinateExtent, type GraphNode, type PanelPosition } from '~/types'
+import { getBoundsofRects, getConnectedEdges, getRectOfNodes } from '~/utils'
 
 const {
   width,

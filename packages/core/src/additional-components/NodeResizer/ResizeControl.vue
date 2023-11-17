@@ -1,11 +1,15 @@
 <script lang="ts" setup>
-import type { NodeChange, NodeDimensionChange, NodePositionChange } from '@vue-flow/core'
-import { clamp, useGetPointerPosition, useVueFlow } from '@vue-flow/core'
+import { ref, toRef, watchEffect } from 'vue'
+
 import { select } from 'd3-selection'
 import { drag } from 'd3-drag'
-import { ref, toRef, watchEffect } from 'vue'
+
 import type { NodeResizerEmits, ResizeControlProps, ResizeControlVariant, ResizeDragEvent } from './types'
 import { DefaultPositions, StylingProperty, getDirection } from './utils'
+
+import { useGetPointerPosition, useVueFlow } from '~/composables'
+import { type NodeChange, type NodeDimensionChange, type NodePositionChange } from '~/types'
+import { clamp } from '~/utils'
 
 const props = withDefaults(defineProps<ResizeControlProps>(), {
   variant: 'handle' as ResizeControlVariant,

@@ -1,11 +1,18 @@
 <script lang="ts" setup>
 // todo: add plugin to emit resize events via vue flow store; requires plugin API to be added to core
 import { computed, inject, watch } from 'vue'
-import type { NodeDimensionChange } from '@vue-flow/core'
-import { NodeIdInjection, useVueFlow } from '@vue-flow/core'
+
 import ResizeControl from './ResizeControl.vue'
-import type { ControlLinePosition, ControlPosition, NodeResizerEmits, NodeResizerProps } from './types'
-import { ResizeControlVariant } from './types'
+import {
+  type ControlLinePosition,
+  type ControlPosition,
+  type NodeResizerEmits,
+  type NodeResizerProps,
+  ResizeControlVariant,
+} from './types'
+import { useVueFlow } from '~/composables'
+import { NodeId as NodeIdInjection } from '~/context'
+import { type NodeDimensionChange } from '~/types'
 
 const props = withDefaults(defineProps<NodeResizerProps>(), {
   isVisible: true,

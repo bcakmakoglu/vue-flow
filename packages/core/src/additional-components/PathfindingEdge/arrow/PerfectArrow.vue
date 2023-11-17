@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { EdgeText, getSimpleBezierPath } from '@vue-flow/core'
-import type { CSSProperties } from 'vue'
 import { getArrow } from 'perfect-arrows'
-import { computed, useAttrs } from 'vue'
-import type { PerfectArrowProps } from '../types'
+import { type CSSProperties, computed, useAttrs } from 'vue'
+import { type PerfectArrowProps } from '../types'
+
+import { EdgeText } from '~/components'
+import { getSimpleBezierPath } from '~/components/Edges/utils'
 
 const props = withDefaults(defineProps<PerfectArrowProps>(), {
   options: () => ({

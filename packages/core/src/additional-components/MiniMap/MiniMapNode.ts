@@ -1,7 +1,5 @@
-import type { CSSProperties, Slots } from 'vue'
-import { defineComponent, h, inject } from 'vue'
-import type { MiniMapNodeProps } from './types'
-import { MiniMapSlots } from './types'
+import { type CSSProperties, type Slots, defineComponent, h, inject } from 'vue'
+import { type MiniMapNodeProps, MiniMapSlots } from './types'
 
 // todo: typings
 export default defineComponent({
