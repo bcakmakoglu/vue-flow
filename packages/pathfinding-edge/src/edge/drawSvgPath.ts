@@ -1,4 +1,4 @@
-import { type XYPosition } from '~/types'
+import { type XYPosition } from '@vue-flow/core'
 
 /**
  * Draws an SVG path from a list of points, using straight lines.

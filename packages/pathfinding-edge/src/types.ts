@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'vue'
 import type { ArrowOptions } from 'perfect-arrows'
-import type { EdgeProps, Position } from '~/types'
+import type { EdgeProps, Position } from '@vue-flow/core'
 
 export interface PathFindingEdgeProps extends EdgeProps<never> {
   id: string

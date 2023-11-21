@@ -1,5 +1,5 @@
+import { type GraphNode, type XYPosition } from '@vue-flow/core'
 import { roundDown, roundUp } from './utils'
-import { type GraphNode, type XYPosition } from '~/types'
 
 export interface NodeBoundingBox {
   id: string

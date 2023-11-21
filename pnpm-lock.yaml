@@ -296,12 +296,6 @@ importers:
       d3-zoom:
         specifier: ^3.0.0
         version: 3.0.0
-      pathfinding:
-        specifier: ^0.4.18
-        version: 0.4.18
-      perfect-arrows:
-        specifier: ^0.3.7
-        version: 0.3.7
       vue:
         specifier: ^3.3.0
         version: 3.3.4

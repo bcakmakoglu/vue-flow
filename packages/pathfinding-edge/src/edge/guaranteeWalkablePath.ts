@@ -1,5 +1,5 @@
 import type { Grid } from 'pathfinding'
-import { type Position, type XYPosition } from '~/types'
+import { type Position, type XYPosition } from '@vue-flow/core'
 
 type Direction = 'top' | 'bottom' | 'left' | 'right'
 

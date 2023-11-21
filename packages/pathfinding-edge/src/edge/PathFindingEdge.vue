@@ -1,17 +1,13 @@
 <script lang="ts" setup>
 import { computed, useAttrs } from 'vue'
 
+import { BezierEdge, EdgeText, Position, getSimpleBezierPath, useVueFlow } from '@vue-flow/core'
 import { type PathFindingEdgeProps } from '../types'
 import { createGrid, gridRatio } from './createGrid'
 import { drawSmoothLinePath } from './drawSvgPath'
 import { generatePath } from './generatePath'
 import { getBoundingBoxes } from './getBoundingBoxes'
 import { gridToGraphPoint } from './pointConversion'
-
-import { BezierEdge, EdgeText } from '~/components'
-import { useVueFlow } from '~/composables'
-import { Position } from '~/types'
-import { getSimpleBezierPath } from '~/components/Edges/utils'
 
 const props = withDefaults(defineProps<PathFindingEdgeProps>(), {
   selected: false,
