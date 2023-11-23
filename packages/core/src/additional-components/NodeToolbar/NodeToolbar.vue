@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { type CSSProperties, computed, inject, toRef } from 'vue'
-import { type Align, type NodeToolbarProps } from './types'
 
-import { useVueFlow } from '~/composables'
-import { NodeId as NodeIdInjection } from '~/context'
-import { type GraphNode, Position, type Rect, type ViewportTransform } from '~/types'
-import { getRectOfNodes } from '~/utils'
+import { useVueFlow } from '../../composables'
+import { NodeId as NodeIdInjection } from '../../context'
+import { type GraphNode, Position, type Rect, type ViewportTransform } from '../../types'
+import { getRectOfNodes } from '../../utils'
+import { type Align, type NodeToolbarProps } from './types'
 
 const props = withDefaults(defineProps<NodeToolbarProps>(), {
   position: Position.Top,

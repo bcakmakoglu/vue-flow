@@ -4,13 +4,12 @@ import { computed, provide, ref, useAttrs, useSlots, watchEffect } from 'vue'
 import { type D3ZoomEvent, zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 
+import { Panel } from '../../components'
+import { useVueFlow } from '../../composables'
+import { type CoordinateExtent, type GraphNode, type PanelPosition } from '../../types'
+import { getBoundsofRects, getConnectedEdges, getRectOfNodes } from '../../utils'
 import { type MiniMapEmits, type MiniMapNodeFunc, type MiniMapProps, MiniMapSlots, type ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode'
-
-import { Panel } from '~/components'
-import { useVueFlow } from '~/composables'
-import { type CoordinateExtent, type GraphNode, type PanelPosition } from '~/types'
-import { getBoundsofRects, getConnectedEdges, getRectOfNodes } from '~/utils'
 
 const {
   width,

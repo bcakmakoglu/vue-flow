@@ -4,12 +4,11 @@ import { ref, toRef, watchEffect } from 'vue'
 import { select } from 'd3-selection'
 import { drag } from 'd3-drag'
 
-import type { NodeResizerEmits, ResizeControlProps, ResizeControlVariant, ResizeDragEvent } from './types'
+import { useGetPointerPosition, useVueFlow } from '../../composables'
+import { type NodeChange, type NodeDimensionChange, type NodePositionChange } from '../../types'
+import { clamp } from '../../utils'
 import { DefaultPositions, StylingProperty, getDirection } from './utils'
-
-import { useGetPointerPosition, useVueFlow } from '~/composables'
-import { type NodeChange, type NodeDimensionChange, type NodePositionChange } from '~/types'
-import { clamp } from '~/utils'
+import type { NodeResizerEmits, ResizeControlProps, ResizeControlVariant, ResizeDragEvent } from './types'
 
 const props = withDefaults(defineProps<ResizeControlProps>(), {
   variant: 'handle' as ResizeControlVariant,

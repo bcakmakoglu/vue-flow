@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { toRef } from 'vue'
+import { useVueFlow } from '../../composables'
+import { Panel } from '../../components'
+import { type PanelPosition } from '../../types'
 import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from './icons/plus.svg'
@@ -7,10 +10,6 @@ import MinusIcon from './icons/minus.svg'
 import FitView from './icons/fitview.svg'
 import Lock from './icons/lock.svg'
 import Unlock from './icons/unlock.svg'
-
-import { useVueFlow } from '~/composables'
-import { Panel } from '~/components'
-import { PanelPosition } from '~/types'
 
 const {
   showZoom = true,
