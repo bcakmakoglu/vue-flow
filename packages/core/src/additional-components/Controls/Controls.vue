@@ -2,7 +2,7 @@
 import { toRef } from 'vue'
 import { useVueFlow } from '../../composables'
 import { Panel } from '../../components'
-import { type PanelPosition } from '../../types'
+import { PanelPosition } from '../../types'
 import type { ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from './icons/plus.svg'
