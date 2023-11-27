@@ -1,3 +1,10 @@
 .data.json
 .temp
 CHANGELOG/*
+
+# Ignore all auto-generated files
+src/changelog
+
+src/typedocs
+
+src/public/*.js
