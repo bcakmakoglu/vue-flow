@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.27.1] - 2023-12-12
+
+[466711f](466711fc3fbd5fd08a91d9ee30f8a0b3efb1d1e9)...[aeed19e](aeed19e35a4228a649378108ba0ce66c910a0069)
+
+### Bug Fixes
+
+- Remove ts-transform-paths and use relative paths ([458b5d4](458b5d42ba3278e9cc86623e02583dff9e5c2825))
+
+### Documentation
+
+- Cleanup copy plugin logs ([04da72f](04da72fbd3a5dc234c4a5a1e43e54391bc860633))
+- Move examples dir out of components dir ([bb2bf72](bb2bf720125dc118f72cabe4f5b96fde1d2b7ba2))
+- Cleanup ([7d7fefe](7d7fefec7524559ea18404f5b8474ac6d675c2d3))
+- Simplify basic example ([0506f6f](0506f6ff93e8fff96ecd05f8c3291aed7bb84e85))
+
+### Miscellaneous Tasks
+
+- Update deps & deps-dev ([7ba258c](7ba258c53b35839268c3a414165f65764292f2a9))
+- Add ([b4402cb](b4402cbbf7719d1c1749213b8bead3c34b08e6cd))
+- Cleanup scripts ([0b27870](0b2787000c7ff22bc25475db1514d191b8cdde8c))
+- Cleanup ([58689d7](58689d751ac8c673f099f4392b1927972d004070))
+
 ## [1.27.0] - 2023-12-12
 
 [ff41107](ff411077278482dcf1e65dd89d1286b0f739d1c4)...[466711f](466711fc3fbd5fd08a91d9ee30f8a0b3efb1d1e9)
