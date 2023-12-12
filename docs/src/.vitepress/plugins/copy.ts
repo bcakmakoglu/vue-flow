@@ -16,8 +16,6 @@ function copyFiles(emit: any) {
 
     const filePath = resolve(__dirname, getPkgPath(name, fileName))
 
-    console.log(filePath)
-
     if (!existsSync(filePath)) {
       throw new Error(`${name} not built. ` + `Run "pnpm -w build" first.`)
     }
@@ -29,10 +27,8 @@ function copyFiles(emit: any) {
       source: readFileSync(filePath, 'utf-8'),
     })
 
-    console.log(`Copied ${filePath} to ${getPublicPath(fileName)}`)
+    console.log(`Copied ${fileName} to ${getPublicPath(fileName)}`)
   })
-
-  console.log('Copied vue-flow files')
 }
 export function copyVueFlowPlugin(): Plugin {
   return {
