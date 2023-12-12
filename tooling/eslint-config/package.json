@@ -8,7 +8,7 @@
     "@antfu/eslint-config": "^0.38.6",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^8.10.0",
-    "eslint-config-turbo": "^1.10.15",
+    "eslint-config-turbo": "^1.11.2",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8"
   }
