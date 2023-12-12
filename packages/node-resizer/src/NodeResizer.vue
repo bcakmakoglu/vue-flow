@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-// todo: add plugin to emit resize events via vue flow store; requires plugin API to be added to core
-import { computed, inject, watch } from 'vue'
+import { inject, toRef, watch } from 'vue'
 import type { NodeDimensionChange } from '@vue-flow/core'
 import { NodeIdInjection, useVueFlow } from '@vue-flow/core'
 import ResizeControl from './ResizeControl.vue'
@@ -21,9 +20,9 @@ const lineControls: ControlLinePosition[] = ['top', 'right', 'bottom', 'left']
 
 const contextNodeId = inject(NodeIdInjection, null)
 
-const id = computed(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
+const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
 
-const node = computed(() => findNode(id.value))
+const node = toRef(() => findNode(nodeId.value))
 
 watch(
   [() => props.minWidth, () => props.minHeight, () => props.maxWidth, () => props.maxHeight, () => node.value?.initialized],
@@ -104,7 +103,7 @@ export default {
       :key="c"
       :class="handleClassName"
       :style="handleStyle"
-      :node-id="id"
+      :node-id="nodeId"
       :position="c"
       :color="color"
       :min-width="minWidth"
