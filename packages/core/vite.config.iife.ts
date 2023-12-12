@@ -6,9 +6,6 @@ import pkg from './package.json'
 
 export default defineConfig({
   resolve: {
-    alias: {
-      '~': resolve('src'),
-    },
     extensions: ['.ts', '.vue'],
   },
   build: {
