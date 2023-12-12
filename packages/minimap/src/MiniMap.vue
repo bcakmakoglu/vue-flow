@@ -6,7 +6,7 @@ import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { computed, provide, ref, toRef, useAttrs, watchEffect } from 'vue'
 import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types'
-import MiniMapNode from './MiniMapNode'
+import MiniMapNode from './MiniMapNode.vue'
 import { Slots } from './types'
 
 const {
@@ -38,7 +38,7 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, viewport, translateExtent, dimensions, emits, nodes, d3Selection, d3Zoom } = useVueFlow()
+const { id, edges, viewport, translateExtent, dimensions, emits, d3Selection, d3Zoom, getNodesInitialized } = useVueFlow()
 
 const el = ref<SVGElement>()
 
@@ -60,7 +60,7 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
-const bb = computed(() => getRectOfNodes(nodes.value))
+const bb = computed(() => getRectOfNodes(getNodesInitialized.value))
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
@@ -69,7 +69,9 @@ const viewBB = computed(() => ({
   height: dimensions.value.height / viewport.value.zoom,
 }))
 
-const boundingRect = computed(() => (nodes.value && nodes.value.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value))
+const boundingRect = computed(() =>
+  getNodesInitialized.value && getNodesInitialized.value.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value,
+)
 
 const viewScale = computed(() => {
   const scaledWidth = boundingRect.value.width / elementWidth.value
@@ -223,7 +225,7 @@ export default {
       <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
 
       <MiniMapNode
-        v-for="node of nodes"
+        v-for="node of getNodesInitialized"
         :id="node.id"
         :key="node.id"
         :position="node.computedPosition"
