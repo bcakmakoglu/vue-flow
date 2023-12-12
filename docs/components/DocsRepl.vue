@@ -3,7 +3,7 @@ import type { SFCOptions } from '@vue/repl'
 import { ReplStore, Repl as VueRepl } from '@vue/repl'
 import { useVueFlow } from '@vue-flow/core'
 import '@vue/repl/style.css'
-import { exampleImports } from './examples'
+import { exampleImports } from '../examples'
 
 const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string; dependencies?: Record<string, string> }>()
 

@@ -41,5 +41,5 @@ files.forEach(({ path, pkgName }) => {
 
   copyFile(filePath, `${changelogDirPath}/${isCore ? 'index' : pkgName}.md`, () => {})
 
-  console.log(`Copied ${filePath} to ${changelogDirPath}/${isCore ? 'index' : pkgName}.md`)
+  console.log(`Copied ${pkgName}/CHANGELOG.md to docs/changelog/${isCore ? 'index' : pkgName}.md`)
 })

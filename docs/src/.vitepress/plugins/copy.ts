@@ -27,7 +27,7 @@ function copyFiles(emit: any) {
       source: readFileSync(filePath, 'utf-8'),
     })
 
-    console.log(`Copied ${fileName} to ${getPublicPath(fileName)}`)
+    console.log(`Copied ${fileName} to /public/${fileName}`)
   })
 }
 export function copyVueFlowPlugin(): Plugin {
