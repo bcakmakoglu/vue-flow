@@ -18,10 +18,10 @@ const defaultOptions = {
     '[data-blobity], a:not([data-no-blobity]), button:not([data-no-blobity]), [data-blobity-tooltip], .back-to-top, .intro',
 }
 
-export const useBlobity = createSharedComposable(() => {
+export function useBlobity() {
   const blobity = ref<Blobity>(isClient ? new Blobity(defaultOptions as any) : (null as any))
 
-  provide(BlobityInjection, blobity)
+  provide(BlobityInjection, blobity as Ref<Blobity>)
 
   const { y } = useWindowScroll()
 
@@ -39,4 +39,4 @@ export const useBlobity = createSharedComposable(() => {
   })
 
   return { blobity, reset }
-})
+}
