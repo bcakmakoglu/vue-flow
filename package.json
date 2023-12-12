@@ -19,9 +19,9 @@
     "ci:publish": "pnpm lint && pnpm build && pnpm test && changeset publish"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.4.8",
-    "@changesets/cli": "^2.26.2",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.1",
     "shx": "^0.3.4",
-    "turbo": "^1.10.15"
+    "turbo": "^1.11.2"
   }
 }

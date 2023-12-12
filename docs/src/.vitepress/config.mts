@@ -82,7 +82,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     },
     define: {
       __ANALYTICS_ID__: process.env.VERCEL_ANALYTICS_ID,
-      __METICULOUS_PROJECT_ID__: process.env.METICULOUS_PROJECT_ID,
     },
     plugins: [
       copyVueFlowPlugin(),
