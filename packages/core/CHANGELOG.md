@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.27.0
+
+### Minor Changes
+
+- [#1203](https://github.com/bcakmakoglu/vue-flow/pull/1203) [`161f4808`](https://github.com/bcakmakoglu/vue-flow/commit/161f48080e74e28322c42e113e8d511db2e80c0a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set default node drag threshold to 1
+
+- [#1212](https://github.com/bcakmakoglu/vue-flow/pull/1212) [`39cd3027`](https://github.com/bcakmakoglu/vue-flow/commit/39cd302701558c1c625fdc4da7535ae6505253a4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Return promise from `fromObject` action. Promise is resolved when transition of `setViewport` ends
+
+### Patch Changes
+
+- [#1214](https://github.com/bcakmakoglu/vue-flow/pull/1214) [`cda531f5`](https://github.com/bcakmakoglu/vue-flow/commit/cda531f54e835aea80d1c159d7bcc62e466dd0c8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add nullish check when looking up the edge label renderer el
+
 ## 1.26.0
 
 ### Minor Changes
