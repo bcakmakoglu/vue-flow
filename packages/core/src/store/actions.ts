@@ -830,31 +830,39 @@ export function useActions(
   }
 
   const fromObject: Actions['fromObject'] = (obj) => {
-    const { nodes, edges, position, zoom, viewport } = obj
+    return new Promise((resolve) => {
+      const { nodes, edges, position, zoom, viewport } = obj
 
-    if (nodes) {
-      setNodes(nodes)
-    }
+      if (nodes) {
+        setNodes(nodes)
+      }
 
-    if (edges) {
-      setEdges(edges)
-    }
+      if (edges) {
+        setEdges(edges)
+      }
 
-    if ((viewport?.x && viewport?.y) || position) {
-      const x = viewport?.x || position[0]
-      const y = viewport?.y || position[1]
-      const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
+      if ((viewport?.x && viewport?.y) || position) {
+        const x = viewport?.x || position[0]
+        const y = viewport?.y || position[1]
+        const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
 
-      until(() => viewportHelper.value.initialized)
-        .toBe(true)
-        .then(() => {
-          viewportHelper.value.setViewport({
-            x,
-            y,
-            zoom: nextZoom,
+        return until(() => viewportHelper.value.initialized)
+          .toBe(true)
+          .then(() => {
+            viewportHelper.value
+              .setViewport({
+                x,
+                y,
+                zoom: nextZoom,
+              })
+              .then(() => {
+                resolve(true)
+              })
           })
-        })
-    }
+      } else {
+        resolve(true)
+      }
+    })
   }
 
   const $reset: Actions['$reset'] = () => {
