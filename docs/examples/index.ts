@@ -1,4 +1,4 @@
-import { BasicApp, BasicCSS, BasicElements } from './basic'
+import { BasicApp, BasicCSS, BasicElements, BasicIcon } from './basic'
 import { ColorPresets, CustomNode, CustomNodeApp, CustomNodeCSS } from './custom-node'
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline'
 import { CustomEdge, CustomEdge2, CustomEdgeLabel, EdgeCSS, EdgesApp } from './edges'
@@ -24,6 +24,7 @@ import { ToolbarApp, ToolbarNode } from './node-toolbar'
 export const exampleImports = {
   basic: {
     'App.vue': BasicApp,
+    'Icon.vue': BasicIcon,
     'initial-elements.js': BasicElements,
     'style.css': BasicCSS,
   },
