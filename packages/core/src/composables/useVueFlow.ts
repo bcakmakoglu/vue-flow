@@ -1,10 +1,10 @@
 import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
 import { computed, effectScope, getCurrentScope, inject, provide, reactive, watch } from 'vue'
-import { useActions, useGetters, useState } from '~/store'
-import type { EdgeChange, FlowOptions, FlowProps, NodeChange, State, VueFlowStore } from '~/types'
-import { VueFlow } from '~/context'
-import { warn } from '~/utils'
+import type { EdgeChange, FlowOptions, FlowProps, NodeChange, State, VueFlowStore } from '../types'
+import { warn } from '../utils'
+import { useActions, useGetters, useState } from '../store'
+import { VueFlow } from '../context'
 
 /**
  * Stores all currently created store instances

@@ -1,5 +1,5 @@
 import type { InjectionKey, Ref } from 'vue'
-import type { FlowSlots, VueFlowStore } from '~/types'
+import type { FlowSlots, VueFlowStore } from '../types'
 
 export const VueFlow: InjectionKey<VueFlowStore> = Symbol('vueFlow')
 export const NodeId: InjectionKey<string> = Symbol('nodeId')

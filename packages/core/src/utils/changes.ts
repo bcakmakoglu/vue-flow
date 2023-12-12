@@ -1,5 +1,4 @@
 import { nextTick } from 'vue'
-import { isDef, isGraphNode } from '.'
 import type {
   EdgeAddChange,
   EdgeChange,
@@ -16,7 +15,8 @@ import type {
   NodeSelectionChange,
   StyleFunc,
   Styles,
-} from '~/types'
+} from '../types'
+import { isDef, isGraphNode } from '.'
 
 function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   if (parent) {

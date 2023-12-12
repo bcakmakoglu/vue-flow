@@ -1,8 +1,8 @@
 import { defineComponent, h } from 'vue'
+import type { SmoothStepEdgeProps } from '../../types'
+import { Position } from '../../types'
 import BaseEdge from './BaseEdge.vue'
 import { getSmoothStepPath } from './utils'
-import type { SmoothStepEdgeProps } from '~/types'
-import { Position } from '~/types'
 
 const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
   name: 'SmoothStepEdge',

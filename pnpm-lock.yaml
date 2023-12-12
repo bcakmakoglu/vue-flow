@@ -330,12 +330,6 @@ importers:
       postcss-nested:
         specifier: ^6.0.1
         version: 6.0.1(postcss@8.4.31)
-      ts-patch:
-        specifier: ^3.0.2
-        version: 3.0.2
-      typescript-transform-paths:
-        specifier: ^3.4.6
-        version: 3.4.6(typescript@4.9.5)
       vite:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@18.18.4)
@@ -6622,15 +6616,6 @@ packages:
       ini: 2.0.0
     dev: true
 
-  /global-prefix@3.0.0:
-    resolution: {integrity: sha512-awConJSVCHVGND6x3tmMaKcQvwXLhjdkmomy2W+Goaui8YPgYgXJZewhg3fWC+DlfqqQuWg8AwqjGTD2nAPVWg==}
-    engines: {node: '>=6'}
-    dependencies:
-      ini: 1.3.8
-      kind-of: 6.0.3
-      which: 1.3.1
-    dev: true
-
   /globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
     engines: {node: '>=4'}
@@ -10392,18 +10377,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /ts-patch@3.0.2:
-    resolution: {integrity: sha512-iTg8euqiNsNM1VDfOsVIsP0bM4kAVXU38n7TGQSkky7YQX/syh6sDPIRkvSS0HjT8ZOr0pq1h+5Le6jdB3hiJQ==}
-    hasBin: true
-    dependencies:
-      chalk: 4.1.2
-      global-prefix: 3.0.0
-      minimist: 1.2.8
-      resolve: 1.22.6
-      semver: 7.5.4
-      strip-ansi: 6.0.1
-    dev: true
-
   /tsconfig-paths@3.14.2:
     resolution: {integrity: sha512-o/9iXgCYc5L/JxCHPe3Hvh8Q/2xm5Z+p18PESBU6Ff33695QnCHBEjcytY2q19ua7Mbl/DavtBOLq+oG0RCL+g==}
     dependencies:
@@ -10626,15 +10599,6 @@ packages:
       marked: 4.3.0
       minimatch: 9.0.3
       shiki: 0.14.4
-      typescript: 4.9.5
-    dev: true
-
-  /typescript-transform-paths@3.4.6(typescript@4.9.5):
-    resolution: {integrity: sha512-qdgpCk9oRHkIBhznxaHAapCFapJt5e4FbFik7Y4qdqtp6VyC3smAIPoDEIkjZ2eiF7x5+QxUPYNwJAtw0thsTw==}
-    peerDependencies:
-      typescript: '>=3.6.5'
-    dependencies:
-      minimatch: 3.1.2
       typescript: 4.9.5
     dev: true
 

@@ -1,7 +1,6 @@
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toValue } from '@vueuse/core'
-import { useVueFlow } from './useVueFlow'
-import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '~/types'
+import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types'
 import {
   calcAutoPan,
   getClosestHandle,
@@ -15,7 +14,8 @@ import {
   pointToRendererPoint,
   rendererPointToPoint,
   resetRecentHandle,
-} from '~/utils'
+} from '../utils'
+import { useVueFlow } from './useVueFlow'
 
 interface UseHandleProps {
   handleId: MaybeRefOrGetter<string | null>

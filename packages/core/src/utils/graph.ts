@@ -1,5 +1,4 @@
 import { markRaw } from 'vue'
-import { isDef, warn } from '.'
 import type {
   Actions,
   Box,
@@ -21,7 +20,8 @@ import type {
   ViewportTransform,
   XYPosition,
   XYZPosition,
-} from '~/types'
+} from '../types'
+import { isDef, warn } from '.'
 import { useWindow } from '~/composables'
 
 export function nodeToRect(node: GraphNode): Rect {

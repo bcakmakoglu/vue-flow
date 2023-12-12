@@ -1,7 +1,6 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
-import { useState } from './state'
 import type {
   Actions,
   ComputedGetters,
@@ -21,8 +20,8 @@ import type {
   NodeSelectionChange,
   Rect,
   State,
-} from '~/types'
-import { useViewport } from '~/composables'
+} from '../types'
+import { useViewport } from '../composables'
 import {
   ErrorCode,
   VueFlowError,
@@ -49,7 +48,8 @@ import {
   nodeToRect,
   parseEdge,
   updateEdgeAction,
-} from '~/utils'
+} from '../utils'
+import { useState } from './state'
 
 export function useActions(
   id: string,

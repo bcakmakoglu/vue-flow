@@ -1,5 +1,5 @@
-import type { GraphNode, NodeEventsEmit, NodeEventsOn, VueFlowStore } from '~/types'
-import { createExtendedEventHook } from '~/utils'
+import type { GraphNode, NodeEventsEmit, NodeEventsOn, VueFlowStore } from '../types'
+import { createExtendedEventHook } from '../utils'
 
 function createNodeHooks() {
   return {

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { useDrag, useUpdateNodePositions, useVueFlow } from '../../composables'
-import { arrowKeyDiffs, getRectOfNodes } from '~/utils'
+import { arrowKeyDiffs, getRectOfNodes } from '../../utils'
 
 const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, userSelectionActive } = $(useVueFlow())
 

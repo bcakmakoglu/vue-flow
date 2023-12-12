@@ -1,6 +1,6 @@
+import type { Actions, EdgePositions, GraphEdge, GraphNode, HandleElement, Rect, ViewportTransform, XYPosition } from '../types'
+import { Position } from '../types'
 import { rectToBox } from '.'
-import type { Actions, EdgePositions, GraphEdge, GraphNode, HandleElement, Rect, ViewportTransform, XYPosition } from '~/types'
-import { Position } from '~/types'
 
 export function getHandlePosition(position: Position, rect: Rect, handle: HandleElement | null): XYPosition {
   const x = (handle?.x ?? 0) + rect.x

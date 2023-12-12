@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import { ref, watch } from 'vue'
 import type { MaybeRefOrGetter } from '@vueuse/core'
 import { toValue } from '@vueuse/core'
-import { useGetPointerPosition, useVueFlow } from '.'
+import type { NodeDragEvent, NodeDragItem, XYPosition } from '../types'
 import {
   calcAutoPan,
   calcNextPosition,
@@ -14,8 +14,8 @@ import {
   getEventPosition,
   handleNodeClick,
   hasSelector,
-} from '~/utils'
-import type { NodeDragEvent, NodeDragItem, XYPosition } from '~/types'
+} from '../utils'
+import { useGetPointerPosition, useVueFlow } from '.'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 

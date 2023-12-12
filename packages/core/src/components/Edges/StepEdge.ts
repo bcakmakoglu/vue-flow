@@ -1,6 +1,6 @@
 import { defineComponent, h } from 'vue'
+import type { StepEdgeProps } from '../../types'
 import SmoothStepEdge from './SmoothStepEdge'
-import type { StepEdgeProps } from '~/types'
 
 const StepEdge = defineComponent<StepEdgeProps>({
   name: 'StepEdge',

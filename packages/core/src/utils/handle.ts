@@ -1,5 +1,4 @@
-import { getEventPosition } from '.'
-import { ConnectionMode } from '~/types'
+import { ConnectionMode } from '../types'
 import type {
   Actions,
   Connection,
@@ -12,7 +11,8 @@ import type {
   ValidConnectionFunc,
   ValidHandleResult,
   XYPosition,
-} from '~/types'
+} from '../types'
+import { getEventPosition } from '.'
 
 export interface ConnectionHandle extends XYPosition, Dimensions {
   id: string | null

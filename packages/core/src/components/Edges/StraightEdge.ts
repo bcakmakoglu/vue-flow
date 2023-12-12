@@ -1,7 +1,7 @@
 import { defineComponent, h } from 'vue'
+import type { StraightEdgeProps } from '../../types'
 import BaseEdge from './BaseEdge.vue'
 import { getStraightPath } from './utils'
-import type { StraightEdgeProps } from '~/types'
 
 const StraightEdge = defineComponent<StraightEdgeProps>({
   name: 'StraightEdge',
