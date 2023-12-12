@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.3.6
+
+### Patch Changes
+
+- [#1215](https://github.com/bcakmakoglu/vue-flow/pull/1215) [`b0e6ac79`](https://github.com/bcakmakoglu/vue-flow/commit/b0e6ac79ff45da5e0bc1b080e2cfca39fc893cdc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass correct node id to resize control
+
 ## 1.3.5
 
 ### Patch Changes
