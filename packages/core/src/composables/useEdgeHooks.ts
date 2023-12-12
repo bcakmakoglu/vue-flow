@@ -1,5 +1,5 @@
-import type { EdgeEventsEmit, EdgeEventsOn, GraphEdge, VueFlowStore } from '~/types'
-import { createExtendedEventHook } from '~/utils'
+import type { EdgeEventsEmit, EdgeEventsOn, GraphEdge, VueFlowStore } from '../types'
+import { createExtendedEventHook } from '../utils'
 
 function createEdgeHooks() {
   return {

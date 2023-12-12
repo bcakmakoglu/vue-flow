@@ -1,5 +1,5 @@
+import type { Dimensions, XYPosition } from '../types'
 import { clamp } from './graph'
-import type { Dimensions, XYPosition } from '~/types'
 
 // returns a number between 0 and 1 that represents the velocity of the movement
 // when the mouse is close to the edge of the canvas

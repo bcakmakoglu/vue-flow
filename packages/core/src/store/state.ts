@@ -1,6 +1,5 @@
-import { createHooks } from './hooks'
-import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '~/types'
-import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '~/types'
+import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '../types'
+import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '../types'
 import {
   BezierEdge,
   DefaultNode,
@@ -10,8 +9,9 @@ import {
   SmoothStepEdge,
   StepEdge,
   StraightEdge,
-} from '~/components'
-import { isDef, isMacOs } from '~/utils'
+} from '../components'
+import { isDef, isMacOs } from '../utils'
+import { createHooks } from './hooks'
 
 export const defaultNodeTypes: DefaultNodeTypes = {
   input: InputNode,

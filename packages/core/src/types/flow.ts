@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { D3ZoomEvent } from 'd3-zoom'
+import type { VueFlowError } from '../utils'
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
 import type {
@@ -16,9 +17,8 @@ import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { CustomEvent, EdgeMouseEvent, EdgeUpdateEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
 import type { ValidConnectionFunc } from './handle'
-import type { EdgeChange, NodeChange } from '~/types/changes'
-import type { VueFlowStore } from '~/types/store'
-import type { VueFlowError } from '~/utils'
+import type { EdgeChange, NodeChange } from './changes'
+import type { VueFlowStore } from './store'
 
 export type ElementData = any
 

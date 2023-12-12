@@ -1,8 +1,8 @@
 import { inject, ref } from 'vue'
+import type { CustomEvent, ElementData } from '../types'
+import { ErrorCode, VueFlowError } from '../utils'
+import { EdgeId, EdgeRef } from '../context'
 import { useVueFlow } from './useVueFlow'
-import type { CustomEvent, ElementData } from '~/types'
-import { ErrorCode, VueFlowError } from '~/utils'
-import { EdgeId, EdgeRef } from '~/context'
 
 /**
  * Access an edge

@@ -1,9 +1,16 @@
 import { computed, defineComponent, h, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { until, useVModel } from '@vueuse/core'
-import type { GraphNode, HandleConnectable, NodeComponent } from '~/types'
-import { NodeId, NodeRef } from '~/context'
-import { isInputDOMNode, useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '~/composables'
-import { ARIA_NODE_DESC_KEY, arrowKeyDiffs, calcNextPosition, elementSelectionKeys, getXYZPos, handleNodeClick } from '~/utils'
+import {
+  ARIA_NODE_DESC_KEY,
+  arrowKeyDiffs,
+  calcNextPosition,
+  elementSelectionKeys,
+  getXYZPos,
+  handleNodeClick,
+} from '../../utils'
+import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
+import { NodeId, NodeRef } from '../../context'
+import { isInputDOMNode, useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
 
 interface Props {
   id: string

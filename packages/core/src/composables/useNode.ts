@@ -1,8 +1,8 @@
 import { computed, inject, ref } from 'vue'
+import type { CustomEvent, ElementData } from '../types'
+import { ErrorCode, VueFlowError, getConnectedEdges } from '../utils'
+import { NodeId, NodeRef } from '../context'
 import { useVueFlow } from './useVueFlow'
-import type { CustomEvent, ElementData } from '~/types'
-import { NodeId, NodeRef } from '~/context'
-import { ErrorCode, VueFlowError, getConnectedEdges } from '~/utils'
 
 /**
  * Access a node, it's parent (if one exists) and connected edges

@@ -6,19 +6,7 @@
     "resolveJsonModule": true,
     "types": [
       "vite/client",
-      "vue/macros",
-    ],
-    "paths": {
-      "~/*": [
-        "src/*"
-      ]
-    },
-    "plugins": [
-      // Transform paths in output .d.ts files (Include this line if you output declarations files)
-      {
-        "transform": "typescript-transform-paths",
-        "afterDeclarations": true
-      }
+      "vue/macros"
     ]
   },
   "include": [

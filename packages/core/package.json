@@ -50,7 +50,6 @@
     "*.css"
   ],
   "scripts": {
-    "prepare": "ts-patch install -s",
     "dev": "pnpm types:watch & pnpm build:watch",
     "build": "vite build && vite build -c vite.config.iife.ts",
     "build:watch": "vite build --watch & vite build -c vite.config.iife.ts --watch",
@@ -84,8 +83,6 @@
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
     "postcss-nested": "^6.0.1",
-    "ts-patch": "^3.0.2",
-    "typescript-transform-paths": "^3.4.6",
     "vite": "^4.4.11",
     "vue-tsc": "^1.8.16"
   },

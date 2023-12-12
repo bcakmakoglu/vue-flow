@@ -1,13 +1,13 @@
 import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
 import type { D3ZoomEvent } from 'd3-zoom'
+import type { VueFlowError } from '../utils/errors'
+import type { EventHookExtended } from '../utils/createExtendedEventHook'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
 import type { ViewportTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
-import type { VueFlowError } from '~/utils/errors'
-import type { EventHookExtended } from '~/utils'
 
 export type MouseTouchEvent = MouseEvent | TouchEvent
 

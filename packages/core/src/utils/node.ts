@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { nextTick } from 'vue'
+import type { Actions, GraphNode, HandleElement, Position } from '../types'
 import { getDimensions } from '.'
-import type { Actions, GraphNode, HandleElement, Position } from '~/types'
 
 export function getHandleBounds(selector: string, nodeElement: HTMLDivElement, zoom: number): HandleElement[] | undefined {
   const handles = nodeElement.querySelectorAll(`.vue-flow__handle${selector}`)
