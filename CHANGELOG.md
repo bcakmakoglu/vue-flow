@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.27.0] - 2023-12-12
+
+[ff41107](ff411077278482dcf1e65dd89d1286b0f739d1c4)...[466711f](466711fc3fbd5fd08a91d9ee30f8a0b3efb1d1e9)
+
+### Bug Fixes
+
+- Use nullish check when finding edge label renderer el ([eff1afd](eff1afdfded85e424191d1de895ddc5e3a11034d))
+- Pass correct node id to resize control ([6895795](68957957aeb979361179b5fce18e937639b54d19))
+
+### Documentation
+
+- Add codesandbox template link ([a6be735](a6be7353e74149ee6fbe2b1d6865fc4ffe05dbc8))
+- Add controlled flow guide page ([f203dea](f203dea1eccc8bf8670152af2cf5bffef523547b))
+
+### Miscellaneous Tasks
+
+- Cleanup header level ([73fc998](73fc9982c551040a0d385df36e5a36f567b34693))
+- Cleanup pkg json files ([5d9ba67](5d9ba67d01b0861e8de9c46fddbe262962a8c625))
+- Cleanup control component slot names ([ce398d7](ce398d7e70b944c5d02ecf212f4efcfa6562e776))
+- Add ([a12de29](a12de295460c4b9751f2542ebaa7ab5f832fb3e7))
+- Update gitignore file ([eb4cff3](eb4cff30c97327d45ea75786ac40d1bf22c08eb1))
+- Add ([6c197c8](6c197c817e54b510ae938f30546110589e5b89c5))
+- Cleanup node wrapper ([fb3d6a7](fb3d6a7f13fae70512540d55e4a852bd9fc97f80))
+- Add ([eb21d87](eb21d87b62b71bc453a4a190cbc8fee7713e0cfd))
+- Cleanup ([aac4c4d](aac4c4d5938b6c277612609e324c259c78a4ea66))
+- Add ([f439e1c](f439e1c4e3301a2b83e397bba43688a7146ea2fc))
+
+### Refactor
+
+- Deprecate pkg ([039f5a5](039f5a545dbfb691e15e83553842dcbcc9211cdf))
+- Set default drag threshold to `1` ([e2b30e0](e2b30e0b9a8fe9dfcd5cca86976780eafcef6651))
+- Return promise from `fromObject` ([c995b80](c995b801ce28d45fa90d5b83f80a8ba6afb04790))
+
 ## [1.26.0] - 2023-11-10
 
 [d963558](d96355846492279a4b7ab9fb046ae7164f0f2142)...[ff41107](ff411077278482dcf1e65dd89d1286b0f739d1c4)
