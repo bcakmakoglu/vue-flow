@@ -4,7 +4,7 @@ import { useVueFlow } from '../../composables'
 
 const { viewportRef } = useVueFlow()
 
-const teleportTarget = toRef(() => viewportRef.value!.getElementsByClassName('vue-flow__edge-labels')[0])
+const teleportTarget = toRef(() => viewportRef.value?.getElementsByClassName('vue-flow__edge-labels')[0] as undefined | unknown)
 </script>
 
 <script lang="ts">
@@ -17,7 +17,7 @@ export default {
 <template>
   <svg>
     <foreignObject height="0" width="0">
-      <Teleport :to="teleportTarget as any" :disabled="!teleportTarget">
+      <Teleport :to="teleportTarget" :disabled="!teleportTarget">
         <slot />
       </Teleport>
     </foreignObject>
