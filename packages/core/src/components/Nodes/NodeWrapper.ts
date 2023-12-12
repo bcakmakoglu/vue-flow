@@ -3,15 +3,7 @@ import { until, useVModel } from '@vueuse/core'
 import type { GraphNode, HandleConnectable, NodeComponent } from '~/types'
 import { NodeId, NodeRef } from '~/context'
 import { isInputDOMNode, useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '~/composables'
-import {
-  ARIA_NODE_DESC_KEY,
-  arrowKeyDiffs,
-  calcNextPosition,
-  elementSelectionKeys,
-  getConnectedEdges,
-  getXYZPos,
-  handleNodeClick,
-} from '~/utils'
+import { ARIA_NODE_DESC_KEY, arrowKeyDiffs, calcNextPosition, elementSelectionKeys, getXYZPos, handleNodeClick } from '~/utils'
 
 interface Props {
   id: string
@@ -34,7 +26,6 @@ const NodeWrapper = defineComponent({
 
     const {
       id: vueFlowId,
-      edges,
       noPanClassName,
       selectNodesOnDrag,
       nodesSelectionActive,
@@ -54,15 +45,16 @@ const NodeWrapper = defineComponent({
       snapToGrid,
       snapGrid,
       nodeDragThreshold,
+      getConnectedEdges,
     } = useVueFlow()
 
     const updateNodePositions = useUpdateNodePositions()
 
     const node = useVModel(props, 'node')
 
-    const parentNode = computed(() => findNode(node.value.parentNode))
+    const parentNode = computed(() => findNode(node.value?.parentNode))
 
-    const connectedEdges = computed(() => getConnectedEdges([node.value], edges.value))
+    const connectedEdges = computed(() => getConnectedEdges(node.value ? [node.value] : []))
 
     const nodeElement = ref<HTMLDivElement | null>(null)
 
