@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.27.1
+
+### Patch Changes
+
+- [#1220](https://github.com/bcakmakoglu/vue-flow/pull/1220) [`2b4ed51`](https://github.com/bcakmakoglu/vue-flow/commit/2b4ed515b54fa7372fd5b086311520b127b83ff4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use relative paths for imports.
+
 ## 1.27.0
 
 ### Minor Changes
