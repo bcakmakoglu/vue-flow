@@ -1,5 +1,5 @@
+import { Position } from '../../..//types'
 import { getBezierEdgeCenter } from './general'
-import { Position } from '~/types'
 
 export interface GetSimpleBezierPathParams {
   sourceX: number

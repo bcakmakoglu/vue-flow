@@ -21,8 +21,8 @@ import type {
   XYPosition,
   XYZPosition,
 } from '../types'
+import { useWindow } from '../composables'
 import { isDef, warn } from '.'
-import { useWindow } from '~/composables'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {

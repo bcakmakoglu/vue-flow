@@ -1,6 +1,6 @@
+import type { XYPosition } from '../../..//types'
+import { Position } from '../../..//types'
 import { getSimpleEdgeCenter } from './general'
-import type { XYPosition } from '~/types'
-import { Position } from '~/types'
 
 export interface GetSmoothStepPathParams {
   sourceX: number
