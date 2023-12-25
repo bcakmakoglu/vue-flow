@@ -520,7 +520,15 @@ export function useActions(
       const connections = getConnectedEdges(nodes).filter((edge) => (isDef(edge.deletable) ? edge.deletable : true))
 
       edgeChanges.push(
-        ...connections.map((connection) => createEdgeRemoveChange(connection.id, connection.source, connection.target)),
+        ...connections.map((connection) =>
+          createEdgeRemoveChange(
+            connection.id,
+            connection.source,
+            connection.target,
+            connection.sourceHandle,
+            connection.targetHandle,
+          ),
+        ),
       )
     }
 
@@ -590,7 +598,15 @@ export function useActions(
         return
       }
 
-      changes.push(createEdgeRemoveChange(typeof item === 'string' ? item : item.id, currEdge.source, currEdge.target))
+      changes.push(
+        createEdgeRemoveChange(
+          typeof item === 'string' ? item : item.id,
+          currEdge.source,
+          currEdge.target,
+          currEdge.sourceHandle,
+          currEdge.targetHandle,
+        ),
+      )
     })
 
     state.hooks.edgesChange.trigger(changes)
