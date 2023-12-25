@@ -235,11 +235,19 @@ export function createNodeRemoveChange(id: string): NodeRemoveChange {
   }
 }
 
-export function createEdgeRemoveChange(id: string, source: string, target: string): EdgeRemoveChange {
+export function createEdgeRemoveChange(
+  id: string,
+  source: string,
+  target: string,
+  sourceHandle?: string | null,
+  targetHandle?: string | null,
+): EdgeRemoveChange {
   return {
     id,
     source,
     target,
+    sourceHandle: sourceHandle || null,
+    targetHandle: targetHandle || null,
     type: 'remove',
   }
 }
