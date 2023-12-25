@@ -55,6 +55,8 @@ export type EdgeSelectionChange = NodeSelectionChange
 export interface EdgeRemoveChange extends NodeRemoveChange {
   source: string
   target: string
+  sourceHandle: string | null
+  targetHandle: string | null
 }
 
 export interface EdgeAddChange<Data = ElementData> {
