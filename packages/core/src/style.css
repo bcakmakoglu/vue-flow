@@ -38,6 +38,7 @@
 
 .vue-flow__viewport {
   z-index: 4;
+  overflow: clip;
 }
 
 .vue-flow__selection {
