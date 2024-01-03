@@ -5,6 +5,7 @@ import { VueFlow, isNode } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
+import type { UnwrapNestedRefs } from 'vue'
 
 export default defineComponent({
   name: 'BasicOptionsAPI',
@@ -45,9 +46,9 @@ export default defineComponent({
     onNodeDragStop(e: FlowEvents['nodeDragStop']) {
       console.log('drag stop', e)
     },
-    onPaneReady(instance: FlowEvents['paneReady']) {
+    onPaneReady(instance: UnwrapNestedRefs<FlowEvents['paneReady']>) {
       instance.fitView()
-      this.instance = instance as any
+      this.instance = instance
     },
     onConnect(params: FlowEvents['connect']) {
       this.instance?.addEdges(params)
