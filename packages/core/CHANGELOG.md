@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.28.0
+
+### Minor Changes
+
+- [#1216](https://github.com/bcakmakoglu/vue-flow/pull/1216) [`845d591`](https://github.com/bcakmakoglu/vue-flow/commit/845d5911fd90f8618dd19c6180ea34d3d6a0da74) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add source and target handle ids to removal change of edges.
+
 ## 1.27.1
 
 ### Patch Changes
