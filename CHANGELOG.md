@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.28.0] - 2024-01-03
+
+[aeed19e](aeed19e35a4228a649378108ba0ce66c910a0069)...[d9dee8d](d9dee8dfdfc129c3ae1d0c20e127a4f537118d29)
+
+### Bug Fixes
+
+- Fix the issue of pushing out the panel when copying a large amount of text to the textarea ([c4fb1ee](c4fb1ee7e3efceae73e20e33f5506082fa62db8e))
+
+### Features
+
+- Add minimap slot types ([476e5d5](476e5d530a8721c348728dda75241dcd1e508eb8))
+- Add `MiniMapNodeEmits` interface & export it ([5f0a333](5f0a333b2a1b3999a68ca76097f700894db482f1))
+- Add source and target handle ids to edge removal change ([d78a53f](d78a53fcd6f36cf3ea1b59d05aa16bc969ac0ba4))
+
+### Miscellaneous Tasks
+
+- Add ([9c2b281](9c2b281948a7544ce2881dd4468a8a288dd06312))
+- Add ([a1bcf66](a1bcf66b4a6d63a4557325c8db858278f1ac89cd))
+- Cleanup minimap node emits ([6f57175](6f5717524997ad948ac525d009d97cc5fd78dcf5))
+- Cleanup ([7f18def](7f18def7fe65ff2668f6c3c9c75504da1a0ec044))
+- Add ([18ed043](18ed0437ada954d28cff7a25e1a0b1ca94343298))
+- Cleanup config ([b53f823](b53f82393f0d8688d227897007e5228d8ce0e938))
+- Cleanup options api example ([14c8f2f](14c8f2faa17f24cc9beca70230de08c71d15bbe7))
+
 ## [1.27.1] - 2023-12-12
 
 [466711f](466711fc3fbd5fd08a91d9ee30f8a0b3efb1d1e9)...[aeed19e](aeed19e35a4228a649378108ba0ce66c910a0069)
