@@ -206,10 +206,3 @@ ul li {
     background: var(--color);
   }
 }
-
-.vue-repl pre, .vue-repl pre[class*=language-] {
-  padding: unset;
-  margin: unset;
-  border-radius: unset;
-  line-height: unset;
-}
