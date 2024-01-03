@@ -1,5 +1,13 @@
 # @vue-flow/minimap
 
+## 1.3.0
+
+### Minor Changes
+
+- [#1216](https://github.com/bcakmakoglu/vue-flow/pull/1216) [`80924fa`](https://github.com/bcakmakoglu/vue-flow/commit/80924faa357dd61a261f352de434229527f81e4d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add minimap slot types
+
+- [#1216](https://github.com/bcakmakoglu/vue-flow/pull/1216) [`2aad7c5`](https://github.com/bcakmakoglu/vue-flow/commit/2aad7c5eaa2e90f473d09c56e7e399bdd902d3ec) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `MiniMapNodeEmits` interface
+
 ## 1.2.0
 
 ### Minor Changes
