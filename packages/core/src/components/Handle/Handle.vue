@@ -160,6 +160,8 @@ function onClick(event: MouseEvent) {
 defineExpose({
   handleClick,
   handlePointerDown,
+  onClick,
+  onPointerDown,
 })
 </script>
 
