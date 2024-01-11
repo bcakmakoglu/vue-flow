@@ -91,7 +91,7 @@ const ConnectionLine = defineComponent({
         return null
       }
 
-      const type = connectionLineType.value ?? connectionLineOptions.value.type
+      const type = connectionLineType.value ?? connectionLineOptions.value.type ?? ConnectionLineType.Bezier
 
       let dAttr = ''
 
