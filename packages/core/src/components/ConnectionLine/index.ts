@@ -145,7 +145,10 @@ const ConnectionLine = defineComponent({
             : h('path', {
                 'd': dAttr,
                 'class': [connectionLineOptions.value.class, connectionStatus, 'vue-flow__connection-path'],
-                'style': connectionLineStyle.value || connectionLineOptions.value.style,
+                'style': {
+                  ...connectionLineStyle.value,
+                  ...connectionLineOptions.value.style,
+                },
                 'marker-end': `url(#${getMarkerId(connectionLineOptions.value.markerEnd)})`,
                 'marker-start': `url(#${getMarkerId(connectionLineOptions.value.markerStart)})`,
               }),
