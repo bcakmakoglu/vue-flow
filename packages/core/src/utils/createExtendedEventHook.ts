@@ -33,7 +33,14 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
     }
 
     fns.add(fn)
-    const offFn = () => off(fn)
+
+    const offFn = () => {
+      off(fn)
+
+      if (defaultHandler && hasDefaultHandler) {
+        fns.add(defaultHandler)
+      }
+    }
 
     tryOnScopeDispose(offFn)
 
