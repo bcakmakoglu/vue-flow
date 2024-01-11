@@ -156,6 +156,11 @@ function onClick(event: MouseEvent) {
     handleClick(event)
   }
 }
+
+defineExpose({
+  handleClick,
+  handlePointerDown,
+})
 </script>
 
 <script lang="ts">
