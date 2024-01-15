@@ -19,6 +19,7 @@ const ConnectionLine = defineComponent({
   compatConfig: { MODE: 3 },
   setup() {
     const {
+      id,
       connectionMode,
       connectionStartHandle,
       connectionEndHandle,
@@ -138,8 +139,8 @@ const ConnectionLine = defineComponent({
                 sourceHandle: fromHandle,
                 targetNode,
                 targetHandle: toHandle,
-                markerEnd: `url(#${getMarkerId(connectionLineOptions.value.markerEnd)})`,
-                markerStart: `url(#${getMarkerId(connectionLineOptions.value.markerStart)})`,
+                markerEnd: `url(#${getMarkerId(connectionLineOptions.value.markerEnd, id)})`,
+                markerStart: `url(#${getMarkerId(connectionLineOptions.value.markerStart, id)})`,
                 connectionStatus: connectionStatus.value,
               })
             : h('path', {
@@ -149,8 +150,8 @@ const ConnectionLine = defineComponent({
                   ...connectionLineStyle.value,
                   ...connectionLineOptions.value.style,
                 },
-                'marker-end': `url(#${getMarkerId(connectionLineOptions.value.markerEnd)})`,
-                'marker-start': `url(#${getMarkerId(connectionLineOptions.value.markerStart)})`,
+                'marker-end': `url(#${getMarkerId(connectionLineOptions.value.markerEnd, id)})`,
+                'marker-start': `url(#${getMarkerId(connectionLineOptions.value.markerStart, id)})`,
               }),
         ),
       )
