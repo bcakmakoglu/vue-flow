@@ -66,10 +66,10 @@ This can be done dynamically at any point in your component's lifecycle.
 ```vue [<LogosJavascript />]
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const elements = reactive([
   {
     id: '1',
     position: { x: 50, y: 50 },
@@ -78,7 +78,7 @@ const elements = ref([
 ]);
 
 onMounted(() => {
-  elements.value.push({
+  elements.push({
     id: '2',
     label: 'Node 2',
     position: { x: 150, y: 50 },
@@ -94,11 +94,11 @@ onMounted(() => {
 ```vue [<LogosTypescript />]
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, reactive } from 'vue'
 import type { Elements } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref<Elements>([
+const elements = reactive<Elements>([
    {
      id: '1',
      position: { x: 50, y: 50 },
@@ -107,7 +107,7 @@ const elements = ref<Elements>([
 ]);
 
 onMounted(() => {
-   elements.value.push({
+   elements.push({
      id: '2',
      label: 'Node 2',
      position: { x: 150, y: 50 },
