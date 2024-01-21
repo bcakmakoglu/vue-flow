@@ -20,5 +20,11 @@ module.exports = {
     ],
     'antfu/if-newline': 0,
     'antfu/generic-spacing': 0,
+
+    // stylistic
+    '@stylistic/ts/member-delimiter-style': 'off',
+    '@stylistic/ts/brace-style': 'off',
+    '@stylistic/js/operator-linebreak': 'off',
+    '@stylistic/ts/indent': 'off',
   },
 }
