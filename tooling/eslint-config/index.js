@@ -21,6 +21,10 @@ module.exports = {
     'antfu/if-newline': 0,
     'antfu/generic-spacing': 0,
 
+    // typescript
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/ban-types': 'off',
+
     // stylistic
     '@stylistic/ts/member-delimiter-style': 'off',
     '@stylistic/ts/brace-style': 'off',
