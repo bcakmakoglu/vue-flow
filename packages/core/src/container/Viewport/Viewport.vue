@@ -4,7 +4,7 @@ import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { onMounted, ref, watch } from 'vue'
 import { toRef, useEventListener, useResizeObserver } from '@vueuse/core'
-import type { CoordinateExtent, D3ZoomHandler, FlowOptions, ViewportTransform } from '../../types'
+import type { CoordinateExtent, D3ZoomHandler, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import { useKeyPress, useVueFlow, useWindow } from '../../composables'
 import { ErrorCode, VueFlowError, clamp, getDimensions, isMacOs, warn } from '../../utils'
@@ -229,7 +229,7 @@ onMounted(() => {
   })
 
   watch(
-    [userSelectionActive, panOnDrag],
+    [userSelectionActive, shouldPanOnDrag],
     () => {
       if (userSelectionActive.value && !isZoomingOrPanning.value) {
         d3Zoom.on('zoom', null)
@@ -250,7 +250,7 @@ onMounted(() => {
   )
 
   watch(
-    [userSelectionActive, panOnScroll, panOnScrollMode, zoomKeyPressed, zoomOnPinch, preventScrolling, noWheelClassName],
+    [userSelectionActive, shouldPanOnScroll, panOnScrollMode, zoomKeyPressed, zoomOnPinch, preventScrolling, noWheelClassName],
     () => {
       if (shouldPanOnScroll.value && !zoomKeyPressed.value && !userSelectionActive.value) {
         d3Selection.on(
@@ -343,7 +343,7 @@ onMounted(() => {
   )
 })
 
-function isRightClickPan(pan: FlowOptions['panOnDrag'], usedButton: number) {
+function isRightClickPan(pan: boolean | number[], usedButton: number) {
   return usedButton === 2 && Array.isArray(pan) && pan.includes(2)
 }
 
