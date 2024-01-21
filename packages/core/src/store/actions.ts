@@ -962,10 +962,10 @@ export function useActions(
   }
 
   until(() => viewportHelper.value.initialized)
-    .toBe(true, { flush: 'pre' })
-    .then(() => {
+    .toBe(true)
+    .then(async () => {
       if (state.fitViewOnInit) {
-        viewportHelper.value.fitView()
+        await viewportHelper.value.fitView()
       }
 
       state.hooks.paneReady.trigger({
