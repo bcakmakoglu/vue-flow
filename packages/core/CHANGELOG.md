@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.29.1
+
+### Patch Changes
+
+- [#1252](https://github.com/bcakmakoglu/vue-flow/pull/1252) [`734d2ba`](https://github.com/bcakmakoglu/vue-flow/commit/734d2ba3a85a35519436f8ee296650281d9a0db7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Watch `shouldPanOnDrag` & `shouldPanOnScroll` to determine whether listeners should be bound or not
+
 ## 1.29.0
 
 ### Minor Changes
