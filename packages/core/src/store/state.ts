@@ -91,7 +91,7 @@ function defaultState(): State {
     connectionStartHandle: null,
     connectionEndHandle: null,
     connectionClickStartHandle: null,
-    connectionPosition: { x: NaN, y: NaN },
+    connectionPosition: { x: Number.NaN, y: Number.NaN },
     connectionRadius: 20,
     connectOnClick: true,
     connectionStatus: null,

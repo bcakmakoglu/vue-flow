@@ -112,11 +112,11 @@ export type FlowHooksEmit = Readonly<{
  */
 export type CustomEvent<Args extends any[] = any[], Return = any> = (...args: Args) => Return
 
-type CustomEventHandlers<CustomEvents = {}> = {
+type CustomEventHandlers<CustomEvents = object> = {
   [key in keyof CustomEvents]: CustomEvents[key]
 }
 
-export type NodeEventsHandler<CustomEvents = {}> = {
+export type NodeEventsHandler<CustomEvents = object> = {
   doubleClick: (event: NodeMouseEvent) => void | { off: () => void }
   click: (event: NodeMouseEvent) => void | { off: () => void }
   mouseEnter: (event: NodeMouseEvent) => void | { off: () => void }
@@ -128,15 +128,15 @@ export type NodeEventsHandler<CustomEvents = {}> = {
   dragStop: (event: NodeDragEvent) => void | { off: () => void }
 } & CustomEventHandlers<CustomEvents>
 
-export type NodeEventsOn<CustomEvents = {}> = {
+export type NodeEventsOn<CustomEvents = object> = {
   [key in keyof NodeEventsHandler]: EventHookOn<NodeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
 } & CustomEventHandlers<CustomEvents>
 
-export type NodeEventsEmit<CustomEvents = {}> = {
+export type NodeEventsEmit<CustomEvents = object> = {
   [key in keyof NodeEventsHandler]: EventHookTrigger<NodeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
 } & CustomEventHandlers<CustomEvents>
 
-export type EdgeEventsHandler<CustomEvents = {}> = {
+export type EdgeEventsHandler<CustomEvents = object> = {
   doubleClick: (event: EdgeMouseEvent) => void | { off: () => void }
   click: (event: EdgeMouseEvent) => void | { off: () => void }
   mouseEnter: (event: EdgeMouseEvent) => void | { off: () => void }
@@ -148,10 +148,10 @@ export type EdgeEventsHandler<CustomEvents = {}> = {
   updateEnd: (event: EdgeMouseEvent) => void | { off: () => void }
 } & CustomEventHandlers<CustomEvents>
 
-export type EdgeEventsOn<CustomEvents = {}> = {
+export type EdgeEventsOn<CustomEvents = object> = {
   [key in keyof EdgeEventsHandler]: EventHookOn<EdgeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
 } & CustomEventHandlers<CustomEvents>
 
-export type EdgeEventsEmit<CustomEvents = {}> = {
+export type EdgeEventsEmit<CustomEvents = object> = {
   [key in keyof EdgeEventsHandler]: EventHookTrigger<EdgeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
 } & CustomEventHandlers<CustomEvents>

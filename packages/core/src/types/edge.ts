@@ -164,7 +164,7 @@ export type GraphEdge<
 } & EdgePositions
 
 /** these props are passed to edge components */
-export interface EdgeProps<Data = ElementData, CustomEvents = {}, Type extends string = string>
+export interface EdgeProps<Data = ElementData, CustomEvents = object, Type extends string = string>
   extends EdgeLabelOptions,
     EdgePositions {
   id: string
@@ -173,7 +173,7 @@ export interface EdgeProps<Data = ElementData, CustomEvents = {}, Type extends s
   source: string
   target: string
   type: Type
-  label?: string | VNode | Component<EdgeTextProps> | Object
+  label?: string | VNode | Component<EdgeTextProps> | object
   style?: CSSProperties
   selected?: boolean
   sourcePosition: Position
