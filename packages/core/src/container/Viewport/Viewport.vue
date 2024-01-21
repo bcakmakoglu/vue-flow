@@ -2,7 +2,7 @@
 import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { onMounted, ref, watchEffect } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { toRef, useEventListener, useResizeObserver } from '@vueuse/core'
 import type { CoordinateExtent, D3ZoomHandler, FlowOptions, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
@@ -66,7 +66,9 @@ const selectionKeyPressed = useKeyPress(selectionKeyCode)
 
 const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
-const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && (panKeyPressed.value || panOnDrag.value))
+const shouldPanOnDrag = toRef(() => panKeyPressed.value || panOnDrag.value)
+
+const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
 
 const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true))
 
@@ -168,7 +170,7 @@ onMounted(() => {
     }
 
     // if all interactions are disabled, we prevent all zoom events
-    if (!shouldPanOnDrag.value && !zoomScroll && !panOnScroll.value && !zoomOnDoubleClick.value && !zoomOnPinch.value) {
+    if (!shouldPanOnDrag.value && !zoomScroll && !shouldPanOnScroll.value && !zoomOnDoubleClick.value && !zoomOnPinch.value) {
       return false
     }
 
@@ -190,7 +192,7 @@ onMounted(() => {
     // if the target element is inside an element with the nopan class, we prevent panning
     if (
       isWrappedWithClass(event, noPanClassName.value) &&
-      (event.type !== 'wheel' || (panOnScroll.value && event.type === 'wheel' && !zoomKeyPressed.value))
+      (event.type !== 'wheel' || (shouldPanOnScroll.value && event.type === 'wheel' && !zoomKeyPressed.value))
     ) {
       return false
     }
@@ -200,7 +202,7 @@ onMounted(() => {
     }
 
     // when there is no scroll handling enabled, we prevent all wheel events
-    if (!zoomScroll && !panOnScroll.value && !pinchZoom && event.type === 'wheel') {
+    if (!zoomScroll && !shouldPanOnScroll.value && !pinchZoom && event.type === 'wheel') {
       return false
     }
 
@@ -226,112 +228,119 @@ onMounted(() => {
     return (!event.ctrlKey || event.type === 'wheel') && buttonAllowed
   })
 
-  watchEffect(() => {
-    if (selectionKeyPressed.value && userSelectionActive.value && !isZoomingOrPanning.value) {
-      d3Zoom.on('zoom', null)
-    } else if (!selectionKeyPressed.value && !userSelectionActive.value) {
-      d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-        viewport.value = { x: event.transform.x, y: event.transform.y, zoom: event.transform.k }
+  watch(
+    [userSelectionActive, panOnDrag],
+    () => {
+      if (userSelectionActive.value && !isZoomingOrPanning.value) {
+        d3Zoom.on('zoom', null)
+      } else if (!userSelectionActive.value) {
+        d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
+          viewport.value = { x: event.transform.x, y: event.transform.y, zoom: event.transform.k }
 
-        const flowTransform = eventToFlowTransform(event.transform)
+          const flowTransform = eventToFlowTransform(event.transform)
 
-        zoomedWithRightMouseButton = isRightClickPan(shouldPanOnDrag.value, mouseButton ?? 0)
+          zoomedWithRightMouseButton = isRightClickPan(shouldPanOnDrag.value, mouseButton ?? 0)
 
-        emits.viewportChange(flowTransform)
-        emits.move({ event, flowTransform })
-      })
-    }
-  })
+          emits.viewportChange(flowTransform)
+          emits.move({ event, flowTransform })
+        })
+      }
+    },
+    { immediate: true },
+  )
 
-  watchEffect(() => {
-    if (panKeyPressed.value || (panOnScroll.value && !zoomKeyPressed.value && !userSelectionActive.value)) {
-      d3Selection.on(
-        'wheel.zoom',
-        (event: WheelEvent) => {
-          if (isWrappedWithClass(event, noWheelClassName.value)) {
-            return false
-          }
+  watch(
+    [userSelectionActive, panOnScroll, panOnScrollMode, zoomKeyPressed, zoomOnPinch, preventScrolling, noWheelClassName],
+    () => {
+      if (shouldPanOnScroll.value && !zoomKeyPressed.value && !userSelectionActive.value) {
+        d3Selection.on(
+          'wheel.zoom',
+          (event: WheelEvent) => {
+            if (isWrappedWithClass(event, noWheelClassName.value)) {
+              return false
+            }
 
-          event.preventDefault()
-          event.stopImmediatePropagation()
+            event.preventDefault()
+            event.stopImmediatePropagation()
 
-          const currentZoom = d3Selection.property('__zoom').k || 1
-          const _isMacOs = isMacOs()
+            const currentZoom = d3Selection.property('__zoom').k || 1
+            const _isMacOs = isMacOs()
 
-          // macOS sets ctrlKey=true for pinch gesture on a trackpad
-          if (event.ctrlKey && zoomOnPinch && _isMacOs) {
-            const point = pointer(event)
-            const pinchDelta = wheelDelta(event)
-            const zoom = currentZoom * 2 ** pinchDelta
-            // @ts-expect-error d3-zoom types are not up to date
-            d3Zoom.scaleTo(d3Selection, zoom, point, event)
+            // macOS sets ctrlKey=true for pinch gesture on a trackpad
+            if (event.ctrlKey && zoomOnPinch.value && _isMacOs) {
+              const point = pointer(event)
+              const pinchDelta = wheelDelta(event)
+              const zoom = currentZoom * 2 ** pinchDelta
+              // @ts-expect-error d3-zoom types are not up to date
+              d3Zoom.scaleTo(d3Selection, zoom, point, event)
 
-            return
-          }
+              return
+            }
 
-          // increase scroll speed in firefox
-          // firefox: deltaMode === 1; chrome: deltaMode === 0
-          const deltaNormalize = event.deltaMode === 1 ? 20 : 1
+            // increase scroll speed in firefox
+            // firefox: deltaMode === 1; chrome: deltaMode === 0
+            const deltaNormalize = event.deltaMode === 1 ? 20 : 1
 
-          let deltaX = panOnScrollMode.value === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize
-          let deltaY = panOnScrollMode.value === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
+            let deltaX = panOnScrollMode.value === PanOnScrollMode.Vertical ? 0 : event.deltaX * deltaNormalize
+            let deltaY = panOnScrollMode.value === PanOnScrollMode.Horizontal ? 0 : event.deltaY * deltaNormalize
 
-          // this enables vertical scrolling with shift + scroll on windows
-          if (!_isMacOs && event.shiftKey && panOnScrollMode.value !== PanOnScrollMode.Vertical && !deltaX && deltaY) {
-            deltaX = deltaY
-            deltaY = 0
-          }
+            // this enables vertical scrolling with shift + scroll on windows
+            if (!_isMacOs && event.shiftKey && panOnScrollMode.value !== PanOnScrollMode.Vertical && !deltaX && deltaY) {
+              deltaX = deltaY
+              deltaY = 0
+            }
 
-          d3Zoom.translateBy(
-            d3Selection,
-            -(deltaX / currentZoom) * panOnScrollSpeed.value,
-            -(deltaY / currentZoom) * panOnScrollSpeed.value,
-          )
+            d3Zoom.translateBy(
+              d3Selection,
+              -(deltaX / currentZoom) * panOnScrollSpeed.value,
+              -(deltaY / currentZoom) * panOnScrollSpeed.value,
+            )
 
-          const nextViewport = eventToFlowTransform(d3Selection.property('__zoom'))
+            const nextViewport = eventToFlowTransform(d3Selection.property('__zoom'))
 
-          if (panScrollTimeout) {
-            clearTimeout(panScrollTimeout)
-          }
+            if (panScrollTimeout) {
+              clearTimeout(panScrollTimeout)
+            }
 
-          // for pan on scroll we need to handle the event calls on our own
-          // we can't use the start, zoom and end events from d3-zoom
-          // because start and move gets called on every scroll event and not once at the beginning
-          if (!isPanScrolling.value) {
-            isPanScrolling.value = true
+            // for pan on scroll we need to handle the event calls on our own
+            // we can't use the start, zoom and end events from d3-zoom
+            // because start and move gets called on every scroll event and not once at the beginning
+            if (!isPanScrolling.value) {
+              isPanScrolling.value = true
 
-            emits.moveStart({ event, flowTransform: nextViewport })
-            emits.viewportChangeStart(nextViewport)
-          } else {
-            emits.move({ event, flowTransform: nextViewport })
-            emits.viewportChange(nextViewport)
+              emits.moveStart({ event, flowTransform: nextViewport })
+              emits.viewportChangeStart(nextViewport)
+            } else {
+              emits.move({ event, flowTransform: nextViewport })
+              emits.viewportChange(nextViewport)
 
-            panScrollTimeout = setTimeout(() => {
-              emits.moveEnd({ event, flowTransform: nextViewport })
-              emits.viewportChangeEnd(nextViewport)
+              panScrollTimeout = setTimeout(() => {
+                emits.moveEnd({ event, flowTransform: nextViewport })
+                emits.viewportChangeEnd(nextViewport)
 
-              isPanScrolling.value = false
-            }, 150)
-          }
-        },
-        { passive: false },
-      )
-    } else if (typeof d3ZoomHandler !== 'undefined') {
-      d3Selection.on(
-        'wheel.zoom',
-        function (event: WheelEvent, d) {
-          if (!preventScrolling.value || isWrappedWithClass(event, noWheelClassName.value)) {
-            return null
-          }
+                isPanScrolling.value = false
+              }, 150)
+            }
+          },
+          { passive: false },
+        )
+      } else if (typeof d3ZoomHandler !== 'undefined') {
+        d3Selection.on(
+          'wheel.zoom',
+          function (this: any, event: WheelEvent, d: any) {
+            if (!preventScrolling.value || isWrappedWithClass(event, noWheelClassName.value)) {
+              return null
+            }
 
-          event.preventDefault()
-          // eslint-disable-next-line @typescript-eslint/no-invalid-this
-          d3ZoomHandler.call(this, event, d)
-        },
-        { passive: false },
-      )
-    }
-  })
+            event.preventDefault()
+            d3ZoomHandler.call(this, event, d)
+          },
+          { passive: false },
+        )
+      }
+    },
+    { immediate: true },
+  )
 })
 
 function isRightClickPan(pan: FlowOptions['panOnDrag'], usedButton: number) {
@@ -346,9 +355,9 @@ function wheelDelta(event: any) {
 
 function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransform) {
   return (
-    (prevViewport.x !== eventTransform.x && !isNaN(eventTransform.x)) ||
-    (prevViewport.y !== eventTransform.y && !isNaN(eventTransform.y)) ||
-    (prevViewport.zoom !== eventTransform.k && !isNaN(eventTransform.k))
+    (prevViewport.x !== eventTransform.x && !Number.isNaN(eventTransform.x)) ||
+    (prevViewport.y !== eventTransform.y && !Number.isNaN(eventTransform.y)) ||
+    (prevViewport.zoom !== eventTransform.k && !Number.isNaN(eventTransform.k))
   )
 }
 
