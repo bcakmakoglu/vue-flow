@@ -2,6 +2,50 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.29.0] - 2024-01-21
+
+[d9dee8d](d9dee8dfdfc129c3ae1d0c20e127a4f537118d29)...[c4becc3](c4becc3523cb8fbcbf24a657b4a6cd5df1cf60d1)
+
+### Bug Fixes
+
+- Add default handler when no handlers exist ([e5c52a3](e5c52a3dba13c9a04d6058a098dd0cc12c571f3c))
+- Add fallback for connection-line type ([5344fec](5344fec3af314e202131ec19ad5a59826437f8b9))
+- Merge connection line styles ([f1d3fa2](f1d3fa2aa35976141f53307df87f02de691f1fb4))
+- Pass flow id to `getMarkerId` in connection line ([2192fff](2192fff9b27e5b141cc36e8da22dd27fa7f0bb29))
+- Return false from bool key filter ([347715d](347715dd111af896164f2e58487628edc804fc10))
+- Allow panning on scroll when selection is active ([e7fb681](e7fb6813cdad9a36a919ec3187460f9f6e40c651))
+- Await fitView before emitting pane-ready ([ca70a7c](ca70a7cd675f8f238d9d41e5edd84e9e35971927))
+
+### Features
+
+- Expose handler functions ([ffcc20a](ffcc20a26320779344191fb34dae13d6b9d7dd88))
+- Expose onClick and onPointerDown handlers ([2f0b00f](2f0b00f8540218e95b0b29e6274e1dc9363b7378))
+- Add `useConnection` composable ([1012f2c](1012f2cae923c20c5f06605685eef6b7477dd539))
+
+### Miscellaneous Tasks
+
+- Update LICENSE ([423d608](423d6085658a060d7bcb5df8b02adcd228071c4c))
+- Add ([f9ea702](f9ea70210bcaece99735bc1eb132752c34a8840a))
+- Add ([2b8fc1a](2b8fc1a65a7a0fb422ec99f91dbb971bc9c5558c))
+- Add ([a19892f](a19892feaf27783e130d2c80b070dafd0c6916e4))
+- Add ([f8abaaf](f8abaaf34d2f09ba483eb6e97dc5bd084dc24510))
+- Add ([72d42ea](72d42eaf98bdbc192da1f25e8d30db0d579f9d36))
+- Add ([2e06568](2e0656822a2b32d41a36380425c6ad96a0753118))
+- Update antfu eslint conf ([8bf6f26](8bf6f26d3dff21e0e4fc791c37caa080c7918fa8))
+- Lint files ([68cfbae](68cfbaebbeec61719a3da09a41de52430a890536))
+- Add ([68762a4](68762a49600488bbfcd6543126bb954372e5fb10))
+- Cleanup ([d09e46f](d09e46fb2edc2078b0f44ea7aad0b896807efd57))
+- Add ([e7e1195](e7e1195b4f6c265e7c7fd29967d495223347477d))
+- Add ([c6ec16e](c6ec16ee8b48aa03d570e3eaceb0ae12a673d330))
+
+### Refactor
+
+- Update handle styles ([3364144](3364144b8545b96eb446342c93e68a02f8b18745))
+
+### Reverts
+
+- Inherit attrs ([45b4326](45b4326f721a8a35fcd2de793ddfd20828d36514))
+
 ## [1.28.0] - 2024-01-03
 
 [aeed19e](aeed19e35a4228a649378108ba0ce66c910a0069)...[d9dee8d](d9dee8dfdfc129c3ae1d0c20e127a4f537118d29)
