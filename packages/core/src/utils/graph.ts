@@ -363,7 +363,7 @@ export function getRectOfNodes(nodes: GraphNode[]) {
           ...dimensions,
         } as Rect),
       ),
-    { x: Infinity, y: Infinity, x2: -Infinity, y2: -Infinity },
+    { x: Number.POSITIVE_INFINITY, y: Number.POSITIVE_INFINITY, x2: Number.NEGATIVE_INFINITY, y2: Number.NEGATIVE_INFINITY },
   )
 
   return boxToRect(box)

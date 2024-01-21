@@ -4,7 +4,7 @@ import type { NodeComponent } from './components'
 import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './handle'
 import type { CustomEvent, NodeEventsHandler, NodeEventsOn } from './hooks'
 
-/** Defined as [[x-from, y-from], [x-to, y-to]] **/
+/** Defined as [[x-from, y-from], [x-to, y-to]] */
 export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]
 
 export interface CoordinateExtentRange {
@@ -119,7 +119,7 @@ export interface GraphNode<
 }
 
 /** these props are passed to node components */
-export interface NodeProps<Data = ElementData, CustomEvents = {}, Type extends string = string> {
+export interface NodeProps<Data = ElementData, CustomEvents = object, Type extends string = string> {
   /** unique node id */
   id: string
   /** node type */
@@ -137,7 +137,7 @@ export interface NodeProps<Data = ElementData, CustomEvents = {}, Type extends s
    * For example like this: `h('div', props, children)`)
    * Object is just a type-hack for Vue, ignore that
    */
-  label?: string | VNode | Component | Object
+  label?: string | VNode | Component | object
   /**
    * @deprecated will be removed in next major release and replaced by just `isValidConnection` prop
    * called when used as target for new connection

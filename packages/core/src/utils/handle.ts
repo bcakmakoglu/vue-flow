@@ -99,7 +99,7 @@ export function getClosestHandle(
 
   // if we couldn't find a handle below the mouse cursor we look for the closest distance based on the connectionRadius
   let closestHandles: { handle: ConnectionHandle; validHandleResult: ValidHandleResult }[] = []
-  let minDistance = Infinity
+  let minDistance = Number.POSITIVE_INFINITY
 
   handles.forEach((handle) => {
     const distance = Math.sqrt((handle.x - pos.x) ** 2 + (handle.y - pos.y) ** 2)
