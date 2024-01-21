@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.29.1] - 2024-01-21
+
+[c4becc3](c4becc3523cb8fbcbf24a657b4a6cd5df1cf60d1)...[35a2606](35a2606ff23db864ef580c684827cd5f2984dbc1)
+
+### Bug Fixes
+
+- Watch `shouldPanOnScroll` & `shouldPanOnDrag` ([9e51070](9e51070144f6ec22f54e95a562966fff502f06e8))
+
+### Miscellaneous Tasks
+
+- Add ([23510ef](23510efc1ffbf7894c269f85271f363a55bef34e))
+
 ## [1.29.0] - 2024-01-21
 
 [d9dee8d](d9dee8dfdfc129c3ae1d0c20e127a4f537118d29)...[c4becc3](c4becc3523cb8fbcbf24a657b4a6cd5df1cf60d1)
