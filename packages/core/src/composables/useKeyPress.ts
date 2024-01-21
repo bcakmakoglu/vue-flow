@@ -158,13 +158,10 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onCha
 
     // if the keyFilter is a boolean, we just set the isPressed value to that boolean
     if (typeof keyFilter === 'boolean') {
-      if (keyFilter) {
-        isPressed.value = keyFilter
-        return () => true
-      } else {
-        reset()
-        return () => false
-      }
+      reset()
+      isPressed.value = keyFilter
+
+      return () => false
     }
 
     if (Array.isArray(keyFilter) || typeof keyFilter === 'string') {
