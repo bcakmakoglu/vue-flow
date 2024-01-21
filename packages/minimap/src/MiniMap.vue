@@ -206,7 +206,6 @@ function onNodeMouseLeave(event: MouseEvent, node: GraphNode) {
 export default {
   name: 'MiniMap',
   compatConfig: { MODE: 3 },
-  inheritAttrs: false,
 }
 </script>
 
@@ -214,7 +213,6 @@ export default {
   <Panel :position="position" class="vue-flow__minimap" :class="{ pannable, zoomable }">
     <svg
       ref="el"
-      v-bind="attrs"
       :width="elementWidth"
       :height="elementHeight"
       :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(' ')"
