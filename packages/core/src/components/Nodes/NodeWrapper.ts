@@ -18,7 +18,7 @@ interface Props {
   selectable: boolean
   connectable: HandleConnectable
   focusable: boolean
-  type: NodeComponent | Function | Object | false
+  type: NodeComponent | ((...args: any[]) => any) | object | false
   name: string
   node: GraphNode
   resizeObserver: ResizeObserver
