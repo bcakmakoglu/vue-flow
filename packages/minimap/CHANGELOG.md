@@ -1,5 +1,11 @@
 # @vue-flow/minimap
 
+## 1.4.0
+
+### Minor Changes
+
+- [#1249](https://github.com/bcakmakoglu/vue-flow/pull/1249) [`a8bdb93`](https://github.com/bcakmakoglu/vue-flow/commit/a8bdb931771c47ecf985e3d0340a5c456efd1a31) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Inherit attrs in minimap
+
 ## 1.3.0
 
 ### Minor Changes

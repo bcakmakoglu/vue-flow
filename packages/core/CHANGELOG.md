@@ -1,5 +1,29 @@
 # @vue-flow/core
 
+## 1.29.0
+
+### Minor Changes
+
+- [#1237](https://github.com/bcakmakoglu/vue-flow/pull/1237) [`16c7d32`](https://github.com/bcakmakoglu/vue-flow/commit/16c7d32746d72dd413e866c5c19461a5bee227ca) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Expose handleClick and handlePointerDown from handle components
+
+- [#1238](https://github.com/bcakmakoglu/vue-flow/pull/1238) [`dd4cbe0`](https://github.com/bcakmakoglu/vue-flow/commit/dd4cbe0c92121fc6039e5f43bdc6e5d1663b8069) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `useConnection` composable for easy access of current connection params
+
+### Patch Changes
+
+- [#1243](https://github.com/bcakmakoglu/vue-flow/pull/1243) [`b5e77a4`](https://github.com/bcakmakoglu/vue-flow/commit/b5e77a43da76db0ee4cbc16d205e90ef84f2ed62) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass vueflow id to `getMarkerId` in connection line component
+
+- [#1236](https://github.com/bcakmakoglu/vue-flow/pull/1236) [`be15b5a`](https://github.com/bcakmakoglu/vue-flow/commit/be15b5acbcb6ccd06107a5dc195cc9e0c35b211c) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add default event handler when no handlers for a given event exist anymore
+
+- [#1250](https://github.com/bcakmakoglu/vue-flow/pull/1250) [`f3c786f`](https://github.com/bcakmakoglu/vue-flow/commit/f3c786f3c9e4445a401e063306e8d1985b3eaf5e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow panning on scroll when selection is active
+
+- [#1236](https://github.com/bcakmakoglu/vue-flow/pull/1236) [`d46ac3a`](https://github.com/bcakmakoglu/vue-flow/commit/d46ac3a52c55e96d2e1994a60407767cdd945118) Thanks [@github-actions](https://github.com/apps/github-actions)! - Merge connection line styles with options
+
+- [#1250](https://github.com/bcakmakoglu/vue-flow/pull/1250) [`b71754f`](https://github.com/bcakmakoglu/vue-flow/commit/b71754fe10a3f7a13132ed1f6058385da267ed88) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Return false for boolean key filter and set the `isPressed` ref to whatever the keyFilter would be (true/false)
+
+- [#1250](https://github.com/bcakmakoglu/vue-flow/pull/1250) [`4109cf1`](https://github.com/bcakmakoglu/vue-flow/commit/4109cf1027455fbb308cdc4262e401e904ad07e2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Await fitView before emitting pane-ready
+
+- [#1236](https://github.com/bcakmakoglu/vue-flow/pull/1236) [`d46ac3a`](https://github.com/bcakmakoglu/vue-flow/commit/d46ac3a52c55e96d2e1994a60407767cdd945118) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add fallback for connection line type (bezier as default)
+
 ## 1.28.0
 
 ### Minor Changes
