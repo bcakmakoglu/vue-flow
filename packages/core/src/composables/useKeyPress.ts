@@ -6,18 +6,12 @@ import { useWindow } from './useWindow'
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
 
-  const hasAttribute = typeof target.hasAttribute === 'function' ? target.hasAttribute('contenteditable') : false
+  const hasAttribute = typeof target?.hasAttribute === 'function' ? target.hasAttribute('contenteditable') : false
 
-  const closest = typeof target.closest === 'function' ? target.closest('.nokey') : null
+  const closest = typeof target?.closest === 'function' ? target.closest('.nokey') : null
 
   // when an input field is focused we don't want to trigger deletion or movement of nodes
-  return (
-    target instanceof HTMLInputElement ||
-    target instanceof HTMLTextAreaElement ||
-    target instanceof HTMLSelectElement ||
-    hasAttribute ||
-    !!closest
-  )
+  return ['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.nodeName) || hasAttribute || !!closest
 }
 
 // we want to be able to do a multi selection event if we are in an input field
@@ -45,6 +39,10 @@ function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<str
 
 function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
   return (event: KeyboardEvent) => {
+    if (!event.code || !event.key) {
+      return false
+    }
+
     const keyOrCode = useKeyOrCode(event.code, keyFilter)
 
     // if the keyFilter is an array of multiple keys, we need to check each possible key combination
