@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.29.2
+
+### Patch Changes
+
+- [#1257](https://github.com/bcakmakoglu/vue-flow/pull/1257) [`31817d3`](https://github.com/bcakmakoglu/vue-flow/commit/31817d342dd57257eedd789c69c72cab47d683a9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if `event.key` or `event.code` exists before trying to match keyfilter against keys
+
 ## 1.29.1
 
 ### Patch Changes
