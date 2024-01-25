@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.29.2] - 2024-01-25
+
+[35a2606](35a2606ff23db864ef580c684827cd5f2984dbc1)...[a8feaaa](a8feaaa7ee4f98b2803b49eea026bf8885987e60)
+
+### Bug Fixes
+
+- Check if key or code exists before matching ([2b82098](2b82098fab22d79ed7016755e9ccd9f41f58b6d1))
+
+### Miscellaneous Tasks
+
+- Add ([390073e](390073e4d2e26b3ce8a2a9e55ee1cbd3773b0c45))
+- Cleanup condition ([be9e580](be9e58092a354ba2b5763ed479f8ac9b4f4b3a54))
+
 ## [1.29.1] - 2024-01-21
 
 [c4becc3](c4becc3523cb8fbcbf24a657b4a6cd5df1cf60d1)...[35a2606](35a2606ff23db864ef580c684827cd5f2984dbc1)
