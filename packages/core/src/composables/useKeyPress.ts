@@ -39,7 +39,7 @@ function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<str
 
 function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
   return (event: KeyboardEvent) => {
-    if (!event.code || !event.key) {
+    if (!event.code && !event.key) {
       return false
     }
 
