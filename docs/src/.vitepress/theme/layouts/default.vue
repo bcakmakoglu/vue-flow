@@ -1,4 +1,5 @@
 <script setup>
+import { SpeedInsights } from '@vercel/speed-insights/vue'
 import { watch } from 'vue'
 import { useRoute } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
@@ -30,5 +31,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ParentLayout></ParentLayout>
+  <SpeedInsights />
+  <ParentLayout />
 </template>

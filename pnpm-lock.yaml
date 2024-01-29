@@ -175,7 +175,7 @@ importers:
         version: 4.4.0(vite@4.4.11)(vue@3.3.4)
       autoprefixer:
         specifier: ^10.4.16
-        version: 10.4.16(postcss@8.4.32)
+        version: 10.4.16(postcss@8.4.33)
 
   examples/vite:
     dependencies:
@@ -541,7 +541,7 @@ importers:
         version: link:../tsconfig
       '@vitejs/plugin-vue':
         specifier: ^4.4.0
-        version: 4.4.0(vite@4.4.11)(vue@3.3.11)
+        version: 4.4.0(vite@4.4.11)(vue@3.4.15)
       defu:
         specifier: ^6.1.2
         version: 6.1.2
@@ -3293,6 +3293,17 @@ packages:
       vue: 3.3.4
     dev: true
 
+  /@vitejs/plugin-vue@4.4.0(vite@4.4.11)(vue@3.4.15):
+    resolution: {integrity: sha512-xdguqb+VUwiRpSg+nsc2HtbAUSGak25DXYvpQQi4RVU1Xq1uworyoH/md9Rfd8zMmPR/pSghr309QNcftUVseg==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      vite: ^4.0.0
+      vue: ^3.2.25
+    dependencies:
+      vite: 4.4.11(@types/node@18.18.4)
+      vue: 3.4.15(typescript@4.9.5)
+    dev: true
+
   /@vitejs/plugin-vue@5.0.3(vite@5.0.12)(vue@3.4.15):
     resolution: {integrity: sha512-b8S5dVS40rgHdDrw+DQi/xOM9ed+kSRZzfm1T74bMmBDCd8XO87NKlFYInzCtwvtWwXZvo1QxE2OSspTATWrbA==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -4115,7 +4126,7 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
-  /autoprefixer@10.4.16(postcss@8.4.32):
+  /autoprefixer@10.4.16(postcss@8.4.33):
     resolution: {integrity: sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
@@ -4127,7 +4138,7 @@ packages:
       fraction.js: 4.3.6
       normalize-range: 0.1.2
       picocolors: 1.0.0
-      postcss: 8.4.32
+      postcss: 8.4.33
       postcss-value-parser: 4.2.0
     dev: true
 
