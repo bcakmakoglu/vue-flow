@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.30.0
+
+### Minor Changes
+
+- [#1261](https://github.com/bcakmakoglu/vue-flow/pull/1261) [`427bfac`](https://github.com/bcakmakoglu/vue-flow/commit/427bface1bfbe41ecc16465079144fa91c0d2249) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Hide viewport until `fitViewOnInitDone` is `true` (if `fitViewOnInit` is not used, this value will automatically become `true` the first time node dimensions are set
+
+- [#1261](https://github.com/bcakmakoglu/vue-flow/pull/1261) [`427bfac`](https://github.com/bcakmakoglu/vue-flow/commit/427bface1bfbe41ecc16465079144fa91c0d2249) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Emit `paneReady` event after 1ms timeout
+
 ## 1.29.2
 
 ### Patch Changes
