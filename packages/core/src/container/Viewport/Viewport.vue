@@ -6,13 +6,11 @@ import { onMounted, ref, watch } from 'vue'
 import { toRef } from '@vueuse/core'
 import type { CoordinateExtent, D3ZoomHandler, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
-import { useKeyPress, useVueFlow, useWindow } from '../../composables'
+import { useKeyPress, useVueFlow } from '../../composables'
 import { clamp, isMacOs, warn } from '../../utils'
 import Pane from '../Pane/Pane.vue'
 import { useResizeHandler } from '../../composables/useResizeHandler'
 import Transform from './Transform.vue'
-
-const window = useWindow()
 
 const {
   id,
@@ -104,8 +102,6 @@ onMounted(() => {
   storeD3Zoom.value = d3Zoom
   storeD3Selection.value = d3Selection
   storeD3ZoomHandler.value = d3ZoomHandler as D3ZoomHandler
-
-  console.log('d3Zoom', d3Zoom)
 
   viewport.value = { x: constrainedTransform.x, y: constrainedTransform.y, zoom: constrainedTransform.k }
 
