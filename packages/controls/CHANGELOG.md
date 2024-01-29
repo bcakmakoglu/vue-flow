@@ -1,5 +1,11 @@
 # @vue-flow/controls
 
+## 1.1.1
+
+### Patch Changes
+
+- [#1261](https://github.com/bcakmakoglu/vue-flow/pull/1261) [`cff86ee`](https://github.com/bcakmakoglu/vue-flow/commit/cff86ee378c83e2ed656b03a66266feae49dd033) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set full width on control button svgs
+
 ## 1.1.0
 
 ### Minor Changes
