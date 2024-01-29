@@ -28,7 +28,7 @@ export default [
     {
       hid: 'og:image',
       property: 'og:image',
-      content: `http://${meta.img}`,
+      content: meta.img,
     },
   ],
   [
@@ -36,7 +36,7 @@ export default [
     {
       hid: 'og:image:secure_url',
       property: 'og:image:secure_url',
-      content: `https://${meta.img}`,
+      content: meta.img,
     },
   ],
   [
