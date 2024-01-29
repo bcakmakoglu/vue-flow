@@ -209,6 +209,12 @@ export function useActions(
       return res
     }, [])
 
+    if (!state.fitViewOnInitDone && state.fitViewOnInit) {
+      viewportHelper.value.fitView()
+    }
+
+    state.fitViewOnInitDone = true
+
     if (changes.length) {
       state.hooks.nodesChange.trigger(changes)
     }
@@ -964,19 +970,17 @@ export function useActions(
   until(() => viewportHelper.value.initialized)
     .toBe(true)
     .then(async () => {
-      if (state.fitViewOnInit) {
-        await viewportHelper.value.fitView()
-      }
-
-      state.hooks.paneReady.trigger({
-        id,
-        emits,
-        vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
-        ...hooksOn,
-        ...state,
-        ...getters,
-        ...actions,
-      })
+      setTimeout(() => {
+        state.hooks.paneReady.trigger({
+          id,
+          emits,
+          vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
+          ...hooksOn,
+          ...state,
+          ...getters,
+          ...actions,
+        })
+      }, 1)
     })
 
   return actions
