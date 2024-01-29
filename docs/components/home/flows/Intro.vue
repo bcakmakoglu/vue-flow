@@ -56,7 +56,7 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onPaneReady } = useVueFlow({
+const { getNodes, findNode, setEdges, updateNodeInternals, dimensions } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -177,9 +177,7 @@ const setElements = useDebounceFn(() => {
   })
 }, 1)
 
-onMounted(() => {
-  useResizeObserver(el, setElements)
-})
+useResizeObserver(el, setElements)
 
 function scrollTo() {
   const el = document.getElementById('acknowledgement')
