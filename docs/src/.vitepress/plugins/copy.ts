@@ -2,7 +2,9 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
 
-function getPkgPath(pkgName: string, fileName) {
+type Emit = (file: { type: 'asset'; fileName: string; filePath: string; source: string }) => void
+
+function getPkgPath(pkgName: string, fileName: string) {
   return resolve(__dirname, `../../../node_modules/@vue-flow/${pkgName}/dist/${fileName}`)
 }
 
@@ -10,7 +12,7 @@ function getPublicPath(fileName: string) {
   return resolve(__dirname, `../../public/${fileName}`)
 }
 
-function copyFiles(emit: any) {
+function copyFiles(emit: Emit) {
   ;['core', 'background', 'controls', 'minimap', 'node-resizer', 'node-toolbar'].forEach((name) => {
     const fileName = `vue-flow-${name}.mjs`
 
@@ -35,18 +37,7 @@ export function copyVueFlowPlugin(): Plugin {
     name: 'copy-vue-flow',
     buildStart() {
       // use fs to copy files
-      copyFiles((file: any) => {
-        // remove existing files
-        if (existsSync(getPublicPath(file.fileName))) {
-          writeFileSync(getPublicPath(file.fileName), '')
-        }
-
-        writeFileSync(getPublicPath(file.fileName), file.source)
-      })
-    },
-    watchChange() {
-      // use fs to copy files
-      copyFiles((file: any) => {
+      copyFiles((file) => {
         // remove existing files
         if (existsSync(getPublicPath(file.fileName))) {
           writeFileSync(getPublicPath(file.fileName), '')
@@ -56,7 +47,7 @@ export function copyVueFlowPlugin(): Plugin {
       })
     },
     generateBundle() {
-      copyFiles((file: any) => this.emitFile(file))
+      copyFiles((file) => this.emitFile(file))
     },
   }
 }
