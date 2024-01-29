@@ -56,7 +56,7 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onNodesInitialized } = useVueFlow({
+const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onPaneReady } = useVueFlow({
   nodes: [
     { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
     { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
@@ -75,116 +75,111 @@ const { getNodes, findNode, setEdges, updateNodeInternals, dimensions, onNodesIn
 
 const el = templateRef<HTMLDivElement>('el', null)
 
-const setElements = useDebounceFn(
-  () => {
-    const offsetX = dimensions.value.width / 2
-    const offsetY = dimensions.value.height / 4
+const setElements = useDebounceFn(() => {
+  const offsetX = dimensions.value.width / 2
+  const offsetY = dimensions.value.height / 4
 
-    if (breakpoints.isSmaller('md') && currentBreakpoint.value !== 'sm') {
-      const mainNode = findNode('intro')!
+  if (breakpoints.isSmaller('md') && currentBreakpoint.value !== 'sm') {
+    const mainNode = findNode('intro')!
 
-      currentBreakpoint.value = 'sm'
+    currentBreakpoint.value = 'sm'
 
-      getNodes.value.forEach((node) => {
-        switch (node.id) {
-          case 'intro':
-            node.position = {
-              x: offsetX - node.dimensions.width / 2,
-              y: offsetY - node.dimensions.height / 2,
-            }
-            break
-          case 'examples':
-            node.position = {
-              x: offsetX - node.dimensions.width / 2,
-              y: mainNode.position.y + mainNode.dimensions.height * 1.5,
-            }
-            break
-          case 'documentation':
-            node.position = {
-              x: offsetX - node.dimensions.width / 2,
-              y: mainNode.position.y + mainNode.dimensions.height * 2 + 50,
-            }
-            break
-          case 'acknowledgement':
-            node.position = {
-              x: offsetX - node.dimensions.width / 2,
-              y: mainNode.position.y + mainNode.dimensions.height * 3,
-            }
-            break
-        }
-      })
-
-      setEdges(() => {
-        return [
-          {
-            id: 'eintro-examples',
-            sourceHandle: 'a',
-            source: 'intro',
-            target: 'examples',
-            animated: true,
-            style: { strokeWidth: 4, stroke: '#ef467e' },
-          },
-          {
-            id: 'eexamples-documentation',
-            source: 'examples',
-            target: 'documentation',
-            animated: true,
-            style: { strokeWidth: 4, stroke: '#f97316' },
-          },
-          {
-            id: 'edocumentation-acknowledgement',
-            source: 'documentation',
-            target: 'acknowledgement',
-            animated: true,
-            style: { strokeWidth: 4, stroke: '#0ea5e9' },
-          },
-        ]
-      })
-    } else if (!breakpoints.isSmaller('md')) {
-      currentBreakpoint.value = 'md'
-
-      getNodes.value.forEach((node) => {
-        const mainNode = findNode('intro')!
-        switch (node.id) {
-          case 'intro':
-            node.position = { x: offsetX - node.dimensions.width / 2, y: offsetY - node.dimensions.height / 2 }
-            break
-          case 'examples':
-            node.position = {
-              x: mainNode.position.x - node.dimensions.width / 2,
-              y: mainNode.position.y + mainNode.dimensions.height * 1.5,
-            }
-            break
-          case 'documentation':
-            node.position = {
-              x: mainNode.position.x + mainNode.dimensions.width - node.dimensions.width / 2,
-              y: mainNode.position.y + mainNode.dimensions.height * 1.5,
-            }
-            break
-          case 'acknowledgement':
-            node.position = {
-              x: offsetX - node.dimensions.width / 2,
-              y: mainNode.position.y + mainNode.dimensions.height * 2,
-            }
-            break
-        }
-      })
-
-      setEdges(initialEdges)
-    }
-
-    nextTick(() => {
-      updateNodeInternals()
+    getNodes.value.forEach((node) => {
+      switch (node.id) {
+        case 'intro':
+          node.position = {
+            x: offsetX - node.dimensions.width / 2,
+            y: offsetY - node.dimensions.height / 2,
+          }
+          break
+        case 'examples':
+          node.position = {
+            x: offsetX - node.dimensions.width / 2,
+            y: mainNode.position.y + mainNode.dimensions.height * 1.5,
+          }
+          break
+        case 'documentation':
+          node.position = {
+            x: offsetX - node.dimensions.width / 2,
+            y: mainNode.position.y + mainNode.dimensions.height * 2 + 50,
+          }
+          break
+        case 'acknowledgement':
+          node.position = {
+            x: offsetX - node.dimensions.width / 2,
+            y: mainNode.position.y + mainNode.dimensions.height * 3,
+          }
+          break
+      }
     })
-  },
-  () => (currentBreakpoint.value === null ? 5 : 50),
-)
 
-onNodesInitialized(() => {
-  setElements()
+    setEdges(() => {
+      return [
+        {
+          id: 'eintro-examples',
+          sourceHandle: 'a',
+          source: 'intro',
+          target: 'examples',
+          animated: true,
+          style: { strokeWidth: 4, stroke: '#ef467e' },
+        },
+        {
+          id: 'eexamples-documentation',
+          source: 'examples',
+          target: 'documentation',
+          animated: true,
+          style: { strokeWidth: 4, stroke: '#f97316' },
+        },
+        {
+          id: 'edocumentation-acknowledgement',
+          source: 'documentation',
+          target: 'acknowledgement',
+          animated: true,
+          style: { strokeWidth: 4, stroke: '#0ea5e9' },
+        },
+      ]
+    })
+  } else if (!breakpoints.isSmaller('md')) {
+    currentBreakpoint.value = 'md'
+
+    getNodes.value.forEach((node) => {
+      const mainNode = findNode('intro')!
+      switch (node.id) {
+        case 'intro':
+          node.position = { x: offsetX - node.dimensions.width / 2, y: offsetY - node.dimensions.height / 2 }
+          break
+        case 'examples':
+          node.position = {
+            x: mainNode.position.x - node.dimensions.width / 2,
+            y: mainNode.position.y + mainNode.dimensions.height * 1.5,
+          }
+          break
+        case 'documentation':
+          node.position = {
+            x: mainNode.position.x + mainNode.dimensions.width - node.dimensions.width / 2,
+            y: mainNode.position.y + mainNode.dimensions.height * 1.5,
+          }
+          break
+        case 'acknowledgement':
+          node.position = {
+            x: offsetX - node.dimensions.width / 2,
+            y: mainNode.position.y + mainNode.dimensions.height * 2,
+          }
+          break
+      }
+    })
+
+    setEdges(initialEdges)
+  }
+
+  nextTick(() => {
+    updateNodeInternals()
+  })
+}, 1)
+
+onMounted(() => {
+  useResizeObserver(el, setElements)
 })
-
-useResizeObserver(el, setElements)
 
 function scrollTo() {
   const el = document.getElementById('acknowledgement')
