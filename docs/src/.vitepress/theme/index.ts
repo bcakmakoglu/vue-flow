@@ -12,7 +12,7 @@ import './style.css'
 export default {
   extends: Theme,
   Layout,
-  enhanceApp({ app }) {
+  enhanceApp() {
     inject()
   },
 } as typeof Theme

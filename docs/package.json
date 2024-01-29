@@ -11,35 +11,36 @@
     "typedocs": "typedoc --options ./typedoc.json"
   },
   "dependencies": {
-    "@algolia/client-search": "^4.21.1",
+    "@algolia/client-search": "^4.22.1",
     "@stackblitz/sdk": "^1.9.0",
-    "@vercel/analytics": "^1.1.1",
+    "@vercel/analytics": "^1.1.2",
+    "@vercel/speed-insights": "^1.0.8",
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
     "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
     "@vue-flow/node-toolbar": "workspace:*",
-    "@vue/repl": "3.0.0",
+    "@vue/repl": "3.4.0",
     "blobity": "^0.2.3",
     "vue": "^3.3.11",
-    "web-vitals": "^3.5.0"
+    "web-vitals": "^3.5.2"
   },
   "devDependencies": {
-    "@iconify/json": "^2.2.156",
+    "@iconify/json": "^2.2.176",
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^16.3.1",
     "ohmyfetch": "^0.4.21",
-    "typedoc": "^0.25.4",
+    "typedoc": "^0.25.7",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-merge-modules": "^5.1.0",
-    "unplugin-auto-import": "^0.17.2",
-    "unplugin-icons": "^0.18.1",
+    "unplugin-auto-import": "^0.17.5",
+    "unplugin-icons": "^0.18.3",
     "unplugin-vue-components": "^0.26.0",
-    "vite-plugin-windicss": "^1.9.1",
-    "vitepress": "1.0.0-rc.31",
+    "vite-plugin-windicss": "^1.9.3",
+    "vitepress": "1.0.0-rc.40",
     "windicss": "^3.5.6"
   }
 }
