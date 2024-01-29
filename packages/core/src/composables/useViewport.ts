@@ -1,6 +1,5 @@
-import { until } from '@vueuse/core'
 import { zoomIdentity } from 'd3-zoom'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import type { ComputedGetters, D3Selection, GraphNode, Project, State, ViewportFunctions } from '../types'
 import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint, warn } from '../utils'
 
@@ -36,35 +35,13 @@ const initialViewportHelper: ExtendedViewport = {
 }
 
 export function useViewport(state: State, getters: ComputedGetters) {
-  const {
-    vueFlowRef: domNode,
-    nodes,
-    d3Zoom,
-    d3Selection,
-    dimensions,
-    translateExtent,
-    minZoom,
-    maxZoom,
-    viewport,
-    snapToGrid,
-    snapGrid,
-  } = $(state)
-
   const { getNodes } = getters
-
-  const isReady = ref(false)
-
-  until(() => !!(d3Zoom && d3Selection && dimensions.width > 0 && dimensions.height > 0))
-    .toBe(true)
-    .then(() => {
-      isReady.value = true
-    })
 
   function zoom(scale: number, duration?: number) {
     return new Promise<boolean>((resolve) => {
-      if (d3Selection && d3Zoom) {
-        d3Zoom.scaleBy(
-          transition(d3Selection, duration, () => {
+      if (state.d3Selection && state.d3Zoom) {
+        state.d3Zoom.scaleBy(
+          transition(state.d3Selection, duration, () => {
             resolve(true)
           }),
           scale,
@@ -78,13 +55,13 @@ export function useViewport(state: State, getters: ComputedGetters) {
   function transformViewport(x: number, y: number, zoom: number, duration?: number) {
     return new Promise<boolean>((resolve) => {
       // enforce translate extent
-      const { x: clampedX, y: clampedY } = clampPosition({ x: -x, y: -y }, translateExtent)
+      const { x: clampedX, y: clampedY } = clampPosition({ x: -x, y: -y }, state.translateExtent)
 
       const nextTransform = zoomIdentity.translate(-clampedX, -clampedY).scale(zoom)
 
-      if (d3Selection && d3Zoom) {
-        d3Zoom.transform(
-          transition(d3Selection, duration, () => {
+      if (state.d3Selection && state.d3Zoom) {
+        state.d3Zoom.transform(
+          transition(state.d3Selection, duration, () => {
             resolve(true)
           }),
           nextTransform,
@@ -96,7 +73,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
   }
 
   return computed<ExtendedViewport>(() => {
-    if (isReady.value) {
+    if (state.d3Zoom && state.d3Selection && state.dimensions.width && state.dimensions.height) {
       return {
         initialized: true,
         // todo: allow passing scale as option
@@ -108,9 +85,9 @@ export function useViewport(state: State, getters: ComputedGetters) {
         },
         zoomTo: (zoomLevel, options) => {
           return new Promise<boolean>((resolve) => {
-            if (d3Selection && d3Zoom) {
-              d3Zoom.scaleTo(
-                transition(d3Selection, options?.duration, () => {
+            if (state.d3Selection && state.d3Zoom) {
+              state.d3Zoom.scaleTo(
+                transition(state.d3Selection, options?.duration, () => {
                   resolve(true)
                 }),
                 zoomLevel,
@@ -127,15 +104,15 @@ export function useViewport(state: State, getters: ComputedGetters) {
           return transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
         },
         getViewport: () => ({
-          x: viewport.x,
-          y: viewport.y,
-          zoom: viewport.zoom,
+          x: state.viewport.x,
+          y: state.viewport.y,
+          zoom: state.viewport.zoom,
         }),
         getTransform: () => {
           return {
-            x: viewport.x,
-            y: viewport.y,
-            zoom: viewport.zoom,
+            x: state.viewport.x,
+            y: state.viewport.y,
+            zoom: state.viewport.zoom,
           }
         },
         fitView: (
@@ -145,8 +122,8 @@ export function useViewport(state: State, getters: ComputedGetters) {
             duration: 0,
           },
         ) => {
-          const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? nodes : getNodes.value).filter((node) => {
-            const initialized = node.initialized && node.dimensions.width && node.dimensions.height
+          const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? state.nodes : getNodes.value).filter((node) => {
+            const initialized = node.dimensions.width && node.dimensions.height
             let shouldInclude = true
 
             if (options.nodes?.length) {
@@ -164,10 +141,10 @@ export function useViewport(state: State, getters: ComputedGetters) {
 
           const { x, y, zoom } = getTransformForBounds(
             bounds,
-            dimensions.width,
-            dimensions.height,
-            options.minZoom ?? minZoom,
-            options.maxZoom ?? maxZoom,
+            state.dimensions.width,
+            state.dimensions.height,
+            options.minZoom ?? state.minZoom,
+            options.maxZoom ?? state.maxZoom,
             options.padding ?? DEFAULT_PADDING,
             options.offset,
           )
@@ -175,49 +152,49 @@ export function useViewport(state: State, getters: ComputedGetters) {
           return transformViewport(x, y, zoom, options?.duration)
         },
         setCenter: (x, y, options) => {
-          const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : maxZoom
-          const centerX = dimensions.width / 2 - x * nextZoom
-          const centerY = dimensions.height / 2 - y * nextZoom
+          const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : state.maxZoom
+          const centerX = state.dimensions.width / 2 - x * nextZoom
+          const centerY = state.dimensions.height / 2 - y * nextZoom
 
           return transformViewport(centerX, centerY, nextZoom, options?.duration)
         },
         fitBounds: (bounds, options = { padding: DEFAULT_PADDING }) => {
           const { x, y, zoom } = getTransformForBounds(
             bounds,
-            dimensions.width,
-            dimensions.height,
-            minZoom,
-            maxZoom,
+            state.dimensions.width,
+            state.dimensions.height,
+            state.minZoom,
+            state.maxZoom,
             options.padding,
           )
 
           return transformViewport(x, y, zoom, options?.duration)
         },
-        project: (position) => pointToRendererPoint(position, viewport, snapToGrid, snapGrid),
+        project: (position) => pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid),
         screenToFlowCoordinate: (position) => {
-          if (domNode) {
-            const { x: domX, y: domY } = domNode.getBoundingClientRect()
+          if (state.vueFlowRef) {
+            const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
 
             const correctedPosition = {
               x: position.x - domX,
               y: position.y - domY,
             }
 
-            return pointToRendererPoint(correctedPosition, viewport, snapToGrid, snapGrid)
+            return pointToRendererPoint(correctedPosition, state.viewport, state.snapToGrid, state.snapGrid)
           }
 
           return { x: 0, y: 0 }
         },
         flowToScreenCoordinate: (position) => {
-          if (domNode) {
-            const { x: domX, y: domY } = domNode.getBoundingClientRect()
+          if (state.vueFlowRef) {
+            const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
 
             const correctedPosition = {
               x: position.x + domX,
               y: position.y + domY,
             }
 
-            return rendererPointToPoint(correctedPosition, viewport)
+            return rendererPointToPoint(correctedPosition, state.viewport)
           }
 
           return { x: 0, y: 0 }
