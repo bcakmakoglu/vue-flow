@@ -1,24 +1,9 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { isClient, until } from '@vueuse/core'
 import { useVueFlow } from '../../composables'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 
-const { id, viewport, d3Zoom, d3Selection, dimensions, fitViewOnInitDone } = useVueFlow()
-
-const viewportReady = ref(!isClient)
-
-until(
-  () =>
-    !!(d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0 && fitViewOnInitDone.value),
-)
-  .toBe(true, { flush: 'post' })
-  .then(() => {
-    setTimeout(() => {
-      viewportReady.value = true
-    }, 1)
-  })
+const { id, viewport, fitViewOnInitDone } = useVueFlow()
 </script>
 
 <script lang="ts">
@@ -34,7 +19,7 @@ export default {
     class="vue-flow__transformationpane vue-flow__container"
     :style="{
       transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})`,
-      opacity: viewportReady ? undefined : 0,
+      opacity: fitViewOnInitDone ? undefined : 0,
     }"
   >
     <EdgeRenderer />
