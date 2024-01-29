@@ -121,6 +121,8 @@ function defaultState(): State {
     autoConnect: false,
 
     fitViewOnInit: false,
+    fitViewOnInitDone: false,
+
     noDragClassName: 'nodrag',
     noWheelClassName: 'nowheel',
     noPanClassName: 'nopan',
