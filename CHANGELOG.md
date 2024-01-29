@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.30.0] - 2024-01-29
+
+[a8feaaa](a8feaaa7ee4f98b2803b49eea026bf8885987e60)...[11a16da](11a16da158a30cf730767275e1a428493b770196)
+
+### Bug Fixes
+
+- Set full width on control btn svgs ([ccaae21](ccaae216f8d8fb73d3580c23bf99b8ce4778676b))
+
+### Miscellaneous Tasks
+
+- Cleanup ([e427e21](e427e21c2894cd8a9cd4207912afc5f7d27f31ec))
+- Cleanup intro ([5d2427e](5d2427ec2eba8c777d69dca50044cb4cd54c1c44))
+- Add ([1caaf36](1caaf364e78561fba5800f9ed845dc545db2bc47))
+- Add ([3d362cb](3d362cb2d370f5be831d94172f9192f8f885d210))
+- Cleanup ([1eefc88](1eefc8860ea6416e819fc6eb6d3fdfd09ee9132f))
+- Cleanup viewport helper ([5e8001f](5e8001f7b00b5cfd4d8017ddf9a297c1fadb692e))
+- Cleanup transform cmp ([e0a48f0](e0a48f05526a37cc19ef8d2f09d896aee0d63fc1))
+- Cleanup type issues ([e24f436](e24f436fc50b72a03a4ff8f22cdabfa5169e8e42))
+- Update head ([64a2091](64a2091ddba4534a899ece1ac63071c45f74f6e5))
+- Update deps ([a79d100](a79d100b258ac5ebd4a30818b8e8336cb5662e81))
+- Add vercel speed insights ([b04cc29](b04cc29a6c5261e137e310257271a5421e17ef48))
+
+### Refactor
+
+- Add `fitViewOnInitDone` to state ([308cff5](308cff5f451a9fe6321e55eda2095ae2867105c1))
+- Emit pane ready after timeout of 1ms ([abe6006](abe6006a0971842acc87d42e28798698988e9917))
+- Suspens transformation pane ([ce229e5](ce229e547f37e657410638abc6143aacb2ce5a6f))
+- Remove suspension ([b65f43c](b65f43c5d8dfd331397e23b524531048f89c8fb5))
+- Use `useResizeHandler` composable ([a5091b9](a5091b9b0ca9a1fbe9af3d7bc6c4b65127137bdd))
+- Trigger fitViewOnInit together with paneReady ([3977875](3977875d0b495de8a52fd240d96658aece8d353c))
+- Remove experimental flag ([2259b2a](2259b2ab9ecc7e316dd0c8cb6c527e75df9060a9))
+
+### Testing
+
+- Use transform matrix to confirm node positions ([8a888a9](8a888a91942d3676a96c3f88cd793eeeb7ae34c1))
+
 ## [1.29.2] - 2024-01-25
 
 [35a2606](35a2606ff23db864ef580c684827cd5f2984dbc1)...[a8feaaa](a8feaaa7ee4f98b2803b49eea026bf8885987e60)
