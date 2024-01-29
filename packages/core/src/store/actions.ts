@@ -969,7 +969,7 @@ export function useActions(
 
   until(() => viewportHelper.value.initialized)
     .toBe(true)
-    .then(async () => {
+    .then(() => {
       setTimeout(() => {
         state.hooks.paneReady.trigger({
           id,
