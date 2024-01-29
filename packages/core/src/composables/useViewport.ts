@@ -54,7 +54,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
 
   const isReady = ref(false)
 
-  until(() => !!d3Zoom && !!d3Selection && !!dimensions.width && !!dimensions.height)
+  until(() => !!(d3Zoom && d3Selection && dimensions.width > 0 && dimensions.height > 0))
     .toBe(true)
     .then(() => {
       isReady.value = true
