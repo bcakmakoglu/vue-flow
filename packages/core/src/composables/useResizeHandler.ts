@@ -2,8 +2,11 @@ import type { Ref } from 'vue'
 import { watchEffect } from 'vue'
 import { ErrorCode, VueFlowError, getDimensions } from '../utils'
 import { useVueFlow } from './useVueFlow'
+import { useWindow } from './useWindow'
 
 export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
+  const window = useWindow()
+
   const { emits, dimensions } = useVueFlow()
 
   let resizeObserver: ResizeObserver
