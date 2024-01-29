@@ -3,12 +3,13 @@ import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { onMounted, ref, watch } from 'vue'
-import { toRef, useEventListener, useResizeObserver } from '@vueuse/core'
+import { toRef } from '@vueuse/core'
 import type { CoordinateExtent, D3ZoomHandler, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import { useKeyPress, useVueFlow, useWindow } from '../../composables'
-import { ErrorCode, VueFlowError, clamp, getDimensions, isMacOs, warn } from '../../utils'
+import { clamp, isMacOs, warn } from '../../utils'
 import Pane from '../Pane/Pane.vue'
+import { useResizeHandler } from '../../composables/useResizeHandler'
 import Transform from './Transform.vue'
 
 const window = useWindow()
@@ -19,7 +20,6 @@ const {
   maxZoom,
   defaultViewport,
   translateExtent,
-  dimensions,
   zoomActivationKeyCode,
   selectionKeyCode,
   panActivationKeyCode,
@@ -43,6 +43,8 @@ const {
   viewport,
   viewportRef,
 } = useVueFlow()
+
+useResizeHandler(viewportRef)
 
 const isZoomingOrPanning = ref(false)
 
@@ -71,10 +73,6 @@ const shouldPanOnDrag = toRef(() => panKeyPressed.value || panOnDrag.value)
 const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
 
 const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true))
-
-useResizeObserver(viewportRef, setDimensions)
-
-useEventListener(window, 'resize', setDimensions)
 
 onMounted(() => {
   if (!viewportRef.value) {
@@ -106,6 +104,8 @@ onMounted(() => {
   storeD3Zoom.value = d3Zoom
   storeD3Selection.value = d3Selection
   storeD3ZoomHandler.value = d3ZoomHandler as D3ZoomHandler
+
+  console.log('d3Zoom', d3Zoom)
 
   viewport.value = { x: constrainedTransform.x, y: constrainedTransform.y, zoom: constrainedTransform.k }
 
@@ -367,21 +367,6 @@ function eventToFlowTransform(eventTransform: ZoomTransform): ViewportTransform 
     y: eventTransform.y,
     zoom: eventTransform.k,
   }
-}
-
-function setDimensions() {
-  if (!viewportRef.value) {
-    return
-  }
-
-  const { width, height } = getDimensions(viewportRef.value)
-
-  if (width === 0 || height === 0) {
-    emits.error(new VueFlowError(ErrorCode.MISSING_VIEWPORT_DIMENSIONS))
-  }
-
-  dimensions.value.width = width || 500
-  dimensions.value.height = height || 500
 }
 
 function isWrappedWithClass(event: Event, className: string | undefined) {
