@@ -402,11 +402,9 @@ export default {
       :is-selecting="isSelecting"
       :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: shouldPanOnDrag }"
     >
-      <Suspense>
-        <Transform>
-          <slot />
-        </Transform>
-      </Suspense>
+      <Transform>
+        <slot />
+      </Transform>
     </Pane>
   </div>
 </template>

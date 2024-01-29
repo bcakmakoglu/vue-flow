@@ -9,10 +9,11 @@ const { id, viewport, d3Zoom, d3Selection, dimensions, fitViewOnInitDone } = use
 
 const viewportReady = ref(!isClient)
 
-await until(() => !!(d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0)).toBe(true)
-
-until(fitViewOnInitDone)
-  .toBe(true)
+until(
+  () =>
+    !!(d3Zoom.value && d3Selection.value && dimensions.value.width > 0 && dimensions.value.height > 0 && fitViewOnInitDone.value),
+)
+  .toBe(true, { flush: 'post' })
   .then(() => {
     setTimeout(() => {
       viewportReady.value = true
