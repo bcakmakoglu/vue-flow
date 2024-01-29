@@ -17,7 +17,7 @@ const emit = defineEmits<{ (event: 'change', data: { color: Colors; val: number 
 const currentColor = toRef(props.data, 'color', 'red')
 
 function onChange(e: InputEvent) {
-  return emit('change', { color: currentColor.value, val: parseInt((e.target as HTMLInputElement).value) })
+  return emit('change', { color: currentColor.value, val: Number.parseInt((e.target as HTMLInputElement).value) })
 }
 </script>
 
