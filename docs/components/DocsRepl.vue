@@ -39,6 +39,7 @@ body,
 
 const store = new ReplStore({
   showOutput: true,
+  outputMode: 'preview',
 })
 
 const files: Record<string, (typeof imports)[keyof typeof imports]> = {}
