@@ -127,6 +127,7 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   autoConnect: boolean | Connector
 
   fitViewOnInit: boolean
+  fitViewOnInitDone: boolean
 
   noDragClassName: 'nodrag' | string
   noWheelClassName: 'nowheel' | string
