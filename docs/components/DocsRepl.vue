@@ -53,7 +53,7 @@ for (const example of Object.keys(imports).filter((i) => i !== 'additionalImport
   }
 }
 
-await store.setVueVersion('3.3.11')
+await store.setVueVersion('3.4.15')
 
 await store.setFiles(
   {
@@ -78,7 +78,7 @@ store.setImportMap({
 
 const sfcOptions = {
   script: {
-    reactivityTransform: true,
+    propsDestructure: true,
   },
 } as SFCOptions
 </script>
