@@ -18,9 +18,9 @@
 }
 
 .vue-flow__controls-button svg {
+  width: 100%;
   max-width: 12px;
   max-height: 12px;
-  overflow: visible;
 }
 
 .vue-flow__controls-button:hover {
