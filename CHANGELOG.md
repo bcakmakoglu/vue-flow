@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.30.1] - 2024-01-30
+
+[11a16da](11a16da158a30cf730767275e1a428493b770196)...[b13d53d](b13d53d60998b050d54e5161fc7d8e85d7cde4df)
+
+### Bug Fixes
+
+- Check if values are numeric in `isRect` ([b7cc917](b7cc917a090fefa58e5903174d53d73d40ae6ce0))
+
+### Miscellaneous Tasks
+
+- Add ([05e17d7](05e17d79515b13584691630d4eb62a8b8987a168))
+
 ## [1.30.0] - 2024-01-29
 
 [a8feaaa](a8feaaa7ee4f98b2803b49eea026bf8885987e60)...[11a16da](11a16da158a30cf730767275e1a428493b770196)
