@@ -89,8 +89,12 @@ export function isGraphNode<Data = ElementData>(element: MaybeElement): element 
   return isNode(element) && 'computedPosition' in element
 }
 
+function isNumeric(n: any): n is number {
+  return !Number.isNaN(n) && Number.isFinite(n)
+}
+
 export function isRect(obj: any): obj is Rect {
-  return !!obj.width && !!obj.height && !!obj.x && !!obj.y
+  return isNumeric(obj.width) && isNumeric(obj.height) && isNumeric(obj.x) && isNumeric(obj.y)
 }
 
 export function parseNode(node: Node, defaults: Partial<GraphNode> = {}): GraphNode {
