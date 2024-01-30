@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.30.1
+
+### Patch Changes
+
+- [#1266](https://github.com/bcakmakoglu/vue-flow/pull/1266) [`c571dde`](https://github.com/bcakmakoglu/vue-flow/commit/c571dde2cca3a7de4c9b954e8f3fdd14a3171b03) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if values are numeric in `isRect` instead of checking for truthiness of values
+
 ## 1.30.0
 
 ### Minor Changes
