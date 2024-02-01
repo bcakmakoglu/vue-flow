@@ -1,8 +1,9 @@
 import { computed, inject, ref } from 'vue'
 import type { CustomEvent, ElementData } from '../types'
 import { ErrorCode, VueFlowError, getConnectedEdges } from '../utils'
-import { NodeId, NodeRef } from '../context'
+import { NodeRef } from '../context'
 import { useVueFlow } from './useVueFlow'
+import { useNodeId } from './useNodeId'
 
 /**
  * Access a node, it's parent (if one exists) and connected edges
@@ -12,7 +13,7 @@ import { useVueFlow } from './useVueFlow'
  * Meaning if you do not provide an id, this composable has to be called in a child of your custom node component, or it will throw
  */
 export function useNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
-  const nodeId = id ?? inject(NodeId, '')
+  const nodeId = id ?? useNodeId()
   const nodeEl = inject(NodeRef, ref(null))
 
   const { findNode, edges, emits } = useVueFlow()
