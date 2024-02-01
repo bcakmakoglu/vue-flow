@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { watchEffect } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import { ErrorCode, VueFlowError, getDimensions } from '../utils'
 import { useVueFlow } from './useVueFlow'
 import { useWindow } from './useWindow'
@@ -11,7 +11,7 @@ export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
 
   let resizeObserver: ResizeObserver
 
-  watchEffect((onCleanup) => {
+  onMounted(() => {
     const rendererNode = viewportEl.value
 
     const updateDimensions = () => {
@@ -25,7 +25,7 @@ export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
         emits.error(new VueFlowError(ErrorCode.MISSING_VIEWPORT_DIMENSIONS))
       }
 
-      dimensions.value = size
+      dimensions.value = { width: size.width || 500, height: size.height || 500 }
     }
 
     updateDimensions()
@@ -36,7 +36,7 @@ export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
       resizeObserver.observe(rendererNode)
     }
 
-    onCleanup(() => {
+    onBeforeUnmount(() => {
       window.removeEventListener('resize', updateDimensions)
 
       if (resizeObserver && rendererNode) {
