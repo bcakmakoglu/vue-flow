@@ -9,8 +9,8 @@ import { useVueFlow } from './useVueFlow'
 
 interface UseHandleConnectionsParams {
   type: MaybeRefOrGetter<HandleType>
-  id?: MaybeRefOrGetter<string | null>
-  nodeId?: MaybeRefOrGetter<string>
+  id?: MaybeRefOrGetter<string | undefined>
+  nodeId?: MaybeRefOrGetter<string | undefined>
   onConnect?: (connections: Connection[]) => void
   onDisconnect?: (connections: Connection[]) => void
 }
@@ -28,7 +28,7 @@ interface UseHandleConnectionsParams {
  */
 export function useHandleConnections({
   type,
-  id = null,
+  id,
   nodeId,
   onConnect,
   onDisconnect,
