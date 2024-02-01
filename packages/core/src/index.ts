@@ -62,15 +62,15 @@ export { defaultEdgeTypes, defaultNodeTypes } from './store/state'
 
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
 
-export {
-  useZoomPanHelper,
-  useVueFlow,
-  Storage as GlobalVueFlowStorage,
-  useHandle,
-  useNode,
-  useEdge,
-  useGetPointerPosition,
-} from './composables'
+export { useZoomPanHelper } from './composables/useZoomPanHelper'
+export { useVueFlow } from './composables/useVueFlow'
+export { useHandle } from './composables/useHandle'
+export { useNode } from './composables/useNode'
+export { useEdge } from './composables/useEdge'
+export { useGetPointerPosition } from './composables/useGetPointerPosition'
+export { useNodeId } from './composables/useNodeId'
+export { useConnection } from './composables/useConnection'
+export { useHandleConnections } from './composables/useHandleConnections'
 
 export { VueFlowError, ErrorCode } from './utils/errors'
 

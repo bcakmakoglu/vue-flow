@@ -47,6 +47,7 @@ import {
   isRect,
   nodeToRect,
   parseEdge,
+  updateConnectionLookup,
   updateEdgeAction,
 } from '../utils'
 import { useState } from './state'
@@ -376,6 +377,8 @@ export function useActions(
         )
       : nextEdges
 
+    updateConnectionLookup(state.connectionLookup, validEdges)
+
     state.edges = validEdges.reduce<GraphEdge[]>((res, edge) => {
       const sourceNode = findNode(edge.source)
       const targetNode = findNode(edge.target)
@@ -587,9 +590,17 @@ export function useActions(
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) =>
     updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId, state.hooks.error.trigger)
 
-  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => applyChanges(changes, state.nodes)
+  const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => {
+    return applyChanges(changes, state.nodes)
+  }
 
-  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => applyChanges(changes, state.edges)
+  const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => {
+    const changedEdges = applyChanges(changes, state.edges)
+
+    updateConnectionLookup(state.connectionLookup, changedEdges)
+
+    return changedEdges
+  }
 
   const startConnection: Actions['startConnection'] = (startHandle, position, event, isClick = false) => {
     if (isClick) {

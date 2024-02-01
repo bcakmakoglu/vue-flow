@@ -35,6 +35,7 @@ function defaultState(): State {
     nodes: [],
     // todo: change this to a Set
     edges: [],
+    connectionLookup: new Map(),
     nodeTypes: {},
     edgeTypes: {},
 
