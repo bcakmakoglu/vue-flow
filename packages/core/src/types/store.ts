@@ -29,6 +29,8 @@ import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ConnectingHandle, ValidConnectionFunc } from './handle'
 
+export type ConnectionLookup = Map<string, Map<string, Connection>>
+
 export interface UpdateNodeDimensionsParams {
   id: string
   nodeElement: HTMLDivElement
@@ -48,6 +50,8 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   nodes: GraphNode[]
   /** all stored edges */
   edges: GraphEdge[]
+
+  connectionLookup: ConnectionLookup
 
   readonly d3Zoom: D3Zoom | null
   readonly d3Selection: D3Selection | null

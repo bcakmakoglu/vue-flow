@@ -1,5 +1,5 @@
-import { unref } from 'vue'
-import type { Actions, Connection, Edge, GraphEdge, GraphNode, Node, State } from '../types'
+import { markRaw, unref } from 'vue'
+import type { Actions, Connection, ConnectionLookup, Edge, GraphEdge, GraphNode, Node, State } from '../types'
 import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
 
 type NonUndefined<T> = T extends undefined ? never : T
@@ -119,4 +119,74 @@ export function createGraphNodes(
   }
 
   return graphNodes
+}
+
+export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges: Edge[]) {
+  connectionLookup.clear()
+
+  for (const edge of edges) {
+    const { source, target, sourceHandle = null, targetHandle = null } = edge
+
+    const sourceKey = `${source}-source-${sourceHandle}`
+    const targetKey = `${target}-target-${targetHandle}`
+
+    const prevSource = connectionLookup.get(sourceKey) || new Map()
+    const prevTarget = connectionLookup.get(targetKey) || new Map()
+    const connection = markRaw({ source, target, sourceHandle, targetHandle })
+
+    connectionLookup.set(sourceKey, prevSource.set(`${target}-${targetHandle}`, connection))
+    connectionLookup.set(targetKey, prevTarget.set(`${source}-${sourceHandle}`, connection))
+  }
+}
+
+/**
+ * We call the callback for all connections in a that are not in b
+ *
+ * @internal
+ */
+export function handleConnectionChange(
+  a: Map<string, Connection>,
+  b: Map<string, Connection>,
+  cb?: (diff: Connection[]) => void,
+) {
+  if (!cb) {
+    return
+  }
+
+  const diff: Connection[] = []
+
+  for (const key of a.keys()) {
+    if (!b.has(key)) {
+      diff.push(a.get(key)!)
+    }
+  }
+
+  if (diff.length) {
+    cb(diff)
+  }
+}
+
+/**
+ * @internal
+ */
+export function areConnectionMapsEqual(a?: Map<string, Connection>, b?: Map<string, Connection>) {
+  if (!a && !b) {
+    return true
+  }
+
+  if (!a || !b || a.size !== b.size) {
+    return false
+  }
+
+  if (!a.size && !b.size) {
+    return true
+  }
+
+  for (const key of a.keys()) {
+    if (!b.has(key)) {
+      return false
+    }
+  }
+
+  return true
 }
