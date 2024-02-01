@@ -13,7 +13,7 @@ import { useNodeId } from './useNodeId'
  * Meaning if you do not provide an id, this composable has to be called in a child of your custom node component, or it will throw
  */
 export function useNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
-  const nodeId = id ?? useNodeId()
+  const nodeId = id ?? useNodeId() ?? ''
   const nodeEl = inject(NodeRef, ref(null))
 
   const { findNode, edges, emits } = useVueFlow()
