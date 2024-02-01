@@ -1,17 +1,42 @@
 .basicflow.dark {
-  background: #57534e;
+  background: #000000;
   color: #FFFFFB;
 }
 
 .basicflow.dark .vue-flow__node {
-  background: #292524;
+  background: hsl(0, 0%, 10%);
   color: #FFFFFB;
 }
 
+.basicflow.dark .vue-flow__node.selected {
+  background: hsl(0, 0%, 20%);
+  border: 1px solid hotpink;
+}
+
+.basicflow .vue-flow__controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.basicflow.dark .vue-flow__controls {
+  border: 1px solid #FFFFFB;
+}
+
+.basicflow .vue-flow__controls .vue-flow__controls-button {
+  border: none;
+  border-right: 1px solid #eee;
+}
+
+
 .basicflow.dark .vue-flow__controls .vue-flow__controls-button {
-  background: #292524;
+  background: hsl(0, 0%, 20%);
   fill: #FFFFFB;
-  border-color: #FFFFFB;
+  border: none;
+}
+
+.basicflow.dark .vue-flow__controls .vue-flow__controls-button:hover {
+  background: hsl(0, 0%, 30%);
 }
 
 .basicflow.dark .vue-flow__edge-textbg {
@@ -20,28 +45,4 @@
 
 .basicflow.dark .vue-flow__edge-text {
   fill: #FFFFFB;
-}
-
-.basicflow .controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-}
-
-.basicflow .controls button {
-  padding: 4px;
-  border-radius: 5px;
-  font-weight: 600;
-  -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.basicflow .controls button:hover {
-  transform: scale(102%);
-  transition: 250ms all ease;
 }

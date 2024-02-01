@@ -1,32 +1,33 @@
 <script setup>
-import { Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
-import { Controls } from '@vue-flow/controls'
+import { ControlButton, Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 import { ref } from 'vue'
 import Icon from './Icon.vue'
 import { initialElements } from './initial-elements.js'
 
-/**
- * useVueFlow provides all event handlers and store properties
- * You can pass the composable an object that has the same properties as the VueFlow component props
- */
-const { onPaneReady, onNodeDragStop, onConnect, addEdges, setTransform, toObject } = useVueFlow()
+// useVueFlow returns all the event-hooks and methods you need to interact with the graph
+const { onPaneReady, onNodeDragStop, onConnect, addEdges, setViewport, toObject } = useVueFlow()
 
-/**
- * Our elements
- */
+// Elements v-model
 const elements = ref(initialElements)
 
+// Dark mode toggle
+const dark = ref(false)
+
 /**
- * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
+ * Event Hooks
  *
- * onPaneReady is called when viewpane & nodes have visible dimensions
+ * These are Vue Flow event-hooks which can be used to listen to events happening on the graph.
  */
+
+// onPaneReady is called when viewpane is ready (dimensions exist and are not 0)
 onPaneReady(({ fitView }) => {
   fitView()
 })
 
+// onNodeDragStop is called when a node is dragged and then released
 onNodeDragStop((e) => console.log('drag stop', e))
 
 /**
@@ -35,11 +36,10 @@ onNodeDragStop((e) => console.log('drag stop', e))
  */
 onConnect((params) => addEdges(params))
 
-const dark = ref(false)
-
 /**
  * To update node properties you can simply use your elements v-model and mutate the elements directly
- * Changes should always be reflected on the graph reactively, without the need to overwrite the elements
+ * Changes should always be reflected on the graph reactively, without the need to overwrite the original elements
+ * Be aware that VueFlow will change your initial `Node[]` and `Edge[]` elements to `GraphNode[]` and `GraphEdge[]`
  */
 function updatePos() {
   return elements.value.forEach((el) => {
@@ -52,18 +52,13 @@ function updatePos() {
   })
 }
 
-/**
- * toObject transforms your current graph data to an easily persist-able object
- */
 function logToObject() {
+  // `toObject` transforms your current graph data to an easily persist-able object
   return console.log(toObject())
 }
 
-/**
- * Resets the current viewpane transformation (zoom & pan)
- */
 function resetTransform() {
-  return setTransform({ x: 0, y: 0, zoom: 1 })
+  return setViewport({ x: 0, y: 0, zoom: 1 })
 }
 
 function toggleClass() {
@@ -73,32 +68,27 @@ function toggleClass() {
 
 <template>
   <VueFlow v-model="elements" :class="{ dark }" class="basicflow" :default-viewport="{ zoom: 1.5 }" :min-zoom="0.2" :max-zoom="4">
-    <Background :pattern-color="dark ? '#FFFFFB' : '#aaa'" gap="8" />
+    <Background pattern-color="#aaa" :gap="16" />
 
     <MiniMap />
 
-    <Controls />
-
-    <Panel position="top-right" class="controls">
-      <button style="background-color: #113285; color: white" title="Reset Transform" @click="resetTransform">
+    <Controls position="top-right">
+      <ControlButton title="Reset Transform" @click="resetTransform">
         <Icon name="reset" />
-      </button>
+      </ControlButton>
 
-      <button style="background-color: #6f3381" title="Shuffle Node Positions" @click="updatePos">
+      <ControlButton title="Shuffle Node Positions" @click="updatePos">
         <Icon name="update" />
-      </button>
+      </ControlButton>
 
-      <button
-        :style="{ backgroundColor: dark ? '#FFFFFB' : '#292524', color: dark ? '#292524' : '#FFFFFB' }"
-        @click="toggleClass"
-      >
+      <ControlButton title="Toggle Mode" @click="toggleClass">
         <Icon v-if="dark" name="sun" />
         <Icon v-else name="moon" />
-      </button>
+      </ControlButton>
 
-      <button title="Log `toObject`" @click="logToObject">
+      <ControlButton title="Log `toObject`" @click="logToObject">
         <Icon name="log" />
-      </button>
-    </Panel>
+      </ControlButton>
+    </Controls>
   </VueFlow>
 </template>
