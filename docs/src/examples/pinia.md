@@ -1,5 +1,9 @@
 # Pinia
 
+<script setup>
+import PiniaExample from '../../examples/pinia/PiniaExample.vue';
+</script>
+
 Using your existing storage implementation is not an issue. 
 You can store your elements in whatever store you're already using, mutate them there and pass the result to Vue Flow.
 
