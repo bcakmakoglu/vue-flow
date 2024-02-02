@@ -72,6 +72,6 @@ export {
   useGetPointerPosition,
 } from './composables'
 
-export { VueFlowError, ErrorCode } from './utils/errors'
+export { VueFlowError, ErrorCode, isErrorOfType } from './utils/errors'
 
 export * from './types'

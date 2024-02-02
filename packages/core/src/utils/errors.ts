@@ -35,15 +35,23 @@ const messages = {
   [ErrorCode.EDGE_NOT_FOUND]: (id: string) => `Edge not found\nEdge: ${id}`,
 } as const
 
-export class VueFlowError<T extends ErrorCode = ErrorCode> extends Error {
+type ErrorArgs<T extends ErrorCode> = (typeof messages)[T] extends (...args: any[]) => string
+  ? Parameters<(typeof messages)[T]>
+  : never
+
+export class VueFlowError<T extends ErrorCode = ErrorCode, Args extends ErrorArgs<T> = ErrorArgs<T>> extends Error {
+  name = 'VueFlowError'
   code: T
-  constructor(
-    code: T,
-    ...args: (typeof messages)[T] extends (...args: any[]) => string ? Parameters<(typeof messages)[T]> : never
-  ) {
+  args: Args
+
+  constructor(code: T, ...args: Args) {
     // @ts-expect-error - TS doesn't know that the message is a key of messages
     super(messages[code]?.(...args))
-
     this.code = code
+    this.args = args
   }
+}
+
+export function isErrorOfType<T extends ErrorCode>(error: VueFlowError, code: T): error is VueFlowError<T> {
+  return error.code === code
 }
