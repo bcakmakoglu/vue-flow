@@ -1,73 +1,104 @@
 <script setup>
-import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { ref } from 'vue'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { ControlButton, Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
-import { ref } from 'vue'
+import { initialEdges, initialNodes } from './initial-elements.js'
 import Icon from './Icon.vue'
-import { initialElements } from './initial-elements.js'
 
-// useVueFlow returns all the event-hooks and methods you need to interact with the graph
+/**
+ * useVueFlow provides all event handlers and store properties
+ * You can pass the composable an object that has the same properties as the VueFlow component props
+ */
 const { onPaneReady, onNodeDragStop, onConnect, addEdges, setViewport, toObject } = useVueFlow()
 
-// Elements v-model
-const elements = ref(initialElements)
+const nodes = ref(initialNodes)
 
-// Dark mode toggle
+const edges = ref(initialEdges)
+
+// our dark mode toggle flag
 const dark = ref(false)
 
 /**
- * Event Hooks
+ * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
+ * Any event that is available as `@event-name` on the VueFlow component is also available as `onEventName` on the composable and vice versa
  *
- * These are Vue Flow event-hooks which can be used to listen to events happening on the graph.
+ * onPaneReady is called when viewpane & nodes have visible dimensions
  */
-
-// onPaneReady is called when viewpane is ready (dimensions exist and are not 0)
 onPaneReady(({ fitView }) => {
   fitView()
 })
 
-// onNodeDragStop is called when a node is dragged and then released
-onNodeDragStop((e) => console.log('drag stop', e))
+/**
+ * onNodeDragStop is called when a node is done being dragged
+ *
+ * Node drag events provide you with:
+ * 1. the event object
+ * 2. the nodes array (if multiple nodes are dragged)
+ * 3. the node that initiated the drag
+ * 4. any intersections with other nodes
+ */
+onNodeDragStop(({ event, nodes, node, intersections }) => {
+  console.log('Node Drag Stop', { event, nodes, node, intersections })
+})
 
 /**
  * onConnect is called when a new connection is created.
- * You can add additional properties to your new edge (like a type or label) or block the creation altogether
+ *
+ * You can add additional properties to your new edge (like a type or label) or block the creation altogether by not calling `addEdges`
  */
-onConnect((params) => addEdges(params))
+onConnect((connection) => {
+  addEdges(connection)
+})
 
 /**
- * To update node properties you can simply use your elements v-model and mutate the elements directly
- * Changes should always be reflected on the graph reactively, without the need to overwrite the original elements
- * Be aware that VueFlow will change your initial `Node[]` and `Edge[]` elements to `GraphNode[]` and `GraphEdge[]`
+ * To update a node or multiple nodes, you can
+ * 1. Mutate the node objects *if* you're using `v-model`
+ * 2. Use the `updateNode` method (from `useVueFlow`) to update the node(s)
+ * 3. Create a new array of nodes and pass it to the `nodes` ref
  */
 function updatePos() {
-  return elements.value.forEach((el) => {
-    if (isNode(el)) {
-      el.position = {
+  nodes.value = nodes.value.map((node) => {
+    return {
+      ...node,
+      position: {
         x: Math.random() * 400,
         y: Math.random() * 400,
-      }
+      },
     }
   })
 }
 
+/**
+ * toObject transforms your current graph data to an easily persist-able object
+ */
 function logToObject() {
-  // `toObject` transforms your current graph data to an easily persist-able object
-  return console.log(toObject())
+  console.log(toObject())
 }
 
+/**
+ * Resets the current viewport transformation (zoom & pan)
+ */
 function resetTransform() {
-  return setViewport({ x: 0, y: 0, zoom: 1 })
+  setViewport({ x: 0, y: 0, zoom: 1 })
 }
 
-function toggleClass() {
-  return (dark.value = !dark.value)
+function toggleDarkMode() {
+  dark.value = !dark.value
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" :class="{ dark }" class="basicflow" :default-viewport="{ zoom: 1.5 }" :min-zoom="0.2" :max-zoom="4">
+  <VueFlow
+    :nodes="nodes"
+    :edges="edges"
+    :class="{ dark }"
+    class="basicflow"
+    :default-viewport="{ zoom: 1.5 }"
+    :min-zoom="0.2"
+    :max-zoom="4"
+  >
     <Background pattern-color="#aaa" :gap="16" />
 
     <MiniMap />
@@ -81,7 +112,7 @@ function toggleClass() {
         <Icon name="update" />
       </ControlButton>
 
-      <ControlButton title="Toggle Mode" @click="toggleClass">
+      <ControlButton title="Toggle Dark Mode" @click="toggleDarkMode">
         <Icon v-if="dark" name="sun" />
         <Icon v-else name="moon" />
       </ControlButton>
