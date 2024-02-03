@@ -9,7 +9,6 @@ import { UpdateNodeApp, UpdateNodeCSS } from './update-node'
 import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode } from './validation'
 import { SaveRestoreApp, SaveRestoreCSS, SaveRestoreControls } from './save-restore'
 import { DndApp, DndBackground, DndCSS, DndScript, DndSidebar } from './dnd'
-import { EmptyApp } from './empty'
 import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
@@ -78,9 +77,6 @@ export const exampleImports = {
     'DropzoneBackground.vue': DndBackground,
     'style.css': DndCSS,
     'useDnD.js': DndScript,
-  },
-  empty: {
-    'App.vue': EmptyApp,
   },
   hidden: {
     'App.vue': HiddenApp,
