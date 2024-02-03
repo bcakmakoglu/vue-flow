@@ -285,7 +285,7 @@ export function useWatchProps(
         'autoConnect',
       ]
 
-      Object.keys(props).forEach((key) => {
+      for (const key of Object.keys(props)) {
         const propKey = key as keyof typeof props
         if (!skip.includes(propKey)) {
           const propValue = toRef(() => props[propKey])
@@ -306,7 +306,7 @@ export function useWatchProps(
             })
           }
         }
-      })
+      }
     }
 
     const runAll = () => {

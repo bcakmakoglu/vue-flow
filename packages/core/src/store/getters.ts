@@ -35,7 +35,9 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
 
     const keys = Object.keys(edgeTypes)
 
-    state.edges?.forEach((e) => e.type && !keys.includes(e.type) && (edgeTypes[e.type] = e.type))
+    for (const e of state.edges) {
+      e.type && !keys.includes(e.type) && (edgeTypes[e.type] = e.type)
+    }
 
     return edgeTypes
   })
@@ -48,7 +50,9 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
 
     const keys = Object.keys(nodeTypes)
 
-    state.nodes?.forEach((n) => n.type && !keys.includes(n.type) && (nodeTypes[n.type] = n.type))
+    for (const n of state.nodes) {
+      n.type && !keys.includes(n.type) && (nodeTypes[n.type] = n.type)
+    }
 
     return nodeTypes
   })
