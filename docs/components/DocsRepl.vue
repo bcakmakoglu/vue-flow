@@ -5,7 +5,7 @@ import CodeMirror from '@vue/repl/codemirror-editor'
 import { useVueFlow } from '@vue-flow/core'
 import { exampleImports } from '../examples'
 
-const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string; dependencies?: Record<string, string> }>()
+const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string }>()
 
 const { vueFlowVersion } = useVueFlow()
 

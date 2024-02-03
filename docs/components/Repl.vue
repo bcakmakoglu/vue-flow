@@ -4,7 +4,7 @@ import { Suspense } from 'vue'
 const DocsRepl = defineAsyncComponent(() => import('./DocsRepl.vue'))
 
 export default defineComponent({
-  props: ['example', 'examplesImports', 'dependencies'],
+  props: ['example', 'mainFile'],
   setup(props) {
     return () => {
       if (typeof navigator === 'undefined') {

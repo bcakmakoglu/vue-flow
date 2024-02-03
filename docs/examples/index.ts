@@ -18,6 +18,7 @@ import { IntersectionApp, IntersectionCSS } from './intersection'
 import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
+import { LayoutApp, LayoutElements } from './layout'
 
 export const exampleImports = {
   basic: {
@@ -122,5 +123,12 @@ export const exampleImports = {
   toolbar: {
     'App.vue': ToolbarApp,
     'ToolbarNode.vue': ToolbarNode,
+  },
+  layout: {
+    'App.vue': LayoutApp,
+    'initial-elements.js': LayoutElements,
+    'additionalImports': {
+      dagre: 'https://cdn.skypack.dev/pin/dagre@v0.8.5-NOlknF82nBdUHQKLJWRC/mode=imports,min/optimized/dagre.js',
+    },
   },
 }

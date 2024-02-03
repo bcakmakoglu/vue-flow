@@ -56,3 +56,10 @@ function onLayout(direction: string) {
     </VueFlow>
   </div>
 </template>
+
+<style>
+.layoutflow {
+  height: 100%;
+  width: 100%;
+}
+</style>
