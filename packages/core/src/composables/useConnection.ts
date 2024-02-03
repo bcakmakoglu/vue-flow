@@ -1,24 +1,11 @@
-import type { VueFlowStore } from '../types'
 import { useVueFlow } from './useVueFlow'
 
-export interface UseConnectionReturn {
-  startHandle: VueFlowStore['connectionStartHandle']
-  endHandle: VueFlowStore['connectionEndHandle']
-  status: VueFlowStore['connectionStatus']
-  position: VueFlowStore['connectionPosition']
-}
-
 /**
- * Hook for accessing the ongoing connection.
+ * Composable for accessing the currently ongoing connection.
  *
- * @returns ongoing connection: startHandle, endHandle, status, position
+ * @returns current connection: startHandle, endHandle, status, position
  */
-export function useConnection(): {
-  startHandle: VueFlowStore['connectionStartHandle']
-  endHandle: VueFlowStore['connectionEndHandle']
-  status: VueFlowStore['connectionStatus']
-  position: VueFlowStore['connectionPosition'] | null
-} {
+export function useConnection() {
   const {
     connectionStartHandle: startHandle,
     connectionEndHandle: endHandle,
