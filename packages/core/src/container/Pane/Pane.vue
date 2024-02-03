@@ -5,8 +5,9 @@ import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import type { GraphNode } from '../../types'
 import { SelectionMode } from '../../types'
-import { useKeyPress, useVueFlow } from '../../composables'
-import { getConnectedEdges, getNodesInside } from '../../utils'
+import { getConnectedEdges, getNodesInside } from '../../utils/graph'
+import { useVueFlow } from '../../composables/useVueFlow'
+import { useKeyPress } from '../../composables/useKeyPress'
 import { getMousePosition } from './utils'
 
 const { isSelecting } = defineProps<{ isSelecting: boolean }>()

@@ -4,7 +4,7 @@ import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine'
 import type { EdgeComponent, EdgeUpdatable, GraphEdge } from '../../types'
 import { Slots } from '../../context'
-import { useVueFlow } from '../../composables'
+import { useVueFlow } from '../../composables/useVueFlow'
 import { ErrorCode, VueFlowError, getEdgeZIndex } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 

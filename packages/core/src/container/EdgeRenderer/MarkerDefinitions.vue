@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
-import { useVueFlow } from '../../composables'
+import { useVueFlow } from '../../composables/useVueFlow'
 import { getMarkerId } from '../../utils'
 import MarkerSymbols from './MarkerSymbols.vue'
 

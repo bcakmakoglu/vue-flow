@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { toRef } from '@vueuse/core'
 import type { TeleportProps } from 'vue'
-import { useVueFlow } from '../../composables'
+import { useVueFlow } from '../../composables/useVueFlow'
 
 const { viewportRef } = useVueFlow()
 

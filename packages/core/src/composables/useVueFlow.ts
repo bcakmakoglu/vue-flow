@@ -3,8 +3,10 @@ import type { EffectScope } from 'vue'
 import { computed, effectScope, getCurrentScope, inject, provide, reactive, watch } from 'vue'
 import type { EdgeChange, FlowOptions, FlowProps, NodeChange, State, VueFlowStore } from '../types'
 import { warn } from '../utils'
-import { useActions, useGetters, useState } from '../store'
 import { VueFlow } from '../context'
+import { useGetters } from '../store/getters'
+import { useActions } from '../store/actions'
+import { useState } from '../store/state'
 
 /**
  * Stores all currently created store instances

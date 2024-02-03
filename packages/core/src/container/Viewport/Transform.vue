@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useVueFlow } from '../../composables'
+import { useVueFlow } from '../../composables/useVueFlow'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 

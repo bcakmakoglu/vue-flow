@@ -15,7 +15,8 @@ import {
   handleNodeClick,
   hasSelector,
 } from '../utils'
-import { useGetPointerPosition, useVueFlow } from '.'
+import { useVueFlow } from './useVueFlow'
+import { useGetPointerPosition } from './useGetPointerPosition'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 

@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { useDrag, useUpdateNodePositions, useVueFlow } from '../../composables'
-import { arrowKeyDiffs, getRectOfNodes } from '../../utils'
+import { useVueFlow } from '../../composables/useVueFlow'
+import { useUpdateNodePositions } from '../../composables/useUpdateNodePositions'
+import { useDrag } from '../../composables/useDrag'
+import { getRectOfNodes } from '../../utils/graph'
+import { arrowKeyDiffs } from '../../utils/a11y'
 
-const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, userSelectionActive } = $(useVueFlow())
+const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, userSelectionActive } = useVueFlow()
 
 const updatePositions = useUpdateNodePositions()
 
@@ -23,12 +26,12 @@ const dragging = useDrag({
 })
 
 onMounted(() => {
-  if (!disableKeyboardA11y) {
+  if (!disableKeyboardA11y.value) {
     el.value?.focus({ preventScroll: true })
   }
 })
 
-const selectedNodesBBox = computed(() => getRectOfNodes(getSelectedNodes))
+const selectedNodesBBox = computed(() => getRectOfNodes(getSelectedNodes.value))
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
@@ -38,11 +41,11 @@ const innerStyle = computed(() => ({
 }))
 
 function onContextMenu(event: MouseEvent) {
-  emits.selectionContextMenu({ event, nodes: getSelectedNodes })
+  emits.selectionContextMenu({ event, nodes: getSelectedNodes.value })
 }
 
 function onKeyDown(event: KeyboardEvent) {
-  if (disableKeyboardA11y) {
+  if (disableKeyboardA11y.value) {
     return
   }
 

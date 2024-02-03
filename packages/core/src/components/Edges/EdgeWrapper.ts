@@ -2,7 +2,6 @@ import { computed, defineComponent, h, provide, ref } from 'vue'
 import { useVModel } from '@vueuse/core'
 import type { Connection, EdgeComponent, EdgeUpdatable, GraphEdge, HandleType, MouseTouchEvent } from '../../types'
 import { ConnectionMode, Position } from '../../types'
-import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { EdgeId, EdgeRef } from '../../context'
 import {
   ARIA_EDGE_DESC_KEY,
@@ -13,6 +12,9 @@ import {
   getHandle,
   getMarkerId,
 } from '../../utils'
+import { useVueFlow } from '../../composables/useVueFlow'
+import { useEdgeHooks } from '../../composables/useEdgeHooks'
+import { useHandle } from '../../composables/useHandle'
 import EdgeAnchor from './EdgeAnchor'
 
 interface Props {

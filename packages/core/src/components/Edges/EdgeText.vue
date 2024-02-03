@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import type { EdgeTextProps } from '../../types/components'
-import type { Rect as RectType } from '../../types'
+import type { EdgeTextProps, Rect as RectType } from '../../types'
 
 const {
   x,

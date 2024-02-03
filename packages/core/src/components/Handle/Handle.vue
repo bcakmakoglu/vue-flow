@@ -1,10 +1,14 @@
 <script lang="ts" setup>
 import { toRef, until } from '@vueuse/core'
 import { computed, onUnmounted, ref } from 'vue'
-import type { HandleProps } from '../../types/handle'
+import type { HandleProps } from '../../types'
 import { Position } from '../../types'
-import { useHandle, useNode, useVueFlow } from '../../composables'
-import { getDimensions, isDef, isMouseEvent } from '../../utils'
+import { useVueFlow } from '../../composables/useVueFlow'
+import { useNode } from '../../composables/useNode'
+import { useHandle } from '../../composables/useHandle'
+import { isDef } from '../../utils/store'
+import { getDimensions } from '../../utils/graph'
+import { isMouseEvent } from '../../utils/general'
 
 const {
   position = Position.Top,

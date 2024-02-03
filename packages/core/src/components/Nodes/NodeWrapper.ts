@@ -10,7 +10,11 @@ import {
 } from '../../utils'
 import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
 import { NodeId, NodeRef } from '../../context'
-import { isInputDOMNode, useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
+import { useVueFlow } from '../../composables/useVueFlow'
+import { useUpdateNodePositions } from '../../composables/useUpdateNodePositions'
+import { useNodeHooks } from '../../composables/useNodeHooks'
+import { useDrag } from '../../composables/useDrag'
+import { isInputDOMNode } from '../../composables/useKeyPress'
 
 interface Props {
   id: string

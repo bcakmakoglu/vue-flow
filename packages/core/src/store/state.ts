@@ -1,15 +1,15 @@
 import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '../types'
 import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '../types'
-import {
-  BezierEdge,
-  DefaultNode,
-  InputNode,
-  OutputNode,
-  SimpleBezierEdge,
-  SmoothStepEdge,
-  StepEdge,
-  StraightEdge,
-} from '../components'
+import InputNode from '../components/Nodes/InputNode'
+import DefaultNode from '../components/Nodes/DefaultNode'
+import OutputNode from '../components/Nodes/OutputNode'
+
+import BezierEdge from '../components/Edges/BezierEdge'
+import StraightEdge from '../components/Edges/StraightEdge'
+import StepEdge from '../components/Edges/StepEdge'
+import SmoothStepEdge from '../components/Edges/SmoothStepEdge'
+import SimpleBezierEdge from '../components/Edges/SimpleBezierEdge'
+
 import { isDef, isMacOs } from '../utils'
 import { createHooks } from './hooks'
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ARIA_EDGE_DESC_KEY, ARIA_LIVE_MESSAGE, ARIA_NODE_DESC_KEY } from '../../utils/a11y'
-import { useVueFlow } from '../../composables'
+import { useVueFlow } from '../../composables/useVueFlow'
 
 const { id, disableKeyboardA11y, ariaLiveMessage } = useVueFlow()
 </script>

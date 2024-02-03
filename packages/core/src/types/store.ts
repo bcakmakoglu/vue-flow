@@ -1,6 +1,6 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { ViewportHelper } from '../composables'
+import type { ViewportHelper } from '../composables/useViewport'
 import type {
   Dimensions,
   ElementData,

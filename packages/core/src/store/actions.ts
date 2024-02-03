@@ -21,35 +21,32 @@ import type {
   Rect,
   State,
 } from '../types'
-import { useViewport } from '../composables'
+import { useViewport } from '../composables/useViewport'
 import {
-  ErrorCode,
-  VueFlowError,
-  addEdgeToStore,
-  applyChanges,
   clamp,
-  createAdditionChange,
-  createEdgeRemoveChange,
-  createGraphNodes,
-  createNodeRemoveChange,
-  createSelectionChange,
   getConnectedEdges as getConnectedEdgesBase,
   getDimensions,
-  getHandleBounds,
   getIncomers as getIncomersBase,
   getOutgoers as getOutgoersBase,
   getOverlappingArea,
-  getSelectionChanges,
-  isDef,
   isEdge,
   isGraphNode,
   isNode,
   isRect,
   nodeToRect,
   parseEdge,
-  updateConnectionLookup,
-  updateEdgeAction,
-} from '../utils'
+} from '../utils/graph'
+import { getHandleBounds } from '../utils/node'
+import {
+  applyChanges,
+  createAdditionChange,
+  createEdgeRemoveChange,
+  createNodeRemoveChange,
+  createSelectionChange,
+  getSelectionChanges,
+} from '../utils/changes'
+import { addEdgeToStore, createGraphNodes, isDef, updateConnectionLookup, updateEdgeAction } from '../utils/store'
+import { ErrorCode, VueFlowError } from '../utils/errors'
 import { useState } from './state'
 
 export function useActions(
