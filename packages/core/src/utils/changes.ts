@@ -114,7 +114,7 @@ export function applyChanges<
     | EdgeRemoveChange
   )[]
 
-  addRemoveChanges.forEach((change) => {
+  for (const change of addRemoveChanges) {
     if (change.type === 'add') {
       const index = elements.findIndex((el) => el.id === change.item.id)
 
@@ -128,11 +128,11 @@ export function applyChanges<
         elements.splice(index, 1)
       }
     }
-  })
+  }
 
   const elementIds = elements.map((el) => el.id)
 
-  elements.forEach((element) => {
+  for (const element of elements) {
     const currentChanges = changes.filter((c) => (<any>c).id === element.id)
 
     for (const currentChange of currentChanges) {
@@ -198,7 +198,7 @@ export function applyChanges<
           break
       }
     }
-  })
+  }
 
   return elements
 }

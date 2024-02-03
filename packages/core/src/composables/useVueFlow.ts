@@ -40,15 +40,15 @@ export class Storage {
     const reactiveState = reactive(state)
 
     const hooksOn = <any>{}
-    Object.entries(reactiveState.hooks).forEach(([n, h]) => {
+    for (const [n, h] of Object.entries(reactiveState.hooks)) {
       const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
       hooksOn[name] = h.on
-    })
+    }
 
     const emits = <any>{}
-    Object.entries(reactiveState.hooks).forEach(([n, h]) => {
+    for (const [n, h] of Object.entries(reactiveState.hooks)) {
       emits[n] = h.trigger
-    })
+    }
 
     // for lookup purposes
     const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))

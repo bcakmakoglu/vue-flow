@@ -145,13 +145,14 @@ function defaultState(): State {
 
 export function useState(opts?: FlowOptions): State {
   const state = defaultState()
+
   if (opts) {
-    Object.keys(opts).forEach((o) => {
-      const option = opts[o as keyof typeof opts]
+    for (const key of Object.keys(opts)) {
+      const option = opts[key as keyof typeof opts]
       if (isDef(option)) {
-        ;(state as any)[o] = option
+        ;(state as any)[key] = option
       }
-    })
+    }
   }
 
   return state
