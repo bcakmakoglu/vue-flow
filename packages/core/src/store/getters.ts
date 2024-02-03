@@ -125,10 +125,16 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
     ...(getSelectedEdges.value ?? []),
   ])
 
+  /**
+   * @deprecated will be removed in next major version; use `useNodesInitialized` instead
+   */
   const getNodesInitialized: ComputedGetters['getNodesInitialized'] = computed(() =>
     getNodes.value.filter((n) => n.initialized && n.handleBounds !== undefined),
   )
 
+  /**
+   * @deprecated will be removed in next major version; use `useNodesInitialized` instead
+   */
   const areNodesInitialized: ComputedGetters['areNodesInitialized'] = computed(
     () => getNodes.value.length > 0 && getNodesInitialized.value.length === getNodes.value.length,
   )
