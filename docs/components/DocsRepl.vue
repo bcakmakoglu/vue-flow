@@ -79,7 +79,7 @@ store.setImportMap({
 
 const sfcOptions = {
   script: {
-    reactivityTransform: true,
+    propsDestructure: true,
   },
 } as SFCOptions
 </script>
@@ -89,8 +89,6 @@ const sfcOptions = {
     :editor="CodeMirror"
     :store="store"
     :show-compile-output="false"
-    :show-import-map="false"
-    :show-ts-config="false"
     :sfc-options="sfcOptions"
     :ssr="false"
     @keydown.ctrl.s.prevent
@@ -104,6 +102,7 @@ const sfcOptions = {
 }
 
 .vue-repl {
-  @apply h-screen rounded-lg border-1 border-solid dark:border-gray-200/10 border-gray-200;
+  @apply border-1 border-solid dark:border-gray-200/10 border-gray-200;
+  height: calc(100vh - var(--vp-nav-height) - 0.5rem);
 }
 </style>
