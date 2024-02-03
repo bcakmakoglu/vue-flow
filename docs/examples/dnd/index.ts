@@ -1,3 +1,5 @@
 export { default as DndApp } from './App.vue?raw'
 export { default as DndSidebar } from './Sidebar.vue?raw'
+export { default as DndBackground } from './DropzoneBackground.vue?raw'
 export { default as DndCSS } from './style.css?inline'
+export { default as DndScript } from './useDnD.js?raw'
