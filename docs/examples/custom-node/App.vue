@@ -112,7 +112,7 @@ function onGradient() {
     fit-view-on-init
   >
     <template #node-color-selector="{ data }">
-      <ColorSelectorNode :data="data" @change="onChange" @gradient="onGradient" />
+      <ColorSelectorNode :data="data" />
     </template>
 
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
