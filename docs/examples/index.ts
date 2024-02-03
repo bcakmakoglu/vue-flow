@@ -1,5 +1,5 @@
 import { BasicApp, BasicCSS, BasicElements, BasicIcon } from './basic'
-import { ColorPresets, CustomNode, CustomNodeApp, CustomNodeCSS } from './custom-node'
+import { ColorPresets, ColorSelectorNode, CustomNodeApp, CustomNodeCSS, OutputNode } from './custom-node'
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline'
 import { CustomEdge, CustomEdge2, CustomEdgeLabel, EdgeCSS, EdgesApp } from './edges'
 import { NestedApp } from './nested'
@@ -30,7 +30,8 @@ export const exampleImports = {
   },
   customNode: {
     'App.vue': CustomNodeApp,
-    'CustomNode.vue': CustomNode,
+    'ColorSelectorNode.vue': ColorSelectorNode,
+    'OutputNode.vue': OutputNode,
     'style.css': CustomNodeCSS,
     'presets.js': ColorPresets,
   },
