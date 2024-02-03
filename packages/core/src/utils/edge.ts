@@ -37,13 +37,7 @@ export function getHandle(bounds: HandleElement[] = [], handleId?: string | null
     return null
   }
 
-  if (!handleId || bounds.length === 1) {
-    return bounds[0]
-  } else if (handleId) {
-    return bounds.find((d) => d.id === handleId) || null
-  }
-
-  return null
+  return (!handleId ? bounds[0] : bounds.find((d) => d.id === handleId)) || null
 }
 
 export function getEdgePositions(
