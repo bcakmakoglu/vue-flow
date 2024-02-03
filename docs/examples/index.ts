@@ -14,7 +14,7 @@ import { InteractionApp, InteractionCSS, InteractionControls } from './interacti
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
 import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
 import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
-import { IntersectionApp, IntersectionCSS, IntersectionElements } from './intersection'
+import { IntersectionApp, IntersectionCSS } from './intersection'
 import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
@@ -109,7 +109,6 @@ export const exampleImports = {
   },
   intersection: {
     'App.vue': IntersectionApp,
-    'initial-elements.js': IntersectionElements,
     'style.css': IntersectionCSS,
   },
   snappable: {
