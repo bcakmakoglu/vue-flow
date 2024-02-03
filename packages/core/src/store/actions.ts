@@ -182,6 +182,16 @@ export function useActions(
       return res
     }, [])
 
+    // Here, we are making all nodes visible once we have the dimensions.
+    if (!document.querySelector('#vue-flow__initialized-styles')) {
+      const style = document.createElement('style')
+      style.id = 'vue-flow__initialized-styles'
+      document.head.appendChild(style)
+
+      const css = `.vue-flow__node { visibility: visible !important; }`
+      style.appendChild(document.createTextNode(css))
+    }
+
     if (changes.length) {
       state.hooks.nodesChange.trigger(changes)
     }
