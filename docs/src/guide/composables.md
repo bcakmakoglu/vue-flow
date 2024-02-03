@@ -6,62 +6,120 @@ title: Composables
 
 ## [useVueFlow](/typedocs/functions/useVueFlow)
 
-If you're using the options API of Vue you will soon notice that your access to the state of Vue Flow is limited.
-
-This is where the composition API comes in.
-
-The composition API and the power of provide/inject allows us to act more flexible with the way we provide states inside
-a component tree.
-Thus accessing the internal state of Vue Flow becomes super easy when using composition.
+The `useVueFlow` composable provides you with a set of methods to interact with the graph.
 
 ```vue
 <script setup>
+import { ref } from 'vue'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 
-const { nodes, edges } = useVueFlow({
-  nodes: [
-    {
-      id: '1',
-      label: 'Node 1',
-      position: { x: 0, y: 0 },
-    }
-  ]
-})
+const { onInit, findNode, fitView, snapToGrid } = useVueFlow()
 
-onMounted(() => {
-  console.log(nodes.value) // will log a single node
-  console.log(edges.value) // will log an empty array
+const nodes = ref([/* ... */])
+
+const edges = ref([/* ... */])
+
+// to enable snapping to grid
+snapToGrid.value = true
+
+// any event that is emitted from the `<VueFlow />` component can be listened to using the `onEventName` method
+onInit((instance) => {
+  // `instance` is the same type as the return of `useVueFlow` (VueFlowStore)
+  
+  fitView()
+  
+  const node = findNode('1')
+  
+  if (node) {
+    node.position = { x: 100, y: 100 }
+  }
 })
 </script>
 <template>
-  <VueFlow />
+  <VueFlow :nodes="nodes" :edges="edges" />
 </template>
 ```
 
-`useVueFlow` exposes basically the whole internal state.
-The values are reactive, meaning changing the state values returned from `useVueFlow` will trigger changes in the graph.
+`useVueFlow` exposes the whole internal state, including the nodes and edges.
+The values are reactive, meaning changing the values returned from `useVueFlow` will trigger changes in the graph.
 
-## [useZoomPanHelper](/typedocs/functions/useZoomPanHelper)
+## [useHandleConnections](/typedocs/functions/useHandleConnections)
 
-::: warning [deprecated]
-All functions of `useZoomPanHelper` are also available in `useVueFlow`.
-`useZoomPanHelper` might be removed in a future version.
-:::
+`useHandleConnections` provides you with an array of connections that are connected to the node you pass to it.
 
-The `useZoomPanHelper` utility can be used to access core store functions like getting Elements or
-using viewpane transforms.
-All functions can also be accessed from `useVueFlow`.
-It requires a valid Vue Flow store in its context.
+```ts
+import { useHandleConnections } from '@vue-flow/core'
 
-```vue
-<script setup>
-import { useZoomPanHelper } from '@vue-flow/core'
+// get all connections where this node is the target (incoming connections)
+const targetConnections = useHandleConnections({
+  type: 'target',
+})
 
-const { fitView } = useZoomPanHelper()
-</script>
-<template>
-  <button @click="fitView({ padding: 0.2, includeHiddenNodes: true })"></button>
-</template>
+// get all connections where this node is the source (outgoing connections)
+const sourceConnections = useHandleConnections({
+  type: 'source',
+})
+
+const connections = useHandleConnections({
+  id: 'handle-1', // you can explicitly pass a handle id if there are multiple handles of the same type
+  nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
+  type: 'target',
+  onConnect: (connections: Connection[]) => {
+    // do something with the connections
+  },
+  onDisconnect: (connections: Connection[]) => {
+    // do something with the connections
+  },
+})
+```
+
+## [useNodesData](/typedocs/functions/useNode)
+
+`useNodesData` provides you with an array of data objects depending on the node ids you pass to it.
+It's especially useful when used together with `useHandleConnections`.
+
+```ts
+import { useNodesData, useHandleConnections } from '@vue-flow/core'
+
+// get all connections where this node is the target (incoming connections)
+const connections = useHandleConnections({
+  type: 'target',
+})
+
+const data = useNodesData(() => connections.value.map((connection) => connection.source))
+
+console.log(data.value) // [{ /* ... */]
+```
+
+To further narrow down the type of the returned data, you can pass a guard function as the 2nd argument.
+
+```ts
+import { useNodesData, useHandleConnections, type Node } from '@vue-flow/core'
+
+type MyNode = Node<{ foo: string }>
+
+const connections = useHandleConnections({
+  type: 'target',
+})
+
+const data = useNodesData(() => connections.value.map((connection) => connection.source), (node): node is MyNode => node.type === 'foo')
+
+console.log(data.value) // [{ /* foo: string */]
+```
+
+## [useNodeId](/typedocs/functions/useNodeId)
+
+`useNodeId` provides you with the current node id.
+
+This composable should be called *inside a custom node component*,
+as the id for the node is provided by the internal `<NodeWrapper />` component.
+
+```ts
+import { useNodeId } from '@vue-flow/core'
+
+const nodeId = useNodeId()
+
+console.log(nodeId.value) // '1'
 ```
 
 ## [useHandle](/typedocs/functions/useHandle)
