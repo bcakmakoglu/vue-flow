@@ -1,9 +1,9 @@
 <script setup>
-import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
 import CustomConnectionLine from './CustomConnectionLine.vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     type: 'input',
@@ -14,7 +14,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow :nodes="nodes">
     <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
       <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
     </template>
