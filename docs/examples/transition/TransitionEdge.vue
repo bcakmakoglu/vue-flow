@@ -1,7 +1,7 @@
 <script setup>
+import { computed, ref } from 'vue'
 import { TransitionPresets, useDebounceFn, useTransition, watchDebounced } from '@vueuse/core'
 import { getBezierPath, useVueFlow } from '@vue-flow/core'
-import { computed, ref } from 'vue'
 
 const props = defineProps({
   id: {
