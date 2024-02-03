@@ -25,7 +25,7 @@ import type {
 } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
-import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportFunctions, ViewportTransform } from './zoom'
+import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportTransform } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ConnectingHandle, ValidConnectionFunc } from './handle'
@@ -218,7 +218,7 @@ export type UpdateNodeData = <Data = ElementData, CustomEvents extends Record<st
 
 export type IsNodeIntersecting = (node: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean
 
-export interface Actions extends ViewportFunctions {
+export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** parses elements (nodes + edges) and re-sets the state */
   setElements: SetElements
   /** parses nodes and re-sets the state */

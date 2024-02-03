@@ -966,6 +966,8 @@ export function useActions(
     setCenter: (x, y, opts) => viewportHelper.value.setCenter(x, y, opts),
     fitBounds: (params, opts) => viewportHelper.value.fitBounds(params, opts),
     project: (params) => viewportHelper.value.project(params),
+    screenToFlowCoordinate: (params) => viewportHelper.value.screenToFlowCoordinate(params),
+    flowToScreenCoordinate: (params) => viewportHelper.value.flowToScreenCoordinate(params),
     toObject,
     fromObject,
     updateNodeInternals,
