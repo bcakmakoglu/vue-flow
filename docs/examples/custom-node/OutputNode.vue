@@ -1,17 +1,21 @@
 <script setup>
-import { useHandleConnections, useNodesData } from '@vue-flow/core'
+import { Handle, Position, useHandleConnections, useNodesData } from '@vue-flow/core'
 
-const props = defineProps({
-  id: {
-    type: String,
+defineProps({
+  data: {
+    type: Object,
     required: true,
   },
 })
 
 const connections = useHandleConnections({
-  nodeId: props.id,
   type: 'target',
 })
 
-const data = useNodesData()
+const data = useNodesData(() => connections.value[0]?.source)
 </script>
+
+<template>
+  <Handle type="target" :position="Position.Left" :style="{ backgroundColor: data?.color, filter: 'invert(100%)' }" />
+  {{ data?.isGradient ? 'GRADIENT' : data?.color }}
+</template>
