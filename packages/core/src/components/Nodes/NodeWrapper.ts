@@ -1,4 +1,4 @@
-import { computed, defineComponent, h, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
+import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { until, useVModel } from '@vueuse/core'
 import {
   ARIA_NODE_DESC_KEY,
@@ -121,13 +121,11 @@ const NodeWrapper = defineComponent({
       props.resizeObserver.unobserve(nodeElement.value as HTMLDivElement)
     })
 
-    watch(
-      [() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition],
-      () => {
+    watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () => {
+      nextTick(() => {
         updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }])
-      },
-      { flush: 'pre' },
-    )
+      })
+    })
 
     /** this watcher only updates XYZPosition (when dragging a parent etc) */
     watch(
