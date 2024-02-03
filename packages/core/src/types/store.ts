@@ -1,5 +1,6 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
+import type { ViewportHelper } from '../composables'
 import type {
   Dimensions,
   ElementData,
@@ -56,8 +57,6 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   readonly d3Zoom: D3Zoom | null
   readonly d3Selection: D3Selection | null
   readonly d3ZoomHandler: D3ZoomHandler | null
-
-  viewportInitialized: boolean
 
   /** use setMinZoom action to change minZoom */
   minZoom: number
@@ -291,6 +290,8 @@ export interface Actions extends ViewportFunctions {
   getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => boolean
+  /** viewport helper instance */
+  viewportHelper: ComputedRef<ViewportHelper>
 
   /** reset state to defaults */
   $reset: () => void
