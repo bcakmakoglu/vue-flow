@@ -7,6 +7,7 @@ export function useOnInitHandler() {
   watch(vfInstance.viewportInitialized, (isInitialized) => {
     if (isInitialized) {
       setTimeout(() => {
+        vfInstance.emits.init(vfInstance)
         vfInstance.emits.paneReady(vfInstance)
       }, 1)
     }
