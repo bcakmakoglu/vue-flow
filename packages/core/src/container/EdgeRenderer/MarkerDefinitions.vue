@@ -20,15 +20,21 @@ const markers = computed(() => {
         } else {
           markers.push({ id: markerId, color: defaultColor, type: marker as MarkerType })
         }
+
         ids.push(markerId)
       }
     }
   }
 
-  ;[connectionLineOptions.markerEnd, connectionLineOptions.markerStart].forEach(createMarkers)
+  for (const marker of [connectionLineOptions.markerEnd, connectionLineOptions.markerStart]) {
+    createMarkers(marker)
+  }
 
   edges.reduce<MarkerProps[]>((markers, edge) => {
-    ;[edge.markerStart, edge.markerEnd].forEach(createMarkers)
+    for (const marker of [edge.markerStart, edge.markerEnd]) {
+      createMarkers(marker)
+    }
+
     return markers.sort((a, b) => a.id.localeCompare(b.id))
   }, markers)
 

@@ -169,11 +169,11 @@ function getConnectedElements<T extends Node = Node>(
 
   const origin = dir === 'source' ? 'target' : 'source'
 
-  edges.forEach((edge) => {
+  for (const edge of edges) {
     if (edge[origin] === id) {
       connectedIds.add(edge[dir])
     }
-  })
+  }
 
   return nodes.filter((n) => connectedIds.has(n.id))
 }
@@ -415,7 +415,9 @@ export function getConnectedEdges<E extends Edge>(nodesOrId: Node[] | string, ed
   if (typeof nodesOrId === 'string') {
     nodeIds.add(nodesOrId)
   } else if (nodesOrId.length >= 1) {
-    nodesOrId.forEach((n) => nodeIds.add(n.id))
+    for (const n of nodesOrId) {
+      nodeIds.add(n.id)
+    }
   }
 
   return edges.filter((edge) => nodeIds.has(edge.source) || nodeIds.has(edge.target))
@@ -424,7 +426,9 @@ export function getConnectedEdges<E extends Edge>(nodesOrId: Node[] | string, ed
 export function getConnectedNodes<N extends Node | { id: string } | string>(nodes: N[], edges: Edge[]) {
   const nodeIds = new Set()
 
-  nodes.forEach((node) => nodeIds.add(typeof node === 'string' ? node : node.id))
+  for (const node of nodes) {
+    nodeIds.add(typeof node === 'string' ? node : node.id)
+  }
 
   const connectedNodeIds = edges.reduce((acc, edge) => {
     if (nodeIds.has(edge.source)) {
