@@ -22,19 +22,19 @@
 }
 
 .custom-node-flow .vue-flow__node-color-selector .color-selector button {
-  border: none;
+  border: 1px solid #777;
   cursor: pointer;
   padding: 5px;
   width: 25px;
   height: 25px;
   border-radius: 25px;
-  -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
 }
 
 .custom-node-flow .vue-flow__node-color-selector .color-selector button:hover {
   -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  transform: scale(105%);
+  transition: 250ms all ease;
 }
 
 .animated-bg-gradient {
