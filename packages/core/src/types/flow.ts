@@ -250,7 +250,9 @@ export interface FlowEmits {
   (event: 'viewportChangeStart', viewport: ViewportTransform): void
   (event: 'viewportChange', viewport: ViewportTransform): void
   (event: 'viewportChangeEnd', viewport: ViewportTransform): void
+  /** @deprecated use `init` instead */
   (event: 'paneReady', paneEvent: VueFlowStore): void
+  (event: 'init', paneEvent: VueFlowStore): void
   (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
   (event: 'paneClick', paneEvent: MouseEvent): void
   (event: 'paneContextMenu', paneEvent: MouseEvent): void
