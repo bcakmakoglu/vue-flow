@@ -1,4 +1,17 @@
 <script setup>
-const props = defineProps();
+import { useHandleConnections, useNodesData } from '@vue-flow/core'
 
-const { }
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+})
+
+const connections = useHandleConnections({
+  nodeId: props.id,
+  type: 'target',
+})
+
+const data = useNodesData()
+</script>

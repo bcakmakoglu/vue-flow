@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@vue-flow/core@1.20.2/dist/vue-flow-core.iife.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@vue-flow/background@1.0.4/dist/vue-flow-background.iife.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@vue-flow/core@1.20.2/dist/style.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vue-flow/core@1.20.2/dist/theme-default.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="app" style="height: 100vh"></div>
+
+<script>
+  const { ref, createApp, h } = Vue
+  const { VueFlow } = vueFlowCore
+
+  const app = createApp({
+    setup() {
+      const elements = ref([
+        { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
+        { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
+        { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
+        { id: '4', type: 'output', label: 'Node 4', position: { x: 400, y: 200 } },
+        { id: 'e1-3', source: '1', target: '3' },
+        { id: 'e1-2', source: '1', target: '2', animated: true },
+      ])
+
+      return () => h(VueFlow, { modelValue: elements.value })
+    },
+  })
+
+  app.mount('#app')
+</script>
+</body>
+</html>
