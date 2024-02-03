@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
 import SaveRestoreControls from './Controls.vue'
 
-const elements = ref([{ id: '1', label: 'Node 1', position: { x: 100, y: 100 } }])
+const nodes = ref([{ id: '1', label: 'Node 1', position: { x: 100, y: 100 } }])
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow :nodes="nodes">
     <SaveRestoreControls />
   </VueFlow>
 </template>

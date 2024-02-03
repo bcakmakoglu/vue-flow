@@ -3,7 +3,7 @@ import { Panel, useVueFlow } from '@vue-flow/core'
 
 const flowKey = 'example-flow'
 
-const { nodes, addNodes, setNodes, setEdges, dimensions, setTransform, toObject } = useVueFlow()
+const { nodes, addNodes, dimensions, toObject, fromObject } = useVueFlow()
 
 function onSave() {
   localStorage.setItem(flowKey, JSON.stringify(toObject()))
@@ -13,10 +13,7 @@ function onRestore() {
   const flow = JSON.parse(localStorage.getItem(flowKey))
 
   if (flow) {
-    const [x = 0, y = 0] = flow.position
-    setNodes(flow.nodes)
-    setEdges(flow.edges)
-    setTransform({ x, y, zoom: flow.zoom || 0 })
+    fromObject(flow)
   }
 }
 

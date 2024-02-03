@@ -1,6 +1,6 @@
 <script setup>
-import { Position, VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
+import { Position, VueFlow } from '@vue-flow/core'
 import ToolbarNode from './ToolbarNode.vue'
 
 const defaultNodeStyle = {
@@ -10,7 +10,7 @@ const defaultNodeStyle = {
   borderRadius: '99px',
 }
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     type: 'toolbar',
@@ -55,7 +55,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow :nodes="nodes" fit-view-on-init class="vue-flow-basic-example">
     <template #node-toolbar="nodeProps">
       <ToolbarNode :data="nodeProps.data" :label="nodeProps.label" />
     </template>

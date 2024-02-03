@@ -1,9 +1,11 @@
 <script setup>
+import { ref } from 'vue'
 import { Background } from '@vue-flow/background'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
-import { ref } from 'vue'
 
-const elements = ref([
+const { updateEdge, addEdges } = useVueFlow()
+
+const nodes = ref([
   {
     id: '1',
     type: 'input',
@@ -21,31 +23,31 @@ const elements = ref([
     position: { x: 400, y: 100 },
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
-  { id: 'e1-2', source: '1', target: '2', label: 'Updateable edge', updatable: true },
 ])
 
-const { updateEdge, addEdges } = useVueFlow()
+const edges = ref([{ id: 'e1-2', source: '1', target: '2', label: 'Updateable edge', updatable: true }])
 
 function onEdgeUpdateStart(edge) {
-  return console.log('start update', edge)
+  console.log('start update', edge)
 }
 
 function onEdgeUpdateEnd(edge) {
-  return console.log('end update', edge)
+  console.log('end update', edge)
 }
 
 function onEdgeUpdate({ edge, connection }) {
-  return updateEdge(edge, connection)
+  updateEdge(edge, connection)
 }
 
 function onConnect(params) {
-  return addEdges([params])
+  addEdges([params])
 }
 </script>
 
 <template>
   <VueFlow
-    v-model="elements"
+    :nodes="nodes"
+    :edges="edges"
     fit-view-on-init
     @edge-update="onEdgeUpdate"
     @connect="onConnect"
