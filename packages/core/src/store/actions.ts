@@ -826,6 +826,7 @@ export function useActions(
             resizing: ______,
             dragging: _______,
             initialized: ________,
+            events: _________,
             ...rest
           } = n
 
@@ -833,7 +834,7 @@ export function useActions(
         }),
         edges: state.edges.map((e) => {
           // omit internal properties when exporting
-          const { selected: _, sourceNode: __, targetNode: ___, ...rest } = e
+          const { selected: _, sourceNode: __, targetNode: ___, events: ____, ...rest } = e
 
           return rest
         }),
