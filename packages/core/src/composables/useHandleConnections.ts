@@ -9,8 +9,8 @@ import { useVueFlow } from './useVueFlow'
 
 interface UseHandleConnectionsParams {
   type: MaybeRefOrGetter<HandleType>
-  id?: MaybeRefOrGetter<string | undefined>
-  nodeId?: MaybeRefOrGetter<string | undefined>
+  id?: MaybeRefOrGetter<string | null>
+  nodeId?: MaybeRefOrGetter<string | null>
   onConnect?: (connections: Connection[]) => void
   onDisconnect?: (connections: Connection[]) => void
 }
@@ -35,13 +35,19 @@ export function useHandleConnections({
   onDisconnect,
 }: UseHandleConnectionsParams): ComputedRef<Connection[]> {
   const { connectionLookup } = useVueFlow()
+
   const _nodeId = useNodeId()
-  const currentNodeId = toRef(() => toValue(nodeId) || _nodeId)
+
+  const currentNodeId = toRef(() => toValue(nodeId) ?? _nodeId)
+
+  const handleType = toRef(() => toValue(type))
+
+  const handleId = toRef(() => toValue(id) ?? null)
 
   const connections = ref<Map<string, Connection>>()
 
   watch(
-    () => connectionLookup.value.get(`${currentNodeId.value}-${toValue(type)}-${toValue(id)}`),
+    () => connectionLookup.value.get(`${currentNodeId.value}-${handleType.value}-${handleId.value}`),
     (nextConnections) => {
       if (areConnectionMapsEqual(connections.value, nextConnections)) {
         return
