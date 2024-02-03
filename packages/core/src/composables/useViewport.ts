@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import type { ComputedGetters, D3Selection, GraphNode, Project, State, ViewportFunctions } from '../types'
 import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint, warn } from '../utils'
 
-interface ExtendedViewport extends ViewportFunctions {
+export interface ViewportHelper extends ViewportFunctions {
   viewportInitialized: boolean
   screenToFlowCoordinate: Project
   flowToScreenCoordinate: Project
@@ -17,7 +17,7 @@ function noop() {
   return Promise.resolve(false)
 }
 
-const initialViewportHelper: ExtendedViewport = {
+const initialViewportHelper: ViewportHelper = {
   zoomIn: noop,
   zoomOut: noop,
   zoomTo: noop,
@@ -72,7 +72,7 @@ export function useViewport(state: State, getters: ComputedGetters) {
     })
   }
 
-  return computed<ExtendedViewport>(() => {
+  return computed<ViewportHelper>(() => {
     const isInitialized = state.d3Zoom && state.d3Selection && state.dimensions.width && state.dimensions.height
 
     if (!isInitialized) {

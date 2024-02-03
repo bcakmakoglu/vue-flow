@@ -8,20 +8,19 @@ import { VueFlow } from '@vue-flow/core'
 import type { FlowProps } from '@vue-flow/core'
 
 function mountVueFlow(props?: FlowProps, attrs?: Record<string, any>, slots?: Record<string, any>) {
-  cy.mount(VueFlow as any, {
+  cy.mount(VueFlow, {
     props: {
       id: 'test',
       fitViewOnInit: true,
       ...props,
     } as FlowProps,
     attrs: {
-      key: 'flowy',
       style: {
         height: '100vh',
         width: '100vw',
-      },
+      } as CSSStyleDeclaration,
       ...attrs,
-    } as Record<string, any>,
+    },
     slots,
   })
 }

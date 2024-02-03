@@ -939,6 +939,7 @@ export function useActions(
     toObject,
     fromObject,
     updateNodeInternals,
+    viewportHelper,
     $reset,
     $destroy: () => {},
   }
