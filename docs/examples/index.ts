@@ -8,7 +8,7 @@ import { UpdateEdgeApp } from './update-edge'
 import { UpdateNodeApp, UpdateNodeCSS } from './update-node'
 import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode } from './validation'
 import { SaveRestoreApp, SaveRestoreCSS, SaveRestoreControls } from './save-restore'
-import { DndApp, DndCSS, DndSidebar } from './dnd'
+import { DndApp, DndBackground, DndCSS, DndScript, DndSidebar } from './dnd'
 import { EmptyApp } from './empty'
 import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
@@ -75,7 +75,9 @@ export const exampleImports = {
   dnd: {
     'App.vue': DndApp,
     'Sidebar.vue': DndSidebar,
+    'DropzoneBackground.vue': DndBackground,
     'style.css': DndCSS,
+    'useDnD.js': DndScript,
   },
   empty: {
     'App.vue': EmptyApp,
