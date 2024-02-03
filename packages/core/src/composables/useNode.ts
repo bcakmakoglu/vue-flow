@@ -6,11 +6,14 @@ import { useVueFlow } from './useVueFlow'
 import { useNodeId } from './useNodeId'
 
 /**
- * Access a node, it's parent (if one exists) and connected edges
+ * This composable provides access to a node object, parent node object, connected edges and it's dom element
  *
  * If no node id is provided, the node id is injected from context
  *
- * Meaning if you do not provide an id, this composable has to be called in a child of your custom node component, or it will throw
+ * If you do not provide an id, this composable has to be called in a child of your custom node component, or it will throw
+ *
+ * @param id - The id of the node to access
+ * @returns the node id, the node, the node dom element, it's parent and connected edges
  */
 export function useNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
   const nodeId = id ?? useNodeId() ?? ''

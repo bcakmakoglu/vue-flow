@@ -18,13 +18,13 @@ interface UseHandleConnectionsParams {
 /**
  * Composable that returns existing connections of a handle
  *
- * @public
  * @param UseHandleConnectionsParams
  * @param UseHandleConnectionsParams.type - handle type `source` or `target`
  * @param UseHandleConnectionsParams.nodeId - node id - if not provided, the node id from the `useNodeId` (meaning, the context-based injection) is used
  * @param UseHandleConnectionsParams.id - the handle id (this is required if the node has multiple handles of the same type)
  * @param UseHandleConnectionsParams.onConnect - gets called when a connection is created
  * @param UseHandleConnectionsParams.onDisconnect - gets called when a connection is removed
+ *
  * @returns An array of connections
  */
 export function useHandleConnections({

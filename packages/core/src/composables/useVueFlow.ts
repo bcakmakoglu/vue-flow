@@ -87,6 +87,15 @@ type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 // todo: maybe replace the storage with a context based solution; This would break calling useVueFlow outside a setup function though, which should be fine
+/**
+ * Composable that provides access to a store instance
+ *
+ * If no id is provided, the store instance is injected from context
+ *
+ * If no store instance is found in context, a new store instance is created and registered in storage
+ *
+ * @returns a vue flow store instance
+ */
 export function useVueFlow(options?: FlowProps): VueFlowStore {
   const storage = Storage.getInstance()
 

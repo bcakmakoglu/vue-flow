@@ -31,6 +31,11 @@ function alwaysValid() {
   return true
 }
 
+/**
+ * This composable provides listeners for handle events
+ *
+ * Generally it's recommended to use the `<Handle />` component instead of this composable.
+ */
 export function useHandle({
   handleId,
   nodeId,
