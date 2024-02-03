@@ -1,9 +1,9 @@
 <script setup>
-import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
 import ConnectionLine from './SnappableConnectionLine.vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     label: 'Node 1',
@@ -23,7 +23,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements" :connection-radius="30" auto-connect fit-view-on-init>
+  <VueFlow :nodes="nodes" :connection-radius="30" auto-connect fit-view-on-init>
     <template #connection-line="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }">
       <ConnectionLine
         :source-x="sourceX"
