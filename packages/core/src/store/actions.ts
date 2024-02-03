@@ -601,7 +601,7 @@ export function useActions(
   }
 
   // todo: maybe we should use a more immutable approach, this is a bit too much mutation and hard to maintain
-  const updateNode: Actions['updateNode'] = (id, nodeUpdate, options = { replace: true }) => {
+  const updateNode: Actions['updateNode'] = (id, nodeUpdate, options = { replace: false }) => {
     const node = findNode(id)
 
     if (!node) {
