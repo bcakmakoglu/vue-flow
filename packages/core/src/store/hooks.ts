@@ -59,6 +59,7 @@ export function createHooks(): FlowHooks {
     edgeUpdate: createExtendedEventHook(),
     edgeUpdateEnd: createExtendedEventHook(),
     updateNodeInternals: createExtendedEventHook(),
+    beforeDelete: createExtendedEventHook(),
     error: createExtendedEventHook((err) => warn(err.message)),
   }
 }

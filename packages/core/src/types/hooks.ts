@@ -93,6 +93,7 @@ export interface FlowEvents {
   edgeUpdateStart: EdgeMouseEvent
   edgeUpdate: EdgeUpdateEvent
   edgeUpdateEnd: EdgeMouseEvent
+  beforeDelete: { nodes: GraphNode[]; edges: GraphEdge[]; shouldDelete: () => boolean }
   error: VueFlowError
 }
 

@@ -271,6 +271,7 @@ export interface FlowEmits {
   (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'updateNodeInternals'): void
   (event: 'error', error: VueFlowError): void
+  (event: 'beforeDelete', deleteEvent: { nodes: GraphNode[]; edges: GraphEdge[]; shouldDelete: () => boolean }): void
 
   /** v-model event definitions */
   (event: 'update:modelValue', value: FlowElements): void
