@@ -103,7 +103,7 @@ export interface DefaultEdge<
   template?: EdgeComponent
   /** Additional data that is passed to your custom components */
   data?: Data
-  /** contextual and custom events of edge */
+  /** @deprecated will be removed in the next major version */
   events?: Partial<EdgeEventsHandler<CustomEvents>>
   /** Aria label for edge (a11y) */
   zIndex?: number
@@ -159,6 +159,7 @@ export type GraphEdge<
   sourceNode: GraphNode
   targetNode: GraphNode
   data: Data
+  /** @deprecated will be removed in the next major version */
   events: Partial<EdgeEventsHandler<CustomEvents>>
   type: Type
 } & EdgePositions

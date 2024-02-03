@@ -114,6 +114,7 @@ export interface GraphNode<
   dragging: boolean
   initialized: boolean
   data: Data
+  /** @deprecated will be removed in the next major version */
   events: Partial<NodeEventsHandler<CustomEvents>>
   type: Type
 }
