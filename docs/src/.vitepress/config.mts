@@ -200,7 +200,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Basic', link: '/examples/' },
             { text: 'Save & Restore', link: '/examples/save' },
             { text: 'Drag & Drop', link: '/examples/dnd' },
-            { text: 'Empty Flow', link: '/examples/empty' },
             { text: 'Hide/Show', link: '/examples/hidden' },
             { text: 'Horizontal Flow', link: '/examples/horizontal' },
             { text: 'Interactions', link: '/examples/interaction' },
