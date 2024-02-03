@@ -71,6 +71,7 @@ export { useGetPointerPosition } from './composables/useGetPointerPosition'
 export { useNodeId } from './composables/useNodeId'
 export { useConnection } from './composables/useConnection'
 export { useHandleConnections } from './composables/useHandleConnections'
+export { useNodesData } from './composables/useNodesData'
 
 export { VueFlowError, ErrorCode } from './utils/errors'
 
