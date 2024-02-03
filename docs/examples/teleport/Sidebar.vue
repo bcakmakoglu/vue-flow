@@ -1,7 +1,3 @@
-<script setup>
-// ...
-</script>
-
 <template>
   <aside>
     <div class="description">Teleport destination</div>

@@ -1,9 +1,9 @@
 <script setup>
-import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
 import ResizableNode from './ResizableNode.vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     type: 'resizable',
@@ -15,7 +15,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init>
+  <VueFlow :nodes="nodes" fit-view-on-init>
     <template #node-resizable="resizableNodeProps">
       <ResizableNode :label="resizableNodeProps.label" />
     </template>

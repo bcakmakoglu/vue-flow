@@ -1,10 +1,10 @@
 <script setup>
-import { VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
 import Sidebar from './Sidebar.vue'
 import TeleportableNode from './TeleportableNode.vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     label: 'Click to teleport',
@@ -26,6 +26,9 @@ const elements = ref([
     position: { x: 0, y: 200 },
     data: {},
   },
+])
+
+const edges = ref([
   {
     id: 'e1-2',
     source: '1',
@@ -36,7 +39,7 @@ const elements = ref([
 
 <template>
   <div class="teleportflow">
-    <VueFlow v-model="elements" fit-view-on-init>
+    <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
       <template #node-teleportable="{ id }">
         <TeleportableNode :id="id" />
       </template>

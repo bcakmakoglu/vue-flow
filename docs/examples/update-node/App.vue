@@ -1,15 +1,8 @@
 <script setup>
+import { reactive, ref } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
-import { reactive } from 'vue'
 
-const defaultLabel = '-'
-const { onPaneReady, getNode } = useVueFlow({
-  nodes: [
-    { id: '1', label: defaultLabel, position: { x: 100, y: 100 } },
-    { id: '2', label: 'Node 2', position: { x: 100, y: 200 } },
-  ],
-  edges: [{ id: 'e1-2', source: '1', target: '2' }],
-})
+const { onPaneReady, findNode, updateNode } = useVueFlow()
 
 const opts = reactive({
   bg: '#eeeeee',
@@ -17,31 +10,34 @@ const opts = reactive({
   hidden: false,
 })
 
-function updateNode() {
-  const node = getNode.value('1')
-  node.label = opts.label.trim() !== '' ? opts.label : defaultLabel
-  node.style = { backgroundColor: opts.bg }
-  node.hidden = opts.hidden
-}
+const nodes = ref([
+  { id: '1', label: opts.label, style: { backgroundColor: opts.bg }, hidden: opts.hidden, position: { x: 100, y: 100 } },
+  { id: '2', label: 'Node 2', position: { x: 100, y: 200 } },
+])
+
+const edges = ref([{ id: 'e1-2', source: '1', target: '2' }])
 
 onPaneReady(({ fitView }) => {
   fitView()
-  updateNode()
 })
+
+function handleUpdate() {
+  updateNode(nodes.value[0].id, { label: opts.label, style: { backgroundColor: opts.bg }, hidden: opts.hidden })
+}
 </script>
 
 <template>
-  <VueFlow>
+  <VueFlow :nodes="nodes" :edges="edges">
     <div class="updatenode__controls">
       <label>label:</label>
-      <input v-model="opts.label" @input="updateNode" />
+      <input v-model="opts.label" @input="handleUpdate" />
 
       <label class="updatenode__bglabel">background:</label>
-      <input v-model="opts.bg" type="color" @input="updateNode" />
+      <input v-model="opts.bg" type="color" @input="handleUpdate" />
 
       <div class="updatenode__checkboxwrapper">
         <label>hidden:</label>
-        <input v-model="opts.hidden" type="checkbox" @change="updateNode" />
+        <input v-model="opts.hidden" type="checkbox" @change="handleUpdate" />
       </div>
     </div>
   </VueFlow>
