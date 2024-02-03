@@ -1,13 +1,6 @@
 <script setup>
 import { Handle, Position, useHandleConnections, useNodesData } from '@vue-flow/core'
 
-defineProps({
-  data: {
-    type: Object,
-    required: true,
-  },
-})
-
 const connections = useHandleConnections({
   type: 'target',
 })

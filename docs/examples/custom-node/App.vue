@@ -1,14 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, toRef } from 'vue'
 import { MiniMap } from '@vue-flow/minimap'
-import { Position, VueFlow, useNodesData, useVueFlow } from '@vue-flow/core'
+import { Position, VueFlow } from '@vue-flow/core'
 import ColorSelectorNode from './ColorSelectorNode.vue'
 import OutputNode from './OutputNode.vue'
 import { presets } from './presets.js'
-
-useVueFlow()
-
-const nodeData = useNodesData('1')
 
 const nodes = ref([
   {
@@ -25,6 +21,8 @@ const nodes = ref([
   },
 ])
 
+const colorSelectorData = toRef(() => nodes.value[0].data)
+
 const edges = ref([
   {
     id: 'e1a-2',
@@ -33,7 +31,7 @@ const edges = ref([
     target: '2',
     animated: true,
     style: () => ({
-      stroke: nodeData.value?.color,
+      stroke: colorSelectorData.value?.color,
       filter: 'invert(100%)',
     }),
   },
@@ -55,7 +53,7 @@ function nodeStroke(n) {
 
 function nodeColor(n) {
   if (n.type === 'color-selector') {
-    return nodeData.value?.color
+    return colorSelectorData.value?.color
   }
 
   return '#fff'
@@ -64,20 +62,20 @@ function nodeColor(n) {
 
 <template>
   <VueFlow
-    :nodes="nodes"
+    v-model:nodes="nodes"
     :edges="edges"
     class="custom-node-flow"
-    :class="[nodeData?.isGradient ? 'animated-bg-gradient' : '']"
-    :style="{ backgroundColor: nodeData?.color }"
+    :class="[colorSelectorData?.isGradient ? 'animated-bg-gradient' : '']"
+    :style="{ backgroundColor: colorSelectorData?.color }"
     :default-viewport="{ zoom: 1.5 }"
     fit-view-on-init
   >
-    <template #node-color-selector="{ data }">
-      <ColorSelectorNode :data="data" />
+    <template #node-color-selector="{ id }">
+      <ColorSelectorNode :id="id" />
     </template>
 
-    <template #node-output="{ data }">
-      <OutputNode :data="data" />
+    <template #node-output>
+      <OutputNode />
     </template>
 
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />

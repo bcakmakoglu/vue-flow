@@ -1,24 +1,22 @@
 <script setup>
-import { Handle, Position, useNodeId, useVueFlow } from '@vue-flow/core'
+import { Handle, Position, useVueFlow } from '@vue-flow/core'
 import { colors } from './presets.js'
 
-defineProps({
-  data: {
-    type: Object,
+const props = defineProps({
+  id: {
+    type: String,
     required: true,
   },
 })
 
-const nodeId = useNodeId()
-
 const { updateNodeData } = useVueFlow()
 
 function onSelect(color) {
-  updateNodeData(nodeId, { color }, { replace: true })
+  updateNodeData(props.id, { color, isGradient: false })
 }
 
 function onGradient() {
-  updateNodeData(nodeId, { isGradient: true }, { replace: true })
+  updateNodeData(props.id, { isGradient: true })
 }
 </script>
 

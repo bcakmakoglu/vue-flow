@@ -13,23 +13,19 @@ const edges = ref(initialEdges)
 
 const { dimensions, fitView } = useVueFlow()
 
-function toggleClass() {
-  nodes.value = nodes.value.map((node) => ({ ...node, class: node.class === 'light' ? 'dark' : 'light' }))
-}
-
 function updatePos() {
   nodes.value = nodes.value.map((node) => {
     return {
       ...node,
       position: {
-        x: Math.random() * 10 * dimensions.value.width,
-        y: Math.random() * 10 * dimensions.value.height,
+        x: Math.random() * dimensions.value.width,
+        y: Math.random() * dimensions.value.height,
       },
     }
   })
 
   nextTick(() => {
-    fitView({ duration: 1000, padding: 0.5 })
+    fitView({ padding: 0.5 })
   })
 }
 </script>
@@ -42,7 +38,6 @@ function updatePos() {
 
     <Panel position="top-right">
       <button style="margin-right: 5px" @click="updatePos">update positions</button>
-      <button @click="toggleClass">toggle class</button>
     </Panel>
   </VueFlow>
 </template>
