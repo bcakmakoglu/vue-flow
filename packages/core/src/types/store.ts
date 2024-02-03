@@ -57,6 +57,8 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   readonly d3Selection: D3Selection | null
   readonly d3ZoomHandler: D3ZoomHandler | null
 
+  viewportInitialized: boolean
+
   /** use setMinZoom action to change minZoom */
   minZoom: number
   /** use setMaxZoom action to change maxZoom */

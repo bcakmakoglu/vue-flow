@@ -54,8 +54,6 @@ import { useState } from './state'
 
 export function useActions(
   id: string,
-  emits: any,
-  hooksOn: any,
   state: State,
   getters: ComputedGetters,
   // todo: change to a Set
@@ -846,7 +844,7 @@ export function useActions(
         const y = viewport?.y || position[1]
         const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
 
-        return until(() => viewportHelper.value.initialized)
+        return until(() => viewportHelper.value.viewportInitialized)
           .toBe(true)
           .then(() => {
             viewportHelper.value
@@ -891,7 +889,7 @@ export function useActions(
     setState(resetState)
   }
 
-  const actions: Actions = {
+  return {
     updateNodePositions,
     updateNodeDimensions,
     setElements,
@@ -944,20 +942,4 @@ export function useActions(
     $reset,
     $destroy: () => {},
   }
-
-  until(() => viewportHelper.value.initialized)
-    .toBe(true)
-    .then(() => {
-      state.hooks.paneReady.trigger({
-        id,
-        emits,
-        vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
-        ...hooksOn,
-        ...state,
-        ...getters,
-        ...actions,
-      })
-    })
-
-  return actions
 }
