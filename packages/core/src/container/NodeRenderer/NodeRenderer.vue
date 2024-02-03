@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, ref, resolveComponent } from 'vue'
-import { until } from '@vueuse/core'
+import { whenever } from '@vueuse/core'
 import { NodeWrapper } from '../../components'
 import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
 import { Slots } from '../../context'
@@ -26,13 +26,14 @@ const resizeObserver = ref<ResizeObserver>()
 
 const instance = getCurrentInstance()
 
-until(() => areNodesInitialized.value)
-  .toBe(true)
-  .then(() => {
+whenever(
+  () => areNodesInitialized.value,
+  () => {
     nextTick(() => {
       emits.nodesInitialized(getNodesInitialized.value)
     })
-  })
+  },
+)
 
 onMounted(() => {
   resizeObserver.value = new ResizeObserver((entries) => {
