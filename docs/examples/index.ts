@@ -12,7 +12,6 @@ import { DndApp, DndBackground, DndCSS, DndScript, DndSidebar } from './dnd'
 import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
-import { HorizontalApp, HorizontalElements } from './horizontal'
 import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
 import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
 import { IntersectionApp, IntersectionCSS, IntersectionElements } from './intersection'
@@ -90,10 +89,6 @@ export const exampleImports = {
     'App.vue': MultiApp,
     'Flow.vue': MultiFlow,
     'style.css': MultiCSS,
-  },
-  horizontal: {
-    'App.vue': HorizontalApp,
-    'initial-elements.js': HorizontalElements,
   },
   teleport: {
     'App.vue': TeleportApp,
