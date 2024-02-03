@@ -1,6 +1,9 @@
+import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import type { GraphNode, Node } from '../types'
 import { useVueFlow } from './useVueFlow'
+
+type NodeData<NodeType extends Node = GraphNode> = NonNullable<NodeType['data']>
 
 /**
  * Composable for receiving data of one or multiple nodes
@@ -10,12 +13,12 @@ import { useVueFlow } from './useVueFlow'
  * @param guard - Optional guard function to narrow down the node type
  * @returns An array of data objects
  */
-export function useNodesData<NodeType extends Node = GraphNode>(nodeId: string): NodeType['data'] | null
-export function useNodesData<NodeType extends Node = GraphNode>(nodeIds: string[]): NodeType['data'][]
+export function useNodesData<NodeType extends Node = GraphNode>(nodeId: string): ComputedRef<NodeData<NodeType> | null>
+export function useNodesData<NodeType extends Node = GraphNode>(nodeIds: string[]): ComputedRef<NodeData<NodeType>[]>
 export function useNodesData<NodeType extends Node = GraphNode>(
   nodeIds: string[],
   guard: (node: Node) => node is NodeType,
-): NodeType['data'][]
+): ComputedRef<NodeData<NodeType>[]>
 export function useNodesData(nodeIds: any): any {
   const { findNode } = useVueFlow()
 
