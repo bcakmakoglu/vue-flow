@@ -13,7 +13,6 @@ import { useResizeHandler } from '../../composables/useResizeHandler'
 import Transform from './Transform.vue'
 
 const {
-  id,
   minZoom,
   maxZoom,
   defaultViewport,
@@ -378,7 +377,7 @@ export default {
 </script>
 
 <template>
-  <div ref="viewportRef" :key="`viewport-${id}`" class="vue-flow__viewport vue-flow__container">
+  <div ref="viewportRef" class="vue-flow__viewport vue-flow__container">
     <Pane
       :is-selecting="isSelecting"
       :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: shouldPanOnDrag }"

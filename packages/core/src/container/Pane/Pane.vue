@@ -12,7 +12,6 @@ import { getMousePosition } from './utils'
 const { isSelecting } = defineProps<{ isSelecting: boolean }>()
 
 const {
-  id,
   vueFlowRef,
   getNodes,
   getEdges,
@@ -252,7 +251,6 @@ export default {
 <template>
   <div
     ref="container"
-    :key="`pane-${id}`"
     class="vue-flow__pane vue-flow__container"
     :class="{ selection: isSelecting }"
     @click="onClick"
