@@ -50,6 +50,9 @@ function defaultState(): State {
     d3Zoom: null,
     d3Selection: null,
     d3ZoomHandler: null,
+
+    viewportInitialized: false,
+
     minZoom: 0.5,
     maxZoom: 2,
 
