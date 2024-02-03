@@ -101,7 +101,7 @@ export function getClosestHandle(
   let closestHandles: { handle: ConnectionHandle; validHandleResult: ValidHandleResult }[] = []
   let minDistance = Number.POSITIVE_INFINITY
 
-  handles.forEach((handle) => {
+  for (const handle of handles) {
     const distance = Math.sqrt((handle.x - pos.x) ** 2 + (handle.y - pos.y) ** 2)
 
     if (distance <= connectionRadius) {
@@ -121,7 +121,7 @@ export function getClosestHandle(
         minDistance = distance
       }
     }
-  })
+  }
 
   if (!closestHandles.length) {
     return { handle: null, validHandleResult: defaultValidHandleResult() }

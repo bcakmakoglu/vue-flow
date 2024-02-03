@@ -110,7 +110,7 @@ export function useActions(
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
     const changes: NodePositionChange[] = []
 
-    dragItems.forEach((node) => {
+    for (const node of dragItems) {
       const change: Partial<NodePositionChange> = {
         id: node.id,
         type: 'position',
@@ -132,7 +132,7 @@ export function useActions(
       }
 
       changes.push(change as NodePositionChange)
-    })
+    }
 
     if (changes?.length) {
       state.hooks.nodesChange.trigger(changes)
@@ -485,8 +485,8 @@ export function useActions(
   }
 
   const removeNodes: Actions['removeNodes'] = (nodes, removeConnectedEdges = true, removeChildren = false) => {
-    let nodesToRemove = nodes instanceof Function ? nodes(state.nodes) : nodes
-    nodesToRemove = Array.isArray(nodesToRemove) ? nodesToRemove : [nodesToRemove]
+    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
+    const nodesToRemove = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
     const nodeChanges: NodeRemoveChange[] = []
     const edgeChanges: EdgeRemoveChange[] = []
@@ -519,21 +519,21 @@ export function useActions(
           createEdgeRemovalChanges(children)
         }
 
-        children.forEach((child) => {
+        for (const child of children) {
           createChildrenRemovalChanges(child.id)
-        })
+        }
       }
     }
 
-    nodesToRemove.forEach((item) => {
+    for (const item of nodesToRemove) {
       const currNode = typeof item === 'string' ? findNode(item) : item
 
       if (!currNode) {
-        return
+        continue
       }
 
       if (isDef(currNode.deletable) && !currNode.deletable) {
-        return
+        continue
       }
 
       nodeChanges.push(createNodeRemoveChange(currNode.id))
@@ -545,7 +545,7 @@ export function useActions(
       if (removeChildren) {
         createChildrenRemovalChanges(currNode.id)
       }
-    })
+    }
 
     if (edgeChanges.length) {
       state.hooks.edgesChange.trigger(edgeChanges)
@@ -557,20 +557,20 @@ export function useActions(
   }
 
   const removeEdges: Actions['removeEdges'] = (edges) => {
-    let edgesToRemove = edges instanceof Function ? edges(state.edges) : edges
-    edgesToRemove = Array.isArray(edgesToRemove) ? edgesToRemove : [edgesToRemove]
+    const nextEdges = edges instanceof Function ? edges(state.edges) : edges
+    const edgesToRemove = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
 
     const changes: EdgeRemoveChange[] = []
 
-    edgesToRemove.forEach((item) => {
+    for (const item of edgesToRemove) {
       const currEdge = typeof item === 'string' ? findEdge(item) : item
 
       if (!currEdge) {
-        return
+        continue
       }
 
       if (isDef(currEdge.deletable) && !currEdge.deletable) {
-        return
+        continue
       }
 
       changes.push(
@@ -582,7 +582,7 @@ export function useActions(
           currEdge.targetHandle,
         ),
       )
-    })
+    }
 
     state.hooks.edgesChange.trigger(changes)
   }
@@ -777,14 +777,14 @@ export function useActions(
       }
     }
 
-    Object.keys(opts).forEach((o) => {
+    for (const o of Object.keys(opts)) {
       const key = o as keyof State
       const option = opts[key]
 
       if (![...skip, ...exclude].includes(key) && isDef(option)) {
         ;(<any>state)[key] = option
       }
-    })
+    }
 
     until(() => state.d3Zoom)
       .not.toBeNull()
