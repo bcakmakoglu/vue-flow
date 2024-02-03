@@ -446,21 +446,15 @@ const edges = ref([
 
 - Default: `2`
 
-### default-zoom (optional)
+### default-viewport (optional)
 
-- Type: `number`
+- Type: [`ViewportTransform`](/typedocs/interfaces/ViewportTransform)
 
-- Default: `1`
-
-### default-position (optional)
-
-- Type: `[x: number, y: number]`
-
-- Default: `[0, 0]`
+- Default: `{ zoom: 1, position: { x: 0, y: 0 } }`
 
 - Details:
 
-  Default viewport position on initial load.
+  The default viewport when the component is mounted.
 
 ### translate-extent (optional)
 
