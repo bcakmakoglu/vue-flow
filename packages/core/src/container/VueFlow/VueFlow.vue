@@ -4,9 +4,11 @@ import { onUnmounted, provide } from 'vue'
 import Viewport from '../Viewport/Viewport.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
-import { useVueFlow, useWatchProps } from '../../composables'
-import { useHooks } from '../../store'
 import { Slots } from '../../context'
+import { useOnInitHandler } from '../../composables/useOnInitHandler'
+import { useWatchProps } from '../../composables/useWatchProps'
+import { useVueFlow } from '../../composables/useVueFlow'
+import { useHooks } from '../../store/hooks'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: undefined,
@@ -63,6 +65,8 @@ const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges
 })
 
 useHooks(emit, hooks)
+
+useOnInitHandler()
 
 // slots will be passed via provide
 // this is to avoid having to pass them down through all the components
