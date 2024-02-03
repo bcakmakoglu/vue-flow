@@ -618,6 +618,34 @@ export function useActions(
     return changedEdges
   }
 
+  // todo: maybe we should use a more immutable approach, this is a bit too much mutation and hard to maintain
+  const updateNode: Actions['updateNode'] = (id, nodeUpdate, options = { replace: true }) => {
+    const node = findNode(id)
+
+    if (!node) {
+      return
+    }
+
+    const nextNode = typeof nodeUpdate === 'function' ? nodeUpdate(node) : nodeUpdate
+
+    if (options.replace) {
+      state.nodes.splice(state.nodes.indexOf(node), 1, nextNode as GraphNode)
+    } else {
+      Object.assign(node, nextNode)
+    }
+  }
+
+  const updateNodeData: Actions['updateNodeData'] = (id, dataUpdate, options = { replace: false }) => {
+    updateNode(
+      id,
+      (node) => {
+        const nextData = typeof dataUpdate === 'function' ? dataUpdate(node) : dataUpdate
+        return options.replace ? { ...node, data: nextData } : { ...node, data: { ...node.data, ...nextData } }
+      },
+      options,
+    )
+  }
+
   const startConnection: Actions['startConnection'] = (startHandle, position, event, isClick = false) => {
     if (isClick) {
       state.connectionClickStartHandle = startHandle
@@ -919,6 +947,8 @@ export function useActions(
     findNode,
     findEdge,
     updateEdge,
+    updateNode,
+    updateNodeData,
     applyEdgeChanges,
     applyNodeChanges,
     addSelectedElements,

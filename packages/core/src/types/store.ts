@@ -203,6 +203,18 @@ export type GetIntersectingNodes = (
   nodes?: GraphNode[],
 ) => GraphNode[]
 
+export type UpdateNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+  id: string,
+  nodeUpdate: Partial<Node<Data, CustomEvents>> | ((node: GraphNode<Data, CustomEvents>) => Partial<Node<Data, CustomEvents>>),
+  options?: { replace: boolean },
+) => void
+
+export type UpdateNodeData = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+  id: string,
+  dataUpdate: Partial<Data> | ((node: GraphNode<Data, CustomEvents>) => Partial<Data>),
+  options?: { replace: boolean },
+) => void
+
 export type IsNodeIntersecting = (node: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean
 
 export interface Actions extends ViewportFunctions {
@@ -226,6 +238,10 @@ export interface Actions extends ViewportFunctions {
   findEdge: FindEdge
   /** updates an edge */
   updateEdge: UpdateEdge
+  /** updates a node */
+  updateNode: UpdateNode
+  /** updates the data of a node */
+  updateNodeData: UpdateNodeData
   /** applies default edge change handler */
   applyEdgeChanges: (changes: EdgeChange[]) => GraphEdge[]
   /** applies default node change handler */
