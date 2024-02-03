@@ -1,12 +1,12 @@
 <script setup>
+import { h, ref } from 'vue'
 import { Background } from '@vue-flow/background'
 import { MarkerType, VueFlow } from '@vue-flow/core'
-import { h, ref } from 'vue'
 import CustomEdge from './CustomEdge.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomEdgeLabel from './CustomEdgeLabel.vue'
 
-const elements = ref([
+const nodes = ref([
   { id: '1', type: 'input', label: 'Start', position: { x: 50, y: 0 }, style: { borderColor: '#10b981' } },
   { id: '2', label: 'Node 2', position: { x: 150, y: 100 } },
   { id: '2a', label: 'Node 2a', position: { x: 0, y: 180 } },
@@ -18,6 +18,9 @@ const elements = ref([
   { id: '7', type: 'output', label: 'Output 7', position: { x: 50, y: 600 } },
   { id: '8', type: 'output', label: 'Output 8', position: { x: 350, y: 600 } },
   { id: '9', type: 'output', label: 'Output 9', position: { x: 550, y: 400 } },
+])
+
+const edges = ref([
   { id: 'e1-2', source: '1', target: '2', label: 'bezier edge (default)', class: 'normal-edge' },
   { id: 'e2-2a', source: '2', target: '2a', type: 'smoothstep', label: 'smoothstep edge' },
   { id: 'e2-3', source: '2', target: '3', type: 'step', label: 'step edge' },
@@ -61,7 +64,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements" :fit-view-on-init="true" :snap-to-grid="true">
+  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
     <template #edge-custom="props">
       <CustomEdge v-bind="props" />
     </template>

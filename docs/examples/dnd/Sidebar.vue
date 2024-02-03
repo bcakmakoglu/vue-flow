@@ -1,10 +1,7 @@
 <script setup>
-function onDragStart(event, nodeType) {
-  if (event.dataTransfer) {
-    event.dataTransfer.setData('application/vueflow', nodeType)
-    event.dataTransfer.effectAllowed = 'move'
-  }
-}
+import useDragAndDrop from './useDnD'
+
+const { onDragStart } = useDragAndDrop()
 </script>
 
 <template>
