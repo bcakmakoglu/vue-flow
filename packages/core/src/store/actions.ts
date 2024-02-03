@@ -947,24 +947,15 @@ export function useActions(
   until(() => viewportHelper.value.initialized)
     .toBe(true)
     .then(() => {
-      setTimeout(() => {
-        // todo:  move this to when *nodes* are initialized instead of viewport
-        if (!state.fitViewOnInitDone && state.fitViewOnInit) {
-          viewportHelper.value.fitView()
-        }
-
-        state.fitViewOnInitDone = true
-
-        state.hooks.paneReady.trigger({
-          id,
-          emits,
-          vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
-          ...hooksOn,
-          ...state,
-          ...getters,
-          ...actions,
-        })
-      }, 1)
+      state.hooks.paneReady.trigger({
+        id,
+        emits,
+        vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
+        ...hooksOn,
+        ...state,
+        ...getters,
+        ...actions,
+      })
     })
 
   return actions
