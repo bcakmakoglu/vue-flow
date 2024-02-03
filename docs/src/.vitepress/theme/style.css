@@ -161,12 +161,16 @@
   backdrop-filter: blur(1px);
 }
 
-.examples .VPDoc {
-  @apply !px-8 !py-6;
+.examples .VPContent {
+  @apply !pr-0;
 }
 
 .examples .content-container {
-  @apply !w-full !max-w-7xl;
+  @apply !w-full !max-w-full;
+}
+
+.examples .VPDoc .container .content {
+  @apply !p-0;
 }
 
 .examples .aside {
