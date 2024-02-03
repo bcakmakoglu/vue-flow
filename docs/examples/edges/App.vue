@@ -2,7 +2,7 @@
 import { h, ref } from 'vue'
 import { Background } from '@vue-flow/background'
 import { MarkerType, VueFlow } from '@vue-flow/core'
-import CustomEdge from './CustomEdge.vue'
+import EdgeWithButton from './EdgeWithButton.vue'
 import CustomEdge2 from './CustomEdge2.vue'
 import CustomEdgeLabel from './CustomEdgeLabel.vue'
 
@@ -66,7 +66,7 @@ const edges = ref([
 <template>
   <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
     <template #edge-custom="props">
-      <CustomEdge v-bind="props" />
+      <EdgeWithButton v-bind="props" />
     </template>
 
     <template #edge-custom2="props">
