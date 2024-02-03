@@ -1,5 +1,7 @@
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
+import type { MaybeRefOrGetter } from '@vueuse/core'
+import { toValue } from '@vueuse/core'
 import type { GraphNode, Node } from '../types'
 import { useVueFlow } from './useVueFlow'
 
@@ -13,17 +15,23 @@ type NodeData<NodeType extends Node = GraphNode> = NonNullable<NodeType['data']>
  * @param guard - Optional guard function to narrow down the node type
  * @returns An array of data objects
  */
-export function useNodesData<NodeType extends Node = GraphNode>(nodeId: string): ComputedRef<NodeData<NodeType> | null>
-export function useNodesData<NodeType extends Node = GraphNode>(nodeIds: string[]): ComputedRef<NodeData<NodeType>[]>
 export function useNodesData<NodeType extends Node = GraphNode>(
-  nodeIds: string[],
+  nodeId: MaybeRefOrGetter<string>,
+): ComputedRef<NodeData<NodeType> | null>
+export function useNodesData<NodeType extends Node = GraphNode>(
+  nodeIds: MaybeRefOrGetter<string[]>,
+): ComputedRef<NodeData<NodeType>[]>
+export function useNodesData<NodeType extends Node = GraphNode>(
+  nodeIds: MaybeRefOrGetter<string[]>,
   guard: (node: Node) => node is NodeType,
 ): ComputedRef<NodeData<NodeType>[]>
-export function useNodesData(nodeIds: any): any {
+export function useNodesData(_nodeIds: any): any {
   const { findNode } = useVueFlow()
 
   return computed({
     get() {
+      const nodeIds = toValue(_nodeIds)
+
       if (!Array.isArray(nodeIds)) {
         return findNode(nodeIds)?.data || null
       }
