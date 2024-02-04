@@ -51,7 +51,7 @@ import {
   updateConnectionLookup,
   updateEdgeAction,
 } from '../utils'
-import { useState } from './state'
+import { storeOptionsToSkip, useState } from './state'
 
 export function useActions(
   id: string,
@@ -345,7 +345,6 @@ export function useActions(
 
   const setNodeExtent: Actions['setNodeExtent'] = (nodeExtent) => {
     state.nodeExtent = nodeExtent
-
     updateNodeInternals(nodeIds.value)
   }
 
@@ -742,19 +741,6 @@ export function useActions(
   const setState: Actions['setState'] = (options) => {
     const opts = options instanceof Function ? options(state) : options
 
-    // these options will be set using the appropriate methods
-    const skip: (keyof typeof opts)[] = [
-      'modelValue',
-      'nodes',
-      'edges',
-      'maxZoom',
-      'minZoom',
-      'translateExtent',
-      'nodeExtent',
-      'hooks',
-      'defaultEdgeOptions',
-    ]
-
     // these options cannot be set after initialization
     const exclude: (keyof typeof opts)[] = [
       'd3Zoom',
@@ -799,16 +785,13 @@ export function useActions(
       if (isDef(opts.translateExtent)) {
         setTranslateExtent(opts.translateExtent)
       }
-      if (isDef(opts.nodeExtent)) {
-        setNodeExtent(opts.nodeExtent)
-      }
     }
 
     for (const o of Object.keys(opts)) {
       const key = o as keyof State
       const option = opts[key]
 
-      if (![...skip, ...exclude].includes(key) && isDef(option)) {
+      if (![...storeOptionsToSkip, ...exclude].includes(key) && isDef(option)) {
         ;(<any>state)[key] = option
       }
     }
