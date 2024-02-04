@@ -199,10 +199,10 @@ const NodeWrapper = defineComponent({
             getClass.value,
           ],
           'style': {
+            visibility: node.value.initialized ? 'visible' : 'hidden',
             zIndex: node.value.computedPosition.z ?? zIndex(),
             transform: `translate(${node.value.computedPosition.x}px,${node.value.computedPosition.y}px)`,
             pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
-            visibility: node.value.initialized ? 'visible' : 'hidden',
             ...getStyle.value,
           },
           'tabIndex': props.focusable ? 0 : undefined,
