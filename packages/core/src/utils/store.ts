@@ -1,5 +1,5 @@
 import { markRaw, unref } from 'vue'
-import type { Actions, Connection, ConnectionLookup, Edge, GraphEdge, GraphNode, Node, State } from '../types'
+import type { Actions, Connection, ConnectionLookup, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node, State } from '../types'
 import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
 
 type NonUndefined<T> = T extends undefined ? never : T
@@ -10,7 +10,12 @@ export function isDef<T>(val: T): val is NonUndefined<T> {
   return typeof unrefVal !== 'undefined'
 }
 
-export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[], triggerError: State['hooks']['error']['trigger']) {
+export function addEdgeToStore(
+  edgeParams: Edge | Connection,
+  edges: Edge[],
+  triggerError: State['hooks']['error']['trigger'],
+  defaultEdgeOptions?: DefaultEdgeOptions,
+): GraphEdge | false {
   if (!edgeParams.source || !edgeParams.target) {
     triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, (edgeParams as Edge).id))
     return false
@@ -26,7 +31,7 @@ export function addEdgeToStore(edgeParams: Edge | Connection, edges: Edge[], tri
     } as Edge
   }
 
-  edge = parseEdge(edge)
+  edge = parseEdge(edge, undefined, defaultEdgeOptions)
 
   if (connectionExists(edge, edges)) {
     return false
@@ -79,17 +84,17 @@ export function createGraphNodes(
 ) {
   const parentNodes: Record<string, true> = {}
 
-  const graphNodes = nodes.reduce((nextNodes, node) => {
+  const graphNodes = nodes.reduce((nextNodes, node, currentIndex) => {
     // make sure we don't try to add invalid nodes
     if (!isNode(node)) {
-      triggerError(new VueFlowError(ErrorCode.NODE_INVALID))
+      triggerError(
+        new VueFlowError(ErrorCode.NODE_INVALID, (node as undefined | Record<any, any>)?.id) ||
+          `[ID UNKNOWN|INDEX ${currentIndex}]`,
+      )
       return nextNodes
     }
 
-    const parsed = parseNode(node, {
-      ...findNode(node.id),
-      parentNode: node.parentNode,
-    })
+    const parsed = parseNode(node, findNode(node.id), node.parentNode)
 
     if (node.parentNode) {
       parentNodes[node.parentNode] = true

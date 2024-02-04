@@ -408,10 +408,10 @@ export function useActions(
         return res
       }
 
-      const storedEdge = findEdge(edge.id)
+      const existingEdge = findEdge(edge.id)
 
       res.push({
-        ...parseEdge(edge, Object.assign({}, storedEdge, state.defaultEdgeOptions)),
+        ...parseEdge(edge, existingEdge, state.defaultEdgeOptions),
         sourceNode,
         targetNode,
       })
@@ -459,15 +459,8 @@ export function useActions(
         )
       : nextEdges
 
-    const changes = validEdges.reduce((edgeChanges, param) => {
-      const edge = addEdgeToStore(
-        {
-          ...param,
-          ...state.defaultEdgeOptions,
-        },
-        state.edges,
-        state.hooks.error.trigger,
-      )
+    const changes = validEdges.reduce((edgeChanges, connection) => {
+      const edge = addEdgeToStore(connection, state.edges, state.hooks.error.trigger, state.defaultEdgeOptions)
 
       if (edge) {
         const sourceNode = findNode(edge.source)!
