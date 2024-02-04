@@ -191,6 +191,10 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Node Resizer', link: '/guide/components/node-resizer' },
           ],
         },
+        {
+          text: 'Troubleshooting',
+          link: '/guide/troubleshooting',
+        }
       ],
       '/examples/': [
         {
