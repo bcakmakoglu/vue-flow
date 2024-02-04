@@ -2,4 +2,4 @@
 "@vue-flow/core": minor
 ---
 
-Use css to toggle all nodes to visible at once
+Call `fitViewOnInit` when initial node dimensions are available
