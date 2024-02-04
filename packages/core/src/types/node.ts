@@ -32,7 +32,10 @@ export type HeightFunc = (node: GraphNode) => number | string | void
 export interface Node<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any, Type extends string = string> {
   /** Unique node id */
   id: string
-  /** A node label */
+  /**
+   * @deprecated - will be removed in next major release and replaced with `{ data: { label: string | VNode | Component } }`
+   * A node label
+   */
   label?: string | VNode | Component
   /** initial node position x, y */
   position: XYPosition
@@ -54,11 +57,15 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   deletable?: boolean
   /** element selector as drag handle for node (can only be dragged from the dragHandle el) */
   dragHandle?: string
-  /** @deprecated will be removed in next major release */
-  /** called when used as target for new connection */
+  /**
+   * @deprecated will be removed in next major release
+   *  called when used as target for new connection
+   */
   isValidTargetPos?: ValidConnectionFunc
-  /** @deprecated will be removed in next major release */
-  /** called when used as source for new connection */
+  /**
+   * @deprecated will be removed in next major release
+   * called when used as source for new connection
+   */
   isValidSourcePos?: ValidConnectionFunc
   /** define node extent, i.e. area in which node can be moved */
   extent?: CoordinateExtent | CoordinateExtentRange | 'parent'
@@ -86,13 +93,16 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   /** Is node hidden */
   hidden?: boolean
   /**
-   * @deprecated will be removed in the next major release
+   * @deprecated - will be removed in the next major release
    * overwrites current node type
    */
   template?: NodeComponent
   /** Additional data that is passed to your custom components */
   data?: Data
-  /** contextual and custom events that are passed to your custom components */
+  /**
+   * @deprecated - will be removed in the next major release
+   * contextual and custom events that are passed to your custom components
+   */
   events?: Partial<NodeEventsHandler<CustomEvents>>
   zIndex?: number
   ariaLabel?: string
@@ -127,33 +137,39 @@ export interface NodeProps<Data = ElementData, CustomEvents = object, Type exten
   type: Type
   /** is node selected */
   selected: boolean
-  /** can node handles be connected */
+  /** can node handles be connected, you need to forward this to your handles for this prop to have any effect */
   connectable: HandleConnectable
-  /** node x, y (relative) position on graph */
+  /**
+   * @deprecated - will be removed in next major release and replaced with `computedPosition`
+   * node x, y (relative) position on graph
+   */
   position: XYPosition
   /** dom element dimensions (width, height) */
   dimensions: Dimensions
   /**
+   * @deprecated - will be removed in next major release and replaced with `{ data: { label: string | VNode | Component } }`
    * node label, either pass a string or a VNode
    * For example like this: `h('div', props, children)`)
    * Object is just a type-hack for Vue, ignore that
    */
   label?: string | VNode | Component | object
   /**
-   * @deprecated will be removed in next major release and replaced by just `isValidConnection` prop
+   * @deprecated will be removed in next major release
    * called when used as target for new connection
    */
   isValidTargetPos?: ValidConnectionFunc
   /**
-   * @deprecated will be removed in next major release and replaced by just `isValidConnection` prop
+   * @deprecated will be removed in next major release
    * called when used as source for new connection
    */
   isValidSourcePos?: ValidConnectionFunc
   /**
-   * todo: rename to `parentNodeId`
+   * @deprecated - will be removed in next major release. Use `parentNodeId` instead
    * parent node id
    */
   parent?: string
+  /** parent node id */
+  parentNodeId?: string
   /** is node currently dragging */
   dragging: boolean
   /** is node currently resizing */
@@ -169,7 +185,10 @@ export interface NodeProps<Data = ElementData, CustomEvents = object, Type exten
 
   /** additional data of node */
   data: Data
-  /** contextual and custom events of node */
+  /**
+   * @deprecated - will be removed in next major release
+   * contextual and custom events of node
+   */
   events: NodeEventsOn<CustomEvents>
 }
 
