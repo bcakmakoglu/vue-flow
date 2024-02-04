@@ -6,10 +6,11 @@ import { onMounted, ref, watch } from 'vue'
 import { toRef } from '@vueuse/core'
 import type { CoordinateExtent, D3ZoomHandler, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
-import { useKeyPress, useVueFlow } from '../../composables'
+import { useKeyPress } from '../../composables/useKeyPress'
+import { useVueFlow } from '../../composables/useVueFlow'
+import { useResizeHandler } from '../../composables/useResizeHandler'
 import { clamp, isMacOs, warn } from '../../utils'
 import Pane from '../Pane/Pane.vue'
-import { useResizeHandler } from '../../composables/useResizeHandler'
 import Transform from './Transform.vue'
 
 const {

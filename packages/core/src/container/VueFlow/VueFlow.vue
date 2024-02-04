@@ -9,6 +9,8 @@ import { useOnInitHandler } from '../../composables/useOnInitHandler'
 import { useWatchProps } from '../../composables/useWatchProps'
 import { useVueFlow } from '../../composables/useVueFlow'
 import { useHooks } from '../../store/hooks'
+import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
+import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: undefined,
@@ -97,6 +99,12 @@ export default {
 <template>
   <div ref="vueFlowRef" class="vue-flow">
     <Viewport>
+      <EdgeRenderer />
+
+      <div class="vue-flow__edge-labels" />
+
+      <NodeRenderer />
+
       <!-- This slot is affected by zooming & panning -->
       <slot name="zoom-pane" />
     </Viewport>
