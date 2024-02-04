@@ -1,5 +1,6 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
+import { nextTick } from 'vue'
 import { until } from '@vueuse/core'
 import type {
   Actions,
@@ -179,6 +180,13 @@ export function useActions(
 
       return res
     }, [])
+
+    if (!state.fitViewOnInitDone && state.fitViewOnInit) {
+      nextTick(() => {
+        viewportHelper.value.fitView()
+        state.fitViewOnInitDone = true
+      })
+    }
 
     if (changes.length) {
       state.hooks.nodesChange.trigger(changes)
