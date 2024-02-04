@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import type { ComputedGetters, GraphEdge, GraphNode, State } from '../types'
 import { ErrorCode, VueFlowError, getNodesInside, isEdgeVisible } from '../utils'
-import { defaultEdgeTypes, defaultNodeTypes } from './state'
+import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
 export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds: ComputedRef<string[]>): ComputedGetters {
   /**

@@ -203,9 +203,12 @@ export function applyChanges<
   return elements
 }
 
+/** @deprecated Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead */
 export function applyEdgeChanges(changes: EdgeChange[], edges: GraphEdge[]) {
   return applyChanges(changes, edges)
 }
+
+/** @deprecated Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead */
 export function applyNodeChanges(changes: NodeChange[], nodes: GraphNode[]) {
   return applyChanges(changes, nodes)
 }
