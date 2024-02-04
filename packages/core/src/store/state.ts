@@ -1,31 +1,8 @@
-import type { DefaultEdgeTypes, DefaultNodeTypes, FlowOptions, State } from '../types'
+import type { FlowOptions, State } from '../types'
 import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '../types'
-import {
-  BezierEdge,
-  DefaultNode,
-  InputNode,
-  OutputNode,
-  SimpleBezierEdge,
-  SmoothStepEdge,
-  StepEdge,
-  StraightEdge,
-} from '../components'
+
 import { isMacOs } from '../utils'
 import { createHooks } from './hooks'
-
-export const defaultNodeTypes: DefaultNodeTypes = {
-  input: InputNode,
-  default: DefaultNode,
-  output: OutputNode,
-}
-
-export const defaultEdgeTypes: DefaultEdgeTypes = {
-  default: BezierEdge,
-  straight: StraightEdge,
-  step: StepEdge,
-  smoothstep: SmoothStepEdge,
-  simplebezier: SimpleBezierEdge,
-}
 
 export function useState(): State {
   return {
