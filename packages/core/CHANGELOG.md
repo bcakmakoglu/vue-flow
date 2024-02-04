@@ -1,5 +1,161 @@
 # @vue-flow/core
 
+## 1.31.0
+
+### Minor Changes
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`1e60944`](https://github.com/bcakmakoglu/vue-flow/commit/1e609440d392ba79cb4162cfc7d57225ce394400) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `useNodeId` composable
+
+  ## 🧙 Example
+
+  ```ts
+  const nodeId = useNodeId();
+
+  console.log("nodeId", nodeId); // '1'
+  ```
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`299408f`](https://github.com/bcakmakoglu/vue-flow/commit/299408f1706865dca619e6caae289c002d6fe2ed) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `updateNode` action
+
+  ## 🧙 Example
+
+  ```ts
+  const { updateNode } = useVueFlow();
+
+  updateNode("1", { position: { x: 100, y: 100 } });
+
+  // or using a function to update the node
+  updateNode("1", (node) => ({ ...node, position: { x: 100, y: 100 } }));
+
+  // passing options - `replace` will replace the node instead of merging it
+  updateNode(
+    "1",
+    { id: "1", label: "Node 1", position: { x: 100, y: 100 } },
+    { replace: true }
+  );
+  ```
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`eae2118`](https://github.com/bcakmakoglu/vue-flow/commit/eae2118cd3ca0ef915dcce953abdb91a7f443af1) Thanks [@github-actions](https://github.com/apps/github-actions)! - Call `onNodesInitialized` whenever `areNodesInitialized` is true instead of only once
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`36ffa3f`](https://github.com/bcakmakoglu/vue-flow/commit/36ffa3f0c5a68cccac24b31c92978811c9d4cf0c) Thanks [@github-actions](https://github.com/apps/github-actions)! - Omit `events` in nodes and edges when returning them from `toObject`
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`85536ed`](https://github.com/bcakmakoglu/vue-flow/commit/85536ed8fa686f3736cd5f0ac3ef4476fb871d30) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `useHandleConnections` composable
+
+  ## 🧙 Example
+
+  ```ts
+  const connections = useHandleConnections({
+    // type of the handle you are looking for - accepts a `MaybeRefOrGetter<string>`
+    type: "source",
+
+    // the id of the handle you are looking for - accepts a `MaybeRefOrGetter<string | undefined> | undefined` [OPTIONAL]
+    id: "a",
+
+    // if not provided, the node id from the NodeIdContext is used - accepts a `MaybeRefOrGetter<string | undefined> | undefined`
+    nodeId: "1",
+
+    // a cb that is called when a new connection is added
+    onConnect: (params) => {
+      console.log("onConnect", params);
+    },
+
+    // a cb that is called when a connection is removed
+    onDisconnect: (params) => {
+      console.log("onDisconnect", params);
+    },
+  });
+
+  watch(
+    connections,
+    (next) => {
+      console.log("connections", next);
+    },
+    { immediate: true }
+  );
+  ```
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`4bce8c9`](https://github.com/bcakmakoglu/vue-flow/commit/4bce8c9136a2c13c0643a8c4f9f2bd2516b99df3) Thanks [@github-actions](https://github.com/apps/github-actions)! - Find handle by id regardless of number of handles that exist
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`85536ed`](https://github.com/bcakmakoglu/vue-flow/commit/85536ed8fa686f3736cd5f0ac3ef4476fb871d30) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `connectionLookup` to state
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`3b02809`](https://github.com/bcakmakoglu/vue-flow/commit/3b028097ed4a41e59aa8db00158186045f1c1a1d) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `onInit` hook and deprecate `onPaneReady`
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`299408f`](https://github.com/bcakmakoglu/vue-flow/commit/299408f1706865dca619e6caae289c002d6fe2ed) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `updateNodeData` action
+
+  ## 🧙 Example
+
+  ```ts
+  const { updateNodeData } = useVueFlow();
+
+  updateNodeData("1", { foo: "bar" });
+
+  // or using a function to update the data
+  updateNodeData("1", (data) => ({ ...data, foo: "bar" }));
+
+  // passing options - `replace` will replace the data instead of merging it
+  updateNodeData("1", { foo: "bar" }, { replace: true });
+  ```
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`823956e`](https://github.com/bcakmakoglu/vue-flow/commit/823956ee92f880f0a546ab4c040c6b115b8b3345) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add `useNodesData` composable
+
+  ## 🧙 Example
+
+  ### Single node id
+
+  ```ts
+  const nodeId = "1";
+
+  const data = useNodesData(nodeId);
+
+  console.log(data.value); // '[{ /* ... */ }]
+  ```
+
+  ### Array of node ids
+
+  ```ts
+  const nodeIds = ["1", "2", "3"];
+
+  const data = useNodesData(nodeIds);
+
+  console.log(data.value); // '[{ /* ... */ }]
+  ```
+
+  ### Asserting data type
+
+  ```ts
+  import type { Node } from "@vue-flow/core";
+
+  interface Data {
+    foo: string;
+    bar: string;
+  }
+
+  type MyNode = Node<CustomNodeData>;
+
+  const nodeId = "1";
+
+  const data = useNodesData([nodeId], (node): node is MyNode => {
+    return "foo" in node.data && "bar" in node.data;
+  });
+
+  console.log(data.value); // '[{ /* foo: string; bar: string */ }]
+  ```
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`99fa4fd`](https://github.com/bcakmakoglu/vue-flow/commit/99fa4fd6a9be8df866788fbe83e16dde63786328) Thanks [@github-actions](https://github.com/apps/github-actions)! - Call `fitViewOnInit` when initial node dimensions are available
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`9f8607f`](https://github.com/bcakmakoglu/vue-flow/commit/9f8607f3d9e7a5c3c0d4671f57b5d0e206b4345e) Thanks [@github-actions](https://github.com/apps/github-actions)! - Deprecate `events` property on nodes and edges
+
+- [#1278](https://github.com/bcakmakoglu/vue-flow/pull/1278) [`ecff6f6`](https://github.com/bcakmakoglu/vue-flow/commit/ecff6f608f9ad2961d3fe07e8658c37debac2e78) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add error args to `VueFlowError`
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`3f60a80`](https://github.com/bcakmakoglu/vue-flow/commit/3f60a803d7a7bb7ec9d3aee316a291a2a2917212) Thanks [@github-actions](https://github.com/apps/github-actions)! - Replace `Array.forEach` loops with `for...of`
+
+- [#1278](https://github.com/bcakmakoglu/vue-flow/pull/1278) [`ecff6f6`](https://github.com/bcakmakoglu/vue-flow/commit/ecff6f608f9ad2961d3fe07e8658c37debac2e78) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Export `isErrorOfType` typeguard to narrow the type of a VueFlowError and infer it's args
+
+### Patch Changes
+
+- [#1295](https://github.com/bcakmakoglu/vue-flow/pull/1295) [`4a5aa14`](https://github.com/bcakmakoglu/vue-flow/commit/4a5aa146d30a4f825b3ccafc5da9628a82bf2409) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - When updating nodes or edges by overwriting the original array, update the nodes and edges in the state by using them as the target for `Object.assign`. This keeps reference in-tact and ensures reactivity when these objects are changed/updated
+
+- [#1271](https://github.com/bcakmakoglu/vue-flow/pull/1271) [`bbee266`](https://github.com/bcakmakoglu/vue-flow/commit/bbee266a015dd567873107dadc18374c14bf382b) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update node dimensions on next tick
+
 ## 1.30.1
 
 ### Patch Changes
