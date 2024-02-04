@@ -448,14 +448,14 @@ export function useActions(
     nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
 
     const validEdges = state.isValidConnection
-      ? nextEdges.filter((edge) =>
-          state.isValidConnection!(edge, {
+      ? nextEdges.filter((edge) => {
+          return state.isValidConnection?.(edge, {
             edges: state.edges,
             nodes: state.nodes,
             sourceNode: findNode(edge.source)!,
             targetNode: findNode(edge.target)!,
-          }),
-        )
+          })
+        })
       : nextEdges
 
     const changes = validEdges.reduce((edgeChanges, connection) => {
