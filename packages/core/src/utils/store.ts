@@ -84,7 +84,7 @@ export function createGraphNodes(
 ) {
   const parentNodes: Record<string, true> = {}
 
-  const graphNodes = nodes.reduce((nextNodes, node, currentIndex) => {
+  const nextNodes = nodes.reduce((nextNodes, node, currentIndex) => {
     // make sure we don't try to add invalid nodes
     if (!isNode(node)) {
       triggerError(
@@ -103,10 +103,10 @@ export function createGraphNodes(
     return nextNodes.concat(parsed)
   }, [] as GraphNode[])
 
-  const nextNodes = [...graphNodes, ...currGraphNodes]
+  const allNodes = [...nextNodes, ...currGraphNodes]
 
-  for (const node of graphNodes) {
-    const parentNode = nextNodes.find((n) => n.id === node.parentNode)
+  for (const node of nextNodes) {
+    const parentNode = allNodes.find((n) => n.id === node.parentNode)
 
     if (node.parentNode && !parentNode) {
       triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentNode))
@@ -123,7 +123,7 @@ export function createGraphNodes(
     }
   }
 
-  return graphNodes
+  return nextNodes
 }
 
 export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges: Edge[]) {

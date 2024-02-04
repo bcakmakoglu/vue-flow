@@ -1,7 +1,7 @@
 import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
 import { computed, effectScope, getCurrentScope, inject, provide, reactive, watch } from 'vue'
-import type { EdgeChange, FlowOptions, FlowProps, NodeChange, State, VueFlowStore } from '../types'
+import type { EdgeChange, FlowOptions, FlowProps, NodeChange, VueFlowStore } from '../types'
 import { warn } from '../utils'
 import { useActions, useGetters, useState } from '../store'
 import { VueFlow } from '../context'
@@ -35,7 +35,7 @@ export class Storage {
   }
 
   public create(id: string, preloadedState?: FlowOptions): VueFlowStore {
-    const state: State = useState(preloadedState)
+    const state = useState()
 
     const reactiveState = reactive(state)
 
@@ -58,7 +58,7 @@ export class Storage {
 
     const actions = useActions(id, reactiveState, getters, nodeIds, edgeIds)
 
-    actions.setState(reactiveState)
+    actions.setState({ ...reactiveState, ...preloadedState })
 
     const flow: VueFlowStore = {
       ...hooksOn,

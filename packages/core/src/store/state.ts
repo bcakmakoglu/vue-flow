@@ -10,7 +10,7 @@ import {
   StepEdge,
   StraightEdge,
 } from '../components'
-import { isDef, isMacOs } from '../utils'
+import { isMacOs } from '../utils'
 import { createHooks } from './hooks'
 
 export const defaultNodeTypes: DefaultNodeTypes = {
@@ -27,7 +27,7 @@ export const defaultEdgeTypes: DefaultEdgeTypes = {
   simplebezier: SimpleBezierEdge,
 }
 
-function defaultState(): State {
+export function useState(): State {
   return {
     vueFlowRef: null,
     viewportRef: null,
@@ -144,17 +144,18 @@ function defaultState(): State {
   }
 }
 
-export function useState(opts?: FlowOptions): State {
-  const state = defaultState()
-
-  if (opts) {
-    for (const key of Object.keys(opts)) {
-      const option = opts[key as keyof typeof opts]
-      if (isDef(option)) {
-        ;(state as any)[key] = option
-      }
-    }
-  }
-
-  return state
-}
+// these options will be set using the appropriate methods
+export const storeOptionsToSkip: (keyof Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>)[] = [
+  'id',
+  'vueFlowRef',
+  'viewportRef',
+  'initialized',
+  'modelValue',
+  'nodes',
+  'edges',
+  'maxZoom',
+  'minZoom',
+  'translateExtent',
+  'hooks',
+  'defaultEdgeOptions',
+]
