@@ -1,5 +1,5 @@
 import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
-import { until, useVModel } from '@vueuse/core'
+import { toRef, until, useVModel } from '@vueuse/core'
 import {
   ARIA_NODE_DESC_KEY,
   arrowKeyDiffs,
@@ -105,7 +105,7 @@ const NodeWrapper = defineComponent({
       return styles
     })
 
-    const zIndex = () => Number(node.value.zIndex ?? getStyle.value.zIndex ?? 0)
+    const zIndex = toRef(() => Number(node.value.zIndex ?? getStyle.value.zIndex ?? 0))
 
     onUpdateNodeInternals((updateIds) => {
       if (updateIds.includes(props.id)) {
@@ -135,7 +135,7 @@ const NodeWrapper = defineComponent({
         () => parentNode.value?.computedPosition.x,
         () => parentNode.value?.computedPosition.y,
         () => parentNode.value?.computedPosition.z,
-        () => zIndex(),
+        zIndex,
         () => node.value.selected,
         () => node.value.dimensions.height,
         () => node.value.dimensions.width,
@@ -200,7 +200,7 @@ const NodeWrapper = defineComponent({
           ],
           'style': {
             visibility: node.value.initialized ? 'visible' : 'hidden',
-            zIndex: node.value.computedPosition.z ?? zIndex(),
+            zIndex: node.value.computedPosition.z ?? zIndex.value,
             transform: `translate(${node.value.computedPosition.x}px,${node.value.computedPosition.y}px)`,
             pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
             ...getStyle.value,
@@ -223,16 +223,17 @@ const NodeWrapper = defineComponent({
             type: node.value.type,
             data: node.value.data,
             events: { ...node.value.events, ...on },
-            selected: !!node.value.selected,
-            resizing: !!node.value.resizing,
+            selected: node.value.selected,
+            resizing: node.value.resizing,
             dragging: dragging.value,
             connectable: props.connectable,
-            position: node.value.position,
+            position: node.value.computedPosition,
             dimensions: node.value.dimensions,
             isValidTargetPos: node.value.isValidTargetPos,
             isValidSourcePos: node.value.isValidSourcePos,
             parent: node.value.parentNode,
-            zIndex: node.value.computedPosition.z,
+            parentNodeId: node.value.parentNode,
+            zIndex: node.value.computedPosition.z ?? zIndex.value,
             targetPosition: node.value.targetPosition,
             sourcePosition: node.value.sourcePosition,
             label: node.value.label,
