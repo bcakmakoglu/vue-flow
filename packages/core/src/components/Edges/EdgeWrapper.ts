@@ -44,7 +44,6 @@ const EdgeWrapper = defineComponent({
       findNode,
       isValidConnection,
       multiSelectionActive,
-      hooks: flowHooks,
     } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
@@ -84,21 +83,19 @@ const EdgeWrapper = defineComponent({
       const targetNode = findNode(edge.value.target)
 
       if (!sourceNode && !targetNode) {
-        flowHooks.value.error.trigger(
-          new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.value.id, edge.value.source, edge.value.target),
-        )
+        emits.error(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.value.id, edge.value.source, edge.value.target))
 
         return null
       }
 
       if (!sourceNode) {
-        flowHooks.value.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.value.id, edge.value.source))
+        emits.error(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.value.id, edge.value.source))
 
         return null
       }
 
       if (!targetNode) {
-        flowHooks.value.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.value.id, edge.value.target))
+        emits.error(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.value.id, edge.value.target))
 
         return null
       }
