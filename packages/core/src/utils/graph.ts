@@ -97,64 +97,61 @@ export function isRect(obj: any): obj is Rect {
   return isNumeric(obj.width) && isNumeric(obj.height) && isNumeric(obj.x) && isNumeric(obj.y)
 }
 
-export function parseNode(node: Node, defaults: Partial<GraphNode> = {}): GraphNode {
-  let initialState = defaults
+export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: string): GraphNode {
+  const initialState = {
+    id: node.id.toString(),
+    type: node.type ?? 'default',
+    dimensions: markRaw({
+      width: 0,
+      height: 0,
+    }),
+    handleBounds: {
+      source: [],
+      target: [],
+    },
+    computedPosition: markRaw({
+      z: 0,
+      ...node.position,
+    }),
+    draggable: undefined,
+    selectable: undefined,
+    connectable: undefined,
+    focusable: undefined,
+    selected: false,
+    dragging: false,
+    resizing: false,
+    initialized: false,
+    isParent: false,
+    position: {
+      x: 0,
+      y: 0,
+    },
+    data: isDef(node.data) ? node.data : {},
+    events: markRaw(isDef(node.events) ? node.events : {}),
+  } as GraphNode
 
-  if (!isGraphNode(node)) {
-    initialState = {
-      type: node.type ?? defaults.type ?? 'default',
-      dimensions: markRaw({
-        width: 0,
-        height: 0,
-      }),
-      handleBounds: {
-        source: [],
-        target: [],
-      },
-      computedPosition: markRaw({
-        z: 0,
-        ...node.position,
-      }),
-      draggable: undefined,
-      selectable: undefined,
-      connectable: undefined,
-      focusable: undefined,
-      selected: false,
-      dragging: false,
-      resizing: false,
-      initialized: false,
-      ...defaults,
-      data: isDef(node.data) ? node.data : {},
-      events: markRaw(isDef(node.events) ? node.events : {}),
-    }
-  }
-
-  return Object.assign({}, initialState, node, { id: node.id.toString() }) as GraphNode
+  return Object.assign(existingNode ?? initialState, node, { id: node.id.toString(), parentNode }) as GraphNode
 }
 
-export function parseEdge(edge: Edge, defaults: Partial<GraphEdge> = {}): GraphEdge {
-  const events = isDef(edge.events) ? edge.events : defaults.events && isDef(defaults.events) ? defaults.events : {}
-  const data = isDef(edge.data) ? edge.data : defaults.data && isDef(defaults.data) ? defaults.data : {}
+export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptions?: DefaultEdgeOptions): GraphEdge {
+  const initialState = {
+    id: edge.id.toString(),
+    type: edge.type ?? existingEdge?.type ?? 'default',
+    source: edge.source.toString(),
+    target: edge.target.toString(),
+    sourceHandle: edge.sourceHandle?.toString(),
+    targetHandle: edge.targetHandle?.toString(),
+    updatable: edge.updatable ?? defaultEdgeOptions?.updatable,
+    selectable: edge.selectable ?? defaultEdgeOptions?.selectable,
+    focusable: edge.focusable ?? defaultEdgeOptions?.focusable,
+    data: isDef(edge.data) ? edge.data : {},
+    events: markRaw(isDef(edge.events) ? edge.events : {}),
+    label: edge.label ?? '',
+    interactionWidth: edge.interactionWidth ?? defaultEdgeOptions?.interactionWidth,
+    ...(defaultEdgeOptions ?? {}),
+  } as GraphEdge
 
-  defaults = !isGraphEdge(edge)
-    ? ({
-        ...defaults,
-        sourceHandle: (edge.sourceHandle ? edge.sourceHandle.toString() : undefined) || defaults.sourceHandle,
-        targetHandle: (edge.targetHandle ? edge.targetHandle.toString() : undefined) || defaults.targetHandle,
-        type: edge.type ?? defaults.type ?? 'default',
-        source: edge.source.toString() || defaults.source,
-        target: edge.target.toString() || defaults.target,
-        updatable: edge.updatable ?? defaults.updatable,
-        selectable: edge.selectable ?? defaults.selectable,
-        focusable: edge.focusable ?? defaults.focusable,
-        data,
-        events: markRaw(events),
-        label: (edge.label && typeof edge.label !== 'string' ? markRaw(edge.label) : edge.label) || defaults.label,
-        interactionWidth: edge.interactionWidth || defaults.interactionWidth,
-      } as GraphEdge)
-    : defaults
-
-  return Object.assign({}, defaults, edge, { id: edge.id.toString() }) as GraphEdge
+  return Object.assign(existingEdge ?? initialState, edge, { id: edge.id.toString() }) as GraphEdge
 }
 
 function getConnectedElements<T extends Node = Node>(
@@ -254,7 +251,7 @@ export function addEdge(edgeParams: Edge | Connection, elements: Elements, defau
     } as Edge
   }
 
-  edge = parseEdge(edge, defaults)
+  edge = parseEdge(edge, undefined, defaults)
 
   if (connectionExists(edge, elements)) {
     return elements
