@@ -73,7 +73,7 @@ const connections = useHandleConnections({
 })
 ```
 
-## [useNodesData](/typedocs/functions/useNode)
+## [useNodesData](/typedocs/functions/useNodesData)
 
 `useNodesData` provides you with an array of data objects depending on the node ids you pass to it.
 It's especially useful when used together with `useHandleConnections`.
