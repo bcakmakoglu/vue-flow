@@ -16,8 +16,8 @@ export function addEdgeToStore(
   triggerError: State['hooks']['error']['trigger'],
   defaultEdgeOptions?: DefaultEdgeOptions,
 ): GraphEdge | false {
-  if (!edgeParams.source || !edgeParams.target) {
-    triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, (edgeParams as Edge).id))
+  if (!edgeParams || !edgeParams.source || !edgeParams.target) {
+    triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, (edgeParams as undefined | Edge)?.id ?? `[ID UNKNOWN]`))
     return false
   }
 
