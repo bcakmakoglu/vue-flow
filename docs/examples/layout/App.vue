@@ -2,6 +2,7 @@
 import dagre from 'dagre'
 import { nextTick, ref } from 'vue'
 import { Panel, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background } from '@vue-flow/background'
 
 import { initialEdges, initialNodes } from './initial-elements.js'
 
@@ -54,6 +55,8 @@ function handleLayout(direction) {
 <template>
   <div class="layoutflow">
     <VueFlow :nodes="nodes" :edges="edges" @nodes-initialized="handleLayout('TB')">
+      <Background />
+
       <Panel style="display: flex; gap: 1rem" position="top-right">
         <button @click="handleLayout('TB')">vertical layout</button>
         <button @click="handleLayout('LR')">horizontal layout</button>
@@ -66,5 +69,35 @@ function handleLayout(direction) {
 .layoutflow {
   height: 100%;
   width: 100%;
+}
+
+.layoutflow .vue-flow .vue-flow__node-input {
+  background-color: #10b981;
+  color: white;
+  border: 1px solid #10b981;
+  border-radius: 99px;
+}
+
+.layoutflow .vue-flow .vue-flow__node-output {
+  background-color: #ef467e;
+  color: white;
+  border: 1px solid #ef467e;
+  border-radius: 99px;
+}
+
+.layoutflow .vue-flow .vue-flow__node-default {
+  background-color: #1a192b;
+  color: white;
+  border: 1px solid #10b981;
+  border-radius: 99px;
+}
+
+.layoutflow .vue-flow .vue-flow__node.selected {
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.layoutflow .vue-flow .vue-flow__edge-path {
+  stroke: #10b981;
+  stroke-width: 2px;
 }
 </style>
