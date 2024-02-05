@@ -4,14 +4,17 @@ import Handle from '../Handle/Handle.vue'
 import type { NodeProps } from '../../types'
 import { Position } from '../../types'
 
-const DefaultNode: FunctionalComponent<NodeProps> = function ({
+const DefaultNode: FunctionalComponent<NodeProps<{ label: any }>> = function ({
   sourcePosition = Position.Bottom,
   targetPosition = Position.Top,
-  label,
+  label: _label,
   connectable = true,
   isValidTargetPos,
   isValidSourcePos,
+  data,
 }) {
+  const label = data.label || _label
+
   return [
     h(Handle as Component, { type: 'target', position: targetPosition, connectable, isValidConnection: isValidTargetPos }),
     typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
@@ -19,7 +22,7 @@ const DefaultNode: FunctionalComponent<NodeProps> = function ({
   ]
 }
 
-DefaultNode.props = ['sourcePosition', 'targetPosition', 'label', 'isValidTargetPos', 'isValidSourcePos', 'connectable']
+DefaultNode.props = ['sourcePosition', 'targetPosition', 'label', 'isValidTargetPos', 'isValidSourcePos', 'connectable', 'data']
 DefaultNode.inheritAttrs = false
 DefaultNode.compatConfig = { MODE: 3 }
 
