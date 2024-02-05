@@ -1,4 +1,5 @@
-import type { ComputedGetters, State, ViewportFunctions } from '../types'
+import { toReactive } from '@vueuse/core'
+import type { ViewportFunctions } from '../types'
 import { useVueFlow } from './useVueFlow'
 import { useViewportHelper } from './useViewportHelper'
 
@@ -6,9 +7,9 @@ import { useViewportHelper } from './useViewportHelper'
  * @deprecated use {@link useVueFlow} instead (all viewport functions are also available in {@link useVueFlow})
  */
 export function useZoomPanHelper(vueFlowId?: string): ViewportFunctions {
-  const state = $(useVueFlow({ id: vueFlowId }))
+  const state = useVueFlow({ id: vueFlowId })
 
-  const viewportHelper = useViewportHelper(state as State, state as unknown as ComputedGetters)
+  const viewportHelper = useViewportHelper(toReactive(state))
 
   return {
     fitView: (params) => viewportHelper.value.fitView(params),
