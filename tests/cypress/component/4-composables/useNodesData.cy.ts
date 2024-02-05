@@ -6,87 +6,109 @@ import { getElements } from '../../utils'
 const { nodes } = getElements()
 
 describe('Composable: `useNodesData`', () => {
-  describe('returns node data for a single node', () => {
-    let data: any = null
-
+  it('should return node data', () => {
     const node = nodes[0]
 
-    beforeEach(() => {
-      cy.vueFlow(
-        {
-          nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
-        },
-        {},
-        {
-          'node-custom': defineComponent({
-            setup() {
-              data = useNodesData(nodes[0].id)
+    const ComposableTester = defineComponent({
+      emits: ['change'],
+      setup(_, { emit }) {
+        const data = useNodesData(node.id)
 
-              return () => h('div', 'Custom Node')
-            },
+        emit('change', data.value)
+
+        return 'Composable Tester'
+      },
+    })
+
+    const onChangeSpy = cy.spy().as('onChangeSpy')
+
+    cy.vueFlow(
+      {
+        nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
+      },
+      {},
+      {
+        default: () =>
+          h(ComposableTester, {
+            onChange: onChangeSpy,
+            nodes: node.id,
           }),
-        },
-      )
-    })
+      },
+    )
 
-    it('should return the node data', () => {
-      expect(data.value).to.deep.equal(node.data)
-    })
+    cy.get('@onChangeSpy').should('have.been.calledWith', node.data)
   })
 
-  describe('returns node data for multiple nodes', () => {
-    let data: any = null
+  it('should return nodes data', () => {
+    const onChangeSpy = cy.spy().as('onChangeSpy')
 
     const nodeIds = nodes.map((node) => node.id)
 
-    beforeEach(() => {
-      cy.vueFlow(
-        {
-          nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
-        },
-        {},
-        {
-          'node-custom': defineComponent({
-            setup() {
-              data = useNodesData(nodeIds)
+    const ComposableTester = defineComponent({
+      emits: ['change'],
+      setup(_, { emit }) {
+        const data = useNodesData(nodeIds)
 
-              return () => h('div', 'Custom Node')
-            },
+        emit('change', data.value)
+
+        return 'Composable Tester'
+      },
+    })
+
+    cy.vueFlow(
+      {
+        nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
+      },
+      {},
+      {
+        default: () =>
+          h(ComposableTester, {
+            onChange: onChangeSpy,
+            nodes: nodeIds,
           }),
-        },
-      )
-    })
+      },
+    )
 
-    it('should return the node data', () => {
-      expect(data.value).to.deep.equal(nodes.map((node) => node.data))
-    })
+    cy.get('@onChangeSpy').should(
+      'have.been.calledWith',
+      nodes.map((node) => node.data),
+    )
   })
 
-  describe('returns node data for multiple nodes with a guard', () => {
-    let data: any = null
+  it('should return the node data with typeguard', () => {
+    const onChangeSpy = cy.spy().as('onChangeSpy')
 
     const nodeIds = nodes.map((node) => node.id)
 
-    beforeEach(() => {
-      cy.vueFlow(
-        {
-          nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
-        },
-        {},
-        {
-          'node-custom': defineComponent({
-            setup() {
-              data = useNodesData(nodeIds, (node): node is Node<{ randomData: number }> => node.type === 'custom')
+    const ComposableTester = defineComponent<{ guard?: (node: Node) => node is Node }>({
+      emits: ['change'],
+      setup(props, { emit }) {
+        const data = useNodesData(nodeIds, props.guard || ((node): node is Node => true))
 
-              return () => h('div', 'Custom Node')
-            },
+        emit('change', data.value)
+
+        return 'Composable Tester'
+      },
+    })
+
+    cy.vueFlow(
+      {
+        nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
+      },
+      {},
+      {
+        default: () =>
+          h(ComposableTester, {
+            onChange: onChangeSpy,
+            nodes: nodeIds,
+            guard: (node): node is Node<{ randomData: number }> => node.type === 'custom',
           }),
-        },
-      )
-    })
+      },
+    )
 
-    it('should return the node data', () => {
-      expect(data.value).to.deep.equal(nodes.map((node) => node.data))
-    })
+    cy.get('@onChangeSpy').should(
+      'have.been.calledWith',
+      nodes.map((node) => node.data),
+    )
   })
 })
