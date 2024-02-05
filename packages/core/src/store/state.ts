@@ -114,10 +114,6 @@ export function useState(): State {
 
     disableKeyboardA11y: false,
     ariaLiveMessage: '',
-
-    __experimentalFeatures: {
-      nestedFlow: false,
-    },
   }
 }
 
