@@ -15,6 +15,11 @@ function createNodeHooks() {
   }
 }
 
+/**
+ * Composable for handling node events
+ *
+ * @internal
+ */
 export function useNodeHooks(node: GraphNode, emits: VueFlowStore['emits']): { emit: NodeEventsEmit; on: NodeEventsOn } {
   const nodeHooks = createNodeHooks()
 

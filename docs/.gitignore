@@ -7,3 +7,4 @@ src/changelog
 src/typedocs
 src/public/*.mjs
 src/.vitepress/cache
+src/.vitepress/.temp

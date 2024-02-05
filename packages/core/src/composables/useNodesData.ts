@@ -10,6 +10,7 @@ type NodeData<NodeType extends Node = GraphNode> = NonNullable<NodeType['data']>
 /**
  * Composable for receiving data of one or multiple nodes
  *
+ * @public
  * @param nodeId - The id (or ids) of the node to get the data from
  * @param guard - Optional guard function to narrow down the node type
  * @returns An array of data objects

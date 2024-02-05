@@ -94,6 +94,7 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
  *
  * If no store instance is found in context, a new store instance is created and registered in storage
  *
+ * @public
  * @returns a vue flow store instance
  */
 export function useVueFlow(options?: FlowProps): VueFlowStore {

@@ -17,7 +17,7 @@ import {
 } from '../utils'
 import { useVueFlow } from './useVueFlow'
 
-interface UseHandleProps {
+export interface UseHandleProps {
   handleId: MaybeRefOrGetter<string | null>
   nodeId: MaybeRefOrGetter<string>
   type: MaybeRefOrGetter<HandleType>
@@ -35,6 +35,8 @@ function alwaysValid() {
  * This composable provides listeners for handle events
  *
  * Generally it's recommended to use the `<Handle />` component instead of this composable.
+ *
+ * @public
  */
 export function useHandle({
   handleId,
