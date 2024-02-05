@@ -1,38 +1,42 @@
 <script lang="ts" setup>
-import { getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, ref, resolveComponent } from 'vue'
-import { whenever } from '@vueuse/core'
+import { getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, ref, resolveComponent, watch } from 'vue'
 import { NodeWrapper } from '../../components'
 import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
 import { Slots } from '../../context'
 import { useVueFlow } from '../../composables'
 import { ErrorCode, VueFlowError } from '../../utils'
-
-const slots = inject(Slots)
+import { useNodesInitialized } from '../../composables/useNodesInitialized'
 
 const {
+  nodes,
   nodesDraggable,
   nodesFocusable,
   elementsSelectable,
   nodesConnectable,
   getNodes,
-  getNodesInitialized,
-  areNodesInitialized,
   getNodeTypes,
   updateNodeDimensions,
   emits,
 } = useVueFlow()
 
+const nodesInitialized = useNodesInitialized()
+
+const slots = inject(Slots)
+
 const resizeObserver = ref<ResizeObserver>()
 
 const instance = getCurrentInstance()
 
-whenever(
-  () => areNodesInitialized.value,
-  () => {
-    nextTick(() => {
-      emits.nodesInitialized(getNodesInitialized.value)
-    })
+watch(
+  nodesInitialized,
+  (initialized) => {
+    if (initialized) {
+      nextTick(() => {
+        emits.nodesInitialized(nodes.value)
+      })
+    }
   },
+  { immediate: true },
 )
 
 onMounted(() => {
