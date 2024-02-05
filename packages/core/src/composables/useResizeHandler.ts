@@ -4,6 +4,12 @@ import { ErrorCode, VueFlowError, getDimensions } from '../utils'
 import { useVueFlow } from './useVueFlow'
 import { useWindow } from './useWindow'
 
+/**
+ * Composable that handles the resize of the viewport.
+ *
+ * @internal
+ * @param viewportEl
+ */
 export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
   const window = useWindow()
 

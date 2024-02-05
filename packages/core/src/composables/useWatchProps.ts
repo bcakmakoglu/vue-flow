@@ -5,6 +5,14 @@ import { toRef, watchPausable } from '@vueuse/core'
 import type { Connection, FlowProps, VueFlowStore } from '../types'
 import { isDef } from '../utils'
 
+/**
+ * Watches props and updates the store accordingly
+ *
+ * @internal
+ * @param models
+ * @param props
+ * @param store
+ */
 export function useWatchProps(
   models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
   props: FlowProps,

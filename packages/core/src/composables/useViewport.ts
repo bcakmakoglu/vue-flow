@@ -34,6 +34,13 @@ const initialViewportHelper: ViewportHelper = {
   viewportInitialized: false,
 }
 
+/**
+ * Composable that provides viewport helper functions.
+ *
+ * @internal
+ * @param state
+ * @param getters
+ */
 export function useViewport(state: State, getters: ComputedGetters) {
   const { getNodes } = getters
 
