@@ -9,12 +9,7 @@
     "allowJs": true,
     "types": [
       "vite/client"
-    ],
-    "paths": {
-      "~/*": [
-        "../../packages/core/src/*"
-      ]
-    }
+    ]
   },
   "references": [
     {
