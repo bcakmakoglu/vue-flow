@@ -4,7 +4,7 @@ import Handle from '../Handle/Handle.vue'
 import type { NodeProps } from '../../types'
 import { Position } from '../../types'
 
-const OutputNode: FunctionalComponent<NodeProps> = function ({
+const OutputNode: FunctionalComponent<NodeProps<{ label: any }>> = function ({
   targetPosition = Position.Top,
   label: _label,
   connectable = true,
