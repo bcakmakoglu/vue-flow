@@ -1,30 +1,18 @@
 # Connection Validation
 
-Connections can be validated before edges are created and nodes get connected. 
+To validate connections before they are created you can either pass a function to the `is-valid-connection` prop of the `<Handle />` component
+or use the `onConnect` event of the `<VueFlow />` component.
+
+Another alternative is to pass a `isValidConnection` function to the `is-valid-connection` prop of the `<VueFlow />` component.
+This function will be applied to *all* connections in the flow (even existing ones).
 
 ## Using a handle in a custom node
 
 ```vue
 <div>
-  [ ... ]
-
-  <Handle type="source" :is-valid-connection="isValidConnection" />
+  <!-- ... -->
+  <Handle type="source" :is-valid-connection="isValidConnection"/>
 </div>
-```
-
-## Passing as node option
-
-```ts
-const nodes = [
-  {
-    id: '1',
-    label: 'Node 1',
-    position: { x: 0, y: 0 },
-    isValidSourcePos: (connection) => {
-      return connection.target === '2'
-    },
-  },
-]
 ```
 
 <div class="mt-6">
