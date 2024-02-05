@@ -4,7 +4,6 @@ import { nextTick } from 'vue'
 import { until } from '@vueuse/core'
 import type {
   Actions,
-  ComputedGetters,
   CoordinateExtent,
   EdgeChange,
   EdgeRemoveChange,
@@ -56,13 +55,12 @@ import { storeOptionsToSkip, useState } from './state'
 export function useActions(
   id: string,
   state: State,
-  getters: ComputedGetters,
   // todo: change to a Set
   nodeIds: ComputedRef<string[]>,
   // todo: change to a Set
   edgeIds: ComputedRef<string[]>,
 ): Actions {
-  const viewportHelper = useViewportHelper(state, getters)
+  const viewportHelper = useViewportHelper(state)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? nodeIds.value ?? []

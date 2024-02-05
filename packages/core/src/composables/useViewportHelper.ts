@@ -1,6 +1,6 @@
 import { zoomIdentity } from 'd3-zoom'
 import { computed } from 'vue'
-import type { ComputedGetters, D3Selection, GraphNode, Project, State, ViewportFunctions } from '../types'
+import type { D3Selection, GraphNode, Project, State, ViewportFunctions } from '../types'
 import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint, warn } from '../utils'
 
 export interface ViewportHelper extends ViewportFunctions {
@@ -41,9 +41,7 @@ const initialViewportHelper: ViewportHelper = {
  * @param state
  * @param getters
  */
-export function useViewportHelper(state: State, getters: ComputedGetters) {
-  const { getNodes } = getters
-
+export function useViewportHelper(state: State) {
   function zoom(scale: number, duration?: number) {
     return new Promise<boolean>((resolve) => {
       if (state.d3Selection && state.d3Zoom) {
