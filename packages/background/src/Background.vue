@@ -17,6 +17,7 @@ const {
   y = 0,
   bgColor,
   patternColor: initialPatternColor,
+  color: _patternColor,
   offset = 2,
 } = defineProps<BackgroundProps>()
 
@@ -44,7 +45,7 @@ const background = computed(() => {
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
 const patternId = toRef(() => `pattern-${vueFlowId}${id ? `-${id}` : ''}`)
 
-const patternColor = toRef(() => initialPatternColor || DefaultBgColors[variant || BackgroundVariant.Dots])
+const patternColor = toRef(() => _patternColor || initialPatternColor || DefaultBgColors[variant || BackgroundVariant.Dots])
 </script>
 
 <script lang="ts">
