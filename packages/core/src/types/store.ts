@@ -321,11 +321,20 @@ export interface Getters {
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
-  /** get all elements (filters hidden elements) */
+  /**
+   * @deprecated - will be removed in next major version
+   * get all elements (filters hidden elements)
+   */
   getElements: FlowElements
-  /** filters hidden nodes */
+  /**
+   * @deprecated - will be removed in next major version; use `useVisibleNodes` instead
+   * all visible nodes
+   */
   getNodes: GraphNode[]
-  /** filters hidden edges */
+  /**
+   * @deprecated - will be removed in next major version; use `useVisibleEdges` instead
+   * all visible edges
+   */
   getEdges: GraphEdge[]
   /** @deprecated use {@link Actions.findNode} instead; returns a node by id */
   getNode: (id: string) => GraphNode | undefined
@@ -337,9 +346,15 @@ export interface Getters {
   getSelectedNodes: GraphNode[]
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge[]
-  /** returns all nodes that are initialized, i.e. they have actual dimensions */
+  /**
+   * @deprecated - will be removed in next major version; use `useNodesInitialized` instead
+   * returns all nodes that are initialized, i.e. they have actual dimensions
+   */
   getNodesInitialized: GraphNode[]
-  /** returns a boolean flag whether all current nodes are initialized */
+  /**
+   * @deprecated - will be removed in next major version; use `useNodesInitialized` instead
+   * returns a boolean flag whether all current nodes are initialized
+   */
   areNodesInitialized: boolean
 }
 
