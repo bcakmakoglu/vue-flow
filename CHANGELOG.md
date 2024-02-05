@@ -2,6 +2,109 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.31.0] - 2024-02-05
+
+[b13d53d](b13d53d60998b050d54e5161fc7d8e85d7cde4df)...[fd4f0c8](fd4f0c81831716a747ae8337bf01d133f3a28b98)
+
+### Bug Fixes
+
+- Import pinia example ([1c54e39](1c54e39c3adf785ed02ee73f6fa196d5131a7e6f))
+- Set opacity on intro until el are set ([da8f82a](da8f82a60bef1c01e3919b9718b77c2815be599d))
+- Update node dimensions on next tick ([4bbc14b](4bbc14b8827338eb6e9c3ffbcd81f7686b066edd))
+- Use existing node/edge obj for assignment ([983971f](983971f576e5c768a9b73080f719aa2c63fdc397))
+- Avoid options passed to `useVueFlow` overwriting default state ([04658b2](04658b2c0d78dfe08b18b845365475019d2f5698))
+- Avoid adding invalid edges (like null or undefined) ([aaf1069](aaf106938fc9162fc9edf6ec5ad08b786cf5f9b3))
+
+### Documentation
+
+- Update basic example ([4b4bcdc](4b4bcdccbb75733950005f613c9460fc35769fab))
+- Add troubleshooting page ([0bfb5f4](0bfb5f40465ca795535f6ca84e362bc1ae0d73dd))
+- Add dagre layout example ([3220e20](3220e20c0e5251136c7364848cde0abaa364ee04))
+
+### Features
+
+- Add `useNodeId` composable ([00a1f9d](00a1f9d4846a04ea0e16c3087aea885f17d14404))
+- Add `useHandleConnections` composable ([064cfd8](064cfd84b3d4a99d6be4ce469152135ead7c3b3e))
+- Add `init` hook ([fd84025](fd84025dd1ccd219b271dc1534e01fa81676b145))
+- Add viewport helper to state ([c855dfe](c855dfe454fe69a66c3d9c64420b98455a81515a))
+- Add `updateNode` & `updateNodeData` actions to store ([fe1d801](fe1d801d5bdb2c915b00769fe9abbad8f4d14ba4))
+- Add `useNodesData` composable ([cecf9d4](cecf9d4c3be33c9e08957fccdd910a16c2c1f30b))
+- Add error args to err ([f36fa77](f36fa770c2e26ef1b0939fa44c977d595d029900))
+
+### Miscellaneous Tasks
+
+- Update vueflow config docs ([ab568b1](ab568b19135123e9e3b3d60a8017b075f9a684dd))
+- Add ([1ed6dbe](1ed6dbe0d9d8604e6d3c1d3ed9f2653eb461ad83))
+- Cleanup ([a9bd82d](a9bd82d28aee64060ed24c61168c511f2fa6b2e1))
+- Add ([3f5519d](3f5519da4df8a2a3565f8ae6ba3a69abb8fdb51f))
+- Cleanup ([0941e60](0941e609dd98d27b932f7b6d047a2ea88e0ab461))
+- Add ([7672672](76726723092bae1c2e1093c45ab7b3736cc39192))
+- Add ([662c5fd](662c5fd99867d67fdb8f32387b2625a1eb3d34ab))
+- Add ([3e9840a](3e9840a351ca2c8cbfa0e8c9425b9e1157aef29a))
+- Deprecate event properties of nodes and edges ([8db9b1a](8db9b1a997d473f756da73294914fa703ded97a9))
+- Add ([66d7198](66d7198a2f83ae911894a86678159b284ff6d93a))
+- Add ([9e72e72](9e72e725e803d9064654b8b78f759dd1285081e3))
+- Cleanup vueflow cmp ([557a679](557a679e8923aabdf79e21df131f947d37ee7877))
+- Add ([fbadf94](fbadf9427fc45a6f5ee0bd3b80bd06dbc265d42a))
+- Add ([0e03b16](0e03b163284254de30a68c3e1035d894fe51c100))
+- Cleanup ([eca0447](eca0447d3b87d1f61652bc8e1ab5f0255cda1634))
+- Add ([c443af6](c443af6991ebd0bfaf4b1dd8b5d638f5d5b4b72c))
+- Add ([1dff3a1](1dff3a17642a9505a626499b5eedbedd40c9f029))
+- Cleanup `useNodesData` types ([533e37e](533e37e624596153637ac4b9d0eecaef758c80e3))
+- Add ([6e162d5](6e162d5f02aef5a9abecd874870927b0b19e2a6f))
+- Update jsdocs ([2ca5bd8](2ca5bd82a4d4d7ff22d24d0ea96b0a1012be7339))
+- Add docs about new composables ([c381e6c](c381e6c11d7d1721e94e22676fcaad7e274c111b))
+- Update custom node example ([fc2f36b](fc2f36b41958a9d0f4d105632984327f2f5c2835))
+- Add cdn example file ([1006006](10060064f21c4d8cbbed02d4ba195acb92a6ea31))
+- Update custom node example ([2637733](2637733aa94e0c0daf61a1a416fab72e781ae788))
+- Cleanup basic example and expand comments ([3c8182e](3c8182ead18d7a253b4667f13f566b5db7f6d37d))
+- Cleanup connection line example ([27f54fd](27f54fd561ae83fa662e5d3265d0dd5cf108c034))
+- Cleanup connection radius example ([be57e51](be57e51685501a66d272b3bdb93335e5d153c866))
+- Update drag and drop example ([88beaec](88beaeca2b69b7c9e15f385360b427cc9c17bbd1))
+- Update edges example ([14f3abe](14f3abef1a4df64027b4d74bdf5689d16945597b))
+- Remove `empty` example ([f5b3d83](f5b3d83731f7e3743d931b4206391f1fc44eee6a))
+- Update hidden example ([8ce3e03](8ce3e03ce9afcdefc8011a379f3ebdfbaa5c269b))
+- Remove horizontal example ([02057b6](02057b6c6c80e2c88f85a41aa918471a83d4799f))
+- Update interaction example ([11f92f4](11f92f4a4a53459be71c53d84786fb801d1f31b2))
+- Update intersection example ([d732597](d73259706551411db855f7a51ba7811879609f71))
+- Update multi example ([0348850](034885062c94edc148ddc8dcfbecf5d6f59015c3))
+- Cleanup examples ([24c2091](24c2091c7a8da529ef8e59f9f29926371552c196))
+- Cleanup EdgeWrapper ([cedb1f5](cedb1f51e77a2cf589ed681559f5df8d2e88e12a))
+- Update ([cc20329](cc20329be9ab58612e840653dd479083aca9b4a5))
+- Add ([3c288e6](3c288e643baa56cdbfd1815f70825af5dab4bcf3))
+- Add ([83848f4](83848f4aa4c551a358138ea92dd6da9f929df09b))
+- Deprecate some node props ([daff22f](daff22f3cf3a5a133dbbae5eb94d20e03bd2bfff))
+- Correct link ([05c4677](05c46770028efe708c1731bdb4ba5ae9cf4c2403))
+
+### Performance
+
+- Replace Array.forEach loops ([c4b4a04](c4b4a04aa083dd87e7ad10d2510ac49e3c69b785))
+
+### Refactor
+
+- Replace watchEffect with onMounted/onBeforeUnmount ([d001d80](d001d802b5922f013f9e9ac21d691d7d27da032e))
+- Remove error from `useNodeId` ([aab31f8](aab31f829648ce81e83d9b43136aca79e9c060f4))
+- Find handle by id regardless of num of handles ([84c2f6d](84c2f6df99b3cd7b220cab27d20fee3c9f29e7e4))
+- Remove unnecessary keys ([97f4a17](97f4a17f8303f2b86f27d1fa0001a3b489cb6fdd))
+- Move fitViewOnInit to node dimensions update ([f09b7d9](f09b7d934bb34701fc0fe7886e7bda2fd44dce3f))
+- Omit events when calling `toObject` ([72cc175](72cc1751429e79a52225e0a0d4f962d8d0881445))
+- Use `useOnInitHandler` to emit `paneReady` event ([5798cc5](5798cc5578cd047dfe82f8839b1e0c0b5a6c8a8e))
+- Allow passing `MaybeRefOrGetter` to `useNodesData` ([f4fb4d8](f4fb4d8036049a35be77fee7e8156eb46dccf5e9))
+- Allow `null` instead of `undefined` as id for `useHandleConnections` ([7161e9e](7161e9ec90d4329e54c279b1a740ce02bbfb51bb))
+- Add missing viewport helper functions to actions ([417a301](417a301b423f5e10f21ca26165d75b04fd582744))
+- Call nodes initialized whenever `areNodesInitialized` is true ([584782b](584782bcc625036a02fd6ccdfcfcbb0bebb21072))
+- Show repl import map and tsconfig opts ([6f33a3b](6f33a3b50e8a085f967b1f3b86d2b24677575edc))
+- Use wider styles for example pages ([32700b1](32700b12d39368357ff5daad4ab087261f3da0a9))
+- Call `fitViewOnInit` when node dimensions are initially set ([0544fbd](0544fbdb6a40a8658a4f64e8b7b00c274ece849a))
+- Pass renderers to viewport cmp as slots ([cc9f4fb](cc9f4fb24499e2c3f374fc46449cbe05114b56ed))
+- Cast zIndex to ref ([259514a](259514a229eab67aac2e7b892308b51ce390ff1b))
+- Remove exports from barrel files ([308338f](308338fa7916806e30402fa0d94642e1813d77f6))
+
+### Testing
+
+- Add tests for `updateNodeData` & `updateNode` ([4d8cd3c](4d8cd3c1a4828c8f322203446f411424fc88e976))
+- Add tests for `useNodesData` ([7f6ae2f](7f6ae2fbf81aca64b9549a6cc45f1ee5de7acba0))
+
 ## [1.30.1] - 2024-01-30
 
 [11a16da](11a16da158a30cf730767275e1a428493b770196)...[b13d53d](b13d53d60998b050d54e5161fc7d8e85d7cde4df)
