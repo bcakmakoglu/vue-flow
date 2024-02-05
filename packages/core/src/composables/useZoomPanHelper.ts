@@ -1,6 +1,6 @@
 import type { ComputedGetters, State, ViewportFunctions } from '../types'
 import { useVueFlow } from './useVueFlow'
-import { useViewport } from './useViewport'
+import { useViewportHelper } from './useViewportHelper'
 
 /**
  * @deprecated use {@link useVueFlow} instead (all viewport functions are also available in {@link useVueFlow})
@@ -8,7 +8,7 @@ import { useViewport } from './useViewport'
 export function useZoomPanHelper(vueFlowId?: string): ViewportFunctions {
   const state = $(useVueFlow({ id: vueFlowId }))
 
-  const viewportHelper = useViewport(state as State, state as unknown as ComputedGetters)
+  const viewportHelper = useViewportHelper(state as State, state as unknown as ComputedGetters)
 
   return {
     fitView: (params) => viewportHelper.value.fitView(params),
