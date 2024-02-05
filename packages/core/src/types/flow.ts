@@ -20,6 +20,7 @@ import type { ValidConnectionFunc } from './handle'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
 
+// todo: should be object type
 export type ElementData = any
 
 /** A flow element (after parsing into state)  */

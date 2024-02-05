@@ -30,6 +30,12 @@ interface UseDragParams {
   id?: string
 }
 
+/**
+ * Composable that provides drag behavior for nodes
+ *
+ * @internal
+ * @param params
+ */
 export function useDrag(params: UseDragParams) {
   const {
     vueFlowRef,

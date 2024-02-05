@@ -15,6 +15,11 @@ function createEdgeHooks() {
   }
 }
 
+/**
+ * Composable for handling edge events
+ *
+ * @internal
+ */
 export function useEdgeHooks(edge: GraphEdge, emits: VueFlowStore['emits']): { emit: EdgeEventsEmit; on: EdgeEventsOn } {
   const edgeHooks = createEdgeHooks()
 

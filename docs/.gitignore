@@ -8,3 +8,7 @@ src/changelog
 src/typedocs
 
 src/public/*.js
+
+src/.vitepress/.temp
+
+src/.vitepress/cache
