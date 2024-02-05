@@ -1,4 +1,6 @@
-// todo: replace with a simple string type
+/**
+ * @deprecated - will be removed in the next major version. You can use simple string values for `variant` prop instead, i.e. `lines` or `dots`
+ */
 export enum BackgroundVariant {
   Lines = 'lines',
   Dots = 'dots',
@@ -15,9 +17,17 @@ export interface BackgroundProps {
   /** Background pattern size */
   size?: number
   lineWidth?: number
-  /** Background pattern color */
+  /**
+   * @deprecated - will be removed in the next major version. Use `color` instead
+   * Background pattern color
+   */
   patternColor?: string
-  /** Background color */
+  /** Background pattern color */
+  color?: string
+  /**
+   * @deprecated - will be removed in the next major version. You can assign a bg color to `<VueFlow />` directly instead.
+   * Background color
+   */
   bgColor?: string
   /** @deprecated Background height */
   height?: number
