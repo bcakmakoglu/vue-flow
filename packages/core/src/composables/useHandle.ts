@@ -57,7 +57,6 @@ export function useHandle({
     autoPanOnConnect,
     findNode,
     panBy,
-    getNodes,
     startConnection,
     updateConnection,
     endConnection,
@@ -107,7 +106,7 @@ export function useHandle({
       let autoPanStarted = false
 
       const handleLookup = getHandleLookup({
-        nodes: getNodes.value,
+        nodes: nodes.value,
         nodeId: toValue(nodeId),
         handleId: toValue(handleId),
         handleType,
