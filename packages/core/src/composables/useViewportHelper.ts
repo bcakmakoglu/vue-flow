@@ -41,7 +41,7 @@ const initialViewportHelper: ViewportHelper = {
  * @param state
  * @param getters
  */
-export function useViewport(state: State, getters: ComputedGetters) {
+export function useViewportHelper(state: State, getters: ComputedGetters) {
   const { getNodes } = getters
 
   function zoom(scale: number, duration?: number) {
@@ -134,15 +134,14 @@ export function useViewport(state: State, getters: ComputedGetters) {
           duration: 0,
         },
       ) => {
-        const nodesToFit: GraphNode[] = (options.includeHiddenNodes ? state.nodes : getNodes.value).filter((node) => {
-          const initialized = node.dimensions.width && node.dimensions.height
-          let shouldInclude = true
+        const nodesToFit: GraphNode[] = state.nodes.filter((node) => {
+          const isVisible = node.dimensions.width && node.dimensions.height && (options?.includeHiddenNodes || !node.hidden)
 
           if (options.nodes?.length) {
-            shouldInclude = options.nodes.includes(node.id)
+            return isVisible && options.nodes.includes(node.id)
           }
 
-          return initialized && shouldInclude
+          return isVisible
         })
 
         if (!nodesToFit.length) {
