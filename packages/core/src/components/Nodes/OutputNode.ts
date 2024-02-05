@@ -6,17 +6,20 @@ import { Position } from '../../types'
 
 const OutputNode: FunctionalComponent<NodeProps> = function ({
   targetPosition = Position.Top,
-  label,
+  label: _label,
   connectable = true,
   isValidTargetPos,
+  data,
 }) {
+  const label = data.label || _label
+
   return [
     h(Handle as Component, { type: 'target', position: targetPosition, connectable, isValidConnection: isValidTargetPos }),
     typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
   ]
 }
 
-OutputNode.props = ['targetPosition', 'label', 'isValidTargetPos', 'connectable']
+OutputNode.props = ['targetPosition', 'label', 'isValidTargetPos', 'connectable', 'data']
 OutputNode.inheritAttrs = false
 OutputNode.compatConfig = { MODE: 3 }
 
