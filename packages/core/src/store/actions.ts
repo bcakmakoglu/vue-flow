@@ -22,7 +22,7 @@ import type {
   Rect,
   State,
 } from '../types'
-import { useViewport } from '../composables'
+import { useViewportHelper } from '../composables'
 import {
   ErrorCode,
   VueFlowError,
@@ -62,7 +62,7 @@ export function useActions(
   // todo: change to a Set
   edgeIds: ComputedRef<string[]>,
 ): Actions {
-  const viewportHelper = useViewport(state, getters)
+  const viewportHelper = useViewportHelper(state, getters)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? nodeIds.value ?? []
