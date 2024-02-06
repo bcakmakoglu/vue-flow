@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import dagre from 'dagre'
 import { ConnectionMode, Panel, Position, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
-
-import '@vue-flow/controls/dist/style.css'
 
 import { initialEdges, initialNodes } from './initial-elements'
 import { useRunProcess } from './useRunProcess'
@@ -18,7 +15,7 @@ const dagreGraph = ref(new dagre.graphlib.Graph())
 
 dagreGraph.value.setDefaultEdgeLabel(() => ({}))
 
-const { run } = useRunProcess()
+const { run, stop, isRunning } = useRunProcess(dagreGraph)
 
 const { findNode, fitView } = useVueFlow()
 
@@ -62,18 +59,19 @@ function handleLayout(direction: 'TB' | 'LR') {
 
 <template>
   <div class="layoutflow">
-    <VueFlow :nodes="nodes" :edges="edges" :connection-mode="ConnectionMode.Loose" @nodes-initialized="handleLayout('TB')">
+    <VueFlow :nodes="nodes" :edges="edges" :connection-mode="ConnectionMode.Loose" @nodes-initialized="handleLayout('LR')">
       <template #node-process="props">
         <ProcessNode v-bind="props" />
       </template>
 
-      <Controls />
+      <Panel class="layout-panel" position="top-right">
+        <button @click="handleLayout('TB')">vertical</button>
+        <button @click="handleLayout('LR')">horizontal</button>
+      </Panel>
 
-      <Panel style="display: flex; gap: 10px" position="top-right">
-        <button @click="handleLayout('TB')">vertical layout</button>
-        <button @click="handleLayout('LR')">horizontal layout</button>
-
-        <button @click="run(nodes, dagreGraph)">Run</button>
+      <Panel class="process-panel" position="bottom-right">
+        <button v-if="isRunning" @click="stop">🛑</button>
+        <button v-else @click="run(nodes)">▶️</button>
       </Panel>
     </VueFlow>
   </div>
@@ -81,7 +79,42 @@ function handleLayout(direction: 'TB' | 'LR') {
 
 <style>
 .layoutflow {
+  background-color: #1a192b;
   height: 100%;
   width: 100%;
+}
+
+.process-panel,
+.layout-panel {
+  display: flex;
+  gap: 10px;
+}
+
+.process-panel button,
+.layout-panel button {
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #2d3748;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.process-panel button {
+  font-size: 24px;
+  width: 50px;
+  height: 50px;
+}
+
+.process-panel button:hover,
+.layout-panel button:hover {
+  background-color: #4b5563;
+  transition: background-color 0.2s;
+}
+
+.process-panel button:disabled {
+  background-color: #4b5563;
+  cursor: not-allowed;
 }
 </style>

@@ -24,12 +24,11 @@ const bgColor = toRef(() => {
     return '#10b981'
   }
 
-  if (props.data.isRunning || props.data.isSkipped) {
-    // pick me a lighter color please
-    return '#6b7280'
+  if (props.data.isCancelled) {
+    return '#fbbf24'
   }
 
-  return '#1a192b'
+  return '#4b5563'
 })
 </script>
 
@@ -38,12 +37,12 @@ const bgColor = toRef(() => {
     <Handle type="target" :position="targetPosition" />
     <Handle type="source" :position="sourcePosition" />
 
-    <div style="display: flex; align-items: center; gap: 8px">
-      <div v-if="data.isRunning" class="spinner" />
-      <span v-else-if="data.hasError">&#x274C;</span>
-      <span v-else-if="data.isSkipped">&#x1F6A7;</span>
-      <span v-else>&#x1F4E6;</span>
-    </div>
+    <div v-if="data.isRunning" class="spinner" />
+    <span v-else-if="data.hasError">&#x274C;</span>
+    <span v-else-if="data.isSkipped">&#x1F6A7;</span>
+    <span v-else-if="data.isFinished"> &#x1F60E;</span>
+    <span v-else-if="data.isCancelled"> &#x1F6AB;</span>
+    <span v-else> &#x1F4E6;</span>
   </div>
 </template>
 
@@ -51,22 +50,22 @@ const bgColor = toRef(() => {
 .process-node {
   padding: 10px;
   color: white;
-  border: 1px solid #1a192b;
   border-radius: 99px;
-  font-size: 10px;
-  width: 15px;
-  height: 15px;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .spinner {
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #10b981;
   border-radius: 50%;
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   animation: spin 1s linear infinite;
 }
 

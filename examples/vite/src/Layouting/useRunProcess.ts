@@ -1,5 +1,7 @@
+import type dagre from 'dagre'
 import type { Node } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
+import type { MaybeRefOrGetter } from 'vue'
 
 /**
  * Composable to simulate running a process tree.
@@ -9,80 +11,112 @@ import { useVueFlow } from '@vue-flow/core'
  *
  * When a node has multiple descendants, it will run them in parallel.
  */
-export function useRunProcess() {
+export function useRunProcess(dagreGraph: MaybeRefOrGetter<dagre.graphlib.Graph>) {
   const { updateNodeData } = useVueFlow()
 
-  const running = ref(false)
-  const executedNodes = new Set<string>()
+  const graph = toRef(() => toValue(dagreGraph))
 
-  async function runNode(node: { id: string }, dagreGraph: dagre.graphlib.Graph) {
+  const isRunning = ref(false)
+  const executedNodes = new Set<string>()
+  const runningTasks = new Map<string, NodeJS.Timeout>()
+
+  async function runNode(node: { id: string }) {
     if (executedNodes.has(node.id)) {
       return
     }
 
     executedNodes.add(node.id)
 
-    updateNodeData(node.id, { isRunning: true, isFinished: false, hasError: false })
+    updateNodeData(node.id, { isRunning: true, isFinished: false, hasError: false, isCancelled: false })
 
     // Simulate an async process with a random timeout between 1 and 3 seconds
     const delay = Math.floor(Math.random() * 2000) + 1000
-    await new Promise((resolve) => setTimeout(resolve, delay))
+    return new Promise<void>((resolve) => {
+      const timeout = setTimeout(async () => {
+        const children = graph.value.successors(node.id) as unknown as string[]
 
-    const children = dagreGraph.successors(node.id) as unknown as string[]
+        // Randomly decide whether the node will throw an error
+        const willThrowError = Math.random() < 0.15
 
-    // Randomly decide whether the node will throw an error
-    const willThrowError = Math.random() < 0.15
+        if (willThrowError) {
+          updateNodeData(node.id, { isRunning: false, hasError: true })
 
-    if (willThrowError) {
-      updateNodeData(node.id, { isRunning: false, hasError: true })
+          await skipDescendants(node.id)
+          runningTasks.delete(node.id)
 
-      await skipDescendants(node.id, dagreGraph)
-      return
-    }
+          resolve()
+          return
+        }
 
-    updateNodeData(node.id, { isRunning: false, isFinished: true })
+        updateNodeData(node.id, { isRunning: false, isFinished: true })
+        console.log(`Node ${node.id} finished`)
+        runningTasks.delete(node.id)
 
-    // Run the process on the children in parallel
-    await Promise.all(
-      children.map((id) => {
-        return runNode({ id }, dagreGraph)
-      }),
-    )
+        if (children.length > 0) {
+          // Run the process on the children in parallel
+          await Promise.all(children.map((id) => runNode({ id })))
+        }
+
+        resolve()
+      }, delay)
+
+      runningTasks.set(node.id, timeout)
+    })
   }
 
-  async function run(nodes: Node[], dagreGraph: dagre.graphlib.Graph) {
-    if (running.value) {
+  async function run(nodes: Node[]) {
+    if (isRunning.value) {
       return
     }
 
     reset(nodes)
 
-    running.value = true
+    isRunning.value = true
 
     // Get all starting nodes (nodes with no predecessors)
-    const startingNodes = nodes.filter((node) => dagreGraph.predecessors(node.id)?.length === 0)
+    const startingNodes = nodes.filter((node) => graph.value.predecessors(node.id)?.length === 0)
 
     // Run the process on all starting nodes in parallel
-    await Promise.all(startingNodes.map((node) => runNode(node, dagreGraph)))
+    await Promise.all(startingNodes.map(runNode))
 
-    running.value = false
-    executedNodes.clear()
+    clear()
   }
 
   function reset(nodes: Node[]) {
+    clear()
+
     for (const node of nodes) {
-      updateNodeData(node.id, { isRunning: false, isFinished: false, hasError: false, isSkipped: false })
+      updateNodeData(node.id, { isRunning: false, isFinished: false, hasError: false, isSkipped: false, isCancelled: false })
     }
   }
 
-  async function skipDescendants(nodeId: string, dagreGraph: dagre.graphlib.Graph) {
-    const children = dagreGraph.successors(nodeId) as unknown as string[]
+  async function skipDescendants(nodeId: string) {
+    const children = graph.value.successors(nodeId) as unknown as string[]
 
     for (const child of children) {
       updateNodeData(child, { isRunning: false, isSkipped: true })
-      await skipDescendants(child, dagreGraph)
+      await skipDescendants(child)
     }
   }
 
-  return { run, running }
+  function stop() {
+    isRunning.value = false
+
+    for (const [nodeId, task] of runningTasks) {
+      clearTimeout(task)
+      runningTasks.delete(nodeId)
+      updateNodeData(nodeId, { isRunning: false, isFinished: false, hasError: false, isSkipped: false, isCancelled: true })
+      skipDescendants(nodeId)
+    }
+
+    executedNodes.clear()
+  }
+
+  function clear() {
+    isRunning.value = false
+    executedNodes.clear()
+    runningTasks.clear()
+  }
+
+  return { run, stop, reset, isRunning }
 }
