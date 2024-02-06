@@ -1,71 +1,75 @@
-import type { Elements, XYPosition } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
 
-const position: XYPosition = { x: 0, y: 0 }
+const position = { x: 0, y: 0 }
+const type: string = 'process'
 
-const elements: Elements = [
+export const initialNodes: Node[] = [
   {
     id: '1',
-    type: 'input',
-    label: 'input',
+    label: 'Start',
     position,
+    type,
   },
   {
     id: '2',
-    label: 'node 2',
     position,
+    type,
   },
   {
     id: '2a',
-    label: 'node 2a',
     position,
+    type,
   },
   {
     id: '2b',
-    label: 'node 2b',
     position,
+    type,
   },
   {
     id: '2c',
-    label: 'node 2c',
     position,
+    type,
   },
   {
     id: '2d',
-    label: 'node 2d',
     position,
+    type,
   },
   {
     id: '3',
-    label: 'node 3',
     position,
+    type,
   },
   {
     id: '4',
-    label: 'node 4',
     position,
+    type,
   },
   {
     id: '5',
-    label: 'node 5',
     position,
+    type,
   },
   {
     id: '6',
-    type: 'output',
-    label: 'output',
     position,
+    type,
   },
-  { id: '7', type: 'output', label: 'output', position: { x: 400, y: 450 } },
-  { id: 'e12', source: '1', target: '2', type: 'smoothstep', animated: true },
-  { id: 'e13', source: '1', target: '3', type: 'smoothstep', animated: true },
-  { id: 'e22a', source: '2', target: '2a', type: 'smoothstep', animated: true },
-  { id: 'e22b', source: '2', target: '2b', type: 'smoothstep', animated: true },
-  { id: 'e22c', source: '2', target: '2c', type: 'smoothstep', animated: true },
-  { id: 'e2c2d', source: '2c', target: '2d', type: 'smoothstep', animated: true },
-
-  { id: 'e45', source: '4', target: '5', type: 'smoothstep', animated: true },
-  { id: 'e56', source: '5', target: '6', type: 'smoothstep', animated: true },
-  { id: 'e57', source: '5', target: '7', type: 'smoothstep', animated: true },
+  {
+    id: '7',
+    position,
+    type,
+  },
 ]
 
-export default elements
+export const initialEdges: Edge[] = [
+  { id: 'e1-2', source: '1', target: '2', type: 'smoothstep', animated: true },
+  { id: 'e1-3', source: '1', target: '3', type: 'smoothstep', animated: true },
+  { id: 'e2-2a', source: '2', target: '2a', type: 'smoothstep', animated: true },
+  { id: 'e2-2b', source: '2', target: '2b', type: 'smoothstep', animated: true },
+  { id: 'e2-2c', source: '2', target: '2c', type: 'smoothstep', animated: true },
+  { id: 'e2c-2d', source: '2c', target: '2d', type: 'smoothstep', animated: true },
+  { id: 'e4-5', source: '4', target: '5', type: 'smoothstep', animated: true },
+  { id: 'e5-6', source: '5', target: '6', type: 'smoothstep', animated: true },
+  { id: 'e5-7', source: '5', target: '7', type: 'smoothstep', animated: true },
+]
