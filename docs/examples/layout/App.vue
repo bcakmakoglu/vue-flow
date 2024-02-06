@@ -62,7 +62,7 @@ function handleLayout(direction) {
 
 <template>
   <div class="layoutflow">
-    <VueFlow :nodes="nodes" :edges="edges" @nodes-initialized="handleLayout('TB')">
+    <VueFlow :nodes="nodes" :edges="edges" @nodes-initialized="handleLayout('LR')">
       <template #node-process="props">
         <ProcessNode v-bind="props" />
       </template>
