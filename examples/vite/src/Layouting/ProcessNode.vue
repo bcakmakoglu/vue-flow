@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import type { NodeProps } from '@vue-flow/core'
-import { Handle } from '@vue-flow/core'
+import { Handle, useHandleConnections } from '@vue-flow/core'
 
 const props = defineProps<NodeProps>()
 
+const sourceConnections = useHandleConnections({
+  type: 'target',
+})
+
+const targetConnections = useHandleConnections({
+  type: 'source',
+})
+
+const isSender = toRef(() => sourceConnections.value.length <= 0)
+
+const isReceiver = toRef(() => targetConnections.value.length <= 0)
+
 const bgColor = toRef(() => {
+  if (isSender.value) {
+    return '#4b5563'
+  }
+
   if (props.data.hasError) {
     return '#f87171'
   }
@@ -19,19 +35,41 @@ const bgColor = toRef(() => {
 
   return '#4b5563'
 })
+
+const processLabel = toRef(() => {
+  if (props.data.hasError) {
+    return '❌'
+  }
+
+  if (props.data.isSkipped) {
+    return '🚧'
+  }
+
+  if (props.data.isCancelled) {
+    return '🚫'
+  }
+
+  if (isSender.value) {
+    return '📦'
+  }
+
+  if (props.data.isFinished) {
+    return '😎'
+  }
+
+  return '📥'
+})
 </script>
 
 <template>
   <div class="process-node" :style="{ backgroundColor: bgColor }">
-    <Handle type="target" :position="targetPosition" />
-    <Handle type="source" :position="sourcePosition" />
+    <Handle v-if="!isSender" type="target" :position="targetPosition" />
+    <Handle v-if="!isReceiver" type="source" :position="sourcePosition" />
 
     <div v-if="data.isRunning" class="spinner" />
-    <span v-else-if="data.hasError">&#x274C;</span>
-    <span v-else-if="data.isSkipped">&#x1F6A7;</span>
-    <span v-else-if="data.isFinished"> &#x1F60E;</span>
-    <span v-else-if="data.isCancelled"> &#x1F6AB;</span>
-    <span v-else> &#x1F4E6;</span>
+    <span v-else>
+      {{ processLabel }}
+    </span>
   </div>
 </template>
 

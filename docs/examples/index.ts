@@ -18,7 +18,7 @@ import { IntersectionApp, IntersectionCSS } from './intersection'
 import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
-import { LayoutApp, LayoutElements, LayoutNode, LayoutScript } from './layout'
+import { LayoutApp, LayoutEdge, LayoutElements, LayoutNode, LayoutScript } from './layout'
 
 export const exampleImports = {
   basic: {
@@ -103,8 +103,8 @@ export const exampleImports = {
     'TransitionEdge.vue': TransitionEdge,
     'style.css': TransitionCSS,
     'additionalImports': {
-      '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@9.3.0/index.mjs',
-      '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@9.3.0/index.mjs',
+      '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@10.7.0/index.mjs',
+      '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@10.7.0/index.mjs',
       'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@0.13.11/lib/index.mjs',
     },
   },
@@ -128,9 +128,13 @@ export const exampleImports = {
     'App.vue': LayoutApp,
     'initial-elements.js': LayoutElements,
     'ProcessNode.vue': LayoutNode,
+    'AnimationEdge.vue': LayoutEdge,
     'useRunProcess.js': LayoutScript,
     'additionalImports': {
-      dagre: 'https://cdn.skypack.dev/pin/dagre@v0.8.5-NOlknF82nBdUHQKLJWRC/mode=imports,min/optimized/dagre.js',
+      '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@10.7.0/index.mjs',
+      '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@10.7.0/index.mjs',
+      'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@0.13.11/lib/index.mjs',
+      'dagre': 'https://cdn.skypack.dev/pin/dagre@v0.8.5-NOlknF82nBdUHQKLJWRC/mode=imports,min/optimized/dagre.js',
     },
   },
 }

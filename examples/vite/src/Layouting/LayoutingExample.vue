@@ -4,6 +4,7 @@ import { ConnectionMode, Panel, Position, VueFlow, useVueFlow } from '@vue-flow/
 
 import { initialEdges, initialNodes } from './initial-elements'
 import { useRunProcess } from './useRunProcess'
+import AnimationEdge from './AnimationEdge.vue'
 import ProcessNode from './ProcessNode.vue'
 
 const nodes = ref(initialNodes)
@@ -64,12 +65,16 @@ function handleLayout(direction: 'TB' | 'LR') {
         <ProcessNode v-bind="props" />
       </template>
 
-      <Panel class="layout-panel" position="top-right">
+      <template #edge-animation="props">
+        <AnimationEdge v-bind="props" />
+      </template>
+
+      <Panel class="layout-panel" position="top-left">
         <button @click="handleLayout('TB')">vertical</button>
         <button @click="handleLayout('LR')">horizontal</button>
       </Panel>
 
-      <Panel class="process-panel" position="bottom-right">
+      <Panel class="process-panel" position="top-right">
         <button v-if="isRunning" @click="stop">🛑</button>
         <button v-else @click="run(nodes)">▶️</button>
       </Panel>

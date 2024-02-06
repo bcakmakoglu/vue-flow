@@ -20,7 +20,7 @@ export function useRunProcess(dagreGraph: MaybeRefOrGetter<dagre.graphlib.Graph>
   const executedNodes = new Set<string>()
   const runningTasks = new Map<string, NodeJS.Timeout>()
 
-  async function runNode(node: { id: string }) {
+  async function runNode(node: { id: string }, isStartingNode = false) {
     if (executedNodes.has(node.id)) {
       return
     }
@@ -32,33 +32,35 @@ export function useRunProcess(dagreGraph: MaybeRefOrGetter<dagre.graphlib.Graph>
     // Simulate an async process with a random timeout between 1 and 3 seconds
     const delay = Math.floor(Math.random() * 2000) + 1000
     return new Promise<void>((resolve) => {
-      const timeout = setTimeout(async () => {
-        const children = graph.value.successors(node.id) as unknown as string[]
+      const timeout = setTimeout(
+        async () => {
+          const children = graph.value.successors(node.id) as unknown as string[]
 
-        // Randomly decide whether the node will throw an error
-        const willThrowError = Math.random() < 0.15
+          // Randomly decide whether the node will throw an error
+          const willThrowError = Math.random() < 0.15
 
-        if (willThrowError) {
-          updateNodeData(node.id, { isRunning: false, hasError: true })
+          if (willThrowError) {
+            updateNodeData(node.id, { isRunning: false, hasError: true })
 
-          await skipDescendants(node.id)
+            await skipDescendants(node.id)
+            runningTasks.delete(node.id)
+
+            resolve()
+            return
+          }
+
+          updateNodeData(node.id, { isRunning: false, isFinished: true })
           runningTasks.delete(node.id)
 
+          if (children.length > 0) {
+            // Run the process on the children in parallel
+            await Promise.all(children.map((id) => runNode({ id })))
+          }
+
           resolve()
-          return
-        }
-
-        updateNodeData(node.id, { isRunning: false, isFinished: true })
-        console.log(`Node ${node.id} finished`)
-        runningTasks.delete(node.id)
-
-        if (children.length > 0) {
-          // Run the process on the children in parallel
-          await Promise.all(children.map((id) => runNode({ id })))
-        }
-
-        resolve()
-      }, delay)
+        },
+        isStartingNode ? 0 : delay,
+      )
 
       runningTasks.set(node.id, timeout)
     })
@@ -77,7 +79,7 @@ export function useRunProcess(dagreGraph: MaybeRefOrGetter<dagre.graphlib.Graph>
     const startingNodes = nodes.filter((node) => graph.value.predecessors(node.id)?.length === 0)
 
     // Run the process on all starting nodes in parallel
-    await Promise.all(startingNodes.map(runNode))
+    await Promise.all(startingNodes.map((node) => runNode(node, true)))
 
     clear()
   }
