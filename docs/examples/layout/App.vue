@@ -65,6 +65,10 @@ function handleLayout(direction) {
         <ProcessNode v-bind="props" />
       </template>
 
+      <template #edge-animation="props">
+        <AnimationEdge v-bind="props" />
+      </template>
+
       <Background />
 
       <Panel class="layout-panel" position="top-left">
