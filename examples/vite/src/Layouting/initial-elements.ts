@@ -6,7 +6,6 @@ const type: string = 'process'
 export const initialNodes: Node[] = [
   {
     id: '1',
-    label: 'Start',
     position,
     type,
   },
@@ -69,6 +68,7 @@ export const initialEdges: Edge[] = [
   { id: 'e2-2b', source: '2', target: '2b', type: 'smoothstep', animated: true },
   { id: 'e2-2c', source: '2', target: '2c', type: 'smoothstep', animated: true },
   { id: 'e2c-2d', source: '2c', target: '2d', type: 'smoothstep', animated: true },
+  { id: 'e3-7', source: '3', target: '4', type: 'smoothstep', animated: true },
   { id: 'e4-5', source: '4', target: '5', type: 'smoothstep', animated: true },
   { id: 'e5-6', source: '5', target: '6', type: 'smoothstep', animated: true },
   { id: 'e5-7', source: '5', target: '7', type: 'smoothstep', animated: true },

@@ -14,9 +14,7 @@ const edges = ref(initialEdges)
 
 const dagreGraph = ref(new dagre.graphlib.Graph())
 
-dagreGraph.value.setDefaultEdgeLabel(() => ({}))
-
-const { run } = useRunProcess()
+const { run, stop, isRunning } = useRunProcess(dagreGraph)
 
 const { findNode, fitView } = useVueFlow()
 
@@ -69,11 +67,14 @@ function handleLayout(direction) {
 
       <Background />
 
-      <Panel style="display: flex; gap: 1rem" position="top-right">
+      <Panel class="layout-panel" position="top-left">
         <button @click="handleLayout('TB')">vertical</button>
         <button @click="handleLayout('LR')">horizontal</button>
+      </Panel>
 
-        <button @click="run(nodes, dagreGraph)">Run</button>
+      <Panel class="process-panel" position="top-right">
+        <button v-if="isRunning" @click="stop">🛑</button>
+        <button v-else @click="run(nodes)">▶️</button>
       </Panel>
     </VueFlow>
   </div>
@@ -81,12 +82,42 @@ function handleLayout(direction) {
 
 <style>
 .layoutflow {
+  background-color: #1a192b;
   height: 100%;
   width: 100%;
 }
 
-.layoutflow .vue-flow .vue-flow__edge-path {
-  stroke: #10b981;
-  stroke-width: 2px;
+.process-panel,
+.layout-panel {
+  display: flex;
+  gap: 10px;
+}
+
+.process-panel button,
+.layout-panel button {
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #2d3748;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.process-panel button {
+  font-size: 24px;
+  width: 50px;
+  height: 50px;
+}
+
+.process-panel button:hover,
+.layout-panel button:hover {
+  background-color: #4b5563;
+  transition: background-color 0.2s;
+}
+
+.process-panel button:disabled {
+  background-color: #4b5563;
+  cursor: not-allowed;
 }
 </style>
