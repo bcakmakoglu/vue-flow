@@ -85,31 +85,6 @@ function handleLayout(direction) {
   width: 100%;
 }
 
-.layoutflow .vue-flow .vue-flow__node-input {
-  background-color: #10b981;
-  color: white;
-  border: 1px solid #10b981;
-  border-radius: 99px;
-}
-
-.layoutflow .vue-flow .vue-flow__node-output {
-  background-color: #ef467e;
-  color: white;
-  border: 1px solid #ef467e;
-  border-radius: 99px;
-}
-
-.layoutflow .vue-flow .vue-flow__node-default {
-  background-color: #1a192b;
-  color: white;
-  border: 1px solid #10b981;
-  border-radius: 99px;
-}
-
-.layoutflow .vue-flow .vue-flow__node.selected {
-  box-shadow: 0 0 0 2px #3b82f6;
-}
-
 .layoutflow .vue-flow .vue-flow__edge-path {
   stroke: #10b981;
   stroke-width: 2px;
