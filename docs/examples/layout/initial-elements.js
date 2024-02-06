@@ -1,61 +1,63 @@
 const position = { x: 0, y: 0 }
+const type = 'process'
 
 export const initialNodes = [
   {
     id: '1',
-    type: 'input',
     label: 'Start',
     position,
+    type,
   },
   {
     id: '2',
-    label: 'Process 1',
     position,
+    type,
   },
   {
     id: '2a',
-    label: 'Process 2a',
     position,
+    type,
   },
   {
     id: '2b',
-    type: 'output',
-    label: 'Process 2b',
     position,
+    type,
   },
   {
     id: '2c',
-    label: 'Process 2c',
     position,
+    type,
   },
   {
     id: '2d',
-    label: 'Process 2d',
     position,
+    type,
   },
   {
     id: '3',
-    label: 'Process 3',
     position,
+    type,
   },
   {
     id: '4',
-    type: 'input',
-    label: 'Start',
     position,
+    type,
   },
   {
     id: '5',
-    label: 'Process 5',
     position,
+    type,
   },
   {
     id: '6',
-    type: 'output',
-    label: 'Process 6',
     position,
+    type,
   },
-  { id: '7', label: 'Process 7', position },
+  {
+    id: '7',
+    position,
+    type,
+  },
 ]
 
 export const initialEdges = [
