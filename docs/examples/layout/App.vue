@@ -4,6 +4,7 @@ import { nextTick, ref } from 'vue'
 import { Panel, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import ProcessNode from './ProcessNode.vue'
+import AnimationEdge from './AnimationEdge.vue'
 
 import { initialEdges, initialNodes } from './initial-elements.js'
 import { useRunProcess } from './useRunProcess'
@@ -62,11 +63,20 @@ function handleLayout(direction) {
   <div class="layoutflow">
     <VueFlow :nodes="nodes" :edges="edges" @nodes-initialized="handleLayout('LR')">
       <template #node-process="props">
-        <ProcessNode v-bind="props" />
+        <ProcessNode :data="props.data" :source-position="props.sourcePosition" :target-position="props.targetPosition" />
       </template>
 
-      <template #edge-animation="props">
-        <AnimationEdge v-bind="props" />
+      <template #edge-animation="edgeProps">
+        <AnimationEdge
+          :id="edgeProps.id"
+          :source="edgeProps.source"
+          :source-x="edgeProps.sourceX"
+          :source-y="edgeProps.sourceY"
+          :targetX="edgeProps.targetX"
+          :targetY="edgeProps.targetY"
+          :source-position="edgeProps.sourcePosition"
+          :target-position="edgeProps.targetPosition"
+        />
       </template>
 
       <Background />
