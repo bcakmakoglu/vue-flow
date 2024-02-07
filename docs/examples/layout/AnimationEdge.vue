@@ -1,10 +1,14 @@
 <script setup>
 import { computed, ref, toRef, watch } from 'vue'
-import { BaseEdge, getSmoothStepPath, useNodesData, useVueFlow } from '@vue-flow/core'
+import { BaseEdge, EdgeLabelRenderer, Position, getSmoothStepPath, useNodesData } from '@vue-flow/core'
 import { TransitionPresets, executeTransition } from '@vueuse/core'
 
 const props = defineProps({
   id: {
+    type: String,
+    required: true,
+  },
+  source: {
     type: String,
     required: true,
   },
@@ -26,65 +30,45 @@ const props = defineProps({
   },
   sourcePosition: {
     type: String,
-    required: true,
+    default: Position.Right,
   },
   targetPosition: {
     type: String,
-    required: true,
-  },
-  data: {
-    type: Object,
-    required: false,
-  },
-  markerEnd: {
-    type: String,
-    required: false,
-  },
-  style: {
-    type: Object,
-    required: false,
-  },
-  sourceHandleId: {
-    type: String,
-    required: false,
-  },
-  targetHandleId: {
-    type: String,
-    required: false,
+    default: Position.Left,
   },
 })
-
-const { onNodeDrag } = useVueFlow()
 
 const edgePoint = ref(0)
 
 const sourceNodeData = useNodesData(() => props.source)
 
-const isSourceNodeRunning = toRef(() => sourceNodeData.value?.isRunning)
+const isFinished = toRef(() => sourceNodeData.value.isFinished)
+
+const isAnimating = ref(false)
 
 const edgeColor = toRef(() => {
-  if (sourceNodeData.value?.hasError) {
+  if (sourceNodeData.value.hasError) {
     return '#f87171'
   }
 
-  if (sourceNodeData.value?.isFinished) {
+  if (sourceNodeData.value.isFinished) {
     return '#10b981'
   }
 
-  if (isSourceNodeRunning.value) {
-    return '#6b7280'
+  if (sourceNodeData.value.isCancelled) {
+    return '#fbbf24'
   }
 
-  if (sourceNodeData.value?.isSkipped) {
-    return '#FFCC99'
+  if (sourceNodeData.value.isSkipped) {
+    return '#f59e0b'
   }
 
-  return '#1a192b'
+  return '#6b7280'
 })
 
 const edgeRef = ref()
 
-const circlePosition = ref({ x: 0, y: 0 })
+const labelPosition = ref({ x: 0, y: 0 })
 
 const currentLength = ref(0)
 
@@ -100,43 +84,44 @@ watch(edgePoint, (point) => {
   const currLength = pathEl.getTotalLength()
 
   if (currentLength.value !== currLength) {
-    runAnimation(point)
-    return
+    return runAnimation()
   }
 
-  circlePosition.value = pathEl.getPointAtLength(point)
+  labelPosition.value = pathEl.getPointAtLength(point)
 })
 
-watch(isSourceNodeRunning, (isRunning, _, onCleanup) => {
-  if (isRunning) {
-    runAnimation()
+watch(isFinished, async (isFinished) => {
+  if (isFinished) {
+    await runAnimation()
 
-    onCleanup(() => {
-      edgePoint.value = 0
-      currentLength.value = 0
-      circlePosition.value = { x: 0, y: 0 }
-    })
+    edgePoint.value = 0
+    currentLength.value = 0
+    labelPosition.value = { x: 0, y: 0 }
   }
 })
 
-function runAnimation(from = 0) {
+async function runAnimation() {
   const pathEl = edgeRef.value?.pathEl
 
   if (!pathEl) {
     return
   }
 
-  edgePoint.value = 0
+  isAnimating.value = true
 
   const totalLength = pathEl.getTotalLength()
+
+  const from = edgePoint.value || 0
 
   if (currentLength.value !== totalLength) {
     currentLength.value = totalLength
   }
 
-  executeTransition(edgePoint, from, totalLength, {
+  await executeTransition(edgePoint, from, totalLength, {
     transition: TransitionPresets.easeInOutCubic,
   })
+
+  isAnimating.value = false
 }
 </script>
 
@@ -148,14 +133,18 @@ export default {
 </script>
 
 <template>
-  <BaseEdge v-bind="$attrs" :id="id" ref="edgeRef" :path="path[0]" :marker-end="markerEnd" :style="{ stroke: edgeColor }" />
+  <BaseEdge v-bind="$attrs" :id="id" ref="edgeRef" :path="path[0]" :style="{ stroke: edgeColor }" />
 
-  <circle
-    v-if="isSourceNodeRunning"
-    r="4"
-    cy="0"
-    cx="0"
-    :transform="`translate(${circlePosition.x}, ${circlePosition.y})`"
-    style="fill: #f59e0b"
-  />
+  <EdgeLabelRenderer v-if="isAnimating">
+    <div
+      :style="{
+        position: 'absolute',
+        transform: `translate(-50%, -50%) translate(${labelPosition.x}px,${labelPosition.y}px)`,
+        pointerEvents: 'all',
+      }"
+      class="nodrag nopan"
+    >
+      📦
+    </div>
+  </EdgeLabelRenderer>
 </template>

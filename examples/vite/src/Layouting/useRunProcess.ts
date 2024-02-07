@@ -20,7 +20,7 @@ export function useRunProcess(dagreGraph: MaybeRefOrGetter<dagre.graphlib.Graph>
   const executedNodes = new Set<string>()
   const runningTasks = new Map<string, NodeJS.Timeout>()
 
-  async function runNode(node: { id: string }, isStartingNode = false) {
+  async function runNode(node: { id: string }, isStart = false) {
     if (executedNodes.has(node.id)) {
       return
     }
@@ -59,7 +59,7 @@ export function useRunProcess(dagreGraph: MaybeRefOrGetter<dagre.graphlib.Graph>
 
           resolve()
         },
-        isStartingNode ? 0 : delay,
+        isStart ? 0 : delay,
       )
 
       runningTasks.set(node.id, timeout)
