@@ -100,7 +100,7 @@ const processLabel = toRef(() => {
 
 .spinner {
   border: 3px solid #f3f3f3;
-  border-top: 3px solid #10b981;
+  border-top: 3px solid #2563eb;
   border-radius: 50%;
   width: 10px;
   height: 10px;

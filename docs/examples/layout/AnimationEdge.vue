@@ -12,6 +12,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  target: {
+    type: String,
+    required: true,
+  },
   sourceX: {
     type: Number,
     required: true,
@@ -38,39 +42,43 @@ const props = defineProps({
   },
 })
 
+const nodesData = useNodesData([props.target, props.source])
+
 const edgePoint = ref(0)
-
-const sourceNodeData = useNodesData(() => props.source)
-
-const isFinished = toRef(() => sourceNodeData.value.isFinished)
-
-const isAnimating = ref(false)
-
-const edgeColor = toRef(() => {
-  if (sourceNodeData.value.hasError) {
-    return '#f87171'
-  }
-
-  if (sourceNodeData.value.isFinished) {
-    return '#10b981'
-  }
-
-  if (sourceNodeData.value.isCancelled) {
-    return '#fbbf24'
-  }
-
-  if (sourceNodeData.value.isSkipped) {
-    return '#f59e0b'
-  }
-
-  return '#6b7280'
-})
 
 const edgeRef = ref()
 
 const labelPosition = ref({ x: 0, y: 0 })
 
 const currentLength = ref(0)
+
+const targetNodeData = toRef(() => nodesData.value[0])
+
+const sourceNodeData = toRef(() => nodesData.value[1])
+
+const isFinished = toRef(() => sourceNodeData.value.isFinished)
+
+const isAnimating = ref(false)
+
+const edgeColor = toRef(() => {
+  if (targetNodeData.value.hasError) {
+    return '#f87171'
+  }
+
+  if (targetNodeData.value.isFinished) {
+    return '#10b981'
+  }
+
+  if (targetNodeData.value.isCancelled || targetNodeData.value.isSkipped) {
+    return '#fbbf24'
+  }
+
+  if (targetNodeData.value.isRunning) {
+    return '#2563eb'
+  }
+
+  return '#6b7280'
+})
 
 const path = computed(() => getSmoothStepPath(props))
 

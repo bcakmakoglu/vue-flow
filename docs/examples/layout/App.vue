@@ -70,6 +70,7 @@ function handleLayout(direction) {
         <AnimationEdge
           :id="edgeProps.id"
           :source="edgeProps.source"
+          :target="edgeProps.target"
           :source-x="edgeProps.sourceX"
           :source-y="edgeProps.sourceY"
           :targetX="edgeProps.targetX"
