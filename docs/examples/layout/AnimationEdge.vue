@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, toRef, watch } from 'vue'
+import { computed, nextTick, ref, toRef, watch } from 'vue'
 import { BaseEdge, EdgeLabelRenderer, Position, getSmoothStepPath, useNodesData } from '@vue-flow/core'
 import { TransitionPresets, executeTransition } from '@vueuse/core'
 
@@ -94,9 +94,11 @@ watch(isFinished, async (isFinished) => {
   if (isFinished) {
     await runAnimation()
 
-    edgePoint.value = 0
-    currentLength.value = 0
-    labelPosition.value = { x: 0, y: 0 }
+    nextTick(() => {
+      edgePoint.value = 0
+      currentLength.value = 0
+      labelPosition.value = { x: 0, y: 0 }
+    })
   }
 })
 
@@ -107,7 +109,9 @@ async function runAnimation() {
     return
   }
 
-  isAnimating.value = true
+  nextTick(() => {
+    isAnimating.value = true
+  })
 
   const totalLength = pathEl.getTotalLength()
 

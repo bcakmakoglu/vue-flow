@@ -77,7 +77,7 @@ const processLabel = toRef(() => {
     <Handle v-if="!isSender" type="target" :position="targetPosition" />
     <Handle v-if="!isReceiver" type="source" :position="sourcePosition" />
 
-    <div v-if="data.isRunning" class="spinner" />
+    <div v-if="!isSender && data.isRunning" class="spinner" />
     <span v-else>
       {{ processLabel }}
     </span>

@@ -37,7 +37,7 @@ export function useRunProcess(dagreGraph) {
           // Randomly decide whether the node will throw an error
           const willThrowError = Math.random() < 0.15
 
-          if (willThrowError) {
+          if (!isStart && willThrowError) {
             updateNodeData(node.id, { isRunning: false, hasError: true })
 
             await skipDescendants(node.id)
