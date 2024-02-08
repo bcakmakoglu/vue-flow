@@ -74,9 +74,7 @@ const processLabel = toRef(() => {
 
 <template>
   <div class="process-node" :style="{ backgroundColor: bgColor }">
-    <Handle v-if="!isSender" type="target" :position="targetPosition">
-      <div>📥</div>
-    </Handle>
+    <Handle v-if="!isSender" type="target" :position="targetPosition" />
     <Handle v-if="!isReceiver" type="source" :position="sourcePosition" />
 
     <div v-if="!isSender && data.isRunning" class="spinner" />
@@ -91,7 +89,6 @@ const processLabel = toRef(() => {
   padding: 10px;
   color: white;
   border-radius: 99px;
-  font-size: 14px;
   width: 24px;
   height: 24px;
   display: flex;

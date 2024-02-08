@@ -60,8 +60,6 @@ const sourceNodeData = toRef(() => nodesData.value[1])
 
 const isFinished = toRef(() => sourceNodeData.value.isFinished)
 
-const isSkipped = toRef(() => targetNodeData.value.isSkipped)
-
 const isAnimating = ref(false)
 
 const edgeColor = toRef(() => {
@@ -85,14 +83,6 @@ const edgeColor = toRef(() => {
 })
 
 const path = computed(() => getSmoothStepPath(props))
-
-watch(isSkipped, (isSkipped) => {
-  if (isSkipped) {
-    edgePoint.value = 0
-    currentLength.value = 0
-    isAnimating.value = false
-  }
-})
 
 watch(isAnimating, (isAnimating) => {
   const edge = findEdge(props.id)
@@ -192,6 +182,7 @@ export default {
 .truck {
   position: relative;
   display: inline-block;
+  transform: scaleX(-1);
 }
 
 .box {
