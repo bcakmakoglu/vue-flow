@@ -88,7 +88,7 @@ const path = computed(() => getSmoothStepPath(props))
 
 watch(isCancelled, (isCancelled) => {
   if (isCancelled) {
-    isAnimating.value = false
+    reset()
   }
 })
 
@@ -110,24 +110,19 @@ watch(edgePoint, (point) => {
     return
   }
 
-  const currLength = pathEl.getTotalLength()
+  const nextLength = pathEl.getTotalLength()
 
-  if (currentLength.value !== currLength) {
-    return runAnimation()
+  if (currentLength.value !== nextLength) {
+    runAnimation()
+    return
   }
 
   labelPosition.value = pathEl.getPointAtLength(point)
 })
 
-watch(isFinished, async (isFinished) => {
+watch(isFinished, (isFinished) => {
   if (isFinished) {
-    await runAnimation()
-
-    nextTick(() => {
-      edgePoint.value = 0
-      currentLength.value = 0
-      labelPosition.value = { x: 0, y: 0 }
-    })
+    runAnimation()
   }
 })
 
@@ -138,13 +133,13 @@ async function runAnimation() {
     return
   }
 
-  nextTick(() => {
-    isAnimating.value = true
-  })
-
   const totalLength = pathEl.getTotalLength()
 
   const from = edgePoint.value || 0
+
+  labelPosition.value = pathEl.getPointAtLength(from)
+
+  isAnimating.value = true
 
   if (currentLength.value !== totalLength) {
     currentLength.value = totalLength
@@ -153,9 +148,19 @@ async function runAnimation() {
   await executeTransition(edgePoint, from, totalLength, {
     transition: TransitionPresets.easeInOutCubic,
     duration: Math.max(1500, totalLength / 2),
+    abort: () => !isAnimating.value,
   })
 
-  isAnimating.value = false
+  reset()
+}
+
+function reset() {
+  nextTick(() => {
+    edgePoint.value = 0
+    currentLength.value = 0
+    labelPosition.value = { x: 0, y: 0 }
+    isAnimating.value = false
+  })
 }
 </script>
 
