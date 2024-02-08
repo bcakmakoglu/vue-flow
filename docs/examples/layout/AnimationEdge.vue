@@ -60,6 +60,8 @@ const sourceNodeData = toRef(() => nodesData.value[1])
 
 const isFinished = toRef(() => sourceNodeData.value.isFinished)
 
+const isCancelled = toRef(() => targetNodeData.value.isCancelled)
+
 const isAnimating = ref(false)
 
 const edgeColor = toRef(() => {
@@ -84,6 +86,12 @@ const edgeColor = toRef(() => {
 
 const path = computed(() => getSmoothStepPath(props))
 
+watch(isCancelled, (isCancelled) => {
+  if (isCancelled) {
+    isAnimating.value = false
+  }
+})
+
 watch(isAnimating, (isAnimating) => {
   const edge = findEdge(props.id)
 
@@ -98,7 +106,7 @@ watch(isAnimating, (isAnimating) => {
 watch(edgePoint, (point) => {
   const pathEl = edgeRef.value?.pathEl
 
-  if (!pathEl || point === 0) {
+  if (!pathEl || point === 0 || !isAnimating.value) {
     return
   }
 

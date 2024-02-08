@@ -15,17 +15,25 @@ export function useRunProcess({ dagreGraph, cancelOnError = true }) {
   const graph = toRef(() => toValue(dagreGraph))
 
   const isRunning = ref(false)
+
   const executedNodes = new Set()
+
   const runningTasks = new Map()
+
+  const upcomingTasks = new Set()
 
   async function runNode(node, isStart = false) {
     if (executedNodes.has(node.id)) {
       return
     }
 
+    upcomingTasks.add(node.id)
+
     const incomers = getConnectedEdges(node.id).filter((connection) => connection.target === node.id)
 
     await Promise.all(incomers.map((incomer) => until(() => !incomer.data.isAnimating)))
+
+    upcomingTasks.clear()
 
     if (!isRunning.value) {
       // The process was stopped
@@ -114,6 +122,13 @@ export function useRunProcess({ dagreGraph, cancelOnError = true }) {
   function stop() {
     isRunning.value = false
 
+    for (const nodeId of upcomingTasks) {
+      clearTimeout(runningTasks.get(nodeId))
+      runningTasks.delete(nodeId)
+      updateNodeData(nodeId, { isRunning: false, isFinished: false, hasError: false, isSkipped: false, isCancelled: true })
+      skipDescendants(nodeId)
+    }
+
     for (const [nodeId, task] of runningTasks) {
       clearTimeout(task)
       runningTasks.delete(nodeId)
@@ -122,6 +137,7 @@ export function useRunProcess({ dagreGraph, cancelOnError = true }) {
     }
 
     executedNodes.clear()
+    upcomingTasks.clear()
   }
 
   function clear() {
