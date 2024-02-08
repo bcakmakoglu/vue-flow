@@ -21,7 +21,11 @@ function generatePossibleEdges(nodes) {
   return possibleEdges
 }
 
-// Function to create a new shuffled edges array
+/**
+ * Composable that returns a function to shuffle the edges of a graph
+ *
+ * @returns {Function} A function that takes a list of nodes and returns a list of edges
+ */
 export function useShuffle() {
   return (nodes) => {
     const possibleEdges = generatePossibleEdges(nodes)

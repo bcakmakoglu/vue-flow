@@ -9,7 +9,7 @@ import { useVueFlow } from '@vue-flow/core'
  *
  * When a node has multiple descendants, it will run them in parallel.
  */
-export function useRunProcess({ dagreGraph, cancelOnError = true }) {
+export function useRunProcess({ graph: dagreGraph, cancelOnError = true }) {
   const { updateNodeData, getConnectedEdges } = useVueFlow()
 
   const graph = toRef(() => toValue(dagreGraph))
@@ -127,21 +127,21 @@ export function useRunProcess({ dagreGraph, cancelOnError = true }) {
     }
   }
 
-  function stop() {
+  async function stop() {
     isRunning.value = false
 
     for (const nodeId of upcomingTasks) {
       clearTimeout(runningTasks.get(nodeId))
       runningTasks.delete(nodeId)
       updateNodeData(nodeId, { isRunning: false, isFinished: false, hasError: false, isSkipped: false, isCancelled: true })
-      skipDescendants(nodeId)
+      await skipDescendants(nodeId)
     }
 
     for (const [nodeId, task] of runningTasks) {
       clearTimeout(task)
       runningTasks.delete(nodeId)
       updateNodeData(nodeId, { isRunning: false, isFinished: false, hasError: false, isSkipped: false, isCancelled: true })
-      skipDescendants(nodeId)
+      await skipDescendants(nodeId)
     }
 
     executedNodes.clear()
