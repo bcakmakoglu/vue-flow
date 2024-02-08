@@ -27,12 +27,15 @@ export function useRunProcess({ dagreGraph, cancelOnError = true }) {
       return
     }
 
+    // save the upcoming task in case it gets cancelled before we even start it
     upcomingTasks.add(node.id)
 
     const incomers = getConnectedEdges(node.id).filter((connection) => connection.target === node.id)
 
+    // wait for edge animations to finish before starting the process
     await Promise.all(incomers.map((incomer) => until(() => !incomer.data.isAnimating)))
 
+    // remove the upcoming task since we are about to start it
     upcomingTasks.clear()
 
     if (!isRunning.value) {
@@ -40,20 +43,23 @@ export function useRunProcess({ dagreGraph, cancelOnError = true }) {
       return
     }
 
+    // mark the node as executed, so it doesn't run again
     executedNodes.add(node.id)
 
     updateNodeData(node.id, { isRunning: true, isFinished: false, hasError: false, isCancelled: false })
 
-    // Simulate an async process with a random timeout between 1 and 3 seconds
+    // simulate an async process with a random timeout between 1-2 seconds
     const delay = Math.floor(Math.random() * 2000) + 1000
+
     return new Promise((resolve) => {
       const timeout = setTimeout(
         async () => {
           const children = graph.value.successors(node.id)
 
-          // Randomly decide whether the node will throw an error
+          // randomly decide whether the node will throw an error
           const willThrowError = Math.random() < 0.15
 
+          // we avoid throwing an error on the starting node
           if (!isStart && willThrowError) {
             updateNodeData(node.id, { isRunning: false, hasError: true })
 
@@ -71,15 +77,17 @@ export function useRunProcess({ dagreGraph, cancelOnError = true }) {
           runningTasks.delete(node.id)
 
           if (children.length > 0) {
-            // Run the process on the children in parallel
+            // run the process on the children in parallel
             await Promise.all(children.map((id) => runNode({ id })))
           }
 
           resolve()
         },
+        // if this is a starting node, we don't want to wait
         isStart ? 0 : delay,
       )
 
+      // save the timeout so we can cancel it if needed
       runningTasks.set(node.id, timeout)
     })
   }
@@ -93,10 +101,10 @@ export function useRunProcess({ dagreGraph, cancelOnError = true }) {
 
     isRunning.value = true
 
-    // Get all starting nodes (nodes with no predecessors)
+    // get all starting nodes (nodes with no predecessors)
     const startingNodes = nodes.filter((node) => graph.value.predecessors(node.id)?.length === 0)
 
-    // Run the process on all starting nodes in parallel
+    // run the process on all starting nodes in parallel
     await Promise.all(startingNodes.map((node) => runNode(node, true)))
 
     clear()
