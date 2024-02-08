@@ -51,7 +51,7 @@ async function layoutGraph(direction) {
 </script>
 
 <template>
-  <div class="layoutflow">
+  <div class="layout-flow">
     <VueFlow :nodes="nodes" :edges="edges" @nodes-initialized="layoutGraph('LR')">
       <template #node-process="props">
         <ProcessNode :data="props.data" :source-position="props.sourcePosition" :target-position="props.targetPosition" />
@@ -75,8 +75,9 @@ async function layoutGraph(direction) {
 
       <Panel class="process-panel" position="top-right">
         <div class="layout-panel">
-          <button v-if="isRunning" title="stop" @click="stop">
+          <button v-if="isRunning" class="stop-btn" title="stop" @click="stop">
             <Icon name="stop" />
+            <span class="spinner" />
           </button>
           <button v-else title="start" @click="run(nodes)">
             <Icon name="play" />
@@ -105,7 +106,7 @@ async function layoutGraph(direction) {
 </template>
 
 <style>
-.layoutflow {
+.layout-flow {
   background-color: #1a192b;
   height: 100%;
   width: 100%;
@@ -126,8 +127,7 @@ async function layoutGraph(direction) {
   flex-direction: column;
 }
 
-.process-panel button,
-.layout-panel button {
+.process-panel button {
   border: none;
   cursor: pointer;
   background-color: #4a5568;
@@ -160,5 +160,35 @@ async function layoutGraph(direction) {
 .process-panel label {
   color: white;
   font-size: 12px;
+}
+
+.stop-btn svg {
+  display: none;
+}
+
+.stop-btn:hover svg {
+  display: block;
+}
+
+.stop-btn:hover .spinner {
+  display: none;
+}
+
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #2563eb;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
