@@ -3,11 +3,13 @@ import dagre from 'dagre'
 import { nextTick, ref } from 'vue'
 import { Panel, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
+import Icon from './Icon.vue'
 import ProcessNode from './ProcessNode.vue'
 import AnimationEdge from './AnimationEdge.vue'
 
 import { initialEdges, initialNodes } from './initial-elements.js'
 import { useRunProcess } from './useRunProcess'
+import { useShuffle } from './useShuffle'
 
 const nodes = ref(initialNodes)
 
@@ -17,7 +19,9 @@ const dagreGraph = ref(new dagre.graphlib.Graph())
 
 const cancelOnError = ref(true)
 
-const { run, stop, isRunning } = useRunProcess({ dagreGraph, cancelOnError })
+const shuffle = useShuffle()
+
+const { run, stop, reset, isRunning } = useRunProcess({ dagreGraph, cancelOnError })
 
 const { findNode, fitView } = useVueFlow()
 
@@ -37,6 +41,7 @@ function handleLayout(direction) {
     dagreGraph.value.setNode(node.id, { width: graphNode.dimensions.width || 150, height: graphNode.dimensions.height || 50 })
   }
 
+  console.log(edges.value)
   for (const edge of edges.value) {
     dagreGraph.value.setEdge(edge.source, edge.target)
   }
@@ -57,6 +62,16 @@ function handleLayout(direction) {
 
   nextTick(() => {
     fitView()
+  })
+}
+
+function shuffleGraph() {
+  reset(nodes.value)
+
+  edges.value = shuffle(nodes.value)
+
+  nextTick(() => {
+    handleLayout('LR')
   })
 }
 </script>
@@ -86,26 +101,23 @@ function handleLayout(direction) {
 
       <Panel class="process-panel" position="top-right">
         <div class="layout-panel">
-          <button v-if="isRunning" @click="stop">🛑</button>
-          <button v-else @click="run(nodes)">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 5v14l11-7z" fill="currentColor" />
-            </svg>
+          <button v-if="isRunning" title="stop" @click="stop">
+            <Icon name="stop" />
+          </button>
+          <button v-else title="start" @click="run(nodes)">
+            <Icon name="play" />
           </button>
 
-          <button title="horizontal" @click="handleLayout('LR')">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2,12 L22,12" stroke="currentColor" stroke-width="2" />
-              <path d="M7,7 L2,12 L7,17" stroke="currentColor" stroke-width="2" fill="none" />
-              <path d="M17,7 L22,12 L17,17" stroke="currentColor" stroke-width="2" fill="none" />
-            </svg>
+          <button title="set horizontal layout" @click="handleLayout('LR')">
+            <Icon name="horizontal" />
           </button>
-          <button title="vertical" @click="handleLayout('TB')">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12,2 L12,22" stroke="currentColor" stroke-width="2" />
-              <path d="M7,7 L12,2 L17,7" stroke="currentColor" stroke-width="2" fill="none" />
-              <path d="M7,17 L12,22 L17,17" stroke="currentColor" stroke-width="2" fill="none" />
-            </svg>
+
+          <button title="set vertical layout" @click="handleLayout('TB')">
+            <Icon name="vertical" />
+          </button>
+
+          <button title="shuffle graph" @click="shuffleGraph">
+            <Icon name="shuffle" />
           </button>
         </div>
 
