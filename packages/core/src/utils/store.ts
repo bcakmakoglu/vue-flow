@@ -130,14 +130,14 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges
   connectionLookup.clear()
 
   for (const edge of edges) {
-    const { source, target, sourceHandle = null, targetHandle = null } = edge
+    const { id: edgeId, source, target, sourceHandle = null, targetHandle = null } = edge
 
     const sourceKey = `${source}-source-${sourceHandle}`
     const targetKey = `${target}-target-${targetHandle}`
 
     const prevSource = connectionLookup.get(sourceKey) || new Map()
     const prevTarget = connectionLookup.get(targetKey) || new Map()
-    const connection = markRaw({ source, target, sourceHandle, targetHandle })
+    const connection = markRaw({ edgeId, source, target, sourceHandle, targetHandle })
 
     connectionLookup.set(sourceKey, prevSource.set(`${target}-${targetHandle}`, connection))
     connectionLookup.set(targetKey, prevTarget.set(`${source}-${sourceHandle}`, connection))
