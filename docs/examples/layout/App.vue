@@ -15,7 +15,9 @@ const edges = ref(initialEdges)
 
 const dagreGraph = ref(new dagre.graphlib.Graph())
 
-const { run, stop, isRunning } = useRunProcess(dagreGraph)
+const cancelOnError = ref(true)
+
+const { run, stop, isRunning } = useRunProcess({ dagreGraph, cancelOnError })
 
 const { findNode, fitView } = useVueFlow()
 
@@ -82,14 +84,35 @@ function handleLayout(direction) {
 
       <Background />
 
-      <Panel class="layout-panel" position="top-left">
-        <button @click="handleLayout('TB')">vertical</button>
-        <button @click="handleLayout('LR')">horizontal</button>
-      </Panel>
-
       <Panel class="process-panel" position="top-right">
-        <button v-if="isRunning" @click="stop">🛑</button>
-        <button v-else @click="run(nodes)">▶️</button>
+        <div class="layout-panel">
+          <button v-if="isRunning" @click="stop">🛑</button>
+          <button v-else @click="run(nodes)">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 5v14l11-7z" fill="currentColor" />
+            </svg>
+          </button>
+
+          <button title="horizontal" @click="handleLayout('LR')">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2,12 L22,12" stroke="currentColor" stroke-width="2" />
+              <path d="M7,7 L2,12 L7,17" stroke="currentColor" stroke-width="2" fill="none" />
+              <path d="M17,7 L22,12 L17,17" stroke="currentColor" stroke-width="2" fill="none" />
+            </svg>
+          </button>
+          <button title="vertical" @click="handleLayout('TB')">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12,2 L12,22" stroke="currentColor" stroke-width="2" />
+              <path d="M7,7 L12,2 L17,7" stroke="currentColor" stroke-width="2" fill="none" />
+              <path d="M7,17 L12,22 L17,17" stroke="currentColor" stroke-width="2" fill="none" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="checkbox-panel">
+          <label>Cancel on error</label>
+          <input v-model="cancelOnError" type="checkbox" />
+        </div>
       </Panel>
     </VueFlow>
   </div>
@@ -108,31 +131,48 @@ function handleLayout(direction) {
   gap: 10px;
 }
 
+.process-panel {
+  background-color: #2d3748;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
 .process-panel button,
 .layout-panel button {
   border: none;
-  padding: 10px;
   cursor: pointer;
-  background-color: #2d3748;
+  background-color: #4a5568;
   border-radius: 8px;
   color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .process-panel button {
-  font-size: 24px;
-  width: 50px;
-  height: 50px;
+  font-size: 16px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox-panel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .process-panel button:hover,
 .layout-panel button:hover {
-  background-color: #4b5563;
+  background-color: #2563eb;
   transition: background-color 0.2s;
 }
 
-.process-panel button:disabled {
-  background-color: #4b5563;
-  cursor: not-allowed;
+.process-panel label {
+  color: white;
+  font-size: 12px;
 }
 </style>
