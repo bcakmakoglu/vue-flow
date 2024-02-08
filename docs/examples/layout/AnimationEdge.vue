@@ -70,7 +70,7 @@ const edgeColor = toRef(() => {
   }
 
   if (targetNodeData.value.isFinished) {
-    return '#10b981'
+    return '#42B983'
   }
 
   if (targetNodeData.value.isCancelled || targetNodeData.value.isSkipped) {
@@ -195,6 +195,7 @@ export default {
 <style>
 .animated-edge-label {
   position: absolute;
+  z-index: 100;
 }
 
 .truck {

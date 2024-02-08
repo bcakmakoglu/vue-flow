@@ -29,7 +29,7 @@ const isReceiver = toRef(() => targetConnections.value.length <= 0)
 
 const bgColor = toRef(() => {
   if (isSender.value) {
-    return '#4b5563'
+    return '#2563eb'
   }
 
   if (props.data.hasError) {
@@ -37,7 +37,7 @@ const bgColor = toRef(() => {
   }
 
   if (props.data.isFinished) {
-    return '#10b981'
+    return '#42B983'
   }
 
   if (props.data.isCancelled) {
@@ -73,8 +73,10 @@ const processLabel = toRef(() => {
 </script>
 
 <template>
-  <div class="process-node" :style="{ backgroundColor: bgColor }">
-    <Handle v-if="!isSender" type="target" :position="targetPosition" />
+  <div class="process-node" :style="{ backgroundColor: bgColor, boxShadow: data.isRunning ? '0 0 10px rgba(0, 0, 0, 0.5)' : '' }">
+    <Handle v-if="!isSender" type="target" :position="targetPosition">
+      <span v-if="!data.isRunning && !data.isFinished && !data.isCancelled && !data.isSkipped && !data.hasError">📥 </span>
+    </Handle>
     <Handle v-if="!isReceiver" type="source" :position="sourcePosition" />
 
     <div v-if="!isSender && data.isRunning" class="spinner" />
@@ -87,7 +89,6 @@ const processLabel = toRef(() => {
 <style scoped>
 .process-node {
   padding: 10px;
-  color: white;
   border-radius: 99px;
   width: 24px;
   height: 24px;
