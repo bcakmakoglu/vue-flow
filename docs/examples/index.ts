@@ -18,7 +18,7 @@ import { IntersectionApp, IntersectionCSS } from './intersection'
 import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
-import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useRunProcess, useShuffle } from './layout'
+import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useLayout, useRunProcess, useShuffle } from './layout'
 
 export const exampleImports = {
   basic: {
@@ -131,6 +131,7 @@ export const exampleImports = {
     'AnimationEdge.vue': LayoutEdge,
     'useRunProcess.js': useRunProcess,
     'useShuffle.js': useShuffle,
+    'useLayout.js': useLayout,
     'Icon.vue': LayoutIcon,
     'additionalImports': {
       '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@10.7.0/index.mjs',
