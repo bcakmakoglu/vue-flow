@@ -187,9 +187,9 @@ Here you'll find a handy reference guide of class names and their respective ele
 | .vue-flow__edge           | Wrapper around each edge element                  |
 | .vue-flow__selectionpane  | Pane for handling user selection                  |
 | .vue-flow__selection      | Defines current user selection box                |
-| .vue-flow__edge-{type}    | Edge type (either custom or default)              |
-| .vue-flow__edge .selected | Defines the currently selected edge(s)            |
-| .vue-flow__edge .animated | Defines an animated edge                          |
+| .vue-flow__edge-\{type\}  | Edge type (either custom or default)              |
+| .vue-flow__edge.selected  | Defines the currently selected edge(s)            |
+| .vue-flow__edge.animated  | Defines an animated edge                          |
 | .vue-flow__edge-path      | SVG path for edge elements                        |
 | .vue-flow__edge-text      | Wrapper around edge label                         |
 | .vue-flow__edge-textbg    | Background wrapper around edge label              |
@@ -202,8 +202,8 @@ Here you'll find a handy reference guide of class names and their respective ele
 | --------------------- | ----------------------------------------- |
 | .vue-flow__nodes      | Rendering wrapper around nodes            |
 | .vue-flow__node       | Wrapper around each node element          |
-| .vue-flow__node .selected | Defines the currently selected node(s)  |
-| .vue-flow__node-{type}   | Node type (either custom or default)     |
+| .vue-flow__node.selected | Defines the currently selected node(s)  |
+| .vue-flow__node-\{type\}   | Node type (either custom or default)     |
 | .vue-flow__nodesselection | Defines selection rectangle for nodes   |
 
 #### Node Handles
