@@ -177,7 +177,7 @@ export default {
 </script>
 
 <template>
-  <BaseEdge v-bind="$attrs" :id="id" ref="edgeRef" :path="path[0]" :style="{ stroke: edgeColor }" />
+  <BaseEdge :id="id" ref="edgeRef" :path="path[0]" :style="{ stroke: edgeColor }" />
 
   <EdgeLabelRenderer v-if="isAnimating">
     <div

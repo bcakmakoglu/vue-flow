@@ -31,10 +31,6 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  data: {
-    type: Object,
-    required: false,
-  },
   markerEnd: {
     type: String,
     required: false,

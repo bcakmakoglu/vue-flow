@@ -43,14 +43,6 @@ const props = defineProps({
     type: Object,
     required: false,
   },
-  sourceHandleId: {
-    type: String,
-    required: false,
-  },
-  targetHandleId: {
-    type: String,
-    required: false,
-  },
 })
 
 const path = computed(() => getBezierPath(props))

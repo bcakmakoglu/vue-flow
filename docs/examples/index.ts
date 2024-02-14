@@ -1,7 +1,7 @@
 import { BasicApp, BasicCSS, BasicElements, BasicIcon } from './basic'
 import { ColorPresets, ColorSelectorNode, CustomNodeApp, CustomNodeCSS, OutputNode } from './custom-node'
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline'
-import { CustomEdge2, CustomEdgeLabel, EdgeCSS, EdgeWithButton, EdgesApp } from './edges'
+import { CustomEdge, CustomEdgeLabel, EdgeCSS, EdgeWithButton, EdgesApp } from './edges'
 import { NestedApp } from './nested'
 import { StressApp, StressCSS, StressUtils } from './stress'
 import { UpdateEdgeApp } from './update-edge'
@@ -40,8 +40,8 @@ export const exampleImports = {
   },
   edges: {
     'App.vue': EdgesApp,
-    'CustomEdge.vue': EdgeWithButton,
-    'CustomEdge2.vue': CustomEdge2,
+    'EdgeWithButton.vue': EdgeWithButton,
+    'CustomEdge.vue': CustomEdge,
     'CustomEdgeLabel.vue': CustomEdgeLabel,
     'style.css': EdgeCSS,
   },

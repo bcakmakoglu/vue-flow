@@ -3,7 +3,7 @@ import { h, ref } from 'vue'
 import { Background } from '@vue-flow/background'
 import { MarkerType, VueFlow } from '@vue-flow/core'
 import EdgeWithButton from './EdgeWithButton.vue'
-import CustomEdge2 from './CustomEdge2.vue'
+import CustomEdge from './CustomEdge.vue'
 import CustomEdgeLabel from './CustomEdgeLabel.vue'
 
 const nodes = ref([
@@ -49,7 +49,7 @@ const edges = ref([
     id: 'e5-8',
     source: '5',
     target: '8',
-    type: 'custom',
+    type: 'button',
     data: { text: 'custom edge' },
     markerEnd: MarkerType.ArrowClosed,
   },
@@ -57,7 +57,7 @@ const edges = ref([
     id: 'e4-9',
     source: '4',
     target: '9',
-    type: 'custom2',
+    type: 'custom',
     data: { text: 'styled custom edge label' },
   },
 ])
@@ -65,12 +65,33 @@ const edges = ref([
 
 <template>
   <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
-    <template #edge-custom="props">
-      <EdgeWithButton v-bind="props" />
+    <template #edge-button="buttonEdgeProps">
+      <EdgeWithButton
+        :id="buttonEdgeProps.id"
+        :source-x="buttonEdgeProps.sourceX"
+        :source-y="buttonEdgeProps.sourceY"
+        :target-x="buttonEdgeProps.targetX"
+        :target-y="buttonEdgeProps.targetY"
+        :source-position="buttonEdgeProps.sourcePosition"
+        :target-position="buttonEdgeProps.targetPosition"
+        :marker-end="buttonEdgeProps.markerEnd"
+        :style="buttonEdgeProps.style"
+      />
     </template>
 
-    <template #edge-custom2="props">
-      <CustomEdge2 v-bind="props" />
+    <template #edge-custom="customEdgeProps">
+      <CustomEdge
+        :id="customEdgeProps.id"
+        :source-x="customEdgeProps.sourceX"
+        :source-y="customEdgeProps.sourceY"
+        :target-x="customEdgeProps.targetX"
+        :target-y="customEdgeProps.targetY"
+        :source-position="customEdgeProps.sourcePosition"
+        :target-position="customEdgeProps.targetPosition"
+        :data="customEdgeProps.data"
+        :marker-end="customEdgeProps.markerEnd"
+        :style="customEdgeProps.style"
+      />
     </template>
 
     <Background />
