@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.32.1
+
+### Patch Changes
+
+- [#1314](https://github.com/bcakmakoglu/vue-flow/pull/1314) [`14c4253`](https://github.com/bcakmakoglu/vue-flow/commit/14c4253ff43646ba0f563880ac2fc4733345d65c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct smoothstep edge pathing
+
 ## 1.32.0
 
 ### Minor Changes
