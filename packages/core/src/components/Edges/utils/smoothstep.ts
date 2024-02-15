@@ -87,7 +87,6 @@ function getPoints({
   if (sourceDir[dirAccessor] * targetDir[dirAccessor] === -1) {
     centerX = center.x || defaultCenterX
     centerY = center.y || defaultCenterY
-
     //    --->
     //    |
     // >---
@@ -126,9 +125,9 @@ function getPoints({
       if (diff <= offset) {
         const gapOffset = Math.min(offset - 1, offset - diff)
         if (sourceDir[dirAccessor] === currDir) {
-          sourceGapOffset[dirAccessor] = gapOffset
+          sourceGapOffset[dirAccessor] = (sourceGapped[dirAccessor] > source[dirAccessor] ? -1 : 1) * gapOffset
         } else {
-          targetGapOffset[dirAccessor] = gapOffset
+          targetGapOffset[dirAccessor] = (targetGapped[dirAccessor] > target[dirAccessor] ? -1 : 1) * gapOffset
         }
       }
     }
@@ -148,8 +147,8 @@ function getPoints({
       }
     }
 
-    const sourceGapPoint = { x: sourceGapped.x - sourceGapOffset.x, y: sourceGapped.y - sourceGapOffset.y }
-    const targetGapPoint = { x: targetGapped.x - targetGapOffset.x, y: targetGapped.y - targetGapOffset.y }
+    const sourceGapPoint = { x: sourceGapped.x + sourceGapOffset.x, y: sourceGapped.y + sourceGapOffset.y }
+    const targetGapPoint = { x: targetGapped.x + targetGapOffset.x, y: targetGapped.y + targetGapOffset.y }
     const maxXDistance = Math.max(Math.abs(sourceGapPoint.x - points[0].x), Math.abs(targetGapPoint.x - points[0].x))
     const maxYDistance = Math.max(Math.abs(sourceGapPoint.y - points[0].y), Math.abs(targetGapPoint.y - points[0].y))
 
@@ -165,16 +164,16 @@ function getPoints({
 
   const pathPoints = [
     source,
-    { x: sourceGapped.x - sourceGapOffset.x, y: sourceGapped.y - sourceGapOffset.y },
+    { x: sourceGapped.x + sourceGapOffset.x, y: sourceGapped.y + sourceGapOffset.y },
     ...points,
-    { x: targetGapped.x - targetGapOffset.x, y: targetGapped.y - targetGapOffset.y },
+    { x: targetGapped.x + targetGapOffset.x, y: targetGapped.y + targetGapOffset.y },
     target,
   ]
 
   return [pathPoints, centerX, centerY, defaultOffsetX, defaultOffsetY]
 }
 
-function getBend(a: XYPosition, b: XYPosition, c: XYPosition, size: number) {
+function getBend(a: XYPosition, b: XYPosition, c: XYPosition, size: number): string {
   const bendSize = Math.min(distance(a, b) / 2, distance(b, c) / 2, size)
   const { x, y } = b
 
@@ -195,6 +194,17 @@ function getBend(a: XYPosition, b: XYPosition, c: XYPosition, size: number) {
   return `L ${x},${y + bendSize * yDir}Q ${x},${y} ${x + bendSize * xDir},${y}`
 }
 
+/**
+ * Get a smooth step path from source to target handle
+ * @param params
+ * @param params.sourceX - The x position of the source handle
+ * @param params.sourceY - The y position of the source handle
+ * @param params.sourcePosition - The position of the source handle (default: Position.Bottom)
+ * @param params.targetX - The x position of the target handle
+ * @param params.targetY - The y position of the target handle
+ * @param params.targetPosition - The position of the target handle (default: Position.Top)
+ * @returns A path string you can use in an SVG, the labelX and labelY position (center of path) and offsetX, offsetY between source handle and label
+ */
 export function getSmoothStepPath({
   sourceX,
   sourceY,
