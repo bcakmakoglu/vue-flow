@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.32.1] - 2024-02-15
+
+[303419d](303419d4b2dcfb6b6497b781e7c7121060ee73cd)...[8fb6aba](8fb6abaed0563f7aa748ff5d596c5e91d0cfc861)
+
+### Bug Fixes
+
+- Correct smoothstep edge pathing ([e5aaaa6](e5aaaa6e8c72322f059f23a805c0b6978d3945a7))
+
+### Miscellaneous Tasks
+
+- Add ([f665072](f66507218c918c1b2fe7fb94934925c63e7d1890))
+
 ## [1.32.0] - 2024-02-15
 
 [fd4f0c8](fd4f0c81831716a747ae8337bf01d133f3a28b98)...[303419d](303419d4b2dcfb6b6497b781e7c7121060ee73cd)
