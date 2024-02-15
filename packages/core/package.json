@@ -49,6 +49,10 @@
   "sideEffects": [
     "*.css"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "dev": "pnpm types:watch & pnpm build:watch",
     "build": "vite build && vite build -c vite.config.iife.ts",
@@ -58,8 +62,6 @@
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
-    "prepublishOnly": "shx cp ../../README.md .",
-    "postpublish": "shx rm README.md && git commit -a -m \"chore: bump version\"",
     "test": "exit 0"
   },
   "peerDependencies": {
@@ -85,13 +87,5 @@
     "postcss-nested": "^6.0.1",
     "vite": "^4.4.11",
     "vue-tsc": "^1.8.16"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "np": {
-    "branch": "master",
-    "message": "v%s"
   }
 }
