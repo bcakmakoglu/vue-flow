@@ -1,5 +1,11 @@
 # @vue-flow/background
 
+## 1.3.0
+
+### Minor Changes
+
+- [#1301](https://github.com/bcakmakoglu/vue-flow/pull/1301) [`b03608d`](https://github.com/bcakmakoglu/vue-flow/commit/b03608dc33ec5999c095ec8d3f80dbab7ec931ef) Thanks [@github-actions](https://github.com/apps/github-actions)! - Deprecate `bgColor` prop
+
 ## 1.2.0
 
 ### Minor Changes
