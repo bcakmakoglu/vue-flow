@@ -1,5 +1,5 @@
-import type { MaybeRefOrGetter } from '@vueuse/core'
-import { toValue } from '@vueuse/core'
+import type { MaybeRefOrGetter } from 'vue'
+import { toValue } from 'vue'
 import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types'
 import {
   calcAutoPan,
