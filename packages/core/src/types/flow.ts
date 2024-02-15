@@ -127,6 +127,7 @@ export interface FlowExportObject {
 
 export interface FlowProps {
   id?: string
+  /** @deprecated use `nodes` & `edges` instead */
   modelValue?: Elements
   nodes?: Node[]
   edges?: Edge[]
@@ -174,12 +175,19 @@ export interface FlowProps {
   preventScrolling?: boolean
   selectionMode?: SelectionMode
   edgeUpdaterRadius?: number
+  /** will be renamed to `fitView` */
   fitViewOnInit?: boolean
   /** allow connection with click handlers, i.e. support touch devices */
   connectOnClick?: boolean
-  /** apply default change handlers for position, dimensions, adding/removing nodes. set this to false if you want to apply the changes manually */
+  /**
+   * @deprecated - will be removed in the next major version, changes will not be auto applied in the future
+   * apply default change handlers for position, dimensions, adding/removing nodes. set this to false if you want to apply the changes manually
+   */
   applyDefault?: boolean
-  /** automatically create an edge when connection is triggered */
+  /**
+   * @deprecated - will be removed in the next major version
+   * automatically create an edge when connection is triggered
+   */
   autoConnect?: boolean | Connector
   noDragClassName?: string
   noWheelClassName?: string
