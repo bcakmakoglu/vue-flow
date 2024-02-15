@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.32.0
+
+### Minor Changes
+
+- [#1301](https://github.com/bcakmakoglu/vue-flow/pull/1301) [`1c8d15e`](https://github.com/bcakmakoglu/vue-flow/commit/1c8d15e61d7a728337032da66b280a5018f53b2c) Thanks [@github-actions](https://github.com/apps/github-actions)! - Use data obj in default nodes to get label
+
+- [#1307](https://github.com/bcakmakoglu/vue-flow/pull/1307) [`290bca3`](https://github.com/bcakmakoglu/vue-flow/commit/290bca30cc58414f62dd9cb722aa6510b8aca5e5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `edgeId` to `useHandleConnections` return value
+
+### Patch Changes
+
+- [#1301](https://github.com/bcakmakoglu/vue-flow/pull/1301) [`1c8d15e`](https://github.com/bcakmakoglu/vue-flow/commit/1c8d15e61d7a728337032da66b280a5018f53b2c) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update composables jsdocs
+
+- [#1313](https://github.com/bcakmakoglu/vue-flow/pull/1313) [`ce98113`](https://github.com/bcakmakoglu/vue-flow/commit/ce98113a292d18896d761594258914805f52318f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Wrap edge marker urls with single quotes to allow for css vars as color
+
 ## 1.31.0
 
 ### Minor Changes
