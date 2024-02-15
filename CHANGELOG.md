@@ -2,6 +2,77 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.32.0] - 2024-02-15
+
+[fd4f0c8](fd4f0c81831716a747ae8337bf01d133f3a28b98)...[303419d](303419d4b2dcfb6b6497b781e7c7121060ee73cd)
+
+### Bug Fixes
+
+- Move node from edges array ([6dd9514](6dd95145b155eedf7f05293668838b354393bac9))
+- Wrap marker urls with quotes ([5094e33](5094e330b855c148abdd5c3ade83731f1f6954f3))
+
+### Documentation
+
+- Add run process to layouting example ([7bd2996](7bd29964a82f340510a698040ffd6c5fa0f326e1))
+- Update class names in theming guide ([d120aa8](d120aa893d0271dc662f4b422b33d1a9bdc36c2c))
+
+### Examples
+
+- Add example for running a process tree ([0ae7502](0ae75025b6e8744323bbea2b9d8b006a3e53f97b))
+- Animation edge ([43a1c9d](43a1c9d2acf8dd7574e23cefbf497b64158b2476))
+
+### Features
+
+- Add animation edge to layouting example ([75355b0](75355b04e730d904da392b12ce1f6a8969032d6e))
+- Wait for edge animation to finish to load node ([fafad1e](fafad1e72102e21749a209035d69df48d363b69b))
+- Add shuffle to layout example ([a0abe3a](a0abe3af9dd441c7493b8b4da290bd9ef7a36688))
+- Add `useLayout` composable ([ce7333f](ce7333fef66e71337519e62fef5b214ac7ba72bf))
+- Add `useNodesInitialized` composable ([f2165af](f2165afe6ffee68b4fb1a9922c8ea5827b1c0d26))
+- Add `edgeId` to `useHandleConnections` return ([3a0dc0f](3a0dc0fff6d457d98477e856c12e2a32a31b2aa5))
+
+### Miscellaneous Tasks
+
+- Update validation example text ([30f158c](30f158cac7a9096eafd9477e311f40997a1de5c5))
+- Cleanup styles ([abf5c3d](abf5c3d0ced13aa540e96c90fd720a6ce5312640))
+- Set LR as default in layouting example ([2910951](291095110a07f9785d7715cbf909f4fe95c38b6d))
+- Update layout example styles ([f9e4d84](f9e4d84297065dd666108a3ec83eb217c22afae5))
+- Reorder menu items ([a99c620](a99c620b18a85ab82eb862bd182d23c92c8f935a))
+- Cleanup layouting example ([dc8faec](dc8faecd8cac8d22ee08b07fa521c79f2d2b69e0))
+- Colors edges based on target node ([c9f8f6f](c9f8f6f97476e3bc591b03910fd0d2b7575c9aee))
+- Put all actions into single panel ([caf874d](caf874dd49a8790176105f0c7c3d81030ec7fb56))
+- Cancel upcoming tasks if stopped ([51c0ee0](51c0ee065b30b52e7555d4769d7c9d0998cb8572))
+- Abort animation if task was cancelled ([4fc7342](4fc73421c3c1627adad2fee32494cf9681f75088))
+- Cleanup comments ([8226796](8226796b8b59a89065e940f8d4e4b0cb77828fee))
+- Cleanup styles ([c65f5cf](c65f5cf56e80cfa5813a17c32841525165f08b0f))
+- Add spinner to stop btn ([0c441b3](0c441b35dfb0d2072276a432c1b0a2684197795b))
+- Cleanup edges example ([f67e5a5](f67e5a57e399950626e02751a5dc8f17f4e192b3))
+- Update license ([060f9e4](060f9e4748f761da7d3cd57f514889febb3e2c8d))
+- Add ([eb78f77](eb78f77c729ae096dd98045626bc3aef727c9375))
+- Cleanup tsconfig & vite config ([49a9f4a](49a9f4aeeef3ace8a20cf6d7d137565f919f7035))
+- Add missing generic for output node ([ee8748e](ee8748e936bb1b4796ee27e871fbcf14c39bdb28))
+- Update composable jsdocs ([fbb3f63](fbb3f63134477d5f517d092015e3c4c9f3ea3ab3))
+- Remove experimental from state ([bbf16e3](bbf16e385cfe1edf69549f9781c024bf0fe828a8))
+- Cleanup ([0139e6e](0139e6eb0fb164bf2a1d7e887c243d348830bf5f))
+- Add ([bc0a33d](bc0a33d6de9e3c3adeff2a4aa2c70ada89f60b2f))
+- Add ([55f0110](55f0110cf61640820bd9f31a7691c9642285d351))
+- Add ([31903e4](31903e415d0559fb49069f8cb00140027ed0af8e))
+- Deprecate flow props ([46be1fe](46be1fed5be4321d555e6c8ceacdeef5ba8d3527))
+
+### Refactor
+
+- Use composable tester cmp ([9837e0d](9837e0d34f8ff08ff6cd838b2fa6f68ebe5c5b9f))
+- Use connection line tester cmp ([96b93e3](96b93e30e328f09637dca21268b9ed5d5850b321))
+- Use `data` obj for labels in default nodes ([6c638b8](6c638b8e2772787ea94ed493928ccbc0e3b3ce20))
+- Deprecate bgcolor prop ([d288a9b](d288a9b842126e56949d7d3288f89d3d950bf1aa))
+- Deprecate getters ([c8c77a2](c8c77a2967c03662a30c324202426ace19622b8c))
+- Use `useNodesInitialized` to emit `nodesInitialized` ([ffdea45](ffdea45af47d2aad41121ada3576d09bd1a951c7))
+- Rename `useViewport` to `useViewportHelper` ([300c742](300c74235219c2f0adeaf71b5e7930d4ac049a0e))
+- Use all nodes for handle lookup ([dda5b58](dda5b58211315d475f426972601a1b8faf045517))
+
+### Testing
+
+- Add `useNodesInitialized` test ([3fa7fde](3fa7fde39440869b4b8d40d6a4427dafffadac1b))
+
 ## [1.31.0] - 2024-02-05
 
 [b13d53d](b13d53d60998b050d54e5161fc7d8e85d7cde4df)...[fd4f0c8](fd4f0c81831716a747ae8337bf01d133f3a28b98)
