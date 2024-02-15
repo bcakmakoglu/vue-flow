@@ -1,7 +1,5 @@
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
-import type { MaybeRefOrGetter } from '@vueuse/core'
-import { toValue } from '@vueuse/core'
+import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import { computed, toValue } from 'vue'
 import type { GraphNode, Node } from '../types'
 import { useVueFlow } from './useVueFlow'
 
