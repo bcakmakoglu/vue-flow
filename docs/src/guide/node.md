@@ -408,8 +408,8 @@ const nodes = ref([
     id: '1',
     label: 'Default Node',
     type: 'default', // You can omit this as it's the fallback type
-    targetHandle: Position.Top, // or Bottom, Left, Right,
-    sourceHandle: Position.Bottom, // or Top, Left, Right,
+    targetPosition: Position.Top, // or Bottom, Left, Right,
+    sourcePosition: Position.Bottom, // or Top, Left, Right,
   }
 ])
 ```
@@ -434,7 +434,7 @@ const nodes = ref([
     id: '1',
     label: 'Input Node',
     type: 'input',
-    sourceHandle: Position.Bottom, // or Top, Left, Right,
+    sourcePosition: Position.Bottom, // or Top, Left, Right,
   }
 ])
 ```
@@ -459,7 +459,7 @@ const nodes = ref([
     id: '1',
     label: 'Output Node',
     type: 'output',
-    targetHandle: Position.Top, // or Bottom, Left, Right,
+    targetPosition: Position.Top, // or Bottom, Left, Right,
   }
 ])
 ```
