@@ -1,9 +1,10 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
 import type { GraphNode, Node } from '../types'
+import { warn } from '../utils'
 import { useVueFlow } from './useVueFlow'
 
-type NodeData<NodeType extends Node = GraphNode> = NonNullable<NodeType['data']>
+type NodeData<NodeType extends Node = GraphNode> = NonNullable<NodeType['data']> & { id: string; type: NodeType['type'] }
 
 /**
  * Composable for receiving data of one or multiple nodes
@@ -31,23 +32,30 @@ export function useNodesData(_nodeIds: any): any {
       const nodeIds = toValue(_nodeIds)
 
       if (!Array.isArray(nodeIds)) {
-        return findNode(nodeIds)?.data || null
+        const node = findNode(nodeIds)
+
+        return node?.data ?? null
       }
 
       const data = []
 
       for (const nodeId of nodeIds) {
-        const nodeData = findNode(nodeId)?.data
+        const node = findNode(nodeId)
 
-        if (nodeData) {
-          data.push(nodeData)
+        if (node) {
+          data.push({
+            id: node.id,
+            type: node.type,
+            data: node.data,
+          })
         }
       }
 
       return data
     },
     set() {
-      console.warn('You are trying to set node data via useNodesData. This is not supported.')
+      // noop
+      warn('You are trying to set node data via useNodesData. This is not supported.')
     },
   })
 }
