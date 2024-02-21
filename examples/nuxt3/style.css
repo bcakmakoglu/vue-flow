@@ -1,0 +1,48 @@
+.basicflow.dark {
+  background: #000000;
+  color: #FFFFFB;
+}
+
+.basicflow.dark .vue-flow__node {
+  background: hsl(0, 0%, 10%);
+  color: #FFFFFB;
+}
+
+.basicflow.dark .vue-flow__node.selected {
+  background: hsl(0, 0%, 20%);
+  border: 1px solid hotpink;
+}
+
+.basicflow .vue-flow__controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.basicflow.dark .vue-flow__controls {
+  border: 1px solid #FFFFFB;
+}
+
+.basicflow .vue-flow__controls .vue-flow__controls-button {
+  border: none;
+  border-right: 1px solid #eee;
+}
+
+
+.basicflow.dark .vue-flow__controls .vue-flow__controls-button {
+  background: hsl(0, 0%, 20%);
+  fill: #FFFFFB;
+  border: none;
+}
+
+.basicflow.dark .vue-flow__controls .vue-flow__controls-button:hover {
+  background: hsl(0, 0%, 30%);
+}
+
+.basicflow.dark .vue-flow__edge-textbg {
+  fill: #292524;
+}
+
+.basicflow.dark .vue-flow__edge-text {
+  fill: #FFFFFB;
+}
