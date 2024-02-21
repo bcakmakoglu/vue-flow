@@ -2,16 +2,16 @@
 
 [![Vue flow](vue-flow.gif)](https://vueflow.dev/)
 ![top-language](https://img.shields.io/github/languages/top/bcakmakoglu/vue-flow)
-![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/bcakmakoglu/vue-flow)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bcakmakoglu/vue-flow)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bcakmakoglu/vue-flow)
 
 __Vue Flow: A highly customizable Vue 3 Flowchart component.__
 
-With Vue Flow, you can build your own, customized node-based applications like static diagrams or even more complex and
-interactive editors!
+Vue Flow is a bridge to the world of interactive flowcharts and graphs, empowering you to bring
+interactivity to your graphic representations. Whether it's crafting personal diagrams, generating dynamic
+editors, or anything else your imagination conjures up, Vue Flow has you covered.
 
-You can find a detailed explanation of how to get started in the [documentation](https://vueflow.dev/guide/) or check
+You can find a detailed explanation on how to get started [here](https://vueflow.dev/guide/) or jump right into
 the [examples](https://vueflow.dev/examples/).
 
 ## Table of contents
@@ -21,11 +21,11 @@ the [examples](https://vueflow.dev/examples/).
 * [🛠 Setup](#-setup)
 
 * [🎮 Quickstart](#-quickstart)
-  
+
   + [🪴 Vue 2](#-vue-2)
 
 * [🧪 Development](#-development)
-  
+
   + [🐳 Dev Container](#-dev-container)
 
 * [![discord logo](https://api.iconify.design/logos:discord-icon.svg) Discord](#-discord)
@@ -62,37 +62,39 @@ the [examples](https://vueflow.dev/examples/).
 $ npm i @vue-flow/core
 
 # or
+$ pnpm i @vue-flow/core
+
+# or
 $ yarn add @vue-flow/core
 ```
 
 ## 🎮 Quickstart
 
-A flow consists of __nodes__ and __edges__ (or just nodes). 
-Together they are called __elements__.
+In Vue Flow, an application structure consists of __nodes__ and __edges__, all of which are categorised as __elements__.
 
-__Each element needs a unique id.__ 
+__Each element requires a unique id.__
 
-A node also needs an XY position.
-An edge needs a source (node id) and a target (node id). 
-
-A basic setup looks like this:
+Nodes additionally need an __XY-position__, while edges require a __source__ and a __target__, both represented by node ids.
 
 ```vue
 <!-- Flowchart.vue -->
 <script setup>
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     label: 'node 1',
-    position: { x: 100, y: 100 },
+    position: {x: 100, y: 100},
   },
   {
     id: '2',
     label: 'node 2',
-    position: { x: 100, y: 200 },
+    position: {x: 100, y: 200},
   },
+])
+  
+const edges = ref([
   {
     id: 'e1-2',
     target: '2',
@@ -102,10 +104,9 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements"></VueFlow>
+  <VueFlow :nodes="nodes" :edges="edges"></VueFlow>
 </template>
 ```
-
 
 ⚠️ __Make sure to import the necessary styles:__
 
@@ -116,6 +117,8 @@ const elements = ref([
 /* import the default theme (optional) */
 @import "@vue-flow/core/dist/theme-default.css";
 ```
+
+Do __not__ scope these styles with `scoped` in your component.
 
 ### 🪴 Vue 2
 
@@ -128,12 +131,11 @@ there is no support for Vue 2, nor will there be any support in the future, sorr
 
 ### Prerequisites
 
-- [Node.js v14+](https://nodejs.org/)
-- [PnPm](https://pnpm.io/)
-
+- [Node.js v18+](https://nodejs.org/)
+- [pnpm](https://pnpm.io/)
 
 ```bash
-# skip if you already have pnpm installed
+# install pnpm if you haven't already
 $ npm i -g pnpm
 
 # start examples
@@ -166,9 +168,9 @@ or share your work that you have built with Vue Flow.
 This project is built with
 
 - [React Flow](https://reactflow.dev/)
-  - Vue flow is heavily based on [webkids'](https://webkid.io/) [react flow](https://reactflow.dev/). I wholeheartedly thank
-  them for their amazing work! Without them Vue Flow would not exist.
-  Please consider [donating](https://github.com/sponsors/wbkd) to them.
+  - Vue flow is heavily based on [webkids'](https://webkid.io/) [ReactFlow](https://reactflow.dev/). I wholeheartedly
+    thank them for their amazing work! Without them VueFlow would not exist.
+    Please consider [donating](https://github.com/sponsors/wbkd) or subscribing to [ReactFlow Pro](https://reactflow.dev/pro).
 
 - [D3.js](https://d3js.org/)
   - D3 makes all the zoom and pan actions in Vue Flow possible.
