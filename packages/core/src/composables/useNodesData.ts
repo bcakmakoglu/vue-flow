@@ -34,7 +34,15 @@ export function useNodesData(_nodeIds: any): any {
       if (!Array.isArray(nodeIds)) {
         const node = findNode(nodeIds)
 
-        return node?.data ?? null
+        if (node) {
+          return {
+            id: node.id,
+            type: node.type,
+            data: node.data,
+          }
+        }
+
+        return null
       }
 
       const data = []
