@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.0] - 2024-02-21
+
+[8fb6aba](8fb6abaed0563f7aa748ff5d596c5e91d0cfc861)...[8e69e1d](8e69e1d036175b95ecedb02bfa996f4801a2a107)
+
+### Bug Fixes
+
+- Correct prop names for node guide (#1321) ([e64ab35](e64ab352e871daf0df993ae2d10cdb4ab443f5ef))
+- Prevent esc keypress when a11y is disabled ([f815ef6](f815ef6dd5855409cddff50d21b62a84941fd0f2))
+- Use default cursor and apply drag cursor if node is draggable ([c48d3c9](c48d3c9be3060b7a0149e768a38377a02c49d143))
+
+### Features
+
+- Add type and id to `useNodesData` ([68ba907](68ba9075e93a5ae766dc64b68eeaa121e9b77b14))
+
+### Miscellaneous Tasks
+
+- Cleanup pkg json fields ([978d180](978d18071a2fea3b1460c533b65c56691ee27548))
+- Update README.md ([c24287d](c24287d4fc44901a2e5937d25a160d8f19f20afc))
+- Add ([5336209](5336209a69be31fc72b89f5f69e811fa08424d18))
+- Add ([bb8fc95](bb8fc9594b79c24fc67409091ee054a918ab1262))
+- Cleanup ([c7313ca](c7313ca421916691cfa1da9cf905649f5e8f411c))
+- Cleanup ([df591b1](df591b1295cfd7b6c9f6ad902e69f5ddf0e8e9a0))
+- Add ([54b3f22](54b3f22066245d3b753623d0b71992409f7f5e71))
+
+### Refactor
+
+- Replace vueuse imports with vue ([e5a8465](e5a84656ad368f7e745f1992de4c38a97c579716))
+
+### Testing
+
+- Update `useNodesData` tests ([4666fec](4666fecc39d42fd9f9c6087e1e8fd25933af91ac))
+
 ## [1.32.1] - 2024-02-15
 
 [303419d](303419d4b2dcfb6b6497b781e7c7121060ee73cd)...[8fb6aba](8fb6abaed0563f7aa748ff5d596c5e91d0cfc861)
