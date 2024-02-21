@@ -1,5 +1,35 @@
 # @vue-flow/core
 
+## 1.33.0
+
+### Minor Changes
+
+- [#1323](https://github.com/bcakmakoglu/vue-flow/pull/1323) [`ed4ccf4`](https://github.com/bcakmakoglu/vue-flow/commit/ed4ccf434ee8c8fcf47b43ebc5b4e25175009680) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add node id and node type to return of `useNodesData`.
+
+  ⚠️This is a small breaking change from the previous implementation!
+
+  Previously you would only receive the data object back, now you will receive an object with the data and the node id and type.
+
+  ```ts
+  const nodesData = useNodesData(nodeIds);
+
+  // Previously
+  nodesData.forEach((data) => {
+    // ...
+  });
+
+  // Now
+  nodesData.forEach(({ id, type, data }) => {
+    // ...
+  });
+  ```
+
+### Patch Changes
+
+- [#1326](https://github.com/bcakmakoglu/vue-flow/pull/1326) [`78a604c`](https://github.com/bcakmakoglu/vue-flow/commit/78a604c35aa908dc7453a70c636fb0e6f9ec4242) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use default cursor for nodes and use grab cursor if node is draggable
+
+- [#1324](https://github.com/bcakmakoglu/vue-flow/pull/1324) [`c964220`](https://github.com/bcakmakoglu/vue-flow/commit/c964220e955b7e2a7c09f8607c683dada59c4827) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent esc keypress triggers when keyboard a11y is disabled
+
 ## 1.32.1
 
 ### Patch Changes
