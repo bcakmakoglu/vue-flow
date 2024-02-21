@@ -24,7 +24,7 @@ describe('Composable: `useNodesData`', () => {
 
     cy.vueFlow(
       {
-        nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
+        nodes,
       },
       {},
       {
@@ -57,7 +57,7 @@ describe('Composable: `useNodesData`', () => {
 
     cy.vueFlow(
       {
-        nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
+        nodes,
       },
       {},
       {
@@ -97,7 +97,7 @@ describe('Composable: `useNodesData`', () => {
 
     cy.vueFlow(
       {
-        nodes: nodes.map((node) => ({ ...node, type: 'custom' })),
+        nodes,
       },
       {},
       {
