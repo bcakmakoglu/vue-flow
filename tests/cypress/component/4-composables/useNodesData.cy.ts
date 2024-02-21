@@ -16,7 +16,7 @@ describe('Composable: `useNodesData`', () => {
 
         emit('change', data.value)
 
-        return 'Composable Tester'
+        return ''
       },
     })
 
@@ -36,7 +36,7 @@ describe('Composable: `useNodesData`', () => {
       },
     )
 
-    cy.get('@onChangeSpy').should('have.been.calledWith', node.data)
+    cy.get('@onChangeSpy').should('have.been.calledWith', { id: node.id, type: node.type, data: node.data })
   })
 
   it('should return nodes data', () => {
@@ -51,7 +51,7 @@ describe('Composable: `useNodesData`', () => {
 
         emit('change', data.value)
 
-        return 'Composable Tester'
+        return ''
       },
     })
 
@@ -71,7 +71,11 @@ describe('Composable: `useNodesData`', () => {
 
     cy.get('@onChangeSpy').should(
       'have.been.calledWith',
-      nodes.map((node) => node.data),
+      nodes.map((node) => ({
+        id: node.id,
+        type: node.type,
+        data: node.data,
+      })),
     )
   })
 
@@ -87,7 +91,7 @@ describe('Composable: `useNodesData`', () => {
 
         emit('change', data.value)
 
-        return 'Composable Tester'
+        return ''
       },
     })
 
@@ -108,7 +112,11 @@ describe('Composable: `useNodesData`', () => {
 
     cy.get('@onChangeSpy').should(
       'have.been.calledWith',
-      nodes.map((node) => node.data),
+      nodes.map((node) => ({
+        id: node.id,
+        type: node.type,
+        data: node.data,
+      })),
     )
   })
 })
