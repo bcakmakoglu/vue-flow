@@ -319,7 +319,7 @@ const NodeWrapper = defineComponent({
     }
 
     function onKeyDown(event: KeyboardEvent) {
-      if (isInputDOMNode(event)) {
+      if (isInputDOMNode(event) || disableKeyboardA11y.value) {
         return
       }
 
@@ -335,7 +335,7 @@ const NodeWrapper = defineComponent({
           unselect,
           nodeElement.value!,
         )
-      } else if (!disableKeyboardA11y.value && props.draggable && node.value.selected && arrowKeyDiffs[event.key]) {
+      } else if (props.draggable && node.value.selected && arrowKeyDiffs[event.key]) {
         ariaLiveMessage.value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
           .value.position.x}, y: ${~~node.value.position.y}`
 
