@@ -44,6 +44,7 @@ const EdgeWrapper = defineComponent({
       findNode,
       isValidConnection,
       multiSelectionActive,
+      disableKeyboardA11y,
     } = useVueFlow()
 
     const hooks = useEdgeHooks(props.edge, emits)
@@ -334,7 +335,7 @@ const EdgeWrapper = defineComponent({
     }
 
     function onKeyDown(event: KeyboardEvent) {
-      if (elementSelectionKeys.includes(event.key) && props.selectable) {
+      if (!disableKeyboardA11y.value && elementSelectionKeys.includes(event.key) && props.selectable) {
         const unselect = event.key === 'Escape'
 
         if (unselect) {
