@@ -54,9 +54,9 @@ const labelPosition = ref({ x: 0, y: 0 })
 
 const currentLength = ref(0)
 
-const targetNodeData = toRef(() => nodesData.value[0])
+const targetNodeData = toRef(() => nodesData.value[0].data)
 
-const sourceNodeData = toRef(() => nodesData.value[1])
+const sourceNodeData = toRef(() => nodesData.value[1].data)
 
 const isFinished = toRef(() => sourceNodeData.value.isFinished)
 
