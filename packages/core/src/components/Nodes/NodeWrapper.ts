@@ -192,6 +192,7 @@ const NodeWrapper = defineComponent({
             {
               [noPanClassName.value]: props.draggable,
               dragging: dragging?.value,
+              draggable: props.draggable,
               selected: node.value.selected,
               selectable: props.selectable,
               parent: node.value.isParent,

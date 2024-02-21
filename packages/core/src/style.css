@@ -153,11 +153,16 @@
   pointer-events: all;
   transform-origin: 0 0;
   box-sizing: border-box;
-  cursor: grab;
+  cursor: default;
 
-  &.dragging {
-     cursor: grabbing;
-   }
+  &.draggable {
+    cursor: grab;
+    pointer-events: all;
+
+    &.dragging {
+      cursor: grabbing;
+    }
+  }
 }
 
 .vue-flow__nodesselection {
