@@ -69,7 +69,7 @@ This can be done dynamically at any point in your component's lifecycle.
 import { ref, onMounted } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
@@ -78,16 +78,19 @@ const elements = ref([
 ]);
 
 onMounted(() => {
-  elements.value.push({
-    id: '2',
-    label: 'Node 2',
-    position: { x: 150, y: 50 },
-  })
+  nodes.value = [
+    ...nodes.value,
+    {
+      id: '2',
+      label: 'Node 2',
+      position: { x: 150, y: 50 },
+    }
+  ]
 })
 </script>
 
 <template>
-  <VueFlow v-model="elements"/>
+  <VueFlow :nodes="nodes"/>
 </template>
 ```
 
@@ -95,10 +98,10 @@ onMounted(() => {
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import type { Elements } from '@vue-flow/core'
+import type { Node } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref<Elements>([
+const nodes = ref<Node[]>([
    {
      id: '1',
      position: { x: 50, y: 50 },
@@ -107,16 +110,19 @@ const elements = ref<Elements>([
 ]);
 
 onMounted(() => {
-   elements.value.push({
-     id: '2',
-     label: 'Node 2',
-     position: { x: 150, y: 50 },
-   })
+  nodes.value = [
+    ...nodes.value,
+    {
+      id: '2',
+      label: 'Node 2',
+      position: { x: 150, y: 50 },
+    }
+  ]
 })
 </script>
 
 <template>
-  <VueFlow v-model="elements"/>
+  <VueFlow :nodes="nodes" />
 </template>
 ```
 
@@ -231,7 +237,7 @@ Similar to adding nodes, nodes can be removed from the graph by removing them fr
 <script setup>
 import { ref } from 'vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
@@ -245,12 +251,12 @@ const elements = ref([
 ])
 
 function onRemoveNode() {
-  elements.value.pop()
+  nodes.value.pop()
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow :nodes="nodes" />
   
   <button type="button" @click="onRemoveNode">Remove a node</button>
 </template>

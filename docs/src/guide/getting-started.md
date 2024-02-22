@@ -70,9 +70,7 @@ import { VueFlow } from '@vue-flow/core'
 import SpecialNode from './components/SpecialNode.vue'
 import SpecialEdge from './components/SpecialEdge.vue'
 
-const elements = ref([
-  // nodes
-
+const nodes = ref([
   // an input node, specified by using `type: 'input'`
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
 
@@ -96,9 +94,9 @@ const elements = ref([
       hello: 'world',
     },
   },
-
-  // edges
-
+])
+  
+const edges = ref([
   // simple default bezier edge
   // consists of an id, source-id and target-id
   { id: 'e1-3', source: '1', target: '3' },
@@ -124,7 +122,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow :nodes="nodes" :edges="edges">
     <!-- bind your custom node type to a component by using slots, slot names are always `node-<type>` -->
     <template #node-special="specialNodeProps">
       <SpecialNode v-bind="specialNodeProps" />
@@ -148,15 +146,13 @@ const elements = ref([
 
 ```vue [<LogosTypescript />]
 <script setup lang="ts">
-import type { Elements } from '@vue-flow/core'  
+import type { Node, Edge } from '@vue-flow/core'  
 import { VueFlow } from '@vue-flow/core'
 
 import SpecialNode from './components/SpecialNode.vue'
 import SpecialEdge from './components/SpecialEdge.vue'
 
-const elements = ref<Elements>([
-  // nodes
-    
+const nodes = ref<Node[]>([
   // an input node, specified by using `type: 'input'`
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
 
@@ -179,25 +175,25 @@ const elements = ref<Elements>([
       // you can pass any data you want to the node
       hello: 'world',
     },
-  },  
-
-  // edges
-    
+  },
+])
+  
+const edges = ref<Edge[]>([
   // simple default bezier edge
   // consists of an id, source-id and target-id
   { id: 'e1-3', source: '1', target: '3' },
 
   // an animated edge, specified by using `animated: true`
   { id: 'e1-2', source: '1', target: '2', animated: true },
-    
+
   // a custom edge, specified by using a custom type name
   // we choose `type: 'special'` for this example
-  { 
-    id: 'e1-4', 
-    type: 'special', 
-    source: '1', 
+  {
+    id: 'e1-4',
+    type: 'special',
+    source: '1',
     target: '4',
-    
+
     // pass custom data to the edge
     data: {
       // You can pass any data you want to the edge       
@@ -208,7 +204,7 @@ const elements = ref<Elements>([
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow :nodes="nodes" :edges="edges">
     <!-- bind your custom node type to a component by using slots, slot names are always `node-<type>` -->
     <template #node-special="specialNodeProps">
       <SpecialNode v-bind="specialNodeProps" />
@@ -234,8 +230,7 @@ const elements = ref<Elements>([
 
 ## TypeScript
 
-As Vue Flow is entirely written in TypeScript, we highly recommend utilizing TypeScript for improved developer
-experience and prevention of common errors.
+As Vue Flow is entirely written in TypeScript, it is highly recommend utilizing TypeScript for improved DX.
 The necessary type definitions are included with the library.
 
 For more information, review our [TypeDocs documentation](/typedocs/).

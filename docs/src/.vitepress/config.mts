@@ -2,6 +2,7 @@ import { resolve } from 'node:path'
 import { readdirSync, statSync } from 'node:fs'
 import type { DefaultTheme, HeadConfig } from 'vitepress'
 import { defineConfigWithTheme } from 'vitepress'
+import { transformerTwoslash} from 'vitepress-plugin-twoslash'
 import WindiCSS from 'vite-plugin-windicss'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -67,6 +68,15 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
   head: head as HeadConfig[],
 
   outDir: resolve(__dirname, '../../dist'),
+
+  markdown
+    : {
+    codeTransformers
+      : [
+      transformerTwoslash
+      ()
+    ]
+  },
 
   vite: {
     define: {

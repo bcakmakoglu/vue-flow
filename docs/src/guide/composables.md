@@ -8,8 +8,7 @@ title: Composables
 
 The `useVueFlow` composable provides you with a set of methods to interact with the graph.
 
-```vue
-<script setup>
+```ts twoslash
 import { ref } from 'vue'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 
@@ -34,10 +33,6 @@ onInit((instance) => {
     node.position = { x: 100, y: 100 }
   }
 })
-</script>
-<template>
-  <VueFlow :nodes="nodes" :edges="edges" />
-</template>
 ```
 
 `useVueFlow` exposes the whole internal state, including the nodes and edges.
@@ -47,7 +42,8 @@ The values are reactive, meaning changing the values returned from `useVueFlow` 
 
 `useHandleConnections` provides you with an array of connections that are connected to the node you pass to it.
 
-```ts
+```ts twoslash
+import type { Connection } from '@vue-flow/core'
 import { useHandleConnections } from '@vue-flow/core'
 
 // get all connections where this node is the target (incoming connections)
@@ -61,14 +57,20 @@ const sourceConnections = useHandleConnections({
 })
 
 const connections = useHandleConnections({
-  id: 'handle-1', // you can explicitly pass a handle id if there are multiple handles of the same type
-  nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
+  // you need to pass the handle id if there are multiple handles of the same type (`source` or `target`)
+  id: 'handle-1',
+
+  // you can pass a node id, otherwise it's used from the `NodeId  injection
+  nodeId: '1',
+  
   type: 'target',
+  
   onConnect: (connections: Connection[]) => {
-    // do something with the connections
+    // ... handle new connections
   },
+  
   onDisconnect: (connections: Connection[]) => {
-    // do something with the connections
+    // ... handle disconnected connections
   },
 })
 ```
@@ -78,7 +80,7 @@ const connections = useHandleConnections({
 `useNodesData` provides you with an array of data objects depending on the node ids you pass to it.
 It's especially useful when used together with `useHandleConnections`.
 
-```ts
+```ts twoslash
 import { useNodesData, useHandleConnections } from '@vue-flow/core'
 
 // get all connections where this node is the target (incoming connections)
@@ -93,8 +95,9 @@ console.log(data.value) // [{ /* ... */]
 
 To further narrow down the type of the returned data, you can pass a guard function as the 2nd argument.
 
-```ts
-import { useNodesData, useHandleConnections, type Node } from '@vue-flow/core'
+```ts twoslash
+import type { Node } from '@vue-flow/core'
+import { useNodesData, useHandleConnections } from '@vue-flow/core'
 
 type MyNode = Node<{ foo: string }>
 
@@ -104,7 +107,7 @@ const connections = useHandleConnections({
 
 const data = useNodesData(() => connections.value.map((connection) => connection.source), (node): node is MyNode => node.type === 'foo')
 
-console.log(data.value) // [{ /* foo: string */]
+console.log(data.value) // [{ /* id: string; type: string; data: { foo: string } */]
 ```
 
 ## [useNodeId](/typedocs/functions/useNodeId)
@@ -114,7 +117,7 @@ console.log(data.value) // [{ /* foo: string */]
 This composable should be called *inside a custom node component*,
 as the id for the node is provided by the internal `<NodeWrapper />` component.
 
-```ts
+```ts twoslash
 import { useNodeId } from '@vue-flow/core'
 
 const nodeId = useNodeId()

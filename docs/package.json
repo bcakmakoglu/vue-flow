@@ -41,6 +41,7 @@
     "unplugin-vue-components": "^0.26.0",
     "vite-plugin-windicss": "^1.9.3",
     "vitepress": "1.0.0-rc.40",
+    "vitepress-plugin-twoslash": "^0.10.2",
     "windicss": "^3.5.6"
   }
 }
