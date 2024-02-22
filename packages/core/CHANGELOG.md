@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.33.1
+
+### Patch Changes
+
+- [#1329](https://github.com/bcakmakoglu/vue-flow/pull/1329) [`9b5d496`](https://github.com/bcakmakoglu/vue-flow/commit/9b5d496a58705270476530360500e9b9ce13abe8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct return type of `useNodesData`
+
 ## 1.33.0
 
 ### Minor Changes
