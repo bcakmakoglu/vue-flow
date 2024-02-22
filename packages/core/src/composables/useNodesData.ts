@@ -4,7 +4,11 @@ import type { GraphNode, Node } from '../types'
 import { warn } from '../utils'
 import { useVueFlow } from './useVueFlow'
 
-type NodeData<NodeType extends Node = GraphNode> = NonNullable<NodeType['data']> & { id: string; type: NodeType['type'] }
+interface NodeData<NodeType extends Node = GraphNode> {
+  id: string
+  type: NodeType['type']
+  data: NonNullable<NodeType['data']> | null
+}
 
 /**
  * Composable for receiving data of one or multiple nodes
@@ -38,14 +42,14 @@ export function useNodesData(_nodeIds: any): any {
           return {
             id: node.id,
             type: node.type,
-            data: node.data,
+            data: node.data ?? null,
           }
         }
 
         return null
       }
 
-      const data = []
+      const data: NodeData<Node>[] = []
 
       for (const nodeId of nodeIds) {
         const node = findNode(nodeId)
@@ -54,7 +58,7 @@ export function useNodesData(_nodeIds: any): any {
           data.push({
             id: node.id,
             type: node.type,
-            data: node.data,
+            data: node.data ?? null,
           })
         }
       }
