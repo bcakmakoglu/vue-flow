@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.1] - 2024-02-23
+
+[8e69e1d](8e69e1d036175b95ecedb02bfa996f4801a2a107)...[41e0c0b](41e0c0b4ccefbb606fbb218c29f9530eaa3c5a52)
+
+### Bug Fixes
+
+- Correct typing of `useNodesData` return ([1184941](1184941900712877282af052c32f3fd8341f8ef7))
+
+### Miscellaneous Tasks
+
+- Update layout example ([7b39b45](7b39b45641bf171ba55d171adea80d264acb3cd6))
+- Update nuxt example ([c7957df](c7957df0e91c92a0978f90b15ac0881db7d58af5))
+- Add ([d2f4271](d2f4271b2d0eda90a2d728ee6ffd03953985f844))
+
 ## [1.33.0] - 2024-02-21
 
 [8fb6aba](8fb6abaed0563f7aa748ff5d596c5e91d0cfc861)...[8e69e1d](8e69e1d036175b95ecedb02bfa996f4801a2a107)
