@@ -62,6 +62,8 @@
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
+    "prepublishOnly": "shx cp ../../README.md .",
+    "postpublish": "shx rm README.md",
     "test": "exit 0"
   },
   "peerDependencies": {
