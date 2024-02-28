@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.2] - 2024-02-28
+
+[41e0c0b](41e0c0b4ccefbb606fbb218c29f9530eaa3c5a52)...[8a99069](8a99069621711bf05cebce717a6ab8d71f349755)
+
+### Bug Fixes
+
+- Remove `ref` prop from `BaseEdge` ([ba90a48](ba90a48553c82f8ad5d2f9f0c1fd37fd11e46d30))
+- Use nullish check to fallback to default center ([a8c09a9](a8c09a90dafb8e699ac466a2b26e2a40f8c61d2c))
+- Check if dimensions exist in `useNodesInitialized` ([3ed91a0](3ed91a0055793e5bab7ae86da01e0159e1e0af71))
+
+### Miscellaneous Tasks
+
+- Add pre and post publish scripts ([d5587f1](d5587f196a6c046a6eedb0cbd4a89a2fcf00386b))
+- Update custom node example ([0f51e2c](0f51e2ce24ff1a9be8500925f4fd330d6a62b6cb))
+- Cleanup dnd example ([01e3df0](01e3df04a973e79cd0cb594283aa84999e6198ed))
+- Add ([c0e2b96](c0e2b96aa88314e5d0b0279082b01a5947a4735d))
+- Add ([78f9f61](78f9f61c12999b05718c50720b616545a0b09576))
+- Add ([d7dfcc3](d7dfcc375e9b6f6f1804205048fa7b93b560e010))
+
 ## [1.33.1] - 2024-02-23
 
 [8e69e1d](8e69e1d036175b95ecedb02bfa996f4801a2a107)...[41e0c0b](41e0c0b4ccefbb606fbb218c29f9530eaa3c5a52)
