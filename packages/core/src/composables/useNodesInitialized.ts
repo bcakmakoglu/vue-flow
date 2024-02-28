@@ -26,7 +26,7 @@ export function useNodesInitialized(options: UseNodesInitializedOptions = { incl
 
     for (const node of nodes.value) {
       if (options.includeHiddenNodes || !node.hidden) {
-        if (node?.handleBounds === undefined) {
+        if (node?.handleBounds === undefined || node.dimensions.width === 0 || node.dimensions.height === 0) {
           return false
         }
       }
