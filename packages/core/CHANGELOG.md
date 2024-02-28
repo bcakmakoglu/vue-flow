@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.33.2
+
+### Patch Changes
+
+- [#1338](https://github.com/bcakmakoglu/vue-flow/pull/1338) [`f3c09ce`](https://github.com/bcakmakoglu/vue-flow/commit/f3c09cea2d346837dc00fd434cace334f278195d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use nullish check to fallback to default center values in `getSmoothstepPath`
+
+- [#1339](https://github.com/bcakmakoglu/vue-flow/pull/1339) [`eb20a0f`](https://github.com/bcakmakoglu/vue-flow/commit/eb20a0f2090eddbc32230853e23750435f60a154) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if node dimensions exist in `useNodesInitialized`
+
+- [#1335](https://github.com/bcakmakoglu/vue-flow/pull/1335) [`ed5d104`](https://github.com/bcakmakoglu/vue-flow/commit/ed5d104d312a0e456c50b1e1206fd7a1f80161ab) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `ref` prop from `BaseEdge`
+
 ## 1.33.1
 
 ### Patch Changes
