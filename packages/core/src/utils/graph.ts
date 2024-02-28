@@ -105,6 +105,7 @@ export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: str
       width: 0,
       height: 0,
     }),
+    // todo: shouldn't be defined initially, as we want to use handleBounds to check if a node was actually initialized or not
     handleBounds: {
       source: [],
       target: [],
