@@ -7,7 +7,7 @@ import useDragAndDrop from './useDnD'
 
 const { onConnect, addEdges } = useVueFlow()
 
-const { onDragOver, onDrop, onDragLeave, isDragging } = useDragAndDrop()
+const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop()
 
 const nodes = ref([])
 
@@ -19,12 +19,10 @@ onConnect(addEdges)
     <VueFlow :nodes="nodes" @dragover="onDragOver" @dragleave="onDragLeave">
       <DropzoneBackground
         :style="{
-          backgroundColor: isDragging ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
-          borderColor: isDragging ? 'rgba(0, 0, 0, 0.2)' : 'transparent',
-          transition: 'background-color 0.2s, border-color 0.2s',
+          backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
+          transition: 'background-color 0.2s ease',
         }"
-      >
-      </DropzoneBackground>
+      />
     </VueFlow>
 
     <Sidebar />
