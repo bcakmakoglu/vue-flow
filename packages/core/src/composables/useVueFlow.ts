@@ -1,7 +1,7 @@
 import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
 import { computed, effectScope, getCurrentScope, inject, provide, reactive, watch } from 'vue'
-import type { EdgeChange, FlowOptions, FlowProps, NodeChange, VueFlowStore } from '../types'
+import type { EdgeChange, FlowOptions, NodeChange, VueFlowStore } from '../types'
 import { warn } from '../utils'
 import { useActions, useGetters, useState } from '../store'
 import { VueFlow } from '../context'
@@ -97,7 +97,7 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
  * @public
  * @returns a vue flow store instance
  */
-export function useVueFlow(options?: FlowProps): VueFlowStore {
+export function useVueFlow(options?: FlowOptions): VueFlowStore {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
