@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.33.3
+
+### Patch Changes
+
+- [#1343](https://github.com/bcakmakoglu/vue-flow/pull/1343) [`89b76a1`](https://github.com/bcakmakoglu/vue-flow/commit/89b76a172eb2d92949d64fd51c2630b15f17506e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use separate interfaces for Edge- and NodeEvents and extend FlowEmit interface from them. Fixes edge events overwriting node event definitions when types are created.
+
 ## 1.33.2
 
 ### Patch Changes
