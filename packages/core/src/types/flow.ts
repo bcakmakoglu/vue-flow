@@ -210,9 +210,19 @@ export interface FlowProps {
 // Todo: Remove in next major version
 export type FlowOptions = FlowProps
 
-export interface FlowEmits {
-  (event: 'nodesChange', changes: NodeChange[]): void
-  (event: 'edgesChange', changes: EdgeChange[]): void
+interface EdgeEvents {
+  (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
+  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
+}
+
+interface NodeEvents {
   (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
   (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent): void
   (event: 'nodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
@@ -222,6 +232,11 @@ export interface FlowEmits {
   (event: 'nodeDragStart', nodeDragEvent: NodeDragEvent): void
   (event: 'nodeDrag', nodeDragEvent: NodeDragEvent): void
   (event: 'nodeDragStop', nodeDragEvent: NodeDragEvent): void
+}
+
+export interface FlowEmits extends NodeEvents, EdgeEvents {
+  (event: 'nodesChange', changes: NodeChange[]): void
+  (event: 'edgesChange', changes: EdgeChange[]): void
   (event: 'nodesInitialized'): void
   (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent): void
   (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
@@ -264,15 +279,6 @@ export interface FlowEmits {
   (event: 'paneMouseEnter', paneEvent: MouseEvent): void
   (event: 'paneMouseMove', paneEvent: MouseEvent): void
   (event: 'paneMouseLeave', paneEvent: MouseEvent): void
-  (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
-  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'updateNodeInternals'): void
   (event: 'error', error: VueFlowError): void
 
