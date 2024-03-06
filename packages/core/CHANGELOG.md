@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.33.4
+
+### Patch Changes
+
+- [#1346](https://github.com/bcakmakoglu/vue-flow/pull/1346) [`376d0ac`](https://github.com/bcakmakoglu/vue-flow/commit/376d0acdb34af1e6ed7c4ee1a94e5fe4d9dd1e15) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Revert extending FlowEmits from separate interfaces for nodes and edges as it breaks event definitions for the actual component, causing warnings that the event was emitted by isn't defined.
+
 ## 1.33.3
 
 ### Patch Changes
