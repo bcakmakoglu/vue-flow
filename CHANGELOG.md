@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.3] - 2024-03-06
+
+[8a99069](8a99069621711bf05cebce717a6ab8d71f349755)...[e2bae63](e2bae63fdd8db36ac7779638144bd423472d5c6d)
+
+### Bug Fixes
+
+- Use separate interfaces for node/edge events ([4e50efe](4e50efe8ee626d270f501dc59c561b91296b9065))
+
+### Miscellaneous Tasks
+
+- Add ([c339058](c339058dcd3d6d1b6d6952aeb88d011dee106288))
+- Export interfaces ([75eb364](75eb36412785a31431cd88f6e9f4d99aab6e3815))
+
 ## [1.33.2] - 2024-02-28
 
 [41e0c0b](41e0c0b4ccefbb606fbb218c29f9530eaa3c5a52)...[8a99069](8a99069621711bf05cebce717a6ab8d71f349755)
