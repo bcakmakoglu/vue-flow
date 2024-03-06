@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.4] - 2024-03-06
+
+[e2bae63](e2bae63fdd8db36ac7779638144bd423472d5c6d)...[e776844](e7768443ba675c258b92527af36798583823d783)
+
+### Miscellaneous Tasks
+
+- Cleanup ([5df365c](5df365cd63e1c4d80b70ea092cda98282eac650e))
+- Add ([28cb081](28cb081a4ea51b2952de97ab34d6b4d22cd9b555))
+
+### Reverts
+
+- Revert extending events from separate interfaces ([e06d2e6](e06d2e6a239235ff27ff907a1efb5a6d3a0a11f3))
+
 ## [1.33.3] - 2024-03-06
 
 [8a99069](8a99069621711bf05cebce717a6ab8d71f349755)...[e2bae63](e2bae63fdd8db36ac7779638144bd423472d5c6d)
