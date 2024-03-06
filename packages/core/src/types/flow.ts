@@ -210,7 +210,7 @@ export interface FlowProps {
 // Todo: Remove in next major version
 export type FlowOptions = FlowProps
 
-interface EdgeEvents {
+export interface EdgeEvents {
   (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
   (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
@@ -222,7 +222,7 @@ interface EdgeEvents {
   (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
 }
 
-interface NodeEvents {
+export interface NodeEvents {
   (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
   (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent): void
   (event: 'nodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
