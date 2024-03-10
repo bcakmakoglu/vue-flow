@@ -1,5 +1,12 @@
 # @vue-flow/node-toolbar
 
+## 2.0.0-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`08db356`](https://github.com/bcakmakoglu/vue-flow/commit/08db356e225a4501f51f06709a20694b8a822ef7), [`125ab76`](https://github.com/bcakmakoglu/vue-flow/commit/125ab76d5fd858801ebc671c83e900db51afd693), [`261f4cf`](https://github.com/bcakmakoglu/vue-flow/commit/261f4cff9d15fd3ed286e5253e2136135dac89a1)]:
+  - @vue-flow/core@2.0.0-next.0
+
 ## 1.1.0
 
 ### Minor Changes
