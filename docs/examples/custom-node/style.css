@@ -1,3 +1,7 @@
+.custom-node-flow .vue-flow__edges {
+  filter: invert(100%);
+}
+
 .custom-node-flow .vue-flow__node-color-selector {
   border: 1px solid #777;
   padding: 10px;
