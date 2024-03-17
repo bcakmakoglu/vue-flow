@@ -32,7 +32,6 @@ const edges = ref([
     animated: true,
     style: () => ({
       stroke: colorSelectorData.value?.color,
-      filter: 'invert(100%)',
     }),
   },
 ])
