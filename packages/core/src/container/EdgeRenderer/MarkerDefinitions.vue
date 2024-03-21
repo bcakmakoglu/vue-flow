@@ -5,7 +5,7 @@ import { useVueFlow } from '../../composables'
 import { getMarkerId } from '../../utils'
 import MarkerSymbols from './MarkerSymbols.vue'
 
-const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = $(useVueFlow())
+const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = useVueFlow()
 
 const markers = computed(() => {
   const ids: string[] = []
@@ -16,9 +16,9 @@ const markers = computed(() => {
       const markerId = getMarkerId(marker, vueFlowId)
       if (!ids.includes(markerId)) {
         if (typeof marker === 'object') {
-          markers.push({ ...marker, id: markerId, color: marker.color || defaultColor })
+          markers.push({ ...marker, id: markerId, color: marker.color || defaultColor.value })
         } else {
-          markers.push({ id: markerId, color: defaultColor, type: marker as MarkerType })
+          markers.push({ id: markerId, color: defaultColor.value, type: marker as MarkerType })
         }
 
         ids.push(markerId)
@@ -26,11 +26,11 @@ const markers = computed(() => {
     }
   }
 
-  for (const marker of [connectionLineOptions.markerEnd, connectionLineOptions.markerStart]) {
+  for (const marker of [connectionLineOptions.value.markerEnd, connectionLineOptions.value.markerStart]) {
     createMarkers(marker)
   }
 
-  edges.reduce<MarkerProps[]>((markers, edge) => {
+  edges.value.reduce<MarkerProps[]>((markers, edge) => {
     for (const marker of [edge.markerStart, edge.markerEnd]) {
       createMarkers(marker)
     }
