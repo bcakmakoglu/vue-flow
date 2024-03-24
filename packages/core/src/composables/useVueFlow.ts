@@ -1,6 +1,6 @@
 import { toRefs, tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { computed, effectScope, getCurrentScope, inject, provide, reactive, watch } from 'vue'
+import { computed, effectScope, getCurrentInstance, getCurrentScope, inject, provide, reactive, watch } from 'vue'
 import type { EdgeChange, FlowOptions, NodeChange, VueFlowStore } from '../types'
 import { warn } from '../utils'
 import { useActions, useGetters, useState } from '../store'
@@ -15,8 +15,15 @@ export class Storage {
   static instance: Storage
 
   public static getInstance(): Storage {
-    if (!Storage.instance) {
-      Storage.instance = new Storage()
+    // todo: this is just a workaround for now, in the next major this class won't exist and the state will be ctx-based (like React Provider)
+    const vueApp = getCurrentInstance()?.appContext.app
+
+    const existingInstance = vueApp?.config.globalProperties.$vueFlowStorage
+
+    Storage.instance = existingInstance ?? new Storage()
+
+    if (vueApp) {
+      vueApp.config.globalProperties.$vueFlowStorage = Storage.instance
     }
 
     return Storage.instance
@@ -140,7 +147,8 @@ export function useVueFlow(options?: FlowOptions): VueFlowStore {
 
     vueFlow = state
 
-    effectScope().run(() => {
+    const vfScope = scope ?? effectScope(true)
+    vfScope.run(() => {
       /**
        * We have to watch the applyDefault option here,
        * because we need to register the default hooks before the `VueFlow` component is actually mounted and props passed
