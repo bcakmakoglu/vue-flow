@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.5] - 2024-03-24
+
+[e776844](e7768443ba675c258b92527af36798583823d783)...[09009ce](09009ce1e611d1ff089277f51a951143ca600e95)
+
+### Bug Fixes
+
+- Store vf instance on vue app for ssr ([3170022](31700221f26cdb2e3d191f366c07ab200e828f85))
+
+### Documentation
+
+- Fix custom-node example for safari ([b2d37e5](b2d37e5a8c596c1200eec456f2ebf75b1ffa6fdb))
+
+### Miscellaneous Tasks
+
+- Add ([7939ca8](7939ca84b3ba5b043d58dc8019f9da9415d7a359))
+- Cleanup ([31c0f82](31c0f82efedba49aea65e6612780cd530fd9c910))
+
+### Refactor
+
+- Remove reactivity transform ([f858d13](f858d139091a17cc2102abe3e40d0df930e0f1e4))
+- Move storage to separate file ([0a9e950](0a9e95007754c3ac0b511811b7be8c95882fd26c))
+
 ## [1.33.4] - 2024-03-06
 
 [e2bae63](e2bae63fdd8db36ac7779638144bd423472d5c6d)...[e776844](e7768443ba675c258b92527af36798583823d783)
