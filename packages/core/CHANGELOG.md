@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.33.5
+
+### Patch Changes
+
+- [#1356](https://github.com/bcakmakoglu/vue-flow/pull/1356) [`b5beac2`](https://github.com/bcakmakoglu/vue-flow/commit/b5beac226d581be8a1a43c90d67a6a96049ce93c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Store current Storage instance on vue app to avoid hydration errors.
+
 ## 1.33.4
 
 ### Patch Changes
