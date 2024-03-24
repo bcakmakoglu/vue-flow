@@ -4,7 +4,9 @@ import type { FlowOptions, VueFlowStore } from '../types'
 import { useActions, useGetters, useState } from '../store'
 
 /**
- * Stores all currently created store instances
+ * @deprecated will be removed in the next major and replaced with a ctx based solution similar to `<ReactFlowProvider>`
+ *
+ * Stores all existing VueFlow state instances
  */
 export class Storage {
   public currentId = 0
