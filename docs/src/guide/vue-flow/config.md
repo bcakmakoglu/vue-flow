@@ -745,7 +745,7 @@ const connector = (params) => {
   }
   
   return {
-    id: `edge-${params.source.id}-${params.target}`,
+    id: `edge-${params.source}-${params.target}`,
     source: params.source,
     target: params.target,
     label: `Edge ${params.source}-${params.target}`,
