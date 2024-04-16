@@ -255,6 +255,14 @@ onMounted(() => {
               return false
             }
 
+            const zoomScroll = zoomKeyPressed.value || zoomOnScroll.value
+            const pinchZoom = zoomOnPinch.value && event.ctrlKey
+
+            const scrollEventEnabled = !preventScrolling.value || shouldPanOnScroll.value || zoomScroll || pinchZoom
+
+            if (!scrollEventEnabled) {
+              return false
+            }
             event.preventDefault()
             event.stopImmediatePropagation()
 
@@ -323,7 +331,9 @@ onMounted(() => {
         d3Selection.on(
           'wheel.zoom',
           function (this: any, event: WheelEvent, d: any) {
-            if (!preventScrolling.value || isWrappedWithClass(event, noWheelClassName.value)) {
+            // we still want to enable pinch zooming even if preventScrolling is set to false
+            const invalidEvent = !preventScrolling.value && event.type === 'wheel' && !event.ctrlKey
+            if (invalidEvent || isWrappedWithClass(event, noWheelClassName.value)) {
               return null
             }
 
