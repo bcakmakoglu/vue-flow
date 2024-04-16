@@ -82,6 +82,7 @@ const EdgeWrapper = defineComponent({
     return () => {
       const sourceNode = findNode(edge.value.source)
       const targetNode = findNode(edge.value.target)
+      const pathOptions = 'pathOptions' in edge.value ? edge.value.pathOptions : {}
 
       if (!sourceNode && !targetNode) {
         emits.error(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.value.id, edge.value.source, edge.value.target))
@@ -207,6 +208,7 @@ const EdgeWrapper = defineComponent({
                 sourceHandleId: edge.value.sourceHandle,
                 targetHandleId: edge.value.targetHandle,
                 interactionWidth: edge.value.interactionWidth,
+                ...pathOptions,
               }),
           [
             props.updatable === 'source' || props.updatable === true
