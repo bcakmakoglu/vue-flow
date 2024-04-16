@@ -4,6 +4,7 @@
   height: 100%;
   overflow: hidden;
   z-index: 0;
+  direction: ltr;
 }
 
 .vue-flow__container {
