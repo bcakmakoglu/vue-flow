@@ -333,7 +333,13 @@ onMounted(() => {
           function (this: any, event: WheelEvent, d: any) {
             // we still want to enable pinch zooming even if preventScrolling is set to false
             const invalidEvent = !preventScrolling.value && event.type === 'wheel' && !event.ctrlKey
-            if (invalidEvent || isWrappedWithClass(event, noWheelClassName.value)) {
+
+            const zoomScroll = zoomKeyPressed.value || zoomOnScroll.value
+            const pinchZoom = zoomOnPinch.value && event.ctrlKey
+
+            const scrollEventsDisabled = !zoomScroll && !panOnScroll.value && !pinchZoom && event.type === 'wheel'
+
+            if (scrollEventsDisabled || invalidEvent || isWrappedWithClass(event, noWheelClassName.value)) {
               return null
             }
 
