@@ -123,7 +123,9 @@ export function useKeyPress(
     (e) => {
       modifierPressed = wasModifierPressed(e)
 
-      if (!modifierPressed && isInputDOMNode(e)) {
+      const preventAction = (!modifierPressed || (modifierPressed && !options.actInsideInputWithModifier)) && isInputDOMNode(e)
+
+      if (preventAction) {
         return
       }
 
@@ -138,7 +140,9 @@ export function useKeyPress(
     (...args) => currentFilter(...args),
     (e) => {
       if (isPressed.value) {
-        if (!modifierPressed && isInputDOMNode(e)) {
+        const preventAction = (!modifierPressed || (modifierPressed && !options.actInsideInputWithModifier)) && isInputDOMNode(e)
+
+        if (preventAction) {
           return
         }
 
