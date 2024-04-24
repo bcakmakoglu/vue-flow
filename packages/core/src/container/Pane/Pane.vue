@@ -43,35 +43,39 @@ const containerBounds = ref<DOMRect>()
 
 const hasActiveSelection = toRef(() => elementsSelectable.value && (isSelecting || userSelectionActive.value))
 
-useKeyPress(deleteKeyCode, (keyPressed) => {
-  if (!keyPressed) {
-    return
-  }
-
-  const nodesToRemove = getNodes.value.reduce<GraphNode[]>((res, node) => {
-    if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
-      res.push(node)
-    } else if (node.selected) {
-      res.push(node)
+useKeyPress(
+  deleteKeyCode,
+  (keyPressed) => {
+    if (!keyPressed) {
+      return
     }
 
-    return res
-  }, [])
+    const nodesToRemove = getNodes.value.reduce<GraphNode[]>((res, node) => {
+      if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
+        res.push(node)
+      } else if (node.selected) {
+        res.push(node)
+      }
 
-  if (nodesToRemove || getSelectedEdges.value) {
-    if (getSelectedEdges.value.length > 0) {
-      removeEdges(getSelectedEdges.value)
+      return res
+    }, [])
+
+    if (nodesToRemove || getSelectedEdges.value) {
+      if (getSelectedEdges.value.length > 0) {
+        removeEdges(getSelectedEdges.value)
+      }
+
+      if (nodesToRemove.length > 0) {
+        removeNodes(nodesToRemove)
+      }
+
+      nodesSelectionActive.value = false
+
+      removeSelectedElements()
     }
-
-    if (nodesToRemove.length > 0) {
-      removeNodes(nodesToRemove)
-    }
-
-    nodesSelectionActive.value = false
-
-    removeSelectedElements()
-  }
-})
+  },
+  { actInsideInputWithModifier: false },
+)
 
 useKeyPress(multiSelectionKeyCode, (keyPressed) => {
   multiSelectionActive.value = keyPressed

@@ -4,6 +4,10 @@ import type { KeyFilter, KeyPredicate } from '@vueuse/core'
 import { onKeyStroke, useEventListener } from '@vueuse/core'
 import { useWindow } from './useWindow'
 
+export interface UseKeyPressOptions {
+  actInsideInputWithModifier?: MaybeRefOrGetter<boolean>
+}
+
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
 
@@ -72,7 +76,11 @@ function useKeyOrCode(code: string, keysToWatch: string | string[]) {
  * @param keyFilter - Can be a boolean, a string or an array of strings. If it's a boolean, it will always return that value. If it's a string, it will return true if the key is pressed. If it's an array of strings, it will return true if any of the keys are pressed, or a combination is pressed (e.g. ['ctrl+a', 'ctrl+b'])
  * @param onChange - Callback function that will be called when the key state changes
  */
-export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, onChange?: (keyPressed: boolean) => void) {
+export function useKeyPress(
+  keyFilter: MaybeRefOrGetter<KeyFilter | null>,
+  onChange?: (keyPressed: boolean) => void,
+  options: UseKeyPressOptions = { actInsideInputWithModifier: true },
+) {
   const window = useWindow()
 
   const isPressed = ref(toValue(keyFilter) === true)
