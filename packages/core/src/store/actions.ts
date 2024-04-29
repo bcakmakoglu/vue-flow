@@ -812,13 +812,11 @@ export function useActions(
           const {
             computedPosition: _,
             handleBounds: __,
-            selected: ___,
-            dimensions: ____,
-            isParent: _____,
-            resizing: ______,
-            dragging: _______,
-            initialized: ________,
-            events: _________,
+            isParent: ___,
+            resizing: ____,
+            dragging: _____,
+            initialized: ______,
+            events: _______,
             ...rest
           } = n
 
