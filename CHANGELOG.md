@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.6] - 2024-04-29
+
+[09009ce](09009ce1e611d1ff089277f51a951143ca600e95)...[4cdf5f2](4cdf5f2affef1a8070d0224da408eb6c6e562eda)
+
+### Bug Fixes
+
+- Set ltr for vue flow wrapper ([590afc8](590afc87f4c562dcda7533976eca77c1513f61fc))
+- Allow pinch-zoom if preventScrolling is disabled ([ffb649e](ffb649ecbd91b22e9d36e11bea677ec8ea0f96c3))
+- Pass path options to edges ([464dc58](464dc582dc865e447fc8b7afe4dfe16ffd5300db))
+- Add options to useKeyPress ([b0f1bf0](b0f1bf0b851b1972db57557776908b8a075a4efb))
+- Prevent delete action if inside input field ([84969ab](84969ab45168c7f0807d11a3882324b38e6b1a1c))
+
+### Documentation
+
+- Replace `source.id` with `source` (#1369) ([11229e4](11229e4dc417c3f22ec2e291ada6f728793d2075))
+
+### Miscellaneous Tasks
+
+- Update README example ([1f1792b](1f1792bd096af123dca45cab56843fc83d37c176))
+- Add ([4f0f62a](4f0f62acf4b6c99f646e183e208781a3f28cdd92))
+- Add ([bc94cde](bc94cde934c7daae6e3ac07d0d9ba36a6b6c5da9))
+- Add ([f3c1ac7](f3c1ac7ddc57c663064927b4091140ed24b0a28f))
+- Add ([40e4478](40e4478be9de5b3513f7033314f16b5fffe0759a))
+
 ## [1.33.5] - 2024-03-24
 
 [e776844](e7768443ba675c258b92527af36798583823d783)...[09009ce](09009ce1e611d1ff089277f51a951143ca600e95)
