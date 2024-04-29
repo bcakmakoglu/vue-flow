@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.33.6
+
+### Patch Changes
+
+- [#1375](https://github.com/bcakmakoglu/vue-flow/pull/1375) [`0754e79`](https://github.com/bcakmakoglu/vue-flow/commit/0754e798927b4c38958c947411ef7fd85faf8fae) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Pass pathOptions to edges
+
+- [#1389](https://github.com/bcakmakoglu/vue-flow/pull/1389) [`f62f2ca`](https://github.com/bcakmakoglu/vue-flow/commit/f62f2ca80cb37778a1c8b2133797dc367c99da73) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent delete key action inside input field even if modifier is pressed.
+
+- [#1373](https://github.com/bcakmakoglu/vue-flow/pull/1373) [`a88cd9e`](https://github.com/bcakmakoglu/vue-flow/commit/a88cd9e10da077f9ea71ba87e377d35ad64ef110) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set ltr on vue flow wrapper
+
+- [#1374](https://github.com/bcakmakoglu/vue-flow/pull/1374) [`2821c32`](https://github.com/bcakmakoglu/vue-flow/commit/2821c32b4fa7b6f929f62b70591d050190d3ee5d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow pinch-zoom if preventScrolling is disabled
+
 ## 1.33.5
 
 ### Patch Changes
