@@ -20,7 +20,7 @@ const props = defineProps<CustomEdgeProps>()
 
 const { removeEdges } = useVueFlow()
 
-const path = $computed(() => getBezierPath(props))
+const path = computed(() => getBezierPath(props))
 </script>
 
 <script lang="ts">
