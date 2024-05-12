@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.33.7
+
+### Patch Changes
+
+- [#1378](https://github.com/bcakmakoglu/vue-flow/pull/1378) [`58d1a36`](https://github.com/bcakmakoglu/vue-flow/commit/58d1a36d3a14a69b22518e4863ba47bad35d66fb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow wheel events to bubble up to the user if the event is not caught and used by the viewport
+
 ## 1.33.6
 
 ### Patch Changes
