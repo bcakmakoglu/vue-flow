@@ -122,7 +122,7 @@ there is no support for Vue 2, nor will there be any support in the future, sorr
 
 ### Prerequisites
 
-- [Node.js v18+](https://nodejs.org/)
+- [Node.js v20+](https://nodejs.org/)
 - [pnpm](https://pnpm.io/)
 
 ```bash
