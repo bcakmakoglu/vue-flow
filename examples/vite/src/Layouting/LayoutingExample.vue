@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import dagre from 'dagre'
+import dagre from '@dagrejs/dagre'
 import { ConnectionMode, Panel, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 
 import { initialEdges, initialNodes } from './initial-elements'
