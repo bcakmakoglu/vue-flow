@@ -7,6 +7,7 @@
     "lint": "eslint --ext .js,.ts,.vue ./ && vue-tsc --noEmit"
   },
   "dependencies": {
+    "@dagrejs/dagre": "^1.1.2",
     "@vue-flow/background": "workspace:*",
     "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
@@ -18,9 +19,7 @@
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
-    "@types/dagre": "^0.7.50",
     "@vitejs/plugin-vue": "^4.4.0",
-    "dagre": "^0.8.5",
     "unplugin-auto-import": "^0.16.6",
     "vite": "^4.4.11",
     "vite-svg-loader": "^4.0.0",

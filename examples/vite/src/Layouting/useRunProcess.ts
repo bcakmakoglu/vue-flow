@@ -1,4 +1,4 @@
-import type dagre from 'dagre'
+import type dagre from '@dagrejs/dagre'
 import type { Node } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
 import type { MaybeRefOrGetter } from 'vue'

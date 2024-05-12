@@ -134,10 +134,10 @@ export const exampleImports = {
     'useLayout.js': useLayout,
     'Icon.vue': LayoutIcon,
     'additionalImports': {
-      '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@10.7.0/index.mjs',
-      '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@10.7.0/index.mjs',
-      'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@0.13.11/lib/index.mjs',
-      'dagre': 'https://cdn.skypack.dev/pin/dagre@v0.8.5-NOlknF82nBdUHQKLJWRC/mode=imports,min/optimized/dagre.js',
+      '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@latest/index.mjs',
+      '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@latest/index.mjs',
+      'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@latest/lib/index.mjs',
+      '@dagrejs/dagre': 'https://cdn.jsdelivr.net/npm/@dagrejs/dagre@1.1.2/dist/dagre.min.js',
     },
   },
 }

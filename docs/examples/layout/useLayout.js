@@ -1,4 +1,4 @@
-import dagre from 'dagre'
+import dagre from '@dagrejs/dagre'
 import { Position, useVueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 
