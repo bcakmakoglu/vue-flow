@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.7] - 2024-05-12
+
+[4cdf5f2](4cdf5f2affef1a8070d0224da408eb6c6e562eda)...[e857398](e85739803b364f026391df4e395aec37f8199d3e)
+
+### Bug Fixes
+
+- Allow wheel to bubble if not used by vf ([7f51fae](7f51faee45a4ce815ea02fcc08878a149d5b7815))
+
+### Miscellaneous Tasks
+
+- Cleanup reactivity transform ([8d3887f](8d3887f615b9523349ba43b17f7db27d3f27989c))
+- Replace `dagre` with `dagrejs/dagre` ([f1bd5b5](f1bd5b5eeffe74806b0432096a34ddc592563ae0))
+- Update pnpm version to 9 ([1206308](120630869322ec079c192c715f8666e4a28d3e24))
+- Update pnpm version to 9 ([cefd802](cefd80244000bfac182a4e46b2ffd1c0c8cdebcc))
+- Update turbo to latest ([f059ba2](f059ba2ce813ec3285ca118efe009952258becd9))
+- Update node to 20 ([880fc15](880fc15017d126bc3fb1af41bc686e7e3c46c85a))
+- Update package manager field ([6e64229](6e64229b078b7058348c3563d0c785d946944fa1))
+- Correct dagre import path ([adfc01d](adfc01d1f35ea8138b021eee2b2701f10857ed1b))
+- Add ([afdf1a4](afdf1a4ec693b141ab47fac1ae9945f7a5718a5d))
+
 ## [1.33.6] - 2024-04-29
 
 [09009ce](09009ce1e611d1ff089277f51a951143ca600e95)...[4cdf5f2](4cdf5f2affef1a8070d0224da408eb6c6e562eda)
