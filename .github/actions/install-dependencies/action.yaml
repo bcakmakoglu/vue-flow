@@ -7,9 +7,9 @@ runs:
 
   steps:
     - name: Install pnpm 📦
-      uses: pnpm/action-setup@v2.2.4
+      uses: pnpm/action-setup@v3.0.0
       with:
-        version: 8
+        version: 9
         run_install: false
 
     - name: Setup pnpm config 📖
@@ -23,7 +23,7 @@ runs:
         echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
     - name: Setup pnpm cache 🧃
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -33,5 +33,3 @@ runs:
     - name: Install dependencies 👨🏻‍💻
       run: pnpm install --frozen-lockfile --ignore-scripts
       shell: bash
-
-
