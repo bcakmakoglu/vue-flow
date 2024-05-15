@@ -591,11 +591,7 @@ export function useActions(
   }
 
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => {
-    const changedEdges = applyChanges(changes, state.edges)
-
-    updateConnectionLookup(state.connectionLookup, changedEdges)
-
-    return changedEdges
+    return applyChanges(changes, state.edges)
   }
 
   // todo: maybe we should use a more immutable approach, this is a bit too much mutation and hard to maintain
