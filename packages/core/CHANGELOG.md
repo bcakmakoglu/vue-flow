@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.33.8
+
+### Patch Changes
+
+- [#1404](https://github.com/bcakmakoglu/vue-flow/pull/1404) [`b636853`](https://github.com/bcakmakoglu/vue-flow/commit/b636853eac087c932dc4baa4c72f7e5837dca927) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent auto-pan on connect when it's set to false.
+
 ## 1.33.7
 
 ### Patch Changes
