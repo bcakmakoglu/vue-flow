@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.33.8] - 2024-05-15
+
+[e857398](e85739803b364f026391df4e395aec37f8199d3e)...[20d2d6c](20d2d6c0f7d5542229b1109a72203b62e77fa839)
+
+### Bug Fixes
+
+- Set specific pnpm version ([7267baa](7267baa31c25c4d4a0ac247af85a597a740027b5))
+- Prevent auto pan if set to false ([96b78ce](96b78ce19dfc9b478104bad6bf71549d955afeee))
+
+### Miscellaneous Tasks
+
+- Add ([da32e16](da32e165bdba1a44249787e505ff59efb5e03f71))
+
 ## [1.33.7] - 2024-05-12
 
 [4cdf5f2](4cdf5f2affef1a8070d0224da408eb6c6e562eda)...[e857398](e85739803b364f026391df4e395aec37f8199d3e)
