@@ -114,7 +114,7 @@ export function useHandle({
 
       // when the user is moving the mouse close to the edge of the canvas while connecting we move the canvas
       const autoPan = () => {
-        if (!autoPanOnConnect) {
+        if (!autoPanOnConnect.value) {
           return
         }
 
