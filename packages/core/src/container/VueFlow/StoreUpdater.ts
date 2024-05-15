@@ -11,6 +11,10 @@ export const StoreUpdater = defineComponent({
     return () => {
       const props = updaterProps.opts
 
+      if (props.nodes && isDef(props.nodes)) {
+        store.setNodes(props.nodes)
+      }
+
       if (props.maxZoom && isDef(props.maxZoom)) {
         store.setMaxZoom(props.maxZoom)
       }

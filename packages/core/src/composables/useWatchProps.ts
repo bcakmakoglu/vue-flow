@@ -67,52 +67,6 @@ export function useWatchProps(
       })
     }
 
-    const watchNodesValue = () => {
-      scope.run(() => {
-        let pauseModel: WatchPausableReturn
-        let pauseStore: WatchPausableReturn
-
-        let immediateStore = !!store.nodes.value.length
-
-        // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.nodes, () => models.nodes?.value?.length], ([nodes]) => {
-          if (nodes && Array.isArray(nodes)) {
-            pauseStore?.pause()
-
-            store.setNodes(nodes)
-
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && nodes.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
-            }
-          }
-        })
-
-        pauseStore = watchPausable(
-          [store.nodes, () => store.nodes.value.length],
-          ([nodes]) => {
-            if (models.nodes?.value && Array.isArray(models.nodes.value)) {
-              pauseModel?.pause()
-
-              models.nodes.value = [...nodes]
-
-              nextTick(() => {
-                pauseModel?.resume()
-              })
-            }
-          },
-          { immediate: immediateStore },
-        )
-
-        onScopeDispose(() => {
-          pauseModel?.stop()
-          pauseStore?.stop()
-        })
-      })
-    }
-
     const watchEdgesValue = () => {
       scope.run(() => {
         let pauseModel: WatchPausableReturn
@@ -203,7 +157,6 @@ export function useWatchProps(
 
     const runAll = () => {
       watchModelValue()
-      watchNodesValue()
       watchEdgesValue()
       watchAutoConnect()
     }
