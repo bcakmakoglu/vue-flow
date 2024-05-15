@@ -54,7 +54,6 @@ import {
 import { storeOptionsToSkip, useState } from './state'
 
 export function useActions(
-  id: string,
   state: State,
   nodeLookup: ComputedRef<NodeLookup>,
   edgeLookup: ComputedRef<EdgeLookup>,
