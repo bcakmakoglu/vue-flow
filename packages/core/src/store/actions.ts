@@ -55,15 +55,13 @@ import { storeOptionsToSkip, useState } from './state'
 export function useActions(
   id: string,
   state: State,
-  // todo: change to a Set
-  nodeIds: ComputedRef<string[]>,
-  // todo: change to a Set
-  edgeIds: ComputedRef<string[]>,
+  nodesMap: ComputedRef<Map<string, GraphNode>>,
+  edgesMap: ComputedRef<Map<string, GraphEdge>>,
 ): Actions {
   const viewportHelper = useViewportHelper(state)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? nodeIds.value ?? []
+    const updateIds = ids ?? state.nodes.map((n) => n.id)
 
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
@@ -82,26 +80,18 @@ export function useActions(
 
   const findNode: Actions['findNode'] = (id) => {
     if (!id) {
-      return
+      return undefined
     }
 
-    if (state.nodes && !nodeIds.value.length) {
-      return state.nodes.find((node) => node.id === id)
-    }
-
-    return state.nodes[nodeIds.value.indexOf(id)]
+    return nodesMap.value.get(id)
   }
 
   const findEdge: Actions['findEdge'] = (id) => {
     if (!id) {
-      return
+      return undefined
     }
 
-    if (state.edges && !edgeIds.value.length) {
-      return state.edges.find((edge) => edge.id === id)
-    }
-
-    return state.edges[edgeIds.value.indexOf(id)]
+    return edgesMap.value.get(id)
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -370,7 +360,7 @@ export function useActions(
 
   const setNodeExtent: Actions['setNodeExtent'] = (nodeExtent) => {
     state.nodeExtent = nodeExtent
-    updateNodeInternals(nodeIds.value)
+    updateNodeInternals()
   }
 
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {

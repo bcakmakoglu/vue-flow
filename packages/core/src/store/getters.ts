@@ -4,28 +4,20 @@ import type { ComputedGetters, GraphEdge, GraphNode, State } from '../types'
 import { ErrorCode, VueFlowError, getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
-export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds: ComputedRef<string[]>): ComputedGetters {
+export function useGetters(
+  state: State,
+  nodesMap: ComputedRef<Map<string, GraphNode>>,
+  edgesMap: ComputedRef<Map<string, GraphEdge>>,
+): ComputedGetters {
   /**
    * @deprecated will be removed in next major version; use findNode instead
    */
-  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => {
-    if (state.nodes && !nodeIds.value.length) {
-      return state.nodes.find((node) => node.id === id)
-    }
-
-    return state.nodes[nodeIds.value.indexOf(id)]
-  })
+  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => nodesMap.value.get(id))
 
   /**
    * @deprecated will be removed in next major version; use findEdge instead
    */
-  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => {
-    if (state.edges && !edgeIds.value.length) {
-      return state.edges.find((edge) => edge.id === id)
-    }
-
-    return state.edges[edgeIds.value.indexOf(id)]
-  })
+  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => edgesMap.value.get(id))
 
   const getEdgeTypes: ComputedGetters['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
