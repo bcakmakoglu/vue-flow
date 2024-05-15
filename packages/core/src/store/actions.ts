@@ -81,7 +81,7 @@ export function useActions(
 
   const findNode: Actions['findNode'] = (id) => {
     if (!id) {
-      return
+      return undefined
     }
 
     return nodeLookup.value.get(id)
@@ -89,7 +89,7 @@ export function useActions(
 
   const findEdge: Actions['findEdge'] = (id) => {
     if (!id) {
-      return
+      return undefined
     }
 
     return edgeLookup.value.get(id)
