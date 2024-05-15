@@ -48,6 +48,8 @@ import {
   nodeToRect,
   updateConnectionLookup,
   updateEdgeAction,
+  updateEdgeLookup,
+  updateNodeLookup,
 } from '../utils'
 import { storeOptionsToSkip, useState } from './state'
 
@@ -55,7 +57,7 @@ export function useActions(state: State): Actions {
   const viewportHelper = useViewportHelper(state)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? Array.from(state.nodesMap.keys())
+    const updateIds = ids ?? Array.from(state.nodeLookup.keys())
 
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
@@ -77,7 +79,7 @@ export function useActions(state: State): Actions {
       return undefined
     }
 
-    return state.nodesMap.get(id)
+    return state.nodeLookup.get(id)
   }
 
   const findEdge: Actions['findEdge'] = (id) => {
@@ -85,7 +87,7 @@ export function useActions(state: State): Actions {
       return undefined
     }
 
-    return state.edgesMap.get(id)
+    return state.edgeLookup.get(id)
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -372,11 +374,7 @@ export function useActions(state: State): Actions {
 
     state.nodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
 
-    const nextNodesMap = new Map<string, GraphNode>()
-    for (const node of state.nodes) {
-      nextNodesMap.set(node.id, node)
-    }
-    state.nodesMap = nextNodesMap
+    updateNodeLookup(state.nodeLookup, state.nodes)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
@@ -398,6 +396,8 @@ export function useActions(state: State): Actions {
     )
 
     updateConnectionLookup(state.connectionLookup, validEdges)
+
+    updateEdgeLookup(state.edgeLookup, validEdges)
 
     state.edges = validEdges
   }

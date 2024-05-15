@@ -156,6 +156,22 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges
   }
 }
 
+export function updateNodeLookup(nodeLookup: Map<string, GraphNode>, nodes: GraphNode[]) {
+  nodeLookup.clear()
+
+  for (const node of nodes) {
+    nodeLookup.set(node.id, node)
+  }
+}
+
+export function updateEdgeLookup(edgeLookup: Map<string, GraphEdge>, edges: GraphEdge[]) {
+  edgeLookup.clear()
+
+  for (const edge of edges) {
+    edgeLookup.set(edge.id, edge)
+  }
+}
+
 /**
  * We call the callback for all connections in a that are not in b
  *

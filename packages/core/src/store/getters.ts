@@ -7,12 +7,12 @@ export function useGetters(state: State): ComputedGetters {
   /**
    * @deprecated will be removed in next major version; use findNode instead
    */
-  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => state.nodesMap.get(id))
+  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => state.nodeLookup.get(id))
 
   /**
    * @deprecated will be removed in next major version; use findEdge instead
    */
-  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => state.edgesMap.get(id))
+  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => state.edgeLookup.get(id))
 
   const getEdgeTypes: ComputedGetters['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
