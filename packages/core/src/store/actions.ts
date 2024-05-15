@@ -60,7 +60,7 @@ export function useActions(
   const viewportHelper = useViewportHelper(state)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? state.nodes.map((n) => n.id)
+    const updateIds = ids ?? Array.from(nodesMap.value.keys())
 
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
