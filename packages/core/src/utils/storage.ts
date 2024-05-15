@@ -1,5 +1,5 @@
 import { toRefs } from '@vueuse/core'
-import { computed, getCurrentInstance, reactive } from 'vue'
+import { getCurrentInstance, reactive } from 'vue'
 import type { FlowOptions, VueFlowStore } from '../types'
 import { useActions, useGetters, useState } from '../store'
 
@@ -56,13 +56,9 @@ export class Storage {
       emits[n] = h.trigger
     }
 
-    // for lookup purposes
-    const nodesMap = computed(() => new Map(reactiveState.nodes.map((n) => [n.id, n])))
-    const edgesMap = computed(() => new Map(reactiveState.edges.map((e) => [e.id, e])))
+    const getters = useGetters(reactiveState)
 
-    const getters = useGetters(reactiveState, nodesMap, edgesMap)
-
-    const actions = useActions(reactiveState, nodesMap, edgesMap)
+    const actions = useActions(reactiveState)
 
     actions.setState({ ...reactiveState, ...preloadedState })
 

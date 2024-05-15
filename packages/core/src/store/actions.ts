@@ -1,5 +1,4 @@
 import { zoomIdentity } from 'd3-zoom'
-import type { ComputedRef } from 'vue'
 import { nextTick } from 'vue'
 import { until } from '@vueuse/core'
 import type {
@@ -52,15 +51,11 @@ import {
 } from '../utils'
 import { storeOptionsToSkip, useState } from './state'
 
-export function useActions(
-  state: State,
-  nodesMap: ComputedRef<Map<string, GraphNode>>,
-  edgesMap: ComputedRef<Map<string, GraphEdge>>,
-): Actions {
+export function useActions(state: State): Actions {
   const viewportHelper = useViewportHelper(state)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? Array.from(nodesMap.value.keys())
+    const updateIds = ids ?? Array.from(state.nodesMap.keys())
 
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
@@ -82,7 +77,7 @@ export function useActions(
       return undefined
     }
 
-    return nodesMap.value.get(id)
+    return state.nodesMap.get(id)
   }
 
   const findEdge: Actions['findEdge'] = (id) => {
@@ -90,7 +85,7 @@ export function useActions(
       return undefined
     }
 
-    return edgesMap.value.get(id)
+    return state.edgesMap.get(id)
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -376,6 +371,12 @@ export function useActions(
     }
 
     state.nodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
+
+    const nextNodesMap = new Map<string, GraphNode>()
+    for (const node of state.nodes) {
+      nextNodesMap.set(node.id, node)
+    }
+    state.nodesMap = nextNodesMap
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {

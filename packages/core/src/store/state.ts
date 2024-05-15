@@ -8,10 +8,10 @@ export function useState(): State {
   return {
     vueFlowRef: null,
     viewportRef: null,
-    // todo: change this to a Set
     nodes: [],
-    // todo: change this to a Set
+    nodesMap: new Map(),
     edges: [],
+    edgesMap: new Map(),
     connectionLookup: new Map(),
     nodeTypes: {},
     edgeTypes: {},

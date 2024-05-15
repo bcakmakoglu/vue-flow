@@ -49,8 +49,12 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
 
   /** all stored nodes */
   nodes: GraphNode[]
+  /** map for lookup purposes */
+  nodesMap: Map<string, GraphNode>
   /** all stored edges */
   edges: GraphEdge[]
+  /** map for lookup purposes */
+  edgesMap: Map<string, GraphEdge>
 
   connectionLookup: ConnectionLookup
 
