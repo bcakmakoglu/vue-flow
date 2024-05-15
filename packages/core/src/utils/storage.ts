@@ -62,7 +62,7 @@ export class Storage {
 
     const getters = useGetters(reactiveState, nodesMap, edgesMap)
 
-    const actions = useActions(id, reactiveState, nodesMap, edgesMap)
+    const actions = useActions(reactiveState, nodesMap, edgesMap)
 
     actions.setState({ ...reactiveState, ...preloadedState })
 

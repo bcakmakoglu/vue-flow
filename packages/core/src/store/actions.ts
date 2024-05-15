@@ -53,7 +53,6 @@ import {
 import { storeOptionsToSkip, useState } from './state'
 
 export function useActions(
-  id: string,
   state: State,
   nodesMap: ComputedRef<Map<string, GraphNode>>,
   edgesMap: ComputedRef<Map<string, GraphEdge>>,
