@@ -1,7 +1,11 @@
 const productionEnvs = ['production', 'prod']
 
 export function warn(message: string, ...args: any[]) {
-  if (!productionEnvs.includes(__ENV__ || '')) {
+  if (isDev()) {
     console.warn(`[Vue Flow]: ${message}`, ...args)
   }
+}
+
+export function isDev() {
+  return !productionEnvs.includes(__ENV__ || '')
 }
