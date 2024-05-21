@@ -11,6 +11,7 @@ import { useVueFlow } from '../../composables/useVueFlow'
 import { useHooks } from '../../store/hooks'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
+import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning'
 
 const props = withDefaults(defineProps<FlowProps>(), {
   snapToGrid: undefined,
@@ -69,6 +70,8 @@ const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges
 useHooks(emit, hooks)
 
 useOnInitHandler()
+
+useStylesLoadedWarning()
 
 // slots will be passed via provide
 // this is to avoid having to pass them down through all the components
