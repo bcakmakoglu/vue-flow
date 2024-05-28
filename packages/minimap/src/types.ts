@@ -1,4 +1,4 @@
-import type { Dimensions, GraphNode, NodeMouseEvent, PanelPosition, XYPosition } from '@vue-flow/core'
+import type { Dimensions, GraphNode, NodeMouseEvent, PanelPosition, PanelPositionType, XYPosition } from '@vue-flow/core'
 import type { CSSProperties, InjectionKey } from 'vue'
 
 /** expects a node and returns a color value */
@@ -24,7 +24,7 @@ export interface MiniMapProps {
   /** Border width of minimap mask */
   maskStrokeWidth?: number
   /** Position of the minimap {@link PanelPosition} */
-  position?: PanelPosition
+  position?: PanelPositionType | PanelPosition
   /** Enable drag minimap to drag viewport */
   pannable?: boolean
   /** Enable zoom minimap to zoom viewport */
