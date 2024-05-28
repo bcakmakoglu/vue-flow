@@ -1,5 +1,11 @@
 # @vue-flow/controls
 
+## 1.1.2
+
+### Patch Changes
+
+- [#1421](https://github.com/bcakmakoglu/vue-flow/pull/1421) [`69631f0`](https://github.com/bcakmakoglu/vue-flow/commit/69631f07dc6b367c6932b8642eb385b8dcc176ff) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow `PanelPositionType` as value for position
+
 ## 1.1.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.34.0
+
+### Minor Changes
+
+- [#1415](https://github.com/bcakmakoglu/vue-flow/pull/1415) [`bcb6c38`](https://github.com/bcakmakoglu/vue-flow/commit/bcb6c389d634e6604f332b86dc12eee8e5b8c08e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add warning when style imports are missing.
+
+- [#1421](https://github.com/bcakmakoglu/vue-flow/pull/1421) [`69631f0`](https://github.com/bcakmakoglu/vue-flow/commit/69631f07dc6b367c6932b8642eb385b8dcc176ff) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Export `PanelPositionType`
+
 ## 1.33.8
 
 ### Patch Changes
