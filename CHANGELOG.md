@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.34.0] - 2024-05-28
+
+[20d2d6c](20d2d6c0f7d5542229b1109a72203b62e77fa839)...[2443752](2443752e82d0c26130358102ed54fc146a067b4c)
+
+### Bug Fixes
+
+- Allow `PanelPositionType` as position value ([c59803e](c59803e6cc5112411d29291fbdcc5f5c2ab7df90))
+- Allow `PanelPositionType` as position value ([1c4e208](1c4e2086275c4aaeae14e02b9edd109c9d421d29))
+
+### Features
+
+- Add missing styles warning ([8a8c8f5](8a8c8f50bf74cfb44b41e8e3115562e0e5a5c251))
+- Export `PanelPositionType` ([6bf4107](6bf41079edace17d1c8140415ae9823faa247204))
+
+### Miscellaneous Tasks
+
+- Add ([2e2c389](2e2c3896539f0986e1fe1ef649967d44ce922c9e))
+- Add ([f698b2d](f698b2dbcc69e80f130969a5e37d97f80ee340a6))
+
 ## [1.33.8] - 2024-05-15
 
 [e857398](e85739803b364f026391df4e395aec37f8199d3e)...[20d2d6c](20d2d6c0f7d5542229b1109a72203b62e77fa839)
