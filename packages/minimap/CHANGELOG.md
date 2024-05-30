@@ -1,5 +1,11 @@
 # @vue-flow/minimap
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1430](https://github.com/bcakmakoglu/vue-flow/pull/1430) [`40ae855`](https://github.com/bcakmakoglu/vue-flow/commit/40ae855f364eeff36dc1ff38df2807ddd70999f0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `maskBorderRadius` prop
+
 ## 1.4.1
 
 ### Patch Changes
