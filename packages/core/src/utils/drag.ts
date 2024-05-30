@@ -34,28 +34,32 @@ export function getDragItems(
   findNode: Actions['findNode'],
   nodeId?: string,
 ): NodeDragItem[] {
-  return nodes
-    .filter(
-      (n) =>
-        (n.selected || n.id === nodeId) &&
-        (!n.parentNode || !isParentSelected(n, findNode)) &&
-        (n.draggable || (nodesDraggable && typeof n.draggable === 'undefined')),
-    )
-    .map((n) =>
-      markRaw({
-        id: n.id,
-        position: n.position || { x: 0, y: 0 },
-        distance: {
-          x: mousePos.x - n.computedPosition?.x || 0,
-          y: mousePos.y - n.computedPosition?.y || 0,
-        },
-        from: n.computedPosition,
-        extent: n.extent,
-        parentNode: n.parentNode,
-        dimensions: n.dimensions,
-        expandParent: n.expandParent,
-      }),
-    )
+  const dragItems: NodeDragItem[] = []
+  for (const node of nodes) {
+    if (
+      (node.selected || node.id === nodeId) &&
+      (!node.parentNode || !isParentSelected(node, findNode)) &&
+      (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined'))
+    ) {
+      dragItems.push(
+        markRaw({
+          id: node.id,
+          position: node.position || { x: 0, y: 0 },
+          distance: {
+            x: mousePos.x - node.computedPosition?.x || 0,
+            y: mousePos.y - node.computedPosition?.y || 0,
+          },
+          from: node.computedPosition,
+          extent: node.extent,
+          parentNode: node.parentNode,
+          dimensions: node.dimensions,
+          expandParent: node.expandParent,
+        }),
+      )
+    }
+  }
+
+  return dragItems
 }
 
 export function getEventHandlerParams({
@@ -67,15 +71,14 @@ export function getEventHandlerParams({
   dragItems: NodeDragItem[]
   findNode: Actions['findNode']
 }): [GraphNode, GraphNode[]] {
-  const extendedDragItems = dragItems.reduce((acc, dragItem) => {
+  const extendedDragItems: GraphNode[] = []
+  for (const dragItem of dragItems) {
     const node = findNode(dragItem.id)
 
     if (node) {
-      acc.push(node)
+      extendedDragItems.push(node)
     }
-
-    return acc
-  }, [] as GraphNode[])
+  }
 
   return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
 }
