@@ -13,6 +13,8 @@ export interface UseHandleConnectionsParams {
   onDisconnect?: (connections: Connection[]) => void
 }
 
+// todo: add edge id to connection params
+
 /**
  * Composable that returns existing connections of a handle
  *
@@ -39,6 +41,8 @@ export function useHandleConnections(params: UseHandleConnectionsParams): Comput
 
   const handleId = toRef(() => toValue(id) ?? null)
 
+  const prevConnections = ref<Map<string, Connection> | null>(null)
+
   const connections = ref<Map<string, Connection>>()
 
   watch(
@@ -55,12 +59,14 @@ export function useHandleConnections(params: UseHandleConnectionsParams): Comput
 
   watch(
     [connections, () => typeof onConnect !== 'undefined', () => typeof onDisconnect !== 'undefined'],
-    ([currentConnections], [prevConnections]) => {
-      if (prevConnections && prevConnections !== currentConnections) {
+    ([currentConnections]) => {
+      if (prevConnections.value && prevConnections.value !== currentConnections) {
         const _connections = currentConnections ?? new Map()
-        handleConnectionChange(prevConnections, _connections, onDisconnect)
-        handleConnectionChange(_connections, prevConnections, onConnect)
+        handleConnectionChange(prevConnections.value, _connections, onDisconnect)
+        handleConnectionChange(_connections, prevConnections.value, onConnect)
       }
+
+      prevConnections.value = currentConnections ?? new Map()
     },
     { immediate: true },
   )
