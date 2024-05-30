@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.34.1
+
+### Patch Changes
+
+- [#1426](https://github.com/bcakmakoglu/vue-flow/pull/1426) [`c997a80`](https://github.com/bcakmakoglu/vue-flow/commit/c997a8095461f3dfcd184ca5b527f923e8da854b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace array fns with for-loops
+
+- [#1425](https://github.com/bcakmakoglu/vue-flow/pull/1425) [`220c290`](https://github.com/bcakmakoglu/vue-flow/commit/220c29036cc8c09d0904e5dcf26461781369cf80) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use separate prevConnections map in `useHandleConnections` composable to ensure comparison check is correct and callbacks are executed.
+
 ## 1.34.0
 
 ### Minor Changes
