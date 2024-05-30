@@ -21,6 +21,7 @@ const {
   position = 'bottom-right' as PanelPosition,
   maskStrokeColor = 'none',
   maskStrokeWidth = 1,
+  maskBorderRadius = 0,
   pannable = false,
   zoomable = false,
   ariaLabel = 'Vue Flow mini map',
@@ -104,10 +105,15 @@ const d = computed(() => {
     h${viewBox.value.width + viewBox.value.offset * 2}
     v${viewBox.value.height + viewBox.value.offset * 2}
     h${-viewBox.value.width - viewBox.value.offset * 2}z
-    M${viewBB.value.x},${viewBB.value.y}
-    h${viewBB.value.width}
-    v${viewBB.value.height}
-    h${-viewBB.value.width}z`
+    M${viewBB.value.x + maskBorderRadius},${viewBB.value.y}
+    h${viewBB.value.width - 2 * maskBorderRadius}
+    a${maskBorderRadius},${maskBorderRadius} 0 0 1 ${maskBorderRadius},${maskBorderRadius}
+    v${viewBB.value.height - 2 * maskBorderRadius}
+    a${maskBorderRadius},${maskBorderRadius} 0 0 1 -${maskBorderRadius},${maskBorderRadius}
+    h${-(viewBB.value.width - 2 * maskBorderRadius)}
+    a${maskBorderRadius},${maskBorderRadius} 0 0 1 -${maskBorderRadius},-${maskBorderRadius}
+    v${-(viewBB.value.height - 2 * maskBorderRadius)}
+    a${maskBorderRadius},${maskBorderRadius} 0 0 1 ${maskBorderRadius},-${maskBorderRadius}z`
 })
 
 watchEffect(

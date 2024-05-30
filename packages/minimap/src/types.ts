@@ -41,6 +41,8 @@ export interface MiniMapProps {
   zoomStep?: number
   /** Specify minimap scale */
   offsetScale?: number
+  /** Mask border radius */
+  maskBorderRadius?: number
 }
 
 /** these props are passed to mini map node slots */
