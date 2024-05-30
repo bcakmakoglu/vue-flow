@@ -57,8 +57,23 @@ export class Storage {
     }
 
     // for lookup purposes
-    const nodeIds = computed(() => reactiveState.nodes.map((n) => n.id))
-    const edgeIds = computed(() => reactiveState.edges.map((e) => e.id))
+    const nodeIds = computed(() => {
+      const ids: string[] = []
+      for (const node of reactiveState.nodes) {
+        ids.push(node.id)
+      }
+
+      return ids
+    })
+
+    const edgeIds = computed(() => {
+      const ids: string[] = []
+      for (const edge of reactiveState.edges) {
+        ids.push(edge.id)
+      }
+
+      return ids
+    })
 
     const getters = useGetters(reactiveState, nodeIds, edgeIds)
 
