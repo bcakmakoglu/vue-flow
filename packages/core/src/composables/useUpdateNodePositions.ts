@@ -21,27 +21,28 @@ export function useUpdateNodePositions() {
     const positionDiffX = positionDiff.x * xVelo * factor
     const positionDiffY = positionDiff.y * yVelo * factor
 
-    const nodeUpdates = getSelectedNodes.value
-      .filter((n) => n.draggable || (nodesDraggable && typeof n.draggable === 'undefined'))
-      .map((n) => {
-        const nextPosition = { x: n.computedPosition.x + positionDiffX, y: n.computedPosition.y + positionDiffY }
+    const nodeUpdates: NodeDragItem[] = []
+    for (const node of getSelectedNodes.value) {
+      if (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined')) {
+        const nextPosition = { x: node.computedPosition.x + positionDiffX, y: node.computedPosition.y + positionDiffY }
 
         const { computedPosition } = calcNextPosition(
-          n,
+          node,
           nextPosition,
           emits.error,
           nodeExtent.value,
-          n.parentNode ? findNode(n.parentNode) : undefined,
+          node.parentNode ? findNode(node.parentNode) : undefined,
         )
 
-        return {
-          id: n.id,
+        nodeUpdates.push({
+          id: node.id,
           position: computedPosition,
-          from: n.position,
+          from: node.position,
           distance: { x: positionDiff.x, y: positionDiff.y },
-          dimensions: n.dimensions,
-        } as NodeDragItem
-      })
+          dimensions: node.dimensions,
+        })
+      }
+    }
 
     updateNodePositions(nodeUpdates, true, false)
   }

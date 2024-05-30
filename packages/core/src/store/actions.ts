@@ -5,6 +5,8 @@ import { until } from '@vueuse/core'
 import type {
   Actions,
   CoordinateExtent,
+  Edge,
+  EdgeAddChange,
   EdgeChange,
   EdgeRemoveChange,
   EdgeSelectionChange,
@@ -13,6 +15,7 @@ import type {
   GraphEdge,
   GraphNode,
   Node,
+  NodeAddChange,
   NodeChange,
   NodeDimensionChange,
   NodePositionChange,
@@ -23,13 +26,11 @@ import type {
 } from '../types'
 import { useViewportHelper } from '../composables'
 import {
-  ErrorCode,
-  VueFlowError,
-  addEdgeToStore,
   applyChanges,
   clamp,
   createAdditionChange,
   createEdgeRemoveChange,
+  createGraphEdges,
   createGraphNodes,
   createNodeRemoveChange,
   createSelectionChange,
@@ -46,7 +47,6 @@ import {
   isNode,
   isRect,
   nodeToRect,
-  parseEdge,
   updateConnectionLookup,
   updateEdgeAction,
 } from '../utils'
@@ -192,13 +192,18 @@ export function useActions(
   }
 
   const nodeSelectionHandler = (nodes: GraphNode[], selected: boolean) => {
-    const nodeIds = nodes.map((n) => n.id)
+    const nodeIds: string[] = []
+    for (const node of nodes) {
+      nodeIds.push(node.id)
+    }
 
-    let changedNodes: NodeChange[]
+    let changedNodes: NodeChange[] = []
     let changedEdges: EdgeChange[] = []
 
     if (state.multiSelectionActive) {
-      changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
+      for (const nodeId of nodeIds) {
+        changedNodes.push(createSelectionChange(nodeId, selected))
+      }
     } else {
       const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds)
       changedNodes = selectionChanges.changedNodes
@@ -215,13 +220,19 @@ export function useActions(
   }
 
   const edgeSelectionHandler = (edges: GraphEdge[], selected: boolean) => {
-    const edgeIds = edges.map((e) => e.id)
+    const edgeIds: string[] = []
+
+    for (const edge of edges) {
+      edgeIds.push(edge.id)
+    }
 
     let changedNodes: NodeChange[] = []
-    let changedEdges: EdgeChange[]
+    let changedEdges: EdgeChange[] = []
 
     if (state.multiSelectionActive) {
-      changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
+      for (const edgeId of edgeIds) {
+        changedEdges.push(createSelectionChange(edgeId, selected))
+      }
     } else {
       const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds)
       changedNodes = selectionChanges.changedNodes
@@ -238,14 +249,27 @@ export function useActions(
   }
 
   const elementSelectionHandler = (elements: Elements, selected: boolean) => {
-    const nodeIds = elements.filter(isNode).map((n) => n.id)
-    const edgeIds = elements.filter(isEdge).map((e) => e.id)
+    const nodeIds: string[] = []
+    const edgeIds: string[] = []
 
-    let { changedNodes, changedEdges } = getSelectionChanges([...state.nodes, ...state.edges], [...nodeIds, ...edgeIds])
+    for (const element of elements) {
+      if (isNode(element)) {
+        nodeIds.push(element.id)
+      } else if (isEdge(element)) {
+        edgeIds.push(element.id)
+      }
+    }
+
+    const { changedNodes, changedEdges } = getSelectionChanges([...state.nodes, ...state.edges], [...nodeIds, ...edgeIds])
 
     if (state.multiSelectionActive) {
-      changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, selected))
-      changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, selected))
+      for (const nodeId of nodeIds) {
+        changedNodes.push(createSelectionChange(nodeId, selected))
+      }
+
+      for (const edgeId of edgeIds) {
+        changedEdges.push(createSelectionChange(edgeId, selected))
+      }
     }
 
     if (changedNodes.length) {
@@ -274,9 +298,11 @@ export function useActions(
       return nodeSelectionHandler(nodes, false)
     }
 
-    const nodeIds = nodes.map((n) => n.id)
+    const changedNodes: NodeSelectionChange[] = []
 
-    const changedNodes = nodeIds.map((nodeId) => createSelectionChange(nodeId, false))
+    for (const node of nodes) {
+      changedNodes.push(createSelectionChange(node.id, false))
+    }
 
     if (changedNodes.length) {
       state.hooks.nodesChange.trigger(changedNodes)
@@ -288,9 +314,10 @@ export function useActions(
       return edgeSelectionHandler(edges, false)
     }
 
-    const edgeIds = edges.map((e) => e.id)
-
-    const changedEdges = edgeIds.map((edgeId) => createSelectionChange(edgeId, false))
+    const changedEdges: EdgeSelectionChange[] = []
+    for (const edge of edges) {
+      changedEdges.push(createSelectionChange(edge.id, false))
+    }
 
     if (changedEdges.length) {
       state.hooks.edgesChange.trigger(changedEdges)
@@ -369,52 +396,20 @@ export function useActions(
       return
     }
 
-    const validEdges = state.isValidConnection
-      ? nextEdges.filter((edge) =>
-          state.isValidConnection!(edge, {
-            edges: state.edges,
-            nodes: state.nodes,
-            sourceNode: findNode(edge.source)!,
-            targetNode: findNode(edge.target)!,
-          }),
-        )
-      : nextEdges
+    const validEdges: GraphEdge[] = createGraphEdges(
+      nextEdges,
+      state.isValidConnection,
+      findNode,
+      findEdge,
+      state.hooks.error.trigger,
+      state.defaultEdgeOptions,
+      state.nodes,
+      state.edges,
+    )
 
     updateConnectionLookup(state.connectionLookup, validEdges)
 
-    state.edges = validEdges.reduce<GraphEdge[]>((res, edge) => {
-      const sourceNode = findNode(edge.source)
-      const targetNode = findNode(edge.target)
-
-      const missingSource = !sourceNode || typeof sourceNode === 'undefined'
-      const missingTarget = !targetNode || typeof targetNode === 'undefined'
-
-      if (missingSource && missingTarget) {
-        state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
-      } else {
-        if (missingSource) {
-          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
-        }
-
-        if (missingTarget) {
-          state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
-        }
-      }
-
-      if (missingSource || missingTarget) {
-        return res
-      }
-
-      const existingEdge = findEdge(edge.id)
-
-      res.push({
-        ...parseEdge(edge, existingEdge, state.defaultEdgeOptions),
-        sourceNode,
-        targetNode,
-      })
-
-      return res
-    }, [])
+    state.edges = validEdges
   }
 
   const setElements: Actions['setElements'] = (elements) => {
@@ -434,7 +429,10 @@ export function useActions(
 
     const graphNodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
 
-    const changes = graphNodes.map(createAdditionChange)
+    const changes: NodeAddChange<any>[] = []
+    for (const node of graphNodes) {
+      changes.push(createAdditionChange(node))
+    }
 
     if (changes.length) {
       state.hooks.nodesChange.trigger(changes)
@@ -445,35 +443,21 @@ export function useActions(
     let nextEdges = params instanceof Function ? params(state.edges) : params
     nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
 
-    const validEdges = state.isValidConnection
-      ? nextEdges.filter((edge) => {
-          return state.isValidConnection?.(edge, {
-            edges: state.edges,
-            nodes: state.nodes,
-            sourceNode: findNode(edge.source)!,
-            targetNode: findNode(edge.target)!,
-          })
-        })
-      : nextEdges
+    const validEdges = createGraphEdges(
+      nextEdges,
+      state.isValidConnection,
+      findNode,
+      findEdge,
+      state.hooks.error.trigger,
+      state.defaultEdgeOptions,
+      state.nodes,
+      state.edges,
+    )
 
-    const changes = validEdges.reduce((edgeChanges, connection) => {
-      const edge = addEdgeToStore(connection, state.edges, state.hooks.error.trigger, state.defaultEdgeOptions)
-
-      if (edge) {
-        const sourceNode = findNode(edge.source)!
-        const targetNode = findNode(edge.target)!
-
-        edgeChanges.push(
-          createAdditionChange<GraphEdge>({
-            ...edge,
-            sourceNode,
-            targetNode,
-          }),
-        )
-      }
-
-      return edgeChanges
-    }, [] as EdgeChange[])
+    const changes: EdgeAddChange[] = []
+    for (const edge of validEdges) {
+      changes.push(createAdditionChange(edge))
+    }
 
     if (changes.length) {
       state.hooks.edgesChange.trigger(changes)
@@ -488,28 +472,27 @@ export function useActions(
     const edgeChanges: EdgeRemoveChange[] = []
 
     function createEdgeRemovalChanges(nodes: Node[]) {
-      const connections = getConnectedEdges(nodes).filter((edge) => (isDef(edge.deletable) ? edge.deletable : true))
-
-      edgeChanges.push(
-        ...connections.map((connection) =>
-          createEdgeRemoveChange(
-            connection.id,
-            connection.source,
-            connection.target,
-            connection.sourceHandle,
-            connection.targetHandle,
-          ),
-        ),
-      )
+      const connectedEdges = getConnectedEdges(nodes)
+      for (const edge of connectedEdges) {
+        if (isDef(edge.deletable) ? edge.deletable : true) {
+          edgeChanges.push(createEdgeRemoveChange(edge.id, edge.source, edge.target, edge.sourceHandle, edge.targetHandle))
+        }
+      }
     }
 
     // recursively get all children and if the child is a parent, get those children as well until all nodes have been removed that are children of the current node
     function createChildrenRemovalChanges(id: string) {
-      const children = state.nodes.filter((n) => n.parentNode === id)
+      const children: GraphNode[] = []
+      for (const node of state.nodes) {
+        if (node.parentNode === id) {
+          children.push(node)
+        }
+      }
 
       if (children.length) {
-        const childIds = children.map((n) => n.id)
-        nodeChanges.push(...childIds.map((id) => createNodeRemoveChange(id)))
+        for (const child of children) {
+          nodeChanges.push(createNodeRemoveChange(child.id))
+        }
 
         if (removeConnectedEdges) {
           createEdgeRemovalChanges(children)
@@ -684,17 +667,22 @@ export function useActions(
       return []
     }
 
-    return (nodes || state.nodes).filter((n) => {
+    const intersections: GraphNode[] = []
+    for (const n of nodes || state.nodes) {
       if (!isRect && (n.id === node!.id || !n.computedPosition)) {
-        return false
+        continue
       }
 
       const currNodeRect = nodeToRect(n)
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
       const partiallyVisible = partially && overlappingArea > 0
 
-      return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
-    })
+      if (partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)) {
+        intersections.push(n)
+      }
+    }
+
+    return intersections
   }
 
   const isNodeIntersecting: Actions['isNodeIntersecting'] = (nodeOrRect, area, partially = true) => {
@@ -804,32 +792,37 @@ export function useActions(
   }
 
   const toObject: Actions['toObject'] = () => {
+    const nodes: Node[] = []
+    const edges: Edge[] = []
+
+    for (const node of state.nodes) {
+      const {
+        computedPosition: _,
+        handleBounds: __,
+        selected: ___,
+        dimensions: ____,
+        isParent: _____,
+        resizing: ______,
+        dragging: _______,
+        initialized: ________,
+        events: _________,
+        ...rest
+      } = node
+
+      nodes.push(rest)
+    }
+
+    for (const edge of state.edges) {
+      const { selected: _, sourceNode: __, targetNode: ___, events: ____, ...rest } = edge
+
+      edges.push(rest)
+    }
+
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
       JSON.stringify({
-        nodes: state.nodes.map((n) => {
-          // omit internal properties when exporting
-          const {
-            computedPosition: _,
-            handleBounds: __,
-            selected: ___,
-            dimensions: ____,
-            isParent: _____,
-            resizing: ______,
-            dragging: _______,
-            initialized: ________,
-            events: _________,
-            ...rest
-          } = n
-
-          return rest
-        }),
-        edges: state.edges.map((e) => {
-          // omit internal properties when exporting
-          const { selected: _, sourceNode: __, targetNode: ___, events: ____, ...rest } = e
-
-          return rest
-        }),
+        nodes,
+        edges,
         position: [state.viewport.x, state.viewport.y],
         zoom: state.viewport.zoom,
         viewport: state.viewport,

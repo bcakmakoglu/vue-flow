@@ -1,5 +1,17 @@
 import { markRaw, unref } from 'vue'
-import type { Actions, Connection, ConnectionLookup, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node, State } from '../types'
+import type {
+  Actions,
+  Connection,
+  ConnectionLookup,
+  DefaultEdgeOptions,
+  Edge,
+  GraphEdge,
+  GraphNode,
+  Node,
+  State,
+  ValidConnectionFunc,
+  VueFlowStore,
+} from '../types'
 import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
 
 type NonUndefined<T> = T extends undefined ? never : T
@@ -194,4 +206,72 @@ export function areConnectionMapsEqual(a?: Map<string, Connection>, b?: Map<stri
   }
 
   return true
+}
+
+/**
+ * @internal
+ */
+export function createGraphEdges(
+  nextEdges: (Edge | Connection)[],
+  isValidConnection: ValidConnectionFunc | null,
+  findNode: Actions['findNode'],
+  findEdge: Actions['findEdge'],
+  onError: VueFlowStore['emits']['error'],
+  defaultEdgeOptions: DefaultEdgeOptions | undefined,
+  nodes: GraphNode[],
+  edges: GraphEdge[],
+) {
+  const validEdges: GraphEdge[] = []
+
+  for (const edgeOrConnection of nextEdges) {
+    const edge = isEdge(edgeOrConnection)
+      ? edgeOrConnection
+      : addEdgeToStore(edgeOrConnection, edges, onError, defaultEdgeOptions)
+
+    if (!edge) {
+      continue
+    }
+
+    const sourceNode = findNode(edge.source)
+    const targetNode = findNode(edge.target)
+
+    if (!sourceNode || !targetNode) {
+      onError(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
+      continue
+    }
+
+    if (!sourceNode) {
+      onError(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
+      continue
+    }
+
+    if (!targetNode) {
+      onError(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
+      continue
+    }
+
+    if (isValidConnection) {
+      const isValid = isValidConnection(edge, {
+        edges,
+        nodes,
+        sourceNode,
+        targetNode,
+      })
+
+      if (!isValid) {
+        onError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id))
+        continue
+      }
+    }
+
+    const existingEdge = findEdge(edge.id)
+
+    validEdges.push({
+      ...parseEdge(edge, existingEdge, defaultEdgeOptions),
+      sourceNode,
+      targetNode,
+    })
+  }
+
+  return validEdges
 }

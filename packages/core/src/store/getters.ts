@@ -58,22 +58,29 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
   })
 
   const getNodes: ComputedGetters['getNodes'] = computed(() => {
-    const nodes = state.nodes.filter((n) => !n.hidden)
+    const nodes: GraphNode[] = []
 
-    return state.onlyRenderVisibleElements
-      ? nodes &&
-          getNodesInside(
-            nodes,
-            {
-              x: 0,
-              y: 0,
-              width: state.dimensions.width,
-              height: state.dimensions.height,
-            },
-            state.viewport,
-            true,
-          )
-      : nodes ?? []
+    for (const node of state.nodes) {
+      if (!node.hidden) {
+        nodes.push(node)
+      }
+    }
+
+    if (state.onlyRenderVisibleElements) {
+      return getNodesInside(
+        nodes,
+        {
+          x: 0,
+          y: 0,
+          width: state.dimensions.width,
+          height: state.dimensions.height,
+        },
+        state.viewport,
+        true,
+      )
+    }
+
+    return nodes
   })
 
   const edgeHidden = (e: GraphEdge, source?: GraphNode, target?: GraphNode) => {
@@ -89,48 +96,87 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
   }
 
   const getEdges: ComputedGetters['getEdges'] = computed(() => {
-    if (!state.onlyRenderVisibleElements) {
-      return state.edges.filter((edge) => edgeHidden(edge))
+    const edges: GraphEdge[] = []
+
+    for (const edge of state.edges) {
+      if (!edgeHidden(edge)) {
+        edges.push(edge)
+      }
     }
 
-    return state.edges.filter((e) => {
-      const source = getNode.value(e.source)!
-      const target = getNode.value(e.target)!
+    if (state.onlyRenderVisibleElements) {
+      const visibleEdges: GraphEdge[] = []
 
-      return (
-        edgeHidden(e, source, target) &&
-        isEdgeVisible({
-          sourcePos: source.computedPosition || { x: 0, y: 0 },
-          targetPos: target.computedPosition || { x: 0, y: 0 },
-          sourceWidth: source.dimensions.width,
-          sourceHeight: source.dimensions.height,
-          targetWidth: target.dimensions.width,
-          targetHeight: target.dimensions.height,
-          width: state.dimensions.width,
-          height: state.dimensions.height,
-          viewport: state.viewport,
-        })
-      )
-    })
+      for (const edge of edges) {
+        const source = getNode.value(edge.source)!
+        const target = getNode.value(edge.target)!
+
+        if (
+          isEdgeVisible({
+            sourcePos: source.computedPosition || { x: 0, y: 0 },
+            targetPos: target.computedPosition || { x: 0, y: 0 },
+            sourceWidth: source.dimensions.width,
+            sourceHeight: source.dimensions.height,
+            targetWidth: target.dimensions.width,
+            targetHeight: target.dimensions.height,
+            width: state.dimensions.width,
+            height: state.dimensions.height,
+            viewport: state.viewport,
+          })
+        ) {
+          visibleEdges.push(edge)
+        }
+      }
+
+      return visibleEdges
+    }
+
+    return edges
   })
 
   const getElements: ComputedGetters['getElements'] = computed(() => [...getNodes.value, ...getEdges.value])
 
-  const getSelectedNodes: ComputedGetters['getSelectedNodes'] = computed(() => state.nodes.filter((n) => n.selected))
+  const getSelectedNodes: ComputedGetters['getSelectedNodes'] = computed(() => {
+    const selectedNodes: GraphNode[] = []
+    for (const node of state.nodes) {
+      if (node.selected) {
+        selectedNodes.push(node)
+      }
+    }
 
-  const getSelectedEdges: ComputedGetters['getSelectedEdges'] = computed(() => state.edges.filter((e) => e.selected))
+    return selectedNodes
+  })
+
+  const getSelectedEdges: ComputedGetters['getSelectedEdges'] = computed(() => {
+    const selectedEdges: GraphEdge[] = []
+    for (const edge of state.edges) {
+      if (edge.selected) {
+        selectedEdges.push(edge)
+      }
+    }
+
+    return selectedEdges
+  })
 
   const getSelectedElements: ComputedGetters['getSelectedElements'] = computed(() => [
-    ...(getSelectedNodes.value ?? []),
-    ...(getSelectedEdges.value ?? []),
+    ...getSelectedNodes.value,
+    ...getSelectedEdges.value,
   ])
 
   /**
    * @deprecated will be removed in next major version; use `useNodesInitialized` instead
    */
-  const getNodesInitialized: ComputedGetters['getNodesInitialized'] = computed(() =>
-    getNodes.value.filter((n) => n.initialized && n.handleBounds !== undefined),
-  )
+  const getNodesInitialized: ComputedGetters['getNodesInitialized'] = computed(() => {
+    const initializedNodes: GraphNode[] = []
+
+    for (const node of state.nodes) {
+      if (node.initialized && node.handleBounds !== undefined) {
+        initializedNodes.push(node)
+      }
+    }
+
+    return initializedNodes
+  })
 
   /**
    * @deprecated will be removed in next major version; use `useNodesInitialized` instead
