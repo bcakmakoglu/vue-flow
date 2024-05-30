@@ -83,7 +83,7 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
     return nodes
   })
 
-  const edgeHidden = (e: GraphEdge, source?: GraphNode, target?: GraphNode) => {
+  const edgeVisible = (e: GraphEdge, source?: GraphNode, target?: GraphNode) => {
     source = source ?? getNode.value(e.source)
     target = target ?? getNode.value(e.target)
 
@@ -99,7 +99,7 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
     const edges: GraphEdge[] = []
 
     for (const edge of state.edges) {
-      if (!edgeHidden(edge)) {
+      if (edgeVisible(edge)) {
         edges.push(edge)
       }
     }
