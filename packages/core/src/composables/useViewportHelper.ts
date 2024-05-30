@@ -132,15 +132,16 @@ export function useViewportHelper(state: State) {
           duration: 0,
         },
       ) => {
-        const nodesToFit: GraphNode[] = state.nodes.filter((node) => {
+        const nodesToFit: GraphNode[] = []
+        for (const node of state.nodes) {
           const isVisible = node.dimensions.width && node.dimensions.height && (options?.includeHiddenNodes || !node.hidden)
 
-          if (options.nodes?.length) {
-            return isVisible && options.nodes.includes(node.id)
+          if (isVisible) {
+            if (!options.nodes?.length || (options.nodes?.length && options.nodes.includes(node.id))) {
+              nodesToFit.push(node)
+            }
           }
-
-          return isVisible
-        })
+        }
 
         if (!nodesToFit.length) {
           return Promise.resolve(false)

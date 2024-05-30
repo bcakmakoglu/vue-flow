@@ -133,9 +133,11 @@ export function applyChanges<
   const elementIds = elements.map((el) => el.id)
 
   for (const element of elements) {
-    const currentChanges = changes.filter((c) => (<any>c).id === element.id)
+    for (const currentChange of changes) {
+      if ((<any>currentChange).id !== element.id) {
+        continue
+      }
 
-    for (const currentChange of currentChanges) {
       switch (currentChange.type) {
         case 'select':
           element.selected = currentChange.selected
