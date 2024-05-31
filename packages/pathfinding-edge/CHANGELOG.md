@@ -1,5 +1,12 @@
 # @vue-flow/pathfinding-edge
 
+## 2.0.0-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`b0ecf6f`](https://github.com/bcakmakoglu/vue-flow/commit/b0ecf6fd0f11dd14d1d56c5eefaa56a0afe4d85d), [`96ddc0d`](https://github.com/bcakmakoglu/vue-flow/commit/96ddc0d7afd0aef44aa53c40b27453516d9d75ce), [`8621e36`](https://github.com/bcakmakoglu/vue-flow/commit/8621e3670dd1492ad73d1a1aa59ead29b382b008)]:
+  - @vue-flow/core@2.0.0-next.0
+
 ## 1.0.6
 
 ### Patch Changes
