@@ -48,7 +48,6 @@ import {
   nodeToRect,
   updateConnectionLookup,
   updateEdgeAction,
-  updateEdgeLookup,
   updateNodeLookup,
 } from '../utils'
 import { storeOptionsToSkip, useState } from './state'
@@ -395,9 +394,7 @@ export function useActions(state: State): Actions {
       state.edges,
     )
 
-    updateConnectionLookup(state.connectionLookup, validEdges)
-
-    updateEdgeLookup(state.edgeLookup, validEdges)
+    updateConnectionLookup(state.connectionLookup, state.edgeLookup, validEdges)
 
     state.edges = validEdges
   }
@@ -566,7 +563,7 @@ export function useActions(state: State): Actions {
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => {
     const changedEdges = applyChanges(changes, state.edges)
 
-    updateConnectionLookup(state.connectionLookup, changedEdges)
+    updateConnectionLookup(state.connectionLookup, state.edgeLookup, changedEdges)
 
     return changedEdges
   }

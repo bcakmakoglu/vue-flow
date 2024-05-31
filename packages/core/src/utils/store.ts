@@ -1,10 +1,11 @@
-import { markRaw, unref } from 'vue'
+import { unref } from 'vue'
 import type {
   Actions,
   Connection,
   ConnectionLookup,
   DefaultEdgeOptions,
   Edge,
+  EdgeLookup,
   GraphEdge,
   GraphNode,
   Node,
@@ -138,19 +139,21 @@ export function createGraphNodes(
   return nextNodes
 }
 
-export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges: Edge[]) {
+export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeLookup: EdgeLookup, edges: GraphEdge[]) {
   connectionLookup.clear()
+  edgeLookup.clear()
 
   for (const edge of edges) {
-    const { id: edgeId, source, target, sourceHandle = null, targetHandle = null } = edge
+    const { source, target, sourceHandle = null, targetHandle = null } = edge
 
     const sourceKey = `${source}-source-${sourceHandle}`
     const targetKey = `${target}-target-${targetHandle}`
 
     const prevSource = connectionLookup.get(sourceKey) || new Map()
     const prevTarget = connectionLookup.get(targetKey) || new Map()
-    const connection = markRaw({ edgeId, source, target, sourceHandle, targetHandle })
+    const connection = { edgeId: edge.id, source, target, sourceHandle, targetHandle }
 
+    edgeLookup.set(edge.id, edge)
     connectionLookup.set(sourceKey, prevSource.set(`${target}-${targetHandle}`, connection))
     connectionLookup.set(targetKey, prevTarget.set(`${source}-${sourceHandle}`, connection))
   }
@@ -161,14 +164,6 @@ export function updateNodeLookup(nodeLookup: Map<string, GraphNode>, nodes: Grap
 
   for (const node of nodes) {
     nodeLookup.set(node.id, node)
-  }
-}
-
-export function updateEdgeLookup(edgeLookup: Map<string, GraphEdge>, edges: GraphEdge[]) {
-  edgeLookup.clear()
-
-  for (const edge of edges) {
-    edgeLookup.set(edge.id, edge)
   }
 }
 
