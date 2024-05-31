@@ -557,7 +557,11 @@ export function useActions(state: State): Actions {
     updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId, state.hooks.error.trigger)
 
   const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => {
-    return applyChanges(changes, state.nodes)
+    const changedNodes = applyChanges(changes, state.nodes)
+
+    updateNodeLookup(state.nodeLookup, changedNodes)
+
+    return changedNodes
   }
 
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => {
