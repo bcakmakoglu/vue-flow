@@ -7,6 +7,7 @@ import type {
   Edge,
   GraphEdge,
   GraphNode,
+  HandleConnection,
   Node,
   State,
   ValidConnectionFunc,
@@ -162,15 +163,15 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges
  * @internal
  */
 export function handleConnectionChange(
-  a: Map<string, Connection>,
-  b: Map<string, Connection>,
-  cb?: (diff: Connection[]) => void,
+  a: Map<string, HandleConnection>,
+  b: Map<string, HandleConnection>,
+  cb?: (diff: HandleConnection[]) => void,
 ) {
   if (!cb) {
     return
   }
 
-  const diff: Connection[] = []
+  const diff: HandleConnection[] = []
 
   for (const key of a.keys()) {
     if (!b.has(key)) {

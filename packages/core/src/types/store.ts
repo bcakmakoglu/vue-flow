@@ -19,6 +19,7 @@ import type {
   Connection,
   ConnectionLineOptions,
   ConnectionLineType,
+  ConnectionLookup,
   ConnectionMode,
   ConnectionStatus,
   Connector,
@@ -29,8 +30,6 @@ import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportTrans
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ConnectingHandle, ValidConnectionFunc } from './handle'
-
-export type ConnectionLookup = Map<string, Map<string, Connection>>
 
 export interface UpdateNodeDimensionsParams {
   id: string
