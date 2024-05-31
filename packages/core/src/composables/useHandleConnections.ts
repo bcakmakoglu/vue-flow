@@ -1,6 +1,6 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, ref, toRef, toValue, watch } from 'vue'
-import type { Connection, HandleType } from '../types'
+import type { HandleConnection, HandleType } from '../types'
 import { areConnectionMapsEqual, handleConnectionChange } from '../utils'
 import { useNodeId } from './useNodeId'
 import { useVueFlow } from './useVueFlow'
@@ -9,14 +9,12 @@ export interface UseHandleConnectionsParams {
   type: MaybeRefOrGetter<HandleType>
   id?: MaybeRefOrGetter<string | null>
   nodeId?: MaybeRefOrGetter<string | null>
-  onConnect?: (connections: Connection[]) => void
-  onDisconnect?: (connections: Connection[]) => void
+  onConnect?: (connections: HandleConnection[]) => void
+  onDisconnect?: (connections: HandleConnection[]) => void
 }
 
-// todo: add edge id to connection params
-
 /**
- * Composable that returns existing connections of a handle
+ * Composable that returns existing connections of a `<Handle />`.
  *
  * @public
  * @param params
@@ -28,7 +26,7 @@ export interface UseHandleConnectionsParams {
  *
  * @returns An array of connections
  */
-export function useHandleConnections(params: UseHandleConnectionsParams): ComputedRef<Connection[]> {
+export function useHandleConnections(params: UseHandleConnectionsParams): ComputedRef<HandleConnection[]> {
   const { type, id, nodeId, onConnect, onDisconnect } = params
 
   const { connectionLookup } = useVueFlow()
@@ -41,9 +39,9 @@ export function useHandleConnections(params: UseHandleConnectionsParams): Comput
 
   const handleId = toRef(() => toValue(id) ?? null)
 
-  const prevConnections = ref<Map<string, Connection> | null>(null)
+  const prevConnections = ref<Map<string, HandleConnection> | null>(null)
 
-  const connections = ref<Map<string, Connection>>()
+  const connections = ref<Map<string, HandleConnection>>()
 
   watch(
     () => connectionLookup.value.get(`${currentNodeId.value}-${handleType.value}-${handleId.value}`),
@@ -59,17 +57,22 @@ export function useHandleConnections(params: UseHandleConnectionsParams): Comput
 
   watch(
     [connections, () => typeof onConnect !== 'undefined', () => typeof onDisconnect !== 'undefined'],
-    ([currentConnections]) => {
+    ([currentConnections = new Map<string, HandleConnection>()]) => {
       if (prevConnections.value && prevConnections.value !== currentConnections) {
-        const _connections = currentConnections ?? new Map()
-        handleConnectionChange(prevConnections.value, _connections, onDisconnect)
-        handleConnectionChange(_connections, prevConnections.value, onConnect)
+        handleConnectionChange(prevConnections.value, currentConnections, onDisconnect)
+        handleConnectionChange(currentConnections, prevConnections.value, onConnect)
       }
 
-      prevConnections.value = currentConnections ?? new Map()
+      prevConnections.value = currentConnections
     },
     { immediate: true },
   )
 
-  return computed(() => Array.from(connections.value?.values() ?? []))
+  return computed(() => {
+    if (!connections.value) {
+      return []
+    }
+
+    return Array.from(connections.value.values())
+  })
 }
