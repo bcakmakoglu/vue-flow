@@ -32,6 +32,10 @@ import type { ConnectingHandle, ValidConnectionFunc } from './handle'
 
 export type ConnectionLookup = Map<string, Map<string, Connection>>
 
+export type NodeLookup = Map<string, GraphNode>
+
+export type EdgeLookup = Map<string, GraphEdge>
+
 export interface UpdateNodeDimensionsParams {
   id: string
   nodeElement: HTMLDivElement
@@ -50,11 +54,11 @@ export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
   /** all stored nodes */
   nodes: GraphNode[]
   /** map for node lookup */
-  readonly nodeLookup: Map<string, GraphNode>
+  readonly nodeLookup: NodeLookup
   /** all stored edges */
   edges: GraphEdge[]
   /** map for edge lookup */
-  readonly edgeLookup: Map<string, GraphEdge>
+  readonly edgeLookup: EdgeLookup
   /** map for connection lookup */
   readonly connectionLookup: ConnectionLookup
 
