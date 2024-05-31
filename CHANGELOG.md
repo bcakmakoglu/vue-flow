@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.34.1] - 2024-05-31
+
+[2443752](2443752e82d0c26130358102ed54fc146a067b4c)...[c91b30f](c91b30fc1eb725848daf68b1e309efc52c683abe)
+
+### Bug Fixes
+
+- Use separate prevConnections map ([cd36279](cd362799e4adde84db08a11e3b25a885687f6a0b))
+
+### Features
+
+- Add `maskBorderRadius` prop ([bbd44bb](bbd44bbb10e26996ce1cc6da0bd3e696d156772c))
+
+### Miscellaneous Tasks
+
+- Add ([ac5e69b](ac5e69b2c88b642655793aee319e98878960d23b))
+- Cleanup ([1a87312](1a873124348ee2de5263a6009f4a9c1fe8ad9d7f))
+- Add ([860570e](860570e1dbd7374ac98a5438eadc82cd3f452e3d))
+- Add ([dc3ef70](dc3ef700f28d22b7facf1b4dfac5f7d89eb74c52))
+
+### Refactor
+
+- Replace array fns ([02f3ca2](02f3ca2ba03161844c0c43babe121eef5ccf1007))
+- Replace array map ([5c2f150](5c2f15061ebb3d6bc3943328abb3b0451d6baa39))
+
 ## [1.34.0] - 2024-05-28
 
 [20d2d6c](20d2d6c0f7d5542229b1109a72203b62e77fa839)...[2443752](2443752e82d0c26130358102ed54fc146a067b4c)
