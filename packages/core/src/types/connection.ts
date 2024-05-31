@@ -33,6 +33,11 @@ export interface Connection {
   targetHandle?: string | null
 }
 
+/** Connection with edge id */
+export interface HandleConnection extends Connection {
+  edgeId: string
+}
+
 export type Connector = (
   params: Connection,
 ) => Promise<(Connection & Partial<Edge>) | false> | ((Connection & Partial<Edge>) | false)
@@ -83,3 +88,5 @@ export interface ConnectionLineProps {
   /** status of the connection (valid, invalid) */
   connectionStatus: ConnectionStatus | null
 }
+
+export type ConnectionLookup = Map<string, Map<string, HandleConnection>>
