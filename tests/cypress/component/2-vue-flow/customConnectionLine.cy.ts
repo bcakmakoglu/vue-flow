@@ -6,18 +6,18 @@ const connectionLineId = 'test-custom-connection-line'
 
 describe('Custom Connection Line', () => {
   it('renders a custom connection line component', () => {
-    const CustomConnectionLine = defineComponent({
-      props: ['sourceNode', 'sourceHandle', 'targetNode', 'targetHandle', 'sourceX', 'sourceY', 'targetX', 'targetY'],
+    const CustomConnectionLine = defineComponent<ConnectionLineProps>({
+      props: ['sourceNode', 'sourceHandle', 'targetNode', 'targetHandle', 'sourceX', 'sourceY', 'targetX', 'targetY'] as any,
       emits: ['change'],
       setup(props, { emit }) {
         watch(
           () => props,
-          () => {
+          (currProps) => {
             emit('change', {
-              sourceNodeId: props.sourceNode?.id,
-              sourceHandleId: props.sourceHandle.id,
-              targetNodeId: props.targetNode?.id,
-              targetHandleId: props.targetHandle?.id,
+              sourceNodeId: currProps.sourceNode?.id,
+              sourceHandleId: currProps.sourceHandle?.id ?? null,
+              targetNodeId: currProps.targetNode?.id,
+              targetHandleId: currProps.targetHandle?.id ?? null,
             })
           },
           { immediate: true, deep: true },
@@ -37,16 +37,16 @@ describe('Custom Connection Line', () => {
       {
         autoConnect: true,
         fitViewOnInit: false,
-        modelValue: [
+        nodes: [
           {
             id: '1',
-            label: 'Node 1',
+            data: { label: 'Node 1' },
             position: { x: 0, y: 0 },
           },
           {
             id: '2',
             type: 'output',
-            label: 'Node 2',
+            data: { label: 'Node 2' },
             position: { x: 300, y: 300 },
           },
         ],
@@ -79,9 +79,9 @@ describe('Custom Connection Line', () => {
 
         cy.get('@onChangeSpy').should('have.been.calledWith', {
           sourceNodeId: '1',
-          sourceHandleId: '1__handle-bottom',
+          sourceHandleId: null,
           targetNodeId: '2',
-          targetHandleId: '2__handle-top',
+          targetHandleId: null,
         })
 
         sourceHandle.trigger('mouseup', {
