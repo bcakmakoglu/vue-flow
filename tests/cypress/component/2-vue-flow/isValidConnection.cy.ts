@@ -11,20 +11,20 @@ describe('isValidConnection Prop', () => {
 
   beforeEach(() => {
     cy.vueFlow({
-      modelValue: [
+      nodes: [
         {
           id: 'A',
-          label: 'Node A',
+          data: { label: 'Node A' },
           position: { x: 0, y: 0 },
         },
         {
           id: 'B',
-          label: 'Node B',
+          data: { label: 'Node B' },
           position: { x: 300, y: 300 },
         },
         {
           id: 'C',
-          label: 'Node C',
+          data: { label: 'Node C' },
           position: { x: 300, y: 0 },
         },
       ],
@@ -76,8 +76,8 @@ describe('isValidConnection Prop', () => {
             view: win,
           })
 
-        cy.get('.vue-flow__edge[data-id="vueflow__edge-AA__handle-bottom-BB__handle-top"]').should('exist')
-        cy.get('.vue-flow__edge[data-id="vueflow__edge-AA__handle-bottom-CC__handle-top"]').should('not.exist')
+        cy.get('.vue-flow__edge[data-id="vueflow__edge-A-B"]').should('exist')
+        cy.get('.vue-flow__edge[data-id="vueflow__edge-A-C"]').should('not.exist')
       })
     })
   })
