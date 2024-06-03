@@ -50,18 +50,20 @@ export default {
 </script>
 
 <template>
-  <defs>
-    <MarkerSymbols
-      v-for="marker of markers"
-      :id="marker.id"
-      :key="marker.id"
-      :type="marker.type"
-      :color="marker.color"
-      :width="marker.width"
-      :height="marker.height"
-      :markerUnits="marker.markerUnits"
-      :stroke-width="marker.strokeWidth"
-      :orient="marker.orient"
-    />
-  </defs>
+  <svg class="vue-flow__marker">
+    <defs>
+      <MarkerSymbols
+        v-for="marker of markers"
+        :id="marker.id"
+        :key="marker.id"
+        :type="marker.type"
+        :color="marker.color"
+        :width="marker.width"
+        :height="marker.height"
+        :markerUnits="marker.markerUnits"
+        :stroke-width="marker.strokeWidth"
+        :orient="marker.orient"
+      />
+    </defs>
+  </svg>
 </template>
