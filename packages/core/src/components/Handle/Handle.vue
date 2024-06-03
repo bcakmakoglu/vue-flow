@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { until } from '@vueuse/core'
 import { computed, onUnmounted, ref, toRef } from 'vue'
-import type { HandleProps } from '../../types/handle'
+import type { HandleProps } from '../../types'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
 import { getDimensions, isDef, isMouseEvent } from '../../utils'
@@ -11,7 +11,7 @@ const {
   connectable = undefined,
   connectableStart = true,
   connectableEnd = true,
-  id,
+  id: handleId = null,
   ...props
 } = defineProps<HandleProps>()
 
@@ -33,8 +33,6 @@ const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
 
 const handle = ref<HTMLDivElement>()
 
-const handleId = toRef(() => id ?? `${nodeId}__handle-${position}`)
-
 const isConnectableStart = toRef(() => (typeof connectableStart !== 'undefined' ? connectableStart : true))
 
 const isConnectableEnd = toRef(() => (typeof connectableEnd !== 'undefined' ? connectableEnd : true))
@@ -42,17 +40,17 @@ const isConnectableEnd = toRef(() => (typeof connectableEnd !== 'undefined' ? co
 const isConnecting = toRef(
   () =>
     (connectionStartHandle.value?.nodeId === nodeId &&
-      connectionStartHandle.value?.handleId === handleId.value &&
+      connectionStartHandle.value?.handleId === handleId &&
       connectionStartHandle.value?.type === type.value) ||
     (connectionEndHandle.value?.nodeId === nodeId &&
-      connectionEndHandle.value?.handleId === handleId.value &&
+      connectionEndHandle.value?.handleId === handleId &&
       connectionEndHandle.value?.type === type.value),
 )
 
 const isClickConnecting = toRef(
   () =>
     connectionClickStartHandle.value?.nodeId === nodeId &&
-    connectionClickStartHandle.value?.handleId === handleId.value &&
+    connectionClickStartHandle.value?.handleId === handleId &&
     connectionClickStartHandle.value?.type === type.value,
 )
 
@@ -72,7 +70,7 @@ const isConnectable = computed(() => {
         return false
       }
 
-      return id ? id === handleId.value : true
+      return id ? id === handleId : true
     })
   }
 
@@ -85,7 +83,7 @@ const isConnectable = computed(() => {
           return false
         }
 
-        return id ? id === handleId.value : true
+        return id ? id === handleId : true
       }).length < connectable
     )
   }
@@ -97,11 +95,12 @@ const isConnectable = computed(() => {
   return isDef(connectable) ? connectable : nodesConnectable.value
 })
 
+// todo: remove this and have users handle this themselves using `updateNodeInternals`
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
 until(() => node.initialized)
   .toBe(true, { flush: 'post' })
   .then(() => {
-    const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId.value)
+    const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
 
     if (!vueFlowRef.value || existingBounds) {
       return
@@ -109,7 +108,7 @@ until(() => node.initialized)
 
     const viewportNode = vueFlowRef.value.querySelector('.vue-flow__transformationpane')
 
-    if (!nodeEl.value || !handle.value || !viewportNode || !handleId.value) {
+    if (!nodeEl.value || !handle.value || !viewportNode || !handleId) {
       return
     }
 
@@ -121,7 +120,7 @@ until(() => node.initialized)
     const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
     const nextBounds = {
-      id: handleId.value,
+      id: handleId,
       position,
       x: (handleBounds.left - nodeBounds.left) / zoom,
       y: (handleBounds.top - nodeBounds.top) / zoom,
@@ -135,7 +134,7 @@ onUnmounted(() => {
   // clean up node internals
   const handleBounds = node.handleBounds[type.value]
   if (handleBounds) {
-    node.handleBounds[type.value] = handleBounds.filter((b) => b.id !== handleId.value)
+    node.handleBounds[type.value] = handleBounds.filter((b) => b.id !== handleId)
   }
 })
 
