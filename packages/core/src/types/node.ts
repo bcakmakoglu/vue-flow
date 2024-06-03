@@ -71,7 +71,10 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   extent?: CoordinateExtent | CoordinateExtentRange | 'parent'
   /** expands parent area to fit child node */
   expandParent?: boolean
-  /** define node as a child node by setting a parent node id */
+  /**
+   * todo: rename to `parentId` in next major release
+   * define node as a child node by setting a parent node id
+   */
   parentNode?: string
   /**
    * Fixed width of node, applied as style
@@ -168,7 +171,10 @@ export interface NodeProps<Data = ElementData, CustomEvents = object, Type exten
    * parent node id
    */
   parent?: string
-  /** parent node id */
+  /**
+   * todo: rename to `parentId` in next major release
+   * parent node id
+   */
   parentNodeId?: string
   /** is node currently dragging */
   dragging: boolean
