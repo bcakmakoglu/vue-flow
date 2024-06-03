@@ -72,9 +72,7 @@ export default {
 
 <template>
   <template v-if="dimensions.width && dimensions.height">
-    <svg class="vue-flow__edges vue-flow__container">
-      <MarkerDefinitions />
-    </svg>
+    <MarkerDefinitions />
 
     <svg
       v-for="edge of getEdges"
