@@ -45,11 +45,11 @@ const ConnectionLine = defineComponent({
         return null
       }
 
-      const handleId = connectionStartHandle.value.handleId
+      const startHandleId = connectionStartHandle.value.handleId
 
       const handleType = connectionStartHandle.value.type
 
-      const targetNode = (connectionEndHandle.value?.handleId && findNode(connectionEndHandle.value.nodeId)) || null
+      const targetNode = (connectionEndHandle.value && findNode(connectionEndHandle.value.nodeId)) || null
 
       const toX = (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom
       const toY = (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom
@@ -65,7 +65,7 @@ const ConnectionLine = defineComponent({
         return null
       }
 
-      const fromHandle = (handleId ? handleBounds.find((d) => d.id === handleId) : handleBounds[0]) ?? null
+      const fromHandle = (startHandleId ? handleBounds.find((d) => d.id === startHandleId) : handleBounds[0]) ?? null
       const fromPosition = fromHandle?.position || Position.Top
       const { x: fromX, y: fromY } = getHandlePosition(
         fromPosition,
@@ -73,6 +73,7 @@ const ConnectionLine = defineComponent({
         fromHandle,
       )
 
+      // todo: this is a bit of a mess, we should refactor this
       const toHandle =
         (targetNode &&
           connectionEndHandle.value?.handleId &&
