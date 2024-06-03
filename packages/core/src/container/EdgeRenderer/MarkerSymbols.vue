@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { MarkerType } from '../../types/edge'
-import type { MarkerProps } from '../../types/edge'
+import { MarkerType } from '../../types'
+import type { MarkerProps } from '../../types'
 
 const {
   id,
