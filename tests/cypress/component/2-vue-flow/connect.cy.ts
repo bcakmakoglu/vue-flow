@@ -6,15 +6,15 @@ describe('Check if nodes can be connected', () => {
   beforeEach(() => {
     cy.vueFlow({
       fitViewOnInit: false,
-      modelValue: [
+      nodes: [
         {
           id: '1',
-          label: 'Node 1',
+          data: { label: 'Node 1' },
           position: { x: 0, y: 0 },
         },
         {
           id: '2',
-          label: 'Node 2',
+          data: { label: 'Node 2' },
           position: { x: 300, y: 300 },
         },
       ],
@@ -57,11 +57,8 @@ describe('Check if nodes can be connected', () => {
           expect(edge.source).to.eq('1')
           expect(edge.target).to.eq('2')
 
-          const sourceHandleId = `1__handle-bottom`
-          const targetHandleId = `2__handle-top`
-
-          expect(edge.sourceHandle).to.eq(sourceHandleId)
-          expect(edge.targetHandle).to.eq(targetHandleId)
+          expect(edge.sourceHandle).to.eq(null)
+          expect(edge.targetHandle).to.eq(null)
         })
     })
 
@@ -98,11 +95,8 @@ describe('Check if nodes can be connected', () => {
       expect(edge.source).to.eq('1')
       expect(edge.target).to.eq('2')
 
-      const sourceHandleId = `1__handle-bottom`
-      const targetHandleId = `2__handle-top`
-
-      expect(edge.sourceHandle).to.eq(sourceHandleId)
-      expect(edge.targetHandle).to.eq(targetHandleId)
+      expect(edge.sourceHandle).to.eq(null)
+      expect(edge.targetHandle).to.eq(null)
     })
   })
 })

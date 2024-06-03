@@ -51,7 +51,7 @@ describe('Store Action: `startConnection`, `updateConnection`, `endConnection`',
     store.endConnection()
 
     expect(store.connectionStartHandle.value).to.equal(null)
-    expect(store.connectionPosition.value).to.deep.equal({ x: NaN, y: NaN })
+    expect(store.connectionPosition.value).to.deep.equal({ x: Number.NaN, y: Number.NaN })
 
     cy.viewPort().find('.vue-flow__connection').should('not.exist')
   })
