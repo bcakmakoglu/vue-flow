@@ -99,7 +99,7 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
   }
 
   if (closestHandle) {
-    const el = document.querySelector(`[data-handleid='${closestHandle.id}']`)
+    const el = document.querySelector(`[data-nodeid='${closestNode.node.id}']`)
 
     const prevStyle = el.style.backgroundColor
     el.style.backgroundColor = canSnap.value ? SNAP_HIGHLIGHT_COLOR : HIGHLIGHT_COLOR
