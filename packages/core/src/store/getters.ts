@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import type { ComputedGetters, GraphEdge, GraphNode, State } from '../types'
-import { ErrorCode, VueFlowError, getNodesInside, isEdgeVisible } from '../utils'
+import { getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
 export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds: ComputedRef<string[]>): ComputedGetters {
@@ -58,17 +58,9 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
   })
 
   const getNodes: ComputedGetters['getNodes'] = computed(() => {
-    const nodes: GraphNode[] = []
-
-    for (const node of state.nodes) {
-      if (!node.hidden) {
-        nodes.push(node)
-      }
-    }
-
     if (state.onlyRenderVisibleElements) {
       return getNodesInside(
-        nodes,
+        state.nodes,
         {
           x: 0,
           y: 0,
@@ -80,34 +72,14 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
       )
     }
 
-    return nodes
+    return state.nodes
   })
 
-  const edgeVisible = (e: GraphEdge, source?: GraphNode, target?: GraphNode) => {
-    source = source ?? getNode.value(e.source)
-    target = target ?? getNode.value(e.target)
-
-    if (!source || !target) {
-      state.hooks.error.trigger(new VueFlowError(ErrorCode.EDGE_ORPHANED, e.id))
-      return
-    }
-
-    return !e.hidden && !target.hidden && !source.hidden
-  }
-
   const getEdges: ComputedGetters['getEdges'] = computed(() => {
-    const edges: GraphEdge[] = []
-
-    for (const edge of state.edges) {
-      if (edgeVisible(edge)) {
-        edges.push(edge)
-      }
-    }
-
     if (state.onlyRenderVisibleElements) {
       const visibleEdges: GraphEdge[] = []
 
-      for (const edge of edges) {
+      for (const edge of state.edges) {
         const source = getNode.value(edge.source)!
         const target = getNode.value(edge.target)!
 
@@ -131,7 +103,7 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
       return visibleEdges
     }
 
-    return edges
+    return state.edges
   })
 
   const getElements: ComputedGetters['getElements'] = computed(() => [...getNodes.value, ...getEdges.value])
