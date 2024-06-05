@@ -7,17 +7,8 @@ import { useVueFlow } from '../../composables'
 import { ErrorCode, VueFlowError } from '../../utils'
 import { useNodesInitialized } from '../../composables/useNodesInitialized'
 
-const {
-  nodes,
-  nodesDraggable,
-  nodesFocusable,
-  elementsSelectable,
-  nodesConnectable,
-  getNodes,
-  getNodeTypes,
-  updateNodeDimensions,
-  emits,
-} = useVueFlow()
+const { nodes, nodesDraggable, nodesFocusable, elementsSelectable, nodesConnectable, getNodeTypes, updateNodeDimensions, emits } =
+  useVueFlow()
 
 const nodesInitialized = useNodesInitialized()
 
@@ -110,7 +101,7 @@ export default {
   <div class="vue-flow__nodes vue-flow__container">
     <template v-if="resizeObserver">
       <NodeWrapper
-        v-for="node of getNodes"
+        v-for="node of nodes"
         :id="node.id"
         :key="node.id"
         :resize-observer="resizeObserver"
