@@ -1,33 +1,41 @@
-import { computed, defineComponent, h, nextTick, onMounted, provide, ref, toRef, watch } from 'vue'
-import { until, useVModel } from '@vueuse/core'
+import {
+  computed,
+  defineComponent,
+  getCurrentInstance,
+  h,
+  inject,
+  nextTick,
+  onMounted,
+  provide,
+  ref,
+  resolveComponent,
+  toRef,
+  watch,
+} from 'vue'
+import { until } from '@vueuse/core'
 import {
   ARIA_NODE_DESC_KEY,
+  ErrorCode,
+  VueFlowError,
   arrowKeyDiffs,
   calcNextPosition,
   elementSelectionKeys,
   getXYZPos,
   handleNodeClick,
 } from '../../utils'
-import type { GraphNode, HandleConnectable, NodeComponent } from '../../types'
-import { NodeId, NodeRef } from '../../context'
-import { isInputDOMNode, useDrag, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
+import { NodeId, NodeRef, Slots } from '../../context'
+import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
+import type { NodeComponent } from '../../types'
 
 interface Props {
   id: string
-  draggable: boolean
-  selectable: boolean
-  connectable: HandleConnectable
-  focusable: boolean
-  type: NodeComponent | ((...args: any[]) => any) | object | false
-  name: string
-  node: GraphNode
   resizeObserver: ResizeObserver
 }
 
 const NodeWrapper = defineComponent({
   name: 'Node',
   compatConfig: { MODE: 3 },
-  props: ['name', 'type', 'id', 'draggable', 'selectable', 'focusable', 'connectable', 'node', 'resizeObserver'],
+  props: ['id', 'resizeObserver'],
   setup(props: Props) {
     provide(NodeId, props.id)
 
@@ -38,7 +46,6 @@ const NodeWrapper = defineComponent({
       nodesSelectionActive,
       multiSelectionActive,
       emits,
-      findNode,
       removeSelectedNodes,
       addSelectedNodes,
       updateNodeDimensions,
@@ -52,48 +59,86 @@ const NodeWrapper = defineComponent({
       snapToGrid,
       snapGrid,
       nodeDragThreshold,
-      getConnectedEdges,
+      nodesDraggable,
+      elementsSelectable,
+      nodesConnectable,
+      nodesFocusable,
     } = useVueFlow()
+
+    const slots = inject(Slots)
+
+    const instance = getCurrentInstance()
 
     const updateNodePositions = useUpdateNodePositions()
 
-    const node = useVModel(props, 'node')
-
-    const parentNode = computed(() => findNode(node.value?.parentNode))
-
-    const connectedEdges = computed(() => getConnectedEdges(node.value ? [node.value] : []))
+    const { node, parentNode, connectedEdges } = useNode(props.id)
 
     const nodeElement = ref<HTMLDivElement | null>(null)
-
     provide(NodeRef, nodeElement)
 
-    const { emit, on } = useNodeHooks(node.value, emits)
+    const isDraggable = toRef(() => (typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable))
+
+    const isSelectable = toRef(() => (typeof node.selectable === 'undefined' ? elementsSelectable.value : node.selectable))
+
+    const isConnectable = toRef(() => (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable))
+
+    const isFocusable = toRef(() => (typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable))
+
+    const nodeCmp = computed(() => {
+      const name = node.type || 'default'
+
+      const slot = slots?.[`node-${name}`]
+      if (slot) {
+        return slot
+      }
+
+      let nodeType = node.template || getNodeTypes.value[name]
+
+      if (typeof nodeType === 'string') {
+        if (instance) {
+          const components = Object.keys(instance.appContext.components)
+          if (components && components.includes(name)) {
+            nodeType = resolveComponent(name, false) as NodeComponent
+          }
+        }
+      }
+
+      if (nodeType && typeof nodeType !== 'string') {
+        return nodeType
+      }
+
+      emits.error(new VueFlowError(ErrorCode.NODE_TYPE_MISSING, nodeType))
+
+      return false
+    })
+
+    const { emit, on } = useNodeHooks(node, emits)
 
     const dragging = useDrag({
       id: props.id,
       el: nodeElement,
-      disabled: () => !props.draggable,
-      selectable: () => props.selectable,
-      dragHandle: () => node.value.dragHandle,
+      disabled: () => !isDraggable.value,
+      selectable: () => isSelectable.value,
+      dragHandle: () => node.dragHandle,
       onStart(args) {
         // todo: remove intersections from here - they are not needed and only reduce performance
-        emit.dragStart({ ...args, intersections: getIntersectingNodes(node.value) })
+        emit.dragStart({ ...args, intersections: getIntersectingNodes(node) })
       },
       onDrag(args) {
-        emit.drag({ ...args, intersections: getIntersectingNodes(node.value) })
+        emit.drag({ ...args, intersections: getIntersectingNodes(node) })
       },
       onStop(args) {
-        emit.dragStop({ ...args, intersections: getIntersectingNodes(node.value) })
+        emit.dragStop({ ...args, intersections: getIntersectingNodes(node) })
       },
     })
 
-    const getClass = computed(() => (node.value.class instanceof Function ? node.value.class(node.value) : node.value.class))
+    const getClass = computed(() => (node.class instanceof Function ? node.class(node) : node.class))
 
     const getStyle = computed(() => {
-      const styles = (node.value.style instanceof Function ? node.value.style(node.value) : node.value.style) || {}
+      const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
 
-      const width = node.value.width instanceof Function ? node.value.width(node.value) : node.value.width
-      const height = node.value.height instanceof Function ? node.value.height(node.value) : node.value.height
+      const width = node.width instanceof Function ? node.width(node) : node.width
+      const height = node.height instanceof Function ? node.height(node) : node.height
 
       if (width) {
         styles.width = typeof width === 'string' ? width : `${width}px`
@@ -106,7 +151,7 @@ const NodeWrapper = defineComponent({
       return styles
     })
 
-    const zIndex = toRef(() => Number(node.value.zIndex ?? getStyle.value.zIndex ?? 0))
+    const zIndex = toRef(() => Number(node.zIndex ?? getStyle.value.zIndex ?? 0))
 
     onUpdateNodeInternals((updateIds) => {
       if (updateIds.includes(props.id)) {
@@ -116,7 +161,7 @@ const NodeWrapper = defineComponent({
 
     onMounted(() => {
       watch(
-        () => node.value.hidden,
+        () => node.hidden,
         (isHidden = false, _, onCleanup) => {
           if (!isHidden && nodeElement.value) {
             props.resizeObserver.observe(nodeElement.value)
@@ -132,7 +177,7 @@ const NodeWrapper = defineComponent({
       )
     })
 
-    watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () => {
+    watch([() => node.type, () => node.sourcePosition, () => node.targetPosition], () => {
       nextTick(() => {
         updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }])
       })
@@ -141,15 +186,15 @@ const NodeWrapper = defineComponent({
     /** this watcher only updates XYZPosition (when dragging a parent etc) */
     watch(
       [
-        () => node.value.position.x,
-        () => node.value.position.y,
+        () => node.position.x,
+        () => node.position.y,
         () => parentNode.value?.computedPosition.x,
         () => parentNode.value?.computedPosition.y,
         () => parentNode.value?.computedPosition.z,
         zIndex,
-        () => node.value.selected,
-        () => node.value.dimensions.height,
-        () => node.value.dimensions.width,
+        () => node.selected,
+        () => node.dimensions.height,
+        () => node.dimensions.width,
         () => parentNode.value?.dimensions.height,
         () => parentNode.value?.dimensions.width,
       ],
@@ -157,19 +202,19 @@ const NodeWrapper = defineComponent({
         const xyzPos = {
           x: newX,
           y: newY,
-          z: nodeZIndex + (elevateNodesOnSelect.value ? (node.value.selected ? 1000 : 0) : 0),
+          z: nodeZIndex + (elevateNodesOnSelect.value ? (node.selected ? 1000 : 0) : 0),
         }
 
         if (typeof parentX !== 'undefined' && typeof parentY !== 'undefined') {
-          node.value.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
+          node.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
         } else {
-          node.value.computedPosition = xyzPos
+          node.computedPosition = xyzPos
         }
       },
       { flush: 'post', immediate: true },
     )
 
-    watch([() => node.value.extent, nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
+    watch([() => node.extent, nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
       // update position if extent has actually changed
       if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
         clampPosition()
@@ -179,10 +224,10 @@ const NodeWrapper = defineComponent({
     // clamp initial position to nodes' extent
     // if extent is parent, we need dimensions to properly clamp the position
     if (
-      node.value.extent === 'parent' ||
-      (typeof node.value.extent === 'object' && 'range' in node.value.extent && node.value.extent.range === 'parent')
+      node.extent === 'parent' ||
+      (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')
     ) {
-      until(() => node.value.initialized)
+      until(() => node.initialized)
         .toBe(true)
         .then(clampPosition)
     }
@@ -192,7 +237,7 @@ const NodeWrapper = defineComponent({
     }
 
     return () => {
-      if (node.value.hidden) {
+      if (node.hidden) {
         return null
       }
 
@@ -200,31 +245,31 @@ const NodeWrapper = defineComponent({
         'div',
         {
           'ref': nodeElement,
-          'data-id': node.value.id,
+          'data-id': node.id,
           'class': [
             'vue-flow__node',
-            `vue-flow__node-${props.type === false ? 'default' : props.name}`,
+            `vue-flow__node-${nodeCmp.value === false ? 'default' : node.type || 'default'}`,
             {
-              [noPanClassName.value]: props.draggable,
+              [noPanClassName.value]: isDraggable.value,
               dragging: dragging?.value,
-              draggable: props.draggable,
-              selected: node.value.selected,
-              selectable: props.selectable,
-              parent: node.value.isParent,
+              draggable: isDraggable.value,
+              selected: node.selected,
+              selectable: isSelectable.value,
+              parent: node.isParent,
             },
             getClass.value,
           ],
           'style': {
-            visibility: node.value.initialized ? 'visible' : 'hidden',
-            zIndex: node.value.computedPosition.z ?? zIndex.value,
-            transform: `translate(${node.value.computedPosition.x}px,${node.value.computedPosition.y}px)`,
-            pointerEvents: props.selectable || props.draggable ? 'all' : 'none',
+            visibility: node.initialized ? 'visible' : 'hidden',
+            zIndex: node.computedPosition.z ?? zIndex.value,
+            transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
+            pointerEvents: isSelectable.value || isDraggable.value ? 'all' : 'none',
             ...getStyle.value,
           },
-          'tabIndex': props.focusable ? 0 : undefined,
-          'role': props.focusable ? 'button' : undefined,
+          'tabIndex': isFocusable.value ? 0 : undefined,
+          'role': isFocusable.value ? 'button' : undefined,
           'aria-describedby': disableKeyboardA11y.value ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`,
-          'aria-label': node.value.ariaLabel,
+          'aria-label': node.ariaLabel,
           'onMouseenter': onMouseEnter,
           'onMousemove': onMouseMove,
           'onMouseleave': onMouseLeave,
@@ -234,26 +279,26 @@ const NodeWrapper = defineComponent({
           'onKeydown': onKeyDown,
         },
         [
-          h(props.type === false ? getNodeTypes.value.default : props.type, {
-            id: node.value.id,
-            type: node.value.type,
-            data: node.value.data,
-            events: { ...node.value.events, ...on },
-            selected: node.value.selected,
-            resizing: node.value.resizing,
+          h(nodeCmp.value === false ? getNodeTypes.value.default : nodeCmp.value, {
+            id: node.id,
+            type: node.type,
+            data: node.data,
+            events: { ...node.events, ...on },
+            selected: node.selected,
+            resizing: node.resizing,
             dragging: dragging.value,
-            connectable: props.connectable,
-            position: node.value.computedPosition,
-            dimensions: node.value.dimensions,
-            isValidTargetPos: node.value.isValidTargetPos,
-            isValidSourcePos: node.value.isValidSourcePos,
-            parent: node.value.parentNode,
-            parentNodeId: node.value.parentNode,
-            zIndex: node.value.computedPosition.z ?? zIndex.value,
-            targetPosition: node.value.targetPosition,
-            sourcePosition: node.value.sourcePosition,
-            label: node.value.label,
-            dragHandle: node.value.dragHandle,
+            connectable: isConnectable.value,
+            position: node.computedPosition,
+            dimensions: node.dimensions,
+            isValidTargetPos: node.isValidTargetPos,
+            isValidSourcePos: node.isValidSourcePos,
+            parent: node.parentNode,
+            parentNodeId: node.parentNode,
+            zIndex: node.computedPosition.z ?? zIndex.value,
+            targetPosition: node.targetPosition,
+            sourcePosition: node.sourcePosition,
+            label: node.label,
+            dragHandle: node.dragHandle,
             onUpdateNodeInternals: updateInternals,
           }),
         ],
@@ -261,28 +306,22 @@ const NodeWrapper = defineComponent({
     }
     /** this re-calculates the current position, necessary for clamping by a node's extent */
     function clampPosition() {
-      const nextPos = node.value.computedPosition
+      const nextPos = node.computedPosition
 
       if (snapToGrid.value) {
         nextPos.x = snapGrid.value[0] * Math.round(nextPos.x / snapGrid.value[0])
         nextPos.y = snapGrid.value[1] * Math.round(nextPos.y / snapGrid.value[1])
       }
 
-      const { computedPosition, position } = calcNextPosition(
-        node.value,
-        nextPos,
-        emits.error,
-        nodeExtent.value,
-        parentNode.value,
-      )
+      const { computedPosition, position } = calcNextPosition(node, nextPos, emits.error, nodeExtent.value, parentNode.value)
 
       // only overwrite positions if there are changes when clamping
-      if (node.value.computedPosition.x !== computedPosition.x || node.value.computedPosition.y !== computedPosition.y) {
-        node.value.computedPosition = { ...node.value.computedPosition, ...computedPosition }
+      if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
+        node.computedPosition = { ...node.computedPosition, ...computedPosition }
       }
 
-      if (node.value.position.x !== position.x || node.value.position.y !== position.y) {
-        node.value.position = position
+      if (node.position.x !== position.x || node.position.y !== position.y) {
+        node.position = position
       }
     }
 
@@ -294,34 +333,34 @@ const NodeWrapper = defineComponent({
 
     function onMouseEnter(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseEnter({ event, node: node.value, connectedEdges: connectedEdges.value })
+        emit.mouseEnter({ event, node, connectedEdges: connectedEdges.value })
       }
     }
 
     function onMouseMove(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseMove({ event, node: node.value, connectedEdges: connectedEdges.value })
+        emit.mouseMove({ event, node, connectedEdges: connectedEdges.value })
       }
     }
 
     function onMouseLeave(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseLeave({ event, node: node.value, connectedEdges: connectedEdges.value })
+        emit.mouseLeave({ event, node, connectedEdges: connectedEdges.value })
       }
     }
 
     function onContextMenu(event: MouseEvent) {
-      return emit.contextMenu({ event, node: node.value, connectedEdges: connectedEdges.value })
+      return emit.contextMenu({ event, node, connectedEdges: connectedEdges.value })
     }
 
     function onDoubleClick(event: MouseEvent) {
-      return emit.doubleClick({ event, node: node.value, connectedEdges: connectedEdges.value })
+      return emit.doubleClick({ event, node, connectedEdges: connectedEdges.value })
     }
 
     function onSelectNode(event: MouseEvent) {
-      if (props.selectable && (!selectNodesOnDrag.value || !props.draggable || nodeDragThreshold.value > 0)) {
+      if (isSelectable.value && (!selectNodesOnDrag.value || !isDraggable.value || nodeDragThreshold.value > 0)) {
         handleNodeClick(
-          node.value,
+          node,
           multiSelectionActive.value,
           addSelectedNodes,
           removeSelectedNodes,
@@ -331,7 +370,7 @@ const NodeWrapper = defineComponent({
         )
       }
 
-      emit.click({ event, node: node.value, connectedEdges: connectedEdges.value })
+      emit.click({ event, node, connectedEdges: connectedEdges.value })
     }
 
     function onKeyDown(event: KeyboardEvent) {
@@ -339,11 +378,11 @@ const NodeWrapper = defineComponent({
         return
       }
 
-      if (elementSelectionKeys.includes(event.key) && props.selectable) {
+      if (elementSelectionKeys.includes(event.key) && isSelectable.value) {
         const unselect = event.key === 'Escape'
 
         handleNodeClick(
-          node.value,
+          node,
           multiSelectionActive.value,
           addSelectedNodes,
           removeSelectedNodes,
@@ -351,9 +390,9 @@ const NodeWrapper = defineComponent({
           unselect,
           nodeElement.value!,
         )
-      } else if (props.draggable && node.value.selected && arrowKeyDiffs[event.key]) {
+      } else if (isDraggable.value && node.selected && arrowKeyDiffs[event.key]) {
         ariaLiveMessage.value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
-          .value.position.x}, y: ${~~node.value.position.y}`
+          .position.x}, y: ${~~node.position.y}`
 
         updateNodePositions(
           {
