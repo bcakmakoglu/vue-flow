@@ -1,4 +1,4 @@
-import { computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, provide, ref, toRef, watch } from 'vue'
+import { computed, defineComponent, h, nextTick, onMounted, provide, ref, toRef, watch } from 'vue'
 import { until, useVModel } from '@vueuse/core'
 import {
   ARIA_NODE_DESC_KEY,
@@ -76,6 +76,7 @@ const NodeWrapper = defineComponent({
       selectable: () => props.selectable,
       dragHandle: () => node.value.dragHandle,
       onStart(args) {
+        // todo: remove intersections from here - they are not needed and only reduce performance
         emit.dragStart({ ...args, intersections: getIntersectingNodes(node.value) })
       },
       onDrag(args) {
@@ -114,11 +115,21 @@ const NodeWrapper = defineComponent({
     })
 
     onMounted(() => {
-      props.resizeObserver.observe(nodeElement.value as HTMLDivElement)
-    })
+      watch(
+        () => node.value.hidden,
+        (isHidden = false, _, onCleanup) => {
+          if (!isHidden && nodeElement.value) {
+            props.resizeObserver.observe(nodeElement.value)
 
-    onBeforeUnmount(() => {
-      props.resizeObserver.unobserve(nodeElement.value as HTMLDivElement)
+            onCleanup(() => {
+              if (nodeElement.value) {
+                props.resizeObserver.unobserve(nodeElement.value)
+              }
+            })
+          }
+        },
+        { immediate: true, flush: 'post' },
+      )
     })
 
     watch([() => node.value.type, () => node.value.sourcePosition, () => node.value.targetPosition], () => {
@@ -180,8 +191,12 @@ const NodeWrapper = defineComponent({
       clampPosition()
     }
 
-    return () =>
-      h(
+    return () => {
+      if (node.value.hidden) {
+        return null
+      }
+
+      return h(
         'div',
         {
           'ref': nodeElement,
@@ -243,7 +258,7 @@ const NodeWrapper = defineComponent({
           }),
         ],
       )
-
+    }
     /** this re-calculates the current position, necessary for clamping by a node's extent */
     function clampPosition() {
       const nextPos = node.value.computedPosition
