@@ -1,6 +1,6 @@
 import { toRefs } from '@vueuse/core'
 import { computed, getCurrentInstance, reactive } from 'vue'
-import type { FlowOptions, VueFlowStore } from '../types'
+import type { FlowOptions, GraphEdge, GraphNode, VueFlowStore } from '../types'
 import { useActions, useGetters, useState } from '../store'
 
 /**
@@ -57,27 +57,28 @@ export class Storage {
     }
 
     // for lookup purposes
-    const nodeIds = computed(() => {
-      const ids: string[] = []
+    const nodeLookup = computed(() => {
+      const nodesMap = new Map<string, GraphNode>()
       for (const node of reactiveState.nodes) {
-        ids.push(node.id)
+        nodesMap.set(node.id, node)
       }
 
-      return ids
+      return nodesMap
     })
 
-    const edgeIds = computed(() => {
-      const ids: string[] = []
+    const edgeLookup = computed(() => {
+      const edgesMap = new Map<string, GraphEdge>()
+
       for (const edge of reactiveState.edges) {
-        ids.push(edge.id)
+        edgesMap.set(edge.id, edge)
       }
 
-      return ids
+      return edgesMap
     })
 
-    const getters = useGetters(reactiveState, nodeIds, edgeIds)
+    const getters = useGetters(reactiveState, nodeLookup, edgeLookup)
 
-    const actions = useActions(id, reactiveState, nodeIds, edgeIds)
+    const actions = useActions(id, reactiveState, nodeLookup, edgeLookup)
 
     actions.setState({ ...reactiveState, ...preloadedState })
 
