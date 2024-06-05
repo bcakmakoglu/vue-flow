@@ -1,31 +1,23 @@
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
-import type { ComputedGetters, GraphEdge, GraphNode, State } from '../types'
+import type { ComputedGetters, EdgeLookup, GraphEdge, GraphNode, NodeLookup, State } from '../types'
 import { getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
-export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds: ComputedRef<string[]>): ComputedGetters {
+export function useGetters(
+  state: State,
+  nodeLookup: ComputedRef<NodeLookup>,
+  edgeLookup: ComputedRef<EdgeLookup>,
+): ComputedGetters {
   /**
    * @deprecated will be removed in next major version; use findNode instead
    */
-  const getNode: ComputedGetters['getNode'] = computed(() => (id: string) => {
-    if (state.nodes && !nodeIds.value.length) {
-      return state.nodes.find((node) => node.id === id)
-    }
-
-    return state.nodes[nodeIds.value.indexOf(id)]
-  })
+  const getNode: ComputedGetters['getNode'] = computed(() => (id) => nodeLookup.value.get(id))
 
   /**
    * @deprecated will be removed in next major version; use findEdge instead
    */
-  const getEdge: ComputedGetters['getEdge'] = computed(() => (id: string) => {
-    if (state.edges && !edgeIds.value.length) {
-      return state.edges.find((edge) => edge.id === id)
-    }
-
-    return state.edges[edgeIds.value.indexOf(id)]
-  })
+  const getEdge: ComputedGetters['getEdge'] = computed(() => (id) => edgeLookup.value.get(id))
 
   const getEdgeTypes: ComputedGetters['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
@@ -80,8 +72,8 @@ export function useGetters(state: State, nodeIds: ComputedRef<string[]>, edgeIds
       const visibleEdges: GraphEdge[] = []
 
       for (const edge of state.edges) {
-        const source = getNode.value(edge.source)!
-        const target = getNode.value(edge.target)!
+        const source = nodeLookup.value.get(edge.source)!
+        const target = nodeLookup.value.get(edge.target)!
 
         if (
           isEdgeVisible({

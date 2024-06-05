@@ -8,6 +8,7 @@ import type {
   Edge,
   EdgeAddChange,
   EdgeChange,
+  EdgeLookup,
   EdgeRemoveChange,
   EdgeSelectionChange,
   Elements,
@@ -18,6 +19,7 @@ import type {
   NodeAddChange,
   NodeChange,
   NodeDimensionChange,
+  NodeLookup,
   NodePositionChange,
   NodeRemoveChange,
   NodeSelectionChange,
@@ -55,15 +57,13 @@ import { storeOptionsToSkip, useState } from './state'
 export function useActions(
   id: string,
   state: State,
-  // todo: change to a Set
-  nodeIds: ComputedRef<string[]>,
-  // todo: change to a Set
-  edgeIds: ComputedRef<string[]>,
+  nodeLookup: ComputedRef<NodeLookup>,
+  edgeLookup: ComputedRef<EdgeLookup>,
 ): Actions {
   const viewportHelper = useViewportHelper(state)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? nodeIds.value ?? []
+    const updateIds = ids ?? state.nodes.map((n) => n.id) ?? []
 
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
@@ -85,11 +85,7 @@ export function useActions(
       return
     }
 
-    if (state.nodes && !nodeIds.value.length) {
-      return state.nodes.find((node) => node.id === id)
-    }
-
-    return state.nodes[nodeIds.value.indexOf(id)]
+    return nodeLookup.value.get(id)
   }
 
   const findEdge: Actions['findEdge'] = (id) => {
@@ -97,11 +93,7 @@ export function useActions(
       return
     }
 
-    if (state.edges && !edgeIds.value.length) {
-      return state.edges.find((edge) => edge.id === id)
-    }
-
-    return state.edges[edgeIds.value.indexOf(id)]
+    return edgeLookup.value.get(id)
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -370,7 +362,7 @@ export function useActions(
 
   const setNodeExtent: Actions['setNodeExtent'] = (nodeExtent) => {
     state.nodeExtent = nodeExtent
-    updateNodeInternals(nodeIds.value)
+    updateNodeInternals()
   }
 
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
