@@ -21,7 +21,7 @@ export function useEdge<Data = ElementData, CustomEvents extends Record<string, 
 
   const { findEdge, emits } = useVueFlow()
 
-  const edge = findEdge<Data, CustomEvents>(edgeId)
+  const edge = findEdge<Data, CustomEvents>(edgeId)!
 
   if (!edge) {
     emits.error(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edgeId))

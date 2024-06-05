@@ -77,18 +77,11 @@ export default {
     <svg
       v-for="edge of getEdges"
       :key="edge.id"
+      v-memo="[edge.id]"
       class="vue-flow__edges vue-flow__container"
       :style="{ zIndex: getEdgeZIndex(edge, findNode, elevateEdgesOnSelect) }"
     >
-      <EdgeWrapper
-        :id="edge.id"
-        :edge="edge"
-        :type="getType(edge.type, edge.template)"
-        :name="edge.type || 'default'"
-        :selectable="selectable(edge.selectable)"
-        :updatable="updatable(edge.updatable)"
-        :focusable="focusable(edge.focusable)"
-      />
+      <EdgeWrapper :id="edge.id" />
     </svg>
 
     <ConnectionLine />
