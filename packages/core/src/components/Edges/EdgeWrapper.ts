@@ -102,7 +102,7 @@ const EdgeWrapper = defineComponent({
         return null
       }
 
-      if (!edge || sourceNode.hidden || targetNode.hidden) {
+      if (!edge.value || edge.value.hidden || sourceNode.hidden || targetNode.hidden) {
         return null
       }
 
