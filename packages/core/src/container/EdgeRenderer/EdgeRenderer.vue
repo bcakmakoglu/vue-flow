@@ -18,8 +18,6 @@ export default {
 <template>
   <MarkerDefinitions />
 
-  {{ getEdges.map((e) => !!e.hidden) }}
-
   <svg
     v-for="edge of getEdges"
     :key="edge.id"
