@@ -279,7 +279,7 @@ const NodeWrapper = defineComponent({
           'onKeydown': onKeyDown,
         },
         [
-          h(nodeCmp.value === false ? getNodeTypes.value.default : nodeCmp.value, {
+          h(nodeCmp.value === false ? getNodeTypes.value.default : (nodeCmp.value as any), {
             id: node.id,
             type: node.type,
             data: node.data,
