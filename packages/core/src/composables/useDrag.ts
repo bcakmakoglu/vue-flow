@@ -185,6 +185,10 @@ export function useDrag(params: UseDragParams) {
   }
 
   const eventStart = (event: UseDragEvent, nodeEl: Element) => {
+    if (event.sourceEvent.type === 'touchmove' && event.sourceEvent.touches.length > 1) {
+      return
+    }
+
     if (nodeDragThreshold.value === 0) {
       startDrag(event, nodeEl)
     }
