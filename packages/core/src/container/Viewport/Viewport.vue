@@ -151,13 +151,14 @@ onMounted(() => {
     }
   })
 
-  d3Zoom.filter((event: MouseEvent) => {
+  d3Zoom.filter((event: MouseEvent | TouchEvent) => {
     const zoomScroll = zoomKeyPressed.value || zoomOnScroll.value
     const pinchZoom = zoomOnPinch.value && event.ctrlKey
+    const eventButton = (event as MouseEvent).button
 
     if (
       (shouldPanOnDrag.value === true || (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(1))) &&
-      event.button === 1 &&
+      eventButton === 1 &&
       event.type === 'mousedown' &&
       ((event.target as HTMLElement)?.closest('.vue-flow__node') || (event.target as HTMLElement)?.closest('.vue-flow__edge'))
     ) {
@@ -201,6 +202,12 @@ onMounted(() => {
       return false
     }
 
+    // prevent zooming on mobile when using pinch and zoomOnPinch is disabled
+    if (!zoomOnPinch && event.type === 'touchstart' && (event as TouchEvent).touches?.length > 1) {
+      event.preventDefault() // if you manage to start with 2 touches, we prevent native zoom
+      return false
+    }
+
     // if the pane is not movable, we prevent dragging it with mousestart or touchstart
     if (!shouldPanOnDrag.value && (event.type === 'mousedown' || event.type === 'touchstart')) {
       return false
@@ -209,7 +216,7 @@ onMounted(() => {
     // if the pane is only movable using allowed clicks
     if (
       Array.isArray(shouldPanOnDrag.value) &&
-      !shouldPanOnDrag.value.includes(event.button) &&
+      !shouldPanOnDrag.value.includes(eventButton) &&
       (event.type === 'mousedown' || event.type === 'touchstart')
     ) {
       return false
@@ -217,7 +224,7 @@ onMounted(() => {
 
     // We only allow right clicks if pan on drag is set to right-click
     const buttonAllowed =
-      (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(event.button)) || !event.button || event.button <= 1
+      (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(eventButton)) || !eventButton || eventButton <= 1
 
     // default filter for d3-zoom
     return (!event.ctrlKey || event.type === 'wheel') && buttonAllowed
