@@ -5,7 +5,7 @@ import { useVueFlow } from '../../composables'
 import { getEdgeZIndex } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
-const { findNode, getEdges, elevateEdgesOnSelect, dimensions } = useVueFlow()
+const { findNode, getEdges, elevateEdgesOnSelect } = useVueFlow()
 </script>
 
 <script lang="ts">
@@ -16,19 +16,19 @@ export default {
 </script>
 
 <template>
-  <template v-if="dimensions.width && dimensions.height">
-    <MarkerDefinitions />
+  <MarkerDefinitions />
 
-    <svg
-      v-for="edge of getEdges"
-      :key="edge.id"
-      v-memo="[edge.id]"
-      class="vue-flow__edges vue-flow__container"
-      :style="{ zIndex: getEdgeZIndex(edge, findNode, elevateEdgesOnSelect) }"
-    >
-      <EdgeWrapper :id="edge.id" />
-    </svg>
+  {{ getEdges.map((e) => !!e.hidden) }}
 
-    <ConnectionLine />
-  </template>
+  <svg
+    v-for="edge of getEdges"
+    :key="edge.id"
+    v-memo="[edge.id]"
+    class="vue-flow__edges vue-flow__container"
+    :style="{ zIndex: getEdgeZIndex(edge, findNode, elevateEdgesOnSelect) }"
+  >
+    <EdgeWrapper :id="edge.id" />
+  </svg>
+
+  <ConnectionLine />
 </template>
