@@ -206,6 +206,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Drag & Drop', link: '/examples/dnd' },
             { text: 'Interactions', link: '/examples/interaction' },
             { text: 'Save & Restore', link: '/examples/save' },
+            { text: 'Screenshot', link: '/examples/screenshot' },
             { text: 'Hide/Show', link: '/examples/hidden' },
             { text: 'Intersection', link: '/examples/intersection' },
             { text: 'Multiple', link: '/examples/multi' },
