@@ -181,6 +181,12 @@ export type AddEdges = (
 
 export type UpdateEdge = (oldEdge: GraphEdge, newConnection: Connection, shouldReplaceId?: boolean) => GraphEdge | false
 
+export type UpdateEdgeData = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+  id: string,
+  dataUpdate: Partial<Data> | ((edge: GraphEdge<Data, CustomEvents>) => Partial<Data>),
+  options?: { replace: boolean },
+) => void
+
 export type SetState = (
   state:
     | Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
@@ -242,6 +248,8 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   findEdge: FindEdge
   /** updates an edge */
   updateEdge: UpdateEdge
+  /** updates the data of an edge */
+  updateEdgeData: UpdateEdgeData
   /** updates a node */
   updateNode: UpdateNode
   /** updates the data of a node */
