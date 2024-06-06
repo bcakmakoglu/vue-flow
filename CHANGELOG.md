@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.35.0] - 2024-06-06
+
+[c91b30f](c91b30fc1eb725848daf68b1e309efc52c683abe)...[dd6aff2](dd6aff24cbe5bd2e1e5ce36350e1b5261c0d42af)
+
+### Bug Fixes
+
+- Disable zoom on mobile when zoomToPinch is false (#1449) ([1b5e14a](1b5e14a5b831ad949df8ff59faf6af092cfd7185))
+- Disable drag when using multi-touch (#1448) ([8bc1c99](8bc1c9925272c4ed2b5a8679a4e1c35a348f24c0))
+- Use computed edge ref ([faf67c2](faf67c2b55d7aa4bb243e238897ba7c3944505c5))
+
+### Documentation
+
+- Cleanup examples ([a220161](a220161876d6c8ac96207b22f5d045c739d17b0d))
+
+### Features
+
+- Add edge id to handle connections ([1bb7a19](1bb7a19e1ba2354f96519694b6e91304b853e461))
+
+### Miscellaneous Tasks
+
+- Add ([0d971d8](0d971d89b6c722e406e4e238d85ccf874b0110d8))
+- Add todos for parentId ([5703647](5703647290ab954baaed3a6db81a9ba673f0cdb7))
+- Add ([688f886](688f886f9b9e020aa7e1ab775a82e3bf0f495c95))
+- Update ([329be6b](329be6b60cca371c52e515e52083df610eab82d7))
+- Add ([e5508bc](e5508bc8eb5c2fb633ad8469ea09d947b9baca61))
+- Add ([0c1bd1b](0c1bd1b204e9da679ad3e3fdf4217d8e4cc9b248))
+- Cleanup ([25bb585](25bb5852204df82f95d13bc0f4d87a90be126af8))
+- Add missing container class name ([40f2421](40f2421dc9bd6e89b608c5e4a308e70ec77e6fc1))
+
+### Refactor
+
+- Use `vue-flow__marker` on marker defs el ([5d3f87f](5d3f87fd5681701d14c2a21f6bec40b3e4ae22da))
+- Remove auto-generated handle ids ([c822f9c](c822f9c632c1251f8b9e976b65d4a32c64b8cb9d))
+- Check if starting handle exists ([660831c](660831cc377798b26ce6d3fb977ea721b30eec4e))
+- Use all nodes in node renderer ([ea45545](ea45545835d9880ff25eae2687ac28580d2798c4))
+- Render null if node is hidden ([3498399](3498399ef763330fd4ff6e9e668a13b752e81fac))
+- Render null if edge is hidden ([5e9db1c](5e9db1c87fbfef3fd52c372f9162a37dbc94e8ac))
+- Remove hidden check from `getNodes` & `getEdges` ([cc0b8b6](cc0b8b69a32692c7ba71578d0bdc59793be7a20b))
+- Use node/edge id as only dependency for nodes/edges list (#1447) ([876b71d](876b71dc19ebf0be16e7dcc5627c3bbc68aefbb5))
+- Use node lookup map internally (#1450) ([a592fbd](a592fbd78a231717b24e314708d630d5f16ff0bc))
+
+### Testing
+
+- Update handle ids in tests ([82d9991](82d99915d3914a5736864fcf1ae041f620e9fc3d))
+
 ## [1.34.1] - 2024-05-31
 
 [2443752](2443752e82d0c26130358102ed54fc146a067b4c)...[c91b30f](c91b30fc1eb725848daf68b1e309efc52c683abe)
