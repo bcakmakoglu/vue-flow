@@ -14,6 +14,7 @@
     "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
     "@vue-flow/node-toolbar": "workspace:*",
+    "html-to-image": "^1.11.11",
     "pinia": "^2.1.6"
   },
   "devDependencies": {
