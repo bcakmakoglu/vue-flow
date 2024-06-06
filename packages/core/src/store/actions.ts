@@ -558,8 +558,21 @@ export function useActions(
     state.hooks.edgesChange.trigger(changes)
   }
 
-  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) =>
-    updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId, state.hooks.error.trigger)
+  const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
+    return updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId, state.hooks.error.trigger)
+  }
+
+  const updateEdgeData: Actions['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
+    const edge = findEdge(id)
+
+    if (!edge) {
+      return
+    }
+
+    const nextData = typeof dataUpdate === 'function' ? dataUpdate(edge) : dataUpdate
+
+    edge.data = options.replace ? nextData : { ...edge.data, ...nextData }
+  }
 
   const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => {
     return applyChanges(changes, state.nodes)
@@ -591,14 +604,15 @@ export function useActions(
   }
 
   const updateNodeData: Actions['updateNodeData'] = (id, dataUpdate, options = { replace: false }) => {
-    updateNode(
-      id,
-      (node) => {
-        const nextData = typeof dataUpdate === 'function' ? dataUpdate(node) : dataUpdate
-        return options.replace ? { ...node, data: nextData } : { ...node, data: { ...node.data, ...nextData } }
-      },
-      options,
-    )
+    const node = findNode(id)
+
+    if (!node) {
+      return
+    }
+
+    const nextData = typeof dataUpdate === 'function' ? dataUpdate(node) : dataUpdate
+
+    node.data = options.replace ? nextData : { ...node.data, ...nextData }
   }
 
   const startConnection: Actions['startConnection'] = (startHandle, position, event, isClick = false) => {
@@ -897,6 +911,7 @@ export function useActions(
     findNode,
     findEdge,
     updateEdge,
+    updateEdgeData,
     updateNode,
     updateNodeData,
     applyEdgeChanges,
