@@ -3,24 +3,32 @@ import { nextTick } from 'vue'
 import type { Actions, GraphNode, HandleElement, Position } from '../types'
 import { getDimensions } from '.'
 
-export function getHandleBounds(selector: string, nodeElement: HTMLDivElement, zoom: number): HandleElement[] | undefined {
+export function getHandleBounds(
+  selector: string,
+  nodeElement: HTMLDivElement,
+  nodeBounds: DOMRect,
+  zoom: number,
+): HandleElement[] | undefined {
   const handles = nodeElement.querySelectorAll(`.vue-flow__handle${selector}`)
 
   if (!handles || !handles.length) {
     return undefined
   }
 
-  const handlesArray = Array.from(handles) as HTMLDivElement[]
-  const nodeBounds = nodeElement.getBoundingClientRect()
+  const nodeOffset = {
+    x: nodeBounds.left - nodeBounds.width,
+    y: nodeBounds.top - nodeBounds.height,
+  }
 
+  const handlesArray = Array.from(handles) as HTMLDivElement[]
   return handlesArray.map((handle): HandleElement => {
     const handleBounds = handle.getBoundingClientRect()
 
     return {
       id: handle.getAttribute('data-handleid'),
       position: handle.getAttribute('data-handlepos') as unknown as Position,
-      x: (handleBounds.left - nodeBounds.left) / zoom,
-      y: (handleBounds.top - nodeBounds.top) / zoom,
+      x: (handleBounds.left - nodeOffset.x) / zoom,
+      y: (handleBounds.top - nodeOffset.y) / zoom,
       ...getDimensions(handle),
     }
   })
