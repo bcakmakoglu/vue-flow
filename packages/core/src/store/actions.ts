@@ -142,7 +142,9 @@ export function useActions(
     const style = window.getComputedStyle(viewportNode)
     const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
-    const changes: NodeDimensionChange[] = updates.reduce<NodeDimensionChange[]>((res, update) => {
+    const changes: NodeDimensionChange[] = []
+
+    for (const update of updates) {
       const node = findNode(update.id)
 
       if (node) {
@@ -155,21 +157,20 @@ export function useActions(
         )
 
         if (doUpdate) {
-          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, zoom)
-          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, zoom)
+          const nodeBounds = update.nodeElement.getBoundingClientRect()
           node.dimensions = dimensions
+          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, nodeBounds, zoom)
+          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, nodeBounds, zoom)
           node.initialized = true
 
-          res.push({
+          changes.push({
             id: node.id,
             type: 'dimensions',
             dimensions,
           })
         }
       }
-
-      return res
-    }, [])
+    }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
       nextTick(() => {
