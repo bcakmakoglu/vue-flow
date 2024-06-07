@@ -142,9 +142,11 @@ export function useActions(
     const style = window.getComputedStyle(viewportNode)
     const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
-    const changes: NodeDimensionChange[] = []
+    const changes: NodeDimensionChange[] = Array.from({ length: updates.length })
 
-    for (const update of updates) {
+    for (let i = 0; i < updates.length; ++i) {
+      const update = updates[i]
+
       const node = findNode(update.id)
 
       if (node) {
@@ -163,11 +165,11 @@ export function useActions(
           node.handleBounds.target = getHandleBounds('.target', update.nodeElement, nodeBounds, zoom)
           node.initialized = true
 
-          changes.push({
+          changes[i] = {
             id: node.id,
             type: 'dimensions',
             dimensions,
-          })
+          }
         }
       }
     }
