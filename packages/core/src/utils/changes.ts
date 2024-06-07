@@ -183,7 +183,9 @@ export function applyChanges<
               const parent = elements[elementIds.indexOf(element.parentNode)]
 
               if (parent && isGraphNode(parent)) {
-                if (!parent.initialized) {
+                const parentInit = !!parent.dimensions.width && !!parent.dimensions.height
+
+                if (!parentInit) {
                   nextTick(() => {
                     handleParentExpand(element, parent)
                   })
@@ -191,10 +193,6 @@ export function applyChanges<
                   handleParentExpand(element, parent)
                 }
               }
-            }
-
-            if (!element.initialized) {
-              element.initialized = true
             }
           }
           break
