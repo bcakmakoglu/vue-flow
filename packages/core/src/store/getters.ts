@@ -134,7 +134,7 @@ export function useGetters(
     const initializedNodes: GraphNode[] = []
 
     for (const node of state.nodes) {
-      if (node.initialized && node.handleBounds !== undefined) {
+      if (!!node.dimensions.width && !!node.dimensions.height && node.handleBounds !== undefined) {
         initializedNodes.push(node)
       }
     }

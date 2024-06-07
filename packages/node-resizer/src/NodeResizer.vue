@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { inject, toRef, watch } from 'vue'
+import { computed, inject, toRef, watch } from 'vue'
 import type { NodeDimensionChange } from '@vue-flow/core'
 import { NodeIdInjection, useVueFlow } from '@vue-flow/core'
 import ResizeControl from './ResizeControl.vue'
@@ -22,10 +22,16 @@ const contextNodeId = inject(NodeIdInjection, null)
 
 const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
 
-const node = toRef(() => findNode(nodeId.value))
+const node = computed(() => findNode(nodeId.value))
 
 watch(
-  [() => props.minWidth, () => props.minHeight, () => props.maxWidth, () => props.maxHeight, () => node.value?.initialized],
+  [
+    () => props.minWidth,
+    () => props.minHeight,
+    () => props.maxWidth,
+    () => props.maxHeight,
+    () => !!node.value?.dimensions.width && !!node.value.dimensions.height,
+  ],
   ([minWidth, minHeight, maxWidth, maxHeight, isInitialized]) => {
     const n = node.value
 
