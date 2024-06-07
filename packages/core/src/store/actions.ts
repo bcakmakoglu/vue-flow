@@ -1,6 +1,5 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
-import { nextTick } from 'vue'
 import { until } from '@vueuse/core'
 import type {
   Actions,
@@ -163,7 +162,6 @@ export function useActions(
           node.dimensions = dimensions
           node.handleBounds.source = getHandleBounds('.source', update.nodeElement, nodeBounds, zoom)
           node.handleBounds.target = getHandleBounds('.target', update.nodeElement, nodeBounds, zoom)
-          node.initialized = true
 
           changes[i] = {
             id: node.id,
@@ -175,10 +173,8 @@ export function useActions(
     }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
-      nextTick(() => {
-        viewportHelper.value.fitView()
-        state.fitViewOnInitDone = true
-      })
+      viewportHelper.value.fitView()
+      state.fitViewOnInitDone = true
     }
 
     if (changes.length) {
@@ -813,7 +809,6 @@ export function useActions(
         isParent: _____,
         resizing: ______,
         dragging: _______,
-        initialized: ________,
         events: _________,
         ...rest
       } = node

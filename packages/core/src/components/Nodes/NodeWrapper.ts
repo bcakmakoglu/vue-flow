@@ -84,6 +84,8 @@ const NodeWrapper = defineComponent({
 
     const isFocusable = toRef(() => (typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable))
 
+    const isInit = toRef(() => !!node.dimensions.width && !!node.dimensions.height)
+
     const nodeCmp = computed(() => {
       const name = node.type || 'default'
 
@@ -227,7 +229,7 @@ const NodeWrapper = defineComponent({
       node.extent === 'parent' ||
       (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')
     ) {
-      until(() => node.initialized)
+      until(() => isInit)
         .toBe(true)
         .then(clampPosition)
     }
@@ -260,7 +262,7 @@ const NodeWrapper = defineComponent({
             getClass.value,
           ],
           'style': {
-            visibility: node.initialized ? 'visible' : 'hidden',
+            visibility: isInit.value ? 'visible' : 'hidden',
             zIndex: node.computedPosition.z ?? zIndex.value,
             transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
             pointerEvents: isSelectable.value || isDraggable.value ? 'all' : 'none',
