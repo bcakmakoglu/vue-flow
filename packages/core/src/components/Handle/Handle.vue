@@ -97,7 +97,7 @@ const isConnectable = computed(() => {
 
 // todo: remove this and have users handle this themselves using `updateNodeInternals`
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
-until(() => node.initialized)
+until(() => !!node.dimensions.width && !!node.dimensions.height)
   .toBe(true, { flush: 'post' })
   .then(() => {
     const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
