@@ -19,6 +19,7 @@ import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
 import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useLayout, useRunProcess, useShuffle } from './layout'
+import { MathApp, MathCSS, MathElements, MathIcon, MathOperatorNode, MathResultNode, MathValueNode } from './math'
 
 export const exampleImports = {
   basic: {
@@ -139,5 +140,14 @@ export const exampleImports = {
       'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@latest/lib/index.mjs',
       '@dagrejs/dagre': 'https://cdn.jsdelivr.net/npm/@dagrejs/dagre@1.1.2/+esm',
     },
+  },
+  math: {
+    'App.vue': MathApp,
+    'ValueNode.vue': MathValueNode,
+    'OperatorNode.vue': MathOperatorNode,
+    'ResultNode.vue': MathResultNode,
+    'Icon.vue': MathIcon,
+    'style.css': MathCSS,
+    'initial-elements.js': MathElements,
   },
 }
