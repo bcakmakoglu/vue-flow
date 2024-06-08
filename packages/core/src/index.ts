@@ -71,6 +71,7 @@ export { useNodeId } from './composables/useNodeId'
 export { useConnection } from './composables/useConnection'
 export { useHandleConnections } from './composables/useHandleConnections'
 export { useNodesData } from './composables/useNodesData'
+export { useEdgesData } from './composables/useEdgesData'
 export { useNodesInitialized } from './composables/useNodesInitialized'
 
 export { VueFlowError, ErrorCode, isErrorOfType } from './utils/errors'
