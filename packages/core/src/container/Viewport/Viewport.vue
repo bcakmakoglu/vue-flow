@@ -151,7 +151,7 @@ onMounted(() => {
     }
   })
 
-  d3Zoom.filter((event: MouseEvent | TouchEvent) => {
+  d3Zoom.filter((event: MouseEvent | TouchEvent | WheelEvent) => {
     const zoomScroll = zoomKeyPressed.value || zoomOnScroll.value
     const pinchZoom = zoomOnPinch.value && event.ctrlKey
     const eventButton = (event as MouseEvent).button
