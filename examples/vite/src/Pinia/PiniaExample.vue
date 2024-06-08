@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup>
 import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import useStore from './store'
 
@@ -6,13 +6,13 @@ const store = useStore()
 
 const { onConnect, addEdges } = useVueFlow()
 
-onConnect(addEdges)
+onConnect((params) => addEdges([params]))
 </script>
 
 <template>
-  <VueFlow v-model="store.elements" fit-view-on-init>
+  <VueFlow v-model:nodes="store.nodes" v-model:edges="store.edges" fit-view-on-init>
     <Panel position="top-center">
-      <button @click="store.updatePosition">update positions</button>
+      <button @click="store.updatePositions">update positions</button>
       <button @click="store.toggleClass">toggle class</button>
       <button @click="store.log">log store state</button>
       <button @click="store.reset">reset elements</button>
