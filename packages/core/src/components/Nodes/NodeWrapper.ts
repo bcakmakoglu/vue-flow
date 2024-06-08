@@ -50,7 +50,6 @@ const NodeWrapper = defineComponent({
       addSelectedNodes,
       updateNodeDimensions,
       onUpdateNodeInternals,
-      getIntersectingNodes,
       getNodeTypes,
       nodeExtent,
       elevateNodesOnSelect,
@@ -120,17 +119,16 @@ const NodeWrapper = defineComponent({
       id: props.id,
       el: nodeElement,
       disabled: () => !isDraggable.value,
-      selectable: () => isSelectable.value,
+      selectable: isSelectable,
       dragHandle: () => node.dragHandle,
       onStart(args) {
-        // todo: remove intersections from here - they are not needed and only reduce performance
-        emit.dragStart({ ...args, intersections: getIntersectingNodes(node) })
+        emit.dragStart(args)
       },
       onDrag(args) {
-        emit.drag({ ...args, intersections: getIntersectingNodes(node) })
+        emit.drag(args)
       },
       onStop(args) {
-        emit.dragStop({ ...args, intersections: getIntersectingNodes(node) })
+        emit.dragStop(args)
       },
     })
 
