@@ -54,8 +54,8 @@ importers:
         specifier: workspace:*
         version: link:../packages/node-toolbar
       '@vue/repl':
-        specifier: 4.2.1
-        version: 4.2.1
+        specifier: 3.4.0
+        version: 3.4.0
       blobity:
         specifier: ^0.2.3
         version: 0.2.3(react@18.2.0)(vue@3.3.11(typescript@4.9.5))
@@ -2610,8 +2610,8 @@ packages:
   '@vue/reactivity@3.4.19':
     resolution: {integrity: sha512-+VcwrQvLZgEclGZRHx4O2XhyEEcKaBi50WbxdVItEezUf4fqRh838Ix6amWTdX0CNb/b6t3Gkz3eOebfcSt+UA==}
 
-  '@vue/repl@4.2.1':
-    resolution: {integrity: sha512-kPpoAp0hQ1sKIGXEHtVdtdh2BgL97SAizEvCqRDB3LmgIYCPbzInwd4mqYkHstAhJPmkNslLd3rwfceMwzwinQ==}
+  '@vue/repl@3.4.0':
+    resolution: {integrity: sha512-iHhIsmQsp9PJuOwverCRQC2owFb0FSFzk6YWwyirAX6AqH//2FrUV4WB16f9lGX5pDXAHjxlzAE6Lqf9P17HHA==}
 
   '@vue/runtime-core@3.3.11':
     resolution: {integrity: sha512-g9ztHGwEbS5RyWaOpXuyIVFTschclnwhqEbdy5AwGhYOgc7m/q3NFwr50MirZwTTzX55JY8pSkeib9BX04NIpw==}
@@ -10054,7 +10054,7 @@ snapshots:
     dependencies:
       '@vue/shared': 3.4.19
 
-  '@vue/repl@4.2.1': {}
+  '@vue/repl@3.4.0': {}
 
   '@vue/runtime-core@3.3.11':
     dependencies:

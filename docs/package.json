@@ -21,7 +21,7 @@
     "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
     "@vue-flow/node-toolbar": "workspace:*",
-    "@vue/repl": "4.2.1",
+    "@vue/repl": "3.4.0",
     "blobity": "^0.2.3",
     "vue": "^3.3.11",
     "web-vitals": "^4.1.0"
