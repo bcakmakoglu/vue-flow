@@ -126,6 +126,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/pinia',
     component: () => import('./src/Pinia/PiniaExample.vue'),
   },
+  {
+    path: '/screenshot',
+    component: () => import('./src/Screenshot/ScreenshotExample.vue'),
+  },
 ]
 
 export const router = createRouter({
