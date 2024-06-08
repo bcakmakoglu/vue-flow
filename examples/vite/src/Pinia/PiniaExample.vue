@@ -1,6 +1,7 @@
 <script setup>
 import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import useStore from './store'
+import Icon from './Icon.vue'
 
 const store = useStore()
 
@@ -10,46 +11,69 @@ onConnect((params) => addEdges([params]))
 </script>
 
 <template>
-  <VueFlow v-model:nodes="store.nodes" v-model:edges="store.edges" fit-view-on-init>
-    <Panel position="top-center">
-      <button @click="store.updatePositions">update positions</button>
-      <button @click="store.toggleClass">toggle class</button>
-      <button @click="store.log">log store state</button>
-      <button @click="store.reset">reset elements</button>
+  <VueFlow v-model:nodes="store.nodes" v-model:edges="store.edges" class="pinia-flow" fit-view-on-init>
+    <Panel position="top-right">
+      <div class="buttons-panel">
+        <button @click="store.updatePositions">
+          <Icon name="shuffle" />
+        </button>
+        <button @click="store.toggleClass">
+          <Icon name="moon" />
+        </button>
+        <button @click="store.log">
+          <Icon name="log" />
+        </button>
+        <button @click="store.reset">
+          <Icon name="reset" />
+        </button>
+      </div>
     </Panel>
   </VueFlow>
 </template>
 
-<style scoped>
+<style>
+.pinia-flow {
+  background-color: #1a192b;
+  height: 100%;
+  width: 100%;
+}
+
+.buttons-panel {
+  display: flex;
+  gap: 10px;
+}
+
 .vue-flow__panel {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  color: #333;
-  font-size: 0.8rem;
-  margin: 0.25rem;
-  padding: 0.25rem 0.5rem;
+  background-color: #2d3748;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
 }
 
 .vue-flow__panel button {
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  color: #333;
+  border: none;
   cursor: pointer;
-  font-size: 0.8rem;
-  margin: 0.25rem;
-  padding: 0.25rem 0.5rem;
+  background-color: #4a5568;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .vue-flow__panel button:hover {
-  background-color: #e5e5e5;
+  background-color: #2563eb;
+  transition: background-color 0.2s;
 }
 
-.vue-flow__panel button:active {
-  background-color: #d5d5d5;
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
+.vue-flow__node.dark {
+  background-color: #2d3748;
+  color: white;
 }
 </style>
