@@ -173,8 +173,9 @@ export function useActions(
     }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
-      viewportHelper.value.fitView()
-      state.fitViewOnInitDone = true
+      viewportHelper.value.fitView().then(() => {
+        state.fitViewOnInitDone = true
+      })
     }
 
     if (changes.length) {
