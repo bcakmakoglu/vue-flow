@@ -19,7 +19,6 @@ import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
 import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useLayout, useRunProcess, useShuffle } from './layout'
-import { ScreenshotApp, useScreenshot } from './screenshot'
 
 export const exampleImports = {
   basic: {
@@ -139,13 +138,6 @@ export const exampleImports = {
       '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@latest/index.mjs',
       'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@latest/lib/index.mjs',
       '@dagrejs/dagre': 'https://cdn.jsdelivr.net/npm/@dagrejs/dagre@1.1.2/+esm',
-    },
-  },
-  screenshot: {
-    'App.vue': ScreenshotApp,
-    'useScreenshot.js': useScreenshot,
-    'additionalImports': {
-      'html-to-image': 'https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/+esm',
     },
   },
 }
