@@ -26,7 +26,11 @@ export default {
 </script>
 
 <template>
-  <Handle type="target" :position="Position.Left" :style="targetHandleStyle" />
+  <Handle type="target" :position="Position.Left" :style="targetHandleStyle">
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" :width="10" :height="10">
+      <circle cx="8" cy="8" r="7" fill="hotpink" />
+    </svg>
+  </Handle>
   <div>
     Custom Color Picker Node: <strong>{{ data.color }}</strong>
   </div>
