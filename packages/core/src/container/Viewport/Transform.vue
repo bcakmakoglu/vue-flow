@@ -1,7 +1,18 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useVueFlow } from '../../composables'
 
-const { viewport } = useVueFlow()
+const { viewport, fitViewOnInit, fitViewOnInitDone } = useVueFlow()
+
+const isHidden = computed(() => {
+  if (fitViewOnInit.value) {
+    return !fitViewOnInitDone.value
+  }
+
+  return false
+})
+
+const transform = computed(() => `translate(${viewport.value.x}px,${viewport.value.y}px) scale(${viewport.value.zoom})`)
 </script>
 
 <script lang="ts">
@@ -12,10 +23,7 @@ export default {
 </script>
 
 <template>
-  <div
-    class="vue-flow__transformationpane vue-flow__container"
-    :style="{ transform: `translate(${viewport.x}px,${viewport.y}px) scale(${viewport.zoom})` }"
-  >
+  <div class="vue-flow__transformationpane vue-flow__container" :style="{ transform, opacity: isHidden ? 0 : undefined }">
     <slot />
   </div>
 </template>
