@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import useStore from './store'
 import Icon from './Icon.vue'
