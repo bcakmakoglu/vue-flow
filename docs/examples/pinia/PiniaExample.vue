@@ -4,7 +4,7 @@ import sdk from '@stackblitz/sdk'
 const el = ref<HTMLDivElement>()
 
 onMounted(() => {
-  sdk.embedProjectId(el.value!, 'vitejs-vite-ujrwcm', {
+  sdk.embedProjectId(el.value!, 'vitejs-vite-zk9hqt', {
     forceEmbedLayout: true,
     openFile: 'src/App.vue',
     height: 750,

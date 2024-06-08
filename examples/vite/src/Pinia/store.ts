@@ -1,63 +1,80 @@
 import { defineStore } from 'pinia'
-import { isNode } from '@vue-flow/core'
+import { ref } from 'vue'
+import type { Edge, Node } from '@vue-flow/core'
 
-const useStore = defineStore('elementsStore', {
-  state() {
-    return {
-      foo: ['bar', 'baz'],
-      elements: [
-        {
-          id: '1',
-          type: 'input',
-          label: 'Node 1',
-          position: { x: 250, y: 5 },
-          class: 'light',
-        },
-        {
-          id: '2',
-          label: 'Node 2',
-          position: { x: 100, y: 100 },
-          class: 'light',
-        },
-        {
-          id: '3',
-          label: 'Node 3',
-          position: { x: 400, y: 100 },
-          class: 'light',
-        },
-        {
-          id: '4',
-          label: 'Node 4',
-          position: { x: 400, y: 200 },
-          class: 'light',
-        },
-        { id: 'e1-2', source: '1', target: '2' },
-        { id: 'e1-3', source: '1', target: '3' },
-        { id: 'e3-4', source: '3', target: '4' },
-      ],
-    }
-  },
-  actions: {
-    reset() {
-      this.elements = []
+const useStore = defineStore('vue-flow-pinia', () => {
+  const nodes = ref<Node[]>([
+    {
+      id: '1',
+      type: 'input',
+      label: 'Node 1',
+      position: { x: 250, y: 5 },
+      class: 'light',
     },
-    log() {
-      console.log('stored elements', this.elements)
+    {
+      id: '2',
+      label: 'Node 2',
+      position: { x: 100, y: 100 },
+      class: 'light',
     },
-    toggleClass() {
-      this.elements.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+    {
+      id: '3',
+      label: 'Node 3',
+      position: { x: 400, y: 100 },
+      class: 'light',
     },
-    updatePosition() {
-      this.elements.forEach((el) => {
-        if (isNode(el)) {
-          el.position = {
-            x: Math.random() * 400,
-            y: Math.random() * 400,
-          }
-        }
-      })
+    {
+      id: '4',
+      label: 'Node 4',
+      position: { x: 400, y: 200 },
+      class: 'light',
     },
-  },
+  ])
+
+  const edges = ref<Edge[]>([
+    { id: 'e1-2', source: '1', target: '2' },
+    { id: 'e1-3', source: '1', target: '3' },
+    { id: 'e3-4', source: '3', target: '4' },
+  ])
+
+  const reset = () => {
+    edges.value = []
+    nodes.value = []
+  }
+
+  const log = () => {
+    console.log('nodes', nodes.value, 'edges', edges.value)
+  }
+
+  const toggleClass = () => {
+    nodes.value = nodes.value.map((node) => {
+      return {
+        ...node,
+        class: node.class === 'dark' ? 'light' : 'dark',
+      }
+    })
+  }
+
+  const updatePositions = () => {
+    nodes.value = nodes.value.map((node) => {
+      return {
+        ...node,
+        position: {
+          x: Math.random() * 400,
+          y: Math.random() * 400,
+        },
+      }
+    })
+  }
+
+  return {
+    nodes,
+    edges,
+    reset,
+    log,
+    toggleClass,
+    updatePositions,
+  }
 })
 
 export default useStore
