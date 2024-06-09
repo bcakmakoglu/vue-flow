@@ -12,7 +12,8 @@ export interface UseNodeConnectionsParams {
 }
 
 /**
- * Composable that returns existing connections of a node.
+ * Composable that returns existing connections of a node by handle type.
+ * This is useful when you want to get all connections of a node by a specific handle type.
  *
  * @public
  * @param params
