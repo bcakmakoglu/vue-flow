@@ -29,12 +29,35 @@ watch(isHidden, () => {
     <Background />
 
     <Panel position="top-right">
-      <div>
-        <label for="ishidden">
-          hidden
-          <input id="ishidden" v-model="isHidden" type="checkbox" />
-        </label>
-      </div>
+      <button type="button" @click="isHidden = !isHidden">
+        {{ isHidden ? 'Show' : 'Hide' }}
+      </button>
     </Panel>
   </VueFlow>
 </template>
+
+<style>
+.vue-flow__panel {
+  background-color: #2d3748;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vue-flow__panel button {
+  background-color: #4a5568;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+}
+</style>
