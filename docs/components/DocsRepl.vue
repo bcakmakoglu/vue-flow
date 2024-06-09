@@ -48,7 +48,8 @@ const additionalImports = 'additionalImports' in imports ? imports.additionalImp
 
 for (const example of Object.keys(imports).filter((i) => i !== 'additionalImports')) {
   if (example.includes('css')) {
-    css += `${imports[example as keyof typeof imports]}`
+    // prettify inline css string
+    css += `${imports[example as keyof typeof imports]}`.replace(/}/g, '}\n')
   } else {
     files[example] = imports[example as keyof typeof imports]
   }
