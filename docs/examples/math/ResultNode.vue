@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { Handle, Position, useHandleConnections, useNodesData, useVueFlow } from '@vue-flow/core'
+import { Handle, Position, useHandleConnections, useNodeConnections, useNodesData } from '@vue-flow/core'
 
 defineProps(['id'])
 
@@ -11,8 +11,6 @@ const mathFunctions = {
   '/': (a, b) => a / b,
 }
 
-const { getConnectedEdges } = useVueFlow()
-
 // Get the source connections of the result node. In this example it's only one operator node.
 const sourceConnections = useHandleConnections({
   // type target means all connections where *this* node is the target
@@ -21,9 +19,10 @@ const sourceConnections = useHandleConnections({
 })
 
 // Get the source connections of the operator node
-const operatorSourceConnections = computed(() =>
-  getConnectedEdges(sourceConnections.value[0].source).filter((e) => e.source !== sourceConnections.value[0].source),
-)
+const operatorSourceConnections = useNodeConnections({
+  type: 'target',
+  nodeId: () => sourceConnections.value[0]?.source,
+})
 
 const operatorData = useNodesData(() => sourceConnections.value.map((connection) => connection.source))
 
@@ -50,6 +49,7 @@ const result = computed(() => {
 </script>
 
 <template>
+  {{ operatorSourceConnections }}
   <div class="calculation">
     <template v-for="(value, i) in valueData" :key="`${value.id}-${value.data}`">
       <span>
