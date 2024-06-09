@@ -48,7 +48,7 @@ const additionalImports = 'additionalImports' in imports ? imports.additionalImp
 
 for (const example of Object.keys(imports).filter((i) => i !== 'additionalImports')) {
   if (example.includes('css')) {
-    css += `${imports[example as keyof typeof imports]}`
+    css += formatCSS(imports[example as keyof typeof imports])
   } else {
     files[example] = imports[example as keyof typeof imports]
   }
@@ -82,6 +82,17 @@ const sfcOptions = {
     propsDestructure: true,
   },
 } as SFCOptions
+
+function formatCSS(cssString: string) {
+  let formattedString = cssString
+
+  formattedString = formattedString.replace(/}/g, '\n}\n\n')
+  formattedString = formattedString.replace(/;/g, ';\n    ')
+
+  formattedString = formattedString.replace(/{/g, ' {\n    ')
+
+  return formattedString.trim()
+}
 </script>
 
 <template>
