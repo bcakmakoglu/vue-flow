@@ -206,10 +206,8 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Drag & Drop', link: '/examples/dnd' },
             { text: 'Interactions', link: '/examples/interaction' },
             { text: 'Save & Restore', link: '/examples/save' },
-            { text: 'Math Operation Flow', link: '/examples/math' },
             { text: 'Screenshot', link: '/examples/screenshot' },
             { text: 'Node Visibility', link: '/examples/hidden' },
-            { text: 'Node Intersections', link: '/examples/intersection' },
             { text: 'Multiple Flows', link: '/examples/multi' },
             { text: 'Pinia Store', link: '/examples/pinia' },
             { text: 'Viewport Transition', link: '/examples/transition' },
@@ -223,6 +221,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           items: [
             { text: 'Custom Node', link: '/examples/nodes/' },
             { text: 'Update Node', link: '/examples/nodes/update-node' },
+            { text: 'Node Intersections', link: '/examples/nodes/intersection' },
             { text: 'Nested Nodes', link: '/examples/nodes/nesting' },
             { text: 'Node Resizer', link: '/examples/nodes/node-resizer' },
             { text: 'Node Toolbar', link: '/examples/nodes/node-toolbar' },

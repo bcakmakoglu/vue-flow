@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 
-const { onPaneReady, findNode, updateNode } = useVueFlow()
+const { onPaneReady, updateNode } = useVueFlow()
 
 const opts = reactive({
   bg: '#eeeeee',
