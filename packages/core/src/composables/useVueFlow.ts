@@ -18,6 +18,7 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
  * If no store instance is found in context, a new store instance is created and registered in storage
  *
  * @public
+ * @param options - optional options to initialize the store instance
  * @returns a vue flow store instance
  */
 export function useVueFlow(options?: FlowOptions): VueFlowStore {
@@ -123,6 +124,10 @@ export function useVueFlow(options?: FlowOptions): VueFlowStore {
     provide(VueFlow, vueFlow)
 
     scope.vueFlowId = vueFlow.id
+  }
+
+  if (options) {
+    warn('options are deprecated and will be removed in the next major version. Use props on the `<VueFlow>` component instead.')
   }
 
   return vueFlow
