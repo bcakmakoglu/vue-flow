@@ -1,15 +1,18 @@
-.interactionflow .controls {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 4;
-  font-size: 11px;
-  background-color: lightgray;
-  border-bottom-right-radius: 10px;
-  padding: 8px;
+.vue-flow__panel {
+  background-color: #2d3748;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.interactionflow .controls .label {
+
+.vue-flow__panel .label {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,6 +20,6 @@
   cursor: pointer;
 }
 
-.interactionflow .controls .label input {
+.vue-flow__panel .label input {
   cursor: pointer;
 }

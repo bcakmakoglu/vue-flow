@@ -29,3 +29,8 @@
   background-color: #2563eb;
   transition: background-color 0.2s;
 }
+
+.vue-flow__panel button svg {
+  width: 100%;
+  height: 100%;
+}

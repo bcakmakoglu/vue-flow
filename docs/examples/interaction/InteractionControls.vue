@@ -1,5 +1,5 @@
 <script setup>
-import { useVueFlow } from '@vue-flow/core'
+import { Panel, useVueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
 
 const {
@@ -42,7 +42,7 @@ onMoveEnd((flowTransform) => console.log('move end', flowTransform))
 </script>
 
 <template>
-  <div class="controls">
+  <Panel position="top-right">
     <div>
       <label class="label" for="draggable">
         nodesDraggable
@@ -113,5 +113,5 @@ onMoveEnd((flowTransform) => console.log('move end', flowTransform))
         <input id="capturezoompanescroll" v-model="captureZoomScroll" type="checkbox" class="vue-flow__capturezoompanescroll" />
       </label>
     </div>
-  </div>
+  </Panel>
 </template>
