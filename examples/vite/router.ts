@@ -134,6 +134,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/screenshot',
     component: () => import('./src/Screenshot/ScreenshotExample.vue'),
   },
+  {
+    path: '/confirm-delete',
+    component: () => import('./src/ConfirmDelete/ConfirmDeleteExample.vue'),
+  },
 ]
 
 export const router = createRouter({

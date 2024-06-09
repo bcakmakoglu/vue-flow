@@ -208,6 +208,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Save & Restore', link: '/examples/save' },
             { text: 'Math Operation Flow', link: '/examples/math' },
             { text: 'Screenshot', link: '/examples/screenshot' },
+            { text: 'Confirm Delete', link: '/examples/confirm' },
             { text: 'Node Visibility', link: '/examples/hidden' },
             { text: 'Node Intersections', link: '/examples/intersection' },
             { text: 'Multiple Flows', link: '/examples/multi' },
