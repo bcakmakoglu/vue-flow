@@ -1,22 +1,19 @@
 <script setup>
+import { computed } from 'vue'
 import { Handle, Position, useVueFlow } from '@vue-flow/core'
 
 const props = defineProps(['id', 'data'])
 
 const { updateNodeData } = useVueFlow()
 
-function onChange(event) {
-  const value = Number.parseFloat(event.target.value)
-
-  if (!Number.isNaN(value)) {
-    updateNodeData(props.id, { value })
-  }
-}
+const value = computed({
+  get: () => props.data.value,
+  set: (value) => updateNodeData(props.id, { value }),
+})
 </script>
 
 <template>
-  <label :for="`${id}-input`"> </label>
-  <input :id="`${id}-input`" :value="data.value" type="number" class="nodrag" @change="onChange" />
+  <input :id="`${id}-input`" v-model="value" type="number" class="nodrag" />
 
   <Handle type="source" :position="Position.Right" :connectable="false" />
 </template>
