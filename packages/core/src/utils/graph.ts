@@ -69,22 +69,18 @@ export function getHostForElement(element: HTMLElement): Document {
   return window.document
 }
 
-// todo: refactor generic to use MaybeElement
 export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
   return element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
 }
 
-// todo: refactor generic to use MaybeElement
 export function isGraphEdge<Data = ElementData>(element: MaybeElement): element is GraphEdge<Data> {
   return isEdge(element) && 'sourceNode' in element && 'targetNode' in element
 }
 
-// todo: refactor generic to use MaybeElement
 export function isNode<Data = ElementData>(element: MaybeElement): element is Node<Data> {
   return element && typeof element === 'object' && 'id' in element && 'position' in element && !isEdge(element)
 }
 
-// todo: refactor generic to use MaybeElement
 export function isGraphNode<Data = ElementData>(element: MaybeElement): element is GraphNode<Data> {
   return isNode(element) && 'computedPosition' in element
 }
@@ -105,15 +101,15 @@ export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: str
       width: 0,
       height: 0,
     }),
+    computedPosition: markRaw({
+      z: 0,
+      ...node.position,
+    }),
     // todo: shouldn't be defined initially, as we want to use handleBounds to check if a node was actually initialized or not
     handleBounds: {
       source: [],
       target: [],
     },
-    computedPosition: markRaw({
-      z: 0,
-      ...node.position,
-    }),
     draggable: undefined,
     selectable: undefined,
     connectable: undefined,
@@ -356,17 +352,23 @@ export function getBoundsofRects(rect1: Rect, rect2: Rect) {
 }
 
 export function getRectOfNodes(nodes: GraphNode[]) {
-  const box = nodes.reduce(
-    (currBox, { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 } } = {} as any) =>
-      getBoundsOfBoxes(
-        currBox,
-        rectToBox({
-          ...computedPosition,
-          ...dimensions,
-        } as Rect),
-      ),
-    { x: Number.POSITIVE_INFINITY, y: Number.POSITIVE_INFINITY, x2: Number.NEGATIVE_INFINITY, y2: Number.NEGATIVE_INFINITY },
-  )
+  let box: Box = {
+    x: Number.POSITIVE_INFINITY,
+    y: Number.POSITIVE_INFINITY,
+    x2: Number.NEGATIVE_INFINITY,
+    y2: Number.NEGATIVE_INFINITY,
+  }
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i]
+    box = getBoundsOfBoxes(
+      box,
+      rectToBox({
+        ...node.computedPosition,
+        ...node.dimensions,
+      } as Rect),
+    )
+  }
 
   return boxToRect(box)
 }

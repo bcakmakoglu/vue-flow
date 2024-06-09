@@ -23,7 +23,10 @@ import type { VueFlowStore } from './store'
 // todo: should be object type
 export type ElementData = any
 
-/** A flow element (after parsing into state)  */
+/**
+ * @deprecated - will be removed in the next major version
+ * A flow element (after parsing into state)
+ */
 export type FlowElement<
   NodeData = ElementData,
   EdgeData = ElementData,
@@ -31,6 +34,10 @@ export type FlowElement<
   EdgeEvents extends Record<string, CustomEvent> = any,
 > = GraphNode<NodeData, NodeEvents> | GraphEdge<EdgeData, EdgeEvents>
 
+/**
+ * @deprecated - will be removed in the next major version
+ * An array of flow elements (after parsing into state)
+ */
 export type FlowElements<
   NodeData = ElementData,
   EdgeData = ElementData,
@@ -54,6 +61,7 @@ export type Elements<
 > = Element<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
 
 export type MaybeElement = Node | Edge | Connection | FlowElement | Element
+
 export interface CustomThemeVars {
   [key: string]: string | number | undefined
 }
@@ -82,13 +90,11 @@ export enum Position {
   Bottom = 'bottom',
 }
 
-// todo: Rename to `Point`
 export interface XYPosition {
   x: number
   y: number
 }
 
-// todo: Rename to `AbsolutePoint`
 export type XYZPosition = XYPosition & { z: number }
 
 export interface Dimensions {

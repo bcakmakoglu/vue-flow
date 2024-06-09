@@ -75,6 +75,7 @@ function useKeyOrCode(code: string, keysToWatch: string | string[]) {
  * @internal
  * @param keyFilter - Can be a boolean, a string or an array of strings. If it's a boolean, it will always return that value. If it's a string, it will return true if the key is pressed. If it's an array of strings, it will return true if any of the keys are pressed, or a combination is pressed (e.g. ['ctrl+a', 'ctrl+b'])
  * @param onChange - Callback function that will be called when the key state changes
+ * @param options - Options object
  */
 export function useKeyPress(
   keyFilter: MaybeRefOrGetter<KeyFilter | null>,

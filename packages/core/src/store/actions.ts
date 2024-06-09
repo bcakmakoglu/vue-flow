@@ -141,7 +141,7 @@ export function useActions(
     const style = window.getComputedStyle(viewportNode)
     const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
-    const changes: NodeDimensionChange[] = Array.from({ length: updates.length })
+    const changes: NodeDimensionChange[] = []
 
     for (let i = 0; i < updates.length; ++i) {
       const update = updates[i]
@@ -378,7 +378,7 @@ export function useActions(
       return
     }
 
-    state.nodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
+    state.nodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
@@ -419,7 +419,7 @@ export function useActions(
     let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
     nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
-    const graphNodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
+    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger)
 
     const changes: NodeAddChange<any>[] = []
     for (const node of graphNodes) {
@@ -665,7 +665,6 @@ export function useActions(
     return [nodeRect, node, isRectObj]
   }
 
-  // todo: rename to `findIntersectingNodes`
   const getIntersectingNodes: Actions['getIntersectingNodes'] = (nodeOrRect, partially = true, nodes = state.nodes) => {
     const [nodeRect, node, isRect] = getNodeRect(nodeOrRect)
 

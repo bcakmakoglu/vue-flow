@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
+import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types'
 import { useVueFlow } from '../../composables'
 import { getMarkerId } from '../../utils'
 import MarkerSymbols from './MarkerSymbols.vue'
@@ -8,20 +8,21 @@ import MarkerSymbols from './MarkerSymbols.vue'
 const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = useVueFlow()
 
 const markers = computed(() => {
-  const ids: string[] = []
+  const ids: Set<string> = new Set()
   const markers: MarkerProps[] = []
 
   const createMarkers = (marker?: EdgeMarkerType) => {
     if (marker) {
       const markerId = getMarkerId(marker, vueFlowId)
-      if (!ids.includes(markerId)) {
+
+      if (!ids.has(markerId)) {
         if (typeof marker === 'object') {
           markers.push({ ...marker, id: markerId, color: marker.color || defaultColor.value })
         } else {
           markers.push({ id: markerId, color: defaultColor.value, type: marker as MarkerType })
         }
 
-        ids.push(markerId)
+        ids.add(markerId)
       }
     }
   }
@@ -30,15 +31,13 @@ const markers = computed(() => {
     createMarkers(marker)
   }
 
-  edges.value.reduce<MarkerProps[]>((markers, edge) => {
+  for (const edge of edges.value) {
     for (const marker of [edge.markerStart, edge.markerEnd]) {
       createMarkers(marker)
     }
+  }
 
-    return markers.sort((a, b) => a.id.localeCompare(b.id))
-  }, markers)
-
-  return markers
+  return markers.sort((a, b) => a.id.localeCompare(b.id))
 })
 </script>
 

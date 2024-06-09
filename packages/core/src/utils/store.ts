@@ -89,22 +89,18 @@ export function updateEdgeAction(
   return newEdge
 }
 
-export function createGraphNodes(
-  nodes: Node[],
-  currGraphNodes: GraphNode[],
-  findNode: Actions['findNode'],
-  triggerError: State['hooks']['error']['trigger'],
-) {
+export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], triggerError: State['hooks']['error']['trigger']) {
   const parentNodes: Record<string, true> = {}
 
-  const nextNodes = nodes.reduce((nextNodes, node, currentIndex) => {
-    // make sure we don't try to add invalid nodes
+  const nextNodes: GraphNode[] = []
+  for (let i = 0; i < nodes.length; ++i) {
+    const node = nodes[i]
+
     if (!isNode(node)) {
       triggerError(
-        new VueFlowError(ErrorCode.NODE_INVALID, (node as undefined | Record<any, any>)?.id) ||
-          `[ID UNKNOWN|INDEX ${currentIndex}]`,
+        new VueFlowError(ErrorCode.NODE_INVALID, (node as undefined | Record<any, any>)?.id) || `[ID UNKNOWN|INDEX ${i}]`,
       )
-      return nextNodes
+      continue
     }
 
     const parsed = parseNode(node, findNode(node.id), node.parentNode)
@@ -113,13 +109,11 @@ export function createGraphNodes(
       parentNodes[node.parentNode] = true
     }
 
-    return nextNodes.concat(parsed)
-  }, [] as GraphNode[])
-
-  const allNodes = [...nextNodes, ...currGraphNodes]
+    nextNodes[i] = parsed
+  }
 
   for (const node of nextNodes) {
-    const parentNode = allNodes.find((n) => n.id === node.parentNode)
+    const parentNode = findNode(node.parentNode) || nextNodes.find((n) => n.id === node.parentNode)
 
     if (node.parentNode && !parentNode) {
       triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentNode))
