@@ -1,20 +1,31 @@
-.save-restore-controls {
-  font-size: 12px;
+.vue-flow__panel {
+  background-color: #2d3748;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.save-restore-controls button {
-  margin-left: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: white;
-  -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
-  box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
+.vue-flow__panel .buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.vue-flow__panel button {
+  border: none;
   cursor: pointer;
+  background-color: #4a5568;
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.save-restore-controls button:hover {
-  transform: scale(105%);
-  transition: 250ms all ease-in-out;
+.vue-flow__panel button:hover {
+  background-color: #2563eb;
+  transition: background-color 0.2s;
 }

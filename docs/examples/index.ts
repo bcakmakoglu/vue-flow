@@ -7,7 +7,7 @@ import { StressApp, StressCSS, StressUtils } from './stress'
 import { UpdateEdgeApp } from './update-edge'
 import { UpdateNodeApp, UpdateNodeCSS } from './update-node'
 import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode } from './validation'
-import { SaveRestoreApp, SaveRestoreCSS, SaveRestoreControls } from './save-restore'
+import { SaveRestoreApp, SaveRestoreCSS, SaveRestoreControls, SaveRestoreIcon } from './save-restore'
 import { DndApp, DndBackground, DndCSS, DndScript, DndSidebar } from './dnd'
 import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
@@ -71,6 +71,7 @@ export const exampleImports = {
   saveRestore: {
     'App.vue': SaveRestoreApp,
     'Controls.vue': SaveRestoreControls,
+    'Icon.vue': SaveRestoreIcon,
     'style.css': SaveRestoreCSS,
   },
   dnd: {

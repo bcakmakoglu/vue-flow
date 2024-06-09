@@ -57,7 +57,7 @@
 }
 
 .vue-flow__node-operator.selected {
-  box-shadow: 0 0 0 2px #0EA5E9;
+  box-shadow: 0 0 0 2px #2563eb;
 }
 
 .vue-flow__node-operator .buttons {
@@ -86,12 +86,12 @@
 }
 
 .vue-flow__node-operator button:hover {
-  background-color: #0EA5E9;
+  background-color: #2563eb;
   transition: background-color 0.2s;
 }
 
 .vue-flow__node-operator button.selected {
-  background-color: #0EA5E9;
+  background-color: #2563eb;
 }
 
 .vue-flow__node-operator .vue-flow__handle[data-handleid="target-a"] {
@@ -103,7 +103,7 @@
 }
 
 .vue-flow__node-operator .vue-flow__handle {
-  background-color: #0EA5E9;
+  background-color: #2563eb;
 }
 
 .vue-flow__node-result {

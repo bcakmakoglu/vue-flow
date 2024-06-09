@@ -1,7 +1,8 @@
 <script setup>
 import { Panel, useVueFlow } from '@vue-flow/core'
+import Icon from './Icon.vue'
 
-const flowKey = 'example-flow'
+const flowKey = 'vue-flow--save-restore'
 
 const { nodes, addNodes, dimensions, toObject, fromObject } = useVueFlow()
 
@@ -31,9 +32,17 @@ function onAdd() {
 </script>
 
 <template>
-  <Panel position="top-right" class="save-restore-controls">
-    <button style="background-color: #33a6b8" @click="onSave">save</button>
-    <button style="background-color: #113285" @click="onRestore">restore</button>
-    <button style="background-color: #6f3381" @click="onAdd">add node</button>
+  <Panel position="top-right">
+    <div class="buttons">
+      <button title="save graph" @click="onSave">
+        <Icon name="save" />
+      </button>
+      <button title="restore graph" @click="onRestore">
+        <Icon name="restore" />
+      </button>
+      <button title="add random node" @click="onAdd">
+        <Icon name="add" />
+      </button>
+    </div>
   </Panel>
 </template>

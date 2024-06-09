@@ -4,7 +4,7 @@ defineProps(['name'])
 
 <template>
   <svg v-if="name === '+'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z" />
+    <path fill="currentColor" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z" />
   </svg>
 
   <svg v-else-if="name === '-'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
