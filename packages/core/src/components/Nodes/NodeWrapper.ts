@@ -37,8 +37,6 @@ const NodeWrapper = defineComponent({
   compatConfig: { MODE: 3 },
   props: ['id', 'resizeObserver'],
   setup(props: Props) {
-    provide(NodeId, props.id)
-
     const {
       id: vueFlowId,
       noPanClassName,
@@ -64,16 +62,17 @@ const NodeWrapper = defineComponent({
       nodesFocusable,
     } = useVueFlow()
 
+    const nodeElement = ref<HTMLDivElement | null>(null)
+    provide(NodeRef, nodeElement)
+    provide(NodeId, props.id)
+
     const slots = inject(Slots)
 
     const instance = getCurrentInstance()
 
     const updateNodePositions = useUpdateNodePositions()
 
-    const { node, parentNode, connectedEdges } = useNode(props.id)
-
-    const nodeElement = ref<HTMLDivElement | null>(null)
-    provide(NodeRef, nodeElement)
+    const { node, parentNode } = useNode(props.id)
 
     const isDraggable = toRef(() => (typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable))
 
@@ -333,28 +332,28 @@ const NodeWrapper = defineComponent({
 
     function onMouseEnter(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseEnter({ event, node, connectedEdges: connectedEdges.value })
+        emit.mouseEnter({ event, node })
       }
     }
 
     function onMouseMove(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseMove({ event, node, connectedEdges: connectedEdges.value })
+        emit.mouseMove({ event, node })
       }
     }
 
     function onMouseLeave(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseLeave({ event, node, connectedEdges: connectedEdges.value })
+        emit.mouseLeave({ event, node })
       }
     }
 
     function onContextMenu(event: MouseEvent) {
-      return emit.contextMenu({ event, node, connectedEdges: connectedEdges.value })
+      return emit.contextMenu({ event, node })
     }
 
     function onDoubleClick(event: MouseEvent) {
-      return emit.doubleClick({ event, node, connectedEdges: connectedEdges.value })
+      return emit.doubleClick({ event, node })
     }
 
     function onSelectNode(event: MouseEvent) {
@@ -370,7 +369,7 @@ const NodeWrapper = defineComponent({
         )
       }
 
-      emit.click({ event, node, connectedEdges: connectedEdges.value })
+      emit.click({ event, node })
     }
 
     function onKeyDown(event: KeyboardEvent) {
