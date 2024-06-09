@@ -222,8 +222,12 @@ interface GetHandleLookupParams {
 }
 
 export function getHandleLookup({ nodes, nodeId, handleId, handleType }: GetHandleLookupParams) {
-  return nodes.reduce<ConnectionHandle[]>((res, node) => {
+  const handleLookup: ConnectionHandle[] = []
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i]
+
     const { handleBounds } = node
+
     let sourceHandles: ConnectionHandle[] = []
     let targetHandles: ConnectionHandle[] = []
 
@@ -232,9 +236,10 @@ export function getHandleLookup({ nodes, nodeId, handleId, handleType }: GetHand
       targetHandles = getHandles(node, handleBounds, 'target', `${nodeId}-${handleId}-${handleType}`)
     }
 
-    res.push(...sourceHandles, ...targetHandles)
-    return res
-  }, [])
+    handleLookup.push(...sourceHandles, ...targetHandles)
+  }
+
+  return handleLookup
 }
 
 export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDomNode: Element | null): HandleType | null {

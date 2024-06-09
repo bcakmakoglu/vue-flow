@@ -356,17 +356,23 @@ export function getBoundsofRects(rect1: Rect, rect2: Rect) {
 }
 
 export function getRectOfNodes(nodes: GraphNode[]) {
-  const box = nodes.reduce(
-    (currBox, { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 } } = {} as any) =>
-      getBoundsOfBoxes(
-        currBox,
-        rectToBox({
-          ...computedPosition,
-          ...dimensions,
-        } as Rect),
-      ),
-    { x: Number.POSITIVE_INFINITY, y: Number.POSITIVE_INFINITY, x2: Number.NEGATIVE_INFINITY, y2: Number.NEGATIVE_INFINITY },
-  )
+  let box: Box = {
+    x: Number.POSITIVE_INFINITY,
+    y: Number.POSITIVE_INFINITY,
+    x2: Number.NEGATIVE_INFINITY,
+    y2: Number.NEGATIVE_INFINITY,
+  }
+
+  for (let i = 0; i < nodes.length; i++) {
+    const node = nodes[i]
+    box = getBoundsOfBoxes(
+      box,
+      rectToBox({
+        ...node.computedPosition,
+        ...node.dimensions,
+      } as Rect),
+    )
+  }
 
   return boxToRect(box)
 }
