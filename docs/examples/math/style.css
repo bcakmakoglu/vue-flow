@@ -15,12 +15,15 @@
   stroke-width: 3;
 }
 
+.vue-flow__node {
+  background-color: #f3f4f6;
+}
+
 .vue-flow__node-value {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background-color: #f3f4f6;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -39,6 +42,8 @@
 
 .vue-flow__node-value input:focus {
   outline: none;
+  box-shadow: 0 0 0 2px #ec4899;
+  transition: box-shadow 0.2s;
 }
 
 .vue-flow__node-value .vue-flow__handle {
@@ -51,7 +56,6 @@
   align-items: center;
   gap: 8px;
   padding: 16px 24px;
-  background-color: #f3f4f6;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -112,7 +116,6 @@
   align-items: center;
   gap: 8px;
   padding: 16px 24px;
-  background-color: #f3f4f6;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -121,8 +124,18 @@
   box-shadow: 0 0 0 2px #5EC697;
 }
 
-.vue-flow__node-result .calculation {
+.vue-flow__node-result .result {
   display: flex;
   gap: 8px;
   font-size: 24px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

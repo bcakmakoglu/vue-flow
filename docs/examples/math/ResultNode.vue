@@ -64,7 +64,7 @@ const result = computed(() => {
 
   <span> = </span>
 
-  <span class="counter" :style="{ color: result > 0 ? '#5EC697' : '#f15a16' }">
+  <span class="result" :style="{ color: result > 0 ? '#5EC697' : '#f15a16' }">
     {{ result }}
   </span>
 
