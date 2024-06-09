@@ -50,15 +50,14 @@ useKeyPress(
       return
     }
 
-    const nodesToRemove = getNodes.value.reduce<GraphNode[]>((res, node) => {
-      if (!node.selected && node.parentNode && res.find((n) => n.id === node.parentNode)) {
-        res.push(node)
+    const nodesToRemove: GraphNode[] = []
+    for (const node of getNodes.value) {
+      if (!node.selected && node.parentNode && nodesToRemove.some((n) => n.id === node.parentNode)) {
+        nodesToRemove.push(node)
       } else if (node.selected) {
-        res.push(node)
+        nodesToRemove.push(node)
       }
-
-      return res
-    }, [])
+    }
 
     if (nodesToRemove || getSelectedEdges.value) {
       if (getSelectedEdges.value.length > 0) {

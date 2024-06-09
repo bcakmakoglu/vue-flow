@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types/edge'
+import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types'
 import { useVueFlow } from '../../composables'
 import { getMarkerId } from '../../utils'
 import MarkerSymbols from './MarkerSymbols.vue'
@@ -30,15 +30,13 @@ const markers = computed(() => {
     createMarkers(marker)
   }
 
-  edges.value.reduce<MarkerProps[]>((markers, edge) => {
+  for (const edge of edges.value) {
     for (const marker of [edge.markerStart, edge.markerEnd]) {
       createMarkers(marker)
     }
+  }
 
-    return markers.sort((a, b) => a.id.localeCompare(b.id))
-  }, markers)
-
-  return markers
+  return markers.sort((a, b) => a.id.localeCompare(b.id))
 })
 </script>
 

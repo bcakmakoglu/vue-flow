@@ -378,7 +378,7 @@ export function useActions(
       return
     }
 
-    state.nodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
+    state.nodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
@@ -419,7 +419,7 @@ export function useActions(
     let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
     nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
-    const graphNodes = createGraphNodes(nextNodes, state.nodes, findNode, state.hooks.error.trigger)
+    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger)
 
     const changes: NodeAddChange<any>[] = []
     for (const node of graphNodes) {
