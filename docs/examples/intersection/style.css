@@ -1,3 +1,19 @@
 .vue-flow__node.intersecting {
-  background-color: yellow;
+  background-color: #f15a16;
+}
+
+.vue-flow__panel {
+  height: 250px;
+  width: 250px;
+  border: 1px dashed #ccc;
+  pointer-events: none !important;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vue-flow__panel.intersecting {
+  border-color: #f15a16;
+  background-color: rgba(241, 90, 22, 0.03);
 }
