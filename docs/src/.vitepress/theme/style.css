@@ -157,7 +157,7 @@
 }
 
 .VPNavBar.has-sidebar .content, .VPNav {
-  background-color: rgba(var(--vp-c-bg), 0.75);
+  background-color: var(--vp-c-bg);
   backdrop-filter: blur(1px);
 }
 
