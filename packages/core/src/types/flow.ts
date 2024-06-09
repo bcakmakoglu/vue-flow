@@ -208,6 +208,7 @@ export interface FlowProps {
 }
 
 // Todo: Remove in next major version
+/** @deprecated use `FlowProps` instead */
 export type FlowOptions = FlowProps
 
 export interface FlowEmits {
