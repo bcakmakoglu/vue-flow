@@ -1,44 +1,42 @@
 <script setup>
-import { reactive, ref } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { ref } from 'vue'
+import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 
-const { onPaneReady, findNode, updateNode } = useVueFlow()
+const { updateNode } = useVueFlow()
 
-const opts = reactive({
-  bg: '#eeeeee',
-  label: 'Node 1',
-  hidden: false,
-})
+const bgColor = ref('#eeeeee')
+
+const label = ref('Node 1')
 
 const nodes = ref([
-  { id: '1', label: opts.label, style: { backgroundColor: opts.bg }, hidden: opts.hidden, position: { x: 100, y: 100 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 200 } },
+  {
+    id: '1',
+    data: { label: label.value },
+    style: { backgroundColor: bgColor.value },
+    position: { x: 100, y: 100 },
+  },
+  { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 200 } },
 ])
 
 const edges = ref([{ id: 'e1-2', source: '1', target: '2' }])
 
-onPaneReady(({ fitView }) => {
-  fitView()
-})
-
 function handleUpdate() {
-  updateNode(nodes.value[0].id, { label: opts.label, style: { backgroundColor: opts.bg }, hidden: opts.hidden })
+  updateNode('1', { data: { label: label.value }, style: { backgroundColor: bgColor.value } })
 }
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges">
-    <div class="updatenode__controls">
-      <label>label:</label>
-      <input v-model="opts.label" @input="handleUpdate" />
-
-      <label class="updatenode__bglabel">background:</label>
-      <input v-model="opts.bg" type="color" @input="handleUpdate" />
-
-      <div class="updatenode__checkboxwrapper">
-        <label>hidden:</label>
-        <input v-model="opts.hidden" type="checkbox" @change="handleUpdate" />
+  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
+    <Panel position="top-right">
+      <div class="field">
+        <label for="label">Label:</label>
+        <input id="label" v-model="label" @input="handleUpdate" />
       </div>
-    </div>
+
+      <div class="field">
+        <label for="bgColor">Background color:</label>
+        <input id="bgColor" v-model="bgColor" type="color" @input="handleUpdate" />
+      </div>
+    </Panel>
   </VueFlow>
 </template>

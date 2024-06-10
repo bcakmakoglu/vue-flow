@@ -89,7 +89,7 @@ export default function useDragAndDrop() {
       id: nodeId,
       type: draggedType.value,
       position,
-      label: `[${nodeId}]`,
+      data: { label: nodeId },
     }
 
     /**

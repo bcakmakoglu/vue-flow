@@ -21,8 +21,6 @@ const nodes = ref([
   },
 ])
 
-const colorSelectorData = toRef(() => nodes.value[0].data)
-
 const edges = ref([
   {
     id: 'e1a-2',
@@ -30,11 +28,13 @@ const edges = ref([
     sourceHandle: 'a',
     target: '2',
     animated: true,
-    style: () => ({
-      stroke: colorSelectorData.value?.color,
-    }),
+    style: {
+      stroke: presets.ayame,
+    },
   },
 ])
+
+const colorSelectorData = toRef(() => nodes.value[0].data)
 
 // minimap stroke color functions
 function nodeStroke(n) {
@@ -42,7 +42,7 @@ function nodeStroke(n) {
     case 'input':
       return '#0041d0'
     case 'color-selector':
-      return presets.sumi
+      return n.data.color
     case 'output':
       return '#ff0072'
     default:
@@ -52,7 +52,7 @@ function nodeStroke(n) {
 
 function nodeColor(n) {
   if (n.type === 'color-selector') {
-    return colorSelectorData.value?.color
+    return n.data.color
   }
 
   return '#fff'
@@ -66,11 +66,10 @@ function nodeColor(n) {
     class="custom-node-flow"
     :class="[colorSelectorData?.isGradient ? 'animated-bg-gradient' : '']"
     :style="{ backgroundColor: colorSelectorData?.color }"
-    :default-viewport="{ zoom: 1.5 }"
     fit-view-on-init
   >
-    <template #node-color-selector="{ id }">
-      <ColorSelectorNode :id="id" />
+    <template #node-color-selector="props">
+      <ColorSelectorNode :id="props.id" :data="props.data" />
     </template>
 
     <template #node-output>

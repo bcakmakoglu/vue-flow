@@ -7,15 +7,30 @@ import CustomNode from './CustomNode.vue'
 const { addEdges } = useVueFlow()
 
 const nodes = ref([
-  { id: '0', type: 'custominput', position: { x: 0, y: 150 }, isValidTargetPos: (connection) => connection.target === 'B' },
+  {
+    id: '0',
+    type: 'custominput',
+    position: { x: 0, y: 150 },
+    isValidTargetPos: (connection) => connection.target === 'B',
+  },
   {
     id: 'A',
     type: 'custom',
     position: { x: 250, y: 0 },
     isValidSourcePos: () => false,
   },
-  { id: 'B', type: 'custom', position: { x: 250, y: 150 }, isValidSourcePos: (connection) => connection.target === 'B' },
-  { id: 'C', type: 'custom', position: { x: 250, y: 300 }, isValidSourcePos: (connection) => connection.target === 'B' },
+  {
+    id: 'B',
+    type: 'custom',
+    position: { x: 250, y: 150 },
+    isValidSourcePos: (connection) => connection.target === 'B',
+  },
+  {
+    id: 'C',
+    type: 'custom',
+    position: { x: 250, y: 300 },
+    isValidSourcePos: (connection) => connection.target === 'B',
+  },
 ])
 
 const edges = ref([])

@@ -7,7 +7,7 @@ const nodes = ref([
   {
     id: '1',
     type: 'resizable',
-    label: 'NodeResizer',
+    data: { label: 'NodeResizer' },
     position: { x: 0, y: 0 },
     style: { background: '#fff', border: '2px solid black' },
   },
@@ -17,7 +17,7 @@ const nodes = ref([
 <template>
   <VueFlow :nodes="nodes" fit-view-on-init>
     <template #node-resizable="resizableNodeProps">
-      <ResizableNode :label="resizableNodeProps.label" />
+      <ResizableNode :data="resizableNodeProps.data" />
     </template>
   </VueFlow>
 </template>

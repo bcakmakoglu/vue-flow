@@ -7,24 +7,21 @@ import TeleportableNode from './TeleportableNode.vue'
 const nodes = ref([
   {
     id: '1',
-    label: 'Click to teleport',
     type: 'teleportable',
     position: { x: 125, y: 0 },
-    data: {},
+    data: { label: 'Click to teleport' },
   },
   {
     id: '2',
-    label: 'Click to teleport',
     type: 'teleportable',
     position: { x: 350, y: 200 },
-    data: {},
+    data: { label: 'Click to teleport' },
   },
   {
     id: '3',
-    label: 'Click to teleport',
     type: 'teleportable',
     position: { x: 0, y: 200 },
-    data: {},
+    data: { label: 'Click to teleport' },
   },
 ])
 
