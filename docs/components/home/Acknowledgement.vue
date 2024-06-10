@@ -3,8 +3,8 @@ import Heart from '~icons/mdi/heart'
 </script>
 
 <template>
-  <div id="acknowledgement">
-    <div class="border-t-1 border-secondary pt-6">
+  <section id="acknowledgement">
+    <div class="border-t-1 border-secondary py-6">
       <div class="max-w-3/4 md:max-w-4xl mx-auto py-4 md:py-12 lg:py-12 text-center">
         <h1 class="md:(!mb-8) flex justify-center items-center gap-2"><Heart class="text-red-500 min-w-8" /> Acknowledgement</h1>
 
@@ -33,5 +33,5 @@ import Heart from '~icons/mdi/heart'
         </p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
