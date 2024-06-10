@@ -21,7 +21,6 @@ import type {
   XYPosition,
   XYZPosition,
 } from '../types'
-import { useWindow } from '../composables'
 import { isDef, warn } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
@@ -57,16 +56,14 @@ export function clampPosition(position: XYPosition, extent: CoordinateExtent): X
   }
 }
 
-export function getHostForElement(element: HTMLElement): Document {
-  const doc = element.getRootNode() as Document
+export function getHostForElement(element: EventTarget | null) {
+  const doc = (element as HTMLElement)?.getRootNode()
 
   if ('elementFromPoint' in doc) {
-    return doc
+    return doc as Document
   }
 
-  const window = useWindow()
-
-  return window.document
+  return null
 }
 
 export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {

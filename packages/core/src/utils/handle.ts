@@ -7,6 +7,7 @@ import type {
   GraphEdge,
   GraphNode,
   HandleType,
+  MouseTouchEvent,
   NodeHandleBounds,
   ValidConnectionFunc,
   ValidHandleResult,
@@ -58,7 +59,7 @@ export function getHandles(
 }
 
 export function getClosestHandle(
-  event: MouseEvent | TouchEvent,
+  event: MouseTouchEvent,
   doc: Document | ShadowRoot,
   pos: XYPosition,
   connectionRadius: number,
@@ -144,7 +145,7 @@ export function getClosestHandle(
 
 // checks if  and returns connection in fom of an object { source: 123, target: 312 }
 export function isValidHandle(
-  event: MouseEvent | TouchEvent,
+  event: MouseTouchEvent,
   handle: Pick<ConnectionHandle, 'nodeId' | 'id' | 'type'> | null,
   connectionMode: ConnectionMode,
   fromNodeId: string,
@@ -242,12 +243,16 @@ export function getHandleLookup({ nodes, nodeId, handleId, handleType }: GetHand
   return handleLookup
 }
 
-export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDomNode: Element | null): HandleType | null {
+export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDomNode?: Element | null): HandleType | null {
   if (edgeUpdaterType) {
     return edgeUpdaterType
-  } else if (handleDomNode?.classList.contains('target')) {
+  }
+
+  if (handleDomNode?.classList.contains('target')) {
     return 'target'
-  } else if (handleDomNode?.classList.contains('source')) {
+  }
+
+  if (handleDomNode?.classList.contains('source')) {
     return 'source'
   }
 

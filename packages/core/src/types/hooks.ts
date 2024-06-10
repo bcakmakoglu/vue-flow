@@ -8,7 +8,12 @@ import type { ViewportTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
 
-export type MouseTouchEvent = MouseEvent | TouchEvent
+interface FakeEvent {
+  clientX: number
+  clientY: number
+}
+
+export type MouseTouchEvent = MouseEvent | TouchEvent | FakeEvent
 
 export interface NodeMouseEvent {
   event: MouseTouchEvent
@@ -53,13 +58,13 @@ export interface FlowEvents {
   miniMapNodeMouseLeave: NodeMouseEvent
   connect: Connection
   connectStart: {
-    event?: MouseEvent | TouchEvent
+    event?: MouseTouchEvent
   } & OnConnectStartParams
-  connectEnd: MouseEvent | TouchEvent | undefined
+  connectEnd: MouseTouchEvent | undefined
   clickConnectStart: {
-    event?: MouseEvent | TouchEvent
+    event?: MouseTouchEvent
   } & OnConnectStartParams
-  clickConnectEnd: MouseEvent | TouchEvent | undefined
+  clickConnectEnd: MouseTouchEvent | undefined
   /** @deprecated use `init` instead */
   paneReady: VueFlowStore
   init: VueFlowStore

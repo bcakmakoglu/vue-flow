@@ -7,7 +7,6 @@ import {
   getConnectionStatus,
   getEventPosition,
   getHandleLookup,
-  getHandleType,
   getHostForElement,
   isMouseEvent,
   isValidHandle,
@@ -16,6 +15,7 @@ import {
   resetRecentHandle,
 } from '../utils'
 import { useVueFlow } from './useVueFlow'
+import { useWindow } from './useWindow'
 
 export interface UseHandleProps {
   handleId: MaybeRefOrGetter<string | null>
@@ -67,6 +67,8 @@ export function useHandle({
     isValidConnection: isValidConnectionProp,
   } = useVueFlow()
 
+  const window = useWindow()
+
   let connection: Connection | null = null
   let isValid = false
   let handleDomNode: Element | null = null
@@ -77,7 +79,7 @@ export function useHandle({
     const isMouseTriggered = isMouseEvent(event)
 
     // when vue-flow is used inside a shadow root we can't use document
-    const doc = getHostForElement(event.target as HTMLElement)
+    const doc = 'target' in event ? getHostForElement(event.target) ?? window.document : window.document
 
     if ((isMouseTriggered && event.button === 0) || !isMouseTriggered) {
       const node = findNode(toValue(nodeId))
@@ -93,8 +95,7 @@ export function useHandle({
       let autoPanId = 0
 
       const { x, y } = getEventPosition(event)
-      const clickedHandle = doc?.elementFromPoint(x, y)
-      const handleType = getHandleType(toValue(edgeUpdaterType), clickedHandle)
+      const handleType = toValue(type)
       const containerBounds = vueFlowRef.value?.getBoundingClientRect()
 
       if (!containerBounds || !handleType) {
@@ -236,6 +237,8 @@ export function useHandle({
 
         doc.removeEventListener('touchmove', onPointerMove)
         doc.removeEventListener('touchend', onPointerUp)
+
+        console.log('onPointerUp')
       }
 
       doc.addEventListener('mousemove', onPointerMove)
@@ -270,7 +273,7 @@ export function useHandle({
         return
       }
 
-      const doc = getHostForElement(event.target as HTMLElement)
+      const doc = getHostForElement(event.target as HTMLElement) ?? window.document
 
       const { connection, isValid } = isValidHandle(
         event,

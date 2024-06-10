@@ -27,7 +27,7 @@ import type {
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportTransform } from './zoom'
-import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
+import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn, MouseTouchEvent } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ConnectingHandle, ValidConnectionFunc } from './handle'
 
@@ -289,16 +289,11 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (
-    startHandle: ConnectingHandle,
-    position?: XYPosition,
-    event?: MouseEvent | TouchEvent,
-    isClick?: boolean,
-  ) => void
+  startConnection: (startHandle: ConnectingHandle, position?: XYPosition, event?: MouseTouchEvent, isClick?: boolean) => void
   /** update connection position */
   updateConnection: (position: XYPosition, result?: ConnectingHandle | null, status?: ConnectionStatus | null) => void
   /** end (or cancel) a connection */
-  endConnection: (event?: MouseEvent | TouchEvent, isClick?: boolean) => void
+  endConnection: (event?: MouseTouchEvent, isClick?: boolean) => void
 
   /** internal position updater, you probably don't want to use this */
   updateNodePositions: UpdateNodePosition
