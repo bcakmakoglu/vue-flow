@@ -1,6 +1,5 @@
-import type { DefineComponent } from 'vue'
-import { defineComponent, h, inject } from 'vue'
-import type { ConnectionLineProps } from '../../types'
+import { computed, defineComponent, h, inject } from 'vue'
+import type { HandleElement } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
 import { getHandlePosition, getMarkerId } from '../../utils'
 import { useVueFlow } from '../../composables'
@@ -32,16 +31,29 @@ const ConnectionLine = defineComponent({
       findNode,
     } = useVueFlow()
 
-    const connectionLineComponent = inject(Slots)?.['connection-line'] as DefineComponent<ConnectionLineProps> | undefined
+    const connectionLineComponent = inject(Slots)?.['connection-line']
+
+    const fromNode = computed(() => findNode(connectionStartHandle.value?.nodeId))
+
+    const toNode = computed(() => findNode(connectionEndHandle.value?.nodeId) ?? null)
+
+    const toXY = computed(() => {
+      return {
+        x: (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom,
+        y: (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom,
+      }
+    })
+
+    const markerStart = computed(() =>
+      connectionLineOptions.value.markerStart ? `url(#${getMarkerId(connectionLineOptions.value.markerStart, id)})` : '',
+    )
+
+    const markerEnd = computed(() =>
+      connectionLineOptions.value.markerEnd ? `url(#${getMarkerId(connectionLineOptions.value.markerEnd, id)})` : '',
+    )
 
     return () => {
-      if (!connectionStartHandle.value) {
-        return null
-      }
-
-      const fromNode = findNode(connectionStartHandle.value.nodeId)
-
-      if (!fromNode) {
+      if (!fromNode.value || !connectionStartHandle.value) {
         return null
       }
 
@@ -49,12 +61,7 @@ const ConnectionLine = defineComponent({
 
       const handleType = connectionStartHandle.value.type
 
-      const targetNode = (connectionEndHandle.value && findNode(connectionEndHandle.value.nodeId)) || null
-
-      const toX = (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom
-      const toY = (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom
-
-      const fromHandleBounds = fromNode.handleBounds
+      const fromHandleBounds = fromNode.value.handleBounds
       let handleBounds = fromHandleBounds?.[handleType]
 
       if (connectionMode.value === ConnectionMode.Loose) {
@@ -69,24 +76,28 @@ const ConnectionLine = defineComponent({
       const fromPosition = fromHandle?.position || Position.Top
       const { x: fromX, y: fromY } = getHandlePosition(
         fromPosition,
-        { ...fromNode.dimensions, ...fromNode.computedPosition },
+        { ...fromNode.value.dimensions, ...fromNode.value.computedPosition },
         fromHandle,
       )
 
-      // todo: this is a bit of a mess, we should refactor this
-      const toHandle =
-        (targetNode &&
-          connectionEndHandle.value?.handleId &&
-          ((connectionMode.value === ConnectionMode.Strict
-            ? targetNode.handleBounds[handleType === 'source' ? 'target' : 'source']?.find(
-                (d) => d.id === connectionEndHandle.value?.handleId,
-              )
-            : [...(targetNode.handleBounds.source || []), ...(targetNode.handleBounds.target || [])]?.find(
-                (d) => d.id === connectionEndHandle.value?.handleId,
-              )) ||
-            targetNode.handleBounds[handleType ?? 'target']?.[0])) ||
-        null
+      let toHandle: HandleElement | null = null
+      if (toNode.value && connectionEndHandle.value?.handleId) {
+        // if connection mode is strict, we only look for handles of the opposite type
+        if (connectionMode.value === ConnectionMode.Strict) {
+          toHandle =
+            toNode.value.handleBounds[handleType === 'source' ? 'target' : 'source']?.find(
+              (d) => d.id === connectionEndHandle.value?.handleId,
+            ) || null
+        } else {
+          // if connection mode is loose, look for the handle in both source and target bounds
+          toHandle =
+            [...(toNode.value.handleBounds.source || []), ...(toNode.value.handleBounds.target || [])]?.find(
+              (d) => d.id === connectionEndHandle.value?.handleId,
+            ) || null
+        }
+      }
 
+      // we assume the target position is opposite to the source position
       const toPosition = fromPosition ? oppositePosition[fromPosition] : null
 
       if (!fromPosition || !toPosition) {
@@ -101,13 +112,12 @@ const ConnectionLine = defineComponent({
         sourceX: fromX,
         sourceY: fromY,
         sourcePosition: fromPosition,
-        targetX: toX,
-        targetY: toY,
+        targetX: toXY.value.x,
+        targetY: toXY.value.y,
         targetPosition: toPosition,
       }
 
       if (type === ConnectionLineType.Bezier) {
-        // we assume the destination position is opposite to the source position
         ;[dAttr] = getBezierPath(pathParams)
       } else if (type === ConnectionLineType.Step) {
         ;[dAttr] = getSmoothStepPath({
@@ -119,7 +129,7 @@ const ConnectionLine = defineComponent({
       } else if (type === ConnectionLineType.SimpleBezier) {
         ;[dAttr] = getSimpleBezierPath(pathParams)
       } else {
-        dAttr = `M${fromX},${fromY} ${toX},${toY}`
+        dAttr = `M${fromX},${fromY} ${toXY.value.x},${toXY.value.y}`
       }
 
       return h(
@@ -133,15 +143,15 @@ const ConnectionLine = defineComponent({
                 sourceX: fromX,
                 sourceY: fromY,
                 sourcePosition: fromPosition,
-                targetX: toX,
-                targetY: toY,
+                targetX: toXY.value.x,
+                targetY: toXY.value.y,
                 targetPosition: toPosition,
-                sourceNode: fromNode,
+                sourceNode: fromNode.value,
                 sourceHandle: fromHandle,
-                targetNode,
+                targetNode: toNode.value,
                 targetHandle: toHandle,
-                markerEnd: `url(#${getMarkerId(connectionLineOptions.value.markerEnd, id)})`,
-                markerStart: `url(#${getMarkerId(connectionLineOptions.value.markerStart, id)})`,
+                markerEnd: markerEnd.value,
+                markerStart: markerStart.value,
                 connectionStatus: connectionStatus.value,
               })
             : h('path', {
@@ -151,8 +161,8 @@ const ConnectionLine = defineComponent({
                   ...connectionLineStyle.value,
                   ...connectionLineOptions.value.style,
                 },
-                'marker-end': `url(#${getMarkerId(connectionLineOptions.value.markerEnd, id)})`,
-                'marker-start': `url(#${getMarkerId(connectionLineOptions.value.markerStart, id)})`,
+                'marker-end': markerEnd.value,
+                'marker-start': markerStart.value,
               }),
         ),
       )
