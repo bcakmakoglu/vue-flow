@@ -1,48 +1,52 @@
-.basicflow.dark {
-  background: #000000;
+.basic-flow.dark {
+  background: #2d3748;
   color: #FFFFFB;
 }
 
-.basicflow.dark .vue-flow__node {
-  background: hsl(0, 0%, 10%);
+.basic-flow.dark .vue-flow__node {
+  background: #4a5568;
   color: #FFFFFB;
 }
 
-.basicflow.dark .vue-flow__node.selected {
+.basic-flow.dark .vue-flow__node.selected {
   background: hsl(0, 0%, 20%);
-  border: 1px solid hotpink;
+  box-shadow: 0 0 0 2px #2563eb;
 }
 
-.basicflow .vue-flow__controls {
+.basic-flow .vue-flow__controls {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.basicflow.dark .vue-flow__controls {
+.basic-flow.dark .vue-flow__controls {
   border: 1px solid #FFFFFB;
 }
 
-.basicflow .vue-flow__controls .vue-flow__controls-button {
+.basic-flow .vue-flow__controls .vue-flow__controls-button {
   border: none;
   border-right: 1px solid #eee;
 }
 
+.basic-flow .vue-flow__controls .vue-flow__controls-button svg {
+  height: 100%;
+  width: 100%;
+}
 
-.basicflow.dark .vue-flow__controls .vue-flow__controls-button {
+.basic-flow.dark .vue-flow__controls .vue-flow__controls-button {
   background: hsl(0, 0%, 20%);
   fill: #FFFFFB;
   border: none;
 }
 
-.basicflow.dark .vue-flow__controls .vue-flow__controls-button:hover {
+.basic-flow.dark .vue-flow__controls .vue-flow__controls-button:hover {
   background: hsl(0, 0%, 30%);
 }
 
-.basicflow.dark .vue-flow__edge-textbg {
+.basic-flow.dark .vue-flow__edge-textbg {
   fill: #292524;
 }
 
-.basicflow.dark .vue-flow__edge-text {
+.basic-flow.dark .vue-flow__edge-text {
   fill: #FFFFFB;
 }

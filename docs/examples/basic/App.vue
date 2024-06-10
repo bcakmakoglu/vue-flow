@@ -8,10 +8,12 @@ import { initialEdges, initialNodes } from './initial-elements.js'
 import Icon from './Icon.vue'
 
 /**
- * useVueFlow provides all event handlers and store properties
- * You can pass the composable an object that has the same properties as the VueFlow component props
+ * `useVueFlow` provides:
+ * 1. a set of methods to interact with the VueFlow instance (like `fitView`, `setViewport`, `addEdges`, etc)
+ * 2. a set of event-hooks to listen to VueFlow events (like `onInit`, `onNodeDragStop`, `onConnect`, etc)
+ * 3. the internal state of the VueFlow instance (like `nodes`, `edges`, `viewport`, etc)
  */
-const { onPaneReady, onNodeDragStop, onConnect, addEdges, setViewport, toObject } = useVueFlow()
+const { onInit, onNodeDragStop, onConnect, addEdges, setViewport, toObject } = useVueFlow()
 
 const nodes = ref(initialNodes)
 
@@ -24,10 +26,11 @@ const dark = ref(false)
  * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
  * Any event that is available as `@event-name` on the VueFlow component is also available as `onEventName` on the composable and vice versa
  *
- * onPaneReady is called when viewpane & nodes have visible dimensions
+ * onInit is called when the VueFlow viewport is initialized
  */
-onPaneReady(({ fitView }) => {
-  fitView()
+onInit((vueFlowInstance) => {
+  // instance is the same as the return of `useVueFlow`
+  vueFlowInstance.fitView()
 })
 
 /**
@@ -39,8 +42,8 @@ onPaneReady(({ fitView }) => {
  * 3. the node that initiated the drag
  * 4. any intersections with other nodes
  */
-onNodeDragStop(({ event, nodes, node, intersections }) => {
-  console.log('Node Drag Stop', { event, nodes, node, intersections })
+onNodeDragStop(({ event, nodes, node }) => {
+  console.log('Node Drag Stop', { event, nodes, node })
 })
 
 /**
@@ -94,7 +97,7 @@ function toggleDarkMode() {
     :nodes="nodes"
     :edges="edges"
     :class="{ dark }"
-    class="basicflow"
+    class="basic-flow"
     :default-viewport="{ zoom: 1.5 }"
     :min-zoom="0.2"
     :max-zoom="4"
@@ -103,7 +106,7 @@ function toggleDarkMode() {
 
     <MiniMap />
 
-    <Controls position="top-right">
+    <Controls position="top-left">
       <ControlButton title="Reset Transform" @click="resetTransform">
         <Icon name="reset" />
       </ControlButton>
