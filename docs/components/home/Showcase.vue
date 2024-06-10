@@ -1,7 +1,8 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div
+  <section
+    id="showcase"
     class="border-t-1 border-secondary w-full text-white bg-gradient-to-br from-secondary-500 to-secondary-100 dark:(!bg-none)"
   >
     <div class="max-w-5/6 2xl:max-w-7xl mx-auto py-12 md:py-16">
@@ -52,5 +53,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>

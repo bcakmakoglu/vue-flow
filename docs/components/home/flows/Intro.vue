@@ -200,7 +200,7 @@ function scrollTo() {
             <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
               <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">Vue Flow</h1>
 
-              <h2 class="text-lg lg:text-xl font-normal !border-0">
+              <h2 class="!text-lg !lg:text-xl !tracking-normal !font-normal !p-0 !m-0 !border-0 !mb-4">
                 The customizable Vue 3 component bringing interactivity to flowcharts and graphs.
               </h2>
             </div>
@@ -292,8 +292,9 @@ function scrollTo() {
   transition-colors
   ease-in-out
   rounded-lg
-  text-white
-  font-semibold
+  !text-white
+  !font-semibold
+  !no-underline
   text-lg;
 }
 </style>

@@ -149,7 +149,11 @@
 }
 
 .VPHome {
-  padding-bottom: 0 !important;
+  @apply !mb-0;
+}
+
+.vp-doc.container {
+  @apply !p-0 !w-full !max-w-full;
 }
 
 .VPFooter {
@@ -186,7 +190,7 @@ ul li {
 }
 
 .docs-button {
-  @apply mt-4 z-1 shadow-lg transition-colors duration-200 text-white font-semibold text-lg px-4 py-3 rounded-lg bg-accent dark:shadow-white/10;
+  @apply mt-4 z-1 shadow-lg transition-colors duration-200 !text-white !font-semibold !no-underline text-lg px-4 py-3 rounded-lg bg-accent dark:shadow-white/10;
 }
 
 .examples-button {

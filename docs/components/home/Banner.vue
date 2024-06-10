@@ -35,7 +35,7 @@ Promise.all([
 </script>
 
 <template>
-  <div class="w-full dark:(border-white) border-black border-y-1 min-h-44">
+  <section id="banner" class="w-full dark:(border-white) border-black border-y-1 min-h-44">
     <div class="max-w-full md:max-w-11/12 m-auto py-4 md:py-12 <md:(dark:border-t-1 border-white)">
       <div class="grid md:grid-cols-3 gap-3 text-center <md:divide-y md:divide-x dark:divide-white divide-black">
         <div class="grid grid-rows-auto gap-2 py-4 md:py-0">
@@ -56,5 +56,5 @@ Promise.all([
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
