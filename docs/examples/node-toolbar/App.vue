@@ -3,61 +3,88 @@ import { ref } from 'vue'
 import { Position, VueFlow } from '@vue-flow/core'
 import ToolbarNode from './ToolbarNode.vue'
 
-const defaultNodeStyle = {
-  border: '1px solid #10b981',
-  background: '#ef467e',
-  color: 'white',
-  borderRadius: '99px',
-}
-
 const nodes = ref([
   {
     id: '1',
-    type: 'toolbar',
+    type: 'menu',
     label: 'toolbar top',
     data: { toolbarPosition: Position.Top },
     position: { x: 200, y: 0 },
-    style: defaultNodeStyle,
   },
   {
     id: '2',
-    type: 'toolbar',
+    type: 'menu',
     label: 'toolbar right',
     data: { toolbarPosition: Position.Right },
     position: { x: -50, y: 100 },
-    style: defaultNodeStyle,
   },
   {
     id: '3',
-    type: 'toolbar',
+    type: 'menu',
     label: 'toolbar bottom',
     data: { toolbarPosition: Position.Bottom },
     position: { x: 0, y: 200 },
-    style: defaultNodeStyle,
   },
   {
     id: '4',
-    type: 'toolbar',
+    type: 'menu',
     label: 'toolbar left',
     data: { toolbarPosition: Position.Left },
     position: { x: 200, y: 300 },
-    style: defaultNodeStyle,
   },
   {
     id: '5',
-    type: 'toolbar',
+    type: 'menu',
     label: 'toolbar always open',
     data: { toolbarPosition: Position.Top, toolbarVisible: true },
     position: { x: 0, y: -100 },
-    style: defaultNodeStyle,
   },
 ])
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" fit-view-on-init class="vue-flow-basic-example">
-    <template #node-toolbar="nodeProps">
-      <ToolbarNode :data="nodeProps.data" :label="nodeProps.label" />
+  <VueFlow :nodes="nodes" fit-view-on-init>
+    <template #node-menu="props">
+      <ToolbarNode :id="props.id" :data="props.data" :label="props.label" />
     </template>
   </VueFlow>
 </template>
+
+<style>
+.vue-flow__node-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  background-color: #2d3748;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.vue-flow__node-toolbar button {
+  background: #4a5568;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.vue-flow__node-toolbar button.selected {
+  background: #2563eb;
+}
+
+.vue-flow__node-toolbar button:hover {
+  background: #2563eb;
+}
+
+.vue-flow__node-menu {
+  padding: 16px 24px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.vue-flow__node-menu.selected {
+  box-shadow: 0 0 0 2px #2563eb;
+}
+</style>

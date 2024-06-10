@@ -1,22 +1,28 @@
 <script setup>
-import { Handle, Position } from '@vue-flow/core'
+import { Handle, Position, useVueFlow } from '@vue-flow/core'
 import { NodeToolbar } from '@vue-flow/node-toolbar'
 
-defineProps(['data', 'label'])
+const props = defineProps(['id', 'data', 'label'])
+
+const actions = ['👎', '✋', '👍']
+
+const { updateNodeData } = useVueFlow()
 </script>
 
 <template>
-  <NodeToolbar
-    style="display: flex; gap: 0.5rem; align-items: center"
-    :is-visible="data.toolbarVisible"
-    :position="data.toolbarPosition"
-  >
-    <button>Action1</button>
-    <button>Action2</button>
-    <button>Action3</button>
+  <NodeToolbar :is-visible="data.toolbarVisible" :position="data.toolbarPosition">
+    <button
+      v-for="action of actions"
+      :key="action"
+      type="button"
+      :class="{ selected: action === data.action }"
+      @click="updateNodeData(props.id, { action })"
+    >
+      {{ action }}
+    </button>
   </NodeToolbar>
 
-  <div :style="{ padding: '10px 20px' }">
+  <div>
     {{ label }}
   </div>
 
