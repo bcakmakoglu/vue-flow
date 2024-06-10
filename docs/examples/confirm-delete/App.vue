@@ -10,8 +10,8 @@ const { onConnect, addEdges, onNodesChange, onEdgesChange, applyNodeChanges, app
 const dialog = useDialog()
 
 const nodes = ref([
-  { id: '1', type: 'input', label: 'Click me and', position: { x: 0, y: 0 } },
-  { id: '2', label: `press 'Backspace' to delete me`, position: { x: 0, y: 100 } },
+  { id: '1', type: 'input', data: { label: 'Click me and' }, position: { x: 0, y: 0 } },
+  { id: '2', data: { label: `press 'Backspace' to delete me` }, position: { x: 0, y: 100 } },
 ])
 
 const edges = ref([{ id: 'e1-2', source: '1', target: '2' }])

@@ -4,7 +4,7 @@ import { VueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import SaveRestoreControls from './Controls.vue'
 
-const nodes = ref([{ id: '1', label: 'Node 1', position: { x: 100, y: 100 } }])
+const nodes = ref([{ id: '1', data: { label: 'Node 1' }, position: { x: 100, y: 100 } }])
 
 const edges = ref([])
 </script>

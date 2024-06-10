@@ -7,12 +7,23 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  data: {
+    type: Object,
+    required: true,
+  },
 })
 
-const { updateNodeData } = useVueFlow()
+const { updateNodeData, getConnectedEdges } = useVueFlow()
 
 function onSelect(color) {
   updateNodeData(props.id, { color, isGradient: false })
+
+  const connectedEdges = getConnectedEdges(props.id)
+  for (const edge of connectedEdges) {
+    edge.style = {
+      stroke: color,
+    }
+  }
 }
 
 function onGradient() {
@@ -28,6 +39,7 @@ function onGradient() {
       v-for="{ name: colorName, value: color } of colors"
       :key="colorName"
       :title="colorName"
+      :class="{ selected: color === data.color }"
       :style="{ backgroundColor: color }"
       type="button"
       @click="onSelect(color)"

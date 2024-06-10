@@ -7,7 +7,7 @@ const nodes = ref([
   {
     id: '1',
     type: 'input',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 250, y: 5 },
   },
 ])
