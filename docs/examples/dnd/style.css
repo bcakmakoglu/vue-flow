@@ -1,51 +1,70 @@
-.dndflow {
+.dnd-flow {
   flex-direction: column;
   display: flex;
   height: 100%;
 }
 
-.dndflow aside {
+.dnd-flow aside {
   color: white;
   font-weight: 700;
   border-right: 1px solid #eee;
   padding: 15px 10px;
   font-size: 12px;
   background: rgba(16, 185, 129, 0.75);
-  -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
-  box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.3);
+  -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
 }
 
-.dndflow aside .nodes > * {
+.dnd-flow aside .nodes > * {
   margin-bottom: 10px;
   cursor: grab;
   font-weight: 500;
-  -webkit-box-shadow: 5px 5px 10px 2px rgba(0,0,0,0.25);
-  box-shadow: 5px 5px 10px 2px rgba(0,0,0,0.25);
+  -webkit-box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.25);
 }
 
-.dndflow aside .description {
+.dnd-flow aside .description {
   margin-bottom: 10px;
 }
 
-.dndflow .vue-flow-wrapper {
+.dnd-flow .vue-flow-wrapper {
   flex-grow: 1;
   height: 100%;
 }
 
 @media screen and (min-width: 640px) {
-  .dndflow {
+  .dnd-flow {
     flex-direction: row;
   }
 
-  .dndflow aside {
+  .dnd-flow aside {
     min-width: 25%;
   }
 }
 
 @media screen and (max-width: 639px) {
-  .dndflow aside .nodes {
+  .dnd-flow aside .nodes {
     display: flex;
     flex-direction: row;
     gap: 5px;
   }
+}
+
+.dropzone-background {
+  position: relative;
+  height: 100%;
+  width: 100%
+}
+
+.dropzone-background .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  pointer-events: none;
 }

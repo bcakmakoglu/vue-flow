@@ -15,14 +15,16 @@ onConnect(addEdges)
 </script>
 
 <template>
-  <div class="dndflow" @drop="onDrop">
+  <div class="dnd-flow" @drop="onDrop">
     <VueFlow :nodes="nodes" @dragover="onDragOver" @dragleave="onDragLeave">
       <DropzoneBackground
         :style="{
           backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',
           transition: 'background-color 0.2s ease',
         }"
-      />
+      >
+        <p v-if="isDragOver">Drop here</p>
+      </DropzoneBackground>
     </VueFlow>
 
     <Sidebar />
