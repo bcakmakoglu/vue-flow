@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { h, ref } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { useDialog } from './useDialog'
@@ -10,16 +10,26 @@ const { onConnect, addEdges, onNodesChange, onEdgesChange, applyNodeChanges, app
 const dialog = useDialog()
 
 const nodes = ref([
-  { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
-  { id: '3', label: 'Node 3', position: { x: 400, y: 100 }, class: 'light' },
-  { id: '4', label: 'Node 4', position: { x: 400, y: 200 }, class: 'light' },
+  { id: '1', type: 'input', label: 'Click me and', position: { x: 0, y: 0 } },
+  { id: '2', label: `press 'Backspace' to delete me`, position: { x: 0, y: 100 } },
 ])
 
-const edges = ref([
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-  { id: 'e1-3', source: '1', target: '3' },
-])
+const edges = ref([{ id: 'e1-2', source: '1', target: '2' }])
+
+function dialogMsg(id) {
+  return h(
+    'span',
+    {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '8px',
+      },
+    },
+    [`Are you sure?`, h('br'), h('span', `[ELEMENT_ID: ${id}]`)],
+  )
+}
 
 onConnect(addEdges)
 
@@ -28,7 +38,7 @@ onNodesChange(async (changes) => {
 
   for (const change of changes) {
     if (change.type === 'remove') {
-      const isConfirmed = await dialog.confirm(`Do you really want to delete this node: ${change.id}?`)
+      const isConfirmed = await dialog.confirm(dialogMsg(change.id))
 
       if (isConfirmed) {
         nextChanges.push(change)
@@ -46,7 +56,7 @@ onEdgesChange(async (changes) => {
 
   for (const change of changes) {
     if (change.type === 'remove') {
-      const isConfirmed = await dialog.confirm(`Do you really want to delete this edge: ${change.id}?`)
+      const isConfirmed = await dialog.confirm(dialogMsg(change.id))
 
       if (isConfirmed) {
         nextChanges.push(change)
@@ -61,7 +71,7 @@ onEdgesChange(async (changes) => {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" fit-view-on-init class="confirm-flow">
     <Background />
 
     <Dialog />
