@@ -59,7 +59,7 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "@vue-flow/core": "^1.23.0",
+    "@vue-flow/core": "^1.35.0",
     "vue": "^3.3.0"
   },
   "dependencies": {
@@ -70,10 +70,10 @@
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@tooling/vite-config": "workspace:*",
-    "@types/d3-drag": "^3.0.4",
-    "@types/d3-selection": "^3.0.7",
+    "@types/d3-drag": "^3.0.7",
+    "@types/d3-selection": "^3.0.10",
     "@vue-flow/core": "workspace:*",
-    "vue-tsc": "^1.8.16"
+    "vue-tsc": "^2.0.21"
   },
   "publishConfig": {
     "access": "public",

@@ -396,17 +396,17 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/vite-config
       '@types/d3-drag':
-        specifier: ^3.0.4
-        version: 3.0.4
-      '@types/d3-selection':
         specifier: ^3.0.7
         version: 3.0.7
+      '@types/d3-selection':
+        specifier: ^3.0.10
+        version: 3.0.10
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../core
       vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
+        specifier: ^2.0.21
+        version: 2.0.21(typescript@5.4.5)
 
   packages/node-toolbar:
     dependencies:
@@ -2206,9 +2206,6 @@ packages:
   '@types/d3-color@3.1.1':
     resolution: {integrity: sha512-CSAVrHAtM9wfuLJ2tpvvwCU/F22sm7rMHNN+yh9D6O6hyAms3+O0cgMpC1pm6UEUMOntuZC8bMt74PteiDUdCg==}
 
-  '@types/d3-drag@3.0.4':
-    resolution: {integrity: sha512-/t53K1erTuUbP7WIX9SE0hlmytpTYRbIthlhbGkBHzCV5vPO++7yrk8OlisWPyIJO5TGowTmqCtGH2tokY5T/g==}
-
   '@types/d3-drag@3.0.7':
     resolution: {integrity: sha512-HE3jVKlzU9AaMazNufooRJ5ZpWmLIoc90A37WU2JMmeq28w1FQqCZswHZ3xR+SuxYftzHq6WU6KJHvqxKzTxxQ==}
 
@@ -2217,9 +2214,6 @@ packages:
 
   '@types/d3-selection@3.0.10':
     resolution: {integrity: sha512-cuHoUgS/V3hLdjJOLTT691+G2QoqAjCVLmr4kJXR4ha56w1Zdu8UUQ5TxLRqudgNjwXeQxKMq4j+lyf9sWuslg==}
-
-  '@types/d3-selection@3.0.7':
-    resolution: {integrity: sha512-qoj2O7KjfqCobmtFOth8FMvjwMVPUAAmn6xiUbLl1ld7vQCPgffvyV5BBcEFfqWdilAUm+3zciU/3P3vZrUMlg==}
 
   '@types/d3-zoom@3.0.8':
     resolution: {integrity: sha512-iqMC4/YlFCSlO8+2Ii1GGGliCAY4XdeG748w5vQUbevlbDu0zSjH/+jojorQVBK/se0j6DUFNPBGSqD3YWYnDw==}
@@ -9585,10 +9579,6 @@ snapshots:
 
   '@types/d3-color@3.1.1': {}
 
-  '@types/d3-drag@3.0.4':
-    dependencies:
-      '@types/d3-selection': 3.0.10
-
   '@types/d3-drag@3.0.7':
     dependencies:
       '@types/d3-selection': 3.0.10
@@ -9598,8 +9588,6 @@ snapshots:
       '@types/d3-color': 3.1.1
 
   '@types/d3-selection@3.0.10': {}
-
-  '@types/d3-selection@3.0.7': {}
 
   '@types/d3-zoom@3.0.8':
     dependencies:
