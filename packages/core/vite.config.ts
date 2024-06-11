@@ -33,13 +33,11 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue({
-      reactivityTransform: true,
-    }),
+    vue(),
     replace({
       __ENV__: 'process.env.NODE_ENV',
       __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
       preventAssignment: true,
-    }) as any,
+    }),
   ],
 })
