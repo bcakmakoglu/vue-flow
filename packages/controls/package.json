@@ -59,7 +59,7 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "@vue-flow/core": "^1.23.0",
+    "@vue-flow/core": "^1.35.0",
     "vue": "^3.3.0"
   },
   "devDependencies": {
