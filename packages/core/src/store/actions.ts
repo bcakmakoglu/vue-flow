@@ -615,7 +615,7 @@ export function useActions(
     node.data = options.replace ? nextData : { ...node.data, ...nextData }
   }
 
-  const startConnection: Actions['startConnection'] = (startHandle, position, event, isClick = false) => {
+  const startConnection: Actions['startConnection'] = (startHandle, position, isClick = false) => {
     if (isClick) {
       state.connectionClickStartHandle = startHandle
     } else {

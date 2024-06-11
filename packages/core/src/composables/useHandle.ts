@@ -134,7 +134,6 @@ export function useHandle({
           x: x - containerBounds.left,
           y: y - containerBounds.top,
         },
-        event,
       )
 
       emits.connectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId), handleType })
@@ -256,7 +255,7 @@ export function useHandle({
     if (!connectionClickStartHandle.value) {
       emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId) })
 
-      startConnection({ nodeId: toValue(nodeId), type: toValue(type), handleId: toValue(handleId) }, undefined, event, true)
+      startConnection({ nodeId: toValue(nodeId), type: toValue(type), handleId: toValue(handleId) }, undefined, true)
     } else {
       let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 

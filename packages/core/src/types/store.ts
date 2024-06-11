@@ -289,12 +289,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (
-    startHandle: ConnectingHandle,
-    position?: XYPosition,
-    event?: MouseEvent | TouchEvent,
-    isClick?: boolean,
-  ) => void
+  startConnection: (startHandle: ConnectingHandle, position?: XYPosition, isClick?: boolean) => void
   /** update connection position */
   updateConnection: (position: XYPosition, result?: ConnectingHandle | null, status?: ConnectionStatus | null) => void
   /** end (or cancel) a connection */
