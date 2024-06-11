@@ -49,8 +49,8 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
     }
   }
 
-  const trigger = (param: T) => {
-    return Promise.all(Array.from(fns).map((fn) => fn(param)))
+  const trigger: EventHookExtended<T>['trigger'] = (...args) => {
+    return Promise.all(Array.from(fns).map((fn) => fn(...(args as [T]))))
   }
 
   return {

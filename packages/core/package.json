@@ -70,24 +70,24 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
-    "@vueuse/core": "^10.5.0",
+    "@vueuse/core": "^10.10.1",
     "d3-drag": "^3.0.0",
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^5.0.3",
+    "@rollup/plugin-replace": "^5.0.7",
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
-    "@types/d3-drag": "^3.0.4",
-    "@types/d3-selection": "^3.0.7",
-    "@types/d3-zoom": "^3.0.5",
-    "@vitejs/plugin-vue": "^4.4.0",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31",
-    "postcss-cli": "^10.1.0",
+    "@types/d3-drag": "^3.0.7",
+    "@types/d3-selection": "^3.0.10",
+    "@types/d3-zoom": "^3.0.8",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "postcss-cli": "^11.0.0",
     "postcss-nested": "^6.0.1",
-    "vite": "^4.4.11",
-    "vue-tsc": "^1.8.16"
+    "vite": "^5.2.13",
+    "vue-tsc": "^2.0.21"
   }
 }

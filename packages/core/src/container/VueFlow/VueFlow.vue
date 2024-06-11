@@ -6,14 +6,15 @@ import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
 import { Slots } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
-import { useWatchProps } from '../../composables/useWatchProps'
+import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning'
 import { useVueFlow } from '../../composables/useVueFlow'
+import { useWatchProps } from '../../composables/useWatchProps'
 import { useHooks } from '../../store/hooks'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
-import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning'
 
 const props = withDefaults(defineProps<FlowProps>(), {
+  // we have to set these as undefined, otherwise they are cast to `false` which is not necessarily what we want
   snapToGrid: undefined,
   onlyRenderVisibleElements: undefined,
   edgesUpdatable: undefined,
