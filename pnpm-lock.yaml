@@ -427,8 +427,8 @@ importers:
         specifier: workspace:*
         version: link:../core
       vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
+        specifier: ^2.0.21
+        version: 2.0.21(typescript@5.4.5)
 
   packages/pathfinding-edge:
     dependencies:
