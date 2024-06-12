@@ -1,5 +1,25 @@
 # @vue-flow/core
 
+## 1.36.0
+
+### Minor Changes
+
+- [#1401](https://github.com/bcakmakoglu/vue-flow/pull/1401) [`ebf387e`](https://github.com/bcakmakoglu/vue-flow/commit/ebf387eeea49cce72ba2e9546e9dbfb969d72ec9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `initialized` property from `GraphNode` type
+
+- [#1401](https://github.com/bcakmakoglu/vue-flow/pull/1401) [`c94e175`](https://github.com/bcakmakoglu/vue-flow/commit/c94e175f31f6404ce2e72e3a20604a20be513a57) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove node intersections from drag event args
+
+- [#1401](https://github.com/bcakmakoglu/vue-flow/pull/1401) [`231673e`](https://github.com/bcakmakoglu/vue-flow/commit/231673e938a4f4a4fdaaf8932af57d9b43343a48) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `updateEdgeData` action
+
+- [#1401](https://github.com/bcakmakoglu/vue-flow/pull/1401) [`bb6abed`](https://github.com/bcakmakoglu/vue-flow/commit/bb6abeda131847f512cb16130eb627ae8636789d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reduce node `getBoundingClientRect` calls by passing node-bounds directly to `getHandleBounds`
+
+- [#1401](https://github.com/bcakmakoglu/vue-flow/pull/1401) [`30e999a`](https://github.com/bcakmakoglu/vue-flow/commit/30e999aab8e499f4bba5cc81505749538cf31fc6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `connectedEdges` as arg from NodeMouseEvents
+
+- [#1401](https://github.com/bcakmakoglu/vue-flow/pull/1401) [`ba6e250`](https://github.com/bcakmakoglu/vue-flow/commit/ba6e25017c501179463fa542db03eaf94dc16b09) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `useEdgesData` composable
+
+### Patch Changes
+
+- [#1401](https://github.com/bcakmakoglu/vue-flow/pull/1401) [`408dfea`](https://github.com/bcakmakoglu/vue-flow/commit/408dfeac512e0e33aa3f54c5b635ee14dd924bcd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Hide viewport until initial fit view is finished
+
 ## 1.35.0
 
 ### Minor Changes
