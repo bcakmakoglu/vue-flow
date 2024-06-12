@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.36.0] - 2024-06-12
+
+[dd6aff2](dd6aff24cbe5bd2e1e5ce36350e1b5261c0d42af)...[09a44b0](09a44b0424d089d8a6e93adfeed1f1e03b708c8d)
+
+### Bug Fixes
+
+- Add width/height to icons ([6ee3170](6ee31708ab642c3ab6c8eb1a530c147579c874c1))
+- Hide graph until initial fitview is done (#1459) ([ed2e574](ed2e5744fd5264600c0f6d2c1d42612f27c6f456))
+- Event type ([19df6ca](19df6ca57a55dad5c01229be822baf83faf67b2f))
+
+### Documentation
+
+- Prettify example css files ([51986d7](51986d7c6c767dd7a31df8b97eca04b590c81839))
+
+### Examples
+
+- Update pinia example (#1458) ([6503b3e](6503b3e9ed0cf125de3564f7d5ea1208489fed48))
+- Add screenshot example (#1456) ([f74be96](f74be96b2d54003b5fff1901cbf609b0bd5ad456))
+- Add math example (#1461) ([a8ba973](a8ba97331f49e5fbd3f9e5c8b656ff87e2712823))
+- Add confirm delete example (#1466) ([257c7aa](257c7aa7041cb5a4a69f3a210dcb86b3259e6c85))
+
+### Features
+
+- Add updateEdgeData action (#1452) ([49dc8ae](49dc8ae2a1b8a2621c8cb8025e4c04d61808bb58))
+- Add useEdgesData composable (#1462) ([a9ccd61](a9ccd61eecfabb942ae18fc66e6bfb4e691a9781))
+
+### Miscellaneous Tasks
+
+- Cleanup math example ([67da354](67da35491711c1433c31dfbbe1b3df6a7e5731b4))
+- Correct header styles ([ba43421](ba4342167492865e5c45bc7cb2a484bc8d7c2a2f))
+- Update repl vue version ([50a3b0e](50a3b0eab5694b6e7eb4dd755df6f99364577f7d))
+- Update save and restore example ([5e953bd](5e953bdb44cd60e91a19293644af8b1e32d94e64))
+- Update math examples styles ([ee8d30d](ee8d30d1cf2504c316c0ef6de586e6307a520097))
+- Update interaction example styles ([01e1b32](01e1b32104e2a93655c00971284d36627dd5d92f))
+- Update visibility example styles ([78f2635](78f2635c5ee1d3160deaa196eb60cfdda009c24e))
+- Update vitepress to latest (#1468) ([5dc8711](5dc8711a6bf2535ec3bf3069d7a0eed2674e5463))
+- Update example styles (#1469) ([d71de0a](d71de0a92d8c16c780d869a66de0a80dacb73c63))
+- Update deps-dev (#1473) ([a647472](a647472db4fba463dc1bd345dee7937fd3607a3d))
+- Cleanup unused event arg (#1475) ([850f54a](850f54aebd745fe445e4de2d932595112d5fa249))
+
+### Refactor
+
+- Reduce node bounds calculation (#1453) ([cd5103e](cd5103e5259dfe733578ed47da81864297752588))
+- Use for loop ([9a7e4ac](9a7e4ac9529e8308dcfb90c3271a9adb8bd475c0))
+- Remove initialized from graph-nodes (#1457) ([0c5dfdd](0c5dfddc47b3931a000c860f21cf540cf9ac254a))
+- Remove node intersections arg from drag events (#1460) ([0825101](0825101ebe8ef7e6fed8edcacf1f384e2d12128f))
+- Remove connectedEdges from node mouse events (#1464) ([798faf1](798faf1be4dae3ea29a39bd03799b795ff189386))
+- Deprecate `useVueFlow` options arg (#1465) ([70b39cc](70b39cc78e0fd6c561aaf86c41970a56511184e2))
+- Replace arr reduce methods (#1467) ([d658c1d](d658c1d357b05e69bd5e8c0410f58492837c1dd2))
+- Cleanup connection line component (#1470) ([d429394](d429394f42334493522c7f45740d988d52d5d2e5))
+
 ## [1.35.0] - 2024-06-06
 
 [c91b30f](c91b30fc1eb725848daf68b1e309efc52c683abe)...[dd6aff2](dd6aff24cbe5bd2e1e5ce36350e1b5261c0d42af)
