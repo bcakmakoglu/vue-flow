@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.4.0
+
+### Minor Changes
+
+- [#1401](https://github.com/bcakmakoglu/vue-flow/pull/1401) [`ebf387e`](https://github.com/bcakmakoglu/vue-flow/commit/ebf387eeea49cce72ba2e9546e9dbfb969d72ec9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace node initialized check with dimensions check
+
 ## 1.3.6
 
 ### Patch Changes
