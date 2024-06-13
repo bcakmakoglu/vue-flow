@@ -17,13 +17,14 @@ This guide will show you how to take control of Vue Flow and apply these changes
 
 ## The `applyChanges` option
 
-The `applyChanges` option is a flag that can be passed to the `VueFlow` component to enable or disable automatic change handling.
+The `applyChanges` option is a prop that can be passed to the `<VueFlow>` component to enable or disable automatic change handling.
 
-By setting this option to `false`, we tell Vue Flow to not apply changes automatically anymore.
+By setting this option to `false`, we tell Vue Flow to not apply changes automatically anymore, 
+that way we can take control of changes and apply them manually.
 
 ```vue
 <template>
-  <VueFlow v-model="elements" :apply-changes="false" />
+  <VueFlow :nodes="nodes" :edges="edges" :apply-changes="false" />
 </template>
 ```
 
@@ -34,14 +35,28 @@ These events are emitted regardless of the `applyChanges` option, so you can use
 
 ```vue
 <script setup>
+import { VueFlow, useVueFlow } from '@vue-flow/core'  
+
+const { onNodesChange, onEdgesChange } = useVueFlow()
+
+onNodesChange((changes) => {
+  // changes are arrays of type `NodeChange`
+  console.log(changes)
+})
+
+onEdgesChange((changes) => {
+  // changes are arrays of type `EdgeChange`
+  console.log(changes)
+})
+  
 const onChange = (changes) => {
   // changes are arrays of type `NodeChange` or `EdgeChange`
-  console.log(changes) // will log the changes
+  console.log(changes)
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" @nodes-change="onChange" @edges-change="onChange" />
+  <VueFlow :nodes="nodes" :edges="edges" @nodes-change="onChange" @edges-change="onChange" />
 </template>
 ```
 
@@ -72,52 +87,60 @@ In this example, we will first disable automatic change handlers with `applyChan
 then use the `onNodesChange` event to listen to changes and validate delete changes and, 
 if they are valid, use `applyNodeChanges` to apply them.
 
+::: info
+Checkout the [confirm delete example](/examples/confirm).
+:::
+
 ```vue
 <script setup>
-import { useVueFlow, VueFlow } from '@vue-flow/core'
 import { ref } from 'vue'
+import { useVueFlow, VueFlow } from '@vue-flow/core'
 
 const { applyNodeChanges } = useVueFlow();
 
 const { confirm } = useConfirm();
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
     position: { x: 0, y: 0 },
+    data: { label: 'Node 1' },
   },
   {
     id: '2',
-    label: 'Node 2',
     position: { x: 100, y: 100 },
+    data: { label: 'Node 2' },
   },
+])
+
+const edges = ref([
   {
-    id: 'e1-2',
+    id: 'e1->2',
     source: '1',
     target: '2',
   },
 ])
 
-const onNodesChange = (changes) => {
-    changes.forEach(async (change) => {
-        // if the change is a remove change, we want to validate it first
-        if (change.type === 'remove') {
-          const isConfirmed = await confirm();
+const onNodesChange = async (changes) => {
+  const nextChanges = []
 
-          if (isConfirmed) {
-            // if confirmed, apply the change
-            applyNodeChanges([change])
-          }
-        } else {
-          // apply all other changes
-          applyNodeChanges([change])
-        }
-    })
+  for (const change of changes) {
+    if (change.type === 'remove') {
+      const isConfirmed = await confirm('Are you sure you want to delete this node?')
+
+      if (isConfirmed) {
+        nextChanges.push(change)
+      }
+    } else {
+      nextChanges.push(change)
+    }
+  }
+
+  applyNodeChanges(nextChanges)
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" :apply-changes="false" @nodes-change="onNodesChange" />
+  <VueFlow :nodes="nodes" :edges="edges" :apply-changes="false" @nodes-change="onNodesChange" />
 </template>
 ```
