@@ -61,38 +61,6 @@ const toggleNodesDraggable = () => {
 
   It is used for the lookup and injection of the state instance.
 
-### modelValue (optional)
-
-- Type: [`Elements`](/typedocs/types/Elements)
-
-- Details:
-
-  An array of elements (nodes + edges).
-
-  Use either the modelValue prop or nodes/edges separately. __Do not mix them!__
-
-- Example:
-
-```vue
-<script setup>
-import { VueFlow } from '@vue-flow/core'
-
-const elements = ref([
-  { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
-  { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
-  { id: '4', type: 'output', label: 'Node 4', position: { x: 400, y: 200 } },
-  { id: 'e1-3', source: '1', target: '3' },
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-])
-</script>
-<template>
-  <div style="height: 300px">
-    <VueFlow v-model="elements" />
-  </div>
-</template>
-```
-
 ### nodes (optional)
 
 - Type: [`Node[]`](/typedocs/interfaces/Node)
@@ -107,19 +75,36 @@ const elements = ref([
 
 ```vue
 <script setup>
+import { ref } from 'vue'  
 import { VueFlow } from '@vue-flow/core'
 
 const nodes = ref([
-  { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
-  { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
-  { id: '4', type: 'output', label: 'Node 4', position: { x: 400, y: 200 } },
+  { 
+    id: '1', 
+    type: 'input',
+    position: { x: 250, y: 5 },
+    data: { label: 'Node 1' },
+  },
+  { 
+    id: '2', 
+    position: { x: 100, y: 100 },
+    data: { label: 'Node 2' },
+  },
+  { 
+    id: '3', 
+    position: { x: 400, y: 100 },
+    data: { label: 'Node 3' },
+  },
+  { 
+    id: '4', 
+    type: 'output',
+    position: { x: 400, y: 200 },
+    data: { label: 'Node 4' },
+  },
 ])
 </script>
 <template>
-  <div style="height: 300px">
-    <VueFlow :nodes="nodes" />
-  </div>
+  <VueFlow :nodes="nodes" />
 </template>
 ```
 
@@ -140,21 +125,77 @@ const nodes = ref([
 import { VueFlow } from '@vue-flow/core'
 
 const nodes = ref([
+  {
+    id: '1',
+    type: 'input',
+    position: { x: 250, y: 5 },
+    data: { label: 'Node 1' },
+  },
+  {
+    id: '2',
+    position: { x: 100, y: 100 },
+    data: { label: 'Node 2' },
+  },
+  {
+    id: '3',
+    position: { x: 400, y: 100 },
+    data: { label: 'Node 3' },
+  },
+  {
+    id: '4',
+    type: 'output',
+    position: { x: 400, y: 200 },
+    data: { label: 'Node 4' },
+  },
+])
+
+const edges = ref([
+  { 
+    id: 'e1->3', 
+    source: '1',
+    target: '3' 
+  },
+  { 
+    id: 'e1->2', 
+    source: '1', 
+    target: '2',  
+  },
+])
+</script>
+<template>
+  <VueFlow :nodes="nodes" :edges="edges" />
+</template>
+```
+
+### modelValue (optional) (deprecated)
+
+- Type: [`Elements`](/typedocs/types/Elements)
+
+- Details:
+
+  An array of elements (nodes + edges).
+
+  Use either the modelValue prop or nodes/edges separately. __Do not mix them!__
+
+- Example:
+
+```vue
+<script setup>
+import { ref } from 'vue'  
+import { VueFlow } from '@vue-flow/core'
+
+const elements = ref([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
   { id: '4', type: 'output', label: 'Node 4', position: { x: 400, y: 200 } },
-])
-
-const edges = ref([
   { id: 'e1-3', source: '1', target: '3' },
   { id: 'e1-2', source: '1', target: '2', animated: true },
 ])
 </script>
+
 <template>
-  <div style="height: 300px">
-    <VueFlow :nodes="nodes" :edges="edges" />
-  </div>
+  <VueFlow v-model="elements" />
 </template>
 ```
 
@@ -172,6 +213,7 @@ const edges = ref([
 
 ```vue
 <script setup>
+import { ref } from 'vue'  
 import { VueFlow } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 
@@ -180,18 +222,25 @@ const nodeTypes = {
 }
 
 const nodes = ref([
-  { id: '1', type: 'custom', label: 'Node 1', position: { x: 250, y: 5 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
+  { 
+    id: '1', 
+    type: 'custom',
+    position: { x: 250, y: 5 },
+    data: { label: 'Node 1' },
+  },
+  { 
+    id: '2', 
+    position: { x: 100, y: 100 },
+    data: { label: 'Node 2' },
+  },
 ])
 
 const edges = ref([
-  { id: 'e1-2', source: '1', target: '2', animated: true },
+  { id: 'e1->2', source: '1', target: '2' },
 ])
 </script>
 <template>
-  <div style="height: 300px">
-    <VueFlow :nodes="nodes" :edges="edges" :node-types="nodeTypes" />
-  </div>
+  <VueFlow :nodes="nodes" :edges="edges" :node-types="nodeTypes" />
 </template>
 ```
 
@@ -209,6 +258,7 @@ const edges = ref([
 
 ```vue
 <script setup>
+import { ref } from 'vue'  
 import { VueFlow } from '@vue-flow/core'
 import CustomEdge from './CustomEdge.vue'
 
@@ -217,18 +267,30 @@ const edgeTypes = {
 }
 
 const nodes = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
+  {
+    id: '1',
+    type: 'custom',
+    position: { x: 250, y: 5 },
+    data: { label: 'Node 1' },
+  },
+  {
+    id: '2',
+    position: { x: 100, y: 100 },
+    data: { label: 'Node 2' },
+  },
 ])
 
 const edges = ref([
-  { id: 'e1-2', type: 'custom', source: '1', target: '2', animated: true },
+  { 
+    id: 'e1->2', 
+    type: 'custom',
+    source: '1', 
+    target: '2' 
+  },
 ])
 </script>
 <template>
-  <div style="height: 300px">
-    <VueFlow :nodes="nodes" :edges="edges" :edge-types="edgeTypes" />
-  </div>
+  <VueFlow :nodes="nodes" :edges="edges" :edge-types="edgeTypes" />
 </template>
 ```
 
@@ -245,25 +307,13 @@ const edges = ref([
   If you want to have full control of state changes, you can disable the default behavior and apply your own change
   handlers to the state.
 
+  Check the [controlled flow](/guide/controlled-flow) guide for more information.
+
 - Example:
 
 ```vue
-<script setup>
-import { VueFlow } from '@vue-flow/core'
-
-const nodes = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
-])
-
-const edges = ref([
-  { id: 'e1-2', type: 'custom', source: '1', target: '2', animated: true },
-])
-</script>
 <template>
-  <div style="height: 300px">
-    <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" />
-  </div>
+  <VueFlow :apply-default="false" />
 </template>
 ```
 
@@ -523,17 +573,26 @@ const edges = ref([
 
 - Example:
 
-```vue{5-6,10}
+```vue
 <script setup>
-const elements = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
-  
-  // This will overwrite the globally set option of nodes-draggable
-  { id: '2', draggable: true, label: 'Node 2', position: { x: 100, y: 100 } },
+import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
+
+const nodesDraggable = ref(false)
+
+const nodes = ref([
+  { id: '1', position: { x: 250, y: 5 } },
+  { 
+    id: '2', 
+    // This will overwrite the globally set option of nodes-draggable
+    draggable: true, 
+    position: { x: 100, y: 100 } 
+  },
 ])
 </script>
+
 <template>
-  <VueFlow :nodes-draggable="false" />
+  <VueFlow :nodes="nodes" :nodes-draggable="nodesDraggable" />
 </template>
 ```
 
@@ -551,17 +610,26 @@ const elements = ref([
 
 - Example:
 
-```vue{5-6,10}
+```vue
 <script setup>
-const elements = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
+import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
+
+const nodesConnectable = ref(false)
   
-  // This will overwrite the globally set option of nodes-connectable
-  { id: '2', connectable: true, label: 'Node 2', position: { x: 100, y: 100 } },
+const nodes = ref([
+  { id: '1', position: { x: 250, y: 5 } },
+  {
+    id: '2',
+    // This will overwrite the globally set option of nodes-connectable
+    connectable: true,
+    position: { x: 100, y: 100 }
+  },
 ])
 </script>
+
 <template>
-  <VueFlow :nodes-connectable="false" />
+  <VueFlow :nodes="nodes" :nodes-connectable="nodesConnectable" />
 </template>
 ```
 
@@ -586,17 +654,23 @@ const elements = ref([
 
 - Example:
 
-```vue{5-6}
+```vue
 <script setup>
-const elements = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
-  
-  // This will overwrite the globally set option of node-extent
-  { id: '2', extent: [[-100, -100], [100, 100]], label: 'Node 2', position: { x: 100, y: 100 } },
+import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
+
+const nodes = ref([
+  { id: '1', position: { x: 250, y: 5 } },
+  {
+    id: '2',
+    extent: [[-100, -100], [100, 100]],
+    position: { x: 100, y: 100 }
+  },
 ])
 </script>
+
 <template>
-  <VueFlow />
+  <VueFlow :nodes="nodes" />
 </template>
 ```
 
@@ -648,19 +722,30 @@ const elements = ref([
 
 - Example:
 
-```vue{7-8,12}
+```vue
 <script setup>
-const elements = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
+import { ref } from 'vue'
+import { VueFlow } from '@vue-flow/core'
+
+const edgesUpdatable = ref(false)
   
-  { id: 'e1-3', source: '1', target: '3' },
-  // Overwrites global edges-updatable config
-  { id: 'e1-2', updatable: true, source: '1', target: '2', animated: true },
+const nodes = ref([
+  { id: '1', position: { x: 250, y: 5 } },
+  { id: '2', position: { x: 100, y: 100 } },
+])
+  
+const edges = ref([
+  { id: 'e1->2', source: '1', target: '2' },
+  { 
+    id: 'e1->3',
+    // Overwrites global edges-updatable config
+    updatable: true, 
+    source: '1', target: '3', 
+  },
 ])
 </script>
 <template>
-  <VueFlow :edges-updatable="false" />
+  <VueFlow :nodes="nodes" :edges="edges" :edges-updatable="edgesUpdatable" />
 </template>
 ```
 
@@ -706,7 +791,7 @@ const elements = ref([
 
   Does not work for the `addEdge` utility!
 
-### auto-connect (optional)
+### auto-connect (optional) (deprecated)
 
 - Type: `boolean` | [`Connector`](/typedocs/types/Connector)
 
@@ -733,11 +818,13 @@ const elements = ref([
 
 #### [Connector](/typedocs/types/Connector)
 
-```vue{6-18,22}
+```vue
 <script setup>
 import { ref } from 'vue'
 
-const elements = ref([/** elements omitted for simplicity */])
+const nodes = ref([/** ... */])
+
+const edges = ref([/** ... */])
 
 const connector = (params) => {
   if (params.source === params.target) {
@@ -755,7 +842,7 @@ const connector = (params) => {
 </script>
 
 <template>
-  <VueFlow v-model="elements" :auto-connect="connector" />
+  <VueFlow :nodes="nodes" :edges="edges" :auto-connect="connector" />
 </template>
 ```
 
