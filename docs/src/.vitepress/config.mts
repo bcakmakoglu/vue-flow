@@ -144,6 +144,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Theming', link: '/guide/theming' },
             { text: 'Nodes', link: '/guide/node' },
             { text: 'Edges', link: '/guide/edge' },
+            { text: 'Handles', link: '/guide/handle' },
             { text: 'Composables', link: '/guide/composables' },
             { text: 'Controlled Flow', link: '/guide/controlled-flow' },
           ],
