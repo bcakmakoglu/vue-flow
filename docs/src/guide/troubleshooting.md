@@ -101,27 +101,34 @@ const edges = ref([
 
 ## Evaluating Errors During Runtime
 
-During development, Vue Flow emits warnings to the console for errors encountered. These warnings are intended to help developers identify and resolve issues without failing silently. In production, however, these warnings are suppressed to avoid exposing potentially sensitive information to end users.
+During development, Vue Flow emits warnings to the console for errors encountered. 
+These warnings are intended to help developers identify and resolve issues without failing silently. 
+In production, however, these warnings are suppressed.
 
-### Hooking into onError or @error Events
+### Handling Errors
 
-You can handle errors programmatically by hooking into the `onError` or `@error` events. This allows you to perform custom operations based on the type of error encountered. Here's an example of how to use `isErrorOfType` to handle a specific error type:
-
-```ts
-import { isErrorOfType, ErrorCode } from '@vue-flow/core'
-
-onError((error) => {
-  if (isErrorOfType(error, ErrorCode.NODE_INVALID)) {
-    const [nodeId] = error.args
-    // Handle the NODE_INVALID error, e.g., by notifying the user or logging details.
-  }
-})
-```
+You can handle errors by hooking into the `onError` event.
+This allows you to perform custom operations based on the type of error encountered.
+Here's an example of how to use the `isErrorOfType` utility to handle an error of `NODE_INVALID` type.
 
 ```vue
+<script lang="ts" setup>
+import { isErrorOfType, ErrorCode, useVueFlow, VueFlowError, VueFlow } from '@vue-flow/core'
+
+const { onError } = useVueFlow()
+
+onError(handleError)
+
+function handleError(error: VueFlowError) {
+  if (isErrorOfType(error, ErrorCode.NODE_INVALID)) {
+    const [nodeId] = error.args
+    // handle the error
+  }
+}
+</script>
+
 <template>
-  <VueFlow v-model="elements" @error="handleError" />
+  <VueFlow @error="handleError" />
 </template>
 ```
-
 
