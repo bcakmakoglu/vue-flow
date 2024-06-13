@@ -1,3 +1,5 @@
+export type EdgePathParams = [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number]
+
 // this is used for straight edges and simple smoothstep edges (LTR, RTL, BTT, TTB)
 export function getSimpleEdgeCenter({
   sourceX,

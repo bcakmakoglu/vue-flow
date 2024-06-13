@@ -1,4 +1,5 @@
 import { Position } from '../../../types'
+import type { EdgePathParams } from './general'
 import { getBezierEdgeCenter } from './general'
 
 export interface GetSimpleBezierPathParams {
@@ -35,14 +36,29 @@ function getControl({ pos, x1, y1, x2, y2 }: GetControlParams): [number, number]
   return [ctX, ctY]
 }
 
-export function getSimpleBezierPath({
-  sourceX,
-  sourceY,
-  sourcePosition = Position.Bottom,
-  targetX,
-  targetY,
-  targetPosition = Position.Top,
-}: GetSimpleBezierPathParams): [path: string, labelX: number, labelY: number, offsetX: number, offsetY: number] {
+/**
+ * Get a simple bezier path from source to target handle (no curvature)
+ * @public
+ *
+ * @param simpleBezierPathParams
+ * @param simpleBezierPathParams.sourceX - The x position of the source handle
+ * @param simpleBezierPathParams.sourceY - The y position of the source handle
+ * @param simpleBezierPathParams.sourcePosition - The position of the source handle (default: Position.Bottom)
+ * @param simpleBezierPathParams.targetX - The x position of the target handle
+ * @param simpleBezierPathParams.targetY - The y position of the target handle
+ * @param simpleBezierPathParams.targetPosition - The position of the target handle (default: Position.Top)
+ * @returns A path string you can use in an SVG, the labelX and labelY position (center of path) and offsetX, offsetY between source handle and label
+ */
+export function getSimpleBezierPath(simpleBezierPathParams: GetSimpleBezierPathParams): EdgePathParams {
+  const {
+    sourceX,
+    sourceY,
+    sourcePosition = Position.Bottom,
+    targetX,
+    targetY,
+    targetPosition = Position.Top,
+  } = simpleBezierPathParams
+
   const [sourceControlX, sourceControlY] = getControl({
     pos: sourcePosition,
     x1: sourceX,
