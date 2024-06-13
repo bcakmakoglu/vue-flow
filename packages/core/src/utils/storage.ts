@@ -78,7 +78,7 @@ export class Storage {
 
     const getters = useGetters(reactiveState, nodeLookup, edgeLookup)
 
-    const actions = useActions(id, reactiveState, nodeLookup, edgeLookup)
+    const actions = useActions(reactiveState, nodeLookup, edgeLookup)
 
     actions.setState({ ...reactiveState, ...preloadedState })
 
