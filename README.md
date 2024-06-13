@@ -7,12 +7,8 @@
 
 __Vue Flow: A highly customizable Vue 3 Flowchart component.__
 
-Vue Flow is a bridge to the world of interactive flowcharts and graphs, empowering you to bring
-interactivity to your graphic representations. Whether it's crafting personal diagrams, generating dynamic
-editors, or anything else your imagination conjures up, Vue Flow has you covered.
-
-You can find a detailed explanation on how to get started [here](https://vueflow.dev/guide/) or jump right into
-the [examples](https://vueflow.dev/examples/).
+You can find a detailed explanation on how to get started [here](https://vueflow.dev/guide/) 
+or jump right into the [examples](https://vueflow.dev/examples/).
 
 ## Table of contents
 
@@ -123,7 +119,7 @@ there is no support for Vue 2, nor will there be any support in the future, sorr
 ### Prerequisites
 
 - [Node.js v20+](https://nodejs.org/)
-- [pnpm](https://pnpm.io/)
+- [pnpm v9+](https://pnpm.io/)
 
 ```bash
 # install pnpm if you haven't already
