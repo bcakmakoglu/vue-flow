@@ -53,16 +53,11 @@ import {
 } from '../utils'
 import { storeOptionsToSkip, useState } from './state'
 
-export function useActions(
-  id: string,
-  state: State,
-  nodeLookup: ComputedRef<NodeLookup>,
-  edgeLookup: ComputedRef<EdgeLookup>,
-): Actions {
+export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, edgeLookup: ComputedRef<EdgeLookup>): Actions {
   const viewportHelper = useViewportHelper(state)
 
   const updateNodeInternals: Actions['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? state.nodes.map((n) => n.id) ?? []
+    const updateIds = ids ?? []
 
     state.hooks.updateNodeInternals.trigger(updateIds)
   }

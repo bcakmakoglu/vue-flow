@@ -39,7 +39,6 @@ const initialViewportHelper: ViewportHelper = {
  *
  * @internal
  * @param state
- * @param getters
  */
 export function useViewportHelper(state: State) {
   function zoom(scale: number, duration?: number) {
