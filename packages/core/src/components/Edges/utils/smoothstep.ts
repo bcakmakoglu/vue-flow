@@ -206,6 +206,7 @@ function getBend(a: XYPosition, b: XYPosition, c: XYPosition, size: number): str
  * @param smoothStepPathParams.targetX - The x position of the target handle
  * @param smoothStepPathParams.targetY - The y position of the target handle
  * @param smoothStepPathParams.targetPosition - The position of the target handle (default: Position.Top)
+ * @param smoothStepPathParams.borderRadius - The border radius of the edge (default: 5)
  * @returns A path string you can use in an SVG, the labelX and labelY position (center of path) and offsetX, offsetY between source handle and label
  */
 export function getSmoothStepPath(smoothStepPathParams: GetSmoothStepPathParams): EdgePathParams {

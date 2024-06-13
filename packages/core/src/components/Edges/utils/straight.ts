@@ -9,16 +9,14 @@ export interface GetStraightPathParams {
 }
 
 /**
- * Get a simple bezier path from source to target handle (no curvature)
+ * Get a straight path from source to target handle
  * @public
  *
  * @param straightEdgeParams
  * @param straightEdgeParams.sourceX - The x position of the source handle
  * @param straightEdgeParams.sourceY - The y position of the source handle
- * @param straightEdgeParams.sourcePosition - The position of the source handle (default: Position.Bottom)
  * @param straightEdgeParams.targetX - The x position of the target handle
  * @param straightEdgeParams.targetY - The y position of the target handle
- * @param straightEdgeParams.targetPosition - The position of the target handle (default: Position.Top)
  * @returns A path string you can use in an SVG, the labelX and labelY position (center of path) and offsetX, offsetY between source handle and label
  */
 export function getStraightPath(straightEdgeParams: GetStraightPathParams): EdgePathParams {

@@ -63,6 +63,7 @@ function getControlWithCurvature({ pos, x1, y1, x2, y2, c }: GetControlWithCurva
  * @param bezierPathParams.targetX - The x position of the target handle
  * @param bezierPathParams.targetY - The y position of the target handle
  * @param bezierPathParams.targetPosition - The position of the target handle (default: Position.Top)
+ * @param bezierPathParams.curvature - The curvature of the edge (default: 0.25)
  * @returns A path string you can use in an SVG, the labelX and labelY position (center of path) and offsetX, offsetY between source handle and label
  */
 export function getBezierPath(bezierPathParams: GetBezierPathParams): EdgePathParams {
