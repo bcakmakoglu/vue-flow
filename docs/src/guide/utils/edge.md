@@ -1,11 +1,17 @@
 # Edge
 
-All default edge components are exported and can be used or extended if necessary.
+Vue Flow exports a couple of utilities you can use to create your own custom edges without having to worry how to actually
+implement the edge path calculation.
+
+This can be helpful if you don't want to actually change the way the edge path is calculated 
+but just want to implement some custom logic on top of the regular edge behavior.
+
+Alternatively, all default edge components are also exported and can be used to create custom edges.
 
 ```vue
 <script lang="ts" setup>
 // CustomEdge.vue
-import { EdgeProps, BezierEdge } from '@vue-flow/core'
+import { EdgeProps, BezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '@vue-flow/core'
 
 const props = defineProps<EdgeProps>()
 
@@ -17,54 +23,161 @@ const props = defineProps<EdgeProps>()
 </template>
 ```
 
-## Path utils
+## [getBezierPath](/typedocs/functions/getBezierPath)
 
-Vue Flow exports a couple of functions you can use to create your own custom edges without having to worry how to actually
-create a bezier path.
+- Details:
+  
+  A function that returns a bezier path and center positions.
 
-This can be helpful if you don't want to actually change the way the path is calculated but just want to implement some custom logic on top of the 
-regular edge behavior.
+- Arguments:
+  - `sourceX`: The x position of the source handle.
+  - `sourceY`: The y position of the source handle.
+  - `sourcePosition`: The position of the source handle.
+  - `targetX`: The x position of the target handle.
+  - `targetY`: The y position of the target handle.
+  - `targetPosition`: The position of the target handle.
+  - `curvature`: The curvature of the path.
 
-### [getBezierPath](/typedocs/functions/getBezierPath)
+- Returns:
+  - `path`: A string representing the path.
+  - `labelX`: The x position of the label.
+  - `labelY`: The y position of the label.
+  - `offsetX`: The x offset of the label.
+  - `offsetY`: The y offset of the label.
+
+- Example:
+
+```vue
+<script lang="ts" setup>
+import { computed } from "vue"
+import { BaseEdge, getBezierPath, EdgeProps } from '@vue-flow/core'
+
+const props = defineProps<EdgeProps>()
+
+const edgePathParams = computed(() => getBezierPath({ ...props, curvature: 0.5 }))
+</script>
+
+<template>
+  <BaseEdge :path="edgePathParams[0]" />
+</template>
+```
+
+## [getSimpleBezierPath](/typedocs/functions/getSimpleBezierPath)
 
 - Details:
 
-  Returns a bezier path and center positions.
+A function that returns a simple bezier path (no curvature from and toward handles) and center positions.
 
-### getBezierCenter (removed)
+- Arguments:
+  - `sourceX`: The x position of the source handle.
+  - `sourceY`: The y position of the source handle.
+  - `sourcePosition`: The position of the source handle.
+  - `targetX`: The x position of the target handle.
+  - `targetY`: The y position of the target handle.
+  - `targetPosition`: The position of the target handle.
 
-::: warning
-This function has been removed. The edge center positions are returned by `getBezierPath` now.
-:::
+- Returns:
+  - `path`: A string representing the path.
+  - `labelX`: The x position of the label.
+  - `labelY`: The y position of the label.
+  - `offsetX`: The x offset of the label.
+  - `offsetY`: The y offset of the label.
+
+- Example:
+
+```vue
+<script lang="ts" setup>
+import { computed } from "vue"
+import { BaseEdge, getSimpleBezierPath, EdgeProps } from '@vue-flow/core'
+
+const props = defineProps<EdgeProps>()
+
+const edgePathParams = computed(() => getSimpleBezierPath(props))
+</script>
+
+<template>
+  <BaseEdge :path="edgePathParams[0]" />
+</template>
+```
+
+## [getSmoothStepPath](/typedocs/functions/getSmoothStepPath)
 
 - Details:
 
-  Returns a bezier path's center x and y values.
+  A function that returns a smoothstep path (you can use a `borderRadius` 0 for a step path).
 
-### [getSimpleBezierPath](/typedocs/functions/getSimpleBezierPath)
+- Arguments:
+  - `sourceX`: The x position of the source handle.
+  - `sourceY`: The y position of the source handle.
+  - `sourcePosition`: The position of the source handle.
+  - `targetX`: The x position of the target handle.
+  - `targetY`: The y position of the target handle.
+  - `targetPosition`: The position of the target handle.
+  - `centerX`: The x position of the center.
+  - `centerY`: The y position of the center.
+  - `offset`: The offset of the path.
+  - `borderRadius`: The border radius of the path.
+
+  ::: info
+  You can use `borderRadius: 0` to create a step path with no smooth corners.
+  :::
+
+- Returns:
+  - `path`: A string representing the path.
+  - `labelX`: The x position of the label.
+  - `labelY`: The y position of the label.
+  - `offsetX`: The x offset of the label.
+  - `offsetY`: The y offset of the label.
+
+- Example:
+
+```vue
+<script lang="ts" setup>
+import { computed } from "vue"
+import { BaseEdge, getSmoothStepPath, EdgeProps } from '@vue-flow/core'
+
+const props = defineProps<EdgeProps>()
+
+const edgePathParams = computed(() => getSmoothStepPath({ ...props, borderRadius: 8 }))
+</script>
+
+<template>
+  <BaseEdge :path="edgePathParams[0]" />
+</template>
+```
+
+## [getStraightPath](/typedocs/functions/getStraightPath)
 
 - Details:
 
-  Returns a simple bezier path (no curvature at handles) and center positions.
+  A function that returns a straight path.
 
-### getSimpleBezierCenter (removed)
+- Arguments:
+  - `sourceX`: The x position of the source handle.
+  - `sourceY`: The y position of the source handle.
+  - `targetX`: The x position of the target handle.
+  - `targetY`: The y position of the target handle.
 
-::: warning
-This function has been removed. The edge center positions are returned by `getSimpleBezierPath` now.
-:::
+- Returns:
+  - `path`: A string representing the path.
+  - `labelX`: The x position of the label.
+  - `labelY`: The y position of the label.
+  - `offsetX`: The x offset of the label.
+  - `offsetY`: The y offset of the label.
 
-- Details:
+- Example:
 
-  Returns a simple bezier path's center x and y values.
+```vue
+<script lang="ts" setup>
+import { computed } from "vue"
+import { BaseEdge, getStraightPath, EdgeProps } from '@vue-flow/core'
 
-### [getSmoothStepPath](/typedocs/functions/getSmoothStepPath)
+const props = defineProps<EdgeProps>()
 
-- Details:
+const edgePathParams = computed(() => getStraightPath(props))
+</script>
 
-  Returns a smoothstep path (use border-radius 0 for a step path).
-
-### [getStraightPath](/typedocs/functions/getStraightPath)
-
-- Details:
-
-  Returns a straight path.
+<template>
+  <BaseEdge :path="edgePathParams[0]" />
+</template>
+```

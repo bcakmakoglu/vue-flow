@@ -58,16 +58,18 @@ Handles are positioned on their respective side using CSS with an `absolute` pos
 That means you can adjust what element a handle aligns itself with by wrapping it in a container that has a `relative` position.
 
 ```vue
-<div>
-  <span>{{ data.label }}</span>
-  
-  <div style="position: relative; padding: 10px">
-    <Handle type="source" :position="Position.Right" />
+<template>
+  <div>
+    <span>{{ data.label }}</span>
+
+    <div style="position: relative; padding: 10px">
+      <Handle type="source" :position="Position.Right" />
 
 
-    <Handle type="target" :position="Position.Left" />
+      <Handle type="target" :position="Position.Left" />
+    </div>
   </div>
-</div>
+</template>
 ```
 
 ## Multiple Handles
