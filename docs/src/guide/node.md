@@ -136,7 +136,7 @@ Sidebar or Toolbar.
 
 <script setup>
 import { ref } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 
 const initialNodes = ref([
   {
@@ -167,10 +167,12 @@ function onAddNodes() {
 </script>
 
 <template>
-  <VueFlow :nodes="initialNodes" />
-  
-  <button type="button" @click="onAddNode">Add a node</button>
-  <button type="button" @click="onAddNodes">Add multiple nodes</button>
+  <VueFlow :nodes="initialNodes">
+    <Panel>
+      <button type="button" @click="onAddNode">Add a node</button>
+      <button type="button" @click="onAddNodes">Add multiple nodes</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 
@@ -178,7 +180,7 @@ function onAddNodes() {
 <script setup lang="ts">
 import { ref } from 'vue'  
 import type { Node } from '@vue-flow/core'  
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 
 const initialNodes = ref<Node[]>([
   {
@@ -213,10 +215,12 @@ function onAddNodes() {
 </script>
 
 <template>
-  <VueFlow :nodes="initialNodes" />
-  
-  <button type="button" @click="onAddNode()">Add a node</button>
-  <button type="button" @click="onAddNodes()">Add multiple nodes</button>
+  <VueFlow :nodes="initialNodes">
+    <Panel>
+      <button type="button" @click="onAddNode">Add a node</button>
+      <button type="button" @click="onAddNodes">Add multiple nodes</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 

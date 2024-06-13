@@ -1,6 +1,6 @@
 # State
 
-##
+## Introduction
 
 Under the hood Vue Flow uses [Provide/Inject](https://v3.vuejs.org/guide/component-provide-inject)
 to pass around it's state between components.

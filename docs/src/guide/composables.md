@@ -35,6 +35,7 @@ onInit((instance) => {
   }
 })
 </script>
+
 <template>
   <VueFlow :nodes="nodes" :edges="edges" />
 </template>
@@ -42,6 +43,30 @@ onInit((instance) => {
 
 `useVueFlow` exposes the whole internal state, including the nodes and edges.
 The values are reactive, meaning changing the values returned from `useVueFlow` will trigger changes in the graph.
+
+### State creation and injection
+
+The `useVueFlow` composable creates, on first call, a new instance of the `VueFlowStore` and injects it into the Vue component tree.
+This allows you to access the store from any child component using the `useVueFlow` composable.
+
+This also means that the *first call* of `useVueFlow` is crucial as it determines the state instance that will be used throughout the component tree.
+You can think of it as a sort of `<VueFlowProvider>` wrapper that is automatically injected into the component tree.
+
+You can read more about this in the [State section of the guide](/guide/vue-flow/state).
+
+#### Enforcing a specific state instance
+
+If necessary, you can enforce the use of a specific state instance by passing an `id` to the `useVueFlow` composable.
+
+```ts
+import { useVueFlow } from '@vue-flow/core'
+
+const { onInit } = useVueFlow({ id: 'my-flow-instance' })
+
+onInit((instance) => {
+  // `instance` is the same type as the return of `useVueFlow` (VueFlowStore)
+})
+```
 
 ## [useHandleConnections](/typedocs/functions/useHandleConnections)
 
