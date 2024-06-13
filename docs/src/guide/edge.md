@@ -73,6 +73,10 @@ const straightEdge = ref([
     target: '2',
   },
 ]);
+
+function logEvent(name, data) {
+  console.log(name, data)
+}
 </script>
 
 # Introduction to Edges
@@ -86,8 +90,7 @@ For the full list of options available for an edge, check out the [Edge Type](/t
 
 ## Adding Edges to the Graph
 
-Edges are generally created by adding them to the `mode-value` (using `v-model`) or to the `edges` prop of the Vue Flow component.
-This can be done dynamically at any point in your component's lifecycle.
+Edges are rendered by passing them to the `edges` prop (or the deprecated `v-model` prop) of the Vue Flow component.
 
 :::code-group
 
@@ -97,30 +100,30 @@ This can be done dynamically at any point in your component's lifecycle.
 import { ref, onMounted } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
     position: { x: 50, y: 250 },
-    label: 'Node 2',
+    data: { label: 'Node 2', },
   }
 ]);
 
-onMounted(() => {
-  elements.value.push({
-    id: 'e1-2',
+const edges = ref([
+  {
+    id: 'e1->2',
     source: '1',
     target: '2',
-  })
-})
+  }
+]);
 </script>
 
 <template>
-  <VueFlow v-model="elements"/>
+  <VueFlow :nodes="nodes" :edges="edges" />
 </template>
 ```
 
@@ -128,42 +131,42 @@ onMounted(() => {
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import type { Elements } from '@vue-flow/core'
+import type { Node, Edge } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref<Elements>([
+const nodes = ref<Node[]>([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
     position: { x: 50, y: 250 },
-    label: 'Node 2',
+    data: { label: 'Node 2', },
   }
 ]);
 
-onMounted(() => {
-  elements.value.push({
-    id: 'e1-2',
+const edges = ref<Edge[]>([
+  {
+    id: 'e1->2',
     source: '1',
     target: '2',
-  })
-})
+  }
+]);
 </script>
 
 <template>
-  <VueFlow v-model="elements"/>
+  <VueFlow :nodes="nodes" :edges="edges" />
 </template>
 ```
 
 :::
 
-If you are working with more complex graphs that necessitate extensive state access, the `useVueFlow` composable should
-be employed.
-The [`addEdges`](/typedocs/interfaces/Actions#addEdges) action is available
-through [useVueFlow](/typedocs/functions/useVueFlow), allowing you to add edges straight to the state.
+If you are working with more complex graphs or simply require access to the internal state,
+the [useVueFlow](/typedocs/functions/useVueFlow) composable will come in handy.
+
+The [`addEdges`](/typedocs/interfaces/Actions#addEdges) action is available through [useVueFlow](/typedocs/functions/useVueFlow), allowing you to add edges straight to the state.
 
 What's more, this action isn't limited to the component rendering the graph; it can be utilized elsewhere, like in a
 Sidebar or Toolbar.
@@ -176,31 +179,28 @@ const initialNodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
     position: { x: 50, y: 250 },
-    label: 'Node 2',
+    data: { label: 'Node 2', },
   }
 ])
 
 const { addEdges } = useVueFlow()
 
-onMounted(() => {
-  // add an edge after mount
-  addEdges([
-     {
-        source: '1',
-        target: '2',
-        
-        // if a node has multiple handles of the same type,
-        // you should specify which handle to use by id
-        sourceHandle: null,
-        targetHandle: null,
-     }
-  ])
-})
+addEdges([
+  {
+    source: '1',
+    target: '2',
+
+    // if a node has multiple handles of the same type,
+    // you should specify which handle to use by id
+    sourceHandle: null,
+    targetHandle: null,
+  }
+])
 </script>
 
 <template>
@@ -213,81 +213,118 @@ onMounted(() => {
 Similar to adding edges, edges can be removed from the graph by removing them from the `mode-value` (using `v-model`) or from the `edges` prop of the Vue Flow component.
 
 ```vue
-
 <script setup>
 import { ref, onMounted } from 'vue'
-import { VueFlow } from '@vue-flow/core'
+import { VueFlow, Panel } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
     position: { x: 50, y: 250 },
-    label: 'Node 2',
+    data: { label: 'Node 2', },
   },
+]);
+
+const edges = ref([
   {
-    id: 'e1-2',
+    id: 'e1->2',
     source: '1',
     target: '2',
   }
 ]);
 
-onMounted(() => {
-  elements.value.splice(2, 1)
-})
+function removeEdge(id) {
+  edges.value = edges.value.filter((edge) => edge.id !== id)
+}
 </script>
 
 <template>
-  <VueFlow v-model="elements"/>
+  <VueFlow :nodes="nodes" :edges="edges">
+    <Panel>
+      <button @click="removeEdge('e1->2')">Remove Edge</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 
-When working with complex graphs with extensive state access, you should use the useVueFlow composable.
-The [`removeEdges`](/typedocs/interfaces/Actions#removeEdges) action is available through [useVueFlow](/typedocs/functions/useVueFlow),
-allowing you to remove edges straight from the state.
+The [`removeEdges`](/typedocs/interfaces/Actions#removeEdges) action is available through [useVueFlow](/typedocs/functions/useVueFlow), allowing you to remove edges straight from the state.
 
-What's more, this action isn't limited to the component rendering the graph; it can be utilized elsewhere, like in a
-Sidebar, Toolbar or the Edge itself.
+You can also use this action outside the component rendering the graph, like in a Sidebar or Toolbar.
 
 ```vue
 <script setup>
+import { ref, onMounted } from 'vue'  
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
     position: { x: 50, y: 250 },
-    label: 'Node 2',
+    data: { label: 'Node 2', },
   },
   {
-    id: 'e1-2',
+    id: '3',
+    position: { x: 250, y: 50 },
+    data: { label: 'Node 3', },
+  },
+  {
+    id: '4',
+    position: { x: 250, y: 250 },
+    data: { label: 'Node 4', },
+  },
+])
+
+const edges = ref([
+  {
+    id: 'e1->2',
     source: '1',
     target: '2',
-  }
+  },
+  {
+    id: 'e1->3',
+    source: '1',
+    target: '3',
+  },
+  {
+    id: 'e2->3',
+    source: '2',
+    target: '3',
+  },
+  {
+    id: 'e2->4',
+    source: '2',
+    target: '4',
+  },
 ])
 
 const { removeEdges } = useVueFlow()
 
-onMounted(() => {
-  // remove an edge after mount
-  removeEdges('e1-2')
-  
-  // or remove multiple edges
-  removeEdges(['e1-2', 'e2-3'])
-})
+function removeOneEdge() {
+  removeEdges('e1->2')
+}
+
+function removeMultipleEdges() {
+  removeEdges(['e1->3', 'e2->3'])
+}
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow :nodes="nodes" :edges="edges">
+    <Panel>
+      <button @click="removeOneEdge">Remove Edge 1</button>
+      <button @click="removeMultipleEdges">Remove Edges 2 and 3</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 
@@ -300,13 +337,34 @@ There are multiple ways of achieving this, here are some examples:
 
 ::: code-group
 
+```ts [useVueFlow]
+import  { useVueFlow } from '@vue-flow/core'
+
+const instance = useVueFlow()
+
+// use the `updateEdgeData` method to update the data of an edge
+instance.updateEdgeData(edgeId, { hello: 'mona' })
+
+// find the edge in the state by its id
+const edge = instance.findEdge(edgeId)
+
+edge.data = {
+  ...edge.data,
+  hello: 'world',
+}
+
+// you can also mutate properties like `selectable` or `animated`
+edge.selectable = !edge.selectable
+edge.animated = !edge.animated
+```
+
 ```vue [useEdge]
 <!-- CustomEdge.vue -->
 <script setup>
 import { useEdge } from '@vue-flow/core'
 
 // `useEdge` returns us the edge object straight from the state
-// since the node obj is reactive, we can mutate it to update our edges' data
+// since the edge obj is reactive, we can mutate it to update our edges' data
 const { edge } = useEdge()
 
 function onSomeEvent() {
@@ -322,51 +380,36 @@ function onSomeEvent() {
 </script>
 ```
 
-```ts [useVueFlow]
-import  { useVueFlow } from '@vue-flow/core'
-
-const instance = useVueFlow()
-
-// find the node in the state by its id
-const edge = instance.findEdge(edgeId)
-
-edge.data = {
-  ...edge.data,
-  hello: 'world',
-}
-
-// you can also mutate properties like `selectable` or `animated`
-edge.selectable = !edge.selectable
-edge.animated = !edge.animated
-```
-
 ```vue [v-model]
 <script setup>
 import { ref } from 'vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
     position: { x: 50, y: 50 },
     data: {
+      label: 'Node 1',
       hello: 'world',
-    }
+    },
   },
   {
       id: '2',
-      label: 'Node 2',
       position: { x: 50, y: 250 },
+      data: { label: 'Node 2', },
   },
+])
+
+const edges = ref([
   {
-      id: 'e1-2',
-      source: '1',
-      target: '2',
+    id: 'e1->2',
+    source: '1',
+    target: '2',
   },
 ])
 
 function onSomeEvent(edgeId) {
-  const edge = elements.value.find((edge) => edge.id === edgeId)
+  const edge = edges.value.find((edge) => edge.id === edgeId)
   edge.data = {
     ...elements.value[0].data,
     hello: 'world',
@@ -447,14 +490,14 @@ import SpecialEdge from './SpecialEdge.vue'
 
 export const edges = ref([
   {
-    id: 'e1-2',
+    id: 'e1->2',
     source: '1',
     target: '2',
     // this will create the edge-type `custom`
     type: 'custom',
   },
   {
-    id: 'e1-3',
+    id: 'e1->3',
     source: '1',
     target: '3',
     // this will create the edge-type `special`
@@ -465,23 +508,23 @@ export const edges = ref([
 const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
     position: { x: 50, y: 50 },
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
-    label: 'Node 2',
     position: { x: 50, y: 250 },
+    data: { label: 'Node 2', },
   },
   {
     id: '3',
-    label: 'Node 3',
     position: { x: 250, y: 50 },
+    data: { label: 'Node 3', },
   },
   {
     id: '4',
-    label: 'Node 4',
     position: { x: 250, y: 250 },
+    data: { label: 'Node 4', },
   },
 ])
 </script>
@@ -576,23 +619,23 @@ export const edges = ref<CustomEdge[]>([
 const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
     position: { x: 50, y: 50 },
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
-    label: 'Node 2',
     position: { x: 50, y: 250 },
+    data: { label: 'Node 2', },
   },
   {
     id: '3',
-    label: 'Node 3',
     position: { x: 250, y: 50 },
+    data: { label: 'Node 3', },
   },
   {
     id: '4',
-    label: 'Node 4',
     position: { x: 250, y: 250 },
+    data: { label: 'Node 4', },
   },
 ])  
 </script>
@@ -656,32 +699,37 @@ One of the easiest ways to define custom edges is, by passing them as template s
 Dynamic resolution to slot-names is done for your user-defined edge-types,
 meaning a edge with the type `custom` is expected to have a slot named `#edge-custom`.
 
-```vue{18,26}
+```vue
 <script setup>
+import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 import CustomEdge from './CustomEdge.vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
     position: { x: 50, y: 50 },
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
-    label: 'Node 2',
     position: { x: 50, y: 250 },
+    data: { label: 'Node 2', },
   },
+])
+
+const edges = ref([
   {
-    id: 'e1-2',
+    id: 'e1->2',
     type: 'custom',
     source: '1',
     target: '2',
   },
 ])
 </script>
+
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow :nodes="nodes" :edges="edges">
     <template #edge-custom="props">
       <CustomEdge v-bind="props" />
     </template>
@@ -697,7 +745,7 @@ Alternatively, edge-types can also be defined by passing an object as a prop to 
 Take precaution to mark your components as raw (utilizing the marked function from the Vue library) to prevent their conversion into reactive objects. Otherwise, Vue will display a warning on the console.
 :::
 
-```vue{5-7,28}
+```vue
 <script setup>
 import { markRaw } from 'vue'
 import CustomEdge from './CustomEdge.vue'
@@ -706,17 +754,22 @@ const edgeTypes = {
   custom: markRaw(CustomEdge),
 }
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
+    position: { x: 50, y: 50 },
+    data: { label: 'Node 1', },
   },
   {
-    id: '1',
-    label: 'Node 1',
+    id: '2',
+    position: { x: 50, y: 250 },
+    data: { label: 'Node 2', },
   },
-    {
-    id: 'e1-2',
+])
+
+const edges = ref([
+  {
+    id: 'e1->2',
     type: 'custom',
     source: '1',
     target: '2',
@@ -724,9 +777,7 @@ const elements = ref([
 ])
 </script>
 <template>
-  <div style="height: 300px">
-    <VueFlow v-model="elements" :edge-types="edgeTypes" />
-  </div>
+  <VueFlow :nodes="nodes" :edges="edges" :edgeTypes="edgeTypes" />
 </template>
 ```
 
@@ -784,19 +835,22 @@ const {
   onEdgeUpdateEnd,
 } = useVueFlow()
   
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
     position: { x: 50, y: 50 },
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
-    label: 'Node 2',
     position: { x: 50, y: 250 },
+    data: { label: 'Node 2', },
   },
+])
+
+const edges = ref([
   {
-    id: 'e1-2',
+    id: 'e1->2',
     source: '1',
     target: '2',
   },
@@ -819,7 +873,7 @@ onEdgeContextMenu((event, edge) => {
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow :nodes="nodes" :edges="edges" />
 </template>
 ```
 
@@ -828,38 +882,45 @@ onEdgeContextMenu((event, edge) => {
 import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
     position: { x: 50, y: 50 },
+    data: { label: 'Node 1', },
   },
   {
     id: '2',
-    label: 'Node 2',
     position: { x: 50, y: 250 },
+    data: { label: 'Node 2', },
   },
+])
+
+const edges = ref([
   {
-    id: 'e1-2',
+    id: 'e1->2',
     source: '1',
     target: '2',
   },
 ])
+  
+function logEvent(eventName, data) {
+  console.log(eventName, data)
+}
 </script>
 
 <template>
-  <!-- bind listeners to the event handlers -->
   <VueFlow
-    v-model="elements"
-    @edge-click="console.log('edge clicked', $event)"
-    @edge-double-click="console.log('edge double clicked', $event)"
-    @edge-context-menu="console.log('edge context menu', $event)"
-    @edge-mouse-enter="console.log('edge mouse enter', $event)"
-    @edge-mouse-leave="console.log('edge mouse leave', $event)"
-    @edge-mouse-move="console.log('edge mouse move', $event)"
-    @edge-update-start="console.log('edge update start', $event)"
-    @edge-update="console.log('edge update', $event)"
-    @edge-update-end="console.log('edge update end', $event)"
+    :nodes="nodes"
+    :edges="edges"
+    @edge-click="logEvent('edge clicked', $event)"
+    @edge-double-click="logEvent('edge double clicked', $event)"
+    @edge-context-menu="logEvent('edge context menu', $event)"
+    @edge-mouse-enter="logEvent('edge mouse enter', $event)"
+    @edge-mouse-leave="logEvent('edge mouse leave', $event)"
+    @edge-mouse-move="logEvent('edge mouse move', $event)"
+    @edge-update-start="logEvent('edge update start', $event)"
+    @edge-update="logEvent('edge update', $event)"
+    @edge-update-end="logEvent('edge update end', $event)"
   />
 </template>
 ```
@@ -869,19 +930,20 @@ const elements = ref([
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
   <VueFlow 
     v-model="bezierEdge" 
-    @edge-click="console.log('edge clicked', $event)"
-    @edge-double-click="console.log('edge double clicked', $event)"
-    @edge-context-menu="console.log('edge context menu', $event)"
-    @edge-mouse-enter="console.log('edge mouse enter', $event)"
-    @edge-mouse-leave="console.log('edge mouse leave', $event)"
-    @edge-mouse-move="console.log('edge mouse move', $event)"
-    @edge-update-start="console.log('edge update start', $event)"
-    @edge-update="console.log('edge update', $event)"
-    @edge-update-end="console.log('edge update end', $event)"
+    @edge-click="logEvent('edge clicked', $event)"
+    @edge-double-click="logEvent('edge double clicked', $event)"
+    @edge-context-menu="logEvent('edge context menu', $event)"
+    @edge-mouse-enter="logEvent('edge mouse enter', $event)"
+    @edge-mouse-leave="logEvent('edge mouse leave', $event)"
+    @edge-mouse-move="logEvent('edge mouse move', $event)"
+    @edge-update-start="logEvent('edge update start', $event)"
+    @edge-update="logEvent('edge update', $event)"
+    @edge-update-end="logEvent('edge update end', $event)"
   >
     <Panel position="top-center">
         <p class="text-sm">Interact to see events in browser console</p>
     </Panel>
+
     <Background class="rounded-lg" />
   </VueFlow>
 </div>

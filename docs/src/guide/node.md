@@ -44,6 +44,10 @@ const outputNode = ref([
     position: { x: 50, y: 75 },
   }
 ]);
+
+function logEvent(name, data) {
+  console.log(name, data)
+}
 </script>
 
 # Introduction to Nodes
@@ -67,27 +71,33 @@ This can be done dynamically at any point in your component's lifecycle.
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { VueFlow } from '@vue-flow/core'
+import { VueFlow, Panel } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1', },
   }
 ]);
 
-onMounted(() => {
-  elements.value.push({
-    id: '2',
-    label: 'Node 2',
+function addNode() {
+  const id = Date.now().toString()
+  
+  nodes.value.push({
+    id,
     position: { x: 150, y: 50 },
+    data: { label: `Node ${id}`, },
   })
-})
+}
 </script>
 
 <template>
-  <VueFlow v-model="elements"/>
+  <VueFlow :nodes="nodes">
+    <Panel>
+      <button type="button" @click="addNode">Add a node</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 
@@ -95,37 +105,43 @@ onMounted(() => {
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import type { Elements } from '@vue-flow/core'
-import { VueFlow } from '@vue-flow/core'
+import type { Node } from '@vue-flow/core'
+import { VueFlow, Panel } from '@vue-flow/core'
 
-const elements = ref<Elements>([
-   {
-     id: '1',
-     position: { x: 50, y: 50 },
-     label: 'Node 1',
-   }
+const nodes = ref<Node[]>([
+  {
+    id: '1',
+    position: { x: 50, y: 50 },
+    data: { label: 'Node 1', },
+  }
 ]);
 
-onMounted(() => {
-   elements.value.push({
-     id: '2',
-     label: 'Node 2',
-     position: { x: 150, y: 50 },
-   })
-})
+function addNode() {
+  const id = Date.now().toString()
+
+  nodes.value.push({
+    id,
+    position: { x: 150, y: 50 },
+    data: { label: `Node ${id}`, },
+  })
+}
 </script>
 
 <template>
-  <VueFlow v-model="elements"/>
+  <VueFlow :nodes="nodes">
+    <Panel>
+      <button type="button" @click="addNode">Add a node</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 
 :::
 
-If you are working with more complex graphs that necessitate extensive state access, the `useVueFlow` composable should
-be employed.
-The [`addNodes`](/typedocs/interfaces/Actions#addnodes) action is available
-through [useVueFlow](/typedocs/functions/useVueFlow), allowing you to add nodes straight to the state.
+If you are working with more complex graphs or simply require access to the internal state, 
+the [useVueFlow](/typedocs/functions/useVueFlow) composable will come in handy.
+
+The [`addNodes`](/typedocs/interfaces/Actions#addnodes) action is available through [useVueFlow](/typedocs/functions/useVueFlow), allowing you to add nodes straight to the state.
 
 What's more, this action isn't limited to the component rendering the graph; it can be utilized elsewhere, like in a
 Sidebar or Toolbar.
@@ -133,7 +149,6 @@ Sidebar or Toolbar.
 ::: code-group
 
 ```vue [<LogosJavascript />]
-
 <script setup>
 import { ref } from 'vue'
 import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
@@ -142,7 +157,7 @@ const initialNodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1' },
   }
 ])
 const { addNodes } = useVueFlow()
@@ -186,8 +201,7 @@ const initialNodes = ref<Node[]>([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
-    data: {},
+    data: { label: 'Node 1' },
   }
 ])
 const { addNodes } = useVueFlow()
@@ -231,79 +245,78 @@ function onAddNodes() {
 Similar to adding nodes, nodes can be removed from the graph by removing them from the `mode-value` (using `v-model`) or from the `nodes` prop of the Vue Flow component.
 
 ```vue
-
 <script setup>
 import { ref } from 'vue'
+import { VueFlow, Panel } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1' },
   },
   {
     id: '2',
     position: { x: 150, y: 50 },
-    label: 'Node 2',
+    data: { label: 'Node 2' },
   }
 ])
 
-function onRemoveNode() {
-  elements.value.pop()
+function removeNode(id) {
+  nodes.value = nodes.value.filter((node) => node.id !== id)
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
-  
-  <button type="button" @click="onRemoveNode">Remove a node</button>
+  <VueFlow :nodes="nodes">
+    <Panel>
+      <button type="button" @click="removeNode('1')">Remove Node 1</button>
+      <button type="button" @click="removeNode('2')">Remove Node 2</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 
-When working with complex graphs with extensive state access, you should use the useVueFlow composable.
-The [`removeNodes`](/typedocs/interfaces/Actions#removeNodes) action is available through [useVueFlow](/typedocs/functions/useVueFlow),
-allowing you to remove nodes straight from the state.
+The [`removeNodes`](/typedocs/interfaces/Actions#removeNodes) action is available through [useVueFlow](/typedocs/functions/useVueFlow), allowing you to remove nodes straight from the state.
 
-What's more, this action isn't limited to the component rendering the graph; it can be utilized elsewhere, like in a
-Sidebar, Toolbar or the Edge itself.
+You can also use this action outside the component rendering the graph, like in a Sidebar or Toolbar.
 
 ```vue
-
 <script setup>
 import { ref } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { VueFlow, Panel, useVueFlow } from '@vue-flow/core'
 
 const initialNodes = ref([
   {
     id: '1',
     position: { x: 50, y: 50 },
-    label: 'Node 1',
+    data: { label: 'Node 1' },
   },
   {
     id: '2',
     position: { x: 150, y: 50 },
-    label: 'Node 2',
+    data: { label: 'Node 2' },
   }
 ])
 
 const { removeNodes } = useVueFlow()
 
-// remove a single node from the graph
-function onRemoveNode() {
+function removeOneNode() {
   removeNodes('1')
 }
 
-// remove multiple nodes from the graph
-function onRemoveNodes() {
+function removeMultipleNodes() {
   removeNodes(['1', '2'])
 }
 </script>
 
 <template>
-  <VueFlow :nodes="initialNodes" />
-  
-  <button type="button" @click="onRemoveNode">Remove a node</button>
-  <button type="button" @click="onRemoveNodes">Remove multiple nodes</button>
+  <VueFlow :nodes="initialNodes">
+    <Panel>
+      <button type="button" @click="removeOneNode">Remove Node 1</button>
+      <button type="button" @click="removeMultipleNodes">Remove Node 1 and 2</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 
@@ -315,6 +328,30 @@ This allows you to disable or enable handles, change the label, or even add new 
 There are multiple ways of achieving this, here are some examples:
 
 ::: code-group
+
+```ts [useVueFlow]
+import  { useVueFlow } from '@vue-flow/core'
+
+const instance = useVueFlow()
+
+// use the `updateNodeData` method to update the data of an edge
+instance.updateNodeData(edgeId, { hello: 'mona' })
+
+// find the node in the state by its id
+const node = instance.findNode(nodeId)
+
+node.data = {
+  ...node.data,
+  hello: 'world',
+}
+
+// you can also mutate properties like `selectable` or `draggable`
+node.selectable = false
+node.draggable = false
+
+// or use `updateNode` to update the node directly
+instance.updateNode(nodeId, { selectable: false, draggable: false })
+```
 
 ```vue [useNode]
 <!-- CustomNode.vue -->
@@ -338,44 +375,26 @@ function onSomeEvent() {
 </script>
 ```
 
-```ts [useVueFlow]
-import  { useVueFlow } from '@vue-flow/core'
-
-const instance = useVueFlow()
-
-// find the node in the state by its id
-const node = instance.findNode(nodeId)
-
-node.data = {
-  ...node.data,
-  hello: 'world',
-}
-
-// you can also mutate properties like `selectable` or `draggable`
-node.selectable = false
-node.draggable = false
-```
-
 ```vue [v-model]
 <script setup>
 import { ref } from 'vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
     position: { x: 50, y: 50 },
     data: {
+      label: 'Node 1',
       hello: 'world',
     }
   },
 ])
 
 function onSomeEvent(nodeId) {
-  const node = elements.value.find((node) => node.id === nodeId)
+  const node = nodes.value.find((node) => node.id === nodeId)
 
   node.data = {
-    ...elements.value[0].data,
+    ...nodes.value[0].data,
     hello: 'world',
   }
     
@@ -386,7 +405,11 @@ function onSomeEvent(nodeId) {
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow :nodes="nodes">
+    <Panel>
+      <button type="button" @click="onSomeEvent('1')">Update Node 1</button>
+    </Panel>
+  </VueFlow>
 </template>
 ```
 
@@ -410,10 +433,10 @@ import { Position } from '@vue-flow/core'
 const nodes = ref([
   {
     id: '1',
-    label: 'Default Node',
     type: 'default', // You can omit this as it's the fallback type
     targetPosition: Position.Top, // or Bottom, Left, Right,
     sourcePosition: Position.Bottom, // or Top, Left, Right,
+    data: { label: 'Default Node' },
   }
 ])
 ```
@@ -436,9 +459,9 @@ import { Position } from '@vue-flow/core'
 const nodes = ref([
   {
     id: '1',
-    label: 'Input Node',
     type: 'input',
     sourcePosition: Position.Bottom, // or Top, Left, Right,
+    data: { label: 'Input Node' },
   }
 ])
 ```
@@ -461,9 +484,9 @@ import { Position } from '@vue-flow/core'
 const nodes = ref([
   {
     id: '1',
-    label: 'Output Node',
     type: 'output',
     targetPosition: Position.Top, // or Bottom, Left, Right,
+    data: { label: 'Output Node' },
   }
 ])
 ```
@@ -482,7 +505,7 @@ Node-types are determined from your nodes' definitions.
 
 ::: code-group
 
-```vue{11-12,18-19} [App.vue <LogosJavascript />]
+```vue [App.vue <LogosJavascript />]
 <script setup>
 import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
@@ -493,14 +516,14 @@ import SpecialNode from './SpecialNode.vue'
 export const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     // this will create the node-type `custom`
     type: 'custom',
     position: { x: 50, y: 50 },
   },
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     // this will create the node-type `special`
     type: 'special',
     position: { x: 150, y: 50 },
@@ -523,7 +546,7 @@ export const nodes = ref([
 
 ```vue [CustomNode.vue <LogosJavascript />]
 <script setup>
-import { Position } from '@vue-flow/core'
+import { Position, Handle } from '@vue-flow/core'
 
 // props were passed from the slot using `v-bind="customNodeProps"`
 const props = defineProps(['label'])
@@ -567,14 +590,14 @@ type CustomNode = Node<CustomData, CustomEvents, CustomNodeTypes>
 export const nodes = ref<CustomNode[]>([
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     // this will create the node-type `custom`
     type: 'custom',
     position: { x: 50, y: 50 },
   },
   {
     id: '2',
-    label: 'Node 2',
+    data: { label: 'Node 2' },
     // this will create the node-type `special`
     type: 'special',
     position: { x: 150, y: 50 },
@@ -582,7 +605,7 @@ export const nodes = ref<CustomNode[]>([
     
   {
     id: '3', 
-    label: 'Node 3',
+    data: { label: 'Node 3' },
     // this will throw a type error, as the type is not defined in the CustomEdgeTypes
     // regardless it would be rendered as a default edge type
     type: 'invalid',
@@ -646,10 +669,10 @@ meaning a node with the type `custom` is expected to have a slot named `#node-cu
 import { VueFlow } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     type: 'custom',
     position: { x: 50, y: 50 },
   }
@@ -657,7 +680,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow :nodes="nodes">
     <!-- the expected slot name is `node-custom` -->
     <template #node-custom="props">
       <CustomNode v-bind="props" />
@@ -685,22 +708,22 @@ const nodeTypes = {
   special: markRaw(SpecialNode),
 }
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     type: 'custom',
   },
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     type: 'special',
   }
 ])
 </script>
 
 <template>
-  <VueFlow v-model="elements" :node-types="nodeTypes" />
+  <VueFlow :nodes="nodes" :nodeTypes="nodeTypes" />
 </template>
 ```
 
@@ -759,10 +782,10 @@ const {
   onNodeMouseMove 
 } = useVueFlow()
   
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 50, y: 50 },
   },
 ])
@@ -784,7 +807,7 @@ onNodeDragStop((event) => {
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow :nodes="nodes" />
 </template>
 ```
 
@@ -793,28 +816,32 @@ onNodeDragStop((event) => {
 import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 50, y: 50 },
   },
 ])
+  
+function logEvent(name, data) {
+  console.log(name, data)
+}
 </script>
 
 <template>
   <!-- bind listeners to the event handlers -->
   <VueFlow
-    v-model="elements"
-    @node-drag-start="console.log('drag start', $event)"
-    @node-drag="console.log('drag', $event)"
-    @node-drag-stop="console.log('drag stop', $event)"
-    @node-click="console.log('click', $event)"
-    @node-double-click="console.log('dblclick', $event)"
-    @node-contextmenu="console.log('contextmenu', $event)"
-    @node-mouse-enter="console.log('mouseenter', $event)"
-    @node-mouse-leave="console.log('mouseleave', $event)"
-    @node-mouse-move="console.log('mousemove', $event)"
+    :nodes="nodes"
+    @node-drag-start="logEvent('drag start', $event)"
+    @node-drag="logEvent('drag', $event)"
+    @node-drag-stop="logEvent('drag stop', $event)"
+    @node-click="logEvent('click', $event)"
+    @node-double-click="logEvent('dblclick', $event)"
+    @node-contextmenu="logEvent('contextmenu', $event)"
+    @node-mouse-enter="logEvent('mouseenter', $event)"
+    @node-mouse-leave="logEvent('mouseleave', $event)"
+    @node-mouse-move="logEvent('mousemove', $event)"
   />
 </template>
 ```
@@ -824,15 +851,15 @@ const elements = ref([
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
   <VueFlow 
     v-model="defaultNode" 
-    @node-drag-start="console.log('drag start', $event)"
-    @node-drag="console.log('drag', $event)"
-    @node-drag-stop="console.log('drag stop', $event)"
-    @node-click="console.log('click', $event)"
-    @node-double-click="console.log('dblclick', $event)"
-    @node-contextmenu="console.log('contextmenu', $event)"
-    @node-mouse-enter="console.log('mouseenter', $event)"
-    @node-mouse-leave="console.log('mouseleave', $event)"
-    @node-mouse-move="console.log('mousemove', $event)"
+    @node-drag-start="logEvent('drag start', $event)"
+    @node-drag="logEvent('drag', $event)"
+    @node-drag-stop="logEvent('drag stop', $event)"
+    @node-click="logEvent('click', $event)"
+    @node-double-click="logEvent('dblclick', $event)"
+    @node-contextmenu="logEvent('contextmenu', $event)"
+    @node-mouse-enter="logEvent('mouseenter', $event)"
+    @node-mouse-leave="logEvent('mouseleave', $event)"
+    @node-mouse-move="logEvent('mousemove', $event)"
   >
     <Panel position="top-center">
         <p class="text-sm">Interact to see events in browser console</p>
