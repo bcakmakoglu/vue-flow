@@ -42,7 +42,7 @@ Consider this example, where we want to create a Sidebar that allows us to selec
   <div>
     <Sidebar />
     <div class="wrapper">
-      <VueFlow v-model="elements" />
+      <VueFlow :nodes="nodes" :edges="edges" />
     </div>
   </div>
 </template>
@@ -105,15 +105,19 @@ If you want to strictly control state changes you can disable this behavior by s
 to `false`.
 
 ```vue
-<div style="height: 300px">
-  <VueFlow v-model="elements" :apply-default="false" />
-</div>
+<template>
+    <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" />
+</template>
 ```
 
 State changes are emitted by the `onNodesChange` or `onEdgesChange` events, which will provide an array of changes that
 have been triggered.
 To take control of state changes you can implement your own state update handlers or use the state helper functions that
 come with the library to mix it up.
+
+::: info
+Read more about this in the [controlled flow](/guide/controlled-flow) guide.
+:::
 
 ## Access State in Options API
 
@@ -122,7 +126,7 @@ Though it is necessary to pass a unique id for your Vue Flow state instance, oth
 will create a new state instance
 when mounted.
 
-```vue{4,32}
+```vue
 <script>
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 
@@ -131,13 +135,14 @@ export default defineComponent({
   components: { VueFlow },
   data() {
     return {
-      elements: [
+      nodes: [
         {
           id: '1',
-          label: 'Node 1',
           position: { x: 0, y: 0},
+          data: { label: 'Node 1' }
         }
-      ]
+      ],
+      edges: [],
     }
   },
   methods: {
@@ -153,7 +158,8 @@ export default defineComponent({
   }
 })
 </script>
+
 <template>
-  <VueFlow v-model="elements" id="options-api" @connect="handleConnect" />
+  <VueFlow id="options-api" :nodes="nodes" :edges="edges" @connect="handleConnect" />
 </template>
 ```
