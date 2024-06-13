@@ -75,6 +75,7 @@ Nodes additionally need an __XY-position__, while edges require a __source__ and
 ```vue
 <!-- Flowchart.vue -->
 <script setup>
+import { ref } from 'vue'  
 import { VueFlow } from '@vue-flow/core'
 
 const nodes = ref([

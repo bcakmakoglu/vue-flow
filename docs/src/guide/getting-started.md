@@ -43,14 +43,14 @@ $ yarn add @vue-flow/core
 
 :::
 
-## Usage
+## Quick Start
 
-In Vue Flow, a graph consists of [**nodes**](/typedocs/interfaces/Node)and [**edges**](/typedocs/types/Edge), all of which are categorised as [**elements**](/typedocs/types/Elements).
+In Vue Flow, a graph consists of [**nodes**](/typedocs/interfaces/Node) and [**edges**](/typedocs/types/Edge).
 
-**Each node and edge requires a unique id.**
+**Each node or edge requires a unique id.**
 
-Nodes also need an [XY-position](/typedocs/interfaces/XYPosition), while edges require a `source` and a
-`target`, both represented by node ids.
+Nodes also need a [XY-position](/typedocs/interfaces/XYPosition), while edges require a `source` and a
+`target` node id.
 
 ::: warning NOTE!
 To ensure Vue Flow's is correctly displayed, make sure you include the necessary styles.

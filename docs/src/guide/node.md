@@ -62,8 +62,7 @@ For the full list of options available for a node, check out the [Node Interface
 
 ## Adding Nodes to the Graph
 
-Nodes are generally created by adding them to the `mode-value` (using `v-model`) or to the `nodes` prop of the Vue Flow component.
-This can be done dynamically at any point in your component's lifecycle.
+Nodes are rendered by passing them to the `nodes` prop (or the deprecated `v-model` prop) of the Vue Flow component.
 
 :::code-group
 
