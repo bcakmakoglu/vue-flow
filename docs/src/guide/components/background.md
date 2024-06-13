@@ -19,14 +19,10 @@ To use the background simply pass the `Background` component as a child to the `
 <script setup>
 import { VueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
-import initialElements from './initial-elements'
-
-// some nodes and edges
-const elements = ref(initialElements)
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow>
     <Background />
   </VueFlow>
 </template>

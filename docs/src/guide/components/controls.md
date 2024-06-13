@@ -26,16 +26,10 @@ import { Controls } from '@vue-flow/controls'
 
 // import default controls styles
 import '@vue-flow/controls/dist/style.css'
-
-import initialElements from './initial-elements'
-
-
-// some nodes and edges
-const elements = ref(initialElements)
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow>
     <Controls />
   </VueFlow>
 </template>

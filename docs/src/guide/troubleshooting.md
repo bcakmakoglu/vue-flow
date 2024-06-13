@@ -18,7 +18,7 @@ Vue Flow can emit several error types to help diagnose and resolve issues.
 <template>
   <!-- Ensure the parent container has a width and height -->
   <div style="width: 500px; height: 500px">
-    <VueFlow v-model="elements" />
+    <VueFlow :nodes="nodes" :edges="edges" />
   </div>
 </template>
 ```

@@ -812,7 +812,7 @@ const edges = ref([
 
 ```vue{2}
 <template>
-  <VueFlow v-model="elements" auto-connect />
+  <VueFlow :auto-connect="true" />
 </template>
 ```
 

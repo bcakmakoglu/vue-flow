@@ -13,8 +13,8 @@
 import { VueFlow, isEdge } from '@vue-flow/core'
 
 const elements = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 }, },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
+  { id: '1', position: { x: 250, y: 5 }, },
+  { id: '2', position: { x: 100, y: 100 }, },
 
   { id: 'e1-2', source: '1', target: '2', class: 'light' },
 ])
@@ -27,9 +27,10 @@ const toggleClass = () => {
   })
 }
 </script>
+
 <template>
   <VueFlow v-model="elements">
-    <button style="position: absolute; top: 10px; right: 10px;" @click="toggleClass">Toggle classes</button>
+    <button @click="toggleClass">Toggle classes</button>
   </VueFlow>
 </template>
 ```
@@ -61,33 +62,34 @@ const toggleClass = () => {
   })
 }
 </script>
+
 <template>
   <VueFlow v-model="elements">
-    <button style="position: absolute; top: 10px; right: 10px;" @click="toggleClass">Toggle classes</button>
+    <button @click="toggleClass">Toggle classes</button>
   </VueFlow>
 </template>
 ```
 
-## [addEdge](/typedocs/functions/isEdge)
+## [addEdge](/typedocs/functions/isEdge) (deprecated)
 
 ::: warning
-In the composition API you should use [`addEdges`](/typedocs/types/AddEdges)
-of [`useVueFlow`](/guide/composables#usevueflow/)
+In the composition API you should use [`addEdges`](/typedocs/types/AddEdges) of [`useVueFlow`](/guide/composables#usevueflow/)
 :::
 
 - Details:
 
-  Confirms if an element is a node.
+  Adds an edge to the elements array.
 
 - Example:
 
 ```vue{12}
 <script setup>
+import { ref } from 'vue'
 import { VueFlow, addEdge } from '@vue-flow/core'
 
 const elements = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
+  { id: '1', position: { x: 250, y: 5 } },
+  { id: '2', position: { x: 100, y: 100 } },
 
   { id: 'e1-2', source: '1', target: '2' },
 ])
@@ -101,16 +103,15 @@ const onConnect = (params) => {
 </template>
 ```
 
-## [updateEdge](/typedocs/functions/updateEdge-1)
+## [updateEdge](/typedocs/functions/updateEdge-1) (deprecated)
 
 ::: warning
-In the composition API you should use [`updateEdge`](/typedocs/types/UpdateEdge)
-of [`useVueFlow`](/guide/composables#usevueflow/)
+In the composition API you should use [`updateEdge`](/typedocs/types/UpdateEdge) of [`useVueFlow`](/guide/composables#usevueflow/)
 :::
 
 - Details:
 
-  Updates an edge and applies new source/target.
+  Updates an edge to a new source or target node.
 
 - Example:
 
@@ -119,8 +120,8 @@ of [`useVueFlow`](/guide/composables#usevueflow/)
 import { VueFlow, updateEdge } from '@vue-flow/core'
 
 const elements = ref([
-  { id: '1', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
+  { id: '1', label: 'Node 1', position: { x: 250, y: 5 } },
+  { id: '2', label: 'Node 2', position: { x: 100, y: 100 } },
 
   { id: 'e1-2', source: '1', target: '2' },
 ])

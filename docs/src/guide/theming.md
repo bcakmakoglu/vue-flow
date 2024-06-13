@@ -91,9 +91,10 @@ Below are a couple of examples on how you can do this:
 
 Directly styling the Vue Flow component:
 
-```vue{3-4}
+```vue{4-5}
 <VueFlow
-  v-model="elements"
+  :nodes="nodes"
+  :edges="edges"
   class="my-diagram-class"  
   :style="{ background: 'red' }"
 />
@@ -108,8 +109,8 @@ Styling nodes/edges with a style or class attribute:
 const nodes = ref([
   { 
     id: '1', 
-    label: 'Node 1', 
     position: { x: 250, y: 5 },
+    data: { label: 'Node 1' },
     
     // Add a class name to the node
     class: 'my-custom-node-class',
@@ -140,11 +141,11 @@ These alterations can be implemented either on a global scale or to individual e
 ```
 
 ```js{6-7} [<LogosJavascript />]
-const elements = ref([
+const nodes = ref([
   { 
     id: '1', 
-    label: 'Node 1', 
     position: { x: 100, y: 100 }, 
+    data: { label: 'Node 1' },
     /* Overriding the `--vf-node-color` variable to change node border, box-shadow and handle color */
     style: { '--vf-node-color': 'blue' } 
   },

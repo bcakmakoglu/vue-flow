@@ -19,16 +19,16 @@ npm install @vue-flow/node-toolbar
 ```vue
 <script setup>
 import { VueFlow } from '@vue-flow/core'
-import initialElements from './initial-elements'
+import initialNodes from './initialNodes'
 
 // some nodes and edges
-const elements = ref(initialElements)
+const nodes = ref(initialNodes)
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init>
+  <VueFlow :nodes="nodes">
     <template #node-custom="nodeProps">
-      <CustomNode :data="nodeProps.data" :label="nodeProps.label" />
+      <CustomNode :data="nodeProps.data" />
     </template>
   </VueFlow>
 </template>
@@ -58,10 +58,6 @@ defineProps<Props>()
     <button>copy</button>
     <button>expand</button>
   </NodeToolbar>
-
-  <div :style="{ padding: '10px 20px' }">
-    {{ label }}
-  </div>
 
   <Handle type="target" :position="Position.Left" />
   <Handle type="source" :position="Position.Right" />
