@@ -153,7 +153,8 @@ const NodeWrapper = defineComponent({
     const zIndex = toRef(() => Number(node.zIndex ?? getStyle.value.zIndex ?? 0))
 
     onUpdateNodeInternals((updateIds) => {
-      if (updateIds.includes(props.id)) {
+      // when no ids are passed, update all nodes
+      if (updateIds.includes(props.id) || !updateIds.length) {
         updateInternals()
       }
     })
