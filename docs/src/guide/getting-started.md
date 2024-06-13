@@ -16,8 +16,8 @@ utilize it within your own projects.
 
 Before you strap in, make sure you're equipped with:
 
-- [Node.js v16 or above](https://nodejs.org/)
-- [Vue 3.0 or above](https://vuejs.org/)
+- [Node.js v20 or above](https://nodejs.org/)
+- [Vue 3.3 or above](https://vuejs.org/)
 
 ## CodeSandbox
 
