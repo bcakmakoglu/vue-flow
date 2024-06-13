@@ -7,10 +7,10 @@ import LogosJavascript from '~icons/logos/javascript';
 import LogosTypescript from '~icons/logos/typescript-icon';
 </script>
 
-# Kickstart Your Journey with Vue Flow!
+# Getting Started
 
-This guide covers the basics of setting up and using Vue Flow. You'll learn how to install Vue Flow, configure it, and
-utilize it within your own projects.
+This guide covers the basics of setting up and using Vue Flow. 
+You'll learn how to install Vue Flow, configure it, and create your first flowchart.
 
 ## Prerequisites
 
@@ -45,78 +45,110 @@ $ yarn add @vue-flow/core
 
 ## Usage
 
-In Vue Flow, an application structure consists of [**nodes**](/typedocs/interfaces/Node)
-and [**edges**](/typedocs/types/Edge), all of which are categorised as [**elements**](/typedocs/types/Elements).
+In Vue Flow, a graph consists of [**nodes**](/typedocs/interfaces/Node)and [**edges**](/typedocs/types/Edge), all of which are categorised as [**elements**](/typedocs/types/Elements).
 
-**Each element requires a unique id.**
+**Each node and edge requires a unique id.**
 
-Nodes additionally need an [XY-position](/typedocs/interfaces/XYPosition), while edges require a source and a
-target, both represented by node ids.
+Nodes also need an [XY-position](/typedocs/interfaces/XYPosition), while edges require a `source` and a
+`target`, both represented by node ids.
 
 ::: warning NOTE!
 To ensure Vue Flow's is correctly displayed, make sure you include the necessary styles.
 
+```css
+/* these are necessary styles for vue flow */
+@import '@vue-flow/core/dist/style.css';
+
+/* this contains the default theme, these are optional styles */
+@import '@vue-flow/core/dist/theme-default.css';
+```
+
 Refer to the [Theming](/guide/theming) section for additional information.
 :::
 
-Here's a simple Vue Flow example to get you started:
+Here's a simple example to get you started:
 
 ::: code-group
 
 ```vue [<LogosJavascript />]
 <script setup>
+import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 
+// these components are only shown as examples of how to use a custom node or edge
+// you can find many examples of how to create these custom components in the examples page of the docs
 import SpecialNode from './components/SpecialNode.vue'
 import SpecialEdge from './components/SpecialEdge.vue'
 
-const elements = ref([
-  // nodes
-
+// these are our nodes
+const nodes = ref([
   // an input node, specified by using `type: 'input'`
-  { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
+  { 
+    id: '1',
+    type: 'input', 
+    position: { x: 250, y: 5 },
+    // all nodes can have a data object containing any data you want to pass to the node
+    // a label can property can be used for default nodes
+    data: { label: 'Node 1' },
+  },
 
   // default node, you can omit `type: 'default'` as it's the fallback type
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
+  { 
+    id: '2', 
+    position: { x: 100, y: 100 },
+    data: { label: 'Node 2' },
+  },
 
   // An output node, specified by using `type: 'output'`
-  { id: '3', type: 'output', label: 'Node 3', position: { x: 400, y: 200 } },
+  { 
+    id: '3', 
+    type: 'output', 
+    position: { x: 400, y: 200 },
+    data: { label: 'Node 3' },
+  },
 
-  // A custom node, specified by using a custom type name
-  // we choose `type: 'special'` for this example
+  // this is a custom node
+  // we set it by using a custom type name we choose, in this example `special`
+  // the name can be freely chosen, there are no restrictions as long as it's a string
   {
     id: '4',
-    type: 'special',
-    label: 'Node 4',
+    type: 'special', // <-- this is the custom node type name
     position: { x: 400, y: 200 },
-
-    // pass custom data to the node
     data: {
-      // you can pass any data you want to the node
+      label: 'Node 4',
       hello: 'world',
     },
   },
+])
 
-  // edges
+// these are our edges
+const edges = ref([
+  // default bezier edge
+  // consists of an edge id, source node id and target node id
+  { 
+    id: 'e1->2',
+    source: '1', 
+    target: '2',
+  },
 
-  // simple default bezier edge
-  // consists of an id, source-id and target-id
-  { id: 'e1-3', source: '1', target: '3' },
-
-  // an animated edge, specified by using `animated: true`
-  { id: 'e1-2', source: '1', target: '2', animated: true },
+  // set `animated: true` to create an animated edge path
+  { 
+    id: 'e2->3',
+    source: '2', 
+    target: '3', 
+    animated: true,
+  },
 
   // a custom edge, specified by using a custom type name
   // we choose `type: 'special'` for this example
   {
-    id: 'e1-4',
+    id: 'e3->4',
     type: 'special',
-    source: '1',
+    source: '3',
     target: '4',
 
-    // pass custom data to the edge
+    // all edges can have a data object containing any data you want to pass to the edge
     data: {
-      // You can pass any data you want to the edge       
       hello: 'world',
     }
   },
@@ -124,7 +156,7 @@ const elements = ref([
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow :nodes="nodes" :edges="edges">
     <!-- bind your custom node type to a component by using slots, slot names are always `node-<type>` -->
     <template #node-special="specialNodeProps">
       <SpecialNode v-bind="specialNodeProps" />
@@ -148,59 +180,84 @@ const elements = ref([
 
 ```vue [<LogosTypescript />]
 <script setup lang="ts">
-import type { Elements } from '@vue-flow/core'  
+import { ref } from 'vue'
+import type { Node, Edge } from '@vue-flow/core'  
 import { VueFlow } from '@vue-flow/core'
 
+// these components are only shown as examples of how to use a custom node or edge
+// you can find many examples of how to create these custom components in the examples page of the docs
 import SpecialNode from './components/SpecialNode.vue'
 import SpecialEdge from './components/SpecialEdge.vue'
 
-const elements = ref<Elements>([
-  // nodes
-    
+// these are our nodes
+const nodes = ref<Node[]>([
   // an input node, specified by using `type: 'input'`
-  { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
+  {
+    id: '1',
+    type: 'input',
+    position: { x: 250, y: 5 },
+    // all nodes can have a data object containing any data you want to pass to the node
+    // a label can property can be used for default nodes
+    data: { label: 'Node 1' },
+  },
 
   // default node, you can omit `type: 'default'` as it's the fallback type
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
+  {
+    id: '2',
+    position: { x: 100, y: 100 },
+    data: { label: 'Node 2' },
+  },
 
   // An output node, specified by using `type: 'output'`
-  { id: '3', type: 'output', label: 'Node 3', position: { x: 400, y: 200 } },
-    
-  // A custom node, specified by using a custom type name
-  // we choose `type: 'special'` for this example
-  { 
-    id: '4', 
-    type: 'special', 
-    label: 'Node 4', 
+  {
+    id: '3',
+    type: 'output',
     position: { x: 400, y: 200 },
+    data: { label: 'Node 3' },
+  },
 
-    // pass custom data to the node
+  // this is a custom node
+  // we set it by using a custom type name we choose, in this example `special`
+  // the name can be freely chosen, there are no restrictions as long as it's a string
+  {
+    id: '4',
+    type: 'special', // <-- this is the custom node type name
+    position: { x: 400, y: 200 },
     data: {
-      // you can pass any data you want to the node
+      label: 'Node 4',
       hello: 'world',
     },
-  },  
+  },
+])
 
-  // edges
-    
-  // simple default bezier edge
-  // consists of an id, source-id and target-id
-  { id: 'e1-3', source: '1', target: '3' },
+// these are our edges
+const edges = ref<Edge[]>([
+  // default bezier edge
+  // consists of an edge id, source node id and target node id
+  {
+    id: 'e1->2',
+    source: '1',
+    target: '2',
+  },
 
-  // an animated edge, specified by using `animated: true`
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-    
+  // set `animated: true` to create an animated edge path
+  {
+    id: 'e2->3',
+    source: '2',
+    target: '3',
+    animated: true,
+  },
+
   // a custom edge, specified by using a custom type name
   // we choose `type: 'special'` for this example
-  { 
-    id: 'e1-4', 
-    type: 'special', 
-    source: '1', 
+  {
+    id: 'e3->4',
+    type: 'special',
+    source: '3',
     target: '4',
-    
-    // pass custom data to the edge
+
+    // all edges can have a data object containing any data you want to pass to the edge
     data: {
-      // You can pass any data you want to the edge       
       hello: 'world',
     }
   },
@@ -208,7 +265,7 @@ const elements = ref<Elements>([
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow :nodes="nodes" :edges="edges">
     <!-- bind your custom node type to a component by using slots, slot names are always `node-<type>` -->
     <template #node-special="specialNodeProps">
       <SpecialNode v-bind="specialNodeProps" />
