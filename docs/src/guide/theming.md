@@ -21,7 +21,7 @@ const elements = ref([
 ])
 </script>
 
-# Getting Creative with Theming
+# Theming
 
 Let's take a tour around the library styles, customization opportunities, and other features that Vue Flow offers out of
 the box.
@@ -42,7 +42,7 @@ To import the necessary and optional styles:
 @import '@vue-flow/core/dist/theme-default.css';
 ```
 
-## Tweaking the Default Theme
+## Adjusting the Default Theme
 
 The Vue Flow default theme functions as your baseline, which you can customize and decorate as per your liking using CSS
 rules, style and class properties, and CSS variables.
