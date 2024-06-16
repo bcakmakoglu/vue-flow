@@ -309,7 +309,7 @@ export function useWatchProps(
                     ;(storeRef.value as any) = nextValue
                   }
                 },
-                { immediate: true, flush: 'pre' },
+                { immediate: true },
               )
             })
           }
