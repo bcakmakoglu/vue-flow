@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.37.0
+
+### Minor Changes
+
+- [#1481](https://github.com/bcakmakoglu/vue-flow/pull/1481) [`192b154`](https://github.com/bcakmakoglu/vue-flow/commit/192b15414aa39bfde209b07c39f799a560a368ea) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add overloads to `useVueFlow`. Allows calling `useVueFlow` with an `id` string only while emitting a deprecation warning for using the options obj.
+
+- [#1476](https://github.com/bcakmakoglu/vue-flow/pull/1476) [`1b38c3f`](https://github.com/bcakmakoglu/vue-flow/commit/1b38c3f692f9cfe3c10c2bfadc0d0f782f6b892d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use empty array when determing whether to update all node internals
+
+- [#1479](https://github.com/bcakmakoglu/vue-flow/pull/1479) [`659ca6a`](https://github.com/bcakmakoglu/vue-flow/commit/659ca6a0b74b7a96434d2e03a39a72154e5b4756) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `EdgePathParams` type and export it
+
 ## 1.36.0
 
 ### Minor Changes
