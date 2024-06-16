@@ -2,7 +2,7 @@ import { tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
 import { effectScope, getCurrentScope, inject, provide, watch } from 'vue'
 import type { EdgeChange, FlowOptions, NodeChange, VueFlowStore } from '../types'
-import { warn } from '../utils'
+import { ErrorCode, VueFlowError, warn } from '../utils'
 import { VueFlow } from '../context'
 import { Storage } from '../utils/storage'
 
@@ -18,13 +18,19 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
  * If no store instance is found in context, a new store instance is created and registered in storage
  *
  * @public
- * @param options - optional options to initialize the store instance
  * @returns a vue flow store instance
+ * @param idOrOpts - id of the store instance or options to create a new store instance
  */
-export function useVueFlow(options?: FlowOptions): VueFlowStore {
+export function useVueFlow(id?: string): VueFlowStore
+export function useVueFlow(options?: FlowOptions): VueFlowStore
+export function useVueFlow(idOrOpts?: any): VueFlowStore {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
+
+  const isOptsObj = typeof idOrOpts === 'object'
+
+  const options = typeof idOrOpts === 'string' ? { id: idOrOpts } : idOrOpts
 
   const id = options?.id
   const vueFlowId = scope?.vueFlowId || id
@@ -114,7 +120,7 @@ export function useVueFlow(options?: FlowOptions): VueFlowStore {
     })
   } else {
     // If options were passed, overwrite state with the options' values
-    if (options) {
+    if (isOptsObj) {
       vueFlow.setState(options)
     }
   }
@@ -126,8 +132,8 @@ export function useVueFlow(options?: FlowOptions): VueFlowStore {
     scope.vueFlowId = vueFlow.id
   }
 
-  if (options) {
-    warn('options are deprecated and will be removed in the next major version. Use props on the `<VueFlow>` component instead.')
+  if (isOptsObj) {
+    vueFlow.emits.error(new VueFlowError(ErrorCode.USEVUEFLOW_OPTIONS))
   }
 
   return vueFlow
