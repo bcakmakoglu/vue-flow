@@ -1,6 +1,6 @@
 import { tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { effectScope, getCurrentScope, inject, provide, watch } from 'vue'
+import { effectScope, getCurrentInstance, getCurrentScope, inject, provide, watch } from 'vue'
 import type { EdgeChange, FlowOptions, NodeChange, VueFlowStore } from '../types'
 import { ErrorCode, VueFlowError, warn } from '../utils'
 import { VueFlow } from '../context'
@@ -30,9 +30,9 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
 
   const isOptsObj = typeof idOrOpts === 'object'
 
-  const options = typeof idOrOpts === 'string' ? { id: idOrOpts } : idOrOpts
+  const options = isOptsObj ? idOrOpts : undefined
 
-  const id = options?.id
+  const id = options?.id ?? idOrOpts
   const vueFlowId = scope?.vueFlowId || id
 
   let vueFlow: Injection
@@ -133,7 +133,12 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
   }
 
   if (isOptsObj) {
-    vueFlow.emits.error(new VueFlowError(ErrorCode.USEVUEFLOW_OPTIONS))
+    const instance = getCurrentInstance()
+
+    // ignore the warning if we are in a VueFlow component
+    if (instance?.type.name !== 'VueFlow') {
+      vueFlow.emits.error(new VueFlowError(ErrorCode.USEVUEFLOW_OPTIONS))
+    }
   }
 
   return vueFlow
