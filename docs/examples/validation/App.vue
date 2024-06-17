@@ -9,38 +9,42 @@ const { addEdges } = useVueFlow()
 const nodes = ref([
   {
     id: '0',
-    type: 'custominput',
+    type: 'input',
     position: { x: 0, y: 150 },
-    isValidTargetPos: (connection) => connection.target === 'B',
+    // only target `B` is valid for this node
+    data: { validTarget: 'B', validSource: '0' },
   },
   {
     id: 'A',
     type: 'custom',
     position: { x: 250, y: 0 },
-    isValidSourcePos: () => false,
+    // no valid connections can be made for this node
+    data: {},
   },
   {
     id: 'B',
     type: 'custom',
     position: { x: 250, y: 150 },
-    isValidSourcePos: (connection) => connection.target === 'B',
+    // only source `0` is valid for this node
+    data: { validTarget: 'B', validSource: '0' },
   },
   {
     id: 'C',
     type: 'custom',
     position: { x: 250, y: 300 },
-    isValidSourcePos: (connection) => connection.target === 'B',
+    // no valid connections can be made for this node
+    data: {},
   },
 ])
 
 const edges = ref([])
 
 function onConnectStart({ nodeId, handleType }) {
-  return console.log('on connect start', { nodeId, handleType })
+  console.log('on connect start', { nodeId, handleType })
 }
 
 function onConnectEnd(event) {
-  return console.log('on connect end', event)
+  console.log('on connect end', event)
 }
 
 function onConnect(params) {
@@ -59,12 +63,12 @@ function onConnect(params) {
     @connect-start="onConnectStart"
     @connect-end="onConnectEnd"
   >
-    <template #node-custominput="props">
-      <CustomInput v-bind="props" />
+    <template #node-input="props">
+      <CustomInput :data="props.data" />
     </template>
 
     <template #node-custom="props">
-      <CustomNode v-bind="props" />
+      <CustomNode :id="props.id" :data="props.data" />
     </template>
   </VueFlow>
 </template>

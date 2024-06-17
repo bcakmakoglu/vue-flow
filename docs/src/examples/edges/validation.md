@@ -9,10 +9,14 @@ This function will be applied to *all* connections in the flow (even existing on
 ## Using a handle in a custom node
 
 ```vue
-<div>
-  <!-- ... -->
-  <Handle type="source" :is-valid-connection="isValidConnection"/>
-</div>
+<script setup>
+import { Handle, Position } from '@vue-flow/core'
+</script>
+
+<template>
+  <Handle type="source" :position="Position.Right" />
+  <Handle type="target" :position="Position.Left" />
+</template>
 ```
 
 <div class="mt-6">

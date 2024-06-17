@@ -6,11 +6,15 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  isValidSourcePos: {
-    type: Function,
-    required: false,
+  data: {
+    type: Object,
+    required: true,
   },
 })
+
+function isValidConnection(connection) {
+  return connection.target === props.data.validTarget && connection.source === props.data.validSource
+}
 </script>
 
 <script>
@@ -20,6 +24,6 @@ export default {
 </script>
 
 <template>
-  <Handle type="target" :position="Position.Left" :is-valid-connection="props.isValidSourcePos" />
+  <Handle type="target" :position="Position.Left" :is-valid-connection="isValidConnection" />
   <div>{{ props.id }}</div>
 </template>
