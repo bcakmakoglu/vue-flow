@@ -19,7 +19,7 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
  *
  * @public
  * @returns a vue flow store instance
- * @param idOrOpts - id of the store instance or options to create a new store instance
+ * @param idOrOpts - id of the store instance or options to pass to the store instance (options are deprecated!)
  */
 export function useVueFlow(id?: string): VueFlowStore
 export function useVueFlow(options?: FlowOptions): VueFlowStore
