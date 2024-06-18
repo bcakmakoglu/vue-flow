@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.37.1] - 2024-06-18
+
+[fdc656a](fdc656af9d2b555fb6aa420dfee301d8c5767bfd)...[e2dec5c](e2dec5c8661b0e64799b3e95ff373561f49b19ba)
+
+### Bug Fixes
+
+- Correct id access in useVueFlow (#1483) ([e2ce205](e2ce2053e41694e1f62b7d82b9bd0c2924c90926))
+
+### Refactor
+
+- Upgrade node to 20 ([14ae927](14ae927a6477f8026767028a1b5c76990556cd02))
+- Remove qodana scan workflow file ([aab43d5](aab43d52475d98f8f3238880df57f3e625a49e15))
+
 ## [1.37.0] - 2024-06-18
 
 [09a44b0](09a44b0424d089d8a6e93adfeed1f1e03b708c8d)...[fdc656a](fdc656af9d2b555fb6aa420dfee301d8c5767bfd)
