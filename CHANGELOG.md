@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.37.0] - 2024-06-18
+
+[09a44b0](09a44b0424d089d8a6e93adfeed1f1e03b708c8d)...[fdc656a](fdc656af9d2b555fb6aa420dfee301d8c5767bfd)
+
+### Documentation
+
+- Add handles section to guide ([c30222e](c30222eec355d8a599f6ed5e85803063ec1512a9))
+- Update handle docs ([532d522](532d52232d854f5efdb960f8034d72fe5864f0d4))
+- Update edge utils docs ([070d78d](070d78ded43b73152daa66fd0444a80fbb6c82ab))
+- Update prerequisites ([96ec3e7](96ec3e744ca47cfd32ce6a88216297237dd0389f))
+- Update getting-started page ([1bacc92](1bacc926ed4e2d790763156de302bfc6ad2d53b7))
+- Update theming page ([d51203c](d51203c4653fb525bd55d46274cfaac7a9d03499))
+- Update nodes / edges pages ([76fe779](76fe779f346a3fd9f2e725c0897f2bedd4a87d58))
+- Update controlled flow page ([c7049e3](c7049e3216d86f3d62b0787c6a95a668ccef16ce))
+- Update config page ([20d18ee](20d18eeed206211c97dad99df86cecc22f88fa2c))
+- Update state page ([7f2917a](7f2917a752b330cc48dfdba124fb558bf9f96e14))
+- Update troubleshooting page ([865fe72](865fe722db8941b10eb9fecfeb2b4e1536f716e0))
+
+### Features
+
+- Add EdgePathParams type to edge utils (#1479) ([9b4e3b2](9b4e3b26568c3833d7a8866bdcbb251d37f43ea8))
+
+### Miscellaneous Tasks
+
+- Add state injection section to `useVueFlow` docs ([fe55415](fe55415b2da39bc7540c9c99b0605694c5c8bb24))
+- Update README ([202d767](202d76777d08e964e088f6f7433a9a3156914ef0))
+- Fix typo and update title ([ff05551](ff055517cd30567ffb824a782e3468dcb2a140d4))
+- Cleanup v-model usages ([889797e](889797e684a5963a0f7e50d98fb39ce0f7b9b1d1))
+- Update validation example ([55a76cd](55a76cd9ad02a273c22386b30a7183752cb70bf5))
+
+### Refactor
+
+- Use empty arr when updating all internals (#1476) ([cff55c8](cff55c8ebf8005446a0aa0c9d8c50a6c5240db4c))
+- Add overloads to useVueFlow (#1481) ([4fe1a7b](4fe1a7b5414644e2ce8c524348b3522bde6db4ec))
+
 ## [1.36.0] - 2024-06-12
 
 [dd6aff2](dd6aff24cbe5bd2e1e5ce36350e1b5261c0d42af)...[09a44b0](09a44b0424d089d8a6e93adfeed1f1e03b708c8d)
