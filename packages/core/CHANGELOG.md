@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.37.1
+
+### Patch Changes
+
+- [#1483](https://github.com/bcakmakoglu/vue-flow/pull/1483) [`6d4d2be`](https://github.com/bcakmakoglu/vue-flow/commit/6d4d2be8396885f3edd9586db48021a8e0615421) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct access of options id in `useVueFlow`
+
 ## 1.37.0
 
 ### Minor Changes
