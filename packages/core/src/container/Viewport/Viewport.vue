@@ -403,6 +403,7 @@ export default {
   <div ref="viewportRef" class="vue-flow__viewport vue-flow__container">
     <Pane
       :is-selecting="isSelecting"
+      :selection-key-pressed="selectionKeyPressed"
       :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: shouldPanOnDrag }"
     >
       <Transform>
