@@ -1,11 +1,12 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { ref, toValue, watch } from 'vue'
+import { onMounted, ref, toValue, watch } from 'vue'
 import type { KeyFilter, KeyPredicate } from '@vueuse/core'
 import { onKeyStroke, useEventListener } from '@vueuse/core'
 import { useWindow } from './useWindow'
 
 export interface UseKeyPressOptions {
   actInsideInputWithModifier?: MaybeRefOrGetter<boolean>
+  target?: MaybeRefOrGetter<EventTarget>
 }
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
@@ -68,22 +69,19 @@ function useKeyOrCode(code: string, keysToWatch: string | string[]) {
   return keysToWatch.includes(code) ? 'code' : 'key'
 }
 
+const window = useWindow()
+
 /**
- * Reactive key press state
+ * Composable that returns a boolean value if a key is pressed
  *
- * todo: make this public?
  * @internal
- * @param keyFilter - Can be a boolean, a string or an array of strings. If it's a boolean, it will always return that value. If it's a string, it will return true if the key is pressed. If it's an array of strings, it will return true if any of the keys are pressed, or a combination is pressed (e.g. ['ctrl+a', 'ctrl+b'])
- * @param onChange - Callback function that will be called when the key state changes
+ * @param keyFilter - Can be a boolean, a string, an array of strings or a function that returns a boolean. If it's a boolean, it will act as if the key is always pressed. If it's a string, it will return true if a key matching that string is pressed. If it's an array of strings, it will return true if any of the strings match a key being pressed, or a combination (e.g. ['ctrl+a', 'ctrl+b'])
  * @param options - Options object
  */
 export function useKeyPress(
   keyFilter: MaybeRefOrGetter<KeyFilter | null>,
-  onChange?: (keyPressed: boolean) => void,
-  options: UseKeyPressOptions = { actInsideInputWithModifier: true },
+  options: UseKeyPressOptions = { actInsideInputWithModifier: true, target: window },
 ) {
-  const window = useWindow()
-
   const isPressed = ref(toValue(keyFilter) === true)
 
   let modifierPressed = false
@@ -91,12 +89,6 @@ export function useKeyPress(
   const pressedKeys = new Set<string>()
 
   let currentFilter = createKeyFilterFn(toValue(keyFilter))
-
-  watch(isPressed, (isKeyPressed, wasPressed) => {
-    if (isKeyPressed !== wasPressed) {
-      onChange?.(isKeyPressed)
-    }
-  })
 
   watch(
     () => toValue(keyFilter),
@@ -113,10 +105,8 @@ export function useKeyPress(
     },
   )
 
-  useEventListener(window, 'blur', () => {
-    if (toValue(keyFilter) !== true) {
-      isPressed.value = false
-    }
+  onMounted(() => {
+    useEventListener(window, ['blur', 'contextmenu'], reset)
   })
 
   onKeyStroke(
@@ -134,7 +124,7 @@ export function useKeyPress(
 
       isPressed.value = true
     },
-    { eventName: 'keydown' },
+    { eventName: 'keydown', target: options.target },
   )
 
   onKeyStroke(
@@ -150,10 +140,8 @@ export function useKeyPress(
         reset()
       }
     },
-    { eventName: 'keyup' },
+    { eventName: 'keyup', target: options.target },
   )
-
-  return isPressed
 
   function reset() {
     modifierPressed = false
@@ -184,4 +172,6 @@ export function useKeyPress(
 
     return keyFilter
   }
+
+  return isPressed
 }
