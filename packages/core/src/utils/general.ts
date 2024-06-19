@@ -1,3 +1,5 @@
+import type { GraphNode } from '../types'
+
 export function isMouseEvent(event: MouseEvent | TouchEvent): event is MouseEvent {
   return 'clientX' in event
 }
@@ -14,3 +16,10 @@ export function getEventPosition(event: MouseEvent | TouchEvent, bounds?: DOMRec
 }
 
 export const isMacOs = () => typeof navigator !== 'undefined' && navigator?.userAgent?.indexOf('Mac') >= 0
+
+export function getNodeDimensions(node: GraphNode): { width: number; height: number } {
+  return {
+    width: node.dimensions?.width ?? node.width ?? 0,
+    height: node.dimensions?.height ?? node.height ?? 0,
+  }
+}

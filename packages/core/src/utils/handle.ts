@@ -12,7 +12,7 @@ import type {
   ValidHandleResult,
   XYPosition,
 } from '../types'
-import { getEventPosition } from '.'
+import { getEventPosition, getHandlePosition } from '.'
 
 export interface ConnectionHandle extends XYPosition, Dimensions {
   id: string | null
@@ -43,12 +43,14 @@ export function getHandles(
 ): ConnectionHandle[] {
   return (handleBounds[type] || []).reduce<ConnectionHandle[]>((res, h) => {
     if (`${node.id}-${h.id}-${type}` !== currentHandle) {
+      const handlePosition = getHandlePosition(h.position, node, h)
+
       res.push({
         id: h.id || null,
         type,
         nodeId: node.id,
-        x: (node.computedPosition?.x ?? 0) + h.x + h.width / 2,
-        y: (node.computedPosition?.y ?? 0) + h.y + h.height / 2,
+        x: handlePosition.x,
+        y: handlePosition.y,
         width: h.width,
         height: h.height,
       })
