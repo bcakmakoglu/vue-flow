@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { until } from '@vueuse/core'
-import { computed, onUnmounted, ref, toRef } from 'vue'
+import { computed, onMounted, onUnmounted, ref, toRef } from 'vue'
 import type { HandleProps } from '../../types'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
@@ -97,38 +96,42 @@ const isConnectable = computed(() => {
 
 // todo: remove this and have users handle this themselves using `updateNodeInternals`
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
-until(() => !!node.dimensions.width && !!node.dimensions.height)
-  .toBe(true, { flush: 'post' })
-  .then(() => {
-    const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
+onMounted(() => {
+  // if the node isn't initialized yet, we can't set up the handle bounds
+  // the handle bounds will be automatically set up when the node is initialized (`updateNodeDimensions`)
+  if (!node.dimensions.width || !node.dimensions.height) {
+    return
+  }
 
-    if (!vueFlowRef.value || existingBounds) {
-      return
-    }
+  const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
 
-    const viewportNode = vueFlowRef.value.querySelector('.vue-flow__transformationpane')
+  if (!vueFlowRef.value || existingBounds) {
+    return
+  }
 
-    if (!nodeEl.value || !handle.value || !viewportNode || !handleId) {
-      return
-    }
+  const viewportNode = vueFlowRef.value.querySelector('.vue-flow__transformationpane')
 
-    const nodeBounds = nodeEl.value.getBoundingClientRect()
+  if (!nodeEl.value || !handle.value || !viewportNode || !handleId) {
+    return
+  }
 
-    const handleBounds = handle.value.getBoundingClientRect()
+  const nodeBounds = nodeEl.value.getBoundingClientRect()
 
-    const style = window.getComputedStyle(viewportNode)
-    const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
+  const handleBounds = handle.value.getBoundingClientRect()
 
-    const nextBounds = {
-      id: handleId,
-      position,
-      x: (handleBounds.left - nodeBounds.left) / zoom,
-      y: (handleBounds.top - nodeBounds.top) / zoom,
-      ...getDimensions(handle.value),
-    }
+  const style = window.getComputedStyle(viewportNode)
+  const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
-    node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
-  })
+  const nextBounds = {
+    id: handleId,
+    position,
+    x: (handleBounds.left - nodeBounds.left) / zoom,
+    y: (handleBounds.top - nodeBounds.top) / zoom,
+    ...getDimensions(handle.value),
+  }
+
+  node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
+})
 
 onUnmounted(() => {
   // clean up node internals
