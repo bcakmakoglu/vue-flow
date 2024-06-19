@@ -246,8 +246,13 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   findNode: FindNode
   /** find an edge by id */
   findEdge: FindEdge
-  /** updates an edge */
+  /**
+   * @deprecated will be replaced completely by `reconnectEdge`
+   * updates an edge
+   */
   updateEdge: UpdateEdge
+  /** reconnects an edge to a new source/target node */
+  reconnectEdge: UpdateEdge
   /** updates the data of an edge */
   updateEdgeData: UpdateEdgeData
   /** updates a node */
