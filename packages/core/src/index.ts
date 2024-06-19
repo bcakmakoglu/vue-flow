@@ -73,6 +73,7 @@ export { useHandleConnections } from './composables/useHandleConnections'
 export { useNodesData } from './composables/useNodesData'
 export { useEdgesData } from './composables/useEdgesData'
 export { useNodesInitialized } from './composables/useNodesInitialized'
+export { useKeyPress } from './composables/useKeyPress'
 
 export { VueFlowError, ErrorCode, isErrorOfType } from './utils/errors'
 
