@@ -125,6 +125,30 @@ You cannot hide a handle by removing it from the DOM (for example using `v-if` o
 <Handle type="source" :position="Position.Right" style="opacity: 0" />
 ```
 
+## Limiting Connections
+
+You can limit the number of connections a handle can have by setting the `connectable` prop on the `<Handle>` component.
+
+This prop accepts a boolean value (defaults to `true`), a number (the maximum number of connections), or a function that returns a boolean.
+
+Using a function allows you to implement custom logic to determine if a handle can be connected to or not.
+```vue
+<script lang="ts" setup>
+import { Position, Handle, type HandleConnectableFunc } from '@vue-flow/core'  
+  
+const handleConnectable: HandleConnectableFunc = (node, connectedEdges) => {
+  // only allow connections if the node has less than 3 connections
+  return connectedEdges.length < 3
+}
+</script>
+
+<template>
+  <Handle type="source" :position="Position.Right" :connectable="handleConnectable" />
+</template>
+```
+
+
+
 ## Dynamic Handle Positions & Adding/Removing Handles Dynamically
 
 ::: tip
