@@ -74,7 +74,7 @@ const ConnectionLine = defineComponent({
 
       const fromHandle = (startHandleId ? handleBounds.find((d) => d.id === startHandleId) : handleBounds[0]) ?? null
       const fromPosition = fromHandle?.position || Position.Top
-      const { x: fromX, y: fromY } = getHandlePosition(fromPosition, fromNode.value, fromHandle)
+      const { x: fromX, y: fromY } = getHandlePosition(fromNode.value, fromHandle, fromPosition)
 
       let toHandle: HandleElement | null = null
       if (toNode.value && connectionEndHandle.value?.handleId) {

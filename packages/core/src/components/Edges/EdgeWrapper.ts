@@ -8,8 +8,8 @@ import {
   ErrorCode,
   VueFlowError,
   elementSelectionKeys,
-  getEdgePositions,
   getHandle,
+  getHandlePosition,
   getMarkerId,
 } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
@@ -160,19 +160,14 @@ const EdgeWrapper = defineComponent({
 
       const targetHandle = getHandle(targetNodeHandles, edge.value.targetHandle)
 
-      const sourcePosition = sourceHandle ? sourceHandle.position : Position.Bottom
+      const sourcePosition = sourceHandle?.position || Position.Bottom
 
-      const targetPosition = targetHandle ? targetHandle.position : Position.Top
+      const targetPosition = targetHandle?.position || Position.Top
 
-      const { sourceX, sourceY, targetY, targetX } = getEdgePositions(
-        sourceNode,
-        sourceHandle,
-        sourcePosition,
-        targetNode,
-        targetHandle,
-        targetPosition,
-      )
+      const { x: sourceX, y: sourceY } = getHandlePosition(sourceNode, sourceHandle, sourcePosition)
+      const { x: targetX, y: targetY } = getHandlePosition(targetNode, targetHandle, targetPosition)
 
+      // todo: let's avoid writing these here (in v2 we want to remove all of these self-managed refs)
       edge.value.sourceX = sourceX
       edge.value.sourceY = sourceY
       edge.value.targetX = targetX
