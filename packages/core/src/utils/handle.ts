@@ -2,8 +2,8 @@ import { ConnectionMode } from '../types'
 import type {
   Actions,
   Connection,
+  ConnectionHandle,
   ConnectionStatus,
-  Dimensions,
   GraphEdge,
   GraphNode,
   HandleType,
@@ -13,12 +13,6 @@ import type {
   XYPosition,
 } from '../types'
 import { getEventPosition, getHandlePosition } from '.'
-
-export interface ConnectionHandle extends XYPosition, Dimensions {
-  id: string | null
-  type: HandleType | null
-  nodeId: string
-}
 
 function defaultValidHandleResult(): ValidHandleResult {
   return {
@@ -41,22 +35,23 @@ export function getHandles(
   type: HandleType,
   currentHandle: string,
 ): ConnectionHandle[] {
-  return (handleBounds[type] || []).reduce<ConnectionHandle[]>((res, h) => {
-    if (`${node.id}-${h.id}-${type}` !== currentHandle) {
-      const handlePosition = getHandlePosition(h.position, node, h)
+  const connectionHandles: ConnectionHandle[] = []
 
-      res.push({
-        id: h.id || null,
+  for (const handle of handleBounds[type] || []) {
+    if (`${node.id}-${handle.id}-${type}` !== currentHandle) {
+      const { x, y } = getHandlePosition(node, handle)
+
+      connectionHandles.push({
+        id: handle.id || null,
         type,
         nodeId: node.id,
-        x: handlePosition.x,
-        y: handlePosition.y,
-        width: h.width,
-        height: h.height,
+        x,
+        y,
       })
     }
-    return res
-  }, [])
+  }
+
+  return connectionHandles
 }
 
 export function getClosestHandle(
