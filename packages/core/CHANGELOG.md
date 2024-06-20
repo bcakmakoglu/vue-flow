@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 2.0.0-next.0
+
+### Major Changes
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`86bdf7f`](https://github.com/bcakmakoglu/vue-flow/commit/86bdf7f83ba9057faa266c8d85c8125da681ab83) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove experimental features flag
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`bafd55c`](https://github.com/bcakmakoglu/vue-flow/commit/bafd55cae6b47e5246a9f2f1c758b14885dd61be) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update handle styles and avoid using fixed pixel positions to offset handle position and instead use transform to align handles
+
 ## 1.37.1
 
 ### Patch Changes

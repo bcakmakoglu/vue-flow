@@ -1,5 +1,12 @@
 # @vue-flow/controls
 
+## 2.0.0-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`86bdf7f`](https://github.com/bcakmakoglu/vue-flow/commit/86bdf7f83ba9057faa266c8d85c8125da681ab83), [`bafd55c`](https://github.com/bcakmakoglu/vue-flow/commit/bafd55cae6b47e5246a9f2f1c758b14885dd61be)]:
+  - @vue-flow/core@2.0.0-next.0
+
 ## 1.1.2
 
 ### Patch Changes
