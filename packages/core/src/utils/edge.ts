@@ -1,12 +1,16 @@
-import type { Actions, EdgePositions, GraphEdge, GraphNode, HandleElement, ViewportTransform, XYPosition } from '../types'
+import type { Actions, GraphEdge, GraphNode, HandleElement, ViewportTransform, XYPosition } from '../types'
 import { Position } from '../types'
-import { rectToBox } from '.'
+import { getNodeDimensions, rectToBox } from '.'
 
-export function getHandlePosition(position: Position, node: GraphNode, handle: HandleElement | null): XYPosition {
+export function getHandlePosition(
+  node: GraphNode,
+  handle: HandleElement | null,
+  fallbackPosition: Position = Position.Left,
+): XYPosition {
   const x = (handle?.x ?? 0) + node.computedPosition.x
   const y = (handle?.y ?? 0) + node.computedPosition.y
-  const width = handle?.width ?? node.dimensions.width
-  const height = handle?.height ?? node.dimensions.height
+  const { width, height } = handle ?? getNodeDimensions(node)
+  const position = handle?.position ?? fallbackPosition
 
   switch (position) {
     case Position.Top:
@@ -38,25 +42,6 @@ export function getHandle(bounds: HandleElement[] = [], handleId?: string | null
   }
 
   return (!handleId ? bounds[0] : bounds.find((d) => d.id === handleId)) || null
-}
-
-export function getEdgePositions(
-  sourceNode: GraphNode,
-  sourceHandle: HandleElement | null,
-  sourcePosition: Position,
-  targetNode: GraphNode,
-  targetHandle: HandleElement | null,
-  targetPosition: Position,
-): EdgePositions {
-  const { x: sourceX, y: sourceY } = getHandlePosition(sourcePosition, sourceNode, sourceHandle)
-  const { x: targetX, y: targetY } = getHandlePosition(targetPosition, targetNode, targetHandle)
-
-  return {
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-  }
 }
 
 interface IsEdgeVisibleParams {
