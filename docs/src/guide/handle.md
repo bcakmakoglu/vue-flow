@@ -147,7 +147,22 @@ const handleConnectable: HandleConnectableFunc = (node, connectedEdges) => {
 </template>
 ```
 
+## Connection Mode
 
+By default, Vue Flow will use `<VueFlow :connection-mode="ConnectionMode.Loose" />` which allows you to connect edges to any handle.
+That means connections between a `source` and another `source` type `<Handle>` are allowed.
+
+If you want to restrict connections to only be made between `source` and `target` type handles, you can set the `connection-mode` prop to `ConnectionMode.Strict`.
+
+```vue
+<script setup>
+import { ConnectionMode, VueFlow } from '@vue-flow/core'
+</script>
+
+<template>
+  <VueFlow :connection-mode="ConnectionMode.Strict" />
+</template>
+```
 
 ## Dynamic Handle Positions & Adding/Removing Handles Dynamically
 
