@@ -50,8 +50,6 @@ function logEvent(name, data) {
 }
 </script>
 
-# Introduction to Nodes
-
 Nodes are the underlying components of your graph.
 They can be any kind of data you want to visualize in your graph, existing independently and being interconnected
 through edges to create a data map.

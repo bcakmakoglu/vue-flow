@@ -22,7 +22,7 @@ const downloadCountTransitioned = useTransition(downloadCount, {
 })
 
 starGazersCount.value = 3000
-downloadCount.value = 50000
+downloadCount.value = 150000
 
 Promise.all([
   $fetch('https://api.github.com/repos/bcakmakoglu/vue-flow?page=$i&per_page=100').then((data) => {

@@ -1,7 +1,5 @@
 # State
 
-## Introduction
-
 Under the hood Vue Flow uses [Provide/Inject](https://v3.vuejs.org/guide/component-provide-inject)
 to pass around it's state between components.
 You can access the internal state through the [`useVueFlow`](/guide/composables#usevueflow/) composable.
@@ -12,13 +10,11 @@ an already existing store from the current context.
 Internal state can be manipulated, for example by adding new elements to the state. The
 state is reactive and changes will be reflected on the graph.
 
-```vue{4-6}
+```vue
 <script setup>
 import { useVueFlow } from '@vue-flow/core'
 
-const { getNodes, onPaneReady } = useVueFlow({
-  ... // you can pass any VueFlowProp to the composable as a static option
-})
+const { getNodes, onPaneReady } = useVueFlow()
 
 // event handler
 onPaneReady((i) => i.fitView())

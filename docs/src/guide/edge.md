@@ -79,8 +79,6 @@ function logEvent(name, data) {
 }
 </script>
 
-# Introduction to Edges
-
 Edges are the links connecting your nodes, forming a map.
 Each edge runs from one handle to another, and can be customized to your liking.
 
