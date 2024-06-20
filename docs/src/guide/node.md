@@ -241,6 +241,11 @@ function onAddNodes() {
 
 :::
 
+::: info
+If you want to have two-way binding of nodes, use `v-model:nodes="nodes"`.
+This will allow you to mutate *your* nodes and have the changes reflected in the graph.
+::: 
+
 ## Removing Nodes from the Graph
 
 Similar to adding nodes, nodes can be removed from the graph by removing them from the `mode-value` (using `v-model`) or from the `nodes` prop of the Vue Flow component.
