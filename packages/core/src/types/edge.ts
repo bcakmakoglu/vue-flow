@@ -92,7 +92,7 @@ export interface DefaultEdge<
   /** Disable/enable deleting edge */
   deletable?: boolean
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
-  class?: string | ClassFunc<GraphEdge<Data, CustomEvents>>
+  class?: string | string[] | Record<string, any> | ClassFunc<GraphEdge<Data, CustomEvents>>
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
   style?: Styles | StyleFunc<GraphEdge<Data, CustomEvents>>
   /** Is edge hidden */
