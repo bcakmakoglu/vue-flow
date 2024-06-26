@@ -90,7 +90,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   height?: number | string | HeightFunc
 
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
-  class?: string | ClassFunc<GraphNode<Data, CustomEvents>>
+  class?: string | string[] | Record<string, any> | ClassFunc<GraphNode<Data, CustomEvents>>
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
   style?: Styles | StyleFunc<GraphNode<Data, CustomEvents>>
   /** Is node hidden */
