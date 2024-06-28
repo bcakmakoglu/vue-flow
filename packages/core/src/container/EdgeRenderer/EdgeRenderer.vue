@@ -21,7 +21,6 @@ export default {
   <svg
     v-for="edge of getEdges"
     :key="edge.id"
-    v-memo="[edge.id]"
     class="vue-flow__edges vue-flow__container"
     :style="{ zIndex: getEdgeZIndex(edge, findNode, elevateEdgesOnSelect) }"
   >
