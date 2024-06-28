@@ -2,7 +2,7 @@
 import { ref, toRef, watch } from 'vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
-import { type GraphNode, SelectionMode } from '../../types'
+import { SelectionMode } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
 import { getConnectedEdges, getNodesInside } from '../../utils'
 import { getMousePosition } from './utils'
@@ -54,28 +54,11 @@ watch(deleteKeyPressed, (isKeyPressed) => {
     return
   }
 
-  const nodesToRemove: GraphNode[] = []
-  for (const node of getNodes.value) {
-    if (!node.selected && node.parentNode && nodesToRemove.some((n) => n.id === node.parentNode)) {
-      nodesToRemove.push(node)
-    } else if (node.selected) {
-      nodesToRemove.push(node)
-    }
-  }
+  removeNodes(getSelectedNodes.value)
 
-  if (nodesToRemove || getSelectedEdges.value) {
-    if (getSelectedEdges.value.length > 0) {
-      removeEdges(getSelectedEdges.value)
-    }
+  removeEdges(getSelectedEdges.value)
 
-    if (nodesToRemove.length > 0) {
-      removeNodes(nodesToRemove)
-    }
-
-    nodesSelectionActive.value = false
-
-    removeSelectedElements()
-  }
+  nodesSelectionActive.value = false
 })
 
 watch(multiSelectKeyPressed, (isKeyPressed) => {
@@ -125,17 +108,14 @@ function onWheel(event: WheelEvent) {
 }
 
 function onPointerDown(event: PointerEvent) {
+  if (!hasActiveSelection.value) {
+    return emits.paneMouseMove(event)
+  }
+
   containerBounds.value = vueFlowRef.value?.getBoundingClientRect()
   container.value?.setPointerCapture(event.pointerId)
 
-  if (
-    !hasActiveSelection.value ||
-    !elementsSelectable ||
-    !isSelecting ||
-    event.button !== 0 ||
-    event.target !== container.value ||
-    !containerBounds.value
-  ) {
+  if (!elementsSelectable || !isSelecting || event.button !== 0 || event.target !== container.value || !containerBounds.value) {
     return
   }
 
@@ -198,11 +178,15 @@ function onPointerMove(event: PointerEvent) {
 }
 
 function onPointerUp(event: PointerEvent) {
-  if (!hasActiveSelection.value || event.button !== 0) {
+  if (event.button !== 0) {
     return
   }
 
   container.value?.releasePointerCapture(event.pointerId)
+
+  if (!hasActiveSelection.value) {
+    return
+  }
 
   // We only want to trigger click functions when in selection mode if
   // the user did not move the mouse.
