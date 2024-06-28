@@ -2,7 +2,6 @@ import type { Ref } from 'vue'
 import { onBeforeUnmount, onMounted } from 'vue'
 import { ErrorCode, VueFlowError, getDimensions } from '../utils'
 import { useVueFlow } from './useVueFlow'
-import { useWindow } from './useWindow'
 
 /**
  * Composable that handles the resize of the viewport.
@@ -11,8 +10,6 @@ import { useWindow } from './useWindow'
  * @param viewportEl
  */
 export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
-  const window = useWindow()
-
   const { emits, dimensions } = useVueFlow()
 
   let resizeObserver: ResizeObserver

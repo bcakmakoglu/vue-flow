@@ -1,12 +1,11 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { onMounted, ref, toValue, watch } from 'vue'
+import { onMounted, ref, toRef, toValue, watch } from 'vue'
 import type { KeyFilter, KeyPredicate } from '@vueuse/core'
 import { onKeyStroke, useEventListener } from '@vueuse/core'
-import { useWindow } from './useWindow'
 
 export interface UseKeyPressOptions {
   actInsideInputWithModifier?: MaybeRefOrGetter<boolean>
-  target?: MaybeRefOrGetter<EventTarget>
+  target?: MaybeRefOrGetter<EventTarget | null | undefined>
 }
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
@@ -69,8 +68,6 @@ function useKeyOrCode(code: string, keysToWatch: string | string[]) {
   return keysToWatch.includes(code) ? 'code' : 'key'
 }
 
-const window = useWindow()
-
 /**
  * Composable that returns a boolean value if a key is pressed
  *
@@ -78,10 +75,11 @@ const window = useWindow()
  * @param keyFilter - Can be a boolean, a string, an array of strings or a function that returns a boolean. If it's a boolean, it will act as if the key is always pressed. If it's a string, it will return true if a key matching that string is pressed. If it's an array of strings, it will return true if any of the strings match a key being pressed, or a combination (e.g. ['ctrl+a', 'ctrl+b'])
  * @param options - Options object
  */
-export function useKeyPress(
-  keyFilter: MaybeRefOrGetter<KeyFilter | null>,
-  options: UseKeyPressOptions = { actInsideInputWithModifier: true, target: window },
-) {
+export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, options?: UseKeyPressOptions) {
+  const actInsideInputWithModifier = toRef(() => toValue(options?.actInsideInputWithModifier) ?? false)
+
+  const target = toRef(() => toValue(options?.target) ?? window)
+
   const isPressed = ref(toValue(keyFilter) === true)
 
   let modifierPressed = false
@@ -114,7 +112,7 @@ export function useKeyPress(
     (e) => {
       modifierPressed = wasModifierPressed(e)
 
-      const preventAction = (!modifierPressed || (modifierPressed && !options.actInsideInputWithModifier)) && isInputDOMNode(e)
+      const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier.value)) && isInputDOMNode(e)
 
       if (preventAction) {
         return
@@ -124,14 +122,14 @@ export function useKeyPress(
 
       isPressed.value = true
     },
-    { eventName: 'keydown', target: options.target },
+    { eventName: 'keydown', target },
   )
 
   onKeyStroke(
     (...args) => currentFilter(...args),
     (e) => {
       if (isPressed.value) {
-        const preventAction = (!modifierPressed || (modifierPressed && !options.actInsideInputWithModifier)) && isInputDOMNode(e)
+        const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier.value)) && isInputDOMNode(e)
 
         if (preventAction) {
           return
@@ -140,7 +138,7 @@ export function useKeyPress(
         reset()
       }
     },
-    { eventName: 'keyup', target: options.target },
+    { eventName: 'keyup', target },
   )
 
   function reset() {
