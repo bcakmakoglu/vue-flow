@@ -21,7 +21,6 @@ import type {
   XYPosition,
   XYZPosition,
 } from '../types'
-import { useWindow } from '../composables'
 import { isDef, warn } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
@@ -63,8 +62,6 @@ export function getHostForElement(element: HTMLElement): Document {
   if ('elementFromPoint' in doc) {
     return doc
   }
-
-  const window = useWindow()
 
   return window.document
 }
