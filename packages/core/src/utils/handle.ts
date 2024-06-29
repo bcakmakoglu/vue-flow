@@ -8,6 +8,7 @@ import type {
   GraphNode,
   HandleType,
   NodeHandleBounds,
+  Position,
   ValidConnectionFunc,
   ValidHandleResult,
   XYPosition,
@@ -192,12 +193,6 @@ export function isValidHandle(
         ? (isTarget && handleType === 'source') || (!isTarget && handleType === 'target')
         : handleNodeId !== fromNodeId || handleId !== fromHandleId)
 
-    result.endHandle = {
-      nodeId: handleNodeId,
-      handleId,
-      type: handleType as HandleType,
-    }
-
     if (isValid) {
       result.isValid = isValidConnection(connection, {
         edges,
@@ -205,6 +200,13 @@ export function isValidHandle(
         sourceNode: findNode(connection.source)!,
         targetNode: findNode(connection.target)!,
       })
+
+      result.endHandle = {
+        nodeId: handleNodeId,
+        handleId,
+        type: handleType as HandleType,
+        position: result.isValid ? (handleToCheck.getAttribute('data-handlepos') as Position) : null,
+      }
     }
   }
 
