@@ -15,6 +15,7 @@ import {
   rendererPointToPoint,
   resetRecentHandle,
 } from '../utils'
+import { Position } from '../types'
 import { useVueFlow } from './useVueFlow'
 
 export interface UseHandleProps {
@@ -129,6 +130,7 @@ export function useHandle({
           nodeId: toValue(nodeId),
           handleId: toValue(handleId),
           type: handleType,
+          position: (clickedHandle?.getAttribute('data-handlepos') as Position) || Position.Top,
         },
         {
           x: x - containerBounds.left,
