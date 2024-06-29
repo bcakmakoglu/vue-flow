@@ -6,7 +6,6 @@ import type {
   CoordinateExtent,
   Edge,
   EdgeAddChange,
-  EdgeChange,
   EdgeLookup,
   EdgeRemoveChange,
   EdgeSelectionChange,
@@ -16,7 +15,6 @@ import type {
   GraphNode,
   Node,
   NodeAddChange,
-  NodeChange,
   NodeDimensionChange,
   NodeLookup,
   NodePositionChange,
@@ -178,76 +176,20 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     }
   }
 
-  const nodeSelectionHandler = (nodes: GraphNode[], selected: boolean) => {
-    const nodeIds: string[] = []
-    for (const node of nodes) {
-      nodeIds.push(node.id)
-    }
-
-    let changedNodes: NodeChange[] = []
-    let changedEdges: EdgeChange[] = []
-
-    if (state.multiSelectionActive) {
-      for (const nodeId of nodeIds) {
-        changedNodes.push(createSelectionChange(nodeId, selected))
-      }
-    } else {
-      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], nodeIds)
-      changedNodes = selectionChanges.changedNodes
-      changedEdges = selectionChanges.changedEdges
-    }
-
-    if (changedNodes.length) {
-      state.hooks.nodesChange.trigger(changedNodes)
-    }
-
-    if (changedEdges.length) {
-      state.hooks.edgesChange.trigger(changedEdges)
-    }
-  }
-
-  const edgeSelectionHandler = (edges: GraphEdge[], selected: boolean) => {
-    const edgeIds: string[] = []
-
-    for (const edge of edges) {
-      edgeIds.push(edge.id)
-    }
-
-    let changedNodes: NodeChange[] = []
-    let changedEdges: EdgeChange[] = []
-
-    if (state.multiSelectionActive) {
-      for (const edgeId of edgeIds) {
-        changedEdges.push(createSelectionChange(edgeId, selected))
-      }
-    } else {
-      const selectionChanges = getSelectionChanges([...state.nodes, ...state.edges], edgeIds)
-      changedNodes = selectionChanges.changedNodes
-      changedEdges = selectionChanges.changedEdges
-    }
-
-    if (changedNodes.length) {
-      state.hooks.nodesChange.trigger(changedNodes)
-    }
-
-    if (changedEdges.length) {
-      state.hooks.edgesChange.trigger(changedEdges)
-    }
-  }
-
   const elementSelectionHandler = (elements: Elements, selected: boolean) => {
-    const nodeIds: string[] = []
-    const edgeIds: string[] = []
+    const nodeIds = new Set<string>()
+    const edgeIds = new Set<string>()
 
     for (const element of elements) {
       if (isNode(element)) {
-        nodeIds.push(element.id)
+        nodeIds.add(element.id)
       } else if (isEdge(element)) {
-        edgeIds.push(element.id)
+        edgeIds.add(element.id)
       }
     }
 
-    const { changedNodes, changedEdges } = getSelectionChanges([...state.nodes, ...state.edges], [...nodeIds, ...edgeIds])
+    const changedNodes = getSelectionChanges(nodeLookup.value, nodeIds, true)
+    const changedEdges = getSelectionChanges(edgeLookup.value, edgeIds)
 
     if (state.multiSelectionActive) {
       for (const nodeId of nodeIds) {
@@ -269,11 +211,25 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const addSelectedNodes: Actions['addSelectedNodes'] = (nodes) => {
-    nodeSelectionHandler(nodes, true)
+    if (state.multiSelectionActive) {
+      const nodeChanges = nodes.map((node) => createSelectionChange(node.id, true))
+      state.hooks.nodesChange.trigger(nodeChanges)
+      return
+    }
+
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup.value, new Set(nodes.map((n) => n.id)), true))
+    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup.value))
   }
 
   const addSelectedEdges: Actions['addSelectedEdges'] = (edges) => {
-    edgeSelectionHandler(edges, true)
+    if (state.multiSelectionActive) {
+      const changedEdges = edges.map((edge) => createSelectionChange(edge.id, true))
+      state.hooks.edgesChange.trigger(changedEdges as EdgeSelectionChange[])
+      return
+    }
+
+    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup.value, new Set(edges.map((e) => e.id))))
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup.value, new Set(), true))
   }
 
   const addSelectedElements: Actions['addSelectedElements'] = (elements) => {
@@ -281,34 +237,25 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const removeSelectedNodes: Actions['removeSelectedNodes'] = (nodes) => {
-    if (!nodes.length) {
-      return nodeSelectionHandler(nodes, false)
-    }
+    const nodesToUnselect = nodes || state.nodes
 
-    const changedNodes: NodeSelectionChange[] = []
+    const nodeChanges = nodesToUnselect.map((n) => {
+      n.selected = false
+      return createSelectionChange(n.id, false)
+    })
 
-    for (const node of nodes) {
-      changedNodes.push(createSelectionChange(node.id, false))
-    }
-
-    if (changedNodes.length) {
-      state.hooks.nodesChange.trigger(changedNodes)
-    }
+    state.hooks.nodesChange.trigger(nodeChanges)
   }
 
   const removeSelectedEdges: Actions['removeSelectedEdges'] = (edges) => {
-    if (!edges.length) {
-      return edgeSelectionHandler(edges, false)
-    }
+    const edgesToUnselect = edges || state.edges
 
-    const changedEdges: EdgeSelectionChange[] = []
-    for (const edge of edges) {
-      changedEdges.push(createSelectionChange(edge.id, false))
-    }
+    const edgeChanges = edgesToUnselect.map((e) => {
+      e.selected = false
+      return createSelectionChange(e.id, false)
+    })
 
-    if (changedEdges.length) {
-      state.hooks.edgesChange.trigger(changedEdges)
-    }
+    state.hooks.edgesChange.trigger(edgeChanges)
   }
 
   const removeSelectedElements: Actions['removeSelectedElements'] = (elements) => {
