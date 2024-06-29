@@ -371,6 +371,8 @@ export type ComputedGetters = {
 export type VueFlowStore = {
   readonly id: string
   readonly emits: FlowHooksEmit
+  readonly nodeLookup: ComputedRef<NodeLookup>
+  readonly edgeLookup: ComputedRef<EdgeLookup>
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
 } & FlowHooksOn &

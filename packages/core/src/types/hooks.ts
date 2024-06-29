@@ -78,9 +78,9 @@ export interface FlowEvents {
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent
-  paneMouseEnter: MouseEvent
-  paneMouseMove: MouseEvent
-  paneMouseLeave: MouseEvent
+  paneMouseEnter: PointerEvent
+  paneMouseMove: PointerEvent
+  paneMouseLeave: PointerEvent
   edgeContextMenu: EdgeMouseEvent
   edgeMouseEnter: EdgeMouseEvent
   edgeMouseMove: EdgeMouseEvent

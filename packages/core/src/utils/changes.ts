@@ -6,7 +6,6 @@ import type {
   EdgeSelectionChange,
   ElementChange,
   FlowElement,
-  FlowElements,
   GraphEdge,
   GraphNode,
   NodeAddChange,
@@ -16,7 +15,7 @@ import type {
   StyleFunc,
   Styles,
 } from '../types'
-import { isDef, isGraphNode } from '.'
+import { isGraphNode } from '.'
 
 function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   if (parent) {
@@ -255,25 +254,27 @@ export function createEdgeRemoveChange(
   }
 }
 
-export function getSelectionChanges(elements: FlowElements, selectedIds: string[]) {
-  return elements.reduce(
-    (res, item) => {
-      let willBeSelected = selectedIds.includes(item.id)
+export function getSelectionChanges(
+  items: Map<string, any>,
+  selectedIds: Set<string> = new Set(),
+  mutateItem = false,
+): NodeSelectionChange[] | EdgeSelectionChange[] {
+  const changes: NodeSelectionChange[] | EdgeSelectionChange[] = []
 
-      if (isDef(item.selectable) && !item.selectable) {
-        willBeSelected = false
+  for (const [id, item] of items) {
+    const willBeSelected = selectedIds.has(id)
+
+    // we don't want to set all items to selected=false on the first selection
+    if (!(item.selected === undefined && !willBeSelected) && item.selected !== willBeSelected) {
+      if (mutateItem) {
+        // this hack is needed for nodes. When the user dragged a node, it's selected.
+        // When another node gets dragged, we need to deselect the previous one,
+        // in order to have only one selected node at a time - the onNodesChange callback comes too late here :/
+        item.selected = willBeSelected
       }
+      changes.push(createSelectionChange(item.id, willBeSelected))
+    }
+  }
 
-      const key = isGraphNode(item) ? 'changedNodes' : 'changedEdges'
-
-      if (!item.selected && willBeSelected) {
-        res[key].push(createSelectionChange(item.id, true))
-      } else if (item.selected && !willBeSelected) {
-        res[key].push(createSelectionChange(item.id, false))
-      }
-
-      return res
-    },
-    { changedNodes: [], changedEdges: [] } as { changedNodes: NodeSelectionChange[]; changedEdges: EdgeSelectionChange[] },
-  )
+  return changes
 }

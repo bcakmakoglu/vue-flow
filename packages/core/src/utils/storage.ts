@@ -87,6 +87,8 @@ export class Storage {
       ...getters,
       ...actions,
       ...toRefs(reactiveState),
+      nodeLookup,
+      edgeLookup,
       emits,
       id,
       vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
