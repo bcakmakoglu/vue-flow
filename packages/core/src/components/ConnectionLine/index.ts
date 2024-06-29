@@ -93,8 +93,7 @@ const ConnectionLine = defineComponent({
         }
       }
 
-      // we assume the target position is opposite to the source position
-      const toPosition = fromPosition ? oppositePosition[fromPosition] : null
+      const toPosition = connectionEndHandle.value?.position ?? (fromPosition ? oppositePosition[fromPosition] : null)
 
       if (!fromPosition || !toPosition) {
         return null

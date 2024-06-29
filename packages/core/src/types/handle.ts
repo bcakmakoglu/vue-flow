@@ -26,7 +26,8 @@ export interface ValidHandleResult {
 export interface ConnectingHandle {
   nodeId: string
   type: HandleType
-  handleId: string | null
+  handleId?: string | null
+  position?: Position | null
 }
 
 /** A valid connection function can determine if an attempted connection is valid or not, i.e. abort creating a new edge */
