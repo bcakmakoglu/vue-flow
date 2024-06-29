@@ -258,7 +258,10 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   applyEdgeChanges: (changes: EdgeChange[]) => GraphEdge[]
   /** applies default node change handler */
   applyNodeChanges: (changes: NodeChange[]) => GraphNode[]
-  /** manually select elements and add to state */
+  /**
+   * @deprecated will be removed in the next major, use `addSelectedNodes`/`addSelectedEdges` instead
+   * manually select elements and add to state
+   */
   addSelectedElements: (elements: FlowElements) => void
   /** manually select edges and add to state */
   addSelectedEdges: (edges: GraphEdge[]) => void
@@ -268,7 +271,10 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   removeSelectedEdges: (edges: GraphEdge[]) => void
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes: GraphNode[]) => void
-  /** unselect selected elements (if none are passed, all elements are unselected) */
+  /**
+   * @deprecated will be replaced in the next major
+   * unselect selected elements (if none are passed, all elements are unselected)
+   */
   removeSelectedElements: (elements?: Elements) => void
   /** apply min zoom value to d3 */
   setMinZoom: (zoom: number) => void
@@ -371,6 +377,8 @@ export type ComputedGetters = {
 export type VueFlowStore = {
   readonly id: string
   readonly emits: FlowHooksEmit
+  readonly nodeLookup: ComputedRef<NodeLookup>
+  readonly edgeLookup: ComputedRef<EdgeLookup>
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
 } & FlowHooksOn &
