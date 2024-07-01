@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.0] - 2024-07-01
+
+[e2dec5c](e2dec5c8661b0e64799b3e95ff373561f49b19ba)...[d0728ac](d0728ac7b0653a8077d3e111820c514cd2ce8bfb)
+
+### Bug Fixes
+
+- Remove v-memo from edge renderer (#1506) ([a52ac6e](a52ac6e90e998d9d6931f79461ad873c94b4932a))
+- Correct pane pointer evt handlers (#1505) ([e57f22c](e57f22c185bf95f6c2c3a7cb5fc2d84eca4340f5))
+
+### Documentation
+
+- Add section on changes ([3ca9aca](3ca9aca72b6070c9512c28aba76b5375577ff4cd))
+- Add info on handle limit ([ea59a71](ea59a7176ecbe276a8209465b7fc7cfb60cf342d))
+- Add info on connection mode ([182a6d9](182a6d9263e3853630a448463e34cc54f08ea4b0))
+
+### Features
+
+- Make `useKeyPress` public and export it ([e435485](e435485b77ac3d3c5eac78f7d40c23716fdcbc2e))
+- Allow string array or object as class to node/edge objects (#1502) ([410765b](410765b87b24ddab6ff28825f48532ff78188631))
+
+### Miscellaneous Tasks
+
+- Cleanup ([e94e0e8](e94e0e879cf51f2899fff73bbdee72a33a827a27))
+- Add info on v-model ([04524d2](04524d27fd8b48145dc48093938771cc38285e95))
+- Add ([e1e5282](e1e52821910e324e102c3a5c9f68937fbd4f9b66))
+- Cleanup handle utils (#1497) ([8454dca](8454dca6d446813ee1e10980801e6cf6f38c3522))
+- Cleanup pane (#1507) ([266f874](266f8744ad3e7bbaca599f99294b08d2da313c9b))
+
+### Refactor
+
+- Replace `until` watcher with `onMounted` in handle cmp (#1488) ([cf32d59](cf32d590746d7ee163c311d8ac7f2f8914812846))
+- Allow passing target to `useKeyPress` ([ea75f8a](ea75f8aac0cbc2cfe962c460f435a834a8c8a5b7))
+- Use pointer evts in pane and prevent cancel of selection ([4effbb0](4effbb00086b29750cffdbb0bd2abceb688804e8))
+- Calculate correct handle pos in handle lookup (#1494) ([09e2221](09e222124c8c84584d623f9589d66be542891025))
+- Remove useWindow (#1504) ([545bb4e](545bb4edf5f2f5fd12fe180f7fb3ab5f013a4334))
+- Use correct end handle position in connection line (#1508) ([3489fae](3489fae8fec2109d05b0ac14e245964e60a082a8))
+
 ## [1.37.1] - 2024-06-18
 
 [fdc656a](fdc656af9d2b555fb6aa420dfee301d8c5767bfd)...[e2dec5c](e2dec5c8661b0e64799b3e95ff373561f49b19ba)
