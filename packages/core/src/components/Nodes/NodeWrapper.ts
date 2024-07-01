@@ -173,7 +173,7 @@ const NodeWrapper = defineComponent({
             })
           }
         },
-        { immediate: true, flush: 'pre' },
+        { immediate: true, flush: 'post' },
       )
     })
 
@@ -237,6 +237,8 @@ const NodeWrapper = defineComponent({
     }
 
     return () => {
+      console.log(node.id, node.dimensions)
+
       if (node.hidden) {
         return null
       }
