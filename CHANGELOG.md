@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.2] - 2024-07-01
+
+[d3b706e](d3b706ea982be641396d3b625bbb8dc9270f3f3d)...[50b32ef](50b32efc7d40b2a6817d4472f297cb276ec2a01a)
+
+### Bug Fixes
+
+- Avoid re-snapping to same handle (#1514) ([9154687](915468741067f5f832644ad7436843b43b15c411))
+- Use post flush to re-observe nodes after toggling visibility (#1517) ([d8ddc4d](d8ddc4de6e2c66939c35d5725fc7c18c2ff4bd99))
+
+### Miscellaneous Tasks
+
+- Upgrade turbo to latest (#1472) ([8f53488](8f53488995719ee19a61af84fd8fc27dfe784199))
+
 ## [1.38.1] - 2024-07-01
 
 [d0728ac](d0728ac7b0653a8077d3e111820c514cd2ce8bfb)...[d3b706e](d3b706ea982be641396d3b625bbb8dc9270f3f3d)
