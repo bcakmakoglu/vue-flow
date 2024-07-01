@@ -237,8 +237,6 @@ const NodeWrapper = defineComponent({
     }
 
     return () => {
-      console.log(node.id, node.dimensions)
-
       if (node.hidden) {
         return null
       }
