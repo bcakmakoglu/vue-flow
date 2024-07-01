@@ -298,8 +298,8 @@ export function rendererPointToPoint({ x, y }: XYPosition, { x: tx, y: ty, zoom:
 export function pointToRendererPoint(
   { x, y }: XYPosition,
   { x: tx, y: ty, zoom: tScale }: ViewportTransform,
-  snapToGrid: boolean,
-  [snapX, snapY]: [snapX: number, snapY: number],
+  snapToGrid: boolean = false,
+  [snapX, snapY]: [snapX: number, snapY: number] = [1, 1],
 ): XYPosition {
   const position: XYPosition = {
     x: (x - tx) / tScale,
@@ -373,37 +373,41 @@ export function getRectOfNodes(nodes: GraphNode[]) {
 export function getNodesInside(
   nodes: GraphNode[],
   rect: Rect,
-  { x: tx, y: ty, zoom: tScale }: ViewportTransform = { x: 0, y: 0, zoom: 1 },
+  viewport: ViewportTransform = { x: 0, y: 0, zoom: 1 },
   partially = false,
   // set excludeNonSelectableNodes if you want to pay attention to the nodes "selectable" attribute
   excludeNonSelectableNodes = false,
 ) {
   const paneRect = {
-    x: (rect.x - tx) / tScale,
-    y: (rect.y - ty) / tScale,
-    width: rect.width / tScale,
-    height: rect.height / tScale,
+    ...pointToRendererPoint(rect, viewport),
+    width: rect.width / viewport.zoom,
+    height: rect.height / viewport.zoom,
   }
 
-  return nodes.filter((node) => {
-    const { computedPosition = { x: 0, y: 0 }, dimensions = { width: 0, height: 0 }, selectable } = node
+  const visibleNodes: GraphNode[] = []
 
-    if (excludeNonSelectableNodes && !selectable) {
-      return false
+  for (const node of nodes) {
+    const { dimensions, selectable = true, hidden = false } = node
+    const width = dimensions.width ?? node.width ?? null
+    const height = dimensions.height ?? node.height ?? null
+
+    if ((excludeNonSelectableNodes && !selectable) || hidden) {
+      continue
     }
 
-    const nodeRect = { ...computedPosition, width: dimensions.width || 0, height: dimensions.height || 0 }
-    const overlappingArea = getOverlappingArea(paneRect, nodeRect)
-    const notInitialized =
-      typeof dimensions.width === 'undefined' ||
-      typeof dimensions.height === 'undefined' ||
-      dimensions.width === 0 ||
-      dimensions.height === 0
+    const overlappingArea = getOverlappingArea(paneRect, nodeToRect(node))
+    const notInitialized = width === null || height === null
 
     const partiallyVisible = partially && overlappingArea > 0
-    const area = dimensions.width * dimensions.height
-    return notInitialized || partiallyVisible || overlappingArea >= area
-  })
+    const area = (width ?? 0) * (height ?? 0)
+    const isVisible = notInitialized || partiallyVisible || overlappingArea >= area
+
+    if (isVisible || node.dragging) {
+      visibleNodes.push(node)
+    }
+  }
+
+  return visibleNodes
 }
 
 export function getConnectedEdges<E extends Edge>(nodesOrId: Node[] | string, edges: E[]) {
