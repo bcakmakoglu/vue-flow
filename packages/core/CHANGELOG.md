@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.38.2
+
+### Patch Changes
+
+- [#1517](https://github.com/bcakmakoglu/vue-flow/pull/1517) [`d2ec752`](https://github.com/bcakmakoglu/vue-flow/commit/d2ec752ca404b58a26831849934628057b0109ca) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use `post` flush timing to re-observe node size when toggling node visibility
+
+- [#1514](https://github.com/bcakmakoglu/vue-flow/pull/1514) [`6a0813e`](https://github.com/bcakmakoglu/vue-flow/commit/6a0813e525e8d24c1ca2888de97f66ac6e7de4c0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Avoid re-snapping to the same handle
+
 ## 1.38.1
 
 ### Patch Changes
