@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.38.1
+
+### Patch Changes
+
+- [#1510](https://github.com/bcakmakoglu/vue-flow/pull/1510) [`4643676`](https://github.com/bcakmakoglu/vue-flow/commit/4643676e689def1901fe171a4b78257db2089684) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct calculation of nodes inside selection rect
+
 ## 1.38.0
 
 ### Minor Changes
