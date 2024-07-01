@@ -3,15 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": ">=20",
-    "pnpm": ">=9.0.0"
+    "node": "^20",
+    "pnpm": "^9.2.0"
   },
-  "packageManager": "pnpm@9.1.0",
+  "packageManager": "pnpm@9.3.0",
   "scripts": {
     "dev": "pnpm build && turbo dev --filter='./packages/*' --filter=@vue-flow/examples-vite",
     "dev:docs": "turbo dev --filter=@vue-flow/docs",
     "changelog": "git-cliff --output CHANGELOG.md && git add CHANGELOG.md && git commit -m \"chore: Update CHANGELOG.md\"",
-    "build:docs": "turbo build --filter docs",
+    "build:docs": "turbo build --filter ./docs",
     "build": "turbo build --filter='./packages/*'",
     "test": "turbo test",
     "lint": "turbo lint --filter='./packages/*'",
@@ -23,6 +23,6 @@
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.5",
     "shx": "^0.3.4",
-    "turbo": "^1.13.3"
+    "turbo": "^2.0.4"
   }
 }
