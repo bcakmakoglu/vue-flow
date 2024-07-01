@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.1] - 2024-07-01
+
+[d0728ac](d0728ac7b0653a8077d3e111820c514cd2ce8bfb)...[d3b706e](d3b706ea982be641396d3b625bbb8dc9270f3f3d)
+
+### Bug Fixes
+
+- Correct calculation of nodes inside selection (#1509) ([c8b5522](c8b55223b940684021eb9b87896ea73013a676ff))
+
 ## [1.38.0] - 2024-07-01
 
 [e2dec5c](e2dec5c8661b0e64799b3e95ff373561f49b19ba)...[d0728ac](d0728ac7b0653a8077d3e111820c514cd2ce8bfb)
