@@ -173,7 +173,7 @@ const NodeWrapper = defineComponent({
             })
           }
         },
-        { immediate: true, flush: 'pre' },
+        { immediate: true, flush: 'post' },
       )
     })
 
