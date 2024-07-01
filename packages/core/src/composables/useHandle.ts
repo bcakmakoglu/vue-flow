@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types'
+import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc, ValidHandleResult } from '../types'
 import {
   calcAutoPan,
   getClosestHandle,
@@ -71,6 +71,7 @@ export function useHandle({
   let connection: Connection | null = null
   let isValid = false
   let handleDomNode: Element | null = null
+  let previousConnection: ValidHandleResult | null = null
 
   function handlePointerDown(event: MouseTouchEvent) {
     const isTarget = toValue(type) === 'target'
@@ -176,6 +177,20 @@ export function useHandle({
         isValid = validHandleResult.isValid
         handleDomNode = validHandleResult.handleDomNode
 
+        // we don't want to trigger an update when the connection
+        // is snapped to the same handle as before
+        if (
+          isValid &&
+          closestHandle &&
+          previousConnection?.endHandle &&
+          validHandleResult.endHandle &&
+          previousConnection.endHandle.type === validHandleResult.endHandle.type &&
+          previousConnection.endHandle.nodeId === validHandleResult.endHandle.nodeId &&
+          previousConnection.endHandle.handleId === validHandleResult.endHandle.handleId
+        ) {
+          return
+        }
+
         updateConnection(
           closestHandle && isValid
             ? rendererPointToPoint(
@@ -189,6 +204,8 @@ export function useHandle({
           validHandleResult.endHandle,
           getConnectionStatus(!!closestHandle, isValid),
         )
+
+        previousConnection = validHandleResult
 
         if (!closestHandle && !isValid && !handleDomNode) {
           return resetRecentHandle(prevActiveHandle)
