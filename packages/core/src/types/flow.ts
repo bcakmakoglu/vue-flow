@@ -122,18 +122,30 @@ export enum SelectionMode {
 }
 
 export interface FlowExportObject {
+  /** exported nodes */
   nodes: Node[]
+  /** exported edges */
   edges: Edge[]
-  /** @deprecated use `viewport` instead */
+  /**
+   * exported viewport position
+   * @deprecated use {@link FlowExportObject.viewport} instead
+   */
   position: [x: number, y: number]
-  /** @deprecated use `viewport` instead */
+  /**
+   * exported zoom level
+   * @deprecated use {@link FlowExportObject.viewport} instead
+   */
   zoom: number
+  /** exported viewport (position + zoom) */
   viewport: ViewportTransform
 }
 
 export interface FlowProps {
   id?: string
-  /** @deprecated use `nodes` & `edges` instead */
+  /**
+   * all elements (nodes + edges)
+   * @deprecated use {@link FlowProps.nodes} & {@link FlowProps.nodes} instead
+   */
   modelValue?: Elements
   nodes?: Node[]
   edges?: Edge[]
@@ -186,13 +198,13 @@ export interface FlowProps {
   /** allow connection with click handlers, i.e. support touch devices */
   connectOnClick?: boolean
   /**
-   * @deprecated - will be removed in the next major version, changes will not be auto applied in the future
    * apply default change handlers for position, dimensions, adding/removing nodes. set this to false if you want to apply the changes manually
+   * @deprecated - will be removed in the next major version, changes will not be auto applied in the future
    */
   applyDefault?: boolean
   /**
-   * @deprecated - will be removed in the next major version
    * automatically create an edge when connection is triggered
+   * @deprecated - will be removed in the next major version
    */
   autoConnect?: boolean | Connector
   noDragClassName?: string
@@ -213,8 +225,10 @@ export interface FlowProps {
   autoPanOnNodeDrag?: boolean
 }
 
-// Todo: Remove in next major version
-/** @deprecated use `FlowProps` instead */
+/**
+ * All available VueFlow options
+ * @deprecated use the {@link FlowProps} type instead
+ */
 export type FlowOptions = FlowProps
 
 export interface FlowEmits {

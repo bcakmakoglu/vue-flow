@@ -8,6 +8,7 @@ import type {
   FlowElements,
   FlowExportObject,
   FlowOptions,
+  FlowProps,
   Rect,
   SelectionMode,
   SelectionRect,
@@ -41,7 +42,7 @@ export interface UpdateNodeDimensionsParams {
   forceUpdate?: boolean
 }
 
-export interface State extends Omit<FlowOptions, 'id' | 'modelValue'> {
+export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
   /** Vue flow element ref */
   vueFlowRef: HTMLDivElement | null
   /** Vue flow viewport element */
@@ -259,8 +260,8 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** applies default node change handler */
   applyNodeChanges: (changes: NodeChange[]) => GraphNode[]
   /**
-   * @deprecated will be removed in the next major, use `addSelectedNodes`/`addSelectedEdges` instead
    * manually select elements and add to state
+   * @deprecated will be removed in the next major, use {@link Actions.addSelectedNodes} or {@link Actions.addSelectedEdges} instead
    */
   addSelectedElements: (elements: FlowElements) => void
   /** manually select edges and add to state */
@@ -334,23 +335,23 @@ export interface Getters {
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
   /**
+   * get all elements
    * @deprecated - will be removed in next major version
-   * get all elements (filters hidden elements)
    */
   getElements: FlowElements
-  /**
-   * @deprecated - will be removed in next major version; use `useVisibleNodes` instead
-   * all visible nodes
-   */
+  /** all visible node */
   getNodes: GraphNode[]
-  /**
-   * @deprecated - will be removed in next major version; use `useVisibleEdges` instead
-   * all visible edges
-   */
+  /** all visible edges */
   getEdges: GraphEdge[]
-  /** @deprecated use {@link Actions.findNode} instead; returns a node by id */
+  /**
+   * returns a node by id
+   * @deprecated use {@link Actions.findNode} instead
+   */
   getNode: (id: string) => GraphNode | undefined
-  /** @deprecated use {@link Actions.findEdge} instead; returns an edge by id */
+  /**
+   * returns an edge by id
+   * @deprecated use {@link Actions.findEdge} instead
+   */
   getEdge: (id: string) => GraphEdge | undefined
   /** returns all currently selected elements */
   getSelectedElements: FlowElements
@@ -359,13 +360,13 @@ export interface Getters {
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge[]
   /**
-   * @deprecated - will be removed in next major version; use `useNodesInitialized` instead
    * returns all nodes that are initialized, i.e. they have actual dimensions
+   * @deprecated - will be removed in next major version; use {@link useNodesInitialized} instead
    */
   getNodesInitialized: GraphNode[]
   /**
-   * @deprecated - will be removed in next major version; use `useNodesInitialized` instead
    * returns a boolean flag whether all current nodes are initialized
+   * @deprecated - will be removed in next major version; use {@link useNodesInitialized} instead
    */
   areNodesInitialized: boolean
 }
