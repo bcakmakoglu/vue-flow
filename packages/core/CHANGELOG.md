@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.38.3
+
+### Patch Changes
+
+- [#1522](https://github.com/bcakmakoglu/vue-flow/pull/1522) [`ccca803`](https://github.com/bcakmakoglu/vue-flow/commit/ccca803e130bb2152b6cc16b29e4ae10b9b8e63a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Emit `nodeClick` event when a node is dragged without exceeding the node drag threshold (i.e. no visible movement has happened)
+
 ## 1.38.2
 
 ### Patch Changes
