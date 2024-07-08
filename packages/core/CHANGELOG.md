@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.38.4
+
+### Patch Changes
+
+- [#1525](https://github.com/bcakmakoglu/vue-flow/pull/1525) [`e8427cf`](https://github.com/bcakmakoglu/vue-flow/commit/e8427cf9dc54856a9b405e64df9af4fae704dff2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent duplicate node click event by checking if drag was actually aborted before emitting node-click
+
 ## 1.38.3
 
 ### Patch Changes
