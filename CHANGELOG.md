@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.3] - 2024-07-08
+
+[50b32ef](50b32efc7d40b2a6817d4472f297cb276ec2a01a)...[d368263](d3682639049897fecc72c50a60ca9d8d23cdb28e)
+
+### Bug Fixes
+
+- Remove backdrop filter ([45c5961](45c59612f3d301bf20b9d9658d0c0af521706a23))
+- Emit node click event when drag was ended with no movement (#1522) ([4548021](4548021b7492b1b99985d961373a87c841e9e79a))
+
 ## [1.38.2] - 2024-07-01
 
 [d3b706e](d3b706ea982be641396d3b625bbb8dc9270f3f3d)...[50b32ef](50b32efc7d40b2a6817d4472f297cb276ec2a01a)
