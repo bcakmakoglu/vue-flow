@@ -71,6 +71,7 @@ export function useDrag(params: UseDragParams) {
   let mousePosition: XYPosition = { x: 0, y: 0 }
   let dragEvent: MouseEvent | null = null
   let dragStarted = false
+  let dragAborted = false
 
   let autoPanId = 0
   let autoPanStarted = false
@@ -148,6 +149,7 @@ export function useDrag(params: UseDragParams) {
 
   const startDrag = (event: UseDragEvent, nodeEl: Element) => {
     dragStarted = true
+    dragAborted = false
 
     const node = findNode(id)
     if (!selectNodesOnDrag.value && !multiSelectionActive.value && node) {
@@ -214,6 +216,8 @@ export function useDrag(params: UseDragParams) {
 
       if (distance > nodeDragThreshold.value) {
         startDrag(event, nodeEl)
+      } else {
+        dragAborted = true
       }
     }
 
@@ -228,11 +232,15 @@ export function useDrag(params: UseDragParams) {
 
   const eventEnd = (event: UseDragEvent) => {
     if (!dragStarted) {
-      const node = findNode(id)
+      if (dragAborted) {
+        const node = findNode(id)
 
-      if (node) {
-        emits.nodeClick({ node, event: event.sourceEvent })
+        if (node) {
+          emits.nodeClick({ node, event: event.sourceEvent })
+        }
       }
+
+      dragAborted = false
 
       return
     }
@@ -240,6 +248,8 @@ export function useDrag(params: UseDragParams) {
     dragging.value = false
     autoPanStarted = false
     dragStarted = false
+    dragAborted = false
+
     cancelAnimationFrame(autoPanId)
 
     if (dragItems.length) {
