@@ -162,7 +162,6 @@
 
 .VPNavBar.has-sidebar .content, .VPNav {
   background-color: var(--vp-c-bg);
-  backdrop-filter: blur(1px);
 }
 
 .examples .VPContent {
