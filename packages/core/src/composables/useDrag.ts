@@ -228,6 +228,12 @@ export function useDrag(params: UseDragParams) {
 
   const eventEnd = (event: UseDragEvent) => {
     if (!dragStarted) {
+      const node = findNode(id)
+
+      if (node) {
+        emits.nodeClick({ node, event: event.sourceEvent })
+      }
+
       return
     }
 
