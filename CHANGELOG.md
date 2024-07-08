@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.4] - 2024-07-08
+
+[d368263](d3682639049897fecc72c50a60ca9d8d23cdb28e)...[0814d42](0814d423bc80e84e6045b51684b42464ac0f2ad3)
+
+### Bug Fixes
+
+- Emit node click if drag was aborted (#1525) ([9d14595](9d14595f1d318064f41603de704b970a0129bcf2))
+
+### Miscellaneous Tasks
+
+- Cleanup deprecation notices (#1527) ([0a0dfe9](0a0dfe96f1826e11ea105bd857e21cb5ca84213f))
+
 ## [1.38.3] - 2024-07-08
 
 [50b32ef](50b32efc7d40b2a6817d4472f297cb276ec2a01a)...[d368263](d3682639049897fecc72c50a60ca9d8d23cdb28e)
