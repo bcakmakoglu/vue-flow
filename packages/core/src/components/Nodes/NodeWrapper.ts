@@ -120,14 +120,17 @@ const NodeWrapper = defineComponent({
       disabled: () => !isDraggable.value,
       selectable: isSelectable,
       dragHandle: () => node.dragHandle,
-      onStart(args) {
-        emit.dragStart(args)
+      onStart(event) {
+        emit.dragStart(event)
       },
-      onDrag(args) {
-        emit.drag(args)
+      onDrag(event) {
+        emit.drag(event)
       },
-      onStop(args) {
-        emit.dragStop(args)
+      onStop(event) {
+        emit.dragStop(event)
+      },
+      onClick(event) {
+        emit.click({ node, event })
       },
     })
 
