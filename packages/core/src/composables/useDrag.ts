@@ -18,9 +18,10 @@ import { useGetPointerPosition, useVueFlow } from '.'
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
 
 interface UseDragParams {
-  onStart: (args: Omit<NodeDragEvent, 'intersections'>) => void
-  onDrag: (event: Omit<NodeDragEvent, 'intersections'>) => void
-  onStop: (event: Omit<NodeDragEvent, 'intersections'>) => void
+  onStart: (event: NodeDragEvent) => void
+  onDrag: (event: NodeDragEvent) => void
+  onStop: (event: NodeDragEvent) => void
+  onClick?: (event: MouseEvent) => void
   el: Ref<Element | null>
   disabled?: MaybeRefOrGetter<boolean>
   selectable?: MaybeRefOrGetter<boolean>
@@ -57,7 +58,7 @@ export function useDrag(params: UseDragParams) {
     emits,
   } = useVueFlow()
 
-  const { onStart, onDrag, onStop, el, disabled, id, selectable, dragHandle } = params
+  const { onStart, onDrag, onStop, onClick, el, disabled, id, selectable, dragHandle } = params
 
   const dragging = ref(false)
 
@@ -71,6 +72,7 @@ export function useDrag(params: UseDragParams) {
   let mousePosition: XYPosition = { x: 0, y: 0 }
   let dragEvent: MouseEvent | null = null
   let dragStarted = false
+  let dragAborted = false
 
   let autoPanId = 0
   let autoPanStarted = false
@@ -223,15 +225,17 @@ export function useDrag(params: UseDragParams) {
       mousePosition = getEventPosition(event.sourceEvent, containerBounds!)
 
       updateNodes(pointerPos)
+    } else {
+      dragAborted = true
     }
   }
 
   const eventEnd = (event: UseDragEvent) => {
     if (!dragStarted) {
-      const node = findNode(id)
-
-      if (node) {
-        emits.nodeClick({ node, event: event.sourceEvent })
+      // if the node was dragged without any movement, and we're not dragging a selection, we want to emit the node-click event
+      if (dragAborted && onClick) {
+        onClick?.(event.sourceEvent)
+        dragAborted = false
       }
 
       return
@@ -240,6 +244,8 @@ export function useDrag(params: UseDragParams) {
     dragging.value = false
     autoPanStarted = false
     dragStarted = false
+    dragAborted = false
+
     cancelAnimationFrame(autoPanId)
 
     if (dragItems.length) {
