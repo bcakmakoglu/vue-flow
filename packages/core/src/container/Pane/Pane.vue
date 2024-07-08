@@ -12,7 +12,7 @@ const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean;
 
 const {
   vueFlowRef,
-  getNodes,
+  nodes,
   viewport,
   emits,
   userSelectionActive,
@@ -171,7 +171,7 @@ function onPointerMove(event: PointerEvent) {
   }
 
   const selectedNodes = getNodesInside(
-    getNodes.value,
+    nodes.value,
     nextUserSelectRect,
     viewport.value,
     selectionMode.value === SelectionMode.Partial,
