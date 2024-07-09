@@ -130,7 +130,7 @@ const NodeWrapper = defineComponent({
         emit.dragStop(event)
       },
       onClick(event) {
-        emit.click({ node, event })
+        onSelectNode(event)
       },
     })
 
