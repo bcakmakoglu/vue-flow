@@ -72,7 +72,6 @@ export function useDrag(params: UseDragParams) {
   let mousePosition: XYPosition = { x: 0, y: 0 }
   let dragEvent: MouseEvent | null = null
   let dragStarted = false
-  let dragAborted = false
 
   let autoPanId = 0
   let autoPanStarted = false
@@ -217,9 +216,6 @@ export function useDrag(params: UseDragParams) {
       if (distance > nodeDragThreshold.value) {
         startDrag(event, nodeEl)
       }
-
-      // we have to ignore very small movements as they would be picked up as regular clicks even though a potential drag might have been registered as well
-      dragAborted = distance >= 0.5 && distance < nodeDragThreshold.value
     }
 
     // skip events without movement
@@ -233,10 +229,15 @@ export function useDrag(params: UseDragParams) {
 
   const eventEnd = (event: UseDragEvent) => {
     if (!dragStarted) {
-      // if the node was dragged without any movement, and we're not dragging a selection, we want to emit the node-click event
-      if (dragAborted && onClick) {
+      const pointerPos = getPointerPosition(event)
+
+      const x = pointerPos.xSnapped - (lastPos.x ?? 0)
+      const y = pointerPos.ySnapped - (lastPos.y ?? 0)
+      const distance = Math.sqrt(x * x + y * y)
+
+      // dispatch a click event if the node was attempted to be dragged but the threshold was not exceeded
+      if (distance !== 0 && distance <= nodeDragThreshold.value) {
         onClick?.(event.sourceEvent)
-        dragAborted = false
       }
 
       return
@@ -245,7 +246,6 @@ export function useDrag(params: UseDragParams) {
     dragging.value = false
     autoPanStarted = false
     dragStarted = false
-    dragAborted = false
 
     cancelAnimationFrame(autoPanId)
 
