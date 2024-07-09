@@ -223,6 +223,7 @@ export interface FlowProps {
 
   autoPanOnConnect?: boolean
   autoPanOnNodeDrag?: boolean
+  autoPanSpeed?: number
 }
 
 /**

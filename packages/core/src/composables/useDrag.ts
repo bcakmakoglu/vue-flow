@@ -46,6 +46,7 @@ export function useDrag(params: UseDragParams) {
     nodeDragThreshold,
     viewport,
     autoPanOnNodeDrag,
+    autoPanSpeed,
     nodesDraggable,
     panBy,
     findNode,
@@ -132,7 +133,7 @@ export function useDrag(params: UseDragParams) {
       return
     }
 
-    const [xMovement, yMovement] = calcAutoPan(mousePosition, containerBounds)
+    const [xMovement, yMovement] = calcAutoPan(mousePosition, containerBounds, autoPanSpeed.value)
 
     if (xMovement !== 0 || yMovement !== 0) {
       const nextPos = {
