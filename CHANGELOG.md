@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.38.5] - 2024-07-09
+
+[0814d42](0814d423bc80e84e6045b51684b42464ac0f2ad3)...[f2ecf29](f2ecf29cf8fe0f308768e5db6e28020ea3decd82)
+
+### Bug Fixes
+
+- Ignore minor drag movements when marking aborted drag ([dab5ab4](dab5ab4bbfcced0993eb6cf989daa8c613cca645))
+
+### Miscellaneous Tasks
+
+- Add ([f63e0ef](f63e0efd0abe5cdb2c19ddac8b44c9a56ac38125))
+
 ## [1.38.4] - 2024-07-08
 
 [d368263](d3682639049897fecc72c50a60ca9d8d23cdb28e)...[0814d42](0814d423bc80e84e6045b51684b42464ac0f2ad3)
