@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.38.5
+
+### Patch Changes
+
+- [#1530](https://github.com/bcakmakoglu/vue-flow/pull/1530) [`e7bcca5`](https://github.com/bcakmakoglu/vue-flow/commit/e7bcca511477a5b749787235ee521fa8393e681b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - ignore minor mouse movements when marking a node drag as aborted
+
 ## 1.38.4
 
 ### Patch Changes
