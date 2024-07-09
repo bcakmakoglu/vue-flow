@@ -217,6 +217,9 @@ export function useDrag(params: UseDragParams) {
       if (distance > nodeDragThreshold.value) {
         startDrag(event, nodeEl)
       }
+
+      // we have to ignore very small movements as they would be picked up as regular clicks even though a potential drag might have been registered as well
+      dragAborted = distance >= 0.5 && distance < nodeDragThreshold.value
     }
 
     // skip events without movement
@@ -225,8 +228,6 @@ export function useDrag(params: UseDragParams) {
       mousePosition = getEventPosition(event.sourceEvent, containerBounds!)
 
       updateNodes(pointerPos)
-    } else {
-      dragAborted = true
     }
   }
 
