@@ -56,6 +56,7 @@ export function useHandle({
     connectionClickStartHandle,
     nodesConnectable,
     autoPanOnConnect,
+    autoPanSpeed,
     findNode,
     panBy,
     startConnection,
@@ -120,7 +121,7 @@ export function useHandle({
           return
         }
 
-        const [xMovement, yMovement] = calcAutoPan(connectionPosition, containerBounds)
+        const [xMovement, yMovement] = calcAutoPan(connectionPosition, containerBounds, autoPanSpeed.value)
 
         panBy({ x: xMovement, y: yMovement })
         autoPanId = requestAnimationFrame(autoPan)

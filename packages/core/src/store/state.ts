@@ -109,6 +109,7 @@ export function useState(): State {
 
     autoPanOnNodeDrag: true,
     autoPanOnConnect: true,
+    autoPanSpeed: 15,
 
     disableKeyboardA11y: false,
     ariaLiveMessage: '',
