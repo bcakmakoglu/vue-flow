@@ -1,16 +1,4 @@
-import { isMouseEvent } from '@xyflow/system'
 import type { GraphNode } from '../types'
-
-export function getEventPosition(event: MouseEvent | TouchEvent, bounds?: DOMRect) {
-  const isMouseTriggered = isMouseEvent(event)
-  const evtX = isMouseTriggered ? event.clientX : event.touches?.[0].clientX
-  const evtY = isMouseTriggered ? event.clientY : event.touches?.[0].clientY
-
-  return {
-    x: evtX - (bounds?.left ?? 0),
-    y: evtY - (bounds?.top ?? 0),
-  }
-}
 
 export const isMacOs = () => typeof navigator !== 'undefined' && navigator?.userAgent?.indexOf('Mac') >= 0
 

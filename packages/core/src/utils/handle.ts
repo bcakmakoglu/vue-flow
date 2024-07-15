@@ -1,3 +1,4 @@
+import { getEventPosition } from '@xyflow/system'
 import { ConnectionMode } from '../types'
 import type {
   Actions,
@@ -13,7 +14,7 @@ import type {
   ValidHandleResult,
   XYPosition,
 } from '../types'
-import { getEventPosition, getHandlePosition } from '.'
+import { getHandlePosition } from '.'
 
 function defaultValidHandleResult(): ValidHandleResult {
   return {

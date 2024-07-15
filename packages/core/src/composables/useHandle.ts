@@ -1,11 +1,10 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-import { calcAutoPan, getHostForElement, isMouseEvent, rendererPointToPoint } from '@xyflow/system'
+import { calcAutoPan, getEventPosition, getHostForElement, isMouseEvent, rendererPointToPoint } from '@xyflow/system'
 import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc, ValidHandleResult } from '../types'
 import {
   getClosestHandle,
   getConnectionStatus,
-  getEventPosition,
   getHandleLookup,
   getHandleType,
   isValidHandle,
