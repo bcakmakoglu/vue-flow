@@ -3,4 +3,4 @@
  *
  * @deprecated Please import these directly from `@vue-flow/core` instead and remove `@vue-flow/background` as a dependency.
  */
-export { Background, BackgroundVariant, BackgroundProps } from '@vue-flow/core'
+export { Background, type BackgroundVariant, type BackgroundProps } from '@vue-flow/core'

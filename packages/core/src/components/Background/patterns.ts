@@ -31,6 +31,6 @@ export const Patterns = {
 }
 
 export const DefaultBgColors: Record<BackgroundVariant, string> = {
-  lines: '#81818a',
-  dots: '#eee',
+  lines: '#eee',
+  dots: '#91919a',
 }
