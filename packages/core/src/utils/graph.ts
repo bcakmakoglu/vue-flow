@@ -1,5 +1,5 @@
 import { markRaw } from 'vue'
-import { clamp } from '@xyflow/system'
+import { clamp, getOverlappingArea } from '@xyflow/system'
 import type {
   Actions,
   Box,
@@ -28,13 +28,6 @@ export function nodeToRect(node: GraphNode): Rect {
     width: node.dimensions.width || 0,
     height: node.dimensions.height || 0,
   }
-}
-
-export function getOverlappingArea(rectA: Rect, rectB: Rect) {
-  const xOverlap = Math.max(0, Math.min(rectA.x + rectA.width, rectB.x + rectB.width) - Math.max(rectA.x, rectB.x))
-  const yOverlap = Math.max(0, Math.min(rectA.y + rectA.height, rectB.y + rectB.height) - Math.max(rectA.y, rectB.y))
-
-  return Math.ceil(xOverlap * yOverlap)
 }
 
 export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
