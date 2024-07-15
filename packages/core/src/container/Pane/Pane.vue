@@ -46,7 +46,8 @@ const edgeIdLookup = ref<Map<string, Set<string>>>(new Map())
 const hasActiveSelection = toRef(() => elementsSelectable.value && (isSelecting || userSelectionActive.value))
 
 // Used to prevent click events when the user lets go of the selectionKey during a selection
-const selectionInProgress = ref(false)
+let selectionInProgress = false
+let selectionStarted = false
 
 const deleteKeyPressed = useKeyPress(deleteKeyCode, { actInsideInputWithModifier: false })
 
@@ -87,8 +88,8 @@ function resetUserSelection() {
 }
 
 function onClick(event: MouseEvent) {
-  if (selectionInProgress.value) {
-    selectionInProgress.value = false
+  if (selectionInProgress) {
+    selectionInProgress = false
     return
   }
 
@@ -128,6 +129,8 @@ function onPointerDown(event: PointerEvent) {
 
   const { x, y } = getMousePosition(event, containerBounds.value)
 
+  selectionStarted = true
+  selectionInProgress = false
   edgeIdLookup.value = new Map()
 
   for (const [id, edge] of edgeLookup.value) {
@@ -157,7 +160,7 @@ function onPointerMove(event: PointerEvent) {
     return
   }
 
-  selectionInProgress.value = true
+  selectionInProgress = true
 
   const { x: mouseX, y: mouseY } = getEventPosition(event, containerBounds.value)
   const { startX = 0, startY = 0 } = userSelectionRect.value
@@ -212,7 +215,7 @@ function onPointerMove(event: PointerEvent) {
 }
 
 function onPointerUp(event: PointerEvent) {
-  if (event.button !== 0) {
+  if (event.button !== 0 || !selectionStarted) {
     return
   }
 
@@ -235,8 +238,10 @@ function onPointerUp(event: PointerEvent) {
   // If the user kept holding the selectionKey during the selection,
   // we need to reset the selectionInProgress, so the next click event is not prevented
   if (selectionKeyPressed) {
-    selectionInProgress.value = false
+    selectionInProgress = false
   }
+
+  selectionStarted = false
 }
 </script>
 
