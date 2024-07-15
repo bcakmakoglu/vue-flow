@@ -1,8 +1,5 @@
+import { isMouseEvent } from '@xyflow/system'
 import type { GraphNode } from '../types'
-
-export function isMouseEvent(event: MouseEvent | TouchEvent): event is MouseEvent {
-  return 'clientX' in event
-}
 
 export function getEventPosition(event: MouseEvent | TouchEvent, bounds?: DOMRect) {
   const isMouseTriggered = isMouseEvent(event)
