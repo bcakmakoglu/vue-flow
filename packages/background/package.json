@@ -56,7 +56,7 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "@vue-flow/core": "^1.23.0"
+    "@vue-flow/core": "^2.0.0"
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
