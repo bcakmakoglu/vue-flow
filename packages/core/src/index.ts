@@ -18,7 +18,7 @@ export { default as BaseEdge } from './components/Edges/BaseEdge.vue'
 export { default as EdgeText } from './components/Edges/EdgeText.vue'
 export { default as EdgeLabelRenderer } from './components/Edges/EdgeLabelRenderer.vue'
 
-export * from './addons/Background'
+export * from './components/Background'
 
 export {
   getBezierPath,

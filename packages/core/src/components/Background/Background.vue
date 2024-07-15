@@ -5,13 +5,13 @@ import type { BackgroundProps } from './types'
 import { DefaultBgColors, DotPattern, LinePattern } from './patterns'
 
 const props = withDefaults(defineProps<BackgroundProps>(), {
-  variant = 'dots',
-  gap = 20,
-  size = 1,
-  lineWidth = 1,
-  x = 0,
-  y = 0,
-  offset = 0,
+  variant: 'dots',
+  gap: 20,
+  size: 1,
+  lineWidth: 1,
+  x: 0,
+  y: 0,
+  offset: 0,
 })
 
 const { id: vueFlowId, viewport } = useVueFlow()
