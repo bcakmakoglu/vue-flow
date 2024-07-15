@@ -22,6 +22,8 @@ import type { VueFlowStore } from './store'
 
 export type MaybeElement = Node | Edge | Connection | Element
 
+export type ElementData = Record<string, unknown>
+
 export interface CustomThemeVars {
   [key: string]: string | number | undefined
 }

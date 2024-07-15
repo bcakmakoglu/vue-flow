@@ -1,11 +1,10 @@
 import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
+import type { InternalNodeBase, NodeBase } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
 import type {
   Dimensions,
   ElementData,
-  Elements,
-  FlowElements,
   FlowExportObject,
   FlowOptions,
   FlowProps,
@@ -161,8 +160,6 @@ export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
   ariaLiveMessage: string
 }
 
-export type SetElements = (elements: Elements | ((elements: FlowElements) => Elements)) => void
-
 export type SetNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[])) => void
 
 export type SetEdges = (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
@@ -206,9 +203,9 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
-export type FindNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+export type FindNode = <NodeType extends NodeBase = NodeBase>(
   id: string | undefined | null,
-) => GraphNode<Data, CustomEvents> | undefined
+) => InternalNodeBase<NodeType> | undefined
 
 export type FindEdge = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
   id: string | undefined | null,
@@ -235,8 +232,6 @@ export type UpdateNodeData = <Data = ElementData, CustomEvents extends Record<st
 export type IsNodeIntersecting = (node: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean
 
 export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
-  /** parses elements (nodes + edges) and re-sets the state */
-  setElements: SetElements
   /** parses nodes and re-sets the state */
   setNodes: SetNodes
   /** parses edges and re-sets the state */
@@ -265,11 +260,6 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   applyEdgeChanges: (changes: EdgeChange[]) => GraphEdge[]
   /** applies default node change handler */
   applyNodeChanges: (changes: NodeChange[]) => GraphNode[]
-  /**
-   * manually select elements and add to state
-   * @deprecated will be removed in the next major, use {@link Actions.addSelectedNodes} or {@link Actions.addSelectedEdges} instead
-   */
-  addSelectedElements: (elements: FlowElements) => void
   /** manually select edges and add to state */
   addSelectedEdges: (edges: GraphEdge[]) => void
   /** manually select nodes and add to state */
@@ -278,11 +268,6 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   removeSelectedEdges: (edges: GraphEdge[]) => void
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes: GraphNode[]) => void
-  /**
-   * @deprecated will be replaced in the next major
-   * unselect selected elements (if none are passed, all elements are unselected)
-   */
-  removeSelectedElements: (elements?: Elements) => void
   /** apply min zoom value to d3 */
   setMinZoom: (zoom: number) => void
   /** apply max zoom value to d3 */
@@ -341,11 +326,6 @@ export interface Getters {
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
-  /**
-   * get all elements
-   * @deprecated - will be removed in next major version
-   */
-  getElements: FlowElements
   /** all visible node */
   getNodes: GraphNode[]
   /** all visible edges */
@@ -360,8 +340,6 @@ export interface Getters {
    * @deprecated use {@link Actions.findEdge} instead
    */
   getEdge: (id: string) => GraphEdge | undefined
-  /** returns all currently selected elements */
-  getSelectedElements: FlowElements
   /** returns all currently selected nodes */
   getSelectedNodes: GraphNode[]
   /** returns all currently selected edges */

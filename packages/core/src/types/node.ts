@@ -1,8 +1,6 @@
 import type { NodeBase, NodeProps as NodePropsBase } from '@xyflow/system'
-import type { Styles } from './flow'
+import type { ElementData, Styles } from './flow'
 import type { HandleConnectable, HandleElement } from './handle'
-
-export type ElementData = Record<string, unknown>
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] */
 export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]

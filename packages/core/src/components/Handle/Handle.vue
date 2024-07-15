@@ -89,7 +89,7 @@ const isConnectable = computed(() => {
   }
 
   if (typeof connectable === 'function') {
-    return connectable(node, connectedEdges.value)
+    return connectable(nodeId, handleId)
   }
 
   return isDef(connectable) ? connectable : nodesConnectable.value
@@ -98,15 +98,17 @@ const isConnectable = computed(() => {
 // todo: remove this and have users handle this themselves using `updateNodeInternals`
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
 onMounted(() => {
+  const nodeHandleBounds = node.internals.handleBounds?.[type.value] ?? []
+
   // if the node isn't initialized yet, we can't set up the handle bounds
   // the handle bounds will be automatically set up when the node is initialized (`updateNodeDimensions`)
-  if (!node.dimensions.width || !node.dimensions.height) {
+  if (!vueFlowRef.value || !node.measured.width || !node.measured.height) {
     return
   }
 
-  const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
+  const existingBounds = nodeHandleBounds.find((b) => b.id === handleId)
 
-  if (!vueFlowRef.value || existingBounds) {
+  if (existingBounds) {
     return
   }
 
@@ -131,14 +133,24 @@ onMounted(() => {
     ...getDimensions(handle.value),
   }
 
-  node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
+  node.internals.handleBounds = {
+    source: [],
+    target: [],
+    ...node.internals.handleBounds,
+    [type.value]: [...nodeHandleBounds, nextBounds],
+  }
 })
 
 onUnmounted(() => {
   // clean up node internals
-  const handleBounds = node.handleBounds[type.value]
-  if (handleBounds) {
-    node.handleBounds[type.value] = handleBounds.filter((b) => b.id !== handleId)
+  const nodeHandleBounds = node.internals.handleBounds?.[type.value]
+  if (nodeHandleBounds) {
+    node.internals.handleBounds = {
+      source: [],
+      target: [],
+      ...node.internals.handleBounds,
+      [type.value]: nodeHandleBounds.filter((b) => b.id !== handleId),
+    }
   }
 })
 
