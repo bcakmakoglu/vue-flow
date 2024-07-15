@@ -1,7 +1,20 @@
 # Vue Flow: Background Component
 
-> [!WARNING] DEPRECATED
-> This package has been deprecated. Please use the `<Background>` component export directly from the core pkg `import { Background } from '@vue-flow/core'`
+> [!WARNING]
+> This package has been deprecated. 
+> Please import the `<Background>` component from `@vue-flow/core`
+> ```vue
+> <script setup>
+> import { VueFlow, Background } from '@vue-flow/core'
+> // ...
+> </script>
+> 
+> <template>
+>   <VueFlow :nodes="nodes" :edges="edges">
+>     <Background />
+>   </VueFlow>
+> </template>
+> ```
 
 This is a background component for Vue Flow.
 It can be used to create a background in your canvas.
