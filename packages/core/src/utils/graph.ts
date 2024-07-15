@@ -4,7 +4,6 @@ import type {
   Actions,
   Box,
   Connection,
-  CoordinateExtent,
   DefaultEdgeOptions,
   Dimensions,
   Edge,
@@ -43,13 +42,6 @@ export function getDimensions(node: HTMLElement): Dimensions {
   return {
     width: node.offsetWidth,
     height: node.offsetHeight,
-  }
-}
-
-export function clampPosition(position: XYPosition, extent: CoordinateExtent): XYPosition {
-  return {
-    x: clamp(position.x, extent[0][0], extent[1][0]),
-    y: clamp(position.y, extent[0][1], extent[1][1]),
   }
 }
 

@@ -1,7 +1,8 @@
 import { zoomIdentity } from 'd3-zoom'
 import { computed } from 'vue'
+import { clampPosition } from '@xyflow/system'
 import type { D3Selection, GraphNode, Project, State, ViewportFunctions } from '../types'
-import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint, warn } from '../utils'
+import { getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint, warn } from '../utils'
 
 export interface ViewportHelper extends ViewportFunctions {
   viewportInitialized: boolean
