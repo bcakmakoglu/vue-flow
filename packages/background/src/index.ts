@@ -1,2 +1,1 @@
-export { default as Background } from './Background.vue'
-export * from './types'
+export { Background, BackgroundVariant, BackgroundProps } from '@vue-flow/core'
