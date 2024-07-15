@@ -1,6 +1,7 @@
+import { rectToBox } from '@xyflow/system'
 import type { Actions, GraphEdge, GraphNode, HandleElement, ViewportTransform, XYPosition } from '../types'
 import { Position } from '../types'
-import { getNodeDimensions, rectToBox } from '.'
+import { getNodeDimensions } from '.'
 
 export function getHandlePosition(
   node: GraphNode,

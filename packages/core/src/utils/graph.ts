@@ -1,5 +1,5 @@
 import { markRaw } from 'vue'
-import { clamp, getOverlappingArea } from '@xyflow/system'
+import { boxToRect, clamp, getOverlappingArea, rectToBox } from '@xyflow/system'
 import type {
   Actions,
   Box,
@@ -219,24 +219,6 @@ function getBoundsOfBoxes(box1: Box, box2: Box): Box {
     y: Math.min(box1.y, box2.y),
     x2: Math.max(box1.x2, box2.x2),
     y2: Math.max(box1.y2, box2.y2),
-  }
-}
-
-export function rectToBox({ x, y, width, height }: Rect): Box {
-  return {
-    x,
-    y,
-    x2: x + width,
-    y2: y + height,
-  }
-}
-
-export function boxToRect({ x, y, x2, y2 }: Box): Rect {
-  return {
-    x,
-    y,
-    width: x2 - x,
-    height: y2 - y,
   }
 }
 
