@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.39.0] - 2024-07-15
+
+[f2ecf29](f2ecf29cf8fe0f308768e5db6e28020ea3decd82)...[d9a133b](d9a133bd0169be8c4d5fb4ea5807d83b24df291e)
+
+### Bug Fixes
+
+- Dispatch click if drag move was attempted (#1534) ([8539731](8539731a8acba83a5b39b41e1745d75bd5e25ae1))
+- Handle pointer capture for selection on drag (#1543) ([f329831](f32983116d89e0ba12e3ae0cf22ac675c9ae0ade))
+- Prevent calling selectionEnd on selection click (#1545) ([763f107](763f107aade5ac4a3ba3256589746d8ab2fef266))
+
+### Features
+
+- Add autoPanSpeed prop (#1535) ([d4ccb11](d4ccb11a4ccdf772604451793a29fcada07fb39d))
+- Add paneClickDistance (#1542) ([180109c](180109c0ca6bc5609c2e557d7c297bda5eb39ed1))
+
 ## [1.38.5] - 2024-07-09
 
 [0814d42](0814d423bc80e84e6045b51684b42464ac0f2ad3)...[f2ecf29](f2ecf29cf8fe0f308768e5db6e28020ea3decd82)
