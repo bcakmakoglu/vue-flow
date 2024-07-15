@@ -1,4 +1,5 @@
 import { markRaw } from 'vue'
+import { clamp } from '@xyflow/system'
 import type {
   Actions,
   Box,
@@ -43,10 +44,6 @@ export function getDimensions(node: HTMLElement): Dimensions {
     width: node.offsetWidth,
     height: node.offsetHeight,
   }
-}
-
-export function clamp(val: number, min = 0, max = 1) {
-  return Math.min(Math.max(val, min), max)
 }
 
 export function clampPosition(position: XYPosition, extent: CoordinateExtent): XYPosition {

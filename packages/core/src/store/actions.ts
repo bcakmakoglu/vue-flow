@@ -1,6 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
+import { clamp } from '@xyflow/system'
 import type {
   Actions,
   CoordinateExtent,
@@ -26,7 +27,6 @@ import type {
 import { useViewportHelper } from '../composables'
 import {
   applyChanges,
-  clamp,
   createAdditionChange,
   createEdgeRemoveChange,
   createGraphEdges,

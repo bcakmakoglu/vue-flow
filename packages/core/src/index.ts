@@ -22,6 +22,9 @@ export { default as EdgeLabelRenderer } from './components/Edges/EdgeLabelRender
 export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter } from '@xyflow/system'
 export { getSimpleBezierPath } from './components/Edges/SimpleBezierEdge'
 
+// re-export graph utils
+export { clamp } from '@xyflow/system'
+
 export {
   isNode,
   isEdge,
@@ -38,7 +41,6 @@ export {
   getMarkerId,
   getBoundsofRects,
   connectionExists,
-  clamp,
 } from './utils/graph'
 
 /**
