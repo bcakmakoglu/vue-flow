@@ -1,5 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
+import { getHostForElement } from '@xyflow/system'
 import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc, ValidHandleResult } from '../types'
 import {
   calcAutoPan,
@@ -8,7 +9,6 @@ import {
   getEventPosition,
   getHandleLookup,
   getHandleType,
-  getHostForElement,
   isMouseEvent,
   isValidHandle,
   pointToRendererPoint,
@@ -142,7 +142,8 @@ export function useHandle({
 
       emits.connectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId), handleType })
 
-      function onPointerMove(event: MouseTouchEvent) {
+      function onPointerMove(_event: Event) {
+        const event = _event as MouseTouchEvent
         connectionPosition = getEventPosition(event, containerBounds)
 
         const { handle, validHandleResult } = getClosestHandle(
@@ -225,7 +226,8 @@ export function useHandle({
         }
       }
 
-      function onPointerUp(event: MouseTouchEvent) {
+      function onPointerUp(_event: Event) {
+        const event = _event as MouseTouchEvent
         if ((closestHandle || handleDomNode) && connection && isValid) {
           if (!onEdgeUpdate) {
             emits.connect(connection)

@@ -37,16 +37,6 @@ export function getOverlappingArea(rectA: Rect, rectB: Rect) {
   return Math.ceil(xOverlap * yOverlap)
 }
 
-export function getHostForElement(element: HTMLElement): Document {
-  const doc = element.getRootNode() as Document
-
-  if ('elementFromPoint' in doc) {
-    return doc
-  }
-
-  return window.document
-}
-
 export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
   return element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
 }
