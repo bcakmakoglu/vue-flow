@@ -6,7 +6,6 @@ import type {
   Connection,
   DefaultEdgeOptions,
   Edge,
-  EdgeMarkerType,
   Element,
   ElementData,
   Elements,
@@ -352,21 +351,4 @@ export function isParentSelected(node: GraphNode, findNode: Actions['findNode'])
   }
 
   return isParentSelected(parent, findNode)
-}
-
-export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: string) {
-  if (typeof marker === 'undefined') {
-    return ''
-  }
-
-  if (typeof marker === 'string') {
-    return marker
-  }
-
-  const idPrefix = vueFlowId ? `${vueFlowId}__` : ''
-
-  return `${idPrefix}${Object.keys(marker)
-    .sort()
-    .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
-    .join('&')}`
 }

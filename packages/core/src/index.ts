@@ -23,7 +23,7 @@ export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter 
 export { getSimpleBezierPath } from './components/Edges/SimpleBezierEdge'
 
 // re-export graph utils
-export { clamp, getBoundsOfRects, getBoundsOfBoxes, rendererPointToPoint } from '@xyflow/system'
+export { clamp, getBoundsOfRects, getBoundsOfBoxes, rendererPointToPoint, getMarkerId } from '@xyflow/system'
 
 export {
   isNode,
@@ -37,7 +37,6 @@ export {
   getRectOfNodes,
   pointToRendererPoint,
   getNodesInside,
-  getMarkerId,
   connectionExists,
 } from './utils/graph'
 
