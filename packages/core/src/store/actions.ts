@@ -307,6 +307,10 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     updateNodeInternals()
   }
 
+  const setPaneClickDistance: Actions['setPaneClickDistance'] = (clickDistance) => {
+    state.d3Zoom?.clickDistance(clickDistance)
+  }
+
   const setInteractive: Actions['setInteractive'] = (isInteractive) => {
     state.nodesDraggable = isInteractive
     state.nodesConnectable = isInteractive
@@ -863,6 +867,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     setMaxZoom,
     setTranslateExtent,
     setNodeExtent,
+    setPaneClickDistance,
     removeSelectedElements,
     removeSelectedNodes,
     removeSelectedEdges,
