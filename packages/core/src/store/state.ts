@@ -47,6 +47,7 @@ export function useState(): State {
     panOnScroll: false,
     panOnScrollSpeed: 0.5,
     panOnScrollMode: PanOnScrollMode.Free,
+    paneClickDistance: 0,
     panOnDrag: true,
     edgeUpdaterRadius: 10,
     onlyRenderVisibleElements: false,

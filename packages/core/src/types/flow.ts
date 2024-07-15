@@ -188,6 +188,11 @@ export interface FlowProps {
   panOnScroll?: boolean
   panOnScrollSpeed?: number
   panOnScrollMode?: PanOnScrollMode
+  /**
+   * Distance that the mouse can move between mousedown/up that will trigger a click
+   * @default 0
+   */
+  paneClickDistance?: number
   zoomOnDoubleClick?: boolean
   /** If set to false, scrolling inside the viewport will be disabled and instead the page scroll will be used */
   preventScrolling?: boolean

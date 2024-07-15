@@ -127,6 +127,7 @@ export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
   panOnScroll: boolean
   panOnScrollSpeed: number
   panOnScrollMode: PanOnScrollMode
+  paneClickDistance: number
   zoomOnDoubleClick: boolean
   preventScrolling: boolean
   paneDragging: boolean
@@ -290,6 +291,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
   /** apply extent to nodes */
   setNodeExtent: (nodeExtent: CoordinateExtent | CoordinateExtentRange) => void
+  setPaneClickDistance: (distance: number) => void
   /** enable/disable node interaction (dragging, selecting etc) */
   setInteractive: (isInteractive: boolean) => void
   /** set new state */

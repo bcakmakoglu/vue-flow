@@ -39,6 +39,7 @@ const {
   d3ZoomHandler: storeD3ZoomHandler,
   viewport,
   viewportRef,
+  paneClickDistance,
 } = useVueFlow()
 
 useResizeHandler(viewportRef)
@@ -81,7 +82,10 @@ onMounted(() => {
 
   const bbox = viewportElement.getBoundingClientRect()
 
-  const d3Zoom = zoom<HTMLDivElement, any>().scaleExtent([minZoom.value, maxZoom.value]).translateExtent(translateExtent.value)
+  const d3Zoom = zoom<HTMLDivElement, unknown>()
+    .clickDistance(paneClickDistance.value)
+    .scaleExtent([minZoom.value, maxZoom.value])
+    .translateExtent(translateExtent.value)
   const d3Selection = select(viewportElement).call(d3Zoom)
   const d3ZoomHandler = d3Selection.on('wheel.zoom')
 
