@@ -21,7 +21,7 @@ export { default as EdgeLabelRenderer } from './components/Edges/EdgeLabelRender
 // re-export these utils from system
 export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter } from '@xyflow/system'
 
-export { getSimpleBezierPath, getSimpleEdgeCenter } from './components/Edges/utils'
+export { getSimpleBezierPath } from './components/Edges/utils'
 
 export {
   isNode,

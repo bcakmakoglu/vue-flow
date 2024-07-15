@@ -5,7 +5,7 @@ import { ConnectionLineType, ConnectionMode, Position } from '../../types'
 import { getHandlePosition, getMarkerId } from '../../utils'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
-import { getSimpleBezierPath } from '../Edges/utils'
+import { getSimpleBezierPath } from '../Edges/SimpleBezierEdge'
 
 const oppositePosition = {
   [Position.Left]: Position.Right,
