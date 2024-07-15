@@ -114,7 +114,7 @@ function onWheel(event: WheelEvent) {
 
 function onPointerDown(event: PointerEvent) {
   containerBounds.value = vueFlowRef.value?.getBoundingClientRect()
-  container.value?.setPointerCapture(event.pointerId)
+  ;(event.target as Element)?.setPointerCapture?.(event.pointerId)
 
   if (
     !elementsSelectable.value ||
@@ -147,6 +147,7 @@ function onPointerDown(event: PointerEvent) {
   }
 
   userSelectionActive.value = true
+  nodesSelectionActive.value = false
 
   emits.selectionStart(event)
 }
@@ -215,7 +216,7 @@ function onPointerUp(event: PointerEvent) {
     return
   }
 
-  container.value?.releasePointerCapture(event.pointerId)
+  ;(event.target as Element)?.releasePointerCapture(event.pointerId)
 
   // We only want to trigger click functions when in selection mode if
   // the user did not move the mouse.
@@ -223,7 +224,9 @@ function onPointerUp(event: PointerEvent) {
     onClick(event)
   }
 
-  nodesSelectionActive.value = prevSelectedNodesCount.value > 0
+  if (prevSelectedNodesCount.value > 0) {
+    nodesSelectionActive.value = true
+  }
 
   resetUserSelection()
 
