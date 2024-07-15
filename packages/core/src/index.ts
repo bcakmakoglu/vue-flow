@@ -19,6 +19,7 @@ export { default as EdgeText } from './components/Edges/EdgeText.vue'
 export { default as EdgeLabelRenderer } from './components/Edges/EdgeLabelRenderer.vue'
 
 export * from './components/Background'
+export * from './components/Controls'
 
 export {
   getBezierPath,

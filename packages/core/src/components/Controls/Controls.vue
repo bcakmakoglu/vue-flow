@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { Panel, PanelPosition, useVueFlow } from '@vue-flow/core'
 import { toRef } from 'vue'
-import type { ControlProps } from './types'
+import { useVueFlow } from '../../composables'
+import Panel from '../Panel/Panel.vue'
+import type { ControlEmits, ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
 import PlusIcon from './icons/plus.svg'
 import MinusIcon from './icons/minus.svg'
@@ -9,20 +10,14 @@ import FitView from './icons/fitview.svg'
 import Lock from './icons/lock.svg'
 import Unlock from './icons/unlock.svg'
 
-const {
-  showZoom = true,
-  showFitView = true,
-  showInteractive = true,
-  fitViewParams,
-  position = PanelPosition.BottomLeft,
-} = defineProps<ControlProps>()
+const props = withDefaults(defineProps<ControlProps>(), {
+  showZoom: true,
+  showFitView: true,
+  showInteractive: true,
+  position: 'bottom-left',
+})
 
-const emit = defineEmits<{
-  (event: 'zoomIn'): void
-  (event: 'zoomOut'): void
-  (event: 'fitView'): void
-  (event: 'interactionChange', active: boolean): void
-}>()
+const emit = defineEmits<ControlEmits>()
 
 const {
   nodesDraggable,
@@ -56,7 +51,7 @@ function onZoomOutHandler() {
 }
 
 function onFitViewHandler() {
-  fitView(fitViewParams)
+  fitView(props.fitViewParams)
 
   emit('fitView')
 }
