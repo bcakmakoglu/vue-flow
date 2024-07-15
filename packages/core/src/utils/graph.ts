@@ -1,5 +1,5 @@
 import { markRaw } from 'vue'
-import { boxToRect, clamp, getOverlappingArea, rectToBox } from '@xyflow/system'
+import { boxToRect, clamp, getBoundsOfBoxes, getOverlappingArea, rectToBox } from '@xyflow/system'
 import type {
   Actions,
   Box,
@@ -186,12 +186,6 @@ export function connectionExists(edge: Edge | Connection, elements: Elements) {
   )
 }
 
-export function rendererPointToPoint({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition {
-  return {
-    x: x * tScale + tx,
-    y: y * tScale + ty,
-  }
-}
 export function pointToRendererPoint(
   { x, y }: XYPosition,
   { x: tx, y: ty, zoom: tScale }: ViewportTransform,
@@ -211,20 +205,6 @@ export function pointToRendererPoint(
   }
 
   return position
-}
-
-function getBoundsOfBoxes(box1: Box, box2: Box): Box {
-  return {
-    x: Math.min(box1.x, box2.x),
-    y: Math.min(box1.y, box2.y),
-    x2: Math.max(box1.x2, box2.x2),
-    y2: Math.max(box1.y2, box2.y2),
-  }
-}
-
-// todo: fix typo
-export function getBoundsofRects(rect1: Rect, rect2: Rect) {
-  return boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)))
 }
 
 export function getRectOfNodes(nodes: GraphNode[]) {

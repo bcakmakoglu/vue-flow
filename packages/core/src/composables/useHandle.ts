@@ -1,6 +1,6 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-import { getHostForElement } from '@xyflow/system'
+import { getHostForElement, rendererPointToPoint } from '@xyflow/system'
 import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc, ValidHandleResult } from '../types'
 import {
   calcAutoPan,
@@ -12,7 +12,6 @@ import {
   isMouseEvent,
   isValidHandle,
   pointToRendererPoint,
-  rendererPointToPoint,
   resetRecentHandle,
 } from '../utils'
 import { Position } from '../types'
@@ -200,7 +199,7 @@ export function useHandle({
                   x: closestHandle.x,
                   y: closestHandle.y,
                 },
-                viewport.value,
+                [viewport.value.x, viewport.value.y, viewport.value.zoom],
               )
             : connectionPosition,
           validHandleResult.endHandle,
