@@ -2,4 +2,4 @@
 "@vue-flow/core": major
 ---
 
-Remove deprecated exports `addEdge`, `updateEdge` & `useZoomPanHelper`, `applyChanges`, `applyEdgeChanges` & `applyNodeChanges`
+Remove deprecated exports `addEdge`, `updateEdge` & `useZoomPanHelper`
