@@ -17,7 +17,7 @@ const transform = computed(() => `translate(${viewport.value.x}px,${viewport.val
 
 <script lang="ts">
 export default {
-  name: 'Transform',
+  name: 'Viewport',
   compatConfig: { MODE: 3 },
 }
 </script>
