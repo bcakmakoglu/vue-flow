@@ -1,31 +1,24 @@
 <script lang="ts" setup>
-import { useVueFlow } from '@vue-flow/core'
-import { computed, toRef } from 'vue'
-import { BackgroundVariant } from './types'
+import { computed } from 'vue'
+import { useVueFlow } from '../../composables/useVueFlow'
 import type { BackgroundProps } from './types'
 import { DefaultBgColors, DotPattern, LinePattern } from './patterns'
 
-const {
-  id,
-  variant = BackgroundVariant.Dots,
+const props = withDefaults(defineProps<BackgroundProps>(), {
+  variant = 'dots',
   gap = 20,
   size = 1,
   lineWidth = 1,
-  height = 100,
-  width = 100,
   x = 0,
   y = 0,
-  bgColor,
-  patternColor: initialPatternColor,
-  color: _patternColor,
   offset = 0,
-} = defineProps<BackgroundProps>()
+})
 
 const { id: vueFlowId, viewport } = useVueFlow()
 
 const background = computed(() => {
   const zoom = viewport.value.zoom
-  const [gapX, gapY] = Array.isArray(gap) ? gap : [gap, gap]
+  const [gapX, gapY] = Array.isArray(props.gap) ? props.gap : [props.gap, props.gap]
   const scaledGap: [number, number] = [gapX * zoom || 1, gapY * zoom || 1]
   const scaledSize = size * zoom
   const [offsetX, offsetY]: [number, number] = Array.isArray(offset) ? offset : [offset, offset]
@@ -40,9 +33,9 @@ const background = computed(() => {
 })
 
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
-const patternId = toRef(() => `pattern-${vueFlowId}${id ? `-${id}` : ''}`)
+const patternId = computed(() => `pattern-${vueFlowId}${props.id ? `-${props.id}` : ''}`)
 
-const patternColor = toRef(() => _patternColor || initialPatternColor || DefaultBgColors[variant || BackgroundVariant.Dots])
+const patternColor = computed(() => props.color || DefaultBgColors[props.variant || 'dots'])
 </script>
 
 <script lang="ts">
@@ -53,13 +46,7 @@ export default {
 </script>
 
 <template>
-  <svg
-    class="vue-flow__background vue-flow__container"
-    :style="{
-      height: `${height > 100 ? 100 : height}%`,
-      width: `${width > 100 ? 100 : width}%`,
-    }"
-  >
+  <svg class="vue-flow__background vue-flow__container">
     <slot :id="patternId" name="pattern-container">
       <pattern
         :id="patternId"
@@ -71,17 +58,13 @@ export default {
         patternUnits="userSpaceOnUse"
       >
         <slot name="pattern">
-          <template v-if="variant === BackgroundVariant.Lines">
+          <template v-if="variant === 'lines'">
             <LinePattern :size="lineWidth" :color="patternColor" :dimensions="background.scaledGap" />
           </template>
 
-          <template v-else-if="variant === BackgroundVariant.Dots">
+          <template v-else-if="variant === 'dots'">
             <DotPattern :color="patternColor" :radius="background.size / 2" />
           </template>
-
-          <svg v-if="bgColor" height="100" width="100">
-            <rect width="100%" height="100%" :fill="bgColor" />
-          </svg>
         </slot>
       </pattern>
     </slot>
