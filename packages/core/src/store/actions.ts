@@ -1,6 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
+import { clamp, getDimensions, getOverlappingArea, isRectObject } from '@xyflow/system'
 import type {
   Actions,
   CoordinateExtent,
@@ -26,7 +27,6 @@ import type {
 import { useViewportHelper } from '../composables'
 import {
   applyChanges,
-  clamp,
   createAdditionChange,
   createEdgeRemoveChange,
   createGraphEdges,
@@ -34,17 +34,14 @@ import {
   createNodeRemoveChange,
   createSelectionChange,
   getConnectedEdges as getConnectedEdgesBase,
-  getDimensions,
   getHandleBounds,
   getIncomers as getIncomersBase,
   getOutgoers as getOutgoersBase,
-  getOverlappingArea,
   getSelectionChanges,
   isDef,
   isEdge,
   isGraphNode,
   isNode,
-  isRect,
   nodeToRect,
   updateConnectionLookup,
   updateEdgeAction,
@@ -599,7 +596,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   const getNodeRect = (
     nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
   ): [Rect | null, Node | null | undefined, boolean] => {
-    const isRectObj = isRect(nodeOrRect)
+    const isRectObj = isRectObject(nodeOrRect)
     const node = isRectObj ? null : isGraphNode(nodeOrRect as GraphNode) ? (nodeOrRect as GraphNode) : findNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {

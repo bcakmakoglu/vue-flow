@@ -1,13 +1,11 @@
 import { markRaw } from 'vue'
+import { boxToRect, clamp, getBoundsOfBoxes, getOverlappingArea, rectToBox } from '@xyflow/system'
 import type {
   Actions,
   Box,
   Connection,
-  CoordinateExtent,
   DefaultEdgeOptions,
-  Dimensions,
   Edge,
-  EdgeMarkerType,
   Element,
   ElementData,
   Elements,
@@ -31,41 +29,6 @@ export function nodeToRect(node: GraphNode): Rect {
   }
 }
 
-export function getOverlappingArea(rectA: Rect, rectB: Rect) {
-  const xOverlap = Math.max(0, Math.min(rectA.x + rectA.width, rectB.x + rectB.width) - Math.max(rectA.x, rectB.x))
-  const yOverlap = Math.max(0, Math.min(rectA.y + rectA.height, rectB.y + rectB.height) - Math.max(rectA.y, rectB.y))
-
-  return Math.ceil(xOverlap * yOverlap)
-}
-
-export function getDimensions(node: HTMLElement): Dimensions {
-  return {
-    width: node.offsetWidth,
-    height: node.offsetHeight,
-  }
-}
-
-export function clamp(val: number, min = 0, max = 1) {
-  return Math.min(Math.max(val, min), max)
-}
-
-export function clampPosition(position: XYPosition, extent: CoordinateExtent): XYPosition {
-  return {
-    x: clamp(position.x, extent[0][0], extent[1][0]),
-    y: clamp(position.y, extent[0][1], extent[1][1]),
-  }
-}
-
-export function getHostForElement(element: HTMLElement): Document {
-  const doc = element.getRootNode() as Document
-
-  if ('elementFromPoint' in doc) {
-    return doc
-  }
-
-  return window.document
-}
-
 export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
   return element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
 }
@@ -80,14 +43,6 @@ export function isNode<Data = ElementData>(element: MaybeElement): element is No
 
 export function isGraphNode<Data = ElementData>(element: MaybeElement): element is GraphNode<Data> {
   return isNode(element) && 'computedPosition' in element
-}
-
-function isNumeric(n: any): n is number {
-  return !Number.isNaN(n) && Number.isFinite(n)
-}
-
-export function isRect(obj: any): obj is Rect {
-  return isNumeric(obj.width) && isNumeric(obj.height) && isNumeric(obj.x) && isNumeric(obj.y)
 }
 
 export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: string): GraphNode {
@@ -222,12 +177,6 @@ export function connectionExists(edge: Edge | Connection, elements: Elements) {
   )
 }
 
-export function rendererPointToPoint({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition {
-  return {
-    x: x * tScale + tx,
-    y: y * tScale + ty,
-  }
-}
 export function pointToRendererPoint(
   { x, y }: XYPosition,
   { x: tx, y: ty, zoom: tScale }: ViewportTransform,
@@ -247,38 +196,6 @@ export function pointToRendererPoint(
   }
 
   return position
-}
-
-function getBoundsOfBoxes(box1: Box, box2: Box): Box {
-  return {
-    x: Math.min(box1.x, box2.x),
-    y: Math.min(box1.y, box2.y),
-    x2: Math.max(box1.x2, box2.x2),
-    y2: Math.max(box1.y2, box2.y2),
-  }
-}
-
-export function rectToBox({ x, y, width, height }: Rect): Box {
-  return {
-    x,
-    y,
-    x2: x + width,
-    y2: y + height,
-  }
-}
-
-export function boxToRect({ x, y, x2, y2 }: Box): Rect {
-  return {
-    x,
-    y,
-    width: x2 - x,
-    height: y2 - y,
-  }
-}
-
-// todo: fix typo
-export function getBoundsofRects(rect1: Rect, rect2: Rect) {
-  return boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)))
 }
 
 export function getRectOfNodes(nodes: GraphNode[]) {
@@ -426,21 +343,4 @@ export function isParentSelected(node: GraphNode, findNode: Actions['findNode'])
   }
 
   return isParentSelected(parent, findNode)
-}
-
-export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: string) {
-  if (typeof marker === 'undefined') {
-    return ''
-  }
-
-  if (typeof marker === 'string') {
-    return marker
-  }
-
-  const idPrefix = vueFlowId ? `${vueFlowId}__` : ''
-
-  return `${idPrefix}${Object.keys(marker)
-    .sort()
-    .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
-    .join('&')}`
 }

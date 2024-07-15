@@ -1,18 +1,14 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
+import { calcAutoPan, getEventPosition, getHostForElement, isMouseEvent, rendererPointToPoint } from '@xyflow/system'
 import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc, ValidHandleResult } from '../types'
 import {
-  calcAutoPan,
   getClosestHandle,
   getConnectionStatus,
-  getEventPosition,
   getHandleLookup,
   getHandleType,
-  getHostForElement,
-  isMouseEvent,
   isValidHandle,
   pointToRendererPoint,
-  rendererPointToPoint,
   resetRecentHandle,
 } from '../utils'
 import { Position } from '../types'
@@ -142,7 +138,8 @@ export function useHandle({
 
       emits.connectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId), handleType })
 
-      function onPointerMove(event: MouseTouchEvent) {
+      function onPointerMove(_event: Event) {
+        const event = _event as MouseTouchEvent
         connectionPosition = getEventPosition(event, containerBounds)
 
         const { handle, validHandleResult } = getClosestHandle(
@@ -199,7 +196,7 @@ export function useHandle({
                   x: closestHandle.x,
                   y: closestHandle.y,
                 },
-                viewport.value,
+                [viewport.value.x, viewport.value.y, viewport.value.zoom],
               )
             : connectionPosition,
           validHandleResult.endHandle,
@@ -225,7 +222,8 @@ export function useHandle({
         }
       }
 
-      function onPointerUp(event: MouseTouchEvent) {
+      function onPointerUp(_event: Event) {
+        const event = _event as MouseTouchEvent
         if ((closestHandle || handleDomNode) && connection && isValid) {
           if (!onEdgeUpdate) {
             emits.connect(connection)

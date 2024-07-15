@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CoordinateExtent, GraphNode, PanelPosition } from '@vue-flow/core'
-import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
+import { Panel, getBoundsOfRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
@@ -71,7 +71,7 @@ const viewBB = computed(() => ({
 }))
 
 const boundingRect = computed(() =>
-  getNodesInitialized.value && getNodesInitialized.value.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value,
+  getNodesInitialized.value && getNodesInitialized.value.length ? getBoundsOfRects(bb.value, viewBB.value) : viewBB.value,
 )
 
 const viewScale = computed(() => {
