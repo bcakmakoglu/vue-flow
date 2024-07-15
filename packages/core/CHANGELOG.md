@@ -1,5 +1,21 @@
 # @vue-flow/core
 
+## 1.39.0
+
+### Minor Changes
+
+- [#1542](https://github.com/bcakmakoglu/vue-flow/pull/1542) [`de75620`](https://github.com/bcakmakoglu/vue-flow/commit/de756206ccdbfa364d8382c7fef51104aceb1c4d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `paneClickDistance` option. Allows specifying the distance between mousedown and mouseup in which a click would still be registered (by default `0`)
+
+- [#1535](https://github.com/bcakmakoglu/vue-flow/pull/1535) [`1a812f3`](https://github.com/bcakmakoglu/vue-flow/commit/1a812f31ddafd008082fc8d0378ec880a1b57a33) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `autoPanSpeed` prop. Allows specifying at what speed the pane moves when auto-panning via node-drag, selection-drag or connection-drag
+
+### Patch Changes
+
+- [#1536](https://github.com/bcakmakoglu/vue-flow/pull/1536) [`235d564`](https://github.com/bcakmakoglu/vue-flow/commit/235d564fcf2bcd7036f9f0bb40c9f32d4d5af014) Thanks [@github-actions](https://github.com/apps/github-actions)! - Dispatch click if drag move was attempted and threshold was not crossed, ignoring any movement that's too small to be considered a drag at all
+
+- [#1545](https://github.com/bcakmakoglu/vue-flow/pull/1545) [`2910992`](https://github.com/bcakmakoglu/vue-flow/commit/2910992c2d59789c5c8cf537655d2d6032471aa7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent calling `onSelectionEnd` when clicking a selection
+
+- [#1543](https://github.com/bcakmakoglu/vue-flow/pull/1543) [`85c8d2d`](https://github.com/bcakmakoglu/vue-flow/commit/85c8d2ddc0612f9831d55f074c1e0d4a4ceca814) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Handle pointer capture for selection on drag
+
 ## 1.38.5
 
 ### Patch Changes
