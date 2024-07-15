@@ -1,7 +1,7 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
-import { clamp } from '@xyflow/system'
+import { clamp, getDimensions } from '@xyflow/system'
 import type {
   Actions,
   CoordinateExtent,
@@ -34,7 +34,6 @@ import {
   createNodeRemoveChange,
   createSelectionChange,
   getConnectedEdges as getConnectedEdgesBase,
-  getDimensions,
   getHandleBounds,
   getIncomers as getIncomersBase,
   getOutgoers as getOutgoersBase,

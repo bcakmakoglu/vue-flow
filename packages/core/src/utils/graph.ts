@@ -5,7 +5,6 @@ import type {
   Box,
   Connection,
   DefaultEdgeOptions,
-  Dimensions,
   Edge,
   EdgeMarkerType,
   Element,
@@ -36,13 +35,6 @@ export function getOverlappingArea(rectA: Rect, rectB: Rect) {
   const yOverlap = Math.max(0, Math.min(rectA.y + rectA.height, rectB.y + rectB.height) - Math.max(rectA.y, rectB.y))
 
   return Math.ceil(xOverlap * yOverlap)
-}
-
-export function getDimensions(node: HTMLElement): Dimensions {
-  return {
-    width: node.offsetWidth,
-    height: node.offsetHeight,
-  }
 }
 
 export function getHostForElement(element: HTMLElement): Document {
