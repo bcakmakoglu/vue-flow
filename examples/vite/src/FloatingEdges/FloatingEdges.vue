@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { MarkerType, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background, BackgroundVariant } from '@vue-flow/background'
+import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
@@ -18,7 +18,7 @@ onConnect((params) => addEdges({ ...params, type: 'floating', markerEnd: MarkerT
 <template>
   <div class="floatingedges">
     <VueFlow fit-view-on-init>
-      <Background :variant="BackgroundVariant.Lines" :gap="24" />
+      <Background variant="lines" :gap="24" />
 
       <MiniMap />
 

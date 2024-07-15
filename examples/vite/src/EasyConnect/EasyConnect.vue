@@ -54,7 +54,7 @@ onConnect(addEdges)
     :default-edge-options="defaultEdgeOptions"
     fit-view-on-init
   >
-    <Background pattern-color="#aaa" :gap="8" />
+    <Background :gap="8" />
 
     <template #node-custom="props">
       <CustomNode :id="props.id" />
