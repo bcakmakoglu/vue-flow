@@ -1,5 +1,5 @@
 import type { CSSProperties, Component, VNode } from 'vue'
-import type { ClassFunc, ElementData, Position, StyleFunc, Styles } from './flow'
+import type { ElementData, Position, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { EdgeComponent, EdgeTextProps } from './components'
 import type { CustomEvent, EdgeEventsHandler, EdgeEventsOn } from './hooks'
@@ -92,9 +92,9 @@ export interface DefaultEdge<
   /** Disable/enable deleting edge */
   deletable?: boolean
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
-  class?: string | string[] | Record<string, any> | ClassFunc<GraphEdge<Data, CustomEvents>>
+  class?: string | string[] | Record<string, any>
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
-  style?: Styles | StyleFunc<GraphEdge<Data, CustomEvents>>
+  style?: Styles
   /** Is edge hidden */
   hidden?: boolean
   /** Radius of mouse event triggers (to ease selecting edges), defaults to 2 */
