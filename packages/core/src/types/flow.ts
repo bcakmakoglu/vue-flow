@@ -84,16 +84,6 @@ export interface FlowExportObject {
   nodes: Node[]
   /** exported edges */
   edges: Edge[]
-  /**
-   * exported viewport position
-   * @deprecated use {@link FlowExportObject.viewport} instead
-   */
-  position: [x: number, y: number]
-  /**
-   * exported zoom level
-   * @deprecated use {@link FlowExportObject.viewport} instead
-   */
-  zoom: number
   /** exported viewport (position + zoom) */
   viewport: ViewportTransform
 }

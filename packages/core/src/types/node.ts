@@ -1,5 +1,5 @@
-import type { NodeBase, NodeProps as NodePropsBase } from '@xyflow/system'
-import type { ElementData, Styles } from './flow'
+import type { NodeBase } from '@xyflow/system'
+import type { ElementData, Styles, XYPosition } from './flow'
 import type { HandleConnectable, HandleElement } from './handle'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] */
@@ -21,6 +21,11 @@ export interface NodeHandleBounds {
   target?: HandleElement[]
 }
 
+export type NodeBounds = XYPosition & {
+  width: number | null
+  height: number | null
+}
+
 /**
  * The node data structure that gets used for the nodes prop.
  * @public
@@ -37,8 +42,44 @@ export interface Node<NodeData extends ElementData = ElementData, NodeType exten
   style?: Styles
 }
 
-/** these props are passed to node components */
-export interface NodeProps<NodeType extends NodeBase = NodeBase> extends Omit<NodePropsBase<NodeType>, 'isConnectable'> {
-  /** can node handles be connected, you need to forward this to your handles for this prop to have any effect */
-  isConnectable: HandleConnectable
+export type GraphNode<NodeType extends Node = Node> = NodeType & {
+  measured: {
+    width?: number
+    height?: number
+  }
+  internals: {
+    positionAbsolute: XYPosition
+    z: number
+    /**
+     * Holds a reference to the original node object provided by the user.
+     * Used as an optimization to avoid certain operations.
+     */
+    userNode: NodeType
+    handleBounds?: NodeHandleBounds
+    bounds?: NodeBounds
+  }
 }
+
+export type NodeProps<NodeType extends Node = Node> = Pick<
+  NodeType,
+  | 'id'
+  | 'data'
+  | 'width'
+  | 'height'
+  | 'sourcePosition'
+  | 'targetPosition'
+  | 'selected'
+  | 'dragHandle'
+  | 'selectable'
+  | 'deletable'
+  | 'draggable'
+  | 'parentId'
+> &
+  Required<Pick<NodeType, 'type' | 'dragging' | 'zIndex'>> & {
+    /** whether a node is connectable or not */
+    isConnectable: HandleConnectable
+    /** position absolute x value */
+    positionAbsoluteX: number
+    /** position absolute x value */
+    positionAbsoluteY: number
+  }

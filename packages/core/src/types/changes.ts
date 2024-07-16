@@ -43,8 +43,8 @@ export interface NodeRemoveChange {
   type: 'remove'
 }
 
-export interface NodeAddChange<Data = ElementData> {
-  item: GraphNode<Data>
+export interface NodeAddChange<NodeType extends Node = Node> {
+  item: GraphNode<NodeType>
   type: 'add'
 }
 
