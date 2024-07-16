@@ -99,6 +99,10 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     ],
   },
 
+  sitemap: {
+    hostname: 'https://vueflow.dev'
+  },
+
   themeConfig: {
     logo: '/favicons/android-chrome-512x512.png',
     footer: {
