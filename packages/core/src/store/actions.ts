@@ -10,7 +10,6 @@ import type {
   EdgeLookup,
   EdgeRemoveChange,
   EdgeSelectionChange,
-  Elements,
   FlowExportObject,
   GraphEdge,
   GraphNode,
@@ -20,7 +19,6 @@ import type {
   NodeLookup,
   NodePositionChange,
   NodeRemoveChange,
-  NodeSelectionChange,
   Rect,
   State,
 } from '../types'
@@ -39,9 +37,7 @@ import {
   getOutgoers as getOutgoersBase,
   getSelectionChanges,
   isDef,
-  isEdge,
   isGraphNode,
-  isNode,
   nodeToRect,
   updateConnectionLookup,
   updateEdgeAction,
@@ -69,7 +65,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     return getConnectedEdgesBase(nodesOrId, state.edges)
   }
 
-  const findNode: Actions['findNode'] = (id) => {
+  const getNode: Actions['getNode'] = (id) => {
     if (!id) {
       return
     }
@@ -77,12 +73,12 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     return nodeLookup.value.get(id)
   }
 
-  const findEdge: Actions['findEdge'] = (id) => {
+  const getEdge: Actions['getEdge'] = (id) => {
     if (!id) {
       return
     }
 
-    return edgeLookup.value.get(id)
+    return edgeLookup.value.get(id) as any
   }
 
   const updateNodePositions: Actions['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -100,11 +96,11 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         change.position = node.position
 
         if (node.parentNode) {
-          const parentNode = findNode(node.parentNode)
+          const parentNode = getNode(node.parentNode)
 
           change.position = {
-            x: change.position.x - (parentNode?.computedPosition?.x ?? 0),
-            y: change.position.y - (parentNode?.computedPosition?.y ?? 0),
+            x: change.position.x - (parentNode?.internals.positionAbsolute?.x ?? 0),
+            y: change.position.y - (parentNode?.internals.positionAbsolute?.y ?? 0),
           }
         }
       }
@@ -136,7 +132,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     for (let i = 0; i < updates.length; ++i) {
       const update = updates[i]
 
-      const node = findNode(update.id)
+      const node = getNode(update.id)
 
       if (node) {
         const dimensions = getDimensions(update.nodeElement)
@@ -144,14 +140,16 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         const doUpdate = !!(
           dimensions.width &&
           dimensions.height &&
-          (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height || update.forceUpdate)
+          (node.measured.width !== dimensions.width || node.measured.height !== dimensions.height || update.forceUpdate)
         )
 
         if (doUpdate) {
           const nodeBounds = update.nodeElement.getBoundingClientRect()
-          node.dimensions = dimensions
-          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, nodeBounds, zoom)
-          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, nodeBounds, zoom)
+          node.measured = dimensions
+          node.internals.handleBounds = {
+            source: getHandleBounds('.source', update.nodeElement, nodeBounds, zoom),
+            target: getHandleBounds('.target', update.nodeElement, nodeBounds, zoom),
+          }
 
           changes[i] = {
             id: node.id,
@@ -170,40 +168,6 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
 
     if (changes.length) {
       state.hooks.nodesChange.trigger(changes)
-    }
-  }
-
-  const elementSelectionHandler = (elements: Elements, selected: boolean) => {
-    const nodeIds = new Set<string>()
-    const edgeIds = new Set<string>()
-
-    for (const element of elements) {
-      if (isNode(element)) {
-        nodeIds.add(element.id)
-      } else if (isEdge(element)) {
-        edgeIds.add(element.id)
-      }
-    }
-
-    const changedNodes = getSelectionChanges(nodeLookup.value, nodeIds, true)
-    const changedEdges = getSelectionChanges(edgeLookup.value, edgeIds)
-
-    if (state.multiSelectionActive) {
-      for (const nodeId of nodeIds) {
-        changedNodes.push(createSelectionChange(nodeId, selected))
-      }
-
-      for (const edgeId of edgeIds) {
-        changedEdges.push(createSelectionChange(edgeId, selected))
-      }
-    }
-
-    if (changedNodes.length) {
-      state.hooks.nodesChange.trigger(changedNodes)
-    }
-
-    if (changedEdges.length) {
-      state.hooks.edgesChange.trigger(changedEdges)
     }
   }
 
@@ -229,10 +193,6 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup.value, new Set(), true))
   }
 
-  const addSelectedElements: Actions['addSelectedElements'] = (elements) => {
-    elementSelectionHandler(elements, true)
-  }
-
   const removeSelectedNodes: Actions['removeSelectedNodes'] = (nodes) => {
     const nodesToUnselect = nodes || state.nodes
 
@@ -253,35 +213,6 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     })
 
     state.hooks.edgesChange.trigger(edgeChanges)
-  }
-
-  const removeSelectedElements: Actions['removeSelectedElements'] = (elements) => {
-    if (!elements || !elements.length) {
-      return elementSelectionHandler([], false)
-    }
-
-    const changes = elements.reduce(
-      (changes, curr) => {
-        const selectionChange = createSelectionChange(curr.id, false)
-
-        if (isNode(curr)) {
-          changes.nodes.push(selectionChange)
-        } else {
-          changes.edges.push(selectionChange)
-        }
-
-        return changes
-      },
-      { nodes: [] as NodeSelectionChange[], edges: [] as EdgeSelectionChange[] },
-    )
-
-    if (changes.nodes.length) {
-      state.hooks.nodesChange.trigger(changes.nodes)
-    }
-
-    if (changes.edges.length) {
-      state.hooks.edgesChange.trigger(changes.edges)
-    }
   }
 
   const setMinZoom: Actions['setMinZoom'] = (minZoom) => {
@@ -321,7 +252,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
       return
     }
 
-    state.nodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger)
+    state.nodes = createGraphNodes(nextNodes, getNode, state.hooks.error.trigger)
   }
 
   const setEdges: Actions['setEdges'] = (edges) => {
@@ -334,8 +265,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     const validEdges: GraphEdge[] = createGraphEdges(
       nextEdges,
       state.isValidConnection,
-      findNode,
-      findEdge,
+      getNode,
+      getEdge,
       state.hooks.error.trigger,
       state.defaultEdgeOptions,
       state.nodes,
@@ -347,22 +278,11 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     state.edges = validEdges
   }
 
-  const setElements: Actions['setElements'] = (elements) => {
-    const nextElements = elements instanceof Function ? elements([...state.nodes, ...state.edges]) : elements
-
-    if (!state.initialized && !nextElements.length) {
-      return
-    }
-
-    setNodes(nextElements.filter(isNode))
-    setEdges(nextElements.filter(isEdge))
-  }
-
   const addNodes: Actions['addNodes'] = (nodes) => {
     let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
     nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
-    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger)
+    const graphNodes = createGraphNodes(nextNodes, getNode, state.hooks.error.trigger)
 
     const changes: NodeAddChange<any>[] = []
     for (const node of graphNodes) {
@@ -381,8 +301,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     const validEdges = createGraphEdges(
       nextEdges,
       state.isValidConnection,
-      findNode,
-      findEdge,
+      getNode,
+      getEdge,
       state.hooks.error.trigger,
       state.defaultEdgeOptions,
       state.nodes,
@@ -419,7 +339,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     function createChildrenRemovalChanges(id: string) {
       const children: GraphNode[] = []
       for (const node of state.nodes) {
-        if (node.parentNode === id) {
+        if (node.parentId === id) {
           children.push(node)
         }
       }
@@ -440,7 +360,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     }
 
     for (const item of nodesToRemove) {
-      const currNode = typeof item === 'string' ? findNode(item) : item
+      const currNode = typeof item === 'string' ? getNode(item) : item
 
       if (!currNode) {
         continue
@@ -477,7 +397,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     const changes: EdgeRemoveChange[] = []
 
     for (const item of edgesToRemove) {
-      const currEdge = typeof item === 'string' ? findEdge(item) : item
+      const currEdge = typeof item === 'string' ? getEdge(item) : item
 
       if (!currEdge) {
         continue
@@ -502,19 +422,19 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
-    return updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId, state.hooks.error.trigger)
+    return updateEdgeAction(oldEdge, newConnection, state.edges, getEdge, shouldReplaceId, state.hooks.error.trigger)
   }
 
   const updateEdgeData: Actions['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
-    const edge = findEdge(id)
+    const edge = getEdge(id)
 
     if (!edge) {
       return
     }
 
-    const nextData = typeof dataUpdate === 'function' ? dataUpdate(edge) : dataUpdate
+    const nextData = typeof dataUpdate === 'function' ? dataUpdate(edge as any) : dataUpdate
 
-    edge.data = options.replace ? nextData : { ...edge.data, ...nextData }
+    edge.data = options.replace ? nextData : ({ ...edge.data, ...nextData } as any)
   }
 
   const applyNodeChanges: Actions['applyNodeChanges'] = (changes) => {
@@ -531,7 +451,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
 
   // todo: maybe we should use a more immutable approach, this is a bit too much mutation and hard to maintain
   const updateNode: Actions['updateNode'] = (id, nodeUpdate, options = { replace: false }) => {
-    const node = findNode(id)
+    const node = getNode(id)
 
     if (!node) {
       return
@@ -547,7 +467,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const updateNodeData: Actions['updateNodeData'] = (id, dataUpdate, options = { replace: false }) => {
-    const node = findNode(id)
+    const node = getNode(id)
 
     if (!node) {
       return
@@ -597,7 +517,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
   ): [Rect | null, Node | null | undefined, boolean] => {
     const isRectObj = isRectObject(nodeOrRect)
-    const node = isRectObj ? null : isGraphNode(nodeOrRect as GraphNode) ? (nodeOrRect as GraphNode) : findNode(nodeOrRect.id)
+    const node = isRectObj ? null : isGraphNode(nodeOrRect as GraphNode) ? (nodeOrRect as GraphNode) : getNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {
       return [null, null, isRectObj]
@@ -617,16 +537,17 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
 
     const intersections: GraphNode[] = []
     for (const n of nodes || state.nodes) {
-      if (!isRect && (n.id === node!.id || !n.computedPosition)) {
+      const internalNode = getNode(n.id)
+      if (!internalNode || (!isRect && (n.id === node!.id || !internalNode.internals.positionAbsolute))) {
         continue
       }
 
-      const currNodeRect = nodeToRect(n)
+      const currNodeRect = nodeToRect(internalNode)
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
       const partiallyVisible = partially && overlappingArea > 0
 
       if (partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)) {
-        intersections.push(n)
+        intersections.push(internalNode)
       }
     }
 
@@ -691,24 +612,6 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
       state.defaultEdgeOptions = opts.defaultEdgeOptions
     }
 
-    const elements = opts.modelValue || opts.nodes || opts.edges ? ([] as Elements) : undefined
-
-    if (elements) {
-      if (opts.modelValue) {
-        elements.push(...opts.modelValue)
-      }
-
-      if (opts.nodes) {
-        elements.push(...opts.nodes)
-      }
-
-      if (opts.edges) {
-        elements.push(...opts.edges)
-      }
-
-      setElements(elements)
-    }
-
     const setSkippedOptions = () => {
       if (isDef(opts.maxZoom)) {
         setMaxZoom(opts.maxZoom)
@@ -740,24 +643,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const toObject: Actions['toObject'] = () => {
-    const nodes: Node[] = []
     const edges: Edge[] = []
-
-    for (const node of state.nodes) {
-      const {
-        computedPosition: _,
-        handleBounds: __,
-        selected: ___,
-        dimensions: ____,
-        isParent: _____,
-        resizing: ______,
-        dragging: _______,
-        events: _________,
-        ...rest
-      } = node
-
-      nodes.push(rest)
-    }
 
     for (const edge of state.edges) {
       const { selected: _, sourceNode: __, targetNode: ___, events: ____, ...rest } = edge
@@ -768,18 +654,20 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
       JSON.stringify({
-        nodes,
+        nodes: state.nodes,
         edges,
-        position: [state.viewport.x, state.viewport.y],
-        zoom: state.viewport.zoom,
         viewport: state.viewport,
       } as FlowExportObject),
     )
   }
 
-  const fromObject: Actions['fromObject'] = (obj) => {
+  const fromObject: Actions['fromObject'] = (exportObject) => {
     return new Promise((resolve) => {
-      const { nodes, edges, position, zoom, viewport } = obj
+      const {
+        nodes,
+        edges,
+        viewport: { x, y, zoom },
+      } = exportObject
 
       if (nodes) {
         setNodes(nodes)
@@ -789,10 +677,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         setEdges(edges)
       }
 
-      if ((viewport?.x && viewport?.y) || position) {
-        const x = viewport?.x || position[0]
-        const y = viewport?.y || position[1]
-        const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
+      if (x && y) {
+        const nextZoom = zoom || state.viewport.zoom
 
         return until(() => viewportHelper.value.viewportInitialized)
           .toBe(true)
@@ -842,22 +728,20 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   return {
     updateNodePositions,
     updateNodeDimensions,
-    setElements,
     setNodes,
     setEdges,
     addNodes,
     addEdges,
     removeNodes,
     removeEdges,
-    findNode,
-    findEdge,
+    getNode,
+    getEdge,
     updateEdge,
     updateEdgeData,
     updateNode,
     updateNodeData,
     applyEdgeChanges,
     applyNodeChanges,
-    addSelectedElements,
     addSelectedNodes,
     addSelectedEdges,
     setMinZoom,
@@ -865,7 +749,6 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     setTranslateExtent,
     setNodeExtent,
     setPaneClickDistance,
-    removeSelectedElements,
     removeSelectedNodes,
     removeSelectedEdges,
     startConnection,
