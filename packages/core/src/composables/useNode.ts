@@ -1,7 +1,7 @@
 import { computed, inject, ref } from 'vue'
-import type { NodeBase } from '@xyflow/system'
 import { ErrorCode, VueFlowError, getConnectedEdges } from '../utils'
 import { NodeRef } from '../context'
+import type { GraphNode, Node } from '../types'
 import { useVueFlow } from './useVueFlow'
 import { useNodeId } from './useNodeId'
 
@@ -16,13 +16,13 @@ import { useNodeId } from './useNodeId'
  * @param id - The id of the node to access
  * @returns the node id, the node, the node dom element, it's parent and connected edges
  */
-export function useNode<NodeType extends NodeBase = NodeBase>(id?: string) {
+export function useNode<NodeType extends Node = Node>(id?: string) {
   const nodeId = id ?? useNodeId() ?? ''
   const nodeEl = inject(NodeRef, ref(null))
 
-  const { findNode, edges, emits } = useVueFlow()
+  const { getNode, edges, emits } = useVueFlow()
 
-  const node = findNode<NodeType>(nodeId)!
+  const node = getNode(nodeId) as GraphNode<NodeType>
 
   if (!node) {
     emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId))
@@ -32,7 +32,7 @@ export function useNode<NodeType extends NodeBase = NodeBase>(id?: string) {
     id: nodeId,
     nodeEl,
     node,
-    parentNode: computed(() => findNode(node.parentId)),
+    parentNode: computed(() => getNode(node.parentId)),
     connectedEdges: computed(() => getConnectedEdges([node], edges.value)),
   }
 }

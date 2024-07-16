@@ -34,6 +34,8 @@ export interface Node<NodeData extends ElementData = ElementData, NodeType exten
   extends Omit<NodeBase<NodeData, NodeType>, 'connectable' | 'extent' | 'origin'> {
   /** Disable/enable connecting node */
   connectable?: HandleConnectable
+  /** Disable/enable focusing node */
+  focusable?: boolean
   /** define node extent, i.e. area in which node can be moved */
   extent?: CoordinateExtent | CoordinateExtentRange | 'parent'
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
