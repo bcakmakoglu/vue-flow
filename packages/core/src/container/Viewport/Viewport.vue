@@ -160,6 +160,10 @@ onMounted(() => {
     const pinchZoom = zoomOnPinch.value && event.ctrlKey
     const eventButton = (event as MouseEvent).button
 
+    if (eventButton === 1) {
+      event.preventDefault()
+    }
+
     if (
       (shouldPanOnDrag.value === true || (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(1))) &&
       eventButton === 1 &&
