@@ -33,7 +33,7 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
   const options = isOptsObj ? idOrOpts : { id: idOrOpts }
 
   const id = options.id
-  const vueFlowId = scope?.vueFlowId || id
+  const vueFlowId = id ?? scope?.vueFlowId
 
   let vueFlow: Injection
 
