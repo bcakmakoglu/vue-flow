@@ -1,5 +1,4 @@
 import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
-import type { D3ZoomEvent } from 'd3-zoom'
 import type { EventHookExtended, VueFlowError } from '../utils'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
@@ -63,9 +62,9 @@ export interface FlowEvents {
   /** @deprecated use `init` instead */
   paneReady: VueFlowStore
   init: VueFlowStore
-  move: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
-  moveStart: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
-  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
+  move: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }
+  moveStart: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }
+  moveEnd: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }
   selectionDragStart: NodeDragEvent
   selectionDrag: NodeDragEvent
   selectionDragStop: NodeDragEvent

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useVModel } from '@vueuse/core'
 import { onUnmounted, provide } from 'vue'
-import Viewport from '../Viewport/Viewport.vue'
+import Viewport from '../Viewport/XYViewport.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
 import { Slots } from '../../context'
