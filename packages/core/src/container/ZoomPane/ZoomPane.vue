@@ -122,9 +122,11 @@ onMounted(() => {
       { immediate: true },
     )
 
+    /* todo: do we need this?
     watch(viewport, (nextViewport) => {
       panZoom.value?.syncViewport(nextViewport)
     })
+     */
   }
 })
 </script>
