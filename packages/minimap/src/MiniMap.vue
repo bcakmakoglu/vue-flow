@@ -5,6 +5,7 @@ import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
 import { computed, provide, ref, toRef, useAttrs, watchEffect } from 'vue'
+import type { XYMinimapInstance } from '@xyflow/system'
 import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode.vue'
 import { Slots } from './types'
@@ -39,9 +40,11 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, viewport, translateExtent, dimensions, emits, d3Selection, d3Zoom, getNodesInitialized } = useVueFlow()
+const { id, edges, viewport, translateExtent, dimensions, emits, panZoom, getNodesInitialized } = useVueFlow()
 
 const el = ref<SVGElement>()
+
+const minimapInstance: XYMinimapInstance | null = null
 
 provide(Slots, slots)
 

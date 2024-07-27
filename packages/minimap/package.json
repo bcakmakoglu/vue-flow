@@ -61,6 +61,7 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
+    "@xyflow/system": "^0.0.37",
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0"
   },
