@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.39.1] - 2024-07-27
+
+[d9a133b](d9a133bd0169be8c4d5fb4ea5807d83b24df291e)...[90a289e](90a289ebbd29812657a64f9268ef23ce851d8462)
+
+### Bug Fixes
+
+- Check if injected state matches options and scope id (#1562) ([fff558f](fff558fbc313d422716d8e5c9ec7255360cbb102))
+
+### Miscellaneous Tasks
+
+- Enable sitemaps (#1554) ([6d9535a](6d9535a1a938382aafb9ad94db7a1bb9e2e51aba))
+
 ## [1.39.0] - 2024-07-15
 
 [f2ecf29](f2ecf29cf8fe0f308768e5db6e28020ea3decd82)...[d9a133b](d9a133bd0169be8c4d5fb4ea5807d83b24df291e)
