@@ -33,7 +33,7 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
   const options = isOptsObj ? idOrOpts : { id: idOrOpts }
 
   const id = options.id
-  const vueFlowId = scope?.vueFlowId || id
+  const vueFlowId = id ?? scope?.vueFlowId
 
   let vueFlow: Injection
 
@@ -42,9 +42,9 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
    * this should be the regular way after initialization
    */
   if (scope) {
-    const injection = inject(VueFlow, null)
-    if (typeof injection !== 'undefined' && injection !== null) {
-      vueFlow = injection
+    const injectedState = inject(VueFlow, null)
+    if (typeof injectedState !== 'undefined' && injectedState !== null && (!vueFlowId || injectedState.id === vueFlowId)) {
+      vueFlow = injectedState
     }
   }
 
@@ -63,7 +63,7 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
    * _or_ if the store instance we found does not match up with provided ids
    * create a new store instance and register it in storage
    */
-  if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
+  if (!vueFlow || (vueFlowId && vueFlow.id !== vueFlowId)) {
     const name = id ?? storage.getId()
 
     const state = storage.create(name, options)
