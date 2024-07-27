@@ -120,7 +120,7 @@ export function useDrag(params: UseDragParams) {
     }
   }
 
-  const autoPan = () => {
+  const autoPan = async () => {
     if (!containerBounds) {
       return
     }
@@ -133,7 +133,7 @@ export function useDrag(params: UseDragParams) {
         y: (lastPos.y ?? 0) - yMovement / viewport.value.zoom,
       }
 
-      if (panBy({ x: xMovement, y: yMovement })) {
+      if (await panBy({ x: xMovement, y: yMovement })) {
         updateNodes(nextPos)
       }
     }

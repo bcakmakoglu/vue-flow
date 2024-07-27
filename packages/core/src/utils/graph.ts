@@ -1,4 +1,5 @@
 import { markRaw } from 'vue'
+import type { Viewport } from '@xyflow/system'
 import { boxToRect, clamp, getBoundsOfBoxes, getOverlappingArea, rectToBox } from '@xyflow/system'
 import type {
   Actions,
@@ -15,7 +16,6 @@ import type {
   MaybeElement,
   Node,
   Rect,
-  ViewportTransform,
   XYPosition,
   XYZPosition,
 } from '../types'
@@ -179,7 +179,7 @@ export function connectionExists(edge: Edge | Connection, elements: Elements) {
 
 export function pointToRendererPoint(
   { x, y }: XYPosition,
-  { x: tx, y: ty, zoom: tScale }: ViewportTransform,
+  { x: tx, y: ty, zoom: tScale }: Viewport,
   snapToGrid: boolean = false,
   [snapX, snapY]: [snapX: number, snapY: number] = [1, 1],
 ): XYPosition {
@@ -223,7 +223,7 @@ export function getRectOfNodes(nodes: GraphNode[]) {
 export function getNodesInside(
   nodes: GraphNode[],
   rect: Rect,
-  viewport: ViewportTransform = { x: 0, y: 0, zoom: 1 },
+  viewport: Viewport = { x: 0, y: 0, zoom: 1 },
   partially = false,
   // set excludeNonSelectableNodes if you want to pay attention to the nodes "selectable" attribute
   excludeNonSelectableNodes = false,
@@ -307,7 +307,7 @@ export function getTransformForBounds(
     x?: number
     y?: number
   } = { x: 0, y: 0 },
-): ViewportTransform {
+): Viewport {
   const xZoom = width / (bounds.width * (1 + padding))
   const yZoom = height / (bounds.height * (1 + padding))
   const zoom = Math.min(xZoom, yZoom)

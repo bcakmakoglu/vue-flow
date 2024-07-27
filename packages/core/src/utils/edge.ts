@@ -1,5 +1,6 @@
+import type { Viewport } from '@xyflow/system'
 import { rectToBox } from '@xyflow/system'
-import type { Actions, GraphEdge, GraphNode, HandleElement, ViewportTransform, XYPosition } from '../types'
+import type { Actions, GraphEdge, GraphNode, HandleElement, XYPosition } from '../types'
 import { Position } from '../types'
 import { getNodeDimensions } from '.'
 
@@ -54,7 +55,7 @@ interface IsEdgeVisibleParams {
   targetHeight: number
   width: number
   height: number
-  viewport: ViewportTransform
+  viewport: Viewport
 }
 
 export function isEdgeVisible({
