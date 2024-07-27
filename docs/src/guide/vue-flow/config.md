@@ -498,7 +498,7 @@ const edges = ref([
 
 ### default-viewport (optional)
 
-- Type: [`Viewport`](/typedocs/interfaces/Viewport)
+- Type: `Viewport`
 
 - Default: `{ zoom: 1, position: { x: 0, y: 0 } }`
 
