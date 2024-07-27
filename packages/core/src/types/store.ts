@@ -325,7 +325,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** get a node's connected edges */
   getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
   /** pan the viewport; return indicates if a transform has happened or not */
-  panBy: (delta: XYPosition) => boolean
+  panBy: (delta: XYPosition) => Promise<boolean>
   /** viewport helper instance */
   viewportHelper: ComputedRef<ViewportHelper>
 
