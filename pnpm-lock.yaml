@@ -342,12 +342,6 @@ importers:
       '@xyflow/system':
         specifier: ^0.0.37
         version: 0.0.37
-      d3-selection:
-        specifier: ^3.0.0
-        version: 3.0.0
-      d3-zoom:
-        specifier: ^3.0.0
-        version: 3.0.0
       vue:
         specifier: ^3.3.0
         version: 3.3.4
@@ -361,12 +355,6 @@ importers:
       '@tooling/vite-config':
         specifier: workspace:*
         version: link:../../tooling/vite-config
-      '@types/d3-selection':
-        specifier: ^3.0.7
-        version: 3.0.7
-      '@types/d3-zoom':
-        specifier: ^3.0.5
-        version: 3.0.5
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../core
@@ -2241,9 +2229,6 @@ packages:
 
   '@types/d3-transition@3.0.8':
     resolution: {integrity: sha512-ew63aJfQ/ms7QQ4X7pk5NxQ9fZH/z+i24ZfJ6tJSfqxJMrYLiK01EAs2/Rtw/JreGUsS3pLPNV644qXFGnoZNQ==}
-
-  '@types/d3-zoom@3.0.5':
-    resolution: {integrity: sha512-mIefdTLtxuWUWTbBupCUXPAXVPmi8/Uwrq41gQpRh0rD25GMU1ku+oTELqNY2NuuiI0F3wXC5e1liBQi7YS7XQ==}
 
   '@types/d3-zoom@3.0.8':
     resolution: {integrity: sha512-iqMC4/YlFCSlO8+2Ii1GGGliCAY4XdeG748w5vQUbevlbDu0zSjH/+jojorQVBK/se0j6DUFNPBGSqD3YWYnDw==}
@@ -9604,11 +9589,6 @@ snapshots:
   '@types/d3-transition@3.0.8':
     dependencies:
       '@types/d3-selection': 3.0.10
-
-  '@types/d3-zoom@3.0.5':
-    dependencies:
-      '@types/d3-interpolate': 3.0.2
-      '@types/d3-selection': 3.0.7
 
   '@types/d3-zoom@3.0.8':
     dependencies:
