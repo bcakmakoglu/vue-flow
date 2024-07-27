@@ -1,7 +1,5 @@
 import type { Rect, XYPosition } from './flow'
 
-export type D3ZoomHandler = (this: HTMLDivElement, event: any, d: unknown) => void
-
 export enum PanOnScrollMode {
   Free = 'free',
   Vertical = 'vertical',

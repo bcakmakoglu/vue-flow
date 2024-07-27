@@ -181,21 +181,3 @@ export function useViewportHelper(state: State) {
     }
   })
 }
-
-export function getFitViewNodes<
-  Params extends NodeLookup<InternalNodeBase<NodeBase>>,
-  Options extends FitViewOptionsBase<NodeBase>,
->(nodeLookup: Params, options?: Pick<Options, 'nodes' | 'includeHiddenNodes'>) {
-  const fitViewNodes: NodeLookup = new Map()
-  const optionNodeIds = options?.nodes ? new Set(options.nodes.map((node) => node.id)) : null
-
-  nodeLookup.forEach((n) => {
-    const isVisible = n.measured.width && n.measured.height && (options?.includeHiddenNodes || !n.hidden)
-
-    if (isVisible && (!optionNodeIds || optionNodeIds.has(n.id))) {
-      fitViewNodes.set(n.id, n)
-    }
-  })
-
-  return fitViewNodes
-}
