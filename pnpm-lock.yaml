@@ -288,8 +288,8 @@ importers:
         specifier: ^10.5.0
         version: 10.5.0(vue@3.3.4)
       '@xyflow/system':
-        specifier: ^0.0.36
-        version: 0.0.36
+        specifier: ^0.0.37
+        version: 0.0.37
       d3-drag:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2775,9 +2775,6 @@ packages:
 
   '@windicss/plugin-utils@1.9.3':
     resolution: {integrity: sha512-3VG5HEGeuIfG/9iTwLyzWWm/aGKNTbtSVkpkAabdRuDP/2lEmf6Hpo4uo5drwE+2O9gXfc6nSYgAwBjotx5CfQ==}
-
-  '@xyflow/system@0.0.36':
-    resolution: {integrity: sha512-u7zWPnZhgX7Yf7L9hq5NLmP3srMe8Do+SEVeNG5r67cFISo2hul/4lrqFE2BzV+n1gyaSrNDR0XqA8aeH1Hqfg==}
 
   '@xyflow/system@0.0.37':
     resolution: {integrity: sha512-hSIhezhxgftPUpC+xiQVIorcRILZUOWlLjpYPTyGWRu8s4RJvM4GqvrsFmD5OnMKXLgpU7/PqqUibDVO67oWQQ==}
@@ -10390,16 +10387,6 @@ snapshots:
       windicss: 3.5.6
     transitivePeerDependencies:
       - supports-color
-
-  '@xyflow/system@0.0.36':
-    dependencies:
-      '@types/d3-drag': 3.0.7
-      '@types/d3-selection': 3.0.10
-      '@types/d3-transition': 3.0.8
-      '@types/d3-zoom': 3.0.8
-      d3-drag: 3.0.0
-      d3-selection: 3.0.0
-      d3-zoom: 3.0.0
 
   '@xyflow/system@0.0.37':
     dependencies:
