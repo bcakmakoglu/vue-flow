@@ -1,4 +1,5 @@
 import { markRaw } from 'vue'
+import { clampPosition } from '@xyflow/system'
 import type {
   Actions,
   CoordinateExtent,
@@ -9,7 +10,7 @@ import type {
   State,
   XYPosition,
 } from '../types'
-import { ErrorCode, VueFlowError, clampPosition, isParentSelected } from '.'
+import { ErrorCode, VueFlowError, isParentSelected } from '.'
 
 export function hasSelector(target: Element, selector: string, node: Element): boolean {
   let current = target
