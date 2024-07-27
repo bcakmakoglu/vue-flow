@@ -288,8 +288,8 @@ importers:
         specifier: ^10.5.0
         version: 10.5.0(vue@3.3.4)
       '@xyflow/system':
-        specifier: ^0.0.36
-        version: 0.0.36
+        specifier: ^0.0.37
+        version: 0.0.37
       d3-drag:
         specifier: ^3.0.0
         version: 3.0.0
@@ -339,12 +339,9 @@ importers:
 
   packages/minimap:
     dependencies:
-      d3-selection:
-        specifier: ^3.0.0
-        version: 3.0.0
-      d3-zoom:
-        specifier: ^3.0.0
-        version: 3.0.0
+      '@xyflow/system':
+        specifier: ^0.0.37
+        version: 0.0.37
       vue:
         specifier: ^3.3.0
         version: 3.3.4
@@ -358,12 +355,6 @@ importers:
       '@tooling/vite-config':
         specifier: workspace:*
         version: link:../../tooling/vite-config
-      '@types/d3-selection':
-        specifier: ^3.0.7
-        version: 3.0.7
-      '@types/d3-zoom':
-        specifier: ^3.0.5
-        version: 3.0.5
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../core
@@ -423,6 +414,9 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../core
+      '@xyflow/system':
+        specifier: ^0.0.37
+        version: 0.0.37
       vue-tsc:
         specifier: ^1.8.16
         version: 1.8.16(typescript@5.4.5)
@@ -2239,9 +2233,6 @@ packages:
   '@types/d3-transition@3.0.8':
     resolution: {integrity: sha512-ew63aJfQ/ms7QQ4X7pk5NxQ9fZH/z+i24ZfJ6tJSfqxJMrYLiK01EAs2/Rtw/JreGUsS3pLPNV644qXFGnoZNQ==}
 
-  '@types/d3-zoom@3.0.5':
-    resolution: {integrity: sha512-mIefdTLtxuWUWTbBupCUXPAXVPmi8/Uwrq41gQpRh0rD25GMU1ku+oTELqNY2NuuiI0F3wXC5e1liBQi7YS7XQ==}
-
   '@types/d3-zoom@3.0.8':
     resolution: {integrity: sha512-iqMC4/YlFCSlO8+2Ii1GGGliCAY4XdeG748w5vQUbevlbDu0zSjH/+jojorQVBK/se0j6DUFNPBGSqD3YWYnDw==}
 
@@ -2785,8 +2776,8 @@ packages:
   '@windicss/plugin-utils@1.9.3':
     resolution: {integrity: sha512-3VG5HEGeuIfG/9iTwLyzWWm/aGKNTbtSVkpkAabdRuDP/2lEmf6Hpo4uo5drwE+2O9gXfc6nSYgAwBjotx5CfQ==}
 
-  '@xyflow/system@0.0.36':
-    resolution: {integrity: sha512-u7zWPnZhgX7Yf7L9hq5NLmP3srMe8Do+SEVeNG5r67cFISo2hul/4lrqFE2BzV+n1gyaSrNDR0XqA8aeH1Hqfg==}
+  '@xyflow/system@0.0.37':
+    resolution: {integrity: sha512-hSIhezhxgftPUpC+xiQVIorcRILZUOWlLjpYPTyGWRu8s4RJvM4GqvrsFmD5OnMKXLgpU7/PqqUibDVO67oWQQ==}
 
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -9599,11 +9590,6 @@ snapshots:
     dependencies:
       '@types/d3-selection': 3.0.10
 
-  '@types/d3-zoom@3.0.5':
-    dependencies:
-      '@types/d3-interpolate': 3.0.2
-      '@types/d3-selection': 3.0.7
-
   '@types/d3-zoom@3.0.8':
     dependencies:
       '@types/d3-interpolate': 3.0.2
@@ -10402,7 +10388,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@xyflow/system@0.0.36':
+  '@xyflow/system@0.0.37':
     dependencies:
       '@types/d3-drag': 3.0.7
       '@types/d3-selection': 3.0.10
