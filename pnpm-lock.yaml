@@ -414,6 +414,9 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../core
+      '@xyflow/system':
+        specifier: ^0.0.37
+        version: 0.0.37
       vue-tsc:
         specifier: ^1.8.16
         version: 1.8.16(typescript@5.4.5)
