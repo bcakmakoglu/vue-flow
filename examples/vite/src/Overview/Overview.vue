@@ -174,6 +174,6 @@ const elements = ref<Elements>(initialElements)
   >
     <MiniMap :node-stroke-color="nodeStrokeColor" :node-color="nodeColor" :node-border-radius="2" />
     <Controls />
-    <Background color="#aaa" :gap="20" />
+    <Background variant="lines" />
   </VueFlow>
 </template>

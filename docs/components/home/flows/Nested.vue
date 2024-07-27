@@ -76,7 +76,7 @@ onPaneReady((i) => emit('pane', i))
   >
     <VueFlow class="nested">
       <Controls class="md:(!left-auto !right-[10px])" />
-      <Background pattern-color="#aaa" class="!bg-gray-800" :gap="18" />
+      <Background color="#aaa" class="!bg-gray-800" :gap="18" />
     </VueFlow>
   </div>
 </template>

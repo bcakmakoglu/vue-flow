@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 
-import { Background, BackgroundVariant } from '@vue-flow/background'
+import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
@@ -28,7 +28,7 @@ function addRandomNode() {
   <VueFlow>
     <MiniMap />
     <Controls />
-    <Background :variant="BackgroundVariant.Lines" />
+    <Background variant="lines" />
 
     <button type="button" :style="{ position: 'absolute', left: '10px', top: '10px', zIndex: 4 }" @click="addRandomNode">
       add node

@@ -57,7 +57,7 @@ onConnect(addEdges)
       :min-zoom="0.2"
       :max-zoom="4"
     >
-      <Background pattern-color="#aaa" :gap="8" />
+      <Background :gap="8" />
 
       <MiniMap />
 

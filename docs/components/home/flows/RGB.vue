@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind } from '@vueuse/core'
-import { Background, BackgroundVariant } from '@vue-flow/background'
+import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 import type { MiniMapNodeFunc } from '@vue-flow/minimap'
@@ -96,12 +96,7 @@ const nodeColor: MiniMapNodeFunc = (node) => {
       </template>
       <Controls class="hidden md:block" />
 
-      <Background
-        :variant="BackgroundVariant.Lines"
-        :pattern-color="`rgb(${color.red}, ${color.green}, ${color.blue})`"
-        :gap="48"
-        :size="1"
-      />
+      <Background variant="lines" :color="`rgb(${color.red}, ${color.green}, ${color.blue})`" :gap="48" :size="1" />
 
       <MiniMap class="hidden sm:block transform scale-25 md:scale-50 lg:scale-75 origin-bottom-right" :node-color="nodeColor" />
     </VueFlow>

@@ -32,7 +32,7 @@ import { Background } from '@vue-flow/background'
 
 | Name         | Definition                            | Type                                                   | Optional | Default |
 |--------------|---------------------------------------|--------------------------------------------------------|----------|---------|
-| variant      | Pattern variant                       | [BackgroundVariant](/typedocs/enums/BackgroundVariant) | true     | dots    |
+| variant      | Pattern variant                       | [BackgroundVariant](/typedocs/types/BackgroundVariant) | true     | dots    |
 | gap          | Pattern gap                           | number                                                 | true     | 10      |
 | size         | Pattern size                          | number                                                 | true     | 0.4     |
 | patternColor | Pattern color                         | string                                                 | true     | #81818a |

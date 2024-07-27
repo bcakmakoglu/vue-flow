@@ -1,6 +1,6 @@
 import type { FunctionalComponent } from 'vue'
 import { h } from 'vue'
-import { BackgroundVariant } from './types'
+import type { BackgroundVariant } from './types'
 
 interface LinePatternProps {
   dimensions: [number, number]
@@ -26,11 +26,11 @@ export const DotPattern: FunctionalComponent<DotPatternProps> = function ({ radi
 }
 
 export const Patterns = {
-  [BackgroundVariant.Lines]: LinePattern,
-  [BackgroundVariant.Dots]: DotPattern,
+  lines: LinePattern,
+  dots: DotPattern,
 }
 
 export const DefaultBgColors: Record<BackgroundVariant, string> = {
-  [BackgroundVariant.Dots]: '#81818a',
-  [BackgroundVariant.Lines]: '#eee',
+  lines: '#eee',
+  dots: '#91919a',
 }

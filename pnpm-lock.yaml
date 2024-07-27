@@ -236,10 +236,6 @@ importers:
         version: 1.8.16(typescript@5.4.5)
 
   packages/background:
-    dependencies:
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
     devDependencies:
       '@tooling/eslint-config':
         specifier: workspace:*
@@ -247,15 +243,9 @@ importers:
       '@tooling/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../core
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
 
   packages/controls:
     dependencies:
