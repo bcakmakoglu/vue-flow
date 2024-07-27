@@ -283,11 +283,11 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
    * unselect selected elements (if none are passed, all elements are unselected)
    */
   removeSelectedElements: (elements?: Elements) => void
-  /** apply min zoom value to d3 */
+  /** apply min zoom value to panzoom */
   setMinZoom: (zoom: number) => void
-  /** apply max zoom value to d3 */
+  /** apply max zoom value to panzoom */
   setMaxZoom: (zoom: number) => void
-  /** apply translate extent to d3 */
+  /** apply translate extent to panzoom */
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
   /** apply extent to nodes */
   setNodeExtent: (nodeExtent: CoordinateExtent | CoordinateExtentRange) => void

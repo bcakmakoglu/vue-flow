@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { D3ZoomEvent } from 'd3-zoom'
 import type { VueFlowError } from '../utils'
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
@@ -15,7 +14,7 @@ import type {
 } from './connection'
 import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
-import type { CustomEvent, EdgeMouseEvent, EdgeUpdateEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
+import type { CustomEvent, EdgeMouseEvent, EdgeUpdateEvent, MouseTouchEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
 import type { ValidConnectionFunc } from './handle'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
@@ -261,9 +260,9 @@ export interface FlowEmits {
     } & OnConnectStartParams,
   ): void
   (event: 'clickConnectEnd', connectionEvent?: MouseEvent): void
-  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
-  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
-  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
+  (event: 'moveStart', moveEvent: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }): void
+  (event: 'move', moveEvent: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }): void
+  (event: 'moveEnd', moveEvent: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }): void
   (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
   (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
   (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
