@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.39.1
+
+### Patch Changes
+
+- [#1562](https://github.com/bcakmakoglu/vue-flow/pull/1562) [`e83b1ef`](https://github.com/bcakmakoglu/vue-flow/commit/e83b1ef9be83df10be9d4c8a35d6d0caff26e6b9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if injected vue flow state matches options id, otherwise create new state
+
+- [#1562](https://github.com/bcakmakoglu/vue-flow/pull/1562) [`e83b1ef`](https://github.com/bcakmakoglu/vue-flow/commit/e83b1ef9be83df10be9d4c8a35d6d0caff26e6b9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prefer options id over scope id when finding vue flow internal state by id
+
 ## 1.39.0
 
 ### Minor Changes
