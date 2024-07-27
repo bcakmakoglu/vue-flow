@@ -67,3 +67,6 @@ export { useKeyPress } from './composables/useKeyPress'
 export { VueFlowError, ErrorCode, isErrorOfType } from './utils/errors'
 
 export * from './types'
+
+// todo: add more re-exports
+export { Viewport } from '@xyflow/system'
