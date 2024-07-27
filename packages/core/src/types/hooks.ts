@@ -1,9 +1,9 @@
 import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
+import type { Viewport } from '@xyflow/system'
 import type { EventHookExtended, VueFlowError } from '../utils'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
-import type { ViewportTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
 
@@ -62,18 +62,18 @@ export interface FlowEvents {
   /** @deprecated use `init` instead */
   paneReady: VueFlowStore
   init: VueFlowStore
-  move: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }
-  moveStart: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }
-  moveEnd: { event: MouseTouchEvent | null; flowTransform: ViewportTransform }
+  move: { event: MouseTouchEvent | null; viewport: Viewport }
+  moveStart: { event: MouseTouchEvent | null; viewport: Viewport }
+  moveEnd: { event: MouseTouchEvent | null; viewport: Viewport }
   selectionDragStart: NodeDragEvent
   selectionDrag: NodeDragEvent
   selectionDragStop: NodeDragEvent
   selectionContextMenu: { event: MouseEvent; nodes: GraphNode[] }
   selectionStart: MouseEvent
   selectionEnd: MouseEvent
-  viewportChangeStart: ViewportTransform
-  viewportChange: ViewportTransform
-  viewportChangeEnd: ViewportTransform
+  viewportChangeStart: Viewport
+  viewportChange: Viewport
+  viewportChangeEnd: Viewport
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent

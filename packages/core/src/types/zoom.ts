@@ -1,3 +1,4 @@
+import type { Viewport } from '@xyflow/system'
 import type { Rect, XYPosition } from './flow'
 
 export enum PanOnScrollMode {
@@ -21,12 +22,6 @@ export type FitViewParams = {
   }
   nodes?: string[]
 } & TransitionOptions
-
-export interface ViewportTransform {
-  x: number
-  y: number
-  zoom: number
-}
 
 export type SetCenterOptions = TransitionOptions & {
   zoom?: number
@@ -54,11 +49,11 @@ export type ZoomInOut = (options?: TransitionOptions) => Promise<boolean>
 /** zoom to a specific level */
 export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => Promise<boolean>
 
-/** get current viewport transform */
-export type GetViewport = () => ViewportTransform
+/** get current viewport */
+export type GetViewport = () => Viewport
 
-/** set current viewport transform */
-export type SetViewport = (transform: ViewportTransform, options?: TransitionOptions) => Promise<boolean>
+/** set current viewport */
+export type SetViewport = (viewport: Viewport, options?: TransitionOptions) => Promise<boolean>
 
 export interface ViewportFunctions {
   zoomIn: ZoomInOut
