@@ -4,7 +4,7 @@ import { XYPanZoom } from '@xyflow/system'
 import { useKeyPress, useVueFlow } from '../../composables'
 import { useResizeHandler } from '../../composables/useResizeHandler'
 import Pane from '../Pane/Pane.vue'
-import Transform from '../Viewport/Transform.vue'
+import Viewport from '../Viewport/Viewport.vue'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 
@@ -144,7 +144,7 @@ export default {
       :selection-key-pressed="selectionKeyPressed"
       :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: shouldPanOnDrag }"
     >
-      <Transform>
+      <Viewport>
         <EdgeRenderer />
 
         <div class="vue-flow__edge-labels" />
@@ -152,7 +152,7 @@ export default {
         <NodeRenderer />
 
         <slot />
-      </Transform>
+      </Viewport>
     </Pane>
   </div>
 </template>
