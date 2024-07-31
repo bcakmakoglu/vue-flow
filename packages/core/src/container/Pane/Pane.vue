@@ -115,7 +115,6 @@ function onWheel(event: WheelEvent) {
 
 function onPointerDown(event: PointerEvent) {
   containerBounds.value = vueFlowRef.value?.getBoundingClientRect()
-  ;(event.target as Element)?.setPointerCapture?.(event.pointerId)
 
   if (
     !elementsSelectable.value ||
@@ -126,6 +125,8 @@ function onPointerDown(event: PointerEvent) {
   ) {
     return
   }
+
+  ;(event.target as Element)?.setPointerCapture?.(event.pointerId)
 
   const { x, y } = getMousePosition(event, containerBounds.value)
 
