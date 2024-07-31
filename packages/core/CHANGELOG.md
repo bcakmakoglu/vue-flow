@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.39.2
+
+### Patch Changes
+
+- [#1565](https://github.com/bcakmakoglu/vue-flow/pull/1565) [`90f573a`](https://github.com/bcakmakoglu/vue-flow/commit/90f573a4e56a1ad92e1d15f7a45a8f5600dc6307) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Only capture pointer when a valid selection has started
+
 ## 1.39.1
 
 ### Patch Changes
