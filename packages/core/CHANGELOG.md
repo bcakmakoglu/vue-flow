@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.39.3
+
+### Patch Changes
+
+- [#1569](https://github.com/bcakmakoglu/vue-flow/pull/1569) [`f6b394f`](https://github.com/bcakmakoglu/vue-flow/commit/f6b394f0b8ad698fead4f91eaed8650b5b5d2cc9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Push into dimensions changes array instead of using index access.
+
 ## 1.39.2
 
 ### Patch Changes
