@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.39.2] - 2024-08-05
+
+[90a289e](90a289ebbd29812657a64f9268ef23ce851d8462)...[faeed3d](faeed3d6be9fe29c30a71ae09dbd056cc9445ad2)
+
+### Bug Fixes
+
+- Only capture pointer if valid selection has started (#1565) ([a8d837b](a8d837bf93fb201b1805a2a8be79ed1084f7aad1))
+
 ## [1.39.1] - 2024-07-27
 
 [d9a133b](d9a133bd0169be8c4d5fb4ea5807d83b24df291e)...[90a289e](90a289ebbd29812657a64f9268ef23ce851d8462)
