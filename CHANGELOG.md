@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.39.3] - 2024-08-06
+
+[faeed3d](faeed3d6be9fe29c30a71ae09dbd056cc9445ad2)...[809a9a4](809a9a4e16ba4b8cae4159c259ec6a9da0f42954)
+
+### Bug Fixes
+
+- Push into changes arr instead of using index (#1569) ([afa8861](afa88610edcf573d339c13f06d20c1a94d4572b1))
+
 ## [1.39.2] - 2024-08-05
 
 [90a289e](90a289ebbd29812657a64f9268ef23ce851d8462)...[faeed3d](faeed3d6be9fe29c30a71ae09dbd056cc9445ad2)
