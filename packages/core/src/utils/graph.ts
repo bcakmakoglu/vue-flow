@@ -21,7 +21,7 @@ import type {
   XYPosition,
   XYZPosition,
 } from '../types'
-import { isDef, warn } from '.'
+import { isDef } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
@@ -220,73 +220,6 @@ export function connectionExists(edge: Edge | Connection, elements: Elements) {
       (el.sourceHandle === edge.sourceHandle || (!el.sourceHandle && !edge.sourceHandle)) &&
       (el.targetHandle === edge.targetHandle || (!el.targetHandle && !edge.targetHandle)),
   )
-}
-
-/**
- * @deprecated Use store instance and call `addEdges` with template-ref or the one received by `onPaneReady` instead
- *
- * Intended for options API
- * In composition API you can access utilities from `useVueFlow`
- */
-export function addEdge(edgeParams: Edge | Connection, elements: Elements, defaults?: DefaultEdgeOptions) {
-  if (!edgeParams.source || !edgeParams.target) {
-    warn("Can't create edge. An edge needs a source and a target.")
-    return elements
-  }
-
-  let edge
-
-  if (isEdge(edgeParams)) {
-    edge = { ...edgeParams }
-  } else {
-    edge = {
-      ...edgeParams,
-      id: getEdgeId(edgeParams),
-    } as Edge
-  }
-
-  edge = parseEdge(edge, undefined, defaults)
-
-  if (connectionExists(edge, elements)) {
-    return elements
-  }
-
-  elements.push(edge)
-
-  return elements
-}
-
-/**
- * @deprecated Use store instance and call `updateEdge` with template-ref or the one received by `onPaneReady` instead
- *
- * Intended for options API
- * In composition API you can access utilities from `useVueFlow`
- */
-export function updateEdge(oldEdge: Edge, newConnection: Connection, elements: Elements) {
-  if (!newConnection.source || !newConnection.target) {
-    warn("Can't create new edge. An edge needs a source and a target.")
-    return elements
-  }
-
-  const foundEdge = elements.find((e) => isEdge(e) && e.id === oldEdge.id)
-
-  if (!foundEdge) {
-    warn(`The old edge with id=${oldEdge.id} does not exist.`)
-    return elements
-  }
-
-  // Remove old edge and create the new edge with parameters of old edge.
-  const edge: Edge = {
-    ...oldEdge,
-    id: getEdgeId(newConnection),
-    source: newConnection.source,
-    target: newConnection.target,
-    sourceHandle: newConnection.sourceHandle,
-    targetHandle: newConnection.targetHandle,
-  }
-  elements.splice(elements.indexOf(foundEdge), 1, edge)
-
-  return elements.filter((e) => e.id !== oldEdge.id)
 }
 
 export function rendererPointToPoint({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition {
