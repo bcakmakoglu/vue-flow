@@ -53,7 +53,7 @@ function runAnimation() {
     const keyframes = [{ offsetDistance: '0%' }, { offsetDistance: '100%' }]
 
     const animation = labelRef.value?.animate(keyframes, {
-      duration: 2000,
+      duration: 1500,
       direction: 'normal',
       iterations: 1,
     })
