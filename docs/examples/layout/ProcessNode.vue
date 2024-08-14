@@ -1,5 +1,5 @@
 <script setup>
-import { toRef } from 'vue'
+import { computed, toRef } from 'vue'
 import { Handle, useHandleConnections } from '@vue-flow/core'
 
 const props = defineProps({
@@ -27,7 +27,7 @@ const isSender = toRef(() => sourceConnections.value.length <= 0)
 
 const isReceiver = toRef(() => targetConnections.value.length <= 0)
 
-const bgColor = toRef(() => {
+const bgColor = computed(() => {
   if (isSender.value) {
     return '#2563eb'
   }
@@ -47,7 +47,7 @@ const bgColor = toRef(() => {
   return '#4b5563'
 })
 
-const processLabel = toRef(() => {
+const processLabel = computed(() => {
   if (props.data.hasError) {
     return '❌'
   }
@@ -77,6 +77,7 @@ const processLabel = toRef(() => {
     <Handle v-if="!isSender" type="target" :position="targetPosition">
       <span v-if="!data.isRunning && !data.isFinished && !data.isCancelled && !data.isSkipped && !data.hasError">📥 </span>
     </Handle>
+
     <Handle v-if="!isReceiver" type="source" :position="sourcePosition" />
 
     <div v-if="!isSender && data.isRunning" class="spinner" />

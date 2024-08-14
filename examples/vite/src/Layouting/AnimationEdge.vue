@@ -55,6 +55,7 @@ function runAnimation() {
     const animation = labelRef.value?.animate(keyframes, {
       duration: 1500,
       direction: 'normal',
+      easing: 'ease-in-out',
       iterations: 1,
     })
 
