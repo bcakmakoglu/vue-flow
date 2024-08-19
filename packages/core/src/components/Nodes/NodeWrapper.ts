@@ -24,7 +24,7 @@ import {
   handleNodeClick,
 } from '../../utils'
 import { NodeId, NodeRef, Slots } from '../../context'
-import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
+import { isInputDOMNode, useDrag, useNode, useUpdateNodePositions, useVueFlow } from '../../composables'
 import type { NodeComponent } from '../../types'
 
 interface Props {
@@ -92,7 +92,7 @@ const NodeWrapper = defineComponent({
         return slot
       }
 
-      let nodeType = node.template || getNodeTypes.value[name]
+      let nodeType = getNodeTypes.value[name]
 
       if (typeof nodeType === 'string') {
         if (instance) {
@@ -112,8 +112,6 @@ const NodeWrapper = defineComponent({
       return false
     })
 
-    const { emit, on } = useNodeHooks(node, emits)
-
     const dragging = useDrag({
       id: props.id,
       el: nodeElement,
@@ -121,33 +119,28 @@ const NodeWrapper = defineComponent({
       selectable: isSelectable,
       dragHandle: () => node.dragHandle,
       onStart(event) {
-        emit.dragStart(event)
+        emits.nodeDragStart(event)
       },
       onDrag(event) {
-        emit.drag(event)
+        emits.nodeDrag(event)
       },
       onStop(event) {
-        emit.dragStop(event)
+        emits.nodeDragStop(event)
       },
       onClick(event) {
         onSelectNode(event)
       },
     })
 
-    const getClass = computed(() => (node.class instanceof Function ? node.class(node) : node.class))
-
     const getStyle = computed(() => {
-      const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
+      const styles = node.style || {}
 
-      const width = node.width instanceof Function ? node.width(node) : node.width
-      const height = node.height instanceof Function ? node.height(node) : node.height
-
-      if (width) {
-        styles.width = typeof width === 'string' ? width : `${width}px`
+      if (node.width) {
+        styles.width = typeof node.width === 'string' ? node.width : `${node.width}px`
       }
 
-      if (height) {
-        styles.height = typeof height === 'string' ? height : `${height}px`
+      if (node.height) {
+        styles.height = typeof node.height === 'string' ? node.height : `${node.height}px`
       }
 
       return styles
@@ -260,7 +253,7 @@ const NodeWrapper = defineComponent({
               selectable: isSelectable.value,
               parent: node.isParent,
             },
-            getClass.value,
+            node.class,
           ],
           'style': {
             visibility: isInit.value ? 'visible' : 'hidden',
@@ -282,25 +275,20 @@ const NodeWrapper = defineComponent({
           'onKeydown': onKeyDown,
         },
         [
-          h(nodeCmp.value === false ? getNodeTypes.value.default : (nodeCmp.value as any), {
+          h(nodeCmp.value === false ? getNodeTypes.value.default : nodeCmp.value, {
             id: node.id,
             type: node.type,
             data: node.data,
-            events: { ...node.events, ...on },
             selected: node.selected,
             resizing: node.resizing,
             dragging: dragging.value,
             connectable: isConnectable.value,
-            position: node.computedPosition,
             dimensions: node.dimensions,
-            isValidTargetPos: node.isValidTargetPos,
-            isValidSourcePos: node.isValidSourcePos,
             parent: node.parentNode,
             parentNodeId: node.parentNode,
             zIndex: node.computedPosition.z ?? zIndex.value,
             targetPosition: node.targetPosition,
             sourcePosition: node.sourcePosition,
-            label: node.label,
             dragHandle: node.dragHandle,
             onUpdateNodeInternals: updateInternals,
           }),
@@ -336,28 +324,28 @@ const NodeWrapper = defineComponent({
 
     function onMouseEnter(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseEnter({ event, node })
+        emits.nodeMouseEnter({ event, node })
       }
     }
 
     function onMouseMove(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseMove({ event, node })
+        emits.nodeMouseMove({ event, node })
       }
     }
 
     function onMouseLeave(event: MouseEvent) {
       if (!dragging?.value) {
-        emit.mouseLeave({ event, node })
+        emits.nodeMouseLeave({ event, node })
       }
     }
 
     function onContextMenu(event: MouseEvent) {
-      return emit.contextMenu({ event, node })
+      return emits.nodeContextMenu({ event, node })
     }
 
     function onDoubleClick(event: MouseEvent) {
-      return emit.doubleClick({ event, node })
+      return emits.nodeDoubleClick({ event, node })
     }
 
     function onSelectNode(event: MouseEvent) {
@@ -373,7 +361,7 @@ const NodeWrapper = defineComponent({
         )
       }
 
-      emit.click({ event, node })
+      emits.nodeClick({ event, node })
     }
 
     function onKeyDown(event: KeyboardEvent) {

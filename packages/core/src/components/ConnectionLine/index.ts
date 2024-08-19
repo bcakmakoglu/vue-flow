@@ -23,19 +23,17 @@ const ConnectionLine = defineComponent({
       connectionStartHandle,
       connectionEndHandle,
       connectionPosition,
-      connectionLineType,
-      connectionLineStyle,
       connectionLineOptions,
       connectionStatus,
       viewport,
-      findNode,
+      getNode,
     } = useVueFlow()
 
     const connectionLineComponent = inject(Slots)?.['connection-line']
 
-    const fromNode = computed(() => findNode(connectionStartHandle.value?.nodeId))
+    const fromNode = computed(() => getNode(connectionStartHandle.value!.nodeId!))
 
-    const toNode = computed(() => findNode(connectionEndHandle.value?.nodeId) ?? null)
+    const toNode = computed(() => getNode(connectionEndHandle.value!.nodeId!) ?? null)
 
     const toXY = computed(() => {
       return {
@@ -99,7 +97,7 @@ const ConnectionLine = defineComponent({
         return null
       }
 
-      const type = connectionLineType.value ?? connectionLineOptions.value.type ?? ConnectionLineType.Bezier
+      const type = connectionLineOptions.value.type ?? ConnectionLineType.Bezier
 
       let dAttr = ''
 
@@ -152,10 +150,7 @@ const ConnectionLine = defineComponent({
             : h('path', {
                 'd': dAttr,
                 'class': [connectionLineOptions.value.class, connectionStatus, 'vue-flow__connection-path'],
-                'style': {
-                  ...connectionLineStyle.value,
-                  ...connectionLineOptions.value.style,
-                },
+                'style': connectionLineOptions.value.style,
                 'marker-end': markerEnd.value,
                 'marker-start': markerStart.value,
               }),

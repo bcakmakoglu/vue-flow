@@ -1,4 +1,4 @@
-import type { Component, FunctionalComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 import { h } from 'vue'
 import Handle from '../Handle/Handle.vue'
 import type { NodeProps } from '../../types'
@@ -6,20 +6,16 @@ import { Position } from '../../types'
 
 const InputNode: FunctionalComponent<NodeProps<{ label: any }>> = function ({
   sourcePosition = Position.Bottom,
-  label: _label,
   connectable = true,
-  isValidSourcePos,
   data,
 }) {
-  const label = data.label || _label
-
   return [
-    typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
-    h(Handle as Component, { type: 'source', position: sourcePosition, connectable, isValidConnection: isValidSourcePos }),
+    typeof data.label !== 'string' && data.label ? h(data.label) : h('div', { innerHTML: data.label }),
+    h(Handle, { type: 'source', position: sourcePosition, connectable }),
   ]
 }
 
-InputNode.props = ['sourcePosition', 'label', 'isValidSourcePos', 'connectable', 'data']
+InputNode.props = ['sourcePosition', 'connectable', 'data']
 InputNode.inheritAttrs = false
 InputNode.compatConfig = { MODE: 3 }
 

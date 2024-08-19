@@ -1,6 +1,6 @@
-import { inject, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import type { ElementData } from '../types'
-import { ErrorCode, VueFlowError } from '../utils'
+import { ErrorCode, VueFlowError, getConnectedEdges } from '../utils'
 import { NodeRef } from '../context'
 import { useVueFlow } from './useVueFlow'
 import { useNodeId } from './useNodeId'
@@ -20,7 +20,7 @@ export function useNode<Data = ElementData>(id?: string) {
   const nodeId = id ?? useNodeId() ?? ''
   const nodeEl = inject(NodeRef, ref(null))
 
-  const { getNode, emits } = useVueFlow()
+  const { getNode, edges, emits } = useVueFlow()
 
   const node = getNode<Data>(nodeId)!
 
@@ -32,5 +32,7 @@ export function useNode<Data = ElementData>(id?: string) {
     id: nodeId,
     nodeEl,
     node,
+    parentNode: computed(() => (node.parentNode ? getNode(node.parentNode) : undefined)),
+    connectedEdges: computed(() => getConnectedEdges([node], edges.value)),
   }
 }
