@@ -231,12 +231,6 @@ export interface FlowProps {
   autoPanSpeed?: number
 }
 
-/**
- * All available VueFlow options
- * @deprecated use the {@link FlowProps} type instead
- */
-export type FlowOptions = FlowProps
-
 export interface FlowEmits {
   (event: 'nodesChange', changes: NodeChange[]): void
   (event: 'edgesChange', changes: EdgeChange[]): void
