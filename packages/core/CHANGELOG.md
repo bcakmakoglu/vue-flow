@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.40.0
+
+### Minor Changes
+
+- [#1575](https://github.com/bcakmakoglu/vue-flow/pull/1575) [`7aa49f4`](https://github.com/bcakmakoglu/vue-flow/commit/7aa49f4f6da9643797743cddb4074dbad85d0aa8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `null` as possible return type of data in `useNodesData`
+
+### Patch Changes
+
+- [#1586](https://github.com/bcakmakoglu/vue-flow/pull/1586) [`f2ed6a3`](https://github.com/bcakmakoglu/vue-flow/commit/f2ed6a3b3daeb526156173a8913dcc3785b4b999) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Only display grab cursor when panOnDrag is on left mouse button
+
+- [#1585](https://github.com/bcakmakoglu/vue-flow/pull/1585) [`d7a51f8`](https://github.com/bcakmakoglu/vue-flow/commit/d7a51f8014c02043ca1c6c1e96210a0f6545175a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Simplify event emits definitions to avoid hitting complexity limit of TS.
+
 ## 1.39.3
 
 ### Patch Changes
