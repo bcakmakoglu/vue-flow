@@ -237,15 +237,46 @@ export interface FlowProps {
  */
 export type FlowOptions = FlowProps
 
+export type EdgeMouseEvents =
+  | 'edgeContextMenu'
+  | 'edgeMouseEnter'
+  | 'edgeMouseMove'
+  | 'edgeMouseLeave'
+  | 'edgeDoubleClick'
+  | 'edgeClick'
+  | 'edgeUpdateStart'
+  | 'edgeUpdateEnd'
+
+export type NodeMouseEvents =
+  | 'nodeContextMenu'
+  | 'nodeMouseEnter'
+  | 'nodeMouseMove'
+  | 'nodeMouseLeave'
+  | 'nodeDoubleClick'
+  | 'nodeClick'
+
+export type NodeDragEvents = 'nodeDragStart' | 'nodeDrag' | 'nodeDragStop'
+
+export type MiniMapNodeEvents =
+  | 'miniMapNodeClick'
+  | 'miniMapNodeDoubleClick'
+  | 'miniMapNodeMouseEnter'
+  | 'miniMapNodeMouseMove'
+  | 'miniMapNodeMouseLeave'
+
+export type PaneMouseEvents = 'paneClick' | 'paneContextMenu' | 'paneMouseEnter' | 'paneMouseMove' | 'paneMouseLeave'
+
 export interface FlowEmits {
   (event: 'nodesChange', changes: NodeChange[]): void
   (event: 'edgesChange', changes: EdgeChange[]): void
   (event: 'nodesInitialized'): void
-  (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseMove', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseLeave', nodeMouseEvent: NodeMouseEvent): void
+
+  /** @deprecated use `init` instead */
+  (event: 'paneReady', paneEvent: VueFlowStore): void
+  (event: 'init', paneEvent: VueFlowStore): void
+  (event: 'updateNodeInternals'): void
+  (event: 'error', error: VueFlowError): void
+
   (event: 'connect', connectionEvent: Connection): void
   (
     event: 'connectStart',
@@ -261,49 +292,33 @@ export interface FlowEmits {
     } & OnConnectStartParams,
   ): void
   (event: 'clickConnectEnd', connectionEvent?: MouseEvent): void
+
   (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
   (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
+
   (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
   (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
   (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
   (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
   (event: 'selectionStart', selectionEvent: MouseEvent): void
   (event: 'selectionEnd', selectionEvent: MouseEvent): void
+
   (event: 'viewportChangeStart', viewport: ViewportTransform): void
   (event: 'viewportChange', viewport: ViewportTransform): void
   (event: 'viewportChangeEnd', viewport: ViewportTransform): void
-  /** @deprecated use `init` instead */
-  (event: 'paneReady', paneEvent: VueFlowStore): void
-  (event: 'init', paneEvent: VueFlowStore): void
-  (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
-  (event: 'paneClick', paneEvent: MouseEvent): void
-  (event: 'paneContextMenu', paneEvent: MouseEvent): void
-  (event: 'paneMouseEnter', paneEvent: MouseEvent): void
-  (event: 'paneMouseMove', paneEvent: MouseEvent): void
-  (event: 'paneMouseLeave', paneEvent: MouseEvent): void
-  (event: 'updateNodeInternals'): void
-  (event: 'error', error: VueFlowError): void
 
-  (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'paneScroll', paneScrollEvent: WheelEvent | undefined): void
+  (event: PaneMouseEvents, paneMouseEvent: MouseEvent): void
+
   (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
-  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
+  (event: EdgeMouseEvents, edgeMouseEvent: EdgeMouseEvent): void
 
-  (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseMove', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseLeave', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeContextMenu', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeDragStart', nodeDragEvent: NodeDragEvent): void
-  (event: 'nodeDrag', nodeDragEvent: NodeDragEvent): void
-  (event: 'nodeDragStop', nodeDragEvent: NodeDragEvent): void
+  (event: NodeMouseEvents, nodeMouseEvent: NodeMouseEvent): void
+
+  (event: NodeDragEvents, nodeDragEvent: NodeDragEvent): void
+
+  (event: MiniMapNodeEvents, nodeMouseEvent: NodeMouseEvent): void
 
   /** v-model event definitions */
   (event: 'update:modelValue', value: FlowElements): void
