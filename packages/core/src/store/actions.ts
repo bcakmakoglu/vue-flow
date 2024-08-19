@@ -116,17 +116,11 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const updateNodeDimensions: Actions['updateNodeDimensions'] = (updates) => {
-    if (!state.vueFlowRef) {
+    if (!state.viewportRef) {
       return
     }
 
-    const viewportNode = state.vueFlowRef.querySelector('.vue-flow__transformationpane') as HTMLElement
-
-    if (!viewportNode) {
-      return
-    }
-
-    const style = window.getComputedStyle(viewportNode)
+    const style = window.getComputedStyle(state.viewportRef)
     const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
     const changes: NodeDimensionChange[] = []
