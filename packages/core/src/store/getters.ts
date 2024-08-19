@@ -1,24 +1,10 @@
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
-import type { ComputedGetters, EdgeLookup, GraphEdge, GraphNode, NodeLookup, State } from '../types'
+import type { ComputedGetters, GraphEdge, GraphNode, NodeLookup, State } from '../types'
 import { getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
-export function useGetters(
-  state: State,
-  nodeLookup: ComputedRef<NodeLookup>,
-  edgeLookup: ComputedRef<EdgeLookup>,
-): ComputedGetters {
-  /**
-   * @deprecated will be removed in next major version; use findNode instead
-   */
-  const getNode: ComputedGetters['getNode'] = computed(() => (id) => nodeLookup.value.get(id))
-
-  /**
-   * @deprecated will be removed in next major version; use findEdge instead
-   */
-  const getEdge: ComputedGetters['getEdge'] = computed(() => (id) => edgeLookup.value.get(id))
-
+export function useGetters(state: State, nodeLookup: ComputedRef<NodeLookup>): ComputedGetters {
   const getEdgeTypes: ComputedGetters['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
@@ -98,8 +84,6 @@ export function useGetters(
     return state.edges
   })
 
-  const getElements: ComputedGetters['getElements'] = computed(() => [...getNodes.value, ...getEdges.value])
-
   const getSelectedNodes: ComputedGetters['getSelectedNodes'] = computed(() => {
     const selectedNodes: GraphNode[] = []
     for (const node of state.nodes) {
@@ -122,45 +106,12 @@ export function useGetters(
     return selectedEdges
   })
 
-  const getSelectedElements: ComputedGetters['getSelectedElements'] = computed(() => [
-    ...getSelectedNodes.value,
-    ...getSelectedEdges.value,
-  ])
-
-  /**
-   * @deprecated will be removed in next major version; use `useNodesInitialized` instead
-   */
-  const getNodesInitialized: ComputedGetters['getNodesInitialized'] = computed(() => {
-    const initializedNodes: GraphNode[] = []
-
-    for (const node of state.nodes) {
-      if (!!node.dimensions.width && !!node.dimensions.height && node.handleBounds !== undefined) {
-        initializedNodes.push(node)
-      }
-    }
-
-    return initializedNodes
-  })
-
-  /**
-   * @deprecated will be removed in next major version; use `useNodesInitialized` instead
-   */
-  const areNodesInitialized: ComputedGetters['areNodesInitialized'] = computed(
-    () => getNodes.value.length > 0 && getNodesInitialized.value.length === getNodes.value.length,
-  )
-
   return {
-    getNode,
-    getEdge,
-    getElements,
     getEdgeTypes,
     getNodeTypes,
     getEdges,
     getNodes,
-    getSelectedElements,
     getSelectedNodes,
     getSelectedEdges,
-    getNodesInitialized,
-    areNodesInitialized,
   }
 }

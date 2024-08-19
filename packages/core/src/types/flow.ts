@@ -7,7 +7,7 @@ import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProp
 import type { Connection, ConnectionLineOptions, ConnectionLineProps, ConnectionMode, OnConnectStartParams } from './connection'
 import type { PanOnScrollMode, ViewportTransform } from './zoom'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
-import type { CustomEvent, EdgeMouseEvent, EdgeUpdateEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
+import type { EdgeMouseEvent, EdgeUpdateEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
 import type { ValidConnectionFunc } from './handle'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
@@ -16,19 +16,9 @@ import type { VueFlowStore } from './store'
 export type ElementData = any
 
 /** Initial elements (before parsing into state) */
-export type Element<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = Node<NodeData, NodeEvents> | Edge<EdgeData, EdgeEvents>
+export type Element<NodeData = ElementData, EdgeData = ElementData> = Node<NodeData> | Edge<EdgeData>
 
-export type Elements<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = Element<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
+export type Elements<NodeData = ElementData, EdgeData = ElementData> = Element<NodeData, EdgeData>[]
 
 export type MaybeElement = Node | Edge | Connection | Element
 

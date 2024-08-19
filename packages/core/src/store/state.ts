@@ -1,4 +1,4 @@
-import type { FlowOptions, State } from '../types'
+import type { FlowProps, State } from '../types'
 import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '../types'
 
 import { isMacOs } from '../utils'
@@ -59,8 +59,6 @@ export function useState(): State {
     userSelectionRect: null,
 
     defaultMarkerColor: '#b1b1b7',
-    connectionLineStyle: {},
-    connectionLineType: null,
     connectionLineOptions: {
       type: ConnectionLineType.Bezier,
       style: {},
@@ -118,12 +116,11 @@ export function useState(): State {
 }
 
 // these options will be set using the appropriate methods
-export const storeOptionsToSkip: (keyof Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>)[] = [
+export const storeOptionsToSkip: (keyof Partial<FlowProps & Omit<State, 'nodes' | 'edges' | 'modelValue'>>)[] = [
   'id',
   'vueFlowRef',
   'viewportRef',
   'initialized',
-  'modelValue',
   'nodes',
   'edges',
   'maxZoom',
@@ -131,4 +128,8 @@ export const storeOptionsToSkip: (keyof Partial<FlowOptions & Omit<State, 'nodes
   'translateExtent',
   'hooks',
   'defaultEdgeOptions',
+  'd3Zoom',
+  'd3Selection',
+  'd3ZoomHandler',
+  'dimensions',
 ]

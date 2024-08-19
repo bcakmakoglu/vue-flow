@@ -29,7 +29,6 @@ export function createHooks(): FlowHooks {
     connectEnd: createExtendedEventHook(),
     clickConnectStart: createExtendedEventHook(),
     clickConnectEnd: createExtendedEventHook(),
-    paneReady: createExtendedEventHook(),
     init: createExtendedEventHook(),
     move: createExtendedEventHook(),
     moveStart: createExtendedEventHook(),
