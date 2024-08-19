@@ -1,11 +1,9 @@
-import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
+import type { ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { ViewportHelper } from '../composables'
 import type {
   Dimensions,
   ElementData,
-  Elements,
-  FlowElements,
   FlowExportObject,
   FlowOptions,
   FlowProps,
@@ -16,15 +14,7 @@ import type {
   XYPosition,
 } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
-import type {
-  Connection,
-  ConnectionLineOptions,
-  ConnectionLineType,
-  ConnectionLookup,
-  ConnectionMode,
-  ConnectionStatus,
-  Connector,
-} from './connection'
+import type { ConnectionLineOptions, ConnectionLookup, ConnectionMode, ConnectionStatus, Connector } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportTransform } from './zoom'
@@ -89,10 +79,6 @@ export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
 
   connectionMode: ConnectionMode
   connectionLineOptions: ConnectionLineOptions
-  /** @deprecated use {@link ConnectionLineOptions.type} */
-  connectionLineType: ConnectionLineType | null
-  /** @deprecated use {@link ConnectionLineOptions.style} */
-  connectionLineStyle: CSSProperties | null
   connectionStartHandle: ConnectingHandle | null
   connectionEndHandle: ConnectingHandle | null
   connectionClickStartHandle: ConnectingHandle | null
@@ -161,173 +147,258 @@ export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
   ariaLiveMessage: string
 }
 
-export type SetElements = (elements: Elements | ((elements: FlowElements) => Elements)) => void
-
-export type SetNodes = (nodes: Node[] | ((nodes: GraphNode[]) => Node[])) => void
-
-export type SetEdges = (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
-
-export type AddNodes = (nodes: Node | Node[] | ((nodes: GraphNode[]) => Node | Node[])) => void
-
-export type RemoveNodes = (
-  nodes: (string | Node) | (Node | string)[] | ((nodes: GraphNode[]) => (string | Node) | (Node | string)[]),
-  removeConnectedEdges?: boolean,
-  removeChildren?: boolean,
-) => void
-
-export type RemoveEdges = (
-  edges: (string | Edge) | (Edge | string)[] | ((edges: GraphEdge[]) => (string | Edge) | (Edge | string)[]),
-) => void
-
-export type AddEdges = (
-  edgesOrConnections:
-    | (Edge | Connection)
-    | (Edge | Connection)[]
-    | ((edges: GraphEdge[]) => (Edge | Connection) | (Edge | Connection)[]),
-) => void
-
-export type UpdateEdge = (oldEdge: GraphEdge, newConnection: Connection, shouldReplaceId?: boolean) => GraphEdge | false
-
-export type UpdateEdgeData = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string,
-  dataUpdate: Partial<Data> | ((edge: GraphEdge<Data, CustomEvents>) => Partial<Data>),
-  options?: { replace: boolean },
-) => void
-
-export type SetState = (
-  state:
-    | Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
-    | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
-) => void
-
-export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
-
-export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => void
-
-export type UpdateNodeInternals = (nodeIds?: string[]) => void
-
-export type FindNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string | undefined | null,
-) => GraphNode<Data, CustomEvents> | undefined
-
-export type FindEdge = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string | undefined | null,
-) => GraphEdge<Data, CustomEvents> | undefined
-
-export type GetIntersectingNodes = (
-  node: (Partial<Node> & { id: Node['id'] }) | Rect,
-  partially?: boolean,
-  nodes?: GraphNode[],
-) => GraphNode[]
-
-export type UpdateNode = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string,
-  nodeUpdate: Partial<Node<Data, CustomEvents>> | ((node: GraphNode<Data, CustomEvents>) => Partial<Node<Data, CustomEvents>>),
-  options?: { replace: boolean },
-) => void
-
-export type UpdateNodeData = <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-  id: string,
-  dataUpdate: Partial<Data> | ((node: GraphNode<Data, CustomEvents>) => Partial<Data>),
-  options?: { replace: boolean },
-) => void
-
-export type IsNodeIntersecting = (node: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean
-
 export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
-  /** parses elements (nodes + edges) and re-sets the state */
-  setElements: SetElements
-  /** parses nodes and re-sets the state */
-  setNodes: SetNodes
-  /** parses edges and re-sets the state */
-  setEdges: SetEdges
-  /** parses nodes and adds to state */
-  addNodes: AddNodes
-  /** parses edges and adds to state */
-  addEdges: AddEdges
-  /** remove nodes (and possibly connected edges and children) from state */
-  removeNodes: RemoveNodes
-  /** remove edges from state */
-  removeEdges: RemoveEdges
-  /** find a node by id */
-  findNode: FindNode
-  /** find an edge by id */
-  findEdge: FindEdge
-  /** updates an edge */
-  updateEdge: UpdateEdge
-  /** updates the data of an edge */
-  updateEdgeData: UpdateEdgeData
-  /** updates a node */
-  updateNode: UpdateNode
-  /** updates the data of a node */
-  updateNodeData: UpdateNodeData
+  /**
+   * Sets nodes.
+   *
+   * @param nodes - the nodes to set or a function that receives the current nodes and returns the new nodes
+   */
+  setNodes: (nodes: Node[] | ((nodes: GraphNode[]) => Node[])) => void
+
+  /**
+   * Sets edges.
+   *
+   * @param edges - the edges to set or a function that receives the current edges and returns the new edges
+   */
+  setEdges: (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
+
+  /**
+   * Adds nodes.
+   *
+   * @param nodes - the nodes to add
+   */
+  addNodes: (nodes: Node | Node[]) => void
+
+  /**
+   * Adds edges.
+   *
+   * @param edges - the edges to add
+   */
+  addEdges: (edges: Edge | Edge[]) => void
+
+  /**
+   * Removes nodes from state.
+   *
+   * @param nodes - the nodes or its id(s) to remove or a function that receives the current nodes and returns the nodes or its id(s) to remove
+   * @param options - extra options for the removal
+   * @param options.removeConnectedEdges - if true, connected edges will be removed as well
+   * @param options.removeChildren - if true, children will be removed as well
+   */
+  removeNodes: (
+    nodes: (string | Node) | (Node | string)[] | ((nodes: GraphNode[]) => (string | Node) | (Node | string)[]),
+    options?: { removeConnectedEdges?: boolean; removeChildren?: boolean },
+  ) => void
+
+  /**
+   * Removes edges from state.
+   *
+   * @param edges - the edges or its id(s) to remove or a function that receives the current edges and returns the edges or its id(s) to remove
+   */
+  removeEdges: (
+    edges: (string | Edge) | (Edge | string)[] | ((edges: GraphEdge[]) => (string | Edge) | (Edge | string)[]),
+  ) => void
+
+  /**
+   * Get a node by id.
+   *
+   * @param id - the node id
+   */
+  getNode: <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+    id: string,
+  ) => GraphNode<Data, CustomEvents> | undefined
+
+  /**
+   * Get a edge by id.
+   *
+   * @param id - the edge id
+   */
+  getEdge: <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
+    id: string,
+  ) => GraphEdge<Data, CustomEvents> | undefined
+
+  /**
+   * Updates an edge.
+   *
+   * @param id - id of the edge to update
+   * @param edgeUpdate - the edge update as an object or a function that receives the current edge and returns the edge update
+   * @param options.replace - if true, the edge is replaced with the edge update, otherwise the changes get merged
+   *
+   * @example
+   * updateEdge('edge-1', (edge) => ({ label: 'A new label' }));
+   */
+  updateEdge: (
+    id: string,
+    edgeUpdate: Partial<GraphEdge> | ((edge: GraphEdge) => Partial<GraphEdge>),
+    options?: { replace: boolean },
+  ) => void
+
+  /**
+   * Updates the data attribute of a edge.
+   *
+   * @param id - id of the edge to update
+   * @param dataUpdate - the data update as an object or a function that receives the current data and returns the data update
+   * @param options.replace - if true, the data is replaced with the data update, otherwise the changes get merged
+   *
+   * @example
+   * updateEdgeData('edge-1', { label: 'A new label' });
+   */
+  updateEdgeData: (
+    id: string,
+    dataUpdate: Partial<GraphEdge['data']> | ((edge: GraphEdge) => Partial<GraphEdge['data']>),
+    options?: { replace: boolean },
+  ) => void
+
+  /**
+   * Updates a node.
+   *
+   * @param id - id of the node to update
+   * @param nodeUpdate - the node update as an object or a function that receives the current node and returns the node update
+   * @param options.replace - if true, the node is replaced with the node update, otherwise the changes get merged
+   *
+   * @example
+   * updateNode('node-1', (node) => ({ position: { x: node.position.x + 10, y: node.position.y } }));
+   */
+  updateNode: (
+    id: string,
+    nodeUpdate: Partial<GraphNode> | ((node: GraphNode) => Partial<GraphNode>),
+    options?: { replace: boolean },
+  ) => void
+
+  /**
+   * Updates the data attribute of a node.
+   *
+   * @param id - id of the node to update
+   * @param dataUpdate - the data update as an object or a function that receives the current data and returns the data update
+   * @param options.replace - if true, the data is replaced with the data update, otherwise the changes get merged
+   *
+   * @example
+   * updateNodeData('node-1', { label: 'A new label' });
+   */
+  updateNodeData: (
+    id: string,
+    dataUpdate: Partial<NodeType['data']> | ((node: NodeType) => Partial<NodeType['data']>),
+    options?: { replace: boolean },
+  ) => void
+
   /** applies default edge change handler */
   applyEdgeChanges: (changes: EdgeChange[]) => GraphEdge[]
+
   /** applies default node change handler */
   applyNodeChanges: (changes: NodeChange[]) => GraphNode[]
-  /**
-   * manually select elements and add to state
-   * @deprecated will be removed in the next major, use {@link Actions.addSelectedNodes} or {@link Actions.addSelectedEdges} instead
-   */
-  addSelectedElements: (elements: FlowElements) => void
+
   /** manually select edges and add to state */
   addSelectedEdges: (edges: GraphEdge[]) => void
+
   /** manually select nodes and add to state */
   addSelectedNodes: (nodes: GraphNode[]) => void
+
   /** manually unselect edges and remove from state */
   removeSelectedEdges: (edges: GraphEdge[]) => void
+
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes: GraphNode[]) => void
-  /**
-   * @deprecated will be replaced in the next major
-   * unselect selected elements (if none are passed, all elements are unselected)
-   */
-  removeSelectedElements: (elements?: Elements) => void
+
   /** apply min zoom value to d3 */
   setMinZoom: (zoom: number) => void
+
   /** apply max zoom value to d3 */
   setMaxZoom: (zoom: number) => void
+
   /** apply translate extent to d3 */
   setTranslateExtent: (translateExtent: CoordinateExtent) => void
+
   /** apply extent to nodes */
   setNodeExtent: (nodeExtent: CoordinateExtent | CoordinateExtentRange) => void
+
   setPaneClickDistance: (distance: number) => void
+
   /** enable/disable node interaction (dragging, selecting etc) */
   setInteractive: (isInteractive: boolean) => void
-  /** set new state */
-  setState: SetState
+
+  /**
+   * Set the state.
+   *
+   * @param state - the state to set or a function that receives the current state and returns the new state
+   */
+  setState: (
+    state:
+      | Partial<FlowProps & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
+      | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
+  ) => void
+
   /** return an object of graph values (elements, viewport transform) for storage and re-loading a graph */
   toObject: () => FlowExportObject
+
   /** load graph from export obj */
   fromObject: (obj: FlowExportObject) => Promise<boolean>
+
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
-  updateNodeInternals: UpdateNodeInternals
+  updateNodeInternals: (nodeIds?: string[]) => void
+
   /** start a connection */
   startConnection: (startHandle: ConnectingHandle, position?: XYPosition, isClick?: boolean) => void
+
   /** update connection position */
   updateConnection: (position: XYPosition, result?: ConnectingHandle | null, status?: ConnectionStatus | null) => void
+
   /** end (or cancel) a connection */
   endConnection: (event?: MouseEvent | TouchEvent, isClick?: boolean) => void
 
-  /** internal position updater, you probably don't want to use this */
-  updateNodePositions: UpdateNodePosition
-  /** internal dimensions' updater, you probably don't want to use this */
-  updateNodeDimensions: UpdateNodeDimensions
+  /**
+   * Update node positions.
+   *
+   * internal position updater, you shouldn't use this
+   *
+   * @internal
+   * @param dragItems - the drag items
+   * @param changed - if the positions have changed
+   * @param dragging - if the items are currently being dragged
+   */
+  updateNodePositions: (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
 
-  /** returns all node intersections */
-  getIntersectingNodes: GetIntersectingNodes
-  /** check if a node is intersecting with a defined area */
-  isNodeIntersecting: IsNodeIntersecting
+  /**
+   * Update node dimensions.
+   *
+   * internal dimension updater, you shouldn't use this
+   *
+   * @internal
+   * @param updates - the updates
+   */
+  updateNodeDimensions: (updates: UpdateNodeDimensionsParams[]) => void
+
+  /**
+   * Check if a node or a rect is intersecting with other nodes.
+   *
+   * @param nodeOrRect - the node or rect to check for intersections
+   * @param partially - if true, the node is considered to be intersecting if it partially overlaps with the passed node or rect
+   * @param nodes - optional nodes array to check for intersections
+   */
+  getIntersectingNodes: (
+    nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
+    partially?: boolean,
+    nodes?: GraphNode[],
+  ) => GraphNode[]
+
+  /**
+   * Check if a node or a rect is intersecting with the passed rect.
+   *
+   * @param nodeOrRect - the node or rect to check for intersections
+   * @param area - the rect to check for intersections
+   * @param partially - if true, the node is considered to be intersecting if it partially overlaps with the passed react
+   */
+  isNodeIntersecting: (nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean
+
   /** get a node's incomers */
   getIncomers: (nodeOrId: Node | string) => GraphNode[]
+
   /** get a node's outgoers */
   getOutgoers: (nodeOrId: Node | string) => GraphNode[]
+
   /** get a node's connected edges */
   getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
+
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => boolean
-  /** viewport helper instance */
-  viewportHelper: ComputedRef<ViewportHelper>
 
   /** reset state to defaults */
   $reset: () => void
@@ -341,41 +412,14 @@ export interface Getters {
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent>
-  /**
-   * get all elements
-   * @deprecated - will be removed in next major version
-   */
-  getElements: FlowElements
   /** all visible node */
   getNodes: GraphNode[]
   /** all visible edges */
   getEdges: GraphEdge[]
-  /**
-   * returns a node by id
-   * @deprecated use {@link Actions.findNode} instead
-   */
-  getNode: (id: string) => GraphNode | undefined
-  /**
-   * returns an edge by id
-   * @deprecated use {@link Actions.findEdge} instead
-   */
-  getEdge: (id: string) => GraphEdge | undefined
-  /** returns all currently selected elements */
-  getSelectedElements: FlowElements
   /** returns all currently selected nodes */
   getSelectedNodes: GraphNode[]
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge[]
-  /**
-   * returns all nodes that are initialized, i.e. they have actual dimensions
-   * @deprecated - will be removed in next major version; use {@link useNodesInitialized} instead
-   */
-  getNodesInitialized: GraphNode[]
-  /**
-   * returns a boolean flag whether all current nodes are initialized
-   * @deprecated - will be removed in next major version; use {@link useNodesInitialized} instead
-   */
-  areNodesInitialized: boolean
 }
 
 export type ComputedGetters = {
