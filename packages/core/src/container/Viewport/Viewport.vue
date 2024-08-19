@@ -17,13 +17,13 @@ const transform = computed(() => `translate(${viewport.value.x}px,${viewport.val
 
 <script lang="ts">
 export default {
-  name: 'Transform',
+  name: 'Viewport',
   compatConfig: { MODE: 3 },
 }
 </script>
 
 <template>
-  <div class="vue-flow__transformationpane vue-flow__container" :style="{ transform, opacity: isHidden ? 0 : undefined }">
+  <div class="vue-flow__viewport vue-flow__container" :style="{ transform, opacity: isHidden ? 0 : undefined }">
     <slot />
   </div>
 </template>
