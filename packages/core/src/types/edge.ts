@@ -139,8 +139,6 @@ export interface EdgePositions {
 /** Internal edge type */
 export type GraphEdge<Data = ElementData, Type extends string = string> = Edge<Data> & {
   selected: boolean
-  sourceNode: GraphNode
-  targetNode: GraphNode
   data: Data
   type: Type
 } & EdgePositions

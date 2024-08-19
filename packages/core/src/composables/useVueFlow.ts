@@ -1,8 +1,8 @@
 import { tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { effectScope, getCurrentInstance, getCurrentScope, inject, provide, watch } from 'vue'
-import type { EdgeChange, FlowOptions, NodeChange, VueFlowStore } from '../types'
-import { ErrorCode, VueFlowError, warn } from '../utils'
+import { effectScope, getCurrentScope, inject, provide, watch } from 'vue'
+import type { EdgeChange, NodeChange, VueFlowStore } from '../types'
+import { warn } from '../utils'
 import { VueFlow } from '../context'
 import { Storage } from '../utils/storage'
 
@@ -19,20 +19,13 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
  *
  * @public
  * @returns a vue flow store instance
- * @param idOrOpts - id of the store instance or options to create a new store instance
+ * @param id - id of the store instance or options to create a new store instance
  */
-export function useVueFlow(id?: string): VueFlowStore
-export function useVueFlow(options?: FlowOptions): VueFlowStore
-export function useVueFlow(idOrOpts?: any): VueFlowStore {
+export function useVueFlow(id?: string): VueFlowStore {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
 
-  const isOptsObj = typeof idOrOpts === 'object'
-
-  const options = isOptsObj ? idOrOpts : { id: idOrOpts }
-
-  const id = options.id
   const vueFlowId = scope?.vueFlowId || id
 
   let vueFlow: Injection
@@ -66,7 +59,7 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
   if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
     const name = id ?? storage.getId()
 
-    const state = storage.create(name, options)
+    const state = storage.create(name)
 
     vueFlow = state
 
@@ -118,11 +111,6 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
         }
       })
     })
-  } else {
-    // If options were passed, overwrite state with the options' values
-    if (isOptsObj) {
-      vueFlow.setState(options)
-    }
   }
 
   // Provide a fresh instance into context if we are in a scope
@@ -130,15 +118,6 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
     provide(VueFlow, vueFlow)
 
     scope.vueFlowId = vueFlow.id
-  }
-
-  if (isOptsObj) {
-    const instance = getCurrentInstance()
-
-    // ignore the warning if we are in a VueFlow component
-    if (instance?.type.name !== 'VueFlow') {
-      vueFlow.emits.error(new VueFlowError(ErrorCode.USEVUEFLOW_OPTIONS))
-    }
   }
 
   return vueFlow

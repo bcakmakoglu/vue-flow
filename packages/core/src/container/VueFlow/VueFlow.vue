@@ -27,12 +27,9 @@ const props = withDefaults(defineProps<FlowProps>(), {
   zoomOnDoubleClick: undefined,
   panOnScroll: undefined,
   panOnDrag: undefined,
-  applyDefault: undefined,
   fitViewOnInit: undefined,
   connectOnClick: undefined,
-  connectionLineStyle: undefined,
   connectionLineOptions: undefined,
-  autoConnect: undefined,
   elevateEdgesOnSelect: undefined,
   elevateNodesOnSelect: undefined,
   disableKeyboardA11y: undefined,
@@ -52,14 +49,13 @@ const emit = defineEmits<FlowEmits>()
 
 const slots = defineSlots<FlowSlots>()
 
-const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
 const instance = useVueFlow(props)
 
 // watch props and update store state
-const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, instance)
+const dispose = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, instance)
 
 useHooks(emit, instance.hooks)
 

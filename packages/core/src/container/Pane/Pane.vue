@@ -16,7 +16,6 @@ const {
   viewport,
   emits,
   userSelectionActive,
-  removeSelectedElements,
   panOnDrag,
   userSelectionRect,
   elementsSelectable,
@@ -31,6 +30,8 @@ const {
   multiSelectionActive,
   edgeLookup,
   nodeLookup,
+  removeSelectedEdges,
+  removeSelectedNodes,
 } = useVueFlow()
 
 const container = ref<HTMLDivElement | null>(null)
@@ -95,7 +96,8 @@ function onClick(event: MouseEvent) {
 
   emits.paneClick(event)
 
-  removeSelectedElements()
+  removeSelectedEdges()
+  removeSelectedNodes()
 
   nodesSelectionActive.value = false
 }
@@ -138,7 +140,8 @@ function onPointerDown(event: PointerEvent) {
     edgeIdLookup.value.set(edge.target, edgeIdLookup.value.get(edge.target)?.add(id) || new Set([id]))
   }
 
-  removeSelectedElements()
+  removeSelectedEdges()
+  removeSelectedNodes()
 
   userSelectionRect.value = {
     width: 0,

@@ -4,7 +4,6 @@ import { until } from '@vueuse/core'
 import type {
   Actions,
   CoordinateExtent,
-  Edge,
   EdgeAddChange,
   EdgeLookup,
   EdgeRemoveChange,
@@ -651,7 +650,6 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
 
   const toObject: Actions['toObject'] = () => {
     const nodes: Node[] = []
-    const edges: Edge[] = []
 
     for (const node of state.nodes) {
       const {
@@ -668,17 +666,11 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
       nodes.push(rest)
     }
 
-    for (const edge of state.edges) {
-      const { selected: _, sourceNode: __, targetNode: ___, ...rest } = edge
-
-      edges.push(rest)
-    }
-
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
     return JSON.parse(
       JSON.stringify({
         nodes,
-        edges,
+        edges: state.edges,
         position: [state.viewport.x, state.viewport.y],
         zoom: state.viewport.zoom,
         viewport: state.viewport,

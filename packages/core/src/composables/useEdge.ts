@@ -1,5 +1,5 @@
 import { inject, ref } from 'vue'
-import type { CustomEvent, ElementData } from '../types'
+import type { ElementData } from '../types'
 import { ErrorCode, VueFlowError } from '../utils'
 import { EdgeId, EdgeRef } from '../context'
 import { useVueFlow } from './useVueFlow'
@@ -15,13 +15,13 @@ import { useVueFlow } from './useVueFlow'
  * @param id - The id of the edge to access
  * @returns the edge id, the edge and the edge dom element
  */
-export function useEdge<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
+export function useEdge<Data = ElementData>(id?: string) {
   const edgeId = id ?? inject(EdgeId, '')
   const edgeEl = inject(EdgeRef, ref(null))
 
-  const { findEdge, emits } = useVueFlow()
+  const { getEdge, emits } = useVueFlow()
 
-  const edge = findEdge<Data, CustomEvents>(edgeId)!
+  const edge = getEdge<Data>(edgeId)!
 
   if (!edge) {
     emits.error(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edgeId))

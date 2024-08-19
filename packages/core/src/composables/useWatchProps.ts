@@ -2,7 +2,7 @@ import type { ToRefs } from 'vue'
 import { effectScope, isRef, nextTick, onScopeDispose, toRef, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { watchPausable } from '@vueuse/core'
-import type { Connection, FlowProps, VueFlowStore } from '../types'
+import type { FlowProps, VueFlowStore } from '../types'
 import { isDef } from '../utils'
 
 /**
@@ -13,60 +13,10 @@ import { isDef } from '../utils'
  * @param props
  * @param store
  */
-export function useWatchProps(
-  models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
-  props: FlowProps,
-  store: VueFlowStore,
-) {
+export function useWatchProps(models: ToRefs<Pick<FlowProps, 'nodes' | 'edges'>>, props: FlowProps, store: VueFlowStore) {
   const scope = effectScope(true)
 
   scope.run(() => {
-    const watchModelValue = () => {
-      scope.run(() => {
-        let pauseModel: WatchPausableReturn
-        let pauseStore: WatchPausableReturn
-
-        let immediateStore = !!(store.nodes.value.length || store.edges.value.length)
-
-        // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.modelValue, () => models.modelValue?.value?.length], ([elements]) => {
-          if (elements && Array.isArray(elements)) {
-            pauseStore?.pause()
-
-            store.setElements(elements)
-
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && elements.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
-            }
-          }
-        })
-
-        pauseStore = watchPausable(
-          [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
-          ([nodes, edges]) => {
-            if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
-              pauseModel?.pause()
-
-              models.modelValue.value = [...nodes, ...edges]
-
-              nextTick(() => {
-                pauseModel?.resume()
-              })
-            }
-          },
-          { immediate: immediateStore },
-        )
-
-        onScopeDispose(() => {
-          pauseModel?.stop()
-          pauseStore?.stop()
-        })
-      })
-    }
-
     const watchNodesValue = () => {
       scope.run(() => {
         let pauseModel: WatchPausableReturn
@@ -221,77 +171,8 @@ export function useWatchProps(
       })
     }
 
-    const watchApplyDefault = () => {
-      scope.run(() => {
-        watch(
-          () => props.applyDefault,
-          () => {
-            if (isDef(props.applyDefault)) {
-              store.applyDefault.value = props.applyDefault
-            }
-          },
-          {
-            immediate: true,
-          },
-        )
-      })
-    }
-
-    const watchAutoConnect = () => {
-      scope.run(() => {
-        const autoConnector = async (params: Connection) => {
-          let connection: boolean | Connection = params
-
-          if (typeof props.autoConnect === 'function') {
-            connection = await props.autoConnect(params)
-          }
-
-          if (connection !== false) {
-            store.addEdges([connection])
-          }
-        }
-
-        watch(
-          () => props.autoConnect,
-          () => {
-            if (isDef(props.autoConnect)) {
-              store.autoConnect.value = props.autoConnect
-            }
-          },
-          { immediate: true },
-        )
-
-        watch(
-          store.autoConnect,
-          (autoConnectEnabled, _, onCleanup) => {
-            if (autoConnectEnabled) {
-              store.onConnect(autoConnector)
-            } else {
-              store.hooks.value.connect.off(autoConnector)
-            }
-
-            onCleanup(() => {
-              store.hooks.value.connect.off(autoConnector)
-            })
-          },
-          { immediate: true },
-        )
-      })
-    }
-
     const watchRest = () => {
-      const skip: (keyof typeof props)[] = [
-        'id',
-        'modelValue',
-        'translateExtent',
-        'nodeExtent',
-        'edges',
-        'nodes',
-        'maxZoom',
-        'minZoom',
-        'applyDefault',
-        'autoConnect',
-      ]
+      const skip: (keyof typeof props)[] = ['id', 'translateExtent', 'nodeExtent', 'edges', 'nodes', 'maxZoom', 'minZoom']
 
       for (const key of Object.keys(props)) {
         const propKey = key as keyof typeof props
@@ -318,15 +199,12 @@ export function useWatchProps(
     }
 
     const runAll = () => {
-      watchModelValue()
       watchNodesValue()
       watchEdgesValue()
       watchMinZoom()
       watchMaxZoom()
       watchTranslateExtent()
       watchNodeExtent()
-      watchApplyDefault()
-      watchAutoConnect()
       watchRest()
     }
 

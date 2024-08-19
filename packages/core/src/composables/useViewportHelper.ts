@@ -28,9 +28,7 @@ const initialViewportHelper: ViewportHelper = {
   screenToFlowCoordinate: (position) => position,
   flowToScreenCoordinate: (position) => position,
   setViewport: noop,
-  setTransform: noop,
   getViewport: () => ({ x: 0, y: 0, zoom: 1 }),
-  getTransform: () => ({ x: 0, y: 0, zoom: 1 }),
   viewportInitialized: false,
 }
 
@@ -109,21 +107,11 @@ export function useViewportHelper(state: State) {
       setViewport: (transform, options) => {
         return transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
       },
-      setTransform: (transform, options) => {
-        return transformViewport(transform.x, transform.y, transform.zoom, options?.duration)
-      },
       getViewport: () => ({
         x: state.viewport.x,
         y: state.viewport.y,
         zoom: state.viewport.zoom,
       }),
-      getTransform: () => {
-        return {
-          x: state.viewport.x,
-          y: state.viewport.y,
-          zoom: state.viewport.zoom,
-        }
-      },
       fitView: (
         options = {
           padding: DEFAULT_PADDING,

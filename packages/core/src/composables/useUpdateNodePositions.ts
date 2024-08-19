@@ -8,8 +8,7 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useUpdateNodePositions() {
-  const { getSelectedNodes, nodeExtent, updateNodePositions, findNode, snapGrid, snapToGrid, nodesDraggable, emits } =
-    useVueFlow()
+  const { getSelectedNodes, nodeExtent, updateNodePositions, getNode, snapGrid, snapToGrid, nodesDraggable, emits } = useVueFlow()
 
   return (positionDiff: XYPosition, isShiftPressed = false) => {
     // by default a node moves 5px on each key press, or 20px if shift is pressed
@@ -31,7 +30,7 @@ export function useUpdateNodePositions() {
           nextPosition,
           emits.error,
           nodeExtent.value,
-          node.parentNode ? findNode(node.parentNode) : undefined,
+          node.parentNode ? getNode(node.parentNode) : undefined,
         )
 
         nodeUpdates.push({

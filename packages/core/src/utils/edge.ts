@@ -96,12 +96,12 @@ export function isEdgeVisible({
   return overlappingArea > 0
 }
 
-export function getEdgeZIndex(edge: GraphEdge, findNode: Actions['findNode'], elevateEdgesOnSelect = false) {
+export function getEdgeZIndex(edge: GraphEdge, getNode: Actions['getNode'], elevateEdgesOnSelect = false) {
   const hasZIndex = typeof edge.zIndex === 'number'
   let z = hasZIndex ? edge.zIndex! : 0
 
-  const source = findNode(edge.source)
-  const target = findNode(edge.target)
+  const source = getNode(edge.source)
+  const target = getNode(edge.target)
 
   if (!source || !target) {
     return 0

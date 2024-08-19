@@ -29,14 +29,14 @@ export function useNodesData<NodeType extends Node = GraphNode>(
   guard: (node: Node) => node is NodeType,
 ): ComputedRef<NodeData<NodeType>[]>
 export function useNodesData(_nodeIds: any): any {
-  const { findNode } = useVueFlow()
+  const { getNode } = useVueFlow()
 
   return computed({
     get() {
       const nodeIds = toValue(_nodeIds)
 
       if (!Array.isArray(nodeIds)) {
-        const node = findNode(nodeIds)
+        const node = getNode(nodeIds)
 
         if (node) {
           return {
@@ -52,7 +52,7 @@ export function useNodesData(_nodeIds: any): any {
       const data: NodeData<Node>[] = []
 
       for (const nodeId of nodeIds) {
-        const node = findNode(nodeId)
+        const node = getNode(nodeId)
 
         if (node) {
           data.push({

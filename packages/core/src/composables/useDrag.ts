@@ -49,11 +49,11 @@ export function useDrag(params: UseDragParams) {
     autoPanSpeed,
     nodesDraggable,
     panBy,
-    findNode,
+    getNode,
     multiSelectionActive,
     nodesSelectionActive,
     selectNodesOnDrag,
-    removeSelectedElements,
+    removeSelectedNodes,
     addSelectedNodes,
     updateNodePositions,
     emits,
@@ -97,7 +97,7 @@ export function useDrag(params: UseDragParams) {
         nextPosition,
         emits.error,
         nodeExtent.value,
-        n.parentNode ? findNode(n.parentNode) : undefined,
+        n.parentNode ? getNode(n.parentNode) : undefined,
       )
 
       // we want to make sure that we only fire a change event when there is a change
@@ -120,7 +120,7 @@ export function useDrag(params: UseDragParams) {
       const [currentNode, nodes] = getEventHandlerParams({
         id,
         dragItems,
-        findNode,
+        findNode: getNode,
       })
 
       onDrag({ event: dragEvent, node: currentNode, nodes })
@@ -151,11 +151,11 @@ export function useDrag(params: UseDragParams) {
   const startDrag = (event: UseDragEvent, nodeEl: Element) => {
     dragStarted = true
 
-    const node = findNode(id)
+    const node = getNode(id!)
     if (!selectNodesOnDrag.value && !multiSelectionActive.value && node) {
       if (!node.selected) {
         // we need to reset selected nodes when selectNodesOnDrag=false
-        removeSelectedElements()
+        removeSelectedNodes()
       }
     }
 
@@ -164,7 +164,7 @@ export function useDrag(params: UseDragParams) {
         node,
         multiSelectionActive.value,
         addSelectedNodes,
-        removeSelectedElements,
+        removeSelectedNodes,
         nodesSelectionActive,
         false,
         nodeEl as HTMLDivElement,
@@ -173,13 +173,13 @@ export function useDrag(params: UseDragParams) {
 
     const pointerPos = getPointerPosition(event)
     lastPos = pointerPos
-    dragItems = getDragItems(nodes.value, nodesDraggable.value, pointerPos, findNode, id)
+    dragItems = getDragItems(nodes.value, nodesDraggable.value, pointerPos, getNode, id)
 
     if (dragItems.length) {
       const [currentNode, nodes] = getEventHandlerParams({
         id,
         dragItems,
-        findNode,
+        findNode: getNode,
       })
 
       onStart({ event: event.sourceEvent, node: currentNode, nodes })
@@ -256,7 +256,7 @@ export function useDrag(params: UseDragParams) {
       const [currentNode, nodes] = getEventHandlerParams({
         id,
         dragItems,
-        findNode,
+        findNode: getNode,
       })
 
       onStop({ event: event.sourceEvent, node: currentNode, nodes })

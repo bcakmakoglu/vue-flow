@@ -29,14 +29,14 @@ export function useEdgesData<EdgeType extends Edge = GraphEdge>(
   guard: (node: Edge) => node is EdgeType,
 ): ComputedRef<EdgeData<EdgeType>[]>
 export function useEdgesData(_edgeIds: any): any {
-  const { findEdge } = useVueFlow()
+  const { getEdge } = useVueFlow()
 
   return computed({
     get() {
       const edgeIds = toValue(_edgeIds)
 
       if (!Array.isArray(edgeIds)) {
-        const edge = findEdge(edgeIds)
+        const edge = getEdge(edgeIds)
 
         if (edge) {
           return {
@@ -52,7 +52,7 @@ export function useEdgesData(_edgeIds: any): any {
       const data: EdgeData<Edge>[] = []
 
       for (const edgeId of edgeIds) {
-        const edge = findEdge(edgeId)
+        const edge = getEdge(edgeId)
 
         if (edge) {
           data.push({

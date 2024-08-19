@@ -57,7 +57,7 @@ export function useHandle({
     nodesConnectable,
     autoPanOnConnect,
     autoPanSpeed,
-    findNode,
+    getNode,
     panBy,
     startConnection,
     updateConnection,
@@ -83,13 +83,7 @@ export function useHandle({
     const doc = getHostForElement(event.target as HTMLElement)
 
     if ((isMouseTriggered && event.button === 0) || !isMouseTriggered) {
-      const node = findNode(toValue(nodeId))
-
-      let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
-
-      if (!isValidConnectionHandler && node) {
-        isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
-      }
+      const isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
       let closestHandle: ConnectionHandle | null
 
@@ -163,7 +157,7 @@ export function useHandle({
               doc,
               edges.value,
               nodes.value,
-              findNode,
+              getNode,
             ),
         )
 
@@ -270,20 +264,14 @@ export function useHandle({
       return
     }
 
-    const isTarget = toValue(type) === 'target'
-
     if (!connectionClickStartHandle.value) {
       emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId) })
 
       startConnection({ nodeId: toValue(nodeId), type: toValue(type), handleId: toValue(handleId) }, undefined, true)
     } else {
-      let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
+      const isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
-      const node = findNode(toValue(nodeId))
-
-      if (!isValidConnectionHandler && node) {
-        isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
-      }
+      const node = getNode(toValue(nodeId))
 
       if (node && (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable) === false) {
         return
@@ -306,7 +294,7 @@ export function useHandle({
         doc,
         edges.value,
         nodes.value,
-        findNode,
+        getNode,
       )
 
       const isOwnHandle = connection.source === connection.target
