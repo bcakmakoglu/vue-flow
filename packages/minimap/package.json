@@ -61,7 +61,7 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
-    "@xyflow/system": "^0.0.37"
+    "@xyflow/system": "^0.0.39"
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
