@@ -144,6 +144,38 @@ export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptio
   return Object.assign(existingEdge ?? initialState, edge, { id: edge.id.toString() }) as GraphEdge
 }
 
+export function getOutgoers<N extends Node>(nodeOrId: Node | { id: string } | string, nodes: N[], edges: Edge[]): N[] {
+  const nodeId = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
+
+  const connectedEdges = edges.filter((edge) => edge.source === nodeId)
+  const outgoers: N[] = []
+
+  for (const edge of connectedEdges) {
+    const node = nodes.find((node) => node.id === edge.target)
+    if (node) {
+      outgoers.push(node)
+    }
+  }
+
+  return outgoers
+}
+
+export function getIncomers<N extends Node>(nodeOrId: Node | { id: string } | string, nodes: N[], edges: Edge[]): N[] {
+  const nodeId = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
+
+  const connectEdges = edges.filter((edge) => edge.target === nodeId)
+  const incomers: N[] = []
+
+  for (const edge of connectEdges) {
+    const node = nodes.find((node) => node.id === edge.source)
+    if (node) {
+      incomers.push(node)
+    }
+  }
+
+  return incomers
+}
+
 export function getEdgeId({ source, sourceHandle, target, targetHandle }: Connection) {
   return `vueflow__edge-${source}${sourceHandle ?? ''}-${target}${targetHandle ?? ''}`
 }

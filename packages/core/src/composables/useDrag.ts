@@ -120,7 +120,7 @@ export function useDrag(params: UseDragParams) {
       const [currentNode, nodes] = getEventHandlerParams({
         id,
         dragItems,
-        findNode: getNode,
+        getNode,
       })
 
       onDrag({ event: dragEvent, node: currentNode, nodes })
@@ -179,7 +179,7 @@ export function useDrag(params: UseDragParams) {
       const [currentNode, nodes] = getEventHandlerParams({
         id,
         dragItems,
-        findNode: getNode,
+        getNode,
       })
 
       onStart({ event: event.sourceEvent, node: currentNode, nodes })
@@ -256,7 +256,7 @@ export function useDrag(params: UseDragParams) {
       const [currentNode, nodes] = getEventHandlerParams({
         id,
         dragItems,
-        findNode: getNode,
+        getNode,
       })
 
       onStop({ event: event.sourceEvent, node: currentNode, nodes })
