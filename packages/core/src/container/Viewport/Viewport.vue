@@ -408,7 +408,11 @@ export default {
     <Pane
       :is-selecting="isSelecting"
       :selection-key-pressed="selectionKeyPressed"
-      :class="{ connecting: !!connectionStartHandle, dragging: paneDragging, draggable: shouldPanOnDrag }"
+      :class="{
+        connecting: !!connectionStartHandle,
+        dragging: paneDragging,
+        draggable: panOnDrag === true || (Array.isArray(panOnDrag) && panOnDrag.includes(0)),
+      }"
     >
       <Transform>
         <slot />
