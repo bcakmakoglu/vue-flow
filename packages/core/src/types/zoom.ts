@@ -71,11 +71,7 @@ export interface ViewportFunctions {
   zoomOut: ZoomInOut
   zoomTo: ZoomTo
   setViewport: SetViewport
-  /** @deprecated use setViewport instead */
-  setTransform: SetViewport
   getViewport: GetViewport
-  /** @deprecated use getViewport instead */
-  getTransform: GetViewport
   fitView: FitView
   setCenter: SetCenter
   fitBounds: FitBounds

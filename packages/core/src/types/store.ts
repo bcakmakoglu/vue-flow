@@ -5,7 +5,6 @@ import type {
   Dimensions,
   ElementData,
   FlowExportObject,
-  FlowOptions,
   FlowProps,
   Rect,
   SelectionMode,
@@ -18,7 +17,7 @@ import type { ConnectionLineOptions, ConnectionLookup, ConnectionMode, Connectio
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportTransform } from './zoom'
-import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
+import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ConnectingHandle, ValidConnectionFunc } from './handle'
 
@@ -203,18 +202,14 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
    *
    * @param id - the node id
    */
-  getNode: <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-    id: string,
-  ) => GraphNode<Data, CustomEvents> | undefined
+  getNode: <Data = ElementData>(id: string) => GraphNode<Data> | undefined
 
   /**
    * Get a edge by id.
    *
    * @param id - the edge id
    */
-  getEdge: <Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(
-    id: string,
-  ) => GraphEdge<Data, CustomEvents> | undefined
+  getEdge: <Data = ElementData>(id: string) => GraphEdge<Data> | undefined
 
   /**
    * Updates an edge.
@@ -276,7 +271,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
    */
   updateNodeData: (
     id: string,
-    dataUpdate: Partial<NodeType['data']> | ((node: NodeType) => Partial<NodeType['data']>),
+    dataUpdate: Partial<GraphNode['data']> | ((node: GraphNode) => Partial<GraphNode['data']>),
     options?: { replace: boolean },
   ) => void
 
@@ -323,7 +318,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   setState: (
     state:
       | Partial<FlowProps & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
-      | ((state: State) => Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
+      | ((state: State) => Partial<FlowProps & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
   ) => void
 
   /** return an object of graph values (elements, viewport transform) for storage and re-loading a graph */
