@@ -1,5 +1,37 @@
 # @vue-flow/core
 
+## 1.40.0
+
+### Minor Changes
+
+- [#1575](https://github.com/bcakmakoglu/vue-flow/pull/1575) [`7aa49f4`](https://github.com/bcakmakoglu/vue-flow/commit/7aa49f4f6da9643797743cddb4074dbad85d0aa8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `null` as possible return type of data in `useNodesData`
+
+### Patch Changes
+
+- [#1586](https://github.com/bcakmakoglu/vue-flow/pull/1586) [`f2ed6a3`](https://github.com/bcakmakoglu/vue-flow/commit/f2ed6a3b3daeb526156173a8913dcc3785b4b999) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Only display grab cursor when panOnDrag is on left mouse button
+
+- [#1585](https://github.com/bcakmakoglu/vue-flow/pull/1585) [`d7a51f8`](https://github.com/bcakmakoglu/vue-flow/commit/d7a51f8014c02043ca1c6c1e96210a0f6545175a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Simplify event emits definitions to avoid hitting complexity limit of TS.
+
+## 1.39.3
+
+### Patch Changes
+
+- [#1569](https://github.com/bcakmakoglu/vue-flow/pull/1569) [`f6b394f`](https://github.com/bcakmakoglu/vue-flow/commit/f6b394f0b8ad698fead4f91eaed8650b5b5d2cc9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Push into dimensions changes array instead of using index access.
+
+## 1.39.2
+
+### Patch Changes
+
+- [#1565](https://github.com/bcakmakoglu/vue-flow/pull/1565) [`90f573a`](https://github.com/bcakmakoglu/vue-flow/commit/90f573a4e56a1ad92e1d15f7a45a8f5600dc6307) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Only capture pointer when a valid selection has started
+
+## 1.39.1
+
+### Patch Changes
+
+- [#1562](https://github.com/bcakmakoglu/vue-flow/pull/1562) [`e83b1ef`](https://github.com/bcakmakoglu/vue-flow/commit/e83b1ef9be83df10be9d4c8a35d6d0caff26e6b9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check if injected vue flow state matches options id, otherwise create new state
+
+- [#1562](https://github.com/bcakmakoglu/vue-flow/pull/1562) [`e83b1ef`](https://github.com/bcakmakoglu/vue-flow/commit/e83b1ef9be83df10be9d4c8a35d6d0caff26e6b9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prefer options id over scope id when finding vue flow internal state by id
+
 ## 1.39.0
 
 ### Minor Changes

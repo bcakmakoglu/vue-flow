@@ -15,7 +15,7 @@ const elements = ref<Elements>([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 
-const { onConnect, addEdges, setTransform, toObject } = useVueFlow({
+const { onConnect, addEdges, setViewport, toObject } = useVueFlow({
   minZoom: 0.2,
   maxZoom: 4,
 })
@@ -36,8 +36,8 @@ function updatePos() {
 function logToObject() {
   return console.log(toObject())
 }
-function resetTransform() {
-  return setTransform({ x: 0, y: 0, zoom: 1 })
+function resetViewport() {
+  return setViewport({ x: 0, y: 0, zoom: 1 })
 }
 function toggleclass() {
   return elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
@@ -50,7 +50,7 @@ function toggleclass() {
     <MiniMap />
     <Controls />
     <Panel position="top-right" style="display: flex; gap: 5px">
-      <button @click="resetTransform">reset transform</button>
+      <button @click="resetViewport">reset viewport</button>
       <button @click="updatePos">change pos</button>
       <button @click="toggleclass">toggle class</button>
       <button @click="logToObject">toObject</button>
