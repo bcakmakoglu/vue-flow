@@ -14,9 +14,6 @@ export enum ErrorCode {
   EDGE_SOURCE_TARGET_SAME = 'EDGE_SOURCE_TARGET_SAME',
   EDGE_SOURCE_TARGET_MISSING = 'EDGE_SOURCE_TARGET_MISSING',
   EDGE_ORPHANED = 'EDGE_ORPHANED',
-
-  // deprecation errors
-  USEVUEFLOW_OPTIONS = 'USEVUEFLOW_OPTIONS',
 }
 
 const messages = {
@@ -39,10 +36,6 @@ const messages = {
   [ErrorCode.EDGE_ORPHANED]: (id: string) =>
     `Edge was orphaned (suddenly missing source or target) and has been removed\nEdge: ${id}`,
   [ErrorCode.EDGE_NOT_FOUND]: (id: string) => `Edge not found\nEdge: ${id}`,
-
-  // deprecation errors
-  [ErrorCode.USEVUEFLOW_OPTIONS]: () =>
-    `The options parameter is deprecated and will be removed in the next major version. Please use the id parameter instead`,
 } as const
 
 type ErrorArgs<T extends ErrorCode> = (typeof messages)[T] extends (...args: any[]) => string

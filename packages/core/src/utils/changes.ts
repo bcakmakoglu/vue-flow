@@ -5,14 +5,12 @@ import type {
   EdgeRemoveChange,
   EdgeSelectionChange,
   ElementChange,
-  FlowElement,
   GraphEdge,
   GraphNode,
   NodeAddChange,
   NodeChange,
   NodeRemoveChange,
   NodeSelectionChange,
-  StyleFunc,
   Styles,
 } from '../types'
 import { isGraphNode } from '.'
@@ -25,9 +23,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
       let parentStyles: Styles = {}
 
-      if (typeof parent.style === 'function') {
-        parentStyles = { ...parent.style(parent) }
-      } else if (parent.style) {
+      if (parent.style) {
         parentStyles = { ...parent.style }
       }
 
@@ -80,30 +76,16 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         updateItem.position.y = 0
       }
 
-      parent.dimensions.width = Number(parentStyles.width.toString().replace('px', ''))
-      parent.dimensions.height = Number(parentStyles.height.toString().replace('px', ''))
-
-      if (typeof parent.style === 'function') {
-        parent.style = (p) => {
-          const styleFunc = parent.style as StyleFunc
-
-          return {
-            ...styleFunc(p),
-            ...parentStyles,
-          }
-        }
-      } else {
-        parent.style = {
-          ...parent.style,
-          ...parentStyles,
-        }
+      parent.style = {
+        ...parent.style,
+        ...parentStyles,
       }
     }
   }
 }
 
 export function applyChanges<
-  T extends FlowElement = FlowElement,
+  T extends GraphNode | GraphEdge = GraphNode | GraphEdge,
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(changes: C[], elements: T[]): T[] {
   const addRemoveChanges = changes.filter((c) => c.type === 'add' || c.type === 'remove') as (

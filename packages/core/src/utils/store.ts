@@ -57,7 +57,7 @@ export function updateEdgeAction(
   edge: GraphEdge,
   newConnection: Connection,
   edges: GraphEdge[],
-  findEdge: Actions['findEdge'],
+  getEdge: Actions['getEdge'],
   shouldReplaceId: boolean,
   triggerError: State['hooks']['error']['trigger'],
 ) {
@@ -66,7 +66,7 @@ export function updateEdgeAction(
     return false
   }
 
-  const foundEdge = findEdge(edge.id)
+  const foundEdge = getEdge(edge.id)
 
   if (!foundEdge) {
     triggerError(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edge.id))
@@ -89,7 +89,7 @@ export function updateEdgeAction(
   return newEdge
 }
 
-export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], triggerError: State['hooks']['error']['trigger']) {
+export function createGraphNodes(nodes: Node[], getNode: Actions['getNode'], triggerError: State['hooks']['error']['trigger']) {
   const parentNodes: Record<string, true> = {}
 
   const nextNodes: GraphNode[] = []
@@ -103,7 +103,7 @@ export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], t
       continue
     }
 
-    const parsed = parseNode(node, findNode(node.id), node.parentNode)
+    const parsed = parseNode(node, getNode(node.id), node.parentNode)
 
     if (node.parentNode) {
       parentNodes[node.parentNode] = true
@@ -113,7 +113,7 @@ export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], t
   }
 
   for (const node of nextNodes) {
-    const parentNode = findNode(node.parentNode) || nextNodes.find((n) => n.id === node.parentNode)
+    const parentNode = getNode(node.parentNode!) || nextNodes.find((n) => n.id === node.parentNode)
 
     if (node.parentNode && !parentNode) {
       triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentNode))
@@ -209,8 +209,8 @@ export function areConnectionMapsEqual(a?: Map<string, Connection>, b?: Map<stri
 export function createGraphEdges(
   nextEdges: (Edge | Connection)[],
   isValidConnection: ValidConnectionFunc | null,
-  findNode: Actions['findNode'],
-  findEdge: Actions['findEdge'],
+  getNode: Actions['getNode'],
+  getEdge: Actions['getEdge'],
   onError: VueFlowStore['emits']['error'],
   defaultEdgeOptions: DefaultEdgeOptions | undefined,
   nodes: GraphNode[],
@@ -227,8 +227,8 @@ export function createGraphEdges(
       continue
     }
 
-    const sourceNode = findNode(edge.source)
-    const targetNode = findNode(edge.target)
+    const sourceNode = getNode(edge.source)
+    const targetNode = getNode(edge.target)
 
     if (!sourceNode || !targetNode) {
       onError(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
@@ -259,13 +259,9 @@ export function createGraphEdges(
       }
     }
 
-    const existingEdge = findEdge(edge.id)
+    const existingEdge = getEdge(edge.id)
 
-    validEdges.push({
-      ...parseEdge(edge, existingEdge, defaultEdgeOptions),
-      sourceNode,
-      targetNode,
-    })
+    validEdges.push(parseEdge(edge, existingEdge, defaultEdgeOptions))
   }
 
   return validEdges

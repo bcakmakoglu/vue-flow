@@ -31,14 +31,14 @@ export function getDragItems(
   nodes: GraphNode[],
   nodesDraggable: boolean,
   mousePos: XYPosition,
-  findNode: Actions['findNode'],
+  getNode: Actions['getNode'],
   nodeId?: string,
 ): NodeDragItem[] {
   const dragItems: NodeDragItem[] = []
   for (const node of nodes) {
     if (
       (node.selected || node.id === nodeId) &&
-      (!node.parentNode || !isParentSelected(node, findNode)) &&
+      (!node.parentNode || !isParentSelected(node, getNode)) &&
       (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined'))
     ) {
       dragItems.push(
@@ -65,15 +65,15 @@ export function getDragItems(
 export function getEventHandlerParams({
   id,
   dragItems,
-  findNode,
+  getNode,
 }: {
   id?: string
   dragItems: NodeDragItem[]
-  findNode: Actions['findNode']
+  getNode: Actions['getNode']
 }): [GraphNode, GraphNode[]] {
   const extendedDragItems: GraphNode[] = []
   for (const dragItem of dragItems) {
-    const node = findNode(dragItem.id)
+    const node = getNode(dragItem.id)
 
     if (node) {
       extendedDragItems.push(node)
