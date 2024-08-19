@@ -1,7 +1,6 @@
 <script setup>
-import { computed, nextTick, ref, toRef, watch } from 'vue'
+import { computed, ref, toRef, watch } from 'vue'
 import { BaseEdge, EdgeLabelRenderer, Position, getSmoothStepPath, useNodesData, useVueFlow } from '@vue-flow/core'
-import { TransitionPresets, executeTransition } from '@vueuse/core'
 
 const props = defineProps({
   id: {
@@ -42,21 +41,17 @@ const props = defineProps({
   },
 })
 
-const { findEdge } = useVueFlow()
+const { updateEdgeData } = useVueFlow()
 
 const nodesData = useNodesData([props.target, props.source])
 
-const edgePoint = ref(0)
+const labelRef = ref()
 
 const edgeRef = ref()
 
-const labelPosition = ref({ x: 0, y: 0 })
+const targetNodeData = computed(() => nodesData.value[0].data)
 
-const currentLength = ref(0)
-
-const targetNodeData = toRef(() => nodesData.value[0].data)
-
-const sourceNodeData = toRef(() => nodesData.value[1].data)
+const sourceNodeData = computed(() => nodesData.value[1].data)
 
 const isFinished = toRef(() => sourceNodeData.value.isFinished)
 
@@ -64,7 +59,11 @@ const isCancelled = toRef(() => targetNodeData.value.isCancelled)
 
 const isAnimating = ref(false)
 
-const edgeColor = toRef(() => {
+let animation = null
+
+const path = computed(() => getSmoothStepPath(props))
+
+const edgeColor = computed(() => {
   if (targetNodeData.value.hasError) {
     return '#f87171'
   }
@@ -84,42 +83,14 @@ const edgeColor = toRef(() => {
   return '#6b7280'
 })
 
-const path = computed(() => getSmoothStepPath(props))
-
 watch(isCancelled, (isCancelled) => {
   if (isCancelled) {
-    reset()
+    animation?.cancel()
   }
 })
 
 watch(isAnimating, (isAnimating) => {
-  const edge = findEdge(props.id)
-
-  if (edge) {
-    // we set the `isAnimating` flag, so we can wait until the next node gets executed
-    edge.data = {
-      ...edge.data,
-      isAnimating,
-    }
-  }
-})
-
-watch(edgePoint, (point) => {
-  const pathEl = edgeRef.value?.pathEl
-
-  if (!pathEl || point === 0 || !isAnimating.value) {
-    return
-  }
-
-  const nextLength = pathEl.getTotalLength()
-
-  // if length changed, restart animation
-  if (currentLength.value !== nextLength) {
-    runAnimation()
-    return
-  }
-
-  labelPosition.value = pathEl.getPointAtLength(point)
+  updateEdgeData(props.id, { isAnimating })
 })
 
 watch(isFinished, (isFinished) => {
@@ -128,7 +99,7 @@ watch(isFinished, (isFinished) => {
   }
 })
 
-async function runAnimation() {
+function runAnimation() {
   const pathEl = edgeRef.value?.pathEl
 
   if (!pathEl) {
@@ -137,35 +108,26 @@ async function runAnimation() {
 
   const totalLength = pathEl.getTotalLength()
 
-  // if animation restarted, use last edgePoint value to continue from
-  const from = edgePoint.value || 0
-
-  // update initial label position
-  labelPosition.value = pathEl.getPointAtLength(from)
-
   isAnimating.value = true
 
-  // update currentLength value, so we can check if the path length changed during animation
-  if (currentLength.value !== totalLength) {
-    currentLength.value = totalLength
-  }
+  const keyframes = [{ offsetDistance: '0%' }, { offsetDistance: '100%' }]
 
-  await executeTransition(edgePoint, from, totalLength, {
-    transition: TransitionPresets.easeInOutCubic,
-    duration: Math.max(1500, totalLength / 2),
-    abort: () => !isAnimating.value,
+  // use path length as a possible measure for the animation duration
+  const pathLengthDuration = totalLength * 10
+
+  animation = labelRef.value.animate(keyframes, {
+    duration: Math.min(Math.max(pathLengthDuration, 1500), 3000), // clamp duration between 1.5s and 3s
+    direction: 'normal',
+    easing: 'ease-in-out',
+    iterations: 1,
   })
 
-  reset()
+  animation.onfinish = handleAnimationEnd
+  animation.oncancel = handleAnimationEnd
 }
 
-function reset() {
-  nextTick(() => {
-    edgePoint.value = 0
-    currentLength.value = 0
-    labelPosition.value = { x: 0, y: 0 }
-    isAnimating.value = false
-  })
+function handleAnimationEnd() {
+  isAnimating.value = false
 }
 </script>
 
@@ -179,10 +141,18 @@ export default {
 <template>
   <BaseEdge :id="id" ref="edgeRef" :path="path[0]" :style="{ stroke: edgeColor }" />
 
-  <EdgeLabelRenderer v-if="isAnimating">
+  <EdgeLabelRenderer>
     <div
-      :style="{ transform: `translate(-50%, -50%) translate(${labelPosition.x}px,${labelPosition.y}px)` }"
-      class="nodrag nopan animated-edge-label"
+      ref="labelRef"
+      :style="{
+        visibility: isAnimating ? 'visible' : 'hidden',
+        position: 'absolute',
+        zIndex: 1,
+        offsetPath: `path('${path[0]}')`,
+        offsetRotate: '0deg',
+        offsetAnchor: 'center',
+      }"
+      class="animated-edge-label"
     >
       <span class="truck">
         <span class="box">📦</span>
@@ -192,12 +162,7 @@ export default {
   </EdgeLabelRenderer>
 </template>
 
-<style>
-.animated-edge-label {
-  position: absolute;
-  z-index: 100;
-}
-
+<style scoped>
 .truck {
   position: relative;
   display: inline-block;

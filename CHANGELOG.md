@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.40.0] - 2024-08-19
+
+[809a9a4](809a9a4e16ba4b8cae4159c259ec6a9da0f42954)...[538b03e](538b03ef6b94d252410cca563428eb8288eba711)
+
+### Bug Fixes
+
+- Correct controlled flow docs and replace `applyChanges` with `applyDefault` (#1574) ([876c198](876c19868f6b21f600c33b16192a5d2c1fb9256f))
+- Simplify event emit definitions to avoid hitting complexity limit of TS (#1585) ([ebc604d](ebc604d9803d53b8eb78ae68b727aa7b216ad6b3))
+- Only display grab cursor when panOnDrag is on left mouse button (#1586) ([e90f4cc](e90f4cca57415ad068eec777fa1bbe2f8b70bd75))
+
+### Documentation
+
+- Update layouting example (#1576) ([2976b11](2976b1102528a88f7b367d9c660130f2b9d078b9))
+
+### Refactor
+
+- Remove null as return type of data in `useNodesData` (#1575) ([1d772af](1d772af4a4c6424af570672372025617bebbc686))
+
+## [1.39.3] - 2024-08-06
+
+[faeed3d](faeed3d6be9fe29c30a71ae09dbd056cc9445ad2)...[809a9a4](809a9a4e16ba4b8cae4159c259ec6a9da0f42954)
+
+### Bug Fixes
+
+- Push into changes arr instead of using index (#1569) ([afa8861](afa88610edcf573d339c13f06d20c1a94d4572b1))
+
+## [1.39.2] - 2024-08-05
+
+[90a289e](90a289ebbd29812657a64f9268ef23ce851d8462)...[faeed3d](faeed3d6be9fe29c30a71ae09dbd056cc9445ad2)
+
+### Bug Fixes
+
+- Only capture pointer if valid selection has started (#1565) ([a8d837b](a8d837bf93fb201b1805a2a8be79ed1084f7aad1))
+
+## [1.39.1] - 2024-07-27
+
+[d9a133b](d9a133bd0169be8c4d5fb4ea5807d83b24df291e)...[90a289e](90a289ebbd29812657a64f9268ef23ce851d8462)
+
+### Bug Fixes
+
+- Check if injected state matches options and scope id (#1562) ([fff558f](fff558fbc313d422716d8e5c9ec7255360cbb102))
+
+### Miscellaneous Tasks
+
+- Enable sitemaps (#1554) ([6d9535a](6d9535a1a938382aafb9ad94db7a1bb9e2e51aba))
+
 ## [1.39.0] - 2024-07-15
 
 [f2ecf29](f2ecf29cf8fe0f308768e5db6e28020ea3decd82)...[d9a133b](d9a133bd0169be8c4d5fb4ea5807d83b24df291e)

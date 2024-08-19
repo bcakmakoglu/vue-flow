@@ -82,23 +82,23 @@ removeNodes('1')
 </script>
 ```
 
-## The `applyChanges` option
+## The `applyDefault` option
 
-The `applyChanges` option is a prop that can be passed to the `<VueFlow>` component to enable or disable automatic change handling.
+The `applyDefault` option is a prop that can be passed to the `<VueFlow>` component to enable or disable automatic change handling.
 
 By setting this option to `false`, we tell Vue Flow to not apply changes automatically anymore, 
 that way we can take control of changes and apply them manually.
 
 ```vue
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-changes="false" />
+  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" />
 </template>
 ```
 
 ## `onNodesChange` / `onEdgesChange` events
 
 Vue Flow provides two events that can be used to listen to changes on nodes and edges.
-These events are emitted regardless of the `applyChanges` option, so you can use them to listen to changes even if you have automatic changes enabled.
+These events are emitted regardless of the `applyDefault` option, so you can use them to listen to changes even if you have automatic changes enabled.
 
 ```vue
 <script setup>
@@ -150,7 +150,7 @@ const onChange = (changes) => {
 
 Using what we just learned, we can now take control of changes and apply them manually.
 
-In this example, we will first disable automatic change handlers with `applyChanges`, 
+In this example, we will first disable automatic change handlers with `applyDefault`, 
 then use the `onNodesChange` event to listen to changes and validate delete changes and, 
 if they are valid, use `applyNodeChanges` to apply them.
 

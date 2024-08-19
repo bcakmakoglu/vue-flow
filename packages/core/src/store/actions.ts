@@ -151,11 +151,11 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
           node.handleBounds.source = getHandleBounds('.source', update.nodeElement, nodeBounds, zoom)
           node.handleBounds.target = getHandleBounds('.target', update.nodeElement, nodeBounds, zoom)
 
-          changes[i] = {
+          changes.push({
             id: node.id,
             type: 'dimensions',
             dimensions,
-          }
+          })
         }
       }
     }
