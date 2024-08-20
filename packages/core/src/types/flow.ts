@@ -237,35 +237,6 @@ export interface FlowProps {
  */
 export type FlowOptions = FlowProps
 
-export type EdgeMouseEvents =
-  | 'edgeContextMenu'
-  | 'edgeMouseEnter'
-  | 'edgeMouseMove'
-  | 'edgeMouseLeave'
-  | 'edgeDoubleClick'
-  | 'edgeClick'
-  | 'edgeUpdateStart'
-  | 'edgeUpdateEnd'
-
-export type NodeMouseEvents =
-  | 'nodeContextMenu'
-  | 'nodeMouseEnter'
-  | 'nodeMouseMove'
-  | 'nodeMouseLeave'
-  | 'nodeDoubleClick'
-  | 'nodeClick'
-
-export type NodeDragEvents = 'nodeDragStart' | 'nodeDrag' | 'nodeDragStop'
-
-export type MiniMapNodeEvents =
-  | 'miniMapNodeClick'
-  | 'miniMapNodeDoubleClick'
-  | 'miniMapNodeMouseEnter'
-  | 'miniMapNodeMouseMove'
-  | 'miniMapNodeMouseLeave'
-
-export type PaneMouseEvents = 'paneClick' | 'paneContextMenu' | 'paneMouseEnter' | 'paneMouseMove' | 'paneMouseLeave'
-
 export interface FlowEmits {
   (event: 'nodesChange', changes: NodeChange[]): void
   (event: 'edgesChange', changes: EdgeChange[]): void
@@ -309,16 +280,41 @@ export interface FlowEmits {
   (event: 'viewportChangeEnd', viewport: ViewportTransform): void
 
   (event: 'paneScroll', paneScrollEvent: WheelEvent | undefined): void
-  (event: PaneMouseEvents, paneMouseEvent: MouseEvent): void
+  (
+    event: 'paneClick' | 'paneContextMenu' | 'paneMouseEnter' | 'paneMouseMove' | 'paneMouseLeave',
+    paneMouseEvent: MouseEvent,
+  ): void
 
   (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
-  (event: EdgeMouseEvents, edgeMouseEvent: EdgeMouseEvent): void
+  (
+    event:
+      | 'edgeContextMenu'
+      | 'edgeMouseEnter'
+      | 'edgeMouseMove'
+      | 'edgeMouseLeave'
+      | 'edgeDoubleClick'
+      | 'edgeClick'
+      | 'edgeUpdateStart'
+      | 'edgeUpdateEnd',
+    edgeMouseEvent: EdgeMouseEvent,
+  ): void
 
-  (event: NodeMouseEvents, nodeMouseEvent: NodeMouseEvent): void
+  (
+    event: 'nodeContextMenu' | 'nodeMouseEnter' | 'nodeMouseMove' | 'nodeMouseLeave' | 'nodeDoubleClick' | 'nodeClick',
+    nodeMouseEvent: NodeMouseEvent,
+  ): void
 
-  (event: NodeDragEvents, nodeDragEvent: NodeDragEvent): void
+  (event: 'nodeDragStart' | 'nodeDrag' | 'nodeDragStop', nodeDragEvent: NodeDragEvent): void
 
-  (event: MiniMapNodeEvents, nodeMouseEvent: NodeMouseEvent): void
+  (
+    event:
+      | 'miniMapNodeClick'
+      | 'miniMapNodeDoubleClick'
+      | 'miniMapNodeMouseEnter'
+      | 'miniMapNodeMouseMove'
+      | 'miniMapNodeMouseLeave',
+    nodeMouseEvent: NodeMouseEvent,
+  ): void
 
   /** v-model event definitions */
   (event: 'update:modelValue', value: FlowElements): void
