@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.40.1] - 2024-08-20
+
+[538b03e](538b03ef6b94d252410cca563428eb8288eba711)...[b3e457a](b3e457a35a33892915b4cb9d27c268770bef048b)
+
+### Bug Fixes
+
+- Inline event names (#1591) ([47281fd](47281fd66868da5ec389dff2990df7e77526c41a))
+
 ## [1.40.0] - 2024-08-19
 
 [809a9a4](809a9a4e16ba4b8cae4159c259ec6a9da0f42954)...[538b03e](538b03ef6b94d252410cca563428eb8288eba711)
