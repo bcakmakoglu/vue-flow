@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.40.1
+
+### Patch Changes
+
+- [#1591](https://github.com/bcakmakoglu/vue-flow/pull/1591) [`5eb677b`](https://github.com/bcakmakoglu/vue-flow/commit/5eb677bbbe113f2aa698db3156af38abe7892db3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Inline event names
+
 ## 1.40.0
 
 ### Minor Changes
