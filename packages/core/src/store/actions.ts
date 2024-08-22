@@ -72,6 +72,10 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     return getConnectedEdgesBase(nodesOrId, state.edges)
   }
 
+  const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
+    return Array.from(state.connectionLookup.get(`${nodeId}-${type}-${id ?? null}`)?.values() ?? [])
+  }
+
   const findNode: Actions['findNode'] = (id) => {
     if (!id) {
       return
@@ -880,6 +884,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     getIncomers,
     getOutgoers,
     getConnectedEdges,
+    getHandleConnections,
     isNodeIntersecting,
     panBy,
     fitView: (params) => viewportHelper.value.fitView(params),

@@ -24,13 +24,14 @@ import type {
   ConnectionMode,
   ConnectionStatus,
   Connector,
+  HandleConnection,
 } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { D3Selection, D3Zoom, D3ZoomHandler, PanOnScrollMode, ViewportTransform } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
-import type { ConnectingHandle, ValidConnectionFunc } from './handle'
+import type { ConnectingHandle, HandleType, ValidConnectionFunc } from './handle'
 
 export type NodeLookup = Map<string, GraphNode>
 
@@ -324,6 +325,8 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   getOutgoers: (nodeOrId: Node | string) => GraphNode[]
   /** get a node's connected edges */
   getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
+  /** get all connections of a handle belonging to a node */
+  getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => HandleConnection[]
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => boolean
   /** viewport helper instance */
