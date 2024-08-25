@@ -112,7 +112,7 @@ const nodes = ref([
 
 ### edges (optional)
 
-- Type: [`Edge[]`](/typedocs/types/Edge)
+- Type: [`Edge[]`](/typedocs/type-aliases/Edge)
 
 - Details:
 
@@ -171,7 +171,7 @@ const edges = ref([
 
 ### modelValue (optional) (deprecated)
 
-- Type: [`Elements`](/typedocs/types/Elements)
+- Type: [`Elements`](/typedocs/type-aliases/Elements)
 
 - Details:
 
@@ -203,9 +203,9 @@ const elements = ref([
 
 ### node-types (optional)
 
-- Type: [`Record<string, NodeComponent>`](/typedocs/types/NodeComponent)
+- Type: [`Record<string, NodeComponent>`](/typedocs/type-aliases/NodeComponent)
 
-- Default: [`DefaultNodeTypes`](/typedocs/types/DefaultNodeTypes)
+- Default: [`DefaultNodeTypes`](/typedocs/type-aliases/DefaultNodeTypes)
 
 - Details:
 
@@ -248,7 +248,7 @@ const edges = ref([
 
 ### edge-types (optional)
 
-- Type: [`Record<string, EdgeComponent>`](/typedocs/types/EdgeComponent)
+- Type: [`Record<string, EdgeComponent>`](/typedocs/type-aliases/EdgeComponent)
 
 - Default: [`DefaultEdgeTypes`](/typedocs/interfaces/DefaultEdgeTypes)
 
@@ -321,7 +321,7 @@ const edges = ref([
 
 ### connection-mode (optional)
 
-- Type: [`ConnectionMode`](/typedocs/enums/ConnectionMode)
+- Type: [`ConnectionMode`](/typedocs/enumerations/ConnectionMode)
 
 - Default: `ConnectionMode.Loose`
 
@@ -341,7 +341,7 @@ const edges = ref([
 
 ### connection-line-type (optional) (deprecated)
 
-- Type: [`ConnectionLineType`](/typedocs/enums/ConnectionLineType)
+- Type: [`ConnectionLineType`](/typedocs/enumerations/ConnectionLineType)
 
 - Default: `ConnectionLineType.Bezier`
 
@@ -433,7 +433,7 @@ const edges = ref([
 
 ### pan-on-scroll-mode (optional)
 
-- Type: [`PanOnScrollMode`](/typedocs/enums/PanOnScrollMode)
+- Type: [`PanOnScrollMode`](/typedocs/enumerations/PanOnScrollMode)
 
 - Default: `PanOnScrollMode.Free`
 
@@ -510,7 +510,7 @@ const edges = ref([
 
 ### translate-extent (optional)
 
-- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent)
+- Type: [`CoordinateExtent`](/typedocs/type-aliases/CoordinateExtent)
 
 - Default:
 
@@ -637,7 +637,7 @@ const nodes = ref([
 
 ### node-extent (optional)
 
-- Type: [`CoordinateExtent`](/typedocs/types/CoordinateExtent)
+- Type: [`CoordinateExtent`](/typedocs/type-aliases/CoordinateExtent)
 
 - Default:
 
@@ -694,7 +694,7 @@ const nodes = ref([
 
 ### snap-grid (optional)
 
-- Type: [`SnapGrid`](/typedocs/types/SnapGrid)
+- Type: [`SnapGrid`](/typedocs/type-aliases/SnapGrid)
 
 - Default: `[15, 15]`
 
@@ -785,7 +785,7 @@ const edges = ref([
 
 ### default-edge-options (optional)
 
-- Type: [`DefaultEdgeOptions`](/typedocs/types/DefaultEdgeOptions)
+- Type: [`DefaultEdgeOptions`](/typedocs/type-aliases/DefaultEdgeOptions)
 
 - Details:
 
@@ -795,7 +795,7 @@ const edges = ref([
 
 ### auto-connect (optional) (deprecated)
 
-- Type: `boolean` | [`Connector`](/typedocs/types/Connector)
+- Type: `boolean` | [`Connector`](/typedocs/type-aliases/Connector)
 
 - Default: `false`
 
@@ -803,7 +803,7 @@ const edges = ref([
 
   When connection is emitted, automatically create a new edge from params.
 
-  Also accepts a [`Connector`](/typedocs/types/Connector) which returns an edge-like object or false (if creating
+  Also accepts a [`Connector`](/typedocs/type-aliases/Connector) which returns an edge-like object or false (if creating
   an edge is not allowed).
 
   This option can be used as a shorthand for `onConnect((params) => addEdges([params]))`.
@@ -818,7 +818,7 @@ const edges = ref([
 </template>
 ```
 
-#### [Connector](/typedocs/types/Connector)
+#### [Connector](/typedocs/type-aliases/Connector)
 
 ```vue
 <script setup>
