@@ -160,16 +160,16 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Configuration', link: '/guide/vue-flow/config' },
             { text: 'State', link: '/guide/vue-flow/state' },
             {
+              text: 'Events',
+              link: '/guide/vue-flow/events',
+            },
+            {
               text: 'Actions',
               link: '/typedocs/interfaces/Actions.html',
             },
             {
               text: 'Getters',
               link: '/typedocs/interfaces/Getters.html',
-            },
-            {
-              text: 'Events',
-              link: '/typedocs/interfaces/FlowEvents.html',
             },
             { text: 'Slots', link: '/guide/vue-flow/slots' },
           ],
