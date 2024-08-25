@@ -12,6 +12,10 @@ import LogosTypescript from '~icons/logos/typescript-icon';
 This guide covers the basics of setting up and using Vue Flow. 
 You'll learn how to install Vue Flow, configure it, and create your first flowchart.
 
+:::info NOTE
+If you're looking for a guide on how to setup a Vue project, check out the [official Vue documentation](https://vuejs.org/guide/quick-start).
+:::
+
 ## Prerequisites
 
 Before you strap in, make sure you're equipped with:
