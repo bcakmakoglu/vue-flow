@@ -1,5 +1,7 @@
 # Configuration
 
+This page covers the configuration options available for Vue Flow and how to use and set them.
+
 ## Options / Props
 
 Vue Flow allows you to configure zoom, graph and flow behavior.
