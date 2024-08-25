@@ -127,11 +127,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         activeMatch: '^/examples/',
       },
       {
-        text: 'Migration',
-        link: '/migration/',
-        activeMatch: '^/migration/',
-      },
-      {
         text: 'TypeDocs',
         link: '/typedocs/',
         activeMatch: '^/typedocs/',
