@@ -73,7 +73,7 @@ const toggleClass = () => {
 ## [addEdge](/typedocs/functions/isEdge) (deprecated)
 
 ::: warning
-In the composition API you should use [`addEdges`](/typedocs/types/AddEdges) of [`useVueFlow`](/guide/composables#usevueflow/)
+In the composition API you should use [`addEdges`](/typedocs/type-aliases/AddEdges) of [`useVueFlow`](/guide/composables#usevueflow/)
 :::
 
 - Details:
@@ -103,10 +103,10 @@ const onConnect = (params) => {
 </template>
 ```
 
-## [updateEdge](/typedocs/functions/updateEdge-1) (deprecated)
+## [updateEdge](/typedocs/functions/updateEdge) (deprecated)
 
 ::: warning
-In the composition API you should use [`updateEdge`](/typedocs/types/UpdateEdge) of [`useVueFlow`](/guide/composables#usevueflow/)
+In the composition API you should use [`updateEdge`](/typedocs/type-aliases/UpdateEdge) of [`useVueFlow`](/guide/composables#usevueflow/)
 :::
 
 - Details:

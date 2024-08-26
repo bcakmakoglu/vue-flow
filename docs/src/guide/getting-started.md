@@ -49,7 +49,7 @@ $ yarn add @vue-flow/core
 
 ## Quick Start
 
-In Vue Flow, a graph consists of [**nodes**](/typedocs/interfaces/Node) and [**edges**](/typedocs/types/Edge).
+In Vue Flow, a graph consists of [**nodes**](/typedocs/interfaces/Node) and [**edges**](/typedocs/type-aliases/Edge).
 
 **Each node or edge requires a unique id.**
 

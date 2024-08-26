@@ -1,7 +1,7 @@
 # Viewport Functions
 
 Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables#usevueflow)
-utility or with the [`VueFlowStore`](/typedocs/types/VueFlowStore)
+utility or with the [`VueFlowStore`](/typedocs/type-aliases/VueFlowStore)
 instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
 
 - Using Event Hooks (Composable)
@@ -43,7 +43,7 @@ export default defineComponent({
 </template>
 ```
 
-## [project](/typedocs/types/Project)
+## [project](/typedocs/type-aliases/Project)
 
 - Details:
 
@@ -57,7 +57,7 @@ export default defineComponent({
 vueFlowInstance.project({ x: 100, y: 100 })
 ```
 
-## [fitView](/typedocs/types/FitView)
+## [fitView](/typedocs/type-aliases/FitView)
 
 - Details:
 
@@ -71,7 +71,7 @@ vueFlowInstance.project({ x: 100, y: 100 })
 vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 ```
 
-## [fitBounds](/typedocs/types/FitBounds)
+## [fitBounds](/typedocs/type-aliases/FitBounds)
 
 - Details:
 
@@ -83,7 +83,7 @@ vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 ```
 
-## [setViewport](/typedocs/types/SetViewport)
+## [setViewport](/typedocs/type-aliases/SetViewport)
 
 - Details:
 
@@ -95,25 +95,25 @@ vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
 vueFlowInstance.setViewport({ x: 100, y: 100, zoom: 1.5 })
 ```
 
-## [getViewport](/typedocs/types/GetViewport)
+## [getViewport](/typedocs/type-aliases/GetViewport)
 
 - Details:
 
   Gets position and zoom of the pane.
 
-## [zoomIn](/typedocs/types/ZoomInOut)
+## [zoomIn](/typedocs/type-aliases/ZoomInOut)
 
 - Details:
 
   Zooms in.
 
-## [zoomOut](/typedocs/types/ZoomInOut)
+## [zoomOut](/typedocs/type-aliases/ZoomInOut)
 
 - Details:
 
   Zooms out.
 
-## [zoomTo](/typedocs/types/ZoomTo)
+## [zoomTo](/typedocs/type-aliases/ZoomTo)
 
 - Details:
 

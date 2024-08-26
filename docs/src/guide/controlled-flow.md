@@ -14,7 +14,7 @@ Though, there are cases where you want to take control of changes and apply them
 
 In this guide, we will learn how to take control of changes and apply them manually.
 
-## What is a [Change](https://vueflow.dev/typedocs/types/NodeChange.html)?
+## What is a [Change](https://vueflow.dev/typedocs/type-aliases/NodeChange.html)?
 
 A *change* is anything that is triggered by an interaction with the flow, like adding, updating (position, selected), or removing a node or an edge, either
 by dragging, clicking etc. or by using the provided API.
