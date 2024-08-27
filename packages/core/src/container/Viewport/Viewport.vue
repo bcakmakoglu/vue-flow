@@ -66,7 +66,7 @@ const selectionKeyPressed = useKeyPress(selectionKeyCode)
 
 const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
-const shouldPanOnDrag = toRef(() => panKeyPressed.value || panOnDrag.value)
+const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && (panKeyPressed.value || panOnDrag.value))
 
 const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
 
