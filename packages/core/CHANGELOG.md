@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.41.0
+
+### Minor Changes
+
+- [#1595](https://github.com/bcakmakoglu/vue-flow/pull/1595) [`9c18037`](https://github.com/bcakmakoglu/vue-flow/commit/9c180374406668457b47acb6646ff6a229d58c82) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `getHandleConnections` action to store.
+
+### Patch Changes
+
+- [#1600](https://github.com/bcakmakoglu/vue-flow/pull/1600) [`a3c72fe`](https://github.com/bcakmakoglu/vue-flow/commit/a3c72fe8a08a646954affe669609d55dfcc0b5e6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Don't set user selection flags on pointer down, only setting them when pointer is moved to allow pane click events to occur when `selectionKeyCode` is `true` (i.e. selection on drag).
+
 ## 1.40.1
 
 ### Patch Changes
