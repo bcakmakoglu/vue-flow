@@ -150,9 +150,6 @@ function onPointerDown(event: PointerEvent) {
     y,
   }
 
-  userSelectionActive.value = true
-  nodesSelectionActive.value = false
-
   emits.selectionStart(event)
 }
 
