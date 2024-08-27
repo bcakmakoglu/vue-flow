@@ -279,10 +279,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   removeSelectedEdges: (edges: GraphEdge[]) => void
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes: GraphNode[]) => void
-  /**
-   * @deprecated will be replaced in the next major
-   * unselect selected elements (if none are passed, all elements are unselected)
-   */
+  /** unselect selected elements (if none are passed, all elements are unselected) */
   removeSelectedElements: (elements?: Elements) => void
   /** apply min zoom value to d3 */
   setMinZoom: (zoom: number) => void
