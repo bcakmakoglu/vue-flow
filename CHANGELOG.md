@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.41.0] - 2024-08-30
+
+[b3e457a](b3e457a35a33892915b4cb9d27c268770bef048b)...[c555dfd](c555dfd987b32f312c4003d3b53f094fa5bf71b9)
+
+### Bug Fixes
+
+- Don't set user selection flags on pointer down (#1600) ([eb12bdc](eb12bdc56ff107241fb88e1bd12eb49df93c9bd7))
+
+### Documentation
+
+- Add info on setting up vue project ([f4bffeb](f4bffebcb13dd894375a9ef340289ccb8005a9e4))
+- Add info on listening to events ([a7a9fd5](a7a9fd5d0aadec995147b69fce098972c0650cdf))
+
+### Features
+
+- Add getHandleConnections action (#1595) ([9c003d4](9c003d4353a4bbfe7d9a4d8ac7f8ed3e708c3c29))
+
+### Miscellaneous Tasks
+
+- Cleanup ([57e868d](57e868ddd8249460f7e2bb507e333ec294e93bca))
+- Remove old migration guide ([f24230a](f24230a01007fc08ff2b083aaa759718ed6272cf))
+- Update deps (#1598) ([564d593](564d5931a5045c8f7dd039ee157bdbf2cf28acda))
+- Update `useHandle` docs ([940b08e](940b08e080cd987fb226ee017a88603ec47c815c))
+
 ## [1.40.1] - 2024-08-20
 
 [538b03e](538b03ef6b94d252410cca563428eb8288eba711)...[b3e457a](b3e457a35a33892915b4cb9d27c268770bef048b)
