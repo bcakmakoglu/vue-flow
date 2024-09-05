@@ -229,24 +229,14 @@ export function useDrag(params: UseDragParams) {
   }
 
   const eventEnd = (event: UseDragEvent) => {
-    if (!dragStarted) {
-      const pointerPos = getPointerPosition(event)
-
-      const x = pointerPos.xSnapped - (lastPos.x ?? 0)
-      const y = pointerPos.ySnapped - (lastPos.y ?? 0)
-      const distance = Math.sqrt(x * x + y * y)
-
-      // dispatch a click event if the node was attempted to be dragged but the threshold was not exceeded
-      if (distance !== 0 && distance <= nodeDragThreshold.value) {
-        onClick?.(event.sourceEvent)
-      }
-
-      return
+    if (!dragging.value && !multiSelectionActive.value) {
+      onClick?.(event.sourceEvent)
     }
 
     dragging.value = false
     autoPanStarted = false
     dragStarted = false
+    lastPos = { x: undefined, y: undefined }
 
     cancelAnimationFrame(autoPanId)
 
