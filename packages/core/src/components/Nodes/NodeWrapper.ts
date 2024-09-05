@@ -142,11 +142,11 @@ const NodeWrapper = defineComponent({
       const width = node.width instanceof Function ? node.width(node) : node.width
       const height = node.height instanceof Function ? node.height(node) : node.height
 
-      if (width) {
+      if (!styles.width && width) {
         styles.width = typeof width === 'string' ? width : `${width}px`
       }
 
-      if (height) {
+      if (!styles.height && height) {
         styles.height = typeof height === 'string' ? height : `${height}px`
       }
 
