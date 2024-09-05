@@ -1,5 +1,14 @@
 # @vue-flow/core
 
+## 1.41.1
+
+### Patch Changes
+
+- [#1608](https://github.com/bcakmakoglu/vue-flow/pull/1608) [`0581cd8`](https://github.com/bcakmakoglu/vue-flow/commit/0581cd820f7db3aa04a7247e56d283327906b93b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent overwriting width/height in node styles object with `node.width`/`node.height` if `width`/`height` already exist in the styles object.
+  Fixes NodeResizer not working when initial size was passed to a node through `node.width`/`node.height`.
+
+- [#1609](https://github.com/bcakmakoglu/vue-flow/pull/1609) [`81a81fa`](https://github.com/bcakmakoglu/vue-flow/commit/81a81faf5a2708b34c6b867593480050fbcfb27f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent drag-click handler when multi selection is active.
+
 ## 1.41.0
 
 ### Minor Changes
