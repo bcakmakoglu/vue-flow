@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.41.1] - 2024-09-06
+
+[c555dfd](c555dfd987b32f312c4003d3b53f094fa5bf71b9)...[524d812](524d8129451edc7c40db5366ecd8113ad7dd99bd)
+
+### Bug Fixes
+
+- Prevent overwriting size in node styles object (#1608) ([f4bde90](f4bde903028d07105b65d3aa8b95b88562349755))
+- Prevent drag click when multi selection is active (#1609) ([43ed0a8](43ed0a831801d507697ff8831ecee6cb44036ba4))
+
 ## [1.41.0] - 2024-08-30
 
 [b3e457a](b3e457a35a33892915b4cb9d27c268770bef048b)...[c555dfd](c555dfd987b32f312c4003d3b53f094fa5bf71b9)
