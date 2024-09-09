@@ -208,6 +208,6 @@ const onNodesChange = async (changes) => {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-changes="false" @nodes-change="onNodesChange" />
+  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" @nodes-change="onNodesChange" />
 </template>
 ```
