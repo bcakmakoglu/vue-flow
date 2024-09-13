@@ -1,16 +1,19 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-import type { Connection, ConnectionHandle, HandleType, MouseTouchEvent, ValidConnectionFunc, ValidHandleResult } from '../types'
+import type { Connection, ConnectionInProgress, HandleElement, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types'
 import {
   calcAutoPan,
   getClosestHandle,
   getConnectionStatus,
   getEventPosition,
-  getHandleLookup,
+  getHandle,
+  getHandlePosition,
   getHandleType,
   getHostForElement,
+  isConnectionValid,
   isMouseEvent,
   isValidHandle,
+  oppositePosition,
   pointToRendererPoint,
   rendererPointToPoint,
   resetRecentHandle,
@@ -49,6 +52,7 @@ export function useHandle({
   onEdgeUpdateEnd,
 }: UseHandleProps) {
   const {
+    id: flowId,
     vueFlowRef,
     connectionMode,
     connectionRadius,
@@ -67,12 +71,12 @@ export function useHandle({
     edges,
     nodes,
     isValidConnection: isValidConnectionProp,
+    nodeLookup,
   } = useVueFlow()
 
   let connection: Connection | null = null
-  let isValid = false
+  let isValid: boolean | null = false
   let handleDomNode: Element | null = null
-  let previousConnection: ValidHandleResult | null = null
 
   function handlePointerDown(event: MouseTouchEvent) {
     const isTarget = toValue(type) === 'target'
@@ -91,7 +95,7 @@ export function useHandle({
         isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
       }
 
-      let closestHandle: ConnectionHandle | null
+      let closestHandle: HandleElement | null
 
       let autoPanId = 0
 
@@ -104,16 +108,15 @@ export function useHandle({
         return
       }
 
+      const fromHandleInternal = getHandle(toValue(nodeId), handleType, toValue(handleId), nodeLookup.value, connectionMode.value)
+
+      if (!fromHandleInternal) {
+        return
+      }
+
       let prevActiveHandle: Element
       let connectionPosition = getEventPosition(event, containerBounds)
       let autoPanStarted = false
-
-      const handleLookup = getHandleLookup({
-        nodes: nodes.value,
-        nodeId: toValue(nodeId),
-        handleId: toValue(handleId),
-        handleType,
-      })
 
       // when the user is moving the mouse close to the edge of the canvas while connecting we move the canvas
       const autoPan = () => {
@@ -127,10 +130,37 @@ export function useHandle({
         autoPanId = requestAnimationFrame(autoPan)
       }
 
+      // Stays the same for all consecutive pointermove events
+      const fromHandle: HandleElement = {
+        ...fromHandleInternal,
+        nodeId: toValue(nodeId),
+        type: handleType,
+        position: fromHandleInternal.position,
+      }
+
+      const fromNodeInternal = nodeLookup.value.get(toValue(nodeId))!
+
+      const from = getHandlePosition(fromNodeInternal, fromHandle, Position.Left, true)
+
+      const newConnection: ConnectionInProgress = {
+        inProgress: true,
+        isValid: null,
+
+        from,
+        fromHandle,
+        fromPosition: fromHandle.position,
+        fromNode: fromNodeInternal,
+
+        to: connectionPosition,
+        toHandle: null,
+        toPosition: oppositePosition[fromHandle.position],
+        toNode: null,
+      }
+
       startConnection(
         {
           nodeId: toValue(nodeId),
-          handleId: toValue(handleId),
+          id: toValue(handleId),
           type: handleType,
           position: (clickedHandle?.getAttribute('data-handlepos') as Position) || Position.Top,
         },
@@ -142,52 +172,71 @@ export function useHandle({
 
       emits.connectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId), handleType })
 
+      let previousConnection: ConnectionInProgress = newConnection
+
       function onPointerMove(event: MouseTouchEvent) {
         connectionPosition = getEventPosition(event, containerBounds)
 
-        const { handle, validHandleResult } = getClosestHandle(
-          event,
-          doc,
+        closestHandle = getClosestHandle(
           pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
           connectionRadius.value,
-          handleLookup,
-          (handle) =>
-            isValidHandle(
-              event,
-              handle,
-              connectionMode.value,
-              toValue(nodeId),
-              toValue(handleId),
-              isTarget ? 'target' : 'source',
-              isValidConnectionHandler,
-              doc,
-              edges.value,
-              nodes.value,
-              findNode,
-            ),
+          nodeLookup.value,
+          fromHandle,
         )
-
-        closestHandle = handle
 
         if (!autoPanStarted) {
           autoPan()
           autoPanStarted = true
         }
 
-        connection = validHandleResult.connection
-        isValid = validHandleResult.isValid
-        handleDomNode = validHandleResult.handleDomNode
+        const result = isValidHandle(
+          event,
+          {
+            handle: closestHandle,
+            connectionMode: connectionMode.value,
+            fromNodeId: toValue(nodeId),
+            fromHandleId: toValue(handleId),
+            fromType: isTarget ? 'target' : 'source',
+            isValidConnection: isValidConnectionHandler,
+            doc,
+            lib: 'vue',
+            flowId,
+            nodeLookup: nodeLookup.value,
+          },
+          edges.value,
+          nodes.value,
+          findNode,
+        )
+
+        handleDomNode = result.handleDomNode
+        connection = result.connection
+        isValid = isConnectionValid(!!closestHandle, result.isValid)
+
+        const newConnection: ConnectionInProgress = {
+          // from stays the same
+          ...previousConnection,
+          isValid,
+          to:
+            closestHandle && isValid
+              ? rendererPointToPoint({ x: closestHandle.x, y: closestHandle.y }, viewport.value)
+              : connectionPosition,
+          toHandle: result.toHandle,
+          toPosition: isValid && result.toHandle ? result.toHandle.position : oppositePosition[fromHandle.position],
+          toNode: result.toHandle ? nodeLookup.value.get(result.toHandle.nodeId)! : null,
+        }
 
         // we don't want to trigger an update when the connection
         // is snapped to the same handle as before
         if (
           isValid &&
           closestHandle &&
-          previousConnection?.endHandle &&
-          validHandleResult.endHandle &&
-          previousConnection.endHandle.type === validHandleResult.endHandle.type &&
-          previousConnection.endHandle.nodeId === validHandleResult.endHandle.nodeId &&
-          previousConnection.endHandle.handleId === validHandleResult.endHandle.handleId
+          previousConnection?.toHandle &&
+          newConnection.toHandle &&
+          previousConnection.toHandle.type === newConnection.toHandle.type &&
+          previousConnection.toHandle.nodeId === newConnection.toHandle.nodeId &&
+          previousConnection.toHandle.id === newConnection.toHandle.id &&
+          previousConnection.to.x === newConnection.to.x &&
+          previousConnection.to.y === newConnection.to.y
         ) {
           return
         }
@@ -202,11 +251,11 @@ export function useHandle({
                 viewport.value,
               )
             : connectionPosition,
-          validHandleResult.endHandle,
+          result.toHandle,
           getConnectionStatus(!!closestHandle, isValid),
         )
 
-        previousConnection = validHandleResult
+        previousConnection = newConnection
 
         if (!closestHandle && !isValid && !handleDomNode) {
           return resetRecentHandle(prevActiveHandle)
@@ -219,9 +268,9 @@ export function useHandle({
 
           // todo: remove `vue-flow__handle-connecting` in next major version
           handleDomNode.classList.add('connecting', 'vue-flow__handle-connecting')
-          handleDomNode.classList.toggle('valid', isValid)
+          handleDomNode.classList.toggle('valid', !!isValid)
           // todo: remove this in next major version
-          handleDomNode.classList.toggle('vue-flow__handle-valid', isValid)
+          handleDomNode.classList.toggle('vue-flow__handle-valid', !!isValid)
         }
       }
 
@@ -275,7 +324,11 @@ export function useHandle({
     if (!connectionClickStartHandle.value) {
       emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId) })
 
-      startConnection({ nodeId: toValue(nodeId), type: toValue(type), handleId: toValue(handleId) }, undefined, true)
+      startConnection(
+        { nodeId: toValue(nodeId), type: toValue(type), id: toValue(handleId), position: Position.Top },
+        undefined,
+        true,
+      )
     } else {
       let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
@@ -291,28 +344,29 @@ export function useHandle({
 
       const doc = getHostForElement(event.target as HTMLElement)
 
-      const { connection, isValid } = isValidHandle(
+      const result = isValidHandle(
         event,
         {
-          nodeId: toValue(nodeId),
-          id: toValue(handleId),
-          type: toValue(type),
+          handle: connectionClickStartHandle.value,
+          connectionMode: connectionMode.value,
+          fromNodeId: toValue(nodeId),
+          fromHandleId: toValue(handleId),
+          fromType: isTarget ? 'target' : 'source',
+          isValidConnection: isValidConnectionHandler,
+          doc,
+          lib: 'vue',
+          flowId,
+          nodeLookup: nodeLookup.value,
         },
-        connectionMode.value,
-        connectionClickStartHandle.value.nodeId,
-        connectionClickStartHandle.value.handleId || null,
-        connectionClickStartHandle.value.type,
-        isValidConnectionHandler,
-        doc,
         edges.value,
         nodes.value,
         findNode,
       )
 
-      const isOwnHandle = connection.source === connection.target
+      const isOwnHandle = result.connection?.source === result.connection?.target
 
-      if (isValid && !isOwnHandle) {
-        emits.connect(connection)
+      if (result.isValid && result.connection && !isOwnHandle) {
+        emits.connect(result.connection)
       }
 
       emits.clickConnectEnd(event)

@@ -1,17 +1,10 @@
 import { computed, defineComponent, h, inject } from 'vue'
 import type { HandleElement } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
-import { getHandlePosition, getMarkerId } from '../../utils'
+import { getHandlePosition, getMarkerId, oppositePosition } from '../../utils'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
 import { getBezierPath, getSimpleBezierPath, getSmoothStepPath } from '../Edges/utils'
-
-const oppositePosition = {
-  [Position.Left]: Position.Right,
-  [Position.Right]: Position.Left,
-  [Position.Top]: Position.Bottom,
-  [Position.Bottom]: Position.Top,
-}
 
 const ConnectionLine = defineComponent({
   name: 'ConnectionLine',

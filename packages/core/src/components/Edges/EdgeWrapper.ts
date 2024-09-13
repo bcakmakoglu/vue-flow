@@ -8,7 +8,7 @@ import {
   ErrorCode,
   VueFlowError,
   elementSelectionKeys,
-  getHandle,
+  getEdgeHandle,
   getHandlePosition,
   getMarkerId,
 } from '../../utils'
@@ -150,7 +150,7 @@ const EdgeWrapper = defineComponent({
         sourceNodeHandles = [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]
       }
 
-      const sourceHandle = getHandle(sourceNodeHandles, edge.value.sourceHandle)
+      const sourceHandle = getEdgeHandle(sourceNodeHandles, edge.value.sourceHandle)
 
       let targetNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
@@ -159,7 +159,7 @@ const EdgeWrapper = defineComponent({
         targetNodeHandles = [...(targetNode.handleBounds.target || []), ...(targetNode.handleBounds.source || [])]
       }
 
-      const targetHandle = getHandle(targetNodeHandles, edge.value.targetHandle)
+      const targetHandle = getEdgeHandle(targetNodeHandles, edge.value.targetHandle)
 
       const sourcePosition = sourceHandle?.position || Position.Bottom
 
