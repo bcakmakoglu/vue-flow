@@ -60,6 +60,7 @@ const NodeWrapper = defineComponent({
       elementsSelectable,
       nodesConnectable,
       nodesFocusable,
+      hooks,
     } = useVueFlow()
 
     const nodeElement = ref<HTMLDivElement | null>(null)
@@ -74,6 +75,8 @@ const NodeWrapper = defineComponent({
 
     const { node, parentNode } = useNode(props.id)
 
+    const { emit, on } = useNodeHooks(node, emits)
+
     const isDraggable = toRef(() => (typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable))
 
     const isSelectable = toRef(() => (typeof node.selectable === 'undefined' ? elementsSelectable.value : node.selectable))
@@ -81,6 +84,17 @@ const NodeWrapper = defineComponent({
     const isConnectable = toRef(() => (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable))
 
     const isFocusable = toRef(() => (typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable))
+
+    const hasPointerEvents = toRef(
+      () =>
+        isSelectable.value ||
+        isDraggable.value ||
+        hooks.value.nodeClick.hasListeners() ||
+        hooks.value.nodeDoubleClick.hasListeners() ||
+        hooks.value.nodeMouseEnter.hasListeners() ||
+        hooks.value.nodeMouseMove.hasListeners() ||
+        hooks.value.nodeMouseLeave.hasListeners(),
+    )
 
     const isInit = toRef(() => !!node.dimensions.width && !!node.dimensions.height)
 
@@ -111,8 +125,6 @@ const NodeWrapper = defineComponent({
 
       return false
     })
-
-    const { emit, on } = useNodeHooks(node, emits)
 
     const dragging = useDrag({
       id: props.id,
@@ -266,7 +278,7 @@ const NodeWrapper = defineComponent({
             visibility: isInit.value ? 'visible' : 'hidden',
             zIndex: node.computedPosition.z ?? zIndex.value,
             transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
-            pointerEvents: isSelectable.value || isDraggable.value ? 'all' : 'none',
+            pointerEvents: hasPointerEvents.value ? 'all' : 'none',
             ...getStyle.value,
           },
           'tabIndex': isFocusable.value ? 0 : undefined,
