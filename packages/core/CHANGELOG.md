@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.41.2
+
+### Patch Changes
+
+- [#1624](https://github.com/bcakmakoglu/vue-flow/pull/1624) [`6692072`](https://github.com/bcakmakoglu/vue-flow/commit/6692072c919fef0f343b0a75d77636f5a820639e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use calculated drag distance to trigger drag-click.
+
+- [#1618](https://github.com/bcakmakoglu/vue-flow/pull/1618) [`1fa90ac`](https://github.com/bcakmakoglu/vue-flow/commit/1fa90acec247b2dd8a6e8c6db7209eb8791a02d0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow node/edge pointer events if mouse event listeners (like `nodeClick` or `edgeClick`) exists.
+
 ## 1.41.1
 
 ### Patch Changes
