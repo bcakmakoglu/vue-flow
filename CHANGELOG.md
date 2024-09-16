@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.41.2] - 2024-09-16
+
+[524d812](524d8129451edc7c40db5366ecd8113ad7dd99bd)...[becb928](becb928c395cc5a7c2b4a883b10a26c8f9dc860f)
+
+### Bug Fixes
+
+- Allow pointer events if mouse evt listeners exist (#1618) ([6338a9d](6338a9db067fcb7a8f6077a90450066812466875))
+- Calculate distance to trigger drag-click (#1624) ([6cc3042](6cc30429b54715650ccd7851287cd0f142daba44))
+
+### Miscellaneous Tasks
+
+- Correct prop name ([a1bfef8](a1bfef80162dbe9101c7eb8945ba816afd0e4d03))
+
 ## [1.41.1] - 2024-09-06
 
 [c555dfd](c555dfd987b32f312c4003d3b53f094fa5bf71b9)...[524d812](524d8129451edc7c40db5366ecd8113ad7dd99bd)
