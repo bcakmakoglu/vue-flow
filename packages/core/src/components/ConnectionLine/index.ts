@@ -71,7 +71,7 @@ const ConnectionLine = defineComponent({
       const { x: fromX, y: fromY } = getHandlePosition(fromNode.value, fromHandle, fromPosition)
 
       let toHandle: HandleElement | null = null
-      if (toNode.value && connectionEndHandle.value?.handleId) {
+      if (toNode.value) {
         // if connection mode is strict, we only look for handles of the opposite type
         if (connectionMode.value === ConnectionMode.Strict) {
           toHandle =
