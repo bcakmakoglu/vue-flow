@@ -50,7 +50,7 @@ const ConnectionLine = defineComponent({
         return null
       }
 
-      const startHandleId = connectionStartHandle.value.handleId
+      const startHandleId = connectionStartHandle.value.id
 
       const handleType = connectionStartHandle.value.type
 
@@ -76,13 +76,13 @@ const ConnectionLine = defineComponent({
         if (connectionMode.value === ConnectionMode.Strict) {
           toHandle =
             toNode.value.handleBounds[handleType === 'source' ? 'target' : 'source']?.find(
-              (d) => d.id === connectionEndHandle.value?.handleId,
+              (d) => d.id === connectionEndHandle.value?.id,
             ) || null
         } else {
           // if connection mode is loose, look for the handle in both source and target bounds
           toHandle =
             [...(toNode.value.handleBounds.source || []), ...(toNode.value.handleBounds.target || [])]?.find(
-              (d) => d.id === connectionEndHandle.value?.handleId,
+              (d) => d.id === connectionEndHandle.value?.id,
             ) || null
         }
       }
