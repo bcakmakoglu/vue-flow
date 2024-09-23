@@ -19,6 +19,7 @@ const type = toRef(() => props.type ?? 'source')
 const isValidConnection = toRef(() => props.isValidConnection ?? null)
 
 const {
+  id: flowId,
   connectionStartHandle,
   connectionClickStartHandle,
   connectionEndHandle,
@@ -179,7 +180,7 @@ export default {
 <template>
   <div
     ref="handle"
-    :data-id="`${nodeId}-${handleId}-${type}`"
+    :data-id="`${flowId}-${nodeId}-${handleId}-${type}`"
     :data-handleid="handleId"
     :data-nodeid="nodeId"
     :data-handlepos="position"

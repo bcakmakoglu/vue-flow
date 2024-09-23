@@ -92,7 +92,7 @@ export function getClosestHandle(
       }
 
       // determine absolute position of the handle
-      const { x, y } = getHandlePosition(node, handle, handle.position, true)
+      const { x, y } = getHandlePosition(node, handle, handle.position)
 
       const distance = Math.sqrt((x - position.x) ** 2 + (y - position.y) ** 2)
       if (distance > connectionRadius) {
@@ -112,6 +112,7 @@ export function getClosestHandle(
   if (!closestHandles.length) {
     return null
   }
+
   // when multiple handles overlay each other we prefer the opposite handle
   if (closestHandles.length > 1) {
     const oppositeHandleType = fromHandle.type === 'source' ? 'target' : 'source'
