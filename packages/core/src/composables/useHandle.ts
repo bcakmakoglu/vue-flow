@@ -329,50 +329,57 @@ export function useHandle({
         undefined,
         true,
       )
-    } else {
-      let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
-      const node = findNode(toValue(nodeId))
-
-      if (!isValidConnectionHandler && node) {
-        isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
-      }
-
-      if (node && (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable) === false) {
-        return
-      }
-
-      const doc = getHostForElement(event.target as HTMLElement)
-
-      const result = isValidHandle(
-        event,
-        {
-          handle: connectionClickStartHandle.value,
-          connectionMode: connectionMode.value,
-          fromNodeId: toValue(nodeId),
-          fromHandleId: toValue(handleId),
-          fromType: isTarget ? 'target' : 'source',
-          isValidConnection: isValidConnectionHandler,
-          doc,
-          lib: 'vue',
-          flowId,
-          nodeLookup: nodeLookup.value,
-        },
-        edges.value,
-        nodes.value,
-        findNode,
-      )
-
-      const isOwnHandle = result.connection?.source === result.connection?.target
-
-      if (result.isValid && result.connection && !isOwnHandle) {
-        emits.connect(result.connection)
-      }
-
-      emits.clickConnectEnd(event)
-
-      endConnection(event, true)
+      return
     }
+
+    let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
+
+    const node = findNode(toValue(nodeId))
+
+    if (!isValidConnectionHandler && node) {
+      isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
+    }
+
+    if (node && (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable) === false) {
+      return
+    }
+
+    const doc = getHostForElement(event.target as HTMLElement)
+
+    const result = isValidHandle(
+      event,
+      {
+        handle: {
+          nodeId: toValue(nodeId),
+          id: toValue(handleId),
+          type: toValue(type),
+          position: Position.Top,
+        },
+        connectionMode: connectionMode.value,
+        fromNodeId: connectionClickStartHandle.value.nodeId,
+        fromHandleId: connectionClickStartHandle.value.id || null,
+        fromType: connectionClickStartHandle.value.type,
+        isValidConnection: isValidConnectionHandler,
+        doc,
+        lib: 'vue',
+        flowId,
+        nodeLookup: nodeLookup.value,
+      },
+      edges.value,
+      nodes.value,
+      findNode,
+    )
+
+    const isOwnHandle = result.connection?.source === result.connection?.target
+
+    if (result.isValid && result.connection && !isOwnHandle) {
+      emits.connect(result.connection)
+    }
+
+    emits.clickConnectEnd(event)
+
+    endConnection(event, true)
   }
 
   return {
