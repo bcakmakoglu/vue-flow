@@ -6,41 +6,36 @@ export function getHandlePosition(
   node: GraphNode,
   handle: HandleElement | null,
   fallbackPosition: Position = Position.Left,
+  center = false,
 ): XYPosition {
   const x = (handle?.x ?? 0) + node.computedPosition.x
   const y = (handle?.y ?? 0) + node.computedPosition.y
   const { width, height } = handle ?? getNodeDimensions(node)
+
+  if (center) {
+    return { x: x + width / 2, y: y + height / 2 }
+  }
+
   const position = handle?.position ?? fallbackPosition
 
   switch (position) {
     case Position.Top:
-      return {
-        x: x + width / 2,
-        y,
-      }
+      return { x: x + width / 2, y }
     case Position.Right:
-      return {
-        x: x + width,
-        y: y + height / 2,
-      }
+      return { x: x + width, y: y + height / 2 }
     case Position.Bottom:
-      return {
-        x: x + width / 2,
-        y: y + height,
-      }
+      return { x: x + width / 2, y: y + height }
     case Position.Left:
-      return {
-        x,
-        y: y + height / 2,
-      }
+      return { x, y: y + height / 2 }
   }
 }
 
-export function getHandle(bounds: HandleElement[] = [], handleId?: string | null): HandleElement | null {
-  if (!bounds.length) {
+export function getEdgeHandle(bounds: HandleElement[] | undefined, handleId?: string | null): HandleElement | null {
+  if (!bounds) {
     return null
   }
 
+  // if no handleId is given, we use the first handle, otherwise we check for the id
   return (!handleId ? bounds[0] : bounds.find((d) => d.id === handleId)) || null
 }
 
