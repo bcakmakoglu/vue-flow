@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
@@ -36,7 +36,7 @@ jobs:
 
       - name: Setup Turbo cache 🏎️
         id: turbo-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: .turbo
           key: turbo-${{ runner.os }}-${{ github.sha }}
@@ -50,7 +50,7 @@ jobs:
         run: pnpm run build --cache-dir=.turbo
 
       - name: Run tests 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           install-command: pnpm cypress install
           command: pnpm run test --cache-dir=.turbo
