@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.41.3
+
+### Patch Changes
+
+- [#1662](https://github.com/bcakmakoglu/vue-flow/pull/1662) [`a41bd7b`](https://github.com/bcakmakoglu/vue-flow/commit/a41bd7b8218a47061824f2f4a5a2a7758e62561a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reorder pane class names to allow dragging cursor when selection mode is permanently enabled
+
+- [#1667](https://github.com/bcakmakoglu/vue-flow/pull/1667) [`e51f08c`](https://github.com/bcakmakoglu/vue-flow/commit/e51f08cb51ee1bf442b70b88ce74f54db86ad4a7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set `isPressed` to `true` if permanent keypress is enabled
+
+- [#1662](https://github.com/bcakmakoglu/vue-flow/pull/1662) [`a41bd7b`](https://github.com/bcakmakoglu/vue-flow/commit/a41bd7b8218a47061824f2f4a5a2a7758e62561a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow pan on drag when selectionKeyCode is `true` but panOnDrag key is not left mouse btn
+
+- [#1665](https://github.com/bcakmakoglu/vue-flow/pull/1665) [`a6ec480`](https://github.com/bcakmakoglu/vue-flow/commit/a6ec4800f3256ce6d7d5d88212ac780634cb4f09) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use all handle bounds when using loose connection mode during edge update
+
 ## 1.41.2
 
 ### Patch Changes
