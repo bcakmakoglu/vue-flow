@@ -93,7 +93,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, optio
     (nextKeyFilter, previousKeyFilter) => {
       // if the previous keyFilter was a boolean but is now something else, we need to reset the isPressed value
       if (typeof previousKeyFilter === 'boolean' && typeof nextKeyFilter !== 'boolean') {
-        reset()
+        reset(false)
       }
 
       currentFilter = createKeyFilterFn(nextKeyFilter)
@@ -104,7 +104,8 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, optio
   )
 
   onMounted(() => {
-    useEventListener(window, ['blur', 'contextmenu'], reset)
+    useEventListener(window, 'blur', () => reset(true))
+    useEventListener(window, 'contextmenu', () => reset(true))
   })
 
   onKeyStroke(
@@ -135,30 +136,32 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, optio
           return
         }
 
-        reset()
+        reset(false)
       }
     },
     { eventName: 'keyup', target },
   )
 
-  function reset() {
+  function reset(isPermanent: boolean) {
     modifierPressed = false
 
     pressedKeys.clear()
 
-    isPressed.value = false
+    if (!isPermanent) {
+      isPressed.value = false
+    }
   }
 
   function createKeyFilterFn(keyFilter: KeyFilter | null) {
     // if the keyFilter is null, we just set the isPressed value to false
     if (keyFilter === null) {
-      reset()
+      reset(false)
       return () => false
     }
 
     // if the keyFilter is a boolean, we just set the isPressed value to that boolean
     if (typeof keyFilter === 'boolean') {
-      reset()
+      reset(false)
       isPressed.value = keyFilter
 
       return () => false
