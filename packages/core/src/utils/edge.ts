@@ -107,7 +107,9 @@ export function getEdgeZIndex(edge: GraphEdge, findNode: Actions['findNode'], el
     return 0
   }
 
-  if (elevateEdgesOnSelect) {
+  if (elevateEdgesOnSelect && edge.selected) {
+    z = hasZIndex ? edge.zIndex! : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0, 1000)
+  } else {
     z = hasZIndex ? edge.zIndex! : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
   }
 
