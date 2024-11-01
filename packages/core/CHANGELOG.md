@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.41.4
+
+### Patch Changes
+
+- [#1670](https://github.com/bcakmakoglu/vue-flow/pull/1670) [`4bc7658`](https://github.com/bcakmakoglu/vue-flow/commit/4bc76586e1013c8a17b2a83ff32a050f2e16c350) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - if selection key code is true prevent pan on drag on left mouse btn
+
 ## 1.41.3
 
 ### Patch Changes
