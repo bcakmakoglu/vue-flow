@@ -162,7 +162,7 @@ export interface FlowProps {
   connectionRadius?: number
   isValidConnection?: ValidConnectionFunc | null
   deleteKeyCode?: KeyFilter | null
-  selectionKeyCode?: KeyFilter | null
+  selectionKeyCode?: KeyFilter | boolean | null
   multiSelectionKeyCode?: KeyFilter | null
   zoomActivationKeyCode?: KeyFilter | null
   panActivationKeyCode?: KeyFilter | null
