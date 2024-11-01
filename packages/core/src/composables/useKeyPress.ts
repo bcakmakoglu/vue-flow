@@ -146,7 +146,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
 
     pressedKeys.clear()
 
-    isPressed.value = false
+    isPressed.value = toValue(keyFilter) === true
   }
 
   function createKeyFilterFn(keyFilter: KeyFilter | boolean | null) {
