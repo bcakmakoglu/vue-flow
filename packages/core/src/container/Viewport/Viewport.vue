@@ -66,7 +66,11 @@ const selectionKeyPressed = useKeyPress(selectionKeyCode)
 
 const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
-const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && (panKeyPressed.value || panOnDrag.value))
+const shouldPanOnDrag = toRef(
+  () =>
+    (!selectionKeyPressed.value || (selectionKeyPressed.value && selectionKeyCode.value === true)) &&
+    (panKeyPressed.value || panOnDrag.value),
+)
 
 const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
 
@@ -226,9 +230,16 @@ onMounted(() => {
       return false
     }
 
+    const leftMouseBtnPanAllowed =
+      eventButton !== 0 || (selectionKeyCode.value === true && Array.isArray(panOnDrag.value) && !panOnDrag.value.includes(0))
+
     // We only allow right clicks if pan on drag is set to right-click
     const buttonAllowed =
-      (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(eventButton)) || !eventButton || eventButton <= 1
+      leftMouseBtnPanAllowed &&
+      ((Array.isArray(panOnDrag.value) && panOnDrag.value.includes(eventButton)) ||
+        (selectionKeyCode.value === true && Array.isArray(panOnDrag.value) && !panOnDrag.value.includes(0)) ||
+        !eventButton ||
+        eventButton <= 1)
 
     // default filter for d3-zoom
     return (!event.ctrlKey || event.type === 'wheel') && buttonAllowed
