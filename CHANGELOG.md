@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.41.4] - 2024-11-01
+
+[367f894](367f8947f2cf8adc8135c38d665f967f742a739b)...[6bb195d](6bb195da0ce074f5d581f2d7a1a41779736ee124)
+
+### Bug Fixes
+
+- If selection key code is true prevent pan on drag on left mouse btn (#1670) ([1e3acb1](1e3acb197994df60f3ac76f54dd9b8b9794a1aa5))
+
 ## [1.41.3] - 2024-11-01
 
 [becb928](becb928c395cc5a7c2b4a883b10a26c8f9dc860f)...[367f894](367f8947f2cf8adc8135c38d665f967f742a739b)
