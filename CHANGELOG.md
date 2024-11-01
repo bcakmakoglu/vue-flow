@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.41.3] - 2024-11-01
+
+[becb928](becb928c395cc5a7c2b4a883b10a26c8f9dc860f)...[367f894](367f8947f2cf8adc8135c38d665f967f742a739b)
+
+### Bug Fixes
+
+- Typo in SnappableConnectionLine.vue (#1638) ([a90010b](a90010b5c47cd1c5236611c8c420189ec3d480dd))
+- Allow pan on drag for non left-btn when selectionKeyCode is `true` (#1662) ([fe552fc](fe552fc5c5843a67e38da0054598f9451ef76d95))
+- Use all handle bounds in loose connection mode (#1665) ([cfc2332](cfc233237048c20b89c3aae294314788a0b8a1e0))
+- Start patterns at 0,0 (#1666) ([900850d](900850d3ae0dd8957745a6e8b265dda7337f8487))
+- Set `isPressed` to `true` on `blur` and `contextmenu` events if permant keypress is enabled (#1667) ([72e0e2e](72e0e2e97eff0c1b96b7fa32a5eca30f70dc4630))
+- Allow pan on drag for other mouse btns if left is disabled ([ecd21ce](ecd21ceebb605760294ecd4c668915ff96fc77a6))
+
+### Miscellaneous Tasks
+
+- Update deps (#1633) ([de6f042](de6f042826f0149153a06517dc8b00169d0d1f2d))
+
 ## [1.41.2] - 2024-09-16
 
 [524d812](524d8129451edc7c40db5366ecd8113ad7dd99bd)...[becb928](becb928c395cc5a7c2b4a883b10a26c8f9dc860f)
