@@ -83,7 +83,7 @@ export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
   multiSelectionActive: boolean
 
   deleteKeyCode: KeyFilter | null
-  selectionKeyCode: KeyFilter | null
+  selectionKeyCode: KeyFilter | boolean | null
   multiSelectionKeyCode: KeyFilter | null
   zoomActivationKeyCode: KeyFilter | null
   panActivationKeyCode: KeyFilter | null
