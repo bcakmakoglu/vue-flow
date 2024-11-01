@@ -75,7 +75,7 @@ function useKeyOrCode(code: string, keysToWatch: string | string[]) {
  * @param keyFilter - Can be a boolean, a string, an array of strings or a function that returns a boolean. If it's a boolean, it will act as if the key is always pressed. If it's a string, it will return true if a key matching that string is pressed. If it's an array of strings, it will return true if any of the strings match a key being pressed, or a combination (e.g. ['ctrl+a', 'ctrl+b'])
  * @param options - Options object
  */
-export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, options?: UseKeyPressOptions) {
+export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | null>, options?: UseKeyPressOptions) {
   const actInsideInputWithModifier = toRef(() => toValue(options?.actInsideInputWithModifier) ?? false)
 
   const target = toRef(() => toValue(options?.target) ?? window)
@@ -149,7 +149,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, optio
     isPressed.value = false
   }
 
-  function createKeyFilterFn(keyFilter: KeyFilter | null) {
+  function createKeyFilterFn(keyFilter: KeyFilter | boolean | null) {
     // if the keyFilter is null, we just set the isPressed value to false
     if (keyFilter === null) {
       reset()
