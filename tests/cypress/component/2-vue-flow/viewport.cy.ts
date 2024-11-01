@@ -8,6 +8,7 @@ describe('Viewport drag / zoom', () => {
   beforeEach(() => {
     cy.vueFlow({
       nodes,
+      fitViewOnInit: false,
     })
   })
 
@@ -27,6 +28,7 @@ describe('Viewport drag / zoom', () => {
       await cy.tryAssertion(() => {
         cy.transformationPane()
           .should('exist')
+          .should('not.have.css', 'transform', 'matrix(1, 0, 0, 1, 0, 0)')
           .should(
             'have.css',
             'transform',
