@@ -62,10 +62,11 @@ const ConnectionLine = defineComponent({
       const handleType = connectionStartHandle.value.type
 
       const fromHandleBounds = fromNode.value.handleBounds
-      let handleBounds = fromHandleBounds?.[handleType]
+      let handleBounds = fromHandleBounds?.[handleType] || []
 
       if (connectionMode.value === ConnectionMode.Loose) {
-        handleBounds = handleBounds || fromHandleBounds?.[handleType === 'source' ? 'target' : 'source']
+        const oppositeBounds = fromHandleBounds?.[handleType === 'source' ? 'target' : 'source'] || []
+        handleBounds = [...handleBounds, ...oppositeBounds] || oppositeBounds
       }
 
       if (!handleBounds) {
