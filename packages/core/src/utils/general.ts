@@ -1,4 +1,5 @@
-import type { GraphNode } from '../types'
+import type { Dimensions, GraphNode, XYPosition } from '../types'
+import { clampPosition } from './graph'
 
 export function isMouseEvent(event: MouseEvent | TouchEvent): event is MouseEvent {
   return 'clientX' in event
@@ -22,4 +23,18 @@ export function getNodeDimensions(node: GraphNode): { width: number; height: num
     width: node.dimensions?.width ?? node.width ?? 0,
     height: node.dimensions?.height ?? node.height ?? 0,
   }
+}
+
+export function clampPositionToParent(childPosition: XYPosition, childDimensions: Dimensions, parent: GraphNode) {
+  const { width: parentWidth, height: parentHeight } = getNodeDimensions(parent)
+  const { x: parentX, y: parentY } = parent.computedPosition
+
+  return clampPosition(
+    childPosition,
+    [
+      [parentX, parentY],
+      [parentX + parentWidth, parentY + parentHeight],
+    ],
+    childDimensions,
+  )
 }
