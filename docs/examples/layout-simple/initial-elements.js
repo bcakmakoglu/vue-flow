@@ -1,61 +1,82 @@
 const position = { x: 0, y: 0 }
-const nodeType = 'process'
 
 export const initialNodes = [
   {
     id: '1',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 1',
+    },
   },
   {
     id: '2',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 2',
+    },
   },
   {
     id: '2a',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 2a',
+    },
   },
   {
     id: '2b',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 2b',
+    },
   },
   {
     id: '2c',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 2c',
+    },
   },
   {
     id: '2d',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 2d',
+    },
   },
   {
     id: '3',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 3',
+    },
   },
   {
     id: '4',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 4',
+    },
   },
   {
     id: '5',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 5',
+    },
   },
   {
     id: '6',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 6',
+    },
   },
   {
     id: '7',
     position,
-    type: nodeType,
+    data: {
+      label: 'Node 7',
+    },
   },
 ]
 

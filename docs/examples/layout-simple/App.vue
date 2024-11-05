@@ -3,45 +3,19 @@ import { nextTick, ref } from 'vue'
 import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import Icon from './Icon.vue'
-import ProcessNode from './ProcessNode.vue'
-import AnimationEdge from './AnimationEdge.vue'
 
 import { initialEdges, initialNodes } from './initial-elements.js'
-import { useRunProcess } from './useRunProcess'
-import { useShuffle } from './useShuffle'
 import { useLayout } from './useLayout'
 
 const nodes = ref(initialNodes)
 
 const edges = ref(initialEdges)
 
-const cancelOnError = ref(true)
-
-const shuffle = useShuffle()
-
-const { graph, layout, previousDirection } = useLayout()
-
-const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
+const { layout } = useLayout()
 
 const { fitView } = useVueFlow()
 
-async function shuffleGraph() {
-  await stop()
-
-  reset(nodes.value)
-
-  edges.value = shuffle(nodes.value)
-
-  nextTick(() => {
-    layoutGraph(previousDirection.value)
-  })
-}
-
 async function layoutGraph(direction) {
-  await stop()
-
-  reset(nodes.value)
-
   nodes.value = layout(nodes.value, edges.value, direction)
 
   nextTick(() => {
@@ -52,42 +26,11 @@ async function layoutGraph(direction) {
 
 <template>
   <div class="layout-flow">
-    <VueFlow
-      :nodes="nodes"
-      :edges="edges"
-      :default-edge-options="{ type: 'animation', animated: true }"
-      @nodes-initialized="layoutGraph('LR')"
-    >
-      <template #node-process="props">
-        <ProcessNode :data="props.data" :source-position="props.sourcePosition" :target-position="props.targetPosition" />
-      </template>
-
-      <template #edge-animation="edgeProps">
-        <AnimationEdge
-          :id="edgeProps.id"
-          :source="edgeProps.source"
-          :target="edgeProps.target"
-          :source-x="edgeProps.sourceX"
-          :source-y="edgeProps.sourceY"
-          :targetX="edgeProps.targetX"
-          :targetY="edgeProps.targetY"
-          :source-position="edgeProps.sourcePosition"
-          :target-position="edgeProps.targetPosition"
-        />
-      </template>
-
+    <VueFlow :nodes="nodes" :edges="edges" @nodes-initialized="layoutGraph('LR')">
       <Background />
 
       <Panel class="process-panel" position="top-right">
         <div class="layout-panel">
-          <button v-if="isRunning" class="stop-btn" title="stop" @click="stop">
-            <Icon name="stop" />
-            <span class="spinner" />
-          </button>
-          <button v-else title="start" @click="run(nodes)">
-            <Icon name="play" />
-          </button>
-
           <button title="set horizontal layout" @click="layoutGraph('LR')">
             <Icon name="horizontal" />
           </button>
@@ -95,15 +38,6 @@ async function layoutGraph(direction) {
           <button title="set vertical layout" @click="layoutGraph('TB')">
             <Icon name="vertical" />
           </button>
-
-          <button title="shuffle graph" @click="shuffleGraph">
-            <Icon name="shuffle" />
-          </button>
-        </div>
-
-        <div class="checkbox-panel">
-          <label>Cancel on error</label>
-          <input v-model="cancelOnError" type="checkbox" />
         </div>
       </Panel>
     </VueFlow>
