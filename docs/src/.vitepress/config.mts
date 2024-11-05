@@ -202,7 +202,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           collapsed: false,
           items: [
             { text: 'Basic', link: '/examples/' },
-            { text: 'Layouting', link: '/examples/layout' },
             { text: 'Drag & Drop', link: '/examples/dnd' },
             { text: 'Interactions', link: '/examples/interaction' },
             { text: 'Save & Restore', link: '/examples/save' },
@@ -215,6 +214,14 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Viewport Transition', link: '/examples/transition' },
             { text: 'Teleport Nodes', link: '/examples/teleport' },
             { text: 'Stress Test', link: '/examples/stress' },
+          ],
+        },
+        {
+          text: 'Layout',
+          collapsed: false,
+          items: [
+            { text: 'Simple Layout', link: '/examples/layout/simple' },
+            { text: 'Animation & Layout', link: '/examples/layout/animated' },
           ],
         },
         {

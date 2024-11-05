@@ -19,6 +19,8 @@ import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
 import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useLayout, useRunProcess, useShuffle } from './layout'
+import { SimpleLayoutApp, SimpleLayoutElements, SimpleLayoutIcon, useSimpleLayout } from './layout-simple'
+
 import { MathApp, MathCSS, MathElements, MathIcon, MathOperatorNode, MathResultNode, MathValueNode } from './math'
 import { ConfirmApp, ConfirmDialog, useDialog } from './confirm-delete'
 
@@ -136,6 +138,15 @@ export const exampleImports = {
     'useShuffle.js': useShuffle,
     'useLayout.js': useLayout,
     'Icon.vue': LayoutIcon,
+    'additionalImports': {
+      '@dagrejs/dagre': 'https://cdn.jsdelivr.net/npm/@dagrejs/dagre@1.1.2/+esm',
+    },
+  },
+  layoutSimple: {
+    'App.vue': SimpleLayoutApp,
+    'initial-elements.js': SimpleLayoutElements,
+    'useLayout.js': useSimpleLayout,
+    'Icon.vue': SimpleLayoutIcon,
     'additionalImports': {
       '@dagrejs/dagre': 'https://cdn.jsdelivr.net/npm/@dagrejs/dagre@1.1.2/+esm',
     },
