@@ -74,7 +74,7 @@ Here's a simple example to get you started:
 
 ::: code-group
 
-```vue [<LogosJavascript />]
+```vue [App.vue <LogosJavascript />]
 <script setup>
 import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
@@ -182,7 +182,100 @@ const edges = ref([
 </style>
 ```
 
-```vue [<LogosTypescript />]
+```vue [SpecialNode.vue <LogosJavascript />]
+<script setup>
+import { computed } from 'vue'
+  
+const props = defineProps({
+  position: {
+    type: Object,
+    required: true,
+  }
+})
+
+const x = computed(() => `${Math.round(props.position.x)}px`)
+const y = computed(() => `${Math.round(props.position.y)}px`)
+</script>
+
+<template>
+  <div class="vue-flow__node-default">
+    <div>{{ data.label }}</div>
+
+    <div>
+      {x} {y}
+    </div>
+
+    <Handle type="source" :position="Position.Bottom" />
+  </div>
+</template>
+```
+
+```vue [SpecialEdge.vue <LogosJavascript />]
+<script setup>
+import { BaseEdge, EdgeLabelRenderer, getBezierPath } from '@vue-flow/core'
+import { computed } from 'vue'
+
+const props = defineProps({
+  sourceX: {
+    type: Number,
+    required: true,
+  },
+  sourceY: {
+    type: Number,
+    required: true,
+  },
+  targetX: {
+    type: Number,
+    required: true,
+  },
+  targetY: {
+    type: Number,
+    required: true,
+  },
+  sourcePosition: {
+    type: String,
+    required: true,
+  },
+  targetPosition: {
+    type: String,
+    required: true,
+  },
+  data: {
+    type: Object,
+    required: true,
+  }
+})
+
+const path = computed(() => getBezierPath(props))
+</script>
+
+<script>
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<template>
+  <!-- You can use the `BaseEdge` component to create your own custom edge more easily -->
+  <BaseEdge :path="path[0]" />
+
+  <!-- Use the `EdgeLabelRenderer` to escape the SVG world of edges and render your own custom label in a `<div>` ctx -->
+  <EdgeLabelRenderer>
+    <div
+      :style="{
+        pointerEvents: 'all',
+        position: 'absolute',
+        transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
+      }"
+      class="nodrag nopan"
+    >
+      {{ data.hello }}
+    </div>
+  </EdgeLabelRenderer>
+</template>
+```
+
+```vue [App.vue <LogosTypescript />]
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Node, Edge } from '@vue-flow/core'  
@@ -289,6 +382,66 @@ const edges = ref<Edge[]>([
 /* import the default theme, this is optional but generally recommended */
 @import '@vue-flow/core/dist/theme-default.css';
 </style>
+```
+
+```vue [SpecialNode.vue <LogosTypescript />]
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { NodeProps } from '@vue-flow/core'
+  
+const props = defineProps<NodeProps>()
+
+const x = computed(() => `${Math.round(props.position.x)}px`)
+const y = computed(() => `${Math.round(props.position.y)}px`)
+</script>
+
+<template>
+  <div class="vue-flow__node-default">
+    <div>{{ data.label }}</div>
+
+    <div>
+      {x} {y}
+    </div>
+
+    <Handle type="source" :position="Position.Bottom" />
+  </div>
+</template>
+```
+
+```vue [SpecialEdge.vue <LogosTypescript />]
+<script setup lang="ts">
+import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps } from '@vue-flow/core'
+import { computed } from 'vue'
+
+const props = defineProps<EdgeProps>()
+
+const path = computed(() => getBezierPath(props))
+</script>
+
+<script>
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<template>
+  <!-- You can use the `BaseEdge` component to create your own custom edge more easily -->
+  <BaseEdge :path="path[0]" />
+
+  <!-- Use the `EdgeLabelRenderer` to escape the SVG world of edges and render your own custom label in a `<div>` ctx -->
+  <EdgeLabelRenderer>
+    <div
+      :style="{
+        pointerEvents: 'all',
+        position: 'absolute',
+        transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
+      }"
+      class="nodrag nopan"
+    >
+      {{ data.hello }}
+    </div>
+  </EdgeLabelRenderer>
+</template>
 ```
 
 :::
