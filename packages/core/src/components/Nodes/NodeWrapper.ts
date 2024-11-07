@@ -22,10 +22,11 @@ import {
   elementSelectionKeys,
   getXYZPos,
   handleNodeClick,
+  snapPosition,
 } from '../../utils'
 import { NodeId, NodeRef, Slots } from '../../context'
 import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
-import type { NodeComponent } from '../../types'
+import type { MouseTouchEvent, NodeComponent } from '../../types'
 
 interface Props {
   id: string
@@ -321,14 +322,15 @@ const NodeWrapper = defineComponent({
     }
     /** this re-calculates the current position, necessary for clamping by a node's extent */
     function clampPosition() {
-      const nextPos = node.computedPosition
+      const nextPosition = node.computedPosition
 
-      if (snapToGrid.value) {
-        nextPos.x = snapGrid.value[0] * Math.round(nextPos.x / snapGrid.value[0])
-        nextPos.y = snapGrid.value[1] * Math.round(nextPos.y / snapGrid.value[1])
-      }
-
-      const { computedPosition, position } = calcNextPosition(node, nextPos, emits.error, nodeExtent.value, parentNode.value)
+      const { computedPosition, position } = calcNextPosition(
+        node,
+        snapToGrid.value ? snapPosition(nextPosition, snapGrid.value) : nextPosition,
+        emits.error,
+        nodeExtent.value,
+        parentNode.value,
+      )
 
       // only overwrite positions if there are changes when clamping
       if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
@@ -372,7 +374,7 @@ const NodeWrapper = defineComponent({
       return emit.doubleClick({ event, node })
     }
 
-    function onSelectNode(event: MouseEvent) {
+    function onSelectNode(event: MouseTouchEvent) {
       if (isSelectable.value && (!selectNodesOnDrag.value || !isDraggable.value || nodeDragThreshold.value > 0)) {
         handleNodeClick(
           node,

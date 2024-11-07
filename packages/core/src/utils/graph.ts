@@ -21,7 +21,7 @@ import type {
   XYPosition,
   XYZPosition,
 } from '../types'
-import { isDef, warn } from '.'
+import { isDef, snapPosition, warn } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
@@ -299,21 +299,14 @@ export function pointToRendererPoint(
   { x, y }: XYPosition,
   { x: tx, y: ty, zoom: tScale }: ViewportTransform,
   snapToGrid: boolean = false,
-  [snapX, snapY]: [snapX: number, snapY: number] = [1, 1],
+  snapGrid: [snapX: number, snapY: number] = [1, 1],
 ): XYPosition {
   const position: XYPosition = {
     x: (x - tx) / tScale,
     y: (y - ty) / tScale,
   }
 
-  if (snapToGrid) {
-    return {
-      x: snapX * Math.round(position.x / snapX),
-      y: snapY * Math.round(position.y / snapY),
-    }
-  }
-
-  return position
+  return snapToGrid ? snapPosition(position, snapGrid) : position
 }
 
 function getBoundsOfBoxes(box1: Box, box2: Box): Box {
