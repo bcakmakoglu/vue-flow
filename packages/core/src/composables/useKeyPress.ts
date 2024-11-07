@@ -35,12 +35,6 @@ function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<str
     return pressedKey.toLowerCase() === keyToMatch.toLowerCase()
   }
 
-  if (isKeyUp) {
-    pressedKeys.delete(pressedKey.toLowerCase())
-  } else {
-    pressedKeys.add(pressedKey.toLowerCase())
-  }
-
   return keyCombination.every(
     (key, index) => pressedKeys.has(key) && Array.from(pressedKeys.values())[index] === keyCombination[index],
   )
@@ -54,13 +48,22 @@ function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<strin
 
     const keyOrCode = useKeyOrCode(event.code, keyFilter)
 
+    const isKeyUp = event.type === 'keyup'
+    const pressedKey = event[keyOrCode]
+
+    if (isKeyUp) {
+      pressedKeys.delete(pressedKey.toLowerCase())
+    } else {
+      pressedKeys.add(pressedKey.toLowerCase())
+    }
+
     // if the keyFilter is an array of multiple keys, we need to check each possible key combination
     if (Array.isArray(keyFilter)) {
-      return keyFilter.some((key) => isKeyMatch(event[keyOrCode], key, pressedKeys, event.type === 'keyup'))
+      return keyFilter.some((key) => isKeyMatch(pressedKey, key, pressedKeys, isKeyUp))
     }
 
     // if the keyFilter is a string, we need to check if the key matches the string
-    return isKeyMatch(event[keyOrCode], keyFilter, pressedKeys, event.type === 'keyup')
+    return isKeyMatch(pressedKey, keyFilter, pressedKeys, isKeyUp)
   }
 }
 
@@ -130,7 +133,9 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
   )
 
   onKeyStroke(
-    (...args) => currentFilter(...args),
+    (...args) => {
+      return currentFilter(...args)
+    },
     (e) => {
       if (isPressed.value) {
         const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier.value)) && isInputDOMNode(e)
@@ -153,7 +158,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
     isPressed.value = toValue(keyFilter) === true
   }
 
-  function createKeyFilterFn(keyFilter: KeyFilter | boolean | null) {
+  function createKeyFilterFn(keyFilter: KeyFilter | boolean | null, isKeyUp = false) {
     // if the keyFilter is null, we just set the isPressed value to false
     if (keyFilter === null) {
       reset()
