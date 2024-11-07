@@ -1,7 +1,12 @@
 import type { GraphNode, SnapGrid, XYPosition } from '../types'
+import type { UseDragEvent } from '../composables'
 
 export function isMouseEvent(event: MouseEvent | TouchEvent): event is MouseEvent {
   return 'clientX' in event
+}
+
+export function isUseDragEvent(event: any): event is UseDragEvent {
+  return 'sourceEvent' in event
 }
 
 export function getEventPosition(event: MouseEvent | TouchEvent, bounds?: DOMRect) {
