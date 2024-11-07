@@ -25,7 +25,11 @@ function wasModifierPressed(event: KeyboardEvent) {
 }
 
 function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<string>, isKeyUp: boolean) {
-  const keyCombination = keyToMatch.split('+').map((k) => k.trim().toLowerCase())
+  const keyCombination = keyToMatch
+    .replace('+', '\n')
+    .replace('\n\n', '\n+')
+    .split('\n')
+    .map((k) => k.trim().toLowerCase())
 
   if (keyCombination.length === 1) {
     return pressedKey.toLowerCase() === keyToMatch.toLowerCase()
