@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.41.5
+
+### Patch Changes
+
+- [#1680](https://github.com/bcakmakoglu/vue-flow/pull/1680) [`b6c500d`](https://github.com/bcakmakoglu/vue-flow/commit/b6c500dca8a8baa054802a80772990c723f83e2d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - check if event on drag end is mouse/touch event or a usedrag event
+
+- [#1696](https://github.com/bcakmakoglu/vue-flow/pull/1696) [`249efce`](https://github.com/bcakmakoglu/vue-flow/commit/249efce8107f1b51ecd98206953015b9b470e342) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Properly release key combinations when one of the keys is unpressed
+
+- [#1693](https://github.com/bcakmakoglu/vue-flow/pull/1693) [`f28ffba`](https://github.com/bcakmakoglu/vue-flow/commit/f28ffba4d3f8166f2e80a9e6805d17db14ab2a89) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow using the `+` key in key combinations
+
+- [#1695](https://github.com/bcakmakoglu/vue-flow/pull/1695) [`b09ad8e`](https://github.com/bcakmakoglu/vue-flow/commit/b09ad8ea35e974c83b5ad2ceea49e7971ff62cf3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Escape node labels and avoid rendering them as innerHTML
+
 ## 1.41.4
 
 ### Patch Changes
