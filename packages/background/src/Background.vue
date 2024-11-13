@@ -18,21 +18,19 @@ const {
   bgColor,
   patternColor: initialPatternColor,
   color: _patternColor,
-  offset = 2,
+  offset = 0,
 } = defineProps<BackgroundProps>()
 
 const { id: vueFlowId, viewport } = useVueFlow()
 
 const background = computed(() => {
+  const zoom = viewport.value.zoom
   const [gapX, gapY] = Array.isArray(gap) ? gap : [gap, gap]
-  const scaledGap: [number, number] = [gapX * viewport.value.zoom || 1, gapY * viewport.value.zoom || 1]
-  const scaledSize = size * viewport.value.zoom
+  const scaledGap: [number, number] = [gapX * zoom || 1, gapY * zoom || 1]
+  const scaledSize = size * zoom
   const [offsetX, offsetY]: [number, number] = Array.isArray(offset) ? offset : [offset, offset]
 
-  const scaledOffset: [number, number] = [
-    offsetX * viewport.value.zoom || 1 + scaledGap[0] / 2,
-    offsetY * viewport.value.zoom || 1 + scaledGap[1] / 2,
-  ]
+  const scaledOffset: [number, number] = [offsetX * zoom || 1 + scaledGap[0] / 2, offsetY * zoom || 1 + scaledGap[1] / 2]
 
   return {
     scaledGap,
