@@ -3,6 +3,9 @@ import { onMounted, ref, toRef, toValue, watch } from 'vue'
 import type { KeyFilter, KeyPredicate } from '@vueuse/core'
 import { onKeyStroke, useEventListener } from '@vueuse/core'
 
+type PressedKeys = Set<string>
+type KeyOrCode = 'key' | 'code'
+
 export interface UseKeyPressOptions {
   actInsideInputWithModifier?: MaybeRefOrGetter<boolean>
   target?: MaybeRefOrGetter<EventTarget | null | undefined>
@@ -35,18 +38,23 @@ function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<str
     return pressedKey.toLowerCase() === keyToMatch.toLowerCase()
   }
 
-  if (isKeyUp) {
-    pressedKeys.delete(pressedKey.toLowerCase())
-  } else {
+  // we need to remove the key *after* checking for a match otherwise a combination like 'shift+a' would never get unmatched/reset
+  if (!isKeyUp) {
     pressedKeys.add(pressedKey.toLowerCase())
   }
 
-  return keyCombination.every(
+  const isMatch = keyCombination.every(
     (key, index) => pressedKeys.has(key) && Array.from(pressedKeys.values())[index] === keyCombination[index],
   )
+
+  if (isKeyUp) {
+    pressedKeys.delete(pressedKey.toLowerCase())
+  }
+
+  return isMatch
 }
 
-function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
+function createKeyPredicate(keyFilter: string | string[], pressedKeys: PressedKeys): KeyPredicate {
   return (event: KeyboardEvent) => {
     if (!event.code && !event.key) {
       return false
@@ -54,24 +62,17 @@ function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<strin
 
     const keyOrCode = useKeyOrCode(event.code, keyFilter)
 
-    const isKeyUp = event.type === 'keyup'
-    const pressedKey = event[keyOrCode]
-
     // if the keyFilter is an array of multiple keys, we need to check each possible key combination
     if (Array.isArray(keyFilter)) {
-      return keyFilter.some((key) => isKeyMatch(pressedKey, key, pressedKeys, isKeyUp))
+      return keyFilter.some((key) => isKeyMatch(event[keyOrCode], key, pressedKeys, event.type === 'keyup'))
     }
 
     // if the keyFilter is a string, we need to check if the key matches the string
-    return isKeyMatch(pressedKey, keyFilter, pressedKeys, isKeyUp)
+    return isKeyMatch(event[keyOrCode], keyFilter, pressedKeys, event.type === 'keyup')
   }
 }
 
-function useKeyOrCode(code: string, keysToWatch: string | string[]) {
-  if (typeof keysToWatch === 'string') {
-    return code === keysToWatch ? 'code' : 'key'
-  }
-
+function useKeyOrCode(code: string, keysToWatch: string | string[]): KeyOrCode {
   return keysToWatch.includes(code) ? 'code' : 'key'
 }
 
@@ -133,9 +134,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
   )
 
   onKeyStroke(
-    (...args) => {
-      return currentFilter(...args)
-    },
+    (...args) => currentFilter(...args),
     (e) => {
       if (isPressed.value) {
         const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier.value)) && isInputDOMNode(e)
@@ -144,7 +143,8 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
           return
         }
 
-        reset()
+        modifierPressed = false
+        isPressed.value = false
       }
     },
     { eventName: 'keyup', target },
