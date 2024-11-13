@@ -25,7 +25,11 @@ function wasModifierPressed(event: KeyboardEvent) {
 }
 
 function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<string>, isKeyUp: boolean) {
-  const keyCombination = keyToMatch.split('+').map((k) => k.trim().toLowerCase())
+  const keyCombination = keyToMatch
+    .replace('+', '\n')
+    .replace('\n\n', '\n+')
+    .split('\n')
+    .map((k) => k.trim().toLowerCase())
 
   if (keyCombination.length === 1) {
     return pressedKey.toLowerCase() === keyToMatch.toLowerCase()
@@ -50,13 +54,16 @@ function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<strin
 
     const keyOrCode = useKeyOrCode(event.code, keyFilter)
 
+    const isKeyUp = event.type === 'keyup'
+    const pressedKey = event[keyOrCode]
+
     // if the keyFilter is an array of multiple keys, we need to check each possible key combination
     if (Array.isArray(keyFilter)) {
-      return keyFilter.some((key) => isKeyMatch(event[keyOrCode], key, pressedKeys, event.type === 'keyup'))
+      return keyFilter.some((key) => isKeyMatch(pressedKey, key, pressedKeys, isKeyUp))
     }
 
     // if the keyFilter is a string, we need to check if the key matches the string
-    return isKeyMatch(event[keyOrCode], keyFilter, pressedKeys, event.type === 'keyup')
+    return isKeyMatch(pressedKey, keyFilter, pressedKeys, isKeyUp)
   }
 }
 
@@ -126,7 +133,9 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
   )
 
   onKeyStroke(
-    (...args) => currentFilter(...args),
+    (...args) => {
+      return currentFilter(...args)
+    },
     (e) => {
       if (isPressed.value) {
         const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier.value)) && isInputDOMNode(e)
