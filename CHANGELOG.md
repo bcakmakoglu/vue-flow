@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.41.5] - 2024-11-13
+
+[6bb195d](6bb195da0ce074f5d581f2d7a1a41779736ee124)...[d22a239](d22a2394d49318b01c1a384d73970db018caec5d)
+
+### Bug Fixes
+
+- Check if dragEnd event is UseDrag or MouseTouch event (#1680) ([5a028cf](5a028cf2d401e5fa6aa5a13fa3e5be51b9f9f5da))
+- Set default offset to `0` (#1692) ([129d543](129d543c4ed13396edec387ebeaa62a0217a932b))
+- Allow using + as a key in key combinations (#1693) ([2e2fa9a](2e2fa9a93c149ace318dc65e1cf683ba7fb20522))
+- Release key combination presses (#1696) ([4b8139d](4b8139da66753ad68bfe1bca345cd211433a7e53))
+- Escape node labels (#1695) ([f7a2664](f7a266415a162213e363d0397135950a00c2d76a))
+
+### Documentation
+
+- Add custom components to getting-started example (#1677) ([f3075bc](f3075bc246d9fc5e26940ba010e305b9f8e617f4))
+- Add simple layout example (#1678) ([61f4b0d](61f4b0d447fde0eff6324cb7d1f5ae00f9f397bd))
+
 ## [1.41.4] - 2024-11-01
 
 [367f894](367f8947f2cf8adc8135c38d665f967f742a739b)...[6bb195d](6bb195da0ce074f5d581f2d7a1a41779736ee124)
