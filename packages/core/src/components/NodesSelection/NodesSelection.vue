@@ -47,6 +47,8 @@ function onKeyDown(event: KeyboardEvent) {
   }
 
   if (arrowKeyDiffs[event.key]) {
+    event.preventDefault()
+
     updatePositions(
       {
         x: arrowKeyDiffs[event.key].x,
