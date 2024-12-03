@@ -56,8 +56,7 @@ export function addEdgeToStore(
 export function updateEdgeAction(
   edge: GraphEdge,
   newConnection: Connection,
-  edges: GraphEdge[],
-  findEdge: Actions['findEdge'],
+  prevEdge: GraphEdge | undefined,
   shouldReplaceId: boolean,
   triggerError: State['hooks']['error']['trigger'],
 ) {
@@ -66,16 +65,14 @@ export function updateEdgeAction(
     return false
   }
 
-  const foundEdge = findEdge(edge.id)
-
-  if (!foundEdge) {
+  if (!prevEdge) {
     triggerError(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edge.id))
     return false
   }
 
   const { id, ...rest } = edge
 
-  const newEdge = {
+  return {
     ...rest,
     id: shouldReplaceId ? getEdgeId(newConnection) : id,
     source: newConnection.source,
@@ -83,10 +80,6 @@ export function updateEdgeAction(
     sourceHandle: newConnection.sourceHandle,
     targetHandle: newConnection.targetHandle,
   }
-
-  edges.splice(edges.indexOf(foundEdge), 1, newEdge)
-
-  return newEdge
 }
 
 export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], triggerError: State['hooks']['error']['trigger']) {
