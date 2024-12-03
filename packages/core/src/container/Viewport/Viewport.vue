@@ -293,7 +293,7 @@ onMounted(() => {
             const _isMacOs = isMacOs()
 
             // macOS sets ctrlKey=true for pinch gesture on a trackpad
-            if (event.ctrlKey && zoomOnPinch.value && _isMacOs) {
+            if (!panKeyPressed.value && event.ctrlKey && zoomOnPinch.value && _isMacOs) {
               const point = pointer(event)
               const pinchDelta = wheelDelta(event)
               const zoom = currentZoom * 2 ** pinchDelta
