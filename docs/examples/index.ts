@@ -20,7 +20,7 @@ import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
 import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useLayout, useRunProcess, useShuffle } from './layout'
 import { SimpleLayoutApp, SimpleLayoutElements, SimpleLayoutIcon, useSimpleLayout } from './layout-simple'
-
+import { LoopbackApp, LoopbackCSS, LoopbackEdge } from './loopback'
 import { MathApp, MathCSS, MathElements, MathIcon, MathOperatorNode, MathResultNode, MathValueNode } from './math'
 import { ConfirmApp, ConfirmDialog, useDialog } from './confirm-delete'
 
@@ -164,5 +164,10 @@ export const exampleImports = {
     'App.vue': ConfirmApp,
     'Dialog.vue': ConfirmDialog,
     'useDialog.js': useDialog,
+  },
+  loopback: {
+    'App.vue': LoopbackApp,
+    'LoopbackEdge.vue': LoopbackEdge,
+    'style.css': LoopbackCSS,
   },
 }

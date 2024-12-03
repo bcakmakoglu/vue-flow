@@ -245,6 +245,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Custom Connection Line', link: '/examples/edges/connection-line' },
             { text: 'Connection Validation', link: '/examples/edges/validation' },
             { text: 'Connection Radius', link: '/examples/edges/connection-radius' },
+            { text: 'Loopback Edge', link: '/examples/edges/loopback' },
           ],
         },
       ],
