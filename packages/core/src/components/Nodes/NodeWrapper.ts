@@ -408,6 +408,9 @@ const NodeWrapper = defineComponent({
           nodeElement.value!,
         )
       } else if (isDraggable.value && node.selected && arrowKeyDiffs[event.key]) {
+        // prevent page scrolling
+        event.preventDefault()
+
         ariaLiveMessage.value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
           .position.x}, y: ${~~node.position.y}`
 
