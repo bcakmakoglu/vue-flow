@@ -165,10 +165,9 @@ onMounted(() => {
     const eventButton = (event as MouseEvent).button
 
     if (
-      (shouldPanOnDrag.value === true || (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(1))) &&
       eventButton === 1 &&
       event.type === 'mousedown' &&
-      ((event.target as HTMLElement)?.closest('.vue-flow__node') || (event.target as HTMLElement)?.closest('.vue-flow__edge'))
+      (isWrappedWithClass(event, 'vue-flow__node') || isWrappedWithClass(event, 'vue-flow__edge'))
     ) {
       return true
     }
