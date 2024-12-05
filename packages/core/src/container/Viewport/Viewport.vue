@@ -227,8 +227,8 @@ onMounted(() => {
 
     // if the pane is only movable using allowed clicks
     if (
-      Array.isArray(shouldPanOnDrag.value) &&
-      !shouldPanOnDrag.value.includes(eventButton) &&
+      Array.isArray(panOnDrag.value) &&
+      !panOnDrag.value.includes(eventButton) &&
       (event.type === 'mousedown' || event.type === 'touchstart')
     ) {
       return false
@@ -236,13 +236,13 @@ onMounted(() => {
 
     // We only allow right clicks if pan on drag is set to right-click
     const buttonAllowed =
-      (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(eventButton)) ||
-      (selectionKeyCode.value === true && Array.isArray(shouldPanOnDrag.value) && !shouldPanOnDrag.value.includes(0)) ||
+      (Array.isArray(panOnDrag.value) && panOnDrag.value.includes(eventButton)) ||
+      (selectionKeyCode.value === true && Array.isArray(panOnDrag.value) && !panOnDrag.value.includes(0)) ||
       !eventButton ||
       eventButton <= 1
 
     // default filter for d3-zoom
-    return (!event.ctrlKey || event.type === 'wheel') && buttonAllowed
+    return (!event.ctrlKey || panKeyPressed.value || event.type === 'wheel') && buttonAllowed
   })
 
   watch(
