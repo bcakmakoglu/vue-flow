@@ -101,10 +101,7 @@ function onClick(event: MouseEvent) {
 }
 
 function onContextMenu(event: MouseEvent) {
-  if (Array.isArray(panOnDrag.value) && panOnDrag.value?.includes(2)) {
-    event.preventDefault()
-    return
-  }
+  event.stopPropagation()
 
   emits.paneContextMenu(event)
 }
