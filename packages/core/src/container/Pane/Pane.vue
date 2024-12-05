@@ -17,7 +17,6 @@ const {
   emits,
   userSelectionActive,
   removeSelectedElements,
-  panOnDrag,
   userSelectionRect,
   elementsSelectable,
   nodesSelectionActive,
@@ -101,6 +100,7 @@ function onClick(event: MouseEvent) {
 }
 
 function onContextMenu(event: MouseEvent) {
+  event.preventDefault()
   event.stopPropagation()
 
   emits.paneContextMenu(event)
