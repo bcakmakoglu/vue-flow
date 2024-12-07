@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.41.6] - 2024-12-07
+
+[d22a239](d22a2394d49318b01c1a384d73970db018caec5d)...[265e03d](265e03d9f47b8030caaa4db6877af7fc63e33348)
+
+### Bug Fixes
+
+- Prevent scrolling when using arrow keys to move nodes (#1698) ([04d1355](04d13551e373d7c4cce7b743a1a6e57f0e4be9e4))
+- Prevent scrolling when using arrow keys to move node selection (#1702) ([600d1a6](600d1a63fd3231e533781d2d4b1ee65999c4d439))
+- Update source/target node of updated edge (#1705) ([7a022c8](7a022c89c621a54c5d174647d8953b5163e7a939))
+- Allow control key as pan activation key code (#1707) ([f4f2494](f4f2494fd13baebe3df73e9e49c4dd7e71e566dc))
+
+### Documentation
+
+- Add loopback edge example (#1708) ([4d09783](4d0978343f457278fbd82e79cdf99bf645ff75da))
+
 ## [1.41.5] - 2024-11-13
 
 [6bb195d](6bb195da0ce074f5d581f2d7a1a41779736ee124)...[d22a239](d22a2394d49318b01c1a384d73970db018caec5d)
