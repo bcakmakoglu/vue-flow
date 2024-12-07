@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { onMounted, ref, toRef, toValue, watch } from 'vue'
+import { ref, toRef, toValue, watch } from 'vue'
 import type { KeyFilter, KeyPredicate } from '@vueuse/core'
 import { onKeyStroke, useEventListener } from '@vueuse/core'
 
@@ -111,9 +111,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
     },
   )
 
-  onMounted(() => {
-    useEventListener(window, ['blur', 'contextmenu'], reset)
-  })
+  useEventListener(['blur', 'contextmenu'], reset)
 
   onKeyStroke(
     (...args) => currentFilter(...args),
