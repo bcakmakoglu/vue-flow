@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.41.6
+
+### Patch Changes
+
+- [#1705](https://github.com/bcakmakoglu/vue-flow/pull/1705) [`047ec99`](https://github.com/bcakmakoglu/vue-flow/commit/047ec996d9e08cc456d1da858382944d2194d552) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update sourceNode and targetNode properties of edge when using `updateEdge`.
+
+- [#1698](https://github.com/bcakmakoglu/vue-flow/pull/1698) [`7cc1c5a`](https://github.com/bcakmakoglu/vue-flow/commit/7cc1c5a8dd99b3979d741a33510281a159ba3ca6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent default scrolling behavior when using arrow keys to move nodes or a selection.
+
+- [#1707](https://github.com/bcakmakoglu/vue-flow/pull/1707) [`4c9e517`](https://github.com/bcakmakoglu/vue-flow/commit/4c9e5176b9b30582456db6197ee55f646b614b86) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow Control key as pan activation key code.
+
+- [#1707](https://github.com/bcakmakoglu/vue-flow/pull/1707) [`4c9e517`](https://github.com/bcakmakoglu/vue-flow/commit/4c9e5176b9b30582456db6197ee55f646b614b86) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check `panOnDrag` for allowed drag buttons in d3 filter
+
+- [#1707](https://github.com/bcakmakoglu/vue-flow/pull/1707) [`4c9e517`](https://github.com/bcakmakoglu/vue-flow/commit/4c9e5176b9b30582456db6197ee55f646b614b86) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent browser context menu when triggering pane context menu event.
+
 ## 1.41.5
 
 ### Patch Changes
