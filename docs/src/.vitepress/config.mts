@@ -244,6 +244,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Updatable Edge', link: '/examples/edges/updatable-edge' },
             { text: 'Custom Connection Line', link: '/examples/edges/connection-line' },
             { text: 'Connection Validation', link: '/examples/edges/validation' },
+            { text: 'Edge Markers', link: '/examples/edges/markers' },
             { text: 'Connection Radius', link: '/examples/edges/connection-radius' },
             { text: 'Loopback Edge', link: '/examples/edges/loopback' },
           ],

@@ -23,6 +23,7 @@ import { SimpleLayoutApp, SimpleLayoutElements, SimpleLayoutIcon, useSimpleLayou
 import { LoopbackApp, LoopbackCSS, LoopbackEdge } from './loopback'
 import { MathApp, MathCSS, MathElements, MathIcon, MathOperatorNode, MathResultNode, MathValueNode } from './math'
 import { ConfirmApp, ConfirmDialog, useDialog } from './confirm-delete'
+import { EdgeMarkersApp, EdgeMarkersCSS, EdgeMarkersEdge, EdgeMarkersMarker } from './edge-markers'
 
 export const exampleImports = {
   basic: {
@@ -169,5 +170,11 @@ export const exampleImports = {
     'App.vue': LoopbackApp,
     'LoopbackEdge.vue': LoopbackEdge,
     'style.css': LoopbackCSS,
+  },
+  markers: {
+    'App.vue': EdgeMarkersApp,
+    'CustomEdge.vue': EdgeMarkersEdge,
+    'CustomMarker.vue': EdgeMarkersMarker,
+    'style.css': EdgeMarkersCSS,
   },
 }
