@@ -62,6 +62,7 @@ export default {
         :markerUnits="marker.markerUnits"
         :stroke-width="marker.strokeWidth"
         :orient="marker.orient"
+        :fill="marker.fill"
       />
     </defs>
   </svg>
