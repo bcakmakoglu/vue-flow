@@ -15,7 +15,7 @@ export interface EdgeMarker {
   /** Unique marker id */
   id?: string
   /** Marker type */
-  type: MarkerType
+  type: MarkerType | string
   /** Marker color */
   color?: string
   /** Marker width */
@@ -28,6 +28,8 @@ export interface EdgeMarker {
   orient?: string
   /** Marker stroke width */
   strokeWidth?: number
+  /** Shape marker fill */
+  fill?: string  
 }
 
 export interface MarkerProps {
@@ -39,6 +41,7 @@ export interface MarkerProps {
   markerUnits?: string
   orient?: string
   strokeWidth?: number
+  fill?: string
 }
 
 export type EdgeMarkerType = string | MarkerType | EdgeMarker

@@ -35,6 +35,10 @@ export const routes: RouterOptions['routes'] = [
     component: () => import('./src/CustomConnectionLine/CustomConnectionLine.vue'),
   },
   {
+    path: '/custom-marker',
+    component: () => import('./src/CustomMarker/CustomMarker.vue'),
+  },
+  {
     path: '/custom-node',
     component: () => import('./src/CustomNode/CustomNode.vue'),
   },

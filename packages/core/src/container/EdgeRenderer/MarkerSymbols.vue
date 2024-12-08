@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { MarkerType } from '../../types'
 import type { MarkerProps } from '../../types'
+import { useCustomMarker } from '../../composables/useCustomMarker'
 
 const {
   id,
@@ -11,7 +13,26 @@ const {
   orient = 'auto-start-reverse',
   strokeWidth = 1,
   color = 'none',
+  fill = 'none',
 } = defineProps<MarkerProps>()
+
+const { getMarkerDefinition } = useCustomMarker();
+
+const baseMarkerTypes = Object.entries(MarkerType).map(([_, value]) => value as string); 
+
+const customMarkerDefinition = computed(() => {
+  if(!baseMarkerTypes.includes(type)) {
+    return getMarkerDefinition(type).path
+  }
+});
+
+const refX = computed(() => {
+  if(!baseMarkerTypes.includes(type)) {
+    return 3
+  }
+
+  return 0
+})
 </script>
 
 <script lang="ts">
@@ -26,7 +47,7 @@ export default {
     :id="id"
     class="vue-flow__arrowhead"
     viewBox="-10 -10 20 20"
-    refX="0"
+    :refX="refX"
     refY="0"
     :markerWidth="`${width}`"
     :markerHeight="`${height}`"
@@ -56,5 +77,17 @@ export default {
       fill="none"
       points="-5,-4 0,0 -5,4"
     />
+
+    <path
+      v-else
+      :style="{
+        stroke: color,
+        strokeWidth,
+      }"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      :fill="fill"
+      :d="customMarkerDefinition"
+    />    
   </marker>
 </template>
