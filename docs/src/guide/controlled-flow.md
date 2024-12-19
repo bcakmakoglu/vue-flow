@@ -211,3 +211,38 @@ const onNodesChange = async (changes) => {
   <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" @nodes-change="onNodesChange" />
 </template>
 ```
+
+## V-Model Nodes and Edges
+
+In some cases you want to *sync* the state of internal nodes/edges with your own state,
+for those cases you can use the `v-model` directive to bind the internal state with your own state.
+
+```vue
+<template>
+  <VueFlow v-model:edges="edges" v-model:nodes="nodes" />
+</template>
+```
+
+Doing this will sync the internal state with your own state, which is useful for situations where you update internal nodes and edges but also want those changes to be reflected in your own state.
+
+For example, if you update the type of nodes using `updateNode` and want to see the same change reflected in your own nodes state and not just in the internal state.
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { useVueFlow } from '@vue-flow/core'
+
+const nodes = ref([
+  {
+    id: '1',
+    position: { x: 0, y: 0 },
+    data: { label: 'Node 1' },
+  },
+])
+
+const { updateNode } = useVueFlow()
+
+// using updateNode will only update the internal state, not the nodes state unless you use v-model
+updateNode('1', { type: 'new-type' })
+</script>
+```
