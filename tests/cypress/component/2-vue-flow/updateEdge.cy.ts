@@ -50,13 +50,13 @@ describe('Check if edges are updatable', () => {
             view: win,
           })
           .trigger('mousemove', {
-            clientX: x + 5,
-            clientY: y + 5,
+            clientX: x,
+            clientY: y,
             force: true,
           })
           .trigger('mouseup', {
-            clientX: x + 5,
-            clientY: y + 5,
+            clientX: x,
+            clientY: y,
             force: true,
             view: win,
           })
