@@ -185,7 +185,8 @@ const edges = ref([
 ```vue [SpecialNode.vue <LogosJavascript />]
 <script setup>
 import { computed } from 'vue'
-  
+import { Position, Handle } from '@vue-flow/core'
+
 const props = defineProps({
   position: {
     type: Object,
@@ -387,6 +388,7 @@ const edges = ref<Edge[]>([
 ```vue [SpecialNode.vue <LogosTypescript />]
 <script setup lang="ts">
 import { computed } from 'vue'
+import { Position, Handle } from '@vue-flow/core'
 import type { NodeProps } from '@vue-flow/core'
   
 const props = defineProps<NodeProps>()
