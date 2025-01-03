@@ -92,7 +92,7 @@ export function getClosestHandle(
       }
 
       // determine absolute position of the handle
-      const { x, y } = getHandlePosition(node, handle, handle.position)
+      const { x, y } = getHandlePosition(node, handle, handle.position, true)
 
       const distance = Math.sqrt((x - position.x) ** 2 + (y - position.y) ** 2)
       if (distance > connectionRadius) {
