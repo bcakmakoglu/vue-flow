@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.41.7
+
+### Patch Changes
+
+- [#1726](https://github.com/bcakmakoglu/vue-flow/pull/1726) [`763d122`](https://github.com/bcakmakoglu/vue-flow/commit/763d1220874edc08dd99b6a46bc2991ef1e92525) Thanks [@github-actions](https://github.com/apps/github-actions)! - use center position of handle as snapping point for connection lines
+
 ## 1.41.6
 
 ### Patch Changes
