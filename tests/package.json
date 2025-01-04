@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "cypress run --component",
+    "test": "cypress run --component --browser chrome",
     "open": "cypress open",
     "lint": "eslint --ext .js,.ts ./"
   },

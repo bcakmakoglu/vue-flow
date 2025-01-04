@@ -157,8 +157,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         if (doUpdate) {
           const nodeBounds = update.nodeElement.getBoundingClientRect()
           node.dimensions = dimensions
-          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, nodeBounds, zoom)
-          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, nodeBounds, zoom)
+          node.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom)
+          node.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom)
 
           changes.push({
             id: node.id,

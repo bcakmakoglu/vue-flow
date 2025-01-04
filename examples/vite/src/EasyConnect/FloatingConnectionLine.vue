@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { GraphNode } from '@vue-flow/core'
-import { getStraightPath } from '@vue-flow/core'
+import type { ConnectionLineProps } from '@vue-flow/core'
+import { BaseEdge, getStraightPath } from '@vue-flow/core'
 import { computed } from 'vue'
 
-const props = defineProps<{ sourceNode: GraphNode; sourceX: number; sourceY: number; targetX: number; targetY: number }>()
+const props = defineProps<ConnectionLineProps>()
 
 const edgePath = computed(() =>
   getStraightPath({
@@ -15,13 +15,12 @@ const edgePath = computed(() =>
 
 <template>
   <g>
-    <path
+    <BaseEdge
       :style="{
         strokeWidth: 3,
         stroke: 'black',
       }"
-      fill="none"
-      :d="edgePath[0]"
+      :path="edgePath[0]"
     />
     <circle :cx="targetX" :cy="targetY" fill="black" :r="3" stroke="black" :stroke-width="1.5" />
   </g>
