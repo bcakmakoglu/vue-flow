@@ -54,5 +54,3 @@ jobs:
         with:
           install-command: pnpm cypress install
           command: pnpm run test --cache-dir=.turbo
-          browser: chrome
-          component: true
