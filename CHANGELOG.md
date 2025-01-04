@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.41.7] - 2025-01-04
+
+[265e03d](265e03d9f47b8030caaa4db6877af7fc63e33348)...[549d5ce](549d5cee7f6a8be784924175e6ab280b9334dd67)
+
+### Bug Fixes
+
+- Add missing import ([f438acb](f438acbc9f54b9f94839af6348e3919a3b770d05))
+- Use center position of handle as snapping point for connection lines (#1625) ([b33da47](b33da47a3a02577b8981a544b9252174ce2bc4ec))
+
+### Documentation
+
+- Add edge markers example ([fe239b5](fe239b5d8fc07dae429a59a0484b6d232a18286b))
+- Add docs section about v-modelling nodes and edges ([2231ee4](2231ee462604c950f3e7aba1999ec9a1e7b835b7))
+
+### Miscellaneous Tasks
+
+- Add ([041fd87](041fd871a12fb146faca62719ebce688865757d7))
+
 ## [1.41.6] - 2024-12-07
 
 [d22a239](d22a2394d49318b01c1a384d73970db018caec5d)...[265e03d](265e03d9f47b8030caaa4db6877af7fc63e33348)
