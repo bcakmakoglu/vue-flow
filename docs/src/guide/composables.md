@@ -70,13 +70,14 @@ onInit((instance) => {
 
 ## [useHandleConnections](/typedocs/functions/useHandleConnections)
 
-`useHandleConnections` provides you with an array of connections that are connected to the node you pass to it.
+`useHandleConnections` provides you with an array of connections that are connected to specific `<Handle>`.
 
 ```ts
-import { useHandleConnections } from '@vue-flow/core'
+import { type HandleConnection, useHandleConnections } from '@vue-flow/core'
 
 // get all connections where this node is the target (incoming connections)
 const targetConnections = useHandleConnections({
+  // type is required
   type: 'target',
 })
 
@@ -89,10 +90,42 @@ const connections = useHandleConnections({
   id: 'handle-1', // you can explicitly pass a handle id if there are multiple handles of the same type
   nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
   type: 'target',
-  onConnect: (connections: Connection[]) => {
+  onConnect: (connections: HandleConnection[]) => {
     // do something with the connections
   },
-  onDisconnect: (connections: Connection[]) => {
+  onDisconnect: (connections: HandleConnection[]) => {
+    // do something with the connections
+  },
+})
+```
+
+## [useNodeConnections](/typedocs/functions/useNodeConnections)
+
+`useNodeConnections` provides you with an array of connections that are connected to a specific node.
+This composable is especially useful when you want to get all connections (of either type `source` or `target`) of a node 
+instead of just the connections of a specific `<Handle>`.
+
+```ts
+import { type HandleConnection, useNodeConnections } from '@vue-flow/core'
+
+// get all connections where this node is the target (incoming connections)
+const targetConnections = useNodeConnections({
+  // type is required
+  type: 'target',
+})
+
+// get all connections where this node is the source (outgoing connections)
+const sourceConnections = useNodeConnections({
+  type: 'source',
+})
+
+const connections = useNodeConnections({
+  nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
+  type: 'target',
+  onConnect: (connections: HandleConnection[]) => {
+    // do something with the connections
+  },
+  onDisconnect: (connections: HandleConnection[]) => {
     // do something with the connections
   },
 })
