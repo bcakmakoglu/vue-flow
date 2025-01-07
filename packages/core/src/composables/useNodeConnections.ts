@@ -1,4 +1,4 @@
-import type { ComputedRef, MaybeRefOrGetter } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
 import { computed, ref, toValue, watch } from 'vue'
 import type { HandleType, NodeConnection } from '../types'
 import { areConnectionMapsEqual, handleConnectionChange } from '../utils'
@@ -26,13 +26,9 @@ export interface UseNodeConnectionsParams {
  *
  * @returns An array of connections
  */
-export function useNodeConnections({
-  type,
-  handleId,
-  nodeId,
-  onConnect,
-  onDisconnect,
-}: UseNodeConnectionsParams = {}): ComputedRef<NodeConnection[]> {
+export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
+  const { type, handleId, nodeId, onConnect, onDisconnect } = params
+
   const { connectionLookup } = useVueFlow()
 
   const _nodeId = useNodeId()
