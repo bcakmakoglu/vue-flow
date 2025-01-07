@@ -349,7 +349,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
       state.edges,
     )
 
-    updateConnectionLookup(state.connectionLookup, validEdges)
+    updateConnectionLookup(state.connectionLookup, edgeLookup.value, validEdges)
 
     state.edges = validEdges
   }
@@ -527,7 +527,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
 
       state.edges.splice(state.edges.indexOf(prevEdge), 1, validEdge)
 
-      updateConnectionLookup(state.connectionLookup, [validEdge])
+      updateConnectionLookup(state.connectionLookup, edgeLookup.value, [validEdge])
 
       return validEdge
     }
@@ -554,7 +554,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => {
     const changedEdges = applyChanges(changes, state.edges)
 
-    updateConnectionLookup(state.connectionLookup, changedEdges)
+    updateConnectionLookup(state.connectionLookup, edgeLookup.value, changedEdges)
 
     return changedEdges
   }
