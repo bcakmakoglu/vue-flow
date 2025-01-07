@@ -1,6 +1,5 @@
-import type { GraphNode, SnapGrid, XYPosition } from '../types'
 import type { UseDragEvent } from '../composables'
-import type { Dimensions, GraphNode, XYPosition } from '../types'
+import type { Dimensions, GraphNode, SnapGrid, XYPosition } from '../types'
 import { clampPosition } from './graph'
 
 export function isMouseEvent(event: MouseEvent | TouchEvent): event is MouseEvent {

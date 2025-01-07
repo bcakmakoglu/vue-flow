@@ -49,7 +49,7 @@ export function clamp(val: number, min = 0, max = 1) {
   return Math.min(Math.max(val, min), max)
 }
 
-export function clampPosition(position: XYPosition = { x: 0, y: 0 }, extent: CoordinateExtent, dimensions: Partial<Dimensions>) {
+export function clampPosition(position: XYPosition = { x: 0, y: 0 }, extent: CoordinateExtent, dimensions?: Partial<Dimensions>) {
   return {
     x: clamp(position.x, extent[0][0], extent[1][0] - (dimensions?.width ?? 0)),
     y: clamp(position.y, extent[0][1], extent[1][1] - (dimensions?.height ?? 0)),
