@@ -1,6 +1,6 @@
 <script setup>
 import { computed, toRef } from 'vue'
-import { Handle, useHandleConnections } from '@vue-flow/core'
+import { Handle, useNodeConnections } from '@vue-flow/core'
 
 const props = defineProps({
   data: {
@@ -15,11 +15,11 @@ const props = defineProps({
   },
 })
 
-const sourceConnections = useHandleConnections({
+const sourceConnections = useNodeConnections({
   type: 'target',
 })
 
-const targetConnections = useHandleConnections({
+const targetConnections = useNodeConnections({
   type: 'source',
 })
 

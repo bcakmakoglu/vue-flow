@@ -102,8 +102,7 @@ const connections = useHandleConnections({
 ## [useNodeConnections](/typedocs/functions/useNodeConnections)
 
 `useNodeConnections` provides you with an array of connections that are connected to a specific node.
-This composable is especially useful when you want to get all connections (of either type `source` or `target`) of a node 
-instead of just the connections of a specific `<Handle>`.
+This composable is especially useful when you want to get all connections (of either type `source` or `target`) of a node.
 
 ```ts
 import { type HandleConnection, useNodeConnections } from '@vue-flow/core'
@@ -117,6 +116,10 @@ const targetConnections = useNodeConnections({
 // get all connections where this node is the source (outgoing connections)
 const sourceConnections = useNodeConnections({
   type: 'source',
+})
+
+const handleConnections = useNodeConnections({
+  handleId: 'handle-1', // you can explicitly pass a handle id if you want to get connections of a specific handle
 })
 
 const connections = useNodeConnections({
