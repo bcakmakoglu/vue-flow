@@ -1,120 +1,80 @@
-import type { ComputedRef, MaybeRefOrGetter } from 'vue'
-import { computed, ref, toRef, toValue, watch } from 'vue'
-import type { HandleConnection, HandleElement, HandleType } from '../types'
+import type { MaybeRefOrGetter } from 'vue'
+import { computed, ref, toValue, watch } from 'vue'
+import type { HandleType, NodeConnection } from '../types'
+import { areConnectionMapsEqual, handleConnectionChange } from '../utils'
 import { useNodeId } from './useNodeId'
 import { useVueFlow } from './useVueFlow'
 
 export interface UseNodeConnectionsParams {
-  type: MaybeRefOrGetter<HandleType>
+  type?: MaybeRefOrGetter<HandleType>
+  handleId?: MaybeRefOrGetter<string | null>
   nodeId?: MaybeRefOrGetter<string | null>
-  onConnect?: (connections: HandleConnection[]) => void
-  onDisconnect?: (connections: HandleConnection[]) => void
+  onConnect?: (connections: NodeConnection[]) => void
+  onDisconnect?: (connections: NodeConnection[]) => void
 }
 
 /**
- * Composable that returns existing connections of a node by handle type.
- * This is useful when you want to get all connections of a node by a specific handle type.
+ * Hook to retrieve all edges connected to a node. Can be filtered by handle type and id.
  *
  * @public
  * @param params
  * @param params.type - handle type `source` or `target`
  * @param params.nodeId - node id - if not provided, the node id from the `useNodeId` (meaning, the context-based injection) is used
+ * @param params.handleId - the handle id (this is required if the node has multiple handles of the same type)
  * @param params.onConnect - gets called when a connection is created
  * @param params.onDisconnect - gets called when a connection is removed
  *
  * @returns An array of connections
  */
-export function useNodeConnections(params: UseNodeConnectionsParams): ComputedRef<HandleConnection[]> {
-  const { type, nodeId, onConnect, onDisconnect } = params
+export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
+  const { type, handleId, nodeId, onConnect, onDisconnect } = params
 
-  const { connectionLookup, findNode } = useVueFlow()
+  const { connectionLookup } = useVueFlow()
 
   const _nodeId = useNodeId()
 
-  const currentNodeId = toRef(() => toValue(nodeId) ?? _nodeId)
+  const prevConnections = ref<Map<string, NodeConnection> | null>(null)
 
-  const handleType = toRef(() => toValue(type))
+  const connections = ref<Map<string, NodeConnection>>()
 
-  const node = computed(() => findNode(currentNodeId.value))
+  const lookupKey = computed(() => {
+    const currNodeId = toValue(nodeId) ?? _nodeId
+    const handleType = toValue(type)
+    const currHandleId = toValue(handleId)
 
-  const handleIds = computed(() => {
-    if (!node.value) {
-      return []
-    }
-
-    const handles: HandleElement['id'][] = []
-    for (const handle of node.value?.handleBounds?.[handleType.value] ?? []) {
-      handles.push(handle.id)
-    }
-
-    return handles
-  })
-
-  const prevConnections = ref<Map<string, HandleConnection> | null>(null)
-
-  const connectionsFromLookup = computed(() => {
-    const nodeConnections = [] as Map<string, HandleConnection>[]
-
-    for (const handleId of handleIds.value) {
-      const connectionMap = connectionLookup.value.get(`${currentNodeId.value}-${handleType.value}-${handleId}`)
-      if (connectionMap) {
-        nodeConnections.push(connectionMap)
-      }
-    }
-
-    return nodeConnections
+    return `${currNodeId}${handleType ? (currHandleId ? `-${handleType}-${currHandleId}` : `-${handleType}`) : ''}`
   })
 
   watch(
-    [connectionsFromLookup, () => typeof onConnect !== 'undefined', () => typeof onDisconnect !== 'undefined'],
-    ([currentConnections]) => {
-      if (!currentConnections) {
+    () => connectionLookup.value.get(lookupKey.value),
+    (nextConnections) => {
+      if (areConnectionMapsEqual(connections.value, nextConnections)) {
         return
       }
 
-      const newConnections = new Map<string, HandleConnection>()
+      connections.value = nextConnections
+    },
+    { immediate: true },
+  )
 
-      for (const connectionMap of currentConnections) {
-        for (const [key, connection] of connectionMap) {
-          newConnections.set(key, connection)
-        }
+  watch(
+    [connections, () => typeof onConnect !== 'undefined', () => typeof onDisconnect !== 'undefined'],
+    ([currentConnections = new Map<string, NodeConnection>()]) => {
+      if (prevConnections.value && prevConnections.value !== currentConnections) {
+        handleConnectionChange(prevConnections.value, currentConnections, onDisconnect)
+        handleConnectionChange(currentConnections, prevConnections.value, onConnect)
       }
 
-      if (!prevConnections.value) {
-        prevConnections.value = new Map(newConnections)
-        return
-      }
-
-      const prevConnectionsValue = prevConnections.value
-
-      const addedConnections = Array.from(newConnections.keys()).filter((key) => !prevConnectionsValue.has(key))
-
-      const removedConnections = Array.from(prevConnectionsValue.keys()).filter((key) => !newConnections.has(key))
-
-      if (addedConnections.length && onConnect) {
-        const added = addedConnections.map((key) => newConnections.get(key)!)
-        onConnect(added)
-      }
-
-      if (removedConnections.length && onDisconnect) {
-        const removed = removedConnections.map((key) => prevConnectionsValue.get(key)!)
-        onDisconnect(removed)
-      }
-
-      prevConnections.value = new Map(newConnections)
+      prevConnections.value = currentConnections
     },
     { immediate: true },
   )
 
   return computed(() => {
-    const connections = [] as HandleConnection[]
-
-    for (const connectionMap of connectionsFromLookup.value) {
-      for (const connection of connectionMap.values()) {
-        connections.push(connection)
-      }
+    if (!connections.value) {
+      return []
     }
 
-    return connections
+    return Array.from(connections.value.values())
   })
 }
