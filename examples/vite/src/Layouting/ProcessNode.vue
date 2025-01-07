@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { NodeProps } from '@vue-flow/core'
-import { Handle, useHandleConnections } from '@vue-flow/core'
+import { Handle, useNodeConnections } from '@vue-flow/core'
 import type { ProcessNodeData } from './types'
 
 const props = defineProps<NodeProps<ProcessNodeData>>()
 
-const sourceConnections = useHandleConnections({
+const sourceConnections = useNodeConnections({
   type: 'target',
 })
 
-const targetConnections = useHandleConnections({
+const targetConnections = useNodeConnections({
   type: 'source',
 })
 

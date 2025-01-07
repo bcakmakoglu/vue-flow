@@ -1,14 +1,15 @@
-import { markRaw, unref } from 'vue'
+import { unref } from 'vue'
 import type {
   Actions,
   Connection,
   ConnectionLookup,
   DefaultEdgeOptions,
   Edge,
+  EdgeLookup,
   GraphEdge,
   GraphNode,
-  HandleConnection,
   Node,
+  NodeConnection,
   State,
   ValidConnectionFunc,
   VueFlowStore,
@@ -126,21 +127,57 @@ export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], t
   return nextNodes
 }
 
-export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges: Edge[]) {
+/**
+ * this function adds the connection to the connectionLookup
+ * at the following keys: nodeId-type-handleId, nodeId-type and nodeId
+ * @param type type of the connection
+ * @param connection connection that should be added to the lookup
+ * @param connectionKey at which key the connection should be added
+ * @param connectionLookup reference to the connection lookup
+ * @param nodeId nodeId of the connection
+ * @param handleId handleId of the conneciton
+ */
+function addConnectionToLookup(
+  type: 'source' | 'target',
+  connection: NodeConnection,
+  connectionKey: string,
+  connectionLookup: ConnectionLookup,
+  nodeId: string,
+  handleId: string | null,
+) {
+  // We add the connection to the connectionLookup at the following keys
+  // 1. nodeId, 2. nodeId-type, 3. nodeId-type-handleId
+  // If the key already exists, we add the connection to the existing map
+  let key = nodeId
+  const nodeMap = connectionLookup.get(key) || new Map()
+  connectionLookup.set(key, nodeMap.set(connectionKey, connection))
+
+  key = `${nodeId}-${type}`
+  const typeMap = connectionLookup.get(key) || new Map()
+  connectionLookup.set(key, typeMap.set(connectionKey, connection))
+
+  if (handleId) {
+    key = `${nodeId}-${type}-${handleId}`
+    const handleMap = connectionLookup.get(key) || new Map()
+    connectionLookup.set(key, handleMap.set(connectionKey, connection))
+  }
+}
+
+export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeLookup: EdgeLookup, edges: GraphEdge[]) {
   connectionLookup.clear()
+  edgeLookup.clear()
 
   for (const edge of edges) {
-    const { id: edgeId, source, target, sourceHandle = null, targetHandle = null } = edge
+    const { source: sourceNode, target: targetNode, sourceHandle = null, targetHandle = null } = edge
 
-    const sourceKey = `${source}-source-${sourceHandle}`
-    const targetKey = `${target}-target-${targetHandle}`
+    const connection = { edgeId: edge.id, source: sourceNode, target: targetNode, sourceHandle, targetHandle }
+    const sourceKey = `${sourceNode}-${sourceHandle}`
+    const targetKey = `${targetNode}-${targetHandle}`
 
-    const prevSource = connectionLookup.get(sourceKey) || new Map()
-    const prevTarget = connectionLookup.get(targetKey) || new Map()
-    const connection = markRaw({ edgeId, source, target, sourceHandle, targetHandle })
+    addConnectionToLookup('source', connection, targetKey, connectionLookup, sourceNode, sourceHandle)
+    addConnectionToLookup('target', connection, sourceKey, connectionLookup, targetNode, targetHandle)
 
-    connectionLookup.set(sourceKey, prevSource.set(`${target}-${targetHandle}`, connection))
-    connectionLookup.set(targetKey, prevTarget.set(`${source}-${sourceHandle}`, connection))
+    edgeLookup.set(edge.id, edge)
   }
 }
 
@@ -150,15 +187,15 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges
  * @internal
  */
 export function handleConnectionChange(
-  a: Map<string, HandleConnection>,
-  b: Map<string, HandleConnection>,
-  cb?: (diff: HandleConnection[]) => void,
+  a: Map<string, NodeConnection>,
+  b: Map<string, NodeConnection>,
+  cb?: (diff: NodeConnection[]) => void,
 ) {
   if (!cb) {
     return
   }
 
-  const diff: HandleConnection[] = []
+  const diff: NodeConnection[] = []
 
   for (const key of a.keys()) {
     if (!b.has(key)) {

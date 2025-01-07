@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { GraphNode } from '@vue-flow/core'
-import { Handle, Position, useHandleConnections, useNodeConnections, useNodesData } from '@vue-flow/core'
+import { Handle, Position, useNodeConnections, useNodesData } from '@vue-flow/core'
 import type { OperatorNodeData, ValueNodeData } from './types'
 import { mathFunctions } from './utils'
 
 defineProps<{ id: string }>()
 
 // Get the source connections of the result node. In this example it's only one operator node.
-const sourceConnections = useHandleConnections({
+const sourceConnections = useNodeConnections({
   // type target means all connections where *this* node is the target
   // that means we go backwards in the graph to find the source of the connection(s)
   type: 'target',
