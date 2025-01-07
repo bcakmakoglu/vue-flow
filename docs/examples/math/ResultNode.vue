@@ -49,7 +49,6 @@ const result = computed(() => {
 </script>
 
 <template>
-  {{ operatorSourceConnections }}
   <div class="calculation">
     <template v-for="(value, i) in valueData" :key="`${value.id}-${value.data}`">
       <span>
