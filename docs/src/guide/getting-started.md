@@ -29,13 +29,13 @@ Before you strap in, make sure you're equipped with:
 Try out the sandbox starter templates for Vue Flow in JavaScript and TypeScript and get a feel for the library.
 
 <div class="flex flex-col gap-4 md:flex-row md:gap-8">
-  <a href="https://new.vueflow.dev/js" class="flex-1 !no-underline">
+  <a href="https://new.vueflow.dev/js" target="_blank" class="flex-1 !no-underline">
     <div class="flex items-center gap-4 p-4 rounded-lg border-1 border-primary dark:bg-secondary">
       <LogosJavascript class="text-accent text-2xl" />
       <h3 class="!m-0 font-semibold">new.vueflow.dev/js</h3>
     </div>
   </a>
-  <a href="https://new.vueflow.dev/ts" class="flex-1 !no-underline">
+  <a href="https://new.vueflow.dev/ts" target="_blank" class="flex-1 !no-underline">
     <div class="flex items-center gap-4 p-4 rounded-lg shadow-md border-1 border-primary dark:bg-secondary">
       <LogosTypescript class="text-accent text-2xl" />
       <h3 class="!m-0 font-semibold">new.vueflow.dev/ts</h3>
