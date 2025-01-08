@@ -42,6 +42,21 @@ body:
         4. See error...
     validations:
       required: false
+  - type: input
+    id: link
+    attributes:
+      label: Minimal reproduction of the issue with CodeSandbox
+      description: |
+        Please provide a link to a CodeSandbox that shows the issue, this helps immensely in debugging.
+
+        You can use one of the following Vue Flow codesandbox starters:
+        - js: https://new.vueflow.dev/js
+        - ts: https://new.vueflow.dev/ts
+
+        Avoid too many dependencies in your example and try to reproduce the issue as minimal as possible.
+      placeholder: https://codesandbox.io/s/...
+    validations:
+      required: false
   - type: textarea
     attributes:
       label: Relevant log output
