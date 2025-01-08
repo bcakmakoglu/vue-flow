@@ -236,6 +236,23 @@ export function areConnectionMapsEqual(a?: Map<string, Connection>, b?: Map<stri
 /**
  * @internal
  */
+export function areSetsEqual(a: Set<string>, b: Set<string>) {
+  if (a.size !== b.size) {
+    return false
+  }
+
+  for (const item of a) {
+    if (!b.has(item)) {
+      return false
+    }
+  }
+
+  return true
+}
+
+/**
+ * @internal
+ */
 export function createGraphEdges(
   nextEdges: (Edge | Connection)[],
   isValidConnection: ValidConnectionFunc | null,
