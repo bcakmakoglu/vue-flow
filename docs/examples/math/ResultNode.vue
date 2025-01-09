@@ -15,12 +15,12 @@ const mathFunctions = {
 const sourceConnections = useNodeConnections({
   // type target means all connections where *this* node is the target
   // that means we go backwards in the graph to find the source of the connection(s)
-  type: 'target',
+  handleType: 'target',
 })
 
 // Get the source connections of the operator node
 const operatorSourceConnections = useNodeConnections({
-  type: 'target',
+  handleType: 'target',
   nodeId: () => sourceConnections.value[0]?.source,
 })
 

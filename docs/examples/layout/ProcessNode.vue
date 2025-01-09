@@ -16,11 +16,11 @@ const props = defineProps({
 })
 
 const sourceConnections = useNodeConnections({
-  type: 'target',
+  handleType: 'target',
 })
 
 const targetConnections = useNodeConnections({
-  type: 'source',
+  handleType: 'source',
 })
 
 const isSender = toRef(() => sourceConnections.value.length <= 0)

@@ -2,7 +2,7 @@
 import { Handle, Position, useNodeConnections, useNodesData } from '@vue-flow/core'
 
 const connections = useNodeConnections({
-  type: 'target',
+  handleType: 'target',
 })
 
 const nodesData = useNodesData(() => connections.value[0]?.source)

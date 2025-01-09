@@ -6,7 +6,7 @@ import { useNodeId } from './useNodeId'
 import { useVueFlow } from './useVueFlow'
 
 export interface UseNodeConnectionsParams {
-  type?: MaybeRefOrGetter<HandleType>
+  handleType?: MaybeRefOrGetter<HandleType>
   handleId?: MaybeRefOrGetter<string | null>
   nodeId?: MaybeRefOrGetter<string | null>
   onConnect?: (connections: NodeConnection[]) => void
@@ -18,7 +18,7 @@ export interface UseNodeConnectionsParams {
  *
  * @public
  * @param params
- * @param params.type - handle type `source` or `target`
+ * @param params.handleType - handle type `source` or `target`
  * @param params.nodeId - node id - if not provided, the node id from the `useNodeId` (meaning, the context-based injection) is used
  * @param params.handleId - the handle id (this is required if the node has multiple handles of the same type)
  * @param params.onConnect - gets called when a connection is created
@@ -27,7 +27,7 @@ export interface UseNodeConnectionsParams {
  * @returns An array of connections
  */
 export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
-  const { type, handleId, nodeId, onConnect, onDisconnect } = params
+  const { handleType, handleId, nodeId, onConnect, onDisconnect } = params
 
   const { connectionLookup } = useVueFlow()
 
@@ -39,10 +39,12 @@ export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
 
   const lookupKey = computed(() => {
     const currNodeId = toValue(nodeId) ?? _nodeId
-    const handleType = toValue(type)
+    const currentHandleType = toValue(handleType)
     const currHandleId = toValue(handleId)
 
-    return `${currNodeId}${handleType ? (currHandleId ? `-${handleType}-${currHandleId}` : `-${handleType}`) : ''}`
+    return `${currNodeId}${
+      currentHandleType ? (currHandleId ? `-${currentHandleType}-${currHandleId}` : `-${currentHandleType}`) : ''
+    }`
   })
 
   watch(
