@@ -6,11 +6,11 @@ import type { ProcessNodeData } from './types'
 const props = defineProps<NodeProps<ProcessNodeData>>()
 
 const sourceConnections = useNodeConnections({
-  type: 'target',
+  handleType: 'target',
 })
 
 const targetConnections = useNodeConnections({
-  type: 'source',
+  handleType: 'source',
 })
 
 const isSender = toRef(() => sourceConnections.value.length <= 0)

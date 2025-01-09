@@ -110,12 +110,12 @@ import { type HandleConnection, useNodeConnections } from '@vue-flow/core'
 // get all connections where this node is the target (incoming connections)
 const targetConnections = useNodeConnections({
   // type is required
-  type: 'target',
+  handleType: 'target',
 })
 
 // get all connections where this node is the source (outgoing connections)
 const sourceConnections = useNodeConnections({
-  type: 'source',
+  handleType: 'source',
 })
 
 const handleConnections = useNodeConnections({
@@ -124,7 +124,7 @@ const handleConnections = useNodeConnections({
 
 const connections = useNodeConnections({
   nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
-  type: 'target',
+  handleType: 'target',
   onConnect: (connections: HandleConnection[]) => {
     // do something with the connections
   },
