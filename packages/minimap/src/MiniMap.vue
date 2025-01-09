@@ -244,6 +244,7 @@ export default {
         :stroke-width="nodeStrokeWidth"
         :shape-rendering="shapeRendering"
         :type="node.type"
+        :hidden="node.hidden"
         @click="onNodeClick($event, node)"
         @dblclick="onNodeDblClick($event, node)"
         @mouseenter="onNodeMouseEnter($event, node)"
