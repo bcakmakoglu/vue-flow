@@ -43,27 +43,29 @@ export default {
 </script>
 
 <template>
-  <component :is="miniMapSlots[`node-${props.type}`]" v-if="miniMapSlots[`node-${props.type}`]" v-bind="props" />
+  <template v-if="!hidden && dimensions.width !== 0 && dimensions.height !== 0">
+    <component :is="miniMapSlots[`node-${props.type}`]" v-if="miniMapSlots[`node-${props.type}`]" v-bind="props" />
 
-  <rect
-    v-else
-    :id="id"
-    class="vue-flow__minimap-node"
-    :class="{ selected, dragging }"
-    :x="position.x"
-    :y="position.y"
-    :rx="borderRadius"
-    :ry="borderRadius"
-    :width="dimensions.width"
-    :height="dimensions.height"
-    :fill="color || (style.background as string) || style.backgroundColor"
-    :stroke="strokeColor"
-    :stroke-width="strokeWidth"
-    :shape-rendering="shapeRendering"
-    @click="onClick"
-    @dblclick="onDblclick"
-    @mouseenter="onMouseEnter"
-    @mousemove="onMouseMove"
-    @mouseleave="onMouseLeave"
-  />
+    <rect
+      v-else
+      :id="id"
+      class="vue-flow__minimap-node"
+      :class="{ selected, dragging }"
+      :x="position.x"
+      :y="position.y"
+      :rx="borderRadius"
+      :ry="borderRadius"
+      :width="dimensions.width"
+      :height="dimensions.height"
+      :fill="color || (style.background as string) || style.backgroundColor"
+      :stroke="strokeColor"
+      :stroke-width="strokeWidth"
+      :shape-rendering="shapeRendering"
+      @click="onClick"
+      @dblclick="onDblclick"
+      @mouseenter="onMouseEnter"
+      @mousemove="onMouseMove"
+      @mouseleave="onMouseLeave"
+    />
+  </template>
 </template>
