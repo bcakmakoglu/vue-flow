@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.42.0
+
+### Minor Changes
+
+- [#1729](https://github.com/bcakmakoglu/vue-flow/pull/1729) [`8a832f1`](https://github.com/bcakmakoglu/vue-flow/commit/8a832f1bc2eb045f95d9cc0e66bba7be559caad5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use connection lookup to check what elements should be selected by a user selection box.
+
+- [#1729](https://github.com/bcakmakoglu/vue-flow/pull/1729) [`d4a6910`](https://github.com/bcakmakoglu/vue-flow/commit/d4a6910b90feb2169da32ded7738645853684338) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `useNodeConnections` composable
+
+- [#1742](https://github.com/bcakmakoglu/vue-flow/pull/1742) [`b1e2f57`](https://github.com/bcakmakoglu/vue-flow/commit/b1e2f57bf77ccb33e6b2d20e4be69e8c0bd29327) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Inherit attributes on main edge path element in BaseEdge component.
+
 ## 1.41.7
 
 ### Patch Changes
