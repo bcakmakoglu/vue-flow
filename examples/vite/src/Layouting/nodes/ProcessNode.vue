@@ -1,20 +1,11 @@
-<script setup>
+<script lang="ts" setup>
 import { computed, toRef } from 'vue'
+import type { NodeProps } from '@vue-flow/core'
 import { Handle, useNodeConnections } from '@vue-flow/core'
-import { ProcessStatus } from './useRunProcess'
+import type { ProcessData } from '.'
+import { ProcessStatus } from '.'
 
-const props = defineProps({
-  data: {
-    type: Object,
-    required: true,
-  },
-  sourcePosition: {
-    type: String,
-  },
-  targetPosition: {
-    type: String,
-  },
-})
+const props = defineProps<NodeProps<ProcessData>>()
 
 const sourceConnections = useNodeConnections({
   handleType: 'target',

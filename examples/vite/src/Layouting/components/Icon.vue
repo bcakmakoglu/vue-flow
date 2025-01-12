@@ -1,10 +1,5 @@
-<script setup>
-defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-})
+<script lang="ts" setup>
+defineProps<{ name: 'play' | 'stop' | 'horizontal' | 'vertical' }>()
 </script>
 
 <template>

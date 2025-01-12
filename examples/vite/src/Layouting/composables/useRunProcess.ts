@@ -1,12 +1,15 @@
 import { ref, toRef, toValue } from 'vue'
+import type { Node } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
+import type { MaybeRefOrGetter } from 'vue'
+import type dagre from '@dagrejs/dagre'
+import type { ProcessData, ProcessNode } from '../nodes'
+import { ProcessStatus } from '../nodes'
+import type { ProcessEdge } from '../edges'
 
-export const ProcessStatus = {
-  ERROR: 'error',
-  SKIPPED: 'skipped',
-  CANCELLED: 'cancelled',
-  FINISHED: 'finished',
-  RUNNING: 'running',
+interface UseRunProcessOptions {
+  graph: MaybeRefOrGetter<dagre.graphlib.Graph<Node>>
+  cancelOnError?: MaybeRefOrGetter<boolean>
 }
 
 /**
@@ -21,21 +24,18 @@ export const ProcessStatus = {
  * @param options.graph The graph object containing the nodes and edges.
  * @param options.cancelOnError Whether to cancel the process if an error occurs.
  */
-export function useRunProcess({ graph: dagreGraph, cancelOnError = true }) {
+export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRunProcessOptions) {
   const { updateNodeData, getConnectedEdges } = useVueFlow()
 
   const graph = toRef(() => toValue(dagreGraph))
 
   const isRunning = ref(false)
 
-  /** Map of running tasks with the node ID as the key and the timeout as the value. */
-  const runningTasks = new Map()
+  const runningTasks = new Map<string, NodeJS.Timeout>()
 
-  /** Set of node ids of nodes that have been executed  */
-  const executedNodes = new Set()
+  const executedNodes = new Set<string>()
 
-  /** Set of node ids yet to be executed */
-  const upcomingTasks = new Set()
+  const upcomingTasks = new Set<string>()
 
   /**
    * Run the process on a node.
@@ -44,7 +44,7 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }) {
    * @param nodeId The ID of the node to run.
    * @param isStart Whether this is a starting node.
    */
-  async function runNode(nodeId, isStart = false) {
+  async function runNode(nodeId: string, isStart = false) {
     if (executedNodes.has(nodeId)) {
       return
     }
@@ -53,7 +53,7 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }) {
     upcomingTasks.add(nodeId)
 
     // get all incoming edges to this node
-    const incomers = getConnectedEdges(nodeId).filter((connection) => connection.target === nodeId)
+    const incomers = (getConnectedEdges(nodeId) as ProcessEdge[]).filter((connection) => connection.target === nodeId)
 
     // wait for edge animations to finish before starting the process
     await Promise.all(incomers.map((incomer) => until(() => !incomer.data?.isAnimating)))
@@ -127,7 +127,7 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }) {
    *
    * @param nodes The nodes to run.
    */
-  async function run(nodes) {
+  async function run(nodes: ProcessNode[]) {
     // if the process is already running, we don't want to start it again
     if (isRunning.value) {
       return
@@ -152,7 +152,7 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }) {
    *
    * @param nodes The nodes to reset.
    */
-  function reset(nodes) {
+  function reset(nodes: ProcessNode[]) {
     clear()
 
     for (const node of nodes) {
@@ -165,7 +165,7 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }) {
    *
    * @param nodeId The ID of the node to skip descendants for.
    */
-  async function skipDescendants(nodeId) {
+  async function skipDescendants(nodeId: string) {
     const children = graph.value.successors(nodeId) || []
 
     for (const child of children) {
@@ -215,14 +215,14 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }) {
    * @param nodeId The ID of the node to update.
    * @param status The new status of the node.
    */
-  function updateNodeStatus(nodeId, status) {
-    updateNodeData(nodeId, { status })
+  function updateNodeStatus(nodeId: string, status: ProcessData['status']) {
+    updateNodeData<ProcessData>(nodeId, { status })
   }
 
   return { run, stop, reset, isRunning }
 }
 
-async function until(condition) {
+async function until(condition: () => boolean) {
   return new Promise((resolve) => {
     const interval = setInterval(() => {
       if (condition()) {

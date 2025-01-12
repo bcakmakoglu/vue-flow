@@ -1,50 +1,12 @@
-<script setup>
-import { computed, nextTick, ref, watch } from 'vue'
-import { BaseEdge, EdgeLabelRenderer, Position, getSmoothStepPath, useNodesData, useVueFlow } from '@vue-flow/core'
-import { ProcessStatus } from './useRunProcess'
+<script lang="ts" setup>
+import { computed, ref, watch } from 'vue'
+import type { EdgeProps } from '@vue-flow/core'
+import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath, useNodesData, useVueFlow } from '@vue-flow/core'
+import type { ProcessNode } from '../nodes'
+import { ProcessStatus } from '../nodes'
+import type { ProcessEdgeData } from '.'
 
-const props = defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-  source: {
-    type: String,
-    required: true,
-  },
-  target: {
-    type: String,
-    required: true,
-  },
-  sourceX: {
-    type: Number,
-    required: true,
-  },
-  sourceY: {
-    type: Number,
-    required: true,
-  },
-  targetX: {
-    type: Number,
-    required: true,
-  },
-  targetY: {
-    type: Number,
-    required: true,
-  },
-  sourcePosition: {
-    type: String,
-    default: Position.Right,
-  },
-  targetPosition: {
-    type: String,
-    default: Position.Left,
-  },
-  data: {
-    type: Object,
-    required: false,
-  },
-})
+const props = defineProps<EdgeProps<ProcessEdgeData>>()
 
 const { updateEdgeData } = useVueFlow()
 
@@ -52,9 +14,9 @@ const { updateEdgeData } = useVueFlow()
  * We call `useNodesData` to get the data of the source and target nodes, which
  * contain the information about the status of each nodes' process.
  */
-const nodesData = useNodesData(() => [props.target, props.source])
+const nodesData = useNodesData<ProcessNode>(() => [props.target, props.source])
 
-const labelRef = ref()
+const labelRef = ref<HTMLDivElement | null>(null)
 
 const edgeRef = ref()
 
@@ -73,7 +35,7 @@ const isAnimating = computed({
   },
 })
 
-let animation = null
+let animation: Animation | null = null
 
 const path = computed(() => getSmoothStepPath(props))
 
@@ -161,7 +123,7 @@ function runAnimation() {
 }
 </script>
 
-<script>
+<script lang="ts">
 export default {
   name: 'AnimationEdge',
   inheritAttrs: false,
