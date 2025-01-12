@@ -1,61 +1,73 @@
-const position = { x: 0, y: 0 }
-const nodeType = 'process'
+const initialPos = { x: 0, y: 0 }
+const type = 'process'
+const data = { status: null }
 
 export const initialNodes = [
   {
     id: '1',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '2',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '2a',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '2b',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '2c',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '2d',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '3',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '4',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '5',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '6',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
   {
     id: '7',
-    position,
-    type: nodeType,
+    position: initialPos,
+    type,
+    data,
   },
 ]
 
