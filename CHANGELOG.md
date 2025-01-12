@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.42.0] - 2025-01-12
+
+[549d5ce](549d5cee7f6a8be784924175e6ab280b9334dd67)...[5a5b2c1](5a5b2c15d76ac6173e616b947e227f6974bfe444)
+
+### Bug Fixes
+
+- Hide minimap node if graph node is hidden (#1739) ([0a0d8af](0a0d8af16c2c813ce028898ee07b1d52c75ca612))
+
+### Features
+
+- Add `useNodeConnections` composable (#1728) ([268ed0e](268ed0e84ee3d77aab6862ad3003da6e8356c879))
+
+### Miscellaneous Tasks
+
+- Update license ([dbd9330](dbd9330d91b8c7f687eac1dc3f80454528b2a4a3))
+- Add new sandbox links to docs ([46f3892](46f389269617f7f89872e114c3a0bac18d8a5c76))
+- Update issue template ([b9c9cd9](b9c9cd9e1c22f6bb01f90931cddb61d606051f97))
+- Open links in new tab ([a8f7e36](a8f7e36d9e5f5c32031614acf6791f682b9be531))
+- Cleanup card styles ([1c5caff](1c5caffaad54fd95afbb665c712fd5b7965eff8a))
+
+### Refactor
+
+- Allow setting handleId in useNodeConnections (#1732) ([3d1b85f](3d1b85fce23da9662d33f4f197933b8c65e393d6))
+- Use connection lookup to check for selected elements (#1737) ([6f3ed67](6f3ed6746303be317c5722ba9d93cf86f6f87912))
+- Inherit attrs on edge path el in `BaseEdge` (#1742) ([44b9232](44b9232b196259db4dc69be930ff9437355c6dc0))
+- Rename useNodeConnections params (#1743) ([f78c348](f78c348947b8fbcd4ea857f12f24dc2ece21dfc4))
+
 ## [1.41.7] - 2025-01-04
 
 [265e03d](265e03d9f47b8030caaa4db6877af7fc63e33348)...[549d5ce](549d5cee7f6a8be784924175e6ab280b9334dd67)
