@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.42.1
+
+### Patch Changes
+
+- [#1749](https://github.com/bcakmakoglu/vue-flow/pull/1749) [`56eb94e`](https://github.com/bcakmakoglu/vue-flow/commit/56eb94e10963de645a61b0fd737365b05415577d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct connection keys.
+
 ## 1.42.0
 
 ### Minor Changes
