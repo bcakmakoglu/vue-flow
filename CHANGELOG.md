@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.42.1] - 2025-01-16
+
+[5a5b2c1](5a5b2c15d76ac6173e616b947e227f6974bfe444)...[d7f5506](d7f5506882b4438ee04f8f08217547f38379366e)
+
+### Bug Fixes
+
+- Correct connection keys (#1749) ([424f6cf](424f6cf63c5c9a295ca9a3a901a96838846d0701))
+
+### Miscellaneous Tasks
+
+- Simplify animated layout example (#1747) ([e94611a](e94611a3b0e43517af8ef3ffa4ee30e3c22068d6))
+
 ## [1.42.0] - 2025-01-12
 
 [549d5ce](549d5cee7f6a8be784924175e6ab280b9334dd67)...[5a5b2c1](5a5b2c15d76ac6173e616b947e227f6974bfe444)
