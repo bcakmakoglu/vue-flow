@@ -1,5 +1,11 @@
 # @vue-flow/minimap
 
+## 1.5.2
+
+### Patch Changes
+
+- [#1754](https://github.com/bcakmakoglu/vue-flow/pull/1754) [`a3870b8`](https://github.com/bcakmakoglu/vue-flow/commit/a3870b85e0c61512f4f5f9ac287536dbe9c720dd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Bind attributes to minimap node elements.
+
 ## 1.5.1
 
 ### Patch Changes
