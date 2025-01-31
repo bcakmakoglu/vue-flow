@@ -66,7 +66,11 @@ const selectionKeyPressed = useKeyPress(selectionKeyCode)
 
 const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
-const shouldPanOnDrag = toRef(() => panKeyPressed.value || panOnDrag.value)
+const shouldPanOnDrag = toRef(
+  () =>
+    (!selectionKeyPressed.value || (selectionKeyPressed.value && selectionKeyCode.value === true)) &&
+    (panKeyPressed.value || panOnDrag.value),
+)
 
 const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
 
@@ -161,10 +165,9 @@ onMounted(() => {
     const eventButton = (event as MouseEvent).button
 
     if (
-      (shouldPanOnDrag.value === true || (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(1))) &&
       eventButton === 1 &&
       event.type === 'mousedown' &&
-      ((event.target as HTMLElement)?.closest('.vue-flow__node') || (event.target as HTMLElement)?.closest('.vue-flow__edge'))
+      (isWrappedWithClass(event, 'vue-flow__node') || isWrappedWithClass(event, 'vue-flow__edge'))
     ) {
       return true
     }
@@ -217,10 +220,15 @@ onMounted(() => {
       return false
     }
 
+    // if selection key code is true and panOnDrag tries to use left mouse button we prevent it
+    if (selectionKeyCode.value === true && Array.isArray(panOnDrag.value) && panOnDrag.value.includes(0) && eventButton === 0) {
+      return false
+    }
+
     // if the pane is only movable using allowed clicks
     if (
-      Array.isArray(shouldPanOnDrag.value) &&
-      !shouldPanOnDrag.value.includes(eventButton) &&
+      Array.isArray(panOnDrag.value) &&
+      !panOnDrag.value.includes(eventButton) &&
       (event.type === 'mousedown' || event.type === 'touchstart')
     ) {
       return false
@@ -228,10 +236,13 @@ onMounted(() => {
 
     // We only allow right clicks if pan on drag is set to right-click
     const buttonAllowed =
-      (Array.isArray(shouldPanOnDrag.value) && shouldPanOnDrag.value.includes(eventButton)) || !eventButton || eventButton <= 1
+      (Array.isArray(panOnDrag.value) && panOnDrag.value.includes(eventButton)) ||
+      (selectionKeyCode.value === true && Array.isArray(panOnDrag.value) && !panOnDrag.value.includes(0)) ||
+      !eventButton ||
+      eventButton <= 1
 
     // default filter for d3-zoom
-    return (!event.ctrlKey || event.type === 'wheel') && buttonAllowed
+    return (!event.ctrlKey || panKeyPressed.value || event.type === 'wheel') && buttonAllowed
   })
 
   watch(
@@ -281,7 +292,7 @@ onMounted(() => {
             const _isMacOs = isMacOs()
 
             // macOS sets ctrlKey=true for pinch gesture on a trackpad
-            if (event.ctrlKey && zoomOnPinch.value && _isMacOs) {
+            if (!panKeyPressed.value && event.ctrlKey && zoomOnPinch.value && _isMacOs) {
               const point = pointer(event)
               const pinchDelta = wheelDelta(event)
               const zoom = currentZoom * 2 ** pinchDelta

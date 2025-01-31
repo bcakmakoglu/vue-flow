@@ -38,5 +38,5 @@ export interface BackgroundProps {
   /** Background y-coordinate (offset y) */
   y?: number
   /** Background offset */
-  offset?: number
+  offset?: number | [number, number]
 }

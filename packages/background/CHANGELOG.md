@@ -1,5 +1,17 @@
 # @vue-flow/background
 
+## 1.3.2
+
+### Patch Changes
+
+- [#1692](https://github.com/bcakmakoglu/vue-flow/pull/1692) [`f08c15d`](https://github.com/bcakmakoglu/vue-flow/commit/f08c15da511ab3e6e6960e2e80c32d2870d6e755) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set default offset value to `0`
+
+## 1.3.1
+
+### Patch Changes
+
+- [#1666](https://github.com/bcakmakoglu/vue-flow/pull/1666) [`a48659a`](https://github.com/bcakmakoglu/vue-flow/commit/a48659a9215ca037221e09fccab85ea04b1a50d6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Start patterns at 0,0
+
 ## 1.3.0
 
 ### Minor Changes

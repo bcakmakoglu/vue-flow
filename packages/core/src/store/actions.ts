@@ -72,6 +72,10 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     return getConnectedEdgesBase(nodesOrId, state.edges)
   }
 
+  const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
+    return Array.from(state.connectionLookup.get(`${nodeId}-${type}-${id ?? null}`)?.values() ?? [])
+  }
+
   const findNode: Actions['findNode'] = (id) => {
     if (!id) {
       return
@@ -153,8 +157,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         if (doUpdate) {
           const nodeBounds = update.nodeElement.getBoundingClientRect()
           node.dimensions = dimensions
-          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, nodeBounds, zoom)
-          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, nodeBounds, zoom)
+          node.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom)
+          node.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom)
 
           changes.push({
             id: node.id,
@@ -345,7 +349,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
       state.edges,
     )
 
-    updateConnectionLookup(state.connectionLookup, validEdges)
+    updateConnectionLookup(state.connectionLookup, edgeLookup.value, validEdges)
 
     state.edges = validEdges
   }
@@ -505,7 +509,30 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
-    return updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId, state.hooks.error.trigger)
+    const prevEdge = findEdge(oldEdge.id)!
+
+    const newEdge = updateEdgeAction(oldEdge, newConnection, prevEdge, shouldReplaceId, state.hooks.error.trigger)
+
+    if (newEdge) {
+      const [validEdge] = createGraphEdges(
+        [newEdge],
+        state.isValidConnection,
+        findNode,
+        findEdge,
+        state.hooks.error.trigger,
+        state.defaultEdgeOptions,
+        state.nodes,
+        state.edges,
+      )
+
+      state.edges.splice(state.edges.indexOf(prevEdge), 1, validEdge)
+
+      updateConnectionLookup(state.connectionLookup, edgeLookup.value, [validEdge])
+
+      return validEdge
+    }
+
+    return false
   }
 
   const updateEdgeData: Actions['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
@@ -527,7 +554,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   const applyEdgeChanges: Actions['applyEdgeChanges'] = (changes) => {
     const changedEdges = applyChanges(changes, state.edges)
 
-    updateConnectionLookup(state.connectionLookup, changedEdges)
+    updateConnectionLookup(state.connectionLookup, edgeLookup.value, changedEdges)
 
     return changedEdges
   }
@@ -880,6 +907,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     getIncomers,
     getOutgoers,
     getConnectedEdges,
+    getHandleConnections,
     isNodeIntersecting,
     panBy,
     fitView: (params) => viewportHelper.value.fitView(params),

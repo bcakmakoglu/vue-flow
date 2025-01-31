@@ -14,7 +14,7 @@ Though, there are cases where you want to take control of changes and apply them
 
 In this guide, we will learn how to take control of changes and apply them manually.
 
-## What is a [Change](https://vueflow.dev/typedocs/types/NodeChange.html)?
+## What is a [Change](https://vueflow.dev/typedocs/type-aliases/NodeChange.html)?
 
 A *change* is anything that is triggered by an interaction with the flow, like adding, updating (position, selected), or removing a node or an edge, either
 by dragging, clicking etc. or by using the provided API.
@@ -208,6 +208,41 @@ const onNodesChange = async (changes) => {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-changes="false" @nodes-change="onNodesChange" />
+  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" @nodes-change="onNodesChange" />
 </template>
+```
+
+## V-Model Nodes and Edges
+
+In some cases you want to *sync* the state of internal nodes/edges with your own state,
+for those cases you can use the `v-model` directive to bind the internal state with your own state.
+
+```vue
+<template>
+  <VueFlow v-model:edges="edges" v-model:nodes="nodes" />
+</template>
+```
+
+Doing this will sync the internal state with your own state, which is useful for situations where you update internal nodes and edges but also want those changes to be reflected in your own state.
+
+For example, if you update the type of nodes using `updateNode` and want to see the same change reflected in your own nodes state and not just in the internal state.
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { useVueFlow } from '@vue-flow/core'
+
+const nodes = ref([
+  {
+    id: '1',
+    position: { x: 0, y: 0 },
+    data: { label: 'Node 1' },
+  },
+])
+
+const { updateNode } = useVueFlow()
+
+// using updateNode will only update the internal state, not the nodes state unless you use v-model
+updateNode('1', { type: 'new-type' })
+</script>
 ```

@@ -1,5 +1,7 @@
 <template>
   <div style="height: 100%">
-    <Flow />
+    <ClientOnly>
+      <Flow />
+    </ClientOnly>
   </div>
 </template>

@@ -1,7 +1,10 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { onMounted, ref, toRef, toValue, watch } from 'vue'
+import { ref, toRef, toValue, watch } from 'vue'
 import type { KeyFilter, KeyPredicate } from '@vueuse/core'
 import { onKeyStroke, useEventListener } from '@vueuse/core'
+
+type PressedKeys = Set<string>
+type KeyOrCode = 'key' | 'code'
 
 export interface UseKeyPressOptions {
   actInsideInputWithModifier?: MaybeRefOrGetter<boolean>
@@ -25,24 +28,33 @@ function wasModifierPressed(event: KeyboardEvent) {
 }
 
 function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<string>, isKeyUp: boolean) {
-  const keyCombination = keyToMatch.split('+').map((k) => k.trim().toLowerCase())
+  const keyCombination = keyToMatch
+    .replace('+', '\n')
+    .replace('\n\n', '\n+')
+    .split('\n')
+    .map((k) => k.trim().toLowerCase())
 
   if (keyCombination.length === 1) {
     return pressedKey.toLowerCase() === keyToMatch.toLowerCase()
   }
 
-  if (isKeyUp) {
-    pressedKeys.delete(pressedKey.toLowerCase())
-  } else {
+  // we need to remove the key *after* checking for a match otherwise a combination like 'shift+a' would never get unmatched/reset
+  if (!isKeyUp) {
     pressedKeys.add(pressedKey.toLowerCase())
   }
 
-  return keyCombination.every(
+  const isMatch = keyCombination.every(
     (key, index) => pressedKeys.has(key) && Array.from(pressedKeys.values())[index] === keyCombination[index],
   )
+
+  if (isKeyUp) {
+    pressedKeys.delete(pressedKey.toLowerCase())
+  }
+
+  return isMatch
 }
 
-function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<string>): KeyPredicate {
+function createKeyPredicate(keyFilter: string | string[], pressedKeys: PressedKeys): KeyPredicate {
   return (event: KeyboardEvent) => {
     if (!event.code && !event.key) {
       return false
@@ -60,11 +72,7 @@ function createKeyPredicate(keyFilter: string | string[], pressedKeys: Set<strin
   }
 }
 
-function useKeyOrCode(code: string, keysToWatch: string | string[]) {
-  if (typeof keysToWatch === 'string') {
-    return code === keysToWatch ? 'code' : 'key'
-  }
-
+function useKeyOrCode(code: string, keysToWatch: string | string[]): KeyOrCode {
   return keysToWatch.includes(code) ? 'code' : 'key'
 }
 
@@ -75,7 +83,7 @@ function useKeyOrCode(code: string, keysToWatch: string | string[]) {
  * @param keyFilter - Can be a boolean, a string, an array of strings or a function that returns a boolean. If it's a boolean, it will act as if the key is always pressed. If it's a string, it will return true if a key matching that string is pressed. If it's an array of strings, it will return true if any of the strings match a key being pressed, or a combination (e.g. ['ctrl+a', 'ctrl+b'])
  * @param options - Options object
  */
-export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, options?: UseKeyPressOptions) {
+export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | null>, options?: UseKeyPressOptions) {
   const actInsideInputWithModifier = toRef(() => toValue(options?.actInsideInputWithModifier) ?? false)
 
   const target = toRef(() => toValue(options?.target) ?? window)
@@ -103,9 +111,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, optio
     },
   )
 
-  onMounted(() => {
-    useEventListener(window, ['blur', 'contextmenu'], reset)
-  })
+  useEventListener(['blur', 'contextmenu'], reset)
 
   onKeyStroke(
     (...args) => currentFilter(...args),
@@ -135,7 +141,8 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, optio
           return
         }
 
-        reset()
+        modifierPressed = false
+        isPressed.value = false
       }
     },
     { eventName: 'keyup', target },
@@ -146,10 +153,10 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | null>, optio
 
     pressedKeys.clear()
 
-    isPressed.value = false
+    isPressed.value = toValue(keyFilter) === true
   }
 
-  function createKeyFilterFn(keyFilter: KeyFilter | null) {
+  function createKeyFilterFn(keyFilter: KeyFilter | boolean | null) {
     // if the keyFilter is null, we just set the isPressed value to false
     if (keyFilter === null) {
       reset()

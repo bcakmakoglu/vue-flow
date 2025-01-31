@@ -16,6 +16,9 @@ import Gamepad from '~icons/mdi/gamepad';
 import Wrench from '~icons/mdi/wrench';
 import ArrowExpand from '~icons/mdi/arrow-expand';
 import LockCheck from '~icons/mdi/lock-check';
+import VueJs from '~icons/mdi/vuejs';
+import LogosJavascript from '~icons/logos/javascript';
+import LogosTypescript from '~icons/logos/typescript-icon';
 </script>
 
 # Welcome to Vue Flow!
@@ -30,7 +33,24 @@ bespoke nodes and edges.
 Additional components such as Background, Minimap, and Controls further enrich the interface,
 transforming your creations into engaging platforms.
 
-Explore the [examples](/examples/) or checkout the [CodeSandbox template](https://codesandbox.io/p/sandbox/vue-flow-basic-gfgro4) if you're eager to jump right in and get your hands on some code!
+## <span class="flex gap-2 items-center"> <VueJs class="text-primary" /> Play Online</span>
+
+Try out the sandbox starter templates for Vue Flow in JavaScript and TypeScript and get a feel for the library.
+
+<div class="flex flex-col gap-4 md:flex-row md:gap-8">
+  <a href="https://new.vueflow.dev/js" target="_blank" class="flex-1 !no-underline">
+    <div class="flex items-center gap-4 p-4 rounded-lg shadow-md border-1 border-primary dark:bg-secondary">
+      <LogosJavascript class="text-accent text-2xl" />
+      <h3 class="!m-0 font-semibold">new.vueflow.dev/js</h3>
+    </div>
+  </a>
+  <a href="https://new.vueflow.dev/ts" target="_blank" class="flex-1 !no-underline">
+    <div class="flex items-center gap-4 p-4 rounded-lg shadow-md border-1 border-primary dark:bg-secondary">
+      <LogosTypescript class="text-accent text-2xl" />
+      <h3 class="!m-0 font-semibold">new.vueflow.dev/ts</h3>
+    </div>
+  </a>
+</div>
 
 ## <span class="flex gap-2 items-center"><Flash class="text-yellow-500" /> Key Features</span>
 

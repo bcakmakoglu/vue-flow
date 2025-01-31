@@ -1,13 +1,16 @@
 import type { Dimensions, Position, XYPosition } from './flow'
-import type { Connection } from './connection'
+import type { Connection, ConnectionMode } from './connection'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
+import type { NodeLookup } from './store'
 
 export type HandleType = 'source' | 'target'
 
 export interface HandleElement extends XYPosition, Dimensions {
   id?: string | null
   position: Position
+  type: HandleType
+  nodeId: string
 }
 
 export interface ConnectionHandle extends XYPosition {
@@ -16,18 +19,11 @@ export interface ConnectionHandle extends XYPosition {
   nodeId: string
 }
 
-export interface ValidHandleResult {
-  endHandle: ConnectingHandle | null
-  handleDomNode: Element | null
-  isValid: boolean
-  connection: Connection
-}
-
 export interface ConnectingHandle {
   nodeId: string
   type: HandleType
-  handleId?: string | null
-  position?: Position | null
+  id?: string | null
+  position: Position
 }
 
 /** A valid connection function can determine if an attempted connection is valid or not, i.e. abort creating a new edge */
@@ -62,4 +58,37 @@ export interface HandleProps {
   connectableStart?: boolean
   /** Can this handle be used to *end* a connection */
   connectableEnd?: boolean
+}
+
+export interface IsValidParams {
+  handle: ConnectingHandle | null
+  connectionMode: ConnectionMode
+  fromNodeId: string
+  fromHandleId: string | null
+  fromType: HandleType
+  isValidConnection?: ValidConnectionFunc
+  doc: Document | ShadowRoot
+  lib: string
+  flowId: string | null
+  nodeLookup: NodeLookup
+}
+
+export interface Result {
+  handleDomNode: Element | null
+  isValid: boolean
+  connection: Connection | null
+  toHandle: ConnectingHandle | null
+}
+
+export interface ConnectionInProgress<NodeType extends GraphNode = GraphNode> {
+  inProgress: true
+  isValid: boolean | null
+  from: XYPosition
+  fromHandle: HandleElement
+  fromPosition: Position
+  fromNode: NodeType
+  to: XYPosition
+  toHandle: ConnectingHandle | null
+  toPosition: Position
+  toNode: NodeType | null
 }

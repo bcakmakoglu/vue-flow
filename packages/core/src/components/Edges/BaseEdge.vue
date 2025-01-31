@@ -3,7 +3,7 @@ import { ref, useAttrs } from 'vue'
 import type { BaseEdgeProps } from '../../types'
 import EdgeText from './EdgeText.vue'
 
-const { interactionWidth = 20, labelShowBg = true, ...props } = defineProps<BaseEdgeProps>()
+withDefaults(defineProps<BaseEdgeProps>(), { interactionWidth: 20 })
 
 const pathEl = ref<SVGPathElement | null>(null)
 
@@ -30,12 +30,11 @@ export default {
 
 <template>
   <path
+    v-bind="attrs"
     :id="id"
     ref="pathEl"
     :d="path"
-    :style="props.style"
     class="vue-flow__edge-path"
-    :class="attrs.class"
     :marker-end="markerEnd"
     :marker-start="markerStart"
   />

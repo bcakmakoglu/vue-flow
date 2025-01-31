@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { GraphNode } from '@vue-flow/core'
-import { getStraightPath } from '@vue-flow/core'
+import type { EdgeProps } from '@vue-flow/core'
+import { BaseEdge, getStraightPath } from '@vue-flow/core'
 import { computed } from 'vue'
 
 import { getEdgeParams } from './utils'
 
-const props = defineProps<{ id: string; sourceNode: GraphNode; targetNode: GraphNode; markerEnd: string; style: any }>()
+const props = defineProps<EdgeProps>()
 
 const edgeParams = computed(() => getEdgeParams(props.sourceNode, props.targetNode))
 
@@ -20,5 +20,5 @@ const edgePath = computed(() =>
 </script>
 
 <template>
-  <path :id="id" class="vue-flow__edge-path" :d="edgePath[0]" :marker-end="markerEnd" :style="style" />
+  <BaseEdge :id="id" :path="edgePath[0]" :marker-end="markerEnd" :style="style" />
 </template>

@@ -70,7 +70,7 @@ defineProps<Props>()
 |-----------------|---------------------------------------------------|--------------------------------------|----------|-------------------------|
 | nodeId          | Node(s) the toolbar is supposed to be attached to | string array                         | true     | NodeId from context     |
 | isVisible       | Force visibility of toolbar                       | boolean                              | true     | Selected node           |
-| position        | Toolbar position (top, left, right, bottom)       | [Position](/typedocs/enums/Position) | true     | Top                     |
+| position        | Toolbar position (top, left, right, bottom)       | [Position](/typedocs/enumerations/Position) | true     | Top                     |
 | offset          | Offset of toolbar position                        | number                               | true     | 10                      |
 
 ## Slots

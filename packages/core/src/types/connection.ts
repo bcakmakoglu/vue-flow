@@ -33,8 +33,16 @@ export interface Connection {
   targetHandle?: string | null
 }
 
-/** Connection with edge id */
+/**
+ * Connection with edge id
+ * @deprecated
+ * todo: remove in next major release
+ */
 export interface HandleConnection extends Connection {
+  edgeId: string
+}
+
+export type NodeConnection = Connection & {
   edgeId: string
 }
 
@@ -89,4 +97,4 @@ export interface ConnectionLineProps {
   connectionStatus: ConnectionStatus | null
 }
 
-export type ConnectionLookup = Map<string, Map<string, HandleConnection>>
+export type ConnectionLookup = Map<string, Map<string, NodeConnection>>

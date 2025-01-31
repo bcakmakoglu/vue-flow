@@ -1,5 +1,104 @@
 # @vue-flow/core
 
+## 1.42.1
+
+### Patch Changes
+
+- [#1749](https://github.com/bcakmakoglu/vue-flow/pull/1749) [`56eb94e`](https://github.com/bcakmakoglu/vue-flow/commit/56eb94e10963de645a61b0fd737365b05415577d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correct connection keys.
+
+## 1.42.0
+
+### Minor Changes
+
+- [#1729](https://github.com/bcakmakoglu/vue-flow/pull/1729) [`8a832f1`](https://github.com/bcakmakoglu/vue-flow/commit/8a832f1bc2eb045f95d9cc0e66bba7be559caad5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use connection lookup to check what elements should be selected by a user selection box.
+
+- [#1729](https://github.com/bcakmakoglu/vue-flow/pull/1729) [`d4a6910`](https://github.com/bcakmakoglu/vue-flow/commit/d4a6910b90feb2169da32ded7738645853684338) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `useNodeConnections` composable
+
+- [#1742](https://github.com/bcakmakoglu/vue-flow/pull/1742) [`b1e2f57`](https://github.com/bcakmakoglu/vue-flow/commit/b1e2f57bf77ccb33e6b2d20e4be69e8c0bd29327) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Inherit attributes on main edge path element in BaseEdge component.
+
+## 1.41.7
+
+### Patch Changes
+
+- [#1726](https://github.com/bcakmakoglu/vue-flow/pull/1726) [`763d122`](https://github.com/bcakmakoglu/vue-flow/commit/763d1220874edc08dd99b6a46bc2991ef1e92525) Thanks [@github-actions](https://github.com/apps/github-actions)! - use center position of handle as snapping point for connection lines
+
+## 1.41.6
+
+### Patch Changes
+
+- [#1705](https://github.com/bcakmakoglu/vue-flow/pull/1705) [`047ec99`](https://github.com/bcakmakoglu/vue-flow/commit/047ec996d9e08cc456d1da858382944d2194d552) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update sourceNode and targetNode properties of edge when using `updateEdge`.
+
+- [#1698](https://github.com/bcakmakoglu/vue-flow/pull/1698) [`7cc1c5a`](https://github.com/bcakmakoglu/vue-flow/commit/7cc1c5a8dd99b3979d741a33510281a159ba3ca6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent default scrolling behavior when using arrow keys to move nodes or a selection.
+
+- [#1707](https://github.com/bcakmakoglu/vue-flow/pull/1707) [`4c9e517`](https://github.com/bcakmakoglu/vue-flow/commit/4c9e5176b9b30582456db6197ee55f646b614b86) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow Control key as pan activation key code.
+
+- [#1707](https://github.com/bcakmakoglu/vue-flow/pull/1707) [`4c9e517`](https://github.com/bcakmakoglu/vue-flow/commit/4c9e5176b9b30582456db6197ee55f646b614b86) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Check `panOnDrag` for allowed drag buttons in d3 filter
+
+- [#1707](https://github.com/bcakmakoglu/vue-flow/pull/1707) [`4c9e517`](https://github.com/bcakmakoglu/vue-flow/commit/4c9e5176b9b30582456db6197ee55f646b614b86) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent browser context menu when triggering pane context menu event.
+
+## 1.41.5
+
+### Patch Changes
+
+- [#1680](https://github.com/bcakmakoglu/vue-flow/pull/1680) [`b6c500d`](https://github.com/bcakmakoglu/vue-flow/commit/b6c500dca8a8baa054802a80772990c723f83e2d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - check if event on drag end is mouse/touch event or a usedrag event
+
+- [#1696](https://github.com/bcakmakoglu/vue-flow/pull/1696) [`249efce`](https://github.com/bcakmakoglu/vue-flow/commit/249efce8107f1b51ecd98206953015b9b470e342) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Properly release key combinations when one of the keys is unpressed
+
+- [#1693](https://github.com/bcakmakoglu/vue-flow/pull/1693) [`f28ffba`](https://github.com/bcakmakoglu/vue-flow/commit/f28ffba4d3f8166f2e80a9e6805d17db14ab2a89) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow using the `+` key in key combinations
+
+- [#1695](https://github.com/bcakmakoglu/vue-flow/pull/1695) [`b09ad8e`](https://github.com/bcakmakoglu/vue-flow/commit/b09ad8ea35e974c83b5ad2ceea49e7971ff62cf3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Escape node labels and avoid rendering them as innerHTML
+
+## 1.41.4
+
+### Patch Changes
+
+- [#1670](https://github.com/bcakmakoglu/vue-flow/pull/1670) [`4bc7658`](https://github.com/bcakmakoglu/vue-flow/commit/4bc76586e1013c8a17b2a83ff32a050f2e16c350) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - if selection key code is true prevent pan on drag on left mouse btn
+
+## 1.41.3
+
+### Patch Changes
+
+- [#1662](https://github.com/bcakmakoglu/vue-flow/pull/1662) [`a41bd7b`](https://github.com/bcakmakoglu/vue-flow/commit/a41bd7b8218a47061824f2f4a5a2a7758e62561a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reorder pane class names to allow dragging cursor when selection mode is permanently enabled
+
+- [#1667](https://github.com/bcakmakoglu/vue-flow/pull/1667) [`e51f08c`](https://github.com/bcakmakoglu/vue-flow/commit/e51f08cb51ee1bf442b70b88ce74f54db86ad4a7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set `isPressed` to `true` if permanent keypress is enabled
+
+- [#1662](https://github.com/bcakmakoglu/vue-flow/pull/1662) [`a41bd7b`](https://github.com/bcakmakoglu/vue-flow/commit/a41bd7b8218a47061824f2f4a5a2a7758e62561a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow pan on drag when selectionKeyCode is `true` but panOnDrag key is not left mouse btn
+
+- [#1665](https://github.com/bcakmakoglu/vue-flow/pull/1665) [`a6ec480`](https://github.com/bcakmakoglu/vue-flow/commit/a6ec4800f3256ce6d7d5d88212ac780634cb4f09) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use all handle bounds when using loose connection mode during edge update
+
+## 1.41.2
+
+### Patch Changes
+
+- [#1624](https://github.com/bcakmakoglu/vue-flow/pull/1624) [`6692072`](https://github.com/bcakmakoglu/vue-flow/commit/6692072c919fef0f343b0a75d77636f5a820639e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use calculated drag distance to trigger drag-click.
+
+- [#1618](https://github.com/bcakmakoglu/vue-flow/pull/1618) [`1fa90ac`](https://github.com/bcakmakoglu/vue-flow/commit/1fa90acec247b2dd8a6e8c6db7209eb8791a02d0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow node/edge pointer events if mouse event listeners (like `nodeClick` or `edgeClick`) exists.
+
+## 1.41.1
+
+### Patch Changes
+
+- [#1608](https://github.com/bcakmakoglu/vue-flow/pull/1608) [`0581cd8`](https://github.com/bcakmakoglu/vue-flow/commit/0581cd820f7db3aa04a7247e56d283327906b93b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent overwriting width/height in node styles object with `node.width`/`node.height` if `width`/`height` already exist in the styles object.
+  Fixes NodeResizer not working when initial size was passed to a node through `node.width`/`node.height`.
+
+- [#1609](https://github.com/bcakmakoglu/vue-flow/pull/1609) [`81a81fa`](https://github.com/bcakmakoglu/vue-flow/commit/81a81faf5a2708b34c6b867593480050fbcfb27f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent drag-click handler when multi selection is active.
+
+## 1.41.0
+
+### Minor Changes
+
+- [#1595](https://github.com/bcakmakoglu/vue-flow/pull/1595) [`9c18037`](https://github.com/bcakmakoglu/vue-flow/commit/9c180374406668457b47acb6646ff6a229d58c82) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `getHandleConnections` action to store.
+
+### Patch Changes
+
+- [#1600](https://github.com/bcakmakoglu/vue-flow/pull/1600) [`a3c72fe`](https://github.com/bcakmakoglu/vue-flow/commit/a3c72fe8a08a646954affe669609d55dfcc0b5e6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Don't set user selection flags on pointer down, only setting them when pointer is moved to allow pane click events to occur when `selectionKeyCode` is `true` (i.e. selection on drag).
+
+## 1.40.1
+
+### Patch Changes
+
+- [#1591](https://github.com/bcakmakoglu/vue-flow/pull/1591) [`5eb677b`](https://github.com/bcakmakoglu/vue-flow/commit/5eb677bbbe113f2aa698db3156af38abe7892db3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Inline event names
+
 ## 1.40.0
 
 ### Minor Changes

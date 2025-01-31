@@ -1,13 +1,19 @@
-import type { GraphNode } from '../types'
+import type { GraphNode, SnapGrid, XYPosition } from '../types'
+import type { UseDragEvent } from '../composables'
 
 export function isMouseEvent(event: MouseEvent | TouchEvent): event is MouseEvent {
   return 'clientX' in event
 }
 
+export function isUseDragEvent(event: any): event is UseDragEvent {
+  return 'sourceEvent' in event
+}
+
 export function getEventPosition(event: MouseEvent | TouchEvent, bounds?: DOMRect) {
-  const isMouseTriggered = isMouseEvent(event)
-  const evtX = isMouseTriggered ? event.clientX : event.touches?.[0].clientX
-  const evtY = isMouseTriggered ? event.clientY : event.touches?.[0].clientY
+  const isMouse = isMouseEvent(event)
+
+  const evtX = isMouse ? event.clientX : event.touches?.[0].clientX
+  const evtY = isMouse ? event.clientY : event.touches?.[0].clientY
 
   return {
     x: evtX - (bounds?.left ?? 0),
@@ -21,5 +27,12 @@ export function getNodeDimensions(node: GraphNode): { width: number; height: num
   return {
     width: node.dimensions?.width ?? node.width ?? 0,
     height: node.dimensions?.height ?? node.height ?? 0,
+  }
+}
+
+export function snapPosition(position: XYPosition, snapGrid: SnapGrid = [1, 1]): XYPosition {
+  return {
+    x: snapGrid[0] * Math.round(position.x / snapGrid[0]),
+    y: snapGrid[1] * Math.round(position.y / snapGrid[1]),
   }
 }

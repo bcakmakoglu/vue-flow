@@ -166,7 +166,7 @@ export function applyChanges<
               element.dimensions = currentChange.dimensions
             }
 
-            if (typeof currentChange.updateStyle !== 'undefined') {
+            if (typeof currentChange.updateStyle !== 'undefined' && currentChange.updateStyle) {
               element.style = {
                 ...(element.style || {}),
                 width: `${currentChange.dimensions?.width}px`,

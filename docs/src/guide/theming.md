@@ -123,7 +123,7 @@ const nodes = ref([
 
 :::
 
-### [Redefining Styles with CSS variables](/typedocs/types/CSSVars)
+### [Redefining Styles with CSS variables](/typedocs/type-aliases/CSSVars)
 
 Some of the defined theme styles can be overwritten using CSS variables.
 These alterations can be implemented either on a global scale or to individual elements.

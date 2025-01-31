@@ -2,6 +2,174 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.42.1] - 2025-01-16
+
+[5a5b2c1](5a5b2c15d76ac6173e616b947e227f6974bfe444)...[d7f5506](d7f5506882b4438ee04f8f08217547f38379366e)
+
+### Bug Fixes
+
+- Correct connection keys (#1749) ([424f6cf](424f6cf63c5c9a295ca9a3a901a96838846d0701))
+
+### Miscellaneous Tasks
+
+- Simplify animated layout example (#1747) ([e94611a](e94611a3b0e43517af8ef3ffa4ee30e3c22068d6))
+
+## [1.42.0] - 2025-01-12
+
+[549d5ce](549d5cee7f6a8be784924175e6ab280b9334dd67)...[5a5b2c1](5a5b2c15d76ac6173e616b947e227f6974bfe444)
+
+### Bug Fixes
+
+- Hide minimap node if graph node is hidden (#1739) ([0a0d8af](0a0d8af16c2c813ce028898ee07b1d52c75ca612))
+
+### Features
+
+- Add `useNodeConnections` composable (#1728) ([268ed0e](268ed0e84ee3d77aab6862ad3003da6e8356c879))
+
+### Miscellaneous Tasks
+
+- Update license ([dbd9330](dbd9330d91b8c7f687eac1dc3f80454528b2a4a3))
+- Add new sandbox links to docs ([46f3892](46f389269617f7f89872e114c3a0bac18d8a5c76))
+- Update issue template ([b9c9cd9](b9c9cd9e1c22f6bb01f90931cddb61d606051f97))
+- Open links in new tab ([a8f7e36](a8f7e36d9e5f5c32031614acf6791f682b9be531))
+- Cleanup card styles ([1c5caff](1c5caffaad54fd95afbb665c712fd5b7965eff8a))
+
+### Refactor
+
+- Allow setting handleId in useNodeConnections (#1732) ([3d1b85f](3d1b85fce23da9662d33f4f197933b8c65e393d6))
+- Use connection lookup to check for selected elements (#1737) ([6f3ed67](6f3ed6746303be317c5722ba9d93cf86f6f87912))
+- Inherit attrs on edge path el in `BaseEdge` (#1742) ([44b9232](44b9232b196259db4dc69be930ff9437355c6dc0))
+- Rename useNodeConnections params (#1743) ([f78c348](f78c348947b8fbcd4ea857f12f24dc2ece21dfc4))
+
+## [1.41.7] - 2025-01-04
+
+[265e03d](265e03d9f47b8030caaa4db6877af7fc63e33348)...[549d5ce](549d5cee7f6a8be784924175e6ab280b9334dd67)
+
+### Bug Fixes
+
+- Add missing import ([f438acb](f438acbc9f54b9f94839af6348e3919a3b770d05))
+- Use center position of handle as snapping point for connection lines (#1625) ([b33da47](b33da47a3a02577b8981a544b9252174ce2bc4ec))
+
+### Documentation
+
+- Add edge markers example ([fe239b5](fe239b5d8fc07dae429a59a0484b6d232a18286b))
+- Add docs section about v-modelling nodes and edges ([2231ee4](2231ee462604c950f3e7aba1999ec9a1e7b835b7))
+
+### Miscellaneous Tasks
+
+- Add ([041fd87](041fd871a12fb146faca62719ebce688865757d7))
+
+## [1.41.6] - 2024-12-07
+
+[d22a239](d22a2394d49318b01c1a384d73970db018caec5d)...[265e03d](265e03d9f47b8030caaa4db6877af7fc63e33348)
+
+### Bug Fixes
+
+- Prevent scrolling when using arrow keys to move nodes (#1698) ([04d1355](04d13551e373d7c4cce7b743a1a6e57f0e4be9e4))
+- Prevent scrolling when using arrow keys to move node selection (#1702) ([600d1a6](600d1a63fd3231e533781d2d4b1ee65999c4d439))
+- Update source/target node of updated edge (#1705) ([7a022c8](7a022c89c621a54c5d174647d8953b5163e7a939))
+- Allow control key as pan activation key code (#1707) ([f4f2494](f4f2494fd13baebe3df73e9e49c4dd7e71e566dc))
+
+### Documentation
+
+- Add loopback edge example (#1708) ([4d09783](4d0978343f457278fbd82e79cdf99bf645ff75da))
+
+## [1.41.5] - 2024-11-13
+
+[6bb195d](6bb195da0ce074f5d581f2d7a1a41779736ee124)...[d22a239](d22a2394d49318b01c1a384d73970db018caec5d)
+
+### Bug Fixes
+
+- Check if dragEnd event is UseDrag or MouseTouch event (#1680) ([5a028cf](5a028cf2d401e5fa6aa5a13fa3e5be51b9f9f5da))
+- Set default offset to `0` (#1692) ([129d543](129d543c4ed13396edec387ebeaa62a0217a932b))
+- Allow using + as a key in key combinations (#1693) ([2e2fa9a](2e2fa9a93c149ace318dc65e1cf683ba7fb20522))
+- Release key combination presses (#1696) ([4b8139d](4b8139da66753ad68bfe1bca345cd211433a7e53))
+- Escape node labels (#1695) ([f7a2664](f7a266415a162213e363d0397135950a00c2d76a))
+
+### Documentation
+
+- Add custom components to getting-started example (#1677) ([f3075bc](f3075bc246d9fc5e26940ba010e305b9f8e617f4))
+- Add simple layout example (#1678) ([61f4b0d](61f4b0d447fde0eff6324cb7d1f5ae00f9f397bd))
+
+## [1.41.4] - 2024-11-01
+
+[367f894](367f8947f2cf8adc8135c38d665f967f742a739b)...[6bb195d](6bb195da0ce074f5d581f2d7a1a41779736ee124)
+
+### Bug Fixes
+
+- If selection key code is true prevent pan on drag on left mouse btn (#1670) ([1e3acb1](1e3acb197994df60f3ac76f54dd9b8b9794a1aa5))
+
+## [1.41.3] - 2024-11-01
+
+[becb928](becb928c395cc5a7c2b4a883b10a26c8f9dc860f)...[367f894](367f8947f2cf8adc8135c38d665f967f742a739b)
+
+### Bug Fixes
+
+- Typo in SnappableConnectionLine.vue (#1638) ([a90010b](a90010b5c47cd1c5236611c8c420189ec3d480dd))
+- Allow pan on drag for non left-btn when selectionKeyCode is `true` (#1662) ([fe552fc](fe552fc5c5843a67e38da0054598f9451ef76d95))
+- Use all handle bounds in loose connection mode (#1665) ([cfc2332](cfc233237048c20b89c3aae294314788a0b8a1e0))
+- Start patterns at 0,0 (#1666) ([900850d](900850d3ae0dd8957745a6e8b265dda7337f8487))
+- Set `isPressed` to `true` on `blur` and `contextmenu` events if permant keypress is enabled (#1667) ([72e0e2e](72e0e2e97eff0c1b96b7fa32a5eca30f70dc4630))
+- Allow pan on drag for other mouse btns if left is disabled ([ecd21ce](ecd21ceebb605760294ecd4c668915ff96fc77a6))
+
+### Miscellaneous Tasks
+
+- Update deps (#1633) ([de6f042](de6f042826f0149153a06517dc8b00169d0d1f2d))
+
+## [1.41.2] - 2024-09-16
+
+[524d812](524d8129451edc7c40db5366ecd8113ad7dd99bd)...[becb928](becb928c395cc5a7c2b4a883b10a26c8f9dc860f)
+
+### Bug Fixes
+
+- Allow pointer events if mouse evt listeners exist (#1618) ([6338a9d](6338a9db067fcb7a8f6077a90450066812466875))
+- Calculate distance to trigger drag-click (#1624) ([6cc3042](6cc30429b54715650ccd7851287cd0f142daba44))
+
+### Miscellaneous Tasks
+
+- Correct prop name ([a1bfef8](a1bfef80162dbe9101c7eb8945ba816afd0e4d03))
+
+## [1.41.1] - 2024-09-06
+
+[c555dfd](c555dfd987b32f312c4003d3b53f094fa5bf71b9)...[524d812](524d8129451edc7c40db5366ecd8113ad7dd99bd)
+
+### Bug Fixes
+
+- Prevent overwriting size in node styles object (#1608) ([f4bde90](f4bde903028d07105b65d3aa8b95b88562349755))
+- Prevent drag click when multi selection is active (#1609) ([43ed0a8](43ed0a831801d507697ff8831ecee6cb44036ba4))
+
+## [1.41.0] - 2024-08-30
+
+[b3e457a](b3e457a35a33892915b4cb9d27c268770bef048b)...[c555dfd](c555dfd987b32f312c4003d3b53f094fa5bf71b9)
+
+### Bug Fixes
+
+- Don't set user selection flags on pointer down (#1600) ([eb12bdc](eb12bdc56ff107241fb88e1bd12eb49df93c9bd7))
+
+### Documentation
+
+- Add info on setting up vue project ([f4bffeb](f4bffebcb13dd894375a9ef340289ccb8005a9e4))
+- Add info on listening to events ([a7a9fd5](a7a9fd5d0aadec995147b69fce098972c0650cdf))
+
+### Features
+
+- Add getHandleConnections action (#1595) ([9c003d4](9c003d4353a4bbfe7d9a4d8ac7f8ed3e708c3c29))
+
+### Miscellaneous Tasks
+
+- Cleanup ([57e868d](57e868ddd8249460f7e2bb507e333ec294e93bca))
+- Remove old migration guide ([f24230a](f24230a01007fc08ff2b083aaa759718ed6272cf))
+- Update deps (#1598) ([564d593](564d5931a5045c8f7dd039ee157bdbf2cf28acda))
+- Update `useHandle` docs ([940b08e](940b08e080cd987fb226ee017a88603ec47c815c))
+
+## [1.40.1] - 2024-08-20
+
+[538b03e](538b03ef6b94d252410cca563428eb8288eba711)...[b3e457a](b3e457a35a33892915b4cb9d27c268770bef048b)
+
+### Bug Fixes
+
+- Inline event names (#1591) ([47281fd](47281fd66868da5ec389dff2990df7e77526c41a))
+
 ## [1.40.0] - 2024-08-19
 
 [809a9a4](809a9a4e16ba4b8cae4159c259ec6a9da0f42954)...[538b03e](538b03ef6b94d252410cca563428eb8288eba711)
