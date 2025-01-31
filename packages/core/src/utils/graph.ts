@@ -17,6 +17,7 @@ import type {
   MaybeElement,
   Node,
   Rect,
+  SnapGrid,
   ViewportTransform,
   XYPosition,
   XYZPosition,
