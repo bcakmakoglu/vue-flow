@@ -16,6 +16,7 @@ export interface UseHandleConnectionsParams {
 /**
  * Composable that returns existing connections of a `<Handle />`.
  *
+ * @deprecated use `useNodeConnections` instead
  * @public
  * @param params
  * @param params.type - handle type `source` or `target`

@@ -2,17 +2,10 @@ import { computed, defineComponent, h, inject } from 'vue'
 import { getBezierPath, getMarkerId, getSmoothStepPath } from '@xyflow/system'
 import type { HandleElement } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
-import { getHandlePosition } from '../../utils'
+import { getHandlePosition, oppositePosition } from '../../utils'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
 import { getSimpleBezierPath } from '../Edges/SimpleBezierEdge'
-
-const oppositePosition = {
-  [Position.Left]: Position.Right,
-  [Position.Right]: Position.Left,
-  [Position.Top]: Position.Bottom,
-  [Position.Bottom]: Position.Top,
-}
 
 const ConnectionLine = defineComponent({
   name: 'ConnectionLine',
@@ -58,15 +51,16 @@ const ConnectionLine = defineComponent({
         return null
       }
 
-      const startHandleId = connectionStartHandle.value.handleId
+      const startHandleId = connectionStartHandle.value.id
 
       const handleType = connectionStartHandle.value.type
 
       const fromHandleBounds = fromNode.value.handleBounds
-      let handleBounds = fromHandleBounds?.[handleType]
+      let handleBounds = fromHandleBounds?.[handleType] || []
 
       if (connectionMode.value === ConnectionMode.Loose) {
-        handleBounds = handleBounds || fromHandleBounds?.[handleType === 'source' ? 'target' : 'source']
+        const oppositeBounds = fromHandleBounds?.[handleType === 'source' ? 'target' : 'source'] || []
+        handleBounds = [...handleBounds, ...oppositeBounds] || oppositeBounds
       }
 
       if (!handleBounds) {
@@ -78,18 +72,18 @@ const ConnectionLine = defineComponent({
       const { x: fromX, y: fromY } = getHandlePosition(fromNode.value, fromHandle, fromPosition)
 
       let toHandle: HandleElement | null = null
-      if (toNode.value && connectionEndHandle.value?.handleId) {
+      if (toNode.value) {
         // if connection mode is strict, we only look for handles of the opposite type
         if (connectionMode.value === ConnectionMode.Strict) {
           toHandle =
             toNode.value.handleBounds[handleType === 'source' ? 'target' : 'source']?.find(
-              (d) => d.id === connectionEndHandle.value?.handleId,
+              (d) => d.id === connectionEndHandle.value?.id,
             ) || null
         } else {
           // if connection mode is loose, look for the handle in both source and target bounds
           toHandle =
             [...(toNode.value.handleBounds.source || []), ...(toNode.value.handleBounds.target || [])]?.find(
-              (d) => d.id === connectionEndHandle.value?.handleId,
+              (d) => d.id === connectionEndHandle.value?.id,
             ) || null
         }
       }

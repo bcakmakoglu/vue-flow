@@ -4,7 +4,7 @@ import type { Connection, EdgeComponent, HandleType, MouseTouchEvent } from '../
 import { ConnectionMode, Position } from '../../types'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { EdgeId, EdgeRef, Slots } from '../../context'
-import { ARIA_EDGE_DESC_KEY, ErrorCode, VueFlowError, elementSelectionKeys, getHandle, getHandlePosition } from '../../utils'
+import { ARIA_EDGE_DESC_KEY, ErrorCode, VueFlowError, elementSelectionKeys, getEdgeHandle, getHandlePosition } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
 
 interface Props {
@@ -34,11 +34,12 @@ const EdgeWrapper = defineComponent({
       elementsSelectable,
       edgesUpdatable,
       edgesFocusable,
+      hooks,
     } = useVueFlow()
 
     const edge = computed(() => findEdge(props.id)!)
 
-    const hooks = useEdgeHooks(edge.value, emits)
+    const { emit, on } = useEdgeHooks(edge.value, emits)
 
     const slots = inject(Slots)
 
@@ -142,7 +143,7 @@ const EdgeWrapper = defineComponent({
         sourceNodeHandles = [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]
       }
 
-      const sourceHandle = getHandle(sourceNodeHandles, edge.value.sourceHandle)
+      const sourceHandle = getEdgeHandle(sourceNodeHandles, edge.value.sourceHandle)
 
       let targetNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
@@ -151,7 +152,7 @@ const EdgeWrapper = defineComponent({
         targetNodeHandles = [...(targetNode.handleBounds.target || []), ...(targetNode.handleBounds.source || [])]
       }
 
-      const targetHandle = getHandle(targetNodeHandles, edge.value.targetHandle)
+      const targetHandle = getEdgeHandle(targetNodeHandles, edge.value.targetHandle)
 
       const sourcePosition = sourceHandle?.position || Position.Bottom
 
@@ -181,7 +182,7 @@ const EdgeWrapper = defineComponent({
               updating: mouseOver.value,
               selected: edge.value.selected,
               animated: edge.value.animated,
-              inactive: !isSelectable.value,
+              inactive: !isSelectable.value && !hooks.value.edgeClick.hasListeners(),
             },
           ],
           'onClick': onEdgeClick,
@@ -219,7 +220,7 @@ const EdgeWrapper = defineComponent({
                 labelBgPadding: edge.value.labelBgPadding,
                 labelBgBorderRadius: edge.value.labelBgBorderRadius,
                 data: edge.value.data,
-                events: { ...edge.value.events, ...hooks.on },
+                events: { ...edge.value.events, ...on },
                 style: edgeStyle.value,
                 markerStart: `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')`,
                 markerEnd: `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')`,
@@ -289,11 +290,11 @@ const EdgeWrapper = defineComponent({
     }
 
     function onEdgeUpdate(event: MouseTouchEvent, connection: Connection) {
-      hooks.emit.update({ event, edge: edge.value, connection })
+      emit.update({ event, edge: edge.value, connection })
     }
 
     function onEdgeUpdateEnd(event: MouseTouchEvent) {
-      hooks.emit.updateEnd({ event, edge: edge.value })
+      emit.updateEnd({ event, edge: edge.value })
       updating.value = false
     }
 
@@ -309,7 +310,7 @@ const EdgeWrapper = defineComponent({
 
       edgeUpdaterType.value = isSourceHandle ? 'target' : 'source'
 
-      hooks.emit.updateStart({ event, edge: edge.value })
+      emit.updateStart({ event, edge: edge.value })
 
       handlePointerDown(event)
     }
@@ -329,27 +330,27 @@ const EdgeWrapper = defineComponent({
         }
       }
 
-      hooks.emit.click(data)
+      emit.click(data)
     }
 
     function onEdgeContextMenu(event: MouseEvent) {
-      hooks.emit.contextMenu({ event, edge: edge.value })
+      emit.contextMenu({ event, edge: edge.value })
     }
 
     function onDoubleClick(event: MouseEvent) {
-      hooks.emit.doubleClick({ event, edge: edge.value })
+      emit.doubleClick({ event, edge: edge.value })
     }
 
     function onEdgeMouseEnter(event: MouseEvent) {
-      hooks.emit.mouseEnter({ event, edge: edge.value })
+      emit.mouseEnter({ event, edge: edge.value })
     }
 
     function onEdgeMouseMove(event: MouseEvent) {
-      hooks.emit.mouseMove({ event, edge: edge.value })
+      emit.mouseMove({ event, edge: edge.value })
     }
 
     function onEdgeMouseLeave(event: MouseEvent) {
-      hooks.emit.mouseLeave({ event, edge: edge.value })
+      emit.mouseLeave({ event, edge: edge.value })
     }
 
     function onEdgeUpdaterSourceMouseDown(event: MouseEvent) {

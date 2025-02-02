@@ -25,13 +25,14 @@ import type {
   ConnectionMode,
   ConnectionStatus,
   Connector,
+  HandleConnection,
 } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { PanOnScrollMode } from './zoom'
 import type { CustomEvent, FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
-import type { ConnectingHandle, ValidConnectionFunc } from './handle'
+import type { ConnectingHandle, HandleType, ValidConnectionFunc } from './handle'
 
 export type NodeLookup = Map<string, GraphNode>
 
@@ -82,7 +83,7 @@ export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
   multiSelectionActive: boolean
 
   deleteKeyCode: KeyFilter | null
-  selectionKeyCode: KeyFilter | null
+  selectionKeyCode: KeyFilter | boolean | null
   multiSelectionKeyCode: KeyFilter | null
   zoomActivationKeyCode: KeyFilter | null
   panActivationKeyCode: KeyFilter | null
@@ -278,10 +279,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   removeSelectedEdges: (edges: GraphEdge[]) => void
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes: GraphNode[]) => void
-  /**
-   * @deprecated will be replaced in the next major
-   * unselect selected elements (if none are passed, all elements are unselected)
-   */
+  /** unselect selected elements (if none are passed, all elements are unselected) */
   removeSelectedElements: (elements?: Elements) => void
   /** apply min zoom value to panzoom */
   setMinZoom: (zoom: number) => void
@@ -324,6 +322,8 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   getOutgoers: (nodeOrId: Node | string) => GraphNode[]
   /** get a node's connected edges */
   getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
+  /** get all connections of a handle belonging to a node */
+  getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => HandleConnection[]
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => Promise<boolean>
   /** viewport helper instance */

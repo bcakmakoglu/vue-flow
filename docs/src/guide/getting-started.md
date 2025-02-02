@@ -3,6 +3,7 @@ title: Getting Started
 ---
 
 <script setup>
+import VueJs from '~icons/mdi/vuejs';
 import LogosJavascript from '~icons/logos/javascript';
 import LogosTypescript from '~icons/logos/typescript-icon';
 </script>
@@ -12,6 +13,10 @@ import LogosTypescript from '~icons/logos/typescript-icon';
 This guide covers the basics of setting up and using Vue Flow. 
 You'll learn how to install Vue Flow, configure it, and create your first flowchart.
 
+:::info NOTE
+If you're looking for a guide on how to setup a Vue project, check out the [official Vue documentation](https://vuejs.org/guide/quick-start).
+:::
+
 ## Prerequisites
 
 Before you strap in, make sure you're equipped with:
@@ -19,9 +24,24 @@ Before you strap in, make sure you're equipped with:
 - [Node.js v20 or above](https://nodejs.org/)
 - [Vue 3.3 or above](https://vuejs.org/)
 
-## CodeSandbox
+## <span class="flex gap-2 items-center"> <VueJs class="text-primary" /> Play Online</span>
 
-If you're looking for a quick way to get started, check out the [CodeSandbox template](https://codesandbox.io/p/sandbox/vue-flow-basic-gfgro4).
+Try out the sandbox starter templates for Vue Flow in JavaScript and TypeScript and get a feel for the library.
+
+<div class="flex flex-col gap-4 md:flex-row md:gap-8">
+  <a href="https://new.vueflow.dev/js" target="_blank" class="flex-1 !no-underline">
+    <div class="flex items-center gap-4 p-4 rounded-lg shadow-md border-1 border-primary dark:bg-secondary">
+      <LogosJavascript class="text-accent text-2xl" />
+      <h3 class="!m-0 font-semibold">new.vueflow.dev/js</h3>
+    </div>
+  </a>
+  <a href="https://new.vueflow.dev/ts" target="_blank" class="flex-1 !no-underline">
+    <div class="flex items-center gap-4 p-4 rounded-lg shadow-md border-1 border-primary dark:bg-secondary">
+      <LogosTypescript class="text-accent text-2xl" />
+      <h3 class="!m-0 font-semibold">new.vueflow.dev/ts</h3>
+    </div>
+  </a>
+</div>
 
 ## Installation
 
@@ -45,7 +65,7 @@ $ yarn add @vue-flow/core
 
 ## Quick Start
 
-In Vue Flow, a graph consists of [**nodes**](/typedocs/interfaces/Node) and [**edges**](/typedocs/types/Edge).
+In Vue Flow, a graph consists of [**nodes**](/typedocs/interfaces/Node) and [**edges**](/typedocs/type-aliases/Edge).
 
 **Each node or edge requires a unique id.**
 
@@ -70,7 +90,7 @@ Here's a simple example to get you started:
 
 ::: code-group
 
-```vue [<LogosJavascript />]
+```vue [App.vue <LogosJavascript />]
 <script setup>
 import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
@@ -178,7 +198,101 @@ const edges = ref([
 </style>
 ```
 
-```vue [<LogosTypescript />]
+```vue [SpecialNode.vue <LogosJavascript />]
+<script setup>
+import { computed } from 'vue'
+import { Position, Handle } from '@vue-flow/core'
+
+const props = defineProps({
+  position: {
+    type: Object,
+    required: true,
+  }
+})
+
+const x = computed(() => `${Math.round(props.position.x)}px`)
+const y = computed(() => `${Math.round(props.position.y)}px`)
+</script>
+
+<template>
+  <div class="vue-flow__node-default">
+    <div>{{ data.label }}</div>
+
+    <div>
+      {x} {y}
+    </div>
+
+    <Handle type="source" :position="Position.Bottom" />
+  </div>
+</template>
+```
+
+```vue [SpecialEdge.vue <LogosJavascript />]
+<script setup>
+import { BaseEdge, EdgeLabelRenderer, getBezierPath } from '@vue-flow/core'
+import { computed } from 'vue'
+
+const props = defineProps({
+  sourceX: {
+    type: Number,
+    required: true,
+  },
+  sourceY: {
+    type: Number,
+    required: true,
+  },
+  targetX: {
+    type: Number,
+    required: true,
+  },
+  targetY: {
+    type: Number,
+    required: true,
+  },
+  sourcePosition: {
+    type: String,
+    required: true,
+  },
+  targetPosition: {
+    type: String,
+    required: true,
+  },
+  data: {
+    type: Object,
+    required: true,
+  }
+})
+
+const path = computed(() => getBezierPath(props))
+</script>
+
+<script>
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<template>
+  <!-- You can use the `BaseEdge` component to create your own custom edge more easily -->
+  <BaseEdge :path="path[0]" />
+
+  <!-- Use the `EdgeLabelRenderer` to escape the SVG world of edges and render your own custom label in a `<div>` ctx -->
+  <EdgeLabelRenderer>
+    <div
+      :style="{
+        pointerEvents: 'all',
+        position: 'absolute',
+        transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
+      }"
+      class="nodrag nopan"
+    >
+      {{ data.hello }}
+    </div>
+  </EdgeLabelRenderer>
+</template>
+```
+
+```vue [App.vue <LogosTypescript />]
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Node, Edge } from '@vue-flow/core'  
@@ -285,6 +399,67 @@ const edges = ref<Edge[]>([
 /* import the default theme, this is optional but generally recommended */
 @import '@vue-flow/core/dist/theme-default.css';
 </style>
+```
+
+```vue [SpecialNode.vue <LogosTypescript />]
+<script setup lang="ts">
+import { computed } from 'vue'
+import { Position, Handle } from '@vue-flow/core'
+import type { NodeProps } from '@vue-flow/core'
+  
+const props = defineProps<NodeProps>()
+
+const x = computed(() => `${Math.round(props.position.x)}px`)
+const y = computed(() => `${Math.round(props.position.y)}px`)
+</script>
+
+<template>
+  <div class="vue-flow__node-default">
+    <div>{{ data.label }}</div>
+
+    <div>
+      {x} {y}
+    </div>
+
+    <Handle type="source" :position="Position.Bottom" />
+  </div>
+</template>
+```
+
+```vue [SpecialEdge.vue <LogosTypescript />]
+<script setup lang="ts">
+import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps } from '@vue-flow/core'
+import { computed } from 'vue'
+
+const props = defineProps<EdgeProps>()
+
+const path = computed(() => getBezierPath(props))
+</script>
+
+<script>
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<template>
+  <!-- You can use the `BaseEdge` component to create your own custom edge more easily -->
+  <BaseEdge :path="path[0]" />
+
+  <!-- Use the `EdgeLabelRenderer` to escape the SVG world of edges and render your own custom label in a `<div>` ctx -->
+  <EdgeLabelRenderer>
+    <div
+      :style="{
+        pointerEvents: 'all',
+        position: 'absolute',
+        transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
+      }"
+      class="nodrag nopan"
+    >
+      {{ data.hello }}
+    </div>
+  </EdgeLabelRenderer>
+</template>
 ```
 
 :::

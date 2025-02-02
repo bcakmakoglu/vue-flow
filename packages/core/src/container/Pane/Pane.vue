@@ -3,10 +3,10 @@ import { ref, toRef, watch } from 'vue'
 import { getEventPosition } from '@xyflow/system'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
-import type { NodeChange } from '../../types'
+import type { EdgeChange, NodeChange } from '../../types'
 import { SelectionMode } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
-import { getNodesInside, getSelectionChanges } from '../../utils'
+import { areSetsEqual, getNodesInside, getSelectionChanges } from '../../utils'
 import { getMousePosition } from './utils'
 
 const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>()
@@ -18,7 +18,6 @@ const {
   emits,
   userSelectionActive,
   removeSelectedElements,
-  panOnDrag,
   userSelectionRect,
   elementsSelectable,
   nodesSelectionActive,
@@ -32,17 +31,17 @@ const {
   multiSelectionActive,
   edgeLookup,
   nodeLookup,
+  connectionLookup,
+  defaultEdgeOptions,
 } = useVueFlow()
 
 const container = ref<HTMLDivElement | null>(null)
 
-const prevSelectedNodesCount = ref(0)
+const selectedNodeIds = ref<Set<string>>(new Set())
 
-const prevSelectedEdgesCount = ref(0)
+const selectedEdgeIds = ref<Set<string>>(new Set())
 
 const containerBounds = ref<DOMRect>()
-
-const edgeIdLookup = ref<Map<string, Set<string>>>(new Map())
 
 const hasActiveSelection = toRef(() => elementsSelectable.value && (isSelecting || userSelectionActive.value))
 
@@ -80,14 +79,6 @@ function wrapHandler(handler: Function, containerRef: HTMLDivElement | null) {
   }
 }
 
-function resetUserSelection() {
-  userSelectionActive.value = false
-  userSelectionRect.value = null
-
-  prevSelectedNodesCount.value = 0
-  prevSelectedEdgesCount.value = 0
-}
-
 function onClick(event: MouseEvent) {
   if (selectionInProgress) {
     selectionInProgress = false
@@ -102,10 +93,8 @@ function onClick(event: MouseEvent) {
 }
 
 function onContextMenu(event: MouseEvent) {
-  if (Array.isArray(panOnDrag.value) && panOnDrag.value?.includes(2)) {
-    event.preventDefault()
-    return
-  }
+  event.preventDefault()
+  event.stopPropagation()
 
   emits.paneContextMenu(event)
 }
@@ -133,12 +122,6 @@ function onPointerDown(event: PointerEvent) {
 
   selectionStarted = true
   selectionInProgress = false
-  edgeIdLookup.value = new Map()
-
-  for (const [id, edge] of edgeLookup.value) {
-    edgeIdLookup.value.set(edge.source, edgeIdLookup.value.get(edge.source)?.add(id) || new Set([id]))
-    edgeIdLookup.value.set(edge.target, edgeIdLookup.value.get(edge.target)?.add(id) || new Set([id]))
-  }
 
   removeSelectedElements()
 
@@ -150,9 +133,6 @@ function onPointerDown(event: PointerEvent) {
     x,
     y,
   }
-
-  userSelectionActive.value = true
-  nodesSelectionActive.value = false
 
   emits.selectionStart(event)
 }
@@ -176,38 +156,39 @@ function onPointerMove(event: PointerEvent) {
     height: Math.abs(mouseY - startY),
   }
 
-  const selectedNodes = getNodesInside(
-    nodes.value,
-    nextUserSelectRect,
-    viewport.value,
-    selectionMode.value === SelectionMode.Partial,
-    true,
+  const prevSelectedNodeIds = selectedNodeIds.value
+  const prevSelectedEdgeIds = selectedEdgeIds.value
+
+  selectedNodeIds.value = new Set(
+    getNodesInside(nodes.value, nextUserSelectRect, viewport.value, selectionMode.value === SelectionMode.Partial, true).map(
+      (node) => node.id,
+    ),
   )
 
-  const selectedEdgeIds = new Set<string>()
-  const selectedNodeIds = new Set<string>()
+  selectedEdgeIds.value = new Set()
+  const edgesSelectable = defaultEdgeOptions.value?.selectable ?? true
 
-  for (const selectedNode of selectedNodes) {
-    selectedNodeIds.add(selectedNode.id)
-
-    const edgeIds = edgeIdLookup.value.get(selectedNode.id)
-
-    if (edgeIds) {
-      for (const edgeId of edgeIds) {
-        selectedEdgeIds.add(edgeId)
+  // We look for all edges connected to the selected nodes
+  for (const nodeId of selectedNodeIds.value) {
+    const connections = connectionLookup.value.get(nodeId)
+    if (!connections) {
+      continue
+    }
+    for (const { edgeId } of connections.values()) {
+      const edge = edgeLookup.value.get(edgeId)
+      if (edge && (edge.selectable ?? edgesSelectable)) {
+        selectedEdgeIds.value.add(edgeId)
       }
     }
   }
 
-  if (prevSelectedNodesCount.value !== selectedNodeIds.size) {
-    prevSelectedNodesCount.value = selectedNodeIds.size
-    const changes = getSelectionChanges(nodeLookup.value, selectedNodeIds, true) as NodeChange[]
+  if (!areSetsEqual(prevSelectedNodeIds, selectedNodeIds.value)) {
+    const changes = getSelectionChanges(nodeLookup.value, selectedNodeIds.value, true) as NodeChange[]
     emits.nodesChange(changes)
   }
 
-  if (prevSelectedEdgesCount.value !== selectedEdgeIds.size) {
-    prevSelectedEdgesCount.value = selectedEdgeIds.size
-    const changes = getSelectionChanges(edgeLookup.value, selectedEdgeIds)
+  if (!areSetsEqual(prevSelectedEdgeIds, selectedEdgeIds.value)) {
+    const changes = getSelectionChanges(edgeLookup.value, selectedEdgeIds.value) as EdgeChange[]
     emits.edgesChange(changes)
   }
 
@@ -229,11 +210,9 @@ function onPointerUp(event: PointerEvent) {
     onClick(event)
   }
 
-  if (prevSelectedNodesCount.value > 0) {
-    nodesSelectionActive.value = true
-  }
-
-  resetUserSelection()
+  userSelectionActive.value = false
+  userSelectionRect.value = null
+  nodesSelectionActive.value = selectedNodeIds.value.size > 0
 
   emits.selectionEnd(event)
 

@@ -16,10 +16,11 @@ import type {
   MaybeElement,
   Node,
   Rect,
+  SnapGrid,
   XYPosition,
   XYZPosition,
 } from '../types'
-import { isDef } from '.'
+import { isDef, snapPosition } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
@@ -181,21 +182,14 @@ export function pointToRendererPoint(
   { x, y }: XYPosition,
   { x: tx, y: ty, zoom: tScale }: Viewport,
   snapToGrid: boolean = false,
-  [snapX, snapY]: [snapX: number, snapY: number] = [1, 1],
+  snapGrid: SnapGrid = [1, 1],
 ): XYPosition {
   const position: XYPosition = {
     x: (x - tx) / tScale,
     y: (y - ty) / tScale,
   }
 
-  if (snapToGrid) {
-    return {
-      x: snapX * Math.round(position.x / snapX),
-      y: snapY * Math.round(position.y / snapY),
-    }
-  }
-
-  return position
+  return snapToGrid ? snapPosition(position, snapGrid) : position
 }
 
 export function getRectOfNodes(nodes: GraphNode[]) {

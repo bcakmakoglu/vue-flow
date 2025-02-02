@@ -22,13 +22,13 @@
      cursor: grab;
    }
 
-  &.dragging {
-     cursor: grabbing;
-   }
-
   &.selection {
      cursor: pointer;
    }
+
+  &.dragging {
+    cursor: grabbing;
+  }
 }
 
 .vue-flow__viewport {

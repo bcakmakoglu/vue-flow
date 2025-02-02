@@ -44,7 +44,7 @@ import '@vue-flow/controls/dist/style.css'
 | showFitView     | Show fit-view btn                      | boolean                                        | true     | true    |
 | showInteractive | Show lock interactive btn              | boolean                                        | true     | true    |
 | showZoom        | Show zoom button                       | boolean                                        | true     | true    |
-| fitViewParams   | Params to use on fit-view button click | [FitViewParams](/typedocs/types/FitViewParams) | true     | -       |
+| fitViewParams   | Params to use on fit-view button click | [FitViewParams](/typedocs/type-aliases/FitViewParams) | true     | -       |
 
 ## Emits
 

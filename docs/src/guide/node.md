@@ -50,6 +50,8 @@ function logEvent(name, data) {
 }
 </script>
 
+# Introduction to Nodes
+
 Nodes are the underlying components of your graph.
 They can be any kind of data you want to visualize in your graph, existing independently and being interconnected
 through edges to create a data map.
@@ -421,7 +423,7 @@ function onSomeEvent(nodeId) {
 
 :::
 
-## [Predefined Node-Types](/typedocs/types/DefaultNodeTypes)
+## [Predefined Node-Types](/typedocs/type-aliases/DefaultNodeTypes)
 
 Vue Flow provides several built-in node types that you can leverage immediately. 
 The included node types are `default`, `input`, and `output`.
@@ -747,23 +749,23 @@ But you may wish to expand on these features or implement your business logic in
 | id                                                          | Unique node id                                                      | string                                                     | <Close class="text-red-500" />             |
 | type                                                        | Node Type                                                           | string                                                     | <Close class="text-red-500" />             |
 | selected                                                    | Is node selected                                                    | boolean                                                    | <Close class="text-red-500" />             |
-| connectable                                                 | Can node handles be connected                                       | [HandleConnectable](/typedocs/types/HandleConnectable)     | <Close class="text-red-500" />             |
+| connectable                                                 | Can node handles be connected                                       | [HandleConnectable](/typedocs/type-aliases/HandleConnectable)     | <Close class="text-red-500" />             |
 | position                                                    | Node's x, y (relative) position on the graph                        | [XYPosition](/typedocs/interfaces/XYPosition)              | <Close class="text-red-500" />             |
 | dimensions                                                  | Dom element dimensions (width, height)                              | [Dimensions](/typedocs/interfaces/Dimensions)              | <Close class="text-red-500" />             |
 | label                                                       | Node label, either a string or a VNode. `h('div', props, children)` | string \| VNode \| Component \| Object                     | <Check class="text-[var(--vp-c-brand)]" /> |
-| isValidTargetPos <Badge type="warning" text="deprecated" /> | Called when used as target for new connection                       | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
-| isValidSourcePos <Badge type="warning" text="deprecated" /> | Called when used as the source for a new connection                 | [ValidConnectionFunc](/typedocs/types/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
+| isValidTargetPos <Badge type="warning" text="deprecated" /> | Called when used as target for new connection                       | [ValidConnectionFunc](/typedocs/type-aliases/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
+| isValidSourcePos <Badge type="warning" text="deprecated" /> | Called when used as the source for a new connection                 | [ValidConnectionFunc](/typedocs/type-aliases/ValidConnectionFunc) | <Check class="text-[var(--vp-c-brand)]" /> |
 | parent                                                      | Parent node id                                                      | string                                                     | <Check class="text-[var(--vp-c-brand)]" /> |
 | dragging                                                    | Is node currently dragging                                          | boolean                                                    | <Close class="text-red-500" />             |
 | resizing                                                    | Is node currently resizing                                          | boolean                                                    | <Close class="text-red-500" />             |
 | zIndex                                                      | Node z-index                                                        | number                                                     | <Close class="text-red-500" />             |
-| targetPosition                                              | Handle position                                                     | [Position](/typedocs/enums/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
-| sourcePosition                                              | Handle position                                                     | [Position](/typedocs/enums/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| targetPosition                                              | Handle position                                                     | [Position](/typedocs/enumerations/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| sourcePosition                                              | Handle position                                                     | [Position](/typedocs/enumerations/Position)                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | dragHandle                                                  | Drag handle query selector                                          | string                                                     | <Check class="text-[var(--vp-c-brand)]" /> |
 | data                                                        | Additional data of node                                             | any object                                                 | <Close class="text-red-500" />             |
-| events                                                      | Contextual and custom events of node                                | [NodeEventsOn](/typedocs/types/NodeEventsOn)               | <Close class="text-red-500" />             |
+| events                                                      | Contextual and custom events of node                                | [NodeEventsOn](/typedocs/type-aliases/NodeEventsOn)               | <Close class="text-red-500" />             |
 
-## [Node Events](/typedocs/types/NodeEventsHandler)
+## [Node Events](/typedocs/type-aliases/NodeEventsHandler)
 
 Vue Flow provides two main ways of listening to node events, 
 either by using `useVueFlow` to bind listeners to the event handlers or by binding them to the `<VueFlow>` component.

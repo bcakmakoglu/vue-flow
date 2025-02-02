@@ -127,11 +127,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         activeMatch: '^/examples/',
       },
       {
-        text: 'Migration',
-        link: '/migration/',
-        activeMatch: '^/migration/',
-      },
-      {
         text: 'TypeDocs',
         link: '/typedocs/',
         activeMatch: '^/typedocs/',
@@ -160,16 +155,16 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Configuration', link: '/guide/vue-flow/config' },
             { text: 'State', link: '/guide/vue-flow/state' },
             {
+              text: 'Events',
+              link: '/guide/vue-flow/events',
+            },
+            {
               text: 'Actions',
               link: '/typedocs/interfaces/Actions.html',
             },
             {
               text: 'Getters',
               link: '/typedocs/interfaces/Getters.html',
-            },
-            {
-              text: 'Events',
-              link: '/typedocs/interfaces/FlowEvents.html',
             },
             { text: 'Slots', link: '/guide/vue-flow/slots' },
           ],
@@ -207,7 +202,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           collapsed: false,
           items: [
             { text: 'Basic', link: '/examples/' },
-            { text: 'Layouting', link: '/examples/layout' },
             { text: 'Drag & Drop', link: '/examples/dnd' },
             { text: 'Interactions', link: '/examples/interaction' },
             { text: 'Save & Restore', link: '/examples/save' },
@@ -220,6 +214,14 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Viewport Transition', link: '/examples/transition' },
             { text: 'Teleport Nodes', link: '/examples/teleport' },
             { text: 'Stress Test', link: '/examples/stress' },
+          ],
+        },
+        {
+          text: 'Layout',
+          collapsed: false,
+          items: [
+            { text: 'Simple Layout', link: '/examples/layout/simple' },
+            { text: 'Animation & Layout', link: '/examples/layout/animated' },
           ],
         },
         {
@@ -242,7 +244,9 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Updatable Edge', link: '/examples/edges/updatable-edge' },
             { text: 'Custom Connection Line', link: '/examples/edges/connection-line' },
             { text: 'Connection Validation', link: '/examples/edges/validation' },
+            { text: 'Edge Markers', link: '/examples/edges/markers' },
             { text: 'Connection Radius', link: '/examples/edges/connection-radius' },
+            { text: 'Loopback Edge', link: '/examples/edges/loopback' },
           ],
         },
       ],

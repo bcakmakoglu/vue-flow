@@ -8,7 +8,6 @@ import AnimationEdge from './AnimationEdge.vue'
 
 import { initialEdges, initialNodes } from './initial-elements.js'
 import { useRunProcess } from './useRunProcess'
-import { useShuffle } from './useShuffle'
 import { useLayout } from './useLayout'
 
 const nodes = ref(initialNodes)
@@ -17,25 +16,11 @@ const edges = ref(initialEdges)
 
 const cancelOnError = ref(true)
 
-const shuffle = useShuffle()
-
-const { graph, layout, previousDirection } = useLayout()
+const { graph, layout } = useLayout()
 
 const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
 
 const { fitView } = useVueFlow()
-
-async function shuffleGraph() {
-  await stop()
-
-  reset(nodes.value)
-
-  edges.value = shuffle(nodes.value)
-
-  nextTick(() => {
-    layoutGraph(previousDirection.value)
-  })
-}
 
 async function layoutGraph(direction) {
   await stop()
@@ -52,7 +37,12 @@ async function layoutGraph(direction) {
 
 <template>
   <div class="layout-flow">
-    <VueFlow :nodes="nodes" :edges="edges" @nodes-initialized="layoutGraph('LR')">
+    <VueFlow
+      v-model:nodes="nodes"
+      v-model:edges="edges"
+      :default-edge-options="{ type: 'animation', animated: true }"
+      @nodes-initialized="layoutGraph('LR')"
+    >
       <template #node-process="props">
         <ProcessNode :data="props.data" :source-position="props.sourcePosition" :target-position="props.targetPosition" />
       </template>
@@ -68,6 +58,7 @@ async function layoutGraph(direction) {
           :targetY="edgeProps.targetY"
           :source-position="edgeProps.sourcePosition"
           :target-position="edgeProps.targetPosition"
+          :data="edgeProps.data"
         />
       </template>
 
@@ -89,10 +80,6 @@ async function layoutGraph(direction) {
 
           <button title="set vertical layout" @click="layoutGraph('TB')">
             <Icon name="vertical" />
-          </button>
-
-          <button title="shuffle graph" @click="shuffleGraph">
-            <Icon name="shuffle" />
           </button>
         </div>
 

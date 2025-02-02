@@ -20,6 +20,7 @@ const type = toRef(() => props.type ?? 'source')
 const isValidConnection = toRef(() => props.isValidConnection ?? null)
 
 const {
+  id: flowId,
   connectionStartHandle,
   connectionClickStartHandle,
   connectionEndHandle,
@@ -40,17 +41,17 @@ const isConnectableEnd = toRef(() => (typeof connectableEnd !== 'undefined' ? co
 const isConnecting = toRef(
   () =>
     (connectionStartHandle.value?.nodeId === nodeId &&
-      connectionStartHandle.value?.handleId === handleId &&
+      connectionStartHandle.value?.id === handleId &&
       connectionStartHandle.value?.type === type.value) ||
     (connectionEndHandle.value?.nodeId === nodeId &&
-      connectionEndHandle.value?.handleId === handleId &&
+      connectionEndHandle.value?.id === handleId &&
       connectionEndHandle.value?.type === type.value),
 )
 
 const isClickConnecting = toRef(
   () =>
     connectionClickStartHandle.value?.nodeId === nodeId &&
-    connectionClickStartHandle.value?.handleId === handleId &&
+    connectionClickStartHandle.value?.id === handleId &&
     connectionClickStartHandle.value?.type === type.value,
 )
 
@@ -122,6 +123,8 @@ onMounted(() => {
     position,
     x: (handleBounds.left - nodeBounds.left) / zoom,
     y: (handleBounds.top - nodeBounds.top) / zoom,
+    type: type.value,
+    nodeId,
     ...getDimensions(handle.value),
   }
 
@@ -172,7 +175,7 @@ export default {
 <template>
   <div
     ref="handle"
-    :data-id="`${nodeId}-${handleId}-${type}`"
+    :data-id="`${flowId}-${nodeId}-${handleId}-${type}`"
     :data-handleid="handleId"
     :data-nodeid="nodeId"
     :data-handlepos="position"

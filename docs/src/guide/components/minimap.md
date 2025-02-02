@@ -51,9 +51,9 @@ When enabled, these props allow you to pan on drag and zoom on scroll using the 
 
 | Name             | Definition                   | Type                                                       | Optional | Default                 |
 |------------------|------------------------------|------------------------------------------------------------|----------|-------------------------|
-| nodeColor        | Node(s) Background color     | string, [MiniMapNodeFunc](/typedocs/types/MiniMapNodeFunc) | true     | #fff                    |
-| nodeStrokeColor  | Border color                 | string, [MiniMapNodeFunc](/typedocs/types/MiniMapNodeFunc) | true     | #555                    |
-| nodeClassName    | Extra classes                | string, [MiniMapNodeFunc](/typedocs/types/MiniMapNodeFunc) | true     | -                       |
+| nodeColor        | Node(s) Background color     | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | #fff                    |
+| nodeStrokeColor  | Border color                 | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | #555                    |
+| nodeClassName    | Extra classes                | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | -                       |
 | nodeBorderRadius | Border radius                | number                                                     | true     | 5                       |
 | nodeStrokeWidth  | Stroke width                 | number                                                     | true     | 2                       |
 | maskColor        | Minimap Background color     | string                                                     | true     | rgb(240, 242, 243, 0.7) |
