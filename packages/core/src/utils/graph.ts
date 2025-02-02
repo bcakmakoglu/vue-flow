@@ -1,6 +1,6 @@
 import { markRaw } from 'vue'
 import type { Viewport } from '@xyflow/system'
-import { boxToRect, clamp, getBoundsOfBoxes, getOverlappingArea, rectToBox } from '@xyflow/system'
+import { boxToRect, clamp, getBoundsOfBoxes, getOverlappingArea, rectToBox, snapPosition } from '@xyflow/system'
 import type {
   Actions,
   Box,
@@ -20,7 +20,7 @@ import type {
   XYPosition,
   XYZPosition,
 } from '../types'
-import { isDef, snapPosition } from '.'
+import { isDef } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {

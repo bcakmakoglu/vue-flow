@@ -424,37 +424,6 @@ importers:
         specifier: ^1.8.16
         version: 1.8.16(typescript@5.4.5)
 
-  packages/pathfinding-edge:
-    dependencies:
-      pathfinding:
-        specifier: ^0.4.18
-        version: 0.4.18
-      perfect-arrows:
-        specifier: ^0.3.7
-        version: 0.3.7
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@types/pathfinding':
-        specifier: ^0.0.6
-        version: 0.0.6
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
-
   tests:
     dependencies:
       '@vue-flow/background':
@@ -2277,9 +2246,6 @@ packages:
 
   '@types/normalize-package-data@2.4.2':
     resolution: {integrity: sha512-lqa4UEhhv/2sjjIQgjX8B+RBjj47eo0mzGasklVJ78UKGQY1r0VpB9XHDaZZO9qzEFDdy4MrXLuEaSmPrPSe/A==}
-
-  '@types/pathfinding@0.0.6':
-    resolution: {integrity: sha512-yk2LRAKAOW6m1g/4le8tk8go6wjNmCq2EA1l6Rw3tkBautda3FkBzgCLdSNUPiTZPkjxI/OYBwHmJWoYUSk7RQ==}
 
   '@types/qs@6.9.8':
     resolution: {integrity: sha512-u95svzDlTysU5xecFNTgfFG5RUWu1A9P0VzgpcIiGZA9iraHOdSzcxMxQ55DyeRaGCSxQi7LxXDI4rzq/MYfdg==}
@@ -4643,9 +4609,6 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  heap@0.2.5:
-    resolution: {integrity: sha512-G7HLD+WKcrOyJP5VQwYZNC3Z6FcQ7YYjEFiFoIj8PfEr73mu421o8B1N5DKUcc8K37EsJ2XXWA8DtrDz/2dReg==}
-
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
@@ -5786,15 +5749,8 @@ packages:
   pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
 
-  pathfinding@0.4.18:
-    resolution: {integrity: sha512-R0TGEQ9GRcFCDvAWlJAWC+KGJ9SLbW4c0nuZRcioVlXVTlw+F5RvXQ8SQgSqI9KXWC1ew95vgmIiyaWTlCe9Ag==}
-
   pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
-
-  perfect-arrows@0.3.7:
-    resolution: {integrity: sha512-wEN2gerTPVWl3yqoFEF8OeGbg3aRe2sxNUi9rnyYrCsL4JcI6K2tBDezRtqVrYG0BNtsWLdYiiTrYm+X//8yLQ==}
-    engines: {node: '>=10'}
 
   perfect-debounce@1.0.0:
     resolution: {integrity: sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==}
@@ -8284,7 +8240,7 @@ snapshots:
       outdent: 0.5.0
       prettier: 2.8.8
       resolve-from: 5.0.0
-      semver: 7.6.0
+      semver: 7.6.3
 
   '@changesets/assemble-release-plan@6.0.2':
     dependencies:
@@ -8294,7 +8250,7 @@ snapshots:
       '@changesets/should-skip-package': 0.1.0
       '@changesets/types': 6.0.0
       '@manypkg/get-packages': 1.1.3
-      semver: 7.6.0
+      semver: 7.6.3
 
   '@changesets/changelog-git@0.2.0':
     dependencies:
@@ -8364,7 +8320,7 @@ snapshots:
       '@manypkg/get-packages': 1.1.3
       chalk: 2.4.2
       fs-extra: 7.0.1
-      semver: 7.6.0
+      semver: 7.6.3
 
   '@changesets/get-github-info@0.6.0(encoding@0.1.13)':
     dependencies:
@@ -8799,7 +8755,7 @@ snapshots:
   '@eslint/eslintrc@2.1.2':
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4
+      debug: 4.3.6(supports-color@8.1.1)
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.2.4
@@ -8817,7 +8773,7 @@ snapshots:
   '@humanwhocodes/config-array@0.11.11':
     dependencies:
       '@humanwhocodes/object-schema': 1.2.1
-      debug: 4.3.4
+      debug: 4.3.6(supports-color@8.1.1)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -9638,8 +9594,6 @@ snapshots:
 
   '@types/normalize-package-data@2.4.2': {}
 
-  '@types/pathfinding@0.0.6': {}
-
   '@types/qs@6.9.8': {}
 
   '@types/range-parser@1.2.5': {}
@@ -9757,7 +9711,7 @@ snapshots:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
-      semver: 7.6.0
+      semver: 7.6.3
       ts-api-utils: 1.0.3(typescript@5.4.5)
     optionalDependencies:
       typescript: 5.4.5
@@ -10337,7 +10291,7 @@ snapshots:
 
   '@windicss/config@1.9.3':
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.6(supports-color@8.1.1)
       jiti: 1.20.0
       windicss: 3.5.6
     transitivePeerDependencies:
@@ -12541,8 +12495,6 @@ snapshots:
 
   he@1.2.0: {}
 
-  heap@0.2.5: {}
-
   hookable@5.5.3: {}
 
   hosted-git-info@2.8.9: {}
@@ -13820,13 +13772,7 @@ snapshots:
 
   pathe@1.1.2: {}
 
-  pathfinding@0.4.18:
-    dependencies:
-      heap: 0.2.5
-
   pend@1.2.0: {}
-
-  perfect-arrows@0.3.7: {}
 
   perfect-debounce@1.0.0: {}
 

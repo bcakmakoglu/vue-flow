@@ -1,4 +1,5 @@
 import { markRaw } from 'vue'
+import type { UseDragEvent } from '@xyflow/system'
 import { clampPosition } from '@xyflow/system'
 import type {
   Actions,
@@ -11,6 +12,10 @@ import type {
   XYPosition,
 } from '../types'
 import { ErrorCode, VueFlowError, isParentSelected } from '.'
+
+export function isUseDragEvent(event: any): event is UseDragEvent {
+  return 'sourceEvent' in event
+}
 
 export function hasSelector(target: Element, selector: string, node: Element): boolean {
   let current = target

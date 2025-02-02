@@ -3,9 +3,9 @@ import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import { ref, toValue, watch } from 'vue'
-import { calcAutoPan, getEventPosition } from '@xyflow/system'
+import { calcAutoPan, getEventPosition, snapPosition } from '@xyflow/system'
 import type { MouseTouchEvent, NodeDragEvent, NodeDragItem, XYPosition } from '../types'
-import { calcNextPosition, getDragItems, getEventHandlerParams, handleNodeClick, hasSelector } from '../utils'
+import { calcNextPosition, getDragItems, getEventHandlerParams, handleNodeClick, hasSelector, isUseDragEvent } from '../utils'
 import { useGetPointerPosition, useVueFlow } from '.'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>

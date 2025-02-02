@@ -5,7 +5,10 @@ import type { Connection, ConnectionInProgress, HandleElement, HandleType, Mouse
 import {
   getClosestHandle,
   getConnectionStatus,
+  getHandle,
+  getHandlePosition,
   getHandleType,
+  isConnectionValid,
   isValidHandle,
   oppositePosition,
   pointToRendererPoint,
@@ -212,7 +215,11 @@ export function useHandle({
           isValid,
           to:
             closestHandle && isValid
-              ? rendererPointToPoint({ x: closestHandle.x, y: closestHandle.y }, viewport.value)
+              ? rendererPointToPoint({ x: closestHandle.x, y: closestHandle.y }, [
+                  viewport.value.x,
+                  viewport.value.y,
+                  viewport.value.zoom,
+                ])
               : connectionPosition,
           toHandle: result.toHandle,
           toPosition: isValid && result.toHandle ? result.toHandle.position : oppositePosition[fromHandle.position],
