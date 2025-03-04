@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, toRef } from 'vue'
+import { computed, onMounted, ref, toRef } from 'vue'
 import type { HandleProps } from '../../types'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
@@ -134,14 +134,6 @@ onMounted(() => {
   }
 
   node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
-})
-
-onUnmounted(() => {
-  // clean up node internals
-  const handleBounds = node.handleBounds[type.value]
-  if (handleBounds) {
-    node.handleBounds[type.value] = handleBounds.filter((b) => b.id !== handleId)
-  }
 })
 
 function onPointerDown(event: MouseEvent | TouchEvent) {
