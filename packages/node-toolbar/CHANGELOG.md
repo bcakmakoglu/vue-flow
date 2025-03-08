@@ -1,5 +1,11 @@
 # @vue-flow/node-toolbar
 
+## 1.1.1
+
+### Patch Changes
+
+- [#1785](https://github.com/bcakmakoglu/vue-flow/pull/1785) [`0179b98`](https://github.com/bcakmakoglu/vue-flow/commit/0179b982cc7a74d4aa99b4a5c1ba815e0cd4db28) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set default value for `isVisible` to `undefined`
+
 ## 1.1.0
 
 ### Minor Changes
