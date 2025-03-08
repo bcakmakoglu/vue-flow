@@ -62,6 +62,7 @@ const NodeWrapper = defineComponent({
       nodesConnectable,
       nodesFocusable,
       hooks,
+      panOnDrag,
     } = useVueFlow()
 
     const nodeElement = ref<HTMLDivElement | null>(null)
@@ -266,7 +267,7 @@ const NodeWrapper = defineComponent({
             'vue-flow__node',
             `vue-flow__node-${nodeCmp.value === false ? 'default' : node.type || 'default'}`,
             {
-              [noPanClassName.value]: isDraggable.value,
+              [noPanClassName.value]: isDraggable.value && panOnDrag.value,
               dragging: dragging?.value,
               draggable: isDraggable.value,
               selected: node.selected,

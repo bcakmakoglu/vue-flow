@@ -42,6 +42,7 @@ const EdgeWrapper = defineComponent({
       edgesUpdatable,
       edgesFocusable,
       hooks,
+      panOnDrag,
     } = useVueFlow()
 
     const edge = computed(() => findEdge(props.id)!)
@@ -183,9 +184,9 @@ const EdgeWrapper = defineComponent({
           'class': [
             'vue-flow__edge',
             `vue-flow__edge-${edgeCmp.value === false ? 'default' : edge.value.type || 'default'}`,
-            noPanClassName.value,
             edgeClass.value,
             {
+              [noPanClassName.value]: panOnDrag.value,
               updating: mouseOver.value,
               selected: edge.value.selected,
               animated: edge.value.animated,

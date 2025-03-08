@@ -302,6 +302,10 @@ onMounted(() => {
               return
             }
 
+            if (isWrappedWithClass(event, noPanClassName.value)) {
+              return false
+            }
+
             // increase scroll speed in firefox
             // firefox: deltaMode === 1; chrome: deltaMode === 0
             const deltaNormalize = event.deltaMode === 1 ? 20 : 1
