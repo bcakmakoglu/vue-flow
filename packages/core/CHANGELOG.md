@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.42.2
+
+### Patch Changes
+
+- [#1781](https://github.com/bcakmakoglu/vue-flow/pull/1781) [`a14d16d`](https://github.com/bcakmakoglu/vue-flow/commit/a14d16d9d0df1f24a18ce2c4f7ca42b7802cf640) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent removal of handle bounds when `<Handle>` is unmounted.
+
+- [#1776](https://github.com/bcakmakoglu/vue-flow/pull/1776) [`41bed0c`](https://github.com/bcakmakoglu/vue-flow/commit/41bed0cb674cba1b3f22c5e4c4e9c1d0c03a5c61) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent pane click event when connection is in progress.
+
 ## 1.42.1
 
 ### Patch Changes
