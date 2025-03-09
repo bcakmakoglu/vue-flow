@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.42.2] - 2025-03-09
+
+[d7f5506](d7f5506882b4438ee04f8f08217547f38379366e)...[d3b0eb9](d3b0eb91357fa1630f75e359f48cc9a60c83845f)
+
+### Bug Fixes
+
+- Bind attrs to minimap node (#1754) ([acdd1ad](acdd1ad8b0ef8b5cfa501f3e0425712b37e89c65))
+- Prevent pane click event when connection is in progress  (#1776) ([49b2780](49b27807401ef1f54a37c8b5d16df4517dcba6df))
+- Avoid removing handle bounds on handle unmount (#1781) ([dd9c92f](dd9c92ff81af28cb2474da4f56825d43daa8a930))
+- Set default value for isVisible to undefined (#1785) ([2ba98ef](2ba98efef018325a0086e82065dd44279ff1e25c))
+
+### Miscellaneous Tasks
+
+- Cleanup ([67b652e](67b652e159b7866eb2edb75d1324614ff7ca5702))
+
 ## [1.42.1] - 2025-01-16
 
 [5a5b2c1](5a5b2c15d76ac6173e616b947e227f6974bfe444)...[d7f5506](d7f5506882b4438ee04f8f08217547f38379366e)
