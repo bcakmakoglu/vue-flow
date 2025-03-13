@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.42.3
+
+### Patch Changes
+
+- [#1789](https://github.com/bcakmakoglu/vue-flow/pull/1789) [`f4fc254`](https://github.com/bcakmakoglu/vue-flow/commit/f4fc254f5bfb152fb217d9e6278b2737f29293a4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Unwrap ref when checking if connection in progress.
+
 ## 1.42.2
 
 ### Patch Changes
