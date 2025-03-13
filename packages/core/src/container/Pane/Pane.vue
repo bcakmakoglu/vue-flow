@@ -82,7 +82,7 @@ function wrapHandler(handler: Function, containerRef: HTMLDivElement | null) {
 }
 
 function onClick(event: MouseEvent) {
-  if (selectionInProgress || connectionInProgress) {
+  if (selectionInProgress || connectionInProgress.value) {
     selectionInProgress = false
     return
   }
