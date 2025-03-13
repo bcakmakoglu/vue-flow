@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.42.3] - 2025-03-13
+
+[d3b0eb9](d3b0eb91357fa1630f75e359f48cc9a60c83845f)...[e9168d3](e9168d30841ec0cdb15c4034a3fe89f26657b5dc)
+
+### Bug Fixes
+
+- Unwrap ref when checking if connection in progress (#1789) ([410a59d](410a59df5b355df17a4a66726ab6dd1a8ef0246c))
+
 ## [1.42.2] - 2025-03-09
 
 [d7f5506](d7f5506882b4438ee04f8f08217547f38379366e)...[d3b0eb9](d3b0eb91357fa1630f75e359f48cc9a60c83845f)
