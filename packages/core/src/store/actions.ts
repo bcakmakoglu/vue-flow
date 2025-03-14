@@ -1,6 +1,5 @@
 import { zoomIdentity } from 'd3-zoom'
 import type { ComputedRef } from 'vue'
-import { nextTick } from 'vue'
 import { until } from '@vueuse/core'
 import type {
   Actions,
@@ -532,13 +531,9 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         state.edges,
       )
 
-      nextTick(() => {
-        state.edges = state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge))
+      state.edges = state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge))
 
-        nextTick(() => {
-          updateConnectionLookup(state.connectionLookup, edgeLookup.value, [validEdge])
-        })
-      })
+      updateConnectionLookup(state.connectionLookup, edgeLookup.value, [validEdge])
 
       return validEdge
     }
