@@ -12,7 +12,6 @@ import {
   getEventPosition,
   handleNodeClick,
   hasSelector,
-  isUseDragEvent,
   snapPosition,
 } from '../utils'
 import { useGetPointerPosition, useVueFlow } from '.'
@@ -226,8 +225,10 @@ export function useDrag(params: UseDragParams) {
   }
 
   const eventEnd = (event: UseDragEvent) => {
-    if (!isUseDragEvent(event) && !dragStarted && !dragging.value && !multiSelectionActive.value) {
-      const evt = event as MouseTouchEvent
+    let isClick = false
+
+    if (!dragStarted && !dragging.value && !multiSelectionActive.value) {
+      const evt = event.sourceEvent as MouseTouchEvent
 
       const pointerPos = getPointerPosition(evt)
 
@@ -238,19 +239,11 @@ export function useDrag(params: UseDragParams) {
       // dispatch a click event if the node was attempted to be dragged but the threshold was not exceeded
       if (distance !== 0 && distance <= nodeDragThreshold.value) {
         onClick?.(evt)
+        isClick = true
       }
-
-      return
     }
 
-    dragging.value = false
-    autoPanStarted = false
-    dragStarted = false
-    lastPos = { x: undefined, y: undefined }
-
-    cancelAnimationFrame(autoPanId)
-
-    if (dragItems.length) {
+    if (dragItems.length && !isClick) {
       updateNodePositions(dragItems, false, false)
 
       const [currentNode, nodes] = getEventHandlerParams({
@@ -261,6 +254,14 @@ export function useDrag(params: UseDragParams) {
 
       onStop({ event: event.sourceEvent, node: currentNode, nodes })
     }
+
+    dragItems = []
+    dragging.value = false
+    autoPanStarted = false
+    dragStarted = false
+    lastPos = { x: undefined, y: undefined }
+
+    cancelAnimationFrame(autoPanId)
   }
 
   watch([() => toValue(disabled), el], ([isDisabled, nodeEl], _, onCleanup) => {

@@ -313,7 +313,7 @@ const EdgeWrapper = defineComponent({
       updating.value = true
 
       nodeId.value = isSourceHandle ? edge.value.target : edge.value.source
-      handleId.value = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? ''
+      handleId.value = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? null
 
       edgeUpdaterType.value = isSourceHandle ? 'target' : 'source'
 
