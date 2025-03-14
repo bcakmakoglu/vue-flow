@@ -509,7 +509,13 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const updateEdge: Actions['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
-    const prevEdge = findEdge(oldEdge.id)!
+    const prevEdge = findEdge(oldEdge.id)
+
+    if (!prevEdge) {
+      return false
+    }
+
+    const prevEdgeIndex = state.edges.indexOf(prevEdge)
 
     const newEdge = updateEdgeAction(oldEdge, newConnection, prevEdge, shouldReplaceId, state.hooks.error.trigger)
 
@@ -525,7 +531,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         state.edges,
       )
 
-      state.edges.splice(state.edges.indexOf(prevEdge), 1, validEdge)
+      state.edges = state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge))
 
       updateConnectionLookup(state.connectionLookup, edgeLookup.value, [validEdge])
 
