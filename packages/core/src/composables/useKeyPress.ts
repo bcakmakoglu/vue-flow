@@ -11,6 +11,8 @@ export interface UseKeyPressOptions {
   target?: MaybeRefOrGetter<EventTarget | null | undefined>
 }
 
+const inputTags = ['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON']
+
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
 
@@ -19,7 +21,7 @@ export function isInputDOMNode(event: KeyboardEvent): boolean {
   const closest = typeof target?.closest === 'function' ? target.closest('.nokey') : null
 
   // when an input field is focused we don't want to trigger deletion or movement of nodes
-  return ['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.nodeName) || hasAttribute || !!closest
+  return inputTags.includes(target?.nodeName) || hasAttribute || !!closest
 }
 
 // we want to be able to do a multi selection event if we are in an input field
