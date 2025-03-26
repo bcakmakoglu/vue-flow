@@ -61,7 +61,7 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
-const bb = computed(() => getRectOfNodes(getNodesInitialized.value))
+const bb = computed(() => getRectOfNodes(getNodesInitialized.value.filter((node) => !node.hidden)))
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
