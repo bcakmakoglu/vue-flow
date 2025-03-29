@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.42.5] - 2025-03-29
+
+[f49e509](f49e50996f4d9e294b45b0125e45231acc45b3be)...[c24ba07](c24ba071f16f95e7149e876624b790cbc9341071)
+
+### Bug Fixes
+
+- Add button to elements to ignore in useKeyPress (#1807) ([967569a](967569aa6d75945fd5375fbaee6a4c2507af29f4))
+- Filter hidden nodes from bounds (#1808) ([da6dc8b](da6dc8bdf9004fb8394c75a5fd24cc3f46ebcbd5))
+
 ## [1.42.4] - 2025-03-17
 
 [e9168d3](e9168d30841ec0cdb15c4034a3fe89f26657b5dc)...[f49e509](f49e50996f4d9e294b45b0125e45231acc45b3be)
