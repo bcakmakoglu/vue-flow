@@ -7,9 +7,12 @@ type PressedKeys = Set<string>
 type KeyOrCode = 'key' | 'code'
 
 export interface UseKeyPressOptions {
-  actInsideInputWithModifier?: MaybeRefOrGetter<boolean>
   target?: MaybeRefOrGetter<EventTarget | null | undefined>
+  actInsideInputWithModifier?: MaybeRefOrGetter<boolean>
+  preventDefault?: MaybeRefOrGetter<boolean>
 }
+
+const inputTags = ['INPUT', 'SELECT', 'TEXTAREA']
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
@@ -19,12 +22,12 @@ export function isInputDOMNode(event: KeyboardEvent): boolean {
   const closest = typeof target?.closest === 'function' ? target.closest('.nokey') : null
 
   // when an input field is focused we don't want to trigger deletion or movement of nodes
-  return ['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.nodeName) || hasAttribute || !!closest
+  return inputTags.includes(target?.nodeName) || hasAttribute || !!closest
 }
 
 // we want to be able to do a multi selection event if we are in an input field
 function wasModifierPressed(event: KeyboardEvent) {
-  return event.ctrlKey || event.metaKey || event.shiftKey
+  return event.ctrlKey || event.metaKey || event.shiftKey || event.altKey
 }
 
 function isKeyMatch(pressedKey: string, keyToMatch: string, pressedKeys: Set<string>, isKeyUp: boolean) {
@@ -88,6 +91,8 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
 
   const target = toRef(() => toValue(options?.target) ?? window)
 
+  const preventDefault = toRef(() => toValue(options?.preventDefault) ?? true)
+
   const isPressed = ref(toValue(keyFilter) === true)
 
   let modifierPressed = false
@@ -124,7 +129,12 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
         return
       }
 
-      e.preventDefault()
+      const target = (e.composedPath?.()?.[0] || e.target) as Element | null
+      const isInteractiveElement = target?.nodeName === 'BUTTON' || target?.nodeName === 'A'
+
+      if (!preventDefault.value && (modifierPressed || !isInteractiveElement)) {
+        e.preventDefault()
+      }
 
       isPressed.value = true
     },
