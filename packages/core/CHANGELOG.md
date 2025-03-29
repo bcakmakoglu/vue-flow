@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.42.5
+
+### Patch Changes
+
+- [#1807](https://github.com/bcakmakoglu/vue-flow/pull/1807) [`60482cf`](https://github.com/bcakmakoglu/vue-flow/commit/60482cf983d9f674070a48bdfd0624fe6e28a110) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent keypress events from being swallowed when a button element is focused.
+
 ## 1.42.4
 
 ### Patch Changes
