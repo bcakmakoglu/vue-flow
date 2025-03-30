@@ -418,7 +418,7 @@ const y = computed(() => `${Math.round(props.position.y)}px`)
     <div>{{ data.label }}</div>
 
     <div>
-      {{x}} {{y}}
+      {{ x }} {{ y }}
     </div>
 
     <Handle type="source" :position="Position.Bottom" />
