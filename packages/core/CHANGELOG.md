@@ -1,5 +1,21 @@
 # @vue-flow/core
 
+## 1.42.5
+
+### Patch Changes
+
+- [#1807](https://github.com/bcakmakoglu/vue-flow/pull/1807) [`60482cf`](https://github.com/bcakmakoglu/vue-flow/commit/60482cf983d9f674070a48bdfd0624fe6e28a110) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent keypress events from being swallowed when a button element is focused.
+
+## 1.42.4
+
+### Patch Changes
+
+- [#1794](https://github.com/bcakmakoglu/vue-flow/pull/1794) [`e0bb46e`](https://github.com/bcakmakoglu/vue-flow/commit/e0bb46e9ee6c67737e40d154bbd8eae5cdde0cce) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use null as fallback id for edge source handle
+
+- [#1796](https://github.com/bcakmakoglu/vue-flow/pull/1796) [`978b896`](https://github.com/bcakmakoglu/vue-flow/commit/978b8966468737897b6b63fd1ff38d2eee7772d9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove edgelookup update when updating connection lookup as edge lookup is computed already
+
+- [#1796](https://github.com/bcakmakoglu/vue-flow/pull/1796) [`a6a3000`](https://github.com/bcakmakoglu/vue-flow/commit/a6a30008ead042f01b3dd7e82cc015cbfd4f65a2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reset drag items on drag end
+
 ## 1.42.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @vue-flow/minimap
 
+## 1.5.3
+
+### Patch Changes
+
+- [#1809](https://github.com/bcakmakoglu/vue-flow/pull/1809) [`b60c526`](https://github.com/bcakmakoglu/vue-flow/commit/b60c526c7f577663329e1d40e461b599dfaf0bd8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Filter hidden nodes from minimap bounds
+
 ## 1.5.2
 
 ### Patch Changes
