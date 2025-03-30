@@ -1,5 +1,35 @@
 # @vue-flow/core
 
+## 1.42.5
+
+### Patch Changes
+
+- [#1807](https://github.com/bcakmakoglu/vue-flow/pull/1807) [`60482cf`](https://github.com/bcakmakoglu/vue-flow/commit/60482cf983d9f674070a48bdfd0624fe6e28a110) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent keypress events from being swallowed when a button element is focused.
+
+## 1.42.4
+
+### Patch Changes
+
+- [#1794](https://github.com/bcakmakoglu/vue-flow/pull/1794) [`e0bb46e`](https://github.com/bcakmakoglu/vue-flow/commit/e0bb46e9ee6c67737e40d154bbd8eae5cdde0cce) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use null as fallback id for edge source handle
+
+- [#1796](https://github.com/bcakmakoglu/vue-flow/pull/1796) [`978b896`](https://github.com/bcakmakoglu/vue-flow/commit/978b8966468737897b6b63fd1ff38d2eee7772d9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove edgelookup update when updating connection lookup as edge lookup is computed already
+
+- [#1796](https://github.com/bcakmakoglu/vue-flow/pull/1796) [`a6a3000`](https://github.com/bcakmakoglu/vue-flow/commit/a6a30008ead042f01b3dd7e82cc015cbfd4f65a2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reset drag items on drag end
+
+## 1.42.3
+
+### Patch Changes
+
+- [#1789](https://github.com/bcakmakoglu/vue-flow/pull/1789) [`f4fc254`](https://github.com/bcakmakoglu/vue-flow/commit/f4fc254f5bfb152fb217d9e6278b2737f29293a4) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Unwrap ref when checking if connection in progress.
+
+## 1.42.2
+
+### Patch Changes
+
+- [#1781](https://github.com/bcakmakoglu/vue-flow/pull/1781) [`a14d16d`](https://github.com/bcakmakoglu/vue-flow/commit/a14d16d9d0df1f24a18ce2c4f7ca42b7802cf640) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent removal of handle bounds when `<Handle>` is unmounted.
+
+- [#1776](https://github.com/bcakmakoglu/vue-flow/pull/1776) [`41bed0c`](https://github.com/bcakmakoglu/vue-flow/commit/41bed0cb674cba1b3f22c5e4c4e9c1d0c03a5c61) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent pane click event when connection is in progress.
+
 ## 1.42.1
 
 ### Patch Changes

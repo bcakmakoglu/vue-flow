@@ -165,7 +165,6 @@ function addConnectionToLookup(
 
 export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeLookup: EdgeLookup, edges: GraphEdge[]) {
   connectionLookup.clear()
-  edgeLookup.clear()
 
   for (const edge of edges) {
     const { source: sourceNode, target: targetNode, sourceHandle = null, targetHandle = null } = edge
@@ -176,8 +175,6 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeL
 
     addConnectionToLookup('source', connection, targetKey, connectionLookup, sourceNode, sourceHandle)
     addConnectionToLookup('target', connection, sourceKey, connectionLookup, targetNode, targetHandle)
-
-    edgeLookup.set(edge.id, edge)
   }
 }
 

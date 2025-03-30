@@ -32,6 +32,7 @@ const {
   nodeLookup,
   connectionLookup,
   defaultEdgeOptions,
+  connectionStartHandle,
 } = useVueFlow()
 
 const container = ref<HTMLDivElement | null>(null)
@@ -43,6 +44,8 @@ const selectedEdgeIds = ref<Set<string>>(new Set())
 const containerBounds = ref<DOMRect>()
 
 const hasActiveSelection = toRef(() => elementsSelectable.value && (isSelecting || userSelectionActive.value))
+
+const connectionInProgress = toRef(() => connectionStartHandle.value !== null)
 
 // Used to prevent click events when the user lets go of the selectionKey during a selection
 let selectionInProgress = false
@@ -79,7 +82,7 @@ function wrapHandler(handler: Function, containerRef: HTMLDivElement | null) {
 }
 
 function onClick(event: MouseEvent) {
-  if (selectionInProgress) {
+  if (selectionInProgress || connectionInProgress.value) {
     selectionInProgress = false
     return
   }
