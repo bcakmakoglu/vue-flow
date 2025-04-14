@@ -6,9 +6,9 @@ import { useNodeId } from './useNodeId'
 import { useVueFlow } from './useVueFlow'
 
 export interface UseNodeConnectionsParams {
-  handleType?: MaybeRefOrGetter<HandleType>
-  handleId?: MaybeRefOrGetter<string | null>
-  nodeId?: MaybeRefOrGetter<string | null>
+  handleType?: MaybeRefOrGetter<HandleType | null | undefined>
+  handleId?: MaybeRefOrGetter<string | null | undefined>
+  nodeId?: MaybeRefOrGetter<string | null | undefined>
   onConnect?: (connections: NodeConnection[]) => void
   onDisconnect?: (connections: NodeConnection[]) => void
 }
