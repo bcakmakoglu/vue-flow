@@ -42,9 +42,12 @@ export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
     const currentHandleType = toValue(handleType)
     const currHandleId = toValue(handleId)
 
-    return `${currNodeId}${
-      currentHandleType ? (currHandleId ? `-${currentHandleType}-${currHandleId}` : `-${currentHandleType}`) : ''
-    }`
+    let handleSuffix = ''
+    if (currentHandleType) {
+      handleSuffix = currHandleId ? `-${currentHandleType}-${currHandleId}` : `-${currentHandleType}`
+    }
+
+    return `${currNodeId}${handleSuffix}`
   })
 
   watch(
