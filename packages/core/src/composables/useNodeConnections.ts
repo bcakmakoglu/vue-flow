@@ -6,9 +6,9 @@ import { useNodeId } from './useNodeId'
 import { useVueFlow } from './useVueFlow'
 
 export interface UseNodeConnectionsParams {
-  handleType?: MaybeRefOrGetter<HandleType>
-  handleId?: MaybeRefOrGetter<string | null>
-  nodeId?: MaybeRefOrGetter<string | null>
+  handleType?: MaybeRefOrGetter<HandleType | null | undefined>
+  handleId?: MaybeRefOrGetter<string | null | undefined>
+  nodeId?: MaybeRefOrGetter<string | null | undefined>
   onConnect?: (connections: NodeConnection[]) => void
   onDisconnect?: (connections: NodeConnection[]) => void
 }
@@ -42,9 +42,12 @@ export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
     const currentHandleType = toValue(handleType)
     const currHandleId = toValue(handleId)
 
-    return `${currNodeId}${
-      currentHandleType ? (currHandleId ? `-${currentHandleType}-${currHandleId}` : `-${currentHandleType}`) : ''
-    }`
+    let handleSuffix = ''
+    if (currentHandleType) {
+      handleSuffix = currHandleId ? `-${currentHandleType}-${currHandleId}` : `-${currentHandleType}`
+    }
+
+    return `${currNodeId}${handleSuffix}`
   })
 
   watch(
