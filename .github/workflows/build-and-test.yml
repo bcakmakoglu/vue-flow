@@ -15,7 +15,9 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ${{ matrix.os }}
-
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -34,23 +36,14 @@ jobs:
       - name: Install Dependencies 👨🏻‍💻
         uses: ./.github/actions/install-dependencies
 
-      - name: Setup Turbo cache 🏎️
-        id: turbo-cache
-        uses: actions/cache@v4
-        with:
-          path: .turbo
-          key: turbo-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            turbo-${{ runner.os }}-
-
       - name: Run linter 🧹
-        run: pnpm run lint --cache-dir=.turbo
+        run: pnpm run lint
 
       - name: Build Library 👷
-        run: pnpm run build --cache-dir=.turbo
+        run: pnpm run build
 
       - name: Run tests 🧪
         uses: cypress-io/github-action@v6
         with:
           install-command: pnpm cypress install
-          command: pnpm run test --cache-dir=.turbo
+          command: pnpm run test
