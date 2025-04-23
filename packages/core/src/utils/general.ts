@@ -12,8 +12,23 @@ export function isUseDragEvent(event: any): event is UseDragEvent {
 export function getEventPosition(event: MouseEvent | TouchEvent, bounds?: DOMRect) {
   const isMouse = isMouseEvent(event)
 
-  const evtX = isMouse ? event.clientX : event.touches?.[0].clientX
-  const evtY = isMouse ? event.clientY : event.touches?.[0].clientY
+  let evtX: number
+  let evtY: number
+
+  if (isMouse) {
+    evtX = event.clientX
+    evtY = event.clientY
+  } else if ('touches' in event && event.touches.length > 0) {
+    evtX = event.touches[0].clientX
+    evtY = event.touches[0].clientY
+  } else if ('changedTouches' in event && event.changedTouches.length > 0) {
+    evtX = event.changedTouches[0].clientX
+    evtY = event.changedTouches[0].clientY
+  } else {
+    // fallback for other cases
+    evtX = 0
+    evtY = 0
+  }
 
   return {
     x: evtX - (bounds?.left ?? 0),
