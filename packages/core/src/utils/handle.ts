@@ -122,7 +122,7 @@ export function getClosestHandle(
   return closestHandles[0]
 }
 
-// checks if  and returns connection in form of an object { source: 123, target: 312 }
+// checks if and returns connection in form of an object { source: 123, target: 312 }
 export function isValidHandle(
   event: MouseEvent | TouchEvent,
   {
