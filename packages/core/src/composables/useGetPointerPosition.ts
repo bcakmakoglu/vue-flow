@@ -13,14 +13,11 @@ export function useGetPointerPosition() {
 
   // returns the pointer position projected to the VF coordinate system
   return (event: UseDragEvent | MouseTouchEvent) => {
-    const containerBounds = vueFlowRef.value?.getBoundingClientRect() ?? null
+    const containerBounds = vueFlowRef.value?.getBoundingClientRect() ?? { left: 0, top: 0 }
     const evt = isUseDragEvent(event) ? event.sourceEvent : event
 
-    const { x, y } = getEventPosition(evt)
-    const pointerPos = pointToRendererPoint(
-      { x: x - (containerBounds?.left ?? 0), y: y - (containerBounds?.top ?? 0) },
-      viewport.value,
-    )
+    const { x, y } = getEventPosition(evt, containerBounds as DOMRect)
+    const pointerPos = pointToRendererPoint({ x, y }, viewport.value)
     const { x: xSnapped, y: ySnapped } = snapToGrid.value ? snapPosition(pointerPos, snapGrid.value) : pointerPos
 
     // we need the snapped position to be able to skip unnecessary drag events
