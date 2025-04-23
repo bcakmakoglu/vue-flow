@@ -140,8 +140,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
 
     const changes: NodeDimensionChange[] = []
 
-    for (let i = 0; i < updates.length; ++i) {
-      const update = updates[i]
+    for (const element of updates) {
+      const update = element
 
       const node = findNode(update.id)
 
@@ -157,8 +157,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         if (doUpdate) {
           const nodeBounds = update.nodeElement.getBoundingClientRect()
           node.dimensions = dimensions
-          node.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom)
-          node.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom)
+          node.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom, node.id)
+          node.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom, node.id)
 
           changes.push({
             id: node.id,
