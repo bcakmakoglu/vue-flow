@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.43.0
+
+### Minor Changes
+
+- [#1820](https://github.com/bcakmakoglu/vue-flow/pull/1820) [`2201cdd`](https://github.com/bcakmakoglu/vue-flow/commit/2201cdda386b75a8c52c9cb37e0ccbe6ffcd5830) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing null or undefined to `useNodeConnections` options
+
+### Patch Changes
+
+- [#1829](https://github.com/bcakmakoglu/vue-flow/pull/1829) [`a4ea4f7`](https://github.com/bcakmakoglu/vue-flow/commit/a4ea4f7735d7f65d1085d8d70a559c85303cd857) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Subtract container bounds when calculating pointer position.
+
+- [#1817](https://github.com/bcakmakoglu/vue-flow/pull/1817) [`0cc4c99`](https://github.com/bcakmakoglu/vue-flow/commit/0cc4c99d13eae3d766579ed18d92404a976e4a9d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add aria-hidden to markers
+
+- [#1830](https://github.com/bcakmakoglu/vue-flow/pull/1830) [`110acf1`](https://github.com/bcakmakoglu/vue-flow/commit/110acf1f730271e87e88147cde308d00ad3aac04) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fall back to using changedTouches when passing a touchend or touchcancel event to getEventPosition.
+
 ## 1.42.5
 
 ### Patch Changes
