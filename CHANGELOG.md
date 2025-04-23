@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.43.0] - 2025-04-23
+
+[c24ba07](c24ba071f16f95e7149e876624b790cbc9341071)...[78e29f2](78e29f225950c956f936c76ffb2dc29013ddc915)
+
+### Bug Fixes
+
+- Add aria hidden to markers (#1817) ([cb588c8](cb588c8aa9dc0d9962e8be62f7e08b5b24cb836a))
+- Subtract container bounds when getting pointer position (#1829) ([265f928](265f928f13c95a4944acd1f4c387941cea99c5bb))
+- Fall back to changedTouches for touchend events (#1830) ([cc65f12](cc65f12af9e2fe550270acde75a759be6cc37550))
+
+### Documentation
+
+- Correct template syntax (#1797) ([8f5f573](8f5f57381501c0c0e1f0dd6e5248cc7eed2e13da))
+
+### Miscellaneous Tasks
+
+- Cleanup getHandleBounds  (#1828) ([7d9ffe3](7d9ffe3f356d9300041e7f15cf3fc9bd63d13eb9))
+
+### Refactor
+
+- Allow passing null/undefined to use node connection args (#1820) ([7a09afa](7a09afa12acab084d849c7134fcbbb1367ff456d))
+
 ## [1.42.5] - 2025-03-29
 
 [f49e509](f49e50996f4d9e294b45b0125e45231acc45b3be)...[c24ba07](c24ba071f16f95e7149e876624b790cbc9341071)
