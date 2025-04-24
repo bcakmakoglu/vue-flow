@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.43.1
+
+### Patch Changes
+
+- [#1833](https://github.com/bcakmakoglu/vue-flow/pull/1833) [`8eccc19`](https://github.com/bcakmakoglu/vue-flow/commit/8eccc19d9ffc7534bee6e085d2be6f5a7c8b857b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing vue-flow\_\_container class to marker defs.
+
 ## 1.43.0
 
 ### Minor Changes
