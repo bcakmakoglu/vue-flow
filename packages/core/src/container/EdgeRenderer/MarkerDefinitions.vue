@@ -49,7 +49,7 @@ export default {
 </script>
 
 <template>
-  <svg class="vue-flow__marker" aria-hidden="true">
+  <svg class="vue-flow__marker vue-flow__container" aria-hidden="true">
     <defs>
       <MarkerSymbols
         v-for="marker of markers"
