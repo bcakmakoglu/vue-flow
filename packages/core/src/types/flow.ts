@@ -331,3 +331,9 @@ export interface FlowSlots extends NodeSlots, EdgeSlots {
   'zoom-pane': () => any
   'default': () => any
 }
+
+export interface VueFlowProviderProps {
+  initialNodes?: Node[]
+  initialEdges?: Edge[]
+  fitViewOnInit?: boolean
+}
