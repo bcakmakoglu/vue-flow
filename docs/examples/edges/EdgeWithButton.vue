@@ -57,9 +57,12 @@ export default {
   <BaseEdge :id="id" :style="style" :path="path[0]" :marker-end="markerEnd" />
 
   <!-- Use the `EdgeLabelRenderer` to escape the SVG world of edges and render your own custom label in a `<div>` ctx -->
-  <EdgeLabelRenderer>
+
+  <!-- Pass the `edge`'s ID to `EdgeLabelRenderer` and provide the correct `zIndex`. -->
+  <EdgeLabelRenderer v-slot="{ style: labelStyle }" :edge-id="id">
     <div
       :style="{
+        zIndex: labelStyle.zIndex,
         pointerEvents: 'all',
         position: 'absolute',
         transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,

@@ -3,6 +3,7 @@ import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
+import CustomEdge from '../Edges/CustomEdge.vue'
 
 const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
   fitViewOnInit: true,
@@ -69,7 +70,7 @@ const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
     { id: 'e3-4b', source: '3', target: '4b' },
     { id: 'e4a-4b1', source: '4a', target: '4b1' },
     { id: 'e4a-4b2', source: '4a', target: '4b2' },
-    { id: 'e4b1-4b2', source: '4b1', target: '4b2' },
+    { id: 'e4b1-4b2', source: '4b1', target: '4b2', type: 'custom' },
   ],
 })
 
@@ -100,6 +101,9 @@ onMounted(() => {
 
 <template>
   <VueFlow>
+    <template #edge-custom="props">
+      <CustomEdge v-bind="props" />
+    </template>
     <MiniMap />
     <Controls />
     <Background />

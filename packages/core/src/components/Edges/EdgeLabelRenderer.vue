@@ -1,11 +1,18 @@
 <script lang="ts" setup>
-import { toRef } from 'vue'
+import { computed, toRef } from 'vue'
 import type { TeleportProps } from 'vue'
 import { useVueFlow } from '../../composables'
+import { getEdgeZIndex } from '../../utils'
 
-const { viewportRef } = useVueFlow()
+const props = defineProps<{
+  edgeId?: string
+}>()
+const { viewportRef, findNode, elevateEdgesOnSelect, findEdge } = useVueFlow()
 
 const teleportTarget = toRef(() => viewportRef.value?.getElementsByClassName('vue-flow__edge-labels')[0] as TeleportProps['to'])
+
+const edge = computed(() => findEdge(props.edgeId))
+const z = computed(() => (edge.value ? getEdgeZIndex(edge.value, findNode, elevateEdgesOnSelect.value) : undefined))
 </script>
 
 <script lang="ts">
@@ -19,7 +26,7 @@ export default {
   <svg>
     <foreignObject height="0" width="0">
       <Teleport :to="teleportTarget" :disabled="!teleportTarget">
-        <slot />
+        <slot :style="{ zIndex: z }" />
       </Teleport>
     </foreignObject>
   </svg>

@@ -32,9 +32,10 @@ export default {
 <template>
   <path :id="id" :style="style" class="vue-flow__edge-path" :d="path[0]" :marker-end="markerEnd" />
 
-  <EdgeLabelRenderer>
+  <EdgeLabelRenderer v-slot="{ style: labelStyle }" :edge-id="id">
     <div
       :style="{
+        zIndex: labelStyle.zIndex,
         pointerEvents: 'all',
         position: 'absolute',
         transform: `translate(-50%, -50%) translate(${path[1]}px,${path[2]}px)`,
