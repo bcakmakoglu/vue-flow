@@ -19,7 +19,7 @@ export interface ConnectionHandle extends XYPosition {
   nodeId: string
 }
 
-export interface ConnectingHandle {
+export interface ConnectingHandle extends XYPosition {
   nodeId: string
   type: HandleType
   id?: string | null
