@@ -163,6 +163,7 @@ export function useHandle({
           id: toValue(handleId),
           type: handleType,
           position: (clickedHandle?.getAttribute('data-handlepos') as Position) || Position.Top,
+          ...connectionPosition,
         },
         {
           x: x - containerBounds.left,
@@ -217,8 +218,8 @@ export function useHandle({
           ...previousConnection,
           isValid,
           to:
-            closestHandle && isValid
-              ? rendererPointToPoint({ x: closestHandle.x, y: closestHandle.y }, viewport.value)
+            result.toHandle && isValid
+              ? rendererPointToPoint({ x: result.toHandle.x, y: result.toHandle.y }, viewport.value)
               : connectionPosition,
           toHandle: result.toHandle,
           toPosition: isValid && result.toHandle ? result.toHandle.position : oppositePosition[fromHandle.position],
@@ -325,7 +326,13 @@ export function useHandle({
       emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId) })
 
       startConnection(
-        { nodeId: toValue(nodeId), type: toValue(type), id: toValue(handleId), position: Position.Top },
+        {
+          nodeId: toValue(nodeId),
+          type: toValue(type),
+          id: toValue(handleId),
+          position: Position.Top,
+          ...getEventPosition(event),
+        },
         undefined,
         true,
       )
@@ -355,10 +362,11 @@ export function useHandle({
           id: toValue(handleId),
           type: toValue(type),
           position: Position.Top,
+          ...getEventPosition(event),
         },
         connectionMode: connectionMode.value,
         fromNodeId: connectionClickStartHandle.value.nodeId,
-        fromHandleId: connectionClickStartHandle.value.id || null,
+        fromHandleId: connectionClickStartHandle.value.id ?? null,
         fromType: connectionClickStartHandle.value.type,
         isValidConnection: isValidConnectionHandler,
         doc,
