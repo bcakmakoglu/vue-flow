@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter } from 'vue'
-import { ref, toRef, toValue, watch } from 'vue'
+import { computed, shallowRef, toValue, watch } from 'vue'
 import type { KeyFilter, KeyPredicate } from '@vueuse/core'
 import { onKeyStroke, useEventListener } from '@vueuse/core'
 
@@ -13,6 +13,8 @@ export interface UseKeyPressOptions {
 }
 
 const inputTags = ['INPUT', 'SELECT', 'TEXTAREA']
+
+const defaultDoc = typeof document !== 'undefined' ? document : null
 
 export function isInputDOMNode(event: KeyboardEvent): boolean {
   const target = (event.composedPath?.()?.[0] || event.target) as HTMLElement
@@ -87,13 +89,9 @@ function useKeyOrCode(code: string, keysToWatch: string | string[]): KeyOrCode {
  * @param options - Options object
  */
 export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | null>, options?: UseKeyPressOptions) {
-  const actInsideInputWithModifier = toRef(() => toValue(options?.actInsideInputWithModifier) ?? false)
+  const target = computed(() => toValue(options?.target) ?? defaultDoc)
 
-  const target = toRef(() => toValue(options?.target) ?? window)
-
-  const preventDefault = toRef(() => toValue(options?.preventDefault) ?? true)
-
-  const isPressed = ref(toValue(keyFilter) === true)
+  const isPressed = shallowRef(toValue(keyFilter) === true)
 
   let modifierPressed = false
 
@@ -121,9 +119,12 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
   onKeyStroke(
     (...args) => currentFilter(...args),
     (e) => {
+      const actInsideInputWithModifier = toValue(options?.actInsideInputWithModifier) ?? true
+      const preventDefault = toValue(options?.preventDefault) ?? false
+
       modifierPressed = wasModifierPressed(e)
 
-      const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier.value)) && isInputDOMNode(e)
+      const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier)) && isInputDOMNode(e)
 
       if (preventAction) {
         return
@@ -132,7 +133,7 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
       const target = (e.composedPath?.()?.[0] || e.target) as Element | null
       const isInteractiveElement = target?.nodeName === 'BUTTON' || target?.nodeName === 'A'
 
-      if (!preventDefault.value && (modifierPressed || !isInteractiveElement)) {
+      if (!preventDefault && (modifierPressed || !isInteractiveElement)) {
         e.preventDefault()
       }
 
@@ -144,8 +145,10 @@ export function useKeyPress(keyFilter: MaybeRefOrGetter<KeyFilter | boolean | nu
   onKeyStroke(
     (...args) => currentFilter(...args),
     (e) => {
+      const actInsideInputWithModifier = toValue(options?.actInsideInputWithModifier) ?? true
+
       if (isPressed.value) {
-        const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier.value)) && isInputDOMNode(e)
+        const preventAction = (!modifierPressed || (modifierPressed && !actInsideInputWithModifier)) && isInputDOMNode(e)
 
         if (preventAction) {
           return
