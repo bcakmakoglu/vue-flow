@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.43.2
+
+### Patch Changes
+
+- [#1842](https://github.com/bcakmakoglu/vue-flow/pull/1842) [`dc66c85`](https://github.com/bcakmakoglu/vue-flow/commit/dc66c85df7f9e9c935fee9b7109ed363c6098668) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow multi-select when input is focused.
+
+- [#1843](https://github.com/bcakmakoglu/vue-flow/pull/1843) [`6a2b7e5`](https://github.com/bcakmakoglu/vue-flow/commit/6a2b7e51438553445096e638c0740316f833e270) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use whole handle area for snapping.
+
 ## 1.43.1
 
 ### Patch Changes
