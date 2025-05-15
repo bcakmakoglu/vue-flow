@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.43.2] - 2025-05-15
+
+[96e07ee](96e07eeb9db83defd04369522e6cb2171285948e)...[7ecca61](7ecca6141f7dd817b00517cee4e549fb5c783c45)
+
+### Bug Fixes
+
+- Allow multiselect when input is focused (#1842) ([666e4ea](666e4eababac0b5c99e269eaa217f9f93d6d77e0))
+- Use whole handle for snapping area (#1843) ([735c81c](735c81c63f4eab13b5660211c9696078e754c03b))
+
 ## [1.43.1] - 2025-04-24
 
 [78e29f2](78e29f225950c956f936c76ffb2dc29013ddc915)...[96e07ee](96e07eeb9db83defd04369522e6cb2171285948e)
