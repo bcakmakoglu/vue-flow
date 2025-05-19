@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.44.0] - 2025-05-19
+
+[7ecca61](7ecca6141f7dd817b00517cee4e549fb5c783c45)...[a16d851](a16d851894e2c4d7053e34cefd9aa3dc7522ad95)
+
+### Features
+
+- Add ease option to viewport transform functions  (#1848) ([00bc28b](00bc28bf1b675d856f3613c6a30802d7ea9628ba))
+- Add interpolate option to viewport transforming functions  (#1851) ([505fbfe](505fbfef7488d8fe98a3f2b459135794b8110633))
+
+### Refactor
+
+- Use shallowRef where possible (#1847) ([b792d7f](b792d7f536ec224c51aaf822cdb96baf158fb0c2))
+
 ## [1.43.2] - 2025-05-15
 
 [96e07ee](96e07eeb9db83defd04369522e6cb2171285948e)...[7ecca61](7ecca6141f7dd817b00517cee4e549fb5c783c45)
