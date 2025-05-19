@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.44.0
+
+### Minor Changes
+
+- [#1848](https://github.com/bcakmakoglu/vue-flow/pull/1848) [`f09952d`](https://github.com/bcakmakoglu/vue-flow/commit/f09952dc572bd567c7cf0bcf53af657cf458d696) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `ease` option to viewport altering functions.
+
+- [#1851](https://github.com/bcakmakoglu/vue-flow/pull/1851) [`0e6865b`](https://github.com/bcakmakoglu/vue-flow/commit/0e6865bbd67ca284d0ded27550abb00d04aca96c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add interpolate option to viewport transforming functions
+
 ## 1.43.2
 
 ### Patch Changes
