@@ -1,16 +1,12 @@
 {
   "extends": "@tooling/tsconfig/base",
-  "display": "@xyflow/core",
   "compilerOptions": {
     "baseUrl": ".",
     "declarationDir": "./dist",
     "resolveJsonModule": true,
   },
   "include": [
-    "**/*.ts",
-    "**/*.js",
-    "**/*.json",
-    "**/*.vue",
+    "./src"
   ],
   "exclude": [
     "node_modules",
