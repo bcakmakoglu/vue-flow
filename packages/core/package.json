@@ -73,6 +73,7 @@
   "dependencies": {
     "@vueuse/core": "^10.5.0",
     "d3-drag": "^3.0.0",
+    "d3-interpolate": "^3.0.1",
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0"
   },
@@ -81,6 +82,7 @@
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
     "@types/d3-drag": "^3.0.7",
+    "@types/d3-interpolate": "^3.0.4",
     "@types/d3-selection": "^3.0.11",
     "@types/d3-transition": "^3.0.9",
     "@types/d3-zoom": "^3.0.8",
