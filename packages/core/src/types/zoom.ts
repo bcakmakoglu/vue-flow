@@ -19,6 +19,7 @@ export enum PanOnScrollMode {
 export interface TransitionOptions {
   duration?: number
   ease?: (t: number) => number
+  interpolate?: 'smooth' | 'linear'
 }
 
 export type FitViewParams = {
