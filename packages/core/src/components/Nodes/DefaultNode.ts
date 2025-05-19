@@ -13,7 +13,7 @@ const DefaultNode: FunctionalComponent<NodeProps<{ label: any }>> = function ({
   isValidSourcePos,
   data,
 }) {
-  const label = data.label || _label
+  const label = data.label ?? _label
 
   return [
     h(Handle as Component, { type: 'target', position: targetPosition, connectable, isValidConnection: isValidTargetPos }),

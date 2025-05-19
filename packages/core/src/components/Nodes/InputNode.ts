@@ -11,7 +11,7 @@ const InputNode: FunctionalComponent<NodeProps<{ label: any }>> = function ({
   isValidSourcePos,
   data,
 }) {
-  const label = data.label || _label
+  const label = data.label ?? _label
 
   return [
     typeof label !== 'string' && label ? h(label) : h(Fragment, [label]),
