@@ -293,6 +293,9 @@ importers:
       d3-drag:
         specifier: ^3.0.0
         version: 3.0.0
+      d3-interpolate:
+        specifier: ^3.0.1
+        version: 3.0.1
       d3-selection:
         specifier: ^3.0.0
         version: 3.0.0
@@ -315,6 +318,9 @@ importers:
       '@types/d3-drag':
         specifier: ^3.0.7
         version: 3.0.7
+      '@types/d3-interpolate':
+        specifier: ^3.0.4
+        version: 3.0.4
       '@types/d3-selection':
         specifier: ^3.0.11
         version: 3.0.11
@@ -2206,8 +2212,8 @@ packages:
   '@types/d3-drag@3.0.7':
     resolution: {integrity: sha512-HE3jVKlzU9AaMazNufooRJ5ZpWmLIoc90A37WU2JMmeq28w1FQqCZswHZ3xR+SuxYftzHq6WU6KJHvqxKzTxxQ==}
 
-  '@types/d3-interpolate@3.0.2':
-    resolution: {integrity: sha512-zAbCj9lTqW9J9PlF4FwnvEjXZUy75NQqPm7DMHZXuxCFTpuTrdK2NMYGQekf4hlasL78fCYOLu4EE3/tXElwow==}
+  '@types/d3-interpolate@3.0.4':
+    resolution: {integrity: sha512-mgLPETlrpVV1YRJIglr4Ez47g7Yxjl1lj7YKsiMCb27VJH9W8NVM6Bb9d8kkpG/uAQS5AmbA48q2IAolKKo1MA==}
 
   '@types/d3-selection@3.0.11':
     resolution: {integrity: sha512-bhAXu23DJWsrI45xafYpkQ4NtcKMwWnAC/vKrd2l+nxMFuvOT3XMYTIj2opv8vq8AO5Yh7Qac/nSeP/3zjTK0w==}
@@ -9563,7 +9569,7 @@ snapshots:
     dependencies:
       '@types/d3-selection': 3.0.11
 
-  '@types/d3-interpolate@3.0.2':
+  '@types/d3-interpolate@3.0.4':
     dependencies:
       '@types/d3-color': 3.1.1
 
@@ -9577,12 +9583,12 @@ snapshots:
 
   '@types/d3-zoom@3.0.5':
     dependencies:
-      '@types/d3-interpolate': 3.0.2
+      '@types/d3-interpolate': 3.0.4
       '@types/d3-selection': 3.0.11
 
   '@types/d3-zoom@3.0.8':
     dependencies:
-      '@types/d3-interpolate': 3.0.2
+      '@types/d3-interpolate': 3.0.4
       '@types/d3-selection': 3.0.11
 
   '@types/estree@1.0.2': {}
@@ -9775,7 +9781,7 @@ snapshots:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
-      semver: 7.6.0
+      semver: 7.6.3
       ts-api-utils: 1.0.3(typescript@5.4.5)
     optionalDependencies:
       typescript: 5.4.5
@@ -9806,7 +9812,7 @@ snapshots:
       '@typescript-eslint/types': 6.19.0
       '@typescript-eslint/typescript-estree': 6.19.0(typescript@5.4.5)
       eslint: 8.51.0
-      semver: 7.6.0
+      semver: 7.6.3
     transitivePeerDependencies:
       - supports-color
       - typescript

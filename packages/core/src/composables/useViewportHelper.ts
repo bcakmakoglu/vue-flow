@@ -1,3 +1,4 @@
+import { interpolate, interpolateZoom } from 'd3-interpolate'
 import { zoomIdentity } from 'd3-zoom'
 import { computed } from 'vue'
 import type { D3Selection, GraphNode, Project, State, TransitionOptions, ViewportFunctions } from '../types'
@@ -48,7 +49,7 @@ export function useViewportHelper(state: State) {
   function zoom(scale: number, transitionOptions?: TransitionOptions) {
     return new Promise<boolean>((resolve) => {
       if (state.d3Selection && state.d3Zoom) {
-        state.d3Zoom.scaleBy(
+        state.d3Zoom.interpolate(transitionOptions?.interpolate === 'linear' ? interpolate : interpolateZoom).scaleBy(
           getD3Transition(state.d3Selection, transitionOptions?.duration, transitionOptions?.ease, () => {
             resolve(true)
           }),
@@ -68,7 +69,7 @@ export function useViewportHelper(state: State) {
       const nextTransform = zoomIdentity.translate(-clampedX, -clampedY).scale(zoom)
 
       if (state.d3Selection && state.d3Zoom) {
-        state.d3Zoom.transform(
+        state.d3Zoom?.interpolate(transitionOptions?.interpolate === 'linear' ? interpolate : interpolateZoom).transform(
           getD3Transition(state.d3Selection, transitionOptions?.duration, transitionOptions?.ease, () => {
             resolve(true)
           }),
@@ -99,7 +100,7 @@ export function useViewportHelper(state: State) {
       zoomTo: (zoomLevel, options) => {
         return new Promise<boolean>((resolve) => {
           if (state.d3Selection && state.d3Zoom) {
-            state.d3Zoom.scaleTo(
+            state.d3Zoom.interpolate(options?.interpolate === 'linear' ? interpolate : interpolateZoom).scaleTo(
               getD3Transition(state.d3Selection, options?.duration, options?.ease, () => {
                 resolve(true)
               }),
