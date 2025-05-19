@@ -1,9 +1,13 @@
 import type { Selection } from 'd3-selection'
+
+// eslint-disable-next-line unused-imports/no-unused-imports,@typescript-eslint/no-unused-vars -- this is needed for the Selection type to include the transition function :/
+import type { Transition } from 'd3-transition'
 import type { ZoomBehavior } from 'd3-zoom'
+
 import type { Rect, XYPosition } from './flow'
 
 export type D3Zoom = ZoomBehavior<HTMLDivElement, unknown>
-export type D3Selection = Selection<HTMLDivElement, any, any, any>
+export type D3Selection = Selection<HTMLDivElement, unknown, null, undefined>
 export type D3ZoomHandler = (this: HTMLDivElement, event: any, d: unknown) => void
 
 export enum PanOnScrollMode {
@@ -14,6 +18,7 @@ export enum PanOnScrollMode {
 
 export interface TransitionOptions {
   duration?: number
+  ease?: (t: number) => number
 }
 
 export type FitViewParams = {

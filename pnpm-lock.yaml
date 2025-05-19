@@ -95,13 +95,13 @@ importers:
         version: 6.0.3(typedoc@0.26.11(typescript@5.4.5))
       unplugin-auto-import:
         specifier: ^0.18.3
-        version: 0.18.3(@nuxt/kit@3.13.2(magicast@0.3.5)(rollup@4.21.0)(webpack-sources@3.2.3))(@vueuse/core@11.2.0(vue@3.5.12(typescript@5.4.5)))(rollup@4.21.0)(webpack-sources@3.2.3)
+        version: 0.18.3(@nuxt/kit@3.13.2(rollup@4.21.0)(webpack-sources@3.2.3))(@vueuse/core@11.2.0(vue@3.5.12(typescript@5.4.5)))(rollup@4.21.0)(webpack-sources@3.2.3)
       unplugin-icons:
         specifier: ^0.20.0
         version: 0.20.0(@vue/compiler-sfc@3.5.12)(vue-template-compiler@2.7.14)(webpack-sources@3.2.3)
       unplugin-vue-components:
         specifier: ^0.27.4
-        version: 0.27.4(@babel/parser@7.25.7)(@nuxt/kit@3.13.2(magicast@0.3.5)(rollup@4.21.0)(webpack-sources@3.2.3))(rollup@4.21.0)(vue@3.5.12(typescript@5.4.5))
+        version: 0.27.4(@babel/parser@7.25.7)(@nuxt/kit@3.13.2(rollup@4.21.0)(webpack-sources@3.2.3))(rollup@4.21.0)(vue@3.5.12(typescript@5.4.5))
       vite-plugin-windicss:
         specifier: ^1.9.3
         version: 1.9.3(vite@5.4.10(@types/node@20.14.2)(sass@1.79.4)(terser@5.21.0))
@@ -221,7 +221,7 @@ importers:
         version: 5.1.4(vite@5.4.8(@types/node@20.14.2)(sass@1.79.4)(terser@5.21.0))(vue@3.5.11(typescript@5.4.5))
       unplugin-auto-import:
         specifier: ^0.18.3
-        version: 0.18.3(@nuxt/kit@3.13.2(magicast@0.3.5)(rollup@4.21.0)(webpack-sources@3.2.3))(@vueuse/core@11.2.0(vue@3.5.11(typescript@5.4.5)))(rollup@4.21.0)(webpack-sources@3.2.3)
+        version: 0.18.3(@nuxt/kit@3.13.2(rollup@4.21.0)(webpack-sources@3.2.3))(@vueuse/core@11.2.0(vue@3.5.11(typescript@5.4.5)))(rollup@4.21.0)(webpack-sources@3.2.3)
       vite:
         specifier: ^5.4.8
         version: 5.4.8(@types/node@20.14.2)(sass@1.79.4)(terser@5.21.0)
@@ -313,14 +313,17 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/tsconfig
       '@types/d3-drag':
-        specifier: ^3.0.4
-        version: 3.0.4
-      '@types/d3-selection':
         specifier: ^3.0.7
         version: 3.0.7
+      '@types/d3-selection':
+        specifier: ^3.0.11
+        version: 3.0.11
+      '@types/d3-transition':
+        specifier: ^3.0.9
+        version: 3.0.9
       '@types/d3-zoom':
-        specifier: ^3.0.5
-        version: 3.0.5
+        specifier: ^3.0.8
+        version: 3.0.8
       '@vitejs/plugin-vue':
         specifier: ^4.4.0
         version: 4.4.0(vite@4.4.11(@types/node@20.14.2)(sass@1.79.4)(terser@5.21.0))(vue@3.3.4)
@@ -2200,14 +2203,26 @@ packages:
   '@types/d3-drag@3.0.4':
     resolution: {integrity: sha512-/t53K1erTuUbP7WIX9SE0hlmytpTYRbIthlhbGkBHzCV5vPO++7yrk8OlisWPyIJO5TGowTmqCtGH2tokY5T/g==}
 
+  '@types/d3-drag@3.0.7':
+    resolution: {integrity: sha512-HE3jVKlzU9AaMazNufooRJ5ZpWmLIoc90A37WU2JMmeq28w1FQqCZswHZ3xR+SuxYftzHq6WU6KJHvqxKzTxxQ==}
+
   '@types/d3-interpolate@3.0.2':
     resolution: {integrity: sha512-zAbCj9lTqW9J9PlF4FwnvEjXZUy75NQqPm7DMHZXuxCFTpuTrdK2NMYGQekf4hlasL78fCYOLu4EE3/tXElwow==}
+
+  '@types/d3-selection@3.0.11':
+    resolution: {integrity: sha512-bhAXu23DJWsrI45xafYpkQ4NtcKMwWnAC/vKrd2l+nxMFuvOT3XMYTIj2opv8vq8AO5Yh7Qac/nSeP/3zjTK0w==}
 
   '@types/d3-selection@3.0.7':
     resolution: {integrity: sha512-qoj2O7KjfqCobmtFOth8FMvjwMVPUAAmn6xiUbLl1ld7vQCPgffvyV5BBcEFfqWdilAUm+3zciU/3P3vZrUMlg==}
 
+  '@types/d3-transition@3.0.9':
+    resolution: {integrity: sha512-uZS5shfxzO3rGlu0cC3bjmMFKsXv+SmZZcgp0KD22ts4uGXp5EVYGzu/0YdwZeKmddhcAccYtREJKkPfXkZuCg==}
+
   '@types/d3-zoom@3.0.5':
     resolution: {integrity: sha512-mIefdTLtxuWUWTbBupCUXPAXVPmi8/Uwrq41gQpRh0rD25GMU1ku+oTELqNY2NuuiI0F3wXC5e1liBQi7YS7XQ==}
+
+  '@types/d3-zoom@3.0.8':
+    resolution: {integrity: sha512-iqMC4/YlFCSlO8+2Ii1GGGliCAY4XdeG748w5vQUbevlbDu0zSjH/+jojorQVBK/se0j6DUFNPBGSqD3YWYnDw==}
 
   '@types/estree@1.0.2':
     resolution: {integrity: sha512-VeiPZ9MMwXjO32/Xu7+OwflfmeoRwkE/qzndw42gGtgJwZopBnzy2gD//NN1+go1mADzkDcqf/KnFRSjTJ8xJA==}
@@ -4073,6 +4088,7 @@ packages:
   eslint-plugin-i@2.28.1:
     resolution: {integrity: sha512-a4oVt0j3ixNhGhvV4XF6NS7OWRFK2rrJ0Q5C4S2dSRb8FxZi31J0uUd5WJLL58wnVJ/OiQ1BxiXnFA4dWQO1Cg==}
     engines: {node: '>=12'}
+    deprecated: Please migrate to the brand new `eslint-plugin-import-x` instead
     peerDependencies:
       eslint: ^7.2.0 || ^8
 
@@ -9541,18 +9557,33 @@ snapshots:
 
   '@types/d3-drag@3.0.4':
     dependencies:
-      '@types/d3-selection': 3.0.7
+      '@types/d3-selection': 3.0.11
+
+  '@types/d3-drag@3.0.7':
+    dependencies:
+      '@types/d3-selection': 3.0.11
 
   '@types/d3-interpolate@3.0.2':
     dependencies:
       '@types/d3-color': 3.1.1
 
+  '@types/d3-selection@3.0.11': {}
+
   '@types/d3-selection@3.0.7': {}
+
+  '@types/d3-transition@3.0.9':
+    dependencies:
+      '@types/d3-selection': 3.0.11
 
   '@types/d3-zoom@3.0.5':
     dependencies:
       '@types/d3-interpolate': 3.0.2
-      '@types/d3-selection': 3.0.7
+      '@types/d3-selection': 3.0.11
+
+  '@types/d3-zoom@3.0.8':
+    dependencies:
+      '@types/d3-interpolate': 3.0.2
+      '@types/d3-selection': 3.0.11
 
   '@types/estree@1.0.2': {}
 
@@ -15073,7 +15104,7 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unplugin-auto-import@0.18.3(@nuxt/kit@3.13.2(magicast@0.3.5)(rollup@4.21.0)(webpack-sources@3.2.3))(@vueuse/core@11.2.0(vue@3.5.11(typescript@5.4.5)))(rollup@4.21.0)(webpack-sources@3.2.3):
+  unplugin-auto-import@0.18.3(@nuxt/kit@3.13.2(rollup@4.21.0)(webpack-sources@3.2.3))(@vueuse/core@11.2.0(vue@3.5.11(typescript@5.4.5)))(rollup@4.21.0)(webpack-sources@3.2.3):
     dependencies:
       '@antfu/utils': 0.7.10
       '@rollup/pluginutils': 5.1.0(rollup@4.21.0)
@@ -15090,7 +15121,7 @@ snapshots:
       - rollup
       - webpack-sources
 
-  unplugin-auto-import@0.18.3(@nuxt/kit@3.13.2(magicast@0.3.5)(rollup@4.21.0)(webpack-sources@3.2.3))(@vueuse/core@11.2.0(vue@3.5.12(typescript@5.4.5)))(rollup@4.21.0)(webpack-sources@3.2.3):
+  unplugin-auto-import@0.18.3(@nuxt/kit@3.13.2(rollup@4.21.0)(webpack-sources@3.2.3))(@vueuse/core@11.2.0(vue@3.5.12(typescript@5.4.5)))(rollup@4.21.0)(webpack-sources@3.2.3):
     dependencies:
       '@antfu/utils': 0.7.10
       '@rollup/pluginutils': 5.1.0(rollup@4.21.0)
@@ -15123,7 +15154,7 @@ snapshots:
       - supports-color
       - webpack-sources
 
-  unplugin-vue-components@0.27.4(@babel/parser@7.25.7)(@nuxt/kit@3.13.2(magicast@0.3.5)(rollup@4.21.0)(webpack-sources@3.2.3))(rollup@4.21.0)(vue@3.5.12(typescript@5.4.5)):
+  unplugin-vue-components@0.27.4(@babel/parser@7.25.7)(@nuxt/kit@3.13.2(rollup@4.21.0)(webpack-sources@3.2.3))(rollup@4.21.0)(vue@3.5.12(typescript@5.4.5)):
     dependencies:
       '@antfu/utils': 0.7.10
       '@rollup/pluginutils': 5.1.0(rollup@4.21.0)
