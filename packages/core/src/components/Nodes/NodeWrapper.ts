@@ -86,7 +86,7 @@ const NodeWrapper = defineComponent({
 
     const isFocusable = toRef(() => (typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable))
 
-    const hasPointerEvents = toRef(
+    const hasPointerEvents = computed(
       () =>
         isSelectable.value ||
         isDraggable.value ||

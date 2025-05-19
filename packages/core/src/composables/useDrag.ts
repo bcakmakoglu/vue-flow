@@ -2,7 +2,7 @@ import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import { ref, toValue, watch } from 'vue'
+import { shallowRef, toValue, watch } from 'vue'
 import type { MouseTouchEvent, NodeDragEvent, NodeDragItem, XYPosition } from '../types'
 import {
   calcAutoPan,
@@ -62,7 +62,7 @@ export function useDrag(params: UseDragParams) {
 
   const { onStart, onDrag, onStop, onClick, el, disabled, id, selectable, dragHandle } = params
 
-  const dragging = ref(false)
+  const dragging = shallowRef(false)
 
   let dragItems: NodeDragItem[] = []
 

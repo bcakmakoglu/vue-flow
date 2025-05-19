@@ -2,7 +2,7 @@
 import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { onMounted, ref, toRef, watch } from 'vue'
+import { onMounted, shallowRef, toRef, watch } from 'vue'
 import type { CoordinateExtent, D3ZoomHandler, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import { useKeyPress } from '../../composables/useKeyPress'
@@ -44,9 +44,9 @@ const {
 
 useResizeHandler(viewportRef)
 
-const isZoomingOrPanning = ref(false)
+const isZoomingOrPanning = shallowRef(false)
 
-const isPanScrolling = ref(false)
+const isPanScrolling = shallowRef(false)
 
 let panScrollTimeout: ReturnType<typeof setTimeout> | null = null
 
