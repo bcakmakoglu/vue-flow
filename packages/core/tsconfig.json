@@ -1,16 +1,20 @@
 {
   "extends": "@tooling/tsconfig/base",
+  "display": "@xyflow/core",
   "compilerOptions": {
     "baseUrl": ".",
     "declarationDir": "./dist",
     "resolveJsonModule": true,
-    "types": [
-      "vite/client",
-      "vue/macros"
-    ]
   },
   "include": [
-    "./src"
+    "**/*.ts",
+    "**/*.js",
+    "**/*.json",
+    "**/*.vue",
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
   ],
   "references": [
     {
