@@ -8,6 +8,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { useVueFlow } from '@vue-flow/core'
+import llmstxt from 'vitepress-plugin-llms'
 import head from './head'
 import { copyVueFlowPlugin, files } from './plugins'
 
@@ -70,6 +71,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
 
   vite: {
     define: {
+      // eslint-disable-next-line n/prefer-global/process
       __ANALYTICS_ID__: process.env.VERCEL_ANALYTICS_ID,
     },
     plugins: [
@@ -94,13 +96,14 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       }),
       Icons({
         compiler: 'vue3',
-        defaultClass: 'inline-block align-middle'
+        defaultClass: 'inline-block align-middle',
       }),
+      llmstxt(),
     ],
   },
 
   sitemap: {
-    hostname: 'https://vueflow.dev'
+    hostname: 'https://vueflow.dev',
   },
 
   themeConfig: {
@@ -115,6 +118,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     ],
     algolia: {
       appId: 'F7BJNSM4M5',
+      // eslint-disable-next-line n/prefer-global/process
       apiKey: process.env.ALGOLIA_API_KEY!,
       indexName: 'vueflow',
     },
@@ -194,7 +198,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         {
           text: 'Troubleshooting',
           link: '/guide/troubleshooting',
-        }
+        },
       ],
       '/examples/': [
         {
