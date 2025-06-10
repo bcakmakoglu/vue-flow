@@ -114,6 +114,8 @@ export function useState(): State {
 
     disableKeyboardA11y: false,
     ariaLiveMessage: '',
+
+    nodesAttrs: {},
   }
 }
 
