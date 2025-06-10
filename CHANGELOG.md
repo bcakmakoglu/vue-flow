@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.45.0] - 2025-06-10
+
+[a16d851](a16d851894e2c4d7053e34cefd9aa3dc7522ad95)...[45225bf](45225bf973bccca97183da9f8105dcc6a3b0bf89)
+
+### Documentation
+
+- Add vitepress plugin llms (#1865) ([eec568c](eec568cbb77c863857af5508b287d4b1db34493c))
+
+### Features
+
+- Add dom attributes option for nodes (#1861) ([4c1b064](4c1b06423052923d759ecdb331f57cb0f59d18de))
+- Add dom attributes option for nodes and edges (#1869) ([8fa7010](8fa70107a008de4bd9ff62763e5a242ce2a60277))
+
 ## [1.44.0] - 2025-05-19
 
 [7ecca61](7ecca6141f7dd817b00517cee4e549fb5c783c45)...[a16d851](a16d851894e2c4d7053e34cefd9aa3dc7522ad95)
