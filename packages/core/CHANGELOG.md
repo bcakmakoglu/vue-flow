@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.45.0
+
+### Minor Changes
+
+- [#1869](https://github.com/bcakmakoglu/vue-flow/pull/1869) [`4a2427d`](https://github.com/bcakmakoglu/vue-flow/commit/4a2427d08ab0ea19323998a2c863f6c375c6bd4a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `domAttributes` prop to nodes / edges that allows passing any sort of dom attributes to the node/edge wrappers (like aria attributes etc.).
+
 ## 1.44.0
 
 ### Minor Changes
