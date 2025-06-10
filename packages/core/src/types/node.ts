@@ -109,6 +109,7 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   events?: Partial<NodeEventsHandler<CustomEvents>>
   zIndex?: number
   ariaLabel?: string
+  attrs?: Record<string, any>
 }
 
 export interface GraphNode<
