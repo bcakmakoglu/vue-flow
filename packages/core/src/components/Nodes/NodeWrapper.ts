@@ -61,7 +61,6 @@ const NodeWrapper = defineComponent({
       elementsSelectable,
       nodesConnectable,
       nodesFocusable,
-      nodesAttrs,
       hooks,
     } = useVueFlow()
 
@@ -284,11 +283,11 @@ const NodeWrapper = defineComponent({
             ...getStyle.value,
           },
           'tabIndex': isFocusable.value ? 0 : undefined,
-          'role': isFocusable.value ? 'button' : undefined,
+          'role': isFocusable.value ? 'group' : undefined,
           'aria-describedby': disableKeyboardA11y.value ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`,
           'aria-label': node.ariaLabel,
-          ...nodesAttrs?.value,
-          ...node.attrs,
+          'aria-roledescription': 'node',
+          ...node.domAttributes,
           'onMouseenter': onMouseEnter,
           'onMousemove': onMouseMove,
           'onMouseleave': onMouseLeave,

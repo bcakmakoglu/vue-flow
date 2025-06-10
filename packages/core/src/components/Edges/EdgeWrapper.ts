@@ -192,6 +192,15 @@ const EdgeWrapper = defineComponent({
               inactive: !isSelectable.value && !hooks.value.edgeClick.hasListeners(),
             },
           ],
+          'tabIndex': isFocusable.value ? 0 : undefined,
+          'aria-label':
+            edge.value.ariaLabel === null
+              ? undefined
+              : edge.value.ariaLabel ?? `Edge from ${edge.value.source} to ${edge.value.target}`,
+          'aria-describedby': isFocusable.value ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
+          'aria-roledescription': 'edge',
+          'role': isFocusable.value ? 'group' : 'img',
+          ...edge.value.domAttributes,
           'onClick': onEdgeClick,
           'onContextmenu': onEdgeContextMenu,
           'onDblclick': onDoubleClick,
@@ -199,13 +208,6 @@ const EdgeWrapper = defineComponent({
           'onMousemove': onEdgeMouseMove,
           'onMouseleave': onEdgeMouseLeave,
           'onKeyDown': isFocusable.value ? onKeyDown : undefined,
-          'tabIndex': isFocusable.value ? 0 : undefined,
-          'aria-label':
-            edge.value.ariaLabel === null
-              ? undefined
-              : edge.value.ariaLabel || `Edge from ${edge.value.source} to ${edge.value.target}`,
-          'aria-describedby': isFocusable.value ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
-          'role': isFocusable.value ? 'button' : 'img',
         },
         [
           updating.value

@@ -1,4 +1,4 @@
-import type { Component, VNode } from 'vue'
+import type { Component, HTMLAttributes, VNode } from 'vue'
 import type { ClassFunc, Dimensions, ElementData, Position, StyleFunc, Styles, XYPosition, XYZPosition } from './flow'
 import type { NodeComponent } from './components'
 import type { HandleConnectable, HandleElement, ValidConnectionFunc } from './handle'
@@ -109,7 +109,25 @@ export interface Node<Data = ElementData, CustomEvents extends Record<string, Cu
   events?: Partial<NodeEventsHandler<CustomEvents>>
   zIndex?: number
   ariaLabel?: string
-  attrs?: Record<string, any>
+
+  /**
+   * General escape hatch for adding custom attributes to the node's DOM element.
+   */
+  domAttributes?: Omit<
+    HTMLAttributes,
+    | 'id'
+    | 'style'
+    | 'className'
+    | 'draggable'
+    | 'aria-label'
+    | 'onMouseenter'
+    | 'onMousemove'
+    | 'onMouseleave'
+    | 'onContextmenu'
+    | 'onClick'
+    | 'onDblclick'
+    | 'onKeydown'
+  >
 }
 
 export interface GraphNode<
