@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.5.0
+
+### Minor Changes
+
+- [#1872](https://github.com/bcakmakoglu/vue-flow/pull/1872) [`ce0f42d`](https://github.com/bcakmakoglu/vue-flow/commit/ce0f42d1cba1bb224701bb8a806c1ae04c955c8c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add auto-scale prop to node resizer (default `true`) that forces node resizer controls to scale with the viewport zoom level.
+
 ## 1.4.0
 
 ### Minor Changes
