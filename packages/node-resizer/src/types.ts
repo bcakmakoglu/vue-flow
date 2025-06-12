@@ -45,6 +45,11 @@ export interface NodeResizerProps {
   maxHeight?: number
   shouldResize?: ShouldResize
   keepAspectRatio?: boolean | number
+  /**
+   * Scale the controls with the zoom level.
+   * @default true
+   */
+  autoScale?: boolean
 }
 
 export interface NodeResizerEmits {
@@ -62,8 +67,8 @@ export enum ResizeControlVariant {
   Handle = 'handle',
 }
 
-export interface ResizeControlProps {
-  nodeId?: string | null
+export interface ResizeControlProps extends NodeResizerProps {
+  nodeId?: string
   color?: string
   minWidth?: number
   minHeight?: number
@@ -73,6 +78,11 @@ export interface ResizeControlProps {
   variant?: ResizeControlVariant
   shouldResize?: ShouldResize
   keepAspectRatio?: boolean | number
+  /**
+   * Scale the controls with the zoom level.
+   * @default true
+   */
+  autoScale?: boolean
 }
 
 export interface ResizeControlLineProps extends ResizeControlProps {

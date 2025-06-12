@@ -3,8 +3,9 @@ import type { NodeChange, NodeDimensionChange, NodePositionChange } from '@vue-f
 import { clamp, useGetPointerPosition, useVueFlow } from '@vue-flow/core'
 import { select } from 'd3-selection'
 import { drag } from 'd3-drag'
-import { ref, toRef, watchEffect } from 'vue'
-import type { NodeResizerEmits, ResizeControlProps, ResizeControlVariant, ResizeDragEvent } from './types'
+import { computed, ref, toRef, watchEffect } from 'vue'
+import type { NodeResizerEmits, ResizeControlProps, ResizeDragEvent } from './types'
+import { ResizeControlVariant } from './types'
 import { DefaultPositions, StylingProperty, getDirection } from './utils'
 
 const props = withDefaults(defineProps<ResizeControlProps>(), {
@@ -14,6 +15,7 @@ const props = withDefaults(defineProps<ResizeControlProps>(), {
   maxWidth: Number.MAX_VALUE,
   maxHeight: Number.MAX_VALUE,
   keepAspectRatio: false,
+  autoScale: true,
 })
 
 const emits = defineEmits<NodeResizerEmits>()
@@ -27,7 +29,7 @@ const initStartValues = {
   aspectRatio: 1,
 }
 
-const { findNode, emits: triggerEmits } = useVueFlow()
+const { findNode, emits: triggerEmits, viewport, noDragClassName } = useVueFlow()
 
 const getPointerPosition = useGetPointerPosition()
 
@@ -39,7 +41,7 @@ let prevValues: typeof initPrevValues = initPrevValues
 
 const controlPosition = toRef(() => props.position ?? DefaultPositions[props.variant])
 
-const positionClassNames = toRef(() => controlPosition.value.split('-'))
+const positionClassNames = computed(() => controlPosition.value.split('-'))
 
 const controlStyle = toRef(() => (props.color ? { [StylingProperty[props.variant]]: props.color } : {}))
 
@@ -237,9 +239,12 @@ export default {
 <template>
   <div
     ref="resizeControlRef"
-    class="vue-flow__resize-control nodrag"
-    :class="[...positionClassNames, variant]"
-    :style="controlStyle"
+    class="vue-flow__resize-control"
+    :class="[...positionClassNames, variant, noDragClassName]"
+    :style="{
+      ...controlStyle,
+      scale: variant === ResizeControlVariant.Handle ? `${Math.max(1 / viewport.zoom, 1)}` : undefined,
+    }"
   >
     <slot />
   </div>
