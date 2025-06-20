@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.45.1
+
+### Patch Changes
+
+- [#1880](https://github.com/bcakmakoglu/vue-flow/pull/1880) [`dd46505`](https://github.com/bcakmakoglu/vue-flow/commit/dd465053faa44119d2759ae3fe8fc58628b85573) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use correct handlesuffix for connection lookup in `getHandleConnections` action.
+
 ## 1.45.0
 
 ### Minor Changes
