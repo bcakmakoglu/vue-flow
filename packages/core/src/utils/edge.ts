@@ -103,7 +103,14 @@ export function getEdgeZIndex(edge: GraphEdge, findNode: Actions['findNode'], el
   }
 
   if (elevateEdgesOnSelect) {
-    z = hasZIndex ? edge.zIndex! : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
+    const baseZ = hasZIndex ? edge.zIndex! : 0
+    const nodeBasedZ = Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
+    const edgeSelectedZ = edge.selected ? 1000 : 0
+
+    // Take the maximum elevation to avoid double-stacking when both node and edge are selected
+    const elevationZ = Math.max(nodeBasedZ - baseZ, edgeSelectedZ)
+
+    z = baseZ + elevationZ
   }
 
   return z
