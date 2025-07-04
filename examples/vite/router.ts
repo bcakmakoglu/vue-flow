@@ -138,6 +138,10 @@ export const routes: RouterOptions['routes'] = [
     path: '/confirm-delete',
     component: () => import('./src/ConfirmDelete/ConfirmDeleteExample.vue'),
   },
+  {
+    path: '/nesting-flows',
+    component: () => import('./src/NestingFlows/NestingFlows.vue'),
+  },
 ]
 
 export const router = createRouter({
