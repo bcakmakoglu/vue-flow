@@ -179,7 +179,7 @@ export function useHandle({
         connectionPosition = getEventPosition(event, containerBounds)
 
         closestHandle = getClosestHandle(
-          pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
+          pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1], ancestorZoom.value),
           connectionRadius.value,
           nodeLookup.value,
           fromHandle,
@@ -250,6 +250,7 @@ export function useHandle({
                   y: closestHandle.y,
                 },
                 viewport.value,
+                ancestorZoom.value,
               )
             : connectionPosition,
           result.toHandle,
