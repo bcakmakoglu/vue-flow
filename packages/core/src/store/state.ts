@@ -21,6 +21,7 @@ export function useState(): State {
       height: 0,
     },
     viewport: { x: 0, y: 0, zoom: 1 },
+    ancestorZoom: 1,
 
     d3Zoom: null,
     d3Selection: null,
