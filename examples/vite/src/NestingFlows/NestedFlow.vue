@@ -36,6 +36,8 @@ onConnect(addEdges)
     ref="NestedFlowElement"
     v-model="elements"
     :fit-view-on-init="true"
+    :auto-pan-on-connect="false"
+    :auto-pan-on-node-drag="false"
     class="vue-flow-basic-example nested-flow"
     :ancestor-zoom="ancestorZoom"
   >
