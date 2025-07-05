@@ -280,7 +280,6 @@ onMounted(() => {
         d3Selection.on(
           'wheel.zoom',
           (event: WheelEvent) => {
-            // not triggered by mouse wheel
             if (isWrappedWithClass(event, noWheelClassName.value)) {
               return false
             }
