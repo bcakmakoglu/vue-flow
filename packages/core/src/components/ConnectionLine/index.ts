@@ -21,6 +21,7 @@ const ConnectionLine = defineComponent({
       connectionLineOptions,
       connectionStatus,
       viewport,
+      ancestorZoom,
       findNode,
     } = useVueFlow()
 
@@ -32,8 +33,8 @@ const ConnectionLine = defineComponent({
 
     const toXY = computed(() => {
       return {
-        x: (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom,
-        y: (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom,
+        x: (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom / ancestorZoom.value,
+        y: (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom / ancestorZoom.value,
       }
     })
 
