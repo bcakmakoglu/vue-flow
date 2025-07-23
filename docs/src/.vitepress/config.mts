@@ -31,7 +31,7 @@ function typedocSidebarEntries() {
 
     if (module === 'variables') {
       children = children.filter((child) => {
-        return child.link.includes('default')
+        return child.link?.includes('default')
       })
     }
 
