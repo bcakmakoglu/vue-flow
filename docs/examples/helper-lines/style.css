@@ -1,0 +1,15 @@
+.vue-flow__node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  flex-direction: column;
+}
+
+.vue-flow__handle {
+  visibility: hidden;
+  background-color: var(--vf-handle-background-color-default);
+}

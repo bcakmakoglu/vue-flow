@@ -218,6 +218,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Viewport Transition', link: '/examples/transition' },
             { text: 'Teleport Nodes', link: '/examples/teleport' },
             { text: 'Stress Test', link: '/examples/stress' },
+            { text: 'Helper Lines', link: '/examples/helper-lines' },
           ],
         },
         {
