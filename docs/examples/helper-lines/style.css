@@ -11,5 +11,4 @@
 
 .vue-flow__handle {
   visibility: hidden;
-  background-color: var(--vf-handle-background-color-default);
 }

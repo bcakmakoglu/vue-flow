@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useVueFlow } from '@vue-flow/core'
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 interface HelperLinesProps {
   horizontal?: number
@@ -12,23 +12,16 @@ const props = defineProps<HelperLinesProps>()
 const horizontal = computed(() => props.horizontal)
 const vertical = computed(() => props.vertical)
 
-const { viewport, vueFlowRef } = useVueFlow()
+const { viewport, dimensions } = useVueFlow()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-let observer: ResizeObserver | null = null
-
-const width = ref(0)
-const height = ref(0)
+const width = computed(() => dimensions.value.width)
+const height = computed(() => dimensions.value.height)
 
 const x = computed(() => viewport.value.x)
 const y = computed(() => viewport.value.y)
 const zoom = computed(() => viewport.value.zoom)
-
-function updateSize(w: number, h: number) {
-  width.value = w
-  height.value = h
-}
 
 function updateCanvasHelperLines() {
   const canvas = canvasRef.value
@@ -60,24 +53,6 @@ function updateCanvasHelperLines() {
 }
 
 watch([width, height, x, y, zoom, horizontal, vertical], () => updateCanvasHelperLines(), { immediate: true, deep: true })
-
-onMounted(() => {
-  if (vueFlowRef.value) {
-    observer = new ResizeObserver((entries) => {
-      const entry = entries[0]
-      const { width, height } = entry.contentRect
-      updateSize(width, height)
-    })
-    observer.observe(vueFlowRef.value)
-  }
-})
-
-onBeforeUnmount(() => {
-  if (observer && vueFlowRef.value) {
-    observer.unobserve(vueFlowRef.value)
-    observer.disconnect()
-  }
-})
 </script>
 
 <template>
