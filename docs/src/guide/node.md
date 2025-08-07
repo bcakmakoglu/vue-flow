@@ -342,8 +342,8 @@ import  { useVueFlow } from '@vue-flow/core'
 
 const instance = useVueFlow()
 
-// use the `updateNodeData` method to update the data of an edge
-instance.updateNodeData(edgeId, { hello: 'mona' })
+// use the `updateNodeData` method to update the data of an node
+instance.updateNodeData(nodeId, { hello: 'mona' })
 
 // find the node in the state by its id
 const node = instance.findNode(nodeId)
