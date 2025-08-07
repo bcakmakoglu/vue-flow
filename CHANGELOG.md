@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.45.1] - 2025-08-07
+
+[45225bf](45225bf973bccca97183da9f8105dcc6a3b0bf89)...[e094426](e0944266bf1ed813db0cf70fb46fac7c87aa17c5)
+
+### Bug Fixes
+
+- Use correct handlesuffix in getHandleConnections  (#1880) ([a43da6f](a43da6f1ec2320fa17c3b8cdfcfd70348b1b2681))
+- Add `type="button"` to avoid form submissions (#1911) (#1912) ([dfae661](dfae6619e2ec9827ca29f4a760820402c3e2f630))
+- Emit node drag-start, drag and drag-end events on selection drag (#1913) ([ed18865](ed18865525545ff66ef752e0f588a87610c235ce))
+- Calculate overlapping area correctly (#1914) ([e97a65b](e97a65b6b56ee2168b329cd23ee0e9d9099af146))
+
+### Documentation
+
+- Code errors in "Updating Node Data" (#1900) ([b5c4c0e](b5c4c0e3f5b595e2cbb99968f1ccb826d94338ce))
+
+### Examples
+
+- Cleanup basic example ([e094426](e0944266bf1ed813db0cf70fb46fac7c87aa17c5))
+
+### Refactor
+
+- Add auto-scale prop & scale resize controls with zoom level (#1872) ([f4e139f](f4e139f1bcd6038b54efeff83328b06847feeda3))
+
 ## [1.45.0] - 2025-06-10
 
 [a16d851](a16d851894e2c4d7053e34cefd9aa3dc7522ad95)...[45225bf](45225bf973bccca97183da9f8105dcc6a3b0bf89)
