@@ -662,7 +662,11 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
       const partiallyVisible = partially && overlappingArea > 0
 
-      if (partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)) {
+      if (
+        partiallyVisible ||
+        overlappingArea >= currNodeRect.width * currNodeRect.height ||
+        overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
+      ) {
         intersections.push(n)
       }
     }
