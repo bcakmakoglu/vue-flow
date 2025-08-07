@@ -1,5 +1,15 @@
 # @vue-flow/core
 
+## 1.45.1
+
+### Patch Changes
+
+- [#1914](https://github.com/bcakmakoglu/vue-flow/pull/1914) [`8f65028`](https://github.com/bcakmakoglu/vue-flow/commit/8f65028389423fabd8d541a20045f3d53b075c16) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Calculate overlapping area in getNodeIntersections correctly.
+
+- [#1913](https://github.com/bcakmakoglu/vue-flow/pull/1913) [`5366b56`](https://github.com/bcakmakoglu/vue-flow/commit/5366b56c4368e5289f69262af7ac3e88963af7c2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Emit node drag-start, drag and drag-end events when a selection is dragged (selectionKeyCode).
+
+- [#1882](https://github.com/bcakmakoglu/vue-flow/pull/1882) [`742eb98`](https://github.com/bcakmakoglu/vue-flow/commit/742eb98a50ba90a895ff1d856e9e20e7331a0df6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use correct handlesuffix for connection lookup in `getHandleConnections` action.
+
 ## 1.45.0
 
 ### Minor Changes
