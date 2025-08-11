@@ -48,6 +48,7 @@ export {
   getBoundsofRects,
   connectionExists,
   clamp,
+  wheelDelta,
 } from './utils/graph'
 
 /**

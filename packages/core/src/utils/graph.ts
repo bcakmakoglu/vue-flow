@@ -21,7 +21,7 @@ import type {
   XYPosition,
   XYZPosition,
 } from '../types'
-import { isDef, snapPosition, warn } from '.'
+import { isDef, isMacOs, snapPosition, warn } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
@@ -503,4 +503,10 @@ export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: stri
     .sort()
     .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
     .join('&')}`
+}
+
+export function wheelDelta(event: any) {
+  const factor = event.ctrlKey && isMacOs() ? 10 : 1
+
+  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
 }
