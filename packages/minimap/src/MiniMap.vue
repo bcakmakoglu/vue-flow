@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CoordinateExtent, GraphNode, PanelPosition } from '@vue-flow/core'
-import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
+import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow, wheelDelta } from '@vue-flow/core'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
@@ -159,6 +159,7 @@ watchEffect(
       }
 
       const zoomAndPanHandler = zoom()
+        .wheelDelta((event) => wheelDelta(event) * (zoomStep / 10))
         .on('zoom', pannable ? panHandler : () => {})
         .on('zoom.wheel', zoomable ? zoomHandler : () => {})
 
@@ -232,6 +233,7 @@ export default {
         v-for="node of getNodesInitialized"
         :id="node.id"
         :key="node.id"
+        f
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :selected="node.selected"

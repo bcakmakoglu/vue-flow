@@ -8,7 +8,7 @@ import { PanOnScrollMode } from '../../types'
 import { useKeyPress } from '../../composables/useKeyPress'
 import { useVueFlow } from '../../composables/useVueFlow'
 import { useResizeHandler } from '../../composables/useResizeHandler'
-import { clamp, isMacOs, warn } from '../../utils'
+import { clamp, isMacOs, warn, wheelDelta } from '../../utils'
 import Pane from '../Pane/Pane.vue'
 import Transform from './Transform.vue'
 
@@ -378,12 +378,6 @@ onMounted(() => {
 
 function isRightClickPan(pan: boolean | number[], usedButton: number) {
   return usedButton === 2 && Array.isArray(pan) && pan.includes(2)
-}
-
-function wheelDelta(event: any) {
-  const factor = event.ctrlKey && isMacOs() ? 10 : 1
-
-  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
 }
 
 function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransform) {
