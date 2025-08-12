@@ -85,8 +85,9 @@ export function useHandle({
 
     // when vue-flow is used inside a shadow root we can't use document
     const doc = getHostForElement(event.target as HTMLElement)
+    const clickedHandle = event.currentTarget as HTMLElement | null
 
-    if ((isMouseTriggered && event.button === 0) || !isMouseTriggered) {
+    if (clickedHandle && ((isMouseTriggered && event.button === 0) || !isMouseTriggered)) {
       const node = findNode(toValue(nodeId))
 
       let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
@@ -100,7 +101,6 @@ export function useHandle({
       let autoPanId = 0
 
       const { x, y } = getEventPosition(event)
-      const clickedHandle = doc?.elementFromPoint(x, y)
       const handleType = getHandleType(toValue(edgeUpdaterType), clickedHandle)
       const containerBounds = vueFlowRef.value?.getBoundingClientRect()
 
