@@ -1,5 +1,19 @@
 # @vue-flow/core
 
+## 1.46.0
+
+### Minor Changes
+
+- [#1923](https://github.com/bcakmakoglu/vue-flow/pull/1923) [`18d103d`](https://github.com/bcakmakoglu/vue-flow/commit/18d103d7177257ae470949a277cab02d6551d697) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Expose `isMacOs` utility
+
+- [#1918](https://github.com/bcakmakoglu/vue-flow/pull/1918) [`0568ab7`](https://github.com/bcakmakoglu/vue-flow/commit/0568ab7e97ffc67030bd915963c84c2e2f7c42cb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Expose `wheelDelta` utility fn
+
+- [#1919](https://github.com/bcakmakoglu/vue-flow/pull/1919) [`6880409`](https://github.com/bcakmakoglu/vue-flow/commit/68804091969ec3c95c7d491f7dd4c2e15de6be9e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use event target for `<Handle>` components to determine the "clicked" handle, avoiding calls to `getElementFromPoint and allowing "detached" handles
+
+### Patch Changes
+
+- [#1922](https://github.com/bcakmakoglu/vue-flow/pull/1922) [`957d011`](https://github.com/bcakmakoglu/vue-flow/commit/957d0110a4b628dc0e50ab2a65e53fd4d763d5f8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fetch the correct source and target nodes for isValidConnection.
+
 ## 1.45.1
 
 ### Patch Changes

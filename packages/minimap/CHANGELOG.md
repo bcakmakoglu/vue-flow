@@ -1,5 +1,13 @@
 # @vue-flow/minimap
 
+## 1.5.4
+
+### Patch Changes
+
+- [#1918](https://github.com/bcakmakoglu/vue-flow/pull/1918) [`0568ab7`](https://github.com/bcakmakoglu/vue-flow/commit/0568ab7e97ffc67030bd915963c84c2e2f7c42cb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Apply wheelDelta to zoom
+
+- [#1923](https://github.com/bcakmakoglu/vue-flow/pull/1923) [`18d103d`](https://github.com/bcakmakoglu/vue-flow/commit/18d103d7177257ae470949a277cab02d6551d697) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set zoomstep to 1 and apply factor based on macOs (zoomstep \* factor - 10 if macOs)
+
 ## 1.5.3
 
 ### Patch Changes
