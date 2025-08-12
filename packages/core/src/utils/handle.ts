@@ -191,8 +191,8 @@ export function isValidHandle(
       isValidConnection(connection, {
         nodes,
         edges,
-        sourceNode: findNode(fromNodeId)!,
-        targetNode: findNode(handleNodeId)!,
+        sourceNode: findNode(connection.source)!,
+        targetNode: findNode(connection.target)!,
       })
 
     result.toHandle = handle
