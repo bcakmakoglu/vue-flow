@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CoordinateExtent, GraphNode, PanelPosition } from '@vue-flow/core'
-import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, useVueFlow, wheelDelta } from '@vue-flow/core'
+import { Panel, getBoundsofRects, getConnectedEdges, getRectOfNodes, isMacOs, useVueFlow, wheelDelta } from '@vue-flow/core'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import type { D3ZoomEvent } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
@@ -26,7 +26,7 @@ const {
   zoomable = false,
   ariaLabel = 'Vue Flow mini map',
   inversePan = false,
-  zoomStep = 10,
+  zoomStep = 1,
   offsetScale = 5,
 } = defineProps<MiniMapProps>()
 
@@ -126,13 +126,14 @@ watchEffect(
           return
         }
 
+        const factor = event.sourceEvent.ctrlKey && isMacOs() ? 10 : 1
         const pinchDelta =
           -event.sourceEvent.deltaY *
           (event.sourceEvent.deltaMode === 1 ? 0.05 : event.sourceEvent.deltaMode ? 1 : 0.002) *
           zoomStep
-        const zoom = viewport.value.zoom * 2 ** pinchDelta
+        const nextZoom = viewport.value.zoom * 2 ** (pinchDelta * factor)
 
-        d3Zoom.value.scaleTo(d3Selection.value, zoom)
+        d3Zoom.value.scaleTo(d3Selection.value, nextZoom)
       }
 
       const panHandler = (event: D3ZoomEvent<HTMLDivElement, any>) => {
