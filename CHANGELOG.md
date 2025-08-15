@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.46.0] - 2025-08-15
+
+[e094426](e0944266bf1ed813db0cf70fb46fac7c87aa17c5)...[e293519](e293519ee2ec3fd8103707491cbbc401e1be09af)
+
+### Bug Fixes
+
+- Use 1 as zoomstep for minimap and apply factor based on macOs (#1923) ([58a52e1](58a52e137421e5939313760c91f6da2791d3777d))
+- Fetch correct source and target nodes for isValidConnection (#1922) ([c2aad1e](c2aad1e43bd5c3bc661b2a4f907591468ab49006))
+
+### Documentation
+
+- Helper lines (#1915) ([5dc276a](5dc276af52994f83ecd96e86ddcf8dd1a339ac80))
+
+### Features
+
+- Expose wheelDelta utility (#1918) ([5fbbc82](5fbbc826e5929d10c01605192ea4598e0a520883))
+
+### Refactor
+
+- Use event target for Handle pointer down events (#1924) ([299a045](299a04531e20a626494e32ee4d92a1cf5bbda07b))
+
 ## [1.45.1] - 2025-08-07
 
 [45225bf](45225bf973bccca97183da9f8105dcc6a3b0bf89)...[e094426](e0944266bf1ed813db0cf70fb46fac7c87aa17c5)
