@@ -207,6 +207,7 @@ export function useHandle({
           edges.value,
           nodes.value,
           findNode,
+          nodeLookup.value,
         )
 
         handleDomNode = result.handleDomNode
@@ -242,18 +243,19 @@ export function useHandle({
           return
         }
 
+        const connectingHandle = closestHandle ?? result.toHandle
         updateConnection(
-          closestHandle && isValid
+          connectingHandle && isValid
             ? rendererPointToPoint(
                 {
-                  x: closestHandle.x,
-                  y: closestHandle.y,
+                  x: connectingHandle.x,
+                  y: connectingHandle.y,
                 },
                 viewport.value,
               )
             : connectionPosition,
           result.toHandle,
-          getConnectionStatus(!!closestHandle, isValid),
+          getConnectionStatus(!!connectingHandle, isValid),
         )
 
         previousConnection = newConnection
@@ -377,6 +379,7 @@ export function useHandle({
       edges.value,
       nodes.value,
       findNode,
+      nodeLookup.value,
     )
 
     const isOwnHandle = result.connection?.source === result.connection?.target
