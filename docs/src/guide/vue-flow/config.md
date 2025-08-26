@@ -882,4 +882,4 @@ const connector = (params) => {
 
 - Details:
 
-  Enable/disable selecting elements. This will also disable pointer-events in general.
+  Enable/disable selecting elements.
