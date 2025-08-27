@@ -8,37 +8,50 @@ import { tryOnScopeDispose } from '@vueuse/core'
  */
 export interface EventHookExtended<T> extends EventHook<T> {
   hasListeners: () => boolean
-  fns: Set<(param: T) => void>
+  listeners: Set<(param: T) => void>
+  setEmitter: (fn: (param: T) => void) => void
+  removeEmitter: () => void
 }
 
 export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => void): EventHookExtended<T> {
-  const fns = new Set<(param: T) => void>()
+  const listeners = new Set<(param: T) => void>()
+
+  // this is just a binding for `@emit` usage
+  let emitter: ((param: T) => void) | null = null
 
   let hasDefaultHandler = false
 
-  const hasListeners = () => fns.size > 0
+  const hasListeners = () => listeners.size > 0
 
   if (defaultHandler) {
     hasDefaultHandler = true
-    fns.add(defaultHandler)
+    listeners.add(defaultHandler)
+  }
+
+  const setEmitter = (fn: (param: T) => void) => {
+    emitter = fn
+  }
+
+  const removeEmitter = () => {
+    emitter = null
   }
 
   const off = (fn: (param: T) => void) => {
-    fns.delete(fn)
+    listeners.delete(fn)
   }
 
   const on = (fn: (param: T) => void) => {
     if (defaultHandler && hasDefaultHandler) {
-      fns.delete(defaultHandler)
+      listeners.delete(defaultHandler)
     }
 
-    fns.add(fn)
+    listeners.add(fn)
 
     const offFn = () => {
       off(fn)
 
       if (defaultHandler && hasDefaultHandler) {
-        fns.add(defaultHandler)
+        listeners.add(defaultHandler)
       }
     }
 
@@ -50,7 +63,7 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
   }
 
   const trigger = (param: T) => {
-    return Promise.all(Array.from(fns).map((fn) => fn(param)))
+    return Promise.all(Array.from([...listeners, emitter]).map((fn) => fn?.(param)))
   }
 
   return {
@@ -58,6 +71,8 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
     off,
     trigger,
     hasListeners,
-    fns,
+    listeners,
+    setEmitter,
+    removeEmitter,
   }
 }

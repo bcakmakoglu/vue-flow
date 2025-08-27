@@ -63,18 +63,16 @@ export function createHooks(): FlowHooks {
   }
 }
 
-export function useHooks(emit: (...args: any[]) => void, hooks: Ref<FlowHooks>) {
+export function useHooks(emit: (...args: unknown[]) => void, hooks: Ref<FlowHooks>) {
   onBeforeMount(() => {
     for (const [key, value] of Object.entries(hooks.value)) {
-      const listener = (data: any) => {
-        emit(key, data)
-      }
-
       // push into fns instead of using `on` to avoid overwriting default handlers - the emits should be called in addition to the default handlers
-      value.fns.add(listener)
+      value.setEmitter((data) => {
+        emit(key, data)
+      })
 
       tryOnScopeDispose(() => {
-        value.off(listener)
+        value.removeEmitter()
       })
     }
   })
