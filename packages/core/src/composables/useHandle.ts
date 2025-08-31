@@ -278,6 +278,11 @@ export function useHandle({
       }
 
       function onPointerUp(event: MouseTouchEvent) {
+        // Prevent multi-touch aborting connection
+        if ('touches' in event && event.touches.length > 0) {
+          return
+        }
+
         if ((closestHandle || handleDomNode) && connection && isValid) {
           if (!onEdgeUpdate) {
             emits.connect(connection)

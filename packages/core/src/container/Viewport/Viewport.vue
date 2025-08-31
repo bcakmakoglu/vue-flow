@@ -76,6 +76,8 @@ const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
 
 const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true))
 
+const connectionInProgress = toRef(() => connectionStartHandle.value !== null)
+
 onMounted(() => {
   if (!viewportRef.value) {
     warn('Viewport element is missing')
@@ -163,6 +165,7 @@ onMounted(() => {
     const zoomScroll = zoomKeyPressed.value || zoomOnScroll.value
     const pinchZoom = zoomOnPinch.value && event.ctrlKey
     const eventButton = (event as MouseEvent).button
+    const isWheelEvent = event.type === 'wheel'
 
     if (
       eventButton === 1 &&
@@ -182,30 +185,35 @@ onMounted(() => {
       return false
     }
 
+    // we want to disable pinch-zooming while making a connection
+    if (connectionInProgress.value && !isWheelEvent) {
+      return false
+    }
+
     // if zoom on double click is disabled, we prevent the double click event
     if (!zoomOnDoubleClick.value && event.type === 'dblclick') {
       return false
     }
 
     // if the target element is inside an element with the nowheel class, we prevent zooming
-    if (isWrappedWithClass(event, noWheelClassName.value) && event.type === 'wheel') {
+    if (isWrappedWithClass(event, noWheelClassName.value) && isWheelEvent) {
       return false
     }
 
     // if the target element is inside an element with the nopan class, we prevent panning
     if (
       isWrappedWithClass(event, noPanClassName.value) &&
-      (event.type !== 'wheel' || (shouldPanOnScroll.value && event.type === 'wheel' && !zoomKeyPressed.value))
+      (!isWheelEvent || (shouldPanOnScroll.value && isWheelEvent && !zoomKeyPressed.value))
     ) {
       return false
     }
 
-    if (!zoomOnPinch.value && event.ctrlKey && event.type === 'wheel') {
+    if (!zoomOnPinch.value && event.ctrlKey && isWheelEvent) {
       return false
     }
 
     // when there is no scroll handling enabled, we prevent all wheel events
-    if (!zoomScroll && !shouldPanOnScroll.value && !pinchZoom && event.type === 'wheel') {
+    if (!zoomScroll && !shouldPanOnScroll.value && !pinchZoom && isWheelEvent) {
       return false
     }
 
@@ -242,7 +250,7 @@ onMounted(() => {
       eventButton <= 1
 
     // default filter for d3-zoom
-    return (!event.ctrlKey || panKeyPressed.value || event.type === 'wheel') && buttonAllowed
+    return (!event.ctrlKey || panKeyPressed.value || isWheelEvent) && buttonAllowed
   })
 
   watch(
@@ -414,7 +422,7 @@ export default {
       :is-selecting="isSelecting"
       :selection-key-pressed="selectionKeyPressed"
       :class="{
-        connecting: !!connectionStartHandle,
+        connecting: connectionInProgress,
         dragging: paneDragging,
         draggable: panOnDrag === true || (Array.isArray(panOnDrag) && panOnDrag.includes(0)),
       }"
