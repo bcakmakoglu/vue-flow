@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.46.1] - 2025-08-31
+
+[e293519](e293519ee2ec3fd8103707491cbbc401e1be09af)...[7a46a74](7a46a746acb8f3db09c01f31f76b6749032ad2fe)
+
+### Bug Fixes
+
+- Use valid handle result as connecting handle (#1932) ([dd48e47](dd48e47d02a81cfabc2ba32f0bf24bc9b1f09f76))
+- Correctly check if an event has any listeners bound to it (#1935) ([e9f0cdf](e9f0cdff3d26141a01cfcad0e355d9607210a68d))
+- Skip resize handler if node not visible (#1936) ([c9c26d0](c9c26d02f6c2e875381a9eb93b774857658b2d31))
+- Prevent multi touch from aborting connections (#1938) ([490473d](490473d997120ab640a25a7012f34c223f6d41a7))
+
+### Documentation
+
+- Remove info on pointer events removal when elements selectable is false ([3c96b38](3c96b385c31f005b04460165817d8c803504772a))
+
+### Refactor
+
+- Avoid passing reactive values to position changes (#1937) ([bd606b9](bd606b98a205a6fe9f40be76a57a025a7605e424))
+
 ## [1.46.0] - 2025-08-15
 
 [e094426](e0944266bf1ed813db0cf70fb46fac7c87aa17c5)...[e293519](e293519ee2ec3fd8103707491cbbc401e1be09af)
