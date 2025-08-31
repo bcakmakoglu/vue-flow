@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.46.1
+
+### Patch Changes
+
+- [#1935](https://github.com/bcakmakoglu/vue-flow/pull/1935) [`ca54587`](https://github.com/bcakmakoglu/vue-flow/commit/ca54587962af638cbe3a2d046663105bbe287a72) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correctly check if an event listener was bound to the VueFlow component, using for example `@node-click` or if a listener was bound using the exposed event hooks from `useVueFlow` when determening if a listener for an event exists at all.
+
+- [#1932](https://github.com/bcakmakoglu/vue-flow/pull/1932) [`3e0442a`](https://github.com/bcakmakoglu/vue-flow/commit/3e0442a3b7ee0064f8879f079d053961d5774620) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use toHandle from valid handle check as target handle in ongoing connections
+
+- [#1938](https://github.com/bcakmakoglu/vue-flow/pull/1938) [`fd785e2`](https://github.com/bcakmakoglu/vue-flow/commit/fd785e2e595e238f9c93cb3db4f17ae1001f760f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent multi touch from aborting connections.
+
+- [#1936](https://github.com/bcakmakoglu/vue-flow/pull/1936) [`ff6b3d2`](https://github.com/bcakmakoglu/vue-flow/commit/ff6b3d2011924a14807e0c3b21f519445a498762) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Skip resize handler if node is not visible.
+
 ## 1.46.0
 
 ### Minor Changes
