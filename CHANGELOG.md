@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.46.2] - 2025-08-31
+
+[7a46a74](7a46a746acb8f3db09c01f31f76b6749032ad2fe)...[ed35bde](ed35bdeb0cefcdd16d543a1145b3770dd1053fc8)
+
+### Bug Fixes
+
+- Only emit position changes if  change occurred (#1939) ([2bacaa8](2bacaa8b2df18f924302af2a4b39cdcdc4b1bc41))
+
 ## [1.46.1] - 2025-08-31
 
 [e293519](e293519ee2ec3fd8103707491cbbc401e1be09af)...[7a46a74](7a46a746acb8f3db09c01f31f76b6749032ad2fe)
