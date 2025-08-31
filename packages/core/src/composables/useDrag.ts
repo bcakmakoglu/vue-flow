@@ -74,6 +74,7 @@ export function useDrag(params: UseDragParams) {
   let mousePosition: XYPosition = { x: 0, y: 0 }
   let dragEvent: MouseEvent | null = null
   let dragStarted = false
+  let nodePositionsChanged = false
 
   let autoPanId = 0
   let autoPanStarted = false
@@ -103,6 +104,8 @@ export function useDrag(params: UseDragParams) {
 
       return n
     })
+
+    nodePositionsChanged = nodePositionsChanged || hasChange
 
     if (!hasChange) {
       return
@@ -187,6 +190,8 @@ export function useDrag(params: UseDragParams) {
       return
     }
 
+    nodePositionsChanged = false
+
     if (nodeDragThreshold.value === 0) {
       startDrag(event, nodeEl)
     }
@@ -244,7 +249,10 @@ export function useDrag(params: UseDragParams) {
     }
 
     if (dragItems.length && !isClick) {
-      updateNodePositions(dragItems, false, false)
+      if (nodePositionsChanged) {
+        updateNodePositions(dragItems, false, false)
+        nodePositionsChanged = false
+      }
 
       const [currentNode, nodes] = getEventHandlerParams({
         id,
