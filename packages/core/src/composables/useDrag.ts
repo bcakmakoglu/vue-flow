@@ -42,7 +42,7 @@ export function useDrag(params: UseDragParams) {
     snapToGrid,
     snapGrid,
     noDragClassName,
-    nodes,
+    nodeLookup,
     nodeExtent,
     nodeDragThreshold,
     viewport,
@@ -169,7 +169,7 @@ export function useDrag(params: UseDragParams) {
 
     const pointerPos = getPointerPosition(event.sourceEvent)
     lastPos = pointerPos
-    dragItems = getDragItems(nodes.value, nodesDraggable.value, pointerPos, findNode, id)
+    dragItems = getDragItems(nodeLookup.value, nodesDraggable.value, pointerPos, id)
 
     if (dragItems.length) {
       const [currentNode, nodes] = getEventHandlerParams({
