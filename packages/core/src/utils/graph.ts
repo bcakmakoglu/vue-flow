@@ -1,6 +1,5 @@
 import { markRaw } from 'vue'
 import type {
-  Actions,
   Box,
   Connection,
   CoordinateExtent,
@@ -16,6 +15,7 @@ import type {
   GraphNode,
   MaybeElement,
   Node,
+  NodeLookup,
   Rect,
   ViewportTransform,
   XYPosition,
@@ -471,12 +471,12 @@ export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition)
   }
 }
 
-export function isParentSelected(node: GraphNode, findNode: Actions['findNode']): boolean {
+export function isParentSelected(node: GraphNode, nodeLookup: NodeLookup): boolean {
   if (!node.parentNode) {
     return false
   }
 
-  const parent = findNode(node.parentNode)
+  const parent = nodeLookup.get(node.parentNode)
   if (!parent) {
     return false
   }
@@ -485,7 +485,7 @@ export function isParentSelected(node: GraphNode, findNode: Actions['findNode'])
     return true
   }
 
-  return isParentSelected(parent, findNode)
+  return isParentSelected(parent, nodeLookup)
 }
 
 export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: string) {
