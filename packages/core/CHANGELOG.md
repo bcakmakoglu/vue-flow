@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.46.2
+
+### Patch Changes
+
+- [#1939](https://github.com/bcakmakoglu/vue-flow/pull/1939) [`f9a5231`](https://github.com/bcakmakoglu/vue-flow/commit/f9a52316991e949a6167f249d08fbbf41d49860d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Only emit node position changes if a position change actually occurred.
+
 ## 1.46.1
 
 ### Patch Changes
