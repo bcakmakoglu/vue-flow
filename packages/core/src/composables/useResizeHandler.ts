@@ -15,14 +15,12 @@ export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
   let resizeObserver: ResizeObserver
 
   onMounted(() => {
-    const rendererNode = viewportEl.value
-
     const updateDimensions = () => {
-      if (!rendererNode) {
+      if (!viewportEl.value || !(viewportEl.value.checkVisibility() ?? true)) {
         return
       }
 
-      const size = getDimensions(rendererNode)
+      const size = getDimensions(viewportEl.value)
 
       if (size.width === 0 || size.height === 0) {
         emits.error(new VueFlowError(ErrorCode.MISSING_VIEWPORT_DIMENSIONS))
@@ -34,16 +32,16 @@ export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
     updateDimensions()
     window.addEventListener('resize', updateDimensions)
 
-    if (rendererNode) {
+    if (viewportEl.value) {
       resizeObserver = new ResizeObserver(() => updateDimensions())
-      resizeObserver.observe(rendererNode)
+      resizeObserver.observe(viewportEl.value)
     }
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', updateDimensions)
 
-      if (resizeObserver && rendererNode) {
-        resizeObserver.unobserve(rendererNode!)
+      if (resizeObserver && viewportEl.value) {
+        resizeObserver.unobserve(viewportEl.value!)
       }
     })
   })
