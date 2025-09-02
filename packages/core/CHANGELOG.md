@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.46.3
+
+### Patch Changes
+
+- [#1942](https://github.com/bcakmakoglu/vue-flow/pull/1942) [`90cf6ff`](https://github.com/bcakmakoglu/vue-flow/commit/90cf6ff83fc08191df16fd64a45668c4dbcdd845) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add nullish operator to checkVisibility call
+
 ## 1.46.2
 
 ### Patch Changes
