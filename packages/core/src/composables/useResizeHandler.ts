@@ -16,7 +16,7 @@ export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
 
   onMounted(() => {
     const updateDimensions = () => {
-      if (!viewportEl.value || !(viewportEl.value.checkVisibility() ?? true)) {
+      if (!viewportEl.value || !(viewportEl.value.checkVisibility?.() ?? true)) {
         return
       }
 
