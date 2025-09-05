@@ -2,13 +2,8 @@
   "extends": "@tooling/tsconfig/base",
   "compilerOptions": {
     "baseUrl": ".",
-    "declarationDir": "./dist",
-    "types": [
-      "vite/client",
-      "vue/macros"
-    ]
+    "types": ["vite/client", "vue/macros"],
+    "declarationDir": "./dist"
   },
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }
