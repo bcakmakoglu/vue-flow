@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.46.3] - 2025-09-05
+
+[ed35bde](ed35bdeb0cefcdd16d543a1145b3770dd1053fc8)...[c9c9040](c9c9040fb85a425081adbc4cdddf17df3c7b5a38)
+
+### Bug Fixes
+
+- Add nullish operator to check visibility (#1942) ([67832e5](67832e528d9ff993773844a7bcb13026135c8492))
+
 ## [1.46.2] - 2025-08-31
 
 [7a46a74](7a46a746acb8f3db09c01f31f76b6749032ad2fe)...[ed35bde](ed35bdeb0cefcdd16d543a1145b3770dd1053fc8)
