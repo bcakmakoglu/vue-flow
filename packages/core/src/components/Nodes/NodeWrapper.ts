@@ -266,7 +266,7 @@ const NodeWrapper = defineComponent({
             'vue-flow__node',
             `vue-flow__node-${nodeCmp.value === false ? 'default' : node.type || 'default'}`,
             {
-              [noPanClassName.value]: isDraggable.value,
+              // [noPanClassName.value]: isDraggable.value,
               dragging: dragging?.value,
               draggable: isDraggable.value,
               selected: node.selected,
