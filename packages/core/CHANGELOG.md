@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.46.4
+
+### Patch Changes
+
+- [#1954](https://github.com/bcakmakoglu/vue-flow/pull/1954) [`f4cfc50`](https://github.com/bcakmakoglu/vue-flow/commit/f4cfc50ff6653e822a6375a02c3cb1957fc55f55) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove border related styles from the required styles and move them into the default theme stylesheet
+
 ## 1.46.3
 
 ### Patch Changes
