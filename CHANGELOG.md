@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.46.4] - 2025-09-11
+
+[c9c9040](c9c9040fb85a425081adbc4cdddf17df3c7b5a38)...[dee75dd](dee75ddc1ad912eac67467ad52d71fd0bce93391)
+
+### Bug Fixes
+
+- Remove node border styles from required styles (#1954) ([2ebe3d9](2ebe3d9088bc64524fe97cd88b3c9d32e0fe6643))
+
 ## [1.46.3] - 2025-09-05
 
 [ed35bde](ed35bdeb0cefcdd16d543a1145b3770dd1053fc8)...[c9c9040](c9c9040fb85a425081adbc4cdddf17df3c7b5a38)
