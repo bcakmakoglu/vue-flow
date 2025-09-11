@@ -1,7 +1,7 @@
 :root {
   --vf-node-bg: #fff;
   --vf-node-text: #222;
-  --vf-connection-path:  #b1b1b7;
+  --vf-connection-path: #b1b1b7;
   --vf-handle: #555;
 }
 
@@ -32,8 +32,8 @@
 .vue-flow__node.selectable {
   &:focus,
   &:focus-visible {
-     outline: none;
-   }
+    outline: none;
+  }
 }
 
 .vue-flow__node-default,
@@ -52,8 +52,15 @@
 
   &.selected,
   &.selected:hover {
-     box-shadow: 0 0 0 0.5px var(--vf-box-shadow);
-   }
+    box-shadow: 0 0 0 0.5px var(--vf-box-shadow);
+  }
+
+  &.selected,
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border: 1px solid #555;
+  }
 
   .vue-flow__handle {
     background: var(--vf-handle);
@@ -79,9 +86,9 @@
   &.selected,
   &:focus,
   &:focus-visible {
-     outline: none;
-     border: 1px solid var(--vf-node-color, #0041d0);
-   }
+    outline: none;
+    border: 1px solid var(--vf-node-color, #0041d0);
+  }
 }
 
 .vue-flow__node-default {
@@ -94,9 +101,9 @@
   &.selected,
   &:focus,
   &:focus-visible {
-     outline: none;
-     border: 1px solid var(--vf-node-color, #1a192b);
-   }
+    outline: none;
+    border: 1px solid var(--vf-node-color, #1a192b);
+  }
 }
 
 .vue-flow__node-output {
@@ -109,9 +116,9 @@
   &.selected,
   &:focus,
   &:focus-visible {
-     outline: none;
-     border: 1px solid var(--vf-node-color, #ff0072);
-   }
+    outline: none;
+    border: 1px solid var(--vf-node-color, #ff0072);
+  }
 }
 
 .vue-flow__nodesselection-rect,
@@ -121,8 +128,8 @@
 
   &:focus,
   &:focus-visible {
-     outline: none;
-   }
+    outline: none;
+  }
 }
 
 .vue-flow__handle {
