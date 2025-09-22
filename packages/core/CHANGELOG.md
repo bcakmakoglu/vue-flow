@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.46.5
+
+### Patch Changes
+
+- [#1962](https://github.com/bcakmakoglu/vue-flow/pull/1962) [`34bcf36`](https://github.com/bcakmakoglu/vue-flow/commit/34bcf36301c1c1a40ad67013c607726577a0741d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Unwrap connection line status ref in the connection line component to correctly append the class name.
+
 ## 1.46.4
 
 ### Patch Changes
