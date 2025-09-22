@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.46.5] - 2025-09-22
+
+[dee75dd](dee75ddc1ad912eac67467ad52d71fd0bce93391)...[9e2359c](9e2359c98a38b771d7f44f4a77615d6d7cf5bbbe)
+
+### Bug Fixes
+
+- Unwrap connection line status ref (#1962) ([7729eff](7729eff1f0cd1462af0aaae17c2599292a343048))
+
+### Miscellaneous Tasks
+
+- Cleanup ([f3dc522](f3dc5226184df08d155b2eecb84dd70351960150))
+
 ## [1.46.4] - 2025-09-11
 
 [c9c9040](c9c9040fb85a425081adbc4cdddf17df3c7b5a38)...[dee75dd](dee75ddc1ad912eac67467ad52d71fd0bce93391)
