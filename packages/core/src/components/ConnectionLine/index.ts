@@ -145,7 +145,7 @@ const ConnectionLine = defineComponent({
               })
             : h('path', {
                 'd': dAttr,
-                'class': [connectionLineOptions.value.class, connectionStatus, 'vue-flow__connection-path'],
+                'class': [connectionLineOptions.value.class, connectionStatus.value, 'vue-flow__connection-path'],
                 'style': {
                   ...connectionLineStyle.value,
                   ...connectionLineOptions.value.style,
