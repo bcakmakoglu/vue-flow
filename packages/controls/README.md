@@ -25,7 +25,6 @@ import '@vue-flow/controls/dist/style.css'
 
 import initialElements from './initial-elements'
 
-
 // some nodes and edges
 const elements = ref(initialElements)
 </script>
