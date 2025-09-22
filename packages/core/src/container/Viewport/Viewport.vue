@@ -38,6 +38,7 @@ const {
   d3Selection: storeD3Selection,
   d3ZoomHandler: storeD3ZoomHandler,
   viewport,
+  ancestorZoom,
   viewportRef,
   paneClickDistance,
 } = useVueFlow()
@@ -253,6 +254,7 @@ onMounted(() => {
     return (!event.ctrlKey || panKeyPressed.value || isWheelEvent) && buttonAllowed
   })
 
+  let prevEventTransform: ZoomTransform = zoomIdentity
   watch(
     [userSelectionActive, shouldPanOnDrag],
     () => {
@@ -260,7 +262,12 @@ onMounted(() => {
         d3Zoom.on('zoom', null)
       } else if (!userSelectionActive.value) {
         d3Zoom.on('zoom', (event: D3ZoomEvent<HTMLDivElement, any>) => {
-          viewport.value = { x: event.transform.x, y: event.transform.y, zoom: event.transform.k }
+          viewport.value = {
+            x: viewport.value.x + (event.transform.x - prevEventTransform.x) / ancestorZoom.value,
+            y: viewport.value.y + (event.transform.y - prevEventTransform.y) / ancestorZoom.value,
+            zoom: event.transform.k,
+          }
+          prevEventTransform = event.transform
 
           const flowTransform = eventToFlowTransform(event.transform)
 

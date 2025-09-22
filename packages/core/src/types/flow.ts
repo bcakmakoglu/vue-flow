@@ -179,6 +179,7 @@ export interface FlowProps {
   panOnDrag?: boolean | number[]
   minZoom?: number
   maxZoom?: number
+  ancestorZoom?: number
   defaultViewport?: Partial<ViewportTransform>
   translateExtent?: CoordinateExtent
   nodeExtent?: CoordinateExtent | CoordinateExtentRange
