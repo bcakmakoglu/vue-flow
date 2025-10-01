@@ -160,7 +160,6 @@ export function useViewportHelper(state: State) {
           options.minZoom ?? state.minZoom,
           options.maxZoom ?? state.maxZoom,
           options.padding ?? DEFAULT_PADDING,
-          options.offset,
         )
 
         return transformViewport(x, y, zoom, options)
@@ -179,7 +178,7 @@ export function useViewportHelper(state: State) {
           state.dimensions.height,
           state.minZoom,
           state.maxZoom,
-          options.padding,
+          options.padding ?? DEFAULT_PADDING,
         )
 
         return transformViewport(x, y, zoom, options)

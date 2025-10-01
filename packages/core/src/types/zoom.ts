@@ -22,15 +22,25 @@ export interface TransitionOptions {
   interpolate?: 'smooth' | 'linear'
 }
 
+export type PaddingUnit = 'px' | '%'
+export type PaddingWithUnit = `${number}${PaddingUnit}` | number
+
+export type Padding =
+  | PaddingWithUnit
+  | {
+      top?: PaddingWithUnit
+      right?: PaddingWithUnit
+      bottom?: PaddingWithUnit
+      left?: PaddingWithUnit
+      x?: PaddingWithUnit
+      y?: PaddingWithUnit
+    }
+
 export type FitViewParams = {
-  padding?: number
+  padding?: Padding
   includeHiddenNodes?: boolean
   minZoom?: number
   maxZoom?: number
-  offset?: {
-    x?: number
-    y?: number
-  }
   nodes?: string[]
 } & TransitionOptions
 
@@ -45,7 +55,7 @@ export type SetCenterOptions = TransitionOptions & {
 }
 
 export type FitBoundsOptions = TransitionOptions & {
-  padding?: number
+  padding?: Padding
 }
 
 /** Fit the viewport around visible nodes */
