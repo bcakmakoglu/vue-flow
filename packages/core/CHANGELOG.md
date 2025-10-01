@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.47.0
+
+### Minor Changes
+
+- [#1967](https://github.com/bcakmakoglu/vue-flow/pull/1967) [`7828f4a`](https://github.com/bcakmakoglu/vue-flow/commit/7828f4a40b226d6032472be635dc28b0be91c487) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace the existing `offset` option for fitView with a more expressive `padding` option allowing users to define padding per sides.
+
 ## 1.46.5
 
 ### Patch Changes
