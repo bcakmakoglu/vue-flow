@@ -565,7 +565,7 @@ export function getTransformForBounds(
   height: number,
   minZoom: number,
   maxZoom: number,
-  padding: Padding,
+  padding: Padding = 0.1,
 ): ViewportTransform {
   // First we resolve all the paddings to actual pixel values
   const p = parsePaddings(padding, width, height)
