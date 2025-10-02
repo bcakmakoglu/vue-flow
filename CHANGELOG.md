@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.47.0] - 2025-10-02
+
+[9e2359c](9e2359c98a38b771d7f44f4a77615d6d7cf5bbbe)...[ff69823](ff69823b9db45da9dd012852b8b7ec50bb45c6a9)
+
+### Features
+
+- Replace fitView option offset with expressive padding (#1967) ([cca5ab8](cca5ab8c44abc409ac3b80e99ddc8f0cde18ee27))
+
 ## [1.46.5] - 2025-09-22
 
 [dee75dd](dee75ddc1ad912eac67467ad52d71fd0bce93391)...[9e2359c](9e2359c98a38b771d7f44f4a77615d6d7cf5bbbe)
