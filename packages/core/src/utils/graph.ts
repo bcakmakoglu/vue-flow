@@ -291,10 +291,14 @@ export function updateEdge(oldEdge: Edge, newConnection: Connection, elements: E
   return elements.filter((e) => e.id !== oldEdge.id)
 }
 
-export function rendererPointToPoint({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition {
+export function rendererPointToPoint(
+  { x, y }: XYPosition,
+  { x: tx, y: ty, zoom: tScale }: ViewportTransform,
+  ancestorZoom: number,
+): XYPosition {
   return {
-    x: x * tScale + tx,
-    y: y * tScale + ty,
+    x: x * tScale * ancestorZoom + tx,
+    y: y * tScale * ancestorZoom + ty,
   }
 }
 export function pointToRendererPoint(
@@ -302,10 +306,11 @@ export function pointToRendererPoint(
   { x: tx, y: ty, zoom: tScale }: ViewportTransform,
   snapToGrid: boolean = false,
   snapGrid: [snapX: number, snapY: number] = [1, 1],
+  ancestorZoom = 1,
 ): XYPosition {
   const position: XYPosition = {
-    x: (x - tx) / tScale,
-    y: (y - ty) / tScale,
+    x: (x - tx) / (tScale * ancestorZoom),
+    y: (y - ty) / (tScale * ancestorZoom),
   }
 
   return snapToGrid ? snapPosition(position, snapGrid) : position

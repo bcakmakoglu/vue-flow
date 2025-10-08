@@ -193,7 +193,7 @@ export function useViewportHelper(state: State) {
             y: position.y - domY,
           }
 
-          return pointToRendererPoint(correctedPosition, state.viewport, state.snapToGrid, state.snapGrid)
+          return pointToRendererPoint(correctedPosition, state.viewport, state.snapToGrid, state.snapGrid, state.ancestorZoom)
         }
 
         return { x: 0, y: 0 }
@@ -207,7 +207,7 @@ export function useViewportHelper(state: State) {
             y: position.y + domY,
           }
 
-          return rendererPointToPoint(correctedPosition, state.viewport)
+          return rendererPointToPoint(correctedPosition, state.viewport, state.ancestorZoom)
         }
 
         return { x: 0, y: 0 }
