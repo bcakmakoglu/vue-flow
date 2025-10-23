@@ -7,6 +7,7 @@ import type {
   Elements,
   FlowElements,
   FlowExportObject,
+  FlowImportObject,
   FlowOptions,
   FlowProps,
   Rect,
@@ -297,7 +298,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** return an object of graph values (elements, viewport transform) for storage and re-loading a graph */
   toObject: () => FlowExportObject
   /** load graph from export obj */
-  fromObject: (obj: FlowExportObject) => Promise<boolean>
+  fromObject: (obj: FlowImportObject) => Promise<boolean>
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */

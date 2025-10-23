@@ -140,6 +140,8 @@ export interface FlowExportObject {
   viewport: ViewportTransform
 }
 
+export type FlowImportObject = { [key in keyof FlowExportObject]?: FlowExportObject[key] }
+
 export interface FlowProps {
   id?: string
   /**
