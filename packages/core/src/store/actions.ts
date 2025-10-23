@@ -830,9 +830,9 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         setEdges(edges)
       }
 
-      if ((viewport?.x && viewport?.y) || position) {
-        const x = viewport?.x || position[0]
-        const y = viewport?.y || position[1]
+      const [xPos, yPos] = viewport?.x && viewport?.y ? [viewport.x, viewport.y] : position ?? [null, null]
+
+      if (xPos && yPos) {
         const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
 
         return until(() => viewportHelper.value.viewportInitialized)
@@ -840,8 +840,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
           .then(() => {
             viewportHelper.value
               .setViewport({
-                x,
-                y,
+                x: xPos,
+                y: yPos,
                 zoom: nextZoom,
               })
               .then(() => {
