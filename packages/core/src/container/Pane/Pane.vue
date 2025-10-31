@@ -238,8 +238,9 @@ export default {
 <template>
   <div
     ref="container"
-    class="vue-flow__pane vue-flow__container"
     :class="{ selection: isSelecting }"
+    class="vue-flow__pane vue-flow__container"
+    tabindex="0"
     @click="(event) => (hasActiveSelection ? undefined : wrapHandler(onClick, container)(event))"
     @contextmenu="wrapHandler(onContextMenu, container)($event)"
     @wheel.passive="wrapHandler(onWheel, container)($event)"
@@ -248,6 +249,8 @@ export default {
     @pointermove="(event) => (hasActiveSelection ? onPointerMove(event) : emits.paneMouseMove(event))"
     @pointerup="(event) => (hasActiveSelection ? onPointerUp(event) : undefined)"
     @pointerleave="emits.paneMouseLeave($event)"
+    @focus="emits.paneFocus($event)"
+    @blur="emits.paneBlur($event)"
   >
     <slot />
     <UserSelection v-if="userSelectionActive && userSelectionRect" :user-selection-rect="userSelectionRect" />

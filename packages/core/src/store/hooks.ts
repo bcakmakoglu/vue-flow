@@ -48,6 +48,8 @@ export function createHooks(): FlowHooks {
     paneMouseEnter: createExtendedEventHook(),
     paneMouseMove: createExtendedEventHook(),
     paneMouseLeave: createExtendedEventHook(),
+    paneFocus: createExtendedEventHook(),
+    paneBlur: createExtendedEventHook(),
     edgeContextMenu: createExtendedEventHook(),
     edgeMouseEnter: createExtendedEventHook(),
     edgeMouseMove: createExtendedEventHook(),

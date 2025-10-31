@@ -81,6 +81,8 @@ export interface FlowEvents {
   paneMouseEnter: PointerEvent
   paneMouseMove: PointerEvent
   paneMouseLeave: PointerEvent
+  paneFocus: FocusEvent
+  paneBlur: FocusEvent
   edgeContextMenu: EdgeMouseEvent
   edgeMouseEnter: EdgeMouseEvent
   edgeMouseMove: EdgeMouseEvent
