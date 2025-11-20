@@ -26,7 +26,7 @@ export function useUpdateNodePositions() {
       if (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined')) {
         const nextPosition = { x: node.computedPosition.x + positionDiffX, y: node.computedPosition.y + positionDiffY }
 
-        const { computedPosition } = calcNextPosition(
+        const { position } = calcNextPosition(
           node,
           nextPosition,
           emits.error,
@@ -36,7 +36,7 @@ export function useUpdateNodePositions() {
 
         nodeUpdates.push({
           id: node.id,
-          position: computedPosition,
+          position,
           from: node.position,
           distance: { x: positionDiff.x, y: positionDiff.y },
           dimensions: node.dimensions,
