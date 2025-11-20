@@ -45,7 +45,7 @@ function onContextMenu(event: MouseEvent) {
 }
 
 function onKeyDown(event: KeyboardEvent) {
-  if (disableKeyboardA11y) {
+  if (disableKeyboardA11y.value) {
     return
   }
 
