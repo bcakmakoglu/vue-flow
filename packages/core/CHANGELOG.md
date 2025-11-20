@@ -1,5 +1,17 @@
 # @vue-flow/core
 
+## 1.48.0
+
+### Minor Changes
+
+- [#1978](https://github.com/bcakmakoglu/vue-flow/pull/1978) [`7acd6d7`](https://github.com/bcakmakoglu/vue-flow/commit/7acd6d74353a0be6d0c52c7de96ab19f10e97e98) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Separate flow import and export object shapes and interfaces. An export object has all fields as required, while an import object makes all fields optional.
+
+### Patch Changes
+
+- [#1988](https://github.com/bcakmakoglu/vue-flow/pull/1988) [`dd6a91f`](https://github.com/bcakmakoglu/vue-flow/commit/dd6a91f7dce0d7b76b9d0602da89b1ed8542bc85) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correctly unwrap disableKeyboardA11y ref when checking if a selection can be moved or not.
+
+- [#1989](https://github.com/bcakmakoglu/vue-flow/pull/1989) [`3f6e09a`](https://github.com/bcakmakoglu/vue-flow/commit/3f6e09a51c3ec33f5d8ce3bcd442c17623794c0a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use position instead of computedPosition as updated position when moving a child node via keyboard.
+
 ## 1.47.0
 
 ### Minor Changes
