@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.48.0] - 2025-11-21
+
+[ff69823](ff69823b9db45da9dd012852b8b7ec50bb45c6a9)...[09cb136](09cb136ab7326da269f2e97f926880be0605cff6)
+
+### Bug Fixes
+
+- Unwrap disableKeyboardA11y to check if keyboard movement is allowed (#1988) ([ce4a8fb](ce4a8fb00107edefc2cea7ac27b3c527fa396608))
+- Use position instead of computedPos as keyboard move pos (#1989) ([0ced769](0ced7692367d9bdeb927de4c339a6767e593e4b6))
+
+### Miscellaneous Tasks
+
+- Remove duplicate showZoom prop description ([04d9e59](04d9e591c73a6b2f168898ff1432dbad03859ac3))
+- Update showcase ([62a1d41](62a1d41a4336fa3596f1f82cfdcabfffdbd00c65))
+
+### Refactor
+
+- Separate import and export objects and interfaces (#1978) ([6008d63](6008d6330418ef2be99238b6789025808a819551))
+
 ## [1.47.0] - 2025-10-02
 
 [9e2359c](9e2359c98a38b771d7f44f4a77615d6d7cf5bbbe)...[ff69823](ff69823b9db45da9dd012852b8b7ec50bb45c6a9)
