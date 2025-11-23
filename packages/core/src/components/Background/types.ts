@@ -61,7 +61,7 @@ export interface BackgroundProps {
   /**
    * Background pattern offset
    *
-   * @default 2
+   * @default 0
    */
-  offset?: number
+  offset?: number | [number, number]
 }

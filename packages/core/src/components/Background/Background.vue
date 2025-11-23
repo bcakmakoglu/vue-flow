@@ -17,8 +17,10 @@ const props = withDefaults(defineProps<BackgroundProps>(), {
 const { id: vueFlowId, viewport } = useVueFlow()
 
 const background = computed(() => {
+  const { gap, offset, size } = props
+
   const zoom = viewport.value.zoom
-  const [gapX, gapY] = Array.isArray(props.gap) ? props.gap : [props.gap, props.gap]
+  const [gapX, gapY] = Array.isArray(gap) ? gap : [gap, gap]
   const scaledGap: [number, number] = [gapX * zoom || 1, gapY * zoom || 1]
   const scaledSize = size * zoom
   const [offsetX, offsetY]: [number, number] = Array.isArray(offset) ? offset : [offset, offset]
