@@ -2,7 +2,6 @@ import { markRaw } from 'vue'
 import type { Viewport } from '@xyflow/system'
 import { boxToRect, clamp, getBoundsOfBoxes, getOverlappingArea, rectToBox } from '@xyflow/system'
 import type {
-  Actions,
   Box,
   Connection,
   DefaultEdgeOptions,
@@ -11,6 +10,7 @@ import type {
   GraphEdge,
   GraphNode,
   Node,
+  NodeLookup,
   Rect,
   XYPosition,
   XYZPosition,
@@ -277,12 +277,12 @@ export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition)
   }
 }
 
-export function isParentSelected(node: GraphNode, findNode: Actions['findNode']): boolean {
+export function isParentSelected(node: GraphNode, nodeLookup: NodeLookup): boolean {
   if (!node.parentNode) {
     return false
   }
 
-  const parent = findNode(node.parentNode)
+  const parent = nodeLookup.get(node.parentNode)
   if (!parent) {
     return false
   }
@@ -291,5 +291,5 @@ export function isParentSelected(node: GraphNode, findNode: Actions['findNode'])
     return true
   }
 
-  return isParentSelected(parent, findNode)
+  return isParentSelected(parent, nodeLookup)
 }

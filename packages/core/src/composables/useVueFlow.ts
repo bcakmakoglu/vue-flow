@@ -28,7 +28,7 @@ export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowSt
    */
   if (scope) {
     const injectedState = inject(VueFlow, null) as VueFlowStore<NodeType> | null
-    if (typeof injectedState !== 'undefined' && injectedState !== null && (!vueFlowId || injectedState.id === vueFlowId)) {
+    if (typeof injectedState !== 'undefined' && injectedState !== null && (!id || injectedState.id === id)) {
       vueFlow = injectedState
     }
   }

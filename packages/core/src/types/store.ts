@@ -41,7 +41,7 @@ export interface UpdateNodeDimensionsParams {
   forceUpdate?: boolean
 }
 
-export interface State<NodeType extends Node = Node> extends Omit<FlowProps, 'id'> {
+export interface State<NodeType extends Node = Node> extends Omit<FlowProps<NodeType>, 'id' | 'nodes' | 'edges'> {
   /** Vue flow element ref */
   vueFlowRef: HTMLDivElement | null
   /** Vue flow viewport element */
@@ -80,7 +80,7 @@ export interface State<NodeType extends Node = Node> extends Omit<FlowProps, 'id
   multiSelectionActive: boolean
 
   deleteKeyCode: KeyFilter | null
-  selectionKeyCode: KeyFilter | boolean | null
+  selectionKeyCode: KeyFilter | null
   multiSelectionKeyCode: KeyFilter | null
   zoomActivationKeyCode: KeyFilter | null
   panActivationKeyCode: KeyFilter | null
