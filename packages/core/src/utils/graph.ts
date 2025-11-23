@@ -24,7 +24,7 @@ import type {
   XYPosition,
   XYZPosition,
 } from '../types'
-import { isDef, isMacOs, snapPosition } from '.'
+import { isDef, isMacOs, snapPosition, warn } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
