@@ -7,13 +7,9 @@ import type {
   Connection,
   DefaultEdgeOptions,
   Edge,
-  Element,
   ElementData,
-  Elements,
-  FlowElements,
   GraphEdge,
   GraphNode,
-  MaybeElement,
   Node,
   Rect,
   XYPosition,
@@ -29,26 +25,42 @@ export function nodeToRect(node: GraphNode): Rect {
   }
 }
 
-export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
-  return element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
+export function isEdge<Data = ElementData>(element: unknown): element is Edge<Data> {
+  return !!element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
 }
 
-export function isGraphEdge<Data = ElementData>(element: MaybeElement): element is GraphEdge<Data> {
+export function isGraphEdge<Data = ElementData>(element: unknown): element is GraphEdge<Data> {
   return isEdge(element) && 'sourceNode' in element && 'targetNode' in element
 }
 
-export function isNode<Data = ElementData>(element: MaybeElement): element is Node<Data> {
-  return element && typeof element === 'object' && 'id' in element && 'position' in element && !isEdge(element)
+export function isNode<NodeType extends Node = Node>(element: unknown): element is NodeType {
+  return !!element && typeof element === 'object' && 'id' in element && 'position' in element && !isEdge(element)
 }
 
-export function isGraphNode<Data = ElementData>(element: MaybeElement): element is GraphNode<Data> {
+export function isGraphNode<NodeType extends Node = Node>(element: unknown): element is GraphNode<NodeType> {
   return isNode(element) && 'computedPosition' in element
 }
 
-export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: string): GraphNode {
+export function parseNode<NodeType extends Node = Node>(
+  node: Node,
+  existingNode?: GraphNode<NodeType>,
+  parentNode?: string,
+): GraphNode<NodeType> {
   const initialState = {
     id: node.id.toString(),
     type: node.type ?? 'default',
+    measured: markRaw({
+      width: 0,
+      height: 0,
+    }),
+    internals: {
+      positionAbsolute: {
+        x: 0,
+        y: 0,
+      },
+      z: 0,
+      userNode: node,
+    },
     dimensions: markRaw({
       width: 0,
       height: 0,
@@ -57,7 +69,6 @@ export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: str
       z: 0,
       ...node.position,
     }),
-    // todo: shouldn't be defined initially, as we want to use handleBounds to check if a node was actually initialized or not
     handleBounds: {
       source: [],
       target: [],
@@ -76,10 +87,9 @@ export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: str
       y: 0,
     },
     data: isDef(node.data) ? node.data : {},
-    events: markRaw(isDef(node.events) ? node.events : {}),
   } as GraphNode
 
-  return Object.assign(existingNode ?? initialState, node, { id: node.id.toString(), parentNode }) as GraphNode
+  return Object.assign(existingNode ?? initialState, node, { id: node.id.toString(), parentNode }) as GraphNode<NodeType>
 }
 
 export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptions?: DefaultEdgeOptions): GraphEdge {
@@ -94,7 +104,6 @@ export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptio
     selectable: edge.selectable ?? defaultEdgeOptions?.selectable,
     focusable: edge.focusable ?? defaultEdgeOptions?.focusable,
     data: isDef(edge.data) ? edge.data : {},
-    events: markRaw(isDef(edge.events) ? edge.events : {}),
     label: edge.label ?? '',
     interactionWidth: edge.interactionWidth ?? defaultEdgeOptions?.interactionWidth,
     ...(defaultEdgeOptions ?? {}),
@@ -103,73 +112,13 @@ export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptio
   return Object.assign(existingEdge ?? initialState, edge, { id: edge.id.toString() }) as GraphEdge
 }
 
-function getConnectedElements<T extends Node = Node>(
-  nodeOrId: Node | { id: string } | string,
-  nodes: T[],
-  edges: Edge[],
-  dir: 'source' | 'target',
-): T[] {
-  const id = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
-
-  const connectedIds = new Set()
-
-  const origin = dir === 'source' ? 'target' : 'source'
-
-  for (const edge of edges) {
-    if (edge[origin] === id) {
-      connectedIds.add(edge[dir])
-    }
-  }
-
-  return nodes.filter((n) => connectedIds.has(n.id))
-}
-
-export function getOutgoers<N extends Node>(nodeOrId: Node | { id: string } | string, nodes: N[], edges: Edge[]): N[]
-export function getOutgoers<T extends Elements>(
-  nodeOrId: Node | { id: string } | string,
-  elements: T,
-): T extends FlowElements ? GraphNode[] : Node[]
-export function getOutgoers(...args: any[]) {
-  if (args.length === 3) {
-    const [nodeOrId, nodes, edges] = args
-    return getConnectedElements(nodeOrId, nodes, edges, 'target')
-  }
-
-  const [nodeOrId, elements] = args
-  const nodeId = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
-
-  const outgoers = elements.filter((el: Element) => isEdge(el) && el.source === nodeId)
-
-  return outgoers.map((edge: Edge) => elements.find((el: Element) => isNode(el) && el.id === edge.target))
-}
-
-export function getIncomers<N extends Node>(nodeOrId: Node | { id: string } | string, nodes: N[], edges: Edge[]): N[]
-export function getIncomers<T extends Elements>(
-  nodeOrId: Node | { id: string } | string,
-  elements: T,
-): T extends FlowElements ? GraphNode[] : Node[]
-export function getIncomers(...args: any[]) {
-  if (args.length === 3) {
-    const [nodeOrId, nodes, edges] = args
-    return getConnectedElements(nodeOrId, nodes, edges, 'source')
-  }
-
-  const [nodeOrId, elements] = args
-  const nodeId = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
-
-  const incomers = elements.filter((el: Element) => isEdge(el) && el.target === nodeId)
-
-  return incomers.map((edge: Edge) => elements.find((el: Element) => isNode(el) && el.id === edge.source))
-}
-
 export function getEdgeId({ source, sourceHandle, target, targetHandle }: Connection) {
   return `vueflow__edge-${source}${sourceHandle ?? ''}-${target}${targetHandle ?? ''}`
 }
 
-export function connectionExists(edge: Edge | Connection, elements: Elements) {
-  return elements.some(
+export function connectionExists(edge: Edge | Connection, edges: Edge[]) {
+  return edges.some(
     (el) =>
-      isEdge(el) &&
       el.source === edge.source &&
       el.target === edge.target &&
       (el.sourceHandle === edge.sourceHandle || (!el.sourceHandle && !edge.sourceHandle)) &&
@@ -220,8 +169,8 @@ export function getRectOfNodes(nodes: GraphNode[]) {
   return boxToRect(box)
 }
 
-export function getNodesInside(
-  nodes: GraphNode[],
+export function getNodesInside<NodeType extends Node = Node>(
+  nodes: GraphNode<NodeType>[],
   rect: Rect,
   viewport: Viewport = { x: 0, y: 0, zoom: 1 },
   partially = false,
@@ -234,7 +183,7 @@ export function getNodesInside(
     height: rect.height / viewport.zoom,
   }
 
-  const visibleNodes: GraphNode[] = []
+  const visibleNodes: GraphNode<NodeType>[] = []
 
   for (const node of nodes) {
     const { dimensions, selectable = true, hidden = false } = node

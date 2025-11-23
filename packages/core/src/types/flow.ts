@@ -14,7 +14,7 @@ import type {
   OnConnectStartParams,
 } from './connection'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
-import type { CustomEvent, EdgeMouseEvent, EdgeUpdateEvent, MouseTouchEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
+import type { EdgeMouseEvent, EdgeUpdateEvent, MouseTouchEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
 import type { ValidConnectionFunc } from './handle'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
@@ -22,44 +22,7 @@ import type { VueFlowStore } from './store'
 // todo: should be object type
 export type ElementData = any
 
-/**
- * @deprecated - will be removed in the next major version
- * A flow element (after parsing into state)
- */
-export type FlowElement<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = GraphNode<NodeData, NodeEvents> | GraphEdge<EdgeData, EdgeEvents>
-
-/**
- * @deprecated - will be removed in the next major version
- * An array of flow elements (after parsing into state)
- */
-export type FlowElements<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = FlowElement<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
-
-/** Initial elements (before parsing into state) */
-export type Element<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = Node<NodeData, NodeEvents> | Edge<EdgeData, EdgeEvents>
-
-export type Elements<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = Element<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
-
-export type MaybeElement = Node | Edge | Connection | FlowElement | Element
+export type MaybeElement = Node | Edge | Connection | Element
 
 export interface CustomThemeVars {
   [key: string]: string | number | undefined
@@ -75,11 +38,6 @@ export type CSSVars =
 
 export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] }
 export type Styles = CSSProperties & ThemeVars & CustomThemeVars
-/** @deprecated will be removed in the next major version */
-export type ClassFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => string | void
-
-/** @deprecated will be removed in the next major version */
-export type StyleFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => Styles | void
 
 /** Handle Positions */
 export enum Position {
@@ -139,19 +97,14 @@ export interface FlowExportObject {
   viewport: Viewport
 }
 
-export interface FlowProps {
+export interface FlowProps<NodeType extends Node = Node> {
   id?: string
-  /**
-   * all elements (nodes + edges)
-   * @deprecated use {@link FlowProps.nodes} & {@link FlowProps.nodes} instead
-   */
-  modelValue?: Elements
-  nodes?: Node[]
+  nodes?: NodeType[]
   edges?: Edge[]
   /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
   edgeTypes?: EdgeTypesObject
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
-  nodeTypes?: NodeTypesObject
+  nodeTypes?: NodeTypesObject<NodeType>
   connectionMode?: ConnectionMode
   /** @deprecated use {@link ConnectionLineOptions.type} */
   connectionLineType?: ConnectionLineType | null
@@ -230,21 +183,15 @@ export interface FlowProps {
   autoPanSpeed?: number
 }
 
-/**
- * All available VueFlow options
- * @deprecated use the {@link FlowProps} type instead
- */
-export type FlowOptions = FlowProps
-
-export interface FlowEmits {
-  (event: 'nodesChange', changes: NodeChange[]): void
+export interface FlowEmits<NodeType extends Node = Node> {
+  (event: 'nodesChange', changes: NodeChange<NodeType>[]): void
   (event: 'edgesChange', changes: EdgeChange[]): void
   (event: 'nodesInitialized'): void
-  (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseMove', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'miniMapNodeMouseLeave', nodeMouseEvent: NodeMouseEvent): void
+  (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'miniMapNodeMouseEnter', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'miniMapNodeMouseMove', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'miniMapNodeMouseLeave', nodeMouseEvent: NodeMouseEvent<NodeType>): void
   (event: 'connect', connectionEvent: Connection): void
   (
     event: 'connectStart',
@@ -263,9 +210,9 @@ export interface FlowEmits {
   (event: 'moveStart', moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }): void
   (event: 'move', moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }): void
   (event: 'moveEnd', moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }): void
-  (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
-  (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
-  (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
+  (event: 'selectionDragStart', selectionEvent: NodeDragEvent<NodeType>): void
+  (event: 'selectionDrag', selectionEvent: NodeDragEvent<NodeType>): void
+  (event: 'selectionDragStop', selectionEvent: NodeDragEvent<NodeType>): void
   (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
   (event: 'selectionStart', selectionEvent: MouseEvent): void
   (event: 'selectionEnd', selectionEvent: MouseEvent): void
@@ -294,28 +241,31 @@ export interface FlowEmits {
   (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
   (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
 
-  (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseEnter', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseMove', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeMouseLeave', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeContextMenu', nodeMouseEvent: NodeMouseEvent): void
-  (event: 'nodeDragStart', nodeDragEvent: NodeDragEvent): void
-  (event: 'nodeDrag', nodeDragEvent: NodeDragEvent): void
-  (event: 'nodeDragStop', nodeDragEvent: NodeDragEvent): void
+  (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'nodeMouseEnter', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'nodeMouseMove', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'nodeMouseLeave', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'nodeContextMenu', nodeMouseEvent: NodeMouseEvent<NodeType>): void
+  (event: 'nodeDragStart', nodeDragEvent: NodeDragEvent<NodeType>): void
+  (event: 'nodeDrag', nodeDragEvent: NodeDragEvent<NodeType>): void
+  (event: 'nodeDragStop', nodeDragEvent: NodeDragEvent<NodeType>): void
 
   /** v-model event definitions */
-  (event: 'update:modelValue', value: FlowElements): void
-  (event: 'update:nodes', value: GraphNode[]): void
+  (event: 'update:nodes', value: GraphNode<NodeType>[]): void
   (event: 'update:edges', value: GraphEdge[]): void
 }
 
-export interface NodeSlots extends Record<`node-${string}`, (nodeProps: NodeProps) => any> {}
+export type NodeSlots<NodeType extends Node = Node> = Record<
+  `node-${NodeType['type'] | string}`,
+  (nodeProps: NodeProps<NodeType>) => any
+>
 
 export interface EdgeSlots extends Record<`edge-${string}`, (edgeProps: EdgeProps) => any> {}
 
-export interface FlowSlots extends NodeSlots, EdgeSlots {
-  'connection-line': (connectionLineProps: ConnectionLineProps) => any
-  'zoom-pane': () => any
-  'default': () => any
-}
+export type FlowSlots<NodeType extends Node = Node> = NodeSlots<NodeType> &
+  EdgeSlots & {
+    'connection-line': (connectionLineProps: ConnectionLineProps) => any
+    'zoom-pane': () => any
+    'default': () => any
+  }

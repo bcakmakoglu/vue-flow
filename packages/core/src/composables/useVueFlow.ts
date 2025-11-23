@@ -1,12 +1,11 @@
 import { tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
 import { effectScope, getCurrentInstance, getCurrentScope, inject, provide, watch } from 'vue'
-import type { EdgeChange, FlowOptions, NodeChange, VueFlowStore } from '../types'
+import type { EdgeChange, FlowProps, Node, NodeChange, VueFlowStore } from '../types'
 import { ErrorCode, VueFlowError, warn } from '../utils'
 import { VueFlow } from '../context'
 import { Storage } from '../utils/storage'
 
-type Injection = VueFlowStore | null | undefined
 type Scope = (EffectScope & { vueFlowId: string }) | undefined
 
 // todo: maybe replace the storage with a context based solution; This would break calling useVueFlow outside a setup function though, which should be fine
@@ -21,9 +20,9 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
  * @returns a vue flow store instance
  * @param idOrOpts - id of the store instance or options to create a new store instance
  */
-export function useVueFlow(id?: string): VueFlowStore
-export function useVueFlow(options?: FlowOptions): VueFlowStore
-export function useVueFlow(idOrOpts?: any): VueFlowStore {
+export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowStore<NodeType>
+export function useVueFlow<NodeType extends Node = Node>(options?: FlowProps<NodeType>): VueFlowStore<NodeType>
+export function useVueFlow<NodeType extends Node = Node>(idOrOpts?: any): VueFlowStore<NodeType> {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
@@ -35,14 +34,14 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
   const id = options.id
   const vueFlowId = scope?.vueFlowId || id
 
-  let vueFlow: Injection
+  let vueFlow: VueFlowStore<NodeType> | null | undefined
 
   /**
    * check if we can get a store instance through injections
    * this should be the regular way after initialization
    */
   if (scope) {
-    const injection = inject(VueFlow, null)
+    const injection = inject(VueFlow, null) as VueFlowStore<NodeType> | null
     if (typeof injection !== 'undefined' && injection !== null) {
       vueFlow = injection
     }
@@ -54,7 +53,7 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
    */
   if (!vueFlow) {
     if (vueFlowId) {
-      vueFlow = storage.get(vueFlowId)
+      vueFlow = storage.get(vueFlowId) as unknown as VueFlowStore<NodeType>
     }
   }
 
@@ -66,7 +65,7 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
   if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
     const name = id ?? storage.getId()
 
-    const state = storage.create(name, options)
+    const state = storage.create(name, options) as unknown as VueFlowStore<NodeType>
 
     vueFlow = state
 
@@ -80,7 +79,7 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
       watch(
         state.applyDefault,
         (shouldApplyDefault, __, onCleanup) => {
-          const nodesChangeHandler = (changes: NodeChange[]) => {
+          const nodesChangeHandler = (changes: NodeChange<NodeType>[]) => {
             state.applyNodeChanges(changes)
           }
 
@@ -89,16 +88,16 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
           }
 
           if (shouldApplyDefault) {
-            state.onNodesChange(nodesChangeHandler)
+            state.onNodesChange(nodesChangeHandler as any)
             state.onEdgesChange(edgesChangeHandler)
           } else {
-            state.hooks.value.nodesChange.off(nodesChangeHandler)
+            state.hooks.value.nodesChange.off(nodesChangeHandler as any)
             state.hooks.value.edgesChange.off(edgesChangeHandler)
           }
 
           // Release handlers on cleanup
           onCleanup(() => {
-            state.hooks.value.nodesChange.off(nodesChangeHandler)
+            state.hooks.value.nodesChange.off(nodesChangeHandler as any)
             state.hooks.value.edgesChange.off(edgesChangeHandler)
           })
         },
@@ -127,7 +126,7 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
 
   // Provide a fresh instance into context if we are in a scope
   if (scope) {
-    provide(VueFlow, vueFlow)
+    provide(VueFlow, vueFlow as unknown as VueFlowStore)
 
     scope.vueFlowId = vueFlow.id
   }
@@ -141,5 +140,5 @@ export function useVueFlow(idOrOpts?: any): VueFlowStore {
     }
   }
 
-  return vueFlow
+  return vueFlow as VueFlowStore<NodeType>
 }

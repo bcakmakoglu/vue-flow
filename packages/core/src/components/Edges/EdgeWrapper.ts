@@ -38,7 +38,7 @@ const EdgeWrapper = defineComponent({
 
     const edge = computed(() => findEdge(props.id)!)
 
-    const hooks = useEdgeHooks(edge.value, emits)
+    const hooks = useEdgeHooks(emits)
 
     const slots = inject(Slots)
 
@@ -219,7 +219,6 @@ const EdgeWrapper = defineComponent({
                 labelBgPadding: edge.value.labelBgPadding,
                 labelBgBorderRadius: edge.value.labelBgBorderRadius,
                 data: edge.value.data,
-                events: { ...edge.value.events, ...hooks.on },
                 style: edgeStyle.value,
                 markerStart: `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')`,
                 markerEnd: `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')`,

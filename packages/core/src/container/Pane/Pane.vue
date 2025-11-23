@@ -17,7 +17,7 @@ const {
   viewport,
   emits,
   userSelectionActive,
-  removeSelectedElements,
+  removeSelectedNodes,
   panOnDrag,
   userSelectionRect,
   elementsSelectable,
@@ -96,7 +96,7 @@ function onClick(event: MouseEvent) {
 
   emits.paneClick(event)
 
-  removeSelectedElements()
+  removeSelectedNodes()
 
   nodesSelectionActive.value = false
 }
@@ -139,7 +139,7 @@ function onPointerDown(event: PointerEvent) {
     edgeIdLookup.value.set(edge.target, edgeIdLookup.value.get(edge.target)?.add(id) || new Set([id]))
   }
 
-  removeSelectedElements()
+  removeSelectedNodes()
 
   userSelectionRect.value = {
     width: 0,

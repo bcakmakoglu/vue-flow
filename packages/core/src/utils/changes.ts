@@ -1,18 +1,18 @@
 import { nextTick } from 'vue'
 import type {
+  Edge,
   EdgeAddChange,
   EdgeChange,
   EdgeRemoveChange,
   EdgeSelectionChange,
   ElementChange,
-  FlowElement,
   GraphEdge,
   GraphNode,
+  Node,
   NodeAddChange,
   NodeChange,
   NodeRemoveChange,
   NodeSelectionChange,
-  StyleFunc,
   Styles,
 } from '../types'
 import { isGraphNode } from '.'
@@ -25,9 +25,7 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
       let parentStyles: Styles = {}
 
-      if (typeof parent.style === 'function') {
-        parentStyles = { ...parent.style(parent) }
-      } else if (parent.style) {
+      if (parent.style) {
         parentStyles = { ...parent.style }
       }
 
@@ -83,27 +81,16 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
       parent.dimensions.width = Number(parentStyles.width.toString().replace('px', ''))
       parent.dimensions.height = Number(parentStyles.height.toString().replace('px', ''))
 
-      if (typeof parent.style === 'function') {
-        parent.style = (p) => {
-          const styleFunc = parent.style as StyleFunc
-
-          return {
-            ...styleFunc(p),
-            ...parentStyles,
-          }
-        }
-      } else {
-        parent.style = {
-          ...parent.style,
-          ...parentStyles,
-        }
+      parent.style = {
+        ...parent.style,
+        ...parentStyles,
       }
     }
   }
 }
 
 export function applyChanges<
-  T extends FlowElement = FlowElement,
+  T extends Node | Edge = Node | Edge,
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(changes: C[], elements: T[]): T[] {
   const addRemoveChanges = changes.filter((c) => c.type === 'add' || c.type === 'remove') as (
@@ -118,7 +105,7 @@ export function applyChanges<
       const index = elements.findIndex((el) => el.id === change.item.id)
 
       if (index === -1) {
-        elements.push(<T>change.item)
+        elements.push(change.item as any)
       }
     } else if (change.type === 'remove') {
       const index = elements.findIndex((el) => el.id === change.id)
@@ -139,7 +126,7 @@ export function applyChanges<
 
       switch (currentChange.type) {
         case 'select':
-          element.selected = currentChange.selected
+          ;(element as any).selected = currentChange.selected
           break
         case 'position':
           if (isGraphNode(element)) {

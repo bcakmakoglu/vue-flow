@@ -25,7 +25,7 @@ import {
 } from '../../utils'
 import { NodeId, NodeRef, Slots } from '../../context'
 import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
-import type { NodeComponent } from '../../types'
+import type { BuiltInNode, NodeComponent } from '../../types'
 
 interface Props {
   id: string
@@ -92,7 +92,7 @@ const NodeWrapper = defineComponent({
         return slot
       }
 
-      let nodeType = node.template || getNodeTypes.value[name]
+      let nodeType = getNodeTypes.value[name]
 
       if (typeof nodeType === 'string') {
         if (instance) {
@@ -112,7 +112,7 @@ const NodeWrapper = defineComponent({
       return false
     })
 
-    const { emit, on } = useNodeHooks(node, emits)
+    const { emit } = useNodeHooks(emits)
 
     const dragging = useDrag({
       id: props.id,
@@ -139,15 +139,15 @@ const NodeWrapper = defineComponent({
     const getStyle = computed(() => {
       const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
 
-      const width = node.width instanceof Function ? node.width(node) : node.width
-      const height = node.height instanceof Function ? node.height(node) : node.height
+      const width = node.width
+      const height = node.height
 
       if (width) {
-        styles.width = typeof width === 'string' ? width : `${width}px`
+        styles.width = `${width}px`
       }
 
       if (height) {
-        styles.height = typeof height === 'string' ? height : `${height}px`
+        styles.height = `${height}px`
       }
 
       return styles
@@ -228,7 +228,7 @@ const NodeWrapper = defineComponent({
     // if extent is parent, we need dimensions to properly clamp the position
     if (
       node.extent === 'parent' ||
-      (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')
+      (!!node.extent && typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')
     ) {
       until(() => isInit)
         .toBe(true)
@@ -282,25 +282,21 @@ const NodeWrapper = defineComponent({
           'onKeydown': onKeyDown,
         },
         [
-          h(nodeCmp.value === false ? getNodeTypes.value.default : (nodeCmp.value as any), {
+          h(nodeCmp.value === false ? (getNodeTypes.value.default as NodeComponent<BuiltInNode>) : (nodeCmp.value as any), {
             id: node.id,
             type: node.type,
             data: node.data,
-            events: { ...node.events, ...on },
             selected: node.selected,
             resizing: node.resizing,
             dragging: dragging.value,
             connectable: isConnectable.value,
             position: node.computedPosition,
             dimensions: node.dimensions,
-            isValidTargetPos: node.isValidTargetPos,
-            isValidSourcePos: node.isValidSourcePos,
             parent: node.parentNode,
             parentNodeId: node.parentNode,
             zIndex: node.computedPosition.z ?? zIndex.value,
             targetPosition: node.targetPosition,
             sourcePosition: node.sourcePosition,
-            label: node.label,
             dragHandle: node.dragHandle,
             onUpdateNodeInternals: updateInternals,
           }),

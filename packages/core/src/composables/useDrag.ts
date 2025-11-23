@@ -46,7 +46,7 @@ export function useDrag(params: UseDragParams) {
     multiSelectionActive,
     nodesSelectionActive,
     selectNodesOnDrag,
-    removeSelectedElements,
+    removeSelectedNodes,
     addSelectedNodes,
     updateNodePositions,
     emits,
@@ -148,7 +148,7 @@ export function useDrag(params: UseDragParams) {
     if (!selectNodesOnDrag.value && !multiSelectionActive.value && node) {
       if (!node.selected) {
         // we need to reset selected nodes when selectNodesOnDrag=false
-        removeSelectedElements()
+        removeSelectedNodes()
       }
     }
 
@@ -157,7 +157,7 @@ export function useDrag(params: UseDragParams) {
         node,
         multiSelectionActive.value,
         addSelectedNodes,
-        removeSelectedElements,
+        removeSelectedNodes,
         nodesSelectionActive,
         false,
         nodeEl as HTMLDivElement,

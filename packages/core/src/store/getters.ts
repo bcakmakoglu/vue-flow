@@ -1,25 +1,25 @@
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
-import type { ComputedGetters, EdgeLookup, GraphEdge, GraphNode, NodeLookup, State } from '../types'
+import type { ComputedGetters, EdgeLookup, GraphEdge, GraphNode, Node, NodeLookup, State } from '../types'
 import { getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
-export function useGetters(
-  state: State,
-  nodeLookup: ComputedRef<NodeLookup>,
+export function useGetters<NodeType extends Node = Node>(
+  state: State<NodeType>,
+  nodeLookup: ComputedRef<NodeLookup<NodeType>>,
   edgeLookup: ComputedRef<EdgeLookup>,
-): ComputedGetters {
+): ComputedGetters<NodeType> {
   /**
    * @deprecated will be removed in next major version; use findNode instead
    */
-  const getNode: ComputedGetters['getNode'] = computed(() => (id) => nodeLookup.value.get(id))
+  const getNode: ComputedGetters<NodeType>['getNode'] = computed(() => (id) => nodeLookup.value.get(id))
 
   /**
    * @deprecated will be removed in next major version; use findEdge instead
    */
-  const getEdge: ComputedGetters['getEdge'] = computed(() => (id) => edgeLookup.value.get(id))
+  const getEdge: ComputedGetters<NodeType>['getEdge'] = computed(() => (id) => edgeLookup.value.get(id))
 
-  const getEdgeTypes: ComputedGetters['getEdgeTypes'] = computed(() => {
+  const getEdgeTypes: ComputedGetters<NodeType>['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
       ...state.edgeTypes,
@@ -34,7 +34,7 @@ export function useGetters(
     return edgeTypes
   })
 
-  const getNodeTypes: ComputedGetters['getNodeTypes'] = computed(() => {
+  const getNodeTypes: ComputedGetters<NodeType>['getNodeTypes'] = computed(() => {
     const nodeTypes: Record<string, any> = {
       ...defaultNodeTypes,
       ...state.nodeTypes,
@@ -49,7 +49,7 @@ export function useGetters(
     return nodeTypes
   })
 
-  const getNodes: ComputedGetters['getNodes'] = computed(() => {
+  const getNodes: ComputedGetters<NodeType>['getNodes'] = computed(() => {
     if (state.onlyRenderVisibleElements) {
       return getNodesInside(
         state.nodes,
@@ -67,7 +67,7 @@ export function useGetters(
     return state.nodes
   })
 
-  const getEdges: ComputedGetters['getEdges'] = computed(() => {
+  const getEdges: ComputedGetters<NodeType>['getEdges'] = computed(() => {
     if (state.onlyRenderVisibleElements) {
       const visibleEdges: GraphEdge[] = []
 
@@ -98,10 +98,8 @@ export function useGetters(
     return state.edges
   })
 
-  const getElements: ComputedGetters['getElements'] = computed(() => [...getNodes.value, ...getEdges.value])
-
-  const getSelectedNodes: ComputedGetters['getSelectedNodes'] = computed(() => {
-    const selectedNodes: GraphNode[] = []
+  const getSelectedNodes: ComputedGetters<NodeType>['getSelectedNodes'] = computed(() => {
+    const selectedNodes: GraphNode<NodeType>[] = []
     for (const node of state.nodes) {
       if (node.selected) {
         selectedNodes.push(node)
@@ -111,7 +109,7 @@ export function useGetters(
     return selectedNodes
   })
 
-  const getSelectedEdges: ComputedGetters['getSelectedEdges'] = computed(() => {
+  const getSelectedEdges: ComputedGetters<NodeType>['getSelectedEdges'] = computed(() => {
     const selectedEdges: GraphEdge[] = []
     for (const edge of state.edges) {
       if (edge.selected) {
@@ -122,45 +120,14 @@ export function useGetters(
     return selectedEdges
   })
 
-  const getSelectedElements: ComputedGetters['getSelectedElements'] = computed(() => [
-    ...getSelectedNodes.value,
-    ...getSelectedEdges.value,
-  ])
-
-  /**
-   * @deprecated will be removed in next major version; use `useNodesInitialized` instead
-   */
-  const getNodesInitialized: ComputedGetters['getNodesInitialized'] = computed(() => {
-    const initializedNodes: GraphNode[] = []
-
-    for (const node of state.nodes) {
-      if (!!node.dimensions.width && !!node.dimensions.height && node.handleBounds !== undefined) {
-        initializedNodes.push(node)
-      }
-    }
-
-    return initializedNodes
-  })
-
-  /**
-   * @deprecated will be removed in next major version; use `useNodesInitialized` instead
-   */
-  const areNodesInitialized: ComputedGetters['areNodesInitialized'] = computed(
-    () => getNodes.value.length > 0 && getNodesInitialized.value.length === getNodes.value.length,
-  )
-
   return {
     getNode,
     getEdge,
-    getElements,
     getEdgeTypes,
     getNodeTypes,
     getEdges,
     getNodes,
-    getSelectedElements,
     getSelectedNodes,
     getSelectedEdges,
-    getNodesInitialized,
-    areNodesInitialized,
   }
 }

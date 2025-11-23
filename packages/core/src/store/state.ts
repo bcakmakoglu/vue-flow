@@ -1,10 +1,10 @@
 import { PanOnScrollMode, isMacOs } from '@xyflow/system'
-import type { FlowOptions, State } from '../types'
+import type { FlowProps, Node, State } from '../types'
 import { ConnectionLineType, ConnectionMode, SelectionMode } from '../types'
 
 import { createHooks } from './hooks'
 
-export function useState(): State {
+export function useState<NodeType extends Node = Node>(): State<NodeType> {
   return {
     vueFlowRef: null,
     viewportRef: null,
@@ -116,12 +116,11 @@ export function useState(): State {
 }
 
 // these options will be set using the appropriate methods
-export const storeOptionsToSkip: (keyof Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>)[] = [
+export const storeOptionsToSkip: (keyof Partial<FlowProps & Omit<State, 'nodes' | 'edges'>>)[] = [
   'id',
   'vueFlowRef',
   'viewportRef',
   'initialized',
-  'modelValue',
   'nodes',
   'edges',
   'maxZoom',

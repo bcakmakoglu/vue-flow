@@ -30,8 +30,6 @@ export {
   isEdge,
   isGraphNode,
   isGraphEdge,
-  getOutgoers,
-  getIncomers,
   getConnectedEdges,
   getTransformForBounds,
   getRectOfNodes,
