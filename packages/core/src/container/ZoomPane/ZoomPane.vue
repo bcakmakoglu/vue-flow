@@ -52,18 +52,12 @@ useResizeHandler(zoomPane)
 
 onMounted(() => {
   if (zoomPane.value) {
-    panZoom.value = XYPanZoom({
+    const panZoomInstance = XYPanZoom({
       domNode: zoomPane.value,
       minZoom: minZoom.value,
       maxZoom: maxZoom.value,
       translateExtent: translateExtent.value,
       viewport: { ...viewport.value, ...defaultViewport.value },
-      paneClickDistance: 0,
-      onTransformChange: (transform) => {
-        emits.viewportChange({ x: transform[0], y: transform[1], zoom: transform[2] })
-
-        viewport.value = { x: transform[0], y: transform[1], zoom: transform[2] }
-      },
       onDraggingChange: (isDraggingPane) => (paneDragging.value = isDraggingPane),
       onPanZoomStart: (event, viewport) => {
         emits.moveStart({ event, viewport })
@@ -79,9 +73,8 @@ onMounted(() => {
       },
     })
 
-    const { x, y, zoom } = panZoom.value!.getViewport()
-
-    viewport.value = { x, y, zoom }
+    viewport.value = panZoomInstance.getViewport()
+    panZoom.value = panZoomInstance
 
     onUnmounted(() => {
       panZoom.value?.destroy()
@@ -101,6 +94,7 @@ onMounted(() => {
         noPanClassName,
         userSelectionActive,
         noWheelClassName,
+        connectionStartHandle,
       ],
       () => {
         panZoom.value?.update({
@@ -116,17 +110,17 @@ onMounted(() => {
           noPanClassName: noPanClassName.value,
           userSelectionActive: userSelectionActive.value,
           noWheelClassName: noWheelClassName.value,
+          paneClickDistance: 0,
+          onTransformChange: (transform) => {
+            emits.viewportChange({ x: transform[0], y: transform[1], zoom: transform[2] })
+            viewport.value = { x: transform[0], y: transform[1], zoom: transform[2] }
+          },
+          connectionInProgress: !!connectionStartHandle.value,
           lib: 'vue',
         })
       },
       { immediate: true },
     )
-
-    /* todo: do we need this?
-    watch(viewport, (nextViewport) => {
-      panZoom.value?.syncViewport(nextViewport)
-    })
-     */
   }
 })
 </script>

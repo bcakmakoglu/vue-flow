@@ -46,7 +46,7 @@ export interface State<NodeType extends Node = Node> extends Omit<FlowProps, 'id
   viewportRef: HTMLDivElement | null
 
   /** Event hooks, you can manipulate the triggers at your own peril */
-  readonly hooks: FlowHooks
+  readonly hooks: FlowHooks<NodeType>
 
   /** all stored nodes */
   nodes: GraphNode<NodeType>[]

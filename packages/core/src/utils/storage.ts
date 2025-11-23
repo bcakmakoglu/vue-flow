@@ -43,7 +43,7 @@ export class Storage {
   public create<NodeType extends Node = Node>(id: string, preloadedState?: FlowProps<NodeType>): VueFlowStore<NodeType> {
     const state = useState<NodeType>()
 
-    const reactiveState = reactive(state)
+    const reactiveState = reactive(state) as any
 
     const hooksOn = <any>{}
     for (const [n, h] of Object.entries(reactiveState.hooks)) {
@@ -76,7 +76,7 @@ export class Storage {
       return edgesMap
     })
 
-    const getters = useGetters<NodeType>(reactiveState, nodeLookup, edgeLookup)
+    const getters = useGetters(reactiveState, nodeLookup, edgeLookup)
 
     const actions = useActions<NodeType>(reactiveState, nodeLookup, edgeLookup)
 
