@@ -48,12 +48,12 @@ export class Storage {
     const hooksOn = <any>{}
     for (const [n, h] of Object.entries(reactiveState.hooks)) {
       const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
-      hooksOn[name] = h.on
+      hooksOn[name] = (h as any).on
     }
 
     const emits = <any>{}
     for (const [n, h] of Object.entries(reactiveState.hooks)) {
-      emits[n] = h.trigger
+      emits[n] = (h as any).trigger
     }
 
     // for lookup purposes

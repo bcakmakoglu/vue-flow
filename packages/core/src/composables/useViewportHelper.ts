@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { rendererPointToPoint } from '@xyflow/system'
-import type { GraphNode, Project, State, ViewportFunctions } from '../types'
+import type { GraphNode, Node, Project, State, ViewportFunctions } from '../types'
 import { getRectOfNodes, getTransformForBounds, pointToRendererPoint, warn } from '../utils'
 
 export interface ViewportHelper extends ViewportFunctions {
@@ -38,7 +38,7 @@ const initialViewportHelper: ViewportHelper = {
  * @internal
  * @param state
  */
-export function useViewportHelper(state: State) {
+export function useViewportHelper<NodeType extends Node = Node>(state: State<NodeType>) {
   return computed<ViewportHelper>(() => {
     const panZoom = state.panZoom
     const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height

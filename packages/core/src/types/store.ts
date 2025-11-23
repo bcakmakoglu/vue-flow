@@ -39,7 +39,7 @@ export interface UpdateNodeDimensionsParams {
   forceUpdate?: boolean
 }
 
-export interface State<NodeType extends Node = Node> extends Omit<FlowProps, 'id' | 'modelValue'> {
+export interface State<NodeType extends Node = Node> extends Omit<FlowProps, 'id'> {
   /** Vue flow element ref */
   vueFlowRef: HTMLDivElement | null
   /** Vue flow viewport element */
@@ -190,10 +190,8 @@ export type UpdateEdgeData = <Data = ElementData>(
   options?: { replace: boolean },
 ) => void
 
-export type SetState = (
-  state:
-    | Partial<FlowProps & Omit<State, 'nodes' | 'edges' | 'modelValue'>>
-    | ((state: State) => Partial<FlowProps & Omit<State, 'nodes' | 'edges' | 'modelValue'>>),
+export type SetState<NodeType extends Node = Node> = (
+  state: Partial<State<NodeType>> | ((state: State<NodeType>) => Partial<State<NodeType>>),
 ) => void
 
 export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
@@ -275,7 +273,7 @@ export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelp
   /** enable/disable node interaction (dragging, selecting etc) */
   setInteractive: (isInteractive: boolean) => void
   /** set new state */
-  setState: SetState
+  setState: SetState<NodeType>
   /** return an object of graph values (elements, viewport transform) for storage and re-loading a graph */
   toObject: () => FlowExportObject
   /** load graph from export obj */

@@ -48,7 +48,7 @@ export interface MiniMapProps {
 /** these props are passed to mini map node slots */
 export interface MiniMapNodeProps {
   id: string
-  type: string
+  type?: string
   selected?: boolean
   dragging?: boolean
   position: XYPosition

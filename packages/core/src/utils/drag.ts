@@ -195,7 +195,7 @@ export function calcNextPosition(
 ) {
   const extent = clampNodeExtent(node.dimensions, getExtent(node, triggerError, nodeExtent, parentNode))
 
-  const clampedPos = clampPosition(nextPosition, extent)
+  const clampedPos = clampPosition(nextPosition, extent, node.dimensions)
 
   return {
     position: {

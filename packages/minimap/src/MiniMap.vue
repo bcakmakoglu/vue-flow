@@ -38,7 +38,7 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, viewport, translateExtent, dimensions, emits, panZoom, getNodesInitialized } = useVueFlow()
+const { id, edges, nodes, viewport, translateExtent, dimensions, emits, panZoom } = useVueFlow()
 
 const el = ref<SVGElement>()
 
@@ -62,7 +62,7 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
-const bb = computed(() => getRectOfNodes(getNodesInitialized.value))
+const bb = computed(() => getRectOfNodes(nodes.value))
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
@@ -71,9 +71,7 @@ const viewBB = computed(() => ({
   height: dimensions.value.height / viewport.value.zoom,
 }))
 
-const boundingRect = computed(() =>
-  getNodesInitialized.value && getNodesInitialized.value.length ? getBoundsOfRects(bb.value, viewBB.value) : viewBB.value,
-)
+const boundingRect = computed(() => (nodes.value && nodes.value.length ? getBoundsOfRects(bb.value, viewBB.value) : viewBB.value))
 
 const viewScale = computed(() => {
   const scaledWidth = boundingRect.value.width / elementWidth.value
@@ -220,7 +218,7 @@ export default {
       <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
 
       <MiniMapNode
-        v-for="node of getNodesInitialized"
+        v-for="node of nodes"
         :id="node.id"
         :key="node.id"
         :position="node.computedPosition"

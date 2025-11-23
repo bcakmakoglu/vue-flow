@@ -678,7 +678,7 @@ export function useActions<NodeType extends Node = Node>(
   }
 
   const $reset: Actions<NodeType>['$reset'] = () => {
-    const resetState = useState()
+    const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType>()
 
     state.edges = []
     state.nodes = []
