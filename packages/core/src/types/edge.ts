@@ -1,4 +1,4 @@
-import type { CSSProperties, Component, VNode } from 'vue'
+import type { CSSProperties, Component, SVGAttributes, VNode } from 'vue'
 import type { ClassFunc, ElementData, Position, StyleFunc, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { EdgeComponent, EdgeTextProps } from './components'
@@ -108,6 +108,24 @@ export interface DefaultEdge<
   /** Aria label for edge (a11y) */
   zIndex?: number
   ariaLabel?: string | null
+  /**
+   * General escape hatch for adding custom attributes to the edge's DOM element.
+   */
+  domAttributes?: Omit<
+    SVGAttributes,
+    | 'id'
+    | 'style'
+    | 'className'
+    | 'role'
+    | 'aria-label'
+    | 'onClick'
+    | 'onMouseenter'
+    | 'onMousemove'
+    | 'onMouseleave'
+    | 'onContextmenu'
+    | 'onDblclick'
+    | 'onKeyDown'
+  >
 }
 
 export interface SmoothStepPathOptions {

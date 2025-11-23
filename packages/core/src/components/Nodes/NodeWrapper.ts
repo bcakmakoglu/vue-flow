@@ -86,7 +86,7 @@ const NodeWrapper = defineComponent({
 
     const isFocusable = toRef(() => (typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable))
 
-    const hasPointerEvents = toRef(
+    const hasPointerEvents = computed(
       () =>
         isSelectable.value ||
         isDraggable.value ||
@@ -283,9 +283,11 @@ const NodeWrapper = defineComponent({
             ...getStyle.value,
           },
           'tabIndex': isFocusable.value ? 0 : undefined,
-          'role': isFocusable.value ? 'button' : undefined,
+          'role': isFocusable.value ? 'group' : undefined,
           'aria-describedby': disableKeyboardA11y.value ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`,
           'aria-label': node.ariaLabel,
+          'aria-roledescription': 'node',
+          ...node.domAttributes,
           'onMouseenter': onMouseEnter,
           'onMousemove': onMouseMove,
           'onMouseleave': onMouseLeave,

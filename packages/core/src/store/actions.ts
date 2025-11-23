@@ -73,7 +73,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
   }
 
   const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
-    return Array.from(state.connectionLookup.get(`${nodeId}-${type}-${id ?? null}`)?.values() ?? [])
+    const handleSuffix = id ? `-${type}-${id}` : `-${type}`
+    return Array.from(state.connectionLookup.get(`${nodeId}${handleSuffix}`)?.values() ?? [])
   }
 
   const findNode: Actions['findNode'] = (id) => {
@@ -140,8 +141,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
 
     const changes: NodeDimensionChange[] = []
 
-    for (let i = 0; i < updates.length; ++i) {
-      const update = updates[i]
+    for (const element of updates) {
+      const update = element
 
       const node = findNode(update.id)
 
@@ -157,8 +158,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         if (doUpdate) {
           const nodeBounds = update.nodeElement.getBoundingClientRect()
           node.dimensions = dimensions
-          node.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom)
-          node.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom)
+          node.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom, node.id)
+          node.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom, node.id)
 
           changes.push({
             id: node.id,
@@ -661,7 +662,11 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
       const partiallyVisible = partially && overlappingArea > 0
 
-      if (partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)) {
+      if (
+        partiallyVisible ||
+        overlappingArea >= currNodeRect.width * currNodeRect.height ||
+        overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
+      ) {
         intersections.push(n)
       }
     }
@@ -825,9 +830,9 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
         setEdges(edges)
       }
 
-      if ((viewport?.x && viewport?.y) || position) {
-        const x = viewport?.x || position[0]
-        const y = viewport?.y || position[1]
+      const [xPos, yPos] = viewport?.x && viewport?.y ? [viewport.x, viewport.y] : position ?? [null, null]
+
+      if (xPos && yPos) {
         const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
 
         return until(() => viewportHelper.value.viewportInitialized)
@@ -835,8 +840,8 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
           .then(() => {
             viewportHelper.value
               .setViewport({
-                x,
-                y,
+                x: xPos,
+                y: yPos,
                 zoom: nextZoom,
               })
               .then(() => {

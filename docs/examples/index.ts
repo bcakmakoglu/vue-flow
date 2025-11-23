@@ -24,6 +24,13 @@ import { LoopbackApp, LoopbackCSS, LoopbackEdge } from './loopback'
 import { MathApp, MathCSS, MathElements, MathIcon, MathOperatorNode, MathResultNode, MathValueNode } from './math'
 import { ConfirmApp, ConfirmDialog, useDialog } from './confirm-delete'
 import { EdgeMarkersApp, EdgeMarkersCSS, EdgeMarkersEdge, EdgeMarkersMarker } from './edge-markers'
+import {
+  HelperLinesApp,
+  HelperLinesComponent,
+  HelperLinesInitialElements,
+  HelperLinesStyle,
+  HelperLinesUtils,
+} from './helper-lines'
 
 export const exampleImports = {
   basic: {
@@ -175,5 +182,12 @@ export const exampleImports = {
     'CustomEdge.vue': EdgeMarkersEdge,
     'CustomMarker.vue': EdgeMarkersMarker,
     'style.css': EdgeMarkersCSS,
+  },
+  helperLines: {
+    'App.vue': HelperLinesApp,
+    'HelperLines.vue': HelperLinesComponent,
+    'utils.ts': HelperLinesUtils,
+    'initialElements.ts': HelperLinesInitialElements,
+    'style.css': HelperLinesStyle,
   },
 }

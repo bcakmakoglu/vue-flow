@@ -55,11 +55,11 @@ const ConnectionLine = defineComponent({
       const handleType = connectionStartHandle.value.type
 
       const fromHandleBounds = fromNode.value.handleBounds
-      let handleBounds = fromHandleBounds?.[handleType] || []
+      let handleBounds = fromHandleBounds?.[handleType] ?? []
 
       if (connectionMode.value === ConnectionMode.Loose) {
-        const oppositeBounds = fromHandleBounds?.[handleType === 'source' ? 'target' : 'source'] || []
-        handleBounds = [...handleBounds, ...oppositeBounds] || oppositeBounds
+        const oppositeBounds = fromHandleBounds?.[handleType === 'source' ? 'target' : 'source'] ?? []
+        handleBounds = [...handleBounds, ...oppositeBounds]
       }
 
       if (!handleBounds) {
@@ -67,7 +67,7 @@ const ConnectionLine = defineComponent({
       }
 
       const fromHandle = (startHandleId ? handleBounds.find((d) => d.id === startHandleId) : handleBounds[0]) ?? null
-      const fromPosition = fromHandle?.position || Position.Top
+      const fromPosition = fromHandle?.position ?? Position.Top
       const { x: fromX, y: fromY } = getHandlePosition(fromNode.value, fromHandle, fromPosition)
 
       let toHandle: HandleElement | null = null
@@ -81,7 +81,7 @@ const ConnectionLine = defineComponent({
         } else {
           // if connection mode is loose, look for the handle in both source and target bounds
           toHandle =
-            [...(toNode.value.handleBounds.source || []), ...(toNode.value.handleBounds.target || [])]?.find(
+            [...(toNode.value.handleBounds.source ?? []), ...(toNode.value.handleBounds.target ?? [])]?.find(
               (d) => d.id === connectionEndHandle.value?.id,
             ) || null
         }
@@ -145,7 +145,7 @@ const ConnectionLine = defineComponent({
               })
             : h('path', {
                 'd': dAttr,
-                'class': [connectionLineOptions.value.class, connectionStatus, 'vue-flow__connection-path'],
+                'class': [connectionLineOptions.value.class, connectionStatus.value, 'vue-flow__connection-path'],
                 'style': {
                   ...connectionLineStyle.value,
                   ...connectionLineOptions.value.style,

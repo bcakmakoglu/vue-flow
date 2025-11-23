@@ -95,6 +95,7 @@ export function getClosestHandle(
       const { x, y } = getHandlePosition(node, handle, handle.position, true)
 
       const distance = Math.sqrt((x - position.x) ** 2 + (y - position.y) ** 2)
+
       if (distance > connectionRadius) {
         continue
       }
@@ -122,7 +123,7 @@ export function getClosestHandle(
   return closestHandles[0]
 }
 
-// checks if  and returns connection in form of an object { source: 123, target: 312 }
+// checks if and returns connection in form of an object { source: 123, target: 312 }
 export function isValidHandle(
   event: MouseEvent | TouchEvent,
   {
@@ -139,6 +140,7 @@ export function isValidHandle(
   edges: GraphEdge[],
   nodes: GraphNode[],
   findNode: Actions['findNode'],
+  nodeLookup: NodeLookup,
 ) {
   const isTarget = fromType === 'target'
   const handleDomNode = handle
@@ -191,11 +193,11 @@ export function isValidHandle(
       isValidConnection(connection, {
         nodes,
         edges,
-        sourceNode: findNode(fromNodeId)!,
-        targetNode: findNode(handleNodeId)!,
+        sourceNode: findNode(connection.source)!,
+        targetNode: findNode(connection.target)!,
       })
 
-    result.toHandle = handle
+    result.toHandle = getHandle(handleNodeId, handleType, handleId, nodeLookup, connectionMode, true)
   }
 
   return result

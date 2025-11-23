@@ -30,7 +30,7 @@ export function getHandlePosition(
   }
 }
 
-export function getEdgeHandle(bounds: HandleElement[] | undefined, handleId?: string | null): HandleElement | null {
+export function getEdgeHandle(bounds: HandleElement[] | null, handleId?: string | null): HandleElement | null {
   if (!bounds) {
     return null
   }

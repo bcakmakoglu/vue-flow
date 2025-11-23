@@ -13,12 +13,15 @@ const dragging = useDrag({
   el,
   onStart(args) {
     emits.selectionDragStart(args)
+    emits.nodeDragStart(args)
   },
   onDrag(args) {
     emits.selectionDrag(args)
+    emits.nodeDrag(args)
   },
   onStop(args) {
     emits.selectionDragStop(args)
+    emits.nodeDragStop(args)
   },
 })
 
@@ -42,7 +45,7 @@ function onContextMenu(event: MouseEvent) {
 }
 
 function onKeyDown(event: KeyboardEvent) {
-  if (disableKeyboardA11y) {
+  if (disableKeyboardA11y.value) {
     return
   }
 

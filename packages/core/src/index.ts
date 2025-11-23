@@ -44,7 +44,10 @@ export {
   getBoundsofRects,
   connectionExists,
   clamp,
+  wheelDelta,
 } from './utils/graph'
+
+export { isMacOs } from './utils/general'
 
 /**
  * @deprecated - Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead

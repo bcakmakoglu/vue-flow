@@ -1,5 +1,125 @@
 # @vue-flow/core
 
+## 1.48.0
+
+### Minor Changes
+
+- [#1978](https://github.com/bcakmakoglu/vue-flow/pull/1978) [`7acd6d7`](https://github.com/bcakmakoglu/vue-flow/commit/7acd6d74353a0be6d0c52c7de96ab19f10e97e98) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Separate flow import and export object shapes and interfaces. An export object has all fields as required, while an import object makes all fields optional.
+
+### Patch Changes
+
+- [#1988](https://github.com/bcakmakoglu/vue-flow/pull/1988) [`dd6a91f`](https://github.com/bcakmakoglu/vue-flow/commit/dd6a91f7dce0d7b76b9d0602da89b1ed8542bc85) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correctly unwrap disableKeyboardA11y ref when checking if a selection can be moved or not.
+
+- [#1989](https://github.com/bcakmakoglu/vue-flow/pull/1989) [`3f6e09a`](https://github.com/bcakmakoglu/vue-flow/commit/3f6e09a51c3ec33f5d8ce3bcd442c17623794c0a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use position instead of computedPosition as updated position when moving a child node via keyboard.
+
+## 1.47.0
+
+### Minor Changes
+
+- [#1967](https://github.com/bcakmakoglu/vue-flow/pull/1967) [`7828f4a`](https://github.com/bcakmakoglu/vue-flow/commit/7828f4a40b226d6032472be635dc28b0be91c487) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace the existing `offset` option for fitView with a more expressive `padding` option allowing users to define padding per sides.
+
+## 1.46.5
+
+### Patch Changes
+
+- [#1962](https://github.com/bcakmakoglu/vue-flow/pull/1962) [`34bcf36`](https://github.com/bcakmakoglu/vue-flow/commit/34bcf36301c1c1a40ad67013c607726577a0741d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Unwrap connection line status ref in the connection line component to correctly append the class name.
+
+## 1.46.4
+
+### Patch Changes
+
+- [#1954](https://github.com/bcakmakoglu/vue-flow/pull/1954) [`f4cfc50`](https://github.com/bcakmakoglu/vue-flow/commit/f4cfc50ff6653e822a6375a02c3cb1957fc55f55) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove border related styles from the required styles and move them into the default theme stylesheet
+
+## 1.46.3
+
+### Patch Changes
+
+- [#1942](https://github.com/bcakmakoglu/vue-flow/pull/1942) [`90cf6ff`](https://github.com/bcakmakoglu/vue-flow/commit/90cf6ff83fc08191df16fd64a45668c4dbcdd845) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add nullish operator to checkVisibility call
+
+## 1.46.2
+
+### Patch Changes
+
+- [#1939](https://github.com/bcakmakoglu/vue-flow/pull/1939) [`f9a5231`](https://github.com/bcakmakoglu/vue-flow/commit/f9a52316991e949a6167f249d08fbbf41d49860d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Only emit node position changes if a position change actually occurred.
+
+## 1.46.1
+
+### Patch Changes
+
+- [#1935](https://github.com/bcakmakoglu/vue-flow/pull/1935) [`ca54587`](https://github.com/bcakmakoglu/vue-flow/commit/ca54587962af638cbe3a2d046663105bbe287a72) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Correctly check if an event listener was bound to the VueFlow component, using for example `@node-click` or if a listener was bound using the exposed event hooks from `useVueFlow` when determening if a listener for an event exists at all.
+
+- [#1932](https://github.com/bcakmakoglu/vue-flow/pull/1932) [`3e0442a`](https://github.com/bcakmakoglu/vue-flow/commit/3e0442a3b7ee0064f8879f079d053961d5774620) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use toHandle from valid handle check as target handle in ongoing connections
+
+- [#1938](https://github.com/bcakmakoglu/vue-flow/pull/1938) [`fd785e2`](https://github.com/bcakmakoglu/vue-flow/commit/fd785e2e595e238f9c93cb3db4f17ae1001f760f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Prevent multi touch from aborting connections.
+
+- [#1936](https://github.com/bcakmakoglu/vue-flow/pull/1936) [`ff6b3d2`](https://github.com/bcakmakoglu/vue-flow/commit/ff6b3d2011924a14807e0c3b21f519445a498762) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Skip resize handler if node is not visible.
+
+## 1.46.0
+
+### Minor Changes
+
+- [#1923](https://github.com/bcakmakoglu/vue-flow/pull/1923) [`18d103d`](https://github.com/bcakmakoglu/vue-flow/commit/18d103d7177257ae470949a277cab02d6551d697) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Expose `isMacOs` utility
+
+- [#1918](https://github.com/bcakmakoglu/vue-flow/pull/1918) [`0568ab7`](https://github.com/bcakmakoglu/vue-flow/commit/0568ab7e97ffc67030bd915963c84c2e2f7c42cb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Expose `wheelDelta` utility fn
+
+- [#1919](https://github.com/bcakmakoglu/vue-flow/pull/1919) [`6880409`](https://github.com/bcakmakoglu/vue-flow/commit/68804091969ec3c95c7d491f7dd4c2e15de6be9e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use event target for `<Handle>` components to determine the "clicked" handle, avoiding calls to `getElementFromPoint and allowing "detached" handles
+
+### Patch Changes
+
+- [#1922](https://github.com/bcakmakoglu/vue-flow/pull/1922) [`957d011`](https://github.com/bcakmakoglu/vue-flow/commit/957d0110a4b628dc0e50ab2a65e53fd4d763d5f8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fetch the correct source and target nodes for isValidConnection.
+
+## 1.45.1
+
+### Patch Changes
+
+- [#1914](https://github.com/bcakmakoglu/vue-flow/pull/1914) [`8f65028`](https://github.com/bcakmakoglu/vue-flow/commit/8f65028389423fabd8d541a20045f3d53b075c16) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Calculate overlapping area in getNodeIntersections correctly.
+
+- [#1913](https://github.com/bcakmakoglu/vue-flow/pull/1913) [`5366b56`](https://github.com/bcakmakoglu/vue-flow/commit/5366b56c4368e5289f69262af7ac3e88963af7c2) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Emit node drag-start, drag and drag-end events when a selection is dragged (selectionKeyCode).
+
+- [#1882](https://github.com/bcakmakoglu/vue-flow/pull/1882) [`742eb98`](https://github.com/bcakmakoglu/vue-flow/commit/742eb98a50ba90a895ff1d856e9e20e7331a0df6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use correct handlesuffix for connection lookup in `getHandleConnections` action.
+
+## 1.45.0
+
+### Minor Changes
+
+- [#1869](https://github.com/bcakmakoglu/vue-flow/pull/1869) [`4a2427d`](https://github.com/bcakmakoglu/vue-flow/commit/4a2427d08ab0ea19323998a2c863f6c375c6bd4a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `domAttributes` prop to nodes / edges that allows passing any sort of dom attributes to the node/edge wrappers (like aria attributes etc.).
+
+## 1.44.0
+
+### Minor Changes
+
+- [#1848](https://github.com/bcakmakoglu/vue-flow/pull/1848) [`f09952d`](https://github.com/bcakmakoglu/vue-flow/commit/f09952dc572bd567c7cf0bcf53af657cf458d696) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `ease` option to viewport altering functions.
+
+- [#1851](https://github.com/bcakmakoglu/vue-flow/pull/1851) [`0e6865b`](https://github.com/bcakmakoglu/vue-flow/commit/0e6865bbd67ca284d0ded27550abb00d04aca96c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add interpolate option to viewport transforming functions
+
+## 1.43.2
+
+### Patch Changes
+
+- [#1842](https://github.com/bcakmakoglu/vue-flow/pull/1842) [`dc66c85`](https://github.com/bcakmakoglu/vue-flow/commit/dc66c85df7f9e9c935fee9b7109ed363c6098668) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow multi-select when input is focused.
+
+- [#1843](https://github.com/bcakmakoglu/vue-flow/pull/1843) [`6a2b7e5`](https://github.com/bcakmakoglu/vue-flow/commit/6a2b7e51438553445096e638c0740316f833e270) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use whole handle area for snapping.
+
+## 1.43.1
+
+### Patch Changes
+
+- [#1833](https://github.com/bcakmakoglu/vue-flow/pull/1833) [`8eccc19`](https://github.com/bcakmakoglu/vue-flow/commit/8eccc19d9ffc7534bee6e085d2be6f5a7c8b857b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add missing vue-flow\_\_container class to marker defs.
+
+## 1.43.0
+
+### Minor Changes
+
+- [#1820](https://github.com/bcakmakoglu/vue-flow/pull/1820) [`2201cdd`](https://github.com/bcakmakoglu/vue-flow/commit/2201cdda386b75a8c52c9cb37e0ccbe6ffcd5830) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow passing null or undefined to `useNodeConnections` options
+
+### Patch Changes
+
+- [#1829](https://github.com/bcakmakoglu/vue-flow/pull/1829) [`a4ea4f7`](https://github.com/bcakmakoglu/vue-flow/commit/a4ea4f7735d7f65d1085d8d70a559c85303cd857) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Subtract container bounds when calculating pointer position.
+
+- [#1817](https://github.com/bcakmakoglu/vue-flow/pull/1817) [`0cc4c99`](https://github.com/bcakmakoglu/vue-flow/commit/0cc4c99d13eae3d766579ed18d92404a976e4a9d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add aria-hidden to markers
+
+- [#1830](https://github.com/bcakmakoglu/vue-flow/pull/1830) [`110acf1`](https://github.com/bcakmakoglu/vue-flow/commit/110acf1f730271e87e88147cde308d00ad3aac04) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fall back to using changedTouches when passing a touchend or touchcancel event to getEventPosition.
+
 ## 1.42.5
 
 ### Patch Changes

@@ -1,6 +1,5 @@
 import { markRaw } from 'vue'
 import type {
-  Actions,
   Box,
   Connection,
   CoordinateExtent,
@@ -16,13 +15,16 @@ import type {
   GraphNode,
   MaybeElement,
   Node,
+  NodeLookup,
+  Padding,
+  PaddingWithUnit,
   Rect,
   SnapGrid,
   ViewportTransform,
   XYPosition,
   XYZPosition,
 } from '../types'
-import { isDef, snapPosition } from '.'
+import { isDef, isMacOs, snapPosition } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
@@ -373,28 +375,163 @@ export function getConnectedNodes<N extends Node | { id: string } | string>(node
   return nodes.filter((node) => connectedNodeIds.has(typeof node === 'string' ? node : node.id))
 }
 
+/**
+ * Parses a single padding value to a number
+ * @internal
+ * @param padding - Padding to parse
+ * @param viewport - Width or height of the viewport
+ * @returns The padding in pixels
+ */
+function parsePadding(padding: PaddingWithUnit, viewport: number): number {
+  if (typeof padding === 'number') {
+    return Math.floor((viewport - viewport / (1 + padding)) * 0.5)
+  }
+
+  if (typeof padding === 'string' && padding.endsWith('px')) {
+    const paddingValue = Number.parseFloat(padding)
+    if (!Number.isNaN(paddingValue)) {
+      return Math.floor(paddingValue)
+    }
+  }
+
+  if (typeof padding === 'string' && padding.endsWith('%')) {
+    const paddingValue = Number.parseFloat(padding)
+    if (!Number.isNaN(paddingValue)) {
+      return Math.floor(viewport * paddingValue * 0.01)
+    }
+  }
+
+  warn(`The padding value "${padding}" is invalid. Please provide a number or a string with a valid unit (px or %).`)
+
+  return 0
+}
+
+/**
+ * Parses the paddings to an object with top, right, bottom, left, x and y paddings
+ * @internal
+ * @param padding - Padding to parse
+ * @param width - Width of the viewport
+ * @param height - Height of the viewport
+ * @returns An object with the paddings in pixels
+ */
+function parsePaddings(
+  padding: Padding,
+  width: number,
+  height: number,
+): { top: number; bottom: number; left: number; right: number; x: number; y: number } {
+  if (typeof padding === 'string' || typeof padding === 'number') {
+    const paddingY = parsePadding(padding, height)
+    const paddingX = parsePadding(padding, width)
+    return {
+      top: paddingY,
+      right: paddingX,
+      bottom: paddingY,
+      left: paddingX,
+      x: paddingX * 2,
+      y: paddingY * 2,
+    }
+  }
+
+  if (typeof padding === 'object') {
+    const top = parsePadding(padding.top ?? padding.y ?? 0, height)
+    const bottom = parsePadding(padding.bottom ?? padding.y ?? 0, height)
+    const left = parsePadding(padding.left ?? padding.x ?? 0, width)
+    const right = parsePadding(padding.right ?? padding.x ?? 0, width)
+    return { top, right, bottom, left, x: left + right, y: top + bottom }
+  }
+
+  return { top: 0, right: 0, bottom: 0, left: 0, x: 0, y: 0 }
+}
+
+/**
+ * Calculates the resulting paddings if the new viewport is applied
+ * @internal
+ * @param bounds - Bounds to fit inside viewport
+ * @param x - X position of the viewport
+ * @param y - Y position of the viewport
+ * @param zoom - Zoom level of the viewport
+ * @param width - Width of the viewport
+ * @param height - Height of the viewport
+ * @returns An object with the minimum padding required to fit the bounds inside the viewport
+ */
+function calculateAppliedPaddings(bounds: Rect, x: number, y: number, zoom: number, width: number, height: number) {
+  const { x: left, y: top } = rendererPointToPoint(bounds, { x, y, zoom })
+
+  const { x: boundRight, y: boundBottom } = rendererPointToPoint(
+    { x: bounds.x + bounds.width, y: bounds.y + bounds.height },
+    {
+      x,
+      y,
+      zoom,
+    },
+  )
+
+  const right = width - boundRight
+  const bottom = height - boundBottom
+
+  return {
+    left: Math.floor(left),
+    top: Math.floor(top),
+    right: Math.floor(right),
+    bottom: Math.floor(bottom),
+  }
+}
+
+/**
+ * Returns a viewport that encloses the given bounds with padding.
+ * @public
+ * @remarks You can determine bounds of nodes with {@link getNodesBounds} and {@link getBoundsOfRects}
+ * @param bounds - Bounds to fit inside viewport.
+ * @param width - Width of the viewport.
+ * @param height  - Height of the viewport.
+ * @param minZoom - Minimum zoom level of the resulting viewport.
+ * @param maxZoom - Maximum zoom level of the resulting viewport.
+ * @param padding - Padding around the bounds.
+ * @returns A transformed {@link Viewport} that encloses the given bounds which you can pass to e.g. {@link setViewport}.
+ * @example
+ * const { x, y, zoom } = getViewportForBounds(
+ * { x: 0, y: 0, width: 100, height: 100},
+ * 1200, 800, 0.5, 2);
+ */
 export function getTransformForBounds(
   bounds: Rect,
   width: number,
   height: number,
   minZoom: number,
   maxZoom: number,
-  padding = 0.1,
-  offset: {
-    x?: number
-    y?: number
-  } = { x: 0, y: 0 },
+  padding: Padding = 0.1,
 ): ViewportTransform {
-  const xZoom = width / (bounds.width * (1 + padding))
-  const yZoom = height / (bounds.height * (1 + padding))
+  // First we resolve all the paddings to actual pixel values
+  const p = parsePaddings(padding, width, height)
+
+  const xZoom = (width - p.x) / bounds.width
+  const yZoom = (height - p.y) / bounds.height
+
+  // We calculate the new x, y, zoom for a centered view
   const zoom = Math.min(xZoom, yZoom)
   const clampedZoom = clamp(zoom, minZoom, maxZoom)
+
   const boundsCenterX = bounds.x + bounds.width / 2
   const boundsCenterY = bounds.y + bounds.height / 2
-  const x = width / 2 - boundsCenterX * clampedZoom + (offset.x ?? 0)
-  const y = height / 2 - boundsCenterY * clampedZoom + (offset.y ?? 0)
+  const x = width / 2 - boundsCenterX * clampedZoom
+  const y = height / 2 - boundsCenterY * clampedZoom
 
-  return { x, y, zoom: clampedZoom }
+  // Then we calculate the minimum padding, to respect asymmetric paddings
+  const newPadding = calculateAppliedPaddings(bounds, x, y, clampedZoom, width, height)
+
+  // We only want to have an offset if the newPadding is smaller than the required padding
+  const offset = {
+    left: Math.min(newPadding.left - p.left, 0),
+    top: Math.min(newPadding.top - p.top, 0),
+    right: Math.min(newPadding.right - p.right, 0),
+    bottom: Math.min(newPadding.bottom - p.bottom, 0),
+  }
+
+  return {
+    x: x - offset.left + offset.right,
+    y: y - offset.top + offset.bottom,
+    zoom: clampedZoom,
+  }
 }
 
 export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition {
@@ -405,12 +542,12 @@ export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition)
   }
 }
 
-export function isParentSelected(node: GraphNode, findNode: Actions['findNode']): boolean {
+export function isParentSelected(node: GraphNode, nodeLookup: NodeLookup): boolean {
   if (!node.parentNode) {
     return false
   }
 
-  const parent = findNode(node.parentNode)
+  const parent = nodeLookup.get(node.parentNode)
   if (!parent) {
     return false
   }
@@ -419,7 +556,7 @@ export function isParentSelected(node: GraphNode, findNode: Actions['findNode'])
     return true
   }
 
-  return isParentSelected(parent, findNode)
+  return isParentSelected(parent, nodeLookup)
 }
 
 export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: string) {
@@ -437,4 +574,10 @@ export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: stri
     .sort()
     .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
     .join('&')}`
+}
+
+export function wheelDelta(event: any) {
+  const factor = event.ctrlKey && isMacOs() ? 10 : 1
+
+  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
 }

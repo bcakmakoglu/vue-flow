@@ -2,7 +2,7 @@ import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import { ref, toValue, watch } from 'vue'
+import { shallowRef, toValue, watch } from 'vue'
 import type { MouseTouchEvent, NodeDragEvent, NodeDragItem, XYPosition } from '../types'
 import {
   calcAutoPan,
@@ -42,7 +42,7 @@ export function useDrag(params: UseDragParams) {
     snapToGrid,
     snapGrid,
     noDragClassName,
-    nodes,
+    nodeLookup,
     nodeExtent,
     nodeDragThreshold,
     viewport,
@@ -62,7 +62,7 @@ export function useDrag(params: UseDragParams) {
 
   const { onStart, onDrag, onStop, onClick, el, disabled, id, selectable, dragHandle } = params
 
-  const dragging = ref(false)
+  const dragging = shallowRef(false)
 
   let dragItems: NodeDragItem[] = []
 
@@ -74,6 +74,7 @@ export function useDrag(params: UseDragParams) {
   let mousePosition: XYPosition = { x: 0, y: 0 }
   let dragEvent: MouseEvent | null = null
   let dragStarted = false
+  let nodePositionsChanged = false
 
   let autoPanId = 0
   let autoPanStarted = false
@@ -103,6 +104,8 @@ export function useDrag(params: UseDragParams) {
 
       return n
     })
+
+    nodePositionsChanged = nodePositionsChanged || hasChange
 
     if (!hasChange) {
       return
@@ -169,7 +172,7 @@ export function useDrag(params: UseDragParams) {
 
     const pointerPos = getPointerPosition(event.sourceEvent)
     lastPos = pointerPos
-    dragItems = getDragItems(nodes.value, nodesDraggable.value, pointerPos, findNode, id)
+    dragItems = getDragItems(nodeLookup.value, nodesDraggable.value, pointerPos, id)
 
     if (dragItems.length) {
       const [currentNode, nodes] = getEventHandlerParams({
@@ -186,6 +189,8 @@ export function useDrag(params: UseDragParams) {
     if (event.sourceEvent.type === 'touchmove' && event.sourceEvent.touches.length > 1) {
       return
     }
+
+    nodePositionsChanged = false
 
     if (nodeDragThreshold.value === 0) {
       startDrag(event, nodeEl)
@@ -244,7 +249,10 @@ export function useDrag(params: UseDragParams) {
     }
 
     if (dragItems.length && !isClick) {
-      updateNodePositions(dragItems, false, false)
+      if (nodePositionsChanged) {
+        updateNodePositions(dragItems, false, false)
+        nodePositionsChanged = false
+      }
 
       const [currentNode, nodes] = getEventHandlerParams({
         id,

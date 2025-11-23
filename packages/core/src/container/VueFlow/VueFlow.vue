@@ -56,12 +56,12 @@ const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const instance = useVueFlow(props)
+const vfInstance = useVueFlow(props)
 
 // watch props and update store state
-const dispose = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, instance)
+const disposeWatchers = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, vfInstance)
 
-useHooks(emit, instance.hooks)
+useHooks(emit, vfInstance.hooks)
 
 useOnInitHandler()
 
@@ -72,12 +72,9 @@ useStylesLoadedWarning()
 // as that would require a lot of boilerplate and causes significant performance drops
 provide(Slots, slots)
 
-onUnmounted(() => {
-  // clean up watcher scope
-  dispose()
-})
+onUnmounted(disposeWatchers)
 
-defineExpose<VueFlowStore>(instance)
+defineExpose<VueFlowStore>(vfInstance)
 </script>
 
 <script lang="ts">
@@ -88,7 +85,7 @@ export default {
 </script>
 
 <template>
-  <div :ref="instance.vueFlowRef" class="vue-flow">
+  <div :ref="vfInstance.vueFlowRef" class="vue-flow">
     <Viewport>
       <EdgeRenderer />
 

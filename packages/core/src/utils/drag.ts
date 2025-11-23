@@ -1,4 +1,3 @@
-import { markRaw } from 'vue'
 import type {
   Actions,
   CoordinateExtent,
@@ -6,6 +5,7 @@ import type {
   Dimensions,
   GraphNode,
   NodeDragItem,
+  NodeLookup,
   State,
   XYPosition,
 } from '../types'
@@ -27,39 +27,38 @@ export function hasSelector(target: Element, selector: string, node: Element): b
   return false
 }
 
-export function getDragItems(
-  nodes: GraphNode[],
-  nodesDraggable: boolean,
-  mousePos: XYPosition,
-  findNode: Actions['findNode'],
-  nodeId?: string,
-): NodeDragItem[] {
-  const dragItems: NodeDragItem[] = []
-  for (const node of nodes) {
+// looks for all selected nodes and created a NodeDragItem for each of them
+export function getDragItems(nodeLookup: NodeLookup, nodesDraggable: boolean, mousePos: XYPosition, nodeId?: string) {
+  const dragItems = new Map<string, NodeDragItem>()
+
+  for (const [id, node] of nodeLookup) {
     if (
       (node.selected || node.id === nodeId) &&
-      (!node.parentNode || !isParentSelected(node, findNode)) &&
+      (!node.parentNode || !isParentSelected(node, nodeLookup)) &&
       (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined'))
     ) {
-      dragItems.push(
-        markRaw({
+      const internalNode = nodeLookup.get(id)
+
+      if (internalNode) {
+        dragItems.set(id, {
           id: node.id,
           position: node.position || { x: 0, y: 0 },
           distance: {
             x: mousePos.x - node.computedPosition?.x || 0,
             y: mousePos.y - node.computedPosition?.y || 0,
           },
-          from: node.computedPosition,
+          from: { x: node.computedPosition.x, y: node.computedPosition.y },
           extent: node.extent,
           parentNode: node.parentNode,
-          dimensions: node.dimensions,
+          dimensions: { ...node.dimensions },
           expandParent: node.expandParent,
-        }),
-      )
+        })
+      }
     }
   }
 
-  return dragItems
+  // todo: work with map in `useDrag` instead of array
+  return Array.from(dragItems.values())
 }
 
 export function getEventHandlerParams({

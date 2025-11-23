@@ -2,13 +2,13 @@
 import type { D3ZoomEvent, ZoomTransform } from 'd3-zoom'
 import { zoom, zoomIdentity } from 'd3-zoom'
 import { pointer, select } from 'd3-selection'
-import { onMounted, ref, toRef, watch } from 'vue'
+import { onMounted, shallowRef, toRef, watch } from 'vue'
 import type { CoordinateExtent, D3ZoomHandler, ViewportTransform } from '../../types'
 import { PanOnScrollMode } from '../../types'
 import { useKeyPress } from '../../composables/useKeyPress'
 import { useVueFlow } from '../../composables/useVueFlow'
 import { useResizeHandler } from '../../composables/useResizeHandler'
-import { clamp, isMacOs, warn } from '../../utils'
+import { clamp, isMacOs, warn, wheelDelta } from '../../utils'
 import Pane from '../Pane/Pane.vue'
 import Transform from './Transform.vue'
 
@@ -44,9 +44,9 @@ const {
 
 useResizeHandler(viewportRef)
 
-const isZoomingOrPanning = ref(false)
+const isZoomingOrPanning = shallowRef(false)
 
-const isPanScrolling = ref(false)
+const isPanScrolling = shallowRef(false)
 
 let panScrollTimeout: ReturnType<typeof setTimeout> | null = null
 
@@ -75,6 +75,8 @@ const shouldPanOnDrag = toRef(
 const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
 
 const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true))
+
+const connectionInProgress = toRef(() => connectionStartHandle.value !== null)
 
 onMounted(() => {
   if (!viewportRef.value) {
@@ -163,6 +165,7 @@ onMounted(() => {
     const zoomScroll = zoomKeyPressed.value || zoomOnScroll.value
     const pinchZoom = zoomOnPinch.value && event.ctrlKey
     const eventButton = (event as MouseEvent).button
+    const isWheelEvent = event.type === 'wheel'
 
     if (
       eventButton === 1 &&
@@ -182,30 +185,35 @@ onMounted(() => {
       return false
     }
 
+    // we want to disable pinch-zooming while making a connection
+    if (connectionInProgress.value && !isWheelEvent) {
+      return false
+    }
+
     // if zoom on double click is disabled, we prevent the double click event
     if (!zoomOnDoubleClick.value && event.type === 'dblclick') {
       return false
     }
 
     // if the target element is inside an element with the nowheel class, we prevent zooming
-    if (isWrappedWithClass(event, noWheelClassName.value) && event.type === 'wheel') {
+    if (isWrappedWithClass(event, noWheelClassName.value) && isWheelEvent) {
       return false
     }
 
     // if the target element is inside an element with the nopan class, we prevent panning
     if (
       isWrappedWithClass(event, noPanClassName.value) &&
-      (event.type !== 'wheel' || (shouldPanOnScroll.value && event.type === 'wheel' && !zoomKeyPressed.value))
+      (!isWheelEvent || (shouldPanOnScroll.value && isWheelEvent && !zoomKeyPressed.value))
     ) {
       return false
     }
 
-    if (!zoomOnPinch.value && event.ctrlKey && event.type === 'wheel') {
+    if (!zoomOnPinch.value && event.ctrlKey && isWheelEvent) {
       return false
     }
 
     // when there is no scroll handling enabled, we prevent all wheel events
-    if (!zoomScroll && !shouldPanOnScroll.value && !pinchZoom && event.type === 'wheel') {
+    if (!zoomScroll && !shouldPanOnScroll.value && !pinchZoom && isWheelEvent) {
       return false
     }
 
@@ -242,7 +250,7 @@ onMounted(() => {
       eventButton <= 1
 
     // default filter for d3-zoom
-    return (!event.ctrlKey || panKeyPressed.value || event.type === 'wheel') && buttonAllowed
+    return (!event.ctrlKey || panKeyPressed.value || isWheelEvent) && buttonAllowed
   })
 
   watch(
@@ -380,12 +388,6 @@ function isRightClickPan(pan: boolean | number[], usedButton: number) {
   return usedButton === 2 && Array.isArray(pan) && pan.includes(2)
 }
 
-function wheelDelta(event: any) {
-  const factor = event.ctrlKey && isMacOs() ? 10 : 1
-
-  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
-}
-
 function viewChanged(prevViewport: ViewportTransform, eventTransform: ZoomTransform) {
   return (
     (prevViewport.x !== eventTransform.x && !Number.isNaN(eventTransform.x)) ||
@@ -420,7 +422,7 @@ export default {
       :is-selecting="isSelecting"
       :selection-key-pressed="selectionKeyPressed"
       :class="{
-        connecting: !!connectionStartHandle,
+        connecting: connectionInProgress,
         dragging: paneDragging,
         draggable: panOnDrag === true || (Array.isArray(panOnDrag) && panOnDrag.includes(0)),
       }"
