@@ -1,14 +1,15 @@
 {
   "name": "@vue-flow/core",
-  "version": "1.39.0",
+  "version": "1.48.0",
   "private": false,
   "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcakmakoglu/vue-flow"
+    "url": "git+https://github.com/bcakmakoglu/vue-flow",
+    "directory": "packages/core"
   },
-  "homepage": "https://github.com/bcakmakoglu/vue-flow#readme",
+  "homepage": "https://vueflow.dev",
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
@@ -72,6 +73,7 @@
   "dependencies": {
     "@vueuse/core": "^10.5.0",
     "d3-drag": "^3.0.0",
+    "d3-interpolate": "^3.0.1",
     "d3-selection": "^3.0.0",
     "@xyflow/system": "^0.0.73"
   },
@@ -79,8 +81,11 @@
     "@rollup/plugin-replace": "^5.0.3",
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
-    "@types/d3-drag": "^3.0.4",
-    "@types/d3-selection": "^3.0.7",
+    "@types/d3-drag": "^3.0.7",
+    "@types/d3-interpolate": "^3.0.4",
+    "@types/d3-selection": "^3.0.11",
+    "@types/d3-transition": "^3.0.9",
+    "@types/d3-zoom": "^3.0.8",
     "@vitejs/plugin-vue": "^4.4.0",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",

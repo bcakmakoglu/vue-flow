@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { Background } from '@vue-flow/background'
-import { Controls } from '@vue-flow/controls'
-import { MiniMap } from '@vue-flow/minimap'
-import type { Elements } from '@vue-flow/core'
+import type { Node } from '@vue-flow/core'
 import { MarkerType, VueFlow, useVueFlow } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
-import CustomConnectionLine from './CustomConnectionLine.vue'
+import FloatingConnectionLine from './FloatingConnectionLine.vue'
 import FloatingEdge from './FloatingEdge.vue'
 
 const { onConnect, addEdges } = useVueFlow()
@@ -20,7 +18,7 @@ const defaultEdgeOptions = {
   },
 }
 
-const elements = ref<Elements>([
+const nodes = ref<Node[]>([
   {
     id: '1',
     type: 'custom',
@@ -43,37 +41,31 @@ const elements = ref<Elements>([
   },
 ])
 
+const edges = ref([])
+
 onConnect(addEdges)
 </script>
 
 <template>
-  <div style="height: 100vh">
-    <VueFlow
-      v-model="elements"
-      :elevate-nodes-on-select="false"
-      class="vue-flow-basic-example"
-      :default-zoom="1.5"
-      :default-edge-options="defaultEdgeOptions"
-      :min-zoom="0.2"
-      :max-zoom="4"
-    >
-      <Background pattern-color="#aaa" :gap="8" />
+  <VueFlow
+    v-model:nodes="nodes"
+    v-model:edges="edges"
+    :elevate-nodes-on-select="false"
+    :default-edge-options="defaultEdgeOptions"
+    fit-view-on-init
+  >
+    <Background pattern-color="#aaa" :gap="8" />
 
-      <MiniMap />
+    <template #node-custom="props">
+      <CustomNode :id="props.id" />
+    </template>
 
-      <Controls />
+    <template #edge-floating="fProps">
+      <FloatingEdge v-bind="fProps" />
+    </template>
 
-      <template #node-custom="props">
-        <CustomNode :id="props.id" />
-      </template>
-
-      <template #edge-floating="fProps">
-        <FloatingEdge v-bind="fProps" />
-      </template>
-
-      <template #connection-line="cProps">
-        <CustomConnectionLine v-bind="cProps" />
-      </template>
-    </VueFlow>
-  </div>
+    <template #connection-line="cProps">
+      <FloatingConnectionLine v-bind="cProps" />
+    </template>
+  </VueFlow>
 </template>

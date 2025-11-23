@@ -17,8 +17,8 @@ export interface CoordinateExtentRange {
 }
 
 export interface NodeHandleBounds {
-  source?: HandleElement[]
-  target?: HandleElement[]
+  source: HandleElement[] | null
+  target: HandleElement[] | null
 }
 
 export type Node<
@@ -45,6 +45,25 @@ export type Node<
    * @default "group"
    */
   ariaRole?: string
+
+  /**
+   * General escape hatch for adding custom attributes to the node's DOM element.
+   */
+  domAttributes?: Omit<
+    HTMLAttributes,
+    | 'id'
+    | 'style'
+    | 'className'
+    | 'draggable'
+    | 'aria-label'
+    | 'onMouseenter'
+    | 'onMousemove'
+    | 'onMouseleave'
+    | 'onContextmenu'
+    | 'onClick'
+    | 'onDblclick'
+    | 'onKeydown'
+  >
 }
 export type GraphNode<NodeType extends Node = Node> = InternalNodeBase<NodeType> & {
   /** absolute position in relation to parent elements + z-index */

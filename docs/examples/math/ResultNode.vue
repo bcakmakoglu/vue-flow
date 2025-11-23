@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { Handle, Position, useHandleConnections, useNodesData, useVueFlow } from '@vue-flow/core'
+import { Handle, Position, useNodeConnections, useNodesData } from '@vue-flow/core'
 
 defineProps(['id'])
 
@@ -11,19 +11,18 @@ const mathFunctions = {
   '/': (a, b) => a / b,
 }
 
-const { getConnectedEdges } = useVueFlow()
-
 // Get the source connections of the result node. In this example it's only one operator node.
-const sourceConnections = useHandleConnections({
+const sourceConnections = useNodeConnections({
   // type target means all connections where *this* node is the target
   // that means we go backwards in the graph to find the source of the connection(s)
-  type: 'target',
+  handleType: 'target',
 })
 
 // Get the source connections of the operator node
-const operatorSourceConnections = computed(() =>
-  getConnectedEdges(sourceConnections.value[0].source).filter((e) => e.source !== sourceConnections.value[0].source),
-)
+const operatorSourceConnections = useNodeConnections({
+  handleType: 'target',
+  nodeId: () => sourceConnections.value[0]?.source,
+})
 
 const operatorData = useNodesData(() => sourceConnections.value.map((connection) => connection.source))
 

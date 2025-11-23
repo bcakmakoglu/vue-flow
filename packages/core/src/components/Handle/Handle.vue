@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, toRef } from 'vue'
+import { computed, onMounted, ref, toRef } from 'vue'
 import { getDimensions, isMouseEvent } from '@xyflow/system'
 import type { HandleProps } from '../../types'
 import { Position } from '../../types'
@@ -20,6 +20,7 @@ const type = toRef(() => props.type ?? 'source')
 const isValidConnection = toRef(() => props.isValidConnection ?? null)
 
 const {
+  id: flowId,
   connectionStartHandle,
   connectionClickStartHandle,
   connectionEndHandle,
@@ -40,17 +41,17 @@ const isConnectableEnd = toRef(() => (typeof connectableEnd !== 'undefined' ? co
 const isConnecting = toRef(
   () =>
     (connectionStartHandle.value?.nodeId === nodeId &&
-      connectionStartHandle.value?.handleId === handleId &&
+      connectionStartHandle.value?.id === handleId &&
       connectionStartHandle.value?.type === type.value) ||
     (connectionEndHandle.value?.nodeId === nodeId &&
-      connectionEndHandle.value?.handleId === handleId &&
+      connectionEndHandle.value?.id === handleId &&
       connectionEndHandle.value?.type === type.value),
 )
 
 const isClickConnecting = toRef(
   () =>
     connectionClickStartHandle.value?.nodeId === nodeId &&
-    connectionClickStartHandle.value?.handleId === handleId &&
+    connectionClickStartHandle.value?.id === handleId &&
     connectionClickStartHandle.value?.type === type.value,
 )
 
@@ -128,18 +129,12 @@ onMounted(() => {
     position,
     x: (handleBounds.left - nodeBounds.left) / zoom,
     y: (handleBounds.top - nodeBounds.top) / zoom,
+    type: type.value,
+    nodeId,
     ...getDimensions(handle.value),
   }
 
   node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
-})
-
-onUnmounted(() => {
-  // clean up node internals
-  const handleBounds = node.handleBounds[type.value]
-  if (handleBounds) {
-    node.handleBounds[type.value] = handleBounds.filter((b) => b.id !== handleId)
-  }
 })
 
 function onPointerDown(event: MouseEvent | TouchEvent) {
@@ -178,7 +173,7 @@ export default {
 <template>
   <div
     ref="handle"
-    :data-id="`${nodeId}-${handleId}-${type}`"
+    :data-id="`${flowId}-${nodeId}-${handleId}-${type}`"
     :data-handleid="handleId"
     :data-nodeid="nodeId"
     :data-handlepos="position"

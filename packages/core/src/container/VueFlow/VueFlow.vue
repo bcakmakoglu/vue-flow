@@ -53,12 +53,12 @@ const slots = defineSlots<FlowSlots<NodeType>>()
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const instance = useVueFlow<NodeType>()
+const vfInstance = useVueFlow<NodeType>()
 
 // watch props and update store state
-const dispose = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, instance)
+const disposeWatchers = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, vfInstance)
 
-useHooks(emit, instance.hooks)
+useHooks(emit, vfInstance.hooks)
 
 useOnInitHandler()
 
@@ -69,12 +69,9 @@ useStylesLoadedWarning()
 // as that would require a lot of boilerplate and causes significant performance drops
 provide(Slots, slots)
 
-onUnmounted(() => {
-  // clean up watcher scope
-  dispose()
-})
+onUnmounted(disposeWatchers)
 
-defineExpose<VueFlowStore<NodeType>>(instance)
+defineExpose<VueFlowStore<NodeType>>(vfInstance)
 </script>
 
 <script lang="ts">
@@ -85,7 +82,7 @@ export default {
 </script>
 
 <template>
-  <div :ref="instance.vueFlowRef" class="vue-flow">
+  <div :ref="vfInstance.vueFlowRef" class="vue-flow">
     <ZoomPane>
       <!-- This slot is affected by zooming & panning -->
       <slot name="zoom-pane" />

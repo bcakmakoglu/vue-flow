@@ -27,9 +27,9 @@ export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowSt
    * this should be the regular way after initialization
    */
   if (scope) {
-    const injection = inject(VueFlow, null) as VueFlowStore<NodeType> | null
-    if (typeof injection !== 'undefined' && injection !== null) {
-      vueFlow = injection
+    const injectedState = inject(VueFlow, null) as VueFlowStore<NodeType> | null
+    if (typeof injectedState !== 'undefined' && injectedState !== null && (!vueFlowId || injectedState.id === vueFlowId)) {
+      vueFlow = injectedState
     }
   }
 
@@ -46,7 +46,7 @@ export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowSt
    * _or_ if the store instance we found does not match up with provided ids
    * create a new store instance and register it in storage
    */
-  if (!vueFlow || (vueFlow && id && id !== vueFlow.id)) {
+  if (!vueFlow || (id && vueFlow.id !== id)) {
     const name = id ?? storage.getId()
 
     vueFlow = storage.create(name) as unknown as VueFlowStore<NodeType>

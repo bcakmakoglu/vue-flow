@@ -172,7 +172,7 @@ Upon mounting, handles will automatically attempt to attach to the node.
 However, if for any reason this isn't happening as expected, you can stick to the guideline provided below to enforce Vue Flow to update the node internals.
 :::
 
-At times, you may need to modify handle positions dynamically or programmatically add new handles to a node. In this scenario, the [`updateNodeInternals`](/typedocs/types/UpdateNodeInternals) method found in Vue Flow's API comes in handy.
+At times, you may need to modify handle positions dynamically or programmatically add new handles to a node. In this scenario, the [`updateNodeInternals`](/typedocs/type-aliases/UpdateNodeInternals) method found in Vue Flow's API comes in handy.
 
 Invoking this method is vital when dealing with dynamic handles. If not, the node might fail to recognize these new handles, resulting in misaligned edges.
 

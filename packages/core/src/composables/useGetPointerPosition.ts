@@ -1,5 +1,7 @@
-import type { UseDragEvent } from './useDrag'
+import { getEventPosition, isUseDragEvent, pointToRendererPoint, snapPosition } from '../utils'
+import type { MouseTouchEvent } from '../types'
 import { useVueFlow } from './useVueFlow'
+import type { UseDragEvent } from './useDrag'
 
 /**
  * Composable that returns a function to get the pointer position
@@ -7,22 +9,21 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useGetPointerPosition() {
-  const { viewport, snapGrid, snapToGrid } = useVueFlow()
+  const { viewport, snapGrid, snapToGrid, vueFlowRef } = useVueFlow()
 
   // returns the pointer position projected to the VF coordinate system
-  return ({ sourceEvent }: UseDragEvent) => {
-    const x = sourceEvent.touches ? sourceEvent.touches[0].clientX : sourceEvent.clientX
-    const y = sourceEvent.touches ? sourceEvent.touches[0].clientY : sourceEvent.clientY
+  return (event: UseDragEvent | MouseTouchEvent) => {
+    const containerBounds = vueFlowRef.value?.getBoundingClientRect() ?? { left: 0, top: 0 }
+    const evt = isUseDragEvent(event) ? event.sourceEvent : event
 
-    const pointerPos = {
-      x: (x - viewport.value.x) / viewport.value.zoom,
-      y: (y - viewport.value.y) / viewport.value.zoom,
-    }
+    const { x, y } = getEventPosition(evt, containerBounds as DOMRect)
+    const pointerPos = pointToRendererPoint({ x, y }, viewport.value)
+    const { x: xSnapped, y: ySnapped } = snapToGrid.value ? snapPosition(pointerPos, snapGrid.value) : pointerPos
 
-    // we need the snapped position in order to be able to skip unnecessary drag events
+    // we need the snapped position to be able to skip unnecessary drag events
     return {
-      xSnapped: snapToGrid.value ? snapGrid.value[0] * Math.round(pointerPos.x / snapGrid.value[0]) : pointerPos.x,
-      ySnapped: snapToGrid.value ? snapGrid.value[1] * Math.round(pointerPos.y / snapGrid.value[1]) : pointerPos.y,
+      xSnapped,
+      ySnapped,
       ...pointerPos,
     }
   }

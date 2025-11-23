@@ -5,13 +5,13 @@ import { ref } from 'vue'
 /**
  * Composable to run the layout algorithm on the graph.
  * It uses the `dagre` library to calculate the layout of the nodes and edges.
+ *
+ * @see https://github.com/dagrejs/dagre/wiki
  */
 export function useLayout() {
   const { findNode } = useVueFlow()
 
   const graph = ref(new dagre.graphlib.Graph())
-
-  const previousDirection = ref('LR')
 
   function layout(nodes, edges, direction) {
     // we create a new graph instance, in case some nodes/edges were removed, otherwise dagre would act as if they were still there
@@ -24,11 +24,14 @@ export function useLayout() {
     const isHorizontal = direction === 'LR'
     dagreGraph.setGraph({ rankdir: direction })
 
-    previousDirection.value = direction
-
     for (const node of nodes) {
       // if you need width+height of nodes for your layout, you can use the dimensions property of the internal node (`GraphNode` type)
       const graphNode = findNode(node.id)
+
+      if (!graphNode) {
+        console.error(`Node with id ${node.id} not found in the graph`)
+        continue
+      }
 
       dagreGraph.setNode(node.id, { width: graphNode.dimensions.width || 150, height: graphNode.dimensions.height || 50 })
     }
@@ -52,5 +55,5 @@ export function useLayout() {
     })
   }
 
-  return { graph, layout, previousDirection }
+  return { graph, layout }
 }

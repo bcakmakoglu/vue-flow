@@ -79,12 +79,14 @@ function logEvent(name, data) {
 }
 </script>
 
+# Introduction to Edges
+
 Edges are the links connecting your nodes, forming a map.
 Each edge runs from one handle to another, and can be customized to your liking.
 
 Remember, every edge is unique and thus **requires a unique id**, a source and target node id.
 
-For the full list of options available for an edge, check out the [Edge Type](/typedocs/types/Edge).
+For the full list of options available for an edge, check out the [Edge Type](/typedocs/type-aliases/Edge).
 
 ## Adding Edges to the Graph
 
@@ -799,8 +801,8 @@ But you may wish to expand on these features or implement your business logic in
 | label            | Edge label, can be a string or a VNode     | string \| VNode \| Component \| Object       | <Check class="text-[var(--vp-c-brand)]" /> |
 | style            | CSS properties                             | CSSProperties                                | <Check class="text-[var(--vp-c-brand)]" /> |
 | selected         | Is edge selected                           | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
-| sourcePosition   | Source position                            | [Position](/typedocs/enums/Position)         | <Close class="text-red-500" />             |
-| targetPosition   | Target position                            | [Position](/typedocs/enums/Position)         | <Close class="text-red-500" />             |
+| sourcePosition   | Source position                            | [Position](/typedocs/enumerations/Position)         | <Close class="text-red-500" />             |
+| targetPosition   | Target position                            | [Position](/typedocs/enumerations/Position)         | <Close class="text-red-500" />             |
 | sourceHandleId   | ID of the source handle                    | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | targetHandleId   | ID of the target handle                    | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | animated         | Is edge animated                           | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
@@ -810,7 +812,7 @@ But you may wish to expand on these features or implement your business logic in
 | curvature        | The curvature of the edge                  | number                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | interactionWidth | Width of the interaction area for the edge | number                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | data             | Additional data of edge                    | any object                                   | <Close class="text-red-500" />             |
-| events           | Contextual and custom events of edge       | [EdgeEventsOn](/typedocs/types/EdgeEventsOn) | <Close class="text-red-500" />             |
+| events           | Contextual and custom events of edge       | [EdgeEventsOn](/typedocs/type-aliases/EdgeEventsOn) | <Close class="text-red-500" />             |
 
 ## Edge Events
 

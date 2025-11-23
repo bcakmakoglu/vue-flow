@@ -1,4 +1,4 @@
-import type { CSSProperties, Component, VNode } from 'vue'
+import type { CSSProperties, Component, SVGAttributes, VNode } from 'vue'
 import type { ElementData, Position, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { EdgeComponent, EdgeTextProps } from './components'
@@ -102,6 +102,24 @@ export interface DefaultEdge<Data = ElementData, Type extends string = string> e
   /** Aria label for edge (a11y) */
   zIndex?: number
   ariaLabel?: string | null
+  /**
+   * General escape hatch for adding custom attributes to the edge's DOM element.
+   */
+  domAttributes?: Omit<
+    SVGAttributes,
+    | 'id'
+    | 'style'
+    | 'className'
+    | 'role'
+    | 'aria-label'
+    | 'onClick'
+    | 'onMouseenter'
+    | 'onMousemove'
+    | 'onMouseleave'
+    | 'onContextmenu'
+    | 'onDblclick'
+    | 'onKeyDown'
+  >
 }
 
 export interface SmoothStepPathOptions {
@@ -181,7 +199,6 @@ export interface BaseEdgeProps extends EdgeLabelOptions {
   markerStart?: string
   markerEnd?: string
   interactionWidth?: number
-  style?: CSSProperties
 }
 
 export type BezierEdgeProps = EdgePositions &

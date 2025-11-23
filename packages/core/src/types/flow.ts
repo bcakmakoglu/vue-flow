@@ -97,6 +97,8 @@ export interface FlowExportObject {
   viewport: Viewport
 }
 
+export type FlowImportObject = { [key in keyof FlowExportObject]?: FlowExportObject[key] }
+
 export interface FlowProps<NodeType extends Node = Node> {
   id?: string
   nodes?: NodeType[]
@@ -219,8 +221,6 @@ export interface FlowEmits<NodeType extends Node = Node> {
   (event: 'viewportChangeStart', viewport: Viewport): void
   (event: 'viewportChange', viewport: Viewport): void
   (event: 'viewportChangeEnd', viewport: Viewport): void
-  /** @deprecated use `init` instead */
-  (event: 'paneReady', paneEvent: VueFlowStore): void
   (event: 'init', paneEvent: VueFlowStore): void
   (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
   (event: 'paneClick', paneEvent: MouseEvent): void

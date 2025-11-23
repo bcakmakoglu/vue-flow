@@ -1,5 +1,31 @@
 # @vue-flow/minimap
 
+## 1.5.4
+
+### Patch Changes
+
+- [#1918](https://github.com/bcakmakoglu/vue-flow/pull/1918) [`0568ab7`](https://github.com/bcakmakoglu/vue-flow/commit/0568ab7e97ffc67030bd915963c84c2e2f7c42cb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Apply wheelDelta to zoom
+
+- [#1923](https://github.com/bcakmakoglu/vue-flow/pull/1923) [`18d103d`](https://github.com/bcakmakoglu/vue-flow/commit/18d103d7177257ae470949a277cab02d6551d697) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Set zoomstep to 1 and apply factor based on macOs (zoomstep \* factor - 10 if macOs)
+
+## 1.5.3
+
+### Patch Changes
+
+- [#1809](https://github.com/bcakmakoglu/vue-flow/pull/1809) [`b60c526`](https://github.com/bcakmakoglu/vue-flow/commit/b60c526c7f577663329e1d40e461b599dfaf0bd8) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Filter hidden nodes from minimap bounds
+
+## 1.5.2
+
+### Patch Changes
+
+- [#1754](https://github.com/bcakmakoglu/vue-flow/pull/1754) [`a3870b8`](https://github.com/bcakmakoglu/vue-flow/commit/a3870b85e0c61512f4f5f9ac287536dbe9c720dd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Bind attributes to minimap node elements.
+
+## 1.5.1
+
+### Patch Changes
+
+- [#1739](https://github.com/bcakmakoglu/vue-flow/pull/1739) [`6f37cfd`](https://github.com/bcakmakoglu/vue-flow/commit/6f37cfde46c9f8725aa7e74d87c7b2a919f96613) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Hide minimap node when graph node is hidden.
+
 ## 1.5.0
 
 ### Minor Changes

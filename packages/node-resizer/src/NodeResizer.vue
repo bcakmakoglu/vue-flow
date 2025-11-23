@@ -8,6 +8,7 @@ import { ResizeControlVariant } from './types'
 
 const props = withDefaults(defineProps<NodeResizerProps>(), {
   isVisible: true,
+  autoScale: true,
 })
 
 const emits = defineEmits<NodeResizerEmits>()
@@ -92,13 +93,14 @@ export default {
       :node-id="nodeId"
       :position="c"
       :variant="ResizeControlVariant.Line"
-      :keep-aspect-ratio="keepAspectRatio"
       :color="color"
       :min-width="minWidth"
       :min-height="minHeight"
       :max-width="maxWidth"
       :max-height="maxHeight"
       :should-resize="shouldResize"
+      :keep-aspect-ratio="keepAspectRatio"
+      :auto-scale="autoScale"
       @resize-start="emits('resizeStart', $event)"
       @resize="emits('resize', $event)"
       @resize-end="emits('resizeEnd', $event)"
@@ -118,6 +120,7 @@ export default {
       :max-height="maxHeight"
       :should-resize="shouldResize"
       :keep-aspect-ratio="keepAspectRatio"
+      :auto-scale="autoScale"
       @resize-start="emits('resizeStart', $event)"
       @resize="emits('resize', $event)"
       @resize-end="emits('resizeEnd', $event)"

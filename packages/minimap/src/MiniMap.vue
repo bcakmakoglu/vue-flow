@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { GraphNode, PanelPosition } from '@vue-flow/core'
-import { Panel, getBoundsOfRects, getConnectedEdges, getRectOfNodes, useVueFlow } from '@vue-flow/core'
+import { Panel, getBoundsOfRects, getConnectedEdges, getRectOfNodes, isMacOs, useVueFlow, wheelDelta } from '@vue-flow/core'
 import { computed, onMounted, onUnmounted, provide, ref, toRef, useAttrs, watch } from 'vue'
 import type { XYMinimapInstance } from '@xyflow/system'
 import { XYMinimap } from '@xyflow/system'
@@ -25,7 +25,7 @@ const {
   zoomable = false,
   ariaLabel = 'Vue Flow mini map',
   inversePan = false,
-  zoomStep = 10,
+  zoomStep = 1,
   offsetScale = 5,
 } = defineProps<MiniMapProps>()
 
@@ -62,7 +62,7 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
-const bb = computed(() => getRectOfNodes(nodes.value))
+const bb = computed(() => getRectOfNodes(nodes.value.filter((node) => !node.hidden)))
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
@@ -221,6 +221,7 @@ export default {
         v-for="node of nodes"
         :id="node.id"
         :key="node.id"
+        f
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :selected="node.selected"
@@ -233,6 +234,7 @@ export default {
         :stroke-width="nodeStrokeWidth"
         :shape-rendering="shapeRendering"
         :type="node.type"
+        :hidden="node.hidden"
         @click="onNodeClick($event, node)"
         @dblclick="onNodeDblClick($event, node)"
         @mouseenter="onNodeMouseEnter($event, node)"

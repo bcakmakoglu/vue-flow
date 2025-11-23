@@ -18,26 +18,23 @@ const {
   bgColor,
   patternColor: initialPatternColor,
   color: _patternColor,
-  offset = 2,
+  offset = 0,
 } = defineProps<BackgroundProps>()
 
 const { id: vueFlowId, viewport } = useVueFlow()
 
 const background = computed(() => {
+  const zoom = viewport.value.zoom
   const [gapX, gapY] = Array.isArray(gap) ? gap : [gap, gap]
+  const scaledGap: [number, number] = [gapX * zoom || 1, gapY * zoom || 1]
+  const scaledSize = size * zoom
+  const [offsetX, offsetY]: [number, number] = Array.isArray(offset) ? offset : [offset, offset]
 
-  const scaledGap: [number, number] = [gapX * viewport.value.zoom || 1, gapY * viewport.value.zoom || 1]
-
-  const scaledSize = size * viewport.value.zoom
-
-  const patternOffset =
-    variant === BackgroundVariant.Dots
-      ? [scaledSize / offset, scaledSize / offset]
-      : [scaledGap[0] / offset, scaledGap[1] / offset]
+  const scaledOffset: [number, number] = [offsetX * zoom || 1 + scaledGap[0] / 2, offsetY * zoom || 1 + scaledGap[1] / 2]
 
   return {
     scaledGap,
-    offset: patternOffset,
+    offset: scaledOffset,
     size: scaledSize,
   }
 })
@@ -79,7 +76,7 @@ export default {
           </template>
 
           <template v-else-if="variant === BackgroundVariant.Dots">
-            <DotPattern :color="patternColor" :radius="background.size / offset" />
+            <DotPattern :color="patternColor" :radius="background.size / 2" />
           </template>
 
           <svg v-if="bgColor" height="100" width="100">

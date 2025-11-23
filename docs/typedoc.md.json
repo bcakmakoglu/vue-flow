@@ -13,7 +13,6 @@
     "../packages/node-toolbar/src/index.ts",
     "../packages/node-resizer/src/index.ts"
   ],
-  "allReflectionsHaveOwnDocument": true,
   "categorizeByGroup": true,
   "darkHighlightTheme": "vitesse-dark",
   "lightHighlightTheme": "vitesse-light",
@@ -22,5 +21,5 @@
   "cleanOutputDir": true,
   "out": "src/typedocs",
   "tsconfig": "tsconfig.docs.json",
-  "entryDocument": "index.md"
+  "entryFileName": "index.md"
 }

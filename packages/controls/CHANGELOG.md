@@ -1,5 +1,11 @@
 # @vue-flow/controls
 
+## 1.1.3
+
+### Patch Changes
+
+- [#1912](https://github.com/bcakmakoglu/vue-flow/pull/1912) [`19d1d9d`](https://github.com/bcakmakoglu/vue-flow/commit/19d1d9d010d30c8fbaf7dafd112db583945a09ba) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `type="button"` to control buttons to avoid form submission if controls are nested in a form element.
+
 ## 1.1.2
 
 ### Patch Changes

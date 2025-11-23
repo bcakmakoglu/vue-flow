@@ -1,0 +1,26 @@
+.vue-flow__panel {
+  background-color: #2d3748;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 12px;
+  font-weight: 600;
+  width: 100px;
+}
+
+
+.vue-flow__panel label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.vue-flow__panel label input {
+  cursor: pointer;
+}

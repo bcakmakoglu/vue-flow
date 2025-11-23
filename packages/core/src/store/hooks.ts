@@ -1,10 +1,9 @@
 import { tryOnScopeDispose } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { onBeforeMount } from 'vue'
-import type { FlowHooks, Node } from '../types'
+import { getCurrentInstance, onBeforeMount } from 'vue'
+import type { FlowEvents, FlowHooks, Node } from '../types'
 import { createExtendedEventHook, warn } from '../utils'
 
-// flow event hooks
 export function createHooks<NodeType extends Node = Node>(): FlowHooks<NodeType> {
   return {
     edgesChange: createExtendedEventHook(),
@@ -64,18 +63,39 @@ export function createHooks<NodeType extends Node = Node>(): FlowHooks<NodeType>
 }
 
 export function useHooks<NodeType extends Node = Node>(emit: (...args: any[]) => void, hooks: Ref<FlowHooks<NodeType>>) {
+  const inst = getCurrentInstance()
   onBeforeMount(() => {
     for (const [key, value] of Object.entries(hooks.value)) {
-      const listener = (data: any) => {
+      const listener = (data: unknown) => {
         emit(key, data)
       }
 
-      // push into fns instead of using `on` to avoid overwriting default handlers - the emits should be called in addition to the default handlers
-      value.fns.add(listener)
+      // push into fns instead of using `on` to avoid overwriting default handlers - the emitter should be called in addition to the default handlers
+      value.setEmitter(listener)
+      tryOnScopeDispose(value.removeEmitter)
 
-      tryOnScopeDispose(() => {
-        value.off(listener)
-      })
+      value.setHasEmitListeners(() => hasVNodeListener(key as keyof FlowEvents))
+      tryOnScopeDispose(value.removeHasEmitListeners)
     }
   })
+
+  function hasVNodeListener(event: keyof FlowEvents) {
+    const key = toHandlerKey(event)
+    // listeners live on vnode.props; value can be a Function or an array of Functions
+    const h = inst?.vnode.props?.[key]
+    return !!h
+  }
+}
+
+/**
+ * Converts an event name to the corresponding handler key.
+ * E.g. 'nodeClick' -> 'onNodeClick'
+ *
+ * @param event The event name to convert.
+ * @returns The corresponding handler key.
+ */
+function toHandlerKey(event: string) {
+  const [head, ...rest] = event.split(':')
+  const camel = head.replace(/(?:^|-)(\w)/g, (_, c: string) => c.toUpperCase())
+  return `on${camel}${rest.length ? `:${rest.join(':')}` : ''}`
 }

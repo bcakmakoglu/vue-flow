@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, inject, toRef } from 'vue'
+import { computed, inject } from 'vue'
 import type { Viewport } from '@xyflow/system'
 import type { GraphNode, Rect } from '@vue-flow/core'
 import { NodeIdInjection, Position, getRectOfNodes, useVueFlow } from '@vue-flow/core'
@@ -11,6 +11,7 @@ const props = withDefaults(defineProps<NodeToolbarProps>(), {
   position: Position.Top,
   offset: 10,
   align: 'center',
+  isVisible: undefined,
 })
 
 const contextNodeId = inject(NodeIdInjection, null)
@@ -31,7 +32,7 @@ const nodes = computed(() => {
   }, [] as GraphNode[])
 })
 
-const isActive = toRef(() =>
+const isActive = computed(() =>
   typeof props.isVisible === 'boolean'
     ? props.isVisible
     : nodes.value.length === 1 && nodes.value[0].selected && getSelectedNodes.value.length === 1,

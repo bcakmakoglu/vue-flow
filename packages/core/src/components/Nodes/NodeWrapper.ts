@@ -22,10 +22,11 @@ import {
   elementSelectionKeys,
   getXYZPos,
   handleNodeClick,
+  snapPosition,
 } from '../../utils'
 import { NodeId, NodeRef, Slots } from '../../context'
 import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
-import type { BuiltInNode, NodeComponent } from '../../types'
+import type { BuiltInNode, NodeComponent, MouseTouchEvent } from '../../types'
 
 interface Props {
   id: string
@@ -60,6 +61,7 @@ const NodeWrapper = defineComponent({
       elementsSelectable,
       nodesConnectable,
       nodesFocusable,
+      hooks,
     } = useVueFlow()
 
     const nodeElement = ref<HTMLDivElement | null>(null)
@@ -74,6 +76,8 @@ const NodeWrapper = defineComponent({
 
     const { node, parentNode } = useNode(props.id)
 
+    const { emit } = useNodeHooks(emits)
+
     const isDraggable = toRef(() => (typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable))
 
     const isSelectable = toRef(() => (typeof node.selectable === 'undefined' ? elementsSelectable.value : node.selectable))
@@ -81,6 +85,17 @@ const NodeWrapper = defineComponent({
     const isConnectable = toRef(() => (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable))
 
     const isFocusable = toRef(() => (typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable))
+
+    const hasPointerEvents = computed(
+      () =>
+        isSelectable.value ||
+        isDraggable.value ||
+        hooks.value.nodeClick.hasListeners() ||
+        hooks.value.nodeDoubleClick.hasListeners() ||
+        hooks.value.nodeMouseEnter.hasListeners() ||
+        hooks.value.nodeMouseMove.hasListeners() ||
+        hooks.value.nodeMouseLeave.hasListeners(),
+    )
 
     const isInit = toRef(() => !!node.dimensions.width && !!node.dimensions.height)
 
@@ -112,8 +127,6 @@ const NodeWrapper = defineComponent({
       return false
     })
 
-    const { emit } = useNodeHooks(emits)
-
     const dragging = useDrag({
       id: props.id,
       el: nodeElement,
@@ -142,11 +155,11 @@ const NodeWrapper = defineComponent({
       const width = node.width
       const height = node.height
 
-      if (width) {
+      if (!styles.width && width) {
         styles.width = `${width}px`
       }
 
-      if (height) {
+      if (!styles.height && height) {
         styles.height = `${height}px`
       }
 
@@ -266,13 +279,15 @@ const NodeWrapper = defineComponent({
             visibility: isInit.value ? 'visible' : 'hidden',
             zIndex: node.computedPosition.z ?? zIndex.value,
             transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
-            pointerEvents: isSelectable.value || isDraggable.value ? 'all' : 'none',
+            pointerEvents: hasPointerEvents.value ? 'all' : 'none',
             ...getStyle.value,
           },
           'tabIndex': isFocusable.value ? 0 : undefined,
-          'role': isFocusable.value ? 'button' : undefined,
+          'role': isFocusable.value ? 'group' : undefined,
           'aria-describedby': disableKeyboardA11y.value ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`,
           'aria-label': node.ariaLabel,
+          'aria-roledescription': 'node',
+          ...node.domAttributes,
           'onMouseenter': onMouseEnter,
           'onMousemove': onMouseMove,
           'onMouseleave': onMouseLeave,
@@ -305,14 +320,15 @@ const NodeWrapper = defineComponent({
     }
     /** this re-calculates the current position, necessary for clamping by a node's extent */
     function clampPosition() {
-      const nextPos = node.computedPosition
+      const nextPosition = node.computedPosition
 
-      if (snapToGrid.value) {
-        nextPos.x = snapGrid.value[0] * Math.round(nextPos.x / snapGrid.value[0])
-        nextPos.y = snapGrid.value[1] * Math.round(nextPos.y / snapGrid.value[1])
-      }
-
-      const { computedPosition, position } = calcNextPosition(node, nextPos, emits.error, nodeExtent.value, parentNode.value)
+      const { computedPosition, position } = calcNextPosition(
+        node,
+        snapToGrid.value ? snapPosition(nextPosition, snapGrid.value) : nextPosition,
+        emits.error,
+        nodeExtent.value,
+        parentNode.value,
+      )
 
       // only overwrite positions if there are changes when clamping
       if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
@@ -356,7 +372,7 @@ const NodeWrapper = defineComponent({
       return emit.doubleClick({ event, node })
     }
 
-    function onSelectNode(event: MouseEvent) {
+    function onSelectNode(event: MouseTouchEvent) {
       if (isSelectable.value && (!selectNodesOnDrag.value || !isDraggable.value || nodeDragThreshold.value > 0)) {
         handleNodeClick(
           node,
@@ -390,6 +406,9 @@ const NodeWrapper = defineComponent({
           nodeElement.value!,
         )
       } else if (isDraggable.value && node.selected && arrowKeyDiffs[event.key]) {
+        // prevent page scrolling
+        event.preventDefault()
+
         ariaLiveMessage.value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
           .position.x}, y: ${~~node.position.y}`
 

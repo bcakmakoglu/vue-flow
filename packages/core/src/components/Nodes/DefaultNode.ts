@@ -1,5 +1,5 @@
 import type { Component, FunctionalComponent } from 'vue'
-import { h } from 'vue'
+import { Fragment, h } from 'vue'
 import Handle from '../Handle/Handle.vue'
 import type { BuiltInNode, NodeProps } from '../../types'
 import { Position } from '../../types'
@@ -14,7 +14,7 @@ const DefaultNode: FunctionalComponent<NodeProps<BuiltInNode>> = function ({
 
   return [
     h(Handle as Component, { type: 'target', position: targetPosition, isConnectable }),
-    typeof label !== 'string' && label ? h(label) : h('div', { innerHTML: label }),
+    typeof label !== 'string' && label ? h(label) : h(Fragment, [label]),
     h(Handle as Component, { type: 'source', position: sourcePosition, isConnectable }),
   ]
 }

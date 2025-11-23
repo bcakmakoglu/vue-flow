@@ -58,6 +58,7 @@ export interface MiniMapNodeProps {
   shapeRendering?: ShapeRendering
   strokeColor?: string
   strokeWidth?: number
+  hidden?: boolean
 }
 
 export interface MiniMapEmits {

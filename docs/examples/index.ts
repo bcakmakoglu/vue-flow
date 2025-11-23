@@ -18,9 +18,19 @@ import { IntersectionApp, IntersectionCSS } from './intersection'
 import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
-import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useLayout, useRunProcess, useShuffle } from './layout'
+import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useLayout, useRunProcess } from './layout'
+import { SimpleLayoutApp, SimpleLayoutElements, SimpleLayoutIcon, useSimpleLayout } from './layout-simple'
+import { LoopbackApp, LoopbackCSS, LoopbackEdge } from './loopback'
 import { MathApp, MathCSS, MathElements, MathIcon, MathOperatorNode, MathResultNode, MathValueNode } from './math'
 import { ConfirmApp, ConfirmDialog, useDialog } from './confirm-delete'
+import { EdgeMarkersApp, EdgeMarkersCSS, EdgeMarkersEdge, EdgeMarkersMarker } from './edge-markers'
+import {
+  HelperLinesApp,
+  HelperLinesComponent,
+  HelperLinesInitialElements,
+  HelperLinesStyle,
+  HelperLinesUtils,
+} from './helper-lines'
 
 export const exampleImports = {
   basic: {
@@ -133,13 +143,18 @@ export const exampleImports = {
     'ProcessNode.vue': LayoutNode,
     'AnimationEdge.vue': LayoutEdge,
     'useRunProcess.js': useRunProcess,
-    'useShuffle.js': useShuffle,
     'useLayout.js': useLayout,
     'Icon.vue': LayoutIcon,
     'additionalImports': {
-      '@vueuse/core': 'https://cdn.jsdelivr.net/npm/@vueuse/core@latest/index.mjs',
-      '@vueuse/shared': 'https://cdn.jsdelivr.net/npm/@vueuse/shared@latest/index.mjs',
-      'vue-demi': 'https://cdn.jsdelivr.net/npm/vue-demi@latest/lib/index.mjs',
+      '@dagrejs/dagre': 'https://cdn.jsdelivr.net/npm/@dagrejs/dagre@1.1.2/+esm',
+    },
+  },
+  layoutSimple: {
+    'App.vue': SimpleLayoutApp,
+    'initial-elements.js': SimpleLayoutElements,
+    'useLayout.js': useSimpleLayout,
+    'Icon.vue': SimpleLayoutIcon,
+    'additionalImports': {
       '@dagrejs/dagre': 'https://cdn.jsdelivr.net/npm/@dagrejs/dagre@1.1.2/+esm',
     },
   },
@@ -156,5 +171,23 @@ export const exampleImports = {
     'App.vue': ConfirmApp,
     'Dialog.vue': ConfirmDialog,
     'useDialog.js': useDialog,
+  },
+  loopback: {
+    'App.vue': LoopbackApp,
+    'LoopbackEdge.vue': LoopbackEdge,
+    'style.css': LoopbackCSS,
+  },
+  markers: {
+    'App.vue': EdgeMarkersApp,
+    'CustomEdge.vue': EdgeMarkersEdge,
+    'CustomMarker.vue': EdgeMarkersMarker,
+    'style.css': EdgeMarkersCSS,
+  },
+  helperLines: {
+    'App.vue': HelperLinesApp,
+    'HelperLines.vue': HelperLinesComponent,
+    'utils.ts': HelperLinesUtils,
+    'initialElements.ts': HelperLinesInitialElements,
+    'style.css': HelperLinesStyle,
   },
 }

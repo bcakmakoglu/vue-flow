@@ -2,8 +2,8 @@ import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import { ref, toValue, watch } from 'vue'
-import { calcAutoPan, getEventPosition } from '@xyflow/system'
+import { toValue, watch } from 'vue'
+import { calcAutoPan, getEventPosition, snapPosition } from '@xyflow/system'
 import type { NodeDragEvent, NodeDragItem, XYPosition } from '../types'
 import { calcNextPosition, getDragItems, getEventHandlerParams, handleNodeClick, hasSelector } from '../utils'
 import { useGetPointerPosition, useVueFlow } from '.'
@@ -14,7 +14,7 @@ interface UseDragParams {
   onStart: (event: NodeDragEvent) => void
   onDrag: (event: NodeDragEvent) => void
   onStop: (event: NodeDragEvent) => void
-  onClick?: (event: MouseEvent) => void
+  onClick?: (event: MouseTouchEvent) => void
   el: Ref<Element | null>
   disabled?: MaybeRefOrGetter<boolean>
   selectable?: MaybeRefOrGetter<boolean>
@@ -34,7 +34,7 @@ export function useDrag(params: UseDragParams) {
     snapToGrid,
     snapGrid,
     noDragClassName,
-    nodes,
+    nodeLookup,
     nodeExtent,
     nodeDragThreshold,
     viewport,
@@ -54,7 +54,7 @@ export function useDrag(params: UseDragParams) {
 
   const { onStart, onDrag, onStop, onClick, el, disabled, id, selectable, dragHandle } = params
 
-  const dragging = ref(false)
+  const dragging = shallowRef(false)
 
   let dragItems: NodeDragItem[] = []
 
@@ -66,6 +66,7 @@ export function useDrag(params: UseDragParams) {
   let mousePosition: XYPosition = { x: 0, y: 0 }
   let dragEvent: MouseEvent | null = null
   let dragStarted = false
+  let nodePositionsChanged = false
 
   let autoPanId = 0
   let autoPanStarted = false
@@ -80,14 +81,9 @@ export function useDrag(params: UseDragParams) {
     dragItems = dragItems.map((n) => {
       const nextPosition = { x: x - n.distance.x, y: y - n.distance.y }
 
-      if (snapToGrid.value) {
-        nextPosition.x = snapGrid.value[0] * Math.round(nextPosition.x / snapGrid.value[0])
-        nextPosition.y = snapGrid.value[1] * Math.round(nextPosition.y / snapGrid.value[1])
-      }
-
       const { computedPosition } = calcNextPosition(
         n,
-        nextPosition,
+        snapToGrid.value ? snapPosition(nextPosition, snapGrid.value) : nextPosition,
         emits.error,
         nodeExtent.value,
         n.parentNode ? findNode(n.parentNode) : undefined,
@@ -100,6 +96,8 @@ export function useDrag(params: UseDragParams) {
 
       return n
     })
+
+    nodePositionsChanged = nodePositionsChanged || hasChange
 
     if (!hasChange) {
       return
@@ -164,9 +162,9 @@ export function useDrag(params: UseDragParams) {
       )
     }
 
-    const pointerPos = getPointerPosition(event)
+    const pointerPos = getPointerPosition(event.sourceEvent)
     lastPos = pointerPos
-    dragItems = getDragItems(nodes.value, nodesDraggable.value, pointerPos, findNode, id)
+    dragItems = getDragItems(nodeLookup.value, nodesDraggable.value, pointerPos, id)
 
     if (dragItems.length) {
       const [currentNode, nodes] = getEventHandlerParams({
@@ -184,18 +182,20 @@ export function useDrag(params: UseDragParams) {
       return
     }
 
+    nodePositionsChanged = false
+
     if (nodeDragThreshold.value === 0) {
       startDrag(event, nodeEl)
     }
 
-    lastPos = getPointerPosition(event)
+    lastPos = getPointerPosition(event.sourceEvent)
 
     containerBounds = vueFlowRef.value?.getBoundingClientRect() || null
     mousePosition = getEventPosition(event.sourceEvent, containerBounds!)
   }
 
   const eventDrag = (event: UseDragEvent, nodeEl: Element) => {
-    const pointerPos = getPointerPosition(event)
+    const pointerPos = getPointerPosition(event.sourceEvent)
 
     if (!autoPanStarted && dragStarted && autoPanOnNodeDrag.value) {
       autoPanStarted = true
@@ -222,8 +222,12 @@ export function useDrag(params: UseDragParams) {
   }
 
   const eventEnd = (event: UseDragEvent) => {
-    if (!dragStarted) {
-      const pointerPos = getPointerPosition(event)
+    let isClick = false
+
+    if (!dragStarted && !dragging.value && !multiSelectionActive.value) {
+      const evt = event.sourceEvent as MouseTouchEvent
+
+      const pointerPos = getPointerPosition(evt)
 
       const x = pointerPos.xSnapped - (lastPos.x ?? 0)
       const y = pointerPos.ySnapped - (lastPos.y ?? 0)
@@ -231,20 +235,16 @@ export function useDrag(params: UseDragParams) {
 
       // dispatch a click event if the node was attempted to be dragged but the threshold was not exceeded
       if (distance !== 0 && distance <= nodeDragThreshold.value) {
-        onClick?.(event.sourceEvent)
+        onClick?.(evt)
+        isClick = true
       }
-
-      return
     }
 
-    dragging.value = false
-    autoPanStarted = false
-    dragStarted = false
-
-    cancelAnimationFrame(autoPanId)
-
-    if (dragItems.length) {
-      updateNodePositions(dragItems, false, false)
+    if (dragItems.length && !isClick) {
+      if (nodePositionsChanged) {
+        updateNodePositions(dragItems, false, false)
+        nodePositionsChanged = false
+      }
 
       const [currentNode, nodes] = getEventHandlerParams({
         id,
@@ -254,6 +254,14 @@ export function useDrag(params: UseDragParams) {
 
       onStop({ event: event.sourceEvent, node: currentNode, nodes })
     }
+
+    dragItems = []
+    dragging.value = false
+    autoPanStarted = false
+    dragStarted = false
+    lastPos = { x: undefined, y: undefined }
+
+    cancelAnimationFrame(autoPanId)
   }
 
   watch([() => toValue(disabled), el], ([isDisabled, nodeEl], _, onCleanup) => {

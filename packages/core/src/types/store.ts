@@ -6,6 +6,7 @@ import type {
   Dimensions,
   ElementData,
   FlowExportObject,
+  FlowImportObject,
   FlowProps,
   Rect,
   SelectionMode,
@@ -22,12 +23,13 @@ import type {
   ConnectionMode,
   ConnectionStatus,
   Connector,
+  HandleConnection,
 } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
-import type { ConnectingHandle, ValidConnectionFunc } from './handle'
+import type { ConnectingHandle, HandleType, ValidConnectionFunc } from './handle'
 
 export type NodeLookup<NodeType extends Node = Node> = Map<string, GraphNode<NodeType>>
 
@@ -78,7 +80,7 @@ export interface State<NodeType extends Node = Node> extends Omit<FlowProps, 'id
   multiSelectionActive: boolean
 
   deleteKeyCode: KeyFilter | null
-  selectionKeyCode: KeyFilter | null
+  selectionKeyCode: KeyFilter | boolean | null
   multiSelectionKeyCode: KeyFilter | null
   zoomActivationKeyCode: KeyFilter | null
   panActivationKeyCode: KeyFilter | null
@@ -277,7 +279,7 @@ export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelp
   /** return an object of graph values (elements, viewport transform) for storage and re-loading a graph */
   toObject: () => FlowExportObject
   /** load graph from export obj */
-  fromObject: (obj: FlowExportObject) => Promise<boolean>
+  fromObject: (obj: FlowImportObject) => Promise<boolean>
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
@@ -298,6 +300,8 @@ export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelp
   isNodeIntersecting: IsNodeIntersecting
   /** get a node's connected edges */
   getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
+  /** get all connections of a handle belonging to a node */
+  getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => HandleConnection[]
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => Promise<boolean>
   /** viewport helper instance */

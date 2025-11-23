@@ -58,6 +58,11 @@ export function useActions<NodeType extends Node = Node>(
     return getConnectedEdgesBase(nodesOrId, state.edges)
   }
 
+  const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
+    const handleSuffix = id ? `-${type}-${id}` : `-${type}`
+    return Array.from(state.connectionLookup.get(`${nodeId}${handleSuffix}`)?.values() ?? [])
+  }
+
   const findNode: Actions<NodeType>['findNode'] = (id) => {
     if (!id) {
       return
@@ -122,8 +127,8 @@ export function useActions<NodeType extends Node = Node>(
 
     const changes: NodeDimensionChange[] = []
 
-    for (let i = 0; i < updates.length; ++i) {
-      const update = updates[i]
+    for (const element of updates) {
+      const update = element
 
       const node = findNode(update.id)
 
@@ -139,14 +144,14 @@ export function useActions<NodeType extends Node = Node>(
         if (doUpdate) {
           const nodeBounds = update.nodeElement.getBoundingClientRect()
           node.dimensions = dimensions
-          node.handleBounds.source = getHandleBounds('.source', update.nodeElement, nodeBounds, zoom)
-          node.handleBounds.target = getHandleBounds('.target', update.nodeElement, nodeBounds, zoom)
+          node.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom, node.id)
+          node.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom, node.id)
 
-          changes[i] = {
+          changes.push({
             id: node.id,
             type: 'dimensions',
             dimensions,
-          }
+          })
         }
       }
     }
@@ -264,7 +269,7 @@ export function useActions<NodeType extends Node = Node>(
       state.edges,
     )
 
-    updateConnectionLookup(state.connectionLookup, validEdges)
+    updateConnectionLookup(state.connectionLookup, edgeLookup.value, validEdges)
 
     state.edges = validEdges
   }
@@ -413,7 +418,36 @@ export function useActions<NodeType extends Node = Node>(
   }
 
   const updateEdge: Actions<NodeType>['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
-    return updateEdgeAction(oldEdge, newConnection, state.edges, findEdge, shouldReplaceId, state.hooks.error.trigger)
+    const prevEdge = findEdge(oldEdge.id)
+
+    if (!prevEdge) {
+      return false
+    }
+
+    const prevEdgeIndex = state.edges.indexOf(prevEdge)
+
+    const newEdge = updateEdgeAction(oldEdge, newConnection, prevEdge, shouldReplaceId, state.hooks.error.trigger)
+
+    if (newEdge) {
+      const [validEdge] = createGraphEdges(
+        [newEdge],
+        state.isValidConnection,
+        findNode,
+        findEdge,
+        state.hooks.error.trigger,
+        state.defaultEdgeOptions,
+        state.nodes,
+        state.edges,
+      )
+
+      state.edges = state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge))
+
+      updateConnectionLookup(state.connectionLookup, edgeLookup.value, [validEdge])
+
+      return validEdge
+    }
+
+    return false
   }
 
   const updateEdgeData: Actions<NodeType>['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
@@ -435,7 +469,7 @@ export function useActions<NodeType extends Node = Node>(
   const applyEdgeChanges: Actions<NodeType>['applyEdgeChanges'] = (changes) => {
     const changedEdges = applyChanges(changes, state.edges)
 
-    updateConnectionLookup(state.connectionLookup, changedEdges)
+    updateConnectionLookup(state.connectionLookup, edgeLookup.value, changedEdges)
 
     return changedEdges
   }
@@ -536,7 +570,11 @@ export function useActions<NodeType extends Node = Node>(
       const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
       const partiallyVisible = partially && overlappingArea > 0
 
-      if (partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)) {
+      if (
+        partiallyVisible ||
+        overlappingArea >= currNodeRect.width * currNodeRect.height ||
+        overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
+      ) {
         intersections.push(n)
       }
     }
@@ -653,9 +691,9 @@ export function useActions<NodeType extends Node = Node>(
         setEdges(edges)
       }
 
-      if ((viewport?.x && viewport?.y) || position) {
-        const x = viewport?.x || position[0]
-        const y = viewport?.y || position[1]
+      const [xPos, yPos] = viewport?.x && viewport?.y ? [viewport.x, viewport.y] : position ?? [null, null]
+
+      if (xPos && yPos) {
         const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
 
         return until(() => viewportHelper.value.viewportInitialized)
@@ -663,8 +701,8 @@ export function useActions<NodeType extends Node = Node>(
           .then(() => {
             viewportHelper.value
               .setViewport({
-                x,
-                y,
+                x: xPos,
+                y: yPos,
                 zoom: nextZoom,
               })
               .then(() => {
@@ -727,6 +765,7 @@ export function useActions<NodeType extends Node = Node>(
     setState,
     getIntersectingNodes,
     getConnectedEdges,
+    getHandleConnections,
     isNodeIntersecting,
     panBy,
     fitView: (params) => viewportHelper.value.fitView(params),

@@ -8,6 +8,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { useVueFlow } from '@vue-flow/core'
+import llmstxt from 'vitepress-plugin-llms'
 import head from './head'
 import { copyVueFlowPlugin, files } from './plugins'
 
@@ -30,7 +31,7 @@ function typedocSidebarEntries() {
 
     if (module === 'variables') {
       children = children.filter((child) => {
-        return child.link.includes('default')
+        return child.link?.includes('default')
       })
     }
 
@@ -70,6 +71,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
 
   vite: {
     define: {
+      // eslint-disable-next-line n/prefer-global/process
       __ANALYTICS_ID__: process.env.VERCEL_ANALYTICS_ID,
     },
     plugins: [
@@ -94,9 +96,14 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       }),
       Icons({
         compiler: 'vue3',
-        defaultClass: 'inline-block align-middle'
+        defaultClass: 'inline-block align-middle',
       }),
+      llmstxt(),
     ],
+  },
+
+  sitemap: {
+    hostname: 'https://vueflow.dev',
   },
 
   themeConfig: {
@@ -111,6 +118,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     ],
     algolia: {
       appId: 'F7BJNSM4M5',
+      // eslint-disable-next-line n/prefer-global/process
       apiKey: process.env.ALGOLIA_API_KEY!,
       indexName: 'vueflow',
     },
@@ -121,11 +129,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         text: 'Examples',
         link: '/examples/',
         activeMatch: '^/examples/',
-      },
-      {
-        text: 'Migration',
-        link: '/migration/',
-        activeMatch: '^/migration/',
       },
       {
         text: 'TypeDocs',
@@ -156,16 +159,16 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Configuration', link: '/guide/vue-flow/config' },
             { text: 'State', link: '/guide/vue-flow/state' },
             {
+              text: 'Events',
+              link: '/guide/vue-flow/events',
+            },
+            {
               text: 'Actions',
               link: '/typedocs/interfaces/Actions.html',
             },
             {
               text: 'Getters',
               link: '/typedocs/interfaces/Getters.html',
-            },
-            {
-              text: 'Events',
-              link: '/typedocs/interfaces/FlowEvents.html',
             },
             { text: 'Slots', link: '/guide/vue-flow/slots' },
           ],
@@ -195,7 +198,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
         {
           text: 'Troubleshooting',
           link: '/guide/troubleshooting',
-        }
+        },
       ],
       '/examples/': [
         {
@@ -203,7 +206,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           collapsed: false,
           items: [
             { text: 'Basic', link: '/examples/' },
-            { text: 'Layouting', link: '/examples/layout' },
             { text: 'Drag & Drop', link: '/examples/dnd' },
             { text: 'Interactions', link: '/examples/interaction' },
             { text: 'Save & Restore', link: '/examples/save' },
@@ -216,6 +218,15 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Viewport Transition', link: '/examples/transition' },
             { text: 'Teleport Nodes', link: '/examples/teleport' },
             { text: 'Stress Test', link: '/examples/stress' },
+            { text: 'Helper Lines', link: '/examples/helper-lines' },
+          ],
+        },
+        {
+          text: 'Layout',
+          collapsed: false,
+          items: [
+            { text: 'Simple Layout', link: '/examples/layout/simple' },
+            { text: 'Animation & Layout', link: '/examples/layout/animated' },
           ],
         },
         {
@@ -238,7 +249,9 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
             { text: 'Updatable Edge', link: '/examples/edges/updatable-edge' },
             { text: 'Custom Connection Line', link: '/examples/edges/connection-line' },
             { text: 'Connection Validation', link: '/examples/edges/validation' },
+            { text: 'Edge Markers', link: '/examples/edges/markers' },
             { text: 'Connection Radius', link: '/examples/edges/connection-radius' },
+            { text: 'Loopback Edge', link: '/examples/edges/loopback' },
           ],
         },
       ],

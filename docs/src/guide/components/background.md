@@ -30,14 +30,14 @@ import { Background } from '@vue-flow/background'
 
 ## [Props](/typedocs/interfaces/BackgroundProps)
 
-| Name         | Definition                            | Type                                                   | Optional | Default |
-|--------------|---------------------------------------|--------------------------------------------------------|----------|---------|
-| variant      | Pattern variant                       | [BackgroundVariant](/typedocs/enums/BackgroundVariant) | true     | dots    |
-| gap          | Pattern gap                           | number                                                 | true     | 10      |
-| size         | Pattern size                          | number                                                 | true     | 0.4     |
-| patternColor | Pattern color                         | string                                                 | true     | #81818a |
-| bgColor      | Background color (overwrites pattern) | string                                                 | true     | #fff    |
-| height       | Background height                     | number                                                 | true     | 100     |
-| width        | Background width                      | number                                                 | true     | 100     |
-| x            | X-offset                              | number                                                 | true     | 0       |
-| y            | Y-offset                              | number                                                 | true     | 0       |
+| Name         | Definition                            | Type                                                          | Optional | Default |
+|--------------|---------------------------------------|---------------------------------------------------------------|----------|---------|
+| variant      | Pattern variant                       | [BackgroundVariant](/typedocs/enumerations/BackgroundVariant) | true     | dots    |
+| gap          | Pattern gap                           | number                                                        | true     | 10      |
+| size         | Pattern size                          | number                                                        | true     | 0.4     |
+| patternColor | Pattern color                         | string                                                        | true     | #81818a |
+| bgColor      | Background color (overwrites pattern) | string                                                        | true     | #fff    |
+| height       | Background height                     | number                                                        | true     | 100     |
+| width        | Background width                      | number                                                        | true     | 100     |
+| x            | X-offset                              | number                                                        | true     | 0       |
+| y            | Y-offset                              | number                                                        | true     | 0       |

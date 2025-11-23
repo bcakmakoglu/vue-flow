@@ -14,7 +14,7 @@ Though, there are cases where you want to take control of changes and apply them
 
 In this guide, we will learn how to take control of changes and apply them manually.
 
-## What is a [Change](https://vueflow.dev/typedocs/types/NodeChange.html)?
+## What is a [Change](https://vueflow.dev/typedocs/type-aliases/NodeChange.html)?
 
 A *change* is anything that is triggered by an interaction with the flow, like adding, updating (position, selected), or removing a node or an edge, either
 by dragging, clicking etc. or by using the provided API.
@@ -82,23 +82,23 @@ removeNodes('1')
 </script>
 ```
 
-## The `applyChanges` option
+## The `applyDefault` option
 
-The `applyChanges` option is a prop that can be passed to the `<VueFlow>` component to enable or disable automatic change handling.
+The `applyDefault` option is a prop that can be passed to the `<VueFlow>` component to enable or disable automatic change handling.
 
 By setting this option to `false`, we tell Vue Flow to not apply changes automatically anymore, 
 that way we can take control of changes and apply them manually.
 
 ```vue
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-changes="false" />
+  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" />
 </template>
 ```
 
 ## `onNodesChange` / `onEdgesChange` events
 
 Vue Flow provides two events that can be used to listen to changes on nodes and edges.
-These events are emitted regardless of the `applyChanges` option, so you can use them to listen to changes even if you have automatic changes enabled.
+These events are emitted regardless of the `applyDefault` option, so you can use them to listen to changes even if you have automatic changes enabled.
 
 ```vue
 <script setup>
@@ -150,7 +150,7 @@ const onChange = (changes) => {
 
 Using what we just learned, we can now take control of changes and apply them manually.
 
-In this example, we will first disable automatic change handlers with `applyChanges`, 
+In this example, we will first disable automatic change handlers with `applyDefault`, 
 then use the `onNodesChange` event to listen to changes and validate delete changes and, 
 if they are valid, use `applyNodeChanges` to apply them.
 
@@ -208,6 +208,41 @@ const onNodesChange = async (changes) => {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-changes="false" @nodes-change="onNodesChange" />
+  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" @nodes-change="onNodesChange" />
 </template>
+```
+
+## V-Model Nodes and Edges
+
+In some cases you want to *sync* the state of internal nodes/edges with your own state,
+for those cases you can use the `v-model` directive to bind the internal state with your own state.
+
+```vue
+<template>
+  <VueFlow v-model:edges="edges" v-model:nodes="nodes" />
+</template>
+```
+
+Doing this will sync the internal state with your own state, which is useful for situations where you update internal nodes and edges but also want those changes to be reflected in your own state.
+
+For example, if you update the type of nodes using `updateNode` and want to see the same change reflected in your own nodes state and not just in the internal state.
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { useVueFlow } from '@vue-flow/core'
+
+const nodes = ref([
+  {
+    id: '1',
+    position: { x: 0, y: 0 },
+    data: { label: 'Node 1' },
+  },
+])
+
+const { updateNode } = useVueFlow()
+
+// using updateNode will only update the internal state, not the nodes state unless you use v-model
+updateNode('1', { type: 'new-type' })
+</script>
 ```

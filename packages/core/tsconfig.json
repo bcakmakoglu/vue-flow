@@ -4,13 +4,13 @@
     "baseUrl": ".",
     "declarationDir": "./dist",
     "resolveJsonModule": true,
-    "types": [
-      "vite/client",
-      "vue/macros"
-    ]
   },
   "include": [
     "./src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
   ],
   "references": [
     {
