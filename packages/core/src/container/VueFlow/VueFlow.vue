@@ -1,9 +1,9 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="Data = ElementData">
 import { useVModel } from '@vueuse/core'
 import { onUnmounted, provide } from 'vue'
 import Viewport from '../Viewport/Viewport.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
-import type { FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
+import type { ElementData, FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
 import { Slots } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
 import { useWatchProps } from '../../composables/useWatchProps'
@@ -13,7 +13,7 @@ import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning'
 
-const props = withDefaults(defineProps<FlowProps>(), {
+const props = withDefaults(defineProps<FlowProps<Data>>(), {
   snapToGrid: undefined,
   onlyRenderVisibleElements: undefined,
   edgesUpdatable: undefined,
@@ -50,8 +50,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
 
 const emit = defineEmits<FlowEmits>()
 
-const slots = defineSlots<FlowSlots>()
-
+const slots = defineSlots<FlowSlots<Data>>()
 const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)

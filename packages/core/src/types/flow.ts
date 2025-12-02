@@ -142,15 +142,15 @@ export interface FlowExportObject {
 
 export type FlowImportObject = { [key in keyof FlowExportObject]?: FlowExportObject[key] }
 
-export interface FlowProps {
+export interface FlowProps<Data = ElementData> {
   id?: string
   /**
    * all elements (nodes + edges)
    * @deprecated use {@link FlowProps.nodes} & {@link FlowProps.nodes} instead
    */
-  modelValue?: Elements
-  nodes?: Node[]
-  edges?: Edge[]
+  modelValue?: Elements<Data>
+  nodes?: Node<Data>[]
+  edges?: Edge<Data>[]
   /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
   edgeTypes?: EdgeTypesObject
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
@@ -324,11 +324,11 @@ export interface FlowEmits {
   (event: 'update:edges', value: GraphEdge[]): void
 }
 
-export interface NodeSlots extends Record<`node-${string}`, (nodeProps: NodeProps) => any> {}
+export interface NodeSlots<Data = ElementData> extends Record<`node-${string}`, (nodeProps: NodeProps<Data>) => any> { }
 
-export interface EdgeSlots extends Record<`edge-${string}`, (edgeProps: EdgeProps) => any> {}
+export interface EdgeSlots<Data = ElementData> extends Record<`edge-${string}`, (edgeProps: EdgeProps<Data>) => any> { }
 
-export interface FlowSlots extends NodeSlots, EdgeSlots {
+export interface FlowSlots<Data = ElementData> extends NodeSlots<Data>, EdgeSlots<Data> {
   'connection-line': (connectionLineProps: ConnectionLineProps) => any
   'zoom-pane': () => any
   'default': () => any
