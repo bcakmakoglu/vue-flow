@@ -51,6 +51,7 @@ const props = withDefaults(defineProps<FlowProps<Data>>(), {
 const emit = defineEmits<FlowEmits>()
 
 const slots = defineSlots<FlowSlots<Data>>()
+
 const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
