@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { MarkerType, VueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, MarkerType, VueFlow } from '@vue-flow/core'
 import CustomEdge from './CustomEdge.vue'
 
 const nodes = ref([

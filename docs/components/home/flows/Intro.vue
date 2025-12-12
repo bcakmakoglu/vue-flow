@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { Background } from '@vue-flow/background'
 import Heart from '~icons/mdi/heart'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)

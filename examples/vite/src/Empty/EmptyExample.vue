@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
 
-import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 

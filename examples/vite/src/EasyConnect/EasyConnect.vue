@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Background } from '@vue-flow/background'
 import type { Node } from '@vue-flow/core'
-import { MarkerType, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, MarkerType, VueFlow, useVueFlow } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 import FloatingConnectionLine from './FloatingConnectionLine.vue'
 import FloatingEdge from './FloatingEdge.vue'

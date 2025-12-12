@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
-import { MarkerType, VueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, MarkerType, VueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 

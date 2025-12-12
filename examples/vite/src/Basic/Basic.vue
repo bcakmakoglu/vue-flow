@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { Edge, Node, ValidConnectionFunc } from '@vue-flow/core'
-import { ConnectionMode, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
+import { Background, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 
-import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
@@ -45,22 +44,10 @@ function resetViewport() {
 function toggleclass() {
   return nodes.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 }
-
-const isValidConnection: ValidConnectionFunc = (...args) => {
-  console.log(args)
-  return true
-}
 </script>
 
 <template>
-  <VueFlow
-    :nodes="nodes"
-    :edges="edges"
-    :connection-mode="ConnectionMode.Strict"
-    :is-valid-connection="isValidConnection"
-    fit-view-on-init
-    class="vue-flow-basic-example"
-  >
+  <VueFlow :nodes="nodes" :edges="edges" class="vue-flow-basic-example" fit-view-on-init>
     <Background />
     <MiniMap />
     <Controls />

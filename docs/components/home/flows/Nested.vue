@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 import { breakpointsTailwind } from '@vueuse/core'
 

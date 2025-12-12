@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { VueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, VueFlow } from '@vue-flow/core'
 import { initialEdges, initialNodes } from './initialElements'
 import ValueNode from './ValueNode.vue'
 import OperatorNode from './OperatorNode.vue'
