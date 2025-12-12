@@ -8,8 +8,7 @@
     "lint": "eslint --ext .js,.ts ./"
   },
   "dependencies": {
-    "@vue-flow/core": "workspace:*",
-    "@vue-flow/minimap": "workspace:*"
+    "@vue-flow/core": "workspace:*"
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
