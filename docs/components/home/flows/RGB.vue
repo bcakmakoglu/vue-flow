@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import { Background, Controls, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { MiniMapNodeFunc } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind } from '@vueuse/core'
-import { MiniMap } from '@vue-flow/minimap'
-import type { MiniMapNodeFunc } from '@vue-flow/minimap'
 
 import CustomEdge from '../edges/Custom.vue'
 import RGBNode from '../nodes/Input.vue'

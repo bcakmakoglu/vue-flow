@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { Edge, Node } from '@vue-flow/core'
-import { Background, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
-
-import { MiniMap } from '@vue-flow/minimap'
+import { Background, MiniMap, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 
 const nodes = ref<Node[]>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },

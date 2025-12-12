@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Background, Controls, VueFlow } from '@vue-flow/core'
-import { MiniMap } from '@vue-flow/minimap'
+import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core'
 
 const nodes = ref([
   {

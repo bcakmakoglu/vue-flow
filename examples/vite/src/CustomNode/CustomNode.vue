@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { Elements, Node, SnapGrid } from '@vue-flow/core'
-import { Controls, Position, VueFlow, isEdge, useVueFlow } from '@vue-flow/core'
-
-import { MiniMap } from '@vue-flow/minimap'
+import { Controls, MiniMap, Position, VueFlow, isEdge, useVueFlow } from '@vue-flow/core'
 
 import ColorSelectorNode from './ColorSelectorNode.vue'
 
