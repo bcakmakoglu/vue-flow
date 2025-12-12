@@ -1,5 +1,13 @@
 # @vue-flow/core
 
+## 1.48.1
+
+### Patch Changes
+
+- [#1996](https://github.com/bcakmakoglu/vue-flow/pull/1996) [`1c9732a`](https://github.com/bcakmakoglu/vue-flow/commit/1c9732ae99313cce9d8125571b51440931f9a9b0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use the connecting handle result when updating a connection, so we get an accurate connection position for `toPosition`.
+
+- [#2001](https://github.com/bcakmakoglu/vue-flow/pull/2001) [`08d57fa`](https://github.com/bcakmakoglu/vue-flow/commit/08d57fa1609e1fc7b966fb08a99fbf4756bc11b5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Block pane ctx-menu from triggering if panOnDrag includes btn 2 (right-click) and let viewport emit pane ctx menu.
+
 ## 1.48.0
 
 ### Minor Changes
