@@ -197,7 +197,7 @@ export function isValidHandle(
         targetNode: findNode(connection.target)!,
       })
 
-    result.toHandle = getHandle(handleNodeId, handleType, handleId, nodeLookup, connectionMode, true)
+    result.toHandle = getHandle(handleNodeId, handleType, handleId, nodeLookup, true)
   }
 
   return result
@@ -243,8 +243,8 @@ export function getHandle(
   nodeId: string,
   handleType: HandleType,
   handleId: string | null,
-  nodeLookup: NodeLookup,
-  connectionMode: ConnectionMode,
+  nodeLookup: NodeLookup, 
+  // unnessary connectionMode: ConnectionMode,
   withAbsolutePosition = false,
 ): HandleElement | null {
   const node = nodeLookup.get(nodeId)
@@ -252,12 +252,14 @@ export function getHandle(
     return null
   }
 
-  const handles =
-    connectionMode === ConnectionMode.Strict
-      ? node.handleBounds?.[handleType]
-      : [...(node.handleBounds?.source ?? []), ...(node.handleBounds?.target ?? [])]
-  const handle = (handleId ? handles?.find((h) => h.id === handleId) : handles?.[0]) ?? null
+  // connectionMode check introduced bug when in loose mode, since 
+  // (when source and target Handles have the same id or handleId wasn't provided, 
+  // the source Handle would be returned, not corresponding with the handle actually hovered over)
+  // The generalisation for target/srouce in loose mode is not necessary here, since this doesn't affect 
+  // getting the Handle and is tackled elsewhere/previosuly in isValidHandle
 
+  const handles = node.handleBounds?.[handleType]
+  const handle = (handleId ? handles?.find((h) => h.id === handleId) : handles?.[0]) ?? null
   return handle && withAbsolutePosition ? { ...handle, ...getHandlePosition(node, handle, handle.position, true) } : handle
 }
 

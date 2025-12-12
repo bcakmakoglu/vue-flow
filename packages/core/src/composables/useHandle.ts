@@ -108,7 +108,7 @@ export function useHandle({
         return
       }
 
-      const fromHandleInternal = getHandle(toValue(nodeId), handleType, toValue(handleId), nodeLookup.value, connectionMode.value)
+      const fromHandleInternal = getHandle(toValue(nodeId), handleType, toValue(handleId), nodeLookup.value) //unnessary connectionMode
 
       if (!fromHandleInternal) {
         return
