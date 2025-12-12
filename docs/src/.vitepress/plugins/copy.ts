@@ -13,7 +13,7 @@ function getPublicPath(fileName: string) {
 }
 
 function copyFiles(emit: Emit) {
-  ;['core', 'controls', 'minimap', 'node-resizer', 'node-toolbar'].forEach((name) => {
+  ;['core', 'minimap', 'node-resizer', 'node-toolbar'].forEach((name) => {
     const fileName = `vue-flow-${name}.mjs`
 
     const filePath = resolve(__dirname, getPkgPath(name, fileName))

@@ -1,8 +1,8 @@
-import type { FitViewParams, PanelPosition, PanelPositionType } from '@vue-flow/core'
+import type { FitViewParams, PanelPositionType } from '../../types'
 
 export interface ControlProps {
   /**
-   * Show the zoom control buttons (zoom-in & zoom-out)
+   * Show the zoom control buttons (zoom-in and zoom-out)
    *
    * @default true
    */
@@ -30,7 +30,7 @@ export interface ControlProps {
    *
    * @default 'bottom-left'
    */
-  position?: PanelPositionType | PanelPosition
+  position?: PanelPositionType
 }
 
 export interface ControlEmits {

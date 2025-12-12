@@ -1,9 +1,3 @@
-<script lang="ts" setup>
-import type { ButtonHTMLAttributes } from 'vue'
-
-const props = defineProps<ButtonHTMLAttributes>()
-</script>
-
 <script lang="ts">
 export default {
   name: 'ControlButton',
@@ -12,7 +6,7 @@ export default {
 </script>
 
 <template>
-  <button v-bind="props" class="vue-flow__controls-button">
+  <button type="button" class="vue-flow__controls-button">
     <slot />
   </button>
 </template>

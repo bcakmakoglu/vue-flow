@@ -1,8 +1,7 @@
 <script lang="ts">
 import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { Background, VueFlow, isNode } from '@vue-flow/core'
+import { Background, Controls, VueFlow, isNode } from '@vue-flow/core'
 
-import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 import type { UnwrapNestedRefs } from 'vue'
 
