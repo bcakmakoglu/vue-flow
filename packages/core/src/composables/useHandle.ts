@@ -244,6 +244,7 @@ export function useHandle({
         }
 
         const connectingHandle = closestHandle ?? result.toHandle
+
         updateConnection(
           connectingHandle && isValid
             ? rendererPointToPoint(
@@ -254,7 +255,7 @@ export function useHandle({
                 viewport.value,
               )
             : connectionPosition,
-          result.toHandle,
+          connectingHandle,
           getConnectionStatus(!!connectingHandle, isValid),
         )
 
