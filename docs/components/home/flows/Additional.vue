@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import type { Elements } from '@vue-flow/core'
-import { Background, Position, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
+import { Background, Controls, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 
 const emit = defineEmits(['pane'])

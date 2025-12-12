@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-
-import { Controls } from '@vue-flow/controls'
+import { Controls, VueFlow, useVueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 
 const isHidden = ref(false)

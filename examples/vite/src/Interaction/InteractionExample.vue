@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
+import { Controls, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 
 const {

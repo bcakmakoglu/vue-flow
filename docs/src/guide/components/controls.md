@@ -2,15 +2,6 @@
 
 The control panel contains a zoom-in, zoom-out, fit-view and a lock/unlock button.
 
-## Installation
-
-```bash
-yarn add @vue-flow/controls
-
-# or
-npm install @vue-flow/controls
-```
-
 ## Usage
 
 To use the controls simply pass the `Controls` component as a child to the `VueFlow` component.
@@ -21,11 +12,7 @@ Make sure you also import the styles as these are *not* part of the default them
 
 ```vue
 <script setup>
-import { VueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
-
-// import default controls styles
-import '@vue-flow/controls/dist/style.css'
+import { Controls, VueFlow } from '@vue-flow/core'
 </script>
 
 <template>

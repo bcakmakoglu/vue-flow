@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
-import { Background, MarkerType, VueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
+import { Background, Controls, MarkerType, VueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 
 function onNodeDragStart(e: FlowEvents['nodeDragStart']) {

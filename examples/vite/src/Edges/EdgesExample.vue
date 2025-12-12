@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { Background, VueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
+import { Background, Controls, VueFlow } from '@vue-flow/core'
 import { MiniMap } from '@vue-flow/minimap'
 
 import CustomEdge from './CustomEdge.vue'

@@ -35,9 +35,6 @@ importers:
       '@vercel/speed-insights':
         specifier: ^1.0.14
         version: 1.0.14(react@18.2.0)(vue-router@4.4.5(vue@3.5.12(typescript@5.4.5)))(vue@3.5.12(typescript@5.4.5))
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../packages/core
@@ -114,9 +111,6 @@ importers:
 
   examples/nuxt3:
     dependencies:
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -136,9 +130,6 @@ importers:
       '@quasar/extras':
         specifier: ^1.16.12
         version: 1.16.12
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -179,9 +170,6 @@ importers:
       '@dagrejs/dagre':
         specifier: ^1.1.4
         version: 1.1.4
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -228,31 +216,6 @@ importers:
       vue-tsc:
         specifier: ^2.1.6
         version: 2.1.6(typescript@5.4.5)
-
-  packages/controls:
-    dependencies:
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      vite-svg-loader:
-        specifier: ^4.0.0
-        version: 4.0.0
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
 
   packages/core:
     dependencies:
@@ -317,6 +280,9 @@ importers:
       vite:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@20.14.2)(sass@1.79.4)(terser@5.21.0)
+      vite-svg-loader:
+        specifier: ^5.1.0
+        version: 5.1.0(vue@3.3.4)
       vue-tsc:
         specifier: ^1.8.16
         version: 1.8.16(typescript@5.4.5)
@@ -413,9 +379,6 @@ importers:
 
   tests:
     dependencies:
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../packages/core
@@ -6784,11 +6747,6 @@ packages:
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
-  svgo@3.0.2:
-    resolution: {integrity: sha512-Z706C1U2pb1+JGP48fbazf3KxHrWOsLme6Rv7imFBn5EnuanDW1GPaA/P1/dvObE670JDePC3mnj0k0B7P0jjQ==}
-    engines: {node: '>=14.0.0'}
-    hasBin: true
-
   svgo@3.2.0:
     resolution: {integrity: sha512-4PP6CMW/V7l/GmKRKzsLR8xxjdHTV4IMvhTnpuHwwBazSIlw5W/5SmPjN8Dwyt7lKbSJrRDgp4t9ph0HgChFBQ==}
     engines: {node: '>=14.0.0'}
@@ -7364,9 +7322,6 @@ packages:
     resolution: {integrity: sha512-PqNiIsrEftCrgn0xIpj8ZMSdpz8NZn+OJ3gKXnOF+hFzbHFrKGJA49ViOUKCHDOquxoGBZMmTjepWr8GrftKcQ==}
     peerDependencies:
       vite: ^2.0.1 || ^3.0.0 || ^4.0.0 || ^5.0.0
-
-  vite-svg-loader@4.0.0:
-    resolution: {integrity: sha512-0MMf1yzzSYlV4MGePsLVAOqXsbF5IVxbn4EEzqRnWxTQl8BJg/cfwIzfQNmNQxZp5XXwd4kyRKF1LytuHZTnqA==}
 
   vite-svg-loader@5.1.0:
     resolution: {integrity: sha512-M/wqwtOEjgb956/+m5ZrYT/Iq6Hax0OakWbokj8+9PXOnB7b/4AxESHieEtnNEy7ZpjsjYW1/5nK8fATQMmRxw==}
@@ -10839,7 +10794,7 @@ snapshots:
 
   builtins@5.0.1:
     dependencies:
-      semver: 7.6.0
+      semver: 7.6.3
 
   bundle-name@4.1.0:
     dependencies:
@@ -15098,15 +15053,6 @@ snapshots:
 
   svg-tags@1.0.0: {}
 
-  svgo@3.0.2:
-    dependencies:
-      '@trysound/sax': 0.2.0
-      commander: 7.2.0
-      css-select: 5.1.0
-      css-tree: 2.3.1
-      csso: 5.0.5
-      picocolors: 1.0.0
-
   svgo@3.2.0:
     dependencies:
       '@trysound/sax': 0.2.0
@@ -15773,10 +15719,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-svg-loader@4.0.0:
+  vite-svg-loader@5.1.0(vue@3.3.4):
     dependencies:
-      '@vue/compiler-sfc': 3.3.4
-      svgo: 3.0.2
+      svgo: 3.2.0
+      vue: 3.3.4
 
   vite-svg-loader@5.1.0(vue@3.5.11(typescript@5.4.5)):
     dependencies:

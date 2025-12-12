@@ -2,7 +2,6 @@
 import type { Edge, Node } from '@vue-flow/core'
 import { Background, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 
-import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
 const nodes = ref<Node[]>([

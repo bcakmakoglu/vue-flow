@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, Controls, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind } from '@vueuse/core'
-import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 import type { MiniMapNodeFunc } from '@vue-flow/minimap'
 
