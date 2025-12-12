@@ -17,7 +17,7 @@ const {
   nodeBorderRadius = 5,
   nodeStrokeWidth = 2,
   maskColor = 'rgb(240, 240, 240, 0.6)',
-  position = 'bottom-right' as PanelPosition,
+  position = 'bottom-right',
   maskStrokeColor = 'none',
   maskStrokeWidth = 1,
   maskBorderRadius = 0,
@@ -205,14 +205,14 @@ export default {
 </script>
 
 <template>
-  <Panel :position="position" class="vue-flow__minimap" :class="{ pannable, zoomable }">
+  <Panel :class="{ pannable, zoomable }" :position="position" class="vue-flow__minimap">
     <svg
       ref="el"
       :width="elementWidth"
       :height="elementHeight"
       :viewBox="[viewBox.x, viewBox.y, viewBox.width, viewBox.height].join(' ')"
-      role="img"
       :aria-labelledby="`vue-flow__minimap-${id}`"
+      role="img"
       @click="onSvgClick"
     >
       <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
@@ -221,7 +221,6 @@ export default {
         v-for="node of nodes"
         :id="node.id"
         :key="node.id"
-        f
         :position="node.computedPosition"
         :dimensions="node.dimensions"
         :selected="node.selected"
@@ -243,11 +242,11 @@ export default {
       />
 
       <path
-        class="vue-flow__minimap-mask"
         :d="d"
         :fill="maskColor"
         :stroke="maskStrokeColor"
         :stroke-width="maskStrokeWidth"
+        class="vue-flow__minimap-mask"
         fill-rule="evenodd"
       />
     </svg>

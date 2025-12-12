@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Background } from '@vue-flow/background'
-import { Panel, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, Panel, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import LoopbackEdge from './LoopbackEdge.vue'
 
 const { updateEdgeData, updateNode } = useVueFlow()

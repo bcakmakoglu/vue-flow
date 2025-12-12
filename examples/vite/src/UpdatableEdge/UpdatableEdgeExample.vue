@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
-
-import '@vue-flow/controls/dist/style.css'
+import { ConnectionMode, Controls, VueFlow, useVueFlow } from '@vue-flow/core'
 
 const initialElements: Elements = [
   {

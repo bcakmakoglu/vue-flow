@@ -2,6 +2,7 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import replace from '@rollup/plugin-replace'
+import svgLoader from 'vite-svg-loader'
 import pkg from './package.json'
 
 export default defineConfig({
@@ -36,6 +37,7 @@ export default defineConfig({
     vue({
       reactivityTransform: true,
     }),
+    svgLoader(),
     replace({
       __ENV__: 'process.env.NODE_ENV',
       __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),

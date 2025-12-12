@@ -5,8 +5,7 @@ title: Theming
 <script setup>
 import LogosJavascript from '~icons/logos/javascript';
 import { ref, h } from 'vue';
-import { Handle, Position, VueFlow } from '@vue-flow/core';
-import { Background } from '@vue-flow/background';
+import { Background, Handle, Position, VueFlow } from '@vue-flow/core';
 
 const CustomNode = (props) => h('div', [
   h(Handle, { connectable: false, type: 'target', position: Position.Top }),

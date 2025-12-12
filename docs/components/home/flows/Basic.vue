@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type { ClassFunc, GraphEdge, GraphNode, StyleFunc } from '@vue-flow/core'
-import { ConnectionLineType, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
-import { Controls } from '@vue-flow/controls'
+import { Background, ConnectionLineType, Controls, VueFlow, useVueFlow } from '@vue-flow/core'
 
 import Cross from '~icons/mdi/window-close'
 

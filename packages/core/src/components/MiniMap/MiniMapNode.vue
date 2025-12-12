@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { CSSProperties } from 'vue'
-import { inject, toRef, useAttrs } from 'vue'
+import { inject, useAttrs } from 'vue'
 import type { MiniMapNodeEmits, MiniMapNodeProps } from './types'
 import { Slots } from './types'
 
@@ -10,29 +9,7 @@ const emits = defineEmits<MiniMapNodeEmits>()
 
 const miniMapSlots = inject(Slots)!
 
-const attrs = useAttrs()
-
-const style = toRef(() => (attrs.style ?? {}) as CSSProperties)
-
-function onClick(event: MouseEvent) {
-  emits('click', event)
-}
-
-function onDblclick(event: MouseEvent) {
-  emits('dblclick', event)
-}
-
-function onMouseEnter(event: MouseEvent) {
-  emits('mouseenter', event)
-}
-
-function onMouseMove(event: MouseEvent) {
-  emits('mousemove', event)
-}
-
-function onMouseLeave(event: MouseEvent) {
-  emits('mouseleave', event)
-}
+const attrs = useAttrs() as Record<string, any>
 </script>
 
 <script lang="ts">
@@ -48,13 +25,13 @@ export default {
     <component
       :is="miniMapSlots[`node-${props.type}`]"
       v-if="miniMapSlots[`node-${props.type}`]"
-      v-bind="{ ...props, ...$attrs }"
+      v-bind="{ ...props, ...attrs }"
     />
 
     <rect
       v-else
       :id="id"
-      v-bind="$attrs"
+      v-bind="attrs"
       class="vue-flow__minimap-node"
       :class="{ selected, dragging }"
       :x="position.x"
@@ -63,15 +40,15 @@ export default {
       :ry="borderRadius"
       :width="dimensions.width"
       :height="dimensions.height"
-      :fill="color || (style.background as string) || style.backgroundColor"
+      :fill="color || (attrs.style?.background as string) || attrs.style?.backgroundColor"
       :stroke="strokeColor"
       :stroke-width="strokeWidth"
       :shape-rendering="shapeRendering"
-      @click="onClick"
-      @dblclick="onDblclick"
-      @mouseenter="onMouseEnter"
-      @mousemove="onMouseMove"
-      @mouseleave="onMouseLeave"
+      @click="emits('click', $event)"
+      @dblclick="emits('dblclick', $event)"
+      @mouseenter="emits('mouseenter', $event)"
+      @mousemove="emits('mousemove', $event)"
+      @mouseleave="emits('mouseleave', $event)"
     />
   </template>
 </template>

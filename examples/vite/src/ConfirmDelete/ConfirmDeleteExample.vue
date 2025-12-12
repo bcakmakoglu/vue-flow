@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { Edge, EdgeChange, Node, NodeChange } from '@vue-flow/core'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
 import { useDialog } from './useDialog'
 import Dialog from './Dialog.vue'
 

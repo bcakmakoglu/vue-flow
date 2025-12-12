@@ -8,10 +8,7 @@
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.4",
-    "@vue-flow/background": "workspace:*",
-    "@vue-flow/controls": "workspace:*",
     "@vue-flow/core": "workspace:*",
-    "@vue-flow/minimap": "workspace:*",
     "@vue-flow/node-resizer": "workspace:*",
     "@vue-flow/node-toolbar": "workspace:*",
     "html-to-image": "^1.11.11",

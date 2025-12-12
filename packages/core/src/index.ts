@@ -18,6 +18,10 @@ export { default as BaseEdge } from './components/Edges/BaseEdge.vue'
 export { default as EdgeText } from './components/Edges/EdgeText.vue'
 export { default as EdgeLabelRenderer } from './components/Edges/EdgeLabelRenderer.vue'
 
+export * from './components/Background'
+export * from './components/Controls'
+export * from './components/MiniMap'
+
 // re-export these utils from system
 export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter } from '@xyflow/system'
 export { getSimpleBezierPath } from './components/Edges/SimpleBezierEdge'

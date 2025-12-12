@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
-import { Controls } from '@vue-flow/controls'
-import { MiniMap } from '@vue-flow/minimap'
+import { Background, ConnectionMode, Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
 
 const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
   fitViewOnInit: true,

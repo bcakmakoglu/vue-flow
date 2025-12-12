@@ -92,6 +92,7 @@
     "postcss-cli": "^10.1.0",
     "postcss-nested": "^6.0.1",
     "vite": "^4.4.11",
+    "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^1.8.16"
   }
 }
