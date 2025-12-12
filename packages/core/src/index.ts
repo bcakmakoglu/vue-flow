@@ -27,7 +27,7 @@ export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter 
 export { getSimpleBezierPath } from './components/Edges/SimpleBezierEdge'
 
 // re-export graph utils
-export { clamp, getBoundsOfRects, getBoundsOfBoxes, rendererPointToPoint, getMarkerId, wheelDelta } from '@xyflow/system'
+export { clamp, getBoundsOfRects, getBoundsOfBoxes, rendererPointToPoint, getMarkerId, isMacOs } from '@xyflow/system'
 
 export {
   isNode,
@@ -41,8 +41,6 @@ export {
   getNodesInside,
   connectionExists,
 } from './utils/graph'
-
-export { isMacOs } from './utils/general'
 
 /**
  * @deprecated - Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead

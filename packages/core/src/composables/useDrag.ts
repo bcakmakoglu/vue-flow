@@ -2,7 +2,7 @@ import type { D3DragEvent, DragBehavior, SubjectPosition } from 'd3-drag'
 import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { MaybeRefOrGetter, Ref } from 'vue'
-import { toValue, watch } from 'vue'
+import { shallowRef, toValue, watch } from 'vue'
 import { calcAutoPan, getEventPosition, snapPosition } from '@xyflow/system'
 import type { NodeDragEvent, NodeDragItem, XYPosition } from '../types'
 import { calcNextPosition, getDragItems, getEventHandlerParams, handleNodeClick, hasSelector } from '../utils'
@@ -14,7 +14,7 @@ interface UseDragParams {
   onStart: (event: NodeDragEvent) => void
   onDrag: (event: NodeDragEvent) => void
   onStop: (event: NodeDragEvent) => void
-  onClick?: (event: MouseTouchEvent) => void
+  onClick?: (event: PointerEvent) => void
   el: Ref<Element | null>
   disabled?: MaybeRefOrGetter<boolean>
   selectable?: MaybeRefOrGetter<boolean>
@@ -225,7 +225,7 @@ export function useDrag(params: UseDragParams) {
     let isClick = false
 
     if (!dragStarted && !dragging.value && !multiSelectionActive.value) {
-      const evt = event.sourceEvent as MouseTouchEvent
+      const evt = event.sourceEvent as PointerEvent
 
       const pointerPos = getPointerPosition(evt)
 
