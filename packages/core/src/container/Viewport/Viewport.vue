@@ -60,11 +60,11 @@ let prevTransform: ViewportTransform = {
   zoom: 0,
 }
 
-const panKeyPressed = useKeyPress(panActivationKeyCode)
+const panKeyPressed = useKeyPress(panActivationKeyCode, { actInsideInputWithModifier: false })
 
 const selectionKeyPressed = useKeyPress(selectionKeyCode)
 
-const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
+const zoomKeyPressed = useKeyPress(zoomActivationKeyCode, { actInsideInputWithModifier: false })
 
 const shouldPanOnDrag = toRef(
   () =>
