@@ -3,17 +3,9 @@ import { drag } from 'd3-drag'
 import { select } from 'd3-selection'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import { shallowRef, toValue, watch } from 'vue'
-import type { MouseTouchEvent, NodeDragEvent, NodeDragItem, XYPosition } from '../types'
-import {
-  calcAutoPan,
-  calcNextPosition,
-  getDragItems,
-  getEventHandlerParams,
-  getEventPosition,
-  handleNodeClick,
-  hasSelector,
-  snapPosition,
-} from '../utils'
+import { calcAutoPan, getEventPosition, snapPosition } from '@xyflow/system'
+import type { NodeDragEvent, NodeDragItem, XYPosition } from '../types'
+import { calcNextPosition, getDragItems, getEventHandlerParams, handleNodeClick, hasSelector } from '../utils'
 import { useGetPointerPosition, useVueFlow } from '.'
 
 export type UseDragEvent = D3DragEvent<HTMLDivElement, null, SubjectPosition>
@@ -22,7 +14,7 @@ interface UseDragParams {
   onStart: (event: NodeDragEvent) => void
   onDrag: (event: NodeDragEvent) => void
   onStop: (event: NodeDragEvent) => void
-  onClick?: (event: MouseTouchEvent) => void
+  onClick?: (event: PointerEvent) => void
   el: Ref<Element | null>
   disabled?: MaybeRefOrGetter<boolean>
   selectable?: MaybeRefOrGetter<boolean>
@@ -54,7 +46,7 @@ export function useDrag(params: UseDragParams) {
     multiSelectionActive,
     nodesSelectionActive,
     selectNodesOnDrag,
-    removeSelectedElements,
+    removeSelectedNodes,
     addSelectedNodes,
     updateNodePositions,
     emits,
@@ -126,7 +118,7 @@ export function useDrag(params: UseDragParams) {
     }
   }
 
-  const autoPan = () => {
+  const autoPan = async () => {
     if (!containerBounds) {
       return
     }
@@ -139,7 +131,7 @@ export function useDrag(params: UseDragParams) {
         y: (lastPos.y ?? 0) - yMovement / viewport.value.zoom,
       }
 
-      if (panBy({ x: xMovement, y: yMovement })) {
+      if (await panBy({ x: xMovement, y: yMovement })) {
         updateNodes(nextPos)
       }
     }
@@ -154,7 +146,7 @@ export function useDrag(params: UseDragParams) {
     if (!selectNodesOnDrag.value && !multiSelectionActive.value && node) {
       if (!node.selected) {
         // we need to reset selected nodes when selectNodesOnDrag=false
-        removeSelectedElements()
+        removeSelectedNodes()
       }
     }
 
@@ -163,7 +155,7 @@ export function useDrag(params: UseDragParams) {
         node,
         multiSelectionActive.value,
         addSelectedNodes,
-        removeSelectedElements,
+        removeSelectedNodes,
         nodesSelectionActive,
         false,
         nodeEl as HTMLDivElement,
@@ -233,7 +225,7 @@ export function useDrag(params: UseDragParams) {
     let isClick = false
 
     if (!dragStarted && !dragging.value && !multiSelectionActive.value) {
-      const evt = event.sourceEvent as MouseTouchEvent
+      const evt = event.sourceEvent as PointerEvent
 
       const pointerPos = getPointerPosition(evt)
 

@@ -1,19 +1,17 @@
-<script lang="ts" setup>
+<script lang="ts" setup generic="NodeType extends Node = Node">
 import { useVModel } from '@vueuse/core'
 import { onUnmounted, provide } from 'vue'
-import Viewport from '../Viewport/Viewport.vue'
+import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
-import type { FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
+import type { FlowEmits, FlowProps, FlowSlots, Node, VueFlowStore } from '../../types'
 import { Slots } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
 import { useWatchProps } from '../../composables/useWatchProps'
 import { useVueFlow } from '../../composables/useVueFlow'
 import { useHooks } from '../../store/hooks'
-import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning'
 
-const props = withDefaults(defineProps<FlowProps>(), {
+const props = withDefaults(defineProps<FlowProps<NodeType>>(), {
   snapToGrid: undefined,
   onlyRenderVisibleElements: undefined,
   edgesUpdatable: undefined,
@@ -48,18 +46,17 @@ const props = withDefaults(defineProps<FlowProps>(), {
   zoomActivationKeyCode: undefined,
 })
 
-const emit = defineEmits<FlowEmits>()
+const emit = defineEmits<FlowEmits<NodeType>>()
 
-const slots = defineSlots<FlowSlots>()
+const slots = defineSlots<FlowSlots<NodeType>>()
 
-const modelValue = useVModel(props, 'modelValue', emit)
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const vfInstance = useVueFlow(props)
+const vfInstance = useVueFlow<NodeType>()
 
 // watch props and update store state
-const disposeWatchers = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, vfInstance)
+const disposeWatchers = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, vfInstance)
 
 useHooks(emit, vfInstance.hooks)
 
@@ -74,7 +71,7 @@ provide(Slots, slots)
 
 onUnmounted(disposeWatchers)
 
-defineExpose<VueFlowStore>(vfInstance)
+defineExpose<VueFlowStore<NodeType>>(vfInstance)
 </script>
 
 <script lang="ts">
@@ -86,16 +83,10 @@ export default {
 
 <template>
   <div :ref="vfInstance.vueFlowRef" class="vue-flow">
-    <Viewport>
-      <EdgeRenderer />
-
-      <div class="vue-flow__edge-labels" />
-
-      <NodeRenderer />
-
+    <ZoomPane>
       <!-- This slot is affected by zooming & panning -->
       <slot name="zoom-pane" />
-    </Viewport>
+    </ZoomPane>
 
     <!-- This slot is _not_ affected by zooming & panning -->
     <slot />

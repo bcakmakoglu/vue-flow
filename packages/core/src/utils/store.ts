@@ -83,10 +83,14 @@ export function updateEdgeAction(
   }
 }
 
-export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], triggerError: State['hooks']['error']['trigger']) {
+export function createGraphNodes<NodeType extends Node = Node>(
+  nodes: NodeType[],
+  findNode: Actions<NodeType>['findNode'],
+  triggerError: State['hooks']['error']['trigger'],
+) {
   const parentNodes: Record<string, true> = {}
 
-  const nextNodes: GraphNode[] = []
+  const nextNodes: GraphNode<NodeType>[] = []
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i]
 

@@ -1,3 +1,4 @@
+import { clampPosition } from '@xyflow/system'
 import type {
   Actions,
   CoordinateExtent,
@@ -9,7 +10,7 @@ import type {
   State,
   XYPosition,
 } from '../types'
-import { ErrorCode, VueFlowError, clampPosition, isParentSelected } from '.'
+import { ErrorCode, VueFlowError, isParentSelected } from '.'
 
 export function hasSelector(target: Element, selector: string, node: Element): boolean {
   let current = target
@@ -193,7 +194,7 @@ export function calcNextPosition(
 ) {
   const extent = clampNodeExtent(node.dimensions, getExtent(node, triggerError, nodeExtent, parentNode))
 
-  const clampedPos = clampPosition(nextPosition, extent)
+  const clampedPos = clampPosition(nextPosition, extent, node.dimensions)
 
   return {
     position: {

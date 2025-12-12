@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-import { zoom, zoomIdentity } from 'd3-zoom'
-import type { D3ZoomEvent } from 'd3-zoom'
-import { pointer, select } from 'd3-selection'
-import { computed, provide, ref, toRef, useAttrs, watchEffect } from 'vue'
-import type { CoordinateExtent, GraphNode } from '../../types'
+import { computed, onMounted, onUnmounted, provide, ref, toRef, useAttrs, watch } from 'vue'
+import type { XYMinimapInstance } from '@xyflow/system'
+import { XYMinimap, getBoundsOfRects } from '@xyflow/system'
+import type { GraphNode } from '../../types'
 import { useVueFlow } from '../../composables'
-import { getBoundsofRects, getConnectedEdges, getRectOfNodes, isMacOs, wheelDelta } from '../../utils'
-import Panel from '../Panel/Panel.vue'
+import { getConnectedEdges, getRectOfNodes } from '../../utils'
 import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode.vue'
 import { Slots } from './types'
@@ -41,9 +39,11 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, viewport, translateExtent, dimensions, emits, d3Selection, d3Zoom, getNodesInitialized } = useVueFlow()
+const { id, edges, nodes, viewport, translateExtent, dimensions, emits, panZoom } = useVueFlow()
 
 const el = ref<SVGElement>()
+
+let minimapInstance: XYMinimapInstance | null = null
 
 provide(Slots, slots)
 
@@ -63,7 +63,7 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
-const bb = computed(() => getRectOfNodes(getNodesInitialized.value.filter((node) => !node.hidden)))
+const bb = computed(() => getRectOfNodes(nodes.value.filter((node) => !node.hidden)))
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
@@ -72,9 +72,7 @@ const viewBB = computed(() => ({
   height: dimensions.value.height / viewport.value.zoom,
 }))
 
-const boundingRect = computed(() =>
-  getNodesInitialized.value && getNodesInitialized.value.length ? getBoundsofRects(bb.value, viewBB.value) : viewBB.value,
-)
+const boundingRect = computed(() => (nodes.value && nodes.value.length ? getBoundsOfRects(bb.value, viewBB.value) : viewBB.value))
 
 const viewScale = computed(() => {
   const scaledWidth = boundingRect.value.width / elementWidth.value
@@ -118,66 +116,54 @@ const d = computed(() => {
     a${maskBorderRadius},${maskBorderRadius} 0 0 1 ${maskBorderRadius},-${maskBorderRadius}z`
 })
 
-watchEffect(
-  (onCleanup) => {
-    if (el.value) {
-      const selection = select(el.value as Element)
-
-      const zoomHandler = (event: D3ZoomEvent<SVGSVGElement, any>) => {
-        if (event.sourceEvent.type !== 'wheel' || !d3Selection.value || !d3Zoom.value) {
-          return
-        }
-
-        const factor = event.sourceEvent.ctrlKey && isMacOs() ? 10 : 1
-        const pinchDelta =
-          -event.sourceEvent.deltaY *
-          (event.sourceEvent.deltaMode === 1 ? 0.05 : event.sourceEvent.deltaMode ? 1 : 0.002) *
-          zoomStep
-        const nextZoom = viewport.value.zoom * 2 ** (pinchDelta * factor)
-
-        d3Zoom.value.scaleTo(d3Selection.value, nextZoom)
+onMounted(() => {
+  watch(
+    panZoom,
+    (panZoomInstance) => {
+      if (el.value && panZoomInstance) {
+        minimapInstance = XYMinimap({
+          domNode: el.value,
+          panZoom: panZoomInstance,
+          getTransform: () => [viewport.value.x, viewport.value.y, viewport.value.zoom],
+          getViewScale: () => viewScale.value,
+        })
       }
+    },
+    { immediate: true },
+  )
 
-      const panHandler = (event: D3ZoomEvent<HTMLDivElement, any>) => {
-        if (event.sourceEvent.type !== 'mousemove' || !d3Selection.value || !d3Zoom.value) {
-          return
-        }
+  onUnmounted(() => {
+    minimapInstance?.destroy()
+  })
 
-        const moveScale = viewScale.value * Math.max(1, viewport.value.zoom) * (inversePan ? -1 : 1)
-
-        const position = {
-          x: viewport.value.x - event.sourceEvent.movementX * moveScale,
-          y: viewport.value.y - event.sourceEvent.movementY * moveScale,
-        }
-
-        const extent: CoordinateExtent = [
-          [0, 0],
-          [dimensions.value.width, dimensions.value.height],
-        ]
-
-        const nextTransform = zoomIdentity.translate(position.x, position.y).scale(viewport.value.zoom)
-        const constrainedTransform = d3Zoom.value.constrain()(nextTransform, extent, translateExtent.value)
-
-        d3Zoom.value.transform(d3Selection.value, constrainedTransform)
-      }
-
-      const zoomAndPanHandler = zoom()
-        .wheelDelta((event) => wheelDelta(event) * (zoomStep / 10))
-        .on('zoom', pannable ? panHandler : () => {})
-        .on('zoom.wheel', zoomable ? zoomHandler : () => {})
-
-      selection.call(zoomAndPanHandler)
-
-      onCleanup(() => {
-        selection.on('zoom', null)
+  watch(
+    [
+      () => pannable,
+      () => zoomable,
+      () => inversePan,
+      () => zoomStep,
+      translateExtent,
+      () => dimensions.value.height,
+      () => dimensions.value.width,
+    ],
+    () => {
+      minimapInstance?.update({
+        translateExtent: translateExtent.value,
+        width: dimensions.value.width,
+        height: dimensions.value.height,
+        inversePan,
+        pannable,
+        zoomStep,
+        zoomable,
       })
-    }
-  },
-  { flush: 'post' },
-)
+    },
+    { immediate: true },
+  )
+})
 
 function onSvgClick(event: MouseEvent) {
-  const [x, y] = pointer(event)
+  const [x, y] = minimapInstance?.pointer(event) || [0, 0]
+
   emit('click', { event, position: { x, y } })
 }
 
@@ -233,7 +219,7 @@ export default {
       <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
 
       <MiniMapNode
-        v-for="node of getNodesInitialized"
+        v-for="node of nodes"
         :id="node.id"
         :key="node.id"
         :position="node.computedPosition"

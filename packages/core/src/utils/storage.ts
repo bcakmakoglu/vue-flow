@@ -1,6 +1,6 @@
 import { toRefs } from '@vueuse/core'
 import { computed, getCurrentInstance, reactive } from 'vue'
-import type { FlowOptions, GraphEdge, GraphNode, VueFlowStore } from '../types'
+import type { FlowProps, GraphEdge, GraphNode, Node, VueFlowStore } from '../types'
 import { useActions, useGetters, useState } from '../store'
 
 /**
@@ -28,37 +28,37 @@ export class Storage {
     return Storage.instance
   }
 
-  public set(id: string, flow: VueFlowStore) {
-    return this.flows.set(id, flow)
+  public set<NodeType extends Node = Node>(id: string, flow: VueFlowStore<NodeType>) {
+    return this.flows.set(id, flow as unknown as VueFlowStore)
   }
 
-  public get(id: string) {
-    return this.flows.get(id)
+  public get<NodeType extends Node = Node>(id: string): VueFlowStore<NodeType> | undefined {
+    return this.flows.get(id) as VueFlowStore<NodeType> | undefined
   }
 
   public remove(id: string) {
     return this.flows.delete(id)
   }
 
-  public create(id: string, preloadedState?: FlowOptions): VueFlowStore {
-    const state = useState()
+  public create<NodeType extends Node = Node>(id: string, preloadedState?: FlowProps<NodeType>): VueFlowStore<NodeType> {
+    const state = useState<NodeType>()
 
-    const reactiveState = reactive(state)
+    const reactiveState = reactive(state) as any
 
     const hooksOn = <any>{}
     for (const [n, h] of Object.entries(reactiveState.hooks)) {
       const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
-      hooksOn[name] = h.on
+      hooksOn[name] = (h as any).on
     }
 
     const emits = <any>{}
     for (const [n, h] of Object.entries(reactiveState.hooks)) {
-      emits[n] = h.trigger
+      emits[n] = (h as any).trigger
     }
 
     // for lookup purposes
     const nodeLookup = computed(() => {
-      const nodesMap = new Map<string, GraphNode>()
+      const nodesMap = new Map<string, GraphNode<NodeType>>()
       for (const node of reactiveState.nodes) {
         nodesMap.set(node.id, node)
       }
@@ -78,11 +78,11 @@ export class Storage {
 
     const getters = useGetters(reactiveState, nodeLookup, edgeLookup)
 
-    const actions = useActions(reactiveState, nodeLookup, edgeLookup)
+    const actions = useActions<NodeType>(reactiveState, nodeLookup, edgeLookup)
 
-    actions.setState({ ...reactiveState, ...preloadedState })
+    actions.setState({ ...reactiveState, ...preloadedState } as any)
 
-    const flow: VueFlowStore = {
+    const flow: VueFlowStore<NodeType> = {
       ...hooksOn,
       ...getters,
       ...actions,
@@ -99,7 +99,7 @@ export class Storage {
 
     this.set(id, flow)
 
-    return flow
+    return flow as VueFlowStore<NodeType>
   }
 
   public getId() {

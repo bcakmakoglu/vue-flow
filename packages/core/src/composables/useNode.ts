@@ -1,5 +1,5 @@
 import { computed, inject, ref } from 'vue'
-import type { CustomEvent, ElementData } from '../types'
+import type { GraphNode, Node } from '../types'
 import { ErrorCode, VueFlowError, getConnectedEdges } from '../utils'
 import { NodeRef } from '../context'
 import { useVueFlow } from './useVueFlow'
@@ -16,13 +16,13 @@ import { useNodeId } from './useNodeId'
  * @param id - The id of the node to access
  * @returns the node id, the node, the node dom element, it's parent and connected edges
  */
-export function useNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
+export function useNode<NodeType extends Node = Node>(id?: string) {
   const nodeId = id ?? useNodeId() ?? ''
   const nodeEl = inject(NodeRef, ref(null))
 
   const { findNode, edges, emits } = useVueFlow()
 
-  const node = findNode<Data, CustomEvents>(nodeId)!
+  const node = findNode(nodeId)! as GraphNode<NodeType>
 
   if (!node) {
     emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId))

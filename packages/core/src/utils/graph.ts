@@ -1,30 +1,21 @@
 import { markRaw } from 'vue'
+import type { Viewport } from '@xyflow/system'
+import { boxToRect, clamp, getBoundsOfBoxes, getOverlappingArea, rectToBox } from '@xyflow/system'
 import type {
   Box,
   Connection,
-  CoordinateExtent,
   DefaultEdgeOptions,
-  Dimensions,
   Edge,
-  EdgeMarkerType,
-  Element,
   ElementData,
-  Elements,
-  FlowElements,
   GraphEdge,
   GraphNode,
-  MaybeElement,
   Node,
   NodeLookup,
-  Padding,
-  PaddingWithUnit,
   Rect,
-  SnapGrid,
-  ViewportTransform,
   XYPosition,
   XYZPosition,
 } from '../types'
-import { isDef, isMacOs, snapPosition, warn } from '.'
+import { isDef } from '.'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
@@ -34,69 +25,42 @@ export function nodeToRect(node: GraphNode): Rect {
   }
 }
 
-export function getOverlappingArea(rectA: Rect, rectB: Rect) {
-  const xOverlap = Math.max(0, Math.min(rectA.x + rectA.width, rectB.x + rectB.width) - Math.max(rectA.x, rectB.x))
-  const yOverlap = Math.max(0, Math.min(rectA.y + rectA.height, rectB.y + rectB.height) - Math.max(rectA.y, rectB.y))
-
-  return Math.ceil(xOverlap * yOverlap)
+export function isEdge<Data = ElementData>(element: unknown): element is Edge<Data> {
+  return !!element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
 }
 
-export function getDimensions(node: HTMLElement): Dimensions {
-  return {
-    width: node.offsetWidth,
-    height: node.offsetHeight,
-  }
-}
-
-export function clamp(val: number, min = 0, max = 1) {
-  return Math.min(Math.max(val, min), max)
-}
-
-export function clampPosition(position: XYPosition, extent: CoordinateExtent): XYPosition {
-  return {
-    x: clamp(position.x, extent[0][0], extent[1][0]),
-    y: clamp(position.y, extent[0][1], extent[1][1]),
-  }
-}
-
-export function getHostForElement(element: HTMLElement): Document {
-  const doc = element.getRootNode() as Document
-
-  if ('elementFromPoint' in doc) {
-    return doc
-  }
-
-  return window.document
-}
-
-export function isEdge<Data = ElementData>(element: MaybeElement): element is Edge<Data> {
-  return element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
-}
-
-export function isGraphEdge<Data = ElementData>(element: MaybeElement): element is GraphEdge<Data> {
+export function isGraphEdge<Data = ElementData>(element: unknown): element is GraphEdge<Data> {
   return isEdge(element) && 'sourceNode' in element && 'targetNode' in element
 }
 
-export function isNode<Data = ElementData>(element: MaybeElement): element is Node<Data> {
-  return element && typeof element === 'object' && 'id' in element && 'position' in element && !isEdge(element)
+export function isNode<NodeType extends Node = Node>(element: unknown): element is NodeType {
+  return !!element && typeof element === 'object' && 'id' in element && 'position' in element && !isEdge(element)
 }
 
-export function isGraphNode<Data = ElementData>(element: MaybeElement): element is GraphNode<Data> {
+export function isGraphNode<NodeType extends Node = Node>(element: unknown): element is GraphNode<NodeType> {
   return isNode(element) && 'computedPosition' in element
 }
 
-function isNumeric(n: any): n is number {
-  return !Number.isNaN(n) && Number.isFinite(n)
-}
-
-export function isRect(obj: any): obj is Rect {
-  return isNumeric(obj.width) && isNumeric(obj.height) && isNumeric(obj.x) && isNumeric(obj.y)
-}
-
-export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: string): GraphNode {
+export function parseNode<NodeType extends Node = Node>(
+  node: Node,
+  existingNode?: GraphNode<NodeType>,
+  parentNode?: string,
+): GraphNode<NodeType> {
   const initialState = {
     id: node.id.toString(),
     type: node.type ?? 'default',
+    measured: markRaw({
+      width: 0,
+      height: 0,
+    }),
+    internals: {
+      positionAbsolute: {
+        x: 0,
+        y: 0,
+      },
+      z: 0,
+      userNode: node,
+    },
     dimensions: markRaw({
       width: 0,
       height: 0,
@@ -105,7 +69,6 @@ export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: str
       z: 0,
       ...node.position,
     }),
-    // todo: shouldn't be defined initially, as we want to use handleBounds to check if a node was actually initialized or not
     handleBounds: {
       source: [],
       target: [],
@@ -124,10 +87,9 @@ export function parseNode(node: Node, existingNode?: GraphNode, parentNode?: str
       y: 0,
     },
     data: isDef(node.data) ? node.data : {},
-    events: markRaw(isDef(node.events) ? node.events : {}),
   } as GraphNode
 
-  return Object.assign(existingNode ?? initialState, node, { id: node.id.toString(), parentNode }) as GraphNode
+  return Object.assign(existingNode ?? initialState, node, { id: node.id.toString(), parentNode }) as GraphNode<NodeType>
 }
 
 export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptions?: DefaultEdgeOptions): GraphEdge {
@@ -142,7 +104,6 @@ export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptio
     selectable: edge.selectable ?? defaultEdgeOptions?.selectable,
     focusable: edge.focusable ?? defaultEdgeOptions?.focusable,
     data: isDef(edge.data) ? edge.data : {},
-    events: markRaw(isDef(edge.events) ? edge.events : {}),
     label: edge.label ?? '',
     interactionWidth: edge.interactionWidth ?? defaultEdgeOptions?.interactionWidth,
     ...(defaultEdgeOptions ?? {}),
@@ -151,73 +112,13 @@ export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptio
   return Object.assign(existingEdge ?? initialState, edge, { id: edge.id.toString() }) as GraphEdge
 }
 
-function getConnectedElements<T extends Node = Node>(
-  nodeOrId: Node | { id: string } | string,
-  nodes: T[],
-  edges: Edge[],
-  dir: 'source' | 'target',
-): T[] {
-  const id = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
-
-  const connectedIds = new Set()
-
-  const origin = dir === 'source' ? 'target' : 'source'
-
-  for (const edge of edges) {
-    if (edge[origin] === id) {
-      connectedIds.add(edge[dir])
-    }
-  }
-
-  return nodes.filter((n) => connectedIds.has(n.id))
-}
-
-export function getOutgoers<N extends Node>(nodeOrId: Node | { id: string } | string, nodes: N[], edges: Edge[]): N[]
-export function getOutgoers<T extends Elements>(
-  nodeOrId: Node | { id: string } | string,
-  elements: T,
-): T extends FlowElements ? GraphNode[] : Node[]
-export function getOutgoers(...args: any[]) {
-  if (args.length === 3) {
-    const [nodeOrId, nodes, edges] = args
-    return getConnectedElements(nodeOrId, nodes, edges, 'target')
-  }
-
-  const [nodeOrId, elements] = args
-  const nodeId = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
-
-  const outgoers = elements.filter((el: Element) => isEdge(el) && el.source === nodeId)
-
-  return outgoers.map((edge: Edge) => elements.find((el: Element) => isNode(el) && el.id === edge.target))
-}
-
-export function getIncomers<N extends Node>(nodeOrId: Node | { id: string } | string, nodes: N[], edges: Edge[]): N[]
-export function getIncomers<T extends Elements>(
-  nodeOrId: Node | { id: string } | string,
-  elements: T,
-): T extends FlowElements ? GraphNode[] : Node[]
-export function getIncomers(...args: any[]) {
-  if (args.length === 3) {
-    const [nodeOrId, nodes, edges] = args
-    return getConnectedElements(nodeOrId, nodes, edges, 'source')
-  }
-
-  const [nodeOrId, elements] = args
-  const nodeId = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id
-
-  const incomers = elements.filter((el: Element) => isEdge(el) && el.target === nodeId)
-
-  return incomers.map((edge: Edge) => elements.find((el: Element) => isNode(el) && el.id === edge.source))
-}
-
 export function getEdgeId({ source, sourceHandle, target, targetHandle }: Connection) {
   return `vueflow__edge-${source}${sourceHandle ?? ''}-${target}${targetHandle ?? ''}`
 }
 
-export function connectionExists(edge: Edge | Connection, elements: Elements) {
-  return elements.some(
+export function connectionExists(edge: Edge | Connection, edges: Edge[]) {
+  return edges.some(
     (el) =>
-      isEdge(el) &&
       el.source === edge.source &&
       el.target === edge.target &&
       (el.sourceHandle === edge.sourceHandle || (!el.sourceHandle && !edge.sourceHandle)) &&
@@ -225,56 +126,25 @@ export function connectionExists(edge: Edge | Connection, elements: Elements) {
   )
 }
 
-export function rendererPointToPoint({ x, y }: XYPosition, { x: tx, y: ty, zoom: tScale }: ViewportTransform): XYPosition {
-  return {
-    x: x * tScale + tx,
-    y: y * tScale + ty,
-  }
-}
 export function pointToRendererPoint(
   { x, y }: XYPosition,
-  { x: tx, y: ty, zoom: tScale }: ViewportTransform,
+  { x: tx, y: ty, zoom: tScale }: Viewport,
   snapToGrid: boolean = false,
-  snapGrid: SnapGrid = [1, 1],
+  [snapX, snapY]: [snapX: number, snapY: number] = [1, 1],
 ): XYPosition {
   const position: XYPosition = {
     x: (x - tx) / tScale,
     y: (y - ty) / tScale,
   }
 
-  return snapToGrid ? snapPosition(position, snapGrid) : position
-}
-
-function getBoundsOfBoxes(box1: Box, box2: Box): Box {
-  return {
-    x: Math.min(box1.x, box2.x),
-    y: Math.min(box1.y, box2.y),
-    x2: Math.max(box1.x2, box2.x2),
-    y2: Math.max(box1.y2, box2.y2),
+  if (snapToGrid) {
+    return {
+      x: snapX * Math.round(position.x / snapX),
+      y: snapY * Math.round(position.y / snapY),
+    }
   }
-}
 
-export function rectToBox({ x, y, width, height }: Rect): Box {
-  return {
-    x,
-    y,
-    x2: x + width,
-    y2: y + height,
-  }
-}
-
-export function boxToRect({ x, y, x2, y2 }: Box): Rect {
-  return {
-    x,
-    y,
-    width: x2 - x,
-    height: y2 - y,
-  }
-}
-
-// todo: fix typo
-export function getBoundsofRects(rect1: Rect, rect2: Rect) {
-  return boxToRect(getBoundsOfBoxes(rectToBox(rect1), rectToBox(rect2)))
+  return position
 }
 
 export function getRectOfNodes(nodes: GraphNode[]) {
@@ -299,10 +169,10 @@ export function getRectOfNodes(nodes: GraphNode[]) {
   return boxToRect(box)
 }
 
-export function getNodesInside(
-  nodes: GraphNode[],
+export function getNodesInside<NodeType extends Node = Node>(
+  nodes: GraphNode<NodeType>[],
   rect: Rect,
-  viewport: ViewportTransform = { x: 0, y: 0, zoom: 1 },
+  viewport: Viewport = { x: 0, y: 0, zoom: 1 },
   partially = false,
   // set excludeNonSelectableNodes if you want to pay attention to the nodes "selectable" attribute
   excludeNonSelectableNodes = false,
@@ -313,7 +183,7 @@ export function getNodesInside(
     height: rect.height / viewport.zoom,
   }
 
-  const visibleNodes: GraphNode[] = []
+  const visibleNodes: GraphNode<NodeType>[] = []
 
   for (const node of nodes) {
     const { dimensions, selectable = true, hidden = false } = node
@@ -375,163 +245,28 @@ export function getConnectedNodes<N extends Node | { id: string } | string>(node
   return nodes.filter((node) => connectedNodeIds.has(typeof node === 'string' ? node : node.id))
 }
 
-/**
- * Parses a single padding value to a number
- * @internal
- * @param padding - Padding to parse
- * @param viewport - Width or height of the viewport
- * @returns The padding in pixels
- */
-function parsePadding(padding: PaddingWithUnit, viewport: number): number {
-  if (typeof padding === 'number') {
-    return Math.floor((viewport - viewport / (1 + padding)) * 0.5)
-  }
-
-  if (typeof padding === 'string' && padding.endsWith('px')) {
-    const paddingValue = Number.parseFloat(padding)
-    if (!Number.isNaN(paddingValue)) {
-      return Math.floor(paddingValue)
-    }
-  }
-
-  if (typeof padding === 'string' && padding.endsWith('%')) {
-    const paddingValue = Number.parseFloat(padding)
-    if (!Number.isNaN(paddingValue)) {
-      return Math.floor(viewport * paddingValue * 0.01)
-    }
-  }
-
-  warn(`The padding value "${padding}" is invalid. Please provide a number or a string with a valid unit (px or %).`)
-
-  return 0
-}
-
-/**
- * Parses the paddings to an object with top, right, bottom, left, x and y paddings
- * @internal
- * @param padding - Padding to parse
- * @param width - Width of the viewport
- * @param height - Height of the viewport
- * @returns An object with the paddings in pixels
- */
-function parsePaddings(
-  padding: Padding,
-  width: number,
-  height: number,
-): { top: number; bottom: number; left: number; right: number; x: number; y: number } {
-  if (typeof padding === 'string' || typeof padding === 'number') {
-    const paddingY = parsePadding(padding, height)
-    const paddingX = parsePadding(padding, width)
-    return {
-      top: paddingY,
-      right: paddingX,
-      bottom: paddingY,
-      left: paddingX,
-      x: paddingX * 2,
-      y: paddingY * 2,
-    }
-  }
-
-  if (typeof padding === 'object') {
-    const top = parsePadding(padding.top ?? padding.y ?? 0, height)
-    const bottom = parsePadding(padding.bottom ?? padding.y ?? 0, height)
-    const left = parsePadding(padding.left ?? padding.x ?? 0, width)
-    const right = parsePadding(padding.right ?? padding.x ?? 0, width)
-    return { top, right, bottom, left, x: left + right, y: top + bottom }
-  }
-
-  return { top: 0, right: 0, bottom: 0, left: 0, x: 0, y: 0 }
-}
-
-/**
- * Calculates the resulting paddings if the new viewport is applied
- * @internal
- * @param bounds - Bounds to fit inside viewport
- * @param x - X position of the viewport
- * @param y - Y position of the viewport
- * @param zoom - Zoom level of the viewport
- * @param width - Width of the viewport
- * @param height - Height of the viewport
- * @returns An object with the minimum padding required to fit the bounds inside the viewport
- */
-function calculateAppliedPaddings(bounds: Rect, x: number, y: number, zoom: number, width: number, height: number) {
-  const { x: left, y: top } = rendererPointToPoint(bounds, { x, y, zoom })
-
-  const { x: boundRight, y: boundBottom } = rendererPointToPoint(
-    { x: bounds.x + bounds.width, y: bounds.y + bounds.height },
-    {
-      x,
-      y,
-      zoom,
-    },
-  )
-
-  const right = width - boundRight
-  const bottom = height - boundBottom
-
-  return {
-    left: Math.floor(left),
-    top: Math.floor(top),
-    right: Math.floor(right),
-    bottom: Math.floor(bottom),
-  }
-}
-
-/**
- * Returns a viewport that encloses the given bounds with padding.
- * @public
- * @remarks You can determine bounds of nodes with {@link getNodesBounds} and {@link getBoundsOfRects}
- * @param bounds - Bounds to fit inside viewport.
- * @param width - Width of the viewport.
- * @param height  - Height of the viewport.
- * @param minZoom - Minimum zoom level of the resulting viewport.
- * @param maxZoom - Maximum zoom level of the resulting viewport.
- * @param padding - Padding around the bounds.
- * @returns A transformed {@link Viewport} that encloses the given bounds which you can pass to e.g. {@link setViewport}.
- * @example
- * const { x, y, zoom } = getViewportForBounds(
- * { x: 0, y: 0, width: 100, height: 100},
- * 1200, 800, 0.5, 2);
- */
 export function getTransformForBounds(
   bounds: Rect,
   width: number,
   height: number,
   minZoom: number,
   maxZoom: number,
-  padding: Padding = 0.1,
-): ViewportTransform {
-  // First we resolve all the paddings to actual pixel values
-  const p = parsePaddings(padding, width, height)
-
-  const xZoom = (width - p.x) / bounds.width
-  const yZoom = (height - p.y) / bounds.height
-
-  // We calculate the new x, y, zoom for a centered view
+  padding = 0.1,
+  offset: {
+    x?: number
+    y?: number
+  } = { x: 0, y: 0 },
+): Viewport {
+  const xZoom = width / (bounds.width * (1 + padding))
+  const yZoom = height / (bounds.height * (1 + padding))
   const zoom = Math.min(xZoom, yZoom)
   const clampedZoom = clamp(zoom, minZoom, maxZoom)
-
   const boundsCenterX = bounds.x + bounds.width / 2
   const boundsCenterY = bounds.y + bounds.height / 2
-  const x = width / 2 - boundsCenterX * clampedZoom
-  const y = height / 2 - boundsCenterY * clampedZoom
+  const x = width / 2 - boundsCenterX * clampedZoom + (offset.x ?? 0)
+  const y = height / 2 - boundsCenterY * clampedZoom + (offset.y ?? 0)
 
-  // Then we calculate the minimum padding, to respect asymmetric paddings
-  const newPadding = calculateAppliedPaddings(bounds, x, y, clampedZoom, width, height)
-
-  // We only want to have an offset if the newPadding is smaller than the required padding
-  const offset = {
-    left: Math.min(newPadding.left - p.left, 0),
-    top: Math.min(newPadding.top - p.top, 0),
-    right: Math.min(newPadding.right - p.right, 0),
-    bottom: Math.min(newPadding.bottom - p.bottom, 0),
-  }
-
-  return {
-    x: x - offset.left + offset.right,
-    y: y - offset.top + offset.bottom,
-    zoom: clampedZoom,
-  }
+  return { x, y, zoom: clampedZoom }
 }
 
 export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition {
@@ -557,27 +292,4 @@ export function isParentSelected(node: GraphNode, nodeLookup: NodeLookup): boole
   }
 
   return isParentSelected(parent, nodeLookup)
-}
-
-export function getMarkerId(marker: EdgeMarkerType | undefined, vueFlowId?: string) {
-  if (typeof marker === 'undefined') {
-    return ''
-  }
-
-  if (typeof marker === 'string') {
-    return marker
-  }
-
-  const idPrefix = vueFlowId ? `${vueFlowId}__` : ''
-
-  return `${idPrefix}${Object.keys(marker)
-    .sort()
-    .map((key) => `${key}=${marker[<keyof EdgeMarkerType>key]}`)
-    .join('&')}`
-}
-
-export function wheelDelta(event: any) {
-  const factor = event.ctrlKey && isMacOs() ? 10 : 1
-
-  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002) * factor
 }

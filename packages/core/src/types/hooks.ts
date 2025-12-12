@@ -1,24 +1,23 @@
 import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
-import type { D3ZoomEvent } from 'd3-zoom'
+import type { Viewport } from '@xyflow/system'
 import type { EventHookExtended, VueFlowError } from '../utils'
 import type { GraphEdge } from './edge'
-import type { GraphNode } from './node'
+import type { GraphNode, Node } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
-import type { ViewportTransform } from './zoom'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
 
 export type MouseTouchEvent = MouseEvent | TouchEvent
 
-export interface NodeMouseEvent {
+export interface NodeMouseEvent<NodeType extends Node = Node> {
   event: MouseTouchEvent
-  node: GraphNode
+  node: GraphNode<NodeType>
 }
 
-export interface NodeDragEvent {
+export interface NodeDragEvent<NodeType extends Node = Node> {
   event: MouseTouchEvent
-  node: GraphNode
-  nodes: GraphNode[]
+  node: GraphNode<NodeType>
+  nodes: GraphNode<NodeType>[]
 }
 
 export interface EdgeMouseEvent {
@@ -32,25 +31,25 @@ export interface EdgeUpdateEvent {
   connection: Connection
 }
 
-export interface FlowEvents {
-  nodesChange: NodeChange[]
+export interface FlowEvents<NodeType extends Node = Node> {
+  nodesChange: NodeChange<NodeType>[]
   edgesChange: EdgeChange[]
-  nodeDoubleClick: NodeMouseEvent
-  nodeClick: NodeMouseEvent
-  nodeMouseEnter: NodeMouseEvent
-  nodeMouseMove: NodeMouseEvent
-  nodeMouseLeave: NodeMouseEvent
-  nodeContextMenu: NodeMouseEvent
-  nodeDragStart: NodeDragEvent
-  nodeDrag: NodeDragEvent
-  nodeDragStop: NodeDragEvent
+  nodeDoubleClick: NodeMouseEvent<NodeType>
+  nodeClick: NodeMouseEvent<NodeType>
+  nodeMouseEnter: NodeMouseEvent<NodeType>
+  nodeMouseMove: NodeMouseEvent<NodeType>
+  nodeMouseLeave: NodeMouseEvent<NodeType>
+  nodeContextMenu: NodeMouseEvent<NodeType>
+  nodeDragStart: NodeDragEvent<NodeType>
+  nodeDrag: NodeDragEvent<NodeType>
+  nodeDragStop: NodeDragEvent<NodeType>
   nodesInitialized: GraphNode[]
   updateNodeInternals: string[]
-  miniMapNodeClick: NodeMouseEvent
-  miniMapNodeDoubleClick: NodeMouseEvent
-  miniMapNodeMouseEnter: NodeMouseEvent
-  miniMapNodeMouseMove: NodeMouseEvent
-  miniMapNodeMouseLeave: NodeMouseEvent
+  miniMapNodeClick: NodeMouseEvent<NodeType>
+  miniMapNodeDoubleClick: NodeMouseEvent<NodeType>
+  miniMapNodeMouseEnter: NodeMouseEvent<NodeType>
+  miniMapNodeMouseMove: NodeMouseEvent<NodeType>
+  miniMapNodeMouseLeave: NodeMouseEvent<NodeType>
   connect: Connection
   connectStart: {
     event?: MouseEvent | TouchEvent
@@ -63,18 +62,18 @@ export interface FlowEvents {
   /** @deprecated use `init` instead */
   paneReady: VueFlowStore
   init: VueFlowStore
-  move: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
-  moveStart: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
-  moveEnd: { event: D3ZoomEvent<HTMLDivElement, any> | WheelEvent; flowTransform: ViewportTransform }
-  selectionDragStart: NodeDragEvent
-  selectionDrag: NodeDragEvent
-  selectionDragStop: NodeDragEvent
+  move: { event: MouseTouchEvent | null; viewport: Viewport }
+  moveStart: { event: MouseTouchEvent | null; viewport: Viewport }
+  moveEnd: { event: MouseTouchEvent | null; viewport: Viewport }
+  selectionDragStart: NodeDragEvent<NodeType>
+  selectionDrag: NodeDragEvent<NodeType>
+  selectionDragStop: NodeDragEvent<NodeType>
   selectionContextMenu: { event: MouseEvent; nodes: GraphNode[] }
   selectionStart: MouseEvent
   selectionEnd: MouseEvent
-  viewportChangeStart: ViewportTransform
-  viewportChange: ViewportTransform
-  viewportChangeEnd: ViewportTransform
+  viewportChangeStart: Viewport
+  viewportChange: Viewport
+  viewportChangeEnd: Viewport
   paneScroll: WheelEvent | undefined
   paneClick: MouseEvent
   paneContextMenu: MouseEvent
@@ -93,49 +92,43 @@ export interface FlowEvents {
   error: VueFlowError
 }
 
-export type FlowHooks = Readonly<{
-  [key in keyof FlowEvents]: EventHookExtended<FlowEvents[key]>
+export type FlowHooks<NodeType extends Node = Node> = Readonly<{
+  [key in keyof FlowEvents<NodeType>]: EventHookExtended<FlowEvents<NodeType>[key]>
 }>
 
-export type FlowHooksOn = Readonly<{
-  [key in keyof FlowEvents as `on${Capitalize<key>}`]: EventHookOn<FlowEvents[key]>
+export type FlowHooksOn<NodeType extends Node = Node> = Readonly<{
+  [key in keyof FlowEvents<NodeType> as `on${Capitalize<key>}`]: EventHookOn<FlowEvents<NodeType>[key]>
 }>
 
-export type FlowHooksEmit = Readonly<{
-  [key in keyof FlowEvents]: EventHookTrigger<FlowEvents[key]>
+export type FlowHooksEmit<NodeType extends Node = Node> = Readonly<{
+  [key in keyof FlowEvents<NodeType>]: EventHookTrigger<FlowEvents<NodeType>[key]>
 }>
 
-/**
- * To type `Args` (the event callback arguments) pass an array as argument list as first generic type
- * To type `Return` (the event callback return value) pass a value to the second generic type
- */
-export type CustomEvent<Args extends any[] = any[], Return = any> = (...args: Args) => Return
-
-type CustomEventHandlers<CustomEvents = object> = {
-  [key in keyof CustomEvents]: CustomEvents[key]
+export interface NodeEventsHandler<NodeType extends Node = Node> {
+  doubleClick: (event: NodeMouseEvent<NodeType>) => void | { off: () => void }
+  click: (event: NodeMouseEvent<NodeType>) => void | { off: () => void }
+  mouseEnter: (event: NodeMouseEvent<NodeType>) => void | { off: () => void }
+  mouseMove: (event: NodeMouseEvent<NodeType>) => void | { off: () => void }
+  mouseLeave: (event: NodeMouseEvent<NodeType>) => void | { off: () => void }
+  contextMenu: (event: NodeMouseEvent<NodeType>) => void | { off: () => void }
+  dragStart: (event: NodeDragEvent<NodeType>) => void | { off: () => void }
+  drag: (event: NodeDragEvent<NodeType>) => void | { off: () => void }
+  dragStop: (event: NodeDragEvent<NodeType>) => void | { off: () => void }
 }
 
-export type NodeEventsHandler<CustomEvents = object> = {
-  doubleClick: (event: NodeMouseEvent) => void | { off: () => void }
-  click: (event: NodeMouseEvent) => void | { off: () => void }
-  mouseEnter: (event: NodeMouseEvent) => void | { off: () => void }
-  mouseMove: (event: NodeMouseEvent) => void | { off: () => void }
-  mouseLeave: (event: NodeMouseEvent) => void | { off: () => void }
-  contextMenu: (event: NodeMouseEvent) => void | { off: () => void }
-  dragStart: (event: NodeDragEvent) => void | { off: () => void }
-  drag: (event: NodeDragEvent) => void | { off: () => void }
-  dragStop: (event: NodeDragEvent) => void | { off: () => void }
-} & CustomEventHandlers<CustomEvents>
+export type NodeEventsOn<NodeType extends Node = Node> = {
+  [key in keyof NodeEventsHandler<NodeType>]: EventHookOn<
+    NodeEventsHandler<NodeType>[key] extends (event: infer Event) => any ? Event : never
+  >
+}
 
-export type NodeEventsOn<CustomEvents = object> = {
-  [key in keyof NodeEventsHandler]: EventHookOn<NodeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
-} & CustomEventHandlers<CustomEvents>
+export type NodeEventsEmit<NodeType extends Node = Node> = {
+  [key in keyof NodeEventsHandler<NodeType>]: EventHookTrigger<
+    NodeEventsHandler<NodeType>[key] extends (event: infer Event) => any ? Event : never
+  >
+}
 
-export type NodeEventsEmit<CustomEvents = object> = {
-  [key in keyof NodeEventsHandler]: EventHookTrigger<NodeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
-} & CustomEventHandlers<CustomEvents>
-
-export type EdgeEventsHandler<CustomEvents = object> = {
+export interface EdgeEventsHandler {
   doubleClick: (event: EdgeMouseEvent) => void | { off: () => void }
   click: (event: EdgeMouseEvent) => void | { off: () => void }
   mouseEnter: (event: EdgeMouseEvent) => void | { off: () => void }
@@ -145,12 +138,12 @@ export type EdgeEventsHandler<CustomEvents = object> = {
   updateStart: (event: EdgeMouseEvent) => void | { off: () => void }
   update: (event: EdgeUpdateEvent) => void | { off: () => void }
   updateEnd: (event: EdgeMouseEvent) => void | { off: () => void }
-} & CustomEventHandlers<CustomEvents>
+}
 
-export type EdgeEventsOn<CustomEvents = object> = {
+export type EdgeEventsOn = {
   [key in keyof EdgeEventsHandler]: EventHookOn<EdgeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
-} & CustomEventHandlers<CustomEvents>
+}
 
-export type EdgeEventsEmit<CustomEvents = object> = {
+export type EdgeEventsEmit = {
   [key in keyof EdgeEventsHandler]: EventHookTrigger<EdgeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
-} & CustomEventHandlers<CustomEvents>
+}

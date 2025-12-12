@@ -1,21 +1,23 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-import type { Connection, ConnectionInProgress, HandleElement, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types'
 import {
   calcAutoPan,
+  getEventPosition,
+  getHandlePosition,
+  getHostForElement,
+  isMouseEvent,
+  rendererPointToPoint,
+} from '@xyflow/system'
+import type { Connection, ConnectionInProgress, HandleElement, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types'
+import {
   getClosestHandle,
   getConnectionStatus,
-  getEventPosition,
   getHandle,
-  getHandlePosition,
   getHandleType,
-  getHostForElement,
   isConnectionValid,
-  isMouseEvent,
   isValidHandle,
   oppositePosition,
   pointToRendererPoint,
-  rendererPointToPoint,
   resetRecentHandle,
 } from '../utils'
 import { Position } from '../types'
@@ -88,13 +90,7 @@ export function useHandle({
     const clickedHandle = event.currentTarget as HTMLElement | null
 
     if (clickedHandle && ((isMouseTriggered && event.button === 0) || !isMouseTriggered)) {
-      const node = findNode(toValue(nodeId))
-
-      let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
-
-      if (!isValidConnectionHandler && node) {
-        isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
-      }
+      const isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
       let closestHandle: HandleElement | null
 
@@ -175,7 +171,8 @@ export function useHandle({
 
       let previousConnection: ConnectionInProgress = newConnection
 
-      function onPointerMove(event: MouseTouchEvent) {
+      function onPointerMove(_event: Event) {
+        const event = _event as MouseTouchEvent
         connectionPosition = getEventPosition(event, containerBounds)
 
         closestHandle = getClosestHandle(
@@ -220,7 +217,11 @@ export function useHandle({
           isValid,
           to:
             result.toHandle && isValid
-              ? rendererPointToPoint({ x: result.toHandle.x, y: result.toHandle.y }, viewport.value)
+              ? rendererPointToPoint({ x: result.toHandle.x, y: result.toHandle.y }, [
+                  viewport.value.x,
+                  viewport.value.y,
+                  viewport.value.zoom,
+                ])
               : connectionPosition,
           toHandle: result.toHandle,
           toPosition: isValid && result.toHandle ? result.toHandle.position : oppositePosition[fromHandle.position],
@@ -251,7 +252,7 @@ export function useHandle({
                   x: connectingHandle.x,
                   y: connectingHandle.y,
                 },
-                viewport.value,
+                [viewport.value.x, viewport.value.y, viewport.value.zoom],
               )
             : connectionPosition,
           result.toHandle,
@@ -277,7 +278,8 @@ export function useHandle({
         }
       }
 
-      function onPointerUp(event: MouseTouchEvent) {
+      function onPointerUp(_event: Event) {
+        const event = _event as MouseTouchEvent
         // Prevent multi-touch aborting connection
         if ('touches' in event && event.touches.length > 0) {
           return
@@ -327,8 +329,6 @@ export function useHandle({
       return
     }
 
-    const isTarget = toValue(type) === 'target'
-
     if (!connectionClickStartHandle.value) {
       emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId) })
 
@@ -347,13 +347,9 @@ export function useHandle({
       return
     }
 
-    let isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
+    const isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
     const node = findNode(toValue(nodeId))
-
-    if (!isValidConnectionHandler && node) {
-      isValidConnectionHandler = (!isTarget ? node.isValidTargetPos : node.isValidSourcePos) || alwaysValid
-    }
 
     if (node && (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable) === false) {
       return

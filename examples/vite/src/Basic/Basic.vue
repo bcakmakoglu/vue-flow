@@ -14,10 +14,7 @@ const edges = ref<Edge[]>([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 
-const { onConnect, addEdges, setViewport, toObject } = useVueFlow({
-  minZoom: 0.2,
-  maxZoom: 4,
-})
+const { onConnect, addEdges, setViewport, toObject } = useVueFlow()
 
 onConnect(addEdges)
 
