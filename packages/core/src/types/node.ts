@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from 'vue'
 import type { InternalNodeBase, NodeBase, NodeProps as NodePropsBase } from '@xyflow/system'
 import type { Dimensions, Styles, XYZPosition } from './flow'
 import type { HandleElement } from './handle'
