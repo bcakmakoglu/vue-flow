@@ -14,5 +14,13 @@
     "@tooling/tsconfig": "0.0.0",
     "@tooling/vite-config": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "cyan-melons-unite",
+    "dry-guests-battle",
+    "fresh-cars-live",
+    "hip-melons-peel",
+    "late-toys-play",
+    "nine-fishes-lick",
+    "pink-toes-happen"
+  ]
 }
