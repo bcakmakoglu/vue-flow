@@ -1,5 +1,4 @@
 ---
-"@vue-flow/background": minor
 "@vue-flow/core": minor
 ---
 
