@@ -13,6 +13,7 @@ import {
   watch,
 } from 'vue'
 import { until } from '@vueuse/core'
+import { snapPosition } from '@xyflow/system'
 import {
   ARIA_NODE_DESC_KEY,
   ErrorCode,
@@ -22,11 +23,10 @@ import {
   elementSelectionKeys,
   getXYZPos,
   handleNodeClick,
-  snapPosition,
 } from '../../utils'
 import { NodeId, NodeRef, Slots } from '../../context'
 import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
-import type { BuiltInNode, NodeComponent, MouseTouchEvent } from '../../types'
+import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types'
 
 interface Props {
   id: string

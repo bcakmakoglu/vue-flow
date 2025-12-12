@@ -1,11 +1,20 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
-import { calcAutoPan, getEventPosition, getHostForElement, isMouseEvent, rendererPointToPoint } from '@xyflow/system'
+import {
+  calcAutoPan,
+  getEventPosition,
+  getHandlePosition,
+  getHostForElement,
+  isMouseEvent,
+  rendererPointToPoint,
+} from '@xyflow/system'
 import type { Connection, ConnectionInProgress, HandleElement, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types'
 import {
   getClosestHandle,
   getConnectionStatus,
+  getHandle,
   getHandleType,
+  isConnectionValid,
   isValidHandle,
   oppositePosition,
   pointToRendererPoint,
@@ -208,7 +217,11 @@ export function useHandle({
           isValid,
           to:
             result.toHandle && isValid
-              ? rendererPointToPoint({ x: result.toHandle.x, y: result.toHandle.y }, viewport.value)
+              ? rendererPointToPoint({ x: result.toHandle.x, y: result.toHandle.y }, [
+                  viewport.value.x,
+                  viewport.value.y,
+                  viewport.value.zoom,
+                ])
               : connectionPosition,
           toHandle: result.toHandle,
           toPosition: isValid && result.toHandle ? result.toHandle.position : oppositePosition[fromHandle.position],
@@ -338,9 +351,9 @@ export function useHandle({
 
     const node = findNode(toValue(nodeId))
 
-      if (node && (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable) === false) {
-        return
-      }
+    if (node && (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable) === false) {
+      return
+    }
 
     const doc = getHostForElement(event.target as HTMLElement)
 

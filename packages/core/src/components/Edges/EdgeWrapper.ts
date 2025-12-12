@@ -39,7 +39,7 @@ const EdgeWrapper = defineComponent({
 
     const edge = computed(() => findEdge(props.id)!)
 
-    const { emit, on } = useEdgeHooks(emits)
+    const { emit } = useEdgeHooks(emits)
 
     const slots = inject(Slots)
 
