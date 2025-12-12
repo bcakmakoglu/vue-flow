@@ -38,9 +38,6 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../packages/minimap
       '@vue-flow/node-resizer':
         specifier: workspace:*
         version: link:../packages/node-resizer
@@ -114,9 +111,6 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../../packages/minimap
     devDependencies:
       '@tooling/eslint-config':
         specifier: workspace:*
@@ -133,9 +127,6 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../../packages/minimap
       quasar:
         specifier: ^2.17.0
         version: 2.17.0
@@ -173,9 +164,6 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../../packages/minimap
       '@vue-flow/node-resizer':
         specifier: workspace:*
         version: link:../../packages/node-resizer
@@ -287,40 +275,6 @@ importers:
         specifier: ^1.8.16
         version: 1.8.16(typescript@5.4.5)
 
-  packages/minimap:
-    dependencies:
-      d3-selection:
-        specifier: ^3.0.0
-        version: 3.0.0
-      d3-zoom:
-        specifier: ^3.0.0
-        version: 3.0.0
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@types/d3-selection':
-        specifier: ^3.0.7
-        version: 3.0.7
-      '@types/d3-zoom':
-        specifier: ^3.0.5
-        version: 3.0.5
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
-
   packages/node-resizer:
     dependencies:
       d3-drag:
@@ -382,9 +336,6 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../packages/minimap
     devDependencies:
       '@tooling/eslint-config':
         specifier: workspace:*
@@ -2121,9 +2072,6 @@ packages:
 
   '@types/d3-transition@3.0.9':
     resolution: {integrity: sha512-uZS5shfxzO3rGlu0cC3bjmMFKsXv+SmZZcgp0KD22ts4uGXp5EVYGzu/0YdwZeKmddhcAccYtREJKkPfXkZuCg==}
-
-  '@types/d3-zoom@3.0.5':
-    resolution: {integrity: sha512-mIefdTLtxuWUWTbBupCUXPAXVPmi8/Uwrq41gQpRh0rD25GMU1ku+oTELqNY2NuuiI0F3wXC5e1liBQi7YS7XQ==}
 
   '@types/d3-zoom@3.0.8':
     resolution: {integrity: sha512-iqMC4/YlFCSlO8+2Ii1GGGliCAY4XdeG748w5vQUbevlbDu0zSjH/+jojorQVBK/se0j6DUFNPBGSqD3YWYnDw==}
@@ -9622,11 +9570,6 @@ snapshots:
 
   '@types/d3-transition@3.0.9':
     dependencies:
-      '@types/d3-selection': 3.0.11
-
-  '@types/d3-zoom@3.0.5':
-    dependencies:
-      '@types/d3-interpolate': 3.0.4
       '@types/d3-selection': 3.0.11
 
   '@types/d3-zoom@3.0.8':

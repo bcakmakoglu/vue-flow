@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Background, ControlButton, Controls, VueFlow, useVueFlow } from '@vue-flow/core'
-import { MiniMap } from '@vue-flow/minimap'
+import { Background, ControlButton, Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
 import { initialEdges, initialNodes } from './initial-elements.js'
 import Icon from './Icon.vue'
 
