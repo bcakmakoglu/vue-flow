@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
 import { ControlButton, Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 import { initialEdges, initialNodes } from './initial-elements.js'
@@ -102,7 +101,7 @@ function toggleDarkMode() {
     :min-zoom="0.2"
     :max-zoom="4"
   >
-    <Background pattern-color="#aaa" :gap="16" />
+    <Background color="#aaa" :gap="16" />
 
     <MiniMap />
 

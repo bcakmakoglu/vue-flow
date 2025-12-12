@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import type { Elements } from '@vue-flow/core'
-import { Position, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
@@ -98,7 +97,7 @@ onPaneReady((i) => emit('pane', i))
     <VueFlow>
       <Controls :show-interactive="false" />
       <MiniMap mask-color="rgba(16, 185, 129, 0.5)" class="transform scale-60 origin-bottom-right opacity-75" />
-      <Background variant="lines" pattern-color="#aaa" :gap="46" />
+      <Background variant="lines" color="#aaa" :gap="46" />
     </VueFlow>
   </div>
 

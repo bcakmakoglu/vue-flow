@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Background } from '@vue-flow/background'
-import { Panel, VueFlow } from '@vue-flow/core'
+import { Background, Panel, VueFlow } from '@vue-flow/core'
 
 const nodes = ref([
   {

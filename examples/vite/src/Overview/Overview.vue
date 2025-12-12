@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
-import { MarkerType, VueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, MarkerType, VueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
 
@@ -174,6 +173,6 @@ const elements = ref<Elements>(initialElements)
   >
     <MiniMap :node-stroke-color="nodeStrokeColor" :node-color="nodeColor" :node-border-radius="2" />
     <Controls />
-    <Background color="#aaa" :gap="20" />
+    <Background variant="lines" />
   </VueFlow>
 </template>

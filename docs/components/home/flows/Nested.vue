@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 import { breakpointsTailwind } from '@vueuse/core'
 
@@ -76,7 +75,7 @@ onPaneReady((i) => emit('pane', i))
   >
     <VueFlow class="nested">
       <Controls class="md:(!left-auto !right-[10px])" />
-      <Background pattern-color="#aaa" class="!bg-gray-800" :gap="18" />
+      <Background color="#aaa" class="!bg-gray-800" :gap="18" />
     </VueFlow>
   </div>
 </template>

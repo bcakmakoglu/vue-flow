@@ -1,7 +1,6 @@
 <script setup>
-import { Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Background, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
 import { nextTick, ref } from 'vue'
-import { Background } from '@vue-flow/background'
 import { getElements } from './utils'
 
 const { nodes, edges } = getElements(15, 15)

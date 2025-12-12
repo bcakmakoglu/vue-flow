@@ -20,6 +20,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ['@vue-flow/core', '@vue-flow/minimap', '@vue-flow/controls', '@vue-flow/background'],
+    exclude: ['@vue-flow/core', '@vue-flow/minimap', '@vue-flow/controls'],
   },
 })

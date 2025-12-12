@@ -67,7 +67,6 @@ await store.setFiles(
 // pre-set import map
 store.setImportMap({
   imports: {
-    '@vue-flow/background': `${location.origin}/vue-flow-background.mjs`,
     '@vue-flow/controls': `${location.origin}/vue-flow-controls.mjs`,
     '@vue-flow/minimap': `${location.origin}/vue-flow-minimap.mjs`,
     '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
