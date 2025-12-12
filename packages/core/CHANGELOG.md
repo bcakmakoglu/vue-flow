@@ -1,5 +1,25 @@
 # @vue-flow/core
 
+## 2.0.0-next.0
+
+### Major Changes
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`702ff95`](https://github.com/bcakmakoglu/vue-flow/commit/702ff950096dd3f563e7747c32d8627239c652ce) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove experimental features flag
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`6da35f5`](https://github.com/bcakmakoglu/vue-flow/commit/6da35f5767588f836292c91ce045b6c3b54a579e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update handle styles and avoid using fixed pixel positions to offset handle position and instead use transform to align handles
+
+- [#1549](https://github.com/bcakmakoglu/vue-flow/pull/1549) [`f6bb711`](https://github.com/bcakmakoglu/vue-flow/commit/f6bb7111bf53b174ddbef5b458d249188d8b1524) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove deprecated exports `addEdge`, `updateEdge` & `useZoomPanHelper`
+
+### Minor Changes
+
+- [#2005](https://github.com/bcakmakoglu/vue-flow/pull/2005) [`30cbd70`](https://github.com/bcakmakoglu/vue-flow/commit/30cbd702e5a00e92539fac53d3535ce7a0e0d174) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `MiniMap` component into core pkg.
+
+- [#2004](https://github.com/bcakmakoglu/vue-flow/pull/2004) [`b5f7162`](https://github.com/bcakmakoglu/vue-flow/commit/b5f7162a002c1aafa2effe35697be62ece42fd56) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `Controls` component into core pkg.
+
+- [#1548](https://github.com/bcakmakoglu/vue-flow/pull/1548) [`1359e81`](https://github.com/bcakmakoglu/vue-flow/commit/1359e81810d16277e20684eca99e52deafa21e13) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `<Background>` component to core package
+
+- [#2004](https://github.com/bcakmakoglu/vue-flow/pull/2004) [`b5f7162`](https://github.com/bcakmakoglu/vue-flow/commit/b5f7162a002c1aafa2effe35697be62ece42fd56) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `<Controls>` component to core pkg
+
 ## 1.48.0
 
 ### Minor Changes
