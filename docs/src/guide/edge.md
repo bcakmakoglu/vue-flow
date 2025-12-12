@@ -5,8 +5,7 @@ title: Edges
 <script setup>
 import LogosJavascript from '~icons/logos/javascript';
 import LogosTypescript from '~icons/logos/typescript-icon';
-import { VueFlow, Panel } from '@vue-flow/core';
-import { Background } from '@vue-flow/background';
+import { Background, Panel, VueFlow } from '@vue-flow/core';
 import Check from '~icons/mdi/check';
 import Close from '~icons/mdi/close';
 import { ref } from 'vue';

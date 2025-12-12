@@ -11,8 +11,6 @@ const { vueFlowVersion } = useVueFlow()
 
 let css = `@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/style.css';
 @import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/theme-default.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/controls@latest/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/minimap@latest/dist/style.css';
 @import 'https://cdn.jsdelivr.net/npm/@vue-flow/node-resizer@latest/dist/style.css';
 
 html,
@@ -67,9 +65,6 @@ await store.setFiles(
 // pre-set import map
 store.setImportMap({
   imports: {
-    '@vue-flow/background': `${location.origin}/vue-flow-background.mjs`,
-    '@vue-flow/controls': `${location.origin}/vue-flow-controls.mjs`,
-    '@vue-flow/minimap': `${location.origin}/vue-flow-minimap.mjs`,
     '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
     '@vue-flow/node-resizer': `${location.origin}/vue-flow-node-resizer.mjs`,
     '@vue-flow/node-toolbar': `${location.origin}/vue-flow-node-toolbar.mjs`,

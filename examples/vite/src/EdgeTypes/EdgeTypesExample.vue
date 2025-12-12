@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { VueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
-import { MiniMap } from '@vue-flow/minimap'
+import { Controls, MiniMap, VueFlow } from '@vue-flow/core'
 
 import { getElements } from './utils'
 

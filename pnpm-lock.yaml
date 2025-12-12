@@ -35,18 +35,9 @@ importers:
       '@vercel/speed-insights':
         specifier: ^1.0.14
         version: 1.0.14(react@18.2.0)(vue-router@4.4.5(vue@3.5.12(typescript@5.4.5)))(vue@3.5.12(typescript@5.4.5))
-      '@vue-flow/background':
-        specifier: workspace:*
-        version: link:../packages/background
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../packages/minimap
       '@vue-flow/node-resizer':
         specifier: workspace:*
         version: link:../packages/node-resizer
@@ -117,18 +108,9 @@ importers:
 
   examples/nuxt3:
     dependencies:
-      '@vue-flow/background':
-        specifier: workspace:*
-        version: link:../../packages/background
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../../packages/minimap
     devDependencies:
       '@tooling/eslint-config':
         specifier: workspace:*
@@ -142,18 +124,9 @@ importers:
       '@quasar/extras':
         specifier: ^1.16.12
         version: 1.16.12
-      '@vue-flow/background':
-        specifier: workspace:*
-        version: link:../../packages/background
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../../packages/minimap
       quasar:
         specifier: ^2.17.0
         version: 2.17.0
@@ -188,18 +161,9 @@ importers:
       '@dagrejs/dagre':
         specifier: ^1.1.4
         version: 1.1.4
-      '@vue-flow/background':
-        specifier: workspace:*
-        version: link:../../packages/background
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../../packages/minimap
       '@vue-flow/node-resizer':
         specifier: workspace:*
         version: link:../../packages/node-resizer
@@ -240,53 +204,6 @@ importers:
       vue-tsc:
         specifier: ^2.1.6
         version: 2.1.6(typescript@5.4.5)
-
-  packages/background:
-    dependencies:
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
-
-  packages/controls:
-    dependencies:
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      vite-svg-loader:
-        specifier: ^4.0.0
-        version: 4.0.0
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
 
   packages/core:
     dependencies:
@@ -351,40 +268,9 @@ importers:
       vite:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@20.14.2)(sass@1.79.4)(terser@5.21.0)
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
-
-  packages/minimap:
-    dependencies:
-      d3-selection:
-        specifier: ^3.0.0
-        version: 3.0.0
-      d3-zoom:
-        specifier: ^3.0.0
-        version: 3.0.0
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@types/d3-selection':
-        specifier: ^3.0.7
-        version: 3.0.7
-      '@types/d3-zoom':
-        specifier: ^3.0.5
-        version: 3.0.5
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
+      vite-svg-loader:
+        specifier: ^5.1.0
+        version: 5.1.0(vue@3.3.4)
       vue-tsc:
         specifier: ^1.8.16
         version: 1.8.16(typescript@5.4.5)
@@ -445,51 +331,11 @@ importers:
         specifier: ^1.8.16
         version: 1.8.16(typescript@5.4.5)
 
-  packages/pathfinding-edge:
-    dependencies:
-      pathfinding:
-        specifier: ^0.4.18
-        version: 0.4.18
-      perfect-arrows:
-        specifier: ^0.3.7
-        version: 0.3.7
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@types/pathfinding':
-        specifier: ^0.0.6
-        version: 0.0.6
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
-
   tests:
     dependencies:
-      '@vue-flow/background':
-        specifier: workspace:*
-        version: link:../packages/background
-      '@vue-flow/controls':
-        specifier: workspace:*
-        version: link:../packages/controls
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../packages/core
-      '@vue-flow/minimap':
-        specifier: workspace:*
-        version: link:../packages/minimap
     devDependencies:
       '@tooling/eslint-config':
         specifier: workspace:*
@@ -2227,9 +2073,6 @@ packages:
   '@types/d3-transition@3.0.9':
     resolution: {integrity: sha512-uZS5shfxzO3rGlu0cC3bjmMFKsXv+SmZZcgp0KD22ts4uGXp5EVYGzu/0YdwZeKmddhcAccYtREJKkPfXkZuCg==}
 
-  '@types/d3-zoom@3.0.5':
-    resolution: {integrity: sha512-mIefdTLtxuWUWTbBupCUXPAXVPmi8/Uwrq41gQpRh0rD25GMU1ku+oTELqNY2NuuiI0F3wXC5e1liBQi7YS7XQ==}
-
   '@types/d3-zoom@3.0.8':
     resolution: {integrity: sha512-iqMC4/YlFCSlO8+2Ii1GGGliCAY4XdeG748w5vQUbevlbDu0zSjH/+jojorQVBK/se0j6DUFNPBGSqD3YWYnDw==}
 
@@ -2307,9 +2150,6 @@ packages:
 
   '@types/normalize-package-data@2.4.2':
     resolution: {integrity: sha512-lqa4UEhhv/2sjjIQgjX8B+RBjj47eo0mzGasklVJ78UKGQY1r0VpB9XHDaZZO9qzEFDdy4MrXLuEaSmPrPSe/A==}
-
-  '@types/pathfinding@0.0.6':
-    resolution: {integrity: sha512-yk2LRAKAOW6m1g/4le8tk8go6wjNmCq2EA1l6Rw3tkBautda3FkBzgCLdSNUPiTZPkjxI/OYBwHmJWoYUSk7RQ==}
 
   '@types/qs@6.9.8':
     resolution: {integrity: sha512-u95svzDlTysU5xecFNTgfFG5RUWu1A9P0VzgpcIiGZA9iraHOdSzcxMxQ55DyeRaGCSxQi7LxXDI4rzq/MYfdg==}
@@ -4704,9 +4544,6 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  heap@0.2.5:
-    resolution: {integrity: sha512-G7HLD+WKcrOyJP5VQwYZNC3Z6FcQ7YYjEFiFoIj8PfEr73mu421o8B1N5DKUcc8K37EsJ2XXWA8DtrDz/2dReg==}
-
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
@@ -5936,15 +5773,8 @@ packages:
   pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
 
-  pathfinding@0.4.18:
-    resolution: {integrity: sha512-R0TGEQ9GRcFCDvAWlJAWC+KGJ9SLbW4c0nuZRcioVlXVTlw+F5RvXQ8SQgSqI9KXWC1ew95vgmIiyaWTlCe9Ag==}
-
   pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
-
-  perfect-arrows@0.3.7:
-    resolution: {integrity: sha512-wEN2gerTPVWl3yqoFEF8OeGbg3aRe2sxNUi9rnyYrCsL4JcI6K2tBDezRtqVrYG0BNtsWLdYiiTrYm+X//8yLQ==}
-    engines: {node: '>=10'}
 
   perfect-debounce@1.0.0:
     resolution: {integrity: sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==}
@@ -6865,11 +6695,6 @@ packages:
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
-  svgo@3.0.2:
-    resolution: {integrity: sha512-Z706C1U2pb1+JGP48fbazf3KxHrWOsLme6Rv7imFBn5EnuanDW1GPaA/P1/dvObE670JDePC3mnj0k0B7P0jjQ==}
-    engines: {node: '>=14.0.0'}
-    hasBin: true
-
   svgo@3.2.0:
     resolution: {integrity: sha512-4PP6CMW/V7l/GmKRKzsLR8xxjdHTV4IMvhTnpuHwwBazSIlw5W/5SmPjN8Dwyt7lKbSJrRDgp4t9ph0HgChFBQ==}
     engines: {node: '>=14.0.0'}
@@ -7445,9 +7270,6 @@ packages:
     resolution: {integrity: sha512-PqNiIsrEftCrgn0xIpj8ZMSdpz8NZn+OJ3gKXnOF+hFzbHFrKGJA49ViOUKCHDOquxoGBZMmTjepWr8GrftKcQ==}
     peerDependencies:
       vite: ^2.0.1 || ^3.0.0 || ^4.0.0 || ^5.0.0
-
-  vite-svg-loader@4.0.0:
-    resolution: {integrity: sha512-0MMf1yzzSYlV4MGePsLVAOqXsbF5IVxbn4EEzqRnWxTQl8BJg/cfwIzfQNmNQxZp5XXwd4kyRKF1LytuHZTnqA==}
 
   vite-svg-loader@5.1.0:
     resolution: {integrity: sha512-M/wqwtOEjgb956/+m5ZrYT/Iq6Hax0OakWbokj8+9PXOnB7b/4AxESHieEtnNEy7ZpjsjYW1/5nK8fATQMmRxw==}
@@ -9750,11 +9572,6 @@ snapshots:
     dependencies:
       '@types/d3-selection': 3.0.11
 
-  '@types/d3-zoom@3.0.5':
-    dependencies:
-      '@types/d3-interpolate': 3.0.4
-      '@types/d3-selection': 3.0.11
-
   '@types/d3-zoom@3.0.8':
     dependencies:
       '@types/d3-interpolate': 3.0.4
@@ -9836,8 +9653,6 @@ snapshots:
       undici-types: 5.26.5
 
   '@types/normalize-package-data@2.4.2': {}
-
-  '@types/pathfinding@0.0.6': {}
 
   '@types/qs@6.9.8': {}
 
@@ -10922,7 +10737,7 @@ snapshots:
 
   builtins@5.0.1:
     dependencies:
-      semver: 7.6.0
+      semver: 7.6.3
 
   bundle-name@4.1.0:
     dependencies:
@@ -12757,8 +12572,6 @@ snapshots:
 
   he@1.2.0: {}
 
-  heap@0.2.5: {}
-
   hookable@5.5.3: {}
 
   hosted-git-info@2.8.9: {}
@@ -14224,13 +14037,7 @@ snapshots:
 
   pathe@1.1.2: {}
 
-  pathfinding@0.4.18:
-    dependencies:
-      heap: 0.2.5
-
   pend@1.2.0: {}
-
-  perfect-arrows@0.3.7: {}
 
   perfect-debounce@1.0.0: {}
 
@@ -15189,15 +14996,6 @@ snapshots:
 
   svg-tags@1.0.0: {}
 
-  svgo@3.0.2:
-    dependencies:
-      '@trysound/sax': 0.2.0
-      commander: 7.2.0
-      css-select: 5.1.0
-      css-tree: 2.3.1
-      csso: 5.0.5
-      picocolors: 1.0.0
-
   svgo@3.2.0:
     dependencies:
       '@trysound/sax': 0.2.0
@@ -15864,10 +15662,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-svg-loader@4.0.0:
+  vite-svg-loader@5.1.0(vue@3.3.4):
     dependencies:
-      '@vue/compiler-sfc': 3.3.4
-      svgo: 3.0.2
+      svgo: 3.2.0
+      vue: 3.3.4
 
   vite-svg-loader@5.1.0(vue@3.5.11(typescript@5.4.5)):
     dependencies:

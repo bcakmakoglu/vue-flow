@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Position, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import TransitionEdge from './TransitionEdge.vue'
 
 const { onInit } = useVueFlow()

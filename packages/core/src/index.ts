@@ -18,6 +18,10 @@ export { default as BaseEdge } from './components/Edges/BaseEdge.vue'
 export { default as EdgeText } from './components/Edges/EdgeText.vue'
 export { default as EdgeLabelRenderer } from './components/Edges/EdgeLabelRenderer.vue'
 
+export * from './components/Background'
+export * from './components/Controls'
+export * from './components/MiniMap'
+
 export {
   getBezierPath,
   getSimpleBezierPath,
@@ -32,8 +36,6 @@ export {
   isEdge,
   isGraphNode,
   isGraphEdge,
-  addEdge,
-  updateEdge,
   getOutgoers,
   getIncomers,
   getConnectedEdges,
@@ -41,8 +43,6 @@ export {
   getRectOfNodes,
   pointToRendererPoint,
   rendererPointToPoint,
-  /** @deprecated - will be removed in the next major version, use `rendererPointToPoint` instead */
-  rendererPointToPoint as graphPosToZoomedPos,
   getNodesInside,
   getMarkerId,
   getBoundsofRects,
@@ -64,7 +64,6 @@ export { defaultEdgeTypes, defaultNodeTypes } from './utils/defaultNodesEdges'
 
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
 
-export { useZoomPanHelper } from './composables/useZoomPanHelper'
 export { useVueFlow } from './composables/useVueFlow'
 export { useHandle } from './composables/useHandle'
 export { useNode } from './composables/useNode'
