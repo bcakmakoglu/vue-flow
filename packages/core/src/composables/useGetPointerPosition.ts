@@ -1,6 +1,5 @@
 import { getEventPosition, pointToRendererPoint, snapPosition } from '@xyflow/system'
 import { useVueFlow } from './useVueFlow'
-import type { UseDragEvent } from './useDrag'
 
 /**
  * Composable that returns a function to get the pointer position
@@ -11,7 +10,7 @@ export function useGetPointerPosition() {
   const { viewport, snapGrid, snapToGrid, vueFlowRef } = useVueFlow()
 
   // returns the pointer position projected to the VF coordinate system
-  return (event: UseDragEvent | PointerEvent) => {
+  return (event: any) => {
     const containerBounds = vueFlowRef.value?.getBoundingClientRect() ?? { left: 0, top: 0 }
     const evt = 'sourceEvent' in event ? event.sourceEvent : event
 
