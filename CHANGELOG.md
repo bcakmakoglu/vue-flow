@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.48.1] - 2025-12-17
+
+[09cb136](09cb136ab7326da269f2e97f926880be0605cff6)...[87b2d2c](87b2d2c4e8b8e1e321a9cb0795987672b13de913)
+
+### Bug Fixes
+
+- Add missing `ts` script type to getting started example (#1971) ([1b15e24](1b15e24bb3d9e3dcc2f6b0f45be875098a71df18))
+- Use connecting handle to update connection (#1996) ([474e830](474e830d081f548777cf5518961fde5dc68a8039))
+
+### Reverts
+
+- Block pane ctx menu if panOnDrag includes [2] (right-click) (#2001) ([d98d3b5](d98d3b57c2a6721b1de66acbedac7cb5128712ae))
+
 ## [1.48.0] - 2025-11-21
 
 [ff69823](ff69823b9db45da9dd012852b8b7ec50bb45c6a9)...[09cb136](09cb136ab7326da269f2e97f926880be0605cff6)
