@@ -71,7 +71,7 @@
     "vue": "^3.3.0"
   },
   "dependencies": {
-    "@vueuse/core": "^10.5.0",
+    "@vueuse/core": "^14.1.0",
     "d3-drag": "^3.0.0",
     "d3-interpolate": "^3.0.1",
     "d3-selection": "^3.0.0",
