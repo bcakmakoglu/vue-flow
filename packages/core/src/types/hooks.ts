@@ -33,8 +33,8 @@ export interface EdgeUpdateEvent {
 }
 
 export interface FlowEvents {
-  nodesChange: NodeChange[]
-  edgesChange: EdgeChange[]
+  nodesChange: [NodeChange[]]
+  edgesChange: [EdgeChange[]]
   nodeDoubleClick: NodeMouseEvent
   nodeClick: NodeMouseEvent
   nodeMouseEnter: NodeMouseEvent
@@ -44,8 +44,8 @@ export interface FlowEvents {
   nodeDragStart: NodeDragEvent
   nodeDrag: NodeDragEvent
   nodeDragStop: NodeDragEvent
-  nodesInitialized: GraphNode[]
-  updateNodeInternals: string[]
+  nodesInitialized: [GraphNode[]]
+  updateNodeInternals: [string[]]
   miniMapNodeClick: NodeMouseEvent
   miniMapNodeDoubleClick: NodeMouseEvent
   miniMapNodeMouseEnter: NodeMouseEvent

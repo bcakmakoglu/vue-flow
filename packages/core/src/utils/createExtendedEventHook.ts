@@ -1,13 +1,17 @@
-import type { EventHook } from '@vueuse/core'
+import type { EventHook, EventHookOn, EventHookTrigger } from '@vueuse/core'
 import { tryOnScopeDispose } from '@vueuse/core'
+
+// Extract VueUse's actual callback type for T (includes tuple/void/any behavior)
+type HookCallback<T> = Parameters<EventHookOn<T>>[0]
+type HookArgs<T> = Parameters<HookCallback<T>>
 
 export interface EventHookExtended<T> extends EventHook<T> {
   /** true if any user listeners are registered (emitter ignored) */
   hasListeners: () => boolean
   /** current user listeners (read-only; do not mutate externally) */
-  listeners: ReadonlySet<(param: T) => void>
+  listeners: ReadonlySet<HookCallback<T>>
   /** wire a single external emitter (e.g., for `emit`) */
-  setEmitter: (fn: (param: T) => void) => void
+  setEmitter: (fn: HookCallback<T>) => void
   /** remove the external emitter */
   removeEmitter: () => void
   /** wire a function to detect if any emit listeners exist (e.g., for `$listeners` in Vue 2) */
@@ -16,23 +20,21 @@ export interface EventHookExtended<T> extends EventHook<T> {
   removeHasEmitListeners: () => void
 }
 
-type Handler<T = any> = (param: T) => any | Promise<any>
+function noop(..._args: any[]) {}
 
-const noop: Handler = () => {}
-
-export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => void): EventHookExtended<T> {
-  const listeners = new Set<Handler>()
-  let emitter: Handler = noop
+export function createExtendedEventHook<T = any>(defaultHandler?: HookCallback<T>): EventHookExtended<T> {
+  const listeners = new Set<HookCallback<T>>()
+  let emitter: HookCallback<T> = noop as HookCallback<T>
   let hasEmitListeners = () => false
 
   const hasListeners = () => listeners.size > 0 || hasEmitListeners()
 
-  const setEmitter = (fn: Handler) => {
+  const setEmitter = (fn: HookCallback<T>) => {
     emitter = fn
   }
 
   const removeEmitter = () => {
-    emitter = noop
+    emitter = noop as HookCallback<T>
   }
 
   const setHasEmitListeners = (fn: () => boolean) => {
@@ -43,11 +45,11 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
     hasEmitListeners = () => false
   }
 
-  const off = (fn: Handler) => {
+  const off = (fn: HookCallback<T>) => {
     listeners.delete(fn)
   }
 
-  const on = (fn: Handler) => {
+  const on: EventHookOn<T> = (fn) => {
     listeners.add(fn)
 
     const offFn = () => off(fn)
@@ -56,15 +58,12 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
     return { off: offFn }
   }
 
-  /**
-   * Trigger order:
-   * 1) If any user listeners OR an emitter exist -> call all of those (defaultHandler is skipped)
-   * 2) Else (no listeners and no emitter) -> call defaultHandler (if provided)
-   *
-   * Errors are isolated via allSettled so one failing handler doesn't break others.
-   */
-  const trigger = (param: T) => {
-    const queue: Handler[] = [emitter]
+  const clear = () => {
+    listeners.clear()
+  }
+
+  const trigger: EventHookTrigger<T> = async (...args: HookArgs<T>) => {
+    const queue: HookCallback<T>[] = [emitter]
 
     if (hasListeners()) {
       queue.push(...listeners)
@@ -72,13 +71,14 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
       queue.push(defaultHandler)
     }
 
-    return Promise.allSettled(queue.map((fn) => fn(param)))
+    return Promise.all(queue.map((fn) => fn(...args)))
   }
 
   return {
     on,
     off,
     trigger,
+    clear,
     hasListeners,
     listeners,
     setEmitter,

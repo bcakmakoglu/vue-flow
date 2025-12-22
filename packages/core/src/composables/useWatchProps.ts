@@ -29,20 +29,23 @@ export function useWatchProps(
         let immediateStore = !!(store.nodes.value.length || store.edges.value.length)
 
         // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.modelValue, () => models.modelValue?.value?.length], ([elements]) => {
-          if (elements && Array.isArray(elements)) {
-            pauseStore?.pause()
+        pauseModel = watchPausable(
+          [() => models.modelValue?.value, () => models.modelValue?.value?.length] as const,
+          ([elements]) => {
+            if (elements && Array.isArray(elements)) {
+              pauseStore?.pause()
 
-            store.setElements(elements)
+              store.setElements(elements)
 
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && elements.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && elements.length) {
+                immediateStore = true
+              } else {
+                pauseStore?.resume()
+              }
             }
-          }
-        })
+          },
+        )
 
         pauseStore = watchPausable(
           [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
@@ -75,7 +78,7 @@ export function useWatchProps(
         let immediateStore = !!store.nodes.value.length
 
         // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.nodes, () => models.nodes?.value?.length], ([nodes]) => {
+        pauseModel = watchPausable([() => models.nodes?.value, () => models.nodes?.value?.length] as const, ([nodes]) => {
           if (nodes && Array.isArray(nodes)) {
             pauseStore?.pause()
 
@@ -121,7 +124,7 @@ export function useWatchProps(
         let immediateStore = !!store.edges.value.length
 
         // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.edges, () => models.edges?.value?.length], ([edges]) => {
+        pauseModel = watchPausable([() => models.edges?.value, () => models.edges?.value?.length] as const, ([edges]) => {
           if (edges && Array.isArray(edges)) {
             pauseStore?.pause()
 
