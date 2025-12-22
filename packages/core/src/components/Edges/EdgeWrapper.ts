@@ -3,6 +3,7 @@ import type { Connection, EdgeComponent, HandleType, MouseTouchEvent } from '../
 import { ConnectionMode, Position } from '../../types'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { EdgeId, EdgeRef, Slots } from '../../context'
+import { pointToRendererPoint } from '../../utils'
 import {
   ARIA_EDGE_DESC_KEY,
   ErrorCode,
@@ -42,6 +43,8 @@ const EdgeWrapper = defineComponent({
       edgesUpdatable,
       edgesFocusable,
       hooks,
+      viewport,
+      connectionPosition,
     } = useVueFlow()
 
     const edge = computed(() => findEdge(props.id)!)
@@ -114,6 +117,7 @@ const EdgeWrapper = defineComponent({
       edgeUpdaterType,
       onEdgeUpdate,
       onEdgeUpdateEnd,
+      edgeId: props.id,
     })
 
     return () => {
@@ -165,8 +169,27 @@ const EdgeWrapper = defineComponent({
 
       const targetPosition = targetHandle?.position || Position.Top
 
-      const { x: sourceX, y: sourceY } = getHandlePosition(sourceNode, sourceHandle, sourcePosition)
-      const { x: targetX, y: targetY } = getHandlePosition(targetNode, targetHandle, targetPosition)
+      const { x: handleSourceX, y: handleSourceY } = getHandlePosition(sourceNode, sourceHandle, sourcePosition)
+      const { x: handleTargetX, y: handleTargetY } = getHandlePosition(targetNode, targetHandle, targetPosition)
+
+      let sourceX = handleSourceX
+      let sourceY = handleSourceY
+      let targetX = handleTargetX
+      let targetY = handleTargetY
+
+      // When updating this edge, use connection position for the appropriate end
+      if (updating.value && connectionPosition.value && !Number.isNaN(connectionPosition.value.x) && !Number.isNaN(connectionPosition.value.y)) {
+        const dynamicPos = pointToRendererPoint(connectionPosition.value,viewport.value)
+
+        // If updating the source(edgeUpdaterType == target), override source coordinates
+        if (edgeUpdaterType.value === 'target') {
+          sourceX = dynamicPos.x
+          sourceY = dynamicPos.y
+        } else {
+          targetX = dynamicPos.x
+          targetY = dynamicPos.y
+        }
+      }
 
       // todo: let's avoid writing these here (in v2 we want to remove all of these self-managed refs)
       edge.value.sourceX = sourceX
@@ -210,40 +233,38 @@ const EdgeWrapper = defineComponent({
           'onKeyDown': isFocusable.value ? onKeyDown : undefined,
         },
         [
-          updating.value
-            ? null
-            : h(edgeCmp.value === false ? getEdgeTypes.value.default : (edgeCmp.value as any), {
-                id: props.id,
-                sourceNode,
-                targetNode,
-                source: edge.value.source,
-                target: edge.value.target,
-                type: edge.value.type,
-                updatable: isUpdatable.value,
-                selected: edge.value.selected,
-                animated: edge.value.animated,
-                label: edge.value.label,
-                labelStyle: edge.value.labelStyle,
-                labelShowBg: edge.value.labelShowBg,
-                labelBgStyle: edge.value.labelBgStyle,
-                labelBgPadding: edge.value.labelBgPadding,
-                labelBgBorderRadius: edge.value.labelBgBorderRadius,
-                data: edge.value.data,
-                events: { ...edge.value.events, ...on },
-                style: edgeStyle.value,
-                markerStart: `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')`,
-                markerEnd: `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')`,
-                sourcePosition,
-                targetPosition,
-                sourceX,
-                sourceY,
-                targetX,
-                targetY,
-                sourceHandleId: edge.value.sourceHandle,
-                targetHandleId: edge.value.targetHandle,
-                interactionWidth: edge.value.interactionWidth,
-                ...pathOptions,
-              }),
+          h(edgeCmp.value === false ? getEdgeTypes.value.default : (edgeCmp.value as any), {
+              id: props.id,
+              sourceNode,
+              targetNode,
+              source: edge.value.source,
+              target: edge.value.target,
+              type: edge.value.type,
+              updatable: isUpdatable.value,
+              selected: edge.value.selected,
+              animated: edge.value.animated,
+              label: edge.value.label,
+              labelStyle: edge.value.labelStyle,
+              labelShowBg: edge.value.labelShowBg,
+              labelBgStyle: edge.value.labelBgStyle,
+              labelBgPadding: edge.value.labelBgPadding,
+              labelBgBorderRadius: edge.value.labelBgBorderRadius,
+              data: edge.value.data,
+              events: { ...edge.value.events, ...on },
+              style: edgeStyle.value,
+              markerStart: `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')`,
+              markerEnd: `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')`,
+              sourcePosition,
+              targetPosition,
+              sourceX,
+              sourceY,
+              targetX,
+              targetY,
+              sourceHandleId: edge.value.sourceHandle,
+              targetHandleId: edge.value.targetHandle,
+              interactionWidth: edge.value.interactionWidth,
+              ...pathOptions,
+            }),
           [
             isUpdatable.value === 'source' || isUpdatable.value === true
               ? [

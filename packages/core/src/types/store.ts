@@ -102,6 +102,7 @@ export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
   connectionRadius: number
   connectionStatus: ConnectionStatus | null
   isValidConnection: ValidConnectionFunc | null
+  updateExistingEdge: boolean | null
 
   connectOnClick: boolean
   edgeUpdaterRadius: number
@@ -302,7 +303,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (startHandle: ConnectingHandle, position?: XYPosition, isClick?: boolean) => void
+  startConnection: (startHandle: ConnectingHandle, position?: XYPosition, isClick?: boolean, updateExistingEdge?: boolean | null) => void
   /** update connection position */
   updateConnection: (position: XYPosition, result?: ConnectingHandle | null, status?: ConnectionStatus | null) => void
   /** end (or cancel) a connection */

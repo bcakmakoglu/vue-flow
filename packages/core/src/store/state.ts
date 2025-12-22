@@ -74,6 +74,7 @@ export function useState(): State {
     connectOnClick: true,
     connectionStatus: null,
     isValidConnection: null,
+    updateExistingEdge: null,
 
     snapGrid: [15, 15],
     snapToGrid: false,

@@ -29,6 +29,8 @@ export interface UseHandleProps {
   edgeUpdaterType?: MaybeRefOrGetter<HandleType>
   onEdgeUpdate?: (event: MouseTouchEvent, connection: Connection) => void
   onEdgeUpdateEnd?: (event: MouseTouchEvent) => void
+  edgeTypeOnCreate?: string | MaybeRefOrGetter<string | null>
+  edgeId: string
 }
 
 function alwaysValid() {
@@ -50,6 +52,7 @@ export function useHandle({
   edgeUpdaterType,
   onEdgeUpdate,
   onEdgeUpdateEnd,
+  edgeId,
 }: UseHandleProps) {
   const {
     id: flowId,
@@ -72,6 +75,7 @@ export function useHandle({
     nodes,
     isValidConnection: isValidConnectionProp,
     nodeLookup,
+    getEdgeTypes,
   } = useVueFlow()
 
   let connection: Connection | null = null
@@ -169,6 +173,8 @@ export function useHandle({
           x: x - containerBounds.left,
           y: y - containerBounds.top,
         },
+        false,
+        !!edgeId
       )
 
       emits.connectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId), handleType })
@@ -332,7 +338,7 @@ export function useHandle({
 
     if (!connectionClickStartHandle.value) {
       emits.clickConnectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId) })
-
+      
       startConnection(
         {
           nodeId: toValue(nodeId),
@@ -343,6 +349,7 @@ export function useHandle({
         },
         undefined,
         true,
+        !!edgeId
       )
 
       return

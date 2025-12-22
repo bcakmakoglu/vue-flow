@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine'
+import ConnectionEdge from '../../components/ConnectionEdge'
 import { useVueFlow } from '../../composables'
 import { getEdgeZIndex } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
@@ -27,5 +28,6 @@ export default {
     <EdgeWrapper :id="edge.id" />
   </svg>
 
+  <ConnectionEdge />
   <ConnectionLine />
 </template>
