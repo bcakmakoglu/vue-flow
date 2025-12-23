@@ -11,16 +11,18 @@ const ConnectionEdge = defineComponent({
   compatConfig: { MODE: 3 },
   setup() {
     const {
-      id: vueFlowId,
+      id:VueFlowId,
       connectionMode,
       connectionStartHandle,
       connectionEndHandle,
       connectionPosition,
+      connectionLineOptions,
       connectionStatus,
-      updateExistingEdge,
       viewport,
       findNode,
+      connectionEdgeType,
       getEdgeTypes,
+      connectionExistingEdge
     } = useVueFlow()
 
     const slots = inject(Slots)
@@ -36,14 +38,19 @@ const ConnectionEdge = defineComponent({
         y: (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom,
       }
     })
-    
 
+    const markerStart = computed(() =>
+      connectionLineOptions.value.markerStart ? `url(#${getMarkerId(connectionLineOptions.value.markerStart, VueFlowId)})` : '',
+    )
 
+    const markerEnd = computed(() =>
+      connectionLineOptions.value.markerEnd ? `url(#${getMarkerId(connectionLineOptions.value.markerEnd, VueFlowId)})` : '',
+    )
 
     return () => {
-
-      if(updateExistingEdge.value){
-        return null;
+      // Hide ConnectionEdge when updating edge type is not kept
+      if(connectionExistingEdge.value) {
+        return null
       }
 
       if (!fromNode.value || !connectionStartHandle.value) {
@@ -91,7 +98,7 @@ const ConnectionEdge = defineComponent({
       const toPosition = connectionEndHandle.value?.position ?? (fromPosition ? oppositePosition[fromPosition] : undefined)
 
       // Get the edge component for the specified type
-      const edgeTypeName = 'default'
+      const edgeTypeName = toValue(connectionEdgeType) || 'default'
       const slot = slots?.[`edge-${edgeTypeName}`]
       
       let edgeComponent: EdgeComponent | false = false
@@ -153,9 +160,12 @@ const ConnectionEdge = defineComponent({
             sourceY: fromY,
             targetX: toXY.value.x,
             targetY: toXY.value.y,
-            
             sourceHandle: fromHandle,
             targetHandle: toHandle,
+            markerStart: markerStart.value,
+            markerEnd: markerEnd.value,
+            style: { pointerEvents: 'none' },
+            data: {},
           }),
         ),
       )

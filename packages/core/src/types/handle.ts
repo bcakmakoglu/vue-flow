@@ -3,7 +3,7 @@ import type { Connection, ConnectionMode } from './connection'
 import type { GraphEdge } from './edge'
 import type { GraphNode } from './node'
 import type { NodeLookup } from './store'
-
+import type { MaybeRefOrGetter } from 'vue'
 export type HandleType = 'source' | 'target'
 
 export interface HandleElement extends XYPosition, Dimensions {
@@ -52,6 +52,8 @@ export interface HandleProps {
   position?: Position
   /** A valid connection func {@link ValidConnectionFunc} */
   isValidConnection?: ValidConnectionFunc
+  /** Edge type to create when connecting from this handle */
+  connectionEdgeType?: string | MaybeRefOrGetter<string | null> 
   /** Enable/disable connecting to handle altogether */
   connectable?: HandleConnectable
   /** Can this handle be used to *start* a connection */

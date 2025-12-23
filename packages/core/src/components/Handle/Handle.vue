@@ -11,6 +11,7 @@ const {
   connectableStart = true,
   connectableEnd = true,
   id: handleId = null,
+  connectionEdgeType = null,
   ...props
 } = defineProps<HandleProps>()
 
@@ -59,6 +60,7 @@ const { handlePointerDown, handleClick } = useHandle({
   handleId,
   isValidConnection,
   type,
+  connectionEdgeType
 })
 
 const isConnectable = computed(() => {

@@ -6,7 +6,8 @@ import { useVueFlow } from '../../composables'
 import { getEdgeZIndex } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
-const { findNode, getEdges, elevateEdgesOnSelect } = useVueFlow()
+const { findNode, getEdges, elevateEdgesOnSelect, keepEdgeTypeDuringUpdate } = useVueFlow()
+console.log('keepEdgeTypeDuringUpdate in EdgeRenderer:', keepEdgeTypeDuringUpdate)
 </script>
 
 <script lang="ts">
@@ -28,6 +29,6 @@ export default {
     <EdgeWrapper :id="edge.id" />
   </svg>
 
-  <ConnectionEdge />
-  <ConnectionLine />
+  <ConnectionEdge v-if="keepEdgeTypeDuringUpdate" />
+  <ConnectionLine v-else />
 </template>

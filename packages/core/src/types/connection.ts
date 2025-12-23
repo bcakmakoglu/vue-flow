@@ -31,6 +31,8 @@ export interface Connection {
   sourceHandle?: string | null
   /** Target handle id */
   targetHandle?: string | null
+  /** Edge type for the connection (used when creating edges from connections) */
+  type?: string | null
 }
 
 /**

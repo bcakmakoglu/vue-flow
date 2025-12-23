@@ -29,8 +29,8 @@ export interface UseHandleProps {
   edgeUpdaterType?: MaybeRefOrGetter<HandleType>
   onEdgeUpdate?: (event: MouseTouchEvent, connection: Connection) => void
   onEdgeUpdateEnd?: (event: MouseTouchEvent) => void
-  edgeTypeOnCreate?: string | MaybeRefOrGetter<string | null>
-  edgeId: string
+  edgeId?: string | null
+  connectionEdgeType?: string | MaybeRefOrGetter<string | null> | null
 }
 
 function alwaysValid() {
@@ -53,6 +53,7 @@ export function useHandle({
   onEdgeUpdate,
   onEdgeUpdateEnd,
   edgeId,
+  connectionEdgeType
 }: UseHandleProps) {
   const {
     id: flowId,
@@ -174,7 +175,8 @@ export function useHandle({
           y: y - containerBounds.top,
         },
         false,
-        !!edgeId
+        !!edgeId,
+        toValue(connectionEdgeType)
       )
 
       emits.connectStart({ event, nodeId: toValue(nodeId), handleId: toValue(handleId), handleType })
@@ -291,10 +293,14 @@ export function useHandle({
         }
 
         if ((closestHandle || handleDomNode) && connection && isValid) {
+          
+          // Add connectionEdgeType to connection if specified
+          const connectionWithType = toValue(connectionEdgeType) ? { ...connection, type: toValue(connectionEdgeType) } : connection
+
           if (!onEdgeUpdate) {
-            emits.connect(connection)
+            emits.connect(connectionWithType)
           } else {
-            onEdgeUpdate(event, connection)
+            onEdgeUpdate(event, connectionWithType)
           }
         }
 
@@ -349,7 +355,8 @@ export function useHandle({
         },
         undefined,
         true,
-        !!edgeId
+        !!edgeId,
+        toValue(connectionEdgeType)
       )
 
       return
@@ -398,7 +405,9 @@ export function useHandle({
     const isOwnHandle = result.connection?.source === result.connection?.target
 
     if (result.isValid && result.connection && !isOwnHandle) {
-      emits.connect(result.connection)
+      // Add connectionEdgeType to connection if specified
+      const connectionWithType = toValue(connectionEdgeType)? { ...result.connection, type: toValue(connectionEdgeType) }: result.connection
+      emits.connect(connectionWithType)
     }
 
     emits.clickConnectEnd(event)

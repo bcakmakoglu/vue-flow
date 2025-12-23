@@ -46,6 +46,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   multiSelectionKeyCode: undefined,
   panActivationKeyCode: undefined,
   zoomActivationKeyCode: undefined,
+  keepEdgeTypeDuringUpdate: undefined,
 })
 
 const emit = defineEmits<FlowEmits>()

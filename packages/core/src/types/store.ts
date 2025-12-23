@@ -1,4 +1,4 @@
-import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
+import type { CSSProperties, ComputedRef, MaybeRefOrGetter, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { ViewportHelper } from '../composables'
 import type {
@@ -102,7 +102,8 @@ export interface State extends Omit<FlowProps, 'id' | 'modelValue'> {
   connectionRadius: number
   connectionStatus: ConnectionStatus | null
   isValidConnection: ValidConnectionFunc | null
-  updateExistingEdge: boolean | null
+  connectionExistingEdge: boolean | null
+  connectionEdgeType: string | null
 
   connectOnClick: boolean
   edgeUpdaterRadius: number
@@ -303,7 +304,7 @@ export interface Actions extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
   updateNodeInternals: UpdateNodeInternals
   /** start a connection */
-  startConnection: (startHandle: ConnectingHandle, position?: XYPosition, isClick?: boolean, updateExistingEdge?: boolean | null) => void
+  startConnection: (startHandle: ConnectingHandle, position?: XYPosition, isClick?: boolean, connectionExistingEdge?: boolean | null, connectionEdgeType?: string | null) => void
   /** update connection position */
   updateConnection: (position: XYPosition, result?: ConnectingHandle | null, status?: ConnectionStatus | null) => void
   /** end (or cancel) a connection */

@@ -595,13 +595,14 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     node.data = options.replace ? nextData : { ...node.data, ...nextData }
   }
 
-  const startConnection: Actions['startConnection'] = (startHandle, position, isClick = false, updateExistingEdge = false) => {
+  const startConnection: Actions['startConnection'] = (startHandle, position, isClick = false, connectionExistingEdge = false, connectionEdgeType = null) => {
     if (isClick) {
       state.connectionClickStartHandle = startHandle
     } else {
       state.connectionStartHandle = startHandle
     }
-    state.updateExistingEdge = updateExistingEdge
+    state.connectionExistingEdge = connectionExistingEdge
+    state.connectionEdgeType = connectionEdgeType
 
     state.connectionEndHandle = null
     state.connectionStatus = null
@@ -622,7 +623,7 @@ export function useActions(state: State, nodeLookup: ComputedRef<NodeLookup>, ed
     state.connectionPosition = { x: Number.NaN, y: Number.NaN }
     state.connectionEndHandle = null
     state.connectionStatus = null
-    state.edgeTypeOnCreate = null
+    state.connectionEdgeType = null
 
     if (isClick) {
       state.connectionClickStartHandle = null

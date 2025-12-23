@@ -45,6 +45,7 @@ const EdgeWrapper = defineComponent({
       hooks,
       viewport,
       connectionPosition,
+      keepEdgeTypeDuringUpdate
     } = useVueFlow()
 
     const edge = computed(() => findEdge(props.id)!)
@@ -118,6 +119,7 @@ const EdgeWrapper = defineComponent({
       onEdgeUpdate,
       onEdgeUpdateEnd,
       edgeId: props.id,
+      connectionEdgeType: toRef(() => edge.value.type) || null,
     })
 
     return () => {
@@ -178,7 +180,7 @@ const EdgeWrapper = defineComponent({
       let targetY = handleTargetY
 
       // When updating this edge, use connection position for the appropriate end
-      if (updating.value && connectionPosition.value && !Number.isNaN(connectionPosition.value.x) && !Number.isNaN(connectionPosition.value.y)) {
+      if (keepEdgeTypeDuringUpdate?.value && updating.value && connectionPosition.value && !Number.isNaN(connectionPosition.value.x) && !Number.isNaN(connectionPosition.value.y)) {
         const dynamicPos = pointToRendererPoint(connectionPosition.value,viewport.value)
 
         // If updating the source(edgeUpdaterType == target), override source coordinates
@@ -233,6 +235,8 @@ const EdgeWrapper = defineComponent({
           'onKeyDown': isFocusable.value ? onKeyDown : undefined,
         },
         [
+          !keepEdgeTypeDuringUpdate?.value && updating.value
+          ? null :
           h(edgeCmp.value === false ? getEdgeTypes.value.default : (edgeCmp.value as any), {
               id: props.id,
               sourceNode,
@@ -266,7 +270,7 @@ const EdgeWrapper = defineComponent({
               ...pathOptions,
             }),
           [
-            isUpdatable.value === 'source' || isUpdatable.value === true
+            (!updating.value && isUpdatable.value === 'source' || isUpdatable.value === true)
               ? [
                   h(
                     'g',
@@ -286,7 +290,7 @@ const EdgeWrapper = defineComponent({
                   ),
                 ]
               : null,
-            isUpdatable.value === 'target' || isUpdatable.value === true
+            (!updating.value && isUpdatable.value === 'target' || isUpdatable.value === true)
               ? [
                   h(
                     'g',
