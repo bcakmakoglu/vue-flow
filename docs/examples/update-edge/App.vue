@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 import { Background } from '@vue-flow/background'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
-
+import CustomEdge from './CustomEdge.vue'
+import CustomNode from './CustomNode.vue'
 const { updateEdge, addEdges } = useVueFlow()
 
 const nodes = ref([
@@ -14,6 +15,7 @@ const nodes = ref([
   },
   {
     id: '2',
+    type: 'custom',
     data: { label: 'Node <strong>B</strong>' },
     position: { x: 100, y: 100 },
   },
@@ -49,11 +51,20 @@ function onConnect(params) {
     :nodes="nodes"
     :edges="edges"
     fit-view-on-init
+    :nodes-connectable="true"
+    :keepEdgeTypeDuringUpdate="true"
     @edge-update="onEdgeUpdate"
     @connect="onConnect"
     @edge-update-start="onEdgeUpdateStart"
     @edge-update-end="onEdgeUpdateEnd"
   >
     <Background />
+
+    <template #edge-custom="customEdgeProps">
+      <CustomEdge v-bind="customEdgeProps" />
+    </template>
+    <template #node-custom="customNodeProps">
+      <CustomNode v-bind="customNodeProps" />
+    </template>
   </VueFlow>
 </template>

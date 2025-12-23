@@ -48,7 +48,6 @@ function onEdgeUpdateEnd({ edge }: FlowEvents['edgeUpdateEnd']) {
 }
 
 function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
-  console.log('updating edge', edge, connection)
   return updateEdge(edge, connection)
 }
 </script>

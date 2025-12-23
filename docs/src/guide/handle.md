@@ -115,6 +115,41 @@ For example, you can set the `top` and `bottom` properties to position the handl
 <Handle id="source-b" type="source" :position="Position.Right" style="bottom: 10px; top: auto;" />
 ```
 
+## Specifying Edge Type for Connections
+
+You can specify which edge type should be used when creating connections from a handle by setting the `connectionEdgeType` prop.
+
+When a connection is created from a handle with `connectionEdgeType` specified, the resulting connection object will include a `type` field. 
+This allows `addEdges()` to automatically create edges with the specified type.
+
+```vue
+<script setup>
+import { Handle, Position } from '@vue-flow/core'
+</script>
+
+<template>
+  <!-- Connections from this handle will create 'smoothstep' edges -->
+  <Handle 
+    type="source" 
+    connectionEdgeType="custom"
+    :position="Position.Right" 
+  />
+</template>
+```
+
+```vue
+<script setup>
+import { ref } from 'vue'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
+
+const { addEdges } = useVueFlow()
+
+// When onConnect is called, the connection will include type: 'custom'
+// addEdges will create an edge with this type
+onConnect(addEdges)
+</script>
+```
+
 ## Hidden Handles
 
 In some cases you might not want to display a handle at all. You can hide a handle by setting `opacity: 0` as the styles for that handle.
