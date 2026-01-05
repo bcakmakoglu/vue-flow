@@ -45,6 +45,10 @@ const positionClassNames = computed(() => controlPosition.value.split('-'))
 
 const controlStyle = toRef(() => (props.color ? { [StylingProperty[props.variant]]: props.color } : {}))
 
+const isHandleControl = toRef(() => props.variant === ResizeControlVariant.Handle)
+
+const scale = computed(() => (isHandleControl.value && props.autoScale ? `${Math.max(1 / viewport.value.zoom, 1)}` : undefined))
+
 watchEffect((onCleanup) => {
   if (!resizeControlRef.value || !props.nodeId) {
     return
@@ -243,7 +247,7 @@ export default {
     :class="[...positionClassNames, variant, noDragClassName]"
     :style="{
       ...controlStyle,
-      scale: variant === ResizeControlVariant.Handle ? `${Math.max(1 / viewport.zoom, 1)}` : undefined,
+      scale,
     }"
   >
     <slot />
