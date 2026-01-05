@@ -1,5 +1,11 @@
 # @vue-flow/node-resizer
 
+## 1.5.1
+
+### Patch Changes
+
+- [#2012](https://github.com/bcakmakoglu/vue-flow/pull/2012) [`de9c276`](https://github.com/bcakmakoglu/vue-flow/commit/de9c2768e8f65c6cd913023f13044ba93aceda5b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Use auto-scale prop to determine whether a resize handle should be scaled.
+
 ## 1.5.0
 
 ### Minor Changes
