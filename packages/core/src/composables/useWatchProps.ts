@@ -29,20 +29,24 @@ export function useWatchProps<NodeType extends Node = Node>(
         let immediateStore = !!store.nodes.value.length
 
         // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.nodes, () => models.nodes?.value?.length], ([nodes]) => {
-          if (nodes && Array.isArray(nodes)) {
-            pauseStore?.pause()
+        pauseModel = watchPausable(
+          [models.nodes, () => models.nodes?.value?.length],
+          ([nodes]) => {
+            if (nodes && Array.isArray(nodes)) {
+              pauseStore?.pause()
 
-            store.setNodes(nodes)
+              store.setNodes(nodes)
 
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && nodes.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && nodes.length) {
+                immediateStore = true
+              } else {
+                pauseStore?.resume()
+              }
             }
-          }
-        })
+          },
+          { immediate: true },
+        )
 
         pauseStore = watchPausable(
           [store.nodes, () => store.nodes.value.length],
@@ -75,20 +79,24 @@ export function useWatchProps<NodeType extends Node = Node>(
         let immediateStore = !!store.edges.value.length
 
         // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.edges, () => models.edges?.value?.length], ([edges]) => {
-          if (edges && Array.isArray(edges)) {
-            pauseStore?.pause()
+        pauseModel = watchPausable(
+          [models.edges, () => models.edges?.value?.length],
+          ([edges]) => {
+            if (edges && Array.isArray(edges)) {
+              pauseStore?.pause()
 
-            store.setEdges(edges)
+              store.setEdges(edges)
 
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && edges.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && edges.length) {
+                immediateStore = true
+              } else {
+                pauseStore?.resume()
+              }
             }
-          }
-        })
+          },
+          { immediate: true },
+        )
 
         pauseStore = watchPausable(
           [store.edges, () => store.edges.value.length],
