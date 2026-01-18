@@ -59,8 +59,6 @@ export interface FlowEvents<NodeType extends Node = Node> {
     event?: MouseEvent | TouchEvent
   } & OnConnectStartParams
   clickConnectEnd: MouseEvent | TouchEvent | undefined
-  /** @deprecated use `init` instead */
-  paneReady: VueFlowStore
   init: VueFlowStore
   move: { event: MouseTouchEvent | null; viewport: Viewport }
   moveStart: { event: MouseTouchEvent | null; viewport: Viewport }

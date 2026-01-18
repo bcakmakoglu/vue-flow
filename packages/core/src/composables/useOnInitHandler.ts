@@ -15,7 +15,6 @@ export function useOnInitHandler() {
       if (isInitialized) {
         setTimeout(() => {
           vfInstance.emits.init(vfInstance)
-          vfInstance.emits.paneReady(vfInstance)
         }, 1)
       }
     },

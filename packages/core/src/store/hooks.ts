@@ -28,7 +28,6 @@ export function createHooks<NodeType extends Node = Node>(): FlowHooks<NodeType>
     connectEnd: createExtendedEventHook(),
     clickConnectStart: createExtendedEventHook(),
     clickConnectEnd: createExtendedEventHook(),
-    paneReady: createExtendedEventHook(),
     init: createExtendedEventHook(),
     move: createExtendedEventHook(),
     moveStart: createExtendedEventHook(),
