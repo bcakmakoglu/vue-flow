@@ -1,18 +1,13 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import type { NodeProps } from '@vue-flow/core'
 import { Handle, Position } from '@vue-flow/core'
+import type { ColorSelectorNodeProps } from './types'
 
-interface Data {
-  color: string
-  onChange: (event: InputEvent) => void
-}
+defineProps<ColorSelectorNodeProps>()
 
-interface ColorSelectorNodeProps extends Pick<NodeProps<Data, {}, 'selectorNode'>, 'data'> {
-  data: Data
-}
-
-const props = defineProps<ColorSelectorNodeProps>()
+const emits = defineEmits<{
+  change: [color: string]
+}>()
 
 const targetHandleStyle: CSSProperties = { background: '#555' }
 const sourceHandleStyleA: CSSProperties = { ...targetHandleStyle, top: '10px' }
@@ -31,11 +26,12 @@ export default {
       <circle cx="8" cy="8" r="7" fill="hotpink" />
     </svg>
   </Handle>
+
   <div>
     Custom Color Picker Node: <strong>{{ data.color }}</strong>
   </div>
 
-  <input class="nodrag" type="color" :value="data.color" @input="props.data.onChange" />
+  <input class="nodrag" type="color" :value="data.color" @input="emits('change', ($event.target as HTMLInputElement).value)" />
   <Handle id="a" type="source" :position="Position.Right" :style="sourceHandleStyleA" />
   <Handle id="b" type="source" :position="Position.Right" :style="sourceHandleStyleB" />
 </template>

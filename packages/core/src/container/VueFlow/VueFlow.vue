@@ -85,11 +85,11 @@ export default {
   <div :ref="vfInstance.vueFlowRef" class="vue-flow">
     <ZoomPane>
       <!-- This slot is affected by zooming & panning -->
-      <slot name="zoom-pane" />
+      <slot v-bind="{} as any" name="zoom-pane" />
     </ZoomPane>
 
     <!-- This slot is _not_ affected by zooming & panning -->
-    <slot />
+    <slot v-bind="{} as any" />
 
     <A11yDescriptions />
   </div>
