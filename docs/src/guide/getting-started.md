@@ -436,7 +436,7 @@ const props = defineProps<EdgeProps>()
 const path = computed(() => getBezierPath(props))
 </script>
 
-<script>
+<script lang="ts">
 export default {
   inheritAttrs: false,
 }

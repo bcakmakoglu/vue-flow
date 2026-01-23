@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { Edge, Node } from '@vue-flow/core'
-import { Background, MiniMap, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+
+import { Background } from '@vue-flow/background'
+import { Controls } from '@vue-flow/controls'
+import { MiniMap } from '@vue-flow/minimap'
 
 const nodes = ref<Node[]>([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
@@ -14,7 +18,10 @@ const edges = ref<Edge[]>([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 
-const { onConnect, addEdges, setViewport, toObject } = useVueFlow()
+const { onConnect, addEdges, setViewport, toObject } = useVueFlow({
+  minZoom: 0.2,
+  maxZoom: 4,
+})
 
 onConnect(addEdges)
 
