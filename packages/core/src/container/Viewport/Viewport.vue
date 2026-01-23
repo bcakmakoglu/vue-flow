@@ -61,9 +61,7 @@ let prevTransform: ViewportTransform = {
 }
 
 const panKeyPressed = useKeyPress(panActivationKeyCode)
-
 const selectionKeyPressed = useKeyPress(selectionKeyCode)
-
 const zoomKeyPressed = useKeyPress(zoomActivationKeyCode)
 
 const shouldPanOnDrag = toRef(
@@ -74,7 +72,11 @@ const shouldPanOnDrag = toRef(
 
 const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
 
-const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true))
+const shouldSelectOnDrag = toRef(() => selectionKeyCode.value === true && shouldPanOnDrag.value !== true)
+
+const isSelecting = toRef(
+  () => (selectionKeyPressed.value && selectionKeyCode.value !== true) || userSelectionActive.value || shouldSelectOnDrag.value,
+)
 
 const connectionInProgress = toRef(() => connectionStartHandle.value !== null)
 
@@ -229,7 +231,7 @@ onMounted(() => {
     }
 
     // if selection key code is true and panOnDrag tries to use left mouse button we prevent it
-    if (selectionKeyCode.value === true && Array.isArray(panOnDrag.value) && panOnDrag.value.includes(0) && eventButton === 0) {
+    if (shouldSelectOnDrag.value && Array.isArray(panOnDrag.value) && panOnDrag.value.includes(0) && eventButton === 0) {
       return false
     }
 
