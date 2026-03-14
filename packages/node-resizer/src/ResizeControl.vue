@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { NodeChange, NodeDimensionChange, NodePositionChange } from '@vue-flow/core'
-import { clamp, useGetPointerPosition, useVueFlow } from '@vue-flow/core'
-import { select } from 'd3-selection'
-import { drag } from 'd3-drag'
+import { useVueFlow } from '@vue-flow/core'
+import { XYResizer } from '@xyflow/system'
+import type { XYResizerChange, XYResizerChildChange } from '@xyflow/system'
 import { computed, ref, toRef, watchEffect } from 'vue'
-import type { NodeResizerEmits, ResizeControlProps, ResizeDragEvent } from './types'
+import type { NodeResizerEmits, ResizeControlProps } from './types'
 import { ResizeControlVariant } from './types'
-import { DefaultPositions, StylingProperty, getDirection } from './utils'
+import { DefaultPositions, StylingProperty } from './utils'
 
 const props = withDefaults(defineProps<ResizeControlProps>(), {
   variant: 'handle' as ResizeControlVariant,
@@ -20,24 +20,9 @@ const props = withDefaults(defineProps<ResizeControlProps>(), {
 
 const emits = defineEmits<NodeResizerEmits>()
 
-const initPrevValues = { width: 0, height: 0, x: 0, y: 0 }
-
-const initStartValues = {
-  ...initPrevValues,
-  pointerX: 0,
-  pointerY: 0,
-  aspectRatio: 1,
-}
-
-const { findNode, emits: triggerEmits, viewport, noDragClassName } = useVueFlow()
-
-const getPointerPosition = useGetPointerPosition()
+const { emits: triggerEmits, viewport, nodeLookup, snapGrid, snapToGrid, vueFlowRef, noDragClassName } = useVueFlow()
 
 const resizeControlRef = ref<HTMLDivElement>()
-
-let startValues: typeof initStartValues = initStartValues
-
-let prevValues: typeof initPrevValues = initPrevValues
 
 const controlPosition = toRef(() => props.position ?? DefaultPositions[props.variant])
 
@@ -50,181 +35,88 @@ watchEffect((onCleanup) => {
     return
   }
 
-  const selection = select(resizeControlRef.value)
+  const resizerInstance = XYResizer({
+    domNode: resizeControlRef.value,
+    nodeId: props.nodeId,
+    getStoreItems: () => ({
+      nodeLookup: nodeLookup.value,
+      transform: [viewport.value.x, viewport.value.y, viewport.value.zoom] as [number, number, number],
+      snapGrid: snapGrid.value,
+      snapToGrid: snapToGrid.value,
+      nodeOrigin: [0, 0],
+      paneDomNode: vueFlowRef.value,
+    }),
+    onChange: (changes: XYResizerChange, childChanges: XYResizerChildChange[]) => {
+      const nodeChanges: NodeChange[] = []
 
-  const enableX = controlPosition.value.includes('right') || controlPosition.value.includes('left')
-  const enableY = controlPosition.value.includes('bottom') || controlPosition.value.includes('top')
-  const invertX = controlPosition.value.includes('left')
-  const invertY = controlPosition.value.includes('top')
-
-  const dragHandler = drag<HTMLDivElement, unknown>()
-    .on('start', (event: ResizeDragEvent) => {
-      const node = findNode(props.nodeId)
-      const { xSnapped, ySnapped } = getPointerPosition(event)
-
-      prevValues = {
-        width: node?.dimensions.width ?? 0,
-        height: node?.dimensions.height ?? 0,
-        x: node?.position.x ?? 0,
-        y: node?.position.y ?? 0,
+      if (typeof changes.x !== 'undefined' || typeof changes.y !== 'undefined') {
+        const node = nodeLookup.value.get(props.nodeId!)
+        nodeChanges.push({
+          id: props.nodeId!,
+          type: 'position',
+          from: node?.position ?? { x: 0, y: 0 },
+          position: {
+            x: changes.x ?? node?.position.x ?? 0,
+            y: changes.y ?? node?.position.y ?? 0,
+          },
+        } as NodePositionChange)
       }
 
-      startValues = {
-        ...prevValues,
-        pointerX: xSnapped,
-        pointerY: ySnapped,
-        aspectRatio: prevValues.width / prevValues.height,
+      if (typeof changes.width !== 'undefined' || typeof changes.height !== 'undefined') {
+        nodeChanges.push({
+          id: props.nodeId!,
+          type: 'dimensions',
+          updateStyle: true,
+          resizing: true,
+          dimensions: {
+            width: changes.width ?? 0,
+            height: changes.height ?? 0,
+          },
+        } as NodeDimensionChange)
       }
 
-      emits('resizeStart', { event, params: prevValues })
-    })
-    .on('drag', (event: ResizeDragEvent) => {
-      const { xSnapped, ySnapped } = getPointerPosition(event)
-      const node = findNode(props.nodeId)
-
-      if (node) {
-        const changes: NodeChange[] = []
-        const {
-          pointerX: startX,
-          pointerY: startY,
-          width: startWidth,
-          height: startHeight,
-          x: startNodeX,
-          y: startNodeY,
-          aspectRatio: startAspectRatio,
-        } = startValues
-
-        const { x: prevX, y: prevY, width: prevWidth, height: prevHeight } = prevValues
-
-        const distX = Math.floor(enableX ? xSnapped - startX : 0)
-        const distY = Math.floor(enableY ? ySnapped - startY : 0)
-
-        let width = clamp(startWidth + (invertX ? -distX : distX), props.minWidth, props.maxWidth)
-        let height = clamp(startHeight + (invertY ? -distY : distY), props.minHeight, props.maxHeight)
-
-        if (props.keepAspectRatio) {
-          const nextAspectRatio = width / height
-          let aspectRatio = startAspectRatio
-
-          if (typeof props.keepAspectRatio === 'number' && nextAspectRatio !== props.keepAspectRatio) {
-            aspectRatio = props.keepAspectRatio
-          }
-
-          const isDiagonal = enableX && enableY
-          const isHorizontal = enableX && !enableY
-          const isVertical = enableY && !enableX
-
-          width = (nextAspectRatio <= aspectRatio && isDiagonal) || isVertical ? height * aspectRatio : width
-          height = (nextAspectRatio > aspectRatio && isDiagonal) || isHorizontal ? width / aspectRatio : height
-
-          if (width >= props.maxWidth) {
-            width = props.maxWidth
-            height = props.maxWidth / aspectRatio
-          } else if (width <= props.minWidth) {
-            width = props.minWidth
-            height = props.minWidth / aspectRatio
-          }
-
-          if (height >= props.maxHeight) {
-            height = props.maxHeight
-            width = props.maxHeight * aspectRatio
-          } else if (height <= props.minHeight) {
-            height = props.minHeight
-            width = props.minHeight * aspectRatio
-          }
-        }
-
-        const isWidthChange = width !== prevWidth
-        const isHeightChange = height !== prevHeight
-
-        if (invertX || invertY) {
-          const x = invertX ? startNodeX - (width - startWidth) : startNodeX
-          const y = invertY ? startNodeY - (height - startHeight) : startNodeY
-
-          // only transform the node if the width or height changes
-          const isXPosChange = x !== prevX && isWidthChange
-          const isYPosChange = y !== prevY && isHeightChange
-
-          if (isXPosChange || isYPosChange) {
-            const positionChange: NodePositionChange = {
-              id: node.id,
-              type: 'position',
-              from: node.position,
-              position: {
-                x: isXPosChange ? x : prevX,
-                y: isYPosChange ? y : prevY,
-              },
-            }
-
-            changes.push(positionChange)
-
-            prevValues.x = positionChange.position!.x
-            prevValues.y = positionChange.position!.y
-          }
-        }
-
-        if (props.nodeId && (isWidthChange || isHeightChange)) {
-          const dimensionChange: NodeDimensionChange = {
-            id: props.nodeId,
-            type: 'dimensions',
-            updateStyle: true,
-            resizing: true,
-            dimensions: {
-              width,
-              height,
-            },
-          }
-
-          changes.push(dimensionChange)
-
-          prevValues.width = width
-          prevValues.height = height
-        }
-
-        if (changes.length === 0) {
-          return
-        }
-
-        const direction = getDirection({
-          width: prevValues.width,
-          prevWidth,
-          height: prevValues.height,
-          prevHeight,
-          invertX,
-          invertY,
-        })
-
-        const nextValues = { ...prevValues, direction }
-
-        const callResize = props.shouldResize?.(event, nextValues)
-
-        if (callResize === false) {
-          return
-        }
-
-        emits('resize', { event, params: nextValues })
-
-        triggerEmits.nodesChange(changes)
+      for (const child of childChanges) {
+        const childNode = nodeLookup.value.get(child.id)
+        nodeChanges.push({
+          id: child.id,
+          type: 'position',
+          from: childNode?.position ?? { x: 0, y: 0 },
+          position: child.position,
+        } as NodePositionChange)
       }
-    })
-    .on('end', (event: ResizeDragEvent) => {
-      if (props.nodeId) {
-        const dimensionChange: NodeDimensionChange = {
-          id: props.nodeId,
+
+      if (nodeChanges.length) {
+        triggerEmits.nodesChange(nodeChanges)
+      }
+    },
+    onEnd: () => {
+      triggerEmits.nodesChange([
+        {
+          id: props.nodeId!,
           type: 'dimensions',
           resizing: false,
-        }
+        } as NodeDimensionChange,
+      ])
+    },
+  })
 
-        emits('resizeEnd', { event, params: prevValues })
-
-        triggerEmits.nodesChange([dimensionChange])
-      }
-    })
-
-  selection.call(dragHandler)
+  resizerInstance.update({
+    controlPosition: controlPosition.value,
+    boundaries: {
+      minWidth: props.minWidth,
+      minHeight: props.minHeight,
+      maxWidth: props.maxWidth,
+      maxHeight: props.maxHeight,
+    },
+    keepAspectRatio: props.keepAspectRatio ?? false,
+    onResizeStart: (event, params) => emits('resizeStart', { event, params }),
+    onResize: (event, params) => emits('resize', { event, params }),
+    onResizeEnd: (event, params) => emits('resizeEnd', { event, params }),
+    shouldResize: props.shouldResize,
+  })
 
   onCleanup(() => {
-    selection.on('.drag', null)
+    resizerInstance.destroy()
   })
 })
 </script>
