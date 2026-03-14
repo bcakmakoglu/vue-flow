@@ -176,7 +176,7 @@ export function useHandle({
         connectionPosition = getEventPosition(event, containerBounds)
 
         closestHandle = getClosestHandle(
-          pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
+          pointToRendererPoint(connectionPosition, [viewport.value.x, viewport.value.y, viewport.value.zoom]),
           connectionRadius.value,
           nodeLookup.value,
           fromHandle,

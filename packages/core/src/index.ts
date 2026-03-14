@@ -27,7 +27,22 @@ export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter 
 export { getSimpleBezierPath } from './components/Edges/SimpleBezierEdge'
 
 // re-export graph utils
-export { clamp, getBoundsOfRects, getBoundsOfBoxes, rendererPointToPoint, getMarkerId, isMacOs } from '@xyflow/system'
+export {
+  clamp,
+  getBoundsOfRects,
+  getBoundsOfBoxes,
+  rendererPointToPoint,
+  getMarkerId,
+  isMacOs,
+  pointToRendererPoint,
+  getIncomers,
+  getOutgoers,
+  getNodesBounds,
+  getViewportForBounds,
+  isEdgeBase,
+  isNodeBase,
+  getConnectionStatus,
+} from '@xyflow/system'
 
 export {
   isNode,
@@ -37,7 +52,6 @@ export {
   getConnectedEdges,
   getTransformForBounds,
   getRectOfNodes,
-  pointToRendererPoint,
   getNodesInside,
   connectionExists,
 } from './utils/graph'
@@ -71,5 +85,4 @@ export { VueFlowError, ErrorCode, isErrorOfType } from './utils/errors'
 
 export * from './types'
 
-// todo: add more re-exports
 export { type Viewport, PanOnScrollMode } from '@xyflow/system'

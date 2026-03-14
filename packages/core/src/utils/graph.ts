@@ -1,6 +1,13 @@
 import { markRaw } from 'vue'
 import type { Viewport } from '@xyflow/system'
-import { boxToRect, clamp, getBoundsOfBoxes, getOverlappingArea, rectToBox } from '@xyflow/system'
+import {
+  boxToRect,
+  getBoundsOfBoxes,
+  getOverlappingArea,
+  getViewportForBounds,
+  pointToRendererPoint,
+  rectToBox,
+} from '@xyflow/system'
 import type {
   Box,
   Connection,
@@ -12,10 +19,11 @@ import type {
   Node,
   NodeLookup,
   Rect,
-  XYPosition,
   XYZPosition,
 } from '../types'
 import { isDef } from '.'
+
+export { getEventPosition, pointToRendererPoint } from '@xyflow/system'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
@@ -126,27 +134,6 @@ export function connectionExists(edge: Edge | Connection, edges: Edge[]) {
   )
 }
 
-export function pointToRendererPoint(
-  { x, y }: XYPosition,
-  { x: tx, y: ty, zoom: tScale }: Viewport,
-  snapToGrid: boolean = false,
-  [snapX, snapY]: [snapX: number, snapY: number] = [1, 1],
-): XYPosition {
-  const position: XYPosition = {
-    x: (x - tx) / tScale,
-    y: (y - ty) / tScale,
-  }
-
-  if (snapToGrid) {
-    return {
-      x: snapX * Math.round(position.x / snapX),
-      y: snapY * Math.round(position.y / snapY),
-    }
-  }
-
-  return position
-}
-
 export function getRectOfNodes(nodes: GraphNode[]) {
   let box: Box = {
     x: Number.POSITIVE_INFINITY,
@@ -177,8 +164,9 @@ export function getNodesInside<NodeType extends Node = Node>(
   // set excludeNonSelectableNodes if you want to pay attention to the nodes "selectable" attribute
   excludeNonSelectableNodes = false,
 ) {
+  const transform: [number, number, number] = [viewport.x, viewport.y, viewport.zoom]
   const paneRect = {
-    ...pointToRendererPoint(rect, viewport),
+    ...pointToRendererPoint(rect, transform),
     width: rect.width / viewport.zoom,
     height: rect.height / viewport.zoom,
   }
@@ -257,16 +245,12 @@ export function getTransformForBounds(
     y?: number
   } = { x: 0, y: 0 },
 ): Viewport {
-  const xZoom = width / (bounds.width * (1 + padding))
-  const yZoom = height / (bounds.height * (1 + padding))
-  const zoom = Math.min(xZoom, yZoom)
-  const clampedZoom = clamp(zoom, minZoom, maxZoom)
-  const boundsCenterX = bounds.x + bounds.width / 2
-  const boundsCenterY = bounds.y + bounds.height / 2
-  const x = width / 2 - boundsCenterX * clampedZoom + (offset.x ?? 0)
-  const y = height / 2 - boundsCenterY * clampedZoom + (offset.y ?? 0)
-
-  return { x, y, zoom: clampedZoom }
+  const viewport = getViewportForBounds(bounds, width, height, minZoom, maxZoom, padding)
+  return {
+    x: viewport.x + (offset.x ?? 0),
+    y: viewport.y + (offset.y ?? 0),
+    zoom: viewport.zoom,
+  }
 }
 
 export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition {

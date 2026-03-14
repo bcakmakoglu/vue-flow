@@ -149,7 +149,13 @@ export function useViewportHelper<NodeType extends Node = Node>(state: State<Nod
 
         return Promise.resolve(true)
       },
-      project: (position) => pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid),
+      project: (position) =>
+        pointToRendererPoint(
+          position,
+          [state.viewport.x, state.viewport.y, state.viewport.zoom],
+          state.snapToGrid,
+          state.snapGrid,
+        ),
       screenToFlowCoordinate: (position) => {
         if (state.vueFlowRef) {
           const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
@@ -159,7 +165,12 @@ export function useViewportHelper<NodeType extends Node = Node>(state: State<Nod
             y: position.y - domY,
           }
 
-          return pointToRendererPoint(correctedPosition, state.viewport, state.snapToGrid, state.snapGrid)
+          return pointToRendererPoint(
+            correctedPosition,
+            [state.viewport.x, state.viewport.y, state.viewport.zoom],
+            state.snapToGrid,
+            state.snapGrid,
+          )
         }
 
         return { x: 0, y: 0 }

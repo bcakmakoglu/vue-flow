@@ -1,4 +1,9 @@
 import { unref } from 'vue'
+import {
+  areConnectionMapsEqual as xyflowAreConnectionMapsEqual,
+  handleConnectionChange as xyflowHandleConnectionChange,
+} from '@xyflow/system'
+export { areSetsEqual } from '@xyflow/system'
 import type {
   Actions,
   Connection,
@@ -192,63 +197,24 @@ export function handleConnectionChange(
   b: Map<string, NodeConnection>,
   cb?: (diff: NodeConnection[]) => void,
 ) {
-  if (!cb) {
-    return
-  }
-
-  const diff: NodeConnection[] = []
-
-  for (const key of a.keys()) {
-    if (!b.has(key)) {
-      diff.push(a.get(key)!)
-    }
-  }
-
-  if (diff.length) {
-    cb(diff)
-  }
+  // @xyflow/system's HandleConnection requires sourceHandle/targetHandle as string | null
+  // while VueFlow's NodeConnection allows undefined — the cast is safe since the
+  // connection lookup always stores null (not undefined) for missing handles
+  xyflowHandleConnectionChange(
+    a as Parameters<typeof xyflowHandleConnectionChange>[0],
+    b as Parameters<typeof xyflowHandleConnectionChange>[1],
+    cb as Parameters<typeof xyflowHandleConnectionChange>[2],
+  )
 }
 
 /**
  * @internal
  */
 export function areConnectionMapsEqual(a?: Map<string, Connection>, b?: Map<string, Connection>) {
-  if (!a && !b) {
-    return true
-  }
-
-  if (!a || !b || a.size !== b.size) {
-    return false
-  }
-
-  if (!a.size && !b.size) {
-    return true
-  }
-
-  for (const key of a.keys()) {
-    if (!b.has(key)) {
-      return false
-    }
-  }
-
-  return true
-}
-
-/**
- * @internal
- */
-export function areSetsEqual(a: Set<string>, b: Set<string>) {
-  if (a.size !== b.size) {
-    return false
-  }
-
-  for (const item of a) {
-    if (!b.has(item)) {
-      return false
-    }
-  }
-
-  return true
+  return xyflowAreConnectionMapsEqual(
+    a as Parameters<typeof xyflowAreConnectionMapsEqual>[0],
+    b as Parameters<typeof xyflowAreConnectionMapsEqual>[1],
+  )
 }
 
 /**

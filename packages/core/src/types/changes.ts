@@ -1,3 +1,9 @@
+import type {
+  NodeDimensionChange as NodeDimensionChangeBase,
+  NodePositionChange as NodePositionChangeBase,
+  NodeRemoveChange as NodeRemoveChangeBase,
+  NodeSelectionChange as NodeSelectionChangeBase,
+} from '@xyflow/system'
 import type { Dimensions, ElementData, XYPosition } from './flow'
 import type { GraphNode, Node, NodeHandleBounds } from './node'
 import type { GraphEdge } from './edge'
@@ -15,33 +21,19 @@ export interface NodeDragItem {
   expandParent?: boolean
 }
 
-export interface NodeDimensionChange {
-  id: string
-  type: 'dimensions'
-  dimensions?: Dimensions
+export type NodeDimensionChange = NodeDimensionChangeBase & {
   handleBounds?: NodeHandleBounds
   updateStyle?: boolean
-  resizing?: boolean
 }
 
-export interface NodePositionChange {
-  id: string
-  type: 'position'
+export type NodePositionChange = NodePositionChangeBase & {
   position: XYPosition
   from: XYPosition
-  dragging?: boolean
 }
 
-export interface NodeSelectionChange {
-  id: string
-  type: 'select'
-  selected: boolean
-}
+export type NodeSelectionChange = NodeSelectionChangeBase
 
-export interface NodeRemoveChange {
-  id: string
-  type: 'remove'
-}
+export type NodeRemoveChange = NodeRemoveChangeBase
 
 export interface NodeAddChange<NodeType extends Node = Node> {
   item: GraphNode<NodeType>
@@ -57,7 +49,7 @@ export type NodeChange<NodeType extends Node = Node> =
 
 export type EdgeSelectionChange = NodeSelectionChange
 
-export interface EdgeRemoveChange extends NodeRemoveChange {
+export type EdgeRemoveChange = NodeRemoveChangeBase & {
   source: string
   target: string
   sourceHandle: string | null
