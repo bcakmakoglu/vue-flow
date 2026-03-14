@@ -1,87 +1,14 @@
 import { clampPosition } from '@xyflow/system'
 import type {
-  Actions,
   CoordinateExtent,
   CoordinateExtentRange,
   Dimensions,
   GraphNode,
   NodeDragItem,
-  NodeLookup,
   State,
   XYPosition,
 } from '../types'
-import { ErrorCode, VueFlowError, isParentSelected } from '.'
-
-export function hasSelector(target: Element, selector: string, node: Element): boolean {
-  let current = target
-
-  do {
-    if (current && current.matches(selector)) {
-      return true
-    } else if (current === node) {
-      return false
-    }
-
-    current = current.parentElement as Element
-  } while (current)
-
-  return false
-}
-
-// looks for all selected nodes and created a NodeDragItem for each of them
-export function getDragItems(nodeLookup: NodeLookup, nodesDraggable: boolean, mousePos: XYPosition, nodeId?: string) {
-  const dragItems = new Map<string, NodeDragItem>()
-
-  for (const [id, node] of nodeLookup) {
-    if (
-      (node.selected || node.id === nodeId) &&
-      (!node.parentNode || !isParentSelected(node, nodeLookup)) &&
-      (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined'))
-    ) {
-      const internalNode = nodeLookup.get(id)
-
-      if (internalNode) {
-        dragItems.set(id, {
-          id: node.id,
-          position: node.position || { x: 0, y: 0 },
-          distance: {
-            x: mousePos.x - node.computedPosition?.x || 0,
-            y: mousePos.y - node.computedPosition?.y || 0,
-          },
-          from: { x: node.computedPosition.x, y: node.computedPosition.y },
-          extent: node.extent,
-          parentNode: node.parentNode,
-          dimensions: { ...node.dimensions },
-          expandParent: node.expandParent,
-        })
-      }
-    }
-  }
-
-  // todo: work with map in `useDrag` instead of array
-  return Array.from(dragItems.values())
-}
-
-export function getEventHandlerParams({
-  id,
-  dragItems,
-  findNode,
-}: {
-  id?: string
-  dragItems: NodeDragItem[]
-  findNode: Actions['findNode']
-}): [GraphNode, GraphNode[]] {
-  const extendedDragItems: GraphNode[] = []
-  for (const dragItem of dragItems) {
-    const node = findNode(dragItem.id)
-
-    if (node) {
-      extendedDragItems.push(node)
-    }
-  }
-
-  return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
-}
+import { ErrorCode, VueFlowError } from '.'
 
 function getExtentPadding(padding: CoordinateExtentRange['padding']): [number, number, number, number] {
   if (Array.isArray(padding)) {
