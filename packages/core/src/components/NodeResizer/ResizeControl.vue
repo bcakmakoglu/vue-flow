@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { NodeChange, NodeDimensionChange, NodePositionChange } from '@vue-flow/core'
-import { useVueFlow } from '@vue-flow/core'
 import { XYResizer } from '@xyflow/system'
 import type { XYResizerChange, XYResizerChildChange } from '@xyflow/system'
 import { computed, ref, toRef, watchEffect } from 'vue'
+import { useVueFlow } from '../../composables'
+import type { NodeChange, NodeDimensionChange, NodePositionChange } from '../../types'
 import type { NodeResizerEmits, ResizeControlProps } from './types'
 import { ResizeControlVariant } from './types'
 import { DefaultPositions, StylingProperty } from './utils'

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { computed, inject, toRef, watch } from 'vue'
-import type { NodeDimensionChange } from '@vue-flow/core'
-import { NodeIdInjection, useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '../../composables'
+import { NodeId } from '../../context'
+import type { NodeDimensionChange } from '../../types'
 import ResizeControl from './ResizeControl.vue'
 import type { ControlLinePosition, ControlPosition, NodeResizerEmits, NodeResizerProps } from './types'
 import { ResizeControlVariant } from './types'
@@ -19,7 +20,7 @@ const handleControls: ControlPosition[] = ['top-left', 'top-right', 'bottom-left
 
 const lineControls: ControlLinePosition[] = ['top', 'right', 'bottom', 'left']
 
-const contextNodeId = inject(NodeIdInjection, null)
+const contextNodeId = inject(NodeId, null)
 
 const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
 
