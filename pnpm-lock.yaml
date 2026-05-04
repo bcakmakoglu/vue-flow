@@ -38,12 +38,6 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../packages/core
-      '@vue-flow/node-resizer':
-        specifier: workspace:*
-        version: link:../packages/node-resizer
-      '@vue-flow/node-toolbar':
-        specifier: workspace:*
-        version: link:../packages/node-toolbar
       '@vue/repl':
         specifier: 3.4.0
         version: 3.4.0
@@ -164,12 +158,6 @@ importers:
       '@vue-flow/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@vue-flow/node-resizer':
-        specifier: workspace:*
-        version: link:../../packages/node-resizer
-      '@vue-flow/node-toolbar':
-        specifier: workspace:*
-        version: link:../../packages/node-toolbar
       html-to-image:
         specifier: ^1.11.11
         version: 1.11.11
@@ -213,15 +201,9 @@ importers:
       '@xyflow/system':
         specifier: ^0.0.73
         version: 0.0.73
-      d3-drag:
-        specifier: ^3.0.0
-        version: 3.0.0
       d3-interpolate:
         specifier: ^3.0.1
         version: 3.0.1
-      d3-selection:
-        specifier: ^3.0.0
-        version: 3.0.0
       vue:
         specifier: ^3.3.0
         version: 3.3.4
@@ -235,15 +217,9 @@ importers:
       '@tooling/tsconfig':
         specifier: workspace:*
         version: link:../../tooling/tsconfig
-      '@types/d3-drag':
-        specifier: ^3.0.7
-        version: 3.0.7
       '@types/d3-interpolate':
         specifier: ^3.0.4
         version: 3.0.4
-      '@types/d3-selection':
-        specifier: ^3.0.11
-        version: 3.0.11
       '@types/d3-transition':
         specifier: ^3.0.9
         version: 3.0.9
@@ -271,56 +247,6 @@ importers:
       vite-svg-loader:
         specifier: ^5.1.0
         version: 5.1.0(vue@3.3.4)
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
-
-  packages/node-resizer:
-    dependencies:
-      '@xyflow/system':
-        specifier: ^0.0.73
-        version: 0.0.73
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      vue-tsc:
-        specifier: ^1.8.16
-        version: 1.8.16(typescript@5.4.5)
-
-  packages/node-toolbar:
-    dependencies:
-      vue:
-        specifier: ^3.3.0
-        version: 3.3.4
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
-      '@tooling/vite-config':
-        specifier: workspace:*
-        version: link:../../tooling/vite-config
-      '@vue-flow/core':
-        specifier: workspace:*
-        version: link:../core
-      '@xyflow/system':
-        specifier: ^0.0.73
-        version: 0.0.73
       vue-tsc:
         specifier: ^1.8.16
         version: 1.8.16(typescript@5.4.5)

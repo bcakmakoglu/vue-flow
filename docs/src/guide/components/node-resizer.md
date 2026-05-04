@@ -3,14 +3,7 @@
 This is a resizer component for Vue Flow.
 It can be used to resize your nodes.
 
-## Installation
-
-```bash
-yarn add @vue-flow/node-resizer
-  
-# or
-npm install @vue-flow/node-resizer
-```
+`NodeResizer` ships with `@vue-flow/core`; the `@vue-flow/node-resizer` package is deprecated.
 
 ## Usage
 
@@ -35,11 +28,7 @@ const nodes = ref(initialNodes)
 
 ```vue
 <script lang="ts" setup>
-import { Handle, Position } from '@vue-flow/core'
-import { NodeResizer } from '@vue-flow/node-resizer'
-
-// make sure to include the necessary styles!
-import '@vue-flow/node-resizer/dist/style.css'
+import { Handle, NodeResizer, Position } from '@vue-flow/core'
 
 defineProps(['data'])
 </script>

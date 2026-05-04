@@ -5,14 +5,7 @@ It can be used to create a floating Toolbar next to your nodes.
 You can either display the Toolbar by setting the visibility prop or automatically showing the Toolbar
 on selected nodes.
 
-## Installation
-
-```bash
-yarn add @vue-flow/node-toolbar
-
-# or
-npm install @vue-flow/node-toolbar
-```
+`NodeToolbar` ships with `@vue-flow/core`; the `@vue-flow/node-toolbar` package is deprecated.
 
 ## Usage
 
@@ -36,8 +29,7 @@ const nodes = ref(initialNodes)
 
 ```vue
 <script lang="ts" setup>
-import { Handle, Position } from '@vue-flow/core'
-import { NodeToolbar } from '@vue-flow/node-toolbar'
+import { Handle, NodeToolbar, Position } from '@vue-flow/core'
 
 interface NodeData {
   toolbarVisible: boolean

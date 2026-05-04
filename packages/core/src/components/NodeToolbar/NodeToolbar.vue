@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
 import type { Viewport } from '@xyflow/system'
-import type { GraphNode, Rect } from '@vue-flow/core'
-import { NodeIdInjection, Position, getRectOfNodes, useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '../../composables'
+import { NodeId } from '../../context'
+import type { GraphNode, Rect } from '../../types'
+import { Position } from '../../types'
+import { getRectOfNodes } from '../../utils'
 
 import type { CSSProperties } from 'vue'
 import type { Align, NodeToolbarProps } from './types'
@@ -14,7 +17,7 @@ const props = withDefaults(defineProps<NodeToolbarProps>(), {
   isVisible: undefined,
 })
 
-const contextNodeId = inject(NodeIdInjection, null)
+const contextNodeId = inject(NodeId, null)
 
 const { viewportRef, viewport, getSelectedNodes, findNode } = useVueFlow()
 
