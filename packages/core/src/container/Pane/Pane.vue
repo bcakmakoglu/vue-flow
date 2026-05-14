@@ -12,7 +12,6 @@ const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean;
 
 const {
   vueFlowRef,
-  nodes,
   viewport,
   emits,
   userSelectionActive,

@@ -64,7 +64,12 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
-const bb = computed(() => getNodesBounds(nodes.value.filter((node) => !node.hidden), { nodeLookup: nodeLookup.value }))
+const bb = computed(() =>
+  getNodesBounds(
+    nodes.value.filter((node) => !node.hidden),
+    { nodeLookup: nodeLookup.value },
+  ),
+)
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,
