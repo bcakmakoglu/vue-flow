@@ -1,8 +1,8 @@
 import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
-import { rendererPointToPoint } from '@xyflow/system'
-import type { GraphNode, Node, NodeLookup, Project, State, ViewportFunctions } from '../types'
-import { getNodesBounds, getViewportForBounds, pointToRendererPoint, warn } from '../utils'
+import { fitViewport, rendererPointToPoint } from '@xyflow/system'
+import type { Node, NodeLookup, Project, State, ViewportFunctions } from '../types'
+import { getViewportForBounds, pointToRendererPoint, warn } from '../utils'
 
 export interface ViewportHelper extends ViewportFunctions {
   viewportInitialized: boolean
@@ -12,10 +12,10 @@ export interface ViewportHelper extends ViewportFunctions {
 
 const DEFAULT_PADDING = 0.1
 
-function noop() {
+async function noop() {
   warn('Viewport not initialized yet.')
 
-  return Promise.resolve(false)
+  return false
 }
 
 const initialViewportHelper: ViewportHelper = {
@@ -54,18 +54,12 @@ export function useViewportHelper<NodeType extends Node = Node>(
     return {
       viewportInitialized: true,
       // todo: allow passing scale as option
-      zoomIn: (options) => {
-        return panZoom ? panZoom.scaleBy(1.2, options) : Promise.resolve(false)
-      },
-      zoomOut: (options) => {
-        return panZoom ? panZoom.scaleBy(1 / 1.2, options) : Promise.resolve(false)
-      },
-      zoomTo: (zoomLevel, options) => {
-        return panZoom ? panZoom.scaleTo(zoomLevel, options) : Promise.resolve(false)
-      },
+      zoomIn: async (options) => (panZoom ? panZoom.scaleBy(1.2, options) : false),
+      zoomOut: async (options) => (panZoom ? panZoom.scaleBy(1 / 1.2, options) : false),
+      zoomTo: async (zoomLevel, options) => (panZoom ? panZoom.scaleTo(zoomLevel, options) : false),
       setViewport: async (viewport, options) => {
         if (!panZoom) {
-          return Promise.resolve(false)
+          return false
         }
 
         await panZoom.setViewport(
@@ -77,7 +71,7 @@ export function useViewportHelper<NodeType extends Node = Node>(
           options,
         )
 
-        return Promise.resolve(true)
+        return true
       },
       getViewport: () => ({
         x: state.viewport.x,
@@ -91,46 +85,47 @@ export function useViewportHelper<NodeType extends Node = Node>(
           duration: 0,
         },
       ) => {
-        const nodesToFit: GraphNode[] = []
-        for (const node of state.nodes) {
-          const isVisible = node.measured.width && node.measured.height && (options?.includeHiddenNodes || !node.hidden)
-
-          if (isVisible) {
-            if (!options.nodes?.length || (options.nodes?.length && options.nodes.includes(node.id))) {
-              nodesToFit.push(node)
-            }
-          }
+        if (!panZoom) {
+          return false
         }
 
-        if (!nodesToFit.length || !panZoom) {
-          return Promise.resolve(false)
-        }
-
-        const bounds = getNodesBounds(nodesToFit, { nodeLookup: nodeLookup.value })
-
-        const viewport = getViewportForBounds(
-          bounds,
-          state.dimensions.width,
-          state.dimensions.height,
-          options.minZoom ?? state.minZoom,
-          options.maxZoom ?? state.maxZoom,
-          options.padding ?? DEFAULT_PADDING,
-        )
-
-        await panZoom.setViewport(
+        const ok = await fitViewport(
           {
-            x: viewport.x + (options.offset?.x ?? 0),
-            y: viewport.y + (options.offset?.y ?? 0),
-            zoom: viewport.zoom,
+            nodes: nodeLookup.value,
+            width: state.dimensions.width,
+            height: state.dimensions.height,
+            panZoom,
+            minZoom: state.minZoom,
+            maxZoom: state.maxZoom,
           },
-          options,
+          {
+            padding: options.padding ?? DEFAULT_PADDING,
+            duration: options.duration,
+            minZoom: options.minZoom,
+            maxZoom: options.maxZoom,
+            // system expects `(NodeType | { id })[]`; we accept `string[]` for ergonomics.
+            ...(options.nodes?.length ? { nodes: options.nodes.map((id) => ({ id })) } : {}),
+          },
         )
 
-        return Promise.resolve(true)
+        // vue-flow-only `offset` extension — apply on top of fitViewport's result.
+        if (ok && options.offset && (options.offset.x || options.offset.y)) {
+          const current = state.viewport
+          await panZoom.setViewport(
+            {
+              x: current.x + (options.offset.x ?? 0),
+              y: current.y + (options.offset.y ?? 0),
+              zoom: current.zoom,
+            },
+            { duration: 0 },
+          )
+        }
+
+        return ok
       },
       setCenter: async (x, y, options) => {
         if (!panZoom) {
-          return Promise.resolve(false)
+          return false
         }
 
         const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : state.maxZoom
@@ -139,11 +134,11 @@ export function useViewportHelper<NodeType extends Node = Node>(
 
         await panZoom.setViewport({ x: centerX, y: centerY, zoom: nextZoom }, options)
 
-        return Promise.resolve(true)
+        return true
       },
       fitBounds: async (bounds, options = { padding: DEFAULT_PADDING }) => {
         if (!panZoom) {
-          return Promise.resolve(false)
+          return false
         }
 
         const { x, y, zoom } = getViewportForBounds(
@@ -157,7 +152,7 @@ export function useViewportHelper<NodeType extends Node = Node>(
 
         await panZoom.setViewport({ x, y, zoom }, options)
 
-        return Promise.resolve(true)
+        return true
       },
       project: (position) =>
         pointToRendererPoint(
