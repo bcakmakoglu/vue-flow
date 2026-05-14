@@ -154,11 +154,13 @@ export function applyChanges<
               element.measured = { width: currentChange.dimensions.width, height: currentChange.dimensions.height }
             }
 
-            if (typeof currentChange.updateStyle !== 'undefined' && currentChange.updateStyle) {
+            if (currentChange.setAttributes) {
+              const setW = currentChange.setAttributes === true || currentChange.setAttributes === 'width'
+              const setH = currentChange.setAttributes === true || currentChange.setAttributes === 'height'
               element.style = {
                 ...(element.style || {}),
-                width: `${currentChange.dimensions?.width}px`,
-                height: `${currentChange.dimensions?.height}px`,
+                ...(setW && { width: `${currentChange.dimensions?.width}px` }),
+                ...(setH && { height: `${currentChange.dimensions?.height}px` }),
               }
             }
 
@@ -209,12 +211,13 @@ export function createSelectionChange(id: string, selected: boolean): NodeSelect
 }
 
 export function createAdditionChange<
-  T extends GraphNode | GraphEdge = GraphNode,
-  C extends NodeAddChange | EdgeAddChange = T extends GraphNode ? NodeAddChange : EdgeAddChange,
->(item: T): C {
+  T extends Node | Edge = Node,
+  C extends NodeAddChange | EdgeAddChange = T extends Node ? NodeAddChange : EdgeAddChange,
+>(item: T, index?: number): C {
   return <C>{
     item,
     type: 'add',
+    ...(typeof index === 'number' && { index }),
   }
 }
 
@@ -225,19 +228,9 @@ export function createNodeRemoveChange(id: string): NodeRemoveChange {
   }
 }
 
-export function createEdgeRemoveChange(
-  id: string,
-  source: string,
-  target: string,
-  sourceHandle?: string | null,
-  targetHandle?: string | null,
-): EdgeRemoveChange {
+export function createEdgeRemoveChange(id: string): EdgeRemoveChange {
   return {
     id,
-    source,
-    target,
-    sourceHandle: sourceHandle || null,
-    targetHandle: targetHandle || null,
     type: 'remove',
   }
 }

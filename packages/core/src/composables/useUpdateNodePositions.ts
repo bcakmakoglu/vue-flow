@@ -40,9 +40,7 @@ export function useUpdateNodePositions() {
         nodeUpdates.push({
           id: node.id,
           position,
-          from: node.position,
           distance: { x: positionDiff.x, y: positionDiff.y },
-          dimensions: { width: node.measured.width, height: node.measured.height },
           measured: { width: node.measured.width, height: node.measured.height },
           internals: { positionAbsolute: { x: node.internals.positionAbsolute.x, y: node.internals.positionAbsolute.y } },
         })

@@ -83,11 +83,11 @@ export function useActions<NodeType extends Node = Node>(
     const changes: NodePositionChange[] = []
 
     for (const node of dragItems) {
-      const change: Partial<NodePositionChange> = {
+      const change: NodePositionChange = {
         id: node.id,
         type: 'position',
         dragging,
-        from: node.from,
+        positionAbsolute: node.internals.positionAbsolute,
       }
 
       if (changed) {
@@ -103,7 +103,7 @@ export function useActions<NodeType extends Node = Node>(
         }
       }
 
-      changes.push(change as NodePositionChange)
+      changes.push(change)
     }
 
     if (changes?.length) {
@@ -329,7 +329,7 @@ export function useActions<NodeType extends Node = Node>(
       const connectedEdges = getConnectedEdges(nodes)
       for (const edge of connectedEdges) {
         if (isDef(edge.deletable) ? edge.deletable : true) {
-          edgeChanges.push(createEdgeRemoveChange(edge.id, edge.source, edge.target, edge.sourceHandle, edge.targetHandle))
+          edgeChanges.push(createEdgeRemoveChange(edge.id))
         }
       }
     }
@@ -406,15 +406,7 @@ export function useActions<NodeType extends Node = Node>(
         continue
       }
 
-      changes.push(
-        createEdgeRemoveChange(
-          typeof item === 'string' ? item : item.id,
-          currEdge.source,
-          currEdge.target,
-          currEdge.sourceHandle,
-          currEdge.targetHandle,
-        ),
-      )
+      changes.push(createEdgeRemoveChange(typeof item === 'string' ? item : item.id))
     }
 
     state.hooks.edgesChange.trigger(changes)

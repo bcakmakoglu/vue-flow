@@ -1,21 +1,12 @@
-import type {
-  NodeDimensionChange as NodeDimensionChangeBase,
-  NodePositionChange as NodePositionChangeBase,
-  NodeRemoveChange as NodeRemoveChangeBase,
-  NodeSelectionChange as NodeSelectionChangeBase,
-} from '@xyflow/system'
-import type { Dimensions, ElementData, XYPosition } from './flow'
-import type { GraphNode, Node, NodeHandleBounds, NodeOrigin } from './node'
-import type { GraphEdge } from './edge'
+import type { XYPosition } from './flow'
+import type { Edge } from './edge'
+import type { Node, NodeOrigin } from './node'
 
 /**
  * Drag-item shape used by the drag pipeline.
  *
- * Mirrors `@xyflow/system`'s `NodeDragItem` so vue-flow's drag items are interchangeable with system
- * types. Two vue-flow-only fields remain on the shape:
- *   - `from` flows into the public `NodePositionChange.from`.
- *   - `dimensions` is read by `utils/drag.ts` (legacy alias for `measured` until the change-types
- *     family alignment in step 3).
+ * Mirrors `@xyflow/system`'s `NodeDragItem` exactly so vue-flow's drag items are interchangeable with
+ * system types.
  */
 export interface NodeDragItem {
   id: string
@@ -24,41 +15,58 @@ export interface NodeDragItem {
   /** distance from the mouse cursor to the node when start dragging */
   distance: XYPosition
 
-  // system-aligned
   measured: { width: number; height: number }
   internals: { positionAbsolute: XYPosition }
 
-  // shared / optional
   extent?: Node['extent']
   expandParent?: boolean
   dragging?: boolean
   origin?: NodeOrigin
   parentId?: string
-
-  // vue-flow-only — still load-bearing for the change pipeline
-  /** drag origin in flow coordinates (consumed by `NodePositionChange.from`) */
-  from: XYPosition
-  /** drag-start dimensions snapshot (consumed by `utils/drag.ts`) */
-  dimensions: Dimensions
 }
 
-export type NodeDimensionChange = NodeDimensionChangeBase & {
-  handleBounds?: NodeHandleBounds
-  updateStyle?: boolean
+/**
+ * Node change types — mirror `@xyflow/system`'s shapes (no `replace` variant yet).
+ *
+ * Renames vs the previous vue-flow shape:
+ *   - `NodeDimensionChange.updateStyle` → `setAttributes` (truthy = set width/height on the DOM element;
+ *     `'width'` / `'height'` restricts which axis is written).
+ *   - `NodePositionChange.from` (the OLD absolute position) → dropped. Use `positionAbsolute` (the NEW
+ *     absolute position) which now matches xyflow/react / xyflow/svelte.
+ *
+ * Item shapes on add changes are the user-provided `Node` / `Edge` types (not `GraphNode` / `GraphEdge`).
+ */
+export interface NodeDimensionChange {
+  id: string
+  type: 'dimensions'
+  dimensions?: { width: number; height: number }
+  resizing?: boolean
+  setAttributes?: boolean | 'width' | 'height'
 }
 
-export type NodePositionChange = NodePositionChangeBase & {
-  position: XYPosition
-  from: XYPosition
+export interface NodePositionChange {
+  id: string
+  type: 'position'
+  position?: XYPosition
+  positionAbsolute?: XYPosition
+  dragging?: boolean
 }
 
-export type NodeSelectionChange = NodeSelectionChangeBase
+export interface NodeSelectionChange {
+  id: string
+  type: 'select'
+  selected: boolean
+}
 
-export type NodeRemoveChange = NodeRemoveChangeBase
+export interface NodeRemoveChange {
+  id: string
+  type: 'remove'
+}
 
 export interface NodeAddChange<NodeType extends Node = Node> {
-  item: GraphNode<NodeType>
+  item: NodeType
   type: 'add'
+  index?: number
 }
 
 export type NodeChange<NodeType extends Node = Node> =
@@ -70,18 +78,14 @@ export type NodeChange<NodeType extends Node = Node> =
 
 export type EdgeSelectionChange = NodeSelectionChange
 
-export type EdgeRemoveChange = NodeRemoveChangeBase & {
-  source: string
-  target: string
-  sourceHandle: string | null
-  targetHandle: string | null
-}
+export type EdgeRemoveChange = NodeRemoveChange
 
-export interface EdgeAddChange<Data = ElementData> {
-  item: GraphEdge<Data>
+export interface EdgeAddChange<EdgeType extends Edge = Edge> {
+  item: EdgeType
   type: 'add'
+  index?: number
 }
 
-export type EdgeChange = EdgeSelectionChange | EdgeRemoveChange | EdgeAddChange
+export type EdgeChange<EdgeType extends Edge = Edge> = EdgeSelectionChange | EdgeRemoveChange | EdgeAddChange<EdgeType>
 
 export type ElementChange = NodeChange | EdgeChange

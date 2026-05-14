@@ -98,8 +98,6 @@ export function useDrag(params: UseDragParams) {
               distance: item.distance ?? { x: 0, y: 0 },
               measured: { width, height },
               internals: { positionAbsolute },
-              dimensions: { width, height },
-              from: node?.position ?? item.position,
               extent: item.extent,
               parentId: item.parentId,
               expandParent: item.expandParent,

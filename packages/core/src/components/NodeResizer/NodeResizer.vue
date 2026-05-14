@@ -41,7 +41,7 @@ watch(
       const dimensionChange: NodeDimensionChange = {
         id: n.id,
         type: 'dimensions',
-        updateStyle: true,
+        setAttributes: true,
         dimensions: {
           width: n.measured.width,
           height: n.measured.height,

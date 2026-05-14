@@ -51,14 +51,15 @@ watchEffect((onCleanup) => {
 
       if (typeof changes.x !== 'undefined' || typeof changes.y !== 'undefined') {
         const node = nodeLookup.value.get(props.nodeId!)
+        const position = {
+          x: changes.x ?? node?.position.x ?? 0,
+          y: changes.y ?? node?.position.y ?? 0,
+        }
         nodeChanges.push({
           id: props.nodeId!,
           type: 'position',
-          from: node?.position ?? { x: 0, y: 0 },
-          position: {
-            x: changes.x ?? node?.position.x ?? 0,
-            y: changes.y ?? node?.position.y ?? 0,
-          },
+          position,
+          positionAbsolute: position,
         } as NodePositionChange)
       }
 
@@ -66,7 +67,7 @@ watchEffect((onCleanup) => {
         nodeChanges.push({
           id: props.nodeId!,
           type: 'dimensions',
-          updateStyle: true,
+          setAttributes: true,
           resizing: true,
           dimensions: {
             width: changes.width ?? 0,
@@ -76,12 +77,11 @@ watchEffect((onCleanup) => {
       }
 
       for (const child of childChanges) {
-        const childNode = nodeLookup.value.get(child.id)
         nodeChanges.push({
           id: child.id,
           type: 'position',
-          from: childNode?.position ?? { x: 0, y: 0 },
           position: child.position,
+          positionAbsolute: child.position,
         } as NodePositionChange)
       }
 
