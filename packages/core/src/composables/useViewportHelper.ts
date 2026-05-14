@@ -1,7 +1,8 @@
+import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import { rendererPointToPoint } from '@xyflow/system'
-import type { GraphNode, Node, Project, State, ViewportFunctions } from '../types'
-import { getRectOfNodes, getTransformForBounds, pointToRendererPoint, warn } from '../utils'
+import type { GraphNode, Node, NodeLookup, Project, State, ViewportFunctions } from '../types'
+import { getNodesBounds, getViewportForBounds, pointToRendererPoint, warn } from '../utils'
 
 export interface ViewportHelper extends ViewportFunctions {
   viewportInitialized: boolean
@@ -38,7 +39,10 @@ const initialViewportHelper: ViewportHelper = {
  * @internal
  * @param state
  */
-export function useViewportHelper<NodeType extends Node = Node>(state: State<NodeType>) {
+export function useViewportHelper<NodeType extends Node = Node>(
+  state: State<NodeType>,
+  nodeLookup: ComputedRef<NodeLookup<NodeType>>,
+) {
   return computed<ViewportHelper>(() => {
     const panZoom = state.panZoom
     const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height
@@ -102,19 +106,25 @@ export function useViewportHelper<NodeType extends Node = Node>(state: State<Nod
           return Promise.resolve(false)
         }
 
-        const bounds = getRectOfNodes(nodesToFit)
+        const bounds = getNodesBounds(nodesToFit, { nodeLookup: nodeLookup.value })
 
-        const { x, y, zoom } = getTransformForBounds(
+        const viewport = getViewportForBounds(
           bounds,
           state.dimensions.width,
           state.dimensions.height,
           options.minZoom ?? state.minZoom,
           options.maxZoom ?? state.maxZoom,
           options.padding ?? DEFAULT_PADDING,
-          options.offset,
         )
 
-        await panZoom.setViewport({ x, y, zoom }, options)
+        await panZoom.setViewport(
+          {
+            x: viewport.x + (options.offset?.x ?? 0),
+            y: viewport.y + (options.offset?.y ?? 0),
+            zoom: viewport.zoom,
+          },
+          options,
+        )
 
         return Promise.resolve(true)
       },
@@ -136,13 +146,13 @@ export function useViewportHelper<NodeType extends Node = Node>(state: State<Nod
           return Promise.resolve(false)
         }
 
-        const { x, y, zoom } = getTransformForBounds(
+        const { x, y, zoom } = getViewportForBounds(
           bounds,
           state.dimensions.width,
           state.dimensions.height,
           state.minZoom,
           state.maxZoom,
-          options.padding,
+          options.padding ?? DEFAULT_PADDING,
         )
 
         await panZoom.setViewport({ x, y, zoom }, options)

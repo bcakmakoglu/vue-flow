@@ -101,7 +101,7 @@ export interface DefaultEdge<Data = ElementData, Type extends string = string> e
   data?: Data
   /** Aria label for edge (a11y) */
   zIndex?: number
-  ariaLabel?: string | null
+  ariaLabel?: string
   /**
    * General escape hatch for adding custom attributes to the edge's DOM element.
    */

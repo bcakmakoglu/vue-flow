@@ -257,7 +257,7 @@ export function useHandle({
               )
             : connectionPosition,
           connectingHandle,
-          getConnectionStatus(!!connectingHandle, isValid),
+          getConnectionStatus(isValid ?? (connectingHandle ? false : null)),
         )
 
         previousConnection = newConnection

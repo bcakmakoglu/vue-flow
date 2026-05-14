@@ -27,10 +27,10 @@ export interface Connection {
   source: string
   /** Target node id */
   target: string
-  /** Source handle id */
-  sourceHandle?: string | null
-  /** Target handle id */
-  targetHandle?: string | null
+  /** Source handle id (null when the connection isn't tied to a specific handle) */
+  sourceHandle: string | null
+  /** Target handle id (null when the connection isn't tied to a specific handle) */
+  targetHandle: string | null
 }
 
 /**

@@ -52,16 +52,16 @@ export function useGetters<NodeType extends Node = Node>(
   const getNodes: ComputedGetters<NodeType>['getNodes'] = computed(() => {
     if (state.onlyRenderVisibleElements) {
       return getNodesInside(
-        state.nodes,
+        nodeLookup.value,
         {
           x: 0,
           y: 0,
           width: state.dimensions.width,
           height: state.dimensions.height,
         },
-        state.viewport,
+        [state.viewport.x, state.viewport.y, state.viewport.zoom],
         true,
-      )
+      ) as GraphNode<NodeType>[]
     }
 
     return state.nodes
@@ -77,15 +77,11 @@ export function useGetters<NodeType extends Node = Node>(
 
         if (
           isEdgeVisible({
-            sourcePos: source.internals.positionAbsolute || { x: 0, y: 0 },
-            targetPos: target.internals.positionAbsolute || { x: 0, y: 0 },
-            sourceWidth: source.measured.width,
-            sourceHeight: source.measured.height,
-            targetWidth: target.measured.width,
-            targetHeight: target.measured.height,
+            sourceNode: source,
+            targetNode: target,
             width: state.dimensions.width,
             height: state.dimensions.height,
-            viewport: state.viewport,
+            transform: [state.viewport.x, state.viewport.y, state.viewport.zoom],
           })
         ) {
           visibleEdges.push(edge)

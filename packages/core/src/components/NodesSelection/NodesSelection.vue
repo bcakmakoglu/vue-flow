@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { useDrag, useUpdateNodePositions, useVueFlow } from '../../composables'
-import { arrowKeyDiffs, getRectOfNodes } from '../../utils'
+import { arrowKeyDiffs, getNodesBounds } from '../../utils'
 
-const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, userSelectionActive } = useVueFlow()
+const { emits, viewport, getSelectedNodes, nodeLookup, noPanClassName, disableKeyboardA11y, userSelectionActive } = useVueFlow()
 
 const updatePositions = useUpdateNodePositions()
 
@@ -31,7 +31,7 @@ onMounted(() => {
   }
 })
 
-const selectedNodesBBox = computed(() => getRectOfNodes(getSelectedNodes.value))
+const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value, { nodeLookup: nodeLookup.value }))
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,

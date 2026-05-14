@@ -299,7 +299,7 @@ export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelp
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
   /** get a node's connected edges */
-  getConnectedEdges: (nodesOrId: Node[] | string) => GraphEdge[]
+  getConnectedEdges: (nodes: Node[]) => GraphEdge[]
   /** get all connections of a handle belonging to a node */
   getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => HandleConnection[]
   /** pan the viewport; return indicates if a transform has happened or not */
