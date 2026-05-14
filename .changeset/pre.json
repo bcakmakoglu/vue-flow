@@ -12,5 +12,20 @@
     "@tooling/tsconfig": "0.0.0",
     "@tooling/vite-config": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "align-types-with-xyflow-system",
+    "cyan-melons-unite",
+    "dry-guests-battle",
+    "fluffy-tables-wash",
+    "fresh-cars-live",
+    "hip-melons-peel",
+    "late-toys-play",
+    "merge-resize-toolbar-into-core",
+    "nine-fishes-lick",
+    "pink-toes-happen",
+    "seven-ads-wait",
+    "tame-books-cross",
+    "ten-snails-flash",
+    "usehandle-xyhandle"
+  ]
 }

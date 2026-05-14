@@ -1,5 +1,136 @@
 # @vue-flow/core
 
+## 2.0.0-next.0
+
+### Major Changes
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`22236a4`](https://github.com/bcakmakoglu/vue-flow/commit/22236a44956ca1fb1dabe80079581161ae45c19a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align core types and change-pipeline shapes with `@xyflow/system` (the framework-agnostic engine that powers `xyflow/react` and `xyflow/svelte`). The vue-flow specific helpers — `useVueFlow`, hooks, slots, etc. — are unchanged; only the data shapes move.
+
+  ### `Node` / `GraphNode`
+
+  `Node` keeps its public surface but adds `parentId?: string` (matching xyflow). The deprecated `parentNode` field is removed — use `parentId`.
+
+  `GraphNode` is now structurally assignable to `@xyflow/system`'s `InternalNodeBase`, which means the following vue-flow-only top-level fields are gone:
+
+  - `node.computedPosition` → use `node.internals.positionAbsolute` (and `node.internals.z` for the z-index).
+  - `node.dimensions` → use `node.measured`.
+  - `node.handleBounds` (top-level) → use `node.internals.handleBounds`.
+  - `node.isParent` → check the new `parentLookup` map exposed by the store (`useVueFlow().parentLookup.value.get(nodeId)?.size`). The flag was a derived value; treating it as derived removes a class of stale-flag bugs when nodes are added/removed dynamically.
+
+  ### `NodeProps` / `EdgeProps`
+
+  `NodeProps<NodeType>` and `EdgeProps<EdgeType>` now take a `NodeType`/`EdgeType` generic, matching `xyflow/react`'s convention. Previous data-first usage (`NodeProps<MyData>`) should become `NodeProps<Node<MyData, 'myType'>>`.
+
+  The renderer now forwards the full `NodeProps` surface (`selectable`, `deletable`, `draggable`, `isConnectable`, `positionAbsoluteX`, `positionAbsoluteY`, `parentId`) so custom-node components see the same props they would in xyflow/react.
+
+  ### Change types
+
+  The `NodeChange` / `EdgeChange` families mirror `@xyflow/system` exactly (no `replace` variant yet):
+
+  - `NodeDimensionChange.updateStyle` → `setAttributes` (`true | 'width' | 'height'`).
+  - `NodePositionChange.from` → `positionAbsolute`. Consumers tracking the "before" position now derive it themselves.
+  - `NodeAddChange.item` is the user-provided `Node` (not `GraphNode`); same for `EdgeAddChange.item` and `Edge`. Both add an optional `index`.
+  - `EdgeRemoveChange` is now `{ id, type: 'remove' }` only — vue-flow's extra `source`/`target`/`sourceHandle`/`targetHandle` fields are gone. Read those from the edge via `findEdge(id)` before the change is applied.
+  - `NodeDragItem` drops vue-flow's `from`/`dimensions`/`parentNode` extensions and adopts the system shape (`measured`, `internals.positionAbsolute`, `parentId`, `origin`, `dragging`).
+
+  ### `useVueFlow` API
+
+  `useVueFlow(idOrOptions)` overloads are restored — `useVueFlow({ id, nodes, edges, defaultEdgeOptions, ... })` once again creates/populates a store from options, fixing a regression where passing options object would silently use it as an id (producing `pattern-[object Object]` on the background among other things). Repeated calls in the same setup share the same store via an effect-scope id (previously each `useVueFlow()` call could create a new store when injection didn't work across sibling composables in the same component).
+
+  `<VueFlow>` now forwards its props back through `useVueFlow(props)` so a store created externally by `useVueFlow({ id: 'foo' })` and a `<VueFlow id="foo" ... />` mount end up bound to the same store, with options like `defaultEdgeOptions` applied before edges parse.
+
+  The deprecated `paneReady` event is gone — listen to `init` (or `onInit`) instead. The deprecated mixed-elements API (`<VueFlow v-model="elements">`, `setElements`, `addSelectedElements`, `removeSelectedElements`, `getElements`, `getSelectedElements`) is removed — use the separate `nodes` / `edges` props and `setNodes` / `setEdges` / `addSelectedNodes` / `addSelectedEdges` / `removeSelectedNodes` / `removeSelectedEdges` / `getNodes` / `getEdges` / `getSelectedNodes` / `getSelectedEdges` actions and getters.
+
+  Default change handlers (`applyNodeChanges` / `applyEdgeChanges`) are now wired automatically inside `useVueFlow` (gated on `applyDefault`), so `addNodes` / `addEdges` mutate the store even before `<VueFlow>` mounts — matching xyflow/react.
+
+  ### Built-in nodes (label rendering)
+
+  The built-in `input` / `default` / `output` node components read labels from `data.label`. The deprecated top-level `node.label` is no longer supported — move labels to `data: { label: 'My Node' }`.
+
+  ### Migration cheat-sheet
+
+  | Old                                                          | New                                                                                       |
+  | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+  | `node.parentNode`                                            | `node.parentId`                                                                           |
+  | `node.computedPosition`                                      | `node.internals.positionAbsolute` (+ `node.internals.z`)                                  |
+  | `node.dimensions`                                            | `node.measured`                                                                           |
+  | `node.handleBounds`                                          | `node.internals.handleBounds`                                                             |
+  | `node.isParent`                                              | `parentLookup.value.get(node.id)?.size > 0`                                               |
+  | `node.label` (top-level)                                     | `node.data.label`                                                                         |
+  | `NodeProps<MyData>`                                          | `NodeProps<Node<MyData, 'myType'>>`                                                       |
+  | `EdgeProps<MyData>`                                          | `EdgeProps<Edge<MyData, 'myType'>>`                                                       |
+  | `NodeDimensionChange.updateStyle`                            | `NodeDimensionChange.setAttributes`                                                       |
+  | `NodePositionChange.from`                                    | `NodePositionChange.positionAbsolute`                                                     |
+  | `NodeAddChange.item: GraphNode`                              | `NodeAddChange.item: Node`                                                                |
+  | `EdgeAddChange.item: GraphEdge`                              | `EdgeAddChange.item: Edge`                                                                |
+  | `EdgeRemoveChange.{source,target,sourceHandle,targetHandle}` | look up the edge via `findEdge(id)`                                                       |
+  | `onPaneReady` / `@pane-ready`                                | `onInit` / `@init`                                                                        |
+  | `<VueFlow v-model="elements">`                               | `<VueFlow :nodes="nodes" :edges="edges">` (or `v-model:nodes`/`v-model:edges`)            |
+  | `store.setElements(...)`                                     | `store.setNodes(...)` + `store.setEdges(...)`                                             |
+  | `store.addSelectedElements(...)`                             | `store.addSelectedNodes(...)` / `store.addSelectedEdges(...)`                             |
+  | `store.removeSelectedElements(...)`                          | `store.removeSelectedNodes(...)` / `store.removeSelectedEdges(...)`                       |
+  | `store.getElements` / `store.getSelectedElements`            | `store.getNodes` / `store.getEdges` / `store.getSelectedNodes` / `store.getSelectedEdges` |
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`702ff95`](https://github.com/bcakmakoglu/vue-flow/commit/702ff950096dd3f563e7747c32d8627239c652ce) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove experimental features flag
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`6da35f5`](https://github.com/bcakmakoglu/vue-flow/commit/6da35f5767588f836292c91ce045b6c3b54a579e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update handle styles and avoid using fixed pixel positions to offset handle position and instead use transform to align handles
+
+- [#1549](https://github.com/bcakmakoglu/vue-flow/pull/1549) [`f6bb711`](https://github.com/bcakmakoglu/vue-flow/commit/f6bb7111bf53b174ddbef5b458d249188d8b1524) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove deprecated exports `addEdge`, `updateEdge` & `useZoomPanHelper`
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace d3 zoom and pan with panzoom instance
+
+### Minor Changes
+
+- [#2005](https://github.com/bcakmakoglu/vue-flow/pull/2005) [`30cbd70`](https://github.com/bcakmakoglu/vue-flow/commit/30cbd702e5a00e92539fac53d3535ce7a0e0d174) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `MiniMap` component into core pkg.
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace existing graph utils exports with those already provided by `@xyflow/system`:
+
+  - Replace utils
+    - `clamp`
+    - `clampPosition`
+    - `getDimensions`
+    - `getHostForElement`
+    - `getOverlappingArea`
+    - `rectToBox`
+    - `boxToRect`
+    - `getBoundsofRects`
+    - `getBoundsOfBoxes`
+    - `rendererPointToPoint`
+    - `getMarkerId`
+    - `isRect`
+    - `isNumeric`
+    - `calcAutoPan`
+    - `isMouseEvent`
+    - `getEventPosition`
+
+  -Remove utils
+
+  - `isMacOS`
+
+- [#2004](https://github.com/bcakmakoglu/vue-flow/pull/2004) [`b5f7162`](https://github.com/bcakmakoglu/vue-flow/commit/b5f7162a002c1aafa2effe35697be62ece42fd56) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `Controls` component into core pkg.
+
+- [#1548](https://github.com/bcakmakoglu/vue-flow/pull/1548) [`1359e81`](https://github.com/bcakmakoglu/vue-flow/commit/1359e81810d16277e20684eca99e52deafa21e13) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `<Background>` component to core package
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - `NodeResizer`, `NodeResizeControl`, and `NodeToolbar` are now exported directly from `@vue-flow/core`, and the resize-control styles ship with `@vue-flow/core/dist/style.css`. The `@vue-flow/node-resizer` and `@vue-flow/node-toolbar` packages are deprecated; install only `@vue-flow/core` going forward.
+
+- [#2004](https://github.com/bcakmakoglu/vue-flow/pull/2004) [`b5f7162`](https://github.com/bcakmakoglu/vue-flow/commit/b5f7162a002c1aafa2effe35697be62ece42fd56) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `<Controls>` component to core pkg
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace d3 with xyflow minimap instance
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace existing edge utils with ones that are already provided by `@xyflow/system` and re-export them
+
+### Patch Changes
+
+- [#2034](https://github.com/bcakmakoglu/vue-flow/pull/2034) [`d7577ae`](https://github.com/bcakmakoglu/vue-flow/commit/d7577aef8b34c7a7bf4f8929fdc815e29e322c63) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Rebuild `useHandle` on top of `@xyflow/system`'s `XYHandle`. Drag-to-connect now goes through `XYHandle.onPointerDown` — the same connection engine that powers `xyflow/react` and `xyflow/svelte` — instead of the previous vue-flow specific drag loop. Click-to-connect stays vue-flow specific so the richer `isValidConnection({ source, target, sourceHandle, targetHandle }, { nodes, edges, sourceNode, targetNode })` callback signature is preserved.
+
+  No public-API changes. `useHandle`'s props (`handleId`, `nodeId`, `type`, `isValidConnection`, `edgeUpdaterType`, `onEdgeUpdate`, `onEdgeUpdateEnd`) and return shape (`handlePointerDown`, `handleClick`) are unchanged. The `onConnectStart` / `onConnect` / `onConnectEnd` event hooks fire with the same payloads they did before.
+
+  Internal effects of the migration:
+
+  - Auto-pan on connect, the connection radius / closest-handle resolution, and the drag threshold are now driven by the system implementation. Behaviour is in lockstep with xyflow/react and xyflow/svelte.
+  - A bridge inside `useHandle` decomposes the system's unified `ConnectionState` into vue-flow's split-field store (`connectionStartHandle`, `connectionEndHandle`, `connectionPosition`, `connectionStatus`), so `useConnection`, `Pane.vue`, `ZoomPane.vue`, and `<Handle />` continue to read the same reactive fields they always have.
+  - The user-facing `ValidConnectionFunc` is wrapped at the boundary to fit system's bare `(edge) => boolean` signature — source/target nodes are resolved from `nodeLookup` before the user's callback runs.
+
 ## 1.48.2
 
 ### Patch Changes
