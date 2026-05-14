@@ -6,7 +6,7 @@
     "@vue-flow/examples-nuxt3": "0.0.0",
     "@vue-flow/examples-quasar": "0.0.0",
     "@vue-flow/examples-vite": "0.0.0",
-    "@vue-flow/core": "1.48.0",
+    "@vue-flow/core": "1.48.2",
     "@vue-flow/tests": "0.0.0",
     "@tooling/eslint-config": "0.0.0",
     "@tooling/tsconfig": "0.0.0",
