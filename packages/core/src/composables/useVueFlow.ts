@@ -63,7 +63,8 @@ export function useVueFlow<NodeType extends Node = Node>(idOrOptions?: string | 
   /**
    * If we still don't have a store (and ids don't conflict), create one and register it.
    */
-  if (!vueFlow || (id && vueFlow.id !== id)) {
+  const created = !vueFlow || (id && vueFlow.id !== id)
+  if (created) {
     const name = id ?? storage.getId()
 
     vueFlow = storage.create(
@@ -107,12 +108,20 @@ export function useVueFlow<NodeType extends Node = Node>(idOrOptions?: string | 
     })
   }
 
+  // If options were passed but we reused an existing store (e.g. <VueFlow id="…" /> mounts and finds
+  // a store previously created by `useVueFlow({ id })` in the test/setup), forward those options
+  // through setState so things like `defaultEdgeOptions` are applied before nodes/edges parse.
+  const resolved = vueFlow as VueFlowStore<NodeType>
+  if (!created && isOptsObj && resolved) {
+    resolved.setState(idOrOptions as Parameters<typeof resolved.setState>[0])
+  }
+
   // Provide a fresh instance into context for descendant components
   if (scope) {
-    provide(VueFlow, vueFlow as unknown as VueFlowStore)
+    provide(VueFlow, resolved as unknown as VueFlowStore)
     // Tag the current scope so subsequent sibling `useVueFlow` calls in the same setup share the store.
     if (!scope.vueFlowId) {
-      scope.vueFlowId = vueFlow.id
+      scope.vueFlowId = resolved.id
     }
   }
 

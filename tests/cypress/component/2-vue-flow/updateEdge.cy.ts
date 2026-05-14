@@ -8,22 +8,24 @@ describe('Check if edges are updatable', () => {
     cy.vueFlow({
       fitViewOnInit: false,
       edgesUpdatable: true,
-      modelValue: [
+      nodes: [
         {
           id: '1',
-          label: 'Node 1',
+          data: { label: 'Node 1' },
           position: { x: 0, y: 0 },
         },
         {
           id: '2',
-          label: 'Node 2',
+          data: { label: 'Node 2' },
           position: { x: 300, y: 300 },
         },
         {
           id: '3',
-          label: 'Node 3',
+          data: { label: 'Node 3' },
           position: { x: 300, y: 0 },
         },
+      ],
+      edges: [
         {
           id: 'e1-2',
           source: '1',

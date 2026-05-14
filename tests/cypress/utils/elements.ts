@@ -10,7 +10,6 @@ export function getElements(xElements = 10, yElements = 10) {
     for (let x = 0; x < xElements; x++) {
       initialNodes.push({
         id: nodeId.toString(),
-        label: `Node ${nodeId}`,
         style: (node) => {
           const style: Record<string, any> = { width: `50px`, fontSize: `11px`, zIndex: 1 }
           if (node.selected) {
@@ -21,6 +20,7 @@ export function getElements(xElements = 10, yElements = 10) {
         type: 'default',
         position: { x: x * 100, y: y * 50 },
         data: {
+          label: `Node ${nodeId}`,
           randomData: Math.floor(Math.random() * 1e3),
         },
       })

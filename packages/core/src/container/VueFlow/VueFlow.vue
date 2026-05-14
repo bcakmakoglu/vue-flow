@@ -53,7 +53,7 @@ const slots = defineSlots<FlowSlots<NodeType>>()
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const vfInstance = useVueFlow<NodeType>()
+const vfInstance = useVueFlow<NodeType>(props)
 
 // watch props and update store state
 const disposeWatchers = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, vfInstance)
