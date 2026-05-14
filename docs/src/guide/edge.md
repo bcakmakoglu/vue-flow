@@ -860,16 +860,16 @@ const edges = ref([
 ])
   
 // bind listeners to the event handlers
-onEdgeClick((event, edge) => {
-  console.log('edge clicked', edge)
+onEdgeClick((event) => {
+  console.log('edge clicked', event)
 })
 
-onEdgeDoubleClick((event, edge) => {
-  console.log('edge double clicked', edge)
+onEdgeDoubleClick((event) => {
+  console.log('edge double clicked', event)
 })
 
-onEdgeContextMenu((event, edge) => {
-  console.log('edge context menu', edge)
+onEdgeContextMenu((event) => {
+  console.log('edge context menu', event)
 })
   
 // ... and so on  

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.48.2] - 2026-01-28
+
+[87b2d2c](87b2d2c4e8b8e1e321a9cb0795987672b13de913)...[52a0301](52a030124876245ddc7e32e30445ba506246503d)
+
+### Bug Fixes
+
+- Use autoscale prop to check if resize handle should scale (#2012) ([75a2e05](75a2e052dbe3d2930fa67a0b5fd5715210d14803))
+- Disable selection on drag when panning mode is active (#2014) ([8c1d390](8c1d390c8f84bfb216f324bf72e633e40de0efe2))
+
 ## [1.48.1] - 2025-12-17
 
 [09cb136](09cb136ab7326da269f2e97f926880be0605cff6)...[87b2d2c](87b2d2c4e8b8e1e321a9cb0795987672b13de913)

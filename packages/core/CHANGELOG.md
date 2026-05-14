@@ -1,5 +1,11 @@
 # @vue-flow/core
 
+## 1.48.2
+
+### Patch Changes
+
+- [#2014](https://github.com/bcakmakoglu/vue-flow/pull/2014) [`c81d765`](https://github.com/bcakmakoglu/vue-flow/commit/c81d7657ba9e541f0f0c97a01cd62c777f177d30) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Disable selection on drag by setting the keycode to `true` when panning mode is active.
+
 ## 1.48.1
 
 ### Patch Changes
