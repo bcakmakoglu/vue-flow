@@ -612,6 +612,14 @@ export function useActions<NodeType extends Node = Node>(
       state.defaultEdgeOptions = opts.defaultEdgeOptions
     }
 
+    if (isDef(opts.nodes)) {
+      setNodes(opts.nodes as unknown as NodeType[])
+    }
+
+    if (isDef(opts.edges)) {
+      setEdges(opts.edges)
+    }
+
     const setSkippedOptions = () => {
       if (isDef(opts.maxZoom)) {
         setMaxZoom(opts.maxZoom)

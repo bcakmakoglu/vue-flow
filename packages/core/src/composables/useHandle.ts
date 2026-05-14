@@ -136,7 +136,7 @@ export function useHandle({
 
       const fromNodeInternal = nodeLookup.value.get(toValue(nodeId))!
 
-      const from = getHandlePosition(fromNodeInternal, fromHandle, Position.Left, true)
+      const from = getHandlePosition(fromNodeInternal as any, fromHandle, Position.Left, true)
 
       const newConnection: ConnectionInProgress = {
         inProgress: true,

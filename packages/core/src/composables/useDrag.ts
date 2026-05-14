@@ -64,7 +64,7 @@ export function useDrag(params: UseDragParams) {
     const dragInstance = XYDrag({
       getStoreItems: () => ({
         nodes: getNodes.value,
-        nodeLookup: nodeLookup.value,
+        nodeLookup: nodeLookup.value as any,
         edges: getEdges.value as unknown as EdgeBase[],
         nodeExtent: (isCoordinateExtent(nodeExtent.value as CoordinateExtent) ? nodeExtent.value : infiniteExtent) as CoordinateExtent,
         snapGrid: snapGrid.value,

@@ -1,6 +1,5 @@
 import type { HTMLAttributes } from 'vue'
-import type { InternalNodeBase, NodeBase, NodeProps as NodePropsBase } from '@xyflow/system'
-import type { Dimensions, Styles, XYZPosition } from './flow'
+import type { Dimensions, Position, Styles, XYPosition, XYZPosition } from './flow'
 import type { HandleElement } from './handle'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] */
@@ -22,34 +21,49 @@ export interface NodeHandleBounds {
   target: HandleElement[] | null
 }
 
-export type Node<
+/**
+ * Node type. Defined flat (rather than extending NodeBase) so the Vue SFC compiler can resolve `NodeProps<Node<...>>` without descending into the @xyflow/system d.ts.
+ */
+export interface Node<
   NodeData extends Record<string, unknown> = Record<string, unknown>,
   NodeType extends string | undefined = string | undefined,
-> = NodeBase<NodeData, NodeType> & {
-  /** define node extent, i.e. area in which node can be moved */
-  // extent?: CoordinateExtent | CoordinateExtentRange | 'parent'
-  /** expands parent area to fit child node */
+> {
+  id: string
+  position: XYPosition
+  data: NodeData
+  type?: NodeType
+  sourcePosition?: Position
+  targetPosition?: Position
+  hidden?: boolean
+  selected?: boolean
+  dragging?: boolean
+  draggable?: boolean
+  selectable?: boolean
+  connectable?: boolean
+  deletable?: boolean
+  dragHandle?: string
+  width?: number
+  height?: number
+  initialWidth?: number
+  initialHeight?: number
+  parentId?: string
+  zIndex?: number
+  extent?: 'parent' | CoordinateExtent | null
   expandParent?: boolean
+  ariaLabel?: string
+  origin?: [number, number]
+  handles?: any[]
+  measured?: { width?: number; height?: number }
   /**
    * todo: rename to `parentId` in next major release
    * define node as a child node by setting a parent node id
    */
   parentNode?: string
-  /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
   class?: string | string[] | Record<string, any>
-  /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
   style?: Styles
   resizing?: boolean
   focusable?: boolean
-  /**
-   * The ARIA role attribute for the node element, used for accessibility.
-   * @default "group"
-   */
   ariaRole?: string
-
-  /**
-   * General escape hatch for adding custom attributes to the node's DOM element.
-   */
   domAttributes?: Omit<
     HTMLAttributes,
     | 'id'
@@ -66,16 +80,32 @@ export type Node<
     | 'onKeydown'
   >
 }
-export type GraphNode<NodeType extends Node = Node> = InternalNodeBase<NodeType> & {
+export type GraphNode<NodeType extends Node = Node> = Omit<NodeType, 'measured'> & {
   /** absolute position in relation to parent elements + z-index */
   computedPosition: XYZPosition
   handleBounds: NodeHandleBounds
   /** node width, height */
   dimensions: Dimensions
   isParent: boolean
+  measured: { width: number; height: number }
+  internals: { positionAbsolute: XYPosition; z: number; userNode: NodeType; handleBounds?: { source: any[] | null; target: any[] | null } | null }
 }
 
-/** these props are passed to node components */
-export type NodeProps<NodeType extends Node = Node> = NodePropsBase<NodeType>
+/**
+ * these props are passed to node components
+ *
+ * Parameterized on a `NodeType` (matching the xyflow/react convention).
+ * `Node` is intentionally flat (no `extends NodeBase`) so the Vue SFC compiler can resolve
+ * `NodeProps<...>` without descending into `@xyflow/system`'s d.ts.
+ */
+export type NodeProps<NodeType extends Node = Node> = Pick<
+  NodeType,
+  'id' | 'data' | 'width' | 'height' | 'sourcePosition' | 'targetPosition' | 'dragHandle' | 'parentId'
+> &
+  Required<Pick<NodeType, 'type' | 'dragging' | 'zIndex' | 'selectable' | 'deletable' | 'selected' | 'draggable'>> & {
+    isConnectable: boolean
+    positionAbsoluteX: number
+    positionAbsoluteY: number
+  }
 
 export type BuiltInNode = Node<{ label: string }, 'input' | 'output' | 'default'> | Node<Record<string, never>, 'group'>

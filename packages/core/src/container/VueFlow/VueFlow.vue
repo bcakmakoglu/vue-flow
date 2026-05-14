@@ -67,7 +67,7 @@ useStylesLoadedWarning()
 // slots will be passed via provide
 // this is to avoid having to pass them down through all the components
 // as that would require a lot of boilerplate and causes significant performance drops
-provide(Slots, slots)
+provide(Slots, slots as unknown as FlowSlots)
 
 onUnmounted(disposeWatchers)
 

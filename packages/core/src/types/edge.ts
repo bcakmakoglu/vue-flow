@@ -166,14 +166,19 @@ export type GraphEdge<Data = ElementData, Type extends string = string> = Edge<D
   type: Type
 } & EdgePositions
 
-/** these props are passed to edge components */
-export interface EdgeProps<Data = ElementData, Type extends string = string> extends EdgeLabelOptions, EdgePositions {
+/**
+ * these props are passed to edge components
+ *
+ * Parameterized on an `EdgeType` (matching the xyflow/react convention).
+ * Defaults preserved for back-compat when no generic is passed.
+ */
+export interface EdgeProps<EdgeType extends Edge = Edge> extends EdgeLabelOptions, EdgePositions {
   id: string
   sourceNode: GraphNode
   targetNode: GraphNode
   source: string
   target: string
-  type: Type
+  type: NonNullable<EdgeType['type']> | string
   label?: string | VNode | Component<EdgeTextProps> | object
   style?: CSSProperties
   selected?: boolean
@@ -187,7 +192,7 @@ export interface EdgeProps<Data = ElementData, Type extends string = string> ext
   markerEnd: string
   curvature?: number
   interactionWidth?: number
-  data: Data
+  data: EdgeType extends { data?: infer D } ? D : ElementData
 }
 
 export interface BaseEdgeProps extends EdgeLabelOptions {
