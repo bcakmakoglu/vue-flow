@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'vue'
-import type { Dimensions, Position, Styles, XYPosition, XYZPosition } from './flow'
+import type { Position, Styles, XYPosition } from './flow'
 import type { HandleElement, HandleType } from './handle'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] */

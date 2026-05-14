@@ -3,7 +3,6 @@ import {
   areConnectionMapsEqual as xyflowAreConnectionMapsEqual,
   handleConnectionChange as xyflowHandleConnectionChange,
 } from '@xyflow/system'
-export { areSetsEqual } from '@xyflow/system'
 import type {
   Actions,
   Connection,
@@ -20,6 +19,8 @@ import type {
   VueFlowStore,
 } from '../types'
 import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
+
+export { areSetsEqual } from '@xyflow/system'
 
 type NonUndefined<T> = T extends undefined ? never : T
 

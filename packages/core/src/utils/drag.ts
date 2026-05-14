@@ -1,13 +1,5 @@
 import { clampPosition } from '@xyflow/system'
-import type {
-  CoordinateExtent,
-  CoordinateExtentRange,
-  Dimensions,
-  GraphNode,
-  NodeDragItem,
-  State,
-  XYPosition,
-} from '../types'
+import type { CoordinateExtent, CoordinateExtentRange, Dimensions, GraphNode, NodeDragItem, State, XYPosition } from '../types'
 import { ErrorCode, VueFlowError } from '.'
 
 function getExtentPadding(padding: CoordinateExtentRange['padding']): [number, number, number, number] {

@@ -66,7 +66,10 @@ export function useVueFlow<NodeType extends Node = Node>(idOrOptions?: string | 
   if (!vueFlow || (id && vueFlow.id !== id)) {
     const name = id ?? storage.getId()
 
-    vueFlow = storage.create(name, isOptsObj ? (idOrOptions as FlowOptions<NodeType>) : undefined) as unknown as VueFlowStore<NodeType>
+    vueFlow = storage.create(
+      name,
+      isOptsObj ? (idOrOptions as FlowOptions<NodeType>) : undefined,
+    ) as unknown as VueFlowStore<NodeType>
 
     /**
      * Register default change handlers so that `addNodes`/`addEdges`/etc. mutate the store even

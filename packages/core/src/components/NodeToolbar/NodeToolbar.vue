@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
 import type { Viewport } from '@xyflow/system'
+import type { CSSProperties } from 'vue'
 import { useVueFlow } from '../../composables'
 import { NodeId } from '../../context'
 import type { GraphNode, Rect } from '../../types'
 import { Position } from '../../types'
 import { getRectOfNodes } from '../../utils'
 
-import type { CSSProperties } from 'vue'
 import type { Align, NodeToolbarProps } from './types'
 
 const props = withDefaults(defineProps<NodeToolbarProps>(), {

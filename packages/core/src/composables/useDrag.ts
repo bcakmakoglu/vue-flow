@@ -66,7 +66,9 @@ export function useDrag(params: UseDragParams) {
         nodes: getNodes.value,
         nodeLookup: nodeLookup.value,
         edges: getEdges.value as unknown as EdgeBase[],
-        nodeExtent: (isCoordinateExtent(nodeExtent.value as CoordinateExtent) ? nodeExtent.value : infiniteExtent) as CoordinateExtent,
+        nodeExtent: (isCoordinateExtent(nodeExtent.value as CoordinateExtent)
+          ? nodeExtent.value
+          : infiniteExtent) as CoordinateExtent,
         snapGrid: snapGrid.value,
         snapToGrid: snapToGrid.value,
         nodeOrigin: [0, 0],

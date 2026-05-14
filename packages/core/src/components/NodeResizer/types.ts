@@ -1,8 +1,8 @@
 import type {
   ControlLinePosition,
   ControlPosition,
-  ResizeDragEvent,
   ResizeControlVariant,
+  ResizeDragEvent,
   ResizeParams,
   ResizeParamsWithDirection,
   ShouldResize,

@@ -64,10 +64,7 @@ watch(
         dimensionChange.dimensions!.height = maxHeight
       }
 
-      if (
-        dimensionChange.dimensions!.width !== n.measured.width ||
-        dimensionChange.dimensions!.height !== n.measured.height
-      ) {
+      if (dimensionChange.dimensions!.width !== n.measured.width || dimensionChange.dimensions!.height !== n.measured.height) {
         triggerEmits.nodesChange([dimensionChange])
       }
     }
