@@ -16,7 +16,8 @@ const {
   viewport,
   emits,
   userSelectionActive,
-  removeSelectedElements,
+  removeSelectedNodes,
+  removeSelectedEdges,
   userSelectionRect,
   elementsSelectable,
   nodesSelectionActive,
@@ -90,7 +91,8 @@ function onClick(event: MouseEvent) {
 
   emits.paneClick(event)
 
-  removeSelectedElements()
+  removeSelectedNodes()
+  removeSelectedEdges()
 
   nodesSelectionActive.value = false
 }
@@ -128,7 +130,8 @@ function onPointerDown(event: PointerEvent) {
   selectionStarted = true
   selectionInProgress = false
 
-  removeSelectedElements()
+  removeSelectedNodes()
+  removeSelectedEdges()
 
   userSelectionRect.value = {
     width: 0,

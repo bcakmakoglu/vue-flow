@@ -7,14 +7,14 @@ const { nodes, edges } = getElements(15, 15)
 
 const elements = ref([...nodes, ...edges])
 
-const { onPaneReady, dimensions, fitView } = useVueFlow()
+const { onInit, dimensions, fitView } = useVueFlow()
 
-onPaneReady((i) => {
+onInit((i) => {
   i.fitView({
     padding: 0.2,
   })
 
-  console.log(i.getElements.value)
+  console.log(i.getNodes.value, i.getEdges.value)
 })
 
 function toggleClass() {

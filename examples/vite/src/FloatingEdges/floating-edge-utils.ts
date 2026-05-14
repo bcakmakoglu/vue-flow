@@ -77,7 +77,7 @@ export function createElements() {
   const elements = []
   const center = { x: win.innerWidth / 2, y: win.innerHeight / 2 }
 
-  elements.push({ id: 'target', label: 'Target', position: center })
+  elements.push({ id: 'target', data: { label: 'Target' }, position: center })
 
   for (let i = 0; i < 8; i++) {
     const degrees = i * (360 / 8)
@@ -85,7 +85,7 @@ export function createElements() {
     const x = 250 * Math.cos(radians) + center.x
     const y = 250 * Math.sin(radians) + center.y
 
-    elements.push({ id: `${i}`, label: 'Source', position: { x, y } })
+    elements.push({ id: `${i}`, data: { label: 'Source' }, position: { x, y } })
 
     elements.push({
       id: `edge-${i}`,

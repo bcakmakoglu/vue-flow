@@ -63,40 +63,42 @@ const initialElements: Elements = [
   {
     id: '1',
     type: 'input',
-    label: 'Welcome to <strong>Vue VueFlow!</strong>',
+    data: { label: 'Welcome to <strong>Vue VueFlow!</strong>' },
     position: { x: 250, y: 0 },
   },
   {
     id: '2',
-    label: 'This is a <strong>default node</strong>',
+    data: { label: 'This is a <strong>default node</strong>' },
     position: { x: 100, y: 100 },
   },
   {
     id: '3',
-    label: 'This one has a <strong>custom style</strong>',
+    data: { label: 'This one has a <strong>custom style</strong>' },
     position: { x: 400, y: 100 },
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
   {
     id: '4',
     position: { x: 250, y: 200 },
-    label: `You can find the docs on
+    data: {
+      label: `You can find the docs on
           <a href="https://github.com/bcakmakoglu/vue-flow" target="_blank" rel="noopener noreferrer">
             Github
           </a>`,
+    },
   },
   {
     id: '5',
-    label: 'Or check out the other <strong>examples</strong>',
+    data: { label: 'Or check out the other <strong>examples</strong>' },
     position: { x: 250, y: 325 },
   },
   {
     id: '6',
     type: 'output',
-    label: 'An <strong>output node</strong>',
+    data: { label: 'An <strong>output node</strong>' },
     position: { x: 100, y: 480 },
   },
-  { id: '7', type: 'output', label: 'Another output node', position: { x: 400, y: 450 } },
+  { id: '7', type: 'output', data: { label: 'Another output node' }, position: { x: 400, y: 450 } },
   { id: 'e1-2', source: '1', target: '2', label: 'this is an edge label' },
   { id: 'e1-3', source: '1', target: '3' },
   { id: 'e3-4', source: '3', target: '4', animated: true, label: 'animated edge' },
@@ -150,7 +152,7 @@ const elements = ref<Elements>(initialElements)
     :connection-line-style="{ stroke: '#ddd' }"
     snap-to-grid
     :snap-grid="snapGrid"
-    @pane-ready="onLoad"
+    @init="onLoad"
     @pane-click="onPaneClick"
     @pane-scroll="onPaneScroll"
     @pane-contex-menu="onPaneContextMenu"

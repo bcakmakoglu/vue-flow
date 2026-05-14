@@ -3,8 +3,8 @@ import type { Elements } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 
 const initialElements: Elements = [
-  { id: '1', label: '-', position: { x: 100, y: 100 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 200 } },
+  { id: '1', data: { label: '-' }, position: { x: 100, y: 100 } },
+  { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 200 } },
   { id: 'e1-2', source: '1', target: '2' },
 ]
 
@@ -18,9 +18,8 @@ const opts = reactive({
 
 function updateNode() {
   elements.value.forEach((el) => {
-    if (el.id === '1') {
-      // it's important that you create a new object here in order to notify react flow about the change
-      el.label = opts.name
+    if (el.id === '1' && 'data' in el) {
+      el.data = { ...el.data, label: opts.name }
       el.style = { backgroundColor: opts.bg }
       el.hidden = opts.hidden
     }

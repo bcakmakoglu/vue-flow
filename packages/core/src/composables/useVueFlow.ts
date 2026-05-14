@@ -1,5 +1,5 @@
 import { getCurrentScope, inject, provide } from 'vue'
-import type { Node, VueFlowStore } from '../types'
+import type { FlowOptions, Node, VueFlowStore } from '../types'
 import { VueFlow } from '../context'
 import { Storage } from '../utils/storage'
 
@@ -13,12 +13,19 @@ import { Storage } from '../utils/storage'
  *
  * @public
  * @returns a vue flow store instance
- * @param id - id of the store instance or options to create a new store instance
+ * @param idOrOptions - id of the store instance, or options to create a new store instance
  */
-export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowStore<NodeType> {
+export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowStore<NodeType>
+export function useVueFlow<NodeType extends Node = Node>(options?: FlowOptions<NodeType>): VueFlowStore<NodeType>
+export function useVueFlow<NodeType extends Node = Node>(idOrOptions?: string | FlowOptions<NodeType>): VueFlowStore<NodeType> {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope()
+
+  const isOptsObj = typeof idOrOptions === 'object' && idOrOptions !== null
+
+  const options = (isOptsObj ? idOrOptions : { id: idOrOptions }) as FlowOptions<NodeType> & { id?: string }
+  const id = options.id
 
   let vueFlow: VueFlowStore<NodeType> | null | undefined
 
@@ -49,7 +56,7 @@ export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowSt
   if (!vueFlow || (id && vueFlow.id !== id)) {
     const name = id ?? storage.getId()
 
-    vueFlow = storage.create(name) as unknown as VueFlowStore<NodeType>
+    vueFlow = storage.create(name, isOptsObj ? (idOrOptions as FlowOptions<NodeType>) : undefined) as unknown as VueFlowStore<NodeType>
   }
 
   // Provide a fresh instance into context if we are in a scope

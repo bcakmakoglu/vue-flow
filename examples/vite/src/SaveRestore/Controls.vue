@@ -37,7 +37,7 @@ function onRestore() {
 function onAdd() {
   addNodes({
     id: `random_node-${getNodeId()}`,
-    label: 'Added node',
+    data: { label: 'Added node' },
     position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
   })
 }

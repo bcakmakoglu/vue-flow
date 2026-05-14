@@ -99,6 +99,8 @@ export interface FlowExportObject {
 
 export type FlowImportObject = { [key in keyof FlowExportObject]?: FlowExportObject[key] }
 
+export type FlowOptions<NodeType extends Node = Node> = FlowProps<NodeType>
+
 export interface FlowProps<NodeType extends Node = Node> {
   id?: string
   nodes?: NodeType[]

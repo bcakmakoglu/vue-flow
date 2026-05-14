@@ -167,7 +167,7 @@ const elements = ref(initialElements)
     v-model="elements"
     :connection-line-type="ConnectionLineType.SmoothStep"
     :connection-mode="ConnectionMode.Loose"
-    @pane-ready="({ fitView }) => fitView()"
+    @init="({ fitView }) => fitView()"
   >
     <template #node-custom="props">
       <CustomNode v-bind="props" />

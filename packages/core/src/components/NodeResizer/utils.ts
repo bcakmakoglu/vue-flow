@@ -1,6 +1,7 @@
+import type { ControlPosition } from './types'
 import { ResizeControlVariant } from './types'
 
-export const DefaultPositions = {
+export const DefaultPositions: Record<ResizeControlVariant, ControlPosition> = {
   [ResizeControlVariant.Line]: 'right',
   [ResizeControlVariant.Handle]: 'bottom-right',
 }

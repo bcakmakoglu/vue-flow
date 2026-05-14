@@ -6,17 +6,17 @@ const initialElements: Elements = [
   {
     id: '1',
     type: 'input',
-    label: 'Node <strong>A</strong>',
+    data: { label: 'Node <strong>A</strong>' },
     position: { x: 250, y: 0 },
   },
   {
     id: '2',
-    label: 'Node <strong>B</strong>',
+    data: { label: 'Node <strong>B</strong>' },
     position: { x: 100, y: 100 },
   },
   {
     id: '3',
-    label: 'Node <strong>C</strong>',
+    data: { label: 'Node <strong>C</strong>' },
     position: { x: 400, y: 100 },
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
@@ -49,7 +49,7 @@ function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
     v-model="elements"
     :snap-to-grid="true"
     :connection-mode="ConnectionMode.Loose"
-    @pane-ready="onLoad"
+    @init="onLoad"
     @edge-update="onEdgeUpdate"
     @edge-update-start="onEdgeUpdateStart"
     @edge-update-end="onEdgeUpdateEnd"

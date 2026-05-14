@@ -1,8 +1,8 @@
-import type { InternalNodeBase, NodeDragItem } from '@xyflow/system'
-import { XYDrag } from '@xyflow/system'
+import type { CoordinateExtent, EdgeBase, InternalNodeBase, NodeDragItem as SystemNodeDragItem } from '@xyflow/system'
+import { infiniteExtent, isCoordinateExtent, XYDrag } from '@xyflow/system'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import { shallowRef, toValue, watchEffect } from 'vue'
-import type { NodeDragEvent } from '../types'
+import type { NodeDragEvent, NodeDragItem } from '../types'
 import { useVueFlow } from '.'
 
 interface UseDragParams {
@@ -65,8 +65,8 @@ export function useDrag(params: UseDragParams) {
       getStoreItems: () => ({
         nodes: getNodes.value,
         nodeLookup: nodeLookup.value,
-        edges: getEdges.value,
-        nodeExtent: nodeExtent.value,
+        edges: getEdges.value as unknown as EdgeBase[],
+        nodeExtent: (isCoordinateExtent(nodeExtent.value as CoordinateExtent) ? nodeExtent.value : infiniteExtent) as CoordinateExtent,
         snapGrid: snapGrid.value,
         snapToGrid: snapToGrid.value,
         nodeOrigin: [0, 0],
@@ -82,8 +82,22 @@ export function useDrag(params: UseDragParams) {
           removeSelectedNodes(args?.nodes)
           removeSelectedEdges(args?.edges)
         },
-        updateNodePositions: (dragItems: Map<string, NodeDragItem | InternalNodeBase>, isDragging?: boolean) => {
-          const items = Array.from(dragItems.values()) as NodeDragItem[]
+        updateNodePositions: (dragItems: Map<string, SystemNodeDragItem | InternalNodeBase>, isDragging?: boolean) => {
+          const items: NodeDragItem[] = []
+          for (const item of dragItems.values()) {
+            const node = findNode(item.id)
+            const measured = (item as SystemNodeDragItem).measured ?? node?.dimensions ?? { width: 0, height: 0 }
+            items.push({
+              id: item.id,
+              position: item.position,
+              distance: (item as SystemNodeDragItem).distance ?? { x: 0, y: 0 },
+              dimensions: measured,
+              from: node?.position ?? item.position,
+              extent: (item as SystemNodeDragItem).extent,
+              parentNode: (item as SystemNodeDragItem).parentId,
+              expandParent: (item as SystemNodeDragItem).expandParent,
+            })
+          }
           updateNodePositions(items, true, isDragging ?? false)
         },
         autoPanSpeed: autoPanSpeed.value,
@@ -152,13 +166,14 @@ export function useDrag(params: UseDragParams) {
       }
     }
 
-    nodeEl.addEventListener('pointerdown', handlePointerDown)
-    nodeEl.addEventListener('pointerup', handlePointerUp)
+    const target = nodeEl as HTMLElement
+    target.addEventListener('pointerdown', handlePointerDown)
+    target.addEventListener('pointerup', handlePointerUp)
 
     onCleanup(() => {
       dragInstance.destroy()
-      nodeEl.removeEventListener('pointerdown', handlePointerDown)
-      nodeEl.removeEventListener('pointerup', handlePointerUp)
+      target.removeEventListener('pointerdown', handlePointerDown)
+      target.removeEventListener('pointerup', handlePointerUp)
     })
   })
 

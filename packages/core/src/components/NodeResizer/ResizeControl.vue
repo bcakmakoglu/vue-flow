@@ -108,7 +108,7 @@ watchEffect((onCleanup) => {
       maxWidth: props.maxWidth,
       maxHeight: props.maxHeight,
     },
-    keepAspectRatio: props.keepAspectRatio ?? false,
+    keepAspectRatio: Boolean(props.keepAspectRatio ?? false),
     onResizeStart: (event, params) => emits('resizeStart', { event, params }),
     onResize: (event, params) => emits('resize', { event, params }),
     onResizeEnd: (event, params) => emits('resizeEnd', { event, params }),

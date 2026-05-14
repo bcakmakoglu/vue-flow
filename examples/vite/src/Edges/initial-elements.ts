@@ -3,17 +3,17 @@ import { MarkerType } from '@vue-flow/core'
 import CustomLabel from './CustomLabel.vue'
 
 export const initialNodes: Node[] = [
-  { id: '1', type: 'input', label: 'Input 1', position: { x: 250, y: 0 } },
-  { id: '2', label: 'Node 2', position: { x: 150, y: 100 } },
-  { id: '2a', label: 'Node 2a', position: { x: 0, y: 180 } },
-  { id: '3', label: 'Node 3', position: { x: 250, y: 200 } },
-  { id: '4', label: 'Node 4', position: { x: 400, y: 300 } },
-  { id: '3a', label: 'Node 3a', position: { x: 150, y: 300 } },
-  { id: '5', label: 'Node 5', position: { x: 250, y: 400 } },
-  { id: '6', type: 'output', label: 'Output 6', position: { x: 50, y: 550 } },
-  { id: '7', type: 'output', label: 'Output 7', position: { x: 250, y: 550 } },
-  { id: '8', type: 'output', label: 'Output 8', position: { x: 525, y: 600 } },
-  { id: '9', type: 'output', label: 'Output 9', position: { x: 675, y: 500 } },
+  { id: '1', type: 'input', data: { label: 'Input 1' }, position: { x: 250, y: 0 } },
+  { id: '2', data: { label: 'Node 2' }, position: { x: 150, y: 100 } },
+  { id: '2a', data: { label: 'Node 2a' }, position: { x: 0, y: 180 } },
+  { id: '3', data: { label: 'Node 3' }, position: { x: 250, y: 200 } },
+  { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 300 } },
+  { id: '3a', data: { label: 'Node 3a' }, position: { x: 150, y: 300 } },
+  { id: '5', data: { label: 'Node 5' }, position: { x: 250, y: 400 } },
+  { id: '6', type: 'output', data: { label: 'Output 6' }, position: { x: 50, y: 550 } },
+  { id: '7', type: 'output', data: { label: 'Output 7' }, position: { x: 250, y: 550 } },
+  { id: '8', type: 'output', data: { label: 'Output 8' }, position: { x: 525, y: 600 } },
+  { id: '9', type: 'output', data: { label: 'Output 9' }, position: { x: 675, y: 500 } },
 ]
 
 export const initialEdges: Edge[] = [
