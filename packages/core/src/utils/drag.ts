@@ -38,16 +38,16 @@ function getParentExtent(
 
   if (
     parent &&
-    typeof parent.computedPosition.x !== 'undefined' &&
-    typeof parent.computedPosition.y !== 'undefined' &&
-    typeof parent.dimensions.width !== 'undefined' &&
-    typeof parent.dimensions.height !== 'undefined'
+    typeof parent.internals.positionAbsolute.x !== 'undefined' &&
+    typeof parent.internals.positionAbsolute.y !== 'undefined' &&
+    typeof parent.measured.width !== 'undefined' &&
+    typeof parent.measured.height !== 'undefined'
   ) {
     return [
-      [parent.computedPosition.x + left, parent.computedPosition.y + top],
+      [parent.internals.positionAbsolute.x + left, parent.internals.positionAbsolute.y + top],
       [
-        parent.computedPosition.x + parent.dimensions.width - right,
-        parent.computedPosition.y + parent.dimensions.height - bottom,
+        parent.internals.positionAbsolute.x + parent.measured.width - right,
+        parent.internals.positionAbsolute.y + parent.measured.height - bottom,
       ],
     ]
   }
@@ -67,7 +67,7 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
     (currentExtent === 'parent' || (!Array.isArray(currentExtent) && currentExtent?.range === 'parent')) &&
     !item.expandParent
   ) {
-    if (item.parentNode && parent && item.dimensions.width && item.dimensions.height) {
+    if (item.parentId && parent && item.measured.width && item.measured.height) {
       const parentExtent = getParentExtent(currentExtent, item, parent)
 
       if (parentExtent) {
@@ -79,8 +79,8 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
       currentExtent = extent
     }
   } else if (Array.isArray(currentExtent)) {
-    const parentX = parent?.computedPosition.x || 0
-    const parentY = parent?.computedPosition.y || 0
+    const parentX = parent?.internals.positionAbsolute.x || 0
+    const parentY = parent?.internals.positionAbsolute.y || 0
 
     currentExtent = [
       [currentExtent[0][0] + parentX, currentExtent[0][1] + parentY],
@@ -89,8 +89,8 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
   } else if (currentExtent !== 'parent' && currentExtent?.range && Array.isArray(currentExtent.range)) {
     const [top, right, bottom, left] = getExtentPadding(currentExtent.padding)
 
-    const parentX = parent?.computedPosition.x || 0
-    const parentY = parent?.computedPosition.y || 0
+    const parentX = parent?.internals.positionAbsolute.x || 0
+    const parentY = parent?.internals.positionAbsolute.y || 0
 
     currentExtent = [
       [currentExtent.range[0][0] + parentX + left, currentExtent.range[0][1] + parentY + top],
@@ -119,14 +119,14 @@ export function calcNextPosition(
   nodeExtent?: State['nodeExtent'],
   parentNode?: GraphNode,
 ) {
-  const extent = clampNodeExtent(node.dimensions, getExtent(node, triggerError, nodeExtent, parentNode))
+  const extent = clampNodeExtent(node.measured, getExtent(node, triggerError, nodeExtent, parentNode))
 
-  const clampedPos = clampPosition(nextPosition, extent, node.dimensions)
+  const clampedPos = clampPosition(nextPosition, extent, node.measured)
 
   return {
     position: {
-      x: clampedPos.x - (parentNode?.computedPosition.x || 0),
-      y: clampedPos.y - (parentNode?.computedPosition.y || 0),
+      x: clampedPos.x - (parentNode?.internals.positionAbsolute.x || 0),
+      y: clampedPos.y - (parentNode?.internals.positionAbsolute.y || 0),
     },
     computedPosition: clampedPos,
   }

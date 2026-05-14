@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'vue'
 import type { Dimensions, Position, Styles, XYPosition, XYZPosition } from './flow'
-import type { HandleElement } from './handle'
+import type { HandleElement, HandleType } from './handle'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] */
 export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]
@@ -14,6 +14,36 @@ export interface CoordinateExtentRange {
     | [paddingY: number, paddingX: number]
     | [paddingTop: number, paddingX: number, paddingBottom: number]
     | [paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number]
+}
+
+/**
+ * Origin of a node relative to its position. `[0, 0]` is top-left, `[0.5, 0.5]` centers it, `[1, 1]` is bottom-right.
+ *
+ * Locally defined (rather than re-exported from `@xyflow/system`) so the Vue SFC compiler stays out of the
+ * system d.ts (its `Optional<T, K>` utility trips vuejs/core#14236). Structurally identical to system's.
+ */
+export type NodeOrigin = [number, number]
+
+/**
+ * Bounding box for a node — system shape.
+ *
+ * Locally defined; see {@link NodeOrigin}.
+ */
+export type NodeBounds = XYPosition & { width: number | null; height: number | null }
+
+/**
+ * Handle data attached to a node — system shape.
+ *
+ * Locally defined; see {@link NodeOrigin}.
+ */
+export interface NodeHandle {
+  id?: string | null
+  position: Position
+  type: HandleType
+  x: number
+  y: number
+  width?: number
+  height?: number
 }
 
 export interface NodeHandleBounds {
@@ -51,14 +81,9 @@ export interface Node<
   extent?: 'parent' | CoordinateExtent | null
   expandParent?: boolean
   ariaLabel?: string
-  origin?: [number, number]
-  handles?: any[]
+  origin?: NodeOrigin
+  handles?: NodeHandle[]
   measured?: { width?: number; height?: number }
-  /**
-   * todo: rename to `parentId` in next major release
-   * define node as a child node by setting a parent node id
-   */
-  parentNode?: string
   class?: string | string[] | Record<string, any>
   style?: Styles
   resizing?: boolean
@@ -80,15 +105,28 @@ export interface Node<
     | 'onKeydown'
   >
 }
+/**
+ * Internal node shape used after a user-provided `Node` has been processed by the store.
+ *
+ * Structurally assignable to `@xyflow/system`'s `InternalNodeBase<NodeType>` so we can hand `nodeLookup`
+ * to `XYResizer` / `XYDrag` / `getHandlePosition` without casts.
+ *
+ * Consumers should read absolute position via `internals.positionAbsolute`, z-index via `internals.z`,
+ * handle bounds via `internals.handleBounds`, and dimensions via `measured`. The "is this a parent?"
+ * check moved off the node and lives on `parentLookup` (storage).
+ */
 export type GraphNode<NodeType extends Node = Node> = Omit<NodeType, 'measured'> & {
-  /** absolute position in relation to parent elements + z-index */
-  computedPosition: XYZPosition
-  handleBounds: NodeHandleBounds
-  /** node width, height */
-  dimensions: Dimensions
-  isParent: boolean
+  // inner fields are required (concrete `0` until dimensions are measured) — narrower than system's
+  // optional inner shape but still assignable to `InternalNodeBase`.
   measured: { width: number; height: number }
-  internals: { positionAbsolute: XYPosition; z: number; userNode: NodeType; handleBounds?: { source: any[] | null; target: any[] | null } | null }
+  internals: {
+    positionAbsolute: XYPosition
+    z: number
+    userNode: NodeType
+    rootParentIndex?: number
+    handleBounds?: NodeHandleBounds
+    bounds?: NodeBounds
+  }
 }
 
 /**

@@ -89,7 +89,7 @@ export function useViewportHelper<NodeType extends Node = Node>(state: State<Nod
       ) => {
         const nodesToFit: GraphNode[] = []
         for (const node of state.nodes) {
-          const isVisible = node.dimensions.width && node.dimensions.height && (options?.includeHiddenNodes || !node.hidden)
+          const isVisible = node.measured.width && node.measured.height && (options?.includeHiddenNodes || !node.hidden)
 
           if (isVisible) {
             if (!options.nodes?.length || (options.nodes?.length && options.nodes.includes(node.id))) {

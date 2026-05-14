@@ -138,18 +138,24 @@ const EdgeWrapper = defineComponent({
 
       let sourceNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
-        sourceNodeHandles = sourceNode.handleBounds.source
+        sourceNodeHandles = sourceNode.internals.handleBounds?.source ?? null
       } else {
-        sourceNodeHandles = [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]
+        sourceNodeHandles = [
+          ...(sourceNode.internals.handleBounds?.source || []),
+          ...(sourceNode.internals.handleBounds?.target || []),
+        ]
       }
 
       const sourceHandle = getEdgeHandle(sourceNodeHandles, edge.value.sourceHandle)
 
       let targetNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
-        targetNodeHandles = targetNode.handleBounds.target
+        targetNodeHandles = targetNode.internals.handleBounds?.target ?? null
       } else {
-        targetNodeHandles = [...(targetNode.handleBounds.target || []), ...(targetNode.handleBounds.source || [])]
+        targetNodeHandles = [
+          ...(targetNode.internals.handleBounds?.target || []),
+          ...(targetNode.internals.handleBounds?.source || []),
+        ]
       }
 
       const targetHandle = getEdgeHandle(targetNodeHandles, edge.value.targetHandle)

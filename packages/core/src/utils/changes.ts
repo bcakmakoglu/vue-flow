@@ -19,8 +19,8 @@ import { isGraphNode } from '.'
 
 function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   if (parent) {
-    const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
-    const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
+    const extendWidth = updateItem.position.x + updateItem.measured.width - parent.measured.width
+    const extendHeight = updateItem.position.y + updateItem.measured.height - parent.measured.height
 
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
       let parentStyles: Styles = {}
@@ -29,8 +29,8 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         parentStyles = { ...parent.style }
       }
 
-      parentStyles.width = parentStyles.width ?? `${parent.dimensions.width}px`
-      parentStyles.height = parentStyles.height ?? `${parent.dimensions.height}px`
+      parentStyles.width = parentStyles.width ?? `${parent.measured.width}px`
+      parentStyles.height = parentStyles.height ?? `${parent.measured.height}px`
 
       if (extendWidth > 0) {
         if (typeof parentStyles.width === 'string') {
@@ -78,8 +78,9 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         updateItem.position.y = 0
       }
 
-      parent.dimensions.width = Number(parentStyles.width.toString().replace('px', ''))
-      parent.dimensions.height = Number(parentStyles.height.toString().replace('px', ''))
+      const newWidth = Number(parentStyles.width.toString().replace('px', ''))
+      const newHeight = Number(parentStyles.height.toString().replace('px', ''))
+      parent.measured = { width: newWidth, height: newHeight }
 
       parent.style = {
         ...parent.style,
@@ -138,8 +139,8 @@ export function applyChanges<
               element.dragging = currentChange.dragging
             }
 
-            if (element.expandParent && element.parentNode) {
-              const parent = elements[elementIds.indexOf(element.parentNode)]
+            if (element.expandParent && element.parentId) {
+              const parent = elements[elementIds.indexOf(element.parentId)]
 
               if (parent && isGraphNode(parent)) {
                 handleParentExpand(element, parent)
@@ -150,7 +151,7 @@ export function applyChanges<
         case 'dimensions':
           if (isGraphNode(element)) {
             if (typeof currentChange.dimensions !== 'undefined') {
-              element.dimensions = currentChange.dimensions
+              element.measured = { width: currentChange.dimensions.width, height: currentChange.dimensions.height }
             }
 
             if (typeof currentChange.updateStyle !== 'undefined' && currentChange.updateStyle) {
@@ -165,11 +166,11 @@ export function applyChanges<
               element.resizing = currentChange.resizing
             }
 
-            if (element.expandParent && element.parentNode) {
-              const parent = elements[elementIds.indexOf(element.parentNode)]
+            if (element.expandParent && element.parentId) {
+              const parent = elements[elementIds.indexOf(element.parentId)]
 
               if (parent && isGraphNode(parent)) {
-                const parentInit = !!parent.dimensions.width && !!parent.dimensions.height
+                const parentInit = !!parent.measured.width && !!parent.measured.height
 
                 if (!parentInit) {
                   nextTick(() => {

@@ -32,7 +32,7 @@ export function useNode<NodeType extends Node = Node>(id?: string) {
     id: nodeId,
     nodeEl,
     node,
-    parentNode: computed(() => findNode(node.parentNode)),
+    parentNode: computed(() => findNode(node.parentId)),
     connectedEdges: computed(() => getConnectedEdges([node], edges.value)),
   }
 }

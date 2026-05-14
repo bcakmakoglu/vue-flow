@@ -27,9 +27,9 @@ export { getEventPosition, pointToRendererPoint } from '@xyflow/system'
 
 export function nodeToRect(node: GraphNode): Rect {
   return {
-    ...(node.computedPosition || { x: 0, y: 0 }),
-    width: node.dimensions.width || 0,
-    height: node.dimensions.height || 0,
+    ...(node.internals.positionAbsolute || { x: 0, y: 0 }),
+    width: node.measured.width || 0,
+    height: node.measured.height || 0,
   }
 }
 
@@ -52,7 +52,7 @@ export function isGraphNode<NodeType extends Node = Node>(element: unknown): ele
 export function parseNode<NodeType extends Node = Node>(
   node: Node,
   existingNode?: GraphNode<NodeType>,
-  parentNode?: string,
+  parentId?: string,
 ): GraphNode<NodeType> {
   const initialState = {
     id: node.id.toString(),
@@ -63,23 +63,15 @@ export function parseNode<NodeType extends Node = Node>(
     }),
     internals: {
       positionAbsolute: {
-        x: 0,
-        y: 0,
+        x: node.position?.x ?? 0,
+        y: node.position?.y ?? 0,
       },
-      z: 0,
+      z: node.zIndex ?? 0,
       userNode: node,
-    },
-    dimensions: markRaw({
-      width: 0,
-      height: 0,
-    }),
-    computedPosition: markRaw({
-      z: 0,
-      ...node.position,
-    }),
-    handleBounds: {
-      source: [],
-      target: [],
+      handleBounds: {
+        source: [] as any[],
+        target: [] as any[],
+      },
     },
     draggable: undefined,
     selectable: undefined,
@@ -89,15 +81,17 @@ export function parseNode<NodeType extends Node = Node>(
     dragging: false,
     resizing: false,
     initialized: false,
-    isParent: false,
     position: {
       x: 0,
       y: 0,
     },
     data: isDef(node.data) ? node.data : {},
-  } as GraphNode
+  } as unknown as GraphNode
 
-  return Object.assign(existingNode ?? initialState, node, { id: node.id.toString(), parentNode }) as GraphNode<NodeType>
+  return Object.assign(existingNode ?? initialState, node, {
+    id: node.id.toString(),
+    parentId: node.parentId ?? parentId,
+  }) as GraphNode<NodeType>
 }
 
 export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptions?: DefaultEdgeOptions): GraphEdge {
@@ -147,8 +141,8 @@ export function getRectOfNodes(nodes: GraphNode[]) {
     box = getBoundsOfBoxes(
       box,
       rectToBox({
-        ...node.computedPosition,
-        ...node.dimensions,
+        ...node.internals.positionAbsolute,
+        ...node.measured,
       } as Rect),
     )
   }
@@ -174,9 +168,9 @@ export function getNodesInside<NodeType extends Node = Node>(
   const visibleNodes: GraphNode<NodeType>[] = []
 
   for (const node of nodes) {
-    const { dimensions, selectable = true, hidden = false } = node
-    const width = dimensions.width ?? node.width ?? null
-    const height = dimensions.height ?? node.height ?? null
+    const { measured, selectable = true, hidden = false } = node
+    const width = measured.width ?? node.width ?? null
+    const height = measured.height ?? node.height ?? null
 
     if ((excludeNonSelectableNodes && !selectable) || hidden) {
       continue
@@ -262,11 +256,12 @@ export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition)
 }
 
 export function isParentSelected(node: GraphNode, nodeLookup: NodeLookup): boolean {
-  if (!node.parentNode) {
+  const parentId = node.parentId
+  if (!parentId) {
     return false
   }
 
-  const parent = nodeLookup.get(node.parentNode)
+  const parent = nodeLookup.get(parentId)
   if (!parent) {
     return false
   }

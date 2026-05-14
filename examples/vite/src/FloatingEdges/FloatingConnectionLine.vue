@@ -16,9 +16,9 @@ const props = defineProps<FloatingConnectionLineProps>()
 const targetNode = computed(() => {
   return {
     id: 'connection-target',
-    computedPosition: { x: props.targetX, y: props.targetY },
-    dimensions: { width: 1, height: 1 },
-  } as GraphNode
+    internals: { positionAbsolute: { x: props.targetX, y: props.targetY }, z: 0 },
+    measured: { width: 1, height: 1 },
+  } as unknown as GraphNode
 })
 
 const edgeParams = computed(() => getEdgeParams(props.sourceNode, targetNode.value))

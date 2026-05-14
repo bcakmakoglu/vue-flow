@@ -10,8 +10,8 @@ export function getHandlePosition(
   fallbackPosition: Position = Position.Left,
   center = false,
 ): XYPosition {
-  const x = (handle?.x ?? 0) + node.computedPosition.x
-  const y = (handle?.y ?? 0) + node.computedPosition.y
+  const x = (handle?.x ?? 0) + node.internals.positionAbsolute.x
+  const y = (handle?.y ?? 0) + node.internals.positionAbsolute.y
   const { width, height } = handle ?? getNodeDimensions(node)
 
   if (center) {
@@ -105,7 +105,7 @@ export function getEdgeZIndex(edge: GraphEdge, findNode: Actions['findNode'], el
   }
 
   if (elevateEdgesOnSelect) {
-    z = hasZIndex ? edge.zIndex! : Math.max(source.computedPosition.z || 0, target.computedPosition.z || 0)
+    z = hasZIndex ? edge.zIndex! : Math.max(source.internals.z || 0, target.internals.z || 0)
   }
 
   return z

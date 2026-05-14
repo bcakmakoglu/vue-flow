@@ -66,6 +66,21 @@ export class Storage {
       return nodesMap
     })
 
+    // map parentId -> Set<childId>. Allows O(1) "is this node a parent?" checks without storing the
+    // derived `isParent` flag on each GraphNode.
+    const parentLookup = computed(() => {
+      const map = new Map<string, Set<string>>()
+      for (const node of reactiveState.nodes) {
+        const parentId = node.parentId
+        if (parentId) {
+          const set = map.get(parentId) ?? new Set<string>()
+          set.add(node.id)
+          map.set(parentId, set)
+        }
+      }
+      return map
+    })
+
     const edgeLookup = computed(() => {
       const edgesMap = new Map<string, GraphEdge>()
 
@@ -88,6 +103,7 @@ export class Storage {
       ...actions,
       ...toRefs(reactiveState),
       nodeLookup,
+      parentLookup,
       edgeLookup,
       emits,
       id,

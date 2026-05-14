@@ -93,12 +93,12 @@ export function useActions<NodeType extends Node = Node>(
       if (changed) {
         change.position = node.position
 
-        if (node.parentNode) {
-          const parentNode = findNode(node.parentNode)
+        if (node.parentId) {
+          const parentNode = findNode(node.parentId)
 
           change.position = {
-            x: change.position.x - (parentNode?.computedPosition?.x ?? 0),
-            y: change.position.y - (parentNode?.computedPosition?.y ?? 0),
+            x: change.position.x - (parentNode?.internals.positionAbsolute?.x ?? 0),
+            y: change.position.y - (parentNode?.internals.positionAbsolute?.y ?? 0),
           }
         }
       }
@@ -138,14 +138,17 @@ export function useActions<NodeType extends Node = Node>(
         const doUpdate = !!(
           dimensions.width &&
           dimensions.height &&
-          (node.dimensions.width !== dimensions.width || node.dimensions.height !== dimensions.height || update.forceUpdate)
+          (node.measured.width !== dimensions.width || node.measured.height !== dimensions.height || update.forceUpdate)
         )
 
         if (doUpdate) {
           const nodeBounds = update.nodeElement.getBoundingClientRect()
-          node.dimensions = dimensions
-          node.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom, node.id)
-          node.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom, node.id)
+          node.measured = { width: dimensions.width, height: dimensions.height }
+          if (!node.internals.handleBounds) {
+            node.internals.handleBounds = { source: null, target: null }
+          }
+          node.internals.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom, node.id)
+          node.internals.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom, node.id)
 
           changes.push({
             id: node.id,
@@ -335,7 +338,7 @@ export function useActions<NodeType extends Node = Node>(
     function createChildrenRemovalChanges(id: string) {
       const children: GraphNode[] = []
       for (const node of state.nodes) {
-        if (node.parentNode === id) {
+        if (node.parentId === id) {
           children.push(node)
         }
       }
@@ -562,7 +565,7 @@ export function useActions<NodeType extends Node = Node>(
 
     const intersections: GraphNode<NodeType>[] = []
     for (const n of nodes || state.nodes) {
-      if (!isRect && (n.id === node!.id || !n.computedPosition)) {
+      if (!isRect && (n.id === node!.id || !n.internals.positionAbsolute)) {
         continue
       }
 
@@ -655,16 +658,7 @@ export function useActions<NodeType extends Node = Node>(
     const edges: Edge[] = []
 
     for (const node of state.nodes) {
-      const {
-        computedPosition: _,
-        handleBounds: __,
-        selected: ___,
-        dimensions: ____,
-        isParent: _____,
-        resizing: ______,
-        dragging: _______,
-        ...rest
-      } = node
+      const { selected: _, resizing: __, dragging: ___, measured: ____, internals: _____, ...rest } = node
 
       nodes.push(rest)
     }

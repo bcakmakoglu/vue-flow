@@ -6,10 +6,10 @@ import { MarkerType, Position } from '@vue-flow/core'
 function getNodeIntersection(intersectionNode: GraphNode, targetNode: GraphNode): XYPosition {
   // https://math.stackexchange.com/questions/1724792/an-algorithm-for-finding-the-intersection-point-between-a-center-of-vision-and-a
   const {
-    dimensions: { width: intersectionNodeWidth, height: intersectionNodeHeight },
-    computedPosition: intersectionNodePosition,
+    measured: { width: intersectionNodeWidth, height: intersectionNodeHeight },
+    internals: { positionAbsolute: intersectionNodePosition },
   } = intersectionNode
-  const targetPosition = targetNode.computedPosition
+  const targetPosition = targetNode.internals.positionAbsolute
 
   const w = intersectionNodeWidth / 2
   const h = intersectionNodeHeight / 2
@@ -32,7 +32,7 @@ function getNodeIntersection(intersectionNode: GraphNode, targetNode: GraphNode)
 
 // returns the position (top,right,bottom or right) passed node compared to the intersection point
 function getEdgePosition(node: GraphNode, intersectionPoint: XYPosition) {
-  const n = { ...node.computedPosition, ...node.dimensions }
+  const n = { ...node.internals.positionAbsolute, ...node.measured }
   const nx = Math.round(n.x)
   const ny = Math.round(n.y)
   const px = Math.round(intersectionPoint.x)

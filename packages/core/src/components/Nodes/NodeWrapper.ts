@@ -26,7 +26,7 @@ import {
 } from '../../utils'
 import { NodeId, NodeRef, Slots } from '../../context'
 import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
-import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types'
+import type { BuiltInNode, MouseTouchEvent, NodeComponent, XYZPosition } from '../../types'
 
 interface Props {
   id: string
@@ -62,6 +62,7 @@ const NodeWrapper = defineComponent({
       nodesConnectable,
       nodesFocusable,
       hooks,
+      parentLookup,
     } = useVueFlow()
 
     const nodeElement = ref<HTMLDivElement | null>(null)
@@ -97,7 +98,9 @@ const NodeWrapper = defineComponent({
         hooks.value.nodeMouseLeave.hasListeners(),
     )
 
-    const isInit = toRef(() => !!node.dimensions.width && !!node.dimensions.height)
+    const isInit = toRef(() => !!node.measured.width && !!node.measured.height)
+
+    const isParent = toRef(() => (parentLookup.value.get(node.id)?.size ?? 0) > 0)
 
     const nodeCmp = computed(() => {
       const name = node.type || 'default'
@@ -204,15 +207,15 @@ const NodeWrapper = defineComponent({
       [
         () => node.position.x,
         () => node.position.y,
-        () => parentNode.value?.computedPosition.x,
-        () => parentNode.value?.computedPosition.y,
-        () => parentNode.value?.computedPosition.z,
+        () => parentNode.value?.internals.positionAbsolute.x,
+        () => parentNode.value?.internals.positionAbsolute.y,
+        () => parentNode.value?.internals.z,
         zIndex,
         () => node.selected,
-        () => node.dimensions.height,
-        () => node.dimensions.width,
-        () => parentNode.value?.dimensions.height,
-        () => parentNode.value?.dimensions.width,
+        () => node.measured.height,
+        () => node.measured.width,
+        () => parentNode.value?.measured.height,
+        () => parentNode.value?.measured.width,
       ],
       ([newX, newY, parentX, parentY, parentZ, nodeZIndex]) => {
         const xyzPos = {
@@ -221,11 +224,12 @@ const NodeWrapper = defineComponent({
           z: nodeZIndex + (elevateNodesOnSelect.value ? (node.selected ? 1000 : 0) : 0),
         }
 
-        if (typeof parentX !== 'undefined' && typeof parentY !== 'undefined') {
-          node.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
-        } else {
-          node.computedPosition = xyzPos
-        }
+        const nextComputed: XYZPosition =
+          typeof parentX !== 'undefined' && typeof parentY !== 'undefined'
+            ? getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
+            : xyzPos
+        node.internals.positionAbsolute = { x: nextComputed.x, y: nextComputed.y }
+        node.internals.z = nextComputed.z
       },
       { flush: 'post', immediate: true },
     )
@@ -271,14 +275,14 @@ const NodeWrapper = defineComponent({
               draggable: isDraggable.value,
               selected: node.selected,
               selectable: isSelectable.value,
-              parent: node.isParent,
+              parent: isParent.value,
             },
             getClass.value,
           ],
           'style': {
             visibility: isInit.value ? 'visible' : 'hidden',
-            zIndex: node.computedPosition.z ?? zIndex.value,
-            transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
+            zIndex: node.internals.z ?? zIndex.value,
+            transform: `translate(${node.internals.positionAbsolute.x}px,${node.internals.positionAbsolute.y}px)`,
             pointerEvents: hasPointerEvents.value ? 'all' : 'none',
             ...getStyle.value,
           },
@@ -306,16 +310,16 @@ const NodeWrapper = defineComponent({
             dragging: dragging.value,
             isConnectable: isConnectable.value,
             connectable: isConnectable.value,
-            position: node.computedPosition,
-            positionAbsoluteX: node.computedPosition.x,
-            positionAbsoluteY: node.computedPosition.y,
-            width: node.dimensions.width,
-            height: node.dimensions.height,
-            dimensions: node.dimensions,
-            parent: node.parentNode,
-            parentNodeId: node.parentNode,
-            parentId: node.parentNode,
-            zIndex: node.computedPosition.z ?? zIndex.value,
+            position: { ...node.internals.positionAbsolute, z: node.internals.z },
+            positionAbsoluteX: node.internals.positionAbsolute.x,
+            positionAbsoluteY: node.internals.positionAbsolute.y,
+            width: node.measured.width,
+            height: node.measured.height,
+            dimensions: node.measured,
+            parent: node.parentId,
+            parentNodeId: node.parentId,
+            parentId: node.parentId,
+            zIndex: node.internals.z ?? zIndex.value,
             selectable: node.selectable ?? true,
             deletable: node.deletable ?? true,
             draggable: node.draggable ?? true,
@@ -329,7 +333,7 @@ const NodeWrapper = defineComponent({
     }
     /** this re-calculates the current position, necessary for clamping by a node's extent */
     function clampPosition() {
-      const nextPosition = node.computedPosition
+      const nextPosition = { ...node.internals.positionAbsolute, z: node.internals.z }
 
       const { computedPosition, position } = calcNextPosition(
         node,
@@ -340,8 +344,8 @@ const NodeWrapper = defineComponent({
       )
 
       // only overwrite positions if there are changes when clamping
-      if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
-        node.computedPosition = { ...node.computedPosition, ...computedPosition }
+      if (node.internals.positionAbsolute.x !== computedPosition.x || node.internals.positionAbsolute.y !== computedPosition.y) {
+        node.internals.positionAbsolute = { x: computedPosition.x, y: computedPosition.y }
       }
 
       if (node.position.x !== position.x || node.position.y !== position.y) {

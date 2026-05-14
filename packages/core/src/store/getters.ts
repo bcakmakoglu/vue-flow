@@ -77,12 +77,12 @@ export function useGetters<NodeType extends Node = Node>(
 
         if (
           isEdgeVisible({
-            sourcePos: source.computedPosition || { x: 0, y: 0 },
-            targetPos: target.computedPosition || { x: 0, y: 0 },
-            sourceWidth: source.dimensions.width,
-            sourceHeight: source.dimensions.height,
-            targetWidth: target.dimensions.width,
-            targetHeight: target.dimensions.height,
+            sourcePos: source.internals.positionAbsolute || { x: 0, y: 0 },
+            targetPos: target.internals.positionAbsolute || { x: 0, y: 0 },
+            sourceWidth: source.measured.width,
+            sourceHeight: source.measured.height,
+            targetWidth: target.measured.width,
+            targetHeight: target.measured.height,
             width: state.dimensions.width,
             height: state.dimensions.height,
             viewport: state.viewport,

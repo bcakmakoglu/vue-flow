@@ -101,11 +101,11 @@ const isHandleConnectable = computed(() => {
 onMounted(() => {
   // if the node isn't initialized yet, we can't set up the handle bounds
   // the handle bounds will be automatically set up when the node is initialized (`updateNodeDimensions`)
-  if (!node.dimensions.width || !node.dimensions.height) {
+  if (!node.measured.width || !node.measured.height) {
     return
   }
 
-  const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
+  const existingBounds = node.internals.handleBounds?.[type.value]?.find((b) => b.id === handleId)
 
   if (!vueFlowRef.value || existingBounds) {
     return
@@ -134,7 +134,11 @@ onMounted(() => {
     ...getDimensions(handle.value),
   }
 
-  node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
+  if (!node.internals.handleBounds) {
+    node.internals.handleBounds = { source: null, target: null }
+  }
+  const bounds = node.internals.handleBounds
+  bounds[type.value] = [...(bounds[type.value] ?? []), nextBounds]
 })
 
 function onPointerDown(event: MouseEvent | TouchEvent) {

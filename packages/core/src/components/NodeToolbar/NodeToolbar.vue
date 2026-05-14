@@ -43,7 +43,7 @@ const isActive = computed(() =>
 
 const nodeRect = computed(() => getRectOfNodes(nodes.value))
 
-const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.computedPosition.z || 1) + 1)))
+const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.internals.z || 1) + 1)))
 
 const wrapperStyle = computed<CSSProperties>(() => ({
   position: 'absolute',

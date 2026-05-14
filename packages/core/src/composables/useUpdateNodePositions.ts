@@ -24,14 +24,17 @@ export function useUpdateNodePositions() {
     const nodeUpdates: NodeDragItem[] = []
     for (const node of getSelectedNodes.value) {
       if (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined')) {
-        const nextPosition = { x: node.computedPosition.x + positionDiffX, y: node.computedPosition.y + positionDiffY }
+        const nextPosition = {
+          x: node.internals.positionAbsolute.x + positionDiffX,
+          y: node.internals.positionAbsolute.y + positionDiffY,
+        }
 
         const { position } = calcNextPosition(
           node,
           nextPosition,
           emits.error,
           nodeExtent.value,
-          node.parentNode ? findNode(node.parentNode) : undefined,
+          node.parentId ? findNode(node.parentId) : undefined,
         )
 
         nodeUpdates.push({
@@ -39,7 +42,9 @@ export function useUpdateNodePositions() {
           position,
           from: node.position,
           distance: { x: positionDiff.x, y: positionDiff.y },
-          dimensions: node.dimensions,
+          dimensions: { width: node.measured.width, height: node.measured.height },
+          measured: { width: node.measured.width, height: node.measured.height },
+          internals: { positionAbsolute: { x: node.internals.positionAbsolute.x, y: node.internals.positionAbsolute.y } },
         })
       }
     }

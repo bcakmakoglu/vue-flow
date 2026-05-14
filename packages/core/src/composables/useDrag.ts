@@ -1,5 +1,5 @@
 import type { CoordinateExtent, EdgeBase, InternalNodeBase, NodeDragItem as SystemNodeDragItem } from '@xyflow/system'
-import { infiniteExtent, isCoordinateExtent, XYDrag } from '@xyflow/system'
+import { XYDrag, infiniteExtent, isCoordinateExtent } from '@xyflow/system'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import { shallowRef, toValue, watchEffect } from 'vue'
 import type { NodeDragEvent, NodeDragItem } from '../types'
@@ -64,7 +64,7 @@ export function useDrag(params: UseDragParams) {
     const dragInstance = XYDrag({
       getStoreItems: () => ({
         nodes: getNodes.value,
-        nodeLookup: nodeLookup.value as any,
+        nodeLookup: nodeLookup.value,
         edges: getEdges.value as unknown as EdgeBase[],
         nodeExtent: (isCoordinateExtent(nodeExtent.value as CoordinateExtent) ? nodeExtent.value : infiniteExtent) as CoordinateExtent,
         snapGrid: snapGrid.value,
@@ -84,18 +84,27 @@ export function useDrag(params: UseDragParams) {
         },
         updateNodePositions: (dragItems: Map<string, SystemNodeDragItem | InternalNodeBase>, isDragging?: boolean) => {
           const items: NodeDragItem[] = []
-          for (const item of dragItems.values()) {
+          for (const raw of dragItems.values()) {
+            // XYDrag may emit either NodeDragItem (the normal case) or InternalNodeBase entries
+            // (selection drags). Both shapes carry `measured` and `internals.positionAbsolute`.
+            const item = raw as SystemNodeDragItem
             const node = findNode(item.id)
-            const measured = (item as SystemNodeDragItem).measured ?? node?.dimensions ?? { width: 0, height: 0 }
+            const width = item.measured?.width ?? node?.measured.width ?? 0
+            const height = item.measured?.height ?? node?.measured.height ?? 0
+            const positionAbsolute = item.internals?.positionAbsolute ?? node?.internals.positionAbsolute ?? { x: 0, y: 0 }
             items.push({
               id: item.id,
               position: item.position,
-              distance: (item as SystemNodeDragItem).distance ?? { x: 0, y: 0 },
-              dimensions: measured,
+              distance: item.distance ?? { x: 0, y: 0 },
+              measured: { width, height },
+              internals: { positionAbsolute },
+              dimensions: { width, height },
               from: node?.position ?? item.position,
-              extent: (item as SystemNodeDragItem).extent,
-              parentNode: (item as SystemNodeDragItem).parentId,
-              expandParent: (item as SystemNodeDragItem).expandParent,
+              extent: item.extent,
+              parentId: item.parentId,
+              expandParent: item.expandParent,
+              dragging: item.dragging,
+              origin: item.origin,
             })
           }
           updateNodePositions(items, true, isDragging ?? false)

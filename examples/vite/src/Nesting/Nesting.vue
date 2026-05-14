@@ -17,7 +17,7 @@ const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
       id: '2a',
       data: { label: 'Node 2a' },
       position: { x: 10, y: 50 },
-      parentNode: '2',
+      parentId: '2',
     },
     { id: '3', data: { label: 'Node 3' }, position: { x: 320, y: 100 }, class: 'light' },
     {
@@ -33,7 +33,7 @@ const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
       position: { x: 15, y: 65 },
       class: 'light',
       extent: 'parent',
-      parentNode: '4',
+      parentId: '4',
     },
     {
       id: '4b',
@@ -41,21 +41,21 @@ const { onConnect, addEdges, addNodes, findNode } = useVueFlow({
       position: { x: 15, y: 120 },
       class: 'light',
       style: { backgroundColor: 'rgba(255, 0, 255, 0.7)', height: '150px', width: '270px' },
-      parentNode: '4',
+      parentId: '4',
     },
     {
       id: '4b1',
       data: { label: 'Node 4b1' },
       position: { x: 20, y: 40 },
       class: 'light',
-      parentNode: '4b',
+      parentId: '4b',
     },
     {
       id: '4b2',
       data: { label: 'Node 4b2' },
       position: { x: 100, y: 100 },
       class: 'light',
-      parentNode: '4b',
+      parentId: '4b',
     },
   ],
   edges: [
@@ -81,7 +81,7 @@ onMounted(() => {
     position: { x: 20, y: 100 },
     class: 'light',
     expandParent: true,
-    parentNode: '2',
+    parentId: '2',
   })
 
   setTimeout(() => {

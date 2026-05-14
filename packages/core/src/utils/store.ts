@@ -93,8 +93,6 @@ export function createGraphNodes<NodeType extends Node = Node>(
   findNode: Actions<NodeType>['findNode'],
   triggerError: State['hooks']['error']['trigger'],
 ) {
-  const parentNodes: Record<string, true> = {}
-
   const nextNodes: GraphNode<NodeType>[] = []
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i]
@@ -106,30 +104,17 @@ export function createGraphNodes<NodeType extends Node = Node>(
       continue
     }
 
-    const parsed = parseNode(node, findNode(node.id), node.parentNode)
-
-    if (node.parentNode) {
-      parentNodes[node.parentNode] = true
-    }
-
-    nextNodes[i] = parsed
+    nextNodes[i] = parseNode(node, findNode(node.id), node.parentId)
   }
 
   for (const node of nextNodes) {
-    const parentNode = findNode(node.parentNode) || nextNodes.find((n) => n.id === node.parentNode)
-
-    if (node.parentNode && !parentNode) {
-      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentNode))
+    const parentRef = node.parentId
+    if (!parentRef) {
+      continue
     }
-
-    if (node.parentNode || parentNodes[node.id]) {
-      if (parentNodes[node.id]) {
-        node.isParent = true
-      }
-
-      if (parentNode) {
-        parentNode.isParent = true
-      }
+    const parent = findNode(parentRef) || nextNodes.find((n) => n.id === parentRef)
+    if (!parent) {
+      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, parentRef))
     }
   }
 
