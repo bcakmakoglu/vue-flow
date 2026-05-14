@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements } from '@vue-flow/core'
-import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow } from '@vue-flow/core'
+import type { Edge, Elements, Node } from '@vue-flow/core'
+import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow, isEdge, isNode } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 
 const initialElements: Elements = [
@@ -159,15 +159,17 @@ const initialElements: Elements = [
   },
 ]
 
-const elements = ref(initialElements)
+const nodes = ref<Node[]>(initialElements.filter(isNode))
+const edges = ref<Edge[]>(initialElements.filter(isEdge))
 </script>
 
 <template>
   <VueFlow
-    v-model="elements"
+    v-model:nodes="nodes"
+    v-model:edges="edges"
     :connection-line-type="ConnectionLineType.SmoothStep"
     :connection-mode="ConnectionMode.Loose"
-    @pane-ready="({ fitView }) => fitView()"
+    @init="({ fitView }) => fitView()"
   >
     <template #node-custom="props">
       <CustomNode v-bind="props" />

@@ -1,9 +1,13 @@
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
-import type { GraphNode, Rect, ViewportTransform } from '@vue-flow/core'
-import { NodeIdInjection, Position, getRectOfNodes, useVueFlow } from '@vue-flow/core'
-
+import type { Viewport } from '@xyflow/system'
 import type { CSSProperties } from 'vue'
+import { useVueFlow } from '../../composables'
+import { NodeId } from '../../context'
+import type { GraphNode, Rect } from '../../types'
+import { Position } from '../../types'
+import { getRectOfNodes } from '../../utils'
+
 import type { Align, NodeToolbarProps } from './types'
 
 const props = withDefaults(defineProps<NodeToolbarProps>(), {
@@ -13,7 +17,7 @@ const props = withDefaults(defineProps<NodeToolbarProps>(), {
   isVisible: undefined,
 })
 
-const contextNodeId = inject(NodeIdInjection, null)
+const contextNodeId = inject(NodeId, null)
 
 const { viewportRef, viewport, getSelectedNodes, findNode } = useVueFlow()
 
@@ -39,7 +43,7 @@ const isActive = computed(() =>
 
 const nodeRect = computed(() => getRectOfNodes(nodes.value))
 
-const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.computedPosition.z || 1) + 1)))
+const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.internals.z || 1) + 1)))
 
 const wrapperStyle = computed<CSSProperties>(() => ({
   position: 'absolute',
@@ -47,7 +51,7 @@ const wrapperStyle = computed<CSSProperties>(() => ({
   zIndex: zIndex.value,
 }))
 
-function getTransform(nodeRect: Rect, transform: ViewportTransform, position: Position, offset: number, align: Align): string {
+function getTransform(nodeRect: Rect, viewport: Viewport, position: Position, offset: number, align: Align): string {
   let alignmentOffset = 0.5
 
   if (align === 'start') {
@@ -59,8 +63,8 @@ function getTransform(nodeRect: Rect, transform: ViewportTransform, position: Po
   // position === Position.Top
   // we set the x any y position of the toolbar based on the nodes position
   let pos = [
-    (nodeRect.x + nodeRect.width * alignmentOffset) * transform.zoom + transform.x,
-    nodeRect.y * transform.zoom + transform.y - offset,
+    (nodeRect.x + nodeRect.width * alignmentOffset) * viewport.zoom + viewport.x,
+    nodeRect.y * viewport.zoom + viewport.y - offset,
   ]
   // and then shift it based on the alignment. The shift values are in %.
   let shift = [-100 * alignmentOffset, -100]
@@ -68,19 +72,19 @@ function getTransform(nodeRect: Rect, transform: ViewportTransform, position: Po
   switch (position) {
     case Position.Right:
       pos = [
-        (nodeRect.x + nodeRect.width) * transform.zoom + transform.x + offset,
-        (nodeRect.y + nodeRect.height * alignmentOffset) * transform.zoom + transform.y,
+        (nodeRect.x + nodeRect.width) * viewport.zoom + viewport.x + offset,
+        (nodeRect.y + nodeRect.height * alignmentOffset) * viewport.zoom + viewport.y,
       ]
       shift = [0, -100 * alignmentOffset]
       break
     case Position.Bottom:
-      pos[1] = (nodeRect.y + nodeRect.height) * transform.zoom + transform.y + offset
+      pos[1] = (nodeRect.y + nodeRect.height) * viewport.zoom + viewport.y + offset
       shift[1] = 0
       break
     case Position.Left:
       pos = [
-        nodeRect.x * transform.zoom + transform.x - offset,
-        (nodeRect.y + nodeRect.height * alignmentOffset) * transform.zoom + transform.y,
+        nodeRect.x * viewport.zoom + viewport.x - offset,
+        (nodeRect.y + nodeRect.height * alignmentOffset) * viewport.zoom + viewport.y,
       ]
       shift = [-100, -100 * alignmentOffset]
       break

@@ -1,86 +1,6 @@
-import type {
-  Actions,
-  CoordinateExtent,
-  CoordinateExtentRange,
-  Dimensions,
-  GraphNode,
-  NodeDragItem,
-  NodeLookup,
-  State,
-  XYPosition,
-} from '../types'
-import { ErrorCode, VueFlowError, clampPosition, isParentSelected } from '.'
-
-export function hasSelector(target: Element, selector: string, node: Element): boolean {
-  let current = target
-
-  do {
-    if (current && current.matches(selector)) {
-      return true
-    } else if (current === node) {
-      return false
-    }
-
-    current = current.parentElement as Element
-  } while (current)
-
-  return false
-}
-
-// looks for all selected nodes and created a NodeDragItem for each of them
-export function getDragItems(nodeLookup: NodeLookup, nodesDraggable: boolean, mousePos: XYPosition, nodeId?: string) {
-  const dragItems = new Map<string, NodeDragItem>()
-
-  for (const [id, node] of nodeLookup) {
-    if (
-      (node.selected || node.id === nodeId) &&
-      (!node.parentNode || !isParentSelected(node, nodeLookup)) &&
-      (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined'))
-    ) {
-      const internalNode = nodeLookup.get(id)
-
-      if (internalNode) {
-        dragItems.set(id, {
-          id: node.id,
-          position: node.position || { x: 0, y: 0 },
-          distance: {
-            x: mousePos.x - node.computedPosition?.x || 0,
-            y: mousePos.y - node.computedPosition?.y || 0,
-          },
-          from: { x: node.computedPosition.x, y: node.computedPosition.y },
-          extent: node.extent,
-          parentNode: node.parentNode,
-          dimensions: { ...node.dimensions },
-          expandParent: node.expandParent,
-        })
-      }
-    }
-  }
-
-  // todo: work with map in `useDrag` instead of array
-  return Array.from(dragItems.values())
-}
-
-export function getEventHandlerParams({
-  id,
-  dragItems,
-  findNode,
-}: {
-  id?: string
-  dragItems: NodeDragItem[]
-  findNode: Actions['findNode']
-}): [GraphNode, GraphNode[]] {
-  const extendedDragItems: GraphNode[] = []
-  for (const dragItem of dragItems) {
-    const node = findNode(dragItem.id)
-
-    if (node) {
-      extendedDragItems.push(node)
-    }
-  }
-
-  return [id ? extendedDragItems.find((n) => n.id === id)! : extendedDragItems[0], extendedDragItems]
-}
+import { clampPosition } from '@xyflow/system'
+import type { CoordinateExtent, CoordinateExtentRange, Dimensions, GraphNode, NodeDragItem, State, XYPosition } from '../types'
+import { ErrorCode, VueFlowError } from '.'
 
 function getExtentPadding(padding: CoordinateExtentRange['padding']): [number, number, number, number] {
   if (Array.isArray(padding)) {
@@ -110,16 +30,16 @@ function getParentExtent(
 
   if (
     parent &&
-    typeof parent.computedPosition.x !== 'undefined' &&
-    typeof parent.computedPosition.y !== 'undefined' &&
-    typeof parent.dimensions.width !== 'undefined' &&
-    typeof parent.dimensions.height !== 'undefined'
+    typeof parent.internals.positionAbsolute.x !== 'undefined' &&
+    typeof parent.internals.positionAbsolute.y !== 'undefined' &&
+    typeof parent.measured.width !== 'undefined' &&
+    typeof parent.measured.height !== 'undefined'
   ) {
     return [
-      [parent.computedPosition.x + left, parent.computedPosition.y + top],
+      [parent.internals.positionAbsolute.x + left, parent.internals.positionAbsolute.y + top],
       [
-        parent.computedPosition.x + parent.dimensions.width - right,
-        parent.computedPosition.y + parent.dimensions.height - bottom,
+        parent.internals.positionAbsolute.x + parent.measured.width - right,
+        parent.internals.positionAbsolute.y + parent.measured.height - bottom,
       ],
     ]
   }
@@ -139,7 +59,7 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
     (currentExtent === 'parent' || (!Array.isArray(currentExtent) && currentExtent?.range === 'parent')) &&
     !item.expandParent
   ) {
-    if (item.parentNode && parent && item.dimensions.width && item.dimensions.height) {
+    if (item.parentId && parent && item.measured.width && item.measured.height) {
       const parentExtent = getParentExtent(currentExtent, item, parent)
 
       if (parentExtent) {
@@ -151,8 +71,8 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
       currentExtent = extent
     }
   } else if (Array.isArray(currentExtent)) {
-    const parentX = parent?.computedPosition.x || 0
-    const parentY = parent?.computedPosition.y || 0
+    const parentX = parent?.internals.positionAbsolute.x || 0
+    const parentY = parent?.internals.positionAbsolute.y || 0
 
     currentExtent = [
       [currentExtent[0][0] + parentX, currentExtent[0][1] + parentY],
@@ -161,8 +81,8 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
   } else if (currentExtent !== 'parent' && currentExtent?.range && Array.isArray(currentExtent.range)) {
     const [top, right, bottom, left] = getExtentPadding(currentExtent.padding)
 
-    const parentX = parent?.computedPosition.x || 0
-    const parentY = parent?.computedPosition.y || 0
+    const parentX = parent?.internals.positionAbsolute.x || 0
+    const parentY = parent?.internals.positionAbsolute.y || 0
 
     currentExtent = [
       [currentExtent.range[0][0] + parentX + left, currentExtent.range[0][1] + parentY + top],
@@ -191,14 +111,14 @@ export function calcNextPosition(
   nodeExtent?: State['nodeExtent'],
   parentNode?: GraphNode,
 ) {
-  const extent = clampNodeExtent(node.dimensions, getExtent(node, triggerError, nodeExtent, parentNode))
+  const extent = clampNodeExtent(node.measured, getExtent(node, triggerError, nodeExtent, parentNode))
 
-  const clampedPos = clampPosition(nextPosition, extent)
+  const clampedPos = clampPosition(nextPosition, extent, node.measured)
 
   return {
     position: {
-      x: clampedPos.x - (parentNode?.computedPosition.x || 0),
-      y: clampedPos.y - (parentNode?.computedPosition.y || 0),
+      x: clampedPos.x - (parentNode?.internals.positionAbsolute.x || 0),
+      y: clampedPos.y - (parentNode?.internals.positionAbsolute.y || 0),
     },
     computedPosition: clampedPos,
   }

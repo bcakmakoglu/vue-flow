@@ -1,28 +1,31 @@
 <script lang="ts" setup>
+import type { Edge, Node } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import ConnectionLine from './SnappableConnectionLine.vue'
 
-const elements = ref([
+const nodes = ref<Node[]>([
   {
     id: '1',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 0, y: 0 },
   },
   {
     id: '2',
-    label: 'Node 2',
+    data: { label: 'Node 2' },
     position: { x: 100, y: 100 },
   },
   {
     id: '3',
-    label: 'Node 3',
+    data: { label: 'Node 3' },
     position: { x: 200, y: 0 },
   },
 ])
+
+const edges = ref<Edge[]>([])
 </script>
 
 <template>
-  <VueFlow v-model="elements" auto-connect fit-view-on-init>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" auto-connect fit-view-on-init>
     <template #connection-line="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }">
       <ConnectionLine
         :source-x="sourceX"

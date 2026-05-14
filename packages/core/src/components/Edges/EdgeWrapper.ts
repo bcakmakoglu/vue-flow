@@ -1,17 +1,10 @@
 import { computed, defineComponent, getCurrentInstance, h, inject, provide, ref, resolveComponent, toRef } from 'vue'
+import { getMarkerId } from '@xyflow/system'
 import type { Connection, EdgeComponent, HandleType, MouseTouchEvent } from '../../types'
 import { ConnectionMode, Position } from '../../types'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { EdgeId, EdgeRef, Slots } from '../../context'
-import {
-  ARIA_EDGE_DESC_KEY,
-  ErrorCode,
-  VueFlowError,
-  elementSelectionKeys,
-  getEdgeHandle,
-  getHandlePosition,
-  getMarkerId,
-} from '../../utils'
+import { ARIA_EDGE_DESC_KEY, ErrorCode, VueFlowError, elementSelectionKeys, getEdgeHandle, getHandlePosition } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
 
 interface Props {
@@ -46,7 +39,7 @@ const EdgeWrapper = defineComponent({
 
     const edge = computed(() => findEdge(props.id)!)
 
-    const { emit, on } = useEdgeHooks(edge.value, emits)
+    const { emit } = useEdgeHooks(emits)
 
     const slots = inject(Slots)
 
@@ -145,18 +138,24 @@ const EdgeWrapper = defineComponent({
 
       let sourceNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
-        sourceNodeHandles = sourceNode.handleBounds.source
+        sourceNodeHandles = sourceNode.internals.handleBounds?.source ?? null
       } else {
-        sourceNodeHandles = [...(sourceNode.handleBounds.source || []), ...(sourceNode.handleBounds.target || [])]
+        sourceNodeHandles = [
+          ...(sourceNode.internals.handleBounds?.source || []),
+          ...(sourceNode.internals.handleBounds?.target || []),
+        ]
       }
 
       const sourceHandle = getEdgeHandle(sourceNodeHandles, edge.value.sourceHandle)
 
       let targetNodeHandles
       if (connectionMode.value === ConnectionMode.Strict) {
-        targetNodeHandles = targetNode.handleBounds.target
+        targetNodeHandles = targetNode.internals.handleBounds?.target ?? null
       } else {
-        targetNodeHandles = [...(targetNode.handleBounds.target || []), ...(targetNode.handleBounds.source || [])]
+        targetNodeHandles = [
+          ...(targetNode.internals.handleBounds?.target || []),
+          ...(targetNode.internals.handleBounds?.source || []),
+        ]
       }
 
       const targetHandle = getEdgeHandle(targetNodeHandles, edge.value.targetHandle)
@@ -229,7 +228,6 @@ const EdgeWrapper = defineComponent({
                 labelBgPadding: edge.value.labelBgPadding,
                 labelBgBorderRadius: edge.value.labelBgBorderRadius,
                 data: edge.value.data,
-                events: { ...edge.value.events, ...on },
                 style: edgeStyle.value,
                 markerStart: `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')`,
                 markerEnd: `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')`,

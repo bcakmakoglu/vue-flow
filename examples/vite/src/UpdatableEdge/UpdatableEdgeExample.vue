@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { ConnectionMode, Controls, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { Edge, Elements, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import { ConnectionMode, Controls, VueFlow, isEdge, isNode, useVueFlow } from '@vue-flow/core'
 
 const initialElements: Elements = [
   {
     id: '1',
     type: 'input',
-    label: 'Node <strong>A</strong>',
+    data: { label: 'Node <strong>A</strong>' },
     position: { x: 250, y: 0 },
   },
   {
     id: '2',
-    label: 'Node <strong>B</strong>',
+    data: { label: 'Node <strong>B</strong>' },
     position: { x: 100, y: 100 },
   },
   {
     id: '3',
-    label: 'Node <strong>C</strong>',
+    data: { label: 'Node <strong>C</strong>' },
     position: { x: 400, y: 100 },
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
@@ -25,7 +25,8 @@ const initialElements: Elements = [
 
 const { updateEdge } = useVueFlow()
 
-const elements = ref(initialElements)
+const nodes = ref<Node[]>(initialElements.filter(isNode))
+const edges = ref<Edge[]>(initialElements.filter(isEdge))
 
 function onLoad(flowInstance: VueFlowStore) {
   return flowInstance.fitView()
@@ -46,10 +47,11 @@ function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
 
 <template>
   <VueFlow
-    v-model="elements"
+    v-model:nodes="nodes"
+    v-model:edges="edges"
     :snap-to-grid="true"
     :connection-mode="ConnectionMode.Loose"
-    @pane-ready="onLoad"
+    @init="onLoad"
     @edge-update="onEdgeUpdate"
     @edge-update-start="onEdgeUpdateStart"
     @edge-update-end="onEdgeUpdateEnd"

@@ -1,6 +1,6 @@
 {
   "name": "@vue-flow/core",
-  "version": "1.48.0",
+  "version": "1.48.1",
   "private": false,
   "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
@@ -72,18 +72,14 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.5.0",
-    "d3-drag": "^3.0.0",
     "d3-interpolate": "^3.0.1",
-    "d3-selection": "^3.0.0",
-    "d3-zoom": "^3.0.0"
+    "@xyflow/system": "^0.0.73"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^5.0.3",
     "@tooling/eslint-config": "workspace:*",
     "@tooling/tsconfig": "workspace:*",
-    "@types/d3-drag": "^3.0.7",
     "@types/d3-interpolate": "^3.0.4",
-    "@types/d3-selection": "^3.0.11",
     "@types/d3-transition": "^3.0.9",
     "@types/d3-zoom": "^3.0.8",
     "@vitejs/plugin-vue": "^4.4.0",
@@ -93,6 +89,6 @@
     "postcss-nested": "^6.0.1",
     "vite": "^4.4.11",
     "vite-svg-loader": "^5.1.0",
-    "vue-tsc": "^1.8.16"
+    "vue-tsc": "^2.1.6"
   }
 }

@@ -1,10 +1,11 @@
 import { computed, defineComponent, h, inject } from 'vue'
+import { getBezierPath, getMarkerId, getSmoothStepPath } from '@xyflow/system'
 import type { HandleElement } from '../../types'
 import { ConnectionLineType, ConnectionMode, Position } from '../../types'
-import { getHandlePosition, getMarkerId, oppositePosition } from '../../utils'
+import { getHandlePosition, oppositePosition } from '../../utils'
 import { useVueFlow } from '../../composables'
 import { Slots } from '../../context'
-import { getBezierPath, getSimpleBezierPath, getSmoothStepPath } from '../Edges/utils'
+import { getSimpleBezierPath } from '../Edges/SimpleBezierEdge'
 
 const ConnectionLine = defineComponent({
   name: 'ConnectionLine',
@@ -54,7 +55,7 @@ const ConnectionLine = defineComponent({
 
       const handleType = connectionStartHandle.value.type
 
-      const fromHandleBounds = fromNode.value.handleBounds
+      const fromHandleBounds = fromNode.value.internals.handleBounds
       let handleBounds = fromHandleBounds?.[handleType] ?? []
 
       if (connectionMode.value === ConnectionMode.Loose) {
@@ -75,15 +76,16 @@ const ConnectionLine = defineComponent({
         // if connection mode is strict, we only look for handles of the opposite type
         if (connectionMode.value === ConnectionMode.Strict) {
           toHandle =
-            toNode.value.handleBounds[handleType === 'source' ? 'target' : 'source']?.find(
+            toNode.value.internals.handleBounds?.[handleType === 'source' ? 'target' : 'source']?.find(
               (d) => d.id === connectionEndHandle.value?.id,
             ) || null
         } else {
           // if connection mode is loose, look for the handle in both source and target bounds
           toHandle =
-            [...(toNode.value.handleBounds.source ?? []), ...(toNode.value.handleBounds.target ?? [])]?.find(
-              (d) => d.id === connectionEndHandle.value?.id,
-            ) || null
+            [
+              ...(toNode.value.internals.handleBounds?.source ?? []),
+              ...(toNode.value.internals.handleBounds?.target ?? []),
+            ]?.find((d) => d.id === connectionEndHandle.value?.id) || null
         }
       }
 

@@ -2,7 +2,7 @@ import type { ToRefs } from 'vue'
 import { effectScope, isRef, nextTick, onScopeDispose, toRef, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { watchPausable } from '@vueuse/core'
-import type { Connection, FlowProps, VueFlowStore } from '../types'
+import type { Connection, FlowProps, Node, VueFlowStore } from '../types'
 import { isDef } from '../utils'
 
 /**
@@ -13,60 +13,14 @@ import { isDef } from '../utils'
  * @param props
  * @param store
  */
-export function useWatchProps(
-  models: ToRefs<Pick<FlowProps, 'nodes' | 'edges' | 'modelValue'>>,
-  props: FlowProps,
-  store: VueFlowStore,
+export function useWatchProps<NodeType extends Node = Node>(
+  models: ToRefs<Pick<FlowProps<NodeType>, 'nodes' | 'edges'>>,
+  props: FlowProps<NodeType>,
+  store: VueFlowStore<NodeType>,
 ) {
   const scope = effectScope(true)
 
   scope.run(() => {
-    const watchModelValue = () => {
-      scope.run(() => {
-        let pauseModel: WatchPausableReturn
-        let pauseStore: WatchPausableReturn
-
-        let immediateStore = !!(store.nodes.value.length || store.edges.value.length)
-
-        // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.modelValue, () => models.modelValue?.value?.length], ([elements]) => {
-          if (elements && Array.isArray(elements)) {
-            pauseStore?.pause()
-
-            store.setElements(elements)
-
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && elements.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
-            }
-          }
-        })
-
-        pauseStore = watchPausable(
-          [store.nodes, store.edges, () => store.edges.value.length, () => store.nodes.value.length],
-          ([nodes, edges]) => {
-            if (models.modelValue?.value && Array.isArray(models.modelValue.value)) {
-              pauseModel?.pause()
-
-              models.modelValue.value = [...nodes, ...edges]
-
-              nextTick(() => {
-                pauseModel?.resume()
-              })
-            }
-          },
-          { immediate: immediateStore },
-        )
-
-        onScopeDispose(() => {
-          pauseModel?.stop()
-          pauseStore?.stop()
-        })
-      })
-    }
-
     const watchNodesValue = () => {
       scope.run(() => {
         let pauseModel: WatchPausableReturn
@@ -75,20 +29,24 @@ export function useWatchProps(
         let immediateStore = !!store.nodes.value.length
 
         // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.nodes, () => models.nodes?.value?.length], ([nodes]) => {
-          if (nodes && Array.isArray(nodes)) {
-            pauseStore?.pause()
+        pauseModel = watchPausable(
+          [models.nodes, () => models.nodes?.value?.length],
+          ([nodes]) => {
+            if (nodes && Array.isArray(nodes)) {
+              pauseStore?.pause()
 
-            store.setNodes(nodes)
+              store.setNodes(nodes)
 
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && nodes.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && nodes.length) {
+                immediateStore = true
+              } else {
+                pauseStore?.resume()
+              }
             }
-          }
-        })
+          },
+          { immediate: true },
+        )
 
         pauseStore = watchPausable(
           [store.nodes, () => store.nodes.value.length],
@@ -96,7 +54,7 @@ export function useWatchProps(
             if (models.nodes?.value && Array.isArray(models.nodes.value)) {
               pauseModel?.pause()
 
-              models.nodes.value = [...nodes]
+              models.nodes.value = [...nodes] as unknown as NodeType[]
 
               nextTick(() => {
                 pauseModel?.resume()
@@ -121,20 +79,24 @@ export function useWatchProps(
         let immediateStore = !!store.edges.value.length
 
         // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable([models.edges, () => models.edges?.value?.length], ([edges]) => {
-          if (edges && Array.isArray(edges)) {
-            pauseStore?.pause()
+        pauseModel = watchPausable(
+          [models.edges, () => models.edges?.value?.length],
+          ([edges]) => {
+            if (edges && Array.isArray(edges)) {
+              pauseStore?.pause()
 
-            store.setEdges(edges)
+              store.setEdges(edges)
 
-            // only trigger store watcher immediately if we actually set any elements to the store
-            if (!pauseStore && !immediateStore && edges.length) {
-              immediateStore = true
-            } else {
-              pauseStore?.resume()
+              // only trigger store watcher immediately if we actually set any elements to the store
+              if (!pauseStore && !immediateStore && edges.length) {
+                immediateStore = true
+              } else {
+                pauseStore?.resume()
+              }
             }
-          }
-        })
+          },
+          { immediate: true },
+        )
 
         pauseStore = watchPausable(
           [store.edges, () => store.edges.value.length],
@@ -282,7 +244,6 @@ export function useWatchProps(
     const watchRest = () => {
       const skip: (keyof typeof props)[] = [
         'id',
-        'modelValue',
         'translateExtent',
         'nodeExtent',
         'edges',
@@ -318,7 +279,6 @@ export function useWatchProps(
     }
 
     const runAll = () => {
-      watchModelValue()
       watchNodesValue()
       watchEdgesValue()
       watchMinZoom()

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { computed, inject, toRef, watch } from 'vue'
-import type { NodeDimensionChange } from '@vue-flow/core'
-import { NodeIdInjection, useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '../../composables'
+import { NodeId } from '../../context'
+import type { NodeDimensionChange } from '../../types'
 import ResizeControl from './ResizeControl.vue'
 import type { ControlLinePosition, ControlPosition, NodeResizerEmits, NodeResizerProps } from './types'
 import { ResizeControlVariant } from './types'
@@ -19,7 +20,7 @@ const handleControls: ControlPosition[] = ['top-left', 'top-right', 'bottom-left
 
 const lineControls: ControlLinePosition[] = ['top', 'right', 'bottom', 'left']
 
-const contextNodeId = inject(NodeIdInjection, null)
+const contextNodeId = inject(NodeId, null)
 
 const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
 
@@ -31,7 +32,7 @@ watch(
     () => props.minHeight,
     () => props.maxWidth,
     () => props.maxHeight,
-    () => !!node.value?.dimensions.width && !!node.value.dimensions.height,
+    () => !!node.value?.measured.width && !!node.value.measured.height,
   ],
   ([minWidth, minHeight, maxWidth, maxHeight, isInitialized]) => {
     const n = node.value
@@ -40,33 +41,30 @@ watch(
       const dimensionChange: NodeDimensionChange = {
         id: n.id,
         type: 'dimensions',
-        updateStyle: true,
+        setAttributes: true,
         dimensions: {
-          width: n.dimensions.width,
-          height: n.dimensions.height,
+          width: n.measured.width,
+          height: n.measured.height,
         },
       }
 
-      if (minWidth && n.dimensions.width < minWidth) {
+      if (minWidth && n.measured.width < minWidth) {
         dimensionChange.dimensions!.width = minWidth
       }
 
-      if (minHeight && n.dimensions.height < minHeight) {
+      if (minHeight && n.measured.height < minHeight) {
         dimensionChange.dimensions!.height = minHeight
       }
 
-      if (maxWidth && n.dimensions.width > maxWidth) {
+      if (maxWidth && n.measured.width > maxWidth) {
         dimensionChange.dimensions!.width = maxWidth
       }
 
-      if (maxHeight && n.dimensions.height > maxHeight) {
+      if (maxHeight && n.measured.height > maxHeight) {
         dimensionChange.dimensions!.height = maxHeight
       }
 
-      if (
-        dimensionChange.dimensions!.width !== n.dimensions.width ||
-        dimensionChange.dimensions!.height !== n.dimensions.height
-      ) {
+      if (dimensionChange.dimensions!.width !== n.measured.width || dimensionChange.dimensions!.height !== n.measured.height) {
         triggerEmits.nodesChange([dimensionChange])
       }
     }

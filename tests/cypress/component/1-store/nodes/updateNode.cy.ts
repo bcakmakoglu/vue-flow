@@ -73,7 +73,7 @@ describe('Store Action: `updateNode`', () => {
 
     const newNode = {
       id: nodeId,
-      label: testLabel,
+      data: { label: testLabel },
       position: {
         x: Math.random() * 100,
         y: Math.random() * 100,
@@ -91,6 +91,6 @@ describe('Store Action: `updateNode`', () => {
     expect(updatedNode.id).to.equal(nodeId)
     expect(updatedNode.position.x).to.equal(newNode.position.x)
     expect(updatedNode.position.y).to.equal(newNode.position.y)
-    expect(updatedNode.data).to.equal(undefined)
+    expect(updatedNode.data?.label).to.equal(testLabel)
   })
 })

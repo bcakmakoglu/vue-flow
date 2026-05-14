@@ -1,13 +1,10 @@
-import { tryOnScopeDispose } from '@vueuse/core'
 import type { EffectScope } from 'vue'
-import { effectScope, getCurrentInstance, getCurrentScope, inject, provide, watch } from 'vue'
-import type { EdgeChange, FlowOptions, NodeChange, VueFlowStore } from '../types'
-import { ErrorCode, VueFlowError, warn } from '../utils'
+import { effectScope, getCurrentScope, inject, provide, watch } from 'vue'
+import type { EdgeChange, FlowOptions, Node, NodeChange, VueFlowStore } from '../types'
 import { VueFlow } from '../context'
 import { Storage } from '../utils/storage'
 
-type Injection = VueFlowStore | null | undefined
-type Scope = (EffectScope & { vueFlowId: string }) | undefined
+type Scope = (EffectScope & { vueFlowId?: string }) | undefined
 
 // todo: maybe replace the storage with a context based solution; This would break calling useVueFlow outside a setup function though, which should be fine
 /**
@@ -19,127 +16,114 @@ type Scope = (EffectScope & { vueFlowId: string }) | undefined
  *
  * @public
  * @returns a vue flow store instance
- * @param idOrOpts - id of the store instance or options to create a new store instance
+ * @param idOrOptions - id of the store instance, or options to create a new store instance
  */
-export function useVueFlow(id?: string): VueFlowStore
-export function useVueFlow(options?: FlowOptions): VueFlowStore
-export function useVueFlow(idOrOpts?: any): VueFlowStore {
+export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowStore<NodeType>
+export function useVueFlow<NodeType extends Node = Node>(options?: FlowOptions<NodeType>): VueFlowStore<NodeType>
+export function useVueFlow<NodeType extends Node = Node>(idOrOptions?: string | FlowOptions<NodeType>): VueFlowStore<NodeType> {
   const storage = Storage.getInstance()
 
   const scope = getCurrentScope() as Scope
 
-  const isOptsObj = typeof idOrOpts === 'object'
+  const isOptsObj = typeof idOrOptions === 'object' && idOrOptions !== null
 
-  const options = isOptsObj ? idOrOpts : { id: idOrOpts }
-
+  const options = (isOptsObj ? idOrOptions : { id: idOrOptions }) as FlowOptions<NodeType> & { id?: string }
   const id = options.id
+
+  /**
+   * Resolve the id to look up:
+   * 1. an explicit id passed by the caller
+   * 2. an id previously attached to this effect scope (from a sibling `useVueFlow` call in the same setup)
+   * 3. otherwise create a fresh one below
+   *
+   * NOTE: Vue's `inject` only sees provides from ancestor components — not the current one. So when a
+   * composable provides a store and a sibling composable in the same setup wants to read it, `inject` is
+   * not enough. We piggy-back the id on the current effect scope so siblings can find it.
+   */
   const vueFlowId = id ?? scope?.vueFlowId
 
-  let vueFlow: Injection
+  let vueFlow: VueFlowStore<NodeType> | null | undefined
 
   /**
-   * check if we can get a store instance through injections
-   * this should be the regular way after initialization
+   * Prefer an injected store from an ancestor component (this is the normal case once `<VueFlow>` is mounted).
    */
-  if (scope) {
-    const injectedState = inject(VueFlow, null)
-    if (typeof injectedState !== 'undefined' && injectedState !== null && (!vueFlowId || injectedState.id === vueFlowId)) {
-      vueFlow = injectedState
-    }
+  const injectedState = inject(VueFlow, null) as VueFlowStore<NodeType> | null
+  if (typeof injectedState !== 'undefined' && injectedState !== null && (!vueFlowId || injectedState.id === vueFlowId)) {
+    vueFlow = injectedState
   }
 
   /**
-   * check if we can get a store instance through storage
-   * this requires options id or an id on the current scope
+   * Fall back to looking up the store directly from storage by id. This handles both an explicit id and
+   * the scope-bound id used by sibling composable invocations.
    */
-  if (!vueFlow) {
-    if (vueFlowId) {
-      vueFlow = storage.get(vueFlowId)
-    }
+  if (!vueFlow && vueFlowId) {
+    vueFlow = storage.get(vueFlowId) as unknown as VueFlowStore<NodeType>
   }
 
   /**
-   * If we cannot find any store instance in the previous steps
-   * _or_ if the store instance we found does not match up with provided ids
-   * create a new store instance and register it in storage
+   * If we still don't have a store (and ids don't conflict), create one and register it.
    */
-  if (!vueFlow || (vueFlowId && vueFlow.id !== vueFlowId)) {
+  const created = !vueFlow || (id && vueFlow.id !== id)
+  if (created) {
     const name = id ?? storage.getId()
 
-    const state = storage.create(name, options)
+    vueFlow = storage.create(
+      name,
+      isOptsObj ? (idOrOptions as FlowOptions<NodeType>) : undefined,
+    ) as unknown as VueFlowStore<NodeType>
 
-    vueFlow = state
-
+    /**
+     * Register default change handlers so that `addNodes`/`addEdges`/etc. mutate the store even
+     * before <VueFlow> is mounted. Disabling `applyDefault` (the user is handling changes manually)
+     * removes them. Mirrors xyflow/react default behaviour.
+     */
     const vfScope = scope ?? effectScope(true)
+    const flow = vueFlow as VueFlowStore<NodeType>
     vfScope.run(() => {
-      /**
-       * We have to watch the applyDefault option here,
-       * because we need to register the default hooks before the `VueFlow` component is actually mounted and props passed
-       * Otherwise calling `addNodes` while the component is not mounted will not trigger any changes unless change handlers are explicitly bound
-       */
       watch(
-        state.applyDefault,
-        (shouldApplyDefault, __, onCleanup) => {
+        flow.applyDefault,
+        (shouldApplyDefault, _prev, onCleanup) => {
           const nodesChangeHandler = (changes: NodeChange[]) => {
-            state.applyNodeChanges(changes)
+            flow.applyNodeChanges(changes as NodeChange<NodeType>[])
           }
-
           const edgesChangeHandler = (changes: EdgeChange[]) => {
-            state.applyEdgeChanges(changes)
+            flow.applyEdgeChanges(changes)
           }
 
           if (shouldApplyDefault) {
-            state.onNodesChange(nodesChangeHandler)
-            state.onEdgesChange(edgesChangeHandler)
+            flow.onNodesChange(nodesChangeHandler)
+            flow.onEdgesChange(edgesChangeHandler)
           } else {
-            state.hooks.value.nodesChange.off(nodesChangeHandler)
-            state.hooks.value.edgesChange.off(edgesChangeHandler)
+            flow.hooks.value.nodesChange.off(nodesChangeHandler)
+            flow.hooks.value.edgesChange.off(edgesChangeHandler)
           }
 
-          // Release handlers on cleanup
           onCleanup(() => {
-            state.hooks.value.nodesChange.off(nodesChangeHandler)
-            state.hooks.value.edgesChange.off(edgesChangeHandler)
+            flow.hooks.value.nodesChange.off(nodesChangeHandler)
+            flow.hooks.value.edgesChange.off(edgesChangeHandler)
           })
         },
         { immediate: true },
       )
-
-      // Destroy store instance on scope dispose
-      tryOnScopeDispose(() => {
-        if (vueFlow) {
-          const storedInstance = storage.get(vueFlow.id)
-
-          if (storedInstance) {
-            storedInstance.$destroy()
-          } else {
-            warn(`No store instance found for id ${vueFlow.id} in storage.`)
-          }
-        }
-      })
     })
-  } else {
-    // If options were passed, overwrite state with the options' values
-    if (isOptsObj) {
-      vueFlow.setState(options)
-    }
   }
 
-  // Provide a fresh instance into context if we are in a scope
+  // If options were passed but we reused an existing store (e.g. <VueFlow id="…" /> mounts and finds
+  // a store previously created by `useVueFlow({ id })` in the test/setup), forward those options
+  // through setState so things like `defaultEdgeOptions` are applied before nodes/edges parse.
+  const resolved = vueFlow as VueFlowStore<NodeType>
+  if (!created && isOptsObj && resolved) {
+    resolved.setState(idOrOptions as Parameters<typeof resolved.setState>[0])
+  }
+
+  // Provide a fresh instance into context for descendant components
   if (scope) {
-    provide(VueFlow, vueFlow)
-
-    scope.vueFlowId = vueFlow.id
-  }
-
-  if (isOptsObj) {
-    const instance = getCurrentInstance()
-
-    // ignore the warning if we are in a VueFlow component
-    if (instance?.type.name !== 'VueFlow') {
-      vueFlow.emits.error(new VueFlowError(ErrorCode.USEVUEFLOW_OPTIONS))
+    provide(VueFlow, resolved as unknown as VueFlowStore)
+    // Tag the current scope so subsequent sibling `useVueFlow` calls in the same setup share the store.
+    if (!scope.vueFlowId) {
+      scope.vueFlowId = resolved.id
     }
   }
 
-  return vueFlow
+  return vueFlow as VueFlowStore<NodeType>
 }

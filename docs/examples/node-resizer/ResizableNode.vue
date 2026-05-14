@@ -1,6 +1,5 @@
 <script setup>
-import { Handle, Position } from '@vue-flow/core'
-import { NodeResizer } from '@vue-flow/node-resizer'
+import { Handle, NodeResizer, Position } from '@vue-flow/core'
 
 defineProps(['data'])
 </script>

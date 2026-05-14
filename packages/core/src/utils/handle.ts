@@ -1,3 +1,4 @@
+import { getEventPosition, getOverlappingArea } from '@xyflow/system'
 import { ConnectionMode, Position } from '../types'
 import type {
   Actions,
@@ -14,7 +15,7 @@ import type {
   Result,
   XYPosition,
 } from '../types'
-import { getEventPosition, getHandlePosition, getOverlappingArea, nodeToRect } from '.'
+import { getHandlePosition, nodeToRect } from '.'
 
 const alwaysValid = () => true
 
@@ -83,7 +84,7 @@ export function getClosestHandle(
   const closeNodes = getNodesWithinDistance(position, nodeLookup, connectionRadius + ADDITIONAL_DISTANCE)
 
   for (const node of closeNodes) {
-    const allHandles = [...(node.handleBounds?.source ?? []), ...(node.handleBounds?.target ?? [])]
+    const allHandles = [...(node.internals.handleBounds?.source ?? []), ...(node.internals.handleBounds?.target ?? [])]
 
     for (const handle of allHandles) {
       // if the handle is the same as the fromHandle we skip it
@@ -254,8 +255,8 @@ export function getHandle(
 
   const handles =
     connectionMode === ConnectionMode.Strict
-      ? node.handleBounds?.[handleType]
-      : [...(node.handleBounds?.source ?? []), ...(node.handleBounds?.target ?? [])]
+      ? node.internals.handleBounds?.[handleType]
+      : [...(node.internals.handleBounds?.source ?? []), ...(node.internals.handleBounds?.target ?? [])]
   const handle = (handleId ? handles?.find((h) => h.id === handleId) : handles?.[0]) ?? null
 
   return handle && withAbsolutePosition ? { ...handle, ...getHandlePosition(node, handle, handle.position, true) } : handle

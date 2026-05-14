@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { Handle, Position } from '@vue-flow/core'
-import { NodeToolbar } from '@vue-flow/node-toolbar'
+import { Handle, NodeToolbar, Position } from '@vue-flow/core'
 
 interface NodeData {
   toolbarVisible: boolean

@@ -1,33 +1,33 @@
 <script setup>
-import { Background, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import { Background, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import { nextTick, ref } from 'vue'
 import { getElements } from './utils'
 
-const { nodes, edges } = getElements(15, 15)
+const initial = getElements(15, 15)
 
-const elements = ref([...nodes, ...edges])
+const nodes = ref(initial.nodes)
+const edges = ref(initial.edges)
 
-const { onPaneReady, dimensions, fitView } = useVueFlow()
+const { onInit, dimensions, fitView } = useVueFlow()
 
-onPaneReady((i) => {
+onInit((i) => {
   i.fitView({
     padding: 0.2,
   })
 
-  console.log(i.getElements.value)
+  console.log(i.getNodes.value, i.getEdges.value)
 })
 
 function toggleClass() {
-  return elements.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+  nodes.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+  edges.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 }
 
 function updatePos() {
-  elements.value.forEach((el) => {
-    if (isNode(el)) {
-      el.position = {
-        x: Math.random() * 10 * dimensions.value.width,
-        y: Math.random() * 10 * dimensions.value.height,
-      }
+  nodes.value.forEach((el) => {
+    el.position = {
+      x: Math.random() * 10 * dimensions.value.width,
+      y: Math.random() * 10 * dimensions.value.height,
     }
   })
 
@@ -38,7 +38,7 @@ function updatePos() {
 </script>
 
 <template>
-  <VueFlow v-model="elements" :min-zoom="0.1">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :min-zoom="0.1">
     <Background />
 
     <Panel position="top-right">

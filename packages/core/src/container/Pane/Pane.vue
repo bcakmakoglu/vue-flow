@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, toRef, watch } from 'vue'
+import { shallowRef, toRef, watch } from 'vue'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import type { EdgeChange, NodeChange } from '../../types'
@@ -16,7 +16,8 @@ const {
   viewport,
   emits,
   userSelectionActive,
-  removeSelectedElements,
+  removeSelectedNodes,
+  removeSelectedEdges,
   userSelectionRect,
   elementsSelectable,
   nodesSelectionActive,
@@ -33,15 +34,16 @@ const {
   connectionLookup,
   defaultEdgeOptions,
   connectionStartHandle,
+  panOnDrag,
 } = useVueFlow()
 
-const container = ref<HTMLDivElement | null>(null)
+const container = shallowRef<HTMLDivElement | null>(null)
 
-const selectedNodeIds = ref<Set<string>>(new Set())
+const selectedNodeIds = shallowRef<Set<string>>(new Set())
 
-const selectedEdgeIds = ref<Set<string>>(new Set())
+const selectedEdgeIds = shallowRef<Set<string>>(new Set())
 
-const containerBounds = ref<DOMRect>()
+const containerBounds = shallowRef<DOMRect | null>(null)
 
 const hasActiveSelection = toRef(() => elementsSelectable.value && (isSelecting || userSelectionActive.value))
 
@@ -89,14 +91,17 @@ function onClick(event: MouseEvent) {
 
   emits.paneClick(event)
 
-  removeSelectedElements()
+  removeSelectedNodes()
+  removeSelectedEdges()
 
   nodesSelectionActive.value = false
 }
 
 function onContextMenu(event: MouseEvent) {
-  event.preventDefault()
-  event.stopPropagation()
+  if (Array.isArray(panOnDrag.value) && panOnDrag.value?.includes(2)) {
+    event.preventDefault()
+    return
+  }
 
   emits.paneContextMenu(event)
 }
@@ -106,7 +111,7 @@ function onWheel(event: WheelEvent) {
 }
 
 function onPointerDown(event: PointerEvent) {
-  containerBounds.value = vueFlowRef.value?.getBoundingClientRect()
+  containerBounds.value = vueFlowRef.value?.getBoundingClientRect() ?? null
 
   if (
     !elementsSelectable.value ||
@@ -125,7 +130,8 @@ function onPointerDown(event: PointerEvent) {
   selectionStarted = true
   selectionInProgress = false
 
-  removeSelectedElements()
+  removeSelectedNodes()
+  removeSelectedEdges()
 
   userSelectionRect.value = {
     width: 0,

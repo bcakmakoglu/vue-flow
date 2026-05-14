@@ -1,25 +1,23 @@
 import type { Component, FunctionalComponent } from 'vue'
 import { Fragment, h } from 'vue'
 import Handle from '../Handle/Handle.vue'
-import type { NodeProps } from '../../types'
+import type { BuiltInNode, NodeProps } from '../../types'
 import { Position } from '../../types'
 
-const InputNode: FunctionalComponent<NodeProps<{ label: any }>> = function ({
+const InputNode: FunctionalComponent<NodeProps<BuiltInNode>> = function ({
   sourcePosition = Position.Bottom,
-  label: _label,
-  connectable = true,
-  isValidSourcePos,
+  isConnectable = true,
   data,
 }) {
-  const label = data.label ?? _label
+  const label = data.label
 
   return [
     typeof label !== 'string' && label ? h(label) : h(Fragment, [label]),
-    h(Handle as Component, { type: 'source', position: sourcePosition, connectable, isValidConnection: isValidSourcePos }),
+    h(Handle as Component, { type: 'source', position: sourcePosition, isConnectable }),
   ]
 }
 
-InputNode.props = ['sourcePosition', 'label', 'isValidSourcePos', 'connectable', 'data']
+InputNode.props = ['sourcePosition', 'isConnectable', 'data']
 InputNode.inheritAttrs = false
 InputNode.compatConfig = { MODE: 3 }
 
