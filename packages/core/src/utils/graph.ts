@@ -1,15 +1,5 @@
 import { markRaw } from 'vue'
-import type { Viewport } from '@xyflow/system'
-import {
-  boxToRect,
-  getBoundsOfBoxes,
-  getOverlappingArea,
-  getViewportForBounds,
-  pointToRendererPoint,
-  rectToBox,
-} from '@xyflow/system'
 import type {
-  Box,
   Connection,
   DefaultEdgeOptions,
   Edge,
@@ -18,20 +8,19 @@ import type {
   GraphNode,
   Node,
   NodeLookup,
-  Rect,
   XYZPosition,
 } from '../types'
 import { isDef } from '.'
 
-export { getEventPosition, pointToRendererPoint } from '@xyflow/system'
-
-export function nodeToRect(node: GraphNode): Rect {
-  return {
-    ...(node.internals.positionAbsolute || { x: 0, y: 0 }),
-    width: node.measured.width || 0,
-    height: node.measured.height || 0,
-  }
-}
+export {
+  getEventPosition,
+  pointToRendererPoint,
+  nodeToRect,
+  getNodesBounds,
+  getViewportForBounds,
+  getNodesInside,
+  getConnectedEdges,
+} from '@xyflow/system'
 
 export function isEdge<Data = ElementData>(element: unknown): element is Edge<Data> {
   return !!element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
@@ -46,7 +35,7 @@ export function isNode<NodeType extends Node = Node>(element: unknown): element 
 }
 
 export function isGraphNode<NodeType extends Node = Node>(element: unknown): element is GraphNode<NodeType> {
-  return isNode(element) && 'computedPosition' in element
+  return isNode(element) && 'internals' in element
 }
 
 export function parseNode<NodeType extends Node = Node>(
@@ -128,83 +117,6 @@ export function connectionExists(edge: Edge | Connection, edges: Edge[]) {
   )
 }
 
-export function getRectOfNodes(nodes: GraphNode[]) {
-  let box: Box = {
-    x: Number.POSITIVE_INFINITY,
-    y: Number.POSITIVE_INFINITY,
-    x2: Number.NEGATIVE_INFINITY,
-    y2: Number.NEGATIVE_INFINITY,
-  }
-
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i]
-    box = getBoundsOfBoxes(
-      box,
-      rectToBox({
-        ...node.internals.positionAbsolute,
-        ...node.measured,
-      } as Rect),
-    )
-  }
-
-  return boxToRect(box)
-}
-
-export function getNodesInside<NodeType extends Node = Node>(
-  nodes: GraphNode<NodeType>[],
-  rect: Rect,
-  viewport: Viewport = { x: 0, y: 0, zoom: 1 },
-  partially = false,
-  // set excludeNonSelectableNodes if you want to pay attention to the nodes "selectable" attribute
-  excludeNonSelectableNodes = false,
-) {
-  const transform: [number, number, number] = [viewport.x, viewport.y, viewport.zoom]
-  const paneRect = {
-    ...pointToRendererPoint(rect, transform),
-    width: rect.width / viewport.zoom,
-    height: rect.height / viewport.zoom,
-  }
-
-  const visibleNodes: GraphNode<NodeType>[] = []
-
-  for (const node of nodes) {
-    const { measured, selectable = true, hidden = false } = node
-    const width = measured.width ?? node.width ?? null
-    const height = measured.height ?? node.height ?? null
-
-    if ((excludeNonSelectableNodes && !selectable) || hidden) {
-      continue
-    }
-
-    const overlappingArea = getOverlappingArea(paneRect, nodeToRect(node))
-    const notInitialized = width === null || height === null
-
-    const partiallyVisible = partially && overlappingArea > 0
-    const area = (width ?? 0) * (height ?? 0)
-    const isVisible = notInitialized || partiallyVisible || overlappingArea >= area
-
-    if (isVisible || node.dragging) {
-      visibleNodes.push(node)
-    }
-  }
-
-  return visibleNodes
-}
-
-export function getConnectedEdges<E extends Edge>(nodesOrId: Node[] | string, edges: E[]) {
-  const nodeIds = new Set()
-
-  if (typeof nodesOrId === 'string') {
-    nodeIds.add(nodesOrId)
-  } else if (nodesOrId.length >= 1) {
-    for (const n of nodesOrId) {
-      nodeIds.add(n.id)
-    }
-  }
-
-  return edges.filter((edge) => nodeIds.has(edge.source) || nodeIds.has(edge.target))
-}
-
 export function getConnectedNodes<N extends Node | { id: string } | string>(nodes: N[], edges: Edge[]) {
   const nodeIds = new Set()
 
@@ -225,26 +137,6 @@ export function getConnectedNodes<N extends Node | { id: string } | string>(node
   }, new Set())
 
   return nodes.filter((node) => connectedNodeIds.has(typeof node === 'string' ? node : node.id))
-}
-
-export function getTransformForBounds(
-  bounds: Rect,
-  width: number,
-  height: number,
-  minZoom: number,
-  maxZoom: number,
-  padding = 0.1,
-  offset: {
-    x?: number
-    y?: number
-  } = { x: 0, y: 0 },
-): Viewport {
-  const viewport = getViewportForBounds(bounds, width, height, minZoom, maxZoom, padding)
-  return {
-    x: viewport.x + (offset.x ?? 0),
-    y: viewport.y + (offset.y ?? 0),
-    zoom: viewport.zoom,
-  }
 }
 
 export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition {

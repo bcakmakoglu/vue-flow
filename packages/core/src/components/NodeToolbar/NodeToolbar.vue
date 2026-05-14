@@ -6,7 +6,7 @@ import { useVueFlow } from '../../composables'
 import { NodeId } from '../../context'
 import type { GraphNode, Rect } from '../../types'
 import { Position } from '../../types'
-import { getRectOfNodes } from '../../utils'
+import { getNodesBounds } from '../../utils'
 
 import type { Align, NodeToolbarProps } from './types'
 
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<NodeToolbarProps>(), {
 
 const contextNodeId = inject(NodeId, null)
 
-const { viewportRef, viewport, getSelectedNodes, findNode } = useVueFlow()
+const { viewportRef, viewport, getSelectedNodes, findNode, nodeLookup } = useVueFlow()
 
 const nodes = computed(() => {
   const nodeIds = Array.isArray(props.nodeId) ? props.nodeId : [props.nodeId || contextNodeId || '']
@@ -41,7 +41,7 @@ const isActive = computed(() =>
     : nodes.value.length === 1 && nodes.value[0].selected && getSelectedNodes.value.length === 1,
 )
 
-const nodeRect = computed(() => getRectOfNodes(nodes.value))
+const nodeRect = computed(() => getNodesBounds(nodes.value, { nodeLookup: nodeLookup.value }))
 
 const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.internals.z || 1) + 1)))
 

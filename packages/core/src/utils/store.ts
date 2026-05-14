@@ -1,8 +1,4 @@
 import { unref } from 'vue'
-import {
-  areConnectionMapsEqual as xyflowAreConnectionMapsEqual,
-  handleConnectionChange as xyflowHandleConnectionChange,
-} from '@xyflow/system'
 import type {
   Actions,
   Connection,
@@ -173,35 +169,7 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeL
   }
 }
 
-/**
- * We call the callback for all connections in a that are not in b
- *
- * @internal
- */
-export function handleConnectionChange(
-  a: Map<string, NodeConnection>,
-  b: Map<string, NodeConnection>,
-  cb?: (diff: NodeConnection[]) => void,
-) {
-  // @xyflow/system's HandleConnection requires sourceHandle/targetHandle as string | null
-  // while VueFlow's NodeConnection allows undefined — the cast is safe since the
-  // connection lookup always stores null (not undefined) for missing handles
-  xyflowHandleConnectionChange(
-    a as Parameters<typeof xyflowHandleConnectionChange>[0],
-    b as Parameters<typeof xyflowHandleConnectionChange>[1],
-    cb as Parameters<typeof xyflowHandleConnectionChange>[2],
-  )
-}
-
-/**
- * @internal
- */
-export function areConnectionMapsEqual(a?: Map<string, Connection>, b?: Map<string, Connection>) {
-  return xyflowAreConnectionMapsEqual(
-    a as Parameters<typeof xyflowAreConnectionMapsEqual>[0],
-    b as Parameters<typeof xyflowAreConnectionMapsEqual>[1],
-  )
-}
+export { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system'
 
 /**
  * @internal
@@ -246,12 +214,20 @@ export function createGraphEdges(
     }
 
     if (isValidConnection) {
-      const isValid = isValidConnection(edge, {
-        edges,
-        nodes,
-        sourceNode,
-        targetNode,
-      })
+      const isValid = isValidConnection(
+        {
+          source: edge.source,
+          target: edge.target,
+          sourceHandle: edge.sourceHandle ?? null,
+          targetHandle: edge.targetHandle ?? null,
+        },
+        {
+          edges,
+          nodes,
+          sourceNode,
+          targetNode,
+        },
+      )
 
       if (!isValid) {
         onError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id))

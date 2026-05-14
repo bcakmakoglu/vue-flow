@@ -46,17 +46,7 @@ export {
   getConnectionStatus,
 } from '@xyflow/system'
 
-export {
-  isNode,
-  isEdge,
-  isGraphNode,
-  isGraphEdge,
-  getConnectedEdges,
-  getTransformForBounds,
-  getRectOfNodes,
-  getNodesInside,
-  connectionExists,
-} from './utils/graph'
+export { isNode, isEdge, isGraphNode, isGraphEdge, getConnectedEdges, getNodesInside, connectionExists } from './utils/graph'
 
 /**
  * @deprecated - Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead

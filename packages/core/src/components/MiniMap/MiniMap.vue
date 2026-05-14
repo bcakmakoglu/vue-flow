@@ -4,7 +4,7 @@ import type { XYMinimapInstance } from '@xyflow/system'
 import { XYMinimap, getBoundsOfRects } from '@xyflow/system'
 import type { GraphNode } from '../../types'
 import { useVueFlow } from '../../composables'
-import { getConnectedEdges, getRectOfNodes } from '../../utils'
+import { getConnectedEdges, getNodesBounds } from '../../utils'
 import Panel from '../Panel/Panel.vue'
 import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode.vue'
@@ -40,7 +40,7 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, nodes, viewport, translateExtent, dimensions, emits, panZoom } = useVueFlow()
+const { id, edges, nodes, nodeLookup, viewport, translateExtent, dimensions, emits, panZoom } = useVueFlow()
 
 const el = ref<SVGElement>()
 
@@ -64,7 +64,12 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
-const bb = computed(() => getRectOfNodes(nodes.value.filter((node) => !node.hidden)))
+const bb = computed(() =>
+  getNodesBounds(
+    nodes.value.filter((node) => !node.hidden),
+    { nodeLookup: nodeLookup.value },
+  ),
+)
 
 const viewBB = computed(() => ({
   x: -viewport.value.x / viewport.value.zoom,

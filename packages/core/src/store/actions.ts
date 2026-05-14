@@ -46,7 +46,7 @@ export function useActions<NodeType extends Node = Node>(
   nodeLookup: ComputedRef<NodeLookup<NodeType>>,
   edgeLookup: ComputedRef<EdgeLookup>,
 ): Actions<NodeType> {
-  const viewportHelper = useViewportHelper(state)
+  const viewportHelper = useViewportHelper(state, nodeLookup)
 
   const updateNodeInternals: Actions<NodeType>['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? []
@@ -54,8 +54,8 @@ export function useActions<NodeType extends Node = Node>(
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
 
-  const getConnectedEdges: Actions<NodeType>['getConnectedEdges'] = (nodesOrId) => {
-    return getConnectedEdgesBase(nodesOrId, state.edges)
+  const getConnectedEdges: Actions<NodeType>['getConnectedEdges'] = (nodes) => {
+    return getConnectedEdgesBase(nodes, state.edges) as GraphEdge[]
   }
 
   const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
