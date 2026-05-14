@@ -1,13 +1,10 @@
-import type { Elements } from '@vue-flow/core'
-import { isNode, useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
-describe('Store Action: `removeSelectedElements`', () => {
+describe('Store Action: `removeSelectedNodes` / `removeSelectedEdges`', () => {
   const store = useVueFlow({ id: 'test' })
-  let randomNumber: number
-  let randomNumber2: number
 
   beforeEach(() => {
     cy.vueFlow({
@@ -16,30 +13,39 @@ describe('Store Action: `removeSelectedElements`', () => {
     })
   })
 
-  it('removes passed elements from selected elements in store', async () => {
-    randomNumber = Math.floor(Math.random() * [...nodes, ...edges].length)
-    randomNumber2 = Math.floor(Math.random() * randomNumber)
-    store.addSelectedElements(Array.from({ length: randomNumber }, (_, i) => store.getElements.value[i]))
-    store.removeSelectedElements(
-      Array.from({ length: randomNumber2 }, (_, i) => store.getElements.value[i]).reduce((acc, curr) => {
-        if (isNode(curr)) {
-          acc.push(curr)
-        } else {
-          acc.push(curr)
-        }
+  // NOTE: `addSelectedNodes` deselects edges (and vice versa) when `multiSelectionActive` is false.
+  // Tests below act on one collection at a time to keep behaviour deterministic.
 
-        return acc
-      }, [] as Elements),
-    )
+  it('removes passed nodes from the node selection', () => {
+    const selectCount = Math.max(2, Math.floor(nodes.length / 2))
+    const removeCount = Math.floor(selectCount / 2)
 
-    expect(store.getSelectedElements.value).to.have.length(randomNumber - randomNumber2)
+    store.addSelectedNodes(Array.from({ length: selectCount }, (_, i) => store.getNodes.value[i]))
+    store.removeSelectedNodes(Array.from({ length: removeCount }, (_, i) => store.getNodes.value[i]))
+
+    expect(store.getSelectedNodes.value).to.have.length(selectCount - removeCount)
   })
 
-  it('resets all selected elements in store when no argument is passed', () => {
-    randomNumber = Math.floor(Math.random() * [...nodes, ...edges].length)
-    store.addSelectedElements(Array.from({ length: randomNumber }, (_, i) => store.getElements.value[i]))
-    store.removeSelectedElements()
+  it('removes passed edges from the edge selection', () => {
+    const selectCount = Math.max(2, Math.floor(edges.length / 2))
+    const removeCount = Math.floor(selectCount / 2)
 
-    expect(store.getSelectedElements.value).to.have.length(0)
+    store.addSelectedEdges(Array.from({ length: selectCount }, (_, i) => store.getEdges.value[i]))
+    store.removeSelectedEdges(Array.from({ length: removeCount }, (_, i) => store.getEdges.value[i]))
+
+    expect(store.getSelectedEdges.value).to.have.length(selectCount - removeCount)
+  })
+
+  it('resets all selected nodes/edges when no argument is passed', () => {
+    const selectCount = Math.max(1, Math.floor(nodes.length / 2))
+
+    store.addSelectedNodes(Array.from({ length: selectCount }, (_, i) => store.getNodes.value[i]))
+    store.addSelectedEdges(Array.from({ length: selectCount }, (_, i) => store.getEdges.value[i]))
+
+    store.removeSelectedNodes()
+    store.removeSelectedEdges()
+
+    expect(store.getSelectedNodes.value).to.have.length(0)
+    expect(store.getSelectedEdges.value).to.have.length(0)
   })
 })

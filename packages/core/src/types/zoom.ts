@@ -1,61 +1,28 @@
-import type { Selection } from 'd3-selection'
-
-// eslint-disable-next-line unused-imports/no-unused-imports,@typescript-eslint/no-unused-vars -- this is needed for the Selection type to include the transition function :/
-import type { Transition } from 'd3-transition'
-import type { ZoomBehavior } from 'd3-zoom'
-
+import type { Viewport } from '@xyflow/system'
 import type { Rect, XYPosition } from './flow'
-
-export type D3Zoom = ZoomBehavior<HTMLDivElement, unknown>
-export type D3Selection = Selection<HTMLDivElement, unknown, null, undefined>
-export type D3ZoomHandler = (this: HTMLDivElement, event: any, d: unknown) => void
-
-export enum PanOnScrollMode {
-  Free = 'free',
-  Vertical = 'vertical',
-  Horizontal = 'horizontal',
-}
 
 export interface TransitionOptions {
   duration?: number
-  ease?: (t: number) => number
-  interpolate?: 'smooth' | 'linear'
 }
 
-export type PaddingUnit = 'px' | '%'
-export type PaddingWithUnit = `${number}${PaddingUnit}` | number
-
-export type Padding =
-  | PaddingWithUnit
-  | {
-      top?: PaddingWithUnit
-      right?: PaddingWithUnit
-      bottom?: PaddingWithUnit
-      left?: PaddingWithUnit
-      x?: PaddingWithUnit
-      y?: PaddingWithUnit
-    }
-
 export type FitViewParams = {
-  padding?: Padding
+  padding?: number
   includeHiddenNodes?: boolean
   minZoom?: number
   maxZoom?: number
+  offset?: {
+    x?: number
+    y?: number
+  }
   nodes?: string[]
 } & TransitionOptions
-
-export interface ViewportTransform {
-  x: number
-  y: number
-  zoom: number
-}
 
 export type SetCenterOptions = TransitionOptions & {
   zoom?: number
 }
 
 export type FitBoundsOptions = TransitionOptions & {
-  padding?: Padding
+  padding?: number
 }
 
 /** Fit the viewport around visible nodes */
@@ -76,22 +43,18 @@ export type ZoomInOut = (options?: TransitionOptions) => Promise<boolean>
 /** zoom to a specific level */
 export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => Promise<boolean>
 
-/** get current viewport transform */
-export type GetViewport = () => ViewportTransform
+/** get current viewport */
+export type GetViewport = () => Viewport
 
-/** set current viewport transform */
-export type SetViewport = (transform: ViewportTransform, options?: TransitionOptions) => Promise<boolean>
+/** set current viewport */
+export type SetViewport = (viewport: Viewport, options?: TransitionOptions) => Promise<boolean>
 
 export interface ViewportFunctions {
   zoomIn: ZoomInOut
   zoomOut: ZoomInOut
   zoomTo: ZoomTo
   setViewport: SetViewport
-  /** @deprecated use setViewport instead */
-  setTransform: SetViewport
   getViewport: GetViewport
-  /** @deprecated use getViewport instead */
-  getTransform: GetViewport
   fitView: FitView
   setCenter: SetCenter
   fitBounds: FitBounds

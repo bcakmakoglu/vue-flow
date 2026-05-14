@@ -1,7 +1,6 @@
 <script setup>
 import { nextTick, ref } from 'vue'
-import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
 import Icon from './Icon.vue'
 import ProcessNode from './ProcessNode.vue'
 import AnimationEdge from './AnimationEdge.vue'

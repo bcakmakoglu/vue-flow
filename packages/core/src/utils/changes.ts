@@ -1,38 +1,36 @@
 import { nextTick } from 'vue'
 import type {
+  Edge,
   EdgeAddChange,
   EdgeChange,
   EdgeRemoveChange,
   EdgeSelectionChange,
   ElementChange,
-  FlowElement,
   GraphEdge,
   GraphNode,
+  Node,
   NodeAddChange,
   NodeChange,
   NodeRemoveChange,
   NodeSelectionChange,
-  StyleFunc,
   Styles,
 } from '../types'
 import { isGraphNode } from '.'
 
 function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   if (parent) {
-    const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
-    const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
+    const extendWidth = updateItem.position.x + updateItem.measured.width - parent.measured.width
+    const extendHeight = updateItem.position.y + updateItem.measured.height - parent.measured.height
 
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
       let parentStyles: Styles = {}
 
-      if (typeof parent.style === 'function') {
-        parentStyles = { ...parent.style(parent) }
-      } else if (parent.style) {
+      if (parent.style) {
         parentStyles = { ...parent.style }
       }
 
-      parentStyles.width = parentStyles.width ?? `${parent.dimensions.width}px`
-      parentStyles.height = parentStyles.height ?? `${parent.dimensions.height}px`
+      parentStyles.width = parentStyles.width ?? `${parent.measured.width}px`
+      parentStyles.height = parentStyles.height ?? `${parent.measured.height}px`
 
       if (extendWidth > 0) {
         if (typeof parentStyles.width === 'string') {
@@ -80,30 +78,20 @@ function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
         updateItem.position.y = 0
       }
 
-      parent.dimensions.width = Number(parentStyles.width.toString().replace('px', ''))
-      parent.dimensions.height = Number(parentStyles.height.toString().replace('px', ''))
+      const newWidth = Number(parentStyles.width.toString().replace('px', ''))
+      const newHeight = Number(parentStyles.height.toString().replace('px', ''))
+      parent.measured = { width: newWidth, height: newHeight }
 
-      if (typeof parent.style === 'function') {
-        parent.style = (p) => {
-          const styleFunc = parent.style as StyleFunc
-
-          return {
-            ...styleFunc(p),
-            ...parentStyles,
-          }
-        }
-      } else {
-        parent.style = {
-          ...parent.style,
-          ...parentStyles,
-        }
+      parent.style = {
+        ...parent.style,
+        ...parentStyles,
       }
     }
   }
 }
 
 export function applyChanges<
-  T extends FlowElement = FlowElement,
+  T extends Node | Edge = Node | Edge,
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(changes: C[], elements: T[]): T[] {
   const addRemoveChanges = changes.filter((c) => c.type === 'add' || c.type === 'remove') as (
@@ -118,7 +106,7 @@ export function applyChanges<
       const index = elements.findIndex((el) => el.id === change.item.id)
 
       if (index === -1) {
-        elements.push(<T>change.item)
+        elements.push(change.item as any)
       }
     } else if (change.type === 'remove') {
       const index = elements.findIndex((el) => el.id === change.id)
@@ -139,7 +127,7 @@ export function applyChanges<
 
       switch (currentChange.type) {
         case 'select':
-          element.selected = currentChange.selected
+          ;(element as any).selected = currentChange.selected
           break
         case 'position':
           if (isGraphNode(element)) {
@@ -151,8 +139,8 @@ export function applyChanges<
               element.dragging = currentChange.dragging
             }
 
-            if (element.expandParent && element.parentNode) {
-              const parent = elements[elementIds.indexOf(element.parentNode)]
+            if (element.expandParent && element.parentId) {
+              const parent = elements[elementIds.indexOf(element.parentId)]
 
               if (parent && isGraphNode(parent)) {
                 handleParentExpand(element, parent)
@@ -163,14 +151,16 @@ export function applyChanges<
         case 'dimensions':
           if (isGraphNode(element)) {
             if (typeof currentChange.dimensions !== 'undefined') {
-              element.dimensions = currentChange.dimensions
+              element.measured = { width: currentChange.dimensions.width, height: currentChange.dimensions.height }
             }
 
-            if (typeof currentChange.updateStyle !== 'undefined' && currentChange.updateStyle) {
+            if (currentChange.setAttributes) {
+              const setW = currentChange.setAttributes === true || currentChange.setAttributes === 'width'
+              const setH = currentChange.setAttributes === true || currentChange.setAttributes === 'height'
               element.style = {
                 ...(element.style || {}),
-                width: `${currentChange.dimensions?.width}px`,
-                height: `${currentChange.dimensions?.height}px`,
+                ...(setW && { width: `${currentChange.dimensions?.width}px` }),
+                ...(setH && { height: `${currentChange.dimensions?.height}px` }),
               }
             }
 
@@ -178,11 +168,11 @@ export function applyChanges<
               element.resizing = currentChange.resizing
             }
 
-            if (element.expandParent && element.parentNode) {
-              const parent = elements[elementIds.indexOf(element.parentNode)]
+            if (element.expandParent && element.parentId) {
+              const parent = elements[elementIds.indexOf(element.parentId)]
 
               if (parent && isGraphNode(parent)) {
-                const parentInit = !!parent.dimensions.width && !!parent.dimensions.height
+                const parentInit = !!parent.measured.width && !!parent.measured.height
 
                 if (!parentInit) {
                   nextTick(() => {
@@ -221,12 +211,13 @@ export function createSelectionChange(id: string, selected: boolean): NodeSelect
 }
 
 export function createAdditionChange<
-  T extends GraphNode | GraphEdge = GraphNode,
-  C extends NodeAddChange | EdgeAddChange = T extends GraphNode ? NodeAddChange : EdgeAddChange,
->(item: T): C {
+  T extends Node | Edge = Node,
+  C extends NodeAddChange | EdgeAddChange = T extends Node ? NodeAddChange : EdgeAddChange,
+>(item: T, index?: number): C {
   return <C>{
     item,
     type: 'add',
+    ...(typeof index === 'number' && { index }),
   }
 }
 
@@ -237,19 +228,9 @@ export function createNodeRemoveChange(id: string): NodeRemoveChange {
   }
 }
 
-export function createEdgeRemoveChange(
-  id: string,
-  source: string,
-  target: string,
-  sourceHandle?: string | null,
-  targetHandle?: string | null,
-): EdgeRemoveChange {
+export function createEdgeRemoveChange(id: string): EdgeRemoveChange {
   return {
     id,
-    source,
-    target,
-    sourceHandle: sourceHandle || null,
-    targetHandle: targetHandle || null,
     type: 'remove',
   }
 }

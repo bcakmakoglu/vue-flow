@@ -1,14 +1,5 @@
 # MiniMap
 
-## Installation
-
-```bash
-yarn add @vue-flow/minimap
-  
-# or
-npm install @vue-flow/minimap
-```
-
 ## Usage
 
 To use the minimap simply pass the `MiniMap` component as a child to the `VueFlow` component.
@@ -19,11 +10,7 @@ Make sure you also import the styles as these are *not* part of the default them
 
 ```vue
 <script setup>
-import { VueFlow } from '@vue-flow/core'
-import { MiniMap } from '@vue-flow/minimap'
-
-// import default minimap styles
-import '@vue-flow/minimap/dist/style.css'
+import { MiniMap, VueFlow } from '@vue-flow/core'
 </script>
 
 <template>

@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import type { ValidConnectionFunc } from '@vue-flow/core'
+import type { Node, NodeProps, ValidConnectionFunc } from '@vue-flow/core'
 import { Handle, Position } from '@vue-flow/core'
 
-interface CustomInputProps {
-  isValidTargetPos: ValidConnectionFunc
-}
-const props = defineProps<CustomInputProps>()
+type ValidationInputNode = Node<{ isValidTargetPos: ValidConnectionFunc }, 'custominput'>
+
+const props = defineProps<NodeProps<ValidationInputNode>>()
 </script>
 
 <script lang="ts">
@@ -16,5 +15,5 @@ export default {
 
 <template>
   <div>Only connectable with B</div>
-  <Handle type="source" :position="Position.Right" :is-valid-connection="props.isValidTargetPos" />
+  <Handle type="source" :position="Position.Right" :is-valid-connection="props.data.isValidTargetPos" />
 </template>

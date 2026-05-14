@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Background } from '@vue-flow/background'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
 
 const { updateEdge, addEdges } = useVueFlow()
 

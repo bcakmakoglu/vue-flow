@@ -53,7 +53,7 @@ export interface HandleProps {
   /** A valid connection func {@link ValidConnectionFunc} */
   isValidConnection?: ValidConnectionFunc
   /** Enable/disable connecting to handle altogether */
-  connectable?: HandleConnectable
+  isConnectable?: HandleConnectable
   /** Can this handle be used to *start* a connection */
   connectableStart?: boolean
   /** Can this handle be used to *end* a connection */

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { Handle, Position } from '@vue-flow/core'
-import { NodeResizer } from '@vue-flow/node-resizer'
+import { Handle, NodeResizer, Position } from '@vue-flow/core'
 
 defineProps(['label', 'selected'])
 </script>

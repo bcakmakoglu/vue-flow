@@ -1,10 +1,7 @@
 <script lang="ts">
-import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { VueFlow, isNode } from '@vue-flow/core'
+import type { Edge, Elements, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
-import { Background } from '@vue-flow/background'
-import { Controls } from '@vue-flow/controls'
-import { MiniMap } from '@vue-flow/minimap'
 import type { UnwrapNestedRefs } from 'vue'
 
 export default defineComponent({
@@ -14,14 +11,22 @@ export default defineComponent({
     return {
       instance: null as VueFlowStore | null,
       elements: [
-        { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
-        { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
-        { id: '3', label: 'Node 3', position: { x: 400, y: 100 }, class: 'light' },
-        { id: '4', label: 'Node 4', position: { x: 400, y: 200 }, class: 'light' },
+        { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
+        { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, class: 'light' },
+        { id: '3', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, class: 'light' },
+        { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, class: 'light' },
         { id: 'e1-2', source: '1', target: '2', animated: true },
         { id: 'e1-3', source: '1', target: '3' },
       ] as Elements,
     }
+  },
+  computed: {
+    nodes(): Node[] {
+      return this.elements.filter(isNode)
+    },
+    edges(): Edge[] {
+      return this.elements.filter(isEdge)
+    },
   },
   methods: {
     logToObject() {
@@ -46,7 +51,7 @@ export default defineComponent({
     onNodeDragStop(e: FlowEvents['nodeDragStop']) {
       console.log('drag stop', e)
     },
-    onPaneReady(instance: UnwrapNestedRefs<FlowEvents['paneReady']>) {
+    onInit(instance: UnwrapNestedRefs<FlowEvents['init']>) {
       instance.fitView()
       this.instance = instance
     },
@@ -59,7 +64,8 @@ export default defineComponent({
 
 <template>
   <VueFlow
-    v-model="elements"
+    :nodes="nodes"
+    :edges="edges"
     class="vue-flow-basic-example"
     :default-zoom="1.5"
     :min-zoom="0.2"
@@ -67,7 +73,7 @@ export default defineComponent({
     :zoom-on-scroll="false"
     fit-view-on-init
     @connect="onConnect"
-    @pane-ready="onPaneReady"
+    @init="onInit"
     @node-drag-stop="onNodeDragStop"
   >
     <Background />

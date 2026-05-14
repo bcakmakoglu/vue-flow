@@ -240,3 +240,161 @@
     stroke-dashoffset: 10;
   }
 }
+
+.vue-flow__controls {
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+}
+
+.vue-flow__controls-button {
+  background: #fefefe;
+  border: none;
+  border-bottom: 1px solid #eee;
+  box-sizing: content-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  user-select: none;
+  padding: 5px;
+}
+
+.vue-flow__controls-button svg {
+  width: 100%;
+  max-width: 12px;
+  max-height: 12px;
+}
+
+.vue-flow__controls-button:hover {
+  background: #f4f4f4;
+}
+
+
+.vue-flow__controls-button:disabled {
+  pointer-events: none;
+}
+
+.vue-flow__controls-button:disabled svg {
+  fill-opacity: 0.4;
+}
+
+.vue-flow__minimap {
+  background-color: #fff;
+}
+
+.vue-flow__minimap.pannable {
+  cursor: grab;
+}
+
+.vue-flow__minimap.dragging {
+  cursor: grabbing;
+}
+
+.vue-flow__minimap-mask.pannable {
+  cursor: grab;
+}
+
+.vue-flow__resize-control {
+  position: absolute;
+}
+
+.vue-flow__resize-control.left,
+.vue-flow__resize-control.right {
+  cursor: ew-resize;
+}
+
+.vue-flow__resize-control.top,
+.vue-flow__resize-control.bottom {
+  cursor: ns-resize;
+}
+
+.vue-flow__resize-control.top.left,
+.vue-flow__resize-control.bottom.right {
+  cursor: nwse-resize;
+}
+
+.vue-flow__resize-control.bottom.left,
+.vue-flow__resize-control.top.right {
+  cursor: nesw-resize;
+}
+
+/* handle styles */
+.vue-flow__resize-control.handle {
+  width: 5px;
+  height: 5px;
+  border: 1px solid #fff;
+  border-radius: 1px;
+  background-color: #3367d9;
+  transform: translate(-50%, -50%);
+}
+
+.vue-flow__resize-control.handle.left {
+  left: 0;
+  top: 50%;
+}
+.vue-flow__resize-control.handle.right {
+  left: 100%;
+  top: 50%;
+}
+.vue-flow__resize-control.handle.top {
+  left: 50%;
+  top: 0;
+}
+.vue-flow__resize-control.handle.bottom {
+  left: 50%;
+  top: 100%;
+}
+.vue-flow__resize-control.handle.top.left {
+  left: 0;
+}
+.vue-flow__resize-control.handle.bottom.left {
+  left: 0;
+}
+.vue-flow__resize-control.handle.top.right {
+  left: 100%;
+}
+.vue-flow__resize-control.handle.bottom.right {
+  left: 100%;
+}
+
+/* line styles */
+.vue-flow__resize-control.line {
+  border-color: #3367d9;
+  border-width: 0;
+  border-style: solid;
+}
+
+.vue-flow__resize-control.line.left,
+.vue-flow__resize-control.line.right {
+  width: 1px;
+  transform: translate(-50%, 0);
+  top: 0;
+  height: 100%;
+}
+
+.vue-flow__resize-control.line.left {
+  left: 0;
+  border-left-width: 1px;
+}
+.vue-flow__resize-control.line.right {
+  left: 100%;
+  border-right-width: 1px;
+}
+
+.vue-flow__resize-control.line.top,
+.vue-flow__resize-control.line.bottom {
+  height: 1px;
+  transform: translate(0, -50%);
+  left: 0;
+  width: 100%;
+}
+
+.vue-flow__resize-control.line.top {
+  top: 0;
+  border-top-width: 1px;
+}
+.vue-flow__resize-control.line.bottom {
+  border-bottom-width: 1px;
+  top: 100%;
+}

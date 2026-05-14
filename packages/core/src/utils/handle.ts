@@ -1,9 +1,9 @@
+import { getEventPosition, getOverlappingArea } from '@xyflow/system'
 import { ConnectionMode, Position } from '../types'
 import type {
   Actions,
   Connection,
   ConnectionHandle,
-  ConnectionStatus,
   GraphEdge,
   GraphNode,
   HandleElement,
@@ -14,7 +14,7 @@ import type {
   Result,
   XYPosition,
 } from '../types'
-import { getEventPosition, getHandlePosition, getOverlappingArea, nodeToRect } from '.'
+import { getHandlePosition, nodeToRect } from '.'
 
 const alwaysValid = () => true
 
@@ -67,8 +67,6 @@ function getNodesWithinDistance(position: XYPosition, nodeLookup: NodeLookup, di
   return nodes
 }
 
-// this distance is used for the area around the user pointer
-// while doing a connection for finding the closest nodes
 const ADDITIONAL_DISTANCE = 250
 
 export function getClosestHandle(
@@ -83,17 +81,14 @@ export function getClosestHandle(
   const closeNodes = getNodesWithinDistance(position, nodeLookup, connectionRadius + ADDITIONAL_DISTANCE)
 
   for (const node of closeNodes) {
-    const allHandles = [...(node.handleBounds?.source ?? []), ...(node.handleBounds?.target ?? [])]
+    const allHandles = [...(node.internals.handleBounds?.source ?? []), ...(node.internals.handleBounds?.target ?? [])]
 
     for (const handle of allHandles) {
-      // if the handle is the same as the fromHandle we skip it
       if (fromHandle.nodeId === handle.nodeId && fromHandle.type === handle.type && fromHandle.id === handle.id) {
         continue
       }
 
-      // determine absolute position of the handle
       const { x, y } = getHandlePosition(node, handle, handle.position, true)
-
       const distance = Math.sqrt((x - position.x) ** 2 + (y - position.y) ** 2)
 
       if (distance > connectionRadius) {
@@ -104,7 +99,6 @@ export function getClosestHandle(
         closestHandles = [{ ...handle, x, y }]
         minDistance = distance
       } else if (distance === minDistance) {
-        // when multiple handles are on the same distance we collect all of them
         closestHandles.push({ ...handle, x, y })
       }
     }
@@ -114,13 +108,63 @@ export function getClosestHandle(
     return null
   }
 
-  // when multiple handles overlay each other we prefer the opposite handle
   if (closestHandles.length > 1) {
     const oppositeHandleType = fromHandle.type === 'source' ? 'target' : 'source'
     return closestHandles.find((handle) => handle.type === oppositeHandleType) ?? closestHandles[0]
   }
 
   return closestHandles[0]
+}
+
+export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDomNode: Element | null): HandleType | null {
+  if (edgeUpdaterType) {
+    return edgeUpdaterType
+  } else if (handleDomNode?.classList.contains('target')) {
+    return 'target'
+  } else if (handleDomNode?.classList.contains('source')) {
+    return 'source'
+  }
+
+  return null
+}
+
+// Re-export from @xyflow/system — `(isValid) => 'valid' | 'invalid' | null` shape, same as xyflow/react.
+// The previous two-arg form `(insideRadius, isValid)` can be collapsed at the call site to
+// `isValid ?? (insideRadius ? false : null)` before passing through.
+export { getConnectionStatus } from '@xyflow/system'
+
+export function isConnectionValid(isInsideConnectionRadius: boolean, isHandleValid: boolean) {
+  let isValid: boolean | null = null
+
+  if (isHandleValid) {
+    isValid = true
+  } else if (isInsideConnectionRadius && !isHandleValid) {
+    isValid = false
+  }
+
+  return isValid
+}
+
+export function getHandle(
+  nodeId: string,
+  handleType: HandleType,
+  handleId: string | null,
+  nodeLookup: NodeLookup,
+  connectionMode: ConnectionMode,
+  withAbsolutePosition = false,
+): HandleElement | null {
+  const node = nodeLookup.get(nodeId)
+  if (!node) {
+    return null
+  }
+
+  const handles =
+    connectionMode === ConnectionMode.Strict
+      ? node.internals.handleBounds?.[handleType]
+      : [...(node.internals.handleBounds?.source ?? []), ...(node.internals.handleBounds?.target ?? [])]
+  const handle = (handleId ? handles?.find((h) => h.id === handleId) : handles?.[0]) ?? null
+
+  return handle && withAbsolutePosition ? { ...handle, ...getHandlePosition(node, handle, handle.position, true) } : handle
 }
 
 // checks if and returns connection in form of an object { source: 123, target: 312 }
@@ -201,64 +245,6 @@ export function isValidHandle(
   }
 
   return result
-}
-
-export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDomNode: Element | null): HandleType | null {
-  if (edgeUpdaterType) {
-    return edgeUpdaterType
-  } else if (handleDomNode?.classList.contains('target')) {
-    return 'target'
-  } else if (handleDomNode?.classList.contains('source')) {
-    return 'source'
-  }
-
-  return null
-}
-
-export function getConnectionStatus(isInsideConnectionRadius: boolean, isHandleValid: boolean | null) {
-  let connectionStatus: ConnectionStatus | null = null
-
-  if (isHandleValid) {
-    connectionStatus = 'valid'
-  } else if (isInsideConnectionRadius && !isHandleValid) {
-    connectionStatus = 'invalid'
-  }
-
-  return connectionStatus
-}
-
-export function isConnectionValid(isInsideConnectionRadius: boolean, isHandleValid: boolean) {
-  let isValid: boolean | null = null
-
-  if (isHandleValid) {
-    isValid = true
-  } else if (isInsideConnectionRadius && !isHandleValid) {
-    isValid = false
-  }
-
-  return isValid
-}
-
-export function getHandle(
-  nodeId: string,
-  handleType: HandleType,
-  handleId: string | null,
-  nodeLookup: NodeLookup,
-  connectionMode: ConnectionMode,
-  withAbsolutePosition = false,
-): HandleElement | null {
-  const node = nodeLookup.get(nodeId)
-  if (!node) {
-    return null
-  }
-
-  const handles =
-    connectionMode === ConnectionMode.Strict
-      ? node.handleBounds?.[handleType]
-      : [...(node.handleBounds?.source ?? []), ...(node.handleBounds?.target ?? [])]
-  const handle = (handleId ? handles?.find((h) => h.id === handleId) : handles?.[0]) ?? null
-
-  return handle && withAbsolutePosition ? { ...handle, ...getHandlePosition(node, handle, handle.position, true) } : handle
 }
 
 export const oppositePosition = {

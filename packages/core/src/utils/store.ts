@@ -16,6 +16,8 @@ import type {
 } from '../types'
 import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
 
+export { areSetsEqual } from '@xyflow/system'
+
 type NonUndefined<T> = T extends undefined ? never : T
 
 export function isDef<T>(val: T): val is NonUndefined<T> {
@@ -83,10 +85,12 @@ export function updateEdgeAction(
   }
 }
 
-export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], triggerError: State['hooks']['error']['trigger']) {
-  const parentNodes: Record<string, true> = {}
-
-  const nextNodes: GraphNode[] = []
+export function createGraphNodes<NodeType extends Node = Node>(
+  nodes: NodeType[],
+  findNode: Actions<NodeType>['findNode'],
+  triggerError: State['hooks']['error']['trigger'],
+) {
+  const nextNodes: GraphNode<NodeType>[] = []
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i]
 
@@ -97,30 +101,17 @@ export function createGraphNodes(nodes: Node[], findNode: Actions['findNode'], t
       continue
     }
 
-    const parsed = parseNode(node, findNode(node.id), node.parentNode)
-
-    if (node.parentNode) {
-      parentNodes[node.parentNode] = true
-    }
-
-    nextNodes[i] = parsed
+    nextNodes[i] = parseNode(node, findNode(node.id), node.parentId)
   }
 
   for (const node of nextNodes) {
-    const parentNode = findNode(node.parentNode) || nextNodes.find((n) => n.id === node.parentNode)
-
-    if (node.parentNode && !parentNode) {
-      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentNode))
+    const parentRef = node.parentId
+    if (!parentRef) {
+      continue
     }
-
-    if (node.parentNode || parentNodes[node.id]) {
-      if (parentNodes[node.id]) {
-        node.isParent = true
-      }
-
-      if (parentNode) {
-        parentNode.isParent = true
-      }
+    const parent = findNode(parentRef) || nextNodes.find((n) => n.id === parentRef)
+    if (!parent) {
+      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, parentRef))
     }
   }
 
@@ -178,74 +169,7 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeL
   }
 }
 
-/**
- * We call the callback for all connections in a that are not in b
- *
- * @internal
- */
-export function handleConnectionChange(
-  a: Map<string, NodeConnection>,
-  b: Map<string, NodeConnection>,
-  cb?: (diff: NodeConnection[]) => void,
-) {
-  if (!cb) {
-    return
-  }
-
-  const diff: NodeConnection[] = []
-
-  for (const key of a.keys()) {
-    if (!b.has(key)) {
-      diff.push(a.get(key)!)
-    }
-  }
-
-  if (diff.length) {
-    cb(diff)
-  }
-}
-
-/**
- * @internal
- */
-export function areConnectionMapsEqual(a?: Map<string, Connection>, b?: Map<string, Connection>) {
-  if (!a && !b) {
-    return true
-  }
-
-  if (!a || !b || a.size !== b.size) {
-    return false
-  }
-
-  if (!a.size && !b.size) {
-    return true
-  }
-
-  for (const key of a.keys()) {
-    if (!b.has(key)) {
-      return false
-    }
-  }
-
-  return true
-}
-
-/**
- * @internal
- */
-export function areSetsEqual(a: Set<string>, b: Set<string>) {
-  if (a.size !== b.size) {
-    return false
-  }
-
-  for (const item of a) {
-    if (!b.has(item)) {
-      return false
-    }
-  }
-
-  return true
-}
+export { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system'
 
 /**
  * @internal
@@ -290,12 +214,20 @@ export function createGraphEdges(
     }
 
     if (isValidConnection) {
-      const isValid = isValidConnection(edge, {
-        edges,
-        nodes,
-        sourceNode,
-        targetNode,
-      })
+      const isValid = isValidConnection(
+        {
+          source: edge.source,
+          target: edge.target,
+          sourceHandle: edge.sourceHandle ?? null,
+          targetHandle: edge.targetHandle ?? null,
+        },
+        {
+          edges,
+          nodes,
+          sourceNode,
+          targetNode,
+        },
+      )
 
       if (!isValid) {
         onError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id))

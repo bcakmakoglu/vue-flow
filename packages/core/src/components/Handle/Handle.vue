@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, toRef } from 'vue'
+import { getDimensions, isMouseEvent } from '@xyflow/system'
 import type { HandleProps } from '../../types'
 import { Position } from '../../types'
 import { useHandle, useNode, useVueFlow } from '../../composables'
-import { getDimensions, isDef, isMouseEvent } from '../../utils'
+import { isDef } from '../../utils'
 
 const {
   position = Position.Top,
-  connectable = undefined,
+  isConnectable = undefined,
   connectableStart = true,
   connectableEnd = true,
   id: handleId = null,
@@ -61,8 +62,8 @@ const { handlePointerDown, handleClick } = useHandle({
   type,
 })
 
-const isConnectable = computed(() => {
-  if (typeof connectable === 'string' && connectable === 'single') {
+const isHandleConnectable = computed(() => {
+  if (typeof isConnectable === 'string' && isConnectable === 'single') {
     return !connectedEdges.value.some((edge) => {
       const id = edge[`${type.value}Handle`]
 
@@ -74,7 +75,7 @@ const isConnectable = computed(() => {
     })
   }
 
-  if (typeof connectable === 'number') {
+  if (typeof isConnectable === 'number') {
     return (
       connectedEdges.value.filter((edge) => {
         const id = edge[`${type.value}Handle`]
@@ -84,15 +85,15 @@ const isConnectable = computed(() => {
         }
 
         return id ? id === handleId : true
-      }).length < connectable
+      }).length < isConnectable
     )
   }
 
-  if (typeof connectable === 'function') {
-    return connectable(node, connectedEdges.value)
+  if (typeof isConnectable === 'function') {
+    return isConnectable(node, connectedEdges.value)
   }
 
-  return isDef(connectable) ? connectable : nodesConnectable.value
+  return isDef(isConnectable) ? isConnectable : nodesConnectable.value
 })
 
 // todo: remove this and have users handle this themselves using `updateNodeInternals`
@@ -100,11 +101,11 @@ const isConnectable = computed(() => {
 onMounted(() => {
   // if the node isn't initialized yet, we can't set up the handle bounds
   // the handle bounds will be automatically set up when the node is initialized (`updateNodeDimensions`)
-  if (!node.dimensions.width || !node.dimensions.height) {
+  if (!node.measured.width || !node.measured.height) {
     return
   }
 
-  const existingBounds = node.handleBounds[type.value]?.find((b) => b.id === handleId)
+  const existingBounds = node.internals.handleBounds?.[type.value]?.find((b) => b.id === handleId)
 
   if (!vueFlowRef.value || existingBounds) {
     return
@@ -133,13 +134,17 @@ onMounted(() => {
     ...getDimensions(handle.value),
   }
 
-  node.handleBounds[type.value] = [...(node.handleBounds[type.value] ?? []), nextBounds]
+  if (!node.internals.handleBounds) {
+    node.internals.handleBounds = { source: null, target: null }
+  }
+  const bounds = node.internals.handleBounds
+  bounds[type.value] = [...(bounds[type.value] ?? []), nextBounds]
 })
 
 function onPointerDown(event: MouseEvent | TouchEvent) {
   const isMouseTriggered = isMouseEvent(event)
 
-  if (isConnectable.value && isConnectableStart.value && ((isMouseTriggered && event.button === 0) || !isMouseTriggered)) {
+  if (isHandleConnectable.value && isConnectableStart.value && ((isMouseTriggered && event.button === 0) || !isMouseTriggered)) {
     handlePointerDown(event)
   }
 }
@@ -149,7 +154,7 @@ function onClick(event: MouseEvent) {
     return
   }
 
-  if (isConnectable.value) {
+  if (isHandleConnectable.value) {
     handleClick(event)
   }
 }

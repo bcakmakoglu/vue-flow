@@ -12,11 +12,11 @@ const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean;
 
 const {
   vueFlowRef,
-  nodes,
   viewport,
   emits,
   userSelectionActive,
-  removeSelectedElements,
+  removeSelectedNodes,
+  removeSelectedEdges,
   userSelectionRect,
   elementsSelectable,
   nodesSelectionActive,
@@ -90,7 +90,8 @@ function onClick(event: MouseEvent) {
 
   emits.paneClick(event)
 
-  removeSelectedElements()
+  removeSelectedNodes()
+  removeSelectedEdges()
 
   nodesSelectionActive.value = false
 }
@@ -128,7 +129,8 @@ function onPointerDown(event: PointerEvent) {
   selectionStarted = true
   selectionInProgress = false
 
-  removeSelectedElements()
+  removeSelectedNodes()
+  removeSelectedEdges()
 
   userSelectionRect.value = {
     width: 0,
@@ -163,11 +165,14 @@ function onPointerMove(event: PointerEvent) {
 
   const prevSelectedNodeIds = selectedNodeIds.value
   const prevSelectedEdgeIds = selectedEdgeIds.value
-
   selectedNodeIds.value = new Set(
-    getNodesInside(nodes.value, nextUserSelectRect, viewport.value, selectionMode.value === SelectionMode.Partial, true).map(
-      (node) => node.id,
-    ),
+    getNodesInside(
+      nodeLookup.value,
+      nextUserSelectRect,
+      [viewport.value.x, viewport.value.y, viewport.value.zoom],
+      selectionMode.value === SelectionMode.Partial,
+      true,
+    ).map((node) => node.id),
   )
 
   selectedEdgeIds.value = new Set()

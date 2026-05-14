@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { Background } from '@vue-flow/background'
 import Heart from '~icons/mdi/heart'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -190,8 +189,8 @@ function scrollTo() {
 
 <template>
   <VueFlow ref="el" :style="{ opacity: !!currentBreakpoint ? 1 : 0 }">
-    <Background id="dots" pattern-color="#aaa" :size="0.75" :gap="25" />
-    <Background id="lines" variant="lines" :pattern-color="isDark ? '#fff' : '#000'" :size="1" :gap="100" />
+    <Background id="dots" color="#aaa" :size="0.75" :gap="25" />
+    <Background id="lines" variant="lines" :color="isDark ? '#fff' : '#000'" :size="1" :gap="100" />
 
     <template #node-box="props">
       <template v-if="props.id === 'intro'">

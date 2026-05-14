@@ -6,10 +6,10 @@ import { MarkerType, Position } from '@vue-flow/core'
 function getNodeIntersection(intersectionNode: GraphNode, targetNode: GraphNode): XYPosition {
   // https://math.stackexchange.com/questions/1724792/an-algorithm-for-finding-the-intersection-point-between-a-center-of-vision-and-a
   const {
-    dimensions: { width: intersectionNodeWidth, height: intersectionNodeHeight },
-    computedPosition: intersectionNodePosition,
+    measured: { width: intersectionNodeWidth, height: intersectionNodeHeight },
+    internals: { positionAbsolute: intersectionNodePosition },
   } = intersectionNode
-  const targetPosition = targetNode.computedPosition
+  const targetPosition = targetNode.internals.positionAbsolute
 
   const w = intersectionNodeWidth / 2
   const h = intersectionNodeHeight / 2
@@ -32,7 +32,7 @@ function getNodeIntersection(intersectionNode: GraphNode, targetNode: GraphNode)
 
 // returns the position (top,right,bottom or right) passed node compared to the intersection point
 function getEdgePosition(node: GraphNode, intersectionPoint: XYPosition) {
-  const n = { ...node.computedPosition, ...node.dimensions }
+  const n = { ...node.internals.positionAbsolute, ...node.measured }
   const nx = Math.round(n.x)
   const ny = Math.round(n.y)
   const px = Math.round(intersectionPoint.x)
@@ -77,7 +77,7 @@ export function createElements() {
   const elements = []
   const center = { x: win.innerWidth / 2, y: win.innerHeight / 2 }
 
-  elements.push({ id: 'target', label: 'Target', position: center })
+  elements.push({ id: 'target', data: { label: 'Target' }, position: center })
 
   for (let i = 0; i < 8; i++) {
     const degrees = i * (360 / 8)
@@ -85,7 +85,7 @@ export function createElements() {
     const x = 250 * Math.cos(radians) + center.x
     const y = 250 * Math.sin(radians) + center.y
 
-    elements.push({ id: `${i}`, label: 'Source', position: { x, y } })
+    elements.push({ id: `${i}`, data: { label: 'Source' }, position: { x, y } })
 
     elements.push({
       id: `edge-${i}`,

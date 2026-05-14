@@ -1,34 +1,54 @@
-import type { Dimensions, ElementData, XYPosition } from './flow'
-import type { GraphNode, Node, NodeHandleBounds } from './node'
-import type { GraphEdge } from './edge'
+import type { XYPosition } from './flow'
+import type { Edge } from './edge'
+import type { Node, NodeOrigin } from './node'
 
+/**
+ * Drag-item shape used by the drag pipeline.
+ *
+ * Mirrors `@xyflow/system`'s `NodeDragItem` exactly so vue-flow's drag items are interchangeable with
+ * system types.
+ */
 export interface NodeDragItem {
   id: string
-  // relative node position (to parent)
+  /** relative node position (to parent) */
   position: XYPosition
-  // distance from the mouse cursor to the node when start dragging
+  /** distance from the mouse cursor to the node when start dragging */
   distance: XYPosition
-  dimensions: Dimensions
-  from: XYPosition
+
+  measured: { width: number; height: number }
+  internals: { positionAbsolute: XYPosition }
+
   extent?: Node['extent']
-  parentNode?: string
   expandParent?: boolean
+  dragging?: boolean
+  origin?: NodeOrigin
+  parentId?: string
 }
 
+/**
+ * Node change types — mirror `@xyflow/system`'s shapes (no `replace` variant yet).
+ *
+ * Renames vs the previous vue-flow shape:
+ *   - `NodeDimensionChange.updateStyle` → `setAttributes` (truthy = set width/height on the DOM element;
+ *     `'width'` / `'height'` restricts which axis is written).
+ *   - `NodePositionChange.from` (the OLD absolute position) → dropped. Use `positionAbsolute` (the NEW
+ *     absolute position) which now matches xyflow/react / xyflow/svelte.
+ *
+ * Item shapes on add changes are the user-provided `Node` / `Edge` types (not `GraphNode` / `GraphEdge`).
+ */
 export interface NodeDimensionChange {
   id: string
   type: 'dimensions'
-  dimensions?: Dimensions
-  handleBounds?: NodeHandleBounds
-  updateStyle?: boolean
+  dimensions?: { width: number; height: number }
   resizing?: boolean
+  setAttributes?: boolean | 'width' | 'height'
 }
 
 export interface NodePositionChange {
   id: string
   type: 'position'
-  position: XYPosition
-  from: XYPosition
+  position?: XYPosition
+  positionAbsolute?: XYPosition
   dragging?: boolean
 }
 
@@ -43,27 +63,29 @@ export interface NodeRemoveChange {
   type: 'remove'
 }
 
-export interface NodeAddChange<Data = ElementData> {
-  item: GraphNode<Data>
+export interface NodeAddChange<NodeType extends Node = Node> {
+  item: NodeType
   type: 'add'
+  index?: number
 }
 
-export type NodeChange = NodeDimensionChange | NodePositionChange | NodeSelectionChange | NodeRemoveChange | NodeAddChange
+export type NodeChange<NodeType extends Node = Node> =
+  | NodeDimensionChange
+  | NodePositionChange
+  | NodeSelectionChange
+  | NodeRemoveChange
+  | NodeAddChange<NodeType>
 
 export type EdgeSelectionChange = NodeSelectionChange
 
-export interface EdgeRemoveChange extends NodeRemoveChange {
-  source: string
-  target: string
-  sourceHandle: string | null
-  targetHandle: string | null
-}
+export type EdgeRemoveChange = NodeRemoveChange
 
-export interface EdgeAddChange<Data = ElementData> {
-  item: GraphEdge<Data>
+export interface EdgeAddChange<EdgeType extends Edge = Edge> {
+  item: EdgeType
   type: 'add'
+  index?: number
 }
 
-export type EdgeChange = EdgeSelectionChange | EdgeRemoveChange | EdgeAddChange
+export type EdgeChange<EdgeType extends Edge = Edge> = EdgeSelectionChange | EdgeRemoveChange | EdgeAddChange<EdgeType>
 
 export type ElementChange = NodeChange | EdgeChange

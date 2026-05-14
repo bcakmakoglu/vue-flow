@@ -1,7 +1,6 @@
 <script setup>
 import { h, ref } from 'vue'
-import { Background } from '@vue-flow/background'
-import { MarkerType, VueFlow } from '@vue-flow/core'
+import { Background, MarkerType, VueFlow } from '@vue-flow/core'
 import EdgeWithButton from './EdgeWithButton.vue'
 import CustomEdge from './CustomEdge.vue'
 import CustomEdgeLabel from './CustomEdgeLabel.vue'

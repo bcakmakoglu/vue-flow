@@ -3,7 +3,7 @@ import { getElements } from '../../../utils'
 
 const { nodes } = getElements()
 
-const initialNodes = [{ id: '1e3', position: { x: 0, y: 0 }, label: 'Node 1e3' }]
+const initialNodes = [{ id: '1e3', position: { x: 0, y: 0 }, data: { label: 'Node 1e3' } }]
 
 describe('Store Action: `addNodes`', () => {
   const store = useVueFlow({ id: 'test' })

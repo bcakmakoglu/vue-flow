@@ -5,7 +5,8 @@ const { nodes, edges } = getElements()
 describe('Render Basic Example', () => {
   beforeEach(() => {
     cy.vueFlow({
-      modelValue: [...nodes, ...edges],
+      nodes,
+      edges,
     })
   })
 
@@ -22,7 +23,7 @@ describe('Render Basic Example', () => {
   })
 
   it('renders correct node labels', () => {
-    cy.get('.vue-flow__node').each((node) => expect(nodes.some((el) => el.label === node.text())).to.be.true)
+    cy.get('.vue-flow__node').each((node) => expect(nodes.some((el) => el.data?.label === node.text())).to.be.true)
   })
 
   it('renders nodes at correct position', () => {

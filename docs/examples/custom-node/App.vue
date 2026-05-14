@@ -1,7 +1,6 @@
 <script setup>
 import { ref, toRef } from 'vue'
-import { MiniMap } from '@vue-flow/minimap'
-import { Position, VueFlow } from '@vue-flow/core'
+import { MiniMap, Position, VueFlow } from '@vue-flow/core'
 import ColorSelectorNode from './ColorSelectorNode.vue'
 import OutputNode from './OutputNode.vue'
 import { presets } from './presets.js'

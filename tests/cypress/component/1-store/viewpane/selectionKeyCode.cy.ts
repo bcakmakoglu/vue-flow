@@ -34,7 +34,7 @@ describe('Store State: `selectionKeyCode`', () => {
       cy.get('body').trigger('keyup', { key: 'Shift', release: true })
 
       cy.tryAssertion(() => {
-        expect(store.getSelectedElements.value).to.not.have.length(0)
+        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0)
       })
     })
   })
@@ -61,7 +61,7 @@ describe('Store State: `selectionKeyCode`', () => {
       cy.get('body').trigger('keyup', { key: 'Control', release: true })
 
       cy.tryAssertion(() => {
-        expect(store.getSelectedElements.value).to.not.have.length(0)
+        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0)
       })
     })
   })
@@ -85,7 +85,7 @@ describe('Store State: `selectionKeyCode`', () => {
         .click()
 
       cy.tryAssertion(() => {
-        expect(store.getSelectedElements.value).to.not.have.length(0)
+        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0)
       })
     })
   })

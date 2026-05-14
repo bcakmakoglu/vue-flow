@@ -8,7 +8,7 @@ describe('Check if nodes are draggable', () => {
 
   beforeEach(() => {
     cy.vueFlow({
-      modelValue: [nodes[0]],
+      nodes: [nodes[0]],
       fitViewOnInit: false,
     })
   })
@@ -36,7 +36,7 @@ describe('Check if nodes are draggable', () => {
           .should(
             'have.css',
             'transform',
-            `matrix(1, 0, 0, 1, ${store.nodes.value[0].computedPosition.x}, ${store.nodes.value[0].computedPosition.y})`,
+            `matrix(1, 0, 0, 1, ${store.nodes.value[0].internals.positionAbsolute.x}, ${store.nodes.value[0].internals.positionAbsolute.y})`,
           )
       })
     })

@@ -1,10 +1,10 @@
 import { tryOnScopeDispose } from '@vueuse/core'
 import type { Ref } from 'vue'
 import { getCurrentInstance, onBeforeMount } from 'vue'
-import type { FlowEvents, FlowHooks } from '../types'
+import type { FlowEvents, FlowHooks, Node } from '../types'
 import { createExtendedEventHook, warn } from '../utils'
 
-export function createHooks(): FlowHooks {
+export function createHooks<NodeType extends Node = Node>(): FlowHooks<NodeType> {
   return {
     edgesChange: createExtendedEventHook(),
     nodesChange: createExtendedEventHook(),
@@ -28,7 +28,6 @@ export function createHooks(): FlowHooks {
     connectEnd: createExtendedEventHook(),
     clickConnectStart: createExtendedEventHook(),
     clickConnectEnd: createExtendedEventHook(),
-    paneReady: createExtendedEventHook(),
     init: createExtendedEventHook(),
     move: createExtendedEventHook(),
     moveStart: createExtendedEventHook(),
@@ -62,9 +61,8 @@ export function createHooks(): FlowHooks {
   }
 }
 
-export function useHooks(emit: (...args: any[]) => void, hooks: Ref<FlowHooks>) {
+export function useHooks<NodeType extends Node = Node>(emit: (...args: any[]) => void, hooks: Ref<FlowHooks<NodeType>>) {
   const inst = getCurrentInstance()
-
   onBeforeMount(() => {
     for (const [key, value] of Object.entries(hooks.value)) {
       const listener = (data: unknown) => {

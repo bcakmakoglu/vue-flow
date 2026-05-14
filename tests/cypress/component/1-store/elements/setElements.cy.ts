@@ -3,11 +3,12 @@ import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
-describe('Store Action: `setElements`', () => {
+describe('Store Action: `setNodes` / `setEdges`', () => {
   const store = useVueFlow()
 
   it('sets elements', () => {
-    store.setElements([...nodes, ...edges])
+    store.setNodes(nodes)
+    store.setEdges(edges)
 
     expect(store.nodes.value).to.have.length(nodes.length)
     expect(store.edges.value).to.have.length(edges.length)
@@ -50,7 +51,7 @@ describe('Store Action: `setElements`', () => {
     it('has correct label', () => {
       store.getNodes.value.forEach((el) => {
         const node = nodes.find((node) => node.id === el.id)
-        expect(el.label).to.eq(node?.label)
+        expect(el.data?.label).to.eq(node?.data?.label)
       })
     })
 
