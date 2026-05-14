@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { Edge, Node } from '@vue-flow/core'
 import { Position, VueFlow } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 
@@ -8,7 +9,7 @@ const defaultNodeStyle = {
   borderRadius: '20px',
 }
 
-const elements = ref([
+const nodes = ref<Node[]>([
   {
     id: '1',
     type: 'custom',
@@ -45,10 +46,12 @@ const elements = ref([
     style: defaultNodeStyle,
   },
 ])
+
+const edges = ref<Edge[]>([])
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view-on-init class="vue-flow-basic-example">
     <template #node-custom="nodeProps">
       <CustomNode :data="nodeProps.data" :label="nodeProps.data?.label" />
     </template>

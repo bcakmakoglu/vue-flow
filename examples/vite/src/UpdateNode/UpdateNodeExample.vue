@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements } from '@vue-flow/core'
-import { VueFlow } from '@vue-flow/core'
+import type { Edge, Elements, Node } from '@vue-flow/core'
+import { VueFlow, isEdge, isNode } from '@vue-flow/core'
 
 const initialElements: Elements = [
   { id: '1', data: { label: '-' }, position: { x: 100, y: 100 } },
@@ -8,7 +8,8 @@ const initialElements: Elements = [
   { id: 'e1-2', source: '1', target: '2' },
 ]
 
-const elements = ref<Elements>(initialElements)
+const nodes = ref<Node[]>(initialElements.filter(isNode))
+const edges = ref<Edge[]>(initialElements.filter(isEdge))
 
 const opts = reactive({
   bg: '#eeeeee',
@@ -17,8 +18,8 @@ const opts = reactive({
 })
 
 function updateNode() {
-  elements.value.forEach((el) => {
-    if (el.id === '1' && 'data' in el) {
+  nodes.value.forEach((el) => {
+    if (el.id === '1') {
       el.data = { ...el.data, label: opts.name }
       el.style = { backgroundColor: opts.bg }
       el.hidden = opts.hidden
@@ -30,7 +31,7 @@ onMounted(updateNode)
 </script>
 
 <template>
-  <VueFlow v-model="elements" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
     <div class="updatenode__controls">
       <label>label:</label>
       <input v-model="opts.name" @input="updateNode" />

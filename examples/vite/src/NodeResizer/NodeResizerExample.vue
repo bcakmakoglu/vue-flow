@@ -1,9 +1,10 @@
 <script lang="ts" setup>
+import type { Edge, Node } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import ResizableNode from './ResizableNode.vue'
 import ResizableNodeSelected from './ResizableNodeSelected.vue'
 
-const elements = ref([
+const nodes = ref<Node[]>([
   {
     id: '1',
     type: 'resizable',
@@ -33,10 +34,12 @@ const elements = ref([
     },
   },
 ])
+
+const edges = ref<Edge[]>([])
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view-on-init class="vue-flow-basic-example">
     <template #node-resizable="resizableNodeProps">
       <ResizableNode :label="resizableNodeProps.data?.label" />
     </template>

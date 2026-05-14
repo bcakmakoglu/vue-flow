@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements } from '@vue-flow/core'
-import { Controls, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { Edge, Elements, Node } from '@vue-flow/core'
+import { Controls, VueFlow, isEdge, isNode, useVueFlow } from '@vue-flow/core'
 
 import Sidebar from './Sidebar.vue'
 
@@ -15,7 +15,8 @@ const initialElements: Elements = [
 
 useVueFlow()
 
-const elements = ref<Elements>(initialElements)
+const nodes = ref<Node[]>(initialElements.filter(isNode))
+const edges = ref<Edge[]>(initialElements.filter(isEdge))
 </script>
 
 <template>
@@ -23,7 +24,7 @@ const elements = ref<Elements>(initialElements)
     <Sidebar />
 
     <div class="vue-flow-wrapper">
-      <VueFlow v-model="elements">
+      <VueFlow v-model:nodes="nodes" v-model:edges="edges">
         <Controls />
       </VueFlow>
     </div>

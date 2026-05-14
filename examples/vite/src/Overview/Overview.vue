@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
-import { Background, Controls, MarkerType, MiniMap, VueFlow } from '@vue-flow/core'
+import type { Edge, Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
+import { Background, Controls, MarkerType, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
 function onNodeDragStart(e: FlowEvents['nodeDragStart']) {
   return console.log('drag start', e)
@@ -143,12 +143,14 @@ function nodeColor(n: Node): string {
   return '#fff'
 }
 
-const elements = ref<Elements>(initialElements)
+const nodes = ref<Node[]>(initialElements.filter(isNode))
+const edges = ref<Edge[]>(initialElements.filter(isEdge))
 </script>
 
 <template>
   <VueFlow
-    v-model="elements"
+    v-model:nodes="nodes"
+    v-model:edges="edges"
     :connection-line-style="{ stroke: '#ddd' }"
     snap-to-grid
     :snap-grid="snapGrid"

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { ConnectionMode, Controls, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { Edge, Elements, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import { ConnectionMode, Controls, VueFlow, isEdge, isNode, useVueFlow } from '@vue-flow/core'
 
 const initialElements: Elements = [
   {
@@ -25,7 +25,8 @@ const initialElements: Elements = [
 
 const { updateEdge } = useVueFlow()
 
-const elements = ref(initialElements)
+const nodes = ref<Node[]>(initialElements.filter(isNode))
+const edges = ref<Edge[]>(initialElements.filter(isEdge))
 
 function onLoad(flowInstance: VueFlowStore) {
   return flowInstance.fitView()
@@ -46,7 +47,8 @@ function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
 
 <template>
   <VueFlow
-    v-model="elements"
+    v-model:nodes="nodes"
+    v-model:edges="edges"
     :snap-to-grid="true"
     :connection-mode="ConnectionMode.Loose"
     @init="onLoad"

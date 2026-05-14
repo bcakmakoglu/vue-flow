@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { Background, Controls, MiniMap, VueFlow, isNode } from '@vue-flow/core'
+import type { Edge, Elements, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
 import type { UnwrapNestedRefs } from 'vue'
 
@@ -19,6 +19,14 @@ export default defineComponent({
         { id: 'e1-3', source: '1', target: '3' },
       ] as Elements,
     }
+  },
+  computed: {
+    nodes(): Node[] {
+      return this.elements.filter(isNode)
+    },
+    edges(): Edge[] {
+      return this.elements.filter(isEdge)
+    },
   },
   methods: {
     logToObject() {
@@ -56,7 +64,8 @@ export default defineComponent({
 
 <template>
   <VueFlow
-    v-model="elements"
+    :nodes="nodes"
+    :edges="edges"
     class="vue-flow-basic-example"
     :default-zoom="1.5"
     :min-zoom="0.2"

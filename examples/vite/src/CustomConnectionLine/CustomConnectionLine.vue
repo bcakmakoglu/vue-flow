@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { Elements } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import ConnectionLine from './ConnectionLine.vue'
 
-const elements = ref<Elements>([
+const nodes = ref<Node[]>([
   {
     id: '1',
     type: 'input',
@@ -11,10 +11,12 @@ const elements = ref<Elements>([
     position: { x: 250, y: 5 },
   },
 ])
+
+const edges = ref<Edge[]>([])
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges">
     <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
       <ConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
     </template>

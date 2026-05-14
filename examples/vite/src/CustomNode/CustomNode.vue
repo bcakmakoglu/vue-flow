@@ -70,7 +70,7 @@ function nodeColor(n: Node) {
 <template>
   <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init :style="{ backgroundColor: bgColor }">
     <template #node-colorSelector="props">
-      <ColorSelectorNode :data="props.data" @change="bgColor = $event" />
+      <ColorSelectorNode v-bind="props" @change="bgColor = $event" />
     </template>
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
     <Controls />
