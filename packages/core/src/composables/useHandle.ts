@@ -68,6 +68,7 @@ export function useHandle({
     endConnection,
     emits,
     viewport,
+    ancestorZoom,
     edges,
     nodes,
     isValidConnection: isValidConnectionProp,
@@ -116,6 +117,8 @@ export function useHandle({
 
       let prevActiveHandle: Element
       let connectionPosition = getEventPosition(event, containerBounds)
+      connectionPosition.x += viewport.value.x * (1 - ancestorZoom.value)
+      connectionPosition.y += viewport.value.y * (1 - ancestorZoom.value)
       let autoPanStarted = false
 
       // when the user is moving the mouse close to the edge of the canvas while connecting we move the canvas
@@ -177,9 +180,11 @@ export function useHandle({
 
       function onPointerMove(event: MouseTouchEvent) {
         connectionPosition = getEventPosition(event, containerBounds)
+        connectionPosition.x += viewport.value.x * (1 - ancestorZoom.value)
+        connectionPosition.y += viewport.value.y * (1 - ancestorZoom.value)
 
         closestHandle = getClosestHandle(
-          pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1]),
+          pointToRendererPoint(connectionPosition, viewport.value, false, [1, 1], ancestorZoom.value),
           connectionRadius.value,
           nodeLookup.value,
           fromHandle,
@@ -220,7 +225,7 @@ export function useHandle({
           isValid,
           to:
             result.toHandle && isValid
-              ? rendererPointToPoint({ x: result.toHandle.x, y: result.toHandle.y }, viewport.value)
+              ? rendererPointToPoint({ x: result.toHandle.x, y: result.toHandle.y }, viewport.value, ancestorZoom.value)
               : connectionPosition,
           toHandle: result.toHandle,
           toPosition: isValid && result.toHandle ? result.toHandle.position : oppositePosition[fromHandle.position],
@@ -253,6 +258,7 @@ export function useHandle({
                   y: connectingHandle.y,
                 },
                 viewport.value,
+                ancestorZoom.value,
               )
             : connectionPosition,
           connectingHandle,
