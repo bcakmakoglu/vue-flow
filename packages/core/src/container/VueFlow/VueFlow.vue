@@ -1,9 +1,8 @@
 <script lang="ts" setup generic="NodeType extends Node = Node">
-import { useVModel } from '@vueuse/core'
 import { inject, onUnmounted, provide } from 'vue'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
-import type { FlowEmits, FlowProps, FlowSlots, Node, VueFlowStore } from '../../types'
+import type { Edge, FlowEmits, FlowProps, FlowSlots, Node, VueFlowStore } from '../../types'
 import { Slots, VueFlow as VueFlowInjectionKey } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
 import { useWatchProps } from '../../composables/useWatchProps'
@@ -50,8 +49,8 @@ const emit = defineEmits<FlowEmits<NodeType>>()
 
 const slots = defineSlots<FlowSlots<NodeType>>()
 
-const modelNodes = useVModel(props, 'nodes', emit)
-const modelEdges = useVModel(props, 'edges', emit)
+const modelNodes = defineModel<NodeType[]>('nodes')
+const modelEdges = defineModel<Edge[]>('edges')
 
 // Reuse an ancestor `<VueFlowProvider>`'s store if present; otherwise this `<VueFlow>` owns it —
 // create + provide our own (auto-wrap, like react's `<Wrapper>`). The store is only ever created by a
