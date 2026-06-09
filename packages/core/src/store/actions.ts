@@ -1,8 +1,9 @@
 import { until } from '@vueuse/core'
-import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem } from '@xyflow/system'
+import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem, updateAbsolutePositions } from '@xyflow/system'
 import type {
   Actions,
   CoordinateExtent,
+  CoordinateExtentRange,
   Edge,
   EdgeAddChange,
   EdgeLookup,
@@ -76,6 +77,8 @@ export function useActions<NodeType extends Node = Node>(
       parentLookup.set(parentId, children)
     }
     state.nodes = next
+
+    recomputeAbsolutePositions()
   }
 
   /** Single write path for edge membership; mirrors `next` into `state.edges` (see {@link commitNodes}). */
@@ -85,6 +88,65 @@ export function useActions<NodeType extends Node = Node>(
       edgeLookup.set(edge.id, edge)
     }
     state.edges = next
+  }
+
+  /**
+   * Recompute parent-aware `internals.positionAbsolute`/`z` for every node via `@xyflow/system`'s
+   * `updateAbsolutePositions`, then write the results back onto the canonical reactive node refs
+   * (Step 5, approach A — svelte's write-back). This replaces the per-node positionAbsolute watcher
+   * that used to live in `NodeWrapper`.
+   *
+   * `updateAbsolutePositions` mutates the lookup: root nodes in place, child nodes via clone-on-`.set`
+   * (so React/Svelte pick them up by reference). vue-flow keeps the nodes array canonical and
+   * `useNode().node` returns the live array ref, so for cloned children we copy `internals` back onto
+   * the canonical ref *in place* (propagates through the captured ref) and re-point the lookup at it
+   * (re-converge identity — validated by the write-back spike). System does NOT set root-node `z`
+   * (only children get it via the parent chain), so we apply the elevate-on-select `z` for roots here,
+   * matching the old watcher / system's `calculateZ`.
+   */
+  function recomputeAbsolutePositions() {
+    // `@xyflow/system` has no concept of vue-flow's `CoordinateExtentRange` (`{ range, padding }`) and
+    // its `isCoordinateExtent` treats any non-`'parent'`/non-nullish value as a coordinate-extent array,
+    // so it would index `extent[0]` on the range object and crash. Transiently coerce such extents to
+    // their `range` (`'parent'` or a plain `CoordinateExtent`, both system-understood) for the system
+    // pass and restore afterwards. NOTE: the range `padding` is not applied by the system clamp — a
+    // known limitation tracked for follow-up (vue-flow's padded-parent-extent is richer than system's).
+    // `node.extent` is typed `'parent' | CoordinateExtent | null` (deliberately narrow so `GraphNode`
+    // stays structurally assignable to system's `NodeBase`), but at runtime vue-flow also supports a
+    // `CoordinateExtentRange` ({ range, padding }) — see utils/drag.ts. Hence the localized casts: the
+    // type can't express this without breaking system compat. We restore the original extent after.
+    const coercedExtents: { node: GraphNode<NodeType>; extent: 'parent' | CoordinateExtent | null | undefined }[] = []
+    for (const node of nodeLookup.values()) {
+      const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
+      if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
+        coercedExtents.push({ node, extent: node.extent })
+        node.extent = extent.range
+      }
+    }
+
+    updateAbsolutePositions(nodeLookup, parentLookup, {
+      nodeOrigin: [0, 0],
+      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+      elevateNodesOnSelect: state.elevateNodesOnSelect,
+    })
+
+    for (const { node, extent } of coercedExtents) {
+      node.extent = extent
+    }
+
+    for (const node of state.nodes) {
+      const fresh = nodeLookup.get(node.id)
+      if (fresh && fresh !== node) {
+        node.internals.positionAbsolute = fresh.internals.positionAbsolute
+        node.internals.z = fresh.internals.z
+        nodeLookup.set(node.id, node)
+      }
+
+      if (!node.parentId) {
+        node.internals.z =
+          (typeof node.zIndex === 'number' ? node.zIndex : 0) + (node.selected && state.elevateNodesOnSelect ? 1000 : 0)
+      }
+    }
   }
 
   const updateNodeInternals: Actions<NodeType>['updateNodeInternals'] = (ids) => {
@@ -270,6 +332,7 @@ export function useActions<NodeType extends Node = Node>(
 
   const setNodeExtent: Actions<NodeType>['setNodeExtent'] = (nodeExtent) => {
     state.nodeExtent = nodeExtent
+    recomputeAbsolutePositions()
     updateNodeInternals()
   }
 

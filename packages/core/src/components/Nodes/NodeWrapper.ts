@@ -12,21 +12,10 @@ import {
   toRef,
   watch,
 } from 'vue'
-import { until } from '@vueuse/core'
-import { snapPosition } from '@xyflow/system'
-import {
-  ARIA_NODE_DESC_KEY,
-  ErrorCode,
-  VueFlowError,
-  arrowKeyDiffs,
-  calcNextPosition,
-  elementSelectionKeys,
-  getXYZPos,
-  handleNodeClick,
-} from '../../utils'
+import { ARIA_NODE_DESC_KEY, ErrorCode, VueFlowError, arrowKeyDiffs, elementSelectionKeys, handleNodeClick } from '../../utils'
 import { NodeId, NodeRef, Slots } from '../../context'
 import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
-import type { BuiltInNode, MouseTouchEvent, NodeComponent, XYZPosition } from '../../types'
+import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types'
 
 interface Props {
   id: string
@@ -50,12 +39,8 @@ const NodeWrapper = defineComponent({
       updateNodeDimensions,
       onUpdateNodeInternals,
       getNodeTypes,
-      nodeExtent,
-      elevateNodesOnSelect,
       disableKeyboardA11y,
       ariaLiveMessage,
-      snapToGrid,
-      snapGrid,
       nodeDragThreshold,
       nodesDraggable,
       elementsSelectable,
@@ -75,7 +60,7 @@ const NodeWrapper = defineComponent({
 
     const updateNodePositions = useUpdateNodePositions()
 
-    const { node, parentNode } = useNode(props.id)
+    const { node } = useNode(props.id)
 
     const { emit } = useNodeHooks(emits)
 
@@ -202,60 +187,6 @@ const NodeWrapper = defineComponent({
       })
     })
 
-    /** this watcher only updates XYZPosition (when dragging a parent etc) */
-    watch(
-      [
-        () => node.position.x,
-        () => node.position.y,
-        () => parentNode.value?.internals.positionAbsolute.x,
-        () => parentNode.value?.internals.positionAbsolute.y,
-        () => parentNode.value?.internals.z,
-        zIndex,
-        () => node.selected,
-        () => node.measured.height,
-        () => node.measured.width,
-        () => parentNode.value?.measured.height,
-        () => parentNode.value?.measured.width,
-      ],
-      ([newX, newY, parentX, parentY, parentZ, nodeZIndex]) => {
-        const xyzPos = {
-          x: newX,
-          y: newY,
-          z: nodeZIndex + (elevateNodesOnSelect.value ? (node.selected ? 1000 : 0) : 0),
-        }
-
-        const nextComputed: XYZPosition =
-          typeof parentX !== 'undefined' && typeof parentY !== 'undefined'
-            ? getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
-            : xyzPos
-        node.internals.positionAbsolute = { x: nextComputed.x, y: nextComputed.y }
-        node.internals.z = nextComputed.z
-      },
-      { flush: 'post', immediate: true },
-    )
-
-    watch([() => node.extent, nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
-      // update position if extent has actually changed
-      if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
-        clampPosition()
-      }
-    })
-
-    // clamp initial position to nodes' extent
-    // if extent is parent, we need dimensions to properly clamp the position
-    if (
-      node.extent === 'parent' ||
-      (!!node.extent && typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')
-    ) {
-      until(() => isInit)
-        .toBe(true)
-        .then(clampPosition)
-    }
-    // if extent is not parent, we can clamp it immediately
-    else {
-      clampPosition()
-    }
-
     return () => {
       if (node.hidden) {
         return null
@@ -331,28 +262,6 @@ const NodeWrapper = defineComponent({
         ],
       )
     }
-    /** this re-calculates the current position, necessary for clamping by a node's extent */
-    function clampPosition() {
-      const nextPosition = { ...node.internals.positionAbsolute, z: node.internals.z }
-
-      const { computedPosition, position } = calcNextPosition(
-        node,
-        snapToGrid.value ? snapPosition(nextPosition, snapGrid.value) : nextPosition,
-        emits.error,
-        nodeExtent.value,
-        parentNode.value,
-      )
-
-      // only overwrite positions if there are changes when clamping
-      if (node.internals.positionAbsolute.x !== computedPosition.x || node.internals.positionAbsolute.y !== computedPosition.y) {
-        node.internals.positionAbsolute = { x: computedPosition.x, y: computedPosition.y }
-      }
-
-      if (node.position.x !== position.x || node.position.y !== position.y) {
-        node.position = position
-      }
-    }
-
     function updateInternals() {
       if (nodeElement.value) {
         updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value, forceUpdate: true }])
