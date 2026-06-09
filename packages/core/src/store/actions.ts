@@ -484,7 +484,7 @@ export function useActions<NodeType extends Node = Node>(
         state.edges,
       )
 
-      state.edges = state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge))
+      commitEdges(state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge)))
 
       updateConnectionLookup(state.connectionLookup, edgeLookup, [validEdge])
 
