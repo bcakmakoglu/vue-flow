@@ -22,7 +22,7 @@ const lineControls: ControlLinePosition[] = ['top', 'right', 'bottom', 'left']
 
 const contextNodeId = inject(NodeId, null)
 
-const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId))
+const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId ?? undefined))
 
 const node = computed(() => findNode(nodeId.value))
 

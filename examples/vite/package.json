@@ -14,7 +14,6 @@
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
-    "@tooling/tsconfig": "workspace:*",
     "@vitejs/plugin-vue": "^5.1.4",
     "unplugin-auto-import": "^0.18.3",
     "vite": "^5.4.8",
