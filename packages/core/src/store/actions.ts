@@ -797,34 +797,6 @@ export function useActions<NodeType extends Node = Node>(
     )
   }
 
-  const fromObject: Actions<NodeType>['fromObject'] = (obj) => {
-    return new Promise((resolve) => {
-      const { nodes, edges, position, zoom, viewport } = obj
-
-      if (nodes) {
-        setNodes(nodes as NodeType[])
-      }
-
-      if (edges) {
-        setEdges(edges)
-      }
-
-      const [xPos, yPos] = viewport?.x && viewport?.y ? [viewport.x, viewport.y] : position ?? [null, null]
-
-      if (xPos && yPos) {
-        const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
-
-        // Match React/Svelte Flow: restore is best-effort and expected to run once the flow is ready
-        // (e.g. from `onInit` or a user action). `setViewport` applies immediately when the viewport is
-        // initialized and warns + no-ops otherwise — no init-watching, and we never mutate
-        // `defaultViewport` (which `$reset` reads and the user may have set).
-        viewportHelper.value.setViewport({ x: xPos, y: yPos, zoom: nextZoom }).then(() => resolve(true))
-      } else {
-        resolve(true)
-      }
-    })
-  }
-
   const $reset: Actions<NodeType>['$reset'] = () => {
     const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType>()
 
@@ -890,7 +862,6 @@ export function useActions<NodeType extends Node = Node>(
     screenToFlowCoordinate: (params) => viewportHelper.value.screenToFlowCoordinate(params),
     flowToScreenCoordinate: (params) => viewportHelper.value.flowToScreenCoordinate(params),
     toObject,
-    fromObject,
     updateNodeInternals,
     viewportHelper,
     $reset,
