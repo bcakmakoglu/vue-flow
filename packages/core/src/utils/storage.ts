@@ -1,5 +1,5 @@
 import { toRefs } from '@vueuse/core'
-import { effectScope, getCurrentInstance, reactive, watchEffect } from 'vue'
+import { getCurrentInstance, reactive } from 'vue'
 import type { EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
 import { useActions, useGetters, useState } from '../store'
 
@@ -56,12 +56,14 @@ export class Storage {
       emits[n] = (h as any).trigger
     }
 
-    // Lookup maps held as `reactive(Map)` rather than Vue `computed`s. `reactive(Map)` gives a stable
-    // Map identity across mutations and — critical for the in-progress lookup inversion — lets
-    // `@xyflow/system` helpers `.set` clones in place while reads via `.get` stay reactive (validated by
-    // the Step 0 spike). For now they remain *derived* from `reactiveState.nodes`/`.edges` by the
-    // maintainer effects below (full clear+rebuild on structural change), so behaviour is unchanged;
-    // Step 3 will make these the source of truth.
+    // Lookup maps are now the PRIMARY node/edge structures (Step 3 of the inversion). They are held as
+    // `reactive(Map)` so Map identity is stable across mutations and — critical for the later steps —
+    // `@xyflow/system` helpers can `.set` clones in place while reads via `.get` stay reactive
+    // (validated by the Step 0 spike). The store actions mutate these directly (via `commitNodes` /
+    // `commitEdges` in `useActions`) and keep `reactiveState.nodes`/`.edges` as array mirrors for the
+    // internal reads + the public `store.nodes`/`store.edges` refs that still consume arrays. There is
+    // no derivation watcher: actions write maps + mirror in a single imperative pass, so there is no
+    // rebuild thrash and no forward/backward maintainer loop.
     //
     // The `as` casts undo `reactive()`'s `UnwrapNestedRefs` return type: over a Map of the *generic*
     // `GraphNode<NodeType>`, TS can't prove the element type has no refs to unwrap and widens the value
@@ -77,59 +79,9 @@ export class Storage {
     >
     const edgeLookup = reactive(new Map<string, GraphEdge>()) as EdgeLookup
 
-    // Own effect scope so the maintainer watchers are disposed on `$destroy` (computeds were lazy and
-    // self-collecting; eager effects are not).
-    const lookupScope = effectScope(true)
-    lookupScope.run(() => {
-      // `flush: 'sync'` is essential: the previous `computed` recomputed lazily *on access*, so a
-      // `findNode(...)` call made synchronously right after `state.nodes` was mutated (e.g. `setState`
-      // parsing nodes then edges, which resolves each edge's source/target via `findNode`) always saw
-      // a fresh map. A default ('pre') watcher would defer the rebuild to the next tick, leaving the
-      // lookup stale for that synchronous read — surfacing as "edge source/target missing" / "parent
-      // not found". Sync flush reproduces the computed's eager-on-write freshness.
-      //
-      // Rebuild node + parent lookups on structural change: the effect reads `node.id`/`node.parentId`
-      // and the array (not `node.position`), so it re-runs on add/remove/id/parent changes only — the
-      // same trigger surface as the old computeds. It writes the reactive maps but never reads them,
-      // so there is no self-dependency / loop.
-      watchEffect(
-        () => {
-          nodeLookup.clear()
-          parentLookup.clear()
-          const parents = new Map<string, Map<string, GraphNode<NodeType>>>()
-          for (const node of reactiveState.nodes) {
-            nodeLookup.set(node.id, node)
-            const parentId = node.parentId
-            if (parentId) {
-              let children = parents.get(parentId)
-              if (!children) {
-                children = new Map<string, GraphNode<NodeType>>()
-                parents.set(parentId, children)
-              }
-              children.set(node.id, node)
-            }
-          }
-          for (const [parentId, children] of parents) {
-            parentLookup.set(parentId, children)
-          }
-        },
-        { flush: 'sync' },
-      )
-
-      watchEffect(
-        () => {
-          edgeLookup.clear()
-          for (const edge of reactiveState.edges) {
-            edgeLookup.set(edge.id, edge)
-          }
-        },
-        { flush: 'sync' },
-      )
-    })
-
     const getters = useGetters(reactiveState, nodeLookup, edgeLookup)
 
-    const actions = useActions<NodeType>(reactiveState, nodeLookup, edgeLookup)
+    const actions = useActions<NodeType>(reactiveState, nodeLookup, parentLookup, edgeLookup)
 
     actions.setState({ ...reactiveState, ...preloadedState } as any)
 
@@ -145,7 +97,6 @@ export class Storage {
       id,
       vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
       $destroy: () => {
-        lookupScope.stop()
         this.remove(id)
       },
     }

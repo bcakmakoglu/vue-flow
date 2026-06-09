@@ -44,9 +44,48 @@ import { storeOptionsToSkip, useState } from './state'
 export function useActions<NodeType extends Node = Node>(
   state: State<NodeType>,
   nodeLookup: NodeLookup<NodeType>,
+  parentLookup: Map<string, Map<string, GraphNode<NodeType>>>,
   edgeLookup: EdgeLookup,
 ): Actions<NodeType> {
   const viewportHelper = useViewportHelper(state, nodeLookup)
+
+  /**
+   * Single write path for node membership. `nodeLookup` is the primary structure (Step 3 of the
+   * inversion); we rebuild it + `parentLookup` from `next` in one imperative pass and mirror `next`
+   * into `state.nodes` for the internal reads + public `store.nodes` ref that still consume the array.
+   * In-place field mutations (selected/position/internals/data) don't need this — the entries are
+   * reactive, shared by reference with the mirror — only membership/order/parent changes do.
+   */
+  function commitNodes(next: GraphNode<NodeType>[]) {
+    nodeLookup.clear()
+    parentLookup.clear()
+    const parents = new Map<string, Map<string, GraphNode<NodeType>>>()
+    for (const node of next) {
+      nodeLookup.set(node.id, node)
+      const parentId = node.parentId
+      if (parentId) {
+        let children = parents.get(parentId)
+        if (!children) {
+          children = new Map<string, GraphNode<NodeType>>()
+          parents.set(parentId, children)
+        }
+        children.set(node.id, node)
+      }
+    }
+    for (const [parentId, children] of parents) {
+      parentLookup.set(parentId, children)
+    }
+    state.nodes = next
+  }
+
+  /** Single write path for edge membership; mirrors `next` into `state.edges` (see {@link commitNodes}). */
+  function commitEdges(next: GraphEdge[]) {
+    edgeLookup.clear()
+    for (const edge of next) {
+      edgeLookup.set(edge.id, edge)
+    }
+    state.edges = next
+  }
 
   const updateNodeInternals: Actions<NodeType>['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? []
@@ -251,11 +290,13 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    state.nodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
-      nodeOrigin: [0, 0],
-      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
-      elevateNodesOnSelect: state.elevateNodesOnSelect,
-    }) as GraphNode<NodeType>[]
+    commitNodes(
+      createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
+        nodeOrigin: [0, 0],
+        nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+        elevateNodesOnSelect: state.elevateNodesOnSelect,
+      }) as GraphNode<NodeType>[],
+    )
   }
 
   const setEdges: Actions<NodeType>['setEdges'] = (edges) => {
@@ -276,9 +317,9 @@ export function useActions<NodeType extends Node = Node>(
       state.edges,
     )
 
-    updateConnectionLookup(state.connectionLookup, edgeLookup, validEdges)
+    commitEdges(validEdges)
 
-    state.edges = validEdges
+    updateConnectionLookup(state.connectionLookup, edgeLookup, validEdges)
   }
 
   const addNodes: Actions<NodeType>['addNodes'] = (nodes) => {
@@ -466,15 +507,22 @@ export function useActions<NodeType extends Node = Node>(
   }
 
   const applyNodeChanges: Actions<NodeType>['applyNodeChanges'] = (changes) => {
-    return applyChanges(changes, state.nodes)
+    // Apply changes against a snapshot of the (primary) lookup, then commit the result back. The
+    // public `applyChanges` util stays a pure array transform (it mutates node *fields* on the shared
+    // reactive refs and adds/removes array entries); `commitNodes` reconciles lookup membership/order.
+    const result = applyChanges(changes, Array.from(nodeLookup.values())) as GraphNode<NodeType>[]
+    commitNodes(result)
+    return result
   }
 
   const applyEdgeChanges: Actions<NodeType>['applyEdgeChanges'] = (changes) => {
-    const changedEdges = applyChanges(changes, state.edges)
+    const result = applyChanges(changes, Array.from(edgeLookup.values())) as GraphEdge[]
 
-    updateConnectionLookup(state.connectionLookup, edgeLookup, changedEdges)
+    commitEdges(result)
 
-    return changedEdges
+    updateConnectionLookup(state.connectionLookup, edgeLookup, result)
+
+    return result
   }
 
   // todo: maybe we should use a more immutable approach, this is a bit too much mutation and hard to maintain
@@ -488,9 +536,14 @@ export function useActions<NodeType extends Node = Node>(
     const nextNode = typeof nodeUpdate === 'function' ? nodeUpdate(node) : nodeUpdate
 
     if (options.replace) {
-      state.nodes.splice(state.nodes.indexOf(node), 1, parseNode(nextNode as NodeType))
+      const next = Array.from(nodeLookup.values())
+      next.splice(next.indexOf(node), 1, parseNode(nextNode as NodeType))
+      commitNodes(next)
     } else {
+      // mutate the reactive lookup entry in place, then reconcile (a `parentId` change must be
+      // reflected in `parentLookup`). Membership/order are unchanged, so this reuses the same refs.
       Object.assign(node, nextNode)
+      commitNodes(Array.from(nodeLookup.values()))
     }
   }
 
@@ -720,8 +773,8 @@ export function useActions<NodeType extends Node = Node>(
   const $reset: Actions<NodeType>['$reset'] = () => {
     const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType>()
 
-    state.edges = []
-    state.nodes = []
+    commitEdges([])
+    commitNodes([])
 
     if (state.panZoom) {
       state.panZoom.setViewport({
