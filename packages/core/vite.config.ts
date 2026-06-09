@@ -34,9 +34,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue({
-      reactivityTransform: true,
-    }),
+    vue(),
     svgLoader(),
     replace({
       __ENV__: 'process.env.NODE_ENV',
