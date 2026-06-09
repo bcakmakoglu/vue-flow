@@ -10,7 +10,6 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useStylesLoadedWarning<NodeType extends Node = Node>({ emits }: VueFlowStore<NodeType> = useVueFlow<NodeType>()) {
-
   onMounted(() => {
     if (isDev()) {
       const pane = document.querySelector('.vue-flow__pane')
