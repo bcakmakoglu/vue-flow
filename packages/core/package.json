@@ -73,7 +73,7 @@
   "dependencies": {
     "@vueuse/core": "^14.3.0",
     "d3-interpolate": "^3.0.1",
-    "@xyflow/system": "^0.0.73"
+    "@xyflow/system": "^0.0.77"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^6.0.3",
