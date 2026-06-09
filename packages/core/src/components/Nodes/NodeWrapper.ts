@@ -100,7 +100,7 @@ const NodeWrapper = defineComponent({
 
     const isInit = toRef(() => !!node.measured.width && !!node.measured.height)
 
-    const isParent = toRef(() => (parentLookup.value.get(node.id)?.size ?? 0) > 0)
+    const isParent = toRef(() => (parentLookup.get(node.id)?.size ?? 0) > 0)
 
     const nodeCmp = computed(() => {
       const name = node.type || 'default'

@@ -167,7 +167,7 @@ function onPointerMove(event: PointerEvent) {
   const prevSelectedEdgeIds = selectedEdgeIds.value
   selectedNodeIds.value = new Set(
     getNodesInside(
-      nodeLookup.value,
+      nodeLookup,
       nextUserSelectRect,
       [viewport.value.x, viewport.value.y, viewport.value.zoom],
       selectionMode.value === SelectionMode.Partial,
@@ -185,7 +185,7 @@ function onPointerMove(event: PointerEvent) {
       continue
     }
     for (const { edgeId } of connections.values()) {
-      const edge = edgeLookup.value.get(edgeId)
+      const edge = edgeLookup.get(edgeId)
       if (edge && (edge.selectable ?? edgesSelectable)) {
         selectedEdgeIds.value.add(edgeId)
       }
@@ -193,12 +193,12 @@ function onPointerMove(event: PointerEvent) {
   }
 
   if (!areSetsEqual(prevSelectedNodeIds, selectedNodeIds.value)) {
-    const changes = getSelectionChanges(nodeLookup.value, selectedNodeIds.value, true) as NodeChange[]
+    const changes = getSelectionChanges(nodeLookup, selectedNodeIds.value, true) as NodeChange[]
     emits.nodesChange(changes)
   }
 
   if (!areSetsEqual(prevSelectedEdgeIds, selectedEdgeIds.value)) {
-    const changes = getSelectionChanges(edgeLookup.value, selectedEdgeIds.value) as EdgeChange[]
+    const changes = getSelectionChanges(edgeLookup, selectedEdgeIds.value) as EdgeChange[]
     emits.edgesChange(changes)
   }
 

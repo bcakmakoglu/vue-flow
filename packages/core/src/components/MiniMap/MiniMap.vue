@@ -67,7 +67,7 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
 const bb = computed(() =>
   getNodesBounds(
     nodes.value.filter((node) => !node.hidden),
-    { nodeLookup: nodeLookup.value },
+    { nodeLookup: nodeLookup },
   ),
 )
 

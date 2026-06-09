@@ -106,7 +106,7 @@ export function useHandle({
       handleId: toValue(handleId),
       nodeId: toValue(nodeId),
       isTarget: toValue(type) === 'target',
-      nodeLookup: nodeLookup.value,
+      nodeLookup: nodeLookup,
       lib: 'vue',
       flowId,
       edgeUpdaterType: toValue(edgeUpdaterType),
@@ -246,12 +246,12 @@ export function useHandle({
         doc,
         lib: 'vue',
         flowId,
-        nodeLookup: nodeLookup.value,
+        nodeLookup: nodeLookup,
       },
       edges.value,
       nodes.value,
       findNode,
-      nodeLookup.value,
+      nodeLookup,
     )
 
     const isOwnHandle = result.connection?.source === result.connection?.target

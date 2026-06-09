@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
 import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem } from '@xyflow/system'
 import type {
@@ -44,8 +43,8 @@ import { storeOptionsToSkip, useState } from './state'
 
 export function useActions<NodeType extends Node = Node>(
   state: State<NodeType>,
-  nodeLookup: ComputedRef<NodeLookup<NodeType>>,
-  edgeLookup: ComputedRef<EdgeLookup>,
+  nodeLookup: NodeLookup<NodeType>,
+  edgeLookup: EdgeLookup,
 ): Actions<NodeType> {
   const viewportHelper = useViewportHelper(state, nodeLookup)
 
@@ -69,7 +68,7 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    return nodeLookup.value.get(id)
+    return nodeLookup.get(id)
   }
 
   const findEdge: Actions<NodeType>['findEdge'] = (id) => {
@@ -77,7 +76,7 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    return edgeLookup.value.get(id)
+    return edgeLookup.get(id)
   }
 
   const updateNodePositions: Actions<NodeType>['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -178,8 +177,8 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup.value, new Set(nodes.map((n) => n.id)), true))
-    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup.value))
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(nodes.map((n) => n.id)), true))
+    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup))
   }
 
   const addSelectedEdges: Actions<NodeType>['addSelectedEdges'] = (edges) => {
@@ -189,8 +188,8 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup.value, new Set(edges.map((e) => e.id))))
-    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup.value, new Set(), true))
+    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup, new Set(edges.map((e) => e.id))))
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(), true))
   }
 
   const removeSelectedNodes: Actions<NodeType>['removeSelectedNodes'] = (nodes) => {
@@ -277,7 +276,7 @@ export function useActions<NodeType extends Node = Node>(
       state.edges,
     )
 
-    updateConnectionLookup(state.connectionLookup, edgeLookup.value, validEdges)
+    updateConnectionLookup(state.connectionLookup, edgeLookup, validEdges)
 
     state.edges = validEdges
   }
@@ -446,7 +445,7 @@ export function useActions<NodeType extends Node = Node>(
 
       state.edges = state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge))
 
-      updateConnectionLookup(state.connectionLookup, edgeLookup.value, [validEdge])
+      updateConnectionLookup(state.connectionLookup, edgeLookup, [validEdge])
 
       return validEdge
     }
@@ -473,7 +472,7 @@ export function useActions<NodeType extends Node = Node>(
   const applyEdgeChanges: Actions<NodeType>['applyEdgeChanges'] = (changes) => {
     const changedEdges = applyChanges(changes, state.edges)
 
-    updateConnectionLookup(state.connectionLookup, edgeLookup.value, changedEdges)
+    updateConnectionLookup(state.connectionLookup, edgeLookup, changedEdges)
 
     return changedEdges
   }

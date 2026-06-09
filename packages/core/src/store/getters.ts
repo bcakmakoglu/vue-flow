@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import type { ComputedGetters, EdgeLookup, GraphEdge, GraphNode, Node, NodeLookup, State } from '../types'
 import { getNodesInside, isEdgeVisible } from '../utils'
@@ -6,18 +5,18 @@ import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
 export function useGetters<NodeType extends Node = Node>(
   state: State<NodeType>,
-  nodeLookup: ComputedRef<NodeLookup<NodeType>>,
-  edgeLookup: ComputedRef<EdgeLookup>,
+  nodeLookup: NodeLookup<NodeType>,
+  edgeLookup: EdgeLookup,
 ): ComputedGetters<NodeType> {
   /**
    * @deprecated will be removed in next major version; use findNode instead
    */
-  const getNode: ComputedGetters<NodeType>['getNode'] = computed(() => (id) => nodeLookup.value.get(id))
+  const getNode: ComputedGetters<NodeType>['getNode'] = computed(() => (id) => nodeLookup.get(id))
 
   /**
    * @deprecated will be removed in next major version; use findEdge instead
    */
-  const getEdge: ComputedGetters<NodeType>['getEdge'] = computed(() => (id) => edgeLookup.value.get(id))
+  const getEdge: ComputedGetters<NodeType>['getEdge'] = computed(() => (id) => edgeLookup.get(id))
 
   const getEdgeTypes: ComputedGetters<NodeType>['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
@@ -52,7 +51,7 @@ export function useGetters<NodeType extends Node = Node>(
   const getNodes: ComputedGetters<NodeType>['getNodes'] = computed(() => {
     if (state.onlyRenderVisibleElements) {
       return getNodesInside(
-        nodeLookup.value,
+        nodeLookup,
         {
           x: 0,
           y: 0,
@@ -72,8 +71,8 @@ export function useGetters<NodeType extends Node = Node>(
       const visibleEdges: GraphEdge[] = []
 
       for (const edge of state.edges) {
-        const source = nodeLookup.value.get(edge.source)!
-        const target = nodeLookup.value.get(edge.target)!
+        const source = nodeLookup.get(edge.source)!
+        const target = nodeLookup.get(edge.target)!
 
         if (
           isEdgeVisible({

@@ -1,6 +1,6 @@
 import { toRefs } from '@vueuse/core'
-import { computed, getCurrentInstance, reactive } from 'vue'
-import type { FlowProps, GraphEdge, GraphNode, Node, VueFlowStore } from '../types'
+import { effectScope, getCurrentInstance, reactive, watchEffect } from 'vue'
+import type { EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
 import { useActions, useGetters, useState } from '../store'
 
 /**
@@ -56,40 +56,75 @@ export class Storage {
       emits[n] = (h as any).trigger
     }
 
-    // for lookup purposes
-    const nodeLookup = computed(() => {
-      const nodesMap = new Map<string, GraphNode<NodeType>>()
-      for (const node of reactiveState.nodes) {
-        nodesMap.set(node.id, node)
-      }
-
-      return nodesMap
-    })
-
+    // Lookup maps held as `reactive(Map)` rather than Vue `computed`s. `reactive(Map)` gives a stable
+    // Map identity across mutations and — critical for the in-progress lookup inversion — lets
+    // `@xyflow/system` helpers `.set` clones in place while reads via `.get` stay reactive (validated by
+    // the Step 0 spike). For now they remain *derived* from `reactiveState.nodes`/`.edges` by the
+    // maintainer effects below (full clear+rebuild on structural change), so behaviour is unchanged;
+    // Step 3 will make these the source of truth.
+    //
+    // The `as` casts undo `reactive()`'s `UnwrapNestedRefs` return type: over a Map of the *generic*
+    // `GraphNode<NodeType>`, TS can't prove the element type has no refs to unwrap and widens the value
+    // type. At runtime the proxy is exactly a `Map<string, GraphNode>`, so the assertion is sound (this
+    // is the documented Vue + generics friction, not an `any`-style escape hatch).
+    const nodeLookup = reactive(new Map<string, GraphNode<NodeType>>()) as NodeLookup<NodeType>
     // map parentId -> Map<childId, GraphNode>. Matches `@xyflow/system`'s `ParentLookup` shape so we can
-    // pass it directly into `adoptUserNodes` / `updateAbsolutePositions` / `updateNodeInternals` /
-    // `handleExpandParent` without translation. `.size` still answers "is this node a parent?" in O(1).
-    const parentLookup = computed(() => {
-      const map = new Map<string, Map<string, GraphNode<NodeType>>>()
-      for (const node of reactiveState.nodes) {
-        const parentId = node.parentId
-        if (parentId) {
-          const children = map.get(parentId) ?? new Map<string, GraphNode<NodeType>>()
-          children.set(node.id, node)
-          map.set(parentId, children)
-        }
-      }
-      return map
-    })
+    // pass it directly into `adoptUserNodes` / `updateAbsolutePositions` / `handleExpandParent` without
+    // translation. `.size` still answers "is this node a parent?" in O(1).
+    const parentLookup = reactive(new Map<string, Map<string, GraphNode<NodeType>>>()) as Map<
+      string,
+      Map<string, GraphNode<NodeType>>
+    >
+    const edgeLookup = reactive(new Map<string, GraphEdge>()) as EdgeLookup
 
-    const edgeLookup = computed(() => {
-      const edgesMap = new Map<string, GraphEdge>()
+    // Own effect scope so the maintainer watchers are disposed on `$destroy` (computeds were lazy and
+    // self-collecting; eager effects are not).
+    const lookupScope = effectScope(true)
+    lookupScope.run(() => {
+      // `flush: 'sync'` is essential: the previous `computed` recomputed lazily *on access*, so a
+      // `findNode(...)` call made synchronously right after `state.nodes` was mutated (e.g. `setState`
+      // parsing nodes then edges, which resolves each edge's source/target via `findNode`) always saw
+      // a fresh map. A default ('pre') watcher would defer the rebuild to the next tick, leaving the
+      // lookup stale for that synchronous read — surfacing as "edge source/target missing" / "parent
+      // not found". Sync flush reproduces the computed's eager-on-write freshness.
+      //
+      // Rebuild node + parent lookups on structural change: the effect reads `node.id`/`node.parentId`
+      // and the array (not `node.position`), so it re-runs on add/remove/id/parent changes only — the
+      // same trigger surface as the old computeds. It writes the reactive maps but never reads them,
+      // so there is no self-dependency / loop.
+      watchEffect(
+        () => {
+          nodeLookup.clear()
+          parentLookup.clear()
+          const parents = new Map<string, Map<string, GraphNode<NodeType>>>()
+          for (const node of reactiveState.nodes) {
+            nodeLookup.set(node.id, node)
+            const parentId = node.parentId
+            if (parentId) {
+              let children = parents.get(parentId)
+              if (!children) {
+                children = new Map<string, GraphNode<NodeType>>()
+                parents.set(parentId, children)
+              }
+              children.set(node.id, node)
+            }
+          }
+          for (const [parentId, children] of parents) {
+            parentLookup.set(parentId, children)
+          }
+        },
+        { flush: 'sync' },
+      )
 
-      for (const edge of reactiveState.edges) {
-        edgesMap.set(edge.id, edge)
-      }
-
-      return edgesMap
+      watchEffect(
+        () => {
+          edgeLookup.clear()
+          for (const edge of reactiveState.edges) {
+            edgeLookup.set(edge.id, edge)
+          }
+        },
+        { flush: 'sync' },
+      )
     })
 
     const getters = useGetters(reactiveState, nodeLookup, edgeLookup)
@@ -110,6 +145,7 @@ export class Storage {
       id,
       vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
       $destroy: () => {
+        lookupScope.stop()
         this.remove(id)
       },
     }

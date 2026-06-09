@@ -346,10 +346,10 @@ export type ComputedGetters<NodeType extends Node = Node> = {
 export type VueFlowStore<NodeType extends Node = Node> = {
   readonly id: string
   readonly emits: FlowHooksEmit
-  readonly nodeLookup: ComputedRef<NodeLookup>
+  readonly nodeLookup: NodeLookup<NodeType>
   /** parentId → map of child id → child `GraphNode`. Matches `@xyflow/system`'s `ParentLookup`. */
-  readonly parentLookup: ComputedRef<Map<string, Map<string, GraphNode<NodeType>>>>
-  readonly edgeLookup: ComputedRef<EdgeLookup>
+  readonly parentLookup: Map<string, Map<string, GraphNode<NodeType>>>
+  readonly edgeLookup: EdgeLookup
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
 } & FlowHooksOn &
