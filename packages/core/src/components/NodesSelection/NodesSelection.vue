@@ -31,7 +31,7 @@ onMounted(() => {
   }
 })
 
-const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value, { nodeLookup: nodeLookup }))
+const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value, { nodeLookup }))
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,

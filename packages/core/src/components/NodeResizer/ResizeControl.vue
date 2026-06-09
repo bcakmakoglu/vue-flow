@@ -39,7 +39,7 @@ watchEffect((onCleanup) => {
     domNode: resizeControlRef.value,
     nodeId: props.nodeId,
     getStoreItems: () => ({
-      nodeLookup: nodeLookup,
+      nodeLookup,
       transform: [viewport.value.x, viewport.value.y, viewport.value.zoom] as [number, number, number],
       snapGrid: snapGrid.value,
       snapToGrid: snapToGrid.value,

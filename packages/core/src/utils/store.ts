@@ -1,8 +1,11 @@
 import { unref } from 'vue'
+import type { InternalNodeBase, NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system'
+import { adoptUserNodes } from '@xyflow/system'
 import type {
   Actions,
   Connection,
   ConnectionLookup,
+  CoordinateExtent,
   DefaultEdgeOptions,
   Edge,
   EdgeLookup,
@@ -10,14 +13,12 @@ import type {
   GraphNode,
   Node,
   NodeConnection,
+  NodeOrigin,
   State,
   ValidConnectionFunc,
   VueFlowStore,
 } from '../types'
-import type { InternalNodeBase, NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system'
-import { adoptUserNodes } from '@xyflow/system'
 import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
-import type { CoordinateExtent, NodeOrigin } from '../types'
 
 export { areSetsEqual } from '@xyflow/system'
 

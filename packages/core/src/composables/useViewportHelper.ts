@@ -38,10 +38,7 @@ const initialViewportHelper: ViewportHelper = {
  * @internal
  * @param state
  */
-export function useViewportHelper<NodeType extends Node = Node>(
-  state: State<NodeType>,
-  nodeLookup: NodeLookup<NodeType>,
-) {
+export function useViewportHelper<NodeType extends Node = Node>(state: State<NodeType>, nodeLookup: NodeLookup<NodeType>) {
   return computed<ViewportHelper>(() => {
     const panZoom = state.panZoom
     const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height
