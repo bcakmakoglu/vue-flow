@@ -1,4 +1,3 @@
-import { until } from '@vueuse/core'
 import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem, updateAbsolutePositions } from '@xyflow/system'
 import type {
   Actions,
@@ -760,9 +759,10 @@ export function useActions<NodeType extends Node = Node>(
       }
     }
 
-    until(() => state.panZoom)
-      .not.toBeNull()
-      .then(setSkippedOptions)
+    // min/max-zoom + translateExtent setters are panZoom-null-safe (they always write state, and
+    // `XYPanZoom` reads those state values when it mounts), so apply them directly — no need to wait
+    // for the panZoom instance to exist.
+    setSkippedOptions()
 
     if (!state.initialized) {
       state.initialized = true
@@ -795,42 +795,6 @@ export function useActions<NodeType extends Node = Node>(
         viewport: state.viewport,
       } as FlowExportObject),
     )
-  }
-
-  const fromObject: Actions<NodeType>['fromObject'] = (obj) => {
-    return new Promise((resolve) => {
-      const { nodes, edges, position, zoom, viewport } = obj
-
-      if (nodes) {
-        setNodes(nodes as NodeType[])
-      }
-
-      if (edges) {
-        setEdges(edges)
-      }
-
-      const [xPos, yPos] = viewport?.x && viewport?.y ? [viewport.x, viewport.y] : position ?? [null, null]
-
-      if (xPos && yPos) {
-        const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
-
-        return until(() => viewportHelper.value.viewportInitialized)
-          .toBe(true)
-          .then(() => {
-            viewportHelper.value
-              .setViewport({
-                x: xPos,
-                y: yPos,
-                zoom: nextZoom,
-              })
-              .then(() => {
-                resolve(true)
-              })
-          })
-      } else {
-        resolve(true)
-      }
-    })
   }
 
   const $reset: Actions<NodeType>['$reset'] = () => {
@@ -898,7 +862,6 @@ export function useActions<NodeType extends Node = Node>(
     screenToFlowCoordinate: (params) => viewportHelper.value.screenToFlowCoordinate(params),
     flowToScreenCoordinate: (params) => viewportHelper.value.flowToScreenCoordinate(params),
     toObject,
-    fromObject,
     updateNodeInternals,
     viewportHelper,
     $reset,
