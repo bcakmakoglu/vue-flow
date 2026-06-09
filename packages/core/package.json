@@ -76,18 +76,18 @@
     "@xyflow/system": "^0.0.73"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^5.0.3",
+    "@rollup/plugin-replace": "^6.0.3",
     "@tooling/eslint-config": "workspace:*",
     "@types/d3-interpolate": "^3.0.4",
     "@types/d3-transition": "^3.0.9",
     "@types/d3-zoom": "^3.0.8",
     "@vitejs/plugin-vue": "^4.4.0",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31",
-    "postcss-cli": "^10.1.0",
-    "postcss-nested": "^6.0.1",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "postcss-cli": "^11.0.1",
+    "postcss-nested": "^7.0.2",
     "vite": "^4.4.11",
-    "vite-svg-loader": "^5.1.0",
+    "vite-svg-loader": "^5.1.1",
     "vue": "^3.5.0",
     "vue-tsc": "^2.1.6"
   }
