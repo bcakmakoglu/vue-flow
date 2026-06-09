@@ -24,7 +24,6 @@
   "devDependencies": {
     "@iconify/json": "^2.2.268",
     "@tooling/eslint-config": "workspace:*",
-    "@tooling/tsconfig": "workspace:*",
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^16.4.5",
     "ohmyfetch": "^0.4.21",

@@ -57,9 +57,6 @@ importers:
       '@tooling/eslint-config':
         specifier: workspace:*
         version: link:../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../tooling/tsconfig
       '@windicss/plugin-scrollbar':
         specifier: ^1.2.3
         version: 1.2.3
@@ -168,9 +165,6 @@ importers:
       '@tooling/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
       '@vitejs/plugin-vue':
         specifier: ^5.1.4
         version: 5.2.4(vite@5.4.21(sass@1.96.0)(terser@5.21.0))(vue@3.5.25(typescript@5.4.5))
@@ -214,9 +208,6 @@ importers:
       '@tooling/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../../tooling/tsconfig
       '@types/d3-interpolate':
         specifier: ^3.0.4
         version: 3.0.4
@@ -260,9 +251,6 @@ importers:
       '@tooling/eslint-config':
         specifier: workspace:*
         version: link:../tooling/eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../tooling/tsconfig
       '@vitejs/plugin-vue':
         specifier: ^5.1.4
         version: 5.2.4(vite@5.4.21(@types/node@20.14.2)(sass@1.96.0)(terser@5.21.0))(vue@3.3.4)
@@ -302,33 +290,6 @@ importers:
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
-
-  tooling/tsconfig:
-    devDependencies:
-      '@types/node':
-        specifier: ^20.14.2
-        version: 20.14.2
-      typescript:
-        specifier: ^5.3.3
-        version: 5.4.5
-
-  tooling/vite-config:
-    devDependencies:
-      '@tooling/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@tooling/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@vitejs/plugin-vue':
-        specifier: ^4.4.0
-        version: 4.4.0(vite@4.4.11(@types/node@20.14.2)(sass@1.96.0)(terser@5.21.0))(vue@3.5.25(typescript@5.4.5))
-      defu:
-        specifier: ^6.1.2
-        version: 6.1.2
-      vite:
-        specifier: ^4.4.11
-        version: 4.4.11(@types/node@20.14.2)(sass@1.96.0)(terser@5.21.0)
 
 packages:
 
@@ -3663,9 +3624,6 @@ packages:
   define-properties@1.2.1:
     resolution: {integrity: sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==}
     engines: {node: '>= 0.4'}
-
-  defu@6.1.2:
-    resolution: {integrity: sha512-+uO4+qr7msjNNWKYPHqN/3+Dx3NFkmIzayk2L1MyZQlvgZb/J1A0fo410dpKrN2SnqFjt8n4JL8fDJE0wIgjFQ==}
 
   defu@6.1.4:
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
@@ -10279,11 +10237,6 @@ snapshots:
       vite: 4.4.11(@types/node@20.14.2)(sass@1.96.0)(terser@5.21.0)
       vue: 3.3.4
 
-  '@vitejs/plugin-vue@4.4.0(vite@4.4.11(@types/node@20.14.2)(sass@1.96.0)(terser@5.21.0))(vue@3.5.25(typescript@5.4.5))':
-    dependencies:
-      vite: 4.4.11(@types/node@20.14.2)(sass@1.96.0)(terser@5.21.0)
-      vue: 3.5.25(typescript@5.4.5)
-
   '@vitejs/plugin-vue@5.2.4(vite@5.4.21(@types/node@18.18.4)(sass@1.96.0)(terser@5.21.0))(vue@3.5.25(typescript@5.4.5))':
     dependencies:
       vite: 5.4.21(@types/node@18.18.4)(sass@1.96.0)(terser@5.21.0)
@@ -11588,8 +11541,6 @@ snapshots:
       define-data-property: 1.1.0
       has-property-descriptors: 1.0.0
       object-keys: 1.1.1
-
-  defu@6.1.2: {}
 
   defu@6.1.4: {}
 
