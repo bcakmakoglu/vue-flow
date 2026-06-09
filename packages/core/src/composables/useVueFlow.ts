@@ -2,7 +2,7 @@ import type { EffectScope } from 'vue'
 import { effectScope, getCurrentScope, inject, provide, watch } from 'vue'
 import type { EdgeChange, FlowOptions, Node, NodeChange, VueFlowStore } from '../types'
 import { VueFlow } from '../context'
-import { Storage } from '../utils/storage'
+import { createFlowStore, generateFlowId, getFlowStore } from '../utils/storage'
 
 type Scope = (EffectScope & { vueFlowId?: string }) | undefined
 
@@ -21,8 +21,6 @@ type Scope = (EffectScope & { vueFlowId?: string }) | undefined
 export function useVueFlow<NodeType extends Node = Node>(id?: string): VueFlowStore<NodeType>
 export function useVueFlow<NodeType extends Node = Node>(options?: FlowOptions<NodeType>): VueFlowStore<NodeType>
 export function useVueFlow<NodeType extends Node = Node>(idOrOptions?: string | FlowOptions<NodeType>): VueFlowStore<NodeType> {
-  const storage = Storage.getInstance()
-
   const scope = getCurrentScope() as Scope
 
   const isOptsObj = typeof idOrOptions === 'object' && idOrOptions !== null
@@ -57,7 +55,7 @@ export function useVueFlow<NodeType extends Node = Node>(idOrOptions?: string | 
    * the scope-bound id used by sibling composable invocations.
    */
   if (!vueFlow && vueFlowId) {
-    vueFlow = storage.get(vueFlowId) as unknown as VueFlowStore<NodeType>
+    vueFlow = getFlowStore<NodeType>(vueFlowId)
   }
 
   /**
@@ -65,12 +63,9 @@ export function useVueFlow<NodeType extends Node = Node>(idOrOptions?: string | 
    */
   const created = !vueFlow || (id && vueFlow.id !== id)
   if (created) {
-    const name = id ?? storage.getId()
+    const name = id ?? generateFlowId()
 
-    vueFlow = storage.create(
-      name,
-      isOptsObj ? (idOrOptions as FlowOptions<NodeType>) : undefined,
-    ) as unknown as VueFlowStore<NodeType>
+    vueFlow = createFlowStore<NodeType>(name, isOptsObj ? (idOrOptions as FlowOptions<NodeType>) : undefined)
 
     /**
      * Register default change handlers so that `addNodes`/`addEdges`/etc. mutate the store even
