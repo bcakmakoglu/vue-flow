@@ -1,4 +1,3 @@
-import { until } from '@vueuse/core'
 import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem, updateAbsolutePositions } from '@xyflow/system'
 import type {
   Actions,
@@ -760,9 +759,10 @@ export function useActions<NodeType extends Node = Node>(
       }
     }
 
-    until(() => state.panZoom)
-      .not.toBeNull()
-      .then(setSkippedOptions)
+    // min/max-zoom + translateExtent setters are panZoom-null-safe (they always write state, and
+    // `XYPanZoom` reads those state values when it mounts), so apply them directly — no need to wait
+    // for the panZoom instance to exist.
+    setSkippedOptions()
 
     if (!state.initialized) {
       state.initialized = true
@@ -814,19 +814,11 @@ export function useActions<NodeType extends Node = Node>(
       if (xPos && yPos) {
         const nextZoom = viewport?.zoom || zoom || state.viewport.zoom
 
-        return until(() => viewportHelper.value.viewportInitialized)
-          .toBe(true)
-          .then(() => {
-            viewportHelper.value
-              .setViewport({
-                x: xPos,
-                y: yPos,
-                zoom: nextZoom,
-              })
-              .then(() => {
-                resolve(true)
-              })
-          })
+        // Match React/Svelte Flow: restore is best-effort and expected to run once the flow is ready
+        // (e.g. from `onInit` or a user action). `setViewport` applies immediately when the viewport is
+        // initialized and warns + no-ops otherwise — no init-watching, and we never mutate
+        // `defaultViewport` (which `$reset` reads and the user may have set).
+        viewportHelper.value.setViewport({ x: xPos, y: yPos, zoom: nextZoom }).then(() => resolve(true))
       } else {
         resolve(true)
       }
