@@ -1,7 +1,18 @@
 import { toRefs } from '@vueuse/core'
-import { reactive } from 'vue'
+import type { Ref } from 'vue'
+import { reactive, ref } from 'vue'
 import type { EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
 import { useActions, useGetters, useState } from '../store'
+
+/**
+ * External backing refs for a store's nodes/edges. When `<VueFlow>` passes its `v-model` refs here, the
+ * store reads/writes them directly (single source of truth, like svelte's `$bindable` proxy) so a
+ * separate v-model sync layer isn't needed. Omitted → the store uses internal refs.
+ */
+export interface StoreSignals<NodeType extends Node = Node> {
+  nodes?: Ref<GraphNode<NodeType>[]>
+  edges?: Ref<GraphEdge[]>
+}
 
 /**
  * Builds a fully-wired VueFlow store instance (reactive state, lookups, getters, actions, hooks).
@@ -16,8 +27,35 @@ export function createVueFlowStore<NodeType extends Node = Node>(
   id: string,
   preloadedState?: FlowProps<NodeType>,
   onDestroy?: (id: string) => void,
+  signals?: StoreSignals<NodeType>,
 ): VueFlowStore<NodeType> {
+  // nodes/edges are backed by (optionally injected) signal refs — the single source of truth. When
+  // `<VueFlow>` passes its v-model refs, mutating the store *is* the v-model update (svelte's
+  // bindable-prop proxy), so no separate sync layer is needed. Default: internal `ref`s (deep-reactive,
+  // matching the previous `reactive(state).nodes` behaviour).
+  const nodesSignal = signals?.nodes ?? ref<GraphNode<NodeType>[]>([])
+  const edgesSignal = signals?.edges ?? ref<GraphEdge[]>([])
+
   const state = useState<NodeType>()
+
+  // Proxy `state.nodes`/`.edges` through the signals via accessors (svelte's `get nodes()` pattern), so
+  // every existing `state.nodes` read/write stays unchanged while the backing becomes injectable.
+  Object.defineProperty(state, 'nodes', {
+    get: () => nodesSignal.value,
+    set: (value: GraphNode<NodeType>[]) => {
+      nodesSignal.value = value
+    },
+    enumerable: true,
+    configurable: true,
+  })
+  Object.defineProperty(state, 'edges', {
+    get: () => edgesSignal.value,
+    set: (value: GraphEdge[]) => {
+      edgesSignal.value = value
+    },
+    enumerable: true,
+    configurable: true,
+  })
 
   const reactiveState = reactive(state) as any
 
