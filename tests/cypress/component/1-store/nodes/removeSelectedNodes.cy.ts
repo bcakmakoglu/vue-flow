@@ -1,10 +1,12 @@
-import { isNode, useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { isNode } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
 describe('Store Action: `removeSelectedNodes`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
   let randomNumber: number
   let randomNumber2: number
 
@@ -13,13 +15,14 @@ describe('Store Action: `removeSelectedNodes`', () => {
       nodes,
       edges,
     })
-  })
 
-  beforeEach(() => {
-    randomNumber = Math.floor(Math.random() * nodes.length)
-    randomNumber2 = Math.floor(Math.random() * randomNumber)
-    store.addSelectedNodes(Array.from({ length: randomNumber }, (_, i) => store.nodes.value[i]))
-    store.removeSelectedNodes(Array.from({ length: randomNumber2 }, (_, i) => store.nodes.value[i]))
+    cy.then(() => {
+      store = getStore()
+      randomNumber = Math.floor(Math.random() * nodes.length)
+      randomNumber2 = Math.floor(Math.random() * randomNumber)
+      store.addSelectedNodes(Array.from({ length: randomNumber }, (_, i) => store.nodes.value[i]))
+      store.removeSelectedNodes(Array.from({ length: randomNumber2 }, (_, i) => store.nodes.value[i]))
+    })
   })
 
   it('removes selected nodes from store', () => {

@@ -1,37 +1,26 @@
-import { isRef } from 'vue'
-import type { State } from '@vue-flow/core'
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 
 describe('Store Action: `setState`', () => {
-  let store = useVueFlow()
+  let store: VueFlowStore
 
-  const initial = useVueFlow({ id: 'initial' })
+  beforeEach(() => {
+    cy.vueFlow()
 
-  beforeEach(() => (store = useVueFlow()))
+    cy.then(() => {
+      store = getStore()
+    })
+  })
 
   it('has any initial state', () => expect(store).to.exist)
 
   it('has default initial state', () => {
-    Object.keys(store).forEach((state) => {
-      const storedState = store[<keyof State>state]?.value
-      const initialVal = initial[<keyof State>state]?.value
-
-      if (state === 'initialized') {
-        return expect(storedState).to.be.true
-      }
-
-      if (state === 'getEdgeTypes' || state === 'getNodeTypes' || state === 'nodeTypes' || state === 'edgeTypes') {
-        return
-      }
-
-      if (Array.isArray(initialVal)) {
-        return expect((storedState as any[]).length).to.eq(initialVal.length)
-      }
-
-      if (!(initialVal instanceof Function) && !isRef(initialVal)) {
-        return expect(JSON.stringify(storedState)).to.eq(JSON.stringify(initialVal))
-      }
-    })
+    // a freshly-mounted flow (no element props) starts empty with an initialized viewport/dimensions
+    expect(store.nodes.value).to.deep.eq([])
+    expect(store.edges.value).to.deep.eq([])
+    expect(store.viewport.value).to.exist
+    expect(store.dimensions.value).to.exist
+    expect(store.initialized.value).to.be.true
   })
 
   it('sets state', () => {
@@ -41,11 +30,15 @@ describe('Store Action: `setState`', () => {
     expect(store.zoomOnScroll.value).to.eq(false)
   })
 
-  it('takes initial options', () => {
-    store = useVueFlow({
+  it('takes initial options via props', () => {
+    // options are now passed to `<VueFlow>` as props (no `useVueFlow(options)`); remount with the prop set
+    cy.vueFlow({
       zoomOnScroll: false,
     })
-    expect(store.zoomOnScroll.value).to.eq(false)
+
+    cy.then(() => {
+      expect(getStore().zoomOnScroll.value).to.eq(false)
+    })
   })
 
   it('gets custom node types', () => {

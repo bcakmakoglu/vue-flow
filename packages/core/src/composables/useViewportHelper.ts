@@ -1,4 +1,3 @@
-import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import { fitViewport, rendererPointToPoint } from '@xyflow/system'
 import type { Node, NodeLookup, Project, State, ViewportFunctions } from '../types'
@@ -39,10 +38,7 @@ const initialViewportHelper: ViewportHelper = {
  * @internal
  * @param state
  */
-export function useViewportHelper<NodeType extends Node = Node>(
-  state: State<NodeType>,
-  nodeLookup: ComputedRef<NodeLookup<NodeType>>,
-) {
+export function useViewportHelper<NodeType extends Node = Node>(state: State<NodeType>, nodeLookup: NodeLookup<NodeType>) {
   return computed<ViewportHelper>(() => {
     const panZoom = state.panZoom
     const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height
@@ -91,7 +87,7 @@ export function useViewportHelper<NodeType extends Node = Node>(
 
         const ok = await fitViewport(
           {
-            nodes: nodeLookup.value,
+            nodes: nodeLookup,
             width: state.dimensions.width,
             height: state.dimensions.height,
             panZoom,

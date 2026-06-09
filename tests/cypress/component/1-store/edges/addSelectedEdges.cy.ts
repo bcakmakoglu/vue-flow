@@ -1,10 +1,11 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
 describe('Store Action: `addSelectedEdges`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
   let randomNumber: number
 
   beforeEach(() => {
@@ -12,11 +13,12 @@ describe('Store Action: `addSelectedEdges`', () => {
       nodes,
       edges,
     })
-  })
 
-  beforeEach(() => {
-    randomNumber = Math.floor(Math.random() * edges.length)
-    store.addSelectedEdges(Array.from({ length: randomNumber }, (_, i) => store.edges.value[i]))
+    cy.then(() => {
+      store = getStore()
+      randomNumber = Math.floor(Math.random() * edges.length)
+      store.addSelectedEdges(Array.from({ length: randomNumber }, (_, i) => store.edges.value[i]))
+    })
   })
 
   it('adds selected edges to store', () => {

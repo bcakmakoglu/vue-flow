@@ -1,8 +1,9 @@
-import type { ComputedRef } from 'vue'
 import { until } from '@vueuse/core'
-import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem } from '@xyflow/system'
+import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem, updateAbsolutePositions } from '@xyflow/system'
 import type {
   Actions,
+  CoordinateExtent,
+  CoordinateExtentRange,
   Edge,
   EdgeAddChange,
   EdgeLookup,
@@ -43,10 +44,110 @@ import { storeOptionsToSkip, useState } from './state'
 
 export function useActions<NodeType extends Node = Node>(
   state: State<NodeType>,
-  nodeLookup: ComputedRef<NodeLookup<NodeType>>,
-  edgeLookup: ComputedRef<EdgeLookup>,
+  nodeLookup: NodeLookup<NodeType>,
+  parentLookup: Map<string, Map<string, GraphNode<NodeType>>>,
+  edgeLookup: EdgeLookup,
 ): Actions<NodeType> {
   const viewportHelper = useViewportHelper(state, nodeLookup)
+
+  /**
+   * Single write path for node membership. `nodeLookup` is the primary structure (Step 3 of the
+   * inversion); we rebuild it + `parentLookup` from `next` in one imperative pass and mirror `next`
+   * into `state.nodes` for the internal reads + public `store.nodes` ref that still consume the array.
+   * In-place field mutations (selected/position/internals/data) don't need this — the entries are
+   * reactive, shared by reference with the mirror — only membership/order/parent changes do.
+   */
+  function commitNodes(next: GraphNode<NodeType>[]) {
+    nodeLookup.clear()
+    parentLookup.clear()
+    const parents = new Map<string, Map<string, GraphNode<NodeType>>>()
+    for (const node of next) {
+      nodeLookup.set(node.id, node)
+      const parentId = node.parentId
+      if (parentId) {
+        let children = parents.get(parentId)
+        if (!children) {
+          children = new Map<string, GraphNode<NodeType>>()
+          parents.set(parentId, children)
+        }
+        children.set(node.id, node)
+      }
+    }
+    for (const [parentId, children] of parents) {
+      parentLookup.set(parentId, children)
+    }
+    state.nodes = next
+
+    recomputeAbsolutePositions()
+  }
+
+  /** Single write path for edge membership; mirrors `next` into `state.edges` (see {@link commitNodes}). */
+  function commitEdges(next: GraphEdge[]) {
+    edgeLookup.clear()
+    for (const edge of next) {
+      edgeLookup.set(edge.id, edge)
+    }
+    state.edges = next
+  }
+
+  /**
+   * Recompute parent-aware `internals.positionAbsolute`/`z` for every node via `@xyflow/system`'s
+   * `updateAbsolutePositions`, then write the results back onto the canonical reactive node refs
+   * (Step 5, approach A — svelte's write-back). This replaces the per-node positionAbsolute watcher
+   * that used to live in `NodeWrapper`.
+   *
+   * `updateAbsolutePositions` mutates the lookup: root nodes in place, child nodes via clone-on-`.set`
+   * (so React/Svelte pick them up by reference). vue-flow keeps the nodes array canonical and
+   * `useNode().node` returns the live array ref, so for cloned children we copy `internals` back onto
+   * the canonical ref *in place* (propagates through the captured ref) and re-point the lookup at it
+   * (re-converge identity — validated by the write-back spike). System does NOT set root-node `z`
+   * (only children get it via the parent chain), so we apply the elevate-on-select `z` for roots here,
+   * matching the old watcher / system's `calculateZ`.
+   */
+  function recomputeAbsolutePositions() {
+    // `@xyflow/system` has no concept of vue-flow's `CoordinateExtentRange` (`{ range, padding }`) and
+    // its `isCoordinateExtent` treats any non-`'parent'`/non-nullish value as a coordinate-extent array,
+    // so it would index `extent[0]` on the range object and crash. Transiently coerce such extents to
+    // their `range` (`'parent'` or a plain `CoordinateExtent`, both system-understood) for the system
+    // pass and restore afterwards. NOTE: the range `padding` is not applied by the system clamp — a
+    // known limitation tracked for follow-up (vue-flow's padded-parent-extent is richer than system's).
+    // `node.extent` is typed `'parent' | CoordinateExtent | null` (deliberately narrow so `GraphNode`
+    // stays structurally assignable to system's `NodeBase`), but at runtime vue-flow also supports a
+    // `CoordinateExtentRange` ({ range, padding }) — see utils/drag.ts. Hence the localized casts: the
+    // type can't express this without breaking system compat. We restore the original extent after.
+    const coercedExtents: { node: GraphNode<NodeType>; extent: 'parent' | CoordinateExtent | null | undefined }[] = []
+    for (const node of nodeLookup.values()) {
+      const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
+      if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
+        coercedExtents.push({ node, extent: node.extent })
+        node.extent = extent.range
+      }
+    }
+
+    updateAbsolutePositions(nodeLookup, parentLookup, {
+      nodeOrigin: [0, 0],
+      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+      elevateNodesOnSelect: state.elevateNodesOnSelect,
+    })
+
+    for (const { node, extent } of coercedExtents) {
+      node.extent = extent
+    }
+
+    for (const node of state.nodes) {
+      const fresh = nodeLookup.get(node.id)
+      if (fresh && fresh !== node) {
+        node.internals.positionAbsolute = fresh.internals.positionAbsolute
+        node.internals.z = fresh.internals.z
+        nodeLookup.set(node.id, node)
+      }
+
+      if (!node.parentId) {
+        node.internals.z =
+          (typeof node.zIndex === 'number' ? node.zIndex : 0) + (node.selected && state.elevateNodesOnSelect ? 1000 : 0)
+      }
+    }
+  }
 
   const updateNodeInternals: Actions<NodeType>['updateNodeInternals'] = (ids) => {
     const updateIds = ids ?? []
@@ -68,7 +169,7 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    return nodeLookup.value.get(id)
+    return nodeLookup.get(id)
   }
 
   const findEdge: Actions<NodeType>['findEdge'] = (id) => {
@@ -76,7 +177,7 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    return edgeLookup.value.get(id)
+    return edgeLookup.get(id)
   }
 
   const updateNodePositions: Actions<NodeType>['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -177,8 +278,8 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup.value, new Set(nodes.map((n) => n.id)), true))
-    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup.value))
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(nodes.map((n) => n.id)), true))
+    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup))
   }
 
   const addSelectedEdges: Actions<NodeType>['addSelectedEdges'] = (edges) => {
@@ -188,8 +289,8 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup.value, new Set(edges.map((e) => e.id))))
-    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup.value, new Set(), true))
+    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup, new Set(edges.map((e) => e.id))))
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(), true))
   }
 
   const removeSelectedNodes: Actions<NodeType>['removeSelectedNodes'] = (nodes) => {
@@ -231,6 +332,7 @@ export function useActions<NodeType extends Node = Node>(
 
   const setNodeExtent: Actions<NodeType>['setNodeExtent'] = (nodeExtent) => {
     state.nodeExtent = nodeExtent
+    recomputeAbsolutePositions()
     updateNodeInternals()
   }
 
@@ -251,7 +353,13 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    state.nodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger) as GraphNode<NodeType>[]
+    commitNodes(
+      createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
+        nodeOrigin: [0, 0],
+        nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+        elevateNodesOnSelect: state.elevateNodesOnSelect,
+      }) as GraphNode<NodeType>[],
+    )
   }
 
   const setEdges: Actions<NodeType>['setEdges'] = (edges) => {
@@ -272,16 +380,20 @@ export function useActions<NodeType extends Node = Node>(
       state.edges,
     )
 
-    updateConnectionLookup(state.connectionLookup, edgeLookup.value, validEdges)
+    commitEdges(validEdges)
 
-    state.edges = validEdges
+    updateConnectionLookup(state.connectionLookup, edgeLookup, validEdges)
   }
 
   const addNodes: Actions<NodeType>['addNodes'] = (nodes) => {
     let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
     nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
-    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger)
+    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
+      nodeOrigin: [0, 0],
+      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+      elevateNodesOnSelect: state.elevateNodesOnSelect,
+    })
 
     const changes: NodeAddChange<any>[] = []
     for (const node of graphNodes) {
@@ -435,9 +547,9 @@ export function useActions<NodeType extends Node = Node>(
         state.edges,
       )
 
-      state.edges = state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge))
+      commitEdges(state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge)))
 
-      updateConnectionLookup(state.connectionLookup, edgeLookup.value, [validEdge])
+      updateConnectionLookup(state.connectionLookup, edgeLookup, [validEdge])
 
       return validEdge
     }
@@ -458,15 +570,22 @@ export function useActions<NodeType extends Node = Node>(
   }
 
   const applyNodeChanges: Actions<NodeType>['applyNodeChanges'] = (changes) => {
-    return applyChanges(changes, state.nodes)
+    // Apply changes against a snapshot of the (primary) lookup, then commit the result back. The
+    // public `applyChanges` util stays a pure array transform (it mutates node *fields* on the shared
+    // reactive refs and adds/removes array entries); `commitNodes` reconciles lookup membership/order.
+    const result = applyChanges(changes, Array.from(nodeLookup.values())) as GraphNode<NodeType>[]
+    commitNodes(result)
+    return result
   }
 
   const applyEdgeChanges: Actions<NodeType>['applyEdgeChanges'] = (changes) => {
-    const changedEdges = applyChanges(changes, state.edges)
+    const result = applyChanges(changes, Array.from(edgeLookup.values())) as GraphEdge[]
 
-    updateConnectionLookup(state.connectionLookup, edgeLookup.value, changedEdges)
+    commitEdges(result)
 
-    return changedEdges
+    updateConnectionLookup(state.connectionLookup, edgeLookup, result)
+
+    return result
   }
 
   // todo: maybe we should use a more immutable approach, this is a bit too much mutation and hard to maintain
@@ -480,9 +599,14 @@ export function useActions<NodeType extends Node = Node>(
     const nextNode = typeof nodeUpdate === 'function' ? nodeUpdate(node) : nodeUpdate
 
     if (options.replace) {
-      state.nodes.splice(state.nodes.indexOf(node), 1, parseNode(nextNode as NodeType))
+      const next = Array.from(nodeLookup.values())
+      next.splice(next.indexOf(node), 1, parseNode(nextNode as NodeType))
+      commitNodes(next)
     } else {
+      // mutate the reactive lookup entry in place, then reconcile (a `parentId` change must be
+      // reflected in `parentLookup`). Membership/order are unchanged, so this reuses the same refs.
       Object.assign(node, nextNode)
+      commitNodes(Array.from(nodeLookup.values()))
     }
   }
 
@@ -712,8 +836,8 @@ export function useActions<NodeType extends Node = Node>(
   const $reset: Actions<NodeType>['$reset'] = () => {
     const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType>()
 
-    state.edges = []
-    state.nodes = []
+    commitEdges([])
+    commitNodes([])
 
     if (state.panZoom) {
       state.panZoom.setViewport({

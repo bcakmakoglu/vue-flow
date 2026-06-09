@@ -1,16 +1,21 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
 describe('Store Action: `findNode`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
   let randomIndex: number
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
       edges,
+    })
+
+    cy.then(() => {
+      store = getStore()
     })
   })
 

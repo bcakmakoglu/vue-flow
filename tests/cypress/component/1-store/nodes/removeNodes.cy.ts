@@ -1,10 +1,11 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
 describe('Store Action: `removeNodes`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
   let deletedNodes: string[]
 
   beforeEach(() => {
@@ -12,12 +13,13 @@ describe('Store Action: `removeNodes`', () => {
       nodes,
       edges,
     })
-  })
 
-  beforeEach(() => {
-    const randomNumber = Math.floor(Math.random() * nodes.length)
-    deletedNodes = Array.from({ length: randomNumber }, (_, i) => nodes[i].id)
-    store.removeNodes(deletedNodes)
+    cy.then(() => {
+      store = getStore()
+      const randomNumber = Math.floor(Math.random() * nodes.length)
+      deletedNodes = Array.from({ length: randomNumber }, (_, i) => nodes[i].id)
+      store.removeNodes(deletedNodes)
+    })
   })
 
   it('removes nodes from store', () => {

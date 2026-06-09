@@ -1,13 +1,13 @@
 <script lang="ts" setup generic="NodeType extends Node = Node">
 import { useVModel } from '@vueuse/core'
-import { onUnmounted, provide } from 'vue'
+import { inject, onUnmounted, provide } from 'vue'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { FlowEmits, FlowProps, FlowSlots, Node, VueFlowStore } from '../../types'
-import { Slots } from '../../context'
+import { Slots, VueFlow as VueFlowInjectionKey } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
 import { useWatchProps } from '../../composables/useWatchProps'
-import { useVueFlow } from '../../composables/useVueFlow'
+import { useCreateVueFlow } from '../../composables/useCreateVueFlow'
 import { useHooks } from '../../store/hooks'
 import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning'
 
@@ -53,16 +53,26 @@ const slots = defineSlots<FlowSlots<NodeType>>()
 const modelNodes = useVModel(props, 'nodes', emit)
 const modelEdges = useVModel(props, 'edges', emit)
 
-const vfInstance = useVueFlow<NodeType>(props)
+// Reuse an ancestor `<VueFlowProvider>`'s store if present; otherwise this `<VueFlow>` owns it —
+// create + provide our own (auto-wrap, like react's `<Wrapper>`). The store is only ever created by a
+// provider boundary; `useVueFlow()` is a pure consumer.
+const injectedStore = inject(VueFlowInjectionKey, null) as VueFlowStore<NodeType> | null
+
+const vfInstance = injectedStore ?? useCreateVueFlow<NodeType>(props)
+
+// when reusing a provider's store, apply this `<VueFlow>`'s props to it
+if (injectedStore) {
+  injectedStore.setState(props as Parameters<typeof injectedStore.setState>[0])
+}
 
 // watch props and update store state
 const disposeWatchers = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, vfInstance)
 
 useHooks(emit, vfInstance.hooks)
 
-useOnInitHandler()
+useOnInitHandler(vfInstance)
 
-useStylesLoadedWarning()
+useStylesLoadedWarning(vfInstance)
 
 // slots will be passed via provide
 // this is to avoid having to pass them down through all the components

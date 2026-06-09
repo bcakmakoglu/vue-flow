@@ -1,4 +1,5 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
@@ -7,17 +8,18 @@ const edgesFirstHalf = edges.slice(0, Math.floor(edges.length / 2))
 const edgesSecondHalf = edges.slice(Math.floor(edges.length / 2))
 
 describe('Store Action: `addEdges`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
       edges: edgesFirstHalf,
     })
-  })
 
-  beforeEach(() => {
-    store.addEdges(edgesSecondHalf)
+    cy.then(() => {
+      store = getStore()
+      store.addEdges(edgesSecondHalf)
+    })
   })
 
   it('adds edges to store', () => {

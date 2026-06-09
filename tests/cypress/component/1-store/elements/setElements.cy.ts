@@ -1,15 +1,24 @@
-import { defaultEdgeTypes, defaultNodeTypes, isEdge, isNode, useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { defaultEdgeTypes, defaultNodeTypes, isEdge, isNode } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
 describe('Store Action: `setNodes` / `setEdges`', () => {
-  const store = useVueFlow()
+  let store: VueFlowStore
+
+  beforeEach(() => {
+    cy.vueFlow({})
+
+    cy.then(() => {
+      store = getStore()
+      store.setNodes(nodes)
+      store.setEdges(edges)
+    })
+  })
 
   it('sets elements', () => {
-    store.setNodes(nodes)
-    store.setEdges(edges)
-
     expect(store.nodes.value).to.have.length(nodes.length)
     expect(store.edges.value).to.have.length(edges.length)
   })

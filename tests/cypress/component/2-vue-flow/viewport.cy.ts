@@ -1,14 +1,18 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../support/component'
 import { getElements } from '../../utils'
 
 const { nodes } = getElements()
 
 describe('Viewport drag / zoom', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
   beforeEach(() => {
     cy.vueFlow({
       nodes,
       fitViewOnInit: false,
+    })
+    cy.then(() => {
+      store = getStore()
     })
   })
 

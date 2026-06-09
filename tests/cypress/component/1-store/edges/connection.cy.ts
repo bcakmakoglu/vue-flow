@@ -1,11 +1,11 @@
-import type { ConnectingHandle } from '@vue-flow/core'
-import { useVueFlow } from '@vue-flow/core'
+import type { ConnectingHandle, VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements(2, 2)
 
 describe('Store Action: `startConnection`, `updateConnection`, `endConnection`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
   const startHandle: ConnectingHandle = { nodeId: nodes[0].id, type: 'source', handleId: null }
 
   beforeEach(() => {
@@ -13,6 +13,10 @@ describe('Store Action: `startConnection`, `updateConnection`, `endConnection`',
       nodes,
       edges,
       autoConnect: true,
+    })
+
+    cy.then(() => {
+      store = getStore()
     })
   })
 

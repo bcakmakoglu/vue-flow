@@ -1,11 +1,12 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements(2, 2)
 
 describe('Store State: `deleteKeyCode`', () => {
-  const store = useVueFlow({ id: 'test' })
-  const defaultKeyCode = store.deleteKeyCode.value
+  let store: VueFlowStore
+  let defaultKeyCode: VueFlowStore['deleteKeyCode']['value']
   const nodeToDelete = nodes[Math.floor(Math.random() * nodes.length)]
   const edgeToDelete = edges[Math.floor(Math.random() * edges.length)]
 
@@ -15,8 +16,13 @@ describe('Store State: `deleteKeyCode`', () => {
       edges,
     })
 
-    // reset the deleteKeyCode to default
-    store.deleteKeyCode.value = defaultKeyCode
+    cy.then(() => {
+      store = getStore()
+      defaultKeyCode = store.deleteKeyCode.value
+
+      // reset the deleteKeyCode to default
+      store.deleteKeyCode.value = defaultKeyCode
+    })
   })
 
   it('deleteKeyCode is `Backspace` by default', () => {
@@ -64,13 +70,19 @@ describe('Store State: `deleteKeyCode`', () => {
   it('does not delete node when node is not selected', () => {
     cy.get(`[data-id="${nodeToDelete.id}"]`).click()
 
-    store.findNode(nodeToDelete.id)!.selected = false
+    // deselect AFTER the click has run (the click selects the node); a plain sync statement here would
+    // run before the queued click and be a no-op
+    cy.then(() => {
+      store.findNode(nodeToDelete.id)!.selected = false
+    })
 
     cy.get('body').trigger('keydown', { key: defaultKeyCode })
 
     cy.get(`[data-id="${nodeToDelete.id}"]`).should('exist')
 
-    expect(store.findNode(nodeToDelete.id)).to.not.equal(undefined)
+    cy.then(() => {
+      expect(store.findNode(nodeToDelete.id)).to.not.equal(undefined)
+    })
   })
 
   it('deletes edge', () => {
@@ -98,12 +110,17 @@ describe('Store State: `deleteKeyCode`', () => {
   it('does not delete edge when edge is not selected', () => {
     cy.get(`[data-id="${edgeToDelete.id}"]`).click()
 
-    store.findEdge(edgeToDelete.id)!.selected = false
+    // deselect AFTER the click has run (see the node case above)
+    cy.then(() => {
+      store.findEdge(edgeToDelete.id)!.selected = false
+    })
 
     cy.get('body').trigger('keydown', { key: defaultKeyCode })
 
     cy.get(`[data-id="${edgeToDelete.id}"]`).should('exist')
 
-    expect(store.findEdge(edgeToDelete.id)).to.not.equal(undefined)
+    cy.then(() => {
+      expect(store.findEdge(edgeToDelete.id)).to.not.equal(undefined)
+    })
   })
 })

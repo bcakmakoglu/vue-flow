@@ -41,7 +41,7 @@ const isActive = computed(() =>
     : nodes.value.length === 1 && nodes.value[0].selected && getSelectedNodes.value.length === 1,
 )
 
-const nodeRect = computed(() => getNodesBounds(nodes.value, { nodeLookup: nodeLookup.value }))
+const nodeRect = computed(() => getNodesBounds(nodes.value, { nodeLookup }))
 
 const zIndex = computed(() => Math.max(...nodes.value.map((node) => (node.internals.z || 1) + 1)))
 

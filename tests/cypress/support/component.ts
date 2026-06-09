@@ -4,10 +4,35 @@ import '@vue-flow/core/dist/theme-default.css'
 import './commands'
 
 import { mount } from 'cypress/vue'
-import { VueFlow } from '@vue-flow/core'
-import type { FlowProps } from '@vue-flow/core'
+import { defineComponent, h } from 'vue'
+import { VueFlow, useVueFlow } from '@vue-flow/core'
+import type { FlowProps, VueFlowStore } from '@vue-flow/core'
+
+// Since `useVueFlow()` is now a pure context consumer (no global registry / id lookup), specs can no
+// longer grab the store out of setup. Instead we render a tiny capture component inside `<VueFlow>`'s
+// default slot — it `inject`s the provided store and stashes it for the spec to read via `getStore()`.
+let mountedStore: VueFlowStore | undefined
+
+const StoreCapture = defineComponent({
+  setup() {
+    mountedStore = useVueFlow()
+    return () => null
+  },
+})
+
+/** The store of the `<VueFlow>` mounted by the most recent `cy.vueFlow()`. */
+export function getStore(): VueFlowStore {
+  if (!mountedStore) {
+    throw new Error('VueFlow store is not available — call cy.vueFlow() before getStore()')
+  }
+  return mountedStore
+}
 
 function mountVueFlow(props?: FlowProps, attrs?: Record<string, any>, slots?: Record<string, any>) {
+  mountedStore = undefined
+
+  const userDefault = slots?.default
+
   cy.mount(VueFlow, {
     props: {
       id: 'test',
@@ -21,7 +46,13 @@ function mountVueFlow(props?: FlowProps, attrs?: Record<string, any>, slots?: Re
       } as CSSStyleDeclaration,
       ...attrs,
     },
-    slots,
+    slots: {
+      ...slots,
+      default: (slotProps: any) => [
+        h(StoreCapture),
+        ...(typeof userDefault === 'function' ? [userDefault(slotProps)] : userDefault != null ? [userDefault] : []),
+      ],
+    },
   })
 }
 
