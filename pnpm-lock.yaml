@@ -193,8 +193,8 @@ importers:
         specifier: ^14.3.0
         version: 14.3.0(vue@3.5.25(typescript@5.9.3))
       '@xyflow/system':
-        specifier: ^0.0.73
-        version: 0.0.73
+        specifier: ^0.0.77
+        version: 0.0.77
       d3-interpolate:
         specifier: ^3.0.1
         version: 3.0.1
@@ -2608,8 +2608,8 @@ packages:
   '@windicss/plugin-utils@1.9.3':
     resolution: {integrity: sha512-3VG5HEGeuIfG/9iTwLyzWWm/aGKNTbtSVkpkAabdRuDP/2lEmf6Hpo4uo5drwE+2O9gXfc6nSYgAwBjotx5CfQ==}
 
-  '@xyflow/system@0.0.73':
-    resolution: {integrity: sha512-C2ymH2V4mYDkdVSiRx0D7R0s3dvfXiupVBcko6tXP5K4tVdSBMo22/e3V9yRNdn+2HQFv44RFKzwOyCcUUDAVQ==}
+  '@xyflow/system@0.0.77':
+    resolution: {integrity: sha512-qCDCMCQAAgUu8yHnhloHG9F5mwPX5E+Wl8McpYIOPSSXfzFJJoZcwOcsDiAjitVKIg2de1WmJbCHfpcvxprsgg==}
 
   abbrev@3.0.1:
     resolution: {integrity: sha512-AO2ac6pjRB3SJmGJo+v5/aK6Omggp6fsLrs6wN9bd35ulu4cCwaAU9+7ZhXjeqHVkaHThLuzH0nZr0YpCDhygg==}
@@ -10396,7 +10396,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@xyflow/system@0.0.73':
+  '@xyflow/system@0.0.77':
     dependencies:
       '@types/d3-drag': 3.0.7
       '@types/d3-interpolate': 3.0.4
