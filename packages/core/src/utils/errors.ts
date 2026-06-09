@@ -15,6 +15,8 @@ export enum ErrorCode {
   EDGE_SOURCE_TARGET_MISSING = 'EDGE_SOURCE_TARGET_MISSING',
   EDGE_ORPHANED = 'EDGE_ORPHANED',
 
+  USE_VUE_FLOW_OUTSIDE_PROVIDER = 'USE_VUE_FLOW_OUTSIDE_PROVIDER',
+
   // deprecation errors
   USEVUEFLOW_OPTIONS = 'USEVUEFLOW_OPTIONS',
 }
@@ -42,6 +44,8 @@ const messages = {
   [ErrorCode.EDGE_ORPHANED]: (id: string) =>
     `Edge was orphaned (suddenly missing source or target) and has been removed\nEdge id: ${id}`,
   [ErrorCode.EDGE_NOT_FOUND]: (id: string) => `Edge not found\nEdge id: ${id}`,
+  [ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER]: () =>
+    `useVueFlow() was called without a <VueFlow> or <VueFlowProvider> ancestor (or outside a component setup). Render one of them above the call, or wrap your components in <VueFlowProvider> to share a store.`,
 
   // deprecation errors
   [ErrorCode.USEVUEFLOW_OPTIONS]: () =>

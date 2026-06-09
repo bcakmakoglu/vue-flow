@@ -1,5 +1,5 @@
-import type { DefaultEdgeOptions } from '@vue-flow/core'
-import { useVueFlow } from '@vue-flow/core'
+import type { DefaultEdgeOptions, VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements(2, 2)
@@ -10,7 +10,7 @@ const defaultEdgeOptions: DefaultEdgeOptions = {
 }
 
 describe('Default Edge Options', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
 
   beforeEach(() => {
     cy.vueFlow({
@@ -25,6 +25,10 @@ describe('Default Edge Options', () => {
         ...edges,
       ],
       defaultEdgeOptions,
+    })
+
+    cy.then(() => {
+      store = getStore()
     })
   })
 

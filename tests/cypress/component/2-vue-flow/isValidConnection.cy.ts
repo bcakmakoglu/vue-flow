@@ -1,13 +1,12 @@
-import { useVueFlow } from '@vue-flow/core'
-import type { ValidConnectionFunc } from '@vue-flow/core'
+import type { ValidConnectionFunc, VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../support/component'
 
 const isValidConnection: ValidConnectionFunc = (connection) => {
   return connection.target === 'B' || connection.source === 'B'
 }
 
 describe('isValidConnection Prop', () => {
-  const store = useVueFlow({ id: 'test' })
-  store.onEdgeUpdate((params) => store.updateEdge(params.edge, params.connection))
+  let store: VueFlowStore
 
   beforeEach(() => {
     cy.vueFlow({
@@ -32,6 +31,11 @@ describe('isValidConnection Prop', () => {
       autoConnect: true,
       edgesUpdatable: true,
       isValidConnection,
+    })
+
+    cy.then(() => {
+      store = getStore()
+      store.onEdgeUpdate((params) => store.updateEdge(params.edge, params.connection))
     })
   })
 

@@ -1,8 +1,8 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../support/component'
 
 describe('Check if edges are updatable', () => {
-  const store = useVueFlow({ id: 'test' })
-  store.onEdgeUpdate((params) => store.updateEdge(params.edge, params.connection))
+  let store: VueFlowStore
 
   beforeEach(() => {
     cy.vueFlow({
@@ -33,6 +33,11 @@ describe('Check if edges are updatable', () => {
         },
       ],
       autoConnect: true,
+    })
+
+    cy.then(() => {
+      store = getStore()
+      store.onEdgeUpdate((params) => store.updateEdge(params.edge, params.connection))
     })
   })
 

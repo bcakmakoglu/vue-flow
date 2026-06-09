@@ -1,7 +1,15 @@
 ---
-"@vue-flow/core": patch
+"@vue-flow/core": major
 ---
 
-Retire the internal `Storage` singleton. Store instances are now built by a standalone `createVueFlowStore` factory and tracked in a slim module-level registry, instead of a `Storage` class stashed on `app.config.globalProperties.$vueFlowStorage`. `useVueFlow` resolves a store via context (`inject`, e.g. under `<VueFlowProvider>`) first, then the registry by id — same resolution order as before.
+Retire the global flow store registry in favour of a pure context model, mirroring `useReactFlow` / `useSvelteFlow`. The store is created once by `<VueFlow>` (or `<VueFlowProvider>`) and handed to descendants via `inject`; there is no longer a module-level `Map` of flows keyed by id, nor the internal `Storage` singleton that used to live on `app.config.globalProperties.$vueFlowStorage`.
 
-`Storage` was internal (never exported), so there is no public API change. One behavioural note: the registry is now module-scoped rather than per-Vue-app. For a single app (the overwhelmingly common case) behaviour is identical; for multiple independent Vue apps on one page, address flows by distinct ids or wrap each tree in its own `<VueFlowProvider>` (the recommended way to scope a store).
+**BREAKING:** `useVueFlow()` no longer accepts any argument — no id, no options. It is a pure consumer that returns the store provided by the nearest `<VueFlow>` / `<VueFlowProvider>` ancestor, and throws a `VueFlowError` when called outside one.
+
+Migration:
+
+- `useVueFlow({ nodes, edges, ... })` → pass those to the component instead: `<VueFlow :nodes="nodes" :edges="edges" ... />`.
+- `useVueFlow('my-id')` / `useVueFlow({ id: 'my-id' })` to reach a flow's store from outside its subtree → wrap the relevant subtree in `<VueFlowProvider>` and call `useVueFlow()` from any descendant (siblings of `<VueFlow>` included).
+- Multiple independent flows on one page → give each its own `<VueFlowProvider>` (or `<VueFlow>`) tree; they no longer share a registry, so they can't collide and don't need distinct ids to stay separate.
+
+The store `id` is still readable (`useVueFlow().id`) and can be pinned via `<VueFlowProvider id="...">` / `<VueFlow id="...">`, but it is now purely a label (aria/debug) — never a lookup key.

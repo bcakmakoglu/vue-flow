@@ -1,7 +1,8 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../support/component'
 
 describe('Check if nodes can be connected', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
 
   beforeEach(() => {
     cy.vueFlow({
@@ -20,6 +21,10 @@ describe('Check if nodes can be connected', () => {
       ],
       autoConnect: true,
     })
+
+    cy.then(() => {
+      store = getStore()
+    })
   })
 
   describe('by dragging', () => {
@@ -27,22 +32,24 @@ describe('Check if nodes can be connected', () => {
     let connectCount = 0
     let endCount = 0
 
-    store.onConnectStart(() => {
-      startCount++
-    })
-
-    store.onConnect(() => {
-      connectCount++
-    })
-
-    store.onConnectEnd(() => {
-      endCount++
-    })
-
     beforeEach(() => {
       startCount = 0
       connectCount = 0
       endCount = 0
+
+      cy.then(() => {
+        store.onConnectStart(() => {
+          startCount++
+        })
+
+        store.onConnect(() => {
+          connectCount++
+        })
+
+        store.onConnectEnd(() => {
+          endCount++
+        })
+      })
 
       cy.dragConnection('1', '2')
     })
@@ -78,9 +85,11 @@ describe('Check if nodes can be connected', () => {
   })
 
   describe('by clicking', () => {
-    store.connectOnClick.value = true
-
     beforeEach(() => {
+      cy.then(() => {
+        store.connectOnClick.value = true
+      })
+
       cy.connect('1', '2')
 
       cy.get('.vue-flow__edge').should('have.length', 1)

@@ -1,15 +1,19 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
 import { getElements } from '../../utils'
+import { getStore } from '../../support/component'
 
 const { nodes } = getElements(1, 1)
 
 describe('Check if nodes are draggable', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
 
   beforeEach(() => {
     cy.vueFlow({
       nodes: [nodes[0]],
       fitViewOnInit: false,
+    })
+    cy.then(() => {
+      store = getStore()
     })
   })
 

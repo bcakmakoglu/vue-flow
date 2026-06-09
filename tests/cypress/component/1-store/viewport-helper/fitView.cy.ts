@@ -1,16 +1,21 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements(2, 2)
 
 describe('Viewport Helper: `fitView`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
 
   it('fits view', () => {
     cy.vueFlow({
       nodes,
       edges,
       fitViewOnInit: false,
+    })
+
+    cy.then(() => {
+      store = getStore()
     })
 
     cy.tryAssertion(() => {
@@ -32,6 +37,10 @@ describe('Viewport Helper: `fitView`', () => {
     cy.vueFlow({
       nodes: [],
       edges: [],
+    })
+
+    cy.then(() => {
+      store = getStore()
     })
 
     cy.tryAssertion(() => {

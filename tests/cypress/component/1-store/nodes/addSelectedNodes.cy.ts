@@ -1,10 +1,12 @@
-import { isNode, useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { isNode } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
 describe('Store Action: `addSelectedNodes`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
   let randomNumber: number
 
   beforeEach(() => {
@@ -12,11 +14,12 @@ describe('Store Action: `addSelectedNodes`', () => {
       nodes,
       edges,
     })
-  })
 
-  beforeEach(() => {
-    randomNumber = Math.floor(Math.random() * nodes.length)
-    store.addSelectedNodes(Array.from({ length: randomNumber }, (_, i) => store.nodes.value[i]))
+    cy.then(() => {
+      store = getStore()
+      randomNumber = Math.floor(Math.random() * nodes.length)
+      store.addSelectedNodes(Array.from({ length: randomNumber }, (_, i) => store.nodes.value[i]))
+    })
   })
 
   it('adds selected nodes to store', () => {

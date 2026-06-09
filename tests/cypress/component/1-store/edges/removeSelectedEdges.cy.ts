@@ -1,10 +1,12 @@
-import { isEdge, useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { isEdge } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
 describe('Store Action: `removeSelectedEdges`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
   let randomNumber: number
   let randomNumber2: number
 
@@ -13,13 +15,14 @@ describe('Store Action: `removeSelectedEdges`', () => {
       nodes,
       edges,
     })
-  })
 
-  beforeEach(() => {
-    randomNumber = Math.floor(Math.random() * edges.length)
-    randomNumber2 = Math.floor(Math.random() * randomNumber)
-    store.addSelectedEdges(Array.from({ length: randomNumber }, (_, i) => store.edges.value[i]))
-    store.removeSelectedEdges(Array.from({ length: randomNumber2 }, (_, i) => store.edges.value[i]))
+    cy.then(() => {
+      store = getStore()
+      randomNumber = Math.floor(Math.random() * edges.length)
+      randomNumber2 = Math.floor(Math.random() * randomNumber)
+      store.addSelectedEdges(Array.from({ length: randomNumber }, (_, i) => store.edges.value[i]))
+      store.removeSelectedEdges(Array.from({ length: randomNumber2 }, (_, i) => store.edges.value[i]))
+    })
   })
 
   it('removes selected edges from store', () => {

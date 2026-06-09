@@ -1,19 +1,21 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes } = getElements()
 
 describe('Store Action: `setMaxZoom`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
     })
-  })
 
-  beforeEach(() => {
-    store.setMaxZoom(2)
+    cy.then(() => {
+      store = getStore()
+      store.setMaxZoom(2)
+    })
   })
 
   it('sets max-zoom in store', () => {

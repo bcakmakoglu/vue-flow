@@ -1,9 +1,15 @@
 import { onMounted } from 'vue'
+import type { Node, VueFlowStore } from '../types'
 import { ErrorCode, VueFlowError, isDev } from '../utils'
 import { useVueFlow } from './useVueFlow'
 
-export function useStylesLoadedWarning() {
-  const { emits } = useVueFlow()
+/**
+ * Takes the store explicitly because it runs inside `<VueFlow>`'s own setup, where `inject` can't see
+ * `<VueFlow>`'s own `provide`. Defaults to `useVueFlow()` for descendant callers.
+ *
+ * @internal
+ */
+export function useStylesLoadedWarning<NodeType extends Node = Node>({ emits }: VueFlowStore<NodeType> = useVueFlow<NodeType>()) {
 
   onMounted(() => {
     if (isDev()) {

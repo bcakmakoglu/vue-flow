@@ -1,19 +1,21 @@
-import { useVueFlow } from '@vue-flow/core'
+import type { VueFlowStore } from '@vue-flow/core'
+import { getStore } from '../../../support/component'
 import { getElements } from '../../../utils'
 
 const { nodes } = getElements()
 
 describe('Store Action: `setMinZoom`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
     })
-  })
 
-  beforeEach(() => {
-    store.setMinZoom(0.5)
+    cy.then(() => {
+      store = getStore()
+      store.setMinZoom(0.5)
+    })
   })
 
   it('sets min-zoom in store', () => {
