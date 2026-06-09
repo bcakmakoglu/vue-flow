@@ -66,16 +66,17 @@ export class Storage {
       return nodesMap
     })
 
-    // map parentId -> Set<childId>. Allows O(1) "is this node a parent?" checks without storing the
-    // derived `isParent` flag on each GraphNode.
+    // map parentId -> Map<childId, GraphNode>. Matches `@xyflow/system`'s `ParentLookup` shape so we can
+    // pass it directly into `adoptUserNodes` / `updateAbsolutePositions` / `updateNodeInternals` /
+    // `handleExpandParent` without translation. `.size` still answers "is this node a parent?" in O(1).
     const parentLookup = computed(() => {
-      const map = new Map<string, Set<string>>()
+      const map = new Map<string, Map<string, GraphNode<NodeType>>>()
       for (const node of reactiveState.nodes) {
         const parentId = node.parentId
         if (parentId) {
-          const set = map.get(parentId) ?? new Set<string>()
-          set.add(node.id)
-          map.set(parentId, set)
+          const children = map.get(parentId) ?? new Map<string, GraphNode<NodeType>>()
+          children.set(node.id, node)
+          map.set(parentId, children)
         }
       }
       return map

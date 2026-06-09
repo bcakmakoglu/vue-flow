@@ -14,7 +14,10 @@ import type {
   ValidConnectionFunc,
   VueFlowStore,
 } from '../types'
+import type { InternalNodeBase, NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system'
+import { adoptUserNodes } from '@xyflow/system'
 import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
+import type { CoordinateExtent, NodeOrigin } from '../types'
 
 export { areSetsEqual } from '@xyflow/system'
 
@@ -85,12 +88,25 @@ export function updateEdgeAction(
   }
 }
 
+export interface CreateGraphNodesOptions {
+  nodeOrigin?: NodeOrigin
+  nodeExtent?: CoordinateExtent
+  elevateNodesOnSelect?: boolean
+}
+
+/**
+ * Validate user nodes, run `@xyflow/system`'s `adoptUserNodes` to compute parent-aware
+ * `internals.{positionAbsolute, z, rootParentIndex, handleBounds, userNode}`, then merge vue-flow's
+ * own `GraphNode` defaults onto each entry. This replaces the previous `parseNode`-then-naive-watcher
+ * flow so child nodes have correct absolute positions from the first paint.
+ */
 export function createGraphNodes<NodeType extends Node = Node>(
   nodes: NodeType[],
   findNode: Actions<NodeType>['findNode'],
   triggerError: State['hooks']['error']['trigger'],
-) {
-  const nextNodes: GraphNode<NodeType>[] = []
+  options?: CreateGraphNodesOptions,
+): GraphNode<NodeType>[] {
+  const validNodes: NodeType[] = []
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i]
 
@@ -101,20 +117,32 @@ export function createGraphNodes<NodeType extends Node = Node>(
       continue
     }
 
-    nextNodes[i] = parseNode(node, findNode(node.id), node.parentId)
+    validNodes.push(node)
   }
 
-  for (const node of nextNodes) {
-    const parentRef = node.parentId
-    if (!parentRef) {
+  const lookup: SystemNodeLookup<InternalNodeBase<NodeType>> = new Map()
+  const parentLookup: SystemParentLookup<InternalNodeBase<NodeType>> = new Map()
+  adoptUserNodes(validNodes, lookup, parentLookup, options)
+
+  for (const node of validNodes) {
+    if (node.parentId && !lookup.has(node.parentId)) {
+      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentId))
+    }
+  }
+
+  // Promote each system-shaped `InternalNodeBase` into a vue-flow `GraphNode`. `parseNode` applies
+  // the vue-flow defaults (`selected: false`, `dragging: false`, `data: {}` fallback, etc.) and
+  // preserves the existing `GraphNode` reference when one is found via `findNode`, keeping Vue's
+  // reactive subscriptions live across re-parses.
+  const nextNodes: GraphNode<NodeType>[] = []
+  for (const node of validNodes) {
+    const internal = lookup.get(node.id)
+    if (!internal) {
       continue
     }
-    const parent = findNode(parentRef) || nextNodes.find((n) => n.id === parentRef)
-    if (!parent) {
-      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, parentRef))
-    }
+    const parsed = parseNode(internal, findNode(node.id), node.parentId)
+    nextNodes.push(parsed)
   }
-
   return nextNodes
 }
 

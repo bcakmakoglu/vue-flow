@@ -3,6 +3,7 @@ import { until } from '@vueuse/core'
 import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem } from '@xyflow/system'
 import type {
   Actions,
+  CoordinateExtent,
   Edge,
   EdgeAddChange,
   EdgeLookup,
@@ -251,7 +252,11 @@ export function useActions<NodeType extends Node = Node>(
       return
     }
 
-    state.nodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger) as GraphNode<NodeType>[]
+    state.nodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
+      nodeOrigin: [0, 0],
+      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+      elevateNodesOnSelect: state.elevateNodesOnSelect,
+    }) as GraphNode<NodeType>[]
   }
 
   const setEdges: Actions<NodeType>['setEdges'] = (edges) => {
@@ -281,7 +286,11 @@ export function useActions<NodeType extends Node = Node>(
     let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
     nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
-    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger)
+    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
+      nodeOrigin: [0, 0],
+      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+      elevateNodesOnSelect: state.elevateNodesOnSelect,
+    })
 
     const changes: NodeAddChange<any>[] = []
     for (const node of graphNodes) {

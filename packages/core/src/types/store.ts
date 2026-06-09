@@ -347,8 +347,8 @@ export type VueFlowStore<NodeType extends Node = Node> = {
   readonly id: string
   readonly emits: FlowHooksEmit
   readonly nodeLookup: ComputedRef<NodeLookup>
-  /** parentId → set of child node ids */
-  readonly parentLookup: ComputedRef<Map<string, Set<string>>>
+  /** parentId → map of child id → child `GraphNode`. Matches `@xyflow/system`'s `ParentLookup`. */
+  readonly parentLookup: ComputedRef<Map<string, Map<string, GraphNode<NodeType>>>>
   readonly edgeLookup: ComputedRef<EdgeLookup>
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
