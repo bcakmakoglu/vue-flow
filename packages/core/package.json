@@ -68,7 +68,7 @@
     "test": "exit 0"
   },
   "peerDependencies": {
-    "vue": "^3.3.0"
+    "vue": "^3.5.0"
   },
   "dependencies": {
     "@vueuse/core": "^10.5.0",
@@ -88,6 +88,7 @@
     "postcss-nested": "^6.0.1",
     "vite": "^4.4.11",
     "vite-svg-loader": "^5.1.0",
+    "vue": "^3.5.0",
     "vue-tsc": "^2.1.6"
   }
 }
