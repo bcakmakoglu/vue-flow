@@ -1,6 +1,5 @@
-import { toRefs } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
 import type { EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
 import { useActions } from './actions'
 import { useGetters } from './getters'
