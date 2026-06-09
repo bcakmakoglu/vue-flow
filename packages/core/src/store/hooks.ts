@@ -1,6 +1,5 @@
-import { tryOnScopeDispose } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { getCurrentInstance, onBeforeMount } from 'vue'
+import { getCurrentInstance, onBeforeMount, onScopeDispose } from 'vue'
 import type { FlowEvents, FlowHooks, Node } from '../types'
 import { createExtendedEventHook, warn } from '../utils'
 
@@ -71,10 +70,10 @@ export function useHooks<NodeType extends Node = Node>(emit: (...args: any[]) =>
 
       // push into fns instead of using `on` to avoid overwriting default handlers - the emitter should be called in addition to the default handlers
       value.setEmitter(listener)
-      tryOnScopeDispose(value.removeEmitter)
+      onScopeDispose(value.removeEmitter, true)
 
       value.setHasEmitListeners(() => hasVNodeListener(key as keyof FlowEvents))
-      tryOnScopeDispose(value.removeHasEmitListeners)
+      onScopeDispose(value.removeHasEmitListeners, true)
     }
   })
 

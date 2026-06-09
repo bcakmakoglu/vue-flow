@@ -1,4 +1,4 @@
-import { tryOnScopeDispose } from '@vueuse/core'
+import { onScopeDispose } from 'vue'
 
 /**
  * vue-flow's own event-hook types. We intentionally do NOT reuse `@vueuse/core`'s `EventHook*` types:
@@ -67,7 +67,9 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
     listeners.add(fn)
 
     const offFn = () => off(fn)
-    tryOnScopeDispose(offFn)
+    // `failSilently` (Vue 3.5+) mirrors `tryOnScopeDispose`: auto-remove the listener when registered
+    // inside an effect scope, and no-op (no warning) when `on()` is called outside one.
+    onScopeDispose(offFn, true)
 
     return { off: offFn }
   }
