@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { getNodeDimensions } from '@xyflow/system'
 import { computed, inject, toRef, watch } from 'vue'
 import { useVueFlow } from '../../composables'
 import { NodeId } from '../../context'
@@ -38,29 +39,31 @@ watch(
     const n = node.value
 
     if (n && isInitialized) {
+      const dimensions = getNodeDimensions(n)
+
       const dimensionChange: NodeDimensionChange = {
         id: n.id,
         type: 'dimensions',
         setAttributes: true,
         dimensions: {
-          width: n.measured.width,
-          height: n.measured.height,
+          width: dimensions.width,
+          height: dimensions.height,
         },
       }
 
-      if (minWidth && n.measured.width < minWidth) {
+      if (minWidth && dimensions.width < minWidth) {
         dimensionChange.dimensions!.width = minWidth
       }
 
-      if (minHeight && n.measured.height < minHeight) {
+      if (minHeight && dimensions.height < minHeight) {
         dimensionChange.dimensions!.height = minHeight
       }
 
-      if (maxWidth && n.measured.width > maxWidth) {
+      if (maxWidth && dimensions.width > maxWidth) {
         dimensionChange.dimensions!.width = maxWidth
       }
 
-      if (maxHeight && n.measured.height > maxHeight) {
+      if (maxHeight && dimensions.height > maxHeight) {
         dimensionChange.dimensions!.height = maxHeight
       }
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, provide, ref, toRef, useAttrs, watch } from 'vue'
 import type { XYMinimapInstance } from '@xyflow/system'
-import { XYMinimap, getBoundsOfRects } from '@xyflow/system'
+import { XYMinimap, getBoundsOfRects, getNodeDimensions } from '@xyflow/system'
 import type { GraphNode } from '../../types'
 import { useVueFlow } from '../../composables'
 import { getConnectedEdges, getNodesBounds } from '../../utils'
@@ -229,7 +229,7 @@ export default {
         :id="node.id"
         :key="node.id"
         :position="node.internals.positionAbsolute"
-        :dimensions="node.measured"
+        :dimensions="getNodeDimensions(node)"
         :selected="node.selected"
         :dragging="node.dragging"
         :style="node.style"
