@@ -1,3 +1,4 @@
+import type { InternalNodeBase } from '@xyflow/system'
 import type { HTMLAttributes } from 'vue'
 import type { Position, Styles, XYPosition } from './flow'
 import type { HandleElement, HandleType } from './handle'
@@ -115,35 +116,37 @@ export interface Node<
  * handle bounds via `internals.handleBounds`, and dimensions via `measured`. The "is this a parent?"
  * check moved off the node and lives on `parentLookup` (storage).
  */
-export type GraphNode<NodeType extends Node = Node> = Omit<NodeType, 'measured'> & {
-  // inner fields are required (concrete `0` until dimensions are measured) — narrower than system's
-  // optional inner shape but still assignable to `InternalNodeBase`.
-  measured: { width: number; height: number }
-  internals: {
-    positionAbsolute: XYPosition
-    z: number
-    userNode: NodeType
-    rootParentIndex?: number
-    handleBounds?: NodeHandleBounds
-    bounds?: NodeBounds
-  }
-}
+export type GraphNode<NodeType extends Node = Node> = InternalNodeBase<NodeType>
 
 /**
- * these props are passed to node components
+ * Props passed to custom node components, parameterized on a `NodeType` (xyflow/react convention:
+ * `NodeProps<MyNode>`).
  *
- * Parameterized on a `NodeType` (matching the xyflow/react convention).
- * `Node` is intentionally flat (no `extends NodeBase`) so the Vue SFC compiler can resolve
- * `NodeProps<...>` without descending into `@xyflow/system`'s d.ts.
+ * Declared as a generic **interface** with indexed access (`NodeType['data']`), NOT a `Pick`/`Required`
+ * **type alias**: `@vue/compiler-sfc`'s macro resolver can instantiate generic interfaces in
+ * `defineProps<NodeProps<MyNode>>()` but cannot instantiate generic utility-type aliases — the alias
+ * form silently fails to resolve. (Indexed access resolves even through `NodeType['type']` when the
+ * underlying type is `@xyflow/system`'s conditional `NodeBase`.)
  */
-export type NodeProps<NodeType extends Node = Node> = Pick<
-  NodeType,
-  'id' | 'data' | 'width' | 'height' | 'sourcePosition' | 'targetPosition' | 'dragHandle' | 'parentId'
-> &
-  Required<Pick<NodeType, 'type' | 'dragging' | 'zIndex' | 'selectable' | 'deletable' | 'selected' | 'draggable'>> & {
-    isConnectable: boolean
-    positionAbsoluteX: number
-    positionAbsoluteY: number
-  }
+export interface NodeProps<NodeType extends Node = Node> {
+  id: string
+  data: NodeType['data']
+  type: NodeType['type']
+  selected: boolean
+  selectable: boolean
+  deletable: boolean
+  draggable: boolean
+  dragging: boolean
+  zIndex: number
+  isConnectable: boolean
+  positionAbsoluteX: number
+  positionAbsoluteY: number
+  width?: NodeType['width']
+  height?: NodeType['height']
+  sourcePosition?: NodeType['sourcePosition']
+  targetPosition?: NodeType['targetPosition']
+  dragHandle?: NodeType['dragHandle']
+  parentId?: NodeType['parentId']
+}
 
 export type BuiltInNode = Node<{ label: string }, 'input' | 'output' | 'default'> | Node<Record<string, never>, 'group'>

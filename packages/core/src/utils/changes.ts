@@ -1,3 +1,4 @@
+import { getNodeDimensions } from '@xyflow/system'
 import { nextTick } from 'vue'
 import type {
   Edge,
@@ -19,8 +20,10 @@ import { isGraphNode } from '.'
 
 function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
   if (parent) {
-    const extendWidth = updateItem.position.x + updateItem.measured.width - parent.measured.width
-    const extendHeight = updateItem.position.y + updateItem.measured.height - parent.measured.height
+    const item = getNodeDimensions(updateItem)
+    const parentDimensions = getNodeDimensions(parent)
+    const extendWidth = updateItem.position.x + item.width - parentDimensions.width
+    const extendHeight = updateItem.position.y + item.height - parentDimensions.height
 
     if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
       let parentStyles: Styles = {}

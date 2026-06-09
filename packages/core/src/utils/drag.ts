@@ -1,4 +1,4 @@
-import { clampPosition } from '@xyflow/system'
+import { clampPosition, getNodeDimensions } from '@xyflow/system'
 import type { CoordinateExtent, CoordinateExtentRange, Dimensions, GraphNode, NodeDragItem, State, XYPosition } from '../types'
 import { ErrorCode, VueFlowError } from '.'
 
@@ -111,9 +111,11 @@ export function calcNextPosition(
   nodeExtent?: State['nodeExtent'],
   parentNode?: GraphNode,
 ) {
-  const extent = clampNodeExtent(node.measured, getExtent(node, triggerError, nodeExtent, parentNode))
+  const measured = getNodeDimensions(node)
 
-  const clampedPos = clampPosition(nextPosition, extent, node.measured)
+  const extent = clampNodeExtent(measured, getExtent(node, triggerError, nodeExtent, parentNode))
+
+  const clampedPos = clampPosition(nextPosition, extent, measured)
 
   return {
     position: {

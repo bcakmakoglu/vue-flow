@@ -1,3 +1,4 @@
+import { getNodeDimensions } from '@xyflow/system'
 import type { NodeDragItem, XYPosition } from '../types'
 import { calcNextPosition } from '../utils'
 import { useVueFlow } from './useVueFlow'
@@ -41,7 +42,7 @@ export function useUpdateNodePositions() {
           id: node.id,
           position,
           distance: { x: positionDiff.x, y: positionDiff.y },
-          measured: { width: node.measured.width, height: node.measured.height },
+          measured: getNodeDimensions(node),
           internals: { positionAbsolute: { x: node.internals.positionAbsolute.x, y: node.internals.positionAbsolute.y } },
         })
       }
