@@ -2,7 +2,7 @@ import type { EffectScope } from 'vue'
 import { effectScope, getCurrentScope, inject, provide, watch } from 'vue'
 import type { EdgeChange, FlowOptions, Node, NodeChange, VueFlowStore } from '../types'
 import { VueFlow } from '../context'
-import { createFlowStore, generateFlowId, getFlowStore } from '../utils/storage'
+import { createFlowStore, generateFlowId, getFlowStore } from '../store/registry'
 
 type Scope = (EffectScope & { vueFlowId?: string }) | undefined
 

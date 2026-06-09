@@ -2,7 +2,9 @@ import { toRefs } from '@vueuse/core'
 import type { Ref } from 'vue'
 import { reactive, ref } from 'vue'
 import type { EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
-import { useActions, useGetters, useState } from '../store'
+import { useActions } from './actions'
+import { useGetters } from './getters'
+import { useState } from './state'
 
 /**
  * External backing refs for a store's nodes/edges. When `<VueFlow>` passes its `v-model` refs here, the
@@ -17,9 +19,9 @@ export interface StoreSignals<NodeType extends Node = Node> {
 /**
  * Builds a fully-wired VueFlow store instance (reactive state, lookups, getters, actions, hooks).
  *
- * Standalone factory decoupled from the `Storage` class so ownership can move to a context provider
- * (`<VueFlowProvider>`) — see the storage → provider migration. `onDestroy` is invoked by the store's
- * `$destroy`, letting the owner (the `Storage` registry today, the provider/registry tomorrow) clean up.
+ * Standalone factory (replaces the former `Storage.create`) so store ownership can live in a context
+ * provider (`<VueFlowProvider>`) and/or the instance registry (./registry). `onDestroy` is invoked by
+ * the store's `$destroy`, letting the owner clean up.
  *
  * @internal
  */
@@ -70,7 +72,7 @@ export function createVueFlowStore<NodeType extends Node = Node>(
     emits[n] = (h as any).trigger
   }
 
-  // Lookup maps are now the PRIMARY node/edge structures (Step 3 of the inversion). They are held as
+  // Lookup maps are the PRIMARY node/edge structures (Step 3 of the inversion). They are held as
   // `reactive(Map)` so Map identity is stable across mutations and — critical for the later steps —
   // `@xyflow/system` helpers can `.set` clones in place while reads via `.get` stay reactive
   // (validated by the Step 0 spike). The store actions mutate these directly (via `commitNodes` /
@@ -116,42 +118,4 @@ export function createVueFlowStore<NodeType extends Node = Node>(
   }
 
   return flow as VueFlowStore<NodeType>
-}
-
-/**
- * Module-level registry of store instances by id. This replaces the former global `Storage` singleton
- * (which was stashed on `app.config.globalProperties.$vueFlowStorage`). It exists for the cases a
- * context provider can't serve on its own: explicit `useVueFlow(id)` lookups and calls made outside a
- * component setup (where `inject` is unavailable). The preferred way to scope/share a store is
- * `<VueFlowProvider>` (provide/inject); this registry is the escape hatch.
- *
- * Note: this is module-scoped (shared across the JS context), not per-Vue-app like the old hack. For
- * multiple independent flows, address them by distinct ids or wrap each tree in its own provider.
- */
-const flows = new Map<string, VueFlowStore>()
-
-let flowCount = 0
-
-/** Generate a fresh, unused flow id. */
-export function generateFlowId(): string {
-  return `vue-flow-${flowCount++}`
-}
-
-/** Look up a previously-registered store by id. */
-export function getFlowStore<NodeType extends Node = Node>(id: string): VueFlowStore<NodeType> | undefined {
-  return flows.get(id) as VueFlowStore<NodeType> | undefined
-}
-
-/** Create a store, register it, and auto-unregister on `$destroy`. */
-export function createFlowStore<NodeType extends Node = Node>(
-  id: string,
-  preloadedState?: FlowProps<NodeType>,
-): VueFlowStore<NodeType> {
-  const flow = createVueFlowStore<NodeType>(id, preloadedState, (flowId) => {
-    flows.delete(flowId)
-  })
-
-  flows.set(id, flow as unknown as VueFlowStore)
-
-  return flow
 }
