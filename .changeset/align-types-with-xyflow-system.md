@@ -2,7 +2,7 @@
 "@vue-flow/core": major
 ---
 
-Align core types and change-pipeline shapes with `@xyflow/system` (the framework-agnostic engine that powers `xyflow/react` and `xyflow/svelte`). The vue-flow specific helpers — `useVueFlow`, hooks, slots, etc. — are unchanged; only the data shapes move.
+Align core types and change-pipeline shapes with `@xyflow/system` (the framework-agnostic engine that powers `xyflow/react` and `xyflow/svelte`). Hooks, slots, and the rest of the vue-flow API keep their shape; this changeset covers the data-shape moves. (The `useVueFlow` signature change and the `<VueFlowProvider>` context model are covered in their own changesets.)
 
 ### `Node` / `GraphNode`
 
@@ -33,13 +33,11 @@ The `NodeChange` / `EdgeChange` families mirror `@xyflow/system` exactly (no `re
 
 ### `useVueFlow` API
 
-`useVueFlow(idOrOptions)` overloads are restored — `useVueFlow({ id, nodes, edges, defaultEdgeOptions, ... })` once again creates/populates a store from options, fixing a regression where passing options object would silently use it as an id (producing `pattern-[object Object]` on the background among other things). Repeated calls in the same setup share the same store via an effect-scope id (previously each `useVueFlow()` call could create a new store when injection didn't work across sibling composables in the same component).
-
-`<VueFlow>` now forwards its props back through `useVueFlow(props)` so a store created externally by `useVueFlow({ id: 'foo' })` and a `<VueFlow id="foo" ... />` mount end up bound to the same store, with options like `defaultEdgeOptions` applied before edges parse.
+`useVueFlow()` is now a zero-argument, pure context consumer — it returns the store provided by the nearest `<VueFlow>` / `<VueFlowProvider>` ancestor and throws when called outside one. It no longer takes an id or options object and no longer creates or populates a store; pass options to `<VueFlow>` as props, and wrap sibling/external consumers in `<VueFlowProvider>`. There is no global flow registry anymore. (See the `retire-storage-singleton` / `vue-flow-provider` changesets for the full migration.)
 
 The deprecated `paneReady` event is gone — listen to `init` (or `onInit`) instead. The deprecated mixed-elements API (`<VueFlow v-model="elements">`, `setElements`, `addSelectedElements`, `removeSelectedElements`, `getElements`, `getSelectedElements`) is removed — use the separate `nodes` / `edges` props and `setNodes` / `setEdges` / `addSelectedNodes` / `addSelectedEdges` / `removeSelectedNodes` / `removeSelectedEdges` / `getNodes` / `getEdges` / `getSelectedNodes` / `getSelectedEdges` actions and getters.
 
-Default change handlers (`applyNodeChanges` / `applyEdgeChanges`) are now wired automatically inside `useVueFlow` (gated on `applyDefault`), so `addNodes` / `addEdges` mutate the store even before `<VueFlow>` mounts — matching xyflow/react.
+Default change handlers (`applyNodeChanges` / `applyEdgeChanges`) are wired automatically when the store is created (gated on `applyDefault`), so `addNodes` / `addEdges` mutate the store — matching xyflow/react.
 
 ### Built-in nodes (label rendering)
 

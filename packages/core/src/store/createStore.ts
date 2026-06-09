@@ -19,9 +19,9 @@ export interface StoreSignals<NodeType extends Node = Node> {
 /**
  * Builds a fully-wired VueFlow store instance (reactive state, lookups, getters, actions, hooks).
  *
- * Standalone factory (replaces the former `Storage.create`) so store ownership can live in a context
- * provider (`<VueFlowProvider>`) and/or the instance registry (./registry). `onDestroy` is invoked by
- * the store's `$destroy`, letting the owner clean up.
+ * Standalone factory so store ownership lives in the component that creates it — `<VueFlow>` or
+ * `<VueFlowProvider>` via `useCreateVueFlow` — which `provide`s it to descendants. There is no global
+ * registry; `useVueFlow()` resolves the store purely through `inject`.
  *
  * @internal
  */

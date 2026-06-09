@@ -7,10 +7,11 @@ const props = defineProps<{
 }>()
 
 /**
- * Owns a VueFlow store and `provide`s it to its subtree. Every descendant `<VueFlow>` and any
- * component that calls `useVueFlow()` below this point resolves the same store via `inject` — the
- * way to share one store across components (mirrors `<ReactFlowProvider>` / `<SvelteFlowProvider>`).
- * A descendant `<VueFlow>` reuses this provided store rather than creating its own.
+ * Owns a VueFlow store and `provide`s it to its subtree. A descendant `<VueFlow>` reuses this
+ * provided store instead of creating its own, and any component that calls `useVueFlow()` below this
+ * point resolves the same store via `inject` — the way to share one store across sibling components
+ * (mirrors `<ReactFlowProvider>` / `<SvelteFlowProvider>`). One provider scopes one store, so host a
+ * single `<VueFlow>` per provider and use a separate provider for each independent flow.
  */
 useCreateVueFlow({ id: props.id })
 </script>

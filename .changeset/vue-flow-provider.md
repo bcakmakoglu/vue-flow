@@ -2,7 +2,7 @@
 "@vue-flow/core": minor
 ---
 
-Add `<VueFlowProvider>` — a context provider component mirroring `<ReactFlowProvider>` / `<SvelteFlowProvider>`. Render it as an ancestor of one or more `<VueFlow>` instances (or of sibling components) and they all resolve the same store via `inject`:
+Add `<VueFlowProvider>` — a context provider component mirroring `<ReactFlowProvider>` / `<SvelteFlowProvider>`. Render it as an ancestor of a `<VueFlow>` and any sibling/descendant components that need the same store; they all resolve it via `inject`:
 
 ```vue
 <VueFlowProvider>
@@ -11,4 +11,4 @@ Add `<VueFlowProvider>` — a context provider component mirroring `<ReactFlowPr
 </VueFlowProvider>
 ```
 
-Pass an optional `id` to label the store (`<VueFlowProvider id="my-flow">`), readable via `useVueFlow().id`. The provider owns the store and provides it via context; it is the supported way to share one flow's store across siblings or to scope multiple independent flows on a page.
+Pass an optional `id` to label the store (`<VueFlowProvider id="my-flow">`), readable via `useVueFlow().id`. The provider owns the store and provides it via context; it is the supported way to share one flow's store with sibling components. For multiple independent flows on a page, give each its own `<VueFlowProvider>` (or bare `<VueFlow>`) — one provider scopes one store, so a single provider is not meant to host several `<VueFlow>` instances.

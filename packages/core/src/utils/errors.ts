@@ -16,9 +16,6 @@ export enum ErrorCode {
   EDGE_ORPHANED = 'EDGE_ORPHANED',
 
   USE_VUE_FLOW_OUTSIDE_PROVIDER = 'USE_VUE_FLOW_OUTSIDE_PROVIDER',
-
-  // deprecation errors
-  USEVUEFLOW_OPTIONS = 'USEVUEFLOW_OPTIONS',
 }
 
 const messages = {
@@ -46,10 +43,6 @@ const messages = {
   [ErrorCode.EDGE_NOT_FOUND]: (id: string) => `Edge not found\nEdge id: ${id}`,
   [ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER]: () =>
     `useVueFlow() was called without a <VueFlow> or <VueFlowProvider> ancestor (or outside a component setup). Render one of them above the call, or wrap your components in <VueFlowProvider> to share a store.`,
-
-  // deprecation errors
-  [ErrorCode.USEVUEFLOW_OPTIONS]: () =>
-    `The options parameter is deprecated and will be removed in the next major version. Please use the id parameter instead`,
 } as const
 
 type ErrorArgs<T extends ErrorCode> = (typeof messages)[T] extends (...args: any[]) => string
