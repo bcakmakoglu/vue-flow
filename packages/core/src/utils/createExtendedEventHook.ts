@@ -1,5 +1,21 @@
-import type { EventHook } from '@vueuse/core'
-import { tryOnScopeDispose } from '@vueuse/core'
+import { onScopeDispose } from 'vue'
+
+/**
+ * vue-flow's own event-hook types. We intentionally do NOT reuse `@vueuse/core`'s `EventHook*` types:
+ * since v14 its `Callback<T>` spreads array payloads (for `T extends any[]` it becomes
+ * `(...param: T) => void`), which is incompatible with vue-flow's single-array-payload hooks — e.g.
+ * `onNodesChange((changes: NodeChange[]) => void)` and `trigger(changes)`. Owning these types keeps the
+ * public hook contract stable regardless of `@vueuse/core`'s internal callback variance.
+ */
+export type EventHookOn<T = any> = (fn: (param: T) => void) => { off: () => void }
+export type EventHookOff<T = any> = (fn: (param: T) => void) => void
+export type EventHookTrigger<T = any> = (param: T) => Promise<unknown[]>
+
+export interface EventHook<T = any> {
+  on: EventHookOn<T>
+  off: EventHookOff<T>
+  trigger: EventHookTrigger<T>
+}
 
 export interface EventHookExtended<T> extends EventHook<T> {
   /** true if any user listeners are registered (emitter ignored) */
@@ -43,15 +59,17 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
     hasEmitListeners = () => false
   }
 
-  const off = (fn: Handler) => {
+  const off: EventHookOff<T> = (fn) => {
     listeners.delete(fn)
   }
 
-  const on = (fn: Handler) => {
+  const on: EventHookOn<T> = (fn) => {
     listeners.add(fn)
 
     const offFn = () => off(fn)
-    tryOnScopeDispose(offFn)
+    // `failSilently` (Vue 3.5+) mirrors `tryOnScopeDispose`: auto-remove the listener when registered
+    // inside an effect scope, and no-op (no warning) when `on()` is called outside one.
+    onScopeDispose(offFn, true)
 
     return { off: offFn }
   }
@@ -63,7 +81,7 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
    *
    * Errors are isolated via allSettled so one failing handler doesn't break others.
    */
-  const trigger = (param: T) => {
+  const trigger: EventHookTrigger<T> = (param) => {
     const queue: Handler[] = [emitter]
 
     if (hasListeners()) {

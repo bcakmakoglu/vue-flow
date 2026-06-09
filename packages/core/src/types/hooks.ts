@@ -1,6 +1,5 @@
-import type { EventHookOn, EventHookTrigger } from '@vueuse/core'
 import type { Viewport } from '@xyflow/system'
-import type { EventHookExtended, VueFlowError } from '../utils'
+import type { EventHookExtended, EventHookOn, EventHookTrigger, VueFlowError } from '../utils'
 import type { GraphEdge } from './edge'
 import type { GraphNode, Node } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
