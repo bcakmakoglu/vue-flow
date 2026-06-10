@@ -1,6 +1,6 @@
 import type { Viewport } from '@xyflow/system'
 import type { EventHookExtended, EventHookOn, EventHookTrigger, VueFlowError } from '../utils'
-import type { GraphEdge } from './edge'
+import type { Edge, GraphEdge } from './edge'
 import type { GraphNode, Node } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
 import type { EdgeChange, NodeChange } from './changes'
@@ -19,20 +19,20 @@ export interface NodeDragEvent<NodeType extends Node = Node> {
   nodes: GraphNode<NodeType>[]
 }
 
-export interface EdgeMouseEvent {
+export interface EdgeMouseEvent<EdgeType extends Edge = Edge> {
   event: MouseTouchEvent
-  edge: GraphEdge
+  edge: GraphEdge<EdgeType>
 }
 
-export interface EdgeUpdateEvent {
+export interface EdgeUpdateEvent<EdgeType extends Edge = Edge> {
   event: MouseTouchEvent
-  edge: GraphEdge
+  edge: GraphEdge<EdgeType>
   connection: Connection
 }
 
-export interface FlowEvents<NodeType extends Node = Node> {
+export interface FlowEvents<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
   nodesChange: NodeChange<NodeType>[]
-  edgesChange: EdgeChange[]
+  edgesChange: EdgeChange<EdgeType>[]
   nodeDoubleClick: NodeMouseEvent<NodeType>
   nodeClick: NodeMouseEvent<NodeType>
   nodeMouseEnter: NodeMouseEvent<NodeType>
@@ -77,28 +77,28 @@ export interface FlowEvents<NodeType extends Node = Node> {
   paneMouseEnter: PointerEvent
   paneMouseMove: PointerEvent
   paneMouseLeave: PointerEvent
-  edgeContextMenu: EdgeMouseEvent
-  edgeMouseEnter: EdgeMouseEvent
-  edgeMouseMove: EdgeMouseEvent
-  edgeMouseLeave: EdgeMouseEvent
-  edgeDoubleClick: EdgeMouseEvent
-  edgeClick: EdgeMouseEvent
-  edgeUpdateStart: EdgeMouseEvent
-  edgeUpdate: EdgeUpdateEvent
-  edgeUpdateEnd: EdgeMouseEvent
+  edgeContextMenu: EdgeMouseEvent<EdgeType>
+  edgeMouseEnter: EdgeMouseEvent<EdgeType>
+  edgeMouseMove: EdgeMouseEvent<EdgeType>
+  edgeMouseLeave: EdgeMouseEvent<EdgeType>
+  edgeDoubleClick: EdgeMouseEvent<EdgeType>
+  edgeClick: EdgeMouseEvent<EdgeType>
+  edgeUpdateStart: EdgeMouseEvent<EdgeType>
+  edgeUpdate: EdgeUpdateEvent<EdgeType>
+  edgeUpdateEnd: EdgeMouseEvent<EdgeType>
   error: VueFlowError
 }
 
-export type FlowHooks<NodeType extends Node = Node> = Readonly<{
-  [key in keyof FlowEvents<NodeType>]: EventHookExtended<FlowEvents<NodeType>[key]>
+export type FlowHooks<NodeType extends Node = Node, EdgeType extends Edge = Edge> = Readonly<{
+  [key in keyof FlowEvents<NodeType, EdgeType>]: EventHookExtended<FlowEvents<NodeType, EdgeType>[key]>
 }>
 
-export type FlowHooksOn<NodeType extends Node = Node> = Readonly<{
-  [key in keyof FlowEvents<NodeType> as `on${Capitalize<key>}`]: EventHookOn<FlowEvents<NodeType>[key]>
+export type FlowHooksOn<NodeType extends Node = Node, EdgeType extends Edge = Edge> = Readonly<{
+  [key in keyof FlowEvents<NodeType, EdgeType> as `on${Capitalize<key>}`]: EventHookOn<FlowEvents<NodeType, EdgeType>[key]>
 }>
 
-export type FlowHooksEmit<NodeType extends Node = Node> = Readonly<{
-  [key in keyof FlowEvents<NodeType>]: EventHookTrigger<FlowEvents<NodeType>[key]>
+export type FlowHooksEmit<NodeType extends Node = Node, EdgeType extends Edge = Edge> = Readonly<{
+  [key in keyof FlowEvents<NodeType, EdgeType>]: EventHookTrigger<FlowEvents<NodeType, EdgeType>[key]>
 }>
 
 export interface NodeEventsHandler<NodeType extends Node = Node> {
@@ -125,22 +125,26 @@ export type NodeEventsEmit<NodeType extends Node = Node> = {
   >
 }
 
-export interface EdgeEventsHandler {
-  doubleClick: (event: EdgeMouseEvent) => void | { off: () => void }
-  click: (event: EdgeMouseEvent) => void | { off: () => void }
-  mouseEnter: (event: EdgeMouseEvent) => void | { off: () => void }
-  mouseMove: (event: EdgeMouseEvent) => void | { off: () => void }
-  mouseLeave: (event: EdgeMouseEvent) => void | { off: () => void }
-  contextMenu: (event: EdgeMouseEvent) => void | { off: () => void }
-  updateStart: (event: EdgeMouseEvent) => void | { off: () => void }
-  update: (event: EdgeUpdateEvent) => void | { off: () => void }
-  updateEnd: (event: EdgeMouseEvent) => void | { off: () => void }
+export interface EdgeEventsHandler<EdgeType extends Edge = Edge> {
+  doubleClick: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  click: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  mouseEnter: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  mouseMove: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  mouseLeave: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  contextMenu: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  updateStart: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  update: (event: EdgeUpdateEvent<EdgeType>) => void | { off: () => void }
+  updateEnd: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
 }
 
-export type EdgeEventsOn = {
-  [key in keyof EdgeEventsHandler]: EventHookOn<EdgeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
+export type EdgeEventsOn<EdgeType extends Edge = Edge> = {
+  [key in keyof EdgeEventsHandler<EdgeType>]: EventHookOn<
+    EdgeEventsHandler<EdgeType>[key] extends (event: infer Event) => any ? Event : never
+  >
 }
 
-export type EdgeEventsEmit = {
-  [key in keyof EdgeEventsHandler]: EventHookTrigger<EdgeEventsHandler[key] extends (event: infer Event) => any ? Event : never>
+export type EdgeEventsEmit<EdgeType extends Edge = Edge> = {
+  [key in keyof EdgeEventsHandler<EdgeType>]: EventHookTrigger<
+    EdgeEventsHandler<EdgeType>[key] extends (event: infer Event) => any ? Event : never
+  >
 }

@@ -203,17 +203,17 @@ export { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system'
 /**
  * @internal
  */
-export function createGraphEdges(
-  nextEdges: (Edge | Connection)[],
+export function createGraphEdges<EdgeType extends Edge = Edge>(
+  nextEdges: (EdgeType | Connection)[],
   isValidConnection: ValidConnectionFunc | null,
   findNode: Actions['findNode'],
-  findEdge: Actions['findEdge'],
+  findEdge: Actions<Node, EdgeType>['findEdge'],
   onError: VueFlowStore['emits']['error'],
   defaultEdgeOptions: DefaultEdgeOptions | undefined,
   nodes: GraphNode[],
   edges: GraphEdge[],
-) {
-  const validEdges: GraphEdge[] = []
+): GraphEdge<EdgeType>[] {
+  const validEdges: GraphEdge<EdgeType>[] = []
 
   for (const edgeOrConnection of nextEdges) {
     const edge = isEdge(edgeOrConnection)
@@ -270,7 +270,7 @@ export function createGraphEdges(
       ...parseEdge(edge, existingEdge, defaultEdgeOptions),
       sourceNode,
       targetNode,
-    })
+    } as unknown as GraphEdge<EdgeType>)
   }
 
   return validEdges

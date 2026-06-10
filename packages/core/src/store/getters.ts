@@ -1,13 +1,13 @@
 import { computed } from 'vue'
-import type { ComputedGetters, EdgeLookup, GraphEdge, GraphNode, Node, NodeLookup, State } from '../types'
+import type { ComputedGetters, Edge, EdgeLookup, GraphEdge, GraphNode, Node, NodeLookup, State } from '../types'
 import { getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
-export function useGetters<NodeType extends Node = Node>(
-  state: State<NodeType>,
+export function useGetters<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  state: State<NodeType, EdgeType>,
   nodeLookup: NodeLookup<NodeType>,
-  edgeLookup: EdgeLookup,
-): ComputedGetters<NodeType> {
+  edgeLookup: EdgeLookup<EdgeType>,
+): ComputedGetters<NodeType, EdgeType> {
   /**
    * @deprecated will be removed in next major version; use findNode instead
    */
@@ -16,9 +16,9 @@ export function useGetters<NodeType extends Node = Node>(
   /**
    * @deprecated will be removed in next major version; use findEdge instead
    */
-  const getEdge: ComputedGetters<NodeType>['getEdge'] = computed(() => (id) => edgeLookup.get(id))
+  const getEdge: ComputedGetters<NodeType, EdgeType>['getEdge'] = computed(() => (id) => edgeLookup.get(id))
 
-  const getEdgeTypes: ComputedGetters<NodeType>['getEdgeTypes'] = computed(() => {
+  const getEdgeTypes: ComputedGetters<NodeType, EdgeType>['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
       ...state.edgeTypes,
@@ -66,9 +66,9 @@ export function useGetters<NodeType extends Node = Node>(
     return state.nodes
   })
 
-  const getEdges: ComputedGetters<NodeType>['getEdges'] = computed(() => {
+  const getEdges: ComputedGetters<NodeType, EdgeType>['getEdges'] = computed(() => {
     if (state.onlyRenderVisibleElements) {
-      const visibleEdges: GraphEdge[] = []
+      const visibleEdges: GraphEdge<EdgeType>[] = []
 
       for (const edge of state.edges) {
         const source = nodeLookup.get(edge.source)!
@@ -104,8 +104,8 @@ export function useGetters<NodeType extends Node = Node>(
     return selectedNodes
   })
 
-  const getSelectedEdges: ComputedGetters<NodeType>['getSelectedEdges'] = computed(() => {
-    const selectedEdges: GraphEdge[] = []
+  const getSelectedEdges: ComputedGetters<NodeType, EdgeType>['getSelectedEdges'] = computed(() => {
+    const selectedEdges: GraphEdge<EdgeType>[] = []
     for (const edge of state.edges) {
       if (edge.selected) {
         selectedEdges.push(edge)

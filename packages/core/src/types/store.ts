@@ -4,7 +4,6 @@ import type { PanOnScrollMode, PanZoomInstance, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
 import type {
   Dimensions,
-  ElementData,
   FlowExportObject,
   FlowProps,
   Rect,
@@ -32,7 +31,7 @@ import type { ConnectingHandle, HandleType, ValidConnectionFunc } from './handle
 
 export type NodeLookup<NodeType extends Node = Node> = Map<string, GraphNode<NodeType>>
 
-export type EdgeLookup = Map<string, GraphEdge>
+export type EdgeLookup<EdgeType extends Edge = Edge> = Map<string, GraphEdge<EdgeType>>
 
 export interface UpdateNodeDimensionsParams {
   id: string
@@ -40,19 +39,20 @@ export interface UpdateNodeDimensionsParams {
   forceUpdate?: boolean
 }
 
-export interface State<NodeType extends Node = Node> extends Omit<FlowProps<NodeType>, 'id' | 'nodes' | 'edges'> {
+export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edge>
+  extends Omit<FlowProps<NodeType, EdgeType>, 'id' | 'nodes' | 'edges'> {
   /** Vue flow element ref */
   vueFlowRef: HTMLDivElement | null
   /** Vue flow viewport element */
   viewportRef: HTMLDivElement | null
 
   /** Event hooks, you can manipulate the triggers at your own peril */
-  readonly hooks: FlowHooks<NodeType>
+  readonly hooks: FlowHooks<NodeType, EdgeType>
 
   /** all stored nodes */
   nodes: GraphNode<NodeType>[]
   /** all stored edges */
-  edges: GraphEdge[]
+  edges: GraphEdge<EdgeType>[]
 
   connectionLookup: ConnectionLookup
 
@@ -160,7 +160,9 @@ export interface State<NodeType extends Node = Node> extends Omit<FlowProps<Node
 
 export type SetNodes<NodeType extends Node = Node> = (nodes: NodeType[] | ((nodes: GraphNode<NodeType>[]) => NodeType[])) => void
 
-export type SetEdges = (edges: Edge[] | ((edges: GraphEdge[]) => Edge[])) => void
+export type SetEdges<EdgeType extends Edge = Edge> = (
+  edges: EdgeType[] | ((edges: GraphEdge<EdgeType>[]) => EdgeType[]),
+) => void
 
 export type AddNodes<NodeType extends Node = Node> = (
   nodes: NodeType | NodeType[] | ((nodes: GraphNode<NodeType>[]) => NodeType | NodeType[]),
@@ -176,23 +178,29 @@ export type RemoveEdges = (
   edges: (string | Edge) | (Edge | string)[] | ((edges: GraphEdge[]) => (string | Edge) | (Edge | string)[]),
 ) => void
 
-export type AddEdges = (
+export type AddEdges<EdgeType extends Edge = Edge> = (
   edgesOrConnections:
-    | (Edge | Connection)
-    | (Edge | Connection)[]
-    | ((edges: GraphEdge[]) => (Edge | Connection) | (Edge | Connection)[]),
+    | (EdgeType | Connection)
+    | (EdgeType | Connection)[]
+    | ((edges: GraphEdge<EdgeType>[]) => (EdgeType | Connection) | (EdgeType | Connection)[]),
 ) => void
 
-export type UpdateEdge = (oldEdge: GraphEdge, newConnection: Connection, shouldReplaceId?: boolean) => GraphEdge | false
+export type UpdateEdge<EdgeType extends Edge = Edge> = (
+  oldEdge: GraphEdge<EdgeType>,
+  newConnection: Connection,
+  shouldReplaceId?: boolean,
+) => GraphEdge<EdgeType> | false
 
-export type UpdateEdgeData = <Data = ElementData>(
+export type UpdateEdgeData<EdgeType extends Edge = Edge> = (
   id: string,
-  dataUpdate: Partial<Data> | ((edge: GraphEdge<Data>) => Partial<Data>),
+  dataUpdate:
+    | Partial<EdgeType['data']>
+    | ((edge: GraphEdge<EdgeType>) => Partial<EdgeType['data']>),
   options?: { replace: boolean },
 ) => void
 
-export type SetState<NodeType extends Node = Node> = (
-  state: Partial<State<NodeType>> | ((state: State<NodeType>) => Partial<State<NodeType>>),
+export type SetState<NodeType extends Node = Node, EdgeType extends Edge = Edge> = (
+  state: Partial<State<NodeType, EdgeType>> | ((state: State<NodeType, EdgeType>) => Partial<State<NodeType, EdgeType>>),
 ) => void
 
 export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void
@@ -203,7 +211,7 @@ export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
 export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
 
-export type FindEdge = <Data = ElementData>(id: string | undefined | null) => GraphEdge<Data> | undefined
+export type FindEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => GraphEdge<EdgeType> | undefined
 
 export type GetIntersectingNodes<NodeType extends Node = Node> = (
   node: (Partial<NodeType> & { id: NodeType['id'] }) | Rect,
@@ -225,15 +233,16 @@ export type UpdateNodeData<NodeType extends Node = Node> = (
 
 export type IsNodeIntersecting = (node: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean
 
-export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelper, 'viewportInitialized'> {
+export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = Edge>
+  extends Omit<ViewportHelper, 'viewportInitialized'> {
   /** parses nodes and re-sets the state */
   setNodes: SetNodes<NodeType>
   /** parses edges and re-sets the state */
-  setEdges: SetEdges
+  setEdges: SetEdges<EdgeType>
   /** parses nodes and adds to state */
   addNodes: AddNodes<NodeType>
   /** parses edges and adds to state */
-  addEdges: AddEdges
+  addEdges: AddEdges<EdgeType>
   /** remove nodes (and possibly connected edges and children) from state */
   removeNodes: RemoveNodes
   /** remove edges from state */
@@ -241,25 +250,25 @@ export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelp
   /** find a node by id */
   findNode: FindNode<NodeType>
   /** find an edge by id */
-  findEdge: FindEdge
+  findEdge: FindEdge<EdgeType>
   /** updates an edge */
-  updateEdge: UpdateEdge
+  updateEdge: UpdateEdge<EdgeType>
   /** updates the data of an edge */
-  updateEdgeData: UpdateEdgeData
+  updateEdgeData: UpdateEdgeData<EdgeType>
   /** updates a node */
   updateNode: UpdateNode<NodeType>
   /** updates the data of a node */
   updateNodeData: UpdateNodeData<NodeType>
   /** applies default edge change handler */
-  applyEdgeChanges: (changes: EdgeChange[]) => GraphEdge[]
+  applyEdgeChanges: (changes: EdgeChange<EdgeType>[]) => GraphEdge<EdgeType>[]
   /** applies default node change handler */
   applyNodeChanges: (changes: NodeChange<NodeType>[]) => GraphNode<NodeType>[]
   /** manually select edges and add to state */
-  addSelectedEdges: (edges: GraphEdge[]) => void
+  addSelectedEdges: (edges: GraphEdge<EdgeType>[]) => void
   /** manually select nodes and add to state */
   addSelectedNodes: (nodes: GraphNode<NodeType>[]) => void
   /** manually unselect edges and remove from state */
-  removeSelectedEdges: (edges?: GraphEdge[]) => void
+  removeSelectedEdges: (edges?: GraphEdge<EdgeType>[]) => void
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes?: GraphNode<NodeType>[]) => void
   /** apply min zoom value to panzoom */
@@ -274,7 +283,7 @@ export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelp
   /** enable/disable node interaction (dragging, selecting etc) */
   setInteractive: (isInteractive: boolean) => void
   /** set new state */
-  setState: SetState<NodeType>
+  setState: SetState<NodeType, EdgeType>
   /** return an object of graph values (elements, viewport transform) for storage and re-loading a graph */
   toObject: () => FlowExportObject
   /** force update node internal data, if handle bounds are incorrect, you might want to use this */
@@ -296,7 +305,7 @@ export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelp
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
   /** get a node's connected edges */
-  getConnectedEdges: (nodes: Node[]) => GraphEdge[]
+  getConnectedEdges: (nodes: Node[]) => GraphEdge<EdgeType>[]
   /** get all connections of a handle belonging to a node */
   getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => HandleConnection[]
   /** pan the viewport; return indicates if a transform has happened or not */
@@ -311,15 +320,15 @@ export interface Actions<NodeType extends Node = Node> extends Omit<ViewportHelp
   $destroy: () => void
 }
 
-export interface Getters<NodeType extends Node = Node> {
+export interface Getters<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
   /** returns object containing current edge types */
-  getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent>
+  getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent<EdgeType>>
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent<NodeType | BuiltInNode>>
   /** all visible node */
   getNodes: GraphNode<NodeType>[]
   /** all visible edges */
-  getEdges: GraphEdge[]
+  getEdges: GraphEdge<EdgeType>[]
   /**
    * returns a node by id
    * @deprecated use {@link Actions.findNode} instead
@@ -329,27 +338,27 @@ export interface Getters<NodeType extends Node = Node> {
    * returns an edge by id
    * @deprecated use {@link Actions.findEdge} instead
    */
-  getEdge: (id: string) => GraphEdge | undefined
+  getEdge: (id: string) => GraphEdge<EdgeType> | undefined
   /** returns all currently selected nodes */
   getSelectedNodes: GraphNode<NodeType>[]
   /** returns all currently selected edges */
-  getSelectedEdges: GraphEdge[]
+  getSelectedEdges: GraphEdge<EdgeType>[]
 }
 
-export type ComputedGetters<NodeType extends Node = Node> = {
-  [key in keyof Getters<NodeType>]: ComputedRef<Getters<NodeType>[key]>
+export type ComputedGetters<NodeType extends Node = Node, EdgeType extends Edge = Edge> = {
+  [key in keyof Getters<NodeType, EdgeType>]: ComputedRef<Getters<NodeType, EdgeType>[key]>
 }
 
-export type VueFlowStore<NodeType extends Node = Node> = {
+export type VueFlowStore<NodeType extends Node = Node, EdgeType extends Edge = Edge> = {
   readonly id: string
-  readonly emits: FlowHooksEmit
+  readonly emits: FlowHooksEmit<NodeType, EdgeType>
   readonly nodeLookup: NodeLookup<NodeType>
   /** parentId → map of child id → child `GraphNode`. Matches `@xyflow/system`'s `ParentLookup`. */
   readonly parentLookup: Map<string, Map<string, GraphNode<NodeType>>>
-  readonly edgeLookup: EdgeLookup
+  readonly edgeLookup: EdgeLookup<EdgeType>
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
-} & FlowHooksOn &
-  ToRefs<State<NodeType>> &
-  Readonly<ComputedGetters<NodeType>> &
-  Readonly<Actions<NodeType>>
+} & FlowHooksOn<NodeType, EdgeType> &
+  ToRefs<State<NodeType, EdgeType>> &
+  Readonly<ComputedGetters<NodeType, EdgeType>> &
+  Readonly<Actions<NodeType, EdgeType>>

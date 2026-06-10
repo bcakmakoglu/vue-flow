@@ -1,7 +1,7 @@
 import type { CSSProperties, Component, DefineComponent, VNode } from 'vue'
 import type { BezierEdge, SimpleBezierEdge, SmoothStepEdge, StepEdge, StraightEdge } from '../components'
 import type { BuiltInNode, Node, NodeProps } from './node'
-import type { EdgeProps } from './edge'
+import type { Edge, EdgeProps } from './edge'
 
 /** Global component names are components registered to the vue instance and are "autoloaded" by their string name */
 type GlobalComponentName = string
@@ -16,10 +16,16 @@ export type NodeTypesObject<NodeType extends Node = Node> = {
   [key in keyof DefaultNodeTypes]?: NodeComponent<BuiltInNode>
 } & Record<string, NodeComponent<NodeType>>
 
-export type EdgeTypesObject = { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & Record<string, EdgeComponent>
+export type EdgeTypesObject<EdgeType extends Edge = Edge> = { [key in keyof DefaultEdgeTypes]?: EdgeComponent } & Record<
+  string,
+  EdgeComponent<EdgeType>
+>
 
 /** Edge Components can either be a component definition or a string name */
-export type EdgeComponent = Component<EdgeProps> | DefineComponent<EdgeProps, any, any, any, any, any> | GlobalComponentName
+export type EdgeComponent<EdgeType extends Edge = Edge> =
+  | Component<EdgeProps<EdgeType>>
+  | DefineComponent<EdgeProps<EdgeType>, any, any, any, any, any>
+  | GlobalComponentName
 
 export interface DefaultEdgeTypes {
   default: typeof BezierEdge

@@ -1,5 +1,5 @@
 import { inject } from 'vue'
-import type { Node, VueFlowStore } from '../types'
+import type { Edge, Node, VueFlowStore } from '../types'
 import { VueFlow } from '../context'
 import { ErrorCode, VueFlowError } from '../utils/errors'
 
@@ -17,8 +17,8 @@ import { ErrorCode, VueFlowError } from '../utils/errors'
  * @public
  * @returns the VueFlow store instance for the current context
  */
-export function useVueFlow<NodeType extends Node = Node>(): VueFlowStore<NodeType> {
-  const store = inject(VueFlow, null) as VueFlowStore<NodeType> | null
+export function useVueFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(): VueFlowStore<NodeType, EdgeType> {
+  const store = inject(VueFlow, null) as VueFlowStore<NodeType, EdgeType> | null
 
   if (!store) {
     throw new VueFlowError(ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER)

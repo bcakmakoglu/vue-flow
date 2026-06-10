@@ -1,4 +1,4 @@
-import type { InternalNodeBase } from '@xyflow/system'
+import type { InternalNodeBase, NodeBase } from '@xyflow/system'
 import type { HTMLAttributes } from 'vue'
 import type { Position, Styles, XYPosition } from './flow'
 import type { HandleElement, HandleType } from './handle'
@@ -53,38 +53,16 @@ export interface NodeHandleBounds {
 }
 
 /**
- * Node type. Defined flat (rather than extending NodeBase) so the Vue SFC compiler can resolve `NodeProps<Node<...>>` without descending into the @xyflow/system d.ts.
+ * User-facing node type — reuses `@xyflow/system`'s `NodeBase` (xyflow/react does
+ * `Node = NodeBase & {…}`) plus vue-flow-specific fields. `extent` stays `NodeBase`'s narrow
+ * `'parent' | CoordinateExtent | null` deliberately (so `GraphNode`/`Node` stay structurally
+ * assignable to system's types); the richer `CoordinateExtentRange` is a runtime-only extension
+ * handled with localized casts (see `store/actions.ts` `recomputeAbsolutePositions`).
  */
-export interface Node<
+export type Node<
   NodeData extends Record<string, unknown> = Record<string, unknown>,
   NodeType extends string | undefined = string | undefined,
-> {
-  id: string
-  position: XYPosition
-  data: NodeData
-  type?: NodeType
-  sourcePosition?: Position
-  targetPosition?: Position
-  hidden?: boolean
-  selected?: boolean
-  dragging?: boolean
-  draggable?: boolean
-  selectable?: boolean
-  connectable?: boolean
-  deletable?: boolean
-  dragHandle?: string
-  width?: number
-  height?: number
-  initialWidth?: number
-  initialHeight?: number
-  parentId?: string
-  zIndex?: number
-  extent?: 'parent' | CoordinateExtent | null
-  expandParent?: boolean
-  ariaLabel?: string
-  origin?: NodeOrigin
-  handles?: NodeHandle[]
-  measured?: { width?: number; height?: number }
+> = NodeBase<NodeData, NodeType> & {
   class?: string | string[] | Record<string, any>
   style?: Styles
   resizing?: boolean

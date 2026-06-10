@@ -1,4 +1,4 @@
-<script lang="ts" setup generic="NodeType extends Node = Node">
+<script lang="ts" setup generic="NodeType extends Node = Node, EdgeType extends Edge = Edge">
 import { inject, onUnmounted, provide } from 'vue'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
@@ -10,7 +10,7 @@ import { useCreateVueFlow } from '../../composables/useCreateVueFlow'
 import { useHooks } from '../../store/hooks'
 import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning'
 
-const props = withDefaults(defineProps<FlowProps<NodeType>>(), {
+const props = withDefaults(defineProps<FlowProps<NodeType, EdgeType>>(), {
   snapToGrid: undefined,
   onlyRenderVisibleElements: undefined,
   edgesUpdatable: undefined,
@@ -45,19 +45,19 @@ const props = withDefaults(defineProps<FlowProps<NodeType>>(), {
   zoomActivationKeyCode: undefined,
 })
 
-const emit = defineEmits<FlowEmits<NodeType>>()
+const emit = defineEmits<FlowEmits<NodeType, EdgeType>>()
 
-const slots = defineSlots<FlowSlots<NodeType>>()
+const slots = defineSlots<FlowSlots<NodeType, EdgeType>>()
 
 const modelNodes = defineModel<NodeType[]>('nodes')
-const modelEdges = defineModel<Edge[]>('edges')
+const modelEdges = defineModel<EdgeType[]>('edges')
 
 // Reuse an ancestor `<VueFlowProvider>`'s store if present; otherwise this `<VueFlow>` owns it —
 // create + provide our own (auto-wrap, like react's `<Wrapper>`). The store is only ever created by a
 // provider boundary; `useVueFlow()` is a pure consumer.
-const injectedStore = inject(VueFlowInjectionKey, null) as VueFlowStore<NodeType> | null
+const injectedStore = inject(VueFlowInjectionKey, null) as VueFlowStore<NodeType, EdgeType> | null
 
-const vfInstance = injectedStore ?? useCreateVueFlow<NodeType>(props)
+const vfInstance = injectedStore ?? useCreateVueFlow<NodeType, EdgeType>(props)
 
 // when reusing a provider's store, apply this `<VueFlow>`'s props to it
 if (injectedStore) {
@@ -80,7 +80,7 @@ provide(Slots, slots as unknown as FlowSlots)
 
 onUnmounted(disposeWatchers)
 
-defineExpose<VueFlowStore<NodeType>>(vfInstance)
+defineExpose<VueFlowStore<NodeType, EdgeType>>(vfInstance)
 </script>
 
 <script lang="ts">

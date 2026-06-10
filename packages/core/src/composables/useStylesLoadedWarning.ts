@@ -1,5 +1,5 @@
 import { onMounted } from 'vue'
-import type { Node, VueFlowStore } from '../types'
+import type { Edge, Node, VueFlowStore } from '../types'
 import { ErrorCode, VueFlowError, isDev } from '../utils'
 import { useVueFlow } from './useVueFlow'
 
@@ -9,7 +9,11 @@ import { useVueFlow } from './useVueFlow'
  *
  * @internal
  */
-export function useStylesLoadedWarning<NodeType extends Node = Node>({ emits }: VueFlowStore<NodeType> = useVueFlow<NodeType>()) {
+export function useStylesLoadedWarning<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  vfInstance: VueFlowStore<NodeType, EdgeType> = useVueFlow<NodeType, EdgeType>(),
+) {
+  const { emits } = vfInstance
+
   onMounted(() => {
     if (isDev()) {
       const pane = document.querySelector('.vue-flow__pane')

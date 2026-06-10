@@ -1,5 +1,5 @@
 import { watch } from 'vue'
-import type { Node, VueFlowStore } from '../types'
+import type { Edge, Node, VueFlowStore } from '../types'
 import { useVueFlow } from './useVueFlow'
 
 /**
@@ -11,7 +11,9 @@ import { useVueFlow } from './useVueFlow'
  *
  * @internal
  */
-export function useOnInitHandler<NodeType extends Node = Node>(vfInstance: VueFlowStore<NodeType> = useVueFlow<NodeType>()) {
+export function useOnInitHandler<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  vfInstance: VueFlowStore<NodeType, EdgeType> = useVueFlow<NodeType, EdgeType>(),
+) {
   watch(
     () => vfInstance.viewportHelper.value.viewportInitialized,
     (isInitialized) => {

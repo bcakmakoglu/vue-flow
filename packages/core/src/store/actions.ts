@@ -41,12 +41,12 @@ import {
 } from '../utils'
 import { storeOptionsToSkip, useState } from './state'
 
-export function useActions<NodeType extends Node = Node>(
-  state: State<NodeType>,
+export function useActions<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  state: State<NodeType, EdgeType>,
   nodeLookup: NodeLookup<NodeType>,
   parentLookup: Map<string, Map<string, GraphNode<NodeType>>>,
-  edgeLookup: EdgeLookup,
-): Actions<NodeType> {
+  edgeLookup: EdgeLookup<EdgeType>,
+): Actions<NodeType, EdgeType> {
   const viewportHelper = useViewportHelper(state, nodeLookup)
 
   /**
@@ -81,7 +81,7 @@ export function useActions<NodeType extends Node = Node>(
   }
 
   /** Single write path for edge membership; mirrors `next` into `state.edges` (see {@link commitNodes}). */
-  function commitEdges(next: GraphEdge[]) {
+  function commitEdges(next: GraphEdge<EdgeType>[]) {
     edgeLookup.clear()
     for (const edge of next) {
       edgeLookup.set(edge.id, edge)
@@ -154,8 +154,8 @@ export function useActions<NodeType extends Node = Node>(
     state.hooks.updateNodeInternals.trigger(updateIds)
   }
 
-  const getConnectedEdges: Actions<NodeType>['getConnectedEdges'] = (nodes) => {
-    return getConnectedEdgesBase(nodes, state.edges) as GraphEdge[]
+  const getConnectedEdges: Actions<NodeType, EdgeType>['getConnectedEdges'] = (nodes) => {
+    return getConnectedEdgesBase(nodes, state.edges) as GraphEdge<EdgeType>[]
   }
 
   const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
@@ -171,7 +171,7 @@ export function useActions<NodeType extends Node = Node>(
     return nodeLookup.get(id)
   }
 
-  const findEdge: Actions<NodeType>['findEdge'] = (id) => {
+  const findEdge: Actions<NodeType, EdgeType>['findEdge'] = (id) => {
     if (!id) {
       return
     }
@@ -281,7 +281,7 @@ export function useActions<NodeType extends Node = Node>(
     state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup))
   }
 
-  const addSelectedEdges: Actions<NodeType>['addSelectedEdges'] = (edges) => {
+  const addSelectedEdges: Actions<NodeType, EdgeType>['addSelectedEdges'] = (edges) => {
     if (state.multiSelectionActive) {
       const changedEdges = edges.map((edge) => createSelectionChange(edge.id, true))
       state.hooks.edgesChange.trigger(changedEdges as EdgeSelectionChange[])
@@ -303,7 +303,7 @@ export function useActions<NodeType extends Node = Node>(
     state.hooks.nodesChange.trigger(nodeChanges)
   }
 
-  const removeSelectedEdges: Actions<NodeType>['removeSelectedEdges'] = (edges) => {
+  const removeSelectedEdges: Actions<NodeType, EdgeType>['removeSelectedEdges'] = (edges) => {
     const edgesToUnselect = edges || state.edges
 
     const edgeChanges = edgesToUnselect.map((e) => {
@@ -361,14 +361,14 @@ export function useActions<NodeType extends Node = Node>(
     )
   }
 
-  const setEdges: Actions<NodeType>['setEdges'] = (edges) => {
+  const setEdges: Actions<NodeType, EdgeType>['setEdges'] = (edges) => {
     const nextEdges = edges instanceof Function ? edges(state.edges) : edges
 
     if (!state.initialized && !nextEdges.length) {
       return
     }
 
-    const validEdges: GraphEdge[] = createGraphEdges(
+    const validEdges = createGraphEdges<EdgeType>(
       nextEdges,
       state.isValidConnection,
       findNode,
@@ -404,11 +404,11 @@ export function useActions<NodeType extends Node = Node>(
     }
   }
 
-  const addEdges: Actions<NodeType>['addEdges'] = (params) => {
+  const addEdges: Actions<NodeType, EdgeType>['addEdges'] = (params) => {
     let nextEdges = params instanceof Function ? params(state.edges) : params
     nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
 
-    const validEdges = createGraphEdges(
+    const validEdges = createGraphEdges<EdgeType>(
       nextEdges,
       state.isValidConnection,
       findNode,
@@ -419,7 +419,7 @@ export function useActions<NodeType extends Node = Node>(
       state.edges,
     )
 
-    const changes: EdgeAddChange[] = []
+    const changes: EdgeAddChange<EdgeType>[] = []
     for (const edge of validEdges) {
       changes.push(createAdditionChange(edge))
     }
@@ -500,7 +500,7 @@ export function useActions<NodeType extends Node = Node>(
     }
   }
 
-  const removeEdges: Actions<NodeType>['removeEdges'] = (edges) => {
+  const removeEdges: Actions<NodeType, EdgeType>['removeEdges'] = (edges) => {
     const nextEdges = edges instanceof Function ? edges(state.edges) : edges
     const edgesToRemove = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
 
@@ -523,7 +523,7 @@ export function useActions<NodeType extends Node = Node>(
     state.hooks.edgesChange.trigger(changes)
   }
 
-  const updateEdge: Actions<NodeType>['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
+  const updateEdge: Actions<NodeType, EdgeType>['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
     const prevEdge = findEdge(oldEdge.id)
 
     if (!prevEdge) {
@@ -535,8 +535,8 @@ export function useActions<NodeType extends Node = Node>(
     const newEdge = updateEdgeAction(oldEdge, newConnection, prevEdge, shouldReplaceId, state.hooks.error.trigger)
 
     if (newEdge) {
-      const [validEdge] = createGraphEdges(
-        [newEdge],
+      const [validEdge] = createGraphEdges<EdgeType>(
+        [newEdge as unknown as EdgeType],
         state.isValidConnection,
         findNode,
         findEdge,
@@ -556,7 +556,7 @@ export function useActions<NodeType extends Node = Node>(
     return false
   }
 
-  const updateEdgeData: Actions<NodeType>['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
+  const updateEdgeData: Actions<NodeType, EdgeType>['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
     const edge = findEdge(id)
 
     if (!edge) {
@@ -577,8 +577,8 @@ export function useActions<NodeType extends Node = Node>(
     return result
   }
 
-  const applyEdgeChanges: Actions<NodeType>['applyEdgeChanges'] = (changes) => {
-    const result = applyChanges(changes, Array.from(edgeLookup.values())) as GraphEdge[]
+  const applyEdgeChanges: Actions<NodeType, EdgeType>['applyEdgeChanges'] = (changes) => {
+    const result = applyChanges(changes, Array.from(edgeLookup.values())) as GraphEdge<EdgeType>[]
 
     commitEdges(result)
 
@@ -719,7 +719,7 @@ export function useActions<NodeType extends Node = Node>(
     return panBySystem({ delta, panZoom, transform: [viewport.x, viewport.y, viewport.zoom], translateExtent, ...dimensions })
   }
 
-  const setState: Actions<NodeType>['setState'] = (options) => {
+  const setState: Actions<NodeType, EdgeType>['setState'] = (options) => {
     const opts = options instanceof Function ? options(state) : options
 
     // these options cannot be set after initialization
@@ -797,8 +797,8 @@ export function useActions<NodeType extends Node = Node>(
     )
   }
 
-  const $reset: Actions<NodeType>['$reset'] = () => {
-    const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType>()
+  const $reset: Actions<NodeType, EdgeType>['$reset'] = () => {
+    const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType, EdgeType>()
 
     commitEdges([])
     commitNodes([])

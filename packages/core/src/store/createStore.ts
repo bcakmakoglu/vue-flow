@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { reactive, ref, toRefs } from 'vue'
-import type { EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
+import type { Edge, EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
 import { useActions } from './actions'
 import { useGetters } from './getters'
 import { useState } from './state'
@@ -10,9 +10,9 @@ import { useState } from './state'
  * store reads/writes them directly (single source of truth, like svelte's `$bindable` proxy) so a
  * separate v-model sync layer isn't needed. Omitted → the store uses internal refs.
  */
-export interface StoreSignals<NodeType extends Node = Node> {
+export interface StoreSignals<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
   nodes?: Ref<GraphNode<NodeType>[]>
-  edges?: Ref<GraphEdge[]>
+  edges?: Ref<GraphEdge<EdgeType>[]>
 }
 
 /**
@@ -24,20 +24,20 @@ export interface StoreSignals<NodeType extends Node = Node> {
  *
  * @internal
  */
-export function createVueFlowStore<NodeType extends Node = Node>(
+export function createVueFlowStore<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   id: string,
-  preloadedState?: FlowProps<NodeType>,
+  preloadedState?: FlowProps<NodeType, EdgeType>,
   onDestroy?: (id: string) => void,
-  signals?: StoreSignals<NodeType>,
-): VueFlowStore<NodeType> {
+  signals?: StoreSignals<NodeType, EdgeType>,
+): VueFlowStore<NodeType, EdgeType> {
   // nodes/edges are backed by (optionally injected) signal refs — the single source of truth. When
   // `<VueFlow>` passes its v-model refs, mutating the store *is* the v-model update (svelte's
   // bindable-prop proxy), so no separate sync layer is needed. Default: internal `ref`s (deep-reactive,
   // matching the previous `reactive(state).nodes` behaviour).
   const nodesSignal = signals?.nodes ?? ref<GraphNode<NodeType>[]>([])
-  const edgesSignal = signals?.edges ?? ref<GraphEdge[]>([])
+  const edgesSignal = signals?.edges ?? ref<GraphEdge<EdgeType>[]>([])
 
-  const state = useState<NodeType>()
+  const state = useState<NodeType, EdgeType>()
 
   // Proxy `state.nodes`/`.edges` through the signals via accessors (svelte's `get nodes()` pattern), so
   // every existing `state.nodes` read/write stays unchanged while the backing becomes injectable.
@@ -51,7 +51,7 @@ export function createVueFlowStore<NodeType extends Node = Node>(
   })
   Object.defineProperty(state, 'edges', {
     get: () => edgesSignal.value,
-    set: (value: GraphEdge[]) => {
+    set: (value: GraphEdge<EdgeType>[]) => {
       edgesSignal.value = value
     },
     enumerable: true,
@@ -92,15 +92,15 @@ export function createVueFlowStore<NodeType extends Node = Node>(
     string,
     Map<string, GraphNode<NodeType>>
   >
-  const edgeLookup = reactive(new Map<string, GraphEdge>()) as EdgeLookup
+  const edgeLookup = reactive(new Map<string, GraphEdge<EdgeType>>()) as EdgeLookup<EdgeType>
 
-  const getters = useGetters(reactiveState, nodeLookup, edgeLookup)
+  const getters = useGetters<NodeType, EdgeType>(reactiveState, nodeLookup, edgeLookup)
 
-  const actions = useActions<NodeType>(reactiveState, nodeLookup, parentLookup, edgeLookup)
+  const actions = useActions<NodeType, EdgeType>(reactiveState, nodeLookup, parentLookup, edgeLookup)
 
   actions.setState({ ...reactiveState, ...preloadedState } as any)
 
-  const flow: VueFlowStore<NodeType> = {
+  const flow: VueFlowStore<NodeType, EdgeType> = {
     ...hooksOn,
     ...getters,
     ...actions,
@@ -116,5 +116,5 @@ export function createVueFlowStore<NodeType extends Node = Node>(
     },
   }
 
-  return flow as VueFlowStore<NodeType>
+  return flow as VueFlowStore<NodeType, EdgeType>
 }
