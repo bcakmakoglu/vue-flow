@@ -1,5 +1,3 @@
-import { getNodeDimensions } from '@xyflow/system'
-import { nextTick } from 'vue'
 import type {
   Edge,
   EdgeAddChange,
@@ -14,84 +12,8 @@ import type {
   NodeChange,
   NodeRemoveChange,
   NodeSelectionChange,
-  Styles,
 } from '../types'
 import { isGraphNode } from '.'
-
-function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
-  if (parent) {
-    const item = getNodeDimensions(updateItem)
-    const parentDimensions = getNodeDimensions(parent)
-    const extendWidth = updateItem.position.x + item.width - parentDimensions.width
-    const extendHeight = updateItem.position.y + item.height - parentDimensions.height
-
-    if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
-      let parentStyles: Styles = {}
-
-      if (parent.style) {
-        parentStyles = { ...parent.style }
-      }
-
-      parentStyles.width = parentStyles.width ?? `${parent.measured.width}px`
-      parentStyles.height = parentStyles.height ?? `${parent.measured.height}px`
-
-      if (extendWidth > 0) {
-        if (typeof parentStyles.width === 'string') {
-          const currWidth = Number(parentStyles.width.replace('px', ''))
-          parentStyles.width = `${currWidth + extendWidth}px`
-        } else {
-          parentStyles.width += extendWidth
-        }
-      }
-
-      if (extendHeight > 0) {
-        if (typeof parentStyles.height === 'string') {
-          const currWidth = Number(parentStyles.height.replace('px', ''))
-          parentStyles.height = `${currWidth + extendHeight}px`
-        } else {
-          parentStyles.height += extendHeight
-        }
-      }
-
-      if (updateItem.position.x < 0) {
-        const xDiff = Math.abs(updateItem.position.x)
-        parent.position.x = parent.position.x - xDiff
-
-        if (typeof parentStyles.width === 'string') {
-          const currWidth = Number(parentStyles.width.replace('px', ''))
-          parentStyles.width = `${currWidth + xDiff}px`
-        } else {
-          parentStyles.width += xDiff
-        }
-
-        updateItem.position.x = 0
-      }
-
-      if (updateItem.position.y < 0) {
-        const yDiff = Math.abs(updateItem.position.y)
-        parent.position.y = parent.position.y - yDiff
-
-        if (typeof parentStyles.height === 'string') {
-          const currWidth = Number(parentStyles.height.replace('px', ''))
-          parentStyles.height = `${currWidth + yDiff}px`
-        } else {
-          parentStyles.height += yDiff
-        }
-
-        updateItem.position.y = 0
-      }
-
-      const newWidth = Number(parentStyles.width.toString().replace('px', ''))
-      const newHeight = Number(parentStyles.height.toString().replace('px', ''))
-      parent.measured = { width: newWidth, height: newHeight }
-
-      parent.style = {
-        ...parent.style,
-        ...parentStyles,
-      }
-    }
-  }
-}
 
 export function applyChanges<
   T extends Node | Edge = Node | Edge,
@@ -120,8 +42,6 @@ export function applyChanges<
     }
   }
 
-  const elementIds = elements.map((el) => el.id)
-
   for (const element of elements) {
     for (const currentChange of changes) {
       if ((<any>currentChange).id !== element.id) {
@@ -140,14 +60,6 @@ export function applyChanges<
 
             if (typeof currentChange.dragging !== 'undefined') {
               element.dragging = currentChange.dragging
-            }
-
-            if (element.expandParent && element.parentId) {
-              const parent = elements[elementIds.indexOf(element.parentId)]
-
-              if (parent && isGraphNode(parent)) {
-                handleParentExpand(element, parent)
-              }
             }
           }
           break
@@ -169,22 +81,6 @@ export function applyChanges<
 
             if (typeof currentChange.resizing !== 'undefined') {
               element.resizing = currentChange.resizing
-            }
-
-            if (element.expandParent && element.parentId) {
-              const parent = elements[elementIds.indexOf(element.parentId)]
-
-              if (parent && isGraphNode(parent)) {
-                const parentInit = !!parent.measured.width && !!parent.measured.height
-
-                if (!parentInit) {
-                  nextTick(() => {
-                    handleParentExpand(element, parent)
-                  })
-                } else {
-                  handleParentExpand(element, parent)
-                }
-              }
             }
           }
           break

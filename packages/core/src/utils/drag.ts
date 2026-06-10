@@ -1,5 +1,5 @@
 import { clampPosition, getNodeDimensions } from '@xyflow/system'
-import type { CoordinateExtent, CoordinateExtentRange, Dimensions, GraphNode, NodeDragItem, State, XYPosition } from '../types'
+import type { CoordinateExtent, CoordinateExtentRange, GraphNode, NodeDragItem, State, XYPosition } from '../types'
 import { ErrorCode, VueFlowError } from '.'
 
 function getExtentPadding(padding: CoordinateExtentRange['padding']): [number, number, number, number] {
@@ -100,10 +100,6 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
   ) as CoordinateExtent
 }
 
-function clampNodeExtent({ width, height }: Dimensions, extent: CoordinateExtent): CoordinateExtent {
-  return [extent[0], [extent[1][0] - (width || 0), extent[1][1] - (height || 0)]]
-}
-
 export function calcNextPosition(
   node: GraphNode | NodeDragItem,
   nextPosition: XYPosition,
@@ -113,9 +109,10 @@ export function calcNextPosition(
 ) {
   const measured = getNodeDimensions(node)
 
-  const extent = clampNodeExtent(measured, getExtent(node, triggerError, nodeExtent, parentNode))
-
-  const clampedPos = clampPosition(nextPosition, extent, measured)
+  // `clampPosition` already subtracts the node's dimensions from the extent's max corner (same as
+  // system's own `clampPositionToParent`), so pass `getExtent`'s region straight through — pre-shrinking
+  // it by the node size first would double-count it and clamp the node a full width/height too far in.
+  const clampedPos = clampPosition(nextPosition, getExtent(node, triggerError, nodeExtent, parentNode), measured)
 
   return {
     position: {
