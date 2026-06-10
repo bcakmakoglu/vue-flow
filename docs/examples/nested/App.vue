@@ -19,7 +19,7 @@ const nodes = ref([
     id: '2a',
     data: { label: 'child node' },
     position: { x: 10, y: 50 },
-    parentNode: '2',
+    parentId: '2',
   },
   {
     id: '4',
@@ -32,32 +32,32 @@ const nodes = ref([
     data: { label: 'child node' },
     position: { x: 15, y: 65 },
     extent: 'parent',
-    parentNode: '4',
+    parentId: '4',
   },
   {
     id: '4b',
     data: { label: 'nested parent node' },
     position: { x: 15, y: 120 },
     style: { backgroundColor: 'rgba(139, 92, 246, 0.5)', height: '150px', width: '270px' },
-    parentNode: '4',
+    parentId: '4',
   },
   {
     id: '4b1',
     data: { label: 'nested child node' },
     position: { x: 20, y: 40 },
-    parentNode: '4b',
+    parentId: '4b',
   },
   {
     id: '4b2',
     data: { label: 'nested child node' },
     position: { x: 100, y: 100 },
-    parentNode: '4b',
+    parentId: '4b',
   },
   {
     id: '4c',
     data: { label: 'child node' },
     position: { x: 200, y: 65 },
-    parentNode: '4',
+    parentId: '4',
   },
   {
     id: '999',
@@ -66,7 +66,7 @@ const nodes = ref([
     position: { x: 20, y: 100 },
     class: 'light',
     expandParent: true,
-    parentNode: '2',
+    parentId: '2',
   },
 ])
 

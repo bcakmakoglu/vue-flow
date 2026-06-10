@@ -75,7 +75,7 @@ const path = computed(() => {
           (props.sourcePosition === Position.Top && props.targetPosition === Position.Bottom)
         ) {
           const source = props.sourceNode
-          centerX = props.sourceX - 40 - source.dimensions.width / 2
+          centerX = props.sourceX - 40 - source.measured.width / 2
           centerY = (props.sourceY + props.targetY) / 2
         } else if (
           (props.sourcePosition === Position.Left && props.targetPosition === Position.Right) ||
@@ -83,7 +83,7 @@ const path = computed(() => {
         ) {
           const source = props.sourceNode
           centerX = (props.sourceX + props.targetX) / 2
-          centerY = props.sourceY + 40 + source.dimensions.height / 2
+          centerY = props.sourceY + 40 + source.measured.height / 2
         }
       }
 

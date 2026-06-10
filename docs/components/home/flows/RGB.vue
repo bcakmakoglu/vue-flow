@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { MiniMapNodeFunc } from '@vue-flow/core'
-import { Background, Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { Edge, MiniMapNodeFunc, Node, VueFlowStore } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core'
 import { breakpointsTailwind } from '@vueuse/core'
 
 import CustomEdge from '../edges/Custom.vue'
@@ -12,24 +12,22 @@ const emit = defineEmits(['pane'])
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const { onPaneReady, findNode, panOnDrag } = useVueFlow({
-  id: 'rgb-flow',
-  nodes: [
-    { id: '1', type: 'rgb', data: { color: 'green' }, position: { x: -25, y: 0 } },
-    { id: '2', type: 'rgb', data: { color: 'red' }, position: { x: 50, y: -110 } },
-    { id: '3', type: 'rgb', data: { color: 'blue' }, position: { x: 0, y: 110 } },
-    { id: '4', type: 'rgb-output', label: 'RGB', position: { x: 400, y: -25 } },
-  ],
-  edges: [
-    { id: 'e1-4', type: 'rgb-line', data: { color: 'green' }, source: '1', target: '4', animated: true },
-    { id: 'e2-4', type: 'rgb-line', data: { color: 'red' }, source: '2', target: '4', animated: true },
-    { id: 'e3-4', type: 'rgb-line', data: { color: 'blue' }, source: '3', target: '4', animated: true },
-  ],
-  zoomOnScroll: false,
-  preventScrolling: false,
-})
+const flow = ref<VueFlowStore>()
 
-onPaneReady((i) => emit('pane', i))
+const panOnDrag = ref(true)
+
+const nodes = ref<Node[]>([
+  { id: '1', type: 'rgb', data: { color: 'green' }, position: { x: -25, y: 0 } },
+  { id: '2', type: 'rgb', data: { color: 'red' }, position: { x: 50, y: -110 } },
+  { id: '3', type: 'rgb', data: { color: 'blue' }, position: { x: 0, y: 110 } },
+  { id: '4', type: 'rgb-output', data: { label: 'RGB' }, position: { x: 400, y: -25 } },
+])
+
+const edges = ref<Edge[]>([
+  { id: 'e1-4', type: 'rgb-line', data: { color: 'green' }, source: '1', target: '4', animated: true },
+  { id: 'e2-4', type: 'rgb-line', data: { color: 'red' }, source: '2', target: '4', animated: true },
+  { id: 'e3-4', type: 'rgb-line', data: { color: 'blue' }, source: '3', target: '4', animated: true },
+])
 
 const el = templateRef<HTMLDivElement>('el', null)
 
@@ -44,7 +42,7 @@ watch(
   () => {
     const mobile = breakpoints.isSmaller('md')
     if (mobile) {
-      const node = findNode('4')
+      const node = flow.value?.findNode('4')
 
       if (node) {
         node.position = { x: 300, y: -25 }
@@ -81,12 +79,21 @@ const nodeColor: MiniMapNodeFunc = (node) => {
     class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase overflow-hidden bg-gray-800 border-2"
     :style="{ borderColor: `rgb(${color.red}, ${color.green}, ${color.blue})` }"
   >
-    <VueFlow class="relative font-mono">
+    <VueFlow
+      ref="flow"
+      class="relative font-mono"
+      :nodes="nodes"
+      :edges="edges"
+      :pan-on-drag="panOnDrag"
+      :zoom-on-scroll="false"
+      :prevent-scrolling="false"
+      @init="(i) => emit('pane', i)"
+    >
       <template #edge-rgb-line="rgbLineProps">
-        <CustomEdge v-bind="{ ...rgbLineProps, data: { text: color[rgbLineProps.data?.color], ...rgbLineProps.data } }" />
+        <CustomEdge v-bind="rgbLineProps" :data="{ text: color[rgbLineProps.data?.color as Colors], ...rgbLineProps.data }" />
       </template>
       <template #node-rgb="rgbProps">
-        <RGBNode v-bind="rgbProps" :amount="color" @change="onChange" />
+        <RGBNode v-bind="rgbProps" :data="rgbProps.data as { color: Colors }" :amount="color" @change="onChange" />
       </template>
       <template #node-rgb-output="rgbOutputProps">
         <RGBOutputNode v-bind="rgbOutputProps" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />

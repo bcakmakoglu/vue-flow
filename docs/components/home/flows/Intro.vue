@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { Background, Handle, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { Edge, Node, VueFlowStore } from '@vue-flow/core'
+import { Background, Handle, Position, VueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Heart from '~icons/mdi/heart'
 
@@ -29,7 +30,14 @@ onMounted(() => {
   })
 })
 
-const initialEdges = [
+const initialNodes: Node[] = [
+  { id: 'intro', type: 'box', position: { x: 0, y: 0 }, data: {} },
+  { id: 'examples', type: 'box', position: { x: -50, y: 400 }, data: {} },
+  { id: 'documentation', type: 'box', position: { x: 300, y: 400 }, data: {} },
+  { id: 'acknowledgement', type: 'box', position: { x: 150, y: 500 }, data: {} },
+]
+
+const initialEdges: Edge[] = [
   {
     id: 'eintro-examples',
     sourceHandle: 'a',
@@ -55,26 +63,19 @@ const initialEdges = [
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
 ]
-const { getNodes, findNode, setEdges, updateNodeInternals, dimensions } = useVueFlow({
-  nodes: [
-    { id: 'intro', type: 'box', position: { x: 0, y: 0 } },
-    { id: 'examples', type: 'box', position: { x: -50, y: 400 } },
-    { id: 'documentation', type: 'box', position: { x: 300, y: 400 } },
-    { id: 'acknowledgement', type: 'box', position: { x: 150, y: 500 } },
-  ],
-  edges: initialEdges,
-  elementsSelectable: true,
-  panOnDrag: false,
-  zoomOnScroll: false,
-  zoomOnDoubleClick: false,
-  zoomOnPinch: false,
-  preventScrolling: false,
-  elevateEdgesOnSelect: true,
-})
 
-const el = templateRef<HTMLDivElement>('el', null)
+// `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to reach
+// the store (getNodes/findNode/setEdges/updateNodeInternals + the viewport `dimensions`) from the
+// component that renders the flow (no `useVueFlow()` outside a provider needed).
+const flow = ref<VueFlowStore>()
 
 const setElements = useDebounceFn(() => {
+  if (!flow.value) {
+    return
+  }
+
+  const { getNodes, findNode, setEdges, updateNodeInternals, dimensions } = flow.value
+
   const offsetX = dimensions.value.width / 2
   const offsetY = dimensions.value.height / 4
 
@@ -87,26 +88,26 @@ const setElements = useDebounceFn(() => {
       switch (node.id) {
         case 'intro':
           node.position = {
-            x: offsetX - node.dimensions.width / 2,
-            y: offsetY - node.dimensions.height / 2,
+            x: offsetX - (node.measured.width ?? 0) / 2,
+            y: offsetY - (node.measured.height ?? 0) / 2,
           }
           break
         case 'examples':
           node.position = {
-            x: offsetX - node.dimensions.width / 2,
-            y: mainNode.position.y + mainNode.dimensions.height * 1.5,
+            x: offsetX - (node.measured.width ?? 0) / 2,
+            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 1.5,
           }
           break
         case 'documentation':
           node.position = {
-            x: offsetX - node.dimensions.width / 2,
-            y: mainNode.position.y + mainNode.dimensions.height * 2 + 50,
+            x: offsetX - (node.measured.width ?? 0) / 2,
+            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 2 + 50,
           }
           break
         case 'acknowledgement':
           node.position = {
-            x: offsetX - node.dimensions.width / 2,
-            y: mainNode.position.y + mainNode.dimensions.height * 3,
+            x: offsetX - (node.measured.width ?? 0) / 2,
+            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 3,
           }
           break
       }
@@ -145,24 +146,24 @@ const setElements = useDebounceFn(() => {
       const mainNode = findNode('intro')!
       switch (node.id) {
         case 'intro':
-          node.position = { x: offsetX - node.dimensions.width / 2, y: offsetY - node.dimensions.height / 2 }
+          node.position = { x: offsetX - (node.measured.width ?? 0) / 2, y: offsetY - (node.measured.height ?? 0) / 2 }
           break
         case 'examples':
           node.position = {
-            x: mainNode.position.x - node.dimensions.width / 2,
-            y: mainNode.position.y + mainNode.dimensions.height * 1.5,
+            x: mainNode.position.x - (node.measured.width ?? 0) / 2,
+            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 1.5,
           }
           break
         case 'documentation':
           node.position = {
-            x: mainNode.position.x + mainNode.dimensions.width - node.dimensions.width / 2,
-            y: mainNode.position.y + mainNode.dimensions.height * 1.5,
+            x: mainNode.position.x + (mainNode.measured.width ?? 0) - (node.measured.width ?? 0) / 2,
+            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 1.5,
           }
           break
         case 'acknowledgement':
           node.position = {
-            x: offsetX - node.dimensions.width / 2,
-            y: mainNode.position.y + mainNode.dimensions.height * 2,
+            x: offsetX - (node.measured.width ?? 0) / 2,
+            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 2,
           }
           break
       }
@@ -176,7 +177,7 @@ const setElements = useDebounceFn(() => {
   })
 }, 1)
 
-useResizeObserver(el, setElements)
+useResizeObserver(() => flow.value?.vueFlowRef.value ?? null, setElements)
 
 function scrollTo() {
   const el = document.getElementById('acknowledgement')
@@ -188,7 +189,19 @@ function scrollTo() {
 </script>
 
 <template>
-  <VueFlow ref="el" :style="{ opacity: !!currentBreakpoint ? 1 : 0 }">
+  <VueFlow
+    ref="flow"
+    :nodes="initialNodes"
+    :edges="initialEdges"
+    :elements-selectable="true"
+    :pan-on-drag="false"
+    :zoom-on-scroll="false"
+    :zoom-on-double-click="false"
+    :zoom-on-pinch="false"
+    :prevent-scrolling="false"
+    :elevate-edges-on-select="true"
+    :style="{ opacity: !!currentBreakpoint ? 1 : 0 }"
+  >
     <Background id="dots" color="#aaa" :size="0.75" :gap="25" />
     <Background id="lines" variant="lines" :color="isDark ? '#fff' : '#000'" :size="1" :gap="100" />
 

@@ -1,22 +1,22 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import type { Elements } from '@vue-flow/core'
-import { Background, Controls, MiniMap, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
+import { Background, Controls, MiniMap, Position, VueFlow } from '@vue-flow/core'
 
 const emit = defineEmits(['pane'])
 
-const elements = ref<Elements>([
+const nodes = ref<Node[]>([
   {
     id: '1',
     style: { width: '75px' },
     type: 'input',
     sourcePosition: Position.Right,
-    label: 'input',
+    data: { label: 'input' },
     position: { x: 25, y: 120 },
   },
   {
     id: '2',
-    label: 'A',
+    data: { label: 'A' },
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
     position: { x: 150, y: 25 },
@@ -24,7 +24,7 @@ const elements = ref<Elements>([
   },
   {
     id: '3',
-    label: 'B',
+    data: { label: 'B' },
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
     position: { x: 250, y: 25 },
@@ -32,7 +32,7 @@ const elements = ref<Elements>([
   },
   {
     id: '4',
-    label: 'C',
+    data: { label: 'C' },
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
     position: { x: 350, y: 25 },
@@ -40,7 +40,7 @@ const elements = ref<Elements>([
   },
   {
     id: '5',
-    label: 'D',
+    data: { label: 'D' },
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
     position: { x: 150, y: 220 },
@@ -48,7 +48,7 @@ const elements = ref<Elements>([
   },
   {
     id: '6',
-    label: 'E',
+    data: { label: 'E' },
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
     position: { x: 250, y: 220 },
@@ -56,7 +56,7 @@ const elements = ref<Elements>([
   },
   {
     id: '7',
-    label: 'F',
+    data: { label: 'F' },
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
     position: { x: 350, y: 220 },
@@ -65,11 +65,14 @@ const elements = ref<Elements>([
   {
     id: '8',
     type: 'output',
-    label: 'Output',
+    data: { label: 'Output' },
     targetPosition: Position.Left,
     position: { x: 500, y: 120 },
     style: { width: '75px' },
   },
+])
+
+const edges = ref<Edge[]>([
   { id: 'e1-2', type: 'step', source: '1', target: '2' },
   { id: 'e2-3', type: 'step', source: '2', target: '3' },
   { id: 'e3-4', type: 'step', source: '3', target: '4' },
@@ -79,20 +82,18 @@ const elements = ref<Elements>([
   { id: 'e6-7', type: 'step', source: '6', target: '7', animated: true },
   { id: 'e6-8', type: 'step', source: '7', target: '8', animated: true },
 ])
-
-const { onPaneReady } = useVueFlow({
-  modelValue: elements.value,
-  zoomOnScroll: false,
-  panOnDrag: false,
-  preventScrolling: false,
-})
-
-onPaneReady((i) => emit('pane', i))
 </script>
 
 <template>
   <div class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase overflow-hidden border-2">
-    <VueFlow>
+    <VueFlow
+      :nodes="nodes"
+      :edges="edges"
+      :zoom-on-scroll="false"
+      :pan-on-drag="false"
+      :prevent-scrolling="false"
+      @init="(i) => emit('pane', i)"
+    >
       <Controls :show-interactive="false" />
       <MiniMap mask-color="rgba(16, 185, 129, 0.5)" class="transform scale-60 origin-bottom-right opacity-75" />
       <Background variant="lines" color="#aaa" :gap="46" />

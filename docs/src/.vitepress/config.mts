@@ -1,4 +1,5 @@
 import { resolve } from 'node:path'
+import { createRequire } from 'node:module'
 import { readdirSync, statSync } from 'node:fs'
 import type { DefaultTheme, HeadConfig } from 'vitepress'
 import { defineConfigWithTheme } from 'vitepress'
@@ -7,12 +8,12 @@ import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
-import { useVueFlow } from '@vue-flow/core'
 import llmstxt from 'vitepress-plugin-llms'
 import head from './head'
 import { copyVueFlowPlugin, files } from './plugins'
 
-const { vueFlowVersion } = useVueFlow()
+const require = createRequire(import.meta.url)
+const vueFlowVersion = (require('@vue-flow/core/package.json') as { version: string }).version
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
@@ -73,6 +74,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     define: {
       // eslint-disable-next-line n/prefer-global/process
       __ANALYTICS_ID__: process.env.VERCEL_ANALYTICS_ID,
+      __VUE_FLOW_VERSION__: JSON.stringify(vueFlowVersion),
     },
     plugins: [
       copyVueFlowPlugin(),
