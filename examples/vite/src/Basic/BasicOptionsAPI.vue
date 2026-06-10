@@ -7,7 +7,9 @@ export default defineComponent({
   components: { VueFlow, Background, MiniMap, Controls },
   data() {
     return {
-      instance: null as VueFlowStore | null,
+      // NOTE: don't keep the `VueFlowStore` in reactive `data()` — Vue's ref-unwrapping over the store's
+      // many refs breaks `defineComponent`'s type inference. Reach the store via the `<VueFlow>` template
+      // ref instead (it exposes the store through `defineExpose`).
       elements: [
         { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
         { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, class: 'light' },
@@ -25,13 +27,15 @@ export default defineComponent({
     edges(): Edge[] {
       return this.elements.filter(isEdge)
     },
+    // NOTE: don't expose the `VueFlowStore` via `data()`/`computed` — Vue's ref-unwrapping over the store
+    // breaks `defineComponent` inference. Reach it inside method bodies via the template ref instead.
   },
   methods: {
     logToObject() {
-      console.log(this.instance?.toObject())
+      console.log((this.$refs.flow as VueFlowStore | undefined)?.toObject())
     },
     resetTransform() {
-      this.instance?.setViewport({ x: 0, y: 0, zoom: 1 })
+      ;(this.$refs.flow as VueFlowStore | undefined)?.setViewport({ x: 0, y: 0, zoom: 1 })
     },
     toggleclass() {
       this.elements.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
@@ -49,12 +53,11 @@ export default defineComponent({
     onNodeDragStop(e: FlowEvents['nodeDragStop']) {
       console.log('drag stop', e)
     },
-    onInit(instance: FlowEvents['init']) {
+    onInit(instance: VueFlowStore) {
       instance.fitView()
-      this.instance = instance
     },
     onConnect(params: FlowEvents['connect']) {
-      this.instance?.addEdges(params)
+      ;(this.$refs.flow as VueFlowStore | undefined)?.addEdges([params])
     },
   },
 })
@@ -62,6 +65,7 @@ export default defineComponent({
 
 <template>
   <VueFlow
+    ref="flow"
     :nodes="nodes"
     :edges="edges"
     class="vue-flow-basic-example"

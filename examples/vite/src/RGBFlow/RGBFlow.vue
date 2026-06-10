@@ -34,15 +34,15 @@ function onChange({ color: c, val }: { color: Colors; val: number }) {
   <div class="demo-flow">
     <VueFlow v-model:nodes="nodes" v-model:edges="edges">
       <template #node-rgb="props">
-        <RGBNode v-bind="props" :amount="color" @change="onChange" />
+        <RGBNode :data="props.data as { color: Colors }" :amount="color" @change="onChange" />
       </template>
 
-      <template #node-rgb-output="props">
-        <RGBOutputNode v-bind="props" :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
+      <template #node-rgb-output>
+        <RGBOutputNode :rgb="`rgb(${color.red}, ${color.green}, ${color.blue})`" />
       </template>
 
       <template #edge-rgb-edge="props">
-        <RGBEdge v-bind="{ ...props, data: { text: color[props.data?.color as Colors], ...props.data } }" />
+        <RGBEdge v-bind="props" :data="{ text: color[props.data?.color as Colors], ...props.data }" />
       </template>
     </VueFlow>
   </div>

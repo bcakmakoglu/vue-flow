@@ -1,19 +1,10 @@
-<script lang="ts">
-import type { Position } from '@vue-flow/core'
-
-export interface ToolbarNodeData {
-  label?: string
-  toolbarVisible?: boolean
-  toolbarPosition?: Position
-}
-</script>
-
 <script lang="ts" setup>
 import { Handle, NodeToolbar, Position as PositionEnum } from '@vue-flow/core'
+import type { ToolbarNodeData } from './types'
 
 interface Props {
   data: ToolbarNodeData
-  label: string
+  label?: string
 }
 
 defineProps<Props>()

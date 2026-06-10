@@ -256,19 +256,21 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   (event: 'update:edges', value: GraphEdge<EdgeType>[]): void
 }
 
-export type NodeSlots<NodeType extends Node = Node> = Record<
-  `node-${NodeType['type'] | string}`,
-  (nodeProps: NodeProps<NodeType>) => any
+// Slots are optional (a flow needn't define every node-/edge-type slot), so use `Partial<Record<…>>`
+// rather than a bare `Record`. Beyond correctness, a required index signature makes `<VueFlow>`
+// unassignable to Vue's `Component` (whose `InternalSlots` are optional), which breaks Options-API
+// `components: { VueFlow }` registration.
+export type NodeSlots<NodeType extends Node = Node> = Partial<
+  Record<`node-${NodeType['type'] | string}`, (nodeProps: NodeProps<NodeType>) => any>
 >
 
-export type EdgeSlots<EdgeType extends Edge = Edge> = Record<
-  `edge-${NonNullable<EdgeType['type']> | string}`,
-  (edgeProps: EdgeProps<EdgeType>) => any
+export type EdgeSlots<EdgeType extends Edge = Edge> = Partial<
+  Record<`edge-${NonNullable<EdgeType['type']> | string}`, (edgeProps: EdgeProps<EdgeType>) => any>
 >
 
 export type FlowSlots<NodeType extends Node = Node, EdgeType extends Edge = Edge> = NodeSlots<NodeType> &
   EdgeSlots<EdgeType> & {
-    'connection-line': (connectionLineProps: ConnectionLineProps) => any
-    'zoom-pane': () => any
-    'default': () => any
+    'connection-line'?: (connectionLineProps: ConnectionLineProps) => any
+    'zoom-pane'?: () => any
+    'default'?: () => any
   }

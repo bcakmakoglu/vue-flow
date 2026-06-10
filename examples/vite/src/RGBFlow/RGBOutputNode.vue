@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { NodeProps } from '@vue-flow/core'
 import { Handle, Position } from '@vue-flow/core'
 
-interface RBGOutputNodeProps extends NodeProps {
+interface RBGOutputNodeProps {
   rgb: string
 }
 

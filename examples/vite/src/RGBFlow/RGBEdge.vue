@@ -4,7 +4,7 @@ import type { Edge, EdgeProps } from '@vue-flow/core'
 import { getBezierPath } from '@vue-flow/core'
 import type { Colors } from './utils'
 
-type EdgeData = {
+interface EdgeData extends Record<string, unknown> {
   text?: string
   color?: Colors
 }

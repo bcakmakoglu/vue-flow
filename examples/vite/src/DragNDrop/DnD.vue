@@ -33,7 +33,7 @@ function onConnect(connection: Connection) {
 function onDrop(event: DragEvent) {
   const type = event.dataTransfer?.getData('application/vueflow')
 
-  const flowbounds = flow.value!.vueFlowRef!.getBoundingClientRect()
+  const flowbounds = flow.value!.vueFlowRef.value!.getBoundingClientRect()
 
   const position = flow.value!.project({
     x: event.clientX - flowbounds.left,
