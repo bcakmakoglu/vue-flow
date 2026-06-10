@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { XYResizer } from '@xyflow/system'
+import { XYResizer, evaluateAbsolutePosition, handleExpandParent } from '@xyflow/system'
 import type { XYResizerChange, XYResizerChildChange } from '@xyflow/system'
 import { computed, ref, toRef, watchEffect } from 'vue'
 import { useVueFlow } from '../../composables'
@@ -20,7 +20,8 @@ const props = withDefaults(defineProps<ResizeControlProps>(), {
 
 const emits = defineEmits<NodeResizerEmits>()
 
-const { emits: triggerEmits, viewport, nodeLookup, snapGrid, snapToGrid, vueFlowRef, noDragClassName } = useVueFlow()
+const { emits: triggerEmits, viewport, nodeLookup, parentLookup, snapGrid, snapToGrid, vueFlowRef, noDragClassName } =
+  useVueFlow()
 
 const resizeControlRef = ref<HTMLDivElement>()
 
@@ -48,12 +49,46 @@ watchEffect((onCleanup) => {
     }),
     onChange: (changes: XYResizerChange, childChanges: XYResizerChildChange[]) => {
       const nodeChanges: NodeChange[] = []
+      const node = nodeLookup.get(props.nodeId!)
 
-      if (typeof changes.x !== 'undefined' || typeof changes.y !== 'undefined') {
-        const node = nodeLookup.get(props.nodeId!)
+      // resolved x/y for the resized node; clamped below when the node expands its parent
+      let nextX = changes.x
+      let nextY = changes.y
+
+      if (node?.expandParent && node.parentId) {
+        const origin = node.origin ?? [0, 0]
+        const width = changes.width ?? node.measured.width ?? 0
+        const height = changes.height ?? node.measured.height ?? 0
+
+        // grow the parent to fit the resized child (mirrors xyflow/react's NodeResizeControl)
+        const child = {
+          id: node.id,
+          parentId: node.parentId,
+          rect: {
+            width,
+            height,
+            ...evaluateAbsolutePosition(
+              { x: changes.x ?? node.position.x, y: changes.y ?? node.position.y },
+              { width, height },
+              node.parentId,
+              nodeLookup,
+              origin,
+            ),
+          },
+        }
+
+        nodeChanges.push(...(handleExpandParent([child], nodeLookup, parentLookup, [0, 0]) as NodeChange[]))
+
+        // once the parent was expanded, the child clamps to the parent's edge (0,0 for origin [0,0],
+        // width/height for [1,1]).
+        nextX = typeof changes.x !== 'undefined' ? Math.max(origin[0] * width, changes.x) : undefined
+        nextY = typeof changes.y !== 'undefined' ? Math.max(origin[1] * height, changes.y) : undefined
+      }
+
+      if (typeof nextX !== 'undefined' || typeof nextY !== 'undefined') {
         const position = {
-          x: changes.x ?? node?.position.x ?? 0,
-          y: changes.y ?? node?.position.y ?? 0,
+          x: nextX ?? node?.position.x ?? 0,
+          y: nextY ?? node?.position.y ?? 0,
         }
         nodeChanges.push({
           id: props.nodeId!,

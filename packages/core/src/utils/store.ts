@@ -6,6 +6,7 @@ import type {
   Connection,
   ConnectionLookup,
   CoordinateExtent,
+  CoordinateExtentRange,
   DefaultEdgeOptions,
   Edge,
   EdgeLookup,
@@ -121,9 +122,24 @@ export function createGraphNodes<NodeType extends Node = Node>(
     validNodes.push(node)
   }
 
+  // `@xyflow/system`'s `adoptUserNodes` (and the `clampPosition` it calls) only understand
+  // `'parent' | CoordinateExtent`. A vue-flow `CoordinateExtentRange` ({ range, padding }) extent would
+  // make `clampPosition` index `extent[0][0]` on the object and throw. Feed `adoptUserNodes` shallow
+  // copies whose extent is coerced to the bare `range`, then restore the original range+padding onto the
+  // parsed `GraphNode` below — the padding inset is applied later by the store's `recomputeAbsolutePositions`.
+  const rangeExtents = new Map<string, CoordinateExtentRange>()
+  const adoptable = validNodes.map((node): NodeType => {
+    const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
+    if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
+      rangeExtents.set(node.id, extent)
+      return { ...node, extent: extent.range }
+    }
+    return node
+  })
+
   const lookup: SystemNodeLookup<InternalNodeBase<NodeType>> = new Map()
   const parentLookup: SystemParentLookup<InternalNodeBase<NodeType>> = new Map()
-  adoptUserNodes(validNodes, lookup, parentLookup, options)
+  adoptUserNodes(adoptable, lookup, parentLookup, options)
 
   for (const node of validNodes) {
     if (node.parentId && !lookup.has(node.parentId)) {
@@ -142,6 +158,14 @@ export function createGraphNodes<NodeType extends Node = Node>(
       continue
     }
     const parsed = parseNode(internal, findNode(node.id), node.parentId)
+
+    // restore the vue-flow range+padding extent that was coerced away for the system pass (the narrow
+    // `extent` field type is deliberate — the range form is a runtime-only extension, see types/node.ts)
+    const range = rangeExtents.get(node.id)
+    if (range) {
+      ;(parsed as { extent?: CoordinateExtentRange }).extent = range
+    }
+
     nextNodes.push(parsed)
   }
   return nextNodes

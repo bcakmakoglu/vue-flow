@@ -1,4 +1,13 @@
-import { getDimensions, getOverlappingArea, isRectObject, panBy as panBySystem, updateAbsolutePositions } from '@xyflow/system'
+import {
+  clampPosition,
+  clampPositionToParent,
+  getDimensions,
+  getOverlappingArea,
+  handleExpandParent,
+  isRectObject,
+  panBy as panBySystem,
+  updateAbsolutePositions,
+} from '@xyflow/system'
 import type {
   Actions,
   CoordinateExtent,
@@ -23,6 +32,7 @@ import type {
 import { useViewportHelper } from '../composables'
 import {
   applyChanges,
+  calcNextPosition,
   createAdditionChange,
   createEdgeRemoveChange,
   createGraphEdges,
@@ -30,6 +40,7 @@ import {
   createNodeRemoveChange,
   createSelectionChange,
   getConnectedEdges as getConnectedEdgesBase,
+  getExtent,
   getHandleBounds,
   getSelectionChanges,
   isDef,
@@ -146,6 +157,45 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
           (typeof node.zIndex === 'number' ? node.zIndex : 0) + (node.selected && state.elevateNodesOnSelect ? 1000 : 0)
       }
     }
+
+    // Apply the range `padding` the system clamp can't express. `updateAbsolutePositions` only understands
+    // `'parent'`/`CoordinateExtent` (we coerced `{ range, padding }` to its bare `range` above), so it
+    // clamps to the parent/extent bounds *without* the inset. Now that absolute positions are fresh (and
+    // re-converged onto the canonical refs), re-clamp each padded node against the padded extent via the
+    // same `calcNextPosition`/`getExtent` math the keyboard-move path uses — restoring the padding the
+    // pre-system-migration NodeWrapper watcher used to apply. Idempotent (an in-bounds node is unchanged),
+    // and `expandParent` nodes are skipped (they grow the parent instead of being clamped into it).
+    for (const { node } of coercedExtents) {
+      if (node.expandParent) {
+        continue
+      }
+
+      const parent = node.parentId ? nodeLookup.get(node.parentId) : undefined
+
+      // The padding clamp needs measured dimensions: `getExtent` indexes into the computed extent array
+      // and would throw on the unmeasured fallback (the global extent may be undefined). Skip until the
+      // node — and, for a `'parent'` range, its parent — are measured; the next recompute (triggered by
+      // `updateNodeDimensions` once dimensions land) re-runs this.
+      if (!node.measured?.width || !node.measured?.height) {
+        continue
+      }
+
+      const extent = node.extent as unknown as CoordinateExtentRange
+      if (extent.range === 'parent' && (!parent?.measured?.width || !parent?.measured?.height)) {
+        continue
+      }
+
+      const { position, computedPosition } = calcNextPosition(
+        node,
+        node.internals.positionAbsolute,
+        state.hooks.error.trigger,
+        state.nodeExtent,
+        parent,
+      )
+
+      node.position = position
+      node.internals.positionAbsolute = computedPosition
+    }
   }
 
   const updateNodeInternals: Actions<NodeType>['updateNodeInternals'] = (ids) => {
@@ -180,9 +230,15 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const updateNodePositions: Actions<NodeType>['updateNodePositions'] = (dragItems, changed, dragging) => {
-    const changes: NodePositionChange[] = []
+    const changes: (NodePositionChange | NodeDimensionChange)[] = []
+    const parentExpandChildren: { id: string; parentId: string; rect: Rect }[] = []
 
     for (const node of dragItems) {
+      // read `expandParent`/`parentId` from the canonical node: drag items carry them, but keyboard-move
+      // items (from `useUpdateNodePositions`) do not — mirrors xyflow/react reading from the lookup.
+      const lookupNode = findNode(node.id)
+      const expandParentId = lookupNode?.expandParent ? lookupNode.parentId : undefined
+
       const change: NodePositionChange = {
         id: node.id,
         type: 'position',
@@ -201,12 +257,39 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
             y: change.position.y - (parentNode?.internals.positionAbsolute?.y ?? 0),
           }
         }
+
+        if (expandParentId) {
+          // pin the child's relative position to >= 0; the parent grows to contain it instead
+          // (xyflow/react clamps the same way before collecting the child for expansion).
+          change.position = { x: Math.max(0, change.position.x), y: Math.max(0, change.position.y) }
+
+          parentExpandChildren.push({
+            id: node.id,
+            parentId: expandParentId,
+            rect: {
+              ...node.internals.positionAbsolute,
+              width: node.measured?.width ?? 0,
+              height: node.measured?.height ?? 0,
+            },
+          })
+        }
       }
 
       changes.push(change)
     }
 
-    if (changes?.length) {
+    // grow each parent to fit its `expandParent` children — system returns the parent's position +
+    // dimension changes plus counter-offsets for the other children, applied through the same pipeline.
+    if (parentExpandChildren.length > 0) {
+      changes.push(
+        ...(handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]) as (
+          | NodePositionChange
+          | NodeDimensionChange
+        )[]),
+      )
+    }
+
+    if (changes.length) {
       state.hooks.nodesChange.trigger(changes)
     }
   }
@@ -225,7 +308,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const style = window.getComputedStyle(viewportNode)
     const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
 
-    const changes: NodeDimensionChange[] = []
+    const changes: (NodeDimensionChange | NodePositionChange)[] = []
+    const parentExpandChildren: { id: string; parentId: string; rect: Rect }[] = []
 
     for (const element of updates) {
       const update = element
@@ -255,8 +339,49 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
             type: 'dimensions',
             dimensions,
           })
+
+          // a freshly-measured `expandParent` child grows its parent to fit (mirrors system's own
+          // `updateNodeDimensions`). Unlike the drag path (where the position is the user's target), here
+          // the position is fixed and only the size grew — so re-clamp it against the NEW dimensions and
+          // the node's extent BEFORE measuring expansion, exactly as system does. Otherwise a node that
+          // merely grew would be treated as overflowing and the parent would expand more than necessary.
+          if (node.expandParent && node.parentId) {
+            const parent = findNode(node.parentId)
+            let positionAbsolute = node.internals.positionAbsolute
+            const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
+
+            if (extent === 'parent' && parent) {
+              positionAbsolute = clampPositionToParent(positionAbsolute, dimensions, parent)
+            } else if (Array.isArray(extent)) {
+              positionAbsolute = clampPosition(positionAbsolute, extent, dimensions)
+            } else if (extent && typeof extent === 'object' && 'range' in extent && parent?.measured.width && parent.measured.height) {
+              // vue-flow range form → its padded coordinate extent
+              positionAbsolute = clampPosition(
+                positionAbsolute,
+                getExtent(node, state.hooks.error.trigger, state.nodeExtent, parent),
+                dimensions,
+              )
+            } else if (Array.isArray(state.nodeExtent)) {
+              positionAbsolute = clampPosition(positionAbsolute, state.nodeExtent, dimensions)
+            }
+
+            parentExpandChildren.push({
+              id: node.id,
+              parentId: node.parentId,
+              rect: { ...positionAbsolute, width: dimensions.width, height: dimensions.height },
+            })
+          }
         }
       }
+    }
+
+    if (parentExpandChildren.length > 0) {
+      changes.push(
+        ...(handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]) as (
+          | NodeDimensionChange
+          | NodePositionChange
+        )[]),
+      )
     }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
