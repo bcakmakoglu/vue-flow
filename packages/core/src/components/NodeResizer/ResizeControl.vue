@@ -20,8 +20,16 @@ const props = withDefaults(defineProps<ResizeControlProps>(), {
 
 const emits = defineEmits<NodeResizerEmits>()
 
-const { emits: triggerEmits, viewport, nodeLookup, parentLookup, snapGrid, snapToGrid, vueFlowRef, noDragClassName } =
-  useVueFlow()
+const {
+  emits: triggerEmits,
+  viewport,
+  nodeLookup,
+  parentLookup,
+  snapGrid,
+  snapToGrid,
+  vueFlowRef,
+  noDragClassName,
+} = useVueFlow()
 
 const resizeControlRef = ref<HTMLDivElement>()
 

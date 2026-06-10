@@ -354,7 +354,13 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
               positionAbsolute = clampPositionToParent(positionAbsolute, dimensions, parent)
             } else if (Array.isArray(extent)) {
               positionAbsolute = clampPosition(positionAbsolute, extent, dimensions)
-            } else if (extent && typeof extent === 'object' && 'range' in extent && parent?.measured.width && parent.measured.height) {
+            } else if (
+              extent &&
+              typeof extent === 'object' &&
+              'range' in extent &&
+              parent?.measured.width &&
+              parent.measured.height
+            ) {
               // vue-flow range form → its padded coordinate extent
               positionAbsolute = clampPosition(
                 positionAbsolute,
