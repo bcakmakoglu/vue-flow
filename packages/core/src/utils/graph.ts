@@ -1,14 +1,5 @@
 import { markRaw } from 'vue'
-import type {
-  Connection,
-  DefaultEdgeOptions,
-  Edge,
-  GraphEdge,
-  GraphNode,
-  Node,
-  NodeLookup,
-  XYZPosition,
-} from '../types'
+import type { Connection, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node, NodeLookup, XYZPosition } from '../types'
 import { isDef } from '.'
 
 export {

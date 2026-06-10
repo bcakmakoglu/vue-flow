@@ -2,16 +2,7 @@ import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { PanOnScrollMode, PanZoomInstance, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
-import type {
-  Dimensions,
-  FlowExportObject,
-  FlowProps,
-  Rect,
-  SelectionMode,
-  SelectionRect,
-  SnapGrid,
-  XYPosition,
-} from './flow'
+import type { Dimensions, FlowExportObject, FlowProps, Rect, SelectionMode, SelectionRect, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 import type {
   Connection,
@@ -160,9 +151,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
 export type SetNodes<NodeType extends Node = Node> = (nodes: NodeType[] | ((nodes: GraphNode<NodeType>[]) => NodeType[])) => void
 
-export type SetEdges<EdgeType extends Edge = Edge> = (
-  edges: EdgeType[] | ((edges: GraphEdge<EdgeType>[]) => EdgeType[]),
-) => void
+export type SetEdges<EdgeType extends Edge = Edge> = (edges: EdgeType[] | ((edges: GraphEdge<EdgeType>[]) => EdgeType[])) => void
 
 export type AddNodes<NodeType extends Node = Node> = (
   nodes: NodeType | NodeType[] | ((nodes: GraphNode<NodeType>[]) => NodeType | NodeType[]),
@@ -193,9 +182,7 @@ export type UpdateEdge<EdgeType extends Edge = Edge> = (
 
 export type UpdateEdgeData<EdgeType extends Edge = Edge> = (
   id: string,
-  dataUpdate:
-    | Partial<EdgeType['data']>
-    | ((edge: GraphEdge<EdgeType>) => Partial<EdgeType['data']>),
+  dataUpdate: Partial<EdgeType['data']> | ((edge: GraphEdge<EdgeType>) => Partial<EdgeType['data']>),
   options?: { replace: boolean },
 ) => void
 
