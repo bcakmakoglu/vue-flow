@@ -3,6 +3,7 @@ import type { Edge, Node } from '@vue-flow/core'
 import { Controls, MiniMap, Position, VueFlow } from '@vue-flow/core'
 
 import ColorSelectorNode from './ColorSelectorNode.vue'
+import type { ColorSelectorNodeProps } from './types'
 
 const bgColor = shallowRef('#1A192B')
 
@@ -68,7 +69,9 @@ function nodeColor(n: Node) {
 <template>
   <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init :style="{ backgroundColor: bgColor }">
     <template #node-colorSelector="props">
-      <ColorSelectorNode v-bind="props" @change="bgColor = $event" />
+      <!-- the `#node-colorSelector` slot only renders for colorSelector nodes, so the wide slot props are
+           that node's props at runtime; cast to satisfy the typed child (slot keys can't narrow the type). -->
+      <ColorSelectorNode v-bind="props as unknown as ColorSelectorNodeProps" @change="bgColor = $event" />
     </template>
     <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
     <Controls />

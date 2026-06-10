@@ -68,10 +68,7 @@ function onMoveEnd(moveEvent: FlowEvents['moveEnd']) {
 
       <Controls />
 
-      <InteractionControls
-        v-model:capture-zoom-click="captureZoomClick"
-        v-model:capture-zoom-scroll="captureZoomScroll"
-      />
+      <InteractionControls v-model:capture-zoom-click="captureZoomClick" v-model:capture-zoom-scroll="captureZoomScroll" />
     </VueFlow>
   </VueFlowProvider>
 </template>

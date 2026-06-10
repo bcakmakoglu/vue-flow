@@ -8,7 +8,7 @@ export enum ProcessStatus {
   RUNNING = 'running',
 }
 
-export type ProcessData = {
+export interface ProcessData extends Record<string, unknown> {
   status: ProcessStatus | null
 }
 

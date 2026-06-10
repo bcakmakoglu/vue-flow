@@ -2,7 +2,7 @@
 import type { Edge, EdgeProps, Position } from '@vue-flow/core'
 import { BezierEdge } from '@vue-flow/core'
 
-type CustomData = {
+interface CustomData extends Record<string, unknown> {
   text: string
 }
 

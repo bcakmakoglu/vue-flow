@@ -2,12 +2,11 @@
 import type { SFCOptions } from '@vue/repl'
 import { ReplStore, Repl as VueRepl } from '@vue/repl'
 import CodeMirror from '@vue/repl/codemirror-editor'
-import { useVueFlow } from '@vue-flow/core'
 import { exampleImports } from '../examples'
 
 const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string }>()
 
-const { vueFlowVersion } = useVueFlow()
+const vueFlowVersion = __VUE_FLOW_VERSION__
 
 let css = `@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/style.css';
 @import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/theme-default.css';
@@ -75,6 +74,13 @@ const sfcOptions = {
   },
 } as SFCOptions
 
+function onKeydown(event: KeyboardEvent) {
+  // prevent the browser's save dialog on both Ctrl+S and Cmd+S
+  if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+    event.preventDefault()
+  }
+}
+
 function formatCSS(cssString: string) {
   let formattedString = cssString
 
@@ -94,8 +100,7 @@ function formatCSS(cssString: string) {
     :show-compile-output="false"
     :sfc-options="sfcOptions"
     :ssr="false"
-    @keydown.ctrl.s.prevent
-    @keydown.meta.s.prevent
+    @keydown="onKeydown"
   />
 </template>
 

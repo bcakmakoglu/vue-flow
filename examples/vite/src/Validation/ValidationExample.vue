@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Node, OnConnectStartParams, VueFlowStore } from '@vue-flow/core'
+import type { Connection, Node, NodeProps, OnConnectStartParams, ValidConnectionFunc, VueFlowStore } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
@@ -57,11 +57,13 @@ function onConnect(params: Connection) {
     @connect-start="onConnectStart"
     @connect-end="onConnectEnd"
   >
+    <!-- each slot only renders for its node type, so cast the wide slot props to the typed child's props
+         (the dynamic slot key can't narrow `type`/`data` on its own). -->
     <template #node-custominput="props">
-      <CustomInput v-bind="props" />
+      <CustomInput v-bind="props as unknown as NodeProps<Node<{ isValidTargetPos: ValidConnectionFunc }, 'custominput'>>" />
     </template>
     <template #node-customnode="props">
-      <CustomNode v-bind="props" />
+      <CustomNode v-bind="props as unknown as NodeProps<Node<{ isValidSourcePos: ValidConnectionFunc }, 'customnode'>>" />
     </template>
   </VueFlow>
 </template>

@@ -51,8 +51,8 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
   const closestNode = getNodes.value.reduce(
     (res, n) => {
       if (n.id !== connectionStartHandle.value?.nodeId) {
-        const dx = props.targetX - (n.computedPosition.x + n.dimensions.width / 2)
-        const dy = props.targetY - (n.computedPosition.y + n.dimensions.height / 2)
+        const dx = props.targetX - (n.internals.positionAbsolute.x + n.measured.width / 2)
+        const dy = props.targetY - (n.internals.positionAbsolute.y + n.measured.height / 2)
         const d = Math.sqrt(dx * dx + dy * dy)
 
         if (d < res.distance && d < MIN_DISTANCE) {
@@ -77,7 +77,7 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
 
   const type = connectionStartHandle.value.type === 'source' ? 'target' : 'source'
 
-  const closestHandle = closestNode.node.handleBounds[type]?.reduce((prev, curr) => {
+  const closestHandle = closestNode.node.internals.handleBounds[type]?.reduce((prev, curr) => {
     const prevDistance = Math.sqrt((prev.x - props.targetX) ** 2 + (prev.y - props.targetY) ** 2)
     const currDistance = Math.sqrt((curr.x - props.targetX) ** 2 + (curr.y - props.targetY) ** 2)
 

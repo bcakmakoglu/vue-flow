@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Edge, Node } from '@vue-flow/core'
 import { Position, VueFlow } from '@vue-flow/core'
-import type { ToolbarNodeData } from './CustomNode.vue'
+import type { ToolbarNodeData } from './types'
 import CustomNode from './CustomNode.vue'
 
 type ToolbarNode = Node<ToolbarNodeData, 'custom'>

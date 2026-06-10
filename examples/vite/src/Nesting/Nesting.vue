@@ -89,12 +89,14 @@ onMounted(() => {
   })
 
   setTimeout(() => {
-    const node = flow.value?.findNode('999')!
-    node.expandParent = false
-    node.extent = {
-      range: 'parent',
-      padding: [10],
-    } as any
+    const node = flow.value?.findNode('999')
+    if (node) {
+      node.expandParent = false
+      node.extent = {
+        range: 'parent',
+        padding: [10],
+      } as any
+    }
   })
 })
 </script>

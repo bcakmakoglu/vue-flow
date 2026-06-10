@@ -22,11 +22,11 @@ export function getHelperLines(change: NodePositionChange, nodes: GraphNode[], d
 
   const nodeABounds = {
     left: change.position.x,
-    right: change.position.x + ((nodeA.dimensions.width as number) ?? 0),
+    right: change.position.x + (nodeA.measured?.width ?? 0),
     top: change.position.y,
-    bottom: change.position.y + ((nodeA.dimensions.height as number) ?? 0),
-    width: (nodeA.dimensions.width as number) ?? 0,
-    height: (nodeA.dimensions.height as number) ?? 0,
+    bottom: change.position.y + (nodeA.measured?.height ?? 0),
+    width: nodeA.measured?.width ?? 0,
+    height: nodeA.measured?.height ?? 0,
   }
 
   let horizontalDistance = distance
@@ -37,11 +37,11 @@ export function getHelperLines(change: NodePositionChange, nodes: GraphNode[], d
     .reduce<GetHelperLinesResult>((result, nodeB) => {
       const nodeBBounds = {
         left: nodeB.position.x,
-        right: nodeB.position.x + ((nodeB.dimensions.width as number) ?? 0),
+        right: nodeB.position.x + (nodeB.measured?.width ?? 0),
         top: nodeB.position.y,
-        bottom: nodeB.position.y + ((nodeB.dimensions.height as number) ?? 0),
-        width: nodeB.width ?? 0,
-        height: nodeB.height ?? 0,
+        bottom: nodeB.position.y + (nodeB.measured?.height ?? 0),
+        width: nodeB.measured?.width ?? 0,
+        height: nodeB.measured?.height ?? 0,
       }
 
       //  |‾‾‾‾‾‾‾‾‾‾‾|

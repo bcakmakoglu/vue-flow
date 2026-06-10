@@ -12,7 +12,7 @@ export function getElements(xElements = 10, yElements = 10) {
       const node = {
         id: nodeId.toString(),
         style: { width: 50, fontSize: 11 },
-        label: `Node ${nodeId}`,
+        data: { label: `Node ${nodeId}` },
         position,
       }
       initialNodes.push(node)
