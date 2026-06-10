@@ -1,11 +1,6 @@
 <script lang="ts" setup>
 import { useCreateVueFlow } from '../../composables/useCreateVueFlow'
 
-const props = defineProps<{
-  /** Optional id for the created store (used for aria/debug — not a lookup key). */
-  id?: string
-}>()
-
 /**
  * Owns a VueFlow store and `provide`s it to its subtree. A descendant `<VueFlow>` reuses this
  * provided store instead of creating its own, and any component that calls `useVueFlow()` below this
@@ -13,6 +8,8 @@ const props = defineProps<{
  * (mirrors `<ReactFlowProvider>` / `<SvelteFlowProvider>`). One provider scopes one store, so host a
  * single `<VueFlow>` per provider and use a separate provider for each independent flow.
  */
+const props = defineProps<{ id?: string }>()
+
 useCreateVueFlow({ id: props.id })
 </script>
 

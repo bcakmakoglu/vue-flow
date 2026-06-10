@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref, toRefs, watch } from 'vue'
 import type { Edge, EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
 import { useActions } from './actions'
 import { useGetters } from './getters'
@@ -37,21 +37,35 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   const nodesSignal = signals?.nodes ?? ref<GraphNode<NodeType>[]>([])
   const edgesSignal = signals?.edges ?? ref<GraphEdge<EdgeType>[]>([])
 
+  // The array references the store itself last wrote (through the `state.nodes`/`.edges` setters below).
+  // The single-source binding watch (further down) uses these to tell its own writes apart from an
+  // external `v-model` reassignment — no pause/resume flags needed.
+  let lastWriteNodes: GraphNode<NodeType>[] | undefined
+  let lastWriteEdges: GraphEdge<EdgeType>[] | undefined
+
+  // Stable empty fallbacks: an injected `v-model` ref is `undefined` until bound (e.g. `<VueFlow>` with no
+  // `:nodes`), so reads must never surface `undefined` (everything iterates `state.nodes`/`.edges`). A
+  // stable reference avoids reactivity churn while unbound; `setState`/`commit` replace it with a real array.
+  const emptyNodes: GraphNode<NodeType>[] = []
+  const emptyEdges: GraphEdge<EdgeType>[] = []
+
   const state = useState<NodeType, EdgeType>()
 
   // Proxy `state.nodes`/`.edges` through the signals via accessors (svelte's `get nodes()` pattern), so
   // every existing `state.nodes` read/write stays unchanged while the backing becomes injectable.
   Object.defineProperty(state, 'nodes', {
-    get: () => nodesSignal.value,
+    get: () => nodesSignal.value ?? emptyNodes,
     set: (value: GraphNode<NodeType>[]) => {
+      lastWriteNodes = value
       nodesSignal.value = value
     },
     enumerable: true,
     configurable: true,
   })
   Object.defineProperty(state, 'edges', {
-    get: () => edgesSignal.value,
+    get: () => edgesSignal.value ?? emptyEdges,
     set: (value: GraphEdge<EdgeType>[]) => {
+      lastWriteEdges = value
       edgesSignal.value = value
     },
     enumerable: true,
@@ -99,6 +113,28 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   const actions = useActions<NodeType, EdgeType>(reactiveState, nodeLookup, parentLookup, edgeLookup)
 
   actions.setState({ ...reactiveState, ...preloadedState } as any)
+
+  // Single-source `v-model` binding. When `<VueFlow>` passes its model refs as signals, the store's
+  // nodes/edges ARE those refs: internal mutations (drag, `addEdges`, `applyNodeChanges`, …) write them
+  // through the `state.nodes`/`.edges` setters, which IS the v-model write-back — the OUT direction is
+  // free, no watcher. The only thing left is adopting an EXTERNAL reassignment (`nodes.value = [...]` in
+  // user land) so the lookups rebuild. The store's own writes are recorded in `lastWriteNodes`; a user
+  // reassignment writes the signal directly, bypassing the setter, so we re-adopt only then (mirrors
+  // svelte-flow re-running `adoptUserNodes` via `$derived` on a reference change — no pause/resume).
+  if (signals?.nodes) {
+    watch(nodesSignal, () => {
+      if (nodesSignal.value && nodesSignal.value !== lastWriteNodes) {
+        actions.setNodes(nodesSignal.value as unknown as NodeType[])
+      }
+    })
+  }
+  if (signals?.edges) {
+    watch(edgesSignal, () => {
+      if (edgesSignal.value && edgesSignal.value !== lastWriteEdges) {
+        actions.setEdges(edgesSignal.value as unknown as EdgeType[])
+      }
+    })
+  }
 
   const flow: VueFlowStore<NodeType, EdgeType> = {
     ...hooksOn,

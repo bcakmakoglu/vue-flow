@@ -1,123 +1,85 @@
-import type { ToRefs } from 'vue'
-import { effectScope, isRef, nextTick, onScopeDispose, toRef, watch } from 'vue'
-import type { WatchPausableReturn } from '@vueuse/core'
-import { watchPausable } from '@vueuse/core'
+import type { Ref, ToRefs } from 'vue'
+import { effectScope, isRef, toRef, watch } from 'vue'
 import type { Connection, Edge, FlowProps, Node, VueFlowStore } from '../types'
 import { isDef } from '../utils'
+
+/**
+ * Two-way bind a `v-model` array ref to the store, identity-in / snapshot-out, with native `watch`.
+ *
+ * Used only when `<VueFlow>` does NOT own its store (it reuses a `<VueFlowProvider>`'s), so the model
+ * refs can't back the store directly. The owned-store path is single-source instead — the model refs
+ * ARE the store's nodes/edges (see `createStore`'s `StoreSignals` binding), needing no sync here.
+ *
+ * - **out** (store → model): snapshot on every membership change; element refs are shared, so per-node
+ *   field mutations surface without a copy.
+ * - **in** (model → store): adopt externally-assigned arrays via `setItems`, ignoring our own snapshot
+ *   (identity check against `lastSnapshot`) — replacing the previous `@vueuse` `watchPausable` flag dance.
+ */
+function syncModelArray<ModelItem, StoreItem>(
+  model: Ref<ModelItem[] | undefined> | undefined,
+  storeItems: Ref<StoreItem[]>,
+  setItems: (items: ModelItem[]) => void,
+) {
+  if (!model) {
+    return
+  }
+
+  // the array we last pushed store → model; the `in` watcher skips it so the snapshot doesn't loop back
+  let lastSnapshot: ModelItem[] | undefined
+
+  watch(
+    [storeItems, () => storeItems.value.length],
+    () => {
+      lastSnapshot = [...storeItems.value] as unknown as ModelItem[]
+      model.value = lastSnapshot
+    },
+    // seed the model only if the store already holds elements (populated by `setState(props)` on create)
+    { immediate: storeItems.value.length > 0 },
+  )
+
+  watch(
+    [model, () => model.value?.length],
+    () => {
+      const next = model.value
+      if (!Array.isArray(next) || next === lastSnapshot) {
+        return
+      }
+
+      setItems(next)
+    },
+    { immediate: true },
+  )
+}
 
 /**
  * Watches props and updates the store accordingly
  *
  * @internal
- * @param models
- * @param props
- * @param store
+ * @param models v-model refs for nodes/edges (bound only when `ownsStore` is false — see {@link syncModelArray})
+ * @param props the `<VueFlow>` props
+ * @param store the store instance
+ * @param ownsStore whether this `<VueFlow>` created the store (then nodes/edges are signal-backed and skipped here)
  */
 export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   models: ToRefs<Pick<FlowProps<NodeType, EdgeType>, 'nodes' | 'edges'>>,
   props: FlowProps<NodeType, EdgeType>,
   store: VueFlowStore<NodeType, EdgeType>,
+  ownsStore = false,
 ) {
   const scope = effectScope(true)
 
   scope.run(() => {
+    // Only when this `<VueFlow>` reuses a provider's store (it didn't create it, so the model refs can't
+    // back it). Owned stores are single-source — the models ARE the store's nodes/edges — so these are skipped.
     const watchNodesValue = () => {
       scope.run(() => {
-        let pauseModel: WatchPausableReturn
-        let pauseStore: WatchPausableReturn
-
-        let immediateStore = !!store.nodes.value.length
-
-        // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable(
-          [models.nodes, () => models.nodes?.value?.length],
-          ([nodes]) => {
-            if (nodes && Array.isArray(nodes)) {
-              pauseStore?.pause()
-
-              store.setNodes(nodes)
-
-              // only trigger store watcher immediately if we actually set any elements to the store
-              if (!pauseStore && !immediateStore && nodes.length) {
-                immediateStore = true
-              } else {
-                pauseStore?.resume()
-              }
-            }
-          },
-          { immediate: true },
-        )
-
-        pauseStore = watchPausable(
-          [store.nodes, () => store.nodes.value.length],
-          ([nodes]) => {
-            if (models.nodes?.value && Array.isArray(models.nodes.value)) {
-              pauseModel?.pause()
-
-              models.nodes.value = [...nodes] as unknown as NodeType[]
-
-              nextTick(() => {
-                pauseModel?.resume()
-              })
-            }
-          },
-          { immediate: immediateStore },
-        )
-
-        onScopeDispose(() => {
-          pauseModel?.stop()
-          pauseStore?.stop()
-        })
+        syncModelArray(models.nodes, store.nodes, (nodes) => store.setNodes(nodes))
       })
     }
 
     const watchEdgesValue = () => {
       scope.run(() => {
-        let pauseModel: WatchPausableReturn
-        let pauseStore: WatchPausableReturn
-
-        let immediateStore = !!store.edges.value.length
-
-        // eslint-disable-next-line prefer-const
-        pauseModel = watchPausable(
-          [models.edges, () => models.edges?.value?.length],
-          ([edges]) => {
-            if (edges && Array.isArray(edges)) {
-              pauseStore?.pause()
-
-              store.setEdges(edges)
-
-              // only trigger store watcher immediately if we actually set any elements to the store
-              if (!pauseStore && !immediateStore && edges.length) {
-                immediateStore = true
-              } else {
-                pauseStore?.resume()
-              }
-            }
-          },
-          { immediate: true },
-        )
-
-        pauseStore = watchPausable(
-          [store.edges, () => store.edges.value.length],
-          ([edges]) => {
-            if (models.edges?.value && Array.isArray(models.edges.value)) {
-              pauseModel?.pause()
-
-              models.edges.value = [...edges] as unknown as EdgeType[]
-
-              nextTick(() => {
-                pauseModel?.resume()
-              })
-            }
-          },
-          { immediate: immediateStore },
-        )
-
-        onScopeDispose(() => {
-          pauseModel?.stop()
-          pauseStore?.stop()
-        })
+        syncModelArray(models.edges, store.edges, (edges) => store.setEdges(edges))
       })
     }
 
@@ -279,8 +241,11 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
     }
 
     const runAll = () => {
-      watchNodesValue()
-      watchEdgesValue()
+      // owned stores bind nodes/edges single-source via signals (createStore); only reused stores sync here
+      if (!ownsStore) {
+        watchNodesValue()
+        watchEdgesValue()
+      }
       watchMinZoom()
       watchMaxZoom()
       watchTranslateExtent()
