@@ -8,8 +8,8 @@ export enum ProcessStatus {
   RUNNING = 'running',
 }
 
-export interface ProcessData {
+export type ProcessData = {
   status: ProcessStatus | null
 }
 
-export type ProcessNode = Node<ProcessData, any, 'process'>
+export type ProcessNode = Node<ProcessData, 'process'>

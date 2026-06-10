@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import type { NodeProps } from '@vue-flow/core'
+import type { Node, NodeProps } from '@vue-flow/core'
 import { Handle, Position } from '@vue-flow/core'
 import type { Colors } from './utils'
 
-interface RGBNodeProps extends Pick<NodeProps<{ color: Colors }>, 'data'> {
-  data: {
-    color: Colors
-  }
+type RGBNode = Node<{ color: Colors }, 'rgb'>
+
+interface RGBNodeProps extends Pick<NodeProps<RGBNode>, 'data'> {
   amount: Record<Colors, number>
 }
 

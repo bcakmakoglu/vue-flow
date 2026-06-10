@@ -1,4 +1,4 @@
-import type { Elements } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
 import { Position } from '@vue-flow/core'
 
 const nodeWidth = 80
@@ -54,8 +54,8 @@ function getNodeId() {
   return (id++).toString()
 }
 
-export function getElements(): Elements {
-  const initialElements = []
+export function getElements(): (Node | Edge)[] {
+  const initialElements: (Node | Edge)[] = []
 
   for (let sourceTargetIndex = 0; sourceTargetIndex < sourceTargetPositions.length; sourceTargetIndex++) {
     const currSourceTargetPos = sourceTargetPositions[sourceTargetIndex]
@@ -76,7 +76,7 @@ export function getElements(): Elements {
         const sourceNode = {
           id: sourceId,
           style,
-          label: sourceLabel,
+          data: { label: sourceLabel },
           position: sourcePosition,
           sourcePosition: currSourceTargetPos.source,
           targetPosition: currSourceTargetPos.target,
@@ -91,7 +91,7 @@ export function getElements(): Elements {
         const targetNode = {
           id: targetId,
           style,
-          label: targetLabel,
+          data: { label: targetLabel },
           position: targetPosition,
           sourcePosition: currSourceTargetPos.source,
           targetPosition: currSourceTargetPos.target,

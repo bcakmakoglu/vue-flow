@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Edge, Elements, Node } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
 import { VueFlow, isEdge, isNode } from '@vue-flow/core'
 
-const initialElements: Elements = [
+const initialElements: (Node | Edge)[] = [
   { id: '1', data: { label: '-' }, position: { x: 100, y: 100 } },
   { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 200 } },
   { id: 'e1-2', source: '1', target: '2' },
@@ -31,7 +31,7 @@ onMounted(updateNode)
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :default-viewport="{ zoom: 1.5 }" :min-zoom="0.2" :max-zoom="4">
     <div class="updatenode__controls">
       <label>label:</label>
       <input v-model="opts.name" @input="updateNode" />

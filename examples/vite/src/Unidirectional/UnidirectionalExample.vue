@@ -1,52 +1,61 @@
 <script lang="ts" setup>
-import type { Edge, Elements, Node } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
 import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow, isEdge, isNode } from '@vue-flow/core'
 import CustomNode from './CustomNode.vue'
 
-const initialElements: Elements = [
+const initialElements: (Node | Edge)[] = [
   {
     id: '00',
     type: 'custom',
+    data: {},
     position: { x: 300, y: 250 },
   },
   {
     id: '01',
     type: 'custom',
+    data: {},
     position: { x: 100, y: 50 },
   },
   {
     id: '02',
     type: 'custom',
+    data: {},
     position: { x: 500, y: 50 },
   },
   {
     id: '03',
     type: 'custom',
+    data: {},
     position: { x: 500, y: 500 },
   },
   {
     id: '04',
     type: 'custom',
+    data: {},
     position: { x: 100, y: 500 },
   },
   {
     id: '10',
     type: 'custom',
+    data: {},
     position: { x: 300, y: 5 },
   },
   {
     id: '20',
     type: 'custom',
+    data: {},
     position: { x: 600, y: 250 },
   },
   {
     id: '30',
     type: 'custom',
+    data: {},
     position: { x: 300, y: 600 },
   },
   {
     id: '40',
     type: 'custom',
+    data: {},
     position: { x: 5, y: 250 },
   },
   {

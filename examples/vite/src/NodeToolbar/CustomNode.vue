@@ -1,13 +1,18 @@
-<script lang="ts" setup>
-import { Handle, NodeToolbar, Position } from '@vue-flow/core'
+<script lang="ts">
+import type { Position } from '@vue-flow/core'
 
-interface NodeData {
-  toolbarVisible: boolean
-  toolbarPosition: Position
+export interface ToolbarNodeData {
+  label?: string
+  toolbarVisible?: boolean
+  toolbarPosition?: Position
 }
+</script>
+
+<script lang="ts" setup>
+import { Handle, NodeToolbar, Position as PositionEnum } from '@vue-flow/core'
 
 interface Props {
-  data: NodeData
+  data: ToolbarNodeData
   label: string
 }
 
@@ -25,6 +30,6 @@ defineProps<Props>()
     {{ label }}
   </div>
 
-  <Handle type="target" :position="Position.Left" />
-  <Handle type="source" :position="Position.Right" />
+  <Handle type="target" :position="PositionEnum.Left" />
+  <Handle type="source" :position="PositionEnum.Right" />
 </template>

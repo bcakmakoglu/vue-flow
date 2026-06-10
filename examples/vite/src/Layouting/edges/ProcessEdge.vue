@@ -4,9 +4,9 @@ import type { EdgeProps } from '@vue-flow/core'
 import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath, useNodesData, useVueFlow } from '@vue-flow/core'
 import type { ProcessNode } from '../nodes'
 import { ProcessStatus } from '../nodes'
-import type { ProcessEdgeData } from '.'
+import type { ProcessEdge } from '.'
 
-const props = defineProps<EdgeProps<ProcessEdgeData>>()
+const props = defineProps<EdgeProps<ProcessEdge>>()
 
 const { updateEdgeData } = useVueFlow()
 

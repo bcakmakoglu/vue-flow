@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Edge, Elements, Node } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
 import { Position, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
-const initialElements: Elements = [
+const initialElements: (Node | Edge)[] = [
   {
     id: '1',
     sourcePosition: Position.Right,

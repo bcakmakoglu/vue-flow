@@ -42,7 +42,7 @@ function onChange({ color: c, val }: { color: Colors; val: number }) {
       </template>
 
       <template #edge-rgb-edge="props">
-        <RGBEdge v-bind="{ ...props, data: { text: color[props.data?.color], ...props.data } }" />
+        <RGBEdge v-bind="{ ...props, data: { text: color[props.data?.color as Colors], ...props.data } }" />
       </template>
     </VueFlow>
   </div>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Edge, Node } from '@vue-flow/core'
-import { Controls, MiniMap, Position, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Controls, MiniMap, Position, VueFlow } from '@vue-flow/core'
 
 import ColorSelectorNode from './ColorSelectorNode.vue'
 
@@ -42,8 +42,6 @@ const edges = ref<Edge[]>([
   { id: 'e2a-3', source: '2', sourceHandle: 'a', target: '3', animated: true, style: { stroke: '#fff' } },
   { id: 'e2b-4', source: '2', sourceHandle: 'b', target: '4', animated: true, style: { stroke: '#fff' } },
 ])
-
-useVueFlow()
 
 function nodeStroke(n: Node) {
   switch (n.type) {

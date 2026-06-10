@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Edge, Elements, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
 import { Background, Controls, MarkerType, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
 function onNodeDragStart(e: FlowEvents['nodeDragStart']) {
@@ -41,7 +41,7 @@ function onLoad(flowInstance: VueFlowStore) {
 }
 
 function onMoveEnd(e: FlowEvents['moveEnd']) {
-  return console.log('zoom/move end', e.flowTransform)
+  return console.log('zoom/move end', e.viewport)
 }
 function onEdgeContextMenu(e: FlowEvents['edgeContextMenu']) {
   return console.log('edge context menu', e)
@@ -59,7 +59,7 @@ function onEdgeDoubleClick(e: FlowEvents['edgeDoubleClick']) {
   return console.log('edge double click', e)
 }
 
-const initialElements: Elements = [
+const initialElements: (Node | Edge)[] = [
   {
     id: '1',
     type: 'input',

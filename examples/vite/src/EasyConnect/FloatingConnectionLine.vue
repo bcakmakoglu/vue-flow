@@ -8,7 +8,7 @@ const props = defineProps<ConnectionLineProps>()
 const edgePath = computed(() =>
   getStraightPath({
     ...props,
-    sourceX: props.sourceX - props.sourceNode.dimensions.width / 2,
+    sourceX: props.sourceX - (props.sourceNode.measured?.width ?? 0) / 2,
   }),
 )
 </script>

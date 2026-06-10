@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { GraphNode } from '@vue-flow/core'
+import type { Node } from '@vue-flow/core'
 import { Handle, Position, useNodeConnections, useNodesData } from '@vue-flow/core'
 import type { OperatorNodeData, ValueNodeData } from './types'
 import { mathFunctions } from './utils'
@@ -19,11 +19,11 @@ const operatorSourceConnections = useNodeConnections({
   nodeId: () => sourceConnections.value[0]?.source,
 })
 
-const operatorData = useNodesData<GraphNode<OperatorNodeData>>(() =>
+const operatorData = useNodesData<Node<OperatorNodeData, 'operator'>>(() =>
   sourceConnections.value.map((connection) => connection.source),
 )
 
-const valueData = useNodesData<GraphNode<ValueNodeData>>(() =>
+const valueData = useNodesData<Node<ValueNodeData, 'value'>>(() =>
   operatorSourceConnections.value.map((connection) => connection.source),
 )
 

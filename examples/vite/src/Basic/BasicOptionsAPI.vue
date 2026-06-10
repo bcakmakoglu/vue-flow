@@ -1,8 +1,6 @@
 <script lang="ts">
-import type { Edge, Elements, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
 import { Background, Controls, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
-
-import type { UnwrapNestedRefs } from 'vue'
 
 export default defineComponent({
   name: 'BasicOptionsAPI',
@@ -17,7 +15,7 @@ export default defineComponent({
         { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, class: 'light' },
         { id: 'e1-2', source: '1', target: '2', animated: true },
         { id: 'e1-3', source: '1', target: '3' },
-      ] as Elements,
+      ] as (Node | Edge)[],
     }
   },
   computed: {
@@ -33,7 +31,7 @@ export default defineComponent({
       console.log(this.instance?.toObject())
     },
     resetTransform() {
-      this.instance?.setTransform({ x: 0, y: 0, zoom: 1 })
+      this.instance?.setViewport({ x: 0, y: 0, zoom: 1 })
     },
     toggleclass() {
       this.elements.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
@@ -51,7 +49,7 @@ export default defineComponent({
     onNodeDragStop(e: FlowEvents['nodeDragStop']) {
       console.log('drag stop', e)
     },
-    onInit(instance: UnwrapNestedRefs<FlowEvents['init']>) {
+    onInit(instance: FlowEvents['init']) {
       instance.fitView()
       this.instance = instance
     },

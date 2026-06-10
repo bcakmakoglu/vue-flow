@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { NodeProps } from '@vue-flow/core'
+import type { Node, NodeProps } from '@vue-flow/core'
 import { Handle, Position, useVueFlow } from '@vue-flow/core'
 import type { ValueNodeData } from './types'
 
-const props = defineProps<Pick<NodeProps<ValueNodeData>, 'id' | 'data'>>()
+const props = defineProps<Pick<NodeProps<Node<ValueNodeData, 'value'>>, 'id' | 'data'>>()
 
 const { updateNodeData } = useVueFlow()
 

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Edge, Elements, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
-import { ConnectionMode, Controls, VueFlow, isEdge, isNode, useVueFlow } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import { ConnectionMode, Controls, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
-const initialElements: Elements = [
+const initialElements: (Node | Edge)[] = [
   {
     id: '1',
     type: 'input',
@@ -23,10 +23,11 @@ const initialElements: Elements = [
   { id: 'e1-2', source: '1', target: '2', label: 'Updatable target', updatable: 'target' },
 ]
 
-const { updateEdge } = useVueFlow()
-
 const nodes = ref<Node[]>(initialElements.filter(isNode))
 const edges = ref<Edge[]>(initialElements.filter(isEdge))
+
+// imperative store access for the component that renders `<VueFlow>` (pure-provider model)
+const flow = ref<VueFlowStore>()
 
 function onLoad(flowInstance: VueFlowStore) {
   return flowInstance.fitView()
@@ -41,12 +42,13 @@ function onEdgeUpdateEnd({ edge }: FlowEvents['edgeUpdateEnd']) {
 }
 
 function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
-  return updateEdge(edge, connection)
+  return flow.value?.updateEdge(edge, connection)
 }
 </script>
 
 <template>
   <VueFlow
+    ref="flow"
     v-model:nodes="nodes"
     v-model:edges="edges"
     :snap-to-grid="true"

@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import type { Edge, Node } from '@vue-flow/core'
 import { Position, VueFlow } from '@vue-flow/core'
+import type { ToolbarNodeData } from './CustomNode.vue'
 import CustomNode from './CustomNode.vue'
+
+type ToolbarNode = Node<ToolbarNodeData, 'custom'>
 
 const defaultNodeStyle = {
   border: '2px solid #ff0071',
@@ -9,7 +12,7 @@ const defaultNodeStyle = {
   borderRadius: '20px',
 }
 
-const nodes = ref<Node[]>([
+const nodes = ref<ToolbarNode[]>([
   {
     id: '1',
     type: 'custom',

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
-import { Background, Controls, MiniMap, Panel, VueFlow, isNode, useVueFlow } from '@vue-flow/core'
+import type { Connection, Edge, Node, VueFlowStore } from '@vue-flow/core'
+import { Background, Controls, MiniMap, Panel, VueFlow, isNode } from '@vue-flow/core'
 
 const nodes = ref<Node[]>([
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
@@ -14,12 +14,13 @@ const edges = ref<Edge[]>([
   { id: 'e1-3', source: '1', target: '3' },
 ])
 
-const { onConnect, addEdges, setViewport, toObject } = useVueFlow({
-  minZoom: 0.2,
-  maxZoom: 4,
-})
+// `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to reach
+// the store from the component that renders the flow (no `useVueFlow()` outside a provider needed).
+const flow = ref<VueFlowStore>()
 
-onConnect(addEdges)
+function onConnect(connection: Connection) {
+  flow.value?.addEdges([connection])
+}
 
 function updatePos() {
   return nodes.value.forEach((el) => {
@@ -33,10 +34,10 @@ function updatePos() {
 }
 
 function logToObject() {
-  return console.log(toObject())
+  return console.log(flow.value?.toObject())
 }
 function resetViewport() {
-  return setViewport({ x: 0, y: 0, zoom: 1 })
+  return flow.value?.setViewport({ x: 0, y: 0, zoom: 1 })
 }
 function toggleclass() {
   return nodes.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
@@ -44,7 +45,16 @@ function toggleclass() {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" class="vue-flow-basic-example" fit-view-on-init>
+  <VueFlow
+    ref="flow"
+    :nodes="nodes"
+    :edges="edges"
+    :min-zoom="0.2"
+    :max-zoom="4"
+    class="vue-flow-basic-example"
+    fit-view-on-init
+    @connect="onConnect"
+  >
     <Background />
     <MiniMap />
     <Controls />

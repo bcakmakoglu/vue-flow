@@ -1,9 +1,9 @@
-export interface ValueNodeData {
+export type ValueNodeData = {
   value: number
 }
 
 export type Operator = '+' | '-' | '*' | '/'
 
-export interface OperatorNodeData {
+export type OperatorNodeData = {
   operator: Operator
 }

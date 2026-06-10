@@ -2,10 +2,10 @@
 import { computed, toRef } from 'vue'
 import type { NodeProps } from '@vue-flow/core'
 import { Handle, useNodeConnections } from '@vue-flow/core'
-import type { ProcessData } from '.'
+import type { ProcessNode } from '.'
 import { ProcessStatus } from '.'
 
-const props = defineProps<NodeProps<ProcessData>>()
+const props = defineProps<NodeProps<ProcessNode>>()
 
 const sourceConnections = useNodeConnections({
   handleType: 'target',

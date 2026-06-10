@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { EdgeProps, Position } from '@vue-flow/core'
+import type { Edge, EdgeProps, Position } from '@vue-flow/core'
 import { EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core'
 import type { CSSProperties } from 'vue'
 
-interface CustomEdgeProps<T = any> extends EdgeProps<T> {
+interface CustomEdgeProps<EdgeType extends Edge = Edge> extends EdgeProps<EdgeType> {
   id: string
   sourceX: number
   sourceY: number
@@ -11,7 +11,6 @@ interface CustomEdgeProps<T = any> extends EdgeProps<T> {
   targetY: number
   sourcePosition: Position
   targetPosition: Position
-  data: T
   markerEnd: string
   style?: CSSProperties
 }

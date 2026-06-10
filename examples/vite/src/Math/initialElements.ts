@@ -24,6 +24,7 @@ export const initialNodes: Node[] = [
     id: '4',
     position: { x: 700, y: 40 },
     type: 'result',
+    data: {},
   },
 ]
 

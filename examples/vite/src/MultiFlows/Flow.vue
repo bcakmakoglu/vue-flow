@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Edge, Elements, Node } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core'
 import { Background, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
-const initialElements: Elements = [
+const initialElements: (Node | Edge)[] = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
   { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, class: 'light' },
   { id: '3', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, class: 'light' },

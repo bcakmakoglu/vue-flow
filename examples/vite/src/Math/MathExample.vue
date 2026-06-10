@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Background, VueFlow } from '@vue-flow/core'
 import { initialEdges, initialNodes } from './initialElements'
+import type { OperatorNodeData, ValueNodeData } from './types'
 import ValueNode from './ValueNode.vue'
 import OperatorNode from './OperatorNode.vue'
 import ResultNode from './ResultNode.vue'
@@ -13,12 +14,14 @@ const edges = ref(initialEdges)
 
 <template>
   <VueFlow class="math-flow" :nodes="nodes" :edges="edges" fit-view-on-init>
+    <!-- node slots are keyed by `node-${type | string}`, so their `data` widens to `Record<string, unknown>`;
+         narrow it back to each node's concrete data type at the call site. -->
     <template #node-value="props">
-      <ValueNode :id="props.id" :data="props.data" />
+      <ValueNode :id="props.id" :data="props.data as ValueNodeData" />
     </template>
 
     <template #node-operator="props">
-      <OperatorNode :id="props.id" :data="props.data" />
+      <OperatorNode :id="props.id" :data="props.data as OperatorNodeData" />
     </template>
 
     <template #node-result="props">

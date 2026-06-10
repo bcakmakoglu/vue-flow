@@ -1,22 +1,9 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
-import type { EdgeProps, GraphNode, MarkerType } from '@vue-flow/core'
+import type { EdgeProps } from '@vue-flow/core'
 import { BaseEdge, getBezierPath } from '@vue-flow/core'
 import { getEdgeParams } from './floating-edge-utils'
 
-interface FloatingEdgeProps extends EdgeProps {
-  id: string
-  source: string
-  target: string
-  markerEndId?: string
-  sourceNode: GraphNode
-  targetNode: GraphNode
-  style?: CSSProperties
-  markerEnd: MarkerType
-  markerStart: MarkerType
-}
-
-const props = defineProps<FloatingEdgeProps>()
+const props = defineProps<EdgeProps>()
 
 const edgeParams = computed(() => getEdgeParams(props.sourceNode, props.targetNode))
 

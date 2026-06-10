@@ -25,7 +25,7 @@ interface UseRunProcessOptions {
  * @param options.cancelOnError Whether to cancel the process if an error occurs.
  */
 export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRunProcessOptions) {
-  const { updateNodeData, getConnectedEdges } = useVueFlow()
+  const { updateNodeData, getConnectedEdges, findNode } = useVueFlow<ProcessNode>()
 
   const graph = toRef(() => toValue(dagreGraph))
 
@@ -53,7 +53,9 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
     upcomingTasks.add(nodeId)
 
     // get all incoming edges to this node
-    const incomers = (getConnectedEdges(nodeId) as ProcessEdge[]).filter((connection) => connection.target === nodeId)
+    const node = findNode(nodeId)
+    const connectedEdges = node ? (getConnectedEdges([node]) as ProcessEdge[]) : []
+    const incomers = connectedEdges.filter((connection) => connection.target === nodeId)
 
     // wait for edge animations to finish before starting the process
     await Promise.all(incomers.map((incomer) => until(() => !incomer.data?.isAnimating)))
@@ -216,7 +218,7 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
    * @param status The new status of the node.
    */
   function updateNodeStatus(nodeId: string, status: ProcessData['status']) {
-    updateNodeData<ProcessData>(nodeId, { status })
+    updateNodeData(nodeId, { status })
   }
 
   return { run, stop, reset, isRunning }

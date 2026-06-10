@@ -11,8 +11,8 @@ function getNodeIntersection(intersectionNode: GraphNode, targetNode: GraphNode)
   } = intersectionNode
   const targetPosition = targetNode.internals.positionAbsolute
 
-  const w = intersectionNodeWidth / 2
-  const h = intersectionNodeHeight / 2
+  const w = (intersectionNodeWidth ?? 0) / 2
+  const h = (intersectionNodeHeight ?? 0) / 2
 
   const x2 = intersectionNodePosition.x + w
   const y2 = intersectionNodePosition.y + h
@@ -41,13 +41,13 @@ function getEdgePosition(node: GraphNode, intersectionPoint: XYPosition) {
   if (px <= nx + 1) {
     return Position.Left
   }
-  if (px >= nx + n.width - 1) {
+  if (px >= nx + (n.width ?? 0) - 1) {
     return Position.Right
   }
   if (py <= ny + 1) {
     return Position.Top
   }
-  if (py >= n.y + n.height - 1) {
+  if (py >= n.y + (n.height ?? 0) - 1) {
     return Position.Bottom
   }
 
