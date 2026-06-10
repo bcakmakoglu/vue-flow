@@ -1,5 +1,5 @@
 import { provide, useId, watch } from 'vue'
-import type { EdgeChange, FlowOptions, Node, NodeChange, VueFlowStore } from '../types'
+import type { Edge, EdgeChange, FlowOptions, Node, NodeChange, VueFlowStore } from '../types'
 import { VueFlow } from '../context'
 import { createVueFlowStore } from '../store/createStore'
 import type { StoreSignals } from '../store/createStore'
@@ -13,12 +13,12 @@ import type { StoreSignals } from '../store/createStore'
  *
  * @internal
  */
-export function useCreateVueFlow<NodeType extends Node = Node>(
-  options?: FlowOptions<NodeType>,
-  signals?: StoreSignals<NodeType>,
-): VueFlowStore<NodeType> {
+export function useCreateVueFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  options?: FlowOptions<NodeType, EdgeType>,
+  signals?: StoreSignals<NodeType, EdgeType>,
+): VueFlowStore<NodeType, EdgeType> {
   // the flow id is only an aria/debug label (not a lookup key), so default it to Vue's SSR-safe `useId()`
-  const store = createVueFlowStore<NodeType>(options?.id ?? useId(), options, undefined, signals)
+  const store = createVueFlowStore<NodeType, EdgeType>(options?.id ?? useId(), options, undefined, signals)
 
   /**
    * Register default change handlers so `addNodes`/`addEdges`/etc. mutate the store. Disabling
@@ -31,7 +31,7 @@ export function useCreateVueFlow<NodeType extends Node = Node>(
         store.applyNodeChanges(changes as NodeChange<NodeType>[])
       }
       const edgesChangeHandler = (changes: EdgeChange[]) => {
-        store.applyEdgeChanges(changes)
+        store.applyEdgeChanges(changes as EdgeChange<EdgeType>[])
       }
 
       if (shouldApplyDefault) {

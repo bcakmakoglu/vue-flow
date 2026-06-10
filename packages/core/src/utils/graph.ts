@@ -1,15 +1,5 @@
 import { markRaw } from 'vue'
-import type {
-  Connection,
-  DefaultEdgeOptions,
-  Edge,
-  ElementData,
-  GraphEdge,
-  GraphNode,
-  Node,
-  NodeLookup,
-  XYZPosition,
-} from '../types'
+import type { Connection, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node, NodeLookup, XYZPosition } from '../types'
 import { isDef } from '.'
 
 export {
@@ -22,11 +12,11 @@ export {
   getConnectedEdges,
 } from '@xyflow/system'
 
-export function isEdge<Data = ElementData>(element: unknown): element is Edge<Data> {
+export function isEdge<EdgeType extends Edge = Edge>(element: unknown): element is EdgeType {
   return !!element && typeof element === 'object' && 'id' in element && 'source' in element && 'target' in element
 }
 
-export function isGraphEdge<Data = ElementData>(element: unknown): element is GraphEdge<Data> {
+export function isGraphEdge<EdgeType extends Edge = Edge>(element: unknown): element is GraphEdge<EdgeType> {
   return isEdge(element) && 'sourceNode' in element && 'targetNode' in element
 }
 

@@ -97,14 +97,14 @@ export interface FlowExportObject {
   viewport: Viewport
 }
 
-export type FlowOptions<NodeType extends Node = Node> = FlowProps<NodeType>
+export type FlowOptions<NodeType extends Node = Node, EdgeType extends Edge = Edge> = FlowProps<NodeType, EdgeType>
 
-export interface FlowProps<NodeType extends Node = Node> {
+export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
   id?: string
   nodes?: NodeType[]
-  edges?: Edge[]
+  edges?: EdgeType[]
   /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
-  edgeTypes?: EdgeTypesObject
+  edgeTypes?: EdgeTypesObject<EdgeType>
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
   nodeTypes?: NodeTypesObject<NodeType>
   connectionMode?: ConnectionMode
@@ -185,9 +185,9 @@ export interface FlowProps<NodeType extends Node = Node> {
   autoPanSpeed?: number
 }
 
-export interface FlowEmits<NodeType extends Node = Node> {
+export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
   (event: 'nodesChange', changes: NodeChange<NodeType>[]): void
-  (event: 'edgesChange', changes: EdgeChange[]): void
+  (event: 'edgesChange', changes: EdgeChange<EdgeType>[]): void
   (event: 'nodesInitialized'): void
   (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
   (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
@@ -231,15 +231,15 @@ export interface FlowEmits<NodeType extends Node = Node> {
   (event: 'updateNodeInternals'): void
   (event: 'error', error: VueFlowError): void
 
-  (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent): void
-  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
-  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent): void
+  (event: 'edgeContextMenu', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'edgeMouseEnter', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'edgeMouseMove', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent<EdgeType>): void
+  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
 
   (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
   (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
@@ -253,7 +253,7 @@ export interface FlowEmits<NodeType extends Node = Node> {
 
   /** v-model event definitions */
   (event: 'update:nodes', value: GraphNode<NodeType>[]): void
-  (event: 'update:edges', value: GraphEdge[]): void
+  (event: 'update:edges', value: GraphEdge<EdgeType>[]): void
 }
 
 export type NodeSlots<NodeType extends Node = Node> = Record<
@@ -261,10 +261,13 @@ export type NodeSlots<NodeType extends Node = Node> = Record<
   (nodeProps: NodeProps<NodeType>) => any
 >
 
-export interface EdgeSlots extends Record<`edge-${string}`, (edgeProps: EdgeProps) => any> {}
+export type EdgeSlots<EdgeType extends Edge = Edge> = Record<
+  `edge-${NonNullable<EdgeType['type']> | string}`,
+  (edgeProps: EdgeProps<EdgeType>) => any
+>
 
-export type FlowSlots<NodeType extends Node = Node> = NodeSlots<NodeType> &
-  EdgeSlots & {
+export type FlowSlots<NodeType extends Node = Node, EdgeType extends Edge = Edge> = NodeSlots<NodeType> &
+  EdgeSlots<EdgeType> & {
     'connection-line': (connectionLineProps: ConnectionLineProps) => any
     'zoom-pane': () => any
     'default': () => any

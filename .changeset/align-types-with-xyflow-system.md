@@ -21,6 +21,12 @@ Align core types and change-pipeline shapes with `@xyflow/system` (the framework
 
 The renderer now forwards the full `NodeProps` surface (`selectable`, `deletable`, `draggable`, `isConnectable`, `positionAbsoluteX`, `positionAbsoluteY`, `parentId`) so custom-node components see the same props they would in xyflow/react.
 
+### `EdgeType` generic (mirrors `NodeType`)
+
+`Node` and `Edge` now reuse `@xyflow/system`'s `NodeBase` / `EdgeBase` as their foundation (`Node = NodeBase & {…vue}`, `DefaultEdge extends EdgeBase`), the same way `xyflow/react` does — so the shared fields stay in lockstep with the engine instead of being hand-maintained.
+
+The store and its public types now carry an `EdgeType extends Edge = Edge` generic alongside the existing `NodeType` (xyflow/react order: `<NodeType, EdgeType>`), with defaults so existing untyped usage is unchanged. `useVueFlow<NodeType, EdgeType>()` now returns a fully-typed store: `edges`, `findEdge`, `addEdges`, `updateEdge`, `updateEdgeData`, the edge lookup, and the edge-related hooks/events/slots are all parameterized on your `EdgeType` (e.g. `useVueFlow<Node, MyEdge>().findEdge(id)` returns `GraphEdge<MyEdge> | undefined`). `GraphEdge` is now `GraphEdge<EdgeType>` (parameterized on the user edge, like `GraphNode<NodeType>`) rather than `GraphEdge<Data, Type>`.
+
 ### Change types
 
 The `NodeChange` / `EdgeChange` families mirror `@xyflow/system` exactly (no `replace` variant yet):

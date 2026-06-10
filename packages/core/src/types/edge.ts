@@ -1,3 +1,4 @@
+import type { EdgeBase } from '@xyflow/system'
 import type { CSSProperties, Component, SVGAttributes, VNode } from 'vue'
 import type { ElementData, Position, Styles } from './flow'
 import type { GraphNode } from './node'
@@ -58,50 +59,30 @@ export interface EdgeLabelOptions {
   labelBgBorderRadius?: number
 }
 
-export interface DefaultEdge<Data = ElementData, Type extends string = string> extends EdgeLabelOptions {
-  /** Unique edge id */
-  id: string
+/**
+ * User-facing edge type — reuses `@xyflow/system`'s `EdgeBase` (id, source/target(+handles), type,
+ * animated, markers, data, deletable/selectable/selected, hidden, zIndex, ariaLabel, interactionWidth)
+ * plus vue-flow-specific fields, mirroring how xyflow/react does `Edge = EdgeBase & EdgeLabelOptions & {…}`.
+ */
+export interface DefaultEdge<Data extends Record<string, unknown> = ElementData, Type extends string = string>
+  extends EdgeBase<Data, Type>,
+    EdgeLabelOptions {
   /** An edge label */
   label?: string | VNode | Component<EdgeTextProps>
-  /** Edge type, can be a default type or a custom type */
-  type?: Type
-  /** Source node id */
-  source: string
-  /** Target node id */
-  target: string
-  /** Source handle id */
-  sourceHandle?: string | null
-  /** Target handle id */
-  targetHandle?: string | null
-  /** Animated edge */
-  animated?: boolean
-  /** EdgeMarker */
+  /** EdgeMarker — vue-flow's `EdgeMarkerType` (own `MarkerType` enum + `EdgeMarker`), overriding `EdgeBase`'s */
   markerStart?: EdgeMarkerType
   /** EdgeMarker */
   markerEnd?: EdgeMarkerType
   /** Disable/enable updating edge */
   updatable?: EdgeUpdatable
-  /** Disable/enable selecting edge */
-  selectable?: boolean
   /** Disable/enable focusing edge (a11y) */
   focusable?: boolean
-  /** Disable/enable deleting edge */
-  deletable?: boolean
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
   class?: string | string[] | Record<string, any>
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
   style?: Styles
-  /** Is edge hidden */
-  hidden?: boolean
-  /** Radius of mouse event triggers (to ease selecting edges), defaults to 2 */
-  interactionWidth?: number
   /** Overwrites current edge type */
   template?: EdgeComponent
-  /** Additional data that is passed to your custom components */
-  data?: Data
-  /** Aria label for edge (a11y) */
-  zIndex?: number
-  ariaLabel?: string
   /**
    * General escape hatch for adding custom attributes to the edge's DOM element.
    */
@@ -127,7 +108,7 @@ export interface SmoothStepPathOptions {
   borderRadius?: number
 }
 
-export type SmoothStepEdgeType<Data = ElementData> = DefaultEdge<Data> & {
+export type SmoothStepEdgeType<Data extends Record<string, unknown> = ElementData> = DefaultEdge<Data> & {
   type: 'smoothstep'
   pathOptions?: SmoothStepPathOptions
 }
@@ -136,12 +117,12 @@ export interface BezierPathOptions {
   curvature?: number
 }
 
-export type BezierEdgeType<Data = ElementData> = DefaultEdge<Data> & {
+export type BezierEdgeType<Data extends Record<string, unknown> = ElementData> = DefaultEdge<Data> & {
   type: 'default'
   pathOptions?: BezierPathOptions
 }
 
-export type Edge<Data = ElementData, Type extends string = string> =
+export type Edge<Data extends Record<string, unknown> = ElementData, Type extends string = string> =
   | DefaultEdge<Data, Type>
   | SmoothStepEdgeType<Data>
   | BezierEdgeType<Data>
@@ -155,15 +136,17 @@ export interface EdgePositions {
   targetY: number
 }
 
-/** Internal edge type */
-export type GraphEdge<Data = ElementData, Type extends string = string> = Edge<Data> & {
+/**
+ * Internal edge type — vue-flow-specific enrichment of a user `Edge` (resolved source/target nodes,
+ * computed positions). There is no `@xyflow/system` "internal edge" to mirror (system stores edges
+ * as-is), so this is parameterized on the user `EdgeType`, like `GraphNode<NodeType>`.
+ */
+export type GraphEdge<EdgeType extends Edge = Edge> = EdgeType & {
   selected: boolean
   sourceNode: GraphNode
   targetNode: GraphNode
-  data: Data
   /** @deprecated will be removed in the next major version */
   events: Partial<EdgeEventsHandler>
-  type: Type
 } & EdgePositions
 
 /**

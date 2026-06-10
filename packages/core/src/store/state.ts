@@ -1,10 +1,10 @@
 import { PanOnScrollMode, isMacOs } from '@xyflow/system'
-import type { FlowProps, Node, State } from '../types'
+import type { Edge, FlowProps, Node, State } from '../types'
 import { ConnectionLineType, ConnectionMode, SelectionMode } from '../types'
 
 import { createHooks } from './hooks'
 
-export function useState<NodeType extends Node = Node>(): State<NodeType> {
+export function useState<NodeType extends Node = Node, EdgeType extends Edge = Edge>(): State<NodeType, EdgeType> {
   return {
     vueFlowRef: null,
     viewportRef: null,

@@ -2,7 +2,7 @@ import type { ToRefs } from 'vue'
 import { effectScope, isRef, nextTick, onScopeDispose, toRef, watch } from 'vue'
 import type { WatchPausableReturn } from '@vueuse/core'
 import { watchPausable } from '@vueuse/core'
-import type { Connection, FlowProps, Node, VueFlowStore } from '../types'
+import type { Connection, Edge, FlowProps, Node, VueFlowStore } from '../types'
 import { isDef } from '../utils'
 
 /**
@@ -13,10 +13,10 @@ import { isDef } from '../utils'
  * @param props
  * @param store
  */
-export function useWatchProps<NodeType extends Node = Node>(
-  models: ToRefs<Pick<FlowProps<NodeType>, 'nodes' | 'edges'>>,
-  props: FlowProps<NodeType>,
-  store: VueFlowStore<NodeType>,
+export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  models: ToRefs<Pick<FlowProps<NodeType, EdgeType>, 'nodes' | 'edges'>>,
+  props: FlowProps<NodeType, EdgeType>,
+  store: VueFlowStore<NodeType, EdgeType>,
 ) {
   const scope = effectScope(true)
 
@@ -104,7 +104,7 @@ export function useWatchProps<NodeType extends Node = Node>(
             if (models.edges?.value && Array.isArray(models.edges.value)) {
               pauseModel?.pause()
 
-              models.edges.value = [...edges]
+              models.edges.value = [...edges] as unknown as EdgeType[]
 
               nextTick(() => {
                 pauseModel?.resume()

@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { fitViewport, rendererPointToPoint } from '@xyflow/system'
-import type { Node, NodeLookup, Project, State, ViewportFunctions } from '../types'
+import type { Edge, Node, NodeLookup, Project, State, ViewportFunctions } from '../types'
 import { getViewportForBounds, pointToRendererPoint, warn } from '../utils'
 
 export interface ViewportHelper extends ViewportFunctions {
@@ -38,7 +38,10 @@ const initialViewportHelper: ViewportHelper = {
  * @internal
  * @param state
  */
-export function useViewportHelper<NodeType extends Node = Node>(state: State<NodeType>, nodeLookup: NodeLookup<NodeType>) {
+export function useViewportHelper<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  state: State<NodeType, EdgeType>,
+  nodeLookup: NodeLookup<NodeType>,
+) {
   return computed<ViewportHelper>(() => {
     const panZoom = state.panZoom
     const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height
