@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, provide, ref, toRef, useAttrs, watch } from 'vue'
 import type { XYMinimapInstance } from '@xyflow/system'
-import { XYMinimap, getBoundsOfRects, getNodeDimensions } from '@xyflow/system'
+import { XYMinimap, getBoundsOfRects, getConnectedEdges, getNodeDimensions, getNodesBounds } from '@xyflow/system'
 import type { GraphNode } from '../../types'
 import { useVueFlow } from '../../composables'
-import { getConnectedEdges, getNodesBounds } from '../../utils'
 import Panel from '../Panel/Panel.vue'
 import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode.vue'

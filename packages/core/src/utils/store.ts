@@ -1,6 +1,6 @@
 import { markRaw, toRaw, unref } from 'vue'
 import type { NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system'
-import { adoptUserNodes } from '@xyflow/system'
+import { adoptUserNodes, getEdgeId } from '@xyflow/system'
 import type {
   Actions,
   Connection,
@@ -19,9 +19,7 @@ import type {
   ValidConnectionFunc,
   VueFlowStore,
 } from '../types'
-import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge } from '.'
-
-export { areSetsEqual } from '@xyflow/system'
+import { ErrorCode, VueFlowError, connectionExists, isEdge, isNode, parseEdge } from '.'
 
 type NonUndefined<T> = T extends undefined ? never : T
 
@@ -227,8 +225,6 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeL
     addConnectionToLookup('target', connection, sourceKey, connectionLookup, targetNode, targetHandle)
   }
 }
-
-export { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system'
 
 /**
  * @internal

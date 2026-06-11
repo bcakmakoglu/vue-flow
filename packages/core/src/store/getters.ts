@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import type { DeepReadonly } from 'vue'
+import { getNodesInside, isEdgeVisible } from '@xyflow/system'
 import type { ComputedGetters, Edge, EdgeLookup, GraphEdge, Node, NodeLookup, State } from '../types'
-import { getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
 export function useGetters<NodeType extends Node = Node, EdgeType extends Edge = Edge>(

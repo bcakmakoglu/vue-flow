@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { computed, ref, toValue, watch } from 'vue'
+import { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system'
 import type { HandleType, NodeConnection } from '../types'
-import { areConnectionMapsEqual, handleConnectionChange } from '../utils'
 import { useNodeId } from './useNodeId'
 import { useVueFlow } from './useVueFlow'
 
