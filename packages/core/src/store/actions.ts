@@ -262,16 +262,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       }
 
       if (changed) {
+        // drag items already carry the parent-RELATIVE position: XYDrag's `calculateNodePosition` and the
+        // keyboard path's `calcNextPosition` both subtract the parent offset before handing items here.
         change.position = node.position
-
-        if (node.parentId) {
-          const parentNode = getInternalNode(node.parentId)
-
-          change.position = {
-            x: change.position.x - (parentNode?.internals.positionAbsolute?.x ?? 0),
-            y: change.position.y - (parentNode?.internals.positionAbsolute?.y ?? 0),
-          }
-        }
 
         if (expandParentId) {
           // pin the child's relative position to >= 0; the parent grows to contain it instead
@@ -680,7 +673,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
       commitEdges(state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge)))
 
-      updateConnectionLookup(state.connectionLookup, edgeLookup, [validEdge])
+      // rebuild from ALL edges — `updateConnectionLookup` clears the lookup before repopulating, so
+      // passing only the updated edge would drop every other edge's connections
+      updateConnectionLookup(state.connectionLookup, edgeLookup, state.edges)
 
       return validEdge
     }
