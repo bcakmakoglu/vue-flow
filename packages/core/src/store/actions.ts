@@ -1,5 +1,5 @@
-import { markRaw, toRaw } from 'vue'
 import type { DeepReadonly } from 'vue'
+import { markRaw, toRaw } from 'vue'
 import {
   clampPosition,
   clampPositionToParent,
@@ -92,7 +92,11 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     for (const [id, internal] of systemNodeLookup) {
       if (rawNodeLookup.get(id) !== internal) {
-        nodeLookup.set(id, internal)
+        // `markRaw` exactly the entries that are new since the last sync — `adoptUserNodes` rebuilds
+        // changed nodes as fresh plain objects and `updateAbsolutePositions` clones moved children, and
+        // without the mark the reactive lookup would deep-proxy them on read. The per-node render
+        // computed still re-renders on the `.set` (key-level reactivity is independent of value markRaw).
+        nodeLookup.set(id, markRaw(internal))
       }
     }
 
@@ -136,13 +140,11 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
    * `checkEquality` would re-adopt the stale `InternalNode`.
    */
   function commitNodes(nodes: NodeType[]) {
-    const validNodes = adoptNodes(nodes, systemNodeLookup, systemParentLookup, state.hooks.error.trigger, {
+    state.nodes = adoptNodes(nodes, systemNodeLookup, systemParentLookup, state.hooks.error.trigger, {
       nodeOrigin: [0, 0],
       nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
     })
-
-    state.nodes = validNodes
 
     recomputeAbsolutePositions()
   }
@@ -177,17 +179,16 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   /**
-   * Recompute parent-aware `internals.positionAbsolute`/`z` for every node via `@xyflow/system`'s
-   * `updateAbsolutePositions`. The lookup is the canonical home of the enriched `InternalNode`s/`internals`,
-   * so this is lookup-only: `updateAbsolutePositions` writes `internals.positionAbsolute` directly onto the
-   * lookup InternalNodes (root nodes in place, moved children via clone-on-`.set`, which the per-node render
-   * computed picks up by reference). There is NO write-back onto `state.nodes` — those hold the raw user
-   * `Node`s. This replaces the per-node positionAbsolute watcher that used to live in `NodeWrapper`.
+   * Recompute parent-aware `internals.positionAbsolute` on the system lookup, then mirror into the
+   * reactive lookups (`syncLookups`). Lookup-only: there is NO write-back onto `state.nodes` — those hold
+   * the raw user `Node`s. This replaces the per-node positionAbsolute watcher that used to live in
+   * `NodeWrapper`.
    *
-   * System does NOT set root-node `z` (only children get it via the parent chain), so we apply the
-   * elevate-on-select `z` for roots here, matching system's `calculateZ`.
+   * Adoption (`adoptUserNodes`) already computes clamped positions and `z` (via `calculateZ`, including
+   * select-elevation) for every changed node, so the full `updateAbsolutePositions` pass only runs for
+   * graphs with child nodes — or when `forceFullPass` says inputs changed without a re-adoption.
    */
-  function recomputeAbsolutePositions() {
+  function recomputeAbsolutePositions(forceFullPass = false) {
     // `@xyflow/system` has no concept of vue-flow's `CoordinateExtentRange` (`{ range, padding }`) and
     // its `isCoordinateExtent` treats any non-`'parent'`/non-nullish value as a coordinate-extent array,
     // so it would index `extent[0]` on the range object and crash. Transiently coerce such extents to
@@ -207,26 +208,21 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       }
     }
 
-    updateAbsolutePositions(systemNodeLookup, systemParentLookup, {
-      nodeOrigin: [0, 0],
-      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
-      elevateNodesOnSelect: state.elevateNodesOnSelect,
-    })
+    // `adoptUserNodes` already computed the clamped `positionAbsolute` + `z` for every changed node
+    // (reused nodes keep their still-valid values) and cascades parented nodes inline, so after a commit
+    // the full pass is only needed when child nodes exist — a moved parent must cascade to REUSED
+    // children regardless of the user array's parent/child order. Callers that change inputs without
+    // re-adopting (`setNodeExtent`) force it.
+    if (forceFullPass || systemParentLookup.size > 0) {
+      updateAbsolutePositions(systemNodeLookup, systemParentLookup, {
+        nodeOrigin: [0, 0],
+        nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+        elevateNodesOnSelect: state.elevateNodesOnSelect,
+      })
+    }
 
     for (const { node, extent } of coercedExtents) {
       node.extent = extent
-    }
-
-    // `updateAbsolutePositions` writes `internals.positionAbsolute` directly onto the lookup
-    // InternalNodes (roots in place, moved children via clone-on-`.set`) — the lookup is canonical for
-    // internals now, so there is no array write-back. System does NOT set root-node `z` (only children get
-    // it through the parent chain), so apply the elevate-on-select `z` to root InternalNodes here,
-    // matching system's `calculateZ`.
-    for (const node of systemNodeLookup.values()) {
-      if (!node.parentId) {
-        node.internals.z =
-          (typeof node.zIndex === 'number' ? node.zIndex : 0) + (node.selected && state.elevateNodesOnSelect ? 1000 : 0)
-      }
     }
 
     // Apply the range `padding` the system clamp can't express. `updateAbsolutePositions` only understands
@@ -269,14 +265,6 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       // mirror the padding-clamped position onto the user node (the canonical array element) so v-model /
       // getNodes reflect it (the InternalNode's `position` is internal-only otherwise).
       ;(node.internals.userNode as Node).position = position
-    }
-
-    // Keep every InternalNode raw: `adoptUserNodes` rebuilds changed nodes as fresh plain objects and
-    // `updateAbsolutePositions` clones moved children (`.set(id, {...node})`), so without this the reactive
-    // lookup would deep-proxy them. The per-node render computed still re-renders on the lookup `.set`
-    // (key-level reactivity is independent of value markRaw). Idempotent — reused/already-raw entries no-op.
-    for (const internal of systemNodeLookup.values()) {
-      markRaw(internal)
     }
 
     syncLookups()
@@ -550,7 +538,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
   const setNodeExtent: Actions<NodeType>['setNodeExtent'] = (nodeExtent) => {
     state.nodeExtent = nodeExtent
-    recomputeAbsolutePositions()
+    // force the full system pass — the extent changed without a re-adoption, so every root needs re-clamping
+    recomputeAbsolutePositions(true)
     updateNodeInternals()
   }
 
