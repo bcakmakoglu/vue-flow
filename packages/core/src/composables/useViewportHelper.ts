@@ -63,9 +63,9 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
 
         await panZoom.setViewport(
           {
-            x: viewport.x ?? state.viewport.x,
-            y: viewport.y ?? state.viewport.y,
-            zoom: viewport.zoom ?? state.viewport.zoom,
+            x: viewport.x ?? state.transform[0],
+            y: viewport.y ?? state.transform[1],
+            zoom: viewport.zoom ?? state.transform[2],
           },
           options,
         )
@@ -73,9 +73,9 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
         return true
       },
       getViewport: () => ({
-        x: state.viewport.x,
-        y: state.viewport.y,
-        zoom: state.viewport.zoom,
+        x: state.transform[0],
+        y: state.transform[1],
+        zoom: state.transform[2],
       }),
       fitView: async (
         options = {
@@ -109,12 +109,12 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
 
         // vue-flow-only `offset` extension — apply on top of fitViewport's result.
         if (ok && options.offset && (options.offset.x || options.offset.y)) {
-          const current = state.viewport
+          const [currentX, currentY, currentZoom] = state.transform
           await panZoom.setViewport(
             {
-              x: current.x + (options.offset.x ?? 0),
-              y: current.y + (options.offset.y ?? 0),
-              zoom: current.zoom,
+              x: currentX + (options.offset.x ?? 0),
+              y: currentY + (options.offset.y ?? 0),
+              zoom: currentZoom,
             },
             { duration: 0 },
           )
@@ -153,13 +153,7 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
 
         return true
       },
-      project: (position) =>
-        pointToRendererPoint(
-          position,
-          [state.viewport.x, state.viewport.y, state.viewport.zoom],
-          state.snapToGrid,
-          state.snapGrid,
-        ),
+      project: (position) => pointToRendererPoint(position, state.transform, state.snapToGrid, state.snapGrid),
       screenToFlowCoordinate: (position) => {
         if (state.vueFlowRef) {
           const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
@@ -169,12 +163,7 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
             y: position.y - domY,
           }
 
-          return pointToRendererPoint(
-            correctedPosition,
-            [state.viewport.x, state.viewport.y, state.viewport.zoom],
-            state.snapToGrid,
-            state.snapGrid,
-          )
+          return pointToRendererPoint(correctedPosition, state.transform, state.snapToGrid, state.snapGrid)
         }
 
         return { x: 0, y: 0 }
@@ -188,7 +177,7 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
             y: position.y + domY,
           }
 
-          return rendererPointToPoint(correctedPosition, [state.viewport.x, state.viewport.y, state.viewport.zoom])
+          return rendererPointToPoint(correctedPosition, state.transform)
         }
 
         return { x: 0, y: 0 }

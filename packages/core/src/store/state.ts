@@ -20,7 +20,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
       width: 0,
       height: 0,
     },
-    viewport: { x: 0, y: 0, zoom: 1 },
+    transform: [0, 0, 1],
 
     panZoom: null,
 

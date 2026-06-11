@@ -11,7 +11,7 @@ import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 const {
   id,
   emits,
-  viewport,
+  transform,
   viewportRef: zoomPane,
   panZoom,
   paneDragging,
@@ -57,7 +57,7 @@ onMounted(() => {
       minZoom: minZoom.value,
       maxZoom: maxZoom.value,
       translateExtent: translateExtent.value,
-      viewport: { ...viewport.value, ...defaultViewport.value },
+      viewport: { x: transform.value[0], y: transform.value[1], zoom: transform.value[2], ...defaultViewport.value },
       onDraggingChange: (isDraggingPane) => (paneDragging.value = isDraggingPane),
       onPanZoomStart: (event, viewport) => {
         emits.moveStart({ event, viewport })
@@ -73,7 +73,8 @@ onMounted(() => {
       },
     })
 
-    viewport.value = panZoomInstance.getViewport()
+    const initialViewport = panZoomInstance.getViewport()
+    transform.value = [initialViewport.x, initialViewport.y, initialViewport.zoom]
     panZoom.value = panZoomInstance
 
     onUnmounted(() => {
@@ -111,9 +112,9 @@ onMounted(() => {
           userSelectionActive: userSelectionActive.value,
           noWheelClassName: noWheelClassName.value,
           paneClickDistance: 0,
-          onTransformChange: (transform) => {
-            emits.viewportChange({ x: transform[0], y: transform[1], zoom: transform[2] })
-            viewport.value = { x: transform[0], y: transform[1], zoom: transform[2] }
+          onTransformChange: (nextTransform) => {
+            emits.viewportChange({ x: nextTransform[0], y: nextTransform[1], zoom: nextTransform[2] })
+            transform.value = nextTransform
           },
           connectionInProgress: !!connectionStartHandle.value,
           lib: 'vue',

@@ -43,7 +43,7 @@ export function useHandle({
   const {
     id: flowId,
     vueFlowRef,
-    viewport,
+    transform,
     connectionMode,
     connectionRadius,
     connectOnClick,
@@ -115,7 +115,7 @@ export function useHandle({
       handleDomNode,
       panBy,
       isValidConnection: buildSystemIsValidConnection(),
-      getTransform: () => [viewport.value.x, viewport.value.y, viewport.value.zoom],
+      getTransform: () => transform.value,
       // system aborts the move loop if this returns null, so once `startConnection` has populated the
       // store's `connectionStartHandle`, surface it as a system-shaped `Handle`. Width/height aren't
       // tracked on `ConnectingHandle` — fall back to 0; system only reads them for rendering.

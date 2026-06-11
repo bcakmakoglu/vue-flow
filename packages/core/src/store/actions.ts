@@ -850,9 +850,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const panBy: Actions<NodeType>['panBy'] = (delta) => {
-    const { viewport, dimensions, translateExtent, panZoom } = state
+    const { transform, dimensions, translateExtent, panZoom } = state
 
-    return panBySystem({ delta, panZoom, transform: [viewport.x, viewport.y, viewport.zoom], translateExtent, ...dimensions })
+    return panBySystem({ delta, panZoom, transform, translateExtent, ...dimensions })
   }
 
   const setState: Actions<NodeType, EdgeType>['setState'] = (options) => {
@@ -927,7 +927,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       JSON.stringify({
         nodes,
         edges,
-        viewport: state.viewport,
+        viewport: { x: state.transform[0], y: state.transform[1], zoom: state.transform[2] },
       } as FlowExportObject),
     )
   }
