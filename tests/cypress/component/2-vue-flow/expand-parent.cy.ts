@@ -59,8 +59,8 @@ describe('expandParent + range-extent', () => {
       cy.then(() => store.updateNodePositions([dragItem({ x: 80, y: 80 })] as any, true, false))
 
       cy.tryAssertion(() => {
-        const parent = store.findNode('p')!
-        const child = store.findNode('c')!
+        const parent = store.getInternalNode('p')!
+        const child = store.getInternalNode('c')!
         expect(parent.measured.width, 'parent width grew').to.be.at.least(130)
         expect(parent.measured.height, 'parent height grew').to.be.at.least(130)
         // child stays where it was dragged (relative === absolute, parent at origin)
@@ -73,8 +73,8 @@ describe('expandParent + range-extent', () => {
       cy.then(() => store.updateNodePositions([dragItem({ x: -30, y: -30 })] as any, true, false))
 
       cy.tryAssertion(() => {
-        const parent = store.findNode('p')!
-        const child = store.findNode('c')!
+        const parent = store.getInternalNode('p')!
+        const child = store.getInternalNode('c')!
         // child relative position is clamped to the parent's (new) top-left corner
         expect(child.position.x).to.eq(0)
         expect(child.position.y).to.eq(0)
@@ -94,7 +94,7 @@ describe('expandParent + range-extent', () => {
     it('grows the parent to fit a freshly-measured oversized child', () => {
       cy.tryAssertion(
         () => {
-          const parent = store.findNode('p')!
+          const parent = store.getInternalNode('p')!
           // child at (10,10) sized 140x140 → needs at least 150x150 of parent
           expect(parent.measured.width).to.be.at.least(150)
           expect(parent.measured.height).to.be.at.least(150)
@@ -134,8 +134,8 @@ describe('expandParent + range-extent', () => {
     it('clamps the child instead of over-expanding the parent', () => {
       cy.tryAssertion(
         () => {
-          const parent = store.findNode('p')!
-          const child = store.findNode('c')!
+          const parent = store.getInternalNode('p')!
+          const child = store.getInternalNode('c')!
           // parent must stay ~200 (it would balloon to ~250 if the rect used the unclamped position)
           expect(parent.measured.width, 'parent not over-expanded').to.be.lessThan(230)
           // child is clamped to sit inside the parent (200 − child width ≈ 100)
@@ -160,7 +160,7 @@ describe('expandParent + range-extent', () => {
       // boundary: parent 100 − padding 10 − child width = max relative position.
       cy.tryAssertion(
         () => {
-          const child = store.findNode('c')!
+          const child = store.getInternalNode('c')!
           const expected = 90 - child.measured.width // 90 = parent (100) − padding (10)
           expect(child.internals.positionAbsolute.x, 'clamped to padded bound x').to.be.closeTo(expected, 1)
           expect(child.internals.positionAbsolute.y, 'clamped to padded bound y').to.be.closeTo(expected, 1)

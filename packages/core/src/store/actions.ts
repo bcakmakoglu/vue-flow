@@ -1,3 +1,5 @@
+import { markRaw, toRaw } from 'vue'
+import type { DeepReadonly } from 'vue'
 import {
   clampPosition,
   clampPositionToParent,
@@ -31,12 +33,12 @@ import type {
 } from '../types'
 import { useViewportHelper } from '../composables'
 import {
+  adoptNodes,
   applyChanges,
   calcNextPosition,
   createAdditionChange,
   createEdgeRemoveChange,
   createGraphEdges,
-  createGraphNodes,
   createNodeRemoveChange,
   createSelectionChange,
   getConnectedEdges as getConnectedEdgesBase,
@@ -45,8 +47,8 @@ import {
   getSelectionChanges,
   isDef,
   isGraphNode,
+  isNode,
   nodeToRect,
-  parseNode,
   updateConnectionLookup,
   updateEdgeAction,
 } from '../utils'
@@ -61,32 +63,24 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   const viewportHelper = useViewportHelper(state, nodeLookup)
 
   /**
-   * Single write path for node membership. `nodeLookup` is the primary structure (Step 3 of the
-   * inversion); we rebuild it + `parentLookup` from `next` in one imperative pass and mirror `next`
-   * into `state.nodes` for the internal reads + public `store.nodes` ref that still consume the array.
-   * In-place field mutations (selected/position/internals/data) don't need this — the entries are
-   * reactive, shared by reference with the mirror — only membership/order/parent changes do.
+   * Single write path for node membership/content. Takes the canonical USER `Node`s, re-adopts them into
+   * `nodeLookup`/`parentLookup` via `adoptNodes` (xyflow/react+svelte parity — `adoptUserNodes` mutates the
+   * lookups in place, reusing unchanged `InternalNode`s by reference via `checkEquality`), then stores the
+   * validated user nodes as `state.nodes` (the v-model array / `getNodes`). The enriched `InternalNode`s
+   * live only in the lookup. `recomputeAbsolutePositions` refreshes parent-aware absolute positions/z.
+   *
+   * Because adoption is immutable+reference-based, callers MUST pass NEW user-node objects for changed
+   * nodes (see the immutable `applyChanges`) — mutating a node in place keeps its reference, so
+   * `checkEquality` would re-adopt the stale `InternalNode`.
    */
-  function commitNodes(next: GraphNode<NodeType>[]) {
-    nodeLookup.clear()
-    parentLookup.clear()
-    const parents = new Map<string, Map<string, GraphNode<NodeType>>>()
-    for (const node of next) {
-      nodeLookup.set(node.id, node)
-      const parentId = node.parentId
-      if (parentId) {
-        let children = parents.get(parentId)
-        if (!children) {
-          children = new Map<string, GraphNode<NodeType>>()
-          parents.set(parentId, children)
-        }
-        children.set(node.id, node)
-      }
-    }
-    for (const [parentId, children] of parents) {
-      parentLookup.set(parentId, children)
-    }
-    state.nodes = next
+  function commitNodes(nodes: NodeType[]) {
+    const validNodes = adoptNodes(nodes, nodeLookup, parentLookup, state.hooks.error.trigger, {
+      nodeOrigin: [0, 0],
+      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+      elevateNodesOnSelect: state.elevateNodesOnSelect,
+    })
+
+    state.nodes = validNodes
 
     recomputeAbsolutePositions()
   }
@@ -102,17 +96,14 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
   /**
    * Recompute parent-aware `internals.positionAbsolute`/`z` for every node via `@xyflow/system`'s
-   * `updateAbsolutePositions`, then write the results back onto the canonical reactive node refs
-   * (Step 5, approach A — svelte's write-back). This replaces the per-node positionAbsolute watcher
-   * that used to live in `NodeWrapper`.
+   * `updateAbsolutePositions`. The lookup is the canonical home of the enriched `InternalNode`s/`internals`,
+   * so this is lookup-only: `updateAbsolutePositions` writes `internals.positionAbsolute` directly onto the
+   * lookup InternalNodes (root nodes in place, moved children via clone-on-`.set`, which the per-node render
+   * computed picks up by reference). There is NO write-back onto `state.nodes` — those hold the raw user
+   * `Node`s. This replaces the per-node positionAbsolute watcher that used to live in `NodeWrapper`.
    *
-   * `updateAbsolutePositions` mutates the lookup: root nodes in place, child nodes via clone-on-`.set`
-   * (so React/Svelte pick them up by reference). vue-flow keeps the nodes array canonical and
-   * `useNode().node` returns the live array ref, so for cloned children we copy `internals` back onto
-   * the canonical ref *in place* (propagates through the captured ref) and re-point the lookup at it
-   * (re-converge identity — validated by the write-back spike). System does NOT set root-node `z`
-   * (only children get it via the parent chain), so we apply the elevate-on-select `z` for roots here,
-   * matching the old watcher / system's `calculateZ`.
+   * System does NOT set root-node `z` (only children get it via the parent chain), so we apply the
+   * elevate-on-select `z` for roots here, matching system's `calculateZ`.
    */
   function recomputeAbsolutePositions() {
     // `@xyflow/system` has no concept of vue-flow's `CoordinateExtentRange` (`{ range, padding }`) and
@@ -144,14 +135,12 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       node.extent = extent
     }
 
-    for (const node of state.nodes) {
-      const fresh = nodeLookup.get(node.id)
-      if (fresh && fresh !== node) {
-        node.internals.positionAbsolute = fresh.internals.positionAbsolute
-        node.internals.z = fresh.internals.z
-        nodeLookup.set(node.id, node)
-      }
-
+    // `updateAbsolutePositions` writes `internals.positionAbsolute` directly onto the lookup
+    // InternalNodes (roots in place, moved children via clone-on-`.set`) — the lookup is canonical for
+    // internals now, so there is no array write-back. System does NOT set root-node `z` (only children get
+    // it through the parent chain), so apply the elevate-on-select `z` to root InternalNodes here,
+    // matching system's `calculateZ`.
+    for (const node of nodeLookup.values()) {
       if (!node.parentId) {
         node.internals.z =
           (typeof node.zIndex === 'number' ? node.zIndex : 0) + (node.selected && state.elevateNodesOnSelect ? 1000 : 0)
@@ -160,8 +149,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     // Apply the range `padding` the system clamp can't express. `updateAbsolutePositions` only understands
     // `'parent'`/`CoordinateExtent` (we coerced `{ range, padding }` to its bare `range` above), so it
-    // clamps to the parent/extent bounds *without* the inset. Now that absolute positions are fresh (and
-    // re-converged onto the canonical refs), re-clamp each padded node against the padded extent via the
+    // clamps to the parent/extent bounds *without* the inset. Now that absolute positions are fresh on the
+    // lookup InternalNodes, re-clamp each padded node against the padded extent via the
     // same `calcNextPosition`/`getExtent` math the keyboard-move path uses — restoring the padding the
     // pre-system-migration NodeWrapper watcher used to apply. Idempotent (an in-bounds node is unchanged),
     // and `expandParent` nodes are skipped (they grow the parent instead of being clamped into it).
@@ -195,6 +184,17 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
       node.position = position
       node.internals.positionAbsolute = computedPosition
+      // mirror the padding-clamped position onto the user node (the canonical array element) so v-model /
+      // getNodes reflect it (the InternalNode's `position` is internal-only otherwise).
+      ;(node.internals.userNode as Node).position = position
+    }
+
+    // Keep every InternalNode raw: `adoptUserNodes` rebuilds changed nodes as fresh plain objects and
+    // `updateAbsolutePositions` clones moved children (`.set(id, {...node})`), so without this the reactive
+    // lookup would deep-proxy them. The per-node render computed still re-renders on the lookup `.set`
+    // (key-level reactivity is independent of value markRaw). Idempotent — reused/already-raw entries no-op.
+    for (const internal of nodeLookup.values()) {
+      markRaw(toRaw(internal))
     }
   }
 
@@ -205,7 +205,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const getConnectedEdges: Actions<NodeType, EdgeType>['getConnectedEdges'] = (nodes) => {
-    return getConnectedEdgesBase(nodes, state.edges) as GraphEdge<EdgeType>[]
+    return getConnectedEdgesBase(nodes, state.edges)
   }
 
   const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
@@ -214,6 +214,21 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const findNode: Actions<NodeType>['findNode'] = (id) => {
+    if (!id) {
+      return
+    }
+
+    // The public contract: `findNode`/`getNode` return the user-facing `Node` (the exact object held in
+    // `state.nodes`/v-model), which the store keeps on the InternalNode as `internals.userNode`. Enriched
+    // data (internals/measured) is reached via `getInternalNode`. Typed `DeepReadonly` (zero runtime) so
+    // mutating the result is a compile error → use the helpers (updateNode/applyNodeChanges/setNodes).
+    return nodeLookup.get(id)?.internals.userNode as DeepReadonly<NodeType> | undefined
+  }
+
+  // The enriched-node accessor (xyflow/react parity): returns the lookup `InternalNode` (enriched
+  // `internals`/`measured`), whereas `findNode`/`getNode` return the user-facing `Node` (`internals.userNode`).
+  // Internal call sites that need `internals`/`measured` use this.
+  const getInternalNode: Actions<NodeType>['getInternalNode'] = (id) => {
     if (!id) {
       return
     }
@@ -250,7 +265,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         change.position = node.position
 
         if (node.parentId) {
-          const parentNode = findNode(node.parentId)
+          const parentNode = getInternalNode(node.parentId)
 
           change.position = {
             x: change.position.x - (parentNode?.internals.positionAbsolute?.x ?? 0),
@@ -281,12 +296,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // grow each parent to fit its `expandParent` children — system returns the parent's position +
     // dimension changes plus counter-offsets for the other children, applied through the same pipeline.
     if (parentExpandChildren.length > 0) {
-      changes.push(
-        ...(handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]) as (
-          | NodePositionChange
-          | NodeDimensionChange
-        )[]),
-      )
+      changes.push(...handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]))
     }
 
     if (changes.length) {
@@ -314,7 +324,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     for (const element of updates) {
       const update = element
 
-      const node = findNode(update.id)
+      const node = getInternalNode(update.id)
 
       if (node) {
         const dimensions = getDimensions(update.nodeElement)
@@ -346,7 +356,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
           // the node's extent BEFORE measuring expansion, exactly as system does. Otherwise a node that
           // merely grew would be treated as overflowing and the parent would expand more than necessary.
           if (node.expandParent && node.parentId) {
-            const parent = findNode(node.parentId)
+            const parent = getInternalNode(node.parentId)
             let positionAbsolute = node.internals.positionAbsolute
             const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
 
@@ -377,17 +387,18 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
               rect: { ...positionAbsolute, width: dimensions.width, height: dimensions.height },
             })
           }
+
+          // Re-set a fresh entry so the markRaw lookup re-renders this node — in-place `measured`/
+          // `handleBounds` writes don't trigger the per-node render computed (markRaw values aren't deep
+          // tracked; only the lookup `.set` is). This makes measurement reflect even with `applyDefault:false`
+          // (the 'dimensions' change additionally flows `measured` onto the user node via re-adopt).
+          nodeLookup.set(node.id, markRaw({ ...toRaw(node) }))
         }
       }
     }
 
     if (parentExpandChildren.length > 0) {
-      changes.push(
-        ...(handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]) as (
-          | NodeDimensionChange
-          | NodePositionChange
-        )[]),
-      )
+      changes.push(...handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]))
     }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
@@ -426,10 +437,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   const removeSelectedNodes: Actions<NodeType>['removeSelectedNodes'] = (nodes) => {
     const nodesToUnselect = nodes || state.nodes
 
-    const nodeChanges = nodesToUnselect.map((n) => {
-      n.selected = false
-      return createSelectionChange(n.id, false)
-    })
+    // emit select=false changes only — `applyNodeChanges` applies them immutably + re-adopts. (No in-place
+    // `n.selected = false`: it would keep the node's reference, so the re-adopt would reuse the stale entry.)
+    const nodeChanges = nodesToUnselect.map((n) => createSelectionChange(n.id, false))
 
     state.hooks.nodesChange.trigger(nodeChanges)
   }
@@ -437,10 +447,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   const removeSelectedEdges: Actions<NodeType, EdgeType>['removeSelectedEdges'] = (edges) => {
     const edgesToUnselect = edges || state.edges
 
-    const edgeChanges = edgesToUnselect.map((e) => {
-      e.selected = false
-      return createSelectionChange(e.id, false)
-    })
+    const edgeChanges = edgesToUnselect.map((e) => createSelectionChange(e.id, false))
 
     state.hooks.edgesChange.trigger(edgeChanges)
   }
@@ -483,13 +490,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return
     }
 
-    commitNodes(
-      createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
-        nodeOrigin: [0, 0],
-        nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
-        elevateNodesOnSelect: state.elevateNodesOnSelect,
-      }) as GraphNode<NodeType>[],
-    )
+    // `commitNodes` re-adopts the user nodes into the lookup (xyflow-style) and stores them as `state.nodes`
+    commitNodes(nextNodes)
   }
 
   const setEdges: Actions<NodeType, EdgeType>['setEdges'] = (edges) => {
@@ -502,7 +504,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const validEdges = createGraphEdges<EdgeType>(
       nextEdges,
       state.isValidConnection,
-      findNode,
+      getInternalNode,
       findEdge,
       state.hooks.error.trigger,
       state.defaultEdgeOptions,
@@ -519,14 +521,13 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
     nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
-    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
-      nodeOrigin: [0, 0],
-      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
-      elevateNodesOnSelect: state.elevateNodesOnSelect,
-    })
-
+    // Emit `add` changes for the valid user nodes (filter invalid up front — `applyChanges` would
+    // otherwise read `.id` off a non-node and throw; `commitNodes`/`adoptNodes` re-validates on adopt).
     const changes: NodeAddChange<any>[] = []
-    for (const node of graphNodes) {
+    for (const node of nextNodes) {
+      if (!isNode(node)) {
+        continue
+      }
       changes.push(createAdditionChange(node))
     }
 
@@ -542,7 +543,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const validEdges = createGraphEdges<EdgeType>(
       nextEdges,
       state.isValidConnection,
-      findNode,
+      getInternalNode,
       findEdge,
       state.hooks.error.trigger,
       state.defaultEdgeOptions,
@@ -578,7 +579,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     // recursively get all children and if the child is a parent, get those children as well until all nodes have been removed that are children of the current node
     function createChildrenRemovalChanges(id: string) {
-      const children: GraphNode[] = []
+      const children: NodeType[] = []
       for (const node of state.nodes) {
         if (node.parentId === id) {
           children.push(node)
@@ -614,7 +615,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       nodeChanges.push(createNodeRemoveChange(currNode.id))
 
       if (removeConnectedEdges) {
-        createEdgeRemovalChanges([currNode])
+        createEdgeRemovalChanges([currNode as Node])
       }
 
       if (removeChildren) {
@@ -669,7 +670,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       const [validEdge] = createGraphEdges<EdgeType>(
         [newEdge as unknown as EdgeType],
         state.isValidConnection,
-        findNode,
+        getInternalNode,
         findEdge,
         state.hooks.error.trigger,
         state.defaultEdgeOptions,
@@ -700,16 +701,16 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const applyNodeChanges: Actions<NodeType>['applyNodeChanges'] = (changes) => {
-    // Apply changes against a snapshot of the (primary) lookup, then commit the result back. The
-    // public `applyChanges` util stays a pure array transform (it mutates node *fields* on the shared
-    // reactive refs and adds/removes array entries); `commitNodes` reconciles lookup membership/order.
-    const result = applyChanges(changes, Array.from(nodeLookup.values())) as GraphNode<NodeType>[]
+    // Apply changes IMMUTABLY against the canonical user nodes (`applyChanges` returns a new array — new
+    // objects for changed nodes, unchanged reused by reference), then re-adopt via `commitNodes`
+    // (`adoptUserNodes` reuses unchanged InternalNodes by reference via `checkEquality`).
+    const result = applyChanges(changes, state.nodes)
     commitNodes(result)
     return result
   }
 
   const applyEdgeChanges: Actions<NodeType, EdgeType>['applyEdgeChanges'] = (changes) => {
-    const result = applyChanges(changes, Array.from(edgeLookup.values())) as GraphEdge<EdgeType>[]
+    const result = applyChanges(changes, Array.from(edgeLookup.values()))
 
     commitEdges(result)
 
@@ -718,9 +719,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     return result
   }
 
-  // todo: maybe we should use a more immutable approach, this is a bit too much mutation and hard to maintain
   const updateNode: Actions<NodeType>['updateNode'] = (id, nodeUpdate, options = { replace: false }) => {
-    const node = findNode(id)
+    const node = getInternalNode(id)
 
     if (!node) {
       return
@@ -728,20 +728,14 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     const nextNode = typeof nodeUpdate === 'function' ? nodeUpdate(node) : nodeUpdate
 
-    if (options.replace) {
-      const next = Array.from(nodeLookup.values())
-      next.splice(next.indexOf(node), 1, parseNode(nextNode as NodeType))
-      commitNodes(next)
-    } else {
-      // mutate the reactive lookup entry in place, then reconcile (a `parentId` change must be
-      // reflected in `parentLookup`). Membership/order are unchanged, so this reuses the same refs.
-      Object.assign(node, nextNode)
-      commitNodes(Array.from(nodeLookup.values()))
-    }
+    // Immutable update: build a NEW user node (full replacement or shallow merge) for the target id and
+    // re-adopt via `commitNodes`. Mutating in place would keep the reference and re-adopt the stale node.
+    const next = state.nodes.map((n) => (n.id === id ? ((options.replace ? nextNode : { ...n, ...nextNode }) as NodeType) : n))
+    commitNodes(next)
   }
 
   const updateNodeData: Actions<NodeType>['updateNodeData'] = (id, dataUpdate, options = { replace: false }) => {
-    const node = findNode(id)
+    const node = getInternalNode(id)
 
     if (!node) {
       return
@@ -749,7 +743,11 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     const nextData = typeof dataUpdate === 'function' ? dataUpdate(node) : dataUpdate
 
-    node.data = options.replace ? nextData : { ...node.data, ...nextData }
+    // Immutable: new user node with new `data`, then re-adopt (see {@link updateNode}).
+    const next = state.nodes.map((n) =>
+      n.id === id ? ({ ...n, data: options.replace ? nextData : { ...n.data, ...nextData } } as NodeType) : n,
+    )
+    commitNodes(next)
   }
 
   const startConnection: Actions<NodeType>['startConnection'] = (startHandle, position, isClick = false) => {
@@ -791,7 +789,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
   ): [Rect | null, Node | null | undefined, boolean] => {
     const isRectObj = isRectObject(nodeOrRect)
-    const node = isRectObj ? null : isGraphNode(nodeOrRect as GraphNode) ? (nodeOrRect as GraphNode) : findNode(nodeOrRect.id)
+    // use `getInternalNode` (not findNode): `nodeToRect` below needs `internals`/`measured`, which live on
+    // the InternalNode, not the user `Node` that findNode returns
+    const node = isRectObj ? null : isGraphNode(nodeOrRect) ? nodeOrRect : getInternalNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {
       return [null, null, isRectObj]
@@ -802,7 +802,12 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     return [nodeRect, node, isRectObj]
   }
 
-  const getIntersectingNodes: Actions<NodeType>['getIntersectingNodes'] = (nodeOrRect, partially = true, nodes = state.nodes) => {
+  const getIntersectingNodes: Actions<NodeType>['getIntersectingNodes'] = (
+    nodeOrRect,
+    partially = true,
+    // defaults to the enriched InternalNodes — intersection geometry needs `internals`/`measured`
+    nodes = Array.from(nodeLookup.values()),
+  ) => {
     const [nodeRect, node, isRect] = getNodeRect(nodeOrRect)
 
     if (!nodeRect) {
@@ -810,7 +815,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     const intersections: GraphNode<NodeType>[] = []
-    for (const n of nodes || state.nodes) {
+    for (const n of nodes) {
       if (!isRect && (n.id === node!.id || !n.internals.positionAbsolute)) {
         continue
       }
@@ -862,7 +867,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     if (isDef(opts.nodes)) {
-      setNodes(opts.nodes as unknown as NodeType[])
+      setNodes(opts.nodes)
     }
 
     if (isDef(opts.edges)) {
@@ -905,7 +910,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const edges: Edge[] = []
 
     for (const node of state.nodes) {
-      const { selected: _, resizing: __, dragging: ___, measured: ____, internals: _____, ...rest } = node
+      // `state.nodes` are already user `Node`s (no `internals`); strip the transient runtime fields for export
+      const { selected: _, resizing: __, dragging: ___, measured: ____, ...rest } = node
 
       nodes.push(rest)
     }
@@ -955,6 +961,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     removeNodes,
     removeEdges,
     findNode,
+    getInternalNode,
     findEdge,
     updateEdge,
     updateEdgeData,

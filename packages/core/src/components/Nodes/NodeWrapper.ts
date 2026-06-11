@@ -60,17 +60,31 @@ const NodeWrapper = defineComponent({
 
     const updateNodePositions = useUpdateNodePositions()
 
-    const { node } = useNode(props.id)
+    // `nodeRef` is a `computed` over the lookup (see useNode): it re-resolves to a NEW InternalNode object
+    // whenever the store re-adopts this node (immutable model), which is what re-renders this wrapper.
+    const { node: nodeRef } = useNode(props.id)
 
     const { emit } = useNodeHooks(emits)
 
-    const isDraggable = toRef(() => (typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable))
+    const isDraggable = toRef(() => {
+      const node = nodeRef.value
+      return !node || typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable
+    })
 
-    const isSelectable = toRef(() => (typeof node.selectable === 'undefined' ? elementsSelectable.value : node.selectable))
+    const isSelectable = toRef(() => {
+      const node = nodeRef.value
+      return !node || typeof node.selectable === 'undefined' ? elementsSelectable.value : node.selectable
+    })
 
-    const isConnectable = toRef(() => (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable))
+    const isConnectable = toRef(() => {
+      const node = nodeRef.value
+      return !node || typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable
+    })
 
-    const isFocusable = toRef(() => (typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable))
+    const isFocusable = toRef(() => {
+      const node = nodeRef.value
+      return !node || typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable
+    })
 
     const hasPointerEvents = computed(
       () =>
@@ -83,12 +97,12 @@ const NodeWrapper = defineComponent({
         hooks.value.nodeMouseLeave.hasListeners(),
     )
 
-    const isInit = toRef(() => !!node.measured.width && !!node.measured.height)
+    const isInit = toRef(() => !!nodeRef.value?.measured?.width && !!nodeRef.value?.measured?.height)
 
-    const isParent = toRef(() => (parentLookup.get(node.id)?.size ?? 0) > 0)
+    const isParent = toRef(() => (parentLookup.get(props.id)?.size ?? 0) > 0)
 
     const nodeCmp = computed(() => {
-      const name = node.type || 'default'
+      const name = nodeRef.value?.type || 'default'
 
       const slot = slots?.[`node-${name}`]
       if (slot) {
@@ -120,7 +134,7 @@ const NodeWrapper = defineComponent({
       el: nodeElement,
       disabled: () => !isDraggable.value,
       selectable: isSelectable,
-      dragHandle: () => node.dragHandle,
+      dragHandle: () => nodeRef.value?.dragHandle,
       onStart(event) {
         emit.dragStart(event)
       },
@@ -135,13 +149,20 @@ const NodeWrapper = defineComponent({
       },
     })
 
-    const getClass = computed(() => (node.class instanceof Function ? node.class(node) : node.class))
+    const getClass = computed(() => {
+      const node = nodeRef.value
+      if (!node) {
+        return undefined
+      }
+      return node.class instanceof Function ? node.class(node) : node.class
+    })
 
     const getStyle = computed(() => {
-      const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
+      const node = nodeRef.value
+      const styles = (node?.style instanceof Function ? node.style(node) : node?.style) || {}
 
-      const width = node.width
-      const height = node.height
+      const width = node?.width
+      const height = node?.height
 
       if (!styles.width && width) {
         styles.width = `${width}px`
@@ -154,7 +175,7 @@ const NodeWrapper = defineComponent({
       return styles
     })
 
-    const zIndex = toRef(() => Number(node.zIndex ?? getStyle.value.zIndex ?? 0))
+    const zIndex = toRef(() => Number(nodeRef.value?.zIndex ?? getStyle.value.zIndex ?? 0))
 
     onUpdateNodeInternals((updateIds) => {
       // when no ids are passed, update all nodes
@@ -165,7 +186,7 @@ const NodeWrapper = defineComponent({
 
     onMounted(() => {
       watch(
-        () => node.hidden,
+        () => nodeRef.value?.hidden,
         (isHidden = false, _, onCleanup) => {
           if (!isHidden && nodeElement.value) {
             props.resizeObserver.observe(nodeElement.value)
@@ -181,14 +202,16 @@ const NodeWrapper = defineComponent({
       )
     })
 
-    watch([() => node.type, () => node.sourcePosition, () => node.targetPosition], () => {
+    watch([() => nodeRef.value?.type, () => nodeRef.value?.sourcePosition, () => nodeRef.value?.targetPosition], () => {
       nextTick(() => {
         updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }])
       })
     })
 
     return () => {
-      if (node.hidden) {
+      const node = nodeRef.value
+
+      if (!node || node.hidden) {
         return null
       }
 
@@ -269,32 +292,46 @@ const NodeWrapper = defineComponent({
     }
 
     function onMouseEnter(event: MouseEvent) {
-      if (!dragging?.value) {
+      const node = nodeRef.value
+      if (node && !dragging?.value) {
         emit.mouseEnter({ event, node })
       }
     }
 
     function onMouseMove(event: MouseEvent) {
-      if (!dragging?.value) {
+      const node = nodeRef.value
+      if (node && !dragging?.value) {
         emit.mouseMove({ event, node })
       }
     }
 
     function onMouseLeave(event: MouseEvent) {
-      if (!dragging?.value) {
+      const node = nodeRef.value
+      if (node && !dragging?.value) {
         emit.mouseLeave({ event, node })
       }
     }
 
     function onContextMenu(event: MouseEvent) {
-      return emit.contextMenu({ event, node })
+      const node = nodeRef.value
+      if (node) {
+        emit.contextMenu({ event, node })
+      }
     }
 
     function onDoubleClick(event: MouseEvent) {
-      return emit.doubleClick({ event, node })
+      const node = nodeRef.value
+      if (node) {
+        emit.doubleClick({ event, node })
+      }
     }
 
     function onSelectNode(event: MouseTouchEvent) {
+      const node = nodeRef.value
+      if (!node) {
+        return
+      }
+
       if (isSelectable.value && (!selectNodesOnDrag.value || !isDraggable.value || nodeDragThreshold.value > 0)) {
         handleNodeClick(
           node,
@@ -311,7 +348,8 @@ const NodeWrapper = defineComponent({
     }
 
     function onKeyDown(event: KeyboardEvent) {
-      if (isInputDOMNode(event) || disableKeyboardA11y.value) {
+      const node = nodeRef.value
+      if (!node || isInputDOMNode(event) || disableKeyboardA11y.value) {
         return
       }
 

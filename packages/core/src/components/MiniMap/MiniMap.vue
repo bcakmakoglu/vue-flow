@@ -64,6 +64,10 @@ const nodeClassNameFunc = computed<MiniMapNodeFunc>(() =>
   typeof nodeClassName === 'string' ? () => nodeClassName : typeof nodeClassName === 'function' ? nodeClassName : () => '',
 )
 
+// The minimap renders absolute positions + measured dimensions, which live on the InternalNode — iterate
+// the lookup (the public `nodes` ref holds user `Node`s without `internals`).
+const minimapNodes = computed(() => Array.from(nodeLookup.values()))
+
 const bb = computed(() =>
   getNodesBounds(
     nodes.value.filter((node) => !node.hidden),
@@ -225,7 +229,7 @@ export default {
       <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
 
       <MiniMapNode
-        v-for="node of nodes"
+        v-for="node of minimapNodes"
         :id="node.id"
         :key="node.id"
         :position="node.internals.positionAbsolute"

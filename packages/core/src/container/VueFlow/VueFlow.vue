@@ -1,8 +1,9 @@
 <script lang="ts" setup generic="NodeType extends Node = Node, EdgeType extends Edge = Edge">
+import type { Ref } from 'vue'
 import { inject, onUnmounted, provide } from 'vue'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
-import type { Edge, FlowEmits, FlowProps, FlowSlots, Node, VueFlowStore } from '../../types'
+import type { Edge, FlowEmits, FlowProps, FlowSlots, GraphEdge, Node, VueFlowStore } from '../../types'
 import { Slots, VueFlow as VueFlowInjectionKey } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
 import { useWatchProps } from '../../composables/useWatchProps'
@@ -57,15 +58,27 @@ const modelEdges = defineModel<EdgeType[]>('edges')
 // provider boundary; `useVueFlow()` is a pure consumer.
 const injectedStore = inject(VueFlowInjectionKey, null) as VueFlowStore<NodeType, EdgeType> | null
 
-const vfInstance = injectedStore ?? useCreateVueFlow<NodeType, EdgeType>(props)
+// This `<VueFlow>` owns its store unless it reuses an ancestor provider's. When it owns the store, the
+// v-model refs back it directly as signals — single source of truth (svelte's `$bindable` proxy), so the
+// store mutating nodes/edges IS the v-model update, no out-sync. When it reuses a provider's store, the
+// model refs can't back the already-created store, so `useWatchProps` syncs them instead (rebinding a
+// reused store to the hosting `<VueFlow>`'s models is deferred to the multi-instance guard work).
+const ownsStore = !injectedStore
+
+const vfInstance =
+  injectedStore ??
+  useCreateVueFlow<NodeType, EdgeType>(props, {
+    nodes: modelNodes as unknown as Ref<NodeType[]>,
+    edges: modelEdges as unknown as Ref<GraphEdge<EdgeType>[]>,
+  })
 
 // when reusing a provider's store, apply this `<VueFlow>`'s props to it
 if (injectedStore) {
   injectedStore.setState(props as Parameters<typeof injectedStore.setState>[0])
 }
 
-// watch props and update store state
-const disposeWatchers = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, vfInstance)
+// watch props and update store state (nodes/edges are signal-backed when we own the store — see above)
+const disposeWatchers = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, vfInstance, ownsStore)
 
 useHooks(emit, vfInstance.hooks)
 

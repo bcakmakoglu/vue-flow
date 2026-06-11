@@ -1,4 +1,4 @@
-import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
+import type { CSSProperties, ComputedRef, DeepReadonly, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { PanOnScrollMode, PanZoomInstance, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
@@ -40,8 +40,8 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   /** Event hooks, you can manipulate the triggers at your own peril */
   readonly hooks: FlowHooks<NodeType, EdgeType>
 
-  /** all stored nodes */
-  nodes: GraphNode<NodeType>[]
+  /** all stored nodes (the user-facing `Node`s; enriched `InternalNode`s live in `nodeLookup`) */
+  nodes: NodeType[]
   /** all stored edges */
   edges: GraphEdge<EdgeType>[]
 
@@ -149,16 +149,16 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   ariaLiveMessage: string
 }
 
-export type SetNodes<NodeType extends Node = Node> = (nodes: NodeType[] | ((nodes: GraphNode<NodeType>[]) => NodeType[])) => void
+export type SetNodes<NodeType extends Node = Node> = (nodes: NodeType[] | ((nodes: NodeType[]) => NodeType[])) => void
 
 export type SetEdges<EdgeType extends Edge = Edge> = (edges: EdgeType[] | ((edges: GraphEdge<EdgeType>[]) => EdgeType[])) => void
 
 export type AddNodes<NodeType extends Node = Node> = (
-  nodes: NodeType | NodeType[] | ((nodes: GraphNode<NodeType>[]) => NodeType | NodeType[]),
+  nodes: NodeType | NodeType[] | ((nodes: NodeType[]) => NodeType | NodeType[]),
 ) => void
 
 export type RemoveNodes = (
-  nodes: (string | Node) | (Node | string)[] | ((nodes: GraphNode[]) => (string | Node) | (Node | string)[]),
+  nodes: (string | Node) | (Node | string)[] | ((nodes: Node[]) => (string | Node) | (Node | string)[]),
   removeConnectedEdges?: boolean,
   removeChildren?: boolean,
 ) => void
@@ -196,7 +196,14 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
-export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
+export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => DeepReadonly<NodeType> | undefined
+
+/**
+ * Returns the enriched {@link InternalNode} (`internals.{positionAbsolute, z, handleBounds, userNode}` +
+ * authoritative `measured`) for an id, mirroring xyflow/react's `getInternalNode`. This is the accessor
+ * for store-computed data; `findNode`/`getNode` expose the user-facing node.
+ */
+export type GetInternalNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
 
 export type FindEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => GraphEdge<EdgeType> | undefined
 
@@ -236,6 +243,8 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   removeEdges: RemoveEdges
   /** find a node by id */
   findNode: FindNode<NodeType>
+  /** get the enriched internal node (store-computed `internals` + `measured`) by id */
+  getInternalNode: GetInternalNode<NodeType>
   /** find an edge by id */
   findEdge: FindEdge<EdgeType>
   /** updates an edge */
@@ -248,16 +257,16 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   updateNodeData: UpdateNodeData<NodeType>
   /** applies default edge change handler */
   applyEdgeChanges: (changes: EdgeChange<EdgeType>[]) => GraphEdge<EdgeType>[]
-  /** applies default node change handler */
-  applyNodeChanges: (changes: NodeChange<NodeType>[]) => GraphNode<NodeType>[]
+  /** applies default node change handler; returns the resulting user nodes */
+  applyNodeChanges: (changes: NodeChange<NodeType>[]) => NodeType[]
   /** manually select edges and add to state */
   addSelectedEdges: (edges: GraphEdge<EdgeType>[]) => void
   /** manually select nodes and add to state */
-  addSelectedNodes: (nodes: GraphNode<NodeType>[]) => void
+  addSelectedNodes: (nodes: NodeType[]) => void
   /** manually unselect edges and remove from state */
   removeSelectedEdges: (edges?: GraphEdge<EdgeType>[]) => void
   /** manually unselect nodes and remove from state */
-  removeSelectedNodes: (nodes?: GraphNode<NodeType>[]) => void
+  removeSelectedNodes: (nodes?: NodeType[]) => void
   /** apply min zoom value to panzoom */
   setMinZoom: (zoom: number) => void
   /** apply max zoom value to panzoom */
@@ -312,22 +321,24 @@ export interface Getters<NodeType extends Node = Node, EdgeType extends Edge = E
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent<EdgeType>>
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent<NodeType | BuiltInNode>>
-  /** all visible node */
-  getNodes: GraphNode<NodeType>[]
+  /** all visible nodes (user-facing `Node`s; use `getInternalNode`/`nodeLookup` for enriched data) */
+  getNodes: DeepReadonly<NodeType[]>
+  // NOTE: DeepReadonly is a TYPE-only guard (zero runtime) — mutating a node read here is a compile error
+  // pointing users at the helpers (updateNode/updateNodeData/applyNodeChanges/setNodes); see #40.
   /** all visible edges */
   getEdges: GraphEdge<EdgeType>[]
   /**
    * returns a node by id
    * @deprecated use {@link Actions.findNode} instead
    */
-  getNode: (id: string) => GraphNode<NodeType> | undefined
+  getNode: (id: string) => DeepReadonly<NodeType> | undefined
   /**
    * returns an edge by id
    * @deprecated use {@link Actions.findEdge} instead
    */
   getEdge: (id: string) => GraphEdge<EdgeType> | undefined
-  /** returns all currently selected nodes */
-  getSelectedNodes: GraphNode<NodeType>[]
+  /** returns all currently selected nodes (user-facing `Node`s) */
+  getSelectedNodes: DeepReadonly<NodeType[]>
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge<EdgeType>[]
 }

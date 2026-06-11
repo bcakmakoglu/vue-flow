@@ -14,17 +14,20 @@ import { useNodeId } from './useNodeId'
  *
  * @public
  * @param id - The id of the node to access
- * @returns the node id, the node, the node dom element, it's parent and connected edges
+ * @returns the node id, the node (a `ComputedRef`), the node dom element, it's parent and connected edges
  */
 export function useNode<NodeType extends Node = Node>(id?: string) {
   const nodeId = id ?? useNodeId() ?? ''
   const nodeEl = inject(NodeRef, ref(null))
 
-  const { findNode, edges, emits } = useVueFlow()
+  const { getInternalNode, edges, emits } = useVueFlow()
 
-  const node = findNode(nodeId)! as GraphNode<NodeType>
+  // `node` is the enriched `InternalNode` (it carries `internals`/`measured`, which NodeWrapper + custom
+  // nodes read) and a `computed` (not a one-time read) so it re-resolves whenever the store replaces this
+  // node's lookup entry — required for the immutable re-adopt model where a changed node is a NEW object.
+  const node = computed(() => getInternalNode(nodeId) as GraphNode<NodeType> | undefined)
 
-  if (!node) {
+  if (!node.value) {
     emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId))
   }
 
@@ -32,7 +35,7 @@ export function useNode<NodeType extends Node = Node>(id?: string) {
     id: nodeId,
     nodeEl,
     node,
-    parentNode: computed(() => findNode(node.parentId)),
-    connectedEdges: computed(() => getConnectedEdges([node], edges.value)),
+    parentNode: computed(() => (node.value ? getInternalNode(node.value.parentId) : undefined)),
+    connectedEdges: computed(() => (node.value ? getConnectedEdges([node.value], edges.value) : [])),
   }
 }

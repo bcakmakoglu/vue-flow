@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<NodeResizerProps>(), {
 
 const emits = defineEmits<NodeResizerEmits>()
 
-const { findNode, emits: triggerEmits } = useVueFlow()
+const { getInternalNode, emits: triggerEmits } = useVueFlow()
 
 const handleControls: ControlPosition[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
 
@@ -25,7 +25,7 @@ const contextNodeId = inject(NodeId, null)
 
 const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId ?? undefined))
 
-const node = computed(() => findNode(nodeId.value))
+const node = computed(() => getInternalNode(nodeId.value))
 
 watch(
   [

@@ -13,82 +13,118 @@ import type {
   NodeRemoveChange,
   NodeSelectionChange,
 } from '../types'
-import { isGraphNode } from '.'
+import { isNode } from '.'
 
+/**
+ * Apply element changes IMMUTABLY (xyflow/react `applyNodeChanges` semantics): returns a NEW array where
+ * changed elements are NEW objects and unchanged elements are reused by reference. Immutability is required
+ * by the node split — the store re-adopts the result via `adoptUserNodes`, whose `checkEquality` reuses the
+ * existing `InternalNode` when the user-node reference is unchanged; mutating in place would keep the same
+ * reference and re-adopt a stale internal node. Reusing unchanged refs keeps re-adoption O(changed).
+ *
+ * `position`/`dimensions` changes are gated on `isNode` (user `Node`s have no `internals`, so the old
+ * `isGraphNode` guard would skip them) — edges never receive those change types anyway.
+ */
 export function applyChanges<
   T extends Node | Edge = Node | Edge,
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(changes: C[], elements: T[]): T[] {
-  const addRemoveChanges = changes.filter((c) => c.type === 'add' || c.type === 'remove') as (
-    | NodeAddChange
-    | EdgeAddChange
-    | NodeRemoveChange
-    | EdgeRemoveChange
-  )[]
+  // bucket changes: field updates by id, plus add/remove
+  const updatesById = new Map<string, C[]>()
+  const addChanges: (NodeAddChange | EdgeAddChange)[] = []
+  const removeIds = new Set<string>()
 
-  for (const change of addRemoveChanges) {
+  for (const change of changes) {
     if (change.type === 'add') {
-      const index = elements.findIndex((el) => el.id === change.item.id)
-
-      if (index === -1) {
-        elements.push(change.item as any)
-      }
+      addChanges.push(change as NodeAddChange | EdgeAddChange)
     } else if (change.type === 'remove') {
-      const index = elements.findIndex((el) => el.id === change.id)
-
-      if (index !== -1) {
-        elements.splice(index, 1)
+      removeIds.add((change as NodeRemoveChange | EdgeRemoveChange).id)
+    } else {
+      const id = (change as { id?: string }).id
+      if (id == null) {
+        continue
+      }
+      const bucket = updatesById.get(id)
+      if (bucket) {
+        bucket.push(change)
+      } else {
+        updatesById.set(id, [change])
       }
     }
   }
 
-  for (const element of elements) {
-    for (const currentChange of changes) {
-      if ((<any>currentChange).id !== element.id) {
-        continue
-      }
+  const next: T[] = []
 
+  for (const element of elements) {
+    if (removeIds.has(element.id)) {
+      continue
+    }
+
+    const elementChanges = updatesById.get(element.id)
+    if (!elementChanges) {
+      // unchanged → reuse the same reference (so the store's `checkEquality` re-adopt is a no-op)
+      next.push(element)
+      continue
+    }
+
+    const updated = { ...element } as T
+
+    for (const currentChange of elementChanges) {
       switch (currentChange.type) {
         case 'select':
-          ;(element as any).selected = currentChange.selected
+          ;(updated as { selected?: boolean }).selected = currentChange.selected
           break
         case 'position':
-          if (isGraphNode(element)) {
+          if (isNode(updated)) {
             if (typeof currentChange.position !== 'undefined') {
-              element.position = currentChange.position
+              updated.position = currentChange.position
             }
 
             if (typeof currentChange.dragging !== 'undefined') {
-              element.dragging = currentChange.dragging
+              updated.dragging = currentChange.dragging
             }
           }
           break
         case 'dimensions':
-          if (isGraphNode(element)) {
+          if (isNode(updated)) {
             if (typeof currentChange.dimensions !== 'undefined') {
-              element.measured = { width: currentChange.dimensions.width, height: currentChange.dimensions.height }
+              updated.measured = { width: currentChange.dimensions.width, height: currentChange.dimensions.height }
             }
 
             if (currentChange.setAttributes) {
               const setW = currentChange.setAttributes === true || currentChange.setAttributes === 'width'
               const setH = currentChange.setAttributes === true || currentChange.setAttributes === 'height'
-              element.style = {
-                ...(element.style || {}),
+              updated.style = {
+                ...(updated.style || {}),
                 ...(setW && { width: `${currentChange.dimensions?.width}px` }),
                 ...(setH && { height: `${currentChange.dimensions?.height}px` }),
               }
             }
 
             if (typeof currentChange.resizing !== 'undefined') {
-              element.resizing = currentChange.resizing
+              updated.resizing = currentChange.resizing
             }
           }
           break
       }
     }
+
+    next.push(updated)
   }
 
-  return elements
+  for (const change of addChanges) {
+    if (next.some((el) => el.id === change.item.id)) {
+      continue
+    }
+
+    if (typeof change.index === 'number') {
+      next.splice(change.index, 0, change.item as unknown as T)
+    } else {
+      next.push(change.item as unknown as T)
+    }
+  }
+
+  return next
 }
 
 /** @deprecated Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead */

@@ -23,13 +23,18 @@ function onConnect(connection: Connection) {
 }
 
 function updatePos() {
-  return nodes.value.forEach((el) => {
+  nodes.value = nodes.value.map((el) => {
     if (isNode(el)) {
-      el.position = {
-        x: Math.random() * 400,
-        y: Math.random() * 400,
+      return {
+        ...el,
+        position: {
+          x: Math.random() * 400,
+          y: Math.random() * 400,
+        },
       }
     }
+
+    return el
   })
 }
 
@@ -40,7 +45,7 @@ function resetViewport() {
   return flow.value?.setViewport({ x: 0, y: 0, zoom: 1 })
 }
 function toggleclass() {
-  return nodes.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+  nodes.value = nodes.value.map((el) => ({ ...el, class: el.class === 'light' ? 'dark' : 'light' }))
 }
 </script>
 

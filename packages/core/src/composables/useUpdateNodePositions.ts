@@ -9,7 +9,7 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useUpdateNodePositions() {
-  const { getSelectedNodes, nodeExtent, updateNodePositions, findNode, snapGrid, snapToGrid, nodesDraggable, emits } =
+  const { getSelectedNodes, nodeExtent, updateNodePositions, getInternalNode, snapGrid, snapToGrid, nodesDraggable, emits } =
     useVueFlow()
 
   return (positionDiff: XYPosition, isShiftPressed = false) => {
@@ -25,25 +25,33 @@ export function useUpdateNodePositions() {
     const nodeUpdates: NodeDragItem[] = []
     for (const node of getSelectedNodes.value) {
       if (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined')) {
+        // `getSelectedNodes` returns user `Node`s — resolve the enriched InternalNode for internals/measured
+        const internalNode = getInternalNode(node.id)
+        if (!internalNode) {
+          continue
+        }
+
         const nextPosition = {
-          x: node.internals.positionAbsolute.x + positionDiffX,
-          y: node.internals.positionAbsolute.y + positionDiffY,
+          x: internalNode.internals.positionAbsolute.x + positionDiffX,
+          y: internalNode.internals.positionAbsolute.y + positionDiffY,
         }
 
         const { position } = calcNextPosition(
-          node,
+          internalNode,
           nextPosition,
           emits.error,
           nodeExtent.value,
-          node.parentId ? findNode(node.parentId) : undefined,
+          node.parentId ? getInternalNode(node.parentId) : undefined,
         )
 
         nodeUpdates.push({
           id: node.id,
           position,
           distance: { x: positionDiff.x, y: positionDiff.y },
-          measured: getNodeDimensions(node),
-          internals: { positionAbsolute: { x: node.internals.positionAbsolute.x, y: node.internals.positionAbsolute.y } },
+          measured: getNodeDimensions(internalNode),
+          internals: {
+            positionAbsolute: { x: internalNode.internals.positionAbsolute.x, y: internalNode.internals.positionAbsolute.y },
+          },
         })
       }
     }

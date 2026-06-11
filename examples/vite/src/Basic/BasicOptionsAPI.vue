@@ -38,17 +38,20 @@ export default defineComponent({
       ;(this.$refs.flow as VueFlowStore | undefined)?.setViewport({ x: 0, y: 0, zoom: 1 })
     },
     toggleclass() {
-      this.elements.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+      this.elements = this.elements.map((el) => ({ ...el, class: el.class === 'light' ? 'dark' : 'light' }))
     },
     updatePos() {
-      this.elements.forEach((el) => {
-        if (isNode(el)) {
-          el.position = {
-            x: Math.random() * 400,
-            y: Math.random() * 400,
-          }
-        }
-      })
+      this.elements = this.elements.map((el) =>
+        isNode(el)
+          ? {
+              ...el,
+              position: {
+                x: Math.random() * 400,
+                y: Math.random() * 400,
+              },
+            }
+          : el,
+      )
     },
     onNodeDragStop(e: FlowEvents['nodeDragStop']) {
       console.log('drag stop', e)

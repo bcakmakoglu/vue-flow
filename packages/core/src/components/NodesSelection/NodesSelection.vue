@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useDrag, useUpdateNodePositions, useVueFlow } from '../../composables'
 import { arrowKeyDiffs, getNodesBounds } from '../../utils'
+import type { GraphNode } from '../../types'
 
 const { emits, viewport, getSelectedNodes, nodeLookup, noPanClassName, disableKeyboardA11y, userSelectionActive } = useVueFlow()
 
@@ -31,7 +32,8 @@ onMounted(() => {
   }
 })
 
-const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value, { nodeLookup }))
+// getSelectedNodes is DeepReadonly (public guard); getNodesBounds only reads it (dims come from nodeLookup)
+const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as unknown as GraphNode[], { nodeLookup }))
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
@@ -41,7 +43,16 @@ const innerStyle = computed(() => ({
 }))
 
 function onContextMenu(event: MouseEvent) {
-  emits.selectionContextMenu({ event, nodes: getSelectedNodes.value })
+  // resolve the enriched InternalNodes for the event payload (`getSelectedNodes` is user-facing)
+  const nodes = getSelectedNodes.value.reduce<GraphNode[]>((acc, node) => {
+    const internalNode = nodeLookup.get(node.id)
+    if (internalNode) {
+      acc.push(internalNode)
+    }
+    return acc
+  }, [])
+
+  emits.selectionContextMenu({ event, nodes })
 }
 
 function onKeyDown(event: KeyboardEvent) {

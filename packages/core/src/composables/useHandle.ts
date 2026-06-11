@@ -53,6 +53,7 @@ export function useHandle({
     autoPanOnConnect,
     autoPanSpeed,
     findNode,
+    getInternalNode,
     panBy,
     startConnection,
     updateConnection,
@@ -75,8 +76,8 @@ export function useHandle({
       return undefined
     }
     return (edge) => {
-      const sourceNode = findNode(edge.source)
-      const targetNode = findNode(edge.target)
+      const sourceNode = getInternalNode(edge.source)
+      const targetNode = getInternalNode(edge.target)
       if (!sourceNode || !targetNode) {
         return false
       }
@@ -250,7 +251,7 @@ export function useHandle({
       },
       edges.value,
       nodes.value,
-      findNode,
+      getInternalNode,
       nodeLookup,
     )
 

@@ -1,5 +1,4 @@
-import { markRaw } from 'vue'
-import type { Connection, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node, NodeLookup, XYZPosition } from '../types'
+import type { Connection, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node } from '../types'
 import { isDef } from '.'
 
 export {
@@ -26,51 +25,6 @@ export function isNode<NodeType extends Node = Node>(element: unknown): element 
 
 export function isGraphNode<NodeType extends Node = Node>(element: unknown): element is GraphNode<NodeType> {
   return isNode(element) && 'internals' in element
-}
-
-export function parseNode<NodeType extends Node = Node>(
-  node: Node,
-  existingNode?: GraphNode<NodeType>,
-  parentId?: string,
-): GraphNode<NodeType> {
-  const initialState = {
-    id: node.id.toString(),
-    type: node.type ?? 'default',
-    measured: markRaw({
-      width: 0,
-      height: 0,
-    }),
-    internals: {
-      positionAbsolute: {
-        x: node.position?.x ?? 0,
-        y: node.position?.y ?? 0,
-      },
-      z: node.zIndex ?? 0,
-      userNode: node,
-      handleBounds: {
-        source: [] as any[],
-        target: [] as any[],
-      },
-    },
-    draggable: undefined,
-    selectable: undefined,
-    connectable: undefined,
-    focusable: undefined,
-    selected: false,
-    dragging: false,
-    resizing: false,
-    initialized: false,
-    position: {
-      x: 0,
-      y: 0,
-    },
-    data: isDef(node.data) ? node.data : {},
-  } as unknown as GraphNode
-
-  return Object.assign(existingNode ?? initialState, node, {
-    id: node.id.toString(),
-    parentId: node.parentId ?? parentId,
-  }) as GraphNode<NodeType>
 }
 
 export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptions?: DefaultEdgeOptions): GraphEdge {
@@ -127,30 +81,4 @@ export function getConnectedNodes<N extends Node | { id: string } | string>(node
   }, new Set())
 
   return nodes.filter((node) => connectedNodeIds.has(typeof node === 'string' ? node : node.id))
-}
-
-export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition {
-  return {
-    x: computedPosition.x + parentPos.x,
-    y: computedPosition.y + parentPos.y,
-    z: (parentPos.z > computedPosition.z ? parentPos.z : computedPosition.z) + 1,
-  }
-}
-
-export function isParentSelected(node: GraphNode, nodeLookup: NodeLookup): boolean {
-  const parentId = node.parentId
-  if (!parentId) {
-    return false
-  }
-
-  const parent = nodeLookup.get(parentId)
-  if (!parent) {
-    return false
-  }
-
-  if (parent.selected) {
-    return true
-  }
-
-  return isParentSelected(parent, nodeLookup)
 }

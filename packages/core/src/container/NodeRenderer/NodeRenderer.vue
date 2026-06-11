@@ -4,7 +4,7 @@ import { NodeWrapper } from '../../components'
 import { useVueFlow } from '../../composables'
 import { useNodesInitialized } from '../../composables/useNodesInitialized'
 
-const { getNodes, updateNodeDimensions, emits } = useVueFlow()
+const { getNodes, nodeLookup, updateNodeDimensions, emits } = useVueFlow()
 
 const nodesInitialized = useNodesInitialized()
 
@@ -15,7 +15,8 @@ watch(
   (isInit) => {
     if (isInit) {
       nextTick(() => {
-        emits.nodesInitialized(getNodes.value)
+        // emit the enriched InternalNodes (the event payload stays rich; `getNodes` is user-facing)
+        emits.nodesInitialized(Array.from(nodeLookup.values()))
       })
     }
   },

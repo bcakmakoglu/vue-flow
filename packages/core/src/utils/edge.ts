@@ -41,12 +41,12 @@ export function getEdgeHandle(bounds: HandleElement[] | null, handleId?: string 
 
 export { isEdgeVisible } from '@xyflow/system'
 
-export function getEdgeZIndex(edge: GraphEdge, findNode: Actions['findNode'], elevateEdgesOnSelect = false) {
+export function getEdgeZIndex(edge: GraphEdge, getInternalNode: Actions['getInternalNode'], elevateEdgesOnSelect = false) {
   const hasZIndex = typeof edge.zIndex === 'number'
   let z = hasZIndex ? edge.zIndex! : 0
 
-  const source = findNode(edge.source)
-  const target = findNode(edge.target)
+  const source = getInternalNode(edge.source)
+  const target = getInternalNode(edge.target)
 
   if (!source || !target) {
     return 0

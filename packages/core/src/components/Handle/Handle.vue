@@ -30,7 +30,7 @@ const {
   noPanClassName,
 } = useVueFlow()
 
-const { id: nodeId, node, nodeEl, connectedEdges } = useNode()
+const { id: nodeId, node: nodeRef, nodeEl, connectedEdges } = useNode()
 
 const handle = ref<HTMLDivElement>()
 
@@ -90,7 +90,7 @@ const isHandleConnectable = computed(() => {
   }
 
   if (typeof isConnectable === 'function') {
-    return isConnectable(node, connectedEdges.value)
+    return nodeRef.value ? isConnectable(nodeRef.value, connectedEdges.value) : false
   }
 
   return isDef(isConnectable) ? isConnectable : nodesConnectable.value
@@ -99,9 +99,11 @@ const isHandleConnectable = computed(() => {
 // todo: remove this and have users handle this themselves using `updateNodeInternals`
 // set up handle bounds if they don't exist yet and the node has been initialized (i.e. the handle was added after the node has already been mounted)
 onMounted(() => {
+  const node = nodeRef.value
+
   // if the node isn't initialized yet, we can't set up the handle bounds
   // the handle bounds will be automatically set up when the node is initialized (`updateNodeDimensions`)
-  if (!node.measured.width || !node.measured.height) {
+  if (!node || !node.measured.width || !node.measured.height) {
     return
   }
 
