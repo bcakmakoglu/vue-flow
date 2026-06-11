@@ -673,7 +673,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
       commitEdges(state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge)))
 
-      updateConnectionLookup(state.connectionLookup, edgeLookup, [validEdge])
+      // rebuild from ALL edges — `updateConnectionLookup` clears the lookup before repopulating, so
+      // passing only the updated edge would drop every other edge's connections
+      updateConnectionLookup(state.connectionLookup, edgeLookup, state.edges)
 
       return validEdge
     }
