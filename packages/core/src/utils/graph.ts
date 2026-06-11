@@ -1,4 +1,4 @@
-import type { Connection, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node, NodeLookup, XYZPosition } from '../types'
+import type { Connection, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node } from '../types'
 import { isDef } from '.'
 
 export {
@@ -26,11 +26,6 @@ export function isNode<NodeType extends Node = Node>(element: unknown): element 
 export function isGraphNode<NodeType extends Node = Node>(element: unknown): element is GraphNode<NodeType> {
   return isNode(element) && 'internals' in element
 }
-
-// `parseNode` was removed in the node/InternalNode split: vue-flow now adopts user nodes directly into the
-// `nodeLookup` via `@xyflow/system`'s `adoptUserNodes` (see `adoptNodes` in utils/store.ts), xyflow/react+
-// svelte style — there is no second per-node parse/normalize pass. Edges still have no system adopter, so
-// `parseEdge` (below) stays the canonical edge-build step.
 
 export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptions?: DefaultEdgeOptions): GraphEdge {
   const initialState = {
@@ -86,30 +81,4 @@ export function getConnectedNodes<N extends Node | { id: string } | string>(node
   }, new Set())
 
   return nodes.filter((node) => connectedNodeIds.has(typeof node === 'string' ? node : node.id))
-}
-
-export function getXYZPos(parentPos: XYZPosition, computedPosition: XYZPosition): XYZPosition {
-  return {
-    x: computedPosition.x + parentPos.x,
-    y: computedPosition.y + parentPos.y,
-    z: (parentPos.z > computedPosition.z ? parentPos.z : computedPosition.z) + 1,
-  }
-}
-
-export function isParentSelected(node: GraphNode, nodeLookup: NodeLookup): boolean {
-  const parentId = node.parentId
-  if (!parentId) {
-    return false
-  }
-
-  const parent = nodeLookup.get(parentId)
-  if (!parent) {
-    return false
-  }
-
-  if (parent.selected) {
-    return true
-  }
-
-  return isParentSelected(parent, nodeLookup)
 }
