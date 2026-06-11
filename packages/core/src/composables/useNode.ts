@@ -1,6 +1,7 @@
 import { computed, inject, ref } from 'vue'
+import { getConnectedEdges } from '@xyflow/system'
 import type { GraphNode, Node } from '../types'
-import { ErrorCode, VueFlowError, getConnectedEdges } from '../utils'
+import { ErrorCode, VueFlowError } from '../utils'
 import { NodeRef } from '../context'
 import { useVueFlow } from './useVueFlow'
 import { useNodeId } from './useNodeId'

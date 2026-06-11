@@ -1,7 +1,7 @@
 import { computed } from 'vue'
-import { fitViewport, rendererPointToPoint } from '@xyflow/system'
+import { fitViewport, getViewportForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system'
 import type { Edge, Node, NodeLookup, Project, State, ViewportFunctions } from '../types'
-import { getViewportForBounds, pointToRendererPoint, warn } from '../utils'
+import { warn } from '../utils'
 
 export interface ViewportHelper extends ViewportFunctions {
   viewportInitialized: boolean

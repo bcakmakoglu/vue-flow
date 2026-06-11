@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { shallowRef, toRef, watch } from 'vue'
+import { areSetsEqual, getEventPosition, getNodesInside } from '@xyflow/system'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import type { EdgeChange, Node, NodeChange } from '../../types'
 import { SelectionMode } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
-import { areSetsEqual, getEventPosition, getNodesInside, getSelectionChanges } from '../../utils'
+import { getSelectionChanges } from '../../utils'
 import { getMousePosition } from './utils'
 
 const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>()

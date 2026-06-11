@@ -1,121 +1,8 @@
-import { getEventPosition, getOverlappingArea } from '@xyflow/system'
-import { ConnectionMode, Position } from '../types'
-import type {
-  Actions,
-  Connection,
-  ConnectionHandle,
-  GraphEdge,
-  GraphNode,
-  HandleElement,
-  HandleType,
-  IsValidParams,
-  Node,
-  NodeHandleBounds,
-  NodeLookup,
-  Result,
-  XYPosition,
-} from '../types'
-import { getHandlePosition, nodeToRect } from '.'
+import { getEventPosition, getHandlePosition } from '@xyflow/system'
+import { ConnectionMode } from '../types'
+import type { Actions, Connection, GraphEdge, HandleElement, HandleType, IsValidParams, Node, NodeLookup, Result } from '../types'
 
 const alwaysValid = () => true
-
-export function resetRecentHandle(handleDomNode: Element): void {
-  handleDomNode?.classList.remove('valid', 'connecting', 'vue-flow__handle-valid', 'vue-flow__handle-connecting')
-}
-
-// this functions collects all handles and adds an absolute position
-// so that we can later find the closest handle to the mouse position
-export function getHandles(
-  node: GraphNode,
-  handleBounds: NodeHandleBounds,
-  type: HandleType,
-  currentHandle: string,
-): ConnectionHandle[] {
-  const connectionHandles: ConnectionHandle[] = []
-
-  for (const handle of handleBounds[type] || []) {
-    if (`${node.id}-${handle.id}-${type}` !== currentHandle) {
-      const { x, y } = getHandlePosition(node, handle)
-
-      connectionHandles.push({
-        id: handle.id || null,
-        type,
-        nodeId: node.id,
-        x,
-        y,
-      })
-    }
-  }
-
-  return connectionHandles
-}
-
-function getNodesWithinDistance(position: XYPosition, nodeLookup: NodeLookup, distance: number): GraphNode[] {
-  const nodes: GraphNode[] = []
-  const rect = {
-    x: position.x - distance,
-    y: position.y - distance,
-    width: distance * 2,
-    height: distance * 2,
-  }
-
-  for (const node of nodeLookup.values()) {
-    if (getOverlappingArea(rect, nodeToRect(node)) > 0) {
-      nodes.push(node)
-    }
-  }
-
-  return nodes
-}
-
-const ADDITIONAL_DISTANCE = 250
-
-export function getClosestHandle(
-  position: XYPosition,
-  connectionRadius: number,
-  nodeLookup: NodeLookup,
-  fromHandle: { nodeId: string; type: HandleType; id?: string | null },
-): HandleElement | null {
-  let closestHandles: HandleElement[] = []
-  let minDistance = Number.POSITIVE_INFINITY
-
-  const closeNodes = getNodesWithinDistance(position, nodeLookup, connectionRadius + ADDITIONAL_DISTANCE)
-
-  for (const node of closeNodes) {
-    const allHandles = [...(node.internals.handleBounds?.source ?? []), ...(node.internals.handleBounds?.target ?? [])]
-
-    for (const handle of allHandles) {
-      if (fromHandle.nodeId === handle.nodeId && fromHandle.type === handle.type && fromHandle.id === handle.id) {
-        continue
-      }
-
-      const { x, y } = getHandlePosition(node, handle, handle.position, true)
-      const distance = Math.sqrt((x - position.x) ** 2 + (y - position.y) ** 2)
-
-      if (distance > connectionRadius) {
-        continue
-      }
-
-      if (distance < minDistance) {
-        closestHandles = [{ ...handle, x, y }]
-        minDistance = distance
-      } else if (distance === minDistance) {
-        closestHandles.push({ ...handle, x, y })
-      }
-    }
-  }
-
-  if (!closestHandles.length) {
-    return null
-  }
-
-  if (closestHandles.length > 1) {
-    const oppositeHandleType = fromHandle.type === 'source' ? 'target' : 'source'
-    return closestHandles.find((handle) => handle.type === oppositeHandleType) ?? closestHandles[0]
-  }
-
-  return closestHandles[0]
-}
 
 export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDomNode: Element | null): HandleType | null {
   if (edgeUpdaterType) {
@@ -127,23 +14,6 @@ export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDom
   }
 
   return null
-}
-
-// Re-export from @xyflow/system — `(isValid) => 'valid' | 'invalid' | null` shape, same as xyflow/react.
-// The previous two-arg form `(insideRadius, isValid)` can be collapsed at the call site to
-// `isValid ?? (insideRadius ? false : null)` before passing through.
-export { getConnectionStatus } from '@xyflow/system'
-
-export function isConnectionValid(isInsideConnectionRadius: boolean, isHandleValid: boolean) {
-  let isValid: boolean | null = null
-
-  if (isHandleValid) {
-    isValid = true
-  } else if (isInsideConnectionRadius && !isHandleValid) {
-    isValid = false
-  }
-
-  return isValid
 }
 
 export function getHandle(
@@ -246,11 +116,4 @@ export function isValidHandle(
   }
 
   return result
-}
-
-export const oppositePosition = {
-  [Position.Left]: Position.Right,
-  [Position.Right]: Position.Left,
-  [Position.Top]: Position.Bottom,
-  [Position.Bottom]: Position.Top,
 }

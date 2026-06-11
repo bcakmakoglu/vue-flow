@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
-import { getNodeToolbarTransform } from '@xyflow/system'
+import { getNodeToolbarTransform, getNodesBounds } from '@xyflow/system'
 import type { CSSProperties } from 'vue'
 import { useVueFlow } from '../../composables'
 import { NodeId } from '../../context'
 import type { GraphNode } from '../../types'
 import { Position } from '../../types'
-import { getNodesBounds } from '../../utils'
 
 import type { NodeToolbarProps } from './types'
 

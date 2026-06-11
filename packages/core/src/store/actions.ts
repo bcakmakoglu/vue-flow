@@ -3,10 +3,13 @@ import type { DeepReadonly } from 'vue'
 import {
   clampPosition,
   clampPositionToParent,
+  getConnectedEdges as getConnectedEdgesBase,
   getDimensions,
+  getHandleBounds,
   getOverlappingArea,
   handleExpandParent,
   isRectObject,
+  nodeToRect,
   panBy as panBySystem,
   updateAbsolutePositions,
 } from '@xyflow/system'
@@ -41,14 +44,11 @@ import {
   createGraphEdges,
   createNodeRemoveChange,
   createSelectionChange,
-  getConnectedEdges as getConnectedEdgesBase,
   getExtent,
-  getHandleBounds,
   getSelectionChanges,
   isDef,
   isGraphNode,
   isNode,
-  nodeToRect,
   updateConnectionLookup,
   updateEdgeAction,
 } from '../utils'

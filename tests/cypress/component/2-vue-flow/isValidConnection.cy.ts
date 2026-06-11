@@ -80,8 +80,8 @@ describe('isValidConnection Prop', () => {
             view: win,
           })
 
-        cy.get('.vue-flow__edge[data-id="vueflow__edge-A-B"]').should('exist')
-        cy.get('.vue-flow__edge[data-id="vueflow__edge-A-C"]').should('not.exist')
+        cy.get('.vue-flow__edge[data-id="xy-edge__A-B"]').should('exist')
+        cy.get('.vue-flow__edge[data-id="xy-edge__A-C"]').should('not.exist')
       })
     })
   })
