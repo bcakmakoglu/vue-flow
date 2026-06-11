@@ -16,8 +16,6 @@ const ConnectionLine = defineComponent({
       connectionStartHandle,
       connectionEndHandle,
       connectionPosition,
-      connectionLineType,
-      connectionLineStyle,
       connectionLineOptions,
       connectionStatus,
       viewport,
@@ -94,7 +92,7 @@ const ConnectionLine = defineComponent({
         return null
       }
 
-      const type = connectionLineType.value ?? connectionLineOptions.value.type ?? ConnectionLineType.Bezier
+      const type = connectionLineOptions.value.type ?? ConnectionLineType.Bezier
 
       let dAttr = ''
 
@@ -148,7 +146,6 @@ const ConnectionLine = defineComponent({
                 'd': dAttr,
                 'class': [connectionLineOptions.value.class, connectionStatus.value, 'vue-flow__connection-path'],
                 'style': {
-                  ...connectionLineStyle.value,
                   ...connectionLineOptions.value.style,
                 },
                 'marker-end': markerEnd.value,

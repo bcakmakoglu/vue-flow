@@ -176,7 +176,7 @@ const edges = ref<Edge[]>(initialElements.filter(isEdge))
   <VueFlow
     v-model:nodes="nodes"
     v-model:edges="edges"
-    :connection-line-type="ConnectionLineType.SmoothStep"
+    :connection-line-options="{ type: ConnectionLineType.SmoothStep }"
     :connection-mode="ConnectionMode.Loose"
     @init="({ fitView }) => fitView()"
   >

@@ -68,44 +68,13 @@ onInit((instance) => {
 })
 ```
 
-## [useHandleConnections](/typedocs/functions/useHandleConnections)
-
-`useHandleConnections` provides you with an array of connections that are connected to specific `<Handle>`.
-
-```ts
-import { type HandleConnection, useHandleConnections } from '@vue-flow/core'
-
-// get all connections where this node is the target (incoming connections)
-const targetConnections = useHandleConnections({
-  // type is required
-  type: 'target',
-})
-
-// get all connections where this node is the source (outgoing connections)
-const sourceConnections = useHandleConnections({
-  type: 'source',
-})
-
-const connections = useHandleConnections({
-  id: 'handle-1', // you can explicitly pass a handle id if there are multiple handles of the same type
-  nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
-  type: 'target',
-  onConnect: (connections: HandleConnection[]) => {
-    // do something with the connections
-  },
-  onDisconnect: (connections: HandleConnection[]) => {
-    // do something with the connections
-  },
-})
-```
-
 ## [useNodeConnections](/typedocs/functions/useNodeConnections)
 
 `useNodeConnections` provides you with an array of connections that are connected to a specific node.
 This composable is especially useful when you want to get all connections (of either type `source` or `target`) of a node.
 
 ```ts
-import { type HandleConnection, useNodeConnections } from '@vue-flow/core'
+import { type NodeConnection, useNodeConnections } from '@vue-flow/core'
 
 // get all connections where this node is the target (incoming connections)
 const targetConnections = useNodeConnections({
@@ -125,10 +94,10 @@ const handleConnections = useNodeConnections({
 const connections = useNodeConnections({
   nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
   handleType: 'target',
-  onConnect: (connections: HandleConnection[]) => {
+  onConnect: (connections: NodeConnection[]) => {
     // do something with the connections
   },
-  onDisconnect: (connections: HandleConnection[]) => {
+  onDisconnect: (connections: NodeConnection[]) => {
     // do something with the connections
   },
 })
@@ -137,14 +106,14 @@ const connections = useNodeConnections({
 ## [useNodesData](/typedocs/functions/useNodesData)
 
 `useNodesData` provides you with an array of data objects depending on the node ids you pass to it.
-It's especially useful when used together with `useHandleConnections`.
+It's especially useful when used together with `useNodeConnections`.
 
 ```ts
-import { useNodesData, useHandleConnections } from '@vue-flow/core'
+import { useNodesData, useNodeConnections } from '@vue-flow/core'
 
 // get all connections where this node is the target (incoming connections)
-const connections = useHandleConnections({
-  type: 'target',
+const connections = useNodeConnections({
+  handleType: 'target',
 })
 
 const data = useNodesData(() => connections.value.map((connection) => connection.source))
@@ -155,12 +124,12 @@ console.log(data.value) // [{ /* ... */]
 To further narrow down the type of the returned data, you can pass a guard function as the 2nd argument.
 
 ```ts
-import { useNodesData, useHandleConnections, type Node } from '@vue-flow/core'
+import { useNodesData, useNodeConnections, type Node } from '@vue-flow/core'
 
 type MyNode = Node<{ foo: string }>
 
-const connections = useHandleConnections({
-  type: 'target',
+const connections = useNodeConnections({
+  handleType: 'target',
 })
 
 const data = useNodesData(() => connections.value.map((connection) => connection.source), (node): node is MyNode => node.type === 'foo')

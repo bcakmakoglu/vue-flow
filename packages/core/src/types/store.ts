@@ -1,4 +1,4 @@
-import type { CSSProperties, ComputedRef, DeepReadonly, ToRefs } from 'vue'
+import type { ComputedRef, DeepReadonly, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { PanOnScrollMode, PanZoomInstance, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
@@ -7,12 +7,11 @@ import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent }
 import type {
   Connection,
   ConnectionLineOptions,
-  ConnectionLineType,
   ConnectionLookup,
   ConnectionMode,
   ConnectionStatus,
   Connector,
-  HandleConnection,
+  NodeConnection,
 } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
 import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
@@ -77,10 +76,6 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
   connectionMode: ConnectionMode
   connectionLineOptions: ConnectionLineOptions
-  /** @deprecated use {@link ConnectionLineOptions.type} */
-  connectionLineType: ConnectionLineType | null
-  /** @deprecated use {@link ConnectionLineOptions.style} */
-  connectionLineStyle: CSSProperties | null
   connectionStartHandle: ConnectingHandle | null
   connectionEndHandle: ConnectingHandle | null
   connectionClickStartHandle: ConnectingHandle | null
@@ -303,7 +298,7 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   /** get a node's connected edges */
   getConnectedEdges: (nodes: Node[]) => GraphEdge<EdgeType>[]
   /** get all connections of a handle belonging to a node */
-  getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => HandleConnection[]
+  getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => NodeConnection[]
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => Promise<boolean>
   /** viewport helper instance */
