@@ -42,11 +42,7 @@ watch(
   () => {
     const mobile = breakpoints.isSmaller('md')
     if (mobile) {
-      const node = flow.value?.findNode('4')
-
-      if (node) {
-        node.position = { x: 300, y: -25 }
-      }
+      flow.value?.updateNode('4', { position: { x: 300, y: -25 } })
     }
 
     panOnDrag.value = !mobile

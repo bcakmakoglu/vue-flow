@@ -29,7 +29,7 @@ const props = defineProps({
   },
 })
 
-const { getNodes, connectionStartHandle, onConnectEnd, addEdges, edges } = useVueFlow()
+const { getNodes, getInternalNode, connectionStartHandle, onConnectEnd, addEdges, edges } = useVueFlow()
 
 const closest = reactive({
   node: null,
@@ -51,13 +51,14 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
   const closestNode = getNodes.value.reduce(
     (res, n) => {
       if (n.id !== connectionStartHandle.value?.nodeId) {
-        const dx = props.targetX - (n.internals.positionAbsolute.x + n.measured.width / 2)
-        const dy = props.targetY - (n.internals.positionAbsolute.y + n.measured.height / 2)
+        const internalNode = getInternalNode(n.id)
+        const dx = props.targetX - (internalNode.internals.positionAbsolute.x + internalNode.measured.width / 2)
+        const dy = props.targetY - (internalNode.internals.positionAbsolute.y + internalNode.measured.height / 2)
         const d = Math.sqrt(dx * dx + dy * dy)
 
         if (d < res.distance && d < MIN_DISTANCE) {
           res.distance = d
-          res.node = n
+          res.node = internalNode
         }
       }
 

@@ -29,16 +29,17 @@ function onConnect(params) {
 }
 
 /**
- * To update node properties you can simply mutate the nodes directly.
- * Changes should always be reflected on the graph reactively, without the need to overwrite the nodes
+ * To update node properties, reassign the nodes ref immutably so the v-model change is re-adopted.
+ * Changes are reflected on the graph reactively (the bound nodes are markRaw'd, so in-place mutation is no longer reactive).
  */
 function updatePos() {
-  return nodes.value.forEach((node) => {
-    node.position = {
+  nodes.value = nodes.value.map((node) => ({
+    ...node,
+    position: {
       x: Math.random() * 400,
       y: Math.random() * 400,
-    }
-  })
+    },
+  }))
 }
 
 /**
@@ -57,7 +58,7 @@ function resetTransform() {
 
 function toggleClass() {
   dark.value = !dark.value
-  nodes.value.forEach((node) => (node.class = dark.value ? 'dark' : 'light'))
+  nodes.value = nodes.value.map((node) => ({ ...node, class: dark.value ? 'dark' : 'light' }))
 }
 </script>
 

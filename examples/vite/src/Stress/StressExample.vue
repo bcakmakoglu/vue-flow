@@ -19,17 +19,18 @@ onInit((i) => {
 })
 
 function toggleClass() {
-  nodes.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+  nodes.value = nodes.value.map((el) => ({ ...el, class: el.class === 'light' ? 'dark' : 'light' }))
   edges.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
 }
 
 function updatePos() {
-  nodes.value.forEach((el) => {
-    el.position = {
+  nodes.value = nodes.value.map((el) => ({
+    ...el,
+    position: {
       x: Math.random() * 10 * dimensions.value.width,
       y: Math.random() * 10 * dimensions.value.height,
-    }
-  })
+    },
+  }))
 
   nextTick(() => {
     fitView({ duration: 1000, padding: 0.5 })

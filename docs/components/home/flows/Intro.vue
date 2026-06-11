@@ -74,44 +74,59 @@ const setElements = useDebounceFn(() => {
     return
   }
 
-  const { getNodes, findNode, setEdges, updateNodeInternals, dimensions } = flow.value
+  const { getNodes, findNode, getInternalNode, setNodes, setEdges, updateNodeInternals, dimensions } = flow.value
 
   const offsetX = dimensions.value.width / 2
   const offsetY = dimensions.value.height / 4
 
   if (breakpoints.isSmaller('md') && currentBreakpoint.value !== 'sm') {
     const mainNode = findNode('intro')!
+    const mainInternal = getInternalNode('intro')!
 
     currentBreakpoint.value = 'sm'
 
-    getNodes.value.forEach((node) => {
-      switch (node.id) {
-        case 'intro':
-          node.position = {
-            x: offsetX - (node.measured.width ?? 0) / 2,
-            y: offsetY - (node.measured.height ?? 0) / 2,
-          }
-          break
-        case 'examples':
-          node.position = {
-            x: offsetX - (node.measured.width ?? 0) / 2,
-            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 1.5,
-          }
-          break
-        case 'documentation':
-          node.position = {
-            x: offsetX - (node.measured.width ?? 0) / 2,
-            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 2 + 50,
-          }
-          break
-        case 'acknowledgement':
-          node.position = {
-            x: offsetX - (node.measured.width ?? 0) / 2,
-            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 3,
-          }
-          break
-      }
-    })
+    setNodes(
+      getNodes.value.map((node) => {
+        const internal = getInternalNode(node.id)!
+
+        switch (node.id) {
+          case 'intro':
+            return {
+              ...node,
+              position: {
+                x: offsetX - (internal.measured.width ?? 0) / 2,
+                y: offsetY - (internal.measured.height ?? 0) / 2,
+              },
+            }
+          case 'examples':
+            return {
+              ...node,
+              position: {
+                x: offsetX - (internal.measured.width ?? 0) / 2,
+                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
+              },
+            }
+          case 'documentation':
+            return {
+              ...node,
+              position: {
+                x: offsetX - (internal.measured.width ?? 0) / 2,
+                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 2 + 50,
+              },
+            }
+          case 'acknowledgement':
+            return {
+              ...node,
+              position: {
+                x: offsetX - (internal.measured.width ?? 0) / 2,
+                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 3,
+              },
+            }
+          default:
+            return node
+        }
+      }),
+    )
 
     setEdges(() => {
       return [
@@ -142,32 +157,48 @@ const setElements = useDebounceFn(() => {
   } else if (!breakpoints.isSmaller('md')) {
     currentBreakpoint.value = 'md'
 
-    getNodes.value.forEach((node) => {
-      const mainNode = findNode('intro')!
-      switch (node.id) {
-        case 'intro':
-          node.position = { x: offsetX - (node.measured.width ?? 0) / 2, y: offsetY - (node.measured.height ?? 0) / 2 }
-          break
-        case 'examples':
-          node.position = {
-            x: mainNode.position.x - (node.measured.width ?? 0) / 2,
-            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 1.5,
-          }
-          break
-        case 'documentation':
-          node.position = {
-            x: mainNode.position.x + (mainNode.measured.width ?? 0) - (node.measured.width ?? 0) / 2,
-            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 1.5,
-          }
-          break
-        case 'acknowledgement':
-          node.position = {
-            x: offsetX - (node.measured.width ?? 0) / 2,
-            y: mainNode.position.y + (mainNode.measured.height ?? 0) * 2,
-          }
-          break
-      }
-    })
+    const mainNode = findNode('intro')!
+    const mainInternal = getInternalNode('intro')!
+
+    setNodes(
+      getNodes.value.map((node) => {
+        const internal = getInternalNode(node.id)!
+
+        switch (node.id) {
+          case 'intro':
+            return {
+              ...node,
+              position: { x: offsetX - (internal.measured.width ?? 0) / 2, y: offsetY - (internal.measured.height ?? 0) / 2 },
+            }
+          case 'examples':
+            return {
+              ...node,
+              position: {
+                x: mainNode.position.x - (internal.measured.width ?? 0) / 2,
+                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
+              },
+            }
+          case 'documentation':
+            return {
+              ...node,
+              position: {
+                x: mainNode.position.x + (mainInternal.measured.width ?? 0) - (internal.measured.width ?? 0) / 2,
+                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
+              },
+            }
+          case 'acknowledgement':
+            return {
+              ...node,
+              position: {
+                x: offsetX - (internal.measured.width ?? 0) / 2,
+                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 2,
+              },
+            }
+          default:
+            return node
+        }
+      }),
+    )
 
     setEdges(initialEdges)
   }
