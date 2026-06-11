@@ -74,7 +74,7 @@ const setElements = useDebounceFn(() => {
     return
   }
 
-  const { getNodes, findNode, getInternalNode, setNodes, setEdges, updateNodeInternals, dimensions } = flow.value
+  const { findNode, getInternalNode, setNodes, setEdges, updateNodeInternals, dimensions } = flow.value
 
   const offsetX = dimensions.value.width / 2
   const offsetY = dimensions.value.height / 4
@@ -85,8 +85,8 @@ const setElements = useDebounceFn(() => {
 
     currentBreakpoint.value = 'sm'
 
-    setNodes(
-      getNodes.value.map((node) => {
+    setNodes((nodes) =>
+      nodes.map((node) => {
         const internal = getInternalNode(node.id)!
 
         switch (node.id) {
@@ -160,8 +160,8 @@ const setElements = useDebounceFn(() => {
     const mainNode = findNode('intro')!
     const mainInternal = getInternalNode('intro')!
 
-    setNodes(
-      getNodes.value.map((node) => {
+    setNodes((nodes) =>
+      nodes.map((node) => {
         const internal = getInternalNode(node.id)!
 
         switch (node.id) {
