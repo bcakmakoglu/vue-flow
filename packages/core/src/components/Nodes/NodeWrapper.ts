@@ -7,8 +7,8 @@ import {
   nextTick,
   onMounted,
   provide,
-  ref,
   resolveComponent,
+  shallowRef,
   toRef,
   watch,
 } from 'vue'
@@ -50,7 +50,7 @@ const NodeWrapper = defineComponent({
       parentLookup,
     } = useVueFlow()
 
-    const nodeElement = ref<HTMLDivElement | null>(null)
+    const nodeElement = shallowRef<HTMLDivElement | null>(null)
     provide(NodeRef, nodeElement)
     provide(NodeId, props.id)
 

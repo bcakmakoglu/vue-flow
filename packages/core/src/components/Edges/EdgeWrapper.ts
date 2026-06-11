@@ -1,4 +1,4 @@
-import { computed, defineComponent, getCurrentInstance, h, inject, provide, ref, resolveComponent, toRef } from 'vue'
+import { computed, defineComponent, getCurrentInstance, h, inject, provide, resolveComponent, shallowRef, toRef } from 'vue'
 import { getHandlePosition, getMarkerId } from '@xyflow/system'
 import type { Connection, EdgeComponent, HandleType, MouseTouchEvent } from '../../types'
 import { ConnectionMode, Position } from '../../types'
@@ -51,17 +51,17 @@ const EdgeWrapper = defineComponent({
 
     const instance = getCurrentInstance()
 
-    const mouseOver = ref(false)
+    const mouseOver = shallowRef(false)
 
-    const updating = ref(false)
+    const updating = shallowRef(false)
 
-    const nodeId = ref('')
+    const nodeId = shallowRef('')
 
-    const handleId = ref<string | null>(null)
+    const handleId = shallowRef<string | null>(null)
 
-    const edgeUpdaterType = ref<HandleType>('source')
+    const edgeUpdaterType = shallowRef<HandleType>('source')
 
-    const edgeEl = ref<SVGElement | null>(null)
+    const edgeEl = shallowRef<SVGElement | null>(null)
 
     const isSelectable = toRef(() =>
       typeof edge.value.selectable === 'undefined' ? elementsSelectable.value : edge.value.selectable,
