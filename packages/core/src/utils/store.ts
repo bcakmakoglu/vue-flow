@@ -104,7 +104,7 @@ export interface CreateGraphNodesOptions {
  */
 export function createGraphNodes<NodeType extends Node = Node>(
   nodes: NodeType[],
-  findNode: Actions<NodeType>['findNode'],
+  getInternalNode: Actions<NodeType>['getInternalNode'],
   triggerError: State['hooks']['error']['trigger'],
   options?: CreateGraphNodesOptions,
 ): GraphNode<NodeType>[] {
@@ -157,7 +157,7 @@ export function createGraphNodes<NodeType extends Node = Node>(
     if (!internal) {
       continue
     }
-    const parsed = parseNode(internal, findNode(node.id), node.parentId)
+    const parsed = parseNode(internal, getInternalNode(node.id), node.parentId)
 
     // restore the vue-flow range+padding extent that was coerced away for the system pass (the narrow
     // `extent` field type is deliberate — the range form is a runtime-only extension, see types/node.ts)
@@ -230,7 +230,7 @@ export { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system'
 export function createGraphEdges<EdgeType extends Edge = Edge>(
   nextEdges: (EdgeType | Connection)[],
   isValidConnection: ValidConnectionFunc | null,
-  findNode: Actions['findNode'],
+  getInternalNode: Actions['getInternalNode'],
   findEdge: Actions<Node, EdgeType>['findEdge'],
   onError: VueFlowStore['emits']['error'],
   defaultEdgeOptions: DefaultEdgeOptions | undefined,
@@ -248,8 +248,8 @@ export function createGraphEdges<EdgeType extends Edge = Edge>(
       continue
     }
 
-    const sourceNode = findNode(edge.source)
-    const targetNode = findNode(edge.target)
+    const sourceNode = getInternalNode(edge.source)
+    const targetNode = getInternalNode(edge.target)
 
     if (!sourceNode || !targetNode) {
       onError(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))

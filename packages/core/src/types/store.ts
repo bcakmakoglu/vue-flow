@@ -196,7 +196,7 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
-export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
+export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => NodeType | undefined
 
 /**
  * Returns the enriched {@link InternalNode} (`internals.{positionAbsolute, z, handleBounds, userNode}` +

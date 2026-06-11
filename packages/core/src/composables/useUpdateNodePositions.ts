@@ -9,7 +9,7 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useUpdateNodePositions() {
-  const { getSelectedNodes, nodeExtent, updateNodePositions, findNode, snapGrid, snapToGrid, nodesDraggable, emits } =
+  const { getSelectedNodes, nodeExtent, updateNodePositions, getInternalNode, snapGrid, snapToGrid, nodesDraggable, emits } =
     useVueFlow()
 
   return (positionDiff: XYPosition, isShiftPressed = false) => {
@@ -35,7 +35,7 @@ export function useUpdateNodePositions() {
           nextPosition,
           emits.error,
           nodeExtent.value,
-          node.parentId ? findNode(node.parentId) : undefined,
+          node.parentId ? getInternalNode(node.parentId) : undefined,
         )
 
         nodeUpdates.push({

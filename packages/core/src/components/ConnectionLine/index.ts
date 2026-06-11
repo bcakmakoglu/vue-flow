@@ -22,14 +22,14 @@ const ConnectionLine = defineComponent({
       connectionLineOptions,
       connectionStatus,
       viewport,
-      findNode,
+      getInternalNode,
     } = useVueFlow()
 
     const connectionLineComponent = inject(Slots)?.['connection-line']
 
-    const fromNode = computed(() => findNode(connectionStartHandle.value?.nodeId))
+    const fromNode = computed(() => getInternalNode(connectionStartHandle.value?.nodeId))
 
-    const toNode = computed(() => findNode(connectionEndHandle.value?.nodeId) ?? null)
+    const toNode = computed(() => getInternalNode(connectionEndHandle.value?.nodeId) ?? null)
 
     const toXY = computed(() => {
       return {

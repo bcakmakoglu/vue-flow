@@ -183,7 +183,7 @@ export function isValidHandle(
   }: IsValidParams,
   edges: GraphEdge[],
   nodes: GraphNode[],
-  findNode: Actions['findNode'],
+  getInternalNode: Actions['getInternalNode'],
   nodeLookup: NodeLookup,
 ) {
   const isTarget = fromType === 'target'
@@ -237,8 +237,8 @@ export function isValidHandle(
       isValidConnection(connection, {
         nodes,
         edges,
-        sourceNode: findNode(connection.source)!,
-        targetNode: findNode(connection.target)!,
+        sourceNode: getInternalNode(connection.source)!,
+        targetNode: getInternalNode(connection.target)!,
       })
 
     result.toHandle = getHandle(handleNodeId, handleType, handleId, nodeLookup, connectionMode, true)

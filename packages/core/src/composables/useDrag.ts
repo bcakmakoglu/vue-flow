@@ -37,7 +37,7 @@ export function useDrag(params: UseDragParams) {
     autoPanSpeed,
     nodesDraggable,
     panBy,
-    findNode,
+    getInternalNode,
     multiSelectionActive,
     selectNodesOnDrag,
     removeSelectedNodes,
@@ -90,7 +90,7 @@ export function useDrag(params: UseDragParams) {
             // XYDrag may emit either NodeDragItem (the normal case) or InternalNodeBase entries
             // (selection drags). Both shapes carry `measured` and `internals.positionAbsolute`.
             const item = raw as SystemNodeDragItem
-            const node = findNode(item.id)
+            const node = getInternalNode(item.id)
             const width = item.measured?.width ?? node?.measured.width ?? 0
             const height = item.measured?.height ?? node?.measured.height ?? 0
             const positionAbsolute = item.internals?.positionAbsolute ?? node?.internals.positionAbsolute ?? { x: 0, y: 0 }
@@ -114,33 +114,33 @@ export function useDrag(params: UseDragParams) {
       onDragStart: (event, _dragItems, node, nodes) => {
         dragFired = true
         dragging.value = true
-        const graphNode = findNode(node.id)
+        const graphNode = getInternalNode(node.id)
         if (graphNode) {
           onStart({
             event,
             node: graphNode,
-            nodes: nodes.map((n) => findNode(n.id)!).filter(Boolean),
+            nodes: nodes.map((n) => getInternalNode(n.id)!).filter(Boolean),
           })
         }
       },
       onDrag: (event, _dragItems, node, nodes) => {
-        const graphNode = findNode(node.id)
+        const graphNode = getInternalNode(node.id)
         if (graphNode) {
           onDrag({
             event,
             node: graphNode,
-            nodes: nodes.map((n) => findNode(n.id)!).filter(Boolean),
+            nodes: nodes.map((n) => getInternalNode(n.id)!).filter(Boolean),
           })
         }
       },
       onDragStop: (event, _dragItems, node, nodes) => {
         dragging.value = false
-        const graphNode = findNode(node.id)
+        const graphNode = getInternalNode(node.id)
         if (graphNode) {
           onStop({
             event,
             node: graphNode,
-            nodes: nodes.map((n) => findNode(n.id)!).filter(Boolean),
+            nodes: nodes.map((n) => getInternalNode(n.id)!).filter(Boolean),
           })
         }
       },

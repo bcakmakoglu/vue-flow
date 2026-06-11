@@ -27,7 +27,7 @@ const EdgeWrapper = defineComponent({
       getEdgeTypes,
       removeSelectedEdges,
       findEdge,
-      findNode,
+      getInternalNode,
       isValidConnection,
       multiSelectionActive,
       disableKeyboardA11y,
@@ -110,8 +110,8 @@ const EdgeWrapper = defineComponent({
     })
 
     return () => {
-      const sourceNode = findNode(edge.value.source)
-      const targetNode = findNode(edge.value.target)
+      const sourceNode = getInternalNode(edge.value.source)
+      const targetNode = getInternalNode(edge.value.target)
       const pathOptions = 'pathOptions' in edge.value ? edge.value.pathOptions : {}
 
       if (!sourceNode && !targetNode) {

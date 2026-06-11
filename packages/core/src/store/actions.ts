@@ -218,7 +218,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return
     }
 
-    return nodeLookup.get(id)
+    // S2: still returns the (merged) lookup entry, now typed as the user `Node` per the public contract.
+    // S3 will split this to `nodeLookup.get(id)?.internals.userNode` once the array holds user nodes.
+    return nodeLookup.get(id) as unknown as NodeType | undefined
   }
 
   // The enriched-node accessor (xyflow/react parity). Today it returns the same `nodeLookup` entry as
@@ -262,7 +264,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         change.position = node.position
 
         if (node.parentId) {
-          const parentNode = findNode(node.parentId)
+          const parentNode = getInternalNode(node.parentId)
 
           change.position = {
             x: change.position.x - (parentNode?.internals.positionAbsolute?.x ?? 0),
@@ -326,7 +328,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     for (const element of updates) {
       const update = element
 
-      const node = findNode(update.id)
+      const node = getInternalNode(update.id)
 
       if (node) {
         const dimensions = getDimensions(update.nodeElement)
@@ -358,7 +360,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
           // the node's extent BEFORE measuring expansion, exactly as system does. Otherwise a node that
           // merely grew would be treated as overflowing and the parent would expand more than necessary.
           if (node.expandParent && node.parentId) {
-            const parent = findNode(node.parentId)
+            const parent = getInternalNode(node.parentId)
             let positionAbsolute = node.internals.positionAbsolute
             const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
 
@@ -496,7 +498,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     commitNodes(
-      createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
+      createGraphNodes(nextNodes, getInternalNode, state.hooks.error.trigger, {
         nodeOrigin: [0, 0],
         nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
         elevateNodesOnSelect: state.elevateNodesOnSelect,
@@ -514,7 +516,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const validEdges = createGraphEdges<EdgeType>(
       nextEdges,
       state.isValidConnection,
-      findNode,
+      getInternalNode,
       findEdge,
       state.hooks.error.trigger,
       state.defaultEdgeOptions,
@@ -531,7 +533,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
     nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
 
-    const graphNodes = createGraphNodes(nextNodes, findNode, state.hooks.error.trigger, {
+    const graphNodes = createGraphNodes(nextNodes, getInternalNode, state.hooks.error.trigger, {
       nodeOrigin: [0, 0],
       nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
@@ -554,7 +556,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const validEdges = createGraphEdges<EdgeType>(
       nextEdges,
       state.isValidConnection,
-      findNode,
+      getInternalNode,
       findEdge,
       state.hooks.error.trigger,
       state.defaultEdgeOptions,
@@ -681,7 +683,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       const [validEdge] = createGraphEdges<EdgeType>(
         [newEdge as unknown as EdgeType],
         state.isValidConnection,
-        findNode,
+        getInternalNode,
         findEdge,
         state.hooks.error.trigger,
         state.defaultEdgeOptions,
@@ -732,7 +734,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
   // todo: maybe we should use a more immutable approach, this is a bit too much mutation and hard to maintain
   const updateNode: Actions<NodeType>['updateNode'] = (id, nodeUpdate, options = { replace: false }) => {
-    const node = findNode(id)
+    const node = getInternalNode(id)
 
     if (!node) {
       return
@@ -753,7 +755,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const updateNodeData: Actions<NodeType>['updateNodeData'] = (id, dataUpdate, options = { replace: false }) => {
-    const node = findNode(id)
+    const node = getInternalNode(id)
 
     if (!node) {
       return

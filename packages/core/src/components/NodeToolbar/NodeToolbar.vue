@@ -19,13 +19,13 @@ const props = withDefaults(defineProps<NodeToolbarProps>(), {
 
 const contextNodeId = inject(NodeId, null)
 
-const { viewportRef, viewport, getSelectedNodes, findNode, nodeLookup } = useVueFlow()
+const { viewportRef, viewport, getSelectedNodes, getInternalNode, nodeLookup } = useVueFlow()
 
 const nodes = computed(() => {
   const nodeIds = Array.isArray(props.nodeId) ? props.nodeId : [props.nodeId || contextNodeId || '']
 
   return nodeIds.reduce<GraphNode[]>((acc, id) => {
-    const node = findNode(id)
+    const node = getInternalNode(id)
 
     if (node) {
       acc.push(node)
