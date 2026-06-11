@@ -170,14 +170,10 @@ const EdgeWrapper = defineComponent({
 
       const targetPosition = targetHandle?.position || Position.Top
 
+      // positions are render-local (xyflow parity: `EdgePosition` is a render-output type, never stored
+      // on the edge) — they flow to the edge component as props only
       const { x: sourceX, y: sourceY } = getHandlePosition(sourceNode, sourceHandle, sourcePosition)
       const { x: targetX, y: targetY } = getHandlePosition(targetNode, targetHandle, targetPosition)
-
-      // todo: let's avoid writing these here (in v2 we want to remove all of these self-managed refs)
-      edge.value.sourceX = sourceX
-      edge.value.sourceY = sourceY
-      edge.value.targetX = targetX
-      edge.value.targetY = targetY
 
       // the full-container svg wrapper (one stacking context per edge zIndex) is rendered here rather
       // than in EdgeRenderer's v-for so its node-lookup tracking stays scoped to this edge

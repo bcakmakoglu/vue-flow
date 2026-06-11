@@ -1,4 +1,4 @@
-import { inject, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import type { Edge, Node } from '../types'
 import { ErrorCode, VueFlowError } from '../utils'
 import { EdgeId, EdgeRef } from '../context'
@@ -13,7 +13,7 @@ import { useVueFlow } from './useVueFlow'
  *
  * @public
  * @param id - The id of the edge to access
- * @returns the edge id, the edge and the edge dom element
+ * @returns the edge id, the edge (a `ComputedRef`) and the edge dom element
  */
 export function useEdge<EdgeType extends Edge = Edge>(id?: string) {
   const edgeId = id ?? inject(EdgeId, '')
@@ -21,9 +21,11 @@ export function useEdge<EdgeType extends Edge = Edge>(id?: string) {
 
   const { findEdge, emits } = useVueFlow<Node, EdgeType>()
 
-  const edge = findEdge(edgeId)!
+  // a `computed` (not a one-time read) so it re-resolves whenever the store replaces this edge's lookup
+  // entry — required for the immutable model where a changed edge is a NEW object (mirrors `useNode`)
+  const edge = computed(() => findEdge(edgeId))
 
-  if (!edge) {
+  if (!edge.value) {
     emits.error(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edgeId))
   }
 
