@@ -49,7 +49,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
           width: state.dimensions.width,
           height: state.dimensions.height,
         },
-        [state.viewport.x, state.viewport.y, state.viewport.zoom],
+        state.transform,
         true,
       ).map((node) => node.internals.userNode) as unknown as DeepReadonly<NodeType[]>
     }
@@ -71,7 +71,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
             targetNode: target,
             width: state.dimensions.width,
             height: state.dimensions.height,
-            transform: [state.viewport.x, state.viewport.y, state.viewport.zoom],
+            transform: state.transform,
           })
         ) {
           visibleEdges.push(edge)
@@ -106,6 +106,13 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
     return selectedEdges
   })
 
+  // the public `{ x, y, zoom }` shape derived from the canonical `transform` tuple (read-only)
+  const viewport: ComputedGetters<NodeType, EdgeType>['viewport'] = computed(() => ({
+    x: state.transform[0],
+    y: state.transform[1],
+    zoom: state.transform[2],
+  }))
+
   return {
     getEdgeTypes,
     getNodeTypes,
@@ -113,5 +120,6 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
     getNodes,
     getSelectedNodes,
     getSelectedEdges,
+    viewport,
   }
 }

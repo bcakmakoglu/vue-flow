@@ -1,6 +1,6 @@
 import type { ComputedRef, DeepReadonly, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { PanOnScrollMode, PanZoomInstance, Viewport } from '@xyflow/system'
+import type { PanOnScrollMode, PanZoomInstance, Transform, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
 import type { Dimensions, FlowExportObject, FlowProps, Rect, SelectionMode, SelectionRect, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
@@ -60,8 +60,8 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
   /** viewport dimensions - do not change! */
   readonly dimensions: Dimensions
-  /** viewport transform x, y, z - do not change!  */
-  readonly viewport: Viewport
+  /** canonical viewport transform `[x, y, zoom]` (the `@xyflow/system` representation) - do not change! Read `viewport` for the `{ x, y, zoom }` shape. */
+  readonly transform: Transform
   /** if true will skip rendering any elements currently not inside viewport until they become visible */
   onlyRenderVisibleElements: boolean
   nodesSelectionActive: boolean
@@ -326,6 +326,8 @@ export interface Getters<NodeType extends Node = Node, EdgeType extends Edge = E
   getSelectedNodes: DeepReadonly<NodeType[]>
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge<EdgeType>[]
+  /** the viewport as `{ x, y, zoom }`, derived from the canonical `transform` — read-only; set via `setViewport`/`zoom*`/`fitView` */
+  viewport: Viewport
 }
 
 export type ComputedGetters<NodeType extends Node = Node, EdgeType extends Edge = Edge> = {

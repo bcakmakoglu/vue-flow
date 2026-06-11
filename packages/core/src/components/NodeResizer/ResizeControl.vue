@@ -23,6 +23,7 @@ const emits = defineEmits<NodeResizerEmits>()
 const {
   emits: triggerEmits,
   viewport,
+  transform,
   nodeLookup,
   parentLookup,
   snapGrid,
@@ -49,7 +50,7 @@ watchEffect((onCleanup) => {
     nodeId: props.nodeId,
     getStoreItems: () => ({
       nodeLookup,
-      transform: [viewport.value.x, viewport.value.y, viewport.value.zoom] as [number, number, number],
+      transform: transform.value,
       snapGrid: snapGrid.value,
       snapToGrid: snapToGrid.value,
       nodeOrigin: [0, 0],

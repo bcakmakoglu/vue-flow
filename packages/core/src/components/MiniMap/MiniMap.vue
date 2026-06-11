@@ -39,7 +39,7 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, nodes, nodeLookup, viewport, translateExtent, dimensions, emits, panZoom } = useVueFlow()
+const { id, edges, nodes, nodeLookup, viewport, transform, translateExtent, dimensions, emits, panZoom } = useVueFlow()
 
 const el = ref<SVGElement>()
 
@@ -133,7 +133,7 @@ onMounted(() => {
         minimapInstance = XYMinimap({
           domNode: el.value,
           panZoom: panZoomInstance,
-          getTransform: () => [viewport.value.x, viewport.value.y, viewport.value.zoom],
+          getTransform: () => transform.value,
           getViewScale: () => viewScale.value,
         })
       }

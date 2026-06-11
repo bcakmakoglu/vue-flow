@@ -7,7 +7,7 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useGetPointerPosition() {
-  const { viewport, snapGrid, snapToGrid, vueFlowRef } = useVueFlow()
+  const { transform, snapGrid, snapToGrid, vueFlowRef } = useVueFlow()
 
   // returns the pointer position projected to the VF coordinate system
   return (event: any) => {
@@ -15,7 +15,7 @@ export function useGetPointerPosition() {
     const evt = 'sourceEvent' in event ? event.sourceEvent : event
 
     const { x, y } = getEventPosition(evt, containerBounds as DOMRect)
-    const pointerPos = pointToRendererPoint({ x, y }, [viewport.value.x, viewport.value.y, viewport.value.zoom])
+    const pointerPos = pointToRendererPoint({ x, y }, transform.value)
     const { x: xSnapped, y: ySnapped } = snapToGrid.value ? snapPosition(pointerPos, snapGrid.value) : pointerPos
 
     // we need the snapped position to be able to skip unnecessary drag events
