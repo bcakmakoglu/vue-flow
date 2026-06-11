@@ -1,4 +1,4 @@
-import type { CoordinateExtent, EdgeBase, InternalNodeBase, NodeDragItem as SystemNodeDragItem } from '@xyflow/system'
+import type { CoordinateExtent, EdgeBase, InternalNodeBase, NodeBase, NodeDragItem as SystemNodeDragItem } from '@xyflow/system'
 import { XYDrag, infiniteExtent, isCoordinateExtent } from '@xyflow/system'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import { shallowRef, toValue, watchEffect } from 'vue'
@@ -63,7 +63,8 @@ export function useDrag(params: UseDragParams) {
 
     const dragInstance = XYDrag({
       getStoreItems: () => ({
-        nodes: getNodes.value,
+        // getNodes is DeepReadonly (public guard); XYDrag reads node data from nodeLookup, not this array
+        nodes: getNodes.value as unknown as NodeBase[],
         nodeLookup,
         edges: getEdges.value as unknown as EdgeBase[],
         nodeExtent: (isCoordinateExtent(nodeExtent.value as CoordinateExtent)

@@ -1,4 +1,4 @@
-import type { CSSProperties, ComputedRef, ToRefs } from 'vue'
+import type { CSSProperties, ComputedRef, DeepReadonly, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { PanOnScrollMode, PanZoomInstance, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
@@ -196,7 +196,7 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
-export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => NodeType | undefined
+export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => DeepReadonly<NodeType> | undefined
 
 /**
  * Returns the enriched {@link InternalNode} (`internals.{positionAbsolute, z, handleBounds, userNode}` +
@@ -322,21 +322,23 @@ export interface Getters<NodeType extends Node = Node, EdgeType extends Edge = E
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent<NodeType | BuiltInNode>>
   /** all visible nodes (user-facing `Node`s; use `getInternalNode`/`nodeLookup` for enriched data) */
-  getNodes: NodeType[]
+  getNodes: DeepReadonly<NodeType[]>
+  // NOTE: DeepReadonly is a TYPE-only guard (zero runtime) — mutating a node read here is a compile error
+  // pointing users at the helpers (updateNode/updateNodeData/applyNodeChanges/setNodes); see #40.
   /** all visible edges */
   getEdges: GraphEdge<EdgeType>[]
   /**
    * returns a node by id
    * @deprecated use {@link Actions.findNode} instead
    */
-  getNode: (id: string) => NodeType | undefined
+  getNode: (id: string) => DeepReadonly<NodeType> | undefined
   /**
    * returns an edge by id
    * @deprecated use {@link Actions.findEdge} instead
    */
   getEdge: (id: string) => GraphEdge<EdgeType> | undefined
   /** returns all currently selected nodes (user-facing `Node`s) */
-  getSelectedNodes: NodeType[]
+  getSelectedNodes: DeepReadonly<NodeType[]>
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge<EdgeType>[]
 }

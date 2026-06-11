@@ -1,4 +1,5 @@
 import { markRaw, toRaw } from 'vue'
+import type { DeepReadonly } from 'vue'
 import {
   clampPosition,
   clampPositionToParent,
@@ -222,8 +223,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     // The public contract: `findNode`/`getNode` return the user-facing `Node` (the exact object held in
     // `state.nodes`/v-model), which the store keeps on the InternalNode as `internals.userNode`. Enriched
-    // data (internals/measured) is reached via `getInternalNode`.
-    return nodeLookup.get(id)?.internals.userNode as NodeType | undefined
+    // data (internals/measured) is reached via `getInternalNode`. Typed `DeepReadonly` (zero runtime) so
+    // mutating the result is a compile error → use the helpers (updateNode/applyNodeChanges/setNodes).
+    return nodeLookup.get(id)?.internals.userNode as DeepReadonly<NodeType> | undefined
   }
 
   // The enriched-node accessor (xyflow/react parity). Today it returns the same `nodeLookup` entry as
@@ -627,7 +629,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       nodeChanges.push(createNodeRemoveChange(currNode.id))
 
       if (removeConnectedEdges) {
-        createEdgeRemovalChanges([currNode])
+        createEdgeRemovalChanges([currNode as Node])
       }
 
       if (removeChildren) {
@@ -803,7 +805,13 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
   ): [Rect | null, Node | null | undefined, boolean] => {
     const isRectObj = isRectObject(nodeOrRect)
-    const node = isRectObj ? null : isGraphNode(nodeOrRect as GraphNode) ? (nodeOrRect as GraphNode) : findNode(nodeOrRect.id)
+    // use `getInternalNode` (not findNode): `nodeToRect` below needs `internals`/`measured`, which live on
+    // the InternalNode, not the user `Node` that findNode returns
+    const node = isRectObj
+      ? null
+      : isGraphNode(nodeOrRect as GraphNode)
+        ? (nodeOrRect as GraphNode)
+        : getInternalNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {
       return [null, null, isRectObj]

@@ -1,4 +1,5 @@
 import { computed } from 'vue'
+import type { DeepReadonly } from 'vue'
 import type { ComputedGetters, Edge, EdgeLookup, GraphEdge, GraphNode, Node, NodeLookup, State } from '../types'
 import { getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
@@ -11,7 +12,9 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
   /**
    * @deprecated will be removed in next major version; use findNode instead
    */
-  const getNode: ComputedGetters<NodeType>['getNode'] = computed(() => (id) => nodeLookup.get(id)?.internals.userNode)
+  const getNode: ComputedGetters<NodeType>['getNode'] = computed(
+    () => (id) => nodeLookup.get(id)?.internals.userNode as DeepReadonly<NodeType> | undefined,
+  )
 
   /**
    * @deprecated will be removed in next major version; use findEdge instead
@@ -63,10 +66,10 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
           [state.viewport.x, state.viewport.y, state.viewport.zoom],
           true,
         ) as GraphNode<NodeType>[]
-      ).map((node) => node.internals.userNode as NodeType)
+      ).map((node) => node.internals.userNode) as unknown as DeepReadonly<NodeType[]>
     }
 
-    return state.nodes
+    return state.nodes as unknown as DeepReadonly<NodeType[]>
   })
 
   const getEdges: ComputedGetters<NodeType, EdgeType>['getEdges'] = computed(() => {
@@ -104,7 +107,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
       }
     }
 
-    return selectedNodes
+    return selectedNodes as unknown as DeepReadonly<NodeType[]>
   })
 
   const getSelectedEdges: ComputedGetters<NodeType, EdgeType>['getSelectedEdges'] = computed(() => {

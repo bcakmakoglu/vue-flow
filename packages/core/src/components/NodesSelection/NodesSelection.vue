@@ -32,7 +32,8 @@ onMounted(() => {
   }
 })
 
-const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value, { nodeLookup }))
+// getSelectedNodes is DeepReadonly (public guard); getNodesBounds only reads it (dims come from nodeLookup)
+const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as unknown as GraphNode[], { nodeLookup }))
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
