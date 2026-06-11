@@ -198,6 +198,13 @@ export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
 export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
 
+/**
+ * Returns the enriched {@link InternalNode} (`internals.{positionAbsolute, z, handleBounds, userNode}` +
+ * authoritative `measured`) for an id, mirroring xyflow/react's `getInternalNode`. This is the accessor
+ * for store-computed data; `findNode`/`getNode` expose the user-facing node.
+ */
+export type GetInternalNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
+
 export type FindEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => GraphEdge<EdgeType> | undefined
 
 export type GetIntersectingNodes<NodeType extends Node = Node> = (
@@ -236,6 +243,8 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   removeEdges: RemoveEdges
   /** find a node by id */
   findNode: FindNode<NodeType>
+  /** get the enriched internal node (store-computed `internals` + `measured`) by id */
+  getInternalNode: GetInternalNode<NodeType>
   /** find an edge by id */
   findEdge: FindEdge<EdgeType>
   /** updates an edge */

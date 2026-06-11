@@ -221,6 +221,18 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     return nodeLookup.get(id)
   }
 
+  // The enriched-node accessor (xyflow/react parity). Today it returns the same `nodeLookup` entry as
+  // `findNode`; once the public split lands, `findNode`/`getNode` will return the user `Node` while this
+  // keeps returning the enriched `InternalNode`. Internal call sites that read `internals`/`measured`
+  // should migrate onto this so the contract flip doesn't churn them.
+  const getInternalNode: Actions<NodeType>['getInternalNode'] = (id) => {
+    if (!id) {
+      return
+    }
+
+    return nodeLookup.get(id)
+  }
+
   const findEdge: Actions<NodeType, EdgeType>['findEdge'] = (id) => {
     if (!id) {
       return
@@ -955,6 +967,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     removeNodes,
     removeEdges,
     findNode,
+    getInternalNode,
     findEdge,
     updateEdge,
     updateEdgeData,
