@@ -339,26 +339,6 @@ const edges = ref([
   
   The options include the connection line type, style and possible marker types (marker-end/marker-start).
 
-### connection-line-type (optional) (deprecated)
-
-- Type: [`ConnectionLineType`](/typedocs/enumerations/ConnectionLineType)
-
-- Default: `ConnectionLineType.Bezier`
-
-- Details:
-
-  The path to use when drawing a connection-line (`bezier`, `step`, `smoothstep`).
-
-  When using a custom connection line this prop does nothing.
-
-### connection-line-style (optional) (deprecated)
-
-- Type: `CSSProperties` | `null`
-
-- Details:
-
-  Additional styles to add to the default connection-line.
-
 ### fit-view-on-init (optional)
 
 - Type: `boolean`

@@ -28,7 +28,6 @@ const props = withDefaults(defineProps<FlowProps<NodeType, EdgeType>>(), {
   applyDefault: undefined,
   fitViewOnInit: undefined,
   connectOnClick: undefined,
-  connectionLineStyle: undefined,
   connectionLineOptions: undefined,
   autoConnect: undefined,
   elevateEdgesOnSelect: undefined,

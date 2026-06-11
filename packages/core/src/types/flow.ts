@@ -8,7 +8,6 @@ import type {
   Connection,
   ConnectionLineOptions,
   ConnectionLineProps,
-  ConnectionLineType,
   ConnectionMode,
   Connector,
   OnConnectStartParams,
@@ -98,10 +97,6 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
   nodeTypes?: NodeTypesObject<NodeType>
   connectionMode?: ConnectionMode
-  /** @deprecated use {@link ConnectionLineOptions.type} */
-  connectionLineType?: ConnectionLineType | null
-  /** @deprecated use {@link ConnectionLineOptions.style} */
-  connectionLineStyle?: CSSProperties | null
   connectionLineOptions?: ConnectionLineOptions
   connectionRadius?: number
   isValidConnection?: ValidConnectionFunc | null

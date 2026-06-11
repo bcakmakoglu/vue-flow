@@ -23,7 +23,7 @@ export interface MiniMapProps {
   maskStrokeColor?: string
   /** Border width of minimap mask */
   maskStrokeWidth?: number
-  /** Position of the minimap {@link PanelPosition} */
+  /** Position of the minimap {@link PanelPositionType} */
   position?: PanelPositionType
   /** Enable drag minimap to drag viewport */
   pannable?: boolean

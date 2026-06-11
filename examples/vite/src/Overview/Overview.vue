@@ -151,7 +151,7 @@ const edges = ref<Edge[]>(initialElements.filter(isEdge))
   <VueFlow
     v-model:nodes="nodes"
     v-model:edges="edges"
-    :connection-line-style="{ stroke: '#ddd' }"
+    :connection-line-options="{ style: { stroke: '#ddd' } }"
     snap-to-grid
     :snap-grid="snapGrid"
     @init="onLoad"
