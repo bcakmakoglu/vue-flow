@@ -85,14 +85,12 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
     emits[n] = (h as any).trigger
   }
 
-  // Lookup maps are the PRIMARY node/edge structures (Step 3 of the inversion). They are held as
-  // `reactive(Map)` so Map identity is stable across mutations and — critical for the later steps —
-  // `@xyflow/system` helpers can `.set` clones in place while reads via `.get` stay reactive
-  // (validated by the Step 0 spike). The store actions mutate these directly (via `commitNodes` /
-  // `commitEdges` in `useActions`) and keep `reactiveState.nodes`/`.edges` as array mirrors for the
-  // internal reads + the public `store.nodes`/`store.edges` refs that still consume arrays. There is
-  // no derivation watcher: actions write maps + mirror in a single imperative pass, so there is no
-  // rebuild thrash and no forward/backward maintainer loop.
+  // The lookup maps hold the enriched `InternalNode`s/edges (canonical for `internals`/`measured`); the
+  // canonical user-facing `Node`/`Edge` arrays live in `state.nodes`/`state.edges` (the v-model source of
+  // truth). They are held as `reactive(Map)` so Map identity is stable across mutations and `@xyflow/system`
+  // helpers can `.set` clones in place while reads via `.get` stay reactive. The store actions write both in
+  // one imperative pass (`commitNodes` re-adopts the user nodes into the lookup, `commitEdges` mirrors edges)
+  // — no derivation watcher, no rebuild thrash.
   //
   // The `as` casts undo `reactive()`'s `UnwrapNestedRefs` return type: over a Map of the *generic*
   // `GraphNode<NodeType>`, TS can't prove the element type has no refs to unwrap and widens the value

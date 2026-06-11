@@ -96,17 +96,14 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
   /**
    * Recompute parent-aware `internals.positionAbsolute`/`z` for every node via `@xyflow/system`'s
-   * `updateAbsolutePositions`, then write the results back onto the canonical reactive node refs
-   * (Step 5, approach A — svelte's write-back). This replaces the per-node positionAbsolute watcher
-   * that used to live in `NodeWrapper`.
+   * `updateAbsolutePositions`. The lookup is the canonical home of the enriched `InternalNode`s/`internals`,
+   * so this is lookup-only: `updateAbsolutePositions` writes `internals.positionAbsolute` directly onto the
+   * lookup InternalNodes (root nodes in place, moved children via clone-on-`.set`, which the per-node render
+   * computed picks up by reference). There is NO write-back onto `state.nodes` — those hold the raw user
+   * `Node`s. This replaces the per-node positionAbsolute watcher that used to live in `NodeWrapper`.
    *
-   * `updateAbsolutePositions` mutates the lookup: root nodes in place, child nodes via clone-on-`.set`
-   * (so React/Svelte pick them up by reference). vue-flow keeps the nodes array canonical and
-   * `useNode().node` returns the live array ref, so for cloned children we copy `internals` back onto
-   * the canonical ref *in place* (propagates through the captured ref) and re-point the lookup at it
-   * (re-converge identity — validated by the write-back spike). System does NOT set root-node `z`
-   * (only children get it via the parent chain), so we apply the elevate-on-select `z` for roots here,
-   * matching the old watcher / system's `calculateZ`.
+   * System does NOT set root-node `z` (only children get it via the parent chain), so we apply the
+   * elevate-on-select `z` for roots here, matching system's `calculateZ`.
    */
   function recomputeAbsolutePositions() {
     // `@xyflow/system` has no concept of vue-flow's `CoordinateExtentRange` (`{ range, padding }`) and
@@ -152,8 +149,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     // Apply the range `padding` the system clamp can't express. `updateAbsolutePositions` only understands
     // `'parent'`/`CoordinateExtent` (we coerced `{ range, padding }` to its bare `range` above), so it
-    // clamps to the parent/extent bounds *without* the inset. Now that absolute positions are fresh (and
-    // re-converged onto the canonical refs), re-clamp each padded node against the padded extent via the
+    // clamps to the parent/extent bounds *without* the inset. Now that absolute positions are fresh on the
+    // lookup InternalNodes, re-clamp each padded node against the padded extent via the
     // same `calcNextPosition`/`getExtent` math the keyboard-move path uses — restoring the padding the
     // pre-system-migration NodeWrapper watcher used to apply. Idempotent (an in-bounds node is unchanged),
     // and `expandParent` nodes are skipped (they grow the parent instead of being clamped into it).
@@ -208,7 +205,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const getConnectedEdges: Actions<NodeType, EdgeType>['getConnectedEdges'] = (nodes) => {
-    return getConnectedEdgesBase(nodes, state.edges) as GraphEdge<EdgeType>[]
+    return getConnectedEdgesBase(nodes, state.edges)
   }
 
   const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
@@ -228,10 +225,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     return nodeLookup.get(id)?.internals.userNode as DeepReadonly<NodeType> | undefined
   }
 
-  // The enriched-node accessor (xyflow/react parity). Today it returns the same `nodeLookup` entry as
-  // `findNode`; once the public split lands, `findNode`/`getNode` will return the user `Node` while this
-  // keeps returning the enriched `InternalNode`. Internal call sites that read `internals`/`measured`
-  // should migrate onto this so the contract flip doesn't churn them.
+  // The enriched-node accessor (xyflow/react parity): returns the lookup `InternalNode` (enriched
+  // `internals`/`measured`), whereas `findNode`/`getNode` return the user-facing `Node` (`internals.userNode`).
+  // Internal call sites that need `internals`/`measured` use this.
   const getInternalNode: Actions<NodeType>['getInternalNode'] = (id) => {
     if (!id) {
       return
@@ -300,12 +296,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // grow each parent to fit its `expandParent` children — system returns the parent's position +
     // dimension changes plus counter-offsets for the other children, applied through the same pipeline.
     if (parentExpandChildren.length > 0) {
-      changes.push(
-        ...(handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]) as (
-          | NodePositionChange
-          | NodeDimensionChange
-        )[]),
-      )
+      changes.push(...handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]))
     }
 
     if (changes.length) {
@@ -407,12 +398,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     if (parentExpandChildren.length > 0) {
-      changes.push(
-        ...(handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]) as (
-          | NodeDimensionChange
-          | NodePositionChange
-        )[]),
-      )
+      changes.push(...handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]))
     }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
@@ -718,13 +704,13 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // Apply changes IMMUTABLY against the canonical user nodes (`applyChanges` returns a new array — new
     // objects for changed nodes, unchanged reused by reference), then re-adopt via `commitNodes`
     // (`adoptUserNodes` reuses unchanged InternalNodes by reference via `checkEquality`).
-    const result = applyChanges(changes, state.nodes) as NodeType[]
+    const result = applyChanges(changes, state.nodes)
     commitNodes(result)
     return result
   }
 
   const applyEdgeChanges: Actions<NodeType, EdgeType>['applyEdgeChanges'] = (changes) => {
-    const result = applyChanges(changes, Array.from(edgeLookup.values())) as GraphEdge<EdgeType>[]
+    const result = applyChanges(changes, Array.from(edgeLookup.values()))
 
     commitEdges(result)
 
@@ -805,11 +791,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const isRectObj = isRectObject(nodeOrRect)
     // use `getInternalNode` (not findNode): `nodeToRect` below needs `internals`/`measured`, which live on
     // the InternalNode, not the user `Node` that findNode returns
-    const node = isRectObj
-      ? null
-      : isGraphNode(nodeOrRect as GraphNode)
-      ? (nodeOrRect as GraphNode)
-      : getInternalNode(nodeOrRect.id)
+    const node = isRectObj ? null : isGraphNode(nodeOrRect) ? nodeOrRect : getInternalNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {
       return [null, null, isRectObj]
@@ -885,7 +867,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     if (isDef(opts.nodes)) {
-      setNodes(opts.nodes as unknown as NodeType[])
+      setNodes(opts.nodes)
     }
 
     if (isDef(opts.edges)) {

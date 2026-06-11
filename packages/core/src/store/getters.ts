@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import type { DeepReadonly } from 'vue'
-import type { ComputedGetters, Edge, EdgeLookup, GraphEdge, GraphNode, Node, NodeLookup, State } from '../types'
+import type { ComputedGetters, Edge, EdgeLookup, GraphEdge, Node, NodeLookup, State } from '../types'
 import { getNodesInside, isEdgeVisible } from '../utils'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
@@ -54,18 +54,16 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
   const getNodes: ComputedGetters<NodeType>['getNodes'] = computed(() => {
     if (state.onlyRenderVisibleElements) {
       // `getNodesInside` works on the InternalNode lookup; surface the user nodes (the public contract)
-      return (
-        getNodesInside(
-          nodeLookup,
-          {
-            x: 0,
-            y: 0,
-            width: state.dimensions.width,
-            height: state.dimensions.height,
-          },
-          [state.viewport.x, state.viewport.y, state.viewport.zoom],
-          true,
-        ) as GraphNode<NodeType>[]
+      return getNodesInside(
+        nodeLookup,
+        {
+          x: 0,
+          y: 0,
+          width: state.dimensions.width,
+          height: state.dimensions.height,
+        },
+        [state.viewport.x, state.viewport.y, state.viewport.zoom],
+        true,
       ).map((node) => node.internals.userNode) as unknown as DeepReadonly<NodeType[]>
     }
 
