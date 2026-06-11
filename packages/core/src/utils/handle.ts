@@ -9,6 +9,7 @@ import type {
   HandleElement,
   HandleType,
   IsValidParams,
+  Node,
   NodeHandleBounds,
   NodeLookup,
   Result,
@@ -182,7 +183,7 @@ export function isValidHandle(
     isValidConnection = alwaysValid,
   }: IsValidParams,
   edges: GraphEdge[],
-  nodes: GraphNode[],
+  nodes: Node[],
   getInternalNode: Actions['getInternalNode'],
   nodeLookup: NodeLookup,
 ) {

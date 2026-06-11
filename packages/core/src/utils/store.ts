@@ -1,5 +1,5 @@
 import { unref } from 'vue'
-import type { InternalNodeBase, NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system'
+import type { NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system'
 import { adoptUserNodes } from '@xyflow/system'
 import type {
   Actions,
@@ -19,7 +19,7 @@ import type {
   ValidConnectionFunc,
   VueFlowStore,
 } from '../types'
-import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge, parseNode } from '.'
+import { ErrorCode, VueFlowError, connectionExists, getEdgeId, isEdge, isNode, parseEdge } from '.'
 
 export { areSetsEqual } from '@xyflow/system'
 
@@ -97,17 +97,26 @@ export interface CreateGraphNodesOptions {
 }
 
 /**
- * Validate user nodes, run `@xyflow/system`'s `adoptUserNodes` to compute parent-aware
- * `internals.{positionAbsolute, z, rootParentIndex, handleBounds, userNode}`, then merge vue-flow's
- * own `GraphNode` defaults onto each entry. This replaces the previous `parseNode`-then-naive-watcher
- * flow so child nodes have correct absolute positions from the first paint.
+ * Adopt user `Node`s into the store's lookups, xyflow/react+svelte style: validate, then run
+ * `@xyflow/system`'s `adoptUserNodes` DIRECTLY against the PERSISTENT `nodeLookup`/`parentLookup`
+ * (mutated in place — cleared + repopulated) to build the enriched `InternalNode`s with parent-aware
+ * `internals.{positionAbsolute, z, rootParentIndex, handleBounds, userNode}`.
+ *
+ * There is no second `parseNode` pass and no vue-flow-specific default-stamping (parity with RF/SF, which
+ * apply no node defaults — undefined fields stay undefined; consumers tolerate them). `checkEquality`
+ * reuses the existing `InternalNode` by reference whenever the user node is unchanged, so re-adopting on
+ * every change is O(changed) and `measured`/`handleBounds` survive for unchanged nodes for free.
+ *
+ * Returns the validated user nodes (to be stored as the canonical `state.nodes` array). The InternalNodes
+ * live only in `nodeLookup`; `internals.userNode` references the exact user object stored in the array.
  */
-export function createGraphNodes<NodeType extends Node = Node>(
+export function adoptNodes<NodeType extends Node = Node>(
   nodes: NodeType[],
-  getInternalNode: Actions<NodeType>['getInternalNode'],
+  nodeLookup: SystemNodeLookup<GraphNode<NodeType>>,
+  parentLookup: SystemParentLookup<GraphNode<NodeType>>,
   triggerError: State['hooks']['error']['trigger'],
   options?: CreateGraphNodesOptions,
-): GraphNode<NodeType>[] {
+): NodeType[] {
   const validNodes: NodeType[] = []
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i]
@@ -126,7 +135,7 @@ export function createGraphNodes<NodeType extends Node = Node>(
   // `'parent' | CoordinateExtent`. A vue-flow `CoordinateExtentRange` ({ range, padding }) extent would
   // make `clampPosition` index `extent[0][0]` on the object and throw. Feed `adoptUserNodes` shallow
   // copies whose extent is coerced to the bare `range`, then restore the original range+padding onto the
-  // parsed `GraphNode` below — the padding inset is applied later by the store's `recomputeAbsolutePositions`.
+  // adopted `InternalNode` below — the padding inset is applied later by `recomputeAbsolutePositions`.
   const rangeExtents = new Map<string, CoordinateExtentRange>()
   const adoptable = validNodes.map((node): NodeType => {
     const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
@@ -137,38 +146,30 @@ export function createGraphNodes<NodeType extends Node = Node>(
     return node
   })
 
-  const lookup: SystemNodeLookup<InternalNodeBase<NodeType>> = new Map()
-  const parentLookup: SystemParentLookup<InternalNodeBase<NodeType>> = new Map()
-  adoptUserNodes(adoptable, lookup, parentLookup, options)
+  adoptUserNodes(adoptable, nodeLookup, parentLookup, { ...options, checkEquality: true })
+
+  // For range-extent nodes we fed `adoptUserNodes` a COPY (different reference): restore the original
+  // `{ range, padding }` extent and re-point `internals.userNode` at the un-coerced node so
+  // `findNode`/`getNodes` surface the exact user object the array holds.
+  for (const node of validNodes) {
+    const range = rangeExtents.get(node.id)
+    if (!range) {
+      continue
+    }
+    const internal = nodeLookup.get(node.id)
+    if (internal) {
+      ;(internal as { extent?: CoordinateExtentRange }).extent = range
+      ;(internal.internals as { userNode: Node }).userNode = node
+    }
+  }
 
   for (const node of validNodes) {
-    if (node.parentId && !lookup.has(node.parentId)) {
+    if (node.parentId && !nodeLookup.has(node.parentId)) {
       triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentId))
     }
   }
 
-  // Promote each system-shaped `InternalNodeBase` into a vue-flow `GraphNode`. `parseNode` applies
-  // the vue-flow defaults (`selected: false`, `dragging: false`, `data: {}` fallback, etc.) and
-  // preserves the existing `GraphNode` reference when one is found via `findNode`, keeping Vue's
-  // reactive subscriptions live across re-parses.
-  const nextNodes: GraphNode<NodeType>[] = []
-  for (const node of validNodes) {
-    const internal = lookup.get(node.id)
-    if (!internal) {
-      continue
-    }
-    const parsed = parseNode(internal, getInternalNode(node.id), node.parentId)
-
-    // restore the vue-flow range+padding extent that was coerced away for the system pass (the narrow
-    // `extent` field type is deliberate — the range form is a runtime-only extension, see types/node.ts)
-    const range = rangeExtents.get(node.id)
-    if (range) {
-      ;(parsed as { extent?: CoordinateExtentRange }).extent = range
-    }
-
-    nextNodes.push(parsed)
-  }
-  return nextNodes
+  return validNodes
 }
 
 /**
@@ -234,7 +235,7 @@ export function createGraphEdges<EdgeType extends Edge = Edge>(
   findEdge: Actions<Node, EdgeType>['findEdge'],
   onError: VueFlowStore['emits']['error'],
   defaultEdgeOptions: DefaultEdgeOptions | undefined,
-  nodes: GraphNode[],
+  nodes: Node[],
   edges: GraphEdge[],
 ): GraphEdge<EdgeType>[] {
   const validEdges: GraphEdge<EdgeType>[] = []

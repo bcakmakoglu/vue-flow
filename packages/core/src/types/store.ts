@@ -40,8 +40,8 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   /** Event hooks, you can manipulate the triggers at your own peril */
   readonly hooks: FlowHooks<NodeType, EdgeType>
 
-  /** all stored nodes */
-  nodes: GraphNode<NodeType>[]
+  /** all stored nodes (the user-facing `Node`s; enriched `InternalNode`s live in `nodeLookup`) */
+  nodes: NodeType[]
   /** all stored edges */
   edges: GraphEdge<EdgeType>[]
 
@@ -149,16 +149,16 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   ariaLiveMessage: string
 }
 
-export type SetNodes<NodeType extends Node = Node> = (nodes: NodeType[] | ((nodes: GraphNode<NodeType>[]) => NodeType[])) => void
+export type SetNodes<NodeType extends Node = Node> = (nodes: NodeType[] | ((nodes: NodeType[]) => NodeType[])) => void
 
 export type SetEdges<EdgeType extends Edge = Edge> = (edges: EdgeType[] | ((edges: GraphEdge<EdgeType>[]) => EdgeType[])) => void
 
 export type AddNodes<NodeType extends Node = Node> = (
-  nodes: NodeType | NodeType[] | ((nodes: GraphNode<NodeType>[]) => NodeType | NodeType[]),
+  nodes: NodeType | NodeType[] | ((nodes: NodeType[]) => NodeType | NodeType[]),
 ) => void
 
 export type RemoveNodes = (
-  nodes: (string | Node) | (Node | string)[] | ((nodes: GraphNode[]) => (string | Node) | (Node | string)[]),
+  nodes: (string | Node) | (Node | string)[] | ((nodes: Node[]) => (string | Node) | (Node | string)[]),
   removeConnectedEdges?: boolean,
   removeChildren?: boolean,
 ) => void
@@ -257,16 +257,16 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   updateNodeData: UpdateNodeData<NodeType>
   /** applies default edge change handler */
   applyEdgeChanges: (changes: EdgeChange<EdgeType>[]) => GraphEdge<EdgeType>[]
-  /** applies default node change handler */
-  applyNodeChanges: (changes: NodeChange<NodeType>[]) => GraphNode<NodeType>[]
+  /** applies default node change handler; returns the resulting user nodes */
+  applyNodeChanges: (changes: NodeChange<NodeType>[]) => NodeType[]
   /** manually select edges and add to state */
   addSelectedEdges: (edges: GraphEdge<EdgeType>[]) => void
   /** manually select nodes and add to state */
-  addSelectedNodes: (nodes: GraphNode<NodeType>[]) => void
+  addSelectedNodes: (nodes: NodeType[]) => void
   /** manually unselect edges and remove from state */
   removeSelectedEdges: (edges?: GraphEdge<EdgeType>[]) => void
   /** manually unselect nodes and remove from state */
-  removeSelectedNodes: (nodes?: GraphNode<NodeType>[]) => void
+  removeSelectedNodes: (nodes?: NodeType[]) => void
   /** apply min zoom value to panzoom */
   setMinZoom: (zoom: number) => void
   /** apply max zoom value to panzoom */
@@ -321,22 +321,22 @@ export interface Getters<NodeType extends Node = Node, EdgeType extends Edge = E
   getEdgeTypes: Record<keyof DefaultEdgeTypes | string, EdgeComponent<EdgeType>>
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent<NodeType | BuiltInNode>>
-  /** all visible node */
-  getNodes: GraphNode<NodeType>[]
+  /** all visible nodes (user-facing `Node`s; use `getInternalNode`/`nodeLookup` for enriched data) */
+  getNodes: NodeType[]
   /** all visible edges */
   getEdges: GraphEdge<EdgeType>[]
   /**
    * returns a node by id
    * @deprecated use {@link Actions.findNode} instead
    */
-  getNode: (id: string) => GraphNode<NodeType> | undefined
+  getNode: (id: string) => NodeType | undefined
   /**
    * returns an edge by id
    * @deprecated use {@link Actions.findEdge} instead
    */
   getEdge: (id: string) => GraphEdge<EdgeType> | undefined
-  /** returns all currently selected nodes */
-  getSelectedNodes: GraphNode<NodeType>[]
+  /** returns all currently selected nodes (user-facing `Node`s) */
+  getSelectedNodes: NodeType[]
   /** returns all currently selected edges */
   getSelectedEdges: GraphEdge<EdgeType>[]
 }

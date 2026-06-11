@@ -68,7 +68,7 @@ const ownsStore = !injectedStore
 const vfInstance =
   injectedStore ??
   useCreateVueFlow<NodeType, EdgeType>(props, {
-    nodes: modelNodes as unknown as Ref<GraphNode<NodeType>[]>,
+    nodes: modelNodes as unknown as Ref<NodeType[]>,
     edges: modelEdges as unknown as Ref<GraphEdge<EdgeType>[]>,
   })
 

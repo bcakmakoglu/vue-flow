@@ -9,7 +9,7 @@ const OutputNode: FunctionalComponent<NodeProps<BuiltInNode>> = function ({
   isConnectable,
   data,
 }) {
-  const label = data.label
+  const label = data?.label
 
   return [
     h(Handle as Component, { type: 'target', position: targetPosition, isConnectable }),

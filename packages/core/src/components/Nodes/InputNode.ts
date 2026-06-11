@@ -9,7 +9,7 @@ const InputNode: FunctionalComponent<NodeProps<BuiltInNode>> = function ({
   isConnectable = true,
   data,
 }) {
-  const label = data.label
+  const label = data?.label
 
   return [
     typeof label !== 'string' && label ? h(label) : h(Fragment, [label]),

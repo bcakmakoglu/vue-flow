@@ -35,12 +35,14 @@ describe('Check if nodes are draggable', () => {
           view: win,
         })
       await cy.tryAssertion(() => {
+        // absolute position lives on the InternalNode now (getNodes/v-model return user nodes)
+        const internalNode = store.getInternalNode(nodes[0].id)!
         cy.get(`[data-id="${nodes[0].id}"]`)
           .should('be.visible')
           .should(
             'have.css',
             'transform',
-            `matrix(1, 0, 0, 1, ${store.nodes.value[0].internals.positionAbsolute.x}, ${store.nodes.value[0].internals.positionAbsolute.y})`,
+            `matrix(1, 0, 0, 1, ${internalNode.internals.positionAbsolute.x}, ${internalNode.internals.positionAbsolute.y})`,
           )
       })
     })

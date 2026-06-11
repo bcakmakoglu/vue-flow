@@ -11,7 +11,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
   /**
    * @deprecated will be removed in next major version; use findNode instead
    */
-  const getNode: ComputedGetters<NodeType>['getNode'] = computed(() => (id) => nodeLookup.get(id))
+  const getNode: ComputedGetters<NodeType>['getNode'] = computed(() => (id) => nodeLookup.get(id)?.internals.userNode)
 
   /**
    * @deprecated will be removed in next major version; use findEdge instead
@@ -50,17 +50,20 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
 
   const getNodes: ComputedGetters<NodeType>['getNodes'] = computed(() => {
     if (state.onlyRenderVisibleElements) {
-      return getNodesInside(
-        nodeLookup,
-        {
-          x: 0,
-          y: 0,
-          width: state.dimensions.width,
-          height: state.dimensions.height,
-        },
-        [state.viewport.x, state.viewport.y, state.viewport.zoom],
-        true,
-      ) as GraphNode<NodeType>[]
+      // `getNodesInside` works on the InternalNode lookup; surface the user nodes (the public contract)
+      return (
+        getNodesInside(
+          nodeLookup,
+          {
+            x: 0,
+            y: 0,
+            width: state.dimensions.width,
+            height: state.dimensions.height,
+          },
+          [state.viewport.x, state.viewport.y, state.viewport.zoom],
+          true,
+        ) as GraphNode<NodeType>[]
+      ).map((node) => node.internals.userNode as NodeType)
     }
 
     return state.nodes
@@ -94,7 +97,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
   })
 
   const getSelectedNodes: ComputedGetters<NodeType>['getSelectedNodes'] = computed(() => {
-    const selectedNodes: GraphNode<NodeType>[] = []
+    const selectedNodes: NodeType[] = []
     for (const node of state.nodes) {
       if (node.selected) {
         selectedNodes.push(node)

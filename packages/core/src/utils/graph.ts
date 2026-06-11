@@ -1,4 +1,3 @@
-import { markRaw } from 'vue'
 import type { Connection, DefaultEdgeOptions, Edge, GraphEdge, GraphNode, Node, NodeLookup, XYZPosition } from '../types'
 import { isDef } from '.'
 
@@ -28,50 +27,10 @@ export function isGraphNode<NodeType extends Node = Node>(element: unknown): ele
   return isNode(element) && 'internals' in element
 }
 
-export function parseNode<NodeType extends Node = Node>(
-  node: Node,
-  existingNode?: GraphNode<NodeType>,
-  parentId?: string,
-): GraphNode<NodeType> {
-  const initialState = {
-    id: node.id.toString(),
-    type: node.type ?? 'default',
-    measured: markRaw({
-      width: 0,
-      height: 0,
-    }),
-    internals: {
-      positionAbsolute: {
-        x: node.position?.x ?? 0,
-        y: node.position?.y ?? 0,
-      },
-      z: node.zIndex ?? 0,
-      userNode: node,
-      handleBounds: {
-        source: [] as any[],
-        target: [] as any[],
-      },
-    },
-    draggable: undefined,
-    selectable: undefined,
-    connectable: undefined,
-    focusable: undefined,
-    selected: false,
-    dragging: false,
-    resizing: false,
-    initialized: false,
-    position: {
-      x: 0,
-      y: 0,
-    },
-    data: isDef(node.data) ? node.data : {},
-  } as unknown as GraphNode
-
-  return Object.assign(existingNode ?? initialState, node, {
-    id: node.id.toString(),
-    parentId: node.parentId ?? parentId,
-  }) as GraphNode<NodeType>
-}
+// `parseNode` was removed in the node/InternalNode split: vue-flow now adopts user nodes directly into the
+// `nodeLookup` via `@xyflow/system`'s `adoptUserNodes` (see `adoptNodes` in utils/store.ts), xyflow/react+
+// svelte style — there is no second per-node parse/normalize pass. Edges still have no system adopter, so
+// `parseEdge` (below) stays the canonical edge-build step.
 
 export function parseEdge(edge: Edge, existingEdge?: GraphEdge, defaultEdgeOptions?: DefaultEdgeOptions): GraphEdge {
   const initialState = {

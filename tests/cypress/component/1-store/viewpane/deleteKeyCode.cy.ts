@@ -58,7 +58,8 @@ describe('Store State: `deleteKeyCode`', () => {
   it('does not delete node when node is not deletable', () => {
     cy.get(`[data-id="${nodeToDelete.id}"]`).click()
 
-    store.findNode(nodeToDelete.id)!.deletable = false
+    // node fields are updated via the store helper (direct in-place mutation is no longer reactive)
+    store.updateNode(nodeToDelete.id, { deletable: false })
 
     cy.get('body').trigger('keydown', { key: defaultKeyCode })
 
@@ -73,7 +74,7 @@ describe('Store State: `deleteKeyCode`', () => {
     // deselect AFTER the click has run (the click selects the node); a plain sync statement here would
     // run before the queued click and be a no-op
     cy.then(() => {
-      store.findNode(nodeToDelete.id)!.selected = false
+      store.updateNode(nodeToDelete.id, { selected: false })
     })
 
     cy.get('body').trigger('keydown', { key: defaultKeyCode })

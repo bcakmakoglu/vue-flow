@@ -11,7 +11,7 @@ import { useState } from './state'
  * separate v-model sync layer isn't needed. Omitted → the store uses internal refs.
  */
 export interface StoreSignals<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
-  nodes?: Ref<GraphNode<NodeType>[]>
+  nodes?: Ref<NodeType[]>
   edges?: Ref<GraphEdge<EdgeType>[]>
 }
 
@@ -34,19 +34,19 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   // `<VueFlow>` passes its v-model refs, mutating the store *is* the v-model update (svelte's
   // bindable-prop proxy), so no separate sync layer is needed. Default: internal `ref`s (deep-reactive,
   // matching the previous `reactive(state).nodes` behaviour).
-  const nodesSignal = signals?.nodes ?? ref<GraphNode<NodeType>[]>([])
+  const nodesSignal = signals?.nodes ?? ref<NodeType[]>([])
   const edgesSignal = signals?.edges ?? ref<GraphEdge<EdgeType>[]>([])
 
   // The array references the store itself last wrote (through the `state.nodes`/`.edges` setters below).
   // The single-source binding watch (further down) uses these to tell its own writes apart from an
   // external `v-model` reassignment — no pause/resume flags needed.
-  let lastWriteNodes: GraphNode<NodeType>[] | undefined
+  let lastWriteNodes: NodeType[] | undefined
   let lastWriteEdges: GraphEdge<EdgeType>[] | undefined
 
   // Stable empty fallbacks: an injected `v-model` ref is `undefined` until bound (e.g. `<VueFlow>` with no
   // `:nodes`), so reads must never surface `undefined` (everything iterates `state.nodes`/`.edges`). A
   // stable reference avoids reactivity churn while unbound; `setState`/`commit` replace it with a real array.
-  const emptyNodes: GraphNode<NodeType>[] = []
+  const emptyNodes: NodeType[] = []
   const emptyEdges: GraphEdge<EdgeType>[] = []
 
   const state = useState<NodeType, EdgeType>()
@@ -55,7 +55,7 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   // every existing `state.nodes` read/write stays unchanged while the backing becomes injectable.
   Object.defineProperty(state, 'nodes', {
     get: () => nodesSignal.value ?? emptyNodes,
-    set: (value: GraphNode<NodeType>[]) => {
+    set: (value: NodeType[]) => {
       lastWriteNodes = value
       nodesSignal.value = value
     },
@@ -124,7 +124,7 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   if (signals?.nodes) {
     watch(nodesSignal, () => {
       if (nodesSignal.value && nodesSignal.value !== lastWriteNodes) {
-        actions.setNodes(nodesSignal.value as unknown as NodeType[])
+        actions.setNodes(nodesSignal.value as NodeType[])
       }
     })
   }

@@ -17,7 +17,7 @@ export interface UseNodesInitializedOptions {
  * @returns boolean indicating whether all nodes are initialized
  */
 export function useNodesInitialized(options: UseNodesInitializedOptions = { includeHiddenNodes: false }) {
-  const { nodes } = useVueFlow()
+  const { nodes, getInternalNode } = useVueFlow()
 
   return computed(() => {
     if (nodes.value.length === 0) {
@@ -26,7 +26,10 @@ export function useNodesInitialized(options: UseNodesInitializedOptions = { incl
 
     for (const node of nodes.value) {
       if (options.includeHiddenNodes || !node.hidden) {
-        if (node?.internals.handleBounds === undefined || node.measured.width === 0 || node.measured.height === 0) {
+        // `nodes` are user `Node`s; the measured/handleBounds live on the InternalNode. A node is
+        // initialized once it has been measured (handleBounds set + non-zero/defined dimensions).
+        const internalNode = getInternalNode(node.id)
+        if (!internalNode || internalNode.internals.handleBounds === undefined || !internalNode.measured?.width || !internalNode.measured?.height) {
           return false
         }
       }

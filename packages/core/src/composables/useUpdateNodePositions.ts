@@ -25,13 +25,19 @@ export function useUpdateNodePositions() {
     const nodeUpdates: NodeDragItem[] = []
     for (const node of getSelectedNodes.value) {
       if (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined')) {
+        // `getSelectedNodes` returns user `Node`s — resolve the enriched InternalNode for internals/measured
+        const internalNode = getInternalNode(node.id)
+        if (!internalNode) {
+          continue
+        }
+
         const nextPosition = {
-          x: node.internals.positionAbsolute.x + positionDiffX,
-          y: node.internals.positionAbsolute.y + positionDiffY,
+          x: internalNode.internals.positionAbsolute.x + positionDiffX,
+          y: internalNode.internals.positionAbsolute.y + positionDiffY,
         }
 
         const { position } = calcNextPosition(
-          node,
+          internalNode,
           nextPosition,
           emits.error,
           nodeExtent.value,
@@ -42,8 +48,10 @@ export function useUpdateNodePositions() {
           id: node.id,
           position,
           distance: { x: positionDiff.x, y: positionDiff.y },
-          measured: getNodeDimensions(node),
-          internals: { positionAbsolute: { x: node.internals.positionAbsolute.x, y: node.internals.positionAbsolute.y } },
+          measured: getNodeDimensions(internalNode),
+          internals: {
+            positionAbsolute: { x: internalNode.internals.positionAbsolute.x, y: internalNode.internals.positionAbsolute.y },
+          },
         })
       }
     }
