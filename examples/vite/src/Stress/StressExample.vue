@@ -1,26 +1,25 @@
 <script setup>
 import { Background, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
-import { nextTick, ref } from 'vue'
+import { nextTick, shallowRef } from 'vue'
 import { getElements } from './utils'
 
-const initial = getElements(15, 15)
+const { nodes: initialNodes, edges: initialEdges } = getElements(15, 15)
 
-const nodes = ref(initial.nodes)
-const edges = ref(initial.edges)
+const nodes = shallowRef(initialNodes)
+const edges = shallowRef(initialEdges)
 
-const { onInit, dimensions, fitView } = useVueFlow()
-
-onInit((i) => {
-  i.fitView({
-    padding: 0.2,
-  })
-
-  console.log(i.getNodes.value, i.getEdges.value)
-})
+const { dimensions, fitView } = useVueFlow()
 
 function toggleClass() {
-  nodes.value = nodes.value.map((el) => ({ ...el, class: el.class === 'light' ? 'dark' : 'light' }))
-  edges.value.forEach((el) => (el.class = el.class === 'light' ? 'dark' : 'light'))
+  nodes.value = nodes.value.map((el) => ({
+    ...el,
+    class: el.class === 'light' ? 'dark' : 'light',
+  }))
+
+  edges.value = edges.value.map((el) => ({
+    ...el,
+    class: el.class === 'light' ? 'dark' : 'light',
+  }))
 }
 
 function updatePos() {
@@ -39,7 +38,7 @@ function updatePos() {
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :min-zoom="0.1">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :min-zoom="0.1" fit-view-on-init>
     <Background />
 
     <Panel position="top-right">

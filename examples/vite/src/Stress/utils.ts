@@ -11,7 +11,8 @@ export function getElements(xElements = 10, yElements = 10) {
       const position = { x: x * 100, y: y * 50 }
       const node = {
         id: nodeId.toString(),
-        style: { width: 50, fontSize: 11 },
+        style: { width: '50px', fontSize: '11px' },
+        class: 'light',
         data: { label: `Node ${nodeId}` },
         position,
       }
