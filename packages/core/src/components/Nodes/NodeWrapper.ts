@@ -99,7 +99,9 @@ const NodeWrapper = defineComponent({
 
     const isInit = toRef(() => !!nodeRef.value?.measured?.width && !!nodeRef.value?.measured?.height)
 
-    const isParent = toRef(() => (parentLookup.get(props.id)?.size ?? 0) > 0)
+    // computed (not toRef): the value-equality gate keeps this node's render effect from re-running on
+    // every `parentLookup` entry replacement — an uncached getter read in render tracks the raw map key
+    const isParent = computed(() => (parentLookup.get(props.id)?.size ?? 0) > 0)
 
     const nodeCmp = computed(() => {
       const name = nodeRef.value?.type || 'default'
